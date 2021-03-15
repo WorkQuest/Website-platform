@@ -1,0 +1,51 @@
+@mixin modalKit {
+  padding: 10px;
+  position: fixed;
+  overflow: auto;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(#000000, .4);
+  z-index: 1400;
+  text-align: center;
+  white-space: nowrap;
+  font-size: 0;
+  &:after {
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+    height: 100%;
+    content: "";
+  }
+  &__box {
+    font-size: 16px;
+    white-space: normal;
+    word-break: break-word;
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+    position: relative;
+    max-width: 500px;
+    text-align: left;
+    background: #FFFFFF;
+  }
+  &__text {
+
+  }
+  &__content {
+    padding: 35px;
+  }
+  &__header {
+    padding: 35px 35px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__title {
+    font-size: 30px;
+  }
+  &__x {
+
+  }
+}

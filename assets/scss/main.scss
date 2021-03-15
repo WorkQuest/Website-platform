@@ -1,0 +1,27 @@
+@import './_reset.css';
+
+@font-face {
+  font-family: "GothamProMedium";
+  src: url(~assets/fonts/GothamProMedium/GothamPro-Medium.woff);
+  font-weight: 500;
+}
+@font-face {
+  font-family: "GothamProBlack";
+  src: url(~assets/fonts/GothamProBlack/GothamPro-Black.woff);
+  font-weight: 400;
+}
+
+body {
+  margin: 0 !important;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+.b-toaster {
+  z-index: 3000;
+}
