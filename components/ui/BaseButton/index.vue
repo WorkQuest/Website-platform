@@ -74,7 +74,8 @@ export default {
   background: #0c82c3;
   border-radius: 23px;
   &:hover {
-    background: #F3BA2F;
+    -webkit-filter: brightness(.84) saturate(.84) hue-rotate(-5deg);
+    filter: brightness(.84) saturate(.84) hue-rotate(-5deg);
   }
   &_disabled {
     pointer-events: none;

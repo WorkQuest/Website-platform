@@ -56,5 +56,11 @@
     "forgot": "Forgot password?",
     "loginWith": "Login with your \nsocial media account",
     "create": "Create account"
+  },
+  "role": {
+    "title": "Login to your \naccount as",
+    "employer": "Employer",
+    "worker": "Worker",
+    "enter": "Enter"
   }
 }
