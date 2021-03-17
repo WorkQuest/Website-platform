@@ -181,7 +181,6 @@
                   </ValidationProvider>
                   <base-btn
                     :mode="'blue'"
-                    @click="handleSubmit(signUp)"
                   >
                     {{ $t('registration.registration') }}
                   </base-btn>
@@ -210,8 +209,19 @@ export default {
     backToMain() {
       this.$router.push('/');
     },
-    signUp() {
-      //
+    async signUp() {
+      const {
+        email, password, firstName, lastName,
+      } = this.model;
+      const response = await this.$store.dispatch('user/signUp', {
+        email,
+        password,
+        firstName,
+        lastName,
+      });
+      if (response?.data.ok) {
+        this.$router.push('/');
+      }
     },
   },
 };

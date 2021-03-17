@@ -108,7 +108,6 @@
                   <base-btn
                     class="account__btn account__btn_login"
                     :mode="'blue'"
-                    @click="handleSubmit(signIn)"
                   >
                     {{ $t('login.signIn') }}
                   </base-btn>
@@ -184,8 +183,15 @@ export default {
     backToMain() {
       this.$router.push('/');
     },
-    signIn() {
-      //
+    async signIn() {
+      const { email, password } = this.model;
+      const response = await this.$store.dispatch('user/signIn', {
+        email,
+        password,
+      });
+      if (response?.data.ok) {
+        this.$router.push('/');
+      }
     },
   },
 };

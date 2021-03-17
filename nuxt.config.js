@@ -49,6 +49,9 @@ export default {
       compact: false,
     },
   },
+  axios: {
+    baseURL: process.env.BASE_URL || 'https://app.workquest.co/api',
+  },
   // bootstrapVue: {
   //   // bootstrapCSS: false, // Or `css: false`
   //   // bootstrapVueCSS: false, // Or `bvCSS: false`
