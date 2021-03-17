@@ -49,5 +49,12 @@
   "registration": {
     "edit": "Edit",
     "registration": "Registration"
+  },
+  "login": {
+    "signIn": "Login",
+    "remember": "Remember me",
+    "forgot": "Forgot password?",
+    "loginWith": "Login with your \nsocial media account",
+    "create": "Create account"
   }
 }
