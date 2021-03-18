@@ -19,6 +19,7 @@
     "cross-env": "^7.0.3",
     "eslint-config-airbnb-base": "^14.2.0",
     "nuxt": "^2.14.12",
+    "nuxt-gmaps": "^1.2.10",
     "nuxt-i18n": "^6.13.12",
     "vee-validate": "^3.3.9",
     "vue": "^2.6.12",

@@ -62,5 +62,13 @@
     "employer": "Employer",
     "worker": "Worker",
     "enter": "Enter"
+  },
+  "profile": {
+    "active": "active proposals",
+    "radius": "in your radius",
+    "lead": "Lead time",
+    "proposalLocation": "Proposal location  according to your  current location",
+    "proposalStatus": "Proposal status",
+    "urgently": "URGENTLY"
   }
 }

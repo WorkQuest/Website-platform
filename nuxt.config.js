@@ -40,6 +40,9 @@ export default {
     'bootstrap-vue/nuxt',
     'nuxt-i18n',
     'cookie-universal-nuxt',
+    ['nuxt-gmaps', {
+      key: 'AIzaSyD32Aorm6CU9xUIrUznzYyw2d_0NTqt3Zw',
+    }],
   ],
   build: {
     transpile: [

@@ -52,6 +52,7 @@ export default {
         { 'base-btn_disabled': disabled },
         { 'base-btn_red': mode === 'red' },
         { 'base-btn_green': mode === 'green' },
+        { 'base-btn_orange': mode === 'orange' },
       ];
     },
   },
@@ -86,6 +87,9 @@ export default {
   }
   &_green {
     background: #27a860;
+  }
+  &_orange {
+    background: #ffa604;
   }
 }
 </style>

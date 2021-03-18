@@ -30,5 +30,6 @@ module.exports = {
     'import/no-dynamic-require': 'off',
     'no-restricted-globals': 'off',
     'global-require': 'off',
+    'no-undef': 'off',
   },
 };
