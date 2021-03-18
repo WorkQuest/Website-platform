@@ -219,7 +219,7 @@ export default {
         firstName,
         lastName,
       });
-      if (response?.data.ok) {
+      if (response?.ok) {
         this.$router.push('/');
       }
     },

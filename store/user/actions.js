@@ -1,7 +1,7 @@
 export default {
   async signIn({ commit }, payload) {
     try {
-      const response = await this.$axios.post('/v1/auth/login', payload);
+      const response = await this.$axios.$post('/v1/auth/login', payload);
       // if (response?.ok) {
       //   commit('setNewTokens', response.result);
       // }
@@ -12,7 +12,7 @@ export default {
   },
   async signUp({ commit }, payload) {
     try {
-      const response = await this.$axios.post('/v1/auth/register', payload);
+      const response = await this.$axios.$post('/v1/auth/register', payload);
       console.log(response);
       return response;
     } catch (err) {
@@ -21,7 +21,7 @@ export default {
   },
   async confirm({ commit }, payload) {
     try {
-      const response = await this.$axios.post('/v1/auth/confirm-email', payload);
+      const response = await this.$axios.$post('/v1/auth/confirm-email', payload);
       console.log(response);
       return response;
     } catch (err) {

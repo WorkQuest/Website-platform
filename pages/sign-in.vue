@@ -189,7 +189,7 @@ export default {
         email,
         password,
       });
-      if (response?.data.ok) {
+      if (response?.ok) {
         this.$router.push('/');
       }
     },

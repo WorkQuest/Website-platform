@@ -13,12 +13,26 @@
           >
         </n-link>
         <div class="header__info">
-          <div class="header__route">
-            <div class="header__title">
-              {{ title }}
+          <div
+            class="header__route"
+            :class="{'header__route_avatar': avatar}"
+          >
+            <div
+              v-if="avatar"
+              class="header__avatar"
+            >
+              <img
+                :src="avatar"
+                alt=""
+              >
             </div>
-            <div class="header__sub">
-              {{ subTitle }}
+            <div class="header__route">
+              <div class="header__title">
+                {{ title }}
+              </div>
+              <div class="header__sub">
+                {{ subTitle }}
+              </div>
             </div>
           </div>
         </div>
@@ -52,6 +66,10 @@ export default {
       default: '',
     },
     subTitle: {
+      type: String,
+      default: '',
+    },
+    avatar: {
       type: String,
       default: '',
     },
@@ -114,8 +132,6 @@ export default {
     text-align: left;
   }
   &__sub {
-    width: 84px;
-    height: 12px;
     color: #27a860;
     font-family: 'GothamProMedium', sans-serif;
     font-size: 15px;
@@ -135,6 +151,10 @@ export default {
     display: flex;
     flex-direction: column;
     grid-gap: 20px;
+    &_avatar {
+      display: grid;
+      grid-template-columns: 50px 1fr;
+    }
   }
   &__links {
     display: flex;
