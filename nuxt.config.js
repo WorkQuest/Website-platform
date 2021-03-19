@@ -41,7 +41,7 @@ export default {
     'nuxt-i18n',
     'cookie-universal-nuxt',
     ['nuxt-gmaps', {
-      key: 'AIzaSyD32Aorm6CU9xUIrUznzYyw2d_0NTqt3Zw',
+      key: process.env.GMAPKEY,
     }],
   ],
   build: {

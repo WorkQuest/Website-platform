@@ -67,8 +67,22 @@
     "active": "active proposals",
     "radius": "in your radius",
     "lead": "Lead time",
-    "proposalLocation": "Proposal location  according to your  current location",
+    "proposalLocation": "Proposal location \naccording to your \ncurrent location",
     "proposalStatus": "Proposal status",
-    "urgently": "URGENTLY"
+    "urgently": "URGENTLY",
+    "details": "View details",
+    "available": "Available",
+    "viewProfile": "View \nprofile",
+    "invite": "INVITE QUESTOR",
+    "slogan": "Create work proposal",
+    "add": "Add all the information and publication time  to find the right",
+    "create": "Create",
+    "sidebar": {
+      "filter": "All Quests filter",
+      "choose": "(Choose simple or \nspecialized category)",
+      "quests": "Quests",
+      "specialized": "SPECIALIZED QUESTS",
+      "find": "FIND A JOB"
+    }
   }
 }
