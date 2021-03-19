@@ -18,14 +18,14 @@ jobs:
       with:
         node-version: '12.x'
 
-    - name: Export env variable
-      run: export GMAPKEY=${{ secrets.GMAPKEY }}
+#    - name: Export env variable
+#      run: export GMAPKEY=${{ secrets.GMAPKEY }}
 
     - name: Install npm dependencies
       run: npm install
 
     - name: Run generate static task
-      run: npm run generate
+      run: GMAPKEY=${{ secrets.GMAPKEY }} npm run generate
 
     - name: Deploy to Server
       uses: easingthemes/ssh-deploy@v2.1.4
