@@ -18,6 +18,9 @@ jobs:
       with:
         node-version: '12.x'
 
+    - name: Export env variable
+      run: export GMAPKEY=${{ secrets.GMAPKEY }}
+
     - name: Install npm dependencies
       run: npm install
 
