@@ -44,6 +44,20 @@
           </div>
         </div>
       </div>
+      <div class="role__terms">
+        <n-link
+          to="/"
+          class="role__link"
+        >
+          TERMS AND CONDITIONS
+        </n-link>
+        <n-link
+          to="/"
+          class="role__link"
+        >
+          PRIVACY POLICY
+        </n-link>
+      </div>
     </div>
   </div>
 </template>
@@ -65,9 +79,24 @@ export default {
     min-height: 100vh;
     background: #20253b;
     display: grid;
+    grid-auto-rows: 1fr 150px;
     align-items: center;
-    justify-content: center;
     position: relative;
+  }
+  &__terms {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 100px;
+    grid-gap: 45px;
+  }
+  &__link {
+    color: #d2d2d3;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-family: 'GothamProMedium', sans-serif;
+    font-style: normal;
+    line-height: 47.92px;
   }
   &__content {
     max-width: 1000px;
@@ -181,6 +210,75 @@ export default {
     width: 2px;
     background-color: #FFFFFF;
     transform: rotate(-45deg);
+  }
+}
+
+@include _1199 {
+  .return {
+    width: 100px;
+    height: 100px;
+  }
+}
+@include _991 {
+  .role {
+    &__top {
+      grid-template-columns: 1fr;
+      grid-gap: 30px;
+      justify-items: center;
+    }
+    &__title {
+      text-align: center;
+      white-space: normal;
+      font-size: 26px;
+      padding: 0 5px;
+    }
+    &__widget {
+      grid-template-columns: 1fr;
+      grid-gap: 0;
+      min-height: 550px;
+      margin-top: 30px;
+    }
+    &__banner {
+      max-width: 94%;
+    }
+  }
+}
+
+@include _575 {
+  .return {
+    position: initial;
+    justify-self: flex-end;
+    margin-bottom: 30px;
+    height: 75px;
+    width: 75px;
+    &__container {
+      padding: 15px;
+    }
+  }
+  .role {
+    &__widget {
+      grid-template-columns: 350px;
+      min-height: 460px;
+    }
+    &__container {
+      grid-template-rows: auto;
+    }
+    &__title {
+      font-size: 22px;
+    }
+    &__terms {
+      display: grid;
+      grid-gap: 0;
+      padding: 0;
+      width: 85%;
+      margin: 0 auto;
+    }
+    &__link {
+      text-align: right;
+    }
+    &__banner {
+      max-width: 85%;
+    }
   }
 }
 </style>
