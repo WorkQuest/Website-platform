@@ -13,6 +13,7 @@
               >
                 <form
                   action=""
+                  class="regs__field"
                   @submit.prevent="handleSubmit(signIn)"
                 >
                   <ValidationProvider
@@ -390,4 +391,68 @@ export default {
   }
 }
 
+@include _991 {
+  .regs {
+    &__account {
+      background: url("~assets/img/app/bg_login_top.png") center top no-repeat, rgba(#FFFFFF, 1);
+      display: grid;
+      width: initial;
+      background-size: contain;
+      position: relative;
+      margin: 20px 10px;
+    }
+    &__field {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  .account {
+    &__container {
+      display: grid;
+      grid-template-rows: 212px 1fr;
+      grid-template-columns: 1fr;
+    }
+    &__left {
+      position: relative;
+    }
+    &__right {
+      padding: 0 20px 50px 20px;
+    }
+    &__btn {
+      &_login {
+        max-width: initial;
+      }
+      &_create {
+        max-width: initial;
+      }
+    }
+    &__title {
+      text-align: center;
+    }
+    &__items {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+  .fields {
+    grid-template-columns: 1fr;
+    width: 100%;
+    &__remember {
+      label {
+        font-size: 14px;
+      }
+    }
+    &__item {
+      width: 100%;
+    }
+    &__forgot {
+      font-size: 14px;
+    }
+  }
+  .back {
+    position: absolute;
+    top: 30px;
+    right: 70px;
+  }
+}
 </style>
