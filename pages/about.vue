@@ -126,4 +126,46 @@ export default {
     }
   }
 }
+@include _575 {
+  .about {
+    display: flex;
+    flex-direction: column;
+    margin: -100px 0 60px 0;
+    &__row {
+      flex-direction: column-reverse;
+    }
+    &__image {
+      position: initial;
+      top: 0;
+      max-height: 270px;
+      overflow: hidden;
+      img {
+        width: 400px;
+      }
+    }
+    &__content {
+      height: 100%;
+    }
+    &__container {
+      grid-template-rows: 1fr 90px;
+    }
+  }
+  .description {
+    align-items: center;
+    max-width: 330px;
+    padding-bottom: 40px;
+    &__title {
+      font-size: 24px;
+    }
+    &__text {
+      font-size: 12px;
+      line-height: normal;
+      &_normal {
+        flex-direction: initial;
+        justify-content: center;
+        padding-top: 20px;
+      }
+    }
+  }
+}
 </style>

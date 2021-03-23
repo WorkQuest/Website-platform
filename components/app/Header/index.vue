@@ -54,6 +54,22 @@
         </div>
       </div>
     </div>
+    <div class="header__bottom">
+      <n-link
+        v-for="(item, i) in headerLinks"
+        :key="`link-${i}`"
+        class="header__link"
+        exact-active-class="header__link_active"
+        :to="item.path"
+      >
+        <div class="header__icon">
+          <img
+            :src="item.icon"
+            alt=""
+          >
+        </div>
+      </n-link>
+    </div>
   </div>
 </template>
 
@@ -176,6 +192,60 @@ export default {
           filter: invert(1);
         }
       }
+    }
+  }
+  &__bottom {
+    display: none;
+  }
+}
+@include _575 {
+  .header {
+    height: 100px;
+    &__body {
+      grid-template-columns: 140px 1fr;
+      padding-left: 20px;
+    }
+    &__router {
+      &_avatar {
+        grid-gap: 10px;
+      }
+    }
+    &__links {
+      display: none;
+    }
+    &__link {
+      border-radius: 40px 40px 0 0;
+      width: 100px;
+    }
+    &__logo {
+      border-radius: 0 0 50px 50px;
+    }
+    &__container {
+      background: #FFFFFF;
+      width: 100%;
+      box-shadow: 0 0 4px rgba(0, 7, 5, 0.3);
+      border-radius: 0 0 50px 50px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      height: 100px;
+    }
+    &__title {
+      font-size: 22px;
+    }
+    &__bottom {
+      padding-left: 20px;
+      display: flex;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      background: #FFFFFF;
+      width: 100%;
+      height: 100px;
+      z-index: 1000;
+      box-shadow: 0 0 7px rgba(0, 7, 5, 0.3);
+      border-radius: 40px 40px 0 0;
     }
   }
 }

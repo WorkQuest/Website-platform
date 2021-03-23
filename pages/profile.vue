@@ -153,12 +153,12 @@
                     Work proposal from Samantha Sparks
                   </div>
                 </div>
-                <div class="box__row">
+                <div class="box__row box__row_about">
                   <div class="box__text box__text_about">
                     about
                   </div>
                 </div>
-                <div class="box__row">
+                <div class="box__row box__row_text">
                   <div class="box__text box__text_quote">
                     <span>Hi
                       I’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage...
@@ -349,7 +349,7 @@ export default {
   }
   &__main {
     padding-top: 50px;
-    min-width: 780px;
+    width: 780px;
     max-width: 1000px;
     margin: 0 auto;
     min-height: calc(100vh - 125px);
@@ -375,7 +375,7 @@ export default {
   background: #FFFFFF;
   position: relative;
   box-shadow: 0 6px 4px 0 rgba(0, 7, 5, .3);
-  min-width: 430px;
+  width: 430px;
   &::after {
     content: '';
     background: #FFFFFF;
@@ -628,6 +628,58 @@ export default {
     display: flex;
     align-items: center;
     grid-gap: 10px;
+  }
+}
+
+@include _575 {
+  .profile {
+    &__box {
+      grid-template-rows: 250px 1fr;
+      grid-template-columns: 1fr;
+    }
+    &__main {
+      margin: 0 15px;
+      padding-bottom: 120px;
+    }
+  }
+  .box {
+    &__row {
+      &_about {
+        display: none;
+      }
+      &_text {
+        display: none;
+      }
+      &_details {
+        flex-direction: column;
+        grid-gap: 20px;
+      }
+    }
+    &__text {
+      &_details {
+        white-space: nowrap;
+      }
+    }
+    &__container {
+      grid-template-columns: 5fr 7fr;
+    }
+  }
+  .info {
+    &__btn {
+      width: 41px;
+      height: 41px;
+      img {
+        width: 50% !important;
+      }
+    }
+  }
+  .sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    max-width: 280px;
+    z-index: 1200;
   }
 }
 </style>

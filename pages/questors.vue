@@ -89,7 +89,7 @@
                   <div class="info__text">
                     Markus Ziman
                   </div>
-                  <div class="info__right">
+                  <div class="info__right info__right_locate">
                     <div class="info__text info__text_simple">
                       <span>worker, open
                         for proposals
@@ -318,7 +318,7 @@ export default {
   }
   &__main {
     padding-top: 50px;
-    min-width: 780px;
+    width: 780px;
     max-width: 1000px;
     margin: 0 auto;
     min-height: calc(100vh - 125px);
@@ -653,6 +653,74 @@ export default {
     display: flex;
     align-items: center;
     grid-gap: 10px;
+  }
+}
+
+@include _575{
+  .profile {
+    &__main {
+      margin: 0 15px;
+      padding-bottom: 150px;
+    }
+  }
+  .info {
+    &__btn {
+      width: 41px;
+      height: 41px;
+      &_invite {
+        max-width: 275px;
+        width: 100%;
+      }
+      img {
+        width: 50% !important;
+      }
+    }
+    &__text {
+      font-size: 16px;
+    }
+    &__row {
+      &_available {
+       display: grid;
+      }
+      &_profile {
+        display: grid;
+        //grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: minmax(40px, 60px) 1fr;
+      }
+    }
+    &__right {
+      &_locate {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    &__action {
+      grid-column: 1/3;
+    }
+  }
+  .locate {
+    &__text {
+      font-size: 16px;
+    }
+  }
+  .box {
+    &__container {
+      height: auto;
+      overflow: hidden;
+    }
+    &__left {
+      background: url("~assets/img/ui/banner_left.png") left center no-repeat;
+      background-size: cover;
+    }
+    &__slogan {
+      font-size: 32px;
+      padding-left: 20px;
+    }
+    &__text {
+      span {
+        white-space: initial;
+      }
+    }
   }
 }
 </style>
