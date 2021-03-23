@@ -5,7 +5,7 @@
         <n-link
           tag="div"
           class="header__logo"
-          to="/"
+          to="/about"
         >
           <img
             src="~assets/img/app/logo.svg"
@@ -99,11 +99,11 @@ export default {
         },
         {
           icon: require('~/assets/img/ui/notification.svg'),
-          path: '/notification',
+          path: '/temp',
         },
         {
           icon: require('~/assets/img/ui/settings.svg'),
-          path: '/settings',
+          path: '/profile',
         },
       ];
     },

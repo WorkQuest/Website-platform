@@ -191,7 +191,7 @@ export default {
         password,
       });
       if (response?.ok) {
-        this.$router.push('/');
+        this.$router.push('/profile');
       }
     },
   },

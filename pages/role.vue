@@ -27,7 +27,10 @@
               {{ $t('role.employer') }}
             </div>
             <div class="role__action">
-              <base-btn :mode="'green'">
+              <base-btn
+                :mode="'green'"
+                @click="doSignUp()"
+              >
                 {{ $t('role.enter') }}
               </base-btn>
             </div>
@@ -37,7 +40,9 @@
               {{ $t('role.worker') }}
             </div>
             <div class="role__action">
-              <base-btn>
+              <base-btn
+                @click="doSignUp()"
+              >
                 {{ $t('role.enter') }}
               </base-btn>
             </div>
@@ -68,6 +73,9 @@ export default {
   methods: {
     backToMain() {
       this.$router.push('/');
+    },
+    doSignUp() {
+      this.$router.push('/sign-up');
     },
   },
 };

@@ -220,7 +220,7 @@ export default {
         lastName,
       });
       if (response?.ok) {
-        this.$router.push('/');
+        this.$router.push('/sign-in');
       }
     },
   },

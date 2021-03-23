@@ -42,14 +42,18 @@ export default {
       ];
     },
   },
+  created() {
+    this.$router.push('/role');
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .links {
-  display: flex;
   grid-gap: 20px;
   padding: 20px;
+  min-height: 100vh;
+  display: none;
   a {
     color: #2b51ff;
   }
