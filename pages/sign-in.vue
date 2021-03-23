@@ -322,7 +322,7 @@ export default {
   &__account {
     background: url("~assets/img/app/account_left.png") no-repeat left center, rgba(#FFFFFF, 1);
     border-radius: 100px;
-    max-height: 520px;
+    min-height: 520px;
     width: 100%;
     max-width: 1000px;
   }
