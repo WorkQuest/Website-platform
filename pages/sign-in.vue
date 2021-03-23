@@ -158,6 +158,7 @@
               <base-btn
                 :mode="'green'"
                 class="account__btn account__btn_create"
+                @click="doSignUp()"
               >
                 {{ $t('login.create') }}
               </base-btn>
@@ -183,6 +184,9 @@ export default {
   methods: {
     backToMain() {
       this.$router.push('/');
+    },
+    doSignUp() {
+      this.$router.push('/sign-up');
     },
     async signIn() {
       const { email, password } = this.model;
@@ -318,7 +322,7 @@ export default {
   &__account {
     background: url("~assets/img/app/account_left.png") no-repeat left center, rgba(#FFFFFF, 1);
     border-radius: 100px;
-    min-height: 520px;
+    max-height: 520px;
     width: 100%;
     max-width: 1000px;
   }

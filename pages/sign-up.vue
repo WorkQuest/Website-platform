@@ -184,6 +184,13 @@
                   >
                     {{ $t('registration.registration') }}
                   </base-btn>
+                  <div style="padding-top: 2px">
+                    Already have an account?
+                    <span
+                      class="fields__link"
+                      @click="doSignIn()"
+                    >Sign in</span>
+                  </div>
                 </form>
               </ValidationObserver>
             </div>
@@ -223,13 +230,16 @@ export default {
         this.$router.push('/sign-in');
       }
     },
+    doSignIn() {
+      this.$router.push('/sign-in');
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .fields {
-  padding-top: 23px;
+  padding-top: 15px;
   max-width: 275px;
   display: grid;
   grid-template-columns: 1fr;
@@ -258,6 +268,10 @@ export default {
     &::placeholder {
       color: #c7c4c4;
     }
+  }
+  &__link {
+    font-weight: 600;
+    cursor: pointer;
   }
   &__box {
     height: 100%;
@@ -298,7 +312,7 @@ export default {
   &__account {
     background: url("~assets/img/app/account_left.png") no-repeat left center, url("~assets/img/app/account_right.png") no-repeat right top -60px, rgba(#27a860, .9);
     border-radius: 100px;
-    min-height: 520px;
+    max-height: 520px;
     width: 100%;
     max-width: 1000px;
   }
@@ -310,7 +324,7 @@ export default {
     grid-template-columns: repeat(2, 1fr);
   }
   &__right {
-    padding: 20px 45px;
+    padding: 10px 45px;
   }
   &__avatar {
     display: grid;
