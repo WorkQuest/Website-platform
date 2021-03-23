@@ -184,7 +184,7 @@
                   >
                     {{ $t('registration.registration') }}
                   </base-btn>
-                  <div style="padding-top: 2px">
+                  <div class="fields__block">
                     Already have an account?
                     <span
                       class="fields__link"
@@ -268,6 +268,10 @@ export default {
     &::placeholder {
       color: #c7c4c4;
     }
+  }
+  &__block {
+    padding-top: 2px;
+    text-align: center;
   }
   &__link {
     font-weight: 600;
