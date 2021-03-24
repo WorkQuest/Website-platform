@@ -20,6 +20,7 @@ export default {
     '@/assets/scss/main.scss',
   ],
   plugins: [
+    { src: '@plugins/axios.js' },
     { src: '@plugins/main.js' },
     { src: '@plugins/vee-validate.js' },
     { src: '@plugins/injectComponents.js' },

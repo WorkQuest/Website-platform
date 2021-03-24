@@ -16,6 +16,7 @@
       </div>
       <div class="auth__fields">
         <base-field
+          v-model="model.firstName"
           :placeholder="$t('signUp.firstName')"
           :mode="'icon'"
         >
@@ -82,6 +83,13 @@
 export default {
   name: 'SignUp',
   layout: 'auth',
+  data() {
+    return {
+      model: {
+        firstName: '',
+      },
+    };
+  },
 };
 </script>
 

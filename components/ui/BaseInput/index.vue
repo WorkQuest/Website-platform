@@ -1,5 +1,7 @@
 <template>
-  <div
+  <ValidationProvider
+    v-slot="{errors}"
+    tag="div"
     class="ctm-field ctm-field_default"
     :class="[
       {'ctm-field_big': big},
@@ -7,6 +9,8 @@
       {'ctm-field_search': isSearch},
       {'ctm-field_icon': mode === 'icon'}
     ]"
+    :rules="rules"
+    :name="name"
   >
     <div
       v-if="label !== ''"
@@ -41,9 +45,9 @@
       v-if="!isHideError"
       class="ctm-field__err"
     >
-      {{ errorText }}
+      {{ errors[0] }}
     </div>
-  </div>
+  </ValidationProvider>
 </template>
 <script>
 export default {
@@ -92,9 +96,20 @@ export default {
       type: String,
       default: 'on',
     },
+    rules: {
+      type: [String, Array, Object],
+      description: 'Vee validate validation rules',
+      default: '',
+    },
+    name: {
+      type: String,
+      description: 'Input name (used for validation)',
+      default: '',
+    },
   },
   methods: {
     input($event) {
+      console.log('ok');
       this.$emit('input', $event.target.value);
     },
   },
