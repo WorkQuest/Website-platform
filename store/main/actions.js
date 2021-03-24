@@ -26,4 +26,23 @@ export default {
   async getApiData({ dispatch }) {
     await dispatch('rate/getRate', null, { root: true });
   },
+  showToast(store, value) {
+    const errorLabel = value?.response?.data?.msg || 'Server error';
+    this._vm.$bvToast.toast(errorLabel, {
+      title: 'Error',
+      variant: 'warning',
+      solid: true,
+      toaster: 'b-toaster-bottom-right',
+      appendToast: true,
+    });
+  },
+  showInfo(store, value) {
+    this._vm.$bvToast.toast(value, {
+      title: 'Info',
+      variant: 'info',
+      solid: true,
+      toaster: 'b-toaster-bottom-right',
+      appendToast: true,
+    });
+  },
 };

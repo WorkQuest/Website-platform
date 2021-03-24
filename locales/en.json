@@ -84,5 +84,8 @@
       "specialized": "SPECIALIZED QUESTS",
       "find": "FIND A JOB"
     }
+  },
+  "meta": {
+    "confirmEmail": "A letter with confirmation code has been sent to your email address."
   }
 }

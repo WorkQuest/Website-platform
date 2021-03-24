@@ -227,6 +227,7 @@ export default {
         lastName,
       });
       if (response?.ok) {
+        this.$store.dispatch('main/showInfo', this.$t('meta.confirmEmail'));
         this.$router.push('/sign-in');
       }
     },
