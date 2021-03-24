@@ -127,7 +127,7 @@ export default {
     left: 13px;
     &:before {
       font-size: 30px;
-      background: linear-gradient(94.43deg, #6B00F2 0.34%, #3C00F2 97.93%);
+      background: #F3F7FA;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -153,13 +153,14 @@ export default {
   &_default {
     .ctm-field__input {
       color: #FFFFFF;
-      background: #161651;
-      border: 2px solid #161651;
+      background: #F3F7FA;
+      border-radius: 6px;
+      border: 1px solid transparent;
       &::placeholder {
         color: rgba(#FFFFFF, .3);
       }
       &:focus {
-        border-color: #3C00F2;
+        border: 1px solid #0083C7;
       }
     }
   }
