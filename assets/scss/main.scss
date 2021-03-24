@@ -17,6 +17,60 @@
   font-weight: 500;
 }
 
+@font-face {
+  font-face-name: 'Inter';
+  src: url("~assets/fonts/InterThin/Inter-Thin.ttf");
+  font-weight: 100;
+}
+
+@font-face {
+  font-face-name: 'Inter';
+  src: url("~assets/fonts/InterExtraLight/Inter-ExtraLight.ttf");
+  font-weight: 200;
+}
+
+@font-face {
+  font-face-name: 'Inter';
+  src: url("~assets/fonts/InterLight/Inter-Light.ttf");
+  font-weight: 300;
+}
+
+@font-face {
+  font-face-name: 'Inter';
+  src: url("~assets/fonts/InterRegular/Inter-Regular.ttf");
+  font-weight: 400;
+}
+
+@font-face {
+  font-face-name: 'Inter';
+  src: url("~assets/fonts/InterMedium/Inter-Medium.ttf");
+  font-weight: 500;
+}
+
+@font-face {
+  font-face-name: 'Inter';
+  src: url("~assets/fonts/InterSemiBold/Inter-SemiBold.ttf");
+  font-weight: 600;
+}
+
+@font-face {
+  font-face-name: 'Inter';
+  src: url("~assets/fonts/InterBold/Inter-Bold.ttf");
+  font-weight: 700;
+}
+
+@font-face {
+  font-face-name: 'Inter';
+  src: url("~assets/fonts/InterExtraBold/Inter-ExtraBold.ttf");
+  font-weight: 800;
+}
+
+@font-face {
+  font-face-name: 'Inter';
+  src: url("~assets/fonts/InterBlack/Inter-Black.ttf");
+  font-weight: 900;
+}
+
 body {
   margin: 0 !important;
 }

@@ -84,5 +84,10 @@
       "specialized": "SPECIALIZED QUESTS",
       "find": "FIND A JOB"
     }
+  },
+  "signUp": {
+    "title": "Sign Up",
+    "haveAccount": "Already have an account?",
+    "auth": "Authorization"
   }
 }
