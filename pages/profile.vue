@@ -171,7 +171,6 @@
                   </div>
                   <div
                     class="box__details"
-                    @click="showQuestors()"
                   >
                     <img
                       src="~/assets/img/app/next-page_blue.png"
@@ -408,9 +407,6 @@ export default {
   methods: {
     toggleFilter() {
       this.isShowSidebar = !this.isShowSidebar;
-    },
-    showQuestors() {
-      this.$router.push('/questors');
     },
   },
 };
