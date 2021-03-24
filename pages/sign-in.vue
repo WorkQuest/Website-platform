@@ -195,12 +195,16 @@ export default {
         password,
       });
       if (response?.ok) {
-        const userData = this.$store.dispatch('user/getUserData');
-        if (userData.role === 'worker') {
-          this.$router.push('/profile');
-        }
-        if (userData.role === 'employer') {
-          this.$router.push('/questors');
+        try {
+          const userData = await this.$store.dispatch('user/getUserData');
+          if (userData.role === 'worker') {
+            this.$router.push('/profile');
+          }
+          if (userData.role === 'employer') {
+            this.$router.push('/questors');
+          }
+        } catch (e) {
+          console.log(e);
         }
       }
     },

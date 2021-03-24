@@ -27,13 +27,9 @@ export default {
     }
   },
   async getUserData({ commit }) {
-    try {
-      const response = await this.$axios.$get('/v1/profile/me');
-      console.log(response);
-      commit('setUserData', response.result);
-      return response.result;
-    } catch (err) {
-      return err;
-    }
+    const response = await this.$axios.$get('/v1/profile/me');
+    console.log(response);
+    commit('setUserData', response.result);
+    return response.result;
   },
 };
