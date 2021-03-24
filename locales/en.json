@@ -88,6 +88,12 @@
   "signUp": {
     "title": "Sign Up",
     "haveAccount": "Already have an account?",
-    "auth": "Authorization"
+    "auth": "Authorization",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Repeat password",
+    "create": "Create account"
   }
 }

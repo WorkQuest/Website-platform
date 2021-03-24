@@ -20,6 +20,11 @@
             When your
             work is quest.</span>
         </div>
+        <img
+          class="template__long"
+          src="~assets/img/app/logo_long.svg"
+          alt=""
+        >
       </div>
     </div>
   </div>
@@ -68,12 +73,14 @@ export default {
     align-items: center;
   }
   &__right {
-    background-color: rgba(#391290, 1);
-    background-image:  url("~assets/img/app/auth_bg.svg"), url("~assets/img/app/logo_long.svg");
-    background-position: center center, right calc(50% + 70px);
-    background-repeat: no-repeat no-repeat;
-    background-size: cover, 90%;
-    grid-template-rows: 200px auto;
+    background:  url("~assets/img/app/auth_bg.svg") center center no-repeat;
+    background-size: cover;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-gap: 53px;
+  }
+  &__long {
+    justify-self: flex-end;
   }
   &__slogan {
     font-family: 'Inter', sans-serif;

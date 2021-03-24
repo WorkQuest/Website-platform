@@ -50,9 +50,6 @@ export default {
       const { mode, disabled } = this;
       return [
         { 'base-btn_disabled': disabled },
-        { 'base-btn_red': mode === 'red' },
-        { 'base-btn_green': mode === 'green' },
-        { 'base-btn_orange': mode === 'orange' },
       ];
     },
   },
@@ -61,35 +58,23 @@ export default {
 <style lang="scss" scoped>
 .base-btn {
   width: 100%;
-  height: 45px;
+  height: 43px;
   color: #ffffff;
-  font-family: 'GothamPro', sans-serif;
-  font-size: 20px;
-  font-weight: 500;
+  font-family: 'Inter', sans-serif;
   font-style: normal;
-  letter-spacing: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 130%;
   text-align: center;
-  text-transform: uppercase;
-  line-height: normal;
   transition: .3s;
-  background: #0c82c3;
-  border-radius: 23px;
+  background: #0083C7;
+  border-radius: 6px;
   &:hover {
-    -webkit-filter: brightness(.84) saturate(.84) hue-rotate(-5deg);
-    filter: brightness(.84) saturate(.84) hue-rotate(-5deg);
+    background: #103D7C;
   }
   &_disabled {
     pointer-events: none;
     background: #D1D1CF;
-  }
-  &_red {
-    background: #ff7c43;
-  }
-  &_green {
-    background: #27a860;
-  }
-  &_orange {
-    background: #ffa604;
   }
 }
 </style>

@@ -5,6 +5,7 @@
       {'ctm-field_big': big},
       {'ctm-field_disabled': disabled},
       {'ctm-field_search': isSearch},
+      {'ctm-field_icon': mode === 'icon'}
     ]"
   >
     <div
@@ -18,6 +19,9 @@
         v-if="isSearch"
         class="icon-Search ctm-field__search"
       />
+      <div class="ctm-field__left">
+        <slot name="left" />
+      </div>
       <input
         class="ctm-field__input"
         :placeholder="placeholder"
@@ -106,6 +110,11 @@ export default {
     position: absolute;
     right: 12px;
   }
+  &__left {
+    position: absolute;
+    left: 12px;
+    padding-left: 5px;
+  }
   &__body {
     display: flex;
     align-items: center;
@@ -133,8 +142,8 @@ export default {
     }
   }
   &__input {
-    height: 60px;
-    border-radius: 13px;
+    height: 46px;
+    border-radius: 6px;
     border: 2px solid transparent;
     padding: 0 20px;
     transition: .3s;
@@ -152,15 +161,23 @@ export default {
   }
   &_default {
     .ctm-field__input {
-      color: #FFFFFF;
+      color: $black700;
       background: #F3F7FA;
       border-radius: 6px;
       border: 1px solid transparent;
       &::placeholder {
-        color: rgba(#FFFFFF, .3);
+        color: $black300;
       }
       &:focus {
+        background: #FFFFFF;
         border: 1px solid #0083C7;
+      }
+    }
+  }
+  &_icon {
+    .ctm-field {
+      &__input {
+        padding: 0 20px 0 50px;
       }
     }
   }
