@@ -17,4 +17,7 @@ export default {
     this.$cookies.remove('status');
     state.userData = {};
   },
+  setUserData(state, value) {
+    state.userData = value;
+  },
 };

@@ -195,7 +195,13 @@ export default {
         password,
       });
       if (response?.ok) {
-        this.$router.push('/profile');
+        const userData = this.$store.dispatch('user/getUserData');
+        if (userData.role === 'worker') {
+          this.$router.push('/profile');
+        }
+        if (userData.role === 'employer') {
+          this.$router.push('/questors');
+        }
       }
     },
   },
