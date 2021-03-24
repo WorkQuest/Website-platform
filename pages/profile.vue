@@ -224,7 +224,7 @@
               >
             </div>
             <div class="filter__text">
-              {{ $t('profile.sidebar.quests') }}
+              QUESTS
             </div>
           </div>
           <b-collapse
@@ -233,7 +233,7 @@
             <b-form-group v-slot="{ ariaDescribedby }">
               <b-form-checkbox-group
                 v-model="selected"
-                :options="options"
+                :options="questsOptions"
                 :aria-describedby="ariaDescribedby"
                 name="items"
                 stacked
@@ -251,7 +251,7 @@
               >
             </div>
             <div class="filter__text">
-              {{ $t('profile.sidebar.specialized') }}
+              SPECIALIZED QUESTS
             </div>
           </div>
           <b-collapse
@@ -260,7 +260,7 @@
             <b-form-group v-slot="{ ariaDescribedby }">
               <b-form-checkbox-group
                 v-model="selected"
-                :options="options"
+                :options="specializedOptions"
                 :aria-describedby="ariaDescribedby"
                 name="items"
                 stacked
@@ -278,7 +278,7 @@
               >
             </div>
             <div class="filter__text">
-              {{ $t('profile.sidebar.find') }}
+              FIND A JOB
             </div>
           </div>
           <b-collapse
@@ -287,7 +287,7 @@
             <b-form-group v-slot="{ ariaDescribedby }">
               <b-form-checkbox-group
                 v-model="selected"
-                :options="options"
+                :options="jobOptions"
                 :aria-describedby="ariaDescribedby"
                 name="items"
                 stacked
@@ -318,19 +318,91 @@ export default {
       },
     ],
     selected: [],
-    options: [
-      { text: '- Test', value: '1' },
-      { text: '- Test', value: '2' },
-      { text: '- Test', value: '3' },
-      { text: '- Test', value: '4' },
-      { text: '- Test', value: '5' },
-      { text: '- Test', value: '6' },
-      { text: '- Test', value: '7' },
-      { text: '- Test', value: '8' },
-      { text: '- Test', value: '9' },
-      { text: '- Test', value: '10' },
-      { text: '- Test', value: '11' },
-      { text: '- Test', value: '12' },
+    questsOptions: [
+      {
+        text: '- Quest One',
+        value: 't',
+      },
+      {
+        text: '- Quest Two',
+        value: 'p',
+      },
+    ],
+    specializedOptions: [
+      {
+        text: '- Retail / sales / purchases',
+        value: 'r',
+      },
+      {
+        text: '- Transport / logistic',
+        value: 'tr',
+      },
+      {
+        text: '- Construction',
+        value: 'c',
+      },
+      {
+        text: '- Telecommunications / Communication',
+        value: 'tcc',
+      },
+      {
+        text: '- Bars / Restaurants',
+        value: 'b',
+      },
+      {
+        text: '- Jurisprudence and accounting',
+        value: 'j',
+      },
+      {
+        text: '- HR / HR',
+        value: 'hrs',
+      },
+      {
+        text: '- Guard / security',
+        value: 'hsr',
+      },
+      {
+        text: '- Home stuff',
+        value: 'hrf',
+      },
+      {
+        text: '- Beauty / fitness / sports',
+        value: 'hr2',
+      },
+      {
+        text: '- Tourism / Recreation / Entertainment',
+        value: 'Tourism',
+      },
+      {
+        text: '- Education',
+        value: 'Education',
+      },
+      {
+        text: '- Culture / Art',
+        value: 'Culture',
+      },
+      {
+        text: '- Medicine / Pharmacy',
+        value: 'Medicine',
+      },
+      {
+        text: '- IT / telecom / computers',
+        value: 'IT',
+      },
+      {
+        text: '- Banks / Finance / Insurance',
+        value: 'Banks',
+      },
+    ],
+    jobOptions: [
+      {
+        text: '- Temporary work',
+        value: 't',
+      },
+      {
+        text: '- Permanent job',
+        value: 'p',
+      },
     ],
   }),
   methods: {
