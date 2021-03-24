@@ -130,7 +130,7 @@ export default {
   .about {
     display: flex;
     flex-direction: column;
-    margin: -100px 0 60px 0;
+    margin: -100px 0 20px 0;
     &__row {
       flex-direction: column-reverse;
     }

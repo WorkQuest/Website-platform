@@ -215,7 +215,14 @@ export default {
     }
     &__link {
       border-radius: 40px 40px 0 0;
-      width: 100px;
+      width: 90px;
+      padding-bottom: 10px;
+    }
+    &__icon {
+      img {
+        max-width: 40px;
+        max-height: 40px;
+      }
     }
     &__logo {
       border-radius: 0 0 50px 50px;
@@ -242,7 +249,7 @@ export default {
       left: 0;
       background: #FFFFFF;
       width: 100%;
-      height: 100px;
+      height: 60px;
       z-index: 1000;
       box-shadow: 0 0 7px rgba(0, 7, 5, 0.3);
       border-radius: 40px 40px 0 0;
