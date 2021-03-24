@@ -28,6 +28,7 @@
           </template>
         </base-field>
         <base-field
+          v-model="model.lastName"
           :placeholder="$t('signUp.lastName')"
           :mode="'icon'"
         >
@@ -39,6 +40,9 @@
           </template>
         </base-field>
         <base-field
+          v-model="model.email"
+          rules="required|email"
+          :name="$t('signUp.email')"
           :placeholder="$t('signUp.email')"
           :mode="'icon'"
         >
@@ -50,6 +54,7 @@
           </template>
         </base-field>
         <base-field
+          v-model="model.password"
           :placeholder="$t('signUp.password')"
           :mode="'icon'"
         >
@@ -61,6 +66,7 @@
           </template>
         </base-field>
         <base-field
+          v-model="model.passwordConfirm"
           :placeholder="$t('signUp.confirmPassword')"
           :mode="'icon'"
         >
@@ -87,6 +93,10 @@ export default {
     return {
       model: {
         firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        passwordConfirm: '',
       },
     };
   },

@@ -23,7 +23,7 @@
     "oneOf": "The {_field_} field is not a valid value",
     "regex": "The {_field_} field format is invalid",
     "required_if": "The {_field_} field is required",
-    "required": "Fields with * are required",
+    "required": "The {_field_} field is required",
     "size": "The {_field_} field size must be less than {size}KB",
     "decimal": "The {_field_} field must contain only decimal values"
   },

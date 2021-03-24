@@ -11,6 +11,8 @@
     ]"
     :rules="rules"
     :name="name"
+    mode="eager"
+    slim
   >
     <div
       v-if="label !== ''"
