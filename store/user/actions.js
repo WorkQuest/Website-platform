@@ -31,7 +31,7 @@ export default {
       const response = await this.$axios.$get('/v1/profile/me');
       console.log(response);
       commit('setUserData', response.result);
-      return response;
+      return response.result;
     } catch (err) {
       return err;
     }
