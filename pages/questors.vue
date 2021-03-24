@@ -424,6 +424,8 @@ export default {
   &__btn {
     width: 61px;
     height: 61px;
+    min-width: 61px;
+    min-height: 61px;
     border-radius: 100%;
     display: flex;
     align-items: center;
@@ -431,6 +433,9 @@ export default {
     box-shadow: 0 0 4px rgba(0, 7, 5, 0.3);
     &_invite {
       width: 250px;
+      max-width: 250px;
+      max-height: 45px;
+      min-height: 45px;
       height: 45px;
       border-radius: 23px;
       background-color: #0c82c3;
@@ -667,6 +672,8 @@ export default {
     &__btn {
       width: 41px;
       height: 41px;
+      min-height: 41px;
+      min-width: 41px;
       &_invite {
         max-width: 275px;
         width: 100%;
