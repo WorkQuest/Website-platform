@@ -224,7 +224,7 @@ export default {
         password: this.model.password,
       };
       if (this.$route.query.role) {
-        payload.role = this.$route.query.role;
+        payload.role = this.$route.query.role.toLowerCase();
       }
       this.$cookies.set('role', this.$route.query.role, { path: '/' });
       const response = await this.$store.dispatch('user/signUp', payload);
