@@ -1,9 +1,12 @@
 <template>
-  <div />
+  <div>
+    <div />
+  </div>
 </template>
 
 <script>
 export default {
+  name: 'Confirm',
   layout: 'confirm',
   async mounted() {
     await this.$store.dispatch('user/confirm', {
