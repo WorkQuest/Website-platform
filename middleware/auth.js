@@ -5,10 +5,11 @@ export default async function ({
   try {
     const hasAccess = !!app.$cookies.get('access');
     const hasRefresh = !!app.$cookies.get('refresh');
-    const isEmailConfirmed = app.$cookies.get('status');
+    // const isEmailConfirmed = app.$cookies.get('status');
     const { role } = store.getters['user/getUserData'];
     console.log(role);
-    if (!hasAccess || !hasRefresh || isEmailConfirmed === 0) {
+    // || isEmailConfirmed === 0
+    if (!hasAccess || !hasRefresh) {
       return redirect('/sign-in');
     }
     if (!role && (hasAccess || hasRefresh)) {

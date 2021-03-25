@@ -2,7 +2,7 @@
   <div class="profile">
     <Header
       :title="'John Queston'"
-      :sub-title="'Last sin 23 min.'"
+      :sub-title="'Last seen 23 min.'"
       :avatar="avatar"
     />
     <div

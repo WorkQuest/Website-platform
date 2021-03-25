@@ -54,7 +54,6 @@
                       <input
                         id="firstName"
                         v-model="model.firstName"
-                        :placeholder="$t('placeholders.firstName')"
                         type="text"
                         class="fields__text fields__text_input fields__input"
                       >
@@ -89,7 +88,6 @@
                       <input
                         id="lastName"
                         v-model="model.lastName"
-                        :placeholder="$t('placeholders.lastName')"
                         type="text"
                         class="fields__text fields__text_input fields__input"
                       >
@@ -125,7 +123,6 @@
                         id="mail"
                         v-model="model.email"
                         autocomplete="username"
-                        :placeholder="$t('placeholders.mail')"
                         type="text"
                         class="fields__text fields__text_input fields__input"
                       >
@@ -161,7 +158,6 @@
                         id="password"
                         v-model="model.password"
                         autocomplete="password"
-                        :placeholder="$t('placeholders.password')"
                         type="password"
                         class="fields__text fields__text_input fields__input"
                       >
@@ -268,6 +264,7 @@ export default {
     padding-left: 36px;
     width: 100%;
     height: 100%;
+    text-transform: initial;
     &::placeholder {
       color: #c7c4c4;
     }

@@ -34,8 +34,8 @@
             <div class="description__text description__text_link">
               <a
                 target="_blank"
-                href="mailto:workquest@yahoo.com"
-              >workquest@yahoo.com</a>
+                href="mailto:hello@workquest.co"
+              >hello@workquest.co</a>
             </div>
           </div>
         </div>

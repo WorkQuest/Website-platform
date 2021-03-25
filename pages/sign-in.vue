@@ -34,7 +34,6 @@
                         id="mail"
                         v-model="model.email"
                         autocomplete="username"
-                        :placeholder="$t('placeholders.mail')"
                         type="text"
                         class="fields__text fields__text_input fields__input"
                       >
@@ -70,7 +69,6 @@
                         id="password"
                         v-model="model.password"
                         autocomplete="password"
-                        :placeholder="$t('placeholders.password')"
                         type="password"
                         class="fields__text fields__text_input fields__input"
                       >
@@ -169,7 +167,6 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
   name: 'SignIn',

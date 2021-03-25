@@ -12,6 +12,7 @@
 <script>
 export default {
   name: 'Index',
+  middleware: 'guest',
   computed: {
     links() {
       return [
@@ -41,9 +42,6 @@ export default {
         },
       ];
     },
-  },
-  created() {
-    this.$router.push('/role');
   },
 };
 </script>
