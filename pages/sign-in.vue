@@ -287,6 +287,7 @@ export default {
     padding-left: 36px;
     width: 100%;
     height: 100%;
+    text-transform: initial;
     &::placeholder {
       color: #c7c4c4;
     }
