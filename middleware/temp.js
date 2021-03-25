@@ -5,5 +5,5 @@ export default (context) => {
   if (hasAccess && hasRefresh) {
     return context.redirect('/profile');
   }
-  return null;
+  return context.redirect('/role');
 };
