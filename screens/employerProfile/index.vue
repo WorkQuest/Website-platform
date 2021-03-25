@@ -406,6 +406,7 @@ export default {
     box-shadow: 0 0 4px rgba(0, 7, 5, 0.3);
   }
   &__map {
+    z-index: -40;
     box-shadow: 0 3px 4px rgba(0, 7, 5, 0.3);
     border-radius: 50px 50px 0 0;
     overflow: hidden;
