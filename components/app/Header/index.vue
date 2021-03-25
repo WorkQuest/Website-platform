@@ -1,83 +1,135 @@
 <template>
-  <div class="header">
-    <div class="header__container">
-      <div class="header__body">
-        <n-link
-          tag="div"
-          class="header__logo"
-          to="/about"
-        >
-          <img
-            src="~assets/img/app/logo.svg"
-            alt=""
+  <div
+    v-click-outside="hideSidebar"
+    class="app"
+  >
+    <div class="header">
+      <div class="header__container">
+        <div class="header__body">
+          <n-link
+            tag="div"
+            class="header__logo"
+            to="/about"
           >
-        </n-link>
-        <div class="header__info">
-          <div
-            class="header__route"
-            :class="{'header__route_avatar': avatar}"
-          >
-            <div
-              v-if="avatar"
-              class="header__avatar"
+            <img
+              src="~assets/img/app/logo.svg"
+              alt=""
             >
-              <img
-                :src="avatar"
-                alt=""
+          </n-link>
+          <div class="header__info">
+            <div
+              class="header__route"
+              :class="{'header__route_avatar': avatar}"
+            >
+              <div
+                v-if="avatar"
+                class="header__avatar"
               >
-            </div>
-            <div class="header__route">
-              <div class="header__title">
-                {{ title }}
+                <img
+                  :src="avatar"
+                  alt=""
+                >
               </div>
-              <div class="header__sub">
-                {{ subTitle }}
+              <div class="header__route">
+                <div class="header__title">
+                  {{ title }}
+                </div>
+                <div class="header__sub">
+                  {{ subTitle }}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="header__links">
-          <n-link
-            v-for="(item, i) in headerLinks"
-            :key="`link-${i}`"
-            class="header__link"
-            exact-active-class="header__link_active"
-            :to="item.path"
-          >
-            <div class="header__icon">
+          <div class="header__links">
+            <n-link
+              v-for="(item, i) in headerLinks"
+              :key="`link-${i}`"
+              class="header__link"
+              exact-active-class="header__link_active"
+              :to="item.path"
+            >
+              <div class="header__icon">
+                <img
+                  :src="item.icon"
+                  alt=""
+                >
+              </div>
+            </n-link>
+            <div
+              class="header__toggle"
+              @click="toggleSidebar()"
+            >
               <img
-                :src="item.icon"
+                src="~assets/img/ui/burger.png"
                 alt=""
               >
             </div>
-          </n-link>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="header__bottom">
-      <n-link
-        v-for="(item, i) in headerLinks"
-        :key="`link-${i}`"
-        class="header__link"
-        exact-active-class="header__link_active"
-        :to="item.path"
-      >
-        <div class="header__icon">
+      <div class="header__bottom">
+        <n-link
+          v-for="(item, i) in headerLinks"
+          :key="`link-${i}`"
+          class="header__link"
+          exact-active-class="header__link_active"
+          :to="item.path"
+        >
+          <div class="header__icon">
+            <img
+              :src="item.icon"
+              alt=""
+            >
+          </div>
+        </n-link>
+        <div
+          class="header__toggle header__toggle_mobile"
+          @click="toggleSidebar()"
+        >
           <img
-            :src="item.icon"
+            src="~assets/img/ui/burger.png"
             alt=""
           >
         </div>
-      </n-link>
+      </div>
+    </div>
+    <div
+      v-if="isShowSidebar"
+      class="sidebar"
+    >
+      <div class="sidebar__container">
+        <div
+          class="sidebar__links"
+        >
+          <button
+            v-for="item in sidebarLinks"
+            :key="item.title"
+            class="sidebar__link"
+            @click.prevent="toggleSidebar()"
+          >
+            {{ item.title }}
+          </button>
+          <div
+            class="sidebar__link sidebar__link_out"
+            @click="doLogout()"
+          >
+            Log out
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import ClickOutside from 'vue-click-outside';
 
 export default {
   name: 'Header',
+  directives: {
+    ClickOutside,
+  },
   props: {
     title: {
       type: String,
@@ -91,6 +143,11 @@ export default {
       type: String,
       default: '',
     },
+  },
+  data() {
+    return {
+      isShowSidebar: false,
+    };
   },
   computed: {
     ...mapGetters({
@@ -112,8 +169,46 @@ export default {
         },
       ];
     },
+    sidebarLinks() {
+      return [
+        {
+          title: 'ABOUT  SERVICE',
+          path: '/profile',
+        },
+        {
+          title: 'DETAILED INFORMATION',
+          path: '/about',
+        },
+        {
+          title: 'WORK HISTORY',
+          path: '/about',
+        },
+        {
+          title: 'DEPOSIT',
+          path: '/about',
+        },
+        {
+          title: 'TERMS AND CONDITIONS',
+          path: '/about',
+        },
+        {
+          title: 'PRIVACY POLICY',
+          path: '/about',
+        },
+      ];
+    },
   },
   methods: {
+    toggleSidebar() {
+      this.isShowSidebar = !this.isShowSidebar;
+    },
+    doLogout() {
+      this.$store.dispatch('user/logOut');
+      this.$router.push('/');
+    },
+    hideSidebar() {
+      this.isShowSidebar = false;
+    },
   },
 };
 </script>
@@ -201,11 +296,99 @@ export default {
       }
     }
   }
+  &__toggle {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 100%;
+    width: 80px;
+    padding-bottom: 30px;
+    cursor: pointer;
+    &_mobile {
+      padding-bottom: 18px;
+    }
+  }
   &__bottom {
     display: none;
   }
 }
+
+.sidebar {
+  &__container {
+    z-index: -20;
+    min-height: 100vh;
+    width: calc(100vw - 70%);
+    background-color: #283f79;
+    box-shadow: 0 0 4px rgba(0, 7, 5, 0.3);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+  }
+  &__links {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 50px;
+    height: 100%;
+    padding-right: 50px;
+    padding-top: 200px;
+  }
+  &__link {
+    font-family: 'GothamProBlack', sans-serif;
+    font-size: 26px;
+    font-weight: 400;
+    text-transform: uppercase;
+    text-align: right;
+    line-height: normal;
+    color: #ffffff;
+    cursor: pointer;
+    text-decoration: none;
+    &:last-child {
+      display: flex;
+      height: 100%;
+      justify-content: center;
+      align-items: flex-end;
+      padding-bottom: 40px;
+    }
+    &_out {
+      font-size: 24px;
+      text-align: center;
+    }
+  }
+}
+.app {
+  z-index: 100;
+}
+@media (max-height: 700px) {
+  .sidebar {
+    &__link {
+      &:last-child {
+        align-items: flex-start !important;
+      }
+    }
+  }
+}
 @include _575 {
+  .sidebar {
+    &__container {
+      width: calc(100vw - 20%);
+      grid-template-rows: auto minmax(100px, 120px);
+    }
+    &__links {
+      padding-right: 20px;
+      padding-top: 140px;
+    }
+    &__link {
+      font-size: 18px;
+      &:last-child {
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 40px;
+      }
+    }
+  }
   .header {
     height: 100px;
     &__body {
