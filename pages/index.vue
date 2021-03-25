@@ -12,7 +12,7 @@
 <script>
 export default {
   name: 'Index',
-  middleware: 'guest',
+  layout: 'auth',
   computed: {
     links() {
       return [
