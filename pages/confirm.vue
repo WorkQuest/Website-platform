@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'Confirm',
+  name: 'ConfirmPage',
   layout: 'confirm',
   async mounted() {
     await this.$store.dispatch('user/confirm', {
