@@ -1,6 +1,8 @@
 /* eslint-disable no-param-reassign,consistent-return */
 // eslint-disable-next-line func-names
-export default function ({ $axios, store, app }, inject) {
+export default function ({
+  $axios, store, app, redirect,
+}, inject) {
   $axios.onRequest((config) => {
     if (store.getters['user/isAuth']) {
       const urlName = config.url.split('/').pop();
@@ -16,8 +18,10 @@ export default function ({ $axios, store, app }, inject) {
       //
     } else if (error.response.status === 401) {
       // app.$tokensRefresher.refreshTokens();
-      await store.dispatch('user/refreshTokens');
-      return $axios(originalRequest);
+      // await store.dispatch('user/refreshTokens');
+      // return $axios(originalRequest);
+      await store.dispatch('user/logOut');
+      redirect('/');
     } else if (error.response.data.code !== 400010) {
       store.dispatch('main/showToast', error);
     }

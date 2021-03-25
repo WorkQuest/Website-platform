@@ -6,7 +6,7 @@ export default async function ({
     const hasAccess = !!app.$cookies.get('access');
     const hasRefresh = !!app.$cookies.get('refresh');
     // const isEmailConfirmed = app.$cookies.get('status');
-    const role = store.getters['user/getUserRole'];
+    const { role } = store.getters['user/getUserData'];
     // || isEmailConfirmed === 0
     if (!hasAccess || !hasRefresh) {
       return redirect('/sign-in');

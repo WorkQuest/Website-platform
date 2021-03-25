@@ -17,6 +17,9 @@ export default {
       return err;
     }
   },
+  async logOut({ commit }) {
+    commit('logOut');
+  },
   async confirm({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/auth/confirm-email', payload);
