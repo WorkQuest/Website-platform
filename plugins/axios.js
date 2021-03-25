@@ -4,11 +4,13 @@ export default function ({
   $axios, store, app, redirect,
 }, inject) {
   $axios.onRequest((config) => {
-    if (store.getters['user/isAuth']) {
-      const urlName = config.url.split('/').pop();
-      const token = urlName === 'refresh-tokens' ? store.getters['user/refreshToken'] : store.getters['user/accessToken'];
-      config.headers.authorization = `Bearer ${token}`;
-    }
+    // if (store.getters['user/isAuth']) {
+    //   const urlName = config.url.split('/').pop();
+    //   // const token = urlName === 'refresh-tokens' ? store.getters['user/refreshToken'] : store.getters['user/accessToken'];
+    //
+    // }
+    const token = app.$cookies.get('access');
+    config.headers.authorization = `Bearer ${token}`;
   });
   // eslint-disable-next-line no-unused-vars
   $axios.onError(async (error) => {
