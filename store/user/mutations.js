@@ -1,18 +1,15 @@
 /* eslint-disable no-param-reassign */
 
 export default {
-  setOldTokens(state, { access, refresh, status }) {
+  setOldTokens(state, { access, refresh }) {
     state.tokens.access = access;
     state.tokens.refresh = refresh;
-    state.status = status;
   },
-  setNewTokens(state, { access, refresh, status }) {
+  setNewTokens(state, { access, refresh }) {
     state.tokens.access = access;
     state.tokens.refresh = refresh;
-    state.status = status;
     this.$cookies.set('access', access, { path: '/' });
     this.$cookies.set('refresh', refresh, { path: '/' });
-    this.$cookies.set('status', status, { path: '/' });
   },
   logOut(state) {
     this.$cookies.remove('access');
@@ -22,5 +19,7 @@ export default {
   },
   setUserData(state, value) {
     state.userData = value;
+    state.status = value.status;
+    this.$cookies.set('status', value.status, { path: '/' });
   },
 };

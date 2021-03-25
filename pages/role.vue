@@ -70,6 +70,7 @@
 <script>
 export default {
   name: 'Role',
+  layout: 'auth',
   methods: {
     backToMain() {
       this.$router.push('/');

@@ -170,6 +170,7 @@
 <script>
 export default {
   name: 'SignIn',
+  layout: 'auth',
   data: () => ({
     model: {
       firstName: '',
