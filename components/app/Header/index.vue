@@ -315,7 +315,7 @@ export default {
 
 .sidebar {
   &__container {
-    z-index: -20;
+    z-index: 1000;
     min-height: 100vh;
     width: calc(100vw - 70%);
     background-color: #283f79;
