@@ -353,6 +353,7 @@ export default {
     &_out {
       font-size: 24px;
       text-align: center;
+      margin-right: -50px;
     }
   }
 }
