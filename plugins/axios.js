@@ -6,8 +6,8 @@ export default function ({
   $axios.onRequest((config) => {
     // if (store.getters['user/isAuth']) {
     //   const urlName = config.url.split('/').pop();
-    //   // const token = urlName === 'refresh-tokens' ? store.getters['user/refreshToken'] : store.getters['user/accessToken'];
-    //
+    //   const token = urlName === 'refresh-tokens' ? store.getters['user/refreshToken'] : store.getters['user/accessToken'];
+    //   config.headers.authorization = `Bearer ${token}`;
     // }
     const token = app.$cookies.get('access');
     config.headers.authorization = `Bearer ${token}`;

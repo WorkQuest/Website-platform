@@ -51,18 +51,6 @@
               >
             </div>
           </n-link>
-          <n-link
-            :to="profileLink"
-            class="header__link"
-            exact-active-class="header__link_active"
-          >
-            <div class="header__icon">
-              <img
-                src="~/assets/img/ui/settings.svg"
-                alt=""
-              >
-            </div>
-          </n-link>
         </div>
       </div>
     </div>
@@ -77,18 +65,6 @@
         <div class="header__icon">
           <img
             :src="item.icon"
-            alt=""
-          >
-        </div>
-      </n-link>
-      <n-link
-        :to="profileLink"
-        class="header__link"
-        exact-active-class="header__link_active"
-      >
-        <div class="header__icon">
-          <img
-            src="~/assets/img/ui/settings.svg"
             alt=""
           >
         </div>
@@ -120,13 +96,6 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
     }),
-    profileLink() {
-      const role = this.$cookies.get('role');
-      if (role === 'worker') {
-        return '/profile';
-      }
-      return '/questors';
-    },
     headerLinks() {
       return [
         {
@@ -136,6 +105,10 @@ export default {
         {
           icon: require('~/assets/img/ui/notification.svg'),
           path: '/temp',
+        },
+        {
+          icon: require('~/assets/img/ui/settings.svg'),
+          path: '/profile',
         },
       ];
     },
