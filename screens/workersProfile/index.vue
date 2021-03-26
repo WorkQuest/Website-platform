@@ -171,6 +171,7 @@
                   </div>
                   <div
                     class="box__details"
+                    @click="viewDetails()"
                   >
                     <img
                       src="~/assets/img/app/next-page_blue.png"
@@ -407,6 +408,9 @@ export default {
   methods: {
     toggleFilter() {
       this.isShowSidebar = !this.isShowSidebar;
+    },
+    viewDetails() {
+      this.$router.push('/proposal');
     },
   },
 };
