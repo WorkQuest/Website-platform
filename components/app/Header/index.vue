@@ -461,7 +461,7 @@ export default {
       height: 60px;
       z-index: 1000;
       box-shadow: 0 0 7px rgba(0, 7, 5, 0.3);
-      border-radius: 40px 40px 0 0;
+      //border-radius: 40px 40px 0 0;
     }
   }
 }

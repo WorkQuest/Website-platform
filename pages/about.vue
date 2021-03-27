@@ -130,9 +130,13 @@ export default {
   .about {
     display: flex;
     flex-direction: column;
-    margin: -100px 0 20px 0;
+    margin-top: -100px;
+    padding-bottom: 20px;
     &__row {
       flex-direction: column-reverse;
+    }
+    &__container {
+      height: initial;
     }
     &__image {
       position: initial;

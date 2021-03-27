@@ -24,7 +24,7 @@ export default {
 }
 .template {
   min-height: 100vh;
-  overflow: hidden;
+  //overflow: hidden;
   background: #ebecec;
   &__content {
     display: flex;
