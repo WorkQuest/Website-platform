@@ -321,7 +321,7 @@ export default {
     width: calc(100vw - 70%);
     background-color: #283f79;
     box-shadow: 0 0 4px rgba(0, 7, 5, 0.3);
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
