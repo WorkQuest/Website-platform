@@ -384,6 +384,7 @@ export default {
   &__container {
     display: flex;
     justify-content: center;
+    padding-bottom: 40px;
     &_sidebar {
       grid-template-columns: 9fr 3fr;
     }
@@ -393,7 +394,7 @@ export default {
     width: 780px;
     max-width: 1000px;
     margin: 0 auto;
-    min-height: calc(100vh - 125px);
+    //min-height: calc(100vh - 125px);
     &_sidebar {
     }
   }
