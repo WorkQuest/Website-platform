@@ -74,7 +74,7 @@
                 >
               </div>
               <div class="info__table">
-                <div class="info__row">
+                <div class="info__row info__row_mobile">
                   <div class="desc__text">
                     Proposal status
                   </div>
@@ -350,6 +350,64 @@ export default {
     letter-spacing: normal;
     line-height: normal;
     text-align: left;
+  }
+}
+
+@include _575 {
+  .box {
+    padding: 15px;
+    &__title {
+      font-size: 22px;
+    }
+    &__back {
+      padding: 10px 0 10px 10px;
+    }
+    &__info {
+      flex-direction: column;
+    }
+    &__image {
+      max-width: 75px;
+      max-height: 75px;
+    }
+    &__container {
+      flex-direction: column;
+    }
+  }
+  .desc {
+    padding: 0;
+    margin-top: 20px;
+    &__top {
+      flex-direction: column;
+    }
+    &__right {
+      padding-top: 20px;
+    }
+    &__text {
+      font-size: 14px;
+    }
+  }
+  .info {
+    &__container {
+      grid-template-columns: 1fr;
+    }
+    &__accept {
+      padding: 20px 0 20px 0;
+      display: flex;
+      flex-direction: column;
+    }
+    &__action {
+      padding-top: 20px;
+    }
+    &__row {
+      &_mobile {
+        padding-top: 20px;
+      }
+    }
+  }
+  .locate {
+    &__text {
+      font-size: 12px;
+    }
   }
 }
 </style>
