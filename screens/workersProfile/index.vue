@@ -529,6 +529,10 @@ export default {
     display: flex;
     align-items: center;
     grid-gap: 7px;
+    &_buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
   &__text {
     color: #20253b;
@@ -703,7 +707,8 @@ export default {
   }
   &__details {
     cursor: pointer;
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr;
     align-items: center;
     grid-gap: 10px;
   }
