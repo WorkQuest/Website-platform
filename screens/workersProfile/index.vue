@@ -47,7 +47,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="info__action">
+                  <div class="info__action info__action_buttons">
                     <base-btn
                       :mode="'green'"
                       class="info__btn"
@@ -569,7 +569,7 @@ export default {
       padding-right: 14px;
       grid-template-columns: 34px auto;
       background: transparent;
-      border: 2px solid #20253b;
+      border: 2px solid #20253b !important;
     }
   }
   &__icon {
@@ -729,9 +729,15 @@ export default {
         display: none;
       }
       &_details {
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: 1fr;
         grid-gap: 20px;
       }
+    }
+    &__details {
+      display: grid;
+      grid-template-columns: 35px 1fr;
+      grid-gap: 10px;
     }
     &__text {
       &_details {
@@ -739,7 +745,12 @@ export default {
       }
     }
     &__container {
-      grid-template-columns: 5fr 7fr;
+      grid-template-columns: 4fr 8fr;
+    }
+    &__left {
+      img {
+        max-width: 100px;
+      }
     }
   }
   .info {
@@ -748,6 +759,13 @@ export default {
       height: 41px;
       img {
         width: 50% !important;
+      }
+    }
+    &__action {
+      &_buttons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 5px;
       }
     }
   }

@@ -356,6 +356,7 @@ export default {
 @include _575 {
   .box {
     padding: 15px;
+    margin-bottom: 70px;
     &__title {
       font-size: 22px;
     }

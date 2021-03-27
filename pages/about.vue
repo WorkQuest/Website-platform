@@ -34,8 +34,8 @@
             <div class="description__text description__text_link">
               <a
                 target="_blank"
-                href="mailto:hello@workquest.co"
-              >hello@workquest.co</a>
+                href="mailto:feedback@workquest.co"
+              >feedback@workquest.co</a>
             </div>
           </div>
         </div>
@@ -154,7 +154,10 @@ export default {
     align-items: center;
     max-width: 330px;
     padding-bottom: 40px;
+    display: grid;
+    grid-template-rows: auto 1fr;
     &__title {
+      text-align: center;
       font-size: 24px;
     }
     &__text {

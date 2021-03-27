@@ -12,6 +12,7 @@
             to="/about"
           >
             <img
+              class="logo"
               src="~assets/img/app/logo.svg"
               alt=""
             >
@@ -266,8 +267,8 @@ export default {
     padding-bottom: 20px;
   }
   &__route {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
     grid-gap: 20px;
     &_avatar {
       display: grid;
@@ -328,10 +329,16 @@ export default {
   &__links {
     display: flex;
     flex-direction: column;
-    grid-gap: 50px;
+    //grid-gap: 50px;
     height: 100%;
     padding-right: 50px;
+    //grid-template-rows: 50px;
     padding-top: 200px;
+    button {
+      &:not(:last-child) {
+        padding-bottom: 70px;
+      }
+    }
   }
   &__link {
     font-family: 'GothamProBlack', sans-serif;
@@ -370,6 +377,9 @@ export default {
   }
 }
 @include _575 {
+  .logo {
+    max-width: 75px;
+  }
   .sidebar {
     &__container {
       width: calc(100vw - 20%);
@@ -377,7 +387,7 @@ export default {
     }
     &__links {
       padding-right: 20px;
-      padding-top: 140px;
+      padding-top: 40px;
     }
     &__link {
       font-size: 18px;
@@ -396,10 +406,18 @@ export default {
       grid-template-columns: 140px 1fr;
       padding-left: 20px;
     }
-    &__router {
+    &__route {
+      grid-gap: 10px;
       &_avatar {
+        grid-template-columns: 30px 1fr;
         grid-gap: 10px;
       }
+    }
+    &__info {
+      padding-bottom: 30px;
+    }
+    &__sub {
+      font-size: 13px;
     }
     &__links {
       display: none;
@@ -430,7 +448,7 @@ export default {
       height: 100px;
     }
     &__title {
-      font-size: 22px;
+      font-size: 20px;
     }
     &__bottom {
       padding-left: 20px;
@@ -447,4 +465,5 @@ export default {
     }
   }
 }
+
 </style>

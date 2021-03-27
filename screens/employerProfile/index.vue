@@ -54,7 +54,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="info__action">
+                    <div class="info__action info__action_buttons">
                       <base-btn
                         :mode="'green'"
                         class="info__btn"
@@ -562,6 +562,7 @@ export default {
       padding-right: 14px;
       grid-template-columns: 34px auto;
       background: transparent;
+      border: 2px solid #20253b !important;
     }
   }
   &__icon {
@@ -733,7 +734,7 @@ export default {
   }
 }
 
-@include _575{
+@include _575 {
   .profile {
     &__main {
       margin: 0 15px;
@@ -760,6 +761,8 @@ export default {
     &__row {
       &_available {
        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: 10px;
       }
       &_profile {
         display: grid;
@@ -768,13 +771,21 @@ export default {
       }
     }
     &__right {
+      display: grid;
+      grid-template-columns: 1fr auto;
       &_locate {
         display: grid;
         grid-template-columns: 1fr 1fr;
       }
     }
     &__action {
-      grid-column: 1/3;
+      //grid-column: 1/3;
+      &_buttons {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 5px;
+        justify-content: flex-end;
+      }
     }
   }
   .locate {
@@ -795,10 +806,20 @@ export default {
       font-size: 32px;
       padding-left: 20px;
     }
-    &__text {
-      span {
-        white-space: initial;
-      }
+    //&__text {
+    //  //span {
+    //  //  white-space: initial;
+    //  //}
+    //  &_details {
+    //    span {
+    //      white-space: nowrap;
+    //    }
+    //  }
+    //}
+    &__details {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      grid-gap: 10px;
     }
   }
 }

@@ -93,11 +93,12 @@ export default {
     position: relative;
   }
   &__terms {
-    display: flex;
+    display: grid;
     align-items: center;
     justify-content: flex-end;
     padding-right: 100px;
     grid-gap: 45px;
+    grid-template-columns: repeat(2, auto);
   }
   &__link {
     color: #d2d2d3;
@@ -265,6 +266,9 @@ export default {
     }
   }
   .role {
+    &__terms {
+      grid-template-columns: 1fr;
+    }
     &__widget {
       grid-template-columns: 350px;
       min-height: 460px;
