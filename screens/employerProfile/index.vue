@@ -32,7 +32,7 @@
                       {{ $t('profile.radius') }}
                     </div>
                   </div>
-                  <div class="info__right">
+                  <div class="info__right info__right_buttons">
                     <div class="info__locate locate">
                       <div class="locate">
                         <div class="locate__body">
@@ -492,6 +492,14 @@ export default {
     display: flex;
     align-items: center;
     grid-gap: 28px;
+    &_buttons {
+      display: grid;
+      grid-template-columns: auto 1fr;
+    }
+    &_locate {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
   &__btn {
     width: 61px;
@@ -520,6 +528,10 @@ export default {
     &_center {
       justify-content: center;
       margin-bottom: 18px;
+    }
+    &_buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
     }
   }
   &__text {
@@ -646,6 +658,7 @@ export default {
     height: 45px;
     border-radius: 23px;
     background-color: #27a860;
+    justify-self: center;
   }
   &__left {
     background: url('~assets/img/app/box_left_create.png') left center no-repeat;
@@ -667,8 +680,8 @@ export default {
   }
   &__right {
     padding: 20px;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: auto 45px;
     justify-content: center;
     align-items: center;
     grid-gap: 20px;
@@ -729,7 +742,8 @@ export default {
   }
   &__details {
     cursor: pointer;
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr;
     align-items: center;
     grid-gap: 10px;
   }
