@@ -604,7 +604,8 @@ export default {
   max-height: calc(100vh - 124px - 130px);
   overflow-y: auto;
   &__row {
-    display: flex;
+    display: grid;
+    grid-template-columns: 12px 1fr;
     align-items: center;
     grid-gap: 16px;
     cursor: pointer;
@@ -735,6 +736,15 @@ export default {
 }
 
 @include _575 {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    max-width: 280px !important;
+    z-index: 1200;
+    min-width: initial;
+  }
   .profile {
     &__main {
       margin: 0 15px;
