@@ -398,12 +398,16 @@ export default {
         text-align: left;
       }
     }
+    &__bottom {
+      padding-bottom: 40px;
+    }
     &__container {
       width: calc(100vw - 20%);
       grid-template-rows: auto;
     }
     &__links {
       padding-right: 20px;
+      grid-template-rows: 50px;
     }
     &__link {
       font-size: 18px;
