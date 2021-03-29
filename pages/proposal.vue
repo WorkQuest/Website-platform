@@ -186,7 +186,7 @@ export default {
 
 <style lang="scss" scoped>
 .box {
-  padding-top: 50px;
+  padding: 50px 0;
   &__container {
     display: flex;
     width: 100%;
@@ -350,6 +350,7 @@ export default {
     letter-spacing: normal;
     line-height: normal;
     text-align: left;
+    white-space: nowrap;
   }
 }
 

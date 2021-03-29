@@ -376,6 +376,14 @@ export default {
     }
   }
 }
+@include _1300 {
+  .sidebar {
+    &__links {
+      padding-top: 50px;
+    }
+  }
+}
+
 @include _575 {
   .logo {
     max-width: 75px;

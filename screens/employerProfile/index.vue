@@ -7,11 +7,9 @@
     />
     <div
       class="profile__container"
-      :class="{'profile__container_sidebar': isShowSidebar}"
     >
       <div
         class="profile__main"
-        :class="{'profile__main_sidebar': isShowSidebar}"
       >
         <div>
           <div class="profile__box">
@@ -415,7 +413,11 @@ export default {
 
 .sidebar {
   background: #FFFFFF;
-  position: relative;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
   box-shadow: 0 6px 4px 0 rgba(0, 7, 5, .3);
   min-width: 430px;
   &::after {
@@ -614,7 +616,7 @@ export default {
   flex-direction: column;
   grid-gap: 13px;
   height: 100%;
-  max-height: calc(100vh - 124px - 130px);
+  max-height: calc(100vh - 124px);
   overflow-y: auto;
   &__row {
     display: grid;
