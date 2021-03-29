@@ -214,7 +214,7 @@ export default {
     },
     doLogout() {
       this.$store.dispatch('user/logOut');
-      this.$router.push('/');
+      this.$router.push('/sign-in');
     },
     hideSidebar() {
       this.isShowSidebar = false;
