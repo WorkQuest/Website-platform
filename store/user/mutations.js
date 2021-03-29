@@ -15,6 +15,7 @@ export default {
     this.$cookies.remove('access');
     this.$cookies.remove('refresh');
     this.$cookies.remove('status');
+    this.$cookies.remove('role');
     state.userData = {};
   },
   setUserData(state, value) {

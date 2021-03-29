@@ -214,16 +214,16 @@ export default {
       this.$router.push('/');
     },
     async signUp() {
+      const role = this.$cookies.get('role');
       const payload = {
         firstName: this.model.firstName,
         lastName: this.model.lastName,
         email: this.model.email,
         password: this.model.password,
       };
-      if (this.$route.query.role) {
-        payload.role = this.$route.query.role.toLowerCase();
+      if (role) {
+        payload.role = role;
       }
-      this.$cookies.set('role', this.$route.query.role, { path: '/' });
       const response = await this.$store.dispatch('user/signUp', payload);
       if (response?.ok) {
         this.$store.dispatch('main/showInfo', this.$t('meta.confirmEmail'));

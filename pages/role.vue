@@ -76,7 +76,8 @@ export default {
       this.$router.push('/');
     },
     doSignUp(role) {
-      this.$router.push(`/sign-up?role=${role}`);
+      this.$cookies.set('role', role, { path: '/' });
+      this.$router.push('/sign-up');
     },
   },
 };

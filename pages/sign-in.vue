@@ -184,13 +184,15 @@ export default {
       this.$router.push('/');
     },
     doSignUp() {
-      this.$router.push('/sign-up');
+      this.$router.push('/role');
     },
     async signIn() {
+      const role = this.$cookies.get('role');
       const { email, password } = this.model;
       const response = await this.$store.dispatch('user/signIn', {
         email,
         password,
+        role,
       });
       if (response?.ok) {
         this.$router.push('/profile');
