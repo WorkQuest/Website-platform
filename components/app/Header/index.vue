@@ -333,6 +333,7 @@ export default {
     }
   }
   &__bottom {
+    align-self: flex-start;
     display: grid;
     grid-gap: 10px;
     width: 100%;
