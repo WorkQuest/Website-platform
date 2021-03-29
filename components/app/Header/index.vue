@@ -117,13 +117,6 @@
             >
               Log out
             </div>
-            <div class="sidebar__contact">
-              <a
-                class="sidebar__mail"
-                target="_blank"
-                href="mailto:feedback@workquest.co"
-              ><span>{{ $t('about.contact') }}:</span> feedback@workquest.co</a>
-            </div>
           </div>
         </div>
       </div>
@@ -333,10 +326,10 @@ export default {
     }
   }
   &__bottom {
-    align-self: flex-start;
     display: grid;
     grid-gap: 10px;
     width: 100%;
+    padding-left: 50px;
   }
   &__mail {
     color: #FFFFFF;
