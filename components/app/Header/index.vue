@@ -110,11 +110,20 @@
           >
             {{ item.title }}
           </button>
-          <div
-            class="sidebar__link sidebar__link_out"
-            @click="doLogout()"
-          >
-            Log out
+          <div class="sidebar__bottom">
+            <div
+              class="sidebar__link sidebar__link_out"
+              @click="doLogout()"
+            >
+              Log out
+            </div>
+            <div class="sidebar__contact">
+              <a
+                class="sidebar__mail"
+                target="_blank"
+                href="mailto:feedback@workquest.co"
+              ><span>{{ $t('about.contact') }}:</span> feedback@workquest.co</a>
+            </div>
           </div>
         </div>
       </div>
@@ -315,6 +324,22 @@ export default {
 }
 
 .sidebar {
+  &__contact {
+    display: grid;
+    text-align: right;
+    span {
+      text-align: right;
+      color: #FFFFFF;
+    }
+  }
+  &__bottom {
+    display: grid;
+    grid-gap: 10px;
+    width: 100%;
+  }
+  &__mail {
+    color: #FFFFFF;
+  }
   &__container {
     z-index: 1000;
     min-height: 100vh;
@@ -327,18 +352,12 @@ export default {
     left: 0;
   }
   &__links {
-    display: flex;
-    flex-direction: column;
-    //grid-gap: 50px;
+    display: grid;
+    grid-template-columns: 1fr;
     height: 100%;
     padding-right: 50px;
-    //grid-template-rows: 50px;
-    padding-top: 200px;
-    button {
-      &:not(:last-child) {
-        padding-bottom: 70px;
-      }
-    }
+    align-items: center;
+    justify-content: center;
   }
   &__link {
     font-family: 'GothamProBlack', sans-serif;
@@ -359,29 +378,11 @@ export default {
     }
     &_out {
       font-size: 24px;
-      text-align: center;
-      margin-right: -50px;
     }
   }
 }
 .app {
   z-index: 100;
-}
-@media (max-height: 700px) {
-  .sidebar {
-    &__link {
-      &:last-child {
-        align-items: flex-start !important;
-      }
-    }
-  }
-}
-@include _1300 {
-  .sidebar {
-    &__links {
-      padding-top: 50px;
-    }
-  }
 }
 
 @include _575 {
@@ -389,23 +390,22 @@ export default {
     max-width: 75px;
   }
   .sidebar {
+    &__contact {
+      grid-template-columns: 1fr;
+      padding-left: 10px;
+      span {
+        text-align: left;
+      }
+    }
     &__container {
       width: calc(100vw - 20%);
-      grid-template-rows: auto minmax(100px, 120px);
+      grid-template-rows: auto;
     }
     &__links {
       padding-right: 20px;
-      padding-top: 40px;
     }
     &__link {
       font-size: 18px;
-      &:last-child {
-        display: flex;
-        height: 100%;
-        justify-content: center;
-        align-items: center;
-        padding-bottom: 40px;
-      }
     }
   }
   .header {

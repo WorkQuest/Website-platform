@@ -126,8 +126,20 @@ export default {
     }
   }
 }
+
+@include _1300 {
+  .about {
+    &__body {
+      padding-bottom: 20px;
+    }
+  }
+}
+
 @include _575 {
   .about {
+    &__footer {
+      display: none;
+    }
     display: flex;
     flex-direction: column;
     margin-top: -100px;
@@ -136,7 +148,11 @@ export default {
       flex-direction: column-reverse;
     }
     &__container {
-      height: initial;
+      //height: initial;
+      display: grid;
+      grid-template-rows: 1fr;
+      min-height: calc(100vh);
+      height: 100%;
     }
     &__image {
       position: initial;
@@ -151,7 +167,7 @@ export default {
       height: 100%;
     }
     &__container {
-      grid-template-rows: 1fr 90px;
+      grid-template-columns: 1fr;
     }
   }
   .description {
