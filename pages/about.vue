@@ -23,21 +23,6 @@
               >
             </div>
           </div>
-          <div class="about__footer about__footer_mobile">
-            <div class="about__content">
-              <div class="description__text description__text_normal">
-                <div class="description__info">
-                  {{ $t('about.contact') }}:
-                </div>
-                <div class="description__text description__text_link">
-                  <a
-                    target="_blank"
-                    href="mailto:feedback@workquest.co"
-                  >feedback@workquest.co</a>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <div class="about__footer">
@@ -155,13 +140,6 @@ export default {
 
 @include _575 {
   .about {
-    &__footer {
-      display: none;
-      &_mobile {
-        display: grid;
-        height: 100%;
-      }
-    }
     display: flex;
     flex-direction: column;
     margin-top: -100px;
@@ -170,11 +148,12 @@ export default {
       flex-direction: column-reverse;
     }
     &__container {
-      //height: initial;
       display: grid;
-      grid-template-rows: 1fr;
-      min-height: calc(100vh);
-      height: 100%;
+      grid-template-rows: 1fr minmax(80px, 110px);
+      min-height: initial;
+      //min-height: calc(100vh);
+      //height: 100%;
+      //height: initial;
     }
     &__image {
       position: initial;
@@ -187,9 +166,6 @@ export default {
     }
     &__content {
       height: 100%;
-    }
-    &__container {
-      grid-template-columns: 1fr;
     }
   }
   .description {

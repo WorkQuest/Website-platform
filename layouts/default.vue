@@ -14,16 +14,16 @@
 </template>
 <script>
 export default {
-  middleware: 'auth',
+  // middleware: 'auth',
 };
 </script>
 <style lang="scss" scoped>
 .primary {
-  height: 100vh;
-  overflow-y: auto;
+  //height: 100vh;
+  //overflow-y: auto;
 }
 .template {
-  min-height: 100vh;
+  //min-height: 100vh;
   //overflow: hidden;
   background: #ebecec;
   &__content {
