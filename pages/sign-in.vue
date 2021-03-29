@@ -104,18 +104,28 @@
                       {{ $t('login.forgot') }}
                     </div>
                   </div>
-                  <base-btn
-                    class="account__btn account__btn_login"
-                    :mode="'blue'"
-                  >
-                    {{ $t('login.signIn') }}
-                  </base-btn>
                 </form>
                 <div
                   class="back"
                   @click="backToMain()"
                 />
               </ValidationObserver>
+              <div class="fields__actions fields__actions_buttons">
+                <base-btn
+                  class="account__btn account__btn_login"
+                  :mode="'blue'"
+                  @click="signIn()"
+                >
+                  {{ $t('login.signIn') }}
+                </base-btn>
+                <base-btn
+                  class="account__btn account__btn_role"
+                  :mode="'green'"
+                  @click="chooseRole()"
+                >
+                  Choose role
+                </base-btn>
+              </div>
             </div>
             <div class="account__media">
               <div class="account__title">
@@ -186,6 +196,9 @@ export default {
     doSignUp() {
       this.$router.push('/role');
     },
+    chooseRole() {
+      this.$router.push('/role?onlySignIn=true');
+    },
     async signIn() {
       const role = this.$cookies.get('role');
       const { email, password } = this.model;
@@ -251,6 +264,10 @@ export default {
     align-items: center;
     grid-gap: 27px;
     padding: 20px 0 30px 0;
+    &_buttons {
+      padding: 0;
+      max-width: 410px;
+    }
   }
   &__text {
     color: #20253b;
@@ -265,7 +282,6 @@ export default {
     &_bold {
       font-size: 13px;
     }
-    // ¯\_(ツ)_/¯ Семантика
     &_label {
       @media screen {
         display: none;
@@ -458,6 +474,19 @@ export default {
     position: absolute;
     top: 30px;
     right: 70px;
+  }
+}
+
+@include _575 {
+  .fields {
+    &__actions {
+      &_buttons {
+        grid-template-columns: 1fr;
+        grid-gap: 20px;
+        padding: 0;
+        max-width: 410px;
+      }
+    }
   }
 }
 </style>

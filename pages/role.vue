@@ -77,7 +77,11 @@ export default {
     },
     doSignUp(role) {
       this.$cookies.set('role', role, { path: '/' });
-      this.$router.push('/sign-up');
+      if (this.$route.query.onlySignIn === 'true') {
+        this.$router.push('/sign-in');
+      } else {
+        this.$router.push('/sign-up');
+      }
     },
   },
 };
