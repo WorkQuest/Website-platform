@@ -12,16 +12,19 @@
           {{ options.text }}
         </div>
       </ctm-modal-box>
+      <CtmModalConfirmEmail v-if="modals.emailConfirm === currentModalKey" />
     </div>
   </transition>
 </template>
 <script>
 import { mapGetters } from 'vuex';
 import modals from '@/store/modals/modals';
+import CtmModalConfirmEmail from './CtmModalConfirmEmail';
 
 export default {
+  name: 'ModalBox',
   components: {
-
+    CtmModalConfirmEmail,
   },
   data: () => ({
     modals,

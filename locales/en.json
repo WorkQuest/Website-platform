@@ -27,6 +27,9 @@
     "size": "The {_field_} field size must be less than {size}KB",
     "decimal": "The {_field_} field must contain only decimal values"
   },
+  "meta": {
+    "ok": "Ok"
+  },
   "labels": {
     "firstName": "First name",
     "lastName": "Last name",
@@ -48,7 +51,9 @@
   },
   "registration": {
     "edit": "Edit",
-    "registration": "Registration"
+    "registration": "Registration",
+    "emailConfirm": "A letter with confirmation code has been sent to your email address",
+    "emailConfirmTitle": "Check your email"
   },
   "login": {
     "signIn": "Login",

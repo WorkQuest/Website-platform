@@ -27,6 +27,7 @@
         >
       </div>
     </div>
+    <ctm-modal />
   </div>
 </template>
 

@@ -12,7 +12,10 @@
         class="ctm-modal__x"
         @click="close()"
       >
-        x
+        <img
+          src="~assets/img/ui/close.svg"
+          alt="x"
+        >
       </button>
     </div>
     <slot />
@@ -22,6 +25,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
+  name: 'ModalBox',
   props: {
     title: {
       type: String,

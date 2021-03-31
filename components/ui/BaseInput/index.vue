@@ -11,6 +11,7 @@
     ]"
     :rules="rules"
     :name="name"
+    :vid="vid"
     mode="eager"
     slim
   >
@@ -108,10 +109,13 @@ export default {
       description: 'Input name (used for validation)',
       default: '',
     },
+    vid: {
+      type: String,
+      default: '',
+    },
   },
   methods: {
     input($event) {
-      console.log('ok');
       this.$emit('input', $event.target.value);
     },
   },
