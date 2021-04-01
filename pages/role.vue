@@ -70,6 +70,10 @@
 <script>
 export default {
   name: 'Role',
+  async mounted() {
+    this.SetLoader(true);
+    this.SetLoader(false);
+  },
   methods: {
     backToMain() {
       this.$router.push('/');

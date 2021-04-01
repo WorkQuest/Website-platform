@@ -6,14 +6,19 @@
       </div>
     </div>
     <transition name="fade">
-      <!--      <loader v-if="isLoadihng" />-->
-      <!--      loader-->
+      <loader v-if="isLoading" />
     </transition>
     <ctm-modal />
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
+  name: 'DefaultLayout',
+  ...mapGetters({
+    isLoading: 'main/getIsLoading',
+  }),
 };
 </script>
 <style lang="scss" scoped>

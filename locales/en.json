@@ -56,7 +56,8 @@
     "emailConfirmTitle": "Check your email"
   },
   "login": {
-    "signIn": "Login",
+    "signIn": "Sign In",
+    "account": "Haven’t account?",
     "remember": "Remember me",
     "forgot": "Forgot password?",
     "loginWith": "Login with your \nsocial media account",
@@ -89,6 +90,16 @@
       "specialized": "SPECIALIZED QUESTS",
       "find": "FIND A JOB"
     }
+  },
+  "signIn": {
+    "title": "Sign in",
+    "account": "Haven’t account?",
+    "regs": "Registration",
+    "login": "Login",
+    "remember": "Remember me",
+    "forgot": "Forgot password",
+    "or": "Or",
+    "loginWith": "Login with"
   },
   "signUp": {
     "title": "Sign Up",

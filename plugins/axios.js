@@ -20,7 +20,11 @@ export default function ({ $axios, store, app }, inject) {
       console.log(112);
       return $axios(originalRequest);
     } else if (error.response.data.code !== 400010) {
-      // store.dispatch('main/showErrorToast', error);
+      console.log(error);
+      store.dispatch('main/showToast', {
+        title: 'Error',
+        text: error.response.data.msg,
+      });
     }
     throw error;
   });

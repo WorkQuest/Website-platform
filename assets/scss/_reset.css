@@ -136,3 +136,22 @@ a:focus, button:focus, input:focus, textarea:focus {
   border-color: #000000 !important;
   background-color: #000000 !important;
 }
+
+.toast {
+  border: none !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 85px 147px rgba(10, 27, 61, 0.17), 0 47.1676px 61.4131px rgba(10, 27, 61, 0.078707), 0 26.7219px 32.8344px rgba(10, 27, 61, 0.0629546), 0 14.4955px 18.4067px rgba(10, 27, 61, 0.0598272), 0 6.96225px 9.77565px rgba(10, 27, 61, 0.0584222), 0 2.43911px 4.06787px rgba(10, 27, 61, 0.0492837) !important;
+  border-radius: 6px !important;
+  font-family: 'Inter', sans-serif;
+}
+
+.toast .toast-header {
+  color: #FFFFFF !important;
+  background: #0083C7 !important;
+}
+
+.close {
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+  font-weight: 500 !important;
+}

@@ -1,197 +1,132 @@
 <template>
-  <div class="regs">
-    <div class="regs__container">
-      <div class="regs__account account">
-        <div class="account__container">
-          <div class="account__left" />
-          <div class="account__right">
-            <div class="account__fields">
-              <ValidationObserver
-                v-slot="{ handleSubmit }"
-                tag="div"
-                class="fields"
-              >
-                <form
-                  action=""
-                  class="regs__field"
-                  @submit.prevent="handleSubmit(signIn)"
-                >
-                  <ValidationProvider
-                    v-slot="{ errors }"
-                    class="fields__item"
-                    tag="div"
-                    :name="$t('labels.mail')"
-                    rules="required_if|email"
-                  >
-                    <label
-                      for="mail"
-                      class="fields__text fields__text_label"
-                    >
-                      {{ $t('labels.mail') }}
-                    </label>
-                    <div class="fields__box">
-                      <input
-                        id="mail"
-                        v-model="model.email"
-                        autocomplete="username"
-                        :placeholder="$t('placeholders.mail')"
-                        type="text"
-                        class="fields__text fields__text_input fields__input"
-                      >
-                      <div class="fields__icon">
-                        <img
-                          src="~assets/img/ui/user.png"
-                          alt=""
-                        >
-                      </div>
-                    </div>
-                    <div
-                      v-if="errors[0]"
-                      class="fields__error"
-                    >
-                      {{ errors[0] }}
-                    </div>
-                  </ValidationProvider>
-                  <ValidationProvider
-                    v-slot="{ errors }"
-                    class="fields__item"
-                    tag="div"
-                    :name="$t('labels.password')"
-                    rules="required_if|min:8"
-                  >
-                    <label
-                      for="password"
-                      class="fields__text fields__text_label"
-                    >
-                      {{ $t('labels.password') }}
-                    </label>
-                    <div class="fields__box">
-                      <input
-                        id="password"
-                        v-model="model.password"
-                        autocomplete="password"
-                        :placeholder="$t('placeholders.password')"
-                        type="password"
-                        class="fields__text fields__text_input fields__input"
-                      >
-                      <div class="fields__icon">
-                        <img
-                          src="~assets/img/ui/password.png"
-                          alt=""
-                        >
-                      </div>
-                    </div>
-                    <div
-                      v-if="errors[0]"
-                      class="fields__error"
-                    >
-                      {{ errors[0] }}
-                    </div>
-                  </ValidationProvider>
-                  <div class="fields__actions">
-                    <div class="fields__remember">
-                      <input
-                        id="remember"
-                        type="checkbox"
-                      >
-                      <label for="remember">
-                        {{ $t('login.remember') }}
-                      </label>
-                    </div>
-                    <div class="fields__forgot">
-                      <img
-                        src="~assets/img/app/next-page.png"
-                        alt="->"
-                      >
-                      {{ $t('login.forgot') }}
-                    </div>
-                  </div>
-                  <base-btn
-                    class="account__btn account__btn_login"
-                    :mode="'blue'"
-                  >
-                    {{ $t('login.signIn') }}
-                  </base-btn>
-                </form>
-                <div
-                  class="back"
-                  @click="backToMain()"
-                />
-              </ValidationObserver>
-            </div>
-            <div class="account__media">
-              <div class="account__title">
-                <span>{{ $t('login.loginWith') }}</span>
-              </div>
-              <div class="account__items">
-                <div class="account__item">
-                  <img
-                    src="~assets/img/social/FACEBOOK.png"
-                    alt=""
-                  >
-                </div>
-                <div class="account__item">
-                  <img
-                    src="~assets/img/social/GOOGLE_+_.png"
-                    alt=""
-                  >
-                </div>
-                <div class="account__item">
-                  <img
-                    src="~assets/img/social/INSTAGRAM.png"
-                    alt=""
-                  >
-                </div>
-                <div class="account__item">
-                  <img
-                    src="~assets/img/social/TWITTER.png"
-                    alt=""
-                  >
-                </div>
-                <div class="account__item">
-                  <img
-                    src="~assets/img/social/LINKED_IN_.png"
-                    alt=""
-                  >
-                </div>
-              </div>
-              <base-btn
-                :mode="'green'"
-                class="account__btn account__btn_create"
-              >
-                {{ $t('login.create') }}
-              </base-btn>
-            </div>
-          </div>
+  <ValidationObserver
+    v-slot="{ handleSubmit }"
+    class="auth"
+    tag="div"
+  >
+    <div class="auth__container">
+      <div class="auth__text auth__text_title">
+        <span>{{ $t('signIn.title') }}</span>
+      </div>
+      <div class="auth__text auth__text_simple">
+        <span>{{ $t('signIn.account') }}</span>
+        <n-link
+          class="auth__text auth__text_link"
+          to="/sign-up"
+        >
+          {{ $t('signIn.regs') }}
+        </n-link>
+      </div>
+      <form
+        class="auth__fields"
+        action=""
+        @submit.prevent="handleSubmit(signIn)"
+      >
+        <base-field
+          v-model="model.email"
+          rules="required|email"
+          :name="$t('signUp.email')"
+          :placeholder="$t('signUp.email')"
+          :mode="'icon'"
+          autocomplete="username"
+        >
+          <template v-slot:left>
+            <img
+              src="~assets/img/icons/email.svg"
+              alt=""
+            >
+          </template>
+        </base-field>
+        <base-field
+          v-model="model.password"
+          :placeholder="$t('signUp.password')"
+          :mode="'icon'"
+          :name="$t('signUp.password')"
+          autocomplete="current-password"
+          rules="required_if|min:8"
+          type="password"
+          vid="confirmation"
+        >
+          <template v-slot:left>
+            <img
+              src="~assets/img/icons/password.svg"
+              alt=""
+            >
+          </template>
+        </base-field>
+        <div class="auth__tools">
+          <base-checkbox
+            v-model="remember"
+            name="remember"
+            :label="$t('signIn.remember')"
+          />
+          <n-link
+            class="auth__text auth__text_link"
+            to="/sign-in"
+          >
+            {{ $t('signIn.forgot') }}
+          </n-link>
+        </div>
+        <div class="auth__action">
+          <base-btn>
+            {{ $t('signIn.login') }}
+          </base-btn>
+        </div>
+        <div class="auth__text auth__text_wrap">
+          {{ $t('signIn.or') }}
+        </div>
+      </form>
+      <div class="auth__social">
+        <div class="auth__text auth__text_dark">
+          {{ $t('signIn.loginWith') }}
+        </div>
+        <div class="auth__icons">
+          <button class="auth__btn auth__btn_google">
+            <span class="icon-google" />
+          </button>
+          <button class="auth__btn auth__btn_instagram">
+            <span class="icon-instagram" />
+          </button>
+          <button class="auth__btn auth__btn_twitter">
+            <span class="icon-twitter" />
+          </button>
+          <button class="auth__btn auth__btn_facebook">
+            <span class="icon-facebook" />
+          </button>
+          <button class="auth__btn auth__btn_LinkedIn">
+            <span class="icon-LinkedIn" />
+          </button>
         </div>
       </div>
     </div>
-  </div>
+  </ValidationObserver>
 </template>
 
 <script>
 export default {
   name: 'SignIn',
+  layout: 'auth',
   data: () => ({
     model: {
-      firstName: '',
-      lastName: '',
       email: '',
       password: '',
     },
+    remember: false,
   }),
+  async mounted() {
+    this.SetLoader(true);
+    this.SetLoader(false);
+  },
   methods: {
-    backToMain() {
-      this.$router.push('/');
-    },
     async signIn() {
       const { email, password } = this.model;
       const response = await this.$store.dispatch('user/signIn', {
         email,
         password,
+        role: 'worker',
       });
       if (response?.ok) {
-        this.$router.push('/profile');
+        this.$router.push('/role');
       }
     },
   },
@@ -199,260 +134,118 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.fields {
-  padding-top: 23px;
-  display: grid;
-  grid-template-columns: 360px 32px;
-  grid-gap: 22px;
-  &__item {
+.auth {
+  &__container {
     display: grid;
-    grid-template-rows: 36px 22px;
-  }
-  &__forgot {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    grid-gap: 10px;
-    color: #27a860;
-    font-family: 'GothamProBlack', sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    font-style: normal;
-    letter-spacing: normal;
-    text-align: left;
-    text-transform: uppercase;
-    line-height: normal;
-  }
-  &__remember {
-    display: flex;
-    grid-gap: 12px;
-    label {
-      margin: 0;
-      display: flex;
-      align-items: center;
-      color: #20253b;
-      font-family: 'GothamProMedium', sans-serif;
-      font-size: 16px;
-      font-weight: 500;
-      font-style: normal;
-      letter-spacing: normal;
-      text-align: left;
-      text-transform: uppercase;
-      line-height: normal;
-    }
-  }
-  &__actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    grid-gap: 27px;
-    padding: 20px 0 30px 0;
+    grid-template-rows: auto;
   }
   &__text {
-    color: #20253b;
-    font-family: 'GothamPro', sans-serif;
-    font-size: 16px;
-    font-weight: 500;
+    font-family: 'Inter', sans-serif;
     font-style: normal;
-    letter-spacing: normal;
-    text-align: left;
-    text-transform: uppercase;
-    line-height: normal;
-    &_bold {
-      font-size: 13px;
+    line-height: 130%;
+    &_title {
+      font-weight: 600;
+      font-size: 34px;
+      color: $black800;
     }
-    // ¯\_(ツ)_/¯ Семантика
-    &_label {
-      @media screen {
-        display: none;
-      }
+    &_simple {
+      color: #000000;
+      font-weight: 300;
+      font-size: 16px;
+      padding-top: 15px;
+    }
+    &_link {
+      padding-left: 5px;
+      font-weight: 300;
+      font-size: 16px;
+      color: #0083C7;
+      text-decoration: underline;
+    }
+    &_wrap {
+      font-weight: normal;
+      color: $black400;
+      font-size: 16px;
+      line-height: 130%;
+      padding: 15px 0;
+    }
+    &_dark {
+      color: $black700;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 130%;
     }
   }
-  &__input {
-    background: transparent;
-    border-radius: 17px;
-    border: 2px solid #d0d0d0;
-    padding-left: 36px;
-    width: 100%;
-    height: 100%;
-    &::placeholder {
-      color: #c7c4c4;
-    }
-  }
-  &__box {
-    height: 100%;
-    width: 100%;
-    position: relative;
-  }
-  &__icon {
-    position: absolute;
-    left: 6px;
-    top:  5px;
-  }
-  &__error {
-    color: #20253b;
+  &__social {
     display: flex;
     align-items: center;
-    font-family: 'GothamPro', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    font-style: normal;
-    letter-spacing: normal;
-    text-align: left;
-    line-height: normal;
+    justify-content: space-between;
   }
-}
-
-.regs {
-  background: url("~assets/img/app/hands_login.png") center center no-repeat;
-  background-size: cover;
-  width: 100%;
-  min-height: 100vh;
-  &__container {
-    position: relative;
-    min-height: inherit;
+  &__fields {
+    padding-top: 40px;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  &__action {
+    padding-top: 40px;
+  }
+  &__icons {
+    display: grid;
+    grid-template-columns: repeat(5, 40px);
+    grid-gap: 30px;
+  }
+  &__tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__btn {
+    transition: .5s;
+    width: 40px;
+    height: 40px;
+    background: #F7F8FA;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  &__account {
-    background: url("~assets/img/app/account_left.png") no-repeat left center, rgba(#FFFFFF, 1);
-    border-radius: 100px;
-    min-height: 520px;
-    width: 100%;
-    max-width: 1000px;
-  }
-}
-
-.account {
-  &__container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-  }
-  &__right {
-    padding: 20px 15px;
-  }
-  &__media {
-    padding-top: 40px;
-  }
-  &__title {
-    color: #20253b;
-    white-space: pre-line;
-    font-family: 'GothamProBlack', sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    font-style: normal;
-    letter-spacing: normal;
-    text-align: left;
-    text-transform: uppercase;
-    line-height: normal;
-  }
-  &__items {
-    padding: 30px 0 25px 0;
-    display: grid;
-    grid-template-columns: repeat(5, 45px);
-    grid-gap: 25px;
-  }
-  &__item {
-    cursor: pointer;
-  }
-  &__btn {
-    &_login {
-      max-width: 275px;
+    &:hover {
+      background: #0083C7;
     }
-    &_create {
-      max-width: 325px;
-    }
-  }
-}
-
-.back {
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  position: relative;
-  &:before {
-    position: absolute;
-    left: 15px;
-    content: ' ';
-    height: 33px;
-    width: 2px;
-    background-color: #d0d0d0;
-    transform: rotate(45deg);
-  }
-  &:after {
-    position: absolute;
-    left: 15px;
-    content: ' ';
-    height: 33px;
-    width: 2px;
-    background-color: #d0d0d0;
-    transform: rotate(-45deg);
-  }
-}
-
-@include _991 {
-  .regs {
-    &__account {
-      background: url("~assets/img/app/bg_login_top.png") center top no-repeat, rgba(#FFFFFF, 1);
-      display: grid;
-      width: initial;
-      background-size: contain;
-      position: relative;
-      margin: 20px 10px;
-    }
-    &__field {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-  }
-  .account {
-    &__container {
-      display: grid;
-      grid-template-rows: 212px 1fr;
-      grid-template-columns: 1fr;
-    }
-    &__left {
-      position: relative;
-    }
-    &__right {
-      padding: 0 20px 50px 20px;
-    }
-    &__btn {
-      &_login {
-        max-width: initial;
-      }
-      &_create {
-        max-width: initial;
+    &:hover {
+      span:before {
+        color: white;
       }
     }
-    &__title {
-      text-align: center;
-    }
-    &__items {
-      grid-template-columns: repeat(5, 1fr);
-    }
-  }
-  .fields {
-    grid-template-columns: 1fr;
-    width: 100%;
-    &__remember {
-      label {
-        font-size: 14px;
+    &_instagram {
+      span:before {
+        font-size: 18px;
+        color: #C540F3;
       }
     }
-    &__item {
-      width: 100%;
+    &_twitter {
+      span:before {
+        font-size: 18px;
+        color: #24CAFF;
+      }
     }
-    &__forgot {
-      font-size: 14px;
+    &_google {
+      span:before {
+        font-size: 18px;
+        color: #094EFF;
+      }
     }
-  }
-  .back {
-    position: absolute;
-    top: 30px;
-    right: 70px;
+    &_facebook {
+      span:before {
+        font-size: 18px;
+        color: #3B67D7;
+      }
+    }
+    &_LinkedIn {
+      span:before {
+        font-size: 18px;
+        color: #0A7EEA;
+      }
+    }
   }
 }
 </style>

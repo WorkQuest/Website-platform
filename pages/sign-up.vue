@@ -127,6 +127,10 @@ export default {
       },
     };
   },
+  async mounted() {
+    this.SetLoader(true);
+    this.SetLoader(false);
+  },
   methods: {
     async signUp() {
       // const role = this.$cookies.get('role');
@@ -172,9 +176,9 @@ export default {
       padding-top: 15px;
     }
     &_link {
+      padding-left: 5px;
       font-weight: 300;
       font-size: 16px;
-      padding-top: 15px;
       color: #0083C7;
       text-decoration: underline;
     }

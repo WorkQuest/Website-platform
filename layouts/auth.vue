@@ -27,13 +27,23 @@
         >
       </div>
     </div>
+    <transition name="fade">
+      <loader v-if="isLoading" />
+    </transition>
     <ctm-modal />
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'AuthLayout',
+  computed: {
+    ...mapGetters({
+      isLoading: 'main/getIsLoading',
+    }),
+  },
 };
 </script>
 
