@@ -13,6 +13,8 @@
         </div>
       </ctm-modal-box>
       <CtmModalConfirmEmail v-if="modals.emailConfirm === currentModalKey" />
+      <CtmModalRestore v-if="modals.restore === currentModalKey" />
+      <CtmModalChangePassword v-if="modals.changePassword === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -20,11 +22,15 @@
 import { mapGetters } from 'vuex';
 import modals from '@/store/modals/modals';
 import CtmModalConfirmEmail from './CtmModalConfirmEmail';
+import CtmModalChangePassword from './CtmModalChangePassword';
+import CtmModalRestore from './CtmModalRestore';
 
 export default {
   name: 'ModalBox',
   components: {
     CtmModalConfirmEmail,
+    CtmModalRestore,
+    CtmModalChangePassword,
   },
   data: () => ({
     modals,

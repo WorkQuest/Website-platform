@@ -60,12 +60,12 @@
             name="remember"
             :label="$t('signIn.remember')"
           />
-          <n-link
+          <div
             class="auth__text auth__text_link"
-            to="/sign-in"
+            @click="showRestoreModal()"
           >
             {{ $t('signIn.forgot') }}
-          </n-link>
+          </div>
         </div>
         <div class="auth__action">
           <base-btn>
@@ -103,6 +103,8 @@
 </template>
 
 <script>
+import modals from '~/store/modals/modals';
+
 export default {
   name: 'SignIn',
   layout: 'auth',
@@ -128,6 +130,11 @@ export default {
       if (response?.ok) {
         this.$router.push('/role');
       }
+    },
+    showRestoreModal() {
+      this.ShowModal({
+        key: modals.restore,
+      });
     },
   },
 };
@@ -160,6 +167,7 @@ export default {
       font-size: 16px;
       color: #0083C7;
       text-decoration: underline;
+      cursor: pointer;
     }
     &_wrap {
       font-weight: normal;
@@ -213,13 +221,17 @@ export default {
     }
     &:hover {
       span:before {
-        color: white;
+        background: white;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
     }
     &_instagram {
       span:before {
         font-size: 18px;
-        color: #C540F3;
+        background: linear-gradient(180deg, #C540F3 0%, #FF8C05 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
     }
     &_twitter {

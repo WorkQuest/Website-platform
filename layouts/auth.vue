@@ -2,7 +2,10 @@
   <div class="template">
     <div class="template__container">
       <div class="template__left">
-        <div class="template__logo">
+        <div
+          class="template__logo"
+          @click="toMain()"
+        >
           <img
             src="~assets/img/app/logo.svg"
             alt="WorkQuest"
@@ -43,6 +46,11 @@ export default {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
     }),
+  },
+  methods: {
+    toMain() {
+      this.$router.push('/sign-in');
+    },
   },
 };
 </script>

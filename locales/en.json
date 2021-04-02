@@ -27,9 +27,6 @@
     "size": "The {_field_} field size must be less than {size}KB",
     "decimal": "The {_field_} field must contain only decimal values"
   },
-  "meta": {
-    "ok": "Ok"
-  },
   "labels": {
     "firstName": "First name",
     "lastName": "Last name",
@@ -38,8 +35,9 @@
   },
   "placeholders": {
     "firstName": "John",
-    "lastName": "Queston",
-    "mail": "J_Quest@gmail.co",
+    "lastName": "Doe",
+    "mail": "your@mail.com",
+    "email": "Email address",
     "password": "•••••••"
   },
   "about": {
@@ -52,7 +50,7 @@
   "registration": {
     "edit": "Edit",
     "registration": "Registration",
-    "emailConfirm": "A letter with confirmation code has been sent to your email address",
+    "emailConfirm": "A letter has been sent to your email address",
     "emailConfirmTitle": "Check your email"
   },
   "login": {
@@ -91,6 +89,11 @@
       "find": "FIND A JOB"
     }
   },
+  "meta": {
+    "ok": "Ok",
+    "send": "Send",
+    "save": "Save"
+  },
   "signIn": {
     "title": "Sign in",
     "account": "Haven’t account?",
@@ -111,5 +114,13 @@
     "password": "Password",
     "confirmPassword": "Repeat password",
     "create": "Create account"
+  },
+  "forgot": {
+    "title": "Forgot password?",
+    "desc": "We will send you instructions on how to reset your password."
+  },
+  "restore": {
+    "title": "Restore password",
+    "modal": "Password changed"
   }
 }
