@@ -10,7 +10,7 @@
       <div class="privacy__forms">
         <base-checkbox
           v-model="privacy"
-          name="remember"
+          name="privacy"
           :label="$t('privacy.agree')"
         >
           <template v-slot:sub>
@@ -19,7 +19,7 @@
         </base-checkbox>
         <base-checkbox
           v-model="terms"
-          name="remember"
+          name="terms"
           :label="$t('privacy.agree')"
         >
           <template v-slot:sub>
@@ -28,7 +28,7 @@
         </base-checkbox>
         <base-checkbox
           v-model="aml"
-          name="remember"
+          name="aml"
           :label="$t('privacy.agree')"
         >
           <template v-slot:sub>
