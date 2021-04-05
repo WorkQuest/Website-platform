@@ -16,9 +16,11 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'DefaultLayout',
-  ...mapGetters({
-    isLoading: 'main/getIsLoading',
-  }),
+  computed: {
+    ...mapGetters({
+      isLoading: 'main/getIsLoading',
+    }),
+  },
 };
 </script>
 <style lang="scss" scoped>

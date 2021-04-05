@@ -1,85 +1,110 @@
 <template>
   <div class="role">
-    <div class="role__container">
-      <div class="role_return return">
-        <div class="return__container">
-          <div
-            class="back"
-            @click="backToMain()"
-          />
-        </div>
-      </div>
-      <div class="role__content">
-        <div class="role__top">
-          <div class="role__banner">
-            <img
-              src="~assets/img/app/WORK_QUEST_logo_horizontal.png"
-              alt=""
-            >
-          </div>
-          <div class="role__title">
-            <span>{{ $t('role.title') }}</span>
-          </div>
-        </div>
-        <div class="role__widget">
-          <div class="role__left">
-            <div class="role__title role__title_widget">
+    <div class="role__title">
+      {{ $t('role.choose') }}
+    </div>
+    <div class="role__cards">
+      <div
+        id="left_card"
+        class="role__card role__card_left"
+        @mouseenter="showLeftChoose = true"
+        @mouseleave="showLeftChoose = false"
+        @click="showPrivacy()"
+      >
+        <div class="role__content">
+          <div class="role__top">
+            <div class="role__text role__text_title">
               {{ $t('role.employer') }}
             </div>
-            <div class="role__action">
-              <base-btn
-                :mode="'green'"
-                @click="doSignUp()"
-              >
-                {{ $t('role.enter') }}
-              </base-btn>
+            <div class="role__text role__text_desc">
+              {{ $t('role.employerWant') }}
             </div>
           </div>
-          <div class="role__right">
-            <div class="role__title role__title_widget">
+          <transition name="fade">
+            <div
+              v-if="showLeftChoose"
+              class="role__bottom role__bottom_left"
+            >
+              <div class="role__text role__text_desc">
+                {{ $t('role.chooseThis') }}
+              </div>
+              <div class="role__arrow role__arrow_left">
+                <span class="icon-short_right" />
+              </div>
+            </div>
+          </transition>
+        </div>
+        <img
+          class="role__image"
+          src="~assets/img/app/role_employer.svg"
+          alt=""
+        >
+      </div>
+      <div
+        id="right_card"
+        class="role__card role__card_right"
+        @mouseenter="showRightChoose = true"
+        @mouseleave="showRightChoose = false"
+        @click="showPrivacy()"
+      >
+        <div class="role__content">
+          <div class="role__top">
+            <div class="role__text role__text_title role__text_light">
               {{ $t('role.worker') }}
             </div>
-            <div class="role__action">
-              <base-btn
-                @click="doSignUp()"
-              >
-                {{ $t('role.enter') }}
-              </base-btn>
+            <div class="role__text role__text_desc role__text_light">
+              {{ $t('role.workerWant') }}
             </div>
           </div>
+          <transition name="fade">
+            <div
+              v-if="showRightChoose"
+              class="role__bottom role__bottom_right"
+            >
+              <div class="role__text role__text_desc role__text_light">
+                {{ $t('role.chooseThis') }}
+              </div>
+              <div class="role__arrow role__arrow_right">
+                <span class="icon-short_right" />
+              </div>
+            </div>
+          </transition>
         </div>
-      </div>
-      <div class="role__terms">
-        <n-link
-          to="/"
-          class="role__link"
+        <img
+          class="role__image"
+          src="~assets/img/app/role_worker.svg"
+          alt=""
         >
-          TERMS AND CONDITIONS
-        </n-link>
-        <n-link
-          to="/"
-          class="role__link"
-        >
-          PRIVACY POLICY
-        </n-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import modals from '~/store/modals/modals';
+
 export default {
   name: 'Role',
+  layout: 'role',
+  data() {
+    return {
+      showLeftChoose: false,
+      showRightChoose: false,
+    };
+  },
   async mounted() {
+    document.getElementById('left_card').addEventListener('mouseover', (_) => document.getElementById('right_card').classList.add('role__card_minimized'));
+    document.getElementById('left_card').addEventListener('mouseleave', (_) => document.getElementById('right_card').classList.remove('role__card_minimized'));
+    document.getElementById('right_card').addEventListener('mouseover', (_) => document.getElementById('left_card').classList.add('role__card_minimized'));
+    document.getElementById('right_card').addEventListener('mouseleave', (_) => document.getElementById('left_card').classList.remove('role__card_minimized'));
     this.SetLoader(true);
     this.SetLoader(false);
   },
   methods: {
-    backToMain() {
-      this.$router.push('/');
-    },
-    doSignUp() {
-      this.$router.push('/sign-up');
+    showPrivacy() {
+      this.ShowModal({
+        key: modals.privacy,
+      });
     },
   },
 };
@@ -87,209 +112,136 @@ export default {
 
 <style lang="scss" scoped>
 .role {
-  &__container {
-    min-height: 100vh;
-    background: #20253b;
-    display: grid;
-    grid-auto-rows: 1fr 150px;
-    align-items: center;
-    position: relative;
-  }
-  &__terms {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-right: 100px;
-    grid-gap: 45px;
-  }
-  &__link {
-    color: #d2d2d3;
-    text-transform: uppercase;
-    text-decoration: none;
-    font-family: 'GothamProMedium', sans-serif;
+  width: 100%;
+  &__title {
+    padding-bottom: 30px;
+    font-family: 'Inter', sans-serif;
     font-style: normal;
-    line-height: 47.92px;
+    font-weight: 600;
+    font-size: 34px;
+    line-height: 130%;
+    color: #FFFFFF;
+  }
+  &__cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 30px;
+  }
+  &__image {
+    transition: .2s;
+    will-change: transform;
+    position: absolute;
+    top: 0;
+    right: -90px;
+    bottom: 0;
+    height: 100%;
+  }
+  &__card {
+    transition: .2s;
+    will-change: transform;
+    min-height: 400px;
+    cursor: pointer;
+    filter: drop-shadow(0px 47.1676px 61.4131px rgba(10, 27, 61, 0.078707))
+    drop-shadow(0px 26.7219px 32.8344px rgba(10, 27, 61, 0.0629546))
+    drop-shadow(0px 14.4955px 18.4067px rgba(10, 27, 61, 0.0598272))
+    drop-shadow(0px 6.96225px 9.77565px rgba(10, 27, 61, 0.0584222))
+    drop-shadow(0px 2.43911px 4.06787px rgba(10, 27, 61, 0.0492837));
+    -webkit-filter: drop-shadow(0px 47.1676px 61.4131px rgba(10, 27, 61, 0.078707))
+    drop-shadow(0px 26.7219px 32.8344px rgba(10, 27, 61, 0.0629546))
+    drop-shadow(0px 14.4955px 18.4067px rgba(10, 27, 61, 0.0598272))
+    drop-shadow(0px 6.96225px 9.77565px rgba(10, 27, 61, 0.0584222))
+    drop-shadow(0px 2.43911px 4.06787px rgba(10, 27, 61, 0.0492837));
+    border-radius: 6px;
+    background-size: cover;
+    overflow: hidden;
+    position: relative;
+    &_minimized {
+      width: 75% !important;
+      .role {
+        &__bottom {
+          &_left {
+            display: flex;
+          }
+        }
+      }
+    }
+    &_right {
+      width: 100%;
+      background-image: url("~assets/img/app/role_dots.svg");
+      background-color: $green;
+      justify-self: flex-end;
+      &:hover {
+        width: 125% !important;
+        .role {
+          &__image {
+            right: 0;
+          }
+        }
+      }
+    }
+    &_left {
+      width: 100%;
+      background-image: url("~assets/img/app/role_dots_light.svg");
+      background-color: $black100;
+      justify-self: flex-start;
+      &:hover {
+        width: 125% !important;
+        .role {
+          &__image {
+            right: 0;
+          }
+        }
+      }
+    }
   }
   &__content {
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-  &__top {
-    display: grid;
-    align-items: flex-end;
-    grid-template-columns: repeat(2, 1fr);
-  }
-  &__title {
-    padding-left: 100px;
-    color: #ffffff;
-    font-family: 'GothamProBlack', sans-serif;
-    font-size: 38px;
-    font-weight: 400;
-    font-style: normal;
-    line-height: 37.5px;
-    text-align: left;
-    text-transform: uppercase;
-    letter-spacing: normal;
-    white-space: pre-line;
-    &_widget {
-      line-height: 47.92px;
-      padding: 0;
-    }
-  }
-  &__widget {
-    margin-top: 50px;
-    display: grid;
-    grid-template-columns: repeat(2, 450px);
-    min-height: 300px;
-    justify-content: center;
-  }
-  &__left {
-    background: rgba(#107c43, .73) url('~assets/img/app/widget_left.png') center center no-repeat;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    grid-gap: 32px;
-    background-size: 100%;
-    transition: .5s ease-in-out;
-    &:hover {
-      cursor: pointer;
-      background-size: 140%;
-    }
-  }
-  &__right {
-    background: rgba(#283f79, .63) url('~assets/img/app/widget_right.png') center center no-repeat;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    grid-gap: 32px;
-    background-size: 100%;
-    transition: .5s ease-in-out;
-    &:hover {
-      cursor: pointer;
-      background-size: 140%;
-    }
-  }
-  &__action {
-    width: 275px;
-  }
-}
-
-.return {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 150px;
-  height: 150px;
-  background: #d0d0d0;
-  background: linear-gradient(to top, #b3b1b1 50%, #d0d0d0 50%);
-  background-size: 100% 200%;
-  background-position: top;
-  transition: .5s ease-out;
-  &:hover {
-    background-position: bottom;
-  }
-  &__container {
-    position: relative;
-    display: flex;
-    align-items: flex-end;
-    width: 100%;
+    justify-content: space-between;
     height: 100%;
-    padding: 30px;
+    padding: 30px 10px 40px 30px;
   }
-}
-
-.back {
-  position: absolute;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  &:before {
-    position: absolute;
-    left: 15px;
-    content: ' ';
-    height: 33px;
-    width: 2px;
-    background-color: #FFFFFF;
-    transform: rotate(45deg);
-  }
-  &:after {
-    position: absolute;
-    left: 15px;
-    content: ' ';
-    height: 33px;
-    width: 2px;
-    background-color: #FFFFFF;
-    transform: rotate(-45deg);
-  }
-}
-
-@include _1199 {
-  .return {
-    width: 100px;
-    height: 100px;
-  }
-}
-@include _991 {
-  .role {
-    &__top {
-      grid-template-columns: 1fr;
-      grid-gap: 30px;
-      justify-items: center;
+  &__bottom {
+    display: flex;
+    &_left {
+      display: flex;
     }
-    &__title {
-      text-align: center;
-      white-space: normal;
-      font-size: 26px;
-      padding: 0 5px;
-    }
-    &__widget {
-      grid-template-columns: 1fr;
-      grid-gap: 0;
-      min-height: 550px;
-      margin-top: 30px;
-    }
-    &__banner {
-      max-width: 94%;
+    &_right {
+      display: flex;
     }
   }
-}
-
-@include _575 {
-  .return {
-    position: initial;
-    justify-self: flex-end;
-    margin-bottom: 30px;
-    height: 75px;
-    width: 75px;
-    &__container {
-      padding: 15px;
+  &__arrow {
+    padding-left: 10px;
+    &_left {
+      span:before {
+        color: $black800;
+      }
+    }
+    &_right {
+      span:before {
+        color: #FFFFFF;
+      }
     }
   }
-  .role {
-    &__widget {
-      grid-template-columns: 350px;
-      min-height: 460px;
+  &__text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    &_title {
+      font-weight: 600;
+      font-size: 45px;
+      line-height: 130%;
+      color: $black800;
+      padding-bottom: 8px;
     }
-    &__container {
-      grid-template-rows: auto;
+    &_desc {
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 145%;
+      color: $black800;
+      max-width: 210px;
     }
-    &__title {
-      font-size: 22px;
-    }
-    &__terms {
-      display: grid;
-      grid-gap: 0;
-      padding: 0;
-      width: 85%;
-      margin: 0 auto;
-    }
-    &__link {
-      text-align: right;
-    }
-    &__banner {
-      max-width: 85%;
+    &_light {
+      color: #FFFFFF;
     }
   }
 }

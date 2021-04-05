@@ -61,12 +61,6 @@
     "loginWith": "Login with your \nsocial media account",
     "create": "Create account"
   },
-  "role": {
-    "title": "Login to your \naccount as",
-    "employer": "Employer",
-    "worker": "Worker",
-    "enter": "Enter"
-  },
   "profile": {
     "active": "active proposals",
     "radius": "in your radius",
@@ -122,5 +116,28 @@
   "restore": {
     "title": "Restore password",
     "modal": "Password changed"
+  },
+  "role": {
+    "employer": "Employer",
+    "worker": "Worker",
+    "enter": "Enter",
+    "choose": "Choose your role",
+    "employerWant": "I want to make a tasks and looking for a workers",
+    "workerWant": "I want to search a tasks and working on freelance",
+    "chooseThis": "Choose this role"
+  },
+  "privacy": {
+    "title": "Privacy policy",
+    "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor",
+    "agree": "I agree with",
+    "privacyLink": "Privacy policy",
+    "termsLink": "Terms & Conditions",
+    "amlLink": "AML & CTF Policy"
+  },
+  "layout": {
+    "links": {
+      "terms": "\t· Terms and conditions",
+      "privacy": "\t· Privacy policy"
+    }
   }
 }

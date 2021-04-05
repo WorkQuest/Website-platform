@@ -78,6 +78,7 @@ export default {
     align-items: center;
     grid-template-columns: 40px 1fr;
     grid-gap: 5px;
+    cursor: pointer;
     span {
       font-family: 'Inter', sans-serif;
       font-style: normal;

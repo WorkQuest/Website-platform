@@ -4,4 +4,5 @@ export default {
   emailConfirm: 'emailConfirm',
   restore: 'restore',
   changePassword: 'changePassword',
+  privacy: 'privacy',
 };

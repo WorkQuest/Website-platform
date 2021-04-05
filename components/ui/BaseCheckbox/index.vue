@@ -19,6 +19,9 @@
       @click="model = !model"
     >
       {{ label }}
+      <slot
+        name="sub"
+      />
     </div>
   </div>
 </template>
