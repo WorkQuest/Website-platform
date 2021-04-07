@@ -3,4 +3,5 @@ export default () => ({
     access: '',
     refresh: '',
   },
+  userData: {},
 });

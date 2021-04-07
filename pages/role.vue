@@ -9,7 +9,7 @@
         class="role__card role__card_left"
         @mouseenter="showLeftChoose = true"
         @mouseleave="showLeftChoose = false"
-        @click="showPrivacy()"
+        @click="showPrivacy('employer')"
       >
         <div class="role__content">
           <div class="role__top">
@@ -45,7 +45,7 @@
         class="role__card role__card_right"
         @mouseenter="showRightChoose = true"
         @mouseleave="showRightChoose = false"
-        @click="showPrivacy()"
+        @click="showPrivacy('worker')"
       >
         <div class="role__content">
           <div class="role__top">
@@ -101,9 +101,10 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    showPrivacy() {
+    showPrivacy(role) {
       this.ShowModal({
         key: modals.privacy,
+        role,
       });
     },
   },

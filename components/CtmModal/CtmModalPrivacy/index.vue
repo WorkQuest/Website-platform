@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'PrivacyModal',
   data() {
@@ -58,14 +60,18 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
     isAllChecked() {
       return this.privacy && this.terms && this.aml;
     },
   },
   methods: {
     hide() {
-      this.CloseModal();
+      this.$cookies.set('role', this.options.role, { path: '/' });
       this.$router.push('/quests');
+      this.CloseModal();
     },
   },
 };

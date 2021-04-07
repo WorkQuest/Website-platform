@@ -1,12 +1,12 @@
 <template>
   <div>
-    Quest
+    my
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Quests',
+  name: 'My',
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
@@ -14,6 +14,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>

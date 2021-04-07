@@ -135,9 +135,21 @@
     "amlLink": "AML & CTF Policy"
   },
   "layout": {
+    "create": "Create a quest",
     "links": {
       "terms": "\t· Terms and conditions",
       "privacy": "\t· Privacy policy"
+    }
+  },
+  "ui": {
+    "profile": {
+      "myProfile": "My profile",
+      "settings": "Settings",
+      "disputes": "Disputes",
+      "logout": "Logout"
+    },
+    "notifications": {
+      "title": "Notifications"
     }
   }
 }

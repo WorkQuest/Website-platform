@@ -26,4 +26,7 @@ export default {
       return err;
     }
   },
+  async logout({ commit }) {
+    commit('logOut');
+  },
 };
