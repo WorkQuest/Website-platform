@@ -146,10 +146,20 @@
       "myProfile": "My profile",
       "settings": "Settings",
       "disputes": "Disputes",
+      "instruments": "Instruments",
       "logout": "Logout"
     },
     "notifications": {
-      "title": "Notifications"
+      "title": "Notifications",
+      "invite": "Invite you a quest"
+    },
+    "menu": {
+      "pension": "Pension program",
+      "referral": "Referral program",
+      "p2p": "P2P insurance",
+      "savings": "Savings product",
+      "crediting": "Crediting",
+      "mining": "Liquidity mining"
     }
   }
 }

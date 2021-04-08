@@ -69,14 +69,82 @@
                 >
                   Wallet
                 </nuxt-link>
+                <button
+                  class="header__link header__link_menu"
+                  :class="{'header__link_active': isShowAdditionalMenu}"
+                  @click="showAdditionalMenu()"
+                >
+                  {{ $t('ui.profile.instruments') }}
+                  <span class="icon-caret_down" />
+                  <transition name="fade">
+                    <div
+                      v-if="isShowAdditionalMenu"
+                      class="menu"
+                    >
+                      <div class="menu__items">
+                        <n-link
+                          v-for="item in additionalMenuLinks"
+                          :key="`item-${item.title}`"
+                          :to="item.path"
+                          tag="div"
+                          class="menu__item"
+                        >
+                          <div class="menu__top">
+                            <div class="menu__text menu__text_header">
+                              {{ item.title }}
+                            </div>
+                            <span class="icon-chevron_right" />
+                          </div>
+                          <div class="menu__bottom">
+                            <div class="menu__text menu__text_grey">
+                              <span>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing ...
+                              </span>
+                            </div>
+                          </div>
+                        </n-link>
+                      </div>
+                    </div>
+                  </transition>
+                </button>
               </div>
             </div>
-            <div
-              class="header__right"
-            >
-              <button class="header__button header__button_locale">
+            <div class="header__right">
+              <button
+                class="header__button header__button_locale"
+                @click="showLocale()"
+              >
                 EN
                 <span class="icon-caret_down" />
+                <transition name="fade">
+                  <div
+                    v-if="isShowLocale"
+                    class="locale"
+                  >
+                    <div class="locale__items">
+                      <div class="locale__item">
+                        <img
+                          src="/img/app/en.svg"
+                          alt="EN"
+                          class="locale__icon"
+                        >
+                        <div class="locale__text">
+                          EN
+                        </div>
+                      </div>
+                      <div class="locale__item">
+                        <img
+                          src="/img/app/ru.svg"
+                          alt="RU"
+                          class="locale__icon"
+                        >
+                        <div class="locale__text">
+                          RU
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </transition>
               </button>
               <button class="header__button">
                 <span class="icon-message" />
@@ -108,10 +176,77 @@
                     <div class="notify__body">
                       <div class="notify__items">
                         <div class="notify__item">
-                          1
+                          <div class="notify__content">
+                            <div class="notify__top">
+                              <div class="notify__user">
+                                <div class="notify__avatar">
+                                  <img
+                                    src="~assets/img/app/fakeavatarcomp.svg"
+                                    alt=""
+                                  >
+                                </div>
+                                <div class="notify__info">
+                                  <div class="notify__text notify__text_name">
+                                    Edward cooper
+                                  </div>
+                                  <div class="notify__text notify__text_grey">
+                                    CEO from Amazon
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="notify__text notify__text_date">
+                                14 January 2021, 14:54
+                              </div>
+                            </div>
+                            <div class="notify__reason">
+                              <div class="notify__text notify__text_blue">
+                                {{ $t('ui.notifications.invite') }}:
+                              </div>
+                            </div>
+                            <div class="notify__action">
+                              <button class="notify__btn">
+                                <span class="notify__text notify__text_btn">
+                                  Paint the garage quickly
+                                </span>
+                                <span class="icon-chevron_right" />
+                              </button>
+                            </div>
+                          </div>
                         </div>
                         <div class="notify__item">
-                          2
+                          <div class="notify__content">
+                            <div class="notify__top">
+                              <div class="notify__user">
+                                <div class="notify__avatar">
+                                  <img
+                                    src="~assets/img/app/fakeavatar.svg"
+                                    alt=""
+                                  >
+                                </div>
+                                <div class="notify__info">
+                                  <div class="notify__text notify__text_name">
+                                    Samantha Sparks
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="notify__text notify__text_date">
+                                14 January 2021, 14:54
+                              </div>
+                            </div>
+                            <div class="notify__reason">
+                              <div class="notify__text notify__text_blue">
+                                {{ $t('ui.notifications.invite') }}:
+                              </div>
+                            </div>
+                            <div class="notify__action">
+                              <button class="notify__btn">
+                                <span class="notify__text notify__text_btn">
+                                  Paint the garage quickly
+                                </span>
+                                <span class="icon-chevron_right" />
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -205,7 +340,9 @@ export default {
     return {
       role: '',
       isShowProfile: false,
-      isShowNotify: true,
+      isShowNotify: false,
+      isShowAdditionalMenu: false,
+      isShowLocale: false,
       notification: 1,
     };
   },
@@ -229,6 +366,34 @@ export default {
         },
       ];
     },
+    additionalMenuLinks() {
+      return [
+        {
+          title: this.$t('ui.menu.pension'),
+          path: '/wallet',
+        },
+        {
+          title: this.$t('ui.menu.referral'),
+          path: '/wallet',
+        },
+        {
+          title: this.$t('ui.menu.p2p'),
+          path: '/wallet',
+        },
+        {
+          title: this.$t('ui.menu.savings'),
+          path: '/wallet',
+        },
+        {
+          title: this.$t('ui.menu.crediting'),
+          path: '/wallet',
+        },
+        {
+          title: this.$t('ui.menu.mining'),
+          path: '/wallet',
+        },
+      ];
+    },
   },
   created() {
     const role = this.$cookies.get('role');
@@ -247,6 +412,12 @@ export default {
     showNotification() {
       this.isShowNotify = !this.isShowNotify;
     },
+    showAdditionalMenu() {
+      this.isShowAdditionalMenu = !this.isShowAdditionalMenu;
+    },
+    showLocale() {
+      this.isShowLocale = !this.isShowLocale;
+    },
     async logout() {
       await this.$store.dispatch('user/logout');
       this.$router.push('/');
@@ -254,6 +425,8 @@ export default {
     closeAll() {
       this.isShowProfile = false;
       this.isShowNotify = false;
+      this.isShowAdditionalMenu = false;
+      this.isShowLocale = false;
     },
   },
 };
@@ -302,12 +475,91 @@ export default {
     line-height: 130%;
     color: $black800;
   }
-  &__body {
-
+  &__btn {
+    background: #F7F8FA;
+    border-radius: 3px;
+    height: 44px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    span:before {
+      color: #0083C7;
+      font-size: 24px;
+    }
+  }
+  &__action {
+    padding-top: 12px;
+  }
+  &__content {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+  }
+  &__reason {
+    padding-top: 12px;
+  }
+  &__text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 130%;
+    &_date {
+      font-size: 12px;
+      text-align: right;
+      color: $black300;
+    }
+    &_name {
+      font-size: 16px;
+      color: $black800;
+    }
+    &_grey {
+      font-size: 12px;
+      color: $black500;
+    }
+    &_blue {
+      font-size: 16px;
+      color: $blue;
+      text-align: left;
+    }
+    &_btn {
+      font-size: 16px;
+      color: $black800;
+    }
   }
   &__items {
     display: grid;
     grid-template-columns: 1fr;
+  }
+  &__user {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    grid-gap: 10px;
+  }
+  &__info {
+    //grid-template-rows: repeat(2, auto);
+    grid-gap: 5px;
+    display: grid;
+    text-align: left;
+    align-items: center;
+  }
+  &__avatar {
+    max-height: 40px;
+    max-width: 40px;
+    border-radius: 100%;
+  }
+  &__top {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__item {
+    min-height: 167px;
+    border-bottom: 1px solid #F7F8FA;
+    width: 100%;
+    display: flex;
+    justify-items: flex-start;
+    align-items: center;
   }
 }
 .profile {
@@ -415,6 +667,16 @@ export default {
     &_active {
       color: $black800;
     }
+    &_menu {
+      display: flex;
+      align-items: center;
+      position: relative;
+      span::before {
+        color: $black400;
+        font-size: 24px;
+        padding-left: 5px;
+      }
+    }
   }
   &__button {
     font-family: 'Inter', sans-serif;
@@ -454,7 +716,7 @@ export default {
   &__links {
     display: grid;
     align-items: center;
-    grid-template-columns: repeat(3, auto);
+    grid-template-columns: repeat(4, auto);
     grid-gap: 25px;
   }
   &__right {
@@ -480,6 +742,104 @@ export default {
       line-height: 130%;
       color: $black700;
     }
+  }
+}
+.menu {
+  position: absolute;
+  top: calc(72px + 5px);
+  background: #FFFFFF;
+  box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
+  border-radius: 6px;
+  min-width: 790px;
+  width: 100%;
+  min-height: 230px;
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    span::before {
+      transition: .1s;
+      visibility: hidden;
+      font-size: 24px;
+      color: #2E3A59;
+    }
+  }
+  &__text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    &_header {
+      font-size: 16px;
+      line-height: 130%;
+      color: $black800;
+    }
+    &_grey {
+      font-size: 14px;
+      line-height: 130%;
+      color: $black500;
+    }
+  }
+  &__items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 20px;
+    grid-gap: 10px;
+  }
+  &__item {
+    transition: .3s;
+    background: #FFFFFF;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    min-height: 90px;
+    display: flex;
+    align-items: flex-start;
+    text-align: left;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    &:hover {
+      border: 1px solid $black100;
+      .menu {
+        &__top {
+          span::before {
+            visibility: initial;
+          }
+        }
+      }
+    }
+  }
+}
+.locale {
+  position: absolute;
+  top: calc(72px + 5px);
+  background: #FFFFFF;
+  box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
+  border-radius: 6px;
+  min-width: 86px;
+  &__items {
+    padding: 10px 15px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 15px;
+  }
+  &__item {
+    display: grid;
+    grid-template-columns: 15px 1fr;
+    grid-gap: 10px;
+    align-items: center;
+    min-height: 20px;
+  }
+  &__icon {
+    border-radius: 100%;
+  }
+  &__text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 130%;
+    color: $black500;
   }
 }
 </style>
