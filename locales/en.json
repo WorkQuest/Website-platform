@@ -160,6 +160,9 @@
       "savings": "Savings product",
       "crediting": "Crediting",
       "mining": "Liquidity mining"
+    },
+    "footer": {
+      "rights": "All rights reserved"
     }
   }
 }

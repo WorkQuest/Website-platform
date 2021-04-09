@@ -146,7 +146,10 @@
                   </div>
                 </transition>
               </button>
-              <button class="header__button">
+              <button
+                class="header__button"
+                @click="goToMessages()"
+              >
                 <span class="icon-message" />
               </button>
               <button class="header__button header__button_notify">
@@ -317,7 +320,105 @@
             </div>
           </div>
         </div>
-        <nuxt />
+        <div class="template__main">
+          <nuxt />
+        </div>
+        <div class="template__footer">
+          <div class="footer">
+            <div class="footer__body">
+              <div class="footer__top">
+                <div class="footer__left">
+                  <div
+                    class="footer__logo"
+                    @click="toMain()"
+                  >
+                    <img
+                      src="/img/app/logo_gray.svg"
+                      alt="Logo"
+                    >
+                    <span>WorkQuest</span>
+                  </div>
+                </div>
+                <div class="footer__right">
+                  <div class="footer__menus">
+                    <div class="footer__items">
+                      <div class="footer__item">
+                        <div class="footer__text footer__text_black">
+                          Menu
+                        </div>
+                        <div class="footer__items footer__items_links">
+                          <div class="footer__text footer__text_grey">
+                            First page
+                          </div>
+                          <div class="footer__text footer__text_grey">
+                            Second page
+                          </div>
+                          <div class="footer__text footer__text_grey">
+                            Third page
+                          </div>
+                        </div>
+                      </div>
+                      <div class="footer__item">
+                        <div class="footer__text footer__text_black">
+                          Menu
+                        </div>
+                        <div class="footer__items footer__items_links">
+                          <div class="footer__text footer__text_grey">
+                            First page
+                          </div>
+                          <div class="footer__text footer__text_grey">
+                            Second page
+                          </div>
+                          <div class="footer__text footer__text_grey">
+                            Third page
+                          </div>
+                        </div>
+                      </div>
+                      <div class="footer__item">
+                        <div class="footer__text footer__text_black">
+                          Menu
+                        </div>
+                        <div class="footer__items footer__items_links">
+                          <div class="footer__text footer__text_grey">
+                            First page
+                          </div>
+                          <div class="footer__text footer__text_grey">
+                            Second page
+                          </div>
+                          <div class="footer__text footer__text_grey">
+                            Third page
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="footer__bottom">
+                <div class="footer__left">
+                  <div class="footer__rights">
+                    <div class="footer__text footer__text_rights">
+                      © WorkQuest {{ new Date().getFullYear() }}
+                    </div>
+                    <div class="footer__text footer__text_rights">
+                      {{ $t('ui.footer.rights') }}
+                    </div>
+                  </div>
+                </div>
+                <div class="footer__right">
+                  <div class="footer__links">
+                    <div class="footer__link">
+                      {{ $t('layout.links.terms') }}
+                    </div>
+                    <div class="footer__link">
+                      {{ $t('layout.links.privacy') }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <transition name="fade">
@@ -406,6 +507,9 @@ export default {
     toMain() {
       this.$router.push('/quests');
     },
+    goToMessages() {
+      this.$router.push('/messages');
+    },
     showProfile() {
       this.isShowProfile = !this.isShowProfile;
     },
@@ -441,10 +545,12 @@ export default {
   overflow: hidden;
   background: #F7F8FA;
   &__content {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    z-index: 120;
+    display: grid;
+    grid-template-rows: 72px 1fr 256px;
+    min-height: 100vh;
+  }
+  &__main {
+    padding-bottom: 80px;
   }
 }
 .notify {
@@ -840,6 +946,101 @@ export default {
     font-size: 16px;
     line-height: 130%;
     color: $black500;
+  }
+}
+.footer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  &__items {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(170px, auto));
+    grid-gap: 50px;
+    &_links {
+      grid-template-columns: 1fr;
+      grid-gap: 10px;
+    }
+  }
+  &__item {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-gap: 15px;
+  }
+  &__body {
+    max-width: 1180px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  &__top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  &__bottom {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid $black100;
+    height: 72px;
+    align-items: center;
+  }
+  &__links {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-gap: 20px;
+  }
+  &__link {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 130%;
+    color: $blue;
+    cursor: pointer;
+  }
+  &__logo {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 40px 1fr;
+    grid-gap: 5px;
+    cursor: pointer;
+    span {
+      font-family: 'Inter', sans-serif;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 23px;
+      line-height: 130%;
+      color: $black400;
+    }
+  }
+  &__text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    &_grey {
+      font-weight: normal;
+      font-size: 16px;
+      color: $black500;
+    }
+    &_black {
+      font-weight: 500;
+      font-size: 16px;
+      color: $black700;
+    }
+    &_rights {
+      font-size: 14px;
+      line-height: 130%;
+      color: $black500;
+    }
+  }
+  &__rights {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-gap: 20px;
   }
 }
 </style>
