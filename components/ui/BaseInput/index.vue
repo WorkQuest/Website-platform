@@ -24,7 +24,7 @@
     <div class="ctm-field__body">
       <span
         v-if="isSearch"
-        class="icon-Search ctm-field__search"
+        class="icon-search ctm-field__search"
       />
       <div class="ctm-field__left">
         <slot name="left" />
@@ -37,6 +37,13 @@
         :autocomplete="autocomplete"
         @input="input"
       >
+      <div
+        v-if="value && isSearch"
+        class="ctm-field__clear"
+        @click="clear()"
+      >
+        <span class="icon-close_small" />
+      </div>
       <div class="ctm-field__right">
         <slot name="right" />
       </div>
@@ -118,6 +125,9 @@ export default {
     input($event) {
       this.$emit('input', $event.target.value);
     },
+    clear() {
+      this.$emit('input', '');
+    },
   },
 };
 </script>
@@ -126,6 +136,16 @@ export default {
   &__right {
     min-height: 100%;
     display: flex;
+  }
+  &__clear {
+    position: absolute;
+    right: 20px;
+    padding-top: 6px;
+    cursor: pointer;
+    span::before {
+      color: $blue;
+      font-size: 24px;
+    }
   }
   &__right-absolute {
     position: absolute;
@@ -140,6 +160,7 @@ export default {
     display: flex;
     align-items: center;
     position: relative;
+    width: 100%;
   }
   &__header {
     letter-spacing: -0.025em;
@@ -156,8 +177,8 @@ export default {
     position: absolute;
     left: 13px;
     &:before {
-      font-size: 30px;
-      background: #F3F7FA;
+      font-size: 24px;
+      background: #0083C7;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -178,6 +199,13 @@ export default {
   &_search {
     .ctm-field__input {
       padding: 0 20px 0 50px;
+      background: transparent !important;
+      &:hover {
+        border: 1px solid #E6EAEE !important;
+      }
+      &:focus {
+        border: 1px solid #E6EAEE !important;
+      }
     }
   }
   &_default {

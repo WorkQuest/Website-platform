@@ -141,6 +141,12 @@
       "privacy": "\t· Privacy policy"
     }
   },
+  "quests": {
+    "ui": {
+      "showMap": "Show map",
+      "search": "City / Street / Place"
+    }
+  },
   "ui": {
     "profile": {
       "myProfile": "My profile",

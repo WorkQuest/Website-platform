@@ -23,7 +23,7 @@
                 class="header__links"
               >
                 <nuxt-link
-                  to="/quests"
+                  to="/workers"
                   class="header__link"
                   :exact-active-class="'header__link_active'"
                 >
@@ -543,7 +543,13 @@ export default {
   },
   methods: {
     toMain() {
-      this.$router.push('/quests');
+      const role = this.$cookies.get('role');
+      if (role === 'worker') {
+        this.$router.push('/quests');
+      }
+      if (role === 'employer') {
+        this.$router.push('/workers');
+      }
     },
     goToMessages() {
       this.$router.push('/messages');

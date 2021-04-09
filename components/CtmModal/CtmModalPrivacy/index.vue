@@ -70,7 +70,13 @@ export default {
   methods: {
     hide() {
       this.$cookies.set('role', this.options.role, { path: '/' });
-      this.$router.push('/quests');
+      const role = this.$cookies.get('role');
+      if (role === 'worker') {
+        this.$router.push('/quests');
+      }
+      if (role === 'employer') {
+        this.$router.push('/workers');
+      }
       this.CloseModal();
     },
   },
