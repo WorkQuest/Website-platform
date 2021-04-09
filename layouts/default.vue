@@ -43,6 +43,44 @@
                 >
                   Wallet
                 </nuxt-link>
+                <button
+                  class="header__link header__link_menu"
+                  :class="{'header__link_active': isShowAdditionalMenu}"
+                  @click="showAdditionalMenu()"
+                >
+                  {{ $t('ui.profile.instruments') }}
+                  <span class="icon-caret_down" />
+                  <transition name="fade">
+                    <div
+                      v-if="isShowAdditionalMenu"
+                      class="menu"
+                    >
+                      <div class="menu__items">
+                        <n-link
+                          v-for="item in additionalMenuLinks"
+                          :key="`item-${item.title}`"
+                          :to="item.path"
+                          tag="div"
+                          class="menu__item"
+                        >
+                          <div class="menu__top">
+                            <div class="menu__text menu__text_header">
+                              {{ item.title }}
+                            </div>
+                            <span class="icon-chevron_right" />
+                          </div>
+                          <div class="menu__bottom">
+                            <div class="menu__text menu__text_grey">
+                              <span>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing ...
+                              </span>
+                            </div>
+                          </div>
+                        </n-link>
+                      </div>
+                    </div>
+                  </transition>
+                </button>
               </div>
               <div
                 v-if="role === 'worker'"
