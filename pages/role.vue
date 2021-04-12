@@ -20,19 +20,17 @@
               {{ $t('role.employerWant') }}
             </div>
           </div>
-          <transition name="fade">
-            <div
-              v-if="showLeftChoose"
-              class="role__bottom role__bottom_left"
-            >
-              <div class="role__text role__text_desc">
-                {{ $t('role.chooseThis') }}
-              </div>
-              <div class="role__arrow role__arrow_left">
-                <span class="icon-short_right" />
-              </div>
+          <div
+            :class="[{'role__bottom_show': showLeftChoose === true}]"
+            class="role__bottom role__bottom_left"
+          >
+            <div class="role__text role__text_desc">
+              {{ $t('role.chooseThis') }}
             </div>
-          </transition>
+            <div class="role__arrow role__arrow_left">
+              <span class="icon-short_right" />
+            </div>
+          </div>
         </div>
         <img
           class="role__image"
@@ -56,19 +54,17 @@
               {{ $t('role.workerWant') }}
             </div>
           </div>
-          <transition name="fade">
-            <div
-              v-if="showRightChoose"
-              class="role__bottom role__bottom_right"
-            >
-              <div class="role__text role__text_desc role__text_light">
-                {{ $t('role.chooseThis') }}
-              </div>
-              <div class="role__arrow role__arrow_right">
-                <span class="icon-short_right" />
-              </div>
+          <div
+            class="role__bottom role__bottom_right"
+            :class="[{'role__bottom_show': showRightChoose === true}]"
+          >
+            <div class="role__text role__text_desc role__text_light">
+              {{ $t('role.chooseThis') }}
             </div>
-          </transition>
+            <div class="role__arrow role__arrow_right">
+              <span class="icon-short_right" />
+            </div>
+          </div>
         </div>
         <img
           class="role__image"
@@ -158,13 +154,6 @@ export default {
     position: relative;
     &_minimized {
       width: 75% !important;
-      .role {
-        &__bottom {
-          &_left {
-            display: flex;
-          }
-        }
-      }
     }
     &_right {
       width: 100%;
@@ -204,11 +193,16 @@ export default {
   }
   &__bottom {
     display: flex;
+    &_show {
+      opacity: 1 !important;
+    }
     &_left {
       display: flex;
+      opacity: 0;
     }
     &_right {
       display: flex;
+      opacity: 0;
     }
   }
   &__arrow {
