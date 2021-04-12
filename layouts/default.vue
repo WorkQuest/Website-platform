@@ -465,7 +465,6 @@
     <ctm-modal />
   </div>
 </template>
-
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';

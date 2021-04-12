@@ -142,6 +142,16 @@
     }
   },
   "quests": {
+    "searchResults": "Search results",
+    "type": "Type of job",
+    "price": "Price",
+    "time": "Added time",
+    "priority": {
+      "all": "All priority",
+      "low": "Low",
+      "normal": "Normal",
+      "urgent": "Urgent"
+    },
     "ui": {
       "showMap": "Show map",
       "search": "City / Street / Place"

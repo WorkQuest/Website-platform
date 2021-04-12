@@ -50,6 +50,7 @@ export default {
       const { mode, disabled } = this;
       return [
         { 'base-btn_disabled': disabled },
+        { 'base-btn_light': mode === 'light' },
       ];
     },
   },
@@ -57,6 +58,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .base-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 43px;
   color: #ffffff;
@@ -75,6 +79,13 @@ export default {
   &_disabled {
     pointer-events: none;
     background: #D1D1CF;
+  }
+  &_light {
+    background: #FFFFFF;
+    color: $black800;
+    &:hover {
+      background: $black100;
+    }
   }
 }
 </style>

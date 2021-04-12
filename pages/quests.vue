@@ -43,9 +43,74 @@
         </div>
       </div>
     </div>
+    <div class="quests__content">
+      <div
+        class="quests__body"
+        :class="{'quests__body_wrap': !isShowMap}"
+      >
+        <div class="quests__title">
+          <div class="quests__text quests__text_title">
+            {{ $t('quests.searchResults') }}
+          </div>
+        </div>
+        <div class="quests__tools tools">
+          <div class="tools__left">
+            <base-btn
+              :mode="'light'"
+              @click="changeSorting('price')"
+            >
+              <span class="tools__text">
+                {{ $t('quests.price') }}
+              </span>
+              <span
+                v-if="priceSort === 'desc'"
+                class="icon-Sorting_descending"
+              />
+              <span
+                v-if="priceSort === 'asc'"
+                class="icon-Sorting_ascending"
+              />
+            </base-btn>
+            <base-btn
+              :mode="'light'"
+              @click="changeSorting('time')"
+            >
+              <span class="tools__text">
+                {{ $t('quests.time') }}
+              </span>
+              <span
+                v-if="timeSort === 'desc'"
+                class="icon-Sorting_descending"
+              />
+              <span
+                v-if="timeSort === 'asc'"
+                class="icon-Sorting_ascending"
+              />
+            </base-btn>
+            <!--            <base-btn :mode="'light'">-->
+            <!--              <span class="tools__text">-->
+            <!--                {{ $t('quests.priority') }}-->
+            <!--              </span>-->
+            <!--              <span class="icon-caret_right" />-->
+            <!--            </base-btn>-->
+            <base-dd
+              v-model="priorityIndex"
+              :items="priority"
+            />
+          </div>
+          <div class="tools__right">
+            <base-btn :mode="'light'">
+              <span class="tools__text">
+                {{ $t('quests.type') }}
+              </span>
+              <span class="icon-caret_right" />
+            </base-btn>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
-
 <script>
 export default {
   name: 'Quests',
@@ -64,7 +129,16 @@ export default {
         '+ 500 m',
         '+ 1000 m',
       ],
+      priority: [
+        this.$t('quests.priority.all'),
+        this.$t('quests.priority.low'),
+        this.$t('quests.priority.normal'),
+        this.$t('quests.priority.urgent'),
+      ],
+      priorityIndex: 0,
       distanceIndex: 0,
+      priceSort: 'desc',
+      timeSort: 'desc',
     };
   },
   async mounted() {
@@ -75,10 +149,19 @@ export default {
     toggleMap() {
       this.isShowMap = !this.isShowMap;
     },
+    changeSorting(type) {
+      if (type === 'price') {
+        // eslint-disable-next-line no-unused-expressions
+        this.priceSort === 'desc' ? this.priceSort = 'asc' : this.priceSort = 'desc';
+      }
+      if (type === 'time') {
+        // eslint-disable-next-line no-unused-expressions
+        this.timeSort === 'desc' ? this.timeSort = 'asc' : this.timeSort = 'desc';
+      }
+    },
   },
 };
 </script>
-
 <style lang="scss" scoped>
 .quests {
   &__top {
@@ -95,6 +178,65 @@ export default {
     margin: auto;
     z-index: 1200;
     @include box;
+  }
+  &__content {
+    display: flex;
+    justify-content: center;
+  }
+  &__body {
+    padding-top: 30px;
+    max-width: 1180px;
+    width: 100%;
+    height: 100%;
+    &_wrap {
+      padding-top: 10px;
+    }
+  }
+  &__text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    &_title  {
+      font-weight: 500;
+      font-size: 25px;
+      line-height: 130%;
+      color: $black800;
+    }
+  }
+  &__tools {
+    padding-top:  20px;
+  }
+}
+.tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &__left {
+    display: grid;
+    grid-template-columns: 103px 152px minmax(141px, auto);
+    grid-gap: 20px;
+    span::before {
+      padding-left: 10px;
+      margin-right: -10px;
+      color: $black400;
+      font-size: 24px;
+    }
+  }
+  &__text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 130%;
+    color: $black800;
+  }
+  &__right {
+    min-width: 149px;
+    span::before {
+      padding-left: 10px;
+      margin-right: -10px;
+      color: $black400;
+      font-size: 24px;
+    }
   }
 }
 .search {
