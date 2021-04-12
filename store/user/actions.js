@@ -1,12 +1,8 @@
 export default {
   async signIn({ commit }, payload) {
-    try {
-      const response = await this.$axios.$post('/v1/auth/login', payload);
-      commit('setNewTokens', response.result);
-      return response;
-    } catch (err) {
-      return err;
-    }
+    const response = await this.$axios.$post('/v1/auth/login', payload);
+    commit('setNewTokens', response.result);
+    return response;
   },
   async signUp({ commit }, payload) {
     try {
