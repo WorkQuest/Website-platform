@@ -605,6 +605,7 @@ export default {
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
   min-width: 441px;
+  z-index: 10000000;
   &__header {
     display: flex;
     align-items: center;
@@ -722,6 +723,7 @@ export default {
   min-width: 223px;
   width: 100%;
   min-height: 235px;
+  z-index: 10000000;
   &__header {
     border-bottom: 1px solid #F7F8FA;
     display: grid;
@@ -903,6 +905,7 @@ export default {
   min-width: 790px;
   width: 100%;
   min-height: 230px;
+  z-index: 10000000;
   &__top {
     display: flex;
     align-items: center;
@@ -967,6 +970,7 @@ export default {
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
   min-width: 86px;
+  z-index: 10000000;
   &__items {
     padding: 10px 15px;
     display: grid;
