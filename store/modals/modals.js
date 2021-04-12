@@ -5,4 +5,5 @@ export default {
   restore: 'restore',
   changePassword: 'changePassword',
   privacy: 'privacy',
+  skills: 'skills',
 };

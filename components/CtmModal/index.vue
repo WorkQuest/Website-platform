@@ -16,6 +16,7 @@
       <CtmModalRestore v-if="modals.restore === currentModalKey" />
       <CtmModalChangePassword v-if="modals.changePassword === currentModalKey" />
       <CtmModalPrivacy v-if="modals.privacy === currentModalKey" />
+      <CtmModalSkills v-if="modals.skills === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -26,6 +27,7 @@ import CtmModalConfirmEmail from './CtmModalConfirmEmail';
 import CtmModalChangePassword from './CtmModalChangePassword';
 import CtmModalRestore from './CtmModalRestore';
 import CtmModalPrivacy from './CtmModalPrivacy';
+import CtmModalSkills from './CtmModalSkills';
 
 export default {
   name: 'ModalBox',
@@ -34,6 +36,7 @@ export default {
     CtmModalRestore,
     CtmModalChangePassword,
     CtmModalPrivacy,
+    CtmModalSkills,
   },
   data: () => ({
     modals,

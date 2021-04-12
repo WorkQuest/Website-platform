@@ -51,6 +51,7 @@ export default {
       return [
         { 'base-btn_disabled': disabled },
         { 'base-btn_light': mode === 'light' },
+        { 'base-btn_tag': mode === 'tag' },
       ];
     },
   },
@@ -79,6 +80,14 @@ export default {
   &_disabled {
     pointer-events: none;
     background: #D1D1CF;
+  }
+  &_tag {
+    background: rgba(0, 131, 199, 0.1);
+    border-radius: 3px;
+    color: $blue;
+    &:hover {
+      background: rgba(0, 131, 199, 0.2);
+    }
   }
   &_light {
     background: #FFFFFF;

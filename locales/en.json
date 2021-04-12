@@ -141,6 +141,9 @@
       "privacy": "\t· Privacy policy"
     }
   },
+  "skills": {
+    "title": "Skills"
+  },
   "quests": {
     "searchResults": "Search results",
     "type": "Type of job",

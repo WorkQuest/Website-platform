@@ -99,11 +99,35 @@
             />
           </div>
           <div class="tools__right">
-            <base-btn :mode="'light'">
+            <base-btn
+              :mode="'light'"
+              @click="showSkillsModal()"
+            >
               <span class="tools__text">
                 {{ $t('quests.type') }}
               </span>
               <span class="icon-caret_right" />
+            </base-btn>
+          </div>
+        </div>
+        <div
+          v-if="tags.length"
+          class="quests__tags tags"
+        >
+          <div
+            v-for="(item, i) in tags"
+            :key="i"
+            class="tags__item"
+          >
+            <base-btn
+              class="tags__btn"
+              mode="tag"
+            >
+              {{ item }}
+              <span
+                class="icon-close_small"
+                @click="deleteTag(i)"
+              />
             </base-btn>
           </div>
         </div>
@@ -112,6 +136,8 @@
   </div>
 </template>
 <script>
+import modals from '~/store/modals/modals';
+
 export default {
   name: 'Quests',
   data() {
@@ -124,6 +150,7 @@ export default {
           lng: 84.967270,
         },
       ],
+      tags: ['Painting work', 'Simple work'],
       distance: [
         '+ 100 m',
         '+ 500 m',
@@ -158,6 +185,14 @@ export default {
         // eslint-disable-next-line no-unused-expressions
         this.timeSort === 'desc' ? this.timeSort = 'asc' : this.timeSort = 'desc';
       }
+    },
+    deleteTag(index) {
+      this.tags.splice(index, 1);
+    },
+    showSkillsModal() {
+      this.ShowModal({
+        key: modals.skills,
+      });
     },
   },
 };
@@ -202,8 +237,28 @@ export default {
       color: $black800;
     }
   }
+  &__tags {
+    padding-top: 30px;
+  }
   &__tools {
     padding-top:  20px;
+  }
+}
+.tags {
+  display: flex;
+  &__btn {
+    span::before {
+      color: $blue;
+      font-size: 24px;
+      padding-left: 3px;
+    }
+  }
+  &__item {
+    min-width: 135px;
+    max-width: 150px;
+    &:not(:first-child) {
+      margin-left: 20px;
+    }
   }
 }
 .tools {
