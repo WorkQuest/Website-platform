@@ -86,7 +86,8 @@
   "meta": {
     "ok": "Ok",
     "send": "Send",
-    "save": "Save"
+    "save": "Save",
+    "reset": "Reset"
   },
   "signIn": {
     "title": "Sign in",

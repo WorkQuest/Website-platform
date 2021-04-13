@@ -126,7 +126,7 @@
               {{ item }}
               <span
                 class="icon-close_small"
-                @click="deleteTag(i)"
+                @click="deleteTag(item)"
               />
             </base-btn>
           </div>
@@ -136,6 +136,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -150,7 +151,6 @@ export default {
           lng: 84.967270,
         },
       ],
-      tags: ['Painting work', 'Simple work'],
       distance: [
         '+ 100 m',
         '+ 500 m',
@@ -167,6 +167,11 @@ export default {
       priceSort: 'desc',
       timeSort: 'desc',
     };
+  },
+  computed: {
+    ...mapGetters({
+      tags: 'ui/getTags',
+    }),
   },
   async mounted() {
     this.SetLoader(true);
@@ -186,8 +191,8 @@ export default {
         this.timeSort === 'desc' ? this.timeSort = 'asc' : this.timeSort = 'desc';
       }
     },
-    deleteTag(index) {
-      this.tags.splice(index, 1);
+    deleteTag(tag) {
+      this.$store.dispatch('ui/deleteTags', tag);
     },
     showSkillsModal() {
       this.ShowModal({
@@ -239,6 +244,7 @@ export default {
   }
   &__tags {
     padding-top: 30px;
+    max-width: 1180px;
   }
   &__tools {
     padding-top:  20px;
