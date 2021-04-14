@@ -87,7 +87,14 @@
     "ok": "Ok",
     "send": "Send",
     "save": "Save",
-    "reset": "Reset"
+    "reset": "Reset",
+    "fromYou": "from you",
+    "details": "View details"
+  },
+  "priority": {
+    "low": "Low priority",
+    "normal": "Normal priority",
+    "urgent": "Urgent"
   },
   "signIn": {
     "title": "Sign in",
