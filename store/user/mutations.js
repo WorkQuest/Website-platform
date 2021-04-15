@@ -11,6 +11,9 @@ export default {
     this.$cookies.set('access', access, { path: '/' });
     this.$cookies.set('refresh', refresh, { path: '/' });
   },
+  setUserData(state, data) {
+    state.userData = data;
+  },
   logOut(state) {
     this.$cookies.remove('access');
     this.$cookies.remove('refresh');

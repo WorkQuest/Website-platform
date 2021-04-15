@@ -5,22 +5,17 @@ export default {
     return response;
   },
   async signUp({ commit }, payload) {
-    try {
-      const response = await this.$axios.$post('/v1/auth/register', payload);
-      console.log(response);
-      return response;
-    } catch (err) {
-      return err;
-    }
+    const response = await this.$axios.$post('/v1/auth/register', payload);
+    return response;
   },
   async confirm({ commit }, payload) {
-    try {
-      const response = await this.$axios.$post('/v1/auth/confirm-email', payload);
-      console.log(response);
-      return response;
-    } catch (err) {
-      return err;
-    }
+    const response = await this.$axios.$post('/v1/auth/confirm-email', payload);
+    return response;
+  },
+  async getUserData({ commit }) {
+    const response = await this.$axios.$get('/v1/profile/me');
+    commit('setUserData', response.result);
+    return response;
   },
   async logout({ commit }) {
     commit('logOut');

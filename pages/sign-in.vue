@@ -121,14 +121,21 @@ export default {
   },
   methods: {
     async signIn() {
-      const { email, password } = this.model;
-      const response = await this.$store.dispatch('user/signIn', {
-        email,
-        password,
-        role: 'worker',
-      });
-      if (response?.ok) {
-        this.$router.push('/role');
+      try {
+        const { email, password } = this.model;
+        const response = await this.$store.dispatch('user/signIn', {
+          email,
+          password,
+        });
+        if (response?.ok) {
+          const userData = await this.$store.dispatch('user/getUserData');
+          if (userData.role) {
+            this.$cookies.set('role', userData.role, { path: '/' });
+            this.$router.push('/quests');
+          }
+        }
+      } catch (e) {
+        console.log(e);
       }
     },
     showRestoreModal() {

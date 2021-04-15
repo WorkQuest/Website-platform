@@ -534,10 +534,11 @@ export default {
     },
   },
   created() {
+    // TODO: change to getters
     const role = this.$cookies.get('role');
     this.role = role;
     if (!role) {
-      this.$router.push('/role');
+      this.$router.push('/sign-in');
     }
   },
   methods: {

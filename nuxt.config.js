@@ -3,7 +3,7 @@ import localeEn from './locales/en.json';
 require('dotenv').config();
 
 export default {
-  ssr: 'false',
+  ssr: false,
   target: 'static',
   head: {
     title: 'WorkQuest',
