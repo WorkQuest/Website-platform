@@ -86,7 +86,15 @@
   "meta": {
     "ok": "Ok",
     "send": "Send",
-    "save": "Save"
+    "save": "Save",
+    "reset": "Reset",
+    "fromYou": "from you",
+    "details": "View details"
+  },
+  "priority": {
+    "low": "Low priority",
+    "normal": "Normal priority",
+    "urgent": "Urgent"
   },
   "signIn": {
     "title": "Sign in",
@@ -140,6 +148,9 @@
       "terms": "\t· Terms and conditions",
       "privacy": "\t· Privacy policy"
     }
+  },
+  "skills": {
+    "title": "Skills"
   },
   "quests": {
     "searchResults": "Search results",
