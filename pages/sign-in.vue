@@ -103,6 +103,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -115,6 +116,11 @@ export default {
     },
     remember: false,
   }),
+  computed: {
+    ...mapGetters({
+      userData: 'user/getUserData',
+    }),
+  },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
@@ -123,17 +129,22 @@ export default {
     async signIn() {
       try {
         const { email, password } = this.model;
-        const response = await this.$store.dispatch('user/signIn', {
+        await this.$store.dispatch('user/signIn', {
           email,
           password,
         });
-        if (response?.ok) {
-          const userData = await this.$store.dispatch('user/getUserData');
-          if (userData.role) {
-            this.$cookies.set('role', userData.role, { path: '/' });
-            this.$router.push('/quests');
-          }
+        if (this.userData.role === 'employer') {
+          this.$router.push('/workers');
+        } else if (this.userData.role === 'worker') {
+          this.$router.push('/quests');
         }
+        // if (response?.ok) {
+        //   const response =
+        //   if (response?.ok) {
+        //     this.$cookies.set('role', profile.role, { path: '/' });
+        //     this.$router.push('/quests');
+        //   }
+        // }
       } catch (e) {
         console.log(e);
       }

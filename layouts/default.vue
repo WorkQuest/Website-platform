@@ -19,7 +19,7 @@
                 <span>WorkQuest</span>
               </div>
               <div
-                v-if="role === 'employer'"
+                v-if="userData.role === 'employer'"
                 class="header__links"
               >
                 <nuxt-link
@@ -83,7 +83,7 @@
                 </button>
               </div>
               <div
-                v-if="role === 'worker'"
+                v-if="userData.role === 'worker'"
                 class="header__links"
               >
                 <nuxt-link
@@ -316,13 +316,13 @@
                           Samantha Sparks
                         </div>
                         <div
-                          v-if="role === 'employer'"
+                          v-if="userData.role === 'employer'"
                           class="profile__text profile__text_blue"
                         >
                           {{ $t('role.employer') }}
                         </div>
                         <div
-                          v-if="role === 'worker'"
+                          v-if="userData.role === 'worker'"
                           class="profile__text profile__text_green"
                         >
                           {{ $t('role.worker') }}
@@ -350,7 +350,7 @@
                 </transition>
               </button>
               <base-btn
-                v-if="role === 'employer'"
+                v-if="userData.role === 'employer'"
                 class="header__btn"
               >
                 {{ $t('layout.create') }}
@@ -471,12 +471,12 @@ import ClickOutside from 'vue-click-outside';
 
 export default {
   name: 'DefaultLayout',
+  middleware: 'auth',
   directives: {
     ClickOutside,
   },
   data() {
     return {
-      role: '',
       isShowProfile: false,
       isShowNotify: false,
       isShowAdditionalMenu: false,
@@ -487,6 +487,7 @@ export default {
   computed: {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
+      userData: 'user/getUserData',
     }),
     profileLinks() {
       return [
@@ -533,21 +534,12 @@ export default {
       ];
     },
   },
-  created() {
-    // TODO: change to getters
-    const role = this.$cookies.get('role');
-    this.role = role;
-    if (!role) {
-      this.$router.push('/sign-in');
-    }
-  },
   methods: {
     toMain() {
-      const role = this.$cookies.get('role');
-      if (role === 'worker') {
+      if (this.userData.role === 'worker') {
         this.$router.push('/quests');
       }
-      if (role === 'employer') {
+      if (this.userData.role === 'employer') {
         this.$router.push('/workers');
       }
     },
