@@ -3,17 +3,21 @@
   <div class="container">
     <div class="user__top">
       <div class="user__container">
-        <img
-          class="user__img"
-          src="https://media.pn.am/media/issue/197/297/photo/197297.jpg"
-        >
-        <p class="user__username">
-          Samantha Sparcs
-        </p>
-        <p class="user__date">
-          12 January 2021,14:45
-        </p>
-        <p>share icon</p>
+        <div class="user__wrapper">
+          <img
+            class="user__img"
+            src="https://media.pn.am/media/issue/197/297/photo/197297.jpg"
+          >
+          <p class="user__username">
+            Samantha Sparcs
+          </p>
+          <div class="date__wrapper">
+            <p class="user__date">
+              12 January 2021,14:45
+            </p>
+            <p>share icon</p>
+          </div>
+        </div>
         <div class="location__container">
           <p class="quest__location">
             Moscow, Lenina street, 3
@@ -221,6 +225,10 @@ $bg-color: white;
     border: 1px solid black;
     background-color: $bg-color;
   }
+  &__wrapper{
+    display: flex;
+    flex-direction: row;
+  }
   &__date{
     color:$color;
   }
@@ -234,6 +242,14 @@ $bg-color: white;
   }
   &__distance{
     color:$color;
+  }
+}
+
+.date{
+  &__wrapper{
+    margin-left: 60%;
+    display: flex;
+    flex-direction: row;
   }
 }
 
@@ -312,12 +328,13 @@ $bg-color: white;
   &__container{
     display: flex;
     flex-direction: row;
+    margin: 1% 1%;
   }
   &__item{
     border-radius: 6px;
     margin: 0 20px;
-    width: 200px;
-    height: 200px;
+    width: 20%;
+    height: 25%;
   }
 }
 </style>
