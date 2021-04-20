@@ -7,6 +7,7 @@
           <img
             class="user__img"
             src="https://media.pn.am/media/issue/197/297/photo/197297.jpg"
+            alt=""
           >
           <p class="user__username">
             Samantha Sparcs
@@ -20,17 +21,22 @@
         </div>
         <div class="location__container">
           <p class="quest__location">
+            <span>Icon</span>
             Moscow, Lenina street, 3
           </p>
           <a
             class="user__distance"
-            href=""
+            href="#"
           >
             200m from you
           </a>
           <div class="runtime__container">
+            <span>Icon</span>
             <p>Runtime</p>
-            <a>
+            <a
+              class="runtime__link"
+              href="#"
+            >
               14:45:23
             </a>
           </div>
@@ -42,11 +48,18 @@
       <span class="badge__blue">Art</span>
     </div>
     <div class="quest__container">
-      <h2>Paint the garage quickly</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus in ornare quam viverra orci sagittis eu volutpat odio facilisis mauris sit amet massa vitae tortor condimentum lacinia quis vel eros donec ac odio tempor orci dapibus ultrices in iaculis nunc sed augue lacus, viverra vitae congue eu, consequat ac felis donec et odio pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus faucibus Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus in ornare quam viverra orci sagittis eu volutpat odio facilisis mauris sit amet massa vitae tortor condimentum lacinia quis vel eros donec ac odio tempor orci dapibus ultrices in iaculis nunc sed augue lacus, viverra vitae congue eu, consequat ac felis donec et odio pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus faucibus</p>
+      <h2 class="quest__title">
+        Paint the garage quickly
+      </h2>
+      <p class="quest__body">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus in ornare quam viverra orci sagittis eu volutpat odio facilisis mauris sit amet massa vitae tortor condimentum lacinia quis vel eros donec ac odio tempor orci dapibus ultrices in iaculis nunc sed augue lacus, viverra vitae congue eu, consequat ac felis donec et odio pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus faucibus Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus in ornare quam viverra orci sagittis eu volutpat odio facilisis mauris sit amet massa vitae tortor condimentum lacinia quis vel eros donec ac odio tempor orci dapibus ultrices in iaculis nunc sed augue lacus, viverra vitae congue eu, consequat ac felis donec et odio pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus faucibus
+      </p>
     </div>
+    <hr class="hr__line">
     <div class="quest_materials__container">
-      <h2>Quest materials</h2>
+      <h2 class="quest_materials__title">
+        Quest materials
+      </h2>
       <div class="img__container">
         <img
           class="img__item"
@@ -69,25 +82,41 @@
           alt=""
         >
       </div>
-      <b-btn>Send a request</b-btn>
-      <p class="price__value">
-        1500  WUSD
-      </p>
-      <span class="badge__green">Low priority</span>
-    </div>
-    <div class="map__container">
-      <h2>Контейнер для карты</h2>
-    </div>
-    <div class="specialisation__container">
-      <div class="quest__group">
-        <h3>Other quests for the specialization</h3>
-        <a>Painting Works</a>
+      <hr>
+      <div class="price__wrapper">
+        <b-btn class="btn__request">
+          Send a request
+        </b-btn>
+        <div class="price__wrapperValue">
+          <p class="price__value">
+            1500  WUSD
+          </p>
+          <div>
+            <div class="badge__wrapper">
+              <span class="badge__green">Low priority</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <p class="quest__count">
-        26 quests
-      </p>
-      <div class="quest__card">
-        <!-- Карточки квестов -->
+      <div class="map__container">
+        <h2>Контейнер для карты</h2>
+      </div>
+      <div class="specialisation__container">
+        <div class="quest__group">
+          <h2 class="quest__spec">
+            Other quests for the specialization
+          </h2>
+          <a
+            class="spec__link"
+            href="#"
+          >"Painting Works"</a>
+        </div>
+        <p class="quest__count">
+          26 quests
+        </p>
+        <div class="quest__card">
+          Карточки квестов
+        </div>
       </div>
     </div>
   </div>
@@ -216,21 +245,24 @@ export default {
 $color: black;
 $bg-color: white;
 
+.container{
+  background-color: $bg-color;
+}
 .user{
-  &__top{
-    border: 1px solid black;
-    background-color: $bg-color;
-  }
+  &__top{}
   &__container{
-    border: 1px solid black;
-    background-color: $bg-color;
+    padding: 34.5px 0 25.5px 0;
   }
   &__wrapper{
     display: flex;
     flex-direction: row;
   }
   &__date{
-    color:$color;
+    color:rgba(124, 131, 141, 1);
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
   }
   &__img{
     width:30px;
@@ -238,13 +270,32 @@ $bg-color: white;
     border-radius: 50%;
   }
   &__username{
-    color:$color;
+    color: #1D2127;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
   }
   &__distance{
-    color:$color;
+    margin: 0 0.5%;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    color: #0083C7;
   }
 }
-
+.spec{
+  &__link{
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 25px;
+    color: #0083C7;
+  }
+}
 .date{
   &__wrapper{
     margin-left: 60%;
@@ -255,17 +306,49 @@ $bg-color: white;
 
 .quest{
   &__container{
-    border: 1px solid black;
     background-color: $bg-color;
   }
+  &__spec{
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 25px;
+    color: #1D2127;
+    margin: 0 0 0 15px;
+  }
+  &__title{
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 30px;
+    color: #1D2127;
+    padding: 0 0 0 10px;
+  }
+  &__body{
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color:rgba(53, 60, 71, 1);
+  }
   &__location{
-    color:$color;
+    color: #353C47;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
   }
   &__count{
-    color:$color;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    color: #8D96A2;
   }
   &__group{
     color:$color;
+    display: flex;
+    flex-direction: row;
   }
   &__card{
     color:$color;
@@ -273,16 +356,44 @@ $bg-color: white;
 }
 
 .quest_materials{
-  &__container{
-    border: 1px solid black;
-    background-color: $bg-color;
+  &__container{}
+  &__title{
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    color: #1D2127;
+    padding: 20px 0 20px 0;
   }
 }
-
+.runtime{
+  &__container{
+    display: flex;
+    flex-direction: row;
+    margin: 0 1%;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 130%;
+    align-items: center;
+    color: #353C47;
+  }
+  &__link{
+    margin: 0 3%;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    color: #0083C7;
+  }
+}
 .map{
   &__container{
     border: 1px solid black;
-    background-color: $bg-color;
+    margin:30px 0 20px 0;
   }
 }
 
@@ -290,38 +401,52 @@ $bg-color: white;
   &__value{
     color: #00AA5B;
   }
+  &__wrapperValue{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    margin-left: 70%;
+  }
+  &__wrapper{
+    display: flex;
+    flex-direction: row;
+    margin:0 0 30px 0;
+  }
 }
 
 .badge{
   &__container{
-    border: 1px solid black;
-    background-color: $bg-color;
+    padding: 0 0 20px 0;
   }
   &__green{
     background-color: rgba(34, 204, 20, 0.1);
     color:#22CC14;
     padding: 5px;
+    margin: 0 0 0 15px;
     border-radius: 5px;
   }
   &__blue{
     background-color: rgba(0, 131, 199, 0.1);
-    color: #0083C7;
     padding: 5px;
     border-radius: 10px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    align-items: center;
+    color: #0083C7;
   }
+  &__wrapper{}
 }
 
 .specialisation{
-  &__container{
-    border: 1px solid black;
-    background-color: $bg-color;
-  }
+  &__container{}
 }
 
 .location{
   &__container{
-    border: 1px solid black;
-    background-color: $bg-color;
+    display: flex;
+    flex-direction: row;
   }
 }
 .img{
@@ -335,6 +460,21 @@ $bg-color: white;
     margin: 0 20px;
     width: 20%;
     height: 25%;
+  }
+}
+.hr{
+  &__line{}
+}
+.btn{
+  &__request{
+    background: #0083C7;
+    border-radius: 6px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    text-align: center;
+    color: #FFFFFF;
   }
 }
 </style>
