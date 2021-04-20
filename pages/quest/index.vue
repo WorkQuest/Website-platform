@@ -20,10 +20,13 @@
           </div>
         </div>
         <div class="location__container">
-          <p class="quest__location">
-            <span>Icon</span>
-            Moscow, Lenina street, 3
-          </p>
+          <div class="quest__location">
+            <img
+              class="location__icon"
+              src="../../assets/img/ui/location.png"
+            >
+            <p>Moscow, Lenina street, 3</p>
+          </div>
           <a
             class="user__distance"
             href="#"
@@ -105,11 +108,11 @@
         <div class="quest__group">
           <h2 class="quest__spec">
             Other quests for the specialization
+            <a
+              class="spec__link"
+              href="#"
+            >"Painting Works"</a>
           </h2>
-          <a
-            class="spec__link"
-            href="#"
-          >"Painting Works"</a>
         </div>
         <p class="quest__count">
           26 quests
@@ -245,9 +248,17 @@ export default {
 $color: black;
 $bg-color: white;
 
-.container{
-  background-color: $bg-color;
+.container{}
+
+.location{
+  &__icon{
+    filter: invert(100%);
+    margin: 0 9px 0 0;
+    width:11px;
+    height:15px;
+  }
 }
+
 .user{
   &__top{}
   &__container{
@@ -275,6 +286,7 @@ $bg-color: white;
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
+    margin: 0 0 0 10px;
   }
   &__distance{
     margin: 0 0.5%;
@@ -305,9 +317,7 @@ $bg-color: white;
 }
 
 .quest{
-  &__container{
-    background-color: $bg-color;
-  }
+  &__container{}
   &__spec{
     font-family: Inter;
     font-style: normal;
@@ -322,7 +332,6 @@ $bg-color: white;
     font-weight: 500;
     font-size: 30px;
     color: #1D2127;
-    padding: 0 0 0 10px;
   }
   &__body{
     font-family: Inter;
@@ -337,6 +346,8 @@ $bg-color: white;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
+    display: flex;
+    flex-direction: row;
   }
   &__count{
     font-family: Inter;
@@ -447,6 +458,7 @@ $bg-color: white;
   &__container{
     display: flex;
     flex-direction: row;
+    margin: 25.5px 0 0 0;
   }
 }
 .img{
