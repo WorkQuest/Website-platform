@@ -17,7 +17,7 @@
                 {{ user.date }}
               </p>
               <div class="icon__wrapper">
-                <span class="icon-share" />
+                <span class="icon-share_outline" />
               </div>
             </div>
           </div>
@@ -99,9 +99,51 @@
         </div>
         <hr>
         <div class="price__wrapper">
-          <b-btn class="btn__request">
+          <b-btn
+            v-b-modal="'window_Invation'"
+            class="btn__request"
+          >
             Send a request
           </b-btn>
+          <!-- Модалка -->
+          <b-modal id="window_Invation">
+            <h2>Send a request</h2>
+            <h3>Message</h3>
+            <textarea type="text" />
+            <div class="form-group">
+              <label for="file_form">Upload a image or videos</label>
+              <input
+                id="file_form"
+                type="file"
+                class="form-control-file"
+              >
+            </div>
+            <v-btn class="">
+              Cancel
+            </v-btn>
+            <v-btn
+              v-b-modal="'window_Invite_send'"
+              class=""
+            >
+              Send
+            </v-btn>
+          </b-modal>
+          <!-- Модалка 2 -->
+          <b-modal id="window_Invite_send">
+            <img
+              class=""
+              src=""
+            >
+            <h2 class="">
+              Request send
+            </h2>
+            <p class="">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,
+            </p>
+            <v-btn class="">
+              Ok
+            </v-btn>
+          </b-modal>
           <div class="price__wrapperValue">
             <p class="price__value">
               {{ quest.price }}
@@ -455,6 +497,7 @@ $bg-color: white;
 .date{
   &__wrapper{
     margin-left: 60%;
+    justify-content: space-between;
     display: flex;
     flex-direction: row;
   }
@@ -609,6 +652,7 @@ $bg-color: white;
     display: flex;
     flex-direction: row;
     margin: 1% 1%;
+    justify-content: space-between;
   }
   &__item{
     border-radius: 6px;
