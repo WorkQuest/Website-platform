@@ -23,9 +23,11 @@
           </div>
           <div class="location__container">
             <div class="quest__location">
-              <span
-                class="icon-location"
-              />
+              <div class="icon__wrapper0">
+                <span
+                  class="icon-location"
+                />
+              </div>
               <p>{{ quest.location }}</p>
             </div>
             <nuxt-link
@@ -35,7 +37,9 @@
               {{ user.distance }}
             </nuxt-link>
             <div class="runtime__container">
-              <span class="icon-clock" />
+              <div class="icon__wrapper0">
+                <span class="icon-clock" />
+              </div>
               <p>Runtime</p>
               <nuxt-link
                 class="runtime__link"
@@ -387,13 +391,14 @@ export default {
 $color: black;
 $bg-color: white;
 
-.container{}
 .icon{
   &__wrapper{
     margin: 0 0 0 25px;
   }
+  &__wrapper0{
+    margin: 0 0 0 0;
+  }
 }
-
 .badgeList{
   display: flex;
   flex-direction: row;
@@ -463,7 +468,7 @@ $bg-color: white;
     font-weight: 500;
     font-size: 25px;
     color: #1D2127;
-    margin: 0 0 0 15px;
+    margin: 0 0 0 0;
   }
   &__title{
     @include text-simple;
