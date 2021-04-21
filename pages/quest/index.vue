@@ -109,7 +109,16 @@
           <b-modal id="window_Invation">
             <h2>Send a request</h2>
             <h3>Message</h3>
-            <textarea type="text" />
+            <div class="form-group">
+              <label
+                for="message-text"
+                class="col-form-label"
+              >Message:</label>
+              <textarea
+                id="message-text"
+                class="form-control"
+              />
+            </div>
             <div class="form-group">
               <label for="file_form">Upload a image or videos</label>
               <input
@@ -118,15 +127,22 @@
                 class="form-control-file"
               >
             </div>
-            <v-btn class="">
-              Cancel
-            </v-btn>
-            <v-btn
-              v-b-modal="'window_Invite_send'"
-              class=""
-            >
-              Send
-            </v-btn>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button
+                v-b-modal="'window_Invite_send'"
+                type="button"
+                class="btn btn-primary"
+              >
+                Send
+              </button>
+            </div>
           </b-modal>
           <!-- Модалка 2 -->
           <b-modal id="window_Invite_send">
