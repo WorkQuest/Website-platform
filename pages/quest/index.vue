@@ -7,15 +7,14 @@
           <div class="user__wrapper">
             <img
               class="user__img"
-              src="https://media.pn.am/media/issue/197/297/photo/197297.jpg"
-              alt=""
+              src="~/assets/img/app/fake_profile.png"
             >
             <p class="user__username">
-              Samantha Sparcs
+              {{ user.username }}
             </p>
             <div class="date__wrapper">
               <p class="user__date">
-                12 January 2021,14:45
+                {{ user.date }}
               </p>
               <div class="icon__wrapper">
                 <span class="icon-share" />
@@ -27,37 +26,44 @@
               <span
                 class="icon-location"
               />
-              <p>Moscow, Lenina street, 3</p>
+              <p>{{ quest.location }}</p>
             </div>
-            <a
+            <nuxt-link
+              :to="user.distanceLink"
               class="user__distance"
-              href="#"
             >
-              200m from you
-            </a>
+              {{ user.distance }}
+            </nuxt-link>
             <div class="runtime__container">
               <span class="icon-clock" />
               <p>Runtime</p>
-              <a
+              <nuxt-link
                 class="runtime__link"
-                href="#"
+                to="quest.runtimeLink"
               >
-                14:45:23
-              </a>
+                {{ quest.runtime }}
+              </nuxt-link>
             </div>
           </div>
         </div>
       </div>
       <div class="badge__container">
-        <span class="badge__blue">Painting Works</span>
-        <span class="badge__blue">Art</span>
+        <ul class="badgeList">
+          <li
+            v-for="item in badgeList"
+            :key="`item-${item.id}`"
+            class="badge__blue"
+          >
+            {{ item.text }}
+          </li>
+        </ul>
       </div>
       <div class="quest__container">
         <h2 class="quest__title">
-          Paint the garage quickly
+          {{ quest.title }}
         </h2>
         <p class="quest__body">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus in ornare quam viverra orci sagittis eu volutpat odio facilisis mauris sit amet massa vitae tortor condimentum lacinia quis vel eros donec ac odio tempor orci dapibus ultrices in iaculis nunc sed augue lacus, viverra vitae congue eu, consequat ac felis donec et odio pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus faucibus Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus in ornare quam viverra orci sagittis eu volutpat odio facilisis mauris sit amet massa vitae tortor condimentum lacinia quis vel eros donec ac odio tempor orci dapibus ultrices in iaculis nunc sed augue lacus, viverra vitae congue eu, consequat ac felis donec et odio pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus faucibus
+          {{ quest.body }}
         </p>
       </div>
       <hr class="hr__line">
@@ -94,11 +100,11 @@
           </b-btn>
           <div class="price__wrapperValue">
             <p class="price__value">
-              1500  WUSD
+              {{ quest.price }}
             </p>
             <div>
               <div class="badge__wrapper">
-                <span class="badge__green">Low priority</span>
+                <span class="badge__green">{{ quest.badgeGreen }}</span>
               </div>
             </div>
           </div>
@@ -122,14 +128,16 @@
         <div class="quest__group">
           <h2 class="quest__spec">
             Other quests for the specialization
-            <a
+            <nuxt-link
+              to="#"
               class="spec__link"
-              href="#"
-            >"Painting Works"</a>
+            >
+              "{{ quest.spec }}"
+            </nuxt-link>
           </h2>
         </div>
         <p class="quest__count">
-          26 quests
+          {{ quest.amount }}
         </p>
         <div class="quest__card">
           <!-- Cards -->
@@ -235,7 +243,6 @@ export default {
   data() {
     return {
       isShowMap: true,
-      search: '',
       locations: [
         {
           lat: 56.475565,
@@ -268,6 +275,58 @@ export default {
           priority: 0,
           amount: 1500,
           symbol: 'wusd',
+        },
+      ],
+      user: {
+        avatar: require('~/assets/img/app/fake_profile.png'),
+        username: 'Samantha Sparcs',
+        date: '12 January 2021,14:45',
+        distance: '200m from you',
+        distanceLink: '#',
+      },
+      quest: {
+        location: 'Moscow, Lenina street, 3',
+        runtime: '14:45:23',
+        runtimeLink: '#',
+        title: 'Paint the garage quickly',
+        body: ' Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, '
+          + 'lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, '
+          + 'vel fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum '
+          + 'dui faucibus in ornare quam viverra orci sagittis eu volutpat odio facilisis mauris sit amet massa vitae tortor condimentum '
+          + 'lacinia quis vel eros donec ac odio tempor orci dapibus ultrices in iaculis nunc sed augue lacus, viverra vitae congue eu, consequat ac '
+          + 'felis donec et odio pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus faucibus Lorem ipsum dolor sit amet, '
+          + 'consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus '
+          + 'non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis enim lobortis '
+          + 'scelerisque fermentum dui faucibus in ornare quam viverra orci sagittis eu volutpat odio facilisis mauris sit amet massa vitae tortor '
+          + 'condimentum lacinia quis vel eros donec ac odio tempor orci dapibus ultrices in iaculis nunc sed augue lacus, viverra vitae congue eu, '
+          + 'consequat ac felis donec et odio pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus faucibus',
+        price: '1500  WUSD',
+        badgeGreen: 'Low priority',
+        spec: 'Painting works',
+        amount: '26 quests',
+        questImgList: [
+          {
+            src: 'https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg',
+          },
+          {
+            src: 'https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg',
+          },
+          {
+            src: 'https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg',
+          },
+          {
+            src: 'https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg',
+          },
+        ],
+      },
+      badgeList: [
+        {
+          id: 1,
+          text: 'Painting Works',
+        },
+        {
+          id: 2,
+          text: 'Art',
         },
       ],
     };
@@ -334,6 +393,12 @@ $bg-color: white;
     margin: 0 0 0 25px;
   }
 }
+
+.badgeList{
+  display: flex;
+  flex-direction: row;
+}
+
 .user{
   &__top{}
   &__container{
@@ -510,8 +575,9 @@ $bg-color: white;
   }
   &__blue{
     background-color: rgba(0, 131, 199, 0.1);
+    margin: 0 9px 0 0;
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 44px;
     @include text-simple;
     font-style: normal;
     font-weight: normal;
@@ -544,6 +610,13 @@ $bg-color: white;
     margin: 0 20px;
     width: 20%;
     height: 25%;
+    transition: 0.5s;
+  }
+  &__item:hover{
+    transform: scale(1.2);
+    transition: 0.5s;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
   }
 }
 .hr{
