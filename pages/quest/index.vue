@@ -1,172 +1,207 @@
 <template>
   <!-- Quest page_User -->
   <div>
-    <div class="container">
-      <div class="user__top">
-        <div class="user__container">
-          <div class="user__wrapper">
-            <img
-              class="user__img"
-              src="~/assets/img/app/fake_profile.png"
-            >
-            <p class="user__username">
-              {{ user.username }}
-            </p>
-            <div class="date__wrapper">
-              <p class="user__date">
-                {{ user.date }}
-              </p>
-              <div class="icon__wrapper">
-                <span class="icon-share_outline" />
+    <div class="main">
+      <div class="main__body">
+        <div class="user__top">
+          <div class="user__container">
+            <div class="user__head">
+              <div class="user__left">
+                <img
+                  class="user__img"
+                  src="~/assets/img/app/fake_profile.png"
+                >
+                <p class="user__username">
+                  {{ user.username }}
+                </p>
+              </div>
+              <div class="user__right">
+                <p class="user__date">
+                  {{ user.date }}
+                </p>
+                <div class="icon__wrapper">
+                  <span class="icon-share_outline" />
+                </div>
               </div>
             </div>
-          </div>
-          <div class="location__container">
-            <div class="quest__location">
-              <div class="icon__wrapper0">
-                <span
-                  class="icon-location"
-                />
+            <div class="location__container">
+              <div class="quest__location">
+                <div class="icon__wrapper0">
+                  <span
+                    class="icon-location"
+                  />
+                </div>
+                <p>{{ quest.location }}</p>
               </div>
-              <p>{{ quest.location }}</p>
-            </div>
-            <nuxt-link
-              :to="user.distanceLink"
-              class="user__distance"
-            >
-              {{ user.distance }}
-            </nuxt-link>
-            <div class="runtime__container">
-              <div class="icon__wrapper0">
-                <span class="icon-clock" />
-              </div>
-              <p>Runtime</p>
               <nuxt-link
-                class="runtime__link"
-                to="quest.runtimeLink"
+                :to="user.distanceLink"
+                class="user__distance"
               >
-                {{ quest.runtime }}
+                {{ user.distance }}
               </nuxt-link>
+              <div class="runtime__container">
+                <div class="icon__wrapper0">
+                  <span class="icon-clock" />
+                </div>
+                <p>Runtime</p>
+                <nuxt-link
+                  class="runtime__link"
+                  to="quest.runtimeLink"
+                >
+                  {{ quest.runtime }}
+                </nuxt-link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="badge__container">
-        <ul class="badgeList">
-          <li
-            v-for="item in badgeList"
-            :key="`item-${item.id}`"
-            class="badge__blue"
-          >
-            {{ item.text }}
-          </li>
-        </ul>
-      </div>
-      <div class="quest__container">
-        <h2 class="quest__title">
-          {{ quest.title }}
-        </h2>
-        <p class="quest__body">
-          {{ quest.body }}
-        </p>
-      </div>
-      <hr class="hr__line">
-      <div class="quest_materials__container">
-        <h2 class="quest_materials__title">
-          Quest materials
-        </h2>
-        <div class="img__container">
-          <img
-            class="img__item"
-            src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
-            alt=""
-          >
-          <img
-            class="img__item"
-            src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
-            alt=""
-          >
-          <img
-            class="img__item"
-            src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
-            alt=""
-          >
-          <img
-            class="img__item"
-            src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
-            alt=""
-          >
-        </div>
-        <hr>
-        <div class="price__wrapper">
-          <b-btn
-            v-b-modal="'window_Invation'"
-            class="btn__request"
-          >
-            Send a request
-          </b-btn>
-          <!-- Модалка -->
-          <b-modal id="window_Invation">
-            <h2>Send a request</h2>
-            <h3>Message</h3>
-            <div class="form-group">
-              <label
-                for="message-text"
-                class="col-form-label"
-              >Message:</label>
-              <textarea
-                id="message-text"
-                class="form-control"
-              />
-            </div>
-            <div class="form-group">
-              <label for="file_form">Upload a image or videos</label>
-              <input
-                id="file_form"
-                type="file"
-                class="form-control-file"
-              >
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-              >
-                Cancel
-              </button>
-              <button
-                v-b-modal="'window_Invite_send'"
-                type="button"
-                class="btn btn-primary"
-              >
-                Send
-              </button>
-            </div>
-          </b-modal>
-          <!-- Модалка 2 -->
-          <b-modal id="window_Invite_send">
-            <img
-              class=""
-              src=""
+        <div class="badge__container">
+          <ul class="badgeList">
+            <li
+              v-for="item in badgeList"
+              :key="`item-${item.id}`"
+              class="badge__blue"
             >
-            <h2 class="">
-              Request send
-            </h2>
-            <p class="">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,
-            </p>
-            <v-btn class="">
-              Ok
-            </v-btn>
-          </b-modal>
-          <div class="price__wrapperValue">
-            <p class="price__value">
-              {{ quest.price }}
-            </p>
-            <div>
-              <div class="badge__wrapper">
-                <span class="badge__green">{{ quest.badgeGreen }}</span>
+              {{ item.text }}
+            </li>
+          </ul>
+        </div>
+        <div class="quest__container">
+          <h2 class="quest__title">
+            {{ quest.title }}
+          </h2>
+          <p class="quest__body">
+            {{ quest.body }}
+          </p>
+        </div>
+        <hr class="hr__line">
+        <div class="quest_materials__container">
+          <h2 class="quest_materials__title">
+            Quest materials
+          </h2>
+          <div class="img__container">
+            <img
+              class="img__item"
+              src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
+              alt=""
+            >
+            <img
+              class="img__item"
+              src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
+              alt=""
+            >
+            <img
+              class="img__item"
+              src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
+              alt=""
+            >
+            <img
+              class="img__item"
+              src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
+              alt=""
+            >
+          </div>
+          <hr>
+          <div class="price__wrapper">
+            <b-btn
+              data-toggle="modal"
+              data-target="#exampleModal"
+              class="btn__request"
+            >
+              Send a request
+            </b-btn>
+            <!-- Модалка -->
+            <div
+              id="exampleModal"
+              class="modal fade"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div
+                class="modal-dialog"
+                role="document"
+              >
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5
+                      id="exampleModalLabel"
+                      class="modal-title"
+                    >
+                      Modal title
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <h2>Send a request</h2>
+                    <div class="form-group">
+                      <label
+                        for="message-text"
+                        class="col-form-label"
+                      >Message:</label>
+                      <textarea
+                        id="message-text"
+                        class="form-control"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="file_form">Upload a image or videos</label>
+                      <input
+                        id="file_form"
+                        type="file"
+                        class="form-control-file"
+                      >
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                    >
+                      Send
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Модалка 2 -->
+            <b-modal id="window_Invite_send">
+              <img
+                class=""
+                src=""
+              >
+              <h2 class="">
+                Request send
+              </h2>
+              <p class="">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,
+              </p>
+              <v-btn class="">
+                Ok
+              </v-btn>
+            </b-modal>
+            <div class="price__wrapperValue">
+              <p class="price__value">
+                {{ quest.price }}
+              </p>
+              <div>
+                <div class="badge__wrapper">
+                  <span class="badge__green">{{ quest.badgeGreen }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -311,11 +346,6 @@ export default {
           lng: 84.967270,
         },
       ],
-      distance: [
-        '+ 100 m',
-        '+ 500 m',
-        '+ 1000 m',
-      ],
       priority: [
         this.$t('quests.priority.all'),
         this.$t('quests.priority.low'),
@@ -406,19 +436,6 @@ export default {
     toggleMap() {
       this.isShowMap = !this.isShowMap;
     },
-    changeSorting(type) {
-      if (type === 'price') {
-        // eslint-disable-next-line no-unused-expressions
-        this.priceSort === 'desc' ? this.priceSort = 'asc' : this.priceSort = 'desc';
-      }
-      if (type === 'time') {
-        // eslint-disable-next-line no-unused-expressions
-        this.timeSort === 'desc' ? this.timeSort = 'asc' : this.timeSort = 'desc';
-      }
-    },
-    deleteTag(tag) {
-      this.$store.dispatch('ui/deleteTags', tag);
-    },
     showSkillsModal() {
       this.ShowModal({
         key: modals.skills,
@@ -445,16 +462,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.main {
+  @include main;
+}
 $color: black;
 $bg-color: white;
 
 .icon{
-  &__wrapper{
+  &__wrapper {
     margin: 0 0 0 25px;
   }
-  &__wrapper0{
-    margin: 0 0 0 0;
+  &__wrapper0 {
+    margin: 0 6px 0 0;
   }
 }
 .badgeList{
@@ -462,9 +481,13 @@ $bg-color: white;
   flex-direction: row;
 }
 
-.user{
-  &__top{}
-  &__container{
+.user {
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__container {
     padding: 34.5px 0 25.5px 0;
   }
   &__wrapper{
@@ -500,6 +523,13 @@ $bg-color: white;
     align-items: center;
     color: #0083C7;
   }
+  &__left {
+    display: flex;
+  }
+  &__right {
+    display: flex;
+    flex-direction: row;
+  }
 }
 .spec{
   &__link{
@@ -510,18 +540,9 @@ $bg-color: white;
     color: #0083C7;
   }
 }
-.date{
-  &__wrapper{
-    margin-left: 60%;
-    justify-content: space-between;
-    display: flex;
-    flex-direction: row;
-  }
-}
 
 .quest{
-  &__container{}
-  &__spec{
+  &__spec {
     @include text-simple;
     font-style: normal;
     font-weight: 500;
@@ -529,21 +550,21 @@ $bg-color: white;
     color: #1D2127;
     margin: 0 0 0 0;
   }
-  &__title{
+  &__title {
     @include text-simple;
     font-style: normal;
     font-weight: 500;
     font-size: 30px;
     color: #1D2127;
   }
-  &__body{
+  &__body {
     @include text-simple;
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
     color:rgba(53, 60, 71, 1);
   }
-  &__location{
+  &__location {
     color: #353C47;
     @include text-simple;
     font-style: normal;
@@ -552,25 +573,24 @@ $bg-color: white;
     display: flex;
     flex-direction: row;
   }
-  &__count{
+  &__count {
     @include text-simple;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
     color: #8D96A2;
   }
-  &__group{
+  &__group {
     color:$color;
     display: flex;
     flex-direction: row;
   }
-  &__card{
+  &__card {
     color:$color;
   }
 }
 
-.quest_materials{
-  &__container{}
+.quest_materials {
   &__title{
     @include text-simple;
     font-style: normal;
@@ -580,8 +600,8 @@ $bg-color: white;
     padding: 20px 0 20px 0;
   }
 }
-.runtime{
-  &__container{
+.runtime {
+  &__container {
     display: flex;
     flex-direction: row;
     margin: 0 1%;
@@ -592,7 +612,7 @@ $bg-color: white;
     align-items: center;
     color: #353C47;
   }
-  &__link{
+  &__link {
     margin: 0 3%;
     @include text-simple;
     font-style: normal;
@@ -603,41 +623,41 @@ $bg-color: white;
     color: #0083C7;
   }
 }
-.map{
-  &__container{
+.map {
+  &__container {
     margin:30px 0 20px 0;
   }
 }
 
 .price{
-  &__value{
+  &__value {
     color: #00AA5B;
   }
-  &__wrapperValue{
+  &__wrapperValue {
     position: relative;
     display: flex;
     flex-direction: row;
     margin-left: 70%;
   }
-  &__wrapper{
+  &__wrapper {
     display: flex;
     flex-direction: row;
     margin:0 0 30px 0;
   }
 }
 
-.badge{
-  &__container{
+.badge {
+  &__container {
     padding: 0 0 20px 0;
   }
-  &__green{
+  &__green {
     background-color: rgba(34, 204, 20, 0.1);
     color:#22CC14;
     padding: 5px;
     margin: 0 0 0 15px;
     border-radius: 5px;
   }
-  &__blue{
+  &__blue {
     background-color: rgba(0, 131, 199, 0.1);
     margin: 0 9px 0 0;
     padding: 5px;
@@ -688,7 +708,7 @@ $bg-color: white;
   &__line{}
 }
 .btn{
-  &__request{
+  &__request {
     background: #0083C7;
     border-radius: 6px;
     @include text-simple;
@@ -697,6 +717,13 @@ $bg-color: white;
     font-size: 16px;
     text-align: center;
     color: #FFFFFF;
+    transition: 0.5s;
+  }
+  &__request:hover {
+    transform: scale(1.1);
+    transition: 0.5s;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
   }
 }
 
