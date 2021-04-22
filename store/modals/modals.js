@@ -6,4 +6,6 @@ export default {
   changePassword: 'changePassword',
   privacy: 'privacy',
   skills: 'skills',
+  message: 'message',
+  messageSend: 'messageSend',
 };

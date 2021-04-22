@@ -89,7 +89,8 @@
     "save": "Save",
     "reset": "Reset",
     "fromYou": "from you",
-    "details": "View details"
+    "details": "View details",
+    "cancel": "Cancel"
   },
   "priority": {
     "low": "Low priority",
@@ -153,6 +154,7 @@
     "title": "Skills"
   },
   "quests": {
+    "runtime": "Runtime",
     "searchResults": "Search results",
     "type": "Type of job",
     "price": "Price",

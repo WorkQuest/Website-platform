@@ -14,6 +14,9 @@
                 <p class="user__username">
                   {{ user.username }}
                 </p>
+                <p class="user__company">
+                  from {{ user.company }}
+                </p>
               </div>
               <div class="user__right">
                 <p class="user__date">
@@ -39,16 +42,18 @@
               >
                 {{ user.distance }}
               </nuxt-link>
-              <div class="runtime__container">
+              <div class="performance__container">
                 <div class="icon__wrapper0">
                   <span class="icon-clock" />
                 </div>
-                <p>Runtime</p>
+                <p class="performance__title">
+                  Performance timer
+                </p>
                 <nuxt-link
-                  class="runtime__link"
+                  class="performance__link"
                   to="quest.runtimeLink"
                 >
-                  {{ quest.runtime }}
+                  {{ quest.performanceTimer }}
                 </nuxt-link>
               </div>
             </div>
@@ -285,6 +290,7 @@ export default {
       user: {
         avatar: require('~/assets/img/app/fake_profile.png'),
         username: 'Samantha Sparcs',
+        company: 'Amazon',
         date: '12 January 2021,14:45',
         distance: '200m from you',
         distanceLink: '#',
@@ -309,6 +315,7 @@ export default {
         badgeGreen: 'Low priority',
         spec: 'Painting works',
         amount: '26 quests',
+        performanceTimer: '14:45:23',
         questImgList: [
           {
             src: 'https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg',
@@ -422,6 +429,12 @@ $bg-color: white;
   }
   &__container {
     padding: 34.5px 0 25.5px 0;
+  }
+  &__company {
+    @include text-simple;
+    margin: 0 0 0 10px;
+    font-size: 16px;
+    color: #7C838D;
   }
   &__wrapper{
     display: flex;
@@ -538,14 +551,15 @@ $bg-color: white;
     padding: 10px 0 20px 0;
   }
 }
-.runtime {
+.performance {
+  &__title {
+    flex-shrink: 0;
+  }
   &__container {
     display: flex;
     flex-direction: row;
     margin: 0 1%;
     @include text-simple;
-    font-style: normal;
-    font-weight: normal;
     font-size: 14px;
     align-items: center;
     color: #353C47;
@@ -559,6 +573,7 @@ $bg-color: white;
     display: flex;
     align-items: center;
     color: #0083C7;
+    flex-shrink: 0;
   }
 }
 .map {
@@ -627,7 +642,6 @@ $bg-color: white;
   &__container{
     display: flex;
     flex-direction: row;
-    margin: 1% 1%;
     justify-content: space-between;
     margin: 0 0 20px 0;
   }
