@@ -18,7 +18,7 @@
                   v-if="userData.role === 'employer'"
                   class="user__company"
                 >
-                  from {{ user.company }}
+                  {{ $t('company.from') }} {{ user.company }}
                 </p>
               </div>
               <div class="user__right">
@@ -62,7 +62,7 @@
               </div>
               <div
                 v-if="userData.role === 'employer'"
-                class="performance__container"
+                class="runtime__container"
               >
                 <div class="icon__wrapper0">
                   <span class="icon-clock" />
@@ -71,7 +71,7 @@
                   {{ $t('quests.performanceTimer') }}
                 </p>
                 <nuxt-link
-                  class="performance__link"
+                  class="runtime__link"
                   to="quest.runtimeLink"
                 >
                   {{ quest.performanceTimer }}
@@ -309,6 +309,7 @@ export default {
         },
       ],
       user: {
+        company: 'Amazon',
         avatar: require('~/assets/img/app/fake_profile.png'),
         username: 'Samantha Sparcs',
         date: '12 January 2021,14:45',
@@ -316,6 +317,7 @@ export default {
         distanceLink: '/',
       },
       quest: {
+        performanceTimer: '14:45:23',
         location: 'Moscow, Lenina street, 3',
         runtime: '14:45:23',
         runtimeLink: '#',
