@@ -14,7 +14,10 @@
                 <p class="user__username">
                   {{ user.username }}
                 </p>
-                <p class="user__company">
+                <p
+                  v-if="userData.role === 'employer'"
+                  class="user__company"
+                >
                   from {{ user.company }}
                 </p>
               </div>
@@ -40,9 +43,27 @@
                 :to="user.distanceLink"
                 class="user__distance"
               >
-                {{ user.distance }}
+                {{ user.distance }} {{ $t('meta.fromYou') }}
               </nuxt-link>
-              <div class="performance__container">
+              <div
+                v-if="userData.role === 'worker'"
+                class="runtime__container"
+              >
+                <div class="icon__wrapper0">
+                  <span class="icon-clock" />
+                </div>
+                <p>Runtime</p>
+                <nuxt-link
+                  class="runtime__link"
+                  :to="quest.runtimeLink"
+                >
+                  {{ quest.runtime }}
+                </nuxt-link>
+              </div>
+              <div
+                v-if="userData.role === 'employer'"
+                class="performance__container"
+              >
                 <div class="icon__wrapper0">
                   <span class="icon-clock" />
                 </div>
@@ -60,7 +81,7 @@
           </div>
         </div>
         <div class="badge__container">
-          <ul class="badgeList">
+          <ul class="badge-list">
             <li
               v-for="item in badgeList"
               :key="`item-${item.id}`"
@@ -74,14 +95,14 @@
           <h2 class="quest__title">
             {{ quest.title }}
           </h2>
-          <p class="quest__body">
+          <p class="quest__description">
             {{ quest.body }}
           </p>
         </div>
         <hr class="hr__line">
         <div class="quest_materials__container">
           <h2 class="quest_materials__title">
-            {{ $t('quests.questMaterial') }}
+            {{ $t('quests.questMaterials') }}
           </h2>
           <div class="img__container">
             <img
@@ -152,7 +173,7 @@
           </h2>
         </div>
         <p class="quest__count">
-          {{ quest.amount }}
+          {{ quest.amount }} {{ $t('quests.questAmount') }}
         </p>
         <div class="quest__card">
           <!-- Cards -->
@@ -212,7 +233,7 @@
                 </div>
                 <div class="block__locate">
                   <span class="icon-location" />
-                  <span class="block__text block__text_locate">200m {{ $t('meta.fromYou') }}</span>
+                  <span class="block__text block__text_locate">{{ user.distance }}m {{ $t('meta.fromYou') }}</span>
                 </div>
                 <div class="block__text block__text_blue">
                   {{ item.theme }}
@@ -290,10 +311,9 @@ export default {
       user: {
         avatar: require('~/assets/img/app/fake_profile.png'),
         username: 'Samantha Sparcs',
-        company: 'Amazon',
         date: '12 January 2021,14:45',
-        distance: '200m from you',
-        distanceLink: '#',
+        distance: '200',
+        distanceLink: '/',
       },
       quest: {
         location: 'Moscow, Lenina street, 3',
@@ -314,8 +334,8 @@ export default {
         price: '1500  WUSD',
         badgeGreen: 'Low priority',
         spec: 'Painting works',
-        amount: '26 quests',
-        performanceTimer: '14:45:23',
+        amount: '26',
+
         questImgList: [
           {
             src: 'https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg',
@@ -346,6 +366,8 @@ export default {
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
+      userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
     }),
   },
   async mounted() {
@@ -378,7 +400,7 @@ export default {
         const payload = {
           // firstName: this.model.firstName,
         };
-        const response = await this.$store.dispatch('user/quest', payload);
+        const response = await this.$store.dispatch('user/quests', payload);
         if (response?.ok) {
           this.showMessageModal();
         }
@@ -414,11 +436,16 @@ $bg-color: white;
   }
   &__wrapper0 {
     margin: 0 6px 0 0;
+    span::before {
+      color: $black500;
+      font-size: 20px;
+    }
   }
 }
-.badgeList{
+.badge-list{
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .user {
@@ -430,19 +457,13 @@ $bg-color: white;
   &__container {
     padding: 34.5px 0 25.5px 0;
   }
-  &__company {
-    @include text-simple;
-    margin: 0 0 0 10px;
-    font-size: 16px;
-    color: #7C838D;
-  }
   &__wrapper{
     display: flex;
     flex-direction: row;
   }
   &__date{
     @include text-simple;
-    color:#7C838D;
+    color: $black500;
     font-style: normal;
     font-weight: normal;
     font-size: 12px;
@@ -455,27 +476,34 @@ $bg-color: white;
   }
   &__username{
     @include text-simple;
-    color: #1D2127;
+    color: $black800;
     font-weight: 500;
     font-size: 16px;
-    margin: 0 0 0 10px;
+    padding-left: 10px;
   }
   &__distance{
-    margin: 0 0.5%;
     @include text-simple;
+    margin: 0 0.5%;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 14px;
     display: flex;
     align-items: center;
-    color: #0083C7;
+    color: $blue;
   }
   &__left {
     display: flex;
+    align-items: center;
   }
   &__right {
     display: flex;
     flex-direction: row;
+  }
+  &__company {
+    @include text-simple;
+    margin: 0 0 0 10px;
+    font-size: 16px;
+    color: $black500;
   }
 }
 .spec{
@@ -484,7 +512,7 @@ $bg-color: white;
     font-style: normal;
     font-weight: 500;
     font-size: 25px;
-    color: #0083C7;
+    color: $blue;
   }
   &__container{
     margin: 20px 0;
@@ -497,7 +525,7 @@ $bg-color: white;
     font-style: normal;
     font-weight: 500;
     font-size: 25px;
-    color: #1D2127;
+    color: $black800;
     margin: 0 0 0 0;
   }
   &__title {
@@ -505,23 +533,26 @@ $bg-color: white;
     font-style: normal;
     font-weight: 500;
     font-size: 30px;
-    color: #1D2127;
+    color: $black800;
     margin: 0 0 10px 0;
   }
-  &__body {
+  &__description {
     @include text-simple;
     font-style: normal;
+    color: $black700;
     font-weight: 400;
     font-size: 16px;
-    color:rgba(53, 60, 71, 1);
+    line-height: 130%;
+    /* or 21px */
   }
   &__location {
-    color: #353C47;
     @include text-simple;
+    color: $black700;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     display: flex;
+    align-items: center;
     flex-direction: row;
   }
   &__count {
@@ -529,7 +560,7 @@ $bg-color: white;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
-    color: #8D96A2;
+    color: $black400;
   }
   &__group {
     color:$color;
@@ -537,7 +568,7 @@ $bg-color: white;
     flex-direction: row;
   }
   &__card {
-    color:$color;
+    color:$black800;
   }
 }
 
@@ -547,33 +578,31 @@ $bg-color: white;
     font-style: normal;
     font-weight: 500;
     font-size: 18px;
-    color: #1D2127;
+    color: $black800;
     padding: 10px 0 20px 0;
   }
 }
-.performance {
-  &__title {
-    flex-shrink: 0;
-  }
+.runtime {
   &__container {
     display: flex;
     flex-direction: row;
     margin: 0 1%;
     @include text-simple;
+    font-style: normal;
+    font-weight: normal;
     font-size: 14px;
     align-items: center;
-    color: #353C47;
+    color: $black700;
   }
   &__link {
-    margin: 0 3%;
     @include text-simple;
+    margin: 0 5px;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 14px;
     display: flex;
     align-items: center;
-    color: #0083C7;
-    flex-shrink: 0;
+    color: $blue;
   }
 }
 .map {
@@ -585,7 +614,7 @@ $bg-color: white;
 .price{
   &__value {
     @include text-simple;
-    color: #00AA5B;
+    color: $green;
     font-weight: bold;
     font-size: 25px;
 
@@ -599,6 +628,7 @@ $bg-color: white;
     display: flex;
     flex-direction: row;
     margin:0 0 30px 0;
+    align-items: center;
     justify-content: space-between;
   }
 }
@@ -607,24 +637,35 @@ $bg-color: white;
   &__container {
     padding: 0 0 20px 0;
   }
+  &__item {
+    &_green {
+    //
+    }
+  }
   &__green {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: rgba(34, 204, 20, 0.1);
-    color:#22CC14;
-    padding: 5px;
+    color:$green;
+    padding: 0 5px;
     margin: 0 0 0 15px;
     border-radius: 5px;
   }
   &__blue {
+    @include text-simple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: rgba(0, 131, 199, 0.1);
     margin: 0 9px 0 0;
-    padding: 5px;
+    padding: 0 5px;
     border-radius: 44px;
-    @include text-simple;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
-    align-items: center;
-    color: #0083C7;
+    color: $blue;
+    height: 31px;
   }
   &__wrapper{
     margin: auto;
@@ -635,25 +676,25 @@ $bg-color: white;
   &__container{
     display: flex;
     flex-direction: row;
+    align-items: center;
     margin: 25.5px 0 0 0;
   }
 }
 .img{
   &__container{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
     margin: 0 0 20px 0;
   }
   &__item{
     border-radius: 6px;
-    margin: 0 20px;
-    width: 20%;
-    height: 25%;
+    max-width: 280px;
+    max-height: 210px;
     transition: 0.5s;
   }
   &__item:hover{
-    transform: scale(1.2);
+    //transform: scale(1.2);
     transition: 0.5s;
     cursor: pointer;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
@@ -663,7 +704,6 @@ $bg-color: white;
   &__line{}
 }
 
-// Стили Ильи
 .star {
   &__default {
     display: flex;
