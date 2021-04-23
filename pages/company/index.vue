@@ -47,7 +47,7 @@
                   <span class="icon-clock" />
                 </div>
                 <p class="performance__title">
-                  Performance timer
+                  {{ $t('quests.performanceTimer') }}
                 </p>
                 <nuxt-link
                   class="performance__link"
@@ -81,7 +81,7 @@
         <hr class="hr__line">
         <div class="quest_materials__container">
           <h2 class="quest_materials__title">
-            Quest materials
+            {{ $t('quests.questMaterial') }}
           </h2>
           <div class="img__container">
             <img
@@ -111,7 +111,7 @@
               <base-btn
                 @click="showMessageModal()"
               >
-                Send a request
+                {{ $t('modals.sendARequest') }}
               </base-btn>
             </div>
             <div class="price__wrapperValue">
@@ -142,7 +142,7 @@
       <div class="spec__container">
         <div class="quest__group">
           <h2 class="quest__spec">
-            Other quests for the specialization
+            {{ $t('quests.otherQuestsSpec') }}
             <nuxt-link
               to="#"
               class="spec__link"
@@ -388,7 +388,7 @@ export default {
     }, */
     showMessageModal() {
       this.ShowModal({
-        key: modals.message,
+        key: modals.sendARequest,
       });
     },
   },

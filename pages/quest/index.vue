@@ -76,7 +76,7 @@
         <hr class="hr__line">
         <div class="quest_materials__container">
           <h2 class="quest_materials__title">
-            Quest materials
+            {{ $t('quests.questMaterials') }}
           </h2>
           <div class="img__container">
             <img
@@ -106,7 +106,7 @@
               <base-btn
                 @click="showMessageModal()"
               >
-                Send a request
+                {{ $t('modals.sendARequest') }}
               </base-btn>
             </div>
             <div class="price__wrapperValue">
@@ -137,7 +137,7 @@
       <div class="spec__container">
         <div class="quest__group">
           <h2 class="quest__spec">
-            Other quests for the specialization
+            {{ $t('quests.otherQuestsSpec') }}
             <nuxt-link
               to="#"
               class="spec__link"
@@ -147,7 +147,7 @@
           </h2>
         </div>
         <p class="quest__count">
-          {{ quest.amount }}
+          {{ quest.amount }} {{ $t('quests.questAmount') }}
         </p>
         <div class="quest__card">
           <!-- Cards -->
@@ -207,7 +207,7 @@
                 </div>
                 <div class="block__locate">
                   <span class="icon-location" />
-                  <span class="block__text block__text_locate">200m {{ $t('meta.fromYou') }}</span>
+                  <span class="block__text block__text_locate">{{ user.distance }}m {{ $t('meta.fromYou') }}</span>
                 </div>
                 <div class="block__text block__text_blue">
                   {{ item.theme }}
@@ -286,7 +286,7 @@ export default {
         avatar: require('~/assets/img/app/fake_profile.png'),
         username: 'Samantha Sparcs',
         date: '12 January 2021,14:45',
-        distance: '200m from you',
+        distance: '200',
         distanceLink: '#',
       },
       quest: {
@@ -308,7 +308,8 @@ export default {
         price: '1500  WUSD',
         badgeGreen: 'Low priority',
         spec: 'Painting works',
-        amount: '26 quests',
+        amount: '26',
+
         questImgList: [
           {
             src: 'https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg',
@@ -381,7 +382,7 @@ export default {
     }, */
     showMessageModal() {
       this.ShowModal({
-        key: modals.message,
+        key: modals.sendARequest,
       });
     },
   },

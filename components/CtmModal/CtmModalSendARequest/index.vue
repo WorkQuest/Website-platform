@@ -3,15 +3,17 @@
     class="message"
     :title="'Send a request'"
   >
+    <!-- Передать заголовок из локацизации -->
     <div class="ctm-modal__content">
       <div class="message">
         <div class="message__content">
           <div class="modal__desc">
             <div class="message__wrapper">
               <p class="modal__labelMessage">
-                Message
+                {{ $t('modals.message') }}
               </p>
               <div>
+                <!-- Передать плейсхолдер из локацизации -->
                 <b-form-textarea
                   id="textarea"
                   v-model="text"
@@ -33,7 +35,7 @@
               <div class="btn__wrapper">
                 <base-btn
                   class="message__action"
-                  @click="showMessageSendModal() "
+                  @click="showRequestSendModal() "
                 >
                   {{ $t('meta.send') }}
                 </base-btn>
@@ -59,7 +61,7 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalMessage',
+  name: 'ModalSendARequest',
   data() {
     return {
       file1: null,
@@ -75,9 +77,9 @@ export default {
     hide() {
       this.CloseModal();
     },
-    showMessageSendModal() {
+    showRequestSendModal() {
       this.ShowModal({
-        key: modals.messageSend,
+        key: modals.requestSend,
       });
     },
   },
@@ -112,15 +114,15 @@ export default {
   &__wrapper {
     margin: 0 0 25px 0;
   }
-&__content {
-   display: grid;
-   grid-template-columns: 1fr;
-   justify-items: center;
-   grid-gap: 20px;
- }
-&__action {
-   margin-top: 10px;
- }
+  &__content {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    grid-gap: 20px;
+  }
+  &__action {
+    margin-top: 10px;
+  }
 }
 .btn {
   &__container {

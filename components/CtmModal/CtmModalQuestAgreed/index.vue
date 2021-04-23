@@ -7,11 +7,11 @@
       <div class="messageSend">
         <div class="messageSend__content">
           <img
-            src="~assets/img/ui/message.svg"
+            src="~assets/img/ui/questAgreed.svg"
             alt="MessageSend"
           >
           <div class="ctm-modal__title">
-            {{ $t('modals.messageSend') }}
+            {{ $t('modals.questAgreed') }}
           </div>
           <div class="ctm-modal__desc">
             {{ modal.modalBody }}
@@ -32,7 +32,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'ModalMessageSend',
+  name: 'ModalQuestAgreed',
   data() {
     return {
       modal: {

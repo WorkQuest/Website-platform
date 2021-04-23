@@ -6,6 +6,9 @@ export default {
   changePassword: 'changePassword',
   privacy: 'privacy',
   skills: 'skills',
-  message: 'message',
   messageSend: 'messageSend',
+  sendARequest: 'sendARequest',
+  requestSend: 'requestSend',
+  questAgreed: 'questAgreed',
+  areYouSure: 'areYouSure',
 };
