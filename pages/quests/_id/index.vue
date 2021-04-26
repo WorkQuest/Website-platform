@@ -1,7 +1,77 @@
 <template>
   <!-- Quest page_User -->
   <div>
-    <div class="main">
+    <div
+      v-if="inviteUser"
+      class="invited__container"
+    >
+      <!--      TODO: Реализовать состояния-->
+      <div class="main__body">
+        <div
+          class="invited__text"
+        >
+          {{ $t('invite.invite_text') }}
+        </div>
+      </div>
+    </div>
+    <div
+      v-if="activeQuest"
+      class="active__container"
+    >
+      <div class="main__body">
+        <div
+          class="active__text"
+        >
+          <!--            TODO: Сделать как на макете-->
+          <div>
+            {{ $t('quests.activeQuest') }}
+          </div>
+          <div class="active__wrapper">
+            <div class="active__text_left">
+              {{ $t('quests.runtime') }}
+            </div>
+            <div class="active__text_right">
+              {{ quest.runtime }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      v-if="responseSend"
+      class="response__container"
+    >
+      <div class="main__body">
+        <div class="response__menu">
+          <div
+            class="response__text"
+          >
+            {{ $t('response.response_text') }}
+          </div>
+          <div>
+            <button class="response__link">
+              Show your message
+            </button>
+            <span class="icon-caret_down" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      v-if="performedSend"
+      class="performed__container"
+    >
+      <div class="main">
+        <div class="main__body">
+          <span
+            class="performed__text"
+          >
+            {{ $t('performed.performed_text') }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="main-white">
       <div class="main__body">
         <div class="user__top">
           <div class="user__container">
@@ -85,7 +155,7 @@
             <li
               v-for="item in badgeList"
               :key="`item-${item.id}`"
-              class="badge__blue"
+              class="badge__item_blue"
             >
               {{ item.text }}
             </li>
@@ -128,11 +198,92 @@
           </div>
           <hr>
           <div class="price__wrapper">
-            <div class="btn__wrapper">
+            <!-- inviteUser -->
+            <div
+              v-if="inviteUser"
+              class="buttons__wrapper"
+            >
+              <div class="btn__wrapper">
+                <!--                  TODO: Добавить действие для кнопки -->
+                <base-btn
+                  class="base-btn_agree"
+                >
+                  {{ $t('btn.agree') }}
+                </base-btn>
+              </div>
+              <div class="btn__wrapper">
+                <base-btn
+                  class="base-btn_goToChat"
+                >
+                  <!--                  TODO: Добавить действие для кнопки -->
+                  {{ $t('btn.goToChat') }}
+                  <div class="icon__wrapper">
+                    <!--                     TODO: 'Change icon color-->
+                    <span class="icon-chat" />
+                  </div>
+                </base-btn>
+              </div>
+            </div>
+            <!-- activeQuest -->
+            <div
+              v-if="activeQuest"
+              class="buttons__wrapper"
+            >
+              <div class="btn__wrapper">
+                <!--                  TODO: Добавить действие для кнопки -->
+                <base-btn
+                  class="base-btn_dispute"
+                >
+                  {{ $t('btn.dispute') }}
+                </base-btn>
+              </div>
+              <div class="btn__wrapper">
+                <base-btn
+                  class="base-btn_goToChat"
+                >
+                  <!--                  TODO: Добавить действие для кнопки -->
+                  {{ $t('btn.goToChat') }}
+                  <div class="icon__wrapper">
+                    <!--                     TODO: 'Change icon color-->
+                    <span class="icon-chat" />
+                  </div>
+                </base-btn>
+              </div>
+            </div>
+            <!-- responded -->
+            <div
+              v-if="responseSend"
+              class="buttons__wrapper"
+            >
+              <div class="btn__wrapper">
+                <!--                  TODO: Добавить действие для кнопки -->
+                <base-btn
+                  :disabled="responseSend"
+                >
+                  {{ $t('btn.responded') }}
+                </base-btn>
+              </div>
+            </div>
+            <!-- performed -->
+            <div
+              v-if="performedSend"
+              class="buttons__wrapper"
+            />
+            <!-- Обычное состояние-->
+            <div
+              v-else
+              class="btn__wrapper"
+            >
               <base-btn
+                :disabled="hasRequest === true"
                 @click="showMessageModal()"
               >
-                {{ $t('modals.sendARequest') }}
+                <p v-if="hasRequest === true">
+                  {{ $t('modals.requestSend') }}
+                </p>
+                <p v-else>
+                  {{ $t('modals.sendARequest') }}
+                </p>
               </base-btn>
             </div>
             <div class="price__wrapperValue">
@@ -140,7 +291,7 @@
                 {{ quest.price }}
               </p>
               <div class="badge__wrapper">
-                <span class="badge__green">{{ quest.badgeGreen }}</span>
+                <span class="badge__item_green">{{ quest.badgeGreen }}</span>
               </div>
             </div>
           </div>
@@ -278,6 +429,7 @@ export default {
   name: 'Quests',
   data() {
     return {
+      hasRequest: false,
       isShowMap: true,
       locations: [
         {
@@ -317,6 +469,7 @@ export default {
         distanceLink: '/',
       },
       quest: {
+        id: '1',
         performanceTimer: '14:45:23',
         location: 'Moscow, Lenina street, 3',
         runtime: '14:45:23',
@@ -371,14 +524,41 @@ export default {
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
     }),
+    // TODO: Написать вычисляемые методы isInviteUser, isActiveQuest, isResponded, isPerformed
+    isInviteUser() {
+      return true;
+    },
+    isActiveQuest() {
+      return true;
+    },
+    isResponded() {
+      return true;
+    },
+    isPerformed() {
+      return true;
+    },
   },
+
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
   },
   methods: {
+    // TODO: НАписать методы inviteUser, activeQuest, responseSend, performedSend
+    inviteUser() {
+      this.isInviteUser = !this.isInviteUser;
+    },
+    activeQuest() {
+      this.isActiveQuest = !this.isActiveQuest;
+    },
+    responseSend() {
+      this.isResponded = !this.isResponded;
+    },
+    performedSend() {
+      this.isPerformed = !this.isPerformed;
+    },
     toggleMap() {
-      this.isShowMap = !this.isShowMap;
+      this.isInvite = !this.isShowMap;
     },
     getPriority(index) {
       const priority = {
@@ -422,13 +602,111 @@ export default {
 <style lang="scss" scoped>
 .main {
   @include main;
+  &-white {
+    @include main-white;
+  }
 }
-$color: black;
-$bg-color: white;
+/* Состояния шапки */
+.active {
+  //TODO: Сделать как на макете
+  &__wrapper {
+    display: flex;
+    flex-direction: row;
+  }
+  &__container {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0 10px 27%;
+    background-color:$green;
+    z-index: 10;
+    align-items: center;
+  }
+  &__text {
+    @include text-simple;
+    display: flex;
+    flex-direction: row;
+    font-size: 16px;
+    font-weight: 400;
+    color: $white;
+    z-index: 11;
+    justify-content: space-between;
+    &_left{
+    }
+    &_right{
+      font-weight: 600;
+      margin: 0 0 0 10px;
+    }
+  }
+}
+.response {
+  &__menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__container {
+    background-color:$grey;
+    display: flex;
+    padding: 10px 0 10px 27%;
+    z-index: 10;
+  }
+  &__text {
+    @include text-simple;
+    display: flex;
+    font-size: 16px;
+    font-weight: 400;
+    color: $black600;
+    z-index: 11;
+  }
+  &__link {
+    margin: 0 15px 0 10px;
+    color: $blue;
+  }
+}
+
+.invited {
+  &__container {
+    background-color:$yellow;
+    display: flex;
+    padding: 10px 0 10px 27%;
+    z-index: 10;
+  }
+  &__text {
+    @include text-simple;
+    font-size: 16px;
+    font-weight: 400;
+    color: $white;
+    z-index: 11;
+  }
+}
+.performed {
+  &__container {
+    background-color:$blue;
+    display: flex;
+    padding: 10px 0 10px 27%;
+    z-index: 10;
+  }
+  &__text {
+    @include text-simple;
+    font-size: 16px;
+    font-weight: 400;
+    color: $white;
+    z-index: 11;
+  }
+}
 
 .btn {
   &__wrapper {
     width: 220px;
+    margin: 0 20px 0 0;
+  }
+}
+.buttons {
+  &__wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 }
 
@@ -517,7 +795,7 @@ $bg-color: white;
     color: $blue;
   }
   &__container{
-    margin: 20px 0;
+    margin: 40px 0;
   }
 }
 
@@ -565,7 +843,7 @@ $bg-color: white;
     color: $black400;
   }
   &__group {
-    color:$color;
+    color:$black800;
     display: flex;
     flex-direction: row;
   }
@@ -609,7 +887,8 @@ $bg-color: white;
 }
 .map {
   &__container {
-    margin:30px 0 20px 0;
+    background-color: #FFFFFF;
+    padding:30px 0 0 0;
   }
 }
 
@@ -641,33 +920,30 @@ $bg-color: white;
   }
   &__item {
     &_green {
-    //
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(34, 204, 20, 0.1);
+      color:$green;
+      padding: 0 5px;
+      margin: 0 0 0 15px;
+      border-radius: 5px;
     }
-  }
-  &__green {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(34, 204, 20, 0.1);
-    color:$green;
-    padding: 0 5px;
-    margin: 0 0 0 15px;
-    border-radius: 5px;
-  }
-  &__blue {
-    @include text-simple;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(0, 131, 199, 0.1);
-    margin: 0 9px 0 0;
-    padding: 0 5px;
-    border-radius: 44px;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    color: $blue;
-    height: 31px;
+    &_blue {
+      @include text-simple;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 131, 199, 0.1);
+      margin: 0 9px 0 0;
+      padding: 0 5px;
+      border-radius: 44px;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      color: $blue;
+      height: 31px;
+    }
   }
   &__wrapper{
     margin: auto;

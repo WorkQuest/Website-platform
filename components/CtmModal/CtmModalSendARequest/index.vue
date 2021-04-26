@@ -23,14 +23,12 @@
                 />
               </div>
             </div>
-            <div class="file__wrapper">
-              <b-form-file
-                v-model="file1"
-                :state="Boolean(file1)"
-                placeholder="Choose a file or drop it here..."
-                drop-placeholder="Drop file here..."
-              />
-            </div>
+            <dropzone
+              id="foo"
+              ref="el"
+              :options="options"
+              :destroy-dropzone="true"
+            />
             <div class="btn__container">
               <div class="btn__wrapper">
                 <base-btn
@@ -58,12 +56,20 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import Dropzone from 'nuxt-dropzone';
 import modals from '~/store/modals/modals';
+import 'nuxt-dropzone/dropzone.css';
 
 export default {
   name: 'ModalSendARequest',
+  components: {
+    Dropzone,
+  },
   data() {
     return {
+      options: {
+        url: 'http://httpbin.org/anything',
+      },
       file1: null,
       file2: null,
     };
@@ -72,6 +78,10 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+  },
+  mounted() {
+    // Everything is mounted and you can access the dropzone instance
+    const instance = this.$refs.el.dropzone;
   },
   methods: {
     hide() {
