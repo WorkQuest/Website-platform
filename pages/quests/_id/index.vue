@@ -52,7 +52,7 @@
             <button class="response__link">
               Show your message
             </button>
-            <span class="icon-caret_down" />
+            <span class="icon-caret_down_blue" />
           </div>
         </div>
       </div>
@@ -61,14 +61,12 @@
       v-if="performedSend"
       class="performed__container"
     >
-      <div class="main">
-        <div class="main__body">
-          <span
-            class="performed__text"
-          >
-            {{ $t('performed.performed_text') }}
-          </span>
-        </div>
+      <div class="main__body">
+        <span
+          class="performed__text"
+        >
+          {{ $t('performed.performed_text') }}
+        </span>
       </div>
     </div>
     <div class="main-white">
@@ -217,10 +215,8 @@
                 >
                   <!--                  TODO: Добавить действие для кнопки -->
                   {{ $t('btn.goToChat') }}
-                  <div class="icon__wrapper">
-                    <!--                     TODO: 'Change icon color-->
-                    <span class="icon-chat" />
-                  </div>
+                  <!--                     TODO: 'Change icon color-->
+                  <span class="icon-chat_green" />
                 </base-btn>
               </div>
             </div>
@@ -243,10 +239,8 @@
                 >
                   <!--                  TODO: Добавить действие для кнопки -->
                   {{ $t('btn.goToChat') }}
-                  <div class="icon__wrapper">
-                    <!--                     TODO: 'Change icon color-->
-                    <span class="icon-chat" />
-                  </div>
+                  <!--                     TODO: 'Change icon color-->
+                  <span class="icon-chat_green" />
                 </base-btn>
               </div>
             </div>
@@ -1251,5 +1245,10 @@ export default {
   .ctm-field__left {
     padding-top: 6px;
   }
+}
+
+.icon-chat_green{
+  font-size: 20px;
+  margin: 0 0 0 15px;
 }
 </style>
