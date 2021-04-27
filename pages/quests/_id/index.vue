@@ -1171,7 +1171,7 @@ export default {
     }
   }
   &__text {
-    font-family: 'Inter', sans-serif;
+    @include text-simple;
     font-style: normal;
     &_title  {
       font-weight: 500;
@@ -1221,7 +1221,7 @@ export default {
     }
   }
   &__text {
-    font-family: 'Inter', sans-serif;
+    @include text-simple;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -1246,9 +1246,13 @@ export default {
     padding-top: 6px;
   }
 }
-
-.icon-chat_green{
-  font-size: 20px;
-  margin: 0 0 0 15px;
+.uploader {
+  &__message {
+    @include text-simple;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+    color: $black800;
+  }
 }
 </style>
