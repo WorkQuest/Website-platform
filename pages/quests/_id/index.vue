@@ -5,7 +5,6 @@
       v-if="inviteUser"
       class="invited__container"
     >
-      <!--      TODO: Реализовать состояния-->
       <div class="main__body">
         <div
           class="invited__text"
@@ -22,7 +21,6 @@
         <div
           class="active__text"
         >
-          <!--            TODO: Сделать как на макете-->
           <div>
             {{ $t('quests.activeQuest') }}
           </div>
@@ -78,6 +76,7 @@
                 <img
                   class="user__img"
                   src="~/assets/img/app/fake_profile.png"
+                  alt=""
                 >
                 <p class="user__username">
                   {{ user.username }}
@@ -215,7 +214,6 @@
                 >
                   <!--                  TODO: Добавить действие для кнопки -->
                   {{ $t('btn.goToChat') }}
-                  <!--                     TODO: 'Change icon color-->
                   <span class="icon-chat_green" />
                 </base-btn>
               </div>
@@ -239,7 +237,6 @@
                 >
                   <!--                  TODO: Добавить действие для кнопки -->
                   {{ $t('btn.goToChat') }}
-                  <!--                     TODO: 'Change icon color-->
                   <span class="icon-chat_green" />
                 </base-btn>
               </div>
@@ -602,7 +599,6 @@ export default {
 }
 /* Состояния шапки */
 .active {
-  //TODO: Сделать как на макете
   &__wrapper {
     display: flex;
     flex-direction: row;
