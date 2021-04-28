@@ -24,7 +24,6 @@
                 />
               </div>
             </div>
-            <!--            TODO: Доделать верстку-->
             <dropzone
               id="foo"
               ref="el"
