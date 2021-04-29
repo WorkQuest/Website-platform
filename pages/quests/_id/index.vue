@@ -357,7 +357,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import Info from '~/components/app/Header/info.vue';
+import Info from '~/components/app/Info/info.vue';
 
 export default {
   name: 'Quests',
