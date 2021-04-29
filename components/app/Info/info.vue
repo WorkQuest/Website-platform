@@ -6,7 +6,7 @@
     >
       <div
         v-if="mode.invited"
-        class="info__container_yellow"
+        class="info__container info__container_yellow"
       >
         <div class="info__body">
           <div
@@ -18,7 +18,7 @@
       </div>
       <div
         v-if="mode.active === true"
-        class="info__container_green"
+        class="info__container info__container_green"
       >
         <div class="info__body">
           <div
@@ -42,7 +42,7 @@
       </div>
       <div
         v-if="mode.response === true"
-        class="info__container_grey"
+        class="info__container info__container_grey"
       >
         <div class="info__body">
           <div class="info__menu">
@@ -56,7 +56,7 @@
       </div>
       <div
         v-if="mode.performed === true"
-        class="info__container_blue"
+        class="info__container info__container_blue"
       >
         <div class="info__body">
           <span
@@ -95,41 +95,20 @@ export default {
 <style lang="scss" scoped>
 .info{
   &__container{
+    height: 54px;
+    width: 100%;
+    box-shadow: 0 0 4px rgba(0, 7, 5, 0.3);
     &_yellow{
       background-color:$yellow;
-      height: 54px;
-      width: 100%;
-      box-shadow: 0 0 4px rgba(0, 7, 5, 0.3);
-      top: 0;
-      left: 0;
-      z-index: 1000;
     }
     &_green{
       background-color:$green;
-      height: 54px;
-      width: 100%;
-      box-shadow: 0 0 4px rgba(0, 7, 5, 0.3);
-      top: 0;
-      left: 0;
-      z-index: 1000;
     }
     &_grey{
       background-color:$grey;
-      height: 54px;
-      width: 100%;
-      box-shadow: 0 0 4px rgba(0, 7, 5, 0.3);
-      top: 0;
-      left: 0;
-      z-index: 1000;
     }
     &_blue{
       background-color:$blue;
-      height: 54px;
-      width: 100%;
-      box-shadow: 0 0 4px rgba(0, 7, 5, 0.3);
-      top: 0;
-      left: 0;
-      z-index: 1000;
     }
   }
   &__body{
