@@ -1,10 +1,14 @@
 <template>
   <!-- Quest page_User -->
   <div>
-    <Info
-      :mods="mods"
-      :payload="payload"
-    />
+    <div
+      v-for="(item, i) in infoList"
+      :key="i"
+    >
+      <Info
+        :info="item"
+      />
+    </div>
     <div class="main-white">
       <div class="main__body">
         <div class="user__top">
@@ -107,7 +111,7 @@
         <hr class="hr__line">
         <div class="quest_materials__container">
           <h2 class="quest_materials__title">
-            {{ $t('payload.questMaterials') }}
+            {{ $t('quests.questMaterials') }}
           </h2>
           <div class="img__container">
             <img
@@ -366,35 +370,6 @@ export default {
   },
   data() {
     return {
-      mods: [{
-        invited: true,
-        active: true,
-        response: true,
-        performed: true,
-      }],
-      hasRequest: false,
-      isShowMap: true,
-      distance: [
-        '+ 100 m',
-        '+ 500 m',
-        '+ 1000 m',
-      ],
-      locations: [
-        {
-          lat: 56.475565,
-          lng: 84.967270,
-        },
-      ],
-      priority: [
-        this.$t('quests.priority.all'),
-        this.$t('quests.priority.low'),
-        this.$t('quests.priority.normal'),
-        this.$t('quests.priority.urgent'),
-      ],
-      priorityIndex: 0,
-      distanceIndex: 0,
-      priceSort: 'desc',
-      timeSort: 'desc',
       payload: {
         cards: [
           {
@@ -451,6 +426,48 @@ export default {
           },
         ],
       },
+      info: {
+        mode: 'active',
+        date: '15:30:20',
+      },
+      infoList: [
+        {
+          mode: 'active',
+          date: '15:30:20',
+        },
+        {
+          mode: 'invited',
+        },
+        {
+          mode: 'response',
+        },
+        {
+          mode: 'performed',
+        },
+      ],
+      hasRequest: false,
+      isShowMap: true,
+      distance: [
+        '+ 100 m',
+        '+ 500 m',
+        '+ 1000 m',
+      ],
+      locations: [
+        {
+          lat: 56.475565,
+          lng: 84.967270,
+        },
+      ],
+      priority: [
+        this.$t('quests.priority.all'),
+        this.$t('quests.priority.low'),
+        this.$t('quests.priority.normal'),
+        this.$t('quests.priority.urgent'),
+      ],
+      priorityIndex: 0,
+      distanceIndex: 0,
+      priceSort: 'desc',
+      timeSort: 'desc',
       badgeList: [
         {
           id: 1,

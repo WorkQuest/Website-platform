@@ -1,80 +1,32 @@
 <template>
   <div>
-    <span
-      v-for="(mode, i) in mods"
-      :key="i"
+    <div
+      class="info"
+      :class="infoClass"
     >
-      <div
-        v-if="mode.invited"
-        class="info info_yellow"
-      >
-        <div class="info__body">
-          <div class="info__left">
-            <div
-              class="info__text info__text_white"
-            >
-              {{ $t('invite.invite_text') }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        v-if="mode.active === true"
-        class="info info_green"
-      >
-        <div class="info__body">
-          <div class="info__left">
-            <div
-              class="info__text info__text_white"
-            >
-              {{ $t('quests.activeQuest') }}
-            </div>
-          </div>
-          <div class="info__right">
-            <div
-              class="info__text info__text_white"
-            >
-              <span class="info__text_normal">
-                {{ $t('quests.runtime') }}
-              </span>
-              <span class="info__text_bold">
-                {{ payload.runtime }}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        v-if="mode.response === true"
-        class="info info_grey"
-      >
-        <div class="info__body">
-          <div class="info__menu">
-            <div
-              class="info__text info__text_black"
-            >
-              <div class="info__left">
-                {{ $t('response.response_text') }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        v-if="mode.performed === true"
-        class="info info_blue"
-      >
-        <div class="info__body">
-          <span
+      <div class="info__body">
+        <div class="info__left">
+          <div
             class="info__text info__text_white"
+            :class="[{'info__text_black': info.mode === 'response'}]"
           >
-            <div class="info__left">
-              {{ $t('performed.performed_text') }}
-            </div>
-          </span>
+            {{ infoText(info.mode) }}
+          </div>
+        </div>
+        <div class="info__right">
+          <div
+            v-if="info.date"
+          >
+            <span class="info__text info__text_white info__text_normal">
+              {{ $t('quests.runtime') }}
+            </span>
+            <span class="info__text info__text_white info__text_bold">
+              {{ info.date }}
+            </span>
+          </div>
         </div>
       </div>
-    </span>
+    </div>
   </div>
 </template>
 
@@ -83,17 +35,47 @@
 export default {
   name: 'InfoVue',
   props: {
-    mods: {
-      type: Array,
-      default() {
-        return {};
-      },
-    },
-    payload: {
+    info: {
       type: Object,
-      default() {
-        return {};
-      },
+      default: () => {},
+    },
+  },
+  computed: {
+    infoClass() {
+      const { mode } = this.info;
+      return [
+        {
+          'info_bg-yellow': mode === 'invited',
+        },
+        {
+          'info_bg-green': mode === 'active',
+        },
+        {
+          'info_bg-grey': mode === 'response',
+        },
+        {
+          'info_bg-blue': mode === 'performed',
+        },
+      ];
+    },
+  },
+  methods: {
+    infoText(type) {
+      const texts = {
+        invited: this.$t('invite.title'),
+        response: this.$t('response.title'),
+        active: this.$t('quests.activeQuest'),
+        performed: this.$t('performed.title'),
+      };
+      return texts[type] || '';
+    },
+    infoTextStyle() {
+      const { mode } = this.info;
+      return [
+        {
+          info_yellow: mode === 'invited',
+        },
+      ];
     },
   },
 };
@@ -102,17 +84,17 @@ export default {
 
 <style lang="scss" scoped>
 .info {
-  &_green {
-    background-color:$green;
+  &_bg-green {
+    background-color: $green;
   }
-  &_yellow {
-    background-color:$yellow;
+  &_bg-yellow {
+    background-color: $yellow;
   }
-  &_grey {
-    background-color:$grey;
+  &_bg-grey {
+    background-color: $grey;
   }
-  &_blue {
-    background-color:$blue;
+  &_bg-blue {
+    background-color: $blue;
   }
   min-height: 54px;
   box-shadow: 0 1px 0 #e6e9ec;

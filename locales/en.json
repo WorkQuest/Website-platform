@@ -1,17 +1,19 @@
 {
   "invite": {
-    "invite_text": "Invited"
+    "title": "Invited"
   },
   "response": {
-    "response_text": "Responded"
+    "title": "Responded"
+  },
+  "active": {
+    "title": "Responded"
   },
   "company": {
     "from": "from"
   },
   "performed": {
-    "performed_text": "Performed"
+    "title": "Performed"
   },
-
   "btn": {
     "agree": "Agree",
     "goToChat": "Go to chat",
@@ -174,7 +176,7 @@
     "title": "Skills"
   },
   "quests": {
-    "activeQuest": "Active Quest",
+    "activeQuest": "Active quest",
     "performanceTimer": "Performance timer",
     "questAmount": "quests",
     "otherQuestsSpec": "Other quests for the specialization",
