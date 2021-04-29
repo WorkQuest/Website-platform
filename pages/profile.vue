@@ -1,691 +1,362 @@
 <template>
-  <div class="profile">
-    <Header
-      :title="'John Queston'"
-      :sub-title="'Last sin 23 min.'"
-      :avatar="avatar"
-    />
-    <div
-      class="profile__container"
-      :class="{'profile__container_sidebar': isShowSidebar}"
-    >
+  <div class="my-profile">
+    <div class="my-profile__header">
       <div
-        class="profile__main"
-        :class="{'profile__main_sidebar': isShowSidebar}"
+        v-for="(item, i) in profile"
+        :key="i"
+        class="my-profile__block block"
       >
-        <div>
-          <div class="profile__box">
-            <div class="profile__map">
-              <GMap
-                ref="gMap"
-                language="en"
-                :center="{lat: locations[0].lat, lng: locations[0].lng}"
-                :zoom="6"
-              />
-            </div>
-            <div class="profile__info">
-              <div class="info">
-                <div class="info__row">
-                  <div class="info__locate locate">
-                    <div class="locate">
-                      <div class="locate__body">
-                        <div class="locate__icon">
-                          <img
-                            src="~/assets/img/ui/compass.png"
-                            alt=""
-                          >
-                        </div>
-                        <div class="locate__text">
-                          1 km
-                        </div>
-                        <div class="locate__icon locate__icon_arrow">
-                          <img
-                            src="~/assets/img/ui/arrow_down_grey.png"
-                            alt=""
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="info__action">
-                    <base-btn
-                      :mode="'green'"
-                      class="info__btn"
-                    >
-                      <img
-                        src="~/assets/img/ui/refresh-button.png"
-                        alt=""
-                      >
-                    </base-btn>
-                    <base-btn
-                      :mode="'orange'"
-                      class="info__btn"
-                    >
-                      <img
-                        src="~/assets/img/ui/info-button.png"
-                        alt=""
-                      >
-                    </base-btn>
-                  </div>
-                </div>
-                <div class="info__row info__row_filter">
-                  <div class="info__text">
-                    15 {{ $t('profile.active') }}
-                    <div class="info__text info__text_light">
-                      {{ $t('profile.radius') }}
-                    </div>
-                  </div>
-                  <div
-                    class="info__col"
-                    @click="toggleFilter()"
-                  >
-                    <base-btn class="info__btn">
-                      <img
-                        src="~/assets/img/ui/filter.png"
-                        alt=""
-                      >
-                    </base-btn>
-                  </div>
-                </div>
-                <div class="info__row info__row_stat">
-                  <div class="info__text info__text_simple">
-                    {{ $t('profile.lead') }}
-                  </div>
-                  <div class="info__locate locate">
-                    <div class="locate">
-                      <div class="locate__body locate__body_simple">
-                        <div class="locate__icon locate__icon_right">
-                          <img
-                            src="~/assets/img/ui/time.png"
-                            alt=""
-                          >
-                        </div>
-                        <div class="locate__text">
-                          24:00
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="info__row info__row_proposal">
-                  <div class="info__text info__text_simple">
-                    <span>{{ $t('profile.proposalLocation') }}</span>
-                  </div>
-                  <div class="info__locate locate">
-                    <div class="locate">
-                      <div class="locate__body locate__body_simple">
-                        <div class="locate__icon locate__icon_right">
-                          <img
-                            src="~/assets/img/ui/location.png"
-                            alt=""
-                          >
-                        </div>
-                        <div class="locate__text">
-                          200 M
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="info__row info__row_status">
-                  <div class="info__text info__text_simple">
-                    {{ $t('profile.proposalStatus') }}
-                  </div>
-                  <div class="info__text info__text_bold">
-                    {{ $t('profile.urgently') }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="box">
-            <div class="box__container">
-              <div class="box__left">
+        <div class="block__left">
+          <div class="block__img image">
+            <img
+              class="my-profile__img"
+              :src="item.background"
+              alt=""
+            >
+            <div class="block__rating">
+              <div class="block__rating_star">
                 <img
-                  class="box__img"
-                  src="~/assets/img/app/fake_quote.png"
-                  alt="profile"
+                  class="block__rating block__rating__star_checked"
+                  src="~assets/img/ui/star_checked.svg"
+                  alt=""
+                >
+                <img
+                  class="block__rating block__rating__star_checked"
+                  src="~assets/img/ui/star_checked.svg"
+                  alt=""
+                >
+                <img
+                  class="block__rating block__rating__star_checked"
+                  src="~assets/img/ui/star_checked.svg"
+                  alt=""
+                >
+                <img
+                  class="block__rating block__rating__star_checked"
+                  src="~assets/img/ui/star_checked.svg"
+                  alt=""
+                >
+                <img
+                  class="block__rating block__rating__star_checked"
+                  src="~assets/img/ui/star_simple.svg"
+                  alt=""
                 >
               </div>
-              <div class="box__right">
-                <div class="box__row">
-                  <div class="box__text box__text_title">
-                    Work proposal from Samantha Sparks
-                  </div>
-                </div>
-                <div class="box__row box__row_about">
-                  <div class="box__text box__text_about">
-                    about
-                  </div>
-                </div>
-                <div class="box__row box__row_text">
-                  <div class="box__text box__text_quote">
-                    <span>Hi
-                      I’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage...
-                    </span>
-                  </div>
-                </div>
-                <div class="box__row box__row_details">
-                  <div class="box__text box__text_bottom">
-                    Specialized quest
-                  </div>
-                  <div
-                    class="box__details"
-                    @click="showQuestors()"
-                  >
-                    <img
-                      src="~/assets/img/app/next-page_blue.png"
-                      alt="->"
-                    >
-                    <div class="box__text box__text_details">
-                      {{ $t('profile.details') }}
-                    </div>
-                  </div>
-                </div>
+              <div class="block__rating__quantity">
+                {{ item.reviews }}
               </div>
             </div>
           </div>
         </div>
+        <div class="block__right">
+          <div class="block__head">
+            <div class="block__title">
+              <div class="block__text block__text_title">
+                {{ item.title }}
+              </div>
+              <div class="block__text block__text_level">
+                {{ item.level }}
+              </div>
+            </div>
+            <div class="block__icon block__icon_share">
+              <span
+                class="icon-circle_up"
+              />
+              <span
+                class="icon-share_outline"
+              />
+            </div>
+          </div>
+          <div class="block__text block__text_text">
+            {{ item.desc }}
+          </div>
+          <div class="block__icon block__icon__social">
+            <span
+              class="icon-facebook"
+            />
+            <span
+              class="icon-twitter"
+            />
+            <span
+              class="icon-instagram"
+            />
+            <span
+              class="icon-LinkedIn"
+            />
+          </div>
+          <div class="block__text block__text_date">
+            <div class="location">
+              <span class="icon-location"/>
+              <span class="block__text block__text_locate">{{ $t('meta.location') }}</span>
+            </div>
+            <div class="phone">
+              <span class="icon-phone"/>
+              <span class="block__text block__text_phone">+7 989 989 98 98</span>
+            </div>
+            <div class="mail">
+              <span class="icon-mail"/>
+              <span class="block__text block__text_mail">worker@gmail.com</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div
-        v-if="isShowSidebar"
-        class="profile__sidebar sidebar"
+    </div>
+    <div class="my-profile__content">
+      <base-btn
+        v-for="item in profileList"
+        :key="item.id"
+        :mode="btnMode(item.id)"
+        class="profile__content__btn"
+        @click="selectedTab(item.id)"
       >
-        <div class="sidebar__header">
-          <div class="sidebar__left">
-            <div class="sidebar__text">
-              <span>
-                {{ $t('profile.sidebar.filter') }}
-              </span>
-              <span class="sidebar__text sidebar__text_medium">
-                {{ $t('profile.sidebar.choose') }}
-              </span>
-            </div>
-          </div>
-          <div
-            class="sidebar__close"
-            @click="toggleFilter()"
-          >
-            <img
-              src="~/assets/img/app/close.png"
-              alt="x"
-            >
-          </div>
-        </div>
-        <div class="sidebar__filter filter">
-          <div
-            v-b-toggle.quests
-            class="filter__row"
-          >
-            <div class="filter__icon">
-              <img
-                src="~/assets/img/ui/SELECT.png"
-                alt=">"
-              >
-            </div>
-            <div class="filter__text">
-              {{ $t('profile.sidebar.quests') }}
-            </div>
-          </div>
-          <b-collapse
-            id="quests"
-          >
-            <b-form-group v-slot="{ ariaDescribedby }">
-              <b-form-checkbox-group
-                v-model="selected"
-                :options="options"
-                :aria-describedby="ariaDescribedby"
-                name="items"
-                stacked
-              />
-            </b-form-group>
-          </b-collapse>
-          <div
-            v-b-toggle.specialized
-            class="filter__row"
-          >
-            <div class="filter__icon">
-              <img
-                src="~/assets/img/ui/SELECT.png"
-                alt=">"
-              >
-            </div>
-            <div class="filter__text">
-              {{ $t('profile.sidebar.specialized') }}
-            </div>
-          </div>
-          <b-collapse
-            id="specialized"
-          >
-            <b-form-group v-slot="{ ariaDescribedby }">
-              <b-form-checkbox-group
-                v-model="selected"
-                :options="options"
-                :aria-describedby="ariaDescribedby"
-                name="items"
-                stacked
-              />
-            </b-form-group>
-          </b-collapse>
-          <div
-            v-b-toggle.find
-            class="filter__row"
-          >
-            <div class="filter__icon">
-              <img
-                src="~/assets/img/ui/SELECT.png"
-                alt=">"
-              >
-            </div>
-            <div class="filter__text">
-              {{ $t('profile.sidebar.find') }}
-            </div>
-          </div>
-          <b-collapse
-            id="find"
-          >
-            <b-form-group v-slot="{ ariaDescribedby }">
-              <b-form-checkbox-group
-                v-model="selected"
-                :options="options"
-                :aria-describedby="ariaDescribedby"
-                name="items"
-                stacked
-              />
-            </b-form-group>
-          </b-collapse>
-        </div>
-      </div>
+        {{ item.title }}
+      </base-btn>
     </div>
   </div>
 </template>
 
 <script>
-import GMap from '~/components/GMap';
 
 export default {
-  name: 'Profile',
-  components: {
-    GMap,
+  name: 'MyProfile',
+  data() {
+    return {
+      selectedTab: 0,
+      profileList: [
+        {
+          title: 'Quests',
+          id: 0,
+        },
+        {
+          title: 'Reviews',
+          id: 1,
+        },
+        {
+          title: 'Portfolio',
+          id: 2,
+        },
+      ],
+      profile: [
+        {
+          title: 'Rosalia Vans',
+          level: 'HIGHER LEVEL',
+          reviews: '23 reviews',
+          background: require('~/assets/img/temp/profile.svg'),
+          desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel',
+        },
+      ],
+    };
   },
-  data: () => ({
-    isShowSidebar: false,
-    avatar: require('~/assets/img/app/fake_profile.png'),
-    locations: [
-      {
-        lat: 56.475565,
-        lng: 84.967270,
-      },
-    ],
-    selected: [],
-    options: [
-      { text: '- Test', value: '1' },
-      { text: '- Test', value: '2' },
-      { text: '- Test', value: '3' },
-      { text: '- Test', value: '4' },
-      { text: '- Test', value: '5' },
-      { text: '- Test', value: '6' },
-      { text: '- Test', value: '7' },
-      { text: '- Test', value: '8' },
-      { text: '- Test', value: '9' },
-      { text: '- Test', value: '10' },
-      { text: '- Test', value: '11' },
-      { text: '- Test', value: '12' },
-    ],
-  }),
+  computed: {},
+  async mounted() {
+    this.SetLoader(true);
+    this.SetLoader(false);
+  },
   methods: {
-    toggleFilter() {
-      this.isShowSidebar = !this.isShowSidebar;
-    },
-    showQuestors() {
-      this.$router.push('/questors');
+    btnMode(id) {
+      if (this.selectedTab === id) {
+        return ' ';
+      }
+      return 'light';
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.profile {
-  &__container {
-    display: flex;
-    justify-content: center;
-    &_sidebar {
-      grid-template-columns: 9fr 3fr;
-    }
-  }
-  &__main {
-    padding-top: 50px;
-    width: 780px;
-    max-width: 1000px;
-    margin: 0 auto;
-    min-height: calc(100vh - 125px);
-    &_sidebar {
-    }
-  }
-  &__box {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    min-height: 325px;
-    border-radius: 14px 50px 50px 14px;
-    background-color: #ffffff;
-    box-shadow: 0 0 4px rgba(0, 7, 5, 0.3);
-  }
-  &__map {
-    border: 3px solid #20253b;
-    border-radius: 14px;
-    overflow: hidden;
-  }
-}
+.my-profile {
+  display: grid;
+  justify-content: center;
+  background-color: #FFFFFF;
 
-.sidebar {
-  background: #FFFFFF;
-  position: relative;
-  box-shadow: 0 6px 4px 0 rgba(0, 7, 5, .3);
-  width: 430px;
-  &::after {
-    content: '';
-    background: #FFFFFF;
-    position: absolute;
-    top: -124px;
-    right: 0;
-    min-height: 124px;
-    width: 100px;
-    z-index: -5;
-  }
   &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    min-height: 130px;
-    box-shadow: 0 0 4px rgba(0, 7, 5, 0.3);
-    padding: 34px;
-  }
-  &__text {
-    color: #20253b;
-    font-family: 'GothamProBlack', sans-serif;
-    line-height: 20.17px;
-    letter-spacing: normal;
-    font-weight: 400;
-    &_medium {
-      font-weight: 500;
-      font-family: 'GothamProMedium', sans-serif;
-      line-height: normal;
-      white-space: pre-line;
-    }
-  }
-  &__filter {
-    padding: 20px 25px;
-  }
-  &__close {
-    cursor: pointer;
-  }
-}
-
-.info {
-  padding: 20px 30px;
-  &__row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    &_filter {
-      padding-top: 22px;
-    }
-    &_stat {
-      padding-top: 10px;
-      align-items: flex-start;
-    }
-    &_proposal {
-      padding-top: 22px;
-    }
-    &_status {
-      padding-top: 50px;
-    }
-  }
-  &__locate {
-    display: flex;
-  }
-  &__btn {
-    width: 61px;
-    height: 61px;
-    border-radius: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 4px rgba(0, 7, 5, 0.3);
-  }
-  &__action {
-    display: flex;
-    align-items: center;
-    grid-gap: 7px;
-  }
-  &__text {
-    color: #20253b;
-    font-family: 'GothamProBlack', sans-serif;
-    font-size: 21px;
-    font-weight: 400;
-    line-height: 20.17px;
-    &_light {
-      font-family: 'GothamProMedium', sans-serif;
-      font-weight: 500;
-    }
-    &_simple {
-      font-family: 'GothamProMedium', sans-serif;
-      font-weight: 500;
-      font-size: 14px;
-      span {
-        white-space: pre-line;
-      }
-    }
-    &_bold {
-      color: #ff0000;
-      text-transform: uppercase;
-      font-size: 16px;
-    }
-  }
-}
-
-.locate {
-  &__body {
-    height: 34px;
-    background-color: #ebecec;
-    border-radius: 17px;
-    display: grid;
-    grid-template-columns: 34px auto 23px;
-    grid-gap: 11px;
-    padding-right: 7px;
-    &_simple {
-      padding-right: 14px;
-      grid-template-columns: 34px auto;
-      background: transparent;
-      border: 2px solid #20253b;
-    }
-  }
-  &__icon {
-    background-color: #20253b;
-    border-radius: 17px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    &_arrow {
-      background: none;
-      border: none;
-    }
-    &_right {
-      padding-right: 3px;
-    }
-  }
-  &__text {
-    display: flex;
-    align-items: center;
-    color: #20253b;
-    font-family: 'GothamProMedium', sans-serif;
-    font-size: 20px;
-    font-weight: 500;
-    font-style: normal;
-    letter-spacing: normal;
-    line-height: normal;
-    text-align: left;
-  }
-}
-
-.filter {
-  display: flex;
-  flex-direction: column;
-  grid-gap: 13px;
-  height: 100%;
-  max-height: calc(100vh - 124px - 130px);
-  overflow-y: auto;
-  &__row {
-    display: flex;
-    align-items: center;
-    grid-gap: 16px;
-    cursor: pointer;
-  }
-  &__text {
-    color: #20253b;
-    font-family: 'GothamProBlack', sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    font-style: normal;
-    letter-spacing: normal;
-    line-height: 25px;
-    text-transform: uppercase;
-  }
-}
-.box {
-  margin-top: 21px;
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  border-radius: 40px;
-  &__container {
-    box-shadow: 0 0 4px rgba(0, 7, 5, 0.3);
-    border-radius: 40px;
-    background: #FFFFFF;
-    max-width: 690px;
+    height: 253px;
     width: 100%;
-    min-height: 200px;
-    display: grid;
-    grid-template-columns: 3fr 9fr;
   }
+
   &__img {
-    max-width: 130px;
-    max-height: 130px;
+    display: block;
+    width: 100%;
+    height: 100%;
   }
-  &__left {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-top-left-radius: 40px;
-    border-bottom-left-radius: 40px;
-    box-shadow: 3px 0 4px rgba(95, 86, 86, .3);
-  }
-  &__right {
-    padding: 20px;
-  }
-  &__text {
-    font-style: normal;
-    letter-spacing: normal;
-    line-height: normal;
-    text-align: left;
-    color: #20253b;
-    &_title {
-      font-family: 'GothamProBlack', sans-serif;
-      font-weight: 400;
-      font-size: 19px;
-    }
-    &_about {
-      padding-top: 15px;
-      font-family: 'GothamProMedium', sans-serif;
-      font-weight: 500;
-      color: #c3c4c4;
-      font-size: 14px;
-    }
-    &_bottom {
-      font-family: 'GothamProMedium', sans-serif;
-      font-weight: 500;
-      font-size: 14px;
-    }
-    &_quote {
-      padding-top: 17px;
-      font-size: 16px;
-      font-family: 'GothamProBold', sans-serif;
-      white-space: pre-line;
-      font-weight: 700;
-    }
-    &_details {
-      font-family: 'GothamProBlack', sans-serif;
-      font-weight: 400;
-      font-size: 19px;
-      color: #0c82c3;
-      text-transform: uppercase;
-    }
-  }
-  &__row {
-    &_details {
-      padding-top: 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-    }
-  }
-  &__details {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
+
+  &__content {
+    height: 46px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 54px 63px 65px;
     grid-gap: 10px;
+    background-color: #FFFFFF;
+
   }
 }
 
-@include _575 {
-  .profile {
-    &__box {
-      grid-template-rows: 250px 1fr;
-      grid-template-columns: 1fr;
+.quests {
+  width: 80%;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 114px 110px 181px 176px 143px 147px;
+  grid-gap: 10px;
+  padding: 20px 0;
+
+  &__btn {
+    padding: 10px 20px;
+    width: max-content;
+    height: 41px;
+  }
+}
+
+.icon-share_outline {
+  object-fit: cover;
+  height: 20px;
+  width: 20px;
+}
+
+.block {
+  max-width: 1180px;
+  display: grid;
+  padding: 25px 0;
+  grid-template-columns: 142px 1008px;
+  grid-gap: 30px;
+  width: 100%;
+
+  &__icon {
+    display: grid;
+    grid-template-columns: 20px 20px;
+    grid-gap: 27px;
+    object-fit: cover;
+    height: 20px;
+    width: 20px;
+
+    span::before {
+      font-size: 20px;
     }
-    &__main {
-      margin: 0 15px;
-      padding-bottom: 120px;
+
+    &__social {
+      font-size: 24px;
+      grid-gap: 15px;
+      display: grid;
+      grid-template-columns: 24px 24px 24px 24px;
+      align-items: center;
     }
   }
-  .box {
-    &__row {
-      &_about {
-        display: none;
-      }
-      &_text {
-        display: none;
-      }
-      &_details {
-        flex-direction: column;
-        grid-gap: 20px;
-      }
+
+  &__rating {
+    display: grid;
+    justify-content: center;
+
+    &__quantity {
+      font-size: 12px;
+      width: 100%;
+      padding: 5px 30px;
+      color: #7C838D;
     }
-    &__text {
-      &_details {
-        white-space: nowrap;
-      }
-    }
-    &__container {
-      grid-template-columns: 5fr 7fr;
-    }
-  }
-  .info {
-    &__btn {
-      width: 41px;
-      height: 41px;
-      img {
-        width: 50% !important;
+
+    &_star {
+      grid-template-columns: 20px 20px 20px 20px 20px;
+      display: grid;
+      grid-gap: 5px;
+      justify-content: center;
+      align-content: center;
+      padding: 20px 11px;
+      width: 120px;
+      height: 20px;
+
+      &_checked {
+        width: 20px;
+        height: 20px;
       }
     }
   }
-  .sidebar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 100%;
-    max-width: 280px;
-    z-index: 1200;
+
+  &__head {
+    display: grid;
+    align-items: center;
+    justify-content: space-between;
+    grid-template-columns: 216px 67px;
+  }
+
+  &__title {
+    display: grid;
+    grid-template-columns: 121px 95px;
+  }
+
+  &__text {
+
+    &_title {
+      width: 121px;
+      height: 26px;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 130%;
+      color: #1D2127;
+    }
+
+    &_text {
+      width: 908px;
+      height: 46px;
+      left: 0;
+      top: 49px;
+      font-size: 16px;
+      line-height: 145%;
+      color: #4C5767;
+      margin: 15px 0;
+    }
+
+    &_level {
+      font-size: 12px;
+      width: 100%;
+      height: 20px;
+      color: #FFFFFF;
+      background: #F7CF00;
+      border-radius: 3px;
+      padding: 2px 5px;
+    }
+
+    &__icon {
+      &_share {
+        cursor: pointer;
+      }
+    }
+
+    &_date {
+      display: grid;
+      grid-gap: 30px;
+      grid-template-columns: 200px 146px 150px;
+      font-size: 15px;
+      padding: 15px 0;
+    }
+
+    span::before {
+      font-size: 15px
+    }
+  }
+
+  .icon-facebook:before {
+    font-size: 24px;
+    background: #4C80CE;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .icon-twitter:before {
+    font-size: 24px;
+    background: #52D0EC;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .icon-instagram:before {
+    font-size: 24px;
+    background: linear-gradient(180deg, #AD00FF 0%, #FF9900 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .icon-LinkedIn:before {
+    font-size: 24px;
+    background: #57A6EF;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }
 </style>

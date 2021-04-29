@@ -106,6 +106,7 @@ button:focus, button:active, button {
   /*border: none;*/
   /*outline: none;*/
 }
+
 button {
   border: none;
   outline: none;
@@ -114,14 +115,17 @@ button {
 :focus {
   outline: none !important;
 }
+
 input[type="checkbox"]:focus {
   outline: none !important;
   offset: none !important;
 }
+
 a:focus, button:focus, input:focus, textarea:focus {
   outline: none !important;
   offset: none !important;
 }
+
 .custom-control-label {
   color: #20253b;
   font-family: 'GothamProBlack', sans-serif;
@@ -132,6 +136,7 @@ a:focus, button:focus, input:focus, textarea:focus {
   line-height: 25px;
   padding-left: 24px;
 }
+
 .custom-control-input:checked ~ .custom-control-label::before {
   border-color: #000000 !important;
   background-color: #000000 !important;
@@ -154,4 +159,33 @@ a:focus, button:focus, input:focus, textarea:focus {
   color: #FFFFFF !important;
   opacity: 1 !important;
   font-weight: 500 !important;
+}
+
+.bi-star-fill {
+  color: #E8D20D;
+}
+
+.bi-star {
+  color: #E6EAEE;
+}
+
+.text-warning {
+  color: #E6EAEE !important;
+}
+.bi-icon{
+  color: #E6EAEE;
+}
+.form-control {
+  display: grid;
+  justify-content: center;
+  width: 100%;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0;
+  font-size: 20px;
+  font-weight: 400;
+  line-height:0;
+  color: #E6EAEE;
+  background-clip: padding-box;
+  border: 0;
+  border-radius: 0;
 }

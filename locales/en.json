@@ -89,7 +89,8 @@
     "save": "Save",
     "reset": "Reset",
     "fromYou": "from you",
-    "details": "View details"
+    "details": "View details",
+    "location": "Moscow, Lenina street, 3d"
   },
   "priority": {
     "low": "Low priority",
@@ -167,6 +168,12 @@
       "showMap": "Show map",
       "search": "City / Street / Place"
     }
+  },
+  "my": {
+    "Requested": "Requested",
+    "Performed": "Performed",
+    "Active": "Active",
+    "Invited": "Invited"
   },
   "ui": {
     "profile": {
