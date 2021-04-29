@@ -31,6 +31,7 @@ jobs:
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v2.1.4
         env:
+          BASE_URL: ${{ secrets.BASE_URL }}
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
           ARGS: "-rltgoDzvO --delete"
           SOURCE: "dist/"
@@ -64,6 +65,7 @@ jobs:
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v2.1.4
         env:
+          BASE_URL: ${{ secrets.BASE_URL }}
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
           ARGS: "-rltgoDzvO --delete"
           SOURCE: "dist/"
