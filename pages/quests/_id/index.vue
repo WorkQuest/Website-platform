@@ -24,7 +24,7 @@
                   {{ payload.username }}
                 </p>
                 <p
-                  v-if="userData.role === 'employer'"
+                  v-if="userRole === 'employer'"
                   class="user__company"
                 >
                   {{ $t('company.from') }} {{ payload.company }}
@@ -48,29 +48,27 @@
                 </div>
                 <p>{{ payload.location }}</p>
               </div>
-              <nuxt-link
-                :to="payload.distanceLink"
+              <span
                 class="user__distance"
               >
                 {{ payload.distance }} {{ $t('meta.fromYou') }}
-              </nuxt-link>
+              </span>
               <div
-                v-if="userData.role === 'worker'"
+                v-if="userRole === 'worker'"
                 class="runtime__container"
               >
                 <div class="icon__wrapper0">
                   <span class="icon-clock" />
                 </div>
                 <p>Runtime</p>
-                <nuxt-link
+                <span
                   class="runtime__link"
-                  :to="payload.runtimeLink"
                 >
                   {{ payload.runtime }}
-                </nuxt-link>
+                </span>
               </div>
               <div
-                v-if="userData.role === 'employer'"
+                v-if="userRole === 'employer'"
                 class="runtime__container"
               >
                 <div class="icon__wrapper0">
@@ -79,12 +77,11 @@
                 <p class="performance__title">
                   {{ $t('quests.performanceTimer') }}
                 </p>
-                <nuxt-link
+                <span
                   class="runtime__link"
-                  to="payload.runtimeLink"
                 >
                   {{ payload.performanceTimer }}
-                </nuxt-link>
+                </span>
               </div>
             </div>
           </div>
@@ -94,7 +91,7 @@
             <li
               v-for="item in badgeList"
               :key="`item-${item.id}`"
-              class="badge__item_blue"
+              class="badge__item badge__item_blue"
             >
               {{ item.text }}
             </li>
@@ -115,21 +112,8 @@
           </h2>
           <div class="img__container">
             <img
-              class="img__item"
-              src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
-              alt=""
-            >
-            <img
-              class="img__item"
-              src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
-              alt=""
-            >
-            <img
-              class="img__item"
-              src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
-              alt=""
-            >
-            <img
+              v-for="n in 4"
+              :key="n"
               class="img__item"
               src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
               alt=""
@@ -147,7 +131,6 @@
               class="buttons__wrapper"
             >
               <div class="btn__wrapper">
-                <!--                  TODO: Добавить действие для кнопки -->
                 <base-btn
                   class="base-btn_agree"
                 >
@@ -158,7 +141,6 @@
                 <base-btn
                   class="base-btn_goToChat"
                 >
-                  <!--                  TODO: Добавить действие для кнопки -->
                   {{ $t('btn.goToChat') }}
                   <span class="icon-chat_green" />
                 </base-btn>
@@ -170,7 +152,6 @@
               class="buttons__wrapper"
             >
               <div class="btn__wrapper">
-                <!--                  TODO: Добавить действие для кнопки -->
                 <base-btn
                   class="base-btn_dispute"
                 >
@@ -181,7 +162,6 @@
                 <base-btn
                   class="base-btn_goToChat"
                 >
-                  <!--                  TODO: Добавить действие для кнопки -->
                   {{ $t('btn.goToChat') }}
                   <span class="icon-chat_green" />
                 </base-btn>
@@ -193,7 +173,6 @@
               class="buttons__wrapper"
             >
               <div class="btn__wrapper">
-                <!--                  TODO: Добавить действие для кнопки -->
                 <base-btn
                   :disabled="mode.response"
                 >
@@ -206,7 +185,6 @@
               v-if="mode.performed"
               class="buttons__wrapper"
             />
-            <!-- Обычное состояние-->
             <div
               v-else
               class="btn__wrapper"
@@ -370,7 +348,14 @@ export default {
   },
   data() {
     return {
+      mods: [{
+        invited: false,
+        active: false,
+        response: false,
+        performed: false,
+      }],
       payload: {
+        type: 'active',
         cards: [
           {
             title: 'Samantha Sparks',
