@@ -1,72 +1,10 @@
 <template>
   <!-- Quest page_User -->
   <div>
-    <div
-      v-if="inviteUser"
-      class="invited__container"
-    >
-      <div class="main__body">
-        <div
-          class="invited__text"
-        >
-          {{ $t('invite.invite_text') }}
-        </div>
-      </div>
-    </div>
-    <div
-      v-if="activeQuest"
-      class="active__container"
-    >
-      <div class="main__body">
-        <div
-          class="active__text"
-        >
-          <div>
-            {{ $t('quests.activeQuest') }}
-          </div>
-          <div class="active__wrapper">
-            <div class="active__text_left">
-              {{ $t('quests.runtime') }}
-            </div>
-            <div class="active__text_right">
-              {{ quest.runtime }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      v-if="responseSend"
-      class="response__container"
-    >
-      <div class="main__body">
-        <div class="response__menu">
-          <div
-            class="response__text"
-          >
-            {{ $t('response.response_text') }}
-          </div>
-          <div>
-            <button class="response__link">
-              Show your message
-            </button>
-            <span class="icon-caret_down_blue" />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      v-if="performedSend"
-      class="performed__container"
-    >
-      <div class="main__body">
-        <span
-          class="performed__text"
-        >
-          {{ $t('performed.performed_text') }}
-        </span>
-      </div>
-    </div>
+    <Info
+      :mods="mods"
+      :payload="payload"
+    />
     <div class="main-white">
       <div class="main__body">
         <div class="user__top">
@@ -79,18 +17,18 @@
                   alt=""
                 >
                 <p class="user__username">
-                  {{ user.username }}
+                  {{ payload.username }}
                 </p>
                 <p
                   v-if="userData.role === 'employer'"
                   class="user__company"
                 >
-                  {{ $t('company.from') }} {{ user.company }}
+                  {{ $t('company.from') }} {{ payload.company }}
                 </p>
               </div>
               <div class="user__right">
                 <p class="user__date">
-                  {{ user.date }}
+                  {{ payload.date }}
                 </p>
                 <div class="icon__wrapper">
                   <span class="icon-share_outline" />
@@ -104,13 +42,13 @@
                     class="icon-location"
                   />
                 </div>
-                <p>{{ quest.location }}</p>
+                <p>{{ payload.location }}</p>
               </div>
               <nuxt-link
-                :to="user.distanceLink"
+                :to="payload.distanceLink"
                 class="user__distance"
               >
-                {{ user.distance }} {{ $t('meta.fromYou') }}
+                {{ payload.distance }} {{ $t('meta.fromYou') }}
               </nuxt-link>
               <div
                 v-if="userData.role === 'worker'"
@@ -122,9 +60,9 @@
                 <p>Runtime</p>
                 <nuxt-link
                   class="runtime__link"
-                  :to="quest.runtimeLink"
+                  :to="payload.runtimeLink"
                 >
-                  {{ quest.runtime }}
+                  {{ payload.runtime }}
                 </nuxt-link>
               </div>
               <div
@@ -139,9 +77,9 @@
                 </p>
                 <nuxt-link
                   class="runtime__link"
-                  to="quest.runtimeLink"
+                  to="payload.runtimeLink"
                 >
-                  {{ quest.performanceTimer }}
+                  {{ payload.performanceTimer }}
                 </nuxt-link>
               </div>
             </div>
@@ -160,16 +98,16 @@
         </div>
         <div class="quest__container">
           <h2 class="quest__title">
-            {{ quest.title }}
+            {{ payload.title }}
           </h2>
           <p class="quest__description">
-            {{ quest.body }}
+            {{ payload.body }}
           </p>
         </div>
         <hr class="hr__line">
         <div class="quest_materials__container">
           <h2 class="quest_materials__title">
-            {{ $t('quests.questMaterials') }}
+            {{ $t('payload.questMaterials') }}
           </h2>
           <div class="img__container">
             <img
@@ -194,10 +132,14 @@
             >
           </div>
           <hr>
-          <div class="price__wrapper">
+          <div
+            v-for="(mode, i) in mods"
+            :key="i"
+            class="price__wrapper"
+          >
             <!-- inviteUser -->
             <div
-              v-if="inviteUser"
+              v-if="mode.invited"
               class="buttons__wrapper"
             >
               <div class="btn__wrapper">
@@ -220,7 +162,7 @@
             </div>
             <!-- activeQuest -->
             <div
-              v-if="activeQuest"
+              v-if="mode.active"
               class="buttons__wrapper"
             >
               <div class="btn__wrapper">
@@ -243,13 +185,13 @@
             </div>
             <!-- responded -->
             <div
-              v-if="responseSend"
+              v-if="mode.response"
               class="buttons__wrapper"
             >
               <div class="btn__wrapper">
                 <!--                  TODO: Добавить действие для кнопки -->
                 <base-btn
-                  :disabled="responseSend"
+                  :disabled="mode.response"
                 >
                   {{ $t('btn.responded') }}
                 </base-btn>
@@ -257,7 +199,7 @@
             </div>
             <!-- performed -->
             <div
-              v-if="performedSend"
+              v-if="mode.performed"
               class="buttons__wrapper"
             />
             <!-- Обычное состояние-->
@@ -279,10 +221,10 @@
             </div>
             <div class="price__wrapperValue">
               <p class="price__value">
-                {{ quest.price }}
+                {{ payload.price }}
               </p>
               <div class="badge__wrapper">
-                <span class="badge__item_green">{{ quest.badgeGreen }}</span>
+                <span class="badge__item_green">{{ payload.badgeGreen }}</span>
               </div>
             </div>
           </div>
@@ -310,18 +252,18 @@
               to="#"
               class="spec__link"
             >
-              "{{ quest.spec }}"
+              "{{ payload.spec }}"
             </nuxt-link>
           </h2>
         </div>
         <p class="quest__count">
-          {{ quest.amount }} {{ $t('quests.questAmount') }}
+          {{ payload.amount }} {{ $t('quests.questAmount') }}
         </p>
         <div class="quest__card">
           <!-- Cards -->
           <div class="quests__cards">
             <div
-              v-for="(item, i) in cards"
+              v-for="(item, i) in payload.cards"
               :key="i"
               class="quests__block block"
             >
@@ -375,7 +317,7 @@
                 </div>
                 <div class="block__locate">
                   <span class="icon-location" />
-                  <span class="block__text block__text_locate">{{ user.distance }}m {{ $t('meta.fromYou') }}</span>
+                  <span class="block__text block__text_locate">{{ payload.distance }}m {{ $t('meta.fromYou') }}</span>
                 </div>
                 <div class="block__text block__text_blue">
                   {{ item.theme }}
@@ -415,13 +357,28 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import Info from '~/components/app/Header/info.vue';
 
 export default {
   name: 'Quests',
+  components: {
+    Info,
+  },
   data() {
     return {
+      mods: [{
+        invited: true,
+        active: true,
+        response: true,
+        performed: true,
+      }],
       hasRequest: false,
       isShowMap: true,
+      distance: [
+        '+ 100 m',
+        '+ 500 m',
+        '+ 1000 m',
+      ],
       locations: [
         {
           lat: 56.475565,
@@ -438,28 +395,26 @@ export default {
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
-      cards: [
-        {
-          title: 'Samantha Sparks',
-          favourite: true,
-          sub: '',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-        },
-      ],
-      user: {
+      payload: {
+        cards: [
+          {
+            title: 'Samantha Sparks',
+            favourite: true,
+            sub: '',
+            background: require('~/assets/img/temp/fake-card.svg'),
+            theme: 'Paint the garage quickly',
+            desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
+            priority: 0,
+            amount: 1500,
+            symbol: 'wusd',
+          },
+        ],
         company: 'Amazon',
         avatar: require('~/assets/img/app/fake_profile.png'),
         username: 'Samantha Sparcs',
         date: '12 January 2021,14:45',
         distance: '200',
         distanceLink: '/',
-      },
-      quest: {
         id: '1',
         performanceTimer: '14:45:23',
         location: 'Moscow, Lenina street, 3',
@@ -481,7 +436,6 @@ export default {
         badgeGreen: 'Low priority',
         spec: 'Painting works',
         amount: '26',
-
         questImgList: [
           {
             src: 'https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg',
@@ -516,18 +470,6 @@ export default {
       userData: 'user/getUserData',
     }),
     // TODO: Написать вычисляемые методы isInviteUser, isActiveQuest, isResponded, isPerformed
-    isInviteUser() {
-      return true;
-    },
-    isActiveQuest() {
-      return true;
-    },
-    isResponded() {
-      return true;
-    },
-    isPerformed() {
-      return true;
-    },
   },
 
   async mounted() {
@@ -536,18 +478,6 @@ export default {
   },
   methods: {
     // TODO: НАписать методы inviteUser, activeQuest, responseSend, performedSend
-    inviteUser() {
-      this.isInviteUser = !this.isInviteUser;
-    },
-    activeQuest() {
-      this.isActiveQuest = !this.isActiveQuest;
-    },
-    responseSend() {
-      this.isResponded = !this.isResponded;
-    },
-    performedSend() {
-      this.isPerformed = !this.isPerformed;
-    },
     toggleMap() {
       this.isInvite = !this.isShowMap;
     },
@@ -567,20 +497,6 @@ export default {
       };
       return priority[index] || '';
     },
-    /*
-    async sendRequest() {
-      try {
-        const payload = {
-          // firstName: this.model.firstName,
-        };
-        const response = await this.$store.dispatch('user/quests', payload);
-        if (response?.ok) {
-          this.showMessageModal();
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }, */
     showMessageModal() {
       this.ShowModal({
         key: modals.sendARequest,
@@ -590,102 +506,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .main {
   @include main;
   &-white {
     @include main-white;
   }
 }
-/* Состояния шапки */
-.active {
-  &__wrapper {
-    display: flex;
-    flex-direction: row;
-  }
-  &__container {
-    display: flex;
-    flex-direction: row;
-    padding: 10px 0 10px 27%;
-    background-color:$green;
-    z-index: 10;
-    align-items: center;
-  }
-  &__text {
-    @include text-simple;
-    display: flex;
-    flex-direction: row;
-    font-size: 16px;
-    font-weight: 400;
-    color: $white;
-    z-index: 11;
-    justify-content: space-between;
-    &_left{
-    }
-    &_right{
-      font-weight: 600;
-      margin: 0 0 0 10px;
-    }
-  }
-}
-.response {
-  &__menu {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-  &__container {
-    background-color:$grey;
-    display: flex;
-    padding: 10px 0 10px 27%;
-    z-index: 10;
-  }
-  &__text {
-    @include text-simple;
-    display: flex;
-    font-size: 16px;
-    font-weight: 400;
-    color: $black600;
-    z-index: 11;
-  }
-  &__link {
-    margin: 0 15px 0 10px;
-    color: $blue;
-  }
-}
-
-.invited {
-  &__container {
-    background-color:$yellow;
-    display: flex;
-    padding: 10px 0 10px 27%;
-    z-index: 10;
-  }
-  &__text {
-    @include text-simple;
-    font-size: 16px;
-    font-weight: 400;
-    color: $white;
-    z-index: 11;
-  }
-}
-.performed {
-  &__container {
-    background-color:$blue;
-    display: flex;
-    padding: 10px 0 10px 27%;
-    z-index: 10;
-  }
-  &__text {
-    @include text-simple;
-    font-size: 16px;
-    font-weight: 400;
-    color: $white;
-    z-index: 11;
-  }
-}
-
 .btn {
   &__wrapper {
     width: 220px;
@@ -701,6 +528,9 @@ export default {
 }
 
 .icon{
+  &-chat_green{
+    margin-left: 10px;
+  }
   &__wrapper {
     margin: 0 0 0 25px;
   }
