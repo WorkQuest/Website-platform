@@ -85,15 +85,15 @@
           </div>
           <div class="block__text block__text_date">
             <div class="location">
-              <span class="icon-location"/>
+              <span class="icon-location" />
               <span class="block__text block__text_locate">{{ $t('meta.location') }}</span>
             </div>
             <div class="phone">
-              <span class="icon-phone"/>
+              <span class="icon-phone" />
               <span class="block__text block__text_phone">+7 989 989 98 98</span>
             </div>
             <div class="mail">
-              <span class="icon-mail"/>
+              <span class="icon-mail" />
               <span class="block__text block__text_mail">worker@gmail.com</span>
             </div>
           </div>

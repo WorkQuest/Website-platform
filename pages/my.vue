@@ -129,9 +129,13 @@
                       class="block__rating"
                     >
                       <div class="block__rating block__rating_star">
-                        <b-form-rating
-                          v-model="value"
-                        />
+                        <button
+                          @click="showReviewModal()"
+                        >
+                          <b-form-rating
+                            v-model="value"
+                          />
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -146,6 +150,8 @@
 </template>
 
 <script>
+
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'My',
@@ -270,6 +276,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    showReviewModal() {
+      this.ShowModal({
+        key: modals.review,
+      });
+    },
     isHideStar(type) {
       return !(type === 4 || type === 3);
     },
@@ -347,23 +358,23 @@ export default {
     justify-content: center;
   }
 
+  &__title {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    text-decoration: none;
+    height: 32px;
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 130%;
+    color: #1D2127;
+    padding: 30px 0;
+  }
+
   &__body {
     max-width: 1180px;
     width: 100%;
     height: 100%;
   }
-
-  //&__title {
-  //  font-family: 'Inter', sans-serif;
-  //  font-style: normal;
-  //  text-decoration: none;
-  //  height: 32px;
-  //  font-weight: 500;
-  //  font-size: 25px;
-  //  line-height: 130%;
-  //  color: #1D2127;
-  //  padding: 30px 0;
-  //}
 
   &__content {
     width: 80%;
@@ -622,10 +633,6 @@ export default {
       grid-template-columns: 30px 1fr;
       grid-gap: 10px;
       align-items: center;
-    }
-
-    &__details {
-      width: 120px;
     }
   }
 

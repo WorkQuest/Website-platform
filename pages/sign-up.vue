@@ -133,16 +133,19 @@ export default {
   },
   methods: {
     async signUp() {
-      // const role = this.$cookies.get('role');
-      const payload = {
-        firstName: this.model.firstName,
-        lastName: this.model.lastName,
-        email: this.model.email,
-        password: this.model.password,
-      };
-      const response = await this.$store.dispatch('user/signUp', payload);
-      if (response?.ok) {
-        this.showConfirmEmailModal();
+      try {
+        const payload = {
+          firstName: this.model.firstName,
+          lastName: this.model.lastName,
+          email: this.model.email,
+          password: this.model.password,
+        };
+        const response = await this.$store.dispatch('user/signUp', payload);
+        if (response?.ok) {
+          this.showConfirmEmailModal();
+        }
+      } catch (e) {
+        console.log(e);
       }
     },
     showConfirmEmailModal() {

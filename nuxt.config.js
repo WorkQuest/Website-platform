@@ -3,7 +3,7 @@ import localeEn from './locales/en.json';
 require('dotenv').config();
 
 export default {
-  ssr: 'false',
+  ssr: false,
   target: 'static',
   head: {
     title: 'WorkQuest',
@@ -54,7 +54,7 @@ export default {
     },
   },
   axios: {
-    baseURL: process.env.BASE_URL || 'https://app.workquest.co/api',
+    baseURL: process.env.BASE_URL,
   },
   // bootstrapVue: {
   //   // bootstrapCSS: false, // Or `css: false`

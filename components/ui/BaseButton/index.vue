@@ -53,6 +53,9 @@ export default {
         { 'base-btn_light': mode === 'light' },
         { 'base-btn_outline': mode === 'outline' },
         { 'base-btn_tag': mode === 'tag' },
+        { 'base-btn_agree': mode === 'agree' },
+        { 'base-btn_goToChat': mode === 'goToChat' },
+        { 'base-btn_dispute': mode === 'dispute' },
       ];
     },
   },
@@ -77,6 +80,33 @@ export default {
   border-radius: 6px;
   &:hover {
     background: #103D7C;
+  }
+  &_agree {
+    background-color: $green;
+    color: $white;
+  }
+  &_agree:hover {
+    background-color: $green;
+    color: $white;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+  }
+  &_goToChat {
+    background-color: $white;
+    color: $green;
+    border: 1px solid $black400;
+  }
+  &_goToChat:hover {
+    background-color: $white;
+    color: $green;
+    border: 1px solid $black600;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+  }
+  &_dispute {
+    background-color: $red;
+  }
+  &_dispute:hover {
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    background-color: $red;
   }
   &_disabled {
     pointer-events: none;

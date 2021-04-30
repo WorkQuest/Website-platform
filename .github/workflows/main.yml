@@ -26,7 +26,7 @@ jobs:
         run: npm install
 
       - name: Run generate static task
-        run: GMAPKEY=${{ secrets.GMAPKEY }} npm run generate
+        run: GMAPKEY=${{ secrets.GMAPKEY }} BASE_URL=${{ secrets.BASE_URL }} npm run generate
 
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v2.1.4
@@ -59,7 +59,7 @@ jobs:
         run: npm install
 
       - name: Run generate static task
-        run: GMAPKEY=${{ secrets.GMAPKEY }} npm run generate
+        run: GMAPKEY=${{ secrets.GMAPKEY }} BASE_URL=${{ secrets.BASE_URL }} npm run generate
 
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v2.1.4

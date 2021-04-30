@@ -68,16 +68,24 @@ export default {
     },
   },
   methods: {
-    hide() {
-      this.$cookies.set('role', this.options.role, { path: '/' });
-      const role = this.$cookies.get('role');
-      if (role === 'worker') {
-        this.$router.push('/quests');
+    async hide() {
+      try {
+        const payload = {
+          confirmCode: this.options.confirmCode,
+          role: this.options.role,
+        };
+        const response = await this.$store.dispatch('user/confirm', payload);
+        if (response?.ok) {
+          await this.$store.dispatch('main/showToast', {
+            title: 'Success',
+            text: 'Your account has been successfully verified',
+          });
+          this.$router.push('/sign-in');
+        }
+        this.CloseModal();
+      } catch (e) {
+        console.log(e);
       }
-      if (role === 'employer') {
-        this.$router.push('/workers');
-      }
-      this.CloseModal();
     },
   },
 };

@@ -17,8 +17,8 @@
     "bootstrap-vue": "^2.21.2",
     "cookie-universal-nuxt": "^2.1.4",
     "cross-env": "^7.0.3",
-    "eslint-config-airbnb-base": "^14.2.0",
     "nuxt": "^2.14.12",
+    "nuxt-dropzone": "^1.0.4",
     "nuxt-gmaps": "^1.2.10",
     "nuxt-i18n": "^6.13.12",
     "vee-validate": "^3.4.5",
@@ -33,9 +33,24 @@
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/style-resources": "^1.0.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.5.0",
+    "eslint": "^7.24.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-nuxt": "^1.0.0",
     "node-sass": "^4.14.1",
     "sass-loader": "^10.0.1"
-  }
+  },
+  "description": "> WorkQuest is a decentralized marketplace for work. Where employers can look for performers for different tasks, and workers perform. Work in any field with different deadlines, interactions occur through smart contracts.",
+  "main": ".eslintrc.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WorkQuest/Front-end-web-development.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WorkQuest/Front-end-web-development/issues"
+  },
+  "homepage": "https://github.com/WorkQuest/Front-end-web-development#readme"
 }
