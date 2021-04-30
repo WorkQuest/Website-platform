@@ -25,9 +25,10 @@
               </div>
             </div>
             <dropzone
-              id="foo"
+              id="uploader"
               ref="el"
               :options="options"
+              :include-styling="false"
             />
             <div class="btn__container">
               <div class="btn__wrapper">
