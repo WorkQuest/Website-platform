@@ -1,7 +1,5 @@
-/*
- * The MIT License
- * Copyright (c) 2012 Matias Meno <m@tias.me>
- */
+@import 'node_modules/nuxt-dropzone/dropzone.css';
+
 @-webkit-keyframes passing-through {
   0% {
     opacity: 0;
