@@ -133,7 +133,7 @@
                           @click="showReviewModal()"
                         >
                           <b-form-rating
-                            v-model="value"
+                            v-model="item.rating"
                           />
                         </button>
                       </div>
@@ -151,7 +151,10 @@
 
 <script>
 
+import Vue from 'vue';
 import modals from '~/store/modals/modals';
+
+const value = new Vue();
 
 export default {
   name: 'My',
@@ -192,7 +195,7 @@ export default {
           title: 'Samantha Sparks',
           favourite: false,
           isFavourite: false,
-          sub: '',
+          sub: 'from Amazon',
           background: require('~/assets/img/temp/fake-card.svg'),
           theme: 'Paint the garage quickly',
           desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
@@ -218,7 +221,7 @@ export default {
           title: 'Samantha Sparks',
           favourite: false,
           isFavourite: true,
-          sub: '',
+          sub: 'from Amazon',
           background: require('~/assets/img/temp/fake-card.svg'),
           theme: 'Paint the garage quickly',
           desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
@@ -231,7 +234,7 @@ export default {
           title: 'Samantha Sparks',
           favourite: false,
           isFavourite: true,
-          sub: '',
+          sub: 'from Amazon',
           background: require('~/assets/img/temp/fake-card.svg'),
           theme: 'Paint the garage quickly',
           desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
@@ -251,21 +254,21 @@ export default {
           priority: 0,
           amount: 1500,
           symbol: 'wusd',
-          value: '',
+          rating: '',
         },
         {
           type: 3,
           title: 'Samantha Sparks',
           favourite: false,
           isRating: false,
-          sub: '',
+          sub: 'from Amazon',
           background: require('~/assets/img/temp/fake-card.svg'),
           theme: 'Paint the garage quickly',
           desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
           priority: 0,
           amount: 1500,
           symbol: 'wusd',
-          value: '',
+          rating: '',
         },
       ],
     };
@@ -279,6 +282,7 @@ export default {
     showReviewModal() {
       this.ShowModal({
         key: modals.review,
+        rating: this.cards,
       });
     },
     isHideStar(type) {

@@ -177,15 +177,20 @@ a:focus, button:focus, input:focus, textarea:focus {
 }
 .form-control {
   display: grid;
+  grid-gap: 5px;
   justify-content: center;
   width: 100%;
   height: calc(1.5em + 0.75rem + 2px);
   padding: 0;
   font-size: 20px;
   font-weight: 400;
-  line-height:0;
   color: #E6EAEE;
   background-clip: padding-box;
   border: 0;
   border-radius: 0;
+}
+
+.b-rating .b-rating-star, .b-rating .b-rating-value {
+  padding: 0;
+  grid-gap: 5px;
 }

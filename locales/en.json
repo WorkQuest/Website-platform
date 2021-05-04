@@ -204,7 +204,9 @@
     "sendARequest": "Send a request",
     "message": "Message",
     "bodyMessage": "Hello",
-    "areYouSure": "Are You Sure?"
+    "areYouSure": "Are You Sure?",
+    "thanks": "Thanks",
+    "couple": "A couple words"
   },
   "ui": {
     "profile": {

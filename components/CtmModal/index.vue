@@ -20,6 +20,7 @@
       <CtmModalMessageSend v-if="modals.messageSend === currentModalKey" />
       <CtmModalSendARequest v-if="modals.sendARequest === currentModalKey" />
       <CtmModalRequestSend v-if="modals.requestSend === currentModalKey" />
+      <CtmModalThanksSend v-if="modals.thanks === currentModalKey" />
       <CtmModalQuestAgreed v-if="modals.questAgreed === currentModalKey" />
       <CtmModalAreYouSure v-if="modals.areYouSure === currentModalKey" />
       <CtmModalReviewEmployer v-if="modals.review === currentModalKey" />
@@ -37,6 +38,7 @@ import CtmModalSkills from './CtmModalSkills';
 import CtmModalMessageSend from './CtmModalMessageSend';
 import CtmModalSendARequest from './CtmModalSendARequest';
 import CtmModalRequestSend from './CtmModalRequestSend';
+import CtmModalThanksSend from './CtmModalThanksSend';
 import CtmModalQuestAgreed from './CtmModalQuestAgreed';
 import CtmModalAreYouSure from './CtmModalAreYouSure';
 import CtmModalReviewEmployer from './CtmModalReviewEmployer';
@@ -55,6 +57,7 @@ export default {
     CtmModalQuestAgreed,
     CtmModalAreYouSure,
     CtmModalReviewEmployer,
+    CtmModalThanksSend,
   },
   data: () => ({
     modals,

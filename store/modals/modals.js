@@ -12,4 +12,5 @@ export default {
   questAgreed: 'questAgreed',
   areYouSure: 'areYouSure',
   review: 'review',
+  thanks: 'Thanks ',
 };
