@@ -176,6 +176,7 @@
     "title": "Skills"
   },
   "quests": {
+    "MyQuests": "My quests",
     "activeQuest": "Active quest",
     "performanceTimer": "Performance timer",
     "questAmount": "quests",

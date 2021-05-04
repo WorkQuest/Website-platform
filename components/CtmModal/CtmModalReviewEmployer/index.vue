@@ -7,7 +7,7 @@
       <div class="btn-rating">
         <button>
           <b-form-rating
-            v-model="rating"
+            v-model="localRating"
           />
         </button>
       </div>
@@ -55,6 +55,7 @@
 
 <script>
 /* eslint-disable object-shorthand,no-var */
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import 'nuxt-dropzone/dropzone.css';
 
@@ -64,9 +65,17 @@ export default {
   data() {
     return {
       rating: '',
+      localRating: 0,
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+  },
+  mounted() {
+    this.localRating = JSON.parse(JSON.stringify(this.options.rating));
+  },
   methods: {
     hide() {
       this.CloseModal();
@@ -150,11 +159,17 @@ export default {
   }
 
   &__textarea {
+    border-radius: 6px;
     padding: 11px 20px 11px 15px;
     height: 214px;
     width: 100%;
-    border-color: $black100;
+    border: 0;
     background-color: $black0;
+    resize: none;
+
+    &::placeholder {
+      color: $black200;
+    }
   }
 }
 
@@ -180,12 +195,15 @@ export default {
     margin: 0 0 0 9% !important;
   }
 }
-.btn-rating{
+
+.btn-rating {
   padding: 25px 0;
 }
+
 .uploader__message_container {
   margin: 0 0 0 10% !important;
 }
+
 .form-control {
   padding: 0;
   height: 0 !important;

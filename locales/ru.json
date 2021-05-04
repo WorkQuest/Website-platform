@@ -153,6 +153,13 @@
     "title": "Skills"
   },
   "quests": {
+    "MyQuests": "Мои проекты",
+    "activeQuest": "Active quest",
+    "performanceTimer": "Performance timer",
+    "questAmount": "quests",
+    "otherQuestsSpec": "Other quests for the specialization",
+    "questMaterials": "Quest materials",
+    "runtime": "Runtime",
     "searchResults": "Search results",
     "type": "Type of job",
     "price": "Price",

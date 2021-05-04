@@ -3,7 +3,7 @@
     <div class="quests__container">
       <div class="quests__body">
         <div class="quests__title">
-          My quests
+          {{ $t('quests.MyQuests') }}
         </div>
         <div class="quests__content">
           <base-btn
@@ -130,7 +130,7 @@
                     >
                       <div class="block__rating block__rating_star">
                         <button
-                          @click="showReviewModal()"
+                          @click="showReviewModal(item.rating)"
                         >
                           <b-form-rating
                             v-model="item.rating"
@@ -279,10 +279,10 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    showReviewModal() {
+    showReviewModal(rating) {
       this.ShowModal({
         key: modals.review,
-        rating: this.cards,
+        rating,
       });
     },
     isHideStar(type) {

@@ -86,15 +86,15 @@
           <div class="block__text block__text_date">
             <div class="location">
               <span class="icon-location" />
-              <span class="block__text block__text_locate">{{ $t('meta.location') }}</span>
+              <span class="block__text block__text_locate">{{ item.location }}</span>
             </div>
             <div class="phone">
               <span class="icon-phone" />
-              <span class="block__text block__text_phone">+7 989 989 98 98</span>
+              <span class="block__text block__text_phone">{{ item.number }}</span>
             </div>
             <div class="mail">
               <span class="icon-mail" />
-              <span class="block__text block__text_mail">worker@gmail.com</span>
+              <span class="block__text block__text_mail">{{ item.email }}</span>
             </div>
           </div>
         </div>
@@ -140,6 +140,9 @@ export default {
           title: 'Rosalia Vans',
           level: 'HIGHER LEVEL',
           reviews: '23 reviews',
+          location: 'Moscow, Lenina street, 3d',
+          number: '+7 989 989 98 98',
+          email: 'worker@gmail.com',
           background: require('~/assets/img/temp/profile.svg'),
           desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel',
         },
