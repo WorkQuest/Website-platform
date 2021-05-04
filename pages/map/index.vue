@@ -469,6 +469,7 @@ export default {
     &_left {
       display: flex;
       flex-direction: row;
+      justify-content: end;
     }
     &_right {}
   }
