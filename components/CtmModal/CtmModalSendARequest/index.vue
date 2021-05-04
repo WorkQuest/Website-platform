@@ -14,21 +14,19 @@
               </p>
               <div>
                 <!-- Передать плейсхолдер из локацизации -->
-                <b-form-textarea
+                <textarea
                   id="textarea"
                   v-model="text"
                   class="message__textarea"
                   placeholder="Hello..."
-                  rows="3"
-                  max-rows="6"
                 />
               </div>
             </div>
             <dropzone
               id="uploader"
               ref="el"
-              :options="options"
-              :include-styling="false"
+              :options="optionsModal"
+              :include-styling="true"
             />
             <div class="btn__container">
               <div class="btn__wrapper">
@@ -61,6 +59,8 @@ import { mapGetters } from 'vuex';
 import Dropzone from 'nuxt-dropzone';
 import modals from '~/store/modals/modals';
 import 'nuxt-dropzone/dropzone.css';
+import '~/assets/scss/vue2Dropzone.min.css';
+import '~/assets/scss/dropzone.scss';
 
 export default {
   name: 'ModalSendARequest',
@@ -69,7 +69,8 @@ export default {
   },
   data() {
     return {
-      options: {
+      text: '',
+      optionsModal: {
         url: 'http://httpbin.org/anything',
         addRemoveLinks: true,
         dictRemoveFile: '<span class="icon-close_big_white"></span>',
@@ -150,9 +151,19 @@ export default {
   &__action {
     margin-top: 10px;
   }
+
   &__textarea {
-    border-color: $black100;
+    border-radius: 6px;
+    padding: 11px 20px 11px 15px;
+    height: 214px;
+    width: 100%;
+    border: 0;
     background-color: $black0;
+    resize: none;
+
+    &::placeholder {
+      color: $black200;
+    }
   }
 }
 .btn {
