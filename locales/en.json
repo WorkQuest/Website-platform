@@ -1,4 +1,26 @@
 {
+  "invite": {
+    "title": "Invited"
+  },
+  "response": {
+    "title": "Responded"
+  },
+  "active": {
+    "title": "Responded"
+  },
+  "company": {
+    "from": "from"
+  },
+  "performed": {
+    "title": "Performed"
+  },
+  "btn": {
+    "agree": "Agree",
+    "goToChat": "Go to chat",
+    "dispute":"Open dispute",
+    "responded": "Respond send"
+  },
+
   "messages": {
     "alpha": "The {_field_} field may only contain alphabetic characters",
     "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
@@ -89,7 +111,8 @@
     "save": "Save",
     "reset": "Reset",
     "fromYou": "from you",
-    "details": "View details"
+    "details": "View details",
+    "cancel": "Cancel"
   },
   "priority": {
     "low": "Low priority",
@@ -153,6 +176,12 @@
     "title": "Skills"
   },
   "quests": {
+    "activeQuest": "Active quest",
+    "performanceTimer": "Performance timer",
+    "questAmount": "quests",
+    "otherQuestsSpec": "Other quests for the specialization",
+    "questMaterials": "Quest materials",
+    "runtime": "Runtime",
     "searchResults": "Search results",
     "type": "Type of job",
     "price": "Price",
@@ -167,6 +196,15 @@
       "showMap": "Show map",
       "search": "City / Street / Place"
     }
+  },
+  "modals": {
+    "messageSend": "Message Send",
+    "questAgreed": "Quest Agreed",
+    "requestSend": "Request sent",
+    "sendARequest": "Send a request",
+    "message": "Message",
+    "bodyMessage": "Hello",
+    "areYouSure": "Are You Sure?"
   },
   "ui": {
     "profile": {

@@ -17,6 +17,11 @@
       <CtmModalChangePassword v-if="modals.changePassword === currentModalKey" />
       <CtmModalPrivacy v-if="modals.privacy === currentModalKey" />
       <CtmModalSkills v-if="modals.skills === currentModalKey" />
+      <CtmModalMessageSend v-if="modals.messageSend === currentModalKey" />
+      <CtmModalSendARequest v-if="modals.sendARequest === currentModalKey" />
+      <CtmModalRequestSend v-if="modals.requestSend === currentModalKey" />
+      <CtmModalQuestAgreed v-if="modals.questAgreed === currentModalKey" />
+      <CtmModalAreYouSure v-if="modals.areYouSure === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -28,6 +33,11 @@ import CtmModalChangePassword from './CtmModalChangePassword';
 import CtmModalRestore from './CtmModalRestore';
 import CtmModalPrivacy from './CtmModalPrivacy';
 import CtmModalSkills from './CtmModalSkills';
+import CtmModalMessageSend from './CtmModalMessageSend';
+import CtmModalSendARequest from './CtmModalSendARequest';
+import CtmModalRequestSend from './CtmModalRequestSend';
+import CtmModalQuestAgreed from './CtmModalQuestAgreed';
+import CtmModalAreYouSure from './CtmModalAreYouSure';
 
 export default {
   name: 'ModalBox',
@@ -37,6 +47,11 @@ export default {
     CtmModalChangePassword,
     CtmModalPrivacy,
     CtmModalSkills,
+    CtmModalMessageSend,
+    CtmModalSendARequest,
+    CtmModalRequestSend,
+    CtmModalQuestAgreed,
+    CtmModalAreYouSure,
   },
   data: () => ({
     modals,

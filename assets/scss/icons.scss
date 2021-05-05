@@ -290,6 +290,10 @@
   content: "\e948";
   color: #2e3a59;
 }
+.icon-close_big_white:before {
+  content: "\e948";
+  color: #FFFFFF;
+}
 .icon-close_small:before {
   content: "\e949";
   color: #2e3a59;
@@ -598,6 +602,11 @@
   content: "\e995";
   color: #2e3a59;
 }
+.icon-add_to_queue_blue:before {
+  content: "\e995";
+  color: #0083C7;
+  font-size: 20px;
+}
 .icon-copy:before {
   content: "\e996";
   color: #2e3a59;
@@ -745,6 +754,11 @@
 .icon-chat:before {
   content: "\e9ba";
   color: #2e3a59;
+}
+.icon-chat_green:before {
+  content: "\e9ba";
+  color: #00AA5B;
+  font-size: 20px;
 }
 .icon-message_check:before {
   content: "\e9bb";
@@ -1313,6 +1327,10 @@
 .icon-caret_down:before {
   content: "\ea48";
   color: #2e3a59;
+}
+.icon-caret_down_blue:before {
+  content: "\ea48";
+  color: #0083C7;
 }
 .icon-caret_left:before {
   content: "\ea49";
