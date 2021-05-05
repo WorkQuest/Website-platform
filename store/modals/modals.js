@@ -11,4 +11,6 @@ export default {
   requestSend: 'requestSend',
   questAgreed: 'questAgreed',
   areYouSure: 'areYouSure',
+  review: 'review',
+  thanks: 'Thanks ',
 };

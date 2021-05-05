@@ -14,7 +14,10 @@
         <div class="user__top">
           <div class="user__container">
             <div class="user__head">
-              <div class="user__left">
+              <div
+                class="user__left"
+                @click="showProfile()"
+              >
                 <img
                   class="user__img"
                   src="~/assets/img/app/fake_profile.png"
@@ -475,6 +478,9 @@ export default {
     toggleMap() {
       this.isInvite = !this.isShowMap;
     },
+    showProfile() {
+      this.$router.push('/show-profile');
+    },
     getPriority(index) {
       const priority = {
         0: this.$t('priority.low'),
@@ -608,6 +614,7 @@ export default {
   &__left {
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
   &__right {
     display: flex;
