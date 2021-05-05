@@ -50,6 +50,10 @@
       @click="showWidthrawModal()"
     >
       showWidthrawModal
+    <base-btn
+      @click="showThsanksModal()"
+    >
+      showThanksModal
     </base-btn>
   </div>
 </template>
@@ -111,6 +115,11 @@ export default {
     showAreYouSureModal() {
       this.ShowModal({
         key: modals.areYouSure,
+      });
+    },
+    showThanksModal() {
+      this.ShowModal({
+        key: modals.thanksSend,
       });
     },
   },

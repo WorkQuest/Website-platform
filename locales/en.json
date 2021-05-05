@@ -183,6 +183,7 @@
     "fromBig": "From",
     "reviews": "reviews",
     "reviewsBig": "Reviews",
+    "MyQuests": "My quests",
     "activeQuest": "Active quest",
     "activeQuests": "Active quests",
     "completedQuests": "Completed quests",
@@ -229,6 +230,8 @@
     "addAnotherCard": "Add another card",
     "widthraw": "Widthraw",
     "addCard": "Add Card"
+    "thanks": "Thanks",
+    "couple": "A couple words"
   },
   "ui": {
     "profile": {
@@ -252,6 +255,24 @@
     },
     "footer": {
       "rights": "All rights reserved"
+    }
+  },
+  "wallet": {
+    "wallet": "Wallet",
+    "balance": "Balance",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw",
+    "addCardProposal": "Add your own card for easy withdrawal",
+    "addCard": "Add card",
+    "table": {
+      "trx": "Transactions",
+      "txHash": "Tx hash",
+      "status": "Status",
+      "block": "Block",
+      "timestamp": "Timestamp",
+      "transferred": "Transferred",
+      "value": "Value",
+      "trxFee": "Transaction fee"
     }
   }
 }

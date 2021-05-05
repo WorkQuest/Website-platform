@@ -1,145 +1,120 @@
 <template>
-  <div class="quests">
-    <div class="quests__container">
-      <div class="quests__body">
-        <div class="quests__title">
-          {{ $t('quests.MyQuests') }}
-        </div>
-        <div class="quests__content">
-          <base-btn
-            v-for="item in tabs"
-            :key="item.id"
-            :mode="btnMode(item.id)"
-            class="content__btn"
-            @click="filterCards(item.id)"
-          >
-            {{ item.title }}
-          </base-btn>
-        </div>
-        <div class="quests__cards">
-          <div
-            v-for="item in filteredCards(selectedTab, isShowFavourite)"
-            :key="item.id"
-            class="quests__cards__all"
-          >
-            <div
-              class="quests__block block"
+  <div class="quests__cards">
+    <div
+      v-for="item in filteredCards(selectedTab, isShowFavourite)"
+      :key="item.id"
+      class="quests__cards__all"
+    >
+      <div
+        class="quests__block block"
+      >
+        <div class="block__left">
+          <div class="block__img">
+            <img
+              src="~/assets/img/temp/fake-card.svg"
+              class="quests__img image"
+              alt=""
             >
-              <div class="block__left">
-                <div class="block__img">
-                  <img
-                    src="~/assets/img/temp/fake-card.svg"
-                    class="quests__img image"
-                    alt=""
-                  >
-                </div>
-                <div
-                  class="quests__cards__state"
-                  :class="getStatusClass(item.type)"
+          </div>
+          <div
+            class="quests__cards__state"
+            :class="getStatusClass(item.type)"
+          >
+            {{ getStatusCard(item.type) }}
+          </div>
+        </div>
+        <div class="block__right">
+          <div class="block__head">
+            <div class="block__title">
+              <div
+                class="block__avatar"
+              >
+                <img
+                  :src="item.background"
+                  alt=""
                 >
-                  {{ getStatusCard(item.type) }}
-                </div>
               </div>
-              <div class="block__right">
-                <div class="block__head">
-                  <div class="block__title">
-                    <div
-                      class="block__avatar"
-                    >
-                      <img
-                        :src="item.background"
-                        alt=""
-                      >
-                    </div>
-                    <div class="block__text block__text_title">
-                      {{ item.title }}
-                      <span
-                        v-if="item.sub"
-                        class="block__text block__text_grey"
-                      >{{ item.sub }}</span>
-                    </div>
-                  </div>
-                  <div
-                    v-if="isHideStar(item.type)"
-                    class="block__icon block__icon_fav star"
-                    @click="item.isFavourite = !item.isFavourite"
-                  >
-                    <img
-                      class="star__hover"
-                      src="~assets/img/ui/star_hover.svg"
-                      alt=""
-                    >
-                    <img
-                      v-if="!item.isFavourite"
-                      class="star__default"
-                      src="~assets/img/ui/star_simple.svg"
-                      alt=""
-                    >
-                    <img
-                      v-if="item.isFavourite"
-                      class="star__checked"
-                      src="~assets/img/ui/star_checked.svg"
-                      alt=""
-                    >
-                  </div>
+              <div class="block__text block__text_title">
+                {{ item.title }}
+                <span
+                  v-if="item.sub"
+                  class="block__text block__text_grey"
+                >{{ item.sub }}</span>
+              </div>
+            </div>
+            <div
+              v-if="isHideStar(item.type)"
+              class="block__icon block__icon_fav star"
+              @click="item.isFavourite = !item.isFavourite"
+            >
+              <img
+                class="star__hover"
+                src="~assets/img/ui/star_hover.svg"
+                alt=""
+              >
+              <img
+                v-if="!item.isFavourite"
+                class="star__default"
+                src="~assets/img/ui/star_simple.svg"
+                alt=""
+              >
+              <img
+                v-if="item.isFavourite"
+                class="star__checked"
+                src="~assets/img/ui/star_checked.svg"
+                alt=""
+              >
+            </div>
+          </div>
+          <div class="block__locate">
+            <span class="icon-location"/>
+            <span class="block__text block__text_locate">200m {{ $t('meta.fromYou') }}</span>
+          </div>
+          <div class="block__text block__text_blue">
+            {{ item.theme }}
+          </div>
+          <div class="block__text block__text_desc">
+            {{ item.desc }}
+          </div>
+          <div class="block__actions">
+            <div
+              v-if="isHideStatus(item.type)"
+              class="block__status"
+            >
+              <div
+                class="block__priority"
+                :class="getPriorityClass(item.priority)"
+              >
+                {{ getPriority(item.priority) }}
+              </div>
+              <div class="block__amount_green">
+                {{ item.amount }} {{ item.symbol }}
+              </div>
+            </div>
+            <div
+              v-else
+              class="block__amount_gray"
+            >
+              {{ item.amount }} {{ item.symbol }}
+            </div>
+            <div class="block__details">
+              <button
+                v-if="item.type !== 3"
+                class="block__btn"
+              >
+                <div class="block__text block__text_details">
+                  {{ $t('meta.details') }}
                 </div>
-                <div class="block__locate">
-                  <span class="icon-location" />
-                  <span class="block__text block__text_locate">200m {{ $t('meta.fromYou') }}</span>
-                </div>
-                <div class="block__text block__text_blue">
-                  {{ item.theme }}
-                </div>
-                <div class="block__text block__text_desc">
-                  {{ item.desc }}
-                </div>
-                <div class="block__actions">
-                  <div
-                    v-if="isHideStatus(item.type)"
-                    class="block__status"
-                  >
-                    <div
-                      class="block__priority"
-                      :class="getPriorityClass(item.priority)"
-                    >
-                      {{ getPriority(item.priority) }}
-                    </div>
-                    <div class="block__amount_green">
-                      {{ item.amount }} {{ item.symbol }}
-                    </div>
-                  </div>
-                  <div
-                    v-else
-                    class="block__amount_gray"
-                  >
-                    {{ item.amount }} {{ item.symbol }}
-                  </div>
-                  <div class="block__details">
-                    <button
-                      v-if="item.type !== 3"
-                      class="block__btn"
-                      @click="showDetails()"
-                    >
-                      <div class="block__text block__text_details">
-                        {{ $t('meta.details') }}
-                      </div>
-                      <span class="icon-short_right" />
-                    </button>
-                    <div
-                      v-else
-                      class="block__rating"
-                    >
-                      <div class="block__rating block__rating_star">
-                        <button
-                          @click="showReviewModal(item.rating)"
-                        >
-                          <b-form-rating
-                            v-model="item.rating"
-                          />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                <span class="icon-short_right"/>
+              </button>
+              <div
+                v-else
+                class="block__rating"
+              >
+                <div class="block__rating block__rating_star">
+                  <b-form-rating
+                    v-model="value"
+                  />
                 </div>
               </div>
             </div>
@@ -152,51 +127,19 @@
 
 <script>
 
-import Vue from 'vue';
-import modals from '~/store/modals/modals';
-
-const value = new Vue();
-
 export default {
   name: 'My',
   data() {
     return {
       selectedTab: 0,
       isShowFavourite: false,
-      tabs: [
-        {
-          title: 'All quests',
-          id: 0,
-        },
-        {
-
-          title: 'Favorite',
-          id: 1,
-        },
-        {
-          title: 'Requested',
-          id: 2,
-        },
-        {
-          title: 'Performed quests',
-          id: 3,
-        },
-        {
-          title: 'Active quests',
-          id: 4,
-        },
-        {
-          title: 'Invited quests',
-          id: 5,
-        },
-      ],
       cards: [
         {
           type: 4,
           title: 'Samantha Sparks',
           favourite: false,
           isFavourite: false,
-          sub: 'from Amazon',
+          sub: '',
           background: require('~/assets/img/temp/fake-card.svg'),
           theme: 'Paint the garage quickly',
           desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
@@ -222,7 +165,7 @@ export default {
           title: 'Samantha Sparks',
           favourite: false,
           isFavourite: true,
-          sub: 'from Amazon',
+          sub: '',
           background: require('~/assets/img/temp/fake-card.svg'),
           theme: 'Paint the garage quickly',
           desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
@@ -235,7 +178,7 @@ export default {
           title: 'Samantha Sparks',
           favourite: false,
           isFavourite: true,
-          sub: 'from Amazon',
+          sub: '',
           background: require('~/assets/img/temp/fake-card.svg'),
           theme: 'Paint the garage quickly',
           desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
@@ -255,21 +198,21 @@ export default {
           priority: 0,
           amount: 1500,
           symbol: 'wusd',
-          rating: '',
+          value: null,
         },
         {
           type: 3,
           title: 'Samantha Sparks',
           favourite: false,
           isRating: false,
-          sub: 'from Amazon',
+          sub: '',
           background: require('~/assets/img/temp/fake-card.svg'),
           theme: 'Paint the garage quickly',
           desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
           priority: 0,
           amount: 1500,
           symbol: 'wusd',
-          rating: '',
+          value: null,
         },
       ],
     };
@@ -280,15 +223,6 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    showDetails() {
-      this.$router.push('/quests/1');
-    },
-    showReviewModal(rating) {
-      this.ShowModal({
-        key: modals.review,
-        rating,
-      });
-    },
     isHideStar(type) {
       return !(type === 4 || type === 3);
     },
@@ -364,18 +298,6 @@ export default {
   &__container {
     display: flex;
     justify-content: center;
-  }
-
-  &__title {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    text-decoration: none;
-    height: 32px;
-    font-weight: 500;
-    font-size: 25px;
-    line-height: 130%;
-    color: #1D2127;
-    padding: 30px 0;
   }
 
   &__body {
@@ -641,6 +563,10 @@ export default {
       grid-template-columns: 30px 1fr;
       grid-gap: 10px;
       align-items: center;
+    }
+
+    &__details {
+      width: 120px;
     }
   }
 
