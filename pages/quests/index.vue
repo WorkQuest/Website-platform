@@ -208,7 +208,10 @@
                   </div>
                 </div>
                 <div class="block__details">
-                  <button class="block__btn">
+                  <button
+                    class="block__btn"
+                    @click="showDetails()"
+                  >
                     <div class="block__text block__text_details">
                       {{ $t('meta.details') }}
                     </div>
@@ -303,6 +306,9 @@ export default {
   methods: {
     toggleMap() {
       this.isShowMap = !this.isShowMap;
+    },
+    showDetails() {
+      this.$router.push('/quests/1');
     },
     changeSorting(type) {
       if (type === 'price') {
