@@ -1092,4 +1092,14 @@ export default {
     color: $black800;
   }
 }
+
+.icon-chat_green:before {
+  content: "\e9ba";
+  color: #00AA5B;
+  font-size: 20px;
+}
+.icon-caret_down_blue:before {
+  content: "\ea48";
+  color: #0083C7;
+}
 </style>

@@ -188,4 +188,14 @@ export default {
 .uploader__message_container {
   margin: 0 0 0 10% !important;
 }
+
+.icon-close_big_white:before {
+  content: "\e948";
+  color: #FFFFFF;
+}
+.icon-add_to_queue_blue:before {
+  content: "\e995";
+  color: #0083C7;
+  font-size: 20px;
+}
 </style>
