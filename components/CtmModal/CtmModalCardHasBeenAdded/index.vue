@@ -7,11 +7,11 @@
       <div class="messageSend">
         <div class="messageSend__content">
           <img
-            src="~assets/img/ui/transactionSend.svg"
+            src="~assets/img/ui/cardHasBeenAdded.svg"
             alt="RequestSend"
           >
           <div class="ctm-modal__title">
-            {{ $t('modals.transactionSend') }}
+            {{ $t('modals.cardHasBeenAdded') }}
           </div>
           <div class="ctm-modal__desc">
             {{ modal.modalBody }}
@@ -32,7 +32,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'ModalTransactionSend',
+  name: 'ModalCardHasBeenAdded',
   data() {
     return {
       modal: {

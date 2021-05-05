@@ -11,4 +11,9 @@ export default {
   requestSend: 'requestSend',
   questAgreed: 'questAgreed',
   areYouSure: 'areYouSure',
+  transactionSend: 'transactionSend',
+  cardHasBeenAdded: 'cardHasBeenAdded',
+  deposit: 'deposit',
+  addCard: 'addCard',
+  widthraw: 'widthraw',
 };
