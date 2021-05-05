@@ -39,18 +39,5 @@
     "eslint-plugin-nuxt": "^1.0.0",
     "node-sass": "^4.14.1",
     "sass-loader": "^10.0.1"
-  },
-  "description": "> WorkQuest is a decentralized marketplace for work. Where employers can look for performers for different tasks, and workers perform. Work in any field with different deadlines, interactions occur through smart contracts.",
-  "main": ".eslintrc.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/WorkQuest/Front-end-web-development.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/WorkQuest/Front-end-web-development/issues"
-  },
-  "homepage": "https://github.com/WorkQuest/Front-end-web-development#readme"
+  }
 }
