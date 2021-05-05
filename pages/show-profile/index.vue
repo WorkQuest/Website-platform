@@ -176,7 +176,7 @@
 
         <div id="active-quests-grid">
           <div class="title">
-            Active quests
+            {{ $t('quests.activeQuests') }}
           </div>
 
           <div class="active-quests-item">
@@ -195,7 +195,7 @@
                 </div>
               </div>
               <div class="subheader">
-                200m from you
+                200m {{ $t('quests.fromYou') }}
               </div>
               <div class="quest-title">
                 <a href="#">Paint the garage quickly</a>
@@ -206,7 +206,7 @@
               <div class="footer">
                 <div class="priority">
                   <div class="text">
-                    Low priority
+                    {{ $t('priority.low') }}
                   </div>
                 </div>
                 <div class="cost -green">
@@ -218,7 +218,7 @@
               class="simple-button"
               href="#"
             >
-              View details
+              {{ $t('profile.details') }}
             </a>
             <div class="favorite" />
           </div>
@@ -227,7 +227,7 @@
             <a
               class="more-button"
               href="#"
-            >Show all reviews</a>
+            >{{ $t('meta.showAllReviews') }}</a>
           </div>
         </div>
       </div>
