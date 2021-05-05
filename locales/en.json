@@ -232,5 +232,23 @@
     "footer": {
       "rights": "All rights reserved"
     }
+  },
+  "wallet": {
+    "wallet": "Wallet",
+    "balance": "Balance",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw",
+    "addCardProposal": "Add your own card for easy withdrawal",
+    "addCard": "Add card",
+    "table": {
+      "trx": "Transactions",
+      "txHash": "Tx hash",
+      "status": "Status",
+      "block": "Block",
+      "timestamp": "Timestamp",
+      "transferred": "Transferred",
+      "value": "Value",
+      "trxFee": "Transaction fee"
+    }
   }
 }
