@@ -113,7 +113,8 @@
     "fromYou": "from you",
     "details": "View details",
     "cancel": "Cancel",
-    "submit": "Submit"
+    "submit": "Submit",
+    "showAllReviews": "Show all reviews"
   },
   "priority": {
     "low": "Low priority",
