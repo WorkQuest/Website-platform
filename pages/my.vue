@@ -118,6 +118,7 @@
                     <button
                       v-if="item.type !== 3"
                       class="block__btn"
+                      @click="showDetails()"
                     >
                       <div class="block__text block__text_details">
                         {{ $t('meta.details') }}
@@ -279,6 +280,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    showDetails() {
+      this.$router.push('/quests/1');
+    },
     showReviewModal(rating) {
       this.ShowModal({
         key: modals.review,
