@@ -4,7 +4,12 @@
       <span class="wallet__title">{{ $t('wallet.wallet') }}</span>
       <div class="wallet__address">
         <span>{{ userWallet }}</span>
-        <span class="icon-copy wallet__icon" />
+        <button
+          v-clipboard:copy="userWallet"
+          type="button"
+        >
+          <span class="icon-copy wallet__icon" />
+        </button>
       </div>
     </div>
     <div class="wallet__info">
@@ -31,7 +36,10 @@
         :class="{'card_closed' : cardClosed }"
       >
         <span class="card__title">{{ $t('wallet.addCardProposal') }}</span>
-        <span class="icon-close_big card__icon" />
+        <span
+          class="icon-close_big card__icon"
+          @click="closeCard()"
+        />
         <img
           src="/img/app/card.svg"
           alt="card"
@@ -46,7 +54,11 @@
       </div>
     </div>
     <div class="wallet__table">
-      <base-table :title="$t('wallet.table.trx')" />
+      <base-table
+        :title="$t('wallet.table.trx')"
+        :items="items"
+        :fields="testFields"
+      />
     </div>
   </div>
 </template>
@@ -57,6 +69,85 @@ export default {
     return {
       cardClosed: false,
       userWallet: '0xnf8o29837hrvbn42o37hsho3b74thb3',
+      items: [
+        {
+          tx_hash: 'sd535sd66sdsd',
+          status: 'Success',
+          block: '5267575474',
+          timestamp: 'Feb 1, 2021, 21:34',
+          transferred: 'To 2381hkjk123',
+          value: '120 WUSD',
+          transaction_fee: '5 WUSD',
+        },
+        {
+          tx_hash: 'sd535sd66sdsd',
+          status: 'Success',
+          block: '5267575474',
+          timestamp: 'Feb 1, 2021, 21:34',
+          transferred: 'To 2381hkjk123',
+          value: '120 WUSD',
+          transaction_fee: '5 WUSD',
+        },
+        {
+          tx_hash: 'sd535sd66sdsd',
+          status: 'Success',
+          block: '5267575474',
+          timestamp: 'Feb 1, 2021, 21:34',
+          transferred: 'To 2381hkjk123',
+          value: '120 WUSD',
+          transaction_fee: '5 WUSD',
+        },
+        {
+          tx_hash: 'sd535sd66sdsd',
+          status: 'Success',
+          block: '5267575474',
+          timestamp: 'Feb 1, 2021, 21:34',
+          transferred: 'To 2381hkjk123',
+          value: '120 WUSD',
+          transaction_fee: '5 WUSD',
+        },
+        {
+          tx_hash: 'sd535sd66sdsd',
+          status: 'Success',
+          block: '5267575474',
+          timestamp: 'Feb 1, 2021, 21:34',
+          transferred: 'To 2381hkjk123',
+          value: '120 WUSD',
+          transaction_fee: '5 WUSD',
+        },
+        {
+          tx_hash: 'sd535sd66sdsd',
+          status: 'Success',
+          block: '5267575474',
+          timestamp: 'Feb 1, 2021, 21:34',
+          transferred: 'To 2381hkjk123',
+          value: '120 WUSD',
+          transaction_fee: '5 WUSD',
+        },
+      ],
+      testFields: [
+        {
+          key: 'tx_hash', label: this.$t('wallet.table.txHash'), sortable: false,
+        },
+        {
+          key: 'status', label: this.$t('wallet.table.status'), sortable: false,
+        },
+        {
+          key: 'block', label: this.$t('wallet.table.block'), sortable: false,
+        },
+        {
+          key: 'timestamp', label: this.$t('wallet.table.timestamp'), sortable: false,
+        },
+        {
+          key: 'transferred', label: this.$t('wallet.table.transferred'), sortable: false,
+        },
+        {
+          key: 'value', label: this.$t('wallet.table.value'), sortable: false,
+        },
+        {
+          key: 'transaction_fee', label: this.$t('wallet.table.trxFee'), sortable: false,
+        },
+      ],
       userBalance: '1500',
       currency: 'WUSD',
       usd: '120.34',
@@ -65,6 +156,11 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
+  },
+  methods: {
+    closeCard() {
+      this.cardClosed = true;
+    },
   },
 };
 </script>
@@ -114,6 +210,7 @@ export default {
   background: $white;
   justify-content: space-between;
   border-radius: 6px;
+  width: 100%;
   min-width: 660px;
   padding: 20px;
 

@@ -1,7 +1,8 @@
 <template>
   <div class="table">
     <b-table
-      :items="testItems"
+      :items="items"
+      :fields="fields"
       borderless
       caption-top
       thead-class="table__header"
@@ -43,6 +44,10 @@ export default {
       default: '',
     },
     items: {
+      type: Array,
+      default: () => [],
+    },
+    fields: {
       type: Array,
       default: () => [],
     },
@@ -148,16 +153,14 @@ export default {
   }
 
   &__header {
+    @include text-simple;
     background: rgba(0, 131, 199, 0.1);
     height: 27px;
-    line-height: 27px;
+    line-height: 17px;
     color: $blue;
-    font-family: Inter;
     font-style: normal;
-    font-weight: normal;
     font-size: 12px;
-    line-height: 130%;
-    font-weight: 100;
+
   }
 
   &__row {
