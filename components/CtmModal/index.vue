@@ -23,6 +23,11 @@
       <CtmModalThanksSend v-if="modals.thanks === currentModalKey" />
       <CtmModalQuestAgreed v-if="modals.questAgreed === currentModalKey" />
       <CtmModalAreYouSure v-if="modals.areYouSure === currentModalKey" />
+      <CtmModalTransactionSend v-if="modals.transactionSend === currentModalKey" />
+      <CtmModalCardHasBeenAdded v-if="modals.cardHasBeenAdded === currentModalKey" />
+      <CtmModalDeposit v-if="modals.deposit === currentModalKey" />
+      <CtmModalAddCard v-if="modals.addCard === currentModalKey" />
+      <CtmModalWidthraw v-if="modals.widthraw === currentModalKey" />
       <CtmModalReviewEmployer v-if="modals.review === currentModalKey" />
     </div>
   </transition>
@@ -42,6 +47,11 @@ import CtmModalThanksSend from './CtmModalThanksSend';
 import CtmModalQuestAgreed from './CtmModalQuestAgreed';
 import CtmModalAreYouSure from './CtmModalAreYouSure';
 import CtmModalReviewEmployer from './CtmModalReviewEmployer';
+import CtmModalTransactionSend from './CtmModalTransactionSend';
+import CtmModalCardHasBeenAdded from './CtmModalCardHasBeenAdded';
+import CtmModalDeposit from './CtmModalDeposit';
+import CtmModalAddCard from './CtmModalAddCard';
+import CtmModalWidthraw from './CtmModalWidthraw';
 
 export default {
   name: 'ModalBox',
@@ -56,6 +66,11 @@ export default {
     CtmModalRequestSend,
     CtmModalQuestAgreed,
     CtmModalAreYouSure,
+    CtmModalTransactionSend,
+    CtmModalCardHasBeenAdded,
+    CtmModalDeposit,
+    CtmModalAddCard,
+    CtmModalWidthraw,
     CtmModalReviewEmployer,
     CtmModalThanksSend,
   },

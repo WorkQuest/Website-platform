@@ -112,7 +112,8 @@
     "reset": "Reset",
     "fromYou": "from you",
     "details": "View details",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "submit": "Submit"
   },
   "priority": {
     "low": "Low priority",
@@ -176,8 +177,19 @@
     "title": "Skills"
   },
   "quests": {
+    "readCompletely": "Read completely",
+    "questBig": "Quest",
+    "fromBig": "From",
+    "reviews": "reviews",
+    "reviewsBig": "Reviews",
     "MyQuests": "My quests",
     "activeQuest": "Active quest",
+    "activeQuests": "Active quests",
+    "completedQuests": "Completed quests",
+    "oneTime": "One time",
+    "fullTime": "Full time",
+    "averageRating": "Average rating",
+    "showAllActiveQuests": "Show all active quests",
     "performanceTimer": "Performance timer",
     "questAmount": "quests",
     "otherQuestsSpec": "Other quests for the specialization",
@@ -199,6 +211,7 @@
     }
   },
   "modals": {
+    "amount": "Amount",
     "messageSend": "Message Send",
     "questAgreed": "Quest Agreed",
     "requestSend": "Request sent",
@@ -208,6 +221,17 @@
     "areYouSure": "Are You Sure?",
     "thanks": "Thanks",
     "couple": "A couple words"
+    "areYouSure": "Are You Sure?",
+    "transactionSend": "Transaction send",
+    "cardHasBeenAdded": "Card has been added",
+    "deposit": "Deposit",
+    "numberOfCard": "Number of card",
+    "date": "Date",
+    "cvv": "CVV",
+    "cardholderName": "Cardholder name",
+    "addAnotherCard": "Add another card",
+    "widthraw": "Widthraw",
+    "addCard": "Add Card"
   },
   "ui": {
     "profile": {
