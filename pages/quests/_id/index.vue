@@ -20,33 +20,29 @@
                   src="~/assets/img/app/fake_profile.png"
                   alt=""
                 >
-                <p class="user__username">
+                <span class="user__username">
                   {{ payload.username }}
-                </p>
-                <p
+                </span>
+                <span
                   v-if="userRole === 'employer'"
                   class="user__company"
                 >
                   {{ $t('company.from') }} {{ payload.company }}
-                </p>
+                </span>
               </div>
               <div class="user__right">
-                <p class="user__date">
+                <span class="user__date">
                   {{ payload.date }}
-                </p>
-                <div class="icon__wrapper">
-                  <span class="icon-share_outline" />
-                </div>
+                </span>
+                <span class="icon-share_outline icon_fs-20 icon_mar-l-15" />
               </div>
             </div>
             <div class="location__container">
               <div class="quest__location">
-                <div class="icon__wrapper0">
-                  <span
-                    class="icon-location"
-                  />
-                </div>
-                <p>{{ payload.location }}</p>
+                <span
+                  class="icon-location icon_fs-20 icon_mar-r-9"
+                />
+                <span>{{ payload.location }}</span>
               </div>
               <span
                 class="user__distance"
@@ -57,10 +53,8 @@
                 v-if="userRole === 'worker'"
                 class="runtime__container"
               >
-                <div class="icon__wrapper0">
-                  <span class="icon-clock" />
-                </div>
-                <p>Runtime</p>
+                <span class="icon-clock icon_fs-16 icon_mar-r-5" />
+                <span>Runtime</span>
                 <span
                   class="runtime__link"
                 >
@@ -71,12 +65,10 @@
                 v-if="userRole === 'employer'"
                 class="runtime__container"
               >
-                <div class="icon__wrapper0">
-                  <span class="icon-clock" />
-                </div>
-                <p class="performance__title">
+                <span class="icon-clock icon_fs-16 icon_mar-r-5" />
+                <span class="performance__title">
                   {{ $t('quests.performanceTimer') }}
-                </p>
+                </span>
                 <span
                   class="runtime__link"
                 >
@@ -101,11 +93,11 @@
           <h2 class="quest__title">
             {{ payload.title }}
           </h2>
-          <p class="quest__description">
+          <span class="quest__description">
             {{ payload.body }}
-          </p>
+          </span>
         </div>
-        <hr class="hr__line">
+        <div class="divider" />
         <div class="quest_materials__container">
           <h2 class="quest_materials__title">
             {{ $t('quests.questMaterials') }}
@@ -119,7 +111,7 @@
               alt=""
             >
           </div>
-          <hr>
+          <div class="divider" />
           <div
             v-for="(mode, i) in mods"
             :key="i"
@@ -142,13 +134,13 @@
                   class="base-btn_goToChat"
                 >
                   {{ $t('btn.goToChat') }}
-                  <span class="icon-chat_green" />
+                  <span class="icon-chat icon_fs-20 icon_mar-l-12" />
                 </base-btn>
               </div>
             </div>
             <!-- activeQuest -->
             <div
-              v-if="mode.active"
+              v-else-if="mode.active"
               class="buttons__wrapper"
             >
               <div class="btn__wrapper">
@@ -163,13 +155,13 @@
                   class="base-btn_goToChat"
                 >
                   {{ $t('btn.goToChat') }}
-                  <span class="icon-chat_green" />
+                  <span class="icon-chat icon_fs-20 icon_mar-l-12" />
                 </base-btn>
               </div>
             </div>
             <!-- responded -->
             <div
-              v-if="mode.response"
+              v-else-if="mode.response"
               class="buttons__wrapper"
             >
               <div class="btn__wrapper">
@@ -182,7 +174,7 @@
             </div>
             <!-- performed -->
             <div
-              v-if="mode.performed"
+              v-else-if="mode.performed"
               class="buttons__wrapper"
             />
             <div
@@ -190,10 +182,10 @@
               class="btn__wrapper"
             >
               <base-btn
-                :disabled="hasRequest === true"
+                :disabled="info.hasRequest === true"
                 @click="showMessageModal()"
               >
-                <p v-if="hasRequest === true">
+                <p v-if="info.hasRequest === true">
                   {{ $t('modals.requestSend') }}
                 </p>
                 <p v-else>
@@ -202,9 +194,9 @@
               </base-btn>
             </div>
             <div class="price__wrapperValue">
-              <p class="price__value">
+              <span class="price__value">
                 {{ payload.price }}
-              </p>
+              </span>
               <div class="badge__wrapper">
                 <span class="badge__item_green">{{ payload.badgeGreen }}</span>
               </div>
@@ -339,7 +331,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import Info from '~/components/app/Info';
+import Info from '~/components/app/Info/index.vue';
 
 export default {
   name: 'Quests',
@@ -354,6 +346,26 @@ export default {
         response: false,
         performed: false,
       }],
+      info: {
+        mode: 'active',
+        date: '15:30:20',
+        hasRequest: 'false',
+      },
+      infoList: [
+        {
+          mode: 'active',
+          date: '15:30:20',
+        },
+        {
+          mode: 'invited',
+        },
+        {
+          mode: 'response',
+        },
+        {
+          mode: 'performed',
+        },
+      ],
       payload: {
         type: 'active',
         cards: [
@@ -411,26 +423,6 @@ export default {
           },
         ],
       },
-      info: {
-        mode: 'active',
-        date: '15:30:20',
-      },
-      infoList: [
-        {
-          mode: 'active',
-          date: '15:30:20',
-        },
-        {
-          mode: 'invited',
-        },
-        {
-          mode: 'response',
-        },
-        {
-          mode: 'performed',
-        },
-      ],
-      hasRequest: false,
       isShowMap: true,
       distance: [
         '+ 100 m',
@@ -509,6 +501,41 @@ export default {
 </script>
 
 <style lang="scss">
+.icon {
+  &_fs-20 {
+    font-size: 20px;
+  }
+  &_fs-16 {
+    font-size: 16px;
+  }
+  &_fs-12 {
+    font-size: 12px;
+  }
+  &_mar-l-12 {
+    margin: 0 0 0 12px;
+  }
+  &_mar-l-15 {
+    margin: 0 0 0 15px;
+  }
+  &_mar-r-9 {
+    margin: 0 9px 0 0;
+  }
+  &_mar-r-5 {
+    margin: 5px 0 0 0;
+  }
+  &-chat::before {
+  color:$green;
+  }
+  &-location::before {
+    color:$black500;
+  }
+}
+.divider{
+  margin: 20px 0 20px 0;
+  background-color: $black0;
+  width:100%;
+  height: 1px;
+}
 .main {
   @include main;
   &-white {
@@ -529,21 +556,6 @@ export default {
   }
 }
 
-.icon{
-  &-chat_green{
-    margin-left: 10px;
-  }
-  &__wrapper {
-    margin: 0 0 0 25px;
-  }
-  &__wrapper0 {
-    margin: 0 6px 0 0;
-    span::before {
-      color: $black500;
-      font-size: 20px;
-    }
-  }
-}
 .badge-list{
   display: flex;
   flex-direction: row;
@@ -799,9 +811,6 @@ export default {
     cursor: pointer;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
   }
-}
-.hr{
-  &__line{}
 }
 
 .star {
@@ -1082,5 +1091,15 @@ export default {
     text-align: center;
     color: $black800;
   }
+}
+
+.icon-chat_green:before {
+  content: "\e9ba";
+  color: #00AA5B;
+  font-size: 20px;
+}
+.icon-caret_down_blue:before {
+  content: "\ea48";
+  color: #0083C7;
 }
 </style>
