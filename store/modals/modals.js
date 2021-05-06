@@ -16,4 +16,6 @@ export default {
   deposit: 'deposit',
   addCard: 'addCard',
   widthraw: 'widthraw',
+  review: 'review',
+  thanks: 'Thanks ',
 };

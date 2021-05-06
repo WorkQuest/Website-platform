@@ -23,6 +23,7 @@ export default {
     { src: '@plugins/axios.js' },
     { src: '@plugins/main.js' },
     { src: '@plugins/vee-validate.js' },
+    { src: '@plugins/clipboard.js' },
     { src: '@plugins/injectComponents.js' },
   ],
   components: true,

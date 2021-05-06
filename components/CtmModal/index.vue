@@ -20,6 +20,7 @@
       <CtmModalMessageSend v-if="modals.messageSend === currentModalKey" />
       <CtmModalSendARequest v-if="modals.sendARequest === currentModalKey" />
       <CtmModalRequestSend v-if="modals.requestSend === currentModalKey" />
+      <CtmModalThanksSend v-if="modals.thanks === currentModalKey" />
       <CtmModalQuestAgreed v-if="modals.questAgreed === currentModalKey" />
       <CtmModalAreYouSure v-if="modals.areYouSure === currentModalKey" />
       <CtmModalTransactionSend v-if="modals.transactionSend === currentModalKey" />
@@ -27,6 +28,7 @@
       <CtmModalDeposit v-if="modals.deposit === currentModalKey" />
       <CtmModalAddCard v-if="modals.addCard === currentModalKey" />
       <CtmModalWidthraw v-if="modals.widthraw === currentModalKey" />
+      <CtmModalReviewEmployer v-if="modals.review === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -41,6 +43,7 @@ import CtmModalSkills from './CtmModalSkills';
 import CtmModalMessageSend from './CtmModalMessageSend';
 import CtmModalSendARequest from './CtmModalSendARequest';
 import CtmModalRequestSend from './CtmModalRequestSend';
+import CtmModalThanksSend from './CtmModalThanksSend';
 import CtmModalQuestAgreed from './CtmModalQuestAgreed';
 import CtmModalAreYouSure from './CtmModalAreYouSure';
 import CtmModalTransactionSend from './CtmModalTransactionSend';
@@ -48,6 +51,7 @@ import CtmModalCardHasBeenAdded from './CtmModalCardHasBeenAdded';
 import CtmModalDeposit from './CtmModalDeposit';
 import CtmModalAddCard from './CtmModalAddCard';
 import CtmModalWidthraw from './CtmModalWidthraw';
+import CtmModalReviewEmployer from './CtmModalReviewEmployer';
 
 export default {
   name: 'ModalBox',
@@ -67,6 +71,8 @@ export default {
     CtmModalDeposit,
     CtmModalAddCard,
     CtmModalWidthraw,
+    CtmModalReviewEmployer,
+    CtmModalThanksSend,
   },
   data: () => ({
     modals,
