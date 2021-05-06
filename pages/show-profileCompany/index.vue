@@ -28,6 +28,9 @@
             <div class="title">
               {{ payload.user.name }}
             </div>
+            <div class="subtitle">
+              {{ payload.user.company }}
+            </div>
             <div class="description">
               {{ payload.user.desc }}
             </div>
@@ -63,6 +66,7 @@
               <span class="icon-location" /><span class="contact__link">{{ payload.user.location }}</span>
               <span class="icon-phone" /><span class="contact__link">{{ payload.user.tel }}</span>
               <span class="icon-mail" /><span class="contact__link">{{ payload.user.email }}</span>
+              <div><span class="icon-Earth" /><span class="contact__link">amazon.com</span></div>
             </div>
           </div>
 
@@ -80,7 +84,7 @@
             <div class="card-title">
               {{ $t('quests.activeQuests') }}
             </div>
-            <div class="number -green">
+            <div class="number number_green">
               {{ payload.quests.activeQuests }}
             </div>
             <a
@@ -114,7 +118,7 @@
             <div class="card-title">
               {{ $t('quests.averageRating') }}
             </div>
-            <div class="number -raiting">
+            <div class="number number__rating">
               {{ payload.quests.averageRating }}
             </div>
             <div class="card-subtitle">
@@ -174,14 +178,106 @@
           </span>
         </div>
         <!-- ACTIVE -->
+        <div class="quest__card">
+          <!-- Cards -->
+          <div class="quests__cards">
+            <div
+              v-for="(item, i) in payload.cards"
+              :key="i"
+              class="quests__block block"
+            >
+              <div class="block__left">
+                <div class="block__img">
+                  <img
+                    src="~/assets/img/temp/avatar.jpg"
+                    alt=""
+                  >
+                </div>
+              </div>
+              <div class="block__right">
+                <div class="block__head">
+                  <div class="block__title">
+                    <div class="block__avatar">
+                      <img
+                        :src="item.background"
+                        alt=""
+                      >
+                    </div>
+                    <div class="block__text block__text_title">
+                      {{ item.title }}
+                      <span
+                        v-if="item.sub"
+                        class="block__text block__text_grey"
+                      >{{ item.sub }}</span>
+                    </div>
+                  </div>
+                  <div
+                    class="block__icon block__icon_fav star"
+                    @click="item.favourite = !item.favourite"
+                  >
+                    <img
+                      class="star__hover"
+                      src="~assets/img/ui/star_hover.svg"
+                      alt=""
+                    >
+                    <img
+                      v-if="!item.favourite"
+                      class="star__default"
+                      src="~assets/img/ui/star_simple.svg"
+                      alt=""
+                    >
+                    <img
+                      v-if="item.favourite"
+                      class="star__checked"
+                      src="~assets/img/ui/star_checked.svg"
+                      alt=""
+                    >
+                  </div>
+                </div>
+                <div class="block__locate">
+                  <span class="icon-location" />
+                  <span class="block__text block__text_locate">{{ payload.distance }}m {{ $t('meta.fromYou') }}</span>
+                </div>
+                <div class="block__text block__text_blue">
+                  {{ item.theme }}
+                </div>
+                <div class="block__text block__text_desc">
+                  {{ item.desc }}
+                </div>
+                <div class="block__actions">
+                  <div class="block__status">
+                    <div
+                      class="block__priority"
+                      :class="getPriorityClass(item.priority)"
+                    >
+                      {{ getPriority(item.priority) }}
+                    </div>
+                    <div class="block__amount">
+                      {{ item.amount }} {{ item.symbol }}
+                    </div>
+                  </div>
+                  <div class="block__details">
+                    <button class="block__btn">
+                      <div class="block__text block__text_details">
+                        {{ $t('meta.details') }}
+                      </div>
+                      <span class="icon-short_right" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div id="active-quests-grid">
           <div class="title">
             {{ $t('quests.activeQuests') }}
           </div>
+
           <div class="active-quests-item">
             <img
-              src="~assets/img/temp/fake-card.svg"
+              src="~/assets/img/temp/fake-card.svg"
               alt=""
             >
             <div class="inner">
@@ -241,11 +337,12 @@ export default {
     return {
       payload: {
         user: {
-          name: 'Samantha Sparcs',
+          name: 'Edward Cooper',
           desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel',
           location: 'Moscow, Lenina street, 3',
           tel: '+7 989 989 98 98',
           email: 'worker@gmail.com',
+          company: 'CEO from Amazon',
         },
         quests: {
           activeQuests: '12',
@@ -255,6 +352,24 @@ export default {
           reviewCount: '23',
         },
         reviews: [
+          {
+            reviewerName: 'Edward Cooper',
+            reviewerRating: '4.00',
+            questName: 'SPA saloon design',
+            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
+          },
+          {
+            reviewerName: 'Edward Cooper',
+            reviewerRating: '4.00',
+            questName: 'SPA saloon design',
+            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
+          },
+          {
+            reviewerName: 'Edward Cooper',
+            reviewerRating: '4.00',
+            questName: 'SPA saloon design',
+            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
+          },
           {
             reviewerName: 'Edward Cooper',
             reviewerRating: '4.00',
@@ -291,6 +406,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.number {
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 130%;
+  color: #0083C7;
+  margin: 9px 0;
+  &_green {
+    color: #00AA5B !important;
+  }
+  &__rating {
+    color: #353C47;
+    background-image: url("data:image/svg+xml,%3Csvg width='28' height='26' viewBox='0 0 28 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a             %3Cpath d='M14 0.5L18.1145 8.83688L27.3148 10.1738L20.6574 16.6631L22.229 25.8262L14 21.5L5.77101 25.8262L7.3426 16.6631L0.685208 10.1738L9.8855 8.83688L14 0.5Z' fill='%23E8D20D'/%3E\a             %3C/svg%3E                           \a             ");
+    background-position: 55px 4px;
+    background-repeat: no-repeat;
+  }
+}
 
 .block {
   background: #FFFFFF;
@@ -489,6 +621,30 @@ export default {
   }
   &__card {
     color:$black800;
+  }
+}
+
+.social {
+  &__link {
+    text-decoration: none;
+  }
+}
+
+.icon {
+  &-facebook::before {
+    color: #0A7EEA;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  &-twitter::before {
+    color: #24CAFF;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  &-instagram::before {
+    color: #C540F3;
+    font-size: 20px;
+    cursor: pointer;
   }
 }
 
@@ -867,21 +1023,6 @@ table {
   padding: 20px;
 }
 
-#information-section #data-grid .data-item .number {
-  font-weight: bold;
-  font-size: 30px;
-  line-height: 130%;
-  color: #0083C7;
-  margin: 9px 0;
-}
-
-#information-section #data-grid .data-item .number.-raiting {
-  color: #353C47;
-  background-image: url("data:image/svg+xml,%3Csvg width='28' height='26' viewBox='0 0 28 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a             %3Cpath d='M14 0.5L18.1145 8.83688L27.3148 10.1738L20.6574 16.6631L22.229 25.8262L14 21.5L5.77101 25.8262L7.3426 16.6631L0.685208 10.1738L9.8855 8.83688L14 0.5Z' fill='%23E8D20D'/%3E\a             %3C/svg%3E                           \a             ");
-  background-position: 55px 4px;
-  background-repeat: no-repeat;
-}
-
 #information-section #reviews-grid {
   padding-bottom: 20px;
   display: grid;
@@ -1147,6 +1288,13 @@ table {
   font-size: 20px;
   line-height: 130%;
   color: #1D2127;
+}
+.subtitle {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  color: $black500;
   margin: 0 0 20px 0;
 }
 
@@ -1176,11 +1324,6 @@ a:hover {
   -webkit-transition: opacity 0.3s;
   transition: opacity 0.3s;
 }
-
-.-green {
-  color: #00AA5B !important;
-}
-
 .simple-button {
   font-size: 16px;
   line-height: 130%;
