@@ -7,7 +7,7 @@
       <div class="messageSend">
         <div class="messageSend__content">
           <img
-            src="~assets/img/ui/message.svg"
+            src="~/assets/img/ui/message.svg"
             alt="MessageSend"
           >
           <div class="ctm-modal__title">
