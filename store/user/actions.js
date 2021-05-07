@@ -7,6 +7,7 @@ export default {
   },
   async signUp({ commit }, payload) {
     const response = await this.$axios.$post('/v1/auth/register', payload);
+    commit('setNewTokens', response.result);
     return response;
   },
   async confirm({ commit }, payload) {
