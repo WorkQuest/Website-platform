@@ -20,7 +20,7 @@
             <base-field
               v-model="balance_input"
               :placeholder="'$ 0'"
-              :mode="'white'"
+              mode="white"
             />
           </div>
         </div>
