@@ -149,18 +149,28 @@
               <div class="block__head">
                 <div class="block__title">
                   <div class="block__avatar">
-                    <img
-                      :src="item.background"
-                      alt=""
+                    <nuxt-link
+                      class="link"
+                      :to="item.url"
                     >
+                      <img
+                        :src="item.background"
+                        alt=""
+                      >
+                    </nuxt-link>
                   </div>
-                  <div class="block__text block__text_title">
-                    {{ item.title }}
-                    <span
-                      v-if="item.sub"
-                      class="block__text block__text_grey"
-                    >{{ item.sub }}</span>
-                  </div>
+                  <nuxt-link
+                    class="link"
+                    :to="item.url"
+                  >
+                    <div class="block__text block__text_title">
+                      {{ item.title }}
+                      <span
+                        v-if="item.sub"
+                        class="block__text block__text_grey"
+                      >{{ item.sub }}</span>
+                    </div>
+                  </nuxt-link>
                 </div>
                 <div
                   class="block__icon block__icon_fav star"
@@ -268,6 +278,7 @@ export default {
           priority: 0,
           amount: 1500,
           symbol: 'wusd',
+          url: '/show-profile',
         },
         {
           title: 'Samantha Sparks',
@@ -279,6 +290,7 @@ export default {
           priority: 1,
           amount: 1100,
           symbol: 'wusd',
+          url: '/show-profileCompany',
         },
         {
           title: 'Samantha Sparks',
@@ -290,6 +302,7 @@ export default {
           priority: 2,
           amount: 1700,
           symbol: 'wusd',
+          url: '/show-profileCompany',
         },
       ],
     };
@@ -348,6 +361,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.link {
+  cursor: pointer;
+}
+.link:hover {
+  cursor: pointer;
+}
 .star {
   &__default {
     display: flex;
