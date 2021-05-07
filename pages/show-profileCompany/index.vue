@@ -90,7 +90,7 @@
               {{ payload.quests.activeQuests }}
             </div>
             <a
-              class="card-subtitle -green"
+              class="card-subtitle card-subtitle_green"
               href="#"
             >{{ $t('quests.showAllActiveQuests') }}</a>
           </div>
@@ -150,7 +150,7 @@
                   <div class="title">
                     {{ item.reviewerName }}
                   </div>
-                  <div class="card-subtitle -green">
+                  <div class="card-subtitle card-subtitle_green">
                     {{ $t('role.worker') }}
                   </div>
                 </div>
@@ -414,6 +414,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.card-subtitle {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 130%;
+  color: #4C5767;
+  &_green {
+    color: #00AA5B !important;
+  }
+}
 
 .number {
   font-weight: bold;
@@ -1301,6 +1311,7 @@ table {
   font-size: 20px;
   line-height: 130%;
   color: #1D2127;
+  margin-bottom: 10px;
 }
 .subtitle {
   font-style: normal;
@@ -1323,13 +1334,6 @@ table {
   font-size: 16px;
   line-height: 130%;
   color: #1D2127;
-}
-
-.card-subtitle {
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 130%;
-  color: #4C5767;
 }
 
 a:hover {
