@@ -50,6 +50,11 @@
       @click="showWidthrawModal()"
     >
       showWidthrawModal
+      <base-btn
+        @click="showThanksModal()"
+      >
+        showThanksModal
+      </base-btn>
     </base-btn>
     <base-btn
       @click="showThsanksModal()"
@@ -120,7 +125,7 @@ export default {
     },
     showThanksModal() {
       this.ShowModal({
-        key: modals.thanksSend,
+        key: modals.thanks,
       });
     },
   },

@@ -23,10 +23,14 @@
           <base-button
             mode="outline"
             class="balance__btn"
+            @click="showDepositModal()"
           >
             {{ $t('wallet.deposit') }}
           </base-button>
-          <base-button class="balance__btn">
+          <base-button
+            class="balance__btn"
+            @click="showWidthrawModal()"
+          >
             {{ $t('wallet.withdraw') }}
           </base-button>
         </div>
@@ -48,6 +52,7 @@
         <base-button
           class="card__btn"
           mode="outline"
+          @click="showAddCardModal()"
         >
           {{ $t('wallet.addCard') }}
         </base-button>
@@ -64,6 +69,8 @@
 </template>
 
 <script>
+import modals from '~/store/modals/modals';
+
 export default {
   data() {
     return {
@@ -160,6 +167,21 @@ export default {
   methods: {
     closeCard() {
       this.cardClosed = true;
+    },
+    showDepositModal() {
+      this.ShowModal({
+        key: modals.deposit,
+      });
+    },
+    showWidthrawModal() {
+      this.ShowModal({
+        key: modals.widthraw,
+      });
+    },
+    showAddCardModal() {
+      this.ShowModal({
+        key: modals.addCard,
+      });
     },
   },
 };
