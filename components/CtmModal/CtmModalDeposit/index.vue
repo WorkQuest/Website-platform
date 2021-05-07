@@ -8,45 +8,43 @@
         <div class="grid__3col">
           <div class="ctm-modal__content-field">
             <label for="date_input">{{ $t('modals.amount') }}</label>
-            <input
-              id="amount_input"
-              class="input_grey"
-              placeholder="02/24"
-            >
+            <base-field
+              v-model="amount_input"
+              :placeholder="'02/24'"
+            />
           </div>
           <div class="ctm-modal__equal">
             =
           </div>
           <div class="ctm-modal__content-field">
-            <input
-              class="input_white"
-              placeholder="$ 0"
-            >
+            <base-field
+              v-model="balance_input"
+              :placeholder="'$ 0'"
+              :mode="'white'"
+            />
           </div>
         </div>
         <div class="ctm-modal__content-field">
           <label for="cardNumber_input">{{ $t('modals.numberOfCard') }}</label>
-          <input
-            class="input_grey"
-            placeholder="1234 1234 1234 1234"
-          >
+          <base-field
+            v-model="cardNumber_input"
+            :placeholder="'1234 1234 1234 1234'"
+          />
         </div>
         <div class="grid__2col">
           <div class="ctm-modal__content-field">
             <label for="date_input">{{ $t('modals.date') }}</label>
-            <input
-              id="date_input"
-              class="input_grey"
-              placeholder="02/24"
-            >
+            <base-field
+              v-model="date_input"
+              :placeholder="'02/24'"
+            />
           </div>
           <div class="ctm-modal__content-field">
             <label for="cvv_input">{{ $t('modals.cvv') }}</label>
-            <input
-              id="cvv_input"
-              class="input_grey"
-              placeholder="242"
-            >
+            <base-field
+              v-model="cvv_input"
+              :placeholder="'242'"
+            />
           </div>
         </div>
         <div class="btn__container">
@@ -79,7 +77,13 @@ import modals from '~/store/modals/modals';
 export default {
   name: 'ModalDeposit',
   data() {
-    return {};
+    return {
+      amount_input: '',
+      date_input: '',
+      cardNumber_input: '',
+      balance_input: '',
+      cvv_input: '',
+    };
   },
   computed: {
     ...mapGetters({
@@ -105,7 +109,7 @@ export default {
     margin: 15px 0 0 0;
   }
   &__equal {
-    margin: 0 0 15px 10px;
+    margin: 0 0 35px 10px;
   }
 }
 
@@ -114,18 +118,6 @@ export default {
 }
 
 .input {
-  &_grey {
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 46px;
-    width: 100%;
-    border: 0;
-    background-color: $black0;
-    resize: none;
-    &::placeholder {
-      color: $black200;
-    }
-  }
   &_white {
     border-radius: 6px;
     border: 1px solid $black0;

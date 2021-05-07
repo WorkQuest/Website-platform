@@ -35,32 +35,38 @@
               {{ payload.user.desc }}
             </div>
             <div class="socials">
-              <a
+              <nuxt-link
                 class="social__link"
-                href="#"
-              ><span
-                class="icon-facebook"
-              /></a>
-              <a
+                to="/show-profileCompany"
+              >
+                <span
+                  class="icon-facebook"
+                />
+              </nuxt-link>
+              <nuxt-link
                 class="social__link"
-                href="#"
-              ><span
-                class="icon-twitter"
-              /></a>
-              <a
+                to="/show-profileCompany"
+              >
+                <span
+                  class="icon-twitter"
+                />
+              </nuxt-link>
+              <nuxt-link
                 class="social__link"
-                href="#"
+                to="/show-profileCompany"
               >
                 <span
                   class="icon-instagram"
                 />
-              </a>
-              <a
+              </nuxt-link>
+              <nuxt-link
                 class="social__link"
-                href="#"
-              ><span
-                class="icon-LinkedIn"
-              /></a>
+                to="/show-profileCompany"
+              >
+                <span
+                  class="icon-LinkedIn"
+                />
+              </nuxt-link>
             </div>
             <div class="contacts">
               <span class="icon-location" /><span class="contact__link">{{ payload.user.location }}</span>
