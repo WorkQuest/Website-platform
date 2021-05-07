@@ -1,7 +1,7 @@
 export default {
   async signIn({ commit, dispatch }, payload) {
     const response = await this.$axios.$post('/v1/auth/login', payload);
-    commit('setNewTokens', response.result);
+    commit('setOldTokens', response.result);
     await dispatch('getUserData');
     return response;
   },
@@ -12,6 +12,7 @@ export default {
   },
   async confirm({ commit }, payload) {
     commit('setOldTokens', { access: this.$cookies.get('access'), refresh: this.$cookies.get('refresh') });
+    this.$cookies.set('role', payload.role);
     const response = await this.$axios.$post('/v1/auth/confirm-email', payload);
     return response;
   },

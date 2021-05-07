@@ -14,12 +14,12 @@ export default function ({ $axios, store, app }, inject) {
     const originalRequest = error.config;
     if (error.config.url === '/v1/auth/refresh-tokens') {
       //
-    } if (error.response.status === 401) {
-      app.$tokensRefresher.refreshTokens();
+    } else if (error.response.status === 401) {
+      // app.$tokensRefresher.refreshTokens();
       await store.dispatch('user/refreshTokens');
       console.log(112);
       return $axios(originalRequest);
-    } if (error.response.data.code !== 400010) {
+    } else if (error.response.data.code !== 400010) {
       console.log(error);
       store.dispatch('main/showToast', {
         title: 'Error',
