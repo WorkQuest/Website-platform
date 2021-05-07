@@ -18,6 +18,7 @@
         <div class="ctm-modal__content-field">
           <base-field
             v-model="balance_input"
+            mode="white"
             :placeholder="'$ 0'"
           />
         </div>

@@ -7,7 +7,8 @@
       {'ctm-field_big': big},
       {'ctm-field_disabled': disabled},
       {'ctm-field_search': isSearch},
-      {'ctm-field_icon': mode === 'icon'}
+      {'ctm-field_icon': mode === 'icon'},
+      {'ctm-field_white': mode === 'white'}
     ]"
     :rules="rules"
     :name="name"
@@ -150,6 +151,12 @@ export default {
   &__right-absolute {
     position: absolute;
     right: 12px;
+  }
+  &_white {
+    background-color: $white;
+    &::placeholder {
+      color: $black800;
+    }
   }
   &__left {
     position: absolute;
