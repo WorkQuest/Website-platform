@@ -424,6 +424,32 @@ export default {
     color: #00AA5B !important;
   }
 }
+.simple-button {
+  font-size: 16px;
+  line-height: 130%;
+  color: #0083C7;
+  position: absolute;
+  bottom: 27px;
+  right: 27px;
+  padding-right: 37px;
+  text-decoration: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a     %3Cpath d='M16.17 13L12.59 16.59L14 18L20 12L14 6L12.59 7.41L16.17 11H4V13H16.17Z' fill='%230083C7'/%3E\a     %3C/svg%3E                                     \a     ");
+  background-position: 100% -1px;
+  background-repeat: no-repeat;
+}
+.button .more-button {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 130%;
+  color: #0083C7;
+  border: 1px solid rgba(0, 131, 199, 0.1);
+  border-radius: 6px;
+  padding: 13px 67px 13px 28px;
+  background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
+  background-position: 82% 21px;
+  background-repeat: no-repeat;
+}
 
 .number {
   font-weight: bold;
@@ -1209,20 +1235,6 @@ table {
   justify-content: center;
 }
 
-.button .more-button {
-  display: inline-block;
-  text-decoration: none;
-  font-size: 16px;
-  line-height: 130%;
-  color: #0083C7;
-  border: 1px solid rgba(0, 131, 199, 0.1);
-  border-radius: 6px;
-  padding: 13px 67px 13px 28px;
-  background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
-  background-position: 82% 21px;
-  background-repeat: no-repeat;
-}
-
 #main-footer #footer {
   padding: 21px 0 27px;
 }
@@ -1340,18 +1352,5 @@ a:hover {
   opacity: 0.5;
   -webkit-transition: opacity 0.3s;
   transition: opacity 0.3s;
-}
-.simple-button {
-  font-size: 16px;
-  line-height: 130%;
-  color: #0083C7;
-  position: absolute;
-  bottom: 27px;
-  right: 27px;
-  padding-right: 37px;
-  text-decoration: none;
-  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a     %3Cpath d='M16.17 13L12.59 16.59L14 18L20 12L14 6L12.59 7.41L16.17 11H4V13H16.17Z' fill='%230083C7'/%3E\a     %3C/svg%3E                                     \a     ");
-  background-position: 100% -1px;
-  background-repeat: no-repeat;
 }
 </style>
