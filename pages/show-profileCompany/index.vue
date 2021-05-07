@@ -59,14 +59,16 @@
                 class="social__link"
                 href="#"
               ><span
-                class="icon-LinkedInn"
+                class="icon-LinkedIn"
               /></a>
             </div>
             <div class="contacts">
               <span class="icon-location" /><span class="contact__link">{{ payload.user.location }}</span>
               <span class="icon-phone" /><span class="contact__link">{{ payload.user.tel }}</span>
-              <span class="icon-mail" /><span class="contact__link">{{ payload.user.email }}</span>
-              <div><span class="icon-Earth" /><span class="contact__link">amazon.com</span></div>
+              <div>
+                <span class="icon-mail" /><span class="contact__link">{{ payload.user.email }}</span>
+                <span class="icon-Earth" /><span class="contact__link">amazon.com</span>
+              </div>
             </div>
           </div>
 
@@ -267,6 +269,12 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div class="button">
+            <a
+              class="more-button"
+              href="#"
+            >{{ $t('meta.showAllReviews') }}</a>
           </div>
         </div>
 
@@ -643,6 +651,11 @@ export default {
   }
   &-instagram::before {
     color: #C540F3;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  &-LinkedIn::before {
+    color: #57A6EF;
     font-size: 20px;
     cursor: pointer;
   }
@@ -1177,7 +1190,7 @@ table {
   cursor: pointer;
 }
 
-#information-section #active-quests-grid .button {
+.button {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1186,7 +1199,7 @@ table {
   justify-content: center;
 }
 
-#information-section #active-quests-grid .button .more-button {
+.button .more-button {
   display: inline-block;
   text-decoration: none;
   font-size: 16px;

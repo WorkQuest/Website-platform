@@ -56,7 +56,7 @@
                 class="social__link"
                 href="#"
               ><span
-                class="icon-LinkedInn"
+                class="icon-LinkedIn"
               /></a>
             </div>
             <div class="contacts">
@@ -523,6 +523,11 @@ export default {
   }
   &-instagram::before {
     color: #C540F3;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  &-LinkedIn::before {
+    color: #57A6EF;
     font-size: 20px;
     cursor: pointer;
   }

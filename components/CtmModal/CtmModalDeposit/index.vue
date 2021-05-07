@@ -4,69 +4,70 @@
     :title="$t('modals.deposit')"
   >
     <div class="ctm-modal__content">
-      <div class="grid__3col">
+      <validation-observer>
+        <div class="grid__3col">
+          <div class="ctm-modal__content-field">
+            <label for="date_input">{{ $t('modals.amount') }}</label>
+            <input
+              id="amount_input"
+              class="input_grey"
+              placeholder="02/24"
+            >
+          </div>
+          <div class="ctm-modal__equal">
+            =
+          </div>
+          <div class="ctm-modal__content-field">
+            <input
+              class="input_white"
+              placeholder="$ 0"
+            >
+          </div>
+        </div>
         <div class="ctm-modal__content-field">
-          <label for="date_input">{{ $t('modals.amount') }}</label>
+          <label for="cardNumber_input">{{ $t('modals.numberOfCard') }}</label>
           <input
-            id="amount_input"
             class="input_grey"
-            placeholder="02/24"
+            placeholder="1234 1234 1234 1234"
           >
         </div>
-        <div class="ctm-modal__equal">
-          =
+        <div class="grid__2col">
+          <div class="ctm-modal__content-field">
+            <label for="date_input">{{ $t('modals.date') }}</label>
+            <input
+              id="date_input"
+              class="input_grey"
+              placeholder="02/24"
+            >
+          </div>
+          <div class="ctm-modal__content-field">
+            <label for="cvv_input">{{ $t('modals.cvv') }}</label>
+            <input
+              id="cvv_input"
+              class="input_grey"
+              placeholder="242"
+            >
+          </div>
         </div>
-        <div class="ctm-modal__content-field">
-          <input
-            class="input_white"
-            placeholder="$ 0"
-          >
+        <div class="btn__container">
+          <div class="btn__wrapper">
+            <base-btn
+              class="message__action"
+              @click="showTransactionSendModal()"
+            >
+              {{ $t('meta.submit') }}
+            </base-btn>
+          </div>
+          <div class="btn__wrapper">
+            <base-btn
+              class="message__action"
+              @click="hide()"
+            >
+              {{ $t('meta.cancel') }}
+            </base-btn>
+          </div>
         </div>
-      </div>
-      <div class="ctm-modal__content-field">
-        <label for="cardNumber_input">{{ $t('modals.numberOfCard') }}</label>
-        <input
-          id="cardNumber_input"
-          class="input_grey"
-          placeholder="1234 1234 1234 1234"
-        >
-      </div>
-      <div class="grid__2col">
-        <div class="ctm-modal__content-field">
-          <label for="date_input">{{ $t('modals.date') }}</label>
-          <input
-            id="date_input"
-            class="input_grey"
-            placeholder="02/24"
-          >
-        </div>
-        <div class="ctm-modal__content-field">
-          <label for="cvv_input">{{ $t('modals.cvv') }}</label>
-          <input
-            id="cvv_input"
-            class="input_grey"
-            placeholder="242"
-          >
-        </div>
-      </div>
-      <div class="btn__container">
-        <div class="btn__wrapper">
-          <base-btn
-            class="message__action"
-            @click="showTransactionSendModal()"
-          >
-            {{ $t('meta.submit') }}
-          </base-btn>
-        </div>
-        <div class="btn__wrapper">
-          <base-btn
-            class="message__action"
-            @click="hide()"
-          >
-            {{ $t('meta.cancel') }}
-          </base-btn>
-        </div>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
