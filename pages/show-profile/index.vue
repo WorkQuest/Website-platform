@@ -80,11 +80,11 @@
             <div class="card-title">
               {{ $t('quests.activeQuests') }}
             </div>
-            <div class="number -green">
+            <div class="number number_green">
               {{ payload.quests.activeQuests }}
             </div>
             <a
-              class="card-subtitle -green"
+              class="card-subtitle card-subtitle_green"
               href="#"
             >{{ $t('quests.showAllActiveQuests') }}</a>
           </div>
@@ -114,7 +114,7 @@
             <div class="card-title">
               {{ $t('quests.averageRating') }}
             </div>
-            <div class="number -raiting">
+            <div class="number number__rating">
               {{ payload.quests.averageRating }}
             </div>
             <div class="card-subtitle">
@@ -144,7 +144,7 @@
                   <div class="title">
                     {{ item.reviewerName }}
                   </div>
-                  <div class="card-subtitle -green">
+                  <div class="card-subtitle card-subtitle_green">
                     {{ $t('role.worker') }}
                   </div>
                 </div>
@@ -291,6 +291,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.card-subtitle {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 130%;
+  color: #4C5767;
+  &_green {
+    color: #00AA5B !important;
+  }
+}
+
+.number {
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 130%;
+  color: #0083C7;
+  margin: 9px 0;
+  &_green {
+    color: #00AA5B !important;
+  }
+  &__rating {
+    color: #353C47;
+    background-image: url("data:image/svg+xml,%3Csvg width='28' height='26' viewBox='0 0 28 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a             %3Cpath d='M14 0.5L18.1145 8.83688L27.3148 10.1738L20.6574 16.6631L22.229 25.8262L14 21.5L5.77101 25.8262L7.3426 16.6631L0.685208 10.1738L9.8855 8.83688L14 0.5Z' fill='%23E8D20D'/%3E\a             %3C/svg%3E                           \a             ");
+    background-position: 55px 4px;
+    background-repeat: no-repeat;
+  }
+}
 
 .block {
   background: #FFFFFF;
@@ -1152,7 +1179,7 @@ table {
   font-size: 20px;
   line-height: 130%;
   color: #1D2127;
-  margin: 0 0 20px 0;
+  margin: 0 0 10px 0;
 }
 
 .description {
@@ -1180,10 +1207,6 @@ a:hover {
   opacity: 0.5;
   -webkit-transition: opacity 0.3s;
   transition: opacity 0.3s;
-}
-
-.-green {
-  color: #00AA5B !important;
 }
 
 .simple-button {
