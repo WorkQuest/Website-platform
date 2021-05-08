@@ -153,7 +153,7 @@ export default {
     right: 12px;
   }
   &_white {
-    background-color: $white;
+    background: $white;
     &::placeholder {
       color: $black800;
     }
