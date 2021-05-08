@@ -25,10 +25,36 @@
     >
       showAreYouSureModal
     </base-btn>
+    <!-- New -->
     <base-btn
-      @click="showThsanksModal()"
+      @click="showTransactionSendModal()"
     >
-      showThanksModal
+      showTransactionSendModal
+    </base-btn>
+    <base-btn
+      @click="showCardHasBeenAddedModal()"
+    >
+      showCardHasBeenAddedModal
+    </base-btn>
+    <base-btn
+      @click="showDepositModal()"
+    >
+      showDepositModal
+    </base-btn>
+    <base-btn
+      @click="showAddCardModal()"
+    >
+      showAddCardModal
+    </base-btn>
+    <base-btn
+      @click="showWidthrawModal()"
+    >
+      showWidthrawModal
+      <base-btn
+        @click="showThanksModal()"
+      >
+        showThanksModal
+      </base-btn>
     </base-btn>
   </div>
 </template>
@@ -42,6 +68,31 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    showWidthrawModal() {
+      this.ShowModal({
+        key: modals.widthraw,
+      });
+    },
+    showDepositModal() {
+      this.ShowModal({
+        key: modals.deposit,
+      });
+    },
+    showAddCardModal() {
+      this.ShowModal({
+        key: modals.addCard,
+      });
+    },
+    showCardHasBeenAddedModal() {
+      this.ShowModal({
+        key: modals.cardHasBeenAdded,
+      });
+    },
+    showTransactionSendModal() {
+      this.ShowModal({
+        key: modals.transactionSend,
+      });
+    },
     showQuestAgreedModal() {
       this.ShowModal({
         key: modals.questAgreed,
@@ -69,7 +120,7 @@ export default {
     },
     showThanksModal() {
       this.ShowModal({
-        key: modals.thanksSend,
+        key: modals.thanks,
       });
     },
   },

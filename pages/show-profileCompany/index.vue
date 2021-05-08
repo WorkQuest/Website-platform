@@ -19,7 +19,7 @@
             <div class="rating" />
             <nuxt-link
               class="reviews-amount"
-              to="/profile"
+              to="/show-profileCompany"
             >
               23 {{ $t('quests.reviews') }}
             </nuxt-link>
@@ -28,10 +28,7 @@
             <div class="title">
               {{ payload.user.name }}
             </div>
-            <div
-              v-if="userRole === 'employer'"
-              class="subtitle"
-            >
+            <div class="subtitle">
               {{ payload.user.company }}
             </div>
             <div class="description">
@@ -40,7 +37,7 @@
             <div class="socials">
               <nuxt-link
                 class="social__link"
-                to="/profile"
+                to="/show-profileCompany"
               >
                 <span
                   class="icon-facebook"
@@ -48,7 +45,7 @@
               </nuxt-link>
               <nuxt-link
                 class="social__link"
-                to="/profile"
+                to="/show-profileCompany"
               >
                 <span
                   class="icon-twitter"
@@ -56,7 +53,7 @@
               </nuxt-link>
               <nuxt-link
                 class="social__link"
-                to="/profile"
+                to="/show-profileCompany"
               >
                 <span
                   class="icon-instagram"
@@ -64,18 +61,18 @@
               </nuxt-link>
               <nuxt-link
                 class="social__link"
-                to="/profile"
+                to="/show-profileCompany"
               >
                 <span
-                  class="icon-LinkedInn"
+                  class="icon-LinkedIn"
                 />
               </nuxt-link>
             </div>
             <div class="contacts">
               <span class="icon-location" /><span class="contact__link">{{ payload.user.location }}</span>
               <span class="icon-phone" /><span class="contact__link">{{ payload.user.tel }}</span>
-              <span class="icon-mail" /><span class="contact__link">{{ payload.user.email }}</span>
-              <div v-if="userRole === 'employer'">
+              <div>
+                <span class="icon-mail" /><span class="contact__link">{{ payload.user.email }}</span>
                 <span class="icon-Earth" /><span class="contact__link">amazon.com</span>
               </div>
             </div>
@@ -95,12 +92,12 @@
             <div class="card-title">
               {{ $t('quests.activeQuests') }}
             </div>
-            <div class="number -green">
+            <div class="number number_green">
               {{ payload.quests.activeQuests }}
             </div>
             <nuxt-link
-              class="card-subtitle -green"
-              to="/profile"
+              class="card-subtitle card-subtitle_green"
+              to="/show-profileCompany"
             >{{ $t('quests.showAllActiveQuests') }}</nuxt-link>
           </div>
           <div class="data-item">
@@ -129,7 +126,7 @@
             <div class="card-title">
               {{ $t('quests.averageRating') }}
             </div>
-            <div class="number -raiting">
+            <div class="number number__rating">
               {{ payload.quests.averageRating }}
             </div>
             <div class="card-subtitle">
@@ -159,7 +156,7 @@
                   <div class="title">
                     {{ item.reviewerName }}
                   </div>
-                  <div class="card-subtitle -green">
+                  <div class="card-subtitle card-subtitle_green">
                     {{ $t('role.worker') }}
                   </div>
                 </div>
@@ -179,10 +176,10 @@
               <div class="rating">
                 {{ item.reviewerRating }}
               </div>
-              <!--              TODO: Добавить стили в BASE Button-->
+<!--              TODO: Добавить стили в BASE Button-->
               <nuxt-link
                 class="simple-button"
-                to="/profile"
+                to="/show-profileCompany"
               >
                 {{ $t('quests.readCompletely') }}
               </nuxt-link>
@@ -190,14 +187,113 @@
           </span>
         </div>
         <!-- ACTIVE -->
+        <div class="quest__card">
+          <!-- Cards -->
+          <div class="quests__cards">
+            <div
+              v-for="(item, i) in payload.cards"
+              :key="i"
+              class="quests__block block"
+            >
+              <div class="block__left">
+                <div class="block__img">
+                  <img
+                    src="~/assets/img/temp/avatar.jpg"
+                    alt=""
+                  >
+                </div>
+              </div>
+              <div class="block__right">
+                <div class="block__head">
+                  <div class="block__title">
+                    <div class="block__avatar">
+                      <img
+                        :src="item.background"
+                        alt=""
+                      >
+                    </div>
+                    <div class="block__text block__text_title">
+                      {{ item.title }}
+                      <span
+                        v-if="item.sub"
+                        class="block__text block__text_grey"
+                      >{{ item.sub }}</span>
+                    </div>
+                  </div>
+                  <div
+                    class="block__icon block__icon_fav star"
+                    @click="item.favourite = !item.favourite"
+                  >
+                    <img
+                      class="star__hover"
+                      src="~assets/img/ui/star_hover.svg"
+                      alt=""
+                    >
+                    <img
+                      v-if="!item.favourite"
+                      class="star__default"
+                      src="~assets/img/ui/star_simple.svg"
+                      alt=""
+                    >
+                    <img
+                      v-if="item.favourite"
+                      class="star__checked"
+                      src="~assets/img/ui/star_checked.svg"
+                      alt=""
+                    >
+                  </div>
+                </div>
+                <div class="block__locate">
+                  <span class="icon-location" />
+                  <span class="block__text block__text_locate">{{ payload.distance }}m {{ $t('meta.fromYou') }}</span>
+                </div>
+                <div class="block__text block__text_blue">
+                  {{ item.theme }}
+                </div>
+                <div class="block__text block__text_desc">
+                  {{ item.desc }}
+                </div>
+                <div class="block__actions">
+                  <div class="block__status">
+                    <div
+                      class="block__priority"
+                      :class="getPriorityClass(item.priority)"
+                    >
+                      {{ getPriority(item.priority) }}
+                    </div>
+                    <div class="block__amount">
+                      {{ item.amount }} {{ item.symbol }}
+                    </div>
+                  </div>
+                  <div class="block__details">
+                    <button class="block__btn">
+                      <div class="block__text block__text_details">
+                        {{ $t('meta.details') }}
+                      </div>
+                      <span class="icon-short_right" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="button">
+            <!--              TODO: Добавить стили в BASE Button-->
+            <nuxt-link
+              class="more-button"
+              to="/show-profileCompany"
+            >{{ $t('meta.showAllReviews') }}</nuxt-link>
+          </div>
+        </div>
 
         <div id="active-quests-grid">
           <div class="title">
             {{ $t('quests.activeQuests') }}
           </div>
+
           <div class="active-quests-item">
             <img
-              src="~assets/img/temp/fake-card.svg"
+              src="~/assets/img/temp/fake-card.svg"
               alt=""
             >
             <div class="inner">
@@ -230,19 +326,19 @@
                 </div>
               </div>
             </div>
+            <!--              TODO: Добавить стили в BASE Button-->
             <nuxt-link
               class="simple-button"
-              to="/profile"
+              to="/show-profileCompany"
             >
               {{ $t('profile.details') }}
             </nuxt-link>
             <div class="favorite" />
           </div>
           <div class="button">
-            <!--              TODO: Добавить стили в BASE Button-->
             <nuxt-link
               class="more-button"
-              to="/profile"
+              to="/show-profileCompany"
             >{{ $t('meta.showAllReviews') }}</nuxt-link>
           </div>
         </div>
@@ -252,19 +348,18 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
   name: 'Index',
   data() {
     return {
       payload: {
         user: {
-          name: 'Samantha Sparcs',
+          name: 'Edward Cooper',
           desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel',
           location: 'Moscow, Lenina street, 3',
           tel: '+7 989 989 98 98',
           email: 'worker@gmail.com',
+          company: 'CEO from Amazon',
         },
         quests: {
           activeQuests: '12',
@@ -280,16 +375,27 @@ export default {
             questName: 'SPA saloon design',
             reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
           },
+          {
+            reviewerName: 'Edward Cooper',
+            reviewerRating: '4.00',
+            questName: 'SPA saloon design',
+            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
+          },
+          {
+            reviewerName: 'Edward Cooper',
+            reviewerRating: '4.00',
+            questName: 'SPA saloon design',
+            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
+          },
+          {
+            reviewerName: 'Edward Cooper',
+            reviewerRating: '4.00',
+            questName: 'SPA saloon design',
+            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
+          },
         ],
       },
     };
-  },
-  computed: {
-    ...mapGetters({
-      tags: 'ui/getTags',
-      userRole: 'user/getUserRole',
-      userData: 'user/getUserData',
-    }),
   },
   async mounted() {
     this.SetLoader(true);
@@ -317,6 +423,59 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.card-subtitle {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 130%;
+  color: #4C5767;
+  &_green {
+    color: #00AA5B !important;
+  }
+}
+.simple-button {
+  font-size: 16px;
+  line-height: 130%;
+  color: #0083C7;
+  position: absolute;
+  bottom: 27px;
+  right: 27px;
+  padding-right: 37px;
+  text-decoration: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a     %3Cpath d='M16.17 13L12.59 16.59L14 18L20 12L14 6L12.59 7.41L16.17 11H4V13H16.17Z' fill='%230083C7'/%3E\a     %3C/svg%3E                                     \a     ");
+  background-position: 100% -1px;
+  background-repeat: no-repeat;
+}
+.button .more-button {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 130%;
+  color: #0083C7;
+  border: 1px solid rgba(0, 131, 199, 0.1);
+  border-radius: 6px;
+  padding: 13px 67px 13px 28px;
+  background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
+  background-position: 82% 21px;
+  background-repeat: no-repeat;
+}
+
+.number {
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 130%;
+  color: #0083C7;
+  margin: 9px 0;
+  &_green {
+    color: #00AA5B !important;
+  }
+  &__rating {
+    color: #353C47;
+    background-image: url("data:image/svg+xml,%3Csvg width='28' height='26' viewBox='0 0 28 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a             %3Cpath d='M14 0.5L18.1145 8.83688L27.3148 10.1738L20.6574 16.6631L22.229 25.8262L14 21.5L5.77101 25.8262L7.3426 16.6631L0.685208 10.1738L9.8855 8.83688L14 0.5Z' fill='%23E8D20D'/%3E\a             %3C/svg%3E                           \a             ");
+    background-position: 55px 4px;
+    background-repeat: no-repeat;
+  }
+}
 
 .block {
   background: #FFFFFF;
@@ -515,6 +674,35 @@ export default {
   }
   &__card {
     color:$black800;
+  }
+}
+
+.social {
+  &__link {
+    text-decoration: none;
+  }
+}
+
+.icon {
+  &-facebook::before {
+    color: #0A7EEA;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  &-twitter::before {
+    color: #24CAFF;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  &-instagram::before {
+    color: #C540F3;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  &-LinkedIn::before {
+    color: #57A6EF;
+    font-size: 20px;
+    cursor: pointer;
   }
 }
 
@@ -893,21 +1081,6 @@ table {
   padding: 20px;
 }
 
-#information-section #data-grid .data-item .number {
-  font-weight: bold;
-  font-size: 30px;
-  line-height: 130%;
-  color: #0083C7;
-  margin: 9px 0;
-}
-
-#information-section #data-grid .data-item .number.-raiting {
-  color: #353C47;
-  background-image: url("data:image/svg+xml,%3Csvg width='28' height='26' viewBox='0 0 28 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a             %3Cpath d='M14 0.5L18.1145 8.83688L27.3148 10.1738L20.6574 16.6631L22.229 25.8262L14 21.5L5.77101 25.8262L7.3426 16.6631L0.685208 10.1738L9.8855 8.83688L14 0.5Z' fill='%23E8D20D'/%3E\a             %3C/svg%3E                           \a             ");
-  background-position: 55px 4px;
-  background-repeat: no-repeat;
-}
-
 #information-section #reviews-grid {
   padding-bottom: 20px;
   display: grid;
@@ -1062,27 +1235,13 @@ table {
   cursor: pointer;
 }
 
-#information-section #active-quests-grid .button {
+.button {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-}
-
-#information-section #active-quests-grid .button .more-button {
-  display: inline-block;
-  text-decoration: none;
-  font-size: 16px;
-  line-height: 130%;
-  color: #0083C7;
-  border: 1px solid rgba(0, 131, 199, 0.1);
-  border-radius: 6px;
-  padding: 13px 67px 13px 28px;
-  background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
-  background-position: 82% 21px;
-  background-repeat: no-repeat;
 }
 
 #main-footer #footer {
@@ -1173,6 +1332,14 @@ table {
   font-size: 20px;
   line-height: 130%;
   color: #1D2127;
+  margin-bottom: 10px;
+}
+.subtitle {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  color: $black500;
   margin: 0 0 20px 0;
 }
 
@@ -1190,34 +1357,9 @@ table {
   color: #1D2127;
 }
 
-.card-subtitle {
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 130%;
-  color: #4C5767;
-}
-
 a:hover {
   opacity: 0.5;
   -webkit-transition: opacity 0.3s;
   transition: opacity 0.3s;
-}
-
-.-green {
-  color: #00AA5B !important;
-}
-
-.simple-button {
-  font-size: 16px;
-  line-height: 130%;
-  color: #0083C7;
-  position: absolute;
-  bottom: 27px;
-  right: 27px;
-  padding-right: 37px;
-  text-decoration: none;
-  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a     %3Cpath d='M16.17 13L12.59 16.59L14 18L20 12L14 6L12.59 7.41L16.17 11H4V13H16.17Z' fill='%230083C7'/%3E\a     %3C/svg%3E                                     \a     ");
-  background-position: 100% -1px;
-  background-repeat: no-repeat;
 }
 </style>

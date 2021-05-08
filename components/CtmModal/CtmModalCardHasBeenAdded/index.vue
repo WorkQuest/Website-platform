@@ -1,17 +1,17 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    is-header="false"
+    :is-header="false"
   >
     <div class="ctm-modal__content">
       <div class="messageSend">
         <div class="messageSend__content">
           <img
-            src="~/assets/img/ui/message.svg"
-            alt="MessageSend"
+            src="~assets/img/ui/cardHasBeenAdded.svg"
+            alt="RequestSend"
           >
           <div class="ctm-modal__title">
-            {{ $t('modals.messageSend') }}
+            {{ $t('modals.cardHasBeenAdded') }}
           </div>
           <div class="ctm-modal__desc">
             {{ modal.modalBody }}
@@ -32,7 +32,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'ModalMessageSend',
+  name: 'ModalCardHasBeenAdded',
   data() {
     return {
       modal: {
