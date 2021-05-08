@@ -17,12 +17,12 @@
               >
             </div>
             <div class="rating" />
-            <a
+            <nuxt-link
               class="reviews-amount"
-              href="#"
+              to="/show-profileCompany"
             >
               23 {{ $t('quests.reviews') }}
-            </a>
+            </nuxt-link>
           </div>
           <div class="col info-grid__col">
             <div class="title">
@@ -95,10 +95,10 @@
             <div class="number number_green">
               {{ payload.quests.activeQuests }}
             </div>
-            <a
+            <nuxt-link
               class="card-subtitle card-subtitle_green"
-              href="#"
-            >{{ $t('quests.showAllActiveQuests') }}</a>
+              to="/show-profileCompany"
+            >{{ $t('quests.showAllActiveQuests') }}</nuxt-link>
           </div>
           <div class="data-item">
             <div class="card-title">
@@ -176,12 +176,13 @@
               <div class="rating">
                 {{ item.reviewerRating }}
               </div>
-              <a
+<!--              TODO: Добавить стили в BASE Button-->
+              <nuxt-link
                 class="simple-button"
-                href="#"
+                to="/show-profileCompany"
               >
                 {{ $t('quests.readCompletely') }}
-              </a>
+              </nuxt-link>
             </div>
           </span>
         </div>
@@ -277,10 +278,11 @@
             </div>
           </div>
           <div class="button">
-            <a
+            <!--              TODO: Добавить стили в BASE Button-->
+            <nuxt-link
               class="more-button"
-              href="#"
-            >{{ $t('meta.showAllReviews') }}</a>
+              to="/show-profileCompany"
+            >{{ $t('meta.showAllReviews') }}</nuxt-link>
           </div>
         </div>
 
@@ -324,19 +326,20 @@
                 </div>
               </div>
             </div>
-            <a
+            <!--              TODO: Добавить стили в BASE Button-->
+            <nuxt-link
               class="simple-button"
-              href="#"
+              to="/show-profileCompany"
             >
               {{ $t('profile.details') }}
-            </a>
+            </nuxt-link>
             <div class="favorite" />
           </div>
           <div class="button">
-            <a
+            <nuxt-link
               class="more-button"
-              href="#"
-            >{{ $t('meta.showAllReviews') }}</a>
+              to="/show-profileCompany"
+            >{{ $t('meta.showAllReviews') }}</nuxt-link>
           </div>
         </div>
       </div>

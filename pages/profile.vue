@@ -17,12 +17,12 @@
               >
             </div>
             <div class="rating" />
-            <a
+            <nuxt-link
               class="reviews-amount"
-              href="#"
+              to="/profile"
             >
               23 {{ $t('quests.reviews') }}
-            </a>
+            </nuxt-link>
           </div>
           <div class="col info-grid__col">
             <div class="title">
@@ -38,32 +38,38 @@
               {{ payload.user.desc }}
             </div>
             <div class="socials">
-              <a
+              <nuxt-link
                 class="social__link"
-                href="#"
-              ><span
-                class="icon-facebook"
-              /></a>
-              <a
+                to="/profile"
+              >
+                <span
+                  class="icon-facebook"
+                />
+              </nuxt-link>
+              <nuxt-link
                 class="social__link"
-                href="#"
-              ><span
-                class="icon-twitter"
-              /></a>
-              <a
+                to="/profile"
+              >
+                <span
+                  class="icon-twitter"
+                />
+              </nuxt-link>
+              <nuxt-link
                 class="social__link"
-                href="#"
+                to="/profile"
               >
                 <span
                   class="icon-instagram"
                 />
-              </a>
-              <a
+              </nuxt-link>
+              <nuxt-link
                 class="social__link"
-                href="#"
-              ><span
-                class="icon-LinkedInn"
-              /></a>
+                to="/profile"
+              >
+                <span
+                  class="icon-LinkedInn"
+                />
+              </nuxt-link>
             </div>
             <div class="contacts">
               <span class="icon-location" /><span class="contact__link">{{ payload.user.location }}</span>
@@ -92,10 +98,10 @@
             <div class="number -green">
               {{ payload.quests.activeQuests }}
             </div>
-            <a
+            <nuxt-link
               class="card-subtitle -green"
-              href="#"
-            >{{ $t('quests.showAllActiveQuests') }}</a>
+              to="/profile"
+            >{{ $t('quests.showAllActiveQuests') }}</nuxt-link>
           </div>
           <div class="data-item">
             <div class="card-title">
@@ -173,12 +179,13 @@
               <div class="rating">
                 {{ item.reviewerRating }}
               </div>
-              <a
+              <!--              TODO: Добавить стили в BASE Button-->
+              <nuxt-link
                 class="simple-button"
-                href="#"
+                to="/profile"
               >
                 {{ $t('quests.readCompletely') }}
-              </a>
+              </nuxt-link>
             </div>
           </span>
         </div>
@@ -223,19 +230,20 @@
                 </div>
               </div>
             </div>
-            <a
+            <nuxt-link
               class="simple-button"
-              href="#"
+              to="/profile"
             >
               {{ $t('profile.details') }}
-            </a>
+            </nuxt-link>
             <div class="favorite" />
           </div>
           <div class="button">
-            <a
+            <!--              TODO: Добавить стили в BASE Button-->
+            <nuxt-link
               class="more-button"
-              href="#"
-            >{{ $t('meta.showAllReviews') }}</a>
+              to="/profile"
+            >{{ $t('meta.showAllReviews') }}</nuxt-link>
           </div>
         </div>
       </div>
