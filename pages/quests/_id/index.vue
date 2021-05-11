@@ -27,7 +27,7 @@
                   {{ payload.username }}
                 </span>
                 <span
-                  v-if="userRole === 'employer'"
+                  v-if="userData.role === 'employer'"
                   class="user__company"
                 >
                   {{ $t('company.from') }} {{ payload.company }}
@@ -53,7 +53,7 @@
                 {{ payload.distance }} {{ $t('meta.fromYou') }}
               </span>
               <div
-                v-if="userRole === 'worker'"
+                v-if="userData.role === 'worker'"
                 class="runtime__container"
               >
                 <span class="icon-clock icon_fs-16 icon_mar-r-5" />
@@ -65,7 +65,7 @@
                 </span>
               </div>
               <div
-                v-if="userRole === 'employer'"
+                v-if="userData.role === 'employer'"
                 class="runtime__container"
               >
                 <span class="icon-clock icon_fs-16 icon_mar-r-5" />

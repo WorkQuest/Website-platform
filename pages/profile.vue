@@ -29,7 +29,7 @@
               {{ payload.user.name }}
             </div>
             <div
-              v-if="userRole === 'employer'"
+              v-if="userData.role === 'employer'"
               class="subtitle"
             >
               {{ payload.user.company }}
@@ -75,7 +75,7 @@
               <span class="icon-location" /><span class="contact__link">{{ payload.user.location }}</span>
               <span class="icon-phone" /><span class="contact__link">{{ payload.user.tel }}</span>
               <span class="icon-mail" /><span class="contact__link">{{ payload.user.email }}</span>
-              <div v-if="userRole === 'employer'">
+              <div v-if="userData.role === 'employer'">
                 <span class="icon-Earth" /><span class="contact__link">amazon.com</span>
               </div>
             </div>
@@ -95,13 +95,15 @@
             <div class="card-title">
               {{ $t('quests.activeQuests') }}
             </div>
-            <div class="number -green">
+            <div class="number number_green">
               {{ payload.quests.activeQuests }}
             </div>
             <nuxt-link
-              class="card-subtitle -green"
+              class="card-subtitle number_green"
               to="/profile"
-            >{{ $t('quests.showAllActiveQuests') }}</nuxt-link>
+            >
+              {{ $t('quests.showAllActiveQuests') }}
+            </nuxt-link>
           </div>
           <div class="data-item">
             <div class="card-title">
@@ -129,7 +131,7 @@
             <div class="card-title">
               {{ $t('quests.averageRating') }}
             </div>
-            <div class="number -raiting">
+            <div class="number number__rating">
               {{ payload.quests.averageRating }}
             </div>
             <div class="card-subtitle">
@@ -189,6 +191,17 @@
             </div>
           </span>
         </div>
+        <div
+          v-if="userData.role === 'employer'"
+          class="button"
+        >
+          <nuxt-link
+            class="more-button"
+            to="/profile"
+          >
+            {{ $t('meta.showAllReviews') }}
+          </nuxt-link>
+        </div>
         <!-- ACTIVE -->
 
         <div id="active-quests-grid">
@@ -243,7 +256,9 @@
             <nuxt-link
               class="more-button"
               to="/profile"
-            >{{ $t('meta.showAllReviews') }}</nuxt-link>
+            >
+              {{ $t('meta.showAllReviews') }}
+            </nuxt-link>
           </div>
         </div>
       </div>
@@ -265,6 +280,7 @@ export default {
           location: 'Moscow, Lenina street, 3',
           tel: '+7 989 989 98 98',
           email: 'worker@gmail.com',
+          company: 'CEO from Amazon',
         },
         quests: {
           activeQuests: '12',
@@ -318,6 +334,54 @@ export default {
 
 <style lang="scss" scoped>
 
+.number {
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 130%;
+  color: #0083C7;
+  margin: 9px 0;
+  &_green {
+    color: #00AA5B !important;
+  }
+  &__rating {
+    color: #353C47;
+    background-image: url("data:image/svg+xml,%3Csvg width='28' height='26' viewBox='0 0 28 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a             %3Cpath d='M14 0.5L18.1145 8.83688L27.3148 10.1738L20.6574 16.6631L22.229 25.8262L14 21.5L5.77101 25.8262L7.3426 16.6631L0.685208 10.1738L9.8855 8.83688L14 0.5Z' fill='%23E8D20D'/%3E\a             %3C/svg%3E                           \a             ");
+    background-position: 55px 4px;
+    background-repeat: no-repeat;
+  }
+}
+
+.subtitle {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  color: $black500;
+  margin: -20px 0 -5px 0;
+}
+
+.button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.button .more-button {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 130%;
+  color: #0083C7;
+  border: 1px solid rgba(0, 131, 199, 0.1);
+  border-radius: 6px;
+  padding: 13px 67px 13px 28px;
+  background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
+  background-position: 82% 21px;
+  background-repeat: no-repeat;
+}
 .block {
   background: #FFFFFF;
   border-radius: 6px;
@@ -407,7 +471,6 @@ export default {
       cursor: pointer;
     }
   }
-
   &__btn {
     display: flex;
     align-items: center;
