@@ -19,7 +19,20 @@
           <div>img</div>
         </div>
       </div>
-      <div>Profile information</div>
+      <div class="page__profile">
+        <div>Profile information</div>
+        <div>
+          <img
+            class="profile__img"
+            src="~/assets/img/temp/photo.jpg"
+          >
+        </div>
+        <div> 1 2 3</div>
+        <div> 4 5 6 </div>
+        <div> 7 </div>
+        <div> 8 9 10 11 </div>
+        <div>btn</div>
+      </div>
       <div class="page__skills">
         <div class="main-white">
           <div class="page__badge-skills">
@@ -79,7 +92,7 @@
                 <base-btn
                   class=""
                 >
-                  {{ $t('btn.goToChat') }}
+                  Change
                 </base-btn>
               </div>
             </div>
@@ -89,7 +102,7 @@
                 <base-btn
                   class=""
                 >
-                  {{ $t('btn.goToChat') }}
+                  Change
                 </base-btn>
               </div>
             </div>
@@ -99,7 +112,7 @@
                 <base-btn
                   class=""
                 >
-                  {{ $t('btn.goToChat') }}
+                  Change
                 </base-btn>
               </div>
             </div>
@@ -109,7 +122,7 @@
                 <base-btn
                   class=""
                 >
-                  {{ $t('btn.goToChat') }}
+                  Change
                 </base-btn>
               </div>
             </div>
@@ -157,6 +170,16 @@ export default {
     border-radius: 6px;
   }
 }
+.profile {
+  &__img {
+    width: 100%;
+    height: 100%;
+    max-height: 107px;
+    max-width: 107px;
+    border-radius: 6px;
+    grid-area: img;
+  }
+}
 .settings {
   display: grid;
   grid-template-columns: 40% 60%;
@@ -202,6 +225,17 @@ export default {
   &__grid {
     display: grid;
     grid-template-columns: 50% 50%;
+  }
+  &__profile {
+    @include main-white;
+    justify-content: start;
+    border-radius: 6px;
+    margin: 20px 0 20px 0;
+    display: grid;
+    grid-template-areas: "img" "input-name" "input-adress" "input-adress2"
+                          "img" "input-lastname" "input-tel" "input-tel2"
+                                  "textarea-bio"
+                        "input-inst" "input-twitter" "input-in" "input-facebook";
   }
   &__checkbox {
     margin: 50px 0 20px 20px;
