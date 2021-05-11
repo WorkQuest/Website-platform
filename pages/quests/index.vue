@@ -197,7 +197,7 @@
               </div>
               <div class="block__locate">
                 <span class="icon-location" />
-                <span class="block__text block__text_locate">200m {{ $t('meta.fromYou') }}</span>
+                <span class="block__text block__text_locate">{{ item.distance }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
               </div>
               <div class="block__text block__text_blue">
                 {{ item.theme }}
@@ -279,6 +279,7 @@ export default {
           amount: 1500,
           symbol: 'wusd',
           url: '/show-profile',
+          distance: '300',
         },
         {
           title: 'Samantha Sparks',
@@ -291,6 +292,7 @@ export default {
           amount: 1100,
           symbol: 'wusd',
           url: '/show-profileCompany',
+          distance: '400',
         },
         {
           title: 'Samantha Sparks',
@@ -303,6 +305,7 @@ export default {
           amount: 1700,
           symbol: 'wusd',
           url: '/show-profileCompany',
+          distance: '100',
         },
       ],
     };
