@@ -15,7 +15,10 @@
           :key="i"
           class="chat__cards"
         >
-          <div class="chat__card">
+          <div
+            class="chat__card"
+            @click="showDetails()"
+          >
             <div class="avatar__row">
               <div>
                 <img
@@ -93,6 +96,11 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
+  },
+  methods: {
+    showDetails() {
+      this.$router.push('/messages/1');
+    },
   },
 };
 </script>
@@ -186,6 +194,7 @@ export default {
   &__cards {}
   &__card {
     border: 1px solid #E9EDF2;
+    cursor: pointer;
   }
 }
 .page {
