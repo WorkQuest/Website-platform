@@ -1,15 +1,196 @@
 <template>
-  <div>
-    Messages
+  <div class="main">
+    <div class="main__body">
+      <h2 class="page__title">
+        Messages
+      </h2>
+      <div class="chat__body">
+        <div class="chat__header">
+          <div class="chat__title">
+            Chat
+          </div>
+        </div>
+        <div
+          v-for="(item, i) in cards"
+          :key="i"
+          class="chat__cards"
+        >
+          <div class="chat__card">
+            <div class="avatar__row">
+              <div>
+                <img
+                  class="profile__img"
+                  src="~/assets/img/temp/profile.svg"
+                >
+              </div>
+              <div>
+                <span class="profile__name">
+                  {{ item.name }}
+                </span>
+              </div>
+              <div>
+                <span class="profile__company">
+                  {{ item.company }}
+                </span>
+              </div>
+            </div>
+            <div class="quest__row">
+              <div class="quest">
+                <span class="params">Quest:</span> <span class="quest__title">{{ item.questName }}</span>
+              </div>
+            </div>
+            <div class="you__row">
+              <div class="you">
+                <span class="params">You:</span> <span class="you__message">{{ item.youMessage }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Messages',
+  data() {
+    return {
+      cards: [
+        {
+          name: 'Edward cooper',
+          company: 'from Amazon',
+          questName: 'Paint the garage quickly',
+          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
+        },
+        {
+          name: 'Edward cooper',
+          company: 'from Amazon',
+          questName: 'Paint the garage quickly',
+          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
+        },
+        {
+          name: 'Edward cooper',
+          company: 'from Amazon',
+          questName: 'Paint the garage quickly',
+          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
+        },
+        {
+          name: 'Edward cooper',
+          company: 'from Amazon',
+          questName: 'Paint the garage quickly',
+          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
+        },
+        {
+          name: 'Edward cooper',
+          company: 'from Amazon',
+          questName: 'Paint the garage quickly',
+          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
+        },
+      ],
+    };
+  },
+  async mounted() {
+    this.SetLoader(true);
+    this.SetLoader(false);
+  },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
+.params {
+
+}
+
+.you {
+  margin: 0 0 20px 0;
+  &__row {
+    display: flex;
+    flex-direction: row;
+    margin: 14.5px 0 0 30px;
+  }
+  &__message {
+    font-weight: 400;
+    font-size: 16px;
+    color: $black500;
+  }
+}
+
+.quest {
+  &__row {
+    display: flex;
+    flex-direction: row;
+    margin: 14.5px 0 0 30px;
+  }
+  &__title {
+    color: $blue;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+.profile {
+  &__img {
+    width: 100%;
+    height: 100%;
+    max-height: 30px;
+    max-width: 30px;
+    border-radius: 84px;
+  }
+  &__name {
+    color: $black800;
+    font-size:16px;
+    font-weight: 500;
+    margin: 0 10px 0 10px;
+  }
+  &__company {
+    color: $black500;
+    font-size: 16px;
+    font-weight: 400;
+  }
+}
+.avatar {
+  &__row {
+    display: flex;
+    flex-direction: row;
+    margin: 20px 0 0 30px;
+  }
+}
+.main {
+  @include main;
+&-white {
+   @include main-white;
+   justify-content: start;
+   border-radius: 6px;
+ }
+}
+.chat {
+  &__header {
+    border: 1px solid #E9EDF2;
+    border-radius: 6px 0 0 0;
+  }
+  &__title {
+    background-color: $white;
+    margin: 15px 0 15px 15px;
+  }
+  &__body {
+    background-color: $white;
+    border: 1px solid #E9EDF2;
+    border-radius: 6px;
+    width: 100%;
+    max-width: 1180px;
+    height: 100%;
+    max-height: 852px;
+  }
+  &__cards {}
+  &__card {
+    border: 1px solid #E9EDF2;
+  }
+}
+.page {
+  &__title {
+    margin: 20px 0 20px 0;
+  }
+}
 </style>
