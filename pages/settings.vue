@@ -1,7 +1,9 @@
 <template>
   <div class="main">
     <div class="main__body">
-      <h2>Settings</h2>
+      <h2 class="page__title">
+        Settings
+      </h2>
       <div class="quests__top">
         <transition name="fade-fast">
           <div class="page__info">
@@ -11,7 +13,7 @@
                 class="page__info"
               >
                 <h2 class="page__info page__info-title">
-                  Add information about you, profile photo and KYC and level up your raiting
+                  Add information about you, profile photo and KYC and level up your rating
                 </h2>
                 <div class="page__info page__info-subtitle">
                   Also rating is depend on your profile data and reviews
@@ -68,7 +70,7 @@
         <div class="profile__row-1col">
           <textarea
             id="textarea"
-            v-model="text"
+            v-model="bio_input"
             class="profile__textarea"
             placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel"
           />
@@ -122,13 +124,28 @@
               Who can see my profile?
             </div>
             <div class="settings__option">
-              All registered users
+              <base-checkbox
+                :name="allRegisterUser"
+                :value="allRegisterUser"
+                :type="'default'"
+                :label="'All registered users'"
+              />
             </div>
             <div class="settings__option">
-              All people in internet
+              <base-checkbox
+                :name="allPeopleInInternet"
+                :value="allPeopleInInternet"
+                :type="'default'"
+                :label="'All people in internet'"
+              />
             </div>
             <div class="settings__option">
-              Only when submited work proposal
+              <base-checkbox
+                :name="onlyWhenSubmitedWork"
+                :value="onlyWhenSubmitedWork"
+                :type="'default'"
+                :label="'Only when submited work proposal'"
+              />
             </div>
           </div>
           <div>
@@ -136,16 +153,36 @@
               Who can see my profile?
             </div>
             <div class="settings__option">
-              Only urgent proposals
+              <base-checkbox
+                :name="onlyUrgentProposals"
+                :value="onlyUrgentProposals"
+                :type="'default'"
+                :label="'Only urgent proposals'"
+              />
             </div>
             <div class="settings__option">
-              Only implementation
+              <base-checkbox
+                :name="onlyInplemention"
+                :value="onlyInplemention"
+                :type="'default'"
+                :label="'Only implementation'"
+              />
             </div>
             <div class="settings__option">
-              Only ready for execution
+              <base-checkbox
+                :name="onlyReadyForExecution"
+                :value="onlyReadyForExecution"
+                :type="'default'"
+                :label="'Only ready for execution'"
+              />
             </div>
             <div class="settings__option">
-              All registered users
+              <base-checkbox
+                :name="allRegisteredUsers"
+                :value="allRegisteredUsers"
+                :type="'default'"
+                :label="'All registered users'"
+              />
             </div>
           </div>
         </div>
@@ -166,9 +203,9 @@
               <div>Enable Two-Step authentication</div>
               <div class="">
                 <base-btn
-                  class="btn__save"
+                  class=""
                 >
-                  Save
+                  Enable
                 </base-btn>
               </div>
             </div>
@@ -178,7 +215,7 @@
                 <base-btn
                   class=""
                 >
-                  Change
+                  Enable
                 </base-btn>
               </div>
             </div>
@@ -204,6 +241,24 @@ export default {
   name: 'Settings',
   data() {
     return {
+      allRegisterUser: false,
+      allPeopleInInternet: false,
+      onlyWhenSubmitedWork: false,
+      onlyUrgentProposals: false,
+      onlyInplemention: false,
+      onlyReadyForExecution: false,
+      allRegisteredUsers: false,
+      bio_input: '',
+      name_input: '',
+      adress1_input: '',
+      adress2_input: '',
+      lastname_input: '',
+      tel1_input: '',
+      tel2_input: '',
+      inst_input: '',
+      twitt_input: '',
+      in_input: '',
+      facebook_input: '',
       isShowInfo: true,
       badges: [
         {
@@ -230,10 +285,6 @@ export default {
 
 <style lang="scss" scoped>
 
-.ctm-field__input {
-  height: 114px;
-}
-
 .avatar {
   &__row {
     display: flex;
@@ -244,7 +295,7 @@ export default {
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    margin: 0px 20px 0 -20px;
+    margin: 0 20px 0 -20px;
     padding: 0 0 20px 0;
   }
   &__save {
@@ -425,6 +476,9 @@ export default {
   &__grid {
     display: grid;
     grid-template-columns: 50% 50%;
+  }
+  &__title {
+    margin: 20px 0 20px 0;
   }
   &__profile {
     @include main-white;
