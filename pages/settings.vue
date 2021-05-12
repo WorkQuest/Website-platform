@@ -2,36 +2,102 @@
   <div class="main">
     <div class="main__body">
       <h2>Settings</h2>
-      <div class="page__info">
-        <div class="page__grid">
+      <div class="quests__top">
+        <transition name="fade-fast">
           <div class="page__info">
-            <h2 class="page__info page__info-title">
-              Add information about you, profile photo and KYC and level up your raiting
-            </h2>
-            <div class="page__info page__info-subtitle">
-              Also rating is depend on your profile data and reviews
-            </div>
-            <div class="page__checkbox">
-              <div>1</div>
-              <div>Don’t show again</div>
+            <div class="page__grid">
+              <div
+                v-if="isShowInfo"
+                class="page__info"
+              >
+                <h2 class="page__info page__info-title">
+                  Add information about you, profile photo and KYC and level up your raiting
+                </h2>
+                <div class="page__info page__info-subtitle">
+                  Also rating is depend on your profile data and reviews
+                </div>
+                <div class="info__toggle">
+                  <base-checkbox
+                    v-model="isShowInfo"
+                    label="Don’t show again"
+                  />
+                </div>
+              </div>
             </div>
           </div>
-          <div>img</div>
-        </div>
+        </transition>
       </div>
       <div class="page__profile">
-        <div>Profile information</div>
-        <div>
-          <img
-            class="profile__img"
-            src="~/assets/img/temp/photo.jpg"
-          >
+        <div class="profile__title">
+          Profile information
         </div>
-        <div> 1 2 3</div>
-        <div> 4 5 6 </div>
-        <div> 7 </div>
-        <div> 8 9 10 11 </div>
-        <div>btn</div>
+        <div class="avatar__row">
+          <div>
+            <img
+              class="profile__img"
+              src="~/assets/img/temp/photo.jpg"
+            >
+          </div>
+          <div class="profile__row-3col">
+            <base-field
+              v-model="name_input"
+              :placeholder="'Rosalia'"
+            />
+            <base-field
+              v-model="adress1_input"
+              :placeholder="'Moscow, Lenina street, 2'"
+            />
+            <base-field
+              v-model="adress2_input"
+              :placeholder="'Moscow, Lenina street, 2'"
+            />
+            <base-field
+              v-model="lastname_input"
+              :placeholder="'Vance'"
+            />
+            <base-field
+              v-model="tel1_input"
+              :placeholder="'+ 7 989 989 9823'"
+            />
+            <base-field
+              v-model="tel2_input"
+              :placeholder="'+ 7 989 989 9823'"
+            />
+          </div>
+        </div>
+        <div class="profile__row-1col">
+          <textarea
+            id="textarea"
+            v-model="text"
+            class="profile__textarea"
+            placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel"
+          />
+        </div>
+        <div class="profile__row-4col">
+          <base-field
+            v-model="inst_input"
+            :placeholder="'@useruser'"
+          />
+          <base-field
+            v-model="twitt_input"
+            :placeholder="'@useruser'"
+          />
+          <base-field
+            v-model="in_input"
+            :placeholder="'@useruser'"
+          />
+          <base-field
+            v-model="facebook_input"
+            :placeholder="'@useruser'"
+          />
+        </div>
+        <div class="btn__container-right">
+          <base-btn
+            class="btn__save"
+          >
+            Save
+          </base-btn>
+        </div>
       </div>
       <div class="page__skills">
         <div class="main-white">
@@ -98,11 +164,11 @@
             </div>
             <div class="settings_blue">
               <div>Enable Two-Step authentication</div>
-              <div>
+              <div class="">
                 <base-btn
-                  class=""
+                  class="btn__save"
                 >
-                  Change
+                  Save
                 </base-btn>
               </div>
             </div>
@@ -138,6 +204,7 @@ export default {
   name: 'Settings',
   data() {
     return {
+      isShowInfo: true,
       badges: [
         {
           name: 'Painting works',
@@ -162,6 +229,99 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.ctm-field__input {
+  height: 114px;
+}
+
+.avatar {
+  &__row {
+    display: flex;
+  }
+}
+.btn {
+  &__container-right {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0px 20px 0 -20px;
+    padding: 0 0 20px 0;
+  }
+  &__save {
+    width: 100%;
+    max-width: 250px;
+    display: grid;
+  }
+}
+.quests {
+  &__cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+    padding-top: 20px;
+  }
+  &__top {
+    position: relative;
+    min-height: 160px;
+  }
+  &__search {
+    position: absolute;
+    max-width: 1180px;
+    height: 83px;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 1200;
+    @include box;
+  }
+  &__content {
+    display: flex;
+    justify-content: center;
+  }
+  &__body {
+    padding-top: 30px;
+    max-width: 1180px;
+    width: 100%;
+    height: 100%;
+    &_wrap {
+      padding-top: 10px;
+    }
+  }
+  &__text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    &_title  {
+      font-weight: 500;
+      font-size: 25px;
+      line-height: 130%;
+      color: $black800;
+    }
+  }
+  &__tags {
+    padding-top: 30px;
+    max-width: 1180px;
+  }
+  &__tools {
+    padding-top:  20px;
+  }
+}
+
+.info {
+  &__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 50px 0 21px 20px;
+  }
+}
+
+.checkbox {
+  &__label {
+    color: $white;
+  }
+}
+
 .main {
   @include main;
   &-white {
@@ -174,10 +334,50 @@ export default {
   &__img {
     width: 100%;
     height: 100%;
-    max-height: 107px;
-    max-width: 107px;
+    max-height: 115px;
+    max-width: 115px;
     border-radius: 6px;
-    grid-area: img;
+    margin: 20px;
+  }
+  &__row-1col {
+    display: grid;
+    grid-template-columns: 96.5%;
+    margin: 0 20px 0 20px;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1180px;
+  }
+  &__row-3col {
+    display: grid;
+    grid-template-columns: 32% 32% 32%;
+    margin: 20px 20px 0 20px;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1180px;
+  }
+  &__row-4col {
+    display: grid;
+    grid-template-columns: 24% 24% 24% 24%;
+    margin: 20px 20px 0 20px;
+    justify-content: space-between;
+    max-width: 1180px;
+  }
+  &__textarea {
+    border-radius: 6px;
+    padding: 11px 20px 11px 15px;
+    height: 114px;
+    width: 100%;
+    border: 0;
+    background-color: $black0;
+    resize: none;
+
+    &::placeholder {
+      color: $black200;
+    }
+  }
+  &__title {
+    margin: 20px 0 0 20px;
+    padding: 20px 0 0 0;
   }
 }
 .settings {
@@ -231,11 +431,7 @@ export default {
     justify-content: start;
     border-radius: 6px;
     margin: 20px 0 20px 0;
-    display: grid;
-    grid-template-areas: "img" "input-name" "input-adress" "input-adress2"
-                          "img" "input-lastname" "input-tel" "input-tel2"
-                                  "textarea-bio"
-                        "input-inst" "input-twitter" "input-in" "input-facebook";
+    display: inherit;
   }
   &__checkbox {
     margin: 50px 0 20px 20px;
