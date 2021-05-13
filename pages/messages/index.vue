@@ -10,41 +10,42 @@
             Chat
           </div>
         </div>
-        <div
-          v-for="(item, i) in cards"
-          :key="i"
-          class="chat__cards"
-        >
+        <div class="chat__cards">
           <div
-            class="chat__card"
-            @click="showDetails()"
+            v-for="(item, i) in cards"
+            :key="i"
           >
-            <div class="avatar__row">
-              <div>
-                <img
-                  class="profile__img"
-                  src="~/assets/img/temp/profile.svg"
-                >
+            <div
+              class="chat__card"
+              @click="showDetails()"
+            >
+              <div class="avatar__row">
+                <div>
+                  <img
+                    class="profile__img"
+                    src="~/assets/img/temp/profile.svg"
+                  >
+                </div>
+                <div>
+                  <span class="profile__name">
+                    {{ item.name }}
+                  </span>
+                </div>
+                <div>
+                  <span class="profile__company">
+                    {{ item.company }}
+                  </span>
+                </div>
               </div>
-              <div>
-                <span class="profile__name">
-                  {{ item.name }}
-                </span>
+              <div class="quest__row">
+                <div class="quest">
+                  <span class="params">Quest:</span> <span class="quest__title">{{ item.questName }}</span>
+                </div>
               </div>
-              <div>
-                <span class="profile__company">
-                  {{ item.company }}
-                </span>
-              </div>
-            </div>
-            <div class="quest__row">
-              <div class="quest">
-                <span class="params">Quest:</span> <span class="quest__title">{{ item.questName }}</span>
-              </div>
-            </div>
-            <div class="you__row">
-              <div class="you">
-                <span class="params">You:</span> <span class="you__message">{{ item.youMessage }}</span>
+              <div class="you__row">
+                <div class="you">
+                  <span class="params">You:</span> <span class="you__message">{{ item.youMessage }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -60,6 +61,30 @@ export default {
   data() {
     return {
       cards: [
+        {
+          name: 'Edward cooper',
+          company: 'from Amazon',
+          questName: 'Paint the garage quickly',
+          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
+        },
+        {
+          name: 'Edward cooper',
+          company: 'from Amazon',
+          questName: 'Paint the garage quickly',
+          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
+        },
+        {
+          name: 'Edward cooper',
+          company: 'from Amazon',
+          questName: 'Paint the garage quickly',
+          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
+        },
+        {
+          name: 'Edward cooper',
+          company: 'from Amazon',
+          questName: 'Paint the garage quickly',
+          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
+        },
         {
           name: 'Edward cooper',
           company: 'from Amazon',
@@ -191,7 +216,12 @@ export default {
     height: 100%;
     max-height: 852px;
   }
-  &__cards {}
+  &__cards {
+    overflow-y: scroll;
+    height: 100%;
+    weight: 100%;
+    max-height: 795px;
+  }
   &__card {
     border: 1px solid #E9EDF2;
     cursor: pointer;
@@ -201,5 +231,19 @@ export default {
   &__title {
     margin: 20px 0 20px 0;
   }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 0 24px rgba(0, 131, 199, 1);
 }
 </style>
