@@ -206,6 +206,8 @@ export default {
   &__title {
     background-color: $white;
     margin: 15px 0 15px 15px;
+    font-weight: 500;
+    font-size: 18px;
   }
   &__body {
     background-color: $white;
