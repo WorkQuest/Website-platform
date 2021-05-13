@@ -13,8 +13,49 @@
             />
             Chat
           </div>
+          <div class="chat__messages">
+            <div class="chat__message">
+              <div>
+                <div class="row__container">
+                  <div class="chat__img-container">
+                    <img
+                      class="chat__img"
+                      src="~/assets/img/temp/profile.svg"
+                    >
+                  </div>
+                  <div class="chat__name-container">
+                    <div class="chat__name">
+                      Samantha Sparcs
+                    </div>
+                    <div class="chat__star">
+                      Star
+                    </div>
+                  </div>
+                </div>
+                <div class="message__body_interlocutor">
+                  <span class="message__body">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim Lorem ipsum dolor sit amet, consectetur adipiscing
+                  </span>
+                  <div class="message__time">
+                    14:23
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        Messages
+        <div class="chat__panel">
+          <button class="chat__btn">
+            1
+          </button>
+          <base-field
+            v-model="facebook_input"
+            :placeholder="'Write you message'"
+          />
+          <button class="chat__btn">
+            1
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -40,42 +81,38 @@ export default {
 
 <style lang="scss" scoped>
 
+.row {
+  &__container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.message {
+  &__body {}
+  &__time {
+    margin: 15px 15px 0 15px;
+    padding: 0 0 10px 0;
+    text-align: right;
+  }
+  &__body_interlocutor {
+    background-color:#0083C7;
+    margin: 0 54px 0 60px;
+    border-radius: 6px;
+    color: $white;
+    padding: 15px;
+  }
+  &__body_you {
+
+  }
+}
+
 .icon-short_left::before {
   content: "\ea6d";
   color: $black800;
   font-size: 20px;
   cursor: pointer;
-}
-
-.params {
-
-}
-
-.you {
-  margin: 0 0 20px 0;
-  &__row {
-    display: flex;
-    flex-direction: row;
-    margin: 14.5px 0 0 30px;
-  }
-  &__message {
-    font-weight: 400;
-    font-size: 16px;
-    color: $black500;
-  }
-}
-
-.quest {
-  &__row {
-    display: flex;
-    flex-direction: row;
-    margin: 14.5px 0 0 30px;
-  }
-  &__title {
-    color: $blue;
-    font-size: 16px;
-    font-weight: 500;
-  }
 }
 
 .profile {
@@ -92,19 +129,8 @@ export default {
     font-weight: 500;
     margin: 0 10px 0 10px;
   }
-  &__company {
-    color: $black500;
-    font-size: 16px;
-    font-weight: 400;
-  }
 }
-.avatar {
-  &__row {
-    display: flex;
-    flex-direction: row;
-    margin: 20px 0 0 30px;
-  }
-}
+
 .main {
   @include main;
   &-white {
@@ -114,6 +140,27 @@ export default {
   }
 }
 .chat {
+  &__btn {
+    background-color: $black0;
+    border-radius: 6px;
+    width: 100%;
+    height: 100%;
+    max-width:40px;
+    max-height: 40px;
+  }
+  &__panel {
+    height: 100%;
+    max-height: 70px;
+    display: grid;
+    grid-template-columns: 5% 90% 5%;
+    align-items: center;
+  }
+  &__name-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+  }
   &__header {
     border: 1px solid #E9EDF2;
     border-radius: 6px 0 0 0;
@@ -133,10 +180,28 @@ export default {
     height: 100%;
     max-height: 852px;
   }
-  &__cards {}
-  &__card {
-    border: 1px solid #E9EDF2;
+  &__message {
     cursor: pointer;
+    margin: 0 0 20px 0;
+  }
+  &__messages {
+    overflow-y: scroll;
+    height: 100%;
+    width: 100%;
+    max-height: 795px;
+  }
+  &__img-container {}
+  &__img {
+    width: 100%;
+    height: 100%;
+    max-height: 30px;
+    max-width: 30px;
+    border-radius: 84px;
+    margin: 10px 10px 10px 20px;
+  }
+  &__name {}
+  &__star {
+    margin: 0 20px 0 0;
   }
 }
 .page {
