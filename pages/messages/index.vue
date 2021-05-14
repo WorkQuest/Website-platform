@@ -7,7 +7,9 @@
       <div class="chat__body">
         <div class="chat__header">
           <div class="chat__title">
-            Chat
+            <div>Chat</div> <div class="icon-more">
+              <span class="icon-more_horizontal" />
+            </div>
           </div>
         </div>
         <div class="chat__cards">
@@ -132,10 +134,15 @@ export default {
 
 <style lang="scss" scoped>
 
-.params {
-
+.icon-more_horizontal::before {
+  content: "\e951";
+  color: $black500;
+  font-size: 26px;
 }
 
+.icon-more {
+  margin: 0 19px 0 0;
+}
 .you {
   margin: 0 0 20px 0;
   &__row {
@@ -208,6 +215,9 @@ export default {
     margin: 15px 0 15px 15px;
     font-weight: 500;
     font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
   &__body {
     background-color: $white;

@@ -7,11 +7,18 @@
       <div class="chat__body">
         <div class="chat__header">
           <div class="chat__title">
-            <span
-              class="icon-short_left"
+            <div
+              class="arrow-back"
               @click="showDetails()"
-            />
-            Chat
+            >
+              <span
+                class="icon-short_left"
+              />
+              <span>Chat</span>
+            </div>
+            <div class="icon-more">
+              <span class="icon-more_horizontal" />
+            </div>
           </div>
         </div>
         <div class="chat__messages">
@@ -34,7 +41,9 @@
             v-for="(item, i) in messages"
             :key="i"
           >
-            <div class="chat__message">
+            <div
+              class="chat__message"
+            >
               <div>
                 <div class="row__container">
                   <div class="chat__img-container">
@@ -49,7 +58,6 @@
                     </div>
                     <div class="chat__star">
                       <div
-                        v-if="isHideStar(item.type)"
                         class="block__icon block__icon_fav star"
                         @click="item.isFavourite = !item.isFavourite"
                       >
@@ -74,7 +82,10 @@
                     </div>
                   </div>
                 </div>
-                <div class="message__body_interlocutor">
+                <div
+                  class="message__interlocutor"
+                  :class="{ message__owner: +item.type === 2 }"
+                >
                   <span class="message__body">
                     {{ item.body }}
                   </span>
@@ -87,9 +98,25 @@
           </div>
         </div>
         <div class="chat__panel">
-          <button class="chat__btn_add">
-            <span class="icon-link" />
-          </button>
+          <div class="input__wrapper">
+            <input
+              id="input__file"
+              name="file"
+              type="file"
+              class="input input__file chat__btn_add"
+              multiple
+            >
+            <label
+              for="input__file"
+              class="input__file-button"
+            >
+              <span class="icon-link" />
+            </label>
+          </div>
+
+          <!--          <button class="chat__btn_add">-->
+          <!--            <span class="icon-link" />-->
+          <!--          </button>-->
           <div class="message__input">
             <div class="input">
               <base-field
@@ -98,7 +125,10 @@
               />
             </div>
           </div>
-          <button class="chat__btn_spend">
+          <button
+            class="chat__btn_spend"
+            @click="sendMessages()"
+          >
             <span class="icon-send" />
           </button>
         </div>
@@ -128,7 +158,7 @@ export default {
         {
           type: '2',
           rating: '',
-          userName: 'Samantha Sparcs',
+          userName: 'Rosalia Vanse',
           body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim Lorem ipsum dolor sit amet, consectetur adipiscing',
           messageTime: moment().format('HH:mm'),
           isFavourite: false,
@@ -144,7 +174,7 @@ export default {
         {
           type: '2',
           rating: '',
-          userName: 'Samantha Sparcs',
+          userName: 'Rosalia Vanse',
           body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim Lorem ipsum dolor sit amet, consectetur adipiscing',
           messageTime: moment().format('HH:mm'),
           isFavourite: false,
@@ -160,8 +190,8 @@ export default {
         {
           type: '2',
           rating: '',
-          userName: 'Samantha Sparcs',
-          body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim Lorem ipsum dolor sit amet, consectetur adipiscing',
+          userName: 'Rosalia Vanse',
+          body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam',
           messageTime: moment().format('HH:mm'),
           isFavourite: false,
         },
@@ -176,28 +206,27 @@ export default {
     isRating(type) {
       return (type === 1 || type === 2);
     },
-    isHideStar(type) {
-      return !(type === 1 || type === 2);
-    },
     showDetails() {
       this.$router.push('/messages');
     },
-    scrollChat() {
-      this.$nextTick(() => {
-        this.$refs.chatBox.scrollTop = this.$refs.chatBox.scrollHeight;
-      });
-    },
+    // scrollChat() {
+    //   this.$nextTick(() => {
+    //     this.$refs.chatBox.scrollTop = this.$refs.chatBox.scrollHeight;
+    //   });
+    // },
     sendMessages() {
-      if (!this.message && !this.message.length) {
+      if (!this.messages && !this.messages.length) {
         return;
       }
       this.messages.push({
+        userName: 'Rosalia Vanse',
         type: 2,
-        text: this.message,
-        time: moment().format('HH:mm'),
+        body: this.message_input,
+        isFavourite: false,
+        messageTime: moment().format('HH:mm'),
       });
-      this.message = '';
-      this.scrollChat();
+      this.messanges = '';
+      // this.scrollChat();
     },
     onEnter(e, callback) {
       if (!e.ctrlKey) {
@@ -210,6 +239,93 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.arrow-back {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.icon-more_horizontal::before {
+  content: "\e951";
+  color: $black500;
+  font-size: 26px;
+}
+
+.icon-more {
+  margin: 0 19px 0 0;
+}
+
+.input__wrapper {
+  width: 100%;
+  position: relative;
+  margin: 15px 0;
+  text-align: center;
+}
+
+.input__file {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+}
+
+.input__file-icon-wrapper {
+  height: 60px;
+  width: 60px;
+  margin-right: 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-right: 1px solid #fff;
+}
+
+.input__file-button-text {
+  line-height: 1;
+  margin-top: 1px;
+}
+
+.input__file-button {
+  width: 100%;
+  max-width: 40px;
+  height: 40px;
+  background: #F7F8FA;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  cursor: pointer;
+  margin: 0 0 0 10px;
+  transition: .2s;
+}
+
+.input__file-button:hover {
+  width: 100%;
+  max-width: 40px;
+  height: 40px;
+  background: #F7F8FA;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  cursor: pointer;
+  margin: 0 0 0 10px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.2);
+  transition: .2s;
+}
 
 .star {
   &__default {
@@ -306,7 +422,7 @@ export default {
 .icon-short_left::before {
   content: "\ea6d";
   color: $black800;
-  font-size: 20px;
+  font-size: 26px;
   cursor: pointer;
 }
 
@@ -323,26 +439,34 @@ export default {
 }
 
 .message {
-  &__body {}
   &__time {
     margin: 15px 15px 0 15px;
-    padding: 0 0 10px 0;
+    padding: 0;
     text-align: right;
   }
-  &__body_interlocutor {
+  &__interlocutor {
     background-color:#0083C7;
     margin: 0 54px 0 60px;
     border-radius: 6px;
     color: $white;
     padding: 15px;
   }
+  &__owner {
+    background-color:$black0;
+    color: $black800;
+    padding: 15px;
+    margin: 0 54px 0 60px;
+    border-radius: 6px;
+  }
   &__input {
     width: 100%;
     display: flex;
     height: 70px;
   }
-  &__body_you {
-
+  &__body {
+    display: flex;
+    word-break: break-word;
+    width: 100%;
   }
 }
 
@@ -444,9 +568,11 @@ export default {
     background-color: $white;
     margin: 15px 0 15px 15px;
     align-items: center;
-    justify-content: center;
     font-weight: 500;
     font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
   &__body {
     background-color: $white;
@@ -460,6 +586,7 @@ export default {
   &__message {
     cursor: pointer;
     margin: 0 0 20px 0;
+    display: inline-block;
   }
   &__messages {
     overflow-y: scroll;
@@ -476,7 +603,9 @@ export default {
     border-radius: 84px;
     margin: 10px 10px 10px 20px;
   }
-  &__name {}
+  &__name {
+    padding: 0 0 0 12px;
+  }
   &__star {
     margin: 0 20px 0 0;
   }
