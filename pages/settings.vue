@@ -4,26 +4,42 @@
       <h2 class="page__title">
         Settings
       </h2>
-      <div class="quests__top">
+      <div
+        v-if="isShowInfo"
+        class="quests__top"
+      >
         <transition name="fade-fast">
           <div class="page__info">
             <div class="page__grid">
               <div
-                v-if="isShowInfo"
                 class="page__info"
               >
-                <h2 class="page__info page__info-title">
-                  Add information about you, profile photo and KYC and level up your rating
-                </h2>
-                <div class="page__info page__info-subtitle">
-                  Also rating is depend on your profile data and reviews
+                <div class="page__info">
+                  <h2 class="page__info page__info-title">
+                    Add information about you, profile photo and KYC and level up your rating
+                  </h2>
+                  <div class="page__info page__info-subtitle">
+                    Also rating is depend on your profile data and reviews
+                  </div>
+                  <div class="info__toggle">
+                    <base-checkbox
+                      v-model="isShowInfo"
+                      label="Don’t show again"
+                    />
+                  </div>
                 </div>
-                <div class="info__toggle">
-                  <base-checkbox
-                    v-model="isShowInfo"
-                    label="Don’t show again"
+              </div>
+              <div>
+                <img
+                  class="higher-level__img"
+                  src="~/assets/img/ui/settingsHigherLevel.svg"
+                >
+                <button @click="isCloseInfo()">
+                  <span
+                    class="icon-close_big icon__close"
+                    :class="{'icon_close_closed' : isShowInfo }"
                   />
-                </div>
+                </button>
               </div>
             </div>
           </div>
@@ -280,10 +296,47 @@ export default {
     this.SetLoader(true);
     this.SetLoader(false);
   },
+  methods: {
+    isCloseInfo() {
+      this.isShowInfo = !this.isShowInfo;
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+
+.icon__close {
+  position: absolute;
+  bottom: 155px;
+  right: 25px;
+  z-index: 2;
+  &_closed {
+    display: none;
+  }
+}
+
+.icon-close_big::before {
+  content: "\e948";
+  color: #2e3a59;
+  font-size: 26px;
+}
+
+.checkbox {
+  &__label::before {
+    color: $white;
+  }
+}
+
+.higher-level {
+  &__img {
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    max-height: 207px;
+    padding: 0 0 0 30px;
+  }
+}
 
 .avatar {
   &__row {
@@ -492,10 +545,21 @@ export default {
     display: flex;
     flex-direction: row;
   }
+  &__part {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    &_left {
+      display: grid;
+    }
+    &_right {
+      display: grid;
+    }
+  }
   &__info {
     background-color: #0083C7;
     border-radius: 6px;
     color: $white;
+    max-height: 207px;
     &-title {
       margin: 20px 0 0 20px;
       font-size: 25px;

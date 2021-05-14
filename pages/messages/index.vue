@@ -232,7 +232,7 @@ export default {
     overflow-y: scroll;
     height: 100%;
     weight: 100%;
-    max-height: 795px;
+    max-height: 793px;
   }
   &__card {
     border: 1px solid #E9EDF2;
