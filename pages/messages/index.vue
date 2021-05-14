@@ -2,12 +2,12 @@
   <div class="main">
     <div class="main__body">
       <h2 class="page__title">
-        Messages
+        {{ $t('chat.messages') }}
       </h2>
       <div class="chat__body">
         <div class="chat__header">
           <div class="chat__title">
-            <div>Chat</div> <div class="icon-more">
+            <div>{{ $t('chat.chat') }}</div> <div class="icon-more">
               <span class="icon-more_horizontal" />
             </div>
           </div>
@@ -41,12 +41,12 @@
               </div>
               <div class="quest__row">
                 <div class="quest">
-                  <span class="params">Quest:</span> <span class="quest__title">{{ item.questName }}</span>
+                  <span class="params">{{ $t('chat.quest') }}</span> <span class="quest__title">{{ item.questName }}</span>
                 </div>
               </div>
               <div class="you__row">
                 <div class="you">
-                  <span class="params">You:</span> <span class="you__message">{{ item.youMessage }}</span>
+                  <span class="params">{{ $t('chat.you') }}</span> <span class="you__message">{{ item.youMessage }}</span>
                 </div>
               </div>
             </div>
