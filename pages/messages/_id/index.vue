@@ -2,7 +2,7 @@
   <div class="main">
     <div class="main__body">
       <h2 class="page__title">
-        Messages
+        {{ $t('chat.messages') }}
       </h2>
       <div class="chat__body">
         <div class="chat__header">
@@ -14,7 +14,7 @@
               <span
                 class="icon-short_left"
               />
-              <span>Chat</span>
+              <span>{{ $t('chat.chat') }}</span>
             </div>
             <div class="icon-more">
               <span class="icon-more_horizontal" />
@@ -27,7 +27,7 @@
               Samantha Sparcs
             </div>
             <div class="event">
-              invited you to a quest
+              {{ $t('chat.invitedYou') }}
             </div>
           </div>
           <div class="info">
@@ -121,7 +121,7 @@
             <div class="input">
               <base-field
                 v-model="message_input"
-                :placeholder="'Write you message'"
+                :placeholder="$t('chat.writeYouMessage')"
               />
             </div>
           </div>

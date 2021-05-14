@@ -2,7 +2,7 @@
   <div class="main">
     <div class="main__body">
       <h2 class="page__title">
-        Settings
+        {{ $t('settings.settings') }}
       </h2>
       <div
         v-if="isShowInfo"
@@ -16,15 +16,15 @@
               >
                 <div class="page__info">
                   <h2 class="page__info page__info-title">
-                    Add information about you, profile photo and KYC and level up your rating
+                    {{ $t('settings.addInfo') }}
                   </h2>
                   <div class="page__info page__info-subtitle">
-                    Also rating is depend on your profile data and reviews
+                    {{ $t('settings.alsoRating') }}
                   </div>
                   <div class="info__toggle">
                     <base-checkbox
                       v-model="isShowInfo"
-                      label="Don’t show again"
+                      :label="$t('settings.dontShow')"
                     />
                   </div>
                 </div>
@@ -47,7 +47,7 @@
       </div>
       <div class="page__profile">
         <div class="profile__title">
-          Profile information
+          {{ $t('settings.profileInfo') }}
         </div>
         <div class="avatar__row">
           <div>
@@ -59,27 +59,27 @@
           <div class="profile__row-3col">
             <base-field
               v-model="name_input"
-              :placeholder="'Rosalia'"
+              :placeholder="$t('settings.nameInput')"
             />
             <base-field
               v-model="adress1_input"
-              :placeholder="'Moscow, Lenina street, 2'"
+              :placeholder="$t('settings.addressInput')"
             />
             <base-field
               v-model="adress2_input"
-              :placeholder="'Moscow, Lenina street, 2'"
+              :placeholder="$t('settings.addressInput')"
             />
             <base-field
               v-model="lastname_input"
-              :placeholder="'Vance'"
+              :placeholder="$t('settings.lastNameInput')"
             />
             <base-field
               v-model="tel1_input"
-              :placeholder="'+ 7 989 989 9823'"
+              :placeholder="$t('settings.telInput')"
             />
             <base-field
               v-model="tel2_input"
-              :placeholder="'+ 7 989 989 9823'"
+              :placeholder="$t('settings.telInput')"
             />
           </div>
         </div>
@@ -94,33 +94,33 @@
         <div class="profile__row-4col">
           <base-field
             v-model="inst_input"
-            :placeholder="'@useruser'"
+            :placeholder="$t('settings.socialInput')"
           />
           <base-field
             v-model="twitt_input"
-            :placeholder="'@useruser'"
+            :placeholder="$t('settings.socialInput')"
           />
           <base-field
             v-model="in_input"
-            :placeholder="'@useruser'"
+            :placeholder="$t('settings.socialInput')"
           />
           <base-field
             v-model="facebook_input"
-            :placeholder="'@useruser'"
+            :placeholder="$t('settings.socialInput')"
           />
         </div>
         <div class="btn__container-right">
           <base-btn
             class="btn__save"
           >
-            Save
+            {{ $t('settings.save') }}
           </base-btn>
         </div>
       </div>
       <div class="page__skills">
         <div class="main-white">
           <div class="page__badge-skills">
-            Skills:
+            {{ $t('settings.skills') }}
           </div>
           <span
             v-for="(item, i) in badges"
@@ -134,17 +134,17 @@
       </div>
       <div class="settings">
         <div class="settings__left">
-          <div>Settings</div>
+          <div>{{ $t('settings.settings') }}</div>
           <div>
             <div class="settings__subtitle">
-              Who can see my profile?
+              {{ $t('settings.whoCanSee') }}
             </div>
             <div class="settings__option">
               <base-checkbox
                 :name="allRegisterUser"
                 :value="allRegisterUser"
                 :type="'default'"
-                :label="'All registered users'"
+                :label="$t('settings.allUsers')"
               />
             </div>
             <div class="settings__option">
@@ -152,7 +152,7 @@
                 :name="allPeopleInInternet"
                 :value="allPeopleInInternet"
                 :type="'default'"
-                :label="'All people in internet'"
+                :label="$t('settings.allInternet')"
               />
             </div>
             <div class="settings__option">
@@ -160,20 +160,20 @@
                 :name="onlyWhenSubmitedWork"
                 :value="onlyWhenSubmitedWork"
                 :type="'default'"
-                :label="'Only when submited work proposal'"
+                :label="$t('settings.onlyWhenSubmittedWork')"
               />
             </div>
           </div>
           <div>
             <div class="settings__subtitle">
-              Who can see my profile?
+              {{ $t('settings.whoCanSee') }}
             </div>
             <div class="settings__option">
               <base-checkbox
                 :name="onlyUrgentProposals"
                 :value="onlyUrgentProposals"
                 :type="'default'"
-                :label="'Only urgent proposals'"
+                :label="$t('settings.urgentProposals')"
               />
             </div>
             <div class="settings__option">
@@ -181,7 +181,7 @@
                 :name="onlyInplemention"
                 :value="onlyInplemention"
                 :type="'default'"
-                :label="'Only implementation'"
+                :label="$t('settings.onlyImplementation')"
               />
             </div>
             <div class="settings__option">
@@ -189,7 +189,7 @@
                 :name="onlyReadyForExecution"
                 :value="onlyReadyForExecution"
                 :type="'default'"
-                :label="'Only ready for execution'"
+                :label="$t('settings.onlyReady')"
               />
             </div>
             <div class="settings__option">
@@ -197,41 +197,41 @@
                 :name="allRegisteredUsers"
                 :value="allRegisteredUsers"
                 :type="'default'"
-                :label="'All registered users'"
+                :label="$t('settings.allRegistered')"
               />
             </div>
           </div>
         </div>
         <div class="settings__right">
-          <div>Settings</div>
+          <div>{{ $t('settings.settings') }}</div>
           <div class="">
             <div class="settings_blue">
-              <div>Change password</div>
+              <div>{{ $t('settings.changePass') }}</div>
               <div>
                 <base-btn
                   class=""
                 >
-                  Change
+                  {{ $t('settings.change') }}
                 </base-btn>
               </div>
             </div>
             <div class="settings_blue">
-              <div>Enable Two-Step authentication</div>
+              <div>{{ $t('settings.enableTwoStepAuth') }}</div>
               <div class="">
                 <base-btn
                   class=""
                 >
-                  Enable
+                  {{ $t('settings.enable') }}
                 </base-btn>
               </div>
             </div>
             <div class="settings_blue">
-              <div>Profile SMS varification</div>
+              <div>{{ $t('settings.smsVerification') }}</div>
               <div>
                 <base-btn
                   class=""
                 >
-                  Enable
+                  {{ $t('settings.enable') }}
                 </base-btn>
               </div>
             </div>
@@ -241,7 +241,7 @@
                 <base-btn
                   class=""
                 >
-                  Change
+                  {{ $t('settings.change') }}
                 </base-btn>
               </div>
             </div>

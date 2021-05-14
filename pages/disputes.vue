@@ -2,7 +2,7 @@
   <div class="main">
     <div class="main__body">
       <h2 class="page__title">
-        Disputes
+        {{ $t('disputes.disputes') }}
       </h2>
       <span
         v-for="(item, i) in payload.disputes"
@@ -24,19 +24,19 @@
           <div class="page__card">
             <div class="page__card-body">
               <div class="page__text">
-                Dispute №: <span class="page__text_blue">{{ item.number }}</span>
+                {{ $t('disputes.dispute') }} <span class="page__text_blue">{{ item.number }}</span>
               </div>
               <div class="page__text">
-                Quest: <span class="page__text_blue">{{ item.quest }}</span>
+                {{ $t('disputes.quest') }} <span class="page__text_blue">{{ item.quest }}</span>
               </div>
               <div class="page__text">
-                Employer: <span class="page__text_blue">{{ item.employer }}</span>
+                {{ $t('disputes.employer') }} <span class="page__text_blue">{{ item.employer }}</span>
               </div>
               <div class="page__text">
-                Quest salary: <span class="page__text_blue">{{ item.questSalary }}</span>
+                {{ $t('disputes.questSalary') }} <span class="page__text_blue">{{ item.questSalary }}</span>
               </div>
               <div class="page__text">
-                Status: <span
+                {{ $t('disputes.status') }} <span
                   v-if="item.status === 'Pending'"
                   class="page__text_yellow"
                 >{{ item.status }}</span>
@@ -49,7 +49,7 @@
             <div class="page__vl" />
             <div class="page__card-body">
               <div class="page__text">
-                Decision:
+                {{ $t('disputes.decision') }}
                 <div
                   v-if="item.decision.length === 0"
                   class="page__decision"
