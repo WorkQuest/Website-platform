@@ -8,8 +8,7 @@
       {'ctm-field_disabled': disabled},
       {'ctm-field_search': isSearch},
       {'ctm-field_icon': mode === 'icon'},
-      {'ctm-field_white': mode === 'white'}
-    ]"
+      {'ctm-field_white': mode === 'white'}]"
     :rules="rules"
     :name="name"
     :vid="vid"
@@ -152,12 +151,6 @@ export default {
     position: absolute;
     right: 12px;
   }
-  &_white {
-    background: $white;
-    &::placeholder {
-      color: $black800;
-    }
-  }
   &__left {
     position: absolute;
     left: 12px;
@@ -221,6 +214,21 @@ export default {
       background: #F3F7FA;
       border-radius: 6px;
       border: 1px solid transparent;
+      &::placeholder {
+        color: $black300;
+      }
+      &:focus {
+        background: #FFFFFF;
+        border: 1px solid #0083C7;
+      }
+    }
+  }
+  &_white {
+    .ctm-field__input {
+      color: $black700;
+      background: #FFFFFF;
+      border-radius: 6px;
+      border: 1px solid #F3F7FA;
       &::placeholder {
         color: $black300;
       }
