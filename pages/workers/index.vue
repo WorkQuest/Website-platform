@@ -38,7 +38,7 @@
             </div>
             <div class="search__actions">
               <base-btn class="search__btn">
-                Search quests
+                {{ $t('workers.searchQuests') }}
               </base-btn>
             </div>
           </div>
@@ -48,41 +48,41 @@
     <div class="main">
       <div class="main__body">
         <h2 class="main__title">
-          Top workers
+          {{ $t('workers.topWorkers') }}
         </h2>
         <div class="main__menu">
           <div class="main__menu main__menu_left">
             <base-btn
               class="btn_white"
             >
-              Price
+              {{ $t('workers.price') }}
             </base-btn>
             <base-btn
               class="btn_white"
             >
-              Added time
+              {{ $t('workers.addedTime') }}
             </base-btn>
           </div>
           <div class="main__menu main__menu_right">
             <base-btn
               class="btn_white"
             >
-              Quests
+              {{ $t('workers.quests') }}
             </base-btn>
             <base-btn
               class="btn_white"
             >
-              Urgent
+              {{ $t('workers.urgent') }}
             </base-btn>
             <base-btn
               class="btn_white"
             >
-              Specialized
+              {{ $t('workers.specialized') }}
             </base-btn>
             <base-btn
               class="btn_white"
             >
-              Type of job
+              {{ $t('workers.typeOfJob') }}
             </base-btn>
           </div>
         </div>
@@ -91,6 +91,8 @@
             v-for="(card, i) in cards"
             :key="i"
             class="card card_higher"
+            :class="cardsLevelsBorder(i)"
+            @click="showDetails()"
           >
             <div
               class="card__content"
@@ -104,18 +106,27 @@
                     >
                   </div>
                   <div class="card__header_right">
-                    <span class="card__name">
+                    <span
+                      class="card__name"
+                      :class="{'card__name_center': card.level === 'DISABLED'}"
+                    >
                       {{ card.name }}
                     </span>
-                    <div class="card__level">
+                    <div
+                      class="card__level"
+                      :class="{'card__level_disabled': card.level === 'DISABLED'}"
+                    >
                       <span class="icon-circle_up icon_blue" />
-                      <span class="card__level_higher">{{ card.level }}</span>
+                      <span
+                        class="card__level_higher"
+                        :class="cardsLevels(i)"
+                      >{{ card.level }}</span>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="card__spec_title">
-                Specializations
+                {{ $t('workers.specializations') }}
               </div>
               <span
                 v-for="(spec, j) in card.specialization"
@@ -125,7 +136,7 @@
                 {{ spec.name }}
               </span>
               <div class="card__about_title">
-                About me
+                {{ $t('workers.aboutMe') }}
               </div>
               <div class="card__about">
                 {{ card.about }}
@@ -142,12 +153,12 @@
 </template>
 
 <script>
-import CheckBox from '~/components/ui/BaseCheckbox';
 
 export default {
   name: 'IndexVue',
   data() {
     return {
+      search: '',
       cards: [
         {
           name: 'Rosalia Vans',
@@ -167,7 +178,7 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'HIGHER LEVEL',
+          level: 'RELIABLE EMP.',
           specialization: [
             {
               name: 'Programming',
@@ -182,7 +193,7 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'HIGHER LEVEL',
+          level: 'CHECKED BY TIME',
           specialization: [
             {
               name: 'Programming',
@@ -197,7 +208,7 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'HIGHER LEVEL',
+          level: 'DISABLED',
           specialization: [
             {
               name: 'Programming',
@@ -212,7 +223,7 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'HIGHER LEVEL',
+          level: 'DISABLED',
           specialization: [
             {
               name: 'Programming',
@@ -414,12 +425,40 @@ export default {
       ],
     };
   },
-  computed: {},
+
+  computed: {
+    cardLevelClass(idx) {
+      const { cards } = this;
+      return [
+        { card__level_reliable: cards[idx].level === 'RELIABLE EMP.' },
+        { card__level_checked: cards[idx].level === 'CHECKED BY TIME' },
+      ];
+    },
+  },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
   },
   methods: {
+    showDetails() {
+      this.$router.push('/workers/1');
+    },
+    cardsLevels(idx) {
+      const { cards, disabled } = this;
+      return [
+        { card__level_reliable: cards[idx].level === 'RELIABLE EMP.' },
+        { card__level_checked: cards[idx].level === 'CHECKED BY TIME' },
+        { card__level_disabled: cards[idx].level === 'DISABLED' },
+      ];
+    },
+    cardsLevelsBorder(idx) {
+      const { cards } = this;
+      return [
+        { card_lower: cards[idx].level === 'RELIABLE EMP.' },
+        { card_lower: cards[idx].level === 'CHECKED BY TIME' },
+        { card_lower: cards[idx].level === 'DISABLED' },
+      ];
+    },
     toggleMap(newPosition) {
       this.isShowMap = !this.isShowMap;
     },
@@ -608,6 +647,7 @@ export default {
     display: block;
   }
 }
+
 .card {
   margin: 20px 0 0 0;
   max-width: 280px;
@@ -617,8 +657,26 @@ export default {
   box-sizing: border-box;
   border-radius:6px;
   align-items: center;
+  cursor: pointer;
+  transition: .2s;
+  &:hover {
+    margin: 20px 0 0 0;
+    max-width: 280px;
+    width: 100%;
+    max-height: 300px;
+    height: 100%;
+    box-sizing: border-box;
+    border-radius:6px;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0px 17px 17px rgba(0, 0, 0, 0.05), 0px 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0px 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0px 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
+    transition: .2s;
+  }
   &_higher {
     border: 1px solid #F6CF00;
+  }
+  &_lower {
+    border: none;
   }
   &__content {
     width: 100%;
@@ -657,6 +715,9 @@ export default {
     margin: 0 0 0 7px;
     font-size: 18px;
     font-weight: 500;
+    &_center {
+      padding: 13px 0 0 0;
+    }
   }
   &__level {
     margin: 0 0 0 15px;
@@ -671,6 +732,25 @@ export default {
       background-color: #F6CF00;
       border-radius: 3px;
       color: $white;
+    }
+    &_reliable {
+      display: block;
+      margin: 0 0 0 7px;
+      padding: 2px 4px 2px 4px;
+      background-color: #BBC0C7;
+      border-radius: 3px;
+      color: $white;
+    }
+    &_checked {
+      display: block;
+      margin: 0 0 0 7px;
+      padding: 2px 4px 2px 4px;
+      background-color: #B79768;
+      border-radius: 3px;
+      color: $white;
+    }
+    &_disabled {
+      display: none;
     }
   }
   &__about {
