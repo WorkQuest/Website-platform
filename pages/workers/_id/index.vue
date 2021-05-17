@@ -358,6 +358,7 @@ export default {
     background: white;
     border-radius: 6px;
     position: relative;
+    cursor: pointer;
   }
   &__grid {
     display: grid;
