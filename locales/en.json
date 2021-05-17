@@ -323,5 +323,17 @@
     "questSalary": "Quest salary:",
     "status": "Status:",
     "decision": "Decision:"
+  },
+  "workers": {
+    "searchQuests": "Search quests",
+    "topWorkers": "Top workers",
+    "price": "Price",
+    "addedTime": "Added time",
+    "quests": "Quests",
+    "urgent": "Urgent",
+    "specialized": "Specialized",
+    "typeOfJob": "Type of job",
+    "specializations": "Specializations",
+    "aboutMe": "About me"
   }
 }
