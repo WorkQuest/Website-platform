@@ -21,6 +21,10 @@
     "responded": "Respond send"
   },
 
+  "distance" : {
+    "m": "m"
+  },
+
   "messages": {
     "alpha": "The {_field_} field may only contain alphabetic characters",
     "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
@@ -275,5 +279,61 @@
       "value": "Value",
       "trxFee": "Transaction fee"
     }
+  },
+  "chat": {
+    "messages": "Messages",
+    "chat": "Chat",
+    "quest": "Quest:",
+    "you": "You:",
+    "invitedYou": "invited you to a quest",
+    "writeYouMessage": "Write you message"
+  },
+  "settings": {
+    "settings": "Settings",
+    "addInfo": "Add information about you, profile photo and KYC and level up your rating",
+    "alsoRating": "Also rating is depend on your profile data and reviews",
+    "dontShow": "Don’t show again",
+    "profileInfo": "Profile information",
+    "nameInput": "Rosalia",
+    "lastNameInput": "Vance",
+    "addressInput": "Moscow, Lenina street, 2",
+    "telInput": "+ 7 989 989 9823",
+    "socialInput": "@useruser",
+    "save": "Save",
+    "skills": "Skills:",
+    "whoCanSee": "Who can see my profile?",
+    "allUsers": "All registered users",
+    "allInternet": "All people in internet",
+    "onlyWhenSubmittedWork": "Only when submited work proposal",
+    "urgentProposals": "Only urgent proposals",
+    "onlyImplementation": "Only implementation",
+    "onlyReady": "Only ready for execution",
+    "allRegistered": "All registered users",
+    "changePass": "Change password",
+    "change": "Change",
+    "enableTwoStepAuth": "Enable Two-Step authentication",
+    "enable": "Enable",
+    "smsVerification": "Profile SMS verification"
+  },
+  "disputes": {
+    "disputes": "Disputes",
+    "dispute": "Dispute №:",
+    "quest": "Quest:",
+    "employer": "Employer:",
+    "questSalary": "Quest salary:",
+    "status": "Status:",
+    "decision": "Decision:"
+  },
+  "workers": {
+    "searchQuests": "Search quests",
+    "topWorkers": "Top workers",
+    "price": "Price",
+    "addedTime": "Added time",
+    "quests": "Quests",
+    "urgent": "Urgent",
+    "specialized": "Specialized",
+    "typeOfJob": "Type of job",
+    "specializations": "Specializations",
+    "aboutMe": "About me"
   }
 }

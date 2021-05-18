@@ -85,7 +85,7 @@
                 </div>
                 <div class="block__locate">
                   <span class="icon-location" />
-                  <span class="block__text block__text_locate">200m {{ $t('meta.fromYou') }}</span>
+                  <span class="block__text block__text_locate">{{ item.distance }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
                 </div>
                 <div class="block__text block__text_blue">
                   {{ item.theme }}
@@ -120,7 +120,9 @@
                       class="block__btn"
                       @click="showDetails()"
                     >
-                      <div class="block__text block__text_details">
+                      <div
+                        class="block__text block__text_details"
+                      >
                         {{ $t('meta.details') }}
                       </div>
                       <span class="icon-short_right" />
@@ -203,6 +205,7 @@ export default {
           priority: 0,
           amount: 1500,
           symbol: 'wusd',
+          distance: '200',
         },
         {
           type: 4,
@@ -216,6 +219,7 @@ export default {
           priority: 0,
           amount: 1500,
           symbol: 'wusd',
+          distance: '200',
         },
         {
           type: 5,
@@ -229,6 +233,7 @@ export default {
           priority: 0,
           amount: 1500,
           symbol: 'wusd',
+          distance: '200',
         },
         {
           type: 2,
@@ -242,6 +247,7 @@ export default {
           priority: 0,
           amount: 1500,
           symbol: 'wusd',
+          distance: '300',
         },
         {
           type: 3,
@@ -256,6 +262,7 @@ export default {
           amount: 1500,
           symbol: 'wusd',
           rating: '',
+          distance: '400',
         },
         {
           type: 3,
@@ -270,6 +277,7 @@ export default {
           amount: 1500,
           symbol: 'wusd',
           rating: '',
+          distance: '100',
         },
       ],
     };
