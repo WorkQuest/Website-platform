@@ -50,11 +50,26 @@
       @click="showWidthrawModal()"
     >
       showWidthrawModal
-      <base-btn
-        @click="showThanksModal()"
-      >
-        showThanksModal
-      </base-btn>
+    </base-btn>
+    <base-btn
+      @click="showThanksModal()"
+    >
+      showThanksModal
+    </base-btn>
+    <base-btn
+      @click="showInviteSendModal()"
+    >
+      showInviteSendModal
+    </base-btn>
+    <base-btn
+      @click="showQuestCreatedModal()"
+    >
+      showQuestCreatedModal
+    </base-btn>
+    <base-btn
+      @click="showInvitationModal()"
+    >
+      showInvitationModal
     </base-btn>
     <base-btn
       @click="showThsanksModal()"
@@ -73,6 +88,21 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    showInvitationModal() {
+      this.ShowModal({
+        key: modals.invitation,
+      });
+    },
+    showQuestCreatedModal() {
+      this.ShowModal({
+        key: modals.questCreated,
+      });
+    },
+    showInviteSendModal() {
+      this.ShowModal({
+        key: modals.inviteSend,
+      });
+    },
     showWidthrawModal() {
       this.ShowModal({
         key: modals.widthraw,

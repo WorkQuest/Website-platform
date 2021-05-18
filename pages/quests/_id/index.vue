@@ -27,7 +27,7 @@
                   {{ payload.username }}
                 </span>
                 <span
-                  v-if="userData.role === 'employer'"
+                  v-if="userRole === 'employer'"
                   class="user__company"
                 >
                   {{ $t('company.from') }} {{ payload.company }}

@@ -18,4 +18,7 @@ export default {
   widthraw: 'widthraw',
   review: 'review',
   thanks: 'Thanks ',
+  inviteSend: 'inviteSend',
+  questCreated: 'questCreated',
+  invitation: 'invitation',
 };

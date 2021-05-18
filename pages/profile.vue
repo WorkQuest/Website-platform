@@ -29,7 +29,7 @@
               {{ payload.user.name }}
             </div>
             <div
-              v-if="userData.role === 'employer'"
+              v-if="userRole === 'employer'"
               class="subtitle"
             >
               {{ payload.user.company }}

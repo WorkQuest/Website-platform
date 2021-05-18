@@ -236,7 +236,11 @@
     "cardholderName": "Cardholder name",
     "addAnotherCard": "Add another card",
     "widthraw": "Widthraw",
-    "addCard": "Add Card"
+    "addCard": "Add Card",
+    "inviteSend": "Invite sent",
+    "questCreated": "Quest Created",
+    "invitation": "Invitation",
+    "chooseQuest": "Choose Quest"
   },
   "ui": {
     "profile": {
@@ -335,5 +339,10 @@
     "typeOfJob": "Type of job",
     "specializations": "Specializations",
     "aboutMe": "About me"
+  },
+  "levels": {
+    "reliableEmp": "RELIABLE EMP.",
+    "checkedByTime": "CHECKED BY TIME",
+    "disabled": "DISABLED"
   }
 }
