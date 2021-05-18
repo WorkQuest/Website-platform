@@ -22,10 +22,16 @@
                     {{ $t('settings.alsoRating') }}
                   </div>
                   <div class="info__toggle">
-                    <base-checkbox
+                    <input
+                      id="dontShow"
                       v-model="isShowInfo"
-                      :label="$t('settings.dontShow')"
-                    />
+                      type="checkbox"
+                      class="custom-checkbox"
+                    >
+                    <label
+                      class="label"
+                      for="dontShow"
+                    >{{ $t('settings.dontShow') }}</label>
                   </div>
                 </div>
               </div>
@@ -195,28 +201,38 @@
               {{ $t('settings.whoCanSee') }}
             </div>
             <div class="settings__option">
-              <base-checkbox
-                :name="allRegisterUser"
-                :value="allRegisterUser"
-                :type="'default'"
-                :label="$t('settings.allUsers')"
-              />
+              <input
+                id="allUsers"
+                type="radio"
+                class="radio__input"
+                checked
+              >
+              <label
+                class="label"
+                for="allUsers"
+              >{{ $t('settings.allUsers') }}</label>
             </div>
             <div class="settings__option">
-              <base-checkbox
-                :name="allPeopleInInternet"
-                :value="allPeopleInInternet"
-                :type="'default'"
-                :label="$t('settings.allInternet')"
-              />
+              <input
+                id="allInternet"
+                type="radio"
+                class="radio__input"
+              >
+              <label
+                class="label"
+                for="allInternet"
+              >{{ $t('settings.allInternet') }}</label>
             </div>
             <div class="settings__option">
-              <base-checkbox
-                :name="onlyWhenSubmitedWork"
-                :value="onlyWhenSubmitedWork"
-                :type="'default'"
-                :label="$t('settings.onlyWhenSubmittedWork')"
-              />
+              <input
+                id="onlyWhenSubmittedWork"
+                type="radio"
+                class="radio__input"
+              >
+              <label
+                class="label"
+                for="onlyWhenSubmittedWork"
+              >{{ $t('settings.onlyWhenSubmittedWork') }}</label>
             </div>
           </div>
           <div>
@@ -224,58 +240,67 @@
               {{ $t('settings.whoCanSee') }}
             </div>
             <div class="settings__option">
-              <base-checkbox
-                :name="onlyUrgentProposals"
-                :value="onlyUrgentProposals"
-                :type="'default'"
-                :label="$t('settings.urgentProposals')"
-              />
+              <input
+                id="urgentProposals"
+                type="radio"
+                class="radio__input"
+              >
+              <label
+                class="label"
+                for="urgentProposals"
+              >{{ $t('settings.urgentProposals') }}</label>
             </div>
             <div class="settings__option">
-              <base-checkbox
-                :name="onlyInplemention"
-                :value="onlyInplemention"
-                :type="'default'"
-                :label="$t('settings.onlyImplementation')"
-              />
+              <input
+                id="onlyImplementation"
+                type="radio"
+                class="radio__input"
+                checked
+              >
+              <label
+                class="label"
+                for="onlyImplementation"
+              >{{ $t('settings.onlyImplementation') }}</label>
             </div>
             <div class="settings__option">
-              <base-checkbox
-                :name="onlyReadyForExecution"
-                :value="onlyReadyForExecution"
-                :type="'default'"
-                :label="$t('settings.onlyReady')"
-              />
+              <input
+                id="onlyReady"
+                type="radio"
+                class="radio__input"
+              >
+              <label
+                class="label"
+                for="onlyReady"
+              >{{ $t('settings.onlyReady') }}</label>
             </div>
             <div class="settings__option">
-              <base-checkbox
-                :name="allRegisteredUsers"
-                :value="allRegisteredUsers"
-                :type="'default'"
-                :label="$t('settings.allRegistered')"
-              />
+              <input
+                id="allRegistered"
+                type="radio"
+                class="radio__input"
+              >
+              <label
+                class="label"
+                for="allRegistered"
+              >{{ $t('settings.allRegistered') }}</label>
             </div>
           </div>
         </div>
         <div class="settings__right">
           <div>{{ $t('settings.settings') }}</div>
-          <div class="">
+          <div>
             <div class="settings_blue">
               <div>{{ $t('settings.changePass') }}</div>
               <div>
-                <base-btn
-                  class=""
-                >
+                <base-btn>
                   {{ $t('settings.change') }}
                 </base-btn>
               </div>
             </div>
             <div class="settings_blue">
               <div>{{ $t('settings.enableTwoStepAuth') }}</div>
-              <div class="">
-                <base-btn
-                  class=""
-                >
+              <div>
+                <base-btn>
                   {{ $t('settings.enable') }}
                 </base-btn>
               </div>
@@ -283,9 +308,7 @@
             <div class="settings_blue">
               <div>{{ $t('settings.smsVerification') }}</div>
               <div>
-                <base-btn
-                  class=""
-                >
+                <base-btn>
                   {{ $t('settings.enable') }}
                 </base-btn>
               </div>
@@ -293,9 +316,7 @@
             <div class="settings_blue">
               <div>Change role</div>
               <div>
-                <base-btn
-                  class=""
-                >
+                <base-btn>
                   {{ $t('settings.change') }}
                 </base-btn>
               </div>
@@ -360,6 +381,80 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.radio {
+  &__input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    border: 1px solid $blue;
+    cursor: pointer;
+
+    &:checked {
+      background: radial-gradient($blue 50%, rgba(255, 0, 0, 0) 55%);
+    }
+  }
+}
+
+.custom-checkbox {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.custom-checkbox+label {
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+}
+.custom-checkbox+label::before {
+  content: '';
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  flex-shrink: 0;
+  flex-grow: 0;
+  border: 1px solid #adb5bd;
+  border-radius: 0.25em;
+  margin-right: 0.5em;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 50% 50%;
+}
+
+.custom-checkbox:checked+label::before {
+  border-color: #0b76ef;
+  background-color: #0b76ef;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
+.custom-checkbox:not(:disabled):not(:checked)+label:hover::before {
+  border-color: #b3d7ff;
+}
+
+.custom-checkbox:not(:disabled):active+label::before {
+  background-color: #b3d7ff;
+  border-color: #b3d7ff;
+}
+
+.custom-checkbox:focus+label::before {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.custom-checkbox:focus:not(:checked)+label::before {
+  border-color: #80bdff;
+}
+
+.custom-checkbox:disabled+label::before {
+  background-color: #e9ecef;
+}
+
+.label {
+  padding: 0 0 0 10px;
+}
 
 .btn {
   &__container {
@@ -631,6 +726,9 @@ export default {
   }
   &__option {
     padding: 5px 0 5px 0;
+    display: flex;
+    justify-content: start;
+    align-items: flex-start;
   }
   &__subtitle {
     margin: 15px 0;
