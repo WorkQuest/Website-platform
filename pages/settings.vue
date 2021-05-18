@@ -60,27 +60,57 @@
             <base-field
               v-model="name_input"
               :placeholder="$t('settings.nameInput')"
-            />
+              mode="icon"
+            >
+              <template v-slot:left>
+                <span class="icon-user" />
+              </template>
+            </base-field>
             <base-field
               v-model="adress1_input"
               :placeholder="$t('settings.addressInput')"
-            />
+              mode="icon"
+            >
+              <template v-slot:left>
+                <span class="icon-location" />
+              </template>
+            </base-field>
             <base-field
               v-model="adress2_input"
               :placeholder="$t('settings.addressInput')"
-            />
+              mode="icon"
+            >
+              <template v-slot:left>
+                <span class="icon-mail" />
+              </template>
+            </base-field>
             <base-field
               v-model="lastname_input"
               :placeholder="$t('settings.lastNameInput')"
-            />
+              mode="icon"
+            >
+              <template v-slot:left>
+                <span class="icon-user" />
+              </template>
+            </base-field>
             <base-field
               v-model="tel1_input"
               :placeholder="$t('settings.telInput')"
-            />
+              mode="icon"
+            >
+              <template v-slot:left>
+                <span class="icon-phone" />
+              </template>
+            </base-field>
             <base-field
               v-model="tel2_input"
               :placeholder="$t('settings.telInput')"
-            />
+              mode="icon"
+            >
+              <template v-slot:left>
+                <span class="icon-phone" />
+              </template>
+            </base-field>
           </div>
         </div>
         <div class="profile__row-1col">
@@ -95,19 +125,39 @@
           <base-field
             v-model="inst_input"
             :placeholder="$t('settings.socialInput')"
-          />
+            mode="icon"
+          >
+            <template v-slot:left>
+              <span class="icon-instagram" />
+            </template>
+          </base-field>
           <base-field
             v-model="twitt_input"
             :placeholder="$t('settings.socialInput')"
-          />
+            mode="icon"
+          >
+            <template v-slot:left>
+              <span class="icon-twitter" />
+            </template>
+          </base-field>
           <base-field
             v-model="in_input"
             :placeholder="$t('settings.socialInput')"
-          />
+            mode="icon"
+          >
+            <template v-slot:left>
+              <span class="icon-LinkedIn" />
+            </template>
+          </base-field>
           <base-field
             v-model="facebook_input"
             :placeholder="$t('settings.socialInput')"
-          />
+            mode="icon"
+          >
+            <template v-slot:left>
+              <span class="icon-facebook" />
+            </template>
+          </base-field>
         </div>
         <div class="btn__container-right">
           <base-btn
@@ -130,6 +180,11 @@
               {{ item.name }}
             </div>
           </span>
+          <div class="btn__container">
+            <div class="btn__plus">
+              <span class="icon-plus_circle" />
+            </div>
+          </div>
         </div>
       </div>
       <div class="settings">
@@ -305,6 +360,84 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.btn {
+  &__container {
+    width: 46%;
+    align-content: center;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 24px 0 0;
+  }
+  &__plus {
+    justify-content: flex-end;
+    align-items: center;
+    display: flex;
+  }
+}
+
+.icon-plus_circle:before {
+  content: "\e9a6";
+  font-size: 20px;
+  color: $blue;
+  align-items: center;
+}
+
+.icon-facebook:before {
+  content: "\e9e5";
+  font-size: 20px;
+  color: $blue;
+  align-items: center;
+}
+
+.icon-LinkedIn::before {
+  content: "\e9ed";
+  font-size: 20px;
+  color: $blue;
+  align-items: center;
+}
+
+.icon-twitter::before {
+  content: "\e9fa";
+  font-size: 20px;
+  color: $blue;
+  align-items: center;
+}
+
+.icon-instagram::before {
+  content: "\e9ea";
+  font-size: 20px;
+  color: $blue;
+  align-items: center;
+}
+
+.icon-phone::before {
+  content: "\ea2d";
+  font-size: 20px;
+  color: $blue;
+  align-items: center;
+}
+
+.icon-mail::before {
+  content: "\ea27";
+  font-size: 20px;
+  color: $blue;
+  align-items: center;
+}
+
+.icon-location::before {
+  content: "\ea23";
+  font-size: 20px;
+  color: $blue;
+  align-items: center;
+}
+
+.icon-user::before {
+  content: "\e90c";
+  font-size: 20px;
+  color: $blue;
+  align-items: center;
+}
 
 .icon__close {
   position: absolute;
