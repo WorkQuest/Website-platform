@@ -1,7 +1,7 @@
 export default {
   async signIn({ commit, dispatch }, payload) {
     const response = await this.$axios.$post('/v1/auth/login', payload);
-    commit('setOldTokens', response.result);
+    commit('setNewTokens', response.result);
     await dispatch('getUserData');
     return response;
   },
