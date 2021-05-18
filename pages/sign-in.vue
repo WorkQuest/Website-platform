@@ -129,14 +129,16 @@ export default {
     async signIn() {
       try {
         const { email, password } = this.model;
-        await this.$store.dispatch('user/signIn', {
+        const response = await this.$store.dispatch('user/signIn', {
           email,
           password,
         });
-        if (this.userData.role === 'employer') {
-          this.$router.push('/workers');
-        } else if (this.userData.role === 'worker') {
-          this.$router.push('/quests');
+        if (response?.ok) {
+          if (this.userData.role === 'employer') {
+            this.$router.push('/workers');
+          } else if (this.userData.role === 'worker') {
+            this.$router.push('/quests');
+          }
         }
         // if (response?.ok) {
         //   const response =
