@@ -583,7 +583,7 @@ export default {
   &__save {
     width: 100%;
     max-width: 250px;
-    display: grid;
+    display: flex;
   }
 }
 .quests {
