@@ -454,6 +454,7 @@ export default {
 
 .label {
   padding: 0 0 0 10px;
+  margin: 0;
 }
 
 .btn {
@@ -658,7 +659,7 @@ export default {
   @include main;
   &-white {
     @include main-white;
-    justify-content: start;
+    justify-content: flex-start;
     border-radius: 6px;
   }
 }
@@ -727,8 +728,8 @@ export default {
   &__option {
     padding: 5px 0 5px 0;
     display: flex;
-    justify-content: start;
-    align-items: flex-start;
+    justify-content:flex-start;
+    align-items: center;
   }
   &__subtitle {
     margin: 15px 0;
@@ -737,7 +738,7 @@ export default {
   }
   &__left {
     @include main-white;
-    justify-content: start;
+    justify-content: flex-start;
     border-radius: 6px;
     margin: 20px 0 0 0;
     padding: 20px;
@@ -747,7 +748,7 @@ export default {
   }
   &__right {
     @include main-white;
-    justify-content: start;
+    justify-content: flex-start;
     border-radius: 6px;
     margin: 20px 0 0 0;
     padding: 20px;
@@ -766,7 +767,7 @@ export default {
   }
   &__profile {
     @include main-white;
-    justify-content: start;
+    justify-content: flex-start;
     border-radius: 6px;
     margin: 20px 0 20px 0;
     display: inherit;
