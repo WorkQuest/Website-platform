@@ -644,7 +644,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin: 50px 0 21px 20px;
+    margin: 50px 0 21px 9px;
   }
 }
 
