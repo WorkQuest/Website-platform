@@ -55,11 +55,17 @@
             <base-btn
               class="btn_white"
             >
+              <template v-slot:right>
+                <span class="icon-Sorting_descending" />
+              </template>
               {{ $t('workers.price') }}
             </base-btn>
             <base-btn
               class="btn_white"
             >
+              <template v-slot:right>
+                <span class="icon-Sorting_descending" />
+              </template>
               {{ $t('workers.addedTime') }}
             </base-btn>
           </div>
@@ -67,21 +73,33 @@
             <base-btn
               class="btn_white"
             >
+              <template v-slot:right>
+                <span class="icon-caret_down" />
+              </template>
               {{ $t('workers.quests') }}
             </base-btn>
             <base-btn
               class="btn_white"
             >
+              <template v-slot:right>
+                <span class="icon-caret_down" />
+              </template>
               {{ $t('workers.urgent') }}
             </base-btn>
             <base-btn
               class="btn_white"
             >
+              <template v-slot:right>
+                <span class="icon-caret_down" />
+              </template>
               {{ $t('workers.specialized') }}
             </base-btn>
             <base-btn
               class="btn_white"
             >
+              <template v-slot:right>
+                <span class="icon-caret_down" />
+              </template>
               {{ $t('workers.typeOfJob') }}
             </base-btn>
           </div>
@@ -600,7 +618,7 @@ export default {
     &_left {
       display: flex;
       flex-direction: row;
-      justify-content: flex-end;
+      justify-content: flex-start;
     }
     &_right {}
   }
@@ -615,6 +633,7 @@ export default {
   grid-template-columns: 25% 25% 25% 25%;
 }
 .btn_white {
+  font-size: 14px;
   background-color: $white;
   color: $black800;
   padding: 11px 10px 11px 20px;
@@ -628,6 +647,7 @@ export default {
   width: 100%;
 }
 .btn_white:hover {
+  font-size: 14px;
   background-color: $white;
   color: $black800;
   padding: 11px 10px 11px 20px;
@@ -639,6 +659,7 @@ export default {
   flex-shrink: 0;
   max-width: 120px;
   width: 100%;
+  box-shadow: 0px 17px 17px rgba(0, 0, 0, 0.05);
 }
 .icon {
   &_blue::before {

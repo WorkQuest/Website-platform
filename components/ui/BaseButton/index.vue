@@ -23,6 +23,9 @@
     @click="$emit('click')"
   >
     <slot />
+    <div class="icon-btn">
+      <slot name="right" />
+    </div>
   </button>
 </template>
 <script>
@@ -62,6 +65,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.icon {
+  &-btn {
+    margin: 0 0 0 5px;
+  }
+}
 .base-btn {
   display: flex;
   align-items: center;
