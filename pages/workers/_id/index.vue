@@ -80,6 +80,7 @@
             <div class="box__btn">
               <base-btn
                 class="btn_green"
+                @click="showModalGiveQuest()"
               >
                 Give a quest
               </base-btn>
@@ -244,6 +245,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'IndexVue',
@@ -351,6 +353,13 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
+  },
+  methods: {
+    showModalGiveQuest() {
+      this.ShowModal({
+        key: modals.invitation,
+      });
+    },
   },
 };
 </script>

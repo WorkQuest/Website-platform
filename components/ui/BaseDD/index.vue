@@ -5,7 +5,7 @@
   >
     <button
       class="dd__btn"
-      :class="{'dd__btn_dark': type === 'dark'}"
+      :class="ddClass"
       @click="isShown = !isShown"
     >
       <div
@@ -97,10 +97,24 @@ export default {
       type: Boolean,
       default: false,
     },
+    mode: {
+      type: String,
+      default: '',
+    },
   },
   data: () => ({
     isShown: false,
   }),
+  computed: {
+    ddClass() {
+      const { type } = this;
+
+      return [
+        { dd__btn_dark: type === 'dark' },
+        { dd__btn_gray: type === 'gray' },
+      ];
+    },
+  },
   methods: {
     hideDd() {
       this.isShown = false;
@@ -188,6 +202,9 @@ export default {
     border-radius: 6px;
     &_dark {
       background: #151552;
+    }
+    &_gray {
+      background-color: $black0;
     }
   }
 }

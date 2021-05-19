@@ -18,4 +18,6 @@ export default {
   widthraw: 'widthraw',
   review: 'review',
   thanks: 'Thanks ',
+  invitation: 'invitation',
+  inviteSend: 'inviteSend',
 };

@@ -236,7 +236,10 @@
     "widthraw": "Widthraw",
     "addCard": "Add Card",
     "thanks": "Thanks",
-    "couple": "A couple words"
+    "couple": "A couple words",
+    "invitation": "Invitation",
+    "chooseQuest": "Choose quest",
+    "inviteSend": "Invite sent"
   },
   "ui": {
     "profile": {
