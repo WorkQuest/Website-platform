@@ -33,18 +33,19 @@
         </div>
         <div class="grid__1col">
           <div class="ctm-modal__content-field">
-            <label for="date_input">{{ $t('modals.chooseQuest') }}</label>
+            <label for="chooseQuest_input">{{ $t('modals.chooseQuest') }}</label>
             <base-field
-              v-model="amount_input"
+              id="chooseQuest_input"
+              v-model="chooseQuest_input"
               :placeholder="'Placeholder'"
             />
           </div>
         </div>
         <div class="ctm-modal__content-field">
-          <label for="text_input">{{ $t('modals.message') }}</label>
+          <label for="message_input">{{ $t('modals.message') }}</label>
           <textarea
-            id="text_input"
-            v-model="cardNumber_input"
+            id="message_input"
+            v-model="message_input"
             class="message__textarea"
             placeholder="Hello..."
           />
@@ -55,12 +56,13 @@
               class="message__action"
               @click="showTransactionSendModal()"
             >
-              {{ $t('meta.submit') }}
+              {{ $t('meta.send') }}
             </base-btn>
           </div>
           <div class="btn__wrapper">
             <base-btn
               class="message__action"
+              :mode="'outline'"
               @click="hide()"
             >
               {{ $t('meta.cancel') }}
@@ -80,6 +82,8 @@ export default {
   name: 'ModalInvitation',
   data() {
     return {
+      message_input: '',
+      chooseQuest_input: '',
       user: {
         name: 'Rosalia Vance',
       },
@@ -226,8 +230,6 @@ export default {
     justify-content: space-between;
     align-items: flex-end;
   }
-}
-.grid {
   &__3col {
     display: grid;
     grid-template-columns: 47% 6% 47%;

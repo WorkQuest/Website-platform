@@ -8,6 +8,7 @@
         <div class="ctm-modal__content-field">
           <label for="date_input">{{ $t('modals.amount') }}</label>
           <base-field
+            id="date_input"
             v-model="date_input"
             :placeholder="'02/24'"
           />
@@ -26,6 +27,7 @@
       <div class="ctm-modal__content-field">
         <label for="cardNumber_input">{{ $t('modals.numberOfCard') }}</label>
         <base-field
+          id="cardNumber_input"
           v-model="cardNumber_input"
           :placeholder="'1234 1234 1234 1234'"
         />

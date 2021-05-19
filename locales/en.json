@@ -241,7 +241,10 @@
     "questCreated": "Quest Created",
     "invitation": "Invitation",
     "chooseQuest": "Choose Quest",
-    "raiseViews": "Raise views"
+    "raiseViews": "Raise views",
+    "priceOfAClick": "Price of a click",
+    "city": "City",
+    "period": "Period"
   },
   "ui": {
     "profile": {

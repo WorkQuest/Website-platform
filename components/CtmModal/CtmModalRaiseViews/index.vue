@@ -4,38 +4,33 @@
     :title="$t('modals.raiseViews')"
   >
     <div class="ctm-modal__content">
-      <div class="grid__3col">
-        <div class="ctm-modal__content-field">
-          <label for="date_input">{{ $t('modals.amount') }}</label>
-          <base-field
-            v-model="date_input"
-            :placeholder="'02/24'"
-          />
-        </div>
-        <div class="ctm-modal__equal">
-          =
-        </div>
-        <div class="ctm-modal__content-field">
-          <base-field
-            v-model="balance_input"
-            mode="white"
-            :placeholder="'$ 0'"
-          />
-        </div>
-      </div>
-      <div class="ctm-modal__content-field">
-        <label for="cardNumber_input">{{ $t('modals.numberOfCard') }}</label>
+      <div class="grid__1col">
+        <label for="priceOfAClick_input">{{ $t('modals.priceOfAClick') }}</label>
         <base-field
-          v-model="cardNumber_input"
-          :placeholder="'1234 1234 1234 1234'"
+          id="priceOfAClick_input"
+          v-model="priceOfAClick_input"
+          :placeholder="'230 WUSD'"
+        />
+        <label for="city_input">{{ $t('modals.city') }}</label>
+        <base-field
+          id="city_input"
+          v-model="city_input"
+          :placeholder="'Moscow'"
+        />
+        <label for="period_input">{{ $t('modals.period') }}</label>
+        <base-field
+          id="period_input"
+          v-model="period_input"
+          :placeholder="'Week'"
         />
       </div>
-      <div class="ctm-modal__content-field link">
-        <nuxt-link
-          to="#"
-        >
-          {{ $t('modals.addAnotherCard') }}
-        </nuxt-link>
+      <div class="payment__container">
+        <div class="payment__title">
+          Estimated payment:
+        </div>
+        <div class="payment__cost">
+          120 WUSD
+        </div>
       </div>
       <div class="btn__container">
         <div class="btn__wrapper">
@@ -43,12 +38,12 @@
             class="message__action"
             @click="showTransactionSendModal()"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.ok') }}
           </base-btn>
         </div>
         <div class="btn__wrapper">
           <base-btn
-            class="message__action"
+            :mode="'outline'"
             @click="hide()"
           >
             {{ $t('meta.cancel') }}
@@ -64,12 +59,12 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalWidthraw',
+  name: 'ModalRaiseViews',
   data() {
     return {
-      date_input: '',
-      balance_input: '',
-      cardNumber_input: '',
+      priceOfAClick_input: '',
+      city_input: '',
+      period_input: '',
     };
   },
   computed: {
@@ -91,6 +86,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.payment {
+  &__container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  &__title {
+    color: $black500;
+    font-weight:400;
+    font-size: 16px;
+  }
+  &__cost {
+    color: $blue;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 0 0 0 5px;
+  }
+}
+
+.btn {
+  &__cancel {
+    &_white {
+      background: $white;
+    }
+  }
+}
+
 .link {
   text-align: right;
 }
@@ -150,7 +173,7 @@ export default {
 }
 
 .messageSend {
-  max-width: 495px !important;
+  max-width: 650px !important;
   &__content {
     display: grid;
     grid-template-columns: 1fr;
