@@ -240,7 +240,8 @@
     "inviteSend": "Invite sent",
     "questCreated": "Quest Created",
     "invitation": "Invitation",
-    "chooseQuest": "Choose Quest"
+    "chooseQuest": "Choose Quest",
+    "raiseViews": "Raise views"
   },
   "ui": {
     "profile": {

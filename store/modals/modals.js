@@ -21,4 +21,5 @@ export default {
   inviteSend: 'inviteSend',
   questCreated: 'questCreated',
   invitation: 'invitation',
+  raiseViews: 'raiseViews',
 };

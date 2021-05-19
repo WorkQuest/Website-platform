@@ -32,6 +32,7 @@
       <CtmModalInviteSend v-if="modals.inviteSend === currentModalKey" />
       <CtmModalQuestCreated v-if="modals.questCreated === currentModalKey" />
       <CtmModalInvitation v-if="modals.invitation === currentModalKey" />
+      <CtmModalRaiseViews v-if="modals.raiseViews === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -58,6 +59,7 @@ import CtmModalWidthraw from './CtmModalWidthraw';
 import CtmModalInviteSend from './CtmModalInviteSend';
 import CtmModalQuestCreated from './CtmModalQuestCreated';
 import CtmModalInvitation from './CtmModalInvitation';
+import CtmModalRaiseViews from './CtmModalRaiseViews';
 
 export default {
   name: 'ModalBox',
@@ -82,6 +84,7 @@ export default {
     CtmModalInviteSend,
     CtmModalQuestCreated,
     CtmModalInvitation,
+    CtmModalRaiseViews,
   },
   data: () => ({
     modals,

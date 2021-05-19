@@ -71,6 +71,11 @@
     >
       showInvitationModal
     </base-btn>
+    <base-btn
+      @click="showRaiseViewsModal()"
+    >
+      showRaiseViewsModal
+    </base-btn>
   </div>
 </template>
 
@@ -79,19 +84,18 @@ import modals from '~/store/modals/modals';
 
 export default {
   data() {
-    return {
-      btns: [
-        {
-          name: 'showMessageSendModal',
-        },
-      ],
-    };
+    return {};
   },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
   },
   methods: {
+    showRaiseViewsModal() {
+      this.ShowModal({
+        key: modals.raiseViews,
+      });
+    },
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.transactionSend,
