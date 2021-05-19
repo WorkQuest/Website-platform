@@ -4,6 +4,8 @@ export default {
   setOldTokens(state, { access, refresh }) {
     state.tokens.access = access;
     state.tokens.refresh = refresh;
+    this.$cookies.set('access', access, { path: '/' });
+    this.$cookies.set('refresh', refresh, { path: '/' });
   },
   setNewTokens(state, { access, refresh }) {
     state.tokens.access = access;
