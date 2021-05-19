@@ -98,7 +98,9 @@
             <nuxt-link
               class="card-subtitle card-subtitle_green"
               to="/show-profileCompany"
-            >{{ $t('quests.showAllActiveQuests') }}</nuxt-link>
+            >
+              {{ $t('quests.showAllActiveQuests') }}
+            </nuxt-link>
           </div>
           <div class="data-item">
             <div class="card-title">
@@ -176,7 +178,7 @@
               <div class="rating">
                 {{ item.reviewerRating }}
               </div>
-<!--              TODO: Добавить стили в BASE Button-->
+              <!--              TODO: Добавить стили в BASE Button-->
               <nuxt-link
                 class="simple-button"
                 to="/show-profileCompany"
@@ -282,7 +284,9 @@
             <nuxt-link
               class="more-button"
               to="/show-profileCompany"
-            >{{ $t('meta.showAllReviews') }}</nuxt-link>
+            >
+              {{ $t('meta.showAllReviews') }}
+            </nuxt-link>
           </div>
         </div>
 
@@ -339,7 +343,9 @@
             <nuxt-link
               class="more-button"
               to="/show-profileCompany"
-            >{{ $t('meta.showAllReviews') }}</nuxt-link>
+            >
+              {{ $t('meta.showAllReviews') }}
+            </nuxt-link>
           </div>
         </div>
       </div>

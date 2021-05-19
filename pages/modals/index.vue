@@ -72,9 +72,14 @@
       showInvitationModal
     </base-btn>
     <base-btn
-      @click="showThsanksModal()"
+      @click="showWidthrawModal()"
     >
-      showThanksModal
+      showWidthrawModal
+      <base-btn
+        @click="showThanksModal()"
+      >
+        showThanksModal
+      </base-btn>
     </base-btn>
   </div>
 </template>
@@ -101,6 +106,31 @@ export default {
     showInviteSendModal() {
       this.ShowModal({
         key: modals.inviteSend,
+      });
+    },
+    showWidthrawModal() {
+      this.ShowModal({
+        key: modals.widthraw,
+      });
+    },
+    showDepositModal() {
+      this.ShowModal({
+        key: modals.deposit,
+      });
+    },
+    showAddCardModal() {
+      this.ShowModal({
+        key: modals.addCard,
+      });
+    },
+    showCardHasBeenAddedModal() {
+      this.ShowModal({
+        key: modals.cardHasBeenAdded,
+      });
+    },
+    showTransactionSendModal() {
+      this.ShowModal({
+        key: modals.transactionSend,
       });
     },
     showWidthrawModal() {

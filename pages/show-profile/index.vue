@@ -93,7 +93,9 @@
             <nuxt-link
               class="card-subtitle card-subtitle_green"
               to="/show-profile"
-            >{{ $t('quests.showAllActiveQuests') }}</nuxt-link>
+            >
+              {{ $t('quests.showAllActiveQuests') }}
+            </nuxt-link>
           </div>
           <div class="data-item">
             <div class="card-title">
@@ -234,7 +236,9 @@
             <nuxt-link
               class="more-button"
               to="/show-profile"
-            >{{ $t('meta.showAllReviews') }}</nuxt-link>
+            >
+              {{ $t('meta.showAllReviews') }}
+            </nuxt-link>
           </div>
         </div>
       </div>
