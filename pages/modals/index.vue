@@ -108,56 +108,6 @@ export default {
         key: modals.inviteSend,
       });
     },
-    showWidthrawModal() {
-      this.ShowModal({
-        key: modals.widthraw,
-      });
-    },
-    showDepositModal() {
-      this.ShowModal({
-        key: modals.deposit,
-      });
-    },
-    showAddCardModal() {
-      this.ShowModal({
-        key: modals.addCard,
-      });
-    },
-    showCardHasBeenAddedModal() {
-      this.ShowModal({
-        key: modals.cardHasBeenAdded,
-      });
-    },
-    showTransactionSendModal() {
-      this.ShowModal({
-        key: modals.transactionSend,
-      });
-    },
-    showWidthrawModal() {
-      this.ShowModal({
-        key: modals.widthraw,
-      });
-    },
-    showDepositModal() {
-      this.ShowModal({
-        key: modals.deposit,
-      });
-    },
-    showAddCardModal() {
-      this.ShowModal({
-        key: modals.addCard,
-      });
-    },
-    showCardHasBeenAddedModal() {
-      this.ShowModal({
-        key: modals.cardHasBeenAdded,
-      });
-    },
-    showTransactionSendModal() {
-      this.ShowModal({
-        key: modals.transactionSend,
-      });
-    },
     showQuestAgreedModal() {
       this.ShowModal({
         key: modals.questAgreed,
