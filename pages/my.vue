@@ -120,11 +120,11 @@
                       class="block__btn"
                       @click="showDetails()"
                     >
-                      <div
+                      <span
                         class="block__text block__text_details"
                       >
                         {{ $t('meta.details') }}
-                      </div>
+                      </span>
                       <span class="icon-short_right" />
                     </button>
                     <div
