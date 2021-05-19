@@ -291,7 +291,7 @@ export default {
           priority: 1,
           amount: 1100,
           symbol: 'wusd',
-          url: '/show-profileCompany',
+          url: '/company',
           distance: '400',
         },
         {
@@ -304,7 +304,7 @@ export default {
           priority: 2,
           amount: 1700,
           symbol: 'wusd',
-          url: '/show-profileCompany',
+          url: '/company',
           distance: '100',
         },
       ],

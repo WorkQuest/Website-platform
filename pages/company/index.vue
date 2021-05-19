@@ -19,7 +19,7 @@
             <div class="rating" />
             <nuxt-link
               class="reviews-amount"
-              to="/show-profileCompany"
+              to="/company"
             >
               23 {{ $t('quests.reviews') }}
             </nuxt-link>
@@ -37,7 +37,7 @@
             <div class="socials">
               <nuxt-link
                 class="social__link"
-                to="/show-profileCompany"
+                to="/company"
               >
                 <span
                   class="icon-facebook"
@@ -45,7 +45,7 @@
               </nuxt-link>
               <nuxt-link
                 class="social__link"
-                to="/show-profileCompany"
+                to="/company"
               >
                 <span
                   class="icon-twitter"
@@ -53,7 +53,7 @@
               </nuxt-link>
               <nuxt-link
                 class="social__link"
-                to="/show-profileCompany"
+                to="/company"
               >
                 <span
                   class="icon-instagram"
@@ -61,7 +61,7 @@
               </nuxt-link>
               <nuxt-link
                 class="social__link"
-                to="/show-profileCompany"
+                to="/company"
               >
                 <span
                   class="icon-LinkedIn"
@@ -97,7 +97,7 @@
             </div>
             <nuxt-link
               class="card-subtitle card-subtitle_green"
-              to="/show-profileCompany"
+              to="/company"
             >
               {{ $t('quests.showAllActiveQuests') }}
             </nuxt-link>
@@ -181,7 +181,7 @@
               <!--              TODO: Добавить стили в BASE Button-->
               <nuxt-link
                 class="simple-button"
-                to="/show-profileCompany"
+                to="/company"
               >
                 {{ $t('quests.readCompletely') }}
               </nuxt-link>
@@ -283,7 +283,7 @@
             <!--              TODO: Добавить стили в BASE Button-->
             <nuxt-link
               class="more-button"
-              to="/show-profileCompany"
+              to="/company"
             >
               {{ $t('meta.showAllReviews') }}
             </nuxt-link>
@@ -333,7 +333,7 @@
             <!--              TODO: Добавить стили в BASE Button-->
             <nuxt-link
               class="simple-button"
-              to="/show-profileCompany"
+              to="/company"
             >
               {{ $t('profile.details') }}
             </nuxt-link>
@@ -342,7 +342,7 @@
           <div class="button">
             <nuxt-link
               class="more-button"
-              to="/show-profileCompany"
+              to="/company"
             >
               {{ $t('meta.showAllReviews') }}
             </nuxt-link>
