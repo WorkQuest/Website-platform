@@ -155,7 +155,7 @@
               >
                 {{ spec.name }}
               </span>
-              <div class="card__about_title">
+              <div class="card__title">
                 {{ $t('workers.aboutMe') }}
               </div>
               <div class="card__about">
@@ -771,9 +771,6 @@ export default {
       grid-template-rows: 20px 1fr;
       grid-gap: 7px;
     }
-    &_left {
-
-    }
   }
   &__img {
     width: 61px;
@@ -822,6 +819,11 @@ export default {
       display: none;
     }
   }
+  &__title {
+    margin: 15px 0 0 0;
+    font-weight: 400;
+    font-size: 14px;
+  }
   &__about {
     margin: 0 0 15px 0;
     font-weight: 400;
@@ -831,11 +833,6 @@ export default {
     overflow: hidden;
     max-height: 65px;
     text-overflow: ellipsis;
-    &_title {
-      margin: 15px 0 0 0;
-      font-weight: 400;
-      font-size: 14px;
-    }
   }
   &__address {
     margin: 0 0 15px 0;
