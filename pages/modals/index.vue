@@ -71,16 +71,6 @@
     >
       showInvitationModal
     </base-btn>
-    <base-btn
-      @click="showWidthrawModal()"
-    >
-      showWidthrawModal
-      <base-btn
-        @click="showThanksModal()"
-      >
-        showThanksModal
-      </base-btn>
-    </base-btn>
   </div>
 </template>
 
@@ -88,11 +78,45 @@
 import modals from '~/store/modals/modals';
 
 export default {
+  data() {
+    return {
+      btns: [
+        {
+          name: 'showMessageSendModal',
+        },
+      ],
+    };
+  },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
   },
   methods: {
+    showTransactionSendModal() {
+      this.ShowModal({
+        key: modals.transactionSend,
+      });
+    },
+    showCardHasBeenAddedModal() {
+      this.ShowModal({
+        key: modals.cardHasBeenAdded,
+      });
+    },
+    showDepositModal() {
+      this.ShowModal({
+        key: modals.deposit,
+      });
+    },
+    showAddCardModal() {
+      this.ShowModal({
+        key: modals.addCard,
+      });
+    },
+    showWidthrawModal() {
+      this.ShowModal({
+        key: modals.widthraw,
+      });
+    },
     showInvitationModal() {
       this.ShowModal({
         key: modals.invitation,

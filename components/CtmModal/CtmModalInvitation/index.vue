@@ -20,12 +20,12 @@
               <div>
                 <div
                   class="card__level"
-                  :class="{'card__level_disabled': card.level === 'DISABLED'}"
+                  :class="{'card__level_disabled': card.level.code === '0'}"
                 >
                   <span
                     class="card__level_higher"
                     :class="cardsLevels()"
-                  >{{ card.level }}</span>
+                  >{{ card.level.title }}</span>
                 </div>
               </div>
             </div>
@@ -84,7 +84,10 @@ export default {
         name: 'Rosalia Vance',
       },
       card: {
-        level: 'HIGHER LEVEL',
+        level: {
+          title: 'HIGHER LEVEL',
+          code: '1',
+        },
       },
     };
   },
@@ -95,8 +98,8 @@ export default {
     cardLevelClass() {
       const { card } = this;
       return [
-        { card__level_reliable: card.level === 'RELIABLE EMP.' },
-        { card__level_checked: card.level === 'CHECKED BY TIME' },
+        { card__level_reliable: card.level.code === '2' },
+        { card__level_checked: card.level.code === '3' },
       ];
     },
   },
@@ -104,9 +107,9 @@ export default {
     cardsLevels() {
       const { card, disabled } = this;
       return [
-        { card__level_reliable: card.level === 'RELIABLE EMP.' },
-        { card__level_checked: card.level === 'CHECKED BY TIME' },
-        { card__level_disabled: card.level === 'DISABLED' },
+        { card__level_reliable: card.level.code === '2' },
+        { card__level_checked: card.level.code === '3' },
+        { card__level_disabled: card.level.code === '0' },
       ];
     },
     hide() {
