@@ -5,7 +5,10 @@
   >
     <button
       class="dd__btn"
-      :class="{'dd__btn_dark': type === 'dark'}"
+      :class="[
+        {'dd__btn_dark': type === 'dark'},
+        {'dd__btn_grey': type === 'grey'}
+      ]"
       @click="isShown = !isShown"
     >
       <div
@@ -188,6 +191,9 @@ export default {
     border-radius: 6px;
     &_dark {
       background: #151552;
+    }
+    &_grey {
+      background: $black0;
     }
   }
 }

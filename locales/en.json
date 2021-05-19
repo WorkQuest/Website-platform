@@ -247,12 +247,21 @@
     "period": "Period"
   },
   "ui": {
+    "workers": "Workers",
+    "wallet": "Wallet",
+    "myQuests": "My quests",
+    "quests": "Quests",
+    "menu": "Menu",
     "profile": {
       "myProfile": "My profile",
       "settings": "Settings",
       "disputes": "Disputes",
       "instruments": "Instruments",
       "logout": "Logout"
+    },
+    "locals": {
+      "en": "EN",
+      "ru": "RU"
     },
     "notifications": {
       "title": "Notifications",
