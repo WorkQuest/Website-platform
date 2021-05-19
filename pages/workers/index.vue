@@ -50,8 +50,8 @@
         <h2 class="main__title">
           {{ $t('workers.topWorkers') }}
         </h2>
-        <div class="main__menu">
-          <div class="main__menu main__menu_left">
+        <div class="main__menu menu">
+          <div class="menu__left">
             <base-btn
               class="btn_white"
             >
@@ -69,7 +69,7 @@
               {{ $t('workers.addedTime') }}
             </base-btn>
           </div>
-          <div class="main__menu main__menu_right">
+          <div class="menu__right">
             <base-btn
               class="btn_white"
             >
@@ -119,8 +119,10 @@
                 <div class="card__header_top">
                   <div class="card__header_left">
                     <img
+                      v-if="card.img"
                       class="card__img"
                       :src="card.img"
+                      alt=""
                     >
                   </div>
                   <div class="card__header_right">
@@ -607,20 +609,32 @@ export default {
     @include main-white;
   }
   &__title {
-    padding: 30px 0 0 0;
+    @include text-simple;
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 130%;
+    color: $black800;
+    margin: 30px 0 25px 0;
   }
-  &__menu {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    max-width: 1180px;
-    width: 100%;
-    &_left {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-    }
-    &_right {}
+}
+.menu {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+  justify-content: space-between;
+  max-width: 1180px;
+  width: 100%;
+  &__left {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-gap: 20px;
+    justify-content: flex-start;
+  }
+  &__right {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    grid-gap: 20px;
+    justify-content: flex-end;
   }
 }
 .map {
@@ -630,36 +644,27 @@ export default {
 }
 .content {
   display: grid;
-  grid-template-columns: 25% 25% 25% 25%;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 300px;
+  grid-gap: 20px;
+  margin-top: 20px;
 }
 .btn_white {
   font-size: 14px;
   background-color: $white;
   color: $black800;
-  padding: 11px 10px 11px 20px;
+  padding: 0 20px;
   display: flex;
   flex-direction: row;
   align-items: center;
   border-radius: 6px;
-  margin: 10px;
   flex-shrink: 0;
-  max-width: 120px;
   width: 100%;
-}
-.btn_white:hover {
-  font-size: 14px;
-  background-color: $white;
-  color: $black800;
-  padding: 11px 10px 11px 20px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  border-radius: 6px;
-  margin: 10px;
-  flex-shrink: 0;
-  max-width: 120px;
-  width: 100%;
-  box-shadow: 0px 17px 17px rgba(0, 0, 0, 0.05);
+  transition: .2s;
+  &:hover {
+    background-color: $white;
+    box-shadow: 0px 17px 17px rgba(0, 0, 0, 0.05);
+  }
 }
 .icon {
   &_blue::before {
@@ -670,28 +675,18 @@ export default {
 }
 
 .card {
-  margin: 20px 0 0 0;
-  max-width: 280px;
   width: 100%;
   max-height: 300px;
   height: 100%;
   box-sizing: border-box;
-  border-radius:6px;
+  border-radius: 6px;
   align-items: center;
   cursor: pointer;
+  box-shadow: none;
   transition: .2s;
   &:hover {
-    margin: 20px 0 0 0;
-    max-width: 280px;
-    width: 100%;
-    max-height: 300px;
-    height: 100%;
-    box-sizing: border-box;
-    border-radius:6px;
-    align-items: center;
     cursor: pointer;
-    box-shadow: 0px 17px 17px rgba(0, 0, 0, 0.05), 0px 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0px 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0px 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
-    transition: .2s;
+    box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   }
   &_higher {
     border: 1px solid #F6CF00;
@@ -718,54 +713,59 @@ export default {
     flex-direction: column;
     margin: 20px 0 0 0;
     &_top {
-      display: flex;
-      flex-direction: row;
+      display: grid;
+      grid-template-columns: 61px 1fr;
+      grid-gap: 15px;
+      align-items: center;
     }
     &_right {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-rows: 20px 1fr;
+      grid-gap: 7px;
     }
-    &_left {}
+    &_left {
+
+    }
   }
   &__img {
     width: 61px;
     height: 61px;
-    border-radius:73px;
+    border-radius: 100%;
+    object-fit: cover;
   }
   &__name {
-    margin: 0 0 0 7px;
+    @include text-simple;
     font-size: 18px;
     font-weight: 500;
-    &_center {
-      padding: 13px 0 0 0;
-    }
   }
   &__level {
-    margin: 0 0 0 15px;
+    display: grid;
+    grid-template-columns: 20px auto;
+    grid-gap: 7px;
     font-size: 12px;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    display: flex;
+    height: 20px;
     &_higher {
-      display: block;
-      margin: 0 0 0 7px;
-      padding: 2px 4px 2px 4px;
+      display: flex;
+      padding: 0 4px;
+      align-items: center;
       background-color: #F6CF00;
       border-radius: 3px;
       color: $white;
     }
     &_reliable {
-      display: block;
-      margin: 0 0 0 7px;
-      padding: 2px 4px 2px 4px;
+      display: flex;
+      padding: 0 4px;
+      align-items: center;
       background-color: #BBC0C7;
       border-radius: 3px;
       color: $white;
     }
     &_checked {
-      display: block;
-      margin: 0 0 0 7px;
-      padding: 2px 4px 2px 4px;
+      display: flex;
+      padding: 0 4px;
+      align-items: center;
       background-color: #B79768;
       border-radius: 3px;
       color: $white;
@@ -779,6 +779,10 @@ export default {
     font-weight: 400;
     font-size: 14px;
     color: $black300;
+    white-space: normal;
+    overflow: hidden;
+    max-height: 65px;
+    text-overflow: ellipsis;
     &_title {
       margin: 15px 0 0 0;
       font-weight: 400;
