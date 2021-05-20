@@ -4,12 +4,13 @@
     :title="$t('modals.invitation')"
   >
     <div class="ctm-modal__content">
-      <validation-observer>
-        <div class="grid__1col">
+      <validation-observer tag="div">
+        <div class="grid__field grid__field_top">
           <div class="ctm-modal__content-field">
             <div class="avatar__container">
               <div>
                 <img
+                  alt=""
                   class="ctm-modal__img"
                   src="~/assets/img/temp/avatar.jpg"
                 >
@@ -31,17 +32,17 @@
             </div>
           </div>
         </div>
-        <div class="grid__1col">
+        <div class="grid__field">
           <div class="ctm-modal__content-field">
             <label for="chooseQuest_input">{{ $t('modals.chooseQuest') }}</label>
-            <base-field
-              id="chooseQuest_input"
-              v-model="chooseQuest_input"
-              :placeholder="'Placeholder'"
+            <base-dd
+              v-model="questIndex"
+              type="gray"
+              :items="quests"
             />
           </div>
         </div>
-        <div class="ctm-modal__content-field">
+        <div class="ctm-modal__content-field grid__field">
           <label for="message_input">{{ $t('modals.message') }}</label>
           <textarea
             id="message_input"
@@ -82,6 +83,12 @@ export default {
   name: 'ModalInvitation',
   data() {
     return {
+      questIndex: 0,
+      quests: [
+        'Quest one',
+        'Quest two',
+        'Quest three',
+      ],
       message_input: '',
       chooseQuest_input: '',
       user: {
@@ -121,7 +128,7 @@ export default {
     },
     showTransactionSendModal() {
       this.ShowModal({
-        key: modals.transactionSend,
+        key: modals.inviteSend,
       });
     },
   },
@@ -194,14 +201,14 @@ export default {
 .ctm-modal {
   @include modalKit;
   &__content-field {
-    margin: 15px 0 0 0;
+    display: grid;
   }
-    &__img {
-      width: 61px;
-      height: 61px;
-      border-radius:73px;
-      margin: 0 10px 0 0;
-    }
+  &__img {
+    width: 61px;
+    height: 61px;
+    border-radius:73px;
+    margin: 0 10px 0 0;
+  }
 }
 
 .input {
@@ -219,22 +226,12 @@ export default {
   }
 }
 .grid {
-  &__1col {
+  &__field {
     display: grid;
-    grid-template-columns: 100%;
-    align-items: flex-end;
-  }
-  &__2col {
-    display: grid;
-    grid-template-columns: 49% 49%;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-  &__3col {
-    display: grid;
-    grid-template-columns: 47% 6% 47%;
-    justify-content: space-between;
-    align-items: flex-end;
+    margin-top: 25px;
+    &_top {
+      margin: 0;
+    }
   }
 }
 .btn {
@@ -242,7 +239,7 @@ export default {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
-    margin: 15px 0 0 0;
+    margin-top: 25px;
   }
   &__wrapper {
     width: 45%;

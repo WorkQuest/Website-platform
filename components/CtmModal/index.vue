@@ -31,8 +31,8 @@
       <CtmModalReviewEmployer v-if="modals.review === currentModalKey" />
       <CtmModalInviteSend v-if="modals.inviteSend === currentModalKey" />
       <CtmModalQuestCreated v-if="modals.questCreated === currentModalKey" />
-      <CtmModalInvitation v-if="modals.invitation === currentModalKey" />
       <CtmModalRaiseViews v-if="modals.raiseViews === currentModalKey" />
+      <CtmModalInvitation v-if="modals.invitation === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -56,9 +56,9 @@ import CtmModalCardHasBeenAdded from './CtmModalCardHasBeenAdded';
 import CtmModalDeposit from './CtmModalDeposit';
 import CtmModalAddCard from './CtmModalAddCard';
 import CtmModalWidthraw from './CtmModalWidthraw';
+import CtmModalInvitation from './CtmModalInvitation';
 import CtmModalInviteSend from './CtmModalInviteSend';
 import CtmModalQuestCreated from './CtmModalQuestCreated';
-import CtmModalInvitation from './CtmModalInvitation';
 import CtmModalRaiseViews from './CtmModalRaiseViews';
 
 export default {
@@ -81,9 +81,9 @@ export default {
     CtmModalWidthraw,
     CtmModalReviewEmployer,
     CtmModalThanksSend,
+    CtmModalInvitation,
     CtmModalInviteSend,
     CtmModalQuestCreated,
-    CtmModalInvitation,
     CtmModalRaiseViews,
   },
   data: () => ({

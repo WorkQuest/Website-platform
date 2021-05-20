@@ -20,6 +20,6 @@ export default {
   thanks: 'Thanks ',
   inviteSend: 'inviteSend',
   questCreated: 'questCreated',
-  invitation: 'invitation',
   raiseViews: 'raiseViews',
+  invitation: 'invitation',
 };

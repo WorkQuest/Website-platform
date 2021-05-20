@@ -27,8 +27,11 @@
                 </nuxt-link>
               </div>
               <div class="col info-grid__col">
-                <div class="title">
+                <div class="title title_inline">
                   {{ payload.user.name }}
+                  <span class="level">
+                    HIGHER LEVEL
+                  </span>
                 </div>
                 <div class="description">
                   {{ payload.user.desc }}
@@ -77,6 +80,7 @@
             <div class="box__btn">
               <base-btn
                 class="btn_green"
+                @click="showModalGiveQuest()"
               >
                 Give a quest
               </base-btn>
@@ -241,6 +245,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'IndexVue',
@@ -349,10 +354,29 @@ export default {
     this.SetLoader(true);
     this.SetLoader(false);
   },
+  methods: {
+    showModalGiveQuest() {
+      this.ShowModal({
+        key: modals.invitation,
+      });
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+.level {
+  @include text-simple;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 130%;
+  color: white;
+  background: #F7CF00;
+  border-radius: 3px;
+  padding: 2px 5px;
+  margin-left: 10px;
+}
 
 .name {
   &__container {
@@ -545,6 +569,7 @@ export default {
   background-position: 82% 21px;
   background-repeat: no-repeat;
 }
+
 .block {
   background: #FFFFFF;
   border-radius: 6px;
@@ -698,6 +723,7 @@ export default {
     }
   }
 }
+
 .quest{
   &__spec {
     @include text-simple;
@@ -822,10 +848,12 @@ export default {
     border-top: 1px solid $black0;
   }
 }
+
 .main-container {
   width: 1180px;
   margin: 0 auto;
 }
+
 .info-grid {
   &__avatar {
     max-width: 142px;
@@ -841,6 +869,7 @@ export default {
     }
   }
 }
+
 .rating {
   padding: 0 15px 0 0;
 }
@@ -1088,6 +1117,11 @@ table {
   background-position: center;
   background-repeat: no-repeat;
   margin-right: 5px;
+}
+
+#main-section .information-grid .col .contacts {
+  display: flex;
+  align-items: center;
 }
 
 #main-section .information-grid .col .contacts a {
@@ -1416,6 +1450,10 @@ table {
   font-size: 20px;
   line-height: 130%;
   color: #1D2127;
+  &_inline {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .description {

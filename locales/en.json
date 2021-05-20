@@ -225,8 +225,6 @@
     "message": "Message",
     "bodyMessage": "Hello",
     "areYouSure": "Are You Sure?",
-    "thanks": "Thanks",
-    "couple": "A couple words",
     "transactionSend": "Transaction send",
     "cardHasBeenAdded": "Card has been added",
     "deposit": "Deposit",
@@ -244,14 +242,15 @@
     "raiseViews": "Raise views",
     "priceOfAClick": "Price of a click",
     "city": "City",
-    "period": "Period"
+    "period": "Period",
+    "thanks": "Thanks",
+    "couple": "A couple words"
   },
   "ui": {
     "workers": "Workers",
     "wallet": "Wallet",
     "myQuests": "My quests",
     "quests": "Quests",
-    "menu": "Menu",
     "profile": {
       "myProfile": "My profile",
       "settings": "Settings",
@@ -273,7 +272,8 @@
       "p2p": "P2P insurance",
       "savings": "Savings product",
       "crediting": "Crediting",
-      "mining": "Liquidity mining"
+      "mining": "Liquidity mining",
+      "menu": "Menu"
     },
     "footer": {
       "rights": "All rights reserved"
