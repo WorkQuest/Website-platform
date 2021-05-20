@@ -6,6 +6,8 @@
         <span>{{ userWallet }}</span>
         <button
           v-clipboard:copy="userWallet"
+          v-clipboard:success="ClipboardSuccessHandler"
+          v-clipboard:error="ClipboardErrorHandler"
           type="button"
         >
           <span class="icon-copy wallet__icon" />
@@ -44,11 +46,11 @@
           class="icon-close_big card__icon"
           @click="closeCard()"
         />
-        <img
-          src="/img/app/card.svg"
-          alt="card"
-          class="card__img"
-        >
+        <!--        <img-->
+        <!--          src="/img/app/card.svg"-->
+        <!--          alt="card"-->
+        <!--          class="card__img"-->
+        <!--        >-->
         <base-button
           class="card__btn"
           mode="outline"
@@ -199,6 +201,7 @@ export default {
   }
 
   &__address {
+    @include text-simple;
     display: flex;
     align-items: center;
     font-weight: 500;
@@ -216,6 +219,7 @@ export default {
   }
 
   &__title {
+    @include text-simple;
     font-size: 25px;
     font-weight: 500;
   }
@@ -235,6 +239,7 @@ export default {
   width: 100%;
   min-width: 660px;
   padding: 20px;
+  height: 154px;
 
   &__left {
     display: flex;
@@ -244,49 +249,55 @@ export default {
 
   &__right {
     width: 220px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
   }
 
   &__title {
+    @include text-simple;
     color: #4C5767;
   }
 
   &__currency {
+    @include text-simple;
+    color: $black800;
     font-weight: 600;
     font-size: 35px;
     line-height: 130%;
   }
 
   &__usd {
+    @include text-simple;
     color: $blue;
-  }
-
-  &__btn {
-    margin-top:20px;
   }
 }
 
 .card {
   width: 100%;
-  max-height: 166px;
+  height: 154px;
   padding: 20px;
   display: grid;
-  grid-template-rows: 80px;
+  grid-template-rows: auto 43px;
+  grid-gap: 10px;
   grid-template-columns: 277px 180px;
   margin: 20px 0 20px 20px;
-  background: $blue;
+  @include text-simple;
+  background: $blue url('/img/app/card.svg') no-repeat right center;
   color: $white;
   position: relative;
   overflow: hidden;
-
+  border: none !important;
   &_closed {
     display: none;
   }
 
   &__title {
+    @include text-simple;
+    color: $white;
+    font-weight: 500;
     font-size: 20px;
+    line-height: 130%;
   }
 
   &__btn {
@@ -301,6 +312,7 @@ export default {
     width: 355px;
     height: 250px;
     z-index: 1;
+    object-fit: cover;
   }
 
   &__icon {
