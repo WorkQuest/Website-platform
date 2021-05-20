@@ -10,7 +10,7 @@
             v-for="item in tabs"
             :key="item.id"
             :mode="btnMode(item.id)"
-            class="content__btn"
+            class="quests__btn"
             @click="filterCards(item.id)"
           >
             {{ item.title }}
@@ -375,15 +375,13 @@ export default {
   }
 
   &__title {
-    font-family: 'Inter', sans-serif;
+    @include text-simple;
     font-style: normal;
-    text-decoration: none;
-    height: 32px;
     font-weight: 500;
     font-size: 25px;
     line-height: 130%;
-    color: #1D2127;
-    padding: 30px 0;
+    color: $black800;
+    padding: 20px 0;
   }
 
   &__body {
@@ -393,18 +391,11 @@ export default {
   }
 
   &__content {
-    width: 80%;
     display: grid;
     align-items: center;
-    grid-template-columns: 114px 110px 181px 176px 143px 147px;
+    grid-template-columns: repeat(6, auto);
     grid-gap: 10px;
-    padding: 20px 0;
-
-    &__btn {
-      padding: 10px 20px;
-      width: max-content;
-      height: 41px;
-    }
+    margin-bottom: 20px;
   }
 
   &__cards {

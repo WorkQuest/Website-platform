@@ -20,12 +20,12 @@
             <!--              TODO: Добавить стили в BASE Button-->
             <nuxt-link
               class="reviews-amount"
-              to="/show-profile"
+              to="/profiles/1"
             >
               23 {{ $t('quests.reviews') }}
             </nuxt-link>
           </div>
-          <div class="col info-grid__col">
+          <div class="col info-grid__col info">
             <div class="title">
               {{ payload.user.name }}
             </div>
@@ -35,7 +35,7 @@
             <div class="socials">
               <nuxt-link
                 class="social__link"
-                to="/show-profile"
+                to="/profiles/1"
               >
                 <span
                   class="icon-facebook"
@@ -43,7 +43,7 @@
               </nuxt-link>
               <nuxt-link
                 class="social__link"
-                to="/show-profile"
+                to="/profiles/1"
               >
                 <span
                   class="icon-twitter"
@@ -51,7 +51,7 @@
               </nuxt-link>
               <nuxt-link
                 class="social__link"
-                to="/show-profile"
+                to="/profiles/1"
               >
                 <span
                   class="icon-instagram"
@@ -59,7 +59,7 @@
               </nuxt-link>
               <nuxt-link
                 class="social__link"
-                to="/show-profile"
+                to="/profiles/1"
               >
                 <span
                   class="icon-LinkedIn"
@@ -92,7 +92,7 @@
             </div>
             <nuxt-link
               class="card-subtitle card-subtitle_green"
-              to="/show-profile"
+              to="/profiles/1"
             >
               {{ $t('quests.showAllActiveQuests') }}
             </nuxt-link>
@@ -175,7 +175,7 @@
               </div>
               <nuxt-link
                 class="simple-button"
-                to="/show-profile"
+                to="/profiles/1"
               >
                 {{ $t('quests.readCompletely') }}
               </nuxt-link>
@@ -190,12 +190,14 @@
           </div>
           <div class="active-quests-item">
             <img
+              class="active-quests-image"
               src="~assets/img/temp/fake-card.svg"
               alt=""
             >
             <div class="inner">
               <div class="header">
                 <img
+                  class="active-quests-image-profile"
                   src="~/assets/img/app/fake_profile.png"
                   alt=""
                 >
@@ -226,7 +228,7 @@
             <!--              TODO: Добавить стили в BASE Button-->
             <nuxt-link
               class="simple-button"
-              to="/show-profile"
+              to="/profiles/1"
             >
               {{ $t('profile.details') }}
             </nuxt-link>
@@ -235,7 +237,7 @@
           <div class="button">
             <nuxt-link
               class="more-button"
-              to="/show-profile"
+              to="/profiles/1"
             >
               {{ $t('meta.showAllReviews') }}
             </nuxt-link>
@@ -248,7 +250,7 @@
 
 <script>
 export default {
-  name: 'Index',
+  name: 'ProfileID',
   data() {
     return {
       payload: {
@@ -809,6 +811,14 @@ table {
   cursor: pointer;
 }
 
+.info {
+  justify-content: initial !important;
+}
+.contacts {
+  display: flex;
+  align-items: center;
+}
+
 #main-section #information-grid .col {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -896,22 +906,20 @@ table {
 
 #information-section #data-grid {
   padding: 20px 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
 }
 
 #information-section #data-grid .data-item {
-  width: 280px;
+  display: grid;
   border-radius: 6px;
   background-color: #fff;
   padding: 20px;
 }
 
 #information-section #data-grid .data-item .number {
+  @include text-simple;
   font-weight: bold;
   font-size: 30px;
   line-height: 130%;
@@ -920,6 +928,7 @@ table {
 }
 
 #information-section #data-grid .data-item .number.-raiting {
+  @include text-simple;
   color: #353C47;
   background-image: url("data:image/svg+xml,%3Csvg width='28' height='26' viewBox='0 0 28 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a             %3Cpath d='M14 0.5L18.1145 8.83688L27.3148 10.1738L20.6574 16.6631L22.229 25.8262L14 21.5L5.77101 25.8262L7.3426 16.6631L0.685208 10.1738L9.8855 8.83688L14 0.5Z' fill='%23E8D20D'/%3E\a             %3C/svg%3E                           \a             ");
   background-position: 55px 4px;
@@ -930,7 +939,7 @@ table {
   padding-bottom: 20px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 1.30em;
+  grid-gap: 20px;
 }
 
 #information-section #reviews-grid .reviews-item {
@@ -983,13 +992,25 @@ table {
 }
 
 #information-section #active-quests-grid .active-quests-item {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  display: grid;
+  grid-template-columns: 240px 1fr;
   background-color: #fff;
   border-radius: 6px;
   margin: 20px 0;
   position: relative;
+}
+#information-section #active-quests-grid .active-quests-image {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px 0 0 6px;
+}
+
+#information-section #active-quests-grid .active-quests-image-profile {
+  object-fit: cover;
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
 }
 
 #information-section #active-quests-grid .active-quests-item .inner {
@@ -1186,12 +1207,13 @@ table {
 }
 
 .title {
+  @include text-simple;
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
   line-height: 130%;
-  color: #1D2127;
-  margin: 0 0 10px 0;
+  color: $black800;
+  margin-bottom: 20px;
 }
 
 .description {

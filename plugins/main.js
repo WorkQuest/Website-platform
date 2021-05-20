@@ -22,6 +22,18 @@ Vue.mixin({
     CloseModal() {
       this.$store.dispatch('modals/hide');
     },
+    ClipboardSuccessHandler(value) {
+      this.$store.dispatch('main/showToast', {
+        title: 'Copied successfully',
+        text: value,
+      });
+    },
+    ClipboardErrorHandler(value) {
+      this.$store.dispatch('main/showToast', {
+        title: 'Copy error',
+        text: value,
+      });
+    },
     ShowError(label) {
       this.$bvToast.toast(label, {
         title: 'Ошибка',

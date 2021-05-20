@@ -187,7 +187,7 @@
                   </div>
                   <nuxt-link
                     class="simple-button"
-                    to="/show-profile"
+                    to="/profiles/1"
                   >
                     {{ $t('quests.readCompletely') }}
                   </nuxt-link>
@@ -197,7 +197,7 @@
             <div class="button">
               <nuxt-link
                 class="more-button"
-                to="/show-profile"
+                to="/profiles/1"
               >
                 {{ $t('meta.showAllReviews') }}
               </nuxt-link>
@@ -231,7 +231,7 @@
             <div class="button">
               <nuxt-link
                 class="more-button"
-                to="/show-profile"
+                to="/profiles/1"
               >
                 Show all cases
               </nuxt-link>
