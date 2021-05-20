@@ -73,14 +73,14 @@ export default {
       optionsModal: {
         url: 'http://httpbin.org/anything',
         addRemoveLinks: true,
-        dictRemoveFile: '<span class="icon-close_big_white"></span>',
-        dictCancelUpload: '<span class="icon-close_big_white"></span>',
+        dictRemoveFile: '<span class="icon-close_big"></span>',
+        dictCancelUpload: '<span class="icon-close_big"></span>',
         dictCancelUploadConfirmation: '',
         maxFiles: '3',
         dictDefaultMessage:
           '<div class="uploader__message_container">'
           + '<div class="uploader__message">Upload a images or videos</div><'
-          + "span class='icon-add_to_queue_blue'></span>"
+          + "span class='icon-add_to_queue'></span>"
           + '</div>',
       },
       file1: null,
