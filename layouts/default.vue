@@ -547,16 +547,46 @@ export default {
       this.$router.push('/messages');
     },
     showProfile() {
+      this.closeAnother('profile');
       this.isShowProfile = !this.isShowProfile;
     },
     showNotification() {
+      this.closeAnother('notify');
       this.isShowNotify = !this.isShowNotify;
     },
     showAdditionalMenu() {
+      this.closeAnother('instruments');
       this.isShowAdditionalMenu = !this.isShowAdditionalMenu;
     },
     showLocale() {
+      this.closeAnother('locale');
       this.isShowLocale = !this.isShowLocale;
+    },
+    closeAnother(value) {
+      switch (value) {
+        case 'instruments':
+          this.isShowProfile = false;
+          this.isShowNotify = false;
+          this.isShowLocale = false;
+          break;
+        case 'profile':
+          this.isShowAdditionalMenu = false;
+          this.isShowNotify = false;
+          this.isShowLocale = false;
+          break;
+        case 'locale':
+          this.isShowAdditionalMenu = false;
+          this.isShowNotify = false;
+          this.isShowProfile = false;
+          break;
+        case 'notify':
+          this.isShowAdditionalMenu = false;
+          this.isShowProfile = false;
+          this.isShowLocale = false;
+          break;
+        default:
+          break;
+      }
     },
     async logout() {
       await this.$store.dispatch('user/logout');
@@ -890,7 +920,7 @@ export default {
 }
 .menu {
   position: absolute;
-  top: calc(72px + 5px);
+  top: 72px;
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
