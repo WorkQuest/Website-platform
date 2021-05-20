@@ -20,7 +20,7 @@
             <!--              TODO: Добавить стили в BASE Button-->
             <nuxt-link
               class="reviews-amount"
-              to="/show-profile"
+              to="/profiles/1"
             >
               23 {{ $t('quests.reviews') }}
             </nuxt-link>
@@ -35,7 +35,7 @@
             <div class="socials">
               <nuxt-link
                 class="social__link"
-                to="/show-profile"
+                to="/profiles/1"
               >
                 <span
                   class="icon-facebook"
@@ -43,7 +43,7 @@
               </nuxt-link>
               <nuxt-link
                 class="social__link"
-                to="/show-profile"
+                to="/profiles/1"
               >
                 <span
                   class="icon-twitter"
@@ -51,7 +51,7 @@
               </nuxt-link>
               <nuxt-link
                 class="social__link"
-                to="/show-profile"
+                to="/profiles/1"
               >
                 <span
                   class="icon-instagram"
@@ -59,7 +59,7 @@
               </nuxt-link>
               <nuxt-link
                 class="social__link"
-                to="/show-profile"
+                to="/profiles/1"
               >
                 <span
                   class="icon-LinkedIn"
@@ -92,7 +92,7 @@
             </div>
             <nuxt-link
               class="card-subtitle card-subtitle_green"
-              to="/show-profile"
+              to="/profiles/1"
             >
               {{ $t('quests.showAllActiveQuests') }}
             </nuxt-link>
@@ -175,7 +175,7 @@
               </div>
               <nuxt-link
                 class="simple-button"
-                to="/show-profile"
+                to="/profiles/1"
               >
                 {{ $t('quests.readCompletely') }}
               </nuxt-link>
@@ -226,7 +226,7 @@
             <!--              TODO: Добавить стили в BASE Button-->
             <nuxt-link
               class="simple-button"
-              to="/show-profile"
+              to="/profiles/1"
             >
               {{ $t('profile.details') }}
             </nuxt-link>
@@ -235,7 +235,7 @@
           <div class="button">
             <nuxt-link
               class="more-button"
-              to="/show-profile"
+              to="/profiles/1"
             >
               {{ $t('meta.showAllReviews') }}
             </nuxt-link>
@@ -248,7 +248,7 @@
 
 <script>
 export default {
-  name: 'Index',
+  name: 'ProfileID',
   data() {
     return {
       payload: {
