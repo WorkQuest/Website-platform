@@ -69,7 +69,10 @@
         </div>
       </div>
       <div>
-        <base-field placeholder="Quest title" />
+        <base-field
+          v-model="questTitle__input"
+          placeholder="Quest title"
+        />
       </div>
       <div>
         <textarea
@@ -193,6 +196,7 @@ export default {
       pickerValue: 1,
       adMode1: true,
       adMode2: false,
+      questTitle__input: '',
       address__input: '',
       textarea: '',
       price__input: '',
