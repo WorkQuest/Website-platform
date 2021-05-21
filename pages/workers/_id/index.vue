@@ -1488,17 +1488,29 @@ a:hover {
 }
 
 .simple-button {
+  display: flex;
+  align-items: center;
   font-size: 16px;
   line-height: 130%;
   color: #0083C7;
   position: absolute;
+  height: 34px;
+  border-radius: 3px;
   bottom: 27px;
   right: 27px;
-  padding-right: 37px;
+  padding: 0 37px 0 10px;
   text-decoration: none;
   background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a     %3Cpath d='M16.17 13L12.59 16.59L14 18L20 12L14 6L12.59 7.41L16.17 11H4V13H16.17Z' fill='%230083C7'/%3E\a     %3C/svg%3E                                     \a     ");
-  background-position: 100% -1px;
+  background-position: center right 5px;
   background-repeat: no-repeat;
+  transition: .3s;
+  &:hover {
+    background-color: #0083C7;
+    opacity: 1;
+    color: $white;
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a     %3Cpath d='M16.17 13L12.59 16.59L14 18L20 12L14 6L12.59 7.41L16.17 11H4V13H16.17Z' fill='white'/%3E\a     %3C/svg%3E                                     \a     ");
+
+  }
 }
 
 .info-grid__col {
