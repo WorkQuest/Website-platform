@@ -51,11 +51,6 @@
               class="icon-close_big card__icon"
               @click="closeCard()"
             />
-            <!--        <img-->
-            <!--          src="/img/app/card.svg"-->
-            <!--          alt="card"-->
-            <!--          class="card__img"-->
-            <!--        >-->
             <base-button
               class="card__btn"
               mode="outline"

@@ -185,7 +185,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -203,7 +203,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'RELIABLE EMP.',
-            code: '2',
+            code: 2,
           },
           specialization: [
             {
@@ -221,7 +221,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'CHECKED BY TIME',
-            code: '3',
+            code: 3,
           },
           specialization: [
             {
@@ -239,7 +239,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'DISABLED',
-            code: '0',
+            code: 0,
           },
           specialization: [
             {
@@ -257,7 +257,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'DISABLED',
-            code: '0',
+            code: 0,
           },
           specialization: [
             {
@@ -275,7 +275,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -293,7 +293,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -311,7 +311,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -329,7 +329,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -347,7 +347,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -365,7 +365,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -383,7 +383,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -401,7 +401,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -419,7 +419,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -437,7 +437,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -455,7 +455,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -498,8 +498,8 @@ export default {
     cardLevelClass(idx) {
       const { cards } = this;
       return [
-        { card__level_reliable: cards[idx].level.code === '2' },
-        { card__level_checked: cards[idx].level.code === '3' },
+        { card__level_reliable: cards[idx].level.code === 2 },
+        { card__level_checked: cards[idx].level.code === 3 },
       ];
     },
   },
@@ -514,17 +514,17 @@ export default {
     cardsLevels(idx) {
       const { cards } = this;
       return [
-        { card__level_reliable: cards[idx].level.code === '2' },
-        { card__level_checked: cards[idx].level.code === '3' },
-        { card__level_disabled: cards[idx].level.code === '0' },
+        { card__level_reliable: cards[idx].level.code === 2 },
+        { card__level_checked: cards[idx].level.code === 3 },
+        { card__level_disabled: cards[idx].level.code === 0 },
       ];
     },
     cardsLevelsBorder(idx) {
       const { cards } = this;
       return [
-        { card_lower: cards[idx].level.code === '2' },
-        { card_lower: cards[idx].level.code === '3' },
-        { card_lower: cards[idx].level.code === '0' },
+        { card_lower: cards[idx].level.code === 2 },
+        { card_lower: cards[idx].level.code === 3 },
+        { card_lower: cards[idx].level.code === 0 },
       ];
     },
     toggleMap(newPosition) {

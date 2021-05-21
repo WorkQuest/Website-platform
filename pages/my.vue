@@ -18,7 +18,7 @@
         </div>
         <div class="quests__cards">
           <div
-            v-for="item in filteredCards(selectedTab, isShowFavourite)"
+            v-for="(item, i) in filteredCards(selectedTab, isShowFavourite)"
             :key="item.id"
             class="quests__cards__all"
           >
@@ -47,6 +47,7 @@
                       class="block__avatar"
                     >
                       <img
+                        class="avatar"
                         :src="item.background"
                         alt=""
                       >
@@ -81,6 +82,44 @@
                       src="~assets/img/ui/star_checked.svg"
                       alt=""
                     >
+                  </div>
+                </div>
+                <div
+                  v-if="item.inProgress.work === true"
+                  class="block__progress"
+                >
+                  <div class="container__title">
+                    In progress by:
+                  </div>
+                  <div class="limit__container">
+                    <div class="avatar__container">
+                      <div class="avatar">
+                        <img
+                          src="~/assets/img/temp/avatar.jpg"
+                          alt=""
+                        >
+                      </div>
+                      <div>
+                        {{ item.inProgress.name }}
+                      </div>
+                      <div class="">
+                        <span
+                          v-if="item.level.code !== 0"
+                          class="card__level_higher"
+                          :class="cardsLevels(i)"
+                        >
+                          <span v-if="item.level.code === 1">
+                            HIGHER LEVEL
+                          </span>
+                          <span v-if="item.level.code === 2">
+                            RELIABLE EMP.
+                          </span>
+                          <span v-if="item.level.code === 3">
+                            CHECKED BY TIME
+                          </span>
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="block__locate">
@@ -196,6 +235,13 @@ export default {
         {
           type: 4,
           title: 'Samantha Sparks',
+          level: {
+            code: 1,
+          },
+          inProgress: {
+            work: false,
+            name: 'Roselia Vance',
+          },
           favourite: false,
           isFavourite: false,
           sub: 'from Amazon',
@@ -210,6 +256,13 @@ export default {
         {
           type: 4,
           title: 'Samantha Sparks',
+          level: {
+            code: 2,
+          },
+          inProgress: {
+            work: true,
+            name: 'Roselia Vance',
+          },
           favourite: false,
           isFavourite: false,
           sub: '',
@@ -224,6 +277,13 @@ export default {
         {
           type: 5,
           title: 'Samantha Sparks',
+          level: {
+            code: 3,
+          },
+          inProgress: {
+            work: true,
+            name: 'Roselia Vance',
+          },
           favourite: false,
           isFavourite: true,
           sub: 'from Amazon',
@@ -238,6 +298,13 @@ export default {
         {
           type: 2,
           title: 'Samantha Sparks',
+          level: {
+            code: 1,
+          },
+          inProgress: {
+            work: true,
+            name: 'Roselia Vance',
+          },
           favourite: false,
           isFavourite: true,
           sub: 'from Amazon',
@@ -252,6 +319,13 @@ export default {
         {
           type: 3,
           title: 'Samantha Sparks',
+          level: {
+            code: 2,
+          },
+          inProgress: {
+            work: true,
+            name: 'Roselia Vance',
+          },
           favourite: false,
           isRating: false,
           sub: '',
@@ -267,6 +341,13 @@ export default {
         {
           type: 3,
           title: 'Samantha Sparks',
+          level: {
+            code: 3,
+          },
+          inProgress: {
+            work: false,
+            name: '',
+          },
           favourite: false,
           isRating: false,
           sub: 'from Amazon',
@@ -282,12 +363,28 @@ export default {
       ],
     };
   },
-  computed: {},
+  computed: {
+    cardLevelClass(idx) {
+      const { cards } = this;
+      return [
+        { card__level_reliable: cards[idx].level.code === 2 },
+        { card__level_checked: cards[idx].level.code === 3 },
+      ];
+    },
+  },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
   },
   methods: {
+    cardsLevels(idx) {
+      const { cards } = this;
+      return [
+        { card__level_checked: cards[idx].level.code === 3 },
+        { card__level_reliable: cards[idx].level.code === 2 },
+        { card__level_higher: cards[idx].level.code === 1 },
+      ];
+    },
     showDetails() {
       this.$router.push('/quests/1');
     },
@@ -368,6 +465,71 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.container {
+  &__title {
+    font-weight: 400;
+    font-size: 12px;
+    color: $black500;
+  }
+}
+
+.limit__container {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    max-height: 30px;
+    max-width: 30px;
+  border-radius: 50%;
+  &__container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 0.2fr 0.6fr 1fr;
+    margin: 10px 0 4px 0;
+  }
+}
+
+.card {
+  &__level {
+    display: grid;
+    grid-template-columns: 20px auto;
+    grid-gap: 7px;
+    font-size: 12px;
+    justify-content: flex-start;
+    align-items: center;
+    height: 20px;
+    &_higher {
+      padding: 2px 8px;
+      align-items: center;
+      background-color: #F6CF00;
+      border-radius: 3px;
+      color: $white;
+    }
+    &_reliable {
+      padding: 2px 8px;
+      align-items: center;
+      background-color: #BBC0C7;
+      border-radius: 3px;
+      color: $white;
+    }
+    &_checked {
+      padding: 2px 8px;
+      align-items: center;
+      background-color: #B79768;
+      border-radius: 3px;
+      color: $white;
+    }
+    &_disabled {
+      display: none;
+    }
+  }
+}
+
 .quests {
   &__container {
     display: flex;
@@ -405,9 +567,8 @@ export default {
     justify-content: center;
     grid-template-columns: 1fr;
     grid-gap: 20px;
-
     &__all {
-      height: 255px;
+      //height: 255px;
 
       &_per {
         height: 244px;
@@ -448,7 +609,8 @@ export default {
     .image {
       border-radius: 6px 0 0 6px;
       object-fit: cover;
-      height: 255px;
+      max-height: 500px;
+      height: 100%;
     }
   }
 
@@ -461,6 +623,13 @@ export default {
 
     &__left {
       position: relative;
+    }
+
+    &__progress {
+      background-color: $black0;
+      border-radius: 6px;
+      width: 100%;
+      padding:10px;
     }
 
     &__locate {
@@ -629,10 +798,17 @@ export default {
     &__avatar {
       max-width: 30px;
       max-height: 30px;
+      border-radius: 50%;
 
-      img {
+      &__img {
         border-radius: 100%;
+        height: 100%;
       }
+    }
+
+    &__img {
+      height: 100%;
+      max-height: 100%;
     }
 
     &__title {
