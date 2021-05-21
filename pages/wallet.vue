@@ -38,19 +38,17 @@
         </div>
       </div>
       <div
+        v-if="userRole === 'worker'"
         class="wallet__card card"
-        :class="{'card_closed' : cardClosed }"
+        :class="[
+          {'card_closed' : cardClosed },
+        ]"
       >
         <span class="card__title">{{ $t('wallet.addCardProposal') }}</span>
         <span
           class="icon-close_big card__icon"
           @click="closeCard()"
         />
-        <!--        <img-->
-        <!--          src="/img/app/card.svg"-->
-        <!--          alt="card"-->
-        <!--          class="card__img"-->
-        <!--        >-->
         <base-button
           class="card__btn"
           mode="outline"
@@ -71,6 +69,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -161,6 +160,13 @@ export default {
       currency: 'WUSD',
       usd: '120.34',
     };
+  },
+  computed: {
+    ...mapGetters({
+      tags: 'ui/getTags',
+      userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
+    }),
   },
   async mounted() {
     this.SetLoader(true);
