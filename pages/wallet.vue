@@ -1,69 +1,78 @@
 <template>
   <div class="wallet">
-    <div class="wallet__nav">
-      <span class="wallet__title">{{ $t('wallet.wallet') }}</span>
-      <div class="wallet__address">
-        <span>{{ userWallet }}</span>
-        <button
-          v-clipboard:copy="userWallet"
-          v-clipboard:success="ClipboardSuccessHandler"
-          v-clipboard:error="ClipboardErrorHandler"
-          type="button"
-        >
-          <span class="icon-copy wallet__icon" />
-        </button>
-      </div>
-    </div>
-    <div class="wallet__info">
-      <div class="wallet__balance balance">
-        <div class="balance__left">
-          <span class="balance__title">{{ $t('wallet.balance') }}</span>
-          <span class="balance__currency">{{ `${userBalance} ${currency}` }}</span>
-          <span class="balance__usd">{{ `$ ${usd}` }}</span>
+    <div class="wallet__container">
+      <div class="wallet__body">
+        <div class="wallet__nav">
+          <span class="wallet__title">{{ $t('wallet.wallet') }}</span>
+          <div class="wallet__address">
+            <span>{{ userWallet }}</span>
+            <button
+              v-clipboard:copy="userWallet"
+              v-clipboard:success="ClipboardSuccessHandler"
+              v-clipboard:error="ClipboardErrorHandler"
+              type="button"
+            >
+              <span class="icon-copy wallet__icon" />
+            </button>
+          </div>
         </div>
-        <div class="balance__right">
-          <base-button
-            mode="outline"
-            class="balance__btn"
-            @click="showDepositModal()"
+        <div
+          class="wallet__info"
+          :class="{'wallet__info_full' : cardClosed }"
+        >
+          <div class="wallet__balance balance">
+            <div class="balance__left">
+              <span class="balance__title">{{ $t('wallet.balance') }}</span>
+              <span class="balance__currency">{{ `${userBalance} ${currency}` }}</span>
+              <span class="balance__usd">{{ `$ ${usd}` }}</span>
+            </div>
+            <div class="balance__right">
+              <base-button
+                mode="outline"
+                class="balance__btn"
+                @click="showDepositModal()"
+              >
+                {{ $t('wallet.deposit') }}
+              </base-button>
+              <base-button
+                class="balance__btn"
+                @click="showWidthrawModal()"
+              >
+                {{ $t('wallet.withdraw') }}
+              </base-button>
+            </div>
+          </div>
+          <div
+            v-if="!cardClosed"
+            class="wallet__card card"
           >
-            {{ $t('wallet.deposit') }}
-          </base-button>
-          <base-button
-            class="balance__btn"
-            @click="showWidthrawModal()"
-          >
-            {{ $t('wallet.withdraw') }}
-          </base-button>
+            <span class="card__title">{{ $t('wallet.addCardProposal') }}</span>
+            <span
+              class="icon-close_big card__icon"
+              @click="closeCard()"
+            />
+            <!--        <img-->
+            <!--          src="/img/app/card.svg"-->
+            <!--          alt="card"-->
+            <!--          class="card__img"-->
+            <!--        >-->
+            <base-button
+              class="card__btn"
+              mode="outline"
+              @click="showAddCardModal()"
+            >
+              {{ $t('wallet.addCard') }}
+            </base-button>
+          </div>
+        </div>
+        <div class="wallet__table">
+          <base-table
+            :title="$t('wallet.table.trx')"
+            :items="items"
+            :fields="testFields"
+          />
         </div>
       </div>
-      <div
-        v-if="userRole === 'worker'"
-        class="wallet__card card"
-        :class="[
-          {'card_closed' : cardClosed },
-        ]"
-      >
-        <span class="card__title">{{ $t('wallet.addCardProposal') }}</span>
-        <span
-          class="icon-close_big card__icon"
-          @click="closeCard()"
-        />
-        <base-button
-          class="card__btn"
-          mode="outline"
-          @click="showAddCardModal()"
-        >
-          {{ $t('wallet.addCard') }}
-        </base-button>
-      </div>
-    </div>
-    <div class="wallet__table">
-      <base-table
-        :title="$t('wallet.table.trx')"
-        :items="items"
-        :fields="testFields"
-      />
     </div>
   </div>
 </template>
@@ -197,15 +206,20 @@ export default {
 
 <style lang="scss" scoped>
 .wallet {
-  max-width: 1180px;
-  margin: 20px auto;
-  line-height: 130%;
+  &__container {
+    display: flex;
+    justify-content: center;
+  }
+  &__body {
+    max-width: 1180px;
+    width: 100%;
+  }
   &__nav {
+    margin-top: 20px;
     display: flex;
     justify-content: space-between;
     font-size: 16px;
   }
-
   &__address {
     @include text-simple;
     display: flex;
@@ -231,14 +245,21 @@ export default {
   }
 
   &__info {
-    display: flex;
-    align-items: center;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 479px;
+    grid-gap: 20px;
+    &_full {
+      grid-template-columns: 1fr;
+    }
+  }
+  &__table {
+    margin-top: 20px;
   }
 }
 
 .balance {
   display: flex;
-  margin: 20px 0;
   background: $white;
   justify-content: space-between;
   border-radius: 6px;
@@ -286,17 +307,13 @@ export default {
   display: grid;
   grid-template-rows: auto 43px;
   grid-gap: 10px;
-  grid-template-columns: 277px 180px;
-  margin: 20px 0 20px 20px;
+  grid-template-columns: 230px 1fr;
   @include text-simple;
   background: $blue url('/img/app/card.svg') no-repeat right center;
   color: $white;
   position: relative;
   overflow: hidden;
   border: none !important;
-  &_closed {
-    display: none;
-  }
 
   &__title {
     @include text-simple;
