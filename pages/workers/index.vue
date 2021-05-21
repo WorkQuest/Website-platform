@@ -128,19 +128,19 @@
                   <div class="card__header_right">
                     <span
                       class="card__name"
-                      :class="{'card__name_center': card.level === 'DISABLED'}"
+                      :class="{'card__name_center': card.level.code === '0'}"
                     >
                       {{ card.name }}
                     </span>
                     <div
                       class="card__level"
-                      :class="{'card__level_disabled': card.level === 'DISABLED'}"
+                      :class="{'card__level_disabled': card.level.code === '0'}"
                     >
                       <span class="icon-circle_up icon_blue" />
                       <span
                         class="card__level_higher"
                         :class="cardsLevels(i)"
-                      >{{ card.level }}</span>
+                      >{{ card.level.title }}</span>
                     </div>
                   </div>
                 </div>
@@ -155,7 +155,7 @@
               >
                 {{ spec.name }}
               </span>
-              <div class="card__about_title">
+              <div class="card__title">
                 {{ $t('workers.aboutMe') }}
               </div>
               <div class="card__about">
@@ -183,7 +183,10 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'HIGHER LEVEL',
+          level: {
+            title: 'HIGHER LEVEL',
+            code: '1',
+          },
           specialization: [
             {
               name: 'Programming',
@@ -198,7 +201,10 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'RELIABLE EMP.',
+          level: {
+            title: 'RELIABLE EMP.',
+            code: '2',
+          },
           specialization: [
             {
               name: 'Programming',
@@ -213,7 +219,10 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'CHECKED BY TIME',
+          level: {
+            title: 'CHECKED BY TIME',
+            code: '3',
+          },
           specialization: [
             {
               name: 'Programming',
@@ -228,7 +237,10 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'DISABLED',
+          level: {
+            title: 'DISABLED',
+            code: '0',
+          },
           specialization: [
             {
               name: 'Programming',
@@ -243,7 +255,10 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'DISABLED',
+          level: {
+            title: 'DISABLED',
+            code: '0',
+          },
           specialization: [
             {
               name: 'Programming',
@@ -258,7 +273,10 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'HIGHER LEVEL',
+          level: {
+            title: 'HIGHER LEVEL',
+            code: '1',
+          },
           specialization: [
             {
               name: 'Programming',
@@ -273,7 +291,10 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'HIGHER LEVEL',
+          level: {
+            title: 'HIGHER LEVEL',
+            code: '1',
+          },
           specialization: [
             {
               name: 'Programming',
@@ -288,7 +309,10 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'HIGHER LEVEL',
+          level: {
+            title: 'HIGHER LEVEL',
+            code: '1',
+          },
           specialization: [
             {
               name: 'Programming',
@@ -303,7 +327,10 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'HIGHER LEVEL',
+          level: {
+            title: 'HIGHER LEVEL',
+            code: '1',
+          },
           specialization: [
             {
               name: 'Programming',
@@ -318,7 +345,10 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'HIGHER LEVEL',
+          level: {
+            title: 'HIGHER LEVEL',
+            code: '1',
+          },
           specialization: [
             {
               name: 'Programming',
@@ -333,7 +363,10 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'HIGHER LEVEL',
+          level: {
+            title: 'HIGHER LEVEL',
+            code: '1',
+          },
           specialization: [
             {
               name: 'Programming',
@@ -348,7 +381,10 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'HIGHER LEVEL',
+          level: {
+            title: 'HIGHER LEVEL',
+            code: '1',
+          },
           specialization: [
             {
               name: 'Programming',
@@ -363,7 +399,10 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'HIGHER LEVEL',
+          level: {
+            title: 'HIGHER LEVEL',
+            code: '1',
+          },
           specialization: [
             {
               name: 'Programming',
@@ -378,7 +417,10 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'HIGHER LEVEL',
+          level: {
+            title: 'HIGHER LEVEL',
+            code: '1',
+          },
           specialization: [
             {
               name: 'Programming',
@@ -393,7 +435,10 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'HIGHER LEVEL',
+          level: {
+            title: 'HIGHER LEVEL',
+            code: '1',
+          },
           specialization: [
             {
               name: 'Programming',
@@ -408,7 +453,10 @@ export default {
         {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
-          level: 'HIGHER LEVEL',
+          level: {
+            title: 'HIGHER LEVEL',
+            code: '1',
+          },
           specialization: [
             {
               name: 'Programming',
@@ -450,8 +498,8 @@ export default {
     cardLevelClass(idx) {
       const { cards } = this;
       return [
-        { card__level_reliable: cards[idx].level === 'RELIABLE EMP.' },
-        { card__level_checked: cards[idx].level === 'CHECKED BY TIME' },
+        { card__level_reliable: cards[idx].level.code === '2' },
+        { card__level_checked: cards[idx].level.code === '3' },
       ];
     },
   },
@@ -464,19 +512,19 @@ export default {
       this.$router.push('/workers/1');
     },
     cardsLevels(idx) {
-      const { cards, disabled } = this;
+      const { cards } = this;
       return [
-        { card__level_reliable: cards[idx].level === 'RELIABLE EMP.' },
-        { card__level_checked: cards[idx].level === 'CHECKED BY TIME' },
-        { card__level_disabled: cards[idx].level === 'DISABLED' },
+        { card__level_reliable: cards[idx].level.code === '2' },
+        { card__level_checked: cards[idx].level.code === '3' },
+        { card__level_disabled: cards[idx].level.code === '0' },
       ];
     },
     cardsLevelsBorder(idx) {
       const { cards } = this;
       return [
-        { card_lower: cards[idx].level === 'RELIABLE EMP.' },
-        { card_lower: cards[idx].level === 'CHECKED BY TIME' },
-        { card_lower: cards[idx].level === 'DISABLED' },
+        { card_lower: cards[idx].level.code === '2' },
+        { card_lower: cards[idx].level.code === '3' },
+        { card_lower: cards[idx].level.code === '0' },
       ];
     },
     toggleMap(newPosition) {
@@ -723,9 +771,6 @@ export default {
       grid-template-rows: 20px 1fr;
       grid-gap: 7px;
     }
-    &_left {
-
-    }
   }
   &__img {
     width: 61px;
@@ -774,6 +819,11 @@ export default {
       display: none;
     }
   }
+  &__title {
+    margin: 15px 0 0 0;
+    font-weight: 400;
+    font-size: 14px;
+  }
   &__about {
     margin: 0 0 15px 0;
     font-weight: 400;
@@ -783,11 +833,6 @@ export default {
     overflow: hidden;
     max-height: 65px;
     text-overflow: ellipsis;
-    &_title {
-      margin: 15px 0 0 0;
-      font-weight: 400;
-      font-size: 14px;
-    }
   }
   &__address {
     margin: 0 0 15px 0;

@@ -190,20 +190,34 @@
     "reviewsBig": "Reviews",
     "MyQuests": "My quests",
     "activeQuest": "Active quest",
+    "createANewQuest": "Create a new quest",
+    "proposal": "Proposal",
+    "category": "Category",
+    "address": "Address",
+    "runtime": "Runtime",
+    "uploadQuestMaterials": "Upload quest materials",
+    "price": "Price",
+    "typeOfAd": "Type of advertisement",
+    "free": "Free",
+    "paid": "Paid",
+    "priceOfAClick": "Price of a click",
+    "city": "City",
+    "period": "Period",
+    "EstimatedPayment": "Estimated payment:",
+    "createAQuest": "Create a quest",
     "activeQuests": "Active quests",
     "completedQuests": "Completed quests",
     "oneTime": "One time",
     "fullTime": "Full time",
+    "uploadAImagesOrVideos": "Upload a images or videos",
     "averageRating": "Average rating",
     "showAllActiveQuests": "Show all active quests",
     "performanceTimer": "Performance timer",
     "questAmount": "quests",
     "otherQuestsSpec": "Other quests for the specialization",
     "questMaterials": "Quest materials",
-    "runtime": "Runtime",
     "searchResults": "Search results",
     "type": "Type of job",
-    "price": "Price",
     "time": "Added time",
     "priority": {
       "all": "All priority",
@@ -235,19 +249,32 @@
     "addAnotherCard": "Add another card",
     "widthraw": "Widthraw",
     "addCard": "Add Card",
-    "thanks": "Thanks",
-    "couple": "A couple words",
+    "inviteSend": "Invite sent",
+    "questCreated": "Quest Created",
     "invitation": "Invitation",
-    "chooseQuest": "Choose quest",
-    "inviteSend": "Invite sent"
+    "chooseQuest": "Choose Quest",
+    "raiseViews": "Raise views",
+    "priceOfAClick": "Price of a click",
+    "city": "City",
+    "period": "Period",
+    "thanks": "Thanks",
+    "couple": "A couple words"
   },
   "ui": {
+    "workers": "Workers",
+    "wallet": "Wallet",
+    "myQuests": "My quests",
+    "quests": "Quests",
     "profile": {
       "myProfile": "My profile",
       "settings": "Settings",
       "disputes": "Disputes",
       "instruments": "Instruments",
       "logout": "Logout"
+    },
+    "locals": {
+      "en": "EN",
+      "ru": "RU"
     },
     "notifications": {
       "title": "Notifications",
@@ -259,7 +286,8 @@
       "p2p": "P2P insurance",
       "savings": "Savings product",
       "crediting": "Crediting",
-      "mining": "Liquidity mining"
+      "mining": "Liquidity mining",
+      "menu": "Menu"
     },
     "footer": {
       "rights": "All rights reserved"
@@ -338,5 +366,10 @@
     "typeOfJob": "Type of job",
     "specializations": "Specializations",
     "aboutMe": "About me"
+  },
+  "levels": {
+    "reliableEmp": "RELIABLE EMP.",
+    "checkedByTime": "CHECKED BY TIME",
+    "disabled": "DISABLED"
   }
 }

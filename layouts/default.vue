@@ -27,21 +27,21 @@
                   class="header__link"
                   :exact-active-class="'header__link_active'"
                 >
-                  Workers
+                  {{ $t('ui.workers') }}
                 </nuxt-link>
                 <nuxt-link
                   to="/my"
                   class="header__link"
                   :exact-active-class="'header__link_active'"
                 >
-                  My quests
+                  {{ $t('quests.MyQuests') }}
                 </nuxt-link>
                 <nuxt-link
                   to="/wallet"
                   class="header__link"
                   :exact-active-class="'header__link_active'"
                 >
-                  Wallet
+                  {{ $t('ui.wallet') }}
                 </nuxt-link>
                 <button
                   class="header__link header__link_menu"
@@ -91,21 +91,21 @@
                   class="header__link"
                   :exact-active-class="'header__link_active'"
                 >
-                  Quests
+                  {{ $t('ui.quests') }}
                 </nuxt-link>
                 <nuxt-link
                   to="/my"
                   class="header__link"
                   :exact-active-class="'header__link_active'"
                 >
-                  My quests
+                  {{ $t('ui.myQuests') }}
                 </nuxt-link>
                 <nuxt-link
                   to="/wallet"
                   class="header__link"
                   :exact-active-class="'header__link_active'"
                 >
-                  Wallet
+                  {{ $t('ui.wallet') }}
                 </nuxt-link>
                 <button
                   class="header__link header__link_menu"
@@ -152,7 +152,7 @@
                 class="header__button header__button_locale"
                 @click="showLocale()"
               >
-                EN
+                {{ $t('ui.locals.en') }}
                 <span class="icon-caret_down" />
                 <transition name="fade">
                   <div
@@ -167,7 +167,7 @@
                           class="locale__icon"
                         >
                         <div class="locale__text">
-                          EN
+                          {{ $t('ui.locals.en') }}
                         </div>
                       </div>
                       <div class="locale__item">
@@ -177,7 +177,7 @@
                           class="locale__icon"
                         >
                         <div class="locale__text">
-                          RU
+                          {{ $t('ui.locals.ru') }}
                         </div>
                       </div>
                     </div>
@@ -352,6 +352,7 @@
               <base-btn
                 v-if="userData.role === 'employer'"
                 class="header__btn"
+                @click="createNewQuest()"
               >
                 {{ $t('layout.create') }}
               </base-btn>
@@ -542,6 +543,9 @@ export default {
       if (this.userData.role === 'employer') {
         this.$router.push('/workers');
       }
+    },
+    createNewQuest() {
+      this.$router.push('/create-quest');
     },
     goToMessages() {
       this.$router.push('/messages');

@@ -50,11 +50,31 @@
       @click="showWidthrawModal()"
     >
       showWidthrawModal
-      <base-btn
-        @click="showThanksModal()"
-      >
-        showThanksModal
-      </base-btn>
+    </base-btn>
+    <base-btn
+      @click="showThanksModal()"
+    >
+      showThanksModal
+    </base-btn>
+    <base-btn
+      @click="showInviteSendModal()"
+    >
+      showInviteSendModal
+    </base-btn>
+    <base-btn
+      @click="showQuestCreatedModal()"
+    >
+      showQuestCreatedModal
+    </base-btn>
+    <base-btn
+      @click="showInvitationModal()"
+    >
+      showInvitationModal
+    </base-btn>
+    <base-btn
+      @click="showRaiseViewsModal()"
+    >
+      showRaiseViewsModal
     </base-btn>
   </div>
 </template>
@@ -63,14 +83,27 @@
 import modals from '~/store/modals/modals';
 
 export default {
+  data() {
+    return {};
+  },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
   },
   methods: {
-    showWidthrawModal() {
+    showRaiseViewsModal() {
       this.ShowModal({
-        key: modals.widthraw,
+        key: modals.raiseViews,
+      });
+    },
+    showTransactionSendModal() {
+      this.ShowModal({
+        key: modals.transactionSend,
+      });
+    },
+    showCardHasBeenAddedModal() {
+      this.ShowModal({
+        key: modals.cardHasBeenAdded,
       });
     },
     showDepositModal() {
@@ -83,14 +116,24 @@ export default {
         key: modals.addCard,
       });
     },
-    showCardHasBeenAddedModal() {
+    showWidthrawModal() {
       this.ShowModal({
-        key: modals.cardHasBeenAdded,
+        key: modals.widthraw,
       });
     },
-    showTransactionSendModal() {
+    showInvitationModal() {
       this.ShowModal({
-        key: modals.transactionSend,
+        key: modals.invitation,
+      });
+    },
+    showQuestCreatedModal() {
+      this.ShowModal({
+        key: modals.questCreated,
+      });
+    },
+    showInviteSendModal() {
+      this.ShowModal({
+        key: modals.inviteSend,
       });
     },
     showQuestAgreedModal() {

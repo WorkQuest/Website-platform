@@ -2,6 +2,7 @@
   <div
     v-click-outside="hideDd"
     class="dd"
+    :class="[{'dd__top': mode === 'top' }]"
   >
     <button
       class="dd__btn"
@@ -108,7 +109,6 @@ export default {
   computed: {
     ddClass() {
       const { type } = this;
-
       return [
         { dd__btn_dark: type === 'dark' },
         { dd__btn_gray: type === 'gray' },
@@ -138,9 +138,11 @@ export default {
   line-height: 130%;
   color: $black800;
   min-width: 131px;
-  height: 100%;
   position: relative;
   text-align: left;
+  &__top {
+    align-items: flex-start;
+  }
   &__items {
     @include box;
     width: 100%;
@@ -152,6 +154,7 @@ export default {
     justify-content: flex-start;
     grid-gap: 15px;
     padding: 15px 20px;
+    z-index: 1;
   }
   &__item {
     text-align: left;
