@@ -344,7 +344,12 @@
     "change": "Change",
     "enableTwoStepAuth": "Enable Two-Step authentication",
     "enable": "Enable",
-    "smsVerification": "Profile SMS verification"
+    "smsVerification": "Profile SMS verification",
+    "amazon": "Amazon",
+    "ceo": "CEO",
+    "amazon_com": "amazon.com",
+    "filterAllWorkProposals": "Filter all work proposals",
+    "changeRole": "Change role"
   },
   "disputes": {
     "disputes": "Disputes",

@@ -5,8 +5,9 @@
         {{ $t('settings.settings') }}
       </h2>
       <div
-        v-if="isShowInfo"
+        v-if="userRole === 'worker'"
         class="quests__top"
+        :class="[{'top-disabled': isShowInfo === false}]"
       >
         <transition name="fade-fast">
           <div class="page__info">
@@ -119,7 +120,42 @@
             </base-field>
           </div>
         </div>
-        <div class="profile__row-1col">
+        <div
+          v-if="userRole === 'employer'"
+          class="company__inputs"
+        >
+          <base-field
+            v-model="tel2_input"
+            :placeholder="$t('settings.amazon')"
+            mode="icon"
+          >
+            <template v-slot:left>
+              <span class="icon-Case" />
+            </template>
+          </base-field>
+          <base-field
+            v-model="tel2_input"
+            :placeholder="$t('settings.ceo')"
+            mode="icon"
+          >
+            <template v-slot:left>
+              <span class="icon-id_card" />
+            </template>
+          </base-field>
+          <base-field
+            v-model="tel2_input"
+            :placeholder="$t('settings.amazon_com')"
+            mode="icon"
+          >
+            <template v-slot:left>
+              <span class="icon-Earth" />
+            </template>
+          </base-field>
+        </div>
+        <div
+          v-if="userRole === 'worker'"
+          class="profile__row-1col"
+        >
           <textarea
             id="textarea"
             v-model="bio_input"
@@ -173,7 +209,10 @@
           </base-btn>
         </div>
       </div>
-      <div class="page__skills">
+      <div
+        v-if="userRole === 'worker'"
+        class="page__skills"
+      >
         <div class="main-white">
           <div class="page__badge-skills">
             {{ $t('settings.skills') }}
@@ -237,7 +276,7 @@
           </div>
           <div>
             <div class="settings__subtitle">
-              {{ $t('settings.whoCanSee') }}
+              {{ $t('settings.filterAllWorkProposals') }}
             </div>
             <div class="settings__option">
               <input
@@ -314,7 +353,7 @@
               </div>
             </div>
             <div class="settings_blue">
-              <div>Change role</div>
+              <div>{{ $t('settings.changeRole') }}</div>
               <div>
                 <base-btn>
                   {{ $t('settings.change') }}
@@ -329,6 +368,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Settings',
   data() {
@@ -368,6 +409,13 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapGetters({
+      tags: 'ui/getTags',
+      userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
+    }),
+  },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
@@ -382,14 +430,27 @@ export default {
 
 <style lang="scss" scoped>
 
+.company {
+  &__inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px 20px;
+    margin: 0 20px 0 20px;
+  }
+}
+
+.top-disabled {
+  display: none;
+}
+
 .radio {
   &__input {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     border: 1px solid $blue;
     cursor: pointer;
 
@@ -454,6 +515,9 @@ export default {
 
 .label {
   padding: 0 0 0 10px;
+  font-weight: 500;
+  font-size: 16px;
+  color: $black800;
 }
 
 .btn {
@@ -473,63 +537,84 @@ export default {
 
 .icon-plus_circle:before {
   content: "\e9a6";
-  font-size: 20px;
+  font-size: 25px;
+  color: $blue;
+  align-items: center;
+}
+
+.icon-Case:before {
+  content: "\e9ff";
+  font-size: 25px;
+  color: $blue;
+  align-items: center;
+}
+
+.icon-id_card:before {
+  content: "\e902";
+  font-size: 25px;
+  color: $blue;
+  align-items: center;
+}
+
+.icon-Earth:before {
+  content: "\ea11";
+  font-size: 25px;
   color: $blue;
   align-items: center;
 }
 
 .icon-facebook:before {
   content: "\e9e5";
-  font-size: 20px;
+  font-size: 25px;
   color: $blue;
   align-items: center;
 }
 
 .icon-LinkedIn::before {
   content: "\e9ed";
-  font-size: 20px;
+  font-size: 25px;
   color: $blue;
   align-items: center;
 }
 
 .icon-twitter::before {
   content: "\e9fa";
-  font-size: 20px;
+  font-size: 25px;
   color: $blue;
   align-items: center;
 }
 
 .icon-instagram::before {
   content: "\e9ea";
-  font-size: 20px;
+  font-size: 25px;
   color: $blue;
   align-items: center;
 }
 
 .icon-phone::before {
   content: "\ea2d";
-  font-size: 20px;
+  font-size: 25px;
   color: $blue;
   align-items: center;
 }
 
 .icon-mail::before {
   content: "\ea27";
-  font-size: 20px;
+  font-size: 25px;
   color: $blue;
   align-items: center;
 }
 
 .icon-location::before {
   content: "\ea23";
-  font-size: 20px;
+  font-size: 25px;
   color: $blue;
   align-items: center;
 }
 
 .icon-user::before {
   content: "\e90c";
-  font-size: 20px;
+  font-size: 25px;
   color: $blue;
   align-items: center;
 }
@@ -582,7 +667,6 @@ export default {
   &__save {
     width: 100%;
     max-width: 250px;
-    display: grid;
   }
 }
 .quests {
@@ -673,7 +757,7 @@ export default {
   }
   &__row-1col {
     display: grid;
-    grid-template-columns: 96.5%;
+    grid-template-columns: repeat(1, 1fr);
     margin: 0 20px 0 20px;
     justify-content: space-between;
     width: 100%;
@@ -681,7 +765,8 @@ export default {
   }
   &__row-3col {
     display: grid;
-    grid-template-columns: 32% 32% 32%;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 0 20px;
     margin: 20px 20px 0 20px;
     justify-content: space-between;
     width: 100%;
@@ -689,8 +774,9 @@ export default {
   }
   &__row-4col {
     display: grid;
-    grid-template-columns: 24% 24% 24% 24%;
-    margin: 20px 20px 0 20px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px 20px;
+    margin: 0 20px 0 20px;
     justify-content: space-between;
     max-width: 1180px;
   }
@@ -714,42 +800,42 @@ export default {
 }
 .settings {
   display: grid;
-  grid-template-columns: 40% 60%;
+  grid-template-columns: 2fr 3fr;
   &_blue {
     padding: 10px 20px 10px 20px;
     margin: 20px 0 20px 0;
     background: rgba(0, 131, 199, 0.1);
     border-radius: 6px;
     display: grid;
-    grid-template-columns: 60% 40%;
+    grid-template-columns: 3fr 1.7fr;
     align-items: center;
   }
   &__option {
-    padding: 5px 0 5px 0;
+    padding: 5px 0 0 0;
     display: flex;
     justify-content: start;
     align-items: flex-start;
   }
   &__subtitle {
-    margin: 15px 0;
+    margin: 7px 0;
     color: $black500;
     font-size: 16px;
   }
   &__left {
     @include main-white;
-    justify-content: start;
-    border-radius: 6px;
-    margin: 20px 0 0 0;
-    padding: 20px;
-    width: 97%;
     display: flex;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 6px;
+    padding: 0 0 20px 20px;
+    width: 96%;
     flex-direction: column;
   }
   &__right {
     @include main-white;
     justify-content: start;
     border-radius: 6px;
-    margin: 20px 0 0 0;
+    margin: 0;
     padding: 20px;
     width: 100%;
     display: flex;
@@ -759,10 +845,13 @@ export default {
 .page {
   &__grid {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: repeat(2, 1fr);
   }
   &__title {
     margin: 20px 0 20px 0;
+    font-weight: 500;
+    font-size: 25px;
+    color: $black800;
   }
   &__profile {
     @include main-white;
@@ -778,7 +867,7 @@ export default {
   }
   &__part {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: repeat(2, 1fr);
     &_left {
       display: grid;
     }
