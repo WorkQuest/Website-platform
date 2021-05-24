@@ -611,7 +611,9 @@ export default {
   height: 100%;
   justify-items: center;
   &__dd {
+    display: flex;
     border-left: 1px solid #F7F8FA;
+    justify-items: center;
     height: 100%;
   }
   &__icon {
