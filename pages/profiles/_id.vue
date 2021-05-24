@@ -82,7 +82,10 @@
       <div class="main-container">
         <!-- DATA -->
 
-        <div id="data-grid">
+        <div
+          v-if="userRole === 'worker'"
+          id="data-grid"
+        >
           <div class="data-item">
             <div class="card-title">
               {{ $t('quests.activeQuests') }}
@@ -249,6 +252,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'ProfileID',
   data() {
@@ -278,6 +283,13 @@ export default {
         ],
       },
     };
+  },
+  computed: {
+    ...mapGetters({
+      tags: 'ui/getTags',
+      userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
+    }),
   },
   async mounted() {
     this.SetLoader(true);
