@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -168,6 +169,13 @@ export default {
       currency: 'WUSD',
       usd: '120.34',
     };
+  },
+  computed: {
+    ...mapGetters({
+      tags: 'ui/getTags',
+      userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
+    }),
   },
   async mounted() {
     this.SetLoader(true);
