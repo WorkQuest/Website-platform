@@ -4,4 +4,5 @@ export default () => ({
     refresh: '',
   },
   userData: {},
+  currentUserPosition: null,
 });

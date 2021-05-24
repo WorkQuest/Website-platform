@@ -489,6 +489,7 @@ export default {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
       userData: 'user/getUserData',
+      userPosition: 'user/getUserCurrentPosition',
     }),
     profileLinks() {
       return [
@@ -534,6 +535,9 @@ export default {
         },
       ];
     },
+  },
+  mounted() {
+    this.GetLocation();
   },
   methods: {
     toMain() {

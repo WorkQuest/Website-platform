@@ -66,5 +66,15 @@ Vue.mixin({
     NumberFormat(value, fixed) {
       return (+value && new Intl.NumberFormat('ru', { maximumFractionDigits: fixed || 8 }).format(value || 0)) || 0;
     },
+    GetLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(this.FormatPosition);
+      }
+    },
+    FormatPosition(position) {
+      console.log(position.coords.latitude);
+      console.log(position.coords.longitude);
+      this.$store.dispatch('user/setCurrentPosition', position.coords);
+    },
   },
 });

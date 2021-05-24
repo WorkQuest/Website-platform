@@ -24,4 +24,7 @@ export default {
   async logout({ commit }) {
     commit('logOut');
   },
+  async setCurrentPosition({ commit }, payload) {
+    commit('setCurrentUserPosition', payload);
+  },
 };
