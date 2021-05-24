@@ -275,8 +275,10 @@ export default {
     async getAddressInfo(address) {
       const geoCode = new GeoCode('google', { key: process.env.GMAPKEY });
       try {
-        const response = await geoCode.geolookup(address);
-        this.addresses = JSON.parse(JSON.stringify(response));
+        if (address.length) {
+          const response = await geoCode.geolookup(address);
+          this.addresses = JSON.parse(JSON.stringify(response));
+        }
       } catch (e) {
         console.log(e);
       }
