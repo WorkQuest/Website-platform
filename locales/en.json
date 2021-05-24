@@ -121,6 +121,8 @@
     "showAllReviews": "Show all reviews"
   },
   "priority": {
+    "title": "Priority",
+    "all": "All priority",
     "low": "Low priority",
     "normal": "Normal priority",
     "urgent": "Urgent"

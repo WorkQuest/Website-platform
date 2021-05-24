@@ -10,7 +10,7 @@
             :cluster="{options: {styles: clusterStyle}}"
             :center="{lat: userPosition.latitude, lng: userPosition.longitude}"
             :options="{fullscreenControl: false}"
-            :zoom="6"
+            :zoom="10"
           >
             <GMapMarker
               v-for="location in locations"

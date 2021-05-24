@@ -5,16 +5,16 @@
         {{ $t('quests.createANewQuest') }}
       </h2>
       <div class="page__category">
-        <div>
-          <label for="proposal_input">{{ $t('quests.proposal') }}</label>
+        <div class="page__dd">
+          <label for="proposal_input">{{ $t('priority.title') }}</label>
           <base-dd
             id="proposal_input"
-            v-model="questIndex"
+            v-model="priorityIndex"
             type="gray"
-            :items="proposals"
+            :items="priority"
           />
         </div>
-        <div>
+        <div class="page__dd">
           <label for="category_input">{{ $t('quests.category') }}</label>
           <base-dd
             id="category_input"
@@ -29,12 +29,31 @@
           <label for="address__input">{{ $t('quests.address') }}</label>
           <base-field
             id="address__input"
-            v-model="address__input"
-            placeholder="Moscow, Lenina street, 3"
+            v-model="address"
+            placeholder="Russia, Moscow, Lenina street, 3"
             mode="icon"
+            :selector="true"
+            @selector="getAddressInfo(address)"
           >
             <template v-slot:left>
               <span class="icon-map" />
+            </template>
+            <template v-slot:selector>
+              <div
+                v-if="addresses.length"
+                class="selector"
+              >
+                <div class="selector__items">
+                  <div
+                    v-for="(item, i) in addresses"
+                    :key="i"
+                    class="selector__item"
+                    @click="selectAddress(item)"
+                  >
+                    {{ item.formatted }}
+                  </div>
+                </div>
+              </div>
             </template>
           </base-field>
         </div>
@@ -70,7 +89,7 @@
       </div>
       <div>
         <base-field
-          v-model="questTitle__input"
+          v-model="questTitle"
           placeholder="Quest title"
         />
       </div>
@@ -99,7 +118,7 @@
         <label for="price__input">{{ $t('quests.price') }}</label>
         <base-field
           id="price__input"
-          v-model="price__input"
+          v-model="price"
           placeholder="200 WUSD"
         />
       </div>
@@ -130,10 +149,10 @@
           class="ads__paid"
         >
           <div class="price__container">
-            <label for="priceOfClick__input">{{ $t('quests.priceOfAClick') }}</label>
+            <label for="priceOfClick">{{ $t('quests.priceOfAClick') }}</label>
             <base-field
-              id="priceOfClick__input"
-              v-model="priceOfClick__input"
+              id="priceOfClick"
+              v-model="priceOfClick"
               placeholder="200 WUSD"
             />
           </div>
@@ -141,7 +160,7 @@
             <label for="city__input">{{ $t('quests.city') }}</label>
             <base-field
               id="city__input"
-              v-model="city__input"
+              v-model="city"
               placeholder="Moscow"
             />
           </div>
@@ -183,6 +202,8 @@ import '~/assets/scss/vue2Dropzone.min.css';
 import '~/assets/scss/dropzone.scss';
 import modals from '~/store/modals/modals';
 
+const { GeoCode } = require('geo-coder');
+
 export default {
   name: 'CreateQuest',
   components: {
@@ -190,28 +211,22 @@ export default {
   },
   data() {
     return {
+      priorityIndex: 1,
       questIndex: 0,
       categoryIndex: 0,
       periodIndex: 0,
       pickerValue: 1,
       adMode1: true,
       adMode2: false,
-      questTitle__input: '',
-      address__input: '',
+      questTitle: '',
+      address: '',
       textarea: '',
-      price__input: '',
-      priceOfClick__input: '',
-      city__input: '',
+      price: '',
+      priceOfClick: '',
+      city: '',
       estimatedPayment: 120,
-      proposals: [
-        'Proposal one',
-        'Proposal two',
-        'Proposal three',
-      ],
       categories: [
-        'Category one',
-        'Category two',
-        'Category three',
+        'Retail',
       ],
       periods: [
         '1 Day',
@@ -219,6 +234,7 @@ export default {
         '1 Month',
         '1 Year',
       ],
+      addresses: [],
       optionsModal: {
         url: 'http://httpbin.org/anything',
         addRemoveLinks: true,
@@ -236,13 +252,35 @@ export default {
       file2: null,
     };
   },
-
+  computed: {
+    priority() {
+      return [
+        this.$t('priority.all'),
+        this.$t('priority.low'),
+        this.$t('priority.normal'),
+        this.$t('priority.urgent'),
+      ];
+    },
+  },
   async mounted() {
     this.SetLoader(true);
-    this.SetLoader(false);
     const instance = this.$refs.el.dropzone;
+    this.SetLoader(false);
   },
   methods: {
+    selectAddress(address) {
+      this.addresses = [];
+      this.address = address.formatted;
+    },
+    async getAddressInfo(address) {
+      const geoCode = new GeoCode('google', { key: process.env.GMAPKEY });
+      try {
+        const response = await geoCode.geolookup(address);
+        this.addresses = JSON.parse(JSON.stringify(response));
+      } catch (e) {
+        console.log(e);
+      }
+    },
     setAd() {
       this.adMode1 = !this.adMode1;
       this.adMode2 = !this.adMode2;
@@ -263,6 +301,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.selector {
+  @include box;
+  width: 100%;
+  z-index: 140;
+  &__items {
+    background: #FFFFFF;
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  &__item {
+    @include text-simple;
+    padding: 15px 20px;
+    background: #FFFFFF;
+    font-weight: 500;
+    font-size: 16px;
+    color: $black800;
+    cursor: pointer;
+    transition: .3s;
+    &:hover {
+      background: #F3F7FA;
+    }
+  }
+}
 
 .page {
   &__title {
@@ -437,12 +499,14 @@ export default {
     font-size: 25px;
     color: $black800;
   }
+  &__dd {
+    min-width: 160px;
+  }
   &__category {
     margin: 20px 0 0 0;
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     align-items: center;
-    justify-content: flex-start;
     grid-gap: 20px;
   }
   &__address {
