@@ -742,7 +742,7 @@ export default {
   @include main;
   &-white {
     @include main-white;
-    justify-content: start;
+    justify-content: flex-start;
     border-radius: 6px;
   }
 }
@@ -813,7 +813,7 @@ export default {
   &__option {
     padding: 5px 0 0 0;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: flex-start;
   }
   &__subtitle {
@@ -833,7 +833,7 @@ export default {
   }
   &__right {
     @include main-white;
-    justify-content: start;
+    justify-content: flex-start;
     border-radius: 6px;
     margin: 0;
     padding: 20px;
@@ -855,7 +855,7 @@ export default {
   }
   &__profile {
     @include main-white;
-    justify-content: start;
+    justify-content: flex-start;
     border-radius: 6px;
     margin: 20px 0 20px 0;
     display: inherit;

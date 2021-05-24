@@ -1783,6 +1783,11 @@ table {
   margin-right: 5px;
 }
 
+#main-section #information-grid .col .contacts {
+  display: flex;
+  align-items: center;
+}
+
 #main-section #information-grid .col .contacts a {
   text-decoration: none;
   font-size: 14px;
