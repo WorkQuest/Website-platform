@@ -62,6 +62,7 @@ export default {
         { 'base-btn_messages': mode === 'goToMessages' },
         { 'base-btn_show-messages': mode === 'showYourMessage' },
         { 'base-btn_delete': mode === 'delete' },
+        { 'base-btn_approve': mode === 'approve' },
       ];
     },
   },
@@ -91,6 +92,19 @@ export default {
   border-radius: 6px;
   &:hover {
     background: #103D7C;
+  }
+  &_approve {
+    background-color: $green;
+    color: $white;
+    border-radius: 6px;
+    transition: .3s;
+    border: 1px solid $green;
+  }
+  &_approve:hover {
+    transition: .3s;
+    background-color: $white;
+    color: $green;
+    border-radius: 6px;
   }
   &_agree {
     background-color: $green;

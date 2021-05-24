@@ -51,8 +51,8 @@
                 v-if="userRole === 'worker'"
                 class="runtime__container"
               >
-                <span class="icon-clock icon_fs-16 icon_mar-r-5" />
-                <span>Runtime</span>
+                <span class="icon-clock icon_fs-16" />
+                <span class="runtime__title">Runtime</span>
                 <span
                   class="runtime__link"
                 >
@@ -63,8 +63,8 @@
                 v-if="userRole === 'employer'"
                 class="runtime__container"
               >
-                <span class="icon-clock icon_fs-16 icon_mar-r-5" />
-                <span class="performance__title">
+                <span class="icon-clock icon_fs-16" />
+                <span class="runtime__title">
                   {{ $t('quests.performanceTimer') }}
                 </span>
                 <span
@@ -110,6 +110,153 @@
             >
           </div>
           <div class="divider" />
+          <span v-if="userRole === 'employer'">
+            <div v-if="infoData.mode === 2">
+              <div class="worker__title">Worker</div>
+              <div class="worker__container">
+                <div>
+                  <img
+                    class="worker__avatar"
+                    src="~/assets/img/temp/avatar.jpg"
+                    alt=""
+                  >
+                </div>
+                <div class="worker__name">
+                  Rosalia Vans
+                </div>
+                <div>
+                  <div
+                    v-if="badge.code !== 0"
+                    class="card__level_higher"
+                    :class="[
+                      {'card__level_higher': badge.code === 1},
+                      {'card__level_reliable': badge.code === 2},
+                      {'card__level_checked': badge.code === 3}
+                    ]"
+                  >
+                    <span v-if="badge.code === 1">
+                      {{ $t('levels.higher') }}
+                    </span>
+                    <span v-if="badge.code === 2">
+                      {{ $t('levels.reliableEmp') }}
+                    </span>
+                    <span v-if="badge.code === 3">
+                      {{ $t('levels.checkedByTime') }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="infoData.mode === 3">
+              <div class="worker__title">Responded</div>
+              <span v-for="(item, i) in respondedList" :key="i">
+                <div class="worker__container">
+                  <!-- TODO: Добавить радиокнопки -->
+                  <div>
+                    <img
+                      class="worker__avatar"
+                      src="~/assets/img/temp/avatar.jpg"
+                      alt=""
+                    >
+                  </div>
+                  <div class="worker__name">
+                    {{item.name}}
+                  </div>
+                  <div>
+                    <div
+                      v-if="item.badge.code !== 0"
+                      class="card__level_higher"
+                      :class="[
+                        {'card__level_higher': item.badge.code === 1},
+                        {'card__level_reliable': item.badge.code === 2},
+                        {'card__level_checked': item.badge.code === 3}
+                      ]"
+                    >
+                      <span v-if="item.badge.code === 1">
+                        {{ $t('levels.higher') }}
+                      </span>
+                      <span v-if="item.badge.code === 2">
+                        {{ $t('levels.reliableEmp') }}
+                      </span>
+                      <span v-if="item.badge.code === 3">
+                        {{ $t('levels.checkedByTime') }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </span>
+              <div class="worker__title">You Invited</div>
+              <div class="worker__container">
+                <div>
+                  <img
+                    class="worker__avatar"
+                    src="~/assets/img/temp/avatar.jpg"
+                    alt=""
+                  >
+                </div>
+                <div class="worker__name">
+                  Rosalia Vans
+                </div>
+                <div>
+                  <div
+                    v-if="badge.code !== 0"
+                    class="card__level_higher"
+                    :class="[
+                      {'card__level_higher': badge.code === 1},
+                      {'card__level_reliable': badge.code === 2},
+                      {'card__level_checked': badge.code === 3}
+                    ]"
+                  >
+                    <span v-if="badge.code === 1">
+                      {{ $t('levels.higher') }}
+                    </span>
+                    <span v-if="badge.code === 2">
+                      {{ $t('levels.reliableEmp') }}
+                    </span>
+                    <span v-if="badge.code === 3">
+                      {{ $t('levels.checkedByTime') }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="infoData.mode === 4">
+              <div class="worker__title">Worker</div>
+              <div class="worker__container">
+                <div>
+                  <img
+                    class="worker__avatar"
+                    src="~/assets/img/temp/avatar.jpg"
+                    alt=""
+                  >
+                </div>
+                <div class="worker__name">
+                  Rosalia Vans
+                </div>
+                <div>
+                  <div
+                    v-if="badge.code !== 0"
+                    class="card__level_higher"
+                    :class="[
+                      {'card__level_higher': badge.code === 1},
+                      {'card__level_reliable': badge.code === 2},
+                      {'card__level_checked': badge.code === 3}
+                    ]"
+                  >
+                    <span v-if="badge.code === 1">
+                      {{ $t('levels.higher') }}
+                    </span>
+                    <span v-if="badge.code === 2">
+                      {{ $t('levels.reliableEmp') }}
+                    </span>
+                    <span v-if="badge.code === 3">
+                      {{ $t('levels.checkedByTime') }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </span>
           <div class="btns__container">
             <div>
               <!-- inviteUser -->
@@ -176,28 +323,23 @@
                 </div>
               </span>
               <span v-if="userRole === 'employer'">
-                <!--                TODO: Add statesments for employer-->
                 <div
                   v-if="infoData.mode === 2"
                   class="buttons__wrapper"
                 >
                   <div class="btn__wrapper">
-                    <base-btn>
-                      Add
-                    </base-btn>
-                  </div>
-                  <div class="btn__wrapper">
-                    <base-btn mode="delete">
-                      Add
+                    <base-btn mode="approve">
+                      Approve
                     </base-btn>
                   </div>
                 </div>
               </span>
               <!-- responded -->
-              <div
-                v-if="infoData.mode === 3"
-                class="buttons__wrapper"
-              >
+              <span v-if="userRole === 'worker'">
+                <div
+                  v-if="infoData.mode === 3"
+                  class="buttons__wrapper"
+                >
                 <div class="btn__wrapper">
                   <base-btn
                     :disabled="infoData.mode === 3"
@@ -206,32 +348,51 @@
                   </base-btn>
                 </div>
               </div>
-              <!-- performed -->
-              <div
-                v-if="infoData.mode === 4"
-                class="buttons__wrapper"
-              >
-                <base-btn
-                  :disabled="infoData.hasRequest === true"
-                  @click="showMessageModal()"
-                >
-                  <p v-if="infoData.hasRequest === true">
-                    {{ $t('modals.requestSend') }}
-                  </p>
-                  <p v-else>
-                    {{ $t('modals.sendARequest') }}
-                  </p>
-                </base-btn>
-              </div>
-            </div>
-            <div class="price__wrapperValue">
-              <span class="price__value">
-                {{ payload.price }}
               </span>
-              <div class="badge__wrapper">
-                <span class="badge__item_green">{{ payload.badgeGreen }}</span>
+              <span v-if="userRole === 'employer'">
+                <div
+                  v-if="infoData.mode === 3"
+                  class="buttons__wrapper"
+                >
+                <div class="btn__wrapper">
+                  <base-btn
+                  >
+                    Start quest
+                  </base-btn>
+                </div>
               </div>
+              </span>
+              <!-- performed -->
+              <span v-if="userRole === 'worker'">
+                <div
+                  v-if="infoData.mode === 4"
+                  class="buttons__wrapper"
+                >
+                  <base-btn
+                    :disabled="infoData.hasRequest === true"
+                    @click="showMessageModal()"
+                  >
+                    <p v-if="infoData.hasRequest === true">
+                      {{ $t('modals.requestSend') }}
+                    </p>
+                    <p v-else>
+                      {{ $t('modals.sendARequest') }}
+                    </p>
+                  </base-btn>
+                </div>
+              </span>
+              <span v-if="userRole === 'employer'" />
             </div>
+            <span v-if="infoData.mode !== 4">
+              <div class="price__wrapperValue">
+                <span class="price__value">
+                  {{ payload.price }}
+                </span>
+                <div class="badge__wrapper">
+                  <span class="badge__item_green">{{ payload.badgeGreen }}</span>
+                </div>
+              </div>
+            </span>
           </div>
         </div>
       </div>
@@ -371,8 +532,37 @@ export default {
   },
   data() {
     return {
+      respondedList: [
+        {
+          name: 'Marvin McKinney',
+          badge: {
+            code: 2,
+          },
+        },
+        {
+          name: 'Marvin McKinney',
+          badge: {
+            code: 1,
+          },
+        },
+        {
+          name: 'Marvin McKinney',
+          badge: {
+            code: 3,
+          },
+        },
+        {
+          name: 'Marvin McKinney',
+          badge: {
+            code: 2,
+          },
+        },
+      ],
+      badge: {
+        code: 1,
+      },
       infoData: {
-        mode: 2,
+        mode: 3,
         date: '15:30:20',
         hasRequest: 'false',
       },
@@ -482,6 +672,14 @@ export default {
   },
   methods: {
     // TODO: НАписать методы inviteUser, activeQuest, responseSend, performedSend
+    cardsLevels(idx) {
+      const { cards } = this;
+      return [
+        { card__level_checked: cards[idx].level.code === 3 },
+        { card__level_reliable: cards[idx].level.code === 2 },
+        { card__level_higher: cards[idx].level.code === 1 },
+      ];
+    },
     toggleMap() {
       this.isInvite = !this.isShowMap;
     },
@@ -514,6 +712,79 @@ export default {
 </script>
 
 <style lang="scss">
+
+.runtime {
+  &__container {
+    margin: 0 0 0 30px;
+  }
+  &__title {
+    margin: 0 5px 0 5px;
+  }
+}
+
+.worker {
+  &__container {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+    margin: 20px 0 20px 0;
+  }
+  &__avatar {
+    max-width: 40px;
+    max-height: 40px;
+    width: 100%;
+    height: 100%;
+  }
+  &__name {
+    margin: 0 10px 0 10px;
+    font-size: 16px;
+    font-weight: 500;
+    color: $black800;
+  }
+  &__title {
+    font-size: 18px;
+    font-weight: 500;
+    color: $black800;
+  }
+}
+
+.card {
+  &__level {
+    display: grid;
+    grid-template-columns: 20px auto;
+    grid-gap: 7px;
+    font-size: 12px;
+    justify-content: flex-start;
+    align-items: center;
+    height: 20px;
+    &_higher {
+      padding: 2px 8px;
+      align-items: center;
+      background-color: #F6CF00;
+      border-radius: 3px;
+      color: $white;
+    }
+    &_reliable {
+      padding: 2px 8px;
+      align-items: center;
+      background-color: #BBC0C7;
+      border-radius: 3px;
+      color: $white;
+    }
+    &_checked {
+      padding: 2px 8px;
+      align-items: center;
+      background-color: #B79768;
+      border-radius: 3px;
+      color: $white;
+    }
+    &_disabled {
+      display: none;
+    }
+  }
+}
+
 .btns {
   &__container {
     display: grid;
@@ -539,9 +810,6 @@ export default {
   }
   &_mar-r-9 {
     margin: 0 9px 0 0;
-  }
-  &_mar-r-5 {
-    margin: 5px 0 0 0;
   }
   &-chat::before {
   color:$green;
@@ -720,13 +988,12 @@ export default {
 .runtime {
   &__container {
     display: flex;
-    flex-direction: row;
-    margin: 0 1%;
     @include text-simple;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     align-items: center;
+    justify-items: center;
     color: $black700;
   }
   &__link {
