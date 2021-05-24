@@ -90,6 +90,9 @@
                     class="message__btn"
                     @click="showMessages()"
                   >
+                    <template v-slot:right>
+                      <span class="icon-chat" />
+                    </template>
                     {{ $t('profile.writeAMessage') }}
                   </base-btn>
                 </div>
@@ -828,6 +831,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.icon-chat:before {
+  content: "\e9ba";
+  color: $green;
+  font-size: 25px;
+}
 
 .contacts {
   &__grid {
