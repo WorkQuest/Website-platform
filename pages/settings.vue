@@ -742,7 +742,7 @@ export default {
   @include main;
   &-white {
     @include main-white;
-    justify-content: start;
+    justify-content: flex-start;
     border-radius: 6px;
   }
 }
@@ -800,7 +800,8 @@ export default {
 }
 .settings {
   display: grid;
-  grid-template-columns: 6fr 8fr;
+  grid-template-columns: 5fr 7fr;
+  grid-gap: 20px;
   &_blue {
     padding: 10px 20px 10px 20px;
     margin: 20px 0 20px 0;
@@ -813,7 +814,7 @@ export default {
   &__option {
     padding: 5px 0 0 0;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: flex-start;
   }
   &__subtitle {
@@ -828,16 +829,14 @@ export default {
     background-color: #fff;
     border-radius: 6px;
     padding: 0 0 20px 20px;
-    width: 96%;
     flex-direction: column;
   }
   &__right {
     @include main-white;
-    justify-content: start;
+    justify-content: flex-start;
     border-radius: 6px;
     margin: 0;
     padding: 20px;
-    width: 100%;
     display: flex;
     flex-direction: column;
   }
@@ -855,7 +854,7 @@ export default {
   }
   &__profile {
     @include main-white;
-    justify-content: start;
+    justify-content: flex-start;
     border-radius: 6px;
     margin: 20px 0 20px 0;
     display: inherit;

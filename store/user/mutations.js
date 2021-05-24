@@ -23,4 +23,7 @@ export default {
     this.$cookies.remove('role');
     state.userData = {};
   },
+  setCurrentUserPosition(state, data) {
+    state.currentUserPosition = data;
+  },
 };

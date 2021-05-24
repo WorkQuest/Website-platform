@@ -535,6 +535,9 @@ export default {
       ];
     },
   },
+  mounted() {
+    this.GetLocation();
+  },
   methods: {
     toMain() {
       if (this.userData.role === 'worker') {
