@@ -72,9 +72,11 @@ Vue.mixin({
       }
     },
     FormatPosition(position) {
-      console.log(position.coords.latitude);
-      console.log(position.coords.longitude);
-      this.$store.dispatch('user/setCurrentPosition', position.coords);
+      const payload = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      };
+      this.$store.dispatch('user/setCurrentPosition', payload);
     },
   },
 });

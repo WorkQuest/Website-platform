@@ -4,6 +4,7 @@
       <div class="quests__top">
         <transition name="fade-fast">
           <GMap
+            v-if="isShowMap && userPosition"
             ref="gMap"
             language="en"
             :cluster="{options: {styles: clusterStyle}}"
