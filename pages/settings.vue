@@ -800,7 +800,8 @@ export default {
 }
 .settings {
   display: grid;
-  grid-template-columns: 6fr 8fr;
+  grid-template-columns: 5fr 7fr;
+  grid-gap: 20px;
   &_blue {
     padding: 10px 20px 10px 20px;
     margin: 20px 0 20px 0;
@@ -828,7 +829,6 @@ export default {
     background-color: #fff;
     border-radius: 6px;
     padding: 0 0 20px 20px;
-    width: 96%;
     flex-direction: column;
   }
   &__right {
@@ -837,7 +837,6 @@ export default {
     border-radius: 6px;
     margin: 0;
     padding: 20px;
-    width: 100%;
     display: flex;
     flex-direction: column;
   }
