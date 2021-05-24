@@ -757,7 +757,7 @@ export default {
   }
   &__row-1col {
     display: grid;
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: 1fr;
     margin: 0 20px 0 20px;
     justify-content: space-between;
     width: 100%;
@@ -800,14 +800,14 @@ export default {
 }
 .settings {
   display: grid;
-  grid-template-columns: 2fr 3fr;
+  grid-template-columns: 6fr 8fr;
   &_blue {
     padding: 10px 20px 10px 20px;
     margin: 20px 0 20px 0;
     background: rgba(0, 131, 199, 0.1);
     border-radius: 6px;
     display: grid;
-    grid-template-columns: 3fr 1.7fr;
+    grid-template-columns: 3fr 2fr;
     align-items: center;
   }
   &__option {
