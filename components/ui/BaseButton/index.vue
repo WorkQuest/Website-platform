@@ -60,6 +60,8 @@ export default {
         { 'base-btn_goToChat': mode === 'goToChat' },
         { 'base-btn_dispute': mode === 'dispute' },
         { 'base-btn_messages': mode === 'goToMessages' },
+        { 'base-btn_show-messages': mode === 'showYourMessage' },
+        { 'base-btn_delete': mode === 'delete' },
       ];
     },
   },
@@ -99,6 +101,19 @@ export default {
     color: $white;
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
   }
+  &_delete {
+    background-color: $red;
+    color: $white;
+  }
+  &_delete:hover {
+    background-color: #cc0000;
+    color: $white;
+  }
+  &_show-messages {
+    background-color: transparent;
+    color: $blue;
+  }
+  &_show-messages:hover {}
   &_messages {
     background-color: $white;
     color: $green;

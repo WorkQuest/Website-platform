@@ -1,14 +1,9 @@
 <template>
   <!-- Quest page_User -->
   <div>
-    <div
-      v-for="(item, i) in infoList"
-      :key="i"
-    >
-      <Info
-        :info="item"
-      />
-    </div>
+    <Info
+      :info="infoData"
+    />
     <div class="main-white">
       <div class="main__body">
         <div class="user__top">
@@ -27,7 +22,7 @@
                   {{ payload.username }}
                 </span>
                 <span
-                  v-if="userData.role === 'employer'"
+                  v-if="userRole === 'employer'"
                   class="user__company"
                 >
                   {{ $t('company.from') }} {{ payload.company }}
@@ -53,7 +48,7 @@
                 {{ payload.distance }} {{ $t('meta.fromYou') }}
               </span>
               <div
-                v-if="userData.role === 'worker'"
+                v-if="userRole === 'worker'"
                 class="runtime__container"
               >
                 <span class="icon-clock icon_fs-16 icon_mar-r-5" />
@@ -65,7 +60,7 @@
                 </span>
               </div>
               <div
-                v-if="userData.role === 'employer'"
+                v-if="userRole === 'employer'"
                 class="runtime__container"
               >
                 <span class="icon-clock icon_fs-16 icon_mar-r-5" />
@@ -115,86 +110,119 @@
             >
           </div>
           <div class="divider" />
-          <div
-            v-for="(mode, i) in mods"
-            :key="i"
-            class="price__wrapper"
-          >
-            <!-- inviteUser -->
-            <div
-              v-if="mode.invited"
-              class="buttons__wrapper"
-            >
-              <div class="btn__wrapper">
-                <base-btn
-                  class="base-btn_agree"
+          <div class="btns__container">
+            <div>
+              <!-- inviteUser -->
+              <span v-if="userRole === 'worker'">
+                <div
+                  v-if="infoData.mode === 1"
+                  class="buttons__wrapper"
                 >
-                  {{ $t('btn.agree') }}
-                </base-btn>
-              </div>
-              <div class="btn__wrapper">
-                <base-btn
-                  class="base-btn_goToChat"
+                  <div class="btn__wrapper">
+                    <base-btn
+                      class="base-btn_agree"
+                    >
+                      {{ $t('btn.agree') }}
+                    </base-btn>
+                  </div>
+                  <div class="btn__wrapper">
+                    <base-btn
+                      class="base-btn_goToChat"
+                    >
+                      {{ $t('btn.goToChat') }}
+                      <span class="icon-chat icon_fs-20 icon_mar-l-12" />
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <span v-if="userRole === 'employer'">
+                <div
+                  v-if="infoData.mode === 1"
+                  class="buttons__wrapper"
                 >
-                  {{ $t('btn.goToChat') }}
-                  <span class="icon-chat icon_fs-20 icon_mar-l-12" />
-                </base-btn>
-              </div>
-            </div>
-            <!-- activeQuest -->
-            <div
-              v-else-if="mode.active"
-              class="buttons__wrapper"
-            >
-              <div class="btn__wrapper">
-                <base-btn
-                  class="base-btn_dispute"
+                  <div class="btn__wrapper">
+                    <base-btn>
+                      Raise views
+                    </base-btn>
+                  </div>
+                  <div class="btn__wrapper">
+                    <base-btn mode="delete">
+                      Delete quest
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <!-- activeQuest -->
+              <span v-if="userRole === 'worker'">
+                <div
+                  v-if="infoData.mode === 2"
+                  class="buttons__wrapper"
                 >
-                  {{ $t('btn.dispute') }}
-                </base-btn>
-              </div>
-              <div class="btn__wrapper">
-                <base-btn
-                  class="base-btn_goToChat"
+                  <div class="btn__wrapper">
+                    <base-btn
+                      class="base-btn_dispute"
+                    >
+                      {{ $t('btn.dispute') }}
+                    </base-btn>
+                  </div>
+                  <div class="btn__wrapper">
+                    <base-btn
+                      class="base-btn_goToChat"
+                    >
+                      {{ $t('btn.goToChat') }}
+                      <span class="icon-chat icon_fs-20 icon_mar-l-12" />
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <span v-if="userRole === 'employer'">
+                <!--                TODO: Add statesments for employer-->
+                <div
+                  v-if="infoData.mode === 2"
+                  class="buttons__wrapper"
                 >
-                  {{ $t('btn.goToChat') }}
-                  <span class="icon-chat icon_fs-20 icon_mar-l-12" />
-                </base-btn>
-              </div>
-            </div>
-            <!-- responded -->
-            <div
-              v-else-if="mode.response"
-              class="buttons__wrapper"
-            >
-              <div class="btn__wrapper">
-                <base-btn
-                  :disabled="mode.response"
-                >
-                  {{ $t('btn.responded') }}
-                </base-btn>
-              </div>
-            </div>
-            <!-- performed -->
-            <div
-              v-else-if="mode.performed"
-              class="buttons__wrapper"
-            />
-            <div
-              v-else
-              class="btn__wrapper"
-            >
-              <base-btn
-                :disabled="info.hasRequest === true"
-                @click="showMessageModal()"
+                  <div class="btn__wrapper">
+                    <base-btn>
+                      Add
+                    </base-btn>
+                  </div>
+                  <div class="btn__wrapper">
+                    <base-btn mode="delete">
+                      Add
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <!-- responded -->
+              <div
+                v-if="infoData.mode === 3"
+                class="buttons__wrapper"
               >
-                <p v-if="info.hasRequest === true">
-                  {{ $t('modals.requestSend') }}
-                </p>
-                <p v-else>
-                  {{ $t('modals.sendARequest') }}
-                </p>
-              </base-btn>
+                <div class="btn__wrapper">
+                  <base-btn
+                    :disabled="infoData.mode === 3"
+                  >
+                    {{ $t('btn.responded') }}
+                  </base-btn>
+                </div>
+              </div>
+              <!-- performed -->
+              <div
+                v-if="infoData.mode === 4"
+                class="buttons__wrapper"
+              >
+                <base-btn
+                  :disabled="infoData.hasRequest === true"
+                  @click="showMessageModal()"
+                >
+                  <p v-if="infoData.hasRequest === true">
+                    {{ $t('modals.requestSend') }}
+                  </p>
+                  <p v-else>
+                    {{ $t('modals.sendARequest') }}
+                  </p>
+                </base-btn>
+              </div>
             </div>
             <div class="price__wrapperValue">
               <span class="price__value">
@@ -343,32 +371,11 @@ export default {
   },
   data() {
     return {
-      mods: [{
-        invited: false,
-        active: false,
-        response: false,
-        performed: false,
-      }],
-      info: {
-        mode: 'active',
+      infoData: {
+        mode: 2,
         date: '15:30:20',
         hasRequest: 'false',
       },
-      infoList: [
-        {
-          mode: 'active',
-          date: '15:30:20',
-        },
-        {
-          mode: 'invited',
-        },
-        {
-          mode: 'response',
-        },
-        {
-          mode: 'performed',
-        },
-      ],
       payload: {
         type: 'active',
         cards: [
@@ -507,6 +514,13 @@ export default {
 </script>
 
 <style lang="scss">
+.btns {
+  &__container {
+    display: grid;
+    grid-template-columns: 8fr 4fr;
+  }
+}
+
 .icon {
   &_fs-20 {
     font-size: 20px;
@@ -742,9 +756,10 @@ export default {
 
   }
   &__wrapperValue {
-    position: relative;
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
   }
   &__wrapper {
     display: flex;
@@ -787,7 +802,9 @@ export default {
     }
   }
   &__wrapper{
-    margin: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 }
 
