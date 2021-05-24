@@ -51,6 +51,11 @@
               class="icon-close_big card__icon"
               @click="closeCard()"
             />
+            <!--        <img-->
+            <!--          src="/img/app/card.svg"-->
+            <!--          alt="card"-->
+            <!--          class="card__img"-->
+            <!--        >-->
             <base-button
               class="card__btn"
               mode="outline"
@@ -215,7 +220,6 @@ export default {
     justify-content: space-between;
     font-size: 16px;
   }
-
   &__address {
     @include text-simple;
     display: flex;
@@ -310,9 +314,6 @@ export default {
   position: relative;
   overflow: hidden;
   border: none !important;
-  &_closed {
-    display: none;
-  }
 
   &__title {
     @include text-simple;
