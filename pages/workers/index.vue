@@ -7,7 +7,7 @@
             ref="gMap"
             language="en"
             :cluster="{options: {styles: clusterStyle}}"
-            :center="{lat: locations[0].lat, lng: locations[0].lng}"
+            :center="{lat: userPosition.latitude, lng: userPosition.longitude}"
             :options="{fullscreenControl: false}"
             :zoom="6"
           >
@@ -186,6 +186,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'IndexVue',
@@ -529,8 +530,10 @@ export default {
       ],
     };
   },
-
   computed: {
+    ...mapGetters({
+      userPosition: 'user/getUserCurrentPosition',
+    }),
     cardLevelClass(idx) {
       const { cards } = this;
       return [

@@ -489,7 +489,6 @@ export default {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
       userData: 'user/getUserData',
-      userPosition: 'user/getUserCurrentPosition',
     }),
     profileLinks() {
       return [
