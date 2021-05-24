@@ -71,13 +71,29 @@
                 />
               </nuxt-link>
             </div>
-            <div class="contacts">
-              <span class="icon-location" /><span class="contact__link">{{ payload.user.location }}</span>
-              <span class="icon-phone" /><span class="contact__link">{{ payload.user.tel }}</span>
-              <span class="icon-mail" /><span class="contact__link">{{ payload.user.email }}</span>
-              <div v-if="userData.role === 'employer'">
-                <span class="icon-Earth" /><span class="contact__link">amazon.com</span>
+            <div class="contacts__grid">
+              <div class="contacts">
+                <span class="icon-location" /><span class="contact__link">{{ payload.user.location }}</span>
+                <span class="icon-phone" /><span class="contact__link">{{ payload.user.tel }}</span>
+                <span class="icon-mail" /><span class="contact__link">{{ payload.user.email }}</span>
+                <div v-if="userRole === 'employer'">
+                  <span class="icon-Earth" /><span class="contact__link">amazon.com</span>
+                </div>
               </div>
+              <span v-if="userRole === 'employer'">
+                <div
+                  v-if="selected === 1"
+                  class="message__container-btn"
+                >
+                  <base-btn
+                    mode="goToMessages"
+                    class="message__btn"
+                    @click="showMessages()"
+                  >
+                    {{ $t('profile.writeAMessage') }}
+                  </base-btn>
+                </div>
+              </span>
             </div>
           </div>
 
@@ -89,14 +105,14 @@
           :class="{tab__btn_active: selected === 2}"
           @click="selected = 2"
         >
-          Quests
+          {{ $t('profile.quests') }}
         </button>
         <button
           class="tab__btn"
           :class="{tab__btn_active: selected === 1}"
           @click="selected = 1"
         >
-          Reviews
+          {{ $t('profile.reviews') }}
         </button>
       </div>
     </section>
@@ -330,13 +346,13 @@
                                   :class="cardsLevels(i)"
                                 >
                                   <span v-if="item.level.code === 1">
-                                    HIGHER LEVEL
+                                    {{ $t('levels.higher') }}
                                   </span>
                                   <span v-if="item.level.code === 2">
-                                    RELIABLE EMP.
+                                    {{ $t('levels.reliableEmp') }}
                                   </span>
                                   <span v-if="item.level.code === 3">
-                                    CHECKED BY TIME
+                                    {{ $t('levels.checkedByTime') }}
                                   </span>
                                 </span>
                               </div>
@@ -721,6 +737,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    showMessages() {
+      this.$router.push('/messages/1');
+    },
     cardsLevels(idx) {
       const { cards } = this;
       return [
@@ -809,6 +828,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.contacts {
+  &__grid {
+    display: grid;
+    grid-template-columns: 5fr 2fr;
+  }
+}
+
+.message {
+  &__container-btn {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  &__btn {
+    max-width: 250px;
+    cursor: pointer;
+  }
+}
 
 .container {
   &__title {

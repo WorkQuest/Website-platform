@@ -59,6 +59,7 @@ export default {
         { 'base-btn_agree': mode === 'agree' },
         { 'base-btn_goToChat': mode === 'goToChat' },
         { 'base-btn_dispute': mode === 'dispute' },
+        { 'base-btn_messages': mode === 'goToMessages' },
       ];
     },
   },
@@ -97,6 +98,19 @@ export default {
     background-color: $green;
     color: $white;
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
+  }
+  &_messages {
+    background-color: $white;
+    color: $green;
+    border-radius: 6px;
+    transition: .3s;
+    border: 1px solid $green;
+  }
+  &_messages:hover {
+    transition: .3s;
+    background-color: $green;
+    color: $white;
+    border-radius: 6px;
   }
   &_goToChat {
     background-color: $white;

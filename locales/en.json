@@ -101,6 +101,9 @@
     "slogan": "Create work proposal",
     "add": "Add all the information and publication time  to find the right",
     "create": "Create",
+    "writeAMessage": "Write a message",
+    "quests": "Quests",
+    "reviews": "Reviews",
     "sidebar": {
       "filter": "All Quests filter",
       "choose": "(Choose simple or \nspecialized category)",
@@ -375,6 +378,7 @@
   "levels": {
     "reliableEmp": "RELIABLE EMP.",
     "checkedByTime": "CHECKED BY TIME",
-    "disabled": "DISABLED"
+    "disabled": "DISABLED",
+    "higher": "HIGHER LEVEL"
   }
 }
