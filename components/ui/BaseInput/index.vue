@@ -44,6 +44,9 @@
       >
         <span class="icon-close_small" />
       </div>
+      <div class="ctm-field__selector">
+        <slot name="selector" />
+      </div>
       <div class="ctm-field__right">
         <slot name="right" />
       </div>
@@ -120,10 +123,17 @@ export default {
       type: String,
       default: '',
     },
+    selector: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     input($event) {
       this.$emit('input', $event.target.value);
+      if (this.selector) {
+        this.$emit('selector', $event.target.value);
+      }
     },
     clear() {
       this.$emit('input', '');
@@ -133,6 +143,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .ctm-field {
+  &__selector {
+    position: absolute;
+    width: 100%;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    z-index: 120;
+  }
   &__right {
     min-height: 100%;
     display: flex;
