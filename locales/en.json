@@ -25,6 +25,10 @@
     "m": "m"
   },
 
+  "info" : {
+    "showYourMessage": "Show your message"
+  },
+
   "messages": {
     "alpha": "The {_field_} field may only contain alphabetic characters",
     "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
@@ -233,7 +237,12 @@
     "ui": {
       "showMap": "Show map",
       "search": "City / Street / Place"
-    }
+    },
+    "worker": "Worker",
+    "raiseViews": "Raise views",
+    "deleteQuest": "Delete quest",
+    "approve": "Approve",
+    "startQuest": "Start quest"
   },
   "modals": {
     "amount": "Amount",

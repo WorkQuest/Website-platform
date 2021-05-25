@@ -61,7 +61,7 @@
                   <template v-slot:right>
                     <span class="icon-caret_down" />
                   </template>
-                  Show your message
+                  {{ $t('info.showYourMessage') }}
                 </base-btn>
               </div>
               <div

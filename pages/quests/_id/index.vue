@@ -52,7 +52,7 @@
                 class="runtime__container"
               >
                 <span class="icon-clock icon_fs-16" />
-                <span class="runtime__title">Runtime</span>
+                <span class="runtime__title">{{ $t('quests.runtime') }}</span>
                 <span
                   class="runtime__link"
                 >
@@ -112,7 +112,7 @@
           <div class="divider" />
           <span v-if="userRole === 'employer'">
             <div v-if="infoData.mode === 2">
-              <div class="worker__title">Worker</div>
+              <div class="worker__title">{{ $t('quests.worker') }}</div>
               <div class="worker__container">
                 <div>
                   <img
@@ -148,7 +148,7 @@
               </div>
             </div>
             <div v-if="infoData.mode === 3">
-              <div class="worker__title">Responded</div>
+              <div class="worker__title">{{ $t('response.title') }}</div>
               <span
                 v-for="(item, i) in respondedList"
                 :key="i"
@@ -224,7 +224,7 @@
               </div>
             </div>
             <div v-if="infoData.mode === 4">
-              <div class="worker__title">Worker</div>
+              <div class="worker__title">{{ $t('quests.worker') }}</div>
               <div class="worker__container">
                 <div>
                   <img
@@ -292,12 +292,12 @@
                 >
                   <div class="btn__wrapper">
                     <base-btn>
-                      Raise views
+                      {{ $t('quests.raiseViews') }}
                     </base-btn>
                   </div>
                   <div class="btn__wrapper">
                     <base-btn mode="delete">
-                      Delete quest
+                      {{ $t('quests.deleteQuest') }}
                     </base-btn>
                   </div>
                 </div>
@@ -332,7 +332,7 @@
                 >
                   <div class="btn__wrapper">
                     <base-btn mode="approve">
-                      Approve
+                      {{ $t('quests.approve') }}
                     </base-btn>
                   </div>
                 </div>
@@ -359,7 +359,7 @@
                 >
                   <div class="btn__wrapper">
                     <base-btn>
-                      Start quest
+                      {{ $t('quests.startQuest') }}
                     </base-btn>
                   </div>
                 </div>
