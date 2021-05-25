@@ -38,7 +38,7 @@
             <div class="location__container">
               <div class="quest__location">
                 <span
-                  class="icon-location icon_fs-20 icon_mar-r-9"
+                  class="icon-location icon_fs-20"
                 />
                 <span>{{ payload.location }}</span>
               </div>
@@ -149,7 +149,10 @@
             </div>
             <div v-if="infoData.mode === 3">
               <div class="worker__title">Responded</div>
-              <span v-for="(item, i) in respondedList" :key="i">
+              <span
+                v-for="(item, i) in respondedList"
+                :key="i"
+              >
                 <div class="worker__container">
                   <!-- TODO: Добавить радиокнопки -->
                   <div>
@@ -160,7 +163,7 @@
                     >
                   </div>
                   <div class="worker__name">
-                    {{item.name}}
+                    {{ item.name }}
                   </div>
                   <div>
                     <div
@@ -340,47 +343,28 @@
                   v-if="infoData.mode === 3"
                   class="buttons__wrapper"
                 >
-                <div class="btn__wrapper">
-                  <base-btn
-                    :disabled="infoData.mode === 3"
-                  >
-                    {{ $t('btn.responded') }}
-                  </base-btn>
+                  <div class="btn__wrapper">
+                    <base-btn
+                      :disabled="infoData.mode === 3"
+                    >
+                      {{ $t('btn.responded') }}
+                    </base-btn>
+                  </div>
                 </div>
-              </div>
               </span>
               <span v-if="userRole === 'employer'">
                 <div
                   v-if="infoData.mode === 3"
                   class="buttons__wrapper"
                 >
-                <div class="btn__wrapper">
-                  <base-btn
-                  >
-                    Start quest
-                  </base-btn>
+                  <div class="btn__wrapper">
+                    <base-btn>
+                      Start quest
+                    </base-btn>
+                  </div>
                 </div>
-              </div>
               </span>
               <!-- performed -->
-              <span v-if="userRole === 'worker'">
-                <div
-                  v-if="infoData.mode === 4"
-                  class="buttons__wrapper"
-                >
-                  <base-btn
-                    :disabled="infoData.hasRequest === true"
-                    @click="showMessageModal()"
-                  >
-                    <p v-if="infoData.hasRequest === true">
-                      {{ $t('modals.requestSend') }}
-                    </p>
-                    <p v-else>
-                      {{ $t('modals.sendARequest') }}
-                    </p>
-                  </base-btn>
-                </div>
-              </span>
               <span v-if="userRole === 'employer'" />
             </div>
             <span v-if="infoData.mode !== 4">
@@ -562,7 +546,7 @@ export default {
         code: 1,
       },
       infoData: {
-        mode: 3,
+        mode: 1,
         date: '15:30:20',
         hasRequest: 'false',
       },

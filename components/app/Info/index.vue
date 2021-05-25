@@ -1,63 +1,96 @@
 <template>
   <div>
-    <div
-      class="info"
-      :class="infoClass"
-    >
-      <div class="info__body">
-        <div class="info__left">
-          <div
-            class="info__text info__text_white"
-            :class="[{'info__text_black': info.mode === 3}]"
-          >
-            <div v-if="info.mode === 1">
-              {{ $t('invite.title') }}
-            </div>
-            <div v-if="info.mode === 2">
-              {{ $t('quests.activeQuest') }}
-            </div>
-            <div v-if="info.mode === 3">
-              {{ $t('response.title') }}
-            </div>
-            <div v-if="info.mode === 4">
-              {{ $t('performed.title') }}
+    <span v-if="userRole === 'employer'">
+      <span v-if="info.mode !== 1">
+        <span v-if="info.mode !== 3">
+          <div>
+            <div
+              class="info"
+              :class="infoClass"
+            >
+              <div class="info__body">
+                <div class="info__left">
+                  <div
+                    class="info__text info__text_white"
+                  >
+                    <div v-if="info.mode === 2">
+                      {{ $t('quests.activeQuest') }}
+                    </div>
+                    <div v-if="info.mode === 4">
+                      {{ $t('performed.title') }}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="info__right">
-          <div
-            v-if="info.mode === 3"
-          >
-            <base-btn mode="showYourMessage">
-              <template v-slot:right>
-                <span class="icon-caret_down" />
-              </template>
-              Show your message
-            </base-btn>
-          </div>
-          <div
-            v-if="info.date"
-          >
-            <span v-if="info.mode !== 1">
-              <span v-if="info.mode !== 4">
-                <span v-if="info.mode !== 3">
-                  <span class="info__text info__text_white info__text_normal">
-                    {{ $t('quests.runtime') }}
-                  </span>
-                  <span class="info__text info__text_white info__text_bold">
-                    {{ info.date }}
+        </span>
+      </span>
+    </span>
+    <span v-if="userRole === 'worker'">
+      <div>
+        <div
+          class="info"
+          :class="infoClass"
+        >
+          <div class="info__body">
+            <div class="info__left">
+              <div
+                class="info__text info__text_white"
+                :class="[{'info__text_black': info.mode === 3}]"
+              >
+                <div v-if="info.mode === 1">
+                  {{ $t('invite.title') }}
+                </div>
+                <div v-if="info.mode === 2">
+                  {{ $t('quests.activeQuest') }}
+                </div>
+                <div v-if="info.mode === 3">
+                  {{ $t('response.title') }}
+                </div>
+                <div v-if="info.mode === 4">
+                  {{ $t('performed.title') }}
+                </div>
+              </div>
+            </div>
+            <div class="info__right">
+              <div
+                v-if="info.mode === 3"
+              >
+                <base-btn mode="showYourMessage">
+                  <template v-slot:right>
+                    <span class="icon-caret_down" />
+                  </template>
+                  Show your message
+                </base-btn>
+              </div>
+              <div
+                v-if="info.date"
+              >
+                <span v-if="info.mode !== 1">
+                  <span v-if="info.mode !== 4">
+                    <span v-if="info.mode !== 3">
+                      <span class="info__text info__text_white info__text_normal">
+                        {{ $t('quests.runtime') }}
+                      </span>
+                      <span class="info__text info__text_white info__text_bold">
+                        {{ info.date }}
+                      </span>
+                    </span>
                   </span>
                 </span>
-              </span>
-            </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </span>
   </div>
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'InfoVue',
@@ -85,6 +118,11 @@ export default {
         },
       ];
     },
+    ...mapGetters({
+      tags: 'ui/getTags',
+      userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
+    }),
   },
   methods: {
     infoText(type) {
