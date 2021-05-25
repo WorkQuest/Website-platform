@@ -142,7 +142,14 @@
     "remember": "Remember me",
     "forgot": "Forgot password",
     "or": "Or",
-    "loginWith": "Login with"
+    "loginWith": "Login with",
+    "welcomeToWorkQuest": "Welcome to WorkQuest",
+    "pleaseSignIn": "Please sign in",
+    "workQuest": "WorkQuest",
+    "makingMoneyIsFast": "Making\n            money is fast.\n            When your\n            work is quest.",
+    "dontHaveAnAccount": "Don’t have an account?",
+    "signUp": "Sign Up",
+    "forgotYourPass": "Forgot your password?"
   },
   "signUp": {
     "title": "Sign Up",

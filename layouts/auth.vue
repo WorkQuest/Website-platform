@@ -1,6 +1,20 @@
 <template>
   <div class="template">
     <div class="template__container">
+      <div class="mobile__container">
+        <div class="mobile__header">
+          <div>
+            <h2 class="mobile__title">
+              {{ $t('signIn.welcomeToWorkQuest') }}
+            </h2>
+          </div>
+          <div>
+            <h3 class="mobile__subtitle">
+              {{ $t('signIn.pleaseSignIn') }}
+            </h3>
+          </div>
+        </div>
+      </div>
       <div class="template__left">
         <div
           class="template__logo"
@@ -10,7 +24,7 @@
             src="~assets/img/app/logo.svg"
             alt="WorkQuest"
           >
-          <span>WorkQuest</span>
+          <span>{{ $t('signIn.workQuest') }}</span>
         </div>
         <div class="template__content">
           <nuxt />
@@ -18,10 +32,7 @@
       </div>
       <div class="template__right">
         <div class="template__slogan">
-          <span>Making
-            money is fast.
-            When your
-            work is quest.</span>
+          <span>{{ $t('signIn.makingMoneyIsFast') }}</span>
         </div>
         <img
           class="template__long"
@@ -56,6 +67,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media screen and (min-width:1199px) {
+    .mobile {
+      &__container {
+        display: none;
+      }
+      &__title {
+        display: none;
+      }
+      &__subtitle {
+        display: none;
+      }
+      &__header {
+        display: none;
+      }
+    }
+}
 .template {
   &__container {
     min-height: 100vh;
@@ -118,6 +145,67 @@ export default {
   .template {
     &__slogan {
       padding: 50px 0 0 50px;
+    }
+  }
+}
+
+@include _1199 {
+  .mobile {
+    &__container {
+      background: url(/_nuxt/assets/img/app/auth_bg.svg) center center no-repeat;
+      display: grid;
+      max-height: 100%;
+      height: 354px;
+      align-content: flex-end;
+      width: 100%;
+    }
+    &__title {
+      color: $white;
+      font-weight: 700;
+      font-size: 34px;
+      padding: 0 0 10px 0;
+    }
+    &__subtitle {
+      color: $white;
+      font-weight: 400;
+      font-size: 16px;
+      padding: 0 0 30px 0;
+    }
+    &__header {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      justify-content: center;
+    }
+  }
+  .template {
+    &__logo {
+      display: none;
+    }
+    &__container {
+      grid-template-columns: 1fr;
+    }
+    &__left {
+     justify-self: center;
+      margin-right: 0;
+      grid-template-rows: 1fr;
+      max-width: 369px;
+      padding-top: 0;
+      align-self: flex-start;
+    }
+    &__right {
+      display: none;
+    }
+  }
+}
+
+@include _767 {
+  .template {
+    &__container {
+      grid-template-columns: 1fr;
+    }
+    &__left {}
+    &__right {
+      display: none;
     }
   }
 }
