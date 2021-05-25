@@ -188,7 +188,7 @@ export default {
      justify-self: center;
       margin-right: 0;
       grid-template-rows: 1fr;
-      max-width: 369px;
+      max-width: 367px;
       padding-top: 0;
       align-self: flex-start;
     }
@@ -203,10 +203,30 @@ export default {
     &__container {
       grid-template-columns: 1fr;
     }
-    &__left {}
     &__right {
       display: none;
     }
   }
 }
+
+@include _380 {
+  .mobile {
+    &__container {
+      height: 230px;
+    }
+    &__title {
+      padding: 0 0 10px 30px;
+    }
+    &__subtitle {
+      padding: 0 0 30px 30px;
+    }
+  }
+  .template {
+    &__left {
+      max-width: 312px;
+      margin: 20px 0 0 0;
+    }
+  }
+}
+
 </style>

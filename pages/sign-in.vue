@@ -98,7 +98,7 @@
           </button>
         </div>
       </div>
-      <div>
+      <div class="mobile__links">
         <div class="auth__mobile">
           <div class="auth__link">
             <span>{{ $t('signIn.dontHaveAnAccount') }}</span>
@@ -351,6 +351,32 @@ export default {
     &__mobile {
       display: grid;
       margin: 60px 0 10px 0;
+    }
+  }
+}
+
+@include _380 {
+  .auth {
+    &__icons {
+      grid-template-columns: repeat(5, 1fr);
+      grid-gap: 28px;
+    }
+    &__action {
+      padding-top: 10px;
+    }
+    &__mobile {
+      margin: 20px 0 10px 0;
+    }
+    &__links {
+      margin: 0 0 20px 0;
+    }
+    &__links {
+      padding: 0 0 20px 0;
+    }
+  }
+  .template {
+    &__left {
+      max-width: 367px;
     }
   }
 }
