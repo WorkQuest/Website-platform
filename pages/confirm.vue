@@ -1,5 +1,16 @@
 <template>
   <div class="role">
+    <div class="btn__back">
+      <base-btn
+        mode="back"
+        @click="$router.go(-1)"
+      >
+        <template v-slot:left>
+          <span class="icon-chevron_big_left" />
+        </template>
+        {{ $t('signUp.back') }}
+      </base-btn>
+    </div>
     <div class="role__title">
       {{ $t('role.choose') }}
     </div>
@@ -117,6 +128,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media screen and (min-width:1199px) {
+  .btn {
+    &__back {
+      display: none;
+    }
+  }
+}
+.btn {
+  &__container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    align-items: flex-end;
+  }
+  &__back {
+    padding: 10px 0 0 33px;
+    width: 100%;
+    max-width: 60px;
+  }
+}
+.icon-chevron_big_left:before {
+  content: "\ea4d";
+  color: $black500;
+  font-size: 25px;
+}
 .role {
   width: 100%;
   &__title {
