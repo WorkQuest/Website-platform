@@ -92,6 +92,14 @@ export default {
 <style lang="scss" scoped>
 
 @media screen and (min-width:1199px) {
+  .template {
+    &__left {
+      grid-template-rows: 0fr 1fr;
+    }
+    &__content {
+      padding: 200px 0 0 0;
+    }
+  }
   .btn {
     &__back {
       display: none;
@@ -148,7 +156,7 @@ export default {
   }
   &__left {
     display: grid;
-    grid-template-rows: 0fr 1fr;
+    grid-template-rows: 0fr 0fr;
     max-width: 470px;
     width: 100%;
     justify-self: flex-end;
@@ -200,6 +208,11 @@ export default {
   .template {
     &__slogan {
       padding: 50px 0 0 50px;
+    }
+  }
+  .template {
+    &__left {
+      grid-template-rows: 0fr 0fr;
     }
   }
 }
