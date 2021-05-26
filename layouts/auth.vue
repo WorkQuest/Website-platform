@@ -1,21 +1,44 @@
 <template>
   <div class="template">
     <div class="template__container">
-      <div class="mobile__container">
-        <div class="mobile__header">
-          <div>
-            <h2 class="mobile__title">
-              {{ $t('signIn.welcomeToWorkQuest') }}
-            </h2>
+      <span
+        v-if="$route.path !== '/restore'"
+        class="mobile__wrapper"
+      >
+        <span v-if="$route.path !== '/sign-up'">
+          <div class="mobile__container">
+            <div class="mobile__header">
+              <div>
+                <h2 class="mobile__title">
+                  {{ $t('signIn.welcomeToWorkQuest') }}
+                </h2>
+              </div>
+              <div>
+                <h3 class="mobile__subtitle">
+                  {{ $t('signIn.pleaseSignIn') }}
+                </h3>
+              </div>
+            </div>
           </div>
-          <div>
-            <h3 class="mobile__subtitle">
-              {{ $t('signIn.pleaseSignIn') }}
-            </h3>
+        </span>
+      </span>
+      <div class="template__left">
+        <div
+          v-if="$route.path !== '/sign-in'"
+          class="btn__container"
+        >
+          <div class="btn__back">
+            <base-btn
+              mode="back"
+              @click="$router.go(-1)"
+            >
+              <template v-slot:left>
+                <span class="icon-chevron_big_left" />
+              </template>
+              back
+            </base-btn>
           </div>
         </div>
-      </div>
-      <div class="template__left">
         <div
           class="template__logo"
           @click="toMain()"
@@ -67,7 +90,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 @media screen and (min-width:1199px) {
+  .btn {
+    &__back {
+      display: none;
+    }
+    &__container {
+      display: none;
+    }
+  }
     .mobile {
       &__container {
         display: none;
@@ -81,7 +113,29 @@ export default {
       &__header {
         display: none;
       }
+      &__wrapper {
+        display: none;
+      }
     }
+}
+.btn {
+  &__container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    align-items: flex-end;
+  }
+  &__back {
+    padding: 10px 0 0 0;
+    width: 100%;
+    max-width: 60px;
+  }
+}
+.icon-chevron_big_left:before {
+  content: "\ea4d";
+  color: $black500;
+  font-size: 25px;
 }
 .template {
   &__container {
@@ -89,11 +143,12 @@ export default {
     width: 100%;
     background: #FFFFFF;
     display: grid;
+    grid-auto-rows: auto 1fr;
     grid-template-columns: repeat(2, 1fr);
   }
   &__left {
     display: grid;
-    grid-template-rows: 40px 1fr;
+    grid-template-rows: 0fr 1fr;
     max-width: 470px;
     width: 100%;
     justify-self: flex-end;
@@ -150,7 +205,11 @@ export default {
 }
 
 @include _1199 {
+
   .mobile {
+    display: flex;
+    color: black;
+    width: 100%;
     &__container {
       background: url(/_nuxt/assets/img/app/auth_bg.svg) center center no-repeat;
       display: grid;
@@ -158,6 +217,7 @@ export default {
       height: 354px;
       align-content: flex-end;
       width: 100%;
+      color: $black800;
     }
     &__title {
       color: $white;
@@ -183,13 +243,13 @@ export default {
     }
     &__container {
       grid-template-columns: 1fr;
+      grid-auto-rows: 0fr;
     }
     &__left {
      justify-self: center;
       margin-right: 0;
       grid-template-rows: 1fr;
       max-width: 367px;
-      padding-top: 0;
       align-self: flex-start;
     }
     &__right {

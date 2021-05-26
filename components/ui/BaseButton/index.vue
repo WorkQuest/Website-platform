@@ -22,8 +22,11 @@
     :class="btnClass"
     @click="$emit('click')"
   >
+    <div class="icon-btn_left">
+      <slot name="left" />
+    </div>
     <slot />
-    <div class="icon-btn">
+    <div class="icon-btn_right">
       <slot name="right" />
     </div>
   </button>
@@ -63,6 +66,7 @@ export default {
         { 'base-btn_show-messages': mode === 'showYourMessage' },
         { 'base-btn_delete': mode === 'delete' },
         { 'base-btn_approve': mode === 'approve' },
+        { 'base-btn_back': mode === 'back' },
       ];
     },
   },
@@ -71,7 +75,12 @@ export default {
 <style lang="scss" scoped>
 .icon {
   &-btn {
-    margin: 0 0 0 5px;
+    &_left {
+      margin: 0 5px 0 0;
+    }
+    &_right {
+      margin: 0 0 0 5px;
+    }
   }
 }
 .base-btn {
@@ -92,6 +101,16 @@ export default {
   border-radius: 6px;
   &:hover {
     background: #103D7C;
+  }
+  &_back {
+    transition: .3s;
+    background-color: transparent;
+    color: $black500;
+  }
+  &_back:hover {
+    transition: .3s;
+    background-color: transparent;
+    color: $black500;
   }
   &_approve {
     background-color: $green;
