@@ -89,6 +89,7 @@ export default {
       confirmCode: '',
     };
   },
+  // TODO: Починить анимацию для мобильного режима
   async mounted() {
     this.SetLoader(true);
     document.getElementById('left_card').addEventListener('mouseover', (_) => document.getElementById('right_card').classList.add('role__card_minimized'));
@@ -245,6 +246,56 @@ export default {
     }
     &_light {
       color: #FFFFFF;
+    }
+  }
+}
+@include _1199 {
+  .role {
+    &__title {
+      color: $black800;
+      margin: 0 20px;
+    }
+    &__cards {
+      margin: 0 20px;
+    }
+  }
+}
+@include _767 {
+  .role {
+    &__text_title {
+      font-size: 20px;
+    }
+    &__text_desc {
+      font-size: 16px;
+      max-width: 140px;
+    }
+    &__cards {
+      grid-template-columns: 1fr;
+      grid-gap: 20px;
+    }
+    &__image {
+      right: -122px;
+    }
+    &__card {
+      &_minimized {
+        width: 100% !important;
+      }
+      &_right:hover {
+        width: 100% !important;
+        .role {
+          &__image {
+            right: -140px;
+          }
+        }
+      }
+      &_left:hover {
+        width: 100% !important;
+        .role {
+          &__image {
+            right: -84px;
+          }
+        }
+      }
     }
   }
 }
