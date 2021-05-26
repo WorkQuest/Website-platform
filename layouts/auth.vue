@@ -35,7 +35,7 @@
               <template v-slot:left>
                 <span class="icon-chevron_big_left" />
               </template>
-              back
+              {{ $t('signUp.back') }}
             </base-btn>
           </div>
         </div>

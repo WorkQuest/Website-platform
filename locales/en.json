@@ -160,7 +160,8 @@
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Repeat password",
-    "create": "Create account"
+    "create": "Create account",
+    "back": "back"
   },
   "forgot": {
     "title": "Forgot password?",
