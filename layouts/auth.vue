@@ -84,6 +84,14 @@ export default {
       this.$router.push('/sign-in');
     },
   },
+  data() {
+    return {
+      links: [
+        { url: '/sign-up' },
+        { url: '/restore' },
+      ],
+    };
+  },
 };
 </script>
 
