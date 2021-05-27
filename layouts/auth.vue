@@ -173,6 +173,39 @@ export default {
   }
 }
 
+@include _2560 {
+  .mobile {
+    &__wrapper {
+      display: none;
+    }
+  }
+  .btn {
+    &__back {
+      display: none;
+    }
+    &__container {
+      display: none;
+    }
+  }
+  .template {
+    &__content {
+      padding: 200px 0 0 0;
+    }
+    &__slogan {
+      padding: 50px 0 0 50px;
+    }
+    &__left {
+      grid-template-rows: 0fr 0fr;
+    }
+    &__right {
+      display: none;
+    }
+    &__right {
+      display: block;
+    }
+  }
+}
+
 @include _1300 {
   .mobile {
     &__wrapper {
