@@ -453,7 +453,6 @@ export default {
     height: 25px;
     border: 1px solid $blue;
     cursor: pointer;
-
     &:checked {
       background: radial-gradient($blue 50%, rgba(255, 0, 0, 0) 55%);
     }
@@ -464,53 +463,62 @@ export default {
   position: absolute;
   z-index: -1;
   opacity: 0;
-}
-
-.custom-checkbox+label {
-  display: inline-flex;
-  align-items: center;
-  user-select: none;
-}
-.custom-checkbox+label::before {
-  content: '';
-  display: inline-block;
-  width: 1.5em;
-  height: 1.5em;
-  flex-shrink: 0;
-  flex-grow: 0;
-  border: 1px solid #adb5bd;
-  border-radius: 0.25em;
-  margin-right: 0.5em;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: 50% 50%;
-}
-
-.custom-checkbox:checked+label::before {
-  border-color: #0b76ef;
-  background-color: #0b76ef;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
-}
-
-.custom-checkbox:not(:disabled):not(:checked)+label:hover::before {
-  border-color: #b3d7ff;
-}
-
-.custom-checkbox:not(:disabled):active+label::before {
-  background-color: #b3d7ff;
-  border-color: #b3d7ff;
-}
-
-.custom-checkbox:focus+label::before {
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-.custom-checkbox:focus:not(:checked)+label::before {
-  border-color: #80bdff;
-}
-
-.custom-checkbox:disabled+label::before {
-  background-color: #e9ecef;
+  &:disabled+label {
+    &::before {
+      background-color: #e9ecef;
+    }
+  }
+  &:focus:not(:checked)+label {
+    &::before {
+      border-color: #80bdff;
+    }
+  }
+  &:focus+label {
+    &::before {
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+  }
+  &:not(:disabled) {
+    &:active+label {
+      &::before {
+        background-color: #b3d7ff;
+        border-color: #b3d7ff;
+      }
+    }
+  }
+  &:not(:disabled) {
+    :not(:checked)+label {
+      :hover::before {
+        border-color: #b3d7ff;
+      }
+    }
+  }
+  &:checked+label {
+    &::before {
+      border-color: #0b76ef;
+      background-color: #0b76ef;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+    }
+  }
+  &+label {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 1.5em;
+      height: 1.5em;
+      flex-shrink: 0;
+      flex-grow: 0;
+      border: 1px solid #adb5bd;
+      border-radius: 0.25em;
+      margin-right: 0.5em;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 50% 50%;
+    }
+  }
 }
 
 .label {
@@ -534,105 +542,72 @@ export default {
     display: flex;
   }
 }
-
-.icon-plus_circle:before {
-  content: "\e9a6";
+.icon {
   font-size: 25px;
   color: $blue;
   align-items: center;
-}
-
-.icon-Case:before {
-  content: "\e9ff";
-  font-size: 25px;
-  color: $blue;
-  align-items: center;
-}
-
-.icon-id_card:before {
-  content: "\e902";
-  font-size: 25px;
-  color: $blue;
-  align-items: center;
-}
-
-.icon-Earth:before {
-  content: "\ea11";
-  font-size: 25px;
-  color: $blue;
-  align-items: center;
-}
-
-.icon-facebook:before {
-  content: "\e9e5";
-  font-size: 25px;
-  color: $blue;
-  align-items: center;
-}
-
-.icon-LinkedIn::before {
-  content: "\e9ed";
-  font-size: 25px;
-  color: $blue;
-  align-items: center;
-}
-
-.icon-twitter::before {
-  content: "\e9fa";
-  font-size: 25px;
-  color: $blue;
-  align-items: center;
-}
-
-.icon-instagram::before {
-  content: "\e9ea";
-  font-size: 25px;
-  color: $blue;
-  align-items: center;
-}
-
-.icon-phone::before {
-  content: "\ea2d";
-  font-size: 25px;
-  color: $blue;
-  align-items: center;
-}
-
-.icon-mail::before {
-  content: "\ea27";
-  font-size: 25px;
-  color: $blue;
-  align-items: center;
-}
-
-.icon-location::before {
-  content: "\ea23";
-  font-size: 25px;
-  color: $blue;
-  align-items: center;
-}
-
-.icon-user::before {
-  content: "\e90c";
-  font-size: 25px;
-  color: $blue;
-  align-items: center;
-}
-
-.icon__close {
-  position: absolute;
-  bottom: 155px;
-  right: 25px;
-  z-index: 2;
-  &_closed {
-    display: none;
+  &-plus_circle:before {
+    @extend .icon;
+    content: "\e9a6";
   }
-}
-
-.icon-close_big::before {
-  content: "\e948";
-  color: #2e3a59;
-  font-size: 26px;
+  &-Case:before {
+    @extend .icon;
+    content: "\e9ff";
+  }
+  &-id_card:before {
+    @extend .icon;
+    content: "\e902";
+  }
+  &-Earth:before {
+    @extend .icon;
+    content: "\ea11";
+  }
+  &-facebook:before {
+    @extend .icon;
+    content: "\e9e5";
+  }
+  &-LinkedIn::before {
+    @extend .icon;
+    content: "\e9ed";
+  }
+  &-twitter::before {
+    @extend .icon;
+    content: "\e9fa";
+  }
+  &-instagram::before {
+    @extend .icon;
+    content: "\e9ea";
+  }
+  &-phone::before {
+    @extend .icon;
+    content: "\ea2d";
+  }
+  &-mail::before {
+    @extend .icon;
+    content: "\ea27";
+  }
+  &-location::before {
+    @extend .icon;
+    content: "\ea23";
+  }
+  &-user::before {
+    @extend .icon;
+    content: "\e90c";
+  }
+  &-close_big::before {
+    content: "\e948";
+    color: #2e3a59;
+    font-size: 26px;
+  }
+  &__close {
+    position: absolute;
+    bottom: 155px;
+    right: 25px;
+    z-index: 2;
+    &_closed {
+      display: none;
+    }
+  }
 }
 
 .checkbox {
@@ -657,15 +632,16 @@ export default {
   }
 }
 .btn {
+  width: 100%;
   &__container-right {
-    width: 100%;
+    @extend .btn;
     display: flex;
     justify-content: flex-end;
     margin: 0 20px 0 -20px;
     padding: 0 0 20px 0;
   }
   &__save {
-    width: 100%;
+    @extend .btn;
     max-width: 250px;
   }
 }
@@ -705,7 +681,7 @@ export default {
     }
   }
   &__text {
-    font-family: 'Inter', sans-serif;
+    @include text-simple;
     font-style: normal;
     &_title  {
       font-weight: 500;
@@ -747,6 +723,9 @@ export default {
   }
 }
 .profile {
+  display: grid;
+  justify-content: space-between;
+  max-width: 1180px;
   &__img {
     width: 100%;
     height: 100%;
@@ -756,29 +735,23 @@ export default {
     margin: 20px;
   }
   &__row-1col {
-    display: grid;
+    @extend .profile;
     grid-template-columns: 1fr;
     margin: 0 20px 0 20px;
-    justify-content: space-between;
     width: 100%;
-    max-width: 1180px;
   }
   &__row-3col {
-    display: grid;
+    @extend .profile;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 0 20px;
     margin: 20px 20px 0 20px;
-    justify-content: space-between;
     width: 100%;
-    max-width: 1180px;
   }
   &__row-4col {
-    display: grid;
+    @extend .profile;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px 20px;
     margin: 0 20px 0 20px;
-    justify-content: space-between;
-    max-width: 1180px;
   }
   &__textarea {
     border-radius: 6px;
