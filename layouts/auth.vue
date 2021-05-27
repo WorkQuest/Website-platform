@@ -117,40 +117,11 @@ export default {
 
 <style lang="scss" scoped>
 
-@media screen and (min-width:1199px) {
-  .template {
-    &__left {
-      grid-template-rows: 0fr 1fr;
-    }
-    &__content {
-      padding: 200px 0 0 0;
-    }
+.title {
+  &__container {
+    max-width: 200px;
+    width: 100%
   }
-  .btn {
-    &__back {
-      display: none;
-    }
-    &__container {
-      display: none;
-    }
-  }
-    .mobile {
-      &__container {
-        display: none;
-      }
-      &__title {
-        display: none;
-      }
-      &__subtitle {
-        display: none;
-      }
-      &__header {
-        display: none;
-      }
-      &__wrapper {
-        display: none;
-      }
-    }
 }
 .btn {
   &__container {
@@ -230,21 +201,74 @@ export default {
   }
 }
 
-@include _1300 {
-  .template {
-    &__slogan {
-      padding: 50px 0 0 50px;
+@include _2560 {
+  .mobile {
+    &__wrapper {
+      display: none;
+    }
+  }
+  .btn {
+    &__back {
+      display: none;
+    }
+    &__container {
+      display: none;
     }
   }
   .template {
+    &__content {
+      padding: 200px 0 0 0;
+    }
+    &__slogan {
+      padding: 50px 0 0 50px;
+    }
     &__left {
       grid-template-rows: 0fr 0fr;
+    }
+    &__right {
+      display: none;
+    }
+    &__right {
+      display: block;
+    }
+  }
+}
+
+@include _1300 {
+  .mobile {
+    &__wrapper {
+      display: none;
+    }
+  }
+  .template {
+    &__content {
+      padding: 200px 0 0 0;
+    }
+    &__slogan {
+      padding: 50px 0 0 50px;
+    }
+    &__left {
+      grid-template-rows: 0fr 0fr;
+    }
+    &__right {
+      display: none;
+    }
+    &__right {
+      display: block;
     }
   }
 }
 
 @include _1199 {
-
+  .btn {
+    &__back {
+      padding: 0;
+      display: flex;
+    }
+  }
+  .btn__container {
+    display: flex;
+  }
   .mobile {
     display: flex;
     color: black;
@@ -254,6 +278,7 @@ export default {
       display: grid;
       max-height: 100%;
       height: 354px;
+      justify-items: center;
       align-content: flex-end;
       width: 100%;
       color: $black800;
@@ -273,7 +298,12 @@ export default {
     &__header {
       display: grid;
       grid-template-rows: auto 1fr;
-      justify-content: center;
+      justify-content: flex-start;
+      max-width: 367px;
+      width: 100%;
+    }
+    &__wrapper {
+      display: block;
     }
   }
   .template {
@@ -283,6 +313,9 @@ export default {
     &__container {
       grid-template-columns: 1fr;
       grid-auto-rows: 0fr;
+    }
+    &__content {
+      padding: 0;
     }
     &__left {
      justify-self: center;
@@ -306,12 +339,49 @@ export default {
       display: none;
     }
   }
+  .mobile {
+    &__wrapper {
+      display: block;
+    }
+  }
+  .btn {
+    &__back {
+      padding: 0;
+      display: flex;
+    }
+    &__container {
+      display: flex;
+    }
+  }
 }
 
 @include _380 {
+  .title {
+    &__container {
+      max-width: 220px;
+    }
+  }
+  .btn {
+    &__back {
+      padding: 0;
+      display: flex;
+    }
+    &__container {
+      display: flex;
+    }
+  }
+  .btn {
+    &__back {
+      padding: 0;
+      height: 100%;
+    }
+  }
   .mobile {
     &__container {
-      height: 230px;
+      height: 354px;
+    }
+    &__wrapper {
+      display: block;
     }
     &__title {
       padding: 0 0 10px 30px;
@@ -323,7 +393,6 @@ export default {
   .template {
     &__left {
       max-width: 312px;
-      margin: 20px 0 0 0;
     }
   }
 }
