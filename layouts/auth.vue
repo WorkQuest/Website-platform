@@ -212,14 +212,6 @@ export default {
       display: none;
     }
   }
-  .btn {
-    &__back {
-      display: none;
-    }
-    &__container {
-      display: none;
-    }
-  }
   .template {
     &__content {
       padding: 200px 0 0 0;
@@ -243,7 +235,11 @@ export default {
   .btn {
     &__back {
       padding: 0;
+      display: flex;
     }
+  }
+  .btn__container {
+    display: flex;
   }
   .mobile {
     display: flex;
@@ -279,7 +275,7 @@ export default {
       width: 100%;
     }
     &__wrapper {
-      display: flex;
+      display: block;
     }
   }
   .template {
@@ -315,6 +311,20 @@ export default {
       display: none;
     }
   }
+  .mobile {
+    &__wrapper {
+      display: block;
+    }
+  }
+  .btn {
+    &__back {
+      padding: 0;
+      display: flex;
+    }
+    &__container {
+      display: flex;
+    }
+  }
 }
 
 @include _380 {
@@ -326,12 +336,24 @@ export default {
   .btn {
     &__back {
       padding: 0;
+      display: flex;
+    }
+    &__container {
+      display: flex;
+    }
+  }
+  .btn {
+    &__back {
+      padding: 0;
       height: 100%;
     }
   }
   .mobile {
     &__container {
       height: 354px;
+    }
+    &__wrapper {
+      display: block;
     }
     &__title {
       padding: 0 0 10px 30px;
