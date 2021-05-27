@@ -106,77 +106,72 @@ export default {
     transition: .3s;
     background-color: transparent;
     color: $black500;
-  }
-  &_back:hover {
-    transition: .3s;
-    background-color: transparent;
-    color: $black500;
+    &:hover {
+      background-color: transparent;
+      color: $black500;
+    }
   }
   &_approve {
     background-color: $green;
     color: $white;
     border-radius: 6px;
-    transition: .3s;
     border: 1px solid $green;
-  }
-  &_approve:hover {
-    transition: .3s;
-    background-color: $white;
-    color: $green;
-    border-radius: 6px;
+    &:hover {
+      background-color: $white;
+      color: $green;
+      border-radius: 6px;
+    }
   }
   &_agree {
     background-color: $green;
     color: $white;
-  }
-  &_agree:hover {
-    background-color: $green;
-    color: $white;
-    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    &:hover {
+      background-color: $green;
+      color: $white;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
   }
   &_delete {
     background-color: $red;
     color: $white;
-  }
-  &_delete:hover {
-    background-color: #cc0000;
-    color: $white;
+    &:hover {
+      background-color: #cc0000;
+      color: $white;
+    }
   }
   &_show-messages {
     background-color: transparent;
     color: $blue;
   }
-  &_show-messages:hover {}
   &_messages {
     background-color: $white;
     color: $green;
     border-radius: 6px;
     transition: .3s;
     border: 1px solid $green;
-  }
-  &_messages:hover {
-    transition: .3s;
-    background-color: $green;
-    color: $white;
-    border-radius: 6px;
+    &:hover {
+      background-color: $green;
+      color: $white;
+      border-radius: 6px;
+    }
   }
   &_goToChat {
     background-color: $white;
     color: $green;
     border: 1px solid $black400;
-  }
-  &_goToChat:hover {
-    background-color: $white;
-    color: $green;
-    border: 1px solid $black600;
-    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    &:hover {
+      background-color: $white;
+      color: $green;
+      border: 1px solid $black600;
+      box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    }
   }
   &_dispute {
     background-color: $red;
-  }
-  &_dispute:hover {
-    box-shadow: 0 0 5px rgba(0,0,0,0.5);
-    background-color: $red;
+    &:hover {
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      background-color: $red;
+    }
   }
   &_disabled {
     pointer-events: none;

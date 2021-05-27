@@ -32,7 +32,7 @@
                 <span class="user__date">
                   {{ payload.date }}
                 </span>
-                <span class="icon-share_outline icon_fs-20 icon_mar-l-15" />
+                <span class="icon-share_outline icon_fs-20" />
               </div>
             </div>
             <div class="location__container">
@@ -280,7 +280,7 @@
                       class="base-btn_goToChat"
                     >
                       {{ $t('btn.goToChat') }}
-                      <span class="icon-chat icon_fs-20 icon_mar-l-12" />
+                      <span class="icon-chat icon_fs-20" />
                     </base-btn>
                   </div>
                 </div>
@@ -320,7 +320,7 @@
                       class="base-btn_goToChat"
                     >
                       {{ $t('btn.goToChat') }}
-                      <span class="icon-chat icon_fs-20 icon_mar-l-12" />
+                      <span class="icon-chat icon_fs-20" />
                     </base-btn>
                   </div>
                 </div>
@@ -368,7 +368,7 @@
               <span v-if="userRole === 'employer'" />
             </div>
             <span v-if="infoData.mode !== 4">
-              <div class="price__wrapperValue">
+              <div class="price__container">
                 <span class="price__value">
                   {{ payload.price }}
                 </span>
@@ -707,6 +707,9 @@ export default {
 }
 
 .worker {
+  font-size: 16px;
+  font-weight: 500;
+  color: $black800;
   &__container {
     display: flex;
     flex-direction: row;
@@ -721,19 +724,20 @@ export default {
     height: 100%;
   }
   &__name {
+    @extend .worker;
     margin: 0 10px 0 10px;
-    font-size: 16px;
-    font-weight: 500;
-    color: $black800;
   }
   &__title {
+    @extend .worker;
     font-size: 18px;
-    font-weight: 500;
-    color: $black800;
   }
 }
 
 .card {
+  padding: 2px 8px;
+  align-items: center;
+  border-radius: 3px;
+  color: $white;
   &__level {
     display: grid;
     grid-template-columns: 20px auto;
@@ -743,25 +747,16 @@ export default {
     align-items: center;
     height: 20px;
     &_higher {
-      padding: 2px 8px;
-      align-items: center;
+      @extend .card;
       background-color: #F6CF00;
-      border-radius: 3px;
-      color: $white;
+
     }
     &_reliable {
-      padding: 2px 8px;
-      align-items: center;
+      @extend .card;
       background-color: #BBC0C7;
-      border-radius: 3px;
-      color: $white;
     }
     &_checked {
-      padding: 2px 8px;
-      align-items: center;
       background-color: #B79768;
-      border-radius: 3px;
-      color: $white;
     }
     &_disabled {
       display: none;
@@ -777,29 +772,21 @@ export default {
 }
 
 .icon {
-  &_fs-20 {
-    font-size: 20px;
-  }
-  &_fs-16 {
-    font-size: 16px;
-  }
-  &_fs-12 {
-    font-size: 12px;
-  }
-  &_mar-l-12 {
-    margin: 0 0 0 12px;
-  }
-  &_mar-l-15 {
-    margin: 0 0 0 15px;
-  }
-  &_mar-r-9 {
-    margin: 0 9px 0 0;
-  }
+  color:$black500;
+  font-size: 20px;
   &-chat::before {
-  color:$green;
+    @extend .icon;
+    color:$green;
   }
   &-location::before {
-    color:$black500;
+    @extend .icon;
+  }
+  &-clock::before {
+    @extend .icon;
+  }
+  &-share_outline {
+    @extend .icon;
+    margin-left: 5px;
   }
 }
 .divider{
@@ -835,6 +822,10 @@ export default {
 }
 
 .user {
+  @include text-simple;
+  color: $black800;
+  font-weight: 500;
+  font-size: 16px;
   &__head {
     display: flex;
     align-items: center;
@@ -861,23 +852,19 @@ export default {
     border-radius: 50%;
   }
   &__username{
-    @include text-simple;
-    color: $black800;
-    font-weight: 500;
-    font-size: 16px;
+    @extend .user;
     padding-left: 10px;
   }
   &__distance{
-    @include text-simple;
+    @extend .user;
     margin: 0 0.5%;
-    font-style: normal;
-    font-weight: 500;
     font-size: 14px;
     display: flex;
     align-items: center;
     color: $blue;
   }
   &__left {
+    @extend .user;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -887,18 +874,17 @@ export default {
     flex-direction: row;
   }
   &__company {
-    @include text-simple;
+    @extend .user;
     margin: 0 0 0 10px;
-    font-size: 16px;
     color: $black500;
   }
 }
-.spec{
+.spec {
+  @include text-simple;
+  font-weight: 500;
+  font-size: 25px;
   &__link{
-    @include text-simple;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 25px;
+    @extend .spec;
     color: $blue;
   }
   &__container{
@@ -907,35 +893,30 @@ export default {
 }
 
 .quest{
+  @include text-simple;
+  font-style: normal;
+  font-weight: 500;
+  color: $black800;
   &__spec {
-    @include text-simple;
-    font-style: normal;
-    font-weight: 500;
+    @extend .quest;
     font-size: 25px;
-    color: $black800;
     margin: 0 0 0 0;
   }
   &__title {
-    @include text-simple;
-    font-style: normal;
-    font-weight: 500;
+    @extend .quest;
     font-size: 30px;
-    color: $black800;
     margin: 0 0 10px 0;
   }
   &__description {
-    @include text-simple;
-    font-style: normal;
+    @extend .quest;
     color: $black700;
     font-weight: 400;
     font-size: 16px;
     line-height: 130%;
-    /* or 21px */
   }
   &__location {
-    @include text-simple;
+    @extend .quest;
     color: $black700;
-    font-style: normal;
     font-weight: normal;
     font-size: 14px;
     display: flex;
@@ -943,14 +924,14 @@ export default {
     flex-direction: row;
   }
   &__count {
-    @include text-simple;
-    font-style: normal;
+    @extend .quest;
     font-weight: normal;
     font-size: 16px;
     color: $black400;
   }
   &__group {
-    color:$black800;
+    @extend .quest;
+    font-weight: 400;
     display: flex;
     flex-direction: row;
   }
@@ -970,53 +951,48 @@ export default {
   }
 }
 .runtime {
+  @include text-simple;
+  display: flex;
+  font-style: normal;
+  font-weight: normal;
+  align-items: center;
+  font-size: 14px;
   &__container {
-    display: flex;
-    @include text-simple;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    align-items: center;
+    @extend .runtime;
     justify-items: center;
     color: $black700;
   }
   &__link {
-    @include text-simple;
+    @extend .runtime;
     margin: 0 5px;
-    font-style: normal;
     font-weight: 500;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
     color: $blue;
   }
 }
 .map {
   &__container {
-    background-color: #FFFFFF;
+    background-color: $white;
     padding:30px 0 0 0;
   }
 }
 
-.price{
+.price {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   &__value {
     @include text-simple;
     color: $green;
     font-weight: bold;
     font-size: 25px;
-
   }
-  &__wrapperValue {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  &__container {
+    @extend .price;
     justify-content: flex-end;
   }
   &__wrapper {
-    display: flex;
-    flex-direction: row;
+    @extend .price;
     margin:0 0 30px 0;
-    align-items: center;
     justify-content: space-between;
   }
 }
@@ -1026,40 +1002,38 @@ export default {
     padding: 0 0 20px 0;
   }
   &__item {
+    @include text-simple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: normal;
+    font-weight: normal;
+    padding: 0 5px;
     &_green {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      @extend .badge__item;
       background-color: rgba(34, 204, 20, 0.1);
       color:$green;
-      padding: 0 5px;
       margin: 0 0 0 15px;
       border-radius: 5px;
     }
     &_blue {
-      @include text-simple;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      @extend .badge__item;
       background-color: rgba(0, 131, 199, 0.1);
       margin: 0 9px 0 0;
-      padding: 0 5px;
       border-radius: 44px;
-      font-style: normal;
-      font-weight: normal;
       font-size: 16px;
       color: $blue;
       height: 31px;
     }
   }
-  &__wrapper{
+  &__wrapper {
     display: flex;
     flex-direction: row;
     align-items: center;
   }
 }
 
-.location{
+.location {
   &__container{
     display: flex;
     flex-direction: row;
@@ -1067,7 +1041,8 @@ export default {
     margin: 25.5px 0 0 0;
   }
 }
-.img{
+.img {
+  transition: 0.5s;
   &__container{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -1075,16 +1050,15 @@ export default {
     margin: 0 0 20px 0;
   }
   &__item{
+    @extend .img;
     border-radius: 6px;
     max-width: 280px;
     max-height: 210px;
-    transition: 0.5s;
-  }
-  &__item:hover{
-    //transform: scale(1.2);
-    transition: 0.5s;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    &:hover {
+      @extend .img;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
   }
 }
 
@@ -1110,7 +1084,7 @@ export default {
   }
 }
 .block {
-  background: #FFFFFF;
+  background: $white;
   border-radius: 6px;
   display: grid;
   grid-template-columns: 240px 1fr;
@@ -1176,9 +1150,7 @@ export default {
     grid-gap: 10px;
   }
   &__head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @extend .block__actions;
   }
   &__icon {
     &_fav {
@@ -1186,9 +1158,7 @@ export default {
     }
   }
   &__btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @extend .block__actions;
     padding: 0 10px;
     min-width: 146px;
     height: 34px;
@@ -1200,36 +1170,34 @@ export default {
   }
   &__text {
     @include text-simple;
+    font-size: 16px;
+    line-height: 130%;
     &_details {
-      font-size: 16px;
-      line-height: 130%;
+      @extend .block__text;
       color: $blue;
     }
     &_desc {
-      font-size: 16px;
-      line-height: 130%;
+      @extend .block__text;
       color: $black700;
     }
     &_blue {
+      @extend .block__text;
       font-weight: 500;
       font-size: 18px;
-      line-height: 130%;
       color: $blue;
     }
     &_title {
+      @extend .block__text;
       font-weight: 500;
-      font-size: 16px;
-      line-height: 130%;
       color: $black800;
     }
     &_locate {
+      @extend .block__text;
       font-size: 14px;
-      line-height: 130%;
       color: #7C838D;
     }
     &_grey {
-      font-size: 16px;
-      line-height: 130%;
+      @extend .block__text;
       color: #7C838D;
     }
   }
@@ -1367,14 +1335,16 @@ export default {
     color: $black800;
   }
 }
+.icon {
+  &-chat_green:before {
+    content: "\e9ba";
+    color: #00AA5B;
+    font-size: 20px;
+  }
+  &-caret_down_blue:before {
+    content: "\ea48";
+    color: #0083C7;
+  }
+}
 
-.icon-chat_green:before {
-  content: "\e9ba";
-  color: #00AA5B;
-  font-size: 20px;
-}
-.icon-caret_down_blue:before {
-  content: "\ea48";
-  color: #0083C7;
-}
 </style>
