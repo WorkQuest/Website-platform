@@ -81,15 +81,15 @@ export default {
   }
 }
   .mobile-menu {
+    padding: 10px 0 0 0;
+    margin-top: 66px;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     width: 100%;
-    height: 100%;
     max-height: 66px;
     background: $white;
     position: fixed;
     bottom: 0;
-    padding: 10px 0 10px 0;
     &__link {
       color: $black400;
       text-decoration: none;

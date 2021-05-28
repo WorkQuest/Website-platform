@@ -1179,6 +1179,7 @@ export default {
       display: none;
   }
   .mobile {
+    padding: 50px 0 0 0;
     display: grid;
   }
   .footer {

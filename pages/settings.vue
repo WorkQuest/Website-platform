@@ -379,48 +379,74 @@
             class="mobile__image"
           >
             <div class="card__level">
-              HIGHER LEVEL
+              <div class="card__level_higher">
+                HIGHER LEVEL
+              </div>
             </div>
-            <div>
-              <div>Samantha Sparcs</div>
-              <div>
+            <div class="user">
+              <div class="user__name">
+                Samantha Sparcs
+              </div>
+              <div class="user__icon">
                 <span class="icon-caret_right" />
               </div>
             </div>
           </div>
           <div class="mobile__btns">
             <div class="mobile__btn">
-              <div>1</div>
-              <div>
-                <div>Change password</div>
-                <div>
+              <div class="icons">
+                <span class="icon-Lock" />
+              </div>
+              <div class="mobile__option">
+                <div class="option__title">
+                  Change password
+                </div>
+                <div class="option__arrow">
                   <span class="icon-caret_right" />
                 </div>
               </div>
             </div>
             <div class="mobile__btn">
-              <div>2</div>
-              <div>
-                <div>2FA</div>
-                <div>
+              <div class="icons">
+                <base-checkbox
+                  type="toggle"
+                  :label="''"
+                />
+              </div>
+              <div class="mobile__option">
+                <div class="option__title">
+                  2FA
+                </div>
+                <div class="option__arrow">
                   <span class="icon-caret_right" />
                 </div>
               </div>
             </div>
             <div class="mobile__btn">
-              <div>3</div>
-              <div>
-                <div>SMS verification</div>
-                <div>
+              <div class="icons">
+                <base-checkbox
+                  type="toggle"
+                  :label="''"
+                />
+              </div>
+              <div class="mobile__option">
+                <div class="option__title">
+                  SMS verification
+                </div>
+                <div class="option__arrow">
                   <span class="icon-caret_right" />
                 </div>
               </div>
             </div>
             <div class="mobile__btn">
-              <div>3</div>
-              <div>
-                <div>Change role</div>
-                <div>
+              <div class="icons">
+                <span class="icon-user_pin" />
+              </div>
+              <div class="mobile__option">
+                <div class="option__title">
+                  Change role
+                </div>
+                <div class="option__arrow">
                   <span class="icon-caret_right" />
                 </div>
               </div>
@@ -442,17 +468,21 @@
                   <span class="icon-chevron_big_right" />
                 </div>
               </div>
-              <div class="instrument">
-                <div>
-                  <span class="icon-group_alt" />
+              <nuxt-link
+                to="/referral"
+              >
+                <div class="instrument">
+                  <div>
+                    <span class="icon-group_alt" />
+                  </div>
+                  <div class="instrument__title">
+                    Referral program
+                  </div>
+                  <div class="arrow-left">
+                    <span class="icon-chevron_big_right" />
+                  </div>
                 </div>
-                <div class="instrument__title">
-                  Referral program
-                </div>
-                <div class="arrow-left">
-                  <span class="icon-chevron_big_right" />
-                </div>
-              </div>
+              </nuxt-link>
               <div class="instrument">
                 <div>
                   <span class="icon-home_alt_check" />
@@ -486,17 +516,21 @@
                   <span class="icon-chevron_big_right" />
                 </div>
               </div>
-              <div class="instrument">
-                <div>
-                  <span class="icon-line_chart_up" />
+              <nuxt-link
+                to="/settings"
+              >
+                <div class="instrument">
+                  <div>
+                    <span class="icon-line_chart_up" />
+                  </div>
+                  <div class="instrument__title">
+                    Liquidity mining
+                  </div>
+                  <div class="arrow-left">
+                    <span class="icon-chevron_big_right" />
+                  </div>
                 </div>
-                <div class="instrument__title">
-                  Liquidity mining
-                </div>
-                <div class="arrow-left">
-                  <span class="icon-chevron_big_right" />
-                </div>
-              </div>
+              </nuxt-link>
             </div>
           </div>
         </div>
@@ -689,6 +723,22 @@ export default {
     -webkit-background-clip: text;
     background-image: linear-gradient(135deg, #0083C7 0%, #00AA5B 100%);
   }
+  &-Lock:before {
+    @extend .icon;
+    @extend .icon__gradient;
+    content: "\ea24";
+  }
+  &-user_pin:before {
+    @extend .icon;
+    @extend .icon__gradient;
+    content: "\e908";
+  }
+  &-caret_right:before {
+    @extend .icon;
+    @extend .icon__gradient;
+    content: "\ea4a";
+    color: $black200;
+  }
   &-data:before {
     @extend .icon;
     @extend .icon__gradient;
@@ -792,6 +842,9 @@ export default {
   }
 }
 
+.icons {
+  padding: 16px 0 16px 16px;
+}
 .checkbox {
   &__label::before {
     color: $white;
@@ -1061,11 +1114,24 @@ export default {
     height: 64px;
   }
 }
-
+.option {
+  &__title {
+    padding: 0 0 0 16px;
+  }
+  &__arrow {
+    display: flex;
+    align-content: center;
+    justify-content: flex-end;
+    padding: 0 16px 23px 0;
+  }
+}
 .mobile {
+  width: 100%;
+  height: 100%;
+  max-height: 900px;
   &__title {
     @include text-simple;
-    font-weight:700;
+    font-weight: 700;
     font-size: 30px;
     color: $black800;
   }
@@ -1079,6 +1145,11 @@ export default {
   }
   &__body {
     margin: 0 20px 0 20px;
+  }
+  &__option {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
   }
   &__image {
     background-image: url("~assets/img/app/widget_left.png");
@@ -1098,7 +1169,7 @@ export default {
   &__btn {
     width: 100%;
     height: 100%;
-    background-color: $green;
+    background-color: $black100;
     border-radius: 6px;
   }
 }
@@ -1114,10 +1185,42 @@ export default {
 
   }
 }
+.user {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 0 16px;
+  &__name {
+    padding: 10px 0 0 0;
+    @include text-simple;
+    font-size: 16px;
+    font-weight: 600;
+    color: $white;
+  }
+  &__icon {
+    padding: 10px 0 0 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
 .arrow {
   &-left {
     display: flex;
     justify-content: flex-end;
+  }
+}
+.card {
+  &__level {
+    padding: 60px 0 0 16px;
+    &_higher {
+      border-radius: 3px;
+      text-align: center;
+      width: 100%;
+      max-width: 115px;
+      background: #F6CF00;
+      color: $white;
+    }
   }
 }
 .instrument {
@@ -1126,7 +1229,7 @@ export default {
   background-color: $black100;
   border-radius: 6px;
   height: 100%;
-  padding: 15px;
+  padding: 10px;
   margin: 15px 0 0 0;
   align-items: center;
   &__title {
@@ -1188,7 +1291,11 @@ export default {
     display: none;
   }
   .mobile {
+    overflow-y: auto;
     display: grid;
+    height: 100%;
+    width: 100%;
+    max-height: 775px;
   }
 }
 </style>
