@@ -1,5 +1,16 @@
 <template>
   <div class="role">
+    <div class="btn__back">
+      <base-btn
+        mode="back"
+        @click="$router.go(-1)"
+      >
+        <template v-slot:left>
+          <span class="icon-chevron_big_left" />
+        </template>
+        {{ $t('signUp.back') }}
+      </base-btn>
+    </div>
     <div class="role__title">
       {{ $t('role.choose') }}
     </div>
@@ -89,6 +100,7 @@ export default {
       confirmCode: '',
     };
   },
+  // TODO: Починить анимацию для мобильного режима
   async mounted() {
     this.SetLoader(true);
     document.getElementById('left_card').addEventListener('mouseover', (_) => document.getElementById('right_card').classList.add('role__card_minimized'));
@@ -116,6 +128,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media screen and (min-width:1199px) {
+  .btn {
+    &__back {
+      display: none;
+    }
+  }
+}
+.btn {
+  &__container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    align-items: flex-end;
+  }
+  &__back {
+    padding: 10px 0 0 33px;
+    width: 100%;
+    max-width: 60px;
+  }
+}
+.icon-chevron_big_left:before {
+  content: "\ea4d";
+  color: $black500;
+  font-size: 25px;
+}
 .role {
   width: 100%;
   &__title {
@@ -245,6 +283,56 @@ export default {
     }
     &_light {
       color: #FFFFFF;
+    }
+  }
+}
+@include _1199 {
+  .role {
+    &__title {
+      color: $black800;
+      margin: 0 20px;
+    }
+    &__cards {
+      margin: 0 20px;
+    }
+  }
+}
+@include _767 {
+  .role {
+    &__text_title {
+      font-size: 20px;
+    }
+    &__text_desc {
+      font-size: 16px;
+      max-width: 140px;
+    }
+    &__cards {
+      grid-template-columns: 1fr;
+      grid-gap: 20px;
+    }
+    &__image {
+      right: -122px;
+    }
+    &__card {
+      &_minimized {
+        width: 100% !important;
+      }
+      &_right:hover {
+        width: 100% !important;
+        .role {
+          &__image {
+            right: -140px;
+          }
+        }
+      }
+      &_left:hover {
+        width: 100% !important;
+        .role {
+          &__image {
+            right: -84px;
+          }
+        }
+      }
     }
   }
 }

@@ -22,8 +22,11 @@
     :class="btnClass"
     @click="$emit('click')"
   >
+    <div class="icon-btn_left">
+      <slot name="left" />
+    </div>
     <slot />
-    <div class="icon-btn">
+    <div class="icon-btn_right">
       <slot name="right" />
     </div>
   </button>
@@ -59,6 +62,11 @@ export default {
         { 'base-btn_agree': mode === 'agree' },
         { 'base-btn_goToChat': mode === 'goToChat' },
         { 'base-btn_dispute': mode === 'dispute' },
+        { 'base-btn_messages': mode === 'goToMessages' },
+        { 'base-btn_show-messages': mode === 'showYourMessage' },
+        { 'base-btn_delete': mode === 'delete' },
+        { 'base-btn_approve': mode === 'approve' },
+        { 'base-btn_back': mode === 'back' },
       ];
     },
   },
@@ -67,7 +75,12 @@ export default {
 <style lang="scss" scoped>
 .icon {
   &-btn {
-    margin: 0 0 0 5px;
+    &_left {
+      margin: 0 5px 0 0;
+    }
+    &_right {
+      margin: 0 0 0 5px;
+    }
   }
 }
 .base-btn {
@@ -89,32 +102,76 @@ export default {
   &:hover {
     background: #103D7C;
   }
+  &_back {
+    transition: .3s;
+    background-color: transparent;
+    color: $black500;
+    &:hover {
+      background-color: transparent;
+      color: $black500;
+    }
+  }
+  &_approve {
+    background-color: $green;
+    color: $white;
+    border-radius: 6px;
+    border: 1px solid $green;
+    &:hover {
+      background-color: $white;
+      color: $green;
+      border-radius: 6px;
+    }
+  }
   &_agree {
     background-color: $green;
     color: $white;
+    &:hover {
+      background-color: $green;
+      color: $white;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
   }
-  &_agree:hover {
-    background-color: $green;
+  &_delete {
+    background-color: $red;
     color: $white;
-    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    &:hover {
+      background-color: #cc0000;
+      color: $white;
+    }
+  }
+  &_show-messages {
+    background-color: transparent;
+    color: $blue;
+  }
+  &_messages {
+    background-color: $white;
+    color: $green;
+    border-radius: 6px;
+    transition: .3s;
+    border: 1px solid $green;
+    &:hover {
+      background-color: $green;
+      color: $white;
+      border-radius: 6px;
+    }
   }
   &_goToChat {
     background-color: $white;
     color: $green;
     border: 1px solid $black400;
-  }
-  &_goToChat:hover {
-    background-color: $white;
-    color: $green;
-    border: 1px solid $black600;
-    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    &:hover {
+      background-color: $white;
+      color: $green;
+      border: 1px solid $black600;
+      box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    }
   }
   &_dispute {
     background-color: $red;
-  }
-  &_dispute:hover {
-    box-shadow: 0 0 5px rgba(0,0,0,0.5);
-    background-color: $red;
+    &:hover {
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      background-color: $red;
+    }
   }
   &_disabled {
     pointer-events: none;
