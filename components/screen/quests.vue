@@ -67,7 +67,7 @@
             </div>
           </div>
           <div class="block__locate">
-            <span class="icon-location"/>
+            <span class="icon-location" />
             <span class="block__text block__text_locate">200m {{ $t('meta.fromYou') }}</span>
           </div>
           <div class="block__text block__text_blue">
@@ -105,7 +105,7 @@
                 <div class="block__text block__text_details">
                   {{ $t('meta.details') }}
                 </div>
-                <span class="icon-short_right"/>
+                <span class="icon-short_right" />
               </button>
               <div
                 v-else

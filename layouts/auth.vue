@@ -112,6 +112,14 @@ export default {
       ],
     };
   },
+  data() {
+    return {
+      links: [
+        { url: '/sign-up' },
+        { url: '/restore' },
+      ],
+    };
+  },
 };
 </script>
 
