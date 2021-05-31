@@ -368,7 +368,7 @@
       <section class="mobile">
         <div class="mobile__header">
           <div class="mobile__title">
-            More
+            {{ $t('settings.more') }}
           </div>
           <div>
             <span class="icon-settings" />
@@ -399,39 +399,49 @@
               </div>
               <div class="mobile__option">
                 <div class="option__title">
-                  Change password
+                  {{ $t('settings.changePass') }}
                 </div>
                 <div class="option__arrow">
                   <span class="icon-caret_right" />
                 </div>
               </div>
             </div>
-            <div class="mobile__btn">
+            <div
+              class="mobile__btn"
+              @click="switch2Fa()"
+            >
               <div class="icons">
                 <base-checkbox
+                  v-model="twoFa"
                   type="toggle"
                   :label="''"
                 />
               </div>
-              <div class="mobile__option">
+              <div
+                class="mobile__option"
+              >
                 <div class="option__title">
-                  2FA
+                  {{ $t('settings.2FA') }}
                 </div>
                 <div class="option__arrow">
                   <span class="icon-caret_right" />
                 </div>
               </div>
             </div>
-            <div class="mobile__btn">
+            <div
+              class="mobile__btn"
+              @click="switchSms()"
+            >
               <div class="icons">
                 <base-checkbox
+                  v-model="sms"
                   type="toggle"
                   :label="''"
                 />
               </div>
               <div class="mobile__option">
                 <div class="option__title">
-                  SMS verification
+                  {{ $t('settings.smsVerification2') }}
                 </div>
                 <div class="option__arrow">
                   <span class="icon-caret_right" />
@@ -444,7 +454,7 @@
               </div>
               <div class="mobile__option">
                 <div class="option__title">
-                  Change role
+                  {{ $t('settings.changeRole') }}
                 </div>
                 <div class="option__arrow">
                   <span class="icon-caret_right" />
@@ -454,7 +464,7 @@
           </div>
           <div class="instruments">
             <div class="instruments__title">
-              Instruments
+              {{ $t('settings.instruments') }}
             </div>
             <div class="instruments__body">
               <div class="instrument">
@@ -462,7 +472,7 @@
                   <span class="icon-data" />
                 </div>
                 <div class="instrument__title">
-                  Pension program
+                  {{ $t('settings.pensionProgram') }}
                 </div>
                 <div class="arrow-left">
                   <span class="icon-chevron_big_right" />
@@ -476,7 +486,7 @@
                     <span class="icon-group_alt" />
                   </div>
                   <div class="instrument__title">
-                    Referral program
+                    {{ $t('settings.referralProgram') }}
                   </div>
                   <div class="arrow-left">
                     <span class="icon-chevron_big_right" />
@@ -488,7 +498,7 @@
                   <span class="icon-home_alt_check" />
                 </div>
                 <div class="instrument__title">
-                  P2P insurance
+                  {{ $t('settings.p2pInsurance') }}
                 </div>
                 <div class="arrow-left">
                   <span class="icon-chevron_big_right" />
@@ -499,7 +509,7 @@
                   <span class="icon-Case" />
                 </div>
                 <div class="instrument__title">
-                  Savings product
+                  {{ $t('settings.savingProduct') }}
                 </div>
                 <div class="arrow-left">
                   <span class="icon-chevron_big_right" />
@@ -510,7 +520,7 @@
                   <span class="icon-credit_card" />
                 </div>
                 <div class="instrument__title">
-                  Crediting
+                  {{ $t('settings.crediting') }}
                 </div>
                 <div class="arrow-left">
                   <span class="icon-chevron_big_right" />
@@ -524,7 +534,7 @@
                     <span class="icon-line_chart_up" />
                   </div>
                   <div class="instrument__title">
-                    Liquidity mining
+                    {{ $t('settings.liquidityMining') }}
                   </div>
                   <div class="arrow-left">
                     <span class="icon-chevron_big_right" />
@@ -546,6 +556,8 @@ export default {
   name: 'Settings',
   data() {
     return {
+      twoFa: false,
+      sms: false,
       allRegisterUser: false,
       allPeopleInInternet: false,
       onlyWhenSubmitedWork: false,
@@ -595,6 +607,12 @@ export default {
   methods: {
     isCloseInfo() {
       this.isShowInfo = !this.isShowInfo;
+    },
+    switch2Fa() {
+      this.twoFa = !this.twoFa;
+    },
+    switchSms() {
+      this.sms = !this.sms;
     },
   },
 };
