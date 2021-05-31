@@ -220,8 +220,8 @@
               <div
                 class="quest__level"
                 :class="[
-                  {'quest__level_invited': item.type === 4},
-                  {'quest__level_active': item.type === 5},
+                  {'quest__level_invited': item.type === 5},
+                  {'quest__level_active': item.type === 4},
                   {'quest__level_performed': item.type === 3},
                   {'quest__level_requested': item.type === 2},
                 ]"
@@ -230,21 +230,21 @@
                   class="level__title"
                   :class="[{'level__title_black': item.type === 2}]"
                 >
-                  <span v-if="item.type === 4">You invited</span>
-                  <span v-if="item.type === 5">Active</span>
+                  <span v-if="item.type === 5">You invited</span>
+                  <span v-if="item.type === 4">Active</span>
                   <span v-if="item.type === 3">Performed</span>
                   <span v-if="item.type === 2">You requested</span>
                 </div>
                 <div class="runtime__container">
                   <div class="runtime__status">
-                    <span v-if="item.type === 4" />
-                    <span v-if="item.type === 5">Runtime</span>
+                    <span v-if="item.type === 5" />
+                    <span v-if="item.type === 4">Runtime</span>
                     <span v-if="item.type === 3" />
                     <span v-if="item.type === 2" />
                   </div>
                   <div class="runtime__time">
-                    <span v-if="item.type === 4" />
-                    <span v-if="item.type === 5">14:23:23</span>
+                    <span v-if="item.type === 5" />
+                    <span v-if="item.type === 4">14:23:23</span>
                     <span v-if="item.type === 3" />
                     <span v-if="item.type === 2" />
                   </div>
