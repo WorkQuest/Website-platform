@@ -1008,12 +1008,12 @@ export default {
     margin: 0 20px 0 20px;
   }
   &__textarea {
+    padding: 10px 10px 0 10px;
     border-radius: 6px;
-    padding: 11px 20px 11px 15px;
+    margin: 11px 40px 20px 0px;
     height: 114px;
-    width: 100%;
     border: 0;
-    background-color: $black0;
+    background-color: #F7F8FA;
     resize: none;
 
     &::placeholder {
@@ -1120,7 +1120,6 @@ export default {
   &__badge {
     background: rgba(0, 131, 199, 0.1);
     border-radius: 44px;
-    height:34px;
     margin: 10px;
     padding: 5px;
     color: $blue;
@@ -1129,7 +1128,7 @@ export default {
     }
   }
   &__skills {
-    height: 64px;
+    margin: 0 0 10px 0;
   }
 }
 .option {
@@ -1292,6 +1291,12 @@ export default {
   .page {
     &__title {
       margin: 20px 0 20px 20px;
+    }
+    &__skills {
+      margin: 0 20px 10px 20px;
+    }
+    &__badge {
+      text-align: center;
     }
     &__profile {
       margin: 20px;
