@@ -25,6 +25,10 @@
     "m": "m"
   },
 
+  "info" : {
+    "showYourMessage": "Show your message"
+  },
+
   "messages": {
     "alpha": "The {_field_} field may only contain alphabetic characters",
     "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
@@ -101,6 +105,9 @@
     "slogan": "Create work proposal",
     "add": "Add all the information and publication time  to find the right",
     "create": "Create",
+    "writeAMessage": "Write a message",
+    "quests": "Quests",
+    "reviews": "Reviews",
     "sidebar": {
       "filter": "All Quests filter",
       "choose": "(Choose simple or \nspecialized category)",
@@ -121,6 +128,8 @@
     "showAllReviews": "Show all reviews"
   },
   "priority": {
+    "title": "Priority",
+    "all": "All priority",
     "low": "Low priority",
     "normal": "Normal priority",
     "urgent": "Urgent"
@@ -133,7 +142,14 @@
     "remember": "Remember me",
     "forgot": "Forgot password",
     "or": "Or",
-    "loginWith": "Login with"
+    "loginWith": "Login with",
+    "welcomeToWorkQuest": "Welcome to WorkQuest",
+    "pleaseSignIn": "Please sign in",
+    "workQuest": "WorkQuest",
+    "makingMoneyIsFast": "Making\n            money is fast.\n            When your\n            work is quest.",
+    "dontHaveAnAccount": "Don’t have an account?",
+    "signUp": "Sign Up",
+    "forgotYourPass": "Forgot your password?"
   },
   "signUp": {
     "title": "Sign Up",
@@ -144,7 +160,8 @@
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Repeat password",
-    "create": "Create account"
+    "create": "Create account",
+    "back": "back"
   },
   "forgot": {
     "title": "Forgot password?",
@@ -228,7 +245,12 @@
     "ui": {
       "showMap": "Show map",
       "search": "City / Street / Place"
-    }
+    },
+    "worker": "Worker",
+    "raiseViews": "Raise views",
+    "deleteQuest": "Delete quest",
+    "approve": "Approve",
+    "startQuest": "Start quest"
   },
   "modals": {
     "amount": "Amount",
@@ -320,6 +342,7 @@
     "writeYouMessage": "Write you message"
   },
   "settings": {
+    "more": "More",
     "settings": "Settings",
     "addInfo": "Add information about you, profile photo and KYC and level up your rating",
     "alsoRating": "Also rating is depend on your profile data and reviews",
@@ -349,7 +372,16 @@
     "ceo": "CEO",
     "amazon_com": "amazon.com",
     "filterAllWorkProposals": "Filter all work proposals",
-    "changeRole": "Change role"
+    "changeRole": "Change role",
+    "2FA": "2FA",
+    "smsVerification2": "SMS verification",
+    "instruments": "Instruments",
+    "pensionProgram": "Pension program",
+    "referralProgram": "Referral program",
+    "p2pInsurance": "P2P insurance",
+    "savingProduct": "Savings product",
+    "crediting": "Crediting",
+    "liquidityMining": "Liquidity mining"
   },
   "disputes": {
     "disputes": "Disputes",
@@ -375,6 +407,7 @@
   "levels": {
     "reliableEmp": "RELIABLE EMP.",
     "checkedByTime": "CHECKED BY TIME",
-    "disabled": "DISABLED"
+    "disabled": "DISABLED",
+    "higher": "HIGHER LEVEL"
   }
 }

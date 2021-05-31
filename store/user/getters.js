@@ -4,4 +4,5 @@ export default {
   refreshToken: (state) => state.tokens.refresh,
   getUserData: (state) => state.userData,
   getUserRole: (state) => state.userData?.role,
+  getUserCurrentPosition: (state) => state.currentUserPosition || null,
 };

@@ -55,6 +55,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media screen and (min-width:1199px) {}
 .template {
   &__body {
     background: linear-gradient(#103D7C 45%, transparent 40%) no-repeat;
@@ -134,4 +135,28 @@ export default {
     cursor: pointer;
   }
 }
+
+@include _1199 {
+  .template {
+    &__logo {
+      display: none;
+    }
+    &__body {
+      background: white;
+    }
+    &__link {
+      margin: 0 20px 0 0;
+    }
+  }
+}
+
+@include _767 {
+  .template {
+    &__link {
+      display: none;
+    }
+  }
+}
+
+@include _380 {}
 </style>
