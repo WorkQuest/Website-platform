@@ -1,122 +1,91 @@
 <template>
-  <div class="referral-page">
-    <div class="referral-page__container">
-      <div class="referral-page__header">
-        <div class="title">
-          {{ $t('referral.inviteFriendsHead') }}
-          <br />
-          {{ $t('referral.earnCryptoTogether') }}
+  <div className="referral-page">
+    <div className="referral-page__container">
+      <div className="referral-page__header">
+        <div className="title">
+          {{ $t('pension.pensionProgram') }}
         </div>
-        <div class="title_sub">
-          {{ $t('referral.headerSubtitle') }}
+        <div className="title_sub">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus
+          magna fringilla urna, porttitor rhoncus dolor purus non enim
         </div>
       </div>
-      <div class="referral-page__content">
-        <div class="info-block_couple">
-          <div class="info-block">
-            <div class="info-block__name">{{ $t('referral.referralReward') }}</div>
-            <div class="info-block__tokens">{{ $tc('referral.wqtCount', 12) }}</div>
-            <div class="info-block__name">{{ $t('referral.lastRefReward') }}</div>
-            <div class="user_last-reward">
-              <div class="user__info">
-                <img
-                  class="ava"
-                  src=""
-                  alt=""
-                />
-                <div class="user__name">Edward Cooper</div>
-              </div>
-              <div class="user__value_green">
-                {{ $tc('referral.plusCount', $tc('referral.wqtCount', 12)) }}
-              </div>
-            </div>
+      <div className="referral-page__content">
+        <div className="info-block__square">
+          <div className="info-block__quarter">
+            <div className="info-block__title">6.5%</div>
+            <div className="info-block__subtitle">annual percent</div>
           </div>
-          <div class="info-block">
-            <div class="info-block__name">{{$t('referral.yourRefers')}}</div>
-            <div class="info-block__refers">
-              <div class="info-block__avatar">
-                <img
-                  class="ava_list"
-                  src="~/assets/img/social/FACEBOOK.png"
-                  alt=""
-                />
-              </div>
-              <div class="info-block__avatar">
-                <img
-                  class="ava_list"
-                  src="~/assets/img/social/TWITTER.png"
-                  alt=""
-                />
-              </div>
-              <div class="info-block__avatar">
-                <img
-                  class="ava_list"
-                  src="~/assets/img/social/GOOGLE_+_.png"
-                  alt=""
-                />
-              </div>
-              <div class="info-block__avatar">
-                <div class="info-block__more">{{$tc('referral.plusCount', 17)}}</div>
-              </div>
+          <div className="info-block__quarter">
+            <div className="info-block__title">Optional</div>
+            <div className="info-block__subtitle">optional first deposit</div>
+          </div>
+          <div className="info-block__quarter">
+            <div className="info-block__title">3 years</div>
+            <div className="info-block__subtitle">term</div>
+          </div>
+          <div className="info-block__quarter">
+            <div className="info-block__title">Castomizable</div>
+            <div className="info-block__subtitle">deposits from quest</div>
+          </div>
+        </div>
+        <div className="info-block">
+          <div className="info-block__name_bold">How to take part in pension program?</div>
+          <div className="info-block__about">
+            <div className="info-block__subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id
+              nunc ac arcu viverra. Aliquet egestas suspendisse id pellentesque lacus. Ut accumsan posuere viverra
+              hendrerit. Lacus volutpat id aliquam accumsan cras. Magna consectetur id sollicitudin sed eget nisl nunc.
+              Quis sagittis sodales volutpat sed.
             </div>
-            <div class="info-block__name">{{$t('referral.yourReferralLink')}}</div>
-            <div class="info-block__link">
-              <div class="address">{{'referLink'}}</div>
-              <button
-                type="button"
-                @click="doCopy"
-              >
-                <img
-                  src="~/assets/img/ui/square_link.svg"
-                  alt=""
-                />
-              </button>
+            <img
+              className="calendar-img"
+              src="~/assets/img/ui/calendar.svg"
+              alt=""
+            />
+            <div className="btn-group">
+              <button className="btn_bl">Apply for a pension</button>
             </div>
           </div>
         </div>
-        <div class="info-block">
-          <div class="info-block__name_bold">{{$t('referral.howToInviteYourFriends')}}</div>
-          <div class="info-block__steps">
-            <div class="step">
-              <div class="step__name">{{$t('referral.getLink')}}</div>
-              <div class="step__about">{{$t('referral.registerAndGenerate')}}</div>
+        <div className="info-block">
+          <div className="info-block__name_bold">Information</div>
+          <div className="document">
+            <img
+              className="document__img"
+              src="~/assets/img/ui/pdf.svg"
+              alt=""
+            />
+            <div className="document__name">
+              Some_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_document.pdf
+              <div className="document__size">1.2 MB</div>
             </div>
-            <div class="step">
-              <div class="step__name">{{$t('referral.inviteFriends')}}</div>
-              <div class="step__about">{{$t('referral.inviteYourFriends')}}</div>
-            </div>
-            <div class="step">
-              <div class="step__name">{{$t('referral.earnCrypto')}}</div>
-              <div class="step__about">{{$t('referral.everyTimeYourFriends')}}</div>
-            </div>
+            <button className="btn__doc">
+              Download
+              <img
+                className="download"
+                src="~/assets/img/ui/download.svg"
+                alt=""
+              />
+            </button>
           </div>
-        </div>
-        <div class="info-block">
-          <div class="info-block__name">{{$t('referral.historyOfRewards')}}</div>
-          <div class="referral-page__table">
-            <b-table
-              :items="items"
-              :fields="testFields"
-              borderless
-              caption-top
-              thead-class="table__header"
-              tbody-tr-class="table__row"
-            >
-              <template #cell(userName)="el">
-                <div class="user__info">
-                  <img
-                    class="ava"
-                    :src=el.item.avaUrl
-                    alt=""
-                  />
-                  <div class="user__name">{{el.item.userName}}</div>
-                </div>
-              </template>
-              <template #cell(userID)="el"><div class="user__value_gray">{{el.item.userID}}</div></template>
-              <template #cell(txHash)="el"><div class="user__value_gray">{{el.item.txHash}}</div></template>
-              <template #cell(time)="el"><div class="user__value_gray">{{el.item.time}}</div></template>
-              <template #cell(status)="el"><div class="user__value_green">{{el.item.status}}</div></template>
-            </b-table>
+          <div className="document">
+            <img
+              className="document__img"
+              src="~/assets/img/ui/pdf.svg"
+              alt=""
+            />
+            <div className="document__name">
+              Some_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_document.pdf
+              <div className="document__size">1.2 MB</div>
+            </div>
+            <button className="btn__doc">
+              Download
+              <img
+                className="download"
+                src="~/assets/img/ui/download.svg"
+                alt=""
+              />
+            </button>
           </div>
         </div>
       </div>
@@ -151,22 +120,40 @@ export default {
       ],
       testFields: [
         {
-          key: 'userName', label: this.$t('referral.table.name'), sortable: false, thClass: 'cell_head',
+          key: 'userName',
+          label: this.$t('referral.table.name'),
+          sortable: false,
+          thClass: 'cell_head',
         },
         {
-          key: 'userID', label: this.$t('referral.table.userID'), sortable: false, thClass: 'cell_head',
+          key: 'userID',
+          label: this.$t('referral.table.userID'),
+          sortable: false,
+          thClass: 'cell_head',
         },
         {
-          key: 'txHash', label: this.$t('referral.table.txHash'), sortable: false, thClass: 'cell_head',
+          key: 'txHash',
+          label: this.$t('referral.table.txHash'),
+          sortable: false,
+          thClass: 'cell_head',
         },
         {
-          key: 'time', label: this.$t('referral.table.time'), sortable: false, thClass: 'cell_head',
+          key: 'time',
+          label: this.$t('referral.table.time'),
+          sortable: false,
+          thClass: 'cell_head',
         },
         {
-          key: 'amount', label: this.$t('referral.table.amount'), sortable: false, thClass: 'cell_head',
+          key: 'amount',
+          label: this.$t('referral.table.amount'),
+          sortable: false,
+          thClass: 'cell_head',
         },
         {
-          key: 'status', label: this.$t('referral.table.status'), sortable: false, thClass: 'cell_head',
+          key: 'status',
+          label: this.$t('referral.table.status'),
+          sortable: false,
+          thClass: 'cell_head',
         },
       ],
     };
@@ -175,9 +162,10 @@ export default {
   methods: {
     doCopy(ev) {
       ev.stopPropagation();
-      this.$copyText(this.referLink).then(() => {
-        alert('Copied');
-      });
+      this.$copyText(this.referLink)
+        .then(() => {
+          alert('Copied');
+        });
     },
   },
 };
@@ -185,27 +173,31 @@ export default {
 
 <style lang="scss" scoped>
 .referral-page {
-  background: linear-gradient(to bottom, #103D7C 370px, #dcdcdc 370px);
+  background: linear-gradient(to bottom, #103D7C 320px, #dcdcdc 320px);
   display: flex;
   justify-content: center;
   height: 100vh;
+
   &__container {
     display: grid;
     grid-template-rows: 225px max-content;
     max-width: 1280px;
-    grid-row-gap: 30px;
+    grid-row-gap: 20px;
     justify-content: center;
   }
+
   &__header {
-    width: 450px;
+    width: 530px;
     font-weight: 500;
     color: #FFF;
     align-self: center;
+
     .title {
       @extend .referral-page__header;
       font-size: 45px;
       line-height: 110%;
-      margin: 0 0 16px;
+      margin: 0 0 24px;
+
       &_sub {
         @extend .referral-page__header;
         font-size: 16px;
@@ -214,14 +206,134 @@ export default {
       }
     }
   }
+
   &__content {
     display: grid;
     grid-row-gap: 30px;
-    grid-template-rows: 225px max-content max-content;
+    grid-template-rows: 140px max-content max-content;
+
+    .btn-group {
+      display: grid;
+      grid-template-columns: repeat(2, calc(50% - 10px));
+      gap: 20px;
+      padding-bottom: 20px;
+    }
+
+    .btn {
+      box-sizing: border-box;
+      font-weight: 400;
+      font-size: 16px;
+      color: #0083C7;
+      border: 1px solid #0083C71A;
+      border-radius: 6px;
+      transition: .3s;
+
+      &__doc {
+        @extend .btn;
+        width: 220px;
+        height: 46px;
+
+        .download {
+          display: unset;
+          vertical-align: unset;
+          margin-left: 5px;
+        }
+      }
+
+      &_bl {
+        @extend .btn;
+        background-color: #0083C7;
+        border: unset;
+        color: #fff;
+
+        &:hover {
+          background-color: #103d7c;
+        }
+      }
+    }
 
     .info-block {
       background-color: #fff;
       border-radius: 6px;
+
+      &__square {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+
+      &__quarter {
+        @extend .info-block;
+        text-align: center;
+        display: grid;
+        align-content: center;
+        gap: 20px;
+      }
+
+      &__title {
+        color: #0083C7;
+        font-weight: 700;
+        font-size: 25px;
+      }
+
+      &__subtitle {
+        font-weight: 400;
+        font-size: 16px;
+        color: #7C838D;
+      }
+
+      &__about {
+        width: calc(100% - 50px);
+        grid-template-areas:
+          "hd ."
+          "ft sd";
+        margin-left: 20px;
+        display: grid;
+        grid-template-columns: 60% auto;
+        grid-template-rows: auto 63px;
+        gap: 20px;
+        position: relative;
+
+        .info-block__subtitle {
+          grid-area: hd;
+        }
+
+        .calendar-img {
+          grid-area: sd;
+          position: absolute;
+          right: 0px;
+          bottom: 0;
+        }
+
+        .btn-group {
+          grid-area: ft;
+        }
+      }
+
+      .document {
+        border: 1px solid #E1E4ED;
+        border-radius: 8px;
+        height: 80px;
+        margin: 0 0 20px 20px;
+        width: calc(100% - 40px);
+        padding: 0 20px;
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+
+        &__name {
+          padding: 0 10px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        &__size {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
 
       &__tokens {
         font-weight: bold;
@@ -251,6 +363,7 @@ export default {
         border-radius: 50%;
         background-color: #fff;
         flex: none;
+
         &_list {
           @extend .ava;
           position: absolute;
@@ -271,12 +384,14 @@ export default {
           align-items: center;
           gap: 10px;
         }
+
         &__name {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
           font-size: 16px;
         }
+
         &__value {
           font-size: 16px;
           white-space: nowrap;
@@ -346,6 +461,7 @@ export default {
         gap: 10px;
         height: 46px;
         align-items: center;
+
         .address {
           white-space: nowrap;
           overflow: hidden;
@@ -375,11 +491,13 @@ export default {
             color: #0083C7;
             padding: 10px;
           }
+
           &__about {
             font-size: 16px;
             color: #7C838D;
             padding: 0 10px 10px;
           }
+
           &:not(:last-child) {
             &:after {
               content: "";
@@ -408,6 +526,7 @@ export default {
             }
           }
         }
+
         &:after {
           content: "";
           position: absolute;
@@ -422,10 +541,12 @@ export default {
         .table {
           .cell {
             padding: 0;
+
             &_head {
               @extend .cell;
             }
           }
+
           &__header {
             height: 27px;
             align-items: center;
