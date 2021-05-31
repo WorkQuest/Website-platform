@@ -260,7 +260,10 @@
     "city": "City",
     "period": "Period",
     "thanks": "Thanks",
-    "couple": "A couple words"
+    "couple": "A couple words",
+    "depositPercentFromAQuest": "Deposit percent from a quest",
+    "thirteenPercents": "13%",
+    "firstDepositAmount": "First deposit amount*"
   },
   "ui": {
     "workers": "Workers",
@@ -407,6 +410,7 @@
     }
   },
  "pension": {
-  "pensionProgram": "Pension program"
+   "pensionProgram": "Pension program",
+   "applyForAPension": "Apply for a pension"
 }
 }

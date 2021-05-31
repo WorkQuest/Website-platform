@@ -1,87 +1,94 @@
 <template>
-  <div className="referral-page">
-    <div className="referral-page__container">
-      <div className="referral-page__header">
-        <div className="title">
+  <div class="referral-page">
+    <div class="referral-page__container">
+      <div class="referral-page__header">
+        <div class="title">
           {{ $t('pension.pensionProgram') }}
         </div>
-        <div className="title_sub">
+        <div class="title_sub">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus
           magna fringilla urna, porttitor rhoncus dolor purus non enim
         </div>
       </div>
-      <div className="referral-page__content">
-        <div className="info-block__square">
-          <div className="info-block__quarter">
-            <div className="info-block__title">6.5%</div>
-            <div className="info-block__subtitle">annual percent</div>
+      <div class="referral-page__content">
+        <div class="info-block__square">
+          <div class="info-block__quarter">
+            <div class="info-block__title">6.5%</div>
+            <div class="info-block__subtitle">annual percent</div>
           </div>
-          <div className="info-block__quarter">
-            <div className="info-block__title">Optional</div>
-            <div className="info-block__subtitle">optional first deposit</div>
+          <div class="info-block__quarter">
+            <div class="info-block__title">Optional</div>
+            <div class="info-block__subtitle">optional first deposit</div>
           </div>
-          <div className="info-block__quarter">
-            <div className="info-block__title">3 years</div>
-            <div className="info-block__subtitle">term</div>
+          <div class="info-block__quarter">
+            <div class="info-block__title">3 years</div>
+            <div class="info-block__subtitle">term</div>
           </div>
-          <div className="info-block__quarter">
-            <div className="info-block__title">Castomizable</div>
-            <div className="info-block__subtitle">deposits from quest</div>
+          <div class="info-block__quarter">
+            <div class="info-block__title">Castomizable</div>
+            <div class="info-block__subtitle">deposits from quest</div>
           </div>
         </div>
-        <div className="info-block">
-          <div className="info-block__name_bold">How to take part in pension program?</div>
-          <div className="info-block__about">
-            <div className="info-block__subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id
+        <div class="info-block">
+          <div class="info-block__name_bold">How to take part in pension program?</div>
+          <div class="info-block__about">
+            <div class="info-block__subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id
               nunc ac arcu viverra. Aliquet egestas suspendisse id pellentesque lacus. Ut accumsan posuere viverra
               hendrerit. Lacus volutpat id aliquam accumsan cras. Magna consectetur id sollicitudin sed eget nisl nunc.
               Quis sagittis sodales volutpat sed.
             </div>
             <img
-              className="calendar-img"
+              class="calendar-img"
               src="~/assets/img/ui/calendar.svg"
               alt=""
             />
-            <div className="btn-group">
-              <button className="btn_bl">Apply for a pension</button>
+            <div class="btn-group">
+              <button
+                class="btn_bl"
+                @click="openApplyForAPensionModal"
+              >Apply for a pension</button>
             </div>
           </div>
         </div>
-        <div className="info-block">
-          <div className="info-block__name_bold">Information</div>
-          <div className="document">
+        <div class="info-block">
+          <div class="info-block__name_bold">Information</div>
+          <div class="document">
             <img
-              className="document__img"
+              class="document__img"
               src="~/assets/img/ui/pdf.svg"
               alt=""
             />
-            <div className="document__name">
-              Some_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_document.pdf
-              <div className="document__size">1.2 MB</div>
+            <div class="document__title">
+              <div class="document__name">
+                Some_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_document.pdf
+              </div>
+              <div class="document__size">1.2 MB</div>
             </div>
-            <button className="btn__doc">
+            <button class="btn__doc">
               Download
               <img
-                className="download"
+                class="download"
                 src="~/assets/img/ui/download.svg"
                 alt=""
               />
             </button>
           </div>
-          <div className="document">
+          <div class="document">
             <img
-              className="document__img"
+              class="document__img"
               src="~/assets/img/ui/pdf.svg"
               alt=""
             />
-            <div className="document__name">
-              Some_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_document.pdf
-              <div className="document__size">1.2 MB</div>
+            <div class="document__title">
+              <div class="document__name">
+                Some_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_documentSome_document.pdf
+              </div>
+              <div class="document__size">1.2 MB</div>
             </div>
-            <button className="btn__doc">
+            <button class="btn__doc">
               Download
               <img
-                className="download"
+                class="download"
                 src="~/assets/img/ui/download.svg"
                 alt=""
               />
@@ -160,12 +167,8 @@ export default {
   },
   // name: 'AuthLayout',
   methods: {
-    doCopy(ev) {
-      ev.stopPropagation();
-      this.$copyText(this.referLink)
-        .then(() => {
-          alert('Copied');
-        });
+    openApplyForAPensionModal(ev) {
+      // showApplyForAPensionModal();
     },
   },
 };
@@ -238,6 +241,11 @@ export default {
           vertical-align: unset;
           margin-left: 5px;
         }
+      }
+
+      &:hover {
+        background-color: #0083C71A;
+        border: 0px;
       }
 
       &_bl {
@@ -318,20 +326,31 @@ export default {
         width: calc(100% - 40px);
         padding: 0 20px;
         align-items: center;
-        display: flex;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 33px auto 220px;
 
-        &__name {
+        &__title {
           padding: 0 10px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          display: flex;
+          align-items: center;
         }
 
-        &__size {
+        &__name {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          font-weight: 400;
+          font-size: 16px;
+          padding-right: 10px;
+        }
+
+        &__size {
+          font-weight: 400;
+          font-size: 13px;
+          color: #A7AEB9;
         }
       }
 

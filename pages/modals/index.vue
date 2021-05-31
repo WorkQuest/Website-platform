@@ -76,6 +76,11 @@
     >
       showRaiseViewsModal
     </base-btn>
+    <base-btn
+      @click="showApplyForAPensionModal()"
+    >
+      showApplyForAPensionModal
+    </base-btn>
   </div>
 </template>
 
@@ -164,6 +169,11 @@ export default {
     showThanksModal() {
       this.ShowModal({
         key: modals.thanks,
+      });
+    },
+    showApplyForAPensionModal() {
+      this.ShowModal({
+        key: modals.applyForAPension,
       });
     },
   },

@@ -33,6 +33,7 @@
       <CtmModalQuestCreated v-if="modals.questCreated === currentModalKey" />
       <CtmModalRaiseViews v-if="modals.raiseViews === currentModalKey" />
       <CtmModalInvitation v-if="modals.invitation === currentModalKey" />
+      <CtmModalApplyForAPension v-if="modals.applyForAPension === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -60,6 +61,7 @@ import CtmModalInvitation from './CtmModalInvitation';
 import CtmModalInviteSend from './CtmModalInviteSend';
 import CtmModalQuestCreated from './CtmModalQuestCreated';
 import CtmModalRaiseViews from './CtmModalRaiseViews';
+import CtmModalApplyForAPension from './CtmModalApplyForAPension';
 
 export default {
   name: 'ModalBox',
@@ -85,6 +87,7 @@ export default {
     CtmModalInviteSend,
     CtmModalQuestCreated,
     CtmModalRaiseViews,
+    CtmModalApplyForAPension,
   },
   data: () => ({
     modals,

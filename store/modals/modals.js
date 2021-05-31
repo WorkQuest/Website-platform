@@ -22,4 +22,5 @@ export default {
   questCreated: 'questCreated',
   raiseViews: 'raiseViews',
   invitation: 'invitation',
+  applyForAPension: 'applyForAPension',
 };
