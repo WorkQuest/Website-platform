@@ -1,14 +1,9 @@
 <template>
   <!-- Quest page_User -->
   <div>
-    <div
-      v-for="(item, i) in infoList"
-      :key="i"
-    >
-      <Info
-        :info="item"
-      />
-    </div>
+    <Info
+      :info="infoData"
+    />
     <div class="main-white">
       <div class="main__body">
         <div class="user__top">
@@ -27,7 +22,7 @@
                   {{ payload.username }}
                 </span>
                 <span
-                  v-if="userData.role === 'employer'"
+                  v-if="userRole === 'employer'"
                   class="user__company"
                 >
                   {{ $t('company.from') }} {{ payload.company }}
@@ -37,13 +32,13 @@
                 <span class="user__date">
                   {{ payload.date }}
                 </span>
-                <span class="icon-share_outline icon_fs-20 icon_mar-l-15" />
+                <span class="icon-share_outline icon_fs-20" />
               </div>
             </div>
             <div class="location__container">
               <div class="quest__location">
                 <span
-                  class="icon-location icon_fs-20 icon_mar-r-9"
+                  class="icon-location icon_fs-20"
                 />
                 <span>{{ payload.location }}</span>
               </div>
@@ -53,11 +48,11 @@
                 {{ payload.distance }} {{ $t('meta.fromYou') }}
               </span>
               <div
-                v-if="userData.role === 'worker'"
+                v-if="userRole === 'worker'"
                 class="runtime__container"
               >
-                <span class="icon-clock icon_fs-16 icon_mar-r-5" />
-                <span>Runtime</span>
+                <span class="icon-clock icon_fs-16" />
+                <span class="runtime__title">{{ $t('quests.runtime') }}</span>
                 <span
                   class="runtime__link"
                 >
@@ -65,11 +60,11 @@
                 </span>
               </div>
               <div
-                v-if="userData.role === 'employer'"
+                v-if="userRole === 'employer'"
                 class="runtime__container"
               >
-                <span class="icon-clock icon_fs-16 icon_mar-r-5" />
-                <span class="performance__title">
+                <span class="icon-clock icon_fs-16" />
+                <span class="runtime__title">
                   {{ $t('quests.performanceTimer') }}
                 </span>
                 <span
@@ -115,95 +110,273 @@
             >
           </div>
           <div class="divider" />
-          <div
-            v-for="(mode, i) in mods"
-            :key="i"
-            class="price__wrapper"
-          >
-            <!-- inviteUser -->
-            <div
-              v-if="mode.invited"
-              class="buttons__wrapper"
-            >
-              <div class="btn__wrapper">
-                <base-btn
-                  class="base-btn_agree"
-                >
-                  {{ $t('btn.agree') }}
-                </base-btn>
-              </div>
-              <div class="btn__wrapper">
-                <base-btn
-                  class="base-btn_goToChat"
-                >
-                  {{ $t('btn.goToChat') }}
-                  <span class="icon-chat icon_fs-20 icon_mar-l-12" />
-                </base-btn>
-              </div>
-            </div>
-            <!-- activeQuest -->
-            <div
-              v-else-if="mode.active"
-              class="buttons__wrapper"
-            >
-              <div class="btn__wrapper">
-                <base-btn
-                  class="base-btn_dispute"
-                >
-                  {{ $t('btn.dispute') }}
-                </base-btn>
-              </div>
-              <div class="btn__wrapper">
-                <base-btn
-                  class="base-btn_goToChat"
-                >
-                  {{ $t('btn.goToChat') }}
-                  <span class="icon-chat icon_fs-20 icon_mar-l-12" />
-                </base-btn>
+          <span v-if="userRole === 'employer'">
+            <div v-if="infoData.mode === 2">
+              <div class="worker__title">{{ $t('quests.worker') }}</div>
+              <div class="worker__container">
+                <div>
+                  <img
+                    class="worker__avatar"
+                    src="~/assets/img/temp/avatar.jpg"
+                    alt=""
+                  >
+                </div>
+                <div class="worker__name">
+                  Rosalia Vans
+                </div>
+                <div>
+                  <div
+                    v-if="badge.code !== 0"
+                    class="card__level_higher"
+                    :class="[
+                      {'card__level_higher': badge.code === 1},
+                      {'card__level_reliable': badge.code === 2},
+                      {'card__level_checked': badge.code === 3}
+                    ]"
+                  >
+                    <span v-if="badge.code === 1">
+                      {{ $t('levels.higher') }}
+                    </span>
+                    <span v-if="badge.code === 2">
+                      {{ $t('levels.reliableEmp') }}
+                    </span>
+                    <span v-if="badge.code === 3">
+                      {{ $t('levels.checkedByTime') }}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-            <!-- responded -->
-            <div
-              v-else-if="mode.response"
-              class="buttons__wrapper"
-            >
-              <div class="btn__wrapper">
-                <base-btn
-                  :disabled="mode.response"
-                >
-                  {{ $t('btn.responded') }}
-                </base-btn>
-              </div>
-            </div>
-            <!-- performed -->
-            <div
-              v-else-if="mode.performed"
-              class="buttons__wrapper"
-            />
-            <div
-              v-else
-              class="btn__wrapper"
-            >
-              <base-btn
-                :disabled="info.hasRequest === true"
-                @click="showMessageModal()"
+            <div v-if="infoData.mode === 3">
+              <div class="worker__title">{{ $t('response.title') }}</div>
+              <span
+                v-for="(item, i) in respondedList"
+                :key="i"
               >
-                <p v-if="info.hasRequest === true">
-                  {{ $t('modals.requestSend') }}
-                </p>
-                <p v-else>
-                  {{ $t('modals.sendARequest') }}
-                </p>
-              </base-btn>
-            </div>
-            <div class="price__wrapperValue">
-              <span class="price__value">
-                {{ payload.price }}
+                <div class="worker__container">
+                  <!-- TODO: Добавить радиокнопки -->
+                  <div>
+                    <img
+                      class="worker__avatar"
+                      src="~/assets/img/temp/avatar.jpg"
+                      alt=""
+                    >
+                  </div>
+                  <div class="worker__name">
+                    {{ item.name }}
+                  </div>
+                  <div>
+                    <div
+                      v-if="item.badge.code !== 0"
+                      class="card__level_higher"
+                      :class="[
+                        {'card__level_higher': item.badge.code === 1},
+                        {'card__level_reliable': item.badge.code === 2},
+                        {'card__level_checked': item.badge.code === 3}
+                      ]"
+                    >
+                      <span v-if="item.badge.code === 1">
+                        {{ $t('levels.higher') }}
+                      </span>
+                      <span v-if="item.badge.code === 2">
+                        {{ $t('levels.reliableEmp') }}
+                      </span>
+                      <span v-if="item.badge.code === 3">
+                        {{ $t('levels.checkedByTime') }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </span>
-              <div class="badge__wrapper">
-                <span class="badge__item_green">{{ payload.badgeGreen }}</span>
+              <div class="worker__title">You Invited</div>
+              <div class="worker__container">
+                <div>
+                  <img
+                    class="worker__avatar"
+                    src="~/assets/img/temp/avatar.jpg"
+                    alt=""
+                  >
+                </div>
+                <div class="worker__name">
+                  Rosalia Vans
+                </div>
+                <div>
+                  <div
+                    v-if="badge.code !== 0"
+                    class="card__level_higher"
+                    :class="[
+                      {'card__level_higher': badge.code === 1},
+                      {'card__level_reliable': badge.code === 2},
+                      {'card__level_checked': badge.code === 3}
+                    ]"
+                  >
+                    <span v-if="badge.code === 1">
+                      {{ $t('levels.higher') }}
+                    </span>
+                    <span v-if="badge.code === 2">
+                      {{ $t('levels.reliableEmp') }}
+                    </span>
+                    <span v-if="badge.code === 3">
+                      {{ $t('levels.checkedByTime') }}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
+            <div v-if="infoData.mode === 4">
+              <div class="worker__title">{{ $t('quests.worker') }}</div>
+              <div class="worker__container">
+                <div>
+                  <img
+                    class="worker__avatar"
+                    src="~/assets/img/temp/avatar.jpg"
+                    alt=""
+                  >
+                </div>
+                <div class="worker__name">
+                  Rosalia Vans
+                </div>
+                <div>
+                  <div
+                    v-if="badge.code !== 0"
+                    class="card__level_higher"
+                    :class="[
+                      {'card__level_higher': badge.code === 1},
+                      {'card__level_reliable': badge.code === 2},
+                      {'card__level_checked': badge.code === 3}
+                    ]"
+                  >
+                    <span v-if="badge.code === 1">
+                      {{ $t('levels.higher') }}
+                    </span>
+                    <span v-if="badge.code === 2">
+                      {{ $t('levels.reliableEmp') }}
+                    </span>
+                    <span v-if="badge.code === 3">
+                      {{ $t('levels.checkedByTime') }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </span>
+          <div class="btns__container">
+            <div>
+              <!-- inviteUser -->
+              <span v-if="userRole === 'worker'">
+                <div
+                  v-if="infoData.mode === 1"
+                  class="buttons__wrapper"
+                >
+                  <div class="btn__wrapper">
+                    <base-btn
+                      class="base-btn_agree"
+                    >
+                      {{ $t('btn.agree') }}
+                    </base-btn>
+                  </div>
+                  <div class="btn__wrapper">
+                    <base-btn
+                      class="base-btn_goToChat"
+                    >
+                      {{ $t('btn.goToChat') }}
+                      <span class="icon-chat icon_fs-20" />
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <span v-if="userRole === 'employer'">
+                <div
+                  v-if="infoData.mode === 1"
+                  class="buttons__wrapper"
+                >
+                  <div class="btn__wrapper">
+                    <base-btn>
+                      {{ $t('quests.raiseViews') }}
+                    </base-btn>
+                  </div>
+                  <div class="btn__wrapper">
+                    <base-btn mode="delete">
+                      {{ $t('quests.deleteQuest') }}
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <!-- activeQuest -->
+              <span v-if="userRole === 'worker'">
+                <div
+                  v-if="infoData.mode === 2"
+                  class="buttons__wrapper"
+                >
+                  <div class="btn__wrapper">
+                    <base-btn
+                      class="base-btn_dispute"
+                    >
+                      {{ $t('btn.dispute') }}
+                    </base-btn>
+                  </div>
+                  <div class="btn__wrapper">
+                    <base-btn
+                      class="base-btn_goToChat"
+                    >
+                      {{ $t('btn.goToChat') }}
+                      <span class="icon-chat icon_fs-20" />
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <span v-if="userRole === 'employer'">
+                <div
+                  v-if="infoData.mode === 2"
+                  class="buttons__wrapper"
+                >
+                  <div class="btn__wrapper">
+                    <base-btn mode="approve">
+                      {{ $t('quests.approve') }}
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <!-- responded -->
+              <span v-if="userRole === 'worker'">
+                <div
+                  v-if="infoData.mode === 3"
+                  class="buttons__wrapper"
+                >
+                  <div class="btn__wrapper">
+                    <base-btn
+                      :disabled="infoData.mode === 3"
+                    >
+                      {{ $t('btn.responded') }}
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <span v-if="userRole === 'employer'">
+                <div
+                  v-if="infoData.mode === 3"
+                  class="buttons__wrapper"
+                >
+                  <div class="btn__wrapper">
+                    <base-btn>
+                      {{ $t('quests.startQuest') }}
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <!-- performed -->
+              <span v-if="userRole === 'employer'" />
+            </div>
+            <span v-if="infoData.mode !== 4">
+              <div class="price__container">
+                <span class="price__value">
+                  {{ payload.price }}
+                </span>
+                <div class="badge__wrapper">
+                  <span class="badge__item_green">{{ payload.badgeGreen }}</span>
+                </div>
+              </div>
+            </span>
           </div>
         </div>
       </div>
@@ -343,32 +516,40 @@ export default {
   },
   data() {
     return {
-      mods: [{
-        invited: false,
-        active: false,
-        response: false,
-        performed: false,
-      }],
-      info: {
-        mode: 'active',
+      respondedList: [
+        {
+          name: 'Marvin McKinney',
+          badge: {
+            code: 2,
+          },
+        },
+        {
+          name: 'Marvin McKinney',
+          badge: {
+            code: 1,
+          },
+        },
+        {
+          name: 'Marvin McKinney',
+          badge: {
+            code: 3,
+          },
+        },
+        {
+          name: 'Marvin McKinney',
+          badge: {
+            code: 2,
+          },
+        },
+      ],
+      badge: {
+        code: 1,
+      },
+      infoData: {
+        mode: 1,
         date: '15:30:20',
         hasRequest: 'false',
       },
-      infoList: [
-        {
-          mode: 'active',
-          date: '15:30:20',
-        },
-        {
-          mode: 'invited',
-        },
-        {
-          mode: 'response',
-        },
-        {
-          mode: 'performed',
-        },
-      ],
       payload: {
         type: 'active',
         cards: [
@@ -475,6 +656,14 @@ export default {
   },
   methods: {
     // TODO: НАписать методы inviteUser, activeQuest, responseSend, performedSend
+    cardsLevels(idx) {
+      const { cards } = this;
+      return [
+        { card__level_checked: cards[idx].level.code === 3 },
+        { card__level_reliable: cards[idx].level.code === 2 },
+        { card__level_higher: cards[idx].level.code === 1 },
+      ];
+    },
     toggleMap() {
       this.isInvite = !this.isShowMap;
     },
@@ -507,33 +696,97 @@ export default {
 </script>
 
 <style lang="scss">
-.icon {
-  &_fs-20 {
-    font-size: 20px;
+
+.runtime {
+  &__container {
+    margin: 0 0 0 30px;
   }
-  &_fs-16 {
-    font-size: 16px;
+  &__title {
+    margin: 0 5px 0 5px;
   }
-  &_fs-12 {
+}
+
+.worker {
+  font-size: 16px;
+  font-weight: 500;
+  color: $black800;
+  &__container {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+    margin: 20px 0 20px 0;
+  }
+  &__avatar {
+    max-width: 40px;
+    max-height: 40px;
+    width: 100%;
+    height: 100%;
+  }
+  &__name {
+    @extend .worker;
+    margin: 0 10px 0 10px;
+  }
+  &__title {
+    @extend .worker;
+    font-size: 18px;
+  }
+}
+
+.card {
+  padding: 2px 8px;
+  align-items: center;
+  border-radius: 3px;
+  color: $white;
+  &__level {
+    display: grid;
+    grid-template-columns: 20px auto;
+    grid-gap: 7px;
     font-size: 12px;
+    justify-content: flex-start;
+    align-items: center;
+    height: 20px;
+    &_higher {
+      @extend .card;
+      background-color: #F6CF00;
+
+    }
+    &_reliable {
+      @extend .card;
+      background-color: #BBC0C7;
+    }
+    &_checked {
+      background-color: #B79768;
+    }
+    &_disabled {
+      display: none;
+    }
   }
-  &_mar-l-12 {
-    margin: 0 0 0 12px;
+}
+
+.btns {
+  &__container {
+    display: grid;
+    grid-template-columns: 8fr 4fr;
   }
-  &_mar-l-15 {
-    margin: 0 0 0 15px;
-  }
-  &_mar-r-9 {
-    margin: 0 9px 0 0;
-  }
-  &_mar-r-5 {
-    margin: 5px 0 0 0;
-  }
+}
+
+.icon {
+  color:$black500;
+  font-size: 20px;
   &-chat::before {
-  color:$green;
+    @extend .icon;
+    color:$green;
   }
   &-location::before {
-    color:$black500;
+    @extend .icon;
+  }
+  &-clock::before {
+    @extend .icon;
+  }
+  &-share_outline {
+    @extend .icon;
+    margin-left: 5px;
   }
 }
 .divider{
@@ -569,6 +822,10 @@ export default {
 }
 
 .user {
+  @include text-simple;
+  color: $black800;
+  font-weight: 500;
+  font-size: 16px;
   &__head {
     display: flex;
     align-items: center;
@@ -595,23 +852,19 @@ export default {
     border-radius: 50%;
   }
   &__username{
-    @include text-simple;
-    color: $black800;
-    font-weight: 500;
-    font-size: 16px;
+    @extend .user;
     padding-left: 10px;
   }
   &__distance{
-    @include text-simple;
+    @extend .user;
     margin: 0 0.5%;
-    font-style: normal;
-    font-weight: 500;
     font-size: 14px;
     display: flex;
     align-items: center;
     color: $blue;
   }
   &__left {
+    @extend .user;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -621,18 +874,17 @@ export default {
     flex-direction: row;
   }
   &__company {
-    @include text-simple;
+    @extend .user;
     margin: 0 0 0 10px;
-    font-size: 16px;
     color: $black500;
   }
 }
-.spec{
+.spec {
+  @include text-simple;
+  font-weight: 500;
+  font-size: 25px;
   &__link{
-    @include text-simple;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 25px;
+    @extend .spec;
     color: $blue;
   }
   &__container{
@@ -641,35 +893,30 @@ export default {
 }
 
 .quest{
+  @include text-simple;
+  font-style: normal;
+  font-weight: 500;
+  color: $black800;
   &__spec {
-    @include text-simple;
-    font-style: normal;
-    font-weight: 500;
+    @extend .quest;
     font-size: 25px;
-    color: $black800;
     margin: 0 0 0 0;
   }
   &__title {
-    @include text-simple;
-    font-style: normal;
-    font-weight: 500;
+    @extend .quest;
     font-size: 30px;
-    color: $black800;
     margin: 0 0 10px 0;
   }
   &__description {
-    @include text-simple;
-    font-style: normal;
+    @extend .quest;
     color: $black700;
     font-weight: 400;
     font-size: 16px;
     line-height: 130%;
-    /* or 21px */
   }
   &__location {
-    @include text-simple;
+    @extend .quest;
     color: $black700;
-    font-style: normal;
     font-weight: normal;
     font-size: 14px;
     display: flex;
@@ -677,14 +924,14 @@ export default {
     flex-direction: row;
   }
   &__count {
-    @include text-simple;
-    font-style: normal;
+    @extend .quest;
     font-weight: normal;
     font-size: 16px;
     color: $black400;
   }
   &__group {
-    color:$black800;
+    @extend .quest;
+    font-weight: 400;
     display: flex;
     flex-direction: row;
   }
@@ -704,53 +951,48 @@ export default {
   }
 }
 .runtime {
+  @include text-simple;
+  display: flex;
+  font-style: normal;
+  font-weight: normal;
+  align-items: center;
+  font-size: 14px;
   &__container {
-    display: flex;
-    flex-direction: row;
-    margin: 0 1%;
-    @include text-simple;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    align-items: center;
+    @extend .runtime;
+    justify-items: center;
     color: $black700;
   }
   &__link {
-    @include text-simple;
+    @extend .runtime;
     margin: 0 5px;
-    font-style: normal;
     font-weight: 500;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
     color: $blue;
   }
 }
 .map {
   &__container {
-    background-color: #FFFFFF;
+    background-color: $white;
     padding:30px 0 0 0;
   }
 }
 
-.price{
+.price {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   &__value {
     @include text-simple;
     color: $green;
     font-weight: bold;
     font-size: 25px;
-
   }
-  &__wrapperValue {
-    position: relative;
-    display: flex;
-    flex-direction: row;
+  &__container {
+    @extend .price;
+    justify-content: flex-end;
   }
   &__wrapper {
-    display: flex;
-    flex-direction: row;
+    @extend .price;
     margin:0 0 30px 0;
-    align-items: center;
     justify-content: space-between;
   }
 }
@@ -760,38 +1002,38 @@ export default {
     padding: 0 0 20px 0;
   }
   &__item {
+    @include text-simple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: normal;
+    font-weight: normal;
+    padding: 0 5px;
     &_green {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      @extend .badge__item;
       background-color: rgba(34, 204, 20, 0.1);
       color:$green;
-      padding: 0 5px;
       margin: 0 0 0 15px;
       border-radius: 5px;
     }
     &_blue {
-      @include text-simple;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      @extend .badge__item;
       background-color: rgba(0, 131, 199, 0.1);
       margin: 0 9px 0 0;
-      padding: 0 5px;
       border-radius: 44px;
-      font-style: normal;
-      font-weight: normal;
       font-size: 16px;
       color: $blue;
       height: 31px;
     }
   }
-  &__wrapper{
-    margin: auto;
+  &__wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 }
 
-.location{
+.location {
   &__container{
     display: flex;
     flex-direction: row;
@@ -799,7 +1041,8 @@ export default {
     margin: 25.5px 0 0 0;
   }
 }
-.img{
+.img {
+  transition: 0.5s;
   &__container{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -807,16 +1050,15 @@ export default {
     margin: 0 0 20px 0;
   }
   &__item{
+    @extend .img;
     border-radius: 6px;
     max-width: 280px;
     max-height: 210px;
-    transition: 0.5s;
-  }
-  &__item:hover{
-    //transform: scale(1.2);
-    transition: 0.5s;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    &:hover {
+      @extend .img;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
   }
 }
 
@@ -842,7 +1084,7 @@ export default {
   }
 }
 .block {
-  background: #FFFFFF;
+  background: $white;
   border-radius: 6px;
   display: grid;
   grid-template-columns: 240px 1fr;
@@ -908,9 +1150,7 @@ export default {
     grid-gap: 10px;
   }
   &__head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @extend .block__actions;
   }
   &__icon {
     &_fav {
@@ -918,9 +1158,7 @@ export default {
     }
   }
   &__btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @extend .block__actions;
     padding: 0 10px;
     min-width: 146px;
     height: 34px;
@@ -932,36 +1170,34 @@ export default {
   }
   &__text {
     @include text-simple;
+    font-size: 16px;
+    line-height: 130%;
     &_details {
-      font-size: 16px;
-      line-height: 130%;
+      @extend .block__text;
       color: $blue;
     }
     &_desc {
-      font-size: 16px;
-      line-height: 130%;
+      @extend .block__text;
       color: $black700;
     }
     &_blue {
+      @extend .block__text;
       font-weight: 500;
       font-size: 18px;
-      line-height: 130%;
       color: $blue;
     }
     &_title {
+      @extend .block__text;
       font-weight: 500;
-      font-size: 16px;
-      line-height: 130%;
       color: $black800;
     }
     &_locate {
+      @extend .block__text;
       font-size: 14px;
-      line-height: 130%;
       color: #7C838D;
     }
     &_grey {
-      font-size: 16px;
-      line-height: 130%;
+      @extend .block__text;
       color: #7C838D;
     }
   }
@@ -1099,14 +1335,16 @@ export default {
     color: $black800;
   }
 }
+.icon {
+  &-chat_green:before {
+    content: "\e9ba";
+    color: #00AA5B;
+    font-size: 20px;
+  }
+  &-caret_down_blue:before {
+    content: "\ea48";
+    color: #0083C7;
+  }
+}
 
-.icon-chat_green:before {
-  content: "\e9ba";
-  color: #00AA5B;
-  font-size: 20px;
-}
-.icon-caret_down_blue:before {
-  content: "\ea48";
-  color: #0083C7;
-}
 </style>
