@@ -749,7 +749,7 @@ export default {
   width: 100%;
   &__deactive {
     @extend .btn;
-    background: $black200;
+    background: $black100;
     color: $black400;
     &:hover {
       @extend .btn;
