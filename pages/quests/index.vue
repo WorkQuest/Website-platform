@@ -641,6 +641,7 @@ export default {
   &__dd {
     border-left: 1px solid #F7F8FA;
     height: 100%;
+    margin: 40px 0 0 0;
   }
   &__icon {
     margin-bottom: -10px;
