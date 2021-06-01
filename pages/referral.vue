@@ -171,7 +171,10 @@ export default {
       ],
     };
   },
-  // name: 'AuthLayout',
+  async mounted() {
+    this.SetLoader(true);
+    this.SetLoader(false);
+  },
   methods: {
     doCopy(ev) {
       ev.stopPropagation();
@@ -224,7 +227,7 @@ export default {
       border-radius: 6px;
 
       &__tokens {
-        font-weight: bold;
+        font-weight: 700;
         font-size: 25px;
         color: #0083C7;
         padding: 0 20px;

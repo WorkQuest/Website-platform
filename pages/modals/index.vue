@@ -81,6 +81,21 @@
     >
       showApplyForAPensionModal
     </base-btn>
+    <base-btn
+      @click="showPensionIsRegisteredModal()"
+    >
+      showPensionIsRegisteredModal
+    </base-btn>
+    <base-btn
+      @click="showMakeDeposit()"
+    >
+      showMakeDeposit
+    </base-btn>
+    <base-btn
+      @click="showChangePercent()"
+    >
+      showChangePercent
+    </base-btn>
   </div>
 </template>
 
@@ -174,6 +189,21 @@ export default {
     showApplyForAPensionModal() {
       this.ShowModal({
         key: modals.applyForAPension,
+      });
+    },
+    showPensionIsRegisteredModal() {
+      this.ShowModal({
+        key: modals.pensionIsRegistered,
+      });
+    },
+    showMakeDeposit() {
+      this.ShowModal({
+        key: modals.makeDeposit,
+      });
+    },
+    showChangePercent() {
+      this.ShowModal({
+        key: modals.changePercent,
       });
     },
   },

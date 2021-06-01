@@ -262,8 +262,9 @@
     "thanks": "Thanks",
     "couple": "A couple words",
     "depositPercentFromAQuest": "Deposit percent from a quest",
-    "thirteenPercents": "13%",
-    "firstDepositAmount": "First deposit amount*"
+    "firstDepositAmount": "First deposit amount*",
+    "aboutFirstDeposit": "* First deposit amount is optional. If you do not want to make a deposit, you may leave this field empty",
+    "pensionIsRegistered": "Pension is registered"
   },
   "ui": {
     "workers": "Workers",

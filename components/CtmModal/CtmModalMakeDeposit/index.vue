@@ -1,25 +1,16 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('pension.applyForAPension')"
+    title="Deposit"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
-        <label for="cardNumber_input">{{ $t('modals.depositPercentFromAQuest') }}</label>
+        <label for="cardNumber_input">Deposit amount</label>
         <input
           id="cardNumber_input"
           class="input_grey"
-          placeholder="13%"
+          placeholder="3 500"
         >
-      </div>
-      <div class="ctm-modal__content-field">
-        <label for="name_input">{{ $t('modals.firstDepositAmount') }}</label>
-        <input
-          id="name_input"
-          class="input_grey"
-          placeholder="130 WUSD"
-        >
-        <div class="">{{ $t('modals.aboutFirstDeposit') }}</div>
       </div>
       <div class="btn__container">
         <div class="btn__wrapper">
@@ -62,9 +53,6 @@ export default {
       this.CloseModal();
     },
     showPensionIsRegisteredModal() {
-      this.ShowModal({
-        key: modals.pensionIsRegistered,
-      });
     },
   },
 };
