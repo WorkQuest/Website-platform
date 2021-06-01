@@ -80,7 +80,7 @@
           </h2>
           <div class="wallet__header">
             <div class="wallet__number">
-              0xu383d7g...dq9w
+              {{ userWallet }}
             </div>
             <button class="btn__copy">
               <span class="icon-copy" />
@@ -91,8 +91,63 @@
               Balance
             </div>
             <div class="balance__number">
-              1
+              {{ userBalance }} WUSD
             </div>
+            <div class="balance__dollar">
+              $ {{ usd }}
+            </div>
+          </div>
+          <div class="btn__container">
+            <base-btn @click="showDepositModal()">
+              Deposit
+            </base-btn>
+            <base-btn @click="showWidthrawModal()">
+              Withdraw
+            </base-btn>
+          </div>
+          <div class="transactions">
+            <div class="transactions__title">
+              Transactions
+            </div>
+            <span
+              v-for="(transaction, i) in transactions"
+              :key="i"
+            >
+              <div class="transaction">
+                <div class="transaction__icon">
+                  <img
+                    v-if="transaction.mode === 1"
+                    alt="income"
+                    src="~assets/img/ui/transaction_income.svg"
+                  >
+                  <img
+                    v-if="transaction.mode === 2"
+                    alt="spending"
+                    src="~assets/img/ui/transaction_spending.svg"
+                  >
+                </div>
+                <div class="transaction__status">
+                  <div class="status__title">
+                    <span v-if="transaction.mode === 1">Recieve</span>
+                    <span v-if="transaction.mode === 2">Send</span>
+                  </div>
+                  <div class="status__date">
+                    {{ transaction.date }}
+                  </div>
+                </div>
+                <div
+                  class="transaction__value"
+                  :class="[
+                    {'transactions__value_income': transaction.mode === 1},
+                    {'transactions__value_spending': transaction.mode === 2},
+                  ]"
+                >
+                  <span v-if="transaction.mode === 1">+</span>
+                  <span v-if="transaction.mode === 2">-</span>
+                  <span>{{ transaction.value }} WUSD</span>
+                </div>
+              </div>
+            </span>
           </div>
         </section>
       </div>
@@ -109,6 +164,58 @@ export default {
     return {
       cardClosed: false,
       userWallet: '0xnf8o29837hrvbn42o37hsho3b74thb3',
+      transactions: [
+        {
+          mode: 1,
+          date: '14.01.20  14:34',
+          value: '1500',
+        },
+        {
+          mode: 2,
+          date: '14.01.20  14:34',
+          value: '1500',
+        },
+        {
+          mode: 2,
+          date: '14.01.20  14:34',
+          value: '1500',
+        },
+        {
+          mode: 1,
+          date: '14.01.20  14:34',
+          value: '1500',
+        },
+        {
+          mode: 2,
+          date: '14.01.20  14:34',
+          value: '1500',
+        },
+        {
+          mode: 2,
+          date: '14.01.20  14:34',
+          value: '1500',
+        },
+        {
+          mode: 2,
+          date: '14.01.20  14:34',
+          value: '1500',
+        },
+        {
+          mode: 2,
+          date: '14.01.20  14:34',
+          value: '1500',
+        },
+        {
+          mode: 2,
+          date: '14.01.20  14:34',
+          value: '1500',
+        },
+        {
+          mode: 2,
+          date: '14.01.20  14:34',
+          value: '1500',
+        },
+      ],
       items: [
         {
           tx_hash: 'sd535sd66sdsd',
@@ -229,13 +336,81 @@ export default {
 
 <style lang="scss" scoped>
 
+.status {
+  &__title {
+    font-weight: 400;
+    font-size: 16px;
+    color: $black800;
+  }
+  &__date {
+    font-weight: 400;
+    font-size: 14px;
+    color: $black300;
+  }
+}
+
+.transactions {
+  &__title {
+    @include text-simple;
+    color:$black800;
+    font-weight: 500;
+    font-size: 16px;
+  }
+  &__icon {}
+  &__status {
+    display: grid;
+  }
+  &__value {
+    font-weight: 500;
+    font-size: 16px;
+    &_income {
+      @extend .transactions__value;
+      color: $green;
+    }
+    &_spending {
+      @extend .transactions__value;
+      color: $red;
+    }
+  }
+}
+.transaction {
+  display: grid;
+  grid-template-columns: 1fr 6fr 5fr;
+}
+
+.btn {
+  &__container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 16px 0 0 0;
+    grid-gap: 20px;
+  }
+  &__copy {
+    background: $black100;
+    border-radius: 6px;
+    padding: 7px;
+    max-width: 34px;
+    max-height: 34px;
+    display: flex;
+    justify-self: flex-end;
+  }
+}
+
 .balance {
+  &__dollar {
+    font-weight: 400;
+    font-size: 14px;
+    color: $black300;
+  }
   &__number {
     font-weight: 700;
     font-size: 25px;
+    color: $blue;
   }
   &__container {
     background: $black100;
+    border-radius: 6px;
+    padding: 16px;
   }
   &__title {
     font-weight: 400;
@@ -252,23 +427,13 @@ export default {
   }
 }
 
-.btn {
-  &__copy {
-    background: $black100;
-    border-radius: 6px;
-    padding: 7px;
-    max-width: 34px;
-    max-height: 34px;
-  }
-}
-
 .mobile {
   &__title {
     @include text-simple;
     color: $black800;
     font-weight: 700;
     font-size: 30px;
-    margin: 18px 20px 0 20px;
+    margin: 18px 0 0 0;
   }
 }
 
@@ -280,7 +445,7 @@ export default {
     color: $black500;
   }
   &__header {
-    margin: 30px 16px 0 16px;
+    margin: 30px 0 30px 0;
     display: grid;
     grid-template-columns: 11fr 1fr;
   }
