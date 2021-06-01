@@ -1,36 +1,96 @@
 <template>
   <div>
-    <div
-      class="info"
-      :class="infoClass"
-    >
-      <div class="info__body">
-        <div class="info__left">
-          <div
-            class="info__text info__text_white"
-            :class="[{'info__text_black': info.mode === 'response'}]"
-          >
-            {{ infoText(info.mode) }}
+    <span v-if="userRole === 'employer'">
+      <span v-if="info.mode !== 1">
+        <span v-if="info.mode !== 3">
+          <div>
+            <div
+              class="info"
+              :class="infoClass"
+            >
+              <div class="info__body">
+                <div class="info__left">
+                  <div
+                    class="info__text info__text_white"
+                  >
+                    <div v-if="info.mode === 2">
+                      {{ $t('quests.activeQuest') }}
+                    </div>
+                    <div v-if="info.mode === 4">
+                      {{ $t('performed.title') }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="info__right">
-          <div
-            v-if="info.date"
-          >
-            <span class="info__text info__text_white info__text_normal">
-              {{ $t('quests.runtime') }}
-            </span>
-            <span class="info__text info__text_white info__text_bold">
-              {{ info.date }}
-            </span>
+        </span>
+      </span>
+    </span>
+    <span v-if="userRole === 'worker'">
+      <div>
+        <div
+          class="info"
+          :class="infoClass"
+        >
+          <div class="info__body">
+            <div class="info__left">
+              <div
+                class="info__text info__text_white"
+                :class="[{'info__text_black': info.mode === 3}]"
+              >
+                <div v-if="info.mode === 1">
+                  {{ $t('invite.title') }}
+                </div>
+                <div v-if="info.mode === 2">
+                  {{ $t('quests.activeQuest') }}
+                </div>
+                <div v-if="info.mode === 3">
+                  {{ $t('response.title') }}
+                </div>
+                <div v-if="info.mode === 4">
+                  {{ $t('performed.title') }}
+                </div>
+              </div>
+            </div>
+            <div class="info__right">
+              <div
+                v-if="info.mode === 3"
+              >
+                <base-btn mode="showYourMessage">
+                  <template v-slot:right>
+                    <span class="icon-caret_down" />
+                  </template>
+                  {{ $t('info.showYourMessage') }}
+                </base-btn>
+              </div>
+              <div
+                v-if="info.date"
+              >
+                <span v-if="info.mode !== 1">
+                  <span v-if="info.mode !== 4">
+                    <span v-if="info.mode !== 3">
+                      <span class="info__text info__text_white info__text_normal">
+                        {{ $t('quests.runtime') }}
+                      </span>
+                      <span class="info__text info__text_white info__text_bold">
+                        {{ info.date }}
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </span>
   </div>
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'InfoVue',
@@ -45,19 +105,24 @@ export default {
       const { mode } = this.info;
       return [
         {
-          'info_bg-yellow': mode === 'invited',
+          'info_bg-yellow': mode === 1,
         },
         {
-          'info_bg-green': mode === 'active',
+          'info_bg-green': mode === 2,
         },
         {
-          'info_bg-grey': mode === 'response',
+          'info_bg-grey': mode === 3,
         },
         {
-          'info_bg-blue': mode === 'performed',
+          'info_bg-blue': mode === 4,
         },
       ];
     },
+    ...mapGetters({
+      tags: 'ui/getTags',
+      userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
+    }),
   },
   methods: {
     infoText(type) {
@@ -73,7 +138,7 @@ export default {
       const { mode } = this.info;
       return [
         {
-          info_yellow: mode === 'invited',
+          info_yellow: mode === 1,
         },
       ];
     },
@@ -83,6 +148,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.icon-caret_down:before {
+  content: "\ea48";
+  color: $blue;
+  font-size: 20px;
+}
 .info {
   &_bg-green {
     background-color: $green;
@@ -116,10 +186,10 @@ export default {
     grid-gap: 35px;
   }
   &__right {
-    display: grid;
-    grid-template-columns: repeat(1, auto);
+    display: flex;
     grid-gap: 10px;
     align-items: center;
+    justify-content: center;
   }
   &__text{
     @include text-simple;

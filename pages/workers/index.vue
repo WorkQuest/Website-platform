@@ -4,13 +4,27 @@
       <div class="quests__top">
         <transition name="fade-fast">
           <GMap
-            v-if="isShowMap"
+            v-if="isShowMap && userPosition"
             ref="gMap"
-            class="quests__map"
             language="en"
-            :center="{lat: locations[0].lat, lng: locations[0].lng}"
-            :zoom="6"
-          />
+            :cluster="{options: {styles: clusterStyle}}"
+            :center="{lat: userPosition.latitude, lng: userPosition.longitude}"
+            :options="{fullscreenControl: false}"
+            :zoom="10"
+          >
+            <GMapMarker
+              v-for="location in locations"
+              :key="location.id"
+              :position="{lat: location.lat, lng: location.lng}"
+              :options="{icon: location === currentLocation ? pins.selected : pins.notSelected}"
+              @click="currentLocation = location"
+            >
+              <GMapInfoWindow :options="{maxWidth: 200}">
+                lat: {{ location.lat }},
+                lng: {{ location.lng }}
+              </GMapInfoWindow>
+            </GMapMarker>
+          </GMap>
         </transition>
         <div class="quests__search">
           <div class="search">
@@ -173,11 +187,41 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'IndexVue',
   data() {
     return {
+      currentLocation: {},
+      circleOptions: {},
+      locations: [
+        {
+          lat: 44.933076,
+          lng: 15.629058,
+        },
+        {
+          lat: 45.815,
+          lng: '15.9819',
+        },
+        {
+          lat: '45.12',
+          lng: '16.21',
+        },
+      ],
+      pins: {
+        selected: '/img/app/marker_blue.svg',
+        notSelected: '/img/app/marker_red.svg',
+      },
+      clusterStyle: [
+        {
+          url:
+            'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m1.png',
+          width: 56,
+          height: 56,
+          textColor: '#fff',
+        },
+      ],
       search: '',
       cards: [
         {
@@ -185,7 +229,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -203,7 +247,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'RELIABLE EMP.',
-            code: '2',
+            code: 2,
           },
           specialization: [
             {
@@ -221,7 +265,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'CHECKED BY TIME',
-            code: '3',
+            code: 3,
           },
           specialization: [
             {
@@ -239,7 +283,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'DISABLED',
-            code: '0',
+            code: 0,
           },
           specialization: [
             {
@@ -257,7 +301,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'DISABLED',
-            code: '0',
+            code: 0,
           },
           specialization: [
             {
@@ -275,7 +319,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -293,7 +337,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -311,7 +355,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -329,7 +373,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -347,7 +391,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -365,7 +409,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -383,7 +427,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -401,7 +445,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -419,7 +463,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -437,7 +481,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -455,7 +499,7 @@ export default {
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
             title: 'HIGHER LEVEL',
-            code: '1',
+            code: 1,
           },
           specialization: [
             {
@@ -470,12 +514,6 @@ export default {
         },
       ],
       isShowMap: true,
-      locations: [
-        {
-          lat: 56.475565,
-          lng: 84.967270,
-        },
-      ],
       distance: [
         '+ 100 m',
         '+ 500 m',
@@ -493,13 +531,15 @@ export default {
       ],
     };
   },
-
   computed: {
+    ...mapGetters({
+      userPosition: 'user/getUserCurrentPosition',
+    }),
     cardLevelClass(idx) {
       const { cards } = this;
       return [
-        { card__level_reliable: cards[idx].level.code === '2' },
-        { card__level_checked: cards[idx].level.code === '3' },
+        { card__level_reliable: cards[idx].level.code === 2 },
+        { card__level_checked: cards[idx].level.code === 3 },
       ];
     },
   },
@@ -514,17 +554,17 @@ export default {
     cardsLevels(idx) {
       const { cards } = this;
       return [
-        { card__level_reliable: cards[idx].level.code === '2' },
-        { card__level_checked: cards[idx].level.code === '3' },
-        { card__level_disabled: cards[idx].level.code === '0' },
+        { card__level_reliable: cards[idx].level.code === 2 },
+        { card__level_checked: cards[idx].level.code === 3 },
+        { card__level_disabled: cards[idx].level.code === 0 },
       ];
     },
     cardsLevelsBorder(idx) {
       const { cards } = this;
       return [
-        { card_lower: cards[idx].level.code === '2' },
-        { card_lower: cards[idx].level.code === '3' },
-        { card_lower: cards[idx].level.code === '0' },
+        { card_lower: cards[idx].level.code === 2 },
+        { card_lower: cards[idx].level.code === 3 },
+        { card_lower: cards[idx].level.code === 0 },
       ];
     },
     toggleMap(newPosition) {
@@ -611,7 +651,9 @@ export default {
   height: 100%;
   justify-items: center;
   &__dd {
+    display: flex;
     border-left: 1px solid #F7F8FA;
+    justify-items: center;
     height: 100%;
   }
   &__icon {

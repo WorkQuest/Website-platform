@@ -24,4 +24,12 @@ export default {
   async logout({ commit }) {
     commit('logOut');
   },
+  async refreshTokens({ commit }) {
+    const response = await this.$axios.$post('/v1/auth/refresh-tokens');
+    commit('setNewTokens', response.result);
+    return response;
+  },
+  async setCurrentPosition({ commit }, payload) {
+    commit('setCurrentUserPosition', payload);
+  },
 };
