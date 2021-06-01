@@ -626,8 +626,6 @@ export default {
   }
 }
 
-.avatar {}
-
 .runtime {
   &__status {
     font-weight: 400;
