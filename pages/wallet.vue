@@ -355,6 +355,7 @@ export default {
     color:$black800;
     font-weight: 500;
     font-size: 16px;
+    margin: 15px 0 15px 0;
   }
   &__icon {}
   &__status {
@@ -363,6 +364,9 @@ export default {
   &__value {
     font-weight: 500;
     font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     &_income {
       @extend .transactions__value;
       color: $green;
@@ -376,6 +380,7 @@ export default {
 .transaction {
   display: grid;
   grid-template-columns: 1fr 6fr 5fr;
+  margin: 0 0 15px 0;
 }
 
 .btn {
