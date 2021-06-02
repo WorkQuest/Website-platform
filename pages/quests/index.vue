@@ -499,6 +499,8 @@ export default {
   &__priority {
     font-weight: 400;
     font-size: 12px;
+    padding: 4px 5px;
+    border-radius: 3px;
     &_low {
       @extend .quest-cards__priority;
       color: #22CC14;
