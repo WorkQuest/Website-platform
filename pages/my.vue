@@ -301,7 +301,34 @@
                   v-if="item.type === 3"
                   class="cards__stars"
                 >
-                  1
+                  <div class="block__details">
+                    <button
+                      v-if="item.type !== 3"
+                      class="block__btn"
+                      @click="showDetails()"
+                    >
+                      <span
+                        class="block__text block__text_details"
+                      >
+                        {{ $t('meta.details') }}
+                      </span>
+                      <span class="icon-short_right" />
+                    </button>
+                    <div
+                      v-else
+                      class="block__rating"
+                    >
+                      <div class="block__rating block__rating_star">
+                        <button
+                          @click="showReviewModal(item.rating)"
+                        >
+                          <b-form-rating
+                            v-model="item.rating"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </span>
                 <div
                   class="cards__price"
