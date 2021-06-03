@@ -270,7 +270,30 @@
               >
             </div>
             <div class="user__name">{{ card.title }}</div>
-            <div class="">Star</div>
+            <div class="">
+              <div
+                class="block__icon block__icon_fav star"
+                @click="card.favourite = !card.favourite"
+              >
+                <img
+                  class="star__hover"
+                  src="~assets/img/ui/star_hover.svg"
+                  alt=""
+                >
+                <img
+                  v-if="!card.favourite"
+                  class="star__default"
+                  src="~assets/img/ui/star_simple.svg"
+                  alt=""
+                >
+                <img
+                  v-if="card.favourite"
+                  class="star__checked"
+                  src="~assets/img/ui/star_checked.svg"
+                  alt=""
+                >
+              </div>
+            </div>
           </div>
           <div class="distance__container">
             <div>
