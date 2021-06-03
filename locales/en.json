@@ -418,7 +418,6 @@
       "urgent": "Urgent",
       "normal": "Normal priority"
     },
-    "myQuests": "My quests",
     "youInvited": "You invited",
     "active": "Active",
     "performed": "Performed",
@@ -427,6 +426,17 @@
     "mFromYou": "m from you",
     "wusd": "WUSD",
     "inviteYouAQuest": "Invite you a quest:",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "balance": "Balance",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw",
+    "transactions": "Transactions",
+    "receive": "Receive",
+    "send": "Send",
+    "quests": "Quests",
+    "myQuests": "My quests",
+    "chat": "Chat",
+    "wallet": "Wallet",
+    "more": "More"
   }
 }
