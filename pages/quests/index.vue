@@ -242,7 +242,7 @@
           <div class="mobile__title">
             Quests
           </div>
-          <div>
+          <div @click="toNotifications()">
             <span class="icon-notification_outline" />
           </div>
         </div>
@@ -454,6 +454,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    toNotifications() {
+      this.$router.push('/notification');
+    },
     toggleMap() {
       this.isShowMap = !this.isShowMap;
     },

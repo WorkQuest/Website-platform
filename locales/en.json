@@ -425,6 +425,8 @@
     "youRequested": "You requested",
     "runtime": "Runtime",
     "mFromYou": "m from you",
-    "wusd": "WUSD"
+    "wusd": "WUSD",
+    "inviteYouAQuest": "Invite you a quest:",
+    "notifications": "Notifications"
   }
 }

@@ -5,7 +5,7 @@
         <div class="body__header">
           <div class="header__title">
             Invite friends.
-            <br />
+            <br>
             Earn crypto together
           </div>
           <div class="header__title_sub">
@@ -15,46 +15,67 @@
         <div class="body__content">
           <div class="info-block_couple">
             <div class="info-block">
-              <div class="info-block__name">Referral reward</div>
-              <div class="info-block__tokens">0 WQT</div>
-              <div class="info-block__name">Last ref reward</div>
+              <div class="info-block__name">
+                Referral reward
+              </div>
+              <div class="info-block__tokens">
+                0 WQT
+              </div>
+              <div class="info-block__name">
+                Last ref reward
+              </div>
               <div class="user_last-reward">
                 <div class="user__info">
-                  <img />
+                  <img>
                   <div>Edward Cooper Edward Cooper Edward CooperEdward Cooper Edward CooperEdward CooperEdward CooperEdward Cooper</div>
                 </div>
-                <div class="user__value_green">+ 12WQT</div>
-
+                <div class="user__value_green">
+                  + 12WQT
+                </div>
               </div>
             </div>
             <div class="info-block">
-              <div class="info-block__name">Your refers</div>
+              <div class="info-block__name">
+                Your refers
+              </div>
               <div class="info-block__refers">
                 <div class="info-block__avatar">
-                  <img src="~/assets/img/social/FACEBOOK.png"/>
+                  <img src="~/assets/img/social/FACEBOOK.png">
                 </div>
                 <div class="info-block__avatar">
-                  <img src="~/assets/img/social/TWITTER.png"/>
+                  <img src="~/assets/img/social/TWITTER.png">
                 </div>
                 <div class="info-block__avatar">
-                  <img src="~/assets/img/social/GOOGLE_+_.png"/>
+                  <img src="~/assets/img/social/GOOGLE_+_.png">
                 </div>
                 <div class="info-block__avatar">
-                  <div class="info-block__more">+ 17</div>
+                  <div class="info-block__more">
+                    + 17
+                  </div>
                 </div>
               </div>
-              <div class="info-block__name">Your referral link</div>
-              <a href="#" class="info-block__link">
+              <div class="info-block__name">
+                Your referral link
+              </div>
+              <a
+                href="#"
+                class="info-block__link"
+              >
                 <div>https://www.workquest.com/ref?v=44T7iUSo1vU</div>
-                <svg viewBox="0 0 21 22" fill="none">
-                  <path d="M12.9992 20.9999H2.99922C2.46329 21.0186 1.94369 20.8138 1.5645 20.4347C1.18532 20.0555 0.980591 19.5359 0.999215 18.9999V8.99995C0.980591 8.46402 1.18532 7.94442 1.5645 7.56524C1.94369 7.18605 2.46329 6.98132 2.99922 6.99995H6.99922V2.99995C6.98059 2.46402 7.18532 1.94442 7.5645 1.56524C7.94369 1.18605 8.46329 0.981324 8.99922 0.999948H18.9992C19.5351 0.981324 20.0547 1.18605 20.4339 1.56524C20.8131 1.94442 21.0178 2.46402 20.9992 2.99995V12.9999C21.0175 13.5358 20.8127 14.0552 20.4336 14.4343C20.0545 14.8134 19.5351 15.0183 18.9992 14.9999H14.9992V18.9999C15.0175 19.5358 14.8127 20.0552 14.4336 20.4343C14.0545 20.8134 13.5351 21.0183 12.9992 20.9999ZM2.99922 8.99995V18.9999H12.9992V14.9999H8.99922C8.46337 15.0183 7.94395 14.8134 7.56483 14.4343C7.18572 14.0552 6.98089 13.5358 6.99922 12.9999V8.99995H2.99922ZM8.99922 2.99995V12.9999H18.9992V2.99995H8.99922Z"/>
+                <svg
+                  viewBox="0 0 21 22"
+                  fill="none"
+                >
+                  <path d="M12.9992 20.9999H2.99922C2.46329 21.0186 1.94369 20.8138 1.5645 20.4347C1.18532 20.0555 0.980591 19.5359 0.999215 18.9999V8.99995C0.980591 8.46402 1.18532 7.94442 1.5645 7.56524C1.94369 7.18605 2.46329 6.98132 2.99922 6.99995H6.99922V2.99995C6.98059 2.46402 7.18532 1.94442 7.5645 1.56524C7.94369 1.18605 8.46329 0.981324 8.99922 0.999948H18.9992C19.5351 0.981324 20.0547 1.18605 20.4339 1.56524C20.8131 1.94442 21.0178 2.46402 20.9992 2.99995V12.9999C21.0175 13.5358 20.8127 14.0552 20.4336 14.4343C20.0545 14.8134 19.5351 15.0183 18.9992 14.9999H14.9992V18.9999C15.0175 19.5358 14.8127 20.0552 14.4336 20.4343C14.0545 20.8134 13.5351 21.0183 12.9992 20.9999ZM2.99922 8.99995V18.9999H12.9992V14.9999H8.99922C8.46337 15.0183 7.94395 14.8134 7.56483 14.4343C7.18572 14.0552 6.98089 13.5358 6.99922 12.9999V8.99995H2.99922ZM8.99922 2.99995V12.9999H18.9992V2.99995H8.99922Z" />
                 </svg>
 
               </a>
             </div>
           </div>
           <div class="info-block">
-            <div class="info-block__name_bold">How to invite your friends?</div>
+            <div class="info-block__name_bold">
+              How to invite your friends?
+            </div>
             <div class="info-block__steps">
               <div class="step">
                 <div>Get Link</div>
@@ -71,7 +92,9 @@
             </div>
           </div>
           <div class="info-block">
-            <div class="info-block__name">History of rewards</div>
+            <div class="info-block__name">
+              History of rewards
+            </div>
             <div class="info-block__table">
               <div class="table__head">
                 <div>Name</div>
@@ -84,25 +107,45 @@
               <div class="table__rows">
                 <div class="user">
                   <div class="user__info">
-                    <img />
+                    <img>
                     <div>Edward Cooper</div>
                   </div>
-                  <div class="user__value_gray">455dad66544ss</div>
-                  <div class="user__value_gray">sf998s...ss877d</div>
-                  <div class="user__value_gray">Feb 1, 2021</div>
-                  <div class="user__value">12 WQT</div>
-                  <div class="user__value_green">Success</div>
+                  <div class="user__value_gray">
+                    455dad66544ss
+                  </div>
+                  <div class="user__value_gray">
+                    sf998s...ss877d
+                  </div>
+                  <div class="user__value_gray">
+                    Feb 1, 2021
+                  </div>
+                  <div class="user__value">
+                    12 WQT
+                  </div>
+                  <div class="user__value_green">
+                    Success
+                  </div>
                 </div>
                 <div class="user">
                   <div class="user__info">
-                    <img />
+                    <img>
                     <div>Edward Cooper</div>
                   </div>
-                  <div class="user__value_gray">455dad66544ss</div>
-                  <div class="user__value_gray">sf998s...ss877d</div>
-                  <div class="user__value_gray">Feb 1, 2021</div>
-                  <div class="user__value">12 WQT</div>
-                  <div class="user__value_green">Success</div>
+                  <div class="user__value_gray">
+                    455dad66544ss
+                  </div>
+                  <div class="user__value_gray">
+                    sf998s...ss877d
+                  </div>
+                  <div class="user__value_gray">
+                    Feb 1, 2021
+                  </div>
+                  <div class="user__value">
+                    12 WQT
+                  </div>
+                  <div class="user__value_green">
+                    Success
+                  </div>
                 </div>
               </div>
             </div>

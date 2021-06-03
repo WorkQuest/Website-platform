@@ -8,7 +8,7 @@
       <!--    />-->
       <!--    notification-->
       <!--  </div>-->
-      notification
+      {{ $t('mobile.notifications') }}
     </section>
     <section class="mobile">
       <div class="mobile__header">
@@ -23,37 +23,42 @@
           </base-btn>
         </div>
         <div class="mobile__title">
-          Notifications
+          {{ $t('mobile.notifications') }}
         </div>
       </div>
-      <div class="notification">
-        <div class="notification__user">
-          <div class="image__container">
-            <img
-              alt=""
-              src="~assets/img/temp/photo.jpg"
-              class="notification__image"
-            >
+      <span
+        v-for="(notification, i) in notifications"
+        :key="i"
+      >
+        <div class="notification">
+          <div class="notification__user">
+            <div class="image__container">
+              <img
+                alt=""
+                src="~assets/img/temp/photo.jpg"
+                class="notification__image"
+              >
+            </div>
+            <div class="notification__name">
+              {{ notification.name }}
+            </div>
+            <div class="notification__date">
+              {{ notification.date }}
+            </div>
           </div>
-          <div class="notification__name">
-            Samantha Sparcs
+          <div class="notification__text">
+            {{ $t('mobile.inviteYouAQuest') }}
           </div>
-          <div class="notification__date">
-            14 Jan 2021, 14:54
+          <div class="notification__quest">
+            <div class="quest__title">
+              {{ notification.quest }}
+            </div>
+            <div class="icon__container">
+              <span class="icon-chevron_right" />
+            </div>
           </div>
         </div>
-        <div class="notification__text">
-          Invite you a quest:
-        </div>
-        <div class="notification__quest">
-          <div class="quest__title">
-            Paint the garage quickly
-          </div>
-          <div class="icon__container">
-            <span class="icon-chevron_right" />
-          </div>
-        </div>
-      </div>
+      </span>
     </section>
   </div>
 </template>
@@ -61,6 +66,37 @@
 <script>
 export default {
   name: 'Notification',
+  data() {
+    return {
+      notifications: [
+        {
+          name: 'Samantha Sparcs',
+          date: '14 Jan 2021, 14:54',
+          quest: 'Paint the garage quickly',
+        },
+        {
+          name: 'Samantha Sparcs',
+          date: '14 Jan 2021, 14:54',
+          quest: 'Paint the garage quickly',
+        },
+        {
+          name: 'Samantha Sparcs',
+          date: '14 Jan 2021, 14:54',
+          quest: 'Paint the garage quickly',
+        },
+        {
+          name: 'Samantha Sparcs',
+          date: '14 Jan 2021, 14:54',
+          quest: 'Paint the garage quickly',
+        },
+        {
+          name: 'Samantha Sparcs',
+          date: '14 Jan 2021, 14:54',
+          quest: 'Paint the garage quickly',
+        },
+      ],
+    };
+  },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
@@ -125,7 +161,7 @@ export default {
     align-items: center;
   }
   &__text {
-    margin: 0 20px 0 20px;
+    margin: 10px 20px 0 20px;
     font-size: 16px;
     font-weight: 400;
     color: $black300;
