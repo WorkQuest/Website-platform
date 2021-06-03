@@ -1,11 +1,11 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    title="Deposit"
+    :title="$t('modals.deposit')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
-        <label for="cardNumber_input">Deposit amount</label>
+        <label for="cardNumber_input">{{$t('modals.depositAmount')}}</label>
         <input
           id="cardNumber_input"
           class="input_grey"
