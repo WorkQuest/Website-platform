@@ -270,7 +270,7 @@
               >
             </div>
             <div class="user__name">{{ card.title }}</div>
-            <div class="">
+            <div class="block__container">
               <div
                 class="block__icon block__icon_fav star"
                 @click="card.favourite = !card.favourite"
@@ -389,6 +389,58 @@ export default {
           url: '/company',
           distance: '100',
         },
+        {
+          title: 'Samantha Sparks',
+          sub: 'from Amazon',
+          favourite: false,
+          background: require('~/assets/img/temp/fake-card.svg'),
+          theme: 'Paint the garage quickly',
+          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
+          priority: 2,
+          amount: 1700,
+          symbol: 'wusd',
+          url: '/company',
+          distance: '100',
+        },
+        {
+          title: 'Samantha Sparks',
+          sub: 'from Amazon',
+          favourite: false,
+          background: require('~/assets/img/temp/fake-card.svg'),
+          theme: 'Paint the garage quickly',
+          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
+          priority: 2,
+          amount: 1700,
+          symbol: 'wusd',
+          url: '/company',
+          distance: '100',
+        },
+        {
+          title: 'Samantha Sparks',
+          sub: 'from Amazon',
+          favourite: false,
+          background: require('~/assets/img/temp/fake-card.svg'),
+          theme: 'Paint the garage quickly',
+          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
+          priority: 2,
+          amount: 1700,
+          symbol: 'wusd',
+          url: '/company',
+          distance: '100',
+        },
+        {
+          title: 'Samantha Sparks',
+          sub: 'from Amazon',
+          favourite: false,
+          background: require('~/assets/img/temp/fake-card.svg'),
+          theme: 'Paint the garage quickly',
+          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
+          priority: 2,
+          amount: 1700,
+          symbol: 'wusd',
+          url: '/company',
+          distance: '100',
+        },
       ],
     };
   },
@@ -446,6 +498,14 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+
+.block {
+  &__container {
+    display: flex;
+    align-self: center;
+    justify-content: flex-end;
+  }
+}
 
 .bg {
   &_white {
