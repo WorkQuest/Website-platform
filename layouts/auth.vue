@@ -25,7 +25,6 @@
           v-for="(item, i) in links"
           :key="i"
           class="links"
-          style="display: none"
         >
           <div
             v-if="$route.path === item.url"
