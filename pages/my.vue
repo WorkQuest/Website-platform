@@ -764,7 +764,6 @@ export default {
     margin: 17px 20px 0 20px;
     display: flex;
     flex-direction: row;
-    align-items: center;
     justify-content: space-between;
   }
   &__priority {
@@ -1279,7 +1278,6 @@ export default {
     }
   }
 }
-
 @include _380 {
   .mobile {
     &__menu {
@@ -1287,10 +1285,29 @@ export default {
       border-radius: 6px;
       background: #F7F8FA;
       padding: 0;
-      margin: 10px 0 0 0;
+      margin: 10px 15px 0 15px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
     }
   }
+  .cards {
+    &__container {
+      max-width: 100%;
+    }
+  }
+  .btn {
+    &__deactive {
+      font-size: 12px;
+      padding: 0;
+      margin: 5px 5px 5px 0;
+      &:hover {
+        margin: 4px 4px 4px -4px;
+      }
+    }
+  }
+}
+.base-btn {
+  height: 32px;
+  padding: 5px;
 }
 </style>
