@@ -409,7 +409,7 @@ export default {
   }
   .template {
     &__left {
-      max-width: 312px;
+      max-width: 290px;
     }
   }
 }
