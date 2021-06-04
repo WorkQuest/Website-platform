@@ -244,4 +244,20 @@ export default {
     max-height: 775px;
   }
 }
+@include _380 {
+  .notification {
+    &__name {
+      font-size: 12px;
+    }
+    &__image {
+      border-radius: 137px;
+    }
+    &__user {
+      margin: 10px 20px 0 20px;
+    }
+    &__date {
+      font-size: 10px;
+    }
+  }
+}
 </style>
