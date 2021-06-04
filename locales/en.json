@@ -427,6 +427,10 @@
     "mFromYou": "m from you",
     "wusd": "WUSD",
     "inviteYouAQuest": "Invite you a quest:",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "quests": "Quests",
+    "chat": "Chat",
+    "wallet": "Wallet",
+    "more": "More"
   }
 }
