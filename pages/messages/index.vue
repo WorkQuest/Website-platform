@@ -445,4 +445,15 @@ export default {
     }
   }
 }
+
+@include _380 {
+  .message {
+    &__body {
+      padding: 10px;
+    }
+    &__data {
+      padding: 0;
+    }
+  }
+}
 </style>
