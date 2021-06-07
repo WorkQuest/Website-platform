@@ -24,23 +24,12 @@
         <span
           v-for="(item, i) in links"
           :key="i"
+          class="links"
         >
           <div
             v-if="$route.path === item.url"
             class="btn__container"
-          >
-            <div class="btn__back">
-              <base-btn
-                mode="back"
-                @click="$router.go(-1)"
-              >
-                <template v-slot:left>
-                  <span class="icon-chevron_big_left" />
-                </template>
-                {{ $t('signUp.back') }}
-              </base-btn>
-            </div>
-          </div>
+          />
         </span>
         <div
           v-if="$route.path !== '/sign-in'"
@@ -208,6 +197,9 @@ export default {
       display: none;
     }
   }
+  .links {
+    display: none;
+  }
   .btn {
     &__back {
       display: none;
@@ -241,6 +233,9 @@ export default {
       display: none;
     }
   }
+  .links {
+    display: none;
+  }
   .template {
     &__content {
       padding: 200px 0 0 0;
@@ -266,6 +261,9 @@ export default {
       padding: 0;
       display: flex;
     }
+  }
+  .links {
+    display: none;
   }
   .btn__container {
     display: flex;
@@ -340,6 +338,9 @@ export default {
       display: none;
     }
   }
+  .links {
+    display: flex;
+  }
   .mobile {
     &__wrapper {
       display: block;
@@ -357,6 +358,9 @@ export default {
 }
 
 @include _380 {
+  .links {
+    display: flex;
+  }
   .title {
     &__container {
       max-width: 220px;
@@ -393,7 +397,7 @@ export default {
   }
   .template {
     &__left {
-      max-width: 312px;
+      max-width: 290px;
     }
   }
 }
