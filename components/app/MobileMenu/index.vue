@@ -6,7 +6,7 @@
     >
       <div class="mobile-menu__item">
         <span class="icon-list_check" />
-        <span class="item__text">{{ $t('mobile.quests') }}</span>
+        <span class="mobile-menu__text">{{ $t('mobile.quests') }}</span>
       </div>
     </nuxt-link>
     <nuxt-link
@@ -15,7 +15,7 @@
     >
       <div class="mobile-menu__item">
         <span class="icon-list_ul" />
-        <span class="item__text">{{ $t('mobile.myQuests') }}</span>
+        <span class="mobile-menu__text">{{ $t('mobile.myQuests') }}</span>
       </div>
     </nuxt-link>
     <nuxt-link
@@ -24,7 +24,7 @@
     >
       <div class="mobile-menu__item">
         <span class="icon-message" />
-        <span class="item__text">{{ $t('mobile.chat') }}</span>
+        <span class="mobile-menu__text">{{ $t('mobile.chat') }}</span>
       </div>
     </nuxt-link>
     <nuxt-link
@@ -33,19 +33,18 @@
     >
       <div class="mobile-menu__item">
         <span class="icon-credit_card" />
-        <span class="item__text">{{ $t('mobile.wallet') }}</span>
+        <span class="mobile-menu__text">{{ $t('mobile.wallet') }}</span>
       </div>
     </nuxt-link>
     <nuxt-link
       class="mobile-menu__link"
-      to="/"
+      to="/settings"
     >
       <div class="mobile-menu__item">
         <span class="icon-more_horizontal" />
-        <span class="item__text">{{ $t('mobile.more') }}</span>
+        <span class="mobile-menu__text">{{ $t('mobile.more') }}</span>
       </div>
     </nuxt-link>
-    <!--    TODO: NEED ADD FUNC FOR COMPONENT-->
   </div>
 </template>
 
@@ -56,13 +55,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.item {
-  &__text {
-    font-size: 16px;
-  }
-}
-
 .icon {
   color: $black200;
   font-size: 25px;
@@ -111,10 +103,11 @@ export default {
       align-items: center;
     }
 }
+
 @include _380 {
-  .item {
+  .mobile-menu {
     &__text {
-      font-size: 13px;
+      font-size: 12px;
     }
   }
 }
