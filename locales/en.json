@@ -447,7 +447,10 @@
     "changePass": "Change password",
     "oldPass": "Old password",
     "newPass": "New password",
-    "confPass": "Confirm password"
+    "confPass": "Confirm password",
+    "phone": "Phone",
+    "smsVerification": "SMS Verification",
+    "submit": "Submit"
   },
   "referral": {
     "inviteFriendsHead": "Invite friends.",

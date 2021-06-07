@@ -2,36 +2,28 @@
   <div>
     <div class="pc" />
     <div class="mobile">
-      <div class="mobile-header">
-        <div @click="back()">
-          <span class="icon-chevron_big_left" />
+      <div>
+        <div class="mobile-header">
+          <div @click="back()">
+            <span class="icon-chevron_big_left" />
+          </div>
+          <div class="mobile-header__title">
+            <div>{{ $t('mobile.smsVerification') }}</div>
+          </div>
         </div>
-        <div class="mobile-header__title">
-          <div>{{ $t('mobile.changePass') }}</div>
+        <div class="input__container">
+          <div>
+            <label for="phone">{{ $t('mobile.phone') }}</label>
+            <base-field
+              id="phone"
+              v-model="phone"
+              placeholder="+7 *** *** ** **"
+            />
+          </div>
         </div>
       </div>
-      <div class="input__container">
-        <div>
-          <label for="old_pass">{{ $t('mobile.oldPass') }}</label>
-          <base-field
-            id="old_pass"
-            v-model="old_pass"
-          />
-        </div>
-        <div>
-          <label for="new_pass">{{ $t('mobile.newPass') }}</label>
-          <base-field
-            id="new_pass"
-            v-model="new_pass"
-          />
-        </div>
-        <div>
-          <label for="conf_pass">{{ $t('mobile.confPass') }}</label>
-          <base-field
-            id="conf_pass"
-            v-model="conf_pass"
-          />
-        </div>
+      <div class="btn__container">
+        <base-btn>{{ $t('mobile.submit') }}</base-btn>
       </div>
     </div>
   </div>
@@ -39,12 +31,10 @@
 
 <script>
 export default {
-  name: 'ChangePassword',
+  name: 'SmsVerification',
   data() {
     return {
-      old_pass: '',
-      new_pass: '',
-      conf_pass: '',
+      phone: '',
     };
   },
   async mounted() {
@@ -61,10 +51,18 @@ export default {
 
 <style lang="scss" scoped>
 
+.btn {
+  &__container {
+    margin: 0 20px 0 20px;
+    background-color: $white;
+  }
+}
+
 .input {
   &__container {
-    margin: 20px;
+    margin: 20px 20px 390px 20px;
     z-index: 1;
+    background-color: $white;
   }
 }
 
@@ -124,7 +122,6 @@ export default {
 
 }
 @include _1199 {
-
   .mobile {
     display: none;
   }
@@ -143,5 +140,5 @@ export default {
   }
 }
 
-@include _575 {}
+@include _380 {}
 </style>

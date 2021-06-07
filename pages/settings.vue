@@ -619,6 +619,7 @@ export default {
     },
     switchSms() {
       this.sms = !this.sms;
+      this.$router.push('/sms-verification');
     },
   },
 };
