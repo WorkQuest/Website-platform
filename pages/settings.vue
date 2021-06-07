@@ -397,7 +397,10 @@
               <div class="icons">
                 <span class="icon-Lock" />
               </div>
-              <div class="mobile__option">
+              <div
+                class="mobile__option"
+                @click="changePass()"
+              >
                 <div class="option__title">
                   {{ $t('settings.changePass') }}
                 </div>
@@ -605,6 +608,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    changePass() {
+      this.$router.push('/change-password');
+    },
     isCloseInfo() {
       this.isShowInfo = !this.isShowInfo;
     },

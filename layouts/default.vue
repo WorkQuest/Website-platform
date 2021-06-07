@@ -1181,9 +1181,15 @@ export default {
   .mobile {
     padding: 50px 0 0 0;
     display: grid;
+    background: $white;
   }
   .footer {
       display: none;
+  }
+  .template {
+    &__footer {
+      background: $white;
+    }
   }
 }
 </style>
