@@ -510,11 +510,11 @@ export default {
       return [
         {
           title: this.$t('ui.menu.pension'),
-          path: '/wallet',
+          path: '/pension',
         },
         {
           title: this.$t('ui.menu.referral'),
-          path: '/wallet',
+          path: '/referral',
         },
         {
           title: this.$t('ui.menu.p2p'),
@@ -522,7 +522,7 @@ export default {
         },
         {
           title: this.$t('ui.menu.savings'),
-          path: '/wallet',
+          path: '/savings',
         },
         {
           title: this.$t('ui.menu.crediting'),

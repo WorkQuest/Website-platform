@@ -25,10 +25,6 @@
     "m": "m"
   },
 
-  "info" : {
-    "showYourMessage": "Show your message"
-  },
-
   "messages": {
     "alpha": "The {_field_} field may only contain alphabetic characters",
     "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
@@ -105,9 +101,6 @@
     "slogan": "Create work proposal",
     "add": "Add all the information and publication time  to find the right",
     "create": "Create",
-    "writeAMessage": "Write a message",
-    "quests": "Quests",
-    "reviews": "Reviews",
     "sidebar": {
       "filter": "All Quests filter",
       "choose": "(Choose simple or \nspecialized category)",
@@ -142,14 +135,7 @@
     "remember": "Remember me",
     "forgot": "Forgot password",
     "or": "Or",
-    "loginWith": "Login with",
-    "welcomeToWorkQuest": "Welcome to WorkQuest",
-    "pleaseSignIn": "Please sign in",
-    "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "Making\n            money is fast.\n            When your\n            work is quest.",
-    "dontHaveAnAccount": "Don’t have an account?",
-    "signUp": "Sign Up",
-    "forgotYourPass": "Forgot your password?"
+    "loginWith": "Login with"
   },
   "signUp": {
     "title": "Sign Up",
@@ -160,8 +146,7 @@
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Repeat password",
-    "create": "Create account",
-    "back": "back"
+    "create": "Create account"
   },
   "forgot": {
     "title": "Forgot password?",
@@ -245,12 +230,7 @@
     "ui": {
       "showMap": "Show map",
       "search": "City / Street / Place"
-    },
-    "worker": "Worker",
-    "raiseViews": "Raise views",
-    "deleteQuest": "Delete quest",
-    "approve": "Approve",
-    "startQuest": "Start quest"
+    }
   },
   "modals": {
     "amount": "Amount",
@@ -280,7 +260,16 @@
     "city": "City",
     "period": "Period",
     "thanks": "Thanks",
-    "couple": "A couple words"
+    "couple": "A couple words",
+    "depositPercentFromAQuest": "Deposit percent from a quest",
+    "firstDepositAmount": "First deposit amount*",
+    "aboutFirstDeposit": "* First deposit amount is optional. If you do not want to make a deposit, you may leave this field empty",
+    "pensionIsRegistered": "Pension is registered",
+    "currentPercent": "Current percent",
+    "depositAmount": "Deposit amount",
+    "lockedSavings": "Locked savings",
+    "durationDays": "Duration (days)",
+    "depositIsOpened": "Deposit is opened"
   },
   "ui": {
     "workers": "Workers",
@@ -397,7 +386,69 @@
   "levels": {
     "reliableEmp": "RELIABLE EMP.",
     "checkedByTime": "CHECKED BY TIME",
-    "disabled": "DISABLED",
-    "higher": "HIGHER LEVEL"
+    "disabled": "DISABLED"
+  },
+  "referral": {
+    "inviteFriendsHead": "Invite friends.",
+    "earnCryptoTogether": "Earn crypto together",
+    "headerSubtitle": "Earn up to 35$ in WQT every time your friends register and make first Quest on Work Quest platform.",
+    "referralReward": "Referral reward",
+    "wqtCount": "{count} WQT",
+    "lastRefReward": "Last ref reward",
+    "plusCount": "+ {count}",
+    "yourRefers": "Your refers",
+    "yourReferralLink": "Your referral link",
+    "howToInviteYourFriends": "How to invite your friends?",
+    "getLink": "Get Link",
+    "registerAndGenerate": "Register and generate referral links with a commission kickback rate.",
+    "inviteFriends": "Invite Friends",
+    "inviteYourFriends": "Invite your friends to register through the referral link and get rewards when they complete first Quest.",
+    "earnCrypto": "Earn Crypto",
+    "everyTimeYourFriends": "Every time your friends make a first Quest, you'll get up to $35 in WQT commission in real time!",
+    "historyOfRewards": "History of rewards",
+    "table": {
+      "name": "Name",
+      "userID": "User ID",
+      "txHash": "Tx hash",
+      "time": "Time",
+      "amount": "Amount",
+      "status": "Status"
+    }
+  },
+ "pension": {
+   "pensionProgram": "Pension program",
+   "applyForAPension": "Apply for a pension",
+   "annualPercent": "annual percent",
+   "optional": "Optional",
+   "optionalFirstDeposit": "optional first deposit",
+   "term": "term",
+   "castomizable": "Castomizable",
+   "depositsFromQuest": "deposits from quest",
+   "howToTakePart": "How to take part in pension program?",
+   "information": "Information",
+   "download": "Download",
+   "pensionBalance": "Pension balance",
+   "makeADeposit": "Make a deposit",
+   "currentPercentFromAQuest": "Current percent from a quest",
+   "changePercent": "Change percent",
+   "everyYear": "every year",
+   "timeRemainsUntilTheEndOfThePeriod": "Time remains until the end of the period",
+   "transactionHistory": "Transaction history",
+   "withdraw": "Withdraw",
+   "prolong": "Prolong"
+ },
+  "saving": {
+    "workQuestSavings": "WorkQuest Savings",
+    "lendAndEarn": "Lend & Earn",
+    "conditions": "Conditions",
+    "maxMinSum": "Max/min sum",
+    "depositsAndWithdrawal": "Deposits and withdrawal",
+    "term": "Term",
+    "annualizedInterestRate": "Annualized interest rate",
+    "openADeposit": "Open a deposit",
+    "faq": "FAQ",
+    "information": "Information",
+    "historyOfDeposits": "History of deposits",
+    "depositAmount": "Deposit amount"
   }
 }
