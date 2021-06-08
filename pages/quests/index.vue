@@ -260,7 +260,9 @@
         v-for="(card, i) in cards"
         :key="i"
       >
-        <div class="quest-cards">
+        <div
+          class="quest-cards"
+        >
           <div class="quest-cards__header">
             <div class="avatar__container">
               <img
@@ -301,7 +303,10 @@
             </div>
             <div class="distance__distance">{{ card.distance }}m from you</div>
           </div>
-          <div class="quest-cards__text">
+          <div
+            class="quest-cards__text"
+            @click="showDetails()"
+          >
             <div class="quest-cards__title">{{ card.theme }}</div>
             <div class="quest-cards__description"> {{ card.desc }}</div>
           </div>
@@ -909,7 +914,7 @@ export default {
   &__dd {
     border-left: 1px solid #F7F8FA;
     height: 100%;
-    margin: 40px 0 0 0;
+    display: flex;
   }
   &__icon {
     margin-bottom: -10px;
@@ -988,6 +993,16 @@ export default {
 
 }
 @include _1199 {
+
+  .quests {
+    &__body {
+      max-width: 980px;
+    }
+    &__search {
+      max-width: 890px;
+    }
+  }
+
   .mobile {
     display: none;
   }
@@ -1005,6 +1020,14 @@ export default {
     height: 100%;
     width: 100%;
     max-height: 775px;
+  }
+}
+
+@include _575 {
+  .user {
+    &__name {
+      margin: 0 0 0 10px;
+    }
   }
 }
 </style>

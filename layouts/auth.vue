@@ -149,7 +149,6 @@ export default {
     width: 100%;
     background: #FFFFFF;
     display: grid;
-    grid-auto-rows: auto 1fr;
     grid-template-columns: repeat(2, 1fr);
   }
   &__left {
