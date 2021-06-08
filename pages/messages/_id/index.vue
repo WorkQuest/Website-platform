@@ -556,7 +556,7 @@ export default {
     align-items: center;
     justify-items: center;
     border: 1px solid #E9EDF2;
-    border-radius: 0px 0px 6px 6px;
+    border-radius: 0 0 6px 6px;
   }
   &__name-container {
     display: flex;

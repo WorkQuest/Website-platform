@@ -202,7 +202,7 @@ export default {
   }
 }
 
-@include _2560 {
+@include _1700 {
   .mobile {
     &__wrapper {
       display: none;
