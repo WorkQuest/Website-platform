@@ -24,12 +24,23 @@
         <span
           v-for="(item, i) in links"
           :key="i"
-          class="links"
         >
           <div
             v-if="$route.path === item.url"
             class="btn__container"
-          />
+          >
+            <div class="btn__back">
+              <base-btn
+                mode="back"
+                @click="$router.go(-1)"
+              >
+                <template v-slot:left>
+                  <span class="icon-chevron_big_left" />
+                </template>
+                {{ $t('signUp.back') }}
+              </base-btn>
+            </div>
+          </div>
         </span>
         <div
           v-if="$route.path !== '/sign-in'"
