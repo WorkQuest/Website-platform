@@ -317,7 +317,7 @@ export default {
       padding: 0;
     }
     &__left {
-     justify-self: center;
+      justify-self: center;
       margin-right: 0;
       grid-template-rows: 1fr;
       max-width: 367px;
