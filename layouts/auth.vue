@@ -100,11 +100,6 @@ export default {
       isLoading: 'main/getIsLoading',
     }),
   },
-  methods: {
-    toMain() {
-      this.$router.push('/sign-in');
-    },
-  },
   data() {
     return {
       links: [
@@ -112,6 +107,11 @@ export default {
         { url: '/restore' },
       ],
     };
+  },
+  methods: {
+    toMain() {
+      this.$router.push('/sign-in');
+    },
   },
 };
 </script>
