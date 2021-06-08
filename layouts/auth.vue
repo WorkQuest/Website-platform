@@ -95,6 +95,14 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'AuthLayout',
+  data() {
+    return {
+      links: [
+        { url: '/sign-up' },
+        { url: '/restore' },
+      ],
+    };
+  },
   computed: {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
@@ -104,14 +112,6 @@ export default {
     toMain() {
       this.$router.push('/sign-in');
     },
-  },
-  data() {
-    return {
-      links: [
-        { url: '/sign-up' },
-        { url: '/restore' },
-      ],
-    };
   },
 };
 </script>
@@ -202,7 +202,7 @@ export default {
   }
 }
 
-@include _2560 {
+@include _1700 {
   .mobile {
     &__wrapper {
       display: none;

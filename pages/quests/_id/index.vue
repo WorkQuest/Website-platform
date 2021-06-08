@@ -801,7 +801,17 @@ export default {
     @extend .icon;
     margin-left: 5px;
   }
+  &-chat_green:before {
+    content: "\e9ba";
+    color: #00AA5B;
+    font-size: 20px;
+  }
+  &-caret_down_blue:before {
+    content: "\ea48";
+    color: #0083C7;
+  }
 }
+
 .divider{
   margin: 20px 0 20px 0;
   background-color: $black0;
@@ -1348,16 +1358,4 @@ export default {
     color: $black800;
   }
 }
-.icon {
-  &-chat_green:before {
-    content: "\e9ba";
-    color: #00AA5B;
-    font-size: 20px;
-  }
-  &-caret_down_blue:before {
-    content: "\ea48";
-    color: #0083C7;
-  }
-}
-
 </style>

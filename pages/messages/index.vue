@@ -26,6 +26,7 @@
                   <div class="avatar__row">
                     <div>
                       <img
+                        alt=""
                         class="profile__img"
                         src="~/assets/img/temp/profile.svg"
                       >
@@ -369,13 +370,6 @@ export default {
 ::-webkit-scrollbar-thumb {
   border-radius: 2px;
   -webkit-box-shadow: inset 0 0 24px rgba(0, 131, 199, 1);
-}
-
-@include _2560 {
-  .mobile {
-    display: none;
-  }
-
 }
 
 @include _1700 {
