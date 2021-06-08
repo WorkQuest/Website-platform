@@ -564,48 +564,46 @@ export default {
 }
 
 .icon {
+  font-size: 20px;
+  cursor: pointer;
   &-facebook::before {
+    @extend .icon;
     color: #0A7EEA;
-    font-size: 20px;
-    cursor: pointer;
   }
   &-twitter::before {
+    @extend .icon;
     color: #24CAFF;
-    font-size: 20px;
-    cursor: pointer;
   }
   &-instagram::before {
+    @extend .icon;
     color: #C540F3;
-    font-size: 20px;
-    cursor: pointer;
   }
   &-LinkedIn::before {
+    @extend .icon;
     color: #57A6EF;
-    font-size: 20px;
-    cursor: pointer;
   }
   &-Earth::before {
+    @extend .icon;
     color: #7C838D;
     font-size: 16px;
-    cursor: pointer;
     padding-right: 5px;
   }
   &-location::before {
+    @extend .icon;
     color: #7C838D;
     font-size: 16px;
-    cursor: pointer;
     padding-right: 5px;
   }
   &-phone::before {
+    @extend .icon;
     color: #7C838D;
     font-size: 16px;
-    cursor: pointer;
     padding-right: 5px;
   }
   &-mail::before {
+    @extend .icon;
     color: #7C838D;
     font-size: 16px;
-    cursor: pointer;
     padding-right: 5px;
   }
 }
@@ -688,7 +686,6 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
   content: none;
 }
 

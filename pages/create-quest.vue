@@ -436,13 +436,13 @@ export default {
     justify-content: flex-start;
   }
   &_left:hover {
-    box-shadow: 0px 3px 15px 0px rgba(34, 60, 80, 0.08);
+    box-shadow: 0 3px 15px 0 rgba(34, 60, 80, 0.08);
   }
   &_right {
     justify-content: flex-end;
   }
   &_right:hover {
-    box-shadow: 0px 3px 15px 0px rgba(34, 60, 80, 0.08);
+    box-shadow: 0 3px 15px 0 rgba(34, 60, 80, 0.08);
   }
   &__container {
     width: 100%;

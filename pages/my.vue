@@ -813,7 +813,7 @@ export default {
       @extend .btn;
       background: $white;
       color: $black800;
-      box-shadow: 0px 3px 20px rgba(16, 51, 91, 0.1);
+      box-shadow: 0 3px 20px rgba(16, 51, 91, 0.1);
     }
   }
 }
@@ -1221,13 +1221,6 @@ export default {
     }
   }
 }
-@include _2560 {
-  .mobile {
-    display: none;
-  }
-
-}
-
 @include _1700 {
   .mobile {
     display: none;
