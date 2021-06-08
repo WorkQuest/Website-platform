@@ -6,7 +6,7 @@
     >
       <div class="mobile-menu__item">
         <span class="icon-list_check" />
-        <span>Quests</span>
+        <span class="item__text">{{ $t('mobile.quests') }}</span>
       </div>
     </nuxt-link>
     <nuxt-link
@@ -15,7 +15,7 @@
     >
       <div class="mobile-menu__item">
         <span class="icon-list_ul" />
-        <span>My quests</span>
+        <span class="item__text">{{ $t('mobile.myQuests') }}</span>
       </div>
     </nuxt-link>
     <nuxt-link
@@ -24,7 +24,7 @@
     >
       <div class="mobile-menu__item">
         <span class="icon-message" />
-        <span>Chat</span>
+        <span class="item__text">{{ $t('mobile.chat') }}</span>
       </div>
     </nuxt-link>
     <nuxt-link
@@ -33,7 +33,7 @@
     >
       <div class="mobile-menu__item">
         <span class="icon-credit_card" />
-        <span>Wallet</span>
+        <span class="item__text">{{ $t('mobile.wallet') }}</span>
       </div>
     </nuxt-link>
     <nuxt-link
@@ -42,7 +42,7 @@
     >
       <div class="mobile-menu__item">
         <span class="icon-more_horizontal" />
-        <span>More</span>
+        <span class="item__text">{{ $t('mobile.more') }}</span>
       </div>
     </nuxt-link>
     <!--    TODO: NEED ADD FUNC FOR COMPONENT-->
@@ -56,6 +56,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.item {
+  &__text {
+    font-size: 16px;
+  }
+}
+
 .icon {
   color: $black200;
   font-size: 25px;
@@ -103,5 +110,12 @@ export default {
       justify-content: center;
       align-items: center;
     }
+}
+@include _380 {
+  .item {
+    &__text {
+      font-size: 13px;
+    }
+  }
 }
 </style>
