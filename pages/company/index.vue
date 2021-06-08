@@ -178,7 +178,6 @@
               <div class="rating">
                 {{ item.reviewerRating }}
               </div>
-              <!--              TODO: Добавить стили в BASE Button-->
               <nuxt-link
                 class="simple-button"
                 to="/company"
@@ -280,7 +279,6 @@
             </div>
           </div>
           <div class="button">
-            <!--              TODO: Добавить стили в BASE Button-->
             <nuxt-link
               class="more-button"
               to="/company"
@@ -330,7 +328,6 @@
                 </div>
               </div>
             </div>
-            <!--              TODO: Добавить стили в BASE Button-->
             <nuxt-link
               class="simple-button"
               to="/company"
@@ -850,7 +847,6 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
   content: none;
 }
 
