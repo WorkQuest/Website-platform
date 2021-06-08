@@ -38,7 +38,7 @@
     </nuxt-link>
     <nuxt-link
       class="mobile-menu__link"
-      to="/settings"
+      to="/"
     >
       <div class="mobile-menu__item">
         <span class="icon-more_horizontal" />

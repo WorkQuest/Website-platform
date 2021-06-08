@@ -76,7 +76,7 @@
         </section>
         <section class="mobile">
           <h2 class="mobile__title">
-            Wallet
+            {{ $t('mobile.wallet') }}
           </h2>
           <div class="wallet__header">
             <div class="wallet__number">
@@ -88,10 +88,10 @@
           </div>
           <div class="balance__container">
             <div class="balance__title">
-              Balance
+              {{ $t('mobile.balance') }}
             </div>
             <div class="balance__number">
-              {{ userBalance }} WUSD
+              {{ userBalance }} {{ $t('mobile.wusd') }}
             </div>
             <div class="balance__dollar">
               $ {{ usd }}
@@ -99,15 +99,15 @@
           </div>
           <div class="btn__container">
             <base-btn @click="showDepositModal()">
-              Deposit
+              {{ $t('mobile.deposit') }}
             </base-btn>
             <base-btn @click="showWidthrawModal()">
-              Withdraw
+              {{ $t('mobile.withdraw') }}
             </base-btn>
           </div>
           <div class="transactions">
             <div class="transactions__title">
-              Transactions
+              {{ $t('mobile.transactions') }}
             </div>
             <span
               v-for="(transaction, i) in transactions"
@@ -128,8 +128,8 @@
                 </div>
                 <div class="transaction__status">
                   <div class="status__title">
-                    <span v-if="transaction.mode === 1">Recieve</span>
-                    <span v-if="transaction.mode === 2">Send</span>
+                    <span v-if="transaction.mode === 1">{{ $t('mobile.receive') }}</span>
+                    <span v-if="transaction.mode === 2">{{ $t('mobile.send') }}</span>
                   </div>
                   <div class="status__date">
                     {{ transaction.date }}
@@ -144,7 +144,7 @@
                 >
                   <span v-if="transaction.mode === 1">+</span>
                   <span v-if="transaction.mode === 2">-</span>
-                  <span>{{ transaction.value }} WUSD</span>
+                  <span>{{ transaction.value }} {{ $t('mobile.wusd') }}</span>
                 </div>
               </div>
             </span>
@@ -358,9 +358,6 @@ export default {
     margin: 15px 0 15px 0;
   }
   &__icon {}
-  &__status {
-    display: grid;
-  }
   &__value {
     font-weight: 500;
     font-size: 16px;
@@ -381,6 +378,10 @@ export default {
   display: grid;
   grid-template-columns: 1fr 6fr 5fr;
   margin: 0 0 15px 0;
+  &__icon {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .btn {
@@ -474,7 +475,6 @@ export default {
     align-items: center;
     font-weight: 500;
     font-size: 16px;
-    line-height: 130%;
   }
 
   &__icon {
@@ -646,6 +646,31 @@ export default {
     height: 100%;
     width: 100%;
     max-height: 775px;
+  }
+  .transaction {
+    &__status {
+      margin: 0 0 0 16px;
+    }
+  }
+}
+@include _380 {
+  .wallet {
+    &__number {
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+    }
+  }
+  .status {
+    &__title {
+      font-size: 13px;
+    }
+  }
+  .transaction {
+    &__status {
+      display: grid;
+      justify-content: center;
+    }
   }
 }
 </style>

@@ -1272,4 +1272,25 @@ export default {
     max-height: 775px;
   }
 }
+@include _480 {
+  .mobile {
+    &__menu {
+      grid-gap: 6px;
+    }
+  }
+}
+
+@include _380 {
+  .mobile {
+    &__menu {
+      grid-gap: 2px;
+      border-radius: 6px;
+      background: #F7F8FA;
+      padding: 0;
+      margin: 10px 0 0 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}
 </style>
