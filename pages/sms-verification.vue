@@ -39,12 +39,18 @@
           </div>
         </div>
       </div>
-      <div class="btn__container" v-if="phoneEnter === false">
+      <div
+        v-if="phoneEnter === false"
+        class="btn__container"
+      >
         <base-btn @click="toSmsCode()">
           {{ $t('mobile.submit') }}
         </base-btn>
       </div>
-      <div class="btn__container" v-if="phoneEnter === true">
+      <div
+        v-if="phoneEnter === true"
+        class="btn__container"
+      >
         <base-btn @click="toSettings()">
           {{ $t('mobile.submit') }}
         </base-btn>
