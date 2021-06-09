@@ -118,6 +118,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.template {
+  &__content {
+    padding: 200px 0 0 0;
+  }
+  &__slogan {
+    padding: 50px 0 0 50px;
+  }
+}
+
+.mobile {
+  &__wrapper {
+    display: none;
+  }
+}
 
 .title {
   &__container {
@@ -205,11 +219,6 @@ export default {
 }
 
 @include _1700 {
-  .mobile {
-    &__wrapper {
-      display: none;
-    }
-  }
   .links {
     display: none;
   }
@@ -222,12 +231,6 @@ export default {
     }
   }
   .template {
-    &__content {
-      padding: 200px 0 0 0;
-    }
-    &__slogan {
-      padding: 50px 0 0 50px;
-    }
     &__left {
       grid-template-rows: 0fr 0fr;
     }
