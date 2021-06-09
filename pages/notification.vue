@@ -192,6 +192,7 @@ export default {
     padding: 18px 18px;
   }
 }
+
 @include _1700 {
   .mobile {
     display: none;
