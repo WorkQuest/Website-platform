@@ -122,6 +122,9 @@ export default {
   &__content {
     padding: 200px 0 0 0;
   }
+  &__slogan {
+    padding: 50px 0 0 50px;
+  }
 }
 
 .mobile {
@@ -228,9 +231,6 @@ export default {
     }
   }
   .template {
-    &__slogan {
-      padding: 50px 0 0 50px;
-    }
     &__left {
       grid-template-rows: 0fr 0fr;
     }
