@@ -17,7 +17,6 @@
               >
             </div>
             <div class="rating" />
-            <!--              TODO: Добавить стили в BASE Button-->
             <nuxt-link
               class="reviews-amount"
               to="/profiles/1"
@@ -228,7 +227,6 @@
                 </div>
               </div>
             </div>
-            <!--              TODO: Добавить стили в BASE Button-->
             <nuxt-link
               class="simple-button"
               to="/profiles/1"
@@ -688,7 +686,6 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
   content: none;
 }
 

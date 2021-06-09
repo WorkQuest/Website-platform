@@ -1263,12 +1263,6 @@ export default {
     font-size: 16px;
   }
 }
-@include _2560 {
-  .mobile {
-    display: none;
-  }
-
-}
 
 @include _1700 {
   .mobile {

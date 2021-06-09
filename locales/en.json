@@ -453,7 +453,9 @@
     "confPass": "Confirm password",
     "phone": "Phone",
     "smsVerification": "SMS Verification",
-    "submit": "Submit"
+    "submit": "Submit",
+    "disabled": "DISABLED",
+    "higher": "HIGHER LEVEL"
   },
   "referral": {
     "inviteFriendsHead": "Invite friends.",
@@ -519,4 +521,3 @@
     "depositAmount": "Deposit amount"
   }
  }
-

@@ -346,7 +346,6 @@
 </template>
 
 <script>
-// TODO: Need Bugfix
 import Vue from 'vue';
 import modals from '~/store/modals/modals';
 
@@ -764,6 +763,7 @@ export default {
     margin: 17px 20px 0 20px;
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
   }
   &__priority {
@@ -812,7 +812,7 @@ export default {
       @extend .btn;
       background: $white;
       color: $black800;
-      box-shadow: 0px 3px 20px rgba(16, 51, 91, 0.1);
+      box-shadow: 0 3px 20px rgba(16, 51, 91, 0.1);
     }
   }
 }
@@ -1220,13 +1220,6 @@ export default {
     }
   }
 }
-@include _2560 {
-  .mobile {
-    display: none;
-  }
-
-}
-
 @include _1700 {
   .mobile {
     display: none;
@@ -1278,6 +1271,7 @@ export default {
     }
   }
 }
+
 @include _380 {
   .mobile {
     &__menu {
@@ -1285,29 +1279,10 @@ export default {
       border-radius: 6px;
       background: #F7F8FA;
       padding: 0;
-      margin: 10px 15px 0 15px;
+      margin: 10px 0 0 0;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
     }
   }
-  .cards {
-    &__container {
-      max-width: 100%;
-    }
-  }
-  .btn {
-    &__deactive {
-      font-size: 12px;
-      padding: 0;
-      margin: 5px 5px 5px 0;
-      &:hover {
-        margin: 4px 4px 4px -4px;
-      }
-    }
-  }
-}
-.base-btn {
-  height: 32px;
-  padding: 5px;
 }
 </style>
