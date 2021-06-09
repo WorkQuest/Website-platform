@@ -361,7 +361,7 @@
             </div>
             <!-- Кнопка меню -->
             <div
-              class="menu__toggle"
+              class="ctm-menu__toggle"
               @click="toggleMobileMenu()"
             >
               <button
@@ -830,7 +830,6 @@ export default {
     display: grid;
     padding-bottom: 80px;
     transition: 1s;
-    max-width: 1080px;
     width: 100%;
   }
 }
@@ -1332,11 +1331,21 @@ export default {
     grid-gap: 20px;
   }
 }
+.ctm-menu {
+  &__toggle {
+    display: none;
+  }
+}
 @include _1700 {}
 @include _1600 {}
 @include _1500 {}
 @include _1300 {}
 @include _1199 {
+  .ctm-menu {
+    &__toggle {
+      display: flex;
+    }
+  }
   .header {
     &__button_menu {
       display: flex;
