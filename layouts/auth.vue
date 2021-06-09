@@ -24,6 +24,7 @@
         <span
           v-for="(item, i) in links"
           :key="i"
+          style="display:none"
         >
           <div
             v-if="$route.path === item.url"
@@ -117,6 +118,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.mobile {
+  &__wrapper {
+    display: none;
+  }
+}
+
+.template {
+  &__content {
+    padding: 200px 0 0 0;
+  }
+
+  &__slogan {
+    padding: 50px 0 0 50px;
+  }
+}
 
 .title {
   &__container {
@@ -165,6 +181,7 @@ export default {
     display: grid;
     align-items: center;
     grid-template-columns: 40px 1fr;
+    grid-template-rows: 40px;
     grid-gap: 5px;
     cursor: pointer;
     span {
@@ -203,11 +220,6 @@ export default {
 }
 
 @include _1700 {
-  .mobile {
-    &__wrapper {
-      display: none;
-    }
-  }
   .btn {
     &__back {
       display: none;
@@ -217,12 +229,6 @@ export default {
     }
   }
   .template {
-    &__content {
-      padding: 200px 0 0 0;
-    }
-    &__slogan {
-      padding: 50px 0 0 50px;
-    }
     &__left {
       grid-template-rows: 0fr 0fr;
     }
