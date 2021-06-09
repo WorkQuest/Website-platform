@@ -1221,6 +1221,7 @@ export default {
     }
   }
 }
+
 @include _1700 {
   .mobile {
     display: none;

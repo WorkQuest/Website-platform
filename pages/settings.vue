@@ -1256,6 +1256,7 @@ export default {
     font-size: 16px;
   }
 }
+
 @include _1700 {
   .mobile {
     display: none;
