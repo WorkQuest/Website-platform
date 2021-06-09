@@ -455,7 +455,8 @@
     "smsVerification": "SMS Verification",
     "submit": "Submit",
     "disabled": "DISABLED",
-    "higher": "HIGHER LEVEL"
+    "higher": "HIGHER LEVEL",
+    "code": "Code"
   },
   "referral": {
     "inviteFriendsHead": "Invite friends.",

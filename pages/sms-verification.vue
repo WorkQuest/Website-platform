@@ -7,23 +7,47 @@
           <div @click="back()">
             <span class="icon-chevron_big_left" />
           </div>
+        </div>
+        <div v-if="phoneEnter === false">
           <div class="mobile-header__title">
             <div>{{ $t('mobile.smsVerification') }}</div>
           </div>
+          <div class="input__container">
+            <div>
+              <label for="phone">{{ $t('mobile.phone') }}</label>
+              <base-field
+                id="phone"
+                v-model="phone"
+                placeholder="+7 *** *** ** **"
+              />
+            </div>
+          </div>
         </div>
-        <div class="input__container">
-          <div>
-            <label for="phone">{{ $t('mobile.phone') }}</label>
-            <base-field
-              id="phone"
-              v-model="phone"
-              placeholder="+7 *** *** ** **"
-            />
+        <div v-else>
+          <div class="mobile-header__title">
+            <div>{{ $t('mobile.smsVerification') }}</div>
+          </div>
+          <div class="input__container">
+            <div>
+              <label for="phone">{{ $t('mobile.code') }}</label>
+              <base-field
+                id="code"
+                v-model="code"
+                placeholder="HRT23ID"
+              />
+            </div>
           </div>
         </div>
       </div>
-      <div class="btn__container">
-        <base-btn>{{ $t('mobile.submit') }}</base-btn>
+      <div class="btn__container" v-if="phoneEnter === false">
+        <base-btn @click="toSmsCode()">
+          {{ $t('mobile.submit') }}
+        </base-btn>
+      </div>
+      <div class="btn__container" v-if="phoneEnter === true">
+        <base-btn @click="toSettings()">
+          {{ $t('mobile.submit') }}
+        </base-btn>
       </div>
     </div>
   </div>
@@ -35,6 +59,9 @@ export default {
   data() {
     return {
       phone: '',
+      code: '',
+      phoneEnter: false,
+      codeEnter: false,
     };
   },
   async mounted() {
@@ -44,6 +71,14 @@ export default {
   methods: {
     back() {
       this.$router.go(-1);
+    },
+    toSmsCode() {
+      this.phoneEnter = this.phone.length === 11;
+    },
+    toSettings() {
+      if (this.code.length === 7) {
+        this.$router.push('/settings');
+      }
     },
   },
 };
