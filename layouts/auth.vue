@@ -10,7 +10,7 @@
             src="~assets/img/app/logo.svg"
             alt="WorkQuest"
           >
-          <span>WorkQuest</span>
+          <span>{{ $t('signIn.workQuest') }}</span>
         </div>
         <div class="template__content">
           <nuxt />
@@ -18,10 +18,7 @@
       </div>
       <div class="template__right">
         <div class="template__slogan">
-          <span>Making
-            money is fast.
-            When your
-            work is quest.</span>
+          <span>{{ $t('signIn.makingMoneyIsFast') }}</span>
         </div>
         <img
           class="template__long"
@@ -117,6 +114,36 @@ export default {
   .template {
     &__slogan {
       padding: 50px 0 0 50px;
+    }
+    &__long {
+      display: none;
+    }
+  }
+}
+
+@include _1199 {
+  .template {
+    &__content {
+      align-items: initial;
+      padding-top: 30px;
+    }
+    &__container {
+      grid-template-columns: 1fr;
+      grid-template-rows: 300px 1fr;
+    }
+    &__slogan {
+      font-size: 32px;
+    }
+    &__right {
+      grid-row: 1/2;
+      grid-column: 1/3;
+    }
+    &__left {
+      grid-column: 1/3;
+      grid-row: 2/3;
+      max-width: 100%;
+      justify-self: initial;
+      padding: 20px;
     }
   }
 }
