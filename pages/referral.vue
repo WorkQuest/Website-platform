@@ -76,7 +76,7 @@
             </div>
             <div class="info-block__link">
               <div class="address">
-                {{ this.referLink }}
+                {{ referLink }}
               </div>
               <button
                 type="button"
@@ -142,11 +142,12 @@
                     {{ el.item.userName }}
                   </div>
                 </div>
-              </template><template #cell(userID)="el">
-              <div class="user__value_gray">
-                {{ el.item.userID }}
-              </div>
-            </template>
+              </template>
+              <template #cell(userID)="el">
+                <div class="user__value_gray">
+                  {{ el.item.userID }}
+                </div>
+              </template>
               <template #cell(txHash)="el">
                 <div class="user__value_gray">
                   {{ el.item.txHash }}
