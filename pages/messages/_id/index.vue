@@ -249,14 +249,6 @@ export default {
 }
 
 .icon {
-  &-more {
-    margin: 0 19px 0 0;
-  }
-  &-more_horizontal::before {
-    content: "\e951";
-    color: $black500;
-    font-size: 26px;
-  }
   &-send::before {
     content: "\ea6b";
     font-size: 30px;
@@ -272,6 +264,14 @@ export default {
     color: $black800;
     font-size: 26px;
     cursor: pointer;
+  }
+  &-more_horizontal::before {
+    content: "\e951";
+    color: $black500;
+    font-size: 26px;
+  }
+  &-more {
+    margin: 0 19px 0 0;
   }
 }
 
@@ -324,7 +324,6 @@ export default {
     &:hover {
       @extend .input__file-button;
       box-shadow: 0 0 6px rgba(0,0,0,0.2);
-      transition: .2s;
     }
   }
 }
@@ -361,7 +360,6 @@ export default {
     &_fav {
       cursor: pointer;
     }
-
     &_perf {
       display: grid;
       grid-template-columns: 25px 25px 25px 25px 25px;
@@ -492,17 +490,10 @@ export default {
       max-height: 40px;
       margin: 0 11px 0 0;
       transition: .2s;
-    }
-    &_spend:hover {
-      background-color: $black0;
-      border-radius: 6px;
-      width: 100%;
-      height: 100%;
-      max-width:40px;
-      max-height: 40px;
-      margin: 0 11px 0 0;
-      box-shadow: 0 0 6px rgba(0,0,0,0.2);
-      transition: .2s;
+      &:hover {
+        @extend .chat__btn_spend;
+        box-shadow: 0 0 6px rgba(0,0,0,0.2);
+      }
     }
     &_add {
       background-color: $black0;
@@ -513,17 +504,10 @@ export default {
       max-height: 40px;
       margin: 0 -11px 0 0;
       transition: .2s;
-    }
-    &_add:hover {
-      background-color: $black0;
-      border-radius: 6px;
-      width: 100%;
-      height: 100%;
-      max-width:40px;
-      max-height: 40px;
-      margin: 0 -11px 0 0;
-      box-shadow: 0 0 6px rgba(0,0,0,0.2);
-      transition: .2s;
+      &:hover {
+        @extend .chat__btn_add;
+        box-shadow: 0 0 6px rgba(0,0,0,0.2);
+      }
     }
   }
   &__panel {
@@ -535,7 +519,7 @@ export default {
     align-items: center;
     justify-items: center;
     border: 1px solid #E9EDF2;
-    border-radius: 0px 0px 6px 6px;
+    border-radius: 0 0 6px 6px;
   }
   &__name-container {
     display: flex;
@@ -573,7 +557,6 @@ export default {
     width: 100%;
     max-height: 722px;
   }
-  &__img-container {}
   &__img {
     width: 100%;
     height: 100%;
