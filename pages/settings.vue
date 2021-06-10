@@ -365,189 +365,6 @@
           </div>
         </div>
       </section>
-      <section class="mobile">
-        <div class="mobile__header">
-          <div class="mobile__title">
-            {{ $t('settings.more') }}
-          </div>
-          <div>
-            <span class="icon-settings" />
-          </div>
-        </div>
-        <div class="mobile__body">
-          <div
-            class="mobile__image"
-          >
-            <div class="card__level">
-              <div class="card__level_higher">
-                HIGHER LEVEL
-              </div>
-            </div>
-            <div class="user">
-              <div class="user__name">
-                Samantha Sparcs
-              </div>
-              <div class="user__icon">
-                <span class="icon-caret_right" />
-              </div>
-            </div>
-          </div>
-          <div class="mobile__btns">
-            <div class="mobile__btn">
-              <div class="icons">
-                <span class="icon-Lock" />
-              </div>
-              <div
-                class="mobile__option"
-                @click="changePass()"
-              >
-                <div class="option__title">
-                  {{ $t('settings.changePass') }}
-                </div>
-                <div class="option__arrow">
-                  <span class="icon-caret_right" />
-                </div>
-              </div>
-            </div>
-            <div
-              class="mobile__btn"
-              @click="switch2Fa()"
-            >
-              <div class="icons">
-                <base-checkbox
-                  v-model="twoFa"
-                  type="toggle"
-                  :label="''"
-                />
-              </div>
-              <div
-                class="mobile__option"
-              >
-                <div class="option__title">
-                  {{ $t('settings.2FA') }}
-                </div>
-                <div class="option__arrow">
-                  <span class="icon-caret_right" />
-                </div>
-              </div>
-            </div>
-            <div
-              class="mobile__btn"
-              @click="switchSms()"
-            >
-              <div class="icons">
-                <base-checkbox
-                  v-model="sms"
-                  type="toggle"
-                  :label="''"
-                />
-              </div>
-              <div class="mobile__option">
-                <div class="option__title">
-                  {{ $t('settings.smsVerification2') }}
-                </div>
-                <div class="option__arrow">
-                  <span class="icon-caret_right" />
-                </div>
-              </div>
-            </div>
-            <div class="mobile__btn">
-              <div class="icons">
-                <span class="icon-user_pin" />
-              </div>
-              <div class="mobile__option">
-                <div class="option__title">
-                  {{ $t('settings.changeRole') }}
-                </div>
-                <div class="option__arrow">
-                  <span class="icon-caret_right" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="instruments">
-            <div class="instruments__title">
-              {{ $t('settings.instruments') }}
-            </div>
-            <div class="instruments__body">
-              <div class="instrument">
-                <div>
-                  <span class="icon-data" />
-                </div>
-                <div class="instrument__title">
-                  {{ $t('settings.pensionProgram') }}
-                </div>
-                <div class="arrow-left">
-                  <span class="icon-chevron_big_right" />
-                </div>
-              </div>
-              <nuxt-link
-                to="/referral"
-              >
-                <div class="instrument">
-                  <div>
-                    <span class="icon-group_alt" />
-                  </div>
-                  <div class="instrument__title">
-                    {{ $t('settings.referralProgram') }}
-                  </div>
-                  <div class="arrow-left">
-                    <span class="icon-chevron_big_right" />
-                  </div>
-                </div>
-              </nuxt-link>
-              <div class="instrument">
-                <div>
-                  <span class="icon-home_alt_check" />
-                </div>
-                <div class="instrument__title">
-                  {{ $t('settings.p2pInsurance') }}
-                </div>
-                <div class="arrow-left">
-                  <span class="icon-chevron_big_right" />
-                </div>
-              </div>
-              <div class="instrument">
-                <div>
-                  <span class="icon-Case" />
-                </div>
-                <div class="instrument__title">
-                  {{ $t('settings.savingProduct') }}
-                </div>
-                <div class="arrow-left">
-                  <span class="icon-chevron_big_right" />
-                </div>
-              </div>
-              <div class="instrument">
-                <div>
-                  <span class="icon-credit_card" />
-                </div>
-                <div class="instrument__title">
-                  {{ $t('settings.crediting') }}
-                </div>
-                <div class="arrow-left">
-                  <span class="icon-chevron_big_right" />
-                </div>
-              </div>
-              <nuxt-link
-                to="/settings"
-              >
-                <div class="instrument">
-                  <div>
-                    <span class="icon-line_chart_up" />
-                  </div>
-                  <div class="instrument__title">
-                    {{ $t('settings.liquidityMining') }}
-                  </div>
-                  <div class="arrow-left">
-                    <span class="icon-chevron_big_right" />
-                  </div>
-                </div>
-              </nuxt-link>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   </div>
 </template>
@@ -1149,54 +966,6 @@ export default {
     padding: 0 16px 23px 0;
   }
 }
-.mobile {
-  width: 100%;
-  height: 100%;
-  max-height: 900px;
-  &__title {
-    @include text-simple;
-    font-weight: 700;
-    font-size: 30px;
-    color: $black800;
-  }
-  &__header {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 18px;
-  }
-  &__body {
-    margin: 0 20px 0 20px;
-  }
-  &__option {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    align-items: center;
-  }
-  &__image {
-    background-image: url("~assets/img/app/widget_left.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    width: 100%;
-    border-radius: 6px;
-    height: 100%;
-    max-height: 125px;
-    margin: 0 0 16px 0;
-  }
-  &__btns {
-    display: grid;
-    grid-gap: 16px;
-    grid-template-columns: repeat(2, 1fr);
-  }
-  &__btn {
-    width: 100%;
-    height: 100%;
-    background-color: $black100;
-    border-radius: 6px;
-  }
-}
 
 .instruments {
   &__title {
@@ -1204,9 +973,6 @@ export default {
     font-size: 16px;
     color: $black800;
     margin: 15px 0 15px 0;
-  }
-  &__body {
-
   }
 }
 .user {
@@ -1264,30 +1030,10 @@ export default {
   }
 }
 
-@include _1700 {
-  .mobile {
-    display: none;
-  }
-
-}
-@include _1600 {
-  .mobile {
-    display: none;
-  }
-
-}
-@include _1400 {
-  .mobile {
-    display: none;
-  }
-
-}
-@include _1300 {
-  .mobile {
-    display: none;
-  }
-
-}
+@include _1700 {}
+@include _1600 {}
+@include _1400 {}
+@include _1300 {}
 @include _1199 {
   .page {
     &__title {
@@ -1306,22 +1052,8 @@ export default {
   .settings {
     margin: 20px;
   }
-  .mobile {
-    display: none;
-  }
 }
-@include _991 {
-  .pc {
-    display: none;
-  }
-  .mobile {
-    overflow-y: auto;
-    display: grid;
-    height: 100%;
-    width: 100%;
-    max-height: 775px;
-  }
-}
+@include _991 {}
 
 @include _380 {
   .option {
