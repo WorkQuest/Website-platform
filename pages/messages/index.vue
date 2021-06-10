@@ -59,48 +59,6 @@
           </div>
         </div>
       </section>
-      <section class="mobile">
-        <div class="mobile__header">
-          <div class="title__container">
-            <h2 class="mobile__title">
-              {{ $t('mobile.chat') }}
-            </h2>
-          </div>
-          <div>
-            <span class="icon-more_vertical" />
-          </div>
-        </div>
-        <span
-          v-for="(item, i) in cards"
-          :key="i"
-        >
-          <div
-            class="mobile__body"
-            @click="showDetails()"
-          >
-            <div class="message__body">
-              <div class="avatar__container">
-                <img
-                  :alt="item.name"
-                  src="~assets/img/temp/photo.jpg"
-                  class="message__avatar"
-                >
-              </div>
-              <div class="message__container">
-                <div class="message__name">
-                  {{ item.name }}
-                </div>
-                <div class="message__text">
-                  You: {{ item.youMessage }}
-                </div>
-                <div class="message__data">
-                  14 days ago
-                </div>
-              </div>
-            </div>
-          </div>
-        </span>
-      </section>
     </div>
   </div>
 </template>
@@ -183,7 +141,6 @@ export default {
 <style lang="scss" scoped>
 
 .message {
-  &__container {}
   &__avatar {
     max-width: 74px;
     max-height: 74px;
@@ -371,34 +328,11 @@ export default {
   -webkit-box-shadow: inset 0 0 24px rgba(0, 131, 199, 1);
 }
 
-@include _1700 {
-  .mobile {
-    display: none;
-  }
-
-}
-@include _1600 {
-  .mobile {
-    display: none;
-  }
-
-}
-@include _1400 {
-  .mobile {
-    display: none;
-  }
-
-}
-@include _1300 {
-  .mobile {
-    display: none;
-  }
-
-}
+@include _1700 {}
+@include _1600 {}
+@include _1400 {}
+@include _1300 {}
 @include _1199 {
-  .mobile {
-    display: none;
-  }
   .chat {
     margin: 0 20px 0 20px;
   }
@@ -418,16 +352,6 @@ export default {
       grid-template-columns: 1fr 6fr;
       align-items: flex-start;
     }
-  }
-  .pc {
-    display: none;
-  }
-  .mobile {
-    overflow-y: auto;
-    display: grid;
-    height: 100%;
-    width: 100%;
-    max-height: 775px;
   }
 }
 

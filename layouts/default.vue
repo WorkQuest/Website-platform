@@ -536,7 +536,9 @@
               </div>
             </div>
           </div>
-          <div class="template__main">
+          <div
+            class="template__main"
+          >
             <nuxt />
           </div>
         </div>
@@ -851,6 +853,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+
+.hidden {
+  display: none;
+}
 
 .mobile {
   &-dropdown {
@@ -1568,5 +1574,8 @@ export default {
       background: $white;
     }
   }
+}
+@include _575 {
+
 }
 </style>
