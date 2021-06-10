@@ -98,21 +98,6 @@
           </button>
         </div>
       </div>
-      <div class="mobile__links">
-        <div class="auth__mobile">
-          <div class="auth__link">
-            <span>{{ $t('signIn.dontHaveAnAccount') }}</span>
-            <nuxt-link to="/sign-up">
-              {{ $t('signIn.signUp') }}
-            </nuxt-link>
-          </div>
-        </div>
-        <div class="auth__link">
-          <nuxt-link to="/restore">
-            {{ $t('signIn.forgotYourPass') }}
-          </nuxt-link>
-        </div>
-      </div>
     </div>
   </ValidationObserver>
 </template>
@@ -176,16 +161,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@media screen and (min-width:575px) {
-  .auth {
-    &__mobile {
-      display: none;
-    }
-    &__link {
-      display: none;
-    }
-  }
-}
 .auth {
   &__container {
     display: grid;
@@ -338,9 +313,6 @@ export default {
       margin: 0 0 10px 0;
     }
   }
-  .auth {
-    &__text {}
-  }
   .template {
     &__right {
       display: none;
@@ -348,42 +320,8 @@ export default {
   }
 }
 
-@include _575 {
-  .auth {
-    &__tools {
-      display: none;
-    }
-    &__action {
-      padding-top: 10px;
-    }
-    &__mobile {
-      display: grid;
-      margin: 20px 0 10px 0;
-    }
-  }
-}
-
 @include _380 {
-  .auth {
-    &__icons {
-      grid-template-columns: repeat(5, 1fr);
-      grid-gap: 22px;
-    }
-    &__mobile {
-      margin: 20px 0 10px 0;
-    }
-    &__links {
-      margin: 0 0 20px 0;
-    }
-    &__links {
-      padding: 0 0 20px 0;
-    }
-  }
-  .template {
-    &__left {
-      max-width: 367px;
-    }
-  }
+
 }
 
 </style>

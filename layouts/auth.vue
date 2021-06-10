@@ -147,4 +147,29 @@ export default {
     }
   }
 }
+
+@include _575 {
+  .template {
+    &__left {
+      max-width: 354px;
+    }
+  }
+}
+
+@include _380 {
+  .template {
+    &__left {
+      padding: 0;
+      grid-column: 1/9;
+      grid-row: 2/3;
+      max-width: 100%;
+      justify-self: initial;
+    }
+  }
+  .auth {
+    &__fields {
+      width: 320px;
+    }
+  }
+}
 </style>
