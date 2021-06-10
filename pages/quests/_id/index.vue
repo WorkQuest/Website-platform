@@ -1,119 +1,159 @@
 <template>
   <div>
-    <section class="pc">
-      <Info
-        :info="infoData"
-      />
-      <div class="main-white">
-        <div class="main__body">
-          <div class="user__top">
-            <div class="user__container">
-              <div class="user__head">
-                <div
-                  class="user__left"
-                  @click="showProfile()"
+    <Info
+      :info="infoData"
+    />
+    <div class="main-white">
+      <div class="main__body">
+        <div class="user__top">
+          <div class="user__container">
+            <div class="user__head">
+              <div
+                class="user__left"
+                @click="showProfile()"
+              >
+                <img
+                  class="user__img"
+                  src="~/assets/img/app/fake_profile.png"
+                  alt=""
                 >
-                  <img
-                    class="user__img"
-                    src="~/assets/img/app/fake_profile.png"
-                    alt=""
-                  >
-                  <span class="user__username">
-                    {{ payload.username }}
-                  </span>
-                  <span
-                    v-if="userRole === 'employer'"
-                    class="user__company"
-                  >
-                    {{ $t('company.from') }} {{ payload.company }}
-                  </span>
-                </div>
-                <div class="user__right">
-                  <span class="user__date">
-                    {{ payload.date }}
-                  </span>
-                  <span class="icon-share_outline icon_fs-20" />
-                </div>
-              </div>
-              <div class="location__container">
-                <div class="quest__location">
-                  <span
-                    class="icon-location icon_fs-20"
-                  />
-                  <span>{{ payload.location }}</span>
-                </div>
-                <span
-                  class="user__distance"
-                >
-                  {{ payload.distance }} {{ $t('meta.fromYou') }}
+                <span class="user__username">
+                  {{ payload.username }}
                 </span>
-                <div
-                  v-if="userRole === 'worker'"
-                  class="runtime__container"
-                >
-                  <span class="icon-clock icon_fs-16" />
-                  <span class="runtime__title">{{ $t('quests.runtime') }}</span>
-                  <span
-                    class="runtime__link"
-                  >
-                    {{ payload.runtime }}
-                  </span>
-                </div>
-                <div
+                <span
                   v-if="userRole === 'employer'"
-                  class="runtime__container"
+                  class="user__company"
                 >
-                  <span class="icon-clock icon_fs-16" />
-                  <span class="runtime__title">
-                    {{ $t('quests.performanceTimer') }}
-                  </span>
-                  <span
-                    class="runtime__link"
-                  >
-                    {{ payload.performanceTimer }}
-                  </span>
-                </div>
+                  {{ $t('company.from') }} {{ payload.company }}
+                </span>
+              </div>
+              <div class="user__right">
+                <span class="user__date">
+                  {{ payload.date }}
+                </span>
+                <span class="icon-share_outline icon_fs-20" />
+              </div>
+            </div>
+            <div class="location__container">
+              <div class="quest__location">
+                <span
+                  class="icon-location icon_fs-20"
+                />
+                <span>{{ payload.location }}</span>
+              </div>
+              <span
+                class="user__distance"
+              >
+                {{ payload.distance }} {{ $t('meta.fromYou') }}
+              </span>
+              <div
+                v-if="userRole === 'worker'"
+                class="runtime__container"
+              >
+                <span class="icon-clock icon_fs-16" />
+                <span class="runtime__title">{{ $t('quests.runtime') }}</span>
+                <span
+                  class="runtime__link"
+                >
+                  {{ payload.runtime }}
+                </span>
+              </div>
+              <div
+                v-if="userRole === 'employer'"
+                class="runtime__container"
+              >
+                <span class="icon-clock icon_fs-16" />
+                <span class="runtime__title">
+                  {{ $t('quests.performanceTimer') }}
+                </span>
+                <span
+                  class="runtime__link"
+                >
+                  {{ payload.performanceTimer }}
+                </span>
               </div>
             </div>
           </div>
-          <div class="badge__container">
-            <ul class="badge-list">
-              <li
-                v-for="item in badgeList"
-                :key="`item-${item.id}`"
-                class="badge__item badge__item_blue"
-              >
-                {{ item.text }}
-              </li>
-            </ul>
-          </div>
-          <div class="quest__container">
-            <h2 class="quest__title">
-              {{ payload.title }}
-            </h2>
-            <span class="quest__description">
-              {{ payload.body }}
-            </span>
+        </div>
+        <div class="badge__container">
+          <ul class="badge-list">
+            <li
+              v-for="item in badgeList"
+              :key="`item-${item.id}`"
+              class="badge__item badge__item_blue"
+            >
+              {{ item.text }}
+            </li>
+          </ul>
+        </div>
+        <div class="quest__container">
+          <h2 class="quest__title">
+            {{ payload.title }}
+          </h2>
+          <span class="quest__description">
+            {{ payload.body }}
+          </span>
+        </div>
+        <div class="divider" />
+        <div class="quest_materials__container">
+          <h2 class="quest_materials__title">
+            {{ $t('quests.questMaterials') }}
+          </h2>
+          <div class="img__container">
+            <img
+              v-for="n in 4"
+              :key="n"
+              class="img__item"
+              src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
+              alt=""
+            >
           </div>
           <div class="divider" />
-          <div class="quest_materials__container">
-            <h2 class="quest_materials__title">
-              {{ $t('quests.questMaterials') }}
-            </h2>
-            <div class="img__container">
-              <img
-                v-for="n in 4"
-                :key="n"
-                class="img__item"
-                src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
-                alt=""
-              >
+          <span v-if="userRole === 'employer'">
+            <div v-if="infoData.mode === 2">
+              <div class="worker__title">{{ $t('quests.worker') }}</div>
+              <div class="worker__container">
+                <div>
+                  <img
+                    class="worker__avatar"
+                    src="~/assets/img/temp/avatar.jpg"
+                    alt=""
+                  >
+                </div>
+                <div class="worker__name">
+                  Rosalia Vans
+                </div>
+                <div>
+                  <div
+                    v-if="badge.code !== 0"
+                    class="card__level_higher"
+                    :class="[
+                      {'card__level_higher': badge.code === 1},
+                      {'card__level_reliable': badge.code === 2},
+                      {'card__level_checked': badge.code === 3}
+                    ]"
+                  >
+                    <span v-if="badge.code === 1">
+                      {{ $t('levels.higher') }}
+                    </span>
+                    <span v-if="badge.code === 2">
+                      {{ $t('levels.reliableEmp') }}
+                    </span>
+                    <span v-if="badge.code === 3">
+                      {{ $t('levels.checkedByTime') }}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="divider" />
-            <span v-if="userRole === 'employer'">
-              <div v-if="infoData.mode === 2">
-                <div class="worker__title">{{ $t('quests.worker') }}</div>
+            <div v-if="infoData.mode === 3">
+              <div class="worker__title">{{ $t('response.title') }}</div>
+              <span
+                v-for="(item, i) in respondedList"
+                :key="i"
+              >
                 <div class="worker__container">
+                  <!-- TODO: Добавить радиокнопки -->
                   <div>
                     <img
                       class="worker__avatar"
@@ -122,392 +162,350 @@
                     >
                   </div>
                   <div class="worker__name">
-                    Rosalia Vans
+                    {{ item.name }}
                   </div>
                   <div>
                     <div
-                      v-if="badge.code !== 0"
+                      v-if="item.badge.code !== 0"
                       class="card__level_higher"
                       :class="[
-                        {'card__level_higher': badge.code === 1},
-                        {'card__level_reliable': badge.code === 2},
-                        {'card__level_checked': badge.code === 3}
+                        {'card__level_higher': item.badge.code === 1},
+                        {'card__level_reliable': item.badge.code === 2},
+                        {'card__level_checked': item.badge.code === 3}
                       ]"
                     >
-                      <span v-if="badge.code === 1">
+                      <span v-if="item.badge.code === 1">
                         {{ $t('levels.higher') }}
                       </span>
-                      <span v-if="badge.code === 2">
+                      <span v-if="item.badge.code === 2">
                         {{ $t('levels.reliableEmp') }}
                       </span>
-                      <span v-if="badge.code === 3">
+                      <span v-if="item.badge.code === 3">
                         {{ $t('levels.checkedByTime') }}
                       </span>
                     </div>
-                  </div>
-                </div>
-              </div>
-              <div v-if="infoData.mode === 3">
-                <div class="worker__title">{{ $t('response.title') }}</div>
-                <span
-                  v-for="(item, i) in respondedList"
-                  :key="i"
-                >
-                  <div class="worker__container">
-                    <!-- TODO: Добавить радиокнопки -->
-                    <div>
-                      <img
-                        class="worker__avatar"
-                        src="~/assets/img/temp/avatar.jpg"
-                        alt=""
-                      >
-                    </div>
-                    <div class="worker__name">
-                      {{ item.name }}
-                    </div>
-                    <div>
-                      <div
-                        v-if="item.badge.code !== 0"
-                        class="card__level_higher"
-                        :class="[
-                          {'card__level_higher': item.badge.code === 1},
-                          {'card__level_reliable': item.badge.code === 2},
-                          {'card__level_checked': item.badge.code === 3}
-                        ]"
-                      >
-                        <span v-if="item.badge.code === 1">
-                          {{ $t('levels.higher') }}
-                        </span>
-                        <span v-if="item.badge.code === 2">
-                          {{ $t('levels.reliableEmp') }}
-                        </span>
-                        <span v-if="item.badge.code === 3">
-                          {{ $t('levels.checkedByTime') }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </span>
-                <div class="worker__title">You Invited</div>
-                <div class="worker__container">
-                  <div>
-                    <img
-                      class="worker__avatar"
-                      src="~/assets/img/temp/avatar.jpg"
-                      alt=""
-                    >
-                  </div>
-                  <div class="worker__name">
-                    Rosalia Vans
-                  </div>
-                  <div>
-                    <div
-                      v-if="badge.code !== 0"
-                      class="card__level_higher"
-                      :class="[
-                        {'card__level_higher': badge.code === 1},
-                        {'card__level_reliable': badge.code === 2},
-                        {'card__level_checked': badge.code === 3}
-                      ]"
-                    >
-                      <span v-if="badge.code === 1">
-                        {{ $t('levels.higher') }}
-                      </span>
-                      <span v-if="badge.code === 2">
-                        {{ $t('levels.reliableEmp') }}
-                      </span>
-                      <span v-if="badge.code === 3">
-                        {{ $t('levels.checkedByTime') }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div v-if="infoData.mode === 4">
-                <div class="worker__title">{{ $t('quests.worker') }}</div>
-                <div class="worker__container">
-                  <div>
-                    <img
-                      class="worker__avatar"
-                      src="~/assets/img/temp/avatar.jpg"
-                      alt=""
-                    >
-                  </div>
-                  <div class="worker__name">
-                    Rosalia Vans
-                  </div>
-                  <div>
-                    <div
-                      v-if="badge.code !== 0"
-                      class="card__level_higher"
-                      :class="[
-                        {'card__level_higher': badge.code === 1},
-                        {'card__level_reliable': badge.code === 2},
-                        {'card__level_checked': badge.code === 3}
-                      ]"
-                    >
-                      <span v-if="badge.code === 1">
-                        {{ $t('levels.higher') }}
-                      </span>
-                      <span v-if="badge.code === 2">
-                        {{ $t('levels.reliableEmp') }}
-                      </span>
-                      <span v-if="badge.code === 3">
-                        {{ $t('levels.checkedByTime') }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </span>
-            <div class="btns__container">
-              <div>
-                <!-- inviteUser -->
-                <span v-if="userRole === 'worker'">
-                  <div
-                    v-if="infoData.mode === 1"
-                    class="buttons__wrapper"
-                  >
-                    <div class="btn__wrapper">
-                      <base-btn
-                        class="base-btn_agree"
-                      >
-                        {{ $t('btn.agree') }}
-                      </base-btn>
-                    </div>
-                    <div class="btn__wrapper">
-                      <base-btn
-                        class="base-btn_goToChat"
-                      >
-                        {{ $t('btn.goToChat') }}
-                        <span class="icon-chat icon_fs-20" />
-                      </base-btn>
-                    </div>
-                  </div>
-                </span>
-                <span v-if="userRole === 'employer'">
-                  <div
-                    v-if="infoData.mode === 1"
-                    class="buttons__wrapper"
-                  >
-                    <div class="btn__wrapper">
-                      <base-btn>
-                        {{ $t('quests.raiseViews') }}
-                      </base-btn>
-                    </div>
-                    <div class="btn__wrapper">
-                      <base-btn mode="delete">
-                        {{ $t('quests.deleteQuest') }}
-                      </base-btn>
-                    </div>
-                  </div>
-                </span>
-                <!-- send a request -->
-                <span v-if="userRole === 'worker'">
-                  <div
-                    v-if="infoData.mode === 5"
-                    class="buttons__wrapper"
-                  >
-                    <div class="btn__wrapper">
-                      <base-btn @click="showMessageModal()">
-                        {{ $t('btn.sendARequest') }}
-                      </base-btn>
-                    </div>
-                  </div>
-                </span>
-                <!-- activeQuest -->
-                <span v-if="userRole === 'worker'">
-                  <div
-                    v-if="infoData.mode === 2"
-                    class="buttons__wrapper"
-                  >
-                    <div class="btn__wrapper">
-                      <base-btn
-                        class="base-btn_dispute"
-                      >
-                        {{ $t('btn.dispute') }}
-                      </base-btn>
-                    </div>
-                    <div class="btn__wrapper">
-                      <base-btn
-                        class="base-btn_goToChat"
-                      >
-                        {{ $t('btn.goToChat') }}
-                        <span class="icon-chat icon_fs-20" />
-                      </base-btn>
-                    </div>
-                  </div>
-                </span>
-                <span v-if="userRole === 'employer'">
-                  <div
-                    v-if="infoData.mode === 2"
-                    class="buttons__wrapper"
-                  >
-                    <div class="btn__wrapper">
-                      <base-btn mode="approve">
-                        {{ $t('quests.approve') }}
-                      </base-btn>
-                    </div>
-                  </div>
-                </span>
-                <!-- responded -->
-                <span v-if="userRole === 'worker'">
-                  <div
-                    v-if="infoData.mode === 3"
-                    class="buttons__wrapper"
-                  >
-                    <div class="btn__wrapper">
-                      <base-btn
-                        :disabled="infoData.mode === 3"
-                      >
-                        {{ $t('btn.responded') }}
-                      </base-btn>
-                    </div>
-                  </div>
-                </span>
-                <span v-if="userRole === 'employer'">
-                  <div
-                    v-if="infoData.mode === 3"
-                    class="buttons__wrapper"
-                  >
-                    <div class="btn__wrapper">
-                      <base-btn>
-                        {{ $t('quests.startQuest') }}
-                      </base-btn>
-                    </div>
-                  </div>
-                </span>
-                <!-- performed -->
-                <span v-if="userRole === 'employer'" />
-              </div>
-              <span v-if="infoData.mode !== 4">
-                <div class="price__container">
-                  <span class="price__value">
-                    {{ payload.price }}
-                  </span>
-                  <div class="badge__wrapper">
-                    <span class="badge__item_green">{{ payload.badgeGreen }}</span>
                   </div>
                 </div>
               </span>
+              <div class="worker__title">You Invited</div>
+              <div class="worker__container">
+                <div>
+                  <img
+                    class="worker__avatar"
+                    src="~/assets/img/temp/avatar.jpg"
+                    alt=""
+                  >
+                </div>
+                <div class="worker__name">
+                  Rosalia Vans
+                </div>
+                <div>
+                  <div
+                    v-if="badge.code !== 0"
+                    class="card__level_higher"
+                    :class="[
+                      {'card__level_higher': badge.code === 1},
+                      {'card__level_reliable': badge.code === 2},
+                      {'card__level_checked': badge.code === 3}
+                    ]"
+                  >
+                    <span v-if="badge.code === 1">
+                      {{ $t('levels.higher') }}
+                    </span>
+                    <span v-if="badge.code === 2">
+                      {{ $t('levels.reliableEmp') }}
+                    </span>
+                    <span v-if="badge.code === 3">
+                      {{ $t('levels.checkedByTime') }}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
+            <div v-if="infoData.mode === 4">
+              <div class="worker__title">{{ $t('quests.worker') }}</div>
+              <div class="worker__container">
+                <div>
+                  <img
+                    class="worker__avatar"
+                    src="~/assets/img/temp/avatar.jpg"
+                    alt=""
+                  >
+                </div>
+                <div class="worker__name">
+                  Rosalia Vans
+                </div>
+                <div>
+                  <div
+                    v-if="badge.code !== 0"
+                    class="card__level_higher"
+                    :class="[
+                      {'card__level_higher': badge.code === 1},
+                      {'card__level_reliable': badge.code === 2},
+                      {'card__level_checked': badge.code === 3}
+                    ]"
+                  >
+                    <span v-if="badge.code === 1">
+                      {{ $t('levels.higher') }}
+                    </span>
+                    <span v-if="badge.code === 2">
+                      {{ $t('levels.reliableEmp') }}
+                    </span>
+                    <span v-if="badge.code === 3">
+                      {{ $t('levels.checkedByTime') }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </span>
+          <div class="btns__container">
+            <div>
+              <!-- inviteUser -->
+              <span v-if="userRole === 'worker'">
+                <div
+                  v-if="infoData.mode === 1"
+                  class="buttons__wrapper"
+                >
+                  <div class="btn__wrapper">
+                    <base-btn
+                      class="base-btn_agree"
+                    >
+                      {{ $t('btn.agree') }}
+                    </base-btn>
+                  </div>
+                  <div class="btn__wrapper">
+                    <base-btn
+                      class="base-btn_goToChat"
+                    >
+                      {{ $t('btn.goToChat') }}
+                      <span class="icon-chat icon_fs-20" />
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <span v-if="userRole === 'employer'">
+                <div
+                  v-if="infoData.mode === 1"
+                  class="buttons__wrapper"
+                >
+                  <div class="btn__wrapper">
+                    <base-btn>
+                      {{ $t('quests.raiseViews') }}
+                    </base-btn>
+                  </div>
+                  <div class="btn__wrapper">
+                    <base-btn mode="delete">
+                      {{ $t('quests.deleteQuest') }}
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <!-- send a request -->
+              <span v-if="userRole === 'worker'">
+                <div
+                  v-if="infoData.mode === 5"
+                  class="buttons__wrapper"
+                >
+                  <div class="btn__wrapper">
+                    <base-btn @click="showMessageModal()">
+                      {{ $t('btn.sendARequest') }}
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <!-- activeQuest -->
+              <span v-if="userRole === 'worker'">
+                <div
+                  v-if="infoData.mode === 2"
+                  class="buttons__wrapper"
+                >
+                  <div class="btn__wrapper">
+                    <base-btn
+                      class="base-btn_dispute"
+                    >
+                      {{ $t('btn.dispute') }}
+                    </base-btn>
+                  </div>
+                  <div class="btn__wrapper">
+                    <base-btn
+                      class="base-btn_goToChat"
+                    >
+                      {{ $t('btn.goToChat') }}
+                      <span class="icon-chat icon_fs-20" />
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <span v-if="userRole === 'employer'">
+                <div
+                  v-if="infoData.mode === 2"
+                  class="buttons__wrapper"
+                >
+                  <div class="btn__wrapper">
+                    <base-btn mode="approve">
+                      {{ $t('quests.approve') }}
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <!-- responded -->
+              <span v-if="userRole === 'worker'">
+                <div
+                  v-if="infoData.mode === 3"
+                  class="buttons__wrapper"
+                >
+                  <div class="btn__wrapper">
+                    <base-btn
+                      :disabled="infoData.mode === 3"
+                    >
+                      {{ $t('btn.responded') }}
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <span v-if="userRole === 'employer'">
+                <div
+                  v-if="infoData.mode === 3"
+                  class="buttons__wrapper"
+                >
+                  <div class="btn__wrapper">
+                    <base-btn>
+                      {{ $t('quests.startQuest') }}
+                    </base-btn>
+                  </div>
+                </div>
+              </span>
+              <!-- performed -->
+              <span v-if="userRole === 'employer'" />
+            </div>
+            <span v-if="infoData.mode !== 4">
+              <div class="price__container">
+                <span class="price__value">
+                  {{ payload.price }}
+                </span>
+                <div class="badge__wrapper">
+                  <span class="badge__item_green">{{ payload.badgeGreen }}</span>
+                </div>
+              </div>
+            </span>
           </div>
         </div>
       </div>
-      <div class="map__container">
-        <transition name="fade-fast">
-          <GMap
-            v-if="isShowMap"
-            ref="gMap"
-            class="quests__map"
-            language="en"
-            :center="{lat: locations[0].lat, lng: locations[0].lng}"
-            :zoom="6"
-          />
-        </transition>
-      </div>
-      <div class="main">
-        <div class="spec__container">
-          <div class="quest__group">
-            <h2 class="quest__spec">
-              {{ $t('quests.otherQuestsSpec') }}
-              <nuxt-link
-                to="#"
-                class="spec__link"
-              >
-                "{{ payload.spec }}"
-              </nuxt-link>
-            </h2>
-          </div>
-          <p class="quest__count">
-            {{ payload.amount }} {{ $t('quests.questAmount') }}
-          </p>
-          <div class="quest__card">
-            <!-- Cards -->
-            <div class="quests__cards">
-              <div
-                v-for="(item, i) in payload.cards"
-                :key="i"
-                class="quests__block block"
-              >
-                <div class="block__left">
-                  <div class="block__img">
+    </div>
+    <div class="map__container">
+      <transition name="fade-fast">
+        <GMap
+          v-if="isShowMap"
+          ref="gMap"
+          class="quests__map"
+          language="en"
+          :center="{lat: locations[0].lat, lng: locations[0].lng}"
+          :zoom="6"
+        />
+      </transition>
+    </div>
+    <div class="main">
+      <div class="spec__container">
+        <div class="quest__group">
+          <h2 class="quest__spec">
+            {{ $t('quests.otherQuestsSpec') }}
+            <nuxt-link
+              to="#"
+              class="spec__link"
+            >
+              "{{ payload.spec }}"
+            </nuxt-link>
+          </h2>
+        </div>
+        <p class="quest__count">
+          {{ payload.amount }} {{ $t('quests.questAmount') }}
+        </p>
+        <div class="quest__card">
+          <!-- Cards -->
+          <div class="quests__cards">
+            <div
+              v-for="(item, i) in payload.cards"
+              :key="i"
+              class="quests__block block"
+            >
+              <div class="block__left">
+                <div class="block__img">
+                  <img
+                    src="~assets/img/temp/fake-card.svg"
+                    alt=""
+                  >
+                </div>
+              </div>
+              <div class="block__right">
+                <div class="block__head">
+                  <div class="block__title">
+                    <div class="block__avatar">
+                      <img
+                        :src="item.background"
+                        alt=""
+                      >
+                    </div>
+                    <div class="block__text block__text_title">
+                      {{ item.title }}
+                      <span
+                        v-if="item.sub"
+                        class="block__text block__text_grey"
+                      >{{ item.sub }}</span>
+                    </div>
+                  </div>
+                  <div
+                    class="block__icon block__icon_fav star"
+                    @click="item.favourite = !item.favourite"
+                  >
                     <img
-                      src="~assets/img/temp/fake-card.svg"
+                      class="star__hover"
+                      src="~assets/img/ui/star_hover.svg"
+                      alt=""
+                    >
+                    <img
+                      v-if="!item.favourite"
+                      class="star__default"
+                      src="~assets/img/ui/star_simple.svg"
+                      alt=""
+                    >
+                    <img
+                      v-if="item.favourite"
+                      class="star__checked"
+                      src="~assets/img/ui/star_checked.svg"
                       alt=""
                     >
                   </div>
                 </div>
-                <div class="block__right">
-                  <div class="block__head">
-                    <div class="block__title">
-                      <div class="block__avatar">
-                        <img
-                          :src="item.background"
-                          alt=""
-                        >
-                      </div>
-                      <div class="block__text block__text_title">
-                        {{ item.title }}
-                        <span
-                          v-if="item.sub"
-                          class="block__text block__text_grey"
-                        >{{ item.sub }}</span>
-                      </div>
-                    </div>
+                <div class="block__locate">
+                  <span class="icon-location" />
+                  <span class="block__text block__text_locate">{{ payload.distance }}m {{ $t('meta.fromYou') }}</span>
+                </div>
+                <div class="block__text block__text_blue">
+                  {{ item.theme }}
+                </div>
+                <div class="block__text block__text_desc">
+                  {{ item.desc }}
+                </div>
+                <div class="block__actions">
+                  <div class="block__status">
                     <div
-                      class="block__icon block__icon_fav star"
-                      @click="item.favourite = !item.favourite"
+                      class="block__priority"
+                      :class="getPriorityClass(item.priority)"
                     >
-                      <img
-                        class="star__hover"
-                        src="~assets/img/ui/star_hover.svg"
-                        alt=""
-                      >
-                      <img
-                        v-if="!item.favourite"
-                        class="star__default"
-                        src="~assets/img/ui/star_simple.svg"
-                        alt=""
-                      >
-                      <img
-                        v-if="item.favourite"
-                        class="star__checked"
-                        src="~assets/img/ui/star_checked.svg"
-                        alt=""
-                      >
+                      {{ getPriority(item.priority) }}
+                    </div>
+                    <div class="block__amount">
+                      {{ item.amount }} {{ item.symbol }}
                     </div>
                   </div>
-                  <div class="block__locate">
-                    <span class="icon-location" />
-                    <span class="block__text block__text_locate">{{ payload.distance }}m {{ $t('meta.fromYou') }}</span>
-                  </div>
-                  <div class="block__text block__text_blue">
-                    {{ item.theme }}
-                  </div>
-                  <div class="block__text block__text_desc">
-                    {{ item.desc }}
-                  </div>
-                  <div class="block__actions">
-                    <div class="block__status">
-                      <div
-                        class="block__priority"
-                        :class="getPriorityClass(item.priority)"
-                      >
-                        {{ getPriority(item.priority) }}
+                  <div class="block__details">
+                    <button class="block__btn">
+                      <div class="block__text block__text_details">
+                        {{ $t('meta.details') }}
                       </div>
-                      <div class="block__amount">
-                        {{ item.amount }} {{ item.symbol }}
-                      </div>
-                    </div>
-                    <div class="block__details">
-                      <button class="block__btn">
-                        <div class="block__text block__text_details">
-                          {{ $t('meta.details') }}
-                        </div>
-                        <span class="icon-short_right" />
-                      </button>
-                    </div>
+                      <span class="icon-short_right" />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -515,131 +513,7 @@
           </div>
         </div>
       </div>
-    </section>
-    <section class="mobile">
-      <div class="mobile__header">
-        <div @click="back()">
-          <span class="icon-chevron_big_left" />
-        </div>
-        <div>
-          <div
-            class="block__icon block__icon_fav star"
-            @click="payload.favourite = !payload.favourite"
-          >
-            <img
-              class="star__hover"
-              src="~assets/img/ui/star_hover.svg"
-              alt=""
-            >
-            <img
-              v-if="!payload.favourite"
-              class="star__default"
-              src="~assets/img/ui/star_simple.svg"
-              alt=""
-            >
-            <img
-              v-if="payload.favourite"
-              class="star__checked"
-              src="~assets/img/ui/star_checked.svg"
-              alt=""
-            >
-          </div>
-        </div>
-      </div>
-      <div class="user-info">
-        <div class="user-name__container">
-          <div>
-            <img
-              alt=""
-              src="~assets/img/temp/photo.jpg"
-              class="user-info__avatar"
-            >
-          </div>
-          <div class="user-info__name">
-            Samantha Sparcs
-          </div>
-        </div>
-        <div class="user-info__level user-info__level_green">
-          Low priority
-        </div>
-      </div>
-      <div class="user-location">
-        <div class="user-location__icon">
-          <span class="icon-location" />
-        </div>
-        <div class="user-location__distance">
-          200m from you
-        </div>
-      </div>
-      <div class="user-skills">
-        <div class="user-skills__skill">
-          Painting works
-        </div>
-        <div class="user-skills__skill">
-          Art
-        </div>
-      </div>
-      <div class="mobile-quest__title">
-        Paint the garage quickly
-      </div>
-      <div class="mobile-quest__description">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus in ornare quam viverra
-      </div>
-      <div class="quest-materials">
-        <div class="quest-materials__title">
-          Quest materials
-        </div>
-        <div class="quest-materials__gallery">
-          <div class="gallery__big">
-            <img
-              alt=""
-              src="~assets/img/temp/photo.jpg"
-              class="gallery__image gallery__image_big"
-            >
-          </div>
-          <div class="gallery__small">
-            <img
-              alt=""
-              src="~assets/img/temp/photo.jpg"
-              class="gallery__image gallery__image_small"
-            >
-            <img
-              alt=""
-              src="~assets/img/temp/photo.jpg"
-              class="gallery__image gallery__image_small"
-            >
-            <img
-              alt=""
-              src="~assets/img/temp/photo.jpg"
-              class="gallery__image gallery__image_small"
-            >
-          </div>
-        </div>
-      </div>
-      <div class="mobile-quest__date">
-        12 January 2021, 14:45
-      </div>
-      <div class="mobile-quest__map">
-        <transition name="fade-fast">
-          <GMap
-            v-if="isShowMap"
-            ref="gMap"
-            class="quests__map"
-            language="en"
-            :center="{lat: locations[0].lat, lng: locations[0].lng}"
-            :zoom="6"
-          />
-        </transition>
-      </div>
-      <div class="mobile-quest__value">
-        1500 WUSD
-      </div>
-      <div class="btn__container">
-        <base-btn @click="showMessageModal()">
-          Send a request
-        </base-btn>
-      </div>
-    </section>
+    </div>
   </div>
 </template>
 <script>
