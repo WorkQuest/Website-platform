@@ -538,6 +538,7 @@
           </div>
           <div
             class="template__main"
+            :class="[{'fifty': isMobileMenu}]"
           >
             <nuxt />
           </div>
@@ -652,7 +653,7 @@ import ClickOutside from 'vue-click-outside';
 
 export default {
   name: 'DefaultLayout',
-  middleware: 'auth',
+  // middleware: 'auth',
   components: {},
   directives: {
     ClickOutside,
@@ -854,8 +855,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 
-.hidden {
-  display: none;
+.fifty {
+  width: 50%;
 }
 
 .mobile {
