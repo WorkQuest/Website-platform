@@ -392,62 +392,21 @@
                 <nuxt-link
                   to="/workers"
                   class="mobile__link"
-                  :exact-active-class="'header__link_active'"
                 >
                   {{ $t('ui.workers') }}
                 </nuxt-link>
                 <nuxt-link
                   to="/my"
                   class="mobile__link"
-                  :exact-active-class="'header__link_active'"
                 >
                   {{ $t('quests.MyQuests') }}
                 </nuxt-link>
                 <nuxt-link
                   to="/wallet"
                   class="mobile__link"
-                  :exact-active-class="'header__link_active'"
                 >
                   {{ $t('ui.wallet') }}
                 </nuxt-link>
-                <button
-                  class="mobile__link mobile__link_menu"
-                  :class="{'header__link_active': isShowAdditionalMenu}"
-                  @click="showAdditionalMenu()"
-                >
-                  {{ $t('ui.profile.instruments') }}
-                  <span class="icon-caret_down" />
-                  <transition name="fade">
-                    <div
-                      v-if="isShowAdditionalMenu"
-                      class="menu"
-                    >
-                      <div class="menu__items">
-                        <n-link
-                          v-for="item in additionalMenuLinks"
-                          :key="`item-${item.title}`"
-                          :to="item.path"
-                          tag="div"
-                          class="menu__item"
-                        >
-                          <div class="menu__top">
-                            <div class="menu__text menu__text_header">
-                              {{ item.title }}
-                            </div>
-                            <span class="icon-chevron_right" />
-                          </div>
-                          <div class="menu__bottom">
-                            <div class="menu__text menu__text_grey">
-                              <span>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing ...
-                              </span>
-                            </div>
-                          </div>
-                        </n-link>
-                      </div>
-                    </div>
-                  </transition>
-                </button>
               </div>
               <div
                 v-if="userRole === 'worker'"
@@ -456,62 +415,21 @@
                 <nuxt-link
                   to="/quests"
                   class="mobile__link"
-                  :exact-active-class="'header__link_active'"
                 >
                   {{ $t('ui.quests') }}
                 </nuxt-link>
                 <nuxt-link
                   to="/my"
                   class="mobile__link"
-                  :exact-active-class="'header__link_active'"
                 >
                   {{ $t('ui.myQuests') }}
                 </nuxt-link>
                 <nuxt-link
                   to="/wallet"
                   class="mobile__link"
-                  :exact-active-class="'header__link_active'"
                 >
                   {{ $t('ui.wallet') }}
                 </nuxt-link>
-                <button
-                  class="mobile__link mobile__link_menu"
-                  :class="{'header__link_active': isShowAdditionalMenu}"
-                  @click="showAdditionalMenu()"
-                >
-                  {{ $t('ui.profile.instruments') }}
-                  <span class="icon-caret_down" />
-                  <transition name="fade">
-                    <div
-                      v-if="isShowAdditionalMenu"
-                      class="menu"
-                    >
-                      <div class="menu__items">
-                        <n-link
-                          v-for="item in additionalMenuLinks"
-                          :key="`item-${item.title}`"
-                          :to="item.path"
-                          tag="div"
-                          class="menu__item"
-                        >
-                          <div class="menu__top">
-                            <div class="menu__text menu__text_header">
-                              {{ item.title }}
-                            </div>
-                            <span class="icon-chevron_right" />
-                          </div>
-                          <div class="menu__bottom">
-                            <div class="menu__text menu__text_grey">
-                              <span>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing ...
-                              </span>
-                            </div>
-                          </div>
-                        </n-link>
-                      </div>
-                    </div>
-                  </transition>
-                </button>
               </div>
             </div>
           </div>
@@ -780,8 +698,22 @@ export default {
 <style lang="scss" scoped>
 
 .mobile {
-  &__links {}
-  &__link {}
+  &__links {
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px 10px 40px;
+  }
+  &__link {
+    font-weight: 500;
+    font-size: 40px;
+    color: $white;
+    border-bottom: 1px solid $black600;
+    transition: all .2s ease-in-out;
+    &:hover {
+      @extend .mobile__link;
+      transform: scale(1.1);
+    }
+  }
 }
 
 .ctm {
@@ -805,7 +737,7 @@ export default {
       width: 100%;
       display: flex;
       flex-direction: column;
-      background-color: green;
+      background: linear-gradient(135deg, #0083C7 0%, #00AA5B 100%);
       &_hide {
         width: 0;
       }
