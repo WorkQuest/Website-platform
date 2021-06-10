@@ -495,357 +495,444 @@ export default {
     margin: 10px 0 4px 0;
   }
 }
-
-.card {
-  &__level {
-    display: grid;
-    grid-template-columns: 20px auto;
-    grid-gap: 7px;
-    font-size: 12px;
-    justify-content: flex-start;
-    align-items: center;
-    height: 20px;
-    &_higher {
-      padding: 2px 8px;
+  .card {
+    &__level {
+      display: grid;
+      grid-template-columns: 20px auto;
+      grid-gap: 7px;
+      font-size: 12px;
+      justify-content: flex-start;
       align-items: center;
-      background-color: #F6CF00;
-      border-radius: 3px;
-      color: $white;
-    }
-    &_reliable {
-      padding: 2px 8px;
-      align-items: center;
-      background-color: #BBC0C7;
-      border-radius: 3px;
-      color: $white;
-    }
-    &_checked {
-      padding: 2px 8px;
-      align-items: center;
-      background-color: #B79768;
-      border-radius: 3px;
-      color: $white;
-    }
-    &_disabled {
-      display: none;
-    }
-  }
-}
-
-.quests {
-  &__container {
-    display: flex;
-    justify-content: center;
-  }
-
-  &__title {
-    @include text-simple;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 25px;
-    line-height: 130%;
-    color: $black800;
-    padding: 20px 0;
-  }
-
-  &__body {
-    max-width: 1180px;
-    width: 100%;
-    height: 100%;
-  }
-
-  &__content {
-    display: grid;
-    align-items: center;
-    grid-template-columns: repeat(6, auto);
-    grid-gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  &__cards {
-    border-radius: 6px;
-    width: 100%;
-    display: grid;
-    justify-content: center;
-    grid-template-columns: 1fr;
-    grid-gap: 20px;
-    &__all {
-      //height: 255px;
-
-      &_per {
-        height: 244px;
+      height: 20px;
+      &_higher {
+        padding: 2px 8px;
+        align-items: center;
+        background-color: #F6CF00;
+        border-radius: 3px;
+        color: $white;
+      }
+      &_reliable {
+        padding: 2px 8px;
+        align-items: center;
+        background-color: #BBC0C7;
+        border-radius: 3px;
+        color: $white;
+      }
+      &_checked {
+        padding: 2px 8px;
+        align-items: center;
+        background-color: #B79768;
+        border-radius: 3px;
+        color: $white;
+      }
+      &_disabled {
+        display: none;
       }
     }
+  }
 
-    &__state {
-      position: absolute;
+  .quests {
+    width: 100%;
+    background-color: #f6f8fa;
+    &__container {
       display: flex;
-      align-items: center;
       justify-content: center;
-      min-width: 80px;
-      padding: 0 20px;
-      height: 41px;
-      border-radius: 5px 0;
-      color: #FFFFFF;
-      top: 0;
-      left: 0;
-
-      &_req {
-        color: $black600;
-        background-color: #E9EFF5;
-      }
-
-      &_per {
-        background-color: #0083C7;
-      }
-
-      &_act {
-        background-color: #00AA5B;
-      }
-
-      &_inv {
-        background-color: #E8D20D;
-      }
     }
 
-    .image {
-      border-radius: 6px 0 0 6px;
-      object-fit: cover;
-      max-height: 500px;
+    &__title {
+      @include text-simple;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 25px;
+      line-height: 130%;
+      color: $black800;
+      padding: 20px 0;
+    }
+
+    &__body {
+      max-width: 1180px;
+      width: 100%;
       height: 100%;
     }
-  }
 
-  .block {
-    background: #FFFFFF;
-    border-radius: 6px;
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    min-height: 100%;
-
-    &__left {
-      position: relative;
+    &__content {
+      display: grid;
+      align-items: center;
+      grid-template-columns: repeat(6, auto);
+      grid-gap: 10px;
+      margin-bottom: 20px;
     }
 
-    &__progress {
-      background-color: $black0;
+    &__cards {
       border-radius: 6px;
       width: 100%;
-      padding:10px;
-    }
-
-    &__locate {
       display: grid;
-      grid-template-columns: 20px 1fr;
-      grid-gap: 5px;
-      align-items: center;
-
-      span::before {
-        font-size: 20px;
-        color: $black500;
-      }
-    }
-
-    &__status {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      grid-gap: 15px;
-    }
-
-    &__amount {
-
-      &_green {
-        font-style: normal;
-        font-weight: bold;
-        font-size: 18px;
-        line-height: 130%;
-        text-transform: uppercase;
-        color: #00AA5B;
-      }
-
-      &_gray {
-        font-style: normal;
-        font-weight: bold;
-        font-size: 18px;
-        line-height: 130%;
-        text-transform: uppercase;
-        color: #B0B3B9;
-      }
-
-      &__performed {
-        color: #B0B3B9;
-        font-style: normal;
-        font-weight: bold;
-        font-size: 18px;
-        line-height: 130%;
-        text-transform: uppercase;
-      }
-    }
-
-    &__priority {
-      @include text-simple;
-      display: flex;
-      align-items: center;
       justify-content: center;
-      border-radius: 3px;
-      font-size: 12px;
-      line-height: 130%;
-      height: 24px;
-      padding: 0 5px;
+      grid-template-columns: 1fr;
+      grid-gap: 20px;
+      &__all {
+        //height: 255px;
 
-      &_low {
-        background: rgba(34, 204, 20, 0.1);
-        color: #22CC14;
+        &_per {
+          height: 244px;
+        }
       }
 
-      &_urgent {
-        background: rgba(223, 51, 51, 0.1);
-        color: #DF3333;
+      &__state {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 80px;
+        padding: 0 20px;
+        height: 41px;
+        border-radius: 5px 0;
+        color: #FFFFFF;
+        top: 0;
+        left: 0;
+
+        &_req {
+          color: $black600;
+          background-color: #E9EFF5;
+        }
+
+        &_per {
+          background-color: #0083C7;
+        }
+
+        &_act {
+          background-color: #00AA5B;
+        }
+
+        &_inv {
+          background-color: #E8D20D;
+        }
       }
 
-      &_normal {
-        background: rgba(232, 210, 13, 0.1);
-        color: #E8D20D;
-      }
-    }
-
-    &__actions {
-      grid-template-columns: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    &__right {
-      padding: 20px 20px 20px 30px;
-      display: grid;
-      grid-template-columns: auto;
-      grid-gap: 10px;
-    }
-
-    &__head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    &__icon {
-      &_fav {
-        cursor: pointer;
-      }
-
-      &_perf {
-        display: grid;
-        grid-template-columns: 25px 25px 25px 25px 25px;
-      }
-    }
-
-    &__btn {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 10px;
-      min-width: 146px;
-      height: 34px;
-      background: transparent;
-
-      span::before {
-        font-size: 24px;
-        color: $blue;
-      }
-    }
-
-    &__text {
-      @include text-simple;
-
-      &_details {
-        font-size: 16px;
-        line-height: 130%;
-        color: $blue;
-      }
-
-      &_desc {
-        font-size: 16px;
-        line-height: 130%;
-        color: $black700;
-      }
-
-      &_blue {
-        font-weight: 500;
-        font-size: 18px;
-        line-height: 130%;
-        color: $blue;
-      }
-
-      &_title {
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 130%;
-        color: $black800;
-      }
-
-      &_locate {
-        font-size: 14px;
-        line-height: 130%;
-        color: #7C838D;
-      }
-
-      &_grey {
-        font-size: 16px;
-        line-height: 130%;
-        color: #7C838D;
-      }
-    }
-
-    &__avatar {
-      max-width: 30px;
-      max-height: 30px;
-      border-radius: 50%;
-
-      &__img {
-        border-radius: 100%;
+      .image {
+        border-radius: 6px 0 0 6px;
+        object-fit: cover;
+        max-height: 500px;
         height: 100%;
       }
     }
 
-    &__img {
-      height: 100%;
-      max-height: 100%;
+    .block {
+      background: #FFFFFF;
+      border-radius: 6px;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100%;
+
+      &__left {
+        position: relative;
+      }
+
+      &__progress {
+        background-color: $black0;
+        border-radius: 6px;
+        width: 100%;
+        padding:10px;
+      }
+
+      &__locate {
+        display: grid;
+        grid-template-columns: 20px 1fr;
+        grid-gap: 5px;
+        align-items: center;
+
+        span::before {
+          font-size: 20px;
+          color: $black500;
+        }
+      }
+
+      &__status {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-gap: 15px;
+      }
+
+      &__amount {
+
+        &_green {
+          font-style: normal;
+          font-weight: bold;
+          font-size: 18px;
+          line-height: 130%;
+          text-transform: uppercase;
+          color: #00AA5B;
+        }
+
+        &_gray {
+          font-style: normal;
+          font-weight: bold;
+          font-size: 18px;
+          line-height: 130%;
+          text-transform: uppercase;
+          color: #B0B3B9;
+        }
+
+        &__performed {
+          color: #B0B3B9;
+          font-style: normal;
+          font-weight: bold;
+          font-size: 18px;
+          line-height: 130%;
+          text-transform: uppercase;
+        }
+      }
+
+      &__priority {
+        @include text-simple;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 3px;
+        font-size: 12px;
+        line-height: 130%;
+        height: 24px;
+        padding: 0 5px;
+
+        &_low {
+          background: rgba(34, 204, 20, 0.1);
+          color: #22CC14;
+        }
+
+        &_urgent {
+          background: rgba(223, 51, 51, 0.1);
+          color: #DF3333;
+        }
+
+        &_normal {
+          background: rgba(232, 210, 13, 0.1);
+          color: #E8D20D;
+        }
+      }
+
+      &__actions {
+        grid-template-columns: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      &__right {
+        padding: 20px 20px 20px 30px;
+        display: grid;
+        grid-template-columns: auto;
+        grid-gap: 10px;
+      }
+
+      &__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      &__icon {
+        &_fav {
+          cursor: pointer;
+        }
+
+        &_perf {
+          display: grid;
+          grid-template-columns: 25px 25px 25px 25px 25px;
+        }
+      }
+
+      &__btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 10px;
+        min-width: 146px;
+        height: 34px;
+        background: transparent;
+
+        span::before {
+          font-size: 24px;
+          color: $blue;
+        }
+      }
+
+      &__text {
+        @include text-simple;
+
+        &_details {
+          font-size: 16px;
+          line-height: 130%;
+          color: $blue;
+        }
+
+        &_desc {
+          font-size: 16px;
+          line-height: 130%;
+          color: $black700;
+        }
+
+        &_blue {
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 130%;
+          color: $blue;
+        }
+
+        &_title {
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 130%;
+          color: $black800;
+        }
+
+        &_locate {
+          font-size: 14px;
+          line-height: 130%;
+          color: #7C838D;
+        }
+
+        &_grey {
+          font-size: 16px;
+          line-height: 130%;
+          color: #7C838D;
+        }
+      }
+
+      &__avatar {
+        max-width: 30px;
+        max-height: 30px;
+        border-radius: 50%;
+
+        &__img {
+          border-radius: 100%;
+          height: 100%;
+        }
+      }
+
+      &__img {
+        height: 100%;
+        max-height: 100%;
+      }
+
+      &__title {
+        display: grid;
+        grid-template-columns: 30px 1fr;
+        grid-gap: 10px;
+        align-items: center;
+      }
     }
 
-    &__title {
-      display: grid;
-      grid-template-columns: 30px 1fr;
-      grid-gap: 10px;
-      align-items: center;
+    .star {
+      &__default {
+        display: flex;
+      }
+
+      &__hover {
+        display: none;
+      }
+
+      &:hover {
+        .star {
+          &__hover {
+            display: flex;
+          }
+
+          &__default {
+            display: none;
+          }
+
+          &__checked {
+            display: none;
+          }
+        }
+      }
     }
   }
-
-  .star {
-    &__default {
-      display: flex;
+@include _1199 {
+  .quests {
+    width: 1024px;
+    padding: 10px;
+  }
+}
+@include _991 {
+  .quests {
+    width: 768px;
+    background-color: #f6f8fa;
+    .limit__container {
+      display: grid;
+      grid-template-columns: auto;
     }
-
-    &__hover {
-      display: none;
+    &__content {
+      grid-template-columns: repeat(6, 170px);
+      overflow-x: auto;
+      -ms-overflow-style: none;
     }
-
-    &:hover {
-      .star {
-        &__hover {
-          display: flex;
-        }
-
-        &__default {
-          display: none;
-        }
-
-        &__checked {
-          display: none;
+    .block {
+      &__img {
+        height: 100%;
+        width: 100%;
+        img {
+          border-radius: 6px;
         }
       }
     }
   }
 }
+@include _767 {
+  .quests {
+    width: 425px;
+    .limit__container {
+      display: grid;
+      grid-template-columns: auto;
+    }
+    .block {
+      grid-template-columns: auto;
+      &__img {
+        height: 200px;
+        img {
+          height: 100%;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+@include _480 {
+  .quests {
+    width: 414px;
+    .block {
+      &__right {
+        padding: 10px;
+      }
+      &__amount_green {
+        font-size: 18px;
+      }
+    }
+  }
+}
 
+@include _380 {
+  .quests {
+    width: 375px;
+    .block {
+      &__amount_green {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@include _321 {
+  .quests {
+    width: 320px;
+    .block {
+      &__status {
+        grid-gap: 30px;
+      }
+      &__btn {
+        min-width: 126px;
+      }
+    }
+  }
+}
 </style>
