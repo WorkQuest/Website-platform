@@ -6,7 +6,9 @@
           v-click-outside="closeAll"
           class="template__header header"
         >
-          <div class="header__body">
+          <div
+            class="header__body"
+          >
             <div class="header__left">
               <div
                 class="header__logo"
@@ -357,14 +359,166 @@
                 {{ $t('layout.create') }}
               </base-btn>
             </div>
+            <!-- Кнопка меню -->
+            <div
+              class="ctm-menu__toggle"
+              @click="toggleMobileMenu()"
+            >
+              <button
+                class="header__button header__button_menu"
+              >
+                <span class="icon-hamburger" />
+              </button>
+            </div>
           </div>
         </div>
-        <div class="template__main">
-          <nuxt />
+        <div
+          class=""
+          :class="[{'ctm-open': isMobileMenu},
+                   {'ctm-open': isNotFlexContainer}]"
+        >
+          <!-- Меню -->
+          <div
+            class="ctm-menu"
+            :class="{'ctm-menu_opened': isMobileMenu}"
+          >
+            <div
+              class="ctm-menu__content"
+            >
+              <div
+                v-if="userRole === 'employer'"
+                class="mobile__links"
+              >
+                <nuxt-link
+                  to="/workers"
+                  class="mobile__link"
+                  :exact-active-class="'header__link_active'"
+                >
+                  {{ $t('ui.workers') }}
+                </nuxt-link>
+                <nuxt-link
+                  to="/my"
+                  class="mobile__link"
+                  :exact-active-class="'header__link_active'"
+                >
+                  {{ $t('quests.MyQuests') }}
+                </nuxt-link>
+                <nuxt-link
+                  to="/wallet"
+                  class="mobile__link"
+                  :exact-active-class="'header__link_active'"
+                >
+                  {{ $t('ui.wallet') }}
+                </nuxt-link>
+                <button
+                  class="mobile__link mobile__link_menu"
+                  :class="{'header__link_active': isShowAdditionalMenu}"
+                  @click="showAdditionalMenu()"
+                >
+                  {{ $t('ui.profile.instruments') }}
+                  <span class="icon-caret_down" />
+                  <transition name="fade">
+                    <div
+                      v-if="isShowAdditionalMenu"
+                      class="menu"
+                    >
+                      <div class="menu__items">
+                        <n-link
+                          v-for="item in additionalMenuLinks"
+                          :key="`item-${item.title}`"
+                          :to="item.path"
+                          tag="div"
+                          class="menu__item"
+                        >
+                          <div class="menu__top">
+                            <div class="menu__text menu__text_header">
+                              {{ item.title }}
+                            </div>
+                            <span class="icon-chevron_right" />
+                          </div>
+                          <div class="menu__bottom">
+                            <div class="menu__text menu__text_grey">
+                              <span>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing ...
+                              </span>
+                            </div>
+                          </div>
+                        </n-link>
+                      </div>
+                    </div>
+                  </transition>
+                </button>
+              </div>
+              <div
+                v-if="userRole === 'worker'"
+                class="mobile__links"
+              >
+                <nuxt-link
+                  to="/quests"
+                  class="mobile__link"
+                  :exact-active-class="'header__link_active'"
+                >
+                  {{ $t('ui.quests') }}
+                </nuxt-link>
+                <nuxt-link
+                  to="/my"
+                  class="mobile__link"
+                  :exact-active-class="'header__link_active'"
+                >
+                  {{ $t('ui.myQuests') }}
+                </nuxt-link>
+                <nuxt-link
+                  to="/wallet"
+                  class="mobile__link"
+                  :exact-active-class="'header__link_active'"
+                >
+                  {{ $t('ui.wallet') }}
+                </nuxt-link>
+                <button
+                  class="mobile__link mobile__link_menu"
+                  :class="{'header__link_active': isShowAdditionalMenu}"
+                  @click="showAdditionalMenu()"
+                >
+                  {{ $t('ui.profile.instruments') }}
+                  <span class="icon-caret_down" />
+                  <transition name="fade">
+                    <div
+                      v-if="isShowAdditionalMenu"
+                      class="menu"
+                    >
+                      <div class="menu__items">
+                        <n-link
+                          v-for="item in additionalMenuLinks"
+                          :key="`item-${item.title}`"
+                          :to="item.path"
+                          tag="div"
+                          class="menu__item"
+                        >
+                          <div class="menu__top">
+                            <div class="menu__text menu__text_header">
+                              {{ item.title }}
+                            </div>
+                            <span class="icon-chevron_right" />
+                          </div>
+                          <div class="menu__bottom">
+                            <div class="menu__text menu__text_grey">
+                              <span>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing ...
+                              </span>
+                            </div>
+                          </div>
+                        </n-link>
+                      </div>
+                    </div>
+                  </transition>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="template__main">
+            <nuxt />
+          </div>
         </div>
-        <section class="mobile">
-          <MobileMenu />
-        </section>
         <div class="template__footer">
           <div class="footer">
             <div class="footer__body">
@@ -472,14 +626,11 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import MobileMenu from '../components/app/MobileMenu/index.vue';
 
 export default {
   name: 'DefaultLayout',
   middleware: 'auth',
-  components: {
-    MobileMenu,
-  },
+  components: {},
   directives: {
     ClickOutside,
   },
@@ -489,6 +640,8 @@ export default {
       isShowNotify: false,
       isShowAdditionalMenu: false,
       isShowLocale: false,
+      isMobileMenu: false,
+      isNotFlexContainer: true,
       notification: 1,
     };
   },
@@ -547,6 +700,13 @@ export default {
     this.GetLocation();
   },
   methods: {
+    closeMenu() {
+      this.isMobileMenu = false;
+    },
+    toggleMobileMenu() {
+      this.isMobileMenu = !this.isMobileMenu;
+      this.isNotFlexContainer = !this.isNotFlexContainer;
+    },
     toMain() {
       if (this.userData.role === 'worker') {
         this.$router.push('/quests');
@@ -618,6 +778,41 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+
+.mobile {
+  &__links {}
+  &__link {}
+}
+
+.ctm {
+  &-open {
+    display: flex;
+    width: 100%;
+  }
+  &-menu {
+    width: 0;
+    height: 0;
+    transition: .4s;
+    &_opened {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      transition: .4s;
+    }
+    &__content {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      background-color: green;
+      &_hide {
+        width: 0;
+      }
+    }
+  }
+}
+
 .primary {
   height: 100vh;
   overflow-y: auto;
@@ -632,7 +827,10 @@ export default {
     min-height: 100vh;
   }
   &__main {
+    display: grid;
     padding-bottom: 80px;
+    transition: 1s;
+    width: 100%;
   }
 }
 .notify {
@@ -892,6 +1090,10 @@ export default {
     &_profile {
       position: relative;
     }
+    &_menu {
+      position: relative;
+      display: none;
+    }
     &_notify {
       position: relative;
     }
@@ -1129,35 +1331,34 @@ export default {
     grid-gap: 20px;
   }
 }
-@include _1700 {
-  .mobile {
+.ctm-menu {
+  &__toggle {
     display: none;
   }
 }
-@include _1600 {
-  .mobile {
-    display: none;
-  }
-}
-@include _1500 {
-  .mobile {
-    display: none;
-  }
-}
-@include _1300 {
-  .mobile {
-    display: none;
-  }
-}
+@include _1700 {}
+@include _1600 {}
+@include _1500 {}
+@include _1300 {}
 @include _1199 {
+  .ctm-menu {
+    &__toggle {
+      display: flex;
+    }
+  }
   .header {
-    display: flex;
+    &__button_menu {
+      display: flex;
+    }
     &__body {
       margin: 0 20px 0 20px;
     }
-  }
-  .mobile {
-    display: none;
+    &__links {
+      display: none;
+    }
+    &__right {
+      display: none;
+    }
   }
   .footer {
     &__body {
@@ -1170,16 +1371,8 @@ export default {
   }
 }
 @include _991 {
-  .header {
-      display: none;
-  }
-  .mobile {
-    padding: 50px 0 0 0;
-    display: grid;
-  }
-  .footer {
-      display: none;
-  }
+  .header {}
+  .footer {}
   .template {
     &__content {
       background: $white;
