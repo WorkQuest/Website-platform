@@ -629,7 +629,7 @@ import ClickOutside from 'vue-click-outside';
 
 export default {
   name: 'DefaultLayout',
-  middleware: 'auth',
+  // middleware: 'auth',
   components: {},
   directives: {
     ClickOutside,
