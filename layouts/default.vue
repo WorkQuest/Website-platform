@@ -296,6 +296,24 @@
                   </div>
                 </transition>
               </button>
+              <!-- Кнопка мобильного меню -->
+              <div
+                class="ctm-menu__toggle"
+                @click="toggleMobileMenu()"
+              >
+                <button
+                  class="header__button header__button_menu"
+                >
+                  <span
+                    v-if="!isMobileMenu"
+                    class="icon-hamburger"
+                  />
+                  <span
+                    v-if="isMobileMenu"
+                    class="icon-close_big"
+                  />
+                </button>
+              </div>
               <button
                 class="header__button header__button_profile"
                 @click="showProfile()"
@@ -359,17 +377,6 @@
                 {{ $t('layout.create') }}
               </base-btn>
             </div>
-            <!-- Кнопка меню -->
-            <div
-              class="ctm-menu__toggle"
-              @click="toggleMobileMenu()"
-            >
-              <button
-                class="header__button header__button_menu"
-              >
-                <span class="icon-hamburger" />
-              </button>
-            </div>
           </div>
         </div>
         <div
@@ -386,30 +393,86 @@
               class="ctm-menu__content"
             >
               <div
-                v-if="userRole === 'employer'"
-                class="mobile__links"
+                v-if="isMobileMenu"
+                class="user"
+                @click="toggleUserDD()"
               >
-                <nuxt-link
-                  to="/workers"
-                  class="mobile__link"
+                <div class="user__container">
+                  <div class="user-container__avatar">
+                    <img
+                      alt=""
+                      src="../assets/img/temp/photo.jpg"
+                      class="user__avatar"
+                    >
+                  </div>
+                  <div class="user-container__user">
+                    <div class="user__name">
+                      Samantha Sparcs
+                    </div>
+                    <div class="user__role">
+                      Employer
+                    </div>
+                  </div>
+                </div>
+                <div class="user-container__dropdown">
+                  <div class="user__container">
+                    <div
+                      class="user__dropdown"
+                    >
+                      <span
+                        v-if="!isUserDDOpened"
+                        class="icon-caret_down"
+                      />
+                      <span
+                        v-if="isUserDDOpened"
+                        class="icon-caret_up"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--              <div-->
+              <!--                v-if="userRole === 'employer'"-->
+              <!--                class="mobile__links"-->
+              <!--              >-->
+              <!--                <nuxt-link-->
+              <!--                  to="/workers"-->
+              <!--                  class="mobile__link"-->
+              <!--                >-->
+              <!--                  {{ $t('ui.workers') }}-->
+              <!--                </nuxt-link>-->
+              <!--                <nuxt-link-->
+              <!--                  to="/my"-->
+              <!--                  class="mobile__link"-->
+              <!--                >-->
+              <!--                  {{ $t('quests.MyQuests') }}-->
+              <!--                </nuxt-link>-->
+              <!--                <nuxt-link-->
+              <!--                  to="/wallet"-->
+              <!--                  class="mobile__link"-->
+              <!--                >-->
+              <!--                  {{ $t('ui.wallet') }}-->
+              <!--                </nuxt-link>-->
+              <!--              </div>-->
+              <!--              v-if="userRole === 'worker'"-->
+              <div
+                v-if="isUserDDOpened === true"
+                class="user-dropdown__container"
+              >
+                <span
+                  v-for="(item, i) in userDDLinks"
+                  :key="i"
                 >
-                  {{ $t('ui.workers') }}
-                </nuxt-link>
-                <nuxt-link
-                  to="/my"
-                  class="mobile__link"
-                >
-                  {{ $t('quests.MyQuests') }}
-                </nuxt-link>
-                <nuxt-link
-                  to="/wallet"
-                  class="mobile__link"
-                >
-                  {{ $t('ui.wallet') }}
-                </nuxt-link>
+                  <nuxt-link
+                    :to="item.link"
+                    class="user-dropdown__link"
+                  >
+                    {{ item.title }}
+                  </nuxt-link>
+                </span>
               </div>
               <div
-                v-if="userRole === 'worker'"
+                v-if="isMobileMenu"
                 class="mobile__links"
               >
                 <nuxt-link
@@ -430,6 +493,46 @@
                 >
                   {{ $t('ui.wallet') }}
                 </nuxt-link>
+              </div>
+              <div
+                class="mobile-dropdown"
+                @click="toggleInstrumentDD()"
+              >
+                <div
+                  v-if="isMobileMenu"
+                  class="mobile-dropdown__btn"
+                >
+                  <div class="mobile-dropdown__title">
+                    Instruments
+                  </div>
+                  <div class="mobile-dropdown__arrow">
+                    <span
+                      v-if="!isInstrumentDropdownOpened"
+                      class="icon-caret_down"
+                    />
+                    <span
+                      v-if="isInstrumentDropdownOpened"
+                      class="icon-caret_up"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                v-if="isInstrumentDropdownOpened === true"
+                class="mobile-dropdown__container"
+              >
+                <span
+                  v-for="(item, i) in instrumentDDLinks"
+                  :key="i"
+                >
+                  <nuxt-link
+                    v-if="isMobileMenu"
+                    :to="item.link"
+                    class="instrument-dropdown__link"
+                  >
+                    {{ item.title }}
+                  </nuxt-link>
+                </span>
               </div>
             </div>
           </div>
@@ -547,13 +650,15 @@ import ClickOutside from 'vue-click-outside';
 
 export default {
   name: 'DefaultLayout',
-  middleware: 'auth',
+  // middleware: 'auth',
   components: {},
   directives: {
     ClickOutside,
   },
   data() {
     return {
+      isInstrumentDropdownOpened: false,
+      isUserDDOpened: false,
       isShowProfile: false,
       isShowNotify: false,
       isShowAdditionalMenu: false,
@@ -561,6 +666,50 @@ export default {
       isMobileMenu: false,
       isNotFlexContainer: true,
       notification: 1,
+      instrumentDDLinks: [
+        {
+          link: '',
+          title: 'Pension program',
+        },
+        {
+          link: '',
+          title: 'Refferal program',
+        },
+        {
+          link: '',
+          title: 'P2P insurance',
+        },
+        {
+          link: '',
+          title: 'Savings product',
+        },
+        {
+          link: '',
+          title: 'Сrediting',
+        },
+        {
+          link: '',
+          title: 'Liquidity mining',
+        },
+      ],
+      userDDLinks: [
+        {
+          link: '/profile',
+          title: 'My profile',
+        },
+        {
+          link: '/settings',
+          title: 'Settings',
+        },
+        {
+          link: '/disputes',
+          title: 'Disputes',
+        },
+        {
+          link: '/',
+          title: 'Logout',
+        },
+      ],
     };
   },
   computed: {
@@ -618,6 +767,12 @@ export default {
     this.GetLocation();
   },
   methods: {
+    toggleUserDD() {
+      this.isUserDDOpened = !this.isUserDDOpened;
+    },
+    toggleInstrumentDD() {
+      this.isInstrumentDropdownOpened = !this.isInstrumentDropdownOpened;
+    },
     closeMenu() {
       this.isMobileMenu = false;
     },
@@ -698,21 +853,120 @@ export default {
 <style lang="scss" scoped>
 
 .mobile {
+  &-dropdown {
+    border-bottom: 1px solid $black0;
+    &__btn {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    &__title {
+      padding: 16px 0 20px 20px;
+    }
+    &__arrow {
+      justify-self: flex-end;
+      padding: 16px 20px 0 0;
+    }
+    &__container {}
+  }
   &__links {
     display: flex;
     flex-direction: column;
-    padding: 0 20px 10px 40px;
   }
   &__link {
-    font-weight: 500;
-    font-size: 40px;
-    color: $white;
-    border-bottom: 1px solid $black600;
-    transition: all .2s ease-in-out;
+    padding: 16px 20px 16px 20px;
+    font-weight: 400;
+    font-size: 16px;
+    color: $black800;
+    border-bottom: 1px solid $black0;
+    transition: 1s;
+    text-decoration: none;
     &:hover {
       @extend .mobile__link;
-      transform: scale(1.1);
+      background: $blue;
+      color: $white;
+      font-weight: 600;
     }
+  }
+}
+.instrument-dropdown {
+  &__link {
+    @extend .mobile__link;
+    display: flex;
+    flex-direction: column;
+    color: $black600;
+    padding: 16px 0 20px 35px;
+  }
+}
+.user {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  &-dropdown {
+    &__link {
+      @extend .mobile__link;
+      display: flex;
+      flex-direction: column;
+      background: $black0;
+      padding: 16px 0 20px 20px;
+    }
+  }
+  &-container {
+    &__avatar {
+      padding: 15px;
+    }
+    &__user {
+      padding: 15px 0 0 0;
+      display: grid;
+    }
+  }
+  &__dropdown {
+    align-self: center;
+  }
+  &__container {
+    display: flex;
+    flex-direction: row;
+    background: $black0;
+    max-height: 70px;
+    height: 100%;
+    max-width: 100%;
+    width: 100%;
+    padding: 0 20px 0 0;
+  }
+  &__avatar {
+    max-height: 40px;
+    max-width: 40px;
+    height: 100%;
+    width: 100%;
+    border-radius: 137px;
+  }
+  &__name {
+    font-weight: 500;
+    font-size: 16px;
+    color: $black800;
+  }
+  &__role {
+    font-weight: 400;
+    font-size: 12px;
+    color: $blue;
+    padding: 0 0 11px 0;
+  }
+}
+.icon {
+  font-size: 20px;
+  &-caret_down:before {
+    @extend .icon;
+    content: "\ea48";
+    color: #2e3a59;
+  }
+  &-caret_up:before {
+    @extend .icon;
+    content: "\ea4b";
+    color: #2e3a59;
+  }
+  &-close_big:before {
+    @extend .icon;
+    content: "\e948";
+    color: #2e3a59;
   }
 }
 
@@ -723,21 +977,22 @@ export default {
   }
   &-menu {
     width: 0;
-    height: 0;
-    transition: .4s;
+    height: 100%;
+    transition: .2s;
     &_opened {
       display: flex;
-      width: 100%;
-      height: 100%;
+      width: 50%;
+      height: 96.7%;
       overflow-y: auto;
-      transition: .4s;
+      transition: .2s;
     }
     &__content {
       height: 100%;
       width: 100%;
       display: flex;
       flex-direction: column;
-      background: linear-gradient(135deg, #0083C7 0%, #00AA5B 100%);
+      background: $white;
+      border-radius: 0 0 5px 5px;
       &_hide {
         width: 0;
       }
@@ -1288,8 +1543,11 @@ export default {
     &__links {
       display: none;
     }
-    &__right {
-      display: none;
+    &__right {}
+    &__button {
+      &_profile {
+        display: none;
+      }
     }
   }
   .footer {
