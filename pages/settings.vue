@@ -537,7 +537,7 @@ export default {
   padding: 0 0 0 10px;
   font-weight: 500;
   font-size: 16px;
-  color: $black800;
+  color: $white;
 }
 
 .btn {
