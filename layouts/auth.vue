@@ -141,9 +141,36 @@ export default {
     &__left {
       grid-column: 1/3;
       grid-row: 2/3;
-      max-width: 100%;
+      max-width: 87%;
       justify-self: initial;
       padding: 20px;
+    }
+  }
+}
+
+@include _575 {
+  .template {
+    width: 100%;
+    overflow:  hidden;
+    &__left {
+      max-width: 100%;
+    }
+  }
+}
+
+@include _380 {
+  .template {
+    &__left {
+      padding: 0;
+      grid-column: 1/9;
+      grid-row: 2/3;
+      max-width: 100%;
+      justify-self: initial;
+    }
+  }
+  .auth {
+    &__fields {
+      width: 320px;
     }
   }
 }

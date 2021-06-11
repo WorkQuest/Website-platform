@@ -16,7 +16,7 @@
                   src="~assets/img/app/logo.svg"
                   alt="WorkQuest"
                 >
-                <span>WorkQuest</span>
+                <span class="header__text">WorkQuest</span>
               </div>
               <div
                 v-if="userRole === 'employer'"
@@ -294,6 +294,24 @@
                   </div>
                 </transition>
               </button>
+              <!-- Кнопка мобильного меню -->
+              <div
+                class="ctm-menu__toggle"
+                @click="toggleMobileMenu()"
+              >
+                <button
+                  class="header__button header__button_menu"
+                >
+                  <span
+                    v-if="!isMobileMenu"
+                    class="icon-hamburger"
+                  />
+                  <span
+                    v-if="isMobileMenu"
+                    class="icon-close_big"
+                  />
+                </button>
+              </div>
               <button
                 class="header__button header__button_profile"
                 @click="showProfile()"
@@ -313,7 +331,7 @@
                       </div>
                       <div class="profile__info">
                         <div class="profile__text">
-                          Samantha Sparks
+                          {{ userData.firstName }} {{ userData.lastName }}
                         </div>
                         <div
                           v-if="userRole === 'employer'"
@@ -359,8 +377,177 @@
             </div>
           </div>
         </div>
-        <div class="template__main">
-          <nuxt />
+        <div
+          class=""
+          :class="[{'ctm-open': isMobileMenu},
+                   {'ctm-open': isNotFlexContainer}]"
+        >
+          <!-- Меню -->
+          <transition name="fade-fast">
+            <div
+              class="ctm-menu"
+              :class="{'ctm-menu_opened': isMobileMenu}"
+            >
+              <div class="ctm-menu__content">
+                <div
+                  v-if="isMobileMenu"
+                  class="user"
+                  @click="toggleUserDD()"
+                >
+                  <div class="user__container">
+                    <div class="user-container__avatar">
+                      <img
+                        alt=""
+                        src="../assets/img/temp/photo.jpg"
+                        class="user__avatar"
+                      >
+                    </div>
+                    <div class="user-container__user">
+                      <div class="user__name">
+                        {{ userData.firstName }} {{ userData.lastName }}
+                      </div>
+                      <div
+                        v-if="userRole === 'employer'"
+                        class="user__role"
+                      >
+                        {{ $t('role.employer') }}
+                      </div>
+                      <div
+                        v-if="userRole === 'worker'"
+                        class="user__role"
+                      >
+                        {{ $t('role.worker') }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-container__dropdown">
+                    <div class="user__container">
+                      <div
+                        class="user__dropdown"
+                      >
+                        <span
+                          v-if="!isUserDDOpened"
+                          class="icon-caret_down"
+                        />
+                        <span
+                          v-if="isUserDDOpened"
+                          class="icon-caret_up"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--              <div-->
+                <!--                v-if="userRole === 'employer'"-->
+                <!--                class="mobile__links"-->
+                <!--              >-->
+                <!--                <nuxt-link-->
+                <!--                  to="/workers"-->
+                <!--                  class="mobile__link"-->
+                <!--                >-->
+                <!--                  {{ $t('ui.workers') }}-->
+                <!--                </nuxt-link>-->
+                <!--                <nuxt-link-->
+                <!--                  to="/my"-->
+                <!--                  class="mobile__link"-->
+                <!--                >-->
+                <!--                  {{ $t('quests.MyQuests') }}-->
+                <!--                </nuxt-link>-->
+                <!--                <nuxt-link-->
+                <!--                  to="/wallet"-->
+                <!--                  class="mobile__link"-->
+                <!--                >-->
+                <!--                  {{ $t('ui.wallet') }}-->
+                <!--                </nuxt-link>-->
+                <!--              </div>-->
+                <!--              v-if="userRole === 'worker'"-->
+                <div
+                  v-if="isUserDDOpened === true"
+                  class="user-dropdown__container"
+                >
+                  <div
+                    v-for="(item, i) in userDDLinks"
+                    :key="i"
+                  >
+                    <div
+                      class="user-dropdown__link"
+                      @click="toRoute(item.link)"
+                    >
+                      {{ item.title }}
+                    </div>
+                  </div>
+                </div>
+                <div
+                  v-if="isMobileMenu"
+                  class="mobile__links"
+                >
+                  <div
+                    v-for="(item, i) in mobileMenuLinks"
+                    :key="i"
+                  >
+                    <div
+                      class="mobile__link"
+                      @click="toRoute(item.path)"
+                    >
+                      {{ item.title }}
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="mobile-dropdown"
+                  @click="toggleInstrumentDD()"
+                >
+                  <div
+                    v-if="isMobileMenu"
+                    class="mobile-dropdown__btn"
+                  >
+                    <div class="mobile-dropdown__title">
+                      Instruments
+                    </div>
+                    <div class="mobile-dropdown__arrow">
+                      <span
+                        v-if="!isInstrumentDropdownOpened"
+                        class="icon-caret_down"
+                      />
+                      <span
+                        v-if="isInstrumentDropdownOpened"
+                        class="icon-caret_up"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  v-if="isInstrumentDropdownOpened"
+                  class="mobile-dropdown__container"
+                >
+                  <div
+                    v-for="(item, i) in instrumentDDLinks"
+                    :key="i"
+                  >
+                    <div
+                      v-if="isMobileMenu"
+                      class="instrument-dropdown__link"
+                      @click="toRoute(item.link)"
+                    >
+                      {{ item.title }}
+                    </div>
+                  </div>
+                </div>
+                <div class="ctm__actions">
+                  <base-btn
+                    v-if="userRole === 'employer'"
+                    class="ctm__btn"
+                    @click="createNewQuest()"
+                  >
+                    {{ $t('layout.create') }}
+                  </base-btn>
+                </div>
+              </div>
+            </div>
+          </transition>
+          <div class="template__main">
+            <nuxt />
+          </div>
         </div>
         <div class="template__footer">
           <div class="footer">
@@ -473,16 +660,79 @@ import ClickOutside from 'vue-click-outside';
 export default {
   name: 'DefaultLayout',
   middleware: 'auth',
+  components: {},
   directives: {
     ClickOutside,
   },
   data() {
     return {
+      isInstrumentDropdownOpened: false,
+      isUserDDOpened: false,
       isShowProfile: false,
       isShowNotify: false,
       isShowAdditionalMenu: false,
       isShowLocale: false,
+      isMobileMenu: false,
+      isNotFlexContainer: true,
       notification: 1,
+      mobileMenuLinks: [
+        {
+          path: '/quests',
+          title: this.$t('ui.quests'),
+        },
+        {
+          path: '/my',
+          title: this.$t('ui.myQuests'),
+        },
+        {
+          path: '/wallet',
+          title: this.$t('ui.wallet'),
+        },
+      ],
+      instrumentDDLinks: [
+        {
+          link: '',
+          title: 'Pension program',
+        },
+        {
+          link: '',
+          title: 'Refferal program',
+        },
+        {
+          link: '',
+          title: 'P2P insurance',
+        },
+        {
+          link: '',
+          title: 'Savings product',
+        },
+        {
+          link: '',
+          title: 'Сrediting',
+        },
+        {
+          link: '',
+          title: 'Liquidity mining',
+        },
+      ],
+      userDDLinks: [
+        {
+          link: '/profile',
+          title: 'My profile',
+        },
+        {
+          link: '/settings',
+          title: 'Settings',
+        },
+        {
+          link: '/disputes',
+          title: 'Disputes',
+        },
+        {
+          link: '/',
+          title: 'Logout',
+        },
+      ],
     };
   },
   computed: {
@@ -540,6 +790,23 @@ export default {
     this.GetLocation();
   },
   methods: {
+    toRoute(path) {
+      this.$router.push(path);
+      this.toggleMobileMenu();
+    },
+    toggleUserDD() {
+      this.isUserDDOpened = !this.isUserDDOpened;
+    },
+    toggleInstrumentDD() {
+      this.isInstrumentDropdownOpened = !this.isInstrumentDropdownOpened;
+    },
+    closeMenu() {
+      this.isMobileMenu = false;
+    },
+    toggleMobileMenu() {
+      this.isMobileMenu = !this.isMobileMenu;
+      this.isNotFlexContainer = !this.isNotFlexContainer;
+    },
     toMain() {
       if (this.userData.role === 'worker') {
         this.$router.push('/quests');
@@ -611,6 +878,161 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.hidden {
+  display: none;
+}
+.mobile {
+  &-dropdown {
+    border-bottom: 1px solid $black0;
+    &__btn {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    &__title {
+      padding: 16px 0 20px 20px;
+    }
+    &__arrow {
+      justify-self: flex-end;
+      padding: 16px 20px 0 0;
+    }
+    &__container {}
+  }
+  &__links {
+    display: flex;
+    flex-direction: column;
+  }
+  &__link {
+    padding: 16px 20px 16px 20px;
+    font-weight: 400;
+    font-size: 16px;
+    color: $black800;
+    border-bottom: 1px solid $black0;
+    transition: 1s;
+    text-decoration: none;
+    &:hover {
+      @extend .mobile__link;
+      background: $blue;
+      color: $white;
+      font-weight: 600;
+    }
+  }
+}
+.instrument-dropdown {
+  &__link {
+    @extend .mobile__link;
+    display: flex;
+    flex-direction: column;
+    color: $black600;
+    padding: 16px 0 20px 35px;
+  }
+}
+.user {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  &-dropdown {
+    &__link {
+      @extend .mobile__link;
+      display: flex;
+      flex-direction: column;
+      background: $black0;
+      padding: 16px 0 20px 20px;
+    }
+  }
+  &-container {
+    &__avatar {
+      padding: 15px;
+    }
+    &__user {
+      padding: 15px 0 0 0;
+      display: grid;
+    }
+  }
+  &__dropdown {
+    align-self: center;
+  }
+  &__container {
+    display: flex;
+    flex-direction: row;
+    background: $black0;
+    max-height: 70px;
+    height: 100%;
+    max-width: 100%;
+    width: 100%;
+    padding: 0 20px 0 0;
+  }
+  &__avatar {
+    max-height: 40px;
+    max-width: 40px;
+    height: 100%;
+    width: 100%;
+    border-radius: 137px;
+  }
+  &__name {
+    font-weight: 500;
+    font-size: 16px;
+    color: $black800;
+  }
+  &__role {
+    font-weight: 400;
+    font-size: 12px;
+    color: $blue;
+    padding: 0 0 11px 0;
+  }
+}
+.icon {
+  font-size: 20px;
+  &-caret_down:before {
+    @extend .icon;
+    content: "\ea48";
+    color: #2e3a59;
+  }
+  &-caret_up:before {
+    @extend .icon;
+    content: "\ea4b";
+    color: #2e3a59;
+  }
+  &-close_big:before {
+    @extend .icon;
+    content: "\e948";
+    color: #2e3a59;
+  }
+}
+.ctm {
+  &-open {
+    display: flex;
+    width: 100%;
+  }
+  &__actions {
+    padding: 20px;
+  }
+  &-menu {
+    display: none;
+    transition: .2s;
+    &_opened {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 73px;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      z-index: 9999;
+    }
+    &__content {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      background: $white;
+      border-radius: 0 0 5px 5px;
+      &_hide {
+        width: 0;
+      }
+    }
+  }
+}
 .primary {
   height: 100vh;
   overflow-y: auto;
@@ -625,7 +1047,10 @@ export default {
     min-height: 100vh;
   }
   &__main {
+    display: grid;
     padding-bottom: 80px;
+    transition: 1s;
+    width: 100%;
   }
 }
 .notify {
@@ -885,6 +1310,10 @@ export default {
     &_profile {
       position: relative;
     }
+    &_menu {
+      position: relative;
+      display: none;
+    }
     &_notify {
       position: relative;
     }
@@ -1122,56 +1551,112 @@ export default {
     grid-gap: 20px;
   }
 }
-@include _1700 {
-  .mobile {
+.ctm-menu {
+  &__toggle {
     display: none;
   }
 }
-@include _1600 {
-  .mobile {
-    display: none;
-  }
-}
-@include _1500 {
-  .mobile {
-    display: none;
-  }
-}
-@include _1300 {
-  .mobile {
-    display: none;
-  }
-}
+@include _1700 {}
+@include _1600 {}
+@include _1500 {}
+@include _1300 {}
 @include _1199 {
+  .ctm-menu {
+    &__toggle {
+      display: flex;
+    }
+  }
   .header {
-    display: flex;
+    &__button_menu {
+      display: flex;
+    }
     &__body {
       margin: 0 20px 0 20px;
     }
-  }
-  .mobile {
-    display: none;
+    &__links {
+      display: none;
+    }
+    &__right {}
+    &__button {
+      &_profile {
+        display: none;
+      }
+    }
   }
   .footer {
-    &__body {
-      max-width: 1180px;
-      margin: 0 20px 0 20px;
-    }
-    &__bottom {
-      max-width: 1020px;
-    }
+    padding: 0 10px;
   }
 }
 @include _991 {
   .header {
-      display: none;
+    &__btn {
+      display: none !important;
+    }
   }
-  .mobile {
-    padding: 50px 0 0 0;
-    display: grid;
+  .template {
+    &__content {
+      grid-template-rows: 72px 1fr auto;
+    }
   }
   .footer {
-      display: none;
+    &__top {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      grid-gap: 30px;
+      margin-bottom: 10px;
+    }
+    &__items {
+      grid-template-columns: 1fr;
+      grid-gap: 20px;
+    }
+  }
+}
+@include _991 {}
+@include _575 {
+  .header {
+    &__logo {
+      span {
+        display: none;
+      }
+    }
+    &__btn {
+      display: none !important;
+    }
+    &__left {
+      grid-gap: 15px;
+    }
+    &__right {
+      grid-gap: 2px;
+    }
+  }
+  .footer {
+    &__bottom {
+      display: grid;
+    }
+    &__left {
+      grid-column: 1/2;
+    }
+    &__rights {
+      grid-column: 1/2;
+    }
+    &__rights {
+      display: flex;
+    }
+    &__links {
+      display: flex;
+    }
+    &__top {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-gap: 30px;
+    }
+    &__items {
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 20px;
+      &_links {
+        grid-template-columns: 1fr;
+      }
+    }
   }
 }
 </style>

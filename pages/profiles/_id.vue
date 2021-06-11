@@ -17,7 +17,6 @@
               >
             </div>
             <div class="rating" />
-            <!--              TODO: Добавить стили в BASE Button-->
             <nuxt-link
               class="reviews-amount"
               to="/profiles/1"
@@ -212,7 +211,9 @@
                 200m {{ $t('quests.fromYou') }}
               </div>
               <div class="quest-title">
-                <a href="#">Paint the garage quickly</a>
+                <nuxt-link to="/quests/1">
+                  Paint the garage quickly
+                </nuxt-link>
               </div>
               <div class="description">
                 Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...
@@ -228,7 +229,6 @@
                 </div>
               </div>
             </div>
-            <!--              TODO: Добавить стили в BASE Button-->
             <nuxt-link
               class="simple-button"
               to="/profiles/1"
@@ -688,7 +688,6 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
   content: none;
 }
 
