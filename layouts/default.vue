@@ -1595,15 +1595,7 @@ export default {
     }
   }
 }
-@include _991 {
-  .header {}
-  .footer {}
-  .template {
-    &__content {
-      background: $white;
-    }
-  }
-}
+@include _991 {}
 @include _575 {
   .header {
     &__logo {
