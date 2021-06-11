@@ -444,8 +444,18 @@ export default {
 @include _1199 {
   .wallet {
     margin: 0 20px 0 20px;
+    &__info {
+      grid-template-columns: 1fr;
+    }
+  }
+  .card {
+    grid-template-columns: 2fr 1fr;
   }
 }
-@include _991 {}
+@include _767 {
+  .card {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 @include _380 {}
 </style>
