@@ -141,7 +141,7 @@ export default {
     &__left {
       grid-column: 1/3;
       grid-row: 2/3;
-      max-width: 100%;
+      max-width: 87%;
       justify-self: initial;
       padding: 20px;
     }
@@ -150,8 +150,10 @@ export default {
 
 @include _575 {
   .template {
+    width: 100%;
+    overflow:  hidden;
     &__left {
-      max-width: 354px;
+      max-width: 100%;
     }
   }
 }
