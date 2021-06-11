@@ -1087,10 +1087,7 @@ export default {
 @include _767 {
   .icon {
     &__close {
-      position: absolute;
-      bottom: 204px;
-      right: 12px;
-      z-index: 2;
+      bottom: 167px;
     }
   }
   .page {
@@ -1116,6 +1113,20 @@ export default {
     grid-template-columns: 1fr;
     &__left {
       padding: 20px 0 20px 20px;
+    }
+  }
+}
+
+@include _575 {
+  .settings {
+    &_blue {
+      grid-template-columns: 1fr;
+      padding: 10px;
+    }
+  }
+  .icon {
+    &__close {
+      bottom: 167px;
     }
   }
 }
