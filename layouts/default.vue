@@ -385,157 +385,159 @@
                    {'ctm-open': isNotFlexContainer}]"
         >
           <!-- Меню -->
-          <div
-            class="ctm-menu"
-            :class="{'ctm-menu_opened': isMobileMenu}"
-          >
+          <transition name="fade-fast">
             <div
-              class="ctm-menu__content"
+              class="ctm-menu"
+              :class="{'ctm-menu_opened': isMobileMenu}"
             >
               <div
-                v-if="isMobileMenu"
-                class="user"
-                @click="toggleUserDD()"
+                class="ctm-menu__content"
               >
-                <div class="user__container">
-                  <div class="user-container__avatar">
-                    <img
-                      alt=""
-                      src="../assets/img/temp/photo.jpg"
-                      class="user__avatar"
-                    >
-                  </div>
-                  <div class="user-container__user">
-                    <div class="user__name">
-                      Samantha Sparcs
+                <div
+                  v-if="isMobileMenu"
+                  class="user"
+                  @click="toggleUserDD()"
+                >
+                  <div class="user__container">
+                    <div class="user-container__avatar">
+                      <img
+                        alt=""
+                        src="../assets/img/temp/photo.jpg"
+                        class="user__avatar"
+                      >
                     </div>
-                    <div class="user__role">
-                      Employer
+                    <div class="user-container__user">
+                      <div class="user__name">
+                        Samantha Sparcs
+                      </div>
+                      <div class="user__role">
+                        Employer
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-container__dropdown">
+                    <div class="user__container">
+                      <div
+                        class="user__dropdown"
+                      >
+                        <span
+                          v-if="!isUserDDOpened"
+                          class="icon-caret_down"
+                        />
+                        <span
+                          v-if="isUserDDOpened"
+                          class="icon-caret_up"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="user-container__dropdown">
-                  <div class="user__container">
-                    <div
-                      class="user__dropdown"
+                <!--              <div-->
+                <!--                v-if="userRole === 'employer'"-->
+                <!--                class="mobile__links"-->
+                <!--              >-->
+                <!--                <nuxt-link-->
+                <!--                  to="/workers"-->
+                <!--                  class="mobile__link"-->
+                <!--                >-->
+                <!--                  {{ $t('ui.workers') }}-->
+                <!--                </nuxt-link>-->
+                <!--                <nuxt-link-->
+                <!--                  to="/my"-->
+                <!--                  class="mobile__link"-->
+                <!--                >-->
+                <!--                  {{ $t('quests.MyQuests') }}-->
+                <!--                </nuxt-link>-->
+                <!--                <nuxt-link-->
+                <!--                  to="/wallet"-->
+                <!--                  class="mobile__link"-->
+                <!--                >-->
+                <!--                  {{ $t('ui.wallet') }}-->
+                <!--                </nuxt-link>-->
+                <!--              </div>-->
+                <!--              v-if="userRole === 'worker'"-->
+                <div
+                  v-if="isUserDDOpened === true"
+                  class="user-dropdown__container"
+                >
+                  <span
+                    v-for="(item, i) in userDDLinks"
+                    :key="i"
+                  >
+                    <nuxt-link
+                      :to="item.link"
+                      class="user-dropdown__link"
                     >
+                      {{ item.title }}
+                    </nuxt-link>
+                  </span>
+                </div>
+                <div
+                  v-if="isMobileMenu"
+                  class="mobile__links"
+                >
+                  <nuxt-link
+                    to="/quests"
+                    class="mobile__link"
+                  >
+                    {{ $t('ui.quests') }}
+                  </nuxt-link>
+                  <nuxt-link
+                    to="/my"
+                    class="mobile__link"
+                  >
+                    {{ $t('ui.myQuests') }}
+                  </nuxt-link>
+                  <nuxt-link
+                    to="/wallet"
+                    class="mobile__link"
+                  >
+                    {{ $t('ui.wallet') }}
+                  </nuxt-link>
+                </div>
+                <div
+                  class="mobile-dropdown"
+                  @click="toggleInstrumentDD()"
+                >
+                  <div
+                    v-if="isMobileMenu"
+                    class="mobile-dropdown__btn"
+                  >
+                    <div class="mobile-dropdown__title">
+                      Instruments
+                    </div>
+                    <div class="mobile-dropdown__arrow">
                       <span
-                        v-if="!isUserDDOpened"
+                        v-if="!isInstrumentDropdownOpened"
                         class="icon-caret_down"
                       />
                       <span
-                        v-if="isUserDDOpened"
+                        v-if="isInstrumentDropdownOpened"
                         class="icon-caret_up"
                       />
                     </div>
                   </div>
                 </div>
-              </div>
-              <!--              <div-->
-              <!--                v-if="userRole === 'employer'"-->
-              <!--                class="mobile__links"-->
-              <!--              >-->
-              <!--                <nuxt-link-->
-              <!--                  to="/workers"-->
-              <!--                  class="mobile__link"-->
-              <!--                >-->
-              <!--                  {{ $t('ui.workers') }}-->
-              <!--                </nuxt-link>-->
-              <!--                <nuxt-link-->
-              <!--                  to="/my"-->
-              <!--                  class="mobile__link"-->
-              <!--                >-->
-              <!--                  {{ $t('quests.MyQuests') }}-->
-              <!--                </nuxt-link>-->
-              <!--                <nuxt-link-->
-              <!--                  to="/wallet"-->
-              <!--                  class="mobile__link"-->
-              <!--                >-->
-              <!--                  {{ $t('ui.wallet') }}-->
-              <!--                </nuxt-link>-->
-              <!--              </div>-->
-              <!--              v-if="userRole === 'worker'"-->
-              <div
-                v-if="isUserDDOpened === true"
-                class="user-dropdown__container"
-              >
-                <span
-                  v-for="(item, i) in userDDLinks"
-                  :key="i"
-                >
-                  <nuxt-link
-                    :to="item.link"
-                    class="user-dropdown__link"
-                  >
-                    {{ item.title }}
-                  </nuxt-link>
-                </span>
-              </div>
-              <div
-                v-if="isMobileMenu"
-                class="mobile__links"
-              >
-                <nuxt-link
-                  to="/quests"
-                  class="mobile__link"
-                >
-                  {{ $t('ui.quests') }}
-                </nuxt-link>
-                <nuxt-link
-                  to="/my"
-                  class="mobile__link"
-                >
-                  {{ $t('ui.myQuests') }}
-                </nuxt-link>
-                <nuxt-link
-                  to="/wallet"
-                  class="mobile__link"
-                >
-                  {{ $t('ui.wallet') }}
-                </nuxt-link>
-              </div>
-              <div
-                class="mobile-dropdown"
-                @click="toggleInstrumentDD()"
-              >
                 <div
-                  v-if="isMobileMenu"
-                  class="mobile-dropdown__btn"
+                  v-if="isInstrumentDropdownOpened === true"
+                  class="mobile-dropdown__container"
                 >
-                  <div class="mobile-dropdown__title">
-                    Instruments
-                  </div>
-                  <div class="mobile-dropdown__arrow">
-                    <span
-                      v-if="!isInstrumentDropdownOpened"
-                      class="icon-caret_down"
-                    />
-                    <span
-                      v-if="isInstrumentDropdownOpened"
-                      class="icon-caret_up"
-                    />
-                  </div>
+                  <span
+                    v-for="(item, i) in instrumentDDLinks"
+                    :key="i"
+                  >
+                    <nuxt-link
+                      v-if="isMobileMenu"
+                      :to="item.link"
+                      class="instrument-dropdown__link"
+                    >
+                      {{ item.title }}
+                    </nuxt-link>
+                  </span>
                 </div>
               </div>
-              <div
-                v-if="isInstrumentDropdownOpened === true"
-                class="mobile-dropdown__container"
-              >
-                <span
-                  v-for="(item, i) in instrumentDDLinks"
-                  :key="i"
-                >
-                  <nuxt-link
-                    v-if="isMobileMenu"
-                    :to="item.link"
-                    class="instrument-dropdown__link"
-                  >
-                    {{ item.title }}
-                  </nuxt-link>
-                </span>
-              </div>
             </div>
-          </div>
+          </transition>
           <div
             class="template__main"
             :class="[{'fifty': isMobileMenu}]"
