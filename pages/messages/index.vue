@@ -268,7 +268,7 @@ export default {
   @include main;
   &-white {
    @include main-white;
-   justify-content: flex-start;
+    justify-self: center;
    border-radius: 6px;
  }
 }
