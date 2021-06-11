@@ -362,9 +362,6 @@
         <div class="template__main">
           <nuxt />
         </div>
-        <section class="mobile">
-          <MobileMenu />
-        </section>
         <div class="template__footer">
           <div class="footer">
             <div class="footer__body">
@@ -472,14 +469,10 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import MobileMenu from '../components/app/MobileMenu/index.vue';
 
 export default {
   name: 'DefaultLayout',
   middleware: 'auth',
-  components: {
-    MobileMenu,
-  },
   directives: {
     ClickOutside,
   },
