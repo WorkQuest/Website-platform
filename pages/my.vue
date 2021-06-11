@@ -851,10 +851,6 @@ export default {
 @include _1199 {
   .quests {
     padding: 10px;
-    &__search {
-      margin: 10px;
-      width: 97.5%;
-    }
   }
 }
 @include _991 {
@@ -864,7 +860,7 @@ export default {
       grid-template-columns: auto;
     }
     &__content {
-      grid-template-columns: repeat(6, 170px);
+      grid-template-columns: repeat(3, auto);
     }
     .block {
       &__img {
@@ -874,9 +870,6 @@ export default {
           border-radius: 6px;
         }
       }
-    }
-    &__search {
-      width: 95.5%;
     }
   }
 }
@@ -889,62 +882,28 @@ export default {
     .block {
       grid-template-columns: auto;
       &__img {
-        max-width: 100%;
+        height: 200px;
         img {
-          height: 200px;
-          object-fit: cover;
+          height: 100%;
           width: 100%;
         }
       }
     }
   }
-  .tools {
-    &__left {
-      grid-template-columns: auto auto auto;
-    }
-  }
-  .search {
-    grid-template-columns: auto auto;
-    &__toggle, &__dd {
-      display: none;
-    }
-  }
 }
 @include _480 {
   .quests {
-    &__top {
-      min-height: 125px;
+    &__content {
+      grid-template-columns: repeat(2, auto);
     }
     .block {
       &__right {
         padding: 10px;
       }
-      &__btn {
-        padding: 0 30px;
-        justify-content: flex-end;
-      }
       &__amount_green {
         font-size: 18px;
       }
     }
-  }
-  .tools {
-    display: block;
-    &__left {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  .dd__btn {
-    justify-content: space-around;
-  }
-  .search {
-    display: flex;
-    &__actions {
-      width: 50%;
-    }
-  }
-  .base-btn {
-    justify-content: space-between;
   }
 }
 
@@ -956,24 +915,6 @@ export default {
       }
     }
   }
-  .search {
-    &__actions {
-      width: 60%;
-      padding: 10px;
-    }
-  }
 }
 
-@include _321 {
-  .quests {
-    .block {
-      &__status {
-        grid-gap: 30px;
-      }
-      &__btn {
-        min-width: 126px;
-      }
-    }
-  }
-}
 </style>
