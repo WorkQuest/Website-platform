@@ -1004,17 +1004,4 @@ export default {
     }
   }
 }
-
-@include _321 {
-  .quests {
-    .block {
-      &__status {
-        grid-gap: 30px;
-      }
-      &__btn {
-        min-width: 126px;
-      }
-    }
-  }
-}
 </style>

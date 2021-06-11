@@ -453,13 +453,15 @@ export default {
     margin: 0 10px 0 10px;
   }
 }
-
 .main {
   @include main;
   &-white {
     @include main-white;
     justify-content: flex-start;
     border-radius: 6px;
+  }
+  &__body {
+    margin: 0 10px 0 10px;
   }
 }
 .chat {
@@ -534,8 +536,6 @@ export default {
     border-radius: 6px;
     width: 100%;
     max-width: 1180px;
-    height: 100%;
-    max-height: 852px;
   }
   &__message {
     cursor: pointer;

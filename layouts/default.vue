@@ -1613,6 +1613,7 @@ export default {
     }
   }
 }
+@include _991 {}
 @include _575 {
   .header {
     &__logo {
