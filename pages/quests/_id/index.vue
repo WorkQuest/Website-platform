@@ -1479,49 +1479,45 @@ export default {
 }
 
 @include _1199 {
-  .template__main {
-    background-color: #f6f8fa;
-  }
   .main__body, .main {
-    width: 1024px;
     padding: 10px;
   }
   .user__distance {
     margin: 0 20px;
-  }
-  .img__container{
-    overflow-x: auto;
   }
 }
 @include _991 {
   .main-white {
     display: block;
   }
-  .main__body, .main {
-    width: 768px;
-  }
-}
-@include _767 {
-  .main__body, .main, .map__container {
-    width: 425px;
-  }
-  .main {
-    display: block;
-    .block {
-      grid-template-columns: auto;
-      &__img {
-        height: 200px;
+  .img {
+    &__container {
+      grid-template-columns: repeat(2, auto);
+      img {
         max-width: 100%;
-        .image {
-          width: 100%;
-          border-radius: 6px;
-          object-fit: cover;
-          max-height: 500px;
-          height: 100%;
-        }
+        max-height: 100%;
       }
     }
   }
+}
+@include _767 {
+.main {
+  display: block;
+  .block {
+    grid-template-columns: auto;
+    &__img {
+      height: 200px;
+      max-width: 100%;
+      .image {
+        width: 100%;
+        border-radius: 6px;
+        object-fit: cover;
+        max-height: 500px;
+        height: 100%;
+      }
+    }
+  }
+}
   .price {
     &__container {
       flex-direction: column;
@@ -1532,50 +1528,4 @@ export default {
   }
 }
 
-@include _380 {
-  .main__body, .main, .map__container {
-    width: 375px;
-  }
-}
-
-@include _321 {
-  .main__body, .main, .map__container {
-    width: 320px;
-  }
-  .main {
-    .block {
-      grid-template-columns: 300px;
-      .block {
-        &__amount {
-          font-size: 15px;
-        }
-        &__status {
-          grid-gap: 30px;
-        }
-        &__btn {
-          min-width: 126px;
-        }
-        &__priority {
-          height: 35px;
-        }
-      }
-    }
-  }
-  .price {
-    &__container {
-      .badge__item_green {
-        font-size: 14px;
-      }
-    }
-    &__value {
-      font-size: 17px;
-    }
-  }
-  .quest__spec {
-    font-size: 20px;
-    .spec__link {
-      font-size: 20px;
-    }
-  }
-}
 </style>

@@ -64,9 +64,3 @@
     @content;
   }
 }
-
-@mixin _321 {
-  @media (max-width: 321px) {
-    @content;
-  }
-}
