@@ -333,7 +333,7 @@
                       </div>
                       <div class="profile__info">
                         <div class="profile__text">
-                          Samantha Sparks
+                          {{ userData.firstName }} {{ userData.lastName }}
                         </div>
                         <div
                           v-if="userRole === 'employer'"
@@ -390,9 +390,7 @@
               class="ctm-menu"
               :class="{'ctm-menu_opened': isMobileMenu}"
             >
-              <div
-                class="ctm-menu__content"
-              >
+              <div class="ctm-menu__content">
                 <div
                   v-if="isMobileMenu"
                   class="user"
@@ -408,10 +406,19 @@
                     </div>
                     <div class="user-container__user">
                       <div class="user__name">
-                        Samantha Sparcs
+                        {{ userData.firstName }} {{ userData.lastName }}
                       </div>
-                      <div class="user__role">
-                        Employer
+                      <div
+                        v-if="userRole === 'employer'"
+                        class="user__role"
+                      >
+                        {{ $t('role.employer') }}
+                      </div>
+                      <div
+                        v-if="userRole === 'worker'"
+                        class="user__role"
+                      >
+                        {{ $t('role.worker') }}
                       </div>
                     </div>
                   </div>
@@ -464,36 +471,29 @@
                     v-for="(item, i) in userDDLinks"
                     :key="i"
                   >
-                    <nuxt-link
-                      :to="item.link"
+                    <div
                       class="user-dropdown__link"
+                      @click="toRoute(item.link)"
                     >
                       {{ item.title }}
-                    </nuxt-link>
+                    </div>
                   </span>
                 </div>
                 <div
                   v-if="isMobileMenu"
                   class="mobile__links"
                 >
-                  <nuxt-link
-                    to="/quests"
-                    class="mobile__link"
+                  <div
+                    v-for="(item, i) in mobileMenuLinks"
+                    :key="i"
                   >
-                    {{ $t('ui.quests') }}
-                  </nuxt-link>
-                  <nuxt-link
-                    to="/my"
-                    class="mobile__link"
-                  >
-                    {{ $t('ui.myQuests') }}
-                  </nuxt-link>
-                  <nuxt-link
-                    to="/wallet"
-                    class="mobile__link"
-                  >
-                    {{ $t('ui.wallet') }}
-                  </nuxt-link>
+                    <div
+                      class="mobile__link"
+                      @click="toRoute(item.path)"
+                    >
+                      {{ item.title }}
+                    </div>
+                  </div>
                 </div>
                 <div
                   class="mobile-dropdown"
@@ -519,28 +519,35 @@
                   </div>
                 </div>
                 <div
-                  v-if="isInstrumentDropdownOpened === true"
+                  v-if="isInstrumentDropdownOpened"
                   class="mobile-dropdown__container"
                 >
-                  <span
+                  <div
                     v-for="(item, i) in instrumentDDLinks"
                     :key="i"
                   >
-                    <nuxt-link
+                    <div
                       v-if="isMobileMenu"
-                      :to="item.link"
                       class="instrument-dropdown__link"
+                      @click="toRoute(item.link)"
                     >
                       {{ item.title }}
-                    </nuxt-link>
-                  </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="ctm__actions">
+                  <base-btn
+                    v-if="userRole === 'employer'"
+                    class="ctm__btn"
+                    @click="createNewQuest()"
+                  >
+                    {{ $t('layout.create') }}
+                  </base-btn>
                 </div>
               </div>
             </div>
           </transition>
-          <div
-            class="template__main"
-          >
+          <div class="template__main">
             <nuxt />
           </div>
         </div>
@@ -670,6 +677,20 @@ export default {
       isMobileMenu: false,
       isNotFlexContainer: true,
       notification: 1,
+      mobileMenuLinks: [
+        {
+          path: '/quests',
+          title: this.$t('ui.quests'),
+        },
+        {
+          path: '/my',
+          title: this.$t('ui.myQuests'),
+        },
+        {
+          path: '/wallet',
+          title: this.$t('ui.wallet'),
+        },
+      ],
       instrumentDDLinks: [
         {
           link: '',
@@ -771,6 +792,10 @@ export default {
     this.GetLocation();
   },
   methods: {
+    toRoute(path) {
+      this.$router.push(path);
+      this.toggleMobileMenu();
+    },
     toggleUserDD() {
       this.isUserDDOpened = !this.isUserDDOpened;
     },
@@ -855,11 +880,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-
 .hidden {
   display: none;
 }
-
 .mobile {
   &-dropdown {
     border-bottom: 1px solid $black0;
@@ -977,22 +1000,27 @@ export default {
     color: #2e3a59;
   }
 }
-
 .ctm {
   &-open {
     display: flex;
     width: 100%;
   }
+  &__actions {
+    padding: 20px;
+  }
   &-menu {
-    width: 0;
-    height: 100%;
+    display: none;
     transition: .2s;
     &_opened {
       display: flex;
-      width: 50%;
-      height: 96.7%;
-      overflow-y: auto;
-      transition: .2s;
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 73px;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      z-index: 9999;
     }
     &__content {
       height: 100%;
@@ -1007,7 +1035,6 @@ export default {
     }
   }
 }
-
 .primary {
   height: 100vh;
   overflow-y: auto;
@@ -1578,6 +1605,32 @@ export default {
   }
 }
 @include _575 {
-
+  .header {
+    &__logo {
+      span {
+        display: none;
+      }
+    }
+    &__btn {
+      display: none !important;
+    }
+    &__left {
+      grid-gap: 15px;
+    }
+    &__right {
+      grid-gap: 2px;
+    }
+  }
+  .footer {
+    &__top {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      grid-gap: 30px;
+    }
+    &__items {
+      grid-template-columns: 1fr;
+      grid-gap: 20px;
+    }
+  }
 }
 </style>
