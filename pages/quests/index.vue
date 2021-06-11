@@ -881,7 +881,7 @@ export default {
       grid-template-columns: auto;
     }
     &__content {
-      grid-template-columns: repeat(6, 170px);
+      grid-template-columns: 1fr;
     }
     .block {
       &__img {
