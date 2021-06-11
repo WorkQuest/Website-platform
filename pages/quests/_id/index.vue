@@ -1531,11 +1531,6 @@ export default {
     }
   }
 }
-@include _415 {
-  .main__body, .main, .map__container {
-    width: 414px;
-  }
-}
 
 @include _380 {
   .main__body, .main, .map__container {

@@ -877,14 +877,15 @@ export default {
 
 @include _1199 {
   .quests {
-    width: 1024px;
     padding: 10px;
+    &__search {
+      margin: 10px;
+      width: 97.5%;
+    }
   }
 }
 @include _991 {
   .quests {
-    width: 768px;
-    background-color: #f6f8fa;
     .limit__container {
       display: grid;
       grid-template-columns: auto;
@@ -901,14 +902,13 @@ export default {
         }
       }
     }
+    &__search {
+      width: 95.5%;
+    }
   }
 }
 @include _767 {
   .quests {
-    width: 425px;
-    &__map {
-      display: none;
-    }
     .limit__container {
       display: grid;
       grid-template-columns: auto;
@@ -918,12 +918,20 @@ export default {
       &__img {
         max-width: 100%;
         img {
+          height: 200px;
+          object-fit: cover;
           width: 100%;
         }
       }
     }
   }
+  .tools {
+    &__left {
+      grid-template-columns: auto auto auto;
+    }
+  }
   .search {
+    grid-template-columns: auto auto;
     &__toggle, &__dd {
       display: none;
     }
@@ -931,12 +939,8 @@ export default {
 }
 @include _480 {
   .quests {
-    width: 414px;
     &__top {
       min-height: 125px;
-    }
-    .search {
-      grid-template-columns: 260px 100px;
     }
     .block {
       &__right {
@@ -952,15 +956,22 @@ export default {
     }
   }
   .tools {
+    display: block;
     &__left {
-      grid-template-columns: 181px 191px;
+      grid-template-columns: repeat(2, 1fr);
     }
     &__right {
-      min-width: 192px;
-      position: relative;
-      bottom: -30px;
-      left: -191px;
+      position: absolute;
+      left: 54%;
+      width: 40%;
+      top: 55.5%;
+      button {
+        width: 100%;
+      }
     }
+  }
+  .dd__btn {
+    justify-content: space-around;
   }
   .search {
     display: flex;
@@ -975,7 +986,6 @@ export default {
 
 @include _380 {
   .quests {
-    width: 375px;
     .block {
       &__amount_green {
         font-size: 16px;
@@ -988,22 +998,10 @@ export default {
       padding: 10px;
     }
   }
-  .tools {
-    &__left {
-      grid-template-columns: 163px 170px;
-    }
-    &__right {
-      min-width: 170px;
-      position: relative;
-      bottom: -31px;
-      left: -170px;
-    }
-  }
 }
 
 @include _321 {
   .quests {
-    width: 320px;
     .block {
       &__status {
         grid-gap: 30px;
@@ -1011,17 +1009,6 @@ export default {
       &__btn {
         min-width: 126px;
       }
-    }
-  }
-  .tools {
-    &__left {
-      grid-template-columns: 139px 139px;
-    }
-    &__right {
-      min-width: 139px;
-      position: relative;
-      bottom: -31px;
-      left: -140px;
     }
   }
 }
