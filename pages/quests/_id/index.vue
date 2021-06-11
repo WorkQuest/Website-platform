@@ -749,38 +749,6 @@ export default {
   }
 }
 
-.mobile-quest {
-  margin: 20px 20px 0 20px;
-  &__map {
-    margin: 20px 0 0 0;
-  }
-  &__title {
-    @extend .mobile-quest;
-    font-weight: 700;
-    font-size: 30px;
-    color: $black800;
-  }
-  &__description {
-    @extend .mobile-quest;
-    font-weight: 400;
-    font-size: 16px;
-    color: $black700;
-  }
-  &__date {
-    @extend .mobile-quest;
-    font-weight: 400;
-    font-size: 12px;
-    color: $black300;
-  }
-  &__value {
-    @extend .mobile-quest;
-    font-weight: 700;
-    font-size: 25px;
-    color: $green;
-    padding: 0 0 20px 0;
-  }
-}
-
 .user-skills {
   display: flex;
   flex-direction: row;
@@ -847,16 +815,6 @@ export default {
       color: #22CC14;
       background-color: rgba(34, 204, 20, 0.1);
     }
-  }
-}
-
-.mobile {
-  &__header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px 20px 29px 20px;
   }
 }
 
