@@ -708,6 +708,7 @@ export default {
 .avatar {
   &__row {
     display: flex;
+    margin: 0 20px 0 20px;
   }
 }
 .btn {
@@ -824,7 +825,6 @@ export default {
     @extend .profile;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 0 20px;
-    margin: 20px 20px 0 20px;
     width: 100%;
   }
   &__row-4col {
@@ -1106,7 +1106,6 @@ export default {
   .profile {
     &__row-3col {
       grid-template-columns: 1fr;
-      max-width: 435px;
     }
     &__row-4col {
       grid-template-columns: 1fr;
