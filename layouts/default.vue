@@ -1017,8 +1017,8 @@ export default {
   overflow: hidden;
   background: #F7F8FA;
   &__content {
-    //display: grid;
-    //grid-template-rows: 72px 1fr 256px;
+    display: grid;
+    grid-template-rows: 72px 1fr 256px;
     min-height: 100vh;
   }
   &__main {

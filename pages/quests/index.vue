@@ -878,10 +878,6 @@ export default {
 @include _1199 {
   .quests {
     padding: 10px;
-    &__search {
-      margin: 10px;
-      width: 97.5%;
-    }
   }
 }
 @include _991 {
@@ -901,9 +897,6 @@ export default {
           border-radius: 6px;
         }
       }
-    }
-    &__search {
-      width: 95.5%;
     }
   }
 }
@@ -959,15 +952,6 @@ export default {
     display: block;
     &__left {
       grid-template-columns: repeat(2, 1fr);
-    }
-    &__right {
-      position: absolute;
-      left: 54%;
-      width: 40%;
-      top: 55.5%;
-      button {
-        width: 100%;
-      }
     }
   }
   .dd__btn {
