@@ -433,6 +433,7 @@
                 <div class="block__img">
                   <img
                     src="~assets/img/temp/fake-card.svg"
+                    class="quests__img image"
                     alt=""
                   >
                 </div>
@@ -1519,52 +1520,109 @@ export default {
   }
 }
 
-@include _1700 {
-  .mobile {
-    display: none;
-  }
-
-}
-@include _1600 {
-  .mobile {
-    display: none;
-  }
-
-}
-@include _1400 {
-  .mobile {
-    display: none;
-  }
-
-}
-@include _1300 {
-  .mobile {
-    display: none;
-  }
-
-}
 @include _1199 {
-  .mobile {
-    display: none;
+  .template__main {
+    background-color: #f6f8fa;
+  }
+  .main__body, .main {
+    width: 1024px;
+    padding: 10px;
+  }
+  .user__distance {
+    margin: 0 20px;
+  }
+  .img__container{
+    overflow-x: auto;
   }
 }
 @include _991 {
-  .pc {
-    display: none;
+  .main-white {
+    display: block;
   }
-  .mobile {
-    overflow-y: auto;
-    display: grid;
-    height: 100%;
-    width: 100%;
-    max-height: 775px;
+  .main__body, .main {
+    width: 768px;
   }
-  .GMap {
-    &__Wrapper {
-      height: 215px;
+}
+@include _767 {
+  .main__body, .main, .map__container {
+    width: 425px;
+  }
+  .main {
+    display: block;
+    .block {
+      grid-template-columns: auto;
+      &__img {
+        height: 200px;
+        max-width: 100%;
+        .image {
+          width: 100%;
+          border-radius: 6px;
+          object-fit: cover;
+          max-height: 500px;
+          height: 100%;
+        }
+      }
+    }
+  }
+  .price {
+    &__container {
+      flex-direction: column;
+    }
+    &__value {
+      font-size: 19px;
     }
   }
 }
+@include _415 {
+  .main__body, .main, .map__container {
+    width: 414px;
+  }
+}
 
-@include _575 {}
+@include _380 {
+  .main__body, .main, .map__container {
+    width: 375px;
+  }
+}
+
+@include _321 {
+  .main__body, .main, .map__container {
+    width: 320px;
+  }
+  .main {
+    .block {
+      grid-template-columns: 300px;
+      .block {
+        &__amount {
+          font-size: 15px;
+        }
+        &__status {
+          grid-gap: 30px;
+        }
+        &__btn {
+          min-width: 126px;
+        }
+        &__priority {
+          height: 35px;
+        }
+      }
+    }
+  }
+  .price {
+    &__container {
+      .badge__item_green {
+        font-size: 14px;
+      }
+    }
+    &__value {
+      font-size: 17px;
+    }
+  }
+  .quest__spec {
+    font-size: 20px;
+    .spec__link {
+      font-size: 20px;
+    }
+  }
+}
 </style>
