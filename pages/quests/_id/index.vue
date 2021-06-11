@@ -1529,13 +1529,15 @@ export default {
 }
 @include _575 {
   .block {
-    &__actions {
+    &__head {
+      display: flex !important;
+    }
+    &__actions{
       display: grid;
       grid-template-columns: 1fr;
-    }
-    &__btn {
-      margin-top: 10px;
-      padding: 0;
+      .block__btn {
+        display: flex !important;
+      }
     }
   }
 }

@@ -892,14 +892,16 @@ export default {
   }
 }
 @include _575 {
-  .block {
-    &__actions {
-      display: grid;
-      grid-template-columns: 1fr;
-    }
-    &__btn {
-      margin-top: 10px;
-      padding: 0;
+  .quests {
+    .block {
+      &__actions{
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+      &__btn {
+        margin-top: 10px;
+        padding: 0;
+      }
     }
   }
 }
