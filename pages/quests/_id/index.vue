@@ -433,6 +433,7 @@
                 <div class="block__img">
                   <img
                     src="~assets/img/temp/fake-card.svg"
+                    class="quests__img image"
                     alt=""
                   >
                 </div>
@@ -748,38 +749,6 @@ export default {
   }
 }
 
-.mobile-quest {
-  margin: 20px 20px 0 20px;
-  &__map {
-    margin: 20px 0 0 0;
-  }
-  &__title {
-    @extend .mobile-quest;
-    font-weight: 700;
-    font-size: 30px;
-    color: $black800;
-  }
-  &__description {
-    @extend .mobile-quest;
-    font-weight: 400;
-    font-size: 16px;
-    color: $black700;
-  }
-  &__date {
-    @extend .mobile-quest;
-    font-weight: 400;
-    font-size: 12px;
-    color: $black300;
-  }
-  &__value {
-    @extend .mobile-quest;
-    font-weight: 700;
-    font-size: 25px;
-    color: $green;
-    padding: 0 0 20px 0;
-  }
-}
-
 .user-skills {
   display: flex;
   flex-direction: row;
@@ -846,16 +815,6 @@ export default {
       color: #22CC14;
       background-color: rgba(34, 204, 20, 0.1);
     }
-  }
-}
-
-.mobile {
-  &__header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px 20px 29px 20px;
   }
 }
 
@@ -1519,18 +1478,104 @@ export default {
   }
 }
 
-@include _1700 {}
-@include _1600 {}
-@include _1400 {}
-@include _1300 {}
-@include _1199 {}
+@include _1199 {
+  .template__main {
+    background-color: #f6f8fa;
+  }
+  .main__body, .main {
+    width: 1024px;
+    padding: 10px;
+  }
+  .user__distance {
+    margin: 0 20px;
+  }
+  .img__container{
+    overflow-x: auto;
+  }
+}
 @include _991 {
-  .GMap {
-    &__Wrapper {
-      height: 215px;
+  .main-white {
+    display: block;
+  }
+  .main__body, .main {
+    width: 768px;
+  }
+}
+@include _767 {
+  .main__body, .main, .map__container {
+    width: 425px;
+  }
+  .main {
+    display: block;
+    .block {
+      grid-template-columns: auto;
+      &__img {
+        height: 200px;
+        max-width: 100%;
+        .image {
+          width: 100%;
+          border-radius: 6px;
+          object-fit: cover;
+          max-height: 500px;
+          height: 100%;
+        }
+      }
+    }
+  }
+  .price {
+    &__container {
+      flex-direction: column;
+    }
+    &__value {
+      font-size: 19px;
     }
   }
 }
 
-@include _575 {}
+@include _380 {
+  .main__body, .main, .map__container {
+    width: 375px;
+  }
+}
+
+@include _321 {
+  .main__body, .main, .map__container {
+    width: 320px;
+  }
+  .main {
+    .block {
+      grid-template-columns: 300px;
+      .block {
+        &__amount {
+          font-size: 15px;
+        }
+        &__status {
+          grid-gap: 30px;
+        }
+        &__btn {
+          min-width: 126px;
+        }
+        &__priority {
+          height: 35px;
+        }
+      }
+    }
+  }
+  .price {
+    &__container {
+      .badge__item_green {
+        font-size: 14px;
+      }
+    }
+    &__value {
+      font-size: 17px;
+    }
+  }
+  .quest__spec {
+    font-size: 20px;
+    .spec__link {
+      font-size: 20px;
+    }
+  }
+}
 </style>

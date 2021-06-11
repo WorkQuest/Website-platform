@@ -850,22 +850,21 @@ export default {
   }
 @include _1199 {
   .quests {
-    width: 1024px;
     padding: 10px;
+    &__search {
+      margin: 10px;
+      width: 97.5%;
+    }
   }
 }
 @include _991 {
   .quests {
-    width: 768px;
-    background-color: #f6f8fa;
     .limit__container {
       display: grid;
       grid-template-columns: auto;
     }
     &__content {
       grid-template-columns: repeat(6, 170px);
-      overflow-x: auto;
-      -ms-overflow-style: none;
     }
     .block {
       &__img {
@@ -876,11 +875,13 @@ export default {
         }
       }
     }
+    &__search {
+      width: 95.5%;
+    }
   }
 }
 @include _767 {
   .quests {
-    width: 425px;
     .limit__container {
       display: grid;
       grid-template-columns: auto;
@@ -888,43 +889,83 @@ export default {
     .block {
       grid-template-columns: auto;
       &__img {
-        height: 200px;
+        max-width: 100%;
         img {
-          height: 100%;
+          height: 200px;
+          object-fit: cover;
           width: 100%;
         }
       }
     }
   }
+  .tools {
+    &__left {
+      grid-template-columns: auto auto auto;
+    }
+  }
+  .search {
+    grid-template-columns: auto auto;
+    &__toggle, &__dd {
+      display: none;
+    }
+  }
 }
 @include _480 {
   .quests {
-    width: 414px;
+    &__top {
+      min-height: 125px;
+    }
     .block {
       &__right {
         padding: 10px;
+      }
+      &__btn {
+        padding: 0 30px;
+        justify-content: flex-end;
       }
       &__amount_green {
         font-size: 18px;
       }
     }
   }
+  .tools {
+    display: block;
+    &__left {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .dd__btn {
+    justify-content: space-around;
+  }
+  .search {
+    display: flex;
+    &__actions {
+      width: 50%;
+    }
+  }
+  .base-btn {
+    justify-content: space-between;
+  }
 }
 
 @include _380 {
   .quests {
-    width: 375px;
     .block {
       &__amount_green {
         font-size: 16px;
       }
     }
   }
+  .search {
+    &__actions {
+      width: 60%;
+      padding: 10px;
+    }
+  }
 }
 
 @include _321 {
   .quests {
-    width: 320px;
     .block {
       &__status {
         grid-gap: 30px;
