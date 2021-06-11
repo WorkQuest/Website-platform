@@ -18,7 +18,7 @@
                   src="~assets/img/app/logo.svg"
                   alt="WorkQuest"
                 >
-                <span>WorkQuest</span>
+                <span class="header__text">WorkQuest</span>
               </div>
               <div
                 v-if="userRole === 'employer'"
@@ -1576,9 +1576,84 @@ export default {
     &__content {
       background: $white;
     }
+    &__header {
+      width: 98%;
+    }
   }
 }
-@include _575 {
-
+@include _767 {
+  .template {
+    &__header {
+      width: 98%;
+    }
+  }
+  .header {
+    width: 98%;
+  }
 }
+
+@include _575 {
+  .template {
+    &__header {
+      width: 56%;
+    }
+  }
+  .header {
+    &__text {
+      font-size: 18px;
+    }
+    &__logo span {
+      font-size: 18px;
+    }
+    &__right {
+      transform: scale(0.8);
+    };
+  }
+}
+
+@include _380 {
+  .header {
+    &__text {
+      font-size: 13px;
+    }
+    &__logo span {
+      font-size: 13px;
+    }
+    &__right {
+      transform: scale(0.6);
+      margin: 0 10px 0 0;
+    }
+  }
+}
+
+@include _321 {
+  .header {
+    &__text {
+      font-size: 13px;
+    }
+    &__logo span {
+      font-size: 13px;
+    }
+    &__body {
+      margin: 0 6px 0 6px;
+      justify-content: flex-start;
+    }
+    &__right {
+      transform: scale(0.6);
+      margin: 0 10px 0 0;
+    }
+    &__left {
+      grid-gap: 0;
+    }
+  }
+  .ctm {
+    &-open {
+      width: 118%;
+    }
+    &-menu {
+      &_opened {}
+    }
+  }
+}
+
 </style>
