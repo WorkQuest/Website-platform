@@ -1569,6 +1569,10 @@ export default {
     &__head {
       display: flex !important;
     }
+    &__btn {
+      padding: 0;
+      margin-top: 10px;
+    }
     &__actions {
       display: grid;
       grid-template-columns: 1fr;
