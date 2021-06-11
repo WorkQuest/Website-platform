@@ -1519,46 +1519,12 @@ export default {
   }
 }
 
-@include _1700 {
-  .mobile {
-    display: none;
-  }
-
-}
-@include _1600 {
-  .mobile {
-    display: none;
-  }
-
-}
-@include _1400 {
-  .mobile {
-    display: none;
-  }
-
-}
-@include _1300 {
-  .mobile {
-    display: none;
-  }
-
-}
-@include _1199 {
-  .mobile {
-    display: none;
-  }
-}
+@include _1700 {}
+@include _1600 {}
+@include _1400 {}
+@include _1300 {}
+@include _1199 {}
 @include _991 {
-  .pc {
-    display: none;
-  }
-  .mobile {
-    overflow-y: auto;
-    display: grid;
-    height: 100%;
-    width: 100%;
-    max-height: 775px;
-  }
   .GMap {
     &__Wrapper {
       height: 215px;

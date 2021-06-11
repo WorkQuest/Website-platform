@@ -18,7 +18,7 @@
                   src="~assets/img/app/logo.svg"
                   alt="WorkQuest"
                 >
-                <span>WorkQuest</span>
+                <span class="header__text">WorkQuest</span>
               </div>
               <div
                 v-if="userRole === 'employer'"
@@ -467,7 +467,7 @@
                   v-if="isUserDDOpened === true"
                   class="user-dropdown__container"
                 >
-                  <span
+                  <div
                     v-for="(item, i) in userDDLinks"
                     :key="i"
                   >
@@ -477,7 +477,7 @@
                     >
                       {{ item.title }}
                     </div>
-                  </span>
+                  </div>
                 </div>
                 <div
                   v-if="isMobileMenu"

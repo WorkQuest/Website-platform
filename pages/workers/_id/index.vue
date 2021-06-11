@@ -82,7 +82,7 @@
                 class="btn_green"
                 @click="showModalGiveQuest()"
               >
-                Give a quest
+                {{ $t('workers.giveAQuest') }}
               </base-btn>
             </div>
           </div>
@@ -94,7 +94,7 @@
         <div class="box__skills">
           <div class="block_50">
             <div class="block_title">
-              Skills
+              {{ $t('workers.skills') }}
             </div>
             <div
               v-for="(skill, i) in payload.skills"
@@ -105,7 +105,7 @@
           </div>
           <div class="block_16">
             <div class="block_title">
-              Completed quests
+              {{ $t('workers.completedQuests') }}
             </div>
             <div class="numbers__big_blue">
               12
@@ -114,7 +114,7 @@
           </div>
           <div class="block_16">
             <div class="block_title">
-              Opened quests
+              {{ $t('workers.openedQuests') }}
             </div>
             <div class="numbers__big_blue">
               2
@@ -123,12 +123,12 @@
               class="block__link"
               to="/workers"
             >
-              Show all
+              {{ $t('workers.showAll') }}
             </n-link>
           </div>
           <div class="block_16">
             <div class="block_title">
-              Average rating
+              {{ $t('workers.averageRating') }}
             </div>
             <div class="block__rating">
               <div class="numbers__big_black">
@@ -139,7 +139,7 @@
                 alt="star"
               >
             </div>
-            <div>From 23 reviews</div>
+            <div>{{ $t('workers.from') }} 23 {{ $t('workers.reviews') }}</div>
           </div>
         </div>
         <section id="information-section">
@@ -204,7 +204,7 @@
             </div>
             <!-- Portfolio -->
             <div class="section__title">
-              Portfolio
+              {{ $t('quests.portfolio') }}
             </div>
             <div class="portfolio__items">
               <div
@@ -233,7 +233,7 @@
                 class="more-button"
                 to="/profiles/1"
               >
-                Show all cases
+                {{ $t('quests.showAllCases') }}
               </nuxt-link>
             </div>
           </div>

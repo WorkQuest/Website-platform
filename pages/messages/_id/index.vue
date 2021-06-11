@@ -113,10 +113,6 @@
               <span class="icon-link" />
             </label>
           </div>
-
-          <!--          <button class="chat__btn_add">-->
-          <!--            <span class="icon-link" />-->
-          <!--          </button>-->
           <div class="message__input">
             <div class="input">
               <base-field
@@ -209,11 +205,6 @@ export default {
     showDetails() {
       this.$router.push('/messages');
     },
-    // scrollChat() {
-    //   this.$nextTick(() => {
-    //     this.$refs.chatBox.scrollTop = this.$refs.chatBox.scrollHeight;
-    //   });
-    // },
     sendMessages() {
       if (!this.messages && !this.messages.length) {
         return;
