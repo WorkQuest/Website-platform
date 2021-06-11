@@ -216,9 +216,9 @@
                     class="block__btn"
                     @click="showDetails()"
                   >
-                    <div class="block__text block__text_details">
+                    <span class="block__text block__text_details">
                       {{ $t('meta.details') }}
-                    </div>
+                    </span>
                     <span class="icon-short_right" />
                   </button>
                 </div>
@@ -912,18 +912,55 @@ export default {
       }
     }
   }
-  .tools {
-    &__left {
-      grid-template-columns: auto auto auto;
+  .quests {
+    &__tools {
+      padding: 0;
     }
+  }
+  .tools {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    justify-content: initial;
+    &__left {
+      grid-template-columns: repeat(2, 1fr);
+      grid-column: 1/3;
+      grid-row: 2/3;
+    }
+    &__right {
+      min-width: 100%;
+      grid-column: 1/3;
+      grid-row: 1/2;
+    }
+  }
+  .dd {
+    grid-column: 1/3;
   }
   .search {
     grid-template-columns: auto auto;
+    padding: 0 10px;
+    grid-gap: 10px;
     &__toggle, &__dd {
       display: none;
     }
+    &__actions {
+      border: none;
+    }
   }
 }
+@include _575 {
+  .block {
+    &__actions {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+    &__btn {
+      margin-top: 10px;
+      padding: 0;
+    }
+  }
+}
+
 @include _480 {
   .quests {
     &__top {
@@ -933,19 +970,9 @@ export default {
       &__right {
         padding: 10px;
       }
-      &__btn {
-        padding: 0 30px;
-        justify-content: flex-end;
-      }
       &__amount_green {
         font-size: 18px;
       }
-    }
-  }
-  .tools {
-    display: block;
-    &__left {
-      grid-template-columns: repeat(2, 1fr);
     }
   }
   .dd__btn {
@@ -974,19 +1001,6 @@ export default {
     &__actions {
       width: 60%;
       padding: 10px;
-    }
-  }
-}
-
-@include _321 {
-  .quests {
-    .block {
-      &__status {
-        grid-gap: 30px;
-      }
-      &__btn {
-        min-width: 126px;
-      }
     }
   }
 }
