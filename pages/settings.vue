@@ -1,370 +1,368 @@
 <template>
   <div class="main">
     <div class="main__body">
-      <section class="pc">
-        <h2 class="page__title">
-          {{ $t('settings.settings') }}
-        </h2>
-        <div
-          v-if="userRole === 'worker'"
-          class="quests__top"
-          :class="[{'top-disabled': isShowInfo === false}]"
-        >
-          <transition name="fade-fast">
-            <div class="page__info">
-              <div class="page__grid">
-                <div
-                  class="page__info"
-                >
-                  <div class="page__info">
-                    <h2 class="page__info page__info-title">
-                      {{ $t('settings.addInfo') }}
-                    </h2>
-                    <div class="page__info page__info-subtitle">
-                      {{ $t('settings.alsoRating') }}
-                    </div>
-                    <div class="info__toggle">
-                      <input
-                        id="dontShow"
-                        v-model="isShowInfo"
-                        type="checkbox"
-                        class="custom-checkbox"
-                      >
-                      <label
-                        class="label"
-                        for="dontShow"
-                      >{{ $t('settings.dontShow') }}</label>
-                    </div>
+      <h2 class="page__title">
+        {{ $t('settings.settings') }}
+      </h2>
+      <div
+        v-if="userRole === 'worker'"
+        class="quests__top"
+        :class="[{'top-disabled': isShowInfo === false}]"
+      >
+        <transition name="fade-fast">
+          <div class="page__info">
+            <div class="page__grid">
+              <div
+                class="page__info"
+              >
+                <div class="page__info">
+                  <h2 class="page__info page__info-title">
+                    {{ $t('settings.addInfo') }}
+                  </h2>
+                  <div class="page__info page__info-subtitle">
+                    {{ $t('settings.alsoRating') }}
+                  </div>
+                  <div class="info__toggle">
+                    <input
+                      id="dontShow"
+                      v-model="isShowInfo"
+                      type="checkbox"
+                      class="custom-checkbox"
+                    >
+                    <label
+                      class="label"
+                      for="dontShow"
+                    >{{ $t('settings.dontShow') }}</label>
                   </div>
                 </div>
-                <div>
-                  <img
-                    class="higher-level__img"
-                    src="~/assets/img/ui/settingsHigherLevel.svg"
-                  >
-                  <button @click="isCloseInfo()">
-                    <span
-                      class="icon-close_big icon__close"
-                      :class="{'icon_close_closed' : isShowInfo }"
-                    />
-                  </button>
-                </div>
+              </div>
+              <div>
+                <img
+                  class="higher-level__img"
+                  src="~/assets/img/ui/settingsHigherLevel.svg"
+                >
+                <button @click="isCloseInfo()">
+                  <span
+                    class="icon-close_big icon__close"
+                    :class="{'icon_close_closed' : isShowInfo }"
+                  />
+                </button>
               </div>
             </div>
-          </transition>
+          </div>
+        </transition>
+      </div>
+      <div class="page__profile">
+        <div class="profile__title">
+          {{ $t('settings.profileInfo') }}
         </div>
-        <div class="page__profile">
-          <div class="profile__title">
-            {{ $t('settings.profileInfo') }}
+        <div class="avatar__row">
+          <div>
+            <img
+              class="profile__img"
+              src="~/assets/img/temp/photo.jpg"
+            >
           </div>
-          <div class="avatar__row">
-            <div>
-              <img
-                class="profile__img"
-                src="~/assets/img/temp/photo.jpg"
-              >
-            </div>
-            <div class="profile__row-3col">
-              <base-field
-                v-model="name_input"
-                :placeholder="$t('settings.nameInput')"
-                mode="icon"
-              >
-                <template v-slot:left>
-                  <span class="icon-user" />
-                </template>
-              </base-field>
-              <base-field
-                v-model="adress1_input"
-                :placeholder="$t('settings.addressInput')"
-                mode="icon"
-              >
-                <template v-slot:left>
-                  <span class="icon-location" />
-                </template>
-              </base-field>
-              <base-field
-                v-model="adress2_input"
-                :placeholder="$t('settings.addressInput')"
-                mode="icon"
-              >
-                <template v-slot:left>
-                  <span class="icon-mail" />
-                </template>
-              </base-field>
-              <base-field
-                v-model="lastname_input"
-                :placeholder="$t('settings.lastNameInput')"
-                mode="icon"
-              >
-                <template v-slot:left>
-                  <span class="icon-user" />
-                </template>
-              </base-field>
-              <base-field
-                v-model="tel1_input"
-                :placeholder="$t('settings.telInput')"
-                mode="icon"
-              >
-                <template v-slot:left>
-                  <span class="icon-phone" />
-                </template>
-              </base-field>
-              <base-field
-                v-model="tel2_input"
-                :placeholder="$t('settings.telInput')"
-                mode="icon"
-              >
-                <template v-slot:left>
-                  <span class="icon-phone" />
-                </template>
-              </base-field>
-            </div>
-          </div>
-          <div
-            v-if="userRole === 'employer'"
-            class="company__inputs"
-          >
+          <div class="profile__row-3col">
             <base-field
-              v-model="tel2_input"
-              :placeholder="$t('settings.amazon')"
+              v-model="name_input"
+              :placeholder="$t('settings.nameInput')"
               mode="icon"
             >
               <template v-slot:left>
-                <span class="icon-Case" />
+                <span class="icon-user" />
+              </template>
+            </base-field>
+            <base-field
+              v-model="adress1_input"
+              :placeholder="$t('settings.addressInput')"
+              mode="icon"
+            >
+              <template v-slot:left>
+                <span class="icon-location" />
+              </template>
+            </base-field>
+            <base-field
+              v-model="adress2_input"
+              :placeholder="$t('settings.addressInput')"
+              mode="icon"
+            >
+              <template v-slot:left>
+                <span class="icon-mail" />
+              </template>
+            </base-field>
+            <base-field
+              v-model="lastname_input"
+              :placeholder="$t('settings.lastNameInput')"
+              mode="icon"
+            >
+              <template v-slot:left>
+                <span class="icon-user" />
+              </template>
+            </base-field>
+            <base-field
+              v-model="tel1_input"
+              :placeholder="$t('settings.telInput')"
+              mode="icon"
+            >
+              <template v-slot:left>
+                <span class="icon-phone" />
               </template>
             </base-field>
             <base-field
               v-model="tel2_input"
-              :placeholder="$t('settings.ceo')"
+              :placeholder="$t('settings.telInput')"
               mode="icon"
             >
               <template v-slot:left>
-                <span class="icon-id_card" />
+                <span class="icon-phone" />
               </template>
             </base-field>
-            <base-field
-              v-model="tel2_input"
-              :placeholder="$t('settings.amazon_com')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-Earth" />
-              </template>
-            </base-field>
-          </div>
-          <div
-            v-if="userRole === 'worker'"
-            class="profile__row-1col"
-          >
-            <textarea
-              id="textarea"
-              v-model="bio_input"
-              class="profile__textarea"
-              placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel"
-            />
-          </div>
-          <div class="profile__row-4col">
-            <base-field
-              v-model="inst_input"
-              :placeholder="$t('settings.socialInput')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-instagram" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="twitt_input"
-              :placeholder="$t('settings.socialInput')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-twitter" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="in_input"
-              :placeholder="$t('settings.socialInput')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-LinkedIn" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="facebook_input"
-              :placeholder="$t('settings.socialInput')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-facebook" />
-              </template>
-            </base-field>
-          </div>
-          <div class="btn__container-right">
-            <base-btn
-              class="btn__save"
-            >
-              {{ $t('settings.save') }}
-            </base-btn>
           </div>
         </div>
         <div
-          v-if="userRole === 'worker'"
-          class="page__skills"
+          v-if="userRole === 'employer'"
+          class="company__inputs"
         >
-          <div class="main-white">
-            <div class="page__badge-skills">
-              {{ $t('settings.skills') }}
+          <base-field
+            v-model="tel2_input"
+            :placeholder="$t('settings.amazon')"
+            mode="icon"
+          >
+            <template v-slot:left>
+              <span class="icon-Case" />
+            </template>
+          </base-field>
+          <base-field
+            v-model="tel2_input"
+            :placeholder="$t('settings.ceo')"
+            mode="icon"
+          >
+            <template v-slot:left>
+              <span class="icon-id_card" />
+            </template>
+          </base-field>
+          <base-field
+            v-model="tel2_input"
+            :placeholder="$t('settings.amazon_com')"
+            mode="icon"
+          >
+            <template v-slot:left>
+              <span class="icon-Earth" />
+            </template>
+          </base-field>
+        </div>
+        <div
+          v-if="userRole === 'worker'"
+          class="profile__row-1col"
+        >
+          <textarea
+            id="textarea"
+            v-model="bio_input"
+            class="profile__textarea"
+            placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel"
+          />
+        </div>
+        <div class="profile__row-4col">
+          <base-field
+            v-model="inst_input"
+            :placeholder="$t('settings.socialInput')"
+            mode="icon"
+          >
+            <template v-slot:left>
+              <span class="icon-instagram" />
+            </template>
+          </base-field>
+          <base-field
+            v-model="twitt_input"
+            :placeholder="$t('settings.socialInput')"
+            mode="icon"
+          >
+            <template v-slot:left>
+              <span class="icon-twitter" />
+            </template>
+          </base-field>
+          <base-field
+            v-model="in_input"
+            :placeholder="$t('settings.socialInput')"
+            mode="icon"
+          >
+            <template v-slot:left>
+              <span class="icon-LinkedIn" />
+            </template>
+          </base-field>
+          <base-field
+            v-model="facebook_input"
+            :placeholder="$t('settings.socialInput')"
+            mode="icon"
+          >
+            <template v-slot:left>
+              <span class="icon-facebook" />
+            </template>
+          </base-field>
+        </div>
+        <div class="btn__container-right">
+          <base-btn
+            class="btn__save"
+          >
+            {{ $t('settings.save') }}
+          </base-btn>
+        </div>
+      </div>
+      <div
+        v-if="userRole === 'worker'"
+        class="page__skills"
+      >
+        <div class="main-white">
+          <div class="page__badge-skills">
+            {{ $t('settings.skills') }}
+          </div>
+          <span
+            v-for="(item, i) in badges"
+            :key="i"
+          >
+            <div class="page__badge">
+              {{ item.name }}
             </div>
-            <span
-              v-for="(item, i) in badges"
-              :key="i"
-            >
-              <div class="page__badge">
-                {{ item.name }}
+          </span>
+          <div class="btn__container">
+            <div class="btn__plus">
+              <span class="icon-plus_circle" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="settings">
+        <div class="settings__left">
+          <div>{{ $t('settings.settings') }}</div>
+          <div>
+            <div class="settings__subtitle">
+              {{ $t('settings.whoCanSee') }}
+            </div>
+            <div class="settings__option">
+              <input
+                id="allUsers"
+                type="radio"
+                class="radio__input"
+                checked
+              >
+              <label
+                class="label"
+                for="allUsers"
+              >{{ $t('settings.allUsers') }}</label>
+            </div>
+            <div class="settings__option">
+              <input
+                id="allInternet"
+                type="radio"
+                class="radio__input"
+              >
+              <label
+                class="label"
+                for="allInternet"
+              >{{ $t('settings.allInternet') }}</label>
+            </div>
+            <div class="settings__option">
+              <input
+                id="onlyWhenSubmittedWork"
+                type="radio"
+                class="radio__input"
+              >
+              <label
+                class="label"
+                for="onlyWhenSubmittedWork"
+              >{{ $t('settings.onlyWhenSubmittedWork') }}</label>
+            </div>
+          </div>
+          <div>
+            <div class="settings__subtitle">
+              {{ $t('settings.filterAllWorkProposals') }}
+            </div>
+            <div class="settings__option">
+              <input
+                id="urgentProposals"
+                type="radio"
+                class="radio__input"
+              >
+              <label
+                class="label"
+                for="urgentProposals"
+              >{{ $t('settings.urgentProposals') }}</label>
+            </div>
+            <div class="settings__option">
+              <input
+                id="onlyImplementation"
+                type="radio"
+                class="radio__input"
+                checked
+              >
+              <label
+                class="label"
+                for="onlyImplementation"
+              >{{ $t('settings.onlyImplementation') }}</label>
+            </div>
+            <div class="settings__option">
+              <input
+                id="onlyReady"
+                type="radio"
+                class="radio__input"
+              >
+              <label
+                class="label"
+                for="onlyReady"
+              >{{ $t('settings.onlyReady') }}</label>
+            </div>
+            <div class="settings__option">
+              <input
+                id="allRegistered"
+                type="radio"
+                class="radio__input"
+              >
+              <label
+                class="label"
+                for="allRegistered"
+              >{{ $t('settings.allRegistered') }}</label>
+            </div>
+          </div>
+        </div>
+        <div class="settings__right">
+          <div>{{ $t('settings.settings') }}</div>
+          <div>
+            <div class="settings_blue">
+              <div>{{ $t('settings.changePass') }}</div>
+              <div>
+                <base-btn>
+                  {{ $t('settings.change') }}
+                </base-btn>
               </div>
-            </span>
-            <div class="btn__container">
-              <div class="btn__plus">
-                <span class="icon-plus_circle" />
+            </div>
+            <div class="settings_blue">
+              <div>{{ $t('settings.enableTwoStepAuth') }}</div>
+              <div>
+                <base-btn>
+                  {{ $t('settings.enable') }}
+                </base-btn>
+              </div>
+            </div>
+            <div class="settings_blue">
+              <div>{{ $t('settings.smsVerification') }}</div>
+              <div>
+                <base-btn>
+                  {{ $t('settings.enable') }}
+                </base-btn>
+              </div>
+            </div>
+            <div class="settings_blue">
+              <div>{{ $t('settings.changeRole') }}</div>
+              <div>
+                <base-btn>
+                  {{ $t('settings.change') }}
+                </base-btn>
               </div>
             </div>
           </div>
         </div>
-        <div class="settings">
-          <div class="settings__left">
-            <div>{{ $t('settings.settings') }}</div>
-            <div>
-              <div class="settings__subtitle">
-                {{ $t('settings.whoCanSee') }}
-              </div>
-              <div class="settings__option">
-                <input
-                  id="allUsers"
-                  type="radio"
-                  class="radio__input"
-                  checked
-                >
-                <label
-                  class="label"
-                  for="allUsers"
-                >{{ $t('settings.allUsers') }}</label>
-              </div>
-              <div class="settings__option">
-                <input
-                  id="allInternet"
-                  type="radio"
-                  class="radio__input"
-                >
-                <label
-                  class="label"
-                  for="allInternet"
-                >{{ $t('settings.allInternet') }}</label>
-              </div>
-              <div class="settings__option">
-                <input
-                  id="onlyWhenSubmittedWork"
-                  type="radio"
-                  class="radio__input"
-                >
-                <label
-                  class="label"
-                  for="onlyWhenSubmittedWork"
-                >{{ $t('settings.onlyWhenSubmittedWork') }}</label>
-              </div>
-            </div>
-            <div>
-              <div class="settings__subtitle">
-                {{ $t('settings.filterAllWorkProposals') }}
-              </div>
-              <div class="settings__option">
-                <input
-                  id="urgentProposals"
-                  type="radio"
-                  class="radio__input"
-                >
-                <label
-                  class="label"
-                  for="urgentProposals"
-                >{{ $t('settings.urgentProposals') }}</label>
-              </div>
-              <div class="settings__option">
-                <input
-                  id="onlyImplementation"
-                  type="radio"
-                  class="radio__input"
-                  checked
-                >
-                <label
-                  class="label"
-                  for="onlyImplementation"
-                >{{ $t('settings.onlyImplementation') }}</label>
-              </div>
-              <div class="settings__option">
-                <input
-                  id="onlyReady"
-                  type="radio"
-                  class="radio__input"
-                >
-                <label
-                  class="label"
-                  for="onlyReady"
-                >{{ $t('settings.onlyReady') }}</label>
-              </div>
-              <div class="settings__option">
-                <input
-                  id="allRegistered"
-                  type="radio"
-                  class="radio__input"
-                >
-                <label
-                  class="label"
-                  for="allRegistered"
-                >{{ $t('settings.allRegistered') }}</label>
-              </div>
-            </div>
-          </div>
-          <div class="settings__right">
-            <div>{{ $t('settings.settings') }}</div>
-            <div>
-              <div class="settings_blue">
-                <div>{{ $t('settings.changePass') }}</div>
-                <div>
-                  <base-btn>
-                    {{ $t('settings.change') }}
-                  </base-btn>
-                </div>
-              </div>
-              <div class="settings_blue">
-                <div>{{ $t('settings.enableTwoStepAuth') }}</div>
-                <div>
-                  <base-btn>
-                    {{ $t('settings.enable') }}
-                  </base-btn>
-                </div>
-              </div>
-              <div class="settings_blue">
-                <div>{{ $t('settings.smsVerification') }}</div>
-                <div>
-                  <base-btn>
-                    {{ $t('settings.enable') }}
-                  </base-btn>
-                </div>
-              </div>
-              <div class="settings_blue">
-                <div>{{ $t('settings.changeRole') }}</div>
-                <div>
-                  <base-btn>
-                    {{ $t('settings.change') }}
-                  </base-btn>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
     </div>
   </div>
 </template>
@@ -1062,13 +1060,6 @@ export default {
       font-size: 14px;
     }
   }
-.mobile {
-  &__option {
-    align-items: center;
-    justify-items: flex-end;
-    height: 64px;
-  }
-}
   .user {
     grid-template-columns: 11fr 1fr;
   }
