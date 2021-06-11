@@ -247,7 +247,7 @@
                 checked
               >
               <label
-                class="label"
+                class="label__black"
                 for="allUsers"
               >{{ $t('settings.allUsers') }}</label>
             </div>
@@ -258,7 +258,7 @@
                 class="radio__input"
               >
               <label
-                class="label"
+                class="label__black"
                 for="allInternet"
               >{{ $t('settings.allInternet') }}</label>
             </div>
@@ -269,7 +269,7 @@
                 class="radio__input"
               >
               <label
-                class="label"
+                class="label__black"
                 for="onlyWhenSubmittedWork"
               >{{ $t('settings.onlyWhenSubmittedWork') }}</label>
             </div>
@@ -285,7 +285,7 @@
                 class="radio__input"
               >
               <label
-                class="label"
+                class="label__black"
                 for="urgentProposals"
               >{{ $t('settings.urgentProposals') }}</label>
             </div>
@@ -297,7 +297,7 @@
                 checked
               >
               <label
-                class="label"
+                class="label__black"
                 for="onlyImplementation"
               >{{ $t('settings.onlyImplementation') }}</label>
             </div>
@@ -308,7 +308,7 @@
                 class="radio__input"
               >
               <label
-                class="label"
+                class="label__black"
                 for="onlyReady"
               >{{ $t('settings.onlyReady') }}</label>
             </div>
@@ -319,7 +319,7 @@
                 class="radio__input"
               >
               <label
-                class="label"
+                class="label__black"
                 for="allRegistered"
               >{{ $t('settings.allRegistered') }}</label>
             </div>
@@ -538,6 +538,10 @@ export default {
   font-weight: 500;
   font-size: 16px;
   color: $white;
+  &__black {
+    @extend .label;
+    color: $black800;
+  }
 }
 
 .btn {
