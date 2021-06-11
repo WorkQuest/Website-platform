@@ -1,64 +1,62 @@
 <template>
   <div class="main">
     <div class="main__body">
-      <section class="pc">
-        <div class="chat">
-          <h2 class="page__title">
-            {{ $t('chat.messages') }}
-          </h2>
-          <div class="chat__body">
-            <div class="chat__header">
-              <div class="chat__title">
-                <div>{{ $t('chat.chat') }}</div> <div class="icon-more">
-                  <span class="icon-more_horizontal" />
-                </div>
+      <div class="chat">
+        <h2 class="page__title">
+          {{ $t('chat.messages') }}
+        </h2>
+        <div class="chat__body">
+          <div class="chat__header">
+            <div class="chat__title">
+              <div>{{ $t('chat.chat') }}</div> <div class="icon-more">
+                <span class="icon-more_horizontal" />
               </div>
             </div>
-            <div class="chat__cards">
+          </div>
+          <div class="chat__cards">
+            <div
+              v-for="(item, i) in cards"
+              :key="i"
+            >
               <div
-                v-for="(item, i) in cards"
-                :key="i"
+                class="chat__card"
+                @click="showDetails()"
               >
-                <div
-                  class="chat__card"
-                  @click="showDetails()"
-                >
-                  <div class="avatar__row">
-                    <div>
-                      <img
-                        class="profile__img"
-                        src="~/assets/img/temp/profile.svg"
-                      >
-                    </div>
-                    <div>
-                      <span class="profile__name">
-                        {{ item.name }}
-                      </span>
-                    </div>
-                    <div>
-                      <span class="profile__company">
-                        {{ item.company }}
-                      </span>
-                    </div>
+                <div class="avatar__row">
+                  <div>
+                    <img
+                      class="profile__img"
+                      src="~/assets/img/temp/profile.svg"
+                    >
                   </div>
-                  <div class="quest__row">
-                    <div class="quest">
-                      <span class="params">{{ $t('chat.quest') }}</span>
-                      <span class="quest__title">{{ item.questName }}</span>
-                    </div>
+                  <div>
+                    <span class="profile__name">
+                      {{ item.name }}
+                    </span>
                   </div>
-                  <div class="you__row">
-                    <div class="you">
-                      <span class="params">{{ $t('chat.you') }}</span>
-                      <span class="you__message">{{ item.youMessage }}</span>
-                    </div>
+                  <div>
+                    <span class="profile__company">
+                      {{ item.company }}
+                    </span>
+                  </div>
+                </div>
+                <div class="quest__row">
+                  <div class="quest">
+                    <span class="params">{{ $t('chat.quest') }}</span>
+                    <span class="quest__title">{{ item.questName }}</span>
+                  </div>
+                </div>
+                <div class="you__row">
+                  <div class="you">
+                    <span class="params">{{ $t('chat.you') }}</span>
+                    <span class="you__message">{{ item.youMessage }}</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   </div>
 </template>

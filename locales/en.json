@@ -200,6 +200,7 @@
     "title": "Skills"
   },
   "quests": {
+    "searchQuests": "Search quests",
     "readCompletely": "Read completely",
     "questBig": "Quest",
     "fromBig": "From",
@@ -412,51 +413,23 @@
     "specialized": "Specialized",
     "typeOfJob": "Type of job",
     "specializations": "Specializations",
-    "aboutMe": "About me"
+    "aboutMe": "About me",
+    "giveAQuest": "Give a quest",
+    "skills": "Skills",
+    "completedQuests": "Completed quests",
+    "openedQuests": "Opened quests",
+    "showAll": "Show all",
+    "averageRating": "Average rating",
+    "from": "From",
+    "reviews": "reviews",
+    "portfolio": "Portfolio",
+    "showAllCases": "Show all cases"
   },
   "levels": {
     "reliableEmp": "RELIABLE EMP.",
     "checkedByTime": "CHECKED BY TIME",
     "disabled": "DISABLED",
     "higher": "HIGHER LEVEL"
-  },
-
-  "mobile": {
-    "priority": {
-      "low": "Low priority",
-      "urgent": "Urgent",
-      "normal": "Normal priority"
-    },
-    "myQuests": "My quests",
-    "youInvited": "You invited",
-    "active": "Active",
-    "performed": "Performed",
-    "youRequested": "You requested",
-    "runtime": "Runtime",
-    "mFromYou": "m from you",
-    "wusd": "WUSD",
-    "inviteYouAQuest": "Invite you a quest:",
-    "balance": "Balance",
-    "deposit": "Deposit",
-    "withdraw": "Withdraw",
-    "transactions": "Transactions",
-    "receive": "Receive",
-    "send": "Send",
-    "notifications": "Notifications",
-    "quests": "Quests",
-    "chat": "Chat",
-    "wallet": "Wallet",
-    "more": "More",
-    "changePass": "Change password",
-    "oldPass": "Old password",
-    "newPass": "New password",
-    "confPass": "Confirm password",
-    "phone": "Phone",
-    "smsVerification": "SMS Verification",
-    "submit": "Submit",
-    "disabled": "DISABLED",
-    "higher": "HIGHER LEVEL",
-    "code": "Code"
   },
   "referral": {
     "inviteFriendsHead": "Invite friends.",

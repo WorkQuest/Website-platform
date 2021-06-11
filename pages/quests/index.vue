@@ -37,7 +37,7 @@
           </div>
           <div class="search__actions">
             <base-btn class="search__btn">
-              Search quests
+              {{ $t('quests.searchQuests') }}
             </base-btn>
           </div>
         </div>
@@ -87,12 +87,6 @@
                 class="icon-Sorting_ascending"
               />
             </base-btn>
-            <!--            <base-btn :mode="'light'">-->
-            <!--              <span class="tools__text">-->
-            <!--                {{ $t('quests.priority') }}-->
-            <!--              </span>-->
-            <!--              <span class="icon-caret_right" />-->
-            <!--            </base-btn>-->
             <base-dd
               v-model="priorityIndex"
               :items="priority"
