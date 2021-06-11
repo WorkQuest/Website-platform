@@ -437,73 +437,15 @@ export default {
   }
 }
 
-@include _1700 {
-  .mobile {
-    display: none;
-  }
-
-}
-@include _1600 {
-  .mobile {
-    display: none;
-  }
-
-}
-@include _1400 {
-  .mobile {
-    display: none;
-  }
-
-}
-@include _1300 {
-  .mobile {
-    display: none;
-  }
-
-}
+@include _1700 {}
+@include _1600 {}
+@include _1400 {}
+@include _1300 {}
 @include _1199 {
-  .mobile {
-    display: none;
-  }
   .wallet {
     margin: 0 20px 0 20px;
   }
 }
-@include _991 {
-  .pc {
-    display: none;
-  }
-  .mobile {
-    overflow-y: auto;
-    display: grid;
-    height: 100%;
-    width: 100%;
-    max-height: 775px;
-  }
-  .transaction {
-    &__status {
-      margin: 0 0 0 16px;
-    }
-  }
-}
-@include _380 {
-  .wallet {
-    &__number {
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-    }
-  }
-  .status {
-    &__title {
-      font-size: 13px;
-    }
-  }
-  .transaction {
-    &__status {
-      display: grid;
-      justify-content: center;
-    }
-  }
-}
+@include _991 {}
+@include _380 {}
 </style>
