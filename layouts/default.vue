@@ -1586,21 +1586,30 @@ export default {
     }
   }
   .footer {
-    &__body {
-      max-width: 1180px;
-      margin: 0 20px 0 20px;
-    }
-    &__bottom {
-      max-width: 1020px;
-    }
+    padding: 0 10px;
   }
 }
 @include _991 {
-  .header {}
-  .footer {}
+  .header {
+    &__btn {
+      display: none !important;
+    }
+  }
   .template {
     &__content {
-      background: $white;
+      grid-template-rows: 72px 1fr auto;
+    }
+  }
+  .footer {
+    &__top {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      grid-gap: 30px;
+      margin-bottom: 10px;
+    }
+    &__items {
+      grid-template-columns: 1fr;
+      grid-gap: 20px;
     }
   }
 }
@@ -1622,14 +1631,32 @@ export default {
     }
   }
   .footer {
+    &__bottom {
+      display: grid;
+    }
+    &__left {
+      grid-column: 1/2;
+    }
+    &__rights {
+      grid-column: 1/2;
+    }
+    &__rights {
+      display: flex;
+    }
+    &__links {
+      display: flex;
+    }
     &__top {
       display: grid;
-      grid-template-rows: auto 1fr;
+      grid-template-columns: 1fr;
       grid-gap: 30px;
     }
     &__items {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, 1fr);
       grid-gap: 20px;
+      &_links {
+        grid-template-columns: 1fr;
+      }
     }
   }
 }
