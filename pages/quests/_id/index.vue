@@ -711,7 +711,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 .gallery {
   &__image {
     border-radius: 6px;
@@ -726,13 +725,11 @@ export default {
     height: 61px;
   }
 }
-
 .btn {
   &__container {
     margin: 0 16px 0 16px;
   }
 }
-
 .quest-materials {
   margin: 10px 0 0 10px;
   &__title {
@@ -748,7 +745,6 @@ export default {
     grid-gap: 13px;
   }
 }
-
 .user-skills {
   display: flex;
   flex-direction: row;
@@ -764,7 +760,6 @@ export default {
     margin: 0 10px 0 0;
   }
 }
-
 .user-location {
   display: flex;
   flex-direction: row;
@@ -778,14 +773,12 @@ export default {
     color: $black500;
   }
 }
-
 .user-name {
   &__container {
     display: flex;
     flex-direction: row;
   }
 }
-
 .user-info {
   display: flex;
   flex-direction: row;
@@ -817,7 +810,6 @@ export default {
     }
   }
 }
-
 .runtime {
   &__container {
     margin: 0 0 0 30px;
@@ -853,7 +845,6 @@ export default {
     font-size: 18px;
   }
 }
-
 .card {
   padding: 2px 8px;
   align-items: center;
@@ -884,14 +875,12 @@ export default {
     }
   }
 }
-
 .btns {
   &__container {
     display: grid;
     grid-template-columns: 8fr 4fr;
   }
 }
-
 .icon {
   color:$black500;
   font-size: 20px;
@@ -941,7 +930,6 @@ export default {
   flex-direction: row;
   align-items: center;
 }
-
 .user {
   @include text-simple;
   color: $black800;
@@ -953,7 +941,7 @@ export default {
     justify-content: space-between;
   }
   &__container {
-    padding: 34.5px 0 25.5px 0;
+    padding: 35px 0 25px 0;
   }
   &__wrapper{
     display: flex;
@@ -1012,7 +1000,6 @@ export default {
     margin: 40px 0;
   }
 }
-
 .quest{
   @include text-simple;
   font-style: normal;
@@ -1060,7 +1047,6 @@ export default {
     color:$black800;
   }
 }
-
 .quest_materials {
   &__title{
     @include text-simple;
@@ -1096,7 +1082,6 @@ export default {
     padding:30px 0 0 0;
   }
 }
-
 .price {
   display: flex;
   flex-direction: row;
@@ -1117,7 +1102,6 @@ export default {
     justify-content: space-between;
   }
 }
-
 .badge {
   &__container {
     padding: 0 0 20px 0;
@@ -1153,7 +1137,6 @@ export default {
     align-items: center;
   }
 }
-
 .location {
   &__container{
     display: flex;
@@ -1182,7 +1165,6 @@ export default {
     }
   }
 }
-
 .star {
   &__default {
     display: flex;
@@ -1501,6 +1483,11 @@ export default {
   }
 }
 @include _767 {
+  .user {
+    &__container {
+      padding: 0;
+    }
+  }
   .main {
     display: block;
     .block {
@@ -1528,11 +1515,65 @@ export default {
   }
 }
 @include _575 {
+    .user {
+      &__head {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        grid-gap: 5px;
+      }
+      &__date {
+        margin: 0;
+      }
+      &__left {
+        grid-column: 1/3;
+      }
+  }
+  .location {
+    &__container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      grid-gap: 5px;
+    }
+  }
+  .runtime {
+    &__container {
+      margin: 0;
+    }
+  }
+  .badge {
+    &__container {
+      padding-top: 10px;
+    }
+  }
+  .img {
+    &__container {
+      grid-template-columns: 1fr;
+    }
+  }
+  .quest {
+    &__spec {
+      font-size: 16px;
+    }
+  }
+  .spec {
+    &__link {
+      font-size: 16px;
+    }
+  }
   .block {
+    &__right {
+      padding: 10px;
+    }
     &__head {
       display: flex !important;
     }
-    &__actions{
+    &__btn {
+      padding: 0;
+      margin-top: 10px;
+    }
+    &__actions {
       display: grid;
       grid-template-columns: 1fr;
       .block__btn {

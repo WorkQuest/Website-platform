@@ -247,7 +247,7 @@
                 checked
               >
               <label
-                class="label"
+                class="label__black"
                 for="allUsers"
               >{{ $t('settings.allUsers') }}</label>
             </div>
@@ -258,7 +258,7 @@
                 class="radio__input"
               >
               <label
-                class="label"
+                class="label__black"
                 for="allInternet"
               >{{ $t('settings.allInternet') }}</label>
             </div>
@@ -269,7 +269,7 @@
                 class="radio__input"
               >
               <label
-                class="label"
+                class="label__black"
                 for="onlyWhenSubmittedWork"
               >{{ $t('settings.onlyWhenSubmittedWork') }}</label>
             </div>
@@ -285,7 +285,7 @@
                 class="radio__input"
               >
               <label
-                class="label"
+                class="label__black"
                 for="urgentProposals"
               >{{ $t('settings.urgentProposals') }}</label>
             </div>
@@ -297,7 +297,7 @@
                 checked
               >
               <label
-                class="label"
+                class="label__black"
                 for="onlyImplementation"
               >{{ $t('settings.onlyImplementation') }}</label>
             </div>
@@ -308,7 +308,7 @@
                 class="radio__input"
               >
               <label
-                class="label"
+                class="label__black"
                 for="onlyReady"
               >{{ $t('settings.onlyReady') }}</label>
             </div>
@@ -319,7 +319,7 @@
                 class="radio__input"
               >
               <label
-                class="label"
+                class="label__black"
                 for="allRegistered"
               >{{ $t('settings.allRegistered') }}</label>
             </div>
@@ -537,7 +537,11 @@ export default {
   padding: 0 0 0 10px;
   font-weight: 500;
   font-size: 16px;
-  color: $black800;
+  color: $white;
+  &__black {
+    @extend .label;
+    color: $black800;
+  }
 }
 
 .btn {
@@ -704,6 +708,7 @@ export default {
 .avatar {
   &__row {
     display: flex;
+    margin: 0 20px 0 20px;
   }
 }
 .btn {
@@ -820,7 +825,6 @@ export default {
     @extend .profile;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 0 20px;
-    margin: 20px 20px 0 20px;
     width: 100%;
   }
   &__row-4col {
@@ -1033,6 +1037,11 @@ export default {
 @include _1400 {}
 @include _1300 {}
 @include _1199 {
+  .quests {
+    &__top {
+      margin: 0 20px;
+    }
+  }
   .page {
     &__title {
       margin: 20px 0 20px 20px;
@@ -1051,7 +1060,65 @@ export default {
     margin: 20px;
   }
 }
-@include _991 {}
+@include _991 {
+  .page {
+    &__grid {
+      grid-template-columns: 11fr 1fr;
+    }
+  }
+  .profile {
+    &__row-3col {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    &__row-4col {
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 10px 10px;
+    }
+  }
+  .higher {
+    &-level {
+      &__img {
+        display: none;
+      }
+    }
+  }
+}
+
+@include _767 {
+  .icon {
+    &__close {
+      position: absolute;
+      bottom: 204px;
+      right: 12px;
+      z-index: 2;
+    }
+  }
+  .page {
+    &__info {
+      max-height: 100%;
+    }
+  }
+  .avatar {
+    &__row {
+      flex-direction: column;
+    }
+  }
+  .profile {
+    &__row-3col {
+      grid-template-columns: 1fr;
+    }
+    &__row-4col {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .settings {
+    grid-template-columns: 1fr;
+    &__left {
+      padding: 20px 0 20px 20px;
+    }
+  }
+}
 
 @include _380 {
   .option {

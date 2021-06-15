@@ -6,9 +6,7 @@
           v-click-outside="closeAll"
           class="template__header header"
         >
-          <div
-            class="header__body"
-          >
+          <div class="header__body">
             <div class="header__left">
               <div
                 class="header__logo"
@@ -1041,7 +1039,6 @@ export default {
 }
 .template {
   min-height: 100vh;
-  overflow: hidden;
   background: #F7F8FA;
   &__content {
     display: grid;
@@ -1246,6 +1243,9 @@ export default {
   }
 }
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 99999;
   min-height: 72px;
   background: #FFFFFF;
   box-shadow: 0 1px 0 #E6E9EC;
