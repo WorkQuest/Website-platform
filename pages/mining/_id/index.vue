@@ -1,22 +1,17 @@
 <template>
-  <div class="liquid-mining-page">
-    <div class="liquid-mining-page__container">
-      <div class="liquid-mining-page__header">
-        <div class="title">
-          {{ $t('liquidMining.liquidityMining') }}
-        </div>
-        <div class="title_sub">
-          {{ $t('liquidMining.templateText') }}
-        </div>
+  <div class="mining-page">
+    <div class="mining-page__container">
+      <div class="mining-page__header">
+        <base-btn
+          class="btn"
+          @click="handleBackToMainMining()"
+        >
+          <span class="icon-chevron_left" />
+          {{ $t('mining.back') }}
+        </base-btn>
       </div>
-      <div class="liquid-mining-page__content">
+      <div class="mining-page__content">
         <template v-if="!isDeadline">
-          <base-btn
-            class="btn__time-machine"
-            @click="jumpInTime()"
-          >
-            +3 years
-          </base-btn>
           <div class="info-block__triple">
             <div class="info-block__third">
               <div class="info-block__name">
@@ -69,7 +64,7 @@
             <div class="info-block__name">
               {{ $t('pension.transactionHistory') }}
             </div>
-            <div class="liquid-mining-page__table">
+            <div class="mining-page__table">
               <b-table
                 :items="items"
                 :fields="testFields"
@@ -156,7 +151,7 @@
             <div class="info-block__name">
               {{ $t('pension.transactionHistory') }}
             </div>
-            <div class="liquid-mining-page__table">
+            <div class="mining-page__table">
               <b-table
                 :items="items"
                 :fields="testFields"
@@ -298,19 +293,22 @@ export default {
         key: modals.changePercent,
       });
     },
+    handleBackToMainMining() {
+
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.liquid-mining-page {
+.mining-page {
   background: linear-gradient(to bottom, #103D7C 320px, #f6f8fa 320px);
   display: flex;
   justify-content: center;
 
   &__container {
     display: grid;
-    grid-template-rows: 195px max-content;
+    grid-template-rows: 65px max-content;
     max-width: 1280px;
     grid-row-gap: 50px;
     width: 100%;
@@ -319,20 +317,22 @@ export default {
 
   &__header {
     align-self: flex-end;
+    display: flex;
+    align-items: center;
 
-    .title {
-      font-weight: 500;
-      color: #FFF;
-      width: 530px;
-      font-size: 45px;
-      line-height: 110%;
-      margin: 0 0 24px;
+    .btn {
+      background-color: unset;
+      color: #fff;
+      width: 100px;
+      padding: 0;
+      gap: 5px;
+      font-size: 18px;
 
-      &_sub {
-        @extend .title;
-        font-size: 16px;
-        line-height: 100%;
-        opacity: 0.5;
+      .icon-chevron_left {
+        font-size: 26px;
+        &:before {
+          color: #fff;
+        }
       }
     }
   }

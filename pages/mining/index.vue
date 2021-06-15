@@ -44,7 +44,10 @@
                 </div>
               </template>
               <template #cell(choose)="el">
-                <base-btn class="btn_bl">
+                <base-btn
+                  class="btn_bl"
+                  @click="handleOpenPool(el)"
+                >
                   {{ el.item.chooseBtn }}
                 </base-btn>
               </template>
@@ -192,6 +195,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    handleOpenPool(el) {
+      this.$router.push('/mining/1');
+    },
   },
 };
 </script>
