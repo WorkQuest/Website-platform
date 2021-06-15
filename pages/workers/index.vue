@@ -954,57 +954,48 @@ export default {
   }
 }
 @include _991 {
-  .main-white {
-    display: block;
+  .content {
+    grid-template-columns: repeat(3, 1fr);
   }
-  .img {
-    &__container {
-      grid-template-columns: repeat(2, auto);
-      img {
-        max-width: 100%;
-        max-height: 100%;
-      }
-    }
+  .menu__right {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 @include _767 {
   .main {
     display: block;
-    .block {
-      grid-template-columns: auto;
-      &__img {
-        height: 200px;
-        max-width: 100%;
-        .image {
-          width: 100%;
-          border-radius: 6px;
-          object-fit: cover;
-          max-height: 500px;
-          height: 100%;
-        }
-      }
+    .content {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
-  .price {
-    &__container {
-      flex-direction: column;
+  .search {
+    grid-template-columns: auto auto;
+    padding: 0 10px;
+    grid-gap: 10px;
+    &__toggle, &__dd {
+      display: none;
     }
-    &__value {
-      font-size: 19px;
+    &__actions {
+      border: none;
     }
   }
 }
 @include _575 {
-  .block {
-    &__head {
-      display: flex !important;
+  .main {
+    .menu {
+      display: flex;
+      flex-direction: column;
+      grid-template-columns: auto;
     }
-    &__actions{
-      display: grid;
-      grid-template-columns: 1fr;
-      .block__btn {
-        display: flex !important;
-      }
+    .menu__left {
+      display: flex;
+      flex-direction: column;
+    }
+    .content {
+      grid-template-columns: repeat(1, 1fr);
+    }
+    .menu__right {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 }

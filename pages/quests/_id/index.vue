@@ -1467,6 +1467,15 @@ export default {
   .user__distance {
     margin: 0 20px;
   }
+  .img {
+    &__container {
+      grid-template-columns: repeat(3, auto);
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+  }
 }
 @include _991 {
   .main-white {
