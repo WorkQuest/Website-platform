@@ -942,7 +942,6 @@ table {
   display: flex;
   -webkit-box-align: center;
   -ms-flex-align: center;
-  align-items: center;
 }
 
 .header {
@@ -1444,12 +1443,16 @@ a:hover {
       height: 100%;
     }
   }
-  .main-section .information-grid .col .contacts {
-    display: grid;
-    grid-template-columns: auto 1fr;
+  .information-grid {
+    .col .contacts {
+      display: grid;
+      grid-template-columns: auto 1fr;
+    }
   }
-  .information-section #reviews-grid {
-    grid-template-columns: auto;
+  .information-section {
+    .reviews-grid {
+      grid-template-columns: auto;
+    }
   }
 }
 @include _767 {
@@ -1467,11 +1470,15 @@ a:hover {
       padding: 12px;
     }
   }
-  .information-section #reviews-grid .reviews-item .header {
-    flex-direction: column;
+  .reviews-grid {
+    .reviews-item .header {
+      flex-direction: column;
+    }
   }
-  .main-section .information-grid .col {
-    margin-bottom: 10px;
+  .information-grid {
+    .col {
+      margin-bottom: 10px;
+    }
   }
   .reviews-item {
     .name {
@@ -1483,7 +1490,7 @@ a:hover {
     align-items: center;
   }
   .portfolio__items {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, auto);
     margin-bottom: 20px;
   }
 }
