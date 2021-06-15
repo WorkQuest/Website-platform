@@ -139,97 +139,97 @@
         </div>
       </div>
       <div class="information-section">
-          <!-- REVIEWS -->
-          <div class="section__title">
-            {{ $t('quests.reviewsBig') }}
-          </div>
-          <div id="reviews-grid">
-            <span
-              v-for="(item, i) in payload.reviews"
-              :key="i"
-            >
-              <div class="reviews-item">
-                <div class="header">
-                  <div class="avatar">
-                    <img
-                      src="~/assets/img/temp/avatar-medium.jpg"
-                      alt=""
-                    >
-                  </div>
-                  <div class="name">
-                    <div class="title">
-                      {{ item.reviewerName }}
-                    </div>
-                    <div class="card-subtitle card-subtitle_blue">
-                      {{ $t('role.worker') }}
-                    </div>
-                  </div>
-                </div>
-                <div class="subheader">
-                  <div class="card-subtitle">
-                    {{ $t('quests.questBig') }}
-                  </div>
-                  <div class="card-subtitle card-subtitle_name">
-                    {{ item.questName }}
-                  </div>
-                </div>
-                <div class="description">
-                  {{ item.reviewDesc }}
-                </div>
-                <div class="rating">
-                  {{ item.reviewerRating }}
-                </div>
-                <nuxt-link
-                  class="simple-button"
-                  to="/profiles/1"
-                >
-                  {{ $t('quests.readCompletely') }}
-                </nuxt-link>
-              </div>
-            </span>
-          </div>
-          <div class="button">
-            <nuxt-link
-              class="more-button"
-              to="/profiles/1"
-            >
-              {{ $t('meta.showAllReviews') }}
-            </nuxt-link>
-          </div>
-          <!-- Portfolio -->
-          <div class="section__title">
-            {{ $t('quests.portfolio') }}
-          </div>
-          <div class="portfolio__items">
-            <div
-              v-for="(item, i) in payload.portfolios"
-              :key="i"
-              class="portfolio__item"
-            >
-              <div class="portfolio__card">
-                <div class="portfolio__body">
+        <!-- REVIEWS -->
+        <div class="section__title">
+          {{ $t('quests.reviewsBig') }}
+        </div>
+        <div class="reviews-grid">
+          <span
+            v-for="(item, i) in payload.reviews"
+            :key="i"
+          >
+            <div class="reviews-item">
+              <div class="header">
+                <div class="avatar">
                   <img
-                    class="portfolio__img"
-                    src="~/assets/img/temp/photo.jpg"
+                    src="~/assets/img/temp/avatar-medium.jpg"
                     alt=""
                   >
                 </div>
-                <div class="portfolio__footer">
-                  <div class="portfolio__name">
-                    {{ item.name }}
+                <div class="name">
+                  <div class="title">
+                    {{ item.reviewerName }}
                   </div>
+                  <div class="card-subtitle card-subtitle_blue">
+                    {{ $t('role.worker') }}
+                  </div>
+                </div>
+              </div>
+              <div class="subheader">
+                <div class="card-subtitle">
+                  {{ $t('quests.questBig') }}
+                </div>
+                <div class="card-subtitle card-subtitle_name">
+                  {{ item.questName }}
+                </div>
+              </div>
+              <div class="description">
+                {{ item.reviewDesc }}
+              </div>
+              <div class="rating">
+                {{ item.reviewerRating }}
+              </div>
+              <nuxt-link
+                class="simple-button"
+                to="/profiles/1"
+              >
+                {{ $t('quests.readCompletely') }}
+              </nuxt-link>
+            </div>
+          </span>
+        </div>
+        <div class="button">
+          <nuxt-link
+            class="more-button"
+            to="/profiles/1"
+          >
+            {{ $t('meta.showAllReviews') }}
+          </nuxt-link>
+        </div>
+        <!-- Portfolio -->
+        <div class="section__title">
+          {{ $t('quests.portfolio') }}
+        </div>
+        <div class="portfolio__items">
+          <div
+            v-for="(item, i) in payload.portfolios"
+            :key="i"
+            class="portfolio__item"
+          >
+            <div class="portfolio__card">
+              <div class="portfolio__body">
+                <img
+                  class="portfolio__img"
+                  src="~/assets/img/temp/photo.jpg"
+                  alt=""
+                >
+              </div>
+              <div class="portfolio__footer">
+                <div class="portfolio__name">
+                  {{ item.name }}
                 </div>
               </div>
             </div>
           </div>
-          <div class="button">
-            <nuxt-link
-              class="more-button"
-              to="/profiles/1"
-            >
-              {{ $t('quests.showAllCases') }}
-            </nuxt-link>
-          </div>
+        </div>
+        <div class="button">
+          <nuxt-link
+            class="more-button"
+            to="/profiles/1"
+          >
+            {{ $t('quests.showAllCases') }}
+          </nuxt-link>
+        </div>
       </div>
     </div>
   </div>
@@ -1030,7 +1030,7 @@ table {
   }
 }
 
-info {
+.info {
   justify-content: initial !important;
 }
 .contacts {
