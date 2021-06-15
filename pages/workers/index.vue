@@ -940,4 +940,63 @@ export default {
     width: 220px;
   }
 }
+
+@include _1199 {
+  .map__container, .main {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .menu {
+    grid-template-columns: auto auto;
+  }
+  .card {
+    padding: 10px;
+  }
+}
+@include _991 {
+  .content {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .menu__right {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@include _767 {
+  .main {
+    display: block;
+    .content {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .search {
+    grid-template-columns: auto auto;
+    padding: 0 10px;
+    grid-gap: 10px;
+    &__toggle, &__dd {
+      display: none;
+    }
+    &__actions {
+      border: none;
+    }
+  }
+}
+@include _575 {
+  .main {
+    .menu {
+      display: flex;
+      flex-direction: column;
+      grid-template-columns: auto;
+    }
+    .menu__left {
+      display: flex;
+      flex-direction: column;
+    }
+    .content {
+      grid-template-columns: repeat(1, 1fr);
+    }
+    .menu__right {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
 </style>

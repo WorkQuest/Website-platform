@@ -1,16 +1,5 @@
 <template>
   <div class="role">
-    <div class="btn__back">
-      <base-btn
-        mode="back"
-        @click="$router.go(-1)"
-      >
-        <template v-slot:left>
-          <span class="icon-chevron_big_left" />
-        </template>
-        {{ $t('signUp.back') }}
-      </base-btn>
-    </div>
     <div class="role__title">
       {{ $t('role.choose') }}
     </div>
@@ -18,8 +7,6 @@
       <div
         id="left_card"
         class="role__card role__card_left"
-        @mouseenter="showLeftChoose = true"
-        @mouseleave="showLeftChoose = false"
         @click="showPrivacy('employer')"
       >
         <div class="role__content">
@@ -32,8 +19,7 @@
             </div>
           </div>
           <div
-            :class="[{'role__bottom_show': showLeftChoose === true}]"
-            class="role__bottom role__bottom_left"
+            class="role__bottom role__bottom_left role__bottom_show"
           >
             <div class="role__text role__text_desc">
               {{ $t('role.chooseThis') }}
@@ -45,15 +31,13 @@
         </div>
         <img
           class="role__image"
-          src="~assets/img/app/role_employer.svg"
+          src="~assets/img/app/employer.png"
           alt=""
         >
       </div>
       <div
         id="right_card"
         class="role__card role__card_right"
-        @mouseenter="showRightChoose = true"
-        @mouseleave="showRightChoose = false"
         @click="showPrivacy('worker')"
       >
         <div class="role__content">
@@ -66,8 +50,7 @@
             </div>
           </div>
           <div
-            class="role__bottom role__bottom_right"
-            :class="[{'role__bottom_show': showRightChoose === true}]"
+            class="role__bottom role__bottom_right role__bottom_show"
           >
             <div class="role__text role__text_desc role__text_light">
               {{ $t('role.chooseThis') }}
@@ -79,7 +62,7 @@
         </div>
         <img
           class="role__image"
-          src="~assets/img/app/role_worker.svg"
+          src="~assets/img/app/worker.png"
           alt=""
         >
       </div>
@@ -103,10 +86,6 @@ export default {
   // TODO: Починить анимацию для мобильного режима
   async mounted() {
     this.SetLoader(true);
-    document.getElementById('left_card').addEventListener('mouseover', (_) => document.getElementById('right_card').classList.add('role__card_minimized'));
-    document.getElementById('left_card').addEventListener('mouseleave', (_) => document.getElementById('right_card').classList.remove('role__card_minimized'));
-    document.getElementById('right_card').addEventListener('mouseover', (_) => document.getElementById('left_card').classList.add('role__card_minimized'));
-    document.getElementById('right_card').addEventListener('mouseleave', (_) => document.getElementById('left_card').classList.remove('role__card_minimized'));
     const { token } = this.$route.query;
     if (!token) {
       this.$router.push('/sign-in');
@@ -128,13 +107,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@media screen and (min-width:1199px) {
-  .btn {
-    &__back {
-      display: none;
-    }
-  }
-}
 .btn {
   &__container {
     display: flex;
@@ -172,7 +144,6 @@ export default {
   }
   &__image {
     transition: .2s;
-    will-change: transform;
     position: absolute;
     top: 0;
     right: -90px;
@@ -181,7 +152,6 @@ export default {
   }
   &__card {
     transition: .2s;
-    will-change: transform;
     min-height: 400px;
     cursor: pointer;
     filter: drop-shadow(0px 47.1676px 61.4131px rgba(10, 27, 61, 0.078707))
@@ -206,28 +176,12 @@ export default {
       background-image: url("~assets/img/app/role_dots.svg");
       background-color: $green;
       justify-self: flex-end;
-      &:hover {
-        width: 125% !important;
-        .role {
-          &__image {
-            right: 0;
-          }
-        }
-      }
     }
     &_left {
       width: 100%;
       background-image: url("~assets/img/app/role_dots_light.svg");
       background-color: $black100;
       justify-self: flex-start;
-      &:hover {
-        width: 125% !important;
-        .role {
-          &__image {
-            right: 0;
-          }
-        }
-      }
     }
   }
   &__content {
@@ -288,19 +242,30 @@ export default {
 }
 @include _1199 {
   .role {
-    &__title {
-      color: $black800;
-      margin: 0 20px;
-    }
     &__cards {
       margin: 0 20px;
+    }
+    &__image {
+      right: -170px !important;
     }
   }
 }
 @include _767 {
   .role {
-    &__text_title {
-      font-size: 20px;
+    &__title {
+      font-size: 28px;
+      padding: 0 20px 20px;
+    }
+    &__card {
+      min-height: 270px;
+    }
+    &__image {
+      right: -100px !important;
+    }
+    &__text {
+      &_title {
+        font-size: 18px;
+      }
     }
     &__text_desc {
       font-size: 16px;

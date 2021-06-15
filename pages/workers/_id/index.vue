@@ -1,9 +1,6 @@
 <template>
   <div>
-    <section
-      id="main-section"
-      class="main-section_white"
-    >
+    <div class="main-section main-section_white">
       <div class="main-container">
         <div
           class="information-grid"
@@ -88,158 +85,153 @@
           </div>
         </div>
       </div>
-    </section>
-    <section>
-      <div class="main-container">
-        <div class="box__skills">
-          <div class="block_50">
-            <div class="block_title">
-              {{ $t('workers.skills') }}
-            </div>
-            <div
-              v-for="(skill, i) in payload.skills"
-              :key="i"
-            >
-              <span class="badge_blue">{{ skill.title }}</span>
-            </div>
+    </div>
+    <div class="main-container">
+      <div class="box__skills">
+        <div class="block_50">
+          <div class="block_title">
+            {{ $t('workers.skills') }}
           </div>
-          <div class="block_16">
-            <div class="block_title">
-              {{ $t('workers.completedQuests') }}
-            </div>
-            <div class="numbers__big_blue">
-              12
-            </div>
-            <div>One time</div>
-          </div>
-          <div class="block_16">
-            <div class="block_title">
-              {{ $t('workers.openedQuests') }}
-            </div>
-            <div class="numbers__big_blue">
-              2
-            </div>
-            <n-link
-              class="block__link"
-              to="/workers"
-            >
-              {{ $t('workers.showAll') }}
-            </n-link>
-          </div>
-          <div class="block_16">
-            <div class="block_title">
-              {{ $t('workers.averageRating') }}
-            </div>
-            <div class="block__rating">
-              <div class="numbers__big_black">
-                4.5
-              </div>
-              <img
-                src="~assets/img/ui/star.svg"
-                alt="star"
-              >
-            </div>
-            <div>{{ $t('workers.from') }} 23 {{ $t('workers.reviews') }}</div>
+          <div
+            v-for="(skill, i) in payload.skills"
+            :key="i"
+          >
+            <span class="badge_blue">{{ skill.title }}</span>
           </div>
         </div>
-        <section class="information-section">
-          <div class="main-container">
-            <!-- REVIEWS -->
-            <div class="section__title">
-              {{ $t('quests.reviewsBig') }}
+        <div class="block_16">
+          <div class="block_title">
+            {{ $t('workers.completedQuests') }}
+          </div>
+          <div class="numbers__big_blue">
+            12
+          </div>
+          <div>One time</div>
+        </div>
+        <div class="block_16">
+          <div class="block_title">
+            {{ $t('workers.openedQuests') }}
+          </div>
+          <div class="numbers__big_blue">
+            2
+          </div>
+          <n-link
+            class="block__link"
+            to="/workers"
+          >
+            {{ $t('workers.showAll') }}
+          </n-link>
+        </div>
+        <div class="block_16">
+          <div class="block_title">
+            {{ $t('workers.averageRating') }}
+          </div>
+          <div class="block__rating">
+            <div class="numbers__big_black">
+              4.5
             </div>
-            <div class="reviews-grid">
-              <span
-                v-for="(item, i) in payload.reviews"
-                :key="i"
-              >
-                <div class="reviews-item">
-                  <div class="header">
-                    <div class="avatar">
-                      <img
-                        src="~/assets/img/temp/avatar-medium.jpg"
-                        alt=""
-                      >
-                    </div>
-                    <div class="name">
-                      <div class="title">
-                        {{ item.reviewerName }}
-                      </div>
-                      <div class="card-subtitle card-subtitle_blue">
-                        {{ $t('role.worker') }}
-                      </div>
-                    </div>
-                  </div>
-                  <div class="subheader">
-                    <div class="card-subtitle">
-                      {{ $t('quests.questBig') }}
-                    </div>
-                    <div class="card-subtitle card-subtitle_name">
-                      {{ item.questName }}
-                    </div>
-                  </div>
-                  <div class="description">
-                    {{ item.reviewDesc }}
-                  </div>
-
-                  <div class="rating">
-                    {{ item.reviewerRating }}
-                  </div>
-                  <nuxt-link
-                    class="simple-button"
-                    to="/profiles/1"
-                  >
-                    {{ $t('quests.readCompletely') }}
-                  </nuxt-link>
-                </div>
-              </span>
-            </div>
-            <div class="button">
-              <nuxt-link
-                class="more-button"
-                to="/profiles/1"
-              >
-                {{ $t('meta.showAllReviews') }}
-              </nuxt-link>
-            </div>
-            <!-- Portfolio -->
-            <div class="section__title">
-              {{ $t('quests.portfolio') }}
-            </div>
-            <div class="portfolio__items">
-              <div
-                v-for="(item, i) in payload.portfolios"
-                :key="i"
-                class="portfolio__item"
-              >
-                <div class="portfolio__card">
-                  <div class="portfolio__body">
+            <img
+              src="~assets/img/ui/star.svg"
+              alt="star"
+            >
+          </div>
+          <div>{{ $t('workers.from') }} 23 {{ $t('workers.reviews') }}</div>
+        </div>
+      </div>
+      <div class="information-section">
+          <!-- REVIEWS -->
+          <div class="section__title">
+            {{ $t('quests.reviewsBig') }}
+          </div>
+          <div id="reviews-grid">
+            <span
+              v-for="(item, i) in payload.reviews"
+              :key="i"
+            >
+              <div class="reviews-item">
+                <div class="header">
+                  <div class="avatar">
                     <img
-                      class="portfolio__img"
-                      src="~/assets/img/temp/photo.jpg"
+                      src="~/assets/img/temp/avatar-medium.jpg"
                       alt=""
                     >
                   </div>
-                  <div class="portfolio__footer">
-                    <div class="portfolio__name">
-                      {{ item.name }}
+                  <div class="name">
+                    <div class="title">
+                      {{ item.reviewerName }}
                     </div>
+                    <div class="card-subtitle card-subtitle_blue">
+                      {{ $t('role.worker') }}
+                    </div>
+                  </div>
+                </div>
+                <div class="subheader">
+                  <div class="card-subtitle">
+                    {{ $t('quests.questBig') }}
+                  </div>
+                  <div class="card-subtitle card-subtitle_name">
+                    {{ item.questName }}
+                  </div>
+                </div>
+                <div class="description">
+                  {{ item.reviewDesc }}
+                </div>
+                <div class="rating">
+                  {{ item.reviewerRating }}
+                </div>
+                <nuxt-link
+                  class="simple-button"
+                  to="/profiles/1"
+                >
+                  {{ $t('quests.readCompletely') }}
+                </nuxt-link>
+              </div>
+            </span>
+          </div>
+          <div class="button">
+            <nuxt-link
+              class="more-button"
+              to="/profiles/1"
+            >
+              {{ $t('meta.showAllReviews') }}
+            </nuxt-link>
+          </div>
+          <!-- Portfolio -->
+          <div class="section__title">
+            {{ $t('quests.portfolio') }}
+          </div>
+          <div class="portfolio__items">
+            <div
+              v-for="(item, i) in payload.portfolios"
+              :key="i"
+              class="portfolio__item"
+            >
+              <div class="portfolio__card">
+                <div class="portfolio__body">
+                  <img
+                    class="portfolio__img"
+                    src="~/assets/img/temp/photo.jpg"
+                    alt=""
+                  >
+                </div>
+                <div class="portfolio__footer">
+                  <div class="portfolio__name">
+                    {{ item.name }}
                   </div>
                 </div>
               </div>
             </div>
-            <div class="button">
-              <nuxt-link
-                class="more-button"
-                to="/profiles/1"
-              >
-                {{ $t('quests.showAllCases') }}
-              </nuxt-link>
-            </div>
           </div>
-        </section>
+          <div class="button">
+            <nuxt-link
+              class="more-button"
+              to="/profiles/1"
+            >
+              {{ $t('quests.showAllCases') }}
+            </nuxt-link>
+          </div>
       </div>
-    </section>
+    </div>
   </div>
 </template>
 
@@ -1425,5 +1417,74 @@ a:hover {
 .contacts {
   display: flex;
   align-items: center;
+}
+
+@include _1199 {
+  .template {
+    &__main {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+  .main-container {
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .box__skills {
+    grid-template-columns: repeat(4, auto);
+    grid-gap: 20px;
+  }
+}
+@include _991 {
+  .box {
+    grid-template-columns: 1fr;
+    &__skills {
+      grid-template-columns: repeat(2, auto);
+      height: 100%;
+    }
+  }
+  .main-section .information-grid .col .contacts {
+    display: grid;
+    grid-template-columns: auto 1fr;
+  }
+  .information-section #reviews-grid {
+    grid-template-columns: auto;
+  }
+}
+@include _767 {
+  .main-section .information-grid .col .contacts {
+    display: grid;
+    grid-template-columns: auto 1fr;
+  }
+}
+@include _575 {
+  .badge_blue {
+    padding: 2px 7px;
+  }
+  .block {
+    &_50, &_16 {
+      padding: 12px;
+    }
+  }
+  .information-section #reviews-grid .reviews-item .header {
+    flex-direction: column;
+  }
+  .main-section .information-grid .col {
+    margin-bottom: 10px;
+  }
+  .reviews-item {
+    .name {
+      margin-top: 10px;
+    }
+  }
+  .box__profile {
+    flex-direction: column;
+    align-items: center;
+  }
+  .portfolio__items {
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 20px;
+  }
 }
 </style>

@@ -285,17 +285,11 @@ export default {
   .auth {
     &__icons {
       grid-template-columns: repeat(5, 1fr);
-      grid-gap: 42px;
-    }
-    &__fields {
-      padding-top: 0;
+      grid-gap: 15px;
     }
     &__text {
       &_title {
-        display: none;
-      }
-      &_simple {
-        display: none;
+        font-size: 28px;
       }
       &_wrap {
         text-align: center;
@@ -306,22 +300,14 @@ export default {
     }
   }
 }
-
-@include _767 {
-  .mobile {
-    &__links {
-      margin: 0 0 10px 0;
-    }
-  }
-  .template {
-    &__right {
-      display: none;
+@include _575 {
+  .auth {
+    &__icons {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 }
-
-@include _380 {
-
-}
-
 </style>
