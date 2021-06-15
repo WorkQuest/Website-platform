@@ -1,0 +1,466 @@
+<template>
+  <div class="mining-page">
+    <div class="mining-page__container">
+      <div class="mining-page__header">
+        <div class="title">
+          {{ $t('mining.liquidityMining') }}
+        </div>
+        <div class="title_sub">
+          {{ $t('mining.templateText') }}
+        </div>
+      </div>
+      <div class="mining-page__content">
+        <div class="info-block">
+          <div class="info-block__name_bold">
+            {{ $t('mining.pools') }}
+          </div>
+          <div class="mining-page__table">
+            <b-table
+              :items="items"
+              :fields="testFields"
+              borderless
+              caption-top
+              thead-class="table__header"
+              tbody-tr-class="table__row"
+            >
+              <template #cell(poolAddress)="el">
+                <div class="table__value_gray">
+                  {{ el.item.poolAddress }}
+                </div>
+              </template>
+              <template #cell(assets)="el">
+                <div class="table__value">
+                  {{ el.item.assets }}
+                </div>
+              </template>
+              <template #cell(sdsdsdsd)="el">
+                <div class="table__value">
+                  {{ el.item.sdsdsdsd }}
+                </div>
+              </template>
+              <template #cell(volume)="el">
+                <div class="table__value">
+                  {{ el.item.volume }}
+                </div>
+              </template>
+              <template #cell(choose)="el">
+                <base-btn class="btn_bl">
+                  {{ el.item.chooseBtn }}
+                </base-btn>
+              </template>
+            </b-table>
+          </div>
+        </div>
+        <div
+          v-if="documents.length"
+          class="info-block"
+        >
+          <div class="info-block__name_bold">
+            {{ $t("mining.information") }}
+          </div>
+          <div class="info-block__documents">
+            <div
+              v-for="(item, i) in documents"
+              :key="i"
+              class="document"
+            >
+              <img
+                class="document__img"
+                src="~/assets/img/ui/pdf.svg"
+                alt=""
+              >
+              <div class="document__title">
+                <div class="document__name">
+                  {{ item.name }}
+                </div>
+                <div class="document__size">
+                  {{ item.size }}
+                </div>
+              </div>
+              <button class="btn__doc">
+                {{ $t('pension.download') }}
+                <img
+                  class="download"
+                  src="~/assets/img/ui/download.svg"
+                  alt=""
+                >
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
+
+export default {
+  data() {
+    return {
+      documents: [
+        {
+          name: this.$t('mining.docName'),
+          size: this.$tc('mining.mb', '1.2'),
+          url: '',
+        },
+        {
+          name: this.$t('mining.docName'),
+          size: this.$tc('mining.mb', '1.2'),
+          url: '',
+        },
+        {
+          name: this.$t('mining.docName'),
+          size: this.$tc('mining.mb', '1.2'),
+          url: '',
+        },
+      ],
+      items: [
+        {
+          poolAddress: this.$t('mining.table.poolAddress'),
+          assets: this.$t('mining.table.assets'),
+          template1: this.$t('mining.table.sdsdsdsd'),
+          template2: this.$t('mining.table.sdsdsdsd'),
+          template3: this.$t('mining.sdsdsdsd'),
+          volume: this.$t('mining.table.volume'),
+          chooseBtn: this.$t('mining.choose'),
+        },
+        {
+          poolAddress: this.$t('mining.table.poolAddress'),
+          assets: this.$t('mining.table.assets'),
+          template1: this.$t('mining.table.sdsdsdsd'),
+          template2: this.$t('mining.table.sdsdsdsd'),
+          template3: this.$t('mining.sdsdsdsd'),
+          volume: this.$t('mining.table.volume'),
+          chooseBtn: this.$t('mining.choose'),
+        },
+      ],
+      testFields: [
+        {
+          key: 'poolAddress',
+          label: this.$t('mining.tableHead.poolAddress'),
+          sortable: false,
+          thClass: 'cell_head',
+        },
+        {
+          key: 'assets',
+          label: this.$t('mining.tableHead.assets'),
+          sortable: false,
+          thClass: 'cell_head',
+        },
+        {
+          key: 'template1',
+          label: this.$t('mining.tableHead.sdsdsdsd'),
+          sortable: false,
+          thClass: 'cell_head',
+        },
+        {
+          key: 'template2',
+          label: this.$t('mining.tableHead.sdsdsdsd'),
+          sortable: false,
+          thClass: 'cell_head',
+        },
+        {
+          key: 'template3',
+          label: this.$t('mining.tableHead.sdsdsdsd'),
+          sortable: false,
+          thClass: 'cell_head',
+        },
+        {
+          key: 'volume',
+          label: this.$t('mining.tableHead.volume'),
+          sortable: false,
+          thClass: 'cell_head',
+        },
+        {
+          key: 'choose',
+          label: '',
+          sortable: false,
+        },
+      ],
+    };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+  },
+  async mounted() {
+    this.SetLoader(true);
+    this.SetLoader(false);
+  },
+  methods: {
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.mining-page {
+  background: linear-gradient(to bottom, #103D7C 320px, #f6f8fa 320px);
+  display: flex;
+  justify-content: center;
+
+  &__container {
+    display: grid;
+    grid-template-rows: 190px max-content;
+    max-width: 1280px;
+    grid-row-gap: 20px;
+    width: 100%;
+  }
+
+  &__header {
+    align-self: flex-end;
+
+    .title {
+      font-weight: 500;
+      color: #FFF;
+      width: 530px;
+      font-size: 45px;
+      line-height: 110%;
+      margin: 0 0 24px;
+
+      &_sub {
+        @extend .title;
+        font-size: 16px;
+        line-height: 100%;
+        opacity: 0.5;
+      }
+    }
+  }
+
+  &__content {
+    display: grid;
+    grid-row-gap: 30px;
+    width: 100%;
+
+    .btn-group {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      padding-bottom: 20px;
+
+      &_exp {
+        @extend .btn-group;
+        width: calc(100% - 20px);
+      }
+    }
+
+    .btn {
+      box-sizing: border-box;
+      font-weight: 400;
+      font-size: 16px;
+      color: #0083C7;
+      border: 1px solid #0083C71A;
+      border-radius: 6px;
+      transition: .3s;
+
+      &__doc {
+        @extend .btn;
+        width: 220px;
+        height: 46px;
+
+        .download {
+          display: unset;
+          vertical-align: unset;
+          margin-left: 5px;
+        }
+      }
+
+      &:hover {
+        background-color: #0083C71A;
+        border: 0px;
+      }
+
+      &_bl {
+        @extend .btn;
+        background-color: #0083C7;
+        border: unset;
+        color: #fff;
+
+        &:hover {
+          background-color: #103d7c;
+        }
+      }
+    }
+
+    .info-block {
+      background-color: #fff;
+      border-radius: 6px;
+
+      &__square {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+
+      &__quarter {
+        @extend .info-block;
+        text-align: center;
+        display: grid;
+        align-content: center;
+        gap: 20px;
+      }
+
+      &__title {
+        color: #0083C7;
+        font-weight: 700;
+        font-size: 25px;
+
+        &_gray {
+          color: #7C838D;
+          font-weight: 400;
+          font-size: 16px;
+          margin-left: 20px;
+        }
+      }
+
+      &__subtitle {
+        font-weight: 400;
+        font-size: 16px;
+        color: #7C838D;
+      }
+
+      &__about {
+        width: calc(100% - 50px);
+        grid-template-areas:
+          "hd ."
+          "ft sd";
+        margin-left: 20px;
+        display: grid;
+        grid-template-columns: 60% auto;
+        grid-template-rows: auto 63px;
+        gap: 20px;
+        position: relative;
+
+        .info-block__subtitle {
+          grid-area: hd;
+        }
+
+        .calendar-img {
+          grid-area: sd;
+          position: absolute;
+          right: 0px;
+          bottom: 0;
+        }
+
+        .btn-group {
+          grid-area: ft;
+        }
+      }
+
+      &__documents {
+        padding: 0 20px 20px 20px;
+        display: grid;
+        gap: 20px;
+
+        .document {
+          border: 1px solid #E1E4ED;
+          border-radius: 8px;
+          height: 80px;
+          padding: 0 20px;
+          align-items: center;
+          display: grid;
+          grid-template-columns: 33px auto 220px;
+
+          &__title {
+            padding: 0 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+          }
+
+          &__name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 400;
+            font-size: 16px;
+            padding-right: 10px;
+          }
+
+          &__size {
+            font-weight: 400;
+            font-size: 13px;
+            color: #A7AEB9;
+          }
+        }
+      }
+
+      &__name {
+        font-size: 16px;
+        color: #1D2127;
+        padding: 20px 20px 10px 20px;
+        font-weight: 400;
+
+        &_bold {
+          font-weight: 500;
+          font-size: 25px;
+          color: #103D7C;
+          line-height: 1;
+          padding: 20px;
+        }
+      }
+    }
+  }
+
+  &__table {
+    table {
+      .cell {
+        padding: 0;
+
+        &_head {
+          @extend .cell;
+        }
+
+        &_none {
+          >div {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .table {
+      margin: 0;
+
+      &__header {
+        height: 27px;
+        align-items: center;
+        background-color: rgba(0, 131, 199, 0.1);
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        padding: 0 20px;
+        margin-bottom: 10px;
+        grid-gap: 10px;
+        font-size: 12px;
+        color: #0083C7;
+      }
+
+      &__rows {
+        display: grid;
+        grid-auto-rows: 33px;
+        grid-row-gap: 20px;
+        padding-bottom: 20px;
+      }
+
+      &__value {
+        font-weight: 400;
+        font-size: 16px;
+        color: #1D2127;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        &_gray {
+          @extend .table__value;
+          color: #7C838D;
+        }
+      }
+    }
+  }
+}
+</style>

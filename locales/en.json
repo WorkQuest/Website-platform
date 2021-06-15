@@ -495,7 +495,7 @@
      "status": "Success"
    },
    "docName": "Some_document.pdf",
-   "mb": "MB",
+   "mb": "{count} MB",
    "percents": "{count} %",
    "years": "{count} years",
    "wusdCount": "{count} WUSD",
@@ -522,7 +522,7 @@
     "faq4": "What happens to my funds on the redemption date of a Locked Savings product?",
     "faq5": "How is the average annual return (APR) calculated?",
     "docName": "Some_document.pdf",
-    "mb": "MB",
+    "mb": "{count} MB",
     "percents": "{count} %",
     "days": "{count} days",
     "smallPlug": "??",
@@ -538,5 +538,28 @@
       "status": "Success"
     },
     "depositIsOpened": "Deposit is opened"
+  },
+  "mining":  {
+    "liquidityMining": "Liquidity mining",
+    "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "pools": "Pools",
+    "choose": "Choose",
+    "information": "Information",
+    "docName": "Some_document.pdf",
+    "download": "Download",
+    "tableHead": {
+      "poolAddress": "Pool address",
+      "assets": "Assets",
+      "sdsdsdsd": "sdsdsdsd",
+      "volume": "Volume"
+    },
+    "table": {
+      "poolAddress": "0sjs3892...sd45",
+      "assets": "50% WUSD / 50%ETH",
+      "sdsdsdsd": "sdsdsdsd",
+      "volume": "$4.5M"
+    },
+    "mb": "{count} MB",
+    "": ""
   }
  }

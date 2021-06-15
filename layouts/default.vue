@@ -781,7 +781,7 @@ export default {
         },
         {
           title: this.$t('ui.menu.mining'),
-          path: '/wallet',
+          path: '/mining',
         },
       ];
     },
