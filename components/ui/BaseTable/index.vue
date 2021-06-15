@@ -24,13 +24,19 @@
         >{{ el.item.status }}</span>
       </template>
       <template #cell(block)="el">
-        <span class="table__grey">{{ el.item.block }}</span>
+        <div class="row__container">
+          <span class="table__grey">{{ el.item.block }}</span>
+        </div>
       </template>
       <template #cell(timestamp)="el">
-        <span class="table__grey">{{ el.item.timestamp }}</span>
+        <div class="row__container">
+          <span class="table__grey">{{ el.item.timestamp }}</span>
+        </div>
       </template>
       <template #cell(transaction_fee)="el">
-        <span class="table__grey">{{ el.item.transaction_fee }}</span>
+        <div class="row__container">
+          <span class="table__grey">{{ el.item.transaction_fee }}</span>
+        </div>
       </template>
     </b-table>
   </div>
@@ -56,29 +62,33 @@ export default {
 </script>
 
 <style lang="scss">
+.row {
+  &__container {
+    overflow-x: auto;
+    max-width: 150px;
+    max-height: 150px;
+    display: flex;
+    word-break: break-word;
+  }
+}
 .table {
   font-size: 16px;
   line-height: 130%;
-  background: $white;
+  background: #FFFFFF;
   border-radius: 6px;
-
   &__title {
     margin: 10px;
     color: $black800;
   }
-
   &__success {
     color: $green;
   }
-
   &__failed {
     color: $red;
   }
-
   &__grey {
     color: $black500;
   }
-
   &__header {
     @include text-simple;
     background: rgba(0, 131, 199, 0.1);
@@ -87,11 +97,20 @@ export default {
     color: $blue;
     font-style: normal;
     font-size: 12px;
-
+    word-break: break-word;
   }
-
   &__row {
     line-height: 40px;
+  }
+  @include _991 {
+    .table {
+      &__row {
+        font-size: 12px;
+      }
+      &__header {
+        font-size: 10px;
+      }
+    }
   }
 }
 </style>

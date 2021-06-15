@@ -60,12 +60,14 @@
             </base-button>
           </div>
         </div>
-        <div class="wallet__table">
-          <base-table
-            :title="$t('wallet.table.trx')"
-            :items="items"
-            :fields="testFields"
-          />
+        <div class="table__container">
+          <div class="wallet__table">
+            <base-table
+              :title="$t('wallet.table.trx')"
+              :items="items"
+              :fields="testFields"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -252,6 +254,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.table {
+  &__container {
+    width: 100%;
+  }
+}
 
 .status {
   &__title {
@@ -455,6 +463,24 @@ export default {
 @include _767 {
   .card {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .wallet {
+    &__table {
+      overflow: hidden;
+      min-width: 575px;
+      width: 100%;
+      height: 500px;
+    }
+  }
+}
+@include _575 {
+  .wallet {
+    &__table {
+      overflow: hidden;
+      min-width: 400px;
+      width: 100%;
+      height: 500px;
+    }
   }
 }
 @include _380 {}
