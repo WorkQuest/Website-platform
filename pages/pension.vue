@@ -2,53 +2,34 @@
   <div class="pension-page">
     <div
       class="pension-page__container"
-      :class="[{'pension-page__container_registered' : pensionIsReg && !isDeadline}, {'pension-page__container_expired' : isDeadline}]"
+      :class="[{'pension-page__container_registered' : pensionIsReg && !isDeadline},
+               {'pension-page__container_expired' : isDeadline}]"
     >
       <div class="pension-page__header">
         <div class="title">
           {{ $t('pension.pensionProgram') }}
         </div>
         <div class="title_sub">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus
-          magna fringilla urna, porttitor rhoncus dolor purus non enim
+          {{ $t('general.midPlug') }}
         </div>
       </div>
       <div
         class="pension-page__content"
-        :class="[{'pension-page__content_registered' : pensionIsReg && !isDeadline }, {'pension-page__content_expired' : isDeadline}]"
+        :class="[{'pension-page__content_registered' : pensionIsReg && !isDeadline },
+                 {'pension-page__content_expired' : isDeadline}]"
       >
         <template v-if="!pensionIsReg && !isDeadline">
           <div class="info-block__square">
-            <div class="info-block__quarter">
+            <div
+              v-for="(item, i) in cards"
+              :key="i"
+              class="info-block__quarter"
+            >
               <div class="info-block__title">
-                6.5%
+                {{ item.title }}
               </div>
               <div class="info-block__subtitle">
-                {{ $t('pension.annualPercent') }}
-              </div>
-            </div>
-            <div class="info-block__quarter">
-              <div class="info-block__title">
-                {{ $t('pension.optional') }}
-              </div>
-              <div class="info-block__subtitle">
-                {{ $t('pension.optionalFirstDeposit') }}
-              </div>
-            </div>
-            <div class="info-block__quarter">
-              <div class="info-block__title">
-                3 years
-              </div>
-              <div class="info-block__subtitle">
-                {{ $t('pension.term') }}
-              </div>
-            </div>
-            <div class="info-block__quarter">
-              <div class="info-block__title">
-                {{ $t('pension.castomizable') }}
-              </div>
-              <div class="info-block__subtitle">
-                {{ $t('pension.depositsFromQuest') }}
+                {{ item.subtitle }}
               </div>
             </div>
           </div>
@@ -58,10 +39,7 @@
             </div>
             <div class="info-block__about">
               <div class="info-block__subtitle">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id
-                nunc ac arcu viverra. Aliquet egestas suspendisse id pellentesque lacus. Ut accumsan posuere viverra
-                hendrerit. Lacus volutpat id aliquam accumsan cras. Magna consectetur id sollicitudin sed eget nisl nunc.
-                Quis sagittis sodales volutpat sed.
+                {{ $t('general.fullPlug') }}
               </div>
               <img
                 class="calendar-img"
@@ -83,7 +61,7 @@
             class="info-block"
           >
             <div class="info-block__name_bold">
-              Information
+              {{ $t("pension.information") }}
             </div>
             <div class="info-block__documents">
               <div
@@ -129,7 +107,7 @@
                 {{ $t('pension.pensionBalance') }}
               </div>
               <div class="info-block__tokens">
-                4 562 WUSD
+                {{ $tc("general.wusdCount", "4 562") }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -143,7 +121,7 @@
                 {{ $t('pension.currentPercentFromAQuest') }}
               </div>
               <div class="info-block__tokens">
-                15%
+                {{ $tc('general.percents', 15) }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -155,7 +133,7 @@
             <div class="info-block__third_rate">
               <div class="info-block__small">
                 <div class="info-block__perc">
-                  +6.5%
+                  {{ $tc('general.plusPercents', '6.5') }}
                 </div>
                 <div class="info-block__period">
                   {{ $t('pension.everyYear') }}
@@ -188,7 +166,7 @@
                   <div class="user__info">
                     <img
                       class="ava"
-                      :src="el.item.avaUrl"
+                      src="~/assets/img/temp/avatar-small.jpg"
                       alt=""
                     >
                     <div class="user__name">
@@ -224,15 +202,15 @@
           <div class="info-block__grid">
             <div>
               <div class="info-block__name">
-                Current pension balance
+                {{ $t('pension.currentPensionBalance') }}
               </div>
               <div class="info-block__tokens">
-                4 562 WUSD
+                {{ $tc("general.wusdCount", "4 562") }}
               </div>
             </div>
             <div class="info-block__small_right">
               <div class="info-block__perc">
-                +6.5%
+                {{ $tc("general.plusPercents", "6.5") }}
               </div>
               <div class="info-block__period">
                 {{ $t('pension.everyYear') }}
@@ -275,7 +253,7 @@
                   <div class="user__info">
                     <img
                       class="ava"
-                      :src="el.item.avaUrl"
+                      src="~/assets/img/temp/avatar-small.jpg"
                       alt=""
                     >
                     <div class="user__name">
@@ -314,7 +292,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
+import modals from '../../../Documents/Front-end-web-development/store/modals/modals';
 
 export default {
   data() {
@@ -323,22 +301,22 @@ export default {
       isDeadline: false,
       items: [
         {
-          userName: 'Edward Cooper',
+          userName: this.$t('general.table.userName'),
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
+          userID: this.$t('general.table.userId'),
+          txHash: this.$t('general.table.txHash'),
+          time: this.$t('general.table.time'),
           amount: this.$tc('referral.wqtCount', 12),
-          status: 'Success',
+          status: this.$t('general.table.status'),
         },
         {
-          userName: 'Edward Cooper',
+          userName: this.$t('general.table.userName'),
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
+          userID: this.$t('general.table.userId'),
+          txHash: this.$t('general.table.txHash'),
+          time: this.$t('general.table.time'),
           amount: this.$tc('referral.wqtCount', 12),
-          status: 'Success',
+          status: this.$t('general.table.status'),
         },
       ],
       testFields: [
@@ -381,19 +359,37 @@ export default {
       ],
       documents: [
         {
-          name: 'Some_document.pdf',
-          size: '1.2 MB',
+          name: this.$t('general.docName'),
+          size: this.$tc('general.mb', '1.2'),
           url: '',
         },
         {
-          name: 'Some_document2.pdf',
-          size: '2.2 MB',
+          name: this.$t('general.docName'),
+          size: this.$tc('general.mb', '1.2'),
           url: '',
         },
         {
-          name: 'Some_document3.pdf',
-          size: '34.2 MB',
+          name: this.$t('general.docName'),
+          size: this.$tc('general.mb', '1.2'),
           url: '',
+        },
+      ],
+      cards: [
+        {
+          title: this.$tc('general.percents', '6.5'),
+          subtitle: this.$t('pension.annualPercent'),
+        },
+        {
+          title: this.$t('pension.optional'),
+          subtitle: this.$t('pension.optionalFirstDeposit'),
+        },
+        {
+          title: this.$tc('general.years', 3),
+          subtitle: this.$t('pension.term'),
+        },
+        {
+          title: this.$t('pension.castomizable'),
+          subtitle: this.$t('pension.depositsFromQuest'),
         },
       ],
     };
@@ -437,7 +433,7 @@ export default {
 
 <style lang="scss" scoped>
 .pension-page {
-  background: linear-gradient(to bottom, #103D7C 320px, rgba(0, 0, 0, 0) 320px);
+  background: linear-gradient(to bottom, #103D7C 320px, #f6f8fa 320px);
   display: flex;
   justify-content: center;
 
@@ -529,7 +525,7 @@ export default {
 
       &:hover {
         background-color: #0083C71A;
-        border: 0;
+        border: 0px;
       }
 
       &_bl {
@@ -673,7 +669,7 @@ export default {
         .calendar-img {
           grid-area: sd;
           position: absolute;
-          right: 0;
+          right: 0px;
           bottom: 0;
         }
 

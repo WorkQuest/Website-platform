@@ -27,7 +27,7 @@
               <div class="user__info">
                 <img
                   class="ava"
-                  src=""
+                  src="~/assets/img/temp/avatar-small.jpg"
                   alt=""
                 >
                 <div class="user__name">
@@ -76,7 +76,7 @@
             </div>
             <div class="info-block__link">
               <div class="address">
-                {{ referLink }}
+                {{ this.referLink }}
               </div>
               <button
                 type="button"
@@ -135,7 +135,7 @@
                 <div class="user__info">
                   <img
                     class="ava"
-                    :src="el.item.avaUrl"
+                    src="~/assets/img/temp/avatar-small.jpg"
                     alt=""
                   >
                   <div class="user__name">
@@ -178,22 +178,22 @@ export default {
       referLink: 'https://www.workquest.com/ref?v=44T7iUSo1vU',
       items: [
         {
-          userName: 'Edward Cooper',
+          userName: this.$t('general.table.userName'),
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
+          userID: this.$t('general.table.userId'),
+          txHash: this.$t('general.table.txHash'),
+          time: this.$t('general.table.time'),
           amount: this.$tc('referral.wqtCount', 12),
-          status: 'Success',
+          status: this.$t('general.table.status'),
         },
         {
-          userName: 'Edward Cooper',
+          userName: this.$t('general.table.userName'),
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
+          userID: this.$t('general.table.userId'),
+          txHash: this.$t('general.table.txHash'),
+          time: this.$t('general.table.time'),
           amount: this.$tc('referral.wqtCount', 12),
-          status: 'Success',
+          status: this.$t('general.table.status'),
         },
       ],
       testFields: [
@@ -234,7 +234,7 @@ export default {
 
 <style lang="scss" scoped>
 .referral-page {
-  background: linear-gradient(to bottom, #103D7C 370px, rgba(0, 0, 0, 0) 370px);
+  background: linear-gradient(to bottom, #103D7C 370px, #f6f8fa 370px);
   display: flex;
   justify-content: center;
 
