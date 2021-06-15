@@ -539,4 +539,19 @@ export default {
     @include main-white;
   }
 }
+@include _1199 {
+  .main__body {
+    padding: 10px;
+  }
+}
+@include _767 {
+  .btn__container.btn__container_right {
+    justify-content: center;
+  }
+}
+@include _575 {
+  .page__category {
+    grid-template-columns: auto;
+  }
+}
 </style>
