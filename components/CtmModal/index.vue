@@ -34,11 +34,10 @@
       <CtmModalRaiseViews v-if="modals.raiseViews === currentModalKey" />
       <CtmModalInvitation v-if="modals.invitation === currentModalKey" />
       <CtmModalApplyForAPension v-if="modals.applyForAPension === currentModalKey" />
-      <CtmModalPensionIsRegistered v-if="modals.pensionIsRegistered === currentModalKey" />
       <CtmModalMakeDeposit v-if="modals.makeDeposit === currentModalKey" />
       <CtmModalChangePercent v-if="modals.changePercent === currentModalKey" />
       <CtmModalOpenADeposit v-if="modals.openADeposit === currentModalKey" />
-      <CtmModalDepositIsOpened v-if="modals.depositIsOpened === currentModalKey" />
+      <CtmModalStatus v-if="modals.status === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -67,11 +66,10 @@ import CtmModalInviteSend from './CtmModalInviteSend';
 import CtmModalQuestCreated from './CtmModalQuestCreated';
 import CtmModalRaiseViews from './CtmModalRaiseViews';
 import CtmModalApplyForAPension from './CtmModalApplyForAPension';
-import CtmModalPensionIsRegistered from './CtmModalPensionIsRegistered';
 import CtmModalMakeDeposit from './CtmModalMakeDeposit';
 import CtmModalChangePercent from './CtmModalChangePercent';
 import CtmModalOpenADeposit from './CtmModalOpenADeposit';
-import CtmModalDepositIsOpened from './CtmModalDepositIsOpened';
+import CtmModalStatus from './CtmModalStatus';
 
 export default {
   name: 'ModalBox',
@@ -98,11 +96,10 @@ export default {
     CtmModalQuestCreated,
     CtmModalRaiseViews,
     CtmModalApplyForAPension,
-    CtmModalPensionIsRegistered,
     CtmModalMakeDeposit,
     CtmModalChangePercent,
     CtmModalOpenADeposit,
-    CtmModalDepositIsOpened,
+    CtmModalStatus,
   },
   data: () => ({
     modals,

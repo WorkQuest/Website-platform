@@ -449,13 +449,20 @@
     "earnCrypto": "Earn Crypto",
     "everyTimeYourFriends": "Every time your friends make a first Quest, you'll get up to $35 in WQT commission in real time!",
     "historyOfRewards": "History of rewards",
-    "table": {
+    "tableHead": {
       "name": "Name",
       "userID": "User ID",
       "txHash": "Tx hash",
       "time": "Time",
       "amount": "Amount",
       "status": "Status"
+    },
+    "table": {
+      "userName": "John Doe",
+      "userId": "455dad66544ss",
+      "txHash": "sf998s...ss877d",
+      "time": "Feb 1, 2021",
+      "status": "Success"
     }
   },
  "pension": {
@@ -478,7 +485,21 @@
    "timeRemainsUntilTheEndOfThePeriod": "Time remains until the end of the period",
    "transactionHistory": "Transaction history",
    "withdraw": "Withdraw",
-   "prolong": "Prolong"
+   "prolong": "Prolong",
+   "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac neque cum posuere in. Semper arcu purus eget faucibus.",
+   "table": {
+     "userName": "John Doe",
+     "userId": "455dad66544ss",
+     "txHash": "sf998s...ss877d",
+     "time": "Feb 1, 2021",
+     "status": "Success"
+   },
+   "docName": "Some_document.pdf",
+   "mb": "MB",
+   "percents": "{count} %",
+   "years": "{count} years",
+   "wusdCount": "{count} WUSD",
+   "plusPercents": "+ {count}%"
  },
   "saving": {
     "workQuestSavings": "WorkQuest Savings",
@@ -492,6 +513,30 @@
     "faq": "FAQ",
     "information": "Information",
     "historyOfDeposits": "History of deposits",
-    "depositAmount": "Deposit amount"
+    "depositAmount": "Deposit amount",
+    "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac neque cum posuere in. Semper arcu purus eget faucibus.",
+    "faq1": "What are Locked Savings? Committed to holding your crypto?",
+    "faq2": "What happens to my funds on the day I subscribe to a Locked Savings product?",
+    "ans2": "On the day of subscription, WorkQuest Savings will deduct the funds for subscription from your WUSD wallet.\n",
+    "faq3": "What happens to my funds on the value date of a Locked Savings product?",
+    "faq4": "What happens to my funds on the redemption date of a Locked Savings product?",
+    "faq5": "How is the average annual return (APR) calculated?",
+    "docName": "Some_document.pdf",
+    "mb": "MB",
+    "percents": "{count} %",
+    "days": "{count} days",
+    "smallPlug": "??",
+    "possiblePlug": "Possible",
+    "yearPlug": "1 year",
+    "wusdCount": "{count} WUSD",
+    "plusPercents": "+ {count}%",
+    "table": {
+      "userName": "John Doe",
+      "userId": "455dad66544ss",
+      "txHash": "sf998s...ss877d",
+      "time": "Feb 1, 2021",
+      "status": "Success"
+    },
+    "depositIsOpened": "Deposit is opened"
   }
  }

@@ -7,11 +7,11 @@
       <div class="messageSend">
         <div class="messageSend__content">
           <img
-            src="~assets/img/ui/dollar.svg"
+            :src="options.img"
             alt="RequestSend"
           >
           <div class="ctm-modal__title">
-            {{ $t('modals.depositIsOpened') }}
+            {{ options.title }}
           </div>
           <div class="ctm-modal__desc">
             {{ modal.modalBody }}
@@ -32,7 +32,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'ModalDepositIsOpened',
+  name: 'Status',
   data() {
     return {
       modal: {
@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     hide() {
-      window.dispatchEvent(new CustomEvent('close-modal', {}));
+      if (this.options.path) this.$router.push(this.options.path);
       this.CloseModal();
     },
   },

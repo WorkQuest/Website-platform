@@ -6,7 +6,7 @@
           {{ $t('saving.workQuestSavings') }}<br>{{ $t('saving.lendAndEarn') }}
         </div>
         <div class="title_sub">
-          {{ $t('general.midPlug') }}
+          {{ $t('saving.templateText') }}
         </div>
       </div>
       <div class="saving-page__content">
@@ -154,7 +154,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '../../../../Documents/Front-end-web-development/store/modals/modals';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'SavingProduct',
@@ -189,55 +189,55 @@ export default {
       ],
       documents: [
         {
-          name: this.$t('general.docName'),
-          size: this.$tc('general.mb', '1.2'),
+          name: this.$t('saving.docName'),
+          size: this.$tc('saving.mb', '1.2'),
           url: '',
         },
         {
-          name: this.$t('general.docName'),
-          size: this.$tc('general.mb', '1.2'),
+          name: this.$t('saving.docName'),
+          size: this.$tc('saving.mb', '1.2'),
           url: '',
         },
         {
-          name: this.$t('general.docName'),
-          size: this.$tc('general.mb', '1.2'),
+          name: this.$t('saving.docName'),
+          size: this.$tc('saving.mb', '1.2'),
           url: '',
         },
       ],
       cards: [
         {
-          text: this.$t('general.smallPlug'),
+          text: this.$t('saving.templateText'),
         },
         {
-          text: this.$t('general.smallPlug'),
+          text: this.$t('saving.templateText'),
         },
         {
-          text: this.$t('general.smallPlug'),
+          text: this.$t('saving.templateText'),
         },
         {
-          text: this.$t('general.smallPlug'),
+          text: this.$t('saving.templateText'),
         },
       ],
       interestRate: [
         {
-          perc: this.$tc('general.percents', '5.31'),
-          date: this.$tc('general.days', 7),
+          perc: this.$tc('saving.percents', '5.31'),
+          date: this.$tc('saving.days', 7),
         },
         {
-          perc: this.$tc('general.percents', '5.48'),
-          date: this.$tc('general.days', 14),
+          perc: this.$tc('saving.percents', '5.48'),
+          date: this.$tc('saving.days', 14),
         },
         {
-          perc: this.$tc('general.percents', '5.66'),
-          date: this.$tc('general.days', 30),
+          perc: this.$tc('saving.percents', '5.66'),
+          date: this.$tc('saving.days', 30),
         },
         {
-          perc: this.$tc('general.percents', 6),
-          date: this.$tc('general.days', 90),
+          perc: this.$tc('saving.percents', 6),
+          date: this.$tc('saving.days', 90),
         },
         {
-          perc: this.$tc('general.percents', '6,5'),
-          date: this.$tc('general.days', 180),
+          perc: this.$tc('saving.percents', '6,5'),
+          date: this.$tc('saving.days', 180),
         },
       ],
     };

@@ -2,99 +2,21 @@
   <div class="pension-page">
     <div
       class="pension-page__container"
-      :class="[{'pension-page__container_registered' : pensionIsReg && !isDeadline},
-               {'pension-page__container_expired' : isDeadline}]"
+      :class="{'pension-page__container_expired' : isDeadline}"
     >
       <div class="pension-page__header">
         <div class="title">
           {{ $t('pension.pensionProgram') }}
         </div>
         <div class="title_sub">
-          {{ $t('general.midPlug') }}
+          {{ $t('pension.templateText') }}
         </div>
       </div>
       <div
         class="pension-page__content"
-        :class="[{'pension-page__content_registered' : pensionIsReg && !isDeadline },
-                 {'pension-page__content_expired' : isDeadline}]"
+        :class="{'pension-page__content_expired' : isDeadline}"
       >
-        <template v-if="!pensionIsReg && !isDeadline">
-          <div class="info-block__square">
-            <div
-              v-for="(item, i) in cards"
-              :key="i"
-              class="info-block__quarter"
-            >
-              <div class="info-block__title">
-                {{ item.title }}
-              </div>
-              <div class="info-block__subtitle">
-                {{ item.subtitle }}
-              </div>
-            </div>
-          </div>
-          <div class="info-block">
-            <div class="info-block__name_bold">
-              {{ $t('pension.howToTakePart') }}
-            </div>
-            <div class="info-block__about">
-              <div class="info-block__subtitle">
-                {{ $t('general.fullPlug') }}
-              </div>
-              <img
-                class="calendar-img"
-                src="~/assets/img/ui/calendar.svg"
-                alt=""
-              >
-              <div class="btn-group">
-                <base-btn
-                  class="btn_bl"
-                  @click="openApplyForAPensionModal()"
-                >
-                  {{ $t('pension.applyForAPension') }}
-                </base-btn>
-              </div>
-            </div>
-          </div>
-          <div
-            v-if="documents.length"
-            class="info-block"
-          >
-            <div class="info-block__name_bold">
-              {{ $t("pension.information") }}
-            </div>
-            <div class="info-block__documents">
-              <div
-                v-for="(item, i) in documents"
-                :key="i"
-                class="document"
-              >
-                <img
-                  class="document__img"
-                  src="~/assets/img/ui/pdf.svg"
-                  alt=""
-                >
-                <div class="document__title">
-                  <div class="document__name">
-                    {{ item.name }}
-                  </div>
-                  <div class="document__size">
-                    {{ item.size }}
-                  </div>
-                </div>
-                <button class="btn__doc">
-                  {{ $t('pension.download') }}
-                  <img
-                    class="download"
-                    src="~/assets/img/ui/download.svg"
-                    alt=""
-                  >
-                </button>
-              </div>
-            </div>
-          </div>
-        </template>
-        <template v-if="pensionIsReg && !isDeadline">
+        <template v-if="!isDeadline">
           <base-btn
             class="btn__time-machine"
             @click="jumpInTime()"
@@ -107,7 +29,7 @@
                 {{ $t('pension.pensionBalance') }}
               </div>
               <div class="info-block__tokens">
-                {{ $tc("general.wusdCount", "4 562") }}
+                {{ $tc("pension.wusdCount", "4 562") }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -121,7 +43,7 @@
                 {{ $t('pension.currentPercentFromAQuest') }}
               </div>
               <div class="info-block__tokens">
-                {{ $tc('general.percents', 15) }}
+                {{ $tc('pension.percents', 15) }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -133,7 +55,7 @@
             <div class="info-block__third_rate">
               <div class="info-block__small">
                 <div class="info-block__perc">
-                  {{ $tc('general.plusPercents', '6.5') }}
+                  {{ $tc('pension.plusPercents', '6.5') }}
                 </div>
                 <div class="info-block__period">
                   {{ $t('pension.everyYear') }}
@@ -205,12 +127,12 @@
                 {{ $t('pension.currentPensionBalance') }}
               </div>
               <div class="info-block__tokens">
-                {{ $tc("general.wusdCount", "4 562") }}
+                {{ $tc("pension.wusdCount", "4 562") }}
               </div>
             </div>
             <div class="info-block__small_right">
               <div class="info-block__perc">
-                {{ $tc("general.plusPercents", "6.5") }}
+                {{ $tc("pension.plusPercents", "6.5") }}
               </div>
               <div class="info-block__period">
                 {{ $t('pension.everyYear') }}
@@ -292,104 +214,68 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '../../../Documents/Front-end-web-development/store/modals/modals';
+import modals from '~/store/modals/modals';
 
 export default {
   data() {
     return {
-      pensionIsReg: false,
       isDeadline: false,
       items: [
         {
-          userName: this.$t('general.table.userName'),
+          userName: this.$t('pension.table.userName'),
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('general.table.userId'),
-          txHash: this.$t('general.table.txHash'),
-          time: this.$t('general.table.time'),
+          userID: this.$t('pension.table.userId'),
+          txHash: this.$t('pension.table.txHash'),
+          time: this.$t('pension.table.time'),
           amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('general.table.status'),
+          status: this.$t('pension.table.status'),
         },
         {
-          userName: this.$t('general.table.userName'),
+          userName: this.$t('pension.table.userName'),
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('general.table.userId'),
-          txHash: this.$t('general.table.txHash'),
-          time: this.$t('general.table.time'),
+          userID: this.$t('pension.table.userId'),
+          txHash: this.$t('pension.table.txHash'),
+          time: this.$t('pension.table.time'),
           amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('general.table.status'),
+          status: this.$t('pension.table.status'),
         },
       ],
       testFields: [
         {
           key: 'userName',
-          label: this.$t('referral.table.name'),
+          label: this.$t('referral.tableHead.name'),
           sortable: false,
           thClass: 'cell_head',
         },
         {
           key: 'userID',
-          label: this.$t('referral.table.userID'),
+          label: this.$t('referral.tableHead.userID'),
           sortable: false,
           thClass: 'cell_head',
         },
         {
           key: 'txHash',
-          label: this.$t('referral.table.txHash'),
+          label: this.$t('referral.tableHead.txHash'),
           sortable: false,
           thClass: 'cell_head',
         },
         {
           key: 'time',
-          label: this.$t('referral.table.time'),
+          label: this.$t('referral.tableHead.time'),
           sortable: false,
           thClass: 'cell_head',
         },
         {
           key: 'amount',
-          label: this.$t('referral.table.amount'),
+          label: this.$t('referral.tableHead.amount'),
           sortable: false,
           thClass: 'cell_head',
         },
         {
           key: 'status',
-          label: this.$t('referral.table.status'),
+          label: this.$t('referral.tableHead.status'),
           sortable: false,
           thClass: 'cell_head',
-        },
-      ],
-      documents: [
-        {
-          name: this.$t('general.docName'),
-          size: this.$tc('general.mb', '1.2'),
-          url: '',
-        },
-        {
-          name: this.$t('general.docName'),
-          size: this.$tc('general.mb', '1.2'),
-          url: '',
-        },
-        {
-          name: this.$t('general.docName'),
-          size: this.$tc('general.mb', '1.2'),
-          url: '',
-        },
-      ],
-      cards: [
-        {
-          title: this.$tc('general.percents', '6.5'),
-          subtitle: this.$t('pension.annualPercent'),
-        },
-        {
-          title: this.$t('pension.optional'),
-          subtitle: this.$t('pension.optionalFirstDeposit'),
-        },
-        {
-          title: this.$tc('general.years', 3),
-          subtitle: this.$t('pension.term'),
-        },
-        {
-          title: this.$t('pension.castomizable'),
-          subtitle: this.$t('pension.depositsFromQuest'),
         },
       ],
     };
@@ -405,10 +291,6 @@ export default {
   },
   methods: {
     openApplyForAPensionModal() {
-      window.addEventListener('close-modal', () => {
-        this.pensionIsReg = true;
-        this.isDeadline = false;
-      });
       this.ShowModal({
         key: modals.applyForAPension,
       });
@@ -424,7 +306,6 @@ export default {
       });
     },
     jumpInTime() {
-      this.pensionIsReg = false;
       this.isDeadline = true;
     },
   },
@@ -443,11 +324,7 @@ export default {
     max-width: 1280px;
     grid-row-gap: 50px;
     width: 100%;
-
-    &_registered {
-      @extend .pension-page__container;
-      gap: 20px;
-    }
+    gap: 20px;
 
     &_expired {
       @extend .pension-page__container;
@@ -478,8 +355,8 @@ export default {
   &__content {
     display: grid;
     grid-row-gap: 30px;
-    grid-template-rows: 140px max-content max-content;
     width: 100%;
+    grid-template-rows: 196px max-content;
 
     .btn-group {
       display: grid;
@@ -509,18 +386,6 @@ export default {
         right: 100px;
         width: 150px;
         color: #fff;
-      }
-
-      &__doc {
-        @extend .btn;
-        width: 220px;
-        height: 46px;
-
-        .download {
-          display: unset;
-          vertical-align: unset;
-          margin-left: 5px;
-        }
       }
 
       &:hover {
@@ -611,20 +476,6 @@ export default {
         }
       }
 
-      &__square {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-      }
-
-      &__quarter {
-        @extend .info-block;
-        text-align: center;
-        display: grid;
-        align-content: center;
-        gap: 20px;
-      }
-
       &__title {
         color: #0083C7;
         font-weight: 700;
@@ -650,74 +501,6 @@ export default {
         }
       }
 
-      &__about {
-        width: calc(100% - 50px);
-        grid-template-areas:
-          "hd ."
-          "ft sd";
-        margin-left: 20px;
-        display: grid;
-        grid-template-columns: 60% auto;
-        grid-template-rows: auto 63px;
-        gap: 20px;
-        position: relative;
-
-        .info-block__subtitle {
-          grid-area: hd;
-        }
-
-        .calendar-img {
-          grid-area: sd;
-          position: absolute;
-          right: 0px;
-          bottom: 0;
-        }
-
-        .btn-group {
-          grid-area: ft;
-        }
-      }
-
-      &__documents {
-        padding: 0 20px 20px 20px;
-        display: grid;
-        gap: 20px;
-
-        .document {
-          border: 1px solid #E1E4ED;
-          border-radius: 8px;
-          height: 80px;
-          padding: 0 20px;
-          align-items: center;
-          display: grid;
-          grid-template-columns: 33px auto 220px;
-
-          &__title {
-            padding: 0 10px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: flex;
-            align-items: center;
-          }
-
-          &__name {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-weight: 400;
-            font-size: 16px;
-            padding-right: 10px;
-          }
-
-          &__size {
-            font-weight: 400;
-            font-size: 13px;
-            color: #A7AEB9;
-          }
-        }
-      }
-
       &__tokens {
         font-weight: 700;
         font-size: 25px;
@@ -730,14 +513,6 @@ export default {
         color: #1D2127;
         padding: 20px 20px 10px 20px;
         font-weight: 400;
-
-        &_bold {
-          font-weight: 500;
-          font-size: 25px;
-          color: #103D7C;
-          line-height: 1;
-          padding: 20px;
-        }
       }
 
       .ava {
@@ -746,11 +521,6 @@ export default {
         border-radius: 50%;
         background-color: #fff;
         flex: none;
-
-        &_list {
-          @extend .ava;
-          position: absolute;
-        }
       }
 
       .user {
@@ -793,20 +563,6 @@ export default {
             font-weight: 400;
           }
         }
-
-        &_last-reward {
-          display: grid;
-          background-color: #F7F8FA;
-          border-radius: 5px;
-          height: 50px;
-          line-height: 50px;
-          width: calc(100% - 40px);
-          margin-left: 20px;
-          padding: 0 10px;
-          flex-wrap: wrap;
-          gap: 10px;
-          grid-template-columns: 5fr auto;
-        }
       }
 
       &__table {
@@ -840,11 +596,6 @@ export default {
           }
         }
       }
-    }
-
-    &_registered {
-      @extend .pension-page__content;
-      grid-template-rows: 196px max-content;
     }
 
     &_expired {

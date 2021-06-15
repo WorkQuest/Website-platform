@@ -66,7 +66,11 @@ export default {
     },
     showDepositIsOpenedModal() {
       this.ShowModal({
-        key: modals.depositIsOpened,
+        key: modals.status,
+        img: require('~/assets/img/ui/dollar.svg'),
+        title: this.$t('saving.depositIsOpened'),
+        subTitle: '',
+        path: '/savings/1',
       });
     },
   },

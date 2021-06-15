@@ -82,11 +82,6 @@
       showApplyForAPensionModal
     </base-btn>
     <base-btn
-      @click="showPensionIsRegisteredModal()"
-    >
-      showPensionIsRegisteredModal
-    </base-btn>
-    <base-btn
       @click="showMakeDeposit()"
     >
       showMakeDeposit
@@ -189,11 +184,6 @@ export default {
     showApplyForAPensionModal() {
       this.ShowModal({
         key: modals.applyForAPension,
-      });
-    },
-    showPensionIsRegisteredModal() {
-      this.ShowModal({
-        key: modals.pensionIsRegistered,
       });
     },
     showMakeDeposit() {

@@ -69,7 +69,11 @@ export default {
     },
     showPensionIsRegisteredModal() {
       this.ShowModal({
-        key: modals.pensionIsRegistered,
+        key: modals.status,
+        img: require('~/assets/img/ui/document.svg'),
+        title: this.$t('modals.pensionIsRegistered'),
+        subTitle: '',
+        path: '/pension/1',
       });
     },
   },

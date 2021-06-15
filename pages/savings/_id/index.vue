@@ -6,7 +6,7 @@
           {{ $t('saving.workQuestSavings') }}<br>{{ $t('saving.lendAndEarn') }}
         </div>
         <div class="title_sub">
-          {{ $t('general.midPlug') }}
+          {{ $t('saving.templateText') }}
         </div>
       </div>
       <div class="saving-page__content">
@@ -16,12 +16,12 @@
               {{ $t('saving.depositAmount') }}
             </div>
             <div class="info-block__tokens">
-              {{ $tc('general.wusdCount', "4 562") }}
+              {{ $tc('saving.wusdCount', "4 562") }}
             </div>
           </div>
           <div class="info-block__small_right">
             <div class="info-block__perc">
-              {{ $tc('general.plusPercents', "6.5") }}
+              {{ $tc('saving.plusPercents', "6.5") }}
             </div>
             <div class="info-block__period">
               {{ $t('pension.everyYear') }}
@@ -32,7 +32,7 @@
               {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
             </div>
             <div class="info-block__subtitle_black">
-              {{ $t('saving.date') }}
+              {{ $tc('saving.days', 152) }}
             </div>
           </div>
           <div class="btn-group_exp">
@@ -99,7 +99,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '../../../../../Documents/Front-end-web-development/store/modals/modals';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'SavingProduct',
@@ -107,58 +107,58 @@ export default {
     return {
       items: [
         {
-          userName: this.$t('general.table.userName'),
+          userName: this.$t('saving.table.userName'),
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('general.table.userId'),
-          txHash: this.$t('general.table.txHash'),
-          time: this.$t('general.table.time'),
+          userID: this.$t('saving.table.userId'),
+          txHash: this.$t('saving.table.txHash'),
+          time: this.$t('saving.table.time'),
           amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('general.table.status'),
+          status: this.$t('saving.table.status'),
         },
         {
-          userName: this.$t('general.table.userName'),
+          userName: this.$t('saving.table.userName'),
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('general.table.userId'),
-          txHash: this.$t('general.table.txHash'),
-          time: this.$t('general.table.time'),
+          userID: this.$t('saving.table.userId'),
+          txHash: this.$t('saving.table.txHash'),
+          time: this.$t('saving.table.time'),
           amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('general.table.status'),
+          status: this.$t('saving.table.status'),
         },
       ],
       testFields: [
         {
           key: 'userName',
-          label: this.$t('referral.table.name'),
+          label: this.$t('referral.tableHead.name'),
           sortable: false,
           thClass: 'cell_head',
         },
         {
           key: 'userID',
-          label: this.$t('referral.table.userID'),
+          label: this.$t('referral.tableHead.userID'),
           sortable: false,
           thClass: 'cell_head',
         },
         {
           key: 'txHash',
-          label: this.$t('referral.table.txHash'),
+          label: this.$t('referral.tableHead.txHash'),
           sortable: false,
           thClass: 'cell_head',
         },
         {
           key: 'time',
-          label: this.$t('referral.table.time'),
+          label: this.$t('referral.tableHead.time'),
           sortable: false,
           thClass: 'cell_head',
         },
         {
           key: 'amount',
-          label: this.$t('referral.table.amount'),
+          label: this.$t('referral.tableHead.amount'),
           sortable: false,
           thClass: 'cell_head',
         },
         {
           key: 'status',
-          label: this.$t('referral.table.status'),
+          label: this.$t('referral.tableHead.status'),
           sortable: false,
           thClass: 'cell_head',
         },

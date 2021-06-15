@@ -76,7 +76,7 @@
             </div>
             <div class="info-block__link">
               <div class="address">
-                {{ this.referLink }}
+                {{ referLink }}
               </div>
               <button
                 type="button"
@@ -178,42 +178,42 @@ export default {
       referLink: 'https://www.workquest.com/ref?v=44T7iUSo1vU',
       items: [
         {
-          userName: this.$t('general.table.userName'),
+          userName: this.$t('referral.table.userName'),
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('general.table.userId'),
-          txHash: this.$t('general.table.txHash'),
-          time: this.$t('general.table.time'),
+          userID: this.$t('referral.table.userId'),
+          txHash: this.$t('referral.table.txHash'),
+          time: this.$t('referral.table.time'),
           amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('general.table.status'),
+          status: this.$t('referral.table.status'),
         },
         {
-          userName: this.$t('general.table.userName'),
+          userName: this.$t('referral.table.userName'),
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('general.table.userId'),
-          txHash: this.$t('general.table.txHash'),
-          time: this.$t('general.table.time'),
+          userID: this.$t('referral.table.userId'),
+          txHash: this.$t('referral.table.txHash'),
+          time: this.$t('referral.table.time'),
           amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('general.table.status'),
+          status: this.$t('referral.table.status'),
         },
       ],
       testFields: [
         {
-          key: 'userName', label: this.$t('referral.table.name'), sortable: false, thClass: 'cell_head',
+          key: 'userName', label: this.$t('referral.tableHead.name'), sortable: false, thClass: 'cell_head',
         },
         {
-          key: 'userID', label: this.$t('referral.table.userID'), sortable: false, thClass: 'cell_head',
+          key: 'userID', label: this.$t('referral.tableHead.userID'), sortable: false, thClass: 'cell_head',
         },
         {
-          key: 'txHash', label: this.$t('referral.table.txHash'), sortable: false, thClass: 'cell_head',
+          key: 'txHash', label: this.$t('referral.tableHead.txHash'), sortable: false, thClass: 'cell_head',
         },
         {
-          key: 'time', label: this.$t('referral.table.time'), sortable: false, thClass: 'cell_head',
+          key: 'time', label: this.$t('referral.tableHead.time'), sortable: false, thClass: 'cell_head',
         },
         {
-          key: 'amount', label: this.$t('referral.table.amount'), sortable: false, thClass: 'cell_head',
+          key: 'amount', label: this.$t('referral.tableHead.amount'), sortable: false, thClass: 'cell_head',
         },
         {
-          key: 'status', label: this.$t('referral.table.status'), sortable: false, thClass: 'cell_head',
+          key: 'status', label: this.$t('referral.tableHead.status'), sortable: false, thClass: 'cell_head',
         },
       ],
     };
