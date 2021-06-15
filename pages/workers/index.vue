@@ -940,4 +940,72 @@ export default {
     width: 220px;
   }
 }
+
+@include _1199 {
+  .map__container, .main {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .menu {
+    grid-template-columns: auto auto;
+  }
+  .card {
+    padding: 10px;
+  }
+}
+@include _991 {
+  .main-white {
+    display: block;
+  }
+  .img {
+    &__container {
+      grid-template-columns: repeat(2, auto);
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+  }
+}
+@include _767 {
+  .main {
+    display: block;
+    .block {
+      grid-template-columns: auto;
+      &__img {
+        height: 200px;
+        max-width: 100%;
+        .image {
+          width: 100%;
+          border-radius: 6px;
+          object-fit: cover;
+          max-height: 500px;
+          height: 100%;
+        }
+      }
+    }
+  }
+  .price {
+    &__container {
+      flex-direction: column;
+    }
+    &__value {
+      font-size: 19px;
+    }
+  }
+}
+@include _575 {
+  .block {
+    &__head {
+      display: flex !important;
+    }
+    &__actions{
+      display: grid;
+      grid-template-columns: 1fr;
+      .block__btn {
+        display: flex !important;
+      }
+    }
+  }
+}
 </style>
