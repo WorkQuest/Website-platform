@@ -203,7 +203,7 @@ export default {
           name: this.$t('mining.addLiquidity'),
           clickFunc: () => {
             this.ShowModal({
-              key: modals.applyForAPension,
+              key: modals.addLiquidity,
             });
           },
         },
@@ -211,7 +211,7 @@ export default {
           name: this.$t('mining.removeLiquidity'),
           clickFunc: () => {
             this.ShowModal({
-              key: modals.applyForAPension,
+              key: modals.removeLiquidity,
             });
           },
         },

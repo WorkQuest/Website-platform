@@ -91,6 +91,16 @@
     >
       showChangePercent
     </base-btn>
+    <base-btn
+      @click="showAddLiquidity()"
+    >
+      showAddLiquidity
+    </base-btn>
+    <base-btn
+      @click="showRemoveLiquidity()"
+    >
+      showRemoveLiquidity
+    </base-btn>
   </div>
 </template>
 
@@ -194,6 +204,16 @@ export default {
     showChangePercent() {
       this.ShowModal({
         key: modals.changePercent,
+      });
+    },
+    showAddLiquidity() {
+      this.ShowModal({
+        key: modals.addLiquidity,
+      });
+    },
+    showRemoveLiquidity() {
+      this.ShowModal({
+        key: modals.removeLiquidity,
       });
     },
   },
