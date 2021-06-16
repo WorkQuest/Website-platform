@@ -881,24 +881,6 @@ export default {
     grid-template-columns: 8fr 4fr;
   }
 }
-.icon {
-  color:$black500;
-  font-size: 20px;
-  &-chat::before {
-    @extend .icon;
-    color:$green;
-  }
-  &-location::before {
-    @extend .icon;
-  }
-  &-clock::before {
-    @extend .icon;
-  }
-  &-share_outline {
-    @extend .icon;
-    margin-left: 5px;
-  }
-}
 .divider{
   margin: 20px 0 20px 0;
   background-color: $black0;
@@ -1439,24 +1421,40 @@ export default {
   }
 }
 .icon {
+  color:$black500;
+  font-size: 20px;
+  &-chat::before {
+    @extend .icon;
+    color:$green;
+  }
+  &-location::before {
+    @extend .icon;
+  }
+  &-clock::before {
+    @extend .icon;
+  }
+  &-share_outline {
+    @extend .icon;
+    margin-left: 5px;
+  }
   &-chat_green:before {
+    @extend .icon;
     content: "\e9ba";
     color: #00AA5B;
-    font-size: 20px;
   }
   &-caret_down_blue:before {
+    @extend .icon;
     content: "\ea48";
     color: #0083C7;
   }
   &-chevron_big_left:before {
-    font-size: 20px;
+    @extend .icon;
     content: "\ea4d";
     color: #0083C7;
   }
   &-location:before {
-    font-size: 20px;
+    @extend .icon;
     content: "\ea23";
-    color: $black500;
   }
 }
 

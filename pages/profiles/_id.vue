@@ -411,9 +411,7 @@ export default {
   }
 
   &__actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @extend .styles__between;
   }
 
   &__right {
@@ -424,9 +422,7 @@ export default {
   }
 
   &__head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @extend .styles__between;
   }
 
   &__icon {
@@ -436,9 +432,7 @@ export default {
   }
 
   &__btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @extend .styles__between;
     padding: 0 10px;
     min-width: 146px;
     height: 34px;
@@ -564,48 +558,45 @@ export default {
 }
 
 .icon {
+  font-size: 20px;
+  cursor: pointer;
+  &-LinkedIn::before {
+    @extend .icon;
+    color: #57A6EF;
+  }
   &-facebook::before {
+    @extend .icon;
     color: #0A7EEA;
-    font-size: 20px;
-    cursor: pointer;
   }
   &-twitter::before {
+    @extend .icon;
     color: #24CAFF;
-    font-size: 20px;
-    cursor: pointer;
   }
   &-instagram::before {
+    @extend .icon;
     color: #C540F3;
-    font-size: 20px;
-    cursor: pointer;
-  }
-  &-LinkedIn::before {
-    color: #57A6EF;
-    font-size: 20px;
-    cursor: pointer;
   }
   &-Earth::before {
+    @extend .icon;
     color: #7C838D;
     font-size: 16px;
-    cursor: pointer;
-    padding-right: 5px;
   }
   &-location::before {
+    @extend .icon;
     color: #7C838D;
     font-size: 16px;
-    cursor: pointer;
     padding-right: 5px;
   }
   &-phone::before {
+    @extend .icon;
     color: #7C838D;
     font-size: 16px;
-    cursor: pointer;
     padding-right: 5px;
   }
   &-mail::before {
+    @extend .icon;
     color: #7C838D;
     font-size: 16px;
-    cursor: pointer;
     padding-right: 5px;
   }
 }
@@ -640,19 +631,12 @@ export default {
 
 .col {
   &__header {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;}
+    @extend .styles__flex;
+    @extend .styles__center;
+}
   &__main-header {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
+    @extend .styles__flex;
+    @extend .styles__center;
   }
 }
 
@@ -709,23 +693,15 @@ table {
 }
 
 .main-header {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-  }
+  @extend .styles__flex;
+  @extend .styles__center;
+}
 
 .header {
   @extend .main-header;
   .col {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
+    @extend .header;
+    @extend .styles__center;
   }
   .logo {
     @extend .main-header;
@@ -737,12 +713,8 @@ table {
     margin-right: 35px;
   }
   .navigation {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
+    @extend .header;
+    @extend .styles__center;
   }
   a {
     font-style: normal;
@@ -776,6 +748,30 @@ table {
     background-position: 100% 7px;
     padding-right: 24px;
     margin-right: 40px;
+  }
+  .styles {
+    &__between {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    &__flex {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+    }
+    &__center {
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+    }
+  }
+  .background {
+    &__common {
+      background-repeat: no-repeat;
+      background-position: 0 -1px;
+      padding-left: 25px;
+    }
   }
   .communication {
     height: 24px;
@@ -811,11 +807,9 @@ table {
 }
 
 .information-grid {
+  @extend .styles__flex;
   padding: 25px 0;
   position: relative;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
   .share-btn {
     height: 24px;
     width: 24px;
@@ -830,9 +824,7 @@ table {
     }
   }
   .col {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    @extend .styles__flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
@@ -885,22 +877,17 @@ table {
     margin-right: 30px;
   }
   .col .contacts .location {
+    @extend .background__common;
     background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M9.99999 17.5C8.94744 16.6022 7.97181 15.6179 7.08332 14.5575C5.74999 12.965 4.16666 10.5933 4.16666 8.33334C4.16548 5.97297 5.58686 3.8445 7.76755 2.94118C9.94823 2.03785 12.4584 2.53771 14.1267 4.20751C15.2237 5.29968 15.8383 6.78534 15.8334 8.33334C15.8334 10.5933 14.25 12.965 12.9167 14.5575C12.0282 15.6179 11.0525 16.6022 9.99999 17.5ZM9.99999 5.83334C9.10683 5.83334 8.28151 6.30984 7.83493 7.08334C7.38835 7.85685 7.38835 8.80984 7.83493 9.58335C8.28151 10.3568 9.10683 10.8333 9.99999 10.8333C11.3807 10.8333 12.5 9.71406 12.5 8.33334C12.5 6.95263 11.3807 5.83334 9.99999 5.83334Z' fill='%237C838D'/%3E\a           %3C/svg%3E                                                                       \a           ");
-    background-repeat: no-repeat;
     background-position: 0 -2px;
-    padding-left: 25px;
   }
   .col .contacts .phone {
+    @extend .background__common;
     background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M15.8312 16.6667C8.72155 16.6767 3.32573 11.2163 3.33334 4.16877C3.33334 3.70853 3.70643 3.33334 4.16667 3.33334H6.36613C6.77911 3.33334 7.12994 3.63678 7.19058 4.04528C7.33592 5.02434 7.62097 5.97748 8.03707 6.8756L8.1227 7.06043C8.24177 7.31743 8.16106 7.62279 7.93056 7.7874C7.24941 8.27384 6.9891 9.25297 7.51974 10.017C8.18564 10.9757 9.02504 11.8149 9.98355 12.4805C10.7475 13.011 11.7265 12.7507 12.2129 12.0697C12.3776 11.8391 12.6832 11.7583 12.9403 11.8775L13.1243 11.9627C14.0225 12.3788 14.9757 12.6638 15.9549 12.8091C16.3634 12.8698 16.6667 13.2206 16.6667 13.6336V15.8333C16.6667 16.2936 16.2927 16.6667 15.8324 16.6667L15.8312 16.6667Z' fill='%237C838D'/%3E\a           %3C/svg%3E                                                                                \a           ");
-    background-repeat: no-repeat;
-    background-position: 0 -1px;
-    padding-left: 25px;
   }
   .col .contacts .email {
+    @extend .background__common;
     background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M16.6667 16.6667H3.33333C2.41286 16.6667 1.66667 15.9205 1.66667 15V4.92751C1.70551 4.03547 2.44044 3.3325 3.33333 3.33334H16.6667C17.5871 3.33334 18.3333 4.07954 18.3333 5.00001V15C18.3333 15.9205 17.5871 16.6667 16.6667 16.6667ZM3.33333 6.55668V15H16.6667V6.55668L10 11L3.33333 6.55668ZM4 5.00001L10 9.00001L16 5.00001H4Z' fill='%237C838D'/%3E\a           %3C/svg%3E                                                                                \a           ");
-    background-repeat: no-repeat;
-    background-position: 0 -1px;
-    padding-left: 25px;
   }
 }
 .data-grid {
@@ -944,23 +931,17 @@ table {
     position: relative;
   }
   .reviews-item .header {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    @extend .styles__flex;
   }
   .reviews-item .header .avatar {
     margin-right: 15px;
   }
   .reviews-item .subheader {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    @extend .styles__flex;
     margin: 15px 0;
   }
   .reviews-item .subheader {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    @extend .styles__flex;
     margin: 15px 0;
   }
   .reviews-item .subheader .-name {
@@ -1017,12 +998,8 @@ table {
     padding: 22px 20px 23px 30px;
   }
   .active-quests-item .inner .header {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
+    @extend .header;
+    @extend .styles__center;
   }
   .active-quests-item .inner .header .name {
     font-weight: 500;
@@ -1055,9 +1032,7 @@ table {
     margin: 10px 0 19px;
   }
   .active-quests-item .inner .footer {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    @extend .header;
   }
   .active-quests-item .inner .footer .priority {
     background-color: rgba(34, 204, 20, 0.1);
@@ -1090,9 +1065,7 @@ table {
     cursor: pointer;
   }
   .button {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    @extend .header;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
