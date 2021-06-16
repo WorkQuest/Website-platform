@@ -829,12 +829,6 @@ export default {
 
 <style lang="scss" scoped>
 
-.icon-chat:before {
-  content: "\e9ba";
-  color: $green;
-  font-size: 25px;
-}
-
 .contacts {
   &__grid {
     height: 100%;
@@ -846,8 +840,7 @@ export default {
 
 .message {
   &__container-btn {
-    width: 100%;
-    height: 100%;
+    @extend .styles__full;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -872,8 +865,7 @@ export default {
 }
 
 .avatar {
-  width: 100%;
-  height: 100%;
+  @extend .styles__full;
   max-height: 30px;
   max-width: 30px;
   border-radius: 50%;
@@ -939,9 +931,8 @@ export default {
   }
 
   &__body {
+    @extend .styles__full;
     max-width: 1180px;
-    width: 100%;
-    height: 100%;
   }
 
   &__content {
@@ -1282,9 +1273,7 @@ export default {
 }
 
 .button {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  @extend .styles__flex;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
@@ -1523,6 +1512,12 @@ export default {
 .icon {
   font-size: 20px;
   cursor: pointer;
+  &-chat:before {
+    @extend .icon;
+    content: "\e9ba";
+    color: $green;
+    font-size: 25px;
+  }
   &-facebook::before {
     @extend .icon;
     color: #0A7EEA;
@@ -1601,6 +1596,10 @@ export default {
 }
 
 .styles {
+  &__full {
+    width: 100%;
+    height: 100%;
+  }
   &__between {
     display: flex;
     align-items: center;

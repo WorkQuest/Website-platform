@@ -481,15 +481,20 @@ export default {
   grid-template-columns: 2fr 1.5fr 1fr;
 }
 
-.avatar {
+.styles {
+  &__full {
     width: 100%;
     height: 100%;
+  }
+}
+
+.avatar {
+  @extend .styles__full;
     max-height: 30px;
     max-width: 30px;
   border-radius: 50%;
   &__container {
-    width: 100%;
-    height: 100%;
+    @extend .styles__full;
     display: grid;
     grid-template-columns: 0.2fr 0.6fr 1fr;
     margin: 10px 0 4px 0;
@@ -547,9 +552,8 @@ export default {
     }
 
     &__body {
+      @extend .styles__full;
       max-width: 1180px;
-      width: 100%;
-      height: 100%;
     }
 
     &__content {
@@ -798,8 +802,7 @@ export default {
       }
 
       &__img {
-        height: 100%;
-        max-height: 100%;
+        @extend .styles__full;
       }
 
       &__title {

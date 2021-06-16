@@ -303,6 +303,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.icon {
+  &-map::before {
+    content: "\ea28";
+    color: $blue;
+    font-size: 20px;
+  }
+}
 .selector {
   @include box;
   width: 100%;
@@ -343,12 +351,6 @@ export default {
     font-size: 18px;
     padding: 0 0 20px 0;
   }
-}
-
-.icon-map::before {
-  content: "\ea28";
-  color: $blue;
-  font-size: 20px;
 }
 
 .payment {
