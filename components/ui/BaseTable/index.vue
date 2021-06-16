@@ -4,8 +4,9 @@
       :items="items"
       :fields="fields"
       borderless
-      caption-top
       thead-class="table__header"
+      caption-top
+      :responsive="true"
       tbody-tr-class="table__row"
     >
       <template
@@ -24,19 +25,13 @@
         >{{ el.item.status }}</span>
       </template>
       <template #cell(block)="el">
-        <div class="row__container">
-          <span class="table__grey">{{ el.item.block }}</span>
-        </div>
+        <span class="table__grey">{{ el.item.block }}</span>
       </template>
       <template #cell(timestamp)="el">
-        <div class="row__container">
-          <span class="table__grey">{{ el.item.timestamp }}</span>
-        </div>
+        <span class="table__grey">{{ el.item.timestamp }}</span>
       </template>
       <template #cell(transaction_fee)="el">
-        <div class="row__container">
-          <span class="table__grey">{{ el.item.transaction_fee }}</span>
-        </div>
+        <span class="table__grey">{{ el.item.transaction_fee }}</span>
       </template>
     </b-table>
   </div>
@@ -62,16 +57,8 @@ export default {
 </script>
 
 <style lang="scss">
-.row {
-  &__container {
-    overflow-x: auto;
-    max-width: 150px;
-    max-height: 150px;
-    display: flex;
-    word-break: break-word;
-  }
-}
 .table {
+  overflow-x: hidden;
   font-size: 16px;
   line-height: 130%;
   background: #FFFFFF;
@@ -111,6 +98,28 @@ export default {
         font-size: 10px;
       }
     }
+    //thead, tbody tr {
+    //  display:table;
+    //  width: 920px;
+    //  min-width: 710px;
+    //  table-layout:fixed;
+    //}
+    //thead {
+    //  width: calc( 940px - 1em );
+    //  min-width: calc( 710px - 1em );
+    //}
+  }
+  @include _767 {
+    //thead, tbody tr {
+    //  display:table;
+    //  width: 700px;
+    //  min-width: 540px;
+    //  table-layout:fixed;
+    //}
+    //thead {
+    //  width: calc( 700px - 1em );
+    //  min-width: calc( 540px - 1em );
+    //}
   }
 }
 </style>
