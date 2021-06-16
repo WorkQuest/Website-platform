@@ -1324,7 +1324,7 @@ export default {
   }
   &__content {
     display: flex;
-    justify-content: center;
+    justify-content: unset;
   }
   &__body {
     padding-top: 30px;
