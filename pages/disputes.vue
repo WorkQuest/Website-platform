@@ -173,8 +173,8 @@ export default {
     max-height: 185px;
   }
   &__text {
-    font-size: 16px;
     @include text-simple;
+    font-size: 16px;
     &_blue {
       color: $blue;
     }

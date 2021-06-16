@@ -1078,10 +1078,6 @@ table {
     @extend .styles__flex;
     margin: 15px 0;
   }
-  .reviews-item .subheader {
-    @extend .styles__flex;
-    margin: 15px 0;
-  }
   .reviews-item .subheader .-name {
     font-weight: normal;
     color: #7C838D;
