@@ -627,7 +627,7 @@ export default {
     }
   }
   &__text {
-    font-family: 'Inter', sans-serif;
+    @include text-simple;
     font-style: normal;
     &_title  {
       font-weight: 500;
@@ -709,7 +709,7 @@ export default {
 }
 .menu {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 20px;
   justify-content: space-between;
   max-width: 1180px;
@@ -992,7 +992,7 @@ export default {
       flex-direction: column;
     }
     .content {
-      grid-template-columns: repeat(1, 1fr);
+      grid-template-columns: 1fr;
     }
     .menu__right {
       grid-template-columns: repeat(2, 1fr);

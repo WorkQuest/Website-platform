@@ -496,6 +496,12 @@ export default {
   }
 }
   .card {
+    &__levels {
+      padding: 2px 8px;
+      align-items: center;
+      border-radius: 3px;
+      color: $white;
+    }
     &__level {
       display: grid;
       grid-template-columns: 20px auto;
@@ -505,25 +511,16 @@ export default {
       align-items: center;
       height: 20px;
       &_higher {
-        padding: 2px 8px;
-        align-items: center;
+        @extend .card__levels;
         background-color: #F6CF00;
-        border-radius: 3px;
-        color: $white;
       }
       &_reliable {
-        padding: 2px 8px;
-        align-items: center;
+        @extend .card__levels;
         background-color: #BBC0C7;
-        border-radius: 3px;
-        color: $white;
       }
       &_checked {
-        padding: 2px 8px;
-        align-items: center;
+        @extend .card__levels;
         background-color: #B79768;
-        border-radius: 3px;
-        color: $white;
       }
       &_disabled {
         display: none;
@@ -654,32 +651,25 @@ export default {
       }
 
       &__amount {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 130%;
+        text-transform: uppercase;
 
         &_green {
-          font-style: normal;
-          font-weight: bold;
-          font-size: 18px;
-          line-height: 130%;
-          text-transform: uppercase;
+          @extend .block__amount;
           color: #00AA5B;
         }
 
         &_gray {
-          font-style: normal;
-          font-weight: bold;
-          font-size: 18px;
-          line-height: 130%;
-          text-transform: uppercase;
+          @extend .block__amount;
           color: #B0B3B9;
         }
 
         &__performed {
+          @extend .block__amount;
           color: #B0B3B9;
-          font-style: normal;
-          font-weight: bold;
-          font-size: 18px;
-          line-height: 130%;
-          text-transform: uppercase;
         }
       }
 
@@ -737,14 +727,12 @@ export default {
 
         &_perf {
           display: grid;
-          grid-template-columns: 25px 25px 25px 25px 25px;
+          grid-template-columns: repeat(5, 25px);
         }
       }
 
       &__btn {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        @extend .block__head;
         padding: 0 10px;
         min-width: 146px;
         height: 34px;

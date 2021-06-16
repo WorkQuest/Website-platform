@@ -937,9 +937,7 @@ table {
 }
 
 .main-header {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  @extend .header;
   -webkit-box-align: center;
   -ms-flex-align: center;
 }
@@ -964,9 +962,7 @@ table {
     margin-right: 35px;
   }
   .navigation {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    @extend .header;
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
@@ -1180,15 +1176,11 @@ table {
     margin-right: 15px;
   }
   .reviews-item .subheader {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    @extend .header;
     margin: 15px 0;
   }
   .reviews-item .subheader {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    @extend .header;
     margin: 15px 0;
   }
   .reviews-item .subheader .-name {
@@ -1283,9 +1275,7 @@ table {
     margin: 10px 0 19px;
   }
   .active-quests-item .inner .footer {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    @extend .header;
   }
   .active-quests-item .inner .footer .priority {
     background-color: rgba(34, 204, 20, 0.1);
@@ -1318,9 +1308,7 @@ table {
     cursor: pointer;
   }
   .button {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    @extend .header;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
@@ -1371,6 +1359,7 @@ table {
   font-size: 12px;
   line-height: 130%;
   color: #4C5767;
+  padding: 5px 0 0 0;
   &_blue {
     padding-top: 5px;
     color: $blue;
