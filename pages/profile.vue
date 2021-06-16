@@ -329,36 +329,34 @@
                           <div class="container__title">
                             In progress by:
                           </div>
-<!--                          <div class="limit__container">-->
-                            <div class="avatar__container">
-                              <div class="avatar">
-                                <img
-                                  src="~/assets/img/temp/avatar.jpg"
-                                  alt=""
-                                >
-                              </div>
-                              <div>
-                                {{ item.inProgress.name }}
-                              </div>
-                              <div class="">
-                                <span
-                                  v-if="item.level.code !== 0"
-                                  class="card__level_higher"
-                                  :class="cardsLevels(i)"
-                                >
-                                  <span v-if="item.level.code === 1">
-                                    {{ $t('levels.higher') }}
-                                  </span>
-                                  <span v-if="item.level.code === 2">
-                                    {{ $t('levels.reliableEmp') }}
-                                  </span>
-                                  <span v-if="item.level.code === 3">
-                                    {{ $t('levels.checkedByTime') }}
-                                  </span>
-                                </span>
-                              </div>
+                          <div class="avatar__container">
+                            <div class="avatar">
+                              <img
+                                src="~/assets/img/temp/avatar.jpg"
+                                alt=""
+                              >
                             </div>
-<!--                          </div>-->
+                            <div>
+                              {{ item.inProgress.name }}
+                            </div>
+                            <div class="">
+                              <span
+                                v-if="item.level.code !== 0"
+                                class="card__level_higher"
+                                :class="cardsLevels(i)"
+                              >
+                                <span v-if="item.level.code === 1">
+                                  {{ $t('levels.higher') }}
+                                </span>
+                                <span v-if="item.level.code === 2">
+                                  {{ $t('levels.reliableEmp') }}
+                                </span>
+                                <span v-if="item.level.code === 3">
+                                  {{ $t('levels.checkedByTime') }}
+                                </span>
+                              </span>
+                            </div>
+                          </div>
                         </div>
                         <div class="block__locate">
                           <span class="icon-location" />
