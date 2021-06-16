@@ -561,6 +561,16 @@
     },
     "mb": "{count} MB",
     "back": "Back",
+    "wusdEthPool": "WUSD/ETH pool",
+    "dollarsCount": "$ {count}",
+    "addLiquidity": "Add liquidity",
+    "removeLiquidity": "Remove liquidity",
+    "liquidity": "Liquidity",
+    "volume24h": "Volume (24h)",
+    "myPoolShare": "My pool share",
+    "liquidityPoolProviders": "Liquidity pool providers",
+    "liquidityProvidersEarn": "Liquidity providers earn a 0.3% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
+    "transactions": "Transactions",
     "": ""
   }
  }

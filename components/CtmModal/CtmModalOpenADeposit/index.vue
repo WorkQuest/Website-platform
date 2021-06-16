@@ -67,7 +67,7 @@ export default {
     showDepositIsOpenedModal() {
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/dollar.svg'),
+        img: require('~/assets/img/ui/transactionSend.svg'),
         title: this.$t('saving.depositIsOpened'),
         subTitle: '',
         path: '/savings/1',

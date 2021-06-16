@@ -1,0 +1,13 @@
+<svg width="67" height="68" viewBox="0 0 67 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d)">
+<circle cx="33.5" cy="34" r="33.5" fill="#FAFAFA"/>
+  <svg width="67" height="68" viewBox="-22 -15 67 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M11.9181 27.4539L0.867188 20.9323L11.9113 36.5011L22.9678 20.9323L11.9113 27.4539H11.9181ZM12.0823 0.5L1.03594 18.8341L12.0823 25.367L23.1332 18.8409L12.0823 0.5Z" fill="#3D3C3C"/>
+  </svg>
+</g>
+<defs>
+<filter id="filter0_d" x="0" y="0.5" width="85" height="85" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+</defs>
+</svg>

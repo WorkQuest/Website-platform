@@ -11,191 +11,119 @@
         </base-btn>
       </div>
       <div class="mining-page__content">
-        <template v-if="!isDeadline">
-          <div class="info-block__triple">
-            <div class="info-block__third">
-              <div class="info-block__name">
-                {{ $t('pension.pensionBalance') }}
-              </div>
-              <div class="info-block__tokens">
-                {{ $tc("pension.wusdCount", "4 562") }}
-              </div>
-              <base-btn
-                class="btn_bl"
-                @click="openMakeDepositModal()"
+        <div class="info-block__grid">
+          <div class="info-block__icons">
+            <div
+              v-for="(item, i) in iconUrls"
+              :key="i"
+              class="icon-cont"
+            >
+              <img
+                class="icon-cont__img"
+                :src="item"
+                alt=""
               >
-                {{ $t('pension.makeADeposit') }}
-              </base-btn>
-            </div>
-            <div class="info-block__third">
-              <div class="info-block__name">
-                {{ $t('pension.currentPercentFromAQuest') }}
-              </div>
-              <div class="info-block__tokens">
-                {{ $tc('pension.percents', 15) }}
-              </div>
-              <base-btn
-                class="btn_bl"
-                @click="openChangePercentModal()"
-              >
-                {{ $t('pension.changePercent') }}
-              </base-btn>
-            </div>
-            <div class="info-block__third_rate">
-              <div class="info-block__small">
-                <div class="info-block__perc">
-                  {{ $tc('pension.plusPercents', '6.5') }}
-                </div>
-                <div class="info-block__period">
-                  {{ $t('pension.everyYear') }}
-                </div>
-              </div>
-              <div>
-                <div class="info-block__title_gray">
-                  {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
-                </div>
-                <div class="info-block__subtitle_black">
-                  2 years 52 days
-                </div>
-              </div>
             </div>
           </div>
-          <div class="info-block">
-            <div class="info-block__name">
-              {{ $t('pension.transactionHistory') }}
+          <div class="info-block__about">
+            <div class="info-block__title_black info-block__title_big">
+              {{ $t('mining.wusdEthPool') }}
             </div>
-            <div class="mining-page__table">
-              <b-table
-                :items="items"
-                :fields="testFields"
-                borderless
-                caption-top
-                thead-class="table__header"
-                tbody-tr-class="table__row"
-              >
-                <template #cell(userName)="el">
-                  <div class="user__info">
-                    <img
-                      class="ava"
-                      src="~/assets/img/temp/avatar-small.jpg"
-                      alt=""
-                    >
-                    <div class="user__name">
-                      {{ el.item.userName }}
-                    </div>
-                  </div>
-                </template>
-                <template #cell(userID)="el">
-                  <div class="user__value_gray">
-                    {{ el.item.userID }}
-                  </div>
-                </template>
-                <template #cell(txHash)="el">
-                  <div class="user__value_gray">
-                    {{ el.item.txHash }}
-                  </div>
-                </template>
-                <template #cell(time)="el">
-                  <div class="user__value_gray">
-                    {{ el.item.time }}
-                  </div>
-                </template>
-                <template #cell(status)="el">
-                  <div class="user__value_green">
-                    {{ el.item.status }}
-                  </div>
-                </template>
-              </b-table>
+            <div class="info-block__title">
+              {{ $tc('mining.dollarsCount', "176 904.49") }}
             </div>
           </div>
-        </template>
-        <template v-if="isDeadline">
-          <div class="info-block__grid">
-            <div>
-              <div class="info-block__name">
-                {{ $t('pension.currentPensionBalance') }}
-              </div>
-              <div class="info-block__tokens">
-                {{ $tc("pension.wusdCount", "4 562") }}
-              </div>
+          <div class="info-block__btns">
+            <base-btn
+              v-for="(item, i) in btns"
+              :key="i"
+              class="btn_bl"
+              @click="item.clickFunc()"
+            >
+              {{ item.name }}
+            </base-btn>
+          </div>
+        </div>
+        <div class="info-block__triple">
+          <div
+            v-for="(item, i) in cards"
+            :key="i"
+            class="info-block__third"
+          >
+            <div class="info-block__title_big info-block__title_blue">
+              {{ item.title }}
             </div>
-            <div class="info-block__small_right">
-              <div class="info-block__perc">
-                {{ $tc("pension.plusPercents", "6.5") }}
-              </div>
-              <div class="info-block__period">
-                {{ $t('pension.everyYear') }}
-              </div>
-            </div>
-            <div>
-              <div class="info-block__title_gray">
-                {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
-              </div>
-              <div class="info-block__subtitle_black">
-                2 years 52 days
-              </div>
-            </div>
-            <div class="btn-group_exp">
-              <base-btn class="btn_bl">
-                {{ $t('pension.withdraw') }}
-              </base-btn>
-              <base-btn
-                class="btn_bl"
-                @click="openApplyForAPensionModal()"
-              >
-                {{ $t('pension.prolong') }}
-              </base-btn>
+            <div class="info-block__title_small">
+              {{ item.subtitle }}
             </div>
           </div>
-          <div class="info-block">
-            <div class="info-block__name">
-              {{ $t('pension.transactionHistory') }}
-            </div>
-            <div class="mining-page__table">
-              <b-table
-                :items="items"
-                :fields="testFields"
-                borderless
-                caption-top
-                thead-class="table__header"
-                tbody-tr-class="table__row"
-              >
-                <template #cell(userName)="el">
-                  <div class="user__info">
-                    <img
-                      class="ava"
-                      src="~/assets/img/temp/avatar-small.jpg"
-                      alt=""
-                    >
-                    <div class="user__name">
-                      {{ el.item.userName }}
-                    </div>
-                  </div>
-                </template>
-                <template #cell(userID)="el">
-                  <div class="user__value_gray">
-                    {{ el.item.userID }}
-                  </div>
-                </template>
-                <template #cell(txHash)="el">
-                  <div class="user__value_gray">
-                    {{ el.item.txHash }}
-                  </div>
-                </template>
-                <template #cell(time)="el">
-                  <div class="user__value_gray">
-                    {{ el.item.time }}
-                  </div>
-                </template>
-                <template #cell(status)="el">
-                  <div class="user__value_green">
-                    {{ el.item.status }}
-                  </div>
-                </template>
-              </b-table>
-            </div>
+        </div>
+        <div class="info-block">
+          <div class="info-block__name_bold">
+            {{ $t('mining.liquidityPoolProviders') }}
           </div>
-        </template>
+          <div class="info-block__title_small info-block__title_pad">
+            {{ $t('mining.liquidityProvidersEarn') }}
+          </div>
+        </div>
+        <div class="info-block">
+          <div class="info-block__name">
+            {{ $t('mining.liquidity') }}
+          </div>
+          <img
+            class="info-block__chart"
+            src="~assets/img/ui/chart.svg"
+            alt=""
+          >
+        </div>
+        <div class="info-block">
+          <div class="info-block__name">
+            {{ $t('mining.transactions') }}
+          </div>
+          <div class="mining-page__table">
+            <b-table
+              :items="items"
+              :fields="testFields"
+              borderless
+              caption-top
+              thead-class="table__header"
+              tbody-tr-class="table__row"
+            >
+              <template #cell(userName)="el">
+                <div class="user__info">
+                  <img
+                    class="ava"
+                    src="~/assets/img/temp/avatar-small.jpg"
+                    alt=""
+                  >
+                  <div class="user__name">
+                    {{ el.item.userName }}
+                  </div>
+                </div>
+              </template>
+              <template #cell(userID)="el">
+                <div class="user__value_gray">
+                  {{ el.item.userID }}
+                </div>
+              </template>
+              <template #cell(txHash)="el">
+                <div class="user__value_gray">
+                  {{ el.item.txHash }}
+                </div>
+              </template>
+              <template #cell(time)="el">
+                <div class="user__value_gray">
+                  {{ el.item.time }}
+                </div>
+              </template>
+              <template #cell(status)="el">
+                <div class="user__value_green">
+                  {{ el.item.status }}
+                </div>
+              </template>
+            </b-table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -266,6 +194,42 @@ export default {
           thClass: 'cell_head',
         },
       ],
+      iconUrls: [
+        require('~/assets/img/ui/w-logo.svg'),
+        require('~/assets/img/ui/hromb-logo.svg'),
+      ],
+      btns: [
+        {
+          name: this.$t('mining.addLiquidity'),
+          clickFunc: () => {
+            this.ShowModal({
+              key: modals.applyForAPension,
+            });
+          },
+        },
+        {
+          name: this.$t('mining.removeLiquidity'),
+          clickFunc: () => {
+            this.ShowModal({
+              key: modals.applyForAPension,
+            });
+          },
+        },
+      ],
+      cards: [
+        {
+          title: this.$tc('mining.dollarsCount', '417.1M'),
+          subtitle: this.$t('mining.liquidity'),
+        },
+        {
+          title: this.$tc('mining.dollarsCount', '417.1M'),
+          subtitle: this.$t('mining.volume24h'),
+        },
+        {
+          title: '-',
+          subtitle: this.$t('mining.myPoolShare'),
+        },
+      ],
     };
   },
   computed: {
@@ -278,23 +242,8 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    openApplyForAPensionModal() {
-      this.ShowModal({
-        key: modals.applyForAPension,
-      });
-    },
-    openMakeDepositModal() {
-      this.ShowModal({
-        key: modals.makeDeposit,
-      });
-    },
-    openChangePercentModal() {
-      this.ShowModal({
-        key: modals.changePercent,
-      });
-    },
     handleBackToMainMining() {
-
+      this.$router.push('/mining');
     },
   },
 };
@@ -302,7 +251,7 @@ export default {
 
 <style lang="scss" scoped>
 .mining-page {
-  background: linear-gradient(to bottom, #103D7C 320px, #f6f8fa 320px);
+  background: linear-gradient(to bottom, #103D7C 325px, #f6f8fa 325px);
   display: flex;
   justify-content: center;
 
@@ -341,100 +290,83 @@ export default {
     display: grid;
     grid-row-gap: 30px;
     width: 100%;
-    grid-template-rows: 196px max-content;
-
-    .btn-group {
-      display: grid;
-      grid-template-columns: repeat(2, calc(50% - 10px));
-      gap: 20px;
-      padding-bottom: 20px;
-
-      &_exp {
-        @extend .btn-group;
-        width: calc(100% - 20px);
-      }
-    }
-
-    .btn {
-      box-sizing: border-box;
-      font-weight: 400;
-      font-size: 16px;
-      color: #0083C7;
-      border: 1px solid #0083C71A;
-      border-radius: 6px;
-      transition: .3s;
-
-      &__time-machine {
-        @extend .btn;
-        position: absolute;
-        top: 100px;
-        right: 100px;
-        width: 150px;
-        color: #fff;
-      }
-
-      &:hover {
-        background-color: #0083C71A;
-        border: 0px;
-      }
-
-      &_bl {
-        @extend .btn;
-        background-color: #0083C7;
-        border: unset;
-        color: #fff;
-
-        &:hover {
-          background-color: #103d7c;
-        }
-      }
-    }
 
     .info-block {
       background-color: #fff;
       border-radius: 6px;
 
-      &__grid {
-        @extend .info-block;
-        display: grid;
-        grid-template-columns: 5fr 4fr;
-        grid-template-rows: 3fr 1fr;
-        position: relative;
+      &__chart {
+        width: 100%;
       }
 
-      &__small {
-        background-color: #F7F8FA;
-        display: grid;
-        grid-template-rows: repeat(2, 1fr);
-        width: 115px;
-        height: 66px;
-        box-sizing: border-box;
-        border-radius: 6px;
-        margin: 20px 0 0 20px;
-        padding-left: 10px;
-        align-self: baseline;
+      &__title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #1D2127;
+        opacity: 0.5;
 
-        &_right {
-          @extend .info-block__small;
-          text-align: right;
-          padding: 0 10px 0;
-          justify-self: flex-end;
-          margin: 20px 20px 0;
+        &_black {
+          color: #1D2127;
+        }
+
+        &_big {
+          font-size: 25px;
+          font-weight: 500;
+        }
+
+        &_blue {
+          color: #0083C7;
+          font-weight: 700;
+        }
+
+        &_small {
+          font-size: 16px;
+          font-weight: 400;
+          color: #7C838D;
+        }
+
+        &_pad {
+          padding: 0 0 20px 20px;
+          width: 50%;
         }
       }
 
-      &__perc {
-        font-weight: 700;
-        font-size: 20px;
-        color: #0083C7;
-        align-self: flex-end;
+      &__btns {
+        display: grid;
+        gap: 10px;
       }
 
-      &__period {
-        font-weight: 400;
-        font-size: 16px;
-        color: #0083C7;
-        align-self: flex-start;
+      &__about {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+      }
+
+      &__icons {
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+        height: 67px;
+        align-self: center;
+      }
+
+      .icon-cont {
+        width: 41px;
+
+        &__img {
+          position: absolute;
+          height: 67px;
+          width: 67px;
+        }
+      }
+
+      &__grid {
+        @extend .info-block;
+        display: grid;
+        grid-template-columns: 1fr 5fr 2fr;
+        gap: 20px;
+        padding: 20px;
+        position: relative;
       }
 
       &__triple {
@@ -445,52 +377,11 @@ export default {
 
       &__third {
         @extend .info-block;
-        display: grid;
-        grid-template-rows: min-content min-content auto;
-
-        .btn {
-          align-self: flex-end;
-          margin: 0 0 20px 20px;
-          width: calc(100% - 40px);
-        }
-
-        &_rate {
-          @extend .info-block__third;
-          grid-template-rows: repeat(2, 1fr);
-          align-items: flex-end;
-        }
-      }
-
-      &__title {
-        color: #0083C7;
-        font-weight: 700;
-        font-size: 25px;
-
-        &_gray {
-          color: #7C838D;
-          font-weight: 400;
-          font-size: 16px;
-          margin-left: 20px;
-        }
-      }
-
-      &__subtitle {
-        font-weight: 400;
-        font-size: 16px;
-        color: #7C838D;
-
-        &_black {
-          @extend .info-block__title_gray;
-          margin-bottom: 20px;
-          color: #1D2127;
-        }
-      }
-
-      &__tokens {
-        font-weight: 700;
-        font-size: 25px;
-        color: #0083C7;
-        padding: 0 20px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
       }
 
       &__name {
@@ -498,6 +389,14 @@ export default {
         color: #1D2127;
         padding: 20px 20px 10px 20px;
         font-weight: 400;
+
+        &_bold {
+          font-weight: 700;
+          font-size: 20px;
+          color: #0083C7;
+          line-height: 1;
+          padding: 20px;
+        }
       }
 
       .ava {
