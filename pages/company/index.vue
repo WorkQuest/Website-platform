@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section
+    <div
       class="main-section main-section_white"
     >
       <div class="main-container">
@@ -68,10 +68,16 @@
               </nuxt-link>
             </div>
             <div class="contacts">
-              <span class="icon-location" /><span class="contact__link">{{ payload.user.location }}</span>
-              <span class="icon-phone" /><span class="contact__link">{{ payload.user.tel }}</span>
+              <div>
+                <span class="icon-location" /><span class="contact__link">{{ payload.user.location }}</span>
+              </div>
+              <div>
+                <span class="icon-phone" /><span class="contact__link">{{ payload.user.tel }}</span>
+              </div>
               <div>
                 <span class="icon-mail" /><span class="contact__link">{{ payload.user.email }}</span>
+              </div>
+              <div>
                 <span class="icon-Earth" /><span class="contact__link">amazon.com</span>
               </div>
             </div>
@@ -80,9 +86,9 @@
           <div class="share-btn" />
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="information-section">
+    <div class="information-section">
       <div class="main-container">
         <!-- DATA -->
 
@@ -294,6 +300,7 @@
 
           <div class="active-quests-item">
             <img
+              class="active-quests-img"
               src="~/assets/img/temp/fake-card.svg"
               alt=""
             >
@@ -327,14 +334,16 @@
                 <div class="cost -green">
                   1500 WUSD
                 </div>
+                <div class="details">
+                  <nuxt-link
+                    class="simple-button"
+                    to="/company"
+                  >
+                    {{ $t('profile.details') }}
+                  </nuxt-link>
+                </div>
               </div>
             </div>
-            <nuxt-link
-              class="simple-button"
-              to="/company"
-            >
-              {{ $t('profile.details') }}
-            </nuxt-link>
             <div class="favorite" />
           </div>
           <div class="button">
@@ -347,7 +356,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </div>
   </div>
 </template>
 
@@ -454,6 +463,10 @@ export default {
   padding-right: 37px;
   background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a     %3Cpath d='M16.17 13L12.59 16.59L14 18L20 12L14 6L12.59 7.41L16.17 11H4V13H16.17Z' fill='%230083C7'/%3E\a     %3C/svg%3E                                     \a     ");
   background-position: 100% -1px;
+}
+.button {
+  display: flex;
+  justify-content: center;
 }
 .button .more-button {
   @extend .btn__common;
@@ -1274,6 +1287,137 @@ a:hover {
     color: $white;
     background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a     %3Cpath d='M16.17 13L12.59 16.59L14 18L20 12L14 6L12.59 7.41L16.17 11H4V13H16.17Z' fill='white'/%3E\a     %3C/svg%3E                                     \a     ");
 
+  }
+}
+@include _1199 {
+  .template {
+    &__main {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+  .main-container {
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .box__skills {
+    grid-template-columns: repeat(4, auto);
+    grid-gap: 20px;
+  }
+  .avatar__container {
+    width: 50%;
+  }
+}
+@include _991 {
+  .box {
+    grid-template-columns: 1fr;
+    .data-grid {
+      grid-template-columns: repeat(2, auto);
+    }
+  }
+  .data-grid {
+    grid-template-columns: repeat(2, auto);
+  }
+  .information-grid {
+    .col .contacts {
+      display: grid;
+      grid-template-columns: auto 1fr;
+    }
+  }
+  .information-section {
+    .reviews-grid {
+      grid-template-columns: auto;
+    }
+  }
+  .avatar__container {
+    text-align: center;
+    width: 100%;
+  }
+}
+@include _767 {
+  .main-section .information-grid .col .contacts {
+    display: grid;
+    grid-template-columns: auto;
+  }
+  .quests {
+    .limit__container {
+      display: grid;
+      grid-template-columns: auto;
+    }
+    .block {
+      grid-template-columns: auto;
+      margin-bottom:20px;
+      &__img {
+        max-width: 100%;
+        img {
+          border-radius: 6px;
+          height: 200px;
+          object-fit: cover;
+          width: 100%;
+        }
+      }
+    }
+  }
+  .quests {
+    &__tools {
+      padding: 0;
+    }
+  }
+  .active-quests-grid .active-quests-item {
+    grid-template-columns: auto;
+    .active-quests-img {
+      border-radius: 6px;
+      height: 200px;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+}
+@include _575 {
+  .details {
+    width: 100%;
+  }
+  .quests {
+    .block__actions {
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-direction: column;
+    }
+  }
+  .header {
+    align-items: flex-start;
+  }
+  .active-quests-grid {
+    margin-top: 20px;
+  }
+  .quests__content {
+    grid-template-columns: repeat(2, auto);
+  }
+  .reviews-grid {
+    .reviews-item .header {
+      flex-direction: column;
+    }
+  }
+  .information-grid {
+    flex-direction: column;
+    align-items: center;
+    .col {
+      margin-bottom: 10px;
+    }
+  }
+  .reviews-item {
+    .name {
+      margin-top: 10px;
+    }
+  }
+  .box__profile {
+    flex-direction: column;
+    align-items: center;
+  }
+  .portfolio__items {
+    grid-template-columns: repeat(2, auto);
+    margin-bottom: 20px;
   }
 }
 </style>
