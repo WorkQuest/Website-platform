@@ -28,4 +28,6 @@ export default {
   openADeposit: 'openADeposit',
   addLiquidity: 'addLiquidity',
   removeLiquidity: 'removeLiquidity',
+  creditingDeposit: 'creditingDeposit',
+  confirmDetails: 'confirmDetails',
 };

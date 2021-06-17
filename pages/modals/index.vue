@@ -101,6 +101,11 @@
     >
       showRemoveLiquidity
     </base-btn>
+    <base-btn
+      @click="showCreditingDeposit()"
+    >
+      showCreditingDeposit
+    </base-btn>
   </div>
 </template>
 
@@ -214,6 +219,11 @@ export default {
     showRemoveLiquidity() {
       this.ShowModal({
         key: modals.removeLiquidity,
+      });
+    },
+    showCreditingDeposit() {
+      this.ShowModal({
+        key: modals.creditingDeposit,
       });
     },
   },

@@ -777,7 +777,7 @@ export default {
         },
         {
           title: this.$t('ui.menu.crediting'),
-          path: '/wallet',
+          path: '/crediting',
         },
         {
           title: this.$t('ui.menu.mining'),

@@ -307,7 +307,21 @@
     "currentPoolSize": "Current pool size",
     "yourPoolShare": "Your pool share",
     "eth": "ETH",
-    "wusd": "WUSD"
+    "wusd": "WUSD",
+    "howMuchEthWouldYouLikeToLock": "How much ETH would you like to lock into your account?",
+    "smallTemp": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "template": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
+    "collateralization": "Collateralization",
+    "percentsCount": "{count}%",
+    "liquidationPrice": "Liquidation price",
+    "currentPrice": "Current price",
+    "stabilityFee": "Stability fee",
+    "liquidationRatio": "Liquidation ratio",
+    "liquidationPenalty": "Liquidation penalty",
+    "confirmDetails": "Confirm details",
+    "depositing": "Depositing",
+    "generating": "Generating",
+    "liquidationFee": "Liquidation fee"
   },
   "ui": {
     "workers": "Workers",
@@ -588,5 +602,17 @@
     "liquidityProvidersEarn": "Liquidity providers earn a 0.3% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
     "transactions": "Transactions",
     "": ""
+  },
+  "crediting": {
+    "crediting": "Crediting",
+    "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "marketSize": "Market size",
+    "deposit": "Deposit",
+    "percent": "Percent",
+    "dollarsCount": "$ {count}",
+    "percentsCount": "{count}%",
+    "wantToTakeALoan": "Want to take a loan?",
+    "borrow": "Borrow",
+    "information": "Information"
   }
  }
