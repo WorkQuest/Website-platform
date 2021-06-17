@@ -184,67 +184,111 @@
             </div>
           </span>
         </div>
+        <div class="button">
+          <nuxt-link
+            class="more-button"
+            to="/profile"
+          >
+            {{ $t('meta.showAllReviews') }}
+          </nuxt-link>
+        </div>
         <!-- ACTIVE -->
 
         <div class="active-quests-grid">
           <div class="title">
             {{ $t('quests.activeQuests') }}
           </div>
-          <div class="active-quests-item">
-            <img
-              class="active-quests-image"
-              src="~assets/img/temp/fake-card.svg"
-              alt=""
-            >
-            <div class="inner">
-              <div class="header">
-                <img
-                  class="active-quests-image-profile"
-                  src="~/assets/img/app/fake_profile.png"
-                  alt=""
-                >
-                <div class="name">
-                  Samantha Sparcs
-                </div>
-              </div>
-              <div class="subheader">
-                200m {{ $t('quests.fromYou') }}
-              </div>
-              <div class="quest-title">
-                <nuxt-link to="/quests/1">
-                  Paint the garage quickly
-                </nuxt-link>
-              </div>
-              <div class="description">
-                Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...
-              </div>
-              <div class="footer">
-                <div class="priority">
-                  <div class="text">
-                    {{ $t('priority.low') }}
+          <span
+            v-for="item in filteredCards(selectedTab, isShowFavourite)"
+            :key="item.id"
+            class="quests__cards__all"
+          >
+            <div class="active-quests-item">
+              <img
+                class="active-quests-image"
+                src="~assets/img/temp/fake-card.svg"
+                alt=""
+              >
+              <div class="inner">
+                <div class="header">
+                  <div>
+                    <img
+                      class="active-quests-image-profile"
+                      src="~/assets/img/app/fake_profile.png"
+                      alt=""
+                    >
+                  </div>
+                  <div class="name">
+                    {{ item.title }}
                   </div>
                 </div>
-                <div class="cost -green">
-                  1500 WUSD
+                <div class="subheader">
+                  {{ item.distance }}m {{ $t('quests.fromYou') }}
                 </div>
+                <div class="quest-title">
+                  <nuxt-link to="/quests/1">
+                    {{ item.theme }}
+                  </nuxt-link>
+                </div>
+                <div class="description">
+                  {{ item.desc }}
+                </div>
+
+                <div class="block__actions">
+                  <div
+                    v-if="isHideStatus(item.type)"
+                    class="block__status"
+                  >
+                    <div
+                      class="block__priority"
+                      :class="getPriorityClass(item.priority)"
+                    >
+                      {{ getPriority(item.priority) }}
+                    </div>
+                    <div class="block__amount_green">
+                      {{ item.amount }} {{ item.symbol }}
+                    </div>
+                  </div>
+                  <div
+                    v-else
+                    class="block__amount_gray"
+                  >
+                    {{ item.amount }} {{ item.symbol }}
+                  </div>
+                  <div class="block__details">
+                    <button
+                      v-if="item.type !== 3"
+                      class="block__btn"
+                      @click="showDetails()"
+                    >
+                      <span
+                        class="block__text block__text_details"
+                      >
+                        {{ $t('meta.details') }}
+                      </span>
+                      <span class="icon-short_right" />
+                    </button>
+                    <div
+                      v-else
+                      class="block__rating"
+                    >
+                      <div class="block__rating block__rating_star">
+                        <button
+                          @click="showReviewModal(item.rating)"
+                        >
+                          <b-form-rating
+                            v-model="item.rating"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="favorite" />
               </div>
             </div>
-            <nuxt-link
-              class="simple-button"
-              to="/profiles/1"
-            >
-              {{ $t('profile.details') }}
-            </nuxt-link>
-            <div class="favorite" />
-          </div>
-          <div class="button">
-            <nuxt-link
-              class="more-button"
-              to="/profiles/1"
-            >
-              {{ $t('meta.showAllReviews') }}
-            </nuxt-link>
-          </div>
+          </span>
         </div>
       </div>
     </section>
@@ -253,11 +297,14 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'ProfileID',
   data() {
     return {
+      selectedTab: 0,
+      isShowFavourite: false,
       payload: {
         user: {
           name: 'Samantha Sparcs',
@@ -282,6 +329,136 @@ export default {
           },
         ],
       },
+      cards: [
+        {
+          type: 4,
+          title: 'Samantha Sparks',
+          level: {
+            code: 1,
+          },
+          inProgress: {
+            work: false,
+            name: 'Roselia Vance',
+          },
+          favourite: false,
+          isFavourite: false,
+          sub: 'from Amazon',
+          background: require('~/assets/img/temp/fake-card.svg'),
+          theme: 'Paint the garage quickly',
+          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
+          priority: 0,
+          amount: 1500,
+          symbol: 'wusd',
+          distance: '200',
+        },
+        {
+          type: 4,
+          title: 'Samantha Sparks',
+          level: {
+            code: 2,
+          },
+          inProgress: {
+            work: true,
+            name: 'Roselia Vance',
+          },
+          favourite: false,
+          isFavourite: false,
+          sub: '',
+          background: require('~/assets/img/temp/fake-card.svg'),
+          theme: 'Paint the garage quickly',
+          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
+          priority: 0,
+          amount: 1500,
+          symbol: 'wusd',
+          distance: '200',
+        },
+        {
+          type: 5,
+          title: 'Samantha Sparks',
+          level: {
+            code: 3,
+          },
+          inProgress: {
+            work: true,
+            name: 'Roselia Vance',
+          },
+          favourite: false,
+          isFavourite: true,
+          sub: 'from Amazon',
+          background: require('~/assets/img/temp/fake-card.svg'),
+          theme: 'Paint the garage quickly',
+          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
+          priority: 0,
+          amount: 1500,
+          symbol: 'wusd',
+          distance: '200',
+        },
+        {
+          type: 2,
+          title: 'Samantha Sparks',
+          level: {
+            code: 1,
+          },
+          inProgress: {
+            work: true,
+            name: 'Roselia Vance',
+          },
+          favourite: false,
+          isFavourite: true,
+          sub: 'from Amazon',
+          background: require('~/assets/img/temp/fake-card.svg'),
+          theme: 'Paint the garage quickly',
+          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
+          priority: 0,
+          amount: 1500,
+          symbol: 'wusd',
+          distance: '300',
+        },
+        {
+          type: 3,
+          title: 'Samantha Sparks',
+          level: {
+            code: 2,
+          },
+          inProgress: {
+            work: true,
+            name: 'Roselia Vance',
+          },
+          favourite: false,
+          isRating: false,
+          sub: '',
+          background: require('~/assets/img/temp/fake-card.svg'),
+          theme: 'Paint the garage quickly',
+          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
+          priority: 0,
+          amount: 1500,
+          symbol: 'wusd',
+          rating: '',
+          distance: '400',
+        },
+        {
+          type: 3,
+          title: 'Samantha Sparks',
+          level: {
+            code: 3,
+          },
+          inProgress: {
+            work: false,
+            name: '',
+          },
+          favourite: false,
+          isRating: false,
+          sub: 'from Amazon',
+          background: require('~/assets/img/temp/fake-card.svg'),
+          theme: 'Paint the garage quickly',
+          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
+          priority: 0,
+          amount: 1500,
+          symbol: 'wusd',
+          rating: '',
+          distance: '100',
+        },
+      ],
     };
   },
   computed: {
@@ -296,6 +473,27 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    filteredCards(type, isFavorite) {
+      if (type === 0) {
+        return this.cards;
+      }
+      if (isFavorite) {
+        return this.cards.filter((x) => x.isFavourite);
+      }
+      return this.cards.filter((x) => x.type === type);
+    },
+    showDetails() {
+      this.$router.push('/quests/1');
+    },
+    showReviewModal(rating) {
+      this.ShowModal({
+        key: modals.review,
+        rating,
+      });
+    },
+    isHideStatus(type) {
+      return !(type === 3);
+    },
     getPriority(index) {
       const priority = {
         0: this.$t('priority.low'),
@@ -808,6 +1006,8 @@ table {
 
 .information-grid {
   @extend .styles__flex;
+  display: grid;
+  grid-template-columns: 1fr 6fr;
   padding: 25px 0;
   position: relative;
   .share-btn {
@@ -918,6 +1118,27 @@ table {
   }
 }
 
+.button {
+  @extend .header;
+  margin: 5px 0 0 0;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center
+}
+.button .more-button {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 130%;
+  color: #0083C7;
+  border: 1px solid rgba(0, 131, 199, 0.1);
+  border-radius: 6px;
+  padding: 13px 67px 13px 28px;
+  background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
+  background-position: 82% 21px;
+  background-repeat: no-repeat;
+}
+
 .reviews-grid {
   padding-bottom: 20px;
   display: grid;
@@ -947,7 +1168,7 @@ table {
   .reviews-item .subheader .-name {
     font-weight: normal;
     color: #7C838D;
-    margin-left: 10px;
+    margin: 0;
   }
   .reviews-item .rating {
     font-weight: 500;
@@ -961,6 +1182,35 @@ table {
     background-image: url("data:image/svg+xml,%3Csvg width='120' height='21' viewBox='0 0 120 21' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M10 0.5L12.9389 6.45492L19.5106 7.40983L14.7553 12.0451L15.8779 18.5902L10 15.5L4.12215 18.5902L5.24472 12.0451L0.489435 7.40983L7.06107 6.45492L10 0.5Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M35 0.5L37.9389 6.45492L44.5106 7.40983L39.7553 12.0451L40.8779 18.5902L35 15.5L29.1221 18.5902L30.2447 12.0451L25.4894 7.40983L32.0611 6.45492L35 0.5Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M60 0.5L62.9389 6.45492L69.5106 7.40983L64.7553 12.0451L65.8779 18.5902L60 15.5L54.1221 18.5902L55.2447 12.0451L50.4894 7.40983L57.0611 6.45492L60 0.5Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M85 0.5L87.9389 6.45492L94.5106 7.40983L89.7553 12.0451L90.8779 18.5902L85 15.5L79.1221 18.5902L80.2447 12.0451L75.4894 7.40983L82.0611 6.45492L85 0.5Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M110 0.5L112.939 6.45492L119.511 7.40983L114.755 12.0451L115.878 18.5902L110 15.5L104.122 18.5902L105.245 12.0451L100.489 7.40983L107.061 6.45492L110 0.5Z' fill='%23E9EDF2'/%3E\a           %3C/svg%3E                               \a           ");
     background-position: 0 0;
     background-repeat: no-repeat;
+  }
+}
+
+.block {
+  &__amount {
+    &_green {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 130%;
+      text-transform: uppercase;
+      color: #00AA5B;
+    }
+    &_gray {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 130%;
+      text-transform: uppercase;
+      color: #B0B3B9;
+    }
+    &__performed {
+      color: #B0B3B9;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 130%;
+      text-transform: uppercase;
+    }
   }
 }
 
@@ -1000,6 +1250,7 @@ table {
   .active-quests-item .inner .header {
     @extend .header;
     @extend .styles__center;
+    display: flex;
   }
   .active-quests-item .inner .header .name {
     font-weight: 500;
@@ -1064,25 +1315,6 @@ table {
   .active-quests-item .favorite:hover {
     cursor: pointer;
   }
-  .button {
-    @extend .header;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-  }
-  .button .more-button {
-    display: inline-block;
-    text-decoration: none;
-    font-size: 16px;
-    line-height: 130%;
-    color: #0083C7;
-    border: 1px solid rgba(0, 131, 199, 0.1);
-    border-radius: 6px;
-    padding: 13px 67px 13px 28px;
-    background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
-    background-position: 82% 21px;
-    background-repeat: no-repeat;
-  }
 }
 
 .title {
@@ -1092,7 +1324,7 @@ table {
   font-size: 20px;
   line-height: 130%;
   color: $black800;
-  margin-bottom: 20px;
+  margin: 0 0 20px 0;
 }
 
 .description {
