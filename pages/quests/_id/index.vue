@@ -1535,11 +1535,14 @@ export default {
       &__left {
         grid-column: 1/3;
       }
+      &__distance {
+        margin: 0;
+      }
   }
   .location {
     &__container {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 2fr;
       grid-template-rows: auto auto;
       grid-gap: 5px;
     }

@@ -494,7 +494,6 @@
             <div class="favorite" />
           </div>
           <div class="button">
-            <!--              TODO: Добавить стили в BASE Button-->
             <nuxt-link
               class="more-button"
               to="/profile"
@@ -1037,7 +1036,6 @@ export default {
     }
 
     &__amount {
-
       &_green {
         font-style: normal;
         font-weight: bold;
@@ -1046,7 +1044,6 @@ export default {
         text-transform: uppercase;
         color: #00AA5B;
       }
-
       &_gray {
         font-style: normal;
         font-weight: bold;
@@ -1055,7 +1052,6 @@ export default {
         text-transform: uppercase;
         color: #B0B3B9;
       }
-
       &__performed {
         color: #B0B3B9;
         font-style: normal;
