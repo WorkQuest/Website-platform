@@ -812,7 +812,6 @@ export default {
   &__avatar {
     max-width: 142px;
     max-height: 142px;
-    width: 100%;
     height: 100%;
   }
   &__col {
@@ -835,31 +834,6 @@ export default {
   &__main-header {
     @extend .styles__flex;
     @extend .styles__center;
-  }
-}
-
-.styles {
-  &__between {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  &__flex {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-  }
-  &__center {
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-  }
-}
-.background {
-  &__common {
-    background-repeat: no-repeat;
-    background-position: 0 -1px;
-    padding-left: 25px;
   }
 }
 
@@ -972,6 +946,30 @@ table {
     padding-right: 24px;
     margin-right: 40px;
   }
+  .styles {
+    &__between {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    &__flex {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+    }
+    &__center {
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+    }
+  }
+  .background {
+    &__common {
+      background-repeat: no-repeat;
+      background-position: 0 -1px;
+      padding-left: 25px;
+    }
+  }
   .communication {
     height: 24px;
     width: 24px;
@@ -1033,6 +1031,9 @@ table {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
+  }
+  .info-grid__col_left {
+    text-align: center;
   }
   .avatar {
     border-radius: 89px;
@@ -1154,6 +1155,7 @@ table {
   }
   .reviews-item .header {
     @extend .styles__flex;
+    display: flex;
   }
   .reviews-item .header .avatar {
     margin-right: 15px;
@@ -1457,6 +1459,9 @@ a:hover {
   }
 }
 @include _575 {
+  .information-grid {
+    display: flex;
+  }
   .footer {
     .details {
       width: 100%;
