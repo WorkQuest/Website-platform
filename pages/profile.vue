@@ -116,6 +116,13 @@
         >
           {{ $t('profile.reviews') }}
         </button>
+        <button
+          class="tab__btn"
+          :class="{tab__btn_active: selected === 3}"
+          @click="selected = 3"
+        >
+          {{ $t('profile.portfolio') }}
+        </button>
       </div>
     </div>
 
@@ -184,7 +191,9 @@
           v-if="userRole === 'worker'"
           class="title"
         >
-          {{ $t('quests.reviewsBig') }}
+          <span v-if="selected === 2">
+            {{ $t('quests.reviewsBig') }}
+          </span>
         </div>
         <div
           v-if="selected === 1"
@@ -226,7 +235,6 @@
               <div class="rating">
                 {{ item.reviewerRating }}
               </div>
-              <!--              TODO: Добавить стили в BASE Button-->
               <nuxt-link
                 class="simple-button"
                 to="/profile"
@@ -420,6 +428,41 @@
                         </div>
                       </div>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          v-if="selected === 3"
+          class="tab__container"
+        >
+          <div class="add-btn__container">
+            <base-btn>
+              Add Case
+              <template v-slot:right>
+                <span class="icon-plus" />
+              </template>
+            </base-btn>
+          </div>
+          <div class="portfolio__items">
+            <div
+              v-for="(item, i) in payload.portfolios"
+              :key="i"
+              class="portfolio__item"
+            >
+              <div class="portfolio__card">
+                <div class="portfolio__body">
+                  <img
+                    class="portfolio__img"
+                    src="~/assets/img/temp/photo.jpg"
+                    alt=""
+                  >
+                </div>
+                <div class="portfolio__footer">
+                  <div class="portfolio__name">
+                    {{ item.name }}
                   </div>
                 </div>
               </div>
@@ -676,6 +719,24 @@ export default {
         },
       ],
       payload: {
+        portfolios: [
+          {
+            name: 'Lorem ipsum dolor sit amet',
+            imgUrl: '',
+          },
+          {
+            name: 'Lorem ipsum dolor sit amet',
+            imgUrl: '',
+          },
+          {
+            name: 'Lorem ipsum dolor sit amet',
+            imgUrl: '',
+          },
+          {
+            name: 'Lorem ipsum dolor sit amet',
+            imgUrl: '',
+          },
+        ],
         user: {
           name: 'Samantha Sparcs',
           desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel',
@@ -830,6 +891,54 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.add-btn {
+  &__container {
+    width: 154px;
+    margin: 0 0 20px 0;
+  }
+}
+
+.portfolio {
+  &__card {
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+  }
+  &__items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+  }
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  &__name {
+    @include text-simple;
+    text-align: left;
+    color: $white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+    font-weight: 500;
+  }
+  &__footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: $black700;
+    height: 71px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    border-radius: 0 0 6px 6px;
+  }
+}
 
 .contacts {
   &__grid {
@@ -1230,7 +1339,7 @@ export default {
 
 .tab {
   &__container {
-    margin: 20px 0;
+    margin: 0 0 20px 0;
   }
   &__btn {
     color: $black500;
@@ -1546,6 +1655,12 @@ export default {
     color: #7C838D;
     font-size: 16px;
     padding-right: 5px;
+  }
+  &-plus:before {
+    @extend .icon;
+    content: "\e9a8";
+    color: $white;
+    font-size: 16px;
   }
   &-mail::before {
     @extend .icon;
@@ -2233,7 +2348,7 @@ a:hover {
   }
   .portfolio__items {
     grid-template-columns: repeat(2, auto);
-    margin-bottom: 20px;
+    margin: 0 20px 0 0;
   }
 }
 </style>
