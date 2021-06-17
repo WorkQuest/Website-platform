@@ -1631,6 +1631,9 @@ export default {
       grid-gap: 2px;
     }
   }
+  .notify {
+    min-width: 350px;
+  }
   .footer {
     &__bottom {
       display: grid;
@@ -1659,6 +1662,18 @@ export default {
         grid-template-columns: 1fr;
       }
     }
+  }
+}
+
+@include _480 {
+  .notify {
+    min-width: 300px;
+  }
+}
+
+@include _380 {
+  .notify {
+    min-width: 250px;
   }
 }
 </style>
