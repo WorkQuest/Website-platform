@@ -843,7 +843,6 @@ export default {
   &__avatar {
     max-width: 142px;
     max-height: 142px;
-    width: 100%;
     height: 100%;
   }
   &__col {
@@ -1064,6 +1063,9 @@ table {
     -ms-flex-pack: center;
     justify-content: center;
   }
+  .info-grid__col_left {
+    text-align: center;
+  }
   .avatar {
     border-radius: 89px;
   }
@@ -1184,6 +1186,7 @@ table {
   }
   .reviews-item .header {
     @extend .styles__flex;
+    display: flex;
   }
   .reviews-item .header .avatar {
     margin-right: 15px;
@@ -1487,6 +1490,9 @@ a:hover {
   }
 }
 @include _575 {
+  .information-grid {
+    display: flex;
+  }
   .footer {
     .details {
       width: 100%;
