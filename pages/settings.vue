@@ -57,7 +57,7 @@
           {{ $t('settings.profileInfo') }}
         </div>
         <div class="avatar__row">
-          <div>
+          <div class="avatar__container">
             <img
               class="profile__img"
               src="~/assets/img/temp/photo.jpg"
@@ -1096,6 +1096,9 @@ export default {
   .avatar {
     &__row {
       flex-direction: column;
+    }
+    &__container {
+      justify-self: center;
     }
   }
   .profile {
