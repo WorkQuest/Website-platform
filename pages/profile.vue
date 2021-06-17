@@ -455,6 +455,7 @@
             <div class="inner">
               <div class="header">
                 <img
+                  class="active-quests-image-profile"
                   src="~/assets/img/app/fake_profile.png"
                   alt=""
                 >
@@ -480,12 +481,14 @@
                 <div class="cost -green">
                   1500 WUSD
                 </div>
-                <nuxt-link
-                  class="simple-button"
-                  to="/profile"
-                >
-                  {{ $t('profile.details') }}
-                </nuxt-link>
+                <div class="details">
+                  <nuxt-link
+                    class="simple-button"
+                    to="/company"
+                  >
+                    {{ $t('profile.details') }}
+                  </nuxt-link>
+                </div>
               </div>
             </div>
             <div class="favorite" />
