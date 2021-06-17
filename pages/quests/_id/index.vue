@@ -40,12 +40,12 @@
                   class="icon-location icon_fs-20"
                 />
                 <span>{{ payload.location }}</span>
-              </div>
-              <span
-                class="user__distance"
-              >
+                <span
+                  class="user__distance"
+                >
                 {{ payload.distance }} {{ $t('meta.fromYou') }}
               </span>
+              </div>
               <div
                 v-if="userRole === 'worker'"
                 class="runtime__container"
@@ -1522,39 +1522,39 @@ export default {
   }
 }
 @include _575 {
-    .user {
-      &__head {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto auto;
-        grid-gap: 5px;
+  .user {
+    &__head {
+      display: grid;
+      grid-template-columns: auto auto;
+      grid-gap: 5px;
+    }
+    &__right {
+      align-items: center;
+      .icon-share_outline {
+        margin-left: 25px;
       }
-      &__date {
-        margin: 0;
-      }
-      &__left {
-        grid-column: 1/3;
-      }
-      &__distance {
-        margin: 0;
-      }
+    }
   }
   .location {
     &__container {
       display: grid;
-      grid-template-columns: 1fr 2fr;
-      grid-template-rows: auto auto;
+      grid-template-columns: auto;
       grid-gap: 5px;
     }
   }
+  .icon {
+    &-clock, &-location {
+      width: 30px;
+    }
+  }
   .runtime {
-    &__container {
+    &__container, &__title {
       margin: 0;
     }
   }
   .badge {
     &__container {
-      padding-top: 10px;
+      padding-top: 20px;
     }
   }
   .img {
