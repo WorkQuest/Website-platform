@@ -192,6 +192,11 @@ export default {
   }
 }
 @include _1199 {
+  .main {
+    &__body {
+      padding: 10px;
+    }
+  }
   .page {
     &__grid {
       grid-template-columns: 1fr;
