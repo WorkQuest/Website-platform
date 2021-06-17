@@ -193,102 +193,106 @@
           </nuxt-link>
         </div>
         <!-- ACTIVE -->
-
-        <div class="active-quests-grid">
-          <div class="title">
-            {{ $t('quests.activeQuests') }}
-          </div>
-          <span
-            v-for="item in filteredCards(selectedTab, isShowFavourite)"
-            :key="item.id"
-            class="quests__cards__all"
+        <div class="quests__cards">
+          <div
+            v-for="(item, i) in cards"
+            :key="i"
+            class="quests__block block"
           >
-            <div class="active-quests-item">
-              <img
-                class="active-quests-image"
-                src="~assets/img/temp/fake-card.svg"
-                alt=""
-              >
-              <div class="inner">
-                <div class="header">
-                  <div>
-                    <img
-                      class="active-quests-image-profile"
-                      src="~/assets/img/app/fake_profile.png"
-                      alt=""
-                    >
-                  </div>
-                  <div class="name">
-                    {{ item.title }}
-                  </div>
-                </div>
-                <div class="subheader">
-                  {{ item.distance }}m {{ $t('quests.fromYou') }}
-                </div>
-                <div class="quest-title">
-                  <nuxt-link to="/quests/1">
-                    {{ item.theme }}
-                  </nuxt-link>
-                </div>
-                <div class="description">
-                  {{ item.desc }}
-                </div>
-
-                <div class="block__actions">
-                  <div
-                    v-if="isHideStatus(item.type)"
-                    class="block__status"
-                  >
-                    <div
-                      class="block__priority"
-                      :class="getPriorityClass(item.priority)"
-                    >
-                      {{ getPriority(item.priority) }}
-                    </div>
-                    <div class="block__amount_green">
-                      {{ item.amount }} {{ item.symbol }}
-                    </div>
-                  </div>
-                  <div
-                    v-else
-                    class="block__amount_gray"
-                  >
-                    {{ item.amount }} {{ item.symbol }}
-                  </div>
-                  <div class="block__details">
-                    <button
-                      v-if="item.type !== 3"
-                      class="block__btn"
-                      @click="showDetails()"
-                    >
-                      <span
-                        class="block__text block__text_details"
-                      >
-                        {{ $t('meta.details') }}
-                      </span>
-                      <span class="icon-short_right" />
-                    </button>
-                    <div
-                      v-else
-                      class="block__rating"
-                    >
-                      <div class="block__rating block__rating_star">
-                        <button
-                          @click="showReviewModal(item.rating)"
-                        >
-                          <b-form-rating
-                            v-model="item.rating"
-                          />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="favorite" />
+            <div class="block__left">
+              <div class="block__img">
+                <img
+                  src="~assets/img/temp/fake-card.svg"
+                  alt=""
+                >
               </div>
             </div>
-          </span>
+            <div class="block__right">
+              <div class="block__head">
+                <div class="block__title">
+                  <div class="block__avatar">
+                    <nuxt-link
+                      class="link"
+                      :to="item.url"
+                    >
+                      <img
+                        :src="item.background"
+                        alt=""
+                      >
+                    </nuxt-link>
+                  </div>
+                  <nuxt-link
+                    class="link"
+                    :to="item.url"
+                  >
+                    <div class="block__text block__text_title">
+                      {{ item.title }}
+                      <span
+                        v-if="item.sub"
+                        class="block__text block__text_grey"
+                      >{{ item.sub }}</span>
+                    </div>
+                  </nuxt-link>
+                </div>
+                <div
+                  class="block__icon block__icon_fav star"
+                  @click="item.favourite = !item.favourite"
+                >
+                  <img
+                    class="star__hover"
+                    src="~assets/img/ui/star_hover.svg"
+                    alt=""
+                  >
+                  <img
+                    v-if="!item.favourite"
+                    class="star__default"
+                    src="~assets/img/ui/star_simple.svg"
+                    alt=""
+                  >
+                  <img
+                    v-if="item.favourite"
+                    class="star__checked"
+                    src="~assets/img/ui/star_checked.svg"
+                    alt=""
+                  >
+                </div>
+              </div>
+              <div class="block__locate">
+                <span class="icon-location" />
+                <span class="block__text block__text_locate">{{ item.distance }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
+              </div>
+              <div class="block__text block__text_blue">
+                {{ item.theme }}
+              </div>
+              <div class="block__text block__text_desc">
+                {{ item.desc }}
+              </div>
+              <div class="block__actions">
+                <div class="block__status">
+                  <div
+                    class="block__priority"
+                    :class="getPriorityClass(item.priority)"
+                  >
+                    {{ getPriority(item.priority) }}
+                  </div>
+                  <div class="block__amount">
+                    {{ item.amount }} {{ item.symbol }}
+                  </div>
+                </div>
+                <div class="block__details">
+                  <button
+                    class="block__btn"
+                    @click="showDetails()"
+                  >
+                    <span class="block__text block__text_details">
+                      {{ $t('meta.details') }}
+                    </span>
+                    <span class="icon-short_right" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -331,6 +335,7 @@ export default {
       },
       cards: [
         {
+          url: '/company',
           type: 4,
           title: 'Samantha Sparks',
           level: {
@@ -352,6 +357,7 @@ export default {
           distance: '200',
         },
         {
+          url: '/company',
           type: 4,
           title: 'Samantha Sparks',
           level: {
@@ -373,6 +379,7 @@ export default {
           distance: '200',
         },
         {
+          url: '/company',
           type: 5,
           title: 'Samantha Sparks',
           level: {
@@ -394,6 +401,7 @@ export default {
           distance: '200',
         },
         {
+          url: '/company',
           type: 2,
           title: 'Samantha Sparks',
           level: {
@@ -415,6 +423,7 @@ export default {
           distance: '300',
         },
         {
+          url: '/company',
           type: 3,
           title: 'Samantha Sparks',
           level: {
@@ -437,6 +446,7 @@ export default {
           distance: '400',
         },
         {
+          url: '/company',
           type: 3,
           title: 'Samantha Sparks',
           level: {
@@ -515,6 +525,229 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.star {
+  &__default {
+    display: flex;
+  }
+
+  &__hover {
+    display: none;
+  }
+
+  &:hover {
+    .star {
+      &__hover {
+        display: flex;
+      }
+
+      &__default {
+        display: none;
+      }
+
+      &__checked {
+        display: none;
+      }
+    }
+  }
+}
+
+.bg {
+  &_white {
+    background-color: $white;
+  }
+}
+
+.quests {
+  &__cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+    padding-top: 20px;
+  }
+  &__top {
+    position: relative;
+    min-height: 160px;
+  }
+  &__search {
+    position: absolute;
+    max-width: 1180px;
+    height: 83px;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 1200;
+    @include box;
+  }
+  &__content {
+    display: flex;
+    justify-content: center;
+  }
+  &__body {
+    padding-top: 30px;
+    max-width: 1180px;
+    width: 100%;
+    height: 100%;
+    &_wrap {
+      padding-top: 10px;
+    }
+  }
+  &__text {
+    @include text-simple;
+    font-style: normal;
+    &_title  {
+      font-weight: 500;
+      font-size: 25px;
+      line-height: 130%;
+      color: $black800;
+    }
+  }
+  &__tags {
+    padding-top: 30px;
+    max-width: 1180px;
+  }
+  &__tools {
+    padding-top:  20px;
+  }
+}
+
+.block {
+  background: $white;
+  border-radius: 6px;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 230px;
+  &__img {
+    max-width: 240px;
+  }
+  &__locate {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    grid-gap: 5px;
+    align-items: center;
+    span::before {
+      font-size: 20px;
+      color: $black500;
+    }
+  }
+  &__status {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 15px;
+  }
+  &__amount {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 130%;
+    color: #00AA5B;
+    text-transform: uppercase;
+  }
+  &__priority {
+    @include text-simple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 130%;
+    height: 24px;
+    padding: 0 5px;
+    &_low {
+      background: rgba(34, 204, 20, 0.1);
+      color: #22CC14;
+    }
+    &_urgent {
+      background: rgba(223, 51, 51, 0.1);
+      color: #DF3333;
+    }
+    &_normal {
+      background: rgba(232, 210, 13, 0.1);
+      color: #E8D20D;
+    }
+  }
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__right {
+    padding: 20px 20px 20px 30px;
+    display: grid;
+    grid-template-columns: auto;
+    grid-gap: 10px;
+  }
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__icon {
+    &_fav {
+      cursor: pointer;
+    }
+  }
+  &__btn {
+    @extend .block__actions;
+    padding: 0 10px;
+    min-width: 146px;
+    height: 34px;
+    background: transparent;
+    span::before {
+      font-size: 24px;
+      color: $blue;
+    }
+  }
+  &__text {
+    @include text-simple;
+    &_details {
+      font-size: 16px;
+      line-height: 130%;
+      color: $blue;
+    }
+    &_desc {
+      font-size: 16px;
+      line-height: 130%;
+      color: $black700;
+    }
+    &_blue {
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 130%;
+      color: $blue;
+    }
+    &_title {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 130%;
+      color: $black800;
+    }
+    &_locate {
+      font-size: 14px;
+      line-height: 130%;
+      color: #7C838D;
+    }
+    &_grey {
+      font-size: 16px;
+      line-height: 130%;
+      color: #7C838D;
+    }
+  }
+  &__avatar {
+    max-width: 30px;
+    max-height: 30px;
+    img {
+      border-radius: 100%;
+    }
+  }
+  &__title {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    grid-gap: 10px;
+    align-items: center;
+  }
+}
 
 .card-subtitle {
   font-weight: 500;
@@ -1213,109 +1446,6 @@ table {
   }
 }
 
-.active-quests-grid {
-  padding-bottom: 59px;
-  .active-quests-item {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    background-color: #fff;
-    border-radius: 6px;
-    margin: 20px 0;
-    position: relative;
-  }
-  .active-quests-item {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    background-color: #fff;
-    border-radius: 6px;
-    margin: 20px 0;
-    position: relative;
-  }
-  .active-quests-image {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-    border-radius: 6px 0 0 6px;
-  }
-  .active-quests-image-profile {
-    object-fit: cover;
-    width: 30px;
-    height: 30px;
-    border-radius: 100%;
-  }
-  .active-quests-item .inner {
-    padding: 22px 20px 23px 30px;
-  }
-  .active-quests-item .inner .header {
-    @extend .header;
-    @extend .styles__center;
-    display: flex;
-  }
-  .active-quests-item .inner .header .name {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 130%;
-    color: #1D2127;
-    margin-left: 10px;
-  }
-  .active-quests-item .inner .subheader {
-    font-size: 14px;
-    line-height: 130%;
-    color: #7C838D;
-    padding-left: 25px;
-    margin: 10px 0;
-    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a             %3Cpath d='M9.99999 17.5C8.94744 16.6022 7.97181 15.6179 7.08332 14.5575C5.74999 12.965 4.16666 10.5933 4.16666 8.33333C4.16548 5.97295 5.58686 3.84449 7.76755 2.94116C9.94823 2.03783 12.4584 2.5377 14.1267 4.2075C15.2237 5.29967 15.8383 6.78532 15.8334 8.33333C15.8334 10.5933 14.25 12.965 12.9167 14.5575C12.0282 15.6179 11.0525 16.6022 9.99999 17.5ZM9.99999 5.83333C9.10683 5.83333 8.28151 6.30983 7.83493 7.08333C7.38835 7.85683 7.38835 8.80983 7.83493 9.58333C8.28151 10.3568 9.10683 10.8333 9.99999 10.8333C11.3807 10.8333 12.5 9.71404 12.5 8.33333C12.5 6.95262 11.3807 5.83333 9.99999 5.83333Z' fill='%237C838D'/%3E\a             %3C/svg%3E                                         \a             ");
-    background-position: 0 0;
-    background-repeat: no-repeat;
-  }
-  .active-quests-item .inner .quest-title a {
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 130%;
-    color: #0083C7;
-  }
-  .active-quests-item .inner .description {
-    font-size: 16px;
-    line-height: 130%;
-    color: #353C47;
-    margin: 10px 0 19px;
-  }
-  .active-quests-item .inner .footer {
-    @extend .header;
-  }
-  .active-quests-item .inner .footer .priority {
-    background-color: rgba(34, 204, 20, 0.1);
-    padding: 4px 5px;
-    border-radius: 3px;
-  }
-  .active-quests-item .inner .footer .priority .text {
-    font-size: 12px;
-    line-height: 130%;
-    color: #22CC14;
-  }
-  .active-quests-item .inner .footer .cost {
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 130%;
-    color: #00AA5B;
-    margin-left: 15px;
-  }
-  .active-quests-item .favorite {
-    height: 24px;
-    width: 24px;
-    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M11.9999 1.2905L15.6209 7.6169L15.7276 7.80347L15.9365 7.85433L22.8223 9.53117L18.1753 15.16L18.0458 15.3168L18.0626 15.5194L18.673 22.9156L12.2034 20.0337L11.9999 19.9431L11.7965 20.0337L5.32679 22.9156L5.93727 15.5194L5.954 15.3168L5.82454 15.16L1.17752 9.53117L8.06333 7.85433L8.27219 7.80347L8.37897 7.6169L11.9999 1.2905Z' fill='white' stroke='%23E9EDF2'/%3E\a           %3C/svg%3E                                                    \a           ");
-    background-position: 0 0;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 23px;
-    right: 20px;
-  }
-  .active-quests-item .favorite:hover {
-    cursor: pointer;
-  }
-}
-
 .title {
   @include text-simple;
   font-style: normal;
@@ -1374,6 +1504,9 @@ a:hover {
   }
 }
 @include _1199 {
+  .quests {
+    padding: 10px;
+  }
   .template {
     &__main {
       padding-left: 20px;
@@ -1394,6 +1527,24 @@ a:hover {
   }
 }
 @include _991 {
+  .quests {
+    .limit__container {
+      display: grid;
+      grid-template-columns: auto;
+    }
+    &__content {
+      grid-template-columns: 1fr;
+    }
+    .block {
+      &__img {
+        height: 100%;
+        width: 100%;
+        img {
+          border-radius: 6px;
+        }
+      }
+    }
+  }
   .box {
     grid-template-columns: 1fr;
     .data-grid {
@@ -1420,6 +1571,58 @@ a:hover {
   }
 }
 @include _767 {
+  .quests {
+    .limit__container {
+      display: grid;
+      grid-template-columns: auto;
+    }
+    .block {
+      grid-template-columns: auto;
+      &__img {
+        max-width: 100%;
+        img {
+          height: 200px;
+          object-fit: cover;
+          width: 100%;
+        }
+      }
+    }
+  }
+  .quests {
+    &__tools {
+      padding: 0;
+    }
+  }
+  .tools {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    justify-content: initial;
+    &__left {
+      grid-template-columns: repeat(2, 1fr);
+      grid-column: 1/3;
+      grid-row: 2/3;
+    }
+    &__right {
+      min-width: 100%;
+      grid-column: 1/3;
+      grid-row: 1/2;
+    }
+  }
+  .dd {
+    grid-column: 1/3;
+  }
+  .search {
+    grid-template-columns: auto auto;
+    padding: 0 10px;
+    grid-gap: 10px;
+    &__toggle, &__dd {
+      display: none;
+    }
+    &__actions {
+      border: none;
+    }
+  }
   .main-section .information-grid .col .contacts {
     display: grid;
     grid-template-columns: auto;
@@ -1459,6 +1662,16 @@ a:hover {
   }
 }
 @include _575 {
+  .block {
+    &__actions {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+    &__btn {
+      margin-top: 10px;
+      padding: 0;
+    }
+  }
   .information-grid {
     display: flex;
   }
@@ -1509,4 +1722,49 @@ a:hover {
     margin-bottom: 20px;
   }
 }
+
+@include _480 {
+  .quests {
+    &__top {
+      min-height: 125px;
+    }
+    .block {
+      &__right {
+        padding: 10px;
+      }
+      &__amount_green {
+        font-size: 18px;
+      }
+    }
+  }
+  .dd__btn {
+    justify-content: space-around;
+  }
+  .search {
+    display: flex;
+    &__actions {
+      width: 50%;
+    }
+  }
+  .base-btn {
+    justify-content: space-between;
+  }
+}
+
+@include _380 {
+  .quests {
+    .block {
+      &__amount_green {
+        font-size: 16px;
+      }
+    }
+  }
+  .search {
+    &__actions {
+      width: 60%;
+      padding: 10px;
+    }
+  }
+}
+
 </style>
