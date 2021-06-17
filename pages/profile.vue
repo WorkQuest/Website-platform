@@ -472,7 +472,7 @@
               <div class="description">
                 Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...
               </div>
-              <div class="footer">
+              <div class="footer footer__quest">
                 <div class="priority">
                   <div class="text">
                     {{ $t('priority.low') }}
@@ -2083,13 +2083,19 @@ a:hover {
   color: #00AA5B !important;
 }
 
+.footer {
+  &__quest {
+    display: grid !important;
+    grid-template-columns: 80px auto max-content;
+  }
+}
+
 .simple-button {
   display: flex;
   align-items: center;
   font-size: 16px;
   line-height: 130%;
   color: #0083C7;
-  position: absolute;
   height: 34px;
   border-radius: 3px;
   bottom: 27px;
@@ -2100,13 +2106,6 @@ a:hover {
   background-position: center right 5px;
   background-repeat: no-repeat;
   transition: .3s;
-  &:hover {
-    background-color: #0083C7;
-    opacity: 1;
-    color: $white;
-    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a     %3Cpath d='M16.17 13L12.59 16.59L14 18L20 12L14 6L12.59 7.41L16.17 11H4V13H16.17Z' fill='white'/%3E\a     %3C/svg%3E                                     \a     ");
-
-  }
 }
 @include _1199 {
   .template {
@@ -2194,6 +2193,25 @@ a:hover {
   }
 }
 @include _575 {
+  .footer {
+    &__quest {
+      display: grid !important;
+      grid-template-columns: 1fr;
+      grid-gap: 10px;
+    }
+  }
+  .active-quests-grid .active-quests-item .inner {
+    padding: 10px;
+  }
+  .active-quests-grid .active-quests-item .inner .footer .cost {
+    margin: 0;
+  }
+  .active-quests-grid .active-quests-item .inner .footer .priority {
+    max-width: 80px;
+  }
+  .simple-button {
+    padding: 0;
+  }
   .quests {
     .block__actions {
       align-items: flex-start;
