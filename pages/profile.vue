@@ -2200,6 +2200,13 @@ a:hover {
       justify-content: space-between;
       flex-direction: column;
     }
+    .block__right {
+      padding: 10px;
+    }
+    .block__btn {
+      margin-top: 10px;
+      padding: 0;
+    }
   }
   .header {
     align-items: flex-start;
