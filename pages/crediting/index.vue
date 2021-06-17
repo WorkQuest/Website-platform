@@ -142,6 +142,7 @@ export default {
     openCreditingDepositModal() {
       this.ShowModal({
         key: modals.creditingDeposit,
+        needChangeModal: 1,
       });
     },
   },

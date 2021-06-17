@@ -88,7 +88,7 @@ export default {
         img: require('~/assets/img/ui/transactionSend.svg'),
         title: this.$t('modals.depositIsOpened'),
         subTitle: '',
-        path: '/crediting/1',
+        path: this.options.needChangeModal ? '/crediting/1' : undefined,
       });
     },
   },

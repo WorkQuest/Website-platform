@@ -121,6 +121,7 @@ export default {
     openConfirmDetailsModal() {
       this.ShowModal({
         key: modals.confirmDetails,
+        needChangeModal: this.options.needChangeModal || undefined,
       });
     },
   },
