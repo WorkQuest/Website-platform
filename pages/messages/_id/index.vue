@@ -520,7 +520,7 @@ export default {
     max-height: 70px;
     width: 100%;
     display: grid;
-    grid-template-columns: 4% 92% 4%;
+    grid-template-columns: 1fr 20fr 1fr;
     align-items: center;
     justify-items: center;
     border: 1px solid #E9EDF2;
@@ -593,5 +593,27 @@ export default {
 ::-webkit-scrollbar-thumb {
   border-radius: 2px;
   -webkit-box-shadow: inset 0 0 24px rgba(0, 131, 199, 1);
+}
+
+@include _991 {
+  .chat {
+    &__panel {
+      grid-template-columns: 1fr 15fr 1fr;
+    }
+  }
+}
+@include _575 {
+  .chat {
+    &__panel {
+      grid-template-columns: 1fr 10fr 1fr;
+    }
+  }
+}
+@include _480 {
+  .chat {
+    &__panel {
+      grid-template-columns: 1fr 7fr 1fr;
+    }
+  }
 }
 </style>

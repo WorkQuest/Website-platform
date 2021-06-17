@@ -3,12 +3,14 @@
     <div class="map__container">
       <div class="quests__top">
         <transition name="fade-fast">
+          // in GMAP
+          // v-if="isShowMap && userPosition"
+          // :cluster="{options: {styles: clusterStyle}}"
+          // :center="{lat: userPosition.latitude, lng: userPosition.longitude}"
           <GMap
-            v-if="isShowMap && userPosition"
+            v-if="isShowMap"
             ref="gMap"
             language="en"
-            :cluster="{options: {styles: clusterStyle}}"
-            :center="{lat: userPosition.latitude, lng: userPosition.longitude}"
             :options="{fullscreenControl: false}"
             :zoom="10"
           >
