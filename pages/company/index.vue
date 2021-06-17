@@ -307,6 +307,7 @@
             <div class="inner">
               <div class="header">
                 <img
+                  class="active-quests-image-profile"
                   src="~/assets/img/app/fake_profile.png"
                   alt=""
                 >

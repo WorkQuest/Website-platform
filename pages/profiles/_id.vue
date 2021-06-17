@@ -192,7 +192,7 @@
           </div>
           <div class="active-quests-item">
             <img
-              class="active-quests-image"
+              class="active-quests-img"
               src="~assets/img/temp/fake-card.svg"
               alt=""
             >
@@ -227,14 +227,16 @@
                 <div class="cost -green">
                   1500 WUSD
                 </div>
+                <div class="details">
+                  <nuxt-link
+                    class="simple-button"
+                    to="/company"
+                  >
+                    {{ $t('profile.details') }}
+                  </nuxt-link>
+                </div>
               </div>
             </div>
-            <nuxt-link
-              class="simple-button"
-              to="/profiles/1"
-            >
-              {{ $t('profile.details') }}
-            </nuxt-link>
             <div class="favorite" />
           </div>
           <div class="button">
@@ -326,6 +328,37 @@ export default {
   &_green {
     color: #00AA5B !important;
   }
+}
+.btn {
+  &__common {
+    font-size: 16px;
+    line-height: 130%;
+    text-decoration: none;
+    background-repeat: no-repeat;
+    color: #0083C7;
+  }
+}
+.simple-button {
+  @extend .btn__common;
+  position: absolute;
+  bottom: 27px;
+  right: 27px;
+  padding-right: 37px;
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a     %3Cpath d='M16.17 13L12.59 16.59L14 18L20 12L14 6L12.59 7.41L16.17 11H4V13H16.17Z' fill='%230083C7'/%3E\a     %3C/svg%3E                                     \a     ");
+  background-position: 100% -1px;
+}
+.button {
+  display: flex;
+  justify-content: center;
+}
+.button .more-button {
+  @extend .btn__common;
+  display: inline-block;
+  border: 1px solid rgba(0, 131, 199, 0.1);
+  border-radius: 6px;
+  padding: 13px 67px 13px 28px;
+  background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
+  background-position: 82% 21px;
 }
 
 .number {
@@ -633,10 +666,35 @@ export default {
   &__header {
     @extend .styles__flex;
     @extend .styles__center;
-}
+  }
   &__main-header {
     @extend .styles__flex;
     @extend .styles__center;
+  }
+}
+
+.styles {
+  &__between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__flex {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  &__center {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+}
+.background {
+  &__common {
+    background-repeat: no-repeat;
+    background-position: 0 -1px;
+    padding-left: 25px;
   }
 }
 
@@ -748,30 +806,6 @@ table {
     background-position: 100% 7px;
     padding-right: 24px;
     margin-right: 40px;
-  }
-  .styles {
-    &__between {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    &__flex {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-    }
-    &__center {
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-    }
-  }
-  .background {
-    &__common {
-      background-repeat: no-repeat;
-      background-position: 0 -1px;
-      padding-left: 25px;
-    }
   }
   .communication {
     height: 24px;
@@ -935,10 +969,6 @@ table {
   }
   .reviews-item .header .avatar {
     margin-right: 15px;
-  }
-  .reviews-item .subheader {
-    @extend .styles__flex;
-    margin: 15px 0;
   }
   .reviews-item .subheader {
     @extend .styles__flex;
@@ -1140,6 +1170,139 @@ a:hover {
     color: $white;
     background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a     %3Cpath d='M16.17 13L12.59 16.59L14 18L20 12L14 6L12.59 7.41L16.17 11H4V13H16.17Z' fill='white'/%3E\a     %3C/svg%3E                                     \a     ");
 
+  }
+}
+@include _1199 {
+  .template {
+    &__main {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+  .main-container {
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .box__skills {
+    grid-template-columns: repeat(4, auto);
+    grid-gap: 20px;
+  }
+  .avatar__container {
+    width: 50%;
+  }
+}
+@include _991 {
+  .box {
+    grid-template-columns: 1fr;
+    .data-grid {
+      grid-template-columns: repeat(2, auto);
+    }
+  }
+  .data-grid {
+    grid-template-columns: repeat(2, auto);
+  }
+  .information-grid {
+    .col .contacts {
+      display: grid;
+      grid-template-columns: auto 1fr;
+    }
+  }
+  .information-section {
+    .reviews-grid {
+      grid-template-columns: auto;
+    }
+  }
+  .avatar__container {
+    text-align: center;
+    width: 100%;
+  }
+}
+@include _767 {
+  .main-section .information-grid .col .contacts {
+    display: grid;
+    grid-template-columns: auto;
+  }
+  .quests {
+    .limit__container {
+      display: grid;
+      grid-template-columns: auto;
+    }
+    .block {
+      grid-template-columns: auto;
+      margin-bottom:20px;
+      &__img {
+        max-width: 100%;
+        img {
+          border-radius: 6px;
+          height: 200px;
+          object-fit: cover;
+          width: 100%;
+        }
+      }
+    }
+  }
+  .quests {
+    &__tools {
+      padding: 0;
+    }
+  }
+  .active-quests-grid .active-quests-item {
+    grid-template-columns: auto;
+    .active-quests-img {
+      border-radius: 6px;
+      height: 200px;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+}
+@include _575 {
+  .footer {
+    .details {
+      width: 100%;
+    }
+  }
+  .quests {
+    .block__actions {
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-direction: column;
+    }
+  }
+  .header {
+    align-items: flex-start;
+  }
+  .active-quests-grid {
+    margin-top: 20px;
+  }
+  .quests__content {
+    grid-template-columns: repeat(2, auto);
+  }
+  .reviews-grid {
+    .reviews-item .header {
+      flex-direction: column;
+    }
+  }
+  .information-grid {
+    flex-direction: column;
+    align-items: center;
+    .col {
+      margin-bottom: 10px;
+    }
+  }
+  .reviews-item {
+    .name {
+      margin-top: 10px;
+    }
+  }
+  .box__profile {
+    flex-direction: column;
+    align-items: center;
+  }
+  .portfolio__items {
+    grid-template-columns: repeat(2, auto);
+    margin-bottom: 20px;
   }
 }
 </style>
