@@ -428,9 +428,6 @@ export default {
   }
 }
 
-.avatar {
-  &__container {}
-}
 .distance {
   &__container {
     display: flex;
@@ -547,7 +544,7 @@ export default {
 .link {
   cursor: pointer;
   &:hover {
-    cursor: pointer;
+    @extend .link;
   }
 }
 .star {
@@ -572,7 +569,7 @@ export default {
   }
 }
 .block {
-  background: #FFFFFF;
+  background: $white;
   border-radius: 6px;
   display: grid;
   grid-template-columns: 240px 1fr;
@@ -648,9 +645,7 @@ export default {
     }
   }
   &__btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @extend .block__actions;
     padding: 0 10px;
     min-width: 146px;
     height: 34px;
@@ -745,7 +740,7 @@ export default {
     }
   }
   &__text {
-    font-family: 'Inter', sans-serif;
+    @include text-simple;
     font-style: normal;
     &_title  {
       font-weight: 500;

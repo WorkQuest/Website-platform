@@ -201,7 +201,7 @@
             </template>
           </base-field>
         </div>
-        <div class="btn__container-right">
+        <div class="profile__row-4col">
           <base-btn
             class="btn__save"
           >
@@ -217,14 +217,14 @@
           <div class="page__badge-skills">
             {{ $t('settings.skills') }}
           </div>
-          <span
+          <div
             v-for="(item, i) in badges"
             :key="i"
           >
             <div class="page__badge">
               {{ item.name }}
             </div>
-          </span>
+          </div>
           <div class="btn__container">
             <div class="btn__plus">
               <span class="icon-plus_circle" />
@@ -707,8 +707,10 @@ export default {
 
 .avatar {
   &__row {
-    display: flex;
-    margin: 0 20px 0 20px;
+    display: grid;
+    grid-template-columns: 107px 1fr;
+    grid-gap: 20px;
+    margin: 20px;
   }
 }
 .btn {
@@ -722,7 +724,8 @@ export default {
   }
   &__save {
     @extend .btn;
-    max-width: 250px;
+    grid-column: 4/5;
+    margin-bottom: 20px;
   }
 }
 .quests {
@@ -813,7 +816,6 @@ export default {
     max-height: 115px;
     max-width: 115px;
     border-radius: 6px;
-    margin: 20px;
   }
   &__row-1col {
     @extend .profile;
@@ -1032,10 +1034,6 @@ export default {
   }
 }
 
-@include _1700 {}
-@include _1600 {}
-@include _1400 {}
-@include _1300 {}
 @include _1199 {
   .quests {
     &__top {
@@ -1087,10 +1085,7 @@ export default {
 @include _767 {
   .icon {
     &__close {
-      position: absolute;
-      bottom: 204px;
-      right: 12px;
-      z-index: 2;
+      bottom: 167px;
     }
   }
   .page {
@@ -1116,6 +1111,57 @@ export default {
     grid-template-columns: 1fr;
     &__left {
       padding: 20px 0 20px 20px;
+    }
+  }
+}
+
+@include _575 {
+  .avatar {
+    &__row {
+      grid-template-columns: 1fr;
+    }
+  }
+  .main-white {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .btn {
+    &__container {
+      width: initial;
+      justify-content: center;
+      margin: 0 0 10px;
+    }
+    &__container-right {
+      margin: 0 20px;
+      justify-content: center;
+    }
+  }
+  .btn {
+    &__save {
+      grid-column: 1/5;
+    }
+  }
+  .page {
+    &__info-title {
+      font-size: 18px;
+    }
+  }
+  .settings {
+    &_blue {
+      grid-template-columns: 1fr;
+      padding: 10px;
+      grid-gap: 10px;
+    }
+  }
+  .profile {
+    &__img {
+      margin: 20px 0 20px 0;
+    }
+  }
+  .icon {
+    &__close {
+      bottom: 167px;
+      right: 5px;
     }
   }
 }

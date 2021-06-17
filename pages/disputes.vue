@@ -17,7 +17,7 @@
           </div>
         </span>
         <div class="page__grid">
-          <div
+          <span
             v-for="(item, i) in payload.disputes"
             :key="i"
             class=""
@@ -66,7 +66,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </span>
         </div>
       </div>
     </div>
@@ -160,21 +160,20 @@ export default {
     display: grid;
     width: 100%;
     grid-template-columns: repeat(2, 1fr);
+    grid-gap: 15px;
   }
   &__card {
     background-color: $white;
     border-radius: 6px;
     display: grid;
     grid-template-columns: 5fr 1fr 5fr;
-    max-width: 580px;
     width: 100%;
-    margin: 5px 10px 10px 0;
+    margin: 20px 10px 10px 0;
     height: 100%;
-    max-height: 185px;
   }
   &__text {
-    font-size: 16px;
     @include text-simple;
+    font-size: 16px;
     &_blue {
       color: $blue;
     }
@@ -192,21 +191,36 @@ export default {
   }
 }
 @include _1199 {
+  .main {
+    &__body {
+      padding: 20px;
+    }
+  }
   .page {
     &__grid {
       grid-template-columns: 1fr;
-      justify-items: center;
+      grid-gap: 15px;
     }
     &__title {
-      margin: 20px 0 0 217px;
     }
   }
 }
 
-@include _991 {
+@include _575 {
+  .main {
+    &__body {
+      padding: 0 20px;
+    }
+  }
   .page {
-    &__title {
-      margin: 20px 0 0 135px;
+    &__grid {
+      grid-gap: 15px;
+    }
+    &__text {
+      font-size: 12px;
+    }
+    &__decision {
+      font-size: 12px;
     }
   }
 }

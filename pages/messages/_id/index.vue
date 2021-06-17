@@ -231,6 +231,24 @@ export default {
 
 <style lang="scss" scoped>
 
+.styles {
+  &__between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__flex {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  &__center {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+}
+
 .arrow-back {
   display: flex;
   flex-direction: row;
@@ -240,26 +258,29 @@ export default {
 }
 
 .icon {
+  cursor: pointer;
+  font-size: 26px;
   &-send::before {
+    @extend .icon;
     content: "\ea6b";
     font-size: 30px;
     color: $blue;
   }
   &-link::before {
+    @extend .icon;
     content: "\ea20";
     color: $black700;
     font-size: 30px;
   }
   &-short_left::before {
+    @extend .icon;
     content: "\ea6d";
     color: $black800;
-    font-size: 26px;
-    cursor: pointer;
   }
   &-more_horizontal::before {
+    @extend .icon;
     content: "\e951";
     color: $black500;
-    font-size: 26px;
   }
   &-more {
     margin: 0 19px 0 0;
@@ -279,15 +300,11 @@ export default {
     position: absolute;
   }
   &__file-icon-wrapper {
+    @extend .styles__flex;
+    @extend .styles__center;
     height: 60px;
     width: 60px;
     margin-right: 15px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
@@ -474,29 +491,24 @@ export default {
     border-radius: 6px 0 0 0;
   }
   &__btn {
+    width: 100%;
+    height: 100%;
+    max-width:40px;
+    max-height: 40px;
+    border-radius: 6px;
+    transition: .2s;
+    background-color: $black0;
     &_spend {
-      background-color: $black0;
-      border-radius: 6px;
-      width: 100%;
-      height: 100%;
-      max-width:40px;
-      max-height: 40px;
+      @extend .chat__btn;
       margin: 0 11px 0 0;
-      transition: .2s;
       &:hover {
         @extend .chat__btn_spend;
         box-shadow: 0 0 6px rgba(0,0,0,0.2);
       }
     }
     &_add {
-      background-color: $black0;
-      border-radius: 6px;
-      width: 100%;
-      height: 100%;
-      max-width:40px;
-      max-height: 40px;
+      @extend .chat__btn;
       margin: 0 -11px 0 0;
-      transition: .2s;
       &:hover {
         @extend .chat__btn_add;
         box-shadow: 0 0 6px rgba(0,0,0,0.2);
@@ -508,7 +520,7 @@ export default {
     max-height: 70px;
     width: 100%;
     display: grid;
-    grid-template-columns: 4% 92% 4%;
+    grid-template-columns: 1fr 20fr 1fr;
     align-items: center;
     justify-items: center;
     border: 1px solid #E9EDF2;
@@ -581,5 +593,27 @@ export default {
 ::-webkit-scrollbar-thumb {
   border-radius: 2px;
   -webkit-box-shadow: inset 0 0 24px rgba(0, 131, 199, 1);
+}
+
+@include _991 {
+  .chat {
+    &__panel {
+      grid-template-columns: 1fr 15fr 1fr;
+    }
+  }
+}
+@include _575 {
+  .chat {
+    &__panel {
+      grid-template-columns: 1fr 10fr 1fr;
+    }
+  }
+}
+@include _480 {
+  .chat {
+    &__panel {
+      grid-template-columns: 1fr 7fr 1fr;
+    }
+  }
 }
 </style>
