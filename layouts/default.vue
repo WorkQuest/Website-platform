@@ -769,7 +769,7 @@ export default {
         },
         {
           title: this.$t('ui.menu.p2p'),
-          path: '/wallet',
+          path: '/insuring',
         },
         {
           title: this.$t('ui.menu.savings'),

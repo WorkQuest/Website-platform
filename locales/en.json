@@ -661,5 +661,24 @@
       "sender": "dfgd6...fs65ds",
       "txHash": "dfgd6...fs65ds"
     }
+  },
+  "insuring": {
+   "peerToPeerInsuring": "P2P insuring",
+    "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "minimalProtection": "Minimal protection",
+    "pointTemplate": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Habitant et urna fames.",
+    "standartProtection": "Standart protection",
+    "maximumProtection": "Maximum protection",
+    "buy": "Buy",
+    "information": "Information",
+    "docName": "Some_document.pdf",
+    "mb": "{count} MB",
+    "minimalProtectionPlan": "Minimal protection plan",
+    "yourFundBalance": "Your fund balance",
+    "wusdCount": "{count} WUSD",
+    "dollarsCount": "$ {count}",
+    "withdraw": "Withdraw",
+    "leaveFund": "Leave fund",
+    "changePlan": "Change plan"
   }
  }
