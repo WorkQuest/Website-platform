@@ -10,6 +10,18 @@
           :center="{lat: locations[0].lat, lng: locations[0].lng}"
           :zoom="6"
         />
+        <GMapMarker
+          v-for="location in locations"
+          :key="location.id"
+          :position="{lat: location.lat, lng: location.lng}"
+          :options="{icon: location === currentLocation ? pins.selected : pins.notSelected}"
+          @click="currentLocation = location"
+        >
+          <GMapInfoWindow :options="{maxWidth: 200}">
+            lat: {{ location.lat }},
+            lng: {{ location.lng }}
+          </GMapInfoWindow>
+        </GMapMarker>
       </transition>
       <div class="quests__search">
         <div class="search">
@@ -239,13 +251,36 @@ export default {
   data() {
     return {
       isShowMap: true,
-      search: '',
+      currentLocation: {},
+      circleOptions: {},
       locations: [
         {
-          lat: 56.475565,
-          lng: 84.967270,
+          lat: 44.933076,
+          lng: 15.629058,
+        },
+        {
+          lat: 45.815,
+          lng: '15.9819',
+        },
+        {
+          lat: '45.12',
+          lng: '16.21',
         },
       ],
+      pins: {
+        selected: '/img/app/marker_blue.svg',
+        notSelected: '/img/app/marker_red.svg',
+      },
+      clusterStyle: [
+        {
+          url:
+            'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m1.png',
+          width: 56,
+          height: 56,
+          textColor: '#fff',
+        },
+      ],
+      search: '',
       distance: [
         '+ 100 m',
         '+ 500 m',
