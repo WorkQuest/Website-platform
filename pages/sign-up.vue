@@ -195,4 +195,13 @@ export default {
     padding-top: 30px;
   }
 }
+@include _1199 {
+  .auth {
+    &__text {
+      &_title {
+        font-size: 28px;
+      }
+    }
+  }
+}
 </style>

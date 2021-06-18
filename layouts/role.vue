@@ -55,7 +55,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@media screen and (min-width:1199px) {}
 .template {
   &__body {
     background: linear-gradient(#103D7C 45%, transparent 40%) no-repeat;
@@ -75,7 +74,7 @@ export default {
   &__top {
     display: initial;
     width: 100%;
-    padding-top: 21px;
+    padding-top: 20px;
   }
   &__logo {
     display: grid;
@@ -136,27 +135,17 @@ export default {
   }
 }
 
-@include _1199 {
+@include _575 {
   .template {
-    &__logo {
-      display: none;
+    &__container {
+      grid-gap: 30px;
     }
-    &__body {
-      background: white;
+    &__top {
+      padding: 20px;
     }
-    &__link {
-      margin: 0 20px 0 0;
+    &__footer {
+      justify-content: center;
     }
   }
 }
-
-@include _767 {
-  .template {
-    &__link {
-      display: none;
-    }
-  }
-}
-
-@include _380 {}
 </style>

@@ -45,7 +45,7 @@
         </div>
         <img
           class="role__image"
-          src="~assets/img/app/role_employer.svg"
+          src="~assets/img/app/employer.png"
           alt=""
         >
       </div>
@@ -79,7 +79,7 @@
         </div>
         <img
           class="role__image"
-          src="~assets/img/app/role_worker.svg"
+          src="~assets/img/app/worker.png"
           alt=""
         >
       </div>

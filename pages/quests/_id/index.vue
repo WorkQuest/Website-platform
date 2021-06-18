@@ -1,5 +1,4 @@
 <template>
-  <!-- Quest page_User -->
   <div>
     <Info
       :info="infoData"
@@ -41,12 +40,12 @@
                   class="icon-location icon_fs-20"
                 />
                 <span>{{ payload.location }}</span>
+                <span
+                  class="user__distance"
+                >
+                  {{ payload.distance }} {{ $t('meta.fromYou') }}
+                </span>
               </div>
-              <span
-                class="user__distance"
-              >
-                {{ payload.distance }} {{ $t('meta.fromYou') }}
-              </span>
               <div
                 v-if="userRole === 'worker'"
                 class="runtime__container"
@@ -434,6 +433,7 @@
                 <div class="block__img">
                   <img
                     src="~assets/img/temp/fake-card.svg"
+                    class="quests__img image"
                     alt=""
                   >
                 </div>
@@ -578,6 +578,7 @@ export default {
             symbol: 'wusd',
           },
         ],
+        favourite: true,
         company: 'Amazon',
         avatar: require('~/assets/img/app/fake_profile.png'),
         username: 'Samantha Sparcs',
@@ -660,7 +661,6 @@ export default {
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
     }),
-    // TODO: Написать вычисляемые методы isInviteUser, isActiveQuest, isResponded, isPerformed
   },
 
   async mounted() {
@@ -668,7 +668,6 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    // TODO: НАписать методы inviteUser, activeQuest, responseSend, performedSend
     cardsLevels(idx) {
       const { cards } = this;
       return [
@@ -676,6 +675,9 @@ export default {
         { card__level_reliable: cards[idx].level.code === 2 },
         { card__level_higher: cards[idx].level.code === 1 },
       ];
+    },
+    back() {
+      this.$router.go(-1);
     },
     toggleMap() {
       this.isInvite = !this.isShowMap;
@@ -709,7 +711,105 @@ export default {
 </script>
 
 <style lang="scss">
-
+.gallery {
+  &__image {
+    border-radius: 6px;
+    margin: 0 0 10px 0;
+    &_big {
+      width: 100%;
+      height: 440px;
+    }
+  }
+  &__small {
+    width: 147px;
+    height: 61px;
+  }
+}
+.btn {
+  &__container {
+    margin: 0 16px 0 16px;
+  }
+}
+.quest-materials {
+  margin: 10px 0 0 10px;
+  &__title {
+    @extend .quest-materials;
+    font-weight: 500;
+    font-size: 18px;
+    color: $black800;
+  }
+  &__gallery {
+    @extend .quest-materials;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-gap: 13px;
+  }
+}
+.user-skills {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 20px 20px 0 20px;
+  &__skill {
+    font-weight: 400;
+    font-size: 16px;
+    color: rgba(0, 131, 199, 1);
+    background-color: rgba(0, 131, 199, 0.1);
+    padding: 5px 7px;
+    border-radius: 44px;
+    margin: 0 10px 0 0;
+  }
+}
+.user-location {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 20px 20px 0 20px;
+  &__icon {}
+  &__distance {
+    font-weight: 400;
+    font-size: 14px;
+    color: $black500;
+  }
+}
+.user-name {
+  &__container {
+    display: flex;
+    flex-direction: row;
+  }
+}
+.user-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 20px 0 20px;
+  &__avatar {
+    width: 100%;
+    height: 100%;
+    max-width: 30px;
+    max-height: 30px;
+    border-radius: 137px;
+  }
+  &__name {
+    margin: 0 0 0 10px;
+    font-weight: 500;
+    font-size: 16px;
+    color: $black800;
+  }
+  &__level {
+    font-weight: 400;
+    font-size: 12px;
+    padding: 4px 5px;
+    border-radius: 3px;
+    &_green {
+      @extend .user-info__level;
+      color: #22CC14;
+      background-color: rgba(34, 204, 20, 0.1);
+    }
+  }
+}
 .runtime {
   &__container {
     margin: 0 0 0 30px;
@@ -745,7 +845,6 @@ export default {
     font-size: 18px;
   }
 }
-
 .card {
   padding: 2px 8px;
   align-items: center;
@@ -776,30 +875,10 @@ export default {
     }
   }
 }
-
 .btns {
   &__container {
     display: grid;
     grid-template-columns: 8fr 4fr;
-  }
-}
-
-.icon {
-  color:$black500;
-  font-size: 20px;
-  &-chat::before {
-    @extend .icon;
-    color:$green;
-  }
-  &-location::before {
-    @extend .icon;
-  }
-  &-clock::before {
-    @extend .icon;
-  }
-  &-share_outline {
-    @extend .icon;
-    margin-left: 5px;
   }
 }
 .divider{
@@ -833,7 +912,6 @@ export default {
   flex-direction: row;
   align-items: center;
 }
-
 .user {
   @include text-simple;
   color: $black800;
@@ -845,7 +923,7 @@ export default {
     justify-content: space-between;
   }
   &__container {
-    padding: 34.5px 0 25.5px 0;
+    padding: 35px 0 25px 0;
   }
   &__wrapper{
     display: flex;
@@ -904,7 +982,6 @@ export default {
     margin: 40px 0;
   }
 }
-
 .quest{
   @include text-simple;
   font-style: normal;
@@ -952,7 +1029,6 @@ export default {
     color:$black800;
   }
 }
-
 .quest_materials {
   &__title{
     @include text-simple;
@@ -988,7 +1064,6 @@ export default {
     padding:30px 0 0 0;
   }
 }
-
 .price {
   display: flex;
   flex-direction: row;
@@ -1009,7 +1084,6 @@ export default {
     justify-content: space-between;
   }
 }
-
 .badge {
   &__container {
     padding: 0 0 20px 0;
@@ -1045,7 +1119,6 @@ export default {
     align-items: center;
   }
 }
-
 .location {
   &__container{
     display: flex;
@@ -1074,7 +1147,6 @@ export default {
     }
   }
 }
-
 .star {
   &__default {
     display: flex;
@@ -1252,7 +1324,7 @@ export default {
   }
   &__content {
     display: flex;
-    justify-content: center;
+    justify-content: unset;
   }
   &__body {
     padding-top: 30px;
@@ -1349,15 +1421,175 @@ export default {
   }
 }
 .icon {
+  color:$black500;
+  font-size: 20px;
+  &-chat::before {
+    @extend .icon;
+    color:$green;
+  }
+  &-location::before {
+    @extend .icon;
+  }
+  &-clock::before {
+    @extend .icon;
+  }
+  &-share_outline {
+    @extend .icon;
+    margin-left: 5px;
+  }
   &-chat_green:before {
+    @extend .icon;
     content: "\e9ba";
     color: #00AA5B;
-    font-size: 20px;
   }
   &-caret_down_blue:before {
+    @extend .icon;
     content: "\ea48";
     color: #0083C7;
   }
+  &-chevron_big_left:before {
+    @extend .icon;
+    content: "\ea4d";
+    color: #0083C7;
+  }
+  &-location:before {
+    @extend .icon;
+    content: "\ea23";
+  }
 }
 
+@include _1199 {
+  .main__body, .main {
+    padding: 10px;
+  }
+  .user__distance {
+    margin: 0 20px;
+  }
+  .img {
+    &__container {
+      grid-template-columns: repeat(3, auto);
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+  }
+}
+@include _991 {
+  .main-white {
+    display: block;
+  }
+  .img {
+    &__container {
+      grid-template-columns: repeat(2, auto);
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+  }
+}
+@include _767 {
+  .user {
+    &__container {
+      padding: 0;
+    }
+  }
+  .main {
+    display: block;
+    .block {
+      grid-template-columns: auto;
+      &__img {
+        height: 200px;
+        max-width: 100%;
+        .image {
+          width: 100%;
+          border-radius: 6px;
+          object-fit: cover;
+          max-height: 500px;
+          height: 100%;
+        }
+      }
+    }
+  }
+  .price {
+    &__container {
+      flex-direction: column;
+    }
+    &__value {
+      font-size: 19px;
+    }
+  }
+}
+@include _575 {
+  .user {
+    &__head {
+      display: grid;
+      grid-template-columns: auto auto;
+      grid-gap: 5px;
+    }
+    &__right {
+      align-items: center;
+      .icon-share_outline {
+        margin-left: 25px;
+      }
+    }
+  }
+  .location {
+    &__container {
+      display: grid;
+      grid-template-columns: auto;
+      grid-gap: 5px;
+    }
+  }
+  .icon {
+    &-clock, &-location {
+      width: 30px;
+    }
+  }
+  .runtime {
+    &__container, &__title {
+      margin: 0;
+    }
+  }
+  .badge {
+    &__container {
+      padding-top: 20px;
+    }
+  }
+  .img {
+    &__container {
+      grid-template-columns: 1fr;
+    }
+  }
+  .quest {
+    &__spec {
+      font-size: 16px;
+    }
+  }
+  .spec {
+    &__link {
+      font-size: 16px;
+    }
+  }
+  .block {
+    &__right {
+      padding: 10px;
+    }
+    &__head {
+      display: flex !important;
+    }
+    &__btn {
+      padding: 0;
+      margin-top: 10px;
+    }
+    &__actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      .block__btn {
+        display: flex !important;
+      }
+    }
+  }
+}
 </style>

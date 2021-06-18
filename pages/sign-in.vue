@@ -98,21 +98,6 @@
           </button>
         </div>
       </div>
-      <div class="mobile__links">
-        <div class="auth__mobile">
-          <div class="auth__link">
-            <span>{{ $t('signIn.dontHaveAnAccount') }}</span>
-            <nuxt-link to="/sign-up">
-              {{ $t('signIn.signUp') }}
-            </nuxt-link>
-          </div>
-        </div>
-        <div class="auth__link">
-          <nuxt-link to="/restore">
-            {{ $t('signIn.forgotYourPass') }}
-          </nuxt-link>
-        </div>
-      </div>
     </div>
   </ValidationObserver>
 </template>
@@ -176,16 +161,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@media screen and (min-width:575px) {
-  .auth {
-    &__mobile {
-      display: none;
-    }
-    &__link {
-      display: none;
-    }
-  }
-}
 .auth {
   &__container {
     display: grid;
@@ -310,17 +285,11 @@ export default {
   .auth {
     &__icons {
       grid-template-columns: repeat(5, 1fr);
-      grid-gap: 42px;
-    }
-    &__fields {
-      padding-top: 0;
+      grid-gap: 15px;
     }
     &__text {
       &_title {
-        display: none;
-      }
-      &_simple {
-        display: none;
+        font-size: 28px;
       }
       &_wrap {
         text-align: center;
@@ -331,59 +300,14 @@ export default {
     }
   }
 }
-
-@include _767 {
-  .mobile {
-    &__links {
-      margin: 0 0 10px 0;
-    }
-  }
-  .auth {
-    &__text {}
-  }
-  .template {
-    &__right {
-      display: none;
-    }
-  }
-}
-
 @include _575 {
   .auth {
-    &__tools {
-      display: none;
-    }
-    &__action {
-      padding-top: 10px;
-    }
-    &__mobile {
-      display: grid;
-      margin: 20px 0 10px 0;
-    }
-  }
-}
-
-@include _380 {
-  .auth {
     &__icons {
-      grid-template-columns: repeat(5, 1fr);
-      grid-gap: 28px;
-    }
-    &__mobile {
-      margin: 20px 0 10px 0;
-    }
-    &__links {
-      margin: 0 0 20px 0;
-    }
-    &__links {
-      padding: 0 0 20px 0;
-    }
-  }
-  .template {
-    &__left {
-      max-width: 367px;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 }
-
 </style>

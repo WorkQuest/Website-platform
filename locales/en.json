@@ -109,6 +109,7 @@
     "writeAMessage": "Write a message",
     "quests": "Quests",
     "reviews": "Reviews",
+    "portfolio": "Portfolio",
     "sidebar": {
       "filter": "All Quests filter",
       "choose": "(Choose simple or \nspecialized category)",
@@ -200,6 +201,9 @@
     "title": "Skills"
   },
   "quests": {
+    "showAllCases": "Show all cases",
+    "portfolio": "Portfolio",
+    "searchQuests": "Search quests",
     "readCompletely": "Read completely",
     "questBig": "Quest",
     "fromBig": "From",
@@ -412,42 +416,23 @@
     "specialized": "Specialized",
     "typeOfJob": "Type of job",
     "specializations": "Specializations",
-    "aboutMe": "About me"
+    "aboutMe": "About me",
+    "giveAQuest": "Give a quest",
+    "skills": "Skills",
+    "completedQuests": "Completed quests",
+    "openedQuests": "Opened quests",
+    "showAll": "Show all",
+    "averageRating": "Average rating",
+    "from": "From",
+    "reviews": "reviews",
+    "portfolio": "Portfolio",
+    "showAllCases": "Show all cases"
   },
   "levels": {
     "reliableEmp": "RELIABLE EMP.",
     "checkedByTime": "CHECKED BY TIME",
     "disabled": "DISABLED",
     "higher": "HIGHER LEVEL"
-  },
-
-  "mobile": {
-    "priority": {
-      "low": "Low priority",
-      "urgent": "Urgent",
-      "normal": "Normal priority"
-    },
-    "youInvited": "You invited",
-    "active": "Active",
-    "performed": "Performed",
-    "youRequested": "You requested",
-    "runtime": "Runtime",
-    "mFromYou": "m from you",
-    "wusd": "WUSD",
-    "inviteYouAQuest": "Invite you a quest:",
-    "notifications": "Notifications",
-    "balance": "Balance",
-    "deposit": "Deposit",
-    "withdraw": "Withdraw",
-    "transactions": "Transactions",
-    "receive": "Receive",
-    "send": "Send",
-    "quests": "Quests",
-    "myQuests": "My quests",
-    "chat": "Chat",
-    "wallet": "Wallet",
-    "more": "More",
-    "disabled": "DISABLED"
   },
   "referral": {
     "inviteFriendsHead": "Invite friends.",
@@ -512,4 +497,4 @@
     "historyOfDeposits": "History of deposits",
     "depositAmount": "Deposit amount"
   }
-}
+ }
