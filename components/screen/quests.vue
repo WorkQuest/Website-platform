@@ -567,6 +567,7 @@ export default {
 
     &__details {
       width: 120px;
+      display: flex;
     }
   }
 

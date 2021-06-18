@@ -58,6 +58,8 @@ export default {
         { 'base-btn_disabled': disabled },
         { 'base-btn_light': mode === 'light' },
         { 'base-btn_outline': mode === 'outline' },
+        { 'base-btn_borderless-left': mode === 'borderless-left' },
+        { 'base-btn_borderless-right': mode === 'borderless-right' },
         { 'base-btn_tag': mode === 'tag' },
         { 'base-btn_agree': mode === 'agree' },
         { 'base-btn_goToChat': mode === 'goToChat' },
@@ -181,6 +183,22 @@ export default {
     border: 1px solid rgba(0, 131, 199, 0.1);
     background: #FFFFFF;
     color: $blue;
+    &:hover {
+      background: #F7F8FA;
+      color: $blue;
+    }
+  }
+  &_borderless {
+    background: #FFFFFF;
+    color: $blue;
+    &-left {
+      @extend .base-btn_borderless;
+      justify-content: flex-start;
+    }
+    &-right {
+      @extend .base-btn_borderless;
+      justify-content: flex-end;
+    }
     &:hover {
       background: #F7F8FA;
       color: $blue;

@@ -36,41 +36,24 @@
             <div class="description">
               {{ payload.user.desc }}
             </div>
+            <!-- socials links -->
             <div class="socials">
-              <nuxt-link
-                class="social__link"
-                to="/profile"
+              <span
+                v-for="(item, i) in socials"
+                :key="i"
               >
-                <span
-                  class="icon-facebook"
-                />
-              </nuxt-link>
-              <nuxt-link
-                class="social__link"
-                to="/profile"
-              >
-                <span
-                  class="icon-twitter"
-                />
-              </nuxt-link>
-              <nuxt-link
-                class="social__link"
-                to="/profile"
-              >
-                <span
-                  class="icon-instagram"
-                />
-              </nuxt-link>
-              <nuxt-link
-                class="social__link"
-                to="/profile"
-              >
-                <span
-                  class="icon-LinkedInn"
-                />
-              </nuxt-link>
+                <nuxt-link
+                  class="social__link"
+                  :to="item.url"
+                >
+                  <span
+                    :class="item.class"
+                  />
+                </nuxt-link>
+              </span>
             </div>
             <div class="contacts__grid">
+              <!-- contacts -->
               <div class="contacts">
                 <span class="icon-location" />
                 <span class="contact__link">{{ payload.user.location }}</span>
@@ -110,17 +93,18 @@
           <div class="share-btn" />
         </div>
         <div v-if="userRole === 'employer'" />
+        <!-- tabs -->
         <button
           class="tab__btn"
-          :class="{tab__btn_active: selected === 2}"
-          @click="selected = 2"
+          :class="{tab__btn_active: selected === 1}"
+          @click="selected = 1"
         >
           {{ $t('profile.quests') }}
         </button>
         <button
           class="tab__btn"
-          :class="{tab__btn_active: selected === 1}"
-          @click="selected = 1"
+          :class="{tab__btn_active: selected === 2}"
+          @click="selected = 2"
         >
           {{ $t('profile.reviews') }}
         </button>
@@ -243,12 +227,15 @@
               <div class="rating">
                 {{ item.reviewerRating }}
               </div>
-              <nuxt-link
-                class="simple-button"
-                to="/profile"
+              <base-btn
+                mode="borderless-right"
+                @click="showCompany()"
               >
                 {{ $t('quests.readCompletely') }}
-              </nuxt-link>
+                <template v-slot:right>
+                  <span class="icon-short_right" />
+                </template>
+              </base-btn>
             </div>
           </span>
         </div>
@@ -406,18 +393,28 @@
                             {{ item.amount }} {{ item.symbol }}
                           </div>
                           <div class="block__details">
-                            <button
+                            <base-btn
                               v-if="item.type !== 3"
-                              class="block__btn"
+                              mode="borderless-right"
                               @click="showDetails()"
                             >
-                              <span
-                                class="block__text block__text_details"
-                              >
-                                {{ $t('meta.details') }}
-                              </span>
-                              <span class="icon-short_right" />
-                            </button>
+                              {{ $t('meta.details') }}
+                              <template v-slot:right>
+                                <span class="icon-short_right" />
+                              </template>
+                            </base-btn>
+                            <!--                            <button-->
+                            <!--                              v-if="item.type !== 3"-->
+                            <!--                              class="block__btn"-->
+                            <!--                              @click="showDetails()"-->
+                            <!--                            >-->
+                            <!--                              <span-->
+                            <!--                                class="block__text block__text_details"-->
+                            <!--                              >-->
+                            <!--                                {{ $t('meta.details') }}-->
+                            <!--                              </span>-->
+                            <!--                              <span class="icon-short_right" />-->
+                            <!--                            </button>-->
                             <div
                               v-else
                               class="block__rating"
@@ -482,6 +479,7 @@
           class="button"
         >
           <nuxt-link
+            v-if="selected === 1"
             class="more-button"
             to="/profile"
           >
@@ -533,12 +531,15 @@
                   1500 WUSD
                 </div>
                 <div class="details">
-                  <nuxt-link
-                    class="simple-button"
-                    to="/company"
+                  <base-btn
+                    mode="borderless-right"
+                    @click="showCompany()"
                   >
                     {{ $t('profile.details') }}
-                  </nuxt-link>
+                    <template v-slot:right>
+                      <span class="icon-short_right" />
+                    </template>
+                  </base-btn>
                 </div>
               </div>
             </div>
@@ -546,6 +547,7 @@
           </div>
           <div class="button">
             <nuxt-link
+              v-if="selected === 1"
               class="more-button"
               to="/profile"
             >
@@ -568,7 +570,25 @@ export default {
     return {
       selectedTab: 0,
       isShowFavourite: false,
-      selected: 2,
+      selected: 1,
+      socials: [
+        {
+          url: '/profile',
+          class: 'icon-facebook',
+        },
+        {
+          url: '/profile',
+          class: 'icon-twitter',
+        },
+        {
+          url: '/profile',
+          class: 'icon-instagram',
+        },
+        {
+          url: '/profile',
+          class: 'icon-LinkedInn',
+        },
+      ],
       tabs: [
         {
           title: 'All quests',
@@ -808,6 +828,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    showCompany() {
+      this.$router.push('/company');
+    },
     showMessages() {
       this.$router.push('/messages/1');
     },
@@ -1618,6 +1641,11 @@ export default {
 .icon {
   font-size: 20px;
   cursor: pointer;
+  &-short_right:before {
+    @extend .icon;
+    content: "\ea6e";
+    color: #0083C7;
+  }
   &-chat:before {
     @extend .icon;
     content: "\e9ba";
@@ -2000,7 +2028,7 @@ table {
     width: 100%;
     background-color: #fff;
     border-radius: 6px;
-    padding: 20px 20px 69px;
+    padding: 20px 20px 10px;
     position: relative;
   }
   .reviews-item .header {
