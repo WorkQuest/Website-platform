@@ -3,12 +3,14 @@
     <div class="map__container">
       <div class="quests__top">
         <transition name="fade-fast">
+          // in GMAP
+          // v-if="isShowMap && userPosition"
+          // :cluster="{options: {styles: clusterStyle}}"
+          // :center="{lat: userPosition.latitude, lng: userPosition.longitude}"
           <GMap
-            v-if="isShowMap && userPosition"
+            v-if="isShowMap"
             ref="gMap"
             language="en"
-            :cluster="{options: {styles: clusterStyle}}"
-            :center="{lat: userPosition.latitude, lng: userPosition.longitude}"
             :options="{fullscreenControl: false}"
             :zoom="10"
           >
@@ -627,7 +629,7 @@ export default {
     }
   }
   &__text {
-    font-family: 'Inter', sans-serif;
+    @include text-simple;
     font-style: normal;
     &_title  {
       font-weight: 500;
@@ -709,7 +711,7 @@ export default {
 }
 .menu {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 20px;
   justify-content: space-between;
   max-width: 1180px;
@@ -938,6 +940,65 @@ export default {
   &__btn-search {
     margin: 30px 10px 0 0;
     width: 220px;
+  }
+}
+
+@include _1199 {
+  .map__container, .main {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .menu {
+    grid-template-columns: auto auto;
+  }
+  .card {
+    padding: 10px;
+  }
+}
+@include _991 {
+  .content {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .menu__right {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@include _767 {
+  .main {
+    display: block;
+    .content {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .search {
+    grid-template-columns: auto auto;
+    padding: 0 10px;
+    grid-gap: 10px;
+    &__toggle, &__dd {
+      display: none;
+    }
+    &__actions {
+      border: none;
+    }
+  }
+}
+@include _575 {
+  .main {
+    .menu {
+      display: flex;
+      flex-direction: column;
+      grid-template-columns: auto;
+    }
+    .menu__left {
+      display: flex;
+      flex-direction: column;
+    }
+    .content {
+      grid-template-columns: 1fr;
+    }
+    .menu__right {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 }
 </style>
