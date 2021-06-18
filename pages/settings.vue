@@ -1059,6 +1059,12 @@ export default {
   }
 }
 @include _991 {
+  .icon {
+    &__close {
+      bottom: 154px;
+      right: 10px;
+    }
+  }
   .page {
     &__grid {
       grid-template-columns: 11fr 1fr;
@@ -1163,13 +1169,26 @@ export default {
   }
   .icon {
     &__close {
-      bottom: 167px;
+      bottom: 155px;
       right: 5px;
+    }
+  }
+}
+@include _480 {
+  .icon {
+    &__close {
+      bottom: 177px;
     }
   }
 }
 
 @include _380 {
+  .icon {
+    &__close {
+      bottom: 195px;
+      right: 5px;
+    }
+  }
   .option {
     &__title {
       padding: 0 10px 0 16px;
