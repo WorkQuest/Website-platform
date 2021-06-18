@@ -1089,6 +1089,17 @@ export default {
 }
 
 @include _767 {
+  .avatar {
+    &__row {
+      margin: 20px 20px 0 20px;
+    }
+  }
+  .company {
+    &__inputs {
+      grid-template-columns: 1fr;
+      grid-gap: 0;
+    }
+  }
   .icon {
     &__close {
       bottom: 167px;
