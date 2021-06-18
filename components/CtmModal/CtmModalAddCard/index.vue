@@ -1,4 +1,4 @@
-<template>
+'<template>
   <ctm-modal-box
     class="messageSend"
     :title="$t('modals.addCard')"

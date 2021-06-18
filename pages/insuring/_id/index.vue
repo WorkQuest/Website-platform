@@ -29,6 +29,7 @@
               </div>
               <base-btn
                 class="btn_bl"
+                @click="openWithdrawModule()"
               >
                 {{ $t('insuring.withdraw') }}
               </base-btn>
@@ -109,6 +110,11 @@ export default {
   methods: {
     handleClickBuyProtection() {
       this.$router.push('/insuring/1');
+    },
+    openWithdrawModule() {
+      this.ShowModal({
+        key: modals.withdraw,
+      });
     },
   },
 };

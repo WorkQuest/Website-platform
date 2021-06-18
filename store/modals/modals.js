@@ -15,7 +15,7 @@ export default {
   cardHasBeenAdded: 'cardHasBeenAdded',
   deposit: 'deposit',
   addCard: 'addCard',
-  widthraw: 'widthraw',
+  withdraw: 'withdraw',
   review: 'review',
   thanks: 'Thanks ',
   inviteSend: 'inviteSend',

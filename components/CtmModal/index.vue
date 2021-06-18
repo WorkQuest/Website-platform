@@ -27,7 +27,7 @@
       <CtmModalCardHasBeenAdded v-if="modals.cardHasBeenAdded === currentModalKey" />
       <CtmModalDeposit v-if="modals.deposit === currentModalKey" />
       <CtmModalAddCard v-if="modals.addCard === currentModalKey" />
-      <CtmModalWidthraw v-if="modals.widthraw === currentModalKey" />
+      <CtmModalWithdraw v-if="modals.withdraw === currentModalKey" />
       <CtmModalReviewEmployer v-if="modals.review === currentModalKey" />
       <CtmModalInviteSend v-if="modals.inviteSend === currentModalKey" />
       <CtmModalQuestCreated v-if="modals.questCreated === currentModalKey" />
@@ -64,7 +64,7 @@ import CtmModalTransactionSend from './CtmModalTransactionSend';
 import CtmModalCardHasBeenAdded from './CtmModalCardHasBeenAdded';
 import CtmModalDeposit from './CtmModalDeposit';
 import CtmModalAddCard from './CtmModalAddCard';
-import CtmModalWidthraw from './CtmModalWidthraw';
+import CtmModalWithdraw from './CtmModalWithdraw';
 import CtmModalInvitation from './CtmModalInvitation';
 import CtmModalInviteSend from './CtmModalInviteSend';
 import CtmModalQuestCreated from './CtmModalQuestCreated';
@@ -96,7 +96,7 @@ export default {
     CtmModalCardHasBeenAdded,
     CtmModalDeposit,
     CtmModalAddCard,
-    CtmModalWidthraw,
+    CtmModalWithdraw,
     CtmModalReviewEmployer,
     CtmModalThanksSend,
     CtmModalInvitation,

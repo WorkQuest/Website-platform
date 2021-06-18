@@ -271,7 +271,7 @@
     "cvv": "CVV",
     "cardholderName": "Cardholder name",
     "addAnotherCard": "Add another card",
-    "widthraw": "Widthraw",
+    "withdraw": "Withdraw",
     "addCard": "Add Card",
     "inviteSend": "Invite sent",
     "questCreated": "Quest Created",
@@ -321,7 +321,9 @@
     "confirmDetails": "Confirm details",
     "depositing": "Depositing",
     "generating": "Generating",
-    "liquidationFee": "Liquidation fee"
+    "liquidationFee": "Liquidation fee",
+    "withdrawal": "Withdrawal",
+    "saveCardForNextPayment": "Save card for next payment"
   },
   "ui": {
     "workers": "Workers",

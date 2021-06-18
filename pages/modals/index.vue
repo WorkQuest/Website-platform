@@ -47,9 +47,9 @@
       showAddCardModal
     </base-btn>
     <base-btn
-      @click="showWidthrawModal()"
+      @click="showWithdrawModal()"
     >
-      showWidthrawModal
+      showWithdrawModal
     </base-btn>
     <base-btn
       @click="showThanksModal()"
@@ -146,9 +146,9 @@ export default {
         key: modals.addCard,
       });
     },
-    showWidthrawModal() {
+    showWithdrawModal() {
       this.ShowModal({
-        key: modals.widthraw,
+        key: modals.withdraw,
       });
     },
     showInvitationModal() {
