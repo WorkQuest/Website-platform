@@ -1145,29 +1145,22 @@ export default {
     }
 
     &__amount {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 130%;
+      text-transform: uppercase;
       &_green {
-        font-style: normal;
-        font-weight: bold;
-        font-size: 18px;
-        line-height: 130%;
-        text-transform: uppercase;
+        @extend .block__amount;
         color: #00AA5B;
       }
       &_gray {
-        font-style: normal;
-        font-weight: bold;
-        font-size: 18px;
-        line-height: 130%;
-        text-transform: uppercase;
+        @extend .block__amount;
         color: #B0B3B9;
       }
       &__performed {
+        @extend .block__amount;
         color: #B0B3B9;
-        font-style: normal;
-        font-weight: bold;
-        font-size: 18px;
-        line-height: 130%;
-        text-transform: uppercase;
       }
     }
 
@@ -1430,12 +1423,8 @@ export default {
   }
 
   &__amount {
-    font-style: normal;
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 130%;
+    @extend .block__amount;
     color: #00AA5B;
-    text-transform: uppercase;
   }
 
   &__priority {
@@ -2136,9 +2125,7 @@ table {
     cursor: pointer;
   }
   .button {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    @extend .styles__flex;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;

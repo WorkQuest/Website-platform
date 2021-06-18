@@ -43,8 +43,8 @@
                 <span
                   class="user__distance"
                 >
-                {{ payload.distance }} {{ $t('meta.fromYou') }}
-              </span>
+                  {{ payload.distance }} {{ $t('meta.fromYou') }}
+                </span>
               </div>
               <div
                 v-if="userRole === 'worker'"
