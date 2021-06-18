@@ -308,7 +308,7 @@ export default {
           priority: 0,
           amount: 1500,
           symbol: 'wusd',
-          url: '/show-profile',
+          url: '/profile',
           distance: '300',
         },
         {

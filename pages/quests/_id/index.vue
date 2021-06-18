@@ -683,7 +683,7 @@ export default {
       this.isInvite = !this.isShowMap;
     },
     showProfile() {
-      this.$router.push('/show-profile');
+      this.$router.push('/profile');
     },
     getPriority(index) {
       const priority = {
