@@ -951,7 +951,7 @@ export default {
     }
     &__btn {
       margin-top: 10px;
-      padding: 0;
+      display: flex;
     }
   }
 }

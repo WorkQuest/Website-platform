@@ -72,12 +72,20 @@
             </div>
             <div class="contacts__grid">
               <div class="contacts">
-                <span class="icon-location" /><span class="contact__link">{{ payload.user.location }}</span>
-                <span class="icon-phone" /><span class="contact__link">{{ payload.user.tel }}</span>
-                <span class="icon-mail" /><span class="contact__link">{{ payload.user.email }}</span>
-                <div v-if="userRole === 'employer'">
-                  <span class="icon-Earth" /><span class="contact__link">amazon.com</span>
-                </div>
+                <span class="icon-location" />
+                <span class="contact__link">{{ payload.user.location }}</span>
+                <span class="icon-phone" />
+                <span class="contact__link">{{ payload.user.tel }}</span>
+                <span class="icon-mail" />
+                <span class="contact__link">{{ payload.user.email }}</span>
+                <span
+                  v-if="userRole === 'employer'"
+                  class="icon-Earth"
+                />
+                <span
+                  v-if="userRole === 'employer'"
+                  class="contact__link"
+                >amazon.com</span>
               </div>
               <span v-if="userRole === 'employer'">
                 <div
@@ -946,6 +954,7 @@ export default {
     max-height: 43px;
     display: grid;
     grid-template-columns: 5fr 2fr;
+    margin: 0 0 15px 0;
   }
 }
 
@@ -2198,6 +2207,7 @@ a:hover {
   font-size: 16px;
   line-height: 130%;
   color: #0083C7;
+  position: absolute;
   height: 34px;
   border-radius: 3px;
   bottom: 27px;
@@ -2243,6 +2253,7 @@ a:hover {
     .col .contacts {
       display: grid;
       grid-template-columns: auto 1fr;
+      grid-gap: 5px;
     }
   }
   .information-section {
