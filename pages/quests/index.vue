@@ -224,15 +224,16 @@
                   </div>
                 </div>
                 <div class="block__details">
-                  <button
-                    class="block__btn"
+                  <base-btn
+                    v-if="item.type !== 3"
+                    mode="borderless-right"
                     @click="showDetails()"
                   >
-                    <span class="block__text block__text_details">
-                      {{ $t('meta.details') }}
-                    </span>
-                    <span class="icon-short_right" />
-                  </button>
+                    {{ $t('meta.details') }}
+                    <template v-slot:right>
+                      <span class="icon-short_right" />
+                    </template>
+                  </base-btn>
                 </div>
               </div>
             </div>
@@ -543,6 +544,12 @@ export default {
 }
 
 .icon {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.icon {
+  cursor: pointer;
   font-size: 25px;
   &-notification_outline:before {
     @extend .icon;
@@ -553,6 +560,12 @@ export default {
     font-size: 20px;
     content: "\ea23";
     color: $black500;
+  }
+  &-short_right:before {
+    @extend .icon;
+    content: "\ea6e";
+    color: #0083C7;
+    font-size: 20px;
   }
 }
 .mobile {
