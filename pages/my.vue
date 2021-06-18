@@ -155,18 +155,16 @@
                       {{ item.amount }} {{ item.symbol }}
                     </div>
                     <div class="block__details">
-                      <button
+                      <base-btn
                         v-if="item.type !== 3"
-                        class="block__btn"
+                        mode="borderless-right"
                         @click="showDetails()"
                       >
-                        <span
-                          class="block__text block__text_details"
-                        >
-                          {{ $t('meta.details') }}
-                        </span>
-                        <span class="icon-short_right" />
-                      </button>
+                        {{ $t('meta.details') }}
+                        <template v-slot:right>
+                          <span class="icon-short_right" />
+                        </template>
+                      </base-btn>
                       <div
                         v-else
                         class="block__rating"
@@ -467,6 +465,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.icon {
+  font-size: 20px;
+  cursor: pointer;
+
+  &-short_right:before {
+    @extend .icon;
+    content: "\ea6e";
+    color: #0083C7;
+  }
+}
 
 .container {
   &__title {

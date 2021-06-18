@@ -403,18 +403,6 @@
                                 <span class="icon-short_right" />
                               </template>
                             </base-btn>
-                            <!--                            <button-->
-                            <!--                              v-if="item.type !== 3"-->
-                            <!--                              class="block__btn"-->
-                            <!--                              @click="showDetails()"-->
-                            <!--                            >-->
-                            <!--                              <span-->
-                            <!--                                class="block__text block__text_details"-->
-                            <!--                              >-->
-                            <!--                                {{ $t('meta.details') }}-->
-                            <!--                              </span>-->
-                            <!--                              <span class="icon-short_right" />-->
-                            <!--                            </button>-->
                             <div
                               v-else
                               class="block__rating"
