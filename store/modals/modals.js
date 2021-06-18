@@ -28,4 +28,5 @@ export default {
   changePercent: 'changePercent',
   openADeposit: 'openADeposit',
   depositIsOpened: 'depositIsOpened',
+  addCase: 'addCase',
 };

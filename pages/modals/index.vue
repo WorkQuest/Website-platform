@@ -1,6 +1,11 @@
 <template>
   <div>
     <base-btn
+      @click="showAddCaseModal()"
+    >
+      showAddCaseModal
+    </base-btn>
+    <base-btn
       @click="showMessageSendModal()"
     >
       showMessageSendModal
@@ -111,6 +116,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    showAddCaseModal() {
+      this.ShowModal({
+        key: modals.addCase,
+      });
+    },
     showRaiseViewsModal() {
       this.ShowModal({
         key: modals.raiseViews,

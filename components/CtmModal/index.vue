@@ -39,6 +39,7 @@
       <CtmModalChangePercent v-if="modals.changePercent === currentModalKey" />
       <CtmModalOpenADeposit v-if="modals.openADeposit === currentModalKey" />
       <CtmModalDepositIsOpened v-if="modals.depositIsOpened === currentModalKey" />
+      <CtmModalAddCase v-if="modals.addCase === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -72,6 +73,7 @@ import CtmModalMakeDeposit from './CtmModalMakeDeposit';
 import CtmModalChangePercent from './CtmModalChangePercent';
 import CtmModalOpenADeposit from './CtmModalOpenADeposit';
 import CtmModalDepositIsOpened from './CtmModalDepositIsOpened';
+import CtmModalAddCase from './CtmModalAddCase';
 
 export default {
   name: 'ModalBox',
@@ -103,6 +105,7 @@ export default {
     CtmModalChangePercent,
     CtmModalOpenADeposit,
     CtmModalDepositIsOpened,
+    CtmModalAddCase,
   },
   data: () => ({
     modals,

@@ -432,7 +432,9 @@
           class="tab__container"
         >
           <div class="add-btn__container">
-            <base-btn>
+            <base-btn
+              @click="showAddCaseModal()"
+            >
               Add Case
               <template v-slot:right>
                 <span class="icon-plus" />
@@ -816,6 +818,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    showAddCaseModal() {
+      this.ShowModal({
+        key: modals.addCase,
+      });
+    },
     showCompany() {
       this.$router.push('/company');
     },
