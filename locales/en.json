@@ -323,7 +323,8 @@
     "generating": "Generating",
     "liquidationFee": "Liquidation fee",
     "withdrawal": "Withdrawal",
-    "saveCardForNextPayment": "Save card for next payment"
+    "saveCardForNextPayment": "Save card for next payment",
+    "insureCase": "Insure case"
   },
   "ui": {
     "workers": "Workers",
@@ -681,6 +682,21 @@
     "dollarsCount": "$ {count}",
     "withdraw": "Withdraw",
     "leaveFund": "Leave fund",
-    "changePlan": "Change plan"
+    "changePlan": "Change plan",
+    "fundParticipants": "Fund participants",
+    "userName": "Cody Fisher",
+    "voting": "Voting",
+    "noVoteAtTheMoment": "No vote at the moment",
+    "countPeoplesInChat": "{count} peoples in chat",
+    "writeSomething": "Write something",
+    "activeVoting": "Active voting",
+    "paymentOfInsurance": "{value}: Payment of insurance",
+    "youWillCertifyTheInsuredEvent": "You will certify the insured event?",
+    "studyTheInsuredEventThoroughly": "Study the insured event thoroughly",
+    "notAgree": "Not agree",
+    "insuredEvent": "Insured event",
+    "agree": "Agree",
+    "percentsCount": "{count} %",
+    "votesCount": "{count} votes"
   }
  }

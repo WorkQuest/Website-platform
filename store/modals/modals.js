@@ -30,4 +30,5 @@ export default {
   removeLiquidity: 'removeLiquidity',
   creditingDeposit: 'creditingDeposit',
   confirmDetails: 'confirmDetails',
+  insureCase: 'insureCase',
 };
