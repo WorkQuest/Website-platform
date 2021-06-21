@@ -921,7 +921,7 @@ export default {
 .add-btn {
   &__container {
     width: 154px;
-    margin: 0 0 20px 0;
+    margin: 20px 0 20px 0;
   }
 }
 
@@ -1359,7 +1359,7 @@ export default {
 
 .tab {
   &__container {
-    margin: 0 0 20px 0;
+    margin: 20px 0 20px 0;
   }
   &__btn {
     color: $black500;
