@@ -69,6 +69,7 @@ export default {
         { 'base-btn_delete': mode === 'delete' },
         { 'base-btn_approve': mode === 'approve' },
         { 'base-btn_back': mode === 'back' },
+        { 'base-btn_grey': mode === 'grey' },
       ];
     },
   },
@@ -99,10 +100,13 @@ export default {
   line-height: 130%;
   text-align: center;
   transition: .3s;
-  background: #0083C7;
+  background: $blue;
   border-radius: 6px;
   &:hover {
     background: #103D7C;
+  }
+  &_grey {
+    background-color: $black100;
   }
   &_back {
     transition: .3s;

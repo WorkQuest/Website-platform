@@ -29,4 +29,5 @@ export default {
   openADeposit: 'openADeposit',
   depositIsOpened: 'depositIsOpened',
   addCase: 'addCase',
+  welcome: 'welcome',
 };

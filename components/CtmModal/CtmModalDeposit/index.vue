@@ -58,6 +58,7 @@
           </div>
           <div class="btn__wrapper">
             <base-btn
+              :mode="'outline'"
               class="message__action"
               @click="hide()"
             >

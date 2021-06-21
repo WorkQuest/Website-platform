@@ -1,6 +1,11 @@
 <template>
   <div>
     <base-btn
+      @click="showWelcomeModal()"
+    >
+      showWelcomeModal
+    </base-btn>
+    <base-btn
       @click="showAddCaseModal()"
     >
       showAddCaseModal
@@ -116,6 +121,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    showWelcomeModal() {
+      this.ShowModal({
+        key: modals.welcome,
+      });
+    },
     showAddCaseModal() {
       this.ShowModal({
         key: modals.addCase,
