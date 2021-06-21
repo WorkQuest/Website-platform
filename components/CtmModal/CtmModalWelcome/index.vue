@@ -36,7 +36,7 @@
           class="message__action"
           @click="hide()"
         >
-          {{ $t('meta.cancel') }}
+          {{ $t('meta.later') }}
         </base-btn>
       </div>
     </div>
