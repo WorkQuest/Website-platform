@@ -38,37 +38,12 @@
             </div>
             <!-- socials links -->
             <div class="socials">
-              <span
-                v-for="(item, i) in socials"
-                :key="i"
-              >
-                <nuxt-link
-                  class="social__link"
-                  :to="item.url"
-                >
-                  <span
-                    :class="item.class"
-                  />
-                </nuxt-link>
-              </span>
+              <SocialPanel />
             </div>
+            <!-- contacts -->
             <div class="contacts__grid">
-              <!-- contacts -->
               <div class="contacts">
-                <span class="icon-location" />
-                <span class="contact__link">{{ payload.user.location }}</span>
-                <span class="icon-phone" />
-                <span class="contact__link">{{ payload.user.tel }}</span>
-                <span class="icon-mail" />
-                <span class="contact__link">{{ payload.user.email }}</span>
-                <span
-                  v-if="userRole === 'employer'"
-                  class="icon-Earth"
-                />
-                <span
-                  v-if="userRole === 'employer'"
-                  class="contact__link"
-                >amazon.com</span>
+                <ContactPanel />
               </div>
               <span v-if="userRole === 'employer'">
                 <div
@@ -189,280 +164,21 @@
         </div>
         <div
           v-if="selected === 1"
-          class="tab__container reviews-grid"
+          class="tab__container"
         >
-          <span
-            v-for="(item, i) in payload.reviews"
-            :key="i"
-          >
-            <div class="reviews-item">
-              <div class="header">
-                <div class="avatar">
-                  <img
-                    src="~/assets/img/temp/avatar-medium.jpg"
-                    alt=""
-                  >
-                </div>
-                <div class="name">
-                  <div class="title">
-                    {{ item.reviewerName }}
-                  </div>
-                  <div class="card-subtitle -green">
-                    {{ $t('role.worker') }}
-                  </div>
-                </div>
-              </div>
-              <div class="subheader">
-                <div class="card-subtitle">
-                  {{ $t('quests.questBig') }}
-                </div>
-                <div class="card-subtitle -name">
-                  {{ item.questName }}
-                </div>
-              </div>
-              <div class="description">
-                {{ item.reviewDesc }}
-              </div>
-
-              <div class="rating">
-                {{ item.reviewerRating }}
-              </div>
-              <base-btn
-                mode="borderless-right"
-                @click="showCompany()"
-              >
-                {{ $t('quests.readCompletely') }}
-                <template v-slot:right>
-                  <span class="icon-short_right" />
-                </template>
-              </base-btn>
-            </div>
-          </span>
+          <QuestsTab />
         </div>
         <div
           v-if="selected === 2"
           class="tab__container"
         >
-          <div class="quests">
-            <div class="quests__container">
-              <div class="quests__body">
-                <div class="quests__content">
-                  <base-btn
-                    v-for="item in tabs"
-                    :key="item.id"
-                    :mode="btnMode(item.id)"
-                    class="quests__btn"
-                    @click="filterCards(item.id)"
-                  >
-                    {{ item.title }}
-                  </base-btn>
-                </div>
-                <div class="quests__cards">
-                  <div
-                    v-for="(item, i) in filteredCards(selectedTab, isShowFavourite)"
-                    :key="item.id"
-                    class="quests__cards__all"
-                  >
-                    <div
-                      class="quests__block block"
-                    >
-                      <div class="block__left">
-                        <div class="block__img">
-                          <img
-                            src="~/assets/img/temp/fake-card.svg"
-                            class="quests__img image"
-                            alt=""
-                          >
-                        </div>
-                        <div
-                          class="quests__cards__state"
-                          :class="getStatusClass(item.type)"
-                        >
-                          {{ getStatusCard(item.type) }}
-                        </div>
-                      </div>
-                      <div class="block__right">
-                        <div class="block__head">
-                          <div class="block__title">
-                            <div
-                              class="block__avatar"
-                            >
-                              <img
-                                class="avatar"
-                                :src="item.background"
-                                alt=""
-                              >
-                            </div>
-                            <div class="block__text block__text_title">
-                              {{ item.title }}
-                              <span
-                                v-if="item.sub"
-                                class="block__text block__text_grey"
-                              >{{ item.sub }}</span>
-                            </div>
-                          </div>
-                          <div
-                            v-if="isHideStar(item.type)"
-                            class="block__icon block__icon_fav star"
-                            @click="item.isFavourite = !item.isFavourite"
-                          >
-                            <img
-                              class="star__hover"
-                              src="~assets/img/ui/star_hover.svg"
-                              alt=""
-                            >
-                            <img
-                              v-if="!item.isFavourite"
-                              class="star__default"
-                              src="~assets/img/ui/star_simple.svg"
-                              alt=""
-                            >
-                            <img
-                              v-if="item.isFavourite"
-                              class="star__checked"
-                              src="~assets/img/ui/star_checked.svg"
-                              alt=""
-                            >
-                          </div>
-                        </div>
-                        <div
-                          v-if="item.inProgress.work === true"
-                          class="block__progress"
-                        >
-                          <div class="container__title">
-                            In progress by:
-                          </div>
-                          <div class="avatar__container">
-                            <div class="avatar">
-                              <img
-                                src="~/assets/img/temp/avatar.jpg"
-                                alt=""
-                              >
-                            </div>
-                            <div>
-                              {{ item.inProgress.name }}
-                            </div>
-                            <div class="">
-                              <span
-                                v-if="item.level.code !== 0"
-                                class="card__level_higher"
-                                :class="cardsLevels(i)"
-                              >
-                                <span v-if="item.level.code === 1">
-                                  {{ $t('levels.higher') }}
-                                </span>
-                                <span v-if="item.level.code === 2">
-                                  {{ $t('levels.reliableEmp') }}
-                                </span>
-                                <span v-if="item.level.code === 3">
-                                  {{ $t('levels.checkedByTime') }}
-                                </span>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="block__locate">
-                          <span class="icon-location" />
-                          <span class="block__text block__text_locate">{{ item.distance }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
-                        </div>
-                        <div class="block__text block__text_blue">
-                          {{ item.theme }}
-                        </div>
-                        <div class="block__text block__text_desc">
-                          {{ item.desc }}
-                        </div>
-                        <div class="block__actions">
-                          <div
-                            v-if="isHideStatus(item.type)"
-                            class="block__status"
-                          >
-                            <div
-                              class="block__priority"
-                              :class="getPriorityClass(item.priority)"
-                            >
-                              {{ getPriority(item.priority) }}
-                            </div>
-                            <div class="block__amount_green">
-                              {{ item.amount }} {{ item.symbol }}
-                            </div>
-                          </div>
-                          <div
-                            v-else
-                            class="block__amount_gray"
-                          >
-                            {{ item.amount }} {{ item.symbol }}
-                          </div>
-                          <div class="block__details">
-                            <base-btn
-                              v-if="item.type !== 3"
-                              mode="borderless-right"
-                              @click="showDetails()"
-                            >
-                              {{ $t('meta.details') }}
-                              <template v-slot:right>
-                                <span class="icon-short_right" />
-                              </template>
-                            </base-btn>
-                            <div
-                              v-else
-                              class="block__rating"
-                            >
-                              <div class="block__rating block__rating_star">
-                                <button
-                                  @click="showReviewModal(item.rating)"
-                                >
-                                  <b-form-rating
-                                    v-model="item.rating"
-                                  />
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ReviewsTab />
         </div>
         <div
           v-if="selected === 3"
           class="tab__container"
         >
-          <div class="add-btn__container">
-            <base-btn
-              @click="showAddCaseModal()"
-            >
-              Add Case
-              <template v-slot:right>
-                <span class="icon-plus" />
-              </template>
-            </base-btn>
-          </div>
-          <div class="portfolio__items">
-            <div
-              v-for="(item, i) in payload.portfolios"
-              :key="i"
-              class="portfolio__item"
-            >
-              <div class="portfolio__card">
-                <div class="portfolio__body">
-                  <img
-                    class="portfolio__img"
-                    src="~/assets/img/temp/photo.jpg"
-                    alt=""
-                  >
-                </div>
-                <div class="portfolio__footer">
-                  <div class="portfolio__name">
-                    {{ item.name }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <PortfolioTab />
         </div>
         <div
           v-if="userData.role === 'worker'"
@@ -477,74 +193,75 @@
           </nuxt-link>
         </div>
         <!-- ACTIVE -->
+        <!--        TODO: Заменить секцию на Quest-->
 
-        <div
-          v-if="userRole === 'worker'"
-          class="active-quests-grid"
-        >
-          <div class="title">
-            {{ $t('quests.activeQuests') }}
-          </div>
-          <div class="active-quests-item">
-            <img
-              class="active-quests-img"
-              src="~assets/img/temp/fake-card.svg"
-              alt=""
-            >
-            <div class="inner">
-              <div class="header">
-                <img
-                  class="active-quests-image-profile"
-                  src="~/assets/img/app/fake_profile.png"
-                  alt=""
-                >
-                <div class="name">
-                  Samantha Sparcs
-                </div>
-              </div>
-              <div class="subheader">
-                200m {{ $t('quests.fromYou') }}
-              </div>
-              <div class="quest-title">
-                <a href="#">Paint the garage quickly</a>
-              </div>
-              <div class="description">
-                Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...
-              </div>
-              <div class="footer footer__quest">
-                <div class="priority">
-                  <div class="text">
-                    {{ $t('priority.low') }}
-                  </div>
-                </div>
-                <div class="cost -green">
-                  1500 WUSD
-                </div>
-                <div class="details">
-                  <base-btn
-                    mode="borderless-right"
-                    @click="showCompany()"
-                  >
-                    {{ $t('profile.details') }}
-                    <template v-slot:right>
-                      <span class="icon-short_right" />
-                    </template>
-                  </base-btn>
-                </div>
-              </div>
-            </div>
-            <div class="favorite" />
-          </div>
-          <div class="button">
-            <nuxt-link
-              v-if="selected === 1"
-              class="more-button"
-              to="/profile"
-            >
-              {{ $t('meta.showAllReviews') }}
-            </nuxt-link>
-          </div>
-        </div>
+        <!--        <div-->
+        <!--          v-if="userRole === 'worker'"-->
+        <!--          class="active-quests-grid"-->
+        <!--        >-->
+        <!--          <div class="title">-->
+        <!--            {{ $t('quests.activeQuests') }}-->
+        <!--          </div>-->
+        <!--          <div class="active-quests-item">-->
+        <!--            <img-->
+        <!--              class="active-quests-img"-->
+        <!--              src="~assets/img/temp/fake-card.svg"-->
+        <!--              alt=""-->
+        <!--            >-->
+        <!--            <div class="inner">-->
+        <!--              <div class="header">-->
+        <!--                <img-->
+        <!--                  class="active-quests-image-profile"-->
+        <!--                  src="~/assets/img/app/fake_profile.png"-->
+        <!--                  alt=""-->
+        <!--                >-->
+        <!--                <div class="name">-->
+        <!--                  Samantha Sparcs-->
+        <!--                </div>-->
+        <!--              </div>-->
+        <!--              <div class="subheader">-->
+        <!--                200m {{ $t('quests.fromYou') }}-->
+        <!--              </div>-->
+        <!--              <div class="quest-title">-->
+        <!--                <a href="#">Paint the garage quickly</a>-->
+        <!--              </div>-->
+        <!--              <div class="description">-->
+        <!--                Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...-->
+        <!--              </div>-->
+        <!--              <div class="footer footer__quest">-->
+        <!--                <div class="priority">-->
+        <!--                  <div class="text">-->
+        <!--                    {{ $t('priority.low') }}-->
+        <!--                  </div>-->
+        <!--                </div>-->
+        <!--                <div class="cost -green">-->
+        <!--                  1500 WUSD-->
+        <!--                </div>-->
+        <!--                <div class="details">-->
+        <!--                  <base-btn-->
+        <!--                    mode="borderless-right"-->
+        <!--                    @click="showCompany()"-->
+        <!--                  >-->
+        <!--                    {{ $t('profile.details') }}-->
+        <!--                    <template v-slot:right>-->
+        <!--                      <span class="icon-short_right" />-->
+        <!--                    </template>-->
+        <!--                  </base-btn>-->
+        <!--                </div>-->
+        <!--              </div>-->
+        <!--            </div>-->
+        <!--            <div class="favorite" />-->
+        <!--          </div>-->
+        <!--          <div class="button">-->
+        <!--            <nuxt-link-->
+        <!--              v-if="selected === 1"-->
+        <!--              class="more-button"-->
+        <!--              to="/profile"-->
+        <!--            >-->
+        <!--              {{ $t('meta.showAllReviews') }}-->
+        <!--            </nuxt-link>-->
+        <!--          </div>-->
+        <!--        </div>-->
       </div>
     </div>
   </div>
@@ -552,209 +269,25 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
+import PortfolioTab from '~/components/app/Pages/Profile/Tabs/Portfolio';
+import ReviewsTab from '~/components/app/Pages/Profile/Tabs/Reviews';
+import QuestsTab from '~/components/app/Pages/Common/Quests';
+import SocialPanel from '~/components/app/Panels/Social';
+import ContactPanel from '~/components/app/Panels/Contact';
 
 export default {
   name: 'Index',
+  components: {
+    ContactPanel,
+    ReviewsTab,
+    PortfolioTab,
+    QuestsTab,
+    SocialPanel,
+  },
   data() {
     return {
-      selectedTab: 0,
-      isShowFavourite: false,
       selected: 1,
-      socials: [
-        {
-          url: '/profile',
-          class: 'icon-facebook',
-        },
-        {
-          url: '/profile',
-          class: 'icon-twitter',
-        },
-        {
-          url: '/profile',
-          class: 'icon-instagram',
-        },
-        {
-          url: '/profile',
-          class: 'icon-LinkedInn',
-        },
-      ],
-      tabs: [
-        {
-          title: 'All quests',
-          id: 0,
-        },
-        {
-
-          title: 'Favorite',
-          id: 1,
-        },
-        {
-          title: 'Requested',
-          id: 2,
-        },
-        {
-          title: 'Performed quests',
-          id: 3,
-        },
-        {
-          title: 'Active quests',
-          id: 4,
-        },
-        {
-          title: 'Invited quests',
-          id: 5,
-        },
-      ],
-      cards: [
-        {
-          type: 4,
-          title: 'Samantha Sparks',
-          level: {
-            code: 1,
-          },
-          inProgress: {
-            work: false,
-            name: 'Roselia Vance',
-          },
-          favourite: false,
-          isFavourite: false,
-          sub: 'from Amazon',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-          distance: '200',
-        },
-        {
-          type: 4,
-          title: 'Samantha Sparks',
-          level: {
-            code: 2,
-          },
-          inProgress: {
-            work: true,
-            name: 'Roselia Vance',
-          },
-          favourite: false,
-          isFavourite: false,
-          sub: '',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-          distance: '200',
-        },
-        {
-          type: 5,
-          title: 'Samantha Sparks',
-          level: {
-            code: 3,
-          },
-          inProgress: {
-            work: true,
-            name: 'Roselia Vance',
-          },
-          favourite: false,
-          isFavourite: true,
-          sub: 'from Amazon',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-          distance: '200',
-        },
-        {
-          type: 2,
-          title: 'Samantha Sparks',
-          level: {
-            code: 1,
-          },
-          inProgress: {
-            work: true,
-            name: 'Roselia Vance',
-          },
-          favourite: false,
-          isFavourite: true,
-          sub: 'from Amazon',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-          distance: '300',
-        },
-        {
-          type: 3,
-          title: 'Samantha Sparks',
-          level: {
-            code: 2,
-          },
-          inProgress: {
-            work: true,
-            name: 'Roselia Vance',
-          },
-          favourite: false,
-          isRating: false,
-          sub: '',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-          rating: '',
-          distance: '400',
-        },
-        {
-          type: 3,
-          title: 'Samantha Sparks',
-          level: {
-            code: 3,
-          },
-          inProgress: {
-            work: false,
-            name: '',
-          },
-          favourite: false,
-          isRating: false,
-          sub: 'from Amazon',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-          rating: '',
-          distance: '100',
-        },
-      ],
       payload: {
-        portfolios: [
-          {
-            name: 'Lorem ipsum dolor sit amet',
-            imgUrl: '',
-          },
-          {
-            name: 'Lorem ipsum dolor sit amet',
-            imgUrl: '',
-          },
-          {
-            name: 'Lorem ipsum dolor sit amet',
-            imgUrl: '',
-          },
-          {
-            name: 'Lorem ipsum dolor sit amet',
-            imgUrl: '',
-          },
-        ],
         user: {
           name: 'Samantha Sparcs',
           desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel',
@@ -770,32 +303,6 @@ export default {
           averageRating: '4.5',
           reviewCount: '23',
         },
-        reviews: [
-          {
-            reviewerName: 'Edward Cooper',
-            reviewerRating: '4.00',
-            questName: 'SPA saloon design',
-            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-          },
-          {
-            reviewerName: 'Edward Cooper',
-            reviewerRating: '4.00',
-            questName: 'SPA saloon design',
-            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-          },
-          {
-            reviewerName: 'Edward Cooper',
-            reviewerRating: '4.00',
-            questName: 'SPA saloon design',
-            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-          },
-          {
-            reviewerName: 'Edward Cooper',
-            reviewerRating: '4.00',
-            questName: 'SPA saloon design',
-            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-          },
-        ],
       },
     };
   },
@@ -818,544 +325,17 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    showAddCaseModal() {
-      this.ShowModal({
-        key: modals.addCase,
-      });
-    },
-    showCompany() {
-      this.$router.push('/company');
-    },
     showMessages() {
       this.$router.push('/messages/1');
     },
-    cardsLevels(idx) {
-      const { cards } = this;
-      return [
-        { card__level_checked: cards[idx].level.code === 3 },
-        { card__level_reliable: cards[idx].level.code === 2 },
-        { card__level_higher: cards[idx].level.code === 1 },
-      ];
-    },
-    showDetails() {
-      this.$router.push('/quests/1');
-    },
-    showReviewModal(rating) {
-      this.ShowModal({
-        key: modals.review,
-        rating,
-      });
-    },
-    isHideStar(type) {
-      return !(type === 4 || type === 3);
-    },
     isRating(type) {
       return (type === 3);
-    },
-    isHideStatus(type) {
-      return !(type === 3);
-    },
-    filterCards(id) {
-      this.selectedTab = id;
-      this.isShowFavourite = id === 1;
-    },
-    getStatusCard(index) {
-      const status = {
-        0: '',
-        1: '',
-        2: this.$t('Requested'),
-        3: this.$t('Performed'),
-        4: this.$t('Active'),
-        5: this.$t('Invited'),
-      };
-      return status[index] || '';
-    },
-    getStatusClass(index) {
-      const status = {
-        0: '',
-        1: '',
-        2: this.$t('quests__cards__state_req'),
-        3: this.$t('quests__cards__state_per'),
-        4: this.$t('quests__cards__state_act'),
-        5: this.$t('quests__cards__state_inv'),
-      };
-      return status[index] || '';
-    },
-    filteredCards(type, isFavorite) {
-      if (type === 0) {
-        return this.cards;
-      }
-      if (isFavorite) {
-        return this.cards.filter((x) => x.isFavourite);
-      }
-      return this.cards.filter((x) => x.type === type);
-    },
-    btnMode(id) {
-      if (this.selectedTab === id) {
-        return ' ';
-      }
-      return 'light';
-    },
-    getPriority(index) {
-      const priority = {
-        0: this.$t('priority.low'),
-        1: this.$t('priority.normal'),
-        2: this.$t('priority.urgent'),
-      };
-      return priority[index] || 'None';
-    },
-    getPriorityClass(index) {
-      const priority = {
-        0: 'block__priority_low',
-        1: 'block__priority_normal',
-        2: 'block__priority_urgent',
-      };
-      return priority[index] || '';
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
-.add-btn {
-  &__container {
-    width: 154px;
-    margin: 20px 0 20px 0;
-  }
-}
-
-.portfolio {
-  &__card {
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-  }
-  &__items {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 20px;
-  }
-  &__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 6px;
-  }
-  &__name {
-    @include text-simple;
-    text-align: left;
-    color: $white;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 18px;
-    font-weight: 500;
-  }
-  &__footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: $black700;
-    height: 71px;
-    display: flex;
-    align-items: center;
-    padding-left: 20px;
-    border-radius: 0 0 6px 6px;
-  }
-}
-
-.contacts {
-  &__grid {
-    height: 100%;
-    max-height: 43px;
-    display: grid;
-    grid-template-columns: 5fr 2fr;
-    margin: 0 0 15px 0;
-  }
-}
-
-.message {
-  &__container-btn {
-    @extend .styles__full;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-  }
-  &__btn {
-    max-width: 250px;
-    cursor: pointer;
-  }
-}
-
-.container {
-  &__title {
-    font-weight: 400;
-    font-size: 12px;
-    color: $black500;
-  }
-}
-
-.limit__container {
-  display: grid;
-  grid-template-columns: 2fr 1.5fr 1fr;
-}
-
-.avatar {
-  @extend .styles__full;
-  max-height: 30px;
-  max-width: 30px;
-  border-radius: 50%;
-  &__container {
-    width: 50%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: 0.2fr 0.6fr 1fr;
-    margin: 10px 0 4px 0;
-  }
-}
-
-.card {
-  &__level {
-    display: grid;
-    grid-template-columns: 20px auto;
-    grid-gap: 7px;
-    font-size: 12px;
-    justify-content: flex-start;
-    align-items: center;
-    height: 20px;
-    &_higher {
-      padding: 2px 8px;
-      align-items: center;
-      background-color: #F6CF00;
-      border-radius: 3px;
-      color: $white;
-    }
-    &_reliable {
-      padding: 2px 8px;
-      align-items: center;
-      background-color: #BBC0C7;
-      border-radius: 3px;
-      color: $white;
-    }
-    &_checked {
-      padding: 2px 8px;
-      align-items: center;
-      background-color: #B79768;
-      border-radius: 3px;
-      color: $white;
-    }
-    &_disabled {
-      display: none;
-    }
-  }
-}
-
-.quests {
-  &__container {
-    display: flex;
-    justify-content: center;
-  }
-
-  &__title {
-    @include text-simple;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 25px;
-    line-height: 130%;
-    color: $black800;
-    padding: 20px 0;
-  }
-
-  &__body {
-    @extend .styles__full;
-    max-width: 1180px;
-  }
-
-  &__content {
-    display: grid;
-    align-items: center;
-    grid-template-columns: repeat(6, auto);
-    grid-gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  &__cards {
-    border-radius: 6px;
-    width: 100%;
-    display: grid;
-    justify-content: center;
-    grid-template-columns: 1fr;
-    grid-gap: 20px;
-    &__all {
-      //height: 255px;
-
-      &_per {
-        height: 244px;
-      }
-    }
-
-    &__state {
-      position: absolute;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 80px;
-      padding: 0 20px;
-      height: 41px;
-      border-radius: 5px 0;
-      color: #FFFFFF;
-      top: 0;
-      left: 0;
-
-      &_req {
-        color: $black600;
-        background-color: #E9EFF5;
-      }
-
-      &_per {
-        background-color: #0083C7;
-      }
-
-      &_act {
-        background-color: #00AA5B;
-      }
-
-      &_inv {
-        background-color: #E8D20D;
-      }
-    }
-
-    .image {
-      border-radius: 6px 0 0 6px;
-      object-fit: cover;
-      max-height: 500px;
-      height: 100%;
-    }
-  }
-
-  .block {
-    background: #FFFFFF;
-    border-radius: 6px;
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    min-height: 100%;
-
-    &__left {
-      position: relative;
-    }
-
-    &__progress {
-      background-color: $black0;
-      border-radius: 6px;
-      width: 100%;
-      padding:10px;
-    }
-
-    &__locate {
-      display: grid;
-      grid-template-columns: 20px 1fr;
-      grid-gap: 5px;
-      align-items: center;
-
-      span::before {
-        font-size: 20px;
-        color: $black500;
-      }
-    }
-
-    &__status {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      grid-gap: 15px;
-    }
-
-    &__amount {
-      font-style: normal;
-      font-weight: bold;
-      font-size: 18px;
-      line-height: 130%;
-      text-transform: uppercase;
-      &_green {
-        @extend .block__amount;
-        color: #00AA5B;
-      }
-      &_gray {
-        @extend .block__amount;
-        color: #B0B3B9;
-      }
-      &__performed {
-        @extend .block__amount;
-        color: #B0B3B9;
-      }
-    }
-
-    &__priority {
-      @include text-simple;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 3px;
-      font-size: 12px;
-      line-height: 130%;
-      height: 24px;
-      padding: 0 5px;
-
-      &_low {
-        background: rgba(34, 204, 20, 0.1);
-        color: #22CC14;
-      }
-
-      &_urgent {
-        background: rgba(223, 51, 51, 0.1);
-        color: #DF3333;
-      }
-
-      &_normal {
-        background: rgba(232, 210, 13, 0.1);
-        color: #E8D20D;
-      }
-    }
-
-    &__actions {
-      grid-template-columns: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    &__right {
-      padding: 20px 20px 20px 30px;
-      display: grid;
-      grid-template-columns: auto;
-      grid-gap: 10px;
-    }
-
-    &__head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    &__icon {
-      &_fav {
-        cursor: pointer;
-      }
-
-      &_perf {
-        display: grid;
-        grid-template-columns: 25px 25px 25px 25px 25px;
-      }
-    }
-
-    &__btn {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 10px;
-      min-width: 146px;
-      height: 34px;
-      background: transparent;
-
-      span::before {
-        font-size: 24px;
-        color: $blue;
-      }
-    }
-
-    &__text {
-      @include text-simple;
-
-      &_details {
-        font-size: 16px;
-        line-height: 130%;
-        color: $blue;
-      }
-
-      &_desc {
-        font-size: 16px;
-        line-height: 130%;
-        color: $black700;
-      }
-
-      &_blue {
-        font-weight: 500;
-        font-size: 18px;
-        line-height: 130%;
-        color: $blue;
-      }
-
-      &_title {
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 130%;
-        color: $black800;
-      }
-
-      &_locate {
-        font-size: 14px;
-        line-height: 130%;
-        color: #7C838D;
-      }
-
-      &_grey {
-        font-size: 16px;
-        line-height: 130%;
-        color: #7C838D;
-      }
-    }
-
-    &__avatar {
-      max-width: 30px;
-      max-height: 30px;
-      border-radius: 50%;
-
-      &__img {
-        border-radius: 100%;
-        height: 100%;
-      }
-    }
-
-    &__img {
-      height: 100%;
-      max-height: 100%;
-    }
-
-    &__title {
-      display: grid;
-      grid-template-columns: 30px 1fr;
-      grid-gap: 10px;
-      align-items: center;
-    }
-  }
-
-  .star {
-    &__default {
-      display: flex;
-    }
-
-    &__hover {
-      display: none;
-    }
-
-    &:hover {
-      .star {
-        &__hover {
-          display: flex;
-        }
-
-        &__default {
-          display: none;
-        }
-
-        &__checked {
-          display: none;
-        }
-      }
-    }
-  }
-}
 
 .tab {
   &__container {
@@ -1371,6 +351,34 @@ export default {
       border-bottom: 1px solid $blue;
       padding: 10px;
     }
+  }
+}
+.contacts {
+  &__grid {
+    height: 100%;
+    max-height: 43px;
+    display: grid;
+    grid-template-columns: 5fr 2fr;
+    margin: 0 0 15px 0;
+  }
+}
+.message {
+  &__container-btn {
+    @extend .styles__full;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  &__btn {
+    max-width: 250px;
+    cursor: pointer;
+  }
+}
+.container {
+  &__title {
+    font-weight: 400;
+    font-size: 12px;
+    color: $black500;
   }
 }
 
@@ -1405,163 +413,22 @@ export default {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-}
-
-.button .more-button {
-  display: inline-block;
-  text-decoration: none;
-  font-size: 16px;
-  line-height: 130%;
-  color: #0083C7;
-  border: 1px solid rgba(0, 131, 199, 0.1);
-  border-radius: 6px;
-  padding: 13px 67px 13px 28px;
-  background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
-  background-position: 82% 21px;
-  background-repeat: no-repeat;
-}
-.block {
-  background: #FFFFFF;
-  border-radius: 6px;
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  min-height: 230px;
-
-  &__img {
-    max-width: 240px;
-  }
-
-  &__locate {
-    display: grid;
-    grid-template-columns: 20px 1fr;
-    grid-gap: 5px;
-    align-items: center;
-
-    span::before {
-      font-size: 20px;
-      color: $black500;
-    }
-  }
-
-  &__status {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-gap: 15px;
-  }
-
-  &__amount {
-    @extend .block__amount;
-    color: #00AA5B;
-  }
-
-  &__priority {
-    @include text-simple;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 3px;
-    font-size: 12px;
+  &__more-button {
+    @extend .button;
+    display: inline-block;
+    text-decoration: none;
+    font-size: 16px;
     line-height: 130%;
-    height: 24px;
-    padding: 0 5px;
-
-    &_low {
-      background: rgba(34, 204, 20, 0.1);
-      color: #22CC14;
-    }
-
-    &_urgent {
-      background: rgba(223, 51, 51, 0.1);
-      color: #DF3333;
-    }
-
-    &_normal {
-      background: rgba(232, 210, 13, 0.1);
-      color: #E8D20D;
-    }
-  }
-
-  &__actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  &__right {
-    padding: 20px 20px 20px 30px;
-    display: grid;
-    grid-template-columns: auto;
-    grid-gap: 10px;
-  }
-
-  &__head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  &__icon {
-    &_fav {
-      cursor: pointer;
-    }
-  }
-  &__btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
-    min-width: 146px;
-    height: 34px;
-    background: transparent;
-
-    span::before {
-      font-size: 24px;
-      color: $blue;
-    }
-  }
-
-  &__text {
-    @include text-simple;
-
-    &_details {
-      font-size: 16px;
-      line-height: 130%;
-      color: $blue;
-    }
-
-    &_desc {
-      font-size: 16px;
-      line-height: 130%;
-      color: $black700;
-    }
-
-    &_blue {
-      font-weight: 500;
-      font-size: 18px;
-      line-height: 130%;
-      color: $blue;
-    }
-
-    &_title {
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 130%;
-      color: $black800;
-    }
-
-    &_locate {
-      font-size: 14px;
-      line-height: 130%;
-      color: #7C838D;
-    }
-
-    &_grey {
-      font-size: 16px;
-      line-height: 130%;
-      color: #7C838D;
-    }
+    color: #0083C7;
+    border: 1px solid rgba(0, 131, 199, 0.1);
+    border-radius: 6px;
+    padding: 13px 67px 13px 28px;
+    background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
+    background-position: 82% 21px;
+    background-repeat: no-repeat;
   }
 }
+
 .quest{
   &__spec {
     @include text-simple;
@@ -1615,12 +482,6 @@ export default {
   }
 }
 
-.social {
-  &__link {
-    text-decoration: none;
-  }
-}
-
 .contact {
   &__link {
     text-decoration: none;
@@ -1636,28 +497,11 @@ export default {
 .icon {
   font-size: 20px;
   cursor: pointer;
-  &-short_right:before {
-    @extend .icon;
-    content: "\ea6e";
-    color: #0083C7;
-  }
   &-chat:before {
     @extend .icon;
     content: "\e9ba";
     color: $green;
     font-size: 25px;
-  }
-  &-facebook::before {
-    @extend .icon;
-    color: #0A7EEA;
-  }
-  &-twitter::before {
-    @extend .icon;
-    color: #24CAFF;
-  }
-  &-instagram::before {
-    @extend .icon;
-    color: #C540F3;
   }
   &-Earth::before {
     @extend .icon;
@@ -1676,12 +520,6 @@ export default {
     color: #7C838D;
     font-size: 16px;
     padding-right: 5px;
-  }
-  &-plus:before {
-    @extend .icon;
-    content: "\e9a8";
-    color: $white;
-    font-size: 16px;
   }
   &-mail::before {
     @extend .icon;
@@ -1757,58 +595,6 @@ export default {
     background-position: 0 -1px;
     padding-left: 25px;
   }
-}
-
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-  display: block;
-}
-
-body {
-  line-height: 1;
-}
-
-ol,
-ul {
-  list-style: none;
-}
-
-blockquote,
-q {
-  quotes: none;
-}
-
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: none;
-}
-
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-*,
-*:before,
-*:after {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-* {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .main-header {
@@ -1896,15 +682,12 @@ table {
 .info {
   justify-content: initial !important;
 }
-.contacts {
-  display: flex;
-  align-items: center;
-}
 
 .information-grid {
   @extend .styles__flex;
   padding: 25px 0;
   position: relative;
+
   .share-btn {
     height: 24px;
     width: 24px;
@@ -1914,10 +697,12 @@ table {
     position: absolute;
     right: 0;
     top: 28px;
+
     &:hover {
       cursor: pointer;
     }
   }
+
   .col {
     @extend .styles__flex;
     -webkit-box-orient: vertical;
@@ -1928,9 +713,11 @@ table {
     -ms-flex-pack: center;
     justify-content: center;
   }
+
   .avatar {
     border-radius: 89px;
   }
+
   .rating {
     height: 20px;
     background-image: url("data:image/svg+xml,%3Csvg width='120' height='20' viewBox='0 0 120 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M10 0L12.9389 5.95492L19.5106 6.90983L14.7553 11.5451L15.8779 18.0902L10 15L4.12215 18.0902L5.24472 11.5451L0.489435 6.90983L7.06107 5.95492L10 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M35 0L37.9389 5.95492L44.5106 6.90983L39.7553 11.5451L40.8779 18.0902L35 15L29.1221 18.0902L30.2447 11.5451L25.4894 6.90983L32.0611 5.95492L35 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M60 0L62.9389 5.95492L69.5106 6.90983L64.7553 11.5451L65.8779 18.0902L60 15L54.1221 18.0902L55.2447 11.5451L50.4894 6.90983L57.0611 5.95492L60 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M85 0L87.9389 5.95492L94.5106 6.90983L89.7553 11.5451L90.8779 18.0902L85 15L79.1221 18.0902L80.2447 11.5451L75.4894 6.90983L82.0611 5.95492L85 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M110 0L112.939 5.95492L119.511 6.90983L114.755 11.5451L115.878 18.0902L110 15L104.122 18.0902L105.245 11.5451L100.489 6.90983L107.061 5.95492L110 0Z' fill='%23E9EDF2'/%3E\a           %3C/svg%3E                                                              \a           ");
@@ -1938,6 +725,7 @@ table {
     background-position: center;
     margin-top: 20px;
   }
+
   .reviews-amount {
     font-style: normal;
     font-weight: normal;
@@ -1948,41 +736,25 @@ table {
     text-align: center;
     margin-top: 5px;
   }
+
   .description {
     margin: 15px 0;
   }
+
   .socials {
     margin-bottom: 15px;
   }
+
   .socials a {
     display: inline-block;
   }
+
   .col .socials .icon {
     height: 24px;
     width: 24px;
     background-position: center;
     background-repeat: no-repeat;
     margin-right: 5px;
-  }
-  .col .contacts a {
-    text-decoration: none;
-    font-size: 14px;
-    line-height: 130%;
-    color: #7C838D;
-    margin-right: 30px;
-  }
-  .col .contacts .location {
-    @extend .background__common;
-    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M9.99999 17.5C8.94744 16.6022 7.97181 15.6179 7.08332 14.5575C5.74999 12.965 4.16666 10.5933 4.16666 8.33334C4.16548 5.97297 5.58686 3.8445 7.76755 2.94118C9.94823 2.03785 12.4584 2.53771 14.1267 4.20751C15.2237 5.29968 15.8383 6.78534 15.8334 8.33334C15.8334 10.5933 14.25 12.965 12.9167 14.5575C12.0282 15.6179 11.0525 16.6022 9.99999 17.5ZM9.99999 5.83334C9.10683 5.83334 8.28151 6.30984 7.83493 7.08334C7.38835 7.85685 7.38835 8.80984 7.83493 9.58335C8.28151 10.3568 9.10683 10.8333 9.99999 10.8333C11.3807 10.8333 12.5 9.71406 12.5 8.33334C12.5 6.95263 11.3807 5.83334 9.99999 5.83334Z' fill='%237C838D'/%3E\a           %3C/svg%3E                                                                       \a           ");
-    background-position: 0 -2px;
-  }
-  .col .contacts .phone {
-    @extend .background__common;
-    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M15.8312 16.6667C8.72155 16.6767 3.32573 11.2163 3.33334 4.16877C3.33334 3.70853 3.70643 3.33334 4.16667 3.33334H6.36613C6.77911 3.33334 7.12994 3.63678 7.19058 4.04528C7.33592 5.02434 7.62097 5.97748 8.03707 6.8756L8.1227 7.06043C8.24177 7.31743 8.16106 7.62279 7.93056 7.7874C7.24941 8.27384 6.9891 9.25297 7.51974 10.017C8.18564 10.9757 9.02504 11.8149 9.98355 12.4805C10.7475 13.011 11.7265 12.7507 12.2129 12.0697C12.3776 11.8391 12.6832 11.7583 12.9403 11.8775L13.1243 11.9627C14.0225 12.3788 14.9757 12.6638 15.9549 12.8091C16.3634 12.8698 16.6667 13.2206 16.6667 13.6336V15.8333C16.6667 16.2936 16.2927 16.6667 15.8324 16.6667L15.8312 16.6667Z' fill='%237C838D'/%3E\a           %3C/svg%3E                                                                                \a           ");
-  }
-  .col .contacts .email {
-    @extend .background__common;
-    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M16.6667 16.6667H3.33333C2.41286 16.6667 1.66667 15.9205 1.66667 15V4.92751C1.70551 4.03547 2.44044 3.3325 3.33333 3.33334H16.6667C17.5871 3.33334 18.3333 4.07954 18.3333 5.00001V15C18.3333 15.9205 17.5871 16.6667 16.6667 16.6667ZM3.33333 6.55668V15H16.6667V6.55668L10 11L3.33333 6.55668ZM4 5.00001L10 9.00001L16 5.00001H4Z' fill='%237C838D'/%3E\a           %3C/svg%3E                                                                                \a           ");
   }
 }
 
@@ -2010,169 +782,6 @@ table {
     color: #353C47;
     background-image: url("data:image/svg+xml,%3Csvg width='28' height='26' viewBox='0 0 28 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a             %3Cpath d='M14 0.5L18.1145 8.83688L27.3148 10.1738L20.6574 16.6631L22.229 25.8262L14 21.5L5.77101 25.8262L7.3426 16.6631L0.685208 10.1738L9.8855 8.83688L14 0.5Z' fill='%23E8D20D'/%3E\a             %3C/svg%3E                           \a             ");
     background-position: 55px 4px;
-    background-repeat: no-repeat;
-  }
-}
-
-.reviews-grid {
-  padding-bottom: 20px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 20px;
-  .reviews-item {
-    width: 100%;
-    background-color: #fff;
-    border-radius: 6px;
-    padding: 20px 20px 10px;
-    position: relative;
-  }
-  .reviews-item .header {
-    @extend .styles__flex;
-  }
-  .reviews-item .header .avatar {
-    margin-right: 15px;
-  }
-  .reviews-item .subheader {
-    @extend .styles__flex;
-    margin: 15px 0;
-  }
-  .reviews-item .subheader .-name {
-    font-weight: normal;
-    color: #7C838D;
-    margin-left: 10px;
-  }
-  .reviews-item .rating {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 130%;
-    color: #4C5767;
-    padding-left: 133px;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background-image: url("data:image/svg+xml,%3Csvg width='120' height='21' viewBox='0 0 120 21' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M10 0.5L12.9389 6.45492L19.5106 7.40983L14.7553 12.0451L15.8779 18.5902L10 15.5L4.12215 18.5902L5.24472 12.0451L0.489435 7.40983L7.06107 6.45492L10 0.5Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M35 0.5L37.9389 6.45492L44.5106 7.40983L39.7553 12.0451L40.8779 18.5902L35 15.5L29.1221 18.5902L30.2447 12.0451L25.4894 7.40983L32.0611 6.45492L35 0.5Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M60 0.5L62.9389 6.45492L69.5106 7.40983L64.7553 12.0451L65.8779 18.5902L60 15.5L54.1221 18.5902L55.2447 12.0451L50.4894 7.40983L57.0611 6.45492L60 0.5Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M85 0.5L87.9389 6.45492L94.5106 7.40983L89.7553 12.0451L90.8779 18.5902L85 15.5L79.1221 18.5902L80.2447 12.0451L75.4894 7.40983L82.0611 6.45492L85 0.5Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M110 0.5L112.939 6.45492L119.511 7.40983L114.755 12.0451L115.878 18.5902L110 15.5L104.122 18.5902L105.245 12.0451L100.489 7.40983L107.061 6.45492L110 0.5Z' fill='%23E9EDF2'/%3E\a           %3C/svg%3E                               \a           ");
-    background-position: 0 0;
-    background-repeat: no-repeat;
-  }
-}
-
-.active-quests-grid {
-  padding-bottom: 59px;
-  .active-quests-item {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    background-color: #fff;
-    border-radius: 6px;
-    margin: 20px 0;
-    position: relative;
-  }
-  .active-quests-item {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    background-color: #fff;
-    border-radius: 6px;
-    margin: 20px 0;
-    position: relative;
-  }
-  .active-quests-image {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-    border-radius: 6px 0 0 6px;
-  }
-  .active-quests-image-profile {
-    object-fit: cover;
-    width: 30px;
-    height: 30px;
-    border-radius: 100%;
-  }
-  .active-quests-item .inner {
-    padding: 22px 20px 23px 30px;
-  }
-  .active-quests-item .inner .header {
-    @extend .header;
-    @extend .styles__center;
-  }
-  .active-quests-item .inner .header .name {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 130%;
-    color: #1D2127;
-    margin-left: 10px;
-  }
-  .active-quests-item .inner .subheader {
-    font-size: 14px;
-    line-height: 130%;
-    color: #7C838D;
-    padding-left: 25px;
-    margin: 10px 0;
-    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a             %3Cpath d='M9.99999 17.5C8.94744 16.6022 7.97181 15.6179 7.08332 14.5575C5.74999 12.965 4.16666 10.5933 4.16666 8.33333C4.16548 5.97295 5.58686 3.84449 7.76755 2.94116C9.94823 2.03783 12.4584 2.5377 14.1267 4.2075C15.2237 5.29967 15.8383 6.78532 15.8334 8.33333C15.8334 10.5933 14.25 12.965 12.9167 14.5575C12.0282 15.6179 11.0525 16.6022 9.99999 17.5ZM9.99999 5.83333C9.10683 5.83333 8.28151 6.30983 7.83493 7.08333C7.38835 7.85683 7.38835 8.80983 7.83493 9.58333C8.28151 10.3568 9.10683 10.8333 9.99999 10.8333C11.3807 10.8333 12.5 9.71404 12.5 8.33333C12.5 6.95262 11.3807 5.83333 9.99999 5.83333Z' fill='%237C838D'/%3E\a             %3C/svg%3E                                         \a             ");
-    background-position: 0 0;
-    background-repeat: no-repeat;
-  }
-  .active-quests-item .inner .quest-title a {
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 130%;
-    color: #0083C7;
-  }
-  .active-quests-item .inner .description {
-    font-size: 16px;
-    line-height: 130%;
-    color: #353C47;
-    margin: 10px 0 19px;
-  }
-  .active-quests-item .inner .footer {
-    @extend .header;
-  }
-  .active-quests-item .inner .footer .priority {
-    background-color: rgba(34, 204, 20, 0.1);
-    padding: 4px 5px;
-    border-radius: 3px;
-  }
-  .active-quests-item .inner .footer .priority .text {
-    font-size: 12px;
-    line-height: 130%;
-    color: #22CC14;
-  }
-  .active-quests-item .inner .footer .cost {
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 130%;
-    color: #00AA5B;
-    margin-left: 15px;
-  }
-  .active-quests-item .favorite {
-    height: 24px;
-    width: 24px;
-    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M11.9999 1.2905L15.6209 7.6169L15.7276 7.80347L15.9365 7.85433L22.8223 9.53117L18.1753 15.16L18.0458 15.3168L18.0626 15.5194L18.673 22.9156L12.2034 20.0337L11.9999 19.9431L11.7965 20.0337L5.32679 22.9156L5.93727 15.5194L5.954 15.3168L5.82454 15.16L1.17752 9.53117L8.06333 7.85433L8.27219 7.80347L8.37897 7.6169L11.9999 1.2905Z' fill='white' stroke='%23E9EDF2'/%3E\a           %3C/svg%3E                                                    \a           ");
-    background-position: 0 0;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 23px;
-    right: 20px;
-  }
-  .active-quests-item .favorite:hover {
-    cursor: pointer;
-  }
-  .button {
-    @extend .styles__flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-  }
-  .button .more-button {
-    display: inline-block;
-    text-decoration: none;
-    font-size: 16px;
-    line-height: 130%;
-    color: #0083C7;
-    border: 1px solid rgba(0, 131, 199, 0.1);
-    border-radius: 6px;
-    padding: 13px 67px 13px 28px;
-    background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
-    background-position: 82% 21px;
     background-repeat: no-repeat;
   }
 }
@@ -2217,13 +826,6 @@ a:hover {
   color: #00AA5B !important;
 }
 
-.footer {
-  &__quest {
-    display: grid !important;
-    grid-template-columns: 80px auto max-content;
-  }
-}
-
 .simple-button {
   display: flex;
   align-items: center;
@@ -2258,13 +860,11 @@ a:hover {
     grid-template-columns: repeat(4, auto);
     grid-gap: 20px;
   }
-  .avatar__container {
-    width: 50%;
-  }
 }
 @include _991 {
   .box {
     grid-template-columns: 1fr;
+
     .data-grid {
       grid-template-columns: repeat(2, auto);
     }
@@ -2272,62 +872,10 @@ a:hover {
   .data-grid {
     grid-template-columns: repeat(2, auto);
   }
-  .information-grid {
-    .col .contacts {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      grid-gap: 5px;
-    }
-  }
-  .information-section {
-    .reviews-grid {
-      grid-template-columns: auto;
-    }
-  }
-  .avatar__container {
-    text-align: center;
-    width: 100%;
-  }
 }
-@include _767 {
-  .main-section .information-grid .col .contacts {
-    display: grid;
-    grid-template-columns: auto 1fr;
-  }
-  .quests {
-    .limit__container {
-      display: grid;
-      grid-template-columns: auto;
-    }
-    .block {
-      grid-template-columns: auto;
-      margin-bottom:20px;
-      &__img {
-        max-width: 100%;
-        img {
-          border-radius: 6px;
-          height: 200px;
-          object-fit: cover;
-          width: 100%;
-        }
-      }
-    }
-  }
-  .quests {
-    &__tools {
-      padding: 0;
-    }
-  }
-  .active-quests-grid .active-quests-item {
-    grid-template-columns: auto;
-    .active-quests-img {
-      border-radius: 6px;
-      height: 200px;
-      object-fit: cover;
-      width: 100%;
-    }
-  }
-}
+
+@include _767 {}
+
 @include _575 {
   .footer {
     &__quest {
@@ -2336,45 +884,8 @@ a:hover {
       grid-gap: 10px;
     }
   }
-  .active-quests-grid .active-quests-item .inner {
-    padding: 10px;
-  }
-  .active-quests-grid .active-quests-item .inner .footer .cost {
-    margin: 0;
-  }
-  .active-quests-grid .active-quests-item .inner .footer .priority {
-    max-width: 80px;
-  }
   .simple-button {
     padding: 0;
-  }
-  .quests {
-    .block__actions {
-      align-items: flex-start;
-      justify-content: space-between;
-      flex-direction: column;
-    }
-    .block__right {
-      padding: 10px;
-    }
-    .block__btn {
-      margin-top: 10px;
-      padding: 0;
-    }
-  }
-  .header {
-    align-items: flex-start;
-  }
-  .active-quests-grid {
-    margin-top: 20px;
-  }
-  .quests__content {
-    grid-template-columns: repeat(2, auto);
-  }
-  .reviews-grid {
-    .reviews-item .header {
-      flex-direction: column;
-    }
   }
   .information-grid {
     flex-direction: column;
@@ -2383,18 +894,9 @@ a:hover {
       margin-bottom: 10px;
     }
   }
-  .reviews-item {
-    .name {
-      margin-top: 10px;
-    }
-  }
   .box__profile {
     flex-direction: column;
     align-items: center;
-  }
-  .portfolio__items {
-    grid-template-columns: repeat(2, auto);
-    margin: 0 20px 0 0;
   }
 }
 </style>

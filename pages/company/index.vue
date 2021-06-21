@@ -34,52 +34,10 @@
               {{ payload.user.desc }}
             </div>
             <div class="socials">
-              <nuxt-link
-                class="social__link"
-                to="/company"
-              >
-                <span
-                  class="icon-facebook"
-                />
-              </nuxt-link>
-              <nuxt-link
-                class="social__link"
-                to="/company"
-              >
-                <span
-                  class="icon-twitter"
-                />
-              </nuxt-link>
-              <nuxt-link
-                class="social__link"
-                to="/company"
-              >
-                <span
-                  class="icon-instagram"
-                />
-              </nuxt-link>
-              <nuxt-link
-                class="social__link"
-                to="/company"
-              >
-                <span
-                  class="icon-LinkedIn"
-                />
-              </nuxt-link>
+              <SocialPanel />
             </div>
             <div class="contacts">
-              <div>
-                <span class="icon-location" /><span class="contact__link">{{ payload.user.location }}</span>
-              </div>
-              <div>
-                <span class="icon-phone" /><span class="contact__link">{{ payload.user.tel }}</span>
-              </div>
-              <div>
-                <span class="icon-mail" /><span class="contact__link">{{ payload.user.email }}</span>
-              </div>
-              <div>
-                <span class="icon-Earth" /><span class="contact__link">amazon.com</span>
-              </div>
+              <ContactPanel />
             </div>
           </div>
 
@@ -146,52 +104,7 @@
         <div class="title">
           {{ $t('quests.reviewsBig') }}
         </div>
-        <div class="reviews-grid">
-          <span
-            v-for="(item, i) in payload.reviews"
-            :key="i"
-          >
-            <div class="reviews-item">
-              <div class="header">
-                <div class="avatar">
-                  <img
-                    src="~/assets/img/temp/avatar-medium.jpg"
-                    alt=""
-                  >
-                </div>
-                <div class="name">
-                  <div class="title">
-                    {{ item.reviewerName }}
-                  </div>
-                  <div class="card-subtitle card-subtitle_green">
-                    {{ $t('role.worker') }}
-                  </div>
-                </div>
-              </div>
-              <div class="subheader">
-                <div class="card-subtitle">
-                  {{ $t('quests.questBig') }}
-                </div>
-                <div class="card-subtitle -name">
-                  {{ item.questName }}
-                </div>
-              </div>
-              <div class="description">
-                {{ item.reviewDesc }}
-              </div>
-
-              <div class="rating">
-                {{ item.reviewerRating }}
-              </div>
-              <nuxt-link
-                class="simple-button"
-                to="/company"
-              >
-                {{ $t('quests.readCompletely') }}
-              </nuxt-link>
-            </div>
-          </span>
-        </div>
+        <Reviews />
         <!-- ACTIVE -->
         <div class="quest__card">
           <!-- Cards -->
@@ -362,8 +275,14 @@
 </template>
 
 <script>
+
+import SocialPanel from '~/components/app/Panels/Social';
+import ContactPanel from '~/components/app/Panels/Contact';
+import Reviews from '~/components/app/Pages/Profile/Tabs/Reviews';
+
 export default {
   name: 'Index',
+  components: { ContactPanel, SocialPanel, Reviews },
   data() {
     return {
       payload: {
@@ -382,32 +301,6 @@ export default {
           averageRating: '4.5',
           reviewCount: '23',
         },
-        reviews: [
-          {
-            reviewerName: 'Edward Cooper',
-            reviewerRating: '4.00',
-            questName: 'SPA saloon design',
-            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-          },
-          {
-            reviewerName: 'Edward Cooper',
-            reviewerRating: '4.00',
-            questName: 'SPA saloon design',
-            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-          },
-          {
-            reviewerName: 'Edward Cooper',
-            reviewerRating: '4.00',
-            questName: 'SPA saloon design',
-            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-          },
-          {
-            reviewerName: 'Edward Cooper',
-            reviewerRating: '4.00',
-            questName: 'SPA saloon design',
-            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-          },
-        ],
       },
     };
   },
@@ -437,6 +330,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+//TODO: Удалить лишние стили Review
 
 .card-subtitle {
   font-weight: 500;
@@ -696,18 +591,6 @@ export default {
   }
 }
 
-.contact {
-  &__link {
-    text-decoration: none;
-    font-size: 14px;
-    line-height: 130%;
-    color: #7C838D;
-    margin-right: 30px;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
 .icon {
   font-size: 20px;
   cursor: pointer;
@@ -726,29 +609,6 @@ export default {
   &-instagram::before {
     @extend .icon;
     color: #C540F3;
-  }
-  &-Earth::before {
-    @extend .icon;
-    color: #7C838D;
-    font-size: 16px;
-  }
-  &-location::before {
-    @extend .icon;
-    color: #7C838D;
-    font-size: 16px;
-    padding-right: 5px;
-  }
-  &-phone::before {
-    @extend .icon;
-    color: #7C838D;
-    font-size: 16px;
-    padding-right: 5px;
-  }
-  &-mail::before {
-    @extend .icon;
-    color: #7C838D;
-    font-size: 16px;
-    padding-right: 5px;
   }
 }
 
@@ -814,58 +674,6 @@ export default {
     background-position: 0 -1px;
     padding-left: 25px;
   }
-}
-
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-  display: block;
-}
-
-body {
-  line-height: 1;
-}
-
-ol,
-ul {
-  list-style: none;
-}
-
-blockquote,
-q {
-  quotes: none;
-}
-
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: none;
-}
-
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-*,
-*:before,
-*:after {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-* {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .main-header {
@@ -952,10 +760,6 @@ table {
 
 .info {
   justify-content: initial !important;
-}
-.contacts {
-  display: flex;
-  align-items: center;
 }
 
 .information-grid {
@@ -1066,48 +870,6 @@ table {
     color: #353C47;
     background-image: url("data:image/svg+xml,%3Csvg width='28' height='26' viewBox='0 0 28 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a             %3Cpath d='M14 0.5L18.1145 8.83688L27.3148 10.1738L20.6574 16.6631L22.229 25.8262L14 21.5L5.77101 25.8262L7.3426 16.6631L0.685208 10.1738L9.8855 8.83688L14 0.5Z' fill='%23E8D20D'/%3E\a             %3C/svg%3E                           \a             ");
     background-position: 55px 4px;
-    background-repeat: no-repeat;
-  }
-}
-
-.reviews-grid {
-  padding-bottom: 20px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 20px;
-  .reviews-item {
-    width: 100%;
-    background-color: #fff;
-    border-radius: 6px;
-    padding: 20px 20px 69px;
-    position: relative;
-  }
-  .reviews-item .header {
-    @extend .styles__flex;
-  }
-  .reviews-item .header .avatar {
-    margin-right: 15px;
-  }
-  .reviews-item .subheader {
-    @extend .styles__flex;
-    margin: 15px 0;
-  }
-  .reviews-item .subheader .-name {
-    font-weight: normal;
-    color: #7C838D;
-    margin-left: 10px;
-  }
-  .reviews-item .rating {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 130%;
-    color: #4C5767;
-    padding-left: 133px;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background-image: url("data:image/svg+xml,%3Csvg width='120' height='21' viewBox='0 0 120 21' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M10 0.5L12.9389 6.45492L19.5106 7.40983L14.7553 12.0451L15.8779 18.5902L10 15.5L4.12215 18.5902L5.24472 12.0451L0.489435 7.40983L7.06107 6.45492L10 0.5Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M35 0.5L37.9389 6.45492L44.5106 7.40983L39.7553 12.0451L40.8779 18.5902L35 15.5L29.1221 18.5902L30.2447 12.0451L25.4894 7.40983L32.0611 6.45492L35 0.5Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M60 0.5L62.9389 6.45492L69.5106 7.40983L64.7553 12.0451L65.8779 18.5902L60 15.5L54.1221 18.5902L55.2447 12.0451L50.4894 7.40983L57.0611 6.45492L60 0.5Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M85 0.5L87.9389 6.45492L94.5106 7.40983L89.7553 12.0451L90.8779 18.5902L85 15.5L79.1221 18.5902L80.2447 12.0451L75.4894 7.40983L82.0611 6.45492L85 0.5Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M110 0.5L112.939 6.45492L119.511 7.40983L114.755 12.0451L115.878 18.5902L110 15.5L104.122 18.5902L105.245 12.0451L100.489 7.40983L107.061 6.45492L110 0.5Z' fill='%23E9EDF2'/%3E\a           %3C/svg%3E                               \a           ");
-    background-position: 0 0;
     background-repeat: no-repeat;
   }
 }
