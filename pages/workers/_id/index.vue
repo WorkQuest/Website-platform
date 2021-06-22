@@ -33,45 +33,8 @@
                 <div class="description">
                   {{ payload.user.desc }}
                 </div>
-                <div class="socials">
-                  <nuxt-link
-                    class="social__link"
-                    to="/profile"
-                  >
-                    <span
-                      class="icon-facebook"
-                    />
-                  </nuxt-link>
-                  <nuxt-link
-                    class="social__link"
-                    to="/profile"
-                  >
-                    <span
-                      class="icon-twitter"
-                    />
-                  </nuxt-link>
-                  <nuxt-link
-                    class="social__link"
-                    to="/profile"
-                  >
-                    <span
-                      class="icon-instagram"
-                    />
-                  </nuxt-link>
-                  <nuxt-link
-                    class="social__link"
-                    to="/profile"
-                  >
-                    <span
-                      class="icon-LinkedIn"
-                    />
-                  </nuxt-link>
-                </div>
-                <div class="contacts">
-                  <span class="icon-location" /><span class="contact__link">{{ payload.user.location }}</span>
-                  <span class="icon-phone" /><span class="contact__link">{{ payload.user.tel }}</span>
-                  <span class="icon-mail" /><span class="contact__link">{{ payload.user.email }}</span>
-                </div>
+                <Social />
+                <Contact />
               </div>
             </div>
             <div class="box__btn">
@@ -144,9 +107,9 @@
           {{ $t('quests.reviewsBig') }}
         </div>
         <Reviews />
-        <div class="button">
+        <div class="button__container">
           <nuxt-link
-            class="more-button"
+            class="button__more"
             to="/profiles/1"
           >
             {{ $t('meta.showAllReviews') }}
@@ -157,9 +120,9 @@
           {{ $t('quests.portfolio') }}
         </div>
         <Portfolio />
-        <div class="button">
+        <div class="button__container">
           <nuxt-link
-            class="more-button"
+            class="button__more"
             to="/profiles/1"
           >
             {{ $t('quests.showAllCases') }}
@@ -175,12 +138,16 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import Reviews from '~/components/app/Pages/Profile/Tabs/Reviews';
 import Portfolio from '~/components/app/Pages/Profile/Tabs/Portfolio';
+import Social from '~/components/app/Panels/Social';
+import Contact from '~/components/app/Panels/Contact';
 
 export default {
   name: 'IndexVue',
   components: {
     Reviews,
     Portfolio,
+    Social,
+    Contact,
   },
   data() {
     return {
@@ -254,6 +221,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.button {
+  &__container {
+    @extend .styles__flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+  &__more {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 130%;
+    color: #0083C7;
+    border: 1px solid rgba(0, 131, 199, 0.1);
+    border-radius: 6px;
+    padding: 13px 67px 13px 28px;
+    background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
+    background-position: 82% 21px;
+    background-repeat: no-repeat;
+  }
+}
 
 .level {
   @include text-simple;
@@ -460,27 +449,6 @@ export default {
     background-position: 0 -1px;
     padding-left: 25px;
   }
-}
-
-.button {
-  @extend .styles__flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.button .more-button {
-  display: inline-block;
-  text-decoration: none;
-  font-size: 16px;
-  line-height: 130%;
-  color: #0083C7;
-  border: 1px solid rgba(0, 131, 199, 0.1);
-  border-radius: 6px;
-  padding: 13px 67px 13px 28px;
-  background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
-  background-position: 82% 21px;
-  background-repeat: no-repeat;
 }
 
 .block {
@@ -794,58 +762,6 @@ export default {
     @extend .styles__flex;
     @extend .styles__center;
   }
-}
-
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-  display: block;
-}
-
-body {
-  line-height: 1;
-}
-
-ol,
-ul {
-  list-style: none;
-}
-
-blockquote,
-q {
-  quotes: none;
-}
-
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: none;
-}
-
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-*,
-*:before,
-*:after {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-* {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .main-header {
