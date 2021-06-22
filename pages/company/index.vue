@@ -4,52 +4,13 @@
       class="main-section main-section_white"
     >
       <div class="main-container">
-        <div
-          class="information-grid"
-        >
-          <div class="col info-grid__col_left">
-            <div class="info-grid__avatar">
-              <img
-                class="info-grid__avatar"
-                src="~/assets/img/temp/avatar.jpg"
-                alt=""
-              >
-            </div>
-            <div class="rating" />
-            <nuxt-link
-              class="reviews-amount"
-              to="/company"
-            >
-              23 {{ $t('quests.reviews') }}
-            </nuxt-link>
-          </div>
-          <div class="col info-grid__col">
-            <div class="title">
-              {{ payload.user.name }}
-            </div>
-            <div class="subtitle">
-              {{ payload.user.company }}
-            </div>
-            <div class="description">
-              {{ payload.user.desc }}
-            </div>
-            <div class="socials">
-              <SocialPanel />
-            </div>
-            <div class="contacts">
-              <ContactPanel />
-            </div>
-          </div>
-
-          <div class="share-btn" />
-        </div>
+        <UserInfo />
       </div>
     </div>
 
     <div class="information-section">
       <div class="main-container">
         <!-- DATA -->
-
         <div class="data-grid">
           <div class="data-item">
             <div class="card-title">
@@ -105,161 +66,10 @@
           {{ $t('quests.reviewsBig') }}
         </div>
         <Reviews />
+
         <!-- ACTIVE -->
         <div class="quest__card">
-          <!-- Cards -->
-          <div class="quests__cards">
-            <div
-              v-for="(item, i) in payload.cards"
-              :key="i"
-              class="quests__block block"
-            >
-              <div class="block__left">
-                <div class="block__img">
-                  <img
-                    src="~/assets/img/temp/avatar.jpg"
-                    alt=""
-                  >
-                </div>
-              </div>
-              <div class="block__right">
-                <div class="block__head">
-                  <div class="block__title">
-                    <div class="block__avatar">
-                      <img
-                        :src="item.background"
-                        alt=""
-                      >
-                    </div>
-                    <div class="block__text block__text_title">
-                      {{ item.title }}
-                      <span
-                        v-if="item.sub"
-                        class="block__text block__text_grey"
-                      >{{ item.sub }}</span>
-                    </div>
-                  </div>
-                  <div
-                    class="block__icon block__icon_fav star"
-                    @click="item.favourite = !item.favourite"
-                  >
-                    <img
-                      class="star__hover"
-                      src="~assets/img/ui/star_hover.svg"
-                      alt=""
-                    >
-                    <img
-                      v-if="!item.favourite"
-                      class="star__default"
-                      src="~assets/img/ui/star_simple.svg"
-                      alt=""
-                    >
-                    <img
-                      v-if="item.favourite"
-                      class="star__checked"
-                      src="~assets/img/ui/star_checked.svg"
-                      alt=""
-                    >
-                  </div>
-                </div>
-                <div class="block__locate">
-                  <span class="icon-location" />
-                  <span class="block__text block__text_locate">{{ payload.distance }}m {{ $t('meta.fromYou') }}</span>
-                </div>
-                <div class="block__text block__text_blue">
-                  {{ item.theme }}
-                </div>
-                <div class="block__text block__text_desc">
-                  {{ item.desc }}
-                </div>
-                <div class="block__actions">
-                  <div class="block__status">
-                    <div
-                      class="block__priority"
-                      :class="getPriorityClass(item.priority)"
-                    >
-                      {{ getPriority(item.priority) }}
-                    </div>
-                    <div class="block__amount">
-                      {{ item.amount }} {{ item.symbol }}
-                    </div>
-                  </div>
-                  <div class="block__details">
-                    <button class="block__btn">
-                      <div class="block__text block__text_details">
-                        {{ $t('meta.details') }}
-                      </div>
-                      <span class="icon-short_right" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="button">
-            <nuxt-link
-              class="more-button"
-              to="/company"
-            >
-              {{ $t('meta.showAllReviews') }}
-            </nuxt-link>
-          </div>
-        </div>
-
-        <div class="active-quests-grid">
-          <div class="title">
-            {{ $t('quests.activeQuests') }}
-          </div>
-
-          <div class="active-quests-item">
-            <img
-              class="active-quests-img"
-              src="~/assets/img/temp/fake-card.svg"
-              alt=""
-            >
-            <div class="inner">
-              <div class="header">
-                <img
-                  class="active-quests-image-profile"
-                  src="~/assets/img/app/fake_profile.png"
-                  alt=""
-                >
-                <div class="name">
-                  Samantha Sparcs
-                </div>
-              </div>
-              <div class="subheader">
-                200m {{ $t('quests.fromYou') }}
-              </div>
-              <div class="quest-title">
-                <nuxt-link to="/quests/1">
-                  Paint the garage quickly
-                </nuxt-link>
-              </div>
-              <div class="description">
-                Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...
-              </div>
-              <div class="footer">
-                <div class="priority">
-                  <div class="text">
-                    {{ $t('priority.low') }}
-                  </div>
-                </div>
-                <div class="cost -green">
-                  1500 WUSD
-                </div>
-                <div class="details">
-                  <nuxt-link
-                    class="simple-button"
-                    to="/company"
-                  >
-                    {{ $t('profile.details') }}
-                  </nuxt-link>
-                </div>
-              </div>
-            </div>
-            <div class="favorite" />
-          </div>
+          <QuestCard />
           <div class="button">
             <nuxt-link
               class="more-button"
@@ -275,25 +85,18 @@
 </template>
 
 <script>
-
-import SocialPanel from '~/components/app/Panels/Social';
-import ContactPanel from '~/components/app/Panels/Contact';
+import UserInfo from '~/components/app/Pages/Common/UserInfo';
 import Reviews from '~/components/app/Pages/Profile/Tabs/Reviews';
+import QuestCard from '~/components/app/Cards/QuestCard';
 
 export default {
   name: 'Index',
-  components: { ContactPanel, SocialPanel, Reviews },
+  components: {
+    Reviews, UserInfo, QuestCard,
+  },
   data() {
     return {
       payload: {
-        user: {
-          name: 'Edward Cooper',
-          desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel',
-          location: 'Moscow, Lenina street, 3',
-          tel: '+7 989 989 98 98',
-          email: 'worker@gmail.com',
-          company: 'CEO from Amazon',
-        },
         quests: {
           activeQuests: '12',
           completedQuestsOneTime: '12',
@@ -580,9 +383,6 @@ export default {
     display: flex;
     flex-direction: row;
   }
-  &__card {
-    color:$black800;
-  }
 }
 
 .social {
@@ -762,90 +562,6 @@ export default {
   justify-content: initial !important;
 }
 
-.information-grid {
-  @extend .styles__flex;
-  padding: 25px 0;
-  position: relative;
-  .share-btn {
-    height: 24px;
-    width: 24px;
-    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a         %3Cpath d='M17.5 22C16.4179 22.0125 15.3923 21.5181 14.7282 20.6637C14.0641 19.8094 13.8379 18.6935 14.117 17.648L7.85697 14.07C6.77525 15.0611 5.18965 15.2708 3.88746 14.5951C2.58526 13.9194 1.84384 12.5023 2.03134 11.0472C2.21883 9.5922 3.2953 8.40926 4.72625 8.08577C6.15719 7.76227 7.63783 8.36714 8.43297 9.60002L14.116 6.35102C14.0424 6.07321 14.0035 5.78738 14 5.50002C13.9856 3.82674 15.1478 2.37316 16.7832 2.01884C18.4186 1.66452 20.0781 2.50676 20.7576 4.03594C21.4371 5.56511 20.95 7.36125 19.5909 8.33753C18.2319 9.31381 16.3742 9.20211 15.142 8.07002L8.99097 11.585C8.98488 11.8443 8.94863 12.1021 8.88297 12.353L15.142 15.93C16.2942 14.8726 18.0087 14.7093 19.3399 15.5303C20.671 16.3514 21.2946 17.9568 20.8668 19.461C20.439 20.9653 19.0639 22.0023 17.5 22ZM17.5 17C16.6715 17 16 17.6716 16 18.5C16 19.3284 16.6715 20 17.5 20C18.3284 20 19 19.3284 19 18.5C19 17.6716 18.3284 17 17.5 17ZM5.49997 10C4.67154 10 3.99997 10.6716 3.99997 11.5C3.99997 12.3284 4.67154 13 5.49997 13C6.3284 13 6.99997 12.3284 6.99997 11.5C6.99997 10.6716 6.3284 10 5.49997 10ZM17.5 4.00002C16.6715 4.00002 16 4.67159 16 5.50002C16 6.32845 16.6715 7.00002 17.5 7.00002C18.3284 7.00002 19 6.32845 19 5.50002C19 4.67159 18.3284 4.00002 17.5 4.00002Z' fill='%237C838D'/%3E\a         %3C/svg%3E                                                                   \a         ");
-    background-repeat: no-repeat;
-    background-position: center;
-    position: absolute;
-    right: 0;
-    top: 28px;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-  .col {
-    @extend .styles__flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-  }
-  .avatar {
-    border-radius: 89px;
-  }
-  .rating {
-    height: 20px;
-    background-image: url("data:image/svg+xml,%3Csvg width='120' height='20' viewBox='0 0 120 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M10 0L12.9389 5.95492L19.5106 6.90983L14.7553 11.5451L15.8779 18.0902L10 15L4.12215 18.0902L5.24472 11.5451L0.489435 6.90983L7.06107 5.95492L10 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M35 0L37.9389 5.95492L44.5106 6.90983L39.7553 11.5451L40.8779 18.0902L35 15L29.1221 18.0902L30.2447 11.5451L25.4894 6.90983L32.0611 5.95492L35 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M60 0L62.9389 5.95492L69.5106 6.90983L64.7553 11.5451L65.8779 18.0902L60 15L54.1221 18.0902L55.2447 11.5451L50.4894 6.90983L57.0611 5.95492L60 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M85 0L87.9389 5.95492L94.5106 6.90983L89.7553 11.5451L90.8779 18.0902L85 15L79.1221 18.0902L80.2447 11.5451L75.4894 6.90983L82.0611 5.95492L85 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M110 0L112.939 5.95492L119.511 6.90983L114.755 11.5451L115.878 18.0902L110 15L104.122 18.0902L105.245 11.5451L100.489 6.90983L107.061 5.95492L110 0Z' fill='%23E9EDF2'/%3E\a           %3C/svg%3E                                                              \a           ");
-    background-repeat: no-repeat;
-    background-position: center;
-    margin-top: 20px;
-  }
-  .reviews-amount {
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 130%;
-    text-decoration: none;
-    color: #7C838D;
-    text-align: center;
-    margin-top: 5px;
-  }
-  .description {
-    margin: 15px 0;
-  }
-  .socials {
-    margin-bottom: 15px;
-  }
-  .socials a {
-    display: inline-block;
-  }
-  .col .socials .icon {
-    height: 24px;
-    width: 24px;
-    background-position: center;
-    background-repeat: no-repeat;
-    margin-right: 5px;
-  }
-  .col .contacts a {
-    text-decoration: none;
-    font-size: 14px;
-    line-height: 130%;
-    color: #7C838D;
-    margin-right: 30px;
-  }
-  .col .contacts .location {
-    @extend .background__common;
-    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M9.99999 17.5C8.94744 16.6022 7.97181 15.6179 7.08332 14.5575C5.74999 12.965 4.16666 10.5933 4.16666 8.33334C4.16548 5.97297 5.58686 3.8445 7.76755 2.94118C9.94823 2.03785 12.4584 2.53771 14.1267 4.20751C15.2237 5.29968 15.8383 6.78534 15.8334 8.33334C15.8334 10.5933 14.25 12.965 12.9167 14.5575C12.0282 15.6179 11.0525 16.6022 9.99999 17.5ZM9.99999 5.83334C9.10683 5.83334 8.28151 6.30984 7.83493 7.08334C7.38835 7.85685 7.38835 8.80984 7.83493 9.58335C8.28151 10.3568 9.10683 10.8333 9.99999 10.8333C11.3807 10.8333 12.5 9.71406 12.5 8.33334C12.5 6.95263 11.3807 5.83334 9.99999 5.83334Z' fill='%237C838D'/%3E\a           %3C/svg%3E                                                                       \a           ");
-    background-position: 0 -2px;
-  }
-  .col .contacts .phone {
-    @extend .background__common;
-    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M15.8312 16.6667C8.72155 16.6767 3.32573 11.2163 3.33334 4.16877C3.33334 3.70853 3.70643 3.33334 4.16667 3.33334H6.36613C6.77911 3.33334 7.12994 3.63678 7.19058 4.04528C7.33592 5.02434 7.62097 5.97748 8.03707 6.8756L8.1227 7.06043C8.24177 7.31743 8.16106 7.62279 7.93056 7.7874C7.24941 8.27384 6.9891 9.25297 7.51974 10.017C8.18564 10.9757 9.02504 11.8149 9.98355 12.4805C10.7475 13.011 11.7265 12.7507 12.2129 12.0697C12.3776 11.8391 12.6832 11.7583 12.9403 11.8775L13.1243 11.9627C14.0225 12.3788 14.9757 12.6638 15.9549 12.8091C16.3634 12.8698 16.6667 13.2206 16.6667 13.6336V15.8333C16.6667 16.2936 16.2927 16.6667 15.8324 16.6667L15.8312 16.6667Z' fill='%237C838D'/%3E\a           %3C/svg%3E                                                                                \a           ");
-  }
-  .col .contacts .email {
-    @extend .background__common;
-    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M16.6667 16.6667H3.33333C2.41286 16.6667 1.66667 15.9205 1.66667 15V4.92751C1.70551 4.03547 2.44044 3.3325 3.33333 3.33334H16.6667C17.5871 3.33334 18.3333 4.07954 18.3333 5.00001V15C18.3333 15.9205 17.5871 16.6667 16.6667 16.6667ZM3.33333 6.55668V15H16.6667V6.55668L10 11L3.33333 6.55668ZM4 5.00001L10 9.00001L16 5.00001H4Z' fill='%237C838D'/%3E\a           %3C/svg%3E                                                                                \a           ");
-  }
-}
 .data-grid {
   padding: 20px 0;
   display: grid;
@@ -870,127 +586,6 @@ export default {
     color: #353C47;
     background-image: url("data:image/svg+xml,%3Csvg width='28' height='26' viewBox='0 0 28 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a             %3Cpath d='M14 0.5L18.1145 8.83688L27.3148 10.1738L20.6574 16.6631L22.229 25.8262L14 21.5L5.77101 25.8262L7.3426 16.6631L0.685208 10.1738L9.8855 8.83688L14 0.5Z' fill='%23E8D20D'/%3E\a             %3C/svg%3E                           \a             ");
     background-position: 55px 4px;
-    background-repeat: no-repeat;
-  }
-}
-
-.active-quests-grid {
-  padding-bottom: 59px;
-  .active-quests-item {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    background-color: #fff;
-    border-radius: 6px;
-    margin: 20px 0;
-    position: relative;
-  }
-  .active-quests-item {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    background-color: #fff;
-    border-radius: 6px;
-    margin: 20px 0;
-    position: relative;
-  }
-  .active-quests-image {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-    border-radius: 6px 0 0 6px;
-  }
-  .active-quests-image-profile {
-    object-fit: cover;
-    width: 30px;
-    height: 30px;
-    border-radius: 100%;
-  }
-  .active-quests-item .inner {
-    padding: 22px 20px 23px 30px;
-  }
-  .active-quests-item .inner .header {
-    @extend .header;
-    @extend .styles__center;
-  }
-  .active-quests-item .inner .header .name {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 130%;
-    color: #1D2127;
-    margin-left: 10px;
-  }
-  .active-quests-item .inner .subheader {
-    font-size: 14px;
-    line-height: 130%;
-    color: #7C838D;
-    padding-left: 25px;
-    margin: 10px 0;
-    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a             %3Cpath d='M9.99999 17.5C8.94744 16.6022 7.97181 15.6179 7.08332 14.5575C5.74999 12.965 4.16666 10.5933 4.16666 8.33333C4.16548 5.97295 5.58686 3.84449 7.76755 2.94116C9.94823 2.03783 12.4584 2.5377 14.1267 4.2075C15.2237 5.29967 15.8383 6.78532 15.8334 8.33333C15.8334 10.5933 14.25 12.965 12.9167 14.5575C12.0282 15.6179 11.0525 16.6022 9.99999 17.5ZM9.99999 5.83333C9.10683 5.83333 8.28151 6.30983 7.83493 7.08333C7.38835 7.85683 7.38835 8.80983 7.83493 9.58333C8.28151 10.3568 9.10683 10.8333 9.99999 10.8333C11.3807 10.8333 12.5 9.71404 12.5 8.33333C12.5 6.95262 11.3807 5.83333 9.99999 5.83333Z' fill='%237C838D'/%3E\a             %3C/svg%3E                                         \a             ");
-    background-position: 0 0;
-    background-repeat: no-repeat;
-  }
-  .active-quests-item .inner .quest-title a {
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 130%;
-    color: #0083C7;
-  }
-  .active-quests-item .inner .description {
-    font-size: 16px;
-    line-height: 130%;
-    color: #353C47;
-    margin: 10px 0 19px;
-  }
-  .active-quests-item .inner .footer {
-    @extend .header;
-  }
-  .active-quests-item .inner .footer .priority {
-    background-color: rgba(34, 204, 20, 0.1);
-    padding: 4px 5px;
-    border-radius: 3px;
-  }
-  .active-quests-item .inner .footer .priority .text {
-    font-size: 12px;
-    line-height: 130%;
-    color: #22CC14;
-  }
-  .active-quests-item .inner .footer .cost {
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 130%;
-    color: #00AA5B;
-    margin-left: 15px;
-  }
-  .active-quests-item .favorite {
-    height: 24px;
-    width: 24px;
-    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M11.9999 1.2905L15.6209 7.6169L15.7276 7.80347L15.9365 7.85433L22.8223 9.53117L18.1753 15.16L18.0458 15.3168L18.0626 15.5194L18.673 22.9156L12.2034 20.0337L11.9999 19.9431L11.7965 20.0337L5.32679 22.9156L5.93727 15.5194L5.954 15.3168L5.82454 15.16L1.17752 9.53117L8.06333 7.85433L8.27219 7.80347L8.37897 7.6169L11.9999 1.2905Z' fill='white' stroke='%23E9EDF2'/%3E\a           %3C/svg%3E                                                    \a           ");
-    background-position: 0 0;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 23px;
-    right: 20px;
-  }
-  .active-quests-item .favorite:hover {
-    cursor: pointer;
-  }
-  .button {
-    @extend .header;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-  }
-  .button .more-button {
-    display: inline-block;
-    text-decoration: none;
-    font-size: 16px;
-    line-height: 130%;
-    color: #0083C7;
-    border: 1px solid rgba(0, 131, 199, 0.1);
-    border-radius: 6px;
-    padding: 13px 67px 13px 28px;
-    background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
-    background-position: 82% 21px;
     background-repeat: no-repeat;
   }
 }
