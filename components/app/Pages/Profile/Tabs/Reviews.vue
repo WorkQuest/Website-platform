@@ -1,7 +1,7 @@
 <template>
   <div class="reviews-grid">
     <span
-      v-for="(item, i) in reviews"
+      v-for="(item, i) in Reviews"
       :key="i"
     >
       <div class="reviews-item">
@@ -51,37 +51,21 @@
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'ReviewsTab',
   data() {
-    return {
-      reviews: [
-        {
-          reviewerName: 'Edward Cooper',
-          reviewerRating: '4.00',
-          questName: 'SPA saloon design',
-          reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-        },
-        {
-          reviewerName: 'Edward Cooper',
-          reviewerRating: '4.00',
-          questName: 'SPA saloon design',
-          reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-        },
-        {
-          reviewerName: 'Edward Cooper',
-          reviewerRating: '4.00',
-          questName: 'SPA saloon design',
-          reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-        },
-        {
-          reviewerName: 'Edward Cooper',
-          reviewerRating: '4.00',
-          questName: 'SPA saloon design',
-          reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-        },
-      ],
-    };
+    return {};
+  },
+  computed: {
+    ...mapGetters([
+      'data/getReviews',
+    ]),
+    Reviews() {
+      return this.$store.getters['data/getReviews'];
+    },
   },
   methods: {
     showCompany() {
