@@ -802,10 +802,12 @@ export default {
     },
     closeMenu() {
       this.isMobileMenu = false;
+      this.closeAnother('mobile');
     },
     toggleMobileMenu() {
       this.isMobileMenu = !this.isMobileMenu;
       this.isNotFlexContainer = !this.isNotFlexContainer;
+      this.closeAnother('mobile');
     },
     toMain() {
       if (this.userData.role === 'worker') {
@@ -840,6 +842,12 @@ export default {
     },
     closeAnother(value) {
       switch (value) {
+        case 'mobile':
+          this.isShowProfile = false;
+          this.isShowNotify = false;
+          this.isShowLocale = false;
+          this.isShowAdditionalMenu = false;
+          break;
         case 'instruments':
           this.isShowProfile = false;
           this.isShowNotify = false;
@@ -1586,7 +1594,7 @@ export default {
     }
   }
   .footer {
-    padding: 0 10px;
+    padding: 0 20px;
   }
 }
 @include _991 {
@@ -1631,6 +1639,9 @@ export default {
       grid-gap: 2px;
     }
   }
+  .notify {
+    min-width: 350px;
+  }
   .footer {
     &__bottom {
       display: grid;
@@ -1659,6 +1670,18 @@ export default {
         grid-template-columns: 1fr;
       }
     }
+  }
+}
+
+@include _480 {
+  .notify {
+    min-width: 300px;
+  }
+}
+
+@include _380 {
+  .notify {
+    min-width: 250px;
   }
 }
 </style>

@@ -326,10 +326,6 @@ export default {
   -webkit-box-shadow: inset 0 0 24px rgba(0, 131, 199, 1);
 }
 
-@include _1700 {}
-@include _1600 {}
-@include _1400 {}
-@include _1300 {}
 @include _1199 {
   .chat {
     margin: 0 20px 0 20px;

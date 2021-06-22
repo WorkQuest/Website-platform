@@ -303,6 +303,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.icon {
+  &-map::before {
+    content: "\ea28";
+    color: $blue;
+    font-size: 20px;
+  }
+}
 .selector {
   @include box;
   width: 100%;
@@ -343,12 +351,6 @@ export default {
     font-size: 18px;
     padding: 0 0 20px 0;
   }
-}
-
-.icon-map::before {
-  content: "\ea28";
-  color: $blue;
-  font-size: 20px;
 }
 
 .payment {
@@ -537,6 +539,21 @@ export default {
   &-white {
     border: 1px solid $black0;
     @include main-white;
+  }
+}
+@include _1199 {
+  .main__body {
+    padding: 10px;
+  }
+}
+@include _767 {
+  .btn__container.btn__container_right {
+    justify-content: center;
+  }
+}
+@include _575 {
+  .page__category {
+    grid-template-columns: auto;
   }
 }
 </style>

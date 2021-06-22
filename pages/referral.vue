@@ -126,10 +126,10 @@
             <b-table
               :items="items"
               :fields="testFields"
-              borderless
-              caption-top
               thead-class="table__header"
+              tbody-class="table__body"
               tbody-tr-class="table__row"
+              table-class="referral-table"
             >
               <template #cell(userName)="el">
                 <div class="user__info">
@@ -474,9 +474,22 @@ export default {
       }
 
       &__table {
+
+        .referral-table {
+
+          tr {
+            th,
+            td {
+              padding: 0 !important;
+              border: 0 !important;
+            }
+          }
+        }
+
         .table {
           .cell {
-            padding: 0;
+            padding: 0 !important;
+
             &_head {
               @extend .cell;
             }
@@ -492,6 +505,10 @@ export default {
             grid-gap: 10px;
             font-size: 12px;
             color: #0083C7;
+
+            .cell_head {
+              padding: 0 !important;
+            }
           }
 
           &__rows {

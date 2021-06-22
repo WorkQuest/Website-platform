@@ -40,12 +40,12 @@
                   class="icon-location icon_fs-20"
                 />
                 <span>{{ payload.location }}</span>
+                <span
+                  class="user__distance"
+                >
+                  {{ payload.distance }} {{ $t('meta.fromYou') }}
+                </span>
               </div>
-              <span
-                class="user__distance"
-              >
-                {{ payload.distance }} {{ $t('meta.fromYou') }}
-              </span>
               <div
                 v-if="userRole === 'worker'"
                 class="runtime__container"
@@ -881,24 +881,6 @@ export default {
     grid-template-columns: 8fr 4fr;
   }
 }
-.icon {
-  color:$black500;
-  font-size: 20px;
-  &-chat::before {
-    @extend .icon;
-    color:$green;
-  }
-  &-location::before {
-    @extend .icon;
-  }
-  &-clock::before {
-    @extend .icon;
-  }
-  &-share_outline {
-    @extend .icon;
-    margin-left: 5px;
-  }
-}
 .divider{
   margin: 20px 0 20px 0;
   background-color: $black0;
@@ -1342,7 +1324,7 @@ export default {
   }
   &__content {
     display: flex;
-    justify-content: center;
+    justify-content: unset;
   }
   &__body {
     padding-top: 30px;
@@ -1439,24 +1421,40 @@ export default {
   }
 }
 .icon {
+  color:$black500;
+  font-size: 20px;
+  &-chat::before {
+    @extend .icon;
+    color:$green;
+  }
+  &-location::before {
+    @extend .icon;
+  }
+  &-clock::before {
+    @extend .icon;
+  }
+  &-share_outline {
+    @extend .icon;
+    margin-left: 5px;
+  }
   &-chat_green:before {
+    @extend .icon;
     content: "\e9ba";
     color: #00AA5B;
-    font-size: 20px;
   }
   &-caret_down_blue:before {
+    @extend .icon;
     content: "\ea48";
     color: #0083C7;
   }
   &-chevron_big_left:before {
-    font-size: 20px;
+    @extend .icon;
     content: "\ea4d";
     color: #0083C7;
   }
   &-location:before {
-    font-size: 20px;
+    @extend .icon;
     content: "\ea23";
-    color: $black500;
   }
 }
 
@@ -1466,6 +1464,15 @@ export default {
   }
   .user__distance {
     margin: 0 20px;
+  }
+  .img {
+    &__container {
+      grid-template-columns: repeat(3, auto);
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
   }
 }
 @include _991 {
@@ -1515,36 +1522,39 @@ export default {
   }
 }
 @include _575 {
-    .user {
-      &__head {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto auto;
-        grid-gap: 5px;
+  .user {
+    &__head {
+      display: grid;
+      grid-template-columns: auto auto;
+      grid-gap: 5px;
+    }
+    &__right {
+      align-items: center;
+      .icon-share_outline {
+        margin-left: 25px;
       }
-      &__date {
-        margin: 0;
-      }
-      &__left {
-        grid-column: 1/3;
-      }
+    }
   }
   .location {
     &__container {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto auto;
+      grid-template-columns: auto;
       grid-gap: 5px;
     }
   }
+  .icon {
+    &-clock, &-location {
+      width: 30px;
+    }
+  }
   .runtime {
-    &__container {
+    &__container, &__title {
       margin: 0;
     }
   }
   .badge {
     &__container {
-      padding-top: 10px;
+      padding-top: 20px;
     }
   }
   .img {

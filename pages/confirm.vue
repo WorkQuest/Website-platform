@@ -129,8 +129,8 @@ export default {
 .role {
   width: 100%;
   &__title {
+    @include text-simple;
     padding-bottom: 30px;
-    font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 34px;
@@ -219,7 +219,7 @@ export default {
     }
   }
   &__text {
-    font-family: 'Inter', sans-serif;
+    @include text-simple;
     font-style: normal;
     &_title {
       font-weight: 600;
