@@ -12,11 +12,11 @@
               alt=""
             >
           </div>
-          <div class="name">
-            <div class="title">
+          <div class="name__container">
+            <div class="card-subtitle__name">
               {{ item.reviewerName }}
             </div>
-            <div class="card-subtitle -green">
+            <div class="card-subtitle_green">
               {{ $t('role.worker') }}
             </div>
           </div>
@@ -25,7 +25,7 @@
           <div class="card-subtitle">
             {{ $t('quests.questBig') }}
           </div>
-          <div class="card-subtitle -name">
+          <div class="card-subtitle__title">
             {{ item.questName }}
           </div>
         </div>
@@ -93,6 +93,31 @@ export default {
 
 <style lang="scss" scoped>
 
+.card-subtitle {
+  font-weight: 500;
+  font-size: 12px;
+  color: $black600;
+  &_green {
+    @include text-simple;
+    font-weight: 400;
+    font-size: 12px;
+    color: $green;
+  }
+  &__name {
+    @include text-simple;
+    font-weight: 500;
+    font-size: 20px;
+    color: $black800;
+  }
+  &__title {
+    @include text-simple;
+    margin: 0 0 0 10px;
+    font-weight: 400;
+    font-size: 12px;
+    color: $black500;
+  }
+}
+
 .icon {
   font-size: 20px;
   cursor: pointer;
@@ -131,11 +156,9 @@ export default {
   .reviews-item .subheader {
     @extend .styles__flex;
     margin: 15px 0;
-  }
-  .reviews-item .subheader .-name {
-    font-weight: normal;
-    color: #7C838D;
-    margin-left: 10px;
+    display: flex;
+    align-items: baseline;
+    height: 20px;
   }
   .reviews-item .rating {
     font-weight: 500;

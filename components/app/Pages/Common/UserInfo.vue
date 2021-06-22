@@ -110,6 +110,15 @@ export default {
 
 <style lang="scss" scoped>
 
+.title {
+  @include text-simple;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: $black800;
+  margin-bottom: 20px;
+}
+
 .styles {
   &__flex {
     display: -webkit-box;

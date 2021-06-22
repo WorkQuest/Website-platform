@@ -5,87 +5,8 @@
     />
     <div class="main-white">
       <div class="main__body">
-        <div class="user__top">
-          <div class="user__container">
-            <div class="user__head">
-              <div
-                class="user__left"
-                @click="showProfile()"
-              >
-                <img
-                  class="user__img"
-                  src="~/assets/img/app/fake_profile.png"
-                  alt=""
-                >
-                <span class="user__username">
-                  {{ payload.username }}
-                </span>
-                <span
-                  v-if="userRole === 'employer'"
-                  class="user__company"
-                >
-                  {{ $t('company.from') }} {{ payload.company }}
-                </span>
-              </div>
-              <div class="user__right">
-                <span class="user__date">
-                  {{ payload.date }}
-                </span>
-                <span class="icon-share_outline icon_fs-20" />
-              </div>
-            </div>
-            <div class="location__container">
-              <div class="quest__location">
-                <span
-                  class="icon-location icon_fs-20"
-                />
-                <span>{{ payload.location }}</span>
-                <span
-                  class="user__distance"
-                >
-                  {{ payload.distance }} {{ $t('meta.fromYou') }}
-                </span>
-              </div>
-              <div
-                v-if="userRole === 'worker'"
-                class="runtime__container"
-              >
-                <span class="icon-clock icon_fs-16" />
-                <span class="runtime__title">{{ $t('quests.runtime') }}</span>
-                <span
-                  class="runtime__link"
-                >
-                  {{ payload.runtime }}
-                </span>
-              </div>
-              <div
-                v-if="userRole === 'employer'"
-                class="runtime__container"
-              >
-                <span class="icon-clock icon_fs-16" />
-                <span class="runtime__title">
-                  {{ $t('quests.performanceTimer') }}
-                </span>
-                <span
-                  class="runtime__link"
-                >
-                  {{ payload.performanceTimer }}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="badge__container">
-          <ul class="badge-list">
-            <li
-              v-for="item in badgeList"
-              :key="`item-${item.id}`"
-              class="badge__item badge__item_blue"
-            >
-              {{ item.text }}
-            </li>
-          </ul>
-        </div>
+        <QuestPanel />
+
         <div class="quest__container">
           <h2 class="quest__title">
             {{ payload.title }}
@@ -423,95 +344,7 @@
         </p>
         <div class="quest__card">
           <!-- Cards -->
-          <div class="quests__cards">
-            <div
-              v-for="(item, i) in payload.cards"
-              :key="i"
-              class="quests__block block"
-            >
-              <div class="block__left">
-                <div class="block__img">
-                  <img
-                    src="~assets/img/temp/fake-card.svg"
-                    class="quests__img image"
-                    alt=""
-                  >
-                </div>
-              </div>
-              <div class="block__right">
-                <div class="block__head">
-                  <div class="block__title">
-                    <div class="block__avatar">
-                      <img
-                        :src="item.background"
-                        alt=""
-                      >
-                    </div>
-                    <div class="block__text block__text_title">
-                      {{ item.title }}
-                      <span
-                        v-if="item.sub"
-                        class="block__text block__text_grey"
-                      >{{ item.sub }}</span>
-                    </div>
-                  </div>
-                  <div
-                    class="block__icon block__icon_fav star"
-                    @click="item.favourite = !item.favourite"
-                  >
-                    <img
-                      class="star__hover"
-                      src="~assets/img/ui/star_hover.svg"
-                      alt=""
-                    >
-                    <img
-                      v-if="!item.favourite"
-                      class="star__default"
-                      src="~assets/img/ui/star_simple.svg"
-                      alt=""
-                    >
-                    <img
-                      v-if="item.favourite"
-                      class="star__checked"
-                      src="~assets/img/ui/star_checked.svg"
-                      alt=""
-                    >
-                  </div>
-                </div>
-                <div class="block__locate">
-                  <span class="icon-location" />
-                  <span class="block__text block__text_locate">{{ payload.distance }}m {{ $t('meta.fromYou') }}</span>
-                </div>
-                <div class="block__text block__text_blue">
-                  {{ item.theme }}
-                </div>
-                <div class="block__text block__text_desc">
-                  {{ item.desc }}
-                </div>
-                <div class="block__actions">
-                  <div class="block__status">
-                    <div
-                      class="block__priority"
-                      :class="getPriorityClass(item.priority)"
-                    >
-                      {{ getPriority(item.priority) }}
-                    </div>
-                    <div class="block__amount">
-                      {{ item.amount }} {{ item.symbol }}
-                    </div>
-                  </div>
-                  <div class="block__details">
-                    <button class="block__btn">
-                      <div class="block__text block__text_details">
-                        {{ $t('meta.details') }}
-                      </div>
-                      <span class="icon-short_right" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <QuestCard />
         </div>
       </div>
     </div>
@@ -521,11 +354,15 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import Info from '~/components/app/Info/index.vue';
+import QuestPanel from '~/components/app/Panels/QuestPanel';
+import QuestCard from '~/components/app/Cards/QuestCard';
 
 export default {
   name: 'Quests',
   components: {
     Info,
+    QuestPanel,
+    QuestCard,
   },
   data() {
     return {
@@ -565,31 +402,7 @@ export default {
       },
       payload: {
         type: 'active',
-        cards: [
-          {
-            title: 'Samantha Sparks',
-            favourite: true,
-            sub: '',
-            background: require('~/assets/img/temp/fake-card.svg'),
-            theme: 'Paint the garage quickly',
-            desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-            priority: 0,
-            amount: 1500,
-            symbol: 'wusd',
-          },
-        ],
         favourite: true,
-        company: 'Amazon',
-        avatar: require('~/assets/img/app/fake_profile.png'),
-        username: 'Samantha Sparcs',
-        date: '12 January 2021,14:45',
-        distance: '200',
-        distanceLink: '/',
-        id: '1',
-        performanceTimer: '14:45:23',
-        location: 'Moscow, Lenina street, 3',
-        runtime: '14:45:23',
-        runtimeLink: '#',
         title: 'Paint the garage quickly',
         body: ' Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, '
           + 'lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, '
@@ -643,16 +456,6 @@ export default {
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
-      badgeList: [
-        {
-          id: 1,
-          text: 'Painting Works',
-        },
-        {
-          id: 2,
-          text: 'Art',
-        },
-      ],
     };
   },
   computed: {
@@ -668,38 +471,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    cardsLevels(idx) {
-      const { cards } = this;
-      return [
-        { card__level_checked: cards[idx].level.code === 3 },
-        { card__level_reliable: cards[idx].level.code === 2 },
-        { card__level_higher: cards[idx].level.code === 1 },
-      ];
-    },
     back() {
       this.$router.go(-1);
     },
     toggleMap() {
       this.isInvite = !this.isShowMap;
-    },
-    showProfile() {
-      this.$router.push('/profile');
-    },
-    getPriority(index) {
-      const priority = {
-        0: this.$t('priority.low'),
-        1: this.$t('priority.normal'),
-        2: this.$t('priority.urgent'),
-      };
-      return priority[index] || 'None';
-    },
-    getPriorityClass(index) {
-      const priority = {
-        0: 'block__priority_low',
-        1: 'block__priority_normal',
-        2: 'block__priority_urgent',
-      };
-      return priority[index] || '';
     },
     showMessageModal() {
       this.ShowModal({
@@ -912,64 +688,7 @@ export default {
   flex-direction: row;
   align-items: center;
 }
-.user {
-  @include text-simple;
-  color: $black800;
-  font-weight: 500;
-  font-size: 16px;
-  &__head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  &__container {
-    padding: 35px 0 25px 0;
-  }
-  &__wrapper{
-    display: flex;
-    flex-direction: row;
-  }
-  &__date{
-    @include text-simple;
-    color: $black500;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    margin: auto;
-  }
-  &__img{
-    width:30px;
-    height: 30px;
-    border-radius: 50%;
-  }
-  &__username{
-    @extend .user;
-    padding-left: 10px;
-  }
-  &__distance{
-    @extend .user;
-    margin: 0 0.5%;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    color: $blue;
-  }
-  &__left {
-    @extend .user;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
-  &__right {
-    display: flex;
-    flex-direction: row;
-  }
-  &__company {
-    @extend .user;
-    margin: 0 0 0 10px;
-    color: $black500;
-  }
-}
+
 .spec {
   @include text-simple;
   font-weight: 500;
@@ -982,53 +701,7 @@ export default {
     margin: 40px 0;
   }
 }
-.quest{
-  @include text-simple;
-  font-style: normal;
-  font-weight: 500;
-  color: $black800;
-  &__spec {
-    @extend .quest;
-    font-size: 25px;
-    margin: 0 0 0 0;
-  }
-  &__title {
-    @extend .quest;
-    font-size: 30px;
-    margin: 0 0 10px 0;
-  }
-  &__description {
-    @extend .quest;
-    color: $black700;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 130%;
-  }
-  &__location {
-    @extend .quest;
-    color: $black700;
-    font-weight: normal;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-  }
-  &__count {
-    @extend .quest;
-    font-weight: normal;
-    font-size: 16px;
-    color: $black400;
-  }
-  &__group {
-    @extend .quest;
-    font-weight: 400;
-    display: flex;
-    flex-direction: row;
-  }
-  &__card {
-    color:$black800;
-  }
-}
+
 .quest_materials {
   &__title{
     @include text-simple;
@@ -1039,25 +712,7 @@ export default {
     padding: 10px 0 20px 0;
   }
 }
-.runtime {
-  @include text-simple;
-  display: flex;
-  font-style: normal;
-  font-weight: normal;
-  align-items: center;
-  font-size: 14px;
-  &__container {
-    @extend .runtime;
-    justify-items: center;
-    color: $black700;
-  }
-  &__link {
-    @extend .runtime;
-    margin: 0 5px;
-    font-weight: 500;
-    color: $blue;
-  }
-}
+
 .map {
   &__container {
     background-color: $white;

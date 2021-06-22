@@ -66,6 +66,17 @@
           v-if="selected === 3"
           class="tab__container"
         >
+          <div class="add-btn__container">
+            <base-btn
+              @click="showAddCaseModal()"
+            >
+              <!--        TODO: Добавить в локализацию-->
+              Add Case
+              <template v-slot:right>
+                <span class="icon-plus" />
+              </template>
+            </base-btn>
+          </div>
           <PortfolioTab />
         </div>
 
@@ -96,6 +107,7 @@ import QuestsTab from '~/components/app/Pages/Common/Quests';
 import UserInfo from '~/components/app/Pages/Common/UserInfo';
 import QuestCard from '~/components/app/Cards/QuestCard';
 import UserStatistic from '~/components/app/Panels/UserStatistic';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'Index',
@@ -134,6 +146,11 @@ export default {
     isRating(type) {
       return (type === 3);
     },
+    showAddCaseModal() {
+      this.ShowModal({
+        key: modals.addCase,
+      });
+    },
   },
 };
 </script>
@@ -141,6 +158,13 @@ export default {
 <style lang="scss" scoped>
 
 //TODO: Почистить стили
+
+.add-btn {
+  &__container {
+    width: 154px;
+    margin: 20px 0 20px 0;
+  }
+}
 
 .tab {
   &__container {
@@ -285,6 +309,12 @@ export default {
 .icon {
   font-size: 20px;
   cursor: pointer;
+  &-plus:before {
+    @extend .icon;
+    content: "\e9a8";
+    color: $white;
+    font-size: 16px;
+  }
   &-chat:before {
     @extend .icon;
     content: "\e9ba";

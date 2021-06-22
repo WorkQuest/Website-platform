@@ -1,16 +1,5 @@
 <template>
   <div>
-    <div class="add-btn__container">
-      <base-btn
-        @click="showAddCaseModal()"
-      >
-        <!--        TODO: Добавить в локализацию-->
-        Add Case
-        <template v-slot:right>
-          <span class="icon-plus" />
-        </template>
-      </base-btn>
-    </div>
     <div class="portfolio__items">
       <div
         v-for="(item, i) in portfolios"
@@ -37,7 +26,6 @@
 </template>
 
 <script>
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'PortfolioTab',
@@ -63,35 +51,11 @@ export default {
       ],
     };
   },
-  methods: {
-    showAddCaseModal() {
-      this.ShowModal({
-        key: modals.addCase,
-      });
-    },
-  },
+  methods: {},
 };
 </script>
 
 <style lang="scss" scoped>
-
-.icon {
-  font-size: 20px;
-  cursor: pointer;
-  &-plus:before {
-    @extend .icon;
-    content: "\e9a8";
-    color: $white;
-    font-size: 16px;
-  }
-}
-
-.add-btn {
-  &__container {
-    width: 154px;
-    margin: 20px 0 20px 0;
-  }
-}
 
 .portfolio {
   &__card {

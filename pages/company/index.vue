@@ -11,55 +11,7 @@
     <div class="information-section">
       <div class="main-container">
         <!-- DATA -->
-        <div class="data-grid">
-          <div class="data-item">
-            <div class="card-title">
-              {{ $t('quests.activeQuests') }}
-            </div>
-            <div class="number number_green">
-              {{ payload.quests.activeQuests }}
-            </div>
-            <nuxt-link
-              class="card-subtitle card-subtitle_green"
-              to="/company"
-            >
-              {{ $t('quests.showAllActiveQuests') }}
-            </nuxt-link>
-          </div>
-          <div class="data-item">
-            <div class="card-title">
-              {{ $t('quests.completedQuests') }}
-            </div>
-            <div class="number">
-              {{ payload.quests.completedQuestsOneTime }}
-            </div>
-            <div class="card-subtitle">
-              {{ $t('quests.oneTime') }}
-            </div>
-          </div>
-          <div class="data-item">
-            <div class="card-title">
-              {{ $t('quests.completedQuests') }}
-            </div>
-            <div class="number">
-              {{ payload.quests.completedQuestsFullTime }}
-            </div>
-            <div class="card-subtitle">
-              {{ $t('quests.fullTime') }}
-            </div>
-          </div>
-          <div class="data-item">
-            <div class="card-title">
-              {{ $t('quests.averageRating') }}
-            </div>
-            <div class="number number__rating">
-              {{ payload.quests.averageRating }}
-            </div>
-            <div class="card-subtitle">
-              {{ $t('quests.fromBig') }} {{ payload.quests.reviewCount }} {{ $t('quests.reviews') }}
-            </div>
-          </div>
-        </div>
+        <UserStatistic />
 
         <!-- REVIEWS -->
         <div class="title">
@@ -70,9 +22,9 @@
         <!-- ACTIVE -->
         <div class="quest__card">
           <QuestCard />
-          <div class="button">
+          <div class="button__container">
             <nuxt-link
-              class="more-button"
+              class="button__more"
               to="/company"
             >
               {{ $t('meta.showAllReviews') }}
@@ -88,11 +40,12 @@
 import UserInfo from '~/components/app/Pages/Common/UserInfo';
 import Reviews from '~/components/app/Pages/Profile/Tabs/Reviews';
 import QuestCard from '~/components/app/Cards/QuestCard';
+import UserStatistic from '~/components/app/Panels/UserStatistic';
 
 export default {
   name: 'Index',
   components: {
-    Reviews, UserInfo, QuestCard,
+    Reviews, UserInfo, QuestCard, UserStatistic,
   },
   data() {
     return {
@@ -134,17 +87,8 @@ export default {
 
 <style lang="scss" scoped>
 
-//TODO: Удалить лишние стили Review
+//TODO: Удалить лишние стили
 
-.card-subtitle {
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 130%;
-  color: #4C5767;
-  &_green {
-    color: #00AA5B !important;
-  }
-}
 .btn {
   &__common {
     font-size: 16px;
@@ -166,15 +110,15 @@ export default {
 .button {
   display: flex;
   justify-content: center;
-}
-.button .more-button {
-  @extend .btn__common;
-  display: inline-block;
-  border: 1px solid rgba(0, 131, 199, 0.1);
-  border-radius: 6px;
-  padding: 13px 67px 13px 28px;
-  background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
-  background-position: 82% 21px;
+  &__more {
+    @extend .btn__common;
+    display: inline-block;
+    border: 1px solid rgba(0, 131, 199, 0.1);
+    border-radius: 6px;
+    padding: 13px 67px 13px 28px;
+    background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
+    background-position: 82% 21px;
+  }
 }
 
 .number {

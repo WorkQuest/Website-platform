@@ -143,51 +143,7 @@
         <div class="section__title">
           {{ $t('quests.reviewsBig') }}
         </div>
-        <div class="reviews-grid">
-          <span
-            v-for="(item, i) in payload.reviews"
-            :key="i"
-          >
-            <div class="reviews-item">
-              <div class="header">
-                <div class="avatar">
-                  <img
-                    src="~/assets/img/temp/avatar-medium.jpg"
-                    alt=""
-                  >
-                </div>
-                <div class="name">
-                  <div class="title">
-                    {{ item.reviewerName }}
-                  </div>
-                  <div class="card-subtitle card-subtitle_blue">
-                    {{ $t('role.worker') }}
-                  </div>
-                </div>
-              </div>
-              <div class="subheader">
-                <div class="card-subtitle">
-                  {{ $t('quests.questBig') }}
-                </div>
-                <div class="card-subtitle card-subtitle_name">
-                  {{ item.questName }}
-                </div>
-              </div>
-              <div class="description">
-                {{ item.reviewDesc }}
-              </div>
-              <div class="rating">
-                {{ item.reviewerRating }}
-              </div>
-              <nuxt-link
-                class="simple-button"
-                to="/profiles/1"
-              >
-                {{ $t('quests.readCompletely') }}
-              </nuxt-link>
-            </div>
-          </span>
-        </div>
+        <Reviews />
         <div class="button">
           <nuxt-link
             class="more-button"
@@ -200,28 +156,7 @@
         <div class="section__title">
           {{ $t('quests.portfolio') }}
         </div>
-        <div class="portfolio__items">
-          <div
-            v-for="(item, i) in payload.portfolios"
-            :key="i"
-            class="portfolio__item"
-          >
-            <div class="portfolio__card">
-              <div class="portfolio__body">
-                <img
-                  class="portfolio__img"
-                  src="~/assets/img/temp/photo.jpg"
-                  alt=""
-                >
-              </div>
-              <div class="portfolio__footer">
-                <div class="portfolio__name">
-                  {{ item.name }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Portfolio />
         <div class="button">
           <nuxt-link
             class="more-button"
@@ -238,30 +173,18 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import Reviews from '~/components/app/Pages/Profile/Tabs/Reviews';
+import Portfolio from '~/components/app/Pages/Profile/Tabs/Portfolio';
 
 export default {
   name: 'IndexVue',
+  components: {
+    Reviews,
+    Portfolio,
+  },
   data() {
     return {
       payload: {
-        portfolios: [
-          {
-            name: 'Lorem ipsum dolor sit amet',
-            imgUrl: '',
-          },
-          {
-            name: 'Lorem ipsum dolor sit amet',
-            imgUrl: '',
-          },
-          {
-            name: 'Lorem ipsum dolor sit amet',
-            imgUrl: '',
-          },
-          {
-            name: 'Lorem ipsum dolor sit amet',
-            imgUrl: '',
-          },
-        ],
         skills: [
           {
             title: 'Craft',
@@ -306,32 +229,6 @@ export default {
           averageRating: '4.5',
           reviewCount: '23',
         },
-        reviews: [
-          {
-            reviewerName: 'Edward Cooper',
-            reviewerRating: '4.00',
-            questName: 'SPA saloon design',
-            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-          },
-          {
-            reviewerName: 'Edward Cooper',
-            reviewerRating: '4.00',
-            questName: 'SPA saloon design',
-            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-          },
-          {
-            reviewerName: 'Edward Cooper',
-            reviewerRating: '4.00',
-            questName: 'SPA saloon design',
-            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-          },
-          {
-            reviewerName: 'Edward Cooper',
-            reviewerRating: '4.00',
-            questName: 'SPA saloon design',
-            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-          },
-        ],
       },
     };
   },
