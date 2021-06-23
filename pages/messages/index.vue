@@ -233,6 +233,7 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
   }
   &__body {
     background-color: $white;
