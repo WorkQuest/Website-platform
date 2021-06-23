@@ -31,4 +31,5 @@ export default {
   addCase: 'addCase',
   welcome: 'welcome',
   openADispute: 'openADispute',
+  notice: 'notice',
 };

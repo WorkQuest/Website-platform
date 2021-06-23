@@ -1,6 +1,11 @@
 <template>
   <div>
     <base-btn
+      @click="showNoticeModal()"
+    >
+      showNoticeModal
+    </base-btn>
+    <base-btn
       @click="showOpenADisputeModal()"
     >
       showOpenADisputeModal
@@ -126,6 +131,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    showNoticeModal() {
+      this.ShowModal({
+        key: modals.notice,
+      });
+    },
     showOpenADisputeModal() {
       this.ShowModal({
         key: modals.openADispute,

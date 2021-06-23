@@ -128,7 +128,8 @@
     "cancel": "Cancel",
     "submit": "Submit",
     "showAllReviews": "Show all reviews",
-    "later": "Later"
+    "later": "Later",
+    "iAgree": "I agree"
   },
   "priority": {
     "title": "Priority",
@@ -259,6 +260,7 @@
     "startQuest": "Start quest"
   },
   "modals": {
+    "notice": "Notice",
     "welcomeToWorkQuest": "Welcome to the WorkQuest",
     "pleaseTellUsAboutSkills": "Please, tell us about your skills below",
     "amount": "Amount",
