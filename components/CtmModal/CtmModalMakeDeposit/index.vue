@@ -9,11 +9,11 @@
           for="depositAmount_input"
           class="ctm-modal__label"
         >{{ $t('modals.depositAmount') }}</label>
-        <input
+        <base-field
           id="depositAmount_input"
-          class="input_grey"
-          placeholder="3 500"
-        >
+          v-model="amount_input"
+          :placeholder="'3 500'"
+        />
       </div>
       <div class="ctm-modal__content-btns">
         <div class="btn-group">
@@ -109,21 +109,6 @@ export default {
 
   &__content {
     padding-top: 0 !important;
-  }
-}
-
-.input {
-  &_grey {
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 46px;
-    width: 100%;
-    border: 0;
-    background-color: $black0;
-    resize: none;
-    &::placeholder {
-      color: $black200;
-    }
   }
 }
 

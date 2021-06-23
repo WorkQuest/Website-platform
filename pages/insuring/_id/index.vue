@@ -434,7 +434,7 @@ export default {
   &__container {
     display: grid;
     grid-template-rows: 195px max-content;
-    max-width: 1280px;
+    max-width: 1180px;
     grid-row-gap: 30px;
     width: 100%;
   }

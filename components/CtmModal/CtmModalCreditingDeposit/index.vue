@@ -14,11 +14,12 @@
             <div class="ctm-modal__subtitle">
               {{ $t('modals.smallTemp') }}
             </div>
-            <input
+            <base-field
               id="amountOfETH_input"
-              class="input_grey"
-              placeholder="10 ETH"
-            >
+              v-model="amount_input"
+              class="input"
+              :placeholder="'10 ETH'"
+            />
           </div>
           <div class="ctm-modal__content-field">
             <label
@@ -28,15 +29,17 @@
             <div class="ctm-modal__subtitle">
               {{ $t('modals.smallTemp') }}
             </div>
-            <input
+            <base-field
               id="amountOfWUSD_input"
-              class="input_grey"
-              placeholder="1000 WUSD"
+              v-model="amount_input"
+              class="input"
+              :placeholder="'1000 WUSD'"
             >
-            <div class="ctm-modal__title-head" />
-            <div class="ctm-modal__subtitle">
-              {{ $t('modals.tipAbout') }}
-            </div>
+              <div class="ctm-modal__title-head" />
+              <div class="ctm-modal__subtitle">
+                {{ $t('modals.tipAbout') }}
+              </div>
+            </base-field>
           </div>
         </div>
         <div class="ctm-modal__gray-zone">
@@ -218,19 +221,6 @@ export default {
 }
 
 .input {
-  &_grey {
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 46px;
-    width: 100%;
-    border: 0;
-    background-color: $black0;
-    resize: none;
     margin-top: 10px;
-
-    &::placeholder {
-      color: $black200;
-    }
-  }
 }
 </style>

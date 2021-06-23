@@ -1,4 +1,4 @@
-'<template>
+<template>
   <ctm-modal-box
     class="messageSend"
     :title="$t('modals.addCard')"
@@ -6,36 +6,36 @@
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
         <label for="cardNumber_input">{{ $t('modals.numberOfCard') }}</label>
-        <input
+        <base-field
           id="cardNumber_input"
-          class="input_grey"
-          placeholder="1234 1234 1234 1234"
-        >
+          v-model="cardNumber_input"
+          :placeholder="'1234 1234 1234 1234'"
+        />
       </div>
       <div class="ctm-modal__content-field">
         <label for="name_input">{{ $t('modals.cardholderName') }}</label>
-        <input
+        <base-field
           id="name_input"
-          class="input_grey"
+          v-model="name_input"
           placeholder="John Doe"
-        >
+        />
       </div>
       <div class="grid__2col">
         <div class="ctm-modal__content-field">
           <label for="date_input">{{ $t('modals.date') }}</label>
-          <input
+          <base-field
             id="date_input"
-            class="input_grey"
-            placeholder="02/24"
-          >
+            v-model="date_input"
+            :placeholder="'02/24'"
+          />
         </div>
         <div class="ctm-modal__content-field">
           <label for="cvv_input">{{ $t('modals.cvv') }}</label>
-          <input
+          <base-field
             id="cvv_input"
-            class="input_grey"
+            v-model="cvv_input"
             placeholder="242"
-          >
+          />
         </div>
       </div>
       <div class="btn__container">
@@ -98,20 +98,6 @@ export default {
   @include modalKit;
 }
 
-.input {
-  &_grey {
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 46px;
-    width: 100%;
-    border: 0;
-    background-color: $black0;
-    resize: none;
-    &::placeholder {
-      color: $black200;
-    }
-  }
-}
 .grid {
   &__2col {
     display: grid;

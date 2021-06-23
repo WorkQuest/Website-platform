@@ -211,7 +211,7 @@ export default {
   &__container {
     display: grid;
     grid-template-rows: 190px max-content;
-    max-width: 1280px;
+    max-width: 1180px;
     grid-row-gap: 20px;
     width: 100%;
   }

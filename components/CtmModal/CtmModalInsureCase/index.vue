@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="ctm-modal_left">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
+        {{ $t('modals.smallTemp') }}
       </div>
       <div class="ctm-modal__pics">
         <img

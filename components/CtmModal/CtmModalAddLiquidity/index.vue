@@ -11,28 +11,29 @@
               for="amountOfWusd_input"
               class="ctm-modal__label"
             >{{ $t('modals.amountOfWusd') }}</label>
-            <input
+            <base-field
               id="amountOfWusd_input"
-              class="input_grey"
-              placeholder="10 ETH"
-            >
+              v-model="amount_input"
+              :placeholder="'10 ETH'"
+            />
           </div>
           <div class="ctm-modal__content-field">
             <label
               for="amountOfEth_input"
               class="ctm-modal__label"
             >{{ $t('modals.amountOfEth') }}</label>
-            <input
+            <base-field
               id="amountOfEth_input"
-              class="input_grey"
-              placeholder="1000 WUSD"
+              v-model="amount_input"
+              :placeholder="'1000 WUSD'"
             >
-            <div class="ctm-modal__title-head">
-              {{ $t('modals.tip') }}
-            </div>
-            <div class="ctm-modal__subtitle">
-              {{ $t('modals.tipAbout') }}
-            </div>
+              <div class="ctm-modal__title-head">
+                {{ $t('modals.tip') }}
+              </div>
+              <div class="ctm-modal__subtitle">
+                {{ $t('modals.tipAbout') }}
+              </div>
+            </base-field>
           </div>
         </div>
         <div class="ctm-modal__gray-zone">
@@ -194,21 +195,6 @@ export default {
       color: #7C838D;
       font-weight: 500;
       font-size: 14px;
-    }
-  }
-}
-
-.input {
-  &_grey {
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 46px;
-    width: 100%;
-    border: 0;
-    background-color: $black0;
-    resize: none;
-    &::placeholder {
-      color: $black200;
     }
   }
 }

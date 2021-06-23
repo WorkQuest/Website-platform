@@ -11,11 +11,11 @@
               for="withdrawalAmount_input"
               class="ctm-modal__label"
             >{{ $t('modals.withdrawalAmount') }}</label>
-            <input
+            <base-field
               id="withdrawalAmount_input"
-              class="input_grey"
-              placeholder="1000 WUSD"
-            >
+              v-model="amount_input"
+              :placeholder="'1000 WUSD'"
+            />
           </div>
           <div class="ctm-modal__content-field">
             <div
@@ -227,21 +227,6 @@ export default {
       color: #7C838D;
       font-weight: 500;
       font-size: 14px;
-    }
-  }
-}
-
-.input {
-  &_grey {
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 46px;
-    width: 100%;
-    border: 0;
-    background-color: $black0;
-    resize: none;
-    &::placeholder {
-      color: $black200;
     }
   }
 }
