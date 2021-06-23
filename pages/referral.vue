@@ -198,22 +198,76 @@ export default {
       ],
       testFields: [
         {
-          key: 'userName', label: this.$t('referral.tableHead.name'), sortable: false, thClass: 'cell_head',
+          key: 'userName',
+          label: this.$t('referral.tableHead.name'),
+          thStyle: {
+            padding: '0 0 0 23px',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
+          },
         },
         {
-          key: 'userID', label: this.$t('referral.tableHead.userID'), sortable: false, thClass: 'cell_head',
+          key: 'userID',
+          label: this.$t('referral.tableHead.userID'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
-          key: 'txHash', label: this.$t('referral.tableHead.txHash'), sortable: false, thClass: 'cell_head',
+          key: 'txHash',
+          label: this.$t('referral.tableHead.txHash'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
-          key: 'time', label: this.$t('referral.tableHead.time'), sortable: false, thClass: 'cell_head',
+          key: 'time',
+          label: this.$t('referral.tableHead.time'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
-          key: 'amount', label: this.$t('referral.tableHead.amount'), sortable: false, thClass: 'cell_head',
+          key: 'amount',
+          label: this.$t('referral.tableHead.amount'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
-          key: 'status', label: this.$t('referral.tableHead.status'), sortable: false, thClass: 'cell_head',
+          key: 'status',
+          label: this.$t('referral.tableHead.status'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
       ],
     };
@@ -473,41 +527,17 @@ export default {
         }
       }
 
-      &__table {
-        .table {
-          .cell {
-            padding: 0;
-            &_head {
-              @extend .cell;
-            }
-          }
-          &__header {
-            height: 27px;
-            align-items: center;
-            background-color: rgba(0, 131, 199, 0.1);
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            padding: 0 20px;
-            margin-bottom: 10px;
-            grid-gap: 10px;
-            font-size: 12px;
-            color: #0083C7;
-          }
-
-          &__rows {
-            display: grid;
-            grid-auto-rows: 33px;
-            grid-row-gap: 20px;
-            padding-bottom: 20px;
-          }
-        }
-      }
-
       &_couple {
         display: grid;
         grid-template-columns: repeat(2, calc(50% - 10px));
         grid-column-gap: 20px;
       }
+    }
+  }
+
+  &__table {
+    table {
+      margin: 0 !important;
     }
   }
 }

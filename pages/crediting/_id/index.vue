@@ -113,37 +113,74 @@ export default {
         {
           key: 'ID',
           label: this.$t('crediting.tableHead.id'),
-          sortable: false,
-          thClass: 'cell_head',
+          thStyle: {
+            padding: '0 0 0 23px',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
+          },
         },
         {
           key: 'currentRatio',
           label: this.$t('crediting.tableHead.currentRatio'),
-          sortable: false,
-          thClass: 'cell_head',
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
           key: 'deposited',
           label: this.$t('crediting.tableHead.deposited'),
-          sortable: false,
-          thClass: 'cell_head',
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
           key: 'availableToWithdraw',
           label: this.$t('crediting.tableHead.availableToWithdraw'),
-          sortable: false,
-          thClass: 'cell_head',
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
           key: 'WUSD',
           label: this.$t('crediting.tableHead.wusd'),
-          sortable: false,
-          thClass: 'cell_head',
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
           key: 'manage',
           label: '',
-          sortable: false,
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding-left: 0; padding-right: 20px',
+          },
         },
       ],
       cards: [
@@ -342,33 +379,7 @@ export default {
   &__table {
 
     .table {
-      .cell {
-        padding: 0;
-
-        &_head {
-          @extend .cell;
-        }
-      }
-
-      &__header {
-        height: 27px;
-        align-items: center;
-        background-color: rgba(0, 131, 199, 0.1);
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        padding: 0 20px;
-        margin-bottom: 10px;
-        grid-gap: 10px;
-        font-size: 12px;
-        color: #0083C7;
-      }
-
-      &__rows {
-        display: grid;
-        grid-auto-rows: 33px;
-        grid-row-gap: 20px;
-        padding-bottom: 20px;
-      }
+      margin: 0;
 
       &__value {
         font-size: 16px;

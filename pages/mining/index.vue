@@ -144,43 +144,86 @@ export default {
         {
           key: 'poolAddress',
           label: this.$t('mining.tableHead.poolAddress'),
-          sortable: false,
-          thClass: 'cell_head',
+          thStyle: {
+            padding: '0 0 0 23px',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
+          },
         },
         {
           key: 'assets',
           label: this.$t('mining.tableHead.assets'),
-          sortable: false,
-          thClass: 'cell_head',
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
           key: 'template1',
           label: this.$t('mining.tableHead.sdsdsdsd'),
-          sortable: false,
-          thClass: 'cell_head',
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
           key: 'template2',
           label: this.$t('mining.tableHead.sdsdsdsd'),
-          sortable: false,
-          thClass: 'cell_head',
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
           key: 'template3',
           label: this.$t('mining.tableHead.sdsdsdsd'),
-          sortable: false,
-          thClass: 'cell_head',
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
           key: 'volume',
           label: this.$t('mining.tableHead.volume'),
-          sortable: false,
-          thClass: 'cell_head',
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
           key: 'choose',
           label: '',
-          sortable: false,
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding-left: 0; padding-right: 20px',
+          },
         },
       ],
     };
@@ -414,44 +457,9 @@ export default {
   }
 
   &__table {
-    table {
-      .cell {
-        padding: 0;
-
-        &_head {
-          @extend .cell;
-        }
-
-        &_none {
-          >div {
-            display: none;
-          }
-        }
-      }
-    }
 
     .table {
       margin: 0;
-
-      &__header {
-        height: 27px;
-        align-items: center;
-        background-color: rgba(0, 131, 199, 0.1);
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        padding: 0 20px;
-        margin-bottom: 10px;
-        grid-gap: 10px;
-        font-size: 12px;
-        color: #0083C7;
-      }
-
-      &__rows {
-        display: grid;
-        grid-auto-rows: 33px;
-        grid-row-gap: 20px;
-        padding-bottom: 20px;
-      }
 
       &__value {
         font-weight: 400;

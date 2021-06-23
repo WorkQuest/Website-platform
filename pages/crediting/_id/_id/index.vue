@@ -129,32 +129,62 @@ export default {
         {
           key: 'activity',
           label: this.$t('crediting.credTableHeader.activity'),
-          sortable: false,
-          thClass: 'cell_head',
+          thStyle: {
+            padding: '0 0 0 23px',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
+          },
         },
         {
           key: 'amount',
           label: this.$t('crediting.credTableHeader.amount'),
-          sortable: false,
-          thClass: 'cell_head',
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
           key: 'time',
           label: this.$t('crediting.credTableHeader.time'),
-          sortable: false,
-          thClass: 'cell_head',
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
           key: 'sender',
           label: this.$t('crediting.credTableHeader.sender'),
-          sortable: false,
-          thClass: 'cell_head',
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
           key: 'txHash',
           label: this.$t('crediting.credTableHeader.txHash'),
-          sortable: false,
-          thClass: 'cell_head',
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
       ],
       cards: [
@@ -415,33 +445,7 @@ export default {
   &__table {
 
     .table {
-      .cell {
-        padding: 0;
-
-        &_head {
-          @extend .cell;
-        }
-      }
-
-      &__header {
-        height: 27px;
-        align-items: center;
-        background-color: rgba(0, 131, 199, 0.1);
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        padding: 0 20px;
-        margin-bottom: 10px;
-        grid-gap: 10px;
-        font-size: 12px;
-        color: #0083C7;
-      }
-
-      &__rows {
-        display: grid;
-        grid-auto-rows: 33px;
-        grid-row-gap: 20px;
-        padding-bottom: 20px;
-      }
+      margin: 0;
 
       &__value {
         font-size: 16px;
