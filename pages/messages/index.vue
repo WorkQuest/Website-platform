@@ -67,66 +67,6 @@ import ChatMenu from '~/components/ui/ChatMenu';
 
 export default {
   name: 'Messages',
-  data() {
-    return {
-      cards: [
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-      ],
-    };
-  },
   computed: {
     Messages() {
       return this.$store.getters['data/getMessages'];
