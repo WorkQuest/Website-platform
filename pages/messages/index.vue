@@ -8,8 +8,9 @@
         <div class="chat__body">
           <div class="chat__header">
             <div class="chat__title">
-              <div>{{ $t('chat.chat') }}</div> <div class="icon-more">
-                <span class="icon-more_horizontal" />
+              <div>{{ $t('chat.chat') }}</div>
+              <div class="icon-more">
+                <ChatMenu />
               </div>
             </div>
           </div>
@@ -62,6 +63,8 @@
 </template>
 
 <script>
+import ChatMenu from '~/components/ui/ChatMenu';
+
 export default {
   name: 'Messages',
   data() {
@@ -211,7 +214,7 @@ export default {
     content: "\e951";
   }
   &-more {
-    margin: 0 19px 0 0;
+    margin: 0 7px 0 0;
   }
 }
 

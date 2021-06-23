@@ -353,6 +353,11 @@
     }
   },
   "chat": {
+    "openDispute": "Open dispute",
+    "approveQuest": "Approve quest",
+    "starredMessage": "Starred Message",
+    "starredChats": "Starred chats",
+    "createGroupChat": "Create group chat",
     "messages": "Messages",
     "chat": "Chat",
     "quest": "Quest:",

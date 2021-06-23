@@ -16,9 +16,7 @@
               />
               <span>{{ $t('chat.chat') }}</span>
             </div>
-            <div class="icon-more">
-              <span class="icon-more_horizontal" />
-            </div>
+            <ChatMenu />
           </div>
         </div>
         <div class="chat__messages">
@@ -135,6 +133,8 @@
 
 <script>
 import moment from 'moment';
+import modals from '~/store/modals/modals';
+import ChatMenu from '~/components/ui/ChatMenu';
 
 export default {
   name: 'Messages',
@@ -197,8 +197,14 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
+    this.showNoticeModal();
   },
   methods: {
+    showNoticeModal() {
+      this.ShowModal({
+        key: modals.notice,
+      });
+    },
     isRating(type) {
       return (type === 1 || type === 2);
     },
@@ -283,7 +289,7 @@ export default {
     color: $black500;
   }
   &-more {
-    margin: 0 19px 0 0;
+    margin: 0 15px 0 0;
   }
 }
 
