@@ -23,7 +23,7 @@
             >
               <img
                 :src="avatar"
-                alt=""
+                alt="User.name"
               >
             </div>
             <div class="header__route">

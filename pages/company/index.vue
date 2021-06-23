@@ -50,19 +50,6 @@ export default {
   components: {
     Reviews, UserInfo, QuestCard, UserStatistic,
   },
-  data() {
-    return {
-      payload: {
-        quests: {
-          activeQuests: '12',
-          completedQuestsOneTime: '12',
-          completedQuestsFullTime: '2',
-          averageRating: '4.5',
-          reviewCount: '23',
-        },
-      },
-    };
-  },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);

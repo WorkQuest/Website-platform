@@ -6,7 +6,7 @@
           {{ $t('disputes.disputes') }}
         </h2>
         <span
-          v-for="(item, i) in payload.disputes"
+          v-for="(item, i) in Disputes"
           :key="i"
         >
           <div
@@ -18,7 +18,7 @@
         </span>
         <div class="page__grid">
           <span
-            v-for="(item, i) in payload.disputes"
+            v-for="(item, i) in Disputes"
             :key="i"
             class=""
           >
@@ -76,45 +76,10 @@
 <script>
 export default {
   name: 'Disputes',
-  data() {
-    return {
-      payload: {
-        disputes: [
-          {
-            number: '1',
-            quest: 'Pain the garage quickly...',
-            employer: 'Samantha Sparcs',
-            questSalary: '1 500 WUSD',
-            status: 'Pending',
-            decision: '',
-          },
-          {
-            number: '2',
-            quest: 'Pain the garage quickly...',
-            employer: 'Samantha Sparcs',
-            questSalary: '1 500 WUSD',
-            status: 'Completed',
-            decision: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
-          },
-          {
-            number: '3',
-            quest: 'Pain the garage quickly...',
-            employer: 'Samantha Sparcs',
-            questSalary: '1 500 WUSD',
-            status: 'Pending',
-            decision: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
-          },
-          {
-            number: '4',
-            quest: 'Pain the garage quickly...',
-            employer: 'Samantha Sparcs',
-            questSalary: '1 500 WUSD',
-            status: 'Pending',
-            decision: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
-          },
-        ],
-      },
-    };
+  computed: {
+    Disputes() {
+      return this.$store.getters['data/getDisputes'];
+    },
   },
   async mounted() {
     this.SetLoader(true);

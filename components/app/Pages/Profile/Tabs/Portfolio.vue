@@ -10,8 +10,8 @@
           <div class="portfolio__body">
             <img
               class="portfolio__img"
-              src="~/assets/img/temp/photo.jpg"
-              alt=""
+              :src="item.imgUrl"
+              :alt="item.name"
             >
           </div>
           <div class="portfolio__footer">
@@ -30,16 +30,12 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'PortfolioTab',
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters(['data/getPortfolios']),
     Portfolios() {
       return this.$store.getters['data/getPortfolios'];
     },
   },
-  methods: {},
 };
 </script>
 

@@ -96,8 +96,8 @@
                       <div class="avatar__container">
                         <div class="avatar">
                           <img
-                            src="~/assets/img/temp/avatar.jpg"
-                            alt=""
+                            :src="User.avatar"
+                            :alt="User.name"
                           >
                         </div>
                         <div>
@@ -203,172 +203,24 @@ export default {
     return {
       selectedTab: 0,
       isShowFavourite: false,
-      tabs: [
-        {
-          title: 'All quests',
-          id: 0,
-        },
-        {
-
-          title: 'Favorite',
-          id: 1,
-        },
-        {
-          title: 'Requested',
-          id: 2,
-        },
-        {
-          title: 'Performed quests',
-          id: 3,
-        },
-        {
-          title: 'Active quests',
-          id: 4,
-        },
-        {
-          title: 'Invited quests',
-          id: 5,
-        },
-      ],
-      cards: [
-        {
-          type: 4,
-          title: 'Samantha Sparks',
-          level: {
-            code: 1,
-          },
-          inProgress: {
-            work: false,
-            name: 'Roselia Vance',
-          },
-          favourite: false,
-          isFavourite: false,
-          sub: 'from Amazon',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-          distance: '200',
-        },
-        {
-          type: 4,
-          title: 'Samantha Sparks',
-          level: {
-            code: 2,
-          },
-          inProgress: {
-            work: true,
-            name: 'Roselia Vance',
-          },
-          favourite: false,
-          isFavourite: false,
-          sub: '',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-          distance: '200',
-        },
-        {
-          type: 5,
-          title: 'Samantha Sparks',
-          level: {
-            code: 3,
-          },
-          inProgress: {
-            work: true,
-            name: 'Roselia Vance',
-          },
-          favourite: false,
-          isFavourite: true,
-          sub: 'from Amazon',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-          distance: '200',
-        },
-        {
-          type: 2,
-          title: 'Samantha Sparks',
-          level: {
-            code: 1,
-          },
-          inProgress: {
-            work: true,
-            name: 'Roselia Vance',
-          },
-          favourite: false,
-          isFavourite: true,
-          sub: 'from Amazon',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-          distance: '300',
-        },
-        {
-          type: 3,
-          title: 'Samantha Sparks',
-          level: {
-            code: 2,
-          },
-          inProgress: {
-            work: true,
-            name: 'Roselia Vance',
-          },
-          favourite: false,
-          isRating: false,
-          sub: '',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-          rating: '',
-          distance: '400',
-        },
-        {
-          type: 3,
-          title: 'Samantha Sparks',
-          level: {
-            code: 3,
-          },
-          inProgress: {
-            work: false,
-            name: '',
-          },
-          favourite: false,
-          isRating: false,
-          sub: 'from Amazon',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-          rating: '',
-          distance: '100',
-        },
-      ],
     };
   },
   computed: {
     cardLevelClass(idx) {
-      const { cards } = this;
+      const { Cards } = this;
       return [
-        { card__level_reliable: cards[idx].level.code === 2 },
-        { card__level_checked: cards[idx].level.code === 3 },
+        { card__level_reliable: Cards[idx].level.code === 2 },
+        { card__level_checked: Cards[idx].level.code === 3 },
       ];
+    },
+    Tabs() {
+      return this.$store.getters['data/getTabs'];
+    },
+    Cards() {
+      return this.$store.getters['data/getCards'];
+    },
+    User() {
+      return this.$store.getters['data/getUserInfo'];
     },
   },
   async mounted() {
@@ -377,11 +229,11 @@ export default {
   },
   methods: {
     cardsLevels(idx) {
-      const { cards } = this;
+      const { Cards } = this;
       return [
-        { card__level_checked: cards[idx].level.code === 3 },
-        { card__level_reliable: cards[idx].level.code === 2 },
-        { card__level_higher: cards[idx].level.code === 1 },
+        { card__level_checked: Cards[idx].level.code === 3 },
+        { card__level_reliable: Cards[idx].level.code === 2 },
+        { card__level_higher: Cards[idx].level.code === 1 },
       ];
     },
     showDetails() {
@@ -408,12 +260,12 @@ export default {
     },
     filteredCards(type, isFavorite) {
       if (type === 0) {
-        return this.cards;
+        return this.Cards;
       }
       if (isFavorite) {
-        return this.cards.filter((x) => x.isFavourite);
+        return this.Cards.filter((x) => x.isFavourite);
       }
-      return this.cards.filter((x) => x.type === type);
+      return this.Cards.filter((x) => x.type === type);
     },
     btnMode(id) {
       if (this.selectedTab === id) {

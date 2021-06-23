@@ -13,18 +13,18 @@
               alt=""
             >
             <span class="user__username">
-              {{ payload.username }}
+              {{ Quest.username }}
             </span>
             <span
               v-if="userRole === 'employer'"
               class="user__company"
             >
-              {{ $t('company.from') }} {{ payload.company }}
+              {{ $t('company.from') }} {{ Quest.company }}
             </span>
           </div>
           <div class="user__right">
             <span class="user__date">
-              {{ payload.date }}
+              {{ Quest.date }}
             </span>
             <span class="icon-share_outline icon_fs-20" />
           </div>
@@ -34,11 +34,11 @@
             <span
               class="icon-location icon_fs-20"
             />
-            <span>{{ payload.location }}</span>
+            <span>{{ Quest.location }}</span>
             <span
               class="user__distance"
             >
-              {{ payload.distance }} {{ $t('meta.fromYou') }}
+              {{ Quest.distance }} {{ $t('meta.fromYou') }}
             </span>
           </div>
           <div
@@ -50,7 +50,7 @@
             <span
               class="runtime__link"
             >
-              {{ payload.runtime }}
+              {{ Quest.runtime }}
             </span>
           </div>
           <div
@@ -64,7 +64,7 @@
             <span
               class="runtime__link"
             >
-              {{ payload.performanceTimer }}
+              {{ Quest.performanceTimer }}
             </span>
           </div>
         </div>
@@ -73,7 +73,7 @@
     <div class="badge__container">
       <ul class="badge-list">
         <li
-          v-for="item in badgeList"
+          v-for="item in BadgeList"
           :key="`item-${item.id}`"
           class="badge__item badge__item_blue"
         >
@@ -89,37 +89,18 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'QuestPanel',
-  data() {
-    return {
-      badgeList: [
-        {
-          id: 1,
-          text: 'Painting Works',
-        },
-        {
-          id: 2,
-          text: 'Art',
-        },
-      ],
-      payload: {
-        company: 'Amazon',
-        avatar: require('~/assets/img/app/fake_profile.png'),
-        username: 'Samantha Sparcs',
-        date: '12 January 2021,14:45',
-        distance: '200',
-        distanceLink: '/',
-        performanceTimer: '14:45:23',
-        runtime: '14:45:23',
-        runtimeLink: '#',
-      },
-    };
-  },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
     }),
+    Quest() {
+      return this.$store.getters['data/getQuest'];
+    },
+    BadgeList() {
+      return this.$store.getters['data/getBadgeList'];
+    },
   },
   methods: {
     showProfile() {

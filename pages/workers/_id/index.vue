@@ -25,13 +25,13 @@
               </div>
               <div class="col info-grid__col">
                 <div class="title title_inline">
-                  {{ payload.user.name }}
+                  {{ User.name }}
                   <span class="level">
                     HIGHER LEVEL
                   </span>
                 </div>
                 <div class="description">
-                  {{ payload.user.desc }}
+                  {{ User.desc }}
                 </div>
                 <Social />
                 <Contact />
@@ -56,7 +56,7 @@
             {{ $t('workers.skills') }}
           </div>
           <div
-            v-for="(skill, i) in payload.skills"
+            v-for="(skill, i) in User.skills"
             :key="i"
           >
             <span class="badge_blue">{{ skill.title }}</span>
@@ -181,21 +181,6 @@ export default {
             title: 'Design',
           },
         ],
-        user: {
-          name: 'Samantha Sparcs',
-          desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel',
-          location: 'Moscow, Lenina street, 3',
-          tel: '+7 989 989 98 98',
-          email: 'worker@gmail.com',
-          company: 'CEO from Amazon',
-        },
-        quests: {
-          activeQuests: '12',
-          completedQuestsOneTime: '12',
-          completedQuestsFullTime: '2',
-          averageRating: '4.5',
-          reviewCount: '23',
-        },
       },
     };
   },
@@ -205,6 +190,9 @@ export default {
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
     }),
+    User() {
+      return this.$store.getters['data/getUserInfo'];
+    },
   },
   async mounted() {
     this.SetLoader(true);

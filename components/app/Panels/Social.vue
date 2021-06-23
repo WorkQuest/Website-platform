@@ -1,7 +1,7 @@
 <template>
   <div>
     <span
-      v-for="(item, i) in socials"
+      v-for="(item, i) in Socials"
       :key="i"
     >
       <nuxt-link
@@ -19,27 +19,10 @@
 <script>
 export default {
   name: 'SocialPanel',
-  data() {
-    return {
-      socials: [
-        {
-          url: '/profile',
-          class: 'icon-facebook',
-        },
-        {
-          url: '/profile',
-          class: 'icon-twitter',
-        },
-        {
-          url: '/profile',
-          class: 'icon-instagram',
-        },
-        {
-          url: '/profile',
-          class: 'icon-LinkedIn',
-        },
-      ],
-    };
+  computed: {
+    Socials() {
+      return this.$store.getters['data/getSocials'];
+    },
   },
 };
 </script>

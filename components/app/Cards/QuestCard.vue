@@ -4,7 +4,7 @@
       <div class="quests__body">
         <div class="quests__cards">
           <div
-            v-for="(item, i) in cards"
+            v-for="(item, i) in Card"
             :key="item.id"
             class="quests__cards__all"
           >
@@ -183,30 +183,12 @@ export default {
   data() {
     return {
       isShowFavourite: false,
-      cards: [
-        {
-          type: 4,
-          title: 'Samantha Sparks',
-          level: {
-            code: 2,
-          },
-          inProgress: {
-            work: false,
-            name: 'Roselia Vance',
-          },
-          favourite: false,
-          isFavourite: false,
-          sub: '',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-          distance: '200',
-        },
-      ],
     };
+  },
+  computed: {
+    Card() {
+      return this.$store.getters['data/getCard'];
+    },
   },
   methods: {
     getPriority(index) {
@@ -263,11 +245,11 @@ export default {
       return !(type === 3);
     },
     cardsLevels(idx) {
-      const { cards } = this;
+      const { Card } = this;
       return [
-        { card__level_checked: cards[idx].level.code === 3 },
-        { card__level_reliable: cards[idx].level.code === 2 },
-        { card__level_higher: cards[idx].level.code === 1 },
+        { card__level_checked: Card[idx].level.code === 3 },
+        { card__level_reliable: Card[idx].level.code === 2 },
+        { card__level_higher: Card[idx].level.code === 1 },
       ];
     },
   },

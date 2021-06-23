@@ -9,7 +9,7 @@
           {{ $t('quests.activeQuests') }}
         </div>
         <div class="number number_green">
-          {{ payload.quests.activeQuests }}
+          {{ Quests.activeQuests }}
         </div>
         <nuxt-link
           class="card-subtitle number_green"
@@ -23,7 +23,7 @@
           {{ $t('quests.completedQuests') }}
         </div>
         <div class="number">
-          {{ payload.quests.completedQuestsOneTime }}
+          {{ Quests.completedQuestsOneTime }}
         </div>
         <div class="card-subtitle">
           {{ $t('quests.oneTime') }}
@@ -34,7 +34,7 @@
           {{ $t('quests.completedQuests') }}
         </div>
         <div class="number">
-          {{ payload.quests.completedQuestsFullTime }}
+          {{ Quests.completedQuestsFullTime }}
         </div>
         <div class="card-subtitle">
           {{ $t('quests.fullTime') }}
@@ -45,10 +45,10 @@
           {{ $t('quests.averageRating') }}
         </div>
         <div class="number number__rating">
-          {{ payload.quests.averageRating }}
+          {{ Quests.averageRating }}
         </div>
         <div class="card-subtitle">
-          {{ $t('quests.fromBig') }} {{ payload.quests.reviewCount }} {{ $t('quests.reviews') }}
+          {{ $t('quests.fromBig') }} {{ Quests.reviewCount }} {{ $t('quests.reviews') }}
         </div>
       </div>
     </div>
@@ -60,17 +60,16 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'UserStatistic',
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
     }),
+    Quest() {
+      return this.$store.getters['data/getQuest'];
+    },
   },
-  methods: {},
 };
 </script>
 

@@ -5,27 +5,27 @@
     >
       <span class="contact__container">
         <span
-          v-if="contacts.address"
+          v-if="Quest.contacts.address"
           class="icon-location"
-        /><span class="contact__link">{{ contacts.address }}</span>
+        /><span class="contact__link">{{ Quest.contacts.address }}</span>
       </span>
       <span class="contact__container">
         <span
-          v-if="contacts.phone"
+          v-if="Quest.contacts.phone"
           class="icon-phone"
-        /><span class="contact__link">{{ contacts.phone }}</span>
+        /><span class="contact__link">{{ Quest.contacts.phone }}</span>
       </span>
       <span class="contact__container">
         <span
-          v-if="contacts.email"
+          v-if="Quest.contacts.email"
           class="icon-mail"
-        /><span class="contact__link">{{ contacts.email }}</span>
+        /><span class="contact__link">{{ Quest.contacts.email }}</span>
       </span>
       <span
         v-if="userRole === 'employer'"
         class="contact__container"
       >
-        <span class="icon-Earth" /><span class="contact__link">{{ contacts.company }}</span>
+        <span class="icon-Earth" /><span class="contact__link">{{ Quest.contacts.company }}</span>
       </span>
     </span>
   </div>
@@ -36,22 +36,15 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'ContactPanel',
-  data() {
-    return {
-      contacts: {
-        address: 'Moscow, Lenina street, 3',
-        phone: '+7 989 989 98 98',
-        email: 'worker@gmail.com',
-        company: 'amazon.com',
-      },
-    };
-  },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
     }),
+    Quest() {
+      return this.$store.getters['data/getQuest'];
+    },
   },
 };
 </script>

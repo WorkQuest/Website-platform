@@ -15,7 +15,7 @@
           </div>
           <div class="chat__cards">
             <div
-              v-for="(item, i) in cards"
+              v-for="(item, i) in Messages"
               :key="i"
             >
               <div
@@ -123,6 +123,11 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    Messages() {
+      return this.$store.getters['data/getMessages'];
+    },
   },
   async mounted() {
     this.SetLoader(true);
