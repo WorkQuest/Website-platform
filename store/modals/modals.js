@@ -30,4 +30,5 @@ export default {
   depositIsOpened: 'depositIsOpened',
   addCase: 'addCase',
   welcome: 'welcome',
+  openADispute: 'openADispute',
 };

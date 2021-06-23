@@ -1,6 +1,11 @@
 <template>
   <div>
     <base-btn
+      @click="showOpenADisputeModal()"
+    >
+      showOpenADisputeModal
+    </base-btn>
+    <base-btn
       @click="showWelcomeModal()"
     >
       showWelcomeModal
@@ -121,6 +126,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    showOpenADisputeModal() {
+      this.ShowModal({
+        key: modals.openADispute,
+      });
+    },
     showWelcomeModal() {
       this.ShowModal({
         key: modals.welcome,
