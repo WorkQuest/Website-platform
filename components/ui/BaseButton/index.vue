@@ -107,6 +107,9 @@ export default {
   }
   &_grey {
     background-color: $black100;
+    &:hover {
+      background: $black200;
+    }
   }
   &_back {
     transition: .3s;

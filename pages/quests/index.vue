@@ -400,8 +400,14 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
+    this.showWelcomeModal();
   },
   methods: {
+    showWelcomeModal() {
+      this.ShowModal({
+        key: modals.welcome,
+      });
+    },
     toNotifications() {
       this.$router.push('/notification');
     },
