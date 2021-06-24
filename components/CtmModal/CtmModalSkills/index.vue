@@ -29,7 +29,6 @@
         <div class="skills__items">
           <div class="skills__item">
             <div
-              v-b-toggle.tags-1
               class="skills__drop"
             >
               <div class="skills__text skills__text_title">

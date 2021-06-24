@@ -365,6 +365,7 @@ export default {
     grid-template-columns: 1fr;
     grid-gap: 20px;
     &__all {
+      box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
       &_per {
         height: 244px;
       }

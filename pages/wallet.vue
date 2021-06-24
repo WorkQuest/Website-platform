@@ -298,6 +298,12 @@ export default {
     display: flex;
     justify-content: center;
   }
+  &__card {
+    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+  }
+  &__balance {
+    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+  }
   &__body {
     max-width: 1180px;
     width: 100%;
@@ -321,7 +327,6 @@ export default {
     font-size: 24px;
     &::before {
       color: $blue;
-
     }
   }
 
@@ -342,6 +347,7 @@ export default {
   }
   &__table {
     margin-top: 20px;
+    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
   }
 }
 

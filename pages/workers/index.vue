@@ -755,7 +755,7 @@ export default {
   transition: .2s;
   &:hover {
     background-color: $white;
-    box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05);
+    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
   }
 }
 .icon {
@@ -778,7 +778,7 @@ export default {
   transition: .2s;
   &:hover {
     cursor: pointer;
-    box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
+    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
   }
   &_higher {
     border: 1px solid #F6CF00;

@@ -261,6 +261,8 @@
     "startQuest": "Start quest"
   },
   "modals": {
+    "estimatedPayment": "Estimated payment:",
+    "hello": "Hello...",
     "value": "Value",
     "address": "Address",
     "notice": "Notice",

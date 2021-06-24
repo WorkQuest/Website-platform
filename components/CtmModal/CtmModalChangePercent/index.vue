@@ -5,7 +5,7 @@
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__desc_left">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor
+        {{ desc }}
       </div>
       <div class="ctm-modal__content-field">
         <label
@@ -45,7 +45,9 @@ import modals from '~/store/modals/modals';
 export default {
   name: 'ModalApplyForAPension',
   data() {
-    return {};
+    return {
+      desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
+    };
   },
   computed: {
     ...mapGetters({

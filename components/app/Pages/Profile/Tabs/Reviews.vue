@@ -130,6 +130,7 @@ export default {
     border-radius: 6px;
     padding: 20px 20px 10px;
     position: relative;
+    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.1);
   }
   .reviews-item .header {
     @extend .styles__flex;

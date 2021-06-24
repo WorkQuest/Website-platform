@@ -92,11 +92,6 @@
             {{ $t('meta.showAllReviews') }}
           </nuxt-link>
         </div>
-        <!-- ACTIVE -->
-        <div class="title">
-          {{ $t('quests.activeQuests') }}
-        </div>
-        <QuestCard />
       </div>
     </div>
   </div>
@@ -108,7 +103,6 @@ import PortfolioTab from '~/components/app/Pages/Profile/Tabs/Portfolio';
 import ReviewsTab from '~/components/app/Pages/Profile/Tabs/Reviews';
 import QuestsTab from '~/components/app/Pages/Common/Quests';
 import UserInfo from '~/components/app/Pages/Common/UserInfo';
-import QuestCard from '~/components/app/Cards/QuestCard';
 import UserStatistic from '~/components/app/Panels/UserStatistic';
 import modals from '~/store/modals/modals';
 
@@ -118,7 +112,6 @@ export default {
     ReviewsTab,
     PortfolioTab,
     QuestsTab,
-    QuestCard,
     UserInfo,
     UserStatistic,
   },

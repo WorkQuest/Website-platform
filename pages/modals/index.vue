@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <div class="container">
+    <base-btn
+      @click="showSkillsModal()"
+    >
+      showSkillsModal
+    </base-btn>
     <base-btn
       @click="showTransferModal()"
     >
@@ -136,6 +141,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    showSkillsModal() {
+      this.ShowModal({
+        key: modals.skills,
+      });
+    },
     showTransferModal() {
       this.ShowModal({
         key: modals.transfer,
@@ -259,3 +269,11 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.container {
+  overflow-y: auto;
+  height: 1000px;
+}
+
+</style>
