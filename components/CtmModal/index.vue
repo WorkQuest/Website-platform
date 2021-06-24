@@ -44,7 +44,6 @@
       <CtmModalConfirmDetails v-if="modals.confirmDetails === currentModalKey" />
       <CtmModalInsureCase v-if="modals.insureCase === currentModalKey" />
       <CtmModalWithdrawAbout v-if="modals.withdrawAbout === currentModalKey" />
-      <CtmModalDepositIsOpened v-if="modals.depositIsOpened === currentModalKey" />
       <CtmModalAddCase v-if="modals.addCase === currentModalKey" />
       <CtmModalWelcome v-if="modals.welcome === currentModalKey" />
       <CtmModalOpenADispute v-if="modals.openADispute === currentModalKey" />
@@ -88,7 +87,6 @@ import CtmModalCreditingDeposit from './CtmModalCreditingDeposit';
 import CtmModalConfirmDetails from './CtmModalConfirmDetails';
 import CtmModalInsureCase from './CtmModalInsureCase';
 import CtmModalWithdrawAbout from './CtmModalWithdrawAbout';
-import CtmModalDepositIsOpened from './CtmModalDepositIsOpened';
 import CtmModalAddCase from './CtmModalAddCase';
 import CtmModalWelcome from './CtmModalWelcome';
 import CtmModalOpenADispute from './CtmModalOpenADispute';
@@ -130,7 +128,6 @@ export default {
     CtmModalConfirmDetails,
     CtmModalInsureCase,
     CtmModalWithdrawAbout,
-    CtmModalDepositIsOpened,
     CtmModalAddCase,
     CtmModalWelcome,
     CtmModalOpenADispute,
