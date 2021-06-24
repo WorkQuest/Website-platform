@@ -36,11 +36,17 @@
             </div>
           </div>
           <div class="btn-group_exp">
-            <base-btn class="btn_bl">
-              {{ $t('pension.withdraw') }}
+            <base-btn
+              class="btn_bl"
+              @click="openOpenADepositModal()"
+            >
+              {{ $t('saving.deposit') }}
             </base-btn>
-            <base-btn class="btn_bl">
-              {{ $t('pension.prolong') }}
+            <base-btn
+              class="btn_bl"
+              @click="openWithdrawAboutModal()"
+            >
+              {{ $t('saving.withdraw') }}
             </base-btn>
           </div>
         </div>
@@ -211,6 +217,16 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    openOpenADepositModal() {
+      this.ShowModal({
+        key: modals.openADeposit,
+      });
+    },
+    openWithdrawAboutModal() {
+      this.ShowModal({
+        key: modals.withdrawAbout,
+      });
+    },
   },
 };
 </script>

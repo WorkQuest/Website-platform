@@ -1,20 +1,11 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.deposit')"
+    :title="$t('modals.withdraw')"
   >
     <div class="ctm-modal__content">
-      <div class="ctm-modal__content-field">
-        <label
-          for="depositAmount_input"
-          class="ctm-modal__label"
-        >{{ $t('modals.depositAmount') }}</label>
-        <base-field
-          id="depositAmount_input"
-          v-model="amount_input"
-          :is-hide-error="true"
-          :placeholder="'3 500'"
-        />
+      <div class="ctm-modal__desc">
+        {{ $t('modals.template') }}
       </div>
       <div class="ctm-modal__content-btns">
         <div class="btn-group">
@@ -26,7 +17,7 @@
           </base-btn>
           <base-btn
             class="btn_bl"
-            @click="showPensionIsRegisteredModal()"
+            @click="hide()"
           >
             {{ $t('meta.submit') }}
           </base-btn>
@@ -41,7 +32,7 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalApplyForAPension',
+  name: 'ModalWithdrawAbout',
   data() {
     return {};
   },
@@ -54,17 +45,24 @@ export default {
     hide() {
       this.CloseModal();
     },
-    showPensionIsRegisteredModal() {
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+
 .ctm-modal {
   @include modalKit;
   &__content-field {
     margin: 15px 0 0 0;
+  }
+
+  &__desc {
+      text-align: left;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 21px;
+      color: #4C5767;
   }
 
   &__content-btns {
@@ -107,22 +105,15 @@ export default {
   &__label {
     margin-bottom: 5px;
   }
-
-  &__content {
-    padding-top: 0 !important;
-  }
 }
 
 .messageSend {
-  max-width: 495px !important;
+  max-width: 390px !important;
   &__content {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
     grid-gap: 20px;
-  }
-  &__action {
-    margin-top: 10px;
   }
 }
 </style>

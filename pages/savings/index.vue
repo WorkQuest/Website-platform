@@ -10,11 +10,11 @@
         </div>
       </div>
       <div class="saving-page__content">
-        <div class="info-block__square">
+        <div class="info-block__cards">
           <div
             v-for="(item, i) in cards"
             :key="i"
-            class="info-block__quarter"
+            class="info-block__card"
           >
             <div class="info-block__circle" />
             <div class="info-block__subtitle">
@@ -205,6 +205,9 @@ export default {
         },
       ],
       cards: [
+        {
+          text: this.$t('saving.templateText'),
+        },
         {
           text: this.$t('saving.templateText'),
         },
@@ -416,6 +419,7 @@ export default {
           font-weight: 400;
           color: #8D96A1;
           transition: height 300ms;
+          margin-top: 20px;
         }
       }
 
@@ -553,13 +557,13 @@ export default {
         }
       }
 
-      &__square {
+      &__cards {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         gap: 20px;
       }
 
-      &__quarter {
+      &__card {
         @extend .info-block;
         text-align: center;
         display: grid;

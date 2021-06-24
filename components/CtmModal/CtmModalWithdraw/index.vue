@@ -9,7 +9,7 @@
           <label for="amount_input">{{ $t('modals.amount') }}</label>
           <base-field
             id="amount_input"
-            v-model="amount_input"
+            :is-hide-error="true"
             :placeholder="'0 WDX'"
           />
         </div>
@@ -18,7 +18,7 @@
         </div>
         <div class="ctm-modal__content-field">
           <base-field
-            v-model="balance_input"
+            :is-hide-error="true"
             mode="white"
             :placeholder="'$ 0'"
           />
@@ -118,7 +118,7 @@ export default {
   @include modalKit;
 
   &__equal {
-    margin: 0 0 35px 12px;
+    margin: 0 0 12px 12px;
   }
 
   .grid {

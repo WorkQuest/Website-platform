@@ -11,7 +11,7 @@
         >{{ $t("modals.lockedSavings") }}</label>
         <base-field
           id="depositPercent_input"
-          v-model="amount_input"
+          :is-hide-error="true"
           :placeholder="'3 500'"
         />
       </div>
@@ -22,7 +22,7 @@
         >{{ $t("modals.durationDays") }}</label>
         <base-field
           id="amount_input"
-          v-model="amount_input"
+          :is-hide-error="true"
           :placeholder="'180'"
         />
       </div>

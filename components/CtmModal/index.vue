@@ -43,6 +43,7 @@
       <CtmModalCreditingDeposit v-if="modals.creditingDeposit === currentModalKey" />
       <CtmModalConfirmDetails v-if="modals.confirmDetails === currentModalKey" />
       <CtmModalInsureCase v-if="modals.insureCase === currentModalKey" />
+      <CtmModalWithdrawAbout v-if="modals.withdrawAbout === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -80,6 +81,7 @@ import CtmModalRemoveLiquidity from './CtmModalRemoveLiquidity';
 import CtmModalCreditingDeposit from './CtmModalCreditingDeposit';
 import CtmModalConfirmDetails from './CtmModalConfirmDetails';
 import CtmModalInsureCase from './CtmModalInsureCase';
+import CtmModalWithdrawAbout from './CtmModalWithdrawAbout';
 
 export default {
   name: 'ModalBox',
@@ -115,6 +117,7 @@ export default {
     CtmModalCreditingDeposit,
     CtmModalConfirmDetails,
     CtmModalInsureCase,
+    CtmModalWithdrawAbout,
   },
   data: () => ({
     modals,

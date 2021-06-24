@@ -3,7 +3,7 @@
     <div class="mining-page__container">
       <div class="mining-page__header">
         <div class="title">
-          {{ $t('mining.liquidityMining') }}
+          {{ $t('mining.liquidityManning') }}
         </div>
         <div class="title_sub">
           {{ $t('mining.templateText') }}
@@ -304,11 +304,14 @@ export default {
       border: 1px solid #0083C71A;
       border-radius: 6px;
       transition: .3s;
+      height: 35px;
+      margin-top: 3px;
 
       &__doc {
         @extend .btn;
         width: 220px;
         height: 46px;
+        margin: 0;
 
         .download {
           display: unset;

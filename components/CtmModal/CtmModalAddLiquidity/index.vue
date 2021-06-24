@@ -13,7 +13,7 @@
             >{{ $t('modals.amountOfWusd') }}</label>
             <base-field
               id="amountOfWusd_input"
-              v-model="amount_input"
+              :is-hide-error="true"
               :placeholder="'10 ETH'"
             />
           </div>
@@ -24,16 +24,15 @@
             >{{ $t('modals.amountOfEth') }}</label>
             <base-field
               id="amountOfEth_input"
-              v-model="amount_input"
+              :is-hide-error="true"
               :placeholder="'1000 WUSD'"
-            >
-              <div class="ctm-modal__title-head">
-                {{ $t('modals.tip') }}
-              </div>
-              <div class="ctm-modal__subtitle">
-                {{ $t('modals.tipAbout') }}
-              </div>
-            </base-field>
+            />
+            <div class="ctm-modal__title-head">
+              {{ $t('modals.tip') }}
+            </div>
+            <div class="ctm-modal__subtitle">
+              {{ $t('modals.tipAbout') }}
+            </div>
           </div>
         </div>
         <div class="ctm-modal__gray-zone">
@@ -65,7 +64,7 @@
             class="btn_bl"
             @click="hide()"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('modals.connectWallet') }}
           </base-btn>
         </div>
       </div>

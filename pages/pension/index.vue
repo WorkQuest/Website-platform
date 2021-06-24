@@ -3,7 +3,7 @@
     <div class="pension-page__container">
       <div class="pension-page__header">
         <div class="title">
-          {{ $t('pension.pensionProgram') }}
+          {{ $t('pension.retirementProgram') }}
         </div>
         <div class="title_sub">
           {{ $t('pension.templateText') }}
@@ -84,6 +84,38 @@
             </div>
           </div>
         </div>
+        <div
+          v-if="FAQs.length"
+          class="info-block"
+        >
+          <div class="info-block__name_bold">
+            {{ $t("saving.faq") }}
+          </div>
+          <div class="info-block__faqs">
+            <button
+              v-for="(item, i) in FAQs"
+              :key="i"
+              class="info-block__faq"
+              @click="handleClickFAQ(item)"
+            >
+              <div class="text__faq">
+                {{ item.name }}
+              </div>
+              <img
+                class="select-img"
+                :class="{'select-img_rotate' : item.isOpen}"
+                src="~/assets/img/ui/arrow-down.svg"
+                alt=""
+              >
+              <div
+                class="text__faq_gray"
+                :class="{'text__faq_opened' : item.isOpen}"
+              >
+                {{ item.about }}
+              </div>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -131,6 +163,33 @@ export default {
           subtitle: this.$t('pension.depositsFromQuest'),
         },
       ],
+      FAQs: [
+        {
+          name: this.$t('pension.faq1'),
+          about: this.$t('pension.faq1'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('pension.faq2'),
+          about: this.$t('pension.ans2'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('pension.faq3'),
+          about: this.$t('pension.faq3'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('pension.faq4'),
+          about: this.$t('pension.faq4'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('pension.faq5'),
+          about: this.$t('pension.faq5'),
+          isOpen: false,
+        },
+      ],
     };
   },
   computed: {
@@ -147,6 +206,9 @@ export default {
       this.ShowModal({
         key: modals.applyForAPension,
       });
+    },
+    handleClickFAQ(FAQ) {
+      FAQ.isOpen = !FAQ.isOpen;
     },
   },
 };
@@ -242,9 +304,82 @@ export default {
       }
     }
 
+    .text {
+      font-size: 16px;
+      font-weight: 400;
+      color: #8D96A1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &__faq {
+        color: #4C5767;
+        font-weight: 500;
+
+        &_gray {
+          font-size: 16px;
+          font-weight: 400;
+          color: #8D96A1;
+          height: 0;
+          transition: height 300ms;
+          overflow: hidden;
+        }
+
+        &_opened {
+          height: auto;
+          font-size: 16px;
+          font-weight: 400;
+          color: #8D96A1;
+          transition: height 300ms;
+          margin-top: 20px;
+        }
+      }
+
+      &_blue {
+        @extend .text;
+        font-weight: 500;
+        font-size: 18px;
+        color: #0083C7;
+      }
+
+      &_small {
+        @extend .text;
+        font-size: 14px;
+      }
+    }
+
+    .select-img {
+      height: 7px;
+      position: absolute;
+      width: 12px;
+      right: 30px;
+      top: 30px;
+      transition: 300ms;
+
+      &_rotate {
+        @extend .select-img;
+        transform: rotate(180deg);
+      }
+    }
+
     .info-block {
       background-color: #fff;
       border-radius: 6px;
+
+      &__faqs {
+        margin: 0 20px 20px 20px;
+        display: grid;
+        gap: 20px;
+      }
+
+      &__faq {
+        border-radius: 5px;
+        padding: 20px 60px 20px 20px;
+        background-color: #F7F8FA;
+        text-align: left;
+        position: relative;
+        transition: 300ms;
+      }
 
       &__square {
         display: grid;
@@ -281,6 +416,7 @@ export default {
 
       &__about {
         width: calc(100% - 50px);
+        min-height: 180px;
         grid-template-areas:
           "hd ."
           "ft sd";

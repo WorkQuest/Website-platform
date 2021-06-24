@@ -3,7 +3,7 @@
     <div class="crediting-page__container">
       <div class="crediting-page__header">
         <div class="title">
-          {{ $t('crediting.crediting') }}
+          {{ $t('crediting.lending') }}
         </div>
         <div class="title_sub">
           {{ $t('crediting.templateText') }}

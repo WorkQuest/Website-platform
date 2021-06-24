@@ -13,7 +13,7 @@
             >{{ $t('modals.withdrawalAmount') }}</label>
             <base-field
               id="withdrawalAmount_input"
-              v-model="amount_input"
+              :is-hide-error="true"
               :placeholder="'1000 WUSD'"
             />
           </div>
@@ -63,7 +63,7 @@
             class="btn_bl"
             @click="hide()"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('modals.removeLiquidity') }}
           </base-btn>
         </div>
       </div>

@@ -11,7 +11,7 @@
         >{{ $t('modals.depositPercentFromAQuest') }}</label>
         <base-field
           id="depositPercent_input"
-          v-model="amount_input"
+          :is-hide-error="true"
           :placeholder="'13%'"
         />
       </div>
@@ -22,13 +22,12 @@
         >{{ $t('modals.firstDepositAmount') }}</label>
         <base-field
           id="amount_input"
-          v-model="amount_input"
+          :is-hide-error="true"
           :placeholder="'130 WUSD'"
-        >
-          <div class="ctm-modal__subtitle">
-            {{ $t('modals.aboutFirstDeposit') }}
-          </div>
-        </base-field>
+        />
+        <div class="ctm-modal__subtitle">
+          {{ $t('modals.aboutFirstDeposit') }}
+        </div>
       </div>
       <div class="ctm-modal__content-btns">
         <div class="btn-group">

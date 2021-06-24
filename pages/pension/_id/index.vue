@@ -6,7 +6,7 @@
     >
       <div class="pension-page__header">
         <div class="title">
-          {{ $t('pension.pensionProgram') }}
+          {{ $t('pension.retirementProgram') }}
         </div>
         <div class="title_sub">
           {{ $t('pension.templateText') }}
@@ -142,11 +142,27 @@
               <div class="info-block__title_gray">
                 {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
               </div>
-              <div class="info-block__subtitle_black">
-                2 years 52 days
+              <div
+                :class="[
+                  {'info-block__subtitle_black' : !isExpired},
+                  {'info-block__subtitle_red' : isExpired}
+                ]"
+              >
+                {{ isExpired ? '0 days' : '2 years 52 days' }}
               </div>
             </div>
-            <div class="btn-group_exp">
+            <div
+              :class="[
+                {'btn-group' : !isExpired},
+                {'btn-group_exp' : isExpired}
+              ]"
+            >
+              <base-btn
+                v-if="isExpired"
+                class="btn_red"
+              >
+                {{ $t('pension.cancel') }}
+              </base-btn>
               <base-btn class="btn_bl">
                 {{ $t('pension.withdraw') }}
               </base-btn>
@@ -154,7 +170,7 @@
                 class="btn_bl"
                 @click="openApplyForAPensionModal()"
               >
-                {{ $t('pension.prolong') }}
+                {{ $t('pension.' + (isExpired ? 'renewFor1Year' : 'prolong')) }}
               </base-btn>
             </div>
           </div>
@@ -207,6 +223,38 @@
             </div>
           </div>
         </template>
+        <div
+          v-if="FAQs.length"
+          class="info-block"
+        >
+          <div class="info-block__name_bold">
+            {{ $t("saving.faq") }}
+          </div>
+          <div class="info-block__faqs">
+            <button
+              v-for="(item, i) in FAQs"
+              :key="i"
+              class="info-block__faq"
+              @click="handleClickFAQ(item)"
+            >
+              <div class="text__faq">
+                {{ item.name }}
+              </div>
+              <img
+                class="select-img"
+                :class="{'select-img_rotate' : item.isOpen}"
+                src="~/assets/img/ui/arrow-down.svg"
+                alt=""
+              >
+              <div
+                class="text__faq_gray"
+                :class="{'text__faq_opened' : item.isOpen}"
+              >
+                {{ item.about }}
+              </div>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -219,6 +267,7 @@ import modals from '~/store/modals/modals';
 export default {
   data() {
     return {
+      isExpired: true,
       isDeadline: false,
       items: [
         {
@@ -314,6 +363,33 @@ export default {
           },
         },
       ],
+      FAQs: [
+        {
+          name: this.$t('pension.faq1'),
+          about: this.$t('pension.faq1'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('pension.faq2'),
+          about: this.$t('pension.ans2'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('pension.faq3'),
+          about: this.$t('pension.faq3'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('pension.faq4'),
+          about: this.$t('pension.faq4'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('pension.faq5'),
+          about: this.$t('pension.faq5'),
+          isOpen: false,
+        },
+      ],
     };
   },
   computed: {
@@ -343,6 +419,9 @@ export default {
     },
     jumpInTime() {
       this.isDeadline = true;
+    },
+    handleClickFAQ(FAQ) {
+      FAQ.isOpen = !FAQ.isOpen;
     },
   },
 };
@@ -396,13 +475,14 @@ export default {
 
     .btn-group {
       display: grid;
-      grid-template-columns: repeat(2, calc(50% - 10px));
+      grid-template-columns: repeat(2, 1fr);
       gap: 20px;
       padding-bottom: 20px;
+      width: calc(100% - 20px);
 
       &_exp {
         @extend .btn-group;
-        width: calc(100% - 20px);
+        grid-template-columns: repeat(3, 1fr);
       }
     }
 
@@ -439,11 +519,89 @@ export default {
           background-color: #103d7c;
         }
       }
+
+      &_red {
+        @extend .btn_bl;
+        background-color: #DF3333;
+      }
+    }
+
+    .text {
+      font-size: 16px;
+      font-weight: 400;
+      color: #8D96A1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &__faq {
+        color: #4C5767;
+        font-weight: 500;
+
+        &_gray {
+          font-size: 16px;
+          font-weight: 400;
+          color: #8D96A1;
+          height: 0;
+          transition: height 300ms;
+          overflow: hidden;
+        }
+
+        &_opened {
+          height: auto;
+          font-size: 16px;
+          font-weight: 400;
+          color: #8D96A1;
+          transition: height 300ms;
+          margin-top: 20px;
+        }
+      }
+
+      &_blue {
+        @extend .text;
+        font-weight: 500;
+        font-size: 18px;
+        color: #0083C7;
+      }
+
+      &_small {
+        @extend .text;
+        font-size: 14px;
+      }
+    }
+
+    .select-img {
+      height: 7px;
+      position: absolute;
+      width: 12px;
+      right: 30px;
+      top: 30px;
+      transition: 300ms;
+
+      &_rotate {
+        @extend .select-img;
+        transform: rotate(180deg);
+      }
     }
 
     .info-block {
       background-color: #fff;
       border-radius: 6px;
+
+      &__faqs {
+        margin: 0 20px 20px 20px;
+        display: grid;
+        gap: 20px;
+      }
+
+      &__faq {
+        border-radius: 5px;
+        padding: 20px 60px 20px 20px;
+        background-color: #F7F8FA;
+        text-align: left;
+        position: relative;
+        transition: 300ms;
+      }
 
       &__grid {
         @extend .info-block;
@@ -535,6 +693,11 @@ export default {
           margin-bottom: 20px;
           color: #1D2127;
         }
+
+        &_red {
+          @extend .info-block__subtitle_black;
+          color: #DF3333;
+        }
       }
 
       &__tokens {
@@ -549,6 +712,14 @@ export default {
         color: #1D2127;
         padding: 20px 20px 10px 20px;
         font-weight: 400;
+
+        &_bold {
+          font-weight: 500;
+          font-size: 25px;
+          color: #103D7C;
+          line-height: 1;
+          padding: 20px;
+        }
       }
     }
 

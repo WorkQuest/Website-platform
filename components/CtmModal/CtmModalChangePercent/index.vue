@@ -15,7 +15,8 @@
         <base-field
           id="currPerc_input"
           v-model="amount_input"
-          :placeholder="'3 500'"
+          :is-hide-error="true"
+          :placeholder="'15%'"
         />
       </div>
       <div class="ctm-modal__content-btns">

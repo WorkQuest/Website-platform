@@ -327,7 +327,9 @@
     "liquidationFee": "Liquidation fee",
     "withdrawal": "Withdrawal",
     "saveCardForNextPayment": "Save card for next payment",
-    "insureCase": "Insure case"
+    "insureCase": "Insure case",
+    "connectWallet": "Connect wallet",
+    "howMuchWusdWouldYouLikeToGenerate": "How much WUSD would you like to generate?"
   },
   "ui": {
     "workers": "Workers",
@@ -350,11 +352,11 @@
       "invite": "Invite you a quest"
     },
     "menu": {
-      "pension": "Pension program",
+      "pension": "Retirement Program",
       "referral": "Referral program",
       "p2p": "P2P insurance",
       "savings": "Savings product",
-      "crediting": "Crediting",
+      "crediting": "Lending",
       "mining": "Liquidity mining",
       "menu": "Menu"
     },
@@ -502,6 +504,8 @@
     }
   },
  "pension": {
+   "retirementProgram": "Retirement program",
+   "faq": "FAQ",
    "pensionProgram": "Pension program",
    "applyForAPension": "Apply for a pension",
    "annualPercent": "annual percent",
@@ -535,7 +539,15 @@
    "percents": "{count} %",
    "years": "{count} years",
    "wusdCount": "{count} WUSD",
-   "plusPercents": "+ {count}%"
+   "plusPercents": "+ {count}%",
+   "faq1": "What are Locked Savings? Committed to holding your crypto?",
+   "faq2": "What happens to my funds on the day I subscribe to a Locked Savings product?",
+   "ans2": "On the day of subscription, WorkQuest Savings will deduct the funds for subscription from your WUSD wallet.\n",
+   "faq3": "What happens to my funds on the value date of a Locked Savings product?",
+   "faq4": "What happens to my funds on the redemption date of a Locked Savings product?",
+   "faq5": "How is the average annual return (APR) calculated?",
+   "cancel": "Cancel",
+   "renewFor1Year": "Renew for 1 year"
  },
   "saving": {
     "workQuestSavings": "WorkQuest Savings",
@@ -573,9 +585,12 @@
       "time": "Feb 1, 2021",
       "status": "Success"
     },
-    "depositIsOpened": "Deposit is opened"
+    "depositIsOpened": "Deposit is opened",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw"
   },
   "mining":  {
+    "liquidityManning": "Liquidity manning",
     "liquidityMining": "Liquidity mining",
     "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "pools": "Pools",
@@ -606,10 +621,10 @@
     "myPoolShare": "My pool share",
     "liquidityPoolProviders": "Liquidity pool providers",
     "liquidityProvidersEarn": "Liquidity providers earn a 0.3% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
-    "transactions": "Transactions",
-    "": ""
+    "transactions": "Transactions"
   },
   "crediting": {
+    "lending": "Lending",
     "crediting": "Crediting",
     "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "marketSize": "Market size",
@@ -641,7 +656,7 @@
       "manage": "Manage"
     },
     "back": "Back",
-    "tempName": "Credit #56546",
+    "tempName": "Lend #56546",
     "liquidationPrice": "Liquidation price",
     "collateralizationRatio": "Collateralization ratio",
     "ethLocked": "ETH locked",
@@ -700,6 +715,12 @@
     "insuredEvent": "Insured event",
     "agree": "Agree",
     "percentsCount": "{count} %",
-    "votesCount": "{count} votes"
+    "votesCount": "{count} votes",
+    "faq1": "What are Locked Savings? Committed to holding your crypto?",
+    "faq2": "What happens to my funds on the day I subscribe to a Locked Savings product?",
+    "ans2": "On the day of subscription, WorkQuest Savings will deduct the funds for subscription from your WUSD wallet.\n",
+    "faq3": "What happens to my funds on the value date of a Locked Savings product?",
+    "faq4": "What happens to my funds on the redemption date of a Locked Savings product?",
+    "faq5": "How is the average annual return (APR) calculated?"
   }
  }

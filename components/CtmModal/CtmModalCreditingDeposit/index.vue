@@ -16,7 +16,7 @@
             </div>
             <base-field
               id="amountOfETH_input"
-              v-model="amount_input"
+              :is-hide-error="true"
               class="input"
               :placeholder="'10 ETH'"
             />
@@ -25,21 +25,20 @@
             <label
               for="amountOfWUSD_input"
               class="ctm-modal__label"
-            >{{ $t('modals.amountOfEth') }}</label>
+            >{{ $t('modals.howMuchWusdWouldYouLikeToGenerate') }}</label>
             <div class="ctm-modal__subtitle">
               {{ $t('modals.smallTemp') }}
             </div>
             <base-field
               id="amountOfWUSD_input"
-              v-model="amount_input"
+              :is-hide-error="true"
               class="input"
               :placeholder="'1000 WUSD'"
-            >
-              <div class="ctm-modal__title-head" />
-              <div class="ctm-modal__subtitle">
-                {{ $t('modals.tipAbout') }}
-              </div>
-            </base-field>
+            />
+            <div class="ctm-modal__title-head" />
+            <div class="ctm-modal__subtitle">
+              {{ $t('modals.tipAbout') }}
+            </div>
           </div>
         </div>
         <div class="ctm-modal__gray-zone">

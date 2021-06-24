@@ -31,4 +31,5 @@ export default {
   creditingDeposit: 'creditingDeposit',
   confirmDetails: 'confirmDetails',
   insureCase: 'insureCase',
+  withdrawAbout: 'withdrawAbout',
 };
