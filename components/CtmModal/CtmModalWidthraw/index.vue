@@ -6,10 +6,10 @@
     <div class="ctm-modal__content">
       <div class="grid__3col">
         <div class="ctm-modal__content-field">
-          <label for="date_input">{{ $t('modals.amount') }}</label>
+          <label for="amount_input">{{ $t('modals.amount') }}</label>
           <base-field
-            id="date_input"
-            v-model="date_input"
+            id="amount_input"
+            v-model="amount_input"
             :placeholder="'02/24'"
           />
         </div>
@@ -32,12 +32,40 @@
           :placeholder="'1234 1234 1234 1234'"
         />
       </div>
-      <div class="ctm-modal__content-field link">
-        <nuxt-link
-          to="#"
+      <div
+        class="ctm-modal__content-field"
+        :class="{'hide': isShowCardInputs}"
+      >
+        <span
+          v-if="!isShowCardInputs"
+          class="link"
+          @click="showCardInputs()"
         >
           {{ $t('modals.addAnotherCard') }}
-        </nuxt-link>
+        </span>
+      </div>
+      <div
+        v-if="isShowCardInputs"
+        class="grid__2col"
+      >
+        <div
+          class="ctm-modal__content-field"
+        >
+          <label for="date_input">{{ $t('modals.date') }}</label>
+          <base-field
+            id="date_input"
+            v-model="date_input"
+            :placeholder="'02/24'"
+          />
+        </div>
+        <div class="ctm-modal__content-field">
+          <label for="cvv_input">{{ $t('modals.cvv') }}</label>
+          <base-field
+            id="cvv_input"
+            v-model="cvv_input"
+            :placeholder="'242'"
+          />
+        </div>
       </div>
       <div class="btn__container">
         <div class="btn__wrapper">
@@ -70,9 +98,12 @@ export default {
   name: 'ModalWidthraw',
   data() {
     return {
+      cvv_input: '',
+      amount_input: '',
       date_input: '',
       balance_input: '',
       cardNumber_input: '',
+      isShowCardInputs: false,
     };
   },
   computed: {
@@ -81,6 +112,9 @@ export default {
     }),
   },
   methods: {
+    showCardInputs() {
+      this.isShowCardInputs = !this.isShowCardInputs;
+    },
     hide() {
       this.CloseModal();
     },
@@ -94,8 +128,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.hide {
+  display: none;
+}
+
 .link {
-  text-align: right;
+  justify-content: flex-end;
+  text-decoration: underline;
+  color: $blue;
+  display: flex;
 }
 .ctm-modal {
   &__content-field {
@@ -127,15 +169,16 @@ export default {
 .grid {
   &__2col {
     display: grid;
-    grid-template-columns: 49% 49%;
+    grid-template-columns: repeat(2, 1fr);
     justify-content: space-between;
     align-items: flex-end;
+    grid-gap: 10px;
   }
 }
 .grid {
   &__3col {
     display: grid;
-    grid-template-columns: 47% 6% 47%;
+    grid-template-columns: 6fr 1fr 6fr;
     justify-content: space-between;
     align-items: flex-end;
   }
