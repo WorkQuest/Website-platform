@@ -12,11 +12,12 @@
           for="currPerc_input"
           class="ctm-modal__label"
         >{{ $t('modals.currentPercent') }}</label>
-        <input
+        <base-field
           id="currPerc_input"
-          class="input_grey"
-          placeholder="3 500"
-        >
+          v-model="amount_input"
+          :is-hide-error="true"
+          :placeholder="'15%'"
+        />
       </div>
       <div class="ctm-modal__content-btns">
         <div class="btn-group">
@@ -121,21 +122,6 @@ export default {
 
   &__label {
     margin-bottom: 5px;
-  }
-}
-
-.input {
-  &_grey {
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 46px;
-    width: 100%;
-    border: 0;
-    background-color: $black0;
-    resize: none;
-    &::placeholder {
-      color: $black200;
-    }
   }
 }
 

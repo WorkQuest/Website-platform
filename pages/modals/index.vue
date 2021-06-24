@@ -77,9 +77,9 @@
       showAddCardModal
     </base-btn>
     <base-btn
-      @click="showWidthrawModal()"
+      @click="showWithdrawModal()"
     >
-      showWidthrawModal
+      showWithdrawModal
     </base-btn>
     <base-btn
       @click="showThanksModal()"
@@ -112,11 +112,6 @@
       showApplyForAPensionModal
     </base-btn>
     <base-btn
-      @click="showPensionIsRegisteredModal()"
-    >
-      showPensionIsRegisteredModal
-    </base-btn>
-    <base-btn
       @click="showMakeDeposit()"
     >
       showMakeDeposit
@@ -125,6 +120,21 @@
       @click="showChangePercent()"
     >
       showChangePercent
+    </base-btn>
+    <base-btn
+      @click="showAddLiquidity()"
+    >
+      showAddLiquidity
+    </base-btn>
+    <base-btn
+      @click="showRemoveLiquidity()"
+    >
+      showRemoveLiquidity
+    </base-btn>
+    <base-btn
+      @click="showCreditingDeposit()"
+    >
+      showCreditingDeposit
     </base-btn>
   </div>
 </template>
@@ -196,9 +206,9 @@ export default {
         key: modals.addCard,
       });
     },
-    showWidthrawModal() {
+    showWithdrawModal() {
       this.ShowModal({
-        key: modals.widthraw,
+        key: modals.withdraw,
       });
     },
     showInvitationModal() {
@@ -251,11 +261,6 @@ export default {
         key: modals.applyForAPension,
       });
     },
-    showPensionIsRegisteredModal() {
-      this.ShowModal({
-        key: modals.pensionIsRegistered,
-      });
-    },
     showMakeDeposit() {
       this.ShowModal({
         key: modals.makeDeposit,
@@ -264,6 +269,21 @@ export default {
     showChangePercent() {
       this.ShowModal({
         key: modals.changePercent,
+      });
+    },
+    showAddLiquidity() {
+      this.ShowModal({
+        key: modals.addLiquidity,
+      });
+    },
+    showRemoveLiquidity() {
+      this.ShowModal({
+        key: modals.removeLiquidity,
+      });
+    },
+    showCreditingDeposit() {
+      this.ShowModal({
+        key: modals.creditingDeposit,
       });
     },
   },

@@ -27,17 +27,23 @@
       <CtmModalCardHasBeenAdded v-if="modals.cardHasBeenAdded === currentModalKey" />
       <CtmModalDeposit v-if="modals.deposit === currentModalKey" />
       <CtmModalAddCard v-if="modals.addCard === currentModalKey" />
-      <CtmModalWidthraw v-if="modals.widthraw === currentModalKey" />
+      <CtmModalWithdraw v-if="modals.withdraw === currentModalKey" />
       <CtmModalReviewEmployer v-if="modals.review === currentModalKey" />
       <CtmModalInviteSend v-if="modals.inviteSend === currentModalKey" />
       <CtmModalQuestCreated v-if="modals.questCreated === currentModalKey" />
       <CtmModalRaiseViews v-if="modals.raiseViews === currentModalKey" />
       <CtmModalInvitation v-if="modals.invitation === currentModalKey" />
       <CtmModalApplyForAPension v-if="modals.applyForAPension === currentModalKey" />
-      <CtmModalPensionIsRegistered v-if="modals.pensionIsRegistered === currentModalKey" />
       <CtmModalMakeDeposit v-if="modals.makeDeposit === currentModalKey" />
       <CtmModalChangePercent v-if="modals.changePercent === currentModalKey" />
       <CtmModalOpenADeposit v-if="modals.openADeposit === currentModalKey" />
+      <CtmModalStatus v-if="modals.status === currentModalKey" />
+      <CtmModalAddLiquidity v-if="modals.addLiquidity === currentModalKey" />
+      <CtmModalRemoveLiquidity v-if="modals.removeLiquidity === currentModalKey" />
+      <CtmModalCreditingDeposit v-if="modals.creditingDeposit === currentModalKey" />
+      <CtmModalConfirmDetails v-if="modals.confirmDetails === currentModalKey" />
+      <CtmModalInsureCase v-if="modals.insureCase === currentModalKey" />
+      <CtmModalWithdrawAbout v-if="modals.withdrawAbout === currentModalKey" />
       <CtmModalDepositIsOpened v-if="modals.depositIsOpened === currentModalKey" />
       <CtmModalAddCase v-if="modals.addCase === currentModalKey" />
       <CtmModalWelcome v-if="modals.welcome === currentModalKey" />
@@ -66,16 +72,22 @@ import CtmModalTransactionSend from './CtmModalTransactionSend';
 import CtmModalCardHasBeenAdded from './CtmModalCardHasBeenAdded';
 import CtmModalDeposit from './CtmModalDeposit';
 import CtmModalAddCard from './CtmModalAddCard';
-import CtmModalWidthraw from './CtmModalWidthraw';
+import CtmModalWithdraw from './CtmModalWithdraw';
 import CtmModalInvitation from './CtmModalInvitation';
 import CtmModalInviteSend from './CtmModalInviteSend';
 import CtmModalQuestCreated from './CtmModalQuestCreated';
 import CtmModalRaiseViews from './CtmModalRaiseViews';
 import CtmModalApplyForAPension from './CtmModalApplyForAPension';
-import CtmModalPensionIsRegistered from './CtmModalPensionIsRegistered';
 import CtmModalMakeDeposit from './CtmModalMakeDeposit';
 import CtmModalChangePercent from './CtmModalChangePercent';
 import CtmModalOpenADeposit from './CtmModalOpenADeposit';
+import CtmModalStatus from './CtmModalStatus';
+import CtmModalAddLiquidity from './CtmModalAddLiquidity';
+import CtmModalRemoveLiquidity from './CtmModalRemoveLiquidity';
+import CtmModalCreditingDeposit from './CtmModalCreditingDeposit';
+import CtmModalConfirmDetails from './CtmModalConfirmDetails';
+import CtmModalInsureCase from './CtmModalInsureCase';
+import CtmModalWithdrawAbout from './CtmModalWithdrawAbout';
 import CtmModalDepositIsOpened from './CtmModalDepositIsOpened';
 import CtmModalAddCase from './CtmModalAddCase';
 import CtmModalWelcome from './CtmModalWelcome';
@@ -100,7 +112,7 @@ export default {
     CtmModalCardHasBeenAdded,
     CtmModalDeposit,
     CtmModalAddCard,
-    CtmModalWidthraw,
+    CtmModalWithdraw,
     CtmModalReviewEmployer,
     CtmModalThanksSend,
     CtmModalInvitation,
@@ -108,10 +120,16 @@ export default {
     CtmModalQuestCreated,
     CtmModalRaiseViews,
     CtmModalApplyForAPension,
-    CtmModalPensionIsRegistered,
     CtmModalMakeDeposit,
     CtmModalChangePercent,
     CtmModalOpenADeposit,
+    CtmModalStatus,
+    CtmModalAddLiquidity,
+    CtmModalRemoveLiquidity,
+    CtmModalCreditingDeposit,
+    CtmModalConfirmDetails,
+    CtmModalInsureCase,
+    CtmModalWithdrawAbout,
     CtmModalDepositIsOpened,
     CtmModalAddCase,
     CtmModalWelcome,

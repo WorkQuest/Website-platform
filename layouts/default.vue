@@ -769,7 +769,7 @@ export default {
         },
         {
           title: this.$t('ui.menu.p2p'),
-          path: '/wallet',
+          path: '/insuring',
         },
         {
           title: this.$t('ui.menu.savings'),
@@ -777,11 +777,11 @@ export default {
         },
         {
           title: this.$t('ui.menu.crediting'),
-          path: '/wallet',
+          path: '/crediting',
         },
         {
           title: this.$t('ui.menu.mining'),
-          path: '/wallet',
+          path: '/mining',
         },
       ];
     },

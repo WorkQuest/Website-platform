@@ -14,7 +14,7 @@
             {{ $t('modals.thanks') }}
           </div>
           <div class="ctm-modal__desc">
-            {{ modal.modalBody }}
+            {{ $t('modals.smallTemp') }}
           </div>
           <base-btn
             class="email__action"
@@ -35,9 +35,6 @@ export default {
   name: 'ModalThanksSend',
   data() {
     return {
-      modal: {
-        modalBody: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,',
-      },
     };
   },
   computed: {},

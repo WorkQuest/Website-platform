@@ -1,30 +1,21 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
-    :title="$t('saving.openADeposit')"
+    class="addLiquidity"
+    :title="$t('modals.confirmDetails')"
   >
     <div class="ctm-modal__content">
-      <div class="ctm-modal__content-field">
-        <label
-          for="depositPercent_input"
-          class="ctm-modal__label"
-        >{{ $t("modals.lockedSavings") }}</label>
-        <base-field
-          id="depositPercent_input"
-          :is-hide-error="true"
-          :placeholder="'3 500'"
-        />
-      </div>
-      <div class="ctm-modal__content-field">
-        <label
-          for="amount_input"
-          class="ctm-modal__label"
-        >{{ $t("modals.durationDays") }}</label>
-        <base-field
-          id="amount_input"
-          :is-hide-error="true"
-          :placeholder="'180'"
-        />
+      <div class="ctm-modal__gray-zone">
+        <div
+          v-for="(item, i) in abouts"
+          :key="i"
+        >
+          <div class="ctm-modal__title-head">
+            {{ item.title }}
+          </div>
+          <div class="ctm-modal__subtitle">
+            {{ item.subtitle }}
+          </div>
+        </div>
       </div>
       <div class="ctm-modal__content-btns">
         <div class="btn-group">
@@ -36,7 +27,7 @@
           </base-btn>
           <base-btn
             class="btn_bl"
-            @click="showDepositIsOpenedModal()"
+            @click="openStatusModal()"
           >
             {{ $t('meta.submit') }}
           </base-btn>
@@ -51,9 +42,36 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalOpenADeposit',
+  name: 'ModalConfirmDetails',
   data() {
-    return {};
+    return {
+      abouts: [
+        {
+          title: this.$t('modals.depositing'),
+          subtitle: 1 + this.$t('modals.eth'),
+        },
+        {
+          title: this.$t('modals.generating'),
+          subtitle: 1000 + this.$t('modals.wusd'),
+        },
+        {
+          title: this.$t('modals.liquidationRatio'),
+          subtitle: this.$tc('modals.percentsCount', 150),
+        },
+        {
+          title: this.$t('modals.liquidationPrice'),
+          subtitle: 122,
+        },
+        {
+          title: this.$t('modals.liquidationFee'),
+          subtitle: 10,
+        },
+        {
+          title: this.$t('modals.stabilityFee'),
+          subtitle: this.$tc('modals.percentsCount', '5.85'),
+        },
+      ],
+    };
   },
   computed: {
     ...mapGetters({
@@ -64,13 +82,13 @@ export default {
     hide() {
       this.CloseModal();
     },
-    showDepositIsOpenedModal() {
+    openStatusModal() {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/transactionSend.svg'),
-        title: this.$t('saving.depositIsOpened'),
+        title: this.$t('modals.depositIsOpened'),
         subTitle: '',
-        path: '/savings/1',
+        path: this.options.needChangeModal ? '/crediting/1' : undefined,
       });
     },
   },
@@ -81,8 +99,18 @@ export default {
 
 .ctm-modal {
   @include modalKit;
-  &__content-field {
-    margin: 15px 0 0 0;
+
+  .addLiquidity {
+    max-width: 490px !important;
+  }
+
+  &__gray-zone {
+    background-color: #F7F8FA;
+    border-radius: 5px;
+    margin-top: 15px;
+    padding: 20px;
+    display: grid;
+    gap: 20px;
   }
 
   &__content-btns {
@@ -122,25 +150,19 @@ export default {
     }
   }
 
-  &__label {
-    margin-bottom: 5px;
-  }
-
   &__content {
     padding-top: 0 !important;
   }
-}
 
-.messageSend {
-  max-width: 495px !important;
-  &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    grid-gap: 20px;
+  &__title-head {
+    font-size: 16px;
+    font-weight: 400;
   }
-  &__action {
-    margin-top: 10px;
+
+  &__subtitle {
+    color: #7C838D;
+    font-weight: 500;
+    font-size: 14px;
   }
 }
 </style>
