@@ -260,6 +260,8 @@
     "startQuest": "Start quest"
   },
   "modals": {
+    "value": "Value",
+    "address": "Address",
     "notice": "Notice",
     "welcomeToWorkQuest": "Welcome to the WorkQuest",
     "pleaseTellUsAboutSkills": "Please, tell us about your skills below",
@@ -339,6 +341,7 @@
     "balance": "Balance",
     "deposit": "Deposit",
     "withdraw": "Withdraw",
+    "transfer": "Transfer",
     "addCardProposal": "Add your own card for easy withdrawal",
     "addCard": "Add card",
     "table": {

@@ -21,12 +21,12 @@
           :class="{'wallet__info_full' : cardClosed }"
         >
           <div class="wallet__balance balance">
-            <div class="balance__left">
+            <div class="balance__top">
               <span class="balance__title">{{ $t('wallet.balance') }}</span>
               <span class="balance__currency">{{ `${userBalance} ${currency}` }}</span>
               <span class="balance__usd">{{ `$ ${usd}` }}</span>
             </div>
-            <div class="balance__right">
+            <div class="balance__bottom">
               <base-button
                 mode="outline"
                 class="balance__btn"
@@ -35,10 +35,17 @@
                 {{ $t('wallet.deposit') }}
               </base-button>
               <base-button
+                mode="outline"
                 class="balance__btn"
                 @click="showWidthrawModal()"
               >
                 {{ $t('wallet.withdraw') }}
+              </base-button>
+              <base-button
+                class="balance__btn"
+                @click=" showTransferModal()"
+              >
+                {{ $t('wallet.transfer') }}
               </base-button>
             </div>
           </div>
@@ -232,6 +239,11 @@ export default {
     closeCard() {
       this.cardClosed = true;
     },
+    showTransferModal() {
+      this.ShowModal({
+        key: modals.transfer,
+      });
+    },
     showDepositModal() {
       this.ShowModal({
         key: modals.deposit,
@@ -278,24 +290,6 @@ export default {
     grid-template-columns: repeat(2, 1fr);
     margin: 16px 0 0 0;
     grid-gap: 20px;
-  }
-}
-
-.balance {
-  &__dollar {
-    font-weight: 400;
-    font-size: 14px;
-    color: $black300;
-  }
-  &__number {
-    font-weight: 700;
-    font-size: 25px;
-    color: $blue;
-  }
-  &__title {
-    font-weight: 400;
-    font-size: 16px;
-    color: $black800;
   }
 }
 
@@ -355,23 +349,38 @@ export default {
   display: flex;
   background: $white;
   justify-content: space-between;
+  flex-direction: column;
   border-radius: 6px;
   width: 100%;
   min-width: 660px;
-  padding: 20px;
-  height: 154px;
+  padding: 20px 20px 0 20px;
 
-  &__left {
+  &__dollar {
+    font-weight: 400;
+    font-size: 14px;
+    color: $black300;
+  }
+  &__number {
+    font-weight: 700;
+    font-size: 25px;
+    color: $blue;
+  }
+  &__title {
+    font-weight: 400;
+    font-size: 16px;
+    color: $black800;
+  }
+
+  &__top {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
 
-  &__right {
-    width: 220px;
-    display: grid;
-    grid-template-columns: 1fr;
+  &__bottom {
+    display: flex;
     grid-gap: 20px;
+    padding: 20px 0 20px 0;
   }
 
   &__title {
@@ -395,7 +404,6 @@ export default {
 
 .card {
   width: 100%;
-  height: 154px;
   padding: 20px;
   display: grid;
   grid-template-rows: auto 43px;
@@ -403,6 +411,7 @@ export default {
   grid-template-columns: 230px 1fr;
   @include text-simple;
   background: $blue url('/img/app/card.svg') no-repeat right center;
+  background-size: cover;
   color: $white;
   position: relative;
   overflow: hidden;

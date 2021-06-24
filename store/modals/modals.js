@@ -32,4 +32,5 @@ export default {
   welcome: 'welcome',
   openADispute: 'openADispute',
   notice: 'notice',
+  transfer: 'transfer',
 };

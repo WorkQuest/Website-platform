@@ -1,6 +1,11 @@
 <template>
   <div>
     <base-btn
+      @click="showTransferModal()"
+    >
+      showTransferModal
+    </base-btn>
+    <base-btn
       @click="showNoticeModal()"
     >
       showNoticeModal
@@ -131,6 +136,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    showTransferModal() {
+      this.ShowModal({
+        key: modals.transfer,
+      });
+    },
     showNoticeModal() {
       this.ShowModal({
         key: modals.notice,

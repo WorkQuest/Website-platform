@@ -43,6 +43,7 @@
       <CtmModalWelcome v-if="modals.welcome === currentModalKey" />
       <CtmModalOpenADispute v-if="modals.openADispute === currentModalKey" />
       <CtmModalNotice v-if="modals.notice === currentModalKey" />
+      <CtmModalTransfer v-if="modals.transfer === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -80,6 +81,7 @@ import CtmModalAddCase from './CtmModalAddCase';
 import CtmModalWelcome from './CtmModalWelcome';
 import CtmModalOpenADispute from './CtmModalOpenADispute';
 import CtmModalNotice from './CtmModalNotice';
+import CtmModalTransfer from './CtmModalTransfer';
 
 export default {
   name: 'ModalBox',
@@ -115,6 +117,7 @@ export default {
     CtmModalWelcome,
     CtmModalOpenADispute,
     CtmModalNotice,
+    CtmModalTransfer,
   },
   data: () => ({
     modals,
