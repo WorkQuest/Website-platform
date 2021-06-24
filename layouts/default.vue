@@ -708,7 +708,7 @@ export default {
         },
         {
           link: '',
-          title: 'Сrediting',
+          title: 'Lending',
         },
         {
           link: '',
