@@ -207,8 +207,8 @@ export default {
       justify-content: flex-end;
     }
     &:hover {
-      background: #F7F8FA;
-      color: $blue;
+      color: #3992ff;
+      background: $white;
     }
   }
   &_tag {
