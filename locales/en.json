@@ -129,7 +129,8 @@
     "submit": "Submit",
     "showAllReviews": "Show all reviews",
     "later": "Later",
-    "iAgree": "I agree"
+    "iAgree": "I agree",
+    "next": "Next"
   },
   "priority": {
     "title": "Priority",
@@ -337,6 +338,10 @@
     }
   },
   "wallet": {
+    "cryptoWallet": "Crypto wallet",
+    "bankCard": "Bank card",
+    "send": "Send",
+    "toThisAddress": "to this address",
     "wallet": "Wallet",
     "balance": "Balance",
     "deposit": "Deposit",

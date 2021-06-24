@@ -174,8 +174,6 @@ export default {
     align-items: flex-end;
     grid-gap: 10px;
   }
-}
-.grid {
   &__3col {
     display: grid;
     grid-template-columns: 6fr 1fr 6fr;
@@ -183,6 +181,7 @@ export default {
     align-items: flex-end;
   }
 }
+
 .btn {
   &__container {
     display: flex;
