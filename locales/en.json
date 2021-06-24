@@ -261,6 +261,7 @@
     "startQuest": "Start quest"
   },
   "modals": {
+    "withdraw": "Withdraw",
     "estimatedPayment": "Estimated payment:",
     "hello": "Hello...",
     "value": "Value",
@@ -284,7 +285,6 @@
     "cvv": "CVV",
     "cardholderName": "Cardholder name",
     "addAnotherCard": "Add another card",
-    "withdraw": "Withdraw",
     "addCard": "Add Card",
     "inviteSend": "Invite sent",
     "questCreated": "Quest Created",

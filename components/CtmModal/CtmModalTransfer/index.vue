@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.widthraw')"
+    :title="$t('modals.withdraw')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
