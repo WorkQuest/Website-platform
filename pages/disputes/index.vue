@@ -20,9 +20,11 @@
           <span
             v-for="(item, i) in Disputes"
             :key="i"
-            class=""
           >
-            <div class="page__card">
+            <div
+              class="page__card"
+              @click="toDisputes()"
+            >
               <div class="page__card-body">
                 <div class="page__text">
                   {{ $t('disputes.dispute') }} <span class="page__text_blue">{{ item.number }}</span>
@@ -85,6 +87,11 @@ export default {
     this.SetLoader(true);
     this.SetLoader(false);
   },
+  methods: {
+    toDisputes() {
+      this.$router.push('/disputes/1');
+    },
+  },
 };
 
 </script>
@@ -135,6 +142,10 @@ export default {
     width: 100%;
     margin: 20px 10px 10px 0;
     height: 100%;
+    transition: .5s;
+    &:hover {
+      box-shadow: 4px 4px 8px 0 rgba(34, 60, 80, 0.2);
+    }
   }
   &__text {
     @include text-simple;
