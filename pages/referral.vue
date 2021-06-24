@@ -27,7 +27,7 @@
               <div class="user__info">
                 <img
                   class="ava"
-                  src=""
+                  src="~/assets/img/temp/avatar-small.jpg"
                   alt=""
                 >
                 <div class="user__name">
@@ -135,7 +135,7 @@
                 <div class="user__info">
                   <img
                     class="ava"
-                    :src="el.item.avaUrl"
+                    src="~/assets/img/temp/avatar-small.jpg"
                     alt=""
                   >
                   <div class="user__name">
@@ -178,42 +178,96 @@ export default {
       referLink: 'https://www.workquest.com/ref?v=44T7iUSo1vU',
       items: [
         {
-          userName: 'Edward Cooper',
+          userName: this.$t('referral.table.userName'),
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
+          userID: this.$t('referral.table.userId'),
+          txHash: this.$t('referral.table.txHash'),
+          time: this.$t('referral.table.time'),
           amount: this.$tc('referral.wqtCount', 12),
-          status: 'Success',
+          status: this.$t('referral.table.status'),
         },
         {
-          userName: 'Edward Cooper',
+          userName: this.$t('referral.table.userName'),
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: '455dad66544ss',
-          txHash: 'sf998s...ss877d',
-          time: 'Feb 1, 2021',
+          userID: this.$t('referral.table.userId'),
+          txHash: this.$t('referral.table.txHash'),
+          time: this.$t('referral.table.time'),
           amount: this.$tc('referral.wqtCount', 12),
-          status: 'Success',
+          status: this.$t('referral.table.status'),
         },
       ],
       testFields: [
         {
-          key: 'userName', label: this.$t('referral.table.name'), sortable: false, thClass: 'cell_head',
+          key: 'userName',
+          label: this.$t('referral.tableHead.name'),
+          thStyle: {
+            padding: '0 0 0 23px',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
+          },
         },
         {
-          key: 'userID', label: this.$t('referral.table.userID'), sortable: false, thClass: 'cell_head',
+          key: 'userID',
+          label: this.$t('referral.tableHead.userID'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
-          key: 'txHash', label: this.$t('referral.table.txHash'), sortable: false, thClass: 'cell_head',
+          key: 'txHash',
+          label: this.$t('referral.tableHead.txHash'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
-          key: 'time', label: this.$t('referral.table.time'), sortable: false, thClass: 'cell_head',
+          key: 'time',
+          label: this.$t('referral.tableHead.time'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
-          key: 'amount', label: this.$t('referral.table.amount'), sortable: false, thClass: 'cell_head',
+          key: 'amount',
+          label: this.$t('referral.tableHead.amount'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
         {
-          key: 'status', label: this.$t('referral.table.status'), sortable: false, thClass: 'cell_head',
+          key: 'status',
+          label: this.$t('referral.tableHead.status'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
         },
       ],
     };
@@ -234,14 +288,14 @@ export default {
 
 <style lang="scss" scoped>
 .referral-page {
-  background: linear-gradient(to bottom, #103D7C 370px, rgba(0, 0, 0, 0) 370px);
+  background: linear-gradient(to bottom, #103D7C 370px, #f6f8fa 370px);
   display: flex;
   justify-content: center;
 
   &__container {
     display: grid;
     grid-template-rows: 225px max-content;
-    max-width: 1280px;
+    max-width: 1180px;
     grid-row-gap: 30px;
     justify-content: center;
   }
@@ -473,41 +527,17 @@ export default {
         }
       }
 
-      &__table {
-        .table {
-          .cell {
-            padding: 0;
-            &_head {
-              @extend .cell;
-            }
-          }
-          &__header {
-            height: 27px;
-            align-items: center;
-            background-color: rgba(0, 131, 199, 0.1);
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            padding: 0 20px;
-            margin-bottom: 10px;
-            grid-gap: 10px;
-            font-size: 12px;
-            color: #0083C7;
-          }
-
-          &__rows {
-            display: grid;
-            grid-auto-rows: 33px;
-            grid-row-gap: 20px;
-            padding-bottom: 20px;
-          }
-        }
-      }
-
       &_couple {
         display: grid;
         grid-template-columns: repeat(2, calc(50% - 10px));
         grid-column-gap: 20px;
       }
+    }
+  }
+
+  &__table {
+    table {
+      margin: 0 !important;
     }
   }
 }

@@ -36,7 +36,7 @@
               </base-button>
               <base-button
                 class="balance__btn"
-                @click="showWidthrawModal()"
+                @click="showWithdrawModal()"
               >
                 {{ $t('wallet.withdraw') }}
               </base-button>
@@ -237,9 +237,9 @@ export default {
         key: modals.deposit,
       });
     },
-    showWidthrawModal() {
+    showWithdrawModal() {
       this.ShowModal({
-        key: modals.widthraw,
+        key: modals.withdraw,
       });
     },
     showAddCardModal() {

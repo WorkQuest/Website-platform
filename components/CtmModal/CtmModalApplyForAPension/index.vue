@@ -9,22 +9,22 @@
           for="depositPercent_input"
           class="ctm-modal__label"
         >{{ $t('modals.depositPercentFromAQuest') }}</label>
-        <input
+        <base-field
           id="depositPercent_input"
-          class="input_grey"
-          placeholder="13%"
-        >
+          :is-hide-error="true"
+          :placeholder="'13%'"
+        />
       </div>
       <div class="ctm-modal__content-field">
         <label
           for="amount_input"
           class="ctm-modal__label"
         >{{ $t('modals.firstDepositAmount') }}</label>
-        <input
+        <base-field
           id="amount_input"
-          class="input_grey"
-          placeholder="130 WUSD"
-        >
+          :is-hide-error="true"
+          :placeholder="'130 WUSD'"
+        />
         <div class="ctm-modal__subtitle">
           {{ $t('modals.aboutFirstDeposit') }}
         </div>
@@ -69,7 +69,11 @@ export default {
     },
     showPensionIsRegisteredModal() {
       this.ShowModal({
-        key: modals.pensionIsRegistered,
+        key: modals.status,
+        img: require('~/assets/img/ui/document.svg'),
+        title: this.$t('modals.pensionIsRegistered'),
+        subTitle: '',
+        path: '/pension/1',
       });
     },
   },
@@ -134,21 +138,6 @@ export default {
     font-weight: 400;
     font-size: 14px;
     margin-top: 15px;
-  }
-}
-
-.input {
-  &_grey {
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 46px;
-    width: 100%;
-    border: 0;
-    background-color: $black0;
-    resize: none;
-    &::placeholder {
-      color: $black200;
-    }
   }
 }
 

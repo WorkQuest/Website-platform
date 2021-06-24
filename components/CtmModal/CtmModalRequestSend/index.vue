@@ -14,7 +14,7 @@
             {{ $t('modals.requestSend') }}
           </div>
           <div class="ctm-modal__desc">
-            {{ modal.modalBody }}
+            {{ $t('modals.smallTemp') }}
           </div>
           <base-btn
             class="email__action"
@@ -34,11 +34,7 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'ModalRequestSend',
   data() {
-    return {
-      modal: {
-        modalBody: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,',
-      },
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
