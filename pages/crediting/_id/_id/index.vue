@@ -282,6 +282,7 @@ export default {
       gap: 5px;
       font-size: 18px;
       font-weight: 400;
+      margin-bottom: 10px;
 
       .icon-chevron_left {
         font-size: 26px;
