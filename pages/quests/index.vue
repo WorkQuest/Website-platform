@@ -139,7 +139,7 @@
         </div>
         <div class="quests__cards">
           <div
-            v-for="(item, i) in cards"
+            v-for="(item, i) in cards.quests"
             :key="i"
             class="quests__block block"
           >
@@ -155,28 +155,28 @@
               <div class="block__head">
                 <div class="block__title">
                   <div class="block__avatar">
-                    <nuxt-link
-                      class="link"
-                      :to="item.url"
-                    >
-                      <img
-                        :src="item.background"
-                        alt=""
-                      >
-                    </nuxt-link>
+<!--                    <nuxt-link-->
+<!--                      class="link"-->
+<!--                      :to="item.url"-->
+<!--                    >-->
+<!--                      <img-->
+<!--                        :src="item.background"-->
+<!--                        alt=""-->
+<!--                      >-->
+<!--                    </nuxt-link>-->
                   </div>
-                  <nuxt-link
-                    class="link"
-                    :to="item.url"
-                  >
+<!--                  <nuxt-link-->
+<!--                    class="link"-->
+<!--                    :to="item.url"-->
+<!--                  >-->
                     <div class="block__text block__text_title">
                       {{ item.title }}
                       <span
                         v-if="item.sub"
                         class="block__text block__text_grey"
-                      >{{ item.sub }}</span>
+                      >{{ item.description }}</span>
                     </div>
-                  </nuxt-link>
+<!--                  </nuxt-link>-->
                 </div>
                 <div
                   class="block__icon block__icon_fav star"
@@ -203,13 +203,13 @@
               </div>
               <div class="block__locate">
                 <span class="icon-location" />
-                <span class="block__text block__text_locate">{{ item.distance }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
+                <span class="block__text block__text_locate">{{ getDistanceFromLatLonInKm(item.location.latitude, item.location.longitude, 56.475565, 84.967270) }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
               </div>
               <div class="block__text block__text_blue">
                 {{ item.theme }}
               </div>
               <div class="block__text block__text_desc">
-                {{ item.desc }}
+                {{ item.description }}
               </div>
               <div class="block__actions">
                 <div class="block__status">
@@ -302,19 +302,45 @@ export default {
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
-      cards: 'data/getCards',
+      // cards: 'data/getCards',
+      cards: 'data/getAllQuests',
     }),
   },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
     this.showWelcomeModal();
+    await this.getAllQuests();
   },
   methods: {
     showWelcomeModal() {
       this.ShowModal({
         key: modals.welcome,
       });
+    },
+    getAllQuests() {
+      return this.$store.dispatch('data/getAllQuests');
+    },
+    getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Radius of the earth in km
+      const dLat = this.deg2rad(lat2 - lat1); // deg2rad below
+      const dLon = this.deg2rad(lon2 - lon1);
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+        + Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2))
+        * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      let d = (R * c) * 1000; // Distance in km
+      if (d >= 1000) {
+        d = '+1000';
+      } else if (d >= 500) {
+        d = '+500';
+      } else {
+        d = '-500';
+      }
+      return d;
+    },
+    deg2rad(deg) {
+      return deg * (Math.PI / 180);
     },
     toNotifications() {
       this.$router.push('/notification');
@@ -345,17 +371,19 @@ export default {
     },
     getPriority(index) {
       const priority = {
-        0: this.$t('priority.low'),
-        1: this.$t('priority.normal'),
-        2: this.$t('priority.urgent'),
+        0: this.$t('priority.all'),
+        1: this.$t('priority.low'),
+        2: this.$t('priority.normal'),
+        3: this.$t('priority.urgent'),
       };
       return priority[index] || 'None';
     },
     getPriorityClass(index) {
       const priority = {
-        0: 'block__priority_low',
-        1: 'block__priority_normal',
-        2: 'block__priority_urgent',
+        0: 'block__priority_all',
+        1: 'block__priority_low',
+        2: 'block__priority_normal',
+        3: 'block__priority_urgent',
       };
       return priority[index] || '';
     },
