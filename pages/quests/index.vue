@@ -17,10 +17,10 @@
           :options="{icon: location === currentLocation ? pins.selected : pins.notSelected}"
           @click="currentLocation = location"
         >
-          <GMapInfoWindow :options="{maxWidth: 200}">
-            lat: {{ location.lat }},
-            lng: {{ location.lng }}
-          </GMapInfoWindow>
+          <!--          <GMapInfoWindow :options="{maxWidth: 200}">-->
+          <!--            lat: {{ location.lat }},-->
+          <!--            lng: {{ location.lng }}-->
+          <!--          </GMapInfoWindow>-->
         </GMapMarker>
       </transition>
       <div class="quests__search">
