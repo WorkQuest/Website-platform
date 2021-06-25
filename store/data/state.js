@@ -407,4 +407,6 @@ export default () => ({
       youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
     },
   ],
+  allQuests: {},
+  userInfoQuests: {},
 });

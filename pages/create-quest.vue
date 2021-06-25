@@ -196,6 +196,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Dropzone from 'nuxt-dropzone';
 import 'nuxt-dropzone/dropzone.css';
 import '~/assets/scss/vue2Dropzone.min.css';
@@ -206,6 +207,9 @@ const { GeoCode } = require('geo-coder');
 
 export default {
   name: 'CreateQuest',
+  ...mapGetters({
+    userData: 'user/getUserData',
+  }),
   components: {
     Dropzone,
   },
@@ -294,9 +298,24 @@ export default {
       this.pickerValue -= 1;
     },
     showQuestCreatedModal() {
-      this.ShowModal({
-        key: modals.questCreated,
-      });
+      const createQuestData = {
+        priority: this.priorityIndex,
+        category: this.categories[this.categoryIndex],
+        title: this.questTitle,
+        description: this.textarea,
+        price: this.price,
+        adType: this.adMode1 ? 1 : 0,
+        location: {
+          longitude: this.coordinates.lng,
+          latitude: this.coordinates.lat,
+        },
+      };
+      const response = this.$store.dispatch('user/questCreate', createQuestData);
+      if (response.ok) {
+        this.ShowModal({
+          key: modals.questCreated,
+        });
+      }
     },
   },
 };
