@@ -36,12 +36,6 @@
       <div class="main-container">
         <!-- REVIEWS -->
         <div
-          v-if="userRole === 'worker'"
-          class="title"
-        >
-        </div>
-
-        <div
           v-if="selected === 1"
           class="tab__container"
         >
