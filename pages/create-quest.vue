@@ -229,6 +229,7 @@ export default {
       priceOfClick: '',
       city: '',
       estimatedPayment: 120,
+      coordinates: {},
       categories: [
         'Retail',
       ],
@@ -277,11 +278,13 @@ export default {
       this.address = address.formatted;
     },
     async getAddressInfo(address) {
+      let response = [];
       const geoCode = new GeoCode('google', { key: 'AIzaSyD32Aorm6CU9xUIrUznzYyw2d_0NTqt3Zw' });
       try {
         if (address.length) {
-          const response = await geoCode.geolookup(address);
+          response = await geoCode.geolookup(address);
           this.addresses = JSON.parse(JSON.stringify(response));
+          this.coordinates = JSON.parse(JSON.stringify({ lng: response[0].lng, lat: response[0].lat }));
         }
       } catch (e) {
         console.log(e);
@@ -304,17 +307,22 @@ export default {
         title: this.questTitle,
         description: this.textarea,
         price: this.price,
+        medias: [],
         adType: this.adMode1 ? 1 : 0,
         location: {
           longitude: this.coordinates.lng,
           latitude: this.coordinates.lat,
         },
       };
-      const response = this.$store.dispatch('user/questCreate', createQuestData);
-      if (response.ok) {
-        this.ShowModal({
-          key: modals.questCreated,
-        });
+      try {
+        const response = this.$store.dispatch('data/questCreate', createQuestData);
+        if (response) {
+          this.ShowModal({
+            key: modals.questCreated,
+          });
+        }
+      } catch (e) {
+        console.log(e);
       }
     },
   },
