@@ -459,7 +459,10 @@
     "employer": "Employer:",
     "questSalary": "Quest salary:",
     "status": "Status:",
-    "decision": "Decision:"
+    "decision": "Decision:",
+    "Dispute": "Dispute",
+    "pending": "Pending",
+    "chatHistory": "Chat history"
   },
   "workers": {
     "searchQuests": "Search quests",

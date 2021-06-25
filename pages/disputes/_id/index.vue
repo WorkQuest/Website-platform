@@ -7,20 +7,20 @@
           @click="backToDisputes()"
         >
           <span class="icon-chevron_big_left" />
-          <span class="dispute__back_text">Dispute</span>
+          <span class="dispute__back_text">{{ $t('disputes.Dispute') }}</span>
         </div>
         <div class="dispute__number">
           №87974121
         </div>
         <div class="dispute__status">
-          Pending
+          {{ $t('disputes.pending') }}
         </div>
       </div>
       <Card />
       <div class="chat-history">
         <div class="chat-history__container">
           <div class="chat-history__title">
-            Chat history
+            {{ $t('disputes.chatHistory') }}
           </div>
         </div>
         <div class="messages__container">
