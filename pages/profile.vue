@@ -72,7 +72,7 @@
         >
           <nuxt-link
             v-if="selected === 1"
-            class="more-button"
+            class="button__more"
             to="/profile"
           >
             {{ $t('meta.showAllReviews') }}
@@ -205,7 +205,7 @@ export default {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-  &__more-button {
+  &__more {
     @extend .button;
     display: inline-block;
     text-decoration: none;

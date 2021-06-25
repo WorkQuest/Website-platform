@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="message"
-    :title="'Open a dispute'"
+    :title="$t('modals.openADispute')"
   >
     <div class="ctm-modal__content">
       <div class="message">
@@ -11,7 +11,7 @@
               <label
                 for="reason-dd"
                 class="ctm-modal__label"
-              >Reason</label>
+              >{{ $t('modals.reason') }}</label>
               <base-dd
                 id="reason-dd"
                 type="gray"

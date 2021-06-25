@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       modal: {
-        modalBody: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,',
+        modalBody: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam',
       },
     };
   },

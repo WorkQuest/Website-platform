@@ -204,6 +204,7 @@
     "title": "Skills"
   },
   "quests": {
+    "inProgressBy": "In progress by:",
     "showAllCases": "Show all cases",
     "portfolio": "Portfolio",
     "searchQuests": "Search quests",
@@ -261,6 +262,12 @@
     "startQuest": "Start quest"
   },
   "modals": {
+    "uploadAImage": "Upload a images or videos",
+    "description": "Description",
+    "addCase": "Add case",
+    "openADispute": "Open a dispute",
+    "reason": "Reason",
+    "lorem": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,",
     "withdraw": "Withdraw",
     "estimatedPayment": "Estimated payment:",
     "hello": "Hello...",

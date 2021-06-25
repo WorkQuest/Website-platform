@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="message"
-    :title="'Add case'"
+    :title="$t('modals.addCase')"
   >
     <div class="ctm-modal__content">
       <div class="message">
@@ -26,15 +26,14 @@
             </div>
             <div class="message__wrapper">
               <p class="modal__labelMessage">
-                Description
+                {{ $t('modals.description') }}
               </p>
               <div>
-                <!-- Передать плейсхолдер из локацизации -->
                 <textarea
                   id="textarea"
                   v-model="text"
                   class="message__textarea"
-                  placeholder="Hello..."
+                  :placeholder="$t('modals.hello')"
                 />
               </div>
             </div>

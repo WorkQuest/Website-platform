@@ -93,7 +93,7 @@
                     class="block__progress"
                   >
                     <div class="container__title">
-                      In progress by:
+                      {{ $t('quests.inProgressBy') }}
                     </div>
                     <div class="limit__container">
                       <div class="avatar__container">
@@ -113,13 +113,13 @@
                             :class="cardsLevels(i)"
                           >
                             <span v-if="item.level.code === 1">
-                              HIGHER LEVEL
+                              {{ $t('levels.higher') }}
                             </span>
                             <span v-if="item.level.code === 2">
-                              RELIABLE EMP.
+                              {{ $t('levels.reliableEmp') }}
                             </span>
                             <span v-if="item.level.code === 3">
-                              CHECKED BY TIME
+                              {{ $t('levels.checkedByTime') }}
                             </span>
                           </span>
                         </div>
