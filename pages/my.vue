@@ -20,3 +20,11 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.main {
+  &__body {
+    justify-self: center;
+  }
+}
+</style>
