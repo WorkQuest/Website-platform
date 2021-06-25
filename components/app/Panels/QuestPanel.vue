@@ -13,18 +13,18 @@
               alt=""
             >
             <span class="user__username">
-              {{ Quest.username }}
+              {{ quest.username }}
             </span>
             <span
               v-if="userRole === 'employer'"
               class="user__company"
             >
-              {{ $t('company.from') }} {{ Quest.company }}
+              {{ $t('company.from') }} {{ quest.company }}
             </span>
           </div>
           <div class="user__right">
             <span class="user__date">
-              {{ Quest.date }}
+              {{ quest.date }}
             </span>
             <span class="icon-share_outline icon_fs-20" />
           </div>
@@ -34,11 +34,11 @@
             <span
               class="icon-location icon_fs-20"
             />
-            <span>{{ Quest.location }}</span>
+            <span>{{ quest.location }}</span>
             <span
               class="user__distance"
             >
-              {{ Quest.distance }} {{ $t('meta.fromYou') }}
+              {{ quest.distance }} {{ $t('meta.fromYou') }}
             </span>
           </div>
           <div
@@ -50,7 +50,7 @@
             <span
               class="runtime__link"
             >
-              {{ Quest.runtime }}
+              {{ quest.runtime }}
             </span>
           </div>
           <div
@@ -64,7 +64,7 @@
             <span
               class="runtime__link"
             >
-              {{ Quest.performanceTimer }}
+              {{ quest.performanceTimer }}
             </span>
           </div>
         </div>
@@ -73,7 +73,7 @@
     <div class="badge__container">
       <ul class="badge-list">
         <li
-          v-for="item in BadgeList"
+          v-for="item in badgeList"
           :key="`item-${item.id}`"
           class="badge__item badge__item_blue"
         >
@@ -94,13 +94,9 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      quest: 'data/getQuest',
+      badgeList: 'data/getBadgeList',
     }),
-    Quest() {
-      return this.$store.getters['data/getQuest'];
-    },
-    BadgeList() {
-      return this.$store.getters['data/getBadgeList'];
-    },
   },
   methods: {
     showProfile() {

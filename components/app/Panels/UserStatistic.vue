@@ -9,7 +9,7 @@
           {{ $t('quests.activeQuests') }}
         </div>
         <div class="number number_green">
-          {{ Quests.activeQuests }}
+          {{ questData.activeQuests }}
         </div>
         <nuxt-link
           class="card-subtitle number_green"
@@ -23,7 +23,7 @@
           {{ $t('quests.completedQuests') }}
         </div>
         <div class="number">
-          {{ Quests.completedQuestsOneTime }}
+          {{ questData.completedQuestsOneTime }}
         </div>
         <div class="card-subtitle">
           {{ $t('quests.oneTime') }}
@@ -34,7 +34,7 @@
           {{ $t('quests.completedQuests') }}
         </div>
         <div class="number">
-          {{ Quests.completedQuestsFullTime }}
+          {{ questData.completedQuestsFullTime }}
         </div>
         <div class="card-subtitle">
           {{ $t('quests.fullTime') }}
@@ -45,10 +45,10 @@
           {{ $t('quests.averageRating') }}
         </div>
         <div class="number number__rating">
-          {{ Quests.averageRating }}
+          {{ questData.averageRating }}
         </div>
         <div class="card-subtitle">
-          {{ $t('quests.fromBig') }} {{ Quests.reviewCount }} {{ $t('quests.reviews') }}
+          {{ $t('quests.fromBig') }} {{ questData.reviewCount }} {{ $t('quests.reviews') }}
         </div>
       </div>
     </div>
@@ -65,10 +65,8 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      questData: 'data/getQuest',
     }),
-    Quest() {
-      return this.$store.getters['data/getQuest'];
-    },
   },
 };
 </script>

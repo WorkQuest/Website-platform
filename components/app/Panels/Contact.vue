@@ -5,27 +5,27 @@
     >
       <span class="contact__container">
         <span
-          v-if="Quest.contacts.address"
+          v-if="quest.contacts.address"
           class="icon-location"
-        /><span class="contact__link">{{ Quest.contacts.address }}</span>
+        /><span class="contact__link">{{ quest.contacts.address }}</span>
       </span>
       <span class="contact__container">
         <span
-          v-if="Quest.contacts.phone"
+          v-if="quest.contacts.phone"
           class="icon-phone"
-        /><span class="contact__link">{{ Quest.contacts.phone }}</span>
+        /><span class="contact__link">{{ quest.contacts.phone }}</span>
       </span>
       <span class="contact__container">
         <span
-          v-if="Quest.contacts.email"
+          v-if="quest.contacts.email"
           class="icon-mail"
-        /><span class="contact__link">{{ Quest.contacts.email }}</span>
+        /><span class="contact__link">{{ quest.contacts.email }}</span>
       </span>
       <span
         v-if="userRole === 'employer'"
         class="contact__container"
       >
-        <span class="icon-Earth" /><span class="contact__link">{{ Quest.contacts.company }}</span>
+        <span class="icon-Earth" /><span class="contact__link">{{ quest.contacts.company }}</span>
       </span>
     </span>
   </div>
@@ -41,10 +41,8 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      quest: 'data/getQuest',
     }),
-    Quest() {
-      return this.$store.getters['data/getQuest'];
-    },
   },
 };
 </script>

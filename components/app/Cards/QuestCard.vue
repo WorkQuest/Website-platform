@@ -4,7 +4,7 @@
       <div class="quests__body">
         <div class="quests__cards">
           <div
-            v-for="(item, i) in Card"
+            v-for="(item, i) in card"
             :key="item.id"
             class="quests__cards__all"
           >
@@ -176,6 +176,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -186,9 +187,9 @@ export default {
     };
   },
   computed: {
-    Card() {
-      return this.$store.getters['data/getCard'];
-    },
+    ...mapGetters({
+      card: 'data/getCard',
+    }),
   },
   methods: {
     getPriority(index) {

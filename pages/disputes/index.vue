@@ -6,7 +6,7 @@
           {{ $t('disputes.disputes') }}
         </h2>
         <span
-          v-for="(item, i) in Disputes"
+          v-for="(item, i) in disputes"
           :key="i"
         >
           <div
@@ -18,7 +18,7 @@
         </span>
         <div class="page__grid">
           <span
-            v-for="(item, i) in Disputes"
+            v-for="(item, i) in disputes"
             :key="i"
           >
             <div
@@ -76,12 +76,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Disputes',
   computed: {
-    Disputes() {
-      return this.$store.getters['data/getDisputes'];
-    },
+    ...mapGetters({
+      tags: 'ui/getTags',
+      userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
+      disputes: 'data/getDisputes',
+    }),
   },
   async mounted() {
     this.SetLoader(true);

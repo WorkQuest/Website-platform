@@ -25,13 +25,13 @@
               </div>
               <div class="col info-grid__col">
                 <div class="title title_inline">
-                  {{ User.name }}
+                  {{ user.name }}
                   <span class="level">
                     HIGHER LEVEL
                   </span>
                 </div>
                 <div class="description">
-                  {{ User.desc }}
+                  {{ user.desc }}
                 </div>
                 <Social />
                 <Contact />
@@ -56,7 +56,7 @@
             {{ $t('workers.skills') }}
           </div>
           <div
-            v-for="(skill, i) in User.skills"
+            v-for="(skill, i) in user.skills"
             :key="i"
           >
             <span class="badge_blue">{{ skill.title }}</span>
@@ -189,10 +189,8 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      user: 'data/getUserInfo',
     }),
-    User() {
-      return this.$store.getters['data/getUserInfo'];
-    },
   },
   async mounted() {
     this.SetLoader(true);

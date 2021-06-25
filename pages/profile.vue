@@ -21,15 +21,14 @@
         >
           {{ $t('profile.reviews') }}
         </button>
-        <div v-if="userRole === 'worker'">
-          <button
-            class="tab__btn"
-            :class="{tab__btn_active: selected === 3}"
-            @click="selected = 3"
-          >
-            {{ $t('profile.portfolio') }}
-          </button>
-        </div>
+        <button
+          v-if="userRole === 'worker'"
+          class="tab__btn"
+          :class="{tab__btn_active: selected === 3}"
+          @click="selected = 3"
+        >
+          {{ $t('profile.portfolio') }}
+        </button>
       </div>
     </div>
 

@@ -16,7 +16,7 @@
           </div>
           <div class="chat__cards">
             <div
-              v-for="(item, i) in Messages"
+              v-for="(item, i) in messages"
               :key="i"
             >
               <div
@@ -63,14 +63,15 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import ChatMenu from '~/components/ui/ChatMenu';
 
 export default {
   name: 'Messages',
   computed: {
-    Messages() {
-      return this.$store.getters['data/getMessages'];
-    },
+    ...mapGetters({
+      messages: 'data/getMessages',
+    }),
   },
   async mounted() {
     this.SetLoader(true);

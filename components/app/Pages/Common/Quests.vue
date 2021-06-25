@@ -96,8 +96,8 @@
                       <div class="avatar__container">
                         <div class="avatar">
                           <img
-                            :src="User.avatar"
-                            :alt="User.name"
+                            :src="user.avatar"
+                            :alt="user.name"
                           >
                         </div>
                         <div>
@@ -193,6 +193,7 @@
 
 <script>
 import Vue from 'vue';
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 const value = new Vue();
@@ -206,21 +207,16 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      cards: 'data/getCards',
+      user: 'data/getUserInfo',
+    }),
     cardLevelClass(idx) {
-      const { Cards } = this;
+      const { cards } = this;
       return [
-        { card__level_reliable: Cards[idx].level.code === 2 },
-        { card__level_checked: Cards[idx].level.code === 3 },
+        { card__level_reliable: cards[idx].level.code === 2 },
+        { card__level_checked: cards[idx].level.code === 3 },
       ];
-    },
-    Tabs() {
-      return this.$store.getters['data/getTabs'];
-    },
-    Cards() {
-      return this.$store.getters['data/getCards'];
-    },
-    User() {
-      return this.$store.getters['data/getUserInfo'];
     },
   },
   async mounted() {
@@ -229,11 +225,11 @@ export default {
   },
   methods: {
     cardsLevels(idx) {
-      const { Cards } = this;
+      const { cards } = this;
       return [
-        { card__level_checked: Cards[idx].level.code === 3 },
-        { card__level_reliable: Cards[idx].level.code === 2 },
-        { card__level_higher: Cards[idx].level.code === 1 },
+        { card__level_checked: cards[idx].level.code === 3 },
+        { card__level_reliable: cards[idx].level.code === 2 },
+        { card__level_higher: cards[idx].level.code === 1 },
       ];
     },
     showDetails() {
@@ -260,12 +256,12 @@ export default {
     },
     filteredCards(type, isFavorite) {
       if (type === 0) {
-        return this.Cards;
+        return this.cards;
       }
       if (isFavorite) {
-        return this.Cards.filter((x) => x.isFavourite);
+        return this.cards.filter((x) => x.isFavourite);
       }
-      return this.Cards.filter((x) => x.type === type);
+      return this.cards.filter((x) => x.type === type);
     },
     btnMode(id) {
       if (this.selectedTab === id) {

@@ -1,7 +1,7 @@
 <template>
   <div class="reviews-grid">
     <span
-      v-for="(item, i) in Reviews"
+      v-for="(item, i) in reviews"
       :key="i"
     >
       <div class="reviews-item">
@@ -60,12 +60,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters([
-      'data/getReviews',
-    ]),
-    Reviews() {
-      return this.$store.getters['data/getReviews'];
-    },
+    ...mapGetters({ reviews: 'data/getReviews' }),
   },
   methods: {
     showCompany() {

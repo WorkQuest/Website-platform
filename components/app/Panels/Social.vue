@@ -1,7 +1,7 @@
 <template>
   <div>
     <span
-      v-for="(item, i) in Socials"
+      v-for="(item, i) in socials"
       :key="i"
     >
       <nuxt-link
@@ -17,12 +17,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'SocialPanel',
   computed: {
-    Socials() {
-      return this.$store.getters['data/getSocials'];
-    },
+    ...mapGetters({
+      socials: 'data/getSocials',
+    }),
   },
 };
 </script>

@@ -15,21 +15,21 @@
         class="reviews-amount"
         to="/profile"
       >
-        {{ Quest.reviewCount }} {{ $t('quests.reviews') }}
+        {{ quest.reviewCount }} {{ $t('quests.reviews') }}
       </nuxt-link>
     </div>
     <div class="col info-grid__col">
       <div class="title">
-        {{ UserInfo.name }}
+        {{ userInfo.name }}
       </div>
       <div
         v-if="userRole === 'employer'"
         class="subtitle"
       >
-        {{ UserInfo.company }}
+        {{ userInfo.company }}
       </div>
       <div class="description">
-        {{ UserInfo.desc }}
+        {{ userInfo.desc }}
       </div>
       <!-- socials links -->
       <div class="socials">
@@ -77,13 +77,9 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      userInfo: 'data/getUserInfo',
+      quest: 'data/getQuest',
     }),
-    UserInfo() {
-      return this.$store.getters['data/getUserInfo'];
-    },
-    Quest() {
-      return this.$store.getters['data/getQuest'];
-    },
   },
   methods: {
     showMessages() {

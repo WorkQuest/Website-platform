@@ -2,7 +2,7 @@
   <div>
     <div class="portfolio__items">
       <div
-        v-for="(item, i) in Portfolios"
+        v-for="(item, i) in portfolios"
         :key="i"
         class="portfolio__item"
       >
@@ -31,10 +31,9 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'PortfolioTab',
   computed: {
-    ...mapGetters(['data/getPortfolios']),
-    Portfolios() {
-      return this.$store.getters['data/getPortfolios'];
-    },
+    ...mapGetters({
+      portfolios: 'data/getPortfolios',
+    }),
   },
 };
 </script>
