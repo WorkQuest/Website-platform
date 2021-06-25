@@ -140,16 +140,16 @@ import ChatMenu from '~/components/ui/ChatMenu';
 
 export default {
   name: 'Messages',
-  computed: {
-    ...mapGetters({
-      messages: 'data/getMessages',
-    }),
-  },
   data() {
     return {
       isShowFavourite: false,
       message_input: '',
     };
+  },
+  computed: {
+    ...mapGetters({
+      messages: 'data/getMessages',
+    }),
   },
   async mounted() {
     this.SetLoader(true);
