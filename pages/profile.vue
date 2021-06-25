@@ -39,9 +39,6 @@
           v-if="userRole === 'worker'"
           class="title"
         >
-          <span v-if="selected === 2">
-            {{ $t('quests.reviewsBig') }}
-          </span>
         </div>
 
         <div
