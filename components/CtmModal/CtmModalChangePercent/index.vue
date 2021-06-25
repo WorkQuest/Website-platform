@@ -47,13 +47,18 @@ export default {
   name: 'ModalApplyForAPension',
   data() {
     return {
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
+      amount_input: '',
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+    desc() {
+      return [
+        this.$t('modals.lorem'),
+      ];
+    },
   },
   methods: {
     hide() {

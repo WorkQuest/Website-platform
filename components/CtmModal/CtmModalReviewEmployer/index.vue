@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="message"
-    :title="'Review on employer'"
+    :title="$t('modals.reviewOnEmployer')"
   >
     <div class="body">
       <div class="btn-rating">
@@ -23,7 +23,7 @@
                 <div>
                   <textarea
                     class="message__textarea"
-                    placeholder="Hello..."
+                    :placeholder="$t('modals.hello')"
                   />
                 </div>
               </div>

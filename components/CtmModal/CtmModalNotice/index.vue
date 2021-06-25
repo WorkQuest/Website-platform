@@ -15,7 +15,7 @@
             {{ $t('modals.notice') }}
           </div>
           <div class="modal__desc">
-            {{ modal.modalBody }}
+            {{ modalBody[0] }}
           </div>
           <base-btn
             class="email__action"
@@ -34,17 +34,15 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'Index',
-  data() {
-    return {
-      modal: {
-        modalBody: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam',
-      },
-    };
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+    modalBody() {
+      return [
+        this.$t('modals.lorem'),
+      ];
+    },
   },
   methods: {
     hide() {

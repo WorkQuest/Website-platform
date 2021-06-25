@@ -49,15 +49,18 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalWelcome',
-  data() {
-    return {
-      items: ['Painting work', 'Art', 'Cooking', 'Coding'],
-    };
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+    items() {
+      return [
+        this.$t('modals.paintingWork'),
+        this.$t('modals.art'),
+        this.$t('modals.cooking'),
+        this.$t('modals.coding'),
+      ];
+    },
   },
   methods: {
     hide() {

@@ -50,15 +50,16 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalOpenADispute',
-  data() {
-    return {
-      items: ['Bad service', 'Other Reason'],
-    };
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+    items() {
+      return [
+        this.$t('modals.badService'),
+        this.$t('modals.otherReason'),
+      ];
+    },
   },
   methods: {
     hide() {

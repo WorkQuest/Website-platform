@@ -262,7 +262,14 @@
     "startQuest": "Start quest"
   },
   "modals": {
-    "uploadAImage": "Upload a images or videos",
+    "badService": "Bad service",
+    "otherReason": "Other Reason",
+    "reviewOnEmployer": "Review on employer",
+    "paintingWork": "Painting work",
+    "art": "Art",
+    "cooking": "Cooking",
+    "coding": "Coding",
+    "uploadAImages": "Upload a images or videos",
     "description": "Description",
     "addCase": "Add case",
     "openADispute": "Open a dispute",
