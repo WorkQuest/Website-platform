@@ -20,19 +20,17 @@
         <Reviews />
 
         <!-- ACTIVE -->
-        <div class="quest__card">
-          <div class="title">
-            {{ $t('quests.activeQuests') }}
-          </div>
-          <QuestCard />
-          <div class="button__container">
-            <nuxt-link
-              class="button__more"
-              to="/company"
-            >
-              {{ $t('meta.showAllReviews') }}
-            </nuxt-link>
-          </div>
+        <div class="title">
+          {{ $t('quests.activeQuests') }}
+        </div>
+        <QuestCard />
+        <div class="button__container">
+          <nuxt-link
+            class="button__more"
+            to="/company"
+          >
+            {{ $t('meta.showAllReviews') }}
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -118,6 +116,10 @@ export default {
     background-position: 82% 21px;
     background-repeat: no-repeat;
     margin: 20px 0 0 0;
+  }
+  &__container {
+    display: flex;
+    justify-content: center;
   }
 }
 

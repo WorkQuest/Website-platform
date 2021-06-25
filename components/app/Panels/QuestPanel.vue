@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     showProfile() {
-      this.$router.push('/profile');
+      this.$router.push('/show-profile');
     },
   },
 };
@@ -167,6 +167,9 @@ export default {
   &__username{
     @extend .user;
     padding-left: 10px;
+    &:hover {
+      color: $black600;
+    }
   }
   &__distance{
     @extend .user;

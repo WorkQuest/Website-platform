@@ -6,7 +6,10 @@
           <div class="quests__title">
             {{ $t('quests.MyQuests') }}
           </div>
-          <div class="quests__content">
+          <div
+            class="quests__content"
+            :class="{'quests__content_employer': userRole === 'employer'}"
+          >
             <base-btn
               v-for="item in tabs"
               :key="item.id"
@@ -210,6 +213,7 @@ export default {
     ...mapGetters({
       cards: 'data/getCards',
       user: 'data/getUserInfo',
+      userRole: 'user/getUserRole',
     }),
     cardLevelClass(idx) {
       const { cards } = this;
@@ -397,7 +401,7 @@ export default {
     font-size: 25px;
     line-height: 130%;
     color: $black800;
-    padding: 20px 0;
+    margin: 20px 0 20px 0;
   }
   &__body {
     @extend .styles__full;
@@ -409,6 +413,9 @@ export default {
     grid-template-columns: repeat(6, auto);
     grid-gap: 10px;
     margin-bottom: 20px;
+    &_employer {
+      margin-bottom: 0;
+    }
   }
   &__cards {
     border-radius: 6px;

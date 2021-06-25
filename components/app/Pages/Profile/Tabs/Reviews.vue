@@ -38,7 +38,7 @@
         </div>
         <base-btn
           mode="borderless-right"
-          @click="showCompany()"
+          @click="showProfile()"
         >
           {{ $t('quests.readCompletely') }}
           <template v-slot:right>
@@ -63,8 +63,8 @@ export default {
     ...mapGetters({ reviews: 'data/getReviews' }),
   },
   methods: {
-    showCompany() {
-      this.$router.push('/company');
+    showProfile() {
+      this.$router.push('/show-profile');
     },
   },
 };

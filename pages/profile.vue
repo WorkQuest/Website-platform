@@ -34,9 +34,6 @@
 
     <div class="information-section">
       <div class="main-container">
-        <!-- DATA -->
-        <UserStatistic />
-
         <!-- REVIEWS -->
         <div
           v-if="userRole === 'worker'"
@@ -102,7 +99,6 @@ import PortfolioTab from '~/components/app/Pages/Profile/Tabs/Portfolio';
 import ReviewsTab from '~/components/app/Pages/Profile/Tabs/Reviews';
 import QuestsTab from '~/components/app/Pages/Common/Quests';
 import UserInfo from '~/components/app/Pages/Common/UserInfo';
-import UserStatistic from '~/components/app/Panels/UserStatistic';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -112,7 +108,6 @@ export default {
     PortfolioTab,
     QuestsTab,
     UserInfo,
-    UserStatistic,
   },
   data() {
     return {
@@ -236,7 +231,7 @@ export default {
   }
 }
 
-.quest{
+.quest {
   &__spec {
     @include text-simple;
     font-style: normal;
