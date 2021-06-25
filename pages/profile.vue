@@ -57,8 +57,7 @@
             <base-btn
               @click="showAddCaseModal()"
             >
-              <!--        TODO: Добавить в локализацию-->
-              Add Case
+              {{ $t('profile.addCase') }}
               <template v-slot:right>
                 <span class="icon-plus" />
               </template>
