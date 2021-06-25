@@ -17,7 +17,7 @@
             </div>
             <div class="chat__name-container">
               <div class="chat__name">
-                {{ item.userName }}
+                {{ item.name }}
               </div>
               <div class="chat__star">
                 <div
@@ -64,63 +64,20 @@
 
 <script>
 
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Messages',
   data() {
     return {
       isShowFavourite: false,
       message_input: '',
-      messages: [
-        {
-          type: '1',
-          rating: '',
-          userName: 'Samantha Sparcs',
-          body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim Lorem ipsum dolor sit amet, consectetur adipiscing',
-          messageTime: '10:30',
-          isFavourite: true,
-        },
-        {
-          type: '2',
-          rating: '',
-          userName: 'Rosalia Vanse',
-          body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim Lorem ipsum dolor sit amet, consectetur adipiscing',
-          messageTime: '10:30',
-          isFavourite: false,
-        },
-        {
-          type: '1',
-          rating: '',
-          userName: 'Samantha Sparcs',
-          body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim Lorem ipsum dolor sit amet, consectetur adipiscing',
-          messageTime: '10:30',
-          isFavourite: false,
-        },
-        {
-          type: '1',
-          rating: '',
-          userName: 'Samantha Sparcs',
-          body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim Lorem ipsum dolor sit amet, consectetur adipiscing',
-          messageTime: '10:30',
-          isFavourite: false,
-        },
-        {
-          type: '2',
-          rating: '',
-          userName: 'Samantha Sparcs',
-          body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim Lorem ipsum dolor sit amet, consectetur adipiscing',
-          messageTime: '10:30',
-          isFavourite: false,
-        },
-        {
-          type: '1',
-          rating: '',
-          userName: 'Samantha Sparcs',
-          body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim Lorem ipsum dolor sit amet, consectetur adipiscing',
-          messageTime: '10:30',
-          isFavourite: false,
-        },
-      ],
     };
+  },
+  computed: {
+    ...mapGetters({
+      messages: 'data/getMessages',
+    }),
   },
 };
 </script>
