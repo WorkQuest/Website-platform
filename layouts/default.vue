@@ -822,7 +822,7 @@ export default {
     },
     goToMessages() {
       this.$router.push('/messages');
-      this.closeAll();
+      this.closeMenu();
     },
     showProfile() {
       this.closeAnother('profile');
