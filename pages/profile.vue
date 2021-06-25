@@ -57,7 +57,7 @@
             <base-btn
               @click="showAddCaseModal()"
             >
-              {{ $t('profile.addCase') }}
+              {{ $t('ui.profile.addCase') }}
               <template v-slot:right>
                 <span class="icon-plus" />
               </template>
