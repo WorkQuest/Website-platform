@@ -1,7 +1,6 @@
 <template>
   <div>
     <div
-      v-if="userRole === 'worker'"
       class="data-grid"
     >
       <div class="data-item">
