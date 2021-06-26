@@ -48,7 +48,7 @@
             id="message_input"
             v-model="message_input"
             class="message__textarea"
-            placeholder="Hello..."
+            :placeholder="$t('modals.hello')"
           />
         </div>
         <div class="btn__container">

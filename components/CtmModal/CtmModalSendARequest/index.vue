@@ -1,9 +1,8 @@
 <template>
   <ctm-modal-box
     class="message"
-    :title="'Send a request'"
+    :title="$t('modals.sendARequest')"
   >
-    <!-- Передать заголовок из локацизации -->
     <div class="ctm-modal__content">
       <div class="message">
         <div class="message__content">
@@ -13,21 +12,15 @@
                 {{ $t('modals.message') }}
               </p>
               <div>
-                <!-- Передать плейсхолдер из локацизации -->
                 <textarea
                   id="textarea"
                   v-model="text"
                   class="message__textarea"
-                  placeholder="Hello..."
+                  :placeholder="$t('modals.hello')"
                 />
               </div>
             </div>
-            <dropzone
-              id="uploader"
-              ref="el"
-              :options="optionsModal"
-              :include-styling="true"
-            />
+            <Uploader />
             <div class="btn__container">
               <div class="btn__wrapper">
                 <base-btn
@@ -57,45 +50,23 @@
 <script>
 /* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
-import Dropzone from 'nuxt-dropzone';
 import modals from '~/store/modals/modals';
-import 'nuxt-dropzone/dropzone.css';
-import '~/assets/scss/vue2Dropzone.min.css';
-import '~/assets/scss/dropzone.scss';
+import Uploader from '~/components/ui/Uploader';
 
 export default {
   name: 'ModalSendARequest',
   components: {
-    Dropzone,
+    Uploader,
   },
   data() {
     return {
       text: '',
-      optionsModal: {
-        url: 'http://httpbin.org/anything',
-        addRemoveLinks: true,
-        dictRemoveFile: '<span class="icon-close_big"></span>',
-        dictCancelUpload: '<span class="icon-close_big"></span>',
-        dictCancelUploadConfirmation: '',
-        maxFiles: '3',
-        dictDefaultMessage:
-          '<div class="uploader__message_container">'
-          + '<div class="uploader__message">Upload a images or videos</div><'
-          + "span class='icon-add_to_queue'></span>"
-          + '</div>',
-      },
-      file1: null,
-      file2: null,
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-  },
-  mounted() {
-    // Everything is mounted and you can access the dropzone instance
-    const instance = this.$refs.el.dropzone;
   },
   methods: {
     hide() {
@@ -185,18 +156,5 @@ export default {
   &__title {
     margin: 0 0 0 9% !important;
   }
-}
-.uploader__message_container {
-  margin: 0 0 0 10% !important;
-}
-
-.icon-close_big_white:before {
-  content: "\e948";
-  color: #FFFFFF;
-}
-.icon-add_to_queue_blue:before {
-  content: "\e995";
-  color: #0083C7;
-  font-size: 20px;
 }
 </style>

@@ -262,6 +262,7 @@
     "startQuest": "Start quest"
   },
   "modals": {
+    "title": "Title",
     "badService": "Bad service",
     "otherReason": "Other Reason",
     "reviewOnEmployer": "Review on employer",
