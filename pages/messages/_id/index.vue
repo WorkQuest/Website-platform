@@ -218,6 +218,10 @@ export default {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: .5s;
+  &:hover {
+    filter: drop-shadow(4px 4px 3px rgba(34, 60, 80, 0.4));
+  }
 }
 
 .icon {
@@ -464,6 +468,9 @@ export default {
     &_spend {
       @extend .chat__btn;
       margin: 0 11px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       &:hover {
         @extend .chat__btn_spend;
         box-shadow: 0 0 6px rgba(0,0,0,0.2);
