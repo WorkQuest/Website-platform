@@ -254,20 +254,6 @@ export default {
       isShowMap: true,
       currentLocation: {},
       circleOptions: {},
-      locations: [
-        {
-          lat: 44.933076,
-          lng: 15.629058,
-        },
-        {
-          lat: 45.815,
-          lng: '15.9819',
-        },
-        {
-          lat: '45.12',
-          lng: '16.21',
-        },
-      ],
       pins: {
         selected: '/img/app/marker_blue.svg',
         notSelected: '/img/app/marker_red.svg',
@@ -282,11 +268,6 @@ export default {
         },
       ],
       search: '',
-      distance: [
-        '+ 100 m',
-        '+ 500 m',
-        '+ 1000 m',
-      ],
       priority: [
         this.$t('quests.priority.all'),
         this.$t('quests.priority.low'),
@@ -303,6 +284,8 @@ export default {
     ...mapGetters({
       tags: 'ui/getTags',
       cards: 'data/getCards',
+      distance: 'data/getDistance',
+      locations: 'data/getLocations',
     }),
   },
   async mounted() {

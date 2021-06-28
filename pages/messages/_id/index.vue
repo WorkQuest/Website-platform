@@ -149,6 +149,7 @@ export default {
   computed: {
     ...mapGetters({
       messages: 'data/getMessages',
+
     }),
   },
   async mounted() {

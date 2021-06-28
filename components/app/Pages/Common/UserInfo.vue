@@ -20,7 +20,7 @@
     </div>
     <div class="col info-grid__col">
       <div class="title">
-        {{ userInfo.name }}
+        {{ userData.firstName }} {{ userData.lastName }}
       </div>
       <div
         v-if="userRole === 'employer'"

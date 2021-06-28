@@ -19,7 +19,7 @@
         <span
           v-if="quest.contacts.email"
           class="icon-mail"
-        /><span class="contact__link">{{ quest.contacts.email }}</span>
+        /><span class="contact__link">{{ userData.email }}</span>
       </span>
       <span
         v-if="userRole === 'employer'"

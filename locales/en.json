@@ -204,6 +204,7 @@
     "title": "Skills"
   },
   "quests": {
+    "youInvited": "You Invited",
     "inProgressBy": "In progress by:",
     "showAllCases": "Show all cases",
     "portfolio": "Portfolio",

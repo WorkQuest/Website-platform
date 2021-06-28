@@ -218,11 +218,11 @@
             {{ $t('settings.skills') }}
           </div>
           <div
-            v-for="(item, i) in badges"
+            v-for="(item, i) in userInfo.skills"
             :key="i"
           >
             <div class="page__badge">
-              {{ item.name }}
+              {{ item.title }}
             </div>
           </div>
           <div class="btn__container">
@@ -374,7 +374,6 @@ export default {
   name: 'Settings',
   data() {
     return {
-      twoFa: false,
       sms: false,
       allRegisterUser: false,
       allPeopleInInternet: false,
@@ -395,20 +394,6 @@ export default {
       in_input: '',
       facebook_input: '',
       isShowInfo: true,
-      badges: [
-        {
-          name: 'Painting works',
-        },
-        {
-          name: 'Painting works',
-        },
-        {
-          name: 'Painting works',
-        },
-        {
-          name: 'Painting works',
-        },
-      ],
     };
   },
   computed: {
@@ -416,6 +401,7 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      userInfo: 'data/getUserInfo',
     }),
   },
   async mounted() {
@@ -428,13 +414,6 @@ export default {
     },
     isCloseInfo() {
       this.isShowInfo = !this.isShowInfo;
-    },
-    switch2Fa() {
-      this.twoFa = !this.twoFa;
-    },
-    switchSms() {
-      this.sms = !this.sms;
-      this.$router.push('/sms-verification');
     },
   },
 };
@@ -949,8 +928,10 @@ export default {
     background: rgba(0, 131, 199, 0.1);
     border-radius: 44px;
     margin: 10px;
-    padding: 5px;
     color: $blue;
+    padding: 5px 6px;
+    display: flex;
+    text-align: center;
     &-skills {
       padding: 15px;
     }

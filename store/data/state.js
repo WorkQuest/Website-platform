@@ -556,4 +556,49 @@ export default () => ({
       transaction_fee: '5 WUSD',
     },
   ],
+  respondedList: [
+    {
+      name: 'Marvin McKinney',
+      badge: {
+        code: 2,
+      },
+    },
+    {
+      name: 'Marvin McKinney',
+      badge: {
+        code: 1,
+      },
+    },
+    {
+      name: 'Marvin McKinney',
+      badge: {
+        code: 3,
+      },
+    },
+    {
+      name: 'Marvin McKinney',
+      badge: {
+        code: 2,
+      },
+    },
+  ],
+  distance: [
+    '+ 100 m',
+    '+ 500 m',
+    '+ 1000 m',
+  ],
+  locations: [
+    {
+      lat: 44.933076,
+      lng: 15.629058,
+    },
+    {
+      lat: 45.815,
+      lng: '15.9819',
+    },
+    {
+      lat: '45.12',
+      lng: '16.21',
+    },
+  ],
 });

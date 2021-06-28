@@ -1,4 +1,6 @@
 export default {
+  getLocations: (state) => state.locations,
+  getDistance: (state) => state.distance,
   getReviews: (state) => state.reviews,
   getPortfolios: (state) => state.portfolios,
   getQuest: (state) => state.quest,
@@ -12,4 +14,5 @@ export default {
   getMessages: (state) => state.messages,
   getTransactions: (state) => state.transactions,
   getTransactionsData: (state) => state.transactionsData,
+  getRespondedList: (state) => state.respondedList,
 };

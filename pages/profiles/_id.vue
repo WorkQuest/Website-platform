@@ -47,15 +47,10 @@ export default {
     Reviews,
     QuestCard,
   },
-  data() {
-    return {};
-  },
-  computed: {},
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
   },
-  methods: {},
 };
 </script>
 
