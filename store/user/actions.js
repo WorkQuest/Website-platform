@@ -21,6 +21,16 @@ export default {
     commit('setUserData', response.result);
     return response;
   },
+  async setUserRole({ commit }) {
+    const response = await this.$axios.$post('/v1/profile/set-role');
+    commit('setUserRole', response.result);
+    return response;
+  },
+  async editUserData({ commit }, payload) {
+    const response = await this.$axios.$put('/v1/profile/edit', payload);
+    commit('setUserData', response.result);
+    return response;
+  },
   async logout({ commit }) {
     commit('logOut');
   },

@@ -16,6 +16,9 @@ export default {
   setUserData(state, data) {
     state.userData = data;
   },
+  setUserRole(state, data) {
+    state.userRole = data;
+  },
   logOut(state) {
     this.$cookies.remove('access');
     this.$cookies.remove('refresh');

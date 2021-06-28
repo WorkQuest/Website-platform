@@ -4,6 +4,7 @@
       <h2 class="page__title">
         {{ $t('settings.settings') }}
       </h2>
+      {{ this.userData }}
       <div
         v-if="userRole === 'worker'"
         class="quests__top"
@@ -204,6 +205,7 @@
         <div class="profile__row-4col">
           <base-btn
             class="btn__save"
+            @click="editUserData()"
           >
             {{ $t('settings.save') }}
           </base-btn>
@@ -435,6 +437,48 @@ export default {
     switchSms() {
       this.sms = !this.sms;
       this.$router.push('/sms-verification');
+    },
+    async changeRole() {
+      try {
+        const response = await this.$store.dispatch('user/setUserRole');
+        if (response?.ok) {
+          console.log('good response');
+        }
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async editUserData() {
+      const payload = {
+        avatarId: null,
+        firstName: this.name_input || null,
+        lastName: this.lastname_input || null,
+        additionalInfo: {
+          firstMobileNumber: this.tel1_input || null,
+          secondMobileNumber: this.tel2_input || null,
+          address: this.adress1_input || null,
+          socialNetwork: {
+            instagram: this.inst_input || null,
+            twitter: this.twitt_input || null,
+            linkedin: this.in_input || null,
+            facebook: this.facebook_input || null,
+          },
+          company: this.tel2_input || null,
+          CEO: this.tel2_input || null,
+          website: this.tel2_input || null,
+        },
+      };
+      console.log(payload);
+      try {
+        const response = await this.$store.dispatch('user/editUserData', payload);
+        if (response?.ok) {
+          console.log('good response');
+        }
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };
