@@ -272,7 +272,7 @@ import modals from '~/store/modals/modals';
 export default {
   data() {
     return {
-      isExpired: true,
+      isExpired: false,
       isDeadline: false,
       items: [
         {
@@ -896,13 +896,15 @@ export default {
             grid-column-end: 3;
           }
           .btn-group {
-            grid-template-rows: repeat(2, 1fr);
-            grid-template-columns: repeat(2, 1fr);
-            .btn {
-              &:last-child {
-                grid-row-start: 1;
-                grid-column-start: 1;
-                grid-column-end: 3;
+            &_exp {
+              grid-template-rows: repeat(2, 1fr);
+              grid-template-columns: repeat(2, 1fr);
+              .btn {
+                &:last-child {
+                  grid-row-start: 1;
+                  grid-column-start: 1;
+                  grid-column-end: 3;
+                }
               }
             }
           }
