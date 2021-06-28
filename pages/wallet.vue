@@ -5,7 +5,7 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('wallet.wallet') }}</span>
           <div class="wallet__address">
-            <span>{{ userWallet }}</span>
+            <span>{{ userInfo.userWallet }}</span>
             <button
               v-clipboard:copy="userWallet"
               v-clipboard:success="ClipboardSuccessHandler"
@@ -18,13 +18,13 @@
         </div>
         <div
           class="wallet__info"
-          :class="{'wallet__info_full' : cardClosed }"
+          :class="{'wallet__info_full' : userInfo.cardClosed }"
         >
           <div class="wallet__balance balance">
             <div class="balance__top">
               <span class="balance__title">{{ $t('wallet.balance') }}</span>
-              <span class="balance__currency">{{ `${userBalance} ${currency}` }}</span>
-              <span class="balance__usd">{{ `$ ${usd}` }}</span>
+              <span class="balance__currency">{{ `${userInfo.userBalance} ${userInfo.currency}` }}</span>
+              <span class="balance__usd">{{ `$ ${userInfo.usd}` }}</span>
             </div>
             <div class="balance__bottom">
               <base-button
@@ -70,8 +70,8 @@
         <div class="wallet__table">
           <base-table
             :title="$t('wallet.table.trx')"
-            :items="items"
-            :fields="testFields"
+            :items="transactionsData"
+            :fields="walletTableFields"
           />
         </div>
       </div>
@@ -87,116 +87,7 @@ export default {
   data() {
     return {
       cardClosed: false,
-      userWallet: '0xnf8o29837hrvbn42o37hsho3b74thb3',
-      transactions: [
-        {
-          mode: 1,
-          date: '14.01.20  14:34',
-          value: '1500',
-        },
-        {
-          mode: 2,
-          date: '14.01.20  14:34',
-          value: '1500',
-        },
-        {
-          mode: 2,
-          date: '14.01.20  14:34',
-          value: '1500',
-        },
-        {
-          mode: 1,
-          date: '14.01.20  14:34',
-          value: '1500',
-        },
-        {
-          mode: 2,
-          date: '14.01.20  14:34',
-          value: '1500',
-        },
-        {
-          mode: 2,
-          date: '14.01.20  14:34',
-          value: '1500',
-        },
-        {
-          mode: 2,
-          date: '14.01.20  14:34',
-          value: '1500',
-        },
-        {
-          mode: 2,
-          date: '14.01.20  14:34',
-          value: '1500',
-        },
-        {
-          mode: 2,
-          date: '14.01.20  14:34',
-          value: '1500',
-        },
-        {
-          mode: 2,
-          date: '14.01.20  14:34',
-          value: '1500',
-        },
-      ],
-      items: [
-        {
-          tx_hash: 'sd535sd66sdsd',
-          status: 'Success',
-          block: '5267575474',
-          timestamp: 'Feb 1, 2021, 21:34',
-          transferred: 'To 2381hkjk123',
-          value: '120 WUSD',
-          transaction_fee: '5 WUSD',
-        },
-        {
-          tx_hash: 'sd535sd66sdsd',
-          status: 'Success',
-          block: '5267575474',
-          timestamp: 'Feb 1, 2021, 21:34',
-          transferred: 'To 2381hkjk123',
-          value: '120 WUSD',
-          transaction_fee: '5 WUSD',
-        },
-        {
-          tx_hash: 'sd535sd66sdsd',
-          status: 'Success',
-          block: '5267575474',
-          timestamp: 'Feb 1, 2021, 21:34',
-          transferred: 'To 2381hkjk123',
-          value: '120 WUSD',
-          transaction_fee: '5 WUSD',
-        },
-        {
-          tx_hash: 'sd535sd66sdsd',
-          status: 'Success',
-          block: '5267575474',
-          timestamp: 'Feb 1, 2021, 21:34',
-          transferred: 'To 2381hkjk123',
-          value: '120 WUSD',
-          transaction_fee: '5 WUSD',
-        },
-        {
-          tx_hash: 'sd535sd66sdsd',
-          status: 'Success',
-          block: '5267575474',
-          timestamp: 'Feb 1, 2021, 21:34',
-          transferred: 'To 2381hkjk123',
-          value: '120 WUSD',
-          transaction_fee: '5 WUSD',
-        },
-        {
-          tx_hash: 'sd535sd66sdsd',
-          status: 'Success',
-          block: '5267575474',
-          timestamp: 'Feb 1, 2021, 21:34',
-          transferred: 'To 2381hkjk123',
-          value: '120 WUSD',
-          transaction_fee: '5 WUSD',
-        },
-      ],
-      testFields: [
+      walletTableFields: [
         {
           key: 'tx_hash', label: this.$t('wallet.table.txHash'), sortable: false,
         },
@@ -219,9 +110,6 @@ export default {
           key: 'transaction_fee', label: this.$t('wallet.table.trxFee'), sortable: false,
         },
       ],
-      userBalance: '1500',
-      currency: 'WUSD',
-      usd: '120.34',
     };
   },
   computed: {
@@ -229,6 +117,9 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      userInfo: 'data/getUserInfo',
+      transactions: 'data/getTransactions',
+      transactionsData: 'data/getTransactionsData',
     }),
   },
   async mounted() {

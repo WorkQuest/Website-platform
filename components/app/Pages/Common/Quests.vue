@@ -214,6 +214,7 @@ export default {
       cards: 'data/getCards',
       user: 'data/getUserInfo',
       userRole: 'user/getUserRole',
+      tabs: 'data/getTabs',
     }),
     cardLevelClass(idx) {
       const { cards } = this;

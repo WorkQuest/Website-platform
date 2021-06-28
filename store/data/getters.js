@@ -10,4 +10,6 @@ export default {
   getSocials: (state) => state.socials,
   getDisputes: (state) => state.disputes,
   getMessages: (state) => state.messages,
+  getTransactions: (state) => state.transactions,
+  getTransactionsData: (state) => state.transactionsData,
 };
