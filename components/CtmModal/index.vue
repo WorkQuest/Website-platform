@@ -49,6 +49,7 @@
       <CtmModalOpenADispute v-if="modals.openADispute === currentModalKey" />
       <CtmModalNotice v-if="modals.notice === currentModalKey" />
       <CtmModalTransfer v-if="modals.transfer === currentModalKey" />
+      <CtmModalChangePassInSettings v-if="modals.changePassInSettings === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -92,6 +93,7 @@ import CtmModalWelcome from './CtmModalWelcome';
 import CtmModalOpenADispute from './CtmModalOpenADispute';
 import CtmModalNotice from './CtmModalNotice';
 import CtmModalTransfer from './CtmModalTransfer';
+import CtmModalChangePassInSettings from './CtmModalChangePassInSettings';
 
 export default {
   name: 'ModalBox',
@@ -133,6 +135,7 @@ export default {
     CtmModalOpenADispute,
     CtmModalNotice,
     CtmModalTransfer,
+    CtmModalChangePassInSettings,
   },
   data: () => ({
     modals,

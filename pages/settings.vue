@@ -22,17 +22,22 @@
                   <div class="page__info page__info-subtitle">
                     {{ $t('settings.alsoRating') }}
                   </div>
-                  <div class="info__toggle">
-                    <input
-                      id="dontShow"
-                      v-model="isShowInfo"
-                      type="checkbox"
-                      class="custom-checkbox"
-                    >
-                    <label
-                      class="label"
-                      for="dontShow"
-                    >{{ $t('settings.dontShow') }}</label>
+                  <!--                  <div class="info__toggle">-->
+                  <!--                    <input-->
+                  <!--                      id="dontShow"-->
+                  <!--                      v-model="isShowInfo"-->
+                  <!--                      type="checkbox"-->
+                  <!--                      class="custom-checkbox"-->
+                  <!--                    >-->
+                  <!--                    <label-->
+                  <!--                      class="label"-->
+                  <!--                      for="dontShow"-->
+                  <!--                    >{{ $t('settings.dontShow') }}</label>-->
+                  <!--                  </div>-->
+                  <div class="ver-btn__container">
+                    <base-btn mode="ver">
+                      {{ $t('settings.getVerification') }}
+                    </base-btn>
                   </div>
                 </div>
               </div>
@@ -63,6 +68,9 @@
               src="~/assets/img/temp/photo.jpg"
             >
           </div>
+          <!--          <div class="profile__status">-->
+          <!--            {{ $t('settings.notVerified') }}-->
+          <!--          </div>-->
           <div class="profile__row-3col">
             <base-field
               v-model="name_input"
@@ -242,8 +250,10 @@
             <div class="settings__option">
               <input
                 id="allUsers"
+                name="whoCanSee"
                 type="radio"
                 class="radio__input"
+                value="allUsers"
                 checked
               >
               <label
@@ -254,8 +264,10 @@
             <div class="settings__option">
               <input
                 id="allInternet"
+                name="whoCanSee"
                 type="radio"
                 class="radio__input"
+                value="allInternet"
               >
               <label
                 class="label__black"
@@ -265,8 +277,10 @@
             <div class="settings__option">
               <input
                 id="onlyWhenSubmittedWork"
+                name="whoCanSee"
                 type="radio"
                 class="radio__input"
+                value="onlyWhenSubmittedWork"
               >
               <label
                 class="label__black"
@@ -281,8 +295,10 @@
             <div class="settings__option">
               <input
                 id="urgentProposals"
+                name="filterAllWorkProposals"
                 type="radio"
                 class="radio__input"
+                value="urgentProposals"
               >
               <label
                 class="label__black"
@@ -292,8 +308,10 @@
             <div class="settings__option">
               <input
                 id="onlyImplementation"
+                name="filterAllWorkProposals"
                 type="radio"
                 class="radio__input"
+                value="onlyImplementation"
                 checked
               >
               <label
@@ -304,8 +322,10 @@
             <div class="settings__option">
               <input
                 id="onlyReady"
+                name="filterAllWorkProposals"
                 type="radio"
                 class="radio__input"
+                value="onlyReady"
               >
               <label
                 class="label__black"
@@ -315,8 +335,10 @@
             <div class="settings__option">
               <input
                 id="allRegistered"
+                name="filterAllWorkProposals"
                 type="radio"
                 class="radio__input"
+                value="allRegistered"
               >
               <label
                 class="label__black"
@@ -331,7 +353,7 @@
             <div class="settings_blue">
               <div>{{ $t('settings.changePass') }}</div>
               <div>
-                <base-btn>
+                <base-btn @click="ModalChangePassword()">
                   {{ $t('settings.change') }}
                 </base-btn>
               </div>
@@ -369,6 +391,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'Settings',
@@ -409,8 +432,10 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    changePass() {
-      this.$router.push('/change-password');
+    ModalChangePassword() {
+      this.ShowModal({
+        key: modals.changePassInSettings,
+      });
     },
     isCloseInfo() {
       this.isShowInfo = !this.isShowInfo;
@@ -420,6 +445,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.ver-btn {
+  &__container {
+    display: flex;
+    margin: 20px;
+    width: 250px;
+  }
+}
 
 .company {
   &__inputs {
@@ -789,6 +822,12 @@ export default {
   display: grid;
   justify-content: space-between;
   max-width: 1180px;
+  //&__status {
+  //  display: grid;
+  //  background: $blue;
+  //  color: $white;
+  //  border-radius: 6px;
+  //}
   &__img {
     width: 100%;
     height: 100%;

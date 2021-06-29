@@ -27,7 +27,7 @@
         </div>
         <div>
           <div class="title">
-            Active quests
+            {{ $t('quests.activeQuests') }}
           </div>
           <Card />
         </div>
@@ -100,8 +100,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-//TODO: Почистить стили
 
 .button {
   @extend .styles__flex;
