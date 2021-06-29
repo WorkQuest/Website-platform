@@ -22,18 +22,6 @@
                   <div class="page__info page__info-subtitle">
                     {{ $t('settings.alsoRating') }}
                   </div>
-                  <!--                  <div class="info__toggle">-->
-                  <!--                    <input-->
-                  <!--                      id="dontShow"-->
-                  <!--                      v-model="isShowInfo"-->
-                  <!--                      type="checkbox"-->
-                  <!--                      class="custom-checkbox"-->
-                  <!--                    >-->
-                  <!--                    <label-->
-                  <!--                      class="label"-->
-                  <!--                      for="dontShow"-->
-                  <!--                    >{{ $t('settings.dontShow') }}</label>-->
-                  <!--                  </div>-->
                   <div class="ver-btn__container">
                     <base-btn mode="ver">
                       {{ $t('settings.getVerification') }}
@@ -90,15 +78,6 @@
                 <span class="icon-location" />
               </template>
             </base-field>
-<!--            <base-field-->
-<!--              v-model="email_input"-->
-<!--              :placeholder="$t('settings.addressInput')"-->
-<!--              mode="icon"-->
-<!--            >-->
-<!--              <template v-slot:left>-->
-<!--                <span class="icon-mail" />-->
-<!--              </template>-->
-<!--            </base-field>-->
             <base-field
               v-model="lastname_input"
               :placeholder="userData.lastName || $t('settings.lastNameInput')"
@@ -172,36 +151,40 @@
           />
         </div>
         <div class="profile__row-4col">
+          <!-- :placeholder="userData.additionalInfo.socialNetwork.instagram || $t('settings.socialInput')" -->
           <base-field
             v-model="inst_input"
-            :placeholder="userData.additionalInfo.socialNetwork.instagram || $t('settings.socialInput')"
+            :placeholder="$t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
               <span class="icon-instagram" />
             </template>
           </base-field>
+          <!-- :placeholder="userData.additionalInfo.socialNetwork.twitter || $t('settings.socialInput')" -->
           <base-field
             v-model="twitt_input"
-            :placeholder="userData.additionalInfo.socialNetwork.twitter || $t('settings.socialInput')"
+            :placeholder="$t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
               <span class="icon-twitter" />
             </template>
           </base-field>
+          <!-- :placeholder="userData.additionalInfo.socialNetwork.linkedin || $t('settings.socialInput')"-->
           <base-field
             v-model="in_input"
-            :placeholder="userData.additionalInfo.socialNetwork.linkedin || $t('settings.socialInput')"
+            :placeholder="$t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
               <span class="icon-LinkedIn" />
             </template>
           </base-field>
+          <!-- :placeholder="userData.additionalInfo.socialNetwork.facebook || $t('settings.socialInput')" -->
           <base-field
             v-model="facebook_input"
-            :placeholder="userData.additionalInfo.socialNetwork.facebook || $t('settings.socialInput')"
+            :placeholder="$t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -442,9 +425,6 @@ export default {
       this.ShowModal({
         key: modals.changePassInSettings,
       });
-    },
-    changeRole() {
-      this.$router.push('/role');
     },
     modalTwoFAAuth() {
       this.ShowModal({
