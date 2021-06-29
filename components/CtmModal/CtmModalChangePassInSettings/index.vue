@@ -4,11 +4,14 @@
     :title="$t('settings.changePass')"
   >
     <div class="ctm-modal__content">
+      <div class="error-msg">
+        {{ errorMsg ? $t('errors.incorrectPass') : null }}
+      </div>
       <div class="ctm-modal__content-field">
         <label
           for="currentPassword_input"
           class="ctm-modal__label"
-        >{{ $t("modals.currentPassword") }}</label>
+        >{{ $t('modals.currentPassword') }}</label>
         <base-field
           id="currentPassword_input"
           v-model="currentPassword_input"
@@ -25,7 +28,7 @@
         <label
           for="newPassword_input"
           class="ctm-modal__label"
-        >{{ $t("modals.newPassword") }}</label>
+        >{{ $t('modals.newPassword') }}</label>
         <base-field
           id="newPassword_input"
           v-model="newPassword_input"
@@ -42,7 +45,7 @@
         <label
           for="confirmNewPassword_input"
           class="ctm-modal__label"
-        >{{ $t("modals.confirmNewPassword") }}</label>
+        >{{ $t('modals.confirmNewPassword') }}</label>
         <base-field
           id="confirmNewPassword_input"
           v-model="confirmNewPassword_input"
@@ -79,6 +82,7 @@ export default {
       currentPassword_input: '',
       newPassword_input: '',
       confirmNewPassword_input: '',
+      errorMsg: '',
     };
   },
   computed: {
@@ -87,8 +91,22 @@ export default {
     }),
   },
   methods: {
-    hide() {
-      this.CloseModal();
+    async hide() {
+      const payload = {
+        oldPassword: this.currentPassword_input,
+        newPassword: this.confirmNewPassword_input,
+      };
+      try {
+        const response = await this.$store.dispatch('user/editUserPassword', payload);
+        if (response?.ok) {
+          this.ShowModal({
+            key: modals.changePassword,
+          });
+        }
+      } catch (e) {
+        this.errorMsg = e;
+        console.log(e);
+      }
     },
   },
 };
@@ -103,7 +121,9 @@ export default {
     font-size: 25px;
   }
 }
-
+.error-msg {
+  color:red;
+}
 .ctm-modal {
   @include modalKit;
   &__content-field {

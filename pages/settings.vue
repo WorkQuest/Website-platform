@@ -74,7 +74,7 @@
           <div class="profile__row-3col">
             <base-field
               v-model="name_input"
-              :placeholder="$t('settings.nameInput')"
+              :placeholder="userData.firstName || $t('settings.nameInput')"
               mode="icon"
             >
               <template v-slot:left>
@@ -83,25 +83,25 @@
             </base-field>
             <base-field
               v-model="adress1_input"
-              :placeholder="$t('settings.addressInput')"
+              :placeholder="userData.additionalInfo.address || $t('settings.addressInput')"
               mode="icon"
             >
               <template v-slot:left>
                 <span class="icon-location" />
               </template>
             </base-field>
-            <base-field
-              v-model="adress2_input"
-              :placeholder="$t('settings.addressInput')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-mail" />
-              </template>
-            </base-field>
+<!--            <base-field-->
+<!--              v-model="email_input"-->
+<!--              :placeholder="$t('settings.addressInput')"-->
+<!--              mode="icon"-->
+<!--            >-->
+<!--              <template v-slot:left>-->
+<!--                <span class="icon-mail" />-->
+<!--              </template>-->
+<!--            </base-field>-->
             <base-field
               v-model="lastname_input"
-              :placeholder="$t('settings.lastNameInput')"
+              :placeholder="userData.lastName || $t('settings.lastNameInput')"
               mode="icon"
             >
               <template v-slot:left>
@@ -110,7 +110,7 @@
             </base-field>
             <base-field
               v-model="tel1_input"
-              :placeholder="$t('settings.telInput')"
+              :placeholder="userData.additionalInfo.firstMobileNumber || $t('settings.telInput')"
               mode="icon"
             >
               <template v-slot:left>
@@ -119,7 +119,7 @@
             </base-field>
             <base-field
               v-model="tel2_input"
-              :placeholder="$t('settings.telInput')"
+              :placeholder="userData.additionalInfo.secondMobileNumber || $t('settings.telInput')"
               mode="icon"
             >
               <template v-slot:left>
@@ -133,8 +133,8 @@
           class="company__inputs"
         >
           <base-field
-            v-model="tel2_input"
-            :placeholder="$t('settings.amazon')"
+            v-model="company_input"
+            :placeholder="userData.additionalInfo.company || $t('settings.amazon')"
             mode="icon"
           >
             <template v-slot:left>
@@ -142,8 +142,8 @@
             </template>
           </base-field>
           <base-field
-            v-model="tel2_input"
-            :placeholder="$t('settings.ceo')"
+            v-model="ceo_input"
+            :placeholder="userData.additionalInfo.CEO || $t('settings.ceo')"
             mode="icon"
           >
             <template v-slot:left>
@@ -151,8 +151,8 @@
             </template>
           </base-field>
           <base-field
-            v-model="tel2_input"
-            :placeholder="$t('settings.amazon_com')"
+            v-model="site_input"
+            :placeholder="userData.additionalInfo.website || $t('settings.amazon_com')"
             mode="icon"
           >
             <template v-slot:left>
@@ -174,7 +174,7 @@
         <div class="profile__row-4col">
           <base-field
             v-model="inst_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userData.additionalInfo.socialNetwork.instagram || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -183,7 +183,7 @@
           </base-field>
           <base-field
             v-model="twitt_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userData.additionalInfo.socialNetwork.twitter || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -192,7 +192,7 @@
           </base-field>
           <base-field
             v-model="in_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userData.additionalInfo.socialNetwork.linkedin || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -201,7 +201,7 @@
           </base-field>
           <base-field
             v-model="facebook_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userData.additionalInfo.socialNetwork.facebook || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -212,6 +212,7 @@
         <div class="profile__row-4col">
           <base-btn
             class="btn__save"
+            @click="editUserData()"
           >
             {{ $t('settings.save') }}
           </base-btn>
@@ -410,10 +411,13 @@ export default {
       bio_input: '',
       name_input: '',
       adress1_input: '',
-      adress2_input: '',
+      email_input: '',
       lastname_input: '',
       tel1_input: '',
       tel2_input: '',
+      company_input: '',
+      ceo_input: '',
+      site_input: '',
       inst_input: '',
       twitt_input: '',
       in_input: '',
@@ -449,6 +453,59 @@ export default {
     },
     isCloseInfo() {
       this.isShowInfo = !this.isShowInfo;
+    },
+    switch2Fa() {
+      this.twoFa = !this.twoFa;
+    },
+    switchSms() {
+      this.sms = !this.sms;
+      this.$router.push('/sms-verification');
+    },
+    async changeRole() {
+      try {
+        const response = await this.$store.dispatch('user/setUserRole');
+        if (response?.ok) {
+          console.log('good response');
+        }
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async changePassword() {
+      try {
+        this.ShowModal({
+          key: modals.changePassword,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async editUserData() {
+      const payload = {
+        avatarId: null,
+        firstName: this.name_input || null,
+        lastName: this.lastname_input || null,
+        additionalInfo: {
+          firstMobileNumber: this.tel1_input || null,
+          secondMobileNumber: this.tel2_input || null,
+          address: this.adress1_input || null,
+          socialNetwork: {
+            instagram: this.inst_input || null,
+            twitter: this.twitt_input || null,
+            linkedin: this.in_input || null,
+            facebook: this.facebook_input || null,
+          },
+          company: this.company_input || null,
+          CEO: this.ceo_input || null,
+          website: this.site_input || null,
+        },
+      };
+      try {
+        await this.$store.dispatch('user/editUserData', payload);
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };

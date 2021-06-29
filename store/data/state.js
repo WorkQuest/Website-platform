@@ -601,4 +601,6 @@ export default () => ({
       lng: '16.21',
     },
   ],
+  allQuests: {},
+  userInfoQuests: {},
 });
