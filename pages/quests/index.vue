@@ -139,7 +139,7 @@
         </div>
         <div class="quests__cards">
           <div
-            v-for="(item, i) in cards.quests"
+            v-for="(item, i) in cards"
             :key="i"
             class="quests__block block"
           >
@@ -155,20 +155,20 @@
               <div class="block__head">
                 <div class="block__title">
                   <div class="block__avatar">
-<!--                    <nuxt-link-->
-<!--                      class="link"-->
-<!--                      :to="item.url"-->
-<!--                    >-->
-<!--                      <img-->
-<!--                        :src="item.background"-->
-<!--                        alt=""-->
-<!--                      >-->
-<!--                    </nuxt-link>-->
+                    <nuxt-link
+                      class="link"
+                      :to="item.url"
+                    >
+                      <img
+                        :src="item.background"
+                        alt=""
+                      >
+                    </nuxt-link>
                   </div>
-<!--                  <nuxt-link-->
-<!--                    class="link"-->
-<!--                    :to="item.url"-->
-<!--                  >-->
+                  <nuxt-link
+                    class="link"
+                    :to="item.url"
+                  >
                     <div class="block__text block__text_title">
                       {{ item.title }}
                       <span
@@ -176,7 +176,7 @@
                         class="block__text block__text_grey"
                       >{{ item.description }}</span>
                     </div>
-<!--                  </nuxt-link>-->
+                  </nuxt-link>
                 </div>
                 <div
                   class="block__icon block__icon_fav star"
@@ -302,8 +302,8 @@ export default {
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
-      // cards: 'data/getCards',
-      cards: 'data/getAllQuests',
+      cards: 'data/getCards',
+      // cards: 'data/getAllQuests',
     }),
   },
   async mounted() {

@@ -67,7 +67,7 @@
           <div class="profile__row-3col">
             <base-field
               v-model="name_input"
-              :placeholder="$t('settings.nameInput')"
+              :placeholder="this.userData.firstName || $t('settings.nameInput')"
               mode="icon"
             >
               <template v-slot:left>
@@ -94,7 +94,7 @@
             </base-field>
             <base-field
               v-model="lastname_input"
-              :placeholder="$t('settings.lastNameInput')"
+              :placeholder="this.userData.lastName || $t('settings.lastNameInput')"
               mode="icon"
             >
               <template v-slot:left>
@@ -126,7 +126,7 @@
           class="company__inputs"
         >
           <base-field
-            v-model="tel2_input"
+            v-model="company_input"
             :placeholder="$t('settings.amazon')"
             mode="icon"
           >
@@ -135,7 +135,7 @@
             </template>
           </base-field>
           <base-field
-            v-model="tel2_input"
+            v-model="ceo_input"
             :placeholder="$t('settings.ceo')"
             mode="icon"
           >
@@ -144,7 +144,7 @@
             </template>
           </base-field>
           <base-field
-            v-model="tel2_input"
+            v-model="site_input"
             :placeholder="$t('settings.amazon_com')"
             mode="icon"
           >
@@ -333,7 +333,7 @@
             <div class="settings_blue">
               <div>{{ $t('settings.changePass') }}</div>
               <div>
-                <base-btn>
+                <base-btn @click="changePassword()">
                   {{ $t('settings.change') }}
                 </base-btn>
               </div>
@@ -371,6 +371,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'Settings',
@@ -392,6 +393,9 @@ export default {
       lastname_input: '',
       tel1_input: '',
       tel2_input: '',
+      company_input: '',
+      ceo_input: '',
+      site_input: '',
       inst_input: '',
       twitt_input: '',
       in_input: '',
@@ -425,6 +429,12 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    ShowModal(payload) {
+      this.$store.dispatch('modals/show', {
+        key: modals.default,
+        ...payload,
+      });
+    },
     changePass() {
       this.$router.push('/change-password');
     },
@@ -449,6 +459,15 @@ export default {
         console.log(e);
       }
     },
+    async changePassword() {
+      try {
+        this.ShowModal({
+          key: modals.changePassword,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
     async editUserData() {
       const payload = {
         avatarId: null,
@@ -464,18 +483,13 @@ export default {
             linkedin: this.in_input || null,
             facebook: this.facebook_input || null,
           },
-          company: this.tel2_input || null,
-          CEO: this.tel2_input || null,
-          website: this.tel2_input || null,
+          company: this.company_input || null,
+          CEO: this.ceo_input || null,
+          website: this.site_input || null,
         },
       };
-      console.log(payload);
       try {
-        const response = await this.$store.dispatch('user/editUserData', payload);
-        if (response?.ok) {
-          console.log('good response');
-        }
-        console.log(response);
+        await this.$store.dispatch('user/editUserData', payload);
       } catch (e) {
         console.log(e);
       }
