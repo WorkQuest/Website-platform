@@ -70,6 +70,7 @@ export default {
         { 'base-btn_approve': mode === 'approve' },
         { 'base-btn_back': mode === 'back' },
         { 'base-btn_grey': mode === 'grey' },
+        { 'base-btn_verification': mode === 'ver' },
       ];
     },
   },
@@ -104,6 +105,13 @@ export default {
   border-radius: 6px;
   &:hover {
     background: #103D7C;
+  }
+  &_verification {
+    background: $white;
+    color: $blue;
+    &:hover {
+      background: $black100;
+    }
   }
   &_grey {
     background-color: $black100;

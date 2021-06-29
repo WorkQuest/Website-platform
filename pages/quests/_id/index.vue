@@ -108,7 +108,7 @@
                   </div>
                 </div>
               </span>
-              <div class="worker__title">You Invited</div>
+              <div class="worker__title">{{ $t('quests.youInvited') }}</div>
               <div class="worker__container">
                 <div>
                   <img
@@ -366,32 +366,6 @@ export default {
   },
   data() {
     return {
-      respondedList: [
-        {
-          name: 'Marvin McKinney',
-          badge: {
-            code: 2,
-          },
-        },
-        {
-          name: 'Marvin McKinney',
-          badge: {
-            code: 1,
-          },
-        },
-        {
-          name: 'Marvin McKinney',
-          badge: {
-            code: 3,
-          },
-        },
-        {
-          name: 'Marvin McKinney',
-          badge: {
-            code: 2,
-          },
-        },
-      ],
       badge: {
         code: 1,
       },
@@ -435,11 +409,6 @@ export default {
         ],
       },
       isShowMap: true,
-      distance: [
-        '+ 100 m',
-        '+ 500 m',
-        '+ 1000 m',
-      ],
       locations: [
         {
           lat: 56.475565,
@@ -463,6 +432,8 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      respondedList: 'data/getRespondedList',
+      distance: 'data/getDistance',
     }),
   },
 

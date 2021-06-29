@@ -38,4 +38,5 @@ export default {
   openADispute: 'openADispute',
   notice: 'notice',
   transfer: 'transfer',
+  changePassInSettings: 'changePassInSettings',
 };

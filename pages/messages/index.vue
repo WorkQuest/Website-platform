@@ -50,7 +50,7 @@
                 <div class="you__row">
                   <div class="you">
                     <span class="params">{{ $t('chat.you') }}</span>
-                    <span class="you__message">{{ item.youMessage }}</span>
+                    <span class="you__message">{{ item.body }}</span>
                   </div>
                 </div>
               </div>

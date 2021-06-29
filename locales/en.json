@@ -204,6 +204,8 @@
     "title": "Skills"
   },
   "quests": {
+    "youInvited": "You Invited",
+    "inProgressBy": "In progress by:",
     "showAllCases": "Show all cases",
     "portfolio": "Portfolio",
     "searchQuests": "Search quests",
@@ -261,6 +263,24 @@
     "startQuest": "Start quest"
   },
   "modals": {
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password ",
+    "change": "Change",
+    "title": "Title",
+    "badService": "Bad service",
+    "otherReason": "Other Reason",
+    "reviewOnEmployer": "Review on employer",
+    "paintingWork": "Painting work",
+    "art": "Art",
+    "cooking": "Cooking",
+    "coding": "Coding",
+    "uploadAImages": "Upload a images or videos",
+    "description": "Description",
+    "addCase": "Add case",
+    "openADispute": "Open a dispute",
+    "reason": "Reason",
+    "lorem": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,",
     "withdraw": "Withdraw",
     "estimatedPayment": "Estimated payment:",
     "hello": "Hello...",
@@ -347,6 +367,7 @@
     "myQuests": "My quests",
     "quests": "Quests",
     "profile": {
+      "addCase": "Add Case",
       "myProfile": "My profile",
       "settings": "Settings",
       "disputes": "Disputes",
@@ -411,6 +432,8 @@
     "writeYouMessage": "Write you message"
   },
   "settings": {
+    "getVerification": "Get verification",
+    "notVerified": "Not verified",
     "more": "More",
     "settings": "Settings",
     "addInfo": "Add information about you, profile photo and KYC and level up your rating",

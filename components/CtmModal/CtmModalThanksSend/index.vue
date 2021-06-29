@@ -37,7 +37,6 @@ export default {
     return {
     };
   },
-  computed: {},
   methods: {
     hide() {
       this.CloseModal();

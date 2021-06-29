@@ -174,7 +174,7 @@
                       <span
                         v-if="item.sub"
                         class="block__text block__text_grey"
-                      >{{ item.description }}</span>
+                      >{{ item.sub }}</span>
                     </div>
                   </nuxt-link>
                 </div>
@@ -203,13 +203,13 @@
               </div>
               <div class="block__locate">
                 <span class="icon-location" />
-                <span class="block__text block__text_locate">{{ getDistanceFromLatLonInKm(item.location.latitude, item.location.longitude, 56.475565, 84.967270) }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
+                <span class="block__text block__text_locate">{{ item.distance }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
               </div>
               <div class="block__text block__text_blue">
                 {{ item.theme }}
               </div>
               <div class="block__text block__text_desc">
-                {{ item.description }}
+                {{ item.desc }}
               </div>
               <div class="block__actions">
                 <div class="block__status">
@@ -254,20 +254,6 @@ export default {
       isShowMap: true,
       currentLocation: {},
       circleOptions: {},
-      locations: [
-        {
-          lat: 44.933076,
-          lng: 15.629058,
-        },
-        {
-          lat: 45.815,
-          lng: '15.9819',
-        },
-        {
-          lat: '45.12',
-          lng: '16.21',
-        },
-      ],
       pins: {
         selected: '/img/app/marker_blue.svg',
         notSelected: '/img/app/marker_red.svg',
@@ -282,11 +268,6 @@ export default {
         },
       ],
       search: '',
-      distance: [
-        '+ 100 m',
-        '+ 500 m',
-        '+ 1000 m',
-      ],
       priority: [
         this.$t('quests.priority.all'),
         this.$t('quests.priority.low'),
@@ -303,6 +284,8 @@ export default {
     ...mapGetters({
       tags: 'ui/getTags',
       cards: 'data/getCards',
+      distance: 'data/getDistance',
+      locations: 'data/getLocations',
       // cards: 'data/getAllQuests',
     }),
   },

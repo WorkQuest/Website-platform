@@ -133,6 +133,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
@@ -143,57 +144,13 @@ export default {
     return {
       isShowFavourite: false,
       message_input: '',
-      messages: [
-        {
-          type: '1',
-          rating: '',
-          userName: 'Samantha Sparcs',
-          body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim Lorem ipsum dolor sit amet, consectetur adipiscing',
-          messageTime: moment().format('HH:mm'),
-          isFavourite: true,
-        },
-        {
-          type: '2',
-          rating: '',
-          userName: 'Rosalia Vanse',
-          body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim Lorem ipsum dolor sit amet, consectetur adipiscing',
-          messageTime: moment().format('HH:mm'),
-          isFavourite: false,
-        },
-        {
-          type: '1',
-          rating: '',
-          userName: 'Samantha Sparcs',
-          body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim Lorem ipsum dolor sit amet, consectetur adipiscing',
-          messageTime: moment().format('HH:mm'),
-          isFavourite: false,
-        },
-        {
-          type: '2',
-          rating: '',
-          userName: 'Rosalia Vanse',
-          body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim Lorem ipsum dolor sit amet, consectetur adipiscing',
-          messageTime: moment().format('HH:mm'),
-          isFavourite: false,
-        },
-        {
-          type: '1',
-          rating: '',
-          userName: 'Samantha Sparcs',
-          body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim Lorem ipsum dolor sit amet, consectetur adipiscing',
-          messageTime: moment().format('HH:mm'),
-          isFavourite: false,
-        },
-        {
-          type: '2',
-          rating: '',
-          userName: 'Rosalia Vanse',
-          body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam',
-          messageTime: moment().format('HH:mm'),
-          isFavourite: false,
-        },
-      ],
     };
+  },
+  computed: {
+    ...mapGetters({
+      messages: 'data/getMessages',
+
+    }),
   },
   async mounted() {
     this.SetLoader(true);
@@ -262,6 +219,10 @@ export default {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: .5s;
+  &:hover {
+    filter: drop-shadow(4px 4px 3px rgba(34, 60, 80, 0.4));
+  }
 }
 
 .icon {
@@ -508,6 +469,9 @@ export default {
     &_spend {
       @extend .chat__btn;
       margin: 0 11px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       &:hover {
         @extend .chat__btn_spend;
         box-shadow: 0 0 6px rgba(0,0,0,0.2);

@@ -56,9 +56,6 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'ReviewsTab',
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters({ reviews: 'data/getReviews' }),
   },

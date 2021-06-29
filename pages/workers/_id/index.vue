@@ -56,7 +56,7 @@
             {{ $t('workers.skills') }}
           </div>
           <div
-            v-for="(skill, i) in user.skills"
+            v-for="(skill, i) in userInfo.skills"
             :key="i"
           >
             <span class="badge_blue">{{ skill.title }}</span>
@@ -149,46 +149,12 @@ export default {
     Social,
     Contact,
   },
-  data() {
-    return {
-      payload: {
-        skills: [
-          {
-            title: 'Craft',
-          },
-          {
-            title: 'DIY',
-          },
-          {
-            title: 'Design',
-          },
-          {
-            title: 'Painting works',
-          },
-          {
-            title: 'Welder',
-          },
-          {
-            title: 'Plumbing',
-          },
-          {
-            title: 'Craft',
-          },
-          {
-            title: 'DIY',
-          },
-          {
-            title: 'Design',
-          },
-        ],
-      },
-    };
-  },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      userInfo: 'data/getUserInfo',
       user: 'data/getUserInfo',
     }),
   },

@@ -43,7 +43,9 @@ import modals from '~/store/modals/modals';
 export default {
   name: 'ModalApplyForAPension',
   data() {
-    return {};
+    return {
+      amount_input: '',
+    };
   },
   computed: {
     ...mapGetters({

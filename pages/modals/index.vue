@@ -1,6 +1,11 @@
 <template>
   <div class="container">
     <base-btn
+      @click="ModalChangePassword()"
+    >
+      showModalChangePassword
+    </base-btn>
+    <base-btn
       @click="showSkillsModal()"
     >
       showSkillsModal
@@ -151,6 +156,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    ModalChangePassword() {
+      this.ShowModal({
+        key: modals.changePassInSettings,
+      });
+    },
     showSkillsModal() {
       this.ShowModal({
         key: modals.skills,

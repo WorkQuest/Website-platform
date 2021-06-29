@@ -36,15 +36,6 @@
       <div class="main-container">
         <!-- REVIEWS -->
         <div
-          v-if="userRole === 'worker'"
-          class="title"
-        >
-          <span v-if="selected === 2">
-            {{ $t('quests.reviewsBig') }}
-          </span>
-        </div>
-
-        <div
           v-if="selected === 1"
           class="tab__container"
         >
@@ -66,8 +57,7 @@
             <base-btn
               @click="showAddCaseModal()"
             >
-              <!--        TODO: Добавить в локализацию-->
-              Add Case
+              {{ $t('ui.profile.addCase') }}
               <template v-slot:right>
                 <span class="icon-plus" />
               </template>
@@ -82,7 +72,7 @@
         >
           <nuxt-link
             v-if="selected === 1"
-            class="more-button"
+            class="button__more"
             to="/profile"
           >
             {{ $t('meta.showAllReviews') }}
@@ -215,7 +205,7 @@ export default {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-  &__more-button {
+  &__more {
     @extend .button;
     display: inline-block;
     text-decoration: none;

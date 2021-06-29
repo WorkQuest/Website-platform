@@ -127,97 +127,21 @@
 
 <script>
 
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'My',
   data() {
     return {
       selectedTab: 0,
       isShowFavourite: false,
-      cards: [
-        {
-          type: 4,
-          title: 'Samantha Sparks',
-          favourite: false,
-          isFavourite: false,
-          sub: '',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-        },
-        {
-          type: 4,
-          title: 'Samantha Sparks',
-          favourite: false,
-          isFavourite: false,
-          sub: '',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-        },
-        {
-          type: 5,
-          title: 'Samantha Sparks',
-          favourite: false,
-          isFavourite: true,
-          sub: '',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-        },
-        {
-          type: 2,
-          title: 'Samantha Sparks',
-          favourite: false,
-          isFavourite: true,
-          sub: '',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-        },
-        {
-          type: 3,
-          title: 'Samantha Sparks',
-          favourite: false,
-          isRating: false,
-          sub: '',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-          value: null,
-        },
-        {
-          type: 3,
-          title: 'Samantha Sparks',
-          favourite: false,
-          isRating: false,
-          sub: '',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-          value: null,
-        },
-      ],
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      cards: 'data/getCards',
+    }),
+  },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);

@@ -75,7 +75,7 @@
                   class="block__progress"
                 >
                   <div class="container__title">
-                    In progress by:
+                    {{ $t('quests.inProgressBy') }}
                   </div>
                   <div class="limit__container">
                     <div class="avatar__container">
@@ -95,13 +95,13 @@
                           :class="cardsLevels(i)"
                         >
                           <span v-if="item.level.code === 1">
-                            HIGHER LEVEL
+                            {{ $t('levels.higher') }}
                           </span>
                           <span v-if="item.level.code === 2">
-                            RELIABLE EMP.
+                            {{ $t('levels.reliableEmp') }}
                           </span>
                           <span v-if="item.level.code === 3">
-                            CHECKED BY TIME
+                            {{ $t('levels.checkedByTime') }}
                           </span>
                         </span>
                       </div>
@@ -246,11 +246,11 @@ export default {
       return !(type === 3);
     },
     cardsLevels(idx) {
-      const { Card } = this;
+      const { card } = this;
       return [
-        { card__level_checked: Card[idx].level.code === 3 },
-        { card__level_reliable: Card[idx].level.code === 2 },
-        { card__level_higher: Card[idx].level.code === 1 },
+        { card__level_checked: card[idx].level.code === 3 },
+        { card__level_reliable: card[idx].level.code === 2 },
+        { card__level_higher: card[idx].level.code === 1 },
       ];
     },
   },
