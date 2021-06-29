@@ -448,10 +448,13 @@ export default {
         margin-left: 20px;
         padding: 0 20px;
         display: grid;
-        grid-template-columns: 1fr 20px;
+        grid-template-columns: 1fr 23px;
         gap: 10px;
         height: 46px;
         align-items: center;
+        button {
+          margin-top: 3px;
+        }
         .address {
           white-space: nowrap;
           overflow: hidden;
@@ -541,6 +544,7 @@ export default {
   &__table {
     table {
       margin: 0 !important;
+      border-radius: 0 !important;
     }
   }
 

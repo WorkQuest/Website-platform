@@ -827,6 +827,7 @@ export default {
 
       .table {
         width: 1180px;
+        border-radius: 0 !important;
       }
     }
   }

@@ -398,8 +398,8 @@ export default {
       }
 
       &__points {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-rows: auto;
         gap: 30px;
       }
 
@@ -412,8 +412,8 @@ export default {
       &__third {
         @extend .info-block;
         padding: 20px;
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-rows: auto;
         gap: 30px;
       }
 

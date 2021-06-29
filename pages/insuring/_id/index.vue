@@ -602,8 +602,8 @@ export default {
     }
 
     .user {
-      display: flex;
-      width: calc(50% - 20px);
+      display: grid;
+      grid-template-columns: 40px auto;
       gap: 15px;
       align-items: center;
 
@@ -620,11 +620,11 @@ export default {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        width: calc(100% - 55px);
       }
 
       &_gray {
         @extend .user;
+        grid-template-columns: 25px auto;
         background-color: #F7F8FA;
         border-radius: 5px;
         height: 42px;
@@ -665,17 +665,19 @@ export default {
             color: #AAB0B9;
             font-size: 12px;
             font-weight: 400;
+            text-align: right;
           }
 
           &__about {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(2, auto);
+            gap: 10px;
             align-items: center;
-            justify-content: space-between;
             margin-bottom: 10px;
 
             .user {
+              grid-template-columns: 25px auto;
               gap: 9px;
-              width: 100%;
 
               .name {
                 font-size: 14px;
@@ -802,12 +804,12 @@ export default {
       }
 
       &__list {
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         gap: 20px;
         overflow-y: auto;
         max-height: 220px;
+        padding-right: 20px;
       }
 
       &__voting {
@@ -856,9 +858,9 @@ export default {
       &_pad {
         @extend .info-block;
         padding: 20px;
-        display: flex;
+        display: grid;
         gap: 20px;
-        flex-direction: column;
+        grid-template-rows: repeat(3, auto);
       }
 
       &__point {
@@ -882,8 +884,8 @@ export default {
       }
 
       &__points {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-rows: auto;
         gap: 10px;
       }
 
@@ -1016,9 +1018,7 @@ export default {
           height: fit-content;
         }
         &__list {
-          .user {
-            width: calc(100%/3 - 20px);
-          }
+          grid-template-columns: repeat(3, 1fr);
         }
         &__voting {
           .quest-title {
@@ -1040,8 +1040,9 @@ export default {
           grid-template-columns: unset;
         }
         &__list {
+          grid-template-columns: repeat(2, 1fr);
           .user {
-            width: calc(50% - 20px);
+            grid-template-columns: 35px auto;
             .ava {
               height: 35px;
               width: 35px;
