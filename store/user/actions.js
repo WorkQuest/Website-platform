@@ -42,4 +42,9 @@ export default {
   async setCurrentPosition({ commit }, payload) {
     commit('setCurrentUserPosition', payload);
   },
+  async editUserPassword({ commit }, payload) {
+    const response = await this.$axios.$put('/v1/profile/change-password', payload);
+    commit('setUserPassword', response.result);
+    return response;
+  },
 };

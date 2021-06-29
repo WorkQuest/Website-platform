@@ -768,5 +768,8 @@
     "faq3": "What happens to my funds on the value date of a Locked Savings product?",
     "faq4": "What happens to my funds on the redemption date of a Locked Savings product?",
     "faq5": "How is the average annual return (APR) calculated?"
+  },
+  "errors": {
+    "incorrectPass" : "Oops, something went wrong. Check the data and try again."
   }
  }

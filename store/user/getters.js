@@ -6,4 +6,5 @@ export default {
   editUserData: (state) => state.userData,
   getUserRole: (state) => state.userData?.role,
   getUserCurrentPosition: (state) => state.currentUserPosition || null,
+  editUserPassword: (state) => state.userDataPassword,
 };

@@ -29,4 +29,7 @@ export default {
   setCurrentUserPosition(state, data) {
     state.currentUserPosition = data;
   },
+  setUserPassword(state, data) {
+    state.userDataPassword = data;
+  },
 };
