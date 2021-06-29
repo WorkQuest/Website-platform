@@ -39,4 +39,5 @@ export default {
   notice: 'notice',
   transfer: 'transfer',
   changePassInSettings: 'changePassInSettings',
+  twoFAAuth: 'twoFAAuth',
 };

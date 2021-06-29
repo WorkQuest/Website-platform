@@ -71,6 +71,7 @@ export default {
         { 'base-btn_back': mode === 'back' },
         { 'base-btn_grey': mode === 'grey' },
         { 'base-btn_verification': mode === 'ver' },
+        { 'base-btn_black': mode === 'black' },
       ];
     },
   },
@@ -105,6 +106,13 @@ export default {
   border-radius: 6px;
   &:hover {
     background: #103D7C;
+  }
+  &_black {
+    background: $black800;
+    color: $white;
+    &:hover {
+      background: $black700;
+    }
   }
   &_verification {
     background: $white;

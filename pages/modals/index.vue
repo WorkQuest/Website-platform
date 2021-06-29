@@ -1,6 +1,11 @@
 <template>
   <div class="container">
     <base-btn
+      @click="ModalTwoFAAuth()"
+    >
+      showModalTwoFAAuth
+    </base-btn>
+    <base-btn
       @click="ModalChangePassword()"
     >
       showModalChangePassword
@@ -156,6 +161,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    ModalTwoFAAuth() {
+      this.ShowModal({
+        key: modals.twoFAAuth,
+      });
+    },
     ModalChangePassword() {
       this.ShowModal({
         key: modals.changePassInSettings,

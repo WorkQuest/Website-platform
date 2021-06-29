@@ -353,15 +353,17 @@
             <div class="settings_blue">
               <div>{{ $t('settings.changePass') }}</div>
               <div>
-                <base-btn @click="ModalChangePassword()">
+                <base-btn @click="modalChangePassword()">
                   {{ $t('settings.change') }}
                 </base-btn>
               </div>
             </div>
             <div class="settings_blue">
-              <div>{{ $t('settings.enableTwoStepAuth') }}</div>
               <div>
-                <base-btn>
+                {{ $t('settings.enableTwoStepAuth') }}
+              </div>
+              <div>
+                <base-btn @click="modalTwoFAAuth()">
                   {{ $t('settings.enable') }}
                 </base-btn>
               </div>
@@ -377,7 +379,7 @@
             <div class="settings_blue">
               <div>{{ $t('settings.changeRole') }}</div>
               <div>
-                <base-btn>
+                <base-btn @click="changeRole()">
                   {{ $t('settings.change') }}
                 </base-btn>
               </div>
@@ -432,9 +434,17 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    ModalChangePassword() {
+    modalChangePassword() {
       this.ShowModal({
         key: modals.changePassInSettings,
+      });
+    },
+    changeRole() {
+      this.$router.push('/role');
+    },
+    modalTwoFAAuth() {
+      this.ShowModal({
+        key: modals.twoFAAuth,
       });
     },
     isCloseInfo() {

@@ -119,6 +119,7 @@
     }
   },
   "meta": {
+    "back": "Back",
     "ok": "Ok",
     "send": "Send",
     "save": "Save",
@@ -263,6 +264,19 @@
     "startQuest": "Start quest"
   },
   "modals": {
+    "toYourEmail": "To your email address",
+    "codeHasBeenSent": "code has been sent",
+    "switchOnGoogleAuth": "Switch on Google Authenticator",
+    "conformationCodeFromMail": "Confirmation code from email",
+    "twoFAConfirmationCode": "2FA confirmation code",
+    "appleStore": "Apple store",
+    "googlePlay": "Google play",
+    "useYourGoogleAuth": "Use your Google Authenticator app to scan the barcode",
+    "installGoogleAuth": "Install the Google Authenticator app on your device",
+    "ifYouCantScanBarcode": "If you can't scan barcode, enter the Secret Key manually",
+    "pleaseSaveThisKey": "Please save this Key on paper. This Key will allow you to recover your Google Authenticator in case of phone loss",
+    "step": "Step",
+    "twoFAAuth": "2FA Authentication",
     "currentPassword": "Current password",
     "newPassword": "New password",
     "confirmNewPassword": "Confirm new password ",
