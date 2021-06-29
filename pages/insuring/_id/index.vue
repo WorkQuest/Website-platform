@@ -643,11 +643,12 @@ export default {
       border-radius: 6px;
 
       &__chat-cont {
+        max-height: 569px;
         height: calc(100% - 131px);
         padding: 10px 20px;
         overflow: auto;
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-rows: auto;
         gap: 20px;
 
         .message {
@@ -705,7 +706,8 @@ export default {
         background-color: #F7F8FA;
         height: 46px;
         padding: 11px 20px 11px 15px;
-        display: flex;
+        display: grid;
+        grid-template-columns: 24px auto 22px;
         align-items: center;
         gap: 12px;
 
