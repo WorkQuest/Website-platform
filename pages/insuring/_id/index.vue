@@ -437,6 +437,8 @@ export default {
     max-width: 1180px;
     grid-row-gap: 30px;
     width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
   }
 
   &__header {
@@ -445,7 +447,7 @@ export default {
     .title {
       font-weight: 500;
       color: #FFF;
-      width: 530px;
+      max-width: 530px;
       font-size: 45px;
       line-height: 110%;
       margin: 0 0 24px;
@@ -644,7 +646,6 @@ export default {
         height: calc(100% - 131px);
         padding: 10px 20px;
         overflow: auto;
-        max-height: 523px;
         display: flex;
         flex-direction: column;
         gap: 20px;
@@ -834,6 +835,10 @@ export default {
 
       &_30gap {
         gap: 30px;
+
+        .info-block {
+          max-height: 700px;
+        }
       }
 
       &_vertical {
@@ -845,6 +850,7 @@ export default {
       &_gray {
         background-color: #F7F8FA;
         padding: 15px;
+        border-radius: 5px;
       }
 
       &_pad {
@@ -925,6 +931,134 @@ export default {
           color: #0083C7;
           line-height: 1;
         }
+      }
+    }
+  }
+
+  @include _991 {
+    &__content {
+      .info-block {
+        &_30gap {
+          .info-block__couple {
+            grid-template-rows: repeat(2, auto);
+          }
+        }
+        &__voting {
+          .btn-group {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+
+            .btn {
+              grid-column-start: 1;
+              grid-column-end: 3;
+            }
+
+            .btn_red {
+              grid-row-start: 1;
+              grid-row-end: 2;
+              grid-column-start: 1;
+              grid-column-end: 2;
+            }
+
+            .btn_bl {
+              grid-row-start: 1;
+              grid-row-end: 2;
+              grid-column-start: 2;
+              grid-column-end: 3;
+            }
+          }
+          .quest-title {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+
+  @include _767 {
+    background: linear-gradient(to bottom, #103D7C 220px, #f6f8fa 220px);
+    &__container {
+      grid-template-rows: auto auto;
+      gap: 24px;
+    }
+    &__header {
+      .title {
+        font-size: 38px;
+        margin-bottom: 15px;
+        width: 100%;
+        &_sub {
+          font-size: 16px;
+          max-width: 400px;
+        }
+      }
+    }
+    &__content {
+      .info-block {
+        &__couple {
+            grid-template-rows: repeat(2, auto);
+            grid-template-columns: unset;
+          }
+        &_pad {
+          .info-block__couple {
+            .info-block__couple {
+              max-height: 209px;
+              grid-template-columns: unset;
+              grid-template-rows: 116px 43px;
+
+              .btn_bl {
+                width: 100%;
+                margin: 0;
+              }
+            }
+          }
+        }
+        &__points {
+          height: fit-content;
+        }
+        &__list {
+          .user {
+            width: calc(100%/3 - 20px);
+          }
+        }
+        &__voting {
+          .quest-title {
+            font-size: 25px;
+          }
+        }
+      }
+      .btn-group__fifths {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  }
+
+  @include _575 {
+    &__content {
+      .info-block {
+        &__couple {
+          grid-template-rows: repeat(2, auto);
+          grid-template-columns: unset;
+        }
+        &__list {
+          .user {
+            width: calc(50% - 20px);
+            .ava {
+              height: 35px;
+              width: 35px;
+            }
+            .name {
+              font-size: 14px;
+            }
+          }
+        }
+        &__voting {
+          .quest-title {
+            font-size: 20px;
+          }
+        }
+      }
+      .btn-group__fifths {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   }

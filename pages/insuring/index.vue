@@ -221,6 +221,8 @@ export default {
     max-width: 1180px;
     grid-row-gap: 30px;
     width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
   }
 
   &__header {
@@ -229,7 +231,7 @@ export default {
     .title {
       font-weight: 500;
       color: #FFF;
-      width: 530px;
+      max-width: 530px;
       font-size: 45px;
       line-height: 110%;
       margin: 0 0 24px;
@@ -474,6 +476,48 @@ export default {
           font-size: 25px;
           color: #0083C7;
           line-height: 1;
+        }
+      }
+    }
+  }
+
+  @include _767 {
+    background: linear-gradient(to bottom, #103D7C 220px, #f6f8fa 220px);
+    &__container {
+      grid-template-rows: auto auto;
+      gap: 15px;
+    }
+    &__header {
+      .title {
+        font-size: 38px;
+        margin-bottom: 15px;
+        width: 100%;
+        &_sub {
+          font-size: 16px;
+          max-width: 400px;
+        }
+      }
+    }
+  }
+
+  @include _575 {
+    &__content {
+      .info-block {
+        &__triple {
+          grid-template-rows: repeat(3, 1fr);
+          grid-template-columns: unset;
+        }
+        &__documents {
+          .document {
+            grid-template-columns: 33px auto 23px;
+          }
+        }
+      }
+      .btn {
+        &__doc {
+          border: 0;
+          width: 23px;
+          font-size: 0;
         }
       }
     }
