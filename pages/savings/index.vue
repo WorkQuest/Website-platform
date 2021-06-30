@@ -683,6 +683,13 @@ export default {
             grid-template-columns: repeat(5, 1fr);
             grid-row-gap: 10px;
 
+            .text-block {
+              &:nth-child(2) {
+                padding: 0;
+                border: 0;
+              }
+            }
+
             .text {
               grid-column-end: 7;
               grid-column-start: 1;
@@ -701,7 +708,7 @@ export default {
     &__content {
       .info-block {
         &__card {
-          gap: 5px;
+          gap: 10px;
           padding: 10px;
           text-align: left;
 
@@ -727,6 +734,8 @@ export default {
                 grid-row-start: 3;
                 grid-column-start: 1;
                 grid-column-end: 2;
+                padding: 0;
+                border: 0;
               }
               &:last-child {
                 grid-row-start: 3;

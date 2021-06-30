@@ -269,6 +269,8 @@ export default {
     grid-row-gap: 50px;
     width: 100%;
     gap: 28px;
+    padding: 10px;
+    box-sizing: border-box;
   }
 
   &__header {
@@ -295,7 +297,7 @@ export default {
     .title {
       font-weight: 500;
       color: #FFF;
-      width: 530px;
+      max-width: 530px;
       font-size: 35px;
       line-height: 110%;
       margin: 0 0 20px;
@@ -447,6 +449,7 @@ export default {
 
     .table {
       margin: 0;
+      border-radius: 0 !important;
 
       &__value {
         font-size: 16px;
@@ -464,6 +467,64 @@ export default {
           @extend .table__value;
           color: #7C838D;
           font-weight: 400;
+        }
+      }
+    }
+  }
+
+  @include _991 {
+    &__table {
+      overflow: auto;
+      width: calc(100vw - 20px);
+
+      .table {
+        width: 1180px;
+      }
+    }
+  }
+
+  @include _767 {
+    background: linear-gradient(to bottom, #103D7C 195px, #f6f8fa 195px);
+    &__container {
+      grid-template-rows: auto auto;
+      gap: 15px;
+    }
+    &__header {
+      .btn {
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        grid-template-rows: unset;
+        justify-content: left;
+
+        .icon-chevron_left {
+          grid-column-start: 1;
+          grid-column-end: 2;
+        }
+
+      }
+      .title {
+        font-size: 38px;
+        margin-bottom: 15px;
+        width: 100%;
+      }
+    }
+    &__content {
+      grid-template-rows: auto;
+      .info-block {
+        &_gray {
+          grid-template-columns: unset;
+          grid-template-rows: repeat(2, auto);
+        }
+      }
+    }
+  }
+
+  @include _575 {
+    &__content {
+      .info-block {
+        &__couple {
+          grid-template-rows: repeat(2, 1fr);
+          grid-template-columns: unset;
         }
       }
     }

@@ -841,7 +841,7 @@ export default {
         gap: 30px;
 
         .info-block {
-          max-height: 700px;
+          max-height: 655px;
         }
       }
 
@@ -943,9 +943,12 @@ export default {
     &__content {
       .info-block {
         &_30gap {
-          .info-block__couple {
-            grid-template-rows: repeat(2, auto);
-          }
+            .info-block {
+              max-height: 700px;
+              &__couple {
+                grid-template-rows: repeat(2, auto);
+              }
+            }
         }
         &__voting {
           .btn-group {
