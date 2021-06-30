@@ -47,4 +47,19 @@ export default {
     commit('setUserPassword', response.result);
     return response;
   },
+  async imageType({ commit }, payload) {
+    const response = await this.$axios.$post('/v1/storage/get-upload-link', payload);
+    commit('setImageType', response.result);
+    return response;
+  },
+  async setImage({ commit }, { url, formData, type }) {
+    const response = await this.$axios.$put(url, formData, {
+      headers: {
+        'Content-Type': type,
+        'x-amz-acl': 'public-read',
+      },
+    });
+    commit('setImage', response.result);
+    return response;
+  },
 };

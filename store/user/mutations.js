@@ -32,4 +32,10 @@ export default {
   setUserPassword(state, data) {
     state.userDataPassword = data;
   },
+  setImageType(state, data) {
+    state.imageLink = data;
+  },
+  setImage(state, data) {
+    state.userData.avatar.url = data;
+  },
 };

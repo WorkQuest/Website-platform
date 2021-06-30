@@ -4,7 +4,6 @@
       <h2 class="page__title">
         {{ $t('settings.settings') }}
       </h2>
-      {{ userData }}
       <div
         v-if="userRole === 'worker'"
         class="quests__top"
@@ -54,12 +53,12 @@
           <div class="avatar__container">
             <img
               class="profile__img"
-              src="~/assets/img/temp/photo.jpg"
+              :src="imageData || '~/assets/img/temp/photo.jpg'"
             >
             <label class="user_edit_avatar">
               <div class="icon-edit" />
               <ValidationProvider
-                v-slot="{ Validator }"
+                v-slot="{ validate }"
                 rules="required|ext:png,jpeg,jpg,gif,mp3,mp4,ai"
                 tag="div"
               >
@@ -68,7 +67,7 @@
                   class="edit_avatar"
                   type="file"
                   accept="image/*"
-                  @change="processFile($event, Validator)"
+                  @change="processFile($event, validate)"
                 >
               </ValidationProvider>
             </label>
@@ -470,7 +469,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { Validator } from 'vee-validate';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -507,7 +505,10 @@ export default {
       in_input: '',
       facebook_input: '',
       isShowInfo: true,
-      avatar_change: {},
+      avatar_change: {
+        data: {},
+        file: {},
+      },
     };
   },
   computed: {
@@ -516,6 +517,7 @@ export default {
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
       userInfo: 'data/getUserInfo',
+      imageData: 'user/getImageData',
     }),
   },
   async mounted() {
@@ -527,7 +529,6 @@ export default {
     async processFile(e, validate) {
       const isValid = await validate(e);
       const file = e.target.files[0];
-      this.avatar_change = file;
       document.getElementById('coverUpload').value = null;
       if (isValid.valid) {
         const MAX_SIZE = 20e6; // макс размер - тут 2мб
@@ -542,22 +543,12 @@ export default {
         const reader = new FileReader();
         reader.readAsDataURL(file);
 
-        const item = {};
-        // eslint-disable-next-line no-shadow
-        reader.onload = async (e) => {
-          item.data = e.target.result;
-          this.model.cover.base64 = item.data;
-        };
+        this.avatar_change.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
+        this.avatar_change.file = file;
+        console.log(this.avatar_change);
         reader.onerror = (evt) => {
           console.error(evt);
         };
-      } else {
-        // this.$store.dispatch('modals/show', {
-        //   key: 'status',
-        //   status: 'error',
-        //   title: this.$t('components.uploader.errors.title'),
-        //   text: this.$t('components.uploader.errors.type'),
-        // });
       }
     },
     modalChangePassword() {
@@ -601,14 +592,22 @@ export default {
       }
     },
     async editUserData() {
+      const formData = new FormData();
+      formData.append('image', this.avatar_change.file);
+      const data = {
+        url: this.avatar_change.data.result.url,
+        formData: this.avatar_change.file,
+        type: this.avatar_change.file.type,
+      };
+      console.log(await this.$store.dispatch('user/setImage', data));
       const payload = {
-        avatarId: null,
+        avatarId: this.avatar_change.data.result.mediaId,
         firstName: this.name_input || null,
         lastName: this.lastname_input || null,
         additionalInfo: {
           firstMobileNumber: this.tel1_input || null,
           secondMobileNumber: this.tel2_input || null,
-          address: this.adress1_input || null,
+          address: this.address1_input || null,
           socialNetwork: {
             instagram: this.inst_input || null,
             twitter: this.twitt_input || null,
