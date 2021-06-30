@@ -57,7 +57,10 @@
             >
           </div>
           <div>
-            <span class="profile__status">
+            <span
+              v-if="userRole === 'worker'"
+              class="profile__status"
+            >
               {{ $t('settings.notVerified') }}
               <span class="icon-check_all_big" />
             </span>
@@ -163,10 +166,14 @@
           />
         </div>
         <label
+          v-if="userRole === 'worker'"
           class="knowledge__label"
           for="knowledge"
         >{{ $t('settings.knowledge') }}</label>
-        <div class="knowledge__container">
+        <div
+          v-if="userRole === 'worker'"
+          class="knowledge__container"
+        >
           <base-field
             id="knowledge"
             v-model="knowledgeTerm1__input"
@@ -192,10 +199,14 @@
         </div>
 
         <label
+          v-if="userRole === 'worker'"
           class="knowledge__label"
           for="workExp"
-        >Work experience</label>
-        <div class="knowledge__container">
+        >{{ $t('settings.workExp') }}</label>
+        <div
+          v-if="userRole === 'worker'"
+          class="knowledge__container"
+        >
           <base-field
             id="workExp"
             v-model="workExpTerm1__input"

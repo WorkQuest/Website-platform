@@ -202,8 +202,6 @@ export default {
     },
     getStatusCard(index) {
       const status = {
-        0: '',
-        1: '',
         2: this.$t('Requested'),
         3: this.$t('Performed'),
         4: this.$t('Active'),
@@ -230,8 +228,6 @@ export default {
     },
     getStatusClass(index) {
       const status = {
-        0: '',
-        1: '',
         2: this.$t('quests__cards__state_req'),
         3: this.$t('quests__cards__state_per'),
         4: this.$t('quests__cards__state_act'),

@@ -318,6 +318,9 @@ export default {
   &__btn {
     display: flex;
     align-items: flex-end;
+    margin: 0 0 11px 0;
+    width: 200px;
+    justify-self: flex-end;
   }
   &__skills {
     margin-top: 20px;
@@ -619,7 +622,7 @@ export default {
 .contact {
   &__link {
     text-decoration: none;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 130%;
     color: #7C838D;
     margin-right: 30px;
@@ -693,6 +696,8 @@ export default {
     height: 100%;
   }
   &__col {
+    width: 100%;
+    padding: 0 0 0 10px;
     &_left {
       max-width: 157px;
       width: 100%;

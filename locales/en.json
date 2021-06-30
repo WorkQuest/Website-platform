@@ -449,6 +449,7 @@
     "writeYouMessage": "Write you message"
   },
   "settings": {
+    "workExp": "Work experience",
     "add": "Add",
     "knowledge": "Knowledge",
     "placeOfStudying": "Place of studying",

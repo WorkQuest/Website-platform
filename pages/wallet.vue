@@ -5,7 +5,7 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('wallet.wallet') }}</span>
           <div class="wallet__address">
-            <span>{{ userInfo.userWallet }}</span>
+            <span class="user__wallet">{{ userInfo.userWallet }}</span>
             <button
               v-clipboard:copy="userWallet"
               v-clipboard:success="ClipboardSuccessHandler"
@@ -69,6 +69,7 @@
         </div>
         <div class="wallet__table">
           <base-table
+            class="wallet__table"
             :title="$t('wallet.table.trx')"
             :items="transactionsData"
             :fields="walletTableFields"
@@ -197,7 +198,7 @@ export default {
   }
   &__body {
     max-width: 1180px;
-    width: 100%;
+    width: calc(100vw - 40px);
   }
   &__nav {
     margin-top: 20px;
@@ -237,7 +238,8 @@ export default {
     }
   }
   &__table {
-    margin-top: 20px;
+    margin: 0 !important;
+    border-radius: 0 !important;
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
   }
 }
@@ -249,8 +251,8 @@ export default {
   flex-direction: column;
   border-radius: 6px;
   width: 100%;
-  min-width: 660px;
   padding: 20px 20px 0 20px;
+  margin: 0 0 20px 0;
 
   &__dollar {
     font-weight: 400;
@@ -300,6 +302,7 @@ export default {
 }
 
 .card {
+  margin: 0 0 20px 0;
   width: 100%;
   padding: 20px;
   display: grid;
@@ -349,19 +352,29 @@ export default {
   }
 }
 
-@include _1700 {}
-@include _1600 {}
-@include _1400 {}
-@include _1300 {}
 @include _1199 {
   .wallet {
     margin: 0 20px 0 20px;
     &__info {
-      grid-template-columns: 1fr;
+      display: flex;
+      flex-direction: column-reverse;
     }
   }
   .card {
+    margin: 0;
     grid-template-columns: 2fr 1fr;
+    height: 240px;;
+  }
+}
+@include _991 {
+  .wallet {
+    &__table {
+      overflow: auto;
+      width: calc(100vw - 40px);
+    }
+  }
+  .table {
+    width: 1180px;
   }
 }
 @include _767 {
@@ -369,5 +382,18 @@ export default {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@include _380 {}
+@include _480 {
+  .user {
+    &__wallet {
+      font-size: 13px;
+    }
+  }
+}
+@include _480 {
+  .user {
+    &__wallet {
+      font-size: 12px;
+    }
+  }
+}
 </style>

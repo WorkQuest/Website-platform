@@ -31,7 +31,7 @@
       <div class="description">
         {{ userInfo.desc }}
       </div>
-      <div v-if="selected === 1">
+      <div v-if="selected === 1 && userRole === 'worker' ">
         <div class="knowledge__text">
           {{ $t('profile.knowledge') }}
         </div>
@@ -62,24 +62,24 @@
           <ContactPanel /> <base-btn v-if="userRole === 'worker'">
             {{ $t('profile.raiseViews') }}
           </base-btn>
-        </div>
-        <span v-if="userRole === 'employer'">
-          <div
-            v-if="selected === 1"
-            class="message__container-btn"
-          >
-            <base-btn
-              mode="goToMessages"
-              class="message__btn"
-              @click="showMessages()"
+          <span v-if="userRole === 'employer'">
+            <div
+              v-if="selected === 1"
+              class="message__container-btn"
             >
-              <template v-slot:right>
-                <span class="icon-chat" />
-              </template>
-              {{ $t('profile.writeAMessage') }}
-            </base-btn>
-          </div>
-        </span>
+              <base-btn
+                mode="goToMessages"
+                class="message__btn"
+                @click="showMessages()"
+              >
+                <template v-slot:right>
+                  <span class="icon-chat" />
+                </template>
+                {{ $t('profile.writeAMessage') }}
+              </base-btn>
+            </div>
+          </span>
+        </div>
       </div>
     </div>
 
@@ -120,9 +120,22 @@ export default {
 
 <style lang="scss" scoped>
 
+.icon {
+  &-chat:before {
+    content: "\e9ba";
+    font-size: 14px;
+    color: $green;
+  }
+  &-btn {
+    &_right {
+      margin: 0 5px 0 0;
+    }
+  }
+}
+
 .contacts {
   display: grid;
-  grid-template-columns: 4fr 1fr;
+  grid-template-columns: 7fr 1fr;
 }
 
 .knowledge {
