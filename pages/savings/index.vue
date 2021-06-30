@@ -11,16 +11,18 @@
       </div>
       <div class="saving-page__content">
         <div class="info-block__cards">
-          <div
+          <button
             v-for="(item, i) in cards"
             :key="i"
-            class="info-block__card"
+            :class="[{'info-block__card' : !item.sel},
+                     {'info-block__card_sel' : item.sel}]"
+            @click="handleClickCard(item)"
           >
             <div class="info-block__circle" />
             <div class="info-block__subtitle">
               {{ item.text }}
             </div>
-          </div>
+          </button>
         </div>
         <div class="info-block">
           <div class="info-block__name_bold">
@@ -207,18 +209,23 @@ export default {
       cards: [
         {
           text: this.$t('saving.templateText'),
+          sel: false,
         },
         {
           text: this.$t('saving.templateText'),
+          sel: false,
         },
         {
           text: this.$t('saving.templateText'),
+          sel: false,
         },
         {
           text: this.$t('saving.templateText'),
+          sel: false,
         },
         {
           text: this.$t('saving.templateText'),
+          sel: false,
         },
       ],
       interestRate: [
@@ -263,6 +270,9 @@ export default {
         key: modals.openADeposit,
       });
     },
+    handleClickCard(card) {
+      card.sel = !card.sel;
+    },
   },
 };
 </script>
@@ -279,6 +289,8 @@ export default {
     max-width: 1180px;
     grid-row-gap: 40px;
     width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
   }
 
   &__header {
@@ -287,7 +299,7 @@ export default {
     .title {
       font-weight: 500;
       color: #FFF;
-      width: 530px;
+      max-width: 530px;
       font-size: 45px;
       line-height: 110%;
       margin: 0 0 24px;
@@ -499,7 +511,7 @@ export default {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 20px;
-        padding: 0 20px;
+        padding: 0 20px 20px 20px;
       }
 
       &__small {
@@ -537,7 +549,6 @@ export default {
           height: 104px;
           padding: 20px;
           gap: 10px;
-          margin-bottom: 20px;
           border-radius: 6px;
         }
       }
@@ -570,6 +581,24 @@ export default {
         align-content: center;
         gap: 20px;
         padding: 20px;
+
+        &:hover {
+          background-color: #D1D1CF;
+        }
+
+        &_sel {
+          @extend .info-block__card;
+          background-color: #0083C7;
+          .info-block__circle {
+            border: 1px solid #fff;
+          }
+          .info-block__subtitle {
+            color: #fff;
+          }
+          &:hover {
+            background-color: #103d7c;
+          }
+        }
       }
 
       &__circle {
@@ -598,6 +627,130 @@ export default {
         font-weight: 400;
         font-size: 16px;
         color: #7C838D;
+      }
+    }
+  }
+
+  @include _1199 {
+    &__content {
+      .info-block {
+        &__cards {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+    }
+  }
+
+  @include _991 {
+    &__content {
+      .info-block {
+        &__cards {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+    }
+  }
+
+  @include _767 {
+    background: linear-gradient(to bottom, #103D7C 250px, #f6f8fa 250px);
+    &__container {
+      grid-template-rows: auto auto;
+      gap: 15px;
+    }
+    &__header {
+      .title {
+        font-size: 38px;
+        margin-bottom: 15px;
+        &_sub {
+          font-size: 16px;
+          max-width: 400px;
+        }
+      }
+    }
+    &__content {
+      .info-block {
+        &__cards {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        &__triple {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        &__small
+        {
+          &_line {
+            height: auto;
+            grid-template-rows: repeat(2, auto);
+            grid-template-columns: repeat(5, 1fr);
+            grid-row-gap: 10px;
+
+            .text {
+              grid-column-end: 7;
+              grid-column-start: 1;
+              grid-row-start: 1;
+            }
+          }
+        }
+      }
+      .btn-group__third {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+
+  @include _575 {
+    &__content {
+      .info-block {
+        &__card {
+          gap: 5px;
+          padding: 10px;
+          text-align: left;
+
+          .info-block__subtitle {
+            font-size: 14px;
+          }
+        }
+        &__circle {
+          width: 20px;
+          height: 20px;
+        }
+        &__triple {
+          grid-template-columns: unset;
+          grid-template-rows: repeat(3, 1fr);
+        }
+        &__small
+        {
+          &_line {
+            grid-template-columns: repeat(3, 1fr);
+
+            .text-block {
+              &:nth-child(4) {
+                grid-row-start: 3;
+                grid-column-start: 1;
+                grid-column-end: 2;
+              }
+              &:last-child {
+                grid-row-start: 3;
+                grid-column-start: 2;
+                grid-column-end: 3;
+              }
+            }
+          }
+        }
+        &__documents {
+          .document {
+            grid-template-columns: 33px auto 23px;
+          }
+        }
+      }
+      .btn-group__third {
+        display: block;
+      }
+      .btn {
+        &__doc {
+          border: 0;
+          width: 23px;
+          font-size: 0;
+        }
       }
     }
   }

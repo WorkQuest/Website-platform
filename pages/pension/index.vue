@@ -226,6 +226,8 @@ export default {
     max-width: 1180px;
     grid-row-gap: 50px;
     width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
   }
 
   &__header {
@@ -495,6 +497,94 @@ export default {
           color: #103D7C;
           line-height: 1;
           padding: 20px;
+        }
+      }
+    }
+  }
+
+  @include _991 {
+    background: linear-gradient(to bottom, #103D7C 245px, #f6f8fa 245px);
+    &__container {
+      gap: 15px;
+      grid-template-rows: 150px auto;
+    }
+  }
+
+  @include _767 {
+    background: linear-gradient(to bottom, #103D7C 220px, #f6f8fa 220px);
+    &__container {
+      grid-template-rows: auto auto;
+      gap: 24px;
+    }
+    &__header {
+      .title {
+        font-size: 38px;
+        margin-bottom: 15px;
+        width: 100%;
+        &_sub {
+          font-size: 16px;
+          max-width: 400px;
+        }
+      }
+    }
+    &__content {
+      grid-template-rows: max-content max-content max-content;
+      .info-block {
+        &__square {
+          grid-template-rows: repeat(2, 1fr);
+          grid-template-columns: repeat(2, 1fr);
+        }
+        &__quarter {
+          padding: 20px 0;
+        }
+        &__about {
+          .btn-group {
+            grid-template-columns: 2fr 1fr;
+          }
+        }
+      }
+    }
+  }
+
+  @include _575 {
+    &__content {
+      .info-block {
+        &__square {
+          grid-template-rows: repeat(4, 1fr);
+          grid-template-columns: unset;
+        }
+        &__about {
+          grid-template-areas:
+            "hd"
+            "ft"
+            "sd";
+          grid-template-rows: repeat(3, auto);
+          grid-template-columns: unset;
+          width: 100%;
+          margin: 0;
+          padding: 0 20px;
+          .calendar-img {
+            position: relative;
+            width: 100%;
+            max-width: 370px;
+            justify-self: center;
+          }
+          .btn-group {
+            padding: 0;
+            display: block;
+          }
+        }
+        &__documents {
+          .document {
+            grid-template-columns: 33px auto 23px;
+          }
+        }
+      }
+      .btn {
+        &__doc {
+          border: 0;
+          width: 23px;
+          font-size: 0;
         }
       }
     }

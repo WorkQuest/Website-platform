@@ -116,6 +116,11 @@
                     {{ el.item.status }}
                   </div>
                 </template>
+                <template #cell(amount)="el">
+                  <div class="user__value">
+                    {{ el.item.amount }}
+                  </div>
+                </template>
               </b-table>
             </div>
           </div>
@@ -138,7 +143,7 @@
                 {{ $t('pension.everyYear') }}
               </div>
             </div>
-            <div>
+            <div class="text-cont">
               <div class="info-block__title_gray">
                 {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
               </div>
@@ -267,7 +272,7 @@ import modals from '~/store/modals/modals';
 export default {
   data() {
     return {
-      isExpired: true,
+      isExpired: false,
       isDeadline: false,
       items: [
         {
@@ -440,6 +445,8 @@ export default {
     grid-row-gap: 50px;
     width: 100%;
     gap: 20px;
+    padding: 10px;
+    box-sizing: border-box;
 
     &_expired {
       @extend .pension-page__container;
@@ -497,11 +504,17 @@ export default {
 
       &__time-machine {
         @extend .btn;
-        position: absolute;
-        top: 100px;
-        right: 100px;
-        width: 150px;
+        position: fixed;
+        top: 130px;
+        right: 15px;
+        width: 20px;
         color: #fff;
+        font-size: 0;
+
+        &:hover {
+          width: 150px;
+          font-size: 16px;
+        }
       }
 
       &:hover {
@@ -628,7 +641,7 @@ export default {
           text-align: right;
           padding: 0 10px 0;
           justify-self: flex-end;
-          margin: 20px 20px 0;
+          margin: 20px 20px 0 0;
         }
       }
 
@@ -782,6 +795,122 @@ export default {
   &__table {
     .table {
       margin: 0;
+    }
+  }
+
+  @include _1199 {
+    &__content {
+      .info-block {
+        &__grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    }
+  }
+
+  @include _991 {
+    background: linear-gradient(to bottom, #103D7C 245px, #f6f8fa 245px);
+    &__container {
+      gap: 15px;
+      grid-template-rows: 150px auto;
+    }
+    &__content {
+      .info-block {
+        &__grid {
+          grid-template-columns: 3fr 4fr;
+        }
+      }
+    }
+    &__table {
+      overflow: auto;
+      width: calc(100vw - 20px);
+
+      .table {
+        width: 1180px;
+        border-radius: 0 !important;
+      }
+    }
+  }
+
+  @include _767 {
+    background: linear-gradient(to bottom, #103D7C 220px, #f6f8fa 220px);
+    &__container {
+      grid-template-rows: auto auto;
+      gap: 15px;
+    }
+    &__header {
+      .title {
+        font-size: 38px;
+        margin-bottom: 15px;
+        width: 100%;
+        &_sub {
+          font-size: 16px;
+          max-width: 400px;
+        }
+      }
+    }
+    &__content {
+      grid-template-rows: max-content max-content max-content;
+      .info-block {
+        &__triple {
+          grid-template-rows: repeat(2, 1fr);
+          grid-template-columns: repeat(2, 1fr);
+
+          .info-block__third_rate {
+            grid-column-start: 1;
+            grid-column-end: 3;
+          }
+        }
+        &__grid {
+          grid-template-rows: 1fr auto auto;
+          grid-template-columns: repeat(2, 1fr);
+          align-items: end;
+          grid-row-gap: 10px;
+
+          .btn-group {
+            grid-row-start: 3;
+            grid-column-start: 1;
+            grid-column-end: 3;
+            justify-self: center;
+          }
+        }
+      }
+    }
+  }
+
+  @include _575 {
+    &__content {
+      .info-block {
+        &__triple {
+          grid-template-rows: repeat(3, 1fr);
+          grid-template-columns: unset;
+
+          .info-block__third_rate {
+            grid-column-start: unset;
+            grid-column-end: unset;
+          }
+        }
+        &__grid {
+          grid-template-columns: repeat(2, auto);
+          .text-cont {
+            grid-column-start: 1;
+            grid-column-end: 3;
+          }
+          .btn-group {
+            &_exp {
+              grid-template-rows: repeat(2, 1fr);
+              grid-template-columns: repeat(2, 1fr);
+              .btn {
+                &:last-child {
+                  grid-row-start: 1;
+                  grid-column-start: 1;
+                  grid-column-end: 3;
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
