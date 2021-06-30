@@ -500,7 +500,6 @@ export default {
           grid-column-start: 1;
           grid-column-end: 2;
         }
-
       }
       .title {
         font-size: 38px;

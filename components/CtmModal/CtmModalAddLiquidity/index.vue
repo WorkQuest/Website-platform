@@ -116,6 +116,7 @@ export default {
 
   .addLiquidity {
     max-width: 945px !important;
+    max-height: 80vh;
   }
   &__content-field {
     margin: 15px 0 0 0;
@@ -194,6 +195,27 @@ export default {
       color: #7C838D;
       font-weight: 500;
       font-size: 14px;
+    }
+  }
+
+  @include _575 {
+    .ctm-modal {
+      &__grid-cont {
+        grid-template-rows: repeat(2, auto);
+        grid-template-columns: unset;
+        overflow: auto;
+        height: calc(80vh - 170px);
+      }
+      &__gray-zone {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin: 0;
+        .ctm-modal__subtitle {
+          grid-column-start: 1;
+          grid-column-end: 3;
+        }
+      }
     }
   }
 }
