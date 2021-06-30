@@ -93,6 +93,8 @@
     "create": "Create account"
   },
   "profile": {
+    "knowledge": "Knowledge",
+    "prevWorkExp": "Previous work experience",
     "active": "active proposals",
     "radius": "in your radius",
     "lead": "Lead time",

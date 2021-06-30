@@ -31,6 +31,27 @@
       <div class="description">
         {{ userInfo.desc }}
       </div>
+      <div v-if="selected === 1">
+        <div class="knowledge__text">
+          {{ $t('profile.knowledge') }}
+        </div>
+        <div class="knowledge__term">
+          {{ userInfo.knowledge.start }} - {{ userInfo.knowledge.finish }}
+        </div>
+        <div class="work-exp__text">
+          {{ $t('profile.prevWorkExp') }}
+        </div>
+        <div class="work-exp__container">
+          <div
+            v-for="(item, i) in userInfo.workExp"
+            :key="i"
+            class="work-exp__item"
+          >
+            <span class="work-exp__company">{{ item.company }}</span>
+            <span class="work-exp__term">{{ item.start }} - {{ item.finish }}</span>
+          </div>
+        </div>
+      </div>
       <!-- socials links -->
       <div class="socials">
         <SocialPanel />
@@ -72,6 +93,12 @@ import SocialPanel from '~/components/app/Panels/Social';
 export default {
   name: 'UserInfo',
   components: { ContactPanel, SocialPanel },
+  props: {
+    selected: {
+      type: Number,
+      required: true,
+    },
+  },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
@@ -91,13 +118,46 @@ export default {
 
 <style lang="scss" scoped>
 
+.knowledge {
+  &__text {
+    @extend .work-exp__text;
+  }
+  &__term {
+    @include text-simple;
+    font-weight: 400;
+    font-size: 14px;
+    color: $black500;
+  }
+}
+
+.work-exp {
+  &__text {
+    @include text-simple;
+    font-weight: 500;
+    font-size: 16px;
+    color: $black700;
+    margin: 15px 0 0 0;
+  }
+  &__container {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 20px 0;
+  }
+  &__company {
+    @extend .knowledge__term;
+  }
+  &__term {
+    @extend .knowledge__term;
+    color: $black300;
+  }
+}
+
 .title {
   @include text-simple;
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
   color: $black800;
-  margin-bottom: 20px;
 }
 
 .styles {
@@ -130,6 +190,7 @@ export default {
 
   .col {
     @extend .styles__flex;
+    align-self: flex-start;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
@@ -163,11 +224,14 @@ export default {
   }
 
   .description {
-    margin: 15px 0;
+    margin: 15px 0 0 0;
+    font-weight: 400;
+    font-size: 16px;
+    color: $black600;
   }
 
   .socials {
-    margin-bottom: 15px;
+    margin: 15px 0;
   }
 
   .socials a {

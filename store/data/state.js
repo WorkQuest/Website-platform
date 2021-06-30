@@ -303,6 +303,22 @@ export default () => ({
         title: 'Design',
       },
     ],
+    knowledge: {
+      start: '2019',
+      finish: '2021',
+    },
+    workExp: [
+      {
+        company: 'LinkEd',
+        start: '2010',
+        finish: '2016',
+      },
+      {
+        company: 'RusTor',
+        start: '2016',
+        finish: '2021',
+      },
+    ],
   },
   socials: [
     {

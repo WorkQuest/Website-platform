@@ -4,7 +4,7 @@
       class="main-section main-section_white"
     >
       <div class="main-container">
-        <UserInfo />
+        <UserInfo :selected="selected" />
 
         <!-- tabs -->
         <button
