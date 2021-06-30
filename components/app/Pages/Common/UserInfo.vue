@@ -59,9 +59,12 @@
       <!-- contacts -->
       <div class="contacts__grid">
         <div class="contacts">
-          <ContactPanel /> <base-btn v-if="userRole === 'worker'">
-            {{ $t('profile.raiseViews') }}
-          </base-btn>
+          <ContactPanel />
+          <div class="btn__container">
+            <base-btn v-if="userRole === 'worker'">
+              {{ $t('profile.raiseViews') }}
+            </base-btn>
+          </div>
           <span v-if="userRole === 'employer'">
             <div
               v-if="selected === 1"
@@ -119,6 +122,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.btn {
+  &__container {
+    max-width: 124px;
+    width: 100%;
+    display: flex;
+    justify-self: flex-end;
+  }
+}
 
 .icon {
   &-chat:before {
@@ -190,7 +202,7 @@ export default {
 
 .information-grid {
   @extend .styles__flex;
-  padding: 25px 0;
+  padding: 25px 0 0 0;
   position: relative;
 
   .share-btn {
@@ -282,7 +294,12 @@ export default {
     }
   }
 }
-
+@include _1199 {
+  .contacts {
+    grid-template-columns: 7fr;
+    margin: 0 0 20px 0;
+  }
+}
 @include _575 {
   .information-grid {
     flex-direction: column;
