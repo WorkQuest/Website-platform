@@ -4,6 +4,7 @@
       <h2 class="page__title">
         {{ $t('settings.settings') }}
       </h2>
+      {{ userDataStr }}
       <div
         v-if="userRole === 'worker'"
         class="quests__top"
@@ -493,6 +494,7 @@ export default {
       in_input: '',
       facebook_input: '',
       isShowInfo: true,
+      userDataStr: [],
     };
   },
   computed: {
@@ -556,7 +558,7 @@ export default {
         additionalInfo: {
           firstMobileNumber: this.tel1_input || null,
           secondMobileNumber: this.tel2_input || null,
-          address: this.adress1_input || null,
+          address: this.address1_input || null,
           socialNetwork: {
             instagram: this.inst_input || null,
             twitter: this.twitt_input || null,
