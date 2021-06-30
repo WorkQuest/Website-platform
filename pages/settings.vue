@@ -4,6 +4,7 @@
       <h2 class="page__title">
         {{ $t('settings.settings') }}
       </h2>
+      {{ userData }}
       <div
         v-if="userRole === 'worker'"
         class="quests__top"
@@ -55,6 +56,29 @@
               class="profile__img"
               src="~/assets/img/temp/photo.jpg"
             >
+            <label class="user_edit_avatar">
+              <div class="icon-edit" />
+              <ValidationProvider
+                v-slot="{ Validator }"
+                rules="required|ext:png,jpeg,jpg,gif,mp3,mp4,ai"
+                tag="div"
+              >
+                <input
+                  id="coverUpload"
+                  class="edit_avatar"
+                  type="file"
+                  accept="image/*"
+                  @change="processFile($event, Validator)"
+                >
+              </ValidationProvider>
+            </label>
+            <!--            <button class="user_edit_avatar">-->
+            <!--              <div class="icon-edit" />-->
+            <!--            </button>-->
+            <!--            <img-->
+            <!--              class="profile__img_hover"-->
+            <!--              src="~/assets/img/icons/user.svg"-->
+            <!--            >-->
           </div>
           <div>
             <span class="profile__status">
@@ -446,6 +470,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { Validator } from 'vee-validate';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -482,6 +507,7 @@ export default {
       in_input: '',
       facebook_input: '',
       isShowInfo: true,
+      avatar_change: {},
     };
   },
   computed: {
@@ -497,6 +523,43 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    // eslint-disable-next-line consistent-return
+    async processFile(e, validate) {
+      const isValid = await validate(e);
+      const file = e.target.files[0];
+      this.avatar_change = file;
+      document.getElementById('coverUpload').value = null;
+      if (isValid.valid) {
+        const MAX_SIZE = 20e6; // макс размер - тут 2мб
+        if (!file) {
+          return false;
+        }
+        if (file.size > MAX_SIZE) {
+          this.errorModal(this.$tc('nft.text.maxFileSize', MAX_SIZE / 1e6));
+          return false;
+        }
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        const item = {};
+        // eslint-disable-next-line no-shadow
+        reader.onload = async (e) => {
+          item.data = e.target.result;
+          this.model.cover.base64 = item.data;
+        };
+        reader.onerror = (evt) => {
+          console.error(evt);
+        };
+      } else {
+        // this.$store.dispatch('modals/show', {
+        //   key: 'status',
+        //   status: 'error',
+        //   title: this.$t('components.uploader.errors.title'),
+        //   text: this.$t('components.uploader.errors.type'),
+        // });
+      }
+    },
     modalChangePassword() {
       this.ShowModal({
         key: modals.changePassInSettings,
@@ -843,8 +906,35 @@ export default {
       display: none;
     }
   }
+  &-edit {
+    position: absolute;
+    top: 50%;
+    margin-right: -50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  &-edit::before {
+    @extend .icon;
+    content: "\e997"
+  }
 }
-
+.user_edit_avatar {
+  opacity: 0;
+  width: 40px;
+  height: 40px;
+  background: #F7F8FA;
+  position: relative;
+  top: -50%;
+  left: 35%;
+  border-radius: 6px;
+  -moz-transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+.avatar__container:hover .user_edit_avatar{
+  opacity: 1;
+}
 .icons {
   padding: 16px 0 16px 16px;
 }
@@ -1204,7 +1294,14 @@ export default {
     font-size: 16px;
   }
 }
-
+.edit_avatar {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
 @include _1199 {
   .quests {
     &__top {
