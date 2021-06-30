@@ -56,55 +56,67 @@
               src="~/assets/img/temp/photo.jpg"
             >
           </div>
-          <!--          <div class="profile__status">-->
-          <!--            {{ $t('settings.notVerified') }}-->
-          <!--          </div>-->
-          <div class="profile__row-3col">
-            <base-field
-              v-model="name_input"
-              :placeholder="userData.firstName || $t('settings.nameInput')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-user" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="adress1_input"
-              :placeholder="userData.additionalInfo.address || $t('settings.addressInput')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-location" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="lastname_input"
-              :placeholder="userData.lastName || $t('settings.lastNameInput')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-user" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="tel1_input"
-              :placeholder="userData.additionalInfo.firstMobileNumber || $t('settings.telInput')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-phone" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="tel2_input"
-              :placeholder="userData.additionalInfo.secondMobileNumber || $t('settings.telInput')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-phone" />
-              </template>
-            </base-field>
+          <div>
+            <span class="profile__status">
+              {{ $t('settings.notVerified') }}
+              <span class="icon-check_all_big" />
+            </span>
+            <div class="profile__row-3col">
+              <base-field
+                v-model="name_input"
+                :placeholder="userData.firstName || $t('settings.nameInput')"
+                mode="icon"
+              >
+                <template v-slot:left>
+                  <span class="icon-user" />
+                </template>
+              </base-field>
+              <base-field
+                v-model="address1_input"
+                :placeholder="userData.additionalInfo.address || $t('settings.addressInput')"
+                mode="icon"
+              >
+                <template v-slot:left>
+                  <span class="icon-location" />
+                </template>
+              </base-field>
+              <base-field
+                v-model="address2_input"
+                :placeholder="userData.additionalInfo.address || $t('settings.addressInput')"
+                mode="icon"
+              >
+                <template v-slot:left>
+                  <span class="icon-location" />
+                </template>
+              </base-field>
+              <base-field
+                v-model="lastname_input"
+                :placeholder="userData.lastName || $t('settings.lastNameInput')"
+                mode="icon"
+              >
+                <template v-slot:left>
+                  <span class="icon-user" />
+                </template>
+              </base-field>
+              <base-field
+                v-model="tel1_input"
+                :placeholder="userData.additionalInfo.firstMobileNumber || $t('settings.telInput')"
+                mode="icon"
+              >
+                <template v-slot:left>
+                  <span class="icon-phone" />
+                </template>
+              </base-field>
+              <base-field
+                v-model="tel2_input"
+                :placeholder="userData.additionalInfo.secondMobileNumber || $t('settings.telInput')"
+                mode="icon"
+              >
+                <template v-slot:left>
+                  <span class="icon-phone" />
+                </template>
+              </base-field>
+            </div>
           </div>
         </div>
         <div
@@ -149,6 +161,63 @@
             class="profile__textarea"
             placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel"
           />
+        </div>
+        <label
+          class="knowledge__label"
+          for="knowledge"
+        >{{ $t('settings.knowledge') }}</label>
+        <div class="knowledge__container">
+          <base-field
+            id="knowledge"
+            v-model="knowledgeTerm1__input"
+            type="grey"
+            :placeholder="$t('settings.term')"
+          />
+          <div class="knowledge__dash">
+            -
+          </div>
+          <base-field
+            v-model="knowledgeTerm2__input"
+            type="grey"
+            :placeholder="$t('settings.term')"
+          />
+          <div />
+          <base-field
+            v-model="knowledgePlace__input"
+            type="grey"
+            :placeholder="$t('settings.placeOfStudying')"
+          />
+          <div />
+          <base-btn>{{ $t('settings.add') }}</base-btn>
+        </div>
+
+        <label
+          class="knowledge__label"
+          for="workExp"
+        >Work experience</label>
+        <div class="knowledge__container">
+          <base-field
+            id="workExp"
+            v-model="workExpTerm1__input"
+            type="grey"
+            :placeholder="$t('settings.term')"
+          />
+          <div class="knowledge__dash">
+            -
+          </div>
+          <base-field
+            v-model="workExpTerm2__input"
+            type="grey"
+            :placeholder="$t('settings.term')"
+          />
+          <div />
+          <base-field
+            v-model="workExpVacancy__input"
+            type="grey"
+            :placeholder="$t('settings.vacancy')"
+          />
+          <div />
+          <base-btn>{{ $t('settings.add') }}</base-btn>
         </div>
         <div class="profile__row-4col">
           <!-- :placeholder="userData.additionalInfo.socialNetwork.instagram || $t('settings.socialInput')" -->
@@ -383,6 +452,12 @@ export default {
   name: 'Settings',
   data() {
     return {
+      knowledgeTerm1__input: '',
+      knowledgeTerm2__input: '',
+      knowledgePlace__input: '',
+      workExpTerm1__input: '',
+      workExpTerm2__input: '',
+      workExpVacancy__input: '',
       sms: false,
       allRegisterUser: false,
       allPeopleInInternet: false,
@@ -393,7 +468,8 @@ export default {
       allRegisteredUsers: false,
       bio_input: '',
       name_input: '',
-      adress1_input: '',
+      address1_input: '',
+      address2_input: '',
       email_input: '',
       lastname_input: '',
       tel1_input: '',
@@ -492,6 +568,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.knowledge {
+  &__container {
+    display: grid;
+    grid-template-columns: 5fr 28px 5fr 28px 7fr 28px 2fr;
+    margin: 0 19px 10px 20px;
+    max-height: 44px;
+  }
+  &__dash {
+    display: flex;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+  }
+  &__label {
+    margin: 20px 0 15px 20px;
+  }
+}
 
 .ver-btn {
   &__container {
@@ -625,6 +719,12 @@ export default {
     color: transparent;
     -webkit-background-clip: text;
     background-image: linear-gradient(135deg, #0083C7 0%, #00AA5B 100%);
+  }
+  &-check_all_big:before {
+    @extend .icon;
+    content: "\ea00";
+    color: $white;
+    padding: 0 0 0 10px;
   }
   &-Lock:before {
     @extend .icon;
@@ -767,7 +867,7 @@ export default {
 .avatar {
   &__row {
     display: grid;
-    grid-template-columns: 107px 1fr;
+    grid-template-columns: 151px 1fr;
     grid-gap: 20px;
     margin: 20px;
   }
@@ -869,17 +969,20 @@ export default {
   display: grid;
   justify-content: space-between;
   max-width: 1180px;
-  //&__status {
-  //  display: grid;
-  //  background: $blue;
-  //  color: $white;
-  //  border-radius: 6px;
-  //}
+  &__status {
+    max-width: 159px;
+    margin: 0 0 10px 0;
+    padding: 8px 13px;
+    display: flex;
+    background: $blue;
+    color: $white;
+    border-radius: 36px;
+  }
   &__img {
     width: 100%;
     height: 100%;
-    max-height: 115px;
-    max-width: 115px;
+    max-height: 151px;
+    max-width: 151px;
     border-radius: 6px;
   }
   &__row-1col {
@@ -898,12 +1001,13 @@ export default {
     @extend .profile;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px 20px;
-    margin: 0 20px 0 20px;
+    margin: 31px 20px 0 20px;
+    max-height: 63px;
   }
   &__textarea {
     padding: 10px 10px 0 10px;
     border-radius: 6px;
-    margin: 11px 40px 20px 0px;
+    margin: 11px 40px 20px 0;
     height: 114px;
     border: 0;
     background-color: #F7F8FA;

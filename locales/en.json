@@ -446,6 +446,11 @@
     "writeYouMessage": "Write you message"
   },
   "settings": {
+    "add": "Add",
+    "knowledge": "Knowledge",
+    "placeOfStudying": "Place of studying",
+    "vacancy": "Vacancy",
+    "term": "Term",
     "getVerification": "Get verification",
     "notVerified": "Not verified",
     "more": "More",
