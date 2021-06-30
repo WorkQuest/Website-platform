@@ -1018,9 +1018,10 @@ export default {
     display: none;
     transition: .2s;
     &_opened {
+      overflow-y: auto;
+      background: $white;
       display: flex;
       width: 100%;
-      height: 100%;
       position: fixed;
       top: 73px;
       bottom: 0;
