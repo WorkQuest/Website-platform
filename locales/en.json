@@ -93,6 +93,7 @@
     "create": "Create account"
   },
   "profile": {
+    "raiseViews": "Raise views",
     "knowledge": "Knowledge",
     "prevWorkExp": "Previous work experience",
     "active": "active proposals",

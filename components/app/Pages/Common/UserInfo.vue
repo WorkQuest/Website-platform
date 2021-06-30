@@ -59,7 +59,9 @@
       <!-- contacts -->
       <div class="contacts__grid">
         <div class="contacts">
-          <ContactPanel />
+          <ContactPanel /> <base-btn v-if="userRole === 'worker'">
+            {{ $t('profile.raiseViews') }}
+          </base-btn>
         </div>
         <span v-if="userRole === 'employer'">
           <div
@@ -117,6 +119,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.contacts {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+}
 
 .knowledge {
   &__text {
