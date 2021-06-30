@@ -208,6 +208,10 @@
     "title": "Skills"
   },
   "quests": {
+    "invited": "Invited",
+    "active": "Active",
+    "performed": "Performed",
+    "requested": "Requested",
     "youInvited": "You Invited",
     "inProgressBy": "In progress by:",
     "showAllCases": "Show all cases",
