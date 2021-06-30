@@ -572,6 +572,7 @@
     }
   },
  "pension": {
+   "currentPensionBalance": "Current pension balance",
    "retirementProgram": "Retirement program",
    "faq": "FAQ",
    "pensionProgram": "Pension program",

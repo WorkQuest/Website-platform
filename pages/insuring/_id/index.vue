@@ -437,6 +437,8 @@ export default {
     max-width: 1180px;
     grid-row-gap: 30px;
     width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
   }
 
   &__header {
@@ -445,7 +447,7 @@ export default {
     .title {
       font-weight: 500;
       color: #FFF;
-      width: 530px;
+      max-width: 530px;
       font-size: 45px;
       line-height: 110%;
       margin: 0 0 24px;
@@ -600,8 +602,8 @@ export default {
     }
 
     .user {
-      display: flex;
-      width: calc(50% - 20px);
+      display: grid;
+      grid-template-columns: 40px auto;
       gap: 15px;
       align-items: center;
 
@@ -618,11 +620,11 @@ export default {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        width: calc(100% - 55px);
       }
 
       &_gray {
         @extend .user;
+        grid-template-columns: 25px auto;
         background-color: #F7F8FA;
         border-radius: 5px;
         height: 42px;
@@ -641,12 +643,12 @@ export default {
       border-radius: 6px;
 
       &__chat-cont {
+        max-height: 569px;
         height: calc(100% - 131px);
         padding: 10px 20px;
         overflow: auto;
-        max-height: 523px;
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-rows: auto;
         gap: 20px;
 
         .message {
@@ -664,17 +666,19 @@ export default {
             color: #AAB0B9;
             font-size: 12px;
             font-weight: 400;
+            text-align: right;
           }
 
           &__about {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(2, auto);
+            gap: 10px;
             align-items: center;
-            justify-content: space-between;
             margin-bottom: 10px;
 
             .user {
+              grid-template-columns: 25px auto;
               gap: 9px;
-              width: 100%;
 
               .name {
                 font-size: 14px;
@@ -702,7 +706,8 @@ export default {
         background-color: #F7F8FA;
         height: 46px;
         padding: 11px 20px 11px 15px;
-        display: flex;
+        display: grid;
+        grid-template-columns: 24px auto 22px;
         align-items: center;
         gap: 12px;
 
@@ -801,12 +806,12 @@ export default {
       }
 
       &__list {
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         gap: 20px;
         overflow-y: auto;
         max-height: 220px;
+        padding-right: 20px;
       }
 
       &__voting {
@@ -834,6 +839,10 @@ export default {
 
       &_30gap {
         gap: 30px;
+
+        .info-block {
+          max-height: 700px;
+        }
       }
 
       &_vertical {
@@ -845,14 +854,15 @@ export default {
       &_gray {
         background-color: #F7F8FA;
         padding: 15px;
+        border-radius: 5px;
       }
 
       &_pad {
         @extend .info-block;
         padding: 20px;
-        display: flex;
+        display: grid;
         gap: 20px;
-        flex-direction: column;
+        grid-template-rows: repeat(3, auto);
       }
 
       &__point {
@@ -876,8 +886,8 @@ export default {
       }
 
       &__points {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-rows: auto;
         gap: 10px;
       }
 
@@ -925,6 +935,133 @@ export default {
           color: #0083C7;
           line-height: 1;
         }
+      }
+    }
+  }
+
+  @include _991 {
+    &__content {
+      .info-block {
+        &_30gap {
+          .info-block__couple {
+            grid-template-rows: repeat(2, auto);
+          }
+        }
+        &__voting {
+          .btn-group {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+
+            .btn {
+              grid-column-start: 1;
+              grid-column-end: 3;
+            }
+
+            .btn_red {
+              grid-row-start: 1;
+              grid-row-end: 2;
+              grid-column-start: 1;
+              grid-column-end: 2;
+            }
+
+            .btn_bl {
+              grid-row-start: 1;
+              grid-row-end: 2;
+              grid-column-start: 2;
+              grid-column-end: 3;
+            }
+          }
+          .quest-title {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+
+  @include _767 {
+    background: linear-gradient(to bottom, #103D7C 220px, #f6f8fa 220px);
+    &__container {
+      grid-template-rows: auto auto;
+      gap: 24px;
+    }
+    &__header {
+      .title {
+        font-size: 38px;
+        margin-bottom: 15px;
+        width: 100%;
+        &_sub {
+          font-size: 16px;
+          max-width: 400px;
+        }
+      }
+    }
+    &__content {
+      .info-block {
+        &__couple {
+            grid-template-rows: repeat(2, auto);
+            grid-template-columns: unset;
+          }
+        &_pad {
+          .info-block__couple {
+            .info-block__couple {
+              max-height: 209px;
+              grid-template-columns: unset;
+              grid-template-rows: 116px 43px;
+
+              .btn_bl {
+                width: 100%;
+                margin: 0;
+              }
+            }
+          }
+        }
+        &__points {
+          height: fit-content;
+        }
+        &__list {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        &__voting {
+          .quest-title {
+            font-size: 25px;
+          }
+        }
+      }
+      .btn-group__fifths {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  }
+
+  @include _575 {
+    &__content {
+      .info-block {
+        &__couple {
+          grid-template-rows: repeat(2, auto);
+          grid-template-columns: unset;
+        }
+        &__list {
+          grid-template-columns: repeat(2, 1fr);
+          .user {
+            grid-template-columns: 35px auto;
+            .ava {
+              height: 35px;
+              width: 35px;
+            }
+            .name {
+              font-size: 14px;
+            }
+          }
+        }
+        &__voting {
+          .quest-title {
+            font-size: 20px;
+          }
+        }
+      }
+      .btn-group__fifths {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   }
