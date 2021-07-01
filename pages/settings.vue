@@ -595,12 +595,18 @@ export default {
     async editUserData() {
       const formData = new FormData();
       formData.append('image', this.avatar_change.file);
-      const data = {
-        url: this.avatar_change.data.result.url,
-        formData: this.avatar_change.file,
-        type: this.avatar_change.file.type,
-      };
-      await this.$store.dispatch('user/setImage', data);
+      try {
+        if (this.avatar_change.data.ok) {
+          const data = {
+            url: this.avatar_change.data.result.url,
+            formData: this.avatar_change.file,
+            type: this.avatar_change.file.type,
+          };
+          await this.$store.dispatch('user/setImage', data);
+        }
+      } catch (e) {
+        console.log(e);
+      }
       const payload = {
         avatarId: this.avatar_change.data.result.mediaId,
         firstName: this.name_input || null,
