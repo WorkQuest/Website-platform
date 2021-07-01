@@ -552,16 +552,25 @@ export default {
 
         this.avatar_change.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
         this.avatar_change.file = file;
+        this.showModalOk();
         const output = document.getElementById('userAvatar');
         output.src = URL.createObjectURL(file);
         output.onload = function () {
           URL.revokeObjectURL(output.src);
         };
-
         reader.onerror = (evt) => {
           console.error(evt);
         };
       }
+    },
+    showModalOk() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: 'Image loaded successful',
+        subtitle: 'And you are beautiful',
+        path: '/settings',
+      });
     },
     modalChangePassword() {
       this.ShowModal({
