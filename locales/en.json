@@ -453,6 +453,8 @@
     "writeYouMessage": "Write you message"
   },
   "settings": {
+    "description": "And you are beautiful",
+    "imgLoaded": "Image loaded successful",
     "workExp": "Work experience",
     "add": "Add",
     "knowledge": "Knowledge",

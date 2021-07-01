@@ -52,6 +52,7 @@
         <div class="avatar__row">
           <div class="avatar__container">
             <img
+              id="userAvatar"
               class="profile__img"
               :src="imageData || '~/assets/img/temp/photo.jpg'"
             >
@@ -536,7 +537,6 @@ export default {
     async processFile(e, validate) {
       const isValid = await validate(e);
       const file = e.target.files[0];
-      // document.getElementById('coverUpload').value = null;
       if (isValid.valid) {
         const MAX_SIZE = 20e6; // макс размер - тут 2мб
         if (!file) {
@@ -552,10 +552,26 @@ export default {
 
         this.avatar_change.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
         this.avatar_change.file = file;
+        this.showModalOk();
+        const output = document.getElementById('userAvatar');
+        output.src = URL.createObjectURL(file);
+        // eslint-disable-next-line func-names
+        output.onload = function () {
+          URL.revokeObjectURL(output.src);
+        };
         reader.onerror = (evt) => {
           console.error(evt);
         };
       }
+    },
+    showModalOk() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: 'Image loaded successful',
+        subtitle: 'Please press save button',
+        path: '/settings',
+      });
     },
     modalChangePassword() {
       this.ShowModal({
@@ -597,21 +613,19 @@ export default {
       }
     },
     async editUserData() {
-      if (document.getElementById('coverUpload').value) {
-        const formData = new FormData();
-        formData.append('image', this.avatar_change.file);
-        try {
-          if (this.avatar_change.data.ok) {
-            const data = {
-              url: this.avatar_change.data.result.url,
-              formData: this.avatar_change.file,
-              type: this.avatar_change.file.type,
-            };
-            await this.$store.dispatch('user/setImage', data);
-          }
-        } catch (e) {
-          console.log(e);
+      const formData = new FormData();
+      formData.append('image', this.avatar_change.file);
+      try {
+        if (this.avatar_change.data.ok) {
+          const data = {
+            url: this.avatar_change.data.result.url,
+            formData: this.avatar_change.file,
+            type: this.avatar_change.file.type,
+          };
+          await this.$store.dispatch('user/setImage', data);
         }
+      } catch (error) {
+        console.log(error);
       }
       let payload = {};
       if (this.userRole === 'employer') {

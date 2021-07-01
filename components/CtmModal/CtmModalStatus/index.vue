@@ -14,7 +14,8 @@
             {{ options.title }}
           </div>
           <div class="ctm-modal__desc">
-            {{ $t('modals.smallTemp') }}
+            <span v-if="!options.subtitle">{{ $t('modals.smallTemp') }}</span>
+            <span v-if="options.subtitle">{{ options.subtitle }}</span>
           </div>
           <base-btn
             class="email__action"
