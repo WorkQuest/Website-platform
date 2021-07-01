@@ -4,8 +4,6 @@
       <h2 class="page__title">
         {{ $t('settings.settings') }}
       </h2>
-      {{ additionalInfo }}
-      {{ localUserData }}
       <div
         v-if="userRole === 'worker'"
         class="quests__top"
