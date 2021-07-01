@@ -18,6 +18,7 @@
           :is-hide-error="true"
           :placeholder="'******'"
           mode="icon"
+          type="password"
         >
           <template v-slot:left>
             <span class="icon-Lock" />
@@ -35,6 +36,7 @@
           :is-hide-error="true"
           :placeholder="'******'"
           mode="icon"
+          type="password"
         >
           <template v-slot:left>
             <span class="icon-Lock" />
@@ -52,6 +54,7 @@
           :is-hide-error="true"
           :placeholder="'******'"
           mode="icon"
+          type="password"
         >
           <template v-slot:left>
             <span class="icon-Lock" />

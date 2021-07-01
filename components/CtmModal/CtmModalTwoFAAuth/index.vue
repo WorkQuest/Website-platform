@@ -11,68 +11,53 @@
           <div
             class="step-panel__step"
             :class="[
-              {'step-panel__step_active': step === 1},
-              {'step-panel__step_active': step === 2},
-              {'step-panel__step_active': step === 3},
-              {'step-panel__step_active': step === 4}
+              {'step-panel__step_active': step === 1 || step === 2 || step === 3 || step === 4},
             ]"
           >
             <span
               :class="[
-                {'hide': step === 2},
-                {'hide': step === 3},
-                {'hide': step === 4},
+                {'hide': step === 2 || step === 3 || step === 4},
               ]"
             >{{ $t('modals.step') }}</span>
             <span
               :class="[
-                {'step__number': step === 2},
-                {'step__number': step === 3},
-                {'step__number': step === 4}
+                {'step__number': step === 2 || step === 3 || step === 4},
               ]"
             >1</span>
           </div>
           <div
             class="line"
             :class="[
-              {'line__active': step === 2},
-              {'line__active': step === 3},
-              {'line__active': step === 4}
+              {'line__active': step === 2 || step === 3 || step === 4},
             ]"
           />
           <div
             class="step-panel__step"
             :class="[
-              {'step-panel__step_active': step === 2},
-              {'step-panel__step_active': step === 3},
-              {'step-panel__step_active': step === 4}
+              {'step-panel__step_active': step === 2 || step === 3 || step === 4},
             ]"
           >
             <span
               :class="[
-                {'hide': step === 3},
-                {'hide': step === 4},
+                {'hide': step === 3 || step === 4},
               ]"
             >{{ $t('modals.step') }}</span>
             <span
               :class="[
-                {'step__number': step === 3},
-                {'step__number': step === 4}
+                {'step__number': step === 3 || step === 4},
               ]"
             >2</span>
           </div>
           <div
             class="line"
             :class="[
-              {'line__active': step === 3},
-              {'line__active': step === 4}
+              {'line__active': step === 3 || step === 4},
             ]"
           />
           <div
             class="step-panel__step"
             :class="[
-              {'step-panel__step_active': step === 3},
-              {'step-panel__step_active': step === 4}
+              {'step-panel__step_active': step === 3 || step === 4},
             ]"
           >
             <span
@@ -82,9 +67,7 @@
             >{{ $t('modals.step') }}</span>
             <span
               :class="[
-                {'step__number': step === 2},
-                {'step__number': step === 3},
-                {'step__number': step === 4}
+                {'step__number': step === 2 || step === 3 || step === 4},
               ]"
             >3</span>
           </div>

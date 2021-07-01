@@ -243,6 +243,8 @@ export default {
     max-width: 1180px;
     grid-row-gap: 40px;
     width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
   }
 
   &__header {
@@ -251,7 +253,7 @@ export default {
     .title {
       font-weight: 500;
       color: #FFF;
-      width: 530px;
+      max-width: 530px;
       font-size: 45px;
       line-height: 110%;
       margin: 0 0 24px;
@@ -379,7 +381,7 @@ export default {
           text-align: right;
           padding: 0 10px 0;
           justify-self: flex-end;
-          margin: 20px 20px 0;
+          margin: 20px 20px 0 0;
         }
       }
 
@@ -474,8 +476,80 @@ export default {
   }
 
   &__table {
+
     .table {
       margin: 0;
+      border-radius: 0 !important;
+    }
+  }
+
+  @include _991 {
+    &__table {
+      overflow: auto;
+      width: calc(100vw - 20px);
+
+      .table {
+        width: 1180px;
+      }
+    }
+  }
+
+  @include _767 {
+    background: linear-gradient(to bottom, #103D7C 280px, #f6f8fa 280px);
+    &__container {
+      grid-template-rows: auto auto;
+      gap: 15px;
+    }
+    &__header {
+      .title {
+        font-size: 36px;
+        margin-bottom: 15px;
+        width: 100%;
+        &_sub {
+          font-size: 16px;
+          max-width: 400px;
+        }
+      }
+    }
+    &__content {
+      .info-block {
+        &__grid {
+          grid-template-columns: repeat(2, 1fr);
+          grid-template-rows: repeat(2, auto);
+          grid-row-gap: 10px;
+
+          .btn-group_exp {
+            align-self: flex-end;
+          }
+        }
+      }
+    }
+  }
+
+  @include _575 {
+    &__content {
+      .info-block {
+        &__grid {
+          grid-template-rows: repeat(3, auto);
+
+          div {
+            &:nth-child(3) {
+              grid-column-start: 1;
+              grid-column-end: 3;
+            }
+          }
+
+          .btn-group_exp {
+            padding-left: 20px;
+            grid-row-start: 3;
+            grid-column-start: 1;
+            grid-column-end: 3;
+          }
+        }
+        &__tokens {
+          font-size: 20px;
+        }
+      }
     }
   }
 }

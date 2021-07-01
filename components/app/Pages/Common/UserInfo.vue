@@ -31,7 +31,7 @@
       <div class="description">
         {{ userInfo.desc }}
       </div>
-      <div v-if="selected === 1">
+      <div v-if="selected === 1 && userRole === 'worker' ">
         <div class="knowledge__text">
           {{ $t('profile.knowledge') }}
         </div>
@@ -60,24 +60,29 @@
       <div class="contacts__grid">
         <div class="contacts">
           <ContactPanel />
-        </div>
-        <span v-if="userRole === 'employer'">
-          <div
-            v-if="selected === 1"
-            class="message__container-btn"
-          >
-            <base-btn
-              mode="goToMessages"
-              class="message__btn"
-              @click="showMessages()"
-            >
-              <template v-slot:right>
-                <span class="icon-chat" />
-              </template>
-              {{ $t('profile.writeAMessage') }}
+          <div class="btn__container">
+            <base-btn v-if="userRole === 'worker'">
+              {{ $t('profile.raiseViews') }}
             </base-btn>
           </div>
-        </span>
+          <span v-if="userRole === 'employer'">
+            <div
+              v-if="selected === 1"
+              class="message__container-btn"
+            >
+              <base-btn
+                mode="goToMessages"
+                class="message__btn"
+                @click="showMessages()"
+              >
+                <template v-slot:right>
+                  <span class="icon-chat" />
+                </template>
+                {{ $t('profile.writeAMessage') }}
+              </base-btn>
+            </div>
+          </span>
+        </div>
       </div>
     </div>
 
@@ -117,6 +122,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.btn {
+  &__container {
+    max-width: 124px;
+    width: 100%;
+    display: flex;
+    justify-self: flex-end;
+  }
+}
+
+.icon {
+  &-chat:before {
+    content: "\e9ba";
+    font-size: 14px;
+    color: $green;
+  }
+  &-btn {
+    &_right {
+      margin: 0 5px 0 0;
+    }
+  }
+}
+
+.contacts {
+  display: grid;
+  grid-template-columns: 7fr 1fr;
+}
 
 .knowledge {
   &__text {
@@ -170,7 +202,7 @@ export default {
 
 .information-grid {
   @extend .styles__flex;
-  padding: 25px 0;
+  padding: 25px 0 0 0;
   position: relative;
 
   .share-btn {
@@ -262,7 +294,12 @@ export default {
     }
   }
 }
-
+@include _1199 {
+  .contacts {
+    grid-template-columns: 7fr;
+    margin: 0 0 20px 0;
+  }
+}
 @include _575 {
   .information-grid {
     flex-direction: column;

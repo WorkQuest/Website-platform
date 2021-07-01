@@ -276,23 +276,19 @@ export default {
     },
     getStatusCard(index) {
       const status = {
-        0: '',
-        1: '',
-        2: this.$t('Requested'),
-        3: this.$t('Performed'),
-        4: this.$t('Active'),
-        5: this.$t('Invited'),
+        2: this.$t('quests.requested'),
+        3: this.$t('quests.performed'),
+        4: this.$t('quests.active'),
+        5: this.$t('quests.invited'),
       };
       return status[index] || '';
     },
     getStatusClass(index) {
       const status = {
-        0: '',
-        1: '',
-        2: this.$t('quests__cards__state_req'),
-        3: this.$t('quests__cards__state_per'),
-        4: this.$t('quests__cards__state_act'),
-        5: this.$t('quests__cards__state_inv'),
+        2: 'quests__cards__state_req',
+        3: 'quests__cards__state_per',
+        4: 'quests__cards__state_act',
+        5: 'quests__cards__state_inv',
       };
       return status[index] || '';
     },
@@ -306,9 +302,9 @@ export default {
     },
     getPriorityClass(index) {
       const priority = {
-        0: this.$t('block__priority_low'),
-        1: this.$t('block__priority_normal'),
-        2: this.$t('block__priority_urgent'),
+        0: 'block__priority_low',
+        1: 'block__priority_normal',
+        2: 'block__priority_urgent',
       };
       return priority[index] || '';
     },
@@ -419,6 +415,7 @@ export default {
     }
   }
   &__cards {
+    margin: 20px 0 0 0;
     border-radius: 6px;
     width: 100%;
     display: grid;

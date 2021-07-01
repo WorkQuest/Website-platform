@@ -73,7 +73,10 @@
             </label>
           </div>
           <div>
-            <span class="profile__status">
+            <span
+              v-if="userRole === 'worker'"
+              class="profile__status"
+            >
               {{ $t('settings.notVerified') }}
               <span class="icon-check_all_big" />
             </span>
@@ -179,10 +182,14 @@
           />
         </div>
         <label
+          v-if="userRole === 'worker'"
           class="knowledge__label"
           for="knowledge"
         >{{ $t('settings.knowledge') }}</label>
-        <div class="knowledge__container">
+        <div
+          v-if="userRole === 'worker'"
+          class="knowledge__container"
+        >
           <base-field
             id="knowledge"
             v-model="knowledgeTerm1__input"
@@ -208,10 +215,14 @@
         </div>
 
         <label
+          v-if="userRole === 'worker'"
           class="knowledge__label"
           for="workExp"
-        >Work experience</label>
-        <div class="knowledge__container">
+        >{{ $t('settings.workExp') }}</label>
+        <div
+          v-if="userRole === 'worker'"
+          class="knowledge__container"
+        >
           <base-field
             id="workExp"
             v-model="workExpTerm1__input"
@@ -286,11 +297,11 @@
           </base-btn>
         </div>
       </div>
-      <div
-        v-if="userRole === 'worker'"
-        class="page__skills"
-      >
-        <div class="main-white">
+      <div class="main-white">
+        <div
+          v-if="userRole === 'worker'"
+          class="page__skills"
+        >
           <div class="page__badge-skills">
             {{ $t('settings.skills') }}
           </div>
@@ -502,6 +513,7 @@ export default {
         data: {},
         file: {},
       },
+      userDataStr: [],
     };
   },
   computed: {
@@ -752,11 +764,9 @@ export default {
 
 .btn {
   &__container {
-    width: 46%;
+    justify-content: center;
     align-content: center;
     display: flex;
-    justify-content: flex-end;
-    margin: 0 24px 0 0;
   }
   &__plus {
     justify-content: flex-end;
@@ -966,8 +976,8 @@ export default {
   }
   &__save {
     @extend .btn;
-    grid-column: 4/5;
     margin-bottom: 20px;
+    grid-column: 5/17;
   }
 }
 .quests {
@@ -1043,9 +1053,15 @@ export default {
 .main {
   @include main;
   &-white {
+    @include main;
     @include main-white;
-    justify-content: flex-start;
-    border-radius: 6px;
+    width: calc(98vw - 67px);
+    margin: 0 20px;
+  }
+  &__body {
+    max-width: 1180px;
+    height: 100%;
+    width: calc(100vw - 40px);
   }
 }
 .profile {
@@ -1211,6 +1227,9 @@ export default {
   }
   &__skills {
     margin: 0 0 10px 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    display: flex;
   }
 }
 .option {
@@ -1320,6 +1339,16 @@ export default {
   }
 }
 @include _991 {
+  .knowledge {
+    &__container {
+      grid-template-columns: 5fr 28px 5fr 0;
+      max-height: 100%;
+    }
+  }
+  .settings {
+    grid-auto-rows: auto auto;
+    grid-template-columns: 5fr;
+  }
   .icon {
     &__close {
       bottom: 154px;
@@ -1336,8 +1365,9 @@ export default {
       grid-template-columns: repeat(2, 1fr);
     }
     &__row-4col {
-      grid-template-columns: repeat(2, 1fr);
-      grid-gap: 10px 10px;
+      grid-template-rows: auto auto;
+      grid-template-columns: 1fr;
+      max-height: 100%;
     }
   }
   .higher {
@@ -1363,7 +1393,7 @@ export default {
   }
   .icon {
     &__close {
-      bottom: 167px;
+      bottom: 154px;
     }
   }
   .page {
@@ -1417,11 +1447,6 @@ export default {
       justify-content: center;
     }
   }
-  .btn {
-    &__save {
-      grid-column: 1/5;
-    }
-  }
   .page {
     &__info-title {
       font-size: 18px;
@@ -1436,20 +1461,36 @@ export default {
   }
   .icon {
     &__close {
-      bottom: 155px;
-      right: 5px;
+      bottom: 137px;
+      right: 10px;
     }
   }
 }
 @include _480 {
+  .main-white {
+    width: calc(98vw - 71px);
+  }
+  .btn {
+    &__save {
+      margin-bottom: 20px;
+      grid-column: 5/14;
+    }
+  }
   .icon {
     &__close {
-      bottom: 177px;
+      bottom: 157px;
+      right: 6px;
     }
   }
 }
 
 @include _380 {
+  .btn {
+    &__save {
+      margin-bottom: 20px;
+      grid-column: 5/14;
+    }
+  }
   .icon {
     &__close {
       bottom: 195px;

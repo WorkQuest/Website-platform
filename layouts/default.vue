@@ -691,28 +691,28 @@ export default {
       ],
       instrumentDDLinks: [
         {
-          link: '',
-          title: 'Pension program',
+          link: '/pension',
+          title: this.$t('ui.menu.pension'),
         },
         {
-          link: '',
-          title: 'Refferal program',
+          link: '/referral',
+          title: this.$t('ui.menu.referral'),
         },
         {
-          link: '',
-          title: 'P2P insurance',
+          link: '/insuring',
+          title: this.$t('ui.menu.p2p'),
         },
         {
-          link: '',
-          title: 'Savings product',
+          link: '/savings',
+          title: this.$t('ui.menu.savings'),
         },
         {
-          link: '',
-          title: 'Lending',
+          link: '/crediting',
+          title: this.$t('ui.menu.crediting'),
         },
         {
-          link: '',
-          title: 'Liquidity mining',
+          link: '/mining',
+          title: this.$t('ui.menu.mining'),
         },
       ],
       userDDLinks: [
@@ -822,7 +822,7 @@ export default {
     },
     goToMessages() {
       this.$router.push('/messages');
-      this.closeMenu();
+      this.closeAll();
     },
     showProfile() {
       this.closeAnother('profile');
@@ -1018,9 +1018,10 @@ export default {
     display: none;
     transition: .2s;
     &_opened {
+      overflow-y: auto;
+      background: $white;
       display: flex;
       width: 100%;
-      height: 100%;
       position: fixed;
       top: 73px;
       bottom: 0;

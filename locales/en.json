@@ -93,6 +93,7 @@
     "create": "Create account"
   },
   "profile": {
+    "raiseViews": "Raise views",
     "knowledge": "Knowledge",
     "prevWorkExp": "Previous work experience",
     "active": "active proposals",
@@ -207,6 +208,10 @@
     "title": "Skills"
   },
   "quests": {
+    "invited": "Invited",
+    "active": "Active",
+    "performed": "Performed",
+    "requested": "Requested",
     "youInvited": "You Invited",
     "inProgressBy": "In progress by:",
     "showAllCases": "Show all cases",
@@ -448,6 +453,7 @@
     "writeYouMessage": "Write you message"
   },
   "settings": {
+    "workExp": "Work experience",
     "add": "Add",
     "knowledge": "Knowledge",
     "placeOfStudying": "Place of studying",
@@ -571,6 +577,7 @@
     }
   },
  "pension": {
+   "currentPensionBalance": "Current pension balance",
    "retirementProgram": "Retirement program",
    "faq": "FAQ",
    "pensionProgram": "Pension program",

@@ -174,6 +174,7 @@ export default {
     border-radius: 6px;
     transition: .3s;
     border: 1px solid $green;
+    font-size: 12px;
     &:hover {
       background-color: $green;
       color: $white;
