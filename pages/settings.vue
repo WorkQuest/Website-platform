@@ -4,6 +4,8 @@
       <h2 class="page__title">
         {{ $t('settings.settings') }}
       </h2>
+      {{ additionalInfo }}
+      {{ localUserData }}
       <div
         v-if="userRole === 'worker'"
         class="quests__top"
@@ -82,7 +84,8 @@
             </span>
             <div class="profile__row-3col">
               <base-field
-                v-model="name_input"
+                v-if="localUserData.firstName"
+                v-model="localUserData.firstName"
                 :placeholder="userData.firstName || $t('settings.nameInput')"
                 mode="icon"
               >
@@ -109,7 +112,8 @@
                 </template>
               </base-field>
               <base-field
-                v-model="lastname_input"
+                v-if="localUserData.lastName"
+                v-model="localUserData.lastName"
                 :placeholder="userData.lastName || $t('settings.lastNameInput')"
                 mode="icon"
               >
@@ -507,6 +511,7 @@ export default {
       in_input: '',
       facebook_input: '',
       isShowInfo: true,
+      localUserData: {},
       avatar_change: {
         data: {},
         file: {},
@@ -521,10 +526,12 @@ export default {
       userData: 'user/getUserData',
       userInfo: 'data/getUserInfo',
       imageData: 'user/getImageData',
+      additionalInfo: 'user/getAdditionalInfo',
     }),
   },
   async mounted() {
     this.SetLoader(true);
+    this.localUserData = JSON.parse(JSON.stringify(this.userData));
     this.SetLoader(false);
   },
   methods: {
@@ -594,6 +601,7 @@ export default {
     },
     async editUserData() {
       const formData = new FormData();
+      let payload = {};
       formData.append('image', this.avatar_change.file);
       try {
         if (this.avatar_change.data.ok) {
@@ -607,26 +615,48 @@ export default {
       } catch (e) {
         console.log(e);
       }
-      const payload = {
-        avatarId: this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : null,
-        firstName: this.name_input || null,
-        lastName: this.lastname_input || null,
-        additionalInfo: {
-          firstMobileNumber: this.tel1_input || null,
-          secondMobileNumber: this.tel2_input || null,
-          address: this.address1_input || null,
-          socialNetwork: {
-            instagram: this.inst_input || null,
-            twitter: this.twitt_input || null,
-            linkedin: this.in_input || null,
-            facebook: this.facebook_input || null,
+      if (this.userRole === 'employer') {
+        payload = {
+          avatarId: this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : null,
+          firstName: this.localUserData.firstName || null,
+          lastName: this.localUserData.lastName || null,
+          additionalInfo: {
+            firstMobileNumber: this.tel1_input || null,
+            secondMobileNumber: this.tel2_input || null,
+            address: this.address1_input || null,
+            socialNetwork: {
+              instagram: this.inst_input || null,
+              twitter: this.twitt_input || null,
+              linkedin: this.in_input || null,
+              facebook: this.facebook_input || null,
+            },
+            company: this.company_input || null,
+            CEO: this.ceo_input || null,
+            website: this.site_input || null,
           },
-          company: this.company_input || null,
-          CEO: this.ceo_input || null,
-          website: this.site_input || null,
-        },
-      };
+        };
+      } else {
+        payload = {
+          avatarId: this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : null,
+          firstName: this.localUserData.firstName || null,
+          lastName: this.localUserData.lastName || null,
+          additionalInfo: {
+            firstMobileNumber: this.tel1_input || null,
+            secondMobileNumber: this.tel2_input || null,
+            address: this.address1_input || null,
+            socialNetwork: {
+              instagram: this.inst_input || null,
+              twitter: this.twitt_input || null,
+              linkedin: this.in_input || null,
+              facebook: this.facebook_input || null,
+            },
+            description: this.facebook_input || null,
+            skills: [],
+          },
+        };
+      }
       try {
+        console.log(payload);
         await this.$store.dispatch('user/editUserData', payload);
       } catch (e) {
         console.log(e);
