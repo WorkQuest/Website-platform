@@ -33,9 +33,6 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'ModalCardHasBeenAdded',
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',

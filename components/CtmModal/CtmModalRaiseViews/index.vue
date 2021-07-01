@@ -26,7 +26,7 @@
       </div>
       <div class="payment__container">
         <div class="payment__title">
-          Estimated payment:
+          {{ $t('modals.estimatedPayment') }}
         </div>
         <div class="payment__cost">
           120 WUSD

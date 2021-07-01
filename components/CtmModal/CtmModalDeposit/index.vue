@@ -5,59 +5,155 @@
   >
     <div class="ctm-modal__content">
       <validation-observer>
-        <div class="grid__3col">
-          <div class="ctm-modal__content-field">
-            <label for="date_input">{{ $t('modals.amount') }}</label>
+        <div
+          class="step-panel"
+          :class="{'hide': step === 3}"
+        >
+          <div
+            class="step-panel__step"
+            :class="[{'step-panel__step_active': step === 1}, {'hide': step === 3}]"
+          >
+            {{ $t('wallet.cryptoWallet') }}
+          </div>
+          <div
+            class="step-panel__step"
+            :class="[{'step-panel__step_active': step === 2}, {'hide': step === 3}]"
+          >
+            {{ $t('wallet.bankCard') }}
+          </div>
+        </div>
+        <div
+          v-if="step === 1"
+          class="step__container"
+        >
+          <div
+            class="ctm-modal__content-field"
+          >
+            <label for="amount_input">{{ $t('modals.amount') }}</label>
             <base-field
+              id="amount_input"
               v-model="amount_input"
-              :placeholder="'02/24'"
-            />
-          </div>
-          <div class="ctm-modal__equal">
-            =
-          </div>
-          <div class="ctm-modal__content-field">
-            <base-field
-              v-model="balance_input"
-              :placeholder="'$ 0'"
-              mode="white"
+              :placeholder="'0 WUSD'"
             />
           </div>
         </div>
-        <div class="ctm-modal__content-field">
-          <label for="cardNumber_input">{{ $t('modals.numberOfCard') }}</label>
-          <base-field
-            v-model="cardNumber_input"
-            :placeholder="'1234 1234 1234 1234'"
-          />
-        </div>
-        <div class="grid__2col">
-          <div class="ctm-modal__content-field">
-            <label for="date_input">{{ $t('modals.date') }}</label>
-            <base-field
-              v-model="date_input"
-              :placeholder="'02/24'"
-            />
+        <div
+          v-if="step === 2"
+          class="step__container"
+        >
+          <div class="grid__3col">
+            <div class="ctm-modal__content-field">
+              <label for="amount_input2">{{ $t('modals.amount') }}</label>
+              <base-field
+                id="amount_input2"
+                v-model="amount_input"
+                :placeholder="'0 WUSD'"
+              />
+            </div>
+            <div class="ctm-modal__equal">
+              =
+            </div>
+            <div class="ctm-modal__content-field">
+              <base-field
+                v-model="balance_input"
+                mode="white"
+                :placeholder="'$ 0'"
+              />
+            </div>
           </div>
           <div class="ctm-modal__content-field">
-            <label for="cvv_input">{{ $t('modals.cvv') }}</label>
+            <label for="cardNumber_input">{{ $t('modals.numberOfCard') }}</label>
             <base-field
-              v-model="cvv_input"
-              :placeholder="'242'"
+              id="cardNumber_input"
+              v-model="cardNumber_input"
+              :placeholder="'1234 1234 1234 1234'"
             />
+          </div>
+          <div
+            class="grid__2col"
+          >
+            <div
+              class="ctm-modal__content-field"
+            >
+              <label for="date_input">{{ $t('modals.date') }}</label>
+              <base-field
+                id="date_input"
+                v-model="date_input"
+                :placeholder="'02/24'"
+              />
+            </div>
+            <div class="ctm-modal__content-field">
+              <label for="cvv_input">{{ $t('modals.cvv') }}</label>
+              <base-field
+                id="cvv_input"
+                v-model="cvv_input"
+                :placeholder="'242'"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          v-if="step === 3"
+          class="step__container"
+          :class="{'step__container_grid': step === 3}"
+        >
+          <div>
+            <img
+              alt=""
+              src="~/assets/img/temp/qr.svg"
+            >
+          </div>
+          <div>
+            <span class="step-three__text">{{ $t('wallet.send') }}</span>
+            <span class="step-three__text_blue">0.2 $</span>
+            <div class="step-three__text">
+              {{ $t('wallet.toThisAddress') }}
+            </div>
+            <div class="code__container">
+              <span class="code__text">0xf376g...G7f3g8b</span>
+              <span class="icon-copy" />
+            </div>
           </div>
         </div>
         <div class="btn__container">
           <div class="btn__wrapper">
-            <base-btn
-              class="message__action"
-              @click="showTransactionSendModal()"
+            <span
+              v-if="step === 1"
+              class="step__container"
             >
-              {{ $t('meta.submit') }}
-            </base-btn>
+              <base-btn
+                class="message__action"
+                @click="nextStep()"
+              >
+                {{ $t('meta.next') }}
+              </base-btn>
+            </span>
+            <span
+              v-if="step === 2"
+              class="step__container"
+            >
+              <base-btn
+                class="message__action"
+                @click="nextStep()"
+              >
+                {{ $t('meta.submit') }}
+              </base-btn>
+            </span>
+            <span
+              v-if="step === 3"
+              class="step__container"
+            >
+              <base-btn
+                class="message__action"
+                @click="hide()"
+              >
+                {{ $t('meta.submit') }}
+              </base-btn>
+            </span>
           </div>
           <div class="btn__wrapper">
             <base-btn
+              :mode="'outline'"
               class="message__action"
               @click="hide()"
             >
@@ -79,10 +175,11 @@ export default {
   data() {
     return {
       amount_input: '',
-      date_input: '',
-      cardNumber_input: '',
       balance_input: '',
+      cardNumber_input: '',
+      date_input: '',
       cvv_input: '',
+      step: 1,
     };
   },
   computed: {
@@ -94,6 +191,10 @@ export default {
     hide() {
       this.CloseModal();
     },
+    nextStep() {
+      // eslint-disable-next-line no-plusplus
+      this.step++;
+    },
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.transactionSend,
@@ -104,6 +205,90 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.icon {
+  &-copy:before {
+    content: "\e996";
+    color: $blue;
+    font-size: 20px;
+  }
+}
+
+.code {
+  &__container {
+    display: flex;
+    border: 1px solid $black0;
+    border-radius: 6px;
+    justify-content: space-between;
+    padding: 12px;
+    margin: 33px 0 0 0;
+  }
+  &__text {
+    font-weight: 400;
+    font-size: 16px;
+    color: $black800;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+.grid {
+  &__2col {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: space-between;
+    align-items: flex-end;
+    grid-gap: 10px;
+  }
+  &__3col {
+    display: grid;
+    grid-template-columns: 6fr 1fr 6fr;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+}
+
+.step {
+  &-three {
+    &__text {
+      @include text-simple;
+      font-weight: 400;
+      font-size: 16px;
+      color: $black500;
+      &_blue {
+        @extend .step-three__text;
+        color: $blue;
+      }
+    }
+  }
+  &__container {
+    &_grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+.step-panel {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  &__step {
+    @include text-simple;
+    font-weight: 400;
+    font-size: 16px;
+    color: $black500;
+    margin: 0 10px 0 0;
+    &_active {
+      color: $black800;
+      border-bottom: 1px solid $blue;
+      padding: 0 0 12px 0;
+    }
+  }
+}
+
 .ctm-modal {
   &__content-field {
     margin: 15px 0 0 0;
@@ -129,22 +314,6 @@ export default {
     &::placeholder {
       color: $black800;
     }
-  }
-}
-.grid {
-  &__2col {
-    display: grid;
-    grid-template-columns: 49% 49%;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-}
-.grid {
-  &__3col {
-    display: grid;
-    grid-template-columns: 47% 6% 47%;
-    justify-content: space-between;
-    align-items: flex-end;
   }
 }
 .btn {

@@ -8,14 +8,15 @@
         <div class="chat__body">
           <div class="chat__header">
             <div class="chat__title">
-              <div>{{ $t('chat.chat') }}</div> <div class="icon-more">
-                <span class="icon-more_horizontal" />
+              <div>{{ $t('chat.chat') }}</div>
+              <div class="icon-more">
+                <ChatMenu />
               </div>
             </div>
           </div>
           <div class="chat__cards">
             <div
-              v-for="(item, i) in cards"
+              v-for="(item, i) in messages"
               :key="i"
             >
               <div
@@ -49,7 +50,7 @@
                 <div class="you__row">
                   <div class="you">
                     <span class="params">{{ $t('chat.you') }}</span>
-                    <span class="you__message">{{ item.youMessage }}</span>
+                    <span class="you__message">{{ item.body }}</span>
                   </div>
                 </div>
               </div>
@@ -62,67 +63,15 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import ChatMenu from '~/components/ui/ChatMenu';
+
 export default {
   name: 'Messages',
-  data() {
-    return {
-      cards: [
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-        {
-          name: 'Edward cooper',
-          company: 'from Amazon',
-          questName: 'Paint the garage quickly',
-          youMessage: 'Porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim',
-        },
-      ],
-    };
+  computed: {
+    ...mapGetters({
+      messages: 'data/getMessages',
+    }),
   },
   async mounted() {
     this.SetLoader(true);
@@ -206,7 +155,7 @@ export default {
     content: "\e951";
   }
   &-more {
-    margin: 0 19px 0 0;
+    margin: 0 7px 0 0;
   }
 }
 
@@ -285,6 +234,7 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
   }
   &__body {
     background-color: $white;
@@ -299,7 +249,7 @@ export default {
     overflow-y: scroll;
     height: 100%;
     width: 100%;
-    max-height: 793px;
+    max-height: 778px;
   }
   &__card {
     border: 1px solid #E9EDF2;

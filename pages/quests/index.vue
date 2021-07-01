@@ -17,10 +17,10 @@
           :options="{icon: location === currentLocation ? pins.selected : pins.notSelected}"
           @click="currentLocation = location"
         >
-          <GMapInfoWindow :options="{maxWidth: 200}">
-            lat: {{ location.lat }},
-            lng: {{ location.lng }}
-          </GMapInfoWindow>
+          <!--          <GMapInfoWindow :options="{maxWidth: 200}">-->
+          <!--            lat: {{ location.lat }},-->
+          <!--            lng: {{ location.lng }}-->
+          <!--          </GMapInfoWindow>-->
         </GMapMarker>
       </transition>
       <div class="quests__search">
@@ -254,20 +254,6 @@ export default {
       isShowMap: true,
       currentLocation: {},
       circleOptions: {},
-      locations: [
-        {
-          lat: 44.933076,
-          lng: 15.629058,
-        },
-        {
-          lat: 45.815,
-          lng: '15.9819',
-        },
-        {
-          lat: '45.12',
-          lng: '16.21',
-        },
-      ],
       pins: {
         selected: '/img/app/marker_blue.svg',
         notSelected: '/img/app/marker_red.svg',
@@ -282,11 +268,6 @@ export default {
         },
       ],
       search: '',
-      distance: [
-        '+ 100 m',
-        '+ 500 m',
-        '+ 1000 m',
-      ],
       priority: [
         this.$t('quests.priority.all'),
         this.$t('quests.priority.low'),
@@ -297,111 +278,53 @@ export default {
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
-      cards: [
-        {
-          title: 'Samantha Sparks',
-          favourite: true,
-          sub: '',
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 0,
-          amount: 1500,
-          symbol: 'wusd',
-          url: '/show-profile',
-          distance: '300',
-        },
-        {
-          title: 'Samantha Sparks',
-          sub: 'from Amazon',
-          favourite: false,
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 1,
-          amount: 1100,
-          symbol: 'wusd',
-          url: '/company',
-          distance: '400',
-        },
-        {
-          title: 'Samantha Sparks',
-          sub: 'from Amazon',
-          favourite: false,
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 2,
-          amount: 1700,
-          symbol: 'wusd',
-          url: '/company',
-          distance: '100',
-        },
-        {
-          title: 'Samantha Sparks',
-          sub: 'from Amazon',
-          favourite: false,
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 2,
-          amount: 1700,
-          symbol: 'wusd',
-          url: '/company',
-          distance: '100',
-        },
-        {
-          title: 'Samantha Sparks',
-          sub: 'from Amazon',
-          favourite: false,
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 2,
-          amount: 1700,
-          symbol: 'wusd',
-          url: '/company',
-          distance: '100',
-        },
-        {
-          title: 'Samantha Sparks',
-          sub: 'from Amazon',
-          favourite: false,
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 2,
-          amount: 1700,
-          symbol: 'wusd',
-          url: '/company',
-          distance: '100',
-        },
-        {
-          title: 'Samantha Sparks',
-          sub: 'from Amazon',
-          favourite: false,
-          background: require('~/assets/img/temp/fake-card.svg'),
-          theme: 'Paint the garage quickly',
-          desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-          priority: 2,
-          amount: 1700,
-          symbol: 'wusd',
-          url: '/company',
-          distance: '100',
-        },
-      ],
     };
   },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
+      cards: 'data/getCards',
+      distance: 'data/getDistance',
+      locations: 'data/getLocations',
+      // cards: 'data/getAllQuests',
     }),
   },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
+    this.showWelcomeModal();
+    await this.getAllQuests();
   },
   methods: {
+    showWelcomeModal() {
+      this.ShowModal({
+        key: modals.welcome,
+      });
+    },
+    getAllQuests() {
+      return this.$store.dispatch('data/getAllQuests');
+    },
+    getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Radius of the earth in km
+      const dLat = this.deg2rad(lat2 - lat1); // deg2rad below
+      const dLon = this.deg2rad(lon2 - lon1);
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+        + Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2))
+        * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      let d = (R * c) * 1000; // Distance in km
+      if (d >= 1000) {
+        d = '+1000';
+      } else if (d >= 500) {
+        d = '+500';
+      } else {
+        d = '-500';
+      }
+      return d;
+    },
+    deg2rad(deg) {
+      return deg * (Math.PI / 180);
+    },
     toNotifications() {
       this.$router.push('/notification');
     },
@@ -431,17 +354,19 @@ export default {
     },
     getPriority(index) {
       const priority = {
-        0: this.$t('priority.low'),
-        1: this.$t('priority.normal'),
-        2: this.$t('priority.urgent'),
+        0: this.$t('priority.all'),
+        1: this.$t('priority.low'),
+        2: this.$t('priority.normal'),
+        3: this.$t('priority.urgent'),
       };
       return priority[index] || 'None';
     },
     getPriorityClass(index) {
       const priority = {
-        0: 'block__priority_low',
-        1: 'block__priority_normal',
-        2: 'block__priority_urgent',
+        0: 'block__priority_all',
+        1: 'block__priority_low',
+        2: 'block__priority_normal',
+        3: 'block__priority_urgent',
       };
       return priority[index] || '';
     },

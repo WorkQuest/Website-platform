@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="message"
-    :title="'Review on employer'"
+    :title="$t('modals.reviewOnEmployer')"
   >
     <div class="body">
       <div class="btn-rating">
@@ -11,7 +11,6 @@
           />
         </button>
       </div>
-      <!-- Передать заголовок из локацизации -->
       <div class="ctm-modal__content">
         <div class="message">
           <div class="message__content">
@@ -23,7 +22,7 @@
                 <div>
                   <textarea
                     class="message__textarea"
-                    placeholder="Hello..."
+                    :placeholder="$t('modals.hello')"
                   />
                 </div>
               </div>
@@ -57,7 +56,6 @@
 /* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import 'nuxt-dropzone/dropzone.css';
 
 export default {
   name: 'ModalSendARequest',
@@ -198,10 +196,6 @@ export default {
 
 .btn-rating {
   padding: 25px 0;
-}
-
-.uploader__message_container {
-  margin: 0 0 0 10% !important;
 }
 
 .form-control {

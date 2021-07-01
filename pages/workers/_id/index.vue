@@ -25,53 +25,16 @@
               </div>
               <div class="col info-grid__col">
                 <div class="title title_inline">
-                  {{ payload.user.name }}
+                  {{ user.name }}
                   <span class="level">
                     HIGHER LEVEL
                   </span>
                 </div>
                 <div class="description">
-                  {{ payload.user.desc }}
+                  {{ user.desc }}
                 </div>
-                <div class="socials">
-                  <nuxt-link
-                    class="social__link"
-                    to="/profile"
-                  >
-                    <span
-                      class="icon-facebook"
-                    />
-                  </nuxt-link>
-                  <nuxt-link
-                    class="social__link"
-                    to="/profile"
-                  >
-                    <span
-                      class="icon-twitter"
-                    />
-                  </nuxt-link>
-                  <nuxt-link
-                    class="social__link"
-                    to="/profile"
-                  >
-                    <span
-                      class="icon-instagram"
-                    />
-                  </nuxt-link>
-                  <nuxt-link
-                    class="social__link"
-                    to="/profile"
-                  >
-                    <span
-                      class="icon-LinkedIn"
-                    />
-                  </nuxt-link>
-                </div>
-                <div class="contacts">
-                  <span class="icon-location" /><span class="contact__link">{{ payload.user.location }}</span>
-                  <span class="icon-phone" /><span class="contact__link">{{ payload.user.tel }}</span>
-                  <span class="icon-mail" /><span class="contact__link">{{ payload.user.email }}</span>
-                </div>
+                <Social />
+                <Contact />
               </div>
             </div>
             <div class="box__btn">
@@ -93,7 +56,7 @@
             {{ $t('workers.skills') }}
           </div>
           <div
-            v-for="(skill, i) in payload.skills"
+            v-for="(skill, i) in userInfo.skills"
             :key="i"
           >
             <span class="badge_blue">{{ skill.title }}</span>
@@ -143,54 +106,10 @@
         <div class="section__title">
           {{ $t('quests.reviewsBig') }}
         </div>
-        <div class="reviews-grid">
-          <span
-            v-for="(item, i) in payload.reviews"
-            :key="i"
-          >
-            <div class="reviews-item">
-              <div class="header">
-                <div class="avatar">
-                  <img
-                    src="~/assets/img/temp/avatar-medium.jpg"
-                    alt=""
-                  >
-                </div>
-                <div class="name">
-                  <div class="title">
-                    {{ item.reviewerName }}
-                  </div>
-                  <div class="card-subtitle card-subtitle_blue">
-                    {{ $t('role.worker') }}
-                  </div>
-                </div>
-              </div>
-              <div class="subheader">
-                <div class="card-subtitle">
-                  {{ $t('quests.questBig') }}
-                </div>
-                <div class="card-subtitle card-subtitle_name">
-                  {{ item.questName }}
-                </div>
-              </div>
-              <div class="description">
-                {{ item.reviewDesc }}
-              </div>
-              <div class="rating">
-                {{ item.reviewerRating }}
-              </div>
-              <nuxt-link
-                class="simple-button"
-                to="/profiles/1"
-              >
-                {{ $t('quests.readCompletely') }}
-              </nuxt-link>
-            </div>
-          </span>
-        </div>
-        <div class="button">
+        <Reviews />
+        <div class="button__container">
           <nuxt-link
-            class="more-button"
+            class="button__more"
             to="/profiles/1"
           >
             {{ $t('meta.showAllReviews') }}
@@ -200,31 +119,10 @@
         <div class="section__title">
           {{ $t('quests.portfolio') }}
         </div>
-        <div class="portfolio__items">
-          <div
-            v-for="(item, i) in payload.portfolios"
-            :key="i"
-            class="portfolio__item"
-          >
-            <div class="portfolio__card">
-              <div class="portfolio__body">
-                <img
-                  class="portfolio__img"
-                  src="~/assets/img/temp/photo.jpg"
-                  alt=""
-                >
-              </div>
-              <div class="portfolio__footer">
-                <div class="portfolio__name">
-                  {{ item.name }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="button">
+        <Portfolio />
+        <div class="button__container">
           <nuxt-link
-            class="more-button"
+            class="button__more"
             to="/profiles/1"
           >
             {{ $t('quests.showAllCases') }}
@@ -238,108 +136,26 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import Reviews from '~/components/app/Pages/Profile/Tabs/Reviews';
+import Portfolio from '~/components/app/Pages/Profile/Tabs/Portfolio';
+import Social from '~/components/app/Panels/Social';
+import Contact from '~/components/app/Panels/Contact';
 
 export default {
   name: 'IndexVue',
-  data() {
-    return {
-      payload: {
-        portfolios: [
-          {
-            name: 'Lorem ipsum dolor sit amet',
-            imgUrl: '',
-          },
-          {
-            name: 'Lorem ipsum dolor sit amet',
-            imgUrl: '',
-          },
-          {
-            name: 'Lorem ipsum dolor sit amet',
-            imgUrl: '',
-          },
-          {
-            name: 'Lorem ipsum dolor sit amet',
-            imgUrl: '',
-          },
-        ],
-        skills: [
-          {
-            title: 'Craft',
-          },
-          {
-            title: 'DIY',
-          },
-          {
-            title: 'Design',
-          },
-          {
-            title: 'Painting works',
-          },
-          {
-            title: 'Welder',
-          },
-          {
-            title: 'Plumbing',
-          },
-          {
-            title: 'Craft',
-          },
-          {
-            title: 'DIY',
-          },
-          {
-            title: 'Design',
-          },
-        ],
-        user: {
-          name: 'Samantha Sparcs',
-          desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel',
-          location: 'Moscow, Lenina street, 3',
-          tel: '+7 989 989 98 98',
-          email: 'worker@gmail.com',
-          company: 'CEO from Amazon',
-        },
-        quests: {
-          activeQuests: '12',
-          completedQuestsOneTime: '12',
-          completedQuestsFullTime: '2',
-          averageRating: '4.5',
-          reviewCount: '23',
-        },
-        reviews: [
-          {
-            reviewerName: 'Edward Cooper',
-            reviewerRating: '4.00',
-            questName: 'SPA saloon design',
-            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-          },
-          {
-            reviewerName: 'Edward Cooper',
-            reviewerRating: '4.00',
-            questName: 'SPA saloon design',
-            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-          },
-          {
-            reviewerName: 'Edward Cooper',
-            reviewerRating: '4.00',
-            questName: 'SPA saloon design',
-            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-          },
-          {
-            reviewerName: 'Edward Cooper',
-            reviewerRating: '4.00',
-            questName: 'SPA saloon design',
-            reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum ...',
-          },
-        ],
-      },
-    };
+  components: {
+    Reviews,
+    Portfolio,
+    Social,
+    Contact,
   },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      userInfo: 'data/getUserInfo',
+      user: 'data/getUserInfo',
     }),
   },
   async mounted() {
@@ -357,6 +173,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.button {
+  &__container {
+    @extend .styles__flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+  &__more {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 130%;
+    color: #0083C7;
+    border: 1px solid rgba(0, 131, 199, 0.1);
+    border-radius: 6px;
+    padding: 13px 67px 13px 28px;
+    background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
+    background-position: 82% 21px;
+    background-repeat: no-repeat;
+  }
+}
 
 .level {
   @include text-simple;
@@ -480,6 +318,9 @@ export default {
   &__btn {
     display: flex;
     align-items: flex-end;
+    margin: 0 0 11px 0;
+    width: 200px;
+    justify-self: flex-end;
   }
   &__skills {
     margin-top: 20px;
@@ -563,27 +404,6 @@ export default {
     background-position: 0 -1px;
     padding-left: 25px;
   }
-}
-
-.button {
-  @extend .styles__flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.button .more-button {
-  display: inline-block;
-  text-decoration: none;
-  font-size: 16px;
-  line-height: 130%;
-  color: #0083C7;
-  border: 1px solid rgba(0, 131, 199, 0.1);
-  border-radius: 6px;
-  padding: 13px 67px 13px 28px;
-  background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
-  background-position: 82% 21px;
-  background-repeat: no-repeat;
 }
 
 .block {
@@ -802,7 +622,7 @@ export default {
 .contact {
   &__link {
     text-decoration: none;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 130%;
     color: #7C838D;
     margin-right: 30px;
@@ -876,6 +696,8 @@ export default {
     height: 100%;
   }
   &__col {
+    width: 100%;
+    padding: 0 0 0 10px;
     &_left {
       max-width: 157px;
       width: 100%;
@@ -897,58 +719,6 @@ export default {
     @extend .styles__flex;
     @extend .styles__center;
   }
-}
-
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-  display: block;
-}
-
-body {
-  line-height: 1;
-}
-
-ol,
-ul {
-  list-style: none;
-}
-
-blockquote,
-q {
-  quotes: none;
-}
-
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: none;
-}
-
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-*,
-*:before,
-*:after {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-* {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .main-header {

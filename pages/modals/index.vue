@@ -1,5 +1,45 @@
 <template>
-  <div>
+  <div class="container">
+    <base-btn
+      @click="ModalTwoFAAuth()"
+    >
+      showModalTwoFAAuth
+    </base-btn>
+    <base-btn
+      @click="ModalChangePassword()"
+    >
+      showModalChangePassword
+    </base-btn>
+    <base-btn
+      @click="showSkillsModal()"
+    >
+      showSkillsModal
+    </base-btn>
+    <base-btn
+      @click="showTransferModal()"
+    >
+      showTransferModal
+    </base-btn>
+    <base-btn
+      @click="showNoticeModal()"
+    >
+      showNoticeModal
+    </base-btn>
+    <base-btn
+      @click="showOpenADisputeModal()"
+    >
+      showOpenADisputeModal
+    </base-btn>
+    <base-btn
+      @click="showWelcomeModal()"
+    >
+      showWelcomeModal
+    </base-btn>
+    <base-btn
+      @click="showAddCaseModal()"
+    >
+      showAddCaseModal
+    </base-btn>
     <base-btn
       @click="showMessageSendModal()"
     >
@@ -121,6 +161,46 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    ModalTwoFAAuth() {
+      this.ShowModal({
+        key: modals.twoFAAuth,
+      });
+    },
+    ModalChangePassword() {
+      this.ShowModal({
+        key: modals.changePassInSettings,
+      });
+    },
+    showSkillsModal() {
+      this.ShowModal({
+        key: modals.skills,
+      });
+    },
+    showTransferModal() {
+      this.ShowModal({
+        key: modals.transfer,
+      });
+    },
+    showNoticeModal() {
+      this.ShowModal({
+        key: modals.notice,
+      });
+    },
+    showOpenADisputeModal() {
+      this.ShowModal({
+        key: modals.openADispute,
+      });
+    },
+    showWelcomeModal() {
+      this.ShowModal({
+        key: modals.welcome,
+      });
+    },
+    showAddCaseModal() {
+      this.ShowModal({
+        key: modals.addCase,
+      });
+    },
     showRaiseViewsModal() {
       this.ShowModal({
         key: modals.raiseViews,
@@ -229,3 +309,11 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.container {
+  overflow-y: auto;
+  height: 1000px;
+}
+
+</style>

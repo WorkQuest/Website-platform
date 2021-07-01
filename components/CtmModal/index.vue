@@ -44,6 +44,13 @@
       <CtmModalConfirmDetails v-if="modals.confirmDetails === currentModalKey" />
       <CtmModalInsureCase v-if="modals.insureCase === currentModalKey" />
       <CtmModalWithdrawAbout v-if="modals.withdrawAbout === currentModalKey" />
+      <CtmModalAddCase v-if="modals.addCase === currentModalKey" />
+      <CtmModalWelcome v-if="modals.welcome === currentModalKey" />
+      <CtmModalOpenADispute v-if="modals.openADispute === currentModalKey" />
+      <CtmModalNotice v-if="modals.notice === currentModalKey" />
+      <CtmModalTransfer v-if="modals.transfer === currentModalKey" />
+      <CtmModalChangePassInSettings v-if="modals.changePassInSettings === currentModalKey" />
+      <CtmModalTwoFAAuth v-if="modals.twoFAAuth === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -82,6 +89,13 @@ import CtmModalCreditingDeposit from './CtmModalCreditingDeposit';
 import CtmModalConfirmDetails from './CtmModalConfirmDetails';
 import CtmModalInsureCase from './CtmModalInsureCase';
 import CtmModalWithdrawAbout from './CtmModalWithdrawAbout';
+import CtmModalAddCase from './CtmModalAddCase';
+import CtmModalWelcome from './CtmModalWelcome';
+import CtmModalOpenADispute from './CtmModalOpenADispute';
+import CtmModalNotice from './CtmModalNotice';
+import CtmModalTransfer from './CtmModalTransfer';
+import CtmModalChangePassInSettings from './CtmModalChangePassInSettings';
+import CtmModalTwoFAAuth from './CtmModalTwoFAAuth';
 
 export default {
   name: 'ModalBox',
@@ -118,6 +132,13 @@ export default {
     CtmModalConfirmDetails,
     CtmModalInsureCase,
     CtmModalWithdrawAbout,
+    CtmModalAddCase,
+    CtmModalWelcome,
+    CtmModalOpenADispute,
+    CtmModalNotice,
+    CtmModalTransfer,
+    CtmModalChangePassInSettings,
+    CtmModalTwoFAAuth,
   },
   data: () => ({
     modals,

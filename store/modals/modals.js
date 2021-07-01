@@ -32,4 +32,12 @@ export default {
   confirmDetails: 'confirmDetails',
   insureCase: 'insureCase',
   withdrawAbout: 'withdrawAbout',
+  depositIsOpened: 'depositIsOpened',
+  addCase: 'addCase',
+  welcome: 'welcome',
+  openADispute: 'openADispute',
+  notice: 'notice',
+  transfer: 'transfer',
+  changePassInSettings: 'changePassInSettings',
+  twoFAAuth: 'twoFAAuth',
 };

@@ -152,12 +152,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.icon-caret_down:before {
-  content: "\ea48";
-  color: $blue;
-  font-size: 20px;
+.icon {
+  &-caret_down:before {
+    content: "\ea48";
+    color: $blue;
+    font-size: 20px;
+  }
 }
 .info {
+  min-height: 54px;
+  box-shadow: 0 1px 0 #e6e9ec;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &_bg-green {
     background-color: $green;
   }
@@ -170,12 +178,6 @@ export default {
   &_bg-blue {
     background-color: $blue;
   }
-  min-height: 54px;
-  box-shadow: 0 1px 0 #e6e9ec;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   &__body {
     max-width: 1180px;
     width: 100%;
@@ -195,16 +197,16 @@ export default {
     align-items: center;
     justify-content: center;
   }
-  &__text{
+  &__text {
     @include text-simple;
     font-size: 16px;
     font-weight: 400;
     z-index: 11;
     justify-content: space-between;
-    &_white{
+    &_white {
       color: $white;
     }
-    &_black{
+    &_black {
       color: $black600;
     }
     &_bold {

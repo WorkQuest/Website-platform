@@ -22,17 +22,10 @@
                   <div class="page__info page__info-subtitle">
                     {{ $t('settings.alsoRating') }}
                   </div>
-                  <div class="info__toggle">
-                    <input
-                      id="dontShow"
-                      v-model="isShowInfo"
-                      type="checkbox"
-                      class="custom-checkbox"
-                    >
-                    <label
-                      class="label"
-                      for="dontShow"
-                    >{{ $t('settings.dontShow') }}</label>
+                  <div class="ver-btn__container">
+                    <base-btn mode="ver">
+                      {{ $t('settings.getVerification') }}
+                    </base-btn>
                   </div>
                 </div>
               </div>
@@ -60,64 +53,91 @@
           <div class="avatar__container">
             <img
               class="profile__img"
-              src="~/assets/img/temp/photo.jpg"
+              :src="imageData || '~/assets/img/temp/photo.jpg'"
             >
+            <label class="user_edit_avatar">
+              <div class="icon-edit" />
+              <ValidationProvider
+                v-slot="{ validate }"
+                rules="required|ext:png,jpeg,jpg,gif,mp3,mp4,ai"
+                tag="div"
+              >
+                <input
+                  id="coverUpload"
+                  class="edit_avatar"
+                  type="file"
+                  accept="image/*"
+                  @change="processFile($event, validate)"
+                >
+              </ValidationProvider>
+            </label>
           </div>
-          <div class="profile__row-3col">
-            <base-field
-              v-model="name_input"
-              :placeholder="$t('settings.nameInput')"
-              mode="icon"
+          <div>
+            <span
+              v-if="userRole === 'worker'"
+              class="profile__status"
             >
-              <template v-slot:left>
-                <span class="icon-user" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="adress1_input"
-              :placeholder="$t('settings.addressInput')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-location" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="adress2_input"
-              :placeholder="$t('settings.addressInput')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-mail" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="lastname_input"
-              :placeholder="$t('settings.lastNameInput')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-user" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="tel1_input"
-              :placeholder="$t('settings.telInput')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-phone" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="tel2_input"
-              :placeholder="$t('settings.telInput')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-phone" />
-              </template>
-            </base-field>
+              {{ $t('settings.notVerified') }}
+              <span class="icon-check_all_big" />
+            </span>
+            <div class="profile__row-3col">
+              <base-field
+                v-if="localUserData.firstName"
+                v-model="localUserData.firstName"
+                :placeholder="userData.firstName || $t('settings.nameInput')"
+                mode="icon"
+              >
+                <template v-slot:left>
+                  <span class="icon-user" />
+                </template>
+              </base-field>
+              <base-field
+                v-model="address1_input"
+                :placeholder="$t('settings.addressInput')"
+                mode="icon"
+              >
+                <template v-slot:left>
+                  <span class="icon-location" />
+                </template>
+              </base-field>
+              <base-field
+                v-model="address1_input"
+                :placeholder="$t('settings.addressInput')"
+                mode="icon"
+              >
+                <template v-slot:left>
+                  <span class="icon-location" />
+                </template>
+              </base-field>
+              <base-field
+                v-if="localUserData.lastName"
+                v-model="localUserData.lastName"
+                :placeholder="$t('settings.lastNameInput')"
+                mode="icon"
+              >
+                <template v-slot:left>
+                  <span class="icon-user" />
+                </template>
+              </base-field>
+              <base-field
+                v-model="tel1_input"
+                :placeholder="$t('settings.telInput')"
+                mode="icon"
+              >
+                <template v-slot:left>
+                  <span class="icon-phone" />
+                </template>
+              </base-field>
+              <base-field
+                v-model="tel2_input"
+                :placeholder="$t('settings.telInput')"
+                mode="icon"
+              >
+                <template v-slot:left>
+                  <span class="icon-phone" />
+                </template>
+              </base-field>
+            </div>
           </div>
         </div>
         <div
@@ -125,7 +145,7 @@
           class="company__inputs"
         >
           <base-field
-            v-model="tel2_input"
+            v-model="company_input"
             :placeholder="$t('settings.amazon')"
             mode="icon"
           >
@@ -134,7 +154,7 @@
             </template>
           </base-field>
           <base-field
-            v-model="tel2_input"
+            v-model="ceo_input"
             :placeholder="$t('settings.ceo')"
             mode="icon"
           >
@@ -143,7 +163,7 @@
             </template>
           </base-field>
           <base-field
-            v-model="tel2_input"
+            v-model="site_input"
             :placeholder="$t('settings.amazon_com')"
             mode="icon"
           >
@@ -158,10 +178,75 @@
         >
           <textarea
             id="textarea"
-            v-model="bio_input"
+            v-model="descriptionTextBlock"
             class="profile__textarea"
             placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel"
           />
+        </div>
+        <label
+          v-if="userRole === 'worker'"
+          class="knowledge__label"
+          for="knowledge"
+        >{{ $t('settings.knowledge') }}</label>
+        <div
+          v-if="userRole === 'worker'"
+          class="knowledge__container"
+        >
+          <base-field
+            id="knowledge"
+            v-model="knowledgeTerm1__input"
+            type="grey"
+            :placeholder="$t('settings.term')"
+          />
+          <div class="knowledge__dash">
+            -
+          </div>
+          <base-field
+            v-model="knowledgeTerm2__input"
+            type="grey"
+            :placeholder="$t('settings.term')"
+          />
+          <div />
+          <base-field
+            v-model="knowledgePlace__input"
+            type="grey"
+            :placeholder="$t('settings.placeOfStudying')"
+          />
+          <div />
+          <base-btn>{{ $t('settings.add') }}</base-btn>
+        </div>
+
+        <label
+          v-if="userRole === 'worker'"
+          class="knowledge__label"
+          for="workExp"
+        >{{ $t('settings.workExp') }}</label>
+        <div
+          v-if="userRole === 'worker'"
+          class="knowledge__container"
+        >
+          <base-field
+            id="workExp"
+            v-model="workExpTerm1__input"
+            type="grey"
+            :placeholder="$t('settings.term')"
+          />
+          <div class="knowledge__dash">
+            -
+          </div>
+          <base-field
+            v-model="workExpTerm2__input"
+            type="grey"
+            :placeholder="$t('settings.term')"
+          />
+          <div />
+          <base-field
+            v-model="workExpVacancy__input"
+            type="grey"
+            :placeholder="$t('settings.vacancy')"
+          />
+          <div />
+          <base-btn>{{ $t('settings.add') }}</base-btn>
         </div>
         <div class="profile__row-4col">
           <base-field
@@ -204,25 +289,26 @@
         <div class="profile__row-4col">
           <base-btn
             class="btn__save"
+            @click="editUserData()"
           >
             {{ $t('settings.save') }}
           </base-btn>
         </div>
       </div>
-      <div
-        v-if="userRole === 'worker'"
-        class="page__skills"
-      >
-        <div class="main-white">
+      <div class="main-white">
+        <div
+          v-if="userRole === 'worker'"
+          class="page__skills"
+        >
           <div class="page__badge-skills">
             {{ $t('settings.skills') }}
           </div>
           <div
-            v-for="(item, i) in badges"
+            v-for="(item, i) in userInfo.skills"
             :key="i"
           >
             <div class="page__badge">
-              {{ item.name }}
+              {{ item.title }}
             </div>
           </div>
           <div class="btn__container">
@@ -242,8 +328,10 @@
             <div class="settings__option">
               <input
                 id="allUsers"
+                name="whoCanSee"
                 type="radio"
                 class="radio__input"
+                value="allUsers"
                 checked
               >
               <label
@@ -254,8 +342,10 @@
             <div class="settings__option">
               <input
                 id="allInternet"
+                name="whoCanSee"
                 type="radio"
                 class="radio__input"
+                value="allInternet"
               >
               <label
                 class="label__black"
@@ -265,8 +355,10 @@
             <div class="settings__option">
               <input
                 id="onlyWhenSubmittedWork"
+                name="whoCanSee"
                 type="radio"
                 class="radio__input"
+                value="onlyWhenSubmittedWork"
               >
               <label
                 class="label__black"
@@ -281,8 +373,10 @@
             <div class="settings__option">
               <input
                 id="urgentProposals"
+                name="filterAllWorkProposals"
                 type="radio"
                 class="radio__input"
+                value="urgentProposals"
               >
               <label
                 class="label__black"
@@ -292,8 +386,10 @@
             <div class="settings__option">
               <input
                 id="onlyImplementation"
+                name="filterAllWorkProposals"
                 type="radio"
                 class="radio__input"
+                value="onlyImplementation"
                 checked
               >
               <label
@@ -304,8 +400,10 @@
             <div class="settings__option">
               <input
                 id="onlyReady"
+                name="filterAllWorkProposals"
                 type="radio"
                 class="radio__input"
+                value="onlyReady"
               >
               <label
                 class="label__black"
@@ -315,8 +413,10 @@
             <div class="settings__option">
               <input
                 id="allRegistered"
+                name="filterAllWorkProposals"
                 type="radio"
                 class="radio__input"
+                value="allRegistered"
               >
               <label
                 class="label__black"
@@ -331,15 +431,17 @@
             <div class="settings_blue">
               <div>{{ $t('settings.changePass') }}</div>
               <div>
-                <base-btn>
+                <base-btn @click="modalChangePassword()">
                   {{ $t('settings.change') }}
                 </base-btn>
               </div>
             </div>
             <div class="settings_blue">
-              <div>{{ $t('settings.enableTwoStepAuth') }}</div>
               <div>
-                <base-btn>
+                {{ $t('settings.enableTwoStepAuth') }}
+              </div>
+              <div>
+                <base-btn @click="modalTwoFAAuth()">
                   {{ $t('settings.enable') }}
                 </base-btn>
               </div>
@@ -355,7 +457,7 @@
             <div class="settings_blue">
               <div>{{ $t('settings.changeRole') }}</div>
               <div>
-                <base-btn>
+                <base-btn @click="changeRole()">
                   {{ $t('settings.change') }}
                 </base-btn>
               </div>
@@ -369,12 +471,18 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'Settings',
   data() {
     return {
-      twoFa: false,
+      knowledgeTerm1__input: '',
+      knowledgeTerm2__input: '',
+      knowledgePlace__input: '',
+      workExpTerm1__input: '',
+      workExpTerm2__input: '',
+      workExpVacancy__input: '',
       sms: false,
       allRegisterUser: false,
       allPeopleInInternet: false,
@@ -385,30 +493,27 @@ export default {
       allRegisteredUsers: false,
       bio_input: '',
       name_input: '',
-      adress1_input: '',
-      adress2_input: '',
+      address1_input: '',
+      address2_input: '',
+      email_input: '',
       lastname_input: '',
       tel1_input: '',
       tel2_input: '',
+      company_input: '',
+      ceo_input: '',
+      site_input: '',
       inst_input: '',
       twitt_input: '',
       in_input: '',
       facebook_input: '',
       isShowInfo: true,
-      badges: [
-        {
-          name: 'Painting works',
-        },
-        {
-          name: 'Painting works',
-        },
-        {
-          name: 'Painting works',
-        },
-        {
-          name: 'Painting works',
-        },
-      ],
+      localUserData: {},
+      avatar_change: {
+        data: {},
+        file: {},
+      },
+      userDataStr: [],
+      descriptionTextBlock: '',
     };
   },
   computed: {
@@ -416,15 +521,51 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      userInfo: 'data/getUserInfo',
+      imageData: 'user/getImageData',
+      additionalInfo: 'user/getAdditionalInfo',
     }),
   },
   async mounted() {
     this.SetLoader(true);
+    this.localUserData = JSON.parse(JSON.stringify(this.userData));
     this.SetLoader(false);
   },
   methods: {
-    changePass() {
-      this.$router.push('/change-password');
+    // eslint-disable-next-line consistent-return
+    async processFile(e, validate) {
+      const isValid = await validate(e);
+      const file = e.target.files[0];
+      // document.getElementById('coverUpload').value = null;
+      if (isValid.valid) {
+        const MAX_SIZE = 20e6; // макс размер - тут 2мб
+        if (!file) {
+          return false;
+        }
+        if (file.size > MAX_SIZE) {
+          this.errorModal(this.$tc('nft.text.maxFileSize', MAX_SIZE / 1e6));
+          return false;
+        }
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        this.avatar_change.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
+        this.avatar_change.file = file;
+        reader.onerror = (evt) => {
+          console.error(evt);
+        };
+      }
+    },
+    modalChangePassword() {
+      this.ShowModal({
+        key: modals.changePassInSettings,
+      });
+    },
+    modalTwoFAAuth() {
+      this.ShowModal({
+        key: modals.twoFAAuth,
+      });
     },
     isCloseInfo() {
       this.isShowInfo = !this.isShowInfo;
@@ -436,11 +577,120 @@ export default {
       this.sms = !this.sms;
       this.$router.push('/sms-verification');
     },
+    async changeRole() {
+      try {
+        const response = await this.$store.dispatch('user/setUserRole');
+        if (response?.ok) {
+          console.log('good response');
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async changePassword() {
+      try {
+        this.ShowModal({
+          key: modals.changePassword,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async editUserData() {
+      if (document.getElementById('coverUpload').value) {
+        const formData = new FormData();
+        formData.append('image', this.avatar_change.file);
+        try {
+          if (this.avatar_change.data.ok) {
+            const data = {
+              url: this.avatar_change.data.result.url,
+              formData: this.avatar_change.file,
+              type: this.avatar_change.file.type,
+            };
+            await this.$store.dispatch('user/setImage', data);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+      let payload = {};
+      if (this.userRole === 'employer') {
+        payload = {
+          avatarId: this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : null,
+          firstName: this.localUserData.firstName || null,
+          lastName: this.localUserData.lastName || null,
+          additionalInfo: {
+            firstMobileNumber: this.tel1_input || null,
+            secondMobileNumber: this.tel2_input || null,
+            address: this.address1_input || null,
+            socialNetwork: {
+              instagram: this.inst_input || null,
+              twitter: this.twitt_input || null,
+              linkedin: this.in_input || null,
+              facebook: this.facebook_input || null,
+            },
+            company: this.company_input || null,
+            CEO: this.ceo_input || null,
+            website: this.site_input || null,
+          },
+        };
+      } else {
+        payload = {
+          avatarId: this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : null,
+          firstName: this.localUserData.firstName || null,
+          lastName: this.localUserData.lastName || null,
+          additionalInfo: {
+            firstMobileNumber: this.tel1_input || null,
+            secondMobileNumber: this.tel2_input || null,
+            address: this.address1_input || null,
+            socialNetwork: {
+              instagram: this.inst_input || null,
+              twitter: this.twitt_input || null,
+              linkedin: this.in_input || null,
+              facebook: this.facebook_input || null,
+            },
+            description: this.descriptionTextBlock || null,
+            skills: [],
+          },
+        };
+      }
+      try {
+        await this.$store.dispatch('user/editUserData', payload);
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+
+.knowledge {
+  &__container {
+    display: grid;
+    grid-template-columns: 5fr 28px 5fr 28px 7fr 28px 2fr;
+    margin: 0 19px 10px 20px;
+    max-height: 44px;
+  }
+  &__dash {
+    display: flex;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+  }
+  &__label {
+    margin: 20px 0 15px 20px;
+  }
+}
+
+.ver-btn {
+  &__container {
+    display: flex;
+    margin: 20px;
+    width: 250px;
+  }
+}
 
 .company {
   &__inputs {
@@ -546,11 +796,9 @@ export default {
 
 .btn {
   &__container {
-    width: 46%;
+    justify-content: center;
     align-content: center;
     display: flex;
-    justify-content: flex-end;
-    margin: 0 24px 0 0;
   }
   &__plus {
     justify-content: flex-end;
@@ -566,6 +814,12 @@ export default {
     color: transparent;
     -webkit-background-clip: text;
     background-image: linear-gradient(135deg, #0083C7 0%, #00AA5B 100%);
+  }
+  &-check_all_big:before {
+    @extend .icon;
+    content: "\ea00";
+    color: $white;
+    padding: 0 0 0 10px;
   }
   &-Lock:before {
     @extend .icon;
@@ -684,8 +938,35 @@ export default {
       display: none;
     }
   }
+  &-edit {
+    position: absolute;
+    top: 50%;
+    margin-right: -50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  &-edit::before {
+    @extend .icon;
+    content: "\e997"
+  }
 }
-
+.user_edit_avatar {
+  opacity: 0;
+  width: 40px;
+  height: 40px;
+  background: #F7F8FA;
+  position: relative;
+  top: -60%;
+  left: 35%;
+  border-radius: 6px;
+  -moz-transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+.avatar__container:hover .user_edit_avatar{
+  opacity: 1;
+}
 .icons {
   padding: 16px 0 16px 16px;
 }
@@ -708,9 +989,12 @@ export default {
 .avatar {
   &__row {
     display: grid;
-    grid-template-columns: 107px 1fr;
+    grid-template-columns: 151px 1fr;
     grid-gap: 20px;
     margin: 20px;
+  }
+  &__container {
+    height: 151px;
   }
 }
 .btn {
@@ -724,8 +1008,8 @@ export default {
   }
   &__save {
     @extend .btn;
-    grid-column: 4/5;
     margin-bottom: 20px;
+    grid-column: 5/17;
   }
 }
 .quests {
@@ -801,20 +1085,35 @@ export default {
 .main {
   @include main;
   &-white {
+    @include main;
     @include main-white;
-    justify-content: flex-start;
-    border-radius: 6px;
+    width: calc(98vw - 67px);
+    margin: 0 20px;
+  }
+  &__body {
+    max-width: 1180px;
+    height: 100%;
+    width: calc(100vw - 40px);
   }
 }
 .profile {
   display: grid;
   justify-content: space-between;
   max-width: 1180px;
+  &__status {
+    max-width: 159px;
+    margin: 0 0 10px 0;
+    padding: 8px 13px;
+    display: flex;
+    background: $blue;
+    color: $white;
+    border-radius: 36px;
+  }
   &__img {
     width: 100%;
     height: 100%;
-    max-height: 115px;
-    max-width: 115px;
+    max-height: 151px;
+    max-width: 151px;
     border-radius: 6px;
   }
   &__row-1col {
@@ -833,12 +1132,13 @@ export default {
     @extend .profile;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px 20px;
-    margin: 0 20px 0 20px;
+    margin: 31px 20px 0 20px;
+    max-height: 63px;
   }
   &__textarea {
     padding: 10px 10px 0 10px;
     border-radius: 6px;
-    margin: 11px 40px 20px 0px;
+    margin: 11px 40px 20px 0;
     height: 114px;
     border: 0;
     background-color: #F7F8FA;
@@ -949,14 +1249,19 @@ export default {
     background: rgba(0, 131, 199, 0.1);
     border-radius: 44px;
     margin: 10px;
-    padding: 5px;
     color: $blue;
+    padding: 5px 6px;
+    display: flex;
+    text-align: center;
     &-skills {
       padding: 15px;
     }
   }
   &__skills {
     margin: 0 0 10px 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    display: flex;
   }
 }
 .option {
@@ -1033,7 +1338,14 @@ export default {
     font-size: 16px;
   }
 }
-
+.edit_avatar {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
 @include _1199 {
   .quests {
     &__top {
@@ -1059,6 +1371,16 @@ export default {
   }
 }
 @include _991 {
+  .knowledge {
+    &__container {
+      grid-template-columns: 5fr 28px 5fr 0;
+      max-height: 100%;
+    }
+  }
+  .settings {
+    grid-auto-rows: auto auto;
+    grid-template-columns: 5fr;
+  }
   .icon {
     &__close {
       bottom: 154px;
@@ -1075,8 +1397,9 @@ export default {
       grid-template-columns: repeat(2, 1fr);
     }
     &__row-4col {
-      grid-template-columns: repeat(2, 1fr);
-      grid-gap: 10px 10px;
+      grid-template-rows: auto auto;
+      grid-template-columns: 1fr;
+      max-height: 100%;
     }
   }
   .higher {
@@ -1089,9 +1412,20 @@ export default {
 }
 
 @include _767 {
+  .avatar {
+    &__row {
+      margin: 20px 20px 0 20px;
+    }
+  }
+  .company {
+    &__inputs {
+      grid-template-columns: 1fr;
+      grid-gap: 0;
+    }
+  }
   .icon {
     &__close {
-      bottom: 167px;
+      bottom: 154px;
     }
   }
   .page {
@@ -1145,11 +1479,6 @@ export default {
       justify-content: center;
     }
   }
-  .btn {
-    &__save {
-      grid-column: 1/5;
-    }
-  }
   .page {
     &__info-title {
       font-size: 18px;
@@ -1162,27 +1491,38 @@ export default {
       grid-gap: 10px;
     }
   }
-  .profile {
-    &__img {
-      margin: 20px 0 20px 0;
-    }
-  }
   .icon {
     &__close {
-      bottom: 155px;
-      right: 5px;
+      bottom: 137px;
+      right: 10px;
     }
   }
 }
 @include _480 {
+  .main-white {
+    width: calc(98vw - 71px);
+  }
+  .btn {
+    &__save {
+      margin-bottom: 20px;
+      grid-column: 5/14;
+    }
+  }
   .icon {
     &__close {
-      bottom: 177px;
+      bottom: 157px;
+      right: 6px;
     }
   }
 }
 
 @include _380 {
+  .btn {
+    &__save {
+      margin-bottom: 20px;
+      grid-column: 5/14;
+    }
+  }
   .icon {
     &__close {
       bottom: 195px;

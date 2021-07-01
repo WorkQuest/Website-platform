@@ -49,6 +49,7 @@
         </div>
         <div class="btn__wrapper">
           <base-btn
+            :mode="'outline'"
             class="message__action"
             @click="hide()"
           >
@@ -67,7 +68,12 @@ import modals from '~/store/modals/modals';
 export default {
   name: 'ModalAddCard',
   data() {
-    return {};
+    return {
+      cardNumber_input: '',
+      name_input: '',
+      date_input: '',
+      cvv_input: '',
+    };
   },
   computed: {
     ...mapGetters({

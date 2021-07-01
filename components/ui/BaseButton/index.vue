@@ -69,6 +69,9 @@ export default {
         { 'base-btn_delete': mode === 'delete' },
         { 'base-btn_approve': mode === 'approve' },
         { 'base-btn_back': mode === 'back' },
+        { 'base-btn_grey': mode === 'grey' },
+        { 'base-btn_verification': mode === 'ver' },
+        { 'base-btn_black': mode === 'black' },
       ];
     },
   },
@@ -99,10 +102,30 @@ export default {
   line-height: 130%;
   text-align: center;
   transition: .3s;
-  background: #0083C7;
+  background: $blue;
   border-radius: 6px;
   &:hover {
     background: #103D7C;
+  }
+  &_black {
+    background: $black800;
+    color: $white;
+    &:hover {
+      background: $black700;
+    }
+  }
+  &_verification {
+    background: $white;
+    color: $blue;
+    &:hover {
+      background: $black100;
+    }
+  }
+  &_grey {
+    background-color: $black100;
+    &:hover {
+      background: $black200;
+    }
   }
   &_back {
     transition: .3s;
@@ -151,6 +174,7 @@ export default {
     border-radius: 6px;
     transition: .3s;
     border: 1px solid $green;
+    font-size: 12px;
     &:hover {
       background-color: $green;
       color: $white;
@@ -200,8 +224,8 @@ export default {
       justify-content: flex-end;
     }
     &:hover {
-      background: #F7F8FA;
-      color: $blue;
+      color: #3992ff;
+      background: $white;
     }
   }
   &_tag {

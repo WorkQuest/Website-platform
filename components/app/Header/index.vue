@@ -23,7 +23,7 @@
             >
               <img
                 :src="avatar"
-                alt=""
+                alt="User.name"
               >
             </div>
             <div class="header__route">
@@ -116,8 +116,8 @@ export default {
   background: #FFFFFF;
   width: 100%;
   height: 124px;
-  box-shadow: 0 0 4px rgba(0, 7, 5, 0.3);
   border-radius: 0 0 50px 50px;
+  box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
   &__container {
     height: 100%;
     max-width: 1000px;

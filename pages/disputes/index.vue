@@ -6,7 +6,7 @@
           {{ $t('disputes.disputes') }}
         </h2>
         <span
-          v-for="(item, i) in payload.disputes"
+          v-for="(item, i) in disputes"
           :key="i"
         >
           <div
@@ -18,11 +18,13 @@
         </span>
         <div class="page__grid">
           <span
-            v-for="(item, i) in payload.disputes"
+            v-for="(item, i) in disputes"
             :key="i"
-            class=""
           >
-            <div class="page__card">
+            <div
+              class="page__card"
+              @click="toDisputes()"
+            >
               <div class="page__card-body">
                 <div class="page__text">
                   {{ $t('disputes.dispute') }} <span class="page__text_blue">{{ item.number }}</span>
@@ -74,51 +76,26 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Disputes',
-  data() {
-    return {
-      payload: {
-        disputes: [
-          {
-            number: '1',
-            quest: 'Pain the garage quickly...',
-            employer: 'Samantha Sparcs',
-            questSalary: '1 500 WUSD',
-            status: 'Pending',
-            decision: '',
-          },
-          {
-            number: '2',
-            quest: 'Pain the garage quickly...',
-            employer: 'Samantha Sparcs',
-            questSalary: '1 500 WUSD',
-            status: 'Completed',
-            decision: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
-          },
-          {
-            number: '3',
-            quest: 'Pain the garage quickly...',
-            employer: 'Samantha Sparcs',
-            questSalary: '1 500 WUSD',
-            status: 'Pending',
-            decision: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
-          },
-          {
-            number: '4',
-            quest: 'Pain the garage quickly...',
-            employer: 'Samantha Sparcs',
-            questSalary: '1 500 WUSD',
-            status: 'Pending',
-            decision: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
-          },
-        ],
-      },
-    };
+  computed: {
+    ...mapGetters({
+      tags: 'ui/getTags',
+      userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
+      disputes: 'data/getDisputes',
+    }),
   },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
+  },
+  methods: {
+    toDisputes() {
+      this.$router.push('/disputes/1');
+    },
   },
 };
 
@@ -170,6 +147,11 @@ export default {
     width: 100%;
     margin: 20px 10px 10px 0;
     height: 100%;
+    transition: .5s;
+    &:hover {
+      box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.1);
+      cursor: pointer;
+    }
   }
   &__text {
     @include text-simple;

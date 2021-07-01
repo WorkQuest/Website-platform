@@ -5,4 +5,7 @@ export default () => ({
   },
   userData: {},
   currentUserPosition: null,
+  userRole: {},
+  userDataPassword: {},
+  imageLink: {},
 });

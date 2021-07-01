@@ -2,7 +2,7 @@
 // eslint-disable-next-line func-names
 export default function ({ $axios, store, app }, inject) {
   $axios.onRequest((config) => {
-    if (store.getters['user/isAuth']) {
+    if (store.getters['user/isAuth'] && !config.url.includes('digitaloceanspaces.com')) {
       const urlName = config.url.split('/').pop();
       const token = urlName === 'refresh-tokens' ? store.getters['user/refreshToken'] : store.getters['user/accessToken'];
       config.headers.authorization = `Bearer ${token}`;

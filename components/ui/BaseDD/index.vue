@@ -136,10 +136,13 @@ export default {
   font-weight: normal;
   font-size: 16px;
   line-height: 130%;
-  color: $black800;
+  color: $black500;
   min-width: 131px;
   position: relative;
   text-align: left;
+  &__title {
+    color: $black500;
+  }
   &__top {
     align-items: flex-start;
   }
@@ -186,7 +189,7 @@ export default {
   &__caret {
     &::before {
       padding-left: 10px;
-      color: $black400;
+      color: $blue;
       font-size: 24px;
 
     }

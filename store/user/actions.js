@@ -21,6 +21,16 @@ export default {
     commit('setUserData', response.result);
     return response;
   },
+  async setUserRole({ commit }) {
+    const response = await this.$axios.$post('/v1/profile/set-role');
+    commit('setUserRole', response.result);
+    return response;
+  },
+  async editUserData({ commit }, payload) {
+    const response = await this.$axios.$put('/v1/profile/edit', payload);
+    commit('setUserData', response.result);
+    return response;
+  },
   async logout({ commit }) {
     commit('logOut');
   },
@@ -31,5 +41,25 @@ export default {
   },
   async setCurrentPosition({ commit }, payload) {
     commit('setCurrentUserPosition', payload);
+  },
+  async editUserPassword({ commit }, payload) {
+    const response = await this.$axios.$put('/v1/profile/change-password', payload);
+    commit('setUserPassword', response.result);
+    return response;
+  },
+  async imageType({ commit }, payload) {
+    const response = await this.$axios.$post('/v1/storage/get-upload-link', payload);
+    commit('setImageType', response.result);
+    return response;
+  },
+  async setImage({ commit }, { url, formData, type }) {
+    const response = await this.$axios.$put(url, formData, {
+      headers: {
+        'Content-Type': type,
+        'x-amz-acl': 'public-read',
+      },
+    });
+    commit('setImage', response.result);
+    return response;
   },
 };
