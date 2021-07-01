@@ -569,7 +569,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
         title: 'Image loaded successful',
-        subtitle: 'And you are beautiful, please press save button',
+        subtitle: 'Please press save button',
         path: '/settings',
       });
     },
