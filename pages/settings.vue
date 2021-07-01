@@ -95,7 +95,7 @@
               </base-field>
               <base-field
                 v-model="address1_input"
-                :placeholder="userData.additionalInfo.hasOwnProperty('address') ? (userData.additionalInfo.address || $t('settings.addressInput')) : $t('settings.addressInput')"
+                :placeholder="$t('settings.addressInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -103,8 +103,8 @@
                 </template>
               </base-field>
               <base-field
-                v-model="address2_input"
-                :placeholder="userData.additionalInfo.hasOwnProperty('address') ? (userData.additionalInfo.address || $t('settings.addressInput')) : $t('settings.addressInput')"
+                v-model="address1_input"
+                :placeholder="$t('settings.addressInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -114,7 +114,7 @@
               <base-field
                 v-if="localUserData.lastName"
                 v-model="localUserData.lastName"
-                :placeholder="userData.lastName || $t('settings.lastNameInput')"
+                :placeholder="$t('settings.lastNameInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -123,7 +123,7 @@
               </base-field>
               <base-field
                 v-model="tel1_input"
-                :placeholder="userData.additionalInfo.hasOwnProperty('firstMobileNumber') ? (userData.additionalInfo.firstMobileNumber || $t('settings.telInput')) : $t('settings.telInput')"
+                :placeholder="$t('settings.telInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -132,7 +132,7 @@
               </base-field>
               <base-field
                 v-model="tel2_input"
-                :placeholder="userData.additionalInfo.hasOwnProperty('secondMobileNumber') ? (userData.additionalInfo.secondMobileNumber || $t('settings.telInput')) : $t('settings.telInput')"
+                :placeholder="$t('settings.telInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -148,7 +148,7 @@
         >
           <base-field
             v-model="company_input"
-            :placeholder="userData.additionalInfo.hasOwnProperty('company') ? (userData.additionalInfo.company || $t('settings.amazon')) : $t('settings.amazon')"
+            :placeholder="$t('settings.amazon')"
             mode="icon"
           >
             <template v-slot:left>
@@ -157,7 +157,7 @@
           </base-field>
           <base-field
             v-model="ceo_input"
-            :placeholder="userData.additionalInfo.hasOwnProperty('CEO') ? (userData.additionalInfo.CEO || $t('settings.ceo')) : $t('settings.ceo')"
+            :placeholder="$t('settings.ceo')"
             mode="icon"
           >
             <template v-slot:left>
@@ -166,7 +166,7 @@
           </base-field>
           <base-field
             v-model="site_input"
-            :placeholder="userData.additionalInfo.hasOwnProperty('website') ? (userData.additionalInfo.website || $t('settings.amazon_com')) : $t('settings.amazon_com')"
+            :placeholder="$t('settings.amazon_com')"
             mode="icon"
           >
             <template v-slot:left>
@@ -180,7 +180,7 @@
         >
           <textarea
             id="textarea"
-            v-model="bio_input"
+            v-model="descriptionTextBlock"
             class="profile__textarea"
             placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel"
           />
@@ -251,7 +251,6 @@
           <base-btn>{{ $t('settings.add') }}</base-btn>
         </div>
         <div class="profile__row-4col">
-          <!-- :placeholder="userData.additionalInfo.socialNetwork.instagram || $t('settings.socialInput')" -->
           <base-field
             v-model="inst_input"
             :placeholder="$t('settings.socialInput')"
@@ -261,7 +260,6 @@
               <span class="icon-instagram" />
             </template>
           </base-field>
-          <!-- :placeholder="userData.additionalInfo.socialNetwork.twitter || $t('settings.socialInput')" -->
           <base-field
             v-model="twitt_input"
             :placeholder="$t('settings.socialInput')"
@@ -273,7 +271,7 @@
           </base-field>
           <base-field
             v-model="in_input"
-            :placeholder="userData.additionalInfo.hasOwnProperty('socialNetwork') ? (userData.additionalInfo.socialNetwork.linkedin || $t('settings.socialInput')) : $t('settings.socialInput')"
+            :placeholder="$t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -282,7 +280,7 @@
           </base-field>
           <base-field
             v-model="facebook_input"
-            :placeholder="userData.additionalInfo.hasOwnProperty('socialNetwork') ? (userData.additionalInfo.socialNetwork.facebook || $t('settings.socialInput')) : $t('settings.socialInput')"
+            :placeholder="$t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -517,6 +515,7 @@ export default {
         file: {},
       },
       userDataStr: [],
+      descriptionTextBlock: '',
     };
   },
   computed: {
@@ -539,7 +538,7 @@ export default {
     async processFile(e, validate) {
       const isValid = await validate(e);
       const file = e.target.files[0];
-      document.getElementById('coverUpload').value = null;
+      // document.getElementById('coverUpload').value = null;
       if (isValid.valid) {
         const MAX_SIZE = 20e6; // макс размер - тут 2мб
         if (!file) {
@@ -600,21 +599,23 @@ export default {
       }
     },
     async editUserData() {
-      const formData = new FormData();
-      let payload = {};
-      formData.append('image', this.avatar_change.file);
-      try {
-        if (this.avatar_change.data.ok) {
-          const data = {
-            url: this.avatar_change.data.result.url,
-            formData: this.avatar_change.file,
-            type: this.avatar_change.file.type,
-          };
-          await this.$store.dispatch('user/setImage', data);
+      if (document.getElementById('coverUpload').value) {
+        const formData = new FormData();
+        formData.append('image', this.avatar_change.file);
+        try {
+          if (this.avatar_change.data.ok) {
+            const data = {
+              url: this.avatar_change.data.result.url,
+              formData: this.avatar_change.file,
+              type: this.avatar_change.file.type,
+            };
+            await this.$store.dispatch('user/setImage', data);
+          }
+        } catch (e) {
+          console.log(e);
         }
-      } catch (e) {
-        console.log(e);
       }
+      let payload = {};
       if (this.userRole === 'employer') {
         payload = {
           avatarId: this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : null,
@@ -650,13 +651,12 @@ export default {
               linkedin: this.in_input || null,
               facebook: this.facebook_input || null,
             },
-            description: this.facebook_input || null,
+            description: this.descriptionTextBlock || null,
             skills: [],
           },
         };
       }
       try {
-        console.log(payload);
         await this.$store.dispatch('user/editUserData', payload);
       } catch (e) {
         console.log(e);
