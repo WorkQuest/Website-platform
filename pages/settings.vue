@@ -71,13 +71,6 @@
                 >
               </ValidationProvider>
             </label>
-            <!--            <button class="user_edit_avatar">-->
-            <!--              <div class="icon-edit" />-->
-            <!--            </button>-->
-            <!--            <img-->
-            <!--              class="profile__img_hover"-->
-            <!--              src="~/assets/img/icons/user.svg"-->
-            <!--            >-->
           </div>
           <div>
             <span class="profile__status">
@@ -545,7 +538,6 @@ export default {
 
         this.avatar_change.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
         this.avatar_change.file = file;
-        console.log(this.avatar_change);
         reader.onerror = (evt) => {
           console.error(evt);
         };
@@ -577,7 +569,6 @@ export default {
         if (response?.ok) {
           console.log('good response');
         }
-        console.log(response);
       } catch (e) {
         console.log(e);
       }
@@ -599,7 +590,7 @@ export default {
         formData: this.avatar_change.file,
         type: this.avatar_change.file.type,
       };
-      console.log(await this.$store.dispatch('user/setImage', data));
+      await this.$store.dispatch('user/setImage', data);
       const payload = {
         avatarId: this.avatar_change.data.result.mediaId,
         firstName: this.name_input || null,
@@ -923,7 +914,7 @@ export default {
   height: 40px;
   background: #F7F8FA;
   position: relative;
-  top: -50%;
+  top: -60%;
   left: 35%;
   border-radius: 6px;
   -moz-transition: all 0.5s;
@@ -959,6 +950,9 @@ export default {
     grid-template-columns: 151px 1fr;
     grid-gap: 20px;
     margin: 20px;
+  }
+  &__container {
+    height: 151px;
   }
 }
 .btn {
@@ -1438,11 +1432,6 @@ export default {
       grid-template-columns: 1fr;
       padding: 10px;
       grid-gap: 10px;
-    }
-  }
-  .profile {
-    &__img {
-      margin: 20px 0 20px 0;
     }
   }
   .icon {
