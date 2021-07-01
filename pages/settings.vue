@@ -267,20 +267,18 @@
               <span class="icon-twitter" />
             </template>
           </base-field>
-          <!-- :placeholder="userData.additionalInfo.socialNetwork.linkedin || $t('settings.socialInput')"-->
           <base-field
             v-model="in_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userData.additionalInfo.socialNetwork.linkedin || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
               <span class="icon-LinkedIn" />
             </template>
           </base-field>
-          <!-- :placeholder="userData.additionalInfo.socialNetwork.facebook || $t('settings.socialInput')" -->
           <base-field
             v-model="facebook_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userData.additionalInfo.socialNetwork.facebook || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
