@@ -608,7 +608,7 @@ export default {
         console.log(e);
       }
       const payload = {
-        avatarId: this.avatar_change.data.result.mediaId,
+        avatarId: this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : null,
         firstName: this.name_input || null,
         lastName: this.lastname_input || null,
         additionalInfo: {
