@@ -92,7 +92,7 @@
               </base-field>
               <base-field
                 v-model="address1_input"
-                :placeholder="userData.additionalInfo.address || $t('settings.addressInput')"
+                :placeholder="userData.additionalInfo.hasOwnProperty('address') ? (userData.additionalInfo.address || $t('settings.addressInput')) : $t('settings.addressInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -101,7 +101,7 @@
               </base-field>
               <base-field
                 v-model="address2_input"
-                :placeholder="userData.additionalInfo.address || $t('settings.addressInput')"
+                :placeholder="userData.additionalInfo.hasOwnProperty('address') ? (userData.additionalInfo.address || $t('settings.addressInput')) : $t('settings.addressInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -119,7 +119,7 @@
               </base-field>
               <base-field
                 v-model="tel1_input"
-                :placeholder="userData.additionalInfo.firstMobileNumber || $t('settings.telInput')"
+                :placeholder="userData.additionalInfo.hasOwnProperty('firstMobileNumber') ? (userData.additionalInfo.firstMobileNumber || $t('settings.telInput')) : $t('settings.telInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -128,7 +128,7 @@
               </base-field>
               <base-field
                 v-model="tel2_input"
-                :placeholder="userData.additionalInfo.secondMobileNumber || $t('settings.telInput')"
+                :placeholder="userData.additionalInfo.hasOwnProperty('secondMobileNumber') ? (userData.additionalInfo.secondMobileNumber || $t('settings.telInput')) : $t('settings.telInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -144,7 +144,7 @@
         >
           <base-field
             v-model="company_input"
-            :placeholder="userData.additionalInfo.company || $t('settings.amazon')"
+            :placeholder="userData.additionalInfo.hasOwnProperty('company') ? (userData.additionalInfo.company || $t('settings.amazon')) : $t('settings.amazon')"
             mode="icon"
           >
             <template v-slot:left>
@@ -153,7 +153,7 @@
           </base-field>
           <base-field
             v-model="ceo_input"
-            :placeholder="userData.additionalInfo.CEO || $t('settings.ceo')"
+            :placeholder="userData.additionalInfo.hasOwnProperty('CEO') ? (userData.additionalInfo.CEO || $t('settings.ceo')) : $t('settings.ceo')"
             mode="icon"
           >
             <template v-slot:left>
@@ -162,7 +162,7 @@
           </base-field>
           <base-field
             v-model="site_input"
-            :placeholder="userData.additionalInfo.website || $t('settings.amazon_com')"
+            :placeholder="userData.additionalInfo.hasOwnProperty('website') ? (userData.additionalInfo.website || $t('settings.amazon_com')) : $t('settings.amazon_com')"
             mode="icon"
           >
             <template v-slot:left>
@@ -269,7 +269,7 @@
           </base-field>
           <base-field
             v-model="in_input"
-            :placeholder="firstCharge ? $t('settings.socialInput') : (userData.additionalInfo.socialNetwork.linkedin || $t('settings.socialInput'))"
+            :placeholder="userData.additionalInfo.hasOwnProperty('socialNetwork') ? (userData.additionalInfo.socialNetwork.linkedin || $t('settings.socialInput')) : $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -278,7 +278,7 @@
           </base-field>
           <base-field
             v-model="facebook_input"
-            :placeholder="firstCharge ? $t('settings.socialInput') : userData.additionalInfo.socialNetwork.facebook || $t('settings.socialInput')"
+            :placeholder="userData.additionalInfo.hasOwnProperty('socialNetwork') ? (userData.additionalInfo.socialNetwork.facebook || $t('settings.socialInput')) : $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
