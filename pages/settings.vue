@@ -52,8 +52,8 @@
         <div class="avatar__row">
           <div class="avatar__container">
             <img
-              class="profile__img"
               id="userAvatar"
+              class="profile__img"
               :src="imageData || '~/assets/img/temp/photo.jpg'"
             >
             <label class="user_edit_avatar">
@@ -555,6 +555,7 @@ export default {
         this.showModalOk();
         const output = document.getElementById('userAvatar');
         output.src = URL.createObjectURL(file);
+        // eslint-disable-next-line func-names
         output.onload = function () {
           URL.revokeObjectURL(output.src);
         };
