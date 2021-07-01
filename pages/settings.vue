@@ -269,7 +269,7 @@
           </base-field>
           <base-field
             v-model="in_input"
-            :placeholder="textChecker(firstCharge, userData.additionalInfo.socialNetwork.linkedin, $t('settings.socialInput'))"
+            :placeholder="firstCharge ? $t('settings.socialInput') : (userData.additionalInfo.socialNetwork.linkedin || $t('settings.socialInput'))"
             mode="icon"
           >
             <template v-slot:left>
@@ -278,7 +278,7 @@
           </base-field>
           <base-field
             v-model="facebook_input"
-            :placeholder="textChecker(firstCharge, userData.additionalInfo.socialNetwork.facebook, $t('settings.socialInput'))"
+            :placeholder="firstCharge ? $t('settings.socialInput') : userData.additionalInfo.socialNetwork.facebook || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -529,15 +529,6 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    textChecker(checker, userText, localText) {
-      let text = '';
-      if (!checker) {
-        text = userText || localText;
-      } else {
-        text = localText;
-      }
-      return text;
-    },
     // eslint-disable-next-line consistent-return
     async processFile(e, validate) {
       const isValid = await validate(e);
