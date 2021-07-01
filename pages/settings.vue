@@ -567,8 +567,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        :title: 'Image loaded successful',
-        :subtitle: 'And you are beautiful',
+        title: 'Image loaded successful',
+        subtitle: 'And you are beautiful',
         path: '/settings',
       });
     },
