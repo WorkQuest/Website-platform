@@ -512,7 +512,6 @@ export default {
         file: {},
       },
       userDataStr: [],
-      firstCharge: true,
     };
   },
   computed: {
@@ -623,7 +622,6 @@ export default {
       };
       try {
         await this.$store.dispatch('user/editUserData', payload);
-        this.firstCharge = false;
       } catch (e) {
         console.log(e);
       }
