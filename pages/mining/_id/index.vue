@@ -6,7 +6,9 @@
           class="btn"
           @click="handleBackToMainMining()"
         >
-          <span class="icon-chevron_left" />
+          <template v-slot:left>
+            <span class="icon-chevron_left" />
+          </template>
           {{ $t('mining.back') }}
         </base-btn>
       </div>
@@ -514,15 +516,7 @@ export default {
     }
     &__header {
       .btn {
-        display: grid;
-        grid-template-columns: repeat(2, auto);
-        grid-template-rows: unset;
         justify-content: left;
-
-        .icon-chevron_left {
-          grid-column-start: 1;
-          grid-column-end: 2;
-        }
       }
     }
     &__content {
