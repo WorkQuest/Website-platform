@@ -269,7 +269,7 @@
           </base-field>
           <base-field
             v-model="in_input"
-            :placeholder="userData.additionalInfo.socialNetwork.linkedin || $t('settings.socialInput')"
+            :placeholder="textChecker(firstCharge, userData.additionalInfo.socialNetwork.linkedin, $t('settings.socialInput'))"
             mode="icon"
           >
             <template v-slot:left>
@@ -278,7 +278,7 @@
           </base-field>
           <base-field
             v-model="facebook_input"
-            :placeholder="userData.additionalInfo.socialNetwork.facebook || $t('settings.socialInput')"
+            :placeholder="textChecker(firstCharge, userData.additionalInfo.socialNetwork.facebook, $t('settings.socialInput'))"
             mode="icon"
           >
             <template v-slot:left>
@@ -512,6 +512,7 @@ export default {
         file: {},
       },
       userDataStr: [],
+      firstCharge: true,
     };
   },
   computed: {
@@ -528,6 +529,15 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    textChecker(checker, userText, localText) {
+      let text = '';
+      if (!checker) {
+        text = userText || localText;
+      } else {
+        text = localText;
+      }
+      return text;
+    },
     // eslint-disable-next-line consistent-return
     async processFile(e, validate) {
       const isValid = await validate(e);
@@ -622,6 +632,7 @@ export default {
       };
       try {
         await this.$store.dispatch('user/editUserData', payload);
+        this.firstCharge = false;
       } catch (e) {
         console.log(e);
       }
