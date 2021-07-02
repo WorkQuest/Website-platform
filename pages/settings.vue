@@ -53,15 +53,17 @@
           <div class="avatar__container">
             <img
               v-if="imageData"
-              id="userAvatarOne"
+              id="userAvatar"
               class="profile__img"
               :src="imageData"
+              alt=""
             >
             <img
               v-if="!imageData"
-              id="userAvatar"
+              id="userAvatarTwo"
               class="profile__img"
               src="~/assets/img/app/avatar_empty.png"
+              alt=""
             >
             <label class="user_edit_avatar">
               <div class="icon-edit" />

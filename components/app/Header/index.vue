@@ -22,8 +22,18 @@
               class="header__avatar"
             >
               <img
-                :src="avatar"
-                alt="User.name"
+                v-if="imageData"
+                id="userAvatarOne"
+                class="profile__img"
+                :src="imageData"
+                alt=""
+              >
+              <img
+                v-if="!imageData"
+                id="userAvatar"
+                class="profile__img"
+                src="~/assets/img/app/avatar_empty.png"
+                alt=""
               >
             </div>
             <div class="header__route">
@@ -74,6 +84,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Header',
   props: {
@@ -90,7 +102,17 @@ export default {
       default: '',
     },
   },
+  data() {
+    return {
+      localUserData: {},
+    };
+  },
   computed: {
+    ...mapGetters({
+      userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
+      imageData: 'user/getImageData',
+    }),
     headerLinks() {
       return [
         {
