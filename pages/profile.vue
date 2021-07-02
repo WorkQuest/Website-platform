@@ -177,6 +177,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    width: 100%;
   }
   &__btn {
     max-width: 250px;
