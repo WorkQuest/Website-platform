@@ -22,15 +22,19 @@
           </div>
           <div class="quests__cards">
             <div
-              v-for="(item, i) in filteredCards(selectedTab, isShowFavourite)"
+              v-for="(item, i) in filteredCards(selectedTab, isShowFavourite,)"
               :key="item.id"
               class="quests__cards__all"
             >
               <div
                 class="quests__block block"
               >
-                <div class="block__left">
-                  <div class="block__img">
+                <div
+                  class="block__left"
+                >
+                  <div
+                    class="block__img"
+                  >
                     <img
                       src="~/assets/img/temp/fake-card.svg"
                       class="quests__img image"
@@ -214,6 +218,7 @@ export default {
   name: 'QuestsTab',
   data() {
     return {
+      routerPath: '$route.path',
       selectedTab: 0,
       isShowFavourite: false,
     };
@@ -223,6 +228,7 @@ export default {
       cards: 'data/getCards',
       user: 'data/getUserInfo',
       userRole: 'user/getUserRole',
+      imageData: 'user/getImageData',
       tabs: 'data/getTabs',
     }),
     cardLevelClass(idx) {

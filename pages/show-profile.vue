@@ -7,7 +7,6 @@
         <UserInfo />
       </div>
     </div>
-
     <div class="information-section">
       <div class="main-container">
         <!-- DATA -->
