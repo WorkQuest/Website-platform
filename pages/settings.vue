@@ -585,6 +585,15 @@ export default {
         path: '/settings',
       });
     },
+    showModalSave() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: 'Saved',
+        subtitle: 'User data has been saved',
+        path: '/settings',
+      });
+    },
     modalChangePassword() {
       this.ShowModal({
         key: modals.changePassInSettings,
@@ -682,6 +691,7 @@ export default {
       }
       try {
         await this.$store.dispatch('user/editUserData', payload);
+        this.showModalSave();
       } catch (e) {
         console.log(e);
       }
