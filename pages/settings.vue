@@ -231,7 +231,7 @@
               />
               <div />
               <base-btn @click="deleteKnowledge(i)">
-                -
+                {{ $t('settings.delete') }}
               </base-btn>
             </div>
           </div>
@@ -296,7 +296,7 @@
             />
             <div />
             <base-btn @click="deleteWorkExp(i)">
-              -
+              {{ $t('settings.delete') }}
             </base-btn>
           </div>
         </div>
