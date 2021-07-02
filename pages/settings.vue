@@ -649,24 +649,26 @@ export default {
         console.log(error);
       }
       let payload = {};
+      // eslint-disable-next-line no-prototype-builtins
+      const checkAvatarID = this.avatar_change.data.hasOwnProperty('ok') ? this.avatar_change.data.result.mediaId : this.userData.avatarId;
       if (this.userRole === 'employer') {
         payload = {
-          avatarId: this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : null,
-          firstName: this.localUserData.firstName || null,
-          lastName: this.localUserData.lastName || null,
+          avatarId: checkAvatarID,
+          firstName: this.localUserData.firstName || this.userData.firstName || null,
+          lastName: this.localUserData.lastName || this.userData.lastName || null,
           additionalInfo: {
-            firstMobileNumber: this.tel1_input || null,
-            secondMobileNumber: this.tel2_input || null,
-            address: this.address1_input || null,
+            firstMobileNumber: this.tel1_input || this.userData.additionalInfo.firstMobileNumber || null,
+            secondMobileNumber: this.tel2_input || this.userData.additionalInfo.secondMobileNumber || null,
+            address: this.address1_input || this.userData.additionalInfo.address || null,
             socialNetwork: {
-              instagram: this.inst_input || null,
-              twitter: this.twitt_input || null,
-              linkedin: this.in_input || null,
-              facebook: this.facebook_input || null,
+              instagram: this.inst_input || this.userData.additionalInfo.socialNetwork.instagram || null,
+              twitter: this.twitt_input || this.userData.additionalInfo.socialNetwork.twitter || null,
+              linkedin: this.in_input || this.userData.additionalInfo.socialNetwork.linkedin || null,
+              facebook: this.facebook_input || this.userData.additionalInfo.socialNetwork.facebook || null,
             },
-            company: this.company_input || null,
-            CEO: this.ceo_input || null,
-            website: this.site_input || null,
+            company: this.company_input || this.userData.additionalInfo.company || null,
+            CEO: this.ceo_input || this.userData.additionalInfo.CEO || null,
+            website: this.site_input || this.userData.additionalInfo.website || null,
           },
         };
       } else {
@@ -675,16 +677,16 @@ export default {
           firstName: this.localUserData.firstName || null,
           lastName: this.localUserData.lastName || null,
           additionalInfo: {
-            firstMobileNumber: this.tel1_input || null,
-            secondMobileNumber: this.tel2_input || null,
-            address: this.address1_input || null,
+            firstMobileNumber: this.tel1_input || this.userData.additionalInfo.firstMobileNumber || null,
+            secondMobileNumber: this.tel2_input || this.userData.additionalInfo.secondMobileNumber || null,
+            address: this.address1_input || this.userData.additionalInfo.address || null,
             socialNetwork: {
-              instagram: this.inst_input || null,
-              twitter: this.twitt_input || null,
-              linkedin: this.in_input || null,
-              facebook: this.facebook_input || null,
+              instagram: this.inst_input || this.userData.additionalInfo.socialNetwork.instagram || null,
+              twitter: this.twitt_input || this.userData.additionalInfo.socialNetwork.twitter || null,
+              linkedin: this.in_input || this.userData.additionalInfo.socialNetwork.linkedin || null,
+              facebook: this.facebook_input || this.userData.additionalInfo.socialNetwork.facebook || null,
             },
-            description: this.descriptionTextBlock || null,
+            description: this.descriptionTextBlock || this.userData.additionalInfo.description || null,
             skills: [],
           },
         };
