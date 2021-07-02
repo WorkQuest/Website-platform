@@ -12,7 +12,7 @@
             :alt="localUserData.firstName"
           >
           <img
-            v-if="!imageData"
+            v-else-if="!imageData"
             class="info-grid__avatar"
             src="~/assets/img/app/avatar_empty.png"
             :alt="localUserData.firstName"

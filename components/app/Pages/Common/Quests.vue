@@ -55,13 +55,20 @@
                         class="block__avatar"
                       >
                         <img
-                          class="avatar"
-                          :src="item.background"
-                          alt=""
+                          v-if="imageData"
+                          class="info-grid__avatar"
+                          :src="imageData"
+                          :alt="localUserData.firstName"
+                        >
+                        <img
+                          v-else-if="!imageData"
+                          class="info-grid__avatar"
+                          src="~/assets/img/app/avatar_empty.png"
+                          :alt="localUserData.firstName"
                         >
                       </div>
                       <div class="block__text block__text_title">
-                        {{ item.title }}
+                        {{ userData.firstName }} {{ userData.lastName }}
                         <span
                           v-if="item.sub"
                           class="block__text block__text_grey"
@@ -218,9 +225,9 @@ export default {
   name: 'QuestsTab',
   data() {
     return {
-      routerPath: '$route.path',
       selectedTab: 0,
       isShowFavourite: false,
+      localUserData: {},
     };
   },
   computed: {
@@ -229,6 +236,7 @@ export default {
       user: 'data/getUserInfo',
       userRole: 'user/getUserRole',
       imageData: 'user/getImageData',
+      userData: 'user/getUserData',
       tabs: 'data/getTabs',
     }),
     cardLevelClass(idx) {
@@ -241,6 +249,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    this.localUserData = JSON.parse(JSON.stringify(this.userData));
     this.SetLoader(false);
   },
   methods: {
