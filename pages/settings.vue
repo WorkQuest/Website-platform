@@ -190,7 +190,7 @@
             id="textarea"
             v-model="descriptionTextBlock"
             class="profile__textarea"
-            placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel"
+            :placeholder="userData.additionalInfo.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel'"
           />
         </div>
         <label
@@ -261,7 +261,7 @@
         <div class="profile__row-4col">
           <base-field
             v-model="inst_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userRole === 'employer' ? userData.additionalInfo.socialNetwork.instagram : $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -270,7 +270,7 @@
           </base-field>
           <base-field
             v-model="twitt_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userRole === 'employer' ? userData.additionalInfo.socialNetwork.twitter : $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -279,7 +279,7 @@
           </base-field>
           <base-field
             v-model="in_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userRole === 'employer' ? userData.additionalInfo.socialNetwork.linkedin : $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -288,7 +288,7 @@
           </base-field>
           <base-field
             v-model="facebook_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userRole === 'employer' ? userData.additionalInfo.socialNetwork.facebook : $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>

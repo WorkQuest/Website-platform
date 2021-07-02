@@ -3,29 +3,35 @@
     <span
       class="contact"
     >
-      <span class="contact__container">
+      <span
+        v-if="userData.additionalInfo.address"
+        class="contact__container"
+      >
         <span
-          v-if="quest.contacts.address"
           class="icon-location"
-        /><span class="contact__link">{{ quest.contacts.address }}</span>
+        /><span class="contact__link">{{ userData.additionalInfo.address }}</span>
       </span>
-      <span class="contact__container">
+      <span
+        v-if="userData.additionalInfo.firstMobileNumber"
+        class="contact__container"
+      >
         <span
-          v-if="quest.contacts.phone"
           class="icon-phone"
-        /><span class="contact__link">{{ quest.contacts.phone }}</span>
+        /><span class="contact__link">{{ userData.additionalInfo.firstMobileNumber }}</span>
       </span>
-      <span class="contact__container">
+      <span
+        v-if="userData.email"
+        class="contact__container"
+      >
         <span
-          v-if="quest.contacts.email"
           class="icon-mail"
         /><span class="contact__link">{{ userData.email }}</span>
       </span>
       <span
-        v-if="userRole === 'employer'"
+        v-if="userRole === 'employer' && userData.additionalInfo.company"
         class="contact__container"
       >
-        <span class="icon-Earth" /><span class="contact__link">{{ quest.contacts.company }}</span>
+        <span class="icon-Earth" /><span class="contact__link">{{ userData.additionalInfo.company }}</span>
       </span>
     </span>
   </div>
