@@ -261,7 +261,7 @@
         <div class="profile__row-4col">
           <base-field
             v-model="inst_input"
-            :placeholder="userData.additionalInfo.socialNetwork.instagram || ('settings.socialInput')"
+            :placeholder="userData.additionalInfo.socialNetwork.instagram || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
