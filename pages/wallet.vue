@@ -7,7 +7,7 @@
           <div class="wallet__address">
             <span class="user__wallet">{{ userInfo.userWallet }}</span>
             <button
-              v-clipboard:copy="userWallet"
+              v-clipboard:copy="userInfo.userWallet"
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               type="button"
