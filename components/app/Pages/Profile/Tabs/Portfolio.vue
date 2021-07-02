@@ -10,7 +10,7 @@
           <div class="portfolio__body">
             <img
               class="portfolio__img"
-              :src="item.imgUrl"
+              src="~/assets/img/temp/photo.jpg"
               :alt="item.name"
             >
           </div>

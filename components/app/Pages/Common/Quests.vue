@@ -682,15 +682,15 @@ export default {
         }
       }
     }
-  }
-}
-@include _767 {
-  .quests {
     .avatar {
       &__container {
         grid-template-columns: 1fr 3fr 3fr;
       }
     }
+  }
+}
+@include _767 {
+  .quests {
     .block {
       grid-template-columns: auto;
       &__img {
