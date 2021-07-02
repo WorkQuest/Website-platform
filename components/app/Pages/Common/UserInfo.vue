@@ -323,7 +323,7 @@ export default {
     max-width: 142px;
     max-height: 142px;
     height: 100%;
-    border-radius: 89px;
+    border-radius: 50%;
   }
   &__col {
     &_left {

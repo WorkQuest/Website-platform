@@ -111,6 +111,7 @@
                         <div class="avatar">
                           <img
                             src="~/assets/img/temp/avatar.jpg"
+                            class="info-grid__avatar"
                             :alt="user.name"
                           >
                         </div>
@@ -375,6 +376,17 @@ export default {
     display: grid;
     grid-template-columns: 1fr 9fr 3fr;
     margin: 10px 0 4px 0;
+  }
+}
+.info-grid {
+  &__avatar {
+    border-radius: 50%;
+  }
+  &__col {
+    &_left {
+      max-width: 142px;
+      padding: 0 15px 0 0;
+    }
   }
 }
 .card {
