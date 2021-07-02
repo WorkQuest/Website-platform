@@ -95,7 +95,7 @@
                     <div class="container__title">
                       {{ $t('quests.inProgressBy') }}
                     </div>
-                    <div class="limit__container">
+                    <div>
                       <div class="avatar__container">
                         <div class="avatar">
                           <img
@@ -106,7 +106,7 @@
                         <div>
                           {{ item.inProgress.name }}
                         </div>
-                        <div class="">
+                        <div class="right">
                           <span
                             v-if="item.level.code !== 0"
                             class="card__level_higher"
@@ -323,6 +323,10 @@ export default {
 
 <style lang="scss" scoped>
 
+.right {
+  justify-self: flex-end;
+}
+
 .icon {
   font-size: 20px;
   cursor: pointer;
@@ -339,10 +343,7 @@ export default {
     color: $black500;
   }
 }
-.limit__container {
-  display: grid;
-  grid-template-columns: 2fr 1.5fr 1fr;
-}
+
 .styles {
   &__full {
     width: 100%;
@@ -685,13 +686,9 @@ export default {
 }
 @include _767 {
   .quests {
-    .limit__container {
-      display: grid;
-      grid-template-columns: auto;
-    }
     .avatar {
       &__container {
-        grid-template-columns: 2fr 8fr 6fr;
+        grid-template-columns: 1fr 3fr 3fr;
       }
     }
     .block {
@@ -733,8 +730,8 @@ export default {
     .status {
       &__level {
       font-size: 12px;
+      }
     }
-  }
     .block {
       &__right {
         padding: 10px;
