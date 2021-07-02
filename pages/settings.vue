@@ -261,7 +261,7 @@
         <div class="profile__row-4col">
           <base-field
             v-model="inst_input"
-            :placeholder="userData.additionalInfo.socialNetwork.instagram || ('settings.socialInput')"
+            :placeholder="$t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -270,7 +270,7 @@
           </base-field>
           <base-field
             v-model="twitt_input"
-            :placeholder="userData.additionalInfo.socialNetwork.twitter || $t('settings.socialInput')"
+            :placeholder="$t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -279,7 +279,7 @@
           </base-field>
           <base-field
             v-model="in_input"
-            :placeholder="userData.additionalInfo.socialNetwork.linkedin || $t('settings.socialInput')"
+            :placeholder="$t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -288,7 +288,7 @@
           </base-field>
           <base-field
             v-model="facebook_input"
-            :placeholder="userData.additionalInfo.socialNetwork.facebook || $t('settings.socialInput')"
+            :placeholder="$t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
