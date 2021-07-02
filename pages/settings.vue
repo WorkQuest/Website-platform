@@ -103,7 +103,7 @@
               </base-field>
               <base-field
                 v-model="address1_input"
-                :placeholder="$t('settings.addressInput')"
+                :placeholder="userData.additionalInfo.address || $t('settings.addressInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -112,7 +112,7 @@
               </base-field>
               <base-field
                 v-model="address1_input"
-                :placeholder="$t('settings.addressInput')"
+                :placeholder="userData.additionalInfo.address || $t('settings.addressInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -131,7 +131,7 @@
               </base-field>
               <base-field
                 v-model="tel1_input"
-                :placeholder="$t('settings.telInput')"
+                :placeholder="userData.additionalInfo.firstMobileNumber || $t('settings.telInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -140,7 +140,7 @@
               </base-field>
               <base-field
                 v-model="tel2_input"
-                :placeholder="$t('settings.telInput')"
+                :placeholder="userData.additionalInfo.secondMobileNumber || $t('settings.telInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -156,7 +156,7 @@
         >
           <base-field
             v-model="company_input"
-            :placeholder="$t('settings.amazon')"
+            :placeholder="userData.additionalInfo.company || $t('settings.amazon')"
             mode="icon"
           >
             <template v-slot:left>
@@ -165,7 +165,7 @@
           </base-field>
           <base-field
             v-model="ceo_input"
-            :placeholder="$t('settings.ceo')"
+            :placeholder="userData.additionalInfo.CEO || $t('settings.ceo')"
             mode="icon"
           >
             <template v-slot:left>
@@ -174,7 +174,7 @@
           </base-field>
           <base-field
             v-model="site_input"
-            :placeholder="$t('settings.amazon_com')"
+            :placeholder="userData.additionalInfo.website || $t('settings.amazon_com')"
             mode="icon"
           >
             <template v-slot:left>
@@ -261,7 +261,7 @@
         <div class="profile__row-4col">
           <base-field
             v-model="inst_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userData.additionalInfo.socialNetwork.instagram || ('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -270,7 +270,7 @@
           </base-field>
           <base-field
             v-model="twitt_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userData.additionalInfo.socialNetwork.twitter || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -279,7 +279,7 @@
           </base-field>
           <base-field
             v-model="in_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userData.additionalInfo.socialNetwork.linkedin || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -288,7 +288,7 @@
           </base-field>
           <base-field
             v-model="facebook_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userData.additionalInfo.socialNetwork.facebook || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
