@@ -651,6 +651,7 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 
 export default {
+  scrollToTop: true,
   name: 'DefaultLayout',
   middleware: 'auth',
   components: {},

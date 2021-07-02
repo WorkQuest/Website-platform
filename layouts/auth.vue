@@ -38,6 +38,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
+  scrollToTop: true,
   name: 'AuthLayout',
   computed: {
     ...mapGetters({
