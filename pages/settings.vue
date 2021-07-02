@@ -200,64 +200,124 @@
         >{{ $t('settings.knowledge') }}</label>
         <div
           v-if="userRole === 'worker'"
-          class="knowledge__container"
         >
-          <base-field
-            id="knowledge"
-            v-model="knowledgeTerm1__input"
-            type="grey"
-            :placeholder="$t('settings.term')"
-          />
-          <div class="knowledge__dash">
-            -
+          <div
+            v-if="knowledge.length !==0"
+          >
+            <div
+              v-for="(k, i) in knowledge"
+              :key="k.id"
+              class="knowledge__container"
+            >
+              <base-field
+                id="knowledge"
+                v-model="knowledge[i].from"
+                type="grey"
+                :placeholder="$t('settings.term')"
+              />
+              <div class="knowledge__dash">
+                -
+              </div>
+              <base-field
+                v-model="knowledge[i].to"
+                type="grey"
+                :placeholder="$t('settings.term')"
+              />
+              <div />
+              <base-field
+                v-model="knowledge[i].place"
+                type="grey"
+                :placeholder="$t('settings.placeOfStudying')"
+              />
+              <div />
+              <base-btn @click="deleteKnowledge(i)">-</base-btn>
+            </div>
           </div>
-          <base-field
-            v-model="knowledgeTerm2__input"
-            type="grey"
-            :placeholder="$t('settings.term')"
-          />
-          <div />
-          <base-field
-            v-model="knowledgePlace__input"
-            type="grey"
-            :placeholder="$t('settings.placeOfStudying')"
-          />
-          <div />
-          <base-btn>{{ $t('settings.add') }}</base-btn>
+          <div class="knowledge__container">
+            <base-field
+              v-model="newKnowledge.from"
+              type="grey"
+              :placeholder="$t('settings.term')"
+            />
+            <div class="knowledge__dash">
+              -
+            </div>
+            <base-field
+              v-model="newKnowledge.to"
+              type="grey"
+              :placeholder="$t('settings.term')"
+            />
+            <div />
+            <base-field
+              v-model="newKnowledge.place"
+              type="grey"
+              :placeholder="$t('settings.placeOfStudying')"
+            />
+            <div />
+            <base-btn @click="addNewKnowledge()">{{ $t('settings.add') }}</base-btn>
+          </div>
         </div>
 
-        <label
-          v-if="userRole === 'worker'"
-          class="knowledge__label"
-          for="workExp"
-        >{{ $t('settings.workExp') }}</label>
-        <div
-          v-if="userRole === 'worker'"
-          class="knowledge__container"
-        >
-          <base-field
-            id="workExp"
-            v-model="workExpTerm1__input"
-            type="grey"
-            :placeholder="$t('settings.term')"
-          />
-          <div class="knowledge__dash">
-            -
-          </div>
-          <base-field
-            v-model="workExpTerm2__input"
-            type="grey"
-            :placeholder="$t('settings.term')"
-          />
-          <div />
-          <base-field
-            v-model="workExpVacancy__input"
-            type="grey"
-            :placeholder="$t('settings.vacancy')"
-          />
-          <div />
-          <base-btn>{{ $t('settings.add') }}</base-btn>
-        </div>
+<!--        <label-->
+<!--          v-if="userRole === 'worker'"-->
+<!--          class="knowledge__label"-->
+<!--          for="workExp"-->
+<!--        >{{ $t('settings.workExp') }}</label>-->
+<!--        <div-->
+<!--          v-if="workExp.length !==0"-->
+<!--        >-->
+<!--          <div-->
+<!--            v-for="(k, i) in workExp"-->
+<!--            :key="k.id"-->
+<!--            class="knowledge__container"-->
+<!--          >-->
+<!--            <base-field-->
+<!--              id="workExp"-->
+<!--              v-model="workExp[i].from"-->
+<!--              type="grey"-->
+<!--              :placeholder="$t('settings.term')"-->
+<!--            />-->
+<!--            <div class="knowledge__dash">-->
+<!--              - -->
+<!--            </div>-->
+<!--            <base-field-->
+<!--              v-model="workExp[i].to"-->
+<!--              type="grey"-->
+<!--              :placeholder="$t('settings.term')"-->
+<!--            />-->
+<!--            <div />-->
+<!--            <base-field-->
+<!--              v-model="workExp[i].place"-->
+<!--              type="grey"-->
+<!--              :placeholder="$t('settings.placeOfStudying')"-->
+<!--            />-->
+<!--            <div />-->
+<!--            <base-btn @click="deleteWorkExp(i)">-</base-btn>-->
+<!--          </div>-->
+<!--          <div class="knowledge__container">-->
+<!--            <base-field-->
+<!--              v-model="newWorkExp.from"-->
+<!--              type="grey"-->
+<!--              :placeholder="$t('settings.term')"-->
+<!--            />-->
+<!--            <div class="knowledge__dash">-->
+<!--              - -->
+<!--            </div>-->
+<!--            <base-field-->
+<!--              v-model="newWorkExp.to"-->
+<!--              type="grey"-->
+<!--              :placeholder="$t('settings.term')"-->
+<!--            />-->
+<!--            <div />-->
+<!--            <base-field-->
+<!--              v-model="newWorkExp.place"-->
+<!--              type="grey"-->
+<!--              :placeholder="$t('settings.placeOfStudying')"-->
+<!--            />-->
+<!--            <div />-->
+<!--            <base-btn @click="addNewWorkExp()">{{ $t('settings.add') }}</base-btn>-->
+<!--          </div>-->
+<!--        </div>-->
         <div class="profile__row-4col">
           <base-field
             v-model="inst_input"
@@ -487,12 +547,6 @@ export default {
   name: 'Settings',
   data() {
     return {
-      knowledgeTerm1__input: '',
-      knowledgeTerm2__input: '',
-      knowledgePlace__input: '',
-      workExpTerm1__input: '',
-      workExpTerm2__input: '',
-      workExpVacancy__input: '',
       sms: false,
       allRegisterUser: false,
       allPeopleInInternet: false,
@@ -524,6 +578,21 @@ export default {
       },
       userDataStr: [],
       descriptionTextBlock: '',
+      newKnowledge: {
+        from: null,
+        to: null,
+        place: null,
+      },
+      knowledge: [],
+      // newWorkExp: {
+      //   from: null,
+      //   to: null,
+      //   place: null,
+      // },
+      // workExp: [],
+      from: '',
+      to: '',
+      place: '',
     };
   },
   computed: {
@@ -540,8 +609,31 @@ export default {
     this.SetLoader(true);
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
     this.SetLoader(false);
+    this.knowledge = this.userData.additionalInfo.educations || [];
   },
   methods: {
+    addNewKnowledge() {
+      this.knowledge.push({ ...this.newKnowledge });
+      this.newKnowledge = {
+        from: null,
+        to: null,
+        place: null,
+      };
+    },
+    deleteKnowledge(i) {
+      this.knowledge.splice(i, 1);
+    },
+    // addNewKnowledge() {
+    //   this.knowledge.push({ ...this.newKnowledge });
+    //   this.newKnowledge = {
+    //     from: null,
+    //     to: null,
+    //     place: null,
+    //   };
+    // },
+    // deleteKnowledge(i) {
+    //   this.knowledge.splice(i, 1);
+    // },
     // eslint-disable-next-line consistent-return
     async processFile(e, validate) {
       const isValid = await validate(e);
@@ -676,7 +768,7 @@ export default {
           firstName: this.localUserData.firstName || null,
           lastName: this.localUserData.lastName || null,
           additionalInfo: {
-            educations: [],
+            educations: this.knowledge,
             workExperiences: [],
             firstMobileNumber: this.tel1_input || this.userData.additionalInfo.firstMobileNumber || null,
             secondMobileNumber: this.tel2_input || this.userData.additionalInfo.secondMobileNumber || null,
@@ -1302,7 +1394,7 @@ export default {
     flex-wrap: wrap;
     display: flex;
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 0 20px 0 0;
   }
 }

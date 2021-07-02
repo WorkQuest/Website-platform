@@ -888,8 +888,7 @@ export default {
   &__img {
     width: 40px;
     height: 40px;
-    border-radius: 89px;
-    margin: 0px 10px;
+    border-radius: 50%;
   }
 }
 
