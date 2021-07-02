@@ -325,7 +325,17 @@
                     <div class="profile__header">
                       <div class="profile__avatar">
                         <img
-                          src="~assets/img/app/fakeavatar.svg"
+                          v-if="imageData"
+                          id="userAvatarThree"
+                          class="profile__img"
+                          :src="imageData"
+                          alt=""
+                        >
+                        <img
+                          v-if="!imageData"
+                          id="userAvatarTwo"
+                          class="profile__img"
+                          src="~/assets/img/app/avatar_empty.png"
                           alt=""
                         >
                       </div>
