@@ -110,8 +110,15 @@
               {{ $t('wallet.toThisAddress') }}
             </div>
             <div class="code__container">
-              <span class="code__text">0xf376g...G7f3g8b</span>
-              <span class="icon-copy" />
+              <span class="code__text">{{ code }}</span>
+              <button
+                v-clipboard:copy="code"
+                v-clipboard:success="ClipboardSuccessHandler"
+                v-clipboard:error="ClipboardErrorHandler"
+                type="button"
+              >
+                <span class="icon-copy" />
+              </button>
             </div>
           </div>
         </div>
@@ -180,6 +187,7 @@ export default {
       date_input: '',
       cvv_input: '',
       step: 1,
+      code: '0xf376g...G7f3g8b',
     };
   },
   computed: {
