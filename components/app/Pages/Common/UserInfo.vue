@@ -4,18 +4,27 @@
   >
     <div class="col info-grid__col_left">
       <div class="info-grid__avatar">
-        <img
-          v-if="imageData"
-          class="info-grid__avatar"
-          :src="imageData"
-          :alt="localUserData.firstName"
-        >
-        <img
-          v-if="!imageData"
-          class="info-grid__avatar"
-          src="~/assets/img/app/avatar_empty.png"
-          :alt="localUserData.firstName"
-        >
+        <div v-if="this.$route.path === '/profile'">
+          <img
+            v-if="imageData"
+            class="info-grid__avatar"
+            :src="imageData"
+            :alt="localUserData.firstName"
+          >
+          <img
+            v-if="!imageData"
+            class="info-grid__avatar"
+            src="~/assets/img/app/avatar_empty.png"
+            :alt="localUserData.firstName"
+          >
+        </div>
+        <div v-else>
+          <img
+            class="info-grid__avatar"
+            src="~/assets/img/temp/avatar.jpg"
+            alt=""
+          >
+        </div>
       </div>
       <div class="rating" />
       <nuxt-link
@@ -26,8 +35,15 @@
       </nuxt-link>
     </div>
     <div class="col info-grid__col">
-      <div class="title">
-        {{ userData.firstName }} {{ userData.lastName }}
+      <div v-if="this.$route.path === '/profile'">
+        <div class="title">
+          {{ userData.firstName }} {{ userData.lastName }}
+        </div>
+      </div>
+      <div v-else>
+        <div class="title">
+          {{ userInfo.name }}
+        </div>
       </div>
       <div
         v-if="userRole === 'employer'"

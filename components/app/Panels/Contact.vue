@@ -9,7 +9,13 @@
       >
         <span
           class="icon-location"
-        /><span class="contact__link">{{ userData.additionalInfo.address }}</span>
+        />
+        <span v-if="this.$route.path === '/profile'">
+          <span class="contact__link">{{ userData.additionalInfo.address }}</span>
+        </span>
+        <span v-else>
+          <span class="contact__link">{{ userInfo.location }}</span>
+        </span>
       </span>
       <span
         v-if="userData.additionalInfo.firstMobileNumber"
@@ -17,7 +23,13 @@
       >
         <span
           class="icon-phone"
-        /><span class="contact__link">{{ userData.additionalInfo.firstMobileNumber }}</span>
+        />
+        <span v-if="this.$route.path === '/profile'">
+          <span class="contact__link">{{ userData.additionalInfo.firstMobileNumber }}</span>
+        </span>
+        <span v-else>
+          <span class="contact__link">{{ userInfo.tel }}</span>
+        </span>
       </span>
       <span
         v-if="userData.email"
@@ -25,13 +37,25 @@
       >
         <span
           class="icon-mail"
-        /><span class="contact__link">{{ userData.email }}</span>
+        />
+        <span v-if="this.$route.path === '/profile'">
+          <span class="contact__link">{{ userData.email }}</span>
+        </span>
+        <span v-else>
+          <span class="contact__link">{{ userInfo.email }}</span>
+        </span>
       </span>
       <span
         v-if="userRole === 'employer' && userData.additionalInfo.company"
         class="contact__container"
       >
-        <span class="icon-Earth" /><span class="contact__link">{{ userData.additionalInfo.company }}</span>
+        <span class="icon-Earth" />
+        <span v-if="this.$route.path === '/profile'">
+          <span class="contact__link">{{ userData.additionalInfo.company }}</span>
+        </span>
+        <span v-else>
+          <span class="contact__link">{{ userInfo.company }}</span>
+        </span>
       </span>
     </span>
   </div>
@@ -47,6 +71,7 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      userInfo: 'data/getUserInfo',
       quest: 'data/getQuest',
     }),
   },

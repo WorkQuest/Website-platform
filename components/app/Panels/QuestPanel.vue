@@ -7,12 +7,39 @@
             class="user__left"
             @click="showProfile()"
           >
-            <img
-              class="user__img"
-              src="~/assets/img/app/fake_profile.png"
-              alt=""
+            <span v-if="this.$route.path === '/profile'">
+              <img
+                v-if="imageData"
+                id="userAvatarOne"
+                class="profile__img"
+                :src="imageData"
+                alt=""
+              >
+              <img
+                v-if="!imageData"
+                id="userAvatar"
+                class="profile__img"
+                src="~/assets/img/app/avatar_empty.png"
+                alt=""
+              >
+            </span>
+            <span v-else>
+              <img
+                class="user__img"
+                src="~/assets/img/app/fake_profile.png"
+                alt=""
+              >
+            </span>
+            <span
+              v-if="this.$route.path === '/profile'"
+              class="user__username"
             >
-            <span class="user__username">
+              {{ userData.firstName }} {{ userData.lastName }}
+            </span>
+            <span
+              v-else
+              class="user__username"
+            >
               {{ quest.username }}
             </span>
             <span
@@ -94,6 +121,8 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      imageData: 'user/getImageData',
+      userInfo: 'data/getUserInfo',
       quest: 'data/getQuest',
       badgeList: 'data/getBadgeList',
     }),
