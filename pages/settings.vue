@@ -260,23 +260,48 @@
               {{ $t('settings.add') }}
             </base-btn>
           </div>
-        </div>
-        <label
-          v-if="userRole === 'worker'"
-          class="knowledge__label"
-          for="workExp"
-        >{{ $t('settings.workExp') }}</label>
-        <div
-          v-if="localUserData.additionalInfo.workExperiences.length !==0"
-        >
+          <label
+            v-if="userRole === 'worker'"
+            class="knowledge__label"
+            for="workExp"
+          >{{ $t('settings.workExp') }}</label>
           <div
-            v-for="(k, i) in localUserData.additionalInfo.workExperiences"
-            :key="k.id"
-            class="knowledge__container"
+            v-if="localUserData.additionalInfo.workExperiences.length !==0"
           >
+            <div
+              v-for="(k, i) in localUserData.additionalInfo.workExperiences"
+              :key="k.id"
+              class="knowledge__container"
+            >
+              <base-field
+                id="workExp"
+                v-model="localUserData.additionalInfo.workExperiences[i].from"
+                type="grey"
+                :placeholder="$t('settings.term')"
+              />
+              <div class="knowledge__dash">
+                -
+              </div>
+              <base-field
+                v-model="localUserData.additionalInfo.workExperiences[i].to"
+                type="grey"
+                :placeholder="$t('settings.term')"
+              />
+              <div />
+              <base-field
+                v-model="localUserData.additionalInfo.workExperiences[i].place"
+                type="grey"
+                :placeholder="$t('settings.placeOfStudying')"
+              />
+              <div />
+              <base-btn @click="deleteWorkExp(i)">
+                {{ $t('settings.delete') }}
+              </base-btn>
+            </div>
+          </div>
+          <div class="knowledge__container">
             <base-field
-              id="workExp"
-              v-model="localUserData.additionalInfo.workExperiences[i].from"
+              v-model="newWorkExp.from"
               type="grey"
               :placeholder="$t('settings.term')"
             />
@@ -284,48 +309,22 @@
               -
             </div>
             <base-field
-              v-model="localUserData.additionalInfo.workExperiences[i].to"
+              v-model="newWorkExp.to"
               type="grey"
               :placeholder="$t('settings.term')"
             />
             <div />
             <base-field
-              v-model="localUserData.additionalInfo.workExperiences[i].place"
+              v-model="newWorkExp.place"
               type="grey"
               :placeholder="$t('settings.placeOfStudying')"
             />
             <div />
-            <base-btn @click="deleteWorkExp(i)">
-              {{ $t('settings.delete') }}
+            <base-btn @click="addNewWorkExp()">
+              {{ $t('settings.add') }}
             </base-btn>
           </div>
         </div>
-        <div class="knowledge__container">
-          <base-field
-            v-model="newWorkExp.from"
-            type="grey"
-            :placeholder="$t('settings.term')"
-          />
-          <div class="knowledge__dash">
-            -
-          </div>
-          <base-field
-            v-model="newWorkExp.to"
-            type="grey"
-            :placeholder="$t('settings.term')"
-          />
-          <div />
-          <base-field
-            v-model="newWorkExp.place"
-            type="grey"
-            :placeholder="$t('settings.placeOfStudying')"
-          />
-          <div />
-          <base-btn @click="addNewWorkExp()">
-            {{ $t('settings.add') }}
-          </base-btn>
-        </div>
-
         <div class="profile__row-4col">
           <base-field
             v-model="localUserData.additionalInfo.socialNetwork.instagram"
