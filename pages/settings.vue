@@ -561,13 +561,16 @@ export default {
 
         this.avatar_change.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
         this.avatar_change.file = file;
-        this.showModalOk();
-        const output = document.getElementById('userAvatar');
+        let output = document.getElementById('userAvatar');
+        if (!output) {
+          output = document.getElementById('userAvatarTwo');
+        }
         output.src = URL.createObjectURL(file);
         // eslint-disable-next-line func-names
         output.onload = function () {
           URL.revokeObjectURL(output.src);
         };
+        this.showModalOk();
         reader.onerror = (evt) => {
           console.error(evt);
         };
