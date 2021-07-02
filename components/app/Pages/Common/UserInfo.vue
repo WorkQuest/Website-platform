@@ -33,10 +33,10 @@
         v-if="userRole === 'employer'"
         class="subtitle"
       >
-        {{ userInfo.company }}
+        {{ userData.additionalInfo.company || userInfo.company }}
       </div>
       <div class="description">
-        {{ userInfo.desc }}
+        {{ userData.additionalInfo.description || userInfo.desc }}
       </div>
       <div v-if="selected === 1 && userRole === 'worker' ">
         <div class="knowledge__text">

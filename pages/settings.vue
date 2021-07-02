@@ -190,7 +190,7 @@
             id="textarea"
             v-model="descriptionTextBlock"
             class="profile__textarea"
-            placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel"
+            :placeholder="userData.additionalInfo.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel'"
           />
         </div>
         <label
@@ -261,7 +261,7 @@
         <div class="profile__row-4col">
           <base-field
             v-model="inst_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userRole === 'employer' ? userData.additionalInfo.socialNetwork.instagram : $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -270,7 +270,7 @@
           </base-field>
           <base-field
             v-model="twitt_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userRole === 'employer' ? userData.additionalInfo.socialNetwork.twitter : $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -279,7 +279,7 @@
           </base-field>
           <base-field
             v-model="in_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userRole === 'employer' ? userData.additionalInfo.socialNetwork.linkedin : $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -288,7 +288,7 @@
           </base-field>
           <base-field
             v-model="facebook_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userRole === 'employer' ? userData.additionalInfo.socialNetwork.facebook : $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -691,7 +691,6 @@ export default {
       }
       try {
         await this.$store.dispatch('user/editUserData', payload);
-        this.showModalSave();
       } catch (e) {
         console.log(e);
       }
@@ -1122,15 +1121,14 @@ export default {
   @include main;
   &-white {
     @include main;
-    max-width: 1180px;
-    background: $white;
-    margin: 0 0 20px 0;
-    border-radius: 6px;
-    padding: 0 10px;
+    @include main-white;
+    width: calc(98vw - 67px);
+    margin: 0 20px;
   }
   &__body {
     max-width: 1180px;
     height: 100%;
+    width: calc(100vw - 40px);
   }
 }
 .profile {
@@ -1299,8 +1297,6 @@ export default {
     flex-direction: row;
     flex-wrap: wrap;
     display: flex;
-    width: 100%;
-    justify-content: space-between;
   }
 }
 .option {
@@ -1386,9 +1382,6 @@ export default {
   z-index: -1;
 }
 @include _1199 {
-  .main-white {
-    margin: 0 20px 20px 20px;
-  }
   .quests {
     &__top {
       margin: 0 20px;
