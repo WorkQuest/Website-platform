@@ -397,9 +397,16 @@
                   <div class="user__container">
                     <div class="user-container__avatar">
                       <img
-                        alt=""
-                        src="../assets/img/temp/photo.jpg"
-                        class="user__avatar"
+                        v-if="imageData"
+                        id="userAvatarOne"
+                        class="profile__img"
+                        :src="imageData"
+                      >
+                      <img
+                        v-if="!imageData"
+                        id="userAvatar"
+                        class="profile__img"
+                        src="~/assets/img/app/avatar_empty.png"
                       >
                     </div>
                     <div class="user-container__user">
@@ -437,30 +444,6 @@
                     </div>
                   </div>
                 </div>
-                <!--              <div-->
-                <!--                v-if="userRole === 'employer'"-->
-                <!--                class="mobile__links"-->
-                <!--              >-->
-                <!--                <nuxt-link-->
-                <!--                  to="/workers"-->
-                <!--                  class="mobile__link"-->
-                <!--                >-->
-                <!--                  {{ $t('ui.workers') }}-->
-                <!--                </nuxt-link>-->
-                <!--                <nuxt-link-->
-                <!--                  to="/my"-->
-                <!--                  class="mobile__link"-->
-                <!--                >-->
-                <!--                  {{ $t('quests.MyQuests') }}-->
-                <!--                </nuxt-link>-->
-                <!--                <nuxt-link-->
-                <!--                  to="/wallet"-->
-                <!--                  class="mobile__link"-->
-                <!--                >-->
-                <!--                  {{ $t('ui.wallet') }}-->
-                <!--                </nuxt-link>-->
-                <!--              </div>-->
-                <!--              v-if="userRole === 'worker'"-->
                 <div
                   v-if="isUserDDOpened === true"
                   class="user-dropdown__container"
@@ -666,6 +649,7 @@ export default {
   },
   data() {
     return {
+      localUserData: {},
       isInstrumentDropdownOpened: false,
       isUserDDOpened: false,
       isShowProfile: false,
@@ -739,6 +723,7 @@ export default {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
       userData: 'user/getUserData',
+      imageData: 'user/getImageData',
       userRole: 'user/getUserRole',
     }),
     profileLinks() {
@@ -786,8 +771,9 @@ export default {
       ];
     },
   },
-  mounted() {
+  async mounted() {
     this.GetLocation();
+    this.localUserData = JSON.parse(JSON.stringify(this.userData));
   },
   methods: {
     toRoute(path) {
@@ -886,6 +872,16 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+
+.profile {
+  &__img {
+    width: 40px;
+    height: 40px;
+    border-radius: 89px;
+    margin: 0px 10px;
+  }
+}
+
 .hidden {
   display: none;
 }
