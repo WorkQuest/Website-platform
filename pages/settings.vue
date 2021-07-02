@@ -1121,14 +1121,15 @@ export default {
   @include main;
   &-white {
     @include main;
-    @include main-white;
-    width: calc(98vw - 67px);
-    margin: 0 20px;
+    background: $white;
+    background: #FFFFFF;
+    margin: 0 0 20px 0;
+    border-radius: 6px;
+    justify-content: center;
   }
   &__body {
     max-width: 1180px;
     height: 100%;
-    width: calc(100vw - 40px);
   }
 }
 .profile {
@@ -1293,10 +1294,12 @@ export default {
     }
   }
   &__skills {
-    margin: 0 0 10px 0;
     flex-direction: row;
     flex-wrap: wrap;
     display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 20px 0 0;
   }
 }
 .option {
@@ -1382,6 +1385,9 @@ export default {
   z-index: -1;
 }
 @include _1199 {
+  .main-white {
+    margin: 0 20px;
+  }
   .quests {
     &__top {
       margin: 0 20px;
