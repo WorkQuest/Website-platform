@@ -10,7 +10,7 @@
           <div class="portfolio__body">
             <img
               class="portfolio__img"
-              :src="item.imgUrl"
+              src="~/assets/img/temp/photo.jpg"
               :alt="item.name"
             >
           </div>
@@ -84,7 +84,7 @@ export default {
 
 @include _575 {
   .portfolio__items {
-    grid-template-columns: repeat(2, auto);
+    grid-template-columns: auto;
     margin: 0 20px 0 0;
   }
 }

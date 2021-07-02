@@ -5,7 +5,7 @@
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__desc_left">
-        {{ desc }}
+        {{ $t('modals.lorem') }}
       </div>
       <div class="ctm-modal__content-field">
         <label
@@ -54,11 +54,6 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-    desc() {
-      return [
-        this.$t('modals.lorem'),
-      ];
-    },
   },
   methods: {
     hide() {

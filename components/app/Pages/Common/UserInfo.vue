@@ -5,9 +5,16 @@
     <div class="col info-grid__col_left">
       <div class="info-grid__avatar">
         <img
+          v-if="imageData"
           class="info-grid__avatar"
-          src="~/assets/img/temp/avatar.jpg"
-          alt=""
+          :src="imageData"
+          :alt="localUserData.firstName"
+        >
+        <img
+          v-if="!imageData"
+          class="info-grid__avatar"
+          src="~/assets/img/app/avatar_empty.png"
+          :alt="localUserData.firstName"
         >
       </div>
       <div class="rating" />
@@ -104,14 +111,23 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      localUserData: {},
+    };
+  },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
       userInfo: 'data/getUserInfo',
+      imageData: 'user/getImageData',
       quest: 'data/getQuest',
     }),
+  },
+  async mounted() {
+    this.localUserData = JSON.parse(JSON.stringify(this.userData));
   },
   methods: {
     showMessages() {
@@ -283,13 +299,12 @@ export default {
   &__avatar {
     max-width: 142px;
     max-height: 142px;
-    width: 100%;
     height: 100%;
+    border-radius: 89px;
   }
   &__col {
     &_left {
-      max-width: 157px;
-      width: 100%;
+      max-width: 142px;
       padding: 0 15px 0 0;
     }
   }

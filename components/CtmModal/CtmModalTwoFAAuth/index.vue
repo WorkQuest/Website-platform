@@ -141,10 +141,16 @@
             <span class="content__text">{{ $t('modals.ifYouCantScanBarcode') }}</span>
             <div class="flex__two-cols">
               <div class="code__container">
-                <span class="code__text">GA4HUMTLLBOXIXSASH</span>
+                <span class="code__text">{{ code }}</span>
               </div>
               <div>
-                <button class="btn__copy">
+                <button
+                  v-clipboard:copy="code"
+                  v-clipboard:success="ClipboardSuccessHandler"
+                  v-clipboard:error="ClipboardErrorHandler"
+                  class="btn__copy"
+                  type="button"
+                >
                   <span class="icon-copy" />
                 </button>
               </div>
@@ -159,10 +165,16 @@
             <span class="content__text">{{ $t('modals.pleaseSaveThisKey') }}</span>
             <div class="flex__two-cols">
               <div class="code__container">
-                <span class="code__text">GA4HUMTLLBOXIXSASH</span>
+                <span class="code__text">{{ code }}</span>
               </div>
               <div>
-                <button class="btn__copy">
+                <button
+                  v-clipboard:success="ClipboardSuccessHandler"
+                  v-clipboard:error="ClipboardErrorHandler"
+                  v-clipboard:copy="code"
+                  class="btn__copy"
+                  type="button"
+                >
                   <span class="icon-copy" />
                 </button>
               </div>
@@ -293,6 +305,7 @@ export default {
       step: 1,
       confirmEmailCode_input: '',
       twoFACode_input: '',
+      code: 'GA4HUMTLLBOXIXSASH',
     };
   },
   computed: {

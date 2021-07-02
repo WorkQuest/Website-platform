@@ -52,9 +52,18 @@
         <div class="avatar__row">
           <div class="avatar__container">
             <img
+              v-if="imageData"
               id="userAvatar"
               class="profile__img"
-              :src="imageData || '~/assets/img/temp/photo.jpg'"
+              :src="imageData"
+              alt=""
+            >
+            <img
+              v-if="!imageData"
+              id="userAvatarTwo"
+              class="profile__img"
+              src="~/assets/img/app/avatar_empty.png"
+              alt=""
             >
             <label class="user_edit_avatar">
               <div class="icon-edit" />
@@ -94,7 +103,7 @@
               </base-field>
               <base-field
                 v-model="address1_input"
-                :placeholder="$t('settings.addressInput')"
+                :placeholder="userData.additionalInfo.address || $t('settings.addressInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -103,7 +112,7 @@
               </base-field>
               <base-field
                 v-model="address1_input"
-                :placeholder="$t('settings.addressInput')"
+                :placeholder="userData.additionalInfo.address || $t('settings.addressInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -122,7 +131,7 @@
               </base-field>
               <base-field
                 v-model="tel1_input"
-                :placeholder="$t('settings.telInput')"
+                :placeholder="userData.additionalInfo.firstMobileNumber || $t('settings.telInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -131,7 +140,7 @@
               </base-field>
               <base-field
                 v-model="tel2_input"
-                :placeholder="$t('settings.telInput')"
+                :placeholder="userData.additionalInfo.secondMobileNumber || $t('settings.telInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -147,7 +156,7 @@
         >
           <base-field
             v-model="company_input"
-            :placeholder="$t('settings.amazon')"
+            :placeholder="userData.additionalInfo.company || $t('settings.amazon')"
             mode="icon"
           >
             <template v-slot:left>
@@ -156,7 +165,7 @@
           </base-field>
           <base-field
             v-model="ceo_input"
-            :placeholder="$t('settings.ceo')"
+            :placeholder="userData.additionalInfo.CEO || $t('settings.ceo')"
             mode="icon"
           >
             <template v-slot:left>
@@ -165,7 +174,7 @@
           </base-field>
           <base-field
             v-model="site_input"
-            :placeholder="$t('settings.amazon_com')"
+            :placeholder="userData.additionalInfo.website || $t('settings.amazon_com')"
             mode="icon"
           >
             <template v-slot:left>
@@ -552,13 +561,16 @@ export default {
 
         this.avatar_change.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
         this.avatar_change.file = file;
-        this.showModalOk();
-        const output = document.getElementById('userAvatar');
+        let output = document.getElementById('userAvatar');
+        if (!output) {
+          output = document.getElementById('userAvatarTwo');
+        }
         output.src = URL.createObjectURL(file);
         // eslint-disable-next-line func-names
         output.onload = function () {
           URL.revokeObjectURL(output.src);
         };
+        this.showModalOk();
         reader.onerror = (evt) => {
           console.error(evt);
         };
