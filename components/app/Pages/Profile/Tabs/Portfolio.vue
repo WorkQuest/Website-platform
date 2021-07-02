@@ -84,7 +84,7 @@ export default {
 
 @include _575 {
   .portfolio__items {
-    grid-template-columns: repeat(2, auto);
+    grid-template-columns: auto;
     margin: 0 20px 0 0;
   }
 }

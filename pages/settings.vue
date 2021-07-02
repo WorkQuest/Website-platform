@@ -52,9 +52,16 @@
         <div class="avatar__row">
           <div class="avatar__container">
             <img
+              v-if="imageData"
+              id="userAvatarOne"
+              class="profile__img"
+              :src="imageData"
+            >
+            <img
+              v-if="!imageData"
               id="userAvatar"
               class="profile__img"
-              :src="imageData || '~/assets/img/temp/photo.jpg'"
+              src="~/assets/img/app/avatar_empty.png"
             >
             <label class="user_edit_avatar">
               <div class="icon-edit" />
