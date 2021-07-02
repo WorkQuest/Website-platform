@@ -268,7 +268,6 @@ export default () => ({
     tel: '+7 989 989 98 98',
     email: 'worker@gmail.com',
     company: 'CEO from Amazon',
-    avatar: '~/assets/img/temp/avatar.jpg',
     userWallet: '0xnf8o29837hrvbn42o37hsho3b74thb3',
     cardClosed: false,
     userBalance: '1500',

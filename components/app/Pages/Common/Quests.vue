@@ -99,7 +99,7 @@
                       <div class="avatar__container">
                         <div class="avatar">
                           <img
-                            :src="user.avatar"
+                            src="~/assets/img/temp/avatar.jpg"
                             :alt="user.name"
                           >
                         </div>
@@ -112,13 +112,22 @@
                             class="card__level_higher"
                             :class="cardsLevels(i)"
                           >
-                            <span v-if="item.level.code === 1">
+                            <span
+                              v-if="item.level.code === 1"
+                              class="status__level"
+                            >
                               {{ $t('levels.higher') }}
                             </span>
-                            <span v-if="item.level.code === 2">
+                            <span
+                              v-if="item.level.code === 2"
+                              class="status__level"
+                            >
                               {{ $t('levels.reliableEmp') }}
                             </span>
-                            <span v-if="item.level.code === 3">
+                            <span
+                              v-if="item.level.code === 3"
+                              class="status__level"
+                            >
                               {{ $t('levels.checkedByTime') }}
                             </span>
                           </span>
@@ -348,7 +357,7 @@ export default {
   &__container {
     @extend .styles__full;
     display: grid;
-    grid-template-columns: 0.2fr 0.6fr 1fr;
+    grid-template-columns: 1fr 9fr 3fr;
     margin: 10px 0 4px 0;
   }
 }
@@ -680,6 +689,11 @@ export default {
       display: grid;
       grid-template-columns: auto;
     }
+    .avatar {
+      &__container {
+        grid-template-columns: 2fr 8fr 6fr;
+      }
+    }
     .block {
       grid-template-columns: auto;
       &__img {
@@ -711,6 +725,16 @@ export default {
     &__content {
       grid-template-columns: repeat(2, auto);
     }
+    .avatar {
+      &__container {
+        grid-template-columns: repeat(3, auto);
+      }
+    }
+    .status {
+      &__level {
+      font-size: 12px;
+    }
+  }
     .block {
       &__right {
         padding: 10px;

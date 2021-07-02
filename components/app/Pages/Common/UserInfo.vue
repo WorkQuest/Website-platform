@@ -299,13 +299,12 @@ export default {
   &__avatar {
     max-width: 142px;
     max-height: 142px;
-    width: 100%;
     height: 100%;
+    border-radius: 89px;
   }
   &__col {
     &_left {
-      max-width: 157px;
-      width: 100%;
+      max-width: 142px;
       padding: 0 15px 0 0;
     }
   }
