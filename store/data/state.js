@@ -321,19 +321,19 @@ export default () => ({
   },
   socials: [
     {
-      url: 'https://ru-ru.facebook.com/',
+      url: 'https://ru-ru.facebook.com',
       class: 'icon-facebook',
     },
     {
-      url: 'https://twitter.com/?lang=ru',
+      url: 'https://twitter.com',
       class: 'icon-twitter',
     },
     {
-      url: 'https://www.instagram.com/',
+      url: 'https://www.instagram.com',
       class: 'icon-instagram',
     },
     {
-      url: 'https://ru.linkedin.com/',
+      url: 'https://ru.linkedin.com',
       class: 'icon-LinkedIn',
     },
   ],
