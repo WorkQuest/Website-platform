@@ -353,7 +353,7 @@
             </template>
           </base-field>
           <base-field
-            v-model="facebook_input"
+            v-model="localUserData.additionalInfo.socialNetwork.facebook"
             :placeholder="userData.additionalInfo.socialNetwork.facebook || $t('settings.socialInput')"
             mode="icon"
           >
@@ -561,29 +561,34 @@ export default {
       onlyInplemention: false,
       onlyReadyForExecution: false,
       allRegisteredUsers: false,
-      bio_input: '',
-      name_input: '',
-      address1_input: '',
-      address2_input: '',
-      email_input: '',
-      lastname_input: '',
-      tel1_input: '',
-      tel2_input: '',
-      company_input: '',
-      ceo_input: '',
-      site_input: '',
-      inst_input: '',
-      twitt_input: '',
-      in_input: '',
-      facebook_input: '',
       isShowInfo: true,
-      localUserData: {},
+      localUserData: {
+        avatarId: null,
+        firstName: null,
+        lastName: null,
+        additionalInfo: {
+          firstMobileNumber: null,
+          secondMobileNumber: null,
+          address: null,
+          socialNetwork: {
+            instagram: null,
+            twitter: null,
+            linkedin: null,
+            facebook: null,
+          },
+          description: null,
+          skills: [],
+          educations: [],
+          workExperiences: [],
+          CEO: null,
+          company: null,
+          website: null,
+        },
+      },
       avatar_change: {
         data: {},
         file: {},
       },
-      userDataStr: [],
-      descriptionTextBlock: '',
       newKnowledge: {
         from: null,
         to: null,
@@ -618,7 +623,7 @@ export default {
   },
   methods: {
     addNewKnowledge() {
-      this.knowledge.push({ ...this.newKnowledge });
+      this.localUserData.additionalInfo.educations.push({ ...this.newKnowledge });
       this.newKnowledge = {
         from: null,
         to: null,
@@ -626,7 +631,7 @@ export default {
       };
     },
     deleteKnowledge(i) {
-      this.knowledge.splice(i, 1);
+      this.localUserData.additionalInfo.educations.splice(i, 1);
     },
     addNewWorkExp() {
       this.localUserData.additionalInfo.workExperiences.push({ ...this.newWorkExp });
