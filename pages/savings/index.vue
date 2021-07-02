@@ -14,9 +14,9 @@
           <button
             v-for="(item, i) in cards"
             :key="i"
-            :class="[{'info-block__card' : !item.sel},
-                     {'info-block__card_sel' : item.sel}]"
-            @click="handleClickCard(item)"
+            :class="[{'info-block__card' : selCardID !== i},
+                     {'info-block__card_sel' : selCardID === i}]"
+            @click="handleClickCard(i)"
           >
             <div class="info-block__circle" />
             <div class="info-block__subtitle">
@@ -24,7 +24,10 @@
             </div>
           </button>
         </div>
-        <div class="info-block">
+        <div
+          v-if="selCardID >= 0"
+          class="info-block"
+        >
           <div class="info-block__name_bold">
             {{ $t("saving.conditions") }}
           </div>
@@ -162,6 +165,7 @@ export default {
   name: 'SavingProduct',
   data() {
     return {
+      selCardID: -1,
       FAQs: [
         {
           name: this.$t('saving.faq1'),
@@ -270,8 +274,8 @@ export default {
         key: modals.openADeposit,
       });
     },
-    handleClickCard(card) {
-      card.sel = !card.sel;
+    handleClickCard(i) {
+      this.selCardID = this.selCardID === i ? -1 : i;
     },
   },
 };
