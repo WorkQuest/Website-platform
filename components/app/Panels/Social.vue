@@ -7,6 +7,7 @@
       <nuxt-link
         class="social__link"
         :to="item.url"
+        target="_blank"
       >
         <span
           :class="item.class"
