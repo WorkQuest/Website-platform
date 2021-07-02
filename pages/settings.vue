@@ -261,7 +261,7 @@
         <div class="profile__row-4col">
           <base-field
             v-model="inst_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userData.additionalInfo.socialNetwork.instagram || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -270,7 +270,7 @@
           </base-field>
           <base-field
             v-model="twitt_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userData.additionalInfo.socialNetwork.twitter || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -279,7 +279,7 @@
           </base-field>
           <base-field
             v-model="in_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userData.additionalInfo.socialNetwork.linkedin || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -288,7 +288,7 @@
           </base-field>
           <base-field
             v-model="facebook_input"
-            :placeholder="$t('settings.socialInput')"
+            :placeholder="userData.additionalInfo.socialNetwork.facebook || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -649,8 +649,7 @@ export default {
         console.log(error);
       }
       let payload = {};
-      // eslint-disable-next-line no-prototype-builtins
-      const checkAvatarID = this.avatar_change.data.hasOwnProperty('ok') ? this.avatar_change.data.result.mediaId : this.userData.avatarId;
+      const checkAvatarID = this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : this.userData.avatarId;
       if (this.userRole === 'employer') {
         payload = {
           avatarId: checkAvatarID,
@@ -673,10 +672,12 @@ export default {
         };
       } else {
         payload = {
-          avatarId: this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : null,
+          avatarId: checkAvatarID,
           firstName: this.localUserData.firstName || null,
           lastName: this.localUserData.lastName || null,
           additionalInfo: {
+            educations: [],
+            workExperiences: [],
             firstMobileNumber: this.tel1_input || this.userData.additionalInfo.firstMobileNumber || null,
             secondMobileNumber: this.tel2_input || this.userData.additionalInfo.secondMobileNumber || null,
             address: this.address1_input || this.userData.additionalInfo.address || null,
@@ -693,6 +694,7 @@ export default {
       }
       try {
         await this.$store.dispatch('user/editUserData', payload);
+        this.showModalSave();
       } catch (e) {
         console.log(e);
       }
