@@ -286,6 +286,7 @@ export default {
       cards: 'data/getCards',
       distance: 'data/getDistance',
       locations: 'data/getLocations',
+      checkWelcomeModal: 'modals/getIsShowWelcome',
       // cards: 'data/getAllQuests',
     }),
   },
@@ -297,9 +298,12 @@ export default {
   },
   methods: {
     showWelcomeModal() {
-      this.ShowModal({
-        key: modals.welcome,
-      });
+      if (this.checkWelcomeModal === true) {
+        this.ShowModal({
+          key: modals.welcome,
+        });
+      }
+      this.$store.dispatch('modals/checkWelcomeModal', false);
     },
     getAllQuests() {
       return this.$store.dispatch('data/getAllQuests');
