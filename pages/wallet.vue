@@ -27,26 +27,26 @@
               <span class="balance__usd">{{ `$ ${userInfo.usd}` }}</span>
             </div>
             <div class="balance__bottom">
-              <base-button
+              <base-btn
                 mode="outline"
                 class="balance__btn"
                 @click="showDepositModal()"
               >
                 {{ $t('wallet.deposit') }}
-              </base-button>
-              <base-button
+              </base-btn>
+              <base-btn
                 mode="outline"
                 class="balance__btn"
                 @click="showWithdrawModal()"
               >
                 {{ $t('wallet.withdraw') }}
-              </base-button>
-              <base-button
+              </base-btn>
+              <base-btn
                 class="balance__btn"
                 @click=" showTransferModal()"
               >
                 {{ $t('wallet.transfer') }}
-              </base-button>
+              </base-btn>
             </div>
           </div>
           <div
@@ -58,13 +58,13 @@
               class="icon-close_big card__icon"
               @click="closeCard()"
             />
-            <base-button
+            <base-btn
               class="card__btn"
               mode="outline"
               @click="showAddCardModal()"
             >
               {{ $t('wallet.addCard') }}
-            </base-button>
+            </base-btn>
           </div>
         </div>
         <div class="wallet__table">
