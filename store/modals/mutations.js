@@ -14,4 +14,7 @@ export default {
       isUnclosable: true,
     };
   },
+  setIsShowWelcome(state, value) {
+    state.showWelcomeModal = value;
+  },
 };

@@ -121,6 +121,7 @@ export default {
 }
 
 .modal {
+  overflow: visible;
   max-width: 413px !important;
   height: 292px;
   &__header {
