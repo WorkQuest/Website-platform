@@ -171,14 +171,11 @@ export default {
   &_messages {
     background-color: $white;
     color: $green;
-    border-radius: 6px;
     transition: .3s;
-    border: 1px solid $green;
     font-size: 12px;
     &:hover {
-      background-color: $green;
-      color: $white;
-      border-radius: 6px;
+      color: #77e377;
+      background-color: $white;
     }
   }
   &_goToChat {

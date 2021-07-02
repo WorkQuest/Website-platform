@@ -33,10 +33,10 @@
         v-if="userRole === 'employer'"
         class="subtitle"
       >
-        {{ userInfo.company }}
+        {{ userData.additionalInfo.company || userInfo.company }}
       </div>
       <div class="description">
-        {{ userInfo.desc }}
+        {{ userData.additionalInfo.description || userInfo.desc }}
       </div>
       <div v-if="selected === 1 && userRole === 'worker' ">
         <div class="knowledge__text">
@@ -71,24 +71,27 @@
             <base-btn v-if="userRole === 'worker'">
               {{ $t('profile.raiseViews') }}
             </base-btn>
-          </div>
-          <span v-if="userRole === 'employer'">
-            <div
-              v-if="selected === 1"
-              class="message__container-btn"
+            <span
+              v-if="userRole === 'employer'"
+              class="right"
             >
-              <base-btn
-                mode="goToMessages"
-                class="message__btn"
-                @click="showMessages()"
+              <span
+                v-if="selected === 1"
+                class="message__container-btn"
               >
-                <template v-slot:right>
-                  <span class="icon-chat" />
-                </template>
-                {{ $t('profile.writeAMessage') }}
-              </base-btn>
-            </div>
-          </span>
+                <base-btn
+                  mode="goToMessages"
+                  class="message__btn"
+                  @click="showMessages()"
+                >
+                  <template v-slot:right>
+                    <span class="icon-chat" />
+                  </template>
+                  {{ $t('profile.writeAMessage') }}
+                </base-btn>
+              </span>
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -139,12 +142,16 @@ export default {
 
 <style lang="scss" scoped>
 
+.right {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
 .btn {
   &__container {
-    max-width: 124px;
     width: 100%;
     display: flex;
-    justify-self: flex-end;
   }
 }
 
