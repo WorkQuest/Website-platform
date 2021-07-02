@@ -193,14 +193,13 @@
             :placeholder="userData.additionalInfo.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel'"
           />
         </div>
-        <label
-          v-if="userRole === 'worker'"
-          class="knowledge__label"
-          for="knowledge"
-        >{{ $t('settings.knowledge') }}</label>
         <div
           v-if="userRole === 'worker'"
         >
+          <label
+            class="knowledge__label"
+            for="knowledge"
+          >{{ $t('settings.educations') }}</label>
           <div
             v-if="localUserData.additionalInfo.educations.length !==0"
           >
