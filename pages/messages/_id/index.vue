@@ -19,7 +19,10 @@
             <ChatMenu />
           </div>
         </div>
-        <div class="chat__messages">
+        <div
+          id="chat__messages"
+          class="chat__messages"
+        >
           <div class="chat__info-message">
             <div class="name__underline">
               Samantha Sparcs
@@ -158,6 +161,10 @@ export default {
     this.showNoticeModal();
   },
   methods: {
+    scrollChat() {
+      const chat = this.$el.querySelector('#chat__messages');
+      setTimeout((chat.scrollTop = chat.scrollHeight), 100);
+    },
     showNoticeModal() {
       this.ShowModal({
         key: modals.notice,
@@ -181,7 +188,7 @@ export default {
         messageTime: moment().format('HH:mm'),
       });
       this.messanges = '';
-      // this.scrollChat();
+      this.scrollChat();
     },
     onEnter(e, callback) {
       if (!e.ctrlKey) {
