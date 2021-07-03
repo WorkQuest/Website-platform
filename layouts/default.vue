@@ -393,7 +393,6 @@
           </div>
         </div>
         <div
-          id="anchor"
           :class="[{'ctm-open': isMobileMenu},
                    {'ctm-open': isNotFlexContainer}]"
         >
@@ -543,10 +542,7 @@
               </div>
             </div>
           </transition>
-          <div
-            id="template__main"
-            class="template__main"
-          >
+          <div class="template__main">
             <nuxt />
           </div>
         </div>
@@ -901,8 +897,7 @@ export default {
   &__img {
     width: 40px;
     height: 40px;
-    border-radius: 89px;
-    margin: 0 10px;
+    border-radius: 50%;
   }
 }
 
@@ -1079,9 +1074,6 @@ export default {
     padding-bottom: 80px;
     transition: 1s;
     width: 100%;
-    &_margin {
-      padding-top: 72px;
-    }
   }
 }
 .notify {

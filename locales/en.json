@@ -94,7 +94,7 @@
   },
   "profile": {
     "raiseViews": "Raise views",
-    "knowledge": "Knowledge",
+    "educations": "Educations",
     "prevWorkExp": "Previous work experience",
     "active": "active proposals",
     "radius": "in your radius",
@@ -457,6 +457,7 @@
     "imgLoaded": "Image loaded successful",
     "workExp": "Work experience",
     "add": "Add",
+    "delete": "Delete",
     "knowledge": "Knowledge",
     "placeOfStudying": "Place of studying",
     "vacancy": "Vacancy",
