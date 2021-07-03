@@ -163,7 +163,7 @@ export default {
   methods: {
     scrollChat() {
       const chat = this.$el.querySelector('#chat__messages');
-      setTimeout((chat.scrollTop = chat.scrollHeight), 100);
+      setTimeout(chat.scrollTop = chat.scrollHeight, 100);
     },
     showNoticeModal() {
       this.ShowModal({
