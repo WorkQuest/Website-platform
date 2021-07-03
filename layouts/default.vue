@@ -1,6 +1,11 @@
 <template>
-  <div class="primary">
-    <div class="primary__template template">
+  <div
+    ref="templateScroll"
+    class="primary"
+  >
+    <div
+      class="primary__template template"
+    >
       <div class="template__content">
         <div
           v-click-outside="closeAll"
@@ -388,7 +393,7 @@
           </div>
         </div>
         <div
-          class=""
+          id="anchor"
           :class="[{'ctm-open': isMobileMenu},
                    {'ctm-open': isNotFlexContainer}]"
         >
@@ -538,7 +543,10 @@
               </div>
             </div>
           </transition>
-          <div class="template__main">
+          <div
+            id="template__main"
+            class="template__main"
+          >
             <nuxt />
           </div>
         </div>
@@ -782,6 +790,11 @@ export default {
       ];
     },
   },
+  watch: {
+    $route() {
+      this.$refs.templateScroll.scrollTop = 0;
+    },
+  },
   async mounted() {
     this.GetLocation();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
@@ -889,7 +902,7 @@ export default {
     width: 40px;
     height: 40px;
     border-radius: 89px;
-    margin: 0px 10px;
+    margin: 0 10px;
   }
 }
 
@@ -1066,6 +1079,9 @@ export default {
     padding-bottom: 80px;
     transition: 1s;
     width: 100%;
+    &_margin {
+      padding-top: 72px;
+    }
   }
 }
 .notify {

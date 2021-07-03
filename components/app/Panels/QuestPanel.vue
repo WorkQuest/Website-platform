@@ -137,6 +137,12 @@ export default {
 
 <style lang="scss" scoped>
 
+.profile {
+  &__img {
+    border-radius: 50%;
+  }
+}
+
 .quest {
   &__location {
     display: flex;

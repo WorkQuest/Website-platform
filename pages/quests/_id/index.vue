@@ -3,7 +3,9 @@
     <Info
       :info="infoData"
     />
-    <div class="main-white">
+    <div
+      class="main-white"
+    >
       <div class="main__body">
         <QuestPanel />
 
@@ -323,6 +325,7 @@
           language="en"
           :center="{lat: locations[0].lat, lng: locations[0].lng}"
           :zoom="6"
+          :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
         />
       </transition>
     </div>
@@ -436,7 +439,6 @@ export default {
       distance: 'data/getDistance',
     }),
   },
-
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
