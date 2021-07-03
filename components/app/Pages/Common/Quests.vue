@@ -70,9 +70,9 @@
                       <div class="block__text block__text_title">
                         {{ userData.firstName }} {{ userData.lastName }}
                         <span
-                          v-if="item.sub"
+                          v-if="userData.additionalInfo.company"
                           class="block__text block__text_grey"
-                        >{{ item.sub }}</span>
+                        >from {{ userData.additionalInfo.company }}</span>
                       </div>
                     </div>
                     <div

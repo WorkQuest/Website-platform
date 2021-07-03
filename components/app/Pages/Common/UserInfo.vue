@@ -52,26 +52,33 @@
         {{ userData.additionalInfo.company || userInfo.company }}
       </div>
       <div class="description">
-        {{ userData.additionalInfo.description || userInfo.desc }}
+        {{ userRole === 'employer' ? userInfo.desc : userData.additionalInfo.description }}
       </div>
       <div v-if="selected === 1 && userRole === 'worker' ">
         <div class="knowledge__text">
-          {{ $t('profile.knowledge') }}
+          {{ $t('profile.educations') }}
         </div>
-        <div class="knowledge__term">
-          {{ userInfo.knowledge.start }} - {{ userInfo.knowledge.finish }}
+        <div class="work-exp__container">
+          <div
+            v-for="(item, i) in userData.additionalInfo.educations"
+            :key="i"
+            class="work-exp__item"
+          >
+            <span class="work-exp__company">{{ item.place }}</span>
+            <span class="work-exp__term">{{ item.to }} - {{ item.from }}</span>
+          </div>
         </div>
         <div class="work-exp__text">
           {{ $t('profile.prevWorkExp') }}
         </div>
         <div class="work-exp__container">
           <div
-            v-for="(item, i) in userInfo.workExp"
+            v-for="(item, i) in userData.additionalInfo.workExperiences"
             :key="i"
             class="work-exp__item"
           >
-            <span class="work-exp__company">{{ item.company }}</span>
-            <span class="work-exp__term">{{ item.start }} - {{ item.finish }}</span>
+            <span class="work-exp__company">{{ item.place }}</span>
+            <span class="work-exp__term">{{ item.to }} - {{ item.from }}</span>
           </div>
         </div>
       </div>
@@ -168,6 +175,7 @@ export default {
   &__container {
     width: 100%;
     display: flex;
+    align-items: flex-end;
   }
 }
 
@@ -334,11 +342,14 @@ export default {
 }
 @include _1199 {
   .contacts {
-    grid-template-columns: 7fr;
+    grid-template-columns: 4fr 1fr;
     margin: 0 0 20px 0;
   }
 }
 @include _575 {
+  .contacts {
+    grid-template-columns: 1fr;
+  }
   .information-grid {
     flex-direction: column;
     align-items: center;
