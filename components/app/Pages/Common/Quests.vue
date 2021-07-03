@@ -381,6 +381,7 @@ export default {
 .info-grid {
   &__avatar {
     border-radius: 50%;
+    height: 30px;
   }
   &__col {
     &_left {
