@@ -5,16 +5,9 @@
     <div class="col info-grid__col_left">
       <div class="info-grid__avatar">
         <img
-          v-if="imageData"
           class="info-grid__avatar"
-          :src="imageData"
-          :alt="localUserData.firstName"
-        >
-        <img
-          v-else-if="!imageData"
-          class="info-grid__avatar"
-          src="~/assets/img/app/avatar_empty.png"
-          :alt="localUserData.firstName"
+          src="~/assets/img/temp/avatar.jpg"
+          alt=""
         >
       </div>
       <div class="rating" />
@@ -26,45 +19,34 @@
       </nuxt-link>
     </div>
     <div class="col info-grid__col">
-      <div
-        v-if="firstName && lastName"
-        class="title"
-      >
-        {{ firstName }} {{ lastName }}
+      <div class="title">
+        {{ name }}
       </div>
       <div
         v-if="userRole === 'employer'"
         class="subtitle"
       >
-        {{ company || userInfo.company }}
+        {{ company }}
       </div>
-      <div class="description">
-        {{ userRole === 'employer' ? userInfo.desc : userDesc }}
+      <div
+        v-if="userRole === 'employer'"
+        class="description"
+      >
+        {{ userDesc }}
       </div>
       <div v-if="selected === 1 && userRole === 'worker' ">
-        <div
-          v-if="userEducations !== '' || userEducations !== null"
-          class="knowledge__text"
-        >
+        <div class="knowledge__text">
           {{ $t('profile.educations') }}
         </div>
-        <div
-          v-if="userEducations"
-          class="work-exp__container"
-        >
+        <div class="work-exp__container">
           <div
-            v-for="(item, i) in userEducations"
-            :key="i"
             class="work-exp__item"
           >
-            <span class="work-exp__company">{{ item.place }}</span>
-            <span class="work-exp__term">{{ item.to }} - {{ item.from }}</span>
+            <span class="work-exp__company">{{ userEducations.place }}</span>
+            <span class="work-exp__term">{{ userEducations.to }} - {{ userEducations.from }}</span>
           </div>
         </div>
-        <div
-          v-if="userWorkExp !== '' && userWorkExp !== null"
-          class="work-exp__text"
-        >
+        <div class="work-exp__text">
           {{ $t('profile.prevWorkExp') }}
         </div>
         <div class="work-exp__container">
@@ -114,13 +96,14 @@
         </div>
       </div>
     </div>
+
     <div class="share-btn" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import ContactPanel from '~/components/app/Panels/Contact';
+import ContactPanel from '~/components/app/Panels/ContactOther';
 import SocialPanel from '~/components/app/Panels/Social';
 
 export default {
@@ -142,15 +125,14 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      userInfo: 'data/getUserInfo',
       imageData: 'user/getImageData',
-      firstName: 'user/getFirstName',
-      lastName: 'user/getLastName',
-      company: 'user/getUserCompany',
-      userDesc: 'user/getUserDesc',
-      userEducations: 'user/getUserEducations',
-      userWorkExp: 'user/getUserWorkExp',
+      userEducations: 'data/getEducations',
+      userWorkExp: 'data/getWorkExp',
+      userInfo: 'data/getUserInfo',
       quest: 'data/getQuest',
+      name: 'data/getName',
+      company: 'data/getCompany',
+      userDesc: 'data/getUserDesc',
     }),
   },
   async mounted() {

@@ -4,7 +4,7 @@
       class="main-section main-section_white"
     >
       <div class="main-container">
-        <UserInfo />
+        <UserInfo :selected="selected" />
       </div>
     </div>
     <div class="information-section">
@@ -49,7 +49,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import ReviewsTab from '~/components/app/Pages/Profile/Tabs/Reviews';
-import UserInfo from '~/components/app/Pages/Common/UserInfo';
+import UserInfo from '~/components/app/Pages/Common/UserInfoOther';
 import UserStatistic from '~/components/app/Panels/UserStatistic';
 import Card from '~/components/app/Cards/QuestCard';
 import modals from '~/store/modals/modals';

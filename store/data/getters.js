@@ -17,4 +17,13 @@ export default {
   getTransactions: (state) => state.transactions,
   getTransactionsData: (state) => state.transactionsData,
   getRespondedList: (state) => state.respondedList,
+  getName: (state) => state.userInfo?.name || '',
+  getCompany: (state) => state.userInfo?.company || '',
+  getLocation: (state) => state.userInfo?.location || '',
+  getPhone: (state) => state.userInfo?.tel || '',
+  getEmail: (state) => state.userInfo?.email || '',
+  getSkills: (state) => state.userInfo?.skills || '',
+  getEducations: (state) => state.userInfo?.educations,
+  getWorkExp: (state) => state.userInfo?.workExp,
+  getUserDesc: (state) => state.userInfo?.desc,
 };

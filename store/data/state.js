@@ -302,20 +302,21 @@ export default () => ({
         title: 'Design',
       },
     ],
-    knowledge: {
-      start: '2019',
-      finish: '2021',
+    educations: {
+      place: 'TSU',
+      to: '2019',
+      from: '2021',
     },
     workExp: [
       {
-        company: 'LinkEd',
-        start: '2010',
-        finish: '2016',
+        place: 'LinkEd',
+        to: '2010',
+        from: '2016',
       },
       {
-        company: 'RusTor',
-        start: '2016',
-        finish: '2021',
+        place: 'RusTor',
+        to: '2016',
+        from: '2021',
       },
     ],
   },

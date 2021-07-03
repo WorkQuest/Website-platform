@@ -92,9 +92,9 @@
             </span>
             <div class="profile__row-3col">
               <base-field
-                v-if="localUserData.firstName"
+                v-if="firstName"
                 v-model="localUserData.firstName"
-                :placeholder="userData.firstName || $t('settings.nameInput')"
+                :placeholder="firstName || $t('settings.nameInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -103,7 +103,7 @@
               </base-field>
               <base-field
                 v-model="localUserData.additionalInfo.address"
-                :placeholder="localUserData.additionalInfo.address || $t('settings.addressInput')"
+                :placeholder="address || $t('settings.addressInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -112,7 +112,7 @@
               </base-field>
               <base-field
                 v-model="localUserData.additionalInfo.address"
-                :placeholder="userData.additionalInfo.address || $t('settings.addressInput')"
+                :placeholder="address || $t('settings.addressInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -120,7 +120,7 @@
                 </template>
               </base-field>
               <base-field
-                v-if="localUserData.lastName"
+                v-if="lastName"
                 v-model="localUserData.lastName"
                 :placeholder="$t('settings.lastNameInput')"
                 mode="icon"
@@ -131,7 +131,7 @@
               </base-field>
               <base-field
                 v-model="localUserData.additionalInfo.firstMobileNumber"
-                :placeholder="userData.additionalInfo.firstMobileNumber || $t('settings.telInput')"
+                :placeholder="firstMobileNumber || $t('settings.telInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -140,7 +140,7 @@
               </base-field>
               <base-field
                 v-model="localUserData.additionalInfo.secondMobileNumber"
-                :placeholder="userData.additionalInfo.secondMobileNumber || $t('settings.telInput')"
+                :placeholder="secondMobileNumder || $t('settings.telInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -156,7 +156,7 @@
         >
           <base-field
             v-model="localUserData.additionalInfo.company"
-            :placeholder="userData.additionalInfo.company || $t('settings.amazon')"
+            :placeholder="company || $t('settings.amazon')"
             mode="icon"
           >
             <template v-slot:left>
@@ -165,7 +165,7 @@
           </base-field>
           <base-field
             v-model="localUserData.additionalInfo.CEO"
-            :placeholder="userData.additionalInfo.CEO || $t('settings.ceo')"
+            :placeholder="userCEO || $t('settings.ceo')"
             mode="icon"
           >
             <template v-slot:left>
@@ -174,7 +174,7 @@
           </base-field>
           <base-field
             v-model="localUserData.additionalInfo.website"
-            :placeholder="userData.additionalInfo.website || $t('settings.amazon_com')"
+            :placeholder="userWebsite || $t('settings.amazon_com')"
             mode="icon"
           >
             <template v-slot:left>
@@ -190,7 +190,7 @@
             id="textarea"
             v-model="localUserData.additionalInfo.description"
             class="profile__textarea"
-            :placeholder="userData.additionalInfo.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel'"
+            :placeholder="userDesc || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel'"
           />
         </div>
         <div
@@ -201,10 +201,10 @@
             for="knowledge"
           >{{ $t('settings.educations') }}</label>
           <div
-            v-if="localUserData.additionalInfo.educations.length !==0"
+            v-if="userEducations.length !==0"
           >
             <div
-              v-for="(k, i) in localUserData.additionalInfo.educations"
+              v-for="(k, i) in userEducations"
               :key="k.id"
               class="knowledge__container"
             >
@@ -265,10 +265,10 @@
             for="workExp"
           >{{ $t('settings.workExp') }}</label>
           <div
-            v-if="localUserData.additionalInfo.workExperiences.length !==0"
+            v-if="userWorkExp.length !==0"
           >
             <div
-              v-for="(k, i) in localUserData.additionalInfo.workExperiences"
+              v-for="(k, i) in userWorkExp"
               :key="k.id"
               class="knowledge__container"
             >
@@ -327,7 +327,7 @@
         <div class="profile__row-4col">
           <base-field
             v-model="localUserData.additionalInfo.socialNetwork.instagram"
-            :placeholder="userData.additionalInfo.socialNetwork.instagram || $t('settings.socialInput')"
+            :placeholder="userInstagram || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -336,7 +336,7 @@
           </base-field>
           <base-field
             v-model="localUserData.additionalInfo.socialNetwork.twitter"
-            :placeholder="userData.additionalInfo.socialNetwork.twitter || $t('settings.socialInput')"
+            :placeholder="userTwitter || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -345,7 +345,7 @@
           </base-field>
           <base-field
             v-model="localUserData.additionalInfo.socialNetwork.linkedin"
-            :placeholder="userData.additionalInfo.socialNetwork.linkedin || $t('settings.socialInput')"
+            :placeholder="userLinkedin || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -354,7 +354,7 @@
           </base-field>
           <base-field
             v-model="localUserData.additionalInfo.socialNetwork.facebook"
-            :placeholder="userData.additionalInfo.socialNetwork.facebook || $t('settings.socialInput')"
+            :placeholder="userFacebook || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -380,7 +380,7 @@
             {{ $t('settings.skills') }}
           </div>
           <div
-            v-for="(item, i) in userInfo.skills"
+            v-for="(item, i) in userSkills"
             :key="i"
           >
             <div class="page__badge">
@@ -606,6 +606,22 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      firstName: 'user/getFirstName',
+      lastName: 'user/getLastName',
+      address: 'user/getUserAddress',
+      company: 'user/getUserCompany',
+      userCEO: 'user/getUserCEO',
+      userDesc: 'user/getUserDesc',
+      userWorkExp: 'user/getUserWorkExp',
+      userEducations: 'user/getUserEducations',
+      userWebsite: 'user/getUserWebsite',
+      userInstagram: 'user/getUserInstagram',
+      userTwitter: 'user/getUserTwitter',
+      userLinkedin: 'user/getUserLinkedin',
+      userFacebook: 'user/getUserFacebook',
+      firstMobileNumder: 'user/getUserFirstMobileNumber',
+      secondMobileNumder: 'user/getUserSecondMobileNumber',
+      userSkills: 'data/getSkills',
       userInfo: 'data/getUserInfo',
       imageData: 'user/getImageData',
       additionalInfo: 'user/getAdditionalInfo',
@@ -629,6 +645,7 @@ export default {
         to: null,
         place: null,
       };
+      this.showModalAddEducationOk();
     },
     deleteKnowledge(i) {
       this.localUserData.additionalInfo.educations.splice(i, 1);
@@ -640,6 +657,7 @@ export default {
         to: null,
         place: null,
       };
+      this.showModalAddWorkExpOk();
     },
     deleteWorkExp(i) {
       this.localUserData.additionalInfo.workExperiences.splice(i, 1);
@@ -668,17 +686,35 @@ export default {
         output.onload = function () {
           URL.revokeObjectURL(output.src);
         };
-        this.showModalOk();
+        this.showModalImageOk();
         reader.onerror = (evt) => {
           console.error(evt);
         };
       }
     },
-    showModalOk() {
+    showModalImageOk() {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
         title: 'Image loaded successful',
+        subtitle: 'Please press save button',
+        path: '/settings',
+      });
+    },
+    showModalAddEducationOk() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: 'Education add successful',
+        subtitle: 'Please press save button',
+        path: '/settings',
+      });
+    },
+    showModalAddWorkExpOk() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: 'Work experience add successful',
         subtitle: 'Please press save button',
         path: '/settings',
       });
