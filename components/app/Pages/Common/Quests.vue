@@ -22,7 +22,7 @@
           </div>
           <div class="quests__cards">
             <div
-              v-for="(item, i) in filteredCards(selectedTab, isShowFavourite,)"
+              v-for="(item, i) in filteredCards(selectedTab, isShowFavourite)"
               :key="item.id"
               class="quests__cards__all"
             >
