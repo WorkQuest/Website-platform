@@ -45,7 +45,7 @@ export default () => ({
       distance: '200',
     },
     {
-      type: 5,
+      type: 4,
       title: 'Samantha Sparks',
       level: {
         code: 3,
@@ -60,7 +60,7 @@ export default () => ({
       background: require('~/assets/img/temp/fake-card.svg'),
       theme: 'Paint the garage quickly',
       desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-      priority: 3,
+      priority: 2,
       amount: 1500,
       url: '/profile',
       symbol: 'wusd',

@@ -419,7 +419,6 @@ export default {
         },
       ],
       priority: [
-        this.$t('quests.priority.all'),
         this.$t('quests.priority.low'),
         this.$t('quests.priority.normal'),
         this.$t('quests.priority.urgent'),

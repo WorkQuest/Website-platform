@@ -323,7 +323,7 @@ export default {
         1: this.$t('priority.normal'),
         2: this.$t('priority.urgent'),
       };
-      return priority[index] || 'None';
+      return priority[index] || '';
     },
     getPriorityClass(index) {
       const priority = {
