@@ -4,14 +4,15 @@
       v-for="(item, i) in socials"
       :key="i"
     >
-      <nuxt-link
+      <a
         class="social__link"
-        :to="item.url"
+        :href="item.url"
+        target="_blank"
       >
         <span
           :class="item.class"
         />
-      </nuxt-link>
+      </a>
     </span>
   </div>
 </template>

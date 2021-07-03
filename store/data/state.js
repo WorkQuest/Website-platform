@@ -45,7 +45,7 @@ export default () => ({
       distance: '200',
     },
     {
-      type: 5,
+      type: 4,
       title: 'Samantha Sparks',
       level: {
         code: 3,
@@ -60,7 +60,7 @@ export default () => ({
       background: require('~/assets/img/temp/fake-card.svg'),
       theme: 'Paint the garage quickly',
       desc: 'Hi, i’m urgently looking for a skilled man that can paint my Garage doors and a couple of walls around the garage and by the way...',
-      priority: 3,
+      priority: 2,
       amount: 1500,
       url: '/profile',
       symbol: 'wusd',
@@ -302,38 +302,39 @@ export default () => ({
         title: 'Design',
       },
     ],
-    knowledge: {
-      start: '2019',
-      finish: '2021',
+    educations: {
+      place: 'TSU',
+      to: '2019',
+      from: '2021',
     },
     workExp: [
       {
-        company: 'LinkEd',
-        start: '2010',
-        finish: '2016',
+        place: 'LinkEd',
+        to: '2010',
+        from: '2016',
       },
       {
-        company: 'RusTor',
-        start: '2016',
-        finish: '2021',
+        place: 'RusTor',
+        to: '2016',
+        from: '2021',
       },
     ],
   },
   socials: [
     {
-      url: '/profile',
+      url: 'https://ru-ru.facebook.com',
       class: 'icon-facebook',
     },
     {
-      url: '/profile',
+      url: 'https://twitter.com',
       class: 'icon-twitter',
     },
     {
-      url: '/profile',
+      url: 'https://www.instagram.com',
       class: 'icon-instagram',
     },
     {
-      url: '/profile',
+      url: 'https://ru.linkedin.com',
       class: 'icon-LinkedIn',
     },
   ],

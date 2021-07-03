@@ -40,6 +40,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
+  scrollToTop: true,
   name: 'RoleLayout',
   computed: {
     ...mapGetters({

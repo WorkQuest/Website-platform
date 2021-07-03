@@ -1,6 +1,11 @@
 <template>
-  <div class="primary">
-    <div class="primary__template template">
+  <div
+    ref="templateScroll"
+    class="primary"
+  >
+    <div
+      class="primary__template template"
+    >
       <div class="template__content">
         <div
           v-click-outside="closeAll"
@@ -325,7 +330,17 @@
                     <div class="profile__header">
                       <div class="profile__avatar">
                         <img
-                          src="~assets/img/app/fakeavatar.svg"
+                          v-if="imageData"
+                          id="userAvatarThree"
+                          class="profile__img"
+                          :src="imageData"
+                          alt=""
+                        >
+                        <img
+                          v-if="!imageData"
+                          id="userAvatarTwo"
+                          class="profile__img"
+                          src="~/assets/img/app/avatar_empty.png"
                           alt=""
                         >
                       </div>
@@ -378,7 +393,6 @@
           </div>
         </div>
         <div
-          class=""
           :class="[{'ctm-open': isMobileMenu},
                    {'ctm-open': isNotFlexContainer}]"
         >
@@ -641,6 +655,7 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 
 export default {
+  scrollToTop: true,
   name: 'DefaultLayout',
   middleware: 'auth',
   components: {},
@@ -771,6 +786,11 @@ export default {
       ];
     },
   },
+  watch: {
+    $route() {
+      this.$refs.templateScroll.scrollTop = 0;
+    },
+  },
   async mounted() {
     this.GetLocation();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
@@ -877,8 +897,7 @@ export default {
   &__img {
     width: 40px;
     height: 40px;
-    border-radius: 89px;
-    margin: 0px 10px;
+    border-radius: 50%;
   }
 }
 

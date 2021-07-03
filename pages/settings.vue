@@ -92,9 +92,9 @@
             </span>
             <div class="profile__row-3col">
               <base-field
-                v-if="localUserData.firstName"
+                v-if="firstName"
                 v-model="localUserData.firstName"
-                :placeholder="userData.firstName || $t('settings.nameInput')"
+                :placeholder="firstName || $t('settings.nameInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -102,8 +102,8 @@
                 </template>
               </base-field>
               <base-field
-                v-model="address1_input"
-                :placeholder="userData.additionalInfo.address || $t('settings.addressInput')"
+                v-model="localUserData.additionalInfo.address"
+                :placeholder="address || $t('settings.addressInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -111,8 +111,8 @@
                 </template>
               </base-field>
               <base-field
-                v-model="address1_input"
-                :placeholder="userData.additionalInfo.address || $t('settings.addressInput')"
+                v-model="localUserData.additionalInfo.address"
+                :placeholder="address || $t('settings.addressInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -120,7 +120,7 @@
                 </template>
               </base-field>
               <base-field
-                v-if="localUserData.lastName"
+                v-if="lastName"
                 v-model="localUserData.lastName"
                 :placeholder="$t('settings.lastNameInput')"
                 mode="icon"
@@ -130,8 +130,8 @@
                 </template>
               </base-field>
               <base-field
-                v-model="tel1_input"
-                :placeholder="userData.additionalInfo.firstMobileNumber || $t('settings.telInput')"
+                v-model="localUserData.additionalInfo.firstMobileNumber"
+                :placeholder="firstMobileNumber || $t('settings.telInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -139,8 +139,8 @@
                 </template>
               </base-field>
               <base-field
-                v-model="tel2_input"
-                :placeholder="userData.additionalInfo.secondMobileNumber || $t('settings.telInput')"
+                v-model="localUserData.additionalInfo.secondMobileNumber"
+                :placeholder="secondMobileNumder || $t('settings.telInput')"
                 mode="icon"
               >
                 <template v-slot:left>
@@ -155,8 +155,8 @@
           class="company__inputs"
         >
           <base-field
-            v-model="company_input"
-            :placeholder="userData.additionalInfo.company || $t('settings.amazon')"
+            v-model="localUserData.additionalInfo.company"
+            :placeholder="company || $t('settings.amazon')"
             mode="icon"
           >
             <template v-slot:left>
@@ -164,8 +164,8 @@
             </template>
           </base-field>
           <base-field
-            v-model="ceo_input"
-            :placeholder="userData.additionalInfo.CEO || $t('settings.ceo')"
+            v-model="localUserData.additionalInfo.CEO"
+            :placeholder="userCEO || $t('settings.ceo')"
             mode="icon"
           >
             <template v-slot:left>
@@ -173,8 +173,8 @@
             </template>
           </base-field>
           <base-field
-            v-model="site_input"
-            :placeholder="userData.additionalInfo.website || $t('settings.amazon_com')"
+            v-model="localUserData.additionalInfo.website"
+            :placeholder="userWebsite || $t('settings.amazon_com')"
             mode="icon"
           >
             <template v-slot:left>
@@ -188,80 +188,146 @@
         >
           <textarea
             id="textarea"
-            v-model="descriptionTextBlock"
+            v-model="localUserData.additionalInfo.description"
             class="profile__textarea"
-            :placeholder="userData.additionalInfo.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel'"
+            :placeholder="userDesc || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel'"
           />
         </div>
-        <label
-          v-if="userRole === 'worker'"
-          class="knowledge__label"
-          for="knowledge"
-        >{{ $t('settings.knowledge') }}</label>
         <div
           v-if="userRole === 'worker'"
-          class="knowledge__container"
         >
-          <base-field
-            id="knowledge"
-            v-model="knowledgeTerm1__input"
-            type="grey"
-            :placeholder="$t('settings.term')"
-          />
-          <div class="knowledge__dash">
-            -
+          <label
+            class="knowledge__label"
+            for="knowledge"
+          >{{ $t('settings.educations') }}</label>
+          <div
+            v-if="userEducations.length !==0"
+          >
+            <div
+              v-for="(k, i) in userEducations"
+              :key="k.id"
+              class="knowledge__container"
+            >
+              <base-field
+                id="knowledge"
+                v-model="localUserData.additionalInfo.educations[i].from"
+                type="grey"
+                :placeholder="$t('settings.term')"
+              />
+              <div class="knowledge__dash">
+                -
+              </div>
+              <base-field
+                v-model="localUserData.additionalInfo.educations[i].to"
+                type="grey"
+                :placeholder="$t('settings.term')"
+              />
+              <div />
+              <base-field
+                v-model="localUserData.additionalInfo.educations[i].place"
+                type="grey"
+                :placeholder="$t('settings.placeOfStudying')"
+              />
+              <div />
+              <base-btn @click="deleteKnowledge(i)">
+                {{ $t('settings.delete') }}
+              </base-btn>
+            </div>
           </div>
-          <base-field
-            v-model="knowledgeTerm2__input"
-            type="grey"
-            :placeholder="$t('settings.term')"
-          />
-          <div />
-          <base-field
-            v-model="knowledgePlace__input"
-            type="grey"
-            :placeholder="$t('settings.placeOfStudying')"
-          />
-          <div />
-          <base-btn>{{ $t('settings.add') }}</base-btn>
-        </div>
-
-        <label
-          v-if="userRole === 'worker'"
-          class="knowledge__label"
-          for="workExp"
-        >{{ $t('settings.workExp') }}</label>
-        <div
-          v-if="userRole === 'worker'"
-          class="knowledge__container"
-        >
-          <base-field
-            id="workExp"
-            v-model="workExpTerm1__input"
-            type="grey"
-            :placeholder="$t('settings.term')"
-          />
-          <div class="knowledge__dash">
-            -
+          <div class="knowledge__container">
+            <base-field
+              v-model="newKnowledge.from"
+              type="grey"
+              :placeholder="$t('settings.term')"
+            />
+            <div class="knowledge__dash">
+              -
+            </div>
+            <base-field
+              v-model="newKnowledge.to"
+              type="grey"
+              :placeholder="$t('settings.term')"
+            />
+            <div />
+            <base-field
+              v-model="newKnowledge.place"
+              type="grey"
+              :placeholder="$t('settings.placeOfStudying')"
+            />
+            <div />
+            <base-btn @click="addNewKnowledge()">
+              {{ $t('settings.add') }}
+            </base-btn>
           </div>
-          <base-field
-            v-model="workExpTerm2__input"
-            type="grey"
-            :placeholder="$t('settings.term')"
-          />
-          <div />
-          <base-field
-            v-model="workExpVacancy__input"
-            type="grey"
-            :placeholder="$t('settings.vacancy')"
-          />
-          <div />
-          <base-btn>{{ $t('settings.add') }}</base-btn>
+          <label
+            v-if="userRole === 'worker'"
+            class="knowledge__label"
+            for="workExp"
+          >{{ $t('settings.workExp') }}</label>
+          <div
+            v-if="userWorkExp.length !==0"
+          >
+            <div
+              v-for="(k, i) in userWorkExp"
+              :key="k.id"
+              class="knowledge__container"
+            >
+              <base-field
+                id="workExp"
+                v-model="localUserData.additionalInfo.workExperiences[i].from"
+                type="grey"
+                :placeholder="$t('settings.term')"
+              />
+              <div class="knowledge__dash">
+                -
+              </div>
+              <base-field
+                v-model="localUserData.additionalInfo.workExperiences[i].to"
+                type="grey"
+                :placeholder="$t('settings.term')"
+              />
+              <div />
+              <base-field
+                v-model="localUserData.additionalInfo.workExperiences[i].place"
+                type="grey"
+                :placeholder="$t('settings.placeOfStudying')"
+              />
+              <div />
+              <base-btn @click="deleteWorkExp(i)">
+                {{ $t('settings.delete') }}
+              </base-btn>
+            </div>
+          </div>
+          <div class="knowledge__container">
+            <base-field
+              v-model="newWorkExp.from"
+              type="grey"
+              :placeholder="$t('settings.term')"
+            />
+            <div class="knowledge__dash">
+              -
+            </div>
+            <base-field
+              v-model="newWorkExp.to"
+              type="grey"
+              :placeholder="$t('settings.term')"
+            />
+            <div />
+            <base-field
+              v-model="newWorkExp.place"
+              type="grey"
+              :placeholder="$t('settings.placeOfStudying')"
+            />
+            <div />
+            <base-btn @click="addNewWorkExp()">
+              {{ $t('settings.add') }}
+            </base-btn>
+          </div>
         </div>
         <div class="profile__row-4col">
           <base-field
-            v-model="inst_input"
-            :placeholder="$t('settings.socialInput')"
+            v-model="localUserData.additionalInfo.socialNetwork.instagram"
+            :placeholder="userInstagram || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -269,8 +335,8 @@
             </template>
           </base-field>
           <base-field
-            v-model="twitt_input"
-            :placeholder="$t('settings.socialInput')"
+            v-model="localUserData.additionalInfo.socialNetwork.twitter"
+            :placeholder="userTwitter || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -278,8 +344,8 @@
             </template>
           </base-field>
           <base-field
-            v-model="in_input"
-            :placeholder="$t('settings.socialInput')"
+            v-model="localUserData.additionalInfo.socialNetwork.linkedin"
+            :placeholder="userLinkedin || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -287,8 +353,8 @@
             </template>
           </base-field>
           <base-field
-            v-model="facebook_input"
-            :placeholder="$t('settings.socialInput')"
+            v-model="localUserData.additionalInfo.socialNetwork.facebook"
+            :placeholder="userFacebook || $t('settings.socialInput')"
             mode="icon"
           >
             <template v-slot:left>
@@ -314,7 +380,7 @@
             {{ $t('settings.skills') }}
           </div>
           <div
-            v-for="(item, i) in userInfo.skills"
+            v-for="(item, i) in userSkills"
             :key="i"
           >
             <div class="page__badge">
@@ -487,12 +553,6 @@ export default {
   name: 'Settings',
   data() {
     return {
-      knowledgeTerm1__input: '',
-      knowledgeTerm2__input: '',
-      knowledgePlace__input: '',
-      workExpTerm1__input: '',
-      workExpTerm2__input: '',
-      workExpVacancy__input: '',
       sms: false,
       allRegisterUser: false,
       allPeopleInInternet: false,
@@ -501,29 +561,44 @@ export default {
       onlyInplemention: false,
       onlyReadyForExecution: false,
       allRegisteredUsers: false,
-      bio_input: '',
-      name_input: '',
-      address1_input: '',
-      address2_input: '',
-      email_input: '',
-      lastname_input: '',
-      tel1_input: '',
-      tel2_input: '',
-      company_input: '',
-      ceo_input: '',
-      site_input: '',
-      inst_input: '',
-      twitt_input: '',
-      in_input: '',
-      facebook_input: '',
       isShowInfo: true,
-      localUserData: {},
+      localUserData: {
+        avatarId: null,
+        firstName: null,
+        lastName: null,
+        additionalInfo: {
+          firstMobileNumber: null,
+          secondMobileNumber: null,
+          address: null,
+          socialNetwork: {
+            instagram: null,
+            twitter: null,
+            linkedin: null,
+            facebook: null,
+          },
+          description: null,
+          skills: [],
+          educations: [],
+          workExperiences: [],
+          CEO: null,
+          company: null,
+          website: null,
+        },
+      },
       avatar_change: {
         data: {},
         file: {},
       },
-      userDataStr: [],
-      descriptionTextBlock: '',
+      newKnowledge: {
+        from: null,
+        to: null,
+        place: null,
+      },
+      newWorkExp: {
+        from: null,
+        to: null,
+        place: null,
+      },
     };
   },
   computed: {
@@ -531,6 +606,22 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      firstName: 'user/getFirstName',
+      lastName: 'user/getLastName',
+      address: 'user/getUserAddress',
+      company: 'user/getUserCompany',
+      userCEO: 'user/getUserCEO',
+      userDesc: 'user/getUserDesc',
+      userWorkExp: 'user/getUserWorkExp',
+      userEducations: 'user/getUserEducations',
+      userWebsite: 'user/getUserWebsite',
+      userInstagram: 'user/getUserInstagram',
+      userTwitter: 'user/getUserTwitter',
+      userLinkedin: 'user/getUserLinkedin',
+      userFacebook: 'user/getUserFacebook',
+      firstMobileNumder: 'user/getUserFirstMobileNumber',
+      secondMobileNumder: 'user/getUserSecondMobileNumber',
+      userSkills: 'data/getSkills',
       userInfo: 'data/getUserInfo',
       imageData: 'user/getImageData',
       additionalInfo: 'user/getAdditionalInfo',
@@ -538,10 +629,39 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    this.localUserData = JSON.parse(JSON.stringify(this.userData));
+    this.localUserData = {
+      avatarId: this.userData.avatarId,
+      firstName: this.userData.firstName,
+      lastName: this.userData.lastName,
+      additionalInfo: JSON.parse(JSON.stringify(this.userData.additionalInfo)),
+    };
     this.SetLoader(false);
   },
   methods: {
+    addNewKnowledge() {
+      this.localUserData.additionalInfo.educations.push({ ...this.newKnowledge });
+      this.newKnowledge = {
+        from: null,
+        to: null,
+        place: null,
+      };
+      this.showModalAddEducationOk();
+    },
+    deleteKnowledge(i) {
+      this.localUserData.additionalInfo.educations.splice(i, 1);
+    },
+    addNewWorkExp() {
+      this.localUserData.additionalInfo.workExperiences.push({ ...this.newWorkExp });
+      this.newWorkExp = {
+        from: null,
+        to: null,
+        place: null,
+      };
+      this.showModalAddWorkExpOk();
+    },
+    deleteWorkExp(i) {
+      this.localUserData.additionalInfo.workExperiences.splice(i, 1);
+    },
     // eslint-disable-next-line consistent-return
     async processFile(e, validate) {
       const isValid = await validate(e);
@@ -549,10 +669,6 @@ export default {
       if (isValid.valid) {
         const MAX_SIZE = 20e6; // макс размер - тут 2мб
         if (!file) {
-          return false;
-        }
-        if (file.size > MAX_SIZE) {
-          this.errorModal(this.$tc('nft.text.maxFileSize', MAX_SIZE / 1e6));
           return false;
         }
 
@@ -570,17 +686,35 @@ export default {
         output.onload = function () {
           URL.revokeObjectURL(output.src);
         };
-        this.showModalOk();
+        this.showModalImageOk();
         reader.onerror = (evt) => {
           console.error(evt);
         };
       }
     },
-    showModalOk() {
+    showModalImageOk() {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
         title: 'Image loaded successful',
+        subtitle: 'Please press save button',
+        path: '/settings',
+      });
+    },
+    showModalAddEducationOk() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: 'Education add successful',
+        subtitle: 'Please press save button',
+        path: '/settings',
+      });
+    },
+    showModalAddWorkExpOk() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: 'Work experience add successful',
         subtitle: 'Please press save button',
         path: '/settings',
       });
@@ -649,48 +783,37 @@ export default {
         console.log(error);
       }
       let payload = {};
+      const checkAvatarID = this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : this.userData.avatarId;
       if (this.userRole === 'employer') {
         payload = {
-          avatarId: this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : null,
-          firstName: this.localUserData.firstName || null,
-          lastName: this.localUserData.lastName || null,
+          ...this.localUserData,
+          avatarId: checkAvatarID,
           additionalInfo: {
-            firstMobileNumber: this.tel1_input || null,
-            secondMobileNumber: this.tel2_input || null,
-            address: this.address1_input || null,
-            socialNetwork: {
-              instagram: this.inst_input || null,
-              twitter: this.twitt_input || null,
-              linkedin: this.in_input || null,
-              facebook: this.facebook_input || null,
+            ...this.localUserData.additionalInfo,
+            ...{
+              educations: undefined,
+              workExperiences: undefined,
+              skills: undefined,
             },
-            company: this.company_input || null,
-            CEO: this.ceo_input || null,
-            website: this.site_input || null,
           },
         };
       } else {
         payload = {
-          avatarId: this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : null,
-          firstName: this.localUserData.firstName || null,
-          lastName: this.localUserData.lastName || null,
+          ...this.localUserData,
+          avatarId: checkAvatarID,
           additionalInfo: {
-            firstMobileNumber: this.tel1_input || null,
-            secondMobileNumber: this.tel2_input || null,
-            address: this.address1_input || null,
-            socialNetwork: {
-              instagram: this.inst_input || null,
-              twitter: this.twitt_input || null,
-              linkedin: this.in_input || null,
-              facebook: this.facebook_input || null,
+            ...this.localUserData.additionalInfo,
+            ...{
+              company: undefined,
+              CEO: undefined,
+              website: undefined,
             },
-            description: this.descriptionTextBlock || null,
-            skills: [],
           },
         };
       }
       try {
         await this.$store.dispatch('user/editUserData', payload);
+        this.showModalSave();
       } catch (e) {
         console.log(e);
       }
@@ -1298,7 +1421,7 @@ export default {
     flex-wrap: wrap;
     display: flex;
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 0 20px 0 0;
   }
 }

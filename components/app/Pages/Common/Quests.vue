@@ -29,8 +29,12 @@
               <div
                 class="quests__block block"
               >
-                <div class="block__left">
-                  <div class="block__img">
+                <div
+                  class="block__left"
+                >
+                  <div
+                    class="block__img"
+                  >
                     <img
                       src="~/assets/img/temp/fake-card.svg"
                       class="quests__img image"
@@ -51,17 +55,24 @@
                         class="block__avatar"
                       >
                         <img
-                          class="avatar"
-                          :src="item.background"
-                          alt=""
+                          v-if="imageData"
+                          class="info-grid__avatar"
+                          :src="imageData"
+                          :alt="localUserData.firstName"
+                        >
+                        <img
+                          v-else-if="!imageData"
+                          class="info-grid__avatar"
+                          src="~/assets/img/app/avatar_empty.png"
+                          :alt="localUserData.firstName"
                         >
                       </div>
                       <div class="block__text block__text_title">
-                        {{ item.title }}
+                        {{ userData.firstName }} {{ userData.lastName }}
                         <span
-                          v-if="item.sub"
+                          v-if="userData.additionalInfo.company"
                           class="block__text block__text_grey"
-                        >{{ item.sub }}</span>
+                        >from {{ userData.additionalInfo.company }}</span>
                       </div>
                     </div>
                     <div
@@ -100,6 +111,7 @@
                         <div class="avatar">
                           <img
                             src="~/assets/img/temp/avatar.jpg"
+                            class="info-grid__avatar"
                             :alt="user.name"
                           >
                         </div>
@@ -216,6 +228,7 @@ export default {
     return {
       selectedTab: 0,
       isShowFavourite: false,
+      localUserData: {},
     };
   },
   computed: {
@@ -223,6 +236,8 @@ export default {
       cards: 'data/getCards',
       user: 'data/getUserInfo',
       userRole: 'user/getUserRole',
+      imageData: 'user/getImageData',
+      userData: 'user/getUserData',
       tabs: 'data/getTabs',
     }),
     cardLevelClass(idx) {
@@ -235,6 +250,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    this.localUserData = JSON.parse(JSON.stringify(this.userData));
     this.SetLoader(false);
   },
   methods: {
@@ -307,7 +323,7 @@ export default {
         1: this.$t('priority.normal'),
         2: this.$t('priority.urgent'),
       };
-      return priority[index] || 'None';
+      return priority[index] || '';
     },
     getPriorityClass(index) {
       const priority = {
@@ -360,6 +376,18 @@ export default {
     display: grid;
     grid-template-columns: 1fr 9fr 3fr;
     margin: 10px 0 4px 0;
+  }
+}
+.info-grid {
+  &__avatar {
+    border-radius: 50%;
+    height: 30px;
+  }
+  &__col {
+    &_left {
+      max-width: 142px;
+      padding: 0 15px 0 0;
+    }
   }
 }
 .card {

@@ -4,25 +4,25 @@
       class="contact"
     >
       <span
-        v-if="address"
+        v-if="userInfo.location"
         class="contact__container"
       >
         <span
           class="icon-location"
         />
-        <span class="contact__link">{{ address }}</span>
+        <span class="contact__link">{{ location }}</span>
       </span>
       <span
-        v-if="firstMobileNumber"
+        v-if="userInfo.tel"
         class="contact__container"
       >
         <span
           class="icon-phone"
         />
-        <span class="contact__link">{{ firstMobileNumber }}</span>
+        <span class="contact__link">{{ phone }}</span>
       </span>
       <span
-        v-if="email"
+        v-if="userData.email"
         class="contact__container"
       >
         <span
@@ -31,7 +31,7 @@
         <span class="contact__link">{{ email }}</span>
       </span>
       <span
-        v-if="userRole === 'employer' && company"
+        v-if="userRole === 'employer' && userInfo.company"
         class="contact__container"
       >
         <span class="icon-Earth" />
@@ -53,10 +53,10 @@ export default {
       userData: 'user/getUserData',
       userInfo: 'data/getUserInfo',
       quest: 'data/getQuest',
-      address: 'user/getUserAddress',
-      firstMobileNumber: 'user/getUserFirstMobileNumber',
-      company: 'user/getUserCompany',
-      email: 'user/getUserEmail',
+      location: 'data/getLocation',
+      phone: 'data/getPhone',
+      email: 'data/getEmail',
+      company: 'data/getCompany',
     }),
   },
 };
