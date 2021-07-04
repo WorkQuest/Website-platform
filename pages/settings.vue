@@ -93,7 +93,7 @@
             <div class="profile__row-3col">
               <base-field
                 v-if="firstName"
-                v-model="localUserData.firstName"
+                v-model="localUserData.additionalInfo.firstName"
                 :placeholder="firstName || $t('settings.nameInput')"
                 mode="icon"
               >
@@ -201,10 +201,10 @@
             for="knowledge"
           >{{ $t('settings.educations') }}</label>
           <div
-            v-if="userEducations.length !==0"
+            v-if="localUserData.additionalInfo.educations.length !==0"
           >
             <div
-              v-for="(k, i) in userEducations"
+              v-for="(k, i) in localUserData.additionalInfo.educations"
               :key="k.id"
               class="knowledge__container"
             >
@@ -234,9 +234,11 @@
               </base-btn>
             </div>
           </div>
-          <div class="knowledge__container">
+          <div
+            class="knowledge__container"
+          >
             <base-field
-              v-model="newKnowledge.from"
+              v-model="localUserData.additionalInfo.educations.from"
               type="grey"
               :placeholder="$t('settings.term')"
             />
@@ -244,13 +246,13 @@
               -
             </div>
             <base-field
-              v-model="newKnowledge.to"
+              v-model="localUserData.additionalInfo.educations.to"
               type="grey"
               :placeholder="$t('settings.term')"
             />
             <div />
             <base-field
-              v-model="newKnowledge.place"
+              v-model="localUserData.additionalInfo.educations.place"
               type="grey"
               :placeholder="$t('settings.placeOfStudying')"
             />
@@ -259,16 +261,17 @@
               {{ $t('settings.add') }}
             </base-btn>
           </div>
+
           <label
             v-if="userRole === 'worker'"
             class="knowledge__label"
             for="workExp"
           >{{ $t('settings.workExp') }}</label>
           <div
-            v-if="userWorkExp.length !==0"
+            v-if="localUserData.additionalInfo.workExperiences.length !==0"
           >
             <div
-              v-for="(k, i) in userWorkExp"
+              v-for="(k, i) in localUserData.additionalInfo.workExperiences"
               :key="k.id"
               class="knowledge__container"
             >
@@ -300,7 +303,7 @@
           </div>
           <div class="knowledge__container">
             <base-field
-              v-model="newWorkExp.from"
+              v-model="localUserData.additionalInfo.workExperiences.from"
               type="grey"
               :placeholder="$t('settings.term')"
             />
@@ -308,13 +311,13 @@
               -
             </div>
             <base-field
-              v-model="newWorkExp.to"
+              v-model="localUserData.additionalInfo.workExperiences.to"
               type="grey"
               :placeholder="$t('settings.term')"
             />
             <div />
             <base-field
-              v-model="newWorkExp.place"
+              v-model="localUserData.additionalInfo.workExperiences.place"
               type="grey"
               :placeholder="$t('settings.placeOfStudying')"
             />
