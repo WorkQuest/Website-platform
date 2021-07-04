@@ -43,38 +43,44 @@
       </div>
       <div v-if="selected === 1 && userRole === 'worker' ">
         <div
-          v-if="userEducations !== '' || userEducations !== null"
-          class="knowledge__text"
-        >
-          {{ $t('profile.educations') }}
-        </div>
-        <div
-          v-if="userEducations"
-          class="work-exp__container"
+          v-if="userEducations.length > 0"
         >
           <div
-            v-for="(item, i) in userEducations"
-            :key="i"
-            class="work-exp__item"
+            class="knowledge__text"
           >
-            <span class="work-exp__company">{{ item.place }}</span>
-            <span class="work-exp__term">{{ item.to }} - {{ item.from }}</span>
+            {{ $t('profile.educations') }}
+          </div>
+          <div
+            v-if="userEducations"
+            class="work-exp__container"
+          >
+            <div
+              v-for="(item, i) in userEducations"
+              :key="i"
+              class="work-exp__item"
+            >
+              <span class="work-exp__company">{{ item.place }}</span>
+              <span class="work-exp__term">{{ item.from }} - {{ item.to }}</span>
+            </div>
           </div>
         </div>
         <div
-          v-if="userWorkExp !== '' && userWorkExp !== null"
-          class="work-exp__text"
+          v-if="userWorkExp.length > 0"
         >
-          {{ $t('profile.prevWorkExp') }}
-        </div>
-        <div class="work-exp__container">
           <div
-            v-for="(item, i) in userWorkExp"
-            :key="i"
-            class="work-exp__item"
+            class="work-exp__text"
           >
-            <span class="work-exp__company">{{ item.place }}</span>
-            <span class="work-exp__term">{{ item.to }} - {{ item.from }}</span>
+            {{ $t('profile.prevWorkExp') }}
+          </div>
+          <div class="work-exp__container">
+            <div
+              v-for="(item, i) in userWorkExp"
+              :key="i"
+              class="work-exp__item"
+            >
+              <span class="work-exp__company">{{ item.place }}</span>
+              <span class="work-exp__term">{{ item.from }} - {{ item.to }}</span>
+            </div>
           </div>
         </div>
       </div>

@@ -110,15 +110,15 @@
                   <span class="icon-location" />
                 </template>
               </base-field>
-              <base-field
-                v-model="localUserData.additionalInfo.address"
-                :placeholder="address || $t('settings.addressInput')"
-                mode="icon"
-              >
-                <template v-slot:left>
-                  <span class="icon-location" />
-                </template>
-              </base-field>
+              <!--              <base-field-->
+              <!--                v-model="localUserData.additionalInfo.address"-->
+              <!--                :placeholder="address || $t('settings.addressInput')"-->
+              <!--                mode="icon"-->
+              <!--              >-->
+              <!--                <template v-slot:left>-->
+              <!--                  <span class="icon-location" />-->
+              <!--                </template>-->
+              <!--              </base-field>-->
               <base-field
                 v-if="lastName"
                 v-model="localUserData.lastName"
