@@ -93,7 +93,7 @@
             <div class="profile__row-3col">
               <base-field
                 v-if="firstName"
-                v-model="localUserData.additionalInfo.firstName"
+                v-model="localUserData.firstName"
                 :placeholder="firstName || $t('settings.nameInput')"
                 mode="icon"
               >
