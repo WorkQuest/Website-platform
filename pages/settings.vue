@@ -238,7 +238,7 @@
             class="knowledge__container"
           >
             <base-field
-              v-model="localUserData.additionalInfo.educations.from"
+              v-model="newKnowledge.from"
               type="grey"
               :placeholder="$t('settings.term')"
             />
@@ -246,13 +246,13 @@
               -
             </div>
             <base-field
-              v-model="localUserData.additionalInfo.educations.to"
+              v-model="newKnowledge.to"
               type="grey"
               :placeholder="$t('settings.term')"
             />
             <div />
             <base-field
-              v-model="localUserData.additionalInfo.educations.place"
+              v-model="newKnowledge.place"
               type="grey"
               :placeholder="$t('settings.placeOfStudying')"
             />
@@ -303,7 +303,7 @@
           </div>
           <div class="knowledge__container">
             <base-field
-              v-model="localUserData.additionalInfo.workExperiences.from"
+              v-model="newWorkExp.from"
               type="grey"
               :placeholder="$t('settings.term')"
             />
@@ -311,13 +311,13 @@
               -
             </div>
             <base-field
-              v-model="localUserData.additionalInfo.workExperiences.to"
+              v-model="newWorkExp.to"
               type="grey"
               :placeholder="$t('settings.term')"
             />
             <div />
             <base-field
-              v-model="localUserData.additionalInfo.workExperiences.place"
+              v-model="newWorkExp.place"
               type="grey"
               :placeholder="$t('settings.placeOfStudying')"
             />
