@@ -264,6 +264,7 @@ export default {
 
   .avatar {
     border-radius: 89px;
+    object-fit: cover;
   }
 
   .rating {

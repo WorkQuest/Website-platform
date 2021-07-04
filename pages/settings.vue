@@ -1277,6 +1277,7 @@ export default {
     max-height: 151px;
     max-width: 151px;
     border-radius: 6px;
+    object-fit: cover;
   }
   &__row-1col {
     @extend .profile;
@@ -1423,9 +1424,10 @@ export default {
     flex-direction: row;
     flex-wrap: wrap;
     display: flex;
+    max-width: 1180px;
     width: 100%;
     justify-content: flex-start;
-    padding: 0 20px 0 0;
+    //padding: 0 20px 0 0;
   }
 }
 .option {
@@ -1524,7 +1526,7 @@ export default {
       margin: 20px 0 20px 20px;
     }
     &__skills {
-      margin: 0 20px 10px 20px;
+      margin: 0 0 10px 20px;
     }
     &__badge {
       text-align: center;

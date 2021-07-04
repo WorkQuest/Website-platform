@@ -339,6 +339,7 @@ export default {
     width: 142px;
     height: 142px;
     border-radius: 50%;
+    object-fit: cover;
   }
   &__col {
     &_left {

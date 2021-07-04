@@ -437,6 +437,7 @@ export default {
     max-height: 30px;
     max-width: 30px;
     border-radius: 84px;
+    object-fit: cover;
   }
   &__name {
     color: $black800;
