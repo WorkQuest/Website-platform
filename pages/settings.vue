@@ -1272,10 +1272,8 @@ export default {
     border-radius: 36px;
   }
   &__img {
-    width: 100%;
-    height: 100%;
-    max-height: 151px;
-    max-width: 151px;
+    height: 151px;
+    width: 151px;
     border-radius: 6px;
     object-fit: cover;
   }

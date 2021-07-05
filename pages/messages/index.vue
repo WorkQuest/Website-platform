@@ -188,10 +188,8 @@ export default {
 
 .profile {
   &__img {
-    width: 100%;
-    height: 100%;
-    max-height: 30px;
-    max-width: 30px;
+    height: 30px;
+    width: 30px;
     border-radius: 84px;
     object-fit: cover;
   }

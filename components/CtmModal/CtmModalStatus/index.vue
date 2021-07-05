@@ -54,6 +54,9 @@ export default {
 <style lang="scss" scoped>
 .ctm-modal {
   @include modalKit;
+  &__title {
+    text-align: center;
+  }
 }
 
 .messageSend {
