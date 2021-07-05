@@ -35,7 +35,6 @@
               </div>
             </div>
           </div>
-          <div class="ctm-modal__content-field" />
         </div>
         <div class="ctm-modal__gray-zone">
           <div
@@ -127,6 +126,7 @@ export default {
 
   .addLiquidity {
     max-width: 875px !important;
+    max-height: 80vh;
   }
   &__content-field {
     margin: 15px 0 0 0;
@@ -134,7 +134,7 @@ export default {
 
   &__currency {
     display: grid;
-    grid-template-columns: 45px 3fr 1fr;
+    grid-template-columns: 45px 3fr auto;
     align-items: center;
     gap: 10px;
 
@@ -227,6 +227,21 @@ export default {
       color: #7C838D;
       font-weight: 500;
       font-size: 14px;
+    }
+  }
+
+  @include _575 {
+    .ctm-modal {
+      &__grid-cont {
+        grid-template-rows: repeat(2, auto);
+        grid-template-columns: unset;
+      }
+      &__gray-zone {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin: 0;
+      }
     }
   }
 }

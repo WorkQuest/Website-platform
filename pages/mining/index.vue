@@ -257,6 +257,8 @@ export default {
     max-width: 1180px;
     grid-row-gap: 20px;
     width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
   }
 
   &__header {
@@ -265,7 +267,7 @@ export default {
     .title {
       font-weight: 500;
       color: #FFF;
-      width: 530px;
+      max-width: 530px;
       font-size: 45px;
       line-height: 110%;
       margin: 0 0 24px;
@@ -463,6 +465,7 @@ export default {
 
     .table {
       margin: 0;
+      border-radius: 0 !important;
 
       &__value {
         font-weight: 400;
@@ -475,6 +478,58 @@ export default {
         &_gray {
           @extend .table__value;
           color: #7C838D;
+        }
+      }
+    }
+  }
+
+  @include _991 {
+    &__table {
+      overflow: auto;
+      width: calc(100vw - 20px);
+
+      .table {
+        width: 1180px;
+      }
+    }
+  }
+
+  @include _767 {
+    background: linear-gradient(to bottom, #103D7C 270px, #f6f8fa 270px);
+    &__container {
+      grid-template-rows: auto auto;
+      gap: 24px;
+    }
+    &__header {
+      .title {
+        font-size: 38px;
+        margin-bottom: 15px;
+        width: 100%;
+        &_sub {
+          font-size: 16px;
+          max-width: 400px;
+        }
+      }
+    }
+    &__content {
+      grid-template-rows: auto;
+    }
+  }
+
+  @include _575 {
+    &__content {
+      .info-block {
+        &__documents {
+          .document {
+            grid-template-columns: 33px auto 23px;
+          }
+        }
+      }
+      .btn {
+        &__doc {
+          border: 0;
+          width: 23px;
+          font-size: 0;
         }
       }
     }

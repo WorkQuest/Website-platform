@@ -6,7 +6,9 @@
           class="btn"
           @click="handleBackToMainMining()"
         >
-          <span class="icon-chevron_left" />
+          <template v-slot:left>
+            <span class="icon-chevron_left" />
+          </template>
           {{ $t('mining.back') }}
         </base-btn>
       </div>
@@ -298,6 +300,8 @@ export default {
     grid-row-gap: 50px;
     width: 100%;
     gap: 20px;
+    padding: 10px;
+    box-sizing: border-box;
   }
 
   &__header {
@@ -308,7 +312,7 @@ export default {
     .btn {
       background-color: unset;
       color: #fff;
-      width: 100px;
+      max-width: 100px;
       padding: 0;
       gap: 5px;
       font-size: 18px;
@@ -490,6 +494,70 @@ export default {
   &__table {
     .table {
       margin: 0;
+      border-radius: 0 !important;
+    }
+  }
+
+  @include _991 {
+    &__table {
+      overflow: auto;
+      width: calc(100vw - 20px);
+
+      .table {
+        width: 1180px;
+      }
+    }
+  }
+
+  @include _767 {
+    &__container {
+      grid-template-rows: auto auto;
+      gap: 15px;
+    }
+    &__header {
+      .btn {
+        justify-content: left;
+      }
+    }
+    &__content {
+      .info-block {
+        &__grid {
+          grid-template-columns: 105px auto;
+
+          .info-block__btns {
+            grid-column-start: 2;
+            grid-column-end: 3;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: unset;
+          }
+        }
+        &__title {
+          &_pad {
+            width: 80%;
+          }
+        }
+      }
+    }
+  }
+
+  @include _575 {
+    &__content {
+      .info-block {
+        &__grid {
+          .info-block__btns {
+            grid-column-start: 1;
+          }
+        }
+        &__triple {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        &__title {
+          &_pad {
+            width: 100%;
+            padding-right: 20px;
+          }
+        }
+      }
     }
   }
 }

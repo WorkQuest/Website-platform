@@ -158,7 +158,10 @@
               </template>
             </div>
           </div>
-          <div class="info-block">
+          <div
+            class="info-block"
+            :class="{'info-block_chat' : isMobileChatOpened}"
+          >
             <div class="info-block__chat-header">
               <div class="avas-cont">
                 <div
@@ -176,6 +179,13 @@
               <div class="title">
                 {{ $tc('insuring.countPeoplesInChat', users.length) }}
               </div>
+              <button
+                v-if="isMobileChatOpened"
+                class="close-btn"
+                @click="changeMobChatVisible()"
+              >
+                +
+              </button>
             </div>
             <div class="info-block__chat-cont">
               <div
@@ -203,6 +213,14 @@
                 </div>
               </div>
             </div>
+            <div class="btn-cont">
+              <base-btn
+                class="btn_bl"
+                @click="changeMobChatVisible()"
+              >
+                Open chat
+              </base-btn>
+            </div>
             <div class="info-block__chat-footer">
               <div class="info-block__footer-bar">
                 <button class="icon-link" />
@@ -228,6 +246,7 @@ import modals from '~/store/modals/modals';
 export default {
   data() {
     return {
+      isMobileChatOpened: false,
       points: [
         this.$t('insuring.pointTemplate'),
         this.$t('insuring.pointTemplate'),
@@ -420,6 +439,11 @@ export default {
         return;
       }
       this.isVotingDone = true;
+    },
+    changeMobChatVisible() {
+      this.isMobileChatOpened = !this.isMobileChatOpened;
+
+      document.body.style.overflow = this.isMobileChatOpened ? 'hidden' : 'auto';
     },
   },
 };
@@ -692,6 +716,14 @@ export default {
             }
           }
         }
+
+        .btn_bl {
+          display: none;
+        }
+      }
+
+      .btn-cont {
+        display: none;
       }
 
       &__chat-footer {
@@ -841,7 +873,7 @@ export default {
         gap: 30px;
 
         .info-block {
-          max-height: 700px;
+          max-height: 655px;
         }
       }
 
@@ -943,9 +975,12 @@ export default {
     &__content {
       .info-block {
         &_30gap {
-          .info-block__couple {
-            grid-template-rows: repeat(2, auto);
-          }
+            .info-block {
+              max-height: 700px;
+              &__couple {
+                grid-template-rows: repeat(2, auto);
+              }
+            }
         }
         &__voting {
           .btn-group {
@@ -1025,6 +1060,49 @@ export default {
         &__voting {
           .quest-title {
             font-size: 25px;
+          }
+        }
+        &__chat-cont {
+          display: none;
+        }
+        .btn-cont {
+          display: block;
+          padding: 20px;
+          background-color: #fff;
+        }
+        &__chat-footer {
+          display: none;
+        }
+        &_chat {
+          position: fixed;
+          height: 100vh;
+          max-height: unset;
+          left: 0;
+          top: 71px;
+
+          .btn-cont {
+            display: none;
+          }
+
+          .info-block__chat-header {
+            position: relative;
+
+            .close-btn {
+              position: absolute;
+              right: 20px;
+              transform: rotate(45deg);
+              font-size: 30px;
+              color: #0083C7;
+            }
+          }
+
+          .info-block__chat-cont {
+            display: grid;
+            height: calc(100% - 181px);
+          }
+
+          .info-block__chat-footer {
+            display: block;
           }
         }
       }

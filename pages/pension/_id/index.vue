@@ -795,6 +795,7 @@ export default {
   &__table {
     .table {
       margin: 0;
+      border-radius: 0 !important;
     }
   }
 
@@ -827,7 +828,6 @@ export default {
 
       .table {
         width: 1180px;
-        border-radius: 0 !important;
       }
     }
   }
