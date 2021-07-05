@@ -299,6 +299,7 @@ export default {
 
   &__header {
     align-self: flex-end;
+
     .title {
       font-weight: 500;
       color: #FFF;
