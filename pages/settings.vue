@@ -110,15 +110,15 @@
                   <span class="icon-location" />
                 </template>
               </base-field>
-              <base-field
-                v-model="localUserData.additionalInfo.address"
-                :placeholder="address || $t('settings.addressInput')"
-                mode="icon"
-              >
-                <template v-slot:left>
-                  <span class="icon-location" />
-                </template>
-              </base-field>
+              <!--              <base-field-->
+              <!--                v-model="localUserData.additionalInfo.address"-->
+              <!--                :placeholder="address || $t('settings.addressInput')"-->
+              <!--                mode="icon"-->
+              <!--              >-->
+              <!--                <template v-slot:left>-->
+              <!--                  <span class="icon-location" />-->
+              <!--                </template>-->
+              <!--              </base-field>-->
               <base-field
                 v-if="lastName"
                 v-model="localUserData.lastName"
@@ -201,10 +201,10 @@
             for="knowledge"
           >{{ $t('settings.educations') }}</label>
           <div
-            v-if="userEducations.length !==0"
+            v-if="localUserData.additionalInfo.educations.length !==0"
           >
             <div
-              v-for="(k, i) in userEducations"
+              v-for="(k, i) in localUserData.additionalInfo.educations"
               :key="k.id"
               class="knowledge__container"
             >
@@ -234,7 +234,9 @@
               </base-btn>
             </div>
           </div>
-          <div class="knowledge__container">
+          <div
+            class="knowledge__container"
+          >
             <base-field
               v-model="newKnowledge.from"
               type="grey"
@@ -259,16 +261,17 @@
               {{ $t('settings.add') }}
             </base-btn>
           </div>
+
           <label
             v-if="userRole === 'worker'"
             class="knowledge__label"
             for="workExp"
           >{{ $t('settings.workExp') }}</label>
           <div
-            v-if="userWorkExp.length !==0"
+            v-if="localUserData.additionalInfo.workExperiences.length !==0"
           >
             <div
-              v-for="(k, i) in userWorkExp"
+              v-for="(k, i) in localUserData.additionalInfo.workExperiences"
               :key="k.id"
               class="knowledge__container"
             >
@@ -1274,6 +1277,7 @@ export default {
     max-height: 151px;
     max-width: 151px;
     border-radius: 6px;
+    object-fit: cover;
   }
   &__row-1col {
     @extend .profile;
@@ -1420,9 +1424,10 @@ export default {
     flex-direction: row;
     flex-wrap: wrap;
     display: flex;
+    max-width: 1180px;
     width: 100%;
     justify-content: flex-start;
-    padding: 0 20px 0 0;
+    //padding: 0 20px 0 0;
   }
 }
 .option {
@@ -1521,7 +1526,7 @@ export default {
       margin: 20px 0 20px 20px;
     }
     &__skills {
-      margin: 0 20px 10px 20px;
+      margin: 0 0 10px 20px;
     }
     &__badge {
       text-align: center;

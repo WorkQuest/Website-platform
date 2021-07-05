@@ -382,6 +382,7 @@ export default {
   &__avatar {
     border-radius: 50%;
     height: 30px;
+    object-fit: cover;
   }
   &__col {
     &_left {

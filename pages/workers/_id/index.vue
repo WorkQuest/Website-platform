@@ -690,6 +690,7 @@ export default {
 
 .info-grid {
   &__avatar {
+    object-fit: cover;
     max-width: 142px;
     max-height: 142px;
     width: 100%;

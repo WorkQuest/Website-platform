@@ -264,6 +264,7 @@ export default {
 
   .avatar {
     border-radius: 89px;
+    object-fit: cover;
   }
 
   .rating {
@@ -272,6 +273,7 @@ export default {
     background-repeat: no-repeat;
     background-position: center;
     margin-top: 20px;
+    width: 142px;
   }
 
   .reviews-amount {
@@ -311,9 +313,8 @@ export default {
 
 .info-grid {
   &__avatar {
-    max-width: 142px;
-    max-height: 142px;
-    height: 100%;
+    width: 142px;
+    height: 142px;
     border-radius: 50%;
   }
   &__col {

@@ -175,16 +175,16 @@ export default {
     will-change: transform;
     min-height: 400px;
     cursor: pointer;
-    filter: drop-shadow(0px 47.1676px 61.4131px rgba(10, 27, 61, 0.078707))
-    drop-shadow(0px 26.7219px 32.8344px rgba(10, 27, 61, 0.0629546))
-    drop-shadow(0px 14.4955px 18.4067px rgba(10, 27, 61, 0.0598272))
-    drop-shadow(0px 6.96225px 9.77565px rgba(10, 27, 61, 0.0584222))
-    drop-shadow(0px 2.43911px 4.06787px rgba(10, 27, 61, 0.0492837));
-    -webkit-filter: drop-shadow(0px 47.1676px 61.4131px rgba(10, 27, 61, 0.078707))
-    drop-shadow(0px 26.7219px 32.8344px rgba(10, 27, 61, 0.0629546))
-    drop-shadow(0px 14.4955px 18.4067px rgba(10, 27, 61, 0.0598272))
-    drop-shadow(0px 6.96225px 9.77565px rgba(10, 27, 61, 0.0584222))
-    drop-shadow(0px 2.43911px 4.06787px rgba(10, 27, 61, 0.0492837));
+    //filter: drop-shadow(0px 47.1676px 61.4131px rgba(10, 27, 61, 0.078707))
+    //drop-shadow(0px 26.7219px 32.8344px rgba(10, 27, 61, 0.0629546))
+    //drop-shadow(0px 14.4955px 18.4067px rgba(10, 27, 61, 0.0598272))
+    //drop-shadow(0px 6.96225px 9.77565px rgba(10, 27, 61, 0.0584222))
+    //drop-shadow(0px 2.43911px 4.06787px rgba(10, 27, 61, 0.0492837));
+    //-webkit-filter: drop-shadow(0px 47.1676px 61.4131px rgba(10, 27, 61, 0.078707))
+    //drop-shadow(0px 26.7219px 32.8344px rgba(10, 27, 61, 0.0629546))
+    //drop-shadow(0px 14.4955px 18.4067px rgba(10, 27, 61, 0.0598272))
+    //drop-shadow(0px 6.96225px 9.77565px rgba(10, 27, 61, 0.0584222))
+    //drop-shadow(0px 2.43911px 4.06787px rgba(10, 27, 61, 0.0492837));
     border-radius: 6px;
     background-size: cover;
     overflow: hidden;
