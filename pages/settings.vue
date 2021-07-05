@@ -91,7 +91,7 @@
               <span class="icon-check_all_big" />
             </span>
             <div>
-              <div class="profile__row-3col">
+              <div class="profile__row-2col">
                 <base-field
                   v-model="localUserData.additionalInfo.address"
                   :placeholder="address || $t('settings.addressInput')"
@@ -113,15 +113,6 @@
                 <base-field
                   v-model="localUserData.additionalInfo.firstMobileNumber"
                   :placeholder="firstMobileNumber || $t('settings.telInput')"
-                  mode="icon"
-                >
-                  <template v-slot:left>
-                    <span class="icon-phone" />
-                  </template>
-                </base-field>
-                <base-field
-                  v-model="localUserData.additionalInfo.secondMobileNumber"
-                  :placeholder="secondMobileNumder || $t('settings.telInput')"
                   mode="icon"
                 >
                   <template v-slot:left>
