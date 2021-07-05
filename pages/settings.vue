@@ -93,35 +93,6 @@
             <div>
               <div class="profile__row-2col">
                 <base-field
-                  v-model="localUserData.additionalInfo.address"
-                  :placeholder="address || $t('settings.addressInput')"
-                  mode="icon"
-                >
-                  <template v-slot:left>
-                    <span class="icon-location" />
-                  </template>
-                </base-field>
-                <!--              <base-field-->
-                <!--                v-model="localUserData.additionalInfo.address"-->
-                <!--                :placeholder="address || $t('settings.addressInput')"-->
-                <!--                mode="icon"-->
-                <!--              >-->
-                <!--                <template v-slot:left>-->
-                <!--                  <span class="icon-location" />-->
-                <!--                </template>-->
-                <!--              </base-field>-->
-                <base-field
-                  v-model="localUserData.additionalInfo.firstMobileNumber"
-                  :placeholder="firstMobileNumber || $t('settings.telInput')"
-                  mode="icon"
-                >
-                  <template v-slot:left>
-                    <span class="icon-phone" />
-                  </template>
-                </base-field>
-              </div>
-              <div class="profile__row-2col">
-                <base-field
                   v-if="firstName"
                   v-model="localUserData.firstName"
                   :placeholder="firstName || $t('settings.nameInput')"
@@ -139,6 +110,26 @@
                 >
                   <template v-slot:left>
                     <span class="icon-user" />
+                  </template>
+                </base-field>
+              </div>
+              <div class="profile__row-2col">
+                <base-field
+                  v-model="localUserData.additionalInfo.firstMobileNumber"
+                  :placeholder="firstMobileNumber || $t('settings.telInput')"
+                  mode="icon"
+                >
+                  <template v-slot:left>
+                    <span class="icon-phone" />
+                  </template>
+                </base-field>
+                <base-field
+                  v-model="localUserData.additionalInfo.address"
+                  :placeholder="address || $t('settings.addressInput')"
+                  mode="icon"
+                >
+                  <template v-slot:left>
+                    <span class="icon-location" />
                   </template>
                 </base-field>
               </div>
