@@ -90,63 +90,67 @@
               {{ $t('settings.notVerified') }}
               <span class="icon-check_all_big" />
             </span>
-            <div class="profile__row-3col">
-              <base-field
-                v-if="firstName"
-                v-model="localUserData.firstName"
-                :placeholder="firstName || $t('settings.nameInput')"
-                mode="icon"
-              >
-                <template v-slot:left>
-                  <span class="icon-user" />
-                </template>
-              </base-field>
-              <base-field
-                v-model="localUserData.additionalInfo.address"
-                :placeholder="address || $t('settings.addressInput')"
-                mode="icon"
-              >
-                <template v-slot:left>
-                  <span class="icon-location" />
-                </template>
-              </base-field>
-              <!--              <base-field-->
-              <!--                v-model="localUserData.additionalInfo.address"-->
-              <!--                :placeholder="address || $t('settings.addressInput')"-->
-              <!--                mode="icon"-->
-              <!--              >-->
-              <!--                <template v-slot:left>-->
-              <!--                  <span class="icon-location" />-->
-              <!--                </template>-->
-              <!--              </base-field>-->
-              <base-field
-                v-if="lastName"
-                v-model="localUserData.lastName"
-                :placeholder="$t('settings.lastNameInput')"
-                mode="icon"
-              >
-                <template v-slot:left>
-                  <span class="icon-user" />
-                </template>
-              </base-field>
-              <base-field
-                v-model="localUserData.additionalInfo.firstMobileNumber"
-                :placeholder="firstMobileNumber || $t('settings.telInput')"
-                mode="icon"
-              >
-                <template v-slot:left>
-                  <span class="icon-phone" />
-                </template>
-              </base-field>
-              <base-field
-                v-model="localUserData.additionalInfo.secondMobileNumber"
-                :placeholder="secondMobileNumder || $t('settings.telInput')"
-                mode="icon"
-              >
-                <template v-slot:left>
-                  <span class="icon-phone" />
-                </template>
-              </base-field>
+            <div>
+              <div class="profile__row-3col">
+                <base-field
+                  v-model="localUserData.additionalInfo.address"
+                  :placeholder="address || $t('settings.addressInput')"
+                  mode="icon"
+                >
+                  <template v-slot:left>
+                    <span class="icon-location" />
+                  </template>
+                </base-field>
+                <!--              <base-field-->
+                <!--                v-model="localUserData.additionalInfo.address"-->
+                <!--                :placeholder="address || $t('settings.addressInput')"-->
+                <!--                mode="icon"-->
+                <!--              >-->
+                <!--                <template v-slot:left>-->
+                <!--                  <span class="icon-location" />-->
+                <!--                </template>-->
+                <!--              </base-field>-->
+                <base-field
+                  v-model="localUserData.additionalInfo.firstMobileNumber"
+                  :placeholder="firstMobileNumber || $t('settings.telInput')"
+                  mode="icon"
+                >
+                  <template v-slot:left>
+                    <span class="icon-phone" />
+                  </template>
+                </base-field>
+                <base-field
+                  v-model="localUserData.additionalInfo.secondMobileNumber"
+                  :placeholder="secondMobileNumder || $t('settings.telInput')"
+                  mode="icon"
+                >
+                  <template v-slot:left>
+                    <span class="icon-phone" />
+                  </template>
+                </base-field>
+              </div>
+              <div class="profile__row-2col">
+                <base-field
+                  v-if="firstName"
+                  v-model="localUserData.firstName"
+                  :placeholder="firstName || $t('settings.nameInput')"
+                  mode="icon"
+                >
+                  <template v-slot:left>
+                    <span class="icon-user" />
+                  </template>
+                </base-field>
+                <base-field
+                  v-if="lastName"
+                  v-model="localUserData.lastName"
+                  :placeholder="$t('settings.lastNameInput')"
+                  mode="icon"
+                >
+                  <template v-slot:left>
+                    <span class="icon-user" />
+                  </template>
+                </base-field>
+              </div>
             </div>
           </div>
         </div>
@@ -1282,6 +1286,12 @@ export default {
     grid-template-columns: 1fr;
     margin: 0 20px 0 20px;
     width: 100%;
+  }
+  &__row-2col {
+    @extend .profile;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    grid-gap: 0 20px;
   }
   &__row-3col {
     @extend .profile;
