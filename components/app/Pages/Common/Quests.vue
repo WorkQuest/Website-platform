@@ -382,6 +382,7 @@ export default {
   &__avatar {
     border-radius: 50%;
     height: 30px;
+    width: 30px;
     object-fit: cover;
   }
   &__col {
@@ -393,7 +394,8 @@ export default {
 }
 .card {
   &__levels {
-    padding: 2px 8px;
+    padding: 2px 5px;
+    margin: 0 5px 0 0;
     align-items: center;
     border-radius: 3px;
     color: $white;

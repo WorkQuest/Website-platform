@@ -446,7 +446,7 @@ export default {
   border-top: 1px solid rgba(0, 131, 199, 0.1);
   margin: auto 0;
   padding: 0;
-  width: 35px;
+  width: 33px;
   &__active {
     @extend .line;
     border-top: 1px solid $blue;

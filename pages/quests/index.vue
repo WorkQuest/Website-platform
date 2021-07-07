@@ -160,6 +160,7 @@
                       :to="item.url"
                     >
                       <img
+                        class="user__avatar"
                         :src="item.background"
                         alt=""
                       >

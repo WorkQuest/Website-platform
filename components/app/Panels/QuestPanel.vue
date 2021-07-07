@@ -139,6 +139,8 @@ export default {
 
 .profile {
   &__img {
+    width:30px;
+    height: 30px;
     border-radius: 50%;
   }
 }
