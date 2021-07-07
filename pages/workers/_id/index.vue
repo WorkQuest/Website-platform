@@ -866,6 +866,9 @@ export default {
 .contacts {
   display: flex;
   align-items: center;
+  &__grid {
+    margin: 10px 0;
+  }
 }
 
 .information-grid {
