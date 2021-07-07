@@ -50,11 +50,11 @@
                       <span class="contact__link">Moscow</span>
                     </span>
                     <span class="contact__container">
-                      <span class="icon-phone"/>
+                      <span class="icon-phone" />
                       <span class="contact__link">8-800-5553535</span>
                     </span>
                     <span class="contact__container">
-                      <span class="icon-mail"/>
+                      <span class="icon-mail" />
                       <span class="contact__link">employer@gmail.com</span>
                     </span>
                   </span>

@@ -89,7 +89,7 @@ export default () => ({
       distance: '300',
     },
     {
-      type: 3,
+      type: 5,
       title: 'Samantha Sparks',
       level: {
         code: 2,
