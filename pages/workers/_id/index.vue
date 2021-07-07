@@ -34,7 +34,30 @@
                   {{ user.desc }}
                 </div>
                 <Social />
-                <Contact />
+                <div class="contacts__grid">
+                  <div class="contacts">
+                    <div class="contacts">
+                      <span
+                        class="contact"
+                      >
+                        <span class="contact__container">
+                          <span
+                            class="icon-location"
+                          />
+                          <span class="contact__link">Moscow</span>
+                        </span>
+                        <span class="contact__container">
+                          <span class="icon-phone" />
+                          <span class="contact__link">8-800-5553535</span>
+                        </span>
+                        <span class="contact__container">
+                          <span class="icon-mail" />
+                          <span class="contact__link">worker@gmail.com</span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="box__btn">
@@ -147,7 +170,6 @@ export default {
     Reviews,
     Portfolio,
     Social,
-    Contact,
   },
   computed: {
     ...mapGetters({
@@ -173,6 +195,51 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.icon {
+  color: #7C838D;
+  font-size: 16px;
+  cursor: pointer;
+  padding-right: 5px;
+  &-phone:before {
+    @extend .icon;
+    content: "\ea2d";
+  }
+  &-location:before {
+    @extend .icon;
+    content: "\ea23";
+  }
+  &-mail:before {
+    @extend .icon;
+    content: "\ea27";
+  }
+  &-Earth:before {
+    @extend .icon;
+    content: "\ea11";
+  }
+}
+
+.contacts {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.contact {
+  display: flex;
+  &__container {
+    display: flex;
+    align-items: center;
+  }
+  &__link {
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 130%;
+    color: #7C838D;
+    margin-right: 30px;
+    justify-content: center;
+    align-items: center;
+  }
+}
 
 .button {
   &__container {
@@ -616,18 +683,6 @@ export default {
 .social {
   &__link {
     text-decoration: none;
-  }
-}
-
-.contact {
-  &__link {
-    text-decoration: none;
-    font-size: 12px;
-    line-height: 130%;
-    color: #7C838D;
-    margin-right: 30px;
-    justify-content: center;
-    align-items: center;
   }
 }
 
@@ -1173,6 +1228,10 @@ a:hover {
 }
 
 @include _1199 {
+  .contact {
+    display: flex;
+    flex-direction: column;
+  }
   .template {
     &__main {
       padding-left: 20px;
