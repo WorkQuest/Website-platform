@@ -25,6 +25,8 @@ export default {
 .main {
   &__body {
     justify-self: center;
+    width: 100%;
+    max-width: 1180px;
   }
 }
 </style>

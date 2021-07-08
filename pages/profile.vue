@@ -169,6 +169,7 @@ export default {
     display: grid;
     grid-template-columns: 5fr 2fr;
     margin: 0 0 15px 0;
+    padding: 10px 0;
   }
 }
 .message {
