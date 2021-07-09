@@ -1,60 +1,6 @@
 <template>
   <div class="quests">
-    <div class="quests__top">
-      <transition name="fade-fast">
-        <GMap
-          v-if="isShowMap"
-          ref="gMap"
-          class="quests__map"
-          language="en"
-          :center="{lat: locations[0].lat, lng: locations[0].lng}"
-          :zoom="6"
-        />
-        <GMapMarker
-          v-for="location in locations"
-          :key="location.id"
-          :position="{lat: location.lat, lng: location.lng}"
-          :options="{icon: location === currentLocation ? pins.selected : pins.notSelected}"
-          @click="currentLocation = location"
-        >
-          <!--          <GMapInfoWindow :options="{maxWidth: 200}">-->
-          <!--            lat: {{ location.lat }},-->
-          <!--            lng: {{ location.lng }}-->
-          <!--          </GMapInfoWindow>-->
-        </GMapMarker>
-      </transition>
-      <div class="quests__search">
-        <div class="search">
-          <div class="search__toggle">
-            <base-checkbox
-              v-model="isShowMap"
-              name="map"
-              :label="$t('quests.ui.showMap')"
-            />
-          </div>
-          <div class="search__inputs">
-            <base-field
-              v-model="search"
-              is-search
-              class="search__input"
-              :placeholder="$t('quests.ui.search')"
-              :mode="'icon'"
-            />
-          </div>
-          <div class="search__dd">
-            <base-dd
-              v-model="distanceIndex"
-              :items="distance"
-            />
-          </div>
-          <div class="search__actions">
-            <base-btn class="search__btn">
-              {{ $t('quests.searchQuests') }}
-            </base-btn>
-          </div>
-        </div>
-      </div>
-    </div>
+    <GmapSearchBlock />
     <div class="quests__content">
       <div
         class="quests__body"
@@ -247,9 +193,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import GmapSearchBlock from '~/components/app/GmapSearch';
 
 export default {
   name: 'Quests',
+  components: {
+    GmapSearchBlock,
+  },
   data() {
     return {
       isShowMap: true,
