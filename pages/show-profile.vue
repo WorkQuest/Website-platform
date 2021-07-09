@@ -47,15 +47,24 @@
                       <span
                         class="icon-location"
                       />
-                      <span class="contact__link">Moscow</span>
+                      <a
+                        :href="'https://maps.google.com/?q=' + userData.address"
+                        target="_blank"
+                      ><span class="contact__link">{{ userData.address }}</span></a>
                     </span>
                     <span class="contact__container">
                       <span class="icon-phone" />
-                      <span class="contact__link">8-800-5553535</span>
+                      <a
+                        :href="'tel:' + userData.phone"
+                        target="_blank"
+                      ><span class="contact__link">{{ userData.phone }}</span></a>
                     </span>
                     <span class="contact__container">
                       <span class="icon-mail" />
-                      <span class="contact__link">employer@gmail.com</span>
+                      <a
+                        :href="'mailto:' + userData.email"
+                        target="_blank"
+                      ><span class="contact__link">{{ userData.email }}</span></a>
                     </span>
                   </span>
                 </div>
@@ -126,6 +135,11 @@ export default {
   data() {
     return {
       selected: 1,
+      userData: {
+        address: 'Moscow',
+        phone: '8-800-5553535',
+        email: 'employer@gmail.com',
+      },
     };
   },
   computed: {

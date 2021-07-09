@@ -346,6 +346,7 @@ export default () => ({
       questSalary: '1 500 WUSD',
       status: 'Pending',
       decision: '',
+      time: '12:01',
     },
     {
       number: '2',
@@ -353,6 +354,7 @@ export default () => ({
       employer: 'Samantha Sparcs',
       questSalary: '1 500 WUSD',
       status: 'Completed',
+      time: '10:01',
       decision: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
     },
     {
@@ -361,6 +363,7 @@ export default () => ({
       employer: 'Samantha Sparcs',
       questSalary: '1 500 WUSD',
       status: 'Pending',
+      time: '9:01',
       decision: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
     },
     {
@@ -369,6 +372,7 @@ export default () => ({
       employer: 'Samantha Sparcs',
       questSalary: '1 500 WUSD',
       status: 'Pending',
+      time: '8:01',
       decision: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
     },
   ],
