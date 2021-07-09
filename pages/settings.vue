@@ -169,7 +169,6 @@
           </base-field>
         </div>
         <div
-          v-if="userRole === 'worker'"
           class="profile__row-1col"
         >
           <textarea

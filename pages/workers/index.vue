@@ -54,7 +54,7 @@
             </div>
             <div class="search__actions">
               <base-btn class="search__btn">
-                {{ $t('workers.searchQuests') }}
+                {{ $t('workers.searchWorkers') }}
               </base-btn>
             </div>
           </div>
@@ -964,6 +964,14 @@ export default {
   }
 }
 @include _767 {
+  .map__container {
+    height: 500px;
+    .quests__search {
+      position: relative;
+      bottom: 0;
+      top: 20px;
+    }
+  }
   .main {
     display: block;
     .content {
@@ -971,17 +979,25 @@ export default {
     }
   }
   .search {
-    grid-template-columns: auto auto;
+    grid-template-columns: 1fr 0.5fr 0.5fr;
     padding: 0 10px;
     grid-gap: 10px;
-    &__toggle, &__dd {
+    &__toggle {
       display: none;
     }
     &__actions {
       border: none;
     }
+    &__inputs {
+      padding: 0 10px;
+    }
+  }
+  .dd__btn {
+      justify-content: center;
+      padding: 0px 0px;
   }
 }
+
 @include _575 {
   .main {
     .menu {
