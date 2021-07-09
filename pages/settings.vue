@@ -397,7 +397,6 @@
                 type="radio"
                 class="radio__input"
                 value="allUsers"
-                checked
               >
               <label
                 class="label__black"
@@ -411,6 +410,7 @@
                 type="radio"
                 class="radio__input"
                 value="allInternet"
+                checked
               >
               <label
                 class="label__black"
@@ -455,7 +455,6 @@
                 type="radio"
                 class="radio__input"
                 value="onlyImplementation"
-                checked
               >
               <label
                 class="label__black"
@@ -482,6 +481,7 @@
                 type="radio"
                 class="radio__input"
                 value="allRegistered"
+                checked
               >
               <label
                 class="label__black"

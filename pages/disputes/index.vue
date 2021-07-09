@@ -39,6 +39,9 @@
                   {{ $t('disputes.questSalary') }} <span class="page__text_blue">{{ item.questSalary }}</span>
                 </div>
                 <div class="page__text">
+                  {{ $t('disputes.disputeTime') }} <span class="page__text_blue">{{ item.time }}</span>
+                </div>
+                <div class="page__text">
                   {{ $t('disputes.status') }} <span
                     v-if="item.status === 'Pending'"
                     class="page__text_yellow"
