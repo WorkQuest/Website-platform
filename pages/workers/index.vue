@@ -1,6 +1,6 @@
 <template>
   <div>
-    <GmapSearchBlock/>
+    <GmapSearchBlock />
     <div class="main">
       <div class="main__body">
         <h2 class="main__title">
