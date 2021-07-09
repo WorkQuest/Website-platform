@@ -214,4 +214,10 @@ export default {
     }
   }
 }
+@include _767 {
+  .dd__btn {
+    justify-content: center;
+    padding: 0px 0px;
+  }
+}
 </style>

@@ -519,6 +519,7 @@
   },
   "workers": {
     "searchQuests": "Search quests",
+    "searchWorkers": "Search workers",
     "topWorkers": "Top workers",
     "price": "Price",
     "addedTime": "Added time",
