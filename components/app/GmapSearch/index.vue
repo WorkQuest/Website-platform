@@ -144,7 +144,7 @@ export default {
 .map__container {
   &_small {
     padding-top: 0px;
-    height: 150px;
+    height: 150px !important;
   }
 }
 .quests {
@@ -152,7 +152,7 @@ export default {
     position: absolute;
     max-width: 1180px;
     height: 83px;
-    bottom: 30px;
+    top: 27%;
     left: 0;
     right: 0;
     margin: auto;
@@ -279,7 +279,7 @@ export default {
   }
   .quests {
     &__search {
-      width: 95%;
+      width: 90%;
     }
   }
 }
@@ -290,7 +290,7 @@ export default {
     .quests__search {
       position: relative;
       bottom: 0;
-      top: 20px;
+      top: 10px;
     }
   }
   .quests {
@@ -322,7 +322,7 @@ export default {
       flex-direction: row;
       position: relative;
       justify-content: space-between;
-      top: 30px;
+      top: 20px;
       align-content: center;
     }
   }
