@@ -1,66 +1,6 @@
 <template>
   <div>
-    <div class="map__container">
-      <div class="quests__top">
-        <transition name="fade-fast">
-          <!--          in GMAP-->
-          <!--          v-if="isShowMap && userPosition"-->
-          <!--          :cluster="{options: {styles: clusterStyle}}"-->
-          <!--          :center="{lat: userPosition.latitude, lng: userPosition.longitude}"-->
-          <GMap
-            v-if="isShowMap"
-            ref="gMap"
-            language="en"
-            :options="{fullscreenControl: false}"
-            :zoom="10"
-          >
-            <GMapMarker
-              v-for="location in locations"
-              :key="location.id"
-              :position="{lat: location.lat, lng: location.lng}"
-              :options="{icon: location === currentLocation ? pins.selected : pins.notSelected}"
-              @click="currentLocation = location"
-            >
-              <GMapInfoWindow :options="{maxWidth: 200}">
-                lat: {{ location.lat }},
-                lng: {{ location.lng }}
-              </GMapInfoWindow>
-            </GMapMarker>
-          </GMap>
-        </transition>
-        <div class="quests__search">
-          <div class="search">
-            <div class="search__toggle">
-              <base-checkbox
-                v-model="isShowMap"
-                name="map"
-                :label="$t('quests.ui.showMap')"
-              />
-            </div>
-            <div class="search__inputs">
-              <base-field
-                v-model="search"
-                is-search
-                class="search__input"
-                :placeholder="$t('quests.ui.search')"
-                :mode="'icon'"
-              />
-            </div>
-            <div class="search__dd">
-              <base-dd
-                v-model="distanceIndex"
-                :items="distance"
-              />
-            </div>
-            <div class="search__actions">
-              <base-btn class="search__btn">
-                {{ $t('workers.searchWorkers') }}
-              </base-btn>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <GmapSearchBlock/>
     <div class="main">
       <div class="main__body">
         <h2 class="main__title">
@@ -190,9 +130,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import GmapSearchBlock from '~/components/app/GmapSearch';
 
 export default {
   name: 'IndexVue',
+  components: {
+    GmapSearchBlock,
+  },
   data() {
     return {
       currentLocation: {},
@@ -646,55 +590,6 @@ export default {
     padding-top:  20px;
   }
 }
-.search {
-  display: grid;
-  grid-template-columns: 154px 1fr 143px 260px;
-  align-items: center;
-  height: 100%;
-  justify-items: center;
-  &__dd {
-    display: flex;
-    border-left: 1px solid #F7F8FA;
-    justify-items: center;
-    height: 100%;
-  }
-  &__icon {
-    margin-bottom: -10px;
-    &::before {
-      font-size: 24px;
-      color: $blue;
-    }
-  }
-  &__inputs {
-    padding: 0 20px;
-    width: 100%;
-    display: grid;
-    align-items: center;
-  }
-  &__input {
-    display: flex;
-    align-items: center;
-  }
-  &__btn {
-    max-width: 220px;
-  }
-  &__toggle {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-right: 1px solid #F7F8FA;
-  }
-  &__actions {
-    height: 100%;
-    border-left: 1px solid #F7F8FA;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-}
 .main {
   @include main;
   &-white {
@@ -886,13 +781,6 @@ export default {
   }
 }
 .checkbox {
-  &__isShowMap {
-    margin: 30px 50px 0 10px;
-    display: flex;
-    flex-direction: row;
-    height: 25px;
-    align-items: center;
-  }
   &-input {
     width: 24px;
     height: 24px;
@@ -905,46 +793,9 @@ export default {
     font-size: 16px;
   }
 }
-.search-bar {
-  left: 18%;
-  bottom: 30px;
-  margin: 10px 0 0 0;
-  position: absolute;
-  max-width: 1180px;
-  width: 100%;
-  height: 84px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 6px;
-  background-color: $white;
-  z-index: 10;
-  box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
-  &__body {
-    display: flex;
-    flex-direction: row;
-    flex-shrink: 0;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-    height: 40px;
-  }
-  &__input {
-    margin: 30px 10px 0 0;
-    height: 25px;
-    width: 510px;
-  }
-  &__btn {
-    margin: 30px 10px 0 0;
-    flex-shrink: 0;
-  }
-  &__btn-search {
-    margin: 30px 10px 0 0;
-    width: 220px;
-  }
-}
 
 @include _1199 {
-  .map__container, .main {
+  .main {
     padding-left: 20px;
     padding-right: 20px;
   }
@@ -964,37 +815,11 @@ export default {
   }
 }
 @include _767 {
-  .map__container {
-    height: 500px;
-    .quests__search {
-      position: relative;
-      bottom: 0;
-      top: 20px;
-    }
-  }
   .main {
     display: block;
     .content {
       grid-template-columns: repeat(2, 1fr);
     }
-  }
-  .search {
-    grid-template-columns: 1fr 0.5fr 0.5fr;
-    padding: 0 10px;
-    grid-gap: 10px;
-    &__toggle {
-      display: none;
-    }
-    &__actions {
-      border: none;
-    }
-    &__inputs {
-      padding: 0 10px;
-    }
-  }
-  .dd__btn {
-      justify-content: center;
-      padding: 0px 0px;
   }
 }
 
