@@ -139,8 +139,8 @@
   "priority": {
     "title": "Priority",
     "all": "All priority",
-    "low": "Low priority",
-    "normal": "Normal priority",
+    "low": "Fixed delivery",
+    "normal": "Short term",
     "urgent": "Urgent"
   },
   "signIn": {
