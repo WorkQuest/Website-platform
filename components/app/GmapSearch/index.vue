@@ -141,12 +141,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.map__container {
-  &_small {
-    padding-top: 0px;
-    height: 150px !important;
-  }
-}
 .map__container::v-deep {
   .GMap__Wrapper {
     height: 435px;
@@ -283,6 +277,20 @@ export default {
     width: 220px;
   }
 }
+.map__container {
+  &_small {
+    padding-top: 20px;
+    height: 80px;
+    .quests {
+      &__top {
+        height: 100%;
+      }
+      &__search {
+        bottom: 0;
+      }
+    }
+  }
+}
 @include _1199 {
   .search {
     grid-template-columns: auto auto auto auto;
@@ -304,6 +312,9 @@ export default {
   .map__container {
     height: 580px;
     padding-top: 10px;
+    &_small {
+      height: 150px;
+    }
     .quests__search {
       position: relative;
       bottom: 0;
