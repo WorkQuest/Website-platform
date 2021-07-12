@@ -293,7 +293,7 @@ export default {
 }
 @include _1199 {
   .search {
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: repeat(4, auto);
     &__actions, &__toggle {
       padding: 10px;
     }
