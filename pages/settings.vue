@@ -666,7 +666,7 @@ export default {
     },
     async getAddressInfo(address) {
       let response = [];
-      const geoCode = new GeoCode('google', { key: 'AIzaSyD32Aorm6CU9xUIrUznzYyw2d_0NTqt3Zw' });
+      const geoCode = new GeoCode('google', { key: process.env.GMAPKEY });
       try {
         if (address.length) {
           response = await geoCode.geolookup(address);
