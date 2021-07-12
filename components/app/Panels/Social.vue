@@ -5,7 +5,7 @@
       <a
         v-if="userFacebook"
         class="social__link"
-        :href="'https://ru-ru.facebook.com/' + userFacebook || ''"
+        :href="'https://facebook.com/' + userFacebook || ''"
         target="_blank"
       >
         <span
@@ -35,7 +35,7 @@
       <a
         v-if="userLinkedin"
         class="social__link"
-        :href="'https://ru.linkedin.com/' + userLinkedin || ''"
+        :href="'https://linkedin.com/' + userLinkedin || ''"
         target="_blank"
       >
         <span
