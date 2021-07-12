@@ -147,12 +147,23 @@ export default {
     height: 150px !important;
   }
 }
+.map__container::v-deep {
+  .GMap__Wrapper {
+    height: 435px;
+  }
+  .ctm-field__left {
+    padding-top: 6px;
+  }
+}
 .quests {
+  &__top {
+    height:435px;
+  }
   &__search {
-    position: absolute;
+    position: relative;
     max-width: 1180px;
     height: 83px;
-    top: 27%;
+    bottom: 100px;
     left: 0;
     right: 0;
     margin: auto;
@@ -273,6 +284,12 @@ export default {
   }
 }
 @include _1199 {
+  .search {
+    grid-template-columns: auto auto auto auto;
+    &__actions, &__toggle {
+      padding: 10px;
+    }
+  }
   .map__container {
     padding-left: 20px;
     padding-right: 20px;
