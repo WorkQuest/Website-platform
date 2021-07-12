@@ -738,7 +738,9 @@ export default {
 
 @include _1199 {
   .quests {
-    padding: 10px;
+    &__content {
+      padding: 20px;
+    }
   }
 }
 @include _991 {
