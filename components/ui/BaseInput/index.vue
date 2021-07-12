@@ -187,7 +187,7 @@ export default {
     color: #fff;
   }
   &__err {
-    color: #F82727;
+    color: #bb5151;
     font-size: 12px;
     min-height: 23px;
   }

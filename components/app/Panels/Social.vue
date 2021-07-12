@@ -1,16 +1,45 @@
 <template>
   <div>
-    <span
-      v-for="(item, i) in socials"
-      :key="i"
-    >
+    {{ additionalInfo }}
+    <span>
       <a
+        v-if="userFacebook"
         class="social__link"
-        :href="item.url"
+        :href="'https://facebook.com/' + userFacebook || ''"
         target="_blank"
       >
         <span
-          :class="item.class"
+          class="icon-facebook"
+        />
+      </a>
+      <a
+        v-if="userTwitter"
+        class="social__link"
+        :href="'https://twitter.com/' + userTwitter || ''"
+        target="_blank"
+      >
+        <span
+          class="icon-twitter"
+        />
+      </a>
+      <a
+        v-if="userInstagram"
+        class="social__link"
+        :href="'https://www.instagram.com/' + userInstagram || ''"
+        target="_blank"
+      >
+        <span
+          class="icon-instagram"
+        />
+      </a>
+      <a
+        v-if="userLinkedin"
+        class="social__link"
+        :href="'https://linkedin.com/' + userLinkedin || ''"
+        target="_blank"
+      >
+        <span
+          class="icon-LinkedIn"
         />
       </a>
     </span>
@@ -25,6 +54,10 @@ export default {
   computed: {
     ...mapGetters({
       socials: 'data/getSocials',
+      userInstagram: 'user/getUserInstagram',
+      userTwitter: 'user/getUserTwitter',
+      userLinkedin: 'user/getUserLinkedin',
+      userFacebook: 'user/getUserFacebook',
     }),
   },
 };

@@ -139,8 +139,8 @@
   "priority": {
     "title": "Priority",
     "all": "All priority",
-    "low": "Low priority",
-    "normal": "Normal priority",
+    "low": "Fixed delivery",
+    "normal": "Short term",
     "urgent": "Urgent"
   },
   "signIn": {
@@ -155,7 +155,7 @@
     "welcomeToWorkQuest": "Welcome to WorkQuest",
     "pleaseSignIn": "Please sign in",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "Making\n            money is fast.\n            When your\n            work is quest.",
+    "makingMoneyIsFast": "WorkQuest:\n The World's Decentralized\n Job Market",
     "dontHaveAnAccount": "Don’t have an account?",
     "signUp": "Sign Up",
     "forgotYourPass": "Forgot your password?"
@@ -515,10 +515,12 @@
     "decision": "Decision:",
     "Dispute": "Dispute",
     "pending": "Pending",
-    "chatHistory": "Chat history"
+    "chatHistory": "Chat history",
+    "disputeTime": "Dispute uptime:"
   },
   "workers": {
     "searchQuests": "Search quests",
+    "searchWorkers": "Search workers",
     "topWorkers": "Top workers",
     "price": "Price",
     "addedTime": "Added time",

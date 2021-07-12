@@ -114,22 +114,41 @@
                 </base-field>
               </div>
               <div class="profile__row-2col">
-                <base-field
+                <VuePhoneNumberInput
                   v-model="localUserData.additionalInfo.firstMobileNumber"
-                  :placeholder="firstMobileNumber || $t('settings.telInput')"
-                  mode="icon"
-                >
-                  <template v-slot:left>
-                    <span class="icon-phone" />
-                  </template>
-                </base-field>
+                  class="Phone"
+                  error-color="#EB5757"
+                  clearable
+                  size="lg"
+                  show-code-on-list
+                  @update="updatedPhone = $event"
+                />
                 <base-field
                   v-model="localUserData.additionalInfo.address"
                   :placeholder="address || $t('settings.addressInput')"
                   mode="icon"
+                  :selector="true"
+                  @selector="getAddressInfo(localUserData.additionalInfo.address)"
                 >
                   <template v-slot:left>
                     <span class="icon-location" />
+                  </template>
+                  <template v-slot:selector>
+                    <div
+                      v-if="addresses.length"
+                      class="selector"
+                    >
+                      <div class="selector__items">
+                        <div
+                          v-for="(item, i) in addresses"
+                          :key="i"
+                          class="selector__item"
+                          @click="selectAddress(item)"
+                        >
+                          {{ item.formatted }}
+                        </div>
+                      </div>
+                    </div>
                   </template>
                 </base-field>
               </div>
@@ -169,7 +188,6 @@
           </base-field>
         </div>
         <div
-          v-if="userRole === 'worker'"
           class="profile__row-1col"
         >
           <textarea
@@ -397,7 +415,6 @@
                 type="radio"
                 class="radio__input"
                 value="allUsers"
-                checked
               >
               <label
                 class="label__black"
@@ -411,6 +428,7 @@
                 type="radio"
                 class="radio__input"
                 value="allInternet"
+                checked
               >
               <label
                 class="label__black"
@@ -455,7 +473,6 @@
                 type="radio"
                 class="radio__input"
                 value="onlyImplementation"
-                checked
               >
               <label
                 class="label__black"
@@ -482,6 +499,7 @@
                 type="radio"
                 class="radio__input"
                 value="allRegistered"
+                checked
               >
               <label
                 class="label__black"
@@ -535,13 +553,25 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { mapGetters } from 'vuex';
+import VuePhoneNumberInput from 'vue-phone-number-input';
 import modals from '~/store/modals/modals';
+import 'vue-phone-number-input/dist/vue-phone-number-input.css';
+
+Vue.component('vue-phone-number-input', VuePhoneNumberInput);
+const { GeoCode } = require('geo-coder');
 
 export default {
   name: 'Settings',
+  components: {
+    VuePhoneNumberInput,
+  },
   data() {
     return {
+      updatedPhone: null,
+      address: '',
+      addresses: [],
       sms: false,
       allRegisterUser: false,
       allPeopleInInternet: false,
@@ -614,6 +644,7 @@ export default {
       userInfo: 'data/getUserInfo',
       imageData: 'user/getImageData',
       additionalInfo: 'user/getAdditionalInfo',
+      getUserAddress: 'user/getUserAddress',
     }),
   },
   async mounted() {
@@ -627,6 +658,25 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    selectAddress(address) {
+      this.localUserData.additionalInfo.address = this.address;
+      this.addresses = [];
+      this.address = address.formatted;
+      console.log(address);
+    },
+    async getAddressInfo(address) {
+      let response = [];
+      const geoCode = new GeoCode('google', { key: process.env.GMAPKEY });
+      try {
+        if (address.length) {
+          response = await geoCode.geolookup(address);
+          this.addresses = JSON.parse(JSON.stringify(response));
+          this.coordinates = JSON.parse(JSON.stringify({ lng: response[0].lng, lat: response[0].lat }));
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
     addNewKnowledge() {
       this.localUserData.additionalInfo.educations.push({ ...this.newKnowledge });
       this.newKnowledge = {
@@ -771,6 +821,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
+      this.localUserData.additionalInfo.firstMobileNumber = this.updatedPhone.formatInternational;
       let payload = {};
       const checkAvatarID = this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : this.userData.avatarId;
       if (this.userRole === 'employer') {
@@ -812,6 +863,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.selector {
+  @include box;
+  width: 100%;
+  z-index: 140;
+  &__items {
+    background: #FFFFFF;
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  &__item {
+    @include text-simple;
+    padding: 15px 20px;
+    background: #FFFFFF;
+    font-weight: 500;
+    font-size: 16px;
+    color: $black800;
+    cursor: pointer;
+    transition: .3s;
+    &:hover {
+      background: #F3F7FA;
+    }
+  }
+}
 
 .knowledge {
   &__container {

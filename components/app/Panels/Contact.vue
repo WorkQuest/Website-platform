@@ -10,7 +10,10 @@
         <span
           class="icon-location"
         />
-        <span class="contact__link">{{ address }}</span>
+        <a
+          :href="'https://maps.google.com/?q=' + address"
+          target="_blank"
+        ><span class="contact__link">{{ address }}</span></a>
       </span>
       <span
         v-if="firstMobileNumber"
@@ -19,7 +22,10 @@
         <span
           class="icon-phone"
         />
-        <span class="contact__link">{{ firstMobileNumber }}</span>
+        <a
+          :href="'tel:' + firstMobileNumber"
+          target="_blank"
+        ><span class="contact__link">{{ firstMobileNumber }}</span></a>
       </span>
       <span
         v-if="email"
@@ -28,14 +34,20 @@
         <span
           class="icon-mail"
         />
-        <span class="contact__link">{{ email }}</span>
+        <a
+          :href="'mailto:' + email"
+          target="_blank"
+        ><span class="contact__link">{{ email }}</span></a>
       </span>
       <span
         v-if="userRole === 'employer' && company"
         class="contact__container"
       >
         <span class="icon-Earth" />
-        <span class="contact__link">{{ company }}</span>
+        <a
+          :href="'https://maps.google.com/?q=' + company"
+          target="_blank"
+        ><span class="contact__link">{{ company }}</span></a>
       </span>
     </span>
   </div>
