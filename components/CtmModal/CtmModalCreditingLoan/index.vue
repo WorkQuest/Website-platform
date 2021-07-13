@@ -37,46 +37,29 @@
         </div>
       </div>
       <div class="ctm-modal__content-field">
-        <label
-          for="amountOfETH_input"
-          class="ctm-modal__label"
-        >{{ $t('modals.howMuchETHWouldYouLikeToOpen') }}</label>
-        <div class="ctm-modal__subtitle">
-          {{ $t('modals.smallTemp') }}
-        </div>
         <base-field
-          id="amountOfETH_input"
           :is-hide-error="true"
           class="input"
+          :label="$t('modals.howMuchETHWouldYouLikeToOpen')"
+          :tip="$t('modals.smallTemp')"
           :placeholder="'10 ETH'"
         />
       </div>
       <div class="ctm-modal__content-field">
-        <label
-          for="amountOfPercents_input"
-          class="ctm-modal__label"
-        >{{ $t('modals.howMuchPercentWouldYouLikeToSet') }}</label>
-        <div class="ctm-modal__subtitle">
-          {{ $t('modals.smallTemp') }}
-        </div>
         <base-field
           id="amountOfPercents_input"
           :is-hide-error="true"
           class="input"
+          :label="$t('modals.howMuchPercentWouldYouLikeToSet')"
+          :tip="$t('modals.smallTemp')"
           :placeholder="'10 ETH'"
         />
       </div>
       <div class="ctm-modal__content-field">
-        <label
-          for="amountOfWUSD_input"
-          class="ctm-modal__label"
-        >{{ $t('modals.enterTermToReturnDebtBack') }}</label>
-        <div class="ctm-modal__subtitle">
-          {{ $t('modals.smallTemp') }}
-        </div>
         <base-field
-          id="amountOfWUSD_input"
           :is-hide-error="true"
+          :label="$t('modals.enterTermToReturnDebtBack')"
+          :tip="$t('modals.smallTemp')"
           class="input"
           :placeholder="'10 ETH'"
         />
@@ -260,10 +243,6 @@ export default {
     }
   }
 
-  &__label {
-    margin-bottom: 5px;
-  }
-
   &__content {
     padding-top: 0 !important;
   }
@@ -278,16 +257,12 @@ export default {
     color: #7C838D;
     font-weight: 400;
     font-size: 16px;
-
-    &_small {
-      color: #7C838D;
-      font-weight: 500;
-      font-size: 14px;
-    }
   }
 }
+</style>
 
-.input {
-  margin-top: 10px;
+<style lang="scss">
+.ctm-field__header {
+  color: #212529 !important;
 }
 </style>

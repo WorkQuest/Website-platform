@@ -21,6 +21,12 @@
     >
       {{ label }}
     </div>
+    <div
+      v-if="tip"
+      class="ctm-field__header_sub"
+    >
+      {{ tip }}
+    </div>
     <div class="ctm-field__body">
       <span
         v-if="isSearch"
@@ -86,6 +92,10 @@ export default {
       default: '',
     },
     label: {
+      type: String,
+      default: '',
+    },
+    tip: {
       type: String,
       default: '',
     },
@@ -182,9 +192,16 @@ export default {
   }
   &__header {
     letter-spacing: -0.025em;
-    margin-bottom: 13px;
+    margin-bottom: 5px;
     height: 24px;
     color: #fff;
+
+    &_sub {
+      margin-bottom: 5px;
+      color: #7C838D;
+      font-weight: 400;
+      font-size: 16px;
+    }
   }
   &__err {
     color: #bb5151;
