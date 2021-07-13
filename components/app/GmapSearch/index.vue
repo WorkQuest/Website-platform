@@ -10,7 +10,6 @@
         <!--          :cluster="{options: {styles: clusterStyle}}"-->
         <!--          :center="{lat: userPosition.latitude, lng: userPosition.longitude}"-->
         <GMap
-          v-if="isShowMap"
           ref="gMap"
           language="en"
           :options="{fullscreenControl: false}"
@@ -144,9 +143,15 @@ export default {
 .map__container::v-deep {
   .GMap__Wrapper {
     height: 435px;
+    display: block;
   }
   .ctm-field__left {
     padding-top: 6px;
+  }
+}
+.map__container_small::v-deep {
+  .GMap__Wrapper {
+    display: none;
   }
 }
 .quests {
@@ -280,13 +285,13 @@ export default {
 .map__container {
   &_small {
     padding-top: 20px;
-    height: 80px;
+    height: 90px;
     .quests {
       &__top {
         height: 100%;
       }
       &__search {
-        bottom: 0;
+        top: 1px;
       }
     }
   }
