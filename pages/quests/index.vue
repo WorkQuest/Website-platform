@@ -735,66 +735,12 @@ export default {
     }
   }
 }
-.search {
-  display: grid;
-  grid-template-columns: 154px 1fr 143px 260px;
-  align-items: center;
-  height: 100%;
-  justify-items: center;
-  &__dd {
-    border-left: 1px solid #F7F8FA;
-    height: 100%;
-    display: flex;
-  }
-  &__icon {
-    margin-bottom: -10px;
-    &::before {
-      font-size: 24px;
-      color: $blue;
-    }
-  }
-  &__inputs {
-    padding: 0 20px;
-    width: 100%;
-    display: grid;
-    align-items: center;
-  }
-  &__input {
-    display: flex;
-    align-items: center;
-  }
-  &__btn {
-    max-width: 220px;
-  }
-  &__toggle {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-right: 1px solid #F7F8FA;
-  }
-  &__actions {
-    height: 100%;
-    border-left: 1px solid #F7F8FA;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-}
-.quests::v-deep {
-  .GMap__Wrapper {
-    height: 435px;
-  }
-  .ctm-field__left {
-    padding-top: 6px;
-  }
-}
 
 @include _1199 {
   .quests {
-    padding: 10px;
+    &__content {
+      padding: 20px;
+    }
   }
 }
 @include _991 {
@@ -875,7 +821,7 @@ export default {
   .block {
     &__actions {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: 2fr 1fr;
     }
     &__btn {
       margin-top: 10px;

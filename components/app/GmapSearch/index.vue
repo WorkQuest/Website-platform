@@ -10,7 +10,6 @@
         <!--          :cluster="{options: {styles: clusterStyle}}"-->
         <!--          :center="{lat: userPosition.latitude, lng: userPosition.longitude}"-->
         <GMap
-          v-if="isShowMap"
           ref="gMap"
           language="en"
           :options="{fullscreenControl: false}"
@@ -141,18 +140,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.map__container {
-  &_small {
-    padding-top: 0px;
-    height: 150px !important;
+.map__container::v-deep {
+  .GMap__Wrapper {
+    height: 435px;
+    display: block;
+  }
+  .ctm-field__left {
+    padding-top: 6px;
+  }
+}
+.map__container_small::v-deep {
+  .GMap__Wrapper {
+    display: none;
   }
 }
 .quests {
+  &__top {
+    height:435px;
+  }
   &__search {
-    position: absolute;
+    position: relative;
     max-width: 1180px;
     height: 83px;
-    top: 27%;
+    bottom: 100px;
     left: 0;
     right: 0;
     margin: auto;
@@ -272,7 +282,27 @@ export default {
     width: 220px;
   }
 }
+.map__container {
+  &_small {
+    padding-top: 20px;
+    height: 90px;
+    .quests {
+      &__top {
+        height: 100%;
+      }
+      &__search {
+        top: 1px;
+      }
+    }
+  }
+}
 @include _1199 {
+  .search {
+    grid-template-columns: repeat(4, auto);
+    &__actions, &__toggle {
+      padding: 10px;
+    }
+  }
   .map__container {
     padding-left: 20px;
     padding-right: 20px;
@@ -287,6 +317,9 @@ export default {
   .map__container {
     height: 580px;
     padding-top: 10px;
+    &_small {
+      height: 150px;
+    }
     .quests__search {
       position: relative;
       bottom: 0;
