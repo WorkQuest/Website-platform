@@ -7,5 +7,6 @@ export default () => ({
   currentUserPosition: null,
   userRole: {},
   userDataPassword: {},
+  userSendCode: {},
   imageLink: {},
 });

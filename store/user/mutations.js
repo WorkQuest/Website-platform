@@ -38,4 +38,7 @@ export default {
   setImage(state, data) {
     state.userData.avatar.url = data;
   },
+  setSendCode(state, data) {
+    state.userSendCode = data;
+  },
 };

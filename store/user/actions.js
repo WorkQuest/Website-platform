@@ -62,4 +62,14 @@ export default {
     commit('setImage', response.result);
     return response;
   },
+  async passwordSendCode({ commit }, payload) {
+    const response = await this.$axios.$post('/v1/restore-password/send-code', payload);
+    commit('setSendCode', response.result);
+    return response;
+  },
+  async passwordChange({ commit }, payload) {
+    const response = await this.$axios.$post('/v1/restore-password/set-password', payload);
+    commit('setUserPassword', response.result);
+    return response;
+  },
 };

@@ -16,7 +16,7 @@
         @submit.prevent="handleSubmit(resetPassword)"
       >
         <base-field
-          v-model="model.password"
+          v-model="password"
           :placeholder="$t('signUp.password')"
           :mode="'icon'"
           :name="$t('signUp.password')"
@@ -33,7 +33,7 @@
           </template>
         </base-field>
         <base-field
-          v-model="model.passwordConfirm"
+          v-model="passwordConfirm"
           :placeholder="$t('signUp.confirmPassword')"
           :mode="'icon'"
           type="password"
@@ -65,26 +65,30 @@ export default {
   layout: 'auth',
   data() {
     return {
-      model: {
-        password: '',
-        passwordConfirm: '',
-      },
+      password: '',
+      passwordConfirm: '',
     };
   },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
+    console.log(this.$route.query.token);
   },
   methods: {
     async resetPassword() {
-      // const payload = {
-      //   password: this.model.password,
-      // };
-      // const response = await this.$store.dispatch('user/signUp', payload);
-      // if (response?.ok) {
-      //   this.showConfirmEmailModal();
-      // }
-      this.showChangeModal();
+      const payload = {
+        newPassword: this.password,
+        token: this.$route.query.token,
+      };
+      console.log(payload);
+      try {
+        const response = await this.$store.dispatch('user/passwordChange', payload);
+        if (response?.ok) {
+          this.showChangeModal();
+        }
+      } catch (e) {
+        console.log(e);
+      }
     },
     showChangeModal() {
       this.ShowModal({
