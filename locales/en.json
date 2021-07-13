@@ -160,6 +160,15 @@
     "signUp": "Sign Up",
     "forgotYourPass": "Forgot your password?"
   },
+  "signWorkQuest": {
+    "title": "WorkQuest social network",
+    "description": "You can use your WorkQuest DAO login and password to sign in"
+  },
+  "securityCheck": {
+    "title": "Security check",
+    "confCode": "Google confirmation code",
+    "confCodeDesc": "Enter the 6-digit code from the Google Authentication app"
+  },
   "signUp": {
     "title": "Sign Up",
     "haveAccount": "Already have an account?",
