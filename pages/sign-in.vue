@@ -138,6 +138,8 @@ export default {
             this.$router.push('/workers');
           } else if (this.userData.role === 'worker') {
             this.$router.push('/quests');
+          } else if (response.result.userStatus === 2) {
+            this.$router.push('/role');
           }
         }
         // if (response?.ok) {

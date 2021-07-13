@@ -72,7 +72,6 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
-    console.log(this.$route.query.token);
   },
   methods: {
     async resetPassword() {
@@ -80,7 +79,6 @@ export default {
         newPassword: this.password,
         token: this.$route.query.token,
       };
-      console.log(payload);
       try {
         const response = await this.$store.dispatch('user/passwordChange', payload);
         if (response?.ok) {

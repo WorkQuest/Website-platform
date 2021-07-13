@@ -18,7 +18,7 @@
             {{ $t('forgot.desc') }}
           </div>
           <base-field
-            v-model="email_input"
+            v-model="emailInput"
             :name="$t('placeholders.email')"
             :placeholder="$t('placeholders.email')"
             rules="required|email"
@@ -42,7 +42,7 @@ export default {
   name: 'ModalRestore',
   data() {
     return {
-      email_input: '',
+      emailInput: '',
     };
   },
   computed: {
@@ -56,7 +56,7 @@ export default {
     },
     async restore() {
       const payload = {
-        email: this.email_input,
+        email: this.emailInput,
       };
       try {
         const response = await this.$store.dispatch('user/passwordSendCode', payload);

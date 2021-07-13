@@ -1,17 +1,19 @@
 /* eslint-disable no-param-reassign */
 
 export default {
-  setOldTokens(state, { access, refresh }) {
-    state.tokens.access = access;
-    state.tokens.refresh = refresh;
-    this.$cookies.set('access', access, { path: '/' });
-    this.$cookies.set('refresh', refresh, { path: '/' });
+  setOldTokens(state, payload) {
+    state.tokens.access = payload.access;
+    state.tokens.refresh = payload.refresh;
+    this.$cookies.set('access', payload.access, { path: '/' });
+    this.$cookies.set('refresh', payload.refresh, { path: '/' });
+    this.$cookies.set('userStatus', payload.userStatus, { path: '/' });
   },
-  setNewTokens(state, { access, refresh }) {
-    state.tokens.access = access;
-    state.tokens.refresh = refresh;
-    this.$cookies.set('access', access, { path: '/' });
-    this.$cookies.set('refresh', refresh, { path: '/' });
+  setNewTokens(state, payload) {
+    state.tokens.access = payload.access;
+    state.tokens.refresh = payload.refresh;
+    this.$cookies.set('access', payload.access, { path: '/' });
+    this.$cookies.set('refresh', payload.refresh, { path: '/' });
+    this.$cookies.set('userStatus', payload.userStatus, { path: '/' });
   },
   setUserData(state, data) {
     state.userData = data;
@@ -22,7 +24,7 @@ export default {
   logOut(state) {
     this.$cookies.remove('access');
     this.$cookies.remove('refresh');
-    this.$cookies.remove('status');
+    this.$cookies.remove('userStatus');
     this.$cookies.remove('role');
     state.userData = {};
   },
