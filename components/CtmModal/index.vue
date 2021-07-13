@@ -51,6 +51,8 @@
       <CtmModalTransfer v-if="modals.transfer === currentModalKey" />
       <CtmModalChangePassInSettings v-if="modals.changePassInSettings === currentModalKey" />
       <CtmModalTwoFAAuth v-if="modals.twoFAAuth === currentModalKey" />
+      <CtmModalCreditingLoan v-if="modals.creditingLoan === currentModalKey" />
+      <CtmModalConfirmLoanDetails v-if="modals.confirmLoanDetails === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -96,6 +98,8 @@ import CtmModalNotice from './CtmModalNotice';
 import CtmModalTransfer from './CtmModalTransfer';
 import CtmModalChangePassInSettings from './CtmModalChangePassInSettings';
 import CtmModalTwoFAAuth from './CtmModalTwoFAAuth';
+import CtmModalCreditingLoan from './CtmModalCreditingLoan';
+import CtmModalConfirmLoanDetails from './CtmModalConfirmLoanDetails';
 
 export default {
   name: 'ModalBox',
@@ -139,6 +143,8 @@ export default {
     CtmModalTransfer,
     CtmModalChangePassInSettings,
     CtmModalTwoFAAuth,
+    CtmModalCreditingLoan,
+    CtmModalConfirmLoanDetails,
   },
   data: () => ({
     modals,

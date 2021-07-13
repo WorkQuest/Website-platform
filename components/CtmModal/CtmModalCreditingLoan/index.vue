@@ -4,87 +4,85 @@
     :title="$t('modals.deposit')"
   >
     <div class="ctm-modal__content">
-      <div class="ctm-modal__grid-cont">
-        <div>
-          <div class="ctm-modal__checkpoints">
-            <label
-              for="checkpoints-cont"
-              class="ctm-modal__label"
+      <div class="ctm-modal__checkpoints">
+        <label
+          for="checkpoints-cont"
+          class="ctm-modal__label"
+        >
+          {{ $t('modals.chooseTheCurrency') }}
+        </label>
+        <div
+          id="checkpoints-cont"
+          class="checkpoints-cont"
+        >
+          <div
+            v-for="(item, i) in checkpoints"
+            :key="i"
+            class="checkpoint-cont"
+          >
+            <input
+              :id="item.name"
+              v-model="selCurrencyID"
+              type="radio"
+              class="checkpoint"
+              :value="item.id"
             >
-              {{ $t('modals.chooseTheCurrency') }}
+            <label
+              class=""
+              :for="item.name"
+            >
+              {{ item.name }}
             </label>
-            <div
-              id="checkpoints-cont"
-              class="checkpoints-cont"
-            >
-              <div
-                v-for="(item, i) in checkpoints"
-                :key="i"
-                class="checkpoint-cont"
-              >
-                <input
-                  :id="item.name"
-                  v-model="selCurrencyID"
-                  type="radio"
-                  class="checkpoint"
-                  :value="item.id"
-                >
-                <label
-                  class=""
-                  :for="item.name"
-                >
-                  {{ item.name }}
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="ctm-modal__content-field">
-            <label
-              for="amountOfETH_input"
-              class="ctm-modal__label"
-            >{{ $t('modals.howMuchEthWouldYouLikeToLock') }}</label>
-            <div class="ctm-modal__subtitle">
-              {{ $t('modals.smallTemp') }}
-            </div>
-            <base-field
-              id="amountOfETH_input"
-              :is-hide-error="true"
-              class="input"
-              :placeholder="'10 ETH'"
-            />
-          </div>
-          <div class="ctm-modal__content-field">
-            <label
-              for="amountOfWUSD_input"
-              class="ctm-modal__label"
-            >{{ $t('modals.howMuchWusdWouldYouLikeToGenerate') }}</label>
-            <div class="ctm-modal__subtitle">
-              {{ $t('modals.smallTemp') }}
-            </div>
-            <base-field
-              id="amountOfWUSD_input"
-              :is-hide-error="true"
-              class="input"
-              :placeholder="'1000 WUSD'"
-            />
-            <div class="ctm-modal__title-head" />
-            <div class="ctm-modal__subtitle">
-              {{ $t('modals.tipAbout') }}
-            </div>
           </div>
         </div>
-        <div class="ctm-modal__gray-zone">
-          <div
-            v-for="(item, i) in abouts"
-            :key="i"
-          >
-            <div class="ctm-modal__title-head">
-              {{ item.title }}
-            </div>
-            <div class="ctm-modal__subtitle_small">
-              {{ item.subtitle }}
-            </div>
-          </div>
+      </div>
+      <div class="ctm-modal__content-field">
+        <label
+          for="amountOfETH_input"
+          class="ctm-modal__label"
+        >{{ $t('modals.howMuchETHWouldYouLikeToOpen') }}</label>
+        <div class="ctm-modal__subtitle">
+          {{ $t('modals.smallTemp') }}
+        </div>
+        <base-field
+          id="amountOfETH_input"
+          :is-hide-error="true"
+          class="input"
+          :placeholder="'10 ETH'"
+        />
+      </div>
+      <div class="ctm-modal__content-field">
+        <label
+          for="amountOfPercents_input"
+          class="ctm-modal__label"
+        >{{ $t('modals.howMuchPercentWouldYouLikeToSet') }}</label>
+        <div class="ctm-modal__subtitle">
+          {{ $t('modals.smallTemp') }}
+        </div>
+        <base-field
+          id="amountOfPercents_input"
+          :is-hide-error="true"
+          class="input"
+          :placeholder="'10 ETH'"
+        />
+      </div>
+      <div class="ctm-modal__content-field">
+        <label
+          for="amountOfWUSD_input"
+          class="ctm-modal__label"
+        >{{ $t('modals.enterTermToReturnDebtBack') }}</label>
+        <div class="ctm-modal__subtitle">
+          {{ $t('modals.smallTemp') }}
+        </div>
+        <base-field
+          id="amountOfWUSD_input"
+          :is-hide-error="true"
+          class="input"
+          :placeholder="'10 ETH'"
+        />
+        <div class="ctm-modal__title-head" />
+        <div class="ctm-modal__subtitle">
+          {{ $t('modals.tipAbout') }}
         </div>
       </div>
       <div class="ctm-modal__content-btns">
@@ -112,7 +110,7 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalCreditingDeposit',
+  name: 'ModalCreditingLoan',
   data() {
     return {
       selCurrencyID: 1,
@@ -169,7 +167,7 @@ export default {
     },
     openConfirmDetailsModal() {
       this.ShowModal({
-        key: modals.confirmDetails,
+        key: modals.confirmLoanDetails,
         needChangeModal: this.options.needChangeModal || undefined,
       });
     },
@@ -183,7 +181,7 @@ export default {
   @include modalKit;
 
   .addLiquidity {
-    max-width: 945px !important;
+    max-width: 490px !important;
     max-height: 80vh;
   }
   &__content-field,
@@ -223,20 +221,6 @@ export default {
         cursor: pointer;
       }
     }
-  }
-
-  &__gray-zone {
-    background-color: #F7F8FA;
-    border-radius: 5px;
-    margin-top: 15px;
-    padding: 0 20px 20px 20px;
-    height: fit-content;
-  }
-
-  &__grid-cont {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
   }
 
   &__content-btns {
@@ -301,26 +285,9 @@ export default {
       font-size: 14px;
     }
   }
-
-  @include _575 {
-    .ctm-modal {
-      &__grid-cont {
-        grid-template-rows: repeat(2, auto);
-        grid-template-columns: unset;
-        overflow: auto;
-        height: calc(80vh - 170px);
-      }
-      &__gray-zone {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin: 0;
-      }
-    }
-  }
 }
 
 .input {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 </style>

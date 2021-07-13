@@ -40,4 +40,6 @@ export default {
   transfer: 'transfer',
   changePassInSettings: 'changePassInSettings',
   twoFAAuth: 'twoFAAuth',
+  creditingLoan: 'creditingLoan',
+  confirmLoanDetails: 'confirmLoanDetails',
 };
