@@ -42,4 +42,5 @@ export default {
   twoFAAuth: 'twoFAAuth',
   signWorkQuest: 'signWorkQuest',
   securityCheck: 'securityCheck',
+  sharingQuest: 'sharingQuest',
 };

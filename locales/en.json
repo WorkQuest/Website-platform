@@ -813,5 +813,10 @@
   },
   "errors": {
     "incorrectPass" : "Oops, something went wrong. Check the data and try again."
+  },
+  "sharing": {
+    "title": "Sharing",
+    "socialText": "Share in socials",
+    "share": "Share link"
   }
  }

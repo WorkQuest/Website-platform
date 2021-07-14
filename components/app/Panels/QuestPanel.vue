@@ -53,7 +53,10 @@
             <span class="user__date">
               {{ quest.date }}
             </span>
-            <span class="icon-share_outline icon_fs-20" />
+            <button
+              class="icon-share_outline icon_fs-20"
+              @click="shareModal()"
+            />
           </div>
         </div>
         <div class="location__container">
@@ -113,6 +116,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'QuestPanel',
@@ -130,6 +134,11 @@ export default {
   methods: {
     showProfile() {
       this.$router.push('/show-profile');
+    },
+    shareModal() {
+      this.ShowModal({
+        key: modals.sharingQuest,
+      });
     },
   },
 };
