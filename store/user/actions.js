@@ -2,7 +2,9 @@ export default {
   async signIn({ commit, dispatch }, payload) {
     const response = await this.$axios.$post('/v1/auth/login', payload);
     commit('setNewTokens', response.result);
-    await dispatch('getUserData');
+    if (response.result.userStatus === 1) {
+      await dispatch('getUserData');
+    }
     return response;
   },
   async signUp({ commit }, payload) {
@@ -60,6 +62,16 @@ export default {
       },
     });
     commit('setImage', response.result);
+    return response;
+  },
+  async passwordSendCode({ commit }, payload) {
+    const response = await this.$axios.$post('/v1/restore-password/send-code', payload);
+    commit('setSendCode', response.result);
+    return response;
+  },
+  async passwordChange({ commit }, payload) {
+    const response = await this.$axios.$post('/v1/restore-password/set-password', payload);
+    commit('setUserPassword', response.result);
     return response;
   },
 };

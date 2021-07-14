@@ -81,19 +81,34 @@
           {{ $t('signIn.loginWith') }}
         </div>
         <div class="auth__icons">
-          <button class="auth__btn auth__btn_google">
+          <button
+            class="auth__btn auth__btn_google"
+            @click="redirectSocialLink('google')"
+          >
             <span class="icon-google" />
           </button>
-          <button class="auth__btn auth__btn_instagram">
+          <button
+            class="auth__btn auth__btn_instagram"
+            href="#"
+          >
             <span class="icon-instagram" />
           </button>
-          <button class="auth__btn auth__btn_twitter">
+          <button
+            class="auth__btn auth__btn_twitter"
+            @click="redirectSocialLink('twitter')"
+          >
             <span class="icon-twitter" />
           </button>
-          <button class="auth__btn auth__btn_facebook">
+          <button
+            class="auth__btn auth__btn_facebook"
+            @click="redirectSocialLink('facebook')"
+          >
             <span class="icon-facebook" />
           </button>
-          <button class="auth__btn auth__btn_LinkedIn">
+          <button
+            class="auth__btn auth__btn_LinkedIn"
+            @click="redirectSocialLink('linkedin')"
+          >
             <span class="icon-LinkedIn" />
           </button>
         </div>
@@ -138,6 +153,8 @@ export default {
             this.$router.push('/workers');
           } else if (this.userData.role === 'worker') {
             this.$router.push('/quests');
+          } else if (response.result.userStatus === 2) {
+            this.$router.push('/role');
           }
         }
         // if (response?.ok) {
@@ -150,6 +167,9 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    async redirectSocialLink(socialNetwork) {
+      window.location = `https://app-ver1.workquest.co/api/v1/auth/login/${socialNetwork}`;
     },
     showRestoreModal() {
       this.ShowModal({

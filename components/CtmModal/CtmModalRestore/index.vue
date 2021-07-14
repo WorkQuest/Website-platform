@@ -18,7 +18,7 @@
             {{ $t('forgot.desc') }}
           </div>
           <base-field
-            v-model="model.email"
+            v-model="emailInput"
             :name="$t('placeholders.email')"
             :placeholder="$t('placeholders.email')"
             rules="required|email"
@@ -42,9 +42,7 @@ export default {
   name: 'ModalRestore',
   data() {
     return {
-      model: {
-        email: '',
-      },
+      emailInput: '',
     };
   },
   computed: {
@@ -56,12 +54,21 @@ export default {
     hide() {
       this.CloseModal();
     },
-    restore() {
-      this.hide();
-      this.ShowModal({
-        key: modals.emailConfirm,
-      });
-      // this.$router.push('/restore');
+    async restore() {
+      const payload = {
+        email: this.emailInput,
+      };
+      try {
+        const response = await this.$store.dispatch('user/passwordSendCode', payload);
+        if (response?.ok) {
+          this.ShowModal({
+            key: modals.emailConfirm,
+          });
+        }
+      } catch (e) {
+        this.errorMsg = e;
+        console.log(e);
+      }
     },
   },
 };
