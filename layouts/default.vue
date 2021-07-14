@@ -415,12 +415,14 @@
                         id="userAvatarOne"
                         class="profile__img"
                         :src="imageData"
+                        alt=""
                       >
                       <img
                         v-if="!imageData"
                         id="userAvatar"
                         class="profile__img"
                         src="~/assets/img/app/avatar_empty.png"
+                        alt=""
                       >
                     </div>
                     <div class="user-container__user">
@@ -630,12 +632,20 @@
                 </div>
                 <div class="footer__right">
                   <div class="footer__links">
-                    <div class="footer__link">
+                    <a
+                      class="footer__link"
+                      href="/docs/terms.pdf"
+                      target="_blank"
+                    >
                       {{ $t('layout.links.terms') }}
-                    </div>
-                    <div class="footer__link">
+                    </a>
+                    <a
+                      class="footer__link"
+                      href="/docs/privacy.pdf"
+                      target="_blank"
+                    >
                       {{ $t('layout.links.privacy') }}
-                    </div>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -1536,6 +1546,7 @@ export default {
     line-height: 130%;
     color: $blue;
     cursor: pointer;
+    text-decoration: none;
   }
   &__logo {
     display: grid;
