@@ -54,6 +54,7 @@
       <CtmModalSignWorkQuest v-if="modals.signWorkQuest === currentModalKey" />
       <CtmModalSecurityCheck v-if="modals.securityCheck === currentModalKey" />
       <CtmModalSharing v-if="modals.sharingQuest === currentModalKey" />
+      <CtmModalCopiedSuccess v-if="modals.copiedSuccess === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -102,6 +103,7 @@ import CtmModalTwoFAAuth from './CtmModalTwoFAAuth';
 import CtmModalSignWorkQuest from './CtmModalSignWorkQuest';
 import CtmModalSecurityCheck from './CtmModalSecurityCheck';
 import CtmModalSharing from './CtmModalSharing';
+import CtmModalCopiedSuccess from './CtmModalCopiedSuccess';
 
 export default {
   name: 'ModalBox',
@@ -148,6 +150,7 @@ export default {
     CtmModalSignWorkQuest,
     CtmModalSecurityCheck,
     CtmModalSharing,
+    CtmModalCopiedSuccess,
   },
   data: () => ({
     modals,

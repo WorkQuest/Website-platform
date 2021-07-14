@@ -43,4 +43,5 @@ export default {
   signWorkQuest: 'signWorkQuest',
   securityCheck: 'securityCheck',
   sharingQuest: 'sharingQuest',
+  copiedSuccess: 'copiedSuccess',
 };

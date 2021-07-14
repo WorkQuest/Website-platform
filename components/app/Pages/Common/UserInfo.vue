@@ -38,8 +38,11 @@
       >
         {{ company || userInfo.company }}
       </div>
-      <div class="description">
-        {{ userRole === 'employer' ? userInfo.desc : userDesc }}
+      <div
+        v-if="userDesc"
+        class="description"
+      >
+        {{ userDesc }}
       </div>
       <div v-if="selected === 1 && userRole === 'worker' ">
         <div

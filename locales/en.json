@@ -238,7 +238,7 @@
     "proposal": "Proposal",
     "category": "Category",
     "address": "Address",
-    "runtime": "Runtime",
+    "runtime": "Runtime (hours)",
     "uploadQuestMaterials": "Upload quest materials",
     "price": "Price",
     "typeOfAd": "Type of advertisement",
@@ -389,7 +389,8 @@
     "saveCardForNextPayment": "Save card for next payment",
     "insureCase": "Insure case",
     "connectWallet": "Connect wallet",
-    "howMuchWusdWouldYouLikeToGenerate": "How much WUSD would you like to generate?"
+    "howMuchWusdWouldYouLikeToGenerate": "How much WUSD would you like to generate?",
+    "successCopied": "Wallet number has been copied"
   },
   "ui": {
     "workers": "Workers",
@@ -483,7 +484,7 @@
     "lastNameInput": "Vance",
     "addressInput": "Moscow, Lenina street, 2",
     "telInput": "+ 7 989 989 9823",
-    "socialInput": "@useruser",
+    "socialInput": "username",
     "save": "Save",
     "skills": "Skills:",
     "whoCanSee": "Who can see my profile?",

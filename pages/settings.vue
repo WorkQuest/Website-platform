@@ -851,6 +851,7 @@ export default {
           },
         };
       }
+      console.log(payload);
       try {
         await this.$store.dispatch('user/editUserData', payload);
         this.showModalSave();

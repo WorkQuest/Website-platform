@@ -45,7 +45,7 @@
       >
         <span class="icon-Earth" />
         <a
-          :href="'https://maps.google.com/?q=' + company"
+          :href="'https://' + company"
           target="_blank"
         ><span class="contact__link">{{ company }}</span></a>
       </span>
