@@ -14,7 +14,13 @@
           :label="$t('privacy.agree')"
         >
           <template v-slot:sub>
-            <span class="privacy__link">{{ $t('privacy.privacyLink') }}</span>
+            <a
+              class="privacy__link"
+              href="/docs/privacy.pdf"
+              target="_blank"
+            >
+              {{ $t('privacy.privacyLink') }}
+            </a>
           </template>
         </base-checkbox>
         <base-checkbox
@@ -23,7 +29,13 @@
           :label="$t('privacy.agree')"
         >
           <template v-slot:sub>
-            <span class="privacy__link">{{ $t('privacy.termsLink') }}</span>
+            <a
+              class="privacy__link"
+              href="/docs/terms.pdf"
+              target="_blank"
+            >
+              {{ $t('privacy.termsLink') }}
+            </a>
           </template>
         </base-checkbox>
         <base-checkbox
@@ -32,7 +44,13 @@
           :label="$t('privacy.agree')"
         >
           <template v-slot:sub>
-            <span class="privacy__link">{{ $t('privacy.amlLink') }}</span>
+            <a
+              class="privacy__link"
+              href="/docs/aml.pdf"
+              target="_blank"
+            >
+              {{ $t('privacy.amlLink') }}
+            </a>
           </template>
         </base-checkbox>
         <base-btn

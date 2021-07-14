@@ -5,8 +5,13 @@ export default async function ({ app, redirect, store }) {
     const refresh = app.$cookies.get('refresh');
     const userStatus = app.$cookies.get('userStatus');
     const userData = store.getters['user/getUserData'];
+    const payload = {
+      access,
+      refresh,
+      userData,
+    };
     if (access && refresh) {
-      store.commit('user/setOldTokens', { access, refresh });
+      store.commit('user/setTokens', payload);
     }
     if (!access || !refresh) {
       return redirect('/sign-in');

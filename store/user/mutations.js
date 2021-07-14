@@ -1,14 +1,7 @@
 /* eslint-disable no-param-reassign */
 
 export default {
-  setOldTokens(state, payload) {
-    state.tokens.access = payload.access;
-    state.tokens.refresh = payload.refresh;
-    this.$cookies.set('access', payload.access, { path: '/' });
-    this.$cookies.set('refresh', payload.refresh, { path: '/' });
-    this.$cookies.set('userStatus', payload.userStatus, { path: '/' });
-  },
-  setNewTokens(state, payload) {
+  setTokens(state, payload) {
     state.tokens.access = payload.access;
     state.tokens.refresh = payload.refresh;
     this.$cookies.set('access', payload.access, { path: '/' });
