@@ -28,7 +28,7 @@
         <label for="cardNumber_input">{{ $t('modals.numberOfCard') }}</label>
         <base-field
           id="cardNumber_input"
-          v-model="cardNumber_input"
+          v-model="cardNumber"
           :placeholder="'1234 1234 1234 1234'"
         />
       </div>
@@ -37,7 +37,7 @@
           <label for="date_input">{{ $t('modals.date') }}</label>
           <base-field
             id="date_input"
-            v-model="date_input"
+            v-model="date"
             :placeholder="'02/24'"
           />
         </div>
@@ -45,7 +45,7 @@
           <label for="cvv_input">{{ $t('modals.cvv') }}</label>
           <base-field
             id="cvv_input"
-            v-model="cvv_input"
+            v-model="cvv"
             :placeholder="'242'"
           />
         </div>
@@ -85,9 +85,9 @@ export default {
   name: 'ModalWithdraw',
   data() {
     return {
-      date_input: '',
-      balance_input: '',
-      cardNumber_input: '',
+      date: '',
+      balance: '',
+      cardNumber: '',
     };
   },
   computed: {

@@ -167,6 +167,7 @@
   "securityCheck": {
     "title": "Security check",
     "confCode": "Google confirmation code",
+    "placeholder": "Placeholder",
     "confCodeDesc": "Enter the 6-digit code from the Google Authentication app"
   },
   "signUp": {

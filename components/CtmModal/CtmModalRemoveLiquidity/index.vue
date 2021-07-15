@@ -8,11 +8,11 @@
         <div>
           <div class="ctm-modal__content-field">
             <label
-              for="withdrawalAmount_input"
+              for="withdrawalAmount"
               class="ctm-modal__label"
             >{{ $t('modals.withdrawalAmount') }}</label>
             <base-field
-              id="withdrawalAmount_input"
+              id="withdrawalAmount"
               :is-hide-error="true"
               :placeholder="'1000 WUSD'"
             />

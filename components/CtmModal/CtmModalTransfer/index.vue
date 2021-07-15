@@ -5,10 +5,10 @@
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
-        <label for="date_input">{{ $t('modals.address') }}</label>
+        <label for="date">{{ $t('modals.address') }}</label>
         <base-field
-          id="date_input"
-          v-model="date_input"
+          id="date"
+          v-model="date"
           :placeholder="'0 WUSD'"
         />
       </div>
@@ -19,10 +19,10 @@
         :items="items"
       />
       <div class="ctm-modal__content-field">
-        <label for="cardNumber_input">{{ $t('modals.amount') }}</label>
+        <label for="cardNumber">{{ $t('modals.amount') }}</label>
         <base-field
-          id="cardNumber_input"
-          v-model="cardNumber_input"
+          id="cardNumber"
+          v-model="cardNumber"
           :placeholder="'1234 1234 1234 1234'"
         />
       </div>
@@ -57,9 +57,9 @@ export default {
   name: 'ModalTransfer',
   data() {
     return {
-      date_input: '',
-      balance_input: '',
-      cardNumber_input: '',
+      date: '',
+      balance: '',
+      cardNumber: '',
       items: ['1234 1234 1234 1234'],
     };
   },

@@ -195,12 +195,12 @@
           </div>
           <div class="ctm-modal__content-field">
             <label
-              for="confirmEmailCode_input"
+              for="confirmEmailCode"
               class="ctm-modal__label"
             >{{ $t('modals.conformationCodeFromMail') }}</label>
             <base-field
-              id="confirmEmailCode_input"
-              v-model="confirmEmailCode_input"
+              id="confirmEmailCode"
+              v-model="confirmEmailCode"
               :is-hide-error="true"
               :placeholder="$t('modals.conformationCodeFromMail')"
               mode="icon"
@@ -208,12 +208,12 @@
           </div>
           <div class="ctm-modal__content-field">
             <label
-              for="twoFACode_input_input"
+              for="twoFACode"
               class="ctm-modal__label"
             >{{ $t('modals.twoFAConfirmationCode') }}</label>
             <base-field
-              id="twoFACode_input_input"
-              v-model="twoFACode_input"
+              id="twoFACode"
+              v-model="twoFACode"
               :is-hide-error="true"
               :placeholder="$t('modals.twoFAConfirmationCode')"
               mode="icon"
@@ -303,8 +303,8 @@ export default {
   data() {
     return {
       step: 1,
-      confirmEmailCode_input: '',
-      twoFACode_input: '',
+      confirmEmailCode: '',
+      twoFACode: '',
       code: 'GA4HUMTLLBOXIXSASH',
     };
   },

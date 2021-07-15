@@ -12,9 +12,9 @@
           {{ $t('securityCheck.confCode') }}
         </div>
         <base-field
-          v-model="securityCode_input"
+          v-model="securityCode"
           :is-hide-error="true"
-          :placeholder="'Placeholder'"
+          :placeholder="$t('securityCheck.placeholder')"
           mode="icon"
         />
         <div class="ctm-modal__content-inputDesc">
@@ -41,7 +41,7 @@ export default {
   name: 'ModalOpenADeposit',
   data() {
     return {
-      securityCode_input: '',
+      securityCode: '',
       errorMsg: '',
     };
   },

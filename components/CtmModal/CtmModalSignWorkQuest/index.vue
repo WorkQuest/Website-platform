@@ -12,7 +12,7 @@
       </div>
       <div class="ctm-modal__content-field">
         <base-field
-          v-model="userName_input"
+          v-model="userName"
           :is-hide-error="true"
           :placeholder="'DAO username'"
           mode="icon"
@@ -24,7 +24,7 @@
       </div>
       <div class="ctm-modal__content-field">
         <base-field
-          v-model="userPassword_input"
+          v-model="userPassword"
           :is-hide-error="true"
           :placeholder="'DAO password'"
           mode="icon"
@@ -55,8 +55,8 @@ export default {
   name: 'ModalOpenADeposit',
   data() {
     return {
-      userName_input: '',
-      userPassword_input: '',
+      userName: '',
+      userPassword: '',
       errorMsg: '',
     };
   },
