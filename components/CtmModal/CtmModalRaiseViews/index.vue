@@ -5,22 +5,22 @@
   >
     <div class="ctm-modal__content">
       <div class="grid__1col">
-        <label for="priceOfAClick">{{ $t('modals.priceOfAClick') }}</label>
         <base-field
           id="priceOfAClick"
           v-model="priceOfAClick"
+          :label="$t('modals.priceOfAClick')"
           :placeholder="'230 WUSD'"
         />
-        <label for="city">{{ $t('modals.city') }}</label>
         <base-field
           id="city"
           v-model="city"
+          :label="$t('modals.city')"
           :placeholder="'Moscow'"
         />
-        <label for="period">{{ $t('modals.period') }}</label>
         <base-field
           id="period"
           v-model="period"
+          :label="$t('modals.period')"
           :placeholder="'Week'"
         />
       </div>

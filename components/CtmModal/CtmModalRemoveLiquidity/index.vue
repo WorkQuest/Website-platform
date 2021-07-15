@@ -7,13 +7,10 @@
       <div class="ctm-modal__grid-cont">
         <div>
           <div class="ctm-modal__content-field">
-            <label
-              for="withdrawalAmount"
-              class="ctm-modal__label"
-            >{{ $t('modals.withdrawalAmount') }}</label>
             <base-field
               id="withdrawalAmount"
               :is-hide-error="true"
+              :label="$t('modals.withdrawalAmount')"
               :placeholder="'1000 WUSD'"
             />
           </div>

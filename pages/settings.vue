@@ -92,7 +92,7 @@
               <span class="icon-check_all_big" />
             </span>
             <div>
-              <div class="profile__row-2col">
+              <div class="profile__row-data">
                 <base-field
                   v-if="firstName"
                   v-model="localUserData.firstName"
@@ -114,7 +114,7 @@
                   </template>
                 </base-field>
               </div>
-              <div class="profile__row-2col">
+              <div class="profile__row-data">
                 <VuePhoneNumberInput
                   v-model="localUserData.additionalInfo.firstMobileNumber"
                   class="Phone"
@@ -1367,7 +1367,7 @@ export default {
     margin: 0 20px 0 20px;
     width: 100%;
   }
-  &__row-2col {
+  &__row-data {
     @extend .profile;
     grid-template-columns: repeat(2, 1fr);
     width: 100%;
@@ -1717,7 +1717,7 @@ export default {
 
 @include _575 {
   .profile {
-    &__row-2col {
+    &__row-data {
       grid-template-columns: 1fr;
       grid-gap: 20px;
     }

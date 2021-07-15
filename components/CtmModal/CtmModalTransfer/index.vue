@@ -5,24 +5,24 @@
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
-        <label for="date">{{ $t('modals.address') }}</label>
         <base-field
           id="date"
           v-model="date"
+          :label="$t('modals.address')"
           :placeholder="'0 WUSD'"
         />
       </div>
-      <label for="value_dd">{{ $t('modals.value') }}</label>
       <base-dd
         id="value_dd"
         type="gray"
+        :label="$t('modals.value')"
         :items="items"
       />
       <div class="ctm-modal__content-field">
-        <label for="cardNumber">{{ $t('modals.amount') }}</label>
         <base-field
           id="cardNumber"
           v-model="cardNumber"
+          :label="$t('modals.amount')"
           :placeholder="'1234 1234 1234 1234'"
         />
       </div>

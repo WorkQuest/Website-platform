@@ -6,9 +6,9 @@
     <div class="ctm-modal__content">
       <div class="grid__3col">
         <div class="ctm-modal__content-field">
-          <label for="amount_input">{{ $t('modals.amount') }}</label>
           <base-field
             id="amount_input"
+            :label="$t('modals.amount')"
             :is-hide-error="true"
             :placeholder="'0 WDX'"
           />
@@ -25,27 +25,27 @@
         </div>
       </div>
       <div class="ctm-modal__content-field">
-        <label for="cardNumber_input">{{ $t('modals.numberOfCard') }}</label>
         <base-field
           id="cardNumber_input"
           v-model="cardNumber"
+          :label="$t('modals.numberOfCard')"
           :placeholder="'1234 1234 1234 1234'"
         />
       </div>
       <div class="ctm-modal__content-field_couple">
         <div>
-          <label for="date_input">{{ $t('modals.date') }}</label>
           <base-field
             id="date_input"
             v-model="date"
+            :label="$t('modals.date')"
             :placeholder="'02/24'"
           />
         </div>
         <div>
-          <label for="cvv_input">{{ $t('modals.cvv') }}</label>
           <base-field
             id="cvv_input"
             v-model="cvv"
+            :label="$t('modals.cvv')"
             :placeholder="'242'"
           />
         </div>

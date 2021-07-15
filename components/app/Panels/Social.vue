@@ -5,7 +5,7 @@
       <a
         v-if="userFacebook"
         class="social__link"
-        :href="this.$route.path === '/workers/1' ? 'https://facebook.com/' : 'https://facebook.com/' + userFacebook || ''"
+        :href="socialURL('facebook')"
         target="_blank"
       >
         <span
@@ -15,7 +15,7 @@
       <a
         v-if="userTwitter"
         class="social__link"
-        :href="this.$route.path === '/workers/1' ? 'https://twitter.com/' : 'https://twitter.com/' + userTwitter || ''"
+        :href="socialURL('twitter')"
         target="_blank"
       >
         <span
@@ -25,7 +25,7 @@
       <a
         v-if="userInstagram"
         class="social__link"
-        :href="this.$route.path === '/workers/1' ? 'https://www.instagram.com/' : 'https://www.instagram.com/' + userInstagram || ''"
+        :href="socialURL('instagram')"
         target="_blank"
       >
         <span
@@ -35,7 +35,7 @@
       <a
         v-if="userLinkedin"
         class="social__link"
-        :href="this.$route.path === '/workers/1' ? 'https://linkedin.com/' : 'https://linkedin.com/' + userLinkedin || ''"
+        :href="socialURL('linkedin')"
         target="_blank"
       >
         <span
@@ -59,6 +59,32 @@ export default {
       userLinkedin: 'user/getUserLinkedin',
       userFacebook: 'user/getUserFacebook',
     }),
+  },
+  methods: {
+    socialURL(socialNetwork) {
+      let socialPath = '';
+      if (this.$route.path === '/workers/1') {
+        socialPath = `https://${socialNetwork}.com/`;
+      } else {
+        switch (socialNetwork) {
+          case 'facebook':
+            socialPath = `https://${socialNetwork}.com/${this.userFacebook}` || '';
+            break;
+          case 'twitter':
+            socialPath = `https://${socialNetwork}.com/${this.userTwitter}` || '';
+            break;
+          case 'instagram':
+            socialPath = `https://${socialNetwork}.com/${this.userInstagram}` || '';
+            break;
+          case 'linkedin':
+            socialPath = `https://${socialNetwork}.com/${this.userLinkedin}` || '';
+            break;
+          default:
+            socialPath = '#';
+        }
+      }
+      return socialPath;
+    },
   },
 };
 </script>
