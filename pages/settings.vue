@@ -33,6 +33,7 @@
                 <img
                   class="higher-level__img"
                   src="~/assets/img/ui/settingsHigherLevel.svg"
+                  alt=""
                 >
                 <button @click="isCloseInfo()">
                   <span
@@ -824,6 +825,7 @@ export default {
       this.localUserData.additionalInfo.firstMobileNumber = this.updatedPhone.formatInternational;
       let payload = {};
       const checkAvatarID = this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : this.userData.avatarId;
+      this.localUserData.additionalInfo = this.removeEmpty(this.localUserData.additionalInfo);
       if (this.userRole === 'employer') {
         payload = {
           ...this.localUserData,
@@ -851,13 +853,32 @@ export default {
           },
         };
       }
-      console.log(payload);
       try {
         await this.$store.dispatch('user/editUserData', payload);
         this.showModalSave();
       } catch (e) {
         console.log(e);
       }
+    },
+    removeEmpty(obj) {
+      const newObj = {};
+      Object.entries(obj).forEach(([k, v]) => {
+        if (v === '') {
+          newObj[k] = null;
+        } else {
+          newObj[k] = obj[k];
+        }
+        if (typeof v === 'object') {
+          Object.entries(v).forEach(([k1, v1]) => {
+            if (v1 === '') {
+              newObj[k][k1] = null;
+            } else {
+              newObj[k][k1] = v[k1];
+            }
+          });
+        }
+      });
+      return newObj;
     },
   },
 };

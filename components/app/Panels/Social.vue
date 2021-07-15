@@ -5,7 +5,7 @@
       <a
         v-if="userFacebook"
         class="social__link"
-        :href="'https://facebook.com/' + userFacebook || ''"
+        :href="this.$route.path === '/workers/1' ? 'https://facebook.com/' : 'https://facebook.com/' + userFacebook || ''"
         target="_blank"
       >
         <span
@@ -15,7 +15,7 @@
       <a
         v-if="userTwitter"
         class="social__link"
-        :href="'https://twitter.com/' + userTwitter || ''"
+        :href="this.$route.path === '/workers/1' ? 'https://twitter.com/' : 'https://twitter.com/' + userTwitter || ''"
         target="_blank"
       >
         <span
@@ -25,7 +25,7 @@
       <a
         v-if="userInstagram"
         class="social__link"
-        :href="'https://www.instagram.com/' + userInstagram || ''"
+        :href="this.$route.path === '/workers/1' ? 'https://www.instagram.com/' : 'https://www.instagram.com/' + userInstagram || ''"
         target="_blank"
       >
         <span
@@ -35,7 +35,7 @@
       <a
         v-if="userLinkedin"
         class="social__link"
-        :href="'https://linkedin.com/' + userLinkedin || ''"
+        :href="this.$route.path === '/workers/1' ? 'https://linkedin.com/' : 'https://linkedin.com/' + userLinkedin || ''"
         target="_blank"
       >
         <span
