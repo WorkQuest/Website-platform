@@ -1716,6 +1716,12 @@ export default {
 }
 
 @include _575 {
+  .profile {
+    &__row-2col {
+      grid-template-columns: 1fr;
+      grid-gap: 20px;
+    }
+  }
   .avatar {
     &__row {
       grid-template-columns: 1fr;
