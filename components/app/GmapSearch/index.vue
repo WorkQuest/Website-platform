@@ -142,14 +142,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.map__container {
-  display: flex;
-  justify-content: center;
-  .gmap__block {
-    width: 100%;
-    max-width: 1180px;
-  }
-}
 .map__container::v-deep {
   .GMap__Wrapper {
     height: 435px;
@@ -170,7 +162,7 @@ export default {
   }
   &__search {
     position: relative;
-    max-width: 1040px;
+    max-width: 1180px;
     height: 83px;
     bottom: 100px;
     left: 0;
