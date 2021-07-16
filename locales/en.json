@@ -160,6 +160,16 @@
     "signUp": "Sign Up",
     "forgotYourPass": "Forgot your password?"
   },
+  "signWorkQuest": {
+    "title": "WorkQuest social network",
+    "description": "You can use your WorkQuest DAO login and password to sign in"
+  },
+  "securityCheck": {
+    "title": "Security check",
+    "confCode": "Google confirmation code",
+    "placeholder": "Placeholder",
+    "confCodeDesc": "Enter the 6-digit code from the Google Authentication app"
+  },
   "signUp": {
     "title": "Sign Up",
     "haveAccount": "Already have an account?",
@@ -229,7 +239,7 @@
     "proposal": "Proposal",
     "category": "Category",
     "address": "Address",
-    "runtime": "Runtime",
+    "runtime": "Runtime (hours)",
     "uploadQuestMaterials": "Upload quest materials",
     "price": "Price",
     "typeOfAd": "Type of advertisement",
@@ -391,7 +401,8 @@
     "loan": "Loan",
     "percentage": "Percentage",
     "loanTerm": "Loan term",
-    "loanIsOpened": "Loan is opened"
+    "loanIsOpened": "Loan is opened",
+    "successCopied": "Wallet number has been copied"
   },
   "ui": {
     "workers": "Workers",
@@ -456,6 +467,7 @@
     "starredMessage": "Starred Message",
     "starredChats": "Starred chats",
     "createGroupChat": "Create group chat",
+    "favorite": "Favorite",
     "messages": "Messages",
     "chat": "Chat",
     "quest": "Quest:",
@@ -485,7 +497,7 @@
     "lastNameInput": "Vance",
     "addressInput": "Moscow, Lenina street, 2",
     "telInput": "+ 7 989 989 9823",
-    "socialInput": "@useruser",
+    "socialInput": "username",
     "save": "Save",
     "skills": "Skills:",
     "whoCanSee": "Who can see my profile?",
@@ -823,5 +835,10 @@
   },
   "errors": {
     "incorrectPass" : "Oops, something went wrong. Check the data and try again."
+  },
+  "sharing": {
+    "title": "Sharing",
+    "socialText": "Share in socials",
+    "share": "Share link"
   }
  }

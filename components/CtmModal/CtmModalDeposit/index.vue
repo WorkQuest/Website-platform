@@ -116,6 +116,7 @@
                 v-clipboard:success="ClipboardSuccessHandler"
                 v-clipboard:error="ClipboardErrorHandler"
                 type="button"
+                @click="showSuccessCopied()"
               >
                 <span class="icon-copy" />
               </button>
@@ -202,6 +203,11 @@ export default {
     nextStep() {
       // eslint-disable-next-line no-plusplus
       this.step++;
+    },
+    showSuccessCopied() {
+      this.ShowModal({
+        key: modals.copiedSuccess,
+      });
     },
     showTransactionSendModal() {
       this.ShowModal({

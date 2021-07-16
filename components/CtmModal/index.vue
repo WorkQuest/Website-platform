@@ -51,6 +51,10 @@
       <CtmModalTransfer v-if="modals.transfer === currentModalKey" />
       <CtmModalChangePassInSettings v-if="modals.changePassInSettings === currentModalKey" />
       <CtmModalTwoFAAuth v-if="modals.twoFAAuth === currentModalKey" />
+      <CtmModalSignWorkQuest v-if="modals.signWorkQuest === currentModalKey" />
+      <CtmModalSecurityCheck v-if="modals.securityCheck === currentModalKey" />
+      <CtmModalSharing v-if="modals.sharingQuest === currentModalKey" />
+      <CtmModalCopiedSuccess v-if="modals.copiedSuccess === currentModalKey" />
       <CtmModalCreditingLoan v-if="modals.creditingLoan === currentModalKey" />
       <CtmModalConfirmLoanDetails v-if="modals.confirmLoanDetails === currentModalKey" />
     </div>
@@ -100,6 +104,10 @@ import CtmModalChangePassInSettings from './CtmModalChangePassInSettings';
 import CtmModalTwoFAAuth from './CtmModalTwoFAAuth';
 import CtmModalCreditingLoan from './CtmModalCreditingLoan';
 import CtmModalConfirmLoanDetails from './CtmModalConfirmLoanDetails';
+import CtmModalSignWorkQuest from './CtmModalSignWorkQuest';
+import CtmModalSecurityCheck from './CtmModalSecurityCheck';
+import CtmModalSharing from './CtmModalSharing';
+import CtmModalCopiedSuccess from './CtmModalCopiedSuccess';
 
 export default {
   name: 'ModalBox',
@@ -145,6 +153,10 @@ export default {
     CtmModalTwoFAAuth,
     CtmModalCreditingLoan,
     CtmModalConfirmLoanDetails,
+    CtmModalSignWorkQuest,
+    CtmModalSecurityCheck,
+    CtmModalSharing,
+    CtmModalCopiedSuccess,
   },
   data: () => ({
     modals,

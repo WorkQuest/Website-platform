@@ -5,22 +5,22 @@
   >
     <div class="ctm-modal__content">
       <div class="grid__1col">
-        <label for="priceOfAClick_input">{{ $t('modals.priceOfAClick') }}</label>
         <base-field
-          id="priceOfAClick_input"
-          v-model="priceOfAClick_input"
+          id="priceOfAClick"
+          v-model="priceOfAClick"
+          :label="$t('modals.priceOfAClick')"
           :placeholder="'230 WUSD'"
         />
-        <label for="city_input">{{ $t('modals.city') }}</label>
         <base-field
-          id="city_input"
-          v-model="city_input"
+          id="city"
+          v-model="city"
+          :label="$t('modals.city')"
           :placeholder="'Moscow'"
         />
-        <label for="period_input">{{ $t('modals.period') }}</label>
         <base-field
-          id="period_input"
-          v-model="period_input"
+          id="period"
+          v-model="period"
+          :label="$t('modals.period')"
           :placeholder="'Week'"
         />
       </div>
@@ -62,9 +62,9 @@ export default {
   name: 'ModalRaiseViews',
   data() {
     return {
-      priceOfAClick_input: '',
-      city_input: '',
-      period_input: '',
+      priceOfAClick: '',
+      city: '',
+      period: '',
     };
   },
   computed: {

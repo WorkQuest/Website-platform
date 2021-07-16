@@ -40,6 +40,10 @@ export default {
   transfer: 'transfer',
   changePassInSettings: 'changePassInSettings',
   twoFAAuth: 'twoFAAuth',
+  signWorkQuest: 'signWorkQuest',
+  securityCheck: 'securityCheck',
+  sharingQuest: 'sharingQuest',
+  copiedSuccess: 'copiedSuccess',
   creditingLoan: 'creditingLoan',
   confirmLoanDetails: 'confirmLoanDetails',
 };

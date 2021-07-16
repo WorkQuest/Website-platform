@@ -14,7 +14,7 @@
         >{{ $t('modals.currentPercent') }}</label>
         <base-field
           id="currPerc_input"
-          v-model="amount_input"
+          v-model="amount"
           :is-hide-error="true"
           :placeholder="'15%'"
         />
@@ -47,7 +47,7 @@ export default {
   name: 'ModalApplyForAPension',
   data() {
     return {
-      amount_input: '',
+      amount: '',
     };
   },
   computed: {

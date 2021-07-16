@@ -82,16 +82,19 @@
         </div>
         <div class="auth__icons">
           <button
+            class="auth__btn auth__btn_workQuest"
+            @click="showSignWorkQuest()"
+          >
+            <img
+              src="~assets/img/app/logo.svg"
+              alt="WorkQuest"
+            >
+          </button>
+          <button
             class="auth__btn auth__btn_google"
             @click="redirectSocialLink('google')"
           >
             <span class="icon-google" />
-          </button>
-          <button
-            class="auth__btn auth__btn_instagram"
-            href="#"
-          >
-            <span class="icon-instagram" />
           </button>
           <button
             class="auth__btn auth__btn_twitter"
@@ -174,6 +177,11 @@ export default {
     showRestoreModal() {
       this.ShowModal({
         key: modals.restore,
+      });
+    },
+    showSignWorkQuest() {
+      this.ShowModal({
+        key: modals.signWorkQuest,
       });
     },
   },
@@ -296,6 +304,11 @@ export default {
       span:before {
         font-size: 18px;
         color: #0A7EEA;
+      }
+    }
+    &_workQuest {
+      img {
+        width: 60%;
       }
     }
   }
