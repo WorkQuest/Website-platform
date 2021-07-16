@@ -6,10 +6,14 @@
     <div class="ctm-modal__content">
       <div class="messageSend">
         <div
-          id="skill"
+          id="container"
           class="messageSend__content"
         >
-          <div class="skill">
+          <div
+            id="skill"
+            slot="skill"
+            class="skill"
+          >
             <div>
               <base-dd
                 type="gray"
@@ -19,9 +23,17 @@
             <div>
               <base-btn
                 :mode="'grey'"
+                @click="addSkill()"
               >
                 <template :v-slot="right">
-                  <span class="icon-plus" />
+                  <span
+                    v-if="added"
+                    class="icon-close_big"
+                  />
+                  <span
+                    v-if="!added"
+                    class="icon-plus"
+                  />
                 </template>
               </base-btn>
             </div>
@@ -59,6 +71,7 @@ export default {
   data() {
     return {
       codeInput: '',
+      added: false,
       items: [
         this.$t('modals.paintingWork'),
         this.$t('modals.art'),
@@ -68,12 +81,15 @@ export default {
     };
   },
   methods: {
-    // addSkill() {
-    //   document.querySelector('.btn__apply').addEventListener('click', () => {
-    //     document.querySelector('.skill').appendChild(document.querySelector('.skill').cloneNode(true));
-    //     // document.querySelector('.btn__apply').style.display = '';
-    //   });
-    // },
+    addSkill() {
+      const container = document.querySelector('#container');
+      const before = document.querySelector('#skill');
+      const clonedNode = document.getElementById('skill').cloneNode(true);
+      console.log(clonedNode.slot);
+      this.added = true;
+      container.insertBefore(clonedNode, before);
+    },
+
     hide() {
       this.CloseModal();
     },
