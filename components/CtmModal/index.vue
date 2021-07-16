@@ -55,6 +55,8 @@
       <CtmModalSecurityCheck v-if="modals.securityCheck === currentModalKey" />
       <CtmModalSharing v-if="modals.sharingQuest === currentModalKey" />
       <CtmModalCopiedSuccess v-if="modals.copiedSuccess === currentModalKey" />
+      <CtmModalCreditingLoan v-if="modals.creditingLoan === currentModalKey" />
+      <CtmModalConfirmLoanDetails v-if="modals.confirmLoanDetails === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -100,6 +102,8 @@ import CtmModalNotice from './CtmModalNotice';
 import CtmModalTransfer from './CtmModalTransfer';
 import CtmModalChangePassInSettings from './CtmModalChangePassInSettings';
 import CtmModalTwoFAAuth from './CtmModalTwoFAAuth';
+import CtmModalCreditingLoan from './CtmModalCreditingLoan';
+import CtmModalConfirmLoanDetails from './CtmModalConfirmLoanDetails';
 import CtmModalSignWorkQuest from './CtmModalSignWorkQuest';
 import CtmModalSecurityCheck from './CtmModalSecurityCheck';
 import CtmModalSharing from './CtmModalSharing';
@@ -147,6 +151,8 @@ export default {
     CtmModalTransfer,
     CtmModalChangePassInSettings,
     CtmModalTwoFAAuth,
+    CtmModalCreditingLoan,
+    CtmModalConfirmLoanDetails,
     CtmModalSignWorkQuest,
     CtmModalSecurityCheck,
     CtmModalSharing,

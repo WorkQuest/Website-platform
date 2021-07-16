@@ -44,4 +44,6 @@ export default {
   securityCheck: 'securityCheck',
   sharingQuest: 'sharingQuest',
   copiedSuccess: 'copiedSuccess',
+  creditingLoan: 'creditingLoan',
+  confirmLoanDetails: 'confirmLoanDetails',
 };
