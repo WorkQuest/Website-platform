@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="addLiquidity"
-    :title="$t('modals.deposit')"
+    :title="$t('modals.loan')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__checkpoints">
