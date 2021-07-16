@@ -198,6 +198,7 @@ export default {
 
     &_mar5 {
       margin-bottom: 5px;
+      height: unset;
     }
 
     &_sub {
@@ -205,6 +206,7 @@ export default {
       color: #7C838D !important;
       font-weight: 400;
       font-size: 16px;
+      height: unset;
     }
   }
   &__err {
