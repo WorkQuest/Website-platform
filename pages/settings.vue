@@ -663,7 +663,6 @@ export default {
       this.localUserData.additionalInfo.address = this.address;
       this.addresses = [];
       this.address = address.formatted;
-      console.log(address);
     },
     async getAddressInfo(address) {
       let response = [];
@@ -825,13 +824,16 @@ export default {
       this.localUserData.additionalInfo.firstMobileNumber = this.updatedPhone.formatInternational;
       let payload = {};
       const checkAvatarID = this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : this.userData.avatarId;
-      this.localUserData.additionalInfo = this.removeEmpty(this.localUserData.additionalInfo);
+      const additionalInfo = {
+        ...this.filterEmpty(this.localUserData.additionalInfo),
+        socialNetwork: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork),
+      };
       if (this.userRole === 'employer') {
         payload = {
           ...this.localUserData,
           avatarId: checkAvatarID,
           additionalInfo: {
-            ...this.localUserData.additionalInfo,
+            ...additionalInfo,
             ...{
               educations: undefined,
               workExperiences: undefined,
@@ -844,7 +846,7 @@ export default {
           ...this.localUserData,
           avatarId: checkAvatarID,
           additionalInfo: {
-            ...this.localUserData.additionalInfo,
+            ...additionalInfo,
             ...{
               company: undefined,
               CEO: undefined,
@@ -860,25 +862,14 @@ export default {
         console.log(e);
       }
     },
-    removeEmpty(obj) {
-      const newObj = {};
-      Object.entries(obj).forEach(([k, v]) => {
-        if (v === '') {
-          newObj[k] = null;
-        } else {
-          newObj[k] = obj[k];
+    filterEmpty(obj) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const key of Object.keys(obj)) {
+        if (obj[key] === '') {
+          obj[key] = null;
         }
-        if (typeof v === 'object') {
-          Object.entries(v).forEach(([k1, v1]) => {
-            if (v1 === '') {
-              newObj[k][k1] = null;
-            } else {
-              newObj[k][k1] = v[k1];
-            }
-          });
-        }
-      });
-      return newObj;
+      }
+      return obj;
     },
   },
 };

@@ -68,6 +68,9 @@ import ChatMenu from '~/components/ui/ChatMenu';
 
 export default {
   name: 'Messages',
+  components: {
+    ChatMenu,
+  },
   computed: {
     ...mapGetters({
       messages: 'data/getMessages',
@@ -245,10 +248,10 @@ export default {
     max-height: 852px;
   }
   &__cards {
-    overflow-y: scroll;
+    overflow-y: hidden;
     height: 100%;
     width: 100%;
-    max-height: 778px;
+    max-height: 745px;
   }
   &__card {
     border: 1px solid #E9EDF2;
