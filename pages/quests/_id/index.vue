@@ -460,7 +460,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .gallery {
   &__image {
     border-radius: 6px;
