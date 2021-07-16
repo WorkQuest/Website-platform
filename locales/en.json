@@ -134,7 +134,10 @@
     "showAllReviews": "Show all reviews",
     "later": "Later",
     "iAgree": "I agree",
-    "next": "Next"
+    "next": "Next",
+    "continue": "Continue",
+    "change": "Change",
+    "apply": "Apply"
   },
   "priority": {
     "title": "Priority",
@@ -280,6 +283,13 @@
     "startQuest": "Start quest"
   },
   "modals": {
+    "chooseSkills": "Choose necessary skills",
+    "securityCheck": "Security check",
+    "googleConfCode": "Google confirmation code",
+    "enterCode": "Enter the 6-digit code from the Google Authentication app",
+    "warning": "Warning",
+    "pleaseDescribe": "Please describe the reason to change the role",
+    "ifYouChangeRole": "If you change role now, you can change this only one month later. Do you want to continue?",
     "toYourEmail": "To your email address",
     "codeHasBeenSent": "code has been sent",
     "switchOnGoogleAuth": "Switch on Google Authenticator",

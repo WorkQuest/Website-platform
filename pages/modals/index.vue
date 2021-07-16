@@ -1,5 +1,27 @@
 <template>
   <div class="container">
+    <h2>New Modals</h2>
+    <base-btn
+      @click="modalChooseNecessarySkills()"
+    >
+      showModalChooseNecessarySkills
+    </base-btn>
+    <base-btn
+      @click="modalChangeRoleSecure()"
+    >
+      showModalChangeRoleSecure
+    </base-btn>
+    <base-btn
+      @click="modalChangeRoleReason()"
+    >
+      showModalChangeRoleReason
+    </base-btn>
+    <base-btn
+      @click="modalChangeRoleWarning()"
+    >
+      showModalChangeRoleWarning
+    </base-btn>
+    <h2>Old Modals</h2>
     <base-btn
       @click="ModalTwoFAAuth()"
     >
@@ -161,6 +183,26 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    modalChooseNecessarySkills() {
+      this.ShowModal({
+        key: modals.chooseNecessarySkills,
+      });
+    },
+    modalChangeRoleSecure() {
+      this.ShowModal({
+        key: modals.changeRoleSecureCheck,
+      });
+    },
+    modalChangeRoleReason() {
+      this.ShowModal({
+        key: modals.changeRoleReason,
+      });
+    },
+    modalChangeRoleWarning() {
+      this.ShowModal({
+        key: modals.changeRoleWarning,
+      });
+    },
     ModalTwoFAAuth() {
       this.ShowModal({
         key: modals.twoFAAuth,

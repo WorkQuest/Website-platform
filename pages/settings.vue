@@ -395,9 +395,12 @@
             </div>
           </div>
           <div class="btn__container">
-            <div class="btn__plus">
+            <button
+              class="btn__plus"
+              @click="chooseNecessarySkills()"
+            >
               <span class="icon-plus_circle" />
-            </div>
+            </button>
           </div>
         </div>
       </div>
@@ -658,6 +661,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    chooseNecessarySkills() {
+      this.ShowModal({
+        key: modals.chooseNecessarySkills,
+      });
+    },
     selectAddress(address) {
       this.localUserData.additionalInfo.address = this.address;
       this.addresses = [];
@@ -788,14 +796,17 @@ export default {
       this.$router.push('/sms-verification');
     },
     async changeRole() {
-      try {
-        const response = await this.$store.dispatch('user/setUserRole');
-        if (response?.ok) {
-          console.log('good response');
-        }
-      } catch (e) {
-        console.log(e);
-      }
+      this.ShowModal({
+        key: modals.changeRoleWarning,
+      });
+      // try {
+      //   const response = await this.$store.dispatch('user/setUserRole');
+      //   if (response?.ok) {
+      //     console.log('good response');
+      //   }
+      // } catch (e) {
+      //   console.log(e);
+      // }
     },
     async changePassword() {
       try {
@@ -1028,6 +1039,10 @@ export default {
     justify-content: flex-end;
     align-items: center;
     display: flex;
+    transition: .5s;
+    &:hover {
+      transform: scale(1.08);
+    }
   }
 }
 .icon {
