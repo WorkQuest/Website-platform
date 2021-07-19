@@ -10,34 +10,45 @@
           class="messageSend__content"
         >
           <div
+            v-for="(skill, i) in skills"
             id="skill"
-            slot="skill"
+            :key="i"
             class="skill"
           >
             <div>
               <base-dd
+                v-model="skill.value"
                 type="gray"
-                :items="items"
+                :items="ddList"
+                :placeholder="skill.value"
               />
             </div>
             <div>
               <base-btn
+                v-if="!skill.added || skill.added === null"
                 :mode="'grey'"
-                @click="addSkill()"
+                @click="addNewSkill(currentValue, skill)"
               >
                 <template :v-slot="right">
                   <span
-                    v-if="added"
-                    class="icon-close_big"
-                  />
-                  <span
-                    v-if="!added"
                     class="icon-plus"
+                  />
+                </template>
+              </base-btn>
+              <base-btn
+                v-if="skill.added"
+                :mode="'grey'"
+                @click="deleteSkill()"
+              >
+                <template :v-slot="right">
+                  <span
+                    class="icon-close_big"
                   />
                 </template>
               </base-btn>
             </div>
           </div>
+
           <div class="btn__container">
             <div class="btn__wrapper">
               <base-btn
@@ -71,8 +82,14 @@ export default {
   data() {
     return {
       codeInput: '',
-      added: false,
-      items: [
+      currentValue: '',
+      skills: [
+        {
+          value: 1,
+          added: false,
+        },
+      ],
+      ddList: [
         this.$t('modals.paintingWork'),
         this.$t('modals.art'),
         this.$t('modals.cooking'),
@@ -81,13 +98,15 @@ export default {
     };
   },
   methods: {
-    addSkill() {
-      const container = document.querySelector('#container');
-      const before = document.querySelector('#skill');
-      const clonedNode = document.getElementById('skill').cloneNode(true);
-      console.log(clonedNode.slot);
-      this.added = true;
-      container.insertBefore(clonedNode, before);
+    addNewSkill(currentValue, skill) {
+      const newSkill = {
+        value: skill.value,
+        added: true,
+      };
+      this.skills.unshift(newSkill);
+    },
+    deleteSkill(i) {
+      this.skills.splice(i, 1);
     },
 
     hide() {
@@ -116,8 +135,12 @@ export default {
     font-size: 20px;
     color: $blue;
   }
+  &-close_big:before {
+    content: "\e948";
+    font-size: 20px;
+    color: $red;
+  }
 }
-
 .skill {
   width: 100%;
   display: grid;
