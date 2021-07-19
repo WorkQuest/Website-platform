@@ -98,49 +98,17 @@
                   />
                 </button>
               </li>
-              <li class="nav-item">
+              <li
+                v-for="(item, i) in pages"
+                :key="i"
+                class="nav-item"
+              >
                 <button
                   class="nav-btn"
-                  :class="[{'nav-btn__active' :tab === 1}]"
-                  @click="tab = 1"
+                  :class="[{'nav-btn__active' :tab === item}]"
+                  @click="tab = item"
                 >
-                  1
-                </button>
-              </li>
-              <li class="nav-item">
-                <button
-                  class="nav-btn"
-                  :class="[{'nav-btn__active' :tab === 2}]"
-                  @click="tab = 2"
-                >
-                  2
-                </button>
-              </li>
-              <li class="nav-item">
-                <button
-                  class="nav-btn"
-                  :class="[{'nav-btn__active' :tab === 3}]"
-                  @click="tab = 3"
-                >
-                  3
-                </button>
-              </li>
-              <li class="nav-item">
-                <button
-                  class="nav-btn"
-                  :class="[{'nav-btn__active' :tab === 4}]"
-                  @click="tab = 4"
-                >
-                  4
-                </button>
-              </li>
-              <li class="nav-item">
-                <button
-                  class="nav-btn"
-                  :class="[{'nav-btn__active' :tab === 5}]"
-                  @click="tab = 5"
-                >
-                  5
+                  {{ item }}
                 </button>
               </li>
               <li class="nav-item">
@@ -175,6 +143,7 @@ export default {
   data() {
     return {
       tab: 1,
+      pages: [1, 2, 3, 4, 5],
     };
   },
   computed: {
