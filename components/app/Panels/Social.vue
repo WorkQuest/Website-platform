@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ additionalInfo }}
     <span>
       <a
         v-if="userFacebook"

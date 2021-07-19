@@ -60,11 +60,14 @@
           </div>
         </div>
         <div class="location__container">
-          <div class="quest__location">
+          <div
+            v-if="quest.contacts.address"
+            class="quest__location"
+          >
             <span
-              class="icon-location icon_fs-20"
+              class="icon icon-location icon_fs-20"
             />
-            <span>{{ quest.location }}</span>
+            <span class="quest__address">{{ quest.contacts.address }}</span>
             <span
               class="user__distance"
             >
@@ -75,7 +78,7 @@
             v-if="userRole === 'worker'"
             class="runtime__container"
           >
-            <span class="icon-clock" />
+            <span class="icon icon-clock" />
             <span class="runtime__title">{{ $t('quests.runtime') }}</span>
             <span
               class="runtime__link"
@@ -87,7 +90,7 @@
             v-if="userRole === 'employer'"
             class="runtime__container"
           >
-            <span class="icon-clock" />
+            <span class="icon icon-clock" />
             <span class="runtime__title">
               {{ $t('quests.performanceTimer') }}
             </span>
@@ -153,10 +156,29 @@ export default {
     border-radius: 50%;
   }
 }
-
+.location {
+  &__container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+}
+.icon {
+  align-self: center;
+  &-share_outline {
+    margin-left: 15px;
+  }
+}
 .quest {
   &__location {
+    margin-right: 20px;
     display: flex;
+    align-items: center;
+  }
+  &__address {
+    margin: 0px 5px;
+    font-size: 14px;
   }
 }
 
@@ -174,12 +196,59 @@ export default {
   }
   &__link {
     @extend .runtime;
-    margin: 0 5px;
     font-weight: 500;
     color: $blue;
   }
+  &__title {
+    margin: 0 5px;
+  }
 }
 
+.badge-list{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.badge {
+  &__container {
+    padding-top: 20px;
+  }
+}
+.badge {
+  &__container {
+    padding: 0 0 20px 0;
+  }
+  &__item {
+    @include text-simple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: normal;
+    font-weight: normal;
+    padding: 0 5px;
+    &_green {
+      @extend .badge__item;
+      background-color: rgba(34, 204, 20, 0.1);
+      color:$green;
+      margin: 0 0 0 15px;
+      border-radius: 5px;
+    }
+    &_blue {
+      @extend .badge__item;
+      background-color: rgba(0, 131, 199, 0.1);
+      margin: 0 9px 0 0;
+      border-radius: 44px;
+      font-size: 16px;
+      color: $blue;
+      height: 31px;
+    }
+  }
+  &__wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
 .user {
   @include text-simple;
   color: $black800;

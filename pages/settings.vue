@@ -571,7 +571,6 @@ export default {
   data() {
     return {
       updatedPhone: null,
-      address: '',
       addresses: [],
       sms: false,
       allRegisterUser: false,
@@ -706,7 +705,6 @@ export default {
       const isValid = await validate(e);
       const file = e.target.files[0];
       if (isValid.valid) {
-        const MAX_SIZE = 20e6; // макс размер - тут 2мб
         if (!file) {
           return false;
         }

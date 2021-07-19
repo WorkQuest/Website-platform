@@ -20,41 +20,110 @@
               :key="i"
             >
               <div
-                class="chat__card"
+                class="chat__card profile"
                 @click="showDetails()"
               >
-                <div class="avatar__row">
-                  <div>
+                <div class="chat__data">
+                  <div class="avatar__row">
+                    <div>
+                      <img
+                        class="profile__img"
+                        src="~/assets/img/temp/profile.svg"
+                      >
+                    </div>
+                    <div>
+                      <span class="profile__name">
+                        {{ item.name }}
+                      </span>
+                    </div>
+                    <div>
+                      <span class="profile__company">
+                        {{ item.company }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="quest__row">
+                    <div class="quest">
+                      <span class="params">{{ $t('chat.quest') }}</span>
+                      <span class="quest__title">{{ item.questName }}</span>
+                    </div>
+                  </div>
+                  <div class="you__row">
+                    <div class="you">
+                      <span class="params">{{ $t('chat.you') }}</span>
+                      <span class="you__message">{{ item.body }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="chat__status">
+                  <div class="chat__new" />
+                  <div
+                    v-if="isHideStar(item.type)"
+                    class="block__icon block__icon_fav star"
+                    @click="item.isFavourite = !item.isFavourite"
+                  >
                     <img
-                      class="profile__img"
-                      src="~/assets/img/temp/profile.svg"
+                      class="star__hover"
+                      src="~assets/img/ui/star_hover.svg"
+                      alt=""
                     >
-                  </div>
-                  <div>
-                    <span class="profile__name">
-                      {{ item.name }}
-                    </span>
-                  </div>
-                  <div>
-                    <span class="profile__company">
-                      {{ item.company }}
-                    </span>
-                  </div>
-                </div>
-                <div class="quest__row">
-                  <div class="quest">
-                    <span class="params">{{ $t('chat.quest') }}</span>
-                    <span class="quest__title">{{ item.questName }}</span>
-                  </div>
-                </div>
-                <div class="you__row">
-                  <div class="you">
-                    <span class="params">{{ $t('chat.you') }}</span>
-                    <span class="you__message">{{ item.body }}</span>
+                    <img
+                      v-if="!item.isFavourite"
+                      class="star__default"
+                      src="~assets/img/ui/star_simple.svg"
+                      alt=""
+                    >
+                    <img
+                      v-if="item.isFavourite"
+                      class="star__checked"
+                      src="~assets/img/ui/star_checked.svg"
+                      alt=""
+                    >
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+          <div class="nav_block">
+            <ul class="nav">
+              <li class="nav-item">
+                <button
+                  class="nav-btn nav-btn_prev"
+                  @click="prevTab()"
+                >
+                  <div
+                    class="nav-arrow"
+                    :disabled="tab === 1"
+                    :class="tab === 1 ? 'nav-arrow_disabled' : 'nav-arrow_active'"
+                  />
+                </button>
+              </li>
+              <li
+                v-for="(item, i) in pages"
+                :key="i"
+                class="nav-item"
+              >
+                <button
+                  class="nav-btn"
+                  :class="[{'nav-btn__active' :tab === item}]"
+                  @click="tab = item"
+                >
+                  {{ item }}
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="nav-btn nav-btn_next"
+                  :disabled="tab === 5"
+                  @click="nextTab()"
+                >
+                  <div
+                    class="nav-arrow"
+                    :class="tab === 5 ? 'nav-arrow_disabled' : 'nav-arrow_active'"
+                  />
+                </button>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -71,6 +140,12 @@ export default {
   components: {
     ChatMenu,
   },
+  data() {
+    return {
+      tab: 1,
+      pages: [1, 2, 3, 4, 5],
+    };
+  },
   computed: {
     ...mapGetters({
       messages: 'data/getMessages',
@@ -84,12 +159,83 @@ export default {
     showDetails() {
       this.$router.push('/messages/1');
     },
+    isHideStar(type) {
+      return !(type === 4 || type === 3);
+    },
+    prevTab() {
+      if (this.tab > 1) {
+        this.tab -= 1;
+      }
+    },
+    nextTab() {
+      this.tab += 1;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 
+.nav_block {
+  background-color: #FFFFFF;
+  display: flex;
+  justify-content: flex-end;
+  border-radius: 6px;
+  width: max-content;
+  margin-top: 25px;
+  float: right;
+  .nav {
+    align-content: center;
+    &-btn {
+      border-left: 1px solid #F7F8FA;
+      width:43px;
+      height:43px;
+      &__active {
+        background-color: #E6F3F9;
+        color: #0083c7;
+      }
+      &_next .nav-arrow {
+        mask-image: url('~assets/img/ui/coolicon_next.svg');
+      }
+      &_prev .nav-arrow {
+        mask-image: url('~assets/img/ui/coolicon_prev.svg');
+      }
+    }
+    &-arrow {
+      margin-left: auto;
+      margin-right: auto;
+      height: 10px;
+      width: 5px;
+      &_disabled {
+        background-color: #c2c2c2;
+      }
+      &_active {
+        background-color: #4C5767;
+      }
+    }
+  }
+}
+.star {
+  &__default {
+    display: flex;
+  }
+  &__hover {
+    display: none;
+  }
+  &:hover {
+    .star {
+      &__hover {
+        display: flex;
+      }
+      &__default {
+        display: none;
+      }
+      &__checked {
+        display: none;
+      }
+    }
+  }
+}
 .message {
   &__avatar {
     max-width: 74px;
@@ -224,6 +370,19 @@ export default {
  }
 }
 .chat {
+  &__status {
+    display: flex;
+    flex-direction: column;
+    height: 80px;
+    justify-content: space-between;
+    align-items: center;
+    .chat__new {
+      border-radius: 50%;
+      width: 8px;
+      height: 8px;
+      background: #0083C7;
+    }
+  }
   &__header {
     border: 1px solid #E9EDF2;
     border-radius: 6px 0 0 0;
@@ -245,17 +404,18 @@ export default {
     width: 100%;
     max-width: 1180px;
     height: 100%;
-    max-height: 852px;
   }
   &__cards {
     overflow-y: hidden;
     height: 100%;
     width: 100%;
-    max-height: 745px;
   }
   &__card {
+    display: flex;
     border: 1px solid #E9EDF2;
     cursor: pointer;
+    justify-content: space-evenly;
+    align-items: center;
   }
 }
 .page {
@@ -281,6 +441,9 @@ export default {
 @include _1199 {
   .chat {
     margin: 0 20px 0 20px;
+    &__status {
+      width: 80px;
+    }
   }
 }
 @include _991 {
@@ -299,12 +462,25 @@ export default {
       align-items: flex-start;
     }
   }
+  .chat {
+    &__status {
+      width: 110px;
+    }
+  }
 }
 
 @include _480 {
   .message {
     &__container {
       margin: 0 0 0 10px;
+    }
+  }
+  .chat {
+    &__status {
+      width: 140px;
+      grid-gap: 60px;
+      height: 170px;
+      justify-content: flex-start;
     }
   }
 }
@@ -316,6 +492,11 @@ export default {
     }
     &__data {
       padding: 0;
+    }
+  }
+  .chat {
+    &__status {
+      height: 190px;
     }
   }
 }

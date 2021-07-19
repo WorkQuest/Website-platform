@@ -170,5 +170,11 @@ export default {
     }
   }
 }
-
+@include _991 {
+  .chat {
+    &-menu {
+      width: max-content;
+    }
+  }
+}
 </style>
