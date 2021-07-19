@@ -366,6 +366,8 @@ export default {
     align-items: center;
     .col {
       margin-bottom: 10px;
+      margin-left: auto;
+      margin-right: auto;
     }
   }
 }

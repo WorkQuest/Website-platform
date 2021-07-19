@@ -470,6 +470,7 @@
                   >
                     <div
                       class="user-dropdown__link"
+                      :class="item.title === 'Logout' ? 'user-dropdown__link_logout' : ''"
                       @click="toRoute(item.link)"
                     >
                       {{ item.title }}
@@ -971,6 +972,9 @@ export default {
       flex-direction: column;
       background: $black0;
       padding: 16px 0 20px 20px;
+      &_logout {
+        color: $red;
+      }
     }
   }
   &-container {

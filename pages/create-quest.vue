@@ -269,7 +269,6 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    const instance = this.$refs.el.dropzone;
     this.SetLoader(false);
   },
   methods: {
@@ -572,10 +571,20 @@ export default {
   .main__body {
     padding: 10px;
   }
+  .page {
+    &__address {
+      grid-template-columns: 5fr 1fr;
+    }
+  }
 }
 @include _767 {
   .btn__container.btn__container_right {
     justify-content: center;
+  }
+  .page {
+    &__address {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 }
 @include _575 {
