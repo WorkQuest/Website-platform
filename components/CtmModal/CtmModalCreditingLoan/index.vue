@@ -4,68 +4,70 @@
     :title="$t('modals.loan')"
   >
     <div class="ctm-modal__content">
-      <div class="ctm-modal__checkpoints">
-        <label
-          for="checkpoints-cont"
-          class="ctm-modal__label"
-        >
-          {{ $t('modals.chooseTheCurrency') }}
-        </label>
-        <div
-          id="checkpoints-cont"
-          class="checkpoints-cont"
-        >
-          <div
-            v-for="(item, i) in checkpoints"
-            :key="i"
-            class="checkpoint-cont"
+      <div class="ctm-modal__scroll-cont">
+        <div class="ctm-modal__checkpoints">
+          <label
+            for="checkpoints-cont"
+            class="ctm-modal__label"
           >
-            <input
-              :id="item.name"
-              v-model="selCurrencyID"
-              type="radio"
-              class="checkpoint"
-              :value="item.id"
+            {{ $t('modals.chooseTheCurrency') }}
+          </label>
+          <div
+            id="checkpoints-cont"
+            class="checkpoints-cont"
+          >
+            <div
+              v-for="(item, i) in checkpoints"
+              :key="i"
+              class="checkpoint-cont"
             >
-            <label
-              class=""
-              :for="item.name"
-            >
-              {{ item.name }}
-            </label>
+              <input
+                :id="item.name"
+                v-model="selCurrencyID"
+                type="radio"
+                class="checkpoint"
+                :value="item.id"
+              >
+              <label
+                class=""
+                :for="item.name"
+              >
+                {{ item.name }}
+              </label>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="ctm-modal__content-field">
-        <base-field
-          :is-hide-error="true"
-          class="input"
-          :label="$t('modals.howMuchETHWouldYouLikeToOpen')"
-          :tip="$t('modals.smallTemp')"
-          :placeholder="'10 ETH'"
-        />
-      </div>
-      <div class="ctm-modal__content-field">
-        <base-field
-          id="amountOfPercents_input"
-          :is-hide-error="true"
-          class="input"
-          :label="$t('modals.howMuchPercentWouldYouLikeToSet')"
-          :tip="$t('modals.smallTemp')"
-          :placeholder="'10 ETH'"
-        />
-      </div>
-      <div class="ctm-modal__content-field">
-        <base-field
-          :is-hide-error="true"
-          :label="$t('modals.enterTermToReturnDebtBack')"
-          :tip="$t('modals.smallTemp')"
-          class="input"
-          :placeholder="'10 ETH'"
-        />
-        <div class="ctm-modal__title-head" />
-        <div class="ctm-modal__subtitle">
-          {{ $t('modals.tipAbout') }}
+        <div class="ctm-modal__content-field">
+          <base-field
+            :is-hide-error="true"
+            class="input"
+            :label="$t('modals.howMuchETHWouldYouLikeToOpen')"
+            :tip="$t('modals.smallTemp')"
+            :placeholder="'10 ETH'"
+          />
+        </div>
+        <div class="ctm-modal__content-field">
+          <base-field
+            id="amountOfPercents_input"
+            :is-hide-error="true"
+            class="input"
+            :label="$t('modals.howMuchPercentWouldYouLikeToSet')"
+            :tip="$t('modals.smallTemp')"
+            :placeholder="'10 ETH'"
+          />
+        </div>
+        <div class="ctm-modal__content-field">
+          <base-field
+            :is-hide-error="true"
+            :label="$t('modals.enterTermToReturnDebtBack')"
+            :tip="$t('modals.smallTemp')"
+            class="input"
+            :placeholder="'10 ETH'"
+          />
+          <div class="ctm-modal__title-head" />
+          <div class="ctm-modal__subtitle">
+            {{ $t('modals.tipAbout') }}
+          </div>
         </div>
       </div>
       <div class="ctm-modal__content-btns">
@@ -166,6 +168,11 @@ export default {
   .addLiquidity {
     max-width: 490px !important;
     max-height: 80vh;
+  }
+
+  &__scroll-cont {
+    max-height: calc(80vh - 170px);
+    overflow: auto;
   }
   &__content-field,
   &__checkpoints{

@@ -597,6 +597,10 @@ export default {
           .btn-group {
             padding: 0;
             display: block;
+            display: grid;
+            grid-template-columns: unset;
+            grid-template-rows: repeat(2, 1fr);
+            gap: 20px;
           }
         }
         &__documents {
