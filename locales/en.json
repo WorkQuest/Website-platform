@@ -170,6 +170,7 @@
   "securityCheck": {
     "title": "Security check",
     "confCode": "Google confirmation code",
+    "placeholder": "Placeholder",
     "confCodeDesc": "Enter the 6-digit code from the Google Authentication app"
   },
   "signUp": {
@@ -400,6 +401,17 @@
     "insureCase": "Insure case",
     "connectWallet": "Connect wallet",
     "howMuchWusdWouldYouLikeToGenerate": "How much WUSD would you like to generate?",
+    "chooseTheCurrency": "Choose the currency",
+    "bnb": "BNB",
+    "wqt": "WQT",
+    "howMuchETHWouldYouLikeToOpen": "How much ETH would you like to open into your account?",
+    "howMuchPercentWouldYouLikeToSet": "How much percent would you like to set?",
+    "enterTermToReturnDebtBack ": "Enter term to return debt back",
+    "currency": "Currency",
+    "loan": "Loan",
+    "percentage": "Percentage",
+    "loanTerm": "Loan term",
+    "loanIsOpened": "Loan is opened",
     "successCopied": "Wallet number has been copied"
   },
   "ui": {
@@ -465,6 +477,7 @@
     "starredMessage": "Starred Message",
     "starredChats": "Starred chats",
     "createGroupChat": "Create group chat",
+    "favorite": "Favorite",
     "messages": "Messages",
     "chat": "Chat",
     "quest": "Quest:",
@@ -780,7 +793,15 @@
       "time": "Jun 12 2021",
       "sender": "dfgd6...fs65ds",
       "txHash": "dfgd6...fs65ds"
-    }
+    },
+    "faq1": "What are Locked Savings? Committed to holding your crypto?",
+    "faq2": "What happens to my funds on the day I subscribe to a Locked Savings product?",
+    "ans2": "On the day of subscription, WorkQuest Savings will deduct the funds for subscription from your WUSD wallet.\n",
+    "faq3": "What happens to my funds on the value date of a Locked Savings product?",
+    "faq4": "What happens to my funds on the redemption date of a Locked Savings product?",
+    "faq5": "How is the average annual return (APR) calculated?",
+    "faq": "FAQ",
+    "lend": "Lend"
   },
   "insuring": {
    "peerToPeerInsuring": "P2P insuring",

@@ -39,10 +39,16 @@
             >
             <div class="btn-group">
               <base-btn
-                class="btn_bl"
+                class="btn"
                 @click="openCreditingDepositModal()"
               >
                 {{ $t('crediting.borrow') }}
+              </base-btn>
+              <base-btn
+                class="btn"
+                @click="openCreditingLoanModal()"
+              >
+                {{ $t('crediting.lend') }}
               </base-btn>
             </div>
           </div>
@@ -52,7 +58,7 @@
           class="info-block"
         >
           <div class="info-block__name_bold">
-            {{ $t("pension.crediting") }}
+            {{ $t("crediting.information") }}
           </div>
           <div class="info-block__documents">
             <div
@@ -82,6 +88,38 @@
                 >
               </button>
             </div>
+          </div>
+        </div>
+        <div
+          v-if="FAQs.length"
+          class="info-block"
+        >
+          <div class="info-block__name_bold">
+            {{ $t("crediting.faq") }}
+          </div>
+          <div class="info-block__faqs">
+            <button
+              v-for="(item, i) in FAQs"
+              :key="i"
+              class="info-block__faq"
+              @click="handleClickFAQ(item)"
+            >
+              <div class="text__faq">
+                {{ item.name }}
+              </div>
+              <img
+                class="select-img"
+                :class="{'select-img_rotate' : item.isOpen}"
+                src="~/assets/img/ui/arrow-down.svg"
+                alt=""
+              >
+              <div
+                class="text__faq_gray"
+                :class="{'text__faq_opened' : item.isOpen}"
+              >
+                {{ item.about }}
+              </div>
+            </button>
           </div>
         </div>
       </div>
@@ -127,6 +165,33 @@ export default {
           subtitle: this.$t('crediting.percent'),
         },
       ],
+      FAQs: [
+        {
+          name: this.$t('crediting.faq1'),
+          about: this.$t('crediting.faq1'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('crediting.faq2'),
+          about: this.$t('crediting.ans2'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('crediting.faq3'),
+          about: this.$t('crediting.faq3'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('crediting.faq4'),
+          about: this.$t('crediting.faq4'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('crediting.faq5'),
+          about: this.$t('crediting.faq5'),
+          isOpen: false,
+        },
+      ],
     };
   },
   computed: {
@@ -144,6 +209,15 @@ export default {
         key: modals.creditingDeposit,
         needChangeModal: 1,
       });
+    },
+    openCreditingLoanModal() {
+      this.ShowModal({
+        key: modals.creditingLoan,
+        needChangeModal: 1,
+      });
+    },
+    handleClickFAQ(FAQ) {
+      FAQ.isOpen = !FAQ.isOpen;
     },
   },
 };
@@ -207,8 +281,9 @@ export default {
       font-weight: 400;
       font-size: 16px;
       color: #0083C7;
+      background-color: #fff;
       border: 1px solid #0083C71A;
-      border-radius: 6px;
+      border-radius: 6px !important;
       transition: .3s;
 
       &__doc {
@@ -240,9 +315,82 @@ export default {
       }
     }
 
+    .text {
+      font-size: 16px;
+      font-weight: 400;
+      color: #8D96A1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &__faq {
+        color: #4C5767;
+        font-weight: 500;
+
+        &_gray {
+          font-size: 16px;
+          font-weight: 400;
+          color: #8D96A1;
+          height: 0;
+          transition: height 300ms;
+          overflow: hidden;
+        }
+
+        &_opened {
+          height: auto;
+          font-size: 16px;
+          font-weight: 400;
+          color: #8D96A1;
+          transition: height 300ms;
+          margin-top: 20px;
+        }
+      }
+
+      &_blue {
+        @extend .text;
+        font-weight: 500;
+        font-size: 18px;
+        color: #0083C7;
+      }
+
+      &_small {
+        @extend .text;
+        font-size: 14px;
+      }
+    }
+
+    .select-img {
+      height: 7px;
+      position: absolute;
+      width: 12px;
+      right: 30px;
+      top: 30px;
+      transition: 300ms;
+
+      &_rotate {
+        @extend .select-img;
+        transform: rotate(180deg);
+      }
+    }
+
     .info-block {
       background-color: #fff;
       border-radius: 6px;
+
+      &__faqs {
+        margin: 0 20px 20px 20px;
+        display: grid;
+        gap: 20px;
+      }
+
+      &__faq {
+        border-radius: 5px;
+        padding: 20px 60px 20px 20px;
+        background-color: #F7F8FA;
+        text-align: left;
+        position: relative;
+        transition: 300ms;
+      }
 
       &__triple {
         display: grid;
@@ -449,6 +597,10 @@ export default {
           .btn-group {
             padding: 0;
             display: block;
+            display: grid;
+            grid-template-columns: unset;
+            grid-template-rows: repeat(2, 1fr);
+            gap: 20px;
           }
         }
         &__documents {

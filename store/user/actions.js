@@ -1,17 +1,19 @@
 export default {
   async signIn({ commit, dispatch }, payload) {
     const response = await this.$axios.$post('/v1/auth/login', payload);
-    commit('setNewTokens', response.result);
-    await dispatch('getUserData');
+    commit('setTokens', response.result);
+    if (response.result.userStatus === 1) {
+      await dispatch('getUserData');
+    }
     return response;
   },
   async signUp({ commit }, payload) {
     const response = await this.$axios.$post('/v1/auth/register', payload);
-    commit('setNewTokens', response.result);
+    commit('setTokens', response.result);
     return response;
   },
   async confirm({ commit }, payload) {
-    commit('setOldTokens', { access: this.$cookies.get('access'), refresh: this.$cookies.get('refresh') });
+    commit('setTokens', { access: this.$cookies.get('access'), refresh: this.$cookies.get('refresh') });
     this.$cookies.set('role', payload.role);
     const response = await this.$axios.$post('/v1/auth/confirm-email', payload);
     return response;
@@ -36,7 +38,7 @@ export default {
   },
   async refreshTokens({ commit }) {
     const response = await this.$axios.$post('/v1/auth/refresh-tokens');
-    commit('setNewTokens', response.result);
+    commit('setTokens', response.result);
     return response;
   },
   async setCurrentPosition({ commit }, payload) {
@@ -60,6 +62,16 @@ export default {
       },
     });
     commit('setImage', response.result);
+    return response;
+  },
+  async passwordSendCode({ commit }, payload) {
+    const response = await this.$axios.$post('/v1/restore-password/send-code', payload);
+    commit('setSendCode', response.result);
+    return response;
+  },
+  async passwordChange({ commit }, payload) {
+    const response = await this.$axios.$post('/v1/restore-password/set-password', payload);
+    commit('setUserPassword', response.result);
     return response;
   },
 };

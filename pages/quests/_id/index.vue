@@ -316,18 +316,20 @@
         </div>
       </div>
     </div>
-    <div class="map__container">
-      <transition name="fade-fast">
-        <GMap
-          v-if="isShowMap"
-          ref="gMap"
-          class="quests__map"
-          language="en"
-          :center="{lat: locations[0].lat, lng: locations[0].lng}"
-          :zoom="6"
-          :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
-        />
-      </transition>
+    <div class="map__container gmap">
+      <div class="gmap__block">
+        <transition name="fade-fast">
+          <GMap
+            v-if="isShowMap"
+            ref="gMap"
+            class="quests__map"
+            language="en"
+            :center="{lat: locations[0].lat, lng: locations[0].lng}"
+            :zoom="6"
+            :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
+          />
+        </transition>
+      </div>
     </div>
     <div class="main">
       <div class="spec__container">
@@ -458,7 +460,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .gallery {
   &__image {
     border-radius: 6px;
@@ -627,6 +629,7 @@ export default {
   &__container {
     display: grid;
     grid-template-columns: 8fr 4fr;
+    margin-bottom: 20px;
   }
 }
 .divider{
@@ -687,8 +690,13 @@ export default {
 
 .map {
   &__container {
-    background-color: $white;
     padding:30px 0 0 0;
+    display: flex;
+    justify-content: center;
+    .gmap__block {
+      max-width: 1180px;
+      width: 100%;
+    }
   }
 }
 .price {

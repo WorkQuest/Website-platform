@@ -8,13 +8,11 @@
         {{ errorMsg ? $t('errors.incorrectPass') : null }}
       </div>
       <div class="ctm-modal__content-field">
-        <div class="ctm-modal__content-inputTitle">
-          {{ $t('securityCheck.confCode') }}
-        </div>
         <base-field
-          v-model="securityCode_input"
+          v-model="securityCode"
           :is-hide-error="true"
-          :placeholder="'Placeholder'"
+          :placeholder="$t('securityCheck.placeholder')"
+          :label="$t('securityCheck.confCode')"
           mode="icon"
         />
         <div class="ctm-modal__content-inputDesc">
@@ -41,7 +39,7 @@ export default {
   name: 'ModalOpenADeposit',
   data() {
     return {
-      securityCode_input: '',
+      securityCode: '',
       errorMsg: '',
     };
   },
@@ -90,9 +88,6 @@ export default {
       gap: 20px;
       margin-top: 25px;
     }
-  }
-  &__content-inputTitle {
-    margin-bottom: 5px;
   }
   &__content-inputDesc {
     font-size: 14px;

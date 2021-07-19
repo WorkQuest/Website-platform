@@ -12,7 +12,7 @@
         >
           <div class="chat-menu__items">
             <span
-              v-if="$route.path === '/messages'"
+              v-if="$route.path === '/messages/1'"
               class="chat-menu__container"
             >
               <div
@@ -36,7 +36,7 @@
               </div>
             </span>
             <span
-              v-if="$route.path === '/messages/1'"
+              v-if="$route.path === '/messages'"
               class="chat-menu__container"
             >
               <div
@@ -55,6 +55,15 @@
                   class="chat-menu__text"
                 >
                   {{ $t('chat.starredChats') }}
+                </div>
+              </div>
+              <div
+                class="chat-menu__item"
+              >
+                <div
+                  class="chat-menu__text"
+                >
+                  {{ $t('chat.favorite') }}
                 </div>
               </div>
               <div
@@ -126,7 +135,7 @@ export default {
 
 .chat-menu {
   position: absolute;
-  top: calc(230px + 5px);
+  top: calc(210px + 5px);
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
@@ -134,21 +143,18 @@ export default {
   z-index: 10000000;
   margin: 0 90px 0 0;
   &__container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  &__items {
-    padding: 10px 15px;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 15px;
-  }
-  &__item {
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 10px;
-    align-items: center;
+
+  }
+  &__items {
+    padding: 10px 15px;
+  }
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     min-height: 20px;
   }
   &__text {

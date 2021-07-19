@@ -48,4 +48,6 @@ export default {
   changeRoleReason: 'changeRoleReason',
   changeRoleSecureCheck: 'changeRoleSecureCheck',
   chooseNecessarySkills: 'chooseNecessarySkills',
+  creditingLoan: 'creditingLoan',
+  confirmLoanDetails: 'confirmLoanDetails',
 };

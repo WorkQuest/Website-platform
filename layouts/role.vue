@@ -19,12 +19,20 @@
         </div>
         <div class="template__footer">
           <div class="template__links">
-            <div class="template__link">
+            <a
+              class="template__link"
+              href="/docs/terms.pdf"
+              target="_blank"
+            >
               {{ $t('layout.links.terms') }}
-            </div>
-            <div class="template__link">
+            </a>
+            <a
+              class="template__link"
+              href="/docs/privacy.pdf"
+              target="_blank"
+            >
               {{ $t('layout.links.privacy') }}
-            </div>
+            </a>
           </div>
         </div>
       </div>
@@ -133,6 +141,7 @@ export default {
     line-height: 130%;
     color: $black500;
     cursor: pointer;
+    text-decoration: none;
   }
 }
 

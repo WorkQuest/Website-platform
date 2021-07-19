@@ -6,6 +6,38 @@
     <div class="ctm-modal__content">
       <div class="ctm-modal__grid-cont">
         <div>
+          <div class="ctm-modal__checkpoints">
+            <label
+              for="checkpoints-cont"
+              class="ctm-modal__label"
+            >
+              {{ $t('modals.chooseTheCurrency') }}
+            </label>
+            <div
+              id="checkpoints-cont"
+              class="checkpoints-cont"
+            >
+              <div
+                v-for="(item, i) in checkpoints"
+                :key="i"
+                class="checkpoint-cont"
+              >
+                <input
+                  :id="item.name"
+                  v-model="selCurrencyID"
+                  type="radio"
+                  class="checkpoint"
+                  :value="item.id"
+                >
+                <label
+                  class=""
+                  :for="item.name"
+                >
+                  {{ item.name }}
+                </label>
+              </div>
+            </div>
+          </div>
           <div class="ctm-modal__content-field">
             <label
               for="amountOfETH_input"
@@ -83,6 +115,21 @@ export default {
   name: 'ModalCreditingDeposit',
   data() {
     return {
+      selCurrencyID: 1,
+      checkpoints: [
+        {
+          name: this.$t('modals.bnb'),
+          id: 1,
+        },
+        {
+          name: this.$t('modals.eth'),
+          id: 2,
+        },
+        {
+          name: this.$t('modals.wqt'),
+          id: 3,
+        },
+      ],
       abouts: [
         {
           title: this.$t('modals.collateralization'),
@@ -139,8 +186,43 @@ export default {
     max-width: 945px !important;
     max-height: 80vh;
   }
-  &__content-field {
+  &__content-field,
+  &__checkpoints{
     margin: 15px 0 0 0;
+  }
+
+  &__checkpoints {
+    .ctm-modal__label {
+      margin-bottom: 10px;
+    }
+  }
+
+  .checkpoints-cont {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    text-align: left;
+    justify-content: flex-start;
+    gap: 15px;
+
+    .checkpoint-cont {
+      display: grid;
+      grid-template-columns: repeat(2, auto);
+      gap: 10px;
+
+      >label {
+        margin: unset;
+      }
+
+      .checkpoint {
+        font-size: 16px;
+        font-weight: 400;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        border: 1px solid #0083C7;
+        cursor: pointer;
+      }
+    }
   }
 
   &__gray-zone {
@@ -148,6 +230,7 @@ export default {
     border-radius: 5px;
     margin-top: 15px;
     padding: 0 20px 20px 20px;
+    height: fit-content;
   }
 
   &__grid-cont {

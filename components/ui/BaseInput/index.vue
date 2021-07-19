@@ -17,9 +17,15 @@
   >
     <div
       v-if="label !== ''"
-      class="ctm-field__header"
+      :class="[{'ctm-field__header' : !tip}, {'ctm-field__header ctm-field__header_mar5' : tip}]"
     >
       {{ label }}
+    </div>
+    <div
+      v-if="tip"
+      class="ctm-field__header ctm-field__header_sub"
+    >
+      {{ tip }}
     </div>
     <div class="ctm-field__body">
       <span
@@ -86,6 +92,10 @@ export default {
       default: '',
     },
     label: {
+      type: String,
+      default: '',
+    },
+    tip: {
       type: String,
       default: '',
     },
@@ -184,7 +194,20 @@ export default {
     letter-spacing: -0.025em;
     margin-bottom: 13px;
     height: 24px;
-    color: #fff;
+    color: #212529;
+
+    &_mar5 {
+      margin-bottom: 5px;
+      height: unset;
+    }
+
+    &_sub {
+      margin-bottom: 5px;
+      color: #7C838D !important;
+      font-weight: 400;
+      font-size: 16px;
+      height: unset;
+    }
   }
   &__err {
     color: #bb5151;

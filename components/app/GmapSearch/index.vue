@@ -3,80 +3,78 @@
     class="map__container gmap"
     :class="!isShowMap ? 'map__container_small' : ''"
   >
-    <div class="gmap__block">
-      <div class="gmap__top">
-        <transition name="fade-fast">
-          <!--          in GMAP-->
-          <!--          v-if="isShowMap && userPosition"-->
-          <!--          :cluster="{options: {styles: clusterStyle}}"-->
-          <!--          :center="{lat: userPosition.latitude, lng: userPosition.longitude}"-->
-          <GMap
-            ref="gMap"
-            language="en"
-            :options="{fullscreenControl: false}"
-            :zoom="10"
+    <div class="gmap__top">
+      <transition name="fade-fast">
+        <!--          in GMAP-->
+        <!--          v-if="isShowMap && userPosition"-->
+        <!--          :cluster="{options: {styles: clusterStyle}}"-->
+        <!--          :center="{lat: userPosition.latitude, lng: userPosition.longitude}"-->
+        <GMap
+          ref="gMap"
+          language="en"
+          :options="{fullscreenControl: false}"
+          :zoom="10"
+        >
+          <GMapMarker
+            v-for="location in locations"
+            :key="location.id"
+            :position="{lat: location.lat, lng: location.lng}"
+            :options="{icon: location === currentLocation ? pins.selected : pins.notSelected}"
+            @click="currentLocation = location"
           >
-            <GMapMarker
-              v-for="location in locations"
-              :key="location.id"
-              :position="{lat: location.lat, lng: location.lng}"
-              :options="{icon: location === currentLocation ? pins.selected : pins.notSelected}"
-              @click="currentLocation = location"
-            >
-              <GMapInfoWindow :options="{maxWidth: 200}">
-                lat: {{ location.lat }},
-                lng: {{ location.lng }}
-              </GMapInfoWindow>
-            </GMapMarker>
-          </GMap>
-        </transition>
-        <div class="gmap__search">
-          <div class="search">
-            <div class="search__toggle">
-              <base-checkbox
-                v-model="isShowMap"
-                name="map"
-                :label="$t('quests.ui.showMap')"
-              />
-            </div>
-            <div class="search__inputs">
-              <base-field
-                v-model="search"
-                is-search
-                class="search__input"
-                :placeholder="$t('quests.ui.search')"
-                :mode="'icon'"
-              />
-            </div>
-            <div class="search__dd">
-              <base-dd
-                v-model="distanceIndex"
-                :items="distance"
-              />
-            </div>
-            <div class="search__actions">
-              <base-btn class="search__btn">
-                {{ userRole === 'worker' ? $t('quests.searchResults') : $t('workers.searchWorkers') }}
-              </base-btn>
-            </div>
-          </div>
-        </div>
-        <div class="gmap__filter">
-          <div
-            class="filter__dd"
-          >
-            <base-dd
-              v-model="distanceIndex"
-              :items="distance"
-            />
-          </div>
-          <div class="filter__toggle">
+            <GMapInfoWindow :options="{maxWidth: 200}">
+              lat: {{ location.lat }},
+              lng: {{ location.lng }}
+            </GMapInfoWindow>
+          </GMapMarker>
+        </GMap>
+      </transition>
+      <div class="gmap__search">
+        <div class="search">
+          <div class="search__toggle">
             <base-checkbox
               v-model="isShowMap"
               name="map"
               :label="$t('quests.ui.showMap')"
             />
           </div>
+          <div class="search__inputs">
+            <base-field
+              v-model="search"
+              is-search
+              class="search__input"
+              :placeholder="$t('quests.ui.search')"
+              :mode="'icon'"
+            />
+          </div>
+          <div class="search__dd">
+            <base-dd
+              v-model="distanceIndex"
+              :items="distance"
+            />
+          </div>
+          <div class="search__actions">
+            <base-btn class="search__btn">
+              {{ userRole === 'worker' ? $t('quests.searchResults') : $t('workers.searchWorkers') }}
+            </base-btn>
+          </div>
+        </div>
+      </div>
+      <div class="gmap__filter">
+        <div
+          class="filter__dd"
+        >
+          <base-dd
+            v-model="distanceIndex"
+            :items="distance"
+          />
+        </div>
+        <div class="filter__toggle">
+          <base-checkbox
+            v-model="isShowMap"
+            name="map"
+            :label="$t('quests.ui.showMap')"
+          />
         </div>
       </div>
     </div>
@@ -142,14 +140,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.map__container {
-  display: flex;
-  justify-content: center;
-  .gmap__block {
-    width: 100%;
-    max-width: 1180px;
-  }
-}
 .map__container::v-deep {
   .GMap__Wrapper {
     height: 435px;
@@ -170,7 +160,7 @@ export default {
   }
   &__search {
     position: relative;
-    max-width: 1040px;
+    max-width: 1180px;
     height: 83px;
     bottom: 100px;
     left: 0;
