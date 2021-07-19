@@ -1048,10 +1048,12 @@ export default {
     display: none;
     transition: .2s;
     &_opened {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
       overflow-y: auto;
       background: $white;
       display: flex;
       width: 100%;
+      height: max-content;
       position: fixed;
       top: 73px;
       bottom: 0;
