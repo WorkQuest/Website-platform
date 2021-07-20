@@ -46,4 +46,5 @@ export default {
   copiedSuccess: 'copiedSuccess',
   creditingLoan: 'creditingLoan',
   confirmLoanDetails: 'confirmLoanDetails',
+  chatCreate: 'chatCreate',
 };

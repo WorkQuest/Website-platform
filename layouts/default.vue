@@ -800,6 +800,7 @@ export default {
   watch: {
     $route() {
       this.$refs.templateScroll.scrollTop = 0;
+      this.closeAll();
     },
   },
   async mounted() {
