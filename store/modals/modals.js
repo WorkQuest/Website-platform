@@ -50,4 +50,5 @@ export default {
   chooseNecessarySkills: 'chooseNecessarySkills',
   creditingLoan: 'creditingLoan',
   confirmLoanDetails: 'confirmLoanDetails',
+  smsVerification: 'smsVerification',
 };

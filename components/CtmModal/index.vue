@@ -61,6 +61,7 @@
       <CtmModalChooseNecessarySkills v-if="modals.chooseNecessarySkills === currentModalKey" />
       <CtmModalCreditingLoan v-if="modals.creditingLoan === currentModalKey" />
       <CtmModalConfirmLoanDetails v-if="modals.confirmLoanDetails === currentModalKey" />
+      <CtmModalSmsVerification v-if="modals.smsVerification === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -116,6 +117,7 @@ import CtmModalChangeRoleWarning from './CtmModalChangeRoleWarning';
 import CtmModalChangeRoleReason from './CtmModalChangeRoleReason';
 import CtmModalChangeRoleSecureCheck from './CtmModalChangeRoleSecureCheck';
 import CtmModalChooseNecessarySkills from './CtmModalChooseNecessarySkills';
+import CtmModalSmsVerification from './CtmModalSmsVerification';
 
 export default {
   name: 'ModalBox',
@@ -169,6 +171,7 @@ export default {
     CtmModalChangeRoleReason,
     CtmModalChangeRoleSecureCheck,
     CtmModalChooseNecessarySkills,
+    CtmModalSmsVerification,
   },
   data: () => ({
     modals,

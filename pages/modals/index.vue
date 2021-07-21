@@ -2,6 +2,11 @@
   <div class="container">
     <h2>New Modals</h2>
     <base-btn
+      @click="modalEnableSmsVerification()"
+    >
+      showModalEnableSmsVerification
+    </base-btn>
+    <base-btn
       @click="modalChooseNecessarySkills()"
     >
       showModalChooseNecessarySkills
@@ -183,6 +188,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    modalEnableSmsVerification() {
+      this.ShowModal({
+        key: modals.smsVerification,
+      });
+    },
     modalChooseNecessarySkills() {
       this.ShowModal({
         key: modals.chooseNecessarySkills,

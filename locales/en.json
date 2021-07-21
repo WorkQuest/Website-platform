@@ -138,7 +138,9 @@
     "next": "Next",
     "continue": "Continue",
     "change": "Change",
-    "apply": "Apply"
+    "apply": "Apply",
+    "connectSMSVer": "Connect SMS Verification",
+    "resendSMS": "Resend SMS"
   },
   "priority": {
     "title": "Priority",
@@ -285,6 +287,13 @@
     "startQuest": "Start quest"
   },
   "modals": {
+    "haventSMS": "Haven’t got SMS?",
+    "SMSVerConnected": "SMS Verification connected",
+    "phoneNumber": "Phone number",
+    "enterPhone": "Enter your phone number to confirm SMS verification",
+    "enterSMSCode" : "We have sent verification code to your phone number. Enter this code",
+    "codeFromSMS": "Code from SMS",
+    "smsVerification": "SMS verification",
     "saved": "Saved",
     "userDataHasBeenSaved": "User data has been saved",
     "workExpAddSuccessful": "Work experience add successful",

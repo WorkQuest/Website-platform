@@ -537,7 +537,7 @@
             <div class="settings_blue">
               <div>{{ $t('settings.smsVerification') }}</div>
               <div>
-                <base-btn>
+                <base-btn @click="showModalEnableSmsVerification">
                   {{ $t('settings.enable') }}
                 </base-btn>
               </div>
@@ -739,6 +739,11 @@ export default {
           console.error(evt);
         };
       }
+    },
+    showModalEnableSmsVerification() {
+      this.ShowModal({
+        key: modals.smsVerification,
+      });
     },
     showModalImageOk() {
       this.ShowModal({
