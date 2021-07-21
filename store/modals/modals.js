@@ -52,4 +52,5 @@ export default {
   confirmLoanDetails: 'confirmLoanDetails',
   smsVerification: 'smsVerification',
   reviewDetails: 'reviewDetails',
+  chatCreate: 'chatCreate',
 };

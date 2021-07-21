@@ -63,6 +63,7 @@
       <CtmModalConfirmLoanDetails v-if="modals.confirmLoanDetails === currentModalKey" />
       <CtmModalSmsVerification v-if="modals.smsVerification === currentModalKey" />
       <CtmModalReviewDetails v-if="modals.reviewDetails === currentModalKey" />
+      <CtmModalChatCreate v-if="modals.chatCreate === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -114,6 +115,7 @@ import CtmModalSignWorkQuest from './CtmModalSignWorkQuest';
 import CtmModalSecurityCheck from './CtmModalSecurityCheck';
 import CtmModalSharing from './CtmModalSharing';
 import CtmModalCopiedSuccess from './CtmModalCopiedSuccess';
+import CtmModalChatCreate from './CtmModalChatCreate';
 import CtmModalChangeRoleWarning from './CtmModalChangeRoleWarning';
 import CtmModalChangeRoleReason from './CtmModalChangeRoleReason';
 import CtmModalChangeRoleSecureCheck from './CtmModalChangeRoleSecureCheck';
@@ -175,6 +177,7 @@ export default {
     CtmModalChooseNecessarySkills,
     CtmModalSmsVerification,
     CtmModalReviewDetails,
+    CtmModalChatCreate,
   },
   data: () => ({
     modals,

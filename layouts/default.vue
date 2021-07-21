@@ -476,6 +476,7 @@
                   >
                     <div
                       class="user-dropdown__link"
+                      :class="item.title === 'Logout' ? 'user-dropdown__link_logout' : ''"
                       @click="toRoute(item.link)"
                     >
                       {{ item.title }}
@@ -805,6 +806,7 @@ export default {
   watch: {
     $route() {
       this.$refs.templateScroll.scrollTop = 0;
+      this.closeAll();
     },
   },
   async mounted() {
@@ -981,6 +983,9 @@ export default {
       flex-direction: column;
       background: $black0;
       padding: 16px 0 20px 20px;
+      &_logout {
+        color: $red;
+      }
     }
   }
   &-container {
@@ -1054,10 +1059,12 @@ export default {
     display: none;
     transition: .2s;
     &_opened {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
       overflow-y: auto;
       background: $white;
       display: flex;
       width: 100%;
+      height: max-content;
       position: fixed;
       top: 73px;
       bottom: 0;

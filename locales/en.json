@@ -66,6 +66,7 @@
     "password": "Enter password"
   },
   "placeholders": {
+    "default": "Placeholder",
     "firstName": "John",
     "lastName": "Doe",
     "mail": "your@mail.com",
@@ -287,6 +288,12 @@
     "startQuest": "Start quest"
   },
   "modals": {
+    "chatCreate": {
+      "title": "Create group chat",
+      "desc": "Create name of group chat and choose people from you chat list",
+      "participants": "Participants",
+      "chatName": "Chat name"
+    },
     "review": "Review",
     "haventSMS": "Haven’t got SMS?",
     "SMSVerConnected": "SMS Verification connected",

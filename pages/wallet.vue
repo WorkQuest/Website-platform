@@ -11,6 +11,7 @@
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               type="button"
+              @click="showSuccessCopied()"
             >
               <span class="icon-copy wallet__icon" />
             </button>
@@ -149,6 +150,11 @@ export default {
     showAddCardModal() {
       this.ShowModal({
         key: modals.addCard,
+      });
+    },
+    showSuccessCopied() {
+      this.ShowModal({
+        key: modals.copiedSuccess,
       });
     },
   },

@@ -143,6 +143,9 @@ import ChatMenu from '~/components/ui/ChatMenu';
 
 export default {
   name: 'Messages',
+  components: {
+    ChatMenu,
+  },
   data() {
     return {
       isShowFavourite: false,
@@ -536,6 +539,11 @@ export default {
     height: 100%;
     width: 100%;
     max-height: 722px;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+  }
+  &__messages::-webkit-scrollbar {
+    width: 0;
   }
   &__img {
     width: 100%;
