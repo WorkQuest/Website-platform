@@ -68,6 +68,7 @@
               </div>
               <div
                 class="chat-menu__item"
+                @click="showCreateChatModal()"
               >
                 <div
                   class="chat-menu__text"
@@ -101,6 +102,11 @@ export default {
     },
     showChatMenu() {
       this.isShowChatMenu = !this.isShowChatMenu;
+    },
+    showCreateChatModal() {
+      this.ShowModal({
+        key: modals.chatCreate,
+      });
     },
   },
 };

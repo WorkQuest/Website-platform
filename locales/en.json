@@ -65,6 +65,7 @@
     "password": "Enter password"
   },
   "placeholders": {
+    "default": "Placeholder",
     "firstName": "John",
     "lastName": "Doe",
     "mail": "your@mail.com",
@@ -281,6 +282,12 @@
     "startQuest": "Start quest"
   },
   "modals": {
+    "chatCreate": {
+      "title": "Create group chat",
+      "desc": "Create name of group chat and choose people from you chat list",
+      "participants": "Participants",
+      "chatName": "Chat name"
+    },
     "toYourEmail": "To your email address",
     "codeHasBeenSent": "code has been sent",
     "switchOnGoogleAuth": "Switch on Google Authenticator",

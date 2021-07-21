@@ -57,6 +57,7 @@
       <CtmModalCopiedSuccess v-if="modals.copiedSuccess === currentModalKey" />
       <CtmModalCreditingLoan v-if="modals.creditingLoan === currentModalKey" />
       <CtmModalConfirmLoanDetails v-if="modals.confirmLoanDetails === currentModalKey" />
+      <CtmModalChatCreate v-if="modals.chatCreate === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -108,6 +109,7 @@ import CtmModalSignWorkQuest from './CtmModalSignWorkQuest';
 import CtmModalSecurityCheck from './CtmModalSecurityCheck';
 import CtmModalSharing from './CtmModalSharing';
 import CtmModalCopiedSuccess from './CtmModalCopiedSuccess';
+import CtmModalChatCreate from './CtmModalChatCreate';
 
 export default {
   name: 'ModalBox',
@@ -157,6 +159,7 @@ export default {
     CtmModalSecurityCheck,
     CtmModalSharing,
     CtmModalCopiedSuccess,
+    CtmModalChatCreate,
   },
   data: () => ({
     modals,
