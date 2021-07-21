@@ -287,6 +287,7 @@
     "startQuest": "Start quest"
   },
   "modals": {
+    "review": "Review",
     "haventSMS": "Haven’t got SMS?",
     "SMSVerConnected": "SMS Verification connected",
     "phoneNumber": "Phone number",

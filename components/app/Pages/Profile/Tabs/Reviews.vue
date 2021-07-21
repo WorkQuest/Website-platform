@@ -5,8 +5,8 @@
       :key="i"
     >
       <div class="reviews-item">
-        <div class="header">
-          <div class="avatar">
+        <div class="reviews-item__header">
+          <div class="reviews-item__avatar">
             <img
               src="~/assets/img/temp/avatar-medium.jpg"
               alt=""
@@ -21,7 +21,7 @@
             </div>
           </div>
         </div>
-        <div class="subheader">
+        <div class="reviews-item__subheader">
           <div class="card-subtitle">
             {{ $t('quests.questBig') }}
           </div>
@@ -33,12 +33,12 @@
           {{ item.reviewDesc }}
         </div>
 
-        <div class="rating">
+        <div class="reviews-item__rating">
           {{ item.reviewerRating }}
         </div>
         <base-btn
           mode="borderless-right"
-          @click="showProfile()"
+          @click="showReviewDetails"
         >
           {{ $t('quests.readCompletely') }}
           <template v-slot:right>
@@ -53,6 +53,7 @@
 <script>
 
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'ReviewsTab',
@@ -62,6 +63,11 @@ export default {
   methods: {
     showProfile() {
       this.$router.push('/show-profile');
+    },
+    showReviewDetails() {
+      this.ShowModal({
+        key: modals.reviewDetails,
+      });
     },
   },
 };
@@ -116,28 +122,29 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
-  .reviews-item {
-    width: 100%;
-    background-color: #fff;
-    border-radius: 6px;
-    padding: 20px 20px 10px;
-    position: relative;
-    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.1);
-  }
-  .reviews-item .header {
+}
+
+.reviews-item {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 20px 20px 10px;
+  position: relative;
+  box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.1);
+  &__header {
     @extend .styles__flex;
   }
-  .reviews-item .header .avatar {
+  &__avatar {
     margin-right: 15px;
   }
-  .reviews-item .subheader {
+  &__subheader {
     @extend .styles__flex;
     margin: 15px 0;
     display: flex;
     align-items: baseline;
     height: 20px;
   }
-  .reviews-item .rating {
+  &__rating {
     font-weight: 500;
     font-size: 16px;
     line-height: 130%;
@@ -158,11 +165,13 @@ export default {
   }
 }
 @include _575 {
-  .header {
-    align-items: flex-start;
+  .reviews-item {
+    &__header {
+      align-items: flex-start;
+    }
   }
   .reviews-grid {
-    .reviews-item .header {
+    .reviews-item .reviews-item__header {
       flex-direction: column;
     }
   }

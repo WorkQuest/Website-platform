@@ -51,4 +51,5 @@ export default {
   creditingLoan: 'creditingLoan',
   confirmLoanDetails: 'confirmLoanDetails',
   smsVerification: 'smsVerification',
+  reviewDetails: 'reviewDetails',
 };

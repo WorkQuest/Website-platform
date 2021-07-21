@@ -2,6 +2,11 @@
   <div class="container">
     <h2>New Modals</h2>
     <base-btn
+      @click="modalShowReviewDetails()"
+    >
+      showModalShowReviewDetails
+    </base-btn>
+    <base-btn
       @click="modalEnableSmsVerification()"
     >
       showModalEnableSmsVerification
@@ -188,6 +193,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    modalShowReviewDetails() {
+      this.ShowModal({
+        key: modals.reviewDetails,
+      });
+    },
     modalEnableSmsVerification() {
       this.ShowModal({
         key: modals.smsVerification,
