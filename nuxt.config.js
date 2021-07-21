@@ -25,6 +25,7 @@ export default {
     { src: '@plugins/vee-validate.js' },
     { src: '@plugins/clipboard.js' },
     { src: '@plugins/injectComponents.js' },
+    { src: '@plugins/vue-qrcode.js' },
   ],
   components: true,
   buildModules: [

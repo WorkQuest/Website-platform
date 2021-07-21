@@ -190,7 +190,7 @@ export default {
         isFavourite: false,
         messageTime: moment().format('HH:mm'),
       });
-      this.messanges = '';
+      this.messages = '';
       this.scrollChat();
     },
     onEnter(e, callback) {

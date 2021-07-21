@@ -387,6 +387,7 @@
           <div class="page__badge-skills">
             {{ $t('settings.skills') }}
           </div>
+          <!--          TODO: Вывести баджи со скилами из state, полученные из модалки-->
           <div
             v-for="(item, i) in userSkills"
             :key="i"
@@ -396,9 +397,12 @@
             </div>
           </div>
           <div class="btn__container">
-            <div class="btn__plus">
+            <button
+              class="btn__plus"
+              @click="chooseNecessarySkills()"
+            >
               <span class="icon-plus_circle" />
-            </div>
+            </button>
           </div>
         </div>
       </div>
@@ -533,7 +537,7 @@
             <div class="settings_blue">
               <div>{{ $t('settings.smsVerification') }}</div>
               <div>
-                <base-btn>
+                <base-btn @click="showModalEnableSmsVerification">
                   {{ $t('settings.enable') }}
                 </base-btn>
               </div>
@@ -658,6 +662,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    chooseNecessarySkills() {
+      this.ShowModal({
+        key: modals.chooseNecessarySkills,
+      });
+    },
     selectAddress(address) {
       this.localUserData.additionalInfo.address = this.address;
       this.addresses = [];
@@ -729,12 +738,17 @@ export default {
         };
       }
     },
+    showModalEnableSmsVerification() {
+      this.ShowModal({
+        key: modals.smsVerification,
+      });
+    },
     showModalImageOk() {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Image loaded successful',
-        subtitle: 'Please press save button',
+        title: this.$t('modals.imageLoadedSuccessful'),
+        subtitle: this.$t('modals.pressSaveBtn'),
         path: '/settings',
       });
     },
@@ -742,8 +756,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Education add successful',
-        subtitle: 'Please press save button',
+        title: this.$t('modals.educationAddSuccessful'),
+        subtitle: this.$t('modals.pressSaveBtn'),
         path: '/settings',
       });
     },
@@ -751,8 +765,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Work experience add successful',
-        subtitle: 'Please press save button',
+        title: this.$t('modals.workExpAddSuccessful'),
+        subtitle: this.$t('modals.pressSaveBtn'),
         path: '/settings',
       });
     },
@@ -760,8 +774,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Saved',
-        subtitle: 'User data has been saved',
+        title: this.$t('modals.saved'),
+        subtitle: this.$t('modals.userDataHasBeenSaved'),
         path: '/settings',
       });
     },
@@ -786,14 +800,17 @@ export default {
       this.$router.push('/sms-verification');
     },
     async changeRole() {
-      try {
-        const response = await this.$store.dispatch('user/setUserRole');
-        if (response?.ok) {
-          console.log('good response');
-        }
-      } catch (e) {
-        console.log(e);
-      }
+      this.ShowModal({
+        key: modals.changeRoleWarning,
+      });
+      // try {
+      //   const response = await this.$store.dispatch('user/setUserRole');
+      //   if (response?.ok) {
+      //     console.log('good response');
+      //   }
+      // } catch (e) {
+      //   console.log(e);
+      // }
     },
     async changePassword() {
       try {
@@ -1038,6 +1055,10 @@ export default {
     justify-content: flex-end;
     align-items: center;
     display: flex;
+    transition: .5s;
+    &:hover {
+      transform: scale(1.08);
+    }
   }
 }
 .icon {

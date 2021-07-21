@@ -8,7 +8,7 @@
         {{ title || options.title || 'Default' }}
       </div>
       <button
-        v-if="!options.isUnclosable"
+        v-if="!isUnclosable"
         class="ctm-modal__x"
         @click="close()"
       >

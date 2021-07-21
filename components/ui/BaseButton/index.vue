@@ -122,9 +122,9 @@ export default {
     }
   }
   &_grey {
-    background-color: $black100;
+    background-color: $black0;
     &:hover {
-      background: $black200;
+      background: $black100;
     }
   }
   &_back {

@@ -1,6 +1,10 @@
 /* eslint-disable no-param-reassign */
 
 export default {
+  // setEnabled2FA(state, payload) {
+  //   state.tokens.access = payload.access;
+  //   state.user.confirmCode = payload.result;
+  // },
   setTokens(state, payload) {
     state.tokens.access = payload.access;
     state.tokens.refresh = payload.refresh;

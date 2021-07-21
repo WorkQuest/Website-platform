@@ -99,7 +99,10 @@
             <div class="btn__container">
               <div class="btn__wrapper">
                 <div>
-                  <base-btn mode="black">
+                  <base-btn
+                    mode="black"
+                    @click="goToAppleStore"
+                  >
                     {{ $t('modals.appleStore') }}
                     <template v-slot:left>
                       <img
@@ -112,7 +115,10 @@
               </div>
               <div class="btn__wrapper">
                 <div>
-                  <base-btn mode="black">
+                  <base-btn
+                    mode="black"
+                    @click="goToGooglePlay"
+                  >
                     {{ $t('modals.googlePlay') }}
                     <template v-slot:left>
                       <img
@@ -133,16 +139,17 @@
           <div class="ctm-modal__content-field">
             <span class="content__text">{{ $t('modals.useYourGoogleAuth') }}</span>
             <div class="qr__container">
-              <img
-                alt=""
-                src="~/assets/img/temp/qr.svg"
-              >
+              <qrcode
+                :value="code || 1"
+                :options="{ width: 200 }"
+              />
             </div>
             <span class="content__text">{{ $t('modals.ifYouCantScanBarcode') }}</span>
-            <div class="flex__two-cols">
-              <div class="code__container">
-                <span class="code__text">{{ code }}</span>
-              </div>
+            <div class="code__input">
+              <base-field
+                v-model="code"
+                :placeholder="code"
+              />
               <div>
                 <button
                   v-clipboard:copy="code"
@@ -163,10 +170,11 @@
         >
           <div class="ctm-modal__content-field">
             <span class="content__text">{{ $t('modals.pleaseSaveThisKey') }}</span>
-            <div class="flex__two-cols">
-              <div class="code__container">
-                <span class="code__text">{{ code }}</span>
-              </div>
+            <div class="code__input">
+              <base-field
+                v-model="code"
+                :placeholder="code"
+              />
               <div>
                 <button
                   v-clipboard:success="ClipboardSuccessHandler"
@@ -200,7 +208,6 @@
               :is-hide-error="true"
               :label="$t('modals.conformationCodeFromMail')"
               :placeholder="$t('modals.conformationCodeFromMail')"
-              mode="icon"
             />
           </div>
           <div class="ctm-modal__content-field">
@@ -210,7 +217,6 @@
               :is-hide-error="true"
               :label="$t('modals.twoFAConfirmationCode')"
               :placeholder="$t('modals.twoFAConfirmationCode')"
-              mode="icon"
             />
           </div>
         </div>
@@ -289,8 +295,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'ModalDeposit',
@@ -299,7 +304,7 @@ export default {
       step: 1,
       confirmEmailCode: '',
       twoFACode: '',
-      code: 'GA4HUMTLLBOXIXSASH',
+      code: '',
     };
   },
   computed: {
@@ -307,8 +312,17 @@ export default {
       options: 'modals/getOptions',
       userData: 'user/getUserData',
     }),
+    // ...mapActions({
+    //   enable2FA: 'user/enable2FA',
+    // }),
   },
   methods: {
+    goToGooglePlay(to, from, next) {
+      window.location.href = 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2';
+    },
+    goToAppleStore(to, from, next) {
+      window.location.href = 'https://apps.apple.com/ru/app/google-authenticator/id388497605';
+    },
     hide() {
       this.CloseModal();
     },
@@ -330,7 +344,6 @@ export default {
   &__two-cols {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
   }
 }
 
@@ -367,6 +380,12 @@ export default {
 }
 
 .code {
+  &__input {
+    padding: 10px 0 0 0;
+    display: grid;
+    grid-template-columns: 6fr 1fr;
+    grid-gap: 10px;
+  }
   &__container {
     display: flex;
     border: 1px solid $black0;

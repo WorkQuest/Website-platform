@@ -107,9 +107,10 @@ export default {
 .grid {
   &__2col {
     display: grid;
-    grid-template-columns: 49% 49%;
+    grid-template-columns: repeat(2, 1fr);
     justify-content: space-between;
     align-items: flex-end;
+    grid-gap: 10px;
   }
 }
 .btn {

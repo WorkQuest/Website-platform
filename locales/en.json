@@ -19,7 +19,8 @@
     "goToChat": "Go to chat",
     "dispute":"Open dispute",
     "responded": "Respond send",
-    "sendARequest": "Send a request"
+    "sendARequest": "Send a request",
+    "view": "View"
   },
 
   "distance" : {
@@ -135,7 +136,12 @@
     "showAllReviews": "Show all reviews",
     "later": "Later",
     "iAgree": "I agree",
-    "next": "Next"
+    "next": "Next",
+    "continue": "Continue",
+    "change": "Change",
+    "apply": "Apply",
+    "connectSMSVer": "Connect SMS Verification",
+    "resendSMS": "Resend SMS"
   },
   "priority": {
     "title": "Priority",
@@ -288,6 +294,29 @@
       "participants": "Participants",
       "chatName": "Chat name"
     },
+    "review": "Review",
+    "haventSMS": "Haven’t got SMS?",
+    "SMSVerConnected": "SMS Verification connected",
+    "phoneNumber": "Phone number",
+    "enterPhone": "Enter your phone number to confirm SMS verification",
+    "enterSMSCode" : "We have sent verification code to your phone number. Enter this code",
+    "codeFromSMS": "Code from SMS",
+    "smsVerification": "SMS verification",
+    "saved": "Saved",
+    "userDataHasBeenSaved": "User data has been saved",
+    "workExpAddSuccessful": "Work experience add successful",
+    "educationAddSuccessful": "Education add successful",
+    "pressSaveBtn": "Please press save button",
+    "imageLoadedSuccessful": "Image loaded successful",
+    "success": "Success",
+    "yourRoleHasBeenChanged": "Your role has been changed",
+    "chooseSkills": "Choose necessary skills",
+    "securityCheck": "Security check",
+    "googleConfCode": "Google confirmation code",
+    "enterCode": "Enter the 6-digit code from the Google Authentication app",
+    "warning": "Warning",
+    "pleaseDescribe": "Please describe the reason to change the role",
+    "ifYouChangeRole": "If you change role now, you can change this only one month later. Do you want to continue?",
     "toYourEmail": "To your email address",
     "codeHasBeenSent": "code has been sent",
     "switchOnGoogleAuth": "Switch on Google Authenticator",

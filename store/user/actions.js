@@ -1,4 +1,8 @@
 export default {
+  // async enable2FA({ commit }, payload) {
+  //   const response = await this.$axios.$post('/v1/totp/enable', payload);
+  //   commit('setEnabled2FA', response.result);
+  // },
   async signIn({ commit, dispatch }, payload) {
     const response = await this.$axios.$post('/v1/auth/login', payload);
     commit('setTokens', response.result);

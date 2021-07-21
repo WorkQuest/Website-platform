@@ -55,8 +55,14 @@
       <CtmModalSecurityCheck v-if="modals.securityCheck === currentModalKey" />
       <CtmModalSharing v-if="modals.sharingQuest === currentModalKey" />
       <CtmModalCopiedSuccess v-if="modals.copiedSuccess === currentModalKey" />
+      <CtmModalChangeRoleWarning v-if="modals.changeRoleWarning === currentModalKey" />
+      <CtmModalChangeRoleReason v-if="modals.changeRoleReason === currentModalKey" />
+      <CtmModalChangeRoleSecureCheck v-if="modals.changeRoleSecureCheck === currentModalKey" />
+      <CtmModalChooseNecessarySkills v-if="modals.chooseNecessarySkills === currentModalKey" />
       <CtmModalCreditingLoan v-if="modals.creditingLoan === currentModalKey" />
       <CtmModalConfirmLoanDetails v-if="modals.confirmLoanDetails === currentModalKey" />
+      <CtmModalSmsVerification v-if="modals.smsVerification === currentModalKey" />
+      <CtmModalReviewDetails v-if="modals.reviewDetails === currentModalKey" />
       <CtmModalChatCreate v-if="modals.chatCreate === currentModalKey" />
     </div>
   </transition>
@@ -110,6 +116,12 @@ import CtmModalSecurityCheck from './CtmModalSecurityCheck';
 import CtmModalSharing from './CtmModalSharing';
 import CtmModalCopiedSuccess from './CtmModalCopiedSuccess';
 import CtmModalChatCreate from './CtmModalChatCreate';
+import CtmModalChangeRoleWarning from './CtmModalChangeRoleWarning';
+import CtmModalChangeRoleReason from './CtmModalChangeRoleReason';
+import CtmModalChangeRoleSecureCheck from './CtmModalChangeRoleSecureCheck';
+import CtmModalChooseNecessarySkills from './CtmModalChooseNecessarySkills';
+import CtmModalSmsVerification from './CtmModalSmsVerification';
+import CtmModalReviewDetails from './CtmModalReviewDetails';
 
 export default {
   name: 'ModalBox',
@@ -159,6 +171,12 @@ export default {
     CtmModalSecurityCheck,
     CtmModalSharing,
     CtmModalCopiedSuccess,
+    CtmModalChangeRoleWarning,
+    CtmModalChangeRoleReason,
+    CtmModalChangeRoleSecureCheck,
+    CtmModalChooseNecessarySkills,
+    CtmModalSmsVerification,
+    CtmModalReviewDetails,
     CtmModalChatCreate,
   },
   data: () => ({
