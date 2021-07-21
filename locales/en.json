@@ -19,7 +19,8 @@
     "goToChat": "Go to chat",
     "dispute":"Open dispute",
     "responded": "Respond send",
-    "sendARequest": "Send a request"
+    "sendARequest": "Send a request",
+    "view": "View"
   },
 
   "distance" : {
@@ -284,6 +285,14 @@
     "startQuest": "Start quest"
   },
   "modals": {
+    "saved": "Saved",
+    "userDataHasBeenSaved": "User data has been saved",
+    "workExpAddSuccessful": "Work experience add successful",
+    "educationAddSuccessful": "Education add successful",
+    "pressSaveBtn": "Please press save button",
+    "imageLoadedSuccessful": "Image loaded successful",
+    "success": "Success",
+    "yourRoleHasBeenChanged": "Your role has been changed",
     "chooseSkills": "Choose necessary skills",
     "securityCheck": "Security check",
     "googleConfCode": "Google confirmation code",

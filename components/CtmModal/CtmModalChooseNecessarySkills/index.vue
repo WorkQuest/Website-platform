@@ -53,7 +53,7 @@
             <div class="btn__wrapper">
               <base-btn
                 class="btn__apply"
-                @click="hide()"
+                @click="success()"
               >
                 {{ $t('meta.apply') }}
               </base-btn>
@@ -116,8 +116,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/success.svg'),
-        title: 'Success',
-        subtitle: 'Your role has been changed',
+        title: this.$t('modals.success'),
+        subtitle: this.$t('modals.yourRoleHasBeenChanged'),
       });
     },
   },

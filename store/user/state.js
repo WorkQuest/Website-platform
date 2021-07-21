@@ -9,4 +9,7 @@ export default () => ({
   userDataPassword: {},
   userSendCode: {},
   imageLink: {},
+  secretKey: '',
+  confirmCode: '',
+  totp: '',
 });

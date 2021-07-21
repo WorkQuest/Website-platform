@@ -250,7 +250,10 @@
                               </div>
                             </div>
                             <div class="notify__action">
-                              <button class="notify__btn">
+                              <button
+                                class="notify__btn"
+                                @click="showNotifications"
+                              >
                                 <span class="notify__text notify__text_btn">
                                   Paint the garage quickly
                                 </span>
@@ -285,7 +288,10 @@
                               </div>
                             </div>
                             <div class="notify__action">
-                              <button class="notify__btn">
+                              <button
+                                class="notify__btn"
+                                @click="showNotifications"
+                              >
                                 <span class="notify__text notify__text_btn">
                                   Paint the garage quickly
                                 </span>
@@ -848,6 +854,10 @@ export default {
       this.closeAnother('notify');
       this.isShowNotify = !this.isShowNotify;
     },
+    showNotifications() {
+      this.$router.push('/notifications');
+      this.isShowNotify = !this.isShowNotify;
+    },
     showAdditionalMenu() {
       this.closeAnother('instruments');
       this.isShowAdditionalMenu = !this.isShowAdditionalMenu;
@@ -1125,9 +1135,13 @@ export default {
     align-items: center;
     justify-content: space-between;
     padding: 0 10px;
+    transition: .5s;
     span:before {
       color: #0083C7;
       font-size: 24px;
+    }
+    &:hover {
+      background: #dadade;
     }
   }
   &__action {

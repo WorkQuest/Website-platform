@@ -387,6 +387,7 @@
           <div class="page__badge-skills">
             {{ $t('settings.skills') }}
           </div>
+          <!--          TODO: Вывести баджи со скилами из state, полученные из модалки-->
           <div
             v-for="(item, i) in userSkills"
             :key="i"
@@ -743,8 +744,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Image loaded successful',
-        subtitle: 'Please press save button',
+        title: this.$t('modals.imageLoadedSuccessful'),
+        subtitle: this.$t('modals.pressSaveBtn'),
         path: '/settings',
       });
     },
@@ -752,8 +753,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Education add successful',
-        subtitle: 'Please press save button',
+        title: this.$t('modals.educationAddSuccessful'),
+        subtitle: this.$t('modals.pressSaveBtn'),
         path: '/settings',
       });
     },
@@ -761,8 +762,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Work experience add successful',
-        subtitle: 'Please press save button',
+        title: this.$t('modals.workExpAddSuccessful'),
+        subtitle: this.$t('modals.pressSaveBtn'),
         path: '/settings',
       });
     },
@@ -770,8 +771,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Saved',
-        subtitle: 'User data has been saved',
+        title: this.$t('modals.saved'),
+        subtitle: this.$t('modals.userDataHasBeenSaved'),
         path: '/settings',
       });
     },
