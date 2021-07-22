@@ -53,4 +53,5 @@ export default {
   smsVerification: 'smsVerification',
   reviewDetails: 'reviewDetails',
   chatCreate: 'chatCreate',
+  payment: 'payment',
 };
