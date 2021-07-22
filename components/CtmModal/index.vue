@@ -64,6 +64,7 @@
       <CtmModalSmsVerification v-if="modals.smsVerification === currentModalKey" />
       <CtmModalReviewDetails v-if="modals.reviewDetails === currentModalKey" />
       <CtmModalChatCreate v-if="modals.chatCreate === currentModalKey" />
+      <CtmModalPayment v-if="modals.payment === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -122,6 +123,7 @@ import CtmModalChangeRoleSecureCheck from './CtmModalChangeRoleSecureCheck';
 import CtmModalChooseNecessarySkills from './CtmModalChooseNecessarySkills';
 import CtmModalSmsVerification from './CtmModalSmsVerification';
 import CtmModalReviewDetails from './CtmModalReviewDetails';
+import CtmModalPayment from './CtmModalPayment';
 
 export default {
   name: 'ModalBox',
@@ -178,6 +180,7 @@ export default {
     CtmModalSmsVerification,
     CtmModalReviewDetails,
     CtmModalChatCreate,
+    CtmModalPayment,
   },
   data: () => ({
     modals,

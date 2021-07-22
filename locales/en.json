@@ -294,6 +294,9 @@
       "participants": "Participants",
       "chatName": "Chat name"
     },
+    "yourLevelHasBeenRaised": "Your level has been raised",
+    "payment": "Payment",
+    "cardHolder": "Cardholder name",
     "review": "Review",
     "haventSMS": "Haven’t got SMS?",
     "SMSVerConnected": "SMS Verification connected",
@@ -563,6 +566,14 @@
     "savingProduct": "Savings product",
     "crediting": "Crediting",
     "liquidityMining": "Liquidity mining"
+  },
+  "raising-views": {
+    "raisingViews": "Raising views",
+    "choosePeriod": "Choose period",
+    "forOneDay": "For 1 day",
+    "forOneWeek": "For 1 week",
+    "forOneMonth": "For 1 month",
+    "chooseLevel": "Choose level"
   },
   "disputes": {
     "disputes": "Disputes",
