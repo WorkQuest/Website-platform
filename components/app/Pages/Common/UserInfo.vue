@@ -96,7 +96,10 @@
         <div class="contacts">
           <ContactPanel />
           <div class="btn__container">
-            <base-btn v-if="userRole === 'worker'">
+            <base-btn
+              v-if="userRole === 'worker'"
+              @click="toRaisedViews()"
+            >
               {{ $t('profile.raiseViews') }}
             </base-btn>
             <span
@@ -168,6 +171,9 @@ export default {
   methods: {
     showMessages() {
       this.$router.push('/messages/1');
+    },
+    toRaisedViews() {
+      this.$router.push('/raise-views');
     },
   },
 };
