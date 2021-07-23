@@ -533,7 +533,7 @@
                   class="margin__bottom"
                   @click="disable2FA"
                 >
-                  Disable
+                  {{ $t('meta.disable') }}
                 </base-btn>
                 <base-btn
                   @click="modalTwoFAAuth()"
