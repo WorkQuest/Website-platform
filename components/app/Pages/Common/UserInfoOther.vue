@@ -146,7 +146,7 @@ export default {
       this.$router.push('/messages/1');
     },
     toRaisedViews() {
-      this.$router.push('raising-views');
+      this.$router.push('/raising-views');
     },
   },
 };
