@@ -529,7 +529,15 @@
                 {{ $t('settings.enableTwoStepAuth') }}
               </div>
               <div>
-                <base-btn @click="modalTwoFAAuth()">
+                <base-btn
+                  class="margin__bottom"
+                  @click="disable2FA"
+                >
+                  {{ $t('meta.disable') }}
+                </base-btn>
+                <base-btn
+                  @click="modalTwoFAAuth()"
+                >
                   {{ $t('settings.enable') }}
                 </base-btn>
               </div>
@@ -537,7 +545,9 @@
             <div class="settings_blue">
               <div>{{ $t('settings.smsVerification') }}</div>
               <div>
-                <base-btn @click="showModalEnableSmsVerification">
+                <base-btn
+                  @click="showModalEnableSmsVerification"
+                >
                   {{ $t('settings.enable') }}
                 </base-btn>
               </div>
@@ -649,6 +659,7 @@ export default {
       imageData: 'user/getImageData',
       additionalInfo: 'user/getAdditionalInfo',
       getUserAddress: 'user/getUserAddress',
+      status2FA: 'data/get2FAStatus',
     }),
   },
   async mounted() {
@@ -662,6 +673,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    disable2FA() {
+      this.ShowModal({
+        key: modals.disable2FA,
+      });
+    },
     chooseNecessarySkills() {
       this.ShowModal({
         key: modals.chooseNecessarySkills,
@@ -891,6 +907,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.margin {
+  &__bottom {
+    margin-bottom: 10px;
+  }
+}
 
 .selector {
   @include box;

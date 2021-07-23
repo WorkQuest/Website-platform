@@ -141,7 +141,8 @@
     "change": "Change",
     "apply": "Apply",
     "connectSMSVer": "Connect SMS Verification",
-    "resendSMS": "Resend SMS"
+    "resendSMS": "Resend SMS",
+    "disable": "Disable"
   },
   "priority": {
     "title": "Priority",
@@ -294,6 +295,7 @@
       "participants": "Participants",
       "chatName": "Chat name"
     },
+    "disable2Fa": "Disable 2FA",
     "yourLevelHasBeenRaised": "Your level has been raised",
     "payment": "Payment",
     "cardHolder": "Cardholder name",

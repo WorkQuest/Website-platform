@@ -173,7 +173,7 @@ export default {
       this.$router.push('/messages/1');
     },
     toRaisedViews() {
-      this.$router.push('/raise-views');
+      this.$router.push('/raising-views');
     },
   },
 };
