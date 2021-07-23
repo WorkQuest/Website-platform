@@ -140,19 +140,19 @@
             <span class="content__text">{{ $t('modals.useYourGoogleAuth') }}</span>
             <div class="qr__container">
               <qrcode
-                :value="code || 1"
+                :value="qrLink || 1"
                 :options="{ width: 200 }"
               />
             </div>
             <span class="content__text">{{ $t('modals.ifYouCantScanBarcode') }}</span>
             <div class="code__input">
               <base-field
-                v-model="code"
-                :placeholder="code"
+                v-model="codeFromApi"
+                :placeholder="codeFromApi"
               />
               <div>
                 <button
-                  v-clipboard:copy="code"
+                  v-clipboard:copy="codeFromApi"
                   v-clipboard:success="ClipboardSuccessHandler"
                   v-clipboard:error="ClipboardErrorHandler"
                   class="btn__copy"
@@ -172,14 +172,14 @@
             <span class="content__text">{{ $t('modals.pleaseSaveThisKey') }}</span>
             <div class="code__input">
               <base-field
-                v-model="code"
-                :placeholder="code"
+                v-model="codeFromApi"
+                :placeholder="codeFromApi"
               />
               <div>
                 <button
                   v-clipboard:success="ClipboardSuccessHandler"
                   v-clipboard:error="ClipboardErrorHandler"
-                  v-clipboard:copy="code"
+                  v-clipboard:copy="codeFromApi"
                   class="btn__copy"
                   type="button"
                 >
@@ -232,7 +232,7 @@
             >
               <base-btn
                 class="message__action"
-                @click="nextStep()"
+                @click="nextStepWithEnable2FA()"
               >
                 {{ $t('meta.next') }}
               </base-btn>
@@ -270,7 +270,7 @@
             >
               <base-btn
                 class="message__action"
-                @click="hide()"
+                @click="confirmEnable2FA()"
               >
                 {{ $t('meta.next') }}
               </base-btn>
@@ -304,7 +304,8 @@ export default {
       step: 1,
       confirmEmailCode: '',
       twoFACode: '',
-      code: '',
+      codeFromApi: '',
+      qrLink: '',
     };
   },
   computed: {
@@ -312,9 +313,6 @@ export default {
       options: 'modals/getOptions',
       userData: 'user/getUserData',
     }),
-    // ...mapActions({
-    //   enable2FA: 'user/enable2FA',
-    // }),
   },
   methods: {
     goToGooglePlay(to, from, next) {
@@ -322,6 +320,32 @@ export default {
     },
     goToAppleStore(to, from, next) {
       window.location.href = 'https://apps.apple.com/ru/app/google-authenticator/id388497605';
+    },
+    async enable2FA() {
+      try {
+        const response = await this.$store.dispatch('data/enable2FA');
+        if (response?.ok) {
+          this.codeFromApi = response.result;
+          this.qrLink = `otpauth://totp/${this.userData.email}?secret=${this.codeFromApi}&issuer=WorkQuest.co`;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async confirmEnable2FA() {
+      try {
+        const payload = {
+          confirmCode: this.confirmEmailCode,
+          totp: this.twoFACode,
+        };
+        const response = await this.$store.dispatch('data/confirmEnable2FA', payload);
+        if (response?.ok) {
+          console.log(response);
+          this.hide();
+        }
+      } catch (e) {
+        console.log(e);
+      }
     },
     hide() {
       this.CloseModal();
@@ -331,6 +355,11 @@ export default {
       this.step--;
     },
     nextStep() {
+      // eslint-disable-next-line no-plusplus
+      this.step++;
+    },
+    nextStepWithEnable2FA() {
+      this.enable2FA();
       // eslint-disable-next-line no-plusplus
       this.step++;
     },

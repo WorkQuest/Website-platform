@@ -54,4 +54,5 @@ export default {
   reviewDetails: 'reviewDetails',
   chatCreate: 'chatCreate',
   payment: 'payment',
+  disable2FA: 'disable2FA',
 };

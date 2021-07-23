@@ -24,7 +24,7 @@
           </span>
           <base-field
             v-if="step === 1"
-            v-model="phoneInput"
+            v-model="phoneNumber"
             class="message__action"
             :placeholder="$t('modals.phoneNumber')"
             :is-hide-error="true"
@@ -36,7 +36,7 @@
           </base-field>
           <base-field
             v-if="step === 2"
-            v-model="codeInput"
+            v-model="confirmCode"
             class="message__action"
             :placeholder="$t('modals.codeFromSMS')"
             :is-hide-error="true"
@@ -81,14 +81,41 @@ export default {
   name: 'CtmModalChangeRoleWarning',
   data() {
     return {
-      codeInput: '',
-      phoneInput: '',
+      confirmCode: '',
+      phoneNumber: '',
       step: 1,
     };
   },
   methods: {
     hide() {
       this.CloseModal();
+    },
+    async sendPhoneNumber() {
+      try {
+        const payload = {
+          phoneNumber: this.phoneNumber,
+        };
+        const response = await this.$store.dispatch('data/sendPhone', payload);
+        if (response?.ok) {
+          console.log(response);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async confirmPhone() {
+      try {
+        const payload = {
+          confirmCode: this.confirmCode,
+        };
+        const response = await this.$store.dispatch('data/confirmPhone', payload);
+        if (response?.ok) {
+          console.log('Phone confirmed');
+        }
+      } catch (e) {
+        console.log(e);
+      }
     },
     success() {
       this.ShowModal({
@@ -97,8 +124,10 @@ export default {
         title: this.$t('modals.success'),
         subtitle: this.$t('modals.SMSVerConnected'),
       });
+      this.confirmPhone();
     },
     nextStep() {
+      this.sendPhoneNumber();
       // eslint-disable-next-line no-plusplus
       this.step++;
     },
