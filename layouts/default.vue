@@ -391,7 +391,7 @@
               <base-btn
                 v-if="userRole === 'employer'"
                 class="header__btn"
-                @click="createNewQuest()"
+                @click="createNewQuest('pc')"
               >
                 {{ $t('layout.create') }}
               </base-btn>
@@ -543,7 +543,7 @@
                   <base-btn
                     v-if="userRole === 'employer'"
                     class="ctm__btn"
-                    @click="createNewQuest()"
+                    @click="createNewQuest('mobile')"
                   >
                     {{ $t('layout.create') }}
                   </base-btn>
@@ -841,8 +841,11 @@ export default {
         this.$router.push('/workers');
       }
     },
-    createNewQuest() {
+    createNewQuest(platform) {
       this.$router.push('/create-quest');
+      if (platform === 'mobile') {
+        this.toggleMobileMenu();
+      }
     },
     goToMessages() {
       this.$router.push('/messages');
@@ -1064,7 +1067,6 @@ export default {
       background: $white;
       display: flex;
       width: 100%;
-      height: max-content;
       position: fixed;
       top: 73px;
       bottom: 0;
