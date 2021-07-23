@@ -837,6 +837,7 @@ export default {
     },
     createNewQuest() {
       this.$router.push('/create-quest');
+      this.toggleMobileMenu();
     },
     goToMessages() {
       this.$router.push('/messages');
@@ -1054,7 +1055,6 @@ export default {
       background: $white;
       display: flex;
       width: 100%;
-      height: max-content;
       position: fixed;
       top: 73px;
       bottom: 0;
