@@ -4,7 +4,6 @@
     class="auth"
     tag="div"
   >
-    <!--    <div id="test" />-->
     <div class="auth__container">
       <div class="auth__text auth__text_title">
         <span>{{ $t('signIn.title') }}</span>
@@ -124,14 +123,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-//
-// try {
-//   let refresh_token_from_mobile;
-//   let access_token_from_mobile;
-//   document.getElementById('test').innerText = `Tokens:\nRefresh ${refresh_token_from_mobile}\nAccess ${access_token_from_mobile}`;
-// } catch (e) {
-//   document.getElementById('test').innerText = 'Tokens not found';
-// }
 
 export default {
   name: 'SignIn',
