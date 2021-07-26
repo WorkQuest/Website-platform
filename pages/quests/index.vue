@@ -161,6 +161,7 @@
               <div class="block__actions">
                 <div class="block__status">
                   <div
+                    v-if="item.priority"
                     class="block__priority"
                     :class="getPriorityClass(item.priority)"
                   >

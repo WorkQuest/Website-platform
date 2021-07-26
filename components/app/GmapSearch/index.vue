@@ -297,21 +297,24 @@ export default {
     }
   }
 }
-@include _1199 {
+
+@include _1300 {
   .search {
     grid-template-columns: repeat(4, auto);
     &__actions, &__toggle {
       padding: 10px;
     }
   }
+  .gmap {
+    &__search {
+      width: 80%;
+    }
+  }
+}
+@include _1199 {
   .map__container {
     padding-left: 20px;
     padding-right: 20px;
-  }
-  .gmap {
-    &__search {
-      width: 90%;
-    }
   }
 }
 @include _767 {

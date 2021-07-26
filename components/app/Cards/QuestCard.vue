@@ -123,7 +123,9 @@
                     v-if="isHideStatus(item.type)"
                     class="block__status"
                   >
+                    {{ item.priority }}
                     <div
+                      v-if="item.priority"
                       class="block__priority"
                       :class="getPriorityClass(item.priority)"
                     >
@@ -291,7 +293,8 @@ export default {
   &__container {
     @extend .styles__full;
     display: grid;
-    grid-template-columns: 0.2fr 0.6fr 1fr;
+    grid-template-columns: auto 0.6fr 1fr;
+    grid-gap: 10px;
     margin: 10px 0 4px 0;
   }
 }
