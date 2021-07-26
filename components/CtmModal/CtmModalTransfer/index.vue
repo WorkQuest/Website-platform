@@ -8,7 +8,7 @@
         <base-field
           id="date"
           v-model="date"
-          :label="$t('modals.address')"
+          :label="$t('modals.toAddress')"
           :placeholder="'0 WUSD'"
         />
       </div>
