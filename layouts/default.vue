@@ -32,14 +32,14 @@
                   class="header__link"
                   :exact-active-class="'header__link_active'"
                 >
-                  {{ $t('ui.workers') }}
+                  {{ $t('ui.jobQuestors') }}
                 </nuxt-link>
                 <nuxt-link
                   to="/my"
                   class="header__link"
                   :exact-active-class="'header__link_active'"
                 >
-                  {{ $t('quests.MyQuests') }}
+                  {{ $t('ui.myQuests') }}
                 </nuxt-link>
                 <nuxt-link
                   to="/wallet"
@@ -53,7 +53,7 @@
                   :class="{'header__link_active': isShowAdditionalMenu}"
                   @click="showAdditionalMenu()"
                 >
-                  {{ $t('ui.profile.instruments') }}
+                  {{ $t('ui.profile.DeFi') }}
                   <span class="icon-caret_down" />
                   <transition name="fade">
                     <div

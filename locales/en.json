@@ -446,6 +446,7 @@
     "successCopied": "Wallet number has been copied"
   },
   "ui": {
+    "jobQuestors": "Job Questors",
     "workers": "Workers",
     "wallet": "Wallet",
     "myQuests": "My quests",
@@ -456,6 +457,7 @@
       "settings": "Settings",
       "disputes": "Disputes",
       "instruments": "Instruments",
+      "DeFi": "DeFi functionality",
       "logout": "Logout"
     },
     "locals": {
