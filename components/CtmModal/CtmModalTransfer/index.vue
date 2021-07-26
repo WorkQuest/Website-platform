@@ -6,16 +6,24 @@
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
         <base-field
-          id="date"
+          id="from"
+          v-model="date"
+          :label="$t('modals.fromAddress')"
+          :placeholder="$t('modals.address')"
+        />
+      </div>
+      <div class="ctm-modal__content-field">
+        <base-field
+          id="to"
           v-model="date"
           :label="$t('modals.toAddress')"
-          :placeholder="'0 WUSD'"
+          :placeholder="$t('modals.address')"
         />
       </div>
       <base-dd
         id="value_dd"
         type="gray"
-        :label="$t('modals.value')"
+        :label="$t('modals.amount')"
         :items="items"
       />
       <div class="ctm-modal__content-field">
