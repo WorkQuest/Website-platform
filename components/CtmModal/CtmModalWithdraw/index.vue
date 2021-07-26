@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="withdrawal"
-    :title="$t('modals.withdraw')"
+    :title="$t('modals.withdrawCard')"
   >
     <div class="ctm-modal__content">
       <div class="grid__3col">
@@ -10,7 +10,7 @@
             id="amount_input"
             :label="$t('modals.amount')"
             :is-hide-error="true"
-            :placeholder="'0 WDX'"
+            :placeholder="'0 WUSD'"
           />
         </div>
         <div class="ctm-modal__equal">
@@ -37,7 +37,7 @@
           <base-field
             id="date_input"
             v-model="date"
-            :label="$t('modals.date')"
+            :label="$t('modals.cardDate')"
             :placeholder="'02/24'"
           />
         </div>
@@ -69,7 +69,7 @@
             class="btn_bl"
             @click="showTransactionSendModal()"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.confirm') }}
           </base-btn>
         </div>
       </div>

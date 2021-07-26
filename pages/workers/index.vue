@@ -175,7 +175,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -193,7 +193,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'RELIABLE EMP.',
+            title: 'RELIABLE EMPLOYEE',
             code: 2,
           },
           specialization: [
@@ -211,7 +211,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'CHECKED BY TIME',
+            title: 'CHECKED BY TIME EMPLOYEE',
             code: 3,
           },
           specialization: [
@@ -265,7 +265,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -283,7 +283,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -301,7 +301,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -319,7 +319,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -337,7 +337,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -355,7 +355,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -373,7 +373,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -391,7 +391,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -409,7 +409,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -427,7 +427,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -445,7 +445,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [

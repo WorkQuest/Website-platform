@@ -150,7 +150,7 @@ export default () => ({
       id: 2,
     },
     {
-      title: 'Performed quests',
+      title: 'Completed quests',
       id: 3,
     },
     {

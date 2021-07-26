@@ -22,7 +22,7 @@
       </div>
       <div class="grid__2col">
         <div class="ctm-modal__content-field">
-          <label for="date_input">{{ $t('modals.date') }}</label>
+          <label for="date_input">{{ $t('modals.expirationDate') }}</label>
           <base-field
             id="date_input"
             v-model="date_input"
@@ -44,7 +44,7 @@
             class="message__action"
             @click="showCardHasBeenAddedModal()"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.confirm') }}
           </base-btn>
         </div>
         <div class="btn__wrapper">

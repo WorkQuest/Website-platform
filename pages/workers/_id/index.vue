@@ -27,7 +27,7 @@
                 <div class="title title_inline">
                   {{ user.name }}
                   <span class="level">
-                    HIGHER LEVEL
+                    HIGHER LEVEL EMPLOYEE
                   </span>
                 </div>
                 <div class="description">
@@ -65,7 +65,7 @@
                 class="btn_green"
                 @click="showModalGiveQuest()"
               >
-                {{ $t('workers.giveAQuest') }}
+                {{ $t('workers.inviteQuestor') }}
               </base-btn>
             </div>
           </div>
@@ -121,7 +121,7 @@
               alt="star"
             >
           </div>
-          <div>{{ $t('workers.from') }} 23 {{ $t('workers.reviews') }}</div>
+          <div>{{ $t('workers.based') }} 23 {{ $t('workers.reviews') }}</div>
         </div>
       </div>
       <div class="information-section">
