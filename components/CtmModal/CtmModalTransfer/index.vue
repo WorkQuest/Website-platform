@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.withdraw')"
+    :title="$t('modals.sendTo')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
@@ -32,7 +32,7 @@
             class="message__action"
             @click="showTransactionSendModal()"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.confirm') }}
           </base-btn>
         </div>
         <div class="btn__wrapper">
