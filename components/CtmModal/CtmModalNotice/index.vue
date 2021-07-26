@@ -15,7 +15,7 @@
             {{ $t('modals.notice') }}
           </div>
           <div class="modal__desc">
-            {{ modalBody[0] }}
+            {{ $t('modals.noticeDesc') }}
           </div>
           <base-btn
             class="email__action"
@@ -38,11 +38,6 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-    modalBody() {
-      return [
-        this.$t('modals.lorem'),
-      ];
-    },
   },
   methods: {
     hide() {

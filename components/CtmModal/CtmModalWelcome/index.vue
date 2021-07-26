@@ -27,7 +27,7 @@
           class="message__action"
           @click="hide()"
         >
-          {{ $t('meta.submit') }}
+          {{ $t('meta.confirm') }}
         </base-btn>
       </div>
       <div class="btn__wrapper">
@@ -36,7 +36,7 @@
           class="message__action"
           @click="hide()"
         >
-          {{ $t('meta.later') }}
+          {{ $t('meta.remindLater') }}
         </base-btn>
       </div>
     </div>
@@ -123,9 +123,9 @@ export default {
 .modal {
   overflow: visible;
   max-width: 413px !important;
-  height: 292px;
+  height: 320px;
   &__header {
-    height: 131px;
+    height: 180px;
     width: 100%;
     background: linear-gradient(135deg, #0083C7 0%, #00AA5B 100%);
   }

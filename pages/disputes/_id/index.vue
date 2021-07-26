@@ -10,7 +10,7 @@
           <span class="dispute__back_text">{{ $t('disputes.Dispute') }}</span>
         </div>
         <div class="dispute__number">
-          №87974121
+          № 87974121
         </div>
         <div class="dispute__status">
           {{ $t('disputes.pending') }}

@@ -206,8 +206,8 @@
               id="confirmEmailCode"
               v-model="confirmEmailCode"
               :is-hide-error="true"
-              :label="$t('modals.conformationCodeFromMail')"
-              :placeholder="$t('modals.conformationCodeFromMail')"
+              :label="$t('modals.emailVerificationCode')"
+              :placeholder="$t('modals.emailPlaceholder')"
             />
           </div>
           <div class="ctm-modal__content-field">
@@ -215,8 +215,8 @@
               id="twoFACode"
               v-model="twoFACode"
               :is-hide-error="true"
-              :label="$t('modals.twoFAConfirmationCode')"
-              :placeholder="$t('modals.twoFAConfirmationCode')"
+              :label="$t('modals.googleVerificationCode')"
+              :placeholder="$t('modals.codePlaceholder')"
             />
           </div>
         </div>

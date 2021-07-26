@@ -48,7 +48,7 @@ export default {
       abouts: [
         {
           title: this.$t('modals.depositing'),
-          subtitle: 1 + this.$t('modals.eth'),
+          subtitle: 0 + this.$t('modals.eth'),
         },
         {
           title: this.$t('modals.generating'),
