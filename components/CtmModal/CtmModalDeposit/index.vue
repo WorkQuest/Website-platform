@@ -13,7 +13,7 @@
             class="step-panel__step"
             :class="[{'step-panel__step_active': step === 1}, {'hide': step === 3}]"
           >
-            {{ $t('wallet.cryptoWallet') }}
+            {{ $t('wallet.WUSD') }}
           </div>
           <div
             class="step-panel__step"
@@ -144,7 +144,7 @@
                 class="message__action"
                 @click="nextStep()"
               >
-                {{ $t('meta.submit') }}
+                {{ $t('meta.confirm') }}
               </base-btn>
             </span>
             <span
@@ -155,7 +155,7 @@
                 class="message__action"
                 @click="hide()"
               >
-                {{ $t('meta.submit') }}
+                {{ $t('meta.buyWUSD') }}
               </base-btn>
             </span>
           </div>

@@ -45,7 +45,7 @@
                 <div
                   class="chat-menu__text"
                 >
-                  {{ $t('chat.starredMessage') }}
+                  {{ $t('chat.favoriteMessages') }}
                 </div>
               </div>
               <div
@@ -54,7 +54,7 @@
                 <div
                   class="chat-menu__text"
                 >
-                  {{ $t('chat.starredChats') }}
+                  {{ $t('chat.favoriteChats') }}
                 </div>
               </div>
               <div

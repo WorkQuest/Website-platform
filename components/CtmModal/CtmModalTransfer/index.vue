@@ -1,21 +1,29 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.withdraw')"
+    :title="$t('modals.sendTo')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
         <base-field
-          id="date"
+          id="from"
           v-model="date"
-          :label="$t('modals.address')"
-          :placeholder="'0 WUSD'"
+          :label="$t('modals.fromAddress')"
+          :placeholder="$t('modals.address')"
+        />
+      </div>
+      <div class="ctm-modal__content-field">
+        <base-field
+          id="to"
+          v-model="date"
+          :label="$t('modals.toAddress')"
+          :placeholder="$t('modals.address')"
         />
       </div>
       <base-dd
         id="value_dd"
         type="gray"
-        :label="$t('modals.value')"
+        :label="$t('modals.amount')"
         :items="items"
       />
       <div class="ctm-modal__content-field">
@@ -32,7 +40,7 @@
             class="message__action"
             @click="showTransactionSendModal()"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.confirm') }}
           </base-btn>
         </div>
         <div class="btn__wrapper">

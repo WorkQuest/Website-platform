@@ -238,24 +238,15 @@ export default {
       distance: 'data/getDistance',
       locations: 'data/getLocations',
       checkWelcomeModal: 'modals/getIsShowWelcome',
-      // cards: 'data/getAllQuests',
+      userRole: 'user/getUserRole',
     }),
   },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
-    this.showWelcomeModal();
-    await this.getAllQuests();
+    this.getAllQuests();
   },
   methods: {
-    showWelcomeModal() {
-      if (this.checkWelcomeModal === true) {
-        this.ShowModal({
-          key: modals.welcome,
-        });
-      }
-      this.$store.dispatch('modals/checkWelcomeModal', false);
-    },
     getAllQuests() {
       return this.$store.dispatch('data/getAllQuests');
     },
