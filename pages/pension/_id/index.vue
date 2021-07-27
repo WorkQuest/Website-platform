@@ -58,7 +58,7 @@
                   {{ $tc('pension.plusPercents', '6') }}
                 </div>
                 <div class="info-block__period">
-                  {{ $t('pension.everyYear') }}
+                  {{ $t('pension.year') }}
                 </div>
               </div>
               <div>
@@ -137,10 +137,10 @@
             </div>
             <div class="info-block__small_right">
               <div class="info-block__perc">
-                {{ $tc("pension.plusPercents", "6.5") }}
+                {{ $tc("pension.plusPercents", "6") }}
               </div>
               <div class="info-block__period">
-                {{ $t('pension.everyYear') }}
+                {{ $t('pension.year') }}
               </div>
             </div>
             <div class="text-cont">
