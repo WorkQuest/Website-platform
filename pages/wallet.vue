@@ -402,4 +402,11 @@ export default {
     }
   }
 }
+@include _350 {
+  .wallet {
+    &__nav {
+      flex-direction: column;
+    }
+  }
+}
 </style>

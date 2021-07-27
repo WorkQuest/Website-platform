@@ -186,6 +186,7 @@ export default {
     display: flex;
     border-left: 1px solid #F7F8FA;
     justify-items: center;
+    align-items: center;
     height: 100%;
   }
   &__icon {
