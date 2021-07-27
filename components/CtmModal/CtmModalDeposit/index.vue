@@ -13,7 +13,7 @@
             class="step-panel__step"
             :class="[{'step-panel__step_active': step === 1}, {'hide': step === 3}]"
           >
-            {{ $t('wallet.cryptoWallet') }}
+            {{ $t('wallet.WUSD') }}
           </div>
           <div
             class="step-panel__step"
@@ -29,11 +29,10 @@
           <div
             class="ctm-modal__content-field"
           >
-            <label for="amount_input">{{ $t('modals.amount') }}</label>
             <base-field
-              id="amount_input"
-              v-model="amount_input"
+              v-model="amountInput"
               :placeholder="'0 WUSD'"
+              :label="$t('modals.amount')"
             />
           </div>
         </div>
@@ -43,11 +42,10 @@
         >
           <div class="grid__3col">
             <div class="ctm-modal__content-field">
-              <label for="amount_input2">{{ $t('modals.amount') }}</label>
               <base-field
-                id="amount_input2"
-                v-model="amount_input"
+                v-model="amountInput"
                 :placeholder="'0 WUSD'"
+                :label="$t('modals.amount')"
               />
             </div>
             <div class="ctm-modal__equal">
@@ -55,18 +53,18 @@
             </div>
             <div class="ctm-modal__content-field">
               <base-field
-                v-model="balance_input"
+                v-model="balanceInput"
                 mode="white"
                 :placeholder="'$ 0'"
               />
             </div>
           </div>
           <div class="ctm-modal__content-field">
-            <label for="cardNumber_input">{{ $t('modals.numberOfCard') }}</label>
             <base-field
               id="cardNumber_input"
-              v-model="cardNumber_input"
-              :placeholder="'1234 1234 1234 1234'"
+              v-model="cardNumberInput"
+              :placeholder="'0000 0000 0000 0000'"
+              :label="$t('modals.numberOfCard')"
             />
           </div>
           <div
@@ -75,19 +73,17 @@
             <div
               class="ctm-modal__content-field"
             >
-              <label for="date_input">{{ $t('modals.date') }}</label>
               <base-field
-                id="date_input"
-                v-model="date_input"
+                v-model="dateInput"
                 :placeholder="'02/24'"
+                :label="$t('modals.date')"
               />
             </div>
             <div class="ctm-modal__content-field">
-              <label for="cvv_input">{{ $t('modals.cvv') }}</label>
               <base-field
-                id="cvv_input"
-                v-model="cvv_input"
+                v-model="cvvInput"
                 :placeholder="'242'"
+                :label="$t('modals.cvv')"
               />
             </div>
           </div>
@@ -144,7 +140,7 @@
                 class="message__action"
                 @click="nextStep()"
               >
-                {{ $t('meta.submit') }}
+                {{ $t('meta.confirm') }}
               </base-btn>
             </span>
             <span
@@ -155,7 +151,7 @@
                 class="message__action"
                 @click="hide()"
               >
-                {{ $t('meta.submit') }}
+                {{ $t('meta.buyWUSD') }}
               </base-btn>
             </span>
           </div>
@@ -182,11 +178,11 @@ export default {
   name: 'ModalDeposit',
   data() {
     return {
-      amount_input: '',
-      balance_input: '',
-      cardNumber_input: '',
-      date_input: '',
-      cvv_input: '',
+      amountInput: '',
+      balanceInput: '',
+      cardNumberInput: '',
+      dateInput: '',
+      cvvInput: '',
       step: 1,
       code: '0xf376g...G7f3g8b',
     };

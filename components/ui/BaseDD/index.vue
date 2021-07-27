@@ -1,75 +1,83 @@
 <template>
-  <div
-    v-click-outside="hideDd"
-    class="dd"
-    :class="[{'dd__top': mode === 'top' }]"
-  >
-    <button
-      class="dd__btn"
-      :class="ddClass"
-      @click="isShown = !isShown"
+  <div>
+    <div
+      v-if="label !== ''"
+      :class="[{'ctm-field__header' : !tip}, {'ctm-field__header ctm-field__header_mar5' : tip}]"
     >
-      <div
-        v-if="isIcon"
-        class="dd__icon"
+      {{ label }}
+    </div>
+    <div
+      v-click-outside="hideDd"
+      class="dd"
+      :class="[{'dd__top': mode === 'top' }]"
+    >
+      <button
+        class="dd__btn"
+        :class="ddClass"
+        @click="isShown = !isShown"
       >
-        <img
-          :src="items[value].icon"
-          :alt="items[value].title"
-        >
-        <span
-          class="dd__title"
-        >
-          {{ items[value].title }}
-        </span>
-      </div>
-      <span
-        v-else
-        class="dd__title"
-      >
-        {{ items[value] }}
-      </span>
-      <span
-        v-if="type === 'sort'"
-        class="dd__caret dd__caret_dark icon-Sorting_descending"
-      />
-      <span
-        v-else
-        class="dd__caret icon-caret_down"
-      />
-    </button>
-    <transition name="fade">
-      <div
-        v-if="isShown && isIcon"
-        class="dd__items"
-      >
-        <button
-          v-for="(item, i) in items"
-          :key="`dd__item-${i}`"
-          class="dd__item dd__item_icon"
-          @click="selectItem(i)"
+        <div
+          v-if="isIcon"
+          class="dd__icon"
         >
           <img
-            :src="item.icon"
-            :alt="item.title"
+            :src="items[value].icon"
+            :alt="items[value].title"
           >
-          {{ item.title }}
-        </button>
-      </div>
-      <div
-        v-if="isShown && !isIcon"
-        class="dd__items"
-      >
-        <button
-          v-for="(item, i) in items"
-          :key="`dd__item-${i}`"
-          class="dd__item"
-          @click="selectItem(i)"
+          <span
+            class="dd__title"
+          >
+            {{ items[value].title }}
+          </span>
+        </div>
+        <span
+          v-else
+          class="dd__title"
         >
-          {{ item }}
-        </button>
-      </div>
-    </transition>
+          {{ items[value] }}
+        </span>
+        <span
+          v-if="type === 'sort'"
+          class="dd__caret dd__caret_dark icon-Sorting_descending"
+        />
+        <span
+          v-else
+          class="dd__caret icon-caret_down"
+        />
+      </button>
+      <transition name="fade">
+        <div
+          v-if="isShown && isIcon"
+          class="dd__items"
+        >
+          <button
+            v-for="(item, i) in items"
+            :key="`dd__item-${i}`"
+            class="dd__item dd__item_icon"
+            @click="selectItem(i)"
+          >
+            <img
+              :src="item.icon"
+              :alt="item.title"
+            >
+            {{ item.title }}
+          </button>
+        </div>
+        <div
+          v-if="isShown && !isIcon"
+          class="dd__items"
+        >
+          <button
+            v-for="(item, i) in items"
+            :key="`dd__item-${i}`"
+            class="dd__item"
+            @click="selectItem(i)"
+          >
+            {{ item }}
+          </button>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -85,6 +93,14 @@ export default {
     items: {
       type: Array,
       default: () => [],
+    },
+    label: {
+      type: String,
+      default: '',
+    },
+    tip: {
+      type: String,
+      default: '',
     },
     value: {
       type: Number,
@@ -128,6 +144,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.ctm-field__header {
+  letter-spacing: -0.025em;
+  margin-bottom: 13px;
+  height: 24px;
+  color: #212529;
+}
 .dd {
   display: flex;
   align-items: center;

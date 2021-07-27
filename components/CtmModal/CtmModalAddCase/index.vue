@@ -9,15 +9,11 @@
           <div class="modal__desc">
             <Uploader />
             <div>
-              <label
-                for="title_input"
-                class="ctm-modal__label"
-              >{{ $t('modals.title') }}</label>
-              <input
-                id="title_input"
-                class="input_grey"
-                placeholder="3 500"
-              >
+              <base-field
+                v-model="text"
+                :label="$t('modals.title')"
+                :mode="'gray'"
+              />
             </div>
             <div class="message__wrapper">
               <p class="modal__labelMessage">

@@ -5,7 +5,7 @@
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__desc">
-        {{ $t('modals.template') }}
+        {{ $t('saving.withdrawModalBody') }}
       </div>
       <div class="ctm-modal__content-btns">
         <div class="btn-group">
@@ -19,7 +19,7 @@
             class="btn_bl"
             @click="hide()"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.confirm') }}
           </base-btn>
         </div>
       </div>

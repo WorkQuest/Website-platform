@@ -2,7 +2,7 @@
   <div class="main-white">
     <div class="main__body">
       <h2 class="page__title">
-        {{ $t('quests.createANewQuest') }}
+        {{ $t('quests.createAQuest') }}
       </h2>
       <div class="page__category">
         <div class="page__dd">
@@ -73,7 +73,7 @@
             </div>
             <div class="picker__body">
               <div class="picker__number">
-                {{ pickerValue }}
+                {{ pickerValue }} {{ $t('quests.hours') }}
               </div>
             </div>
             <div class="btn__container btn__right">
@@ -106,6 +106,9 @@
           {{ $t('quests.uploadQuestMaterials') }}
         </div>
         <div>
+          <div class="upload__title">
+            {{ $t('quests.uploadMaterials') }}
+          </div>
           <dropzone
             id="uploader"
             ref="el"
@@ -123,7 +126,7 @@
         />
       </div>
       <div class="ads__container">
-        <div>{{ $t('quests.typeOfAd') }}</div>
+        <div>{{ $t('quests.ads.promoteYourQuest') }}</div>
         <div class="btn__container btn__container_left">
           <div class="btn__ads">
             <button
@@ -131,7 +134,7 @@
               :class="{'base-btn__passive': adMode1 === true}"
               @click="setAd()"
             >
-              {{ $t('quests.free') }}
+              {{ $t('quests.ads.publishForFree') }}
             </button>
           </div>
           <div class="btn__ads">
@@ -140,7 +143,7 @@
               :class="{'base-btn__passive': adMode2 === true}"
               @click="setAd()"
             >
-              {{ $t('quests.paid') }}
+              {{ $t('quests.ads.boostYourPublications') }}
             </button>
           </div>
         </div>
@@ -149,11 +152,11 @@
           class="ads__paid"
         >
           <div class="price__container">
-            <label for="priceOfClick">{{ $t('quests.priceOfAClick') }}</label>
+            <label for="priceOfClick">{{ $t('quests.ads.costPerClick') }}</label>
             <base-field
               id="priceOfClick"
               v-model="priceOfClick"
-              placeholder="200 WUSD"
+              placeholder="0 WUSD"
             />
           </div>
           <div class="price__container">
@@ -161,7 +164,7 @@
             <base-field
               id="city__input"
               v-model="city"
-              placeholder="Moscow"
+              :placeholder="$t('quests.selectLocation')"
             />
           </div>
           <div class="price__container">
@@ -234,10 +237,10 @@ export default {
         'Retail',
       ],
       periods: [
-        '1 Day',
-        '1 Week',
-        '1 Month',
-        '1 Year',
+        '1 Days',
+        '1 Weeks',
+        '1 Months',
+        '1 Years',
       ],
       addresses: [],
       optionsModal: {
@@ -317,7 +320,11 @@ export default {
         const response = this.$store.dispatch('data/questCreate', createQuestData);
         if (response) {
           this.ShowModal({
-            key: modals.questCreated,
+            key: modals.status,
+            img: require('~/assets/img/ui/questAgreed.svg'),
+            title: this.$t('modals.yourSkillsHaveBeenAdded'),
+            subtitle: this.$t('modals.youCanUpdateThisInYourProfile'),
+            path: '/settings',
           });
         }
       } catch (e) {

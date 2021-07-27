@@ -8,15 +8,11 @@
         {{ errorMsg ? $t('errors.incorrectPass') : null }}
       </div>
       <div class="ctm-modal__content-field">
-        <label
-          for="currentPassword_input"
-          class="ctm-modal__label"
-        >{{ $t('modals.currentPassword') }}</label>
         <base-field
-          id="currentPassword_input"
-          v-model="currentPassword_input"
+          v-model="currentPasswordInput"
           :is-hide-error="true"
           :placeholder="'******'"
+          :label="$t('modals.currentPassword')"
           mode="icon"
           type="password"
         >
@@ -26,15 +22,11 @@
         </base-field>
       </div>
       <div class="ctm-modal__content-field">
-        <label
-          for="newPassword_input"
-          class="ctm-modal__label"
-        >{{ $t('modals.newPassword') }}</label>
         <base-field
-          id="newPassword_input"
-          v-model="newPassword_input"
+          v-model="newPasswordInput"
           :is-hide-error="true"
           :placeholder="'******'"
+          :label="$t('modals.newPassword')"
           mode="icon"
           type="password"
         >
@@ -44,15 +36,11 @@
         </base-field>
       </div>
       <div class="ctm-modal__content-field">
-        <label
-          for="confirmNewPassword_input"
-          class="ctm-modal__label"
-        >{{ $t('modals.confirmNewPassword') }}</label>
         <base-field
-          id="confirmNewPassword_input"
-          v-model="confirmNewPassword_input"
+          v-model="confirmNewPasswordInput"
           :is-hide-error="true"
           :placeholder="'******'"
+          :label="$t('modals.confirmNewPassword')"
           mode="icon"
           type="password"
         >
@@ -82,9 +70,9 @@ export default {
   name: 'ModalOpenADeposit',
   data() {
     return {
-      currentPassword_input: '',
-      newPassword_input: '',
-      confirmNewPassword_input: '',
+      currentPasswordInput: '',
+      newPasswordInput: '',
+      confirmNewPasswordInput: '',
       errorMsg: '',
     };
   },
@@ -96,8 +84,8 @@ export default {
   methods: {
     async hide() {
       const payload = {
-        oldPassword: this.currentPassword_input,
-        newPassword: this.confirmNewPassword_input,
+        oldPassword: this.currentPasswordInput,
+        newPassword: this.confirmNewPasswordInput,
       };
       try {
         const response = await this.$store.dispatch('user/editUserPassword', payload);

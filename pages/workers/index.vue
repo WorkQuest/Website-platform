@@ -131,6 +131,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import GmapSearchBlock from '~/components/app/GmapSearch';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'IndexVue',
@@ -174,7 +175,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -192,7 +193,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'RELIABLE EMP.',
+            title: 'RELIABLE EMPLOYEE',
             code: 2,
           },
           specialization: [
@@ -210,7 +211,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'CHECKED BY TIME',
+            title: 'CHECKED BY TIME EMPLOYEE',
             code: 3,
           },
           specialization: [
@@ -264,7 +265,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -282,7 +283,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -300,7 +301,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -318,7 +319,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -336,7 +337,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -354,7 +355,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -372,7 +373,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -390,7 +391,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -408,7 +409,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -426,7 +427,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -444,7 +445,7 @@ export default {
           name: 'Rosalia Vans',
           img: require('~/assets/img/temp/fake-card.svg'),
           level: {
-            title: 'HIGHER LEVEL',
+            title: 'HIGHER LEVEL EMPLOYEE',
             code: 1,
           },
           specialization: [
@@ -492,8 +493,19 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
+    if (this.userRole === 'employer') {
+      this.showWelcomeModal();
+    }
   },
   methods: {
+    showWelcomeModal() {
+      if (this.checkWelcomeModal === true) {
+        this.ShowModal({
+          key: modals.welcome,
+        });
+      }
+      this.$store.dispatch('modals/checkWelcomeModal', false);
+    },
     showDetails() {
       this.$router.push('/workers/1');
     },

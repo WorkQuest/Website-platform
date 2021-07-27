@@ -5,25 +5,19 @@
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
-        <label
-          for="depositPercent_input"
-          class="ctm-modal__label"
-        >{{ $t('modals.depositPercentFromAQuest') }}</label>
         <base-field
-          id="depositPercent_input"
+          v-model="depositPercentFromAQuest"
           :is-hide-error="true"
-          :placeholder="'13%'"
+          :placeholder="'0%'"
+          :label="$t('modals.depositPercentFromAQuest')"
         />
       </div>
       <div class="ctm-modal__content-field">
-        <label
-          for="amount_input"
-          class="ctm-modal__label"
-        >{{ $t('modals.firstDepositAmount') }}</label>
         <base-field
-          id="amount_input"
+          v-model="firstDepositAmount"
           :is-hide-error="true"
-          :placeholder="'130 WUSD'"
+          :placeholder="'0 WUSD'"
+          :label="$t('modals.firstDepositAmount')"
         />
         <div class="ctm-modal__subtitle">
           {{ $t('modals.aboutFirstDeposit') }}
@@ -56,7 +50,10 @@ import modals from '~/store/modals/modals';
 export default {
   name: 'ModalApplyForAPension',
   data() {
-    return {};
+    return {
+      depositPercentFromAQuest: '',
+      firstDepositAmount: '',
+    };
   },
   computed: {
     ...mapGetters({

@@ -5,36 +5,32 @@
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
-        <label for="cardNumber_input">{{ $t('modals.numberOfCard') }}</label>
         <base-field
-          id="cardNumber_input"
-          v-model="cardNumber_input"
-          :placeholder="'1234 1234 1234 1234'"
+          v-model="cardNumberInput"
+          :placeholder="'0000 0000 0000 0000'"
+          :label="$t('modals.numberOfCard')"
         />
       </div>
       <div class="ctm-modal__content-field">
-        <label for="name_input">{{ $t('modals.cardholderName') }}</label>
         <base-field
-          id="name_input"
-          v-model="name_input"
+          v-model="nameInput"
           placeholder="John Doe"
+          :label="$t('modals.cardholderName')"
         />
       </div>
       <div class="grid__2col">
         <div class="ctm-modal__content-field">
-          <label for="date_input">{{ $t('modals.date') }}</label>
           <base-field
-            id="date_input"
-            v-model="date_input"
+            v-model="dateInput"
             :placeholder="'02/24'"
+            :label="$t('modals.expirationDate')"
           />
         </div>
         <div class="ctm-modal__content-field">
-          <label for="cvv_input">{{ $t('modals.cvv') }}</label>
           <base-field
-            id="cvv_input"
-            v-model="cvv_input"
+            v-model="cvvInput"
             placeholder="242"
+            :label="$t('modals.cvv')"
           />
         </div>
       </div>
@@ -44,7 +40,7 @@
             class="message__action"
             @click="showCardHasBeenAddedModal()"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.confirm') }}
           </base-btn>
         </div>
         <div class="btn__wrapper">
@@ -69,10 +65,10 @@ export default {
   name: 'ModalAddCard',
   data() {
     return {
-      cardNumber_input: '',
-      name_input: '',
-      date_input: '',
-      cvv_input: '',
+      cardNumberInput: '',
+      nameInput: '',
+      dateInput: '',
+      cvvInput: '',
     };
   },
   computed: {

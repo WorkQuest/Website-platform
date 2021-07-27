@@ -162,7 +162,7 @@
         >
           <base-field
             v-model="localUserData.additionalInfo.company"
-            :placeholder="company || $t('settings.amazon')"
+            :placeholder="company || $t('settings.company')"
             mode="icon"
           >
             <template v-slot:left>
@@ -180,7 +180,7 @@
           </base-field>
           <base-field
             v-model="localUserData.additionalInfo.website"
-            :placeholder="userWebsite || $t('settings.amazon_com')"
+            :placeholder="userWebsite || $t('settings.website')"
             mode="icon"
           >
             <template v-slot:left>
@@ -195,7 +195,7 @@
             id="textarea"
             v-model="localUserData.additionalInfo.description"
             class="profile__textarea"
-            :placeholder="userDesc || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel'"
+            :placeholder="userDesc || $t('settings.userDesc')"
           />
         </div>
         <div
@@ -217,7 +217,7 @@
                 id="knowledge"
                 v-model="localUserData.additionalInfo.educations[i].from"
                 type="grey"
-                :placeholder="$t('settings.term')"
+                :placeholder="$t('settings.education.from')"
               />
               <div class="knowledge__dash">
                 -
@@ -225,13 +225,13 @@
               <base-field
                 v-model="localUserData.additionalInfo.educations[i].to"
                 type="grey"
-                :placeholder="$t('settings.term')"
+                :placeholder="$t('settings.education.to')"
               />
               <div />
               <base-field
                 v-model="localUserData.additionalInfo.educations[i].place"
                 type="grey"
-                :placeholder="$t('settings.placeOfStudying')"
+                :placeholder="$t('settings.education.educationalInstitution')"
               />
               <div />
               <base-btn @click="deleteKnowledge(i)">
@@ -245,7 +245,7 @@
             <base-field
               v-model="newKnowledge.from"
               type="grey"
-              :placeholder="$t('settings.term')"
+              :placeholder="$t('settings.workExps.from')"
             />
             <div class="knowledge__dash">
               -
@@ -253,13 +253,13 @@
             <base-field
               v-model="newKnowledge.to"
               type="grey"
-              :placeholder="$t('settings.term')"
+              :placeholder="$t('settings.workExps.to')"
             />
             <div />
             <base-field
               v-model="newKnowledge.place"
               type="grey"
-              :placeholder="$t('settings.placeOfStudying')"
+              :placeholder="$t('settings.workExps.companyName')"
             />
             <div />
             <base-btn @click="addNewKnowledge()">
@@ -335,7 +335,7 @@
         <div class="profile__row-4col">
           <base-field
             v-model="localUserData.additionalInfo.socialNetwork.instagram"
-            :placeholder="userInstagram || $t('settings.socialInput')"
+            :placeholder="userInstagram || $t('settings.instagramUsername')"
             mode="icon"
           >
             <template v-slot:left>
@@ -344,7 +344,7 @@
           </base-field>
           <base-field
             v-model="localUserData.additionalInfo.socialNetwork.twitter"
-            :placeholder="userTwitter || $t('settings.socialInput')"
+            :placeholder="userTwitter || $t('settings.twitterUsername')"
             mode="icon"
           >
             <template v-slot:left>
@@ -353,7 +353,7 @@
           </base-field>
           <base-field
             v-model="localUserData.additionalInfo.socialNetwork.linkedin"
-            :placeholder="userLinkedin || $t('settings.socialInput')"
+            :placeholder="userLinkedin || $t('settings.linkedInUsername')"
             mode="icon"
           >
             <template v-slot:left>
@@ -362,7 +362,7 @@
           </base-field>
           <base-field
             v-model="localUserData.additionalInfo.socialNetwork.facebook"
-            :placeholder="userFacebook || $t('settings.socialInput')"
+            :placeholder="userFacebook || $t('settings.facebookUsername')"
             mode="icon"
           >
             <template v-slot:left>
@@ -456,7 +456,7 @@
           </div>
           <div>
             <div class="settings__subtitle">
-              {{ $t('settings.filterAllWorkProposals') }}
+              {{ $t('settings.filterAllEmployeeProfiles') }}
             </div>
             <div class="settings__option">
               <input
@@ -464,12 +464,12 @@
                 name="filterAllWorkProposals"
                 type="radio"
                 class="radio__input"
-                value="urgentProposals"
+                value="urgentJobOffers"
               >
               <label
                 class="label__black"
                 for="urgentProposals"
-              >{{ $t('settings.urgentProposals') }}</label>
+              >{{ $t('settings.urgentJobOffers') }}</label>
             </div>
             <div class="settings__option">
               <input
@@ -477,12 +477,12 @@
                 name="filterAllWorkProposals"
                 type="radio"
                 class="radio__input"
-                value="onlyImplementation"
+                value="shortTermJobOffers"
               >
               <label
                 class="label__black"
                 for="onlyImplementation"
-              >{{ $t('settings.onlyImplementation') }}</label>
+              >{{ $t('settings.shortTermJobOffers') }}</label>
             </div>
             <div class="settings__option">
               <input
@@ -490,26 +490,12 @@
                 name="filterAllWorkProposals"
                 type="radio"
                 class="radio__input"
-                value="onlyReady"
+                value="fixedDeliveryJobOffers"
               >
               <label
                 class="label__black"
                 for="onlyReady"
-              >{{ $t('settings.onlyReady') }}</label>
-            </div>
-            <div class="settings__option">
-              <input
-                id="allRegistered"
-                name="filterAllWorkProposals"
-                type="radio"
-                class="radio__input"
-                value="allRegistered"
-                checked
-              >
-              <label
-                class="label__black"
-                for="allRegistered"
-              >{{ $t('settings.allRegistered') }}</label>
+              >{{ $t('settings.fixedDeliveryJobOffers') }}</label>
             </div>
           </div>
         </div>
