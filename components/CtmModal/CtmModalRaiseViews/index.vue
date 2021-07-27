@@ -9,7 +9,7 @@
           id="priceOfAClick"
           v-model="priceOfAClick"
           :label="$t('modals.priceOfAClick')"
-          :placeholder="'230 WUSD'"
+          :placeholder="'0 WUSD'"
         />
         <base-field
           id="city"
@@ -29,7 +29,7 @@
           {{ $t('modals.estimatedPayment') }}
         </div>
         <div class="payment__cost">
-          120 WUSD
+          0 WUSD
         </div>
       </div>
       <div class="btn__container">

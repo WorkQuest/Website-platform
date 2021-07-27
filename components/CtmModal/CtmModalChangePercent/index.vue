@@ -8,13 +8,9 @@
         {{ $t('modals.changePercentDesc') }}
       </div>
       <div class="ctm-modal__content-field">
-        <label
-          for="currPerc_input"
-          class="ctm-modal__label"
-        >{{ $t('modals.currentPercent') }}</label>
         <base-field
-          id="currPerc_input"
           v-model="amount"
+          :label="$t('modals.currentPercent')"
           :is-hide-error="true"
           :placeholder="'0%'"
         />

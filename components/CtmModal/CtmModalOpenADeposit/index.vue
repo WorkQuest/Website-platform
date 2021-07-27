@@ -12,7 +12,8 @@
         <base-field
           id="depositPercent_input"
           :is-hide-error="true"
-          :placeholder="'3 500'"
+          :placeholder="'0'"
+          :label="$t('modals.lockedSavings')"
         />
       </div>
       <div class="ctm-modal__content-field">
@@ -23,7 +24,7 @@
         <base-field
           id="amount_input"
           :is-hide-error="true"
-          :placeholder="'180'"
+          :placeholder="'0'"
         />
       </div>
       <div class="ctm-modal__content-btns">
@@ -69,7 +70,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/transactionSend.svg'),
         title: this.$t('saving.depositIsOpened'),
-        subTitle: '',
+        subtitle: this.$t('saving.depositModalBody'),
         path: '/savings/1',
       });
     },

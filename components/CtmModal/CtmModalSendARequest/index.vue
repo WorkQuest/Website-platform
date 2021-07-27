@@ -8,9 +8,9 @@
         <div class="message__content">
           <div class="modal__desc">
             <div class="message__wrapper">
-              <p class="modal__labelMessage">
+              <label for="textarea" class="modal__labelMessage">
                 {{ $t('modals.message') }}
-              </p>
+              </label>
               <div>
                 <textarea
                   id="textarea"

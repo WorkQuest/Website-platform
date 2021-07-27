@@ -5,14 +5,10 @@
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
-        <label
-          for="depositAmount_input"
-          class="ctm-modal__label"
-        >{{ $t('modals.depositAmount') }}</label>
         <base-field
-          id="depositAmount_input"
-          v-model="amount_input"
+          v-model="amountInput"
           :is-hide-error="true"
+          :label="$t('modals.depositAmount') "
           :placeholder="'0 WUSD'"
         />
       </div>
@@ -43,7 +39,7 @@ export default {
   name: 'ModalApplyForAPension',
   data() {
     return {
-      amount_input: '',
+      amountInput: '',
     };
   },
   computed: {

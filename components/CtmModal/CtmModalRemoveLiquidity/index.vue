@@ -11,7 +11,7 @@
               id="withdrawalAmount"
               :is-hide-error="true"
               :label="$t('modals.withdrawalAmount')"
-              :placeholder="'1000 WUSD'"
+              :placeholder="'0 WUSD'"
             />
           </div>
           <div class="ctm-modal__content-field">

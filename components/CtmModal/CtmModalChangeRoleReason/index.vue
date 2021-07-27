@@ -1,17 +1,17 @@
 <template>
   <ctm-modal-box
-    isUnclosable="true"
+    is-unclosable="true"
     :title="$t('modals.reason')"
     class="messageSend"
   >
     <div class="ctm-modal__content">
       <div class="messageSend">
         <div class="messageSend__content">
-          <span>{{ $t('modals.pleaseDescribe') }}</span>
           <base-field
             v-model="reasonInput"
             class="message__action"
             :placeholder="$t('modals.reason')"
+            :label="$t('modals.pleaseDescribe')"
           />
           <div class="btn__container">
             <div class="btn__wrapper">

@@ -52,7 +52,7 @@
       </div>
       <div class="checkbox">
         <base-checkbox
-          v-model="isShowMap"
+          v-model="isSavedCard"
           name="map"
           :label="$t('modals.saveCardForNextPayment')"
         />
@@ -88,6 +88,8 @@ export default {
       date: '',
       balance: '',
       cardNumber: '',
+      cvv: '',
+      isSavedCard: false,
     };
   },
   computed: {

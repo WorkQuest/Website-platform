@@ -22,50 +22,35 @@
                 :key="i"
                 class="checkpoint-cont"
               >
-                <input
-                  :id="item.name"
+                <base-field
                   v-model="selCurrencyID"
                   type="radio"
                   class="checkpoint"
-                  :value="item.id"
-                >
-                <label
-                  class=""
-                  :for="item.name"
-                >
-                  {{ item.name }}
-                </label>
+                  :label="item.name"
+                />
               </div>
             </div>
           </div>
           <div class="ctm-modal__content-field">
-            <label
-              for="amountOfETH_input"
-              class="ctm-modal__label"
-            >{{ $t('modals.howMuchEthWouldYouLikeToLock') }}</label>
             <div class="ctm-modal__subtitle">
               {{ $t('modals.smallTemp') }}
             </div>
             <base-field
-              id="amountOfETH_input"
               :is-hide-error="true"
               class="input"
-              :placeholder="'10 ETH'"
+              :placeholder="'0 ETH'"
+              :label="$t('modals.howMuchEthWouldYouLikeToLock')"
             />
           </div>
           <div class="ctm-modal__content-field">
-            <label
-              for="amountOfWUSD_input"
-              class="ctm-modal__label"
-            >{{ $t('modals.howMuchWusdWouldYouLikeToGenerate') }}</label>
             <div class="ctm-modal__subtitle">
               {{ $t('modals.smallTemp') }}
             </div>
             <base-field
-              id="amountOfWUSD_input"
               :is-hide-error="true"
               class="input"
-              :placeholder="'1000 WUSD'"
+              :placeholder="'0 WUSD'"
+              :label="$t('modals.howMuchWusdWouldYouLikeToGenerate')"
             />
             <div class="ctm-modal__title-head" />
             <div class="ctm-modal__subtitle">

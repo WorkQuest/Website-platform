@@ -8,14 +8,11 @@
         <div class="message__content">
           <div class="modal__desc">
             <div>
-              <label
-                for="reason-dd"
-                class="ctm-modal__label"
-              >{{ $t('modals.reason') }}</label>
               <base-dd
                 id="reason-dd"
                 type="gray"
                 :items="items"
+                :label="$t('modals.reason')"
               />
             </div>
             <div class="btn__container">
