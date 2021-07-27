@@ -40,12 +40,59 @@ import { mapGetters } from 'vuex';
 export default {
   scrollToTop: true,
   name: 'AuthLayout',
+  data: () => ({
+    getTokensFromMobileInterval: null,
+    accessTokenMobile: null,
+    refreshTokenMobile: null,
+  }),
   computed: {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
+      userData: 'user/getUserData',
     }),
   },
+  watch: {
+    accessTokenMobile: {
+      immediate: true,
+      async handler() {
+        if (this.accessTokenMobile && this.refreshTokenMobile) {
+          try {
+            const payload = {
+              access: this.accessTokenMobile,
+              refresh: this.refreshTokenMobile,
+            };
+            this.$store.commit('user/setTokens', payload);
+            await this.$store.dispatch('user/getUserData');
+            if (this.userData.role === 'employer') {
+              await this.$router.push('/workers');
+            } else if (this.userData.role === 'worker') {
+              await this.$router.push('/quests');
+            } else if (response.result.userStatus === 2) {
+              await this.$router.push('/role');
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        }
+      },
+    },
+  },
+  mounted() {
+    this.getTokensFromMobile();
+  },
+  beforeDestroy() {
+    if (this.getTokensFromMobileInterval) {
+      clearInterval(this.getTokensFromMobileInterval);
+      this.getTokensFromMobileInterval = null;
+    }
+  },
   methods: {
+    getTokensFromMobile() {
+      this.getTokensFromMobileInterval = setInterval(() => {
+        this.accessTokenMobile = localStorage.getItem('accessToken');
+        this.refreshTokenMobile = localStorage.getItem('refreshToken');
+      }, 100);
+    },
     toMain() {
       this.$router.push('/sign-in');
     },

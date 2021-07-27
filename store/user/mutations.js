@@ -10,7 +10,7 @@ export default {
     state.tokens.refresh = payload.refresh;
     this.$cookies.set('access', payload.access, { path: '/' });
     this.$cookies.set('refresh', payload.refresh, { path: '/' });
-    this.$cookies.set('userStatus', payload.userStatus, { path: '/' });
+    if (payload.userStatus) { this.$cookies.set('userStatus', payload.userStatus, { path: '/' }); }
   },
   setUserData(state, data) {
     state.userData = data;
