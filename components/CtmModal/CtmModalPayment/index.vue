@@ -9,21 +9,19 @@
           class="step__container"
         >
           <div class="ctm-modal__content-field">
-            <label for="cardNumberInput">{{ $t('modals.numberOfCard') }}</label>
             <base-field
-              id="cardNumberInput"
               v-model="cardNumberInput"
               :placeholder="'1234 1234 1234 1234'"
               :is-hide-error="true"
+              :label="$t('modals.numberOfCard')"
             />
           </div>
           <div class="ctm-modal__content-field">
-            <label for="cardHolderInput">{{ $t('modals.cardHolder') }}</label>
             <base-field
-              id="cardHolderInput"
               v-model="cardNumberInput"
               :placeholder="'1234 1234 1234 1234'"
               :is-hide-error="true"
+              :label="$t('modals.cardHolder')"
             />
           </div>
           <div
@@ -32,21 +30,19 @@
             <div
               class="ctm-modal__content-field"
             >
-              <label for="dateInput">{{ $t('modals.date') }}</label>
               <base-field
-                id="dateInput"
                 v-model="dateInput"
                 :placeholder="'02/24'"
                 :is-hide-error="true"
+                :label="$t('modals.date')"
               />
             </div>
             <div class="ctm-modal__content-field">
-              <label for="cvvInput">{{ $t('modals.cvv') }}</label>
               <base-field
-                id="cvvInput"
                 v-model="cvvInput"
                 :placeholder="'242'"
                 :is-hide-error="true"
+                :label="$t('modals.cvv')"
               />
             </div>
           </div>

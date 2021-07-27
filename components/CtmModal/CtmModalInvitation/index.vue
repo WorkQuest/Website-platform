@@ -34,11 +34,11 @@
         </div>
         <div class="grid__field">
           <div class="ctm-modal__content-field">
-            <label for="chooseQuest_input">{{ $t('modals.chooseQuest') }}</label>
             <base-dd
               v-model="questIndex"
               type="gray"
               :items="quests"
+              :label="$t('modals.chooseQuest')"
             />
           </div>
         </div>
