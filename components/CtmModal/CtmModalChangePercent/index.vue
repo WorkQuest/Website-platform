@@ -5,7 +5,7 @@
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__desc_left">
-        {{ $t('modals.lorem') }}
+        {{ $t('modals.changePercentDesc') }}
       </div>
       <div class="ctm-modal__content-field">
         <label
@@ -16,7 +16,7 @@
           id="currPerc_input"
           v-model="amount"
           :is-hide-error="true"
-          :placeholder="'15%'"
+          :placeholder="'0%'"
         />
       </div>
       <div class="ctm-modal__content-btns">
@@ -31,7 +31,7 @@
             class="btn_bl"
             @click="showPensionIsRegisteredModal()"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.confirm') }}
           </base-btn>
         </div>
       </div>
@@ -41,7 +41,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalApplyForAPension',

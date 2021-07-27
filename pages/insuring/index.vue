@@ -6,7 +6,7 @@
           {{ $t('insuring.peerToPeerInsuring') }}
         </div>
         <div class="title_sub">
-          {{ $t('insuring.templateText') }}
+          {{ $t('ui.menu.p2p.desc') }}
         </div>
       </div>
       <div class="insuring-page__content">
@@ -112,7 +112,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   data() {
@@ -136,54 +135,63 @@ export default {
       ],
       cards: [
         {
-          name: this.$t('insuring.minimalProtection'),
+          name: this.$t('insuring.card1.title'),
           points: [
-            this.$t('insuring.pointTemplate'),
-            this.$t('insuring.pointTemplate'),
-            this.$t('insuring.pointTemplate'),
+            this.$t('insuring.card1.pointsText.point1'),
           ],
         },
         {
-          name: this.$t('insuring.standartProtection'),
+          name: this.$t('insuring.card2.title'),
           points: [
-            this.$t('insuring.pointTemplate'),
-            this.$t('insuring.pointTemplate'),
-            this.$t('insuring.pointTemplate'),
+            this.$t('insuring.card2.pointsText.point1'),
           ],
         },
         {
-          name: this.$t('insuring.maximumProtection'),
+          name: this.$t('insuring.card3.title'),
           points: [
-            this.$t('insuring.pointTemplate'),
-            this.$t('insuring.pointTemplate'),
-            this.$t('insuring.pointTemplate'),
+            this.$t('insuring.card3.pointsText.point1'),
           ],
         },
       ],
       FAQs: [
         {
-          name: this.$t('insuring.faq1'),
-          about: this.$t('insuring.faq1'),
+          name: this.$t('insuring.faq1.question'),
+          about: this.$t('insuring.faq1.answer'),
           isOpen: false,
         },
         {
-          name: this.$t('insuring.faq2'),
-          about: this.$t('insuring.ans2'),
+          name: this.$t('insuring.faq2.question'),
+          about: this.$t('insuring.faq2.answer'),
           isOpen: false,
         },
         {
-          name: this.$t('insuring.faq3'),
-          about: this.$t('insuring.faq3'),
+          name: this.$t('insuring.faq3.question'),
+          about: this.$t('insuring.faq3.answer'),
           isOpen: false,
         },
         {
-          name: this.$t('insuring.faq4'),
-          about: this.$t('insuring.faq4'),
+          name: this.$t('insuring.faq4.question'),
+          about: this.$t('insuring.faq4.answer'),
           isOpen: false,
         },
         {
-          name: this.$t('insuring.faq5'),
-          about: this.$t('insuring.faq5'),
+          name: this.$t('insuring.faq5.question'),
+          about: this.$t('insuring.faq5.answer'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('insuring.faq6.question'),
+          about: this.$t('insuring.faq6.answer'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('insuring.faq7.question'),
+          about: this.$t('insuring.faq7.answer'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('insuring.faq8.question'),
+          about: this.$t('insuring.faq8.answer'),
           isOpen: false,
         },
       ],
@@ -217,7 +225,7 @@ export default {
 
   &__container {
     display: grid;
-    grid-template-rows: 195px max-content;
+    grid-template-rows: auto max-content;
     max-width: 1180px;
     grid-row-gap: 30px;
     width: 100%;

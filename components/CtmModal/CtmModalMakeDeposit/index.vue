@@ -13,7 +13,7 @@
           id="depositAmount_input"
           v-model="amount_input"
           :is-hide-error="true"
-          :placeholder="'3 500'"
+          :placeholder="'0 WUSD'"
         />
       </div>
       <div class="ctm-modal__content-btns">
@@ -28,7 +28,7 @@
             class="btn_bl"
             @click="showPensionIsRegisteredModal()"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.confirm') }}
           </base-btn>
         </div>
       </div>
@@ -38,7 +38,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalApplyForAPension',
