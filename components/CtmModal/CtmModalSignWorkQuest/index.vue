@@ -14,7 +14,7 @@
         <base-field
           v-model="userName"
           :is-hide-error="true"
-          :placeholder="'DAO username'"
+          :placeholder="$t('signWorkQuest.daoUsername')"
           mode="icon"
         >
           <template v-slot:left>
@@ -26,7 +26,7 @@
         <base-field
           v-model="userPassword"
           :is-hide-error="true"
-          :placeholder="'DAO password'"
+          :placeholder="$t('signWorkQuest.daoPass')"
           mode="icon"
         >
           <template v-slot:left>

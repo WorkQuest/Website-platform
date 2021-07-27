@@ -1,17 +1,15 @@
 <template>
   <ctm-modal-box
-    isUnclosable="true"
+    is-unclosable="true"
     :title="$t('modals.securityCheck')"
     class="messageSend"
   >
     <div class="ctm-modal__content">
       <div class="messageSend">
         <div class="messageSend__content">
-          <span class="message__top">
-            {{ $t('modals.googleConfCode') }}
-          </span>
           <base-field
             v-model="codeInput"
+            :label="$t('modals.googleConfCode')"
             class="message__action"
             :placeholder="$t('modals.googleConfCode')"
           />

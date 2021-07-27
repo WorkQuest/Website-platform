@@ -7,25 +7,19 @@
       <div class="ctm-modal__grid-cont">
         <div>
           <div class="ctm-modal__content-field">
-            <label
-              for="amountOfWusd_input"
-              class="ctm-modal__label"
-            >{{ $t('modals.amountOfWusd') }}</label>
             <base-field
-              id="amountOfWusd_input"
+              v-model="amountOfWusd"
               :is-hide-error="true"
-              :placeholder="'10 ETH'"
+              :placeholder="'0 ETH'"
+              :label="$t('modals.amountOfWusd')"
             />
           </div>
           <div class="ctm-modal__content-field">
-            <label
-              for="amountOfEth_input"
-              class="ctm-modal__label"
-            >{{ $t('modals.amountOfEth') }}</label>
             <base-field
-              id="amountOfEth_input"
+              v-model="amountOfEth"
               :is-hide-error="true"
-              :placeholder="'1000 WUSD'"
+              :placeholder="'0 WUSD'"
+              :label="$t('modals.amountOfEth')"
             />
             <div class="ctm-modal__title-head">
               {{ $t('modals.tip') }}
@@ -80,6 +74,8 @@ export default {
   name: 'ModalAddLiquidity',
   data() {
     return {
+      amountOfWusd: '',
+      amountOfEth: '',
       abouts: [
         {
           title: this.$t('modals.amountEthPerWusd'),

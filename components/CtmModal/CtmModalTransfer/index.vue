@@ -31,7 +31,7 @@
           id="cardNumber"
           v-model="cardNumber"
           :label="$t('modals.amount')"
-          :placeholder="'1234 1234 1234 1234'"
+          :placeholder="'0000 0000 0000 0000'"
         />
       </div>
       <div class="btn__container">
@@ -68,7 +68,7 @@ export default {
       date: '',
       balance: '',
       cardNumber: '',
-      items: ['1234 1234 1234 1234'],
+      items: ['0000 0000 0000 0000'],
     };
   },
   computed: {

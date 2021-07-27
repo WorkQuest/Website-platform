@@ -169,7 +169,7 @@ export default {
       FAQs: [
         {
           name: this.$t('saving.faq1'),
-          about: this.$t('saving.faq1'),
+          about: this.$t('saving.ans1'),
           isOpen: false,
         },
         {
@@ -179,17 +179,22 @@ export default {
         },
         {
           name: this.$t('saving.faq3'),
-          about: this.$t('saving.faq3'),
+          about: this.$t('saving.ans3'),
           isOpen: false,
         },
         {
           name: this.$t('saving.faq4'),
-          about: this.$t('saving.faq4'),
+          about: this.$t('saving.ans4'),
           isOpen: false,
         },
         {
           name: this.$t('saving.faq5'),
-          about: this.$t('saving.faq5'),
+          about: this.$t('saving.ans5'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('saving.faq6'),
+          about: this.$t('saving.ans6'),
           isOpen: false,
         },
       ],
@@ -212,23 +217,23 @@ export default {
       ],
       cards: [
         {
-          text: this.$t('saving.templateText'),
+          text: this.$t('saving.card1'),
           sel: false,
         },
         {
-          text: this.$t('saving.templateText'),
+          text: this.$t('saving.card2'),
           sel: false,
         },
         {
-          text: this.$t('saving.templateText'),
+          text: this.$t('saving.card3'),
           sel: false,
         },
         {
-          text: this.$t('saving.templateText'),
+          text: this.$t('saving.card4'),
           sel: false,
         },
         {
-          text: this.$t('saving.templateText'),
+          text: this.$t('saving.card5'),
           sel: false,
         },
       ],
