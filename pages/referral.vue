@@ -18,7 +18,7 @@
               {{ $t('referral.referralReward') }}
             </div>
             <div class="info-block__tokens">
-              {{ $tc('referral.wqtCount', 12) }}
+              {{ $tc('referral.wqtCount', 0) }}
             </div>
             <div class="info-block__name">
               {{ $t('referral.lastRefReward') }}
@@ -35,7 +35,7 @@
                 </div>
               </div>
               <div class="user__value_green">
-                {{ $tc('referral.plusCount', $tc('referral.wqtCount', 12)) }}
+                {{ $tc('referral.plusCount', $tc('referral.wqtCount', 0)) }}
               </div>
             </div>
           </div>
@@ -67,7 +67,7 @@
               </div>
               <div class="info-block__avatar">
                 <div class="info-block__more">
-                  {{ $tc('referral.plusCount', 17) }}
+                  {{ $tc('referral.plusCount', 0) }}
                 </div>
               </div>
             </div>

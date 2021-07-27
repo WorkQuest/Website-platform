@@ -304,6 +304,7 @@
       "participants": "Participants",
       "chatName": "Chat name"
     },
+    "changePercentDesc": "A percentage of the quest amount that will be automatically credited to your retirement account",
     "yourSkillsHaveBeenAdded": "Your skills have been successfully added.",
     "youCanUpdateThisInYourProfile": "You can easily update this in your profile.",
     "disable2Fa": "Disable 2FA",
@@ -409,10 +410,14 @@
     "thanks": "Thanks",
     "couple": "A couple words",
     "depositPercentFromAQuest": "Deposit percent from a quest",
+    "depositRetirementModalTitle": "Select a percentage of the quest amount for automatic deposit",
+    "depositRetirementModalPrecentPlaceholder": "0 % please select a percentage",
+    "depositRetirementModalAmountPlaceholder": "0 WUSD please insert the amount",
     "firstDepositAmount": "First deposit amount*",
-    "aboutFirstDeposit": "* First deposit amount is optional. If you do not want to make a deposit, you may leave this field empty",
-    "pensionIsRegistered": "Pension is registered",
-    "currentPercent": "Current percent",
+    "aboutFirstDeposit": "* The amount of the first deposit is optional. If you do not want to make a deposit, you can leave this field blank",
+    "pensionIsRegisteredTitle": "Congratulations !",
+    "pensionIsRegisteredDesc": "The pension program has been successfully launched.",
+    "currentPercent": "Current percentage",
     "depositAmount": "Deposit amount",
     "lockedSavings": "Locked savings",
     "durationDays": "Duration (days)",
@@ -489,12 +494,30 @@
       "invite": "Invites you to complete the quest"
     },
     "menu": {
-      "pension": "Retirement Program",
-      "referral": "Referral program",
-      "p2p": "P2P insurance",
-      "savings": "Savings product",
-      "crediting": "Lending",
-      "mining": "Liquidity mining",
+      "pension": {
+        "title": "Retirement Program",
+        "desc": "You can select a percentage of each completed quest which will then be automatically credited to your retirement account, or simply deposit an amount of your choice. The pool of funds is invested on the employee's behalf, and the earnings on the investments generate income to the worker upon their retirement."
+      },
+      "referral": {
+        "title": "Referral program",
+        "desc": "Refer & Earn is our scheme that lets you earn rewards  for every friend you refer who becomes a customer and subsequently completes a quest. Your referred friends save, too, by getting a free registration."
+      },
+      "p2p": {
+        "title": "P2P insurance",
+        "desc": "Peer-to-peer (P2P) insurance is a product that allows a group of insureds to pool their capital, self-organize, and self-administer their own insurance. The core idea of P2P is that a set of like-minded people with mutual interests group their insurance policies together introducing a sense of control, trust, and transparency while at the same time reducing costs. This model of insurance combines traditional pooling and sharing of losses with current technology and innovations, providing a product for increasingly savvy consumers who require transparency in an on-demand economy."
+      },
+      "savings": {
+        "title": "Savings product",
+        "desc": "A cryptocurrency savings account gives you access to the cryptocurrency market while allowing you to earn interest like a traditional bank savings account does. If you're interested in long-term cryptocurrency investing, a crypto savings account can help you accrue interest while keeping your coins safe."
+      },
+      "crediting": {
+        "title": "Lending",
+        "desc": "Similar to a traditional loan, the crypto loan amount is deposited in the borrower's bank account and then the borrower pays EMIs to the lender. Once the amount is paid back in full, the lender releases the collateral that acted as security."
+      },
+      "mining": {
+        "title": "Liquidity mining",
+        "desc": "is a DeFi (decentralized finance) mechanism in which participants supply cryptocurrencies into liquidity pools, and being rewarded with fees and tokens based on their share of the total pool liquidity."
+      },
       "menu": "Menu"
     },
     "footer": {
@@ -666,7 +689,7 @@
     "wqtCount": "{count} WQT",
     "lastRefReward": "Last ref reward",
     "plusCount": "+ {count}",
-    "yourRefers": "Your refers",
+    "yourRefers": "Your referrals",
     "yourReferralLink": "Your referral link",
     "howToInviteYourFriends": "How to invite your friends?",
     "getLink": "Get Link",
@@ -679,7 +702,7 @@
     "tableHead": {
       "name": "Name",
       "userID": "User ID",
-      "txHash": "Tx hash",
+      "txHash": "Txn hash",
       "time": "Time",
       "amount": "Amount",
       "status": "Status"
@@ -698,21 +721,25 @@
    "faq": "FAQ",
    "pensionProgram": "Pension program",
    "applyForAPension": "Apply for a pension",
-   "annualPercent": "annual percent",
+   "applyForRetirement": "Apply for retirement",
+   "annualPercent": "Annual percent",
    "optional": "Optional",
-   "optionalFirstDeposit": "optional first deposit",
-   "term": "term",
+   "optionalFirstDeposit": "First deposit",
+   "term": "Term",
    "castomizable": "Castomizable",
-   "depositsFromQuest": "deposits from quest",
-   "howToTakePart": "How to take part in pension program?",
-   "information": "Information",
+   "configurablePercentage": "Configurable percentage",
+   "depositsFromQuest": "Deposit from quests",
+   "howToTakePart": "How to participate in the pension program?",
+   "pensionPlanText": "A pension plan may allow a worker to contribute part of their current income from wages into an investment plan to help fund retirement.",
+   "information": "Detailed information",
    "download": "Download",
-   "pensionBalance": "Pension balance",
+   "pensionBalance": "Pension savings balance",
    "makeADeposit": "Make a deposit",
-   "currentPercentFromAQuest": "Current percent from a quest",
-   "changePercent": "Change percent",
-   "everyYear": " Annualized",
-   "timeRemainsUntilTheEndOfThePeriod": "Time remains until the end of the period",
+   "currentPercentFromAQuest": "Current percentage from a quest",
+   "changePercent": "Change percentage",
+   "everyYear": "Annualized",
+   "year": "yearly",
+   "timeRemainsUntilTheEndOfThePeriod": "Time remains until the end of the period:",
    "transactionHistory": "Transaction history",
    "withdraw": "Withdraw",
    "prolong": "Prolong",
@@ -730,12 +757,46 @@
    "years": "{count} years",
    "wusdCount": "{count} WUSD",
    "plusPercents": "+ {count}%",
-   "faq1": "What are Locked Savings? Committed to holding your crypto?",
-   "faq2": "What happens to my funds on the day I subscribe to a Locked Savings product?",
-   "ans2": "On the day of subscription, WorkQuest Savings will deduct the funds for subscription from your WUSD wallet.\n",
-   "faq3": "What happens to my funds on the value date of a Locked Savings product?",
-   "faq4": "What happens to my funds on the redemption date of a Locked Savings product?",
-   "faq5": "How is the average annual return (APR) calculated?",
+   "faq1": {
+     "question": "How do you qualify for a pension?",
+     "answer": "You do not need to have worked for an employer for a certain number of years to be eligible for retirement benefits. Just select the percentage of each quest you want to accumulate in your account. Your retirement benefit usually increases as you accumulate funds. The additional percentage will be earned automated by using funds in the lending program."
+   },
+   "faq2": {
+     "question": "How is the 'additional percentage' calculated?",
+     "answer": "The funds of the pension fund will be blocked in the loan agreement. APY varies depending on changes in the credit protocol. The profit can make from 3-6%"
+   },
+   "faq3": {
+     "question": "How do pension plans work?",
+     "answer": "You do not need to have worked for an employer for a certain number of years to be eligible for retirement benefits. Just select the percentage of each quest you want to accumulate in your account. Your retirement benefit usually increases as you accumulate funds. The additional percentage will be earned automated by using funds in the lending program."
+   },
+   "faq4": {
+     "question": "How many years do you need to work to be vested in the pension plan?",
+     "answer": "According to WorkQuest rules, anyone can open a private sector savings plan. After the first three years, you will have the opportunity to receive 100% of the accumulated funds.\nYou can continue to accumulate for another year or withdraw funds in full to your wallet."
+   },
+   "faq5": {
+     "question": "What is a good pension?",
+     "answer": "What is a good pension amount? Some advisers recommend that you save up 10 times your average working-life salary by the time you retire. So if your average salary is $30,000 you should aim for a pension pot of around $300,000. Another top tip is that you should save 12.5 per cent of your monthly salary."
+   },
+   "faq6": {
+     "question": "Is monthly pension taxable?",
+     "answer": "Your monthly pension payment almost always counts as taxable income, and you'll need to make sure that you have enough taxes withheld from your pension payments to satisfy the Internal Revenue Service"
+   },
+   "faq7": {
+     "question": "Can I take all my pension in one go?",
+     "answer": "After minimum period 3 years retirement program, you can withdraw some or all of your pension savings in one go."
+   },
+   "faq8": {
+     "question": "Can I cancel my pension and get the money?",
+     "answer": "If you withdraw after the minimum 3 years has passed or on the day of the annual renewal, you will receive back all the money you have already paid. If you opt out later, you will not be able to receive a refund of your payments until the end of the extended period (usually 1 year)."
+   },
+   "faq9": {
+     "question": "Can I draw my pension and still work?",
+     "answer": "Can I take my pension early and continue to work? The short answer is yes. These days, there is no set retirement age. You can carry on working for as long as you like, and can also access to pensions program."
+   },
+   "faq10": {
+     "question": "What happens if I Overfund my pension?",
+     "answer": "We have no restrictions on the amount of savings. The entire accumulated amount will be at your disposal at the end of the program period."
+   },
    "cancel": "Cancel",
    "renewFor1Year": "Renew for 1 year"
  },
@@ -876,7 +937,7 @@
       "amount": "Amount",
       "time": "Time",
       "sender": "Sender",
-      "txHash": "Tx hash"
+      "txHash": "Txn hash"
     },
     "credTable": {
       "activity": "Paid back",
@@ -897,19 +958,36 @@
   "insuring": {
    "peerToPeerInsuring": "P2P insuring",
     "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
-    "minimalProtection": "Minimal protection",
+    "card1": {
+      "title": "Minimal protection",
+      "pointsText": {
+        "point1": "An annual contribution of 1000 USD, payment in the event of an insured event 833.333333 WUSD."
+      }
+    },
+    "card2": {
+      "title": "Standart protection",
+      "pointsText": {
+        "point1": "Annual premium 2000 WUSD, payment in case of an insured event 1666.6667 WUSD."
+      }
+    },
+    "card3": {
+      "title": "Maximum protection",
+      "pointsText": {
+        "point1": "An annual contribution of 3000 WUSD, payment in the event of an insured event of 2500 WUSD."
+      }
+    },
     "pointTemplate": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Habitant et urna fames.",
-    "standartProtection": "Standart protection",
-    "maximumProtection": "Maximum protection",
     "buy": "Buy",
     "information": "Information",
     "docName": "Some_document.pdf",
     "mb": "{count} MB",
     "minimalProtectionPlan": "Minimal protection plan",
-    "yourFundBalance": "Your fund balance",
+    "standardProtectionPlan": "Standard protection plan",
+    "maximumProtectionPlan": "Maximum protection plan",
+    "yourFundBalance": "Insurance fund balance",
     "wusdCount": "{count} WUSD",
     "dollarsCount": "$ {count}",
-    "withdraw": "Withdraw",
+    "withdraw": "Withdrawal",
     "leaveFund": "Leave fund",
     "changePlan": "Change plan",
     "fundParticipants": "Fund participants",
@@ -922,17 +1000,49 @@
     "paymentOfInsurance": "{value}: Payment of insurance",
     "youWillCertifyTheInsuredEvent": "You will certify the insured event?",
     "studyTheInsuredEventThoroughly": "Study the insured event thoroughly",
-    "notAgree": "Not agree",
+    "notAgree": "Disagree",
     "insuredEvent": "Insured event",
     "agree": "Agree",
     "percentsCount": "{count} %",
     "votesCount": "{count} votes",
-    "faq1": "What are Locked Savings? Committed to holding your crypto?",
-    "faq2": "What happens to my funds on the day I subscribe to a Locked Savings product?",
-    "ans2": "On the day of subscription, WorkQuest Savings will deduct the funds for subscription from your WUSD wallet.\n",
-    "faq3": "What happens to my funds on the value date of a Locked Savings product?",
-    "faq4": "What happens to my funds on the redemption date of a Locked Savings product?",
-    "faq5": "How is the average annual return (APR) calculated?"
+    "planPoints": {
+      "point1": "Annual fee: {count} WUSD",
+      "point2": "Payment upon occurrence of an insured event: {count} WUSD",
+      "point3": "Duration of the contract: {count} year",
+      "point4": "Number of fund participants: {count} people"
+    },
+    "faq1": {
+      "question": "What does P2P mean in insurance ?",
+      "answer": "Peer-to-peer (P2P) insurance is a product that allows a group of insureds to pool their capital, self-organize, and self-administer their own insurance"
+    },
+    "faq2": {
+      "question": "How does p2p insurance work ?",
+      "answer": "Peer-to-peer insurance, or P2P insurance, enables groups of individuals to insure each other. The members of the group pool their money to insure against a risk affecting them. If a group member suffers an insurable loss, their claim is paid directly from the pool of money contributed by each member"
+    },
+    "faq3": {
+      "question": "How do you do peer to peer insurance ?",
+      "answer": "Ask for a “peer-to-peer” evaluation. In a peer-to-peer evaluation, your insurance fund will speak with another fund members about why the service or therapies are medically necessary. You can upload to the chat all the necessary documents and doctors' opinions, which will prove the legality of your case and create a vote for decision-making by the members of the foundation. If the majority of the fund votes in favor, you will receive the payout to your wallet."
+    },
+    "faq4": {
+      "question": "What will happen to the fund if the insured event does not occur within a year ?",
+      "answer": "At the end of the year, all users will receive notifications with a vote where they will be asked to vote for the extension of the fund for another year, which will automatically double your fund and payments in the event of an insured event or divide the fund between the fund participants."
+    },
+    "faq5": {
+      "question": "Who is a fund administrator ?",
+      "answer": "To ensure that each fund participant does not waste time considering all insured events, he will be able to delegate his voting rights to the fund manager for a small fee"
+    },
+    "faq6": {
+      "question": "What is the standard size of the insurance fund ?",
+      "answer": "Funds are formed by 10 users depending on the selected protection level"
+    },
+    "faq7": {
+      "question": "How is the amount of payment from the insurance fund calculated ?",
+      "answer": "An example of calculating the fund for the first year: Minimum protection - an annual premium of 1000 WUSD, payment in the event of an insured event 833.333333 WUSD.\n10 members of the fund * 1000 WUSD / 12 months = 833.333333 WUSD.\nIn case of continuation of the fund for the next year, the size of the fund and the insurance payment are doubled."
+    },
+    "faq8": {
+      "question": "What is the guarantee of security from withdrawals of funds by one member of the fund ?",
+      "answer": "All members of the fund will keep funds in a multi-signature wallet, where any decisions are made only by a majority vote."
+    }
   },
   "errors": {
     "incorrectPass" : "Oops, something went wrong. Check the data and try again."

@@ -1,22 +1,22 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('pension.applyForAPension')"
+    :title="$t('pension.applyForRetirement')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__content-field">
         <base-field
           v-model="depositPercentFromAQuest"
           :is-hide-error="true"
-          :placeholder="'0%'"
-          :label="$t('modals.depositPercentFromAQuest')"
+          :label="$t('modals.depositRetirementModalTitle')"
+          :placeholder="$t('modals.depositRetirementModalPrecentPlaceholder')"
         />
       </div>
       <div class="ctm-modal__content-field">
         <base-field
           v-model="firstDepositAmount"
           :is-hide-error="true"
-          :placeholder="'0 WUSD'"
+          :placeholder="$t('modals.depositRetirementModalAmountPlaceholder')"
           :label="$t('modals.firstDepositAmount')"
         />
         <div class="ctm-modal__subtitle">
@@ -35,7 +35,7 @@
             class="btn_bl"
             @click="showPensionIsRegisteredModal()"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('meta.confirm') }}
           </base-btn>
         </div>
       </div>
@@ -68,8 +68,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/document.svg'),
-        title: this.$t('modals.pensionIsRegistered'),
-        subTitle: '',
+        title: this.$t('modals.pensionIsRegisteredTitle'),
+        subtitle: this.$t('modals.pensionIsRegisteredDesc'),
         path: '/pension/1',
       });
     },
