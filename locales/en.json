@@ -716,7 +716,7 @@
     }
   },
  "pension": {
-   "currentPensionBalance": "Current pension balance",
+   "pensionSavingsBalance": "Pension savings balance",
    "retirementProgram": "Retirement program",
    "faq": "FAQ",
    "pensionProgram": "Pension program",

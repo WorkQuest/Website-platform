@@ -129,7 +129,7 @@
           <div class="info-block__grid">
             <div>
               <div class="info-block__name">
-                {{ $t('pension.currentPensionBalance') }}
+                {{ $t('pension.pensionSavingsBalance') }}
               </div>
               <div class="info-block__tokens">
                 {{ $tc("pension.wusdCount", "4 562") }}
@@ -153,7 +153,7 @@
                   {'info-block__subtitle_red' : isExpired}
                 ]"
               >
-                {{ isExpired ? '0 days' : '2 years 52 days' }}
+                {{ isExpired ? '0 days' : '3 years' }}
               </div>
             </div>
             <div
