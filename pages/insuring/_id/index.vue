@@ -6,13 +6,17 @@
           {{ $t('insuring.peerToPeerInsuring') }}
         </div>
         <div class="title_sub">
-          {{ $t('insuring.templateText') }}
+          {{ $t('ui.menu.p2p.desc') }}
         </div>
       </div>
       <div class="insuring-page__content">
-        <div class="info-block_pad">
+        <div
+          v-for="(item, i) in cards"
+          :key="i"
+          class="info-block_pad"
+        >
           <div class="info-block__name_blue">
-            {{ $t('insuring.minimalProtectionPlan') }}
+            {{ item.name }}
           </div>
           <div class="info-block__couple">
             <div class="info-block__couple info-block_gray">
@@ -21,10 +25,10 @@
                   {{ $t('insuring.yourFundBalance') }}
                 </div>
                 <div class="title_blue">
-                  {{ $tc('insuring.wusdCount', 1500) }}
+                  {{ $tc('insuring.wusdCount', 0) }}
                 </div>
                 <div class="title_gray">
-                  {{ $tc('insuring.dollarsCount', '120.34') }}
+                  {{ $tc('insuring.dollarsCount', 0) }}
                 </div>
               </div>
               <base-btn
@@ -36,8 +40,8 @@
             </div>
             <div class="info-block__points info-block_gray">
               <div
-                v-for="(point, i) in points"
-                :key="i"
+                v-for="(point, idn) in item.points"
+                :key="idn"
                 class="info-block__point"
               >
                 {{ point }}
@@ -59,7 +63,10 @@
               <div class="info-block__name">
                 {{ $t('insuring.fundParticipants') }}
               </div>
-              <div class="info-block__list">
+              <div
+                v-if="users"
+                class="info-block__list"
+              >
                 <div
                   v-for="(user, i) in users"
                   :key="i"
@@ -187,7 +194,10 @@
                 +
               </button>
             </div>
-            <div class="info-block__chat-cont">
+            <div
+              v-if="users.length > 0"
+              class="info-block__chat-cont"
+            >
               <div
                 v-for="(msg, i) in messages"
                 :key="i"
@@ -254,80 +264,34 @@ export default {
       ],
       cards: [
         {
-          name: this.$t('insuring.minimalProtection'),
+          name: this.$t('insuring.minimalProtectionPlan'),
           points: [
-            this.$t('insuring.pointTemplate'),
-            this.$t('insuring.pointTemplate'),
-            this.$t('insuring.pointTemplate'),
+            this.$tc('insuring.planPoints.point1', 1000),
+            this.$tc('insuring.planPoints.point2', 833.333333),
+            this.$tc('insuring.planPoints.point3', 1),
+            this.$tc('insuring.planPoints.point4', 10),
           ],
         },
         {
-          name: this.$t('insuring.standartProtection'),
+          name: this.$t('insuring.standardProtectionPlan'),
           points: [
-            this.$t('insuring.pointTemplate'),
-            this.$t('insuring.pointTemplate'),
-            this.$t('insuring.pointTemplate'),
+            this.$tc('insuring.planPoints.point1', 2000),
+            this.$tc('insuring.planPoints.point2', 1666.6667),
+            this.$tc('insuring.planPoints.point3', 1),
+            this.$tc('insuring.planPoints.point4', 10),
           ],
         },
         {
-          name: this.$t('insuring.maximumProtection'),
+          name: this.$t('insuring.maximumProtectionPlan'),
           points: [
-            this.$t('insuring.pointTemplate'),
-            this.$t('insuring.pointTemplate'),
-            this.$t('insuring.pointTemplate'),
+            this.$tc('insuring.planPoints.point1', 3000),
+            this.$tc('insuring.planPoints.point2', 2500),
+            this.$tc('insuring.planPoints.point3', 1),
+            this.$tc('insuring.planPoints.point4', 10),
           ],
         },
       ],
-      users: [
-        {
-          url: require('~/assets/img/temp/avatar-small.jpg'),
-          name: this.$t('insuring.userName'),
-        },
-        {
-          url: require('~/assets/img/temp/avatar-small.jpg'),
-          name: this.$t('insuring.userName'),
-        },
-        {
-          url: require('~/assets/img/temp/avatar-small.jpg'),
-          name: this.$t('insuring.userName'),
-        },
-        {
-          url: require('~/assets/img/temp/avatar-small.jpg'),
-          name: this.$t('insuring.userName'),
-        },
-        {
-          url: require('~/assets/img/temp/avatar-small.jpg'),
-          name: this.$t('insuring.userName'),
-        },
-        {
-          url: require('~/assets/img/temp/avatar-small.jpg'),
-          name: this.$t('insuring.userName'),
-        },
-        {
-          url: require('~/assets/img/temp/avatar-small.jpg'),
-          name: this.$t('insuring.userName'),
-        },
-        {
-          url: require('~/assets/img/temp/avatar-small.jpg'),
-          name: this.$t('insuring.userName'),
-        },
-        {
-          url: require('~/assets/img/temp/avatar-small.jpg'),
-          name: this.$t('insuring.userName'),
-        },
-        {
-          url: require('~/assets/img/temp/avatar-small.jpg'),
-          name: this.$t('insuring.userName'),
-        },
-        {
-          url: require('~/assets/img/temp/avatar-small.jpg'),
-          name: this.$t('insuring.userName'),
-        },
-        {
-          url: require('~/assets/img/temp/avatar-small.jpg'),
-          name: this.$t('insuring.userName'),
-        },
-      ],
+      users: [],
       messages: [
         {
           sender: {
@@ -457,7 +421,7 @@ export default {
 
   &__container {
     display: grid;
-    grid-template-rows: 195px max-content;
+    grid-template-rows: auto max-content;
     max-width: 1180px;
     grid-row-gap: 30px;
     width: 100%;

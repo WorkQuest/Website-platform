@@ -6,7 +6,7 @@
           {{ $t('pension.retirementProgram') }}
         </div>
         <div class="title_sub">
-          {{ $t('pension.templateText') }}
+          {{ $t('ui.menu.pension.desc') }}
         </div>
       </div>
       <div class="pension-page__content">
@@ -30,7 +30,7 @@
           </div>
           <div class="info-block__about">
             <div class="info-block__subtitle">
-              {{ $t('pension.templateText') }}
+              {{ $t('pension.pensionPlanText') }}
             </div>
             <img
               class="calendar-img"
@@ -42,7 +42,7 @@
                 class="btn_bl"
                 @click="openApplyForAPensionModal()"
               >
-                {{ $t('pension.applyForAPension') }}
+                {{ $t('pension.applyForRetirement') }}
               </base-btn>
             </div>
           </div>
@@ -147,46 +147,71 @@ export default {
       ],
       cards: [
         {
-          title: this.$tc('pension.percents', '6.5'),
+          title: this.$tc('pension.percents', '5'),
           subtitle: this.$t('pension.annualPercent'),
         },
         {
-          title: this.$t('pension.optional'),
-          subtitle: this.$t('pension.optionalFirstDeposit'),
+          title: this.$t('pension.optionalFirstDeposit'),
+          subtitle: this.$t('pension.optional'),
         },
         {
           title: this.$tc('pension.years', 3),
           subtitle: this.$t('pension.term'),
         },
         {
-          title: this.$t('pension.castomizable'),
+          title: this.$t('pension.configurablePercentage'),
           subtitle: this.$t('pension.depositsFromQuest'),
         },
       ],
       FAQs: [
         {
-          name: this.$t('pension.faq1'),
-          about: this.$t('pension.faq1'),
+          name: this.$t('pension.faq1.question'),
+          about: this.$t('pension.faq1.answer'),
           isOpen: false,
         },
         {
-          name: this.$t('pension.faq2'),
-          about: this.$t('pension.ans2'),
+          name: this.$t('pension.faq2.question'),
+          about: this.$t('pension.faq2.answer'),
           isOpen: false,
         },
         {
-          name: this.$t('pension.faq3'),
-          about: this.$t('pension.faq3'),
+          name: this.$t('pension.faq3.question'),
+          about: this.$t('pension.faq3.answer'),
           isOpen: false,
         },
         {
-          name: this.$t('pension.faq4'),
-          about: this.$t('pension.faq4'),
+          name: this.$t('pension.faq4.question'),
+          about: this.$t('pension.faq4.answer'),
           isOpen: false,
         },
         {
-          name: this.$t('pension.faq5'),
-          about: this.$t('pension.faq5'),
+          name: this.$t('pension.faq5.question'),
+          about: this.$t('pension.faq5.answer'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('pension.faq6.question'),
+          about: this.$t('pension.faq6.answer'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('pension.faq7.question'),
+          about: this.$t('pension.faq7.answer'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('pension.faq8.question'),
+          about: this.$t('pension.faq8.answer'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('pension.faq9.question'),
+          about: this.$t('pension.faq9.answer'),
+          isOpen: false,
+        },
+        {
+          name: this.$t('pension.faq10.question'),
+          about: this.$t('pension.faq10.answer'),
           isOpen: false,
         },
       ],

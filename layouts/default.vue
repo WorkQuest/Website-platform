@@ -708,27 +708,27 @@ export default {
       instrumentDDLinks: [
         {
           link: '/pension',
-          title: this.$t('ui.menu.pension'),
+          title: this.$t('ui.menu.pension.title'),
         },
         {
           link: '/referral',
-          title: this.$t('ui.menu.referral'),
+          title: this.$t('ui.menu.referral.title'),
         },
         {
           link: '/insuring',
-          title: this.$t('ui.menu.p2p'),
+          title: this.$t('ui.menu.p2p.title'),
         },
         {
           link: '/savings',
-          title: this.$t('ui.menu.savings'),
+          title: this.$t('ui.menu.savings.title'),
         },
         {
           link: '/crediting',
-          title: this.$t('ui.menu.crediting'),
+          title: this.$t('ui.menu.crediting.title'),
         },
         {
           link: '/mining',
-          title: this.$t('ui.menu.mining'),
+          title: this.$t('ui.menu.mining.title'),
         },
       ],
       userDDLinks: [
@@ -777,33 +777,33 @@ export default {
     additionalMenuLinks() {
       return [
         {
-          title: this.$t('ui.menu.pension'),
-          desc: 'You can select a percentage of each completed quest which will then be automatically credited to your retirement account, or simply deposit an amount of your choice. The pool of funds is invested on the employee\'s behalf, and the earnings on the investments generate income to the worker upon their retirement.',
+          title: this.$t('ui.menu.pension.title'),
+          desc: this.$t('ui.menu.pension.desc'),
           path: '/pension',
         },
         {
-          title: this.$t('ui.menu.referral'),
-          desc: 'Refer & Earn is our scheme that lets you earn rewards  for every friend you refer who becomes a customer and subsequently completes a quest. Your referred friends save, too, by getting a free registration.',
+          title: this.$t('ui.menu.referral.title'),
+          desc: this.$t('ui.menu.referral.desc'),
           path: '/referral',
         },
         {
-          title: this.$t('ui.menu.p2p'),
-          desc: 'Peer-to-peer (P2P) insurance is a product that allows a group of insureds to pool their capital, self-organize, and self-administer their own insurance. The core idea of P2P is that a set of like-minded people with mutual interests group their insurance policies together introducing a sense of control, trust, and transparency while at the same time reducing costs. This model of insurance combines traditional pooling and sharing of losses with current technology and innovations, providing a product for increasingly savvy consumers who require transparency in an on-demand economy.',
+          title: this.$t('ui.menu.p2p.title'),
+          desc: this.$t('ui.menu.p2p.desc'),
           path: '/insuring',
         },
         {
-          title: this.$t('ui.menu.savings'),
-          desc: 'A cryptocurrency savings account gives you access to the cryptocurrency market while allowing you to earn interest like a traditional bank savings account does. If you\'re interested in long-term cryptocurrency investing, a crypto savings account can help you accrue interest while keeping your coins safe.',
+          title: this.$t('ui.menu.savings.title'),
+          desc: this.$t('ui.menu.savings.desc'),
           path: '/savings',
         },
         {
-          title: this.$t('ui.menu.crediting'),
-          desc: 'Similar to a traditional loan, the crypto loan amount is deposited in the borrower\'s bank account and then the borrower pays EMIs to the lender. Once the amount is paid back in full, the lender releases the collateral that acted as security.',
+          title: this.$t('ui.menu.crediting.title'),
+          desc: this.$t('ui.menu.crediting.desc'),
           path: '/crediting',
         },
         {
-          title: this.$t('ui.menu.mining'),
-          desc: 'is a DeFi (decentralized finance) mechanism in which participants supply cryptocurrencies into liquidity pools, and being rewarded with fees and tokens based on their share of the total pool liquidity.',
+          title: this.$t('ui.menu.mining.title'),
+          desc: this.$t('ui.menu.mining.desc'),
           path: '/mining',
         },
       ];
