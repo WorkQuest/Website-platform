@@ -172,7 +172,7 @@ export default {
       }
     },
     async redirectSocialLink(socialNetwork) {
-      window.location = `https://app-ver1.workquest.co/api/v1/auth/login/${socialNetwork}`;
+      window.location = `${process.env.BASE_URL}/v1/auth/login/${socialNetwork}`;
     },
     showRestoreModal() {
       this.ShowModal({
