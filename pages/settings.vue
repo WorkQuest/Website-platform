@@ -70,7 +70,7 @@
               <div class="icon-edit" />
               <ValidationProvider
                 v-slot="{ validate }"
-                rules="required|ext:png,jpeg,jpg,gif,mp3,mp4,ai"
+                rules="required|ext:png,jpeg,jpg"
                 tag="div"
               >
                 <input

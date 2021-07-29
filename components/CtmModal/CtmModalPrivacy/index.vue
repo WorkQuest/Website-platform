@@ -87,27 +87,43 @@ export default {
   },
   methods: {
     async hide() {
-      try {
-        const payload = {
-          confirmCode: this.options.confirmCode,
-          role: this.options.role,
-        };
-        const response = await this.$store.dispatch('user/confirm', payload);
-        if (response?.ok) {
-          await this.$store.dispatch('main/showToast', {
-            title: 'Success',
-            text: 'Your account has been successfully verified',
-          });
-          if (this.$cookies.get('role') === 'employer') {
-            this.$router.push('/workers');
-          } else if (this.$cookies.get('role') === 'worker') {
-            this.$router.push('/quests');
+      if (this.$cookies.get('userStatus') === 2) {
+        this.$cookies.set('role', this.options.role);
+        try {
+          const response = await this.$store.dispatch('user/setUserRole', { role: this.options.role });
+          if (response?.ok) {
+            if (this.options.role === 'employer') {
+              await this.$router.push('/workers');
+            } else if (this.options.role === 'worker') {
+              await this.$router.push('/quests');
+            }
           }
+        } catch (e) {
+          console.log(e);
         }
-        this.CloseModal();
-      } catch (e) {
-        console.log(e);
+      } else {
+        try {
+          const payload = {
+            confirmCode: this.options.confirmCode,
+            role: this.options.role,
+          };
+          const response = await this.$store.dispatch('user/confirm', payload);
+          if (response?.ok) {
+            await this.$store.dispatch('main/showToast', {
+              title: 'Success',
+              text: 'Your account has been successfully verified',
+            });
+            if (this.$cookies.get('role') === 'employer') {
+              this.$router.push('/workers');
+            } else if (this.$cookies.get('role') === 'worker') {
+              this.$router.push('/quests');
+            }
+          }
+        } catch (e) {
+          console.log(e);
+        }
       }
+      this.CloseModal();
     },
   },
 };

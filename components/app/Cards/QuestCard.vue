@@ -211,9 +211,10 @@ export default {
     },
     getPriority(index) {
       const priority = {
-        0: this.$t('priority.low'),
-        1: this.$t('priority.normal'),
-        2: this.$t('priority.urgent'),
+        0: '',
+        1: this.$t('priority.low'),
+        2: this.$t('priority.normal'),
+        3: this.$t('priority.urgent'),
       };
       return priority[index] || 'None';
     },
@@ -237,9 +238,10 @@ export default {
     },
     getPriorityClass(index) {
       const priority = {
-        0: 'block__priority_low',
-        1: 'block__priority_normal',
-        2: 'block__priority_urgent',
+        0: '',
+        1: 'block__priority_low',
+        2: 'block__priority_normal',
+        3: 'block__priority_urgent',
       };
       return priority[index] || '';
     },

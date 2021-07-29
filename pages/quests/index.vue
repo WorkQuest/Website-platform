@@ -83,9 +83,9 @@
             </base-btn>
           </div>
         </div>
-        <!--<div class="quests__cards">
+        <div class="quests__cards">
           <div
-            v-for="(item, i) in cards2.quests"
+            v-for="(item, i) in cards"
             :key="i"
             class="quests__block block"
           >
@@ -107,7 +107,7 @@
                     >
                       <img
                         class="user__avatar"
-                        :src="'~/assets/img/temp/fake-card.svg'"
+                        src="~/assets/img/temp/fake-card.svg"
                         alt=""
                       >
                     </nuxt-link>
@@ -117,11 +117,11 @@
                     :to="'/show-profile'"
                   >
                     <div class="block__text block__text_title">
-                      {{ item.user.firstName + ' ' + item.user.lastName }}
+                      {{ item.title }}
                       <span
-                        v-if="item.user.additionalInfo.company"
+                        v-if="item.sub"
                         class="block__text block__text_grey"
-                      >{{ item.user.additionalInfo.company }}</span>
+                      >{{ item.sub }}</span>
                     </div>
                   </nuxt-link>
                 </div>
@@ -150,13 +150,13 @@
               </div>
               <div class="block__locate">
                 <span class="icon-location" />
-                <span class="block__text block__text_locate">{{ getDistanceFromLatLonInKm(item.location.latitude, item.location.longitude, 51, 51) }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
+                <span class="block__text block__text_locate">{{ item.distance }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
               </div>
               <div class="block__text block__text_blue">
-                {{ item.title }}
+                {{ item.theme }}
               </div>
               <div class="block__text block__text_desc">
-                {{ item.description }}
+                {{ item.desc }}
               </div>
               <div class="block__actions">
                 <div class="block__status">
@@ -186,8 +186,7 @@
               </div>
             </div>
           </div>
-        </div>-->
-        <questsBlock />
+        </div>
       </div>
     </div>
   </div>
@@ -196,13 +195,11 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
-import questsBlock from '~/components/app/Cards/QuestCard';
 
 export default {
   name: 'Quests',
   components: {
     GmapSearchBlock,
-    questsBlock,
   },
   data() {
     return {
@@ -250,7 +247,6 @@ export default {
     this.SetLoader(true);
     this.SetLoader(false);
     this.getAllQuests();
-    console.log(this.cards2.quests);
   },
   methods: {
     getAllQuests() {

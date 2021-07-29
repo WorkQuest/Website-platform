@@ -17,8 +17,6 @@ export default {
     return response;
   },
   async confirm({ commit }, payload) {
-    commit('setTokens', { access: payload.access, refresh: payload.refresh, userStatus: payload.userStatus });
-    console.log(payload);
     this.$cookies.set('role', payload.role);
     const response = await this.$axios.$post('/v1/auth/confirm-email', payload);
     return response;
@@ -28,8 +26,8 @@ export default {
     commit('setUserData', response.result);
     return response;
   },
-  async setUserRole({ commit }) {
-    const response = await this.$axios.$post('/v1/profile/set-role');
+  async setUserRole({ commit }, payload) {
+    const response = await this.$axios.$post('/v1/profile/set-role', payload);
     commit('setUserRole', response.result);
     return response;
   },
