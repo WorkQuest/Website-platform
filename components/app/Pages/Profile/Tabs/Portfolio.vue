@@ -8,15 +8,24 @@
       >
         <div class="portfolio__card">
           <div class="portfolio__body">
-            <img
+            <div
+              v-for="(img, j) in item.medias"
+              :key="j"
               class="portfolio__img"
-              src="~/assets/img/temp/photo.jpg"
-              :alt="item.name"
             >
+              <img
+                class="portfolio__image"
+                :src="img.url"
+                :alt="img.name"
+              >
+            </div>
           </div>
           <div class="portfolio__footer">
             <div class="portfolio__name">
-              {{ item.name }}
+              {{ item.title }}
+            </div>
+            <div class="portfolio__description">
+              {{ item.description }}
             </div>
           </div>
         </div>
@@ -32,8 +41,26 @@ export default {
   name: 'PortfolioTab',
   computed: {
     ...mapGetters({
-      portfolios: 'data/getPortfolios',
+      portfolios: 'user/getUserPortfolios',
+      userData: 'user/getUserData',
     }),
+  },
+  async mounted() {
+    await this.getAllPortfolios();
+  },
+  methods: {
+    async getAllPortfolios() {
+      try {
+        const { id } = this.userData;
+        const response = await this.$store.dispatch('user/getUserPortfolios', id);
+        if (response?.ok) {
+          console.log(response);
+          this.hide();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
 };
 </script>
@@ -52,10 +79,9 @@ export default {
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 20px;
   }
-  &__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  &__image {
+    height: 350px;
+    object-fit: scale-down;
     border-radius: 6px;
   }
   &__name {
@@ -67,6 +93,12 @@ export default {
     text-overflow: ellipsis;
     font-size: 18px;
     font-weight: 500;
+  }
+  &__description {
+    @include text-simple;
+    font-size: 18px;
+    font-weight: 500;
+    margin-left: 10px;
   }
   &__footer {
     position: absolute;

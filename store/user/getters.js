@@ -25,4 +25,6 @@ export default {
   getUserTwitter: (state) => state.userData?.additionalInfo?.socialNetwork?.twitter || '',
   getUserLinkedin: (state) => state.userData?.additionalInfo?.socialNetwork?.linkedin || '',
   getUserFacebook: (state) => state.userData?.additionalInfo?.socialNetwork?.facebook || '',
+  getUserPortfolios: (state) => state.portfolios || '',
+  getUserPortfolio: (state) => state.medias || '',
 };

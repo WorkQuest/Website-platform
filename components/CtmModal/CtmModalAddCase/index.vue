@@ -7,10 +7,30 @@
       <div class="message">
         <div class="message__content">
           <div class="modal__desc">
-            <Uploader />
+            <!--            <div>-->
+            <!--              <dropzone-->
+            <!--                id="uploader"-->
+            <!--                ref="el"-->
+            <!--                :options="optionsModal"-->
+            <!--                :include-styling="true"-->
+            <!--              />-->
+            <!--            </div>-->
+            <ValidationProvider
+              v-slot="{ validate }"
+              rules="required|ext:png,jpeg,jpg,gif"
+              tag="div"
+            >
+              <input
+                id="coverUpload"
+                class="edit_avatar"
+                type="file"
+                accept="image/*"
+                @change="processFile($event, validate)"
+              >
+            </ValidationProvider>
             <div>
               <base-field
-                v-model="text"
+                v-model="caseTitle"
                 :label="$t('modals.title')"
                 :mode="'gray'"
               />
@@ -22,7 +42,7 @@
               <div>
                 <textarea
                   id="textarea"
-                  v-model="text"
+                  v-model="caseDescription"
                   class="message__textarea"
                   :placeholder="$t('modals.hello')"
                 />
@@ -32,7 +52,7 @@
               <div class="btn__wrapper">
                 <base-btn
                   class="message__action"
-                  @click="showRequestSendModal() "
+                  @click="addUserCase"
                 >
                   {{ $t('meta.send') }}
                 </base-btn>
@@ -58,26 +78,72 @@
 /* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import Uploader from '~/components/ui/Uploader';
 
 export default {
   name: 'ModalAddCase',
-  components: {
-    Uploader,
-  },
+  components: {},
   data() {
     return {
-      text: '',
+      caseTitle: '',
+      caseDescription: '',
+      portfolio_change: {
+        data: {},
+        file: {},
+      },
+      // file: null,
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      getAllPortfolios: 'user/getUserPortfolios',
+      medias: 'user/getUserPortfolio',
     }),
   },
+  mounted() {},
   methods: {
     hide() {
       this.CloseModal();
+    },
+    // eslint-disable-next-line consistent-return
+    async processFile(e, validate) {
+      const isValid = await validate(e);
+      const file = e.target.files[0];
+      if (isValid.valid) {
+        if (!file) {
+          return false;
+        }
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        this.portfolio_change.data = await this.$store.dispatch('user/imageCaseType', { contentType: file.type });
+        this.portfolio_change.file = file;
+      }
+    },
+    async addUserCase() {
+      try {
+        const formData = new FormData();
+        formData.append('image', this.portfolio_change.file);
+        if (this.portfolio_change.data.ok) {
+          const data = {
+            url: this.portfolio_change.data.result.url,
+            formData: this.portfolio_change.file,
+            type: this.portfolio_change.file.type,
+          };
+          await this.$store.dispatch('user/setCaseImage', data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      let payload = {};
+      const checkAvatarID = this.portfolio_change.data.ok ? this.portfolio_change.data.result.mediaId : this.medias.mediaId;
+      console.log(checkAvatarID);
+      payload = {
+        title: this.caseTitle,
+        description: this.caseDescription,
+        medias: [checkAvatarID],
+      };
+      console.log(payload);
+      await this.$store.dispatch('user/setCaseData', payload);
     },
     showRequestSendModal() {
       this.ShowModal({
@@ -89,6 +155,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.file {
+  &__wrapper {
+    margin: 0 0 25px 0;
+  }
+}
+.uploader-message {
+  &__container {
+    margin: 0 0 0 10% !important;
+  }
+}
+.icon {
+  &-close_big_white:before {
+    content: "\e948";
+    color: #FFFFFF;
+  }
+  &-add_to_queue_blue:before {
+    content: "\e995";
+    color: #0083C7;
+    font-size: 20px;
+  }
+}
 
 .input {
   &_grey {
