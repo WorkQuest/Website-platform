@@ -105,7 +105,7 @@ export default {
       this.getTokensFromMobileInterval = setInterval(() => {
         this.accessTokenMobile = localStorage.getItem('accessToken');
         this.refreshTokenMobile = localStorage.getItem('refreshToken');
-      }, 100);
+      }, 500);
     },
     toMain() {
       this.$router.push('/sign-in');

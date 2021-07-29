@@ -600,6 +600,7 @@ export default {
           background-color: #0083C7;
           .info-block__circle {
             border: 1px solid #fff;
+            background-color: #fff;
           }
           .info-block__subtitle {
             color: #fff;
@@ -700,8 +701,7 @@ export default {
             }
 
             .text {
-              grid-column-end: 7;
-              grid-column-start: 1;
+              grid-column: 1/7;
               grid-row-start: 1;
             }
           }
@@ -739,17 +739,15 @@ export default {
             grid-template-columns: repeat(3, 1fr);
 
             .text-block {
-              &:nth-child(4) {
+              &:nth-child(5) {
                 grid-row-start: 3;
-                grid-column-start: 1;
-                grid-column-end: 2;
+                grid-column: 1/2;
                 padding: 0;
                 border: 0;
               }
               &:last-child {
                 grid-row-start: 3;
-                grid-column-start: 2;
-                grid-column-end: 3;
+                grid-column: 2/3;
               }
             }
           }

@@ -466,7 +466,6 @@ export default {
     .table {
       margin: 0;
       border-radius: 0 !important;
-      box-shadow: inset 1px 0 2px 0 black;
 
       &__value {
         font-weight: 400;
