@@ -1,8 +1,34 @@
 export default {
-  // async enable2FA({ commit }, payload) {
-  //   const response = await this.$axios.$post('/v1/totp/enable', payload);
-  //   commit('setEnabled2FA', response.result);
-  // },
+  async getUserPortfolios({ commit }, id) {
+    const response = await this.$axios.$get(`/v1/user/${id}/portfolio/cases`);
+    commit('setUserPortfolioCases', response.result);
+    return response;
+  },
+
+  async imageCaseType({ commit }, payload) {
+    const response = await this.$axios.$post('/v1/storage/get-upload-link', payload);
+    commit('setCaseImage', response.result);
+    return response;
+  },
+
+  async setCaseImage({ commit }, { url, formData, type }) {
+    const response = await this.$axios.$put(url, formData, {
+      headers: {
+        'Content-Type': type,
+        'x-amz-acl': 'public-read',
+      },
+    });
+    commit('setCaseImage', response.result);
+    return response;
+  },
+
+  async setCaseData({ commit }, payload) {
+    const response = await this.$axios.$post('/v1/portfolio/add-case', payload);
+    commit('setCaseData', response.result);
+    console.log(response);
+    return response;
+  },
+
   async signIn({ commit, dispatch }, payload) {
     const response = await this.$axios.$post('/v1/auth/login', payload);
     commit('setTokens', response.result);
