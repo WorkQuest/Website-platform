@@ -77,7 +77,7 @@
                           <div class="menu__bottom">
                             <div class="menu__text menu__text_grey">
                               <span>
-                                {{ item.desc }}
+                                {{ kitcutDescription(item.desc) }}
                               </span>
                             </div>
                           </div>
@@ -141,7 +141,7 @@
                           <div class="menu__bottom">
                             <div class="menu__text menu__text_grey">
                               <span>
-                                {{ item.desc }}
+                                {{ kitcutDescription(item.desc) }}
                               </span>
                             </div>
                           </div>
@@ -826,6 +826,14 @@ export default {
     window.removeEventListener('resize', this.userWindowChange);
   },
   methods: {
+    kitcutDescription(text) {
+      text = text.trim();
+      if (text.length <= 120) return text;
+
+      text = text.slice(0, 120);
+
+      return `${text.trim()}...`;
+    },
     userWindowChange() {
       this.isMobileMenu = false;
       this.isNotFlexContainer = false;

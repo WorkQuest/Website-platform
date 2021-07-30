@@ -677,10 +677,10 @@
     "showAllCases": "Show all cases"
   },
   "levels": {
-    "reliableEmp": "RELIABLE EMPLOYER",
-    "checkedByTime": "CHECKED BY TIME EMPLOYER",
+    "reliableEmp": "RELIABLE EMP.",
+    "checkedByTime": "VERIFIED EMP.",
     "disabled": "DISABLED",
-    "higher": "HIGHER LEVEL EMPLOYER"
+    "higher": "HIGHER LEVEL EMP."
   },
   "referral": {
     "inviteFriendsHead": "Invite friends.",
