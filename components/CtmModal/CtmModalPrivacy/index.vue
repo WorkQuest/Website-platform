@@ -80,6 +80,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      userData: 'user/getUserData',
     }),
     isAllChecked() {
       return this.privacy && this.terms && this.aml;
@@ -90,11 +91,12 @@ export default {
       if (this.$cookies.get('userStatus') === 2) {
         this.$cookies.set('role', this.options.role);
         try {
-          const response = await this.$store.dispatch('user/setUserRole', { role: this.options.role });
+          await this.$store.dispatch('user/setUserRole', { role: this.options.role });
+          const response = await this.$store.dispatch('user/getUserData');
           if (response?.ok) {
-            if (this.options.role === 'employer') {
+            if (this.userData.role === 'employer') {
               await this.$router.push('/workers');
-            } else if (this.options.role === 'worker') {
+            } else if (this.userData.role === 'worker') {
               await this.$router.push('/quests');
             }
           }
