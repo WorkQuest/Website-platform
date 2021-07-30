@@ -17,6 +17,7 @@ export default {
     return response;
   },
   async confirm({ commit }, payload) {
+    commit('setTokens', { access: this.$cookies.get('access'), refresh: this.$cookies.get('refresh') });
     this.$cookies.set('role', payload.role);
     const response = await this.$axios.$post('/v1/auth/confirm-email', payload);
     return response;
