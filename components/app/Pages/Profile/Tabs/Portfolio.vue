@@ -9,10 +9,9 @@
         <div class="portfolio__card">
           <button
             class="close-btn"
-            @click="deletePortfolio()"
+            @click="deletePortfolio(item.id)"
           >
             <span
-              :id="item.id"
               class="icon-close_big"
             />
           </button>
@@ -63,33 +62,14 @@ export default {
         const { id } = this.userData;
         const response = await this.$store.dispatch('user/getUserPortfolios', id);
         if (response?.ok) {
-          console.log(response);
           this.hide();
         }
       } catch (e) {
         console.log(e);
       }
     },
-    deletePortfolio() {
-      // Отладка
-      const delBtn = document.querySelectorAll('button');
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < delBtn.length; i++) {
-        delBtn[i].addEventListener('click', async (e) => {
-          try {
-            console.log(e.target.getAttribute('id'));
-            const id = e.target.getAttribute('id');
-            const response = await this.$store.dispatch('user/deletePortfolio', id);
-            if (response?.ok) {
-              console.log(response);
-              this.hide();
-            }
-            // eslint-disable-next-line no-shadow
-          } catch (e) {
-            console.log(e);
-          }
-        });
-      }
+    async deletePortfolio(id) {
+      await this.$store.dispatch('user/deletePortfolio', id);
     },
   },
 };

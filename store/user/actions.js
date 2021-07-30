@@ -27,14 +27,18 @@ export default {
     console.log(response);
     return response;
   },
-  async deletePortfolio(id) {
-    return await this.$axios.$delete(`/v1/portfolio/${id}`);
+  async deletePortfolio({ commit }, id) {
+    // needed portfolio id
+    const response = await this.$axios.$delete(`/v1/portfolio/${id}`);
+    commit('setUserPortfolioCases', response.result);
+    return response;
   },
 
   // Reviews
   async getAllUserReviews({ commit }, id) {
     const response = await this.$axios.$get(`/v1/user/${id}/reviews`);
     commit('setUserReviews', response.result);
+    console.log(response);
     return response;
   },
 
