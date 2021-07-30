@@ -306,6 +306,7 @@
     },
     "changePercentDesc": "A percentage of the quest amount that will be automatically credited to your retirement account",
     "yourSkillsHaveBeenAdded": "Your skills have been successfully added.",
+    "yourAccountVerified": "Your account has been successfully verified",
     "youCanUpdateThisInYourProfile": "You can easily update this in your profile.",
     "disable2Fa": "Disable 2FA",
     "yourLevelHasBeenRaised": "Your level has been raised",
@@ -676,10 +677,10 @@
     "showAllCases": "Show all cases"
   },
   "levels": {
-    "reliableEmp": "RELIABLE EMPLOYER",
-    "checkedByTime": "CHECKED BY TIME EMPLOYER",
+    "reliableEmp": "RELIABLE EMP.",
+    "checkedByTime": "VERIFIED EMP.",
     "disabled": "DISABLED",
-    "higher": "HIGHER LEVEL EMPLOYER"
+    "higher": "HIGHER LEVEL EMP."
   },
   "referral": {
     "inviteFriendsHead": "Invite friends.",

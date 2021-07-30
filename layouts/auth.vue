@@ -67,7 +67,7 @@ export default {
               await this.$router.push('/workers');
             } else if (this.userData.role === 'worker') {
               await this.$router.push('/quests');
-            } else if (response.result.userStatus === 2) {
+            } else if (this.userData.status === 2) {
               await this.$router.push('/role');
             }
           } catch (e) {
@@ -77,7 +77,21 @@ export default {
       },
     },
   },
-  mounted() {
+  async mounted() {
+    const { access, refresh, userStatus } = this.$route.query;
+    if (access && refresh && userStatus) {
+      this.$store.commit('user/setTokens', { access, refresh, userStatus });
+      if (parseInt(userStatus, 10) === 2) {
+        await this.$router.push('/role');
+      } else {
+        await this.$store.dispatch('user/getUserData');
+        if (this.userData.role === 'employer') {
+          await this.$router.push('/workers');
+        } else if (this.userData.role === 'worker') {
+          await this.$router.push('/quests');
+        }
+      }
+    }
     this.getTokensFromMobile();
   },
   beforeDestroy() {

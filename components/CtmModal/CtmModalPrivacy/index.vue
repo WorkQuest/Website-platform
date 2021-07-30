@@ -80,6 +80,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      userData: 'user/getUserData',
     }),
     isAllChecked() {
       return this.privacy && this.terms && this.aml;
@@ -87,27 +88,44 @@ export default {
   },
   methods: {
     async hide() {
-      try {
-        const payload = {
-          confirmCode: this.options.confirmCode,
-          role: this.options.role,
-        };
-        const response = await this.$store.dispatch('user/confirm', payload);
-        if (response?.ok) {
-          await this.$store.dispatch('main/showToast', {
-            title: 'Success',
-            text: 'Your account has been successfully verified',
-          });
-          if (this.$cookies.get('role') === 'employer') {
-            this.$router.push('/workers');
-          } else if (this.$cookies.get('role') === 'worker') {
-            this.$router.push('/quests');
+      if (this.$cookies.get('userStatus') === 2) {
+        this.$cookies.set('role', this.options.role);
+        try {
+          await this.$store.dispatch('user/setUserRole', { role: this.options.role });
+          const response = await this.$store.dispatch('user/getUserData');
+          if (response?.ok) {
+            if (this.userData.role === 'employer') {
+              await this.$router.push('/workers');
+            } else if (this.userData.role === 'worker') {
+              await this.$router.push('/quests');
+            }
           }
+        } catch (e) {
+          console.log(e);
         }
-        this.CloseModal();
-      } catch (e) {
-        console.log(e);
+      } else {
+        try {
+          const payload = {
+            confirmCode: this.options.confirmCode,
+            role: this.options.role,
+          };
+          const response = await this.$store.dispatch('user/confirm', payload);
+          if (response?.ok) {
+            await this.$store.dispatch('main/showToast', {
+              title: this.$t('modals.success'),
+              text: this.$t('modals.yourAccountVerified'),
+            });
+            if (this.$cookies.get('role') === 'employer') {
+              this.$router.push('/workers');
+            } else if (this.$cookies.get('role') === 'worker') {
+              this.$router.push('/quests');
+            }
+          }
+        } catch (e) {
+          console.log(e);
+        }
       }
+      this.CloseModal();
     },
   },
 };

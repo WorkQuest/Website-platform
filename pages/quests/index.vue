@@ -103,18 +103,18 @@
                   <div class="block__avatar">
                     <nuxt-link
                       class="link"
-                      :to="item.url"
+                      :to="'/show-profile'"
                     >
                       <img
                         class="user__avatar"
-                        :src="item.background"
+                        src="~/assets/img/temp/fake-card.svg"
                         alt=""
                       >
                     </nuxt-link>
                   </div>
                   <nuxt-link
                     class="link"
-                    :to="item.url"
+                    :to="'/show-profile'"
                   >
                     <div class="block__text block__text_title">
                       {{ item.title }}
@@ -161,6 +161,7 @@
               <div class="block__actions">
                 <div class="block__status">
                   <div
+                    v-if="item.priority"
                     class="block__priority"
                     :class="getPriorityClass(item.priority)"
                   >
@@ -235,6 +236,7 @@ export default {
     ...mapGetters({
       tags: 'ui/getTags',
       cards: 'data/getCards',
+      cards2: 'data/getAllQuests',
       distance: 'data/getDistance',
       locations: 'data/getLocations',
       checkWelcomeModal: 'modals/getIsShowWelcome',
@@ -674,6 +676,7 @@ export default {
   }
   &__tools {
     padding-top:  20px;
+    margin-bottom: 20px;
   }
 }
 .tags {
@@ -775,6 +778,7 @@ export default {
   .quests {
     &__tools {
       padding: 0;
+      margin-bottom: 20px;
     }
   }
   .tools {

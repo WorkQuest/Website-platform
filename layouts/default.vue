@@ -62,8 +62,8 @@
                     >
                       <div class="menu__items">
                         <n-link
-                          v-for="item in additionalMenuLinks"
-                          :key="`item-${item.title}`"
+                          v-for="(item,i) in additionalMenuLinks"
+                          :key="`item-${i}`"
                           :to="item.path"
                           tag="div"
                           class="menu__item"
@@ -77,7 +77,7 @@
                           <div class="menu__bottom">
                             <div class="menu__text menu__text_grey">
                               <span>
-                                {{ item.desc }}
+                                {{ kitcutDescription(item.desc) }}
                               </span>
                             </div>
                           </div>
@@ -141,7 +141,7 @@
                           <div class="menu__bottom">
                             <div class="menu__text menu__text_grey">
                               <span>
-                                {{ item.desc }}
+                                {{ kitcutDescription(item.desc) }}
                               </span>
                             </div>
                           </div>
@@ -227,13 +227,13 @@
                               <div class="notify__user">
                                 <div class="notify__avatar">
                                   <img
-                                    src="~assets/img/app/fakeavatarcomp.svg"
+                                    src="~assets/img/app/fakeavatar.svg"
                                     alt=""
                                   >
                                 </div>
                                 <div class="notify__info">
                                   <div class="notify__text notify__text_name">
-                                    Edward cooper
+                                    Edward Cooper
                                   </div>
                                   <div class="notify__text notify__text_grey">
                                     CEO from Amazon
@@ -819,7 +819,26 @@ export default {
     this.GetLocation();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
   },
+  created() {
+    window.addEventListener('resize', this.userWindowChange);
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.userWindowChange);
+  },
   methods: {
+    kitcutDescription(text) {
+      text = text.trim();
+      if (text.length <= 120) return text;
+
+      text = text.slice(0, 120);
+
+      return `${text.trim()}...`;
+    },
+    userWindowChange() {
+      this.isMobileMenu = false;
+      this.isNotFlexContainer = false;
+      this.closeAnother('mobile');
+    },
     toRoute(path) {
       this.$router.push(path);
       this.toggleMobileMenu();
@@ -1430,6 +1449,7 @@ export default {
   border-radius: 6px;
   min-width: 790px;
   width: 100%;
+  left: -100%;
   min-height: 230px;
   z-index: 10000000;
   &__top {
@@ -1649,17 +1669,15 @@ export default {
         display: none;
       }
     }
+    &__btn {
+      display: none !important;
+    }
   }
   .footer {
     padding: 0 20px;
   }
 }
 @include _991 {
-  .header {
-    &__btn {
-      display: none !important;
-    }
-  }
   .template {
     &__content {
       grid-template-rows: 72px 1fr auto;

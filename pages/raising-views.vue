@@ -235,7 +235,7 @@ export default {
           cost: '10',
         },
         {
-          level: 'CHECKED BY TIME',
+          level: 'VERIFIED EMP.',
           code: 3,
           desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Volutpat eleifend accumsan neque, sollicitudin ut id amet, sodales.',
           cost: '10',
@@ -255,7 +255,7 @@ export default {
           cost: '40',
         },
         {
-          level: 'CHECKED BY TIME',
+          level: 'VERIFIED EMP.',
           code: 3,
           desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Volutpat eleifend accumsan neque, sollicitudin ut id amet, sodales.',
           cost: '40',
@@ -275,7 +275,7 @@ export default {
           cost: '70',
         },
         {
-          level: 'CHECKED BY TIME',
+          level: 'VERIFIED EMP.',
           code: 3,
           desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Volutpat eleifend accumsan neque, sollicitudin ut id amet, sodales.',
           cost: '70',
