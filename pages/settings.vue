@@ -35,12 +35,6 @@
                   src="~/assets/img/ui/settingsHigherLevel.svg"
                   alt=""
                 >
-                <button @click="isCloseInfo()">
-                  <span
-                    class="icon-close_big icon__close"
-                    :class="{'icon_close_closed' : isShowInfo }"
-                  />
-                </button>
               </div>
             </div>
           </div>
@@ -1187,20 +1181,6 @@ export default {
     @extend .icon;
     content: "\e90c";
   }
-  &-close_big::before {
-    content: "\e948";
-    color: #2e3a59;
-    font-size: 26px;
-  }
-  &__close {
-    position: absolute;
-    bottom: 155px;
-    right: 25px;
-    z-index: 2;
-    &_closed {
-      display: none;
-    }
-  }
   &-edit {
     position: absolute;
     top: 50%;
@@ -1244,7 +1224,7 @@ export default {
     z-index: 1;
     height: 100%;
     width: 100%;
-    max-height: 207px;
+    max-height: 253px;
     padding: 0 0 0 30px;
   }
 }
@@ -1502,7 +1482,7 @@ export default {
     background-color: #0083C7;
     border-radius: 6px;
     color: $white;
-    max-height: 207px;
+    max-height: 253px;
     &-title {
       margin: 20px 0 0 20px;
       font-size: 25px;

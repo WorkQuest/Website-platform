@@ -62,15 +62,15 @@
                     >
                       <div class="menu__items">
                         <n-link
-                          v-for="item in additionalMenuLinks"
-                          :key="`item-${item.title.title}`"
+                          v-for="(item,i) in additionalMenuLinks"
+                          :key="`item-${i}`"
                           :to="item.path"
                           tag="div"
                           class="menu__item"
                         >
                           <div class="menu__top">
                             <div class="menu__text menu__text_header">
-                              {{ item.title.title }}
+                              {{ item.title }}
                             </div>
                             <span class="icon-chevron_right" />
                           </div>

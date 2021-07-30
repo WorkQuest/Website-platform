@@ -110,8 +110,8 @@ export default {
           const response = await this.$store.dispatch('user/confirm', payload);
           if (response?.ok) {
             await this.$store.dispatch('main/showToast', {
-              title: 'Success',
-              text: 'Your account has been successfully verified',
+              title: this.$t('modals.success'),
+              text: this.$t('modals.yourAccountVerified'),
             });
             if (this.$cookies.get('role') === 'employer') {
               this.$router.push('/workers');
