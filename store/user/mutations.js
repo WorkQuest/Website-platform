@@ -45,4 +45,7 @@ export default {
   setSendCode(state, data) {
     state.userSendCode = data;
   },
+  setUserReviews(state, data) {
+    state.userReviews = data;
+  },
 };

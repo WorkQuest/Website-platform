@@ -1,16 +1,16 @@
 export default {
+
+  // Portfolios
   async getUserPortfolios({ commit }, id) {
     const response = await this.$axios.$get(`/v1/user/${id}/portfolio/cases`);
     commit('setUserPortfolioCases', response.result);
     return response;
   },
-
   async imageCaseType({ commit }, payload) {
     const response = await this.$axios.$post('/v1/storage/get-upload-link', payload);
     commit('setCaseImage', response.result);
     return response;
   },
-
   async setCaseImage({ commit }, { url, formData, type }) {
     const response = await this.$axios.$put(url, formData, {
       headers: {
@@ -21,14 +21,24 @@ export default {
     commit('setCaseImage', response.result);
     return response;
   },
-
   async setCaseData({ commit }, payload) {
     const response = await this.$axios.$post('/v1/portfolio/add-case', payload);
     commit('setCaseData', response.result);
     console.log(response);
     return response;
   },
+  async deletePortfolio(id) {
+    return await this.$axios.$delete(`/v1/portfolio/${id}`);
+  },
 
+  // Reviews
+  async getAllUserReviews({ commit }, id) {
+    const response = await this.$axios.$get(`/v1/user/${id}/reviews`);
+    commit('setUserReviews', response.result);
+    return response;
+  },
+
+  // Auth
   async signIn({ commit, dispatch }, payload) {
     const response = await this.$axios.$post('/v1/auth/login', payload);
     commit('setTokens', response.result);
@@ -79,6 +89,18 @@ export default {
     commit('setUserPassword', response.result);
     return response;
   },
+  async passwordSendCode({ commit }, payload) {
+    const response = await this.$axios.$post('/v1/restore-password/send-code', payload);
+    commit('setSendCode', response.result);
+    return response;
+  },
+  async passwordChange({ commit }, payload) {
+    const response = await this.$axios.$post('/v1/restore-password/set-password', payload);
+    commit('setUserPassword', response.result);
+    return response;
+  },
+
+  // Change avatar
   async imageType({ commit }, payload) {
     const response = await this.$axios.$post('/v1/storage/get-upload-link', payload);
     commit('setImageType', response.result);
@@ -94,14 +116,23 @@ export default {
     commit('setImage', response.result);
     return response;
   },
-  async passwordSendCode({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/restore-password/send-code', payload);
-    commit('setSendCode', response.result);
-    return response;
+
+  // 2FA
+  async disable2FA(payload) {
+    return await this.$axios.$post('/v1/totp/disable', payload);
   },
-  async passwordChange({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/restore-password/set-password', payload);
-    commit('setUserPassword', response.result);
-    return response;
+  async enable2FA(payload) {
+    return await this.$axios.$post('/v1/totp/enable', payload);
+  },
+  async confirmEnable2FA(payload) {
+    return await this.$axios.$post('/v1/totp/confirm', payload);
+  },
+
+  // SMS Ver
+  async sendPhone(payload) {
+    return await this.$axios.$post('/v1/profile/phone/send-code', payload);
+  },
+  async confirmPhone(payload) {
+    return await this.$axios.$post('/v1/profile/phone/confirm', payload);
   },
 };

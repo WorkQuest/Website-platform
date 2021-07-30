@@ -15,4 +15,5 @@ export default () => ({
   portfolios: {},
   portfolio: {},
   medias: null,
+  userReviews: {},
 });

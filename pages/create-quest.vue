@@ -317,7 +317,7 @@ export default {
         },
       };
       try {
-        const response = this.$store.dispatch('data/questCreate', createQuestData);
+        const response = this.$store.dispatch('quests/questCreate', createQuestData);
         if (response) {
           this.ShowModal({
             key: modals.status,

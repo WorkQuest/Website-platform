@@ -27,4 +27,5 @@ export default {
   getUserFacebook: (state) => state.userData?.additionalInfo?.socialNetwork?.facebook || '',
   getUserPortfolios: (state) => state.portfolios || '',
   getUserPortfolio: (state) => state.medias || '',
+  getAllUserReviews: (state) => state.userReviews || '',
 };

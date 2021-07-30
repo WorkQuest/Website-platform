@@ -90,7 +90,6 @@ export default {
         data: {},
         file: {},
       },
-      // file: null,
     };
   },
   computed: {
@@ -144,6 +143,7 @@ export default {
       };
       console.log(payload);
       await this.$store.dispatch('user/setCaseData', payload);
+      this.hide();
     },
     showRequestSendModal() {
       this.ShowModal({

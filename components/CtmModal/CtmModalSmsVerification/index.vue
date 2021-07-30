@@ -95,7 +95,7 @@ export default {
         const payload = {
           phoneNumber: this.phoneNumber,
         };
-        const response = await this.$store.dispatch('data/sendPhone', payload);
+        const response = await this.$store.dispatch('user/sendPhone', payload);
         if (response?.ok) {
           console.log(response);
         }
@@ -109,7 +109,7 @@ export default {
         const payload = {
           confirmCode: this.confirmCode,
         };
-        const response = await this.$store.dispatch('data/confirmPhone', payload);
+        const response = await this.$store.dispatch('user/confirmPhone', payload);
         if (response?.ok) {
           console.log('Phone confirmed');
         }

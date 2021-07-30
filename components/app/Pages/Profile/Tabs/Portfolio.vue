@@ -7,6 +7,15 @@
         class="portfolio__item"
       >
         <div class="portfolio__card">
+          <button
+            class="close-btn"
+            @click="deletePortfolio()"
+          >
+            <span
+              :id="item.id"
+              class="icon-close_big"
+            />
+          </button>
           <div class="portfolio__body">
             <div
               v-for="(img, j) in item.medias"
@@ -61,11 +70,39 @@ export default {
         console.log(e);
       }
     },
+    deletePortfolio() {
+      // Отладка
+      const delBtn = document.querySelectorAll('button');
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < delBtn.length; i++) {
+        delBtn[i].addEventListener('click', async (e) => {
+          try {
+            console.log(e.target.getAttribute('id'));
+            const id = e.target.getAttribute('id');
+            const response = await this.$store.dispatch('user/deletePortfolio', id);
+            if (response?.ok) {
+              console.log(response);
+              this.hide();
+            }
+            // eslint-disable-next-line no-shadow
+          } catch (e) {
+            console.log(e);
+          }
+        });
+      }
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+
+.close-btn {
+  background: $red;
+  border: 1px solid $black400;
+  border-radius: 6px;
+  padding: 2px;
+}
 
 .portfolio {
   &__card {
