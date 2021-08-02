@@ -157,32 +157,34 @@
                 class="header__button header__button_locale"
                 @click="showLocale()"
               >
-                {{ $t('ui.locals.en') }}
+                <span v-if="currentLocale">
+                  {{ currentLocale }}
+                </span>
+                <span v-else>
+                  {{ $t('ui.locals.en') }}
+                </span>
                 <span class="icon-caret_down" />
                 <transition name="fade">
                   <div
                     v-if="isShowLocale"
                     class="locale"
                   >
-                    <div class="locale__items">
-                      <div class="locale__item">
+                    <div
+                      v-for="(item, i) in locales"
+                      :key="i"
+                      class="locale__items"
+                    >
+                      <div
+                        class="locale__item"
+                        @click="setLocale(item)"
+                      >
                         <img
-                          src="/img/app/en.svg"
-                          alt="EN"
+                          :src="item.localeSrc"
+                          :alt="item.localeText"
                           class="locale__icon"
                         >
                         <div class="locale__text">
-                          {{ $t('ui.locals.en') }}
-                        </div>
-                      </div>
-                      <div class="locale__item">
-                        <img
-                          src="/img/app/ru.svg"
-                          alt="RU"
-                          class="locale__icon"
-                        >
-                        <div class="locale__text">
-                          {{ $t('ui.locals.ru') }}
+                          {{ item.localeText }}
                         </div>
                       </div>
                     </div>
@@ -749,6 +751,49 @@ export default {
           title: 'Logout',
         },
       ],
+      locales: [
+        {
+          localeSrc: '/img/app/en.svg',
+          localeText: this.$t('ui.locals.en'),
+        },
+        {
+          localeSrc: '/img/app/ru.svg',
+          localeText: this.$t('ui.locals.ru'),
+        },
+        {
+          localeSrc: '/img/app/ba.svg',
+          localeText: this.$t('ui.locals.ba'),
+        },
+        {
+          localeSrc: '/img/app/zh.svg',
+          localeText: this.$t('ui.locals.zh'),
+        },
+        {
+          localeSrc: '/img/app/fr.svg',
+          localeText: this.$t('ui.locals.fr'),
+        },
+        {
+          localeSrc: '/img/app/hi.svg',
+          localeText: this.$t('ui.locals.hi'),
+        },
+        {
+          localeSrc: '/img/app/in.svg',
+          localeText: this.$t('ui.locals.in'),
+        },
+        {
+          localeSrc: '/img/app/po.svg',
+          localeText: this.$t('ui.locals.po'),
+        },
+        {
+          localeSrc: '/img/app/sp.svg',
+          localeText: this.$t('ui.locals.sp'),
+        },
+        {
+          localeSrc: '/img/app/ae.svg',
+          localeText: this.$t('ui.locals.ae'),
+        },
+      ],
+      currentLocale: '',
     };
   },
   computed: {
@@ -826,6 +871,9 @@ export default {
     window.removeEventListener('resize', this.userWindowChange);
   },
   methods: {
+    setLocale(item) {
+      this.currentLocale = item.localeText;
+    },
     kitcutDescription(text) {
       text = text.trim();
       if (text.length <= 120) return text;

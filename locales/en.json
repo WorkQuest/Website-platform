@@ -488,7 +488,15 @@
     },
     "locals": {
       "en": "EN",
-      "ru": "RU"
+      "ru": "RU",
+      "ba": "BA",
+      "zh": "ZH",
+      "fr": "FR",
+      "hi": "HI",
+      "in": "IN",
+      "po": "PO",
+      "sp": "SP",
+      "ae": "AE"
     },
     "notifications": {
       "title": "Notifications",
