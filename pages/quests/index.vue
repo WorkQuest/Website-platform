@@ -250,7 +250,7 @@ export default {
   },
   methods: {
     getAllQuests() {
-      return this.$store.dispatch('data/getAllQuests');
+      return this.$store.dispatch('quests/getAllQuests');
     },
     getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
       const R = 6371; // Radius of the earth in km

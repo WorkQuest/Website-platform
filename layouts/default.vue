@@ -762,7 +762,7 @@ export default {
       return [
         {
           title: this.$t('ui.profile.myProfile'),
-          path: '/profile',
+          path: `/profile/${this.userData.id}`,
         },
         {
           title: this.$t('ui.profile.settings'),
