@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import Card from '~/components/app/Cards/QuestCard';
+import Card from '~/components/app/cards/questCards';
 import Messages from '~/components/app/Pages/Common/Messages';
 
 export default {

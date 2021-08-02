@@ -27,7 +27,7 @@
         </div>
 
         <!-- ACTIVE -->
-        <QuestCard />
+        <questCards />
       </div>
     </section>
   </div>
@@ -37,7 +37,7 @@
 import UserInfo from '~/components/app/Pages/Common/UserInfo';
 import UserStatistic from '~/components/app/Panels/UserStatistic';
 import Reviews from '~/components/app/Pages/Profile/Tabs/Reviews';
-import QuestCard from '~/components/app/Cards/QuestCard';
+import questCards from '~/components/app/cards/questCards';
 
 export default {
   name: 'ProfileID',
@@ -45,7 +45,7 @@ export default {
     UserInfo,
     UserStatistic,
     Reviews,
-    QuestCard,
+    questCards,
   },
   async mounted() {
     this.SetLoader(true);

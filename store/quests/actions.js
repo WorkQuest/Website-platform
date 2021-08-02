@@ -6,10 +6,10 @@ export default {
   async questCreate({ commit }, payload) {
     return await this.$axios.$post('/v1/quest/create', payload);
   },
-  async getAllQuests({ commit }) {
-    const { data } = await this.$axios.$get('/v1/quests');
-    commit('setAllQuests', data.result);
-    return data.result;
+  async getAllQuests({ commit }, payload) {
+    const response = await this.$axios.$get(`/v1/quests${payload}`);
+    commit('setAllQuests', response.result);
+    return response.result;
   },
   async getUserQuests({ commit }, payload) {
     const { data } = await this.$axios.$get(`/v1/employer/${payload}/quests`);

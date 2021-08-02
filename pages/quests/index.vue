@@ -83,7 +83,7 @@
             </base-btn>
           </div>
         </div>
-        <div class="quests__cards">
+        <!--<div class="quests__cards">
           <div
             v-for="(item, i) in cards"
             :key="i"
@@ -186,7 +186,13 @@
               </div>
             </div>
           </div>
-        </div>
+        </div>-->
+        <questCards
+          :limit="100"
+          :sort-price="priceSort"
+          :sort-time="timeSort"
+          :page="'quests'"
+        />
       </div>
     </div>
   </div>
@@ -195,11 +201,13 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
+import questCards from '~/components/app/Pages/Common/Quests';
 
 export default {
   name: 'Quests',
   components: {
     GmapSearchBlock,
+    questCards,
   },
   data() {
     return {
@@ -230,6 +238,7 @@ export default {
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
+      questLimits: 100,
     };
   },
   computed: {
@@ -246,11 +255,12 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
-    this.getAllQuests();
+    this.getQuests();
   },
   methods: {
-    getAllQuests() {
-      return this.$store.dispatch('quests/getAllQuests');
+    getQuests() {
+      const additionalValue = `?limit=${this.questLimits}&offset=0`;
+      return this.$store.dispatch('quests/getAllQuests', additionalValue);
     },
     getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
       const R = 6371; // Radius of the earth in km
@@ -291,6 +301,7 @@ export default {
         // eslint-disable-next-line no-unused-expressions
         this.timeSort === 'desc' ? this.timeSort = 'asc' : this.timeSort = 'desc';
       }
+      this.getQuests();
     },
     deleteTag(tag) {
       this.$store.dispatch('ui/deleteTags', tag);

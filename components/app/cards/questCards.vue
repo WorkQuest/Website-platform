@@ -175,7 +175,21 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'QuestCard',
+  name: 'QuestCards',
+  props: {
+    limit: {
+      type: Number,
+      default: 10,
+    },
+    sortTime: {
+      type: String,
+      default: 'desc',
+    },
+    sortPrice: {
+      type: String,
+      default: 'desc',
+    },
+  },
   data() {
     return {
       isShowFavourite: false,
@@ -184,8 +198,11 @@ export default {
   computed: {
     ...mapGetters({
       card: 'data/getCard',
-      cards: 'data/getAllQuests',
+      cards: 'quests/getAllQuests',
     }),
+  },
+  mounted() {
+    console.log(this.limit);
   },
   methods: {
     getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
