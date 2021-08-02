@@ -24,7 +24,7 @@
 }
 
 @mixin _1300 {
-  @media (max-width: 1400px) {
+  @media (max-width: 1300px) {
     @content;
   }
 }
@@ -61,6 +61,12 @@
 
 @mixin _380 {
   @media (max-width: 380px) {
+    @content;
+  }
+}
+
+@mixin _350 {
+  @media (max-width: 350px) {
     @content;
   }
 }

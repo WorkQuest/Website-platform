@@ -27,7 +27,7 @@
                 <div class="title title_inline">
                   {{ user.name }}
                   <span class="level">
-                    HIGHER LEVEL EMPLOYEE
+                    TOP RANKED EMP.
                   </span>
                 </div>
                 <div class="description">
