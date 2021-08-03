@@ -12,9 +12,9 @@ export default {
     return response.result;
   },
   async getUserQuests({ commit }, payload) {
-    const { data } = await this.$axios.$get(`/v1/employer/${payload}/quests`);
-    commit('setUserQuests', data.result);
-    return data.result;
+    const response = await this.$axios.$get(`/v1/employer/${payload}/quests`);
+    commit('setUserQuests', response.result);
+    return response.result;
   },
 
   // Experimental

@@ -25,6 +25,7 @@
           <Quests
             :limit="100"
             :selected-tab="selectedTab"
+            :object="questsObjects"
           />
         </div>
       </div>
@@ -50,19 +51,20 @@ export default {
       selectedTab: 0,
       isShowFavourite: false,
       questLimits: 100,
+      questsObjects: {},
     };
   },
   computed: {
     ...mapGetters({
       tabs: 'data/getTabs',
       userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
     }),
   },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
-    const additionalValue = `?limit=${this.questLimits}&offset=0`;
-    return this.$store.dispatch('quests/getAllQuests', additionalValue);
+    this.questsObjects = await this.$store.dispatch('quests/getUserQuests', this.userData.id);
   },
   methods: {
     filterCards(id) {
@@ -74,6 +76,9 @@ export default {
         return ' ';
       }
       return 'light';
+    },
+    changeFlexibleData(data) {
+      this.$store.dispatch('quests/flexibleData', data);
     },
   },
 };

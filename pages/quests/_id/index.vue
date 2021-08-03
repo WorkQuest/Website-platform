@@ -349,7 +349,9 @@
         </p>
         <div class="quest__card">
           <!-- cards -->
-          <questCards />
+          <questCards
+            :limit="1"
+          />
         </div>
       </div>
     </div>
@@ -360,7 +362,7 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import Info from '~/components/app/Info/index.vue';
 import QuestPanel from '~/components/app/Panels/QuestPanel';
-import questCards from '~/components/app/cards/questCards';
+import questCards from '~/components/app/Pages/Common/Quests';
 
 export default {
   name: 'Quests',

@@ -1,5 +1,8 @@
 <template>
-  <div class="quests__cards">
+  <div
+    v-if="object !== null"
+    class="quests__cards"
+  >
     <div
       v-for="(item, i) in filteredCards(selectedTab, isShowFavourite)"
       :key="i"
@@ -135,26 +138,27 @@
               class="block__status"
             >
               <div
+                v-if="item.priority !== 3"
                 class="block__priority"
                 :class="getPriorityClass(item.priority)"
               >
                 {{ getPriority(item.priority) }}
               </div>
               <div class="block__amount_green">
-                {{ item.amount }} {{ item.symbol }}
+                {{ item.price }} WUSD
               </div>
             </div>
             <div
               v-else
               class="block__amount_gray"
             >
-              {{ item.amount }} {{ item.symbol }}
+              {{ item.price }} WUSD
             </div>
             <div class="block__details">
               <base-btn
                 v-if="item.type !== 3"
                 mode="borderless-right"
-                @click="showDetails()"
+                @click="showDetails(item.id)"
               >
                 {{ $t('meta.details') }}
                 <template v-slot:right>
@@ -197,14 +201,6 @@ export default {
       type: Number,
       default: 10,
     },
-    sortTime: {
-      type: String,
-      default: 'desc',
-    },
-    sortPrice: {
-      type: String,
-      default: 'desc',
-    },
     page: {
       type: String,
       default: '',
@@ -212,6 +208,10 @@ export default {
     selectedTab: {
       type: Number,
       default: 0,
+    },
+    object: {
+      type: Object,
+      default: null,
     },
   },
   data() {
@@ -271,8 +271,8 @@ export default {
         { card__level_higher: cards[idx].level.code === 1 },
       ];
     },
-    showDetails() {
-      this.$router.push('/quests/1');
+    showDetails(questId) {
+      this.$router.push(`/quests/${questId}`);
     },
     showReviewModal(rating) {
       this.ShowModal({
@@ -289,24 +289,23 @@ export default {
     isHideStatus(type) {
       return !(type === 3);
     },
-    filterCards(id) {
-      this.selectedTab = id;
-      this.isShowFavourite = id === 1;
+    showMessageModal() {
+      this.ShowModal({
+        key: modals.sendARequest,
+      });
     },
     filteredCards(type, isFavorite) {
-      if (type === 0) {
-        return this.cards.quests;
+      if (this.object !== null) {
+        if (type === 0) {
+          return this.object.quests;
+        }
+        if (isFavorite) {
+          return this.object.quests.filter((x) => x.isFavourite);
+        }
+        return this.object.quests.filter((x) => x.type === type);
       }
-      if (isFavorite) {
-        return this.cards.quests.filter((x) => x.isFavourite);
-      }
-      return this.cards.quests.filter((x) => x.type === type);
-    },
-    btnMode(id) {
-      if (this.selectedTab === id) {
-        return ' ';
-      }
-      return 'light';
+      this.showMessageModal();
+      return {};
     },
     getStatusCard(index) {
       const status = {

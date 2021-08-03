@@ -83,8 +83,7 @@
         </div>
         <questCards
           :limit="100"
-          :sort-price="priceSort"
-          :sort-time="timeSort"
+          :object="questsObjects"
           :page="'quests'"
         />
       </div>
@@ -133,6 +132,7 @@ export default {
       priceSort: 'desc',
       timeSort: 'desc',
       questLimits: 100,
+      questsObjects: {},
     };
   },
   computed: {
@@ -149,7 +149,7 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
-    this.getQuests();
+    await this.getQuests();
   },
   methods: {
     showFilter() {
@@ -157,9 +157,9 @@ export default {
         key: modals.questFilter,
       });
     },
-    getQuests() {
-      const additionalValue = `?limit=${this.questLimits}&offset=0`;
-      return this.$store.dispatch('quests/getAllQuests', additionalValue);
+    async getQuests(specialSort) {
+      const additionalValue = `?limit=${this.questLimits}&offset=0${specialSort || ''}`;
+      this.questsObjects = await this.$store.dispatch('quests/getAllQuests', additionalValue);
     },
     getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
       const R = 6371; // Radius of the earth in km
@@ -192,15 +192,28 @@ export default {
       this.$router.push('/quests/1');
     },
     changeSorting(type) {
+      let sortValue = '';
       if (type === 'price') {
-        // eslint-disable-next-line no-unused-expressions
-        this.priceSort === 'desc' ? this.priceSort = 'asc' : this.priceSort = 'desc';
+        if (this.priceSort === 'desc') {
+          this.priceSort = 'asc';
+          this.timeSort = 'desc';
+        } else {
+          this.priceSort = 'desc';
+          this.timeSort = 'asc';
+        }
+        sortValue = `&sort[price]=${this.priceSort}`;
       }
       if (type === 'time') {
-        // eslint-disable-next-line no-unused-expressions
-        this.timeSort === 'desc' ? this.timeSort = 'asc' : this.timeSort = 'desc';
+        if (this.timeSort === 'desc') {
+          this.timeSort = 'asc';
+          this.priceSort = 'desc';
+        } else {
+          this.timeSort = 'desc';
+          this.priceSort = 'asc';
+        }
+        sortValue = `&sort[createdAt]=${this.timeSort}`;
       }
-      this.getQuests();
+      this.getQuests(sortValue);
     },
     deleteTag(tag) {
       this.$store.dispatch('ui/deleteTags', tag);
