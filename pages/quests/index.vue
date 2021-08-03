@@ -15,20 +15,17 @@
           <div class="tools__left">
             <base-btn
               :mode="'light'"
-              @click="changeSorting('price')"
+              @click="showFilter"
             >
+              <span
+                class="icon-filter_outline"
+              />
               <span class="tools__text">
-                {{ $t('quests.price') }}
+                {{ $t('quests.filter.btn') }}
               </span>
-              <span
-                v-if="priceSort === 'desc'"
-                class="icon-Sorting_descending"
-              />
-              <span
-                v-if="priceSort === 'asc'"
-                class="icon-Sorting_ascending"
-              />
             </base-btn>
+          </div>
+          <div class="tools__right">
             <base-btn
               :mode="'light'"
               @click="changeSorting('time')"
@@ -45,20 +42,21 @@
                 class="icon-Sorting_ascending"
               />
             </base-btn>
-            <base-dd
-              v-model="priorityIndex"
-              :items="priority"
-            />
-          </div>
-          <div class="tools__right">
             <base-btn
               :mode="'light'"
-              @click="showSkillsModal()"
+              @click="changeSorting('price')"
             >
               <span class="tools__text">
-                {{ $t('quests.type') }}
+                {{ $t('quests.price') }}
               </span>
-              <span class="icon-caret_right" />
+              <span
+                v-if="priceSort === 'desc'"
+                class="icon-Sorting_descending"
+              />
+              <span
+                v-if="priceSort === 'asc'"
+                class="icon-Sorting_ascending"
+              />
             </base-btn>
           </div>
         </div>
@@ -249,6 +247,11 @@ export default {
     this.getAllQuests();
   },
   methods: {
+    showFilter() {
+      this.ShowModal({
+        key: modals.questFilter,
+      });
+    },
     getAllQuests() {
       return this.$store.dispatch('quests/getAllQuests');
     },
@@ -702,11 +705,11 @@ export default {
   align-items: center;
   &__left {
     display: grid;
-    grid-template-columns: 103px 152px minmax(141px, auto);
+    grid-template-columns: 1fr;
     grid-gap: 20px;
     span::before {
       padding-left: 10px;
-      margin-right: -10px;
+      margin-right: 10px;
       color: $black400;
       font-size: 24px;
     }
@@ -718,12 +721,15 @@ export default {
     font-size: 16px;
     line-height: 130%;
     color: $black800;
+    display: block;
   }
   &__right {
-    min-width: 149px;
+    display: grid;
+    grid-template-columns: 4fr 3fr;
+    grid-gap: 20px;
     span::before {
       padding-left: 10px;
-      margin-right: -10px;
+      margin-right: 10px;
       color: $black400;
       font-size: 24px;
     }
@@ -792,9 +798,9 @@ export default {
       grid-row: 2/3;
     }
     &__right {
-      min-width: 100%;
-      grid-column: 1/3;
-      grid-row: 1/2;
+      grid-template-columns: repeat(2, 1fr);
+      grid-column: 1/2;
+      grid-row: 2/3;
     }
   }
   .dd {

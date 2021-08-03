@@ -184,7 +184,7 @@ export default {
   computed: {
     ...mapGetters({
       card: 'data/getCard',
-      cards: 'data/getAllQuests',
+      cards: 'quests/getAllQuests',
     }),
   },
   methods: {
