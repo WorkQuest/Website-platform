@@ -34,7 +34,7 @@
             </div>
             <!-- socials links -->
             <div class="socials">
-              <SocialPanel />
+              <socialPanel />
             </div>
             <!-- contacts -->
             <div class="contacts__grid">
@@ -79,7 +79,7 @@
     <div class="information-section">
       <div class="main-container">
         <!-- DATA -->
-        <UserStatistic />
+        <userStatistic />
 
         <!-- REVIEWS -->
         <div
@@ -91,7 +91,7 @@
         <div
           class="tab__container"
         >
-          <ReviewsTab />
+          <reviewsTab />
         </div>
         <div>
           <div class="title">
@@ -117,20 +117,20 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import ReviewsTab from '~/components/app/Pages/Profile/Tabs/Reviews';
-import UserInfo from '~/components/app/Pages/Common/UserInfoOther';
-import SocialPanel from '~/components/app/Panels/Social';
-import UserStatistic from '~/components/app/Panels/UserStatistic';
+import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
+import userInfo from '~/components/app/pages/common/userInfoOther';
+import socialPanel from '~/components/app/panels/social';
+import userStatistic from '~/components/app/panels/userStatistic';
 import Card from '~/components/app/cards/questCards';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'Index',
   components: {
-    ReviewsTab,
-    UserStatistic,
+    reviewsTab,
+    userStatistic,
     Card,
-    SocialPanel,
+    socialPanel,
   },
   data() {
     return {

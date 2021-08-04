@@ -4,14 +4,14 @@
       class="main-section main-section_white"
     >
       <div class="main-container">
-        <UserInfo />
+        <userInfo selected="1" />
       </div>
     </div>
 
     <div class="information-section">
       <div class="main-container">
         <!-- DATA -->
-        <UserStatistic />
+        <userStatistic />
 
         <!-- REVIEWS -->
         <div class="title">
@@ -38,15 +38,15 @@
 </template>
 
 <script>
-import UserInfo from '~/components/app/Pages/Common/UserInfo';
-import Reviews from '~/components/app/Pages/Profile/Tabs/Reviews';
+import userInfo from '~/components/app/pages/common/userInfo';
+import Reviews from '~/components/app/pages/profile/tabs/reviews';
 import questCards from '~/components/app/cards/questCards';
-import UserStatistic from '~/components/app/Panels/UserStatistic';
+import userStatistic from '~/components/app/panels/userStatistic';
 
 export default {
   name: 'Index',
   components: {
-    Reviews, UserInfo, questCards, UserStatistic,
+    Reviews, userInfo, questCards, userStatistic,
   },
   async mounted() {
     this.SetLoader(true);

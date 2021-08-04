@@ -33,7 +33,7 @@
 
 <script>
 import Card from '~/components/app/cards/questCards';
-import Messages from '~/components/app/Pages/Common/Messages';
+import Messages from '~/components/app/pages/common/messages';
 
 export default {
   name: 'Index',

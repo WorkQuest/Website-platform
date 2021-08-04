@@ -1,13 +1,13 @@
 <template>
   <div>
-    <Info
+    <info
       :info="infoData"
     />
     <div
       class="main-white"
     >
       <div class="main__body">
-        <QuestPanel />
+        <questPanel />
 
         <div class="quest__container">
           <h2 class="quest__title">
@@ -360,15 +360,15 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import Info from '~/components/app/Info/index.vue';
-import QuestPanel from '~/components/app/Panels/QuestPanel';
-import questCards from '~/components/app/Pages/Common/Quests';
+import info from '~/components/app/info/index.vue';
+import questPanel from '~/components/app/panels/questPanel';
+import questCards from '~/components/app/pages/common/quests';
 
 export default {
   name: 'Quests',
   components: {
-    Info,
-    QuestPanel,
+    info,
+    questPanel,
     questCards,
   },
   data() {

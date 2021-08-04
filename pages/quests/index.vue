@@ -94,7 +94,7 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
-import questCards from '~/components/app/Pages/Common/Quests';
+import questCards from '~/components/app/pages/common/quests';
 
 export default {
   name: 'Quests',

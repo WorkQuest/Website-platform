@@ -5,9 +5,16 @@
     <div class="col info-grid__col_left">
       <div class="info-grid__avatar">
         <img
+          v-if="imageData"
           class="info-grid__avatar"
-          src="~/assets/img/temp/avatar.jpg"
-          alt=""
+          :src="imageData"
+          :alt="localUserData.firstName"
+        >
+        <img
+          v-else-if="!imageData"
+          class="info-grid__avatar"
+          src="~/assets/img/app/avatar_empty.png"
+          :alt="localUserData.firstName"
         >
       </div>
       <div class="rating" />
@@ -19,59 +26,79 @@
       </nuxt-link>
     </div>
     <div class="col info-grid__col">
-      <div class="title">
-        {{ name }}
+      <div
+        v-if="firstName && lastName"
+        class="title"
+      >
+        {{ firstName }} {{ lastName }}
       </div>
       <div
         v-if="userRole === 'employer'"
         class="subtitle"
       >
-        {{ company }}
+        {{ company || userInfo.company }}
       </div>
       <div
-        v-if="userRole === 'employer'"
+        v-if="userDesc"
         class="description"
       >
         {{ userDesc }}
       </div>
       <div v-if="selected === 1 && userRole === 'worker' ">
-        <div class="knowledge__text">
-          {{ $t('profile.educations') }}
-        </div>
-        <div class="work-exp__container">
+        <div
+          v-if="userEducations.length > 0"
+        >
           <div
-            class="work-exp__item"
+            class="knowledge__text"
           >
-            <span class="work-exp__company">{{ userEducations.place }}</span>
-            <span class="work-exp__term">{{ userEducations.to }} - {{ userEducations.from }}</span>
+            {{ $t('profile.educations') }}
+          </div>
+          <div
+            v-if="userEducations"
+            class="work-exp__container"
+          >
+            <div
+              v-for="(item, i) in userEducations"
+              :key="i"
+              class="work-exp__item"
+            >
+              <span class="work-exp__company">{{ item.place }}</span>
+              <span class="work-exp__term">{{ item.from }} - {{ item.to }}</span>
+            </div>
           </div>
         </div>
-        <div class="work-exp__text">
-          {{ $t('profile.prevWorkExp') }}
-        </div>
-        <div class="work-exp__container">
+        <div
+          v-if="userWorkExp.length > 0"
+        >
           <div
-            v-for="(item, i) in userWorkExp"
-            :key="i"
-            class="work-exp__item"
+            class="work-exp__text"
           >
-            <span class="work-exp__company">{{ item.place }}</span>
-            <span class="work-exp__term">{{ item.to }} - {{ item.from }}</span>
+            {{ $t('profile.prevWorkExp') }}
+          </div>
+          <div class="work-exp__container">
+            <div
+              v-for="(item, i) in userWorkExp"
+              :key="i"
+              class="work-exp__item"
+            >
+              <span class="work-exp__company">{{ item.place }}</span>
+              <span class="work-exp__term">{{ item.from }} - {{ item.to }}</span>
+            </div>
           </div>
         </div>
       </div>
       <!-- socials links -->
       <div class="socials">
-        <SocialPanel />
+        <socialPanel />
       </div>
       <!-- contacts -->
       <div class="contacts__grid">
         <div class="contacts">
-          <ContactPanel />
+          <contactPanel />
           <div class="btn__container">
             <base-btn
               v-if="userRole === 'worker'"
-              @click="toRaisedViews"
+              @click="toRaisedViews()"
             >
               {{ $t('profile.raiseViews') }}
             </base-btn>
@@ -99,19 +126,18 @@
         </div>
       </div>
     </div>
-
     <div class="share-btn" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import ContactPanel from '~/components/app/Panels/ContactOther';
-import SocialPanel from '~/components/app/Panels/Social';
+import contactPanel from '~/components/app/panels/contact';
+import socialPanel from '~/components/app/panels/social';
 
 export default {
   name: 'UserInfo',
-  components: { ContactPanel, SocialPanel },
+  components: { contactPanel, socialPanel },
   props: {
     selected: {
       type: Number,
@@ -128,14 +154,15 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      imageData: 'user/getImageData',
-      userEducations: 'data/getEducations',
-      userWorkExp: 'data/getWorkExp',
       userInfo: 'data/getUserInfo',
+      imageData: 'user/getImageData',
+      firstName: 'user/getFirstName',
+      lastName: 'user/getLastName',
+      company: 'user/getUserCompany',
+      userDesc: 'user/getUserDesc',
+      userEducations: 'user/getUserEducations',
+      userWorkExp: 'user/getUserWorkExp',
       quest: 'data/getQuest',
-      name: 'data/getName',
-      company: 'data/getCompany',
-      userDesc: 'data/getUserDesc',
     }),
   },
   async mounted() {
@@ -270,7 +297,6 @@ export default {
 
   .avatar {
     border-radius: 89px;
-    object-fit: cover;
   }
 
   .rating {
@@ -322,6 +348,7 @@ export default {
     width: 142px;
     height: 142px;
     border-radius: 50%;
+    object-fit: cover;
   }
   &__col {
     &_left {
@@ -345,6 +372,8 @@ export default {
     align-items: center;
     .col {
       margin-bottom: 10px;
+      margin-left: auto;
+      margin-right: auto;
     }
   }
 }

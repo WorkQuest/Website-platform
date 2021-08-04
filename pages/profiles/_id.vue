@@ -4,13 +4,13 @@
       class="main-section main-section_white"
     >
       <div class="main-container">
-        <UserInfo />
+        <userInfo selected="1" />
       </div>
     </div>
     <section class="information-section">
       <div class="main-container">
         <!-- DATA -->
-        <UserStatistic />
+        <userStatistic />
 
         <!-- REVIEWS -->
         <div class="title">
@@ -34,16 +34,16 @@
 </template>
 
 <script>
-import UserInfo from '~/components/app/Pages/Common/UserInfo';
-import UserStatistic from '~/components/app/Panels/UserStatistic';
-import Reviews from '~/components/app/Pages/Profile/Tabs/Reviews';
+import userInfo from '~/components/app/pages/common/userInfo';
+import userStatistic from '~/components/app/panels/userStatistic';
+import Reviews from '~/components/app/pages/profile/tabs/reviews';
 import questCards from '~/components/app/cards/questCards';
 
 export default {
   name: 'ProfileID',
   components: {
-    UserInfo,
-    UserStatistic,
+    userInfo,
+    userStatistic,
     Reviews,
     questCards,
   },

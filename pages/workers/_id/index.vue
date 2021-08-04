@@ -33,7 +33,7 @@
                 <div class="description">
                   {{ user.desc }}
                 </div>
-                <Social />
+                <social />
                 <div class="contacts__grid">
                   <div class="contacts">
                     <div class="contacts">
@@ -159,17 +159,17 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import Reviews from '~/components/app/Pages/Profile/Tabs/Reviews';
-import Portfolio from '~/components/app/Pages/Profile/Tabs/Portfolio';
-import Social from '~/components/app/Panels/Social';
-import Contact from '~/components/app/Panels/Contact';
+import Reviews from '~/components/app/pages/profile/tabs/reviews';
+import Portfolio from '~/components/app/pages/profile/tabs/portfolio';
+import social from '~/components/app/panels/social';
+import contact from '~/components/app/panels/contact';
 
 export default {
   name: 'IndexVue',
   components: {
     Reviews,
     Portfolio,
-    Social,
+    social,
   },
   computed: {
     ...mapGetters({

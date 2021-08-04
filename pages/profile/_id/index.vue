@@ -4,7 +4,7 @@
       class="main-section main-section_white"
     >
       <div class="main-container">
-        <UserInfo :selected="selected" />
+        <userInfo :selected="selected" />
 
         <!-- tabs -->
         <button
@@ -39,14 +39,14 @@
           v-if="selected === 1"
           class="tab__container"
         >
-          <QuestsTab />
+          <questsTab />
         </div>
 
         <div
           v-if="selected === 2"
           class="tab__container"
         >
-          <ReviewsTab />
+          <reviewsTab />
         </div>
 
         <div
@@ -63,7 +63,7 @@
               </template>
             </base-btn>
           </div>
-          <PortfolioTab />
+          <portfolioTab />
         </div>
 
         <div
@@ -85,19 +85,19 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import PortfolioTab from '~/components/app/Pages/Profile/Tabs/Portfolio';
-import ReviewsTab from '~/components/app/Pages/Profile/Tabs/Reviews';
-import QuestsTab from '~/components/app/Pages/Common/Quests';
-import UserInfo from '~/components/app/Pages/Common/UserInfo';
+import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
+import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
+import questsTab from '~/components/app/pages/common/quests';
+import userInfo from '~/components/app/pages/common/userInfo';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'Index',
   components: {
-    ReviewsTab,
-    PortfolioTab,
-    QuestsTab,
-    UserInfo,
+    reviewsTab,
+    portfolioTab,
+    questsTab,
+    userInfo,
   },
   data() {
     return {
