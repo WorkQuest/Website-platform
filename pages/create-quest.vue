@@ -125,7 +125,7 @@
           placeholder="200 WUSD"
         />
       </div>
-      <!--      <Uploader />-->
+      <Uploader />
       <div class="ads__container">
         <div>{{ $t('quests.ads.promoteYourQuest') }}</div>
         <div class="btn__container btn__container_left">
@@ -206,7 +206,7 @@ import 'nuxt-dropzone/dropzone.css';
 import '~/assets/scss/vue2Dropzone.min.css';
 import '~/assets/scss/dropzone.scss';
 import modals from '~/store/modals/modals';
-// import Uploader from '../components/ui/Uploader';
+import Uploader from '../components/ui/Uploader';
 
 const { GeoCode } = require('geo-coder');
 

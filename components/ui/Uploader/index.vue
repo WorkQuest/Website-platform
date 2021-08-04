@@ -3,16 +3,26 @@
     id="file-drag-drop"
     class="uploader-form__container"
     :class="{'uploader-form__container_files': files.length > 0}"
-    @click="openFileUploader"
   >
+    <input
+      id="fileinput"
+      ref="fileinput"
+      type="file"
+      accept=".jpg, .jpeg, .png, .gif"
+      hidden
+      multiple
+      @change="watchInput"
+    >
     <form
       ref="fileform"
       class="uploader-form"
+      @click="openFileUploader"
     >
       <span class="drop-files">
-        <span v-if="files.length === 0">
+        <div v-if="files.length === 0">
           Upload a images or videos
-        </span>
+          <span class="icon-add_to_queue" />
+        </div>
       </span>
     </form>
     <button
@@ -28,21 +38,23 @@
         :value.prop="uploadPercentage"
       />
     </button>
-    <div class="uploader-form__preview-container">
+    <div
+      class="uploader-form__preview-container"
+    >
       <span
-        v-for="(file, key) in files"
-        :key="key"
+        v-for="(file, i) in files"
+        :key="i"
         class="uploader-form__file-listing"
       >
         <div class="btn__close">
           <span
             class="icon-close_big"
-            @click="removeFile( key )"
+            @click="removeFile( i )"
           />
         </div>
 
         <img
-          :ref="'preview'+parseInt( key )"
+          :ref="'preview'+parseInt( i )"
           class="uploader-form__preview"
         >
       </span>
@@ -57,28 +69,45 @@ export default {
       files: [],
       uploadPercentage: 0,
       showLoading: false,
+      dragEvents: ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'],
     };
   },
   mounted() {
     this.dragAndDropCapable = this.determineDragAndDropCapable();
     if (this.dragAndDropCapable) {
-      ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'].forEach((evt) => {
+      this.dragEvents.forEach((evt) => {
         this.$refs.fileform.addEventListener(evt, (e) => {
           e.preventDefault();
           e.stopPropagation();
         }, false);
       });
+    }
+    this.watchDrop();
+    this.watchInput();
+  },
+  methods: {
+    async watchDrop() {
       this.$refs.fileform.addEventListener('drop', (e) => {
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < e.dataTransfer.files.length; i++) {
           this.files.push(e.dataTransfer.files[i]);
-          this.getImagePreviews();
         }
+        this.getImagePreviews();
       });
-    }
-  },
-  methods: {
-    openFileUploader() {},
+    },
+    async watchInput() {
+      this.$refs.fileinput.addEventListener('input', (e) => {
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < e.target.files.length; i++) {
+          this.files.push(e.target.files[i]);
+          console.log(e.target.files[i]);
+        }
+        this.getImagePreviews();
+      });
+    },
+    openFileUploader() {
+      document.getElementById('fileinput').click();
+    },
     determineDragAndDropCapable() {
       const div = document.createElement('div');
       return (('draggable' in div)
@@ -89,7 +118,6 @@ export default {
     getImagePreviews() {
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < this.files.length; i++) {
-        console.log(this.files.length);
         if (/\.(jpe?g|png|gif)$/i.test(this.files[i].name)) {
           const reader = new FileReader();
           reader.addEventListener('load', () => {
@@ -97,12 +125,6 @@ export default {
             this.$refs[`preview${parseInt(i)}`][0].src = reader.result;
           }, false);
           reader.readAsDataURL(this.files[i]);
-        } else {
-          // eslint-disable-next-line func-names
-          this.$nextTick(function () {
-            // eslint-disable-next-line radix
-            this.$refs[`preview${parseInt(i)}`][0].src = '/images/file.png';
-          });
         }
       }
     },
@@ -134,8 +156,8 @@ export default {
           console.log('FAILURE!!');
         });
     },
-    removeFile(key) {
-      this.files.splice(key, 1);
+    removeFile(i) {
+      this.files.splice(i, 1);
     },
   },
 };
