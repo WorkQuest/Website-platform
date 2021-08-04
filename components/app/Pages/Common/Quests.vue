@@ -1,210 +1,182 @@
 <template>
-  <div class="main__body">
-    <div class="quests">
-      <div class="quests__container">
-        <div class="quests__body">
-          <div class="quests__title">
-            {{ $t('quests.MyQuests') }}
+  <div
+    v-if="object !== null"
+    class="quests__cards"
+  >
+    <div
+      v-for="(item, i) in filteredCards(selectedTab, isShowFavourite)"
+      :key="i"
+      class="quests__cards__all"
+    >
+      <div
+        class="quests__block block"
+      >
+        <div
+          class="block__left"
+        >
+          <div
+            class="block__img"
+          >
+            <img
+              src="~/assets/img/temp/fake-card.svg"
+              class="quests__img image"
+              alt=""
+            >
           </div>
           <div
-            class="quests__content"
-            :class="{'quests__content_employer': userRole === 'employer'}"
+            class="quests__cards__state"
+            :class="getStatusClass(item.status)"
           >
-            <base-btn
-              v-for="item in tabs"
-              :key="item.id"
-              :mode="btnMode(item.id)"
-              class="quests__btn"
-              @click="filterCards(item.id)"
-            >
-              {{ item.title }}
-            </base-btn>
+            {{ getStatusCard(item.status) }}
           </div>
-          <div class="quests__cards">
+        </div>
+        <div class="block__right">
+          <div class="block__head">
+            <div class="block__title">
+              <div
+                class="block__avatar"
+              >
+                <img
+                  class="info-grid__avatar"
+                  :src="item.user.avatar ? item.user.avatar.url : '~/assets/img/app/avatar_empty.png'"
+                  :alt="item.user.firstName"
+                >
+              </div>
+              <div class="block__text block__text_title">
+                {{ item.user.firstName + ' ' + item.user.lastName }}
+                <span
+                  v-if="userData.additionalInfo.company"
+                  class="block__text block__text_grey"
+                >from {{ item.user.additionalInfo.company }}</span>
+              </div>
+            </div>
             <div
-              v-for="(item, i) in filteredCards(selectedTab, isShowFavourite)"
-              :key="item.id"
-              class="quests__cards__all"
+              v-if="isHideStar(item.type)"
+              class="block__icon block__icon_fav star"
+              @click="item.isFavourite = !item.isFavourite"
+            >
+              <img
+                class="star__hover"
+                src="~assets/img/ui/star_hover.svg"
+                alt=""
+              >
+              <img
+                v-if="!item.isFavourite"
+                class="star__default"
+                src="~assets/img/ui/star_simple.svg"
+                alt=""
+              >
+              <img
+                v-if="item.isFavourite"
+                class="star__checked"
+                src="~assets/img/ui/star_checked.svg"
+                alt=""
+              >
+            </div>
+          </div>
+          <div
+            v-if="item.assignedWorkerId"
+            class="block__progress"
+          >
+            <div class="container__title">
+              {{ $t('quests.inProgressBy') }}
+            </div>
+            <div>
+              <div class="avatar__container">
+                <div class="avatar">
+                  <img
+                    src="~/assets/img/temp/avatar.jpg"
+                    class="info-grid__avatar"
+                    :alt="item.user.firstName"
+                  >
+                </div>
+                <div>
+                  {{ item.inProgress.name }}
+                </div>
+                <div class="right">
+                  <span
+                    v-if="item.level.code !== 0"
+                    class="card__level_higher"
+                    :class="cardsLevels(i)"
+                  >
+                    <span
+                      v-if="item.level.code === 1"
+                      class="status__level"
+                    >
+                      {{ $t('levels.higher') }}
+                    </span>
+                    <span
+                      v-if="item.level.code === 2"
+                      class="status__level"
+                    >
+                      {{ $t('levels.reliableEmp') }}
+                    </span>
+                    <span
+                      v-if="item.level.code === 3"
+                      class="status__level"
+                    >
+                      {{ $t('levels.checkedByTime') }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="block__locate">
+            <span class="icon-location" />
+            <span class="block__text block__text_locate">{{ getDistanceFromLatLonInKm(item.location.latitude, item.location.longitude, 51, 51) }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
+          </div>
+          <div class="block__text block__text_blue">
+            {{ item.title }}
+          </div>
+          <div class="block__text block__text_desc">
+            {{ item.description }}
+          </div>
+          <div class="block__actions">
+            <div
+              v-if="isHideStatus(item.type)"
+              class="block__status"
             >
               <div
-                class="quests__block block"
+                v-if="item.priority !== 3"
+                class="block__priority"
+                :class="getPriorityClass(item.priority)"
               >
-                <div
-                  class="block__left"
-                >
-                  <div
-                    class="block__img"
+                {{ getPriority(item.priority) }}
+              </div>
+              <div class="block__amount_green">
+                {{ item.price }} WUSD
+              </div>
+            </div>
+            <div
+              v-else
+              class="block__amount_gray"
+            >
+              {{ item.price }} WUSD
+            </div>
+            <div class="block__details">
+              <base-btn
+                v-if="item.type !== 3"
+                mode="borderless-right"
+                @click="showDetails(item.id)"
+              >
+                {{ $t('meta.details') }}
+                <template v-slot:right>
+                  <span class="icon-short_right" />
+                </template>
+              </base-btn>
+              <div
+                v-else
+                class="block__rating"
+              >
+                <div class="block__rating block__rating_star">
+                  <button
+                    @click="showReviewModal(item.user.ratingStatistic)"
                   >
-                    <img
-                      src="~/assets/img/temp/fake-card.svg"
-                      class="quests__img image"
-                      alt=""
-                    >
-                  </div>
-                  <div
-                    class="quests__cards__state"
-                    :class="getStatusClass(item.type)"
-                  >
-                    {{ getStatusCard(item.type) }}
-                  </div>
-                </div>
-                <div class="block__right">
-                  <div class="block__head">
-                    <div class="block__title">
-                      <div
-                        class="block__avatar"
-                      >
-                        <img
-                          v-if="imageData"
-                          class="info-grid__avatar"
-                          :src="imageData"
-                          :alt="localUserData.firstName"
-                        >
-                        <img
-                          v-else-if="!imageData"
-                          class="info-grid__avatar"
-                          src="~/assets/img/app/avatar_empty.png"
-                          :alt="localUserData.firstName"
-                        >
-                      </div>
-                      <div class="block__text block__text_title">
-                        {{ userData.firstName }} {{ userData.lastName }}
-                        <span
-                          v-if="userData.additionalInfo.company"
-                          class="block__text block__text_grey"
-                        >from {{ userData.additionalInfo.company }}</span>
-                      </div>
-                    </div>
-                    <div
-                      v-if="isHideStar(item.type)"
-                      class="block__icon block__icon_fav star"
-                      @click="item.isFavourite = !item.isFavourite"
-                    >
-                      <img
-                        class="star__hover"
-                        src="~assets/img/ui/star_hover.svg"
-                        alt=""
-                      >
-                      <img
-                        v-if="!item.isFavourite"
-                        class="star__default"
-                        src="~assets/img/ui/star_simple.svg"
-                        alt=""
-                      >
-                      <img
-                        v-if="item.isFavourite"
-                        class="star__checked"
-                        src="~assets/img/ui/star_checked.svg"
-                        alt=""
-                      >
-                    </div>
-                  </div>
-                  <div
-                    v-if="item.inProgress.work === true"
-                    class="block__progress"
-                  >
-                    <div class="container__title">
-                      {{ $t('quests.inProgressBy') }}
-                    </div>
-                    <div>
-                      <div class="avatar__container">
-                        <div class="avatar">
-                          <img
-                            src="~/assets/img/temp/avatar.jpg"
-                            class="info-grid__avatar"
-                            :alt="user.name"
-                          >
-                        </div>
-                        <div>
-                          {{ item.inProgress.name }}
-                        </div>
-                        <div class="right">
-                          <span
-                            v-if="item.level.code !== 0"
-                            class="card__level_higher"
-                            :class="cardsLevels(i)"
-                          >
-                            <span
-                              v-if="item.level.code === 1"
-                              class="status__level"
-                            >
-                              {{ $t('levels.higher') }}
-                            </span>
-                            <span
-                              v-if="item.level.code === 2"
-                              class="status__level"
-                            >
-                              {{ $t('levels.reliableEmp') }}
-                            </span>
-                            <span
-                              v-if="item.level.code === 3"
-                              class="status__level"
-                            >
-                              {{ $t('levels.checkedByTime') }}
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="block__locate">
-                    <span class="icon-location" />
-                    <span class="block__text block__text_locate">{{ item.distance }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
-                  </div>
-                  <div class="block__text block__text_blue">
-                    {{ item.theme }}
-                  </div>
-                  <div class="block__text block__text_desc">
-                    {{ item.desc }}
-                  </div>
-                  <div class="block__actions">
-                    <div
-                      v-if="isHideStatus(item.type)"
-                      class="block__status"
-                    >
-                      <div
-                        class="block__priority"
-                        :class="getPriorityClass(item.priority)"
-                      >
-                        {{ getPriority(item.priority) }}
-                      </div>
-                      <div class="block__amount_green">
-                        {{ item.amount }} {{ item.symbol }}
-                      </div>
-                    </div>
-                    <div
-                      v-else
-                      class="block__amount_gray"
-                    >
-                      {{ item.amount }} {{ item.symbol }}
-                    </div>
-                    <div class="block__details">
-                      <base-btn
-                        v-if="item.type !== 3"
-                        mode="borderless-right"
-                        @click="showDetails()"
-                      >
-                        {{ $t('meta.details') }}
-                        <template v-slot:right>
-                          <span class="icon-short_right" />
-                        </template>
-                      </base-btn>
-                      <div
-                        v-else
-                        class="block__rating"
-                      >
-                        <div class="block__rating block__rating_star">
-                          <button
-                            @click="showReviewModal(item.rating)"
-                          >
-                            <b-form-rating
-                              v-model="item.rating"
-                            />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    <b-form-rating
+                      v-model="item.user.ratingStatistic"
+                    />
+                  </button>
                 </div>
               </div>
             </div>
@@ -224,19 +196,35 @@ const value = new Vue();
 
 export default {
   name: 'QuestsTab',
+  props: {
+    limit: {
+      type: Number,
+      default: 10,
+    },
+    page: {
+      type: String,
+      default: '',
+    },
+    selectedTab: {
+      type: Number,
+      default: 0,
+    },
+    object: {
+      type: Object,
+      default: null,
+    },
+  },
   data() {
     return {
-      selectedTab: 0,
       isShowFavourite: false,
       localUserData: {},
     };
   },
   computed: {
     ...mapGetters({
-      cards: 'data/getCards',
+      cards: 'quests/getAllQuests',
       user: 'data/getUserInfo',
       userRole: 'user/getUserRole',
-      imageData: 'user/getImageData',
       userData: 'user/getUserData',
       tabs: 'data/getTabs',
     }),
@@ -254,6 +242,27 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Radius of the earth in km
+      const dLat = this.deg2rad(lat2 - lat1); // deg2rad below
+      const dLon = this.deg2rad(lon2 - lon1);
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+        + Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2))
+        * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      let d = (R * c) * 1000; // Distance in km
+      if (d >= 1000) {
+        d = '+1000';
+      } else if (d >= 500) {
+        d = '+500';
+      } else {
+        d = '-500';
+      }
+      return d;
+    },
+    deg2rad(deg) {
+      return deg * (Math.PI / 180);
+    },
     cardsLevels(idx) {
       const { cards } = this;
       return [
@@ -262,8 +271,8 @@ export default {
         { card__level_higher: cards[idx].level.code === 1 },
       ];
     },
-    showDetails() {
-      this.$router.push('/quests/1');
+    showDetails(questId) {
+      this.$router.push(`/quests/${questId}`);
     },
     showReviewModal(rating) {
       this.ShowModal({
@@ -280,24 +289,23 @@ export default {
     isHideStatus(type) {
       return !(type === 3);
     },
-    filterCards(id) {
-      this.selectedTab = id;
-      this.isShowFavourite = id === 1;
+    showMessageModal() {
+      this.ShowModal({
+        key: modals.sendARequest,
+      });
     },
     filteredCards(type, isFavorite) {
-      if (type === 0) {
-        return this.cards;
+      if (this.object !== null) {
+        if (type === 0) {
+          return this.object.quests;
+        }
+        if (isFavorite) {
+          return this.object.quests.filter((x) => x.isFavourite);
+        }
+        return this.object.quests.filter((x) => x.type === type);
       }
-      if (isFavorite) {
-        return this.cards.filter((x) => x.isFavourite);
-      }
-      return this.cards.filter((x) => x.type === type);
-    },
-    btnMode(id) {
-      if (this.selectedTab === id) {
-        return ' ';
-      }
-      return 'light';
+      this.showMessageModal();
+      return {};
     },
     getStatusCard(index) {
       const status = {

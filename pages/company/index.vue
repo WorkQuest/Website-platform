@@ -23,7 +23,7 @@
         <div class="title">
           {{ $t('quests.activeQuests') }}
         </div>
-        <QuestCard />
+        <questCards />
         <div class="button__container">
           <nuxt-link
             class="button__more"
@@ -40,13 +40,13 @@
 <script>
 import UserInfo from '~/components/app/Pages/Common/UserInfo';
 import Reviews from '~/components/app/Pages/Profile/Tabs/Reviews';
-import QuestCard from '~/components/app/Cards/QuestCard';
+import questCards from '~/components/app/cards/questCards';
 import UserStatistic from '~/components/app/Panels/UserStatistic';
 
 export default {
   name: 'Index',
   components: {
-    Reviews, UserInfo, QuestCard, UserStatistic,
+    Reviews, UserInfo, questCards, UserStatistic,
   },
   async mounted() {
     this.SetLoader(true);

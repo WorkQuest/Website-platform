@@ -348,8 +348,10 @@
           {{ payload.amount }} {{ $t('quests.questAmount') }}
         </p>
         <div class="quest__card">
-          <!-- Cards -->
-          <QuestCard />
+          <!-- cards -->
+          <questCards
+            :limit="1"
+          />
         </div>
       </div>
     </div>
@@ -360,14 +362,14 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import Info from '~/components/app/Info/index.vue';
 import QuestPanel from '~/components/app/Panels/QuestPanel';
-import QuestCard from '~/components/app/Cards/QuestCard';
+import questCards from '~/components/app/Pages/Common/Quests';
 
 export default {
   name: 'Quests',
   components: {
     Info,
     QuestPanel,
-    QuestCard,
+    questCards,
   },
   data() {
     return {

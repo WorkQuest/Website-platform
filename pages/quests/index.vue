@@ -81,110 +81,11 @@
             </base-btn>
           </div>
         </div>
-        <div class="quests__cards">
-          <div
-            v-for="(item, i) in cards"
-            :key="i"
-            class="quests__block block"
-          >
-            <div class="block__left">
-              <div class="block__img">
-                <img
-                  src="~assets/img/temp/fake-card.svg"
-                  alt=""
-                >
-              </div>
-            </div>
-            <div class="block__right">
-              <div class="block__head">
-                <div class="block__title">
-                  <div class="block__avatar">
-                    <nuxt-link
-                      class="link"
-                      :to="'/show-profile'"
-                    >
-                      <img
-                        class="user__avatar"
-                        src="~/assets/img/temp/fake-card.svg"
-                        alt=""
-                      >
-                    </nuxt-link>
-                  </div>
-                  <nuxt-link
-                    class="link"
-                    :to="'/show-profile'"
-                  >
-                    <div class="block__text block__text_title">
-                      {{ item.title }}
-                      <span
-                        v-if="item.sub"
-                        class="block__text block__text_grey"
-                      >{{ item.sub }}</span>
-                    </div>
-                  </nuxt-link>
-                </div>
-                <div
-                  class="block__icon block__icon_fav star"
-                  @click="item.favourite = !item.favourite"
-                >
-                  <img
-                    class="star__hover"
-                    src="~assets/img/ui/star_hover.svg"
-                    alt=""
-                  >
-                  <img
-                    v-if="!item.favourite"
-                    class="star__default"
-                    src="~assets/img/ui/star_simple.svg"
-                    alt=""
-                  >
-                  <img
-                    v-if="item.favourite"
-                    class="star__checked"
-                    src="~assets/img/ui/star_checked.svg"
-                    alt=""
-                  >
-                </div>
-              </div>
-              <div class="block__locate">
-                <span class="icon-location" />
-                <span class="block__text block__text_locate">{{ item.distance }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
-              </div>
-              <div class="block__text block__text_blue">
-                {{ item.theme }}
-              </div>
-              <div class="block__text block__text_desc">
-                {{ item.desc }}
-              </div>
-              <div class="block__actions">
-                <div class="block__status">
-                  <div
-                    v-if="item.priority"
-                    class="block__priority"
-                    :class="getPriorityClass(item.priority)"
-                  >
-                    {{ getPriority(item.priority) }}
-                  </div>
-                  <div class="block__amount">
-                    {{ item.amount }} {{ item.symbol }}
-                  </div>
-                </div>
-                <div class="block__details">
-                  <base-btn
-                    v-if="item.type !== 3"
-                    mode="borderless-right"
-                    @click="showDetails()"
-                  >
-                    {{ $t('meta.details') }}
-                    <template v-slot:right>
-                      <span class="icon-short_right" />
-                    </template>
-                  </base-btn>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <questCards
+          :limit="100"
+          :object="questsObjects"
+          :page="'quests'"
+        />
       </div>
     </div>
   </div>
@@ -193,11 +94,13 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
+import questCards from '~/components/app/Pages/Common/Quests';
 
 export default {
   name: 'Quests',
   components: {
     GmapSearchBlock,
+    questCards,
   },
   data() {
     return {
@@ -228,6 +131,8 @@ export default {
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
+      questLimits: 100,
+      questsObjects: {},
     };
   },
   computed: {
@@ -244,7 +149,7 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
-    this.getAllQuests();
+    await this.getQuests();
   },
   methods: {
     showFilter() {
@@ -252,8 +157,9 @@ export default {
         key: modals.questFilter,
       });
     },
-    getAllQuests() {
-      return this.$store.dispatch('quests/getAllQuests');
+    async getQuests(specialSort) {
+      const additionalValue = `?limit=${this.questLimits}&offset=0${specialSort || ''}`;
+      this.questsObjects = await this.$store.dispatch('quests/getAllQuests', additionalValue);
     },
     getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
       const R = 6371; // Radius of the earth in km
@@ -286,14 +192,28 @@ export default {
       this.$router.push('/quests/1');
     },
     changeSorting(type) {
+      let sortValue = '';
       if (type === 'price') {
-        // eslint-disable-next-line no-unused-expressions
-        this.priceSort === 'desc' ? this.priceSort = 'asc' : this.priceSort = 'desc';
+        if (this.priceSort === 'desc') {
+          this.priceSort = 'asc';
+          this.timeSort = 'desc';
+        } else {
+          this.priceSort = 'desc';
+          this.timeSort = 'asc';
+        }
+        sortValue = `&sort[price]=${this.priceSort}`;
       }
       if (type === 'time') {
-        // eslint-disable-next-line no-unused-expressions
-        this.timeSort === 'desc' ? this.timeSort = 'asc' : this.timeSort = 'desc';
+        if (this.timeSort === 'desc') {
+          this.timeSort = 'asc';
+          this.priceSort = 'desc';
+        } else {
+          this.timeSort = 'desc';
+          this.priceSort = 'asc';
+        }
+        sortValue = `&sort[createdAt]=${this.timeSort}`;
       }
+      this.getQuests(sortValue);
     },
     deleteTag(tag) {
       this.$store.dispatch('ui/deleteTags', tag);
