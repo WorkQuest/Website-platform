@@ -16,7 +16,7 @@
         <div class="title">
           {{ $t('quests.reviewsBig') }}
         </div>
-        <Reviews />
+        <reviews />
         <div class="button__container">
           <nuxt-link
             class="button__more"
@@ -27,25 +27,40 @@
         </div>
 
         <!-- ACTIVE -->
-        <questCards />
+        <quests
+          :limit="100"
+          :object="questsObjects"
+        />
       </div>
     </section>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import userInfo from '~/components/app/pages/common/userInfo';
 import userStatistic from '~/components/app/panels/userStatistic';
-import Reviews from '~/components/app/pages/profile/tabs/reviews';
-import questCards from '~/components/app/cards/questCards';
+import reviews from '~/components/app/pages/profile/tabs/reviews';
+import quests from '~/components/app/pages/common/quests';
 
 export default {
   name: 'ProfileID',
   components: {
     userInfo,
     userStatistic,
-    Reviews,
-    questCards,
+    reviews,
+    quests,
+  },
+  data() {
+    return {
+      questLimits: 100,
+      questsObjects: {},
+    };
+  },
+  computed: {
+    ...mapGetters({
+      userData: 'user/getUserData',
+    }),
   },
   async mounted() {
     this.SetLoader(true);

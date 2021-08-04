@@ -86,6 +86,9 @@
           :object="questsObjects"
           :page="'quests'"
         />
+        <lackData
+          v-if="!questsObjects"
+        />
       </div>
     </div>
   </div>
@@ -95,12 +98,14 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
 import questCards from '~/components/app/pages/common/quests';
+import lackData from '~/components/app/info/lackData';
 
 export default {
   name: 'Quests',
   components: {
     GmapSearchBlock,
     questCards,
+    lackData,
   },
   data() {
     return {

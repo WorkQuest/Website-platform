@@ -39,7 +39,13 @@
           v-if="selected === 1"
           class="tab__container"
         >
-          <questsTab />
+          <questsTab
+            :limit="questLimits"
+            :object="questsObjects"
+          />
+          <lackData
+            v-if="questsObjects.count === 0"
+          />
         </div>
 
         <div
@@ -90,6 +96,7 @@ import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
 import questsTab from '~/components/app/pages/common/quests';
 import userInfo from '~/components/app/pages/common/userInfo';
 import modals from '~/store/modals/modals';
+import lackData from '~/components/app/info/lackData';
 
 export default {
   name: 'Index',
@@ -98,10 +105,13 @@ export default {
     portfolioTab,
     questsTab,
     userInfo,
+    lackData,
   },
   data() {
     return {
       selected: 1,
+      questLimits: 100,
+      questsObjects: {},
     };
   },
   computed: {
@@ -121,6 +131,7 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
+    this.questsObjects = await this.$store.dispatch('quests/getUserQuests', this.userData.id);
   },
   methods: {
     isRating(type) {

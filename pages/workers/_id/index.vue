@@ -129,7 +129,7 @@
         <div class="section__title">
           {{ $t('quests.reviewsBig') }}
         </div>
-        <Reviews />
+        <reviews />
         <div class="button__container">
           <nuxt-link
             class="button__more"
@@ -159,7 +159,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import Reviews from '~/components/app/pages/profile/tabs/reviews';
+import reviews from '~/components/app/pages/profile/tabs/reviews';
 import Portfolio from '~/components/app/pages/profile/tabs/portfolio';
 import social from '~/components/app/panels/social';
 import contact from '~/components/app/panels/contact';
@@ -167,7 +167,7 @@ import contact from '~/components/app/panels/contact';
 export default {
   name: 'IndexVue',
   components: {
-    Reviews,
+    reviews,
     Portfolio,
     social,
   },

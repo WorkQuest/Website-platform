@@ -22,10 +22,13 @@
               {{ item.title }}
             </base-btn>
           </div>
-          <Quests
+          <quests
             :limit="100"
             :selected-tab="selectedTab"
             :object="questsObjects"
+          />
+          <lackData
+            v-if="!questsObjects"
           />
         </div>
       </div>
@@ -37,14 +40,16 @@
 
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
-import Quests from '~/components/app/pages/common/quests';
+import quests from '~/components/app/pages/common/quests';
+import lackData from '~/components/app/info/lackData';
 
 const value = new Vue();
 
 export default {
   name: 'My',
   components: {
-    Quests,
+    quests,
+    lackData,
   },
   data() {
     return {
@@ -76,9 +81,6 @@ export default {
         return ' ';
       }
       return 'light';
-    },
-    changeFlexibleData(data) {
-      this.$store.dispatch('quests/flexibleData', data);
     },
   },
 };

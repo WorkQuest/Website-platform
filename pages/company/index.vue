@@ -17,7 +17,7 @@
         <div class="title">
           {{ $t('quests.reviewsBig') }}
         </div>
-        <Reviews />
+        <reviews />
 
         <!-- ACTIVE -->
         <div class="title">
@@ -39,14 +39,14 @@
 
 <script>
 import userInfo from '~/components/app/pages/common/userInfo';
-import Reviews from '~/components/app/pages/profile/tabs/reviews';
+import reviews from '~/components/app/pages/profile/tabs/reviews';
 import questCards from '~/components/app/cards/questCards';
 import userStatistic from '~/components/app/panels/userStatistic';
 
 export default {
   name: 'Index',
   components: {
-    Reviews, userInfo, questCards, userStatistic,
+    reviews, userInfo, questCards, userStatistic,
   },
   async mounted() {
     this.SetLoader(true);
