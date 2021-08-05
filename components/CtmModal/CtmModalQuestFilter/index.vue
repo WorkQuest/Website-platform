@@ -21,12 +21,14 @@
             class="filter__items"
           >
             <div
-              class="filter__item"
+              class="filter__item item"
             >
-              <span class="item">
+              <span
+                class="item"
+                @click="toggleSub(item)"
+              >
                 <span
                   class="item__title"
-                  @click="toggleSub(item)"
                 >{{ item.title }}</span>
                 <span
                   v-if="!item.visible"
@@ -37,7 +39,7 @@
                   class="icon-caret_up"
                 />
               </span>
-              <div class="sub">
+              <div class="filter__item sub">
                 <div
                   v-for="(sub, idx) in item.body"
                   :key="idx"
@@ -80,55 +82,55 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.1.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.1.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.1.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.1.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.1.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.1.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.1.sub.7'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.1.sub.8'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.1.sub.9'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.1.sub.10'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.1.sub.11'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.1.sub.12'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -138,43 +140,43 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.2.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.2.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.2.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.2.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.2.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.2.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.2.sub.7'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.2.sub.8'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.2.sub.9'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -184,43 +186,43 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.3.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.3.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.3.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.3.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.3.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.3.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.3.sub.7'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.3.sub.8'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.3.sub.9'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -230,27 +232,27 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.4.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.4.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.4.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.4.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.4.sub.5'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -260,39 +262,39 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.5.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.5.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.5.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.5.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.5.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.5.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.5.sub.7'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.5.sub.8'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -302,47 +304,47 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.6.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.6.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.6.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.6.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.6.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.6.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.6.sub.7'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.6.sub.8'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.6.sub.9'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.6.sub.10'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -352,47 +354,47 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.7.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.7.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.7.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.7.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.7.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.7.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.7.sub.7'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.7.sub.8'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.7.sub.9'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.7.sub.10'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -402,27 +404,27 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.8.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.8.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.8.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.8.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.8.sub.5'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -432,35 +434,35 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.9.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.9.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.9.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.9.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.9.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.9.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.9.sub.7'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -470,15 +472,15 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.10.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.10.sub.2'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -488,31 +490,31 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.11.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.11.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.11.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.11.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.11.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.11.sub.6'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -522,31 +524,31 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.12.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.12.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.12.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.12.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.12.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.12.sub.6'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -556,35 +558,35 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.13.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.13.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.13.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.13.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.13.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.13.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.13.sub.6'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -594,27 +596,27 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.14.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.14.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.14.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.14.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.14.sub.5'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -624,35 +626,35 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.15.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.15.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.15.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.15.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.15.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.15.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.15.sub.7'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -662,39 +664,39 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.16.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.16.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.16.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.16.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.16.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.16.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.16.sub.7'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.16.sub.8'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -704,39 +706,39 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.17.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.17.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.17.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.17.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.17.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.17.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.17.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.17.sub.7'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -746,59 +748,59 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.18.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.18.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.18.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.18.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.18.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.18.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.18.sub.7'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.18.sub.8'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.18.sub.9'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.18.sub.10'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.18.sub.11'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.18.sub.12'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.18.sub.13'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -808,47 +810,47 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.19.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.19.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.19.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.19.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.19.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.19.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.19.sub.7'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.19.sub.8'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.19.sub.9'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.19.sub.10'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -858,83 +860,83 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.7'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.8'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.9'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.10'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.11'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.12'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.13'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.14'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.15'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.16'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.17'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.18'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.20.sub.19'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -944,51 +946,51 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.21.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.21.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.21.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.21.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.21.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.21.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.21.sub.7'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.21.sub.8'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.21.sub.9'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.21.sub.10'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.21.sub.11'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -998,39 +1000,39 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.22.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.22.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.22.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.22.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.22.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.22.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.22.sub.7'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.22.sub.8'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -1040,43 +1042,43 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.23.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.23.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.23.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.23.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.23.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.23.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.23.sub.7'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.23.sub.8'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.23.sub.9'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -1086,43 +1088,43 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.24.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.24.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.24.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.24.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.24.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.24.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.24.sub.7'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.24.sub.8'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.24.sub.9'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -1132,43 +1134,43 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.25.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.25.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.25.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.25.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.25.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.25.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.25.sub.7'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.25.sub.8'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.25.sub.9'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -1178,47 +1180,47 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.26.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.26.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.26.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.26.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.26.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.26.sub.6'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.26.sub.7'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.26.sub.8'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.26.sub.9'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.26.sub.10'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -1228,27 +1230,27 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.27.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.27.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.27.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.27.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.27.sub.5'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -1258,31 +1260,31 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.28.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.28.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.28.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.28.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.28.sub.5'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.28.sub.6'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -1292,27 +1294,27 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.29.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.29.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.29.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.29.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.29.sub.5'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -1322,27 +1324,27 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.30.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.30.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.30.sub.3'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.30.sub.4'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.30.sub.5'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -1352,19 +1354,19 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.31.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.31.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.31.sub.3'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -1374,15 +1376,15 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.32.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.32.sub.2'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -1392,19 +1394,19 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.33.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.33.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.33.sub.3'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -1414,19 +1416,19 @@ export default {
           body: [
             {
               title: this.$t('filters.commonSub.selectAll'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.34.sub.1'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.34.sub.2'),
-              status: false,
+              status: true,
             },
             {
               title: this.$t('filters.items.34.sub.3'),
-              status: false,
+              status: true,
             },
           ],
         },
@@ -1437,8 +1439,8 @@ export default {
     hide() {
       this.CloseModal();
     },
-    toggleSub(title) {
-      title.visible = !title.visible;
+    toggleSub(item) {
+      item.visible = !item.visible;
     },
     showFilterFull() {
       this.ShowModal({
@@ -1455,10 +1457,18 @@ export default {
   &__label {
     text-overflow: ellipsis;
     display: contents;
+    &:hover {
+      text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
+      cursor: pointer;
+    }
   }
   &__item {
     width: 300px;
     margin: 0 0 5px 0;
+    &:hover {
+      text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
+      cursor: pointer;
+    }
     &:last-child {
       margin: 0;
     }
@@ -1467,7 +1477,6 @@ export default {
 
 .ctm-modal {
   @include modalKit;
-  max-width: 400px !important;
   &__content {
     display: grid;
     grid-template-columns: 1fr;

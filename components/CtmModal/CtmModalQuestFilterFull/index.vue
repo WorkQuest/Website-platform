@@ -14,10 +14,12 @@
             <div
               class="filter__item"
             >
-              <span class="item">
+              <span
+                class="item"
+                @click="toggleSub(item)"
+              >
                 <span
                   class="item__title"
-                  @click="toggleSub(item)"
                 >{{ item.title }}</span>
                 <span
                   v-if="!item.visible"
@@ -28,7 +30,7 @@
                   class="icon-caret_up"
                 />
               </span>
-              <div class="sub">
+              <div class="filter__item sub">
                 <div
                   v-for="(sub, idx) in item.body"
                   :key="idx"
@@ -1427,8 +1429,8 @@ export default {
     hide() {
       this.CloseModal();
     },
-    toggleSub(title) {
-      title.visible = !title.visible;
+    toggleSub(item) {
+      item.visible = !item.visible;
     },
   },
 };
@@ -1455,10 +1457,18 @@ export default {
   &__label {
     text-overflow: ellipsis;
     display: contents;
+    &:hover {
+      text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
+      cursor: pointer;
+    }
   }
   &__item {
     width: 300px;
     margin: 0 0 5px 0;
+    &:hover {
+      text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
+      cursor: pointer;
+    }
     &:last-child {
       margin: 0;
     }
@@ -1488,8 +1498,8 @@ export default {
 
 .filter {
   overflow-y: auto;
-  max-width: 100% !important;
-  height: 100% !important;
+  max-width: 95% !important;
+  height: 90% !important;
   &__body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

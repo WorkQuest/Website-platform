@@ -77,7 +77,7 @@ export default {
     return {
       caseTitle: '',
       caseDescription: '',
-      portfolio_change: {
+      portfolioChange: {
         data: {},
         file: {},
       },
@@ -104,18 +104,15 @@ export default {
         }
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        const portfolio = this.portfolio_change;
+        const portfolio = this.portfolioChange;
         portfolio.data = await this.$store.dispatch('user/imageCaseType', { contentType: file.type });
-        portfolio.file = file;
-        portfolio.data = await this.$store.dispatch('user/imageCaseType',
-          { contentType: file.type });
         portfolio.file = file;
       }
     },
     async addUserCase() {
+      const portfolio = this.portfolioChange;
       try {
         const formData = new FormData();
-        const portfolio = this.portfolio_change;
         formData.append('image', portfolio.file);
         if (portfolio.data.ok) {
           const data = {
@@ -125,22 +122,17 @@ export default {
           };
           await this.$store.dispatch('user/setCaseImage', data);
         }
+        const payload = {
+          title: this.caseTitle,
+          description: this.caseDescription,
+          medias: [portfolio.data.result.mediaId],
+        };
+        await this.$store.dispatch('user/setCaseData', payload);
+        this.hide();
       } catch (error) {
         console.error(error);
+        this.hide();
       }
-      let payload = {};
-      const portfolio = this.portfolio_change;
-      const checkAvatarID = portfolio.data.ok
-        ? portfolio.data.result.mediaId
-        : this.medias.mediaId;
-      payload = {
-        title: this.caseTitle,
-        description: this.caseDescription,
-        medias: [checkAvatarID],
-      };
-      console.log(payload);
-      await this.$store.dispatch('user/setCaseData', payload);
-      this.hide();
     },
     showRequestSendModal() {
       this.ShowModal({
