@@ -14,7 +14,7 @@
             >
               <input
                 id="coverUpload"
-                class="edit_avatar"
+                class="edit__avatar"
                 type="file"
                 accept="image/*"
                 @change="processFile($event, validate)"
@@ -67,7 +67,6 @@
 </template>
 
 <script>
-/* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
@@ -104,8 +103,10 @@ export default {
           return false;
         }
         const reader = new FileReader();
-        const portfolio = this.portfolio_change;
         reader.readAsDataURL(file);
+        const portfolio = this.portfolio_change;
+        portfolio.data = await this.$store.dispatch('user/imageCaseType', { contentType: file.type });
+        portfolio.file = file;
         portfolio.data = await this.$store.dispatch('user/imageCaseType',
           { contentType: file.type });
         portfolio.file = file;
@@ -125,14 +126,13 @@ export default {
           await this.$store.dispatch('user/setCaseImage', data);
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
       let payload = {};
       const portfolio = this.portfolio_change;
       const checkAvatarID = portfolio.data.ok
         ? portfolio.data.result.mediaId
         : this.medias.mediaId;
-      console.log(checkAvatarID);
       payload = {
         title: this.caseTitle,
         description: this.caseDescription,
