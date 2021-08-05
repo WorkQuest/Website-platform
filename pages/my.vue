@@ -23,12 +23,16 @@
             </base-btn>
           </div>
           <quests
-            :limit="100"
+            :limit="questLimits"
             :selected-tab="selectedTab"
             :object="questsObjects"
+            :page="'my'"
           />
           <lackData
-            v-if="!questsObjects"
+            v-if="questsObjects.count === 0"
+            :description="$t(`errors.lackData.${userRole}.allQuests.desc`)"
+            :button-text="$t(`errors.lackData.${userRole}.allQuests.btnText`)"
+            :button-href="userRole === 'employer' ? '/create-quest' : ''"
           />
         </div>
       </div>
@@ -72,7 +76,7 @@ export default {
     this.questsObjects = await this.$store.dispatch('quests/getUserQuests', this.userData.id);
   },
   methods: {
-    filterCards(id) {
+    async filterCards(id) {
       this.selectedTab = id;
       this.isShowFavourite = id === 1;
     },

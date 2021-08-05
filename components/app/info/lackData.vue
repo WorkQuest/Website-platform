@@ -1,16 +1,24 @@
 <template>
-  <div class="data data__absence">
-    <div class="absence absence__content">
+  <div class="data__absence absence">
+    <div class="absence__content">
       <img
         class="absence__img"
         src="~/assets/img/temp/smile_sad.svg"
+        alt=""
       >
-      <div class="absence__desc">
+      <div
+        v-if="description !== ''"
+        class="absence__desc"
+      >
         {{ description }}
       </div>
-      <button class="absence__button">
+      <base-btn
+        v-if="buttonHref !== ''"
+        class="absence__button"
+        :nuxt-link="buttonHref"
+      >
         {{ buttonText }}
-      </button>
+      </base-btn>
     </div>
   </div>
 </template>
@@ -20,15 +28,15 @@ export default {
   name: 'LackData',
   props: {
     description: {
-      type: text,
+      type: String,
       default: '',
     },
     buttonText: {
-      type: text,
+      type: String,
       default: '',
     },
     buttonHref: {
-      type: text,
+      type: String,
       default: '',
     },
   },
@@ -40,8 +48,22 @@ export default {
   width: 100%;
   background-color: #f6f8fa;
   &__absence {
-    display: flex;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
     justify-content: center;
+  }
+}
+.absence {
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    grid-gap: 20px;
+  }
+  &__desc {
+    color: #AAB0B9;
   }
 }
 </style>

@@ -350,7 +350,9 @@
         <div class="quest__card">
           <!-- cards -->
           <questCards
-            :limit="1"
+            :limit="questLimits"
+            :object="questsObjects"
+            :page="'quests'"
           />
         </div>
       </div>
@@ -431,6 +433,8 @@ export default {
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
+      questLimits: 1,
+      questsObjects: {},
     };
   },
   computed: {

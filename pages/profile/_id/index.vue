@@ -39,12 +39,16 @@
           v-if="selected === 1"
           class="tab__container"
         >
-          <questsTab
+          <quests
             :limit="questLimits"
             :object="questsObjects"
+            :page="'quests'"
           />
           <lackData
             v-if="questsObjects.count === 0"
+            :description="$t(`errors.lackData.${userRole}.allQuests.desc`)"
+            :button-text="$t(`errors.lackData.${userRole}.allQuests.btnText`)"
+            :button-href="userRole === 'employer' ? '/create-quest' : '/quests'"
           />
         </div>
 
@@ -77,7 +81,7 @@
           class="button"
         >
           <nuxt-link
-            v-if="selected === 1"
+            v-if="selected === 2"
             class="button__more"
             to="/profile"
           >
@@ -93,7 +97,7 @@
 import { mapGetters } from 'vuex';
 import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
 import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
-import questsTab from '~/components/app/pages/common/quests';
+import quests from '~/components/app/pages/common/quests';
 import userInfo from '~/components/app/pages/common/userInfo';
 import modals from '~/store/modals/modals';
 import lackData from '~/components/app/info/lackData';
@@ -103,7 +107,7 @@ export default {
   components: {
     reviewsTab,
     portfolioTab,
-    questsTab,
+    quests,
     userInfo,
     lackData,
   },

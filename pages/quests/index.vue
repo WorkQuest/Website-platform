@@ -87,7 +87,10 @@
           :page="'quests'"
         />
         <lackData
-          v-if="!questsObjects"
+          v-if="questsObjects.count === 0"
+          :description="$t(`errors.lackData.${userRole}.allQuests.desc`)"
+          :button-text="$t(`errors.lackData.${userRole}.allQuests.btnText`)"
+          :button-href="userRole === 'employer' ? '/create-quest' : ''"
         />
       </div>
     </div>
