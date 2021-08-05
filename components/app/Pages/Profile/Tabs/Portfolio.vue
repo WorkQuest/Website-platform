@@ -8,7 +8,7 @@
       >
         <div class="portfolio__card">
           <button
-            class="close-btn"
+            class="btn__close"
             @click="deletePortfolio(item.id)"
           >
             <span
@@ -77,11 +77,13 @@ export default {
 
 <style lang="scss" scoped>
 
-.close-btn {
-  background: $red;
-  border: 1px solid $black400;
-  border-radius: 6px;
-  padding: 2px;
+.btn {
+  &__close {
+    background: $red;
+    border: 1px solid $black400;
+    border-radius: 6px;
+    padding: 2px;
+  }
 }
 
 .portfolio {

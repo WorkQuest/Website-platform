@@ -1,47 +1,61 @@
 <template>
   <ctm-modal-box
-    is-unclosable="true"
-    :title="$t('modals.filters.title')"
+    :is-unclosable="true"
+    :title="$t('filters.title')"
     class="filter"
   >
     <div class="ctm-modal__content">
       <div class="filter">
-        <base-btn mode="outline">
-          {{ $t('modals.filters.filterBtn') }}
-        </base-btn>
+        <div class="filter__btn">
+          <base-btn
+            mode="outline"
+            @click="showFilterFull"
+          >
+            {{ $t('filters.filterBtn') }}
+          </base-btn>
+        </div>
         <div class="filter__body">
           <div
-            v-for="(title, i) in filterItems"
+            v-for="(item, i) in filterItems"
             :key="i"
             class="filter__items"
           >
             <div
               class="filter__item"
-              @click="toggleSub(title)"
             >
-              <span class="filter__item-title">{{ title.title }}</span>
-              <span
-                v-if="!title.visible"
-                class="icon-caret_down"
-              />
-              <span
-                v-else
-                class="icon-caret_up"
-              />
-              <div
-                v-for="(sub, j) in title.body"
-                :key="j"
-                class="filter__item-body"
-                :class="[{'hide': !title.visible}]"
-              >
-                <div class="filter__item-body-item">
-                  <input
-                    :id="sub.title"
-                    type="radio"
-                    :name="title.title"
-                    :value="sub.status"
-                  >
-                  <label :for="sub.title">{{ sub.title }}</label>
+              <span class="item">
+                <span
+                  class="item__title"
+                  @click="toggleSub(item)"
+                >{{ item.title }}</span>
+                <span
+                  v-if="!item.visible"
+                  class="icon-caret_down"
+                />
+                <span
+                  v-else
+                  class="icon-caret_up"
+                />
+              </span>
+              <div class="sub">
+                <div
+                  v-for="(sub, idx) in item.body"
+                  :key="idx"
+                  class="sub__body"
+                  :class="[{'hide': !item.visible}]"
+                >
+                  <div class="sub__item">
+                    <input
+                      :id="sub.title"
+                      type="checkbox"
+                      :name="item.title"
+                      :value="sub.status"
+                    >
+                    <label
+                      :for="sub.title"
+                      class="sub__label"
+                    >{{ sub.title }}</label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -53,6 +67,8 @@
 </template>
 
 <script>
+import modals from '~/store/modals/modals';
+
 export default {
   name: 'CtmModalChangeRoleWarning',
   data() {
@@ -1424,17 +1440,39 @@ export default {
     toggleSub(title) {
       title.visible = !title.visible;
     },
+    showFilterFull() {
+      this.ShowModal({
+        key: modals.questFilterFull,
+      });
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+
+.sub {
+  &__label {
+    text-overflow: ellipsis;
+    display: contents;
+  }
+  &__item {
+    width: 300px;
+    margin: 0 0 5px 0;
+    &:last-child {
+      margin: 0;
+    }
+  }
+}
+
 .ctm-modal {
   @include modalKit;
+  max-width: 400px !important;
   &__content {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
+    grid-gap: 10px;
   }
 }
 
@@ -1442,39 +1480,30 @@ export default {
   display: none;
 }
 
+.item {
+  &__title {
+    margin: 10px 0 0 0;
+    @include text-simple;
+    font-size: 16px;
+    font-weight: 600;
+    color: $black800;
+    &:last-child {
+      margin: 10px 0 10px 0;
+    }
+    &:hover {
+      text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
+      cursor: pointer;
+    }
+  }
+}
+
 .filter {
-  max-width: 320px !important;
+  max-width: 400px !important;
   &__body {
     overflow-y: auto;
-    height: 500px;
+    height: 300px;
     margin: 10px 0 0 0;
-  }
-  &__items {}
-  &__item {
-    &-title {
-      padding: 10px 0 0 0;
-      @include text-simple;
-      font-size: 16px;
-      font-weight: 500;
-      color: $black800;
-      &:last-child {
-        margin: 10px 0 10px 0;
-      }
-      &:hover {
-        text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
-        cursor: pointer;
-      }
-    }
-    &-body {
-      padding: 10px 0 0 0;
-      @include text-simple;
-      font-size: 16px;
-      font-weight: 400;
-      color: $black800;
-      &:last-child {
-        margin: 10px 0 10px 0;
-      };
-    }
+    padding: 10px 0 0 0;
   }
 }
 

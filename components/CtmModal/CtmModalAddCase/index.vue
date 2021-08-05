@@ -156,6 +156,16 @@ export default {
 
 <style lang="scss" scoped>
 
+.ctm-modal {
+  @include modalKit;
+  &__box {
+    max-width: 800px !important;
+  }
+  &__title {
+    margin: 0 0 0 9% !important;
+  }
+}
+
 .file {
   &__wrapper {
     margin: 0 0 25px 0;
@@ -193,12 +203,6 @@ export default {
   }
 }
 
-.ctm-modal {
-  @include modalKit;
-  &__box {
-    max-width: 800px;
-  }
-}
 .modal {
   &__title {
     @include text-simple;
@@ -255,14 +259,6 @@ export default {
   }
   &__wrapper {
     width: 45%;
-  }
-}
-.ctm-modal{
-  &__box {
-    max-width: 800px !important;
-  }
-  &__title {
-    margin: 0 0 0 9% !important;
   }
 }
 </style>
