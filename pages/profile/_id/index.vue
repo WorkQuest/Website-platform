@@ -5,8 +5,6 @@
     >
       <div class="main-container">
         <UserInfo :selected="selected" />
-
-        <!-- tabs -->
         <button
           class="tab__btn"
           :class="{tab__btn_active: selected === 1}"
@@ -34,7 +32,6 @@
 
     <div class="information-section">
       <div class="main-container">
-        <!-- REVIEWS -->
         <div
           v-if="selected === 1"
           class="tab__container"
@@ -65,7 +62,6 @@
           </div>
           <PortfolioTab />
         </div>
-
         <div
           v-if="userData.role === 'worker'"
           class="button"

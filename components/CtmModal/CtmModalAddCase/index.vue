@@ -7,14 +7,6 @@
       <div class="message">
         <div class="message__content">
           <div class="modal__desc">
-            <!--            <div>-->
-            <!--              <dropzone-->
-            <!--                id="uploader"-->
-            <!--                ref="el"-->
-            <!--                :options="optionsModal"-->
-            <!--                :include-styling="true"-->
-            <!--              />-->
-            <!--            </div>-->
             <ValidationProvider
               v-slot="{ validate }"
               rules="required|ext:png,jpeg,jpg,gif"
@@ -99,7 +91,6 @@ export default {
       medias: 'user/getUserPortfolio',
     }),
   },
-  mounted() {},
   methods: {
     hide() {
       this.CloseModal();
@@ -113,20 +104,23 @@ export default {
           return false;
         }
         const reader = new FileReader();
+        const portfolio = this.portfolio_change;
         reader.readAsDataURL(file);
-        this.portfolio_change.data = await this.$store.dispatch('user/imageCaseType', { contentType: file.type });
-        this.portfolio_change.file = file;
+        portfolio.data = await this.$store.dispatch('user/imageCaseType',
+          { contentType: file.type });
+        portfolio.file = file;
       }
     },
     async addUserCase() {
       try {
         const formData = new FormData();
-        formData.append('image', this.portfolio_change.file);
-        if (this.portfolio_change.data.ok) {
+        const portfolio = this.portfolio_change;
+        formData.append('image', portfolio.file);
+        if (portfolio.data.ok) {
           const data = {
-            url: this.portfolio_change.data.result.url,
-            formData: this.portfolio_change.file,
-            type: this.portfolio_change.file.type,
+            url: portfolio.data.result.url,
+            formData: portfolio.file,
+            type: portfolio.file.type,
           };
           await this.$store.dispatch('user/setCaseImage', data);
         }
@@ -134,7 +128,10 @@ export default {
         console.log(error);
       }
       let payload = {};
-      const checkAvatarID = this.portfolio_change.data.ok ? this.portfolio_change.data.result.mediaId : this.medias.mediaId;
+      const portfolio = this.portfolio_change;
+      const checkAvatarID = portfolio.data.ok
+        ? portfolio.data.result.mediaId
+        : this.medias.mediaId;
       console.log(checkAvatarID);
       payload = {
         title: this.caseTitle,
