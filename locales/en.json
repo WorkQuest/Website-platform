@@ -665,7 +665,7 @@
     "specializations": "Specializations",
     "aboutMe": "About me",
     "giveAQuest": "Give a quest",
-    "inviteQuestor": "invite Questor",
+    "inviteQuestor": "Invite Questor",
     "skills": "Skills",
     "completedQuests": "Completed quests",
     "openedQuests": "Opened quests",
@@ -963,7 +963,7 @@
     "card1": {
       "title": "Minimal protection",
       "pointsText": {
-        "point1": "An annual contribution of 1000 USD, payment in the event of an insured event 833.333333 WUSD."
+        "point1": "An annual contribution of 1000 WUSD, payment in the event of an insured event 833.333333 WUSD."
       }
     },
     "card2": {
