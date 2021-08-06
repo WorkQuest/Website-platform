@@ -25,8 +25,8 @@
         <base-field
           v-model="model.email"
           rules="required|email"
-          :name="$t('signUp.email')"
-          :placeholder="$t('signUp.email')"
+          :name="$t('signIn.username')"
+          :placeholder="$t('signIn.username')"
           :mode="'icon'"
           autocomplete="username"
         >

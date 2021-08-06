@@ -64,6 +64,7 @@
                         @click="item.isFavourite = !item.isFavourite"
                       >
                         <img
+                          v-if="!item.isFavourite"
                           class="star__hover"
                           src="~assets/img/ui/star_hover.svg"
                           alt=""
@@ -166,7 +167,9 @@ export default {
   methods: {
     scrollChat() {
       const chat = this.$el.querySelector('#chat__messages');
-      setTimeout(chat.scrollTop = chat.scrollHeight, 100);
+      setTimeout(() => {
+        chat.scrollTop = chat.scrollHeight;
+      }, 100);
     },
     showNoticeModal() {
       this.ShowModal({
@@ -180,7 +183,7 @@ export default {
       this.$router.push('/messages');
     },
     sendMessages() {
-      if (!this.messages && !this.messages.length) {
+      if (!this.message_input && !this.message_input.length) {
         return;
       }
       this.messages.push({
@@ -190,7 +193,7 @@ export default {
         isFavourite: false,
         messageTime: moment().format('HH:mm'),
       });
-      this.messages = '';
+      this.message_input = '';
       this.scrollChat();
     },
     onEnter(e, callback) {
@@ -324,12 +327,9 @@ export default {
   &:hover {
     .star {
       &__hover {
-        display: flex;
+        display: block;
       }
       &__default {
-        display: none;
-      }
-      &__checked {
         display: none;
       }
     }
