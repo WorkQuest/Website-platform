@@ -664,9 +664,8 @@ export default {
       });
     },
     selectAddress(address) {
-      this.localUserData.additionalInfo.address = this.address;
+      this.localUserData.additionalInfo.address = address.formatted;
       this.addresses = [];
-      this.address = address.formatted;
     },
     async getAddressInfo(address) {
       let response = [];

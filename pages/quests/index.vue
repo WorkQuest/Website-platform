@@ -1,6 +1,8 @@
 <template>
   <div class="quests">
-    <GmapSearchBlock />
+    <GmapSearchBlock
+      :locations="questsLocation"
+    />
     <div class="quests__content">
       <div
         class="quests__body"
@@ -141,15 +143,12 @@ export default {
       timeSort: 'desc',
       questLimits: 100,
       questsObjects: {},
+      questsLocation: {},
     };
   },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
-      cards: 'data/getCards',
-      cards2: 'data/getAllQuests',
-      distance: 'data/getDistance',
-      locations: 'data/getLocations',
       checkWelcomeModal: 'modals/getIsShowWelcome',
       userRole: 'user/getUserRole',
     }),
@@ -168,6 +167,7 @@ export default {
     async getQuests(specialSort) {
       const additionalValue = `?limit=${this.questLimits}&offset=0${specialSort || ''}`;
       this.questsObjects = await this.$store.dispatch('quests/getAllQuests', additionalValue);
+      this.questsLocation = await this.$store.dispatch('quests/getQuestsLocation');
     },
     getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
       const R = 6371; // Radius of the earth in km

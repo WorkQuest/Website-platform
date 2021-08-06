@@ -86,24 +86,16 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'Index',
+  props: {
+    locations: {
+      type: Object,
+      default: null,
+    },
+  },
   data() {
     return {
       currentLocation: {},
       circleOptions: {},
-      locations: [
-        {
-          lat: 44.933076,
-          lng: 15.629058,
-        },
-        {
-          lat: 45.815,
-          lng: '15.9819',
-        },
-        {
-          lat: '45.12',
-          lng: '16.21',
-        },
-      ],
       pins: {
         selected: '/img/app/marker_blue.svg',
         notSelected: '/img/app/marker_red.svg',
@@ -134,7 +126,11 @@ export default {
     ...mapGetters({
       userPosition: 'user/getUserCurrentPosition',
       userRole: 'user/getUserRole',
+      questsLocations: 'quests/getQuestsLocation',
     }),
+  },
+  mounted() {
+    console.log(this.questsLocations);
   },
 };
 </script>

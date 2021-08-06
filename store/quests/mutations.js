@@ -7,6 +7,9 @@ export default {
   setUserQuests(state, data) {
     state.userInfoQuests = data;
   },
+  setQuestsLocation(state, data) {
+    state.questsLocation = data;
+  },
 
   // Experimental
   setQuestData(state, data) {

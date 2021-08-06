@@ -17,6 +17,13 @@ export default {
     return response.result;
   },
 
+  async getQuestsLocation({ commit }) {
+    const response = await this.$axios.$get('/v1/quests/map/list-points');
+    console.log(response.result);
+    commit('setAllQuests', response.result);
+    return response.result;
+  },
+
   // Experimental
   async editQuest({ commit }, payload, id) {
     // Needed to add quest id;
