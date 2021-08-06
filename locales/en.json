@@ -469,7 +469,21 @@
     "percentage": "Percentage",
     "loanTerm": "Loan term",
     "loanIsOpened": "Loan is opened",
-    "successCopied": "Public address copied to clipboard"
+    "successCopied": "Public address copied to clipboard",
+    "walletAddress": "Wallet address",
+    "scanQr": "Scan QR code or copy wallet address to receive payment",
+    "close": "Close",
+    "depositTitle": "Deposit",
+    "addYourCard": "You have to to add your card to continue",
+    "walletCopy": "Wallet number has been copied",
+    "addingCard": "Adding card",
+    "add": "Add",
+    "totalFee": "Total fee",
+    "processing": "Processing time",
+    "addNewCard": "Add new card",
+    "numberCard": "Number of card",
+    "chooseCard": "Choose Card",
+    "depositInfo": "Deposit info"
   },
   "ui": {
     "jobQuestors": "Job Questors",

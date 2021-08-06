@@ -14,7 +14,9 @@ export default {
   transactionSend: 'transactionSend',
   cardHasBeenAdded: 'cardHasBeenAdded',
   deposit: 'deposit',
+  giveDeposit: 'giveDeposit',
   addCard: 'addCard',
+  addingCard: 'addingCard',
   withdraw: 'withdraw',
   review: 'review',
   thanks: 'Thanks ',
@@ -55,4 +57,7 @@ export default {
   chatCreate: 'chatCreate',
   payment: 'payment',
   disable2FA: 'disable2FA',
+  depositOptions: 'depositOptions',
+  cardAdded: 'cardAdded',
+  depositInfo: 'depositInfo',
 };

@@ -1,23 +1,22 @@
 <template>
   <ctm-modal-box
-    class="transaction"
+    class="cardAdded"
     :is-header="false"
   >
-    <div class="transaction__content">
+    <div class="cardAdded__content">
       <img
-        src="~assets/img/ui/transactionSend.svg"
+        src="~assets/img/ui/cardHasBeenAdded.svg"
         alt="RequestSend"
-        class="transaction__image"
       >
-      <div class="transaction__title">
-        {{ $t('modals.transactionSend') }}
+      <div class="cardAdded__title">
+        {{ $t('modals.cardHasBeenAdded') }}
       </div>
-      <div class="transaction__desc">
+      <div class="cardAdded__desc">
         {{ text }}
       </div>
       <base-btn
-        class="transaction__action"
-        @click="hide()"
+        class="email__action"
+        @click="showDepositOptions"
       >
         {{ $t('meta.ok') }}
       </base-btn>
@@ -26,50 +25,46 @@
 </template>
 
 <script>
+import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalTransactionSend',
+
+  name: 'ModalCardHasBeenAdded',
   data() {
     return {
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,',
     };
   },
-
   methods: {
-    hide() {
-      this.CloseModal();
+    showDepositOptions() {
+      this.ShowModal({
+        key: modals.depositOptions,
+      });
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.ctm-modal {
-  @include modalKit;
-}
 
-.transaction {
+.cardAdded {
   max-width: 337px !important;
   &__content {
-    padding: 30px;
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
     grid-gap: 20px;
+    padding: 30px;
   }
   &__action {
     margin-top: 10px;
   }
   &__title{
-    font-weight: 500;
     font-size: 23px;
+    font-weight: 500;
     line-height: 130%;
-    color: #1D2127;
   }
   &__desc{
-    font-size: 16px;
-    line-height: 130%;
-    color: #4C5767;
     text-align: center;
   }
 }

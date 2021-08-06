@@ -6,11 +6,13 @@
     >
       {{ label }}
     </div>
+
     <div
       v-click-outside="hideDd"
       class="dd"
       :class="[{'dd__top': mode === 'top' }]"
     >
+      <slot name="card" />
       <button
         class="dd__btn"
         :class="ddClass"
@@ -75,6 +77,7 @@
           >
             {{ item }}
           </button>
+          <slot name="buttonCard" />
         </div>
       </transition>
     </div>
@@ -164,6 +167,13 @@ export default {
   text-align: left;
   &__title {
     color: $black500;
+  }
+
+  &__button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
   }
   &__top {
     align-items: flex-start;

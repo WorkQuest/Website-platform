@@ -72,6 +72,7 @@ export default {
         { 'base-btn_grey': mode === 'grey' },
         { 'base-btn_verification': mode === 'ver' },
         { 'base-btn_black': mode === 'black' },
+        { 'base-btn_share': mode === 'share' },
       ];
     },
   },
@@ -125,6 +126,13 @@ export default {
     background-color: $black0;
     &:hover {
       background: $black100;
+    }
+  }
+  &_share {
+    background-color: $white;
+    border: 1px solid $black0;
+    &:hover {
+      background: $black0;
     }
   }
   &_back {

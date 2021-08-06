@@ -139,7 +139,7 @@ export default {
     },
     showDepositModal() {
       this.ShowModal({
-        key: modals.deposit,
+        key: modals.giveDeposit,
       });
     },
     showWithdrawModal() {

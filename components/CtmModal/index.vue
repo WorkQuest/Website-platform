@@ -66,6 +66,11 @@
       <CtmModalChatCreate v-if="modals.chatCreate === currentModalKey" />
       <CtmModalPayment v-if="modals.payment === currentModalKey" />
       <CtmModalDisable2FA v-if="modals.disable2FA === currentModalKey" />
+      <CtmModalGiveDeposit v-if="modals.giveDeposit === currentModalKey" />
+      <CtmModalAddingCard v-if="modals.addingCard === currentModalKey" />
+      <CtmModalDepositOptions v-if="modals.depositOptions === currentModalKey" />
+      <CtmModalCardAdded v-if="modals.cardAdded === currentModalKey" />
+      <CtmModalDepositInfo v-if="modals.depositInfo === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -126,6 +131,11 @@ import CtmModalSmsVerification from './CtmModalSmsVerification';
 import CtmModalReviewDetails from './CtmModalReviewDetails';
 import CtmModalPayment from './CtmModalPayment';
 import CtmModalDisable2FA from './CtmModalDisable2FA';
+import CtmModalGiveDeposit from './CtmModalGiveDeposit';
+import CtmModalAddingCard from './CtmModalAddingCard';
+import CtmModalDepositOptions from './CtmModalDepositOptions';
+import CtmModalCardAdded from './CtmModalCardAdded';
+import CtmModalDepositInfo from './CtmModalDepositInfo';
 
 export default {
   name: 'ModalBox',
@@ -184,6 +194,11 @@ export default {
     CtmModalChatCreate,
     CtmModalPayment,
     CtmModalDisable2FA,
+    CtmModalGiveDeposit,
+    CtmModalAddingCard,
+    CtmModalDepositOptions,
+    CtmModalCardAdded,
+    CtmModalDepositInfo,
   },
   data: () => ({
     modals,
