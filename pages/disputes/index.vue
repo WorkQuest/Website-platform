@@ -23,7 +23,7 @@
           >
             <div
               class="page__card"
-              @click="toDisputes()"
+              @click="toDisputes(item.number)"
             >
               <div class="page__card-body">
                 <div class="page__text">
@@ -96,8 +96,8 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    toDisputes() {
-      this.$router.push('/disputes/1');
+    toDisputes(item) {
+      this.$router.push({ path: `/disputes/${item}` });
     },
   },
 };

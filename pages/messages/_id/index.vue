@@ -166,7 +166,9 @@ export default {
   methods: {
     scrollChat() {
       const chat = this.$el.querySelector('#chat__messages');
-      setTimeout(chat.scrollTop = chat.scrollHeight, 100);
+      setTimeout(() => {
+        chat.scrollTop = chat.scrollHeight;
+      }, 100);
     },
     showNoticeModal() {
       this.ShowModal({
@@ -180,7 +182,7 @@ export default {
       this.$router.push('/messages');
     },
     sendMessages() {
-      if (!this.messages && !this.messages.length) {
+      if (!this.message_input && !this.message_input.length) {
         return;
       }
       this.messages.push({
@@ -190,7 +192,7 @@ export default {
         isFavourite: false,
         messageTime: moment().format('HH:mm'),
       });
-      this.messages = '';
+      this.message_input = '';
       this.scrollChat();
     },
     onEnter(e, callback) {

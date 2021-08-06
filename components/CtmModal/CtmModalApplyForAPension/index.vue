@@ -4,41 +4,47 @@
     :title="$t('pension.applyForRetirement')"
   >
     <div class="ctm-modal__content">
-      <div class="ctm-modal__content-field">
-        <base-field
-          v-model="depositPercentFromAQuest"
-          :is-hide-error="true"
-          :label="$t('modals.depositRetirementModalTitle')"
-          :placeholder="$t('modals.depositRetirementModalPrecentPlaceholder')"
-        />
-      </div>
-      <div class="ctm-modal__content-field">
-        <base-field
-          v-model="firstDepositAmount"
-          :is-hide-error="true"
-          :placeholder="$t('modals.depositRetirementModalAmountPlaceholder')"
-          :label="$t('modals.firstDepositAmount')"
-        />
-        <div class="ctm-modal__subtitle">
-          {{ $t('modals.aboutFirstDeposit') }}
+      <validation-observer v-slot="{ handleSubmit, validated, passed, invalid }">
+        <div class="ctm-modal__content-field">
+          <base-field
+            v-model="depositPercentFromAQuest"
+            :is-hide-error="true"
+            :label="$t('modals.depositRetirementModalTitle')"
+            :placeholder="$t('modals.depositRetirementModalPrecentPlaceholder')"
+            rules="required|min_value:0"
+            name="percentage"
+          />
         </div>
-      </div>
-      <div class="ctm-modal__content-btns">
-        <div class="btn-group">
-          <base-btn
-            class="btn"
-            @click="hide()"
-          >
-            {{ $t('meta.cancel') }}
-          </base-btn>
-          <base-btn
-            class="btn_bl"
-            @click="showPensionIsRegisteredModal()"
-          >
-            {{ $t('meta.confirm') }}
-          </base-btn>
+        <div class="ctm-modal__content-field">
+          <base-field
+            v-model="firstDepositAmount"
+            :is-hide-error="true"
+            :placeholder="$t('modals.depositRetirementModalAmountPlaceholder')"
+            :label="$t('modals.firstDepositAmount')"
+            rules="min_value:0"
+          />
+          <div class="ctm-modal__subtitle">
+            {{ $t('modals.aboutFirstDeposit') }}
+          </div>
         </div>
-      </div>
+        <div class="ctm-modal__content-btns">
+          <div class="btn-group">
+            <base-btn
+              class="btn"
+              @click="hide()"
+            >
+              {{ $t('meta.cancel') }}
+            </base-btn>
+            <base-btn
+              class="btn_bl"
+              :disabled="!validated && !passed && invalid"
+              @click="handleSubmit(showPensionIsRegisteredModal)"
+            >
+              {{ $t('meta.confirm') }}
+            </base-btn>
+          </div>
+        </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -135,6 +141,12 @@ export default {
     font-weight: 400;
     font-size: 14px;
     margin-top: 15px;
+  }
+}
+
+.base-btn {
+  &_disabled {
+    background: #D1D1CF !important;
   }
 }
 

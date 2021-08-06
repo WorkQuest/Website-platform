@@ -156,7 +156,7 @@
   },
   "signIn": {
     "title": "Sign in",
-    "account": "Haven’t account?",
+    "account": "haven’t account?",
     "regs": "Registration",
     "login": "Login",
     "remember": "Remember me",
@@ -166,10 +166,11 @@
     "welcomeToWorkQuest": "Welcome to WorkQuest",
     "pleaseSignIn": "Please sign in",
     "workQuest": "WorkQuest",
-    "makingMoneyIsFast": "WorkQuest:\n The World's Decentralized\n Job Market",
+    "makingMoneyIsFast": "WorkQuest:\n The World's\n Decentralized\n Job Market",
     "dontHaveAnAccount": "Don’t have an account?",
     "signUp": "Sign Up",
-    "forgotYourPass": "Forgot your password?"
+    "forgotYourPass": "Forgot your password?",
+    "username": "Username"
   },
   "signWorkQuest": {
     "title": "WorkQuest social network",
@@ -496,7 +497,7 @@
     },
     "menu": {
       "pension": {
-        "title": "Retirement Program",
+        "title": "Retirement program",
         "desc": "You can select a percentage of each completed quest which will then be automatically credited to your retirement account, or simply deposit an amount of your choice. The pool of funds is invested on the employee's behalf, and the earnings on the investments generate income to the worker upon their retirement."
       },
       "referral": {
