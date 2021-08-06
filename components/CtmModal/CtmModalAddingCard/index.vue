@@ -15,7 +15,9 @@
         />
       </div>
       <div class="content__input input">
-        <span class="input__title">{{ $t('modals.cardHolder') }}</span>
+        <span class="input__title">
+          {{ $t('modals.cardHolder') }}
+        </span>
         <base-field
           v-model="cardHolder"
           class="input__field"
@@ -24,7 +26,9 @@
       </div>
       <div class="content__grid grid">
         <div class="grid__field">
-          <span class="grid__title">{{ $t('modals.date') }}</span>
+          <span class="grid__title">
+            {{ $t('modals.date') }}
+          </span>
           <base-field
             v-model="dateInput"
             class="grid__input"
@@ -32,7 +36,9 @@
           />
         </div>
         <div class="grid__field">
-          <span class="grid__title">{{ $t('modals.cvv') }}</span>
+          <span class="grid__title">
+            {{ $t('modals.cvv') }}
+          </span>
           <base-field
             v-model="cvvInput"
             class="grid__field"
@@ -99,7 +105,6 @@ export default {
     width: 212px!important;
   }
 }
-
 .card {
   max-width: 500px !important;
   max-height: 429px !important;
@@ -110,6 +115,9 @@ export default {
 }
 
 .input{
+  &__field{
+    cursor: pointer;
+  }
   &__title{
     margin: 22px 5px 0 0;
   }
@@ -122,14 +130,11 @@ export default {
     align-items: flex-end;
     grid-gap: 10px;
   }
-
 }
 .grid{
   &__title{
     margin: 15px 5px 0 0;
   }
 }
-.ctm-field__err{
-  display: none!important;
-}
+
 </style>

@@ -6,7 +6,6 @@
     >
       {{ label }}
     </div>
-
     <div
       v-click-outside="hideDd"
       class="dd"
@@ -169,12 +168,6 @@ export default {
     color: $black500;
   }
 
-  &__button{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-  }
   &__top {
     align-items: flex-start;
   }

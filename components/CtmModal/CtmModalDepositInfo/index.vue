@@ -22,15 +22,16 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            @click="showTransactionSend()"
-          >
-            {{ $t('meta.confirm') }}
-          </base-btn>
-          <base-btn
-            class="buttons__button"
             @click="hide()"
           >
             {{ $t('meta.cancel') }}
+          </base-btn>
+          <base-btn
+            class="buttons__button"
+
+            @click="showTransactionSend()"
+          >
+            {{ $t('meta.confirm') }}
           </base-btn>
         </div>
       </div>
@@ -42,7 +43,7 @@
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalAddLiquidity',
+  name: 'ModalDepositInfo',
   data() {
     return {
       items: [
@@ -90,9 +91,7 @@ export default {
     font-size: 14px;
     margin-bottom: 20px;
   }
-
 }
-
 .content{
   padding: 0 28px 30px 28px!important;
   &__field{
@@ -103,7 +102,6 @@ export default {
     margin-right: 13px;
   }
 }
-
 .ifno {
   @include modalKit;
 }
@@ -126,5 +124,4 @@ export default {
     background-color: #fff;
   }
 }
-
 </style>

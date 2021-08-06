@@ -7,6 +7,7 @@
       <img
         src="~/assets/img/ui/questAgreed.svg"
         alt="Agreed"
+        class="copied__picture"
       >
       <div class="copied__title">
         {{ $t('modals.walletCopy') }}
@@ -25,10 +26,6 @@
 
 export default {
   name: 'ModalCopiedSuccess',
-  data() {
-    return {};
-  },
-
   methods: {
     hide() {
       this.CloseModal();

@@ -67,6 +67,7 @@
               v-model="dollars"
               :is-hide-error="true"
               mode="white"
+              disabled
             />
           </div>
         </div>
@@ -81,6 +82,7 @@
             v-model="fee"
             mode="white"
             class="body__input"
+            disabled
           />
         </div>
         <div>
@@ -92,6 +94,7 @@
             v-model="time"
             mode="white"
             class="body__input"
+            disabled
           />
         </div>
       </div>
@@ -130,8 +133,8 @@ export default {
   computed: {
     items() {
       return [
-        'Visa *00001',
-        'Visa *00002',
+        'Visa *0000',
+        'Visa *0000',
       ];
     },
   },
@@ -165,7 +168,6 @@ export default {
   &__content {
     padding: 0 28px 30px 28px;
   }
-
 }
 .content {
   &__step {
@@ -174,7 +176,6 @@ export default {
     align-items: flex-start;
     margin-top: 25px;
   }
-
   &__panel {
     @include text-simple;
     font-weight: 400;
@@ -194,7 +195,6 @@ export default {
     margin: 5px 0 15px 0;
   }
 }
-
 .drop{
   &__field{
     border: 1px solid #F7F8FA;
@@ -236,7 +236,6 @@ export default {
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
-
 .buttons {
   display: grid;
   grid-template-columns: repeat(2, calc(50% - 10px));
@@ -270,6 +269,5 @@ export default {
     color:$blue!important;
     margin-right: 12px;
   }
-
 }
 </style>

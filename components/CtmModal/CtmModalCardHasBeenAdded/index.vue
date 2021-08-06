@@ -18,7 +18,7 @@
           </div>
           <base-btn
             class="email__action"
-            @click="showDeposit"
+            @click="hide()"
           >
             {{ $t('meta.ok') }}
           </base-btn>
@@ -30,7 +30,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalCardHasBeenAdded',
@@ -40,13 +39,8 @@ export default {
     }),
   },
   methods: {
-    // hide() {
-    //   this.CloseModal();
-    // },
-    showDeposit() {
-      this.ShowModal({
-        key: modals.payment,
-      });
+    hide() {
+      this.CloseModal();
     },
   },
 };

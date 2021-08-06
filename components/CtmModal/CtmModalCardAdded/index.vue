@@ -7,6 +7,7 @@
       <img
         src="~assets/img/ui/cardHasBeenAdded.svg"
         alt="RequestSend"
+        class="cardAdded__picture"
       >
       <div class="cardAdded__title">
         {{ $t('modals.cardHasBeenAdded') }}
@@ -29,7 +30,7 @@ import modals from '~/store/modals/modals';
 
 export default {
 
-  name: 'ModalCardHasBeenAdded',
+  name: 'ModalCardAdded',
   data() {
     return {
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,',
@@ -48,7 +49,7 @@ export default {
 <style lang="scss" scoped>
 
 .cardAdded {
-  max-width: 337px !important;
+  max-width: 337px!important;
   &__content {
     display: grid;
     grid-template-columns: 1fr;

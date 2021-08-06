@@ -69,7 +69,7 @@
             class="btn_bl"
             @click="showTransactionSendModal()"
           >
-            {{ $t('meta.buyWUSD') }}
+            {{ $t('meta.confirm') }}
           </base-btn>
         </div>
       </div>
