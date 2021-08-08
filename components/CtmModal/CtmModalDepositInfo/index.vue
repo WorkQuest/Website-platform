@@ -8,6 +8,7 @@
         <div
           v-for="(item, i) in items"
           :key="i"
+          class="field__item"
         >
           <div class="field__title">
             {{ item.title }}
@@ -79,6 +80,12 @@ export default {
 <style lang="scss" scoped>
 
 .field{
+  &__item{
+    margin-bottom: 20px;
+    &:last-child{
+      margin-bottom: 0;
+    }
+  }
   &__title{
     font-size: 16px;
     line-height: 130%;
@@ -89,21 +96,18 @@ export default {
     color: $black500;
     font-weight: 500;
     font-size: 14px;
-    margin-bottom: 20px;
   }
 }
+
 .content{
   padding: 0 28px 30px 28px!important;
   &__field{
-    padding: 20px 20px 0.1px;
+    padding: 20px 20px 20px;
     background-color: #F7F8FA;
     border-radius: 5px;
     margin-top: 25px;
     margin-right: 13px;
   }
-}
-.ifno {
-  @include modalKit;
 }
 .buttons{
   &__group{
@@ -112,16 +116,6 @@ export default {
     grid-gap: 20px;
     gap: 20px;
     margin-top: 25px;
-  }
-  &__buttons{
-    box-sizing: border-box;
-    font-weight: 400;
-    font-size: 16px;
-    color: #0083C7;
-    border: 1px solid #0083C71A;
-    border-radius: 6px;
-    transition: .3s;
-    background-color: #fff;
   }
 }
 </style>

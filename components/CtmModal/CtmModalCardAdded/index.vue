@@ -13,7 +13,7 @@
         {{ $t('modals.cardHasBeenAdded') }}
       </div>
       <div class="cardAdded__desc">
-        {{ text }}
+        {{ $t('modals.cardAddedtext') }}
       </div>
       <base-btn
         class="email__action"
@@ -31,11 +31,6 @@ import modals from '~/store/modals/modals';
 export default {
 
   name: 'ModalCardAdded',
-  data() {
-    return {
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,',
-    };
-  },
   methods: {
     showDepositOptions() {
       this.ShowModal({

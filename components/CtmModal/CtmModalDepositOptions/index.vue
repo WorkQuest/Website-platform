@@ -26,7 +26,6 @@
         <base-dd
           v-model="card"
           class="drop__field"
-          :type="'white'"
           :items="items"
         >
           <template v-slot:card>
@@ -54,7 +53,6 @@
         </span>
         <div class="grid__body">
           <base-field
-            id="amount_input"
             :is-hide-error="true"
             :placeholder="'0 WUSD'"
             class="grid__input"
@@ -78,7 +76,6 @@
             {{ $t('modals.totalFee') }}
           </span>
           <base-field
-            id="fee_input"
             v-model="fee"
             mode="white"
             class="body__input"
@@ -90,7 +87,6 @@
             {{ $t('modals.processing') }}
           </span>
           <base-field
-            id="time_input"
             v-model="time"
             mode="white"
             class="body__input"
@@ -107,7 +103,7 @@
           {{ $t('meta.cancel') }}
         </base-btn>
         <base-btn
-          class="buttons__button_white"
+          class="buttons__button"
           @click="showTransactionSendModal()"
         >
           {{ $t('meta.buyWUSD') }}
@@ -242,28 +238,12 @@ export default {
   grid-gap: 20px;
   gap: 20px;
   margin-top: 2px;
-  &__button {
-    box-sizing: border-box;
-    font-weight: 400;
-    font-size: 16px;
-    color: #0083C7;
-    border: 1px solid #0083C71A;
-    border-radius: 6px;
-    transition: .3s;
-    background-color: #fff;
-    &_white{
-      background-color: #0083C7;
-      border: unset;
-      color: #fff;
-      &:hover {
-        background-color: #103d7c;
-        }
-      }
-    }
 }
+
 .button{
   display: flex;
   justify-content: space-between;
+  padding: 0 5px;
   &__icon::before{
     font-size: 25px;
     color:$blue!important;

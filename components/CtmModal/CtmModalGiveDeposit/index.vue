@@ -18,7 +18,7 @@
         <div
           class="content__panel"
           :class="{'content__panel_active': step === 2}"
-          @click="nextStep()"
+          @click="nextStep"
         >
           {{ $t('wallet.bankCard') }}
         </div>
@@ -34,10 +34,14 @@
             class="content__qr"
           >
         </div>
-        <span class="content__text_gray">{{ $t('modals.scanQr') }}</span>
+        <span class="content__text_gray">
+          {{ $t('modals.scanQr') }}
+        </span>
         <div class="content__code code">
           <div class="code__container">
-            <span class="code__text">{{ code }}</span>
+            <span class="code__text">
+              {{ modifyAddress(walletAddress) }}
+            </span>
             <button
               type="code__copy"
               @click="showSuccessCopied"
@@ -94,7 +98,7 @@
               <base-btn
                 class="buttons__button"
                 mode="outline"
-                @click="hide()"
+                @click="hide"
               >
                 {{ $t('meta.cancel') }}
               </base-btn>
@@ -102,7 +106,7 @@
                 class="buttons__button"
                 @click="showAddingCard"
               >
-                {{ $t('modals.addCard') }}
+                {{ $t('modals.cardAdd') }}
               </base-btn>
             </span>
           </div>
@@ -120,7 +124,6 @@ export default {
   data() {
     return {
       step: 1,
-      code: '0xf376g...G7f3g8b',
       walletAddress: '0xnf8o29837hrvbn42o37hsho3b74thb3',
     };
   },
@@ -143,6 +146,9 @@ export default {
       this.ShowModal({
         key: modals.addingCard,
       });
+    },
+    modifyAddress(address) {
+      return `${address.substr(0, 7)}...${address.substr(address.length - 8, 8)}`;
     },
   },
 };
@@ -227,7 +233,6 @@ export default {
   &__card{
     margin: 30px auto;
   }
-
 }
 
 .buttons {

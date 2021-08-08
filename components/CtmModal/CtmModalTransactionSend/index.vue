@@ -13,7 +13,7 @@
         {{ $t('modals.transactionSend') }}
       </div>
       <div class="transaction__desc">
-        {{ text }}
+        {{ $t('modals.transactionSenttext') }}
       </div>
       <base-btn
         class="transaction__action"
@@ -29,12 +29,6 @@
 
 export default {
   name: 'ModalTransactionSend',
-  data() {
-    return {
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    };
-  },
-
   methods: {
     hide() {
       this.CloseModal();

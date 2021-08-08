@@ -474,7 +474,7 @@
     "scanQr": "Scan QR code or copy wallet address to receive payment",
     "close": "Close",
     "depositTitle": "Deposit",
-    "addYourCard": "You have to to add your card to continue",
+    "addYourCard": "You have to add your card to continue",
     "walletCopy": "Wallet number has been copied",
     "addingCard": "Adding card",
     "add": "Add",
@@ -483,7 +483,10 @@
     "addNewCard": "Add new card",
     "numberCard": "Number of card",
     "chooseCard": "Choose Card",
-    "depositInfo": "Deposit info"
+    "depositInfo": "Deposit info",
+    "cardAdd": "Add card",
+    "cardAddedtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,",
+    "transactionSenttext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,"
   },
   "ui": {
     "jobQuestors": "Job Questors",
