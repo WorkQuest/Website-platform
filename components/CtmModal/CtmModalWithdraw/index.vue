@@ -11,9 +11,8 @@
               id="amount_input"
               v-model="amount"
               :label="$t('modals.amount')"
-              :is-hide-error="true"
               :placeholder="'0 WUSD'"
-              rules="min_value:0|numeric|required"
+              rules="min_value:0|required"
               name="Amount"
             />
           </div>
@@ -22,7 +21,6 @@
           </div>
           <div class="ctm-modal__content-field">
             <base-field
-              :is-hide-error="true"
               mode="white"
               :placeholder="'$ 0'"
             />
@@ -133,7 +131,7 @@ export default {
   @include modalKit;
 
   &__equal {
-    margin: 0 0 12px 12px;
+    margin: 0 0 35px 12px;
   }
 
   .grid {
@@ -150,7 +148,7 @@ export default {
   }
 
   &__content-field {
-    margin: 15px 0 0 0;
+    margin: 0px 0 0 0;
 
     &_couple {
       display: grid;
@@ -215,6 +213,7 @@ export default {
 
   &__content {
     padding-top: 0 !important;
+    margin-top: 15px;
   }
 
   &__title-head {
