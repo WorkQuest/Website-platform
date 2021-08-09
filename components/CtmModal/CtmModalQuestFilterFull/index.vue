@@ -4,7 +4,7 @@
     class="filter"
   >
     <div class="ctm-modal__content filter">
-      <div class="filter">
+      <div class="filter filter__container">
         <div class="filter__body">
           <div
             v-for="(item, i) in filterItems"
@@ -15,7 +15,7 @@
               class="filter__item"
             >
               <span
-                class="item"
+                class="filter item"
                 @click="toggleSub(item)"
               >
                 <span
@@ -1494,9 +1494,11 @@ export default {
 }
 
 .filter {
-  overflow-y: auto;
-  max-width: 95% !important;
-  height: 90% !important;
+  &__container {
+    overflow-y: auto;
+    max-width: 95% !important;
+    height: 90% !important;
+  }
   &__body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

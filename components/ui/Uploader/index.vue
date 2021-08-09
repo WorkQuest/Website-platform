@@ -71,8 +71,6 @@ export default {
         data: {},
         file: {},
       },
-      uploadPercentage: 0,
-      showLoading: false,
       dragEvents: ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'],
     };
   },
@@ -106,10 +104,17 @@ export default {
       }
     },
     async watchDrop() {
-      this.$refs.fileForm.addEventListener('drop', async (e, validate) => {
+      this.$refs.fileForm.addEventListener('drop', async (e) => {
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < e.dataTransfer.files.length; i++) {
           this.files.push(e.dataTransfer.files[i]);
+          console.log(this.files);
+          const file = this.files[i];
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          const img = this.images;
+          img.data = this.$store.dispatch('user/imageCaseType', { contentType: file.type });
+          img.file = file;
         }
         this.getImagePreviews();
       });
@@ -119,6 +124,13 @@ export default {
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < e.target.files.length; i++) {
           this.files.push(e.target.files[i]);
+          console.log(this.files);
+          const file = this.files[i];
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          const img = this.images;
+          img.data = this.$store.dispatch('user/imageCaseType', { contentType: file.type });
+          img.file = file;
         }
         this.getImagePreviews();
       });
@@ -150,6 +162,7 @@ export default {
       const img = this.images;
       try {
         const formData = new FormData();
+
         formData.append('image', img.file);
         if (img.data.ok) {
           const data = {
@@ -157,15 +170,16 @@ export default {
             formData: img.file,
             type: img.file.type,
           };
+          console.log(data);
           await this.$store.dispatch('user/setUploaderImageInStore', data);
         }
         const payload = {
           medias: [img.data.result.mediaId],
         };
+        console.log(payload);
         await this.$store.dispatch('user/setUploaderImageDataInStore', payload);
       } catch (error) {
         console.error(error);
-        this.hide();
       }
     },
     removeFile(i) {

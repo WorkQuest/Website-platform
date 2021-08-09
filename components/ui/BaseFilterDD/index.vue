@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="dd"
+      class="dd dd__container"
     >
       <button
         class="dd__btn"
@@ -23,7 +23,7 @@
         :class="{'hide': isOpenDD}"
       >
         <div
-          class="filter"
+          class="dd filter"
           :class="{'hide': isOpenDD}"
         >
           <div class="filter__btn">
@@ -65,7 +65,10 @@
                     class="sub__body"
                     :class="[{'hide': !item.visible}]"
                   >
-                    <div class="sub__item">
+                    <div
+                      class="sub__item"
+                      @click="selectAll"
+                    >
                       <input
                         :id="sub.title"
                         type="checkbox"
@@ -1460,10 +1463,24 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.closeItem();
+  },
   methods: {
     toggleSub(item) {
       item.visible = !item.visible;
     },
+    closeItem() {
+      const acc = document.getElementsByClassName('filter__item');
+      // eslint-disable-next-line no-const-assign,no-plusplus
+      for (let i = 0; i < acc.length; i++) {
+        acc[i].onclick = () => {
+          this.classList.toggle('hide');
+          this.nextElementSibling.classList.toggle('hide');
+        };
+      }
+    },
+    selectAll() {},
     showFilterFull() {
       this.ShowModal({
         key: modals.questFilterFull,
@@ -1516,17 +1533,19 @@ export default {
 }
 
 .dd {
-  display: flex;
-  align-items: center;
-  font-family: 'Inter', sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 130%;
-  color: $black500;
-  min-width: 131px;
-  position: relative;
-  text-align: left;
+  &__container {
+    display: flex;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 130%;
+    color: $black500;
+    min-width: 131px;
+    position: relative;
+    text-align: left;
+  }
   &__btn {
     height: 43px;
     display: flex;
