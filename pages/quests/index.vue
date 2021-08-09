@@ -168,7 +168,7 @@ export default {
     async getQuests(specialSort) {
       const additionalValue = `?limit=${this.questLimits}&offset=0${specialSort || ''}`;
       this.questsObjects = await this.$store.dispatch('quests/getAllQuests', additionalValue);
-      this.questsLocation = await this.$store.dispatch('quests/getQuestsLocation');
+      // this.questsLocation = await this.$store.dispatch('quests/getQuestsLocation');
     },
     getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
       const R = 6371; // Radius of the earth in km
