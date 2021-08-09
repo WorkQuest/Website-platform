@@ -13,17 +13,27 @@
         </div>
         <div class="quests__tools tools">
           <div class="tools__left">
-            <base-btn
-              :mode="'light'"
-              @click="showFilter"
-            >
-              <span
-                class="icon-filter_outline"
-              />
-              <span class="tools__text">
-                {{ $t('quests.filter.btn') }}
-              </span>
-            </base-btn>
+            <base-filter-dd />
+            <base-dd
+              v-model="selectedQuest"
+              :items="quests"
+              :placeholder="$t('quests.quests')"
+            />
+            <base-dd
+              v-model="selectedTypeOfJob"
+              :items="urgent"
+              :placeholder="$t('quests.urgent')"
+            />
+            <base-dd
+              v-model="selectedTypeOfJob"
+              :items="typeOfJob"
+              :placeholder="$t('quests.typeOfJob')"
+            />
+            <base-dd
+              v-model="selectedDistantWork"
+              :items="distantWork"
+              :placeholder="$t('distantWork.title')"
+            />
           </div>
           <div class="tools__right">
             <base-btn
@@ -121,12 +131,31 @@ export default {
         },
       ],
       search: '',
+      quests: [
+        this.$t('quests.quests'),
+      ],
+      selectedQuest: '',
+      urgent: [
+        this.$t('quests.urgent'),
+      ],
+      selectedUrgent: '',
+      typeOfJob: [
+        this.$t('quests.priority.all'),
+      ],
+      selectedTypeOfJob: '',
+      distantWork: [
+        this.$t('quests.distantWork.distantWork'),
+        this.$t('quests.distantWork.workInOffice'),
+        this.$t('quests.distantWork.bothVariant'),
+      ],
+      selectedDistantWork: '',
       priority: [
         this.$t('quests.priority.all'),
         this.$t('quests.priority.low'),
         this.$t('quests.priority.normal'),
         this.$t('quests.priority.urgent'),
       ],
+      selectedPriority: '',
       priorityIndex: 0,
       distanceIndex: 0,
       priceSort: 'desc',
@@ -625,7 +654,7 @@ export default {
   align-items: center;
   &__left {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(5, 1fr);
     grid-gap: 20px;
     span::before {
       padding-left: 10px;

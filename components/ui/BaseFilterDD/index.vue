@@ -1,62 +1,82 @@
 <template>
-  <ctm-modal-box
-    :is-unclosable="true"
-    :title="$t('filters.title')"
-    class="filter"
-  >
-    <div class="ctm-modal__content">
-      <div class="filter">
-        <div class="filter__btn">
-          <base-btn
-            mode="outline"
-            @click="showFilterFull"
-          >
-            {{ $t('filters.filterBtn') }}
-          </base-btn>
-        </div>
-        <div class="filter__body">
-          <div
-            v-for="(item, i) in filterItems"
-            :key="i"
-            class="filter__items"
-          >
-            <div
-              class="filter__item item"
+  <div>
+    <div
+      class="dd"
+    >
+      <button
+        class="dd__btn"
+        @click="isOpenDD = !isOpenDD"
+      >
+        {{ $t('filters.dd.1') }}
+        <span
+          v-if="isOpenDD"
+          class="icon-caret_down"
+        />
+        <span
+          v-else
+          class="icon-caret_up"
+        />
+      </button>
+      <div
+        v-if="!isOpenDD"
+        class="dd__list"
+        :class="{'hide': isOpenDD}"
+      >
+        <div
+          class="filter"
+          :class="{'hide': isOpenDD}"
+        >
+          <div class="filter__btn">
+            <base-btn
+              mode="outline"
+              @click="showFilterFull"
             >
-              <span
-                class="item"
-                @click="toggleSub(item)"
+              {{ $t('filters.filterBtn') }}
+            </base-btn>
+          </div>
+          <div class="filter__body">
+            <div
+              v-for="(item, i) in filterItems"
+              :key="i"
+            >
+              <div
+                class="filter__item item"
               >
                 <span
-                  class="item__title"
-                >{{ item.title }}</span>
-                <span
-                  v-if="!item.visible"
-                  class="icon-caret_down"
-                />
-                <span
-                  v-else
-                  class="icon-caret_up"
-                />
-              </span>
-              <div class="filter__item sub">
-                <div
-                  v-for="(sub, idx) in item.body"
-                  :key="idx"
-                  class="sub__body"
-                  :class="[{'hide': !item.visible}]"
+                  class="item"
+                  @click="toggleSub(item)"
                 >
-                  <div class="sub__item">
-                    <input
-                      :id="sub.title"
-                      type="checkbox"
-                      :name="item.title"
-                      :value="sub.status"
-                    >
-                    <label
-                      :for="sub.title"
-                      class="sub__label"
-                    >{{ sub.title }}</label>
+                  <span
+                    class="item__title"
+                  >{{ item.title }}</span>
+                  <span
+                    v-if="!item.visible"
+                    class="icon-caret_down"
+                  />
+                  <span
+                    v-else
+                    class="icon-caret_up"
+                  />
+                </span>
+                <div class="filter__item sub">
+                  <div
+                    v-for="(sub, idx) in item.body"
+                    :key="idx"
+                    class="sub__body"
+                    :class="[{'hide': !item.visible}]"
+                  >
+                    <div class="sub__item">
+                      <input
+                        :id="sub.title"
+                        type="checkbox"
+                        :name="item.title"
+                        :value="sub.status"
+                      >
+                      <label
+                        :for="sub.title"
+                        class="sub__label"
+                      >{{ sub.title }}</label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -65,16 +85,21 @@
         </div>
       </div>
     </div>
-  </ctm-modal-box>
+  </div>
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'CtmModalChangeRoleWarning',
+  name: 'Dd',
+  directives: {
+    ClickOutside,
+  },
   data() {
     return {
+      isOpenDD: true,
       filterItems: [
         {
           title: this.$t('filters.items.1.title'),
@@ -1436,9 +1461,6 @@ export default {
     };
   },
   methods: {
-    hide() {
-      this.CloseModal();
-    },
     toggleSub(item) {
       item.visible = !item.visible;
     },
@@ -1451,7 +1473,25 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
+
+.hide {
+  display: none;
+}
+
+.filter {
+  &__body {
+    overflow-y: auto;
+    height: 300px;
+    margin: 10px 0 0 0;
+    padding: 10px 0 0 0;
+  }
+  &__item {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
 
 .sub {
   &__label {
@@ -1475,64 +1515,44 @@ export default {
   }
 }
 
-.ctm-modal {
-  @include modalKit;
-  &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    grid-gap: 10px;
-  }
-}
-
-.hide {
-  display: none;
-}
-
-.item {
-  &__title {
-    margin: 10px 0 0 0;
-    @include text-simple;
-    font-size: 16px;
-    font-weight: 600;
-    color: $black800;
-    &:last-child {
-      margin: 10px 0 10px 0;
-    }
-    &:hover {
-      text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
-      cursor: pointer;
-    }
-  }
-}
-
-.filter {
-  max-width: 400px !important;
-  &__body {
-    overflow-y: auto;
-    height: 300px;
-    margin: 10px 0 0 0;
-    padding: 10px 0 0 0;
-  }
-}
-
-.message {
-  &__action {
-    width: 100%;
-  }
-}
-
-.btn {
-  &__container {
+.dd {
+  display: flex;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 130%;
+  color: $black500;
+  min-width: 131px;
+  position: relative;
+  text-align: left;
+  &__btn {
+    height: 43px;
     display: flex;
-    flex-direction: row-reverse;
+    align-items: center;
     justify-content: space-between;
-    margin: 0;
+    padding: 0 20px;
     width: 100%;
+    max-width: 400px;
+    background: #FFFFFF;
+    border-radius: 6px;
+    &_gray {
+      background-color: $black0;
+    }
   }
-  &__wrapper {
-    width: 45%;
+  &__list {
+    @include box;
+    width: 400px;
+    position: absolute;
+    background: #FFFFFF;
+    top: calc(100% + 4px);
+    display: grid;
+    align-items: center;
+    justify-content: flex-start;
+    grid-gap: 15px;
+    padding: 15px 20px;
+    z-index: 1;
   }
 }
-
 </style>

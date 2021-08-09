@@ -1486,12 +1486,9 @@ export default {
     font-size: 16px;
     font-weight: 600;
     color: $black800;
+    cursor: pointer;
     &:last-child {
       margin: 10px 0 10px 0;
-    }
-    &:hover {
-      text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
-      cursor: pointer;
     }
   }
 }
@@ -1508,6 +1505,10 @@ export default {
   }
   &__items {
     margin: 0 0 10px 0;
+    cursor: pointer;
+    &:hover {
+      text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
+    }
   }
 }
 

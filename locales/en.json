@@ -31,6 +31,11 @@
     "showYourMessage": "Show your message"
   },
 
+  "uploader" : {
+    "uploadText": "Upload a images or videos",
+    "upload": "Upload",
+    "files": "files"
+  },
   "messages": {
     "alpha": "The {_field_} field may only contain alphabetic characters",
     "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
@@ -231,6 +236,15 @@
     "title": "Skills"
   },
   "quests": {
+    "quests": "Quests",
+    "urgent": "Urgent",
+    "typeOfJob": "Type of job",
+    "distantWork": {
+      "title": "Distant work",
+      "distantWork": "Distant work",
+      "workInOffice": "Work in office",
+      "bothVariant": "Both variant"
+    },
     "hours": "hours",
     "invited": "Invited",
     "active": "Active",
@@ -301,6 +315,15 @@
     "startQuest": "Start quest"
   },
   "filters": {
+    "dd": {
+      "1": "Specialization",
+      "2": "Quests",
+      "3": "Urgent",
+      "4": "Type of job",
+      "5": "All priority",
+      "6": "Price",
+      "7": "Added time"
+    },
     "title": "Filters",
     "titleAll": "All Filters",
     "filterBtn": "Show all filters",
