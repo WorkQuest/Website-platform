@@ -14,7 +14,7 @@
       </div>
       <base-btn
         class="copied__action"
-        @click="hide()"
+        @click="hide"
       >
         {{ $t('meta.ok') }}
       </base-btn>
@@ -48,11 +48,8 @@ export default {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
-    grid-gap: 20px;
+    grid-gap: 30px;
     padding: 30px;
-  }
-  &__action {
-    margin-top: 10px;
   }
 }
 </style>

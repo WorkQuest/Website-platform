@@ -5,9 +5,7 @@
     :title="$t('modals.depositTitle')"
   >
     <div class="deposit__content сontent">
-      <div
-        class="content__step"
-      >
+      <div class="content__step">
         <div
           class="content__panel"
           :class="{'content__panel_active': step === 1}"
@@ -68,7 +66,7 @@
       >
         <div>
           <img
-            alt="qr"
+            alt="card"
             src="~assets/img/ui/creditCard.svg"
             class="content__card"
           >
@@ -194,7 +192,6 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-
   }
   &__panel{
     @include text-simple;

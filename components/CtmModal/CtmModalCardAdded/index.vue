@@ -13,10 +13,10 @@
         {{ $t('modals.cardHasBeenAdded') }}
       </div>
       <div class="cardAdded__desc">
-        {{ $t('modals.cardAddedtext') }}
+        {{ $t('modals.cardAddedText') }}
       </div>
       <base-btn
-        class="email__action"
+        class="cardAdded__action"
         @click="showDepositOptions"
       >
         {{ $t('meta.ok') }}
@@ -29,7 +29,6 @@
 import modals from '~/store/modals/modals';
 
 export default {
-
   name: 'ModalCardAdded',
   methods: {
     showDepositOptions() {
@@ -59,9 +58,13 @@ export default {
     font-size: 23px;
     font-weight: 500;
     line-height: 130%;
+    margin-top: 10px;
   }
   &__desc{
     text-align: center;
+    color: #4C5767;
+    font-size: 16px;
+    line-height: 130%;
   }
 }
 </style>

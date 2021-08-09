@@ -50,13 +50,13 @@
         <base-btn
           :mode="'outline'"
           class="buttons__action"
-          @click="hide()"
+          @click="hide"
         >
           {{ $t('meta.cancel') }}
         </base-btn>
         <base-btn
           class="buttons__action"
-          @click="showCardHasBeenAddedModal()"
+          @click="showCardHasBeenAddedModal"
         >
           {{ $t('modals.add') }}
         </base-btn>
@@ -96,11 +96,6 @@ export default {
 .buttons {
   display: flex;
   justify-content: space-between;
-  &__container {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-  }
   &__action{
     width: 212px!important;
   }

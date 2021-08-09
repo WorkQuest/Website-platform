@@ -485,8 +485,8 @@
     "chooseCard": "Choose Card",
     "depositInfo": "Deposit info",
     "cardAdd": "Add card",
-    "cardAddedtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,",
-    "transactionSenttext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,"
+    "cardAddedText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,",
+    "transactionSentText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,"
   },
   "ui": {
     "jobQuestors": "Job Questors",

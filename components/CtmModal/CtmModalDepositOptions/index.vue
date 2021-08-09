@@ -98,13 +98,13 @@
         <base-btn
           class="buttons__button"
           mode="outline"
-          @click="hide()"
+          @click="hide"
         >
           {{ $t('meta.cancel') }}
         </base-btn>
         <base-btn
           class="buttons__button"
-          @click="showTransactionSendModal()"
+          @click="showTransactionSendModal"
         >
           {{ $t('meta.buyWUSD') }}
         </base-btn>
@@ -179,7 +179,6 @@ export default {
     color: $black500;
     margin: 0 20px 0 0;
     cursor: pointer;
-
     &_active {
       color: $black800;
       border-bottom: 2px solid $blue;

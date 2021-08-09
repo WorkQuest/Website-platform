@@ -23,14 +23,13 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            @click="hide()"
+            @click="hide"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
-
-            @click="showTransactionSend()"
+            @click="showTransactionSend"
           >
             {{ $t('meta.confirm') }}
           </base-btn>
@@ -63,7 +62,6 @@ export default {
       ],
     };
   },
-
   methods: {
     hide() {
       this.CloseModal();
@@ -98,7 +96,6 @@ export default {
     font-size: 14px;
   }
 }
-
 .content{
   padding: 0 28px 30px 28px!important;
   &__field{

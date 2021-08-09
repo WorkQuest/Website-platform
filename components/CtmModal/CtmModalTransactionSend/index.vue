@@ -13,11 +13,11 @@
         {{ $t('modals.transactionSend') }}
       </div>
       <div class="transaction__desc">
-        {{ $t('modals.transactionSenttext') }}
+        {{ $t('modals.transactionSentText') }}
       </div>
       <base-btn
         class="transaction__action"
-        @click="hide()"
+        @click="hide"
       >
         {{ $t('meta.ok') }}
       </base-btn>
@@ -59,6 +59,7 @@ export default {
     font-size: 23px;
     line-height: 130%;
     color: #1D2127;
+    margin-top: 10px;
   }
   &__desc{
     font-size: 16px;
