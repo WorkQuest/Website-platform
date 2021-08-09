@@ -9,10 +9,7 @@
     </div>
     <section class="information-section">
       <div class="main-container">
-        <!-- DATA -->
         <UserStatistic />
-
-        <!-- REVIEWS -->
         <div class="title">
           {{ $t('quests.reviewsBig') }}
         </div>
@@ -25,8 +22,6 @@
             {{ $t('meta.showAllReviews') }}
           </nuxt-link>
         </div>
-
-        <!-- ACTIVE -->
         <questCards />
       </div>
     </section>
@@ -55,9 +50,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-//TODO: Почистить стили
-
 .title {
   font-style: normal;
   font-weight: 500;

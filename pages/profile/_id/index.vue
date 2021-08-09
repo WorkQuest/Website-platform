@@ -133,8 +133,6 @@ export default {
 
 <style lang="scss" scoped>
 
-//TODO: Почистить стили
-
 .add-btn {
   &__container {
     width: 154px;
