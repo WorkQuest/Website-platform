@@ -1,182 +1,185 @@
 <template>
   <div
-    v-if="object !== null"
-    class="quests__cards card"
+    class="quests"
   >
     <div
-      v-for="(item, i) in filteredCards(selectedTab, isShowFavourite)"
-      :key="i"
-      class="card__content"
+      class="quests__cards card"
     >
       <div
-        class="card__block block"
+        v-for="(item, i) in filteredCards(selectedTab, isShowFavourite)"
+        :key="i"
+        class="card__content"
       >
         <div
-          class="block__left"
+          class="card__block block"
         >
           <div
-            class="block__img"
+            class="block__left"
           >
-            <img
-              src="~/assets/img/temp/fake-card.svg"
-              class="quests__img image"
-              alt=""
+            <div
+              class="block__img"
             >
-          </div>
-          <div
-            class="block__state"
-            :class="getStatusClass(item.status)"
-          >
-            {{ getStatusCard(item.status) }}
-          </div>
-        </div>
-        <div class="block__right">
-          <div class="block__head">
-            <div class="block__title">
-              <div
-                class="block__avatar"
+              <img
+                src="~/assets/img/temp/fake-card.svg"
+                class="quests__img image"
+                alt=""
               >
-                <img
-                  class="info-grid__avatar"
-                  :src="item.user.avatar ? item.user.avatar.url : '~/assets/img/app/avatar_empty.png'"
-                  :alt="item.user.firstName"
-                >
-              </div>
-              <div class="block__text block__text_title">
-                {{ item.user.firstName + ' ' + item.user.lastName }}
-                <span
-                  v-if="userData.additionalInfo.company"
-                  class="block__text block__text_grey"
-                >from {{ item.user.additionalInfo.company }}</span>
-              </div>
             </div>
             <div
-              v-if="isHideStar(item.type)"
-              class="block__icon block__icon_fav star"
-              @click="item.isFavourite = !item.isFavourite"
+              class="block__state"
+              :class="getStatusClass(item.status)"
             >
-              <img
-                class="star__hover"
-                src="~assets/img/ui/star_hover.svg"
-                alt=""
-              >
-              <img
-                v-if="!item.isFavourite"
-                class="star__default"
-                src="~assets/img/ui/star_simple.svg"
-                alt=""
-              >
-              <img
-                v-if="item.isFavourite"
-                class="star__checked"
-                src="~assets/img/ui/star_checked.svg"
-                alt=""
-              >
+              {{ getStatusCard(item.status) }}
             </div>
           </div>
-          <div
-            v-if="item.assignedWorkerId"
-            class="block__progress"
-          >
-            <div class="container__title">
-              {{ $t('quests.inProgressBy') }}
-            </div>
-            <div>
-              <div class="avatar__container">
-                <div class="avatar">
+          <div class="block__right">
+            <div class="block__head">
+              <div class="block__title">
+                <div
+                  class="block__avatar"
+                >
                   <img
-                    src="~/assets/img/temp/avatar.jpg"
                     class="info-grid__avatar"
+                    :src="item.user.avatar ? item.user.avatar.url : '~/assets/img/app/avatar_empty.png'"
                     :alt="item.user.firstName"
                   >
                 </div>
-                <div>
-                  {{ item.inProgress.name }}
-                </div>
-                <div class="right">
+                <div class="block__text block__text_title">
+                  {{ item.user.firstName }} {{ item.user.lastName }}
                   <span
-                    v-if="item.level.code !== 0"
-                    class="card__level_higher"
-                    :class="cardsLevels(i)"
-                  >
-                    <span
-                      v-if="item.level.code === 1"
-                      class="status__level"
+                    v-if="userData.additionalInfo.company"
+                    class="block__text block__text_grey"
+                  >from {{ item.user.additionalInfo.company }}</span>
+                </div>
+              </div>
+              <div
+                v-if="isHideStar(item.type)"
+                class="block__icon block__icon_fav star"
+                @click="item.isFavourite = !item.isFavourite"
+              >
+                <img
+                  class="star__hover"
+                  src="~assets/img/ui/star_hover.svg"
+                  alt=""
+                >
+                <img
+                  v-if="!item.isFavourite"
+                  class="star__default"
+                  src="~assets/img/ui/star_simple.svg"
+                  alt=""
+                >
+                <img
+                  v-if="item.isFavourite"
+                  class="star__checked"
+                  src="~assets/img/ui/star_checked.svg"
+                  alt=""
+                >
+              </div>
+            </div>
+            <div
+              v-if="item.assignedWorkerId"
+              class="block__progress"
+            >
+              <div class="container__title">
+                {{ $t('quests.inProgressBy') }}
+              </div>
+              <div>
+                <div class="avatar__container">
+                  <div class="avatar">
+                    <img
+                      src="~/assets/img/temp/avatar.jpg"
+                      class="info-grid__avatar"
+                      :alt="item.user.firstName"
                     >
-                      {{ $t('levels.higher') }}
-                    </span>
+                  </div>
+                  <div>
+                    {{ item.inProgress.name }}
+                  </div>
+                  <div class="right">
                     <span
-                      v-if="item.level.code === 2"
-                      class="status__level"
+                      v-if="item.level.code !== 0"
+                      class="card__level_higher"
+                      :class="cardsLevels(i)"
                     >
-                      {{ $t('levels.reliableEmp') }}
+                      <span
+                        v-if="item.level.code === 1"
+                        class="status__level"
+                      >
+                        {{ $t('levels.higher') }}
+                      </span>
+                      <span
+                        v-if="item.level.code === 2"
+                        class="status__level"
+                      >
+                        {{ $t('levels.reliableEmp') }}
+                      </span>
+                      <span
+                        v-if="item.level.code === 3"
+                        class="status__level"
+                      >
+                        {{ $t('levels.checkedByTime') }}
+                      </span>
                     </span>
-                    <span
-                      v-if="item.level.code === 3"
-                      class="status__level"
-                    >
-                      {{ $t('levels.checkedByTime') }}
-                    </span>
-                  </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="block__locate">
-            <span class="icon-location" />
-            <span class="block__text block__text_locate">{{ getDistanceFromLatLonInKm(item.location.latitude, item.location.longitude, 51, 51) }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
-          </div>
-          <div class="block__text block__text_blue">
-            {{ item.title }}
-          </div>
-          <div class="block__text block__text_desc">
-            {{ item.description }}
-          </div>
-          <div class="block__actions">
-            <div
-              v-if="isHideStatus(item.type)"
-              class="block__status"
-            >
+            <div class="block__locate">
+              <span class="icon-location" />
+              <span class="block__text block__text_locate">{{ getDistanceFromLatLonInKm(item.location.latitude, item.location.longitude, 51, 51) }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
+            </div>
+            <div class="block__text block__text_blue">
+              {{ item.title }}
+            </div>
+            <div class="block__text block__text_desc">
+              {{ item.description }}
+            </div>
+            <div class="block__actions">
               <div
-                v-if="item.priority !== 3"
-                class="block__priority"
-                :class="getPriorityClass(item.priority)"
+                v-if="isHideStatus(item.type)"
+                class="block__status"
               >
-                {{ getPriority(item.priority) }}
+                <div
+                  v-if="item.priority !== 3"
+                  class="block__priority"
+                  :class="getPriorityClass(item.priority)"
+                >
+                  {{ getPriority(item.priority) }}
+                </div>
+                <div class="block__amount_green">
+                  {{ item.price }} WUSD
+                </div>
               </div>
-              <div class="block__amount_green">
-                {{ item.price }} WUSD
-              </div>
-            </div>
-            <div
-              v-else
-              class="block__amount_gray"
-            >
-              {{ item.price }} WUSD
-            </div>
-            <div class="block__details">
-              <base-btn
-                v-if="item.type !== 3"
-                mode="borderless-right"
-                @click="showDetails(item.id)"
-              >
-                {{ $t('meta.details') }}
-                <template v-slot:right>
-                  <span class="icon-short_right" />
-                </template>
-              </base-btn>
               <div
                 v-else
-                class="block__rating"
+                class="block__amount_gray"
               >
-                <div class="block__rating block__rating_star">
-                  <button
-                    @click="showReviewModal(item.user.ratingStatistic)"
-                  >
-                    <b-form-rating
-                      v-model="item.user.ratingStatistic"
-                    />
-                  </button>
+                {{ item.price }} WUSD
+              </div>
+              <div class="block__details">
+                <base-btn
+                  v-if="item.type !== 3"
+                  mode="borderless-right"
+                  @click="showDetails(item.id)"
+                >
+                  {{ $t('meta.details') }}
+                  <template v-slot:right>
+                    <span class="icon-short_right" />
+                  </template>
+                </base-btn>
+                <div
+                  v-else
+                  class="block__rating"
+                >
+                  <div class="block__rating block__rating_star">
+                    <button
+                      @click="showReviewModal(item.user.ratingStatistic)"
+                    >
+                      <b-form-rating
+                        v-model="item.user.ratingStatistic"
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

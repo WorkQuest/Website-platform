@@ -40,12 +40,13 @@
           class="tab__container"
         >
           <quests
+            v-if="questsObjects.count !== 0"
             :limit="questLimits"
             :object="questsObjects"
             :page="'quests'"
           />
           <lackData
-            v-if="questsObjects.count === 0"
+            v-else
             :description="$t(`errors.lackData.${userRole}.allQuests.desc`)"
             :button-text="$t(`errors.lackData.${userRole}.allQuests.btnText`)"
             :button-href="userRole === 'employer' ? '/create-quest' : '/quests'"

@@ -2,6 +2,7 @@ export default () => ({
 
   // Replaced
   allQuests: {},
+  quest: {},
   userInfoQuests: {},
   questsLocation: {},
 

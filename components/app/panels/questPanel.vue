@@ -9,49 +9,33 @@
           >
             <span v-if="this.$route.path === '/profile'">
               <img
-                v-if="imageData"
-                id="userAvatarOne"
                 class="profile__img"
-                :src="imageData"
-                alt=""
-              >
-              <img
-                v-if="!imageData"
-                id="userAvatar"
-                class="profile__img"
-                src="~/assets/img/app/avatar_empty.png"
+                :src="userAvatar || '~/assets/img/app/avatar_empty.png'"
                 alt=""
               >
             </span>
             <span v-else>
               <img
                 class="user__img"
-                src="~/assets/img/app/fake_profile.png"
+                :src="userAvatar || '~/assets/img/app/avatar_empty.png'"
                 alt=""
               >
             </span>
             <span
-              v-if="this.$route.path === '/profile'"
               class="user__username"
             >
-              {{ userData.firstName }} {{ userData.lastName }}
+              {{ userInfo.firstName }} {{ userInfo.lastName }}
             </span>
             <span
-              v-else
-              class="user__username"
-            >
-              {{ quest.username }}
-            </span>
-            <span
-              v-if="userRole === 'employer'"
+              v-if="userRole === 'employer' && userCompany"
               class="user__company"
             >
-              {{ $t('company.from') }} {{ quest.company }}
+              {{ $t('company.from') }} {{ userCompany }}
             </span>
           </div>
           <div class="user__right">
             <span class="user__date">
-              {{ quest.date }}
+              {{ convertDate() }}
             </span>
             <button
               class="icon-share_outline icon_fs-20"
@@ -61,17 +45,17 @@
         </div>
         <div class="location__container">
           <div
-            v-if="quest.contacts.address"
+            v-if="questData"
             class="quest__location"
           >
             <span
               class="icon icon-location icon_fs-20"
             />
-            <span class="quest__address">{{ quest.contacts.address }}</span>
+            <span class="quest__address">Хардкод</span>
             <span
               class="user__distance"
             >
-              {{ quest.distance }} {{ $t('meta.fromYou') }}
+              {{ getDistanceFromLatLonInKm() }} {{ $t('meta.fromYou') }}
             </span>
           </div>
           <div
@@ -83,7 +67,7 @@
             <span
               class="runtime__link"
             >
-              {{ quest.runtime }}
+              Хардко
             </span>
           </div>
           <div
@@ -97,7 +81,7 @@
             <span
               class="runtime__link"
             >
-              {{ quest.performanceTimer }}
+              Хардкод
             </span>
           </div>
         </div>
@@ -123,18 +107,50 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'QuestPanel',
+  data() {
+    return {
+      localsTime: '',
+    };
+  },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
       imageData: 'user/getImageData',
-      userInfo: 'data/getUserInfo',
-      quest: 'data/getQuest',
       badgeList: 'data/getBadgeList',
+      questData: 'quests/getQuest',
+      userInfo: 'quests/getQuestUser',
+      userAvatar: 'quests/getQuestUserAvatar',
+      userCompany: 'quests/getQuestUserCompany',
     }),
   },
   methods: {
+    getDistanceFromLatLonInKm() {
+      const lat1 = this.questData?.location?.latitude || 0;
+      const lon1 = this.questData?.location?.longitude || 0;
+      const lat2 = this.userData?.location?.longitude || 0;
+      const lon2 = this.userData?.location?.longitude || 0;
+      const R = 6371; // Radius of the earth in km
+      const dLat = this.deg2rad(lat2 - lat1); // deg2rad below
+      const dLon = this.deg2rad(lon2 - lon1);
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+        + Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2))
+        * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      let d = (R * c) * 1000; // Distance in km
+      if (d >= 1000) {
+        d = '+1000';
+      } else if (d >= 500) {
+        d = '+500';
+      } else {
+        d = '-500';
+      }
+      return d;
+    },
+    deg2rad(deg) {
+      return deg * (Math.PI / 180);
+    },
     showProfile() {
       this.$router.push('/show-profile');
     },
@@ -142,6 +158,14 @@ export default {
       this.ShowModal({
         key: modals.sharingQuest,
       });
+    },
+    convertDate() {
+      if (this.questData.createdAt) {
+        return new Date(this.questData.createdAt).toLocaleDateString('en-US', {
+          year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric',
+        });
+      }
+      return '';
     },
   },
 };

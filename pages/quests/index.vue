@@ -84,12 +84,13 @@
           </div>
         </div>
         <questCards
+          v-if="questsObjects.count !== 0"
           :limit="100"
           :object="questsObjects"
           :page="'quests'"
         />
         <lackData
-          v-if="questsObjects.count === 0"
+          v-else
           :description="$t(`errors.lackData.${userRole}.allQuests.desc`)"
           :button-text="$t(`errors.lackData.${userRole}.allQuests.btnText`)"
           :button-href="userRole === 'employer' ? '/create-quest' : ''"

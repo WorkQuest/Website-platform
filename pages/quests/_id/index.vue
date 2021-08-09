@@ -11,10 +11,10 @@
 
         <div class="quest__container">
           <h2 class="quest__title">
-            {{ payload.title }}
+            {{ questData.title }}
           </h2>
           <span class="quest__description">
-            {{ payload.body }}
+            {{ questData.description }}
           </span>
         </div>
         <div class="divider" />
@@ -305,7 +305,7 @@
             <span v-if="infoData.mode !== 4">
               <div class="price__container">
                 <span class="price__value">
-                  {{ payload.price }}
+                  {{ questData.price }}
                 </span>
                 <div class="badge__wrapper">
                   <span class="badge__item_green">{{ payload.badgeGreen }}</span>
@@ -350,9 +350,16 @@
         <div class="quest__card">
           <!-- cards -->
           <questCards
+            v-if="questsObjects.count !== 0"
             :limit="questLimits"
             :object="questsObjects"
             :page="'quests'"
+          />
+          <lackData
+            v-else
+            :description="$t(`errors.lackData.${userRole}.allQuests.desc`)"
+            :button-text="$t(`errors.lackData.${userRole}.allQuests.btnText`)"
+            :button-href="userRole === 'employer' ? '/create-quest' : '/quests'"
           />
         </div>
       </div>
@@ -365,6 +372,7 @@ import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
 import questCards from '~/components/app/pages/common/quests';
+import lackData from '~/components/app/info/lackData';
 
 export default {
   name: 'Quests',
@@ -372,6 +380,7 @@ export default {
     info,
     questPanel,
     questCards,
+    lackData,
   },
   data() {
     return {
@@ -435,6 +444,7 @@ export default {
       timeSort: 'desc',
       questLimits: 1,
       questsObjects: {},
+      questData: {},
     };
   },
   computed: {
@@ -449,6 +459,7 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
+    this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
   },
   methods: {
     back() {

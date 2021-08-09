@@ -23,13 +23,14 @@
             </base-btn>
           </div>
           <quests
+            v-if="questsObjects.count !== 0"
             :limit="questLimits"
             :selected-tab="selectedTab"
             :object="questsObjects"
             :page="'my'"
           />
           <lackData
-            v-if="questsObjects.count === 0"
+            v-else
             :description="$t(`errors.lackData.${userRole}.allQuests.desc`)"
             :button-text="$t(`errors.lackData.${userRole}.allQuests.btnText`)"
             :button-href="userRole === 'employer' ? '/create-quest' : ''"
