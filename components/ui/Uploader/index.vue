@@ -21,7 +21,7 @@
       <form
         ref="fileForm"
         class="uploader__container"
-        @click="openFileUploader"
+        @click="openFileUploader()"
       >
         <span class="uploader__drop">
           <div v-if="files.length === 0">
@@ -67,7 +67,7 @@ export default {
     return {
       dragAndDropCapable: false,
       files: [],
-      portfolioChange: {
+      images: {
         data: {},
         file: {},
       },
@@ -100,7 +100,7 @@ export default {
         }
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        const img = this.portfolioChange;
+        const img = this.images;
         img.data = await this.$store.dispatch('user/imageCaseType', { contentType: file.type });
         img.file = file;
       }
@@ -147,7 +147,7 @@ export default {
       }
     },
     async addFiles() {
-      const img = this.portfolioChange;
+      const img = this.images;
       try {
         const formData = new FormData();
         formData.append('image', img.file);
