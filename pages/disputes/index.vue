@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="main__body">
-      <div>
+      <div class="page">
         <h2 class="page__title">
           {{ $t('disputes.disputes') }}
         </h2>
@@ -11,7 +11,7 @@
         >
           <div
             v-if="item.number.length === 0"
-            class="page__zero-el"
+            class="page__none"
           >
             <img src="~assets/img/ui/youAreHaven'tDisputs.svg">
           </div>
@@ -114,7 +114,7 @@ export default {
 }
 
 .page {
-  &__zero-el {
+  &__none {
     display: grid;
     width: 100%;
     align-items: center;
