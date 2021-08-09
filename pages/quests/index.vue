@@ -32,7 +32,7 @@
             <base-dd
               v-model="selectedDistantWork"
               :items="distantWork"
-              :placeholder="$t('distantWork.title')"
+              :placeholder="$t('quests.distantWork.title')"
             />
           </div>
           <div class="tools__right">
