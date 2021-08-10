@@ -20,76 +20,78 @@
           class="icon-caret_up"
         />
       </button>
-      <div
-        v-if="!isOpenDD"
-        class="dd__list"
-        :class="{'hide': isOpenDD}"
-      >
+      <transition name="fade">
         <div
-          class="dd filter"
+          v-if="!isOpenDD"
+          class="dd__list"
           :class="{'hide': isOpenDD}"
         >
-          <div class="filter__btn">
-            <base-btn
-              mode="outline"
-              @click="showFilterFull"
-            >
-              {{ $t('filters.filterBtn') }}
-            </base-btn>
-          </div>
-          <div class="filter__body">
-            <div
-              v-for="(item, i) in filterItems"
-              :id="i"
-              :key="i"
-            >
-              <div
-                class="filter__item item"
+          <div
+            class="dd filter"
+            :class="{'hide': isOpenDD}"
+          >
+            <div class="filter__btn">
+              <base-btn
+                mode="outline"
+                @click="showFilterFull"
               >
-                <span
-                  :id="i"
-                  ref="item"
-                  class="item"
-                  @click="toggleSub(item, i)"
-                >
-                  <span
-                    class="item__title"
-                  >{{ item.title }}</span>
-                  <span
-                    v-if="!item.visible"
-                    class="icon-caret_down"
-                  />
-                  <span
-                    v-else
-                    class="icon-caret_up"
-                  />
-                </span>
+                {{ $t('filters.filterBtn') }}
+              </base-btn>
+            </div>
+            <div class="filter__body">
+              <div
+                v-for="(item, i) in filterItems"
+                :id="i"
+                :key="i"
+              >
                 <div
-                  class="filter__item sub"
+                  class="filter__item item"
                 >
+                  <span
+                    :id="i"
+                    ref="item"
+                    class="item"
+                    @click="toggleSub(item, i)"
+                  >
+                    <span
+                      class="item__title"
+                    >{{ item.title }}</span>
+                    <span
+                      v-if="!item.visible"
+                      class="icon-caret_down"
+                    />
+                    <span
+                      v-else
+                      class="icon-caret_up"
+                    />
+                  </span>
                   <div
-                    v-for="(sub, idx) in item.body"
-                    :id="idx"
-                    :key="idx"
-                    ref="sub"
-                    class="sub__body"
-                    :class="[{'hide': !item.visible}]"
-                    @click="selectAllSubs(idx)"
+                    class="filter__item sub"
                   >
                     <div
-                      :id="sub.title"
-                      class="sub__item"
+                      v-for="(sub, idx) in item.body"
+                      :id="idx"
+                      :key="idx"
+                      ref="sub"
+                      class="sub__body"
+                      :class="[{'hide': !item.visible}]"
+                      @click="selectAllSubs(idx)"
                     >
-                      <input
-                        :id="idx"
-                        type="checkbox"
-                        :name="item.title"
-                        :value="sub.status"
+                      <div
+                        :id="sub.title"
+                        class="sub__item"
                       >
-                      <label
-                        :for="idx"
-                        class="sub__label"
-                      >{{ sub.title }}</label>
+                        <input
+                          :id="idx"
+                          type="checkbox"
+                          :name="item.title"
+                          :value="sub.status"
+                        >
+                        <label
+                          :for="idx"
+                          class="sub__label"
+                        >{{ sub.title }}</label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -97,7 +99,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </transition>
     </div>
   </div>
 </template>
