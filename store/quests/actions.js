@@ -24,7 +24,6 @@ export default {
 
   async getQuestsLocation({ commit }) {
     const response = await this.$axios.$get('/v1/quests/map/list-points');
-    console.log(response.result);
     commit('setAllQuests', response.result);
     return response.result;
   },

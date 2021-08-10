@@ -184,7 +184,6 @@
           </span>
           <div class="btns__container">
             <div>
-              <!-- inviteUser -->
               <span v-if="userRole === 'worker'">
                 <div
                   v-if="infoData.mode === 1"
@@ -224,7 +223,6 @@
                   </div>
                 </div>
               </span>
-              <!-- send a request -->
               <span v-if="userRole === 'worker'">
                 <div
                   v-if="infoData.mode === 5"
@@ -237,7 +235,6 @@
                   </div>
                 </div>
               </span>
-              <!-- activeQuest -->
               <span v-if="userRole === 'worker'">
                 <div
                   v-if="infoData.mode === 2"
@@ -272,7 +269,6 @@
                   </div>
                 </div>
               </span>
-              <!-- responded -->
               <span v-if="userRole === 'worker'">
                 <div
                   v-if="infoData.mode === 3"
@@ -299,7 +295,6 @@
                   </div>
                 </div>
               </span>
-              <!-- performed -->
               <span v-if="userRole === 'employer'" />
             </div>
             <span v-if="infoData.mode !== 4">
@@ -348,17 +343,16 @@
           {{ payload.amount }} {{ $t('quests.questAmount') }}
         </p>
         <div class="quest__card">
-          <!-- cards -->
-          <questCards
+          <quests
             v-if="questsObjects.count !== 0"
             :limit="questLimits"
             :object="questsObjects"
             :page="'quests'"
           />
-          <lackData
+          <emptyData
             v-else
-            :description="$t(`errors.lackData.${userRole}.allQuests.desc`)"
-            :button-text="$t(`errors.lackData.${userRole}.allQuests.btnText`)"
+            :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
+            :button-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
             :button-href="userRole === 'employer' ? '/create-quest' : '/quests'"
           />
         </div>
@@ -371,16 +365,16 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
-import questCards from '~/components/app/pages/common/quests';
-import lackData from '~/components/app/info/lackData';
+import quests from '~/components/app/pages/common/quests';
+import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Quests',
   components: {
     info,
     questPanel,
-    questCards,
-    lackData,
+    quests,
+    emptyData,
   },
   data() {
     return {
@@ -458,8 +452,8 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    this.SetLoader(false);
     this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+    this.SetLoader(false);
   },
   methods: {
     back() {

@@ -1489,7 +1489,7 @@
   },
   "errors": {
     "incorrectPass" : "Oops, something went wrong. Check the data and try again.",
-    "lackData": {
+    "emptyData": {
       "employer": {
         "myQuests" : {
           "desc": "You haven't done quests yet",

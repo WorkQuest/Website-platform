@@ -6,7 +6,6 @@
       <div class="main-container">
         <userInfo :selected="selected" />
 
-        <!-- tabs -->
         <button
           class="tab__btn"
           :class="{tab__btn_active: selected === 1}"
@@ -34,7 +33,6 @@
 
     <div class="information-section">
       <div class="main-container">
-        <!-- REVIEWS -->
         <div
           v-if="selected === 1"
           class="tab__container"
@@ -45,10 +43,10 @@
             :object="questsObjects"
             :page="'quests'"
           />
-          <lackData
+          <emptyData
             v-else
-            :description="$t(`errors.lackData.${userRole}.allQuests.desc`)"
-            :button-text="$t(`errors.lackData.${userRole}.allQuests.btnText`)"
+            :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
+            :button-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
             :button-href="userRole === 'employer' ? '/create-quest' : '/quests'"
           />
         </div>
@@ -101,7 +99,7 @@ import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
 import quests from '~/components/app/pages/common/quests';
 import userInfo from '~/components/app/pages/common/userInfo';
 import modals from '~/store/modals/modals';
-import lackData from '~/components/app/info/lackData';
+import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Index',
@@ -110,7 +108,7 @@ export default {
     portfolioTab,
     quests,
     userInfo,
-    lackData,
+    emptyData,
   },
   data() {
     return {
@@ -135,8 +133,8 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    this.SetLoader(false);
     this.questsObjects = await this.$store.dispatch('quests/getUserQuests', this.userData.id);
+    this.SetLoader(false);
   },
   methods: {
     isRating(type) {

@@ -1,41 +1,38 @@
 <template>
-  <div class="main__body">
-    <div class="quests">
-      <div class="quests__container">
-        <div class="quests__body">
-          <div
-            class="quests__title"
-          >
-            {{ $t('quests.MyQuests') }}
-          </div>
-          <div
-            class="quests__content"
-            :class="{'quests__content_employer': userRole === 'employer'}"
-          >
-            <base-btn
-              v-for="item in tabs"
-              :key="item.id"
-              :mode="btnMode(item.id)"
-              class="quests__btn"
-              @click="filterCards(item.id)"
-            >
-              {{ item.title }}
-            </base-btn>
-          </div>
-          <quests
-            v-if="questsObjects.count !== 0"
-            :limit="questLimits"
-            :selected-tab="selectedTab"
-            :object="questsObjects"
-            :page="'my'"
-          />
-          <lackData
-            v-else
-            :description="$t(`errors.lackData.${userRole}.allQuests.desc`)"
-            :button-text="$t(`errors.lackData.${userRole}.allQuests.btnText`)"
-            :button-href="userRole === 'employer' ? '/create-quest' : ''"
-          />
+  <div class="quests">
+    <div class="quests__container">
+      <div class="quests__body">
+        <div
+          class="quests__title"
+        >
+          {{ $t('quests.MyQuests') }}
         </div>
+        <div
+          class="quests__content"
+          :class="{'quests__content_employer': userRole === 'employer'}"
+        >
+          <base-btn
+            v-for="item in tabs"
+            :key="item.id"
+            :mode="btnMode(item.id)"
+            class="quests__btn"
+            @click="filterCards(item.id)"
+          >
+            {{ item.title }}
+          </base-btn>
+        </div>
+        <quests
+          v-if="questsObjects.count !== 0"
+          :limit="questLimits"
+          :selected-tab="selectedTab"
+          :object="questsObjects"
+        />
+        <emptyData
+          v-else
+          :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
+          :button-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+          :button-link="userRole === 'employer' ? '/create-quest' : ''"
+        />
       </div>
     </div>
   </div>
@@ -46,7 +43,7 @@
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import quests from '~/components/app/pages/common/quests';
-import lackData from '~/components/app/info/lackData';
+import emptyData from '~/components/app/info/emptyData';
 
 const value = new Vue();
 
@@ -54,7 +51,7 @@ export default {
   name: 'My',
   components: {
     quests,
-    lackData,
+    emptyData,
   },
   data() {
     return {
@@ -73,17 +70,17 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    this.SetLoader(false);
     this.questsObjects = await this.$store.dispatch('quests/getUserQuests', this.userData.id);
+    this.SetLoader(false);
   },
   methods: {
-    async filterCards(id) {
+    filterCards(id) {
       this.selectedTab = id;
       this.isShowFavourite = id === 1;
     },
     btnMode(id) {
       if (this.selectedTab === id) {
-        return ' ';
+        return '';
       }
       return 'light';
     },

@@ -83,16 +83,16 @@
             </base-btn>
           </div>
         </div>
-        <questCards
+        <quests
           v-if="questsObjects.count !== 0"
           :limit="100"
           :object="questsObjects"
           :page="'quests'"
         />
-        <lackData
+        <emptyData
           v-else
-          :description="$t(`errors.lackData.${userRole}.allQuests.desc`)"
-          :button-text="$t(`errors.lackData.${userRole}.allQuests.btnText`)"
+          :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
+          :button-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
           :button-href="userRole === 'employer' ? '/create-quest' : ''"
         />
       </div>
@@ -103,15 +103,15 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
-import questCards from '~/components/app/pages/common/quests';
-import lackData from '~/components/app/info/lackData';
+import quests from '~/components/app/pages/common/quests';
+import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Quests',
   components: {
     GmapSearchBlock,
-    questCards,
-    lackData,
+    quests,
+    emptyData,
   },
   data() {
     return {
@@ -156,8 +156,8 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    this.SetLoader(false);
     await this.getQuests();
+    this.SetLoader(false);
   },
   methods: {
     showFilter() {

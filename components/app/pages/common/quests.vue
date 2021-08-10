@@ -3,7 +3,7 @@
     class="quests"
   >
     <div
-      class="quests__cards card"
+      class="quests__card card"
     >
       <div
         v-for="(item, i) in filteredCards(selectedTab, isShowFavourite)"
@@ -16,15 +16,11 @@
           <div
             class="block__left"
           >
-            <div
-              class="block__img"
+            <img
+              src="~/assets/img/temp/fake-card.svg"
+              class="block__image"
+              alt=""
             >
-              <img
-                src="~/assets/img/temp/fake-card.svg"
-                class="quests__img image"
-                alt=""
-              >
-            </div>
             <div
               class="block__state"
               :class="getStatusClass(item.status)"
@@ -36,16 +32,16 @@
             <div class="block__head">
               <div class="block__title">
                 <div
-                  class="block__avatar"
+                  class="block__avatar avatar"
                 >
                   <img
-                    class="info-grid__avatar"
+                    class="avatar__image"
                     :src="item.user.avatar ? item.user.avatar.url : '~/assets/img/app/avatar_empty.png'"
                     :alt="item.user.firstName"
                   >
                 </div>
                 <div class="block__text block__text_title">
-                  {{ item.user.firstName }} {{ item.user.lastName }}
+                  {{ `${item.user.firstName} ${item.user.lastName}` }}
                   <span
                     v-if="userData.additionalInfo.company"
                     class="block__text block__text_grey"
@@ -78,55 +74,34 @@
             </div>
             <div
               v-if="item.assignedWorkerId"
-              class="block__progress"
+              class="block__progress progress"
             >
-              <div class="container__title">
+              <div class="progress__title">
                 {{ $t('quests.inProgressBy') }}
               </div>
-              <div>
-                <div class="avatar__container">
-                  <div class="avatar">
-                    <img
-                      src="~/assets/img/temp/avatar.jpg"
-                      class="info-grid__avatar"
-                      :alt="item.user.firstName"
-                    >
+              <div class="progress__container container">
+                <div class="container__user user">
+                  <img
+                    class="user__avatar"
+                    :src="item.user.avatar ? item.user.avatar.url : './assets/img/app/avatar_empty.png'"
+                  >
+                  <div class="user__name">
+                    test
                   </div>
-                  <div>
-                    {{ item.inProgress.name }}
-                  </div>
-                  <div class="right">
-                    <span
-                      v-if="item.level.code !== 0"
-                      class="card__level_higher"
-                      :class="cardsLevels(i)"
-                    >
-                      <span
-                        v-if="item.level.code === 1"
-                        class="status__level"
-                      >
-                        {{ $t('levels.higher') }}
-                      </span>
-                      <span
-                        v-if="item.level.code === 2"
-                        class="status__level"
-                      >
-                        {{ $t('levels.reliableEmp') }}
-                      </span>
-                      <span
-                        v-if="item.level.code === 3"
-                        class="status__level"
-                      >
-                        {{ $t('levels.checkedByTime') }}
-                      </span>
-                    </span>
-                  </div>
+                </div>
+                <div class="container__status status">
+                  <span
+                    class="status__level"
+                    :class="getStatusCard(item.level.code)"
+                  >
+                    {{ $t(`levels.${item.level.code}`) }}
+                  </span>
                 </div>
               </div>
             </div>
             <div class="block__locate">
-              <span class="icon-location" />
-              <span class="block__text block__text_locate">{{ getDistanceFromLatLonInKm(item.location.latitude, item.location.longitude, 51, 51) }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
+              <span class="block__icon" />
+              <span class="block__text block__text_locate">{{ getDistanceFromLatLonInKm(item) }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
             </div>
             <div class="block__text block__text_blue">
               {{ item.title }}
@@ -146,15 +121,15 @@
                 >
                   {{ getPriority(item.priority) }}
                 </div>
-                <div class="block__amount_green">
-                  {{ item.price }} WUSD
+                <div class="block__amount block__amount_green">
+                  {{ `${item.price}  ${currency}` }}
                 </div>
               </div>
               <div
                 v-else
-                class="block__amount_gray"
+                class="block__amount block__amount_gray"
               >
-                {{ item.price }} WUSD
+                {{ `${item.price}  ${currency}` }}
               </div>
               <div class="block__details">
                 <base-btn
@@ -205,7 +180,7 @@ export default {
       default: 10,
     },
     page: {
-      type: String,
+      type: [String, null],
       default: '',
     },
     selectedTab: {
@@ -221,15 +196,14 @@ export default {
     return {
       isShowFavourite: false,
       localUserData: {},
+      currency: 'WUSD',
     };
   },
   computed: {
     ...mapGetters({
       cards: 'quests/getAllQuests',
-      user: 'data/getUserInfo',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      tabs: 'data/getTabs',
     }),
     cardLevelClass(idx) {
       const { cards } = this;
@@ -245,7 +219,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+    getDistanceFromLatLonInKm(item) {
+      const lat1 = item.location.latitude || 0;
+      const lon1 = item.location.longitude || 0;
+      const lat2 = this.userData?.location?.longitude || 0;
+      const lon2 = this.userData?.location?.longitude || 0;
       const R = 6371; // Radius of the earth in km
       const dLat = this.deg2rad(lat2 - lat1); // deg2rad below
       const dLon = this.deg2rad(lon2 - lon1);
@@ -284,13 +262,13 @@ export default {
       });
     },
     isHideStar(type) {
-      return !(type === 4 || type === 3);
+      return type !== 4 || type !== 3;
     },
     isRating(type) {
-      return (type === 3);
+      return type === 3;
     },
     isHideStatus(type) {
-      return !(type === 3);
+      return type !== 3;
     },
     showMessageModal() {
       this.ShowModal({
@@ -298,17 +276,13 @@ export default {
       });
     },
     filteredCards(type, isFavorite) {
-      if (this.object !== null) {
-        if (type === 0) {
-          return this.object.quests;
-        }
-        if (isFavorite) {
-          return this.object.quests.filter((x) => x.isFavourite);
-        }
-        return this.object.quests.filter((x) => x.type === type);
+      if (type === 0) {
+        return this.object.quests;
       }
-      this.showMessageModal();
-      return {};
+      if (isFavorite) {
+        return this.object.quests.filter((x) => x.isFavourite);
+      }
+      return this.object.quests.filter((x) => x.type === type);
     },
     getStatusCard(index) {
       const status = {
@@ -363,11 +337,36 @@ export default {
     color: #0083C7;
   }
 }
-.container {
+.progress {
   &__title {
     font-weight: 400;
     font-size: 12px;
     color: $black500;
+  }
+  &__container {
+    @extend .styles__full;
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto 3fr;
+    grid-gap: 10px;
+    margin: 10px 0 4px 0;
+    .container {
+      &__user {
+        display: flex;
+        grid-gap: 20px;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        .user {
+          &__avatar {
+            border-radius: 50%;
+            height: 30px;
+            width: 30px;
+            object-fit: cover;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -382,16 +381,7 @@ export default {
   max-height: 30px;
   max-width: 30px;
   border-radius: 50%;
-  &__container {
-    @extend .styles__full;
-    display: grid;
-    grid-template-columns: auto 9fr 3fr;
-    grid-gap: 10px;
-    margin: 10px 0 4px 0;
-  }
-}
-.info-grid {
-  &__avatar {
+  &__image {
     border-radius: 50%;
     height: 30px;
     width: 30px;
@@ -404,7 +394,7 @@ export default {
     }
   }
 }
-.card {
+.status {
   &__levels {
     padding: 2px 5px;
     margin: 0 5px 0 0;
@@ -421,15 +411,15 @@ export default {
     align-items: center;
     height: 20px;
     &_higher {
-      @extend .card__levels;
+      @extend .status__levels;
       background-color: #F6CF00;
     }
     &_reliable {
-      @extend .card__levels;
+      @extend .status__levels;
       background-color: #BBC0C7;
     }
     &_checked {
-      @extend .card__levels;
+      @extend .status__levels;
       background-color: #B79768;
     }
     &_disabled {
@@ -465,7 +455,7 @@ export default {
       margin-bottom: 0;
     }
   }
-  &__cards {
+  &__card {
     margin: 20px 0 0 0;
     border: 0 solid;
     border-radius: 6px;
@@ -484,13 +474,6 @@ export default {
         }
       }
     }
-
-    .image {
-      border-radius: 6px 0 0 6px;
-      object-fit: cover;
-      max-height: 500px;
-      height: 100%;
-    }
   }
 }
 .block {
@@ -500,6 +483,7 @@ export default {
   grid-template-columns: 240px 1fr;
   min-height: 100%;
   &__left {
+    @extend .styles__full;
     position: relative;
   }
   &__state {
@@ -531,6 +515,9 @@ export default {
   &__progress {
     background-color: $black0;
     border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    height: auto;
     width: 100%;
     padding:10px;
   }
@@ -672,14 +659,17 @@ export default {
       height: 100%;
     }
   }
-  &__img {
-    @extend .styles__full;
-  }
   &__title {
     display: grid;
     grid-template-columns: 30px 1fr;
     grid-gap: 10px;
     align-items: center;
+  }
+  &__image {
+    border-radius: 6px 0 0 6px;
+    object-fit: cover;
+    max-height: 500px;
+    height: 100%;
   }
 }
 
@@ -719,12 +709,9 @@ export default {
       grid-template-columns: repeat(3, auto);
     }
     .block {
-      &__img {
+      &__left {
         height: 100%;
         width: 100%;
-        img {
-          border-radius: 6px;
-        }
       }
     }
     .avatar {
@@ -738,9 +725,10 @@ export default {
   .quests {
     .block {
       grid-template-columns: auto;
-      &__img {
+      &__left {
         height: 200px;
         img {
+          border-radius: 6px;
           height: 100%;
           width: 100%;
         }

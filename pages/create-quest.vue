@@ -73,7 +73,7 @@
             </div>
             <div class="picker__body">
               <div class="picker__number">
-                {{ pickerValue }} {{ $t('quests.hours') }}
+                {{ `${pickerValue} ${$t('quests.hours')}` }}
               </div>
             </div>
             <div class="btn__container btn__right">
@@ -125,7 +125,6 @@
           placeholder="200 WUSD"
         />
       </div>
-      <!--      <Uploader />-->
       <div class="ads__container">
         <div>{{ $t('quests.ads.promoteYourQuest') }}</div>
         <div class="btn__container btn__container_left">
@@ -183,7 +182,7 @@
               {{ $t('quests.EstimatedPayment') }}
             </div>
             <div class="payment__cost">
-              {{ estimatedPayment }} WUSD
+              {{ `${estimatedPayment} ${currency}` }}
             </div>
           </div>
         </div>
@@ -222,7 +221,6 @@ export default {
   data() {
     return {
       priorityIndex: 1,
-      questIndex: 0,
       categoryIndex: 0,
       periodIndex: 0,
       pickerValue: 1,
@@ -236,6 +234,7 @@ export default {
       city: '',
       estimatedPayment: 120,
       coordinates: {},
+      currency: 'WUSD',
       categories: [
         'Retail',
       ],

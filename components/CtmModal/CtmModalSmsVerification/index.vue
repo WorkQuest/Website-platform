@@ -109,10 +109,7 @@ export default {
         const payload = {
           confirmCode: this.confirmCode,
         };
-        const response = await this.$store.dispatch('user/confirmPhone', payload);
-        if (response?.ok) {
-          console.log('Phone confirmed');
-        }
+        await this.$store.dispatch('user/confirmPhone', payload);
       } catch (e) {
         console.log(e);
       }

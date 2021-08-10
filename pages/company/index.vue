@@ -10,20 +10,16 @@
 
     <div class="information-section">
       <div class="main-container">
-        <!-- DATA -->
         <userStatistic />
 
-        <!-- REVIEWS -->
         <div class="title">
           {{ $t('quests.reviewsBig') }}
         </div>
         <reviews />
 
-        <!-- ACTIVE -->
         <div class="title">
           {{ $t('quests.activeQuests') }}
         </div>
-        <questCards />
         <div class="button__container">
           <nuxt-link
             class="button__more"
@@ -40,13 +36,12 @@
 <script>
 import userInfo from '~/components/app/pages/common/userInfo';
 import reviews from '~/components/app/pages/profile/tabs/reviews';
-import questCards from '~/components/app/cards/questCards';
 import userStatistic from '~/components/app/panels/userStatistic';
 
 export default {
   name: 'Index',
   components: {
-    reviews, userInfo, questCards, userStatistic,
+    reviews, userInfo, userStatistic,
   },
   async mounted() {
     this.SetLoader(true);

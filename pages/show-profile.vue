@@ -32,11 +32,9 @@
             >
               Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel
             </div>
-            <!-- socials links -->
             <div class="socials">
               <socialPanel />
             </div>
-            <!-- contacts -->
             <div class="contacts__grid">
               <div class="contacts">
                 <div class="contacts">
@@ -78,10 +76,8 @@
     </div>
     <div class="information-section">
       <div class="main-container">
-        <!-- DATA -->
         <userStatistic />
 
-        <!-- REVIEWS -->
         <div
           class="title"
         >
@@ -97,7 +93,6 @@
           <div class="title">
             {{ $t('quests.activeQuests') }}
           </div>
-          <Card />
         </div>
         <div
           class="button"
@@ -118,10 +113,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
-import userInfo from '~/components/app/pages/common/userInfoOther';
 import socialPanel from '~/components/app/panels/social';
 import userStatistic from '~/components/app/panels/userStatistic';
-import Card from '~/components/app/cards/questCards';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -129,7 +122,6 @@ export default {
   components: {
     reviewsTab,
     userStatistic,
-    Card,
     socialPanel,
   },
   data() {

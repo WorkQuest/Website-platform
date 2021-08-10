@@ -1,5 +1,5 @@
 <template>
-  <div class="data__absence absence">
+  <div class="absence">
     <div class="absence__content">
       <img
         class="absence__img"
@@ -13,9 +13,9 @@
         {{ description }}
       </div>
       <base-btn
-        v-if="buttonHref !== ''"
+        v-if="buttonLink !== ''"
         class="absence__button"
-        :nuxt-link="buttonHref"
+        :nuxt-link="buttonLink"
       >
         {{ buttonText }}
       </base-btn>
@@ -25,7 +25,7 @@
 
 <script>
 export default {
-  name: 'LackData',
+  name: 'EmptyData',
   props: {
     description: {
       type: String,
@@ -35,7 +35,7 @@ export default {
       type: String,
       default: '',
     },
-    buttonHref: {
+    buttonLink: {
       type: String,
       default: '',
     },
@@ -44,18 +44,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.data {
+.absence {
   width: 100%;
   background-color: #f6f8fa;
-  &__absence {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute;
-    justify-content: center;
-  }
-}
-.absence {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  justify-content: center;
   &__content {
     display: flex;
     flex-direction: column;

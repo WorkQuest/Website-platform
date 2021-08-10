@@ -125,7 +125,6 @@
         </div>
       </div>
       <div class="information-section">
-        <!-- REVIEWS -->
         <div class="section__title">
           {{ $t('quests.reviewsBig') }}
         </div>
@@ -138,7 +137,6 @@
             {{ $t('meta.showAllReviews') }}
           </nuxt-link>
         </div>
-        <!-- Portfolio -->
         <div class="section__title">
           {{ $t('quests.portfolio') }}
         </div>
@@ -162,7 +160,6 @@ import modals from '~/store/modals/modals';
 import reviews from '~/components/app/pages/profile/tabs/reviews';
 import Portfolio from '~/components/app/pages/profile/tabs/portfolio';
 import social from '~/components/app/panels/social';
-import contact from '~/components/app/panels/contact';
 
 export default {
   name: 'IndexVue',

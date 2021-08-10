@@ -87,11 +87,9 @@
           </div>
         </div>
       </div>
-      <!-- socials links -->
       <div class="socials">
         <socialPanel />
       </div>
-      <!-- contacts -->
       <div class="contacts__grid">
         <div class="contacts">
           <contactPanel />

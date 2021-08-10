@@ -9,10 +9,8 @@
     </div>
     <section class="information-section">
       <div class="main-container">
-        <!-- DATA -->
         <userStatistic />
 
-        <!-- REVIEWS -->
         <div class="title">
           {{ $t('quests.reviewsBig') }}
         </div>
@@ -26,7 +24,6 @@
           </nuxt-link>
         </div>
 
-        <!-- ACTIVE -->
         <quests
           :limit="100"
           :object="questsObjects"

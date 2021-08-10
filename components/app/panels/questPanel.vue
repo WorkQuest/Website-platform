@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="user">
     <div class="user__top">
       <div class="user__container">
         <div class="user__head">
@@ -7,14 +7,7 @@
             class="user__left"
             @click="showProfile()"
           >
-            <span v-if="this.$route.path === '/profile'">
-              <img
-                class="profile__img"
-                :src="userAvatar || '~/assets/img/app/avatar_empty.png'"
-                alt=""
-              >
-            </span>
-            <span v-else>
+            <span>
               <img
                 class="user__img"
                 :src="userAvatar || '~/assets/img/app/avatar_empty.png'"
@@ -24,7 +17,7 @@
             <span
               class="user__username"
             >
-              {{ userInfo.firstName }} {{ userInfo.lastName }}
+              {{ `${userInfo.firstName} ${userInfo.lastName}` }}
             </span>
             <span
               v-if="userRole === 'employer' && userCompany"
@@ -103,6 +96,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -161,9 +155,7 @@ export default {
     },
     convertDate() {
       if (this.questData.createdAt) {
-        return new Date(this.questData.createdAt).toLocaleDateString('en-US', {
-          year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric',
-        });
+        return moment(this.questData.createdAt).format('MMMM Do YYYY, h:mm');
       }
       return '';
     },
@@ -201,7 +193,7 @@ export default {
     align-items: center;
   }
   &__address {
-    margin: 0px 5px;
+    margin: 0 5px;
     font-size: 14px;
   }
 }

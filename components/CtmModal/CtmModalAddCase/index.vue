@@ -135,13 +135,11 @@ export default {
       }
       let payload = {};
       const checkAvatarID = this.portfolio_change.data.ok ? this.portfolio_change.data.result.mediaId : this.medias.mediaId;
-      console.log(checkAvatarID);
       payload = {
         title: this.caseTitle,
         description: this.caseDescription,
         medias: [checkAvatarID],
       };
-      console.log(payload);
       await this.$store.dispatch('user/setCaseData', payload);
       this.hide();
     },
