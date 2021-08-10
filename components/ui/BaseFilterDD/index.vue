@@ -1201,13 +1201,14 @@ export default {
       if (selectAll) {
         // eslint-disable-next-line no-plusplus
         console.log(idx++);
-        while (idx) {
+        while (this.$refs.sub[idx]) {
           const subs = this.$refs.sub[idx].childNodes[0].childNodes[0];
           subs.attributes[4].value = !subs.attributes[4].value;
           subs.checked = !subs.checked;
           // eslint-disable-next-line no-plusplus
           idx++;
         }
+        console.log(this.$refs.sub[idx]);
       }
     },
     toggleSub(item) {
