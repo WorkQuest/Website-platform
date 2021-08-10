@@ -1191,13 +1191,14 @@ export default {
   },
   methods: {
     hideDd() {
-      this.isOpenDD = false;
+      this.isOpenDD = true;
     },
     toggleDd() {
       this.isOpenDD = !this.isOpenDD;
     },
     selectAll(idx) {
-      if (this.$refs.sub[idx].id === '0') {
+      const selectAll = this.$refs.sub[idx].id === '0';
+      if (selectAll) {
         // eslint-disable-next-line no-plusplus
         console.log(idx++);
         while (idx) {
@@ -1207,19 +1208,10 @@ export default {
           // eslint-disable-next-line no-plusplus
           idx++;
         }
-        if (this.$refs.sub[idx].id !== '0') {
-          console.log(1);
-        }
       }
     },
-    toggleSub(item, i, isOpenedCategory) {
-      console.log(i);
-      if (i === isOpenedCategory) {
-        item.visible = !item.visible;
-      }
-      if (i !== isOpenedCategory) {
-        item.visible = !item.visible;
-      }
+    toggleSub(item) {
+      item.visible = !item.visible;
     },
     closeItem() {
       const acc = document.getElementsByClassName('filter__item');
