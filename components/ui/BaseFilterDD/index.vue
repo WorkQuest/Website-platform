@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="dd">
     <div
       class="dd dd__container"
     >

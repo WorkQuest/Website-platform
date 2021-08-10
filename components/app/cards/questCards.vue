@@ -291,8 +291,6 @@ export default {
 
 <style lang="scss" scoped>
 
-//TODO: Почистить стили
-
 .icon {
   font-size: 20px;
   cursor: pointer;
