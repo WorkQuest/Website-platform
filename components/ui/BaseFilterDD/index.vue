@@ -42,12 +42,13 @@
               v-for="(item, i) in filterItems"
               :id="i"
               :key="i"
-              ref="item"
             >
               <div
                 class="filter__item item"
               >
                 <span
+                  :id="i"
+                  ref="item"
                   class="item"
                   @click="toggleSub(item, i)"
                 >
@@ -73,7 +74,7 @@
                     ref="sub"
                     class="sub__body"
                     :class="[{'hide': !item.visible}]"
-                    @click="selectAll(idx)"
+                    @click="selectAllSubs(idx)"
                   >
                     <div
                       :id="sub.title"
@@ -1196,11 +1197,9 @@ export default {
     toggleDd() {
       this.isOpenDD = !this.isOpenDD;
     },
-    selectAll(idx) {
+    selectAllSubs(idx) {
       const selectAll = this.$refs.sub[idx].id === '0';
       if (selectAll) {
-        // eslint-disable-next-line no-plusplus
-        console.log(idx++);
         while (this.$refs.sub[idx]) {
           const subs = this.$refs.sub[idx].childNodes[0].childNodes[0];
           subs.attributes[4].value = !subs.attributes[4].value;
@@ -1208,7 +1207,6 @@ export default {
           // eslint-disable-next-line no-plusplus
           idx++;
         }
-        console.log(this.$refs.sub[idx]);
       }
     },
     toggleSub(item) {
