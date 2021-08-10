@@ -1,5 +1,6 @@
 <template>
   <div
+    v-click-outside="hideDd"
     class="dd"
   >
     <div
@@ -7,7 +8,7 @@
     >
       <button
         class="dd__btn"
-        @click="isOpenDD = !isOpenDD"
+        @click="toggleDd"
       >
         {{ $t('filters.dd.1') }}
         <span
@@ -1192,6 +1193,9 @@ export default {
     hideDd() {
       this.isOpenDD = false;
     },
+    toggleDd() {
+      this.isOpenDD = !this.isOpenDD;
+    },
     selectAll(idx) {
       if (this.$refs.sub[idx].id === '0') {
         // eslint-disable-next-line no-plusplus
@@ -1202,6 +1206,9 @@ export default {
           subs.checked = !subs.checked;
           // eslint-disable-next-line no-plusplus
           idx++;
+        }
+        if (this.$refs.sub[idx].id !== '0') {
+          console.log(1);
         }
       }
     },
