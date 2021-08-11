@@ -39,7 +39,7 @@
             </base-btn>
             <base-btn
               class="base-btn btn_bl"
-              :disabled="!validated && !passed && invalid"
+              :disabled="!validated || !passed || invalid"
               @click="handleSubmit(showDepositIsOpenedModal)"
             >
               {{ $t('meta.submit') }}
@@ -110,7 +110,7 @@ export default {
 
         &:hover {
           background-color: #0083C71A;
-          border: 0px;
+          border: 0;
         }
 
         &_bl {
@@ -133,6 +133,12 @@ export default {
 
   &__content {
     padding-top: 0 !important;
+  }
+}
+
+.base-btn {
+  &_disabled {
+    background: #D1D1CF !important;
   }
 }
 

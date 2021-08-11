@@ -20,10 +20,9 @@
             =
           </div>
           <div class="ctm-modal__content-field">
-            <base-field
-              mode="white"
-              :placeholder="'$ 0'"
-            />
+            <div class="ctm-modal__fake-input">
+              $ 0
+            </div>
           </div>
         </div>
         <div class="ctm-modal__content-field">
@@ -75,7 +74,7 @@
             </base-btn>
             <base-btn
               class="btn_bl"
-              :disabled="!validated && !passed && invalid"
+              :disabled="!validated || !passed || invalid"
               @click="handleSubmit(showTransactionSendModal)"
             >
               {{ $t('meta.confirm') }}
@@ -148,7 +147,7 @@ export default {
   }
 
   &__content-field {
-    margin: 0px 0 0 0;
+    margin: 0 0 0 0;
 
     &_couple {
       display: grid;
@@ -190,7 +189,7 @@ export default {
 
         &:hover {
           background-color: #0083C71A;
-          border: 0px;
+          border: 0;
         }
 
         &_bl {
@@ -232,6 +231,18 @@ export default {
       font-weight: 500;
       font-size: 14px;
     }
+  }
+
+  &__fake-input {
+    font: inherit;
+    height: 46px;
+    padding: 10px 20px;
+    width: 100%;
+    color: #B1B3B8;
+    background: #FFFFFF;
+    border-radius: 6px;
+    border: 1px solid #F3F7FA;
+    margin-bottom: 23px;
   }
 }
 

@@ -51,7 +51,7 @@
           <div class="btn__wrapper">
             <base-btn
               class="message__action"
-              :disabled="!validated && !passed && invalid"
+              :disabled="!validated || !passed || invalid"
               @click="handleSubmit(showCardHasBeenAddedModal)"
             >
               {{ $t('meta.confirm') }}

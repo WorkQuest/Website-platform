@@ -56,11 +56,9 @@
               =
             </div>
             <div class="ctm-modal__content-field">
-              <base-field
-                v-model="balanceInput"
-                mode="white"
-                :placeholder="'$ 0'"
-              />
+              <div class="ctm-modal__fake-input">
+                $ 0
+              </div>
             </div>
           </div>
           <div class="ctm-modal__content-field">
@@ -137,7 +135,7 @@
             >
               <base-btn
                 class="message__action"
-                :disabled="!validated && !passed && invalid"
+                :disabled="!validated || !passed || invalid"
                 @click="handleSubmit(nextStep)"
               >
                 {{ $t('meta.next') }}
@@ -149,7 +147,7 @@
             >
               <base-btn
                 class="message__action"
-                :disabled="!validated && !passed && invalid"
+                :disabled="invalid"
                 @click="handleSubmit(nextStep)"
               >
                 {{ $t('meta.confirm') }}
@@ -191,7 +189,6 @@ export default {
   data() {
     return {
       amountInput: '',
-      balanceInput: '',
       cardNumberInput: '',
       dateInput: '',
       cvvInput: '',
@@ -317,6 +314,17 @@ export default {
   }
   &__equal {
     margin: 0 0 35px 10px;
+  }
+  &__fake-input {
+    font: inherit;
+    height: 46px;
+    padding: 10px 20px;
+    width: 100%;
+    color: #B1B3B8;
+    background: #FFFFFF;
+    border-radius: 6px;
+    border: 1px solid #F3F7FA;
+    margin-bottom: 23px;
   }
 }
 

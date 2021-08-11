@@ -4,7 +4,7 @@
     :title="$t('pension.applyForRetirement')"
   >
     <div class="ctm-modal__content">
-      <validation-observer v-slot="{ handleSubmit, validated, passed, invalid }">
+      <validation-observer v-slot="{ handleSubmit, invalid }">
         <div class="ctm-modal__content-field">
           <base-field
             v-model="depositPercentFromAQuest"
@@ -37,7 +37,7 @@
             </base-btn>
             <base-btn
               class="btn_bl"
-              :disabled="!validated && !passed && invalid"
+              :disabled="invalid"
               @click="handleSubmit(showPensionIsRegisteredModal)"
             >
               {{ $t('meta.confirm') }}
@@ -111,7 +111,7 @@ export default {
 
         &:hover {
           background-color: #0083C71A;
-          border: 0px;
+          border: 0;
         }
 
         &_bl {
