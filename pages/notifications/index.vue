@@ -4,6 +4,10 @@
       <div class="main__body">
         <div class="page__container">
           <div class="page__title">
+            <span
+              class="icon-chevron_left back"
+              @click="navigateBack"
+            />
             {{ $t('ui.notifications.title') }}
           </div>
           <span
@@ -12,33 +16,37 @@
             class="notifications"
           >
             <div class="notification">
-              <div class="img__container">
+              <div class="notification__avatar">
                 <img
-                  class="notification__img"
+                  class="avatar"
                   src="../../assets/img/temp/avatar.jpg"
                   alt=""
                 >
               </div>
-              <div class="notification__content">
-                <div class="content__title">
-                  <div class="content__name">{{ item.firstName }} {{ item.lastName }}</div>
-                  <div class="content__company">{{ item.company }}</div>
-                </div>
-                <div class="content__body">
-                  <div class="notification__title">
-                    {{ $t('ui.notifications.invite') }}:
-                  </div>
-                  <div class="quest__title">
-                    {{ item.questTitle }}
-                  </div>
-                </div>
-                <div class="content__footer">
-                  <div class="notification__date">{{ item.date }}</div>
+              <div class="notification__inviter inviter">
+                <span class="inviter__name">{{ item.firstName }} {{ item.lastName }}</span>
+                <span class="inviter__company">{{ item.company }}</span>
+              </div>
+              <div class="notification__quest quest">
+                <span class="quest__invitation">
+                  {{ $t('ui.notifications.invite') }}:
+                </span>
+                <span class="quest__title">
+                  {{ item.questTitle }}
+                </span>
+                <div
+                  class="quest__link"
+                  @click="questDetail()"
+                >
+                  {{ item.questTitle }} <span class="icon-chevron_right" />
                 </div>
               </div>
-              <div class="btn__container">
+              <div class="notification__date">{{ item.date }}</div>
+
+              <div class="notification__button button">
                 <base-btn
                   :mode="'outline'"
+                  class="button__view"
                   @click="questDetail()"
                 >{{ $t('btn.view') }}</base-btn>
               </div>
@@ -72,6 +80,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Notifications',
   data() {
@@ -131,6 +141,11 @@ export default {
       pages: [1, 2, 3, 4, 5],
     };
   },
+  computed: {
+    ...mapGetters({
+      userRole: 'user/getUserRole',
+    }),
+  },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
@@ -138,6 +153,15 @@ export default {
   methods: {
     questDetail() {
       this.$router.push('/quests/1');
+    },
+    navigateBack() {
+      if (this.userRole === 'employer') {
+        this.$router.push('/workers');
+      } else if (this.userRole === 'worker') {
+        this.$router.push('/quests');
+      } else {
+        this.$router.push('/');
+      }
     },
   },
 };
@@ -160,7 +184,6 @@ export default {
     height: 100%;
   }
 }
-
 .icon {
   &-caret_left:before {
     content: "\ea49";
@@ -173,7 +196,6 @@ export default {
     content: "\ea4a";
   }
 }
-
 .pagination {
   display: flex;
   flex-direction: row;
@@ -208,7 +230,6 @@ export default {
     justify-content: center;
   }
 }
-
 .img {
   &__container {
     display: flex;
@@ -222,83 +243,21 @@ export default {
     align-items: center;
   }
 }
-
-.quest {
-  &__title {
-    @include text-simple;
-    font-weight: 500;
-    font-size: 16px;
-    color: $blue;
-    margin: 10px 10px 10px 0;
-  }
-}
-
-.content {
-  &__name {
-    @include text-simple;
-    font-weight: 500;
-    font-size: 16px;
-    color: $black800;
-    margin: 0 10px 0 0;
-  }
-  &__company {
-    @include text-simple;
-    font-weight: 400;
-    font-size: 16px;
-    color: $black500;
-  }
-  &__body {
-    display: flex;
-    flex-direction: row;
-  }
-  &__footer {}
-  &__title {
-    display: flex;
-    flex-direction: row;
-  }
-}
-
 .notifications {
   margin: 20px 20px 0 20px;
-}
-
-.notification {
-  display: grid;
-  grid-template-columns: 1fr 8fr 2fr;
   border-bottom: 1px solid $black100;
-  grid-gap: 10px;
-  &:last-child {
-    border: none;
-  }
-  &__img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-  }
-  &__content {
-    margin: 10px 0 10px 0;
-  }
-  &__title {
-    @include text-simple;
-    font-weight: 400;
-    font-size: 16px;
-    color: $black800;
-    margin: 10px 10px 10px 0;
-  }
-  &__date {
-    @include text-simple;
-    font-weight: 400;
-    font-size: 12px;
-    color: $black500;
+  &:last-of-type {
+    border-bottom: 1px solid white;
   }
 }
-
 .page {
   &__container {
     margin: 20px 0 20px 0;
     display: flex;
     flex-direction: column;
     justify-items: flex-start;
+    max-width: 780px;
+    width: 780px;
   }
   &__title {
     @include text-simple;
@@ -306,6 +265,197 @@ export default {
     font-size: 18px;
     color: $black800;
     margin: 0 0 0 20px;
+    letter-spacing: 0.05em;
+  }
+}
+.back {
+  display: none;
+}
+.notification {
+  display: grid;
+  grid-template-columns: 52px auto 150px;
+  grid-template-rows: 19px auto 1fr;
+  gap: 10px 15px;
+  grid-template-areas:
+    "avatar inviter button"
+    "avatar quest button"
+    "avatar date button";
+  width: 100%;
+  padding-bottom: 5px;
+
+  &__avatar {
+    grid-area: avatar;
+    align-self: flex-start;
+  }
+  &__inviter {
+    grid-area: inviter;
+  }
+  &__quest {
+    grid-area: quest;
+    min-width: 400px;
+    width: 100%;
+  }
+  &__button {
+    grid-area: button;
+    align-self: center;
+  }
+  &__date {
+    grid-area: date;
+    @include text-simple;
+    font-weight: 400;
+    font-size: 12px;
+    color: $black500;
+    margin-bottom: 10px;
+  }
+}
+.icon-chevron_right {
+  display: none;
+}
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.inviter {
+  &__name {
+    @include text-simple;
+    font-weight: 500;
+    font-size: 16px;
+    color: $black800;
+    letter-spacing: 0.02em;
+  }
+  &__company {
+    @include text-simple;
+    font-weight: 400;
+    font-size: 16px;
+    color: $black500;
+    letter-spacing: 0.02em;
+    margin-left: 5px;
+  }
+}
+.quest {
+  &__invitation {
+    @include text-simple;
+    font-weight: 400;
+    font-size: 16px;
+    color: $black800;
+    letter-spacing: 0.03em;
+  }
+  &__title {
+    @include text-simple;
+    font-weight: 500;
+    font-size: 16px;
+    color: $blue;
+    letter-spacing: 0.03em;
+  }
+}
+.button {
+  &__view {
+    margin-top: -16px;
+  }
+}
+@include _991 {
+  .page {
+    &__container {
+      max-width: 100%;
+      width: auto;
+    }
+  }
+  .notification {
+    grid-template-columns: 52px auto 100px;
+    &__quest {
+      min-width: auto;
+    }
+  }
+}
+@include _767 {
+  .notification {
+    grid-template-columns: 40px 1fr 1fr;
+    grid-template-rows: 40px 1fr;
+    grid-template-areas:
+      "avatar inviter date"
+      "quest quest quest";
+    &__date {
+      align-self: flex-start;
+    }
+    &__quest {
+      margin-bottom: 20px;
+    }
+    &__button {
+      display: none;
+    }
+
+    width: 350px;
+  }
+  .inviter {
+    align-self: center;
+    &__name {
+      align-self: center;
+    }
+    &__company {
+      display: none;
+    }
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
+  .quest {
+    &__invitation {
+      display: block;
+      font-size: 16px;
+      line-height: 21px;
+      color: $black500;
+      margin-bottom: 10px;
+    }
+    &__title {
+      display: none;
+    }
+    &__link {
+      display: flex;
+      justify-content: space-between;
+      background: $black0;
+      border-radius: 3px;
+      padding: 10px;
+      color: $black500;
+      letter-spacing: 0.04em;
+      &:hover{
+        text-decoration: none;
+        cursor: pointer;
+      }
+    }
+  }
+  .icon-chevron_right {
+    display: inline-block;
+
+    &:before {
+      color: $blue;
+      font-size: 24px;
+    }
+  }
+  .page {
+    &__title {
+      font-weight: bold;
+      font-size: 30px;
+      line-height: 39px;
+      letter-spacing: 0.03em;
+      margin-bottom: 5px;
+    }
+  }
+  .back {
+    display: block;
+    margin-bottom: 10px;
+    margin-left: -8px;
+    cursor: pointer;
+    &:before {
+      color: $blue;
+      font-size: 40px;
+    }
+  }
+}
+@include _380 {
+  .notification {
+    width: auto;
   }
 }
 
