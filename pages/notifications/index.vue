@@ -80,6 +80,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Notifications',
   data() {
@@ -139,6 +141,11 @@ export default {
       pages: [1, 2, 3, 4, 5],
     };
   },
+  computed: {
+    ...mapGetters({
+      userRole: 'user/getUserRole',
+    }),
+  },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
@@ -148,7 +155,13 @@ export default {
       this.$router.push('/quests/1');
     },
     navigateBack() {
-      this.$router.go(-1);
+      if (this.userRole === 'employer') {
+        this.$router.push('/workers');
+      } else if (this.userRole === 'worker') {
+        this.$router.push('/quests');
+      } else {
+        this.$router.push('/');
+      }
     },
   },
 };
