@@ -4,55 +4,70 @@
     :title="$t('modals.addCard')"
   >
     <div class="ctm-modal__content">
-      <div class="ctm-modal__content-field">
-        <base-field
-          v-model="cardNumberInput"
-          :placeholder="'0000 0000 0000 0000'"
-          :label="$t('modals.numberOfCard')"
-        />
-      </div>
-      <div class="ctm-modal__content-field">
-        <base-field
-          v-model="nameInput"
-          placeholder="John Doe"
-          :label="$t('modals.cardholderName')"
-        />
-      </div>
-      <div class="grid__2col">
-        <div class="ctm-modal__content-field">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
+        <div
+          class="ctm-modal__content-field"
+        >
           <base-field
-            v-model="dateInput"
-            :placeholder="'02/24'"
-            :label="$t('modals.expirationDate')"
+            v-model="cardNumberInput"
+            :placeholder="'0000 0000 0000 0000'"
+            :label="$t('modals.numberOfCard')"
+            rules="required|numberOfCard"
+            name="Card number"
           />
         </div>
         <div class="ctm-modal__content-field">
           <base-field
-            v-model="cvvInput"
-            placeholder="242"
-            :label="$t('modals.cvv')"
+            v-model="nameInput"
+            placeholder="John Doe"
+            :label="$t('modals.cardholderName')"
+            name="cardholder name"
+            rules="required|alpha_spaces"
           />
         </div>
-      </div>
-      <div class="btn__container">
-        <div class="btn__wrapper">
-          <base-btn
-            class="message__action"
-            @click="showCardHasBeenAddedModal()"
-          >
-            {{ $t('meta.confirm') }}
-          </base-btn>
+        <div class="grid__2col">
+          <div class="ctm-modal__content-field">
+            <base-field
+              v-model="dateInput"
+              :placeholder="'02/24'"
+              :label="$t('modals.expirationDate')"
+              name="date"
+              rules="required"
+            />
+          </div>
+          <div class="ctm-modal__content-field">
+            <base-field
+              v-model="cvvInput"
+              placeholder="242"
+              :label="$t('modals.cvv')"
+              rules="required|cvv"
+              name="CVV"
+            />
+          </div>
         </div>
-        <div class="btn__wrapper">
-          <base-btn
-            :mode="'outline'"
-            class="message__action"
-            @click="hide()"
-          >
-            {{ $t('meta.cancel') }}
-          </base-btn>
+        <div class="btn__container">
+          <div class="btn__wrapper">
+            <base-btn
+              class="message__action"
+              :disabled="!validated || !passed || invalid"
+              @click="handleSubmit(showCardHasBeenAddedModal)"
+            >
+              {{ $t('meta.confirm') }}
+            </base-btn>
+          </div>
+          <div class="btn__wrapper">
+            <base-btn
+              :mode="'outline'"
+              class="message__action"
+              @click="hide()"
+            >
+              {{ $t('meta.cancel') }}
+            </base-btn>
+          </div>
         </div>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>

@@ -102,7 +102,7 @@ export default {
     align-items: center;
     transition: .5s;
     &:hover {
-      filter: drop-shadow(4px 4px 3px rgba(34, 60, 80, 0.4));
+      cursor: pointer;
     }
     &_text {
       @include text-simple;

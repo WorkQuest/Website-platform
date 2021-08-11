@@ -118,7 +118,7 @@
                         <div>
                           {{ item.inProgress.name }}
                         </div>
-                        <div class="right">
+                        <div class="left">
                           <span
                             v-if="item.level.code !== 0"
                             class="card__level_higher"
@@ -342,6 +342,9 @@ export default {
 .right {
   justify-self: flex-end;
 }
+.left{
+  justify-self: flex-start;
+}
 
 .icon {
   font-size: 20px;
@@ -374,9 +377,10 @@ export default {
   &__container {
     @extend .styles__full;
     display: grid;
-    grid-template-columns: auto 9fr 3fr;
+    grid-template-columns: auto auto 3fr;
     grid-gap: 10px;
     margin: 10px 0 4px 0;
+    align-items: center;
   }
 }
 .info-grid {

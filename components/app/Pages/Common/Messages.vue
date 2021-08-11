@@ -150,9 +150,14 @@ export default {
 .star {
   &__default {
     display: flex;
+    width: 22px !important;
   }
   &__hover {
     display: none;
+    width: 22px !important;
+  }
+  &__checked {
+    width: 22px !important;
   }
   &:hover {
     .star {

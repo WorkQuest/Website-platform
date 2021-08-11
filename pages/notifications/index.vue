@@ -51,11 +51,13 @@
               <span class="icon-caret_left" />
             </button>
             <button
-              v-for="(page, i) in pages"
+              v-for="(item, i) in pages"
               :key="i"
               class="pagination__btn"
+              :class="[{'pagination__btn_active' :page === item}]"
+              @click="page = item"
             >
-              {{ page.number }}
+              {{ item }}
             </button>
             <button
               class="pagination__arrow"
@@ -125,23 +127,8 @@ export default {
           date: '14 January 2021, 14:54',
         },
       ],
-      pages: [
-        {
-          number: 1,
-        },
-        {
-          number: 2,
-        },
-        {
-          number: 3,
-        },
-        {
-          number: 4,
-        },
-        {
-          number: 5,
-        },
-      ],
+      page: 1,
+      pages: [1, 2, 3, 4, 5],
     };
   },
   async mounted() {
@@ -208,6 +195,10 @@ export default {
     &:hover {
       background-color: rgb(123, 201, 246);
       color: $blue;
+    }
+    &_active {
+      background-color: #E6F3F9;
+      color: #0083c7;
     }
   }
   &__arrow {
