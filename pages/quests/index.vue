@@ -165,8 +165,8 @@ export default {
         key: modals.questFilter,
       });
     },
-    async getQuests(specialSort) {
-      const additionalValue = `?limit=${this.questLimits}&offset=0${specialSort || ''}`;
+    async getQuests(specialSort = '') {
+      const additionalValue = `?limit=${this.questLimits}&offset=0${specialSort}`;
       this.questsObjects = await this.$store.dispatch('quests/getAllQuests', additionalValue);
       // this.questsLocation = await this.$store.dispatch('quests/getQuestsLocation');
     },

@@ -69,7 +69,17 @@ export default {
       ],
     };
   },
-
+  computed: {
+    setProps() {
+      return this.props;
+    },
+  },
+  watch: {
+    async zoom() {
+      this.google = await this.$GMaps.google;
+      this.initMap();
+    },
+  },
   async mounted() {
     if (this.$GMaps.loaded === false) {
       this.$GMaps.loaded = true;
@@ -99,13 +109,12 @@ export default {
   beforeDestroy() {
     this.$GMaps.loaded = false;
   },
-
   methods: {
     initMap() {
       this.map = new google.maps.Map(this.$refs.map, {
-        center: this.center,
-        zoom: this.zoom,
-        ...this.options,
+        center: this.setProps.center,
+        zoom: this.setProps.zoom,
+        ...this.setProps.options,
       });
 
       this.initChildren();

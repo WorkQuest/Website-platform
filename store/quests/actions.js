@@ -16,8 +16,8 @@ export default {
     commit('setQuest', response.result);
     return response.result;
   },
-  async getUserQuests({ commit }, payload) {
-    const response = await this.$axios.$get(`/v1/employer/${payload}/quests`);
+  async getUserQuests({ commit }, { userId, query = undefined }) {
+    const response = await this.$axios.$get(`/v1/employer/${userId}/quests?${query || ''}`);
     commit('setUserQuests', response.result);
     return response.result;
   },
@@ -95,9 +95,10 @@ export default {
   },
 
   // Experimental
-  async setStarOnQuest(id) {
+  async setStarOnQuest({ commit }, id) {
+    console.log(id);
     // Needed to add quest id;
-    return await this.$axios.$post(`/v1/quest/${id}/star`, id);
+    return await this.$axios.$post(`/v1/quest/${id}/star`);
   },
 
   // Experimental

@@ -47,10 +47,8 @@ export default {
 .absence {
   width: 100%;
   background-color: #f6f8fa;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  position: absolute;
+  margin-top: 60px;
+  display: flex;
   justify-content: center;
   &__content {
     display: flex;

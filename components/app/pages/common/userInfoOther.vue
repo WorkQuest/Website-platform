@@ -11,12 +11,11 @@
         >
       </div>
       <div class="rating" />
-      <nuxt-link
+      <div
         class="reviews-amount"
-        to="/profile"
       >
-        {{ quest.reviewCount }} {{ $t('quests.reviews') }}
-      </nuxt-link>
+        {{ `${quest.reviewCount} ${$t('quests.reviews')}` }}
+      </div>
     </div>
     <div class="col info-grid__col">
       <div class="title">

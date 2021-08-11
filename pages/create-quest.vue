@@ -7,6 +7,7 @@
       <div class="page__category">
         <div class="page__dd">
           <label for="proposal_input">{{ $t('priority.title') }}</label>
+          {{ priorityIndex }}
           <base-dd
             id="proposal_input"
             v-model="priorityIndex"

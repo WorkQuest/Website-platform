@@ -1516,5 +1516,15 @@
     "title": "Sharing",
     "socialText": "Share in socials",
     "share": "Share link"
+  },
+  "myQuests": {
+    "statuses": {
+      "all": "All quests",
+      "fav": "Favorite",
+      "requested": "Requested",
+      "completed": "Completed quests",
+      "active": "Active quests",
+      "invited": "Invited quests"
+    }
   }
  }

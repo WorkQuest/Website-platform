@@ -29,6 +29,7 @@
               class="img__item"
               src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
               alt=""
+              @click="openImage()"
             >
           </div>
           <div class="divider" />
@@ -311,7 +312,10 @@
         </div>
       </div>
     </div>
-    <div class="map__container gmap">
+    <div
+      class="map__container gmap"
+      @click="incrisZoom()"
+    >
       <div class="gmap__block">
         <transition name="fade-fast">
           <GMap
@@ -319,8 +323,8 @@
             ref="gMap"
             class="quests__map"
             language="en"
-            :center="{lat: locations[0].lat, lng: locations[0].lng}"
-            :zoom="6"
+            :center="questLocation"
+            :zoom="zoom"
             :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
           />
         </transition>
@@ -439,6 +443,8 @@ export default {
       questLimits: 1,
       questsObjects: {},
       questData: {},
+      questLocation: { lat: 0, lng: 0 },
+      zoom: 10,
     };
   },
   computed: {
@@ -454,6 +460,10 @@ export default {
     this.SetLoader(true);
     this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     this.SetLoader(false);
+    this.questLocation = {
+      lat: this.questData.location.latitude,
+      lng: this.questData.location.longitude,
+    };
   },
   methods: {
     back() {
@@ -466,6 +476,12 @@ export default {
       this.ShowModal({
         key: modals.sendARequest,
       });
+    },
+    incrisZoom() {
+      this.zoom += 1;
+    },
+    openImage(src) {
+
     },
   },
 };

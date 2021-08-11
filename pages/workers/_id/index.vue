@@ -130,24 +130,22 @@
         </div>
         <reviews />
         <div class="button__container">
-          <nuxt-link
+          <div
             class="button__more"
-            to="/profiles/1"
           >
             {{ $t('meta.showAllReviews') }}
-          </nuxt-link>
+          </div>
         </div>
         <div class="section__title">
           {{ $t('quests.portfolio') }}
         </div>
         <Portfolio />
         <div class="button__container">
-          <nuxt-link
+          <div
             class="button__more"
-            to="/profiles/1"
           >
             {{ $t('quests.showAllCases') }}
-          </nuxt-link>
+          </div>
         </div>
       </div>
     </div>

@@ -12,20 +12,20 @@
           :class="{'quests__content_employer': userRole === 'employer'}"
         >
           <base-btn
-            v-for="item in tabs"
-            :key="item.id"
-            :mode="btnMode(item.id)"
+            v-for="(item, i) in questStatus"
+            :key="i"
+            :mode="btnMode(i)"
             class="quests__btn"
-            @click="filterCards(item.id)"
+            @click="item.click"
           >
-            {{ item.title }}
+            {{ item.name }}
           </base-btn>
         </div>
         <quests
-          v-if="questsObjects.count !== 0"
+          v-if="questsData.count !== 0"
           :limit="questLimits"
           :selected-tab="selectedTab"
-          :object="questsObjects"
+          :object="questsData"
         />
         <emptyData
           v-else
@@ -66,17 +66,52 @@ export default {
       tabs: 'data/getTabs',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      questsData: 'quests/getUserInfoQuests',
     }),
+    questStatus() {
+      return [
+        {
+          name: this.$t('myQuests.statuses.all'),
+          click: () => this.switchQuests('', 0),
+        },
+        {
+          name: this.$t('myQuests.statuses.fav'),
+          click: () => this.switchQuests('starred=true', 1),
+        },
+        {
+          name: this.$t('myQuests.statuses.requested'),
+          click: () => this.switchQuests('status=5', 2),
+        },
+        {
+          name: this.$t('myQuests.statuses.completed'),
+          click: () => this.switchQuests('status=6', 3),
+        },
+        {
+          name: this.$t('myQuests.statuses.active'),
+          click: () => this.switchQuests('status=2', 4),
+        },
+        {
+          name: this.$t('myQuests.statuses.invited'),
+          click: () => this.switchQuests('status=4', 5),
+        },
+      ];
+    },
   },
   async mounted() {
     this.SetLoader(true);
-    this.questsObjects = await this.$store.dispatch('quests/getUserQuests', this.userData.id);
+    this.questsObjects = await this.$store.dispatch('quests/getUserQuests', { userId: this.userData.id });
     this.SetLoader(false);
   },
   methods: {
-    filterCards(id) {
+    async switchQuests(query, id) {
       this.selectedTab = id;
-      this.isShowFavourite = id === 1;
+      const payload = {
+        userId: this.userData.id,
+        query,
+      };
+      this.SetLoader(true);
+      await this.$store.dispatch('quests/getUserQuests', payload);
+      this.SetLoader(false);
     },
     btnMode(id) {
       if (this.selectedTab === id) {

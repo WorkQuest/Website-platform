@@ -51,7 +51,7 @@
               <div
                 v-if="isHideStar(item.type)"
                 class="block__icon block__icon_fav star"
-                @click="item.isFavourite = !item.isFavourite"
+                @click="actionFavorite(item.id)"
               >
                 <img
                   class="star__hover"
@@ -65,7 +65,7 @@
                   alt=""
                 >
                 <img
-                  v-if="item.isFavourite"
+                  v-else
                   class="star__checked"
                   src="~assets/img/ui/star_checked.svg"
                   alt=""
@@ -115,7 +115,6 @@
                 class="block__status"
               >
                 <div
-                  v-if="item.priority !== 3"
                   class="block__priority"
                   :class="getPriorityClass(item.priority)"
                 >
@@ -215,10 +214,13 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    this.localUserData = JSON.parse(JSON.stringify(this.userData));
+    this.localUserData = this.userData;
     this.SetLoader(false);
   },
   methods: {
+    async actionFavorite(id) {
+      await this.$store.dispatch('quests/setStarOnQuest', id);
+    },
     getDistanceFromLatLonInKm(item) {
       const lat1 = item.location.latitude || 0;
       const lon1 = item.location.longitude || 0;
@@ -268,7 +270,7 @@ export default {
       return type === 3;
     },
     isHideStatus(type) {
-      return type !== 3;
+      return type !== 4;
     },
     showMessageModal() {
       this.ShowModal({
@@ -304,17 +306,19 @@ export default {
     },
     getPriority(index) {
       const priority = {
-        0: this.$t('priority.low'),
-        1: this.$t('priority.normal'),
-        2: this.$t('priority.urgent'),
+        0: this.$t('priority.all'),
+        1: this.$t('priority.low'),
+        2: this.$t('priority.normal'),
+        3: this.$t('priority.urgent'),
       };
       return priority[index] || '';
     },
     getPriorityClass(index) {
       const priority = {
-        0: 'block__priority_low',
-        1: 'block__priority_normal',
-        2: 'block__priority_urgent',
+        0: 'block__priority_all',
+        1: 'block__priority_low',
+        2: 'block__priority_normal',
+        3: 'block__priority_urgent',
       };
       return priority[index] || '';
     },

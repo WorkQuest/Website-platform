@@ -133,7 +133,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    this.questsObjects = await this.$store.dispatch('quests/getUserQuests', this.userData.id);
+    this.questsObjects = await this.$store.dispatch('quests/getUserQuests', { userId: this.userData.id });
     this.SetLoader(false);
   },
   methods: {

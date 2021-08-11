@@ -18,19 +18,18 @@
         >
       </div>
       <div class="rating" />
-      <nuxt-link
+      <div
         class="reviews-amount"
-        to="/profile"
       >
-        {{ quest.reviewCount }} {{ $t('quests.reviews') }}
-      </nuxt-link>
+        {{ `${quest.reviewCount} ${$t('quests.reviews')}` }}
+      </div>
     </div>
     <div class="col info-grid__col">
       <div
         v-if="firstName && lastName"
         class="title"
       >
-        {{ firstName }} {{ lastName }}
+        {{ `${firstName} ${lastName}` }}
       </div>
       <div
         v-if="userRole === 'employer'"
@@ -63,7 +62,7 @@
               class="work-exp__item"
             >
               <span class="work-exp__company">{{ item.place }}</span>
-              <span class="work-exp__term">{{ item.from }} - {{ item.to }}</span>
+              <span class="work-exp__term">{{ `${item.from} - ${item.to}` }}</span>
             </div>
           </div>
         </div>
@@ -82,7 +81,7 @@
               class="work-exp__item"
             >
               <span class="work-exp__company">{{ item.place }}</span>
-              <span class="work-exp__term">{{ item.from }} - {{ item.to }}</span>
+              <span class="work-exp__term">{{ `${item.from} - ${item.to}` }}</span>
             </div>
           </div>
         </div>
