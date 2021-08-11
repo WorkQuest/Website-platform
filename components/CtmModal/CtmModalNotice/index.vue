@@ -42,6 +42,7 @@ export default {
   methods: {
     hide() {
       this.CloseModal();
+      localStorage.setItem('isChatNotificationShown', 'true');
     },
   },
 };

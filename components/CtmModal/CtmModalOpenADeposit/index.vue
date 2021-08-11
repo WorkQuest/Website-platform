@@ -4,45 +4,49 @@
     :title="$t('saving.openADeposit')"
   >
     <div class="ctm-modal__content">
-      <div class="ctm-modal__content-field">
-        <label
-          for="depositPercent_input"
-          class="ctm-modal__label"
-        >{{ $t("modals.lockedSavings") }}</label>
-        <base-field
-          id="depositPercent_input"
-          :is-hide-error="true"
-          :placeholder="'0'"
-          :label="$t('modals.lockedSavings')"
-        />
-      </div>
-      <div class="ctm-modal__content-field">
-        <label
-          for="amount_input"
-          class="ctm-modal__label"
-        >{{ $t("modals.durationDays") }}</label>
-        <base-field
-          id="amount_input"
-          :is-hide-error="true"
-          :placeholder="'0'"
-        />
-      </div>
-      <div class="ctm-modal__content-btns">
-        <div class="btn-group">
-          <base-btn
-            class="btn"
-            @click="hide()"
-          >
-            {{ $t('meta.cancel') }}
-          </base-btn>
-          <base-btn
-            class="btn_bl"
-            @click="showDepositIsOpenedModal()"
-          >
-            {{ $t('meta.submit') }}
-          </base-btn>
+      <validation-observer v-slot="{ handleSubmit, validated, passed, invalid }">
+        <div class="ctm-modal__content-field">
+          <label
+            for="depositPercent_input"
+            class="ctm-modal__label"
+          >{{ $t("modals.lockedSavings") }}</label>
+          <base-field
+            id="depositPercent_input"
+            :is-hide-error="true"
+            :placeholder="'0'"
+            rules="required|min_value:0"
+            name="deposit percent"
+          />
         </div>
-      </div>
+        <div class="ctm-modal__content-field">
+          <label
+            for="amount_input"
+            class="ctm-modal__label"
+          >{{ $t("modals.durationDays") }}</label>
+          <base-field
+            id="amount_input"
+            :is-hide-error="true"
+            :placeholder="'0'"
+          />
+        </div>
+        <div class="ctm-modal__content-btns">
+          <div class="btn-group">
+            <base-btn
+              class="btn"
+              @click="hide()"
+            >
+              {{ $t('meta.cancel') }}
+            </base-btn>
+            <base-btn
+              class="base-btn btn_bl"
+              :disabled="!validated || !passed || invalid"
+              @click="handleSubmit(showDepositIsOpenedModal)"
+            >
+              {{ $t('meta.submit') }}
+            </base-btn>
+          </div>
+        </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -106,7 +110,7 @@ export default {
 
         &:hover {
           background-color: #0083C71A;
-          border: 0px;
+          border: 0;
         }
 
         &_bl {
@@ -129,6 +133,12 @@ export default {
 
   &__content {
     padding-top: 0 !important;
+  }
+}
+
+.base-btn {
+  &_disabled {
+    background: #D1D1CF !important;
   }
 }
 

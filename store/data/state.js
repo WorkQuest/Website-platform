@@ -341,7 +341,7 @@ export default () => ({
   disputes: [
     {
       number: '1',
-      quest: 'Pain the garage quickly...',
+      quest: 'Paint the garage quickly...',
       employer: 'Samantha Sparcs',
       questSalary: '1 500 WUSD',
       status: 'Pending',
@@ -350,7 +350,7 @@ export default () => ({
     },
     {
       number: '2',
-      quest: 'Pain the garage quickly...',
+      quest: 'Paint the garage quickly...',
       employer: 'Samantha Sparcs',
       questSalary: '1 500 WUSD',
       status: 'Completed',
@@ -359,7 +359,7 @@ export default () => ({
     },
     {
       number: '3',
-      quest: 'Pain the garage quickly...',
+      quest: 'Paint the garage quickly...',
       employer: 'Samantha Sparcs',
       questSalary: '1 500 WUSD',
       status: 'Pending',
@@ -368,7 +368,7 @@ export default () => ({
     },
     {
       number: '4',
-      quest: 'Pain the garage quickly...',
+      quest: 'Paint the garage quickly...',
       employer: 'Samantha Sparcs',
       questSalary: '1 500 WUSD',
       status: 'Pending',
