@@ -1052,5 +1052,19 @@
     "title": "Sharing",
     "socialText": "Share in socials",
     "share": "Share link"
+  },
+  "crosschain": {
+    "pageName": "Crosschain",
+    "pageAbout": "Send Work Quest tokens to Ethereum and Binance Smart Chain blockchains, and remember that the sender pays a crosschain swap fee in both the source and target blockchain",
+    "sourceBlockchain": "Source blockchain",
+    "targetBlockchain": "Target blockchain",
+    "blockchain": "Blockchain",
+    "yourWQTAddress": "Your WQT address",
+    "YourBSCAddress": "Your BSC address",
+    "balance": "Balance",
+    "createSwap": "Create swap",
+    "mySwaps": "My swaps",
+    "worknet": "Worknet",
+    "bsc": "BSC"
   }
  }

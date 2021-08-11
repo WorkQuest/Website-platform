@@ -128,6 +128,7 @@ export default {
       return [
         { dd__btn_dark: type === 'dark' },
         { dd__btn_gray: type === 'gray' },
+        { dd__btn_border: type === 'border' },
       ];
     },
   },
@@ -192,7 +193,6 @@ export default {
     &_icon {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       img {
         margin-right: 5px;
       }
@@ -233,6 +233,9 @@ export default {
     }
     &_gray {
       background-color: $black0;
+    }
+    &_border {
+      border: 1px solid #F7F8FA;
     }
   }
 }
