@@ -127,24 +127,36 @@
               thead-class="table__header"
               tbody-tr-class="table__row"
             >
-              <template #cell(poolAddress)="el">
-                <div class="table__value_gray">
-                  {{ el.item.poolAddress }}
+              <template #cell(direction)="el">
+                <div class="table__direction">
+                  <img
+                    :src="el.item.direction[0]"
+                    alt=""
+                  >
+                  <img
+                    class="arrow-img"
+                    src="~/assets/img/ui/arrow-down.svg"
+                    alt=""
+                  >
+                  <img
+                    :src="el.item.direction[1]"
+                    alt=""
+                  >
                 </div>
               </template>
-              <template #cell(assets)="el">
+              <template #cell(recipient)="el">
                 <div class="table__value">
-                  {{ el.item.assets }}
+                  {{ el.item.recipient }}
                 </div>
               </template>
-              <template #cell(sdsdsdsd)="el">
+              <template #cell(tx)="el">
                 <div class="table__value">
-                  {{ el.item.sdsdsdsd }}
+                  {{ el.item.tx }}
                 </div>
               </template>
-              <template #cell(volume)="el">
-                <div class="table__value">
-                  {{ el.item.volume }}
+              <template #cell(created)="el">
+                <div class="table__value table__value_blue">
+                  {{ el.item.created }}
                 </div>
               </template>
             </b-table>
@@ -167,26 +179,28 @@ export default {
       targetAddressInd: 1,
       items: [
         {
-          poolAddress: this.$t('crosschain.table.poolAddress'),
-          assets: this.$t('crosschain.table.assets'),
-          template1: this.$t('crosschain.table.sdsdsdsd'),
-          template2: this.$t('crosschain.table.sdsdsdsd'),
-          template3: this.$t('crosschain.sdsdsdsd'),
-          volume: this.$t('crosschain.table.volume'),
+          direction: [
+            require('~/assets/img/ui/WQT.png'),
+            require('~/assets/img/ui/Binance.png'),
+          ],
+          recipient: this.$t('crosschain.recipTemp'),
+          tx: this.$t('crosschain.recipTemp'),
+          created: this.$t('crosschain.dateTemp'),
         },
         {
-          poolAddress: this.$t('crosschain.table.poolAddress'),
-          assets: this.$t('crosschain.table.assets'),
-          template1: this.$t('crosschain.table.sdsdsdsd'),
-          template2: this.$t('crosschain.table.sdsdsdsd'),
-          template3: this.$t('crosschain.sdsdsdsd'),
-          volume: this.$t('crosschain.table.volume'),
+          direction: [
+            require('~/assets/img/ui/WQT.png'),
+            require('~/assets/img/ui/Binance.png'),
+          ],
+          recipient: this.$t('crosschain.recipTemp'),
+          tx: this.$t('crosschain.recipTemp'),
+          created: this.$t('crosschain.dateTemp'),
         },
       ],
       testFields: [
         {
-          key: 'poolAddress',
-          label: this.$t('crosschain.tableHead.poolAddress'),
+          key: 'direction',
+          label: this.$t('crosschain.tableHead.direction'),
           thStyle: {
             padding: '0 0 0 23px',
             height: '27px',
@@ -197,8 +211,8 @@ export default {
           },
         },
         {
-          key: 'assets',
-          label: this.$t('crosschain.tableHead.assets'),
+          key: 'recipient',
+          label: this.$t('crosschain.tableHead.recipient'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -209,8 +223,8 @@ export default {
           },
         },
         {
-          key: 'template1',
-          label: this.$t('crosschain.tableHead.sdsdsdsd'),
+          key: 'tx',
+          label: this.$t('crosschain.tableHead.tx'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -221,32 +235,8 @@ export default {
           },
         },
         {
-          key: 'template2',
-          label: this.$t('crosschain.tableHead.sdsdsdsd'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'template3',
-          label: this.$t('crosschain.tableHead.sdsdsdsd'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'volume',
-          label: this.$t('crosschain.tableHead.volume'),
+          key: 'created',
+          label: this.$t('crosschain.tableHead.created'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -490,13 +480,6 @@ export default {
         color: #0083C7;
         font-weight: 700;
         font-size: 25px;
-
-        &_gray {
-          color: #7C838D;
-          font-weight: 400;
-          font-size: 16px;
-          margin-left: 20px;
-        }
       }
 
       &__subtitle {
@@ -563,9 +546,20 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
 
-        &_gray {
-          @extend .table__value;
-          color: #7C838D;
+        &_blue {
+          color: #0083C7;
+        }
+      }
+
+      &__direction {
+        display: grid;
+        grid-template-columns: 25px 14px 25px;
+        height: 100%;
+        align-items: center;
+        gap: 5px;
+
+        .arrow-img {
+          transform: rotate(-90deg);
         }
       }
     }
@@ -583,7 +577,6 @@ export default {
   }
 
   @include _767 {
-    background: linear-gradient(to bottom, #103D7C 270px, #f6f8fa 270px);
     &__container {
       grid-template-rows: auto auto;
       gap: 24px;
@@ -601,16 +594,55 @@ export default {
     }
     &__content {
       grid-template-rows: auto;
+
+      .info-block {
+        &__swap-cont {
+          grid-template-columns: 1fr 24px 1fr;
+        }
+      }
     }
   }
 
   @include _575 {
     &__content {
+      .info-block {
+        &__swap-cont {
+          grid-template-columns: 1fr 34px 1fr;
+          grid-template-rows: repeat(3, auto);
+
+          .swap-icon {
+            grid-column: 2;
+            grid-row: 2;
+          }
+
+          >div {
+            grid-column: 1/4;
+          }
+        }
+
+        &__btns-cont {
+          .base-btn {
+            grid-column: 2;
+          }
+        }
+      }
       .btn {
         &__doc {
           border: 0;
           width: 23px;
           font-size: 0;
+        }
+      }
+    }
+  }
+
+  @include _480 {
+    &__content {
+      .info-block {
+        &__btns-cont {
+          .base-btn {
+            grid-column: 1;
+          }
         }
       }
     }

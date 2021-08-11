@@ -1065,6 +1065,14 @@
     "createSwap": "Create swap",
     "mySwaps": "My swaps",
     "worknet": "Worknet",
-    "bsc": "BSC"
+    "bsc": "BSC",
+    "tableHead": {
+      "direction": "Direction",
+      "recipient": "Recipient",
+      "tx": "Tx",
+      "created": "Created"
+    },
+    "recipTemp": "0xnf8o2…9b74thb3",
+    "dateTemp": "05.08.2021, 12:00"
   }
  }
