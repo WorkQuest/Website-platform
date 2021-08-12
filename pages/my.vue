@@ -33,6 +33,10 @@
           :button-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
           :button-link="userRole === 'employer' ? '/create-quest' : ''"
         />
+        <base-pager
+          v-model="page"
+          :total-pages="totalPagesValue"
+        />
       </div>
     </div>
   </div>
@@ -59,6 +63,10 @@ export default {
       isShowFavourite: false,
       questLimits: 100,
       questsObjects: {},
+      page: 1,
+      perPager: 1,
+      totalPagesValue: 1,
+      sortData: '',
     };
   },
   computed: {
@@ -96,18 +104,35 @@ export default {
         },
       ];
     },
+    totalPages() {
+      return Math.ceil(this.questsObjects.count / this.perPager);
+    },
+  },
+  watch: {
+    async page() {
+      const payload = {
+        userId: this.userData.id,
+        query: `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`,
+      };
+      await this.$store.dispatch('quests/getUserQuests', payload);
+    },
   },
   async mounted() {
     this.SetLoader(true);
-    this.questsObjects = await this.$store.dispatch('quests/getUserQuests', { userId: this.userData.id });
+    this.questsObjects = await this.$store.dispatch('quests/getUserQuests', {
+      userId: this.userData.id,
+      query: `limit=${this.perPager}`,
+    });
+    this.totalPagesValue = this.totalPages;
     this.SetLoader(false);
   },
   methods: {
     async switchQuests(query, id) {
       this.selectedTab = id;
+      this.sortData = query;
       const payload = {
         userId: this.userData.id,
-        query,
+        query: `limit=${this.perPager}&offset=${this.page * this.perPager}&${this.sortData}`,
       };
       this.SetLoader(true);
       await this.$store.dispatch('quests/getUserQuests', payload);

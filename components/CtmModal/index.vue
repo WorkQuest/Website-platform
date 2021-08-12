@@ -68,6 +68,7 @@
       <CtmModalDisable2FA v-if="modals.disable2FA === currentModalKey" />
       <CtmModalQuestFilter v-if="modals.questFilter === currentModalKey" />
       <CtmModalQuestFilterFull v-if="modals.questFilterFull === currentModalKey" />
+      <CtmModalShowImage v-if="modals.showImage === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -130,6 +131,7 @@ import CtmModalPayment from './CtmModalPayment';
 import CtmModalDisable2FA from './CtmModalDisable2FA';
 import CtmModalQuestFilter from './CtmModalQuestFilter';
 import CtmModalQuestFilterFull from './CtmModalQuestFilterFull';
+import CtmModalShowImage from './CtmModalShowImage';
 
 export default {
   name: 'ModalBox',
@@ -190,6 +192,7 @@ export default {
     CtmModalChatCreate,
     CtmModalPayment,
     CtmModalDisable2FA,
+    CtmModalShowImage,
   },
   data: () => ({
     modals,

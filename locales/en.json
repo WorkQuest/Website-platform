@@ -301,6 +301,9 @@
     "startQuest": "Start quest"
   },
   "modals": {
+    "showImage": {
+      "quest": "Quest material"
+    },
     "chatCreate": {
       "title": "Create group chat",
       "desc": "Create name of group chat and choose people from you chat list",

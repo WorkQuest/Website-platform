@@ -10,7 +10,7 @@
             <span>
               <img
                 class="user__img"
-                :src="userAvatar || '~/assets/img/app/avatar_empty.png'"
+                :src="avatarUrl"
                 alt=""
               >
             </span>
@@ -104,6 +104,7 @@ export default {
   data() {
     return {
       localsTime: '',
+      avatarUrl: '',
     };
   },
   computed: {
@@ -118,6 +119,9 @@ export default {
       userAvatar: 'quests/getQuestUserAvatar',
       userCompany: 'quests/getQuestUserCompany',
     }),
+  },
+  mounted() {
+    this.avatarUrl = this.userInfo.avatarId ? this.userInfo.avatar.url : '~/assets/img/app/avatar_empty.png';
   },
   methods: {
     getDistanceFromLatLonInKm() {

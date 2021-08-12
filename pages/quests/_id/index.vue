@@ -29,7 +29,7 @@
               class="img__item"
               src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
               alt=""
-              @click="openImage()"
+              @click="openImage('https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg')"
             >
           </div>
           <div class="divider" />
@@ -314,7 +314,6 @@
     </div>
     <div
       class="map__container gmap"
-      @click="incrisZoom()"
     >
       <div class="gmap__block">
         <transition name="fade-fast">
@@ -344,7 +343,7 @@
           </h2>
         </div>
         <p class="quest__count">
-          {{ payload.amount }} {{ $t('quests.questAmount') }}
+          {{ `${payload.amount} ${$t('quests.questAmount')}` }}
         </p>
         <div class="quest__card">
           <quests
@@ -477,11 +476,13 @@ export default {
         key: modals.sendARequest,
       });
     },
-    incrisZoom() {
-      this.zoom += 1;
-    },
     openImage(src) {
-
+      if (window.innerWidth >= 761) {
+        this.ShowModal({
+          key: modals.showImage,
+          imageSrc: src,
+        });
+      }
     },
   },
 };
