@@ -333,18 +333,6 @@ export default {
     grid-row-gap: 30px;
     width: 100%;
 
-    .btn-group {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      padding-bottom: 20px;
-
-      &_exp {
-        @extend .btn-group;
-        width: calc(100% - 20px);
-      }
-    }
-
     .btn {
       box-sizing: border-box;
       font-weight: 400;
@@ -355,19 +343,6 @@ export default {
       transition: .3s;
       height: 35px;
       margin-top: 3px;
-
-      &__doc {
-        @extend .btn;
-        width: 220px;
-        height: 46px;
-        margin: 0;
-
-        .download {
-          display: unset;
-          vertical-align: unset;
-          margin-left: 5px;
-        }
-      }
 
       &:hover {
         background-color: #0083C71A;
@@ -462,58 +437,10 @@ export default {
         }
       }
 
-      &__square {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-      }
-
-      &__quarter {
-        @extend .info-block;
-        text-align: center;
-        display: grid;
-        align-content: center;
-        gap: 20px;
-      }
-
       &__title {
         color: #0083C7;
         font-weight: 700;
         font-size: 25px;
-      }
-
-      &__subtitle {
-        font-weight: 400;
-        font-size: 16px;
-        color: #7C838D;
-      }
-
-      &__about {
-        width: calc(100% - 50px);
-        grid-template-areas:
-          "hd ."
-          "ft sd";
-        margin-left: 20px;
-        display: grid;
-        grid-template-columns: 60% auto;
-        grid-template-rows: auto 63px;
-        gap: 20px;
-        position: relative;
-
-        .info-block__subtitle {
-          grid-area: hd;
-        }
-
-        .calendar-img {
-          grid-area: sd;
-          position: absolute;
-          right: 0px;
-          bottom: 0;
-        }
-
-        .btn-group {
-          grid-area: ft;
-        }
       }
 
       &__name {
