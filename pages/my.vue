@@ -105,7 +105,7 @@ export default {
       ];
     },
     totalPages() {
-      return Math.ceil(this.questsObjects.count / this.perPager);
+      return Math.ceil(this.questsData.count / this.perPager);
     },
   },
   watch: {
@@ -114,12 +114,15 @@ export default {
         userId: this.userData.id,
         query: `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`,
       };
+      this.SetLoader(true);
       await this.$store.dispatch('quests/getUserQuests', payload);
+      this.SetLoader(false);
+      this.totalPagesValue = this.totalPages;
     },
   },
   async mounted() {
     this.SetLoader(true);
-    this.questsObjects = await this.$store.dispatch('quests/getUserQuests', {
+    await this.$store.dispatch('quests/getUserQuests', {
       userId: this.userData.id,
       query: `limit=${this.perPager}`,
     });
@@ -132,11 +135,12 @@ export default {
       this.sortData = query;
       const payload = {
         userId: this.userData.id,
-        query: `limit=${this.perPager}&offset=${this.page * this.perPager}&${this.sortData}`,
+        query: `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`,
       };
       this.SetLoader(true);
       await this.$store.dispatch('quests/getUserQuests', payload);
       this.SetLoader(false);
+      this.totalPagesValue = this.totalPages;
     },
     btnMode(id) {
       if (this.selectedTab === id) {

@@ -238,7 +238,7 @@ export default {
   &__img {
     object-fit: cover;
     &_prev {
-      transform: rotate(0deg);
+      transform: rotate(180deg);
     }
   }
 }
