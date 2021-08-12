@@ -34,6 +34,7 @@
           :button-link="userRole === 'employer' ? '/create-quest' : ''"
         />
         <base-pager
+          v-if="questsData.count !== 0"
           v-model="page"
           :total-pages="totalPagesValue"
         />
@@ -64,7 +65,7 @@ export default {
       questLimits: 100,
       questsObjects: {},
       page: 1,
-      perPager: 1,
+      perPager: 11,
       totalPagesValue: 1,
       sortData: '',
     };

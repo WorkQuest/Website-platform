@@ -6,7 +6,7 @@
       class="quests__card card"
     >
       <div
-        v-for="(item, i) in filteredCards(selectedTab, isShowFavourite)"
+        v-for="(item, i) in object.quests"
         :key="i"
         class="card__content"
       >
