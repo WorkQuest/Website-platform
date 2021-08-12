@@ -72,6 +72,7 @@ export default {
         { 'base-btn_grey': mode === 'grey' },
         { 'base-btn_verification': mode === 'ver' },
         { 'base-btn_black': mode === 'black' },
+        { 'base-btn_max': mode === 'max' },
         { 'base-btn_share': mode === 'share' },
       ];
     },
@@ -133,6 +134,16 @@ export default {
     border: 1px solid $black0;
     &:hover {
       background: $black0;
+    }
+  }
+  &_max{
+    background-color: $black0;
+    color: $blue;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 130%;
+    &:hover{
+      background-color: $black0;
     }
   }
   &_back {

@@ -1,43 +1,48 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
-    :title="$t('pension.applyForRetirement')"
+    class="pension"
+    :title="$t('pension.applyForAPension')"
   >
-    <div class="ctm-modal__content">
-      <div class="ctm-modal__content-field">
+    <div class="pension__content content">
+      <div class="content__percent">
+        <div class="content__title">
+          {{ $t('modals.depositPercentFromAQuest') }}
+        </div>
         <base-field
           v-model="depositPercentFromAQuest"
           :is-hide-error="true"
-          :label="$t('modals.depositRetirementModalTitle')"
-          :placeholder="$t('modals.depositRetirementModalPrecentPlaceholder')"
+          :placeholder="$tc('modals.percentsCount', 13)"
+          class="content__input"
         />
       </div>
-      <div class="ctm-modal__content-field">
+      <div class="content__amount">
+        <div class="content__title">
+          {{ $t('modals.firstDepositAmount') }}
+        </div>
         <base-field
           v-model="firstDepositAmount"
           :is-hide-error="true"
-          :placeholder="$t('modals.depositRetirementModalAmountPlaceholder')"
-          :label="$t('modals.firstDepositAmount')"
+          :placeholder="$tc('pension.wusdCount', 130)"
+          class="content__input"
         />
-        <div class="ctm-modal__subtitle">
-          {{ $t('modals.aboutFirstDeposit') }}
+        <div class="content__text">
+          {{ $t('modals.firstDepositText') }}
         </div>
       </div>
-      <div class="ctm-modal__content-btns">
-        <div class="btn-group">
-          <base-btn
-            class="btn"
-            @click="hide()"
-          >
-            {{ $t('meta.cancel') }}
-          </base-btn>
-          <base-btn
-            class="btn_bl"
-            @click="showPensionIsRegisteredModal()"
-          >
-            {{ $t('meta.confirm') }}
-          </base-btn>
-        </div>
+      <div class="content__buttons buttons">
+        <base-btn
+          class="buttons__button"
+          mode="outline"
+          @click="hide()"
+        >
+          {{ $t('meta.cancel') }}
+        </base-btn>
+        <base-btn
+          class="buttons__button"
+          @click="showPensionIsRegisteredModal()"
+        >
+          {{ $t('meta.submit') }}
+        </base-btn>
       </div>
     </div>
   </ctm-modal-box>
@@ -68,8 +73,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/document.svg'),
-        title: this.$t('modals.pensionIsRegisteredTitle'),
-        subtitle: this.$t('modals.pensionIsRegisteredDesc'),
+        title: this.$t('modals.pensionIsRegistered'),
+        subtitle: this.$t('modals.pensionIsRegisteredText'),
         path: '/pension/1',
       });
     },
@@ -79,75 +84,38 @@ export default {
 
 <style lang="scss" scoped>
 
-.ctm-modal {
-  @include modalKit;
-  &__content-field {
-    margin: 15px 0 0 0;
-  }
-
-  &__content-btns {
-    .btn-group{
-      display: grid;
-      grid-template-columns: repeat(2, calc(50% - 10px));
-      grid-gap: 20px;
-      gap: 20px;
-      margin-top: 25px;
-
-      .btn {
-        box-sizing: border-box;
-        font-weight: 400;
-        font-size: 16px;
-        color: #0083C7;
-        border: 1px solid #0083C71A;
-        border-radius: 6px;
-        transition: .3s;
-        background-color: #fff;
-
-        &:hover {
-          background-color: #0083C71A;
-          border: 0px;
-        }
-
-        &_bl {
-          @extend .btn;
-          background-color: #0083C7;
-          border: unset;
-          color: #fff;
-
-          &:hover {
-            background-color: #103d7c;
-          }
-        }
-      }
-    }
-  }
-
-  &__label {
-    margin-bottom: 5px;
-  }
-
+.pension{
   &__content {
-    padding-top: 0 !important;
+    max-width: 495px !important;
   }
+}
 
-  &__subtitle {
+.content{
+  padding: 0 28px 30px 28px!important;
+  &__percent{
+    margin-top: 25px;
+  }
+  &__amount{
+    margin-top: 15px;
+  }
+  &__text {
     color: #7C838D;
     font-weight: 400;
     font-size: 14px;
     margin-top: 15px;
   }
+  &__buttons{
+    display: grid;
+    grid-template-columns: repeat(2, calc(50% - 10px));
+    grid-gap: 20px;
+    gap: 20px;
+    margin-top: 25px;
+  }
+  &__title{
+    margin-bottom: 2px;
+    font-size: 16px;
+    line-height: 130%;
+  }
 }
 
-.messageSend {
-  max-width: 495px !important;
-  &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    grid-gap: 20px;
-  }
-  &__action {
-    margin-top: 10px;
-  }
-}
 </style>

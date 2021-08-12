@@ -70,7 +70,10 @@
       <CtmModalAddingCard v-if="modals.addingCard === currentModalKey" />
       <CtmModalDepositOptions v-if="modals.depositOptions === currentModalKey" />
       <CtmModalCardAdded v-if="modals.cardAdded === currentModalKey" />
-      <CtmModalDepositInfo v-if="modals.depositInfo === currentModalKey" />
+      <CtmModalTakeWithdraw v-if="modals.takeWithdraw === currentModalKey" />
+      <CtmModalWithdrawInfo v-if="modals.withdrawInfo === currentModalKey" />
+      <CtmModalWithdrawOptions v-if="modals.withdrawOptions === currentModalKey" />
+      <CtmModalGiveTransfer v-if="modals.giveTransfer === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -135,7 +138,10 @@ import CtmModalGiveDeposit from './CtmModalGiveDeposit';
 import CtmModalAddingCard from './CtmModalAddingCard';
 import CtmModalDepositOptions from './CtmModalDepositOptions';
 import CtmModalCardAdded from './CtmModalCardAdded';
-import CtmModalDepositInfo from './CtmModalDepositInfo';
+import CtmModalTakeWithdraw from './CtmModalTakeWithdraw';
+import CtmModalWithdrawInfo from './CtmModalWithdrawInfo';
+import CtmModalWithdrawOptions from './CtmModalWithdrawOptions';
+import CtmModalGiveTransfer from './CtmModalGiveTransfer';
 
 export default {
   name: 'ModalBox',
@@ -198,7 +204,10 @@ export default {
     CtmModalAddingCard,
     CtmModalDepositOptions,
     CtmModalCardAdded,
-    CtmModalDepositInfo,
+    CtmModalTakeWithdraw,
+    CtmModalWithdrawInfo,
+    CtmModalWithdrawOptions,
+    CtmModalGiveTransfer,
   },
   data: () => ({
     modals,

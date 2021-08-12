@@ -1,35 +1,37 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
-    :title="$t('pension.changePercent')"
+    class="percent"
+    :title="$t('modals.changePercent')"
   >
-    <div class="ctm-modal__content">
-      <div class="ctm-modal__desc_left">
-        {{ $t('modals.changePercentDesc') }}
+    <div class="percent__content content">
+      <div class="content__text">
+        {{ $t('modals.changePercentText') }}
       </div>
-      <div class="ctm-modal__content-field">
+      <div class="content__field">
+        <div class="content__title">
+          {{ $t('modals.currentPercentTitle') }}
+        </div>
         <base-field
           v-model="amount"
-          :label="$t('modals.currentPercent')"
           :is-hide-error="true"
-          :placeholder="'0%'"
+          :placeholder="$tc('modals.percentsCount', 15)"
+          class="content__input"
         />
       </div>
-      <div class="ctm-modal__content-btns">
-        <div class="btn-group">
-          <base-btn
-            class="btn"
-            @click="hide()"
-          >
-            {{ $t('meta.cancel') }}
-          </base-btn>
-          <base-btn
-            class="btn_bl"
-            @click="showPensionIsRegisteredModal()"
-          >
-            {{ $t('meta.confirm') }}
-          </base-btn>
-        </div>
+      <div class="content__buttons buttons">
+        <base-btn
+          class="buttons__button"
+          mode="outline"
+          @click="hide"
+        >
+          {{ $t('meta.cancel') }}
+        </base-btn>
+        <base-btn
+          class="buttons__button"
+          @click="showPercentIsChanged"
+        >
+          {{ $t('meta.submit') }}
+        </base-btn>
       </div>
     </div>
   </ctm-modal-box>
@@ -37,6 +39,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalApplyForAPension',
@@ -54,7 +57,13 @@ export default {
     hide() {
       this.CloseModal();
     },
-    showPensionIsRegisteredModal() {
+    showPercentIsChanged() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/success.svg'),
+        title: this.$t('modals.percentIsChanged'),
+        subtitle: this.$t('modals.percentIsChangedText'),
+      });
     },
   },
 };
@@ -62,74 +71,31 @@ export default {
 
 <style lang="scss" scoped>
 
-.ctm-modal {
-  @include modalKit;
-  &__content-field {
-    margin: 15px 0 0 0;
-  }
-
-  &__desc {
-    &_left {
-      text-align: left;
-      font-size: 16px;
-      font-weight: 400;
-      line-height: 21px;
-      color: #4C5767;
-    }
-  }
-
-  &__content-btns {
-    .btn-group {
-      display: grid;
-      grid-template-columns: repeat(2, calc(50% - 10px));
-      grid-gap: 20px;
-      gap: 20px;
-      margin-top: 25px;
-
-      .btn {
-        box-sizing: border-box;
-        font-weight: 400;
-        font-size: 16px;
-        color: #0083C7;
-        border: 1px solid #0083C71A;
-        border-radius: 6px;
-        transition: .3s;
-        background-color: #fff;
-
-        &:hover {
-          background-color: #0083C71A;
-          border: 0px;
-        }
-
-        &_bl {
-          @extend .btn;
-          background-color: #0083C7;
-          border: unset;
-          color: #fff;
-
-          &:hover {
-            background-color: #103d7c;
-          }
-        }
-      }
-    }
-  }
-
-  &__label {
-    margin-bottom: 5px;
+.percent {
+  padding: 0!important;
+  max-width: 487px !important;
+  &__content {
+    padding: 0 28px 30px 28px!important;
   }
 }
 
-.messageSend {
-  max-width: 495px !important;
-  &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    grid-gap: 20px;
+.content{
+  &__text{
+    margin: 22px 0 15px 0;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 21px;
+    color: #4C5767;
   }
-  &__action {
-    margin-top: 10px;
+  &__title{
+  margin-bottom: 4px;
+  }
+  &__buttons{
+    display: grid;
+    grid-template-columns: repeat(2, calc(50% - 10px));
+    grid-gap: 20px;
+    gap: 20px;
+    margin-top: 25px;
   }
 }
 </style>

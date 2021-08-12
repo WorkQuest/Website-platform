@@ -1,34 +1,38 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
+    class="insure"
     :title="$t('modals.insureCase')"
   >
-    <div class="ctm-modal__content">
-      <div class="user">
+    <div class="insure__content content">
+      <div class="content__user user">
         <img
-          class="ava"
+          class="user__avatar"
           src="~/assets/img/temp/avatar-small.jpg"
-          alt=""
+          alt="userAvatar"
         >
-        <div class="name">
-          {{ $tc('insuring.paymentOfInsurance', $t('insuring.userName') ) }}
-        </div>
+        <span class="user__name">
+          {{ $t('insuring.userNameCase') }}
+        </span>
+        <span class="user__text">
+          {{ $t('insuring.paymentOfInsurance') }}
+        </span>
       </div>
-      <div class="ctm-modal_left">
-        {{ $t('modals.smallTemp') }}
+      <div class="content__text">
+        {{ $t('insuring.insureCaseText') }}
       </div>
-      <div class="ctm-modal__pics">
+      <div class="content__pictures">
         <img
           v-for="(pic, i) in pics"
           :key="i"
-          class="pic"
+          class="picture"
           :src="pic"
-          alt=""
+          alt="picture"
         >
       </div>
-      <div class="ctm-modal__content-btns">
+      <div class="content__buttons buttons">
         <base-btn
-          class="btn"
+          class="buttons__button"
+          mode="outline"
           @click="hide()"
         >
           {{ $t('meta.cancel') }}
@@ -70,84 +74,60 @@ export default {
 
 <style lang="scss" scoped>
 
-.ctm-modal {
-  @include modalKit;
-  &__content-field {
-    margin: 15px 0 0 0;
-  }
+.insure {
+  max-width: 537px !important;
 
-  .user {
+  &__content {
+    padding: 0px 28px 30px 28px!important;
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    grid-gap: 25px;
+  }
+}
+.content{
+  &__user{
     display: flex;
-    gap: 15px;
     align-items: center;
     background-color: #F7F8FA;
     border-radius: 5px;
     height: 42px;
     width: 100%;
-    padding: 0 10px;
-    margin-bottom: 25px;
-
-    .ava {
-      height: 25px;
-      width:  25px;
-      border-radius: 50%;
-    }
-
-    .name {
-      font-weight: 400;
-      font-size: 16px;
-      color: #7C838D;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      width: calc(100% - 55px);
-    }
+    margin-top: 25px;
   }
-
-  &_left {
+  &__text{
     text-align: left;
     font-size: 16px;
     font-weight: 400;
     line-height: 21px;
     color: #4C5767;
   }
-
-  &__pics {
+  &__pictures{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    margin: 25px 0;
-
-    .pic {}
   }
+  &__buttons{
+    width: 100%;
+  }
+}
+.user{
+  &__name{
+    font-size: 16px;
+    line-height: 130%;
+    margin: 0 5px 0 15px;
+  }
+  &__text{
+    font-weight: 400;
+    font-size: 16px;
+    color: #7C838D;
 
-  &__content-btns {
-    .btn {
-        box-sizing: border-box;
-        font-weight: 400;
-        font-size: 16px;
-        color: #0083C7;
-        border: 1px solid #0083C71A;
-        border-radius: 6px;
-        transition: .3s;
-        background-color: #fff;
-
-        &:hover {
-          background-color: #0083C71A;
-          border: 0px;
-        }
-      }
+  }
+  &__avatar{
+    height: 25px;
+    width:  25px;
+    border-radius: 50%;
   }
 }
 
-.messageSend {
-  max-width: 495px !important;
-
-  &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    grid-gap: 20px;
-  }
-}
 </style>

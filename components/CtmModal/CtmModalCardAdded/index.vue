@@ -17,7 +17,7 @@
       </div>
       <base-btn
         class="cardAdded__action"
-        @click="showDepositOptions"
+        @click="showOptions"
       >
         {{ $t('meta.ok') }}
       </base-btn>
@@ -26,15 +26,30 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalCardAdded',
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+  },
   methods: {
-    showDepositOptions() {
-      this.ShowModal({
-        key: modals.depositOptions,
-      });
+    showOptions() {
+      if (this.options.branch === 'widthdraw') {
+        this.ShowModal({
+          key: modals.withdrawOptions,
+        });
+      }
+      if (this.options.branch === 'adding') {
+        this.CloseModal();
+      } else {
+        this.ShowModal({
+          key: modals.depositOptions,
+        });
+      }
     },
   },
 };

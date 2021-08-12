@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -78,6 +79,11 @@ export default {
       cvvInput: '',
     };
   },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+  },
   methods: {
     hide() {
       this.CloseModal();
@@ -85,6 +91,7 @@ export default {
     showCardHasBeenAddedModal() {
       this.ShowModal({
         key: modals.cardAdded,
+        branch: this.options.branch,
       });
     },
   },

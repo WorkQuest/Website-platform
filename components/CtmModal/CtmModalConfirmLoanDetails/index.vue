@@ -1,37 +1,36 @@
 <template>
   <ctm-modal-box
-    class="addLiquidity"
+    class="details"
     :title="$t('modals.confirmDetails')"
   >
-    <div class="ctm-modal__content">
-      <div class="ctm-modal__gray-zone">
+    <div class="details__content content">
+      <div class="content__field">
         <div
           v-for="(item, i) in abouts"
           :key="i"
         >
-          <div class="ctm-modal__title-head">
+          <div class="content__title">
             {{ item.title }}
           </div>
-          <div class="ctm-modal__subtitle">
+          <div class="content__subtitle">
             {{ item.subtitle }}
           </div>
         </div>
       </div>
-      <div class="ctm-modal__content-btns">
-        <div class="btn-group">
-          <base-btn
-            class="btn"
-            @click="hide()"
-          >
-            {{ $t('meta.cancel') }}
-          </base-btn>
-          <base-btn
-            class="btn_bl"
-            @click="openStatusModal()"
-          >
-            {{ $t('meta.submit') }}
-          </base-btn>
-        </div>
+      <div class="content__buttons buttons">
+        <base-btn
+          class="buttons__button"
+          mode="outline"
+          @click="hide()"
+        >
+          {{ $t('meta.cancel') }}
+        </base-btn>
+        <base-btn
+          class="buttons__button"
+          @click="openStatusModal()"
+        >
+          {{ $t('meta.submit') }}
+        </base-btn>
       </div>
     </div>
   </ctm-modal-box>
@@ -47,12 +46,12 @@ export default {
     return {
       abouts: [
         {
-          title: this.$t('modals.currency'),
-          subtitle: 1 + this.$t('modals.eth'),
+          title: this.$t('modals.currencyDetails'),
+          subtitle: this.$t('modals.eth'),
         },
         {
           title: this.$t('modals.loan'),
-          subtitle: 1000 + this.$t('modals.wusd'),
+          subtitle: `${1} ${this.$t('modals.eth')}`,
         },
         {
           title: this.$t('modals.percentage'),
@@ -79,7 +78,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/transactionSend.svg'),
         title: this.$t('modals.loanIsOpened'),
-        subTitle: '',
+        subtitle: this.$t('modals.loanIsOpenedText'),
         path: this.options.needChangeModal ? '/crediting/1' : undefined,
       });
     },
@@ -89,14 +88,15 @@ export default {
 
 <style lang="scss" scoped>
 
-.ctm-modal {
-  @include modalKit;
+.details {
+  max-width: 490px !important;
 
-  .addLiquidity {
-    max-width: 490px !important;
+  &__content {
+    padding: 0 28px 30px 28px !important;
   }
-
-  &__gray-zone {
+}
+.content{
+  &__field {
     background-color: #F7F8FA;
     border-radius: 5px;
     margin-top: 15px;
@@ -105,48 +105,7 @@ export default {
     gap: 20px;
   }
 
-  &__content-btns {
-    .btn-group{
-      display: grid;
-      grid-template-columns: repeat(2, calc(50% - 10px));
-      grid-gap: 20px;
-      gap: 20px;
-      margin-top: 25px;
-
-      .btn {
-        box-sizing: border-box;
-        font-weight: 400;
-        font-size: 16px;
-        color: #0083C7;
-        border: 1px solid #0083C71A;
-        border-radius: 6px;
-        transition: .3s;
-        background-color: #fff;
-
-        &:hover {
-          background-color: #0083C71A;
-          border: 0px;
-        }
-
-        &_bl {
-          @extend .btn;
-          background-color: #0083C7;
-          border: unset;
-          color: #fff;
-
-          &:hover {
-            background-color: #103d7c;
-          }
-        }
-      }
-    }
-  }
-
-  &__content {
-    padding-top: 0 !important;
-  }
-
-  &__title-head {
+  &__title {
     font-size: 16px;
     font-weight: 400;
   }
@@ -156,5 +115,13 @@ export default {
     font-weight: 500;
     font-size: 14px;
   }
+  &__buttons{
+    display: grid;
+    grid-template-columns: repeat(2, calc(50% - 10px));
+    grid-gap: 20px;
+    gap: 20px;
+    margin-top: 25px;
+  }
 }
+
 </style>

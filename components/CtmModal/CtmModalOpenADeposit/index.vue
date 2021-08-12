@@ -1,47 +1,49 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
+    class="deposit"
     :title="$t('saving.openADeposit')"
   >
-    <div class="ctm-modal__content">
-      <div class="ctm-modal__content-field">
+    <div class="deposit__content content">
+      <div class="content__field">
         <label
-          for="depositPercent_input"
-          class="ctm-modal__label"
-        >{{ $t("modals.lockedSavings") }}</label>
+          for="saving__input"
+          class="content__label"
+        >{{ $t("modals.lockedSavings") }}
+        </label>
         <base-field
-          id="depositPercent_input"
+          id="saving__input"
           :is-hide-error="true"
-          :placeholder="'0'"
-          :label="$t('modals.lockedSavings')"
+          :placeholder="'3 500'"
+          class="content__input"
         />
       </div>
-      <div class="ctm-modal__content-field">
+      <div class="content__field">
         <label
-          for="amount_input"
-          class="ctm-modal__label"
-        >{{ $t("modals.durationDays") }}</label>
+          for="amount__input"
+          class="content__label"
+        >{{ $t("modals.durationDays") }}
+        </label>
         <base-field
-          id="amount_input"
+          id="amount__input"
           :is-hide-error="true"
-          :placeholder="'0'"
+          :placeholder="'180'"
+          class="content__input"
         />
       </div>
-      <div class="ctm-modal__content-btns">
-        <div class="btn-group">
-          <base-btn
-            class="btn"
-            @click="hide()"
-          >
-            {{ $t('meta.cancel') }}
-          </base-btn>
-          <base-btn
-            class="btn_bl"
-            @click="showDepositIsOpenedModal()"
-          >
-            {{ $t('meta.submit') }}
-          </base-btn>
-        </div>
+      <div class="content__buttons buttons">
+        <base-btn
+          class="buttons__button"
+          mode="outline"
+          @click="hide()"
+        >
+          {{ $t('meta.cancel') }}
+        </base-btn>
+        <base-btn
+          class="buttons__button"
+          @click="showDepositIsOpenedModal()"
+        >
+          {{ $t('meta.submit') }}
+        </base-btn>
       </div>
     </div>
   </ctm-modal-box>
@@ -69,8 +71,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/transactionSend.svg'),
-        title: this.$t('saving.depositIsOpened'),
-        subtitle: this.$t('saving.depositModalBody'),
+        title: this.$t('modals.depositIsOpened'),
+        subtitle: this.$t('saving.depositIsOpenedText'),
         path: '/savings/1',
       });
     },
@@ -80,68 +82,22 @@ export default {
 
 <style lang="scss" scoped>
 
-.ctm-modal {
-  @include modalKit;
-  &__content-field {
-    margin: 15px 0 0 0;
-  }
-
-  &__content-btns {
-    .btn-group{
-      display: grid;
-      grid-template-columns: repeat(2, calc(50% - 10px));
-      grid-gap: 20px;
-      gap: 20px;
-      margin-top: 25px;
-
-      .btn {
-        box-sizing: border-box;
-        font-weight: 400;
-        font-size: 16px;
-        color: #0083C7;
-        border: 1px solid #0083C71A;
-        border-radius: 6px;
-        transition: .3s;
-        background-color: #fff;
-
-        &:hover {
-          background-color: #0083C71A;
-          border: 0px;
-        }
-
-        &_bl {
-          @extend .btn;
-          background-color: #0083C7;
-          border: unset;
-          color: #fff;
-
-          &:hover {
-            background-color: #103d7c;
-          }
-        }
-      }
-    }
-  }
-
-  &__label {
-    margin-bottom: 5px;
-  }
-
-  &__content {
-    padding-top: 0 !important;
-  }
-}
-
-.messageSend {
+.deposit {
   max-width: 495px !important;
   &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    grid-gap: 20px;
+    padding: 0 28px 30px 28px!important;
   }
-  &__action {
-    margin-top: 10px;
+}
+.content{
+  &__label{
+  margin: 25px 0 4px 0!important;
+  }
+  &__buttons{
+    display: grid;
+    grid-template-columns: repeat(2, calc(50% - 10px));
+    grid-gap: 20px;
+    gap: 20px;
+    margin-top: 25px;
   }
 }
 </style>

@@ -59,5 +59,8 @@ export default {
   disable2FA: 'disable2FA',
   depositOptions: 'depositOptions',
   cardAdded: 'cardAdded',
-  depositInfo: 'depositInfo',
+  takeWithdraw: 'takeWithdraw',
+  withdrawInfo: 'withdrawInfo',
+  withdrawOptions: 'withdrawOptions',
+  giveTransfer: 'giveTransfer',
 };

@@ -1,15 +1,15 @@
 <template>
   <ctm-modal-box
-    class="deposit"
-    :title="$t('modals.depositTitle')"
+    class="withdraw"
+    :title="$t('modals.withdrawal')"
   >
-    <div class="deposit__content content">
+    <div class="withdraw__content content">
       <div
         class="content__step"
       >
         <div
           class="content__panel"
-          @click="showGiveDeposit"
+          @click="showTakeWithdraw"
         >
           {{ $t('modals.walletAddress') }}
         </div>
@@ -19,10 +19,48 @@
           {{ $t('wallet.bankCard') }}
         </div>
       </div>
+      <div class="content__grid grid">
+        <div class="grid__title">
+          {{ $t('modals.amount') }}
+        </div>
+        <div class="grid__body">
+          <base-field
+            v-model="amount"
+            :is-hide-error="true"
+            :placeholder="'0 WUSD'"
+            class="grid__input"
+          />
+          <div class="grid__equal">
+            =
+          </div>
+          <div class="grid__field">
+            <base-field
+              v-model="dollars"
+              :is-hide-error="true"
+              mode="white"
+              :disabled="true"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="content__body body">
+        <div>
+          <div class="body__title">
+            {{ $t('modals.totalFee') }}
+          </div>
+          <base-field
+            v-model="fee"
+            mode="white"
+            class="body__input"
+            :disabled="true"
+            :is-hide-error="true"
+          />
+        </div>
+      </div>
       <div class="content__drop drop">
-        <span class="drop__title">
+        <div class="drop__title">
           {{ $t('modals.chooseCard') }}
-        </span>
+        </div>
         <base-dd
           v-model="card"
           class="drop__field"
@@ -47,54 +85,6 @@
           </template>
         </base-dd>
       </div>
-      <div class="content__grid grid">
-        <span class="grid__title">
-          {{ $t('modals.amount') }}
-        </span>
-        <div class="grid__body">
-          <base-field
-            v-model="amount"
-            :is-hide-error="true"
-            :placeholder="'0 WUSD'"
-            class="grid__input"
-          />
-          <div class="grid__equal">
-            =
-          </div>
-          <div class="grid__field">
-            <base-field
-              v-model="dollars"
-              :is-hide-error="true"
-              mode="white"
-              :disabled="true"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="content__body body">
-        <div>
-          <span class="body__title">
-            {{ $t('modals.totalFee') }}
-          </span>
-          <base-field
-            v-model="fee"
-            mode="white"
-            class="body__input"
-            :disabled="true"
-          />
-        </div>
-        <div>
-          <span class="body__title">
-            {{ $t('modals.processing') }}
-          </span>
-          <base-field
-            v-model="time"
-            mode="white"
-            class="body__input"
-            :disabled="true"
-          />
-        </div>
-      </div>
       <div class="content__buttons buttons">
         <base-btn
           class="buttons__button"
@@ -107,7 +97,7 @@
           class="buttons__button"
           @click="showTransactionSendModal"
         >
-          {{ $t('meta.buyWUSD') }}
+          {{ $t('meta.submit') }}
         </base-btn>
       </div>
     </div>
@@ -118,7 +108,7 @@
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalDepositOptions',
+  name: 'ModalWithdrawOptions',
   data() {
     return {
       card: 0,
@@ -143,17 +133,19 @@ export default {
     showTransactionSendModal() {
       this.ShowModal({
         key: modals.withdrawInfo,
-        title: this.$t('modals.depositInfo'),
+        title: this.$t('modals.withdrawInfo'),
+        cardNumber: '**** **** **** 0000',
       });
     },
-    showGiveDeposit() {
+    showTakeWithdraw() {
       this.ShowModal({
-        key: modals.giveDeposit,
+        key: modals.takeWithdraw,
       });
     },
     showAddingCard() {
       this.ShowModal({
         key: modals.addingCard,
+        branch: 'widthdraw',
       });
     },
   },
@@ -162,7 +154,7 @@ export default {
 
 <style lang="scss" scoped>
 
-.deposit {
+.withdraw {
   max-width: 500px !important;
   &__content {
     padding: 0 28px 30px 28px;
@@ -173,8 +165,9 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    margin-top: 25px;
+    margin: 25px 0 15px 0;
   }
+
   &__panel {
     @include text-simple;
     font-weight: 400;
@@ -190,7 +183,7 @@ export default {
     }
   }
   &__drop{
-    margin: 5px 0 15px 0;
+    margin: 15px 0 25px 0;
   }
 }
 .drop{
@@ -203,6 +196,7 @@ export default {
     font-weight: 400;
     font-size: 16px;
     color: $black800;
+    margin-bottom: 2px;
   }
   &__card:before{
     font-size: 25px;
@@ -219,7 +213,6 @@ export default {
     margin-bottom: 15px;
   }
   &__title{
-    margin-bottom: 5px;
     @include text-simple;
     font-weight: 400;
     font-size: 16px;
@@ -233,13 +226,19 @@ export default {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
+  &__title{
+    @include text-simple;
+    font-weight: 400;
+    font-size: 16px;
+    color: $black800;
+    margin-bottom: 2px;
+  }
 }
 .buttons {
   display: grid;
   grid-template-columns: repeat(2, calc(50% - 10px));
   grid-gap: 20px;
   gap: 20px;
-  margin-top: 2px;
 }
 
 .button{
