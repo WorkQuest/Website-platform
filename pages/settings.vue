@@ -238,7 +238,7 @@
           >
             <base-field
               v-model="newKnowledge.from"
-              type="grey"
+              type="date"
               :placeholder="$t('settings.workExps.from')"
             />
             <div class="knowledge__dash">
@@ -246,7 +246,7 @@
             </div>
             <base-field
               v-model="newKnowledge.to"
-              type="grey"
+              type="date"
               :placeholder="$t('settings.workExps.to')"
             />
             <div />
@@ -277,7 +277,7 @@
               <base-field
                 id="workExp"
                 v-model="localUserData.additionalInfo.workExperiences[i].from"
-                type="grey"
+                type="date"
                 :placeholder="$t('settings.term')"
               />
               <div class="knowledge__dash">
@@ -285,7 +285,7 @@
               </div>
               <base-field
                 v-model="localUserData.additionalInfo.workExperiences[i].to"
-                type="grey"
+                type="date"
                 :placeholder="$t('settings.term')"
               />
               <div />
@@ -303,7 +303,7 @@
           <div class="knowledge__container">
             <base-field
               v-model="newWorkExp.from"
-              type="grey"
+              type="date"
               :placeholder="$t('settings.term')"
             />
             <div class="knowledge__dash">
@@ -311,7 +311,7 @@
             </div>
             <base-field
               v-model="newWorkExp.to"
-              type="grey"
+              type="date"
               :placeholder="$t('settings.term')"
             />
             <div />

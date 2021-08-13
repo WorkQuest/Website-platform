@@ -133,6 +133,7 @@
             <button
               class="base-btn"
               :class="{'base-btn__passive': adMode1 === true}"
+              :disabled="!adMode1"
               @click="setAd()"
             >
               {{ $t('quests.ads.publishForFree') }}
@@ -142,6 +143,7 @@
             <button
               class="base-btn"
               :class="{'base-btn__passive': adMode2 === true}"
+              :disabled="!adMode2"
               @click="setAd()"
             >
               {{ $t('quests.ads.boostYourPublications') }}

@@ -4,7 +4,7 @@
     :title="$t('modals.deposit')"
   >
     <div class="ctm-modal__content">
-      <validation-observer>
+      <validation-observer v-slot="{ handleSubmit, validated, passed, invalid }">
         <div
           class="step-panel"
           :class="{'hide': step === 3}"
@@ -33,6 +33,8 @@
               v-model="amountInput"
               :placeholder="'0 WUSD'"
               :label="$t('modals.amount')"
+              rules="min_value:0|numeric|required"
+              name="Amount"
             />
           </div>
         </div>
@@ -46,17 +48,17 @@
                 v-model="amountInput"
                 :placeholder="'0 WUSD'"
                 :label="$t('modals.amount')"
+                rules="min_value:0|numeric|required"
+                name="Amount"
               />
             </div>
             <div class="ctm-modal__equal">
               =
             </div>
             <div class="ctm-modal__content-field">
-              <base-field
-                v-model="balanceInput"
-                mode="white"
-                :placeholder="'$ 0'"
-              />
+              <div class="ctm-modal__fake-input">
+                $ 0
+              </div>
             </div>
           </div>
           <div class="ctm-modal__content-field">
@@ -65,6 +67,8 @@
               v-model="cardNumberInput"
               :placeholder="'0000 0000 0000 0000'"
               :label="$t('modals.numberOfCard')"
+              rules="required|numberOfCard"
+              name="Card number"
             />
           </div>
           <div
@@ -77,6 +81,8 @@
                 v-model="dateInput"
                 :placeholder="'02/24'"
                 :label="$t('modals.date')"
+                rules="required"
+                name="Date"
               />
             </div>
             <div class="ctm-modal__content-field">
@@ -84,6 +90,8 @@
                 v-model="cvvInput"
                 :placeholder="'242'"
                 :label="$t('modals.cvv')"
+                rules="required|cvv"
+                name="CVV"
               />
             </div>
           </div>
@@ -127,7 +135,8 @@
             >
               <base-btn
                 class="message__action"
-                @click="nextStep()"
+                :disabled="!validated || !passed || invalid"
+                @click="handleSubmit(nextStep)"
               >
                 {{ $t('meta.next') }}
               </base-btn>
@@ -138,7 +147,8 @@
             >
               <base-btn
                 class="message__action"
-                @click="nextStep()"
+                :disabled="invalid"
+                @click="handleSubmit(nextStep)"
               >
                 {{ $t('meta.confirm') }}
               </base-btn>
@@ -179,7 +189,6 @@ export default {
   data() {
     return {
       amountInput: '',
-      balanceInput: '',
       cardNumberInput: '',
       dateInput: '',
       cvvInput: '',
@@ -305,6 +314,17 @@ export default {
   }
   &__equal {
     margin: 0 0 35px 10px;
+  }
+  &__fake-input {
+    font: inherit;
+    height: 46px;
+    padding: 10px 20px;
+    width: 100%;
+    color: #B1B3B8;
+    background: #FFFFFF;
+    border-radius: 6px;
+    border: 1px solid #F3F7FA;
+    margin-bottom: 23px;
   }
 }
 

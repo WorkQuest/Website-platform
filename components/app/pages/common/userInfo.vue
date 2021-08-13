@@ -189,6 +189,7 @@ export default {
     width: 100%;
     display: flex;
     align-items: flex-end;
+    height: 43px;
   }
 }
 
@@ -354,6 +355,7 @@ export default {
     }
   }
 }
+
 @include _1199 {
   .contacts {
     grid-template-columns: 4fr 1fr;
