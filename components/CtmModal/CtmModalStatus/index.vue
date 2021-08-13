@@ -20,7 +20,8 @@
         class="status__action"
         @click="hide()"
       >
-        {{ $t('meta.ok') }}
+        <span v-if="options.button">{{ options.button }}</span>
+        <span v-else>{{ $t('meta.ok') }}</span>
       </base-btn>
     </div>
   </ctm-modal-box>

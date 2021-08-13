@@ -218,7 +218,10 @@
                     </base-btn>
                   </div>
                   <div class="btn__wrapper">
-                    <base-btn mode="delete">
+                    <base-btn
+                      mode="delete"
+                      @click="showDeleteModal"
+                    >
                       {{ $t('quests.deleteQuest') }}
                     </base-btn>
                   </div>
@@ -454,6 +457,11 @@ export default {
     showMessageModal() {
       this.ShowModal({
         key: modals.sendARequest,
+      });
+    },
+    showDeleteModal() {
+      this.ShowModal({
+        key: modals.areYouSureDelete,
       });
     },
   },

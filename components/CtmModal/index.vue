@@ -74,6 +74,8 @@
       <CtmModalWithdrawInfo v-if="modals.withdrawInfo === currentModalKey" />
       <CtmModalWithdrawOptions v-if="modals.withdrawOptions === currentModalKey" />
       <CtmModalGiveTransfer v-if="modals.giveTransfer === currentModalKey" />
+      <CtmModalPaymentOptions v-if="modals.paymentOptions === currentModalKey" />
+      <CtmModalAreYouSureDelete v-if="modals.areYouSureDelete === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -142,6 +144,8 @@ import CtmModalTakeWithdraw from './CtmModalTakeWithdraw';
 import CtmModalWithdrawInfo from './CtmModalWithdrawInfo';
 import CtmModalWithdrawOptions from './CtmModalWithdrawOptions';
 import CtmModalGiveTransfer from './CtmModalGiveTransfer';
+import CtmModalPaymentOptions from './CtmModalPaymentOptions';
+import CtmModalAreYouSureDelete from './CtmModalAreYouSureDelete';
 
 export default {
   name: 'ModalBox',
@@ -208,6 +212,8 @@ export default {
     CtmModalWithdrawInfo,
     CtmModalWithdrawOptions,
     CtmModalGiveTransfer,
+    CtmModalPaymentOptions,
+    CtmModalAreYouSureDelete,
   },
   data: () => ({
     modals,

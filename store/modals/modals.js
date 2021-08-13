@@ -63,4 +63,6 @@ export default {
   withdrawInfo: 'withdrawInfo',
   withdrawOptions: 'withdrawOptions',
   giveTransfer: 'giveTransfer',
+  paymentOptions: 'paymentOptions',
+  areYouSureDelete: 'areYouSureDelete',
 };

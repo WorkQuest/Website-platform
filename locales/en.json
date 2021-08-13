@@ -145,7 +145,8 @@
     "connectSMSVer": "Connect SMS Verification",
     "resendSMS": "Resend SMS",
     "disable": "Disable",
-    "remindLater": "Remind later"
+    "remindLater": "Remind later",
+    "delete": "Delete"
   },
   "priority": {
     "title": "Select Priority",
@@ -482,7 +483,7 @@
     "processing": "Processing time",
     "addNewCard": "Add new card",
     "numberCard": "Number of card",
-    "chooseCard": "Choose Card",
+    "chooseCard": "Choose card",
     "depositInfo": "Deposit info",
     "cardAdd": "Add card",
     "cardAddedText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,",
@@ -509,8 +510,15 @@
     "makeDepositText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,",
     "percentIsChangedText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,",
     "percentIsChanged": "Percent is changed",
-    "invitationSendText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,"
-
+    "invitationSendText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,",
+    "choose": "Choose",
+    "openDisputeText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,",
+    "chooseCurrency": "Choose currency",
+    "wallet": "Wallet",
+    "coinpaymebts": "Сoinpaymebts",
+    "sureDeleteText": "Do you really want to delete this quest?",
+    "error": "Error",
+    "errorDeleteText": "Do you really want to delete this quest?"
   },
   "ui": {
     "jobQuestors": "Job Questors",

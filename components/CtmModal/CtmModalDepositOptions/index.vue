@@ -35,7 +35,7 @@
             v-slot:buttonCard
           >
             <base-btn
-              mode="outline"
+              mode="add"
               class="drop__button button"
               @click="showAddingCard"
             >
@@ -251,5 +251,8 @@ export default {
     color:$blue!important;
     margin-right: 12px;
   }
+}
+.button:hover .button__icon:before{
+  color: $white!important;
 }
 </style>

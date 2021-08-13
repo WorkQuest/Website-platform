@@ -12,6 +12,7 @@
       :class="[{'dd__top': mode === 'top' }]"
     >
       <slot name="card" />
+
       <button
         class="dd__btn"
         :class="ddClass"
@@ -37,6 +38,7 @@
         >
           {{ items[value] }}
         </span>
+        <slot name="choose" />
         <span
           v-if="type === 'sort'"
           class="dd__caret dd__caret_dark icon-Sorting_descending"
@@ -62,8 +64,10 @@
               :alt="item.title"
             >
             {{ item.title }}
+            <slot name="picture" />
           </button>
         </div>
+
         <div
           v-if="isShown && !isIcon"
           class="dd__items"

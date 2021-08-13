@@ -149,7 +149,7 @@ export default {
     },
     showAddCardModal() {
       this.ShowModal({
-        key: modals.addingCard,
+        key: modals.smsVerification,
         branch: 'adding',
       });
     },

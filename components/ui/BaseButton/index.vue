@@ -74,6 +74,7 @@ export default {
         { 'base-btn_black': mode === 'black' },
         { 'base-btn_max': mode === 'max' },
         { 'base-btn_share': mode === 'share' },
+        { 'base-btn_add': mode === 'add' },
       ];
     },
   },
@@ -257,6 +258,14 @@ export default {
     color: $black800;
     &:hover {
       background: $black100;
+    }
+  }
+  &_add{
+    background-color: $white;
+    color: $blue;
+    &:hover{
+      background-color: $blue;
+      color: $white;
     }
   }
 }

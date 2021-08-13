@@ -25,7 +25,7 @@
         v-if="step === 1"
         class="content__container"
       >
-        <div>
+        <div class="content__image">
           <img
             alt="qr"
             src="~/assets/img/temp/qr.svg"

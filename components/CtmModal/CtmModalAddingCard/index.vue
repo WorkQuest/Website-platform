@@ -89,10 +89,17 @@ export default {
       this.CloseModal();
     },
     showCardHasBeenAddedModal() {
-      this.ShowModal({
-        key: modals.cardAdded,
-        branch: this.options.branch,
-      });
+      if (this.options.branch === 'payment') {
+        this.ShowModal({
+          key: modals.paymentOptions,
+          step: 2,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.cardAdded,
+          branch: this.options.branch,
+        });
+      }
     },
   },
 };
