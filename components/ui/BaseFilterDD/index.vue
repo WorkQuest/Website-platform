@@ -1498,12 +1498,12 @@ export default {
       if (sub.id === 1) {
         const { length } = Object.keys(item.items);
         const { checkbox } = this.$refs;
-        let i;
-        while (sub.id < length) {
-          // eslint-disable-next-line no-plusplus
-          i = sub.id++;
-          checkbox[i].checked = true;
+        let i = sub.id;
+        // eslint-disable-next-line no-plusplus
+        for (i; i < length; i++) {
+          checkbox[i].checked = !checkbox[i].checked;
         }
+        console.log(`i: + ${i}`);
       } else if (sub.id > 1) {
         const { checkbox } = this.$refs;
         const i = sub.id;
