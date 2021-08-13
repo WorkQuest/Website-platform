@@ -103,7 +103,7 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
-import quests from '~/components/app/pages/common/quests';
+import quests from '~/components/app/pages/common/Quests';
 import emptyData from '~/components/app/info/emptyData';
 
 export default {

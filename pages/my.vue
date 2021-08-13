@@ -47,7 +47,7 @@
 
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
-import quests from '~/components/app/pages/common/quests';
+import quests from '~/components/app/pages/common/Quests';
 import emptyData from '~/components/app/info/emptyData';
 
 const value = new Vue();

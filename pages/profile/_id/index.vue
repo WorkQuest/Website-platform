@@ -96,7 +96,7 @@
 import { mapGetters } from 'vuex';
 import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
 import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
-import quests from '~/components/app/pages/common/quests';
+import quests from '~/components/app/pages/common/Quests';
 import userInfo from '~/components/app/pages/common/userInfo';
 import modals from '~/store/modals/modals';
 import emptyData from '~/components/app/info/emptyData';
