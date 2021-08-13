@@ -116,6 +116,7 @@ export default {
   data() {
     return {
       isOpenDD: true,
+      selectedItem: null,
       selected: [],
       filters: {
         categories: {
@@ -1517,16 +1518,35 @@ export default {
     toggleItem(item) {
       const { categories } = this.filters;
       const { length } = Object.keys(categories);
-      if (item.visible) {
-        item.visible = !item.visible;
-      } else if (!item.visible) {
-        item.visible = !item.visible;
+      let { selectedItems } = this;
+      // console.log(item);
+      let i = item.id;
+      function selectedItem() {
+        // eslint-disable-next-line no-const-assign
+        selectedItems = i;
+        // console.log(i);
+        console.log(selectedItems);
+      }
+      selectedItem();
+      for (i; i < length; i += 1) {
+        if (item.visible) {
+          console.info('Block 1');
+          for (i; i < length; i += 1) {
+            item.visible = false;
+          }
+        } else if (!item.visible) {
+          console.info('Block 2');
+          console.log(item);
+          for (i; i < length; i += 1) {
+            item.visible = true;
+          }
+        }
+        // item.visible = !item.visible;
       }
     },
     closeItem() {
       const acc = document.getElementsByClassName('filter__item');
-      // eslint-disable-next-line no-const-assign,no-plusplus
-      for (let i = 0; i < acc.length; i++) {
+      for (let i = 0; i < acc.length; i += 1) {
         acc[i].onclick = () => {
           this.classList.toggle('hide');
           this.nextElementSibling.classList.toggle('hide');
