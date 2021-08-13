@@ -65,4 +65,7 @@ export default {
   giveTransfer: 'giveTransfer',
   paymentOptions: 'paymentOptions',
   areYouSureDelete: 'areYouSureDelete',
+  swap: 'swap',
+  swapInfo: 'swapInfo',
+
 };

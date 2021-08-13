@@ -518,7 +518,18 @@
     "coinpaymebts": "Сoinpaymebts",
     "sureDeleteText": "Do you really want to delete this quest?",
     "error": "Error",
-    "errorDeleteText": "Do you really want to delete this quest?"
+    "errorDeleteText": "Do you really want to delete this quest?",
+    "swapTitle": "Crosschain exchange from Worknet to Binance",
+    "coin": "Coin",
+    "recepientBinance": "Recipient binance address",
+    "createSwap": "Create swap",
+    "swapInfo": "Swap info",
+    "crosschain": "Crosschain",
+    "crosschainText": "Worknet > Binance",
+    "senderAddress": "Sender address",
+    "recepientAddress": "Recepient address",
+    "worknetFee": "Worknet fee",
+    "binanceFee": "Binance fee"
   },
   "ui": {
     "jobQuestors": "Job Questors",
