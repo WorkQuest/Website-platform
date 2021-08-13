@@ -13,7 +13,7 @@
           ref="gMap"
           language="en"
           :options="{fullscreenControl: false}"
-          :zoom="zoomChanged()"
+          :zoom="10"
         >
           <GMapMarker
             v-for="location in locations"
@@ -129,17 +129,6 @@ export default {
       userRole: 'user/getUserRole',
       questsLocations: 'quests/getQuestsLocation',
     }),
-  },
-  methods: {
-    zoomChanged() {
-      let value = 10;
-      if (this.distanceIndex === 1) {
-        value = 20;
-      } else if (this.distanceIndex === 2) {
-        value = 30;
-      }
-      return value;
-    },
   },
 };
 </script>

@@ -46,8 +46,8 @@
           <emptyData
             v-else
             :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
-            :button-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-            :button-href="userRole === 'employer' ? '/create-quest' : '/quests'"
+            :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+            :link="userRole === 'employer' ? '/create-quest' : '/quests'"
           />
         </div>
 

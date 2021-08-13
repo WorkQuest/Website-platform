@@ -96,7 +96,6 @@ export default {
 
   // Experimental
   async setStarOnQuest({ commit }, id) {
-    console.log(id);
     // Needed to add quest id;
     return await this.$axios.$post(`/v1/quest/${id}/star`);
   },

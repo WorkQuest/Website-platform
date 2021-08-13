@@ -34,6 +34,27 @@ Vue.mixin({
         text: value,
       });
     },
+    getDistanceFromLatLonInKm(lat1 = 0, lon1 = 0, lat2 = 0, lon2 = 0) {
+      const R = 6371; // Radius of the earth in km
+      const dLat = this.deg2rad(lat2 - lat1); // deg2rad below
+      const dLon = this.deg2rad(lon2 - lon1);
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+        + Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2))
+        * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      let d = (R * c) * 1000; // Distance in km
+      if (d >= 1000) {
+        d = '+1000';
+      } else if (d >= 500) {
+        d = '+500';
+      } else {
+        d = '-500';
+      }
+      return d;
+    },
+    deg2rad(deg) {
+      return deg * (Math.PI / 180);
+    },
     ShowError(label) {
       this.$bvToast.toast(label, {
         title: 'Ошибка',

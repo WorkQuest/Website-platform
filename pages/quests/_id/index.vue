@@ -355,8 +355,8 @@
           <emptyData
             v-else
             :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
-            :button-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-            :button-href="userRole === 'employer' ? '/create-quest' : '/quests'"
+            :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+            :link="userRole === 'employer' ? '/create-quest' : '/quests'"
           />
         </div>
       </div>
@@ -458,11 +458,11 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
-    this.SetLoader(false);
     this.questLocation = {
       lat: this.questData.location.latitude,
       lng: this.questData.location.longitude,
     };
+    this.SetLoader(false);
   },
   methods: {
     back() {

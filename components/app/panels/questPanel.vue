@@ -48,7 +48,7 @@
             <span
               class="user__distance"
             >
-              {{ getDistanceFromLatLonInKm() }} {{ $t('meta.fromYou') }}
+              {{ showDistance() }} {{ $t('meta.fromYou') }}
             </span>
           </div>
           <div
@@ -105,6 +105,10 @@ export default {
     return {
       localsTime: '',
       avatarUrl: '',
+      questLat: 0,
+      questLng: 0,
+      userLat: 0,
+      userLng: 0,
     };
   },
   computed: {
@@ -121,33 +125,22 @@ export default {
     }),
   },
   mounted() {
+    this.SetLoader(true);
     this.avatarUrl = this.userInfo.avatarId ? this.userInfo.avatar.url : '~/assets/img/app/avatar_empty.png';
+    this.questLat = this.questData?.location?.latitude;
+    this.questLng = this.questData?.location?.longitude;
+    this.userLat = this.userData?.location?.longitude;
+    this.userLng = this.userData?.location?.longitude;
+    this.SetLoader(false);
   },
   methods: {
-    getDistanceFromLatLonInKm() {
-      const lat1 = this.questData?.location?.latitude || 0;
-      const lon1 = this.questData?.location?.longitude || 0;
-      const lat2 = this.userData?.location?.longitude || 0;
-      const lon2 = this.userData?.location?.longitude || 0;
-      const R = 6371; // Radius of the earth in km
-      const dLat = this.deg2rad(lat2 - lat1); // deg2rad below
-      const dLon = this.deg2rad(lon2 - lon1);
-      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-        + Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2))
-        * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      let d = (R * c) * 1000; // Distance in km
-      if (d >= 1000) {
-        d = '+1000';
-      } else if (d >= 500) {
-        d = '+500';
-      } else {
-        d = '-500';
-      }
-      return d;
-    },
-    deg2rad(deg) {
-      return deg * (Math.PI / 180);
+    showDistance() {
+      return this.getDistanceFromLatLonInKm(
+        this.questLat,
+        this.questLng,
+        this.userLat,
+        this.userLng,
+      );
     },
     showProfile() {
       this.$router.push('/show-profile');

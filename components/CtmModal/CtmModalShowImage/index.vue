@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
-    :title="$t('modals.showImage.quest')"
+    class="ctm-modal"
+    :is-header="false"
   >
     <div class="ctm-modal__content">
       <img
@@ -33,10 +33,15 @@ export default {
 <style lang="scss" scoped>
 .ctm-modal {
   @include modalKit;
-}
-.messageSend {
-  width: auto !important;
-  max-width: 100% !important;
+  &__box {
+    max-width: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 0 !important;
+  }
+  &__content {
+    padding: 28px 28px 5px 28px !important;
+  }
 }
 
 </style>

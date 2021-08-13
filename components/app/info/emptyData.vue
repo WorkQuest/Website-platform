@@ -13,11 +13,11 @@
         {{ description }}
       </div>
       <base-btn
-        v-if="buttonLink !== ''"
+        v-if="link !== ''"
         class="absence__button"
         :nuxt-link="buttonLink"
       >
-        {{ buttonText }}
+        {{ btnText }}
       </base-btn>
     </div>
   </div>
@@ -31,11 +31,11 @@ export default {
       type: String,
       default: '',
     },
-    buttonText: {
+    btnText: {
       type: String,
       default: '',
     },
-    buttonLink: {
+    link: {
       type: String,
       default: '',
     },

@@ -4,25 +4,6 @@
       class="pager__icon"
       :class="{'pager__icon_disabled': value === 1}"
       :disabled="value === 1"
-      @click="firstPage"
-    >
-      <img
-        v-if="value === 1"
-        src="~/assets/img/ui/pagerLast_disabled.svg"
-        class="pager__img"
-        alt="<<"
-      >
-      <img
-        v-else
-        src="~/assets/img/ui/pagerLast.svg"
-        class="pager__img pager__img_prev"
-        alt="<<"
-      >
-    </button>
-    <button
-      class="pager__icon"
-      :class="{'pager__icon_disabled': value === 1}"
-      :disabled="value === 1"
       @click="prevPage"
     >
       <img
@@ -78,25 +59,6 @@
         src="~/assets/img/ui/pagerNext.svg"
         class="pager__img"
         alt=">"
-      >
-    </button>
-    <button
-      class="pager__icon"
-      :class="{'pager__icon_disabled': value === totalPages}"
-      :disabled="value === totalPages"
-      @click="lastPage"
-    >
-      <img
-        v-if="value === totalPages"
-        src="~/assets/img/ui/pagerLast_disabled.svg"
-        class="pager__img pager__img_prev"
-        alt=">>"
-      >
-      <img
-        v-else
-        src="~/assets/img/ui/pagerLast.svg"
-        class="pager__img"
-        alt=">>"
       >
     </button>
   </div>

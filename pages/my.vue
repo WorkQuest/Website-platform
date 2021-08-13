@@ -30,11 +30,11 @@
         <emptyData
           v-else
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
-          :button-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-          :button-link="userRole === 'employer' ? '/create-quest' : ''"
+          :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+          :link="userRole === 'employer' ? '/create-quest' : ''"
         />
         <base-pager
-          v-if="questsData.count !== 0"
+          v-if="questsData.count !== 0 && totalPagesValue !== 1"
           v-model="page"
           :total-pages="totalPagesValue"
         />
@@ -117,8 +117,8 @@ export default {
       };
       this.SetLoader(true);
       await this.$store.dispatch('quests/getUserQuests', payload);
-      this.SetLoader(false);
       this.totalPagesValue = this.totalPages;
+      this.SetLoader(false);
     },
   },
   async mounted() {
@@ -140,8 +140,8 @@ export default {
       };
       this.SetLoader(true);
       await this.$store.dispatch('quests/getUserQuests', payload);
-      this.SetLoader(false);
       this.totalPagesValue = this.totalPages;
+      this.SetLoader(false);
     },
     btnMode(id) {
       if (this.selectedTab === id) {

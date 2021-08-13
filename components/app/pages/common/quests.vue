@@ -49,7 +49,6 @@
                 </div>
               </div>
               <div
-                v-if="isHideStar(item.type)"
                 class="block__icon block__icon_fav star"
                 @click="actionFavorite(item.id)"
               >
@@ -59,7 +58,7 @@
                   alt=""
                 >
                 <img
-                  v-if="!item.isFavourite"
+                  v-if="item.star === null"
                   class="star__default"
                   src="~assets/img/ui/star_simple.svg"
                   alt=""
@@ -101,7 +100,10 @@
             </div>
             <div class="block__locate">
               <span class="block__icon" />
-              <span class="block__text block__text_locate">{{ getDistanceFromLatLonInKm(item) }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
+              <span class="block__text block__text_locate">
+                {{ showDistance(item.location.latitude, item.location.longitude) }}
+                {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
+              </span>
             </div>
             <div class="block__text block__text_blue">
               {{ item.title }}
@@ -193,58 +195,37 @@ export default {
   },
   data() {
     return {
-      isShowFavourite: false,
+      isFavorite: false,
       localUserData: {},
       currency: 'WUSD',
+      userLat: 0,
+      userLng: 0,
     };
   },
   computed: {
     ...mapGetters({
-      cards: 'quests/getAllQuests',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
     }),
-    cardLevelClass(idx) {
-      const { cards } = this;
-      return [
-        { card__level_reliable: cards[idx].level.code === 2 },
-        { card__level_checked: cards[idx].level.code === 3 },
-      ];
-    },
   },
   async mounted() {
     this.SetLoader(true);
     this.localUserData = this.userData;
+    this.userLat = this.localUserData?.location?.latitude;
+    this.userLng = this.localUserData?.location?.longitude;
     this.SetLoader(false);
   },
   methods: {
+    showDistance(questLat, questLng) {
+      return this.getDistanceFromLatLonInKm(
+        questLat,
+        questLng,
+        this.userLat,
+        this.userLng,
+      );
+    },
     async actionFavorite(id) {
       await this.$store.dispatch('quests/setStarOnQuest', id);
-    },
-    getDistanceFromLatLonInKm(item) {
-      const lat1 = item.location.latitude || 0;
-      const lon1 = item.location.longitude || 0;
-      const lat2 = this.userData?.location?.longitude || 0;
-      const lon2 = this.userData?.location?.longitude || 0;
-      const R = 6371; // Radius of the earth in km
-      const dLat = this.deg2rad(lat2 - lat1); // deg2rad below
-      const dLon = this.deg2rad(lon2 - lon1);
-      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-        + Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2))
-        * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      let d = (R * c) * 1000; // Distance in km
-      if (d >= 1000) {
-        d = '+1000';
-      } else if (d >= 500) {
-        d = '+500';
-      } else {
-        d = '-500';
-      }
-      return d;
-    },
-    deg2rad(deg) {
-      return deg * (Math.PI / 180);
     },
     cardsLevels(idx) {
       const { cards } = this;
@@ -276,15 +257,6 @@ export default {
       this.ShowModal({
         key: modals.sendARequest,
       });
-    },
-    filteredCards(type, isFavorite) {
-      if (type === 0) {
-        return this.object.quests;
-      }
-      if (isFavorite) {
-        return this.object.quests.filter((x) => x.isFavourite);
-      }
-      return this.object.quests.filter((x) => x.type === type);
     },
     getStatusCard(index) {
       const status = {
