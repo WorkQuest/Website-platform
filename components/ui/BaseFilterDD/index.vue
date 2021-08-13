@@ -1499,11 +1499,9 @@ export default {
         const { length } = Object.keys(item.items);
         const { checkbox } = this.$refs;
         let i = sub.id;
-        // eslint-disable-next-line no-plusplus
-        for (i; i < length; i++) {
+        for (i; i < length; i += 1) {
           checkbox[i].checked = !checkbox[i].checked;
         }
-        console.log(`i: + ${i}`);
       } else if (sub.id > 1) {
         const { checkbox } = this.$refs;
         const i = sub.id;
