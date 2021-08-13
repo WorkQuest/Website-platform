@@ -978,389 +978,505 @@ export default {
           21: {
             title: this.$t('filters.items.21.title'),
             visible: false,
+            id: 21,
             items: {
               1: {
+                id: 1,
                 title: this.$t('filters.commonSub.selectAll'),
               },
               2: {
+                id: 2,
                 title: this.$t('filters.items.21.sub.1'),
               },
               3: {
+                id: 3,
                 title: this.$t('filters.items.21.sub.2'),
               },
               4: {
+                id: 4,
                 title: this.$t('filters.items.21.sub.3'),
               },
               5: {
+                id: 5,
                 title: this.$t('filters.items.21.sub.4'),
               },
               6: {
+                id: 6,
                 title: this.$t('filters.items.21.sub.5'),
               },
               7: {
+                id: 7,
                 title: this.$t('filters.items.21.sub.6'),
               },
               8: {
+                id: 8,
                 title: this.$t('filters.items.21.sub.7'),
               },
               9: {
+                id: 9,
                 title: this.$t('filters.items.21.sub.8'),
               },
               10: {
+                id: 10,
                 title: this.$t('filters.items.21.sub.9'),
               },
               11: {
+                id: 11,
                 title: this.$t('filters.items.21.sub.10'),
               },
               12: {
+                id: 12,
                 title: this.$t('filters.items.21.sub.11'),
               },
             },
           },
           22: {
+            id: 22,
             title: this.$t('filters.items.22.title'),
             visible: false,
             items: {
               1: {
+                id: 1,
                 title: this.$t('filters.commonSub.selectAll'),
               },
               2: {
+                id: 2,
                 title: this.$t('filters.items.22.sub.1'),
               },
               3: {
+                id: 3,
                 title: this.$t('filters.items.22.sub.2'),
               },
               4: {
+                id: 4,
                 title: this.$t('filters.items.22.sub.3'),
               },
               5: {
+                id: 5,
                 title: this.$t('filters.items.22.sub.4'),
               },
               6: {
+                id: 6,
                 title: this.$t('filters.items.22.sub.5'),
               },
               7: {
+                id: 7,
                 title: this.$t('filters.items.22.sub.6'),
               },
               8: {
+                id: 8,
                 title: this.$t('filters.items.22.sub.7'),
               },
               9: {
+                id: 9,
                 title: this.$t('filters.items.22.sub.8'),
               },
             },
           },
           23: {
+            id: 23,
             title: this.$t('filters.items.23.title'),
             visible: false,
             items: {
               1: {
+                id: 1,
                 title: this.$t('filters.commonSub.selectAll'),
               },
               2: {
+                id: 2,
                 title: this.$t('filters.items.23.sub.1'),
               },
               3: {
+                id: 3,
                 title: this.$t('filters.items.23.sub.2'),
               },
               4: {
+                id: 4,
                 title: this.$t('filters.items.23.sub.3'),
               },
               5: {
+                id: 5,
                 title: this.$t('filters.items.23.sub.4'),
               },
               6: {
+                id: 6,
                 title: this.$t('filters.items.23.sub.5'),
               },
               7: {
+                id: 7,
                 title: this.$t('filters.items.23.sub.6'),
               },
               8: {
+                id: 8,
                 title: this.$t('filters.items.23.sub.7'),
               },
               9: {
+                id: 9,
                 title: this.$t('filters.items.23.sub.8'),
               },
               10: {
+                id: 10,
                 title: this.$t('filters.items.23.sub.9'),
               },
             },
           },
           24: {
+            id: 24,
             title: this.$t('filters.items.24.title'),
             visible: false,
             items: {
               1: {
+                id: 1,
                 title: this.$t('filters.commonSub.selectAll'),
               },
               2: {
+                id: 2,
                 title: this.$t('filters.items.24.sub.1'),
               },
               3: {
+                id: 3,
                 title: this.$t('filters.items.24.sub.2'),
               },
               4: {
+                id: 4,
                 title: this.$t('filters.items.24.sub.3'),
               },
               5: {
+                id: 5,
                 title: this.$t('filters.items.24.sub.4'),
               },
               6: {
+                id: 6,
                 title: this.$t('filters.items.24.sub.5'),
               },
               7: {
+                id: 7,
                 title: this.$t('filters.items.24.sub.6'),
               },
               8: {
+                id: 8,
                 title: this.$t('filters.items.24.sub.7'),
               },
               9: {
+                id: 9,
                 title: this.$t('filters.items.24.sub.8'),
               },
               10: {
+                id: 10,
                 title: this.$t('filters.items.24.sub.9'),
               },
             },
           },
           25: {
+            id: 25,
             title: this.$t('filters.items.25.title'),
             visible: false,
             items: {
               1: {
+                id: 1,
                 title: this.$t('filters.commonSub.selectAll'),
               },
               2: {
+                id: 2,
                 title: this.$t('filters.items.25.sub.1'),
               },
               3: {
+                id: 3,
                 title: this.$t('filters.items.25.sub.2'),
               },
               4: {
+                id: 4,
                 title: this.$t('filters.items.25.sub.3'),
               },
               5: {
+                id: 5,
                 title: this.$t('filters.items.25.sub.4'),
               },
               6: {
+                id: 6,
                 title: this.$t('filters.items.25.sub.5'),
               },
               7: {
+                id: 7,
                 title: this.$t('filters.items.25.sub.6'),
               },
               8: {
+                id: 8,
                 title: this.$t('filters.items.25.sub.7'),
               },
               9: {
+                id: 9,
                 title: this.$t('filters.items.25.sub.8'),
               },
               10: {
+                id: 10,
                 title: this.$t('filters.items.25.sub.9'),
               },
             },
           },
           26: {
+            id: 26,
             title: this.$t('filters.items.26.title'),
             visible: false,
             items: {
               1: {
+                id: 1,
                 title: this.$t('filters.commonSub.selectAll'),
               },
               2: {
+                id: 2,
                 title: this.$t('filters.items.26.sub.1'),
               },
               3: {
+                id: 3,
                 title: this.$t('filters.items.26.sub.2'),
               },
               4: {
+                id: 4,
                 title: this.$t('filters.items.26.sub.3'),
               },
               5: {
+                id: 5,
                 title: this.$t('filters.items.26.sub.4'),
               },
               6: {
+                id: 6,
                 title: this.$t('filters.items.26.sub.5'),
               },
               7: {
+                id: 7,
                 title: this.$t('filters.items.26.sub.6'),
               },
               8: {
+                id: 8,
                 title: this.$t('filters.items.26.sub.7'),
               },
               9: {
+                id: 9,
                 title: this.$t('filters.items.26.sub.8'),
               },
               10: {
+                id: 10,
                 title: this.$t('filters.items.26.sub.9'),
               },
               11: {
+                id: 11,
                 title: this.$t('filters.items.26.sub.10'),
               },
             },
           },
           27: {
+            id: 27,
             title: this.$t('filters.items.27.title'),
             visible: false,
             items: {
               1: {
+                id: 1,
                 title: this.$t('filters.commonSub.selectAll'),
               },
               2: {
+                id: 2,
                 title: this.$t('filters.items.27.sub.1'),
               },
               3: {
+                id: 3,
                 title: this.$t('filters.items.27.sub.2'),
               },
               4: {
+                id: 4,
                 title: this.$t('filters.items.27.sub.3'),
               },
               5: {
+                id: 5,
                 title: this.$t('filters.items.27.sub.4'),
               },
               6: {
+                id: 6,
                 title: this.$t('filters.items.27.sub.5'),
               },
             },
           },
           28: {
+            id: 28,
             title: this.$t('filters.items.28.title'),
             visible: false,
             items: {
               1: {
+                id: 1,
                 title: this.$t('filters.commonSub.selectAll'),
               },
               2: {
+                id: 2,
                 title: this.$t('filters.items.28.sub.1'),
               },
               3: {
+                id: 3,
                 title: this.$t('filters.items.28.sub.2'),
               },
               4: {
+                id: 4,
                 title: this.$t('filters.items.28.sub.3'),
               },
               5: {
+                id: 5,
                 title: this.$t('filters.items.28.sub.4'),
               },
               6: {
+                id: 6,
                 title: this.$t('filters.items.28.sub.5'),
               },
               7: {
+                id: 7,
                 title: this.$t('filters.items.28.sub.6'),
               },
             },
           },
           29: {
+            id: 29,
             title: this.$t('filters.items.29.title'),
             visible: false,
             items: {
               1: {
+                id: 1,
                 title: this.$t('filters.commonSub.selectAll'),
               },
               2: {
+                id: 2,
                 title: this.$t('filters.items.29.sub.1'),
               },
               3: {
+                id: 3,
                 title: this.$t('filters.items.29.sub.2'),
               },
               4: {
+                id: 4,
                 title: this.$t('filters.items.29.sub.3'),
               },
               5: {
+                id: 5,
                 title: this.$t('filters.items.29.sub.4'),
               },
               6: {
+                id: 6,
                 title: this.$t('filters.items.29.sub.5'),
               },
             },
           },
           30: {
+            id: 30,
             title: this.$t('filters.items.30.title'),
             visible: false,
             items: {
               1: {
+                id: 1,
                 title: this.$t('filters.commonSub.selectAll'),
               },
               2: {
+                id: 2,
                 title: this.$t('filters.items.30.sub.1'),
               },
               3: {
+                id: 3,
                 title: this.$t('filters.items.30.sub.2'),
               },
               4: {
+                id: 4,
                 title: this.$t('filters.items.30.sub.3'),
               },
               5: {
+                id: 5,
                 title: this.$t('filters.items.30.sub.4'),
               },
               6: {
+                id: 6,
                 title: this.$t('filters.items.30.sub.5'),
               },
             },
           },
           31: {
+            id: 31,
             title: this.$t('filters.items.31.title'),
             visible: false,
             items: {
               1: {
+                id: 1,
                 title: this.$t('filters.commonSub.selectAll'),
               },
               2: {
+                id: 2,
                 title: this.$t('filters.items.31.sub.1'),
               },
               3: {
+                id: 3,
                 title: this.$t('filters.items.31.sub.2'),
               },
               4: {
+                id: 4,
                 title: this.$t('filters.items.31.sub.3'),
               },
             },
           },
           32: {
+            id: 32,
             title: this.$t('filters.items.32.title'),
             visible: false,
             items: {
               1: {
+                id: 1,
                 title: this.$t('filters.commonSub.selectAll'),
               },
               2: {
+                id: 2,
                 title: this.$t('filters.items.32.sub.1'),
               },
               3: {
+                id: 3,
                 title: this.$t('filters.items.32.sub.2'),
               },
             },
           },
           33: {
+            id: 33,
             title: this.$t('filters.items.33.title'),
             visible: false,
             items: {
               1: {
+                id: 1,
                 title: this.$t('filters.commonSub.selectAll'),
               },
               2: {
+                id: 2,
                 title: this.$t('filters.items.33.sub.1'),
               },
               3: {
+                id: 3,
                 title: this.$t('filters.items.33.sub.2'),
               },
               4: {
+                id: 4,
                 title: this.$t('filters.items.33.sub.3'),
               },
             },
           },
           34: {
+            id: 34,
             title: this.$t('filters.items.34.title'),
             visible: false,
             items: {
               1: {
+                id: 1,
                 title: this.$t('filters.commonSub.selectAll'),
               },
               2: {
+                id: 2,
                 title: this.$t('filters.items.34.sub.1'),
               },
               3: {
+                id: 3,
                 title: this.$t('filters.items.34.sub.2'),
               },
               4: {
+                id: 4,
                 title: this.$t('filters.items.34.sub.3'),
               },
             },
@@ -1380,16 +1496,14 @@ export default {
   methods: {
     selectSub(sub, item) {
       if (sub.id === 1) {
-        console.info('Select All');
         const { length } = Object.keys(item.items);
-        console.log(`SubsOfCategory: ${length}`);
         const { checkbox } = this.$refs;
+        let i;
         while (sub.id < length) {
           // eslint-disable-next-line no-plusplus
-          const i = sub.id++;
+          i = sub.id++;
           checkbox[i].checked = true;
         }
-        console.log();
       } else if (sub.id > 1) {
         const { checkbox } = this.$refs;
         const i = sub.id;
@@ -1405,21 +1519,11 @@ export default {
     toggleItem(item) {
       const { categories } = this.filters;
       const { length } = Object.keys(categories);
-      console.log(`Categories: ${length}`);
-      console.log(categories);
-      // Object.keys(categories).forEach((el) => (el.visible ? el.visible : el.visible));
-      console.log(item.visible);
       if (item.visible) {
-        // TODO: Перебрать циклом forEach элементы, проверить, если visible = true - везде - false;
         item.visible = !item.visible;
-        console.log(1);
-        console.log(item.visible);
       } else if (!item.visible) {
-        console.log(2);
         item.visible = !item.visible;
-        console.log(item.visible);
       }
-      // item.visible = !item.visible;
     },
     closeItem() {
       const acc = document.getElementsByClassName('filter__item');
