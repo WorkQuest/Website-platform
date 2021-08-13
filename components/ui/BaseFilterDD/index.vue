@@ -116,7 +116,6 @@ export default {
   data() {
     return {
       isOpenDD: true,
-      selectedItem: null,
       selected: [],
       filters: {
         categories: {
@@ -1518,16 +1517,8 @@ export default {
     toggleItem(item) {
       const { categories } = this.filters;
       const { length } = Object.keys(categories);
-      let { selectedItems } = this;
-      // console.log(item);
       let i = item.id;
-      function selectedItem() {
-        // eslint-disable-next-line no-const-assign
-        selectedItems = i;
-        // console.log(i);
-        console.log(selectedItems);
-      }
-      selectedItem();
+
       for (i; i < length; i += 1) {
         if (item.visible) {
           console.info('Block 1');
