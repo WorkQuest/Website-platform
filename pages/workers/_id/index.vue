@@ -33,7 +33,7 @@
                 <div class="description">
                   {{ user.desc }}
                 </div>
-                <Social />
+                <social />
                 <div class="contacts__grid">
                   <div class="contacts">
                     <div class="contacts">
@@ -125,31 +125,27 @@
         </div>
       </div>
       <div class="information-section">
-        <!-- REVIEWS -->
         <div class="section__title">
           {{ $t('quests.reviewsBig') }}
         </div>
-        <Reviews />
+        <reviews />
         <div class="button__container">
-          <nuxt-link
+          <div
             class="button__more"
-            to="/profiles/1"
           >
             {{ $t('meta.showAllReviews') }}
-          </nuxt-link>
+          </div>
         </div>
-        <!-- Portfolio -->
         <div class="section__title">
           {{ $t('quests.portfolio') }}
         </div>
         <Portfolio />
         <div class="button__container">
-          <nuxt-link
+          <div
             class="button__more"
-            to="/profiles/1"
           >
             {{ $t('quests.showAllCases') }}
-          </nuxt-link>
+          </div>
         </div>
       </div>
     </div>
@@ -159,17 +155,16 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import Reviews from '~/components/app/Pages/Profile/Tabs/Reviews';
-import Portfolio from '~/components/app/Pages/Profile/Tabs/Portfolio';
-import Social from '~/components/app/Panels/Social';
-import Contact from '~/components/app/Panels/Contact';
+import reviews from '~/components/app/pages/profile/tabs/reviews';
+import Portfolio from '~/components/app/pages/profile/tabs/portfolio';
+import social from '~/components/app/panels/social';
 
 export default {
   name: 'IndexVue',
   components: {
-    Reviews,
+    reviews,
     Portfolio,
-    Social,
+    social,
   },
   computed: {
     ...mapGetters({

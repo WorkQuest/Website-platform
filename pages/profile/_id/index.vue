@@ -4,9 +4,8 @@
       class="main-section main-section_white"
     >
       <div class="main-container">
-        <UserInfo :selected="selected" />
+        <userInfo :selected="selected" />
 
-        <!-- tabs -->
         <button
           class="tab__btn"
           :class="{tab__btn_active: selected === 1}"
@@ -34,19 +33,29 @@
 
     <div class="information-section">
       <div class="main-container">
-        <!-- REVIEWS -->
         <div
           v-if="selected === 1"
           class="tab__container"
         >
-          <QuestsTab />
+          <quests
+            v-if="questsObjects.count !== 0"
+            :limit="questLimits"
+            :object="questsObjects"
+            :page="'quests'"
+          />
+          <emptyData
+            v-else
+            :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
+            :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+            :link="userRole === 'employer' ? '/create-quest' : '/quests'"
+          />
         </div>
 
         <div
           v-if="selected === 2"
           class="tab__container"
         >
-          <ReviewsTab />
+          <reviewsTab />
         </div>
 
         <div
@@ -63,7 +72,7 @@
               </template>
             </base-btn>
           </div>
-          <PortfolioTab />
+          <portfolioTab />
         </div>
 
         <div
@@ -71,7 +80,7 @@
           class="button"
         >
           <nuxt-link
-            v-if="selected === 1"
+            v-if="selected === 2"
             class="button__more"
             to="/profile"
           >
@@ -85,23 +94,27 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import PortfolioTab from '~/components/app/Pages/Profile/Tabs/Portfolio';
-import ReviewsTab from '~/components/app/Pages/Profile/Tabs/Reviews';
-import QuestsTab from '~/components/app/Pages/Common/Quests';
-import UserInfo from '~/components/app/Pages/Common/UserInfo';
+import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
+import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
+import quests from '~/components/app/pages/common/Quests';
+import userInfo from '~/components/app/pages/common/userInfo';
 import modals from '~/store/modals/modals';
+import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Index',
   components: {
-    ReviewsTab,
-    PortfolioTab,
-    QuestsTab,
-    UserInfo,
+    reviewsTab,
+    portfolioTab,
+    quests,
+    userInfo,
+    emptyData,
   },
   data() {
     return {
       selected: 1,
+      questLimits: 100,
+      questsObjects: {},
     };
   },
   computed: {
@@ -120,6 +133,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    this.questsObjects = await this.$store.dispatch('quests/getUserQuests', { userId: this.userData.id });
     this.SetLoader(false);
   },
   methods: {

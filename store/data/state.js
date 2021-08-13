@@ -141,7 +141,6 @@ export default () => ({
       id: 0,
     },
     {
-
       title: 'Favorite',
       id: 1,
     },
@@ -621,6 +620,4 @@ export default () => ({
       lng: '16.21',
     },
   ],
-  allQuests: {},
-  userInfoQuests: {},
 });

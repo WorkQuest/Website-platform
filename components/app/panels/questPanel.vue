@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="user">
     <div class="user__top">
       <div class="user__container">
         <div class="user__head">
@@ -7,51 +7,28 @@
             class="user__left"
             @click="showProfile()"
           >
-            <span v-if="this.$route.path === '/profile'">
-              <img
-                v-if="imageData"
-                id="userAvatarOne"
-                class="profile__img"
-                :src="imageData"
-                alt=""
-              >
-              <img
-                v-if="!imageData"
-                id="userAvatar"
-                class="profile__img"
-                src="~/assets/img/app/avatar_empty.png"
-                alt=""
-              >
-            </span>
-            <span v-else>
+            <span>
               <img
                 class="user__img"
-                src="~/assets/img/app/fake_profile.png"
+                :src="avatarUrl"
                 alt=""
               >
             </span>
             <span
-              v-if="this.$route.path === '/profile'"
               class="user__username"
             >
-              {{ userData.firstName }} {{ userData.lastName }}
+              {{ `${userInfo.firstName} ${userInfo.lastName}` }}
             </span>
             <span
-              v-else
-              class="user__username"
-            >
-              {{ quest.username }}
-            </span>
-            <span
-              v-if="userRole === 'employer'"
+              v-if="userRole === 'employer' && userCompany"
               class="user__company"
             >
-              {{ $t('company.from') }} {{ quest.company }}
+              {{ $t('company.from') }} {{ userCompany }}
             </span>
           </div>
           <div class="user__right">
             <span class="user__date">
-              {{ quest.date }}
+              {{ convertDate() }}
             </span>
             <button
               class="icon-share_outline icon_fs-20"
@@ -61,17 +38,17 @@
         </div>
         <div class="location__container">
           <div
-            v-if="quest.contacts.address"
+            v-if="questData"
             class="quest__location"
           >
             <span
               class="icon icon-location icon_fs-20"
             />
-            <span class="quest__address">{{ quest.contacts.address }}</span>
+            <span class="quest__address">Хардкод</span>
             <span
               class="user__distance"
             >
-              {{ quest.distance }} {{ $t('meta.fromYou') }}
+              {{ showDistance() }} {{ $t('meta.fromYou') }}
             </span>
           </div>
           <div
@@ -83,7 +60,7 @@
             <span
               class="runtime__link"
             >
-              {{ quest.runtime }}
+              Хардко
             </span>
           </div>
           <div
@@ -97,7 +74,7 @@
             <span
               class="runtime__link"
             >
-              {{ quest.performanceTimer }}
+              Хардкод
             </span>
           </div>
         </div>
@@ -119,22 +96,52 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'QuestPanel',
+  data() {
+    return {
+      localsTime: '',
+      avatarUrl: '',
+      questLat: 0,
+      questLng: 0,
+      userLat: 0,
+      userLng: 0,
+    };
+  },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
       imageData: 'user/getImageData',
-      userInfo: 'data/getUserInfo',
-      quest: 'data/getQuest',
       badgeList: 'data/getBadgeList',
+      questData: 'quests/getQuest',
+      userInfo: 'quests/getQuestUser',
+      userAvatar: 'quests/getQuestUserAvatar',
+      userCompany: 'quests/getQuestUserCompany',
     }),
   },
+  mounted() {
+    this.SetLoader(true);
+    this.avatarUrl = this.userInfo.avatarId ? this.userInfo.avatar.url : '~/assets/img/app/avatar_empty.png';
+    this.questLat = this.questData?.location?.latitude;
+    this.questLng = this.questData?.location?.longitude;
+    this.userLat = this.userData?.location?.longitude;
+    this.userLng = this.userData?.location?.longitude;
+    this.SetLoader(false);
+  },
   methods: {
+    showDistance() {
+      return this.getDistanceFromLatLonInKm(
+        this.questLat,
+        this.questLng,
+        this.userLat,
+        this.userLng,
+      );
+    },
     showProfile() {
       this.$router.push('/show-profile');
     },
@@ -142,6 +149,12 @@ export default {
       this.ShowModal({
         key: modals.sharingQuest,
       });
+    },
+    convertDate() {
+      if (this.questData.createdAt) {
+        return moment(this.questData.createdAt).format('MMMM Do YYYY, h:mm');
+      }
+      return '';
     },
   },
 };
@@ -177,7 +190,7 @@ export default {
     align-items: center;
   }
   &__address {
-    margin: 0px 5px;
+    margin: 0 5px;
     font-size: 14px;
   }
 }

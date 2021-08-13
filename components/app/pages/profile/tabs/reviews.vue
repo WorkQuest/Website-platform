@@ -58,7 +58,13 @@ import modals from '~/store/modals/modals';
 export default {
   name: 'ReviewsTab',
   computed: {
-    ...mapGetters({ reviews: 'data/getReviews' }),
+    ...mapGetters({
+      reviews: 'user/getAllUserReviews',
+      userData: 'user/getUserData',
+    }),
+  },
+  async mounted() {
+    await this.getAllReviews();
   },
   methods: {
     showProfile() {
@@ -68,6 +74,10 @@ export default {
       this.ShowModal({
         key: modals.reviewDetails,
       });
+    },
+    async getAllReviews() {
+      const { id } = this.userData;
+      await this.$store.dispatch('user/getAllUserReviews', id);
     },
   },
 };
