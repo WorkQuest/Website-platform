@@ -1395,7 +1395,7 @@ export default {
       toggleChecked();
       console.log(this.selected);
     },
-    selectSub(sub, item) {
+    selectSub(sub) {
       if (sub.id) {
         const { checkbox } = this.$refs;
         const i = sub.id;
@@ -1409,9 +1409,22 @@ export default {
       this.isOpenDD = !this.isOpenDD;
     },
     toggleItem(item) {
-      const { categories } = this.filters;
+      const categories = item;
+      console.log(categories);
+      let i = item.id;
       const { length } = Object.keys(categories);
-      item.visible = !item.visible;
+      if (item.visible) {
+        // eslint-disable-next-line no-plusplus
+        for (i; i < length; i++) {
+          item.visible = false;
+        }
+      } else if (!item.visible) {
+        // eslint-disable-next-line no-plusplus
+        for (i; i < length; i++) {
+          item.visible = true;
+        }
+      }
+      // item.visible = !item.visible;
     },
     closeItem() {
       const acc = document.getElementsByClassName('filter__item');
