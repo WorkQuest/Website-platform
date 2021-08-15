@@ -68,14 +68,29 @@
                   >
                     {{ selected }}
                     <div
-                      v-for="(sub, idx) in item.items"
-                      :id="idx"
-                      :key="idx"
                       class="sub__body"
                       :class="[{'hide': !item.visible}]"
                     >
                       <div
+                        class="sub__item"
+                        @click="selectAll(item)"
+                      >
+                        <input
+                          id="1"
+                          ref="checkbox"
+                          type="checkbox"
+                          :name="$t('filters.commonSub.selectAll')"
+                        >
+                        <label
+                          for="1"
+                          class="sub__label"
+                        >{{ $t('filters.commonSub.selectAll') }}</label>
+                      </div>
+
+                      <div
+                        v-for="(sub, idx) in item.items"
                         :id="idx"
+                        :key="idx"
                         class="sub__item"
                       >
                         <input
@@ -84,7 +99,7 @@
                           v-model="selected"
                           type="checkbox"
                           :name="sub.title"
-                          :value="sub"
+                          :value="sub.title"
                           @click="selectSub(sub, item)"
                         >
                         <label
@@ -124,10 +139,6 @@ export default {
             title: this.$t('filters.items.1.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.1.sub.1'),
@@ -183,10 +194,6 @@ export default {
             title: this.$t('filters.items.2.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.2.sub.1'),
@@ -230,10 +237,6 @@ export default {
             title: this.$t('filters.items.3.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.3.sub.1'),
@@ -277,10 +280,6 @@ export default {
             title: this.$t('filters.items.4.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.4.sub.1'),
@@ -308,10 +307,6 @@ export default {
             title: this.$t('filters.items.5.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.5.sub.1'),
@@ -351,10 +346,6 @@ export default {
             title: this.$t('filters.items.6.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.6.sub.1'),
@@ -402,10 +393,6 @@ export default {
             title: this.$t('filters.items.7.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.7.sub.1'),
@@ -453,10 +440,6 @@ export default {
             title: this.$t('filters.items.8.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.8.sub.1'),
@@ -484,10 +467,6 @@ export default {
             title: this.$t('filters.items.9.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.9.sub.1'),
@@ -523,10 +502,6 @@ export default {
             title: this.$t('filters.items.10.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.10.sub.1'),
@@ -542,10 +517,6 @@ export default {
             title: this.$t('filters.items.11.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.11.sub.1'),
@@ -577,10 +548,6 @@ export default {
             title: this.$t('filters.items.12.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.12.sub.1'),
@@ -612,10 +579,6 @@ export default {
             title: this.$t('filters.items.13.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.13.sub.1'),
@@ -651,10 +614,6 @@ export default {
             title: this.$t('filters.items.14.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.14.sub.1'),
@@ -682,10 +641,6 @@ export default {
             title: this.$t('filters.items.15.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.15.sub.1'),
@@ -721,10 +676,6 @@ export default {
             title: this.$t('filters.items.16.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.16.sub.1'),
@@ -764,10 +715,6 @@ export default {
             title: this.$t('filters.items.17.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.17.sub.1'),
@@ -803,10 +750,6 @@ export default {
             title: this.$t('filters.items.18.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.18.sub.1'),
@@ -866,10 +809,6 @@ export default {
             title: this.$t('filters.items.19.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.19.sub.1'),
@@ -913,9 +852,6 @@ export default {
             title: this.$t('filters.items.20.title'),
             visible: false,
             items: {
-              1: {
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 title: this.$t('filters.items.20.sub.1'),
               },
@@ -980,10 +916,6 @@ export default {
             visible: false,
             id: 21,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.21.sub.1'),
@@ -1035,10 +967,6 @@ export default {
             title: this.$t('filters.items.22.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.22.sub.1'),
@@ -1078,10 +1006,6 @@ export default {
             title: this.$t('filters.items.23.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.23.sub.1'),
@@ -1125,10 +1049,6 @@ export default {
             title: this.$t('filters.items.24.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.24.sub.1'),
@@ -1172,10 +1092,6 @@ export default {
             title: this.$t('filters.items.25.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.25.sub.1'),
@@ -1219,10 +1135,6 @@ export default {
             title: this.$t('filters.items.26.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.26.sub.1'),
@@ -1270,10 +1182,6 @@ export default {
             title: this.$t('filters.items.27.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.27.sub.1'),
@@ -1301,10 +1209,6 @@ export default {
             title: this.$t('filters.items.28.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.28.sub.1'),
@@ -1336,10 +1240,6 @@ export default {
             title: this.$t('filters.items.29.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.29.sub.1'),
@@ -1367,10 +1267,6 @@ export default {
             title: this.$t('filters.items.30.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.30.sub.1'),
@@ -1398,10 +1294,6 @@ export default {
             title: this.$t('filters.items.31.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.31.sub.1'),
@@ -1421,10 +1313,6 @@ export default {
             title: this.$t('filters.items.32.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.32.sub.1'),
@@ -1440,10 +1328,6 @@ export default {
             title: this.$t('filters.items.33.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.33.sub.1'),
@@ -1463,10 +1347,6 @@ export default {
             title: this.$t('filters.items.34.title'),
             visible: false,
             items: {
-              1: {
-                id: 1,
-                title: this.$t('filters.commonSub.selectAll'),
-              },
               2: {
                 id: 2,
                 title: this.$t('filters.items.34.sub.1'),
@@ -1494,18 +1374,32 @@ export default {
     this.closeItem();
   },
   methods: {
-    selectSub(sub, item) {
-      if (sub.id === 1) {
-        const { length } = Object.keys(item.items);
-        const { checkbox } = this.$refs;
-        let i = sub.id;
-        for (i; i < length; i += 1) {
-          checkbox[i].checked = !checkbox[i].checked;
+    selectAll(item) {
+      console.log(item.items);
+      const { length } = Object.keys(item.items);
+      const { checkbox } = this.$refs;
+      let i = Object.keys(item.items)[0];
+      console.log(i);
+      function toggleChecked() {
+        checkbox[i].checked = !checkbox[i].checked;
+      }
+      // eslint-disable-next-line no-plusplus
+      for (i; i < length; i++) {
+        toggleChecked();
+        if (checkbox[i].checked) {
+          this.selected.push(item.items[i].title);
+        } else if (!checkbox[i].checked) {
+          this.selected.splice(item.items[i].title);
         }
-      } else if (sub.id > 1) {
+      }
+      toggleChecked();
+      console.log(this.selected);
+    },
+    selectSub(sub, item) {
+      if (sub.id) {
         const { checkbox } = this.$refs;
         const i = sub.id;
-        checkbox[i].checked = true;
+        checkbox[i].checked = !checkbox[i].checked;
       }
     },
     hideDd() {
@@ -1517,23 +1411,7 @@ export default {
     toggleItem(item) {
       const { categories } = this.filters;
       const { length } = Object.keys(categories);
-      let i = item.id;
-
-      for (i; i < length; i += 1) {
-        if (item.visible) {
-          console.info('Block 1');
-          for (i; i < length; i += 1) {
-            item.visible = false;
-          }
-        } else if (!item.visible) {
-          console.info('Block 2');
-          console.log(item);
-          for (i; i < length; i += 1) {
-            item.visible = true;
-          }
-        }
-        // item.visible = !item.visible;
-      }
+      item.visible = !item.visible;
     },
     closeItem() {
       const acc = document.getElementsByClassName('filter__item');
