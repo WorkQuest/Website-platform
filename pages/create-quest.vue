@@ -219,6 +219,7 @@ export default {
   }),
   components: {
     Dropzone,
+    Uploader,
   },
   data() {
     return {

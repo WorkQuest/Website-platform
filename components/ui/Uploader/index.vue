@@ -204,7 +204,7 @@ export default {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     align-items: center;
-    margin-top: -230px;
+    margin-top: -367px;
     padding: 0 10px;
   }
   &__file {
@@ -301,6 +301,42 @@ export default {
     transition: .5s;
     &_hide {
       display: none;
+    }
+  }
+}
+
+@include _991 {
+  .btn__submit {
+    margin: -55px auto 20px auto;
+  }
+}
+@include _767 {
+  .preview {
+    &__container {
+      grid-template-columns: repeat(5, 1fr);
+    }
+    &__file {
+      max-width: 120px;
+    }
+  }
+}
+@include _575 {
+  .preview {
+    &__container {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    &__file {
+      max-width: 120px;
+    }
+  }
+}
+@include _380 {
+  .preview {
+    &__container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    &__file {
+      max-width: 100px;
     }
   }
 }
