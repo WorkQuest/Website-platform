@@ -635,11 +635,9 @@ export default {
       firstMobileNumder: 'user/getUserFirstMobileNumber',
       secondMobileNumder: 'user/getUserSecondMobileNumber',
       userSkills: 'data/getSkills',
-      userInfo: 'data/getUserInfo',
       imageData: 'user/getImageData',
       additionalInfo: 'user/getAdditionalInfo',
       getUserAddress: 'user/getUserAddress',
-      status2FA: 'data/get2FAStatus',
     }),
   },
   async mounted() {
@@ -664,9 +662,8 @@ export default {
       });
     },
     selectAddress(address) {
-      this.localUserData.additionalInfo.address = this.address;
+      this.localUserData.additionalInfo.address = address.formatted;
       this.addresses = [];
-      this.address = address.formatted;
     },
     async getAddressInfo(address) {
       let response = [];
@@ -1636,12 +1633,6 @@ export default {
     grid-auto-rows: auto auto;
     grid-template-columns: 5fr;
   }
-  .icon {
-    &__close {
-      bottom: 154px;
-      right: 10px;
-    }
-  }
   .page {
     &__grid {
       grid-template-columns: 11fr 1fr;
@@ -1676,11 +1667,6 @@ export default {
     &__inputs {
       grid-template-columns: 1fr;
       grid-gap: 0;
-    }
-  }
-  .icon {
-    &__close {
-      bottom: 154px;
     }
   }
   .page {
@@ -1752,12 +1738,6 @@ export default {
       grid-gap: 10px;
     }
   }
-  .icon {
-    &__close {
-      bottom: 137px;
-      right: 10px;
-    }
-  }
 }
 @include _480 {
   .main-white {
@@ -1769,12 +1749,6 @@ export default {
       grid-column: 5/14;
     }
   }
-  .icon {
-    &__close {
-      bottom: 157px;
-      right: 6px;
-    }
-  }
 }
 
 @include _380 {
@@ -1782,12 +1756,6 @@ export default {
     &__save {
       margin-bottom: 20px;
       grid-column: 5/14;
-    }
-  }
-  .icon {
-    &__close {
-      bottom: 195px;
-      right: 5px;
     }
   }
   .option {

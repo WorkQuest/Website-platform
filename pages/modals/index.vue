@@ -97,7 +97,6 @@
     >
       showAreYouSureModal
     </base-btn>
-    <!-- New -->
     <base-btn
       @click="showTransactionSendModal()"
     >
