@@ -149,7 +149,7 @@ export default {
     },
     showAddCardModal() {
       this.ShowModal({
-        key: modals.swap,
+        key: modals.welcome,
         branch: 'adding',
       });
     },

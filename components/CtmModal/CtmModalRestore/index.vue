@@ -3,28 +3,29 @@
     class="restore"
     :title="$t('forgot.title')"
   >
-    <div class="ctm-modal__content">
+    <div class="restore__content content">
       <ValidationObserver
         v-slot="{ handleSubmit }"
-        class="restore"
+        class="content__observer"
         tag="div"
       >
         <form
-          class="restore__content"
+          class="restore__body"
           action=""
           @submit.prevent="handleSubmit(restore)"
         >
-          <div class="ctm-modal__desc">
+          <div class="content__field">
             {{ $t('forgot.desc') }}
           </div>
           <base-field
             v-model="emailInput"
             :name="$t('placeholders.email')"
-            :placeholder="$t('placeholders.email')"
+            :placeholder="$t('placeholders.default')"
             rules="required|email"
+            class="content__input"
           />
           <base-btn
-            class="restore__action"
+            class="content__action"
           >
             {{ $t('meta.send') }}
           </base-btn>
@@ -75,21 +76,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ctm-modal {
-  @include modalKit;
-  &__desc {
-    text-align: left;
-  }
-}
+
 .restore {
   max-width: 382px !important;
+
   &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 20px;
+    padding: 25px 28px 30px 28px !important;
   }
-  &__action {
-    margin-top: 5px;
+}
+.content{
+  &__field{
+    font-size: 16px;
+    line-height: 130%;
+    color: #4C5767;
+    margin-bottom: 20px;
+  }
+  &__action{
+    margin-top: 3px;
   }
 }
 </style>

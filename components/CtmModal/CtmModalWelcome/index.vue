@@ -13,13 +13,21 @@
       </div>
     </div>
     <div class="btn__grid">
-      <base-dd
-        :type="'gray'"
-        :items="items"
-      />
-      <base-btn :mode="'grey'">
-        <span class="icon-plus" />
-      </base-btn>
+      <div
+        v-for="elem in skillsArray.length"
+        :key="elem.i"
+      >
+        <base-dd
+          :type="'gray'"
+          :items="items"
+        />
+        <base-btn
+          :mode="'grey'"
+          @click="addSkill"
+        >
+          <span class="icon-plus" />
+        </base-btn>
+      </div>
     </div>
     <div class="btn__container">
       <div class="btn__wrapper">
@@ -49,6 +57,12 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalWelcome',
+  // example: 1,
+  data() {
+    return {
+      skillsArray: ['aa', 'bbb'],
+    };
+  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
@@ -65,7 +79,11 @@ export default {
   methods: {
     hide() {
       this.CloseModal();
+      this.CloseModal();
     },
+    // addSkill() {
+    //   // return this.example.push(this.skillsArray);
+    // },
   },
 };
 </script>
@@ -123,7 +141,6 @@ export default {
 .modal {
   overflow: visible;
   max-width: 413px !important;
-  height: 320px;
   &__header {
     height: 180px;
     width: 100%;
