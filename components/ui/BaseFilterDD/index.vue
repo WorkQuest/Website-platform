@@ -72,7 +72,7 @@
                     >
                       <div
                         class="sub__item"
-                        @click="selectAll(item)"
+                        @click="selectAll(item, i)"
                       >
                         <input
                           id="1"
@@ -1368,7 +1368,7 @@ export default {
     this.closeItem();
   },
   methods: {
-    selectAll(item) {
+    selectAll(item, index) {
       const { length } = Object.keys(item.items);
       const { checkbox } = this.$refs;
       let i = Object.keys(item.items)[0];
