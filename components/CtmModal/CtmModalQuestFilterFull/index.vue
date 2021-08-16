@@ -1320,21 +1320,17 @@ export default {
       },
     };
   },
-  computed: {
-    selectedArray() {
-      return this.selected;
-    },
-  },
   methods: {
     selectAll(item) {
+      console.log(item.items);
       const { length } = Object.keys(item.items);
       const { checkbox } = this.$refs;
       let i = Object.keys(item.items)[0];
+      console.log(i);
       function toggleChecked() {
         checkbox[i].checked = !checkbox[i].checked;
       }
-      // eslint-disable-next-line no-plusplus
-      for (i; i < length; i++) {
+      for (i; i < length; i += 1) {
         toggleChecked();
         if (checkbox[i].checked) {
           this.selected.push(item.items[i].title);
@@ -1343,10 +1339,13 @@ export default {
         }
       }
       toggleChecked();
+      console.log(this.selected);
     },
-    selectSub() {
-      const { checkbox } = this.$refs;
-      checkbox.checked = !checkbox.checked;
+    selectSub(sub) {
+      if (sub.id) {
+        const { checkbox } = this.$refs;
+        checkbox.checked = !checkbox.checked;
+      }
     },
     hideDd() {
       this.isOpenDD = true;

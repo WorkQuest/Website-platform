@@ -49,7 +49,7 @@
                 >
                   <span
                     class="item"
-                    @click="toggleItem(item, i)"
+                    @click="toggleSub(filters, item, i)"
                   >
                     <span
                       class="item__title"
@@ -66,7 +66,6 @@
                   <div
                     class="filter__item sub"
                   >
-                    {{ selected }}
                     <div
                       class="sub__body"
                       :class="[{'hide': !item.visible}]"
@@ -1365,11 +1364,6 @@ export default {
       },
     };
   },
-  computed: {
-    selectedArray() {
-      return this.selected;
-    },
-  },
   mounted() {
     this.closeItem();
   },
@@ -1381,8 +1375,7 @@ export default {
       function toggleChecked() {
         checkbox[i].checked = !checkbox[i].checked;
       }
-      // eslint-disable-next-line no-plusplus
-      for (i; i < length; i++) {
+      for (i; i < length; i += 1) {
         toggleChecked();
         if (checkbox[i].checked) {
           this.selected.push(item.items[i].title);
@@ -1402,23 +1395,13 @@ export default {
     toggleDd() {
       this.isOpenDD = !this.isOpenDD;
     },
-    toggleItem(item) {
-      const categories = item;
-      console.log(categories);
-      let i = item.id;
-      const { length } = Object.keys(categories);
-      if (item.visible) {
-        // eslint-disable-next-line no-plusplus
-        for (i; i < length; i++) {
-          item.visible = false;
-        }
-      } else if (!item.visible) {
-        // eslint-disable-next-line no-plusplus
-        for (i; i < length; i++) {
-          item.visible = true;
-        }
+    toggleSub(filters, item, index) {
+      const { categories } = filters;
+      const { length } = Object.keys(filters.categories);
+      const numIndex = Number(index);
+      for (let i = 1; i < length; i += 1) {
+        categories[i].visible = i === numIndex;
       }
-      // item.visible = !item.visible;
     },
     closeItem() {
       const acc = document.getElementsByClassName('filter__item');
