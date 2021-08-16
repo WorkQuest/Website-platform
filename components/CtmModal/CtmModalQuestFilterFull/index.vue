@@ -1455,6 +1455,7 @@ export default {
 
 .filter {
   max-width: 100% !important;
+  justify-content: center;
   &__container {
     overflow-y: auto;
     display: grid;
