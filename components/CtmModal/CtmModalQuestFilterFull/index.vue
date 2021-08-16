@@ -13,7 +13,7 @@
               class="filter__items"
             >
               <div
-                class="filter__item"
+                class="filter__item item"
               >
                 <span
                   class="item"
@@ -1453,7 +1453,7 @@ export default {
 }
 
 .filter {
-  max-width: 84% !important;
+  max-width: 100% !important;
   &__container {
     overflow-y: auto;
     display: grid;
@@ -1492,4 +1492,27 @@ export default {
     width: 45%;
   }
 }
+
+@include _1300 {
+ .filter {
+   &__body {
+     grid-template-columns: repeat(3, 1fr);
+   }
+ }
+}
+@include _991 {
+  .filter {
+    &__body {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+@include _767 {
+  .filter {
+    &__body {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+}
+
 </style>
