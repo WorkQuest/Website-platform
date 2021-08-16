@@ -1332,7 +1332,8 @@ export default {
       function toggleChecked() {
         checkbox[i].checked = !checkbox[i].checked;
       }
-      for (i; i < length; i += 1) {
+      // eslint-disable-next-line no-plusplus
+      for (i; i < length; i++) {
         toggleChecked();
         if (checkbox[i].checked) {
           this.selected.push(item.items[i].title);
