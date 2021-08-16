@@ -31,46 +31,48 @@
                     class="icon-caret_up"
                   />
                 </span>
-                <div class="filter filter__item sub">
-                  <div
-                    v-if="!item.visible"
-                    class="sub__item"
-                    @click="selectAll(item)"
-                  >
-                    <input
-                      id="1"
-                      ref="checkbox"
-                      type="checkbox"
-                      :name="$t('filters.commonSub.selectAll')"
+                <transition name="fade">
+                  <div class="filter filter__item sub">
+                    <div
+                      v-if="!item.visible"
+                      class="sub__item"
+                      @click="selectAll(item)"
                     >
-                    <label
-                      for="1"
-                      class="sub__label"
-                    >{{ $t('filters.commonSub.selectAll') }}</label>
-                  </div>
-                  <div
-                    v-for="(sub, idx) in item.items"
-                    :key="idx"
-                    class="sub__body"
-                    :class="[{'hide': item.visible}]"
-                  >
-                    <div class="sub__item">
                       <input
-                        :id="sub.id"
+                        id="1"
                         ref="checkbox"
-                        v-model="selected"
                         type="checkbox"
-                        :name="sub.title"
-                        :value="sub.title"
-                        @click="selectSub(sub, item)"
+                        :name="$t('filters.commonSub.selectAll')"
                       >
                       <label
-                        :for="sub.title"
+                        for="1"
                         class="sub__label"
-                      >{{ sub.title }}</label>
+                      >{{ $t('filters.commonSub.selectAll') }}</label>
+                    </div>
+                    <div
+                      v-for="(sub, idx) in item.items"
+                      :key="idx"
+                      class="sub__body"
+                      :class="[{'hide': item.visible}]"
+                    >
+                      <div class="sub__item">
+                        <input
+                          :id="sub.id"
+                          ref="checkbox"
+                          v-model="selected"
+                          type="checkbox"
+                          :name="sub.title"
+                          :value="sub.title"
+                          @click="selectSub(sub, item)"
+                        >
+                        <label
+                          :for="sub.title"
+                          class="sub__label"
+                        >{{ sub.title }}</label>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </transition>
               </div>
             </div>
           </div>
