@@ -81,27 +81,27 @@ export default {
       return [
         {
           name: this.$t('myQuests.statuses.all'),
-          click: () => this.switchQuests('', 0),
+          click: () => this.switchQuests('', 0, 0),
         },
         {
           name: this.$t('myQuests.statuses.fav'),
-          click: () => this.switchQuests('starred=true', 1),
+          click: () => this.switchQuests('starred=true', 0, 1),
         },
         {
           name: this.$t('myQuests.statuses.requested'),
-          click: () => this.switchQuests('status=5', 2),
+          click: () => this.switchQuests('status=5', 0, 2),
         },
         {
           name: this.$t('myQuests.statuses.completed'),
-          click: () => this.switchQuests('status=6', 3),
+          click: () => this.switchQuests('status=6', 0, 3),
         },
         {
           name: this.$t('myQuests.statuses.active'),
-          click: () => this.switchQuests('status=2', 4),
+          click: () => this.switchQuests('status=2', 0, 4),
         },
         {
           name: this.$t('myQuests.statuses.invited'),
-          click: () => this.switchQuests('status=4', 5),
+          click: () => this.switchQuests('status=4', 0, 5),
         },
       ];
     },
@@ -131,14 +131,15 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    async switchQuests(query, id) {
+    async switchQuests(query, perPage, id) {
+      this.SetLoader(true);
+      this.page = 1;
       this.selectedTab = id;
       this.sortData = query;
       const payload = {
         userId: this.userData.id,
-        query: `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`,
+        query: `limit=${this.perPager}&offset=${(this.page - 1) * perPage}&${this.sortData}`,
       };
-      this.SetLoader(true);
       await this.$store.dispatch('quests/getUserQuests', payload);
       this.totalPagesValue = this.totalPages;
       this.SetLoader(false);
