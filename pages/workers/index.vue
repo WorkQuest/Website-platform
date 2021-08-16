@@ -460,7 +460,6 @@ export default {
           address: 'Moscos, Lenina street, 3',
         },
       ],
-      isShowMap: true,
       distance: [
         '+ 100 m',
         '+ 500 m',
@@ -492,10 +491,10 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    this.SetLoader(false);
     if (this.userRole === 'employer') {
       this.showWelcomeModal();
     }
+    this.SetLoader(false);
   },
   methods: {
     showWelcomeModal() {
@@ -524,9 +523,6 @@ export default {
         { card_lower: cards[idx].level.code === 3 },
         { card_lower: cards[idx].level.code === 0 },
       ];
-    },
-    toggleMap(newPosition) {
-      this.isShowMap = !this.isShowMap;
     },
     getPriority(index) {
       const priority = {

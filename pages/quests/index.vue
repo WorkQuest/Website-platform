@@ -1,6 +1,8 @@
 <template>
   <div class="quests">
-    <GmapSearchBlock />
+    <GmapSearchBlock
+      :locations="questsLocation"
+    />
     <div class="quests__content">
       <div
         class="quests__body"
@@ -15,20 +17,17 @@
           <div class="tools__left">
             <base-btn
               :mode="'light'"
-              @click="changeSorting('price')"
+              @click="showFilter"
             >
+              <span
+                class="icon-filter_outline"
+              />
               <span class="tools__text">
-                {{ $t('quests.price') }}
+                {{ $t('quests.filter.btn') }}
               </span>
-              <span
-                v-if="priceSort === 'desc'"
-                class="icon-Sorting_descending"
-              />
-              <span
-                v-if="priceSort === 'asc'"
-                class="icon-Sorting_ascending"
-              />
             </base-btn>
+          </div>
+          <div class="tools__right">
             <base-btn
               :mode="'light'"
               @click="changeSorting('time')"
@@ -45,20 +44,21 @@
                 class="icon-Sorting_ascending"
               />
             </base-btn>
-            <base-dd
-              v-model="priorityIndex"
-              :items="priority"
-            />
-          </div>
-          <div class="tools__right">
             <base-btn
               :mode="'light'"
-              @click="showSkillsModal()"
+              @click="changeSorting('price')"
             >
               <span class="tools__text">
-                {{ $t('quests.type') }}
+                {{ $t('quests.price') }}
               </span>
-              <span class="icon-caret_right" />
+              <span
+                v-if="priceSort === 'desc'"
+                class="icon-Sorting_descending"
+              />
+              <span
+                v-if="priceSort === 'asc'"
+                class="icon-Sorting_ascending"
+              />
             </base-btn>
           </div>
         </div>
@@ -83,110 +83,18 @@
             </base-btn>
           </div>
         </div>
-        <div class="quests__cards">
-          <div
-            v-for="(item, i) in cards"
-            :key="i"
-            class="quests__block block"
-          >
-            <div class="block__left">
-              <div class="block__img">
-                <img
-                  src="~assets/img/temp/fake-card.svg"
-                  alt=""
-                >
-              </div>
-            </div>
-            <div class="block__right">
-              <div class="block__head">
-                <div class="block__title">
-                  <div class="block__avatar">
-                    <nuxt-link
-                      class="link"
-                      :to="'/show-profile'"
-                    >
-                      <img
-                        class="user__avatar"
-                        src="~/assets/img/temp/fake-card.svg"
-                        alt=""
-                      >
-                    </nuxt-link>
-                  </div>
-                  <nuxt-link
-                    class="link"
-                    :to="'/show-profile'"
-                  >
-                    <div class="block__text block__text_title">
-                      {{ item.title }}
-                      <span
-                        v-if="item.sub"
-                        class="block__text block__text_grey"
-                      >{{ item.sub }}</span>
-                    </div>
-                  </nuxt-link>
-                </div>
-                <div
-                  class="block__icon block__icon_fav star"
-                  @click="item.favourite = !item.favourite"
-                >
-                  <img
-                    class="star__hover"
-                    src="~assets/img/ui/star_hover.svg"
-                    alt=""
-                  >
-                  <img
-                    v-if="!item.favourite"
-                    class="star__default"
-                    src="~assets/img/ui/star_simple.svg"
-                    alt=""
-                  >
-                  <img
-                    v-if="item.favourite"
-                    class="star__checked"
-                    src="~assets/img/ui/star_checked.svg"
-                    alt=""
-                  >
-                </div>
-              </div>
-              <div class="block__locate">
-                <span class="icon-location" />
-                <span class="block__text block__text_locate">{{ item.distance }}{{ $t('distance.m') }} {{ $t('meta.fromYou') }}</span>
-              </div>
-              <div class="block__text block__text_blue">
-                {{ item.theme }}
-              </div>
-              <div class="block__text block__text_desc">
-                {{ item.desc }}
-              </div>
-              <div class="block__actions">
-                <div class="block__status">
-                  <div
-                    v-if="item.priority"
-                    class="block__priority"
-                    :class="getPriorityClass(item.priority)"
-                  >
-                    {{ getPriority(item.priority) }}
-                  </div>
-                  <div class="block__amount">
-                    {{ item.amount }} {{ item.symbol }}
-                  </div>
-                </div>
-                <div class="block__details">
-                  <base-btn
-                    v-if="item.type !== 3"
-                    mode="borderless-right"
-                    @click="showDetails()"
-                  >
-                    {{ $t('meta.details') }}
-                    <template v-slot:right>
-                      <span class="icon-short_right" />
-                    </template>
-                  </base-btn>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <quests
+          v-if="questsObjects.count !== 0"
+          :limit="100"
+          :object="questsObjects"
+          :page="'quests'"
+        />
+        <emptyData
+          v-else
+          :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
+          :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+          :link="userRole === 'employer' ? '/create-quest' : ''"
+        />
       </div>
     </div>
   </div>
@@ -195,11 +103,15 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
+import quests from '~/components/app/pages/common/quests';
+import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Quests',
   components: {
     GmapSearchBlock,
+    quests,
+    emptyData,
   },
   data() {
     return {
@@ -230,48 +142,33 @@ export default {
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
+      questLimits: 100,
+      questsObjects: {},
+      questsLocation: {},
     };
   },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
-      cards: 'data/getCards',
-      cards2: 'data/getAllQuests',
-      distance: 'data/getDistance',
-      locations: 'data/getLocations',
       checkWelcomeModal: 'modals/getIsShowWelcome',
       userRole: 'user/getUserRole',
     }),
   },
   async mounted() {
     this.SetLoader(true);
+    await this.getQuests();
     this.SetLoader(false);
-    this.getAllQuests();
   },
   methods: {
-    getAllQuests() {
-      return this.$store.dispatch('data/getAllQuests');
+    showFilter() {
+      this.ShowModal({
+        key: modals.questFilter,
+      });
     },
-    getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-      const R = 6371; // Radius of the earth in km
-      const dLat = this.deg2rad(lat2 - lat1); // deg2rad below
-      const dLon = this.deg2rad(lon2 - lon1);
-      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-        + Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2))
-        * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      let d = (R * c) * 1000; // Distance in km
-      if (d >= 1000) {
-        d = '+1000';
-      } else if (d >= 500) {
-        d = '+500';
-      } else {
-        d = '-500';
-      }
-      return d;
-    },
-    deg2rad(deg) {
-      return deg * (Math.PI / 180);
+    async getQuests(specialSort = '') {
+      const additionalValue = `?limit=${this.questLimits}&offset=0${specialSort}`;
+      this.questsObjects = await this.$store.dispatch('quests/getAllQuests', additionalValue);
+      // this.questsLocation = await this.$store.dispatch('quests/getQuestsLocation');
     },
     toNotifications() {
       this.$router.push('/notification');
@@ -283,14 +180,28 @@ export default {
       this.$router.push('/quests/1');
     },
     changeSorting(type) {
+      let sortValue = '';
       if (type === 'price') {
-        // eslint-disable-next-line no-unused-expressions
-        this.priceSort === 'desc' ? this.priceSort = 'asc' : this.priceSort = 'desc';
+        if (this.priceSort === 'desc') {
+          this.priceSort = 'asc';
+          this.timeSort = 'desc';
+        } else {
+          this.priceSort = 'desc';
+          this.timeSort = 'asc';
+        }
+        sortValue = `&sort[price]=${this.priceSort}`;
       }
       if (type === 'time') {
-        // eslint-disable-next-line no-unused-expressions
-        this.timeSort === 'desc' ? this.timeSort = 'asc' : this.timeSort = 'desc';
+        if (this.timeSort === 'desc') {
+          this.timeSort = 'asc';
+          this.priceSort = 'desc';
+        } else {
+          this.timeSort = 'desc';
+          this.priceSort = 'asc';
+        }
+        sortValue = `&sort[createdAt]=${this.timeSort}`;
       }
+      this.getQuests(sortValue);
     },
     deleteTag(tag) {
       this.$store.dispatch('ui/deleteTags', tag);
@@ -702,11 +613,11 @@ export default {
   align-items: center;
   &__left {
     display: grid;
-    grid-template-columns: 103px 152px minmax(141px, auto);
+    grid-template-columns: 1fr;
     grid-gap: 20px;
     span::before {
       padding-left: 10px;
-      margin-right: -10px;
+      margin-right: 10px;
       color: $black400;
       font-size: 24px;
     }
@@ -718,12 +629,15 @@ export default {
     font-size: 16px;
     line-height: 130%;
     color: $black800;
+    display: block;
   }
   &__right {
-    min-width: 149px;
+    display: grid;
+    grid-template-columns: 4fr 3fr;
+    grid-gap: 20px;
     span::before {
       padding-left: 10px;
-      margin-right: -10px;
+      margin-right: 10px;
       color: $black400;
       font-size: 24px;
     }
@@ -792,9 +706,9 @@ export default {
       grid-row: 2/3;
     }
     &__right {
-      min-width: 100%;
-      grid-column: 1/3;
-      grid-row: 1/2;
+      grid-template-columns: repeat(2, 1fr);
+      grid-column: 1/2;
+      grid-row: 2/3;
     }
   }
   .dd {

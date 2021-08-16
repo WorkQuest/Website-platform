@@ -7,6 +7,7 @@
       <div class="page__category">
         <div class="page__dd">
           <label for="proposal_input">{{ $t('priority.title') }}</label>
+          {{ priorityIndex }}
           <base-dd
             id="proposal_input"
             v-model="priorityIndex"
@@ -73,7 +74,7 @@
             </div>
             <div class="picker__body">
               <div class="picker__number">
-                {{ pickerValue }} {{ $t('quests.hours') }}
+                {{ `${pickerValue} ${$t('quests.hours')}` }}
               </div>
             </div>
             <div class="btn__container btn__right">
@@ -132,6 +133,7 @@
             <button
               class="base-btn"
               :class="{'base-btn__passive': adMode1 === true}"
+              :disabled="!adMode1"
               @click="setAd()"
             >
               {{ $t('quests.ads.publishForFree') }}
@@ -141,6 +143,7 @@
             <button
               class="base-btn"
               :class="{'base-btn__passive': adMode2 === true}"
+              :disabled="!adMode2"
               @click="setAd()"
             >
               {{ $t('quests.ads.boostYourPublications') }}
@@ -182,7 +185,7 @@
               {{ $t('quests.EstimatedPayment') }}
             </div>
             <div class="payment__cost">
-              {{ estimatedPayment }} WUSD
+              {{ `${estimatedPayment} ${currency}` }}
             </div>
           </div>
         </div>
@@ -205,6 +208,7 @@ import 'nuxt-dropzone/dropzone.css';
 import '~/assets/scss/vue2Dropzone.min.css';
 import '~/assets/scss/dropzone.scss';
 import modals from '~/store/modals/modals';
+// import Uploader from '../components/ui/Uploader';
 
 const { GeoCode } = require('geo-coder');
 
@@ -215,11 +219,11 @@ export default {
   }),
   components: {
     Dropzone,
+    // Uploader,
   },
   data() {
     return {
       priorityIndex: 1,
-      questIndex: 0,
       categoryIndex: 0,
       periodIndex: 0,
       pickerValue: 1,
@@ -233,6 +237,7 @@ export default {
       city: '',
       estimatedPayment: 120,
       coordinates: {},
+      currency: 'WUSD',
       categories: [
         'Retail',
       ],
@@ -317,7 +322,7 @@ export default {
         },
       };
       try {
-        const response = this.$store.dispatch('data/questCreate', createQuestData);
+        const response = this.$store.dispatch('quests/questCreate', createQuestData);
         if (response) {
           this.ShowModal({
             key: modals.status,

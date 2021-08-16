@@ -1,10 +1,15 @@
 /* eslint-disable no-param-reassign */
 
 export default {
-  // setEnabled2FA(state, payload) {
-  //   state.tokens.access = payload.access;
-  //   state.user.confirmCode = payload.result;
-  // },
+  setUserPortfolioCases(state, data) {
+    state.portfolios = data;
+  },
+  setCaseImage(state, data) {
+    state.medias = data;
+  },
+  setCaseData(state, data) {
+    state.portfolio = data;
+  },
   setTokens(state, payload) {
     state.tokens.access = payload.access;
     state.tokens.refresh = payload.refresh;
@@ -39,5 +44,8 @@ export default {
   },
   setSendCode(state, data) {
     state.userSendCode = data;
+  },
+  setUserReviews(state, data) {
+    state.userReviews = data;
   },
 };

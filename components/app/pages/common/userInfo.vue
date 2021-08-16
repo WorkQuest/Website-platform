@@ -18,19 +18,18 @@
         >
       </div>
       <div class="rating" />
-      <nuxt-link
+      <div
         class="reviews-amount"
-        to="/profile"
       >
-        {{ quest.reviewCount }} {{ $t('quests.reviews') }}
-      </nuxt-link>
+        {{ `${quest.reviewCount} ${$t('quests.reviews')}` }}
+      </div>
     </div>
     <div class="col info-grid__col">
       <div
         v-if="firstName && lastName"
         class="title"
       >
-        {{ firstName }} {{ lastName }}
+        {{ `${firstName} ${lastName}` }}
       </div>
       <div
         v-if="userRole === 'employer'"
@@ -63,7 +62,7 @@
               class="work-exp__item"
             >
               <span class="work-exp__company">{{ item.place }}</span>
-              <span class="work-exp__term">{{ item.from }} - {{ item.to }}</span>
+              <span class="work-exp__term">{{ `${item.from} - ${item.to}` }}</span>
             </div>
           </div>
         </div>
@@ -82,19 +81,17 @@
               class="work-exp__item"
             >
               <span class="work-exp__company">{{ item.place }}</span>
-              <span class="work-exp__term">{{ item.from }} - {{ item.to }}</span>
+              <span class="work-exp__term">{{ `${item.from} - ${item.to}` }}</span>
             </div>
           </div>
         </div>
       </div>
-      <!-- socials links -->
       <div class="socials">
-        <SocialPanel />
+        <socialPanel />
       </div>
-      <!-- contacts -->
       <div class="contacts__grid">
         <div class="contacts">
-          <ContactPanel />
+          <contactPanel />
           <div class="btn__container">
             <base-btn
               v-if="userRole === 'worker'"
@@ -132,12 +129,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import ContactPanel from '~/components/app/Panels/Contact';
-import SocialPanel from '~/components/app/Panels/Social';
+import contactPanel from '~/components/app/panels/contact';
+import socialPanel from '~/components/app/panels/social';
 
 export default {
   name: 'UserInfo',
-  components: { ContactPanel, SocialPanel },
+  components: { contactPanel, socialPanel },
   props: {
     selected: {
       type: Number,
@@ -192,6 +189,7 @@ export default {
     width: 100%;
     display: flex;
     align-items: flex-end;
+    height: 43px;
   }
 }
 
@@ -357,6 +355,7 @@ export default {
     }
   }
 }
+
 @include _1199 {
   .contacts {
     grid-template-columns: 4fr 1fr;
