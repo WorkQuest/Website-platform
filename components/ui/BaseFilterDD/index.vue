@@ -1375,7 +1375,8 @@ export default {
       function toggleChecked() {
         checkbox[i].checked = !checkbox[i].checked;
       }
-      for (i; i < length; i += 1) {
+      // eslint-disable-next-line no-plusplus
+      for (i; i < length; i++) {
         toggleChecked();
         if (checkbox[i].checked) {
           this.selected.push(item.items[i].title);
@@ -1399,7 +1400,8 @@ export default {
       const { categories } = filters;
       const { length } = Object.keys(filters.categories);
       const numIndex = Number(index);
-      for (let i = 1; i < length; i += 1) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 1; i < length; i++) {
         categories[i].visible = i === numIndex;
       }
     },
