@@ -253,7 +253,7 @@
             <base-field
               v-model="newKnowledge.place"
               type="grey"
-              :placeholder="$t('settings.workExps.companyName')"
+              :placeholder="$t('settings.education.educationalInstitution')"
             />
             <div />
             <base-btn @click="addNewKnowledge()">
@@ -292,7 +292,7 @@
               <base-field
                 v-model="localUserData.additionalInfo.workExperiences[i].place"
                 type="grey"
-                :placeholder="$t('settings.placeOfStudying')"
+                :placeholder="$t('settings.workExps.companyName')"
               />
               <div />
               <base-btn @click="deleteWorkExp(i)">
@@ -318,7 +318,7 @@
             <base-field
               v-model="newWorkExp.place"
               type="grey"
-              :placeholder="$t('settings.placeOfStudying')"
+              :placeholder="$t('settings.workExps.companyName')"
             />
             <div />
             <base-btn @click="addNewWorkExp()">
@@ -373,30 +373,50 @@
           </base-btn>
         </div>
       </div>
-      <div class="main-white">
-        <div
-          v-if="userRole === 'worker'"
-          class="page__skills"
-        >
-          <div class="page__badge-skills">
-            {{ $t('settings.skills') }}
-          </div>
-          <!--          TODO: Вывести баджи со скилами из state, полученные из модалки-->
-          <div
-            v-for="(item, i) in userSkills"
-            :key="i"
-          >
-            <div class="page__badge">
-              {{ item.title }}
+      <h2
+        v-if="userRole === 'worker'"
+        class="page__title"
+      >
+        {{ $t('settings.employmentInfo') }}
+      </h2>
+      <div
+        v-if="userRole === 'worker'"
+        class="main-white"
+      >
+        <div class="page__skills skills">
+          <div class="skills__block block">
+            <div class="block__specialization specialization">
+              <base-dd
+                v-model="specIndex"
+                class="specialization__dd"
+                type="gray"
+                :items="specializations"
+              />
+              <base-input
+                v-model="userSkill"
+                class="specialization__skills"
+                type="gray"
+              />
+              <base-btn
+                :text="$t('settings.removeSpec')"
+                class="specialization__btn specialization__btn_remove"
+              />
             </div>
-          </div>
-          <div class="btn__container">
-            <button
-              class="btn__plus"
-              @click="chooseNecessarySkills()"
-            >
-              <span class="icon-plus_circle" />
-            </button>
+            <div class="block__skill skill">
+              <div
+                v-for="(item, i) in userSkills"
+                :key="i"
+                class="skill__block"
+              >
+                <div class="skill__badge">
+                  {{ item.title }}
+                </div>
+              </div>
+            </div>
+            <base-btn
+              :text="$t('settings.addSpec')"
+              class="skills__btn skills__btn_add"
+            />
           </div>
         </div>
       </div>
@@ -564,6 +584,8 @@ export default {
   },
   data() {
     return {
+      userSkill: '',
+      specIndex: 1,
       updatedPhone: null,
       addresses: [],
       sms: false,
@@ -639,6 +661,14 @@ export default {
       additionalInfo: 'user/getAdditionalInfo',
       getUserAddress: 'user/getUserAddress',
     }),
+    specializations() {
+      return [
+        this.$t('priority.all'),
+        this.$t('priority.low'),
+        this.$t('priority.normal'),
+        this.$t('priority.urgent'),
+      ];
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -1443,6 +1473,38 @@ export default {
   }
 }
 .page {
+  &__skills {
+    width: 100%;
+    padding: 20px;
+    .block {
+      &__specialization {
+        display: grid;
+        grid-template-columns: 1fr 1fr 250px;
+        width: 80%;
+        grid-gap: 20px;
+      }
+      &__skill {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        grid-gap: 10px;
+        .skill {
+          &__badge {
+            background: rgba(0, 131, 199, 0.1);
+            border-radius: 44px;
+            color: $blue;
+            white-space: nowrap;
+            padding: 5px 6px;
+            display: flex;
+            text-align: center;
+            &-skills {
+              padding: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
   &__grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -1491,19 +1553,7 @@ export default {
       font-weight: 400;
     }
   }
-  &__badge {
-    background: rgba(0, 131, 199, 0.1);
-    border-radius: 44px;
-    margin: 10px;
-    color: $blue;
-    padding: 5px 6px;
-    display: flex;
-    text-align: center;
-    &-skills {
-      padding: 15px;
-    }
-  }
-  &__skills {
+  &__spec {
     flex-direction: row;
     flex-wrap: wrap;
     display: flex;
@@ -1511,6 +1561,35 @@ export default {
     width: 100%;
     justify-content: flex-start;
     //padding: 0 20px 0 0;
+  }
+}
+.skills {
+  &__btn {
+    text-align: center;
+    margin-top: 10px;
+    width: 250px;
+    &_add {
+      background: #FFFFFF;
+      color: #0083C7;
+      border: 1px solid #bce8ff;
+    }
+    &_add:hover {
+      background: #bce8ff;
+    }
+  }
+}
+.specialization {
+  &__btn {
+    text-align: center;
+    width: 250px;
+    &_remove {
+      background: #ffffff;
+      color: #d73838;
+      border: 1px solid #e79a9a;
+    }
+    &_remove:hover {
+      background: #e79a9a;
+    }
   }
 }
 .option {
@@ -1608,7 +1687,7 @@ export default {
     &__title {
       margin: 20px 0 20px 20px;
     }
-    &__skills {
+    &__spec {
       margin: 0 0 10px 20px;
     }
     &__badge {
