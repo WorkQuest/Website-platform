@@ -15,7 +15,7 @@
               <div
                 class="filter__item item"
               >
-                <span
+                <div
                   class="item"
                   @click="toggleSub(item)"
                 >
@@ -30,7 +30,7 @@
                     v-else
                     class="icon-caret_up"
                   />
-                </span>
+                </div>
                 <transition name="fade">
                   <div class="filter filter__item sub">
                     <div
@@ -1423,7 +1423,7 @@ export default {
     }
   }
   &__item {
-    width: 300px;
+    width: 100%;
     margin: 0 0 5px 0;
     &:hover {
       text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
@@ -1440,6 +1440,7 @@ export default {
 }
 
 .item {
+  width: 100%;
   &__title {
     margin: 10px 0 0 0;
     @include text-simple;

@@ -47,7 +47,7 @@
                 <div
                   class="filter__item item"
                 >
-                  <span
+                  <div
                     class="item"
                     @click="toggleSub(filters, item, i)"
                   >
@@ -62,7 +62,7 @@
                       v-else
                       class="icon-caret_up"
                     />
-                  </span>
+                  </div>
                   <div
                     class="filter__item sub"
                   >
@@ -1443,6 +1443,10 @@ export default {
   }
 }
 
+.item {
+  width: 100%;
+}
+
 .sub {
   &__label {
     text-overflow: ellipsis;
@@ -1453,7 +1457,7 @@ export default {
     }
   }
   &__item {
-    width: 300px;
+    width: 100%;
     margin: 0 0 5px 0;
     &:hover {
       text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
