@@ -1327,11 +1327,9 @@ export default {
   },
   methods: {
     selectAll(item) {
-      console.log(item.items);
       const { length } = Object.keys(item.items);
       const { checkbox } = this.$refs;
       let i = Object.keys(item.items)[0];
-      console.log(i);
       function toggleChecked() {
         checkbox[i].checked = !checkbox[i].checked;
       }
@@ -1345,14 +1343,10 @@ export default {
         }
       }
       toggleChecked();
-      console.log(this.selected);
     },
-    selectSub(sub) {
-      if (sub.id) {
-        const { checkbox } = this.$refs;
-        const i = sub.id;
-        checkbox[i].checked = !checkbox[i].checked;
-      }
+    selectSub() {
+      const { checkbox } = this.$refs;
+      checkbox.checked = !checkbox.checked;
     },
     hideDd() {
       this.isOpenDD = true;
