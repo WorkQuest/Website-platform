@@ -141,7 +141,6 @@ export default () => ({
       id: 0,
     },
     {
-
       title: 'Favorite',
       id: 1,
     },

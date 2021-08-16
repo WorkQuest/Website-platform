@@ -1,33 +1,43 @@
 <template>
-  <div class="main__body">
-    <div class="quests">
-      <div class="quests__container">
-        <div class="quests__body">
-          <div
-            class="quests__title"
-          >
-            {{ $t('quests.MyQuests') }}
-          </div>
-          <div
-            class="quests__content"
-            :class="{'quests__content_employer': userRole === 'employer'}"
-          >
-            <base-btn
-              v-for="item in tabs"
-              :key="item.id"
-              :mode="btnMode(item.id)"
-              class="quests__btn"
-              @click="filterCards(item.id)"
-            >
-              {{ item.title }}
-            </base-btn>
-          </div>
-          <Quests
-            :limit="100"
-            :selected-tab="selectedTab"
-            :object="questsObjects"
-          />
+  <div class="quests">
+    <div class="quests__container">
+      <div class="quests__body">
+        <div
+          class="quests__title"
+        >
+          {{ $t('quests.MyQuests') }}
         </div>
+        <div
+          class="quests__content"
+          :class="{'quests__content_employer': userRole === 'employer'}"
+        >
+          <base-btn
+            v-for="(item, i) in questStatus"
+            :key="i"
+            :mode="btnMode(i)"
+            class="quests__btn"
+            @click="item.click"
+          >
+            {{ item.name }}
+          </base-btn>
+        </div>
+        <quests
+          v-if="questsData.count !== 0"
+          :limit="questLimits"
+          :selected-tab="selectedTab"
+          :object="questsData"
+        />
+        <emptyData
+          v-else
+          :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
+          :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+          :link="userRole === 'employer' ? '/create-quest' : ''"
+        />
+        <base-pager
+          v-if="questsData.count !== 0 && totalPagesValue !== 1"
+          v-model="page"
+          :total-pages="totalPagesValue"
+        />
       </div>
     </div>
   </div>
@@ -37,14 +47,16 @@
 
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
-import Quests from '~/components/app/Pages/Common/Quests';
+import quests from '~/components/app/pages/common/quests';
+import emptyData from '~/components/app/info/emptyData';
 
 const value = new Vue();
 
 export default {
   name: 'My',
   components: {
-    Quests,
+    quests,
+    emptyData,
   },
   data() {
     return {
@@ -52,6 +64,10 @@ export default {
       isShowFavourite: false,
       questLimits: 100,
       questsObjects: {},
+      page: 1,
+      perPager: 11,
+      totalPagesValue: 1,
+      sortData: '',
     };
   },
   computed: {
@@ -59,26 +75,80 @@ export default {
       tabs: 'data/getTabs',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      questsData: 'quests/getUserInfoQuests',
     }),
+    questStatus() {
+      return [
+        {
+          name: this.$t('myQuests.statuses.all'),
+          click: () => this.switchQuests('', 0, 0),
+        },
+        {
+          name: this.$t('myQuests.statuses.fav'),
+          click: () => this.switchQuests('starred=true', 0, 1),
+        },
+        {
+          name: this.$t('myQuests.statuses.requested'),
+          click: () => this.switchQuests('status=5', 0, 2),
+        },
+        {
+          name: this.$t('myQuests.statuses.completed'),
+          click: () => this.switchQuests('status=6', 0, 3),
+        },
+        {
+          name: this.$t('myQuests.statuses.active'),
+          click: () => this.switchQuests('status=2', 0, 4),
+        },
+        {
+          name: this.$t('myQuests.statuses.invited'),
+          click: () => this.switchQuests('status=4', 0, 5),
+        },
+      ];
+    },
+    totalPages() {
+      return Math.ceil(this.questsData.count / this.perPager);
+    },
+  },
+  watch: {
+    async page() {
+      const payload = {
+        userId: this.userData.id,
+        query: `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`,
+      };
+      this.SetLoader(true);
+      await this.$store.dispatch('quests/getUserQuests', payload);
+      this.totalPagesValue = this.totalPages;
+      this.SetLoader(false);
+    },
   },
   async mounted() {
     this.SetLoader(true);
+    await this.$store.dispatch('quests/getUserQuests', {
+      userId: this.userData.id,
+      query: `limit=${this.perPager}`,
+    });
+    this.totalPagesValue = this.totalPages;
     this.SetLoader(false);
-    this.questsObjects = await this.$store.dispatch('quests/getUserQuests', this.userData.id);
   },
   methods: {
-    filterCards(id) {
+    async switchQuests(query, perPage, id) {
+      this.SetLoader(true);
+      this.page = 1;
       this.selectedTab = id;
-      this.isShowFavourite = id === 1;
+      this.sortData = query;
+      const payload = {
+        userId: this.userData.id,
+        query: `limit=${this.perPager}&offset=${(this.page - 1) * perPage}&${this.sortData}`,
+      };
+      await this.$store.dispatch('quests/getUserQuests', payload);
+      this.totalPagesValue = this.totalPages;
+      this.SetLoader(false);
     },
     btnMode(id) {
       if (this.selectedTab === id) {
-        return ' ';
+        return '';
       }
       return 'light';
-    },
-    changeFlexibleData(data) {
-      this.$store.dispatch('quests/flexibleData', data);
     },
   },
 };

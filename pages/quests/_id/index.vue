@@ -1,20 +1,20 @@
 <template>
   <div>
-    <Info
+    <info
       :info="infoData"
     />
     <div
       class="main-white"
     >
       <div class="main__body">
-        <QuestPanel />
+        <questPanel />
 
         <div class="quest__container">
           <h2 class="quest__title">
-            {{ payload.title }}
+            {{ questData.title }}
           </h2>
           <span class="quest__description">
-            {{ payload.body }}
+            {{ questData.description }}
           </span>
         </div>
         <div class="divider" />
@@ -29,6 +29,7 @@
               class="img__item"
               src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
               alt=""
+              @click="openImage('https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg')"
             >
           </div>
           <div class="divider" />
@@ -183,7 +184,6 @@
           </span>
           <div class="btns__container">
             <div>
-              <!-- inviteUser -->
               <span v-if="userRole === 'worker'">
                 <div
                   v-if="infoData.mode === 1"
@@ -223,7 +223,6 @@
                   </div>
                 </div>
               </span>
-              <!-- send a request -->
               <span v-if="userRole === 'worker'">
                 <div
                   v-if="infoData.mode === 5"
@@ -236,7 +235,6 @@
                   </div>
                 </div>
               </span>
-              <!-- activeQuest -->
               <span v-if="userRole === 'worker'">
                 <div
                   v-if="infoData.mode === 2"
@@ -271,7 +269,6 @@
                   </div>
                 </div>
               </span>
-              <!-- responded -->
               <span v-if="userRole === 'worker'">
                 <div
                   v-if="infoData.mode === 3"
@@ -298,13 +295,12 @@
                   </div>
                 </div>
               </span>
-              <!-- performed -->
               <span v-if="userRole === 'employer'" />
             </div>
             <span v-if="infoData.mode !== 4">
               <div class="price__container">
                 <span class="price__value">
-                  {{ payload.price }}
+                  {{ questData.price }}
                 </span>
                 <div class="badge__wrapper">
                   <span class="badge__item_green">{{ payload.badgeGreen }}</span>
@@ -315,7 +311,9 @@
         </div>
       </div>
     </div>
-    <div class="map__container gmap">
+    <div
+      class="map__container gmap"
+    >
       <div class="gmap__block">
         <transition name="fade-fast">
           <GMap
@@ -323,8 +321,8 @@
             ref="gMap"
             class="quests__map"
             language="en"
-            :center="{lat: locations[0].lat, lng: locations[0].lng}"
-            :zoom="6"
+            :center="questLocation"
+            :zoom="zoom"
             :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
           />
         </transition>
@@ -344,12 +342,20 @@
           </h2>
         </div>
         <p class="quest__count">
-          {{ payload.amount }} {{ $t('quests.questAmount') }}
+          {{ `${payload.amount} ${$t('quests.questAmount')}` }}
         </p>
         <div class="quest__card">
-          <!-- cards -->
-          <questCards
-            :limit="1"
+          <quests
+            v-if="questsObjects.count !== 0"
+            :limit="questLimits"
+            :object="questsObjects"
+            :page="'quests'"
+          />
+          <emptyData
+            v-else
+            :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
+            :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+            :link="userRole === 'employer' ? '/create-quest' : '/quests'"
           />
         </div>
       </div>
@@ -359,16 +365,18 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import Info from '~/components/app/Info/index.vue';
-import QuestPanel from '~/components/app/Panels/QuestPanel';
-import questCards from '~/components/app/Pages/Common/Quests';
+import info from '~/components/app/info/index.vue';
+import questPanel from '~/components/app/panels/questPanel';
+import quests from '~/components/app/pages/common/quests';
+import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Quests',
   components: {
-    Info,
-    QuestPanel,
-    questCards,
+    info,
+    questPanel,
+    quests,
+    emptyData,
   },
   data() {
     return {
@@ -430,6 +438,11 @@ export default {
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
+      questLimits: 1,
+      questsObjects: {},
+      questData: {},
+      questLocation: { lat: 0, lng: 0 },
+      zoom: 10,
     };
   },
   computed: {
@@ -443,6 +456,11 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+    this.questLocation = {
+      lat: this.questData.location.latitude,
+      lng: this.questData.location.longitude,
+    };
     this.SetLoader(false);
   },
   methods: {
@@ -456,6 +474,14 @@ export default {
       this.ShowModal({
         key: modals.sendARequest,
       });
+    },
+    openImage(src) {
+      if (window.innerWidth >= 761) {
+        this.ShowModal({
+          key: modals.showImage,
+          imageSrc: src,
+        });
+      }
     },
   },
 };

@@ -8,9 +8,20 @@ export default {
     commit('setAllQuests', response.result);
     return response.result;
   },
-  async getUserQuests({ commit }, payload) {
-    const response = await this.$axios.$get(`/v1/employer/${payload}/quests`);
+  async getQuest({ commit }, payload) {
+    const response = await this.$axios.$get(`/v1/quest/${payload}`);
+    commit('setQuest', response.result);
+    return response.result;
+  },
+  async getUserQuests({ commit }, { userId, query = undefined }) {
+    const response = await this.$axios.$get(`/v1/employer/${userId}/quests?${query || ''}`);
     commit('setUserQuests', response.result);
+    return response.result;
+  },
+
+  async getQuestsLocation({ commit }) {
+    const response = await this.$axios.$get('/v1/quests/map/list-points');
+    commit('setAllQuests', response.result);
     return response.result;
   },
 
@@ -48,8 +59,9 @@ export default {
     return await this.$axios.$post(`/v1/quest/${id}/reject-work`, id);
   },
 
-  async setStarOnQuest(id) {
-    return await this.$axios.$post(`/v1/quest/${id}/star`, id);
+  async setStarOnQuest({ commit }, id) {
+    // Needed to add quest id;
+    return await this.$axios.$post(`/v1/quest/${id}/star`);
   },
 
   async takeAwayStarOnQuest(id) {

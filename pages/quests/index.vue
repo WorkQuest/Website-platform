@@ -1,6 +1,8 @@
 <template>
   <div class="quests">
-    <GmapSearchBlock />
+    <GmapSearchBlock
+      :locations="questsLocation"
+    />
     <div class="quests__content">
       <div
         class="quests__body"
@@ -91,10 +93,17 @@
             </base-btn>
           </div>
         </div>
-        <questCards
+        <quests
+          v-if="questsObjects.count !== 0"
           :limit="100"
           :object="questsObjects"
           :page="'quests'"
+        />
+        <emptyData
+          v-else
+          :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
+          :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+          :link="userRole === 'employer' ? '/create-quest' : ''"
         />
       </div>
     </div>
@@ -104,13 +113,15 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
-import questCards from '~/components/app/Pages/Common/Quests';
+import quests from '~/components/app/pages/common/quests';
+import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Quests',
   components: {
     GmapSearchBlock,
-    questCards,
+    quests,
+    emptyData,
   },
   data() {
     return {
@@ -162,23 +173,20 @@ export default {
       timeSort: 'desc',
       questLimits: 100,
       questsObjects: {},
+      questsLocation: {},
     };
   },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
-      cards: 'data/getCards',
-      cards2: 'data/getAllQuests',
-      distance: 'data/getDistance',
-      locations: 'data/getLocations',
       checkWelcomeModal: 'modals/getIsShowWelcome',
       userRole: 'user/getUserRole',
     }),
   },
   async mounted() {
     this.SetLoader(true);
-    this.SetLoader(false);
     await this.getQuests();
+    this.SetLoader(false);
   },
   methods: {
     showFilter() {
@@ -186,30 +194,10 @@ export default {
         key: modals.questFilter,
       });
     },
-    async getQuests(specialSort) {
-      const additionalValue = `?limit=${this.questLimits}&offset=0${specialSort || ''}`;
+    async getQuests(specialSort = '') {
+      const additionalValue = `?limit=${this.questLimits}&offset=0${specialSort}`;
       this.questsObjects = await this.$store.dispatch('quests/getAllQuests', additionalValue);
-    },
-    getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-      const R = 6371; // Radius of the earth in km
-      const dLat = this.deg2rad(lat2 - lat1); // deg2rad below
-      const dLon = this.deg2rad(lon2 - lon1);
-      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-        + Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2))
-        * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      let d = (R * c) * 1000; // Distance in km
-      if (d >= 1000) {
-        d = '+1000';
-      } else if (d >= 500) {
-        d = '+500';
-      } else {
-        d = '-500';
-      }
-      return d;
-    },
-    deg2rad(deg) {
-      return deg * (Math.PI / 180);
+      // this.questsLocation = await this.$store.dispatch('quests/getQuestsLocation');
     },
     toNotifications() {
       this.$router.push('/notification');

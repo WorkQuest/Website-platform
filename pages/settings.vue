@@ -634,11 +634,9 @@ export default {
       firstMobileNumder: 'user/getUserFirstMobileNumber',
       secondMobileNumder: 'user/getUserSecondMobileNumber',
       userSkills: 'data/getSkills',
-      userInfo: 'data/getUserInfo',
       imageData: 'user/getImageData',
       additionalInfo: 'user/getAdditionalInfo',
       getUserAddress: 'user/getUserAddress',
-      status2FA: 'data/get2FAStatus',
     }),
   },
   async mounted() {
@@ -663,9 +661,8 @@ export default {
       });
     },
     selectAddress(address) {
-      this.localUserData.additionalInfo.address = this.address;
+      this.localUserData.additionalInfo.address = address.formatted;
       this.addresses = [];
-      this.address = address.formatted;
     },
     async getAddressInfo(address) {
       let response = [];

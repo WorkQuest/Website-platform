@@ -75,10 +75,7 @@ export default {
         const payload = {
           totp: this.twoFACode,
         };
-        const response = await this.$store.dispatch('data/disable2FA', payload);
-        if (response?.ok) {
-          console.log(response);
-        }
+        await this.$store.dispatch('data/disable2FA', payload);
       } catch (e) {
         console.log(e);
       }

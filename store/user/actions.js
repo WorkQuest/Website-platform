@@ -52,7 +52,6 @@ export default {
   async getAllUserReviews({ commit }, id) {
     const response = await this.$axios.$get(`/v1/user/${id}/reviews`);
     commit('setUserReviews', response.result);
-    console.log(response);
     return response;
   },
 

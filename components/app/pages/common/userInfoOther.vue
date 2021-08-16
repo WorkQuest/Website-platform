@@ -11,12 +11,11 @@
         >
       </div>
       <div class="rating" />
-      <nuxt-link
+      <div
         class="reviews-amount"
-        to="/profile"
       >
-        {{ quest.reviewCount }} {{ $t('quests.reviews') }}
-      </nuxt-link>
+        {{ `${quest.reviewCount} ${$t('quests.reviews')}` }}
+      </div>
     </div>
     <div class="col info-grid__col">
       <div class="title">
@@ -61,11 +60,11 @@
         </div>
       </div>
       <div class="socials">
-        <SocialPanel />
+        <socialPanel />
       </div>
       <div class="contacts__grid">
         <div class="contacts">
-          <ContactPanel />
+          <contactPanel />
           <div class="btn__container">
             <base-btn
               v-if="userRole === 'worker'"
@@ -104,12 +103,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import ContactPanel from '~/components/app/Panels/ContactOther';
-import SocialPanel from '~/components/app/Panels/Social';
+import contactPanel from '~/components/app/panels/contactOther';
+import socialPanel from '~/components/app/panels/social';
 
 export default {
   name: 'UserInfo',
-  components: { ContactPanel, SocialPanel },
+  components: { contactPanel, socialPanel },
   props: {
     selected: {
       type: Number,

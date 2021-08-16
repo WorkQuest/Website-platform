@@ -307,7 +307,6 @@
                   </div>
                 </transition>
               </button>
-              <!-- Кнопка мобильного меню -->
               <div
                 class="ctm-menu__toggle"
                 @click="toggleMobileMenu()"
@@ -404,7 +403,6 @@
           :class="[{'ctm-open': isMobileMenu},
                    {'ctm-open': isNotFlexContainer}]"
         >
-          <!-- Меню -->
           <transition name="fade-fast">
             <div
               class="ctm-menu"

@@ -2,8 +2,14 @@ export default {
   setAllQuests(state, data) {
     state.allQuests = data;
   },
+  setQuest(state, data) {
+    state.quest = data;
+  },
   setUserQuests(state, data) {
     state.userInfoQuests = data;
+  },
+  setQuestsLocation(state, data) {
+    state.questsLocation = data;
   },
 
   setQuestData(state, data) {

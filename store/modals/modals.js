@@ -56,4 +56,5 @@ export default {
   payment: 'payment',
   disable2FA: 'disable2FA',
   questFilterFull: 'questFilterFull',
+  showImage: 'showImage',
 };

@@ -16,7 +16,6 @@
           {{ $t('disputes.pending') }}
         </div>
       </div>
-      <Card />
       <div class="chat-history">
         <div class="chat-history__container">
           <div class="chat-history__title">
@@ -32,13 +31,11 @@
 </template>
 
 <script>
-import Card from '~/components/app/cards/questCards';
-import Messages from '~/components/app/Pages/Common/Messages';
+import Messages from '~/components/app/pages/common/messages';
 
 export default {
   name: 'Index',
   components: {
-    Card,
     Messages,
   },
   async mounted() {

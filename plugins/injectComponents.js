@@ -13,6 +13,7 @@ import GMap from '~/components/GMap';
 import GMapMarker from '~/components/GMapMarker';
 import GMapInfoWindow from '~/components/GMapInfoWindow';
 import BaseTable from '~/components/ui/BaseTable';
+import BasePager from '~/components/ui/BasePager';
 
 Vue.component('ctm-modal', CtmModal);
 Vue.component('ctm-modal-box', CtmModalBox);
@@ -27,3 +28,4 @@ Vue.component('GMap', GMap);
 Vue.component('GMapMarker', GMapMarker);
 Vue.component('GMapInfoWindow', GMapInfoWindow);
 Vue.component('base-table', BaseTable);
+Vue.component('base-pager', BasePager);
