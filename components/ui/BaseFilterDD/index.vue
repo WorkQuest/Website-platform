@@ -1453,7 +1453,7 @@ export default {
 .filter {
   &__body {
     overflow-y: auto;
-    height: 300px;
+    height: 400px;
     margin: 10px 0 0 0;
     padding: 10px 0 0 0;
   }
