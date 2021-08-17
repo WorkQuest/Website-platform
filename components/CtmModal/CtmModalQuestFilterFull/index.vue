@@ -3,12 +3,13 @@
     :title="$t('filters.titleAll')"
     class="filter"
   >
-    <div class="ctm-modal__content filter">
+    <div class="filter ctm-modal__content filter">
       <div class="filter">
         <div class="filter__container">
           <div class="filter__body">
             <div
               v-for="(item, i) in filters.categories"
+              :id="i"
               :key="i"
               class="filter__items"
             >
@@ -43,6 +44,7 @@
                         :ref="`allCheckbox${i}`"
                         type="checkbox"
                         :name="$t('filters.commonSub.selectAll')"
+                        @change="selectAll(i)"
                       >
                       <label
                         :for="i"
@@ -63,10 +65,10 @@
                         <input
                           :id="sub.id"
                           :ref="`checkbox${i}`"
-                          v-model="selected"
                           class="checkbox checkbox__box sub"
                           type="checkbox"
                           :name="sub.title"
+                          @change="selectSub(idx, i)"
                         >
                         <label
                           :for="sub.title"
@@ -1331,8 +1333,7 @@ export default {
       const selectAllCheckbox = this.$refs.[`allCheckbox${idx}`];
       const checkboxes = this.$refs.[`checkbox${idx}`];
       selectAllCheckbox[0].checked = !selectAllCheckbox[0].checked;
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < length; i++) {
+      for (let i = 0; i < length; i += 1) {
         checkboxes[i].checked = selectAllCheckbox[0].checked;
       }
     },
@@ -1343,8 +1344,9 @@ export default {
     hide() {
       this.CloseModal();
     },
-    toggleCategory(item) {
-      item.visible = !item.visible;
+    toggleCategory(filters, item, index) {
+      const { categories } = filters;
+      categories[index].visible = !categories[index].visible;
     },
   },
 };
@@ -1353,9 +1355,9 @@ export default {
 <style lang="scss" scoped>
 
 .checkbox {
+  z-index: 3;
   &__box {
     cursor: pointer;
-    z-index: 1;
   }
 }
 
@@ -1390,7 +1392,7 @@ export default {
   &__item {
     width: 100%;
     margin: 0 0 5px 0;
-    z-index: 3;
+    z-index: 1;
     &:hover {
       text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
       cursor: pointer;
