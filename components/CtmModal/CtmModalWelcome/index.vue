@@ -4,48 +4,77 @@
     :is-header="false"
     :title="$t('modals.addCard')"
   >
-    <div class="modal__header">
-      <div class="header__title">
-        {{ $t('modals.welcomeToWorkQuest') }}
+    <div class="modal__content content">
+      <div class="content__header header">
+        <div class="header__title">
+          {{ $t('modals.welcomeToWorkQuest') }}
+        </div>
+        <div class="header__subtitle">
+          {{ $t('modals.welcomeText') }}
+        </div>
       </div>
-      <div class="header__subtitle">
-        {{ $t('modals.pleaseTellUsAboutSkills') }}
-      </div>
-    </div>
-    <div class="btn__grid">
-      <div
-        v-for="elem in skillsArray.length"
-        :key="elem.i"
-      >
-        <base-dd
-          :type="'gray'"
-          :items="items"
-        />
-        <base-btn
-          :mode="'grey'"
-          @click="addSkill"
+      <div class="content__field">
+        <div
+          v-for="(elem, index) in skillsArray"
+          :key="elem.sign"
+          class="content__body body"
         >
-          <span class="icon-plus" />
-        </base-btn>
-      </div>
-    </div>
-    <div class="btn__container">
-      <div class="btn__wrapper">
-        <base-btn
-          class="message__action"
-          @click="hide()"
-        >
-          {{ $t('meta.confirm') }}
-        </base-btn>
-      </div>
-      <div class="btn__wrapper">
-        <base-btn
-          :mode="'outline'"
-          class="message__action"
-          @click="hide()"
-        >
-          {{ $t('meta.remindLater') }}
-        </base-btn>
+          <base-dd
+            v-model="elem.id"
+            :type="'gray'"
+            :items="items"
+            class="body__drop"
+          >
+            <template
+              v-slot:choose
+            >
+              <span
+                v-if="elem.id===-1"
+                class="body__placeholder"
+              >
+                {{ $t('placeholders.default') }}
+              </span>
+            </template>
+          </base-dd>
+          <base-btn
+            v-if="skillsArray.length===index+1"
+            :mode="'grey'"
+            class="body__add"
+            @click="addSkill"
+          >
+            <span
+              class="icon-plus body__picture"
+            />
+          </base-btn>
+          <base-btn
+            v-else
+            :mode="'grey'"
+            class="body__add"
+            @click="removeSkill(elem.sign)"
+          >
+            <span
+              class="body__remove icon-close_big"
+            />
+          </base-btn>
+        </div>
+        <div class="content__buttons buttons">
+          <div class="buttons__container">
+            <base-btn
+              class="buttons__action"
+              @click="hide()"
+            >
+              {{ $t('meta.submit') }}
+            </base-btn>
+
+            <base-btn
+              :mode="'outline'"
+              class="buttons__action"
+              @click="hide()"
+            >
+              {{ $t('meta.later') }}
+            </base-btn>
+          </div>
+        </div>
       </div>
     </div>
   </ctm-modal-box>
@@ -56,11 +85,11 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
+  element: Date.now(),
   name: 'ModalWelcome',
-  // example: 1,
   data() {
     return {
-      skillsArray: ['aa', 'bbb'],
+      skillsArray: [{ id: -1, sign: Date.now() }],
     };
   },
   computed: {
@@ -79,47 +108,71 @@ export default {
   methods: {
     hide() {
       this.CloseModal();
-      this.CloseModal();
     },
-    // addSkill() {
-    //   // return this.example.push(this.skillsArray);
-    // },
+    addSkill() {
+      return this.skillsArray.push({ id: -1, sign: Date.now() });
+    },
+    removeSkill(sign) {
+      this.skillsArray = this.skillsArray.filter((item) => item.sign !== sign);
+      return this.skillsArray;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.modal {
+  overflow: visible;
+  max-width: 413px !important;
+  height: auto;
+  &__content {
 
-.icon {
-  &-plus:before {
-    content: "\e9a8";
-    font-size: 20px;
+  }
+}
+.content{
+  &__header {
+    height: 141px;
+    width: 100%;
+    background: linear-gradient(135deg, #0083C7 0%, #00AA5B 100%);
+    border-radius: 6px 6px 0 0;
+  }
+  &__field{
+    padding: 20px;
+  }
+  &__body{
+    display: flex;
+  }
+}
+.body{
+  justify-content: space-between;
+  &__drop{
+    display: block;
+    width: 314px!important;
+    margin-right: 10px;
+  }
+  &__picture{
+    display: block;
+    width: 46px;
+  }
+  &__add{
+    width: 46px!important;
+    margin-bottom: 10px;
+  }
+  &__picture:before{
+    font-size: 24px;
     color: $blue;
   }
-}
-
-.ctm-modal {
-  @include modalKit;
-}
-
-.btn {
-  &__grid {
-    display: grid;
-    grid-template-columns: 10fr 2fr;
-    margin: 20px;
-    grid-gap: 10px;
+  &__remove:before{
+    font-size: 24px;
+    color: $red;
   }
-  &__container {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    margin: 15px 10px 0 10px;
-  }
-  &__wrapper {
-    width: 45%;
+  &__placeholder{
+    color: #D8DFE3;
+    font-size: 16px;
+    line-height: 130%;
+    margin-right: auto;
   }
 }
-
 .header {
   &__title {
     @include text-simple;
@@ -137,20 +190,16 @@ export default {
     padding: 0 0 20px 20px;
   }
 }
-
-.modal {
-  overflow: visible;
-  max-width: 413px !important;
-  &__header {
-    height: 180px;
-    width: 100%;
-    background: linear-gradient(135deg, #0083C7 0%, #00AA5B 100%);
+.buttons{
+  &__action{
+    max-width: 176px!important;
   }
-  &__content {
-   display: grid;
-   grid-template-columns: 1fr;
-   justify-items: center;
-   grid-gap: 20px;
- }
+  &__container{
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    margin-top: 22px;
+  }
 }
 </style>
