@@ -1370,9 +1370,8 @@ export default {
       selectAllCheckbox[0].checked = !selectAllCheckbox[0].checked;
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < length; i++) {
-        checkboxes[i].checked = !checkboxes[i].checked;
+        checkboxes[i].checked = selectAllCheckbox[0].checked;
       }
-      console.log(selectAllCheckbox);
     },
     selectSub(item, category) {
       const checkbox = this.$refs.[`checkbox${category}`][+item - 2];
