@@ -1347,38 +1347,6 @@ export default {
         checkbox.checked = !checkbox.checked;
       }
     },
-    hideDd() {
-      this.isOpenDD = true;
-    },
-    toggleDd() {
-      this.isOpenDD = !this.isOpenDD;
-    },
-    toggleItem(item) {
-      const categories = item;
-      let i = item.id;
-      const { length } = Object.keys(categories);
-      if (item.visible) {
-        // eslint-disable-next-line no-plusplus
-        for (i; i < length; i++) {
-          item.visible = false;
-        }
-      } else if (!item.visible) {
-        // eslint-disable-next-line no-plusplus
-        for (i; i < length; i++) {
-          item.visible = true;
-        }
-      }
-      // item.visible = !item.visible;
-    },
-    closeItem() {
-      const acc = document.getElementsByClassName('filter__item');
-      for (let i = 0; i < acc.length; i += 1) {
-        acc[i].onclick = () => {
-          this.classList.toggle('hide');
-          this.nextElementSibling.classList.toggle('hide');
-        };
-      }
-    },
     hide() {
       this.CloseModal();
     },
