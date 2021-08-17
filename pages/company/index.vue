@@ -4,26 +4,22 @@
       class="main-section main-section_white"
     >
       <div class="main-container">
-        <UserInfo />
+        <userInfo selected="1" />
       </div>
     </div>
 
     <div class="information-section">
       <div class="main-container">
-        <!-- DATA -->
-        <UserStatistic />
+        <userStatistic />
 
-        <!-- REVIEWS -->
         <div class="title">
           {{ $t('quests.reviewsBig') }}
         </div>
-        <Reviews />
+        <reviews />
 
-        <!-- ACTIVE -->
         <div class="title">
           {{ $t('quests.activeQuests') }}
         </div>
-        <QuestCard />
         <div class="button__container">
           <nuxt-link
             class="button__more"
@@ -38,15 +34,14 @@
 </template>
 
 <script>
-import UserInfo from '~/components/app/Pages/Common/UserInfo';
-import Reviews from '~/components/app/Pages/Profile/Tabs/Reviews';
-import QuestCard from '~/components/app/Cards/QuestCard';
-import UserStatistic from '~/components/app/Panels/UserStatistic';
+import userInfo from '~/components/app/pages/common/userInfo';
+import reviews from '~/components/app/pages/profile/tabs/reviews';
+import userStatistic from '~/components/app/panels/userStatistic';
 
 export default {
   name: 'Index',
   components: {
-    Reviews, UserInfo, QuestCard, UserStatistic,
+    reviews, userInfo, userStatistic,
   },
   async mounted() {
     this.SetLoader(true);

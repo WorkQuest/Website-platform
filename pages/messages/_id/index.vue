@@ -61,9 +61,10 @@
                     <div class="chat__star">
                       <div
                         class="block__icon block__icon_fav star"
-                        @click="item.isFavourite = !item.isFavourite"
+                        @click="favoritesHandler(item)"
                       >
                         <img
+                          v-if="!item.isFavourite"
                           class="star__hover"
                           src="~assets/img/ui/star_hover.svg"
                           alt=""
@@ -161,12 +162,15 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
-    this.showNoticeModal();
+    const isChatNotificationShown = !!localStorage.getItem('isChatNotificationShown');
+    if (!isChatNotificationShown) this.showNoticeModal();
   },
   methods: {
     scrollChat() {
       const chat = this.$el.querySelector('#chat__messages');
-      setTimeout(chat.scrollTop = chat.scrollHeight, 100);
+      setTimeout(() => {
+        chat.scrollTop = chat.scrollHeight;
+      }, 100);
     },
     showNoticeModal() {
       this.ShowModal({
@@ -180,23 +184,33 @@ export default {
       this.$router.push('/messages');
     },
     sendMessages() {
-      if (!this.messages && !this.messages.length) {
+      if (!this.message_input && !this.message_input.length) {
         return;
       }
-      this.messages.push({
+      const message = {
         userName: 'Rosalia Vanse',
         type: 2,
         body: this.message_input,
         isFavourite: false,
         messageTime: moment().format('HH:mm'),
-      });
-      this.messages = '';
+      };
+      // TODO replace with mutation
+      console.log('send: ', message);
+      this.message_input = '';
       this.scrollChat();
     },
     onEnter(e, callback) {
       if (!e.ctrlKey) {
         e.preventDefault();
         callback(this.sendMessages);
+      }
+    },
+    favoritesHandler(item) {
+      // TODO replace with mutation
+      if (item.isFavourite) {
+        console.log('remove from favorites', item);
+      } else {
+        console.log('add to favorites', item);
       }
     },
   },
@@ -316,20 +330,22 @@ export default {
 
 .star {
   &__default {
+
     display: flex;
   }
   &__hover {
+    width: 22px !important;
     display: none;
+  }
+  &__checked {
+    width: 22px !important;
   }
   &:hover {
     .star {
       &__hover {
-        display: flex;
+        display: block;
       }
       &__default {
-        display: none;
-      }
-      &__checked {
         display: none;
       }
     }

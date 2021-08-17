@@ -4,75 +4,84 @@
     :title="$t('modals.withdrawCard')"
   >
     <div class="ctm-modal__content">
-      <div class="grid__3col">
+      <validation-observer v-slot="{ handleSubmit, validated, passed, invalid }">
+        <div class="grid__3col">
+          <div class="ctm-modal__content-field">
+            <base-field
+              id="amount_input"
+              v-model="amount"
+              :label="$t('modals.amount')"
+              :placeholder="'0 WUSD'"
+              rules="min_value:0|required"
+              name="Amount"
+            />
+          </div>
+          <div class="ctm-modal__equal">
+            =
+          </div>
+          <div class="ctm-modal__content-field">
+            <div class="ctm-modal__fake-input">
+              $ 0
+            </div>
+          </div>
+        </div>
         <div class="ctm-modal__content-field">
           <base-field
-            id="amount_input"
-            :label="$t('modals.amount')"
-            :is-hide-error="true"
-            :placeholder="'0 WUSD'"
+            id="cardNumber_input"
+            v-model="cardNumber"
+            :label="$t('modals.numberOfCard')"
+            :placeholder="'1234 1234 1234 1234'"
+            rules="required|numberOfCard"
+            name="Card number"
           />
         </div>
-        <div class="ctm-modal__equal">
-          =
+        <div class="ctm-modal__content-field_couple">
+          <div>
+            <base-field
+              id="date_input"
+              v-model="date"
+              :label="$t('modals.cardDate')"
+              :placeholder="'02/24'"
+              name="date"
+              rules="required"
+            />
+          </div>
+          <div>
+            <base-field
+              id="cvv_input"
+              v-model="cvv"
+              :label="$t('modals.cvv')"
+              :placeholder="'242'"
+              rules="required|cvv"
+              name="CVV"
+            />
+          </div>
         </div>
-        <div class="ctm-modal__content-field">
-          <base-field
-            :is-hide-error="true"
-            mode="white"
-            :placeholder="'$ 0'"
+        <div class="checkbox">
+          <base-checkbox
+            v-model="isSavedCard"
+            name="map"
+            :label="$t('modals.saveCardForNextPayment')"
           />
         </div>
-      </div>
-      <div class="ctm-modal__content-field">
-        <base-field
-          id="cardNumber_input"
-          v-model="cardNumber"
-          :label="$t('modals.numberOfCard')"
-          :placeholder="'1234 1234 1234 1234'"
-        />
-      </div>
-      <div class="ctm-modal__content-field_couple">
-        <div>
-          <base-field
-            id="date_input"
-            v-model="date"
-            :label="$t('modals.cardDate')"
-            :placeholder="'02/24'"
-          />
+        <div class="ctm-modal__content-btns">
+          <div class="btn-group">
+            <base-btn
+              class="btn"
+              @click="hide()"
+            >
+              {{ $t('meta.cancel') }}
+            </base-btn>
+            <base-btn
+              class="btn_bl"
+              :disabled="!validated || !passed || invalid"
+              @click="handleSubmit(showTransactionSendModal)"
+            >
+              {{ $t('meta.confirm') }}
+            </base-btn>
+          </div>
         </div>
-        <div>
-          <base-field
-            id="cvv_input"
-            v-model="cvv"
-            :label="$t('modals.cvv')"
-            :placeholder="'242'"
-          />
-        </div>
-      </div>
-      <div class="checkbox">
-        <base-checkbox
-          v-model="isSavedCard"
-          name="map"
-          :label="$t('modals.saveCardForNextPayment')"
-        />
-      </div>
-      <div class="ctm-modal__content-btns">
-        <div class="btn-group">
-          <base-btn
-            class="btn"
-            @click="hide()"
-          >
-            {{ $t('meta.cancel') }}
-          </base-btn>
-          <base-btn
-            class="btn_bl"
-            @click="showTransactionSendModal()"
-          >
-            {{ $t('meta.confirm') }}
-          </base-btn>
-        </div>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -85,6 +94,7 @@ export default {
   name: 'ModalWithdraw',
   data() {
     return {
+      amount: '',
       date: '',
       balance: '',
       cardNumber: '',
@@ -120,7 +130,7 @@ export default {
   @include modalKit;
 
   &__equal {
-    margin: 0 0 12px 12px;
+    margin: 0 0 35px 12px;
   }
 
   .grid {
@@ -137,7 +147,7 @@ export default {
   }
 
   &__content-field {
-    margin: 15px 0 0 0;
+    margin: 0 0 0 0;
 
     &_couple {
       display: grid;
@@ -179,7 +189,7 @@ export default {
 
         &:hover {
           background-color: #0083C71A;
-          border: 0px;
+          border: 0;
         }
 
         &_bl {
@@ -202,6 +212,7 @@ export default {
 
   &__content {
     padding-top: 0 !important;
+    margin-top: 15px;
   }
 
   &__title-head {
@@ -220,6 +231,24 @@ export default {
       font-weight: 500;
       font-size: 14px;
     }
+  }
+
+  &__fake-input {
+    font: inherit;
+    height: 46px;
+    padding: 10px 20px;
+    width: 100%;
+    color: #B1B3B8;
+    background: #FFFFFF;
+    border-radius: 6px;
+    border: 1px solid #F3F7FA;
+    margin-bottom: 23px;
+  }
+}
+
+.base-btn {
+  &_disabled {
+    background: #D1D1CF !important;
   }
 }
 

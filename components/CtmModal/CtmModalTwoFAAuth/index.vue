@@ -323,7 +323,7 @@ export default {
     },
     async enable2FA() {
       try {
-        const response = await this.$store.dispatch('data/enable2FA');
+        const response = await this.$store.dispatch('user/enable2FA');
         if (response?.ok) {
           this.codeFromApi = response.result;
           this.qrLink = `otpauth://totp/${this.userData.email}?secret=${this.codeFromApi}&issuer=WorkQuest.co`;
@@ -338,7 +338,7 @@ export default {
           confirmCode: this.confirmEmailCode,
           totp: this.twoFACode,
         };
-        const response = await this.$store.dispatch('data/confirmEnable2FA', payload);
+        const response = await this.$store.dispatch('user/confirmEnable2FA', payload);
         if (response?.ok) {
           console.log(response);
           this.hide();
