@@ -15,7 +15,7 @@
         class="content__drop"
       >
         <template
-          v-if="drop===''"
+          v-if="drop===-1"
           v-slot:choose
         >
           <span class="content__choose">
@@ -50,7 +50,7 @@ export default {
   name: 'ModalOpenADispute',
   data() {
     return {
-      drop: '',
+      drop: -1,
     };
   },
   computed: {

@@ -1,29 +1,25 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
-    is-header="false"
+    class="sure"
+    :is-header="false"
   >
-    <div class="ctm-modal__content">
-      <div class="messageSend">
-        <div class="messageSend__content">
-          <img
-            src="~assets/img/ui/message.svg"
-            alt="AreYouSure"
-          >
-          <div class="ctm-modal__title">
-            {{ $t('modals.areYouSure') }}
-          </div>
-          <div class="ctm-modal__desc">
-            {{ $t('modals.smallTemp') }}
-          </div>
-          <base-btn
-            class="email__action"
-            @click="hide()"
-          >
-            {{ $t('meta.ok') }}
-          </base-btn>
-        </div>
+    <div class="sure__content content">
+      <img
+        src="~assets/img/ui/sureDelete.svg"
+        alt="AreYouSure"
+      >
+      <div class="content__title">
+        {{ $t('modals.areYouSure') }}
       </div>
+      <div class="content__desc">
+        {{ $t('modals.areYouSureText') }}
+      </div>
+      <base-btn
+        class="content__action"
+        @click="hide()"
+      >
+        {{ $t('meta.ok') }}
+      </base-btn>
     </div>
   </ctm-modal-box>
 </template>
@@ -50,20 +46,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ctm-modal {
-  @include modalKit;
-}
 
-.messageSend {
+.sure{
   max-width: 337px !important;
   &__content {
+    padding: 30px;
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
     grid-gap: 20px;
   }
+}
+.content{
   &__action {
     margin-top: 10px;
+  }
+  &__title{
+    margin-top: 10px;
+    font-weight: 500;
+    font-size: 23px;
+    line-height: 130%;
+  }
+  &__desc{
+    color: #4C5767;
+    text-align: center;
+    font-size: 16px;
+    line-height: 130%;
   }
 }
 </style>

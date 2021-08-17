@@ -4,63 +4,80 @@
     :title="$t('modals.addingCard')"
   >
     <div class="card__content content">
-      <div class="content__input input">
-        <span class="input__title">
-          {{ $t('modals.numberCard') }}
-        </span>
-        <base-field
-          v-model="cardNumberInput"
-          class="input__field"
-          :placeholder="'1234 1234 1234 1234'"
-        />
-      </div>
-      <div class="content__input input">
-        <span class="input__title">
-          {{ $t('modals.cardHolder') }}
-        </span>
-        <base-field
-          v-model="cardHolder"
-          class="input__field"
-          :placeholder="'AAAA AAAAAAAAA'"
-        />
-      </div>
-      <div class="content__grid grid">
-        <div class="grid__field">
-          <span class="grid__title">
-            {{ $t('modals.date') }}
-          </span>
-          <base-field
-            v-model="dateInput"
-            class="grid__input"
-            :placeholder="'02/24'"
-          />
-        </div>
-        <div class="grid__field">
-          <span class="grid__title">
-            {{ $t('modals.cvv') }}
-          </span>
-          <base-field
-            v-model="cvvInput"
-            class="grid__field"
-            placeholder="242"
-          />
-        </div>
-      </div>
-      <div class="buttons">
-        <base-btn
-          :mode="'outline'"
-          class="buttons__action"
-          @click="hide"
+      <ValidationObserver
+        v-slot="{ handleSubmit }"
+        class="content__observer"
+        tag="div"
+      >
+        <form
+          class="restore__body"
+          action=""
+          @submit.prevent="handleSubmit(card)"
         >
-          {{ $t('meta.cancel') }}
-        </base-btn>
-        <base-btn
-          class="buttons__action"
-          @click="showCardHasBeenAddedModal"
-        >
-          {{ $t('modals.add') }}
-        </base-btn>
-      </div>
+          <div class="content__input input">
+            <div class="input__title">
+              {{ $t('modals.numberCard') }}
+            </div>
+            <base-field
+              v-model="cardNumberInput"
+              class="input__field"
+              :placeholder="'1234 1234 1234 1234'"
+              rules="required|CardNumber"
+              :name="$t('modals.creditCardNumber')"
+            />
+          </div>
+          <div class="content__input input">
+            <div class="input__title">
+              {{ $t('modals.cardHolder') }}
+            </div>
+            <base-field
+              v-model="cardHolder"
+              class="input__field"
+              :placeholder="'AAAA AAAAAAAAA'"
+              is-hide-error="true"
+            />
+          </div>
+          <div class="content__grid grid">
+            <div class="grid__field">
+              <div class="grid__title">
+                {{ $t('modals.date') }}
+              </div>
+              <base-field
+                v-model="dateInput"
+                class="grid__input"
+                :placeholder="'02/24'"
+                is-hide-error="true"
+              />
+            </div>
+            <div class="grid__field">
+              <span class="grid__title">
+                {{ $t('modals.cvv') }}
+              </span>
+              <base-field
+                v-model="cvvInput"
+                class="grid__field"
+                placeholder="242"
+                is-hide-error="true"
+              />
+            </div>
+          </div>
+          <div class="content__buttons buttons">
+            <base-btn
+              :mode="'outline'"
+              class="buttons__action"
+              @click="hide"
+            >
+              {{ $t('meta.cancel') }}
+            </base-btn>
+            <base-btn
+              class="buttons__action"
+              @click="showCardHasBeenAddedModal"
+            >
+              {{ $t('modals.add') }}
+            </base-btn>
+          </div>
+        </form>
+      </ValidationObserver>
     </div>
   </ctm-modal-box>
 </template>
@@ -116,10 +133,9 @@ export default {
 }
 .card {
   max-width: 500px !important;
-  max-height: 429px !important;
   padding: 0!important;
   &__content{
-    padding: 22px 28px 30px 28px!important;
+    padding: 7px 28px 30px 28px!important;
   }
 }
 
@@ -128,7 +144,7 @@ export default {
     cursor: pointer;
   }
   &__title{
-    margin: 22px 5px 0 0;
+    margin: 15px 0 4px 0;
   }
 }
 .content{
@@ -139,10 +155,13 @@ export default {
     align-items: flex-end;
     grid-gap: 10px;
   }
+  &__buttons{
+    margin-top: 25px;
+  }
 }
 .grid{
   &__title{
-    margin: 15px 5px 0 0;
+    margin: 15px 0 4px 0;
   }
 }
 

@@ -32,6 +32,7 @@
             {{ items[value].title }}
           </span>
         </div>
+
         <span
           v-else
           class="dd__title"
@@ -43,10 +44,22 @@
           v-if="type === 'sort'"
           class="dd__caret dd__caret_dark icon-Sorting_descending"
         />
+
         <span
           v-else
           class="dd__caret icon-caret_down"
         />
+        <input
+          v-if="isPlace"
+          :type="type"
+          :name="name"
+          class="field"
+          :value="value"
+          :placeholder="placeholder"
+          :disabled="disabled"
+          @input="input"
+          @keydown.enter="enter"
+        >
       </button>
       <transition name="fade">
         <div
@@ -123,6 +136,14 @@ export default {
     mode: {
       type: String,
       default: '',
+    },
+    placeholder: {
+      type: String,
+      default: 'Placeholder',
+    },
+    isPlace: {
+      type: Boolean,
+      default: false,
     },
   },
   data: () => ({

@@ -132,14 +132,8 @@ export default {
     },
     items() {
       return [
-        'Visa *0001',
-        'Visa *0002',
-      ];
-    },
-    pictures() {
-      return [
-        '1',
-        '2',
+        'Visa *0000',
+        'Visa *0000',
       ];
     },
   },

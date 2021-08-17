@@ -255,4 +255,5 @@ export default {
 .button:hover .button__icon:before{
   color: $white!important;
 }
+
 </style>

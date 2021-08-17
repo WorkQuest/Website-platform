@@ -529,7 +529,13 @@
     "senderAddress": "Sender address",
     "recepientAddress": "Recepient address",
     "worknetFee": "Worknet fee",
-    "binanceFee": "Binance fee"
+    "binanceFee": "Binance fee",
+    "welcomeText": "Please, tell us about your skills below",
+    "areYouSureText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,",
+    "noticeTitle": "Notice",
+    "noticeText": "I disclaim responsibility if communication will take place in third-party chats",
+    "areYouSureNotificationText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor",
+    "creditCardNumber": "credit card number"
   },
   "ui": {
     "jobQuestors": "Job Questors",

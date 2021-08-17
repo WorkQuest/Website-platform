@@ -134,22 +134,22 @@ export default {
     },
     showTransferModal() {
       this.ShowModal({
-        key: modals.giveTransfer,
+        key: modals.openADispute,
       });
     },
     showDepositModal() {
       this.ShowModal({
-        key: modals.giveDeposit,
+        key: modals.changeRoleWarning,
       });
     },
     showWithdrawModal() {
       this.ShowModal({
-        key: modals.takeWithdraw,
+        key: modals.restore,
       });
     },
     showAddCardModal() {
       this.ShowModal({
-        key: modals.welcome,
+        key: modals.addingCard,
         branch: 'adding',
       });
     },

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="addLiquidity"
-    :title="$t('modals.deposit')"
+    :title="$t('crediting.deposit')"
   >
     <div class="ctm-modal__content">
       <div class="ctm-modal__grid-cont">

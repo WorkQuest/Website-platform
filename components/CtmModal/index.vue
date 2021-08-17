@@ -48,6 +48,7 @@
       <CtmModalWelcome v-if="modals.welcome === currentModalKey" />
       <CtmModalOpenADispute v-if="modals.openADispute === currentModalKey" />
       <CtmModalNotice v-if="modals.notice === currentModalKey" />
+      <CtmModalNoticeChat v-if="modals.noticeChat === currentModalKey" />
       <CtmModalTransfer v-if="modals.transfer === currentModalKey" />
       <CtmModalChangePassInSettings v-if="modals.changePassInSettings === currentModalKey" />
       <CtmModalTwoFAAuth v-if="modals.twoFAAuth === currentModalKey" />
@@ -76,6 +77,7 @@
       <CtmModalGiveTransfer v-if="modals.giveTransfer === currentModalKey" />
       <CtmModalPaymentOptions v-if="modals.paymentOptions === currentModalKey" />
       <CtmModalAreYouSureDelete v-if="modals.areYouSureDelete === currentModalKey" />
+      <CtmModalAreYouSureNotification v-if="modals.areYouSureNotification === currentModalKey" />
       <CtmModalSwap v-if="modals.swap === currentModalKey" />
       <CtmModalSwapInfo v-if="modals.swapInfo === currentModalKey" />
     </div>
@@ -120,6 +122,7 @@ import CtmModalAddCase from './CtmModalAddCase';
 import CtmModalWelcome from './CtmModalWelcome';
 import CtmModalOpenADispute from './CtmModalOpenADispute';
 import CtmModalNotice from './CtmModalNotice';
+import CtmModalNoticeChat from './CtmModalNoticeChat';
 import CtmModalTransfer from './CtmModalTransfer';
 import CtmModalChangePassInSettings from './CtmModalChangePassInSettings';
 import CtmModalTwoFAAuth from './CtmModalTwoFAAuth';
@@ -150,6 +153,7 @@ import CtmModalPaymentOptions from './CtmModalPaymentOptions';
 import CtmModalAreYouSureDelete from './CtmModalAreYouSureDelete';
 import CtmModalSwap from './CtmModalSwap';
 import CtmModalSwapInfo from './CtmModalSwapInfo';
+import CtmModalAreYouSureNotification from './CtmModalAreYouSureNotification';
 
 export default {
   name: 'ModalBox',
@@ -190,6 +194,7 @@ export default {
     CtmModalWelcome,
     CtmModalOpenADispute,
     CtmModalNotice,
+    CtmModalNoticeChat,
     CtmModalTransfer,
     CtmModalChangePassInSettings,
     CtmModalTwoFAAuth,
@@ -220,6 +225,7 @@ export default {
     CtmModalAreYouSureDelete,
     CtmModalSwap,
     CtmModalSwapInfo,
+    CtmModalAreYouSureNotification,
   },
   data: () => ({
     modals,

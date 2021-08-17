@@ -16,11 +16,11 @@
       <div class="content__field">
         <div
           v-for="(elem, index) in skillsArray"
-          :key="elem.sign"
+          :key="elem.id"
           class="content__body body"
         >
           <base-dd
-            v-model="elem.id"
+            v-model="elem.sign"
             :type="'gray'"
             :items="items"
             class="body__drop"
@@ -29,7 +29,7 @@
               v-slot:choose
             >
               <span
-                v-if="elem.id===-1"
+                v-if="elem.sign===-1"
                 class="body__placeholder"
               >
                 {{ $t('placeholders.default') }}
@@ -50,7 +50,7 @@
             v-else
             :mode="'grey'"
             class="body__add"
-            @click="removeSkill(elem.sign)"
+            @click="removeSkill(elem.id)"
           >
             <span
               class="body__remove icon-close_big"
@@ -89,7 +89,7 @@ export default {
   name: 'ModalWelcome',
   data() {
     return {
-      skillsArray: [{ id: -1, sign: Date.now() }],
+      skillsArray: [{ sign: -1, id: Date.now() }],
     };
   },
   computed: {
@@ -110,10 +110,10 @@ export default {
       this.CloseModal();
     },
     addSkill() {
-      return this.skillsArray.push({ id: -1, sign: Date.now() });
+      return this.skillsArray.push({ id: Date.now(), sign: -1 });
     },
-    removeSkill(sign) {
-      this.skillsArray = this.skillsArray.filter((item) => item.sign !== sign);
+    removeSkill(id) {
+      this.skillsArray = this.skillsArray.filter((item) => item.id !== id);
       return this.skillsArray;
     },
   },

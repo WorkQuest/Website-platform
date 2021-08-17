@@ -39,6 +39,7 @@ export default {
   welcome: 'welcome',
   openADispute: 'openADispute',
   notice: 'notice',
+  noticeChat: 'noticeChat',
   transfer: 'transfer',
   changePassInSettings: 'changePassInSettings',
   twoFAAuth: 'twoFAAuth',
@@ -67,5 +68,5 @@ export default {
   areYouSureDelete: 'areYouSureDelete',
   swap: 'swap',
   swapInfo: 'swapInfo',
-
+  areYouSureNotification: 'areYouSureNotification',
 };
