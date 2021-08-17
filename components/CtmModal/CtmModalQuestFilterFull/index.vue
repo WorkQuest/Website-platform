@@ -1355,7 +1355,6 @@ export default {
     },
     toggleItem(item) {
       const categories = item;
-      console.log(categories);
       let i = item.id;
       const { length } = Object.keys(categories);
       if (item.visible) {
