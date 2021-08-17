@@ -200,7 +200,7 @@ export default {
   }
   &__container {
     position: relative;
-    z-index: 10;
+    z-index: 1;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     align-items: center;
@@ -275,7 +275,8 @@ export default {
 }
 
 .uploader {
-  margin-bottom: 250px;
+  margin-bottom: 100px;
+  height: 320px;
   &__container {
     z-index: 1000;
     display: block;

@@ -1464,6 +1464,7 @@ export default {
     grid-template-columns: repeat(4, 1fr);
     margin: 10px 0 0 0;
     padding: 10px 0 0 0;
+    grid-gap: 20px;
   }
   &__items {
     margin: 0 0 10px 0;

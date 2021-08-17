@@ -1032,6 +1032,7 @@
     "writeYouMessage": "Write you message"
   },
   "settings": {
+    "placeOfStudying": "Place of studying",
     "description": "And you are beautiful",
     "imgLoaded": "Image loaded successful",
     "workExp": "Work experience",
