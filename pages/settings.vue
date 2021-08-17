@@ -194,10 +194,10 @@
         </div>
         <div
           v-if="userRole === 'worker'"
+          class="page__knowledge knowledge"
         >
           <label
             class="knowledge__label"
-            for="knowledge"
           >{{ $t('settings.educations') }}</label>
           <div
             v-if="localUserData.additionalInfo.educations.length !==0"
@@ -207,58 +207,73 @@
               :key="k.id"
               class="knowledge__container"
             >
-              <base-field
-                id="knowledge"
-                v-model="localUserData.additionalInfo.educations[i].from"
-                type="grey"
-                :placeholder="$t('settings.education.from')"
-              />
-              <div class="knowledge__dash">
-                -
+              <div class="knowledge__content">
+                <base-field
+                  v-model="localUserData.additionalInfo.educations[i].from"
+                  type="grey"
+                  class="knowledge__data"
+                  :placeholder="$t('settings.education.from')"
+                />
+                <div class="knowledge__dash">
+                  -
+                </div>
+                <base-field
+                  v-model="localUserData.additionalInfo.educations[i].to"
+                  type="grey"
+                  class="knowledge__data"
+                  :placeholder="$t('settings.education.to')"
+                />
               </div>
-              <base-field
-                v-model="localUserData.additionalInfo.educations[i].to"
-                type="grey"
-                :placeholder="$t('settings.education.to')"
-              />
-              <div />
-              <base-field
-                v-model="localUserData.additionalInfo.educations[i].place"
-                type="grey"
-                :placeholder="$t('settings.education.educationalInstitution')"
-              />
-              <div />
-              <base-btn @click="deleteKnowledge(i)">
-                {{ $t('settings.delete') }}
-              </base-btn>
+              <div class="knowledge__content">
+                <base-field
+                  v-model="localUserData.additionalInfo.educations[i].place"
+                  type="grey"
+                  class="knowledge__data knowledge__data_big"
+                  :placeholder="$t('settings.education.educationalInstitution')"
+                />
+                <base-btn
+                  class="knowledge__btn"
+                  @click="deleteKnowledge(i)"
+                >
+                  {{ $t('settings.delete') }}
+                </base-btn>
+              </div>
             </div>
           </div>
           <div
             class="knowledge__container"
           >
-            <base-field
-              v-model="newKnowledge.from"
-              type="date"
-              :placeholder="$t('settings.workExps.from')"
-            />
-            <div class="knowledge__dash">
-              -
+            <div class="knowledge__content">
+              <base-field
+                v-model="newKnowledge.from"
+                type="date"
+                class="knowledge__data"
+                :placeholder="$t('settings.workExps.from')"
+              />
+              <div class="knowledge__dash">
+                -
+              </div>
+              <base-field
+                v-model="newKnowledge.to"
+                type="date"
+                class="knowledge__data"
+                :placeholder="$t('settings.workExps.to')"
+              />
             </div>
-            <base-field
-              v-model="newKnowledge.to"
-              type="date"
-              :placeholder="$t('settings.workExps.to')"
-            />
-            <div />
-            <base-field
-              v-model="newKnowledge.place"
-              type="grey"
-              :placeholder="$t('settings.education.educationalInstitution')"
-            />
-            <div />
-            <base-btn @click="addNewKnowledge()">
-              {{ $t('settings.add') }}
-            </base-btn>
+            <div class="knowledge__content">
+              <base-field
+                v-model="newKnowledge.place"
+                type="grey"
+                class="knowledge__data knowledge__data_big"
+                :placeholder="$t('settings.education.educationalInstitution')"
+              />
+              <base-btn
+                class="knowledge__btn"
+                @click="addNewKnowledge()"
+              >
+                {{ $t('settings.add') }}
+              </base-btn>
+            </div>
           </div>
 
           <label
@@ -274,56 +289,72 @@
               :key="k.id"
               class="knowledge__container"
             >
+              <div class="knowledge__content">
+                <base-field
+                  id="workExp"
+                  v-model="localUserData.additionalInfo.workExperiences[i].from"
+                  type="date"
+                  class="knowledge__data"
+                  :placeholder="$t('settings.term')"
+                />
+                <div class="knowledge__dash">
+                  -
+                </div>
+                <base-field
+                  v-model="localUserData.additionalInfo.workExperiences[i].to"
+                  type="date"
+                  class="knowledge__data"
+                  :placeholder="$t('settings.term')"
+                />
+              </div>
+              <div class="knowledge__content">
+                <base-field
+                  v-model="localUserData.additionalInfo.workExperiences[i].place"
+                  type="grey"
+                  class="knowledge__data knowledge__data_big"
+                  :placeholder="$t('settings.workExps.companyName')"
+                />
+                <base-btn
+                  class="knowledge__btn"
+                  @click="deleteWorkExp(i)"
+                >
+                  {{ $t('settings.delete') }}
+                </base-btn>
+              </div>
+            </div>
+          </div>
+          <div class="knowledge__container">
+            <div class="knowledge__content">
               <base-field
-                id="workExp"
-                v-model="localUserData.additionalInfo.workExperiences[i].from"
+                v-model="newWorkExp.from"
                 type="date"
+                class="knowledge__data"
                 :placeholder="$t('settings.term')"
               />
               <div class="knowledge__dash">
                 -
               </div>
               <base-field
-                v-model="localUserData.additionalInfo.workExperiences[i].to"
+                v-model="newWorkExp.to"
                 type="date"
+                class="knowledge__data"
                 :placeholder="$t('settings.term')"
               />
-              <div />
+            </div>
+            <div class="knowledge__content">
               <base-field
-                v-model="localUserData.additionalInfo.workExperiences[i].place"
+                v-model="newWorkExp.place"
                 type="grey"
+                class="knowledge__data knowledge__data_big"
                 :placeholder="$t('settings.workExps.companyName')"
               />
-              <div />
-              <base-btn @click="deleteWorkExp(i)">
-                {{ $t('settings.delete') }}
+              <base-btn
+                class="knowledge__btn"
+                @click="addNewWorkExp()"
+              >
+                {{ $t('settings.add') }}
               </base-btn>
             </div>
-          </div>
-          <div class="knowledge__container">
-            <base-field
-              v-model="newWorkExp.from"
-              type="date"
-              :placeholder="$t('settings.term')"
-            />
-            <div class="knowledge__dash">
-              -
-            </div>
-            <base-field
-              v-model="newWorkExp.to"
-              type="date"
-              :placeholder="$t('settings.term')"
-            />
-            <div />
-            <base-field
-              v-model="newWorkExp.place"
-              type="grey"
-              :placeholder="$t('settings.workExps.companyName')"
-            />
-            <div />
-            <base-btn @click="addNewWorkExp()">
-              {{ $t('settings.add') }}
-            </base-btn>
           </div>
         </div>
         <div class="profile__row-4col">
@@ -364,7 +395,10 @@
             </template>
           </base-field>
         </div>
-        <div class="profile__row-4col">
+        <div
+          v-if="userRole === 'employer'"
+          class="page__btn btn"
+        >
           <base-btn
             class="btn__save"
             @click="editUserData()"
@@ -385,38 +419,75 @@
       >
         <div class="page__skills skills">
           <div class="skills__block block">
-            <div class="block__specialization specialization">
-              <base-dd
-                v-model="specIndex"
-                class="specialization__dd"
-                type="gray"
-                :items="specializations"
-              />
-              <base-input
-                v-model="userSkill"
-                class="specialization__skills"
-                type="gray"
-              />
-              <base-btn
-                :text="$t('settings.removeSpec')"
-                class="specialization__btn specialization__btn_remove"
-              />
-            </div>
-            <div class="block__skill skill">
-              <div
-                v-for="(item, i) in userSkills"
-                :key="i"
-                class="skill__block"
-              >
-                <div class="skill__badge">
-                  {{ item.title }}
+            <div class="block__skill-spec">
+              <div class="block__specialization specialization">
+                <base-dd
+                  v-model="specIndex"
+                  class="specialization__dd"
+                  type="gray"
+                  :items="specializations"
+                  :mode="'small'"
+                  :label="'Specialization'"
+                />
+                <base-input
+                  v-model="userSkill"
+                  class="specialization__skills"
+                  :label="'Skills'"
+                  type="gray"
+                />
+              </div>
+              <div class="block__skill skill">
+                <div
+                  v-for="(item, i) in userSkills"
+                  :key="i"
+                  class="skill__content"
+                >
+                  <div class="skill__badge">
+                    {{ item.title }}
+                  </div>
                 </div>
               </div>
             </div>
             <base-btn
-              :text="$t('settings.addSpec')"
-              class="skills__btn skills__btn_add"
+              :text="$t('settings.removeSpec')"
+              class="specialization__btn specialization__btn_remove"
             />
+          </div>
+          <base-btn
+            :text="$t('settings.addSpec')"
+            class="skills__btn skills__btn_add"
+          />
+          <div class="skills__add-info">
+            <base-dd
+              v-model="specIndex"
+              class="specialization__dd"
+              type="gray"
+              :items="specializations"
+              :mode="'small'"
+              :label="'Specialization'"
+            />
+            <base-dd
+              v-model="specIndex"
+              class="specialization__dd"
+              type="gray"
+              :items="specializations"
+              :mode="'small'"
+              :label="'Specialization'"
+            />
+            <base-input
+              v-model="userSkill"
+              class="specialization__skills"
+              :label="'Skills'"
+              type="gray"
+            />
+          </div>
+          <div class="page__btn btn">
+            <base-btn
+              class="btn__save"
+              @click="editUserData()"
+            >
+              {{ $t('settings.save') }}
+            </base-btn>
           </div>
         </div>
       </div>
@@ -662,12 +733,12 @@ export default {
       getUserAddress: 'user/getUserAddress',
     }),
     specializations() {
-      return [
-        this.$t('priority.all'),
-        this.$t('priority.low'),
-        this.$t('priority.normal'),
-        this.$t('priority.urgent'),
-      ];
+      const specs = [];
+      let i;
+      for (i = 1; i < 26; i += 1) {
+        specs.push(this.$t(`modals.filters.items.${i}.title`));
+      }
+      return specs;
     },
   },
   async mounted() {
@@ -948,10 +1019,19 @@ export default {
 
 .knowledge {
   &__container {
-    display: grid;
-    grid-template-columns: 5fr 28px 5fr 28px 7fr 28px 2fr;
+    display: flex;
+    grid-gap: 30px;
     margin: 0 19px 10px 20px;
     max-height: 44px;
+  }
+  &__content {
+      display: flex;
+      justify-content: space-between;
+      grid-gap: 20px;
+      width: 50%;
+  }
+  &__data {
+    width: 100%;
   }
   &__dash {
     display: flex;
@@ -960,7 +1040,7 @@ export default {
     justify-content: center;
   }
   &__label {
-    margin: 20px 0 15px 20px;
+    margin: 10px 0;
   }
 }
 
@@ -1278,62 +1358,14 @@ export default {
   }
   &__save {
     @extend .btn;
-    margin-bottom: 20px;
-    grid-column: 5/17;
+    width: 250px;
+    float: right;
   }
 }
 .quests {
-  &__cards {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 20px;
-    padding-top: 20px;
-  }
   &__top {
     position: relative;
     min-height: 160px;
-  }
-  &__search {
-    position: absolute;
-    max-width: 1180px;
-    height: 83px;
-    bottom: 30px;
-    left: 0;
-    right: 0;
-    margin: auto;
-    z-index: 1200;
-    @include box;
-  }
-  &__content {
-    display: flex;
-    justify-content: center;
-  }
-  &__body {
-    padding-top: 30px;
-    max-width: 1180px;
-    width: 100%;
-    height: 100%;
-    &_wrap {
-      padding-top: 10px;
-    }
-  }
-  &__text {
-    @include text-simple;
-    font-style: normal;
-    &_title  {
-      @extend .quests__text;
-      font-weight: 500;
-      font-size: 25px;
-      line-height: 130%;
-      color: $black800;
-    }
-  }
-  &__tags {
-    padding-top: 30px;
-    max-width: 1180px;
-  }
-  &__tools {
-    padding-top:  20px;
   }
 }
 
@@ -1477,16 +1509,20 @@ export default {
     width: 100%;
     padding: 20px;
     .block {
+      display: flex;
+      align-items: center;
+      grid-gap: 20px;
+      justify-content: space-between;
       &__specialization {
-        display: grid;
-        grid-template-columns: 1fr 1fr 250px;
-        width: 80%;
+        display: flex;
+        flex-direction: row;
         grid-gap: 20px;
       }
       &__skill {
         display: flex;
         flex-direction: row;
         align-items: center;
+        flex-wrap: wrap;
         grid-gap: 10px;
         .skill {
           &__badge {
@@ -1562,8 +1598,17 @@ export default {
     justify-content: flex-start;
     //padding: 0 20px 0 0;
   }
+  &__btn {
+    margin-bottom: 10px;
+  }
 }
 .skills {
+  &__add-info {
+    display: flex;
+    flex-wrap: nowrap;
+    grid-gap: 20px;
+    margin-top: 20px;
+  }
   &__btn {
     text-align: center;
     margin-top: 10px;
@@ -1578,11 +1623,24 @@ export default {
     }
   }
 }
+.dd {
+  &__items {
+    height: 200px;
+    overflow: hidden;
+  }
+}
 .specialization {
+  &__dd {
+    margin-bottom: 23px;
+    width: 100%;
+  }
+  &__skills {
+    width: 100%;
+  }
   &__btn {
     text-align: center;
-    width: 250px;
     &_remove {
+      width: 20%;
       background: #ffffff;
       color: #d73838;
       border: 1px solid #e79a9a;
@@ -1703,9 +1761,15 @@ export default {
 }
 @include _991 {
   .knowledge {
+    padding: 20px;
     &__container {
-      grid-template-columns: 5fr 28px 5fr 0;
+      flex-direction: column;
+      margin: 20px 0;
+      grid-gap: 10px;
       max-height: 100%;
+    }
+    &__content {
+      width: 100%;
     }
   }
   .settings {
@@ -1721,11 +1785,6 @@ export default {
     &__row-3col {
       grid-template-columns: repeat(2, 1fr);
     }
-    &__row-4col {
-      grid-template-rows: auto auto;
-      grid-template-columns: 1fr;
-      max-height: 100%;
-    }
   }
   .higher {
     &-level {
@@ -1737,9 +1796,54 @@ export default {
 }
 
 @include _767 {
+  .page {
+    &__skills {
+      .block {
+        &__specialization {
+          display: flex;
+          flex-direction: row;
+        }
+      }
+    }
+    &__btn {
+      padding: 0;
+      .btn__save {
+        width: 100%;
+      }
+    }
+  }
+
+  .specialization {
+    &__btn {
+      &_remove {
+        width: 100%;
+      }
+    }
+  }
+  .skills {
+    &__btn_add {
+      width: 100%;
+      margin-top: 0;
+    }
+    &__block {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin-bottom: 50px;
+    }
+    &__add-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  }
   .avatar {
     &__row {
       margin: 20px 20px 0 20px;
+      flex-direction: column;
+    }
+    &__container {
+      justify-self: center;
     }
   }
   .company {
@@ -1753,20 +1857,14 @@ export default {
       max-height: 100%;
     }
   }
-  .avatar {
-    &__row {
-      flex-direction: column;
-    }
-    &__container {
-      justify-self: center;
-    }
-  }
   .profile {
     &__row-3col {
       grid-template-columns: 1fr;
     }
     &__row-4col {
+      grid-template-rows: auto auto;
       grid-template-columns: 1fr;
+      max-height: 100%;
     }
   }
 
@@ -1779,6 +1877,20 @@ export default {
 }
 
 @include _575 {
+  .page {
+    &__skills {
+      .block {
+        &__specialization {
+          flex-direction: column;
+        }
+      }
+    }
+  }
+  .knowledge {
+    &__container {
+      width: 100%;
+    }
+  }
   .profile {
     &__row-data {
       grid-template-columns: 1fr;
@@ -1819,22 +1931,33 @@ export default {
   }
 }
 @include _480 {
-  .main-white {
-    width: calc(98vw - 71px);
+  .knowledge {
+    &__data {
+      width: 150px;
+      &_big {
+        width: 100% !important;
+      }
+    }
+    &__btn {
+      width: 30%;
+    }
   }
   .btn {
     &__save {
       margin-bottom: 20px;
-      grid-column: 5/14;
     }
   }
 }
 
 @include _380 {
+  .knowledge {
+    &__data {
+      width: 120px;
+    }
+  }
   .btn {
     &__save {
       margin-bottom: 20px;
-      grid-column: 5/14;
     }
   }
   .option {
@@ -1848,6 +1971,13 @@ export default {
   }
   .icons {
     padding: 16px 0 0 16px;
+  }
+}
+@include _350 {
+  .knowledge {
+    &__data {
+      width: 90px;
+    }
   }
 }
 </style>

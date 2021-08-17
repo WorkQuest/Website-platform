@@ -49,6 +49,7 @@
         <div
           v-if="isShown && isIcon"
           class="dd__items"
+          :class="mode === 'small' ? 'dd__items_small' : ''"
         >
           <button
             v-for="(item, i) in items"
@@ -66,6 +67,7 @@
         <div
           v-if="isShown && !isIcon"
           class="dd__items"
+          :class="mode === 'small' ? 'dd__items_small' : ''"
         >
           <button
             v-for="(item, i) in items"
@@ -180,6 +182,10 @@ export default {
     grid-gap: 15px;
     padding: 15px 20px;
     z-index: 1;
+    &_small {
+      height: 200px;
+      overflow: scroll;
+    }
   }
   &__item {
     text-align: left;
