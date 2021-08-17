@@ -79,6 +79,7 @@
                           :ref="`allCheckbox${i}`"
                           type="checkbox"
                           :name="$t('filters.commonSub.selectAll')"
+                          @change="selectAll(i)"
                         >
                         <label
                           :for="i"
@@ -96,8 +97,10 @@
                         <input
                           :id="sub.id"
                           :ref="`checkbox${i}`"
+                          class="checkbox checkbox__box sub"
                           type="checkbox"
                           :name="sub.title"
+                          @change="selectSub(idx, i)"
                         >
                         <label
                           :id="idx"
@@ -1368,8 +1371,7 @@ export default {
       const selectAllCheckbox = this.$refs.[`allCheckbox${idx}`];
       const checkboxes = this.$refs.[`checkbox${idx}`];
       selectAllCheckbox[0].checked = !selectAllCheckbox[0].checked;
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < length; i++) {
+      for (let i = 0; i < length; i += 1) {
         checkboxes[i].checked = selectAllCheckbox[0].checked;
       }
     },
@@ -1406,6 +1408,13 @@ export default {
 
 <style scoped lang="scss">
 
+.checkbox {
+  z-index: 3;
+  &__box {
+    cursor: pointer;
+  }
+}
+
 .hide {
   display: none;
 }
@@ -1440,6 +1449,7 @@ export default {
   &__item {
     width: 100%;
     margin: 0 0 5px 0;
+    z-index: 1;
     &:hover {
       text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
       cursor: pointer;
