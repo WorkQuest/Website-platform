@@ -77,7 +77,7 @@ export default {
     return {
       caseTitle: '',
       caseDescription: '',
-      ç: {
+      portfolio: {
         data: {},
         file: {},
       },
