@@ -49,7 +49,7 @@
                 >
                   <div
                     class="item"
-                    @click="toggleSub(filters, item, i)"
+                    @click="toggleCategory(filters, item, i)"
                   >
                     <span
                       class="item__title"
@@ -72,16 +72,16 @@
                     >
                       <div
                         class="sub__item"
-                        @click="selectAll(item, i)"
+                        @click="selectAll(i)"
                       >
                         <input
-                          id="1"
-                          ref="checkbox"
+                          :id="i"
+                          :ref="`allCheckbox${i}`"
                           type="checkbox"
                           :name="$t('filters.commonSub.selectAll')"
                         >
                         <label
-                          for="1"
+                          :for="i"
                           class="sub__label"
                         >{{ $t('filters.commonSub.selectAll') }}</label>
                       </div>
@@ -91,15 +91,13 @@
                         :id="idx"
                         :key="idx"
                         class="sub__item"
+                        @click="selectSub(idx, i)"
                       >
                         <input
                           :id="sub.id"
-                          ref="checkbox"
-                          v-model="selected"
+                          :ref="`checkbox${i}`"
                           type="checkbox"
                           :name="sub.title"
-                          :value="sub.title"
-                          @click="selectSub(sub, item)"
                         >
                         <label
                           :id="idx"
@@ -1364,30 +1362,20 @@ export default {
       },
     };
   },
-  mounted() {
-    this.closeItem();
-  },
   methods: {
-    selectAll(item, index) {
-      const { length } = Object.keys(item.items);
-      const { checkbox } = this.$refs;
-      let i = Object.keys(item.items)[0];
-      function toggleChecked() {
-        checkbox[i].checked = !checkbox[i].checked;
-      }
+    selectAll(idx) {
+      const { length } = Object.keys(this.$refs.[`checkbox${idx}`]);
+      const selectAllCheckbox = this.$refs.[`allCheckbox${idx}`];
+      const checkboxes = this.$refs.[`checkbox${idx}`];
+      selectAllCheckbox[0].checked = !selectAllCheckbox[0].checked;
       // eslint-disable-next-line no-plusplus
-      for (i; i < length; i++) {
-        toggleChecked();
-        if (checkbox[i].checked) {
-          this.selected.push(item.items[i].title);
-        } else if (!checkbox[i].checked) {
-          this.selected.splice(item.items[i].title);
-        }
+      for (let i = 0; i < length; i++) {
+        checkboxes[i].checked = !checkboxes[i].checked;
       }
-      toggleChecked();
+      console.log(selectAllCheckbox);
     },
-    selectSub() {
-      const { checkbox } = this.$refs;
+    selectSub(item, category) {
+      const checkbox = this.$refs.[`checkbox${category}`][+item - 2];
       checkbox.checked = !checkbox.checked;
     },
     hideDd() {
@@ -1396,26 +1384,16 @@ export default {
     toggleDd() {
       this.isOpenDD = !this.isOpenDD;
     },
-    toggleSub(filters, item, index) {
+    toggleCategory(filters, item, index) {
       const { categories } = filters;
       const { length } = Object.keys(filters.categories);
       const numIndex = Number(index);
-      // eslint-disable-next-line no-plusplus
-      for (let i = 1; i < length; i++) {
+      for (let i = 1; i < length; i += 1) {
         if (i !== numIndex) {
           categories[i].visible = false;
         } else if (i === numIndex) {
           categories[i].visible = !categories[i].visible;
         }
-      }
-    },
-    closeItem() {
-      const acc = document.getElementsByClassName('filter__item');
-      for (let i = 0; i < acc.length; i += 1) {
-        acc[i].onclick = () => {
-          this.classList.toggle('hide');
-          this.nextElementSibling.classList.toggle('hide');
-        };
       }
     },
     showFilterFull() {

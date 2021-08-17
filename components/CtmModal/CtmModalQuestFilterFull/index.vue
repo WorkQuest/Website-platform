@@ -17,7 +17,7 @@
               >
                 <div
                   class="item"
-                  @click="toggleSub(item)"
+                  @click="toggleCategory(filters, item, i)"
                 >
                   <span
                     class="item__title"
@@ -36,34 +36,36 @@
                     <div
                       v-if="!item.visible"
                       class="sub__item"
-                      @click="selectAll(item)"
+                      @click="selectAll(i)"
                     >
                       <input
-                        id="1"
-                        ref="checkbox"
+                        :id="i"
+                        :ref="`allCheckbox${i}`"
                         type="checkbox"
                         :name="$t('filters.commonSub.selectAll')"
                       >
                       <label
-                        for="1"
+                        :for="i"
                         class="sub__label"
                       >{{ $t('filters.commonSub.selectAll') }}</label>
                     </div>
                     <div
-                      v-for="(sub, idx) in item.items"
-                      :key="idx"
                       class="sub__body"
                       :class="[{'hide': item.visible}]"
                     >
-                      <div class="sub__item">
+                      <div
+                        v-for="(sub, idx) in item.items"
+                        :id="idx"
+                        :key="idx"
+                        class="sub__item"
+                        @click="selectSub(idx, i)"
+                      >
                         <input
                           :id="sub.id"
-                          ref="checkbox"
+                          :ref="`checkbox${i}`"
                           v-model="selected"
                           type="checkbox"
                           :name="sub.title"
-                          :value="sub.title"
-                          @click="selectSub(sub, item)"
                         >
                         <label
                           :for="sub.title"
@@ -1323,34 +1325,25 @@ export default {
     };
   },
   methods: {
-    selectAll(item) {
-      const { length } = Object.keys(item.items);
-      const { checkbox } = this.$refs;
-      let i = Object.keys(item.items)[0];
-      function toggleChecked() {
-        checkbox[i].checked = !checkbox[i].checked;
-      }
+    selectAll(idx) {
+      const { length } = Object.keys(this.$refs.[`checkbox${idx}`]);
+      const selectAllCheckbox = this.$refs.[`allCheckbox${idx}`];
+      const checkboxes = this.$refs.[`checkbox${idx}`];
+      selectAllCheckbox[0].checked = !selectAllCheckbox[0].checked;
       // eslint-disable-next-line no-plusplus
-      for (i; i < length; i++) {
-        toggleChecked();
-        if (checkbox[i].checked) {
-          this.selected.push(item.items[i].title);
-        } else if (!checkbox[i].checked) {
-          this.selected.splice(item.items[i].title);
-        }
+      for (let i = 0; i < length; i++) {
+        checkboxes[i].checked = !checkboxes[i].checked;
       }
-      toggleChecked();
+      console.log(selectAllCheckbox);
     },
-    selectSub(sub) {
-      if (sub.id) {
-        const { checkbox } = this.$refs;
-        checkbox.checked = !checkbox.checked;
-      }
+    selectSub(item, category) {
+      const checkbox = this.$refs.[`checkbox${category}`][+item - 2];
+      checkbox.checked = !checkbox.checked;
     },
     hide() {
       this.CloseModal();
     },
-    toggleSub(item) {
+    toggleCategory(item) {
       item.visible = !item.visible;
     },
   },
