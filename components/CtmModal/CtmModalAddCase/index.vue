@@ -77,7 +77,7 @@ export default {
     return {
       caseTitle: '',
       caseDescription: '',
-      portfolioChange: {
+      ç: {
         data: {},
         file: {},
       },
@@ -94,7 +94,6 @@ export default {
     hide() {
       this.CloseModal();
     },
-    // eslint-disable-next-line consistent-return
     async processFile(e, validate) {
       const isValid = await validate(e);
       const file = e.target.files[0];
@@ -104,28 +103,28 @@ export default {
         }
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        const portfolio = this.portfolioChange;
-        portfolio.data = await this.$store.dispatch('user/imageCaseType', { contentType: file.type });
-        portfolio.file = file;
+        this.portfolio.data = await this.$store.dispatch('user/imageCaseType', { contentType: file.type });
+        this.portfolio.file = file;
       }
+      return this.portfolio;
     },
     async addUserCase() {
-      const portfolio = this.portfolioChange;
+      const { file, data } = this.portfolio;
       try {
         const formData = new FormData();
-        formData.append('image', portfolio.file);
-        if (portfolio.data.ok) {
-          const data = {
-            url: portfolio.data.result.url,
-            formData: portfolio.file,
-            type: portfolio.file.type,
+        formData.append('image', file);
+        if (data.ok) {
+          const payload = {
+            url: data.result.url,
+            formData: file,
+            type: file.type,
           };
-          await this.$store.dispatch('user/setCaseImage', data);
+          await this.$store.dispatch('user/setCaseImage', payload);
         }
         const payload = {
           title: this.caseTitle,
           description: this.caseDescription,
-          medias: [portfolio.data.result.mediaId],
+          medias: [data.result.mediaId],
         };
         await this.$store.dispatch('user/setCaseData', payload);
         this.hide();
