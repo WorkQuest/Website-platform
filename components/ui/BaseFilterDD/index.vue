@@ -1405,6 +1405,15 @@ export default {
         categories[i].visible = i === numIndex;
       }
     },
+    closeItem() {
+      const acc = document.getElementsByClassName('filter__item');
+      for (let i = 0; i < acc.length; i += 1) {
+        acc[i].onclick = () => {
+          this.classList.toggle('hide');
+          this.nextElementSibling.classList.toggle('hide');
+        };
+      }
+    },
     showFilterFull() {
       this.ShowModal({
         key: modals.questFilterFull,
