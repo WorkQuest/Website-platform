@@ -1402,7 +1402,11 @@ export default {
       const numIndex = Number(index);
       // eslint-disable-next-line no-plusplus
       for (let i = 1; i < length; i++) {
-        categories[i].visible = i === numIndex;
+        if (i !== numIndex) {
+          categories[i].visible = false;
+        } else if (i === numIndex) {
+          categories[i].visible = !categories[i].visible;
+        }
       }
     },
     closeItem() {
