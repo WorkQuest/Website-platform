@@ -448,11 +448,11 @@ export default {
         font-weight: 400;
 
         &_bold {
-          font-weight: 700;
-          font-size: 20px;
-          color: #0083C7;
           line-height: 1;
           padding: 20px;
+          font-weight: 500;
+          font-size: 25px;
+          color: #103D7C;
         }
       }
     }

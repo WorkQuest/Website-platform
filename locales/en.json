@@ -17,20 +17,17 @@
   "btn": {
     "agree": "Agree",
     "goToChat": "Go to chat",
-    "dispute":"Open dispute",
+    "dispute": "Open dispute",
     "responded": "Respond send",
     "sendARequest": "Send a request",
     "view": "View"
   },
-
-  "distance" : {
+  "distance": {
     "m": "m"
   },
-
-  "info" : {
+  "info": {
     "showYourMessage": "Show your message"
   },
-
   "messages": {
     "alpha": "The {_field_} field may only contain alphabetic characters",
     "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
@@ -754,7 +751,7 @@
     "SMSVerConnected": "SMS Verification connected",
     "phoneNumber": "Phone number",
     "enterPhone": "Enter your phone number to confirm SMS verification",
-    "enterSMSCode" : "We have sent verification code to your phone number. Enter this code",
+    "enterSMSCode": "We have sent verification code to your phone number. Enter this code",
     "codeFromSMS": "Code from SMS",
     "smsVerification": "SMS verification",
     "saved": "Saved",
@@ -1053,7 +1050,6 @@
     "allUsers": "All registered users",
     "allInternet": "Internet users worldwide",
     "onlyWhenSubmittedWork": "Only when submitting job offers",
-
     "allRegistered": "All registered users",
     "changePass": "Change password",
     "change": "Change",
@@ -1161,91 +1157,91 @@
       "status": "Success"
     }
   },
- "pension": {
-   "pensionSavingsBalance": "Pension savings balance",
-   "retirementProgram": "Retirement program",
-   "faq": "FAQ",
-   "pensionProgram": "Pension program",
-   "applyForAPension": "Apply for a pension",
-   "applyForRetirement": "Apply for retirement",
-   "annualPercent": "Annual percent",
-   "optional": "Optional",
-   "optionalFirstDeposit": "First deposit",
-   "term": "Term",
-   "castomizable": "Castomizable",
-   "configurablePercentage": "Configurable percentage",
-   "depositsFromQuest": "Deposit from quests",
-   "howToTakePart": "How to participate in the pension program?",
-   "pensionPlanText": "A pension plan may allow a worker to contribute part of their current income from wages into an investment plan to help fund retirement.",
-   "information": "Detailed information",
-   "download": "Download",
-   "pensionBalance": "Pension savings balance",
-   "makeADeposit": "Make a deposit",
-   "currentPercentFromAQuest": "Current percentage from a quest",
-   "changePercent": "Change percentage",
-   "everyYear": "Annualized",
-   "year": "yearly",
-   "timeRemainsUntilTheEndOfThePeriod": "Time remains until the end of the period:",
-   "transactionHistory": "Transaction history",
-   "withdraw": "Withdraw",
-   "prolong": "Prolong",
-   "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac neque cum posuere in. Semper arcu purus eget faucibus.",
-   "table": {
-     "userName": "John Doe",
-     "userId": "455dad66544ss",
-     "txHash": "sf998s...ss877d",
-     "time": "Feb 1, 2021",
-     "status": "Success"
-   },
-   "docName": "Some_document.pdf",
-   "mb": "{count} MB",
-   "percents": "{count} %",
-   "years": "{count} years",
-   "wusdCount": "{count} WUSD",
-   "plusPercents": "+ {count}%",
-   "faq1": {
-     "question": "How do you qualify for a pension?",
-     "answer": "You do not need to have worked for an employer for a certain number of years to be eligible for retirement benefits. Just select the percentage of each quest you want to accumulate in your account. Your retirement benefit usually increases as you accumulate funds. The additional percentage will be earned automated by using funds in the lending program."
-   },
-   "faq2": {
-     "question": "How is the 'additional percentage' calculated?",
-     "answer": "The funds of the pension fund will be blocked in the loan agreement. APY varies depending on changes in the credit protocol. The profit can make from 3-6%"
-   },
-   "faq3": {
-     "question": "How do pension plans work?",
-     "answer": "You do not need to have worked for an employer for a certain number of years to be eligible for retirement benefits. Just select the percentage of each quest you want to accumulate in your account. Your retirement benefit usually increases as you accumulate funds. The additional percentage will be earned automated by using funds in the lending program."
-   },
-   "faq4": {
-     "question": "How many years do you need to work to be vested in the pension plan?",
-     "answer": "According to WorkQuest rules, anyone can open a private sector savings plan. After the first three years, you will have the opportunity to receive 100% of the accumulated funds.\nYou can continue to accumulate for another year or withdraw funds in full to your wallet."
-   },
-   "faq5": {
-     "question": "What is a good pension?",
-     "answer": "What is a good pension amount? Some advisers recommend that you save up 10 times your average working-life salary by the time you retire. So if your average salary is $30,000 you should aim for a pension pot of around $300,000. Another top tip is that you should save 12.5 per cent of your monthly salary."
-   },
-   "faq6": {
-     "question": "Is monthly pension taxable?",
-     "answer": "Your monthly pension payment almost always counts as taxable income, and you'll need to make sure that you have enough taxes withheld from your pension payments to satisfy the Internal Revenue Service"
-   },
-   "faq7": {
-     "question": "Can I take all my pension in one go?",
-     "answer": "After minimum period 3 years retirement program, you can withdraw some or all of your pension savings in one go."
-   },
-   "faq8": {
-     "question": "Can I cancel my pension and get the money?",
-     "answer": "If you withdraw after the minimum 3 years has passed or on the day of the annual renewal, you will receive back all the money you have already paid. If you opt out later, you will not be able to receive a refund of your payments until the end of the extended period (usually 1 year)."
-   },
-   "faq9": {
-     "question": "Can I draw my pension and still work?",
-     "answer": "Can I take my pension early and continue to work? The short answer is yes. These days, there is no set retirement age. You can carry on working for as long as you like, and can also access to pensions program."
-   },
-   "faq10": {
-     "question": "What happens if I Overfund my pension?",
-     "answer": "We have no restrictions on the amount of savings. The entire accumulated amount will be at your disposal at the end of the program period."
-   },
-   "cancel": "Cancel",
-   "renewFor1Year": "Renew for 1 year"
- },
+  "pension": {
+    "pensionSavingsBalance": "Pension savings balance",
+    "retirementProgram": "Retirement program",
+    "faq": "FAQ",
+    "pensionProgram": "Pension program",
+    "applyForAPension": "Apply for a pension",
+    "applyForRetirement": "Apply for retirement",
+    "annualPercent": "Annual percent",
+    "optional": "Optional",
+    "optionalFirstDeposit": "First deposit",
+    "term": "Term",
+    "castomizable": "Castomizable",
+    "configurablePercentage": "Configurable percentage",
+    "depositsFromQuest": "Deposit from quests",
+    "howToTakePart": "How to participate in the pension program?",
+    "pensionPlanText": "A pension plan may allow a worker to contribute part of their current income from wages into an investment plan to help fund retirement.",
+    "information": "Detailed information",
+    "download": "Download",
+    "pensionBalance": "Pension savings balance",
+    "makeADeposit": "Make a deposit",
+    "currentPercentFromAQuest": "Current percentage from a quest",
+    "changePercent": "Change percentage",
+    "everyYear": "Annualized",
+    "year": "yearly",
+    "timeRemainsUntilTheEndOfThePeriod": "Time remains until the end of the period:",
+    "transactionHistory": "Transaction history",
+    "withdraw": "Withdraw",
+    "prolong": "Prolong",
+    "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac neque cum posuere in. Semper arcu purus eget faucibus.",
+    "table": {
+      "userName": "John Doe",
+      "userId": "455dad66544ss",
+      "txHash": "sf998s...ss877d",
+      "time": "Feb 1, 2021",
+      "status": "Success"
+    },
+    "docName": "Some_document.pdf",
+    "mb": "{count} MB",
+    "percents": "{count} %",
+    "years": "{count} years",
+    "wusdCount": "{count} WUSD",
+    "plusPercents": "+ {count}%",
+    "faq1": {
+      "question": "How do you qualify for a pension?",
+      "answer": "You do not need to have worked for an employer for a certain number of years to be eligible for retirement benefits. Just select the percentage of each quest you want to accumulate in your account. Your retirement benefit usually increases as you accumulate funds. The additional percentage will be earned automated by using funds in the lending program."
+    },
+    "faq2": {
+      "question": "How is the 'additional percentage' calculated?",
+      "answer": "The funds of the pension fund will be blocked in the loan agreement. APY varies depending on changes in the credit protocol. The profit can make from 3-6%"
+    },
+    "faq3": {
+      "question": "How do pension plans work?",
+      "answer": "You do not need to have worked for an employer for a certain number of years to be eligible for retirement benefits. Just select the percentage of each quest you want to accumulate in your account. Your retirement benefit usually increases as you accumulate funds. The additional percentage will be earned automated by using funds in the lending program."
+    },
+    "faq4": {
+      "question": "How many years do you need to work to be vested in the pension plan?",
+      "answer": "According to WorkQuest rules, anyone can open a private sector savings plan. After the first three years, you will have the opportunity to receive 100% of the accumulated funds.\nYou can continue to accumulate for another year or withdraw funds in full to your wallet."
+    },
+    "faq5": {
+      "question": "What is a good pension?",
+      "answer": "What is a good pension amount? Some advisers recommend that you save up 10 times your average working-life salary by the time you retire. So if your average salary is $30,000 you should aim for a pension pot of around $300,000. Another top tip is that you should save 12.5 per cent of your monthly salary."
+    },
+    "faq6": {
+      "question": "Is monthly pension taxable?",
+      "answer": "Your monthly pension payment almost always counts as taxable income, and you'll need to make sure that you have enough taxes withheld from your pension payments to satisfy the Internal Revenue Service"
+    },
+    "faq7": {
+      "question": "Can I take all my pension in one go?",
+      "answer": "After minimum period 3 years retirement program, you can withdraw some or all of your pension savings in one go."
+    },
+    "faq8": {
+      "question": "Can I cancel my pension and get the money?",
+      "answer": "If you withdraw after the minimum 3 years has passed or on the day of the annual renewal, you will receive back all the money you have already paid. If you opt out later, you will not be able to receive a refund of your payments until the end of the extended period (usually 1 year)."
+    },
+    "faq9": {
+      "question": "Can I draw my pension and still work?",
+      "answer": "Can I take my pension early and continue to work? The short answer is yes. These days, there is no set retirement age. You can carry on working for as long as you like, and can also access to pensions program."
+    },
+    "faq10": {
+      "question": "What happens if I Overfund my pension?",
+      "answer": "We have no restrictions on the amount of savings. The entire accumulated amount will be at your disposal at the end of the program period."
+    },
+    "cancel": "Cancel",
+    "renewFor1Year": "Renew for 1 year"
+  },
   "saving": {
     "withdrawModalBody": "The amount of locked funds and the accumulated interest will be credited to your wallet",
     "workQuestSavings": "WorkQuest Savings",
@@ -1299,7 +1295,7 @@
     "deposit": "Deposit",
     "withdraw": "Withdraw"
   },
-  "mining":  {
+  "mining": {
     "liquidityManning": "Liquidity manning",
     "liquidityMining": "Liquidity mining",
     "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
@@ -1402,7 +1398,7 @@
     "lend": "Lend"
   },
   "insuring": {
-   "peerToPeerInsuring": "P2P insuring",
+    "peerToPeerInsuring": "P2P insuring",
     "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "card1": {
       "title": "Minimal protection",
@@ -1491,10 +1487,10 @@
     }
   },
   "errors": {
-    "incorrectPass" : "Oops, something went wrong. Check the data and try again.",
+    "incorrectPass": "Oops, something went wrong. Check the data and try again.",
     "emptyData": {
       "employer": {
-        "myQuests" : {
+        "myQuests": {
           "desc": "You haven't done quests yet",
           "btnText": "Create quest !"
         },
@@ -1504,7 +1500,7 @@
         }
       },
       "worker": {
-        "myQuests" : {
+        "myQuests": {
           "desc": "You haven't done the quests yet",
           "btnText": "Create quest !"
         },
@@ -1582,4 +1578,5 @@
       "active": "Active quests",
       "invited": "Invited quests"
     }
- }
+  }
+}
