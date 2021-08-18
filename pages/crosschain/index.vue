@@ -460,7 +460,6 @@ export default {
   }
 
   &__table {
-
     .table {
       margin: 0;
       border-radius: 0 !important;
