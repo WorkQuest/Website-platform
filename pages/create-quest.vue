@@ -209,7 +209,6 @@ import 'nuxt-dropzone/dropzone.css';
 import '~/assets/scss/vue2Dropzone.min.css';
 import '~/assets/scss/dropzone.scss';
 import modals from '~/store/modals/modals';
-import Uploader from '../components/ui/Uploader';
 
 const { GeoCode } = require('geo-coder');
 
@@ -220,7 +219,6 @@ export default {
   }),
   components: {
     Dropzone,
-    Uploader,
   },
   data() {
     return {

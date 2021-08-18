@@ -271,6 +271,8 @@ export default {
 }
 
 .uploader {
+  max-width: 1180px;
+  width: 100%;
   z-index: 100;
   margin-bottom: 100px;
   height: 320px;
