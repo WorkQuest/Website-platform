@@ -172,10 +172,10 @@
                     <div
                       v-for="(item, i) in locales"
                       :key="i"
-                      class="locale__items"
+                      class="locale__container"
                     >
                       <div
-                        class="locale__item"
+                        class="locale__items"
                         @click="setLocale(item)"
                       >
                         <img
@@ -1563,15 +1563,18 @@ export default {
   border-radius: 6px;
   min-width: 86px;
   z-index: 10000000;
+  &__container {
+    width: 100%;
+  }
   &__items {
     padding: 10px 15px;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 15px;
+    display: flex;
+    gap: 15px;
   }
   &__item {
+    width: 100%;
     display: grid;
-    grid-template-columns: 15px 1fr;
+    grid-template-columns: 1fr;
     grid-gap: 10px;
     align-items: center;
     min-height: 20px;

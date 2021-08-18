@@ -4,6 +4,12 @@ export default {
   setUserPortfolioCases(state, data) {
     state.portfolios = data;
   },
+  setUploaderImage(state, data) {
+    state.medias = data;
+  },
+  setUploaderData(state, data) {
+    state.portfolio = data;
+  },
   setCaseImage(state, data) {
     state.medias = data;
   },

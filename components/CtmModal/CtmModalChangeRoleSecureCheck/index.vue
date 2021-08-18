@@ -1,6 +1,6 @@
 <template>
   <ctm-modal-box
-    is-unclosable="true"
+    :is-unclosable="true"
     :title="$t('modals.securityCheck')"
     class="messageSend"
   >

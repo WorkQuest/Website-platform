@@ -77,7 +77,6 @@
                 :key="i"
               >
                 <div class="worker__container">
-                  <!-- TODO: Добавить радиокнопки -->
                   <div>
                     <img
                       class="worker__avatar"
