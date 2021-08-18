@@ -279,7 +279,6 @@
           <label
             v-if="userRole === 'worker'"
             class="knowledge__label"
-            for="workExp"
           >{{ $t('settings.workExp') }}</label>
           <div
             v-if="localUserData.additionalInfo.workExperiences.length !==0"
@@ -291,7 +290,6 @@
             >
               <div class="knowledge__content">
                 <base-field
-                  id="workExp"
                   v-model="localUserData.additionalInfo.workExperiences[i].from"
                   type="date"
                   class="knowledge__data"
@@ -1614,7 +1612,7 @@ export default {
   }
   &__btn {
     text-align: center;
-    margin-top: 10px;
+    margin-top: 20px;
     width: 250px;
     &_add {
       background: #FFFFFF;
