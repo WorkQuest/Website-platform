@@ -28,6 +28,7 @@
   "info": {
     "showYourMessage": "Show your message"
   },
+
   "uploader" : {
     "uploadText": "Upload a images or videos",
     "upload": "Upload",
@@ -1561,6 +1562,59 @@
     },
     "recipTemp": "0xnf8o2…9b74thb3",
     "dateTemp": "05.08.2021, 12:00"
+  },
+  "staking": {
+    "mainHeader": "Single staking",
+    "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "pools": "Pools",
+    "tableHead": {
+      "poolAddress": "Pool address",
+      "totalStaked": "Total Staked",
+      "totalDistributed": "Total Distributed",
+      "stakeTokenAddress": "Stake Token Address",
+      "rewardTokenAddress": "Reward Token Address"
+    },
+    "open": "Open",
+    "tempAddress": "0sjs3892...sd45",
+    "tempStaked": "10 000 WQT",
+    "back": "Back",
+    "claimRewards": "Claim rewards",
+    "pool": "Pool",
+    "stakeTokenAddress": "Stake Token Address",
+    "rewardTokenAddress": "Reward Token Address",
+    "totalStaked": "Total Staked",
+    "wqtCount": "{n} WQT",
+    "totalDistributed": "Total Distributed",
+    "staking": "Staking",
+    "stakingCards": {
+      "distributionTime": "Distribution Time",
+      "distributionTimeData": "10 min",
+      "rewardTotal": "Reward Total",
+      "rewardTotalData": "3.00 WQT",
+      "takePeriod": "Take Period",
+      "takePeriodData": "24 hours",
+      "claimPeriod": "Claim Period",
+      "claimPeriodData": "24 hours",
+      "duration": "Duration",
+      "durationData": "30 days"
+    },
+    "userInformation": "User information",
+    "userInformationCards": {
+      "staked": "Staked",
+      "stakeBalance": "Stake balance",
+      "claimed": "Claimed"
+    },
+    "withdrawal": "Withdrawal",
+    "withdrawalCards": {
+      "displayedInTheCurrentPeriod": "Displayed in the current period",
+      "displayedInTheCurrentPeriodData": "10 000 WQT",
+      "withdrawalLimit": "Withdrawal limit",
+      "withdrawalLimitData": "10 000 WQT",
+      "periodUpdate": "Period update",
+      "periodUpdateData": "10 000 WQT"
+    },
+    "autoRenewal": "Auto Renewal",
+    "withdraw": "Withdraw"
   },
   "myQuests": {
     "statuses": {
