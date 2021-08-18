@@ -108,7 +108,6 @@ export default {
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < e.dataTransfer.files.length; i++) {
           this.files.push(e.dataTransfer.files[i]);
-          console.log(this.files);
           const file = this.files[i];
           const reader = new FileReader();
           reader.readAsDataURL(file);
@@ -124,7 +123,6 @@ export default {
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < e.target.files.length; i++) {
           this.files.push(e.target.files[i]);
-          console.log(this.files);
           const file = this.files[i];
           const reader = new FileReader();
           reader.readAsDataURL(file);
@@ -170,13 +168,11 @@ export default {
             formData: img.file,
             type: img.file.type,
           };
-          console.log(data);
           await this.$store.dispatch('user/setUploaderImageInStore', data);
         }
         const payload = {
           medias: [img.data.result.mediaId],
         };
-        console.log(payload);
         await this.$store.dispatch('user/setUploaderImageDataInStore', payload);
       } catch (error) {
         console.error(error);
