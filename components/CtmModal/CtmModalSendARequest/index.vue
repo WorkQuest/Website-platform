@@ -23,7 +23,6 @@
                 />
               </div>
             </div>
-            <Uploader />
             <div class="btn__container">
               <div class="btn__wrapper">
                 <base-btn
@@ -54,13 +53,10 @@
 /* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import Uploader from '~/components/ui/Uploader';
 
 export default {
   name: 'ModalSendARequest',
-  components: {
-    Uploader,
-  },
+  components: {},
   data() {
     return {
       text: '',

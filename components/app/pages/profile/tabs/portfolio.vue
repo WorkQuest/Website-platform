@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="portfolio__items">
+    <div class="portfolio portfolio__items">
       <div
         v-for="(item, i) in portfolios"
         :key="i"
@@ -8,7 +8,7 @@
       >
         <div class="portfolio__card">
           <button
-            class="close-btn"
+            class="portfolio__close"
             @click="deletePortfolio(item.id)"
           >
             <span
@@ -77,14 +77,13 @@ export default {
 
 <style lang="scss" scoped>
 
-.close-btn {
-  background: $red;
-  border: 1px solid $black400;
-  border-radius: 6px;
-  padding: 2px;
-}
-
 .portfolio {
+  &__close {
+    background: $red;
+    border: 1px solid $black400;
+    border-radius: 6px;
+    padding: 2px;
+  }
   &__card {
     border-radius: 6px;
     cursor: pointer;

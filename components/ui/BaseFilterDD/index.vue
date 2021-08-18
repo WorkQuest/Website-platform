@@ -1,60 +1,92 @@
 <template>
-  <ctm-modal-box
-    :title="$t('filters.titleAll')"
-    class="filter"
+  <div
+    v-click-outside="hideDd"
+    class="dd"
   >
-    <div class="filter ctm-modal__content filter">
-      <div class="filter">
-        <div class="filter__container">
-          <div class="filter__body">
-            <div
-              v-for="(item, i) in filters.categories"
-              :id="i"
-              :key="i"
-              class="filter__items"
-            >
+    <div
+      class="dd dd__container"
+    >
+      <button
+        class="dd__btn"
+        @click="toggleDd"
+      >
+        {{ $t('filters.dd.1') }}
+        <span
+          v-if="isOpenDD"
+          class="icon-caret_down"
+        />
+        <span
+          v-else
+          class="icon-caret_up"
+        />
+      </button>
+      <transition name="fade">
+        <div
+          v-if="!isOpenDD"
+          class="dd__list"
+          :class="{'hide': isOpenDD}"
+        >
+          <div
+            class="dd filter"
+            :class="{'hide': isOpenDD}"
+          >
+            <div class="filter__btn">
+              <base-btn
+                mode="outline"
+                @click="showFilterFull"
+              >
+                {{ $t('filters.filterBtn') }}
+              </base-btn>
+            </div>
+            <div class="filter__body">
               <div
-                class="filter__item item"
+                v-for="(item, i) in filters.categories"
+                :id="i"
+                :key="i"
               >
                 <div
-                  class="item"
-                  @click="toggleCategory(filters, item, i)"
+                  class="filter__item item"
                 >
-                  <span
-                    class="item__title"
-                  >{{ item.title }}</span>
-                  <span
-                    v-if="!item.visible"
-                    class="icon-caret_down"
-                  />
-                  <span
-                    v-else
-                    class="icon-caret_up"
-                  />
-                </div>
-                <transition name="fade">
-                  <div class="filter filter__item sub">
-                    <div
+                  <div
+                    class="item"
+                    @click="toggleCategory(filters, item, i)"
+                  >
+                    <span
+                      class="item__title"
+                    >{{ item.title }}</span>
+                    <span
                       v-if="!item.visible"
-                      class="sub__item"
-                      @click="selectAll(i)"
-                    >
-                      <input
-                        :id="i"
-                        :ref="`allCheckbox${i}`"
-                        type="checkbox"
-                        :name="$t('filters.commonSub.selectAll')"
-                        @change="selectAll(i)"
-                      >
-                      <label
-                        :for="i"
-                        class="sub__label"
-                      >{{ $t('filters.commonSub.selectAll') }}</label>
-                    </div>
+                      class="icon-caret_down"
+                    />
+                    <span
+                      v-else
+                      class="icon-caret_up"
+                    />
+                  </div>
+                  <div
+                    class="filter__item sub"
+                  >
                     <div
                       class="sub__body"
-                      :class="[{'hide': item.visible}]"
+                      :class="[{'hide': !item.visible}]"
                     >
+                      <div
+                        class="sub__item"
+                        @click="selectAll(i)"
+                      >
+                        <input
+                          :id="i"
+                          :ref="`allCheckbox${i}`"
+                          type="checkbox"
+                          :name="$t('filters.commonSub.selectAll')"
+                          @change="selectAll(i)"
+                        >
+                        <label
+                          :for="i"
+                          class="sub__label"
+                        >{{ $t('filters.commonSub.selectAll') }}</label>
+                      </div>
+
                       <div
                         v-for="(sub, idx) in item.items"
                         :id="idx"
@@ -71,28 +103,34 @@
                           @change="selectSub(idx, i)"
                         >
                         <label
-                          :for="sub.title"
+                          :id="idx"
                           class="sub__label"
                         >{{ sub.title }}</label>
                       </div>
                     </div>
                   </div>
-                </transition>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </transition>
     </div>
-  </ctm-modal-box>
+  </div>
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside';
+import modals from '~/store/modals/modals';
 
 export default {
-  name: 'CtmModalChangeRoleWarning',
+  name: 'Dd',
+  directives: {
+    ClickOutside,
+  },
   data() {
     return {
+      isOpenDD: true,
       selected: [],
       filters: {
         categories: {
@@ -1108,18 +1146,34 @@ export default {
       const checkbox = this.$refs.[`checkbox${category}`][item];
       checkbox.checked = !checkbox.checked;
     },
-    hide() {
-      this.CloseModal();
+    hideDd() {
+      this.isOpenDD = true;
+    },
+    toggleDd() {
+      this.isOpenDD = !this.isOpenDD;
     },
     toggleCategory(filters, item, index) {
       const { categories } = filters;
-      categories[index].visible = !categories[index].visible;
+      const { length } = Object.keys(filters.categories);
+      const numIndex = Number(index);
+      for (let i = 0; i < length; i += 1) {
+        if (i !== numIndex) {
+          categories[i].visible = false;
+        } else if (i === numIndex) {
+          categories[i].visible = !categories[i].visible;
+        }
+      }
+    },
+    showFilterFull() {
+      this.ShowModal({
+        key: modals.questFilterFull,
+      });
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 
 .checkbox {
   z-index: 3;
@@ -1128,23 +1182,26 @@ export default {
   }
 }
 
-.ctm-modal {
-  @include modalKit;
-  &__box {
-    max-width: 1180px;
-    width: 100%;
+.hide {
+  display: none;
+}
+
+.filter {
+  &__body {
+    overflow-y: auto;
+    height: 400px;
+    margin: 10px 0 0 0;
+    padding: 10px 0 0 0;
   }
-  &__content {
-    padding: 28px;
-    display: grid;
-    justify-items: flex-end;
+  &__item {
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 
-.message {
-  &__action {
-    width: 100%;
-  }
+.item {
+  width: 100%;
 }
 
 .sub {
@@ -1170,88 +1227,46 @@ export default {
   }
 }
 
-.hide {
-  display: none;
-}
-
-.item {
-  width: 100%;
-  &__title {
-    margin: 10px 0 0 0;
-    @include text-simple;
-    font-size: 16px;
-    font-weight: 600;
-    color: $black800;
-    cursor: pointer;
-    &:last-child {
-      margin: 10px 0 10px 0;
-    }
-  }
-}
-
-.filter {
-  max-width: 100% !important;
-  justify-content: center;
-  &__container {
-    overflow-y: auto;
-    display: grid;
-    justify-content: space-between;
-  }
-  &__body {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    margin: 10px 0 0 0;
-    padding: 10px 0 0 0;
-    grid-gap: 20px;
-  }
-  &__items {
-    margin: 0 0 10px 0;
-    cursor: pointer;
-    &:hover {
-      text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
-    }
-  }
-}
-
-.message {
-  &__action {
-    width: 100%;
-  }
-}
-
-.btn {
+.dd {
   &__container {
     display: flex;
-    flex-direction: row-reverse;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 130%;
+    color: $black500;
+    min-width: 131px;
+    position: relative;
+    text-align: left;
+  }
+  &__btn {
+    height: 43px;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    margin: 0;
+    padding: 0 20px;
     width: 100%;
-  }
-  &__wrapper {
-    width: 45%;
-  }
-}
-
-@include _1300 {
- .filter {
-   &__body {
-     grid-template-columns: repeat(3, 1fr);
-   }
- }
-}
-@include _991 {
-  .filter {
-    &__body {
-      grid-template-columns: repeat(2, 1fr);
+    max-width: 400px;
+    background: #FFFFFF;
+    border-radius: 6px;
+    &_gray {
+      background-color: $black0;
     }
   }
-}
-@include _767 {
-  .filter {
-    &__body {
-      grid-template-columns: repeat(1, 1fr);
-    }
+  &__list {
+    @include box;
+    width: 400px;
+    position: absolute;
+    background: #FFFFFF;
+    top: calc(100% + 4px);
+    display: grid;
+    align-items: center;
+    justify-content: flex-start;
+    grid-gap: 15px;
+    padding: 15px 20px;
+    z-index: 1;
   }
 }
-
 </style>
