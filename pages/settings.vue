@@ -736,7 +736,7 @@ export default {
       const specs = [];
       let i;
       for (i = 1; i < 26; i += 1) {
-        specs.push(this.$t(`modals.filters.items.${i}.title`));
+        specs.push(this.$t(`filters.items.${i}.title`));
       }
       return specs;
     },
@@ -1040,7 +1040,7 @@ export default {
     justify-content: center;
   }
   &__label {
-    margin: 10px 0;
+    margin: 10px 20px;
   }
 }
 
@@ -1773,6 +1773,9 @@ export default {
     }
     &__content {
       width: 100%;
+    }
+    &__label {
+      margin: 10px 0;
     }
   }
   .settings {

@@ -117,7 +117,7 @@
                   :class="{'header__link_active': isShowAdditionalMenu}"
                   @click="showAdditionalMenu()"
                 >
-                  {{ $t('ui.profile.instruments') }}
+                  {{ $t('ui.profile.DeFi') }}
                   <span class="icon-caret_down" />
                   <transition name="fade">
                     <div
