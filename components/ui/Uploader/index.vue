@@ -38,7 +38,7 @@
     >
       {{ $t('uploader.upload') }} {{ files.length }} {{ $t('uploader.files') }}
     </button>
-    <div class="uploader preview">
+    <div class="preview">
       <div class="preview__container">
         <span
           v-for="(file, i) in files"
@@ -275,6 +275,7 @@ export default {
 }
 
 .uploader {
+  z-index: 100;
   margin-bottom: 100px;
   height: 320px;
   &__container {
