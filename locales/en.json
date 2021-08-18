@@ -991,6 +991,11 @@
     },
     "footer": {
       "rights": "All rights reserved"
+    },
+    "buttons": {
+      "errors": {
+        "manySpec": "You can only add 3 specializations"
+      }
     }
   },
   "wallet": {

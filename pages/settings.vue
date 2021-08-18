@@ -416,64 +416,69 @@
         class="main-white"
       >
         <div class="page__skills skills">
-          <div class="skills__block block">
+          <div
+            v-for="key in specCount"
+            :key="key"
+            class="skills__block block"
+          >
             <div class="block__skill-spec">
               <div class="block__specialization specialization">
                 <base-dd
                   v-model="specIndex"
                   class="specialization__dd"
                   type="gray"
-                  :items="specializations"
+                  :items="specializations.titles"
                   :mode="'small'"
                   :label="$t('settings.specialization')"
                 />
-                <base-input
-                  v-model="userSkill"
-                  class="specialization__skills"
-                  :label="$t('settings.skillsInput')"
+                <base-dd
+                  v-model="skillIndex"
+                  class="specialization__dd"
                   type="gray"
+                  :items="specializations.skills[specIndex]"
+                  :mode="'small'"
+                  :label="$t('settings.skillsInput')"
                 />
-              </div>
-              <div class="block__skill skill">
-                <div
-                  v-for="(item, i) in userSkills"
-                  :key="i"
-                  class="skill__content"
-                >
-                  <div class="skill__badge">
-                    {{ item.title }}
-                  </div>
-                </div>
               </div>
             </div>
             <base-btn
               :text="$t('settings.removeSpec')"
               class="specialization__btn specialization__btn_remove"
+              @click="removeSpecialization"
             />
           </div>
           <base-btn
             :text="$t('settings.addSpec')"
-            class="skills__btn skills__btn_add"
+            :disabled="specCount === 3"
+            class="skills__btn-add"
+            :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
+            @click="addSpecialization"
           />
+          <div
+            v-if="specCount === 3"
+            class="skills__error"
+          >
+            {{ $t('ui.buttons.errors.manySpec') }}
+          </div>
           <div class="skills__add-info">
             <base-dd
-              v-model="specIndex"
+              v-model="priorityIndex"
               class="specialization__dd"
               type="gray"
-              :items="specializations"
+              :items="specializations.title"
               :mode="'small'"
               :label="$t('settings.priority')"
             />
             <base-dd
-              v-model="specIndex"
+              v-model="distantIndex"
               class="specialization__dd"
               type="gray"
-              :items="specializations"
+              :items="specializations.title"
               :mode="'small'"
               :label="$t('settings.distantWork')"
             />
-            <base-input
-              v-model="userSkill"
+            <base-field
+              v-model="perHour"
               class="specialization__skills"
               :label="$t('settings.costPerHour')"
               type="gray"
@@ -653,8 +658,17 @@ export default {
   },
   data() {
     return {
-      userSkill: '',
+      specCount: 0,
+      perHour: '0',
+      userSkills: {
+        1: '',
+        2: '',
+        3: '',
+      },
       specIndex: 1,
+      skillIndex: 1,
+      priorityIndex: 1,
+      distantIndex: 1,
       updatedPhone: null,
       addresses: [],
       sms: false,
@@ -725,17 +739,22 @@ export default {
       userFacebook: 'user/getUserFacebook',
       firstMobileNumder: 'user/getUserFirstMobileNumber',
       secondMobileNumder: 'user/getUserSecondMobileNumber',
-      userSkills: 'data/getSkills',
+      dataSkills: 'data/getSkills',
       imageData: 'user/getImageData',
       additionalInfo: 'user/getAdditionalInfo',
       getUserAddress: 'user/getUserAddress',
     }),
     specializations() {
-      const specs = [];
+      const specs = {
+        titles: [],
+        skills: [],
+      };
       let i;
       for (i = 1; i < 26; i += 1) {
-        specs.push(this.$t(`filters.items.${i}.title`));
+        specs.skills.push(this.$t(`filters.items.${i}.sub`));
+        specs.titles.push(this.$t(`filters.items.${i}.title`));
       }
+      console.log(specs.skills);
       return specs;
     },
   },
@@ -750,6 +769,17 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    skillsDD() {
+      console.log('test');
+    },
+    addSpecialization() {
+      if (this.specCount <= 2) {
+        this.specCount += 1;
+      }
+    },
+    removeSpecialization() {
+      this.specCount -= 1;
+    },
     disable2FA() {
       this.ShowModal({
         key: modals.disable2FA,
@@ -1505,17 +1535,18 @@ export default {
 .page {
   &__skills {
     width: 100%;
-    padding: 20px;
+    padding: 0 20px 20px 20px;
     .block {
       display: flex;
-      align-items: center;
       grid-gap: 20px;
       justify-content: space-between;
+      margin-top: 20px;
       &__skill-spec {
-        width: 80%;
+        width: 100%;
       }
       &__specialization {
         display: flex;
+        align-items: center;
         flex-direction: row;
         grid-gap: 20px;
       }
@@ -1611,17 +1642,23 @@ export default {
     margin-top: 20px;
   }
   &__btn {
-    text-align: center;
-    margin-top: 20px;
-    width: 250px;
-    &_add {
+    &-add {
+      text-align: center;
+      margin-top: 20px;
+      width: 250px;
       background: #FFFFFF;
       color: #0083C7;
       border: 1px solid #bce8ff;
+      &_disabled {
+        background: #aaaaaa !important;
+      }
     }
-    &_add:hover {
+    &-add:hover {
       background: #bce8ff;
     }
+  }
+  &__error {
+    color: #f36262;
   }
 }
 .dd {
@@ -1632,7 +1669,7 @@ export default {
 }
 .specialization {
   &__dd {
-    margin-bottom: 23px;
+    margin-bottom: 25px;
     width: 100%;
   }
   &__skills {
@@ -1641,7 +1678,8 @@ export default {
   &__btn {
     text-align: center;
     &_remove {
-      width: 20%;
+      margin-top: 37px;
+      width: 50%;
       background: #ffffff;
       color: #d73838;
       border: 1px solid #e79a9a;
@@ -1663,14 +1701,6 @@ export default {
   }
 }
 
-.instruments {
-  &__title {
-    @include text-simple;
-    font-size: 16px;
-    color: $black800;
-    margin: 15px 0 15px 0;
-  }
-}
 .user {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1755,6 +1785,11 @@ export default {
     &__profile {
       margin: 20px;
     }
+    &__info {
+      &-title {
+        font-size: 20px;
+      }
+    }
   }
   .settings {
     margin: 20px;
@@ -1782,7 +1817,12 @@ export default {
   }
   .page {
     &__grid {
-      grid-template-columns: 11fr 1fr;
+      grid-template-columns: 1fr;
+    }
+    &__info {
+      &-title {
+        margin: 5px 20px 0 20px;
+      }
     }
   }
   .profile {
@@ -1823,12 +1863,13 @@ export default {
   .specialization {
     &__btn {
       &_remove {
+        margin-top: 0;
         width: 100%;
       }
     }
   }
   .skills {
-    &__btn_add {
+    &__btn-add {
       width: 100%;
       margin-top: 0;
     }
