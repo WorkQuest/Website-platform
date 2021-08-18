@@ -1009,6 +1009,11 @@
     "writeYouMessage": "Write you message"
   },
   "settings": {
+    "specialization": "Specialization",
+    "skillsInput": "Skills",
+    "priority": "Priority",
+    "distantWork": "Distant work",
+    "costPerHour": "Cost per hour",
     "description": "And you are beautiful",
     "imgLoaded": "Image loaded successful",
     "workExp": "Work experience",

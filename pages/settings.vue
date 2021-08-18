@@ -108,7 +108,7 @@
                   </template>
                 </base-field>
               </div>
-              <div class="profile__row-data">
+              <div class="profile__row-data profile__row-data_big">
                 <VuePhoneNumberInput
                   v-model="localUserData.additionalInfo.firstMobileNumber"
                   class="Phone"
@@ -427,12 +427,12 @@
                   type="gray"
                   :items="specializations"
                   :mode="'small'"
-                  :label="'Specialization'"
+                  :label="$t('settings.specialization')"
                 />
                 <base-input
                   v-model="userSkill"
                   class="specialization__skills"
-                  :label="'Skills'"
+                  :label="$t('settings.skillsInput')"
                   type="gray"
                 />
               </div>
@@ -464,7 +464,7 @@
               type="gray"
               :items="specializations"
               :mode="'small'"
-              :label="'Specialization'"
+              :label="$t('settings.priority')"
             />
             <base-dd
               v-model="specIndex"
@@ -472,12 +472,12 @@
               type="gray"
               :items="specializations"
               :mode="'small'"
-              :label="'Specialization'"
+              :label="$t('settings.distantWork')"
             />
             <base-input
               v-model="userSkill"
               class="specialization__skills"
-              :label="'Skills'"
+              :label="$t('settings.costPerHour')"
               type="gray"
             />
           </div>
@@ -1513,6 +1513,9 @@ export default {
       align-items: center;
       grid-gap: 20px;
       justify-content: space-between;
+      &__skill-spec {
+        width: 80%;
+      }
       &__specialization {
         display: flex;
         flex-direction: row;
@@ -1799,6 +1802,9 @@ export default {
   .page {
     &__skills {
       .block {
+        &__skill-spec {
+          width: 100%;
+        }
         &__specialization {
           display: flex;
           flex-direction: row;
@@ -1866,6 +1872,13 @@ export default {
       grid-template-columns: 1fr;
       max-height: 100%;
     }
+    &__row-data {
+      &_big {
+        grid-template-rows: repeat(2, 1fr);
+        grid-template-columns: 1fr;
+        grid-gap: 20px;
+      }
+    }
   }
 
   .settings {
@@ -1889,12 +1902,6 @@ export default {
   .knowledge {
     &__container {
       width: 100%;
-    }
-  }
-  .profile {
-    &__row-data {
-      grid-template-columns: 1fr;
-      grid-gap: 20px;
     }
   }
   .avatar {
