@@ -118,6 +118,9 @@ export default {
   data() {
     return {
       localUserData: {},
+      quest: {
+        reviewCount: '10',
+      },
     };
   },
   computed: {
@@ -126,13 +129,6 @@ export default {
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
       imageData: 'user/getImageData',
-      userEducations: 'data/getEducations',
-      userWorkExp: 'data/getWorkExp',
-      userInfo: 'data/getUserInfo',
-      quest: 'data/getQuest',
-      name: 'data/getName',
-      company: 'data/getCompany',
-      userDesc: 'data/getUserDesc',
     }),
   },
   async mounted() {

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    is-header="false"
+    :is-header="false"
   >
     <div class="ctm-modal__content">
       <div class="messageSend">

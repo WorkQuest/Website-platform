@@ -83,7 +83,6 @@ export default {
       confirmCode: '',
     };
   },
-  // TODO: Починить анимацию для мобильного режима
   async mounted() {
     this.SetLoader(true);
     const { token } = this.$route.query;

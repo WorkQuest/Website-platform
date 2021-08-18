@@ -381,7 +381,6 @@
           <div class="page__badge-skills">
             {{ $t('settings.skills') }}
           </div>
-          <!--          TODO: Вывести баджи со скилами из state, полученные из модалки-->
           <div
             v-for="(item, i) in userSkills"
             :key="i"

@@ -31,10 +31,16 @@
           </span>
         </div>
         <span
-          v-else
+          v-else-if="items[value]"
           class="dd__title"
         >
           {{ items[value] }}
+        </span>
+        <span
+          v-else-if="!items[value] && placeholder"
+          class="dd__title"
+        >
+          {{ placeholder }}
         </span>
         <span
           v-if="type === 'sort'"
@@ -98,12 +104,16 @@ export default {
       type: String,
       default: '',
     },
+    placeholder: {
+      type: [String, Number],
+      default: '',
+    },
     tip: {
       type: String,
       default: '',
     },
     value: {
-      type: Number,
+      type: [Number, String],
       default: 0,
     },
     type: {
