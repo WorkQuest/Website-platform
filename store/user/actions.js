@@ -6,25 +6,6 @@ export default {
     commit('setUserPortfolioCases', response.result);
     return response;
   },
-  async imageCaseType({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/storage/get-upload-link', payload);
-    commit('setCaseImage', response.result);
-    return response;
-  },
-  async setUploaderImageInStore({ commit }, { url, formData, type }) {
-    const response = await this.$axios.$put(url, formData, {
-      headers: {
-        'Content-Type': type,
-        'x-amz-acl': 'public-read',
-      },
-    });
-    commit('setUploaderImage', response.result);
-    return response;
-  },
-  async setUploaderImageDataInStore({ commit }, payload) {
-    commit('setUploaderData', payload);
-    return payload;
-  },
   async setCaseImage({ commit }, { url, formData, type }) {
     const response = await this.$axios.$put(url, formData, {
       headers: {
