@@ -5,33 +5,50 @@
         {{ $t('quests.createAQuest') }}
       </h2>
       <div class="page__category">
+        <div class="runtime">
+          <div class="runtime__container">
+            <base-field
+              v-model="runtimeValue"
+              :label="$t('quests.runtime.runtime')"
+              :placeholder="0"
+            />
+            <base-dd
+              v-model="runtimeIndex"
+              class="runtime__dd"
+              type="blue"
+              :items="runtime"
+              :placeholder="runtime[0]"
+            />
+          </div>
+        </div>
+        <base-field
+          v-model="price"
+          :label="$t('quests.price')"
+          :placeholder="+0 + currency"
+        />
         <div class="page__dd">
-          <label for="proposal_input">{{ $t('priority.title') }}</label>
-          {{ priorityIndex }}
           <base-dd
-            id="proposal_input"
             v-model="priorityIndex"
+            :label="$t('quests.employment.employment')"
             type="gray"
-            :items="priority"
+            :items="employment"
           />
         </div>
         <div class="page__dd">
-          <label for="category_input">{{ $t('quests.category') }}</label>
           <base-dd
-            id="category_input"
             v-model="categoryIndex"
+            :label="$t('quests.distantWork.distantWork')"
             type="gray"
-            :items="categories"
+            :items="distantWork"
           />
         </div>
       </div>
       <div class="page__address">
         <div>
-          <label for="address__input">{{ $t('quests.address') }}</label>
           <base-field
-            id="address__input"
             v-model="address"
-            placeholder="Russia, Moscow, Lenina street, 3"
+            :label="$t('quests.address')"
+            :placeholder="$t('quests.address')"
             mode="icon"
             :selector="true"
             @selector="getAddressInfo(address)"
@@ -58,40 +75,11 @@
             </template>
           </base-field>
         </div>
-        <div>
-          <label for="runtime__picker">{{ $t('quests.runtime') }}</label>
-          <div
-            id="runtime__picker"
-            class="picker"
-          >
-            <div class="btn__container btn__left">
-              <button
-                class="picker__btn"
-                @click="decrementNumber()"
-              >
-                <span class="icon-caret_left" />
-              </button>
-            </div>
-            <div class="picker__body">
-              <div class="picker__number">
-                {{ `${pickerValue} ${$t('quests.hours')}` }}
-              </div>
-            </div>
-            <div class="btn__container btn__right">
-              <button
-                class="picker__btn"
-                @click="incrementNumber()"
-              >
-                <span class="icon-caret_right" />
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
       <div>
         <base-field
           v-model="questTitle"
-          placeholder="Quest title"
+          :placeholder="$t('quests.questTitle')"
         />
       </div>
       <div>
@@ -99,97 +87,19 @@
           id="textarea"
           v-model="textarea"
           class="page__textarea"
-          placeholder="Description..."
+          :placeholder="$t('quests.questDesc')"
         />
       </div>
       <div class="upload__container">
         <div class="upload__title">
-          {{ $t('quests.uploadQuestMaterials') }}
+          {{ $t('quests.uploadMaterials') }}
         </div>
-        <div>
-          <div class="upload__title">
-            {{ $t('quests.uploadMaterials') }}
-          </div>
-          <dropzone
-            id="uploader"
-            ref="el"
-            :options="optionsModal"
-            :include-styling="true"
-          />
-        </div>
-      </div>
-      <div class="price__container">
-        <label for="price__input">{{ $t('quests.price') }}</label>
-        <base-field
-          id="price__input"
-          v-model="price"
-          placeholder="200 WUSD"
+        <dropzone
+          id="uploader"
+          ref="el"
+          :options="optionsModal"
+          :include-styling="true"
         />
-      </div>
-      <Uploader />
-      <div class="ads__container">
-        <div>{{ $t('quests.ads.promoteYourQuest') }}</div>
-        <div class="btn__container btn__container_left">
-          <div class="btn__ads">
-            <button
-              class="base-btn"
-              :class="{'base-btn__passive': adMode1 === true}"
-              :disabled="!adMode1"
-              @click="setAd()"
-            >
-              {{ $t('quests.ads.publishForFree') }}
-            </button>
-          </div>
-          <div class="btn__ads">
-            <button
-              class="base-btn"
-              :class="{'base-btn__passive': adMode2 === true}"
-              :disabled="!adMode2"
-              @click="setAd()"
-            >
-              {{ $t('quests.ads.boostYourPublications') }}
-            </button>
-          </div>
-        </div>
-        <div
-          v-if="adMode1 === true"
-          class="ads__paid"
-        >
-          <div class="price__container">
-            <label for="priceOfClick">{{ $t('quests.ads.costPerClick') }}</label>
-            <base-field
-              id="priceOfClick"
-              v-model="priceOfClick"
-              placeholder="0 WUSD"
-            />
-          </div>
-          <div class="price__container">
-            <label for="city__input">{{ $t('quests.city') }}</label>
-            <base-field
-              id="city__input"
-              v-model="city"
-              :placeholder="$t('quests.selectLocation')"
-            />
-          </div>
-          <div class="price__container">
-            <label for="period__input">{{ $t('quests.period') }}</label>
-            <base-dd
-              id="period__input"
-              v-model="periodIndex"
-              mode="top"
-              type="gray"
-              :items="periods"
-            />
-          </div>
-          <div class="payment__container">
-            <div class="payment__title">
-              {{ $t('quests.EstimatedPayment') }}
-            </div>
-            <div class="payment__cost">
-              {{ `${estimatedPayment} ${currency}` }}
-            </div>
-          </div>
-        </div>
       </div>
       <div class="btn__container btn__container_right">
         <div class="btn">
@@ -222,30 +132,19 @@ export default {
   },
   data() {
     return {
-      priorityIndex: 1,
+      priorityIndex: 0,
       categoryIndex: 0,
+      runtimeIndex: 0,
       periodIndex: 0,
-      pickerValue: 1,
-      adMode1: true,
-      adMode2: false,
+      runtimeValue: '',
       questTitle: '',
       address: '',
       textarea: '',
       price: '',
       priceOfClick: '',
       city: '',
-      estimatedPayment: 120,
       coordinates: {},
-      currency: 'WUSD',
-      categories: [
-        'Retail',
-      ],
-      periods: [
-        '1 Days',
-        '1 Weeks',
-        '1 Months',
-        '1 Years',
-      ],
+      currency: ' WUSD',
       addresses: [],
       optionsModal: {
         url: 'http://httpbin.org/anything',
@@ -265,12 +164,26 @@ export default {
     };
   },
   computed: {
-    priority() {
+    runtime() {
       return [
-        this.$t('priority.all'),
-        this.$t('priority.low'),
-        this.$t('priority.normal'),
-        this.$t('priority.urgent'),
+        this.$t('quests.runtime.days'),
+        this.$t('quests.runtime.weeks'),
+        this.$t('quests.runtime.months'),
+        this.$t('quests.runtime.years'),
+      ];
+    },
+    employment() {
+      return [
+        this.$t('quests.employment.fullTime'),
+        this.$t('quests.employment.partTime'),
+        this.$t('quests.employment.fixedTerm'),
+      ];
+    },
+    distantWork() {
+      return [
+        this.$t('quests.distantWork.distantWork'),
+        this.$t('quests.distantWork.workInOffice'),
+        this.$t('quests.distantWork.bothVariant'),
       ];
     },
   },
@@ -299,12 +212,6 @@ export default {
     setAd() {
       this.adMode1 = !this.adMode1;
       this.adMode2 = !this.adMode2;
-    },
-    incrementNumber() {
-      this.pickerValue += 1;
-    },
-    decrementNumber() {
-      this.pickerValue -= 1;
     },
     showQuestCreatedModal() {
       const createQuestData = {
@@ -341,6 +248,18 @@ export default {
 
 <style lang="scss" scoped>
 
+.runtime {
+  &__container {
+    display: grid;
+    grid-template-columns: 6fr 2fr;
+    grid-gap: 10px;
+    align-items: center;
+  }
+  &__dd {
+    margin: 13px 0 0 0;
+  }
+}
+
 .icon {
   &-map::before {
     content: "\ea28";
@@ -373,23 +292,6 @@ export default {
   }
 }
 
-.page {
-  &__title {
-    @include text-simple;
-    margin: 30px 0 0 0;
-  }
-}
-
-.upload {
-  &__title {
-    @include text-simple;
-    font-weight: 500;
-    color: $black800;
-    font-size: 18px;
-    padding: 0 0 20px 0;
-  }
-}
-
 .payment {
   &__container {
     display: flex;
@@ -412,14 +314,6 @@ export default {
   }
 }
 
-.ads {
-  &__paid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 20px;
-  }
-}
-
 .base-btn {
   @include text-simple;
   display: flex;
@@ -434,7 +328,6 @@ export default {
   transition: .3s;
   background: #0083C7;
   border-radius: 6px;
-
   &:hover {
     background: #103D7C;
   }
@@ -449,40 +342,22 @@ export default {
   }
 }
 
-.price {
-  &__container {
-    margin: 20px 0 0 0;
-    width: 100%;
-    max-width: 400px;
-  }
-}
-
 .upload {
   &__container {
     margin: 20px 0 0 0;
     width: 100%;
   }
+  &__title {
+    @include text-simple;
+    font-weight: 500;
+    color: $black800;
+    font-size: 18px;
+    padding: 0 0 20px 0;
+  }
 }
 
 .btn {
   width: 220px;
-  &__ads {
-    padding: 0 20px 0 0;
-    width: 100%;
-    max-width: 220px;
-  }
-  &_left {
-    justify-content: flex-start;
-  }
-  &_left:hover {
-    box-shadow: 0 3px 15px 0 rgba(34, 60, 80, 0.08);
-  }
-  &_right {
-    justify-content: flex-end;
-  }
-  &_right:hover {
-    box-shadow: 0 3px 15px 0 rgba(34, 60, 80, 0.08);
-  }
   &__container {
     width: 100%;
     align-items: center;
@@ -500,41 +375,11 @@ export default {
   }
 }
 
-.picker {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  color: #353C47;
-  background: #F3F7FA;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  height: 100%;
-  max-height: 46px;
-
-  &__btn {
-    width: 100%;
-    height: 100%;
-  }
-  &__body {
-    @include text-simple;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  &__number {
-    @include text-simple;
-    font-weight: 400;
-    font-size: 16px;
-    color: $black800;
-  }
-}
-
-.dd {
-  &__{
-    background: $black0;
-  }
-}
-
 .page {
+  &__title {
+    @include text-simple;
+    margin: 30px 0 0 0;
+  }
   &__page {
     font-weight: 500;
     font-size: 25px;
@@ -544,16 +389,15 @@ export default {
     min-width: 160px;
   }
   &__category {
+    align-items: flex-start;
     margin: 20px 0 0 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 20px;
   }
   &__address {
     margin: 20px 0 0 0;
     display: grid;
-    grid-template-columns: 7fr 1fr;
     grid-gap: 20px;
   }
   &__textarea {
@@ -565,12 +409,12 @@ export default {
     border: 0;
     background-color: $black0;
     resize: none;
-
     &::placeholder {
       color: $black200;
     }
   }
 }
+
 .main {
   @include main;
   &-white {
@@ -578,6 +422,7 @@ export default {
     @include main-white;
   }
 }
+
 @include _1199 {
   .main__body {
     padding: 10px;
@@ -588,16 +433,15 @@ export default {
     }
   }
 }
+
 @include _767 {
-  .btn__container.btn__container_right {
-    justify-content: center;
-  }
   .page {
     &__address {
       grid-template-columns: 1fr 1fr;
     }
   }
 }
+
 @include _575 {
   .page__category {
     grid-template-columns: auto;

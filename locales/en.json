@@ -234,6 +234,8 @@
     "title": "Skills"
   },
   "quests": {
+    "questTitle": "Quest title",
+    "questDesc": "Quest description",
     "quests": "Quests",
     "urgent": "Urgent",
     "typeOfJob": "Type of job",
@@ -242,6 +244,19 @@
       "distantWork": "Distant work",
       "workInOffice": "Work in office",
       "bothVariant": "Both variant"
+    },
+    "employment": {
+      "employment": "Employment",
+      "fullTime": "Full time",
+      "partTime": "Part time",
+      "fixedTerm": "Fixed term"
+    },
+    "runtime": {
+      "runtime": "Runtime",
+      "days": "Days",
+      "weeks": "Weeks",
+      "months": "Months",
+      "years": "Years"
     },
     "hours": "hours",
     "invited": "Invited",
@@ -264,9 +279,7 @@
     "proposal": "Proposal",
     "category": "Select a category",
     "address": "Add address",
-    "runtime": "Runtime (hours)",
-    "uploadMaterials": "Upload materials to better describe the quest",
-    "uploadQuestMaterials": "Add detailed description",
+    "uploadMaterials": "Upload quest materials",
     "price": "Price",
     "filter": {
       "btn": "Filters"
