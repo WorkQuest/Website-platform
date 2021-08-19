@@ -91,7 +91,7 @@
             :placeholder="$t('quests.questDesc')"
           />
         </div>
-        <div class="upload__container">
+        <div class="page upload__container">
           <div class="upload__title">
             {{ $t('quests.uploadMaterials') }}
           </div>
@@ -102,8 +102,8 @@
             :include-styling="true"
           />
         </div>
-        <div class="btn__container btn__container_right">
-          <div class="btn">
+        <div class="upload btn btn__container btn__container_right">
+          <div class="btn__create">
             <base-btn @click="showQuestCreatedModal()">
               {{ $t('quests.createAQuest') }}
             </base-btn>
@@ -359,7 +359,9 @@ export default {
 }
 
 .btn {
-  width: 220px;
+  &__create {
+    width: 220px;
+  }
   &__container {
     width: 100%;
     align-items: center;
