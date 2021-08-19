@@ -67,7 +67,7 @@
           </div>
           <div class="skills">
             <div class="skills__category">
-              <base-dd
+              <base-field
                 :label="$t('quests.skills.skills')"
                 :placeholder="$t('quests.skills.chooseSkills')"
                 type="gray"
