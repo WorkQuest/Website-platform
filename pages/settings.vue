@@ -424,27 +424,50 @@
             <div class="block__skill-spec">
               <div class="block__specialization specialization">
                 <base-dd
-                  v-model="specIndex"
+                  v-model="specIndex[key]"
                   class="specialization__dd"
                   type="gray"
+                  :placeholder="$t('settings.selectSpec')"
                   :items="specializations.titles"
                   :mode="'small'"
                   :label="$t('settings.specialization')"
+                  @input="switchSkill($event, key)"
                 />
                 <base-dd
-                  v-model="skillIndex"
+                  v-model="skillIndex[key]"
                   class="specialization__dd"
-                  type="gray"
-                  :items="specializations.skills[specIndex]"
+                  :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
+                  :disabled="specIndex[key] < 0"
+                  :placeholder="$t('settings.selectSkills')"
+                  :items="specializations.skills[specIndex[key]]"
                   :mode="'small'"
                   :label="$t('settings.skillsInput')"
+                  @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
                 />
+              </div>
+              <div class="block__skill skill">
+                <div
+                  v-for="(item, i) in selectedSkills[key]"
+                  :key="i"
+                  class="skill__badge"
+                >
+                  {{ item }}
+                  <button
+                    class="skill__remove"
+                    @click="removeSkillToBadge(item, key)"
+                  >
+                    <img
+                      src="~assets/img/ui/close_blue.svg"
+                      alt="x"
+                    >
+                  </button>
+                </div>
               </div>
             </div>
             <base-btn
               :text="$t('settings.removeSpec')"
               class="specialization__btn specialization__btn_remove"
-              @click="removeSpecialization"
+              @click="removeSpecialization(key)"
             />
           </div>
           <base-btn
@@ -465,7 +488,8 @@
               v-model="priorityIndex"
               class="specialization__dd"
               type="gray"
-              :items="specializations.title"
+              :placeholder="$t('priority.title')"
+              :items="priority"
               :mode="'small'"
               :label="$t('settings.priority')"
             />
@@ -473,9 +497,10 @@
               v-model="distantIndex"
               class="specialization__dd"
               type="gray"
-              :items="specializations.title"
+              :placeholder="$t('settings.distantWork.select')"
+              :items="distantWork"
               :mode="'small'"
-              :label="$t('settings.distantWork')"
+              :label="$t('settings.distantWork.title')"
             />
             <base-field
               v-model="perHour"
@@ -660,25 +685,26 @@ export default {
     return {
       specCount: 0,
       perHour: '0',
-      userSkills: {
-        1: '',
-        2: '',
-        3: '',
+      specIndex: {
+        1: -1,
+        2: -1,
+        3: -1,
       },
-      specIndex: 1,
-      skillIndex: 1,
-      priorityIndex: 1,
-      distantIndex: 1,
+      skillIndex: {
+        1: -1,
+        2: -1,
+        3: -1,
+      },
+      selectedSkills: {
+        1: [],
+        2: [],
+        3: [],
+      },
+      priorityIndex: -1,
+      distantIndex: -1,
       updatedPhone: null,
       addresses: [],
       sms: false,
-      allRegisterUser: false,
-      allPeopleInInternet: false,
-      onlyWhenSubmitedWork: false,
-      onlyUrgentProposals: false,
-      onlyInplemention: false,
-      onlyReadyForExecution: false,
-      allRegisteredUsers: false,
       isShowInfo: true,
       localUserData: {
         avatarId: null,
@@ -737,9 +763,7 @@ export default {
       userTwitter: 'user/getUserTwitter',
       userLinkedin: 'user/getUserLinkedin',
       userFacebook: 'user/getUserFacebook',
-      firstMobileNumder: 'user/getUserFirstMobileNumber',
       secondMobileNumder: 'user/getUserSecondMobileNumber',
-      dataSkills: 'data/getSkills',
       imageData: 'user/getImageData',
       additionalInfo: 'user/getAdditionalInfo',
       getUserAddress: 'user/getUserAddress',
@@ -754,8 +778,21 @@ export default {
         specs.skills.push(this.$t(`filters.items.${i}.sub`));
         specs.titles.push(this.$t(`filters.items.${i}.title`));
       }
-      console.log(specs.skills);
       return specs;
+    },
+    distantWork() {
+      return [
+        this.$t('settings.distantWork.distantWork'),
+        this.$t('settings.distantWork.workInOffice'),
+        this.$t('settings.distantWork.bothVariant'),
+      ];
+    },
+    priority() {
+      return [
+        this.$t('priority.employee.low'),
+        this.$t('priority.employee.normal'),
+        this.$t('priority.employee.urgent'),
+      ];
     },
   },
   async mounted() {
@@ -769,15 +806,30 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    skillsDD() {
-      console.log('test');
+    addSkillToBadge(event, object, index, key) {
+      if (!this.selectedSkills[key].includes(object[index])) {
+        this.selectedSkills[key].push(object[index]);
+      }
+    },
+    removeSkillToBadge(skillName, key) {
+      const numberInArray = this.selectedSkills[key].indexOf(skillName);
+      this.selectedSkills[key].splice(numberInArray, 1);
+      if (!this.selectedSkills[key].length) {
+        this.skillIndex[key] = -1;
+      }
+    },
+    switchSkill(event, key) {
+      this.skillIndex[key] = -1;
     },
     addSpecialization() {
       if (this.specCount <= 2) {
         this.specCount += 1;
       }
     },
-    removeSpecialization() {
+    removeSpecialization(key) {
+      this.selectedSkills[key] = [];
+      this.specIndex[key] = -1;
+      this.skillIndex[key] = -1;
       this.specCount -= 1;
     },
     disable2FA() {
@@ -1562,7 +1614,8 @@ export default {
             border-radius: 44px;
             color: $blue;
             white-space: nowrap;
-            padding: 5px 6px;
+            grid-gap: 8px;
+            padding: 5px 10px 5px 10px;
             display: flex;
             text-align: center;
             &-skills {

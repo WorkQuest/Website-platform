@@ -14,6 +14,7 @@
       <button
         class="dd__btn"
         :class="ddClass"
+        :disabled="disabled"
         @click="isShown = !isShown"
       >
         <div
@@ -99,7 +100,7 @@ export default {
   },
   props: {
     items: {
-      type: Array,
+      type: [Array, Object],
       default: () => [],
     },
     label: {
@@ -130,6 +131,10 @@ export default {
       type: String,
       default: '',
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => ({
     isShown: false,
@@ -139,6 +144,7 @@ export default {
       const { type } = this;
       return [
         { dd__btn_dark: type === 'dark' },
+        { dd__btn_disabled: type === 'disabled' },
         { dd__btn_gray: type === 'gray' },
       ];
     },
@@ -248,7 +254,10 @@ export default {
       background: #151552;
     }
     &_gray {
-      background-color: $black0;
+      background-color: #F7F8FA;
+    }
+    &_disabled {
+      background-color: #E6E6E7;
     }
   }
 }
