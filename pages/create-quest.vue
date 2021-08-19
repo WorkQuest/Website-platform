@@ -46,6 +46,52 @@
             />
           </div>
         </div>
+        <div class="page__spec spec skills">
+          <div class="spec">
+            <div class="spec__category">
+              <base-dd
+                placeholder="1. Specialization: IT"
+                type="gray"
+              />
+              <base-btn mode="delete">
+                <span class="icon-off_outline_close" />
+              </base-btn>
+            </div>
+            <div class="spec__subcategory">
+              <base-dd
+                :label="$t('quests.spec.spec')"
+                placeholder="IT"
+                type="gray"
+              />
+            </div>
+          </div>
+          <div class="skills">
+            <div class="skills__category">
+              <base-dd
+                :label="$t('quests.skills.skills')"
+                :placeholder="$t('quests.skills.chooseSkills')"
+                type="gray"
+              />
+            </div>
+            <div class="skills__alert">
+              {{ $t('quests.skills.limit') }}
+            </div>
+            <div class="skills__badges">
+              <div class="skills__badge">
+                Painting works
+                <span class="icon-close_small" />
+              </div>
+            </div>
+            <div class="skills btn">
+              <base-btn
+                class="btn__add"
+                mode="outline"
+              >
+                {{ $t('quests.spec.addSpec') }}
+              </base-btn>
+            </div>
+          </div>
+        </div>
         <div class="page__address">
           <base-field
             v-model="address"
@@ -263,6 +309,16 @@ export default {
 }
 
 .icon {
+  &-close_small:before {
+    content: "\e949";
+    color: $red;
+    font-size: 20px;
+  }
+  &-off_outline_close::before {
+    content: "\ea2a";
+    color: $white;
+    font-size: 20px;
+  }
   &-map::before {
     content: "\ea28";
     color: $blue;
@@ -362,6 +418,11 @@ export default {
   &__create {
     width: 220px;
   }
+  &__add {
+    width: 220px;
+    margin: 20px 0 0 0;
+    padding: 0;
+  }
   &__container {
     width: 100%;
     align-items: center;
@@ -376,6 +437,62 @@ export default {
       width: 100%;
       margin: 20px 0 20px 0;
     }
+  }
+}
+
+.half {
+  width: 100%;
+  max-width: 49%;
+}
+
+.skills {
+  &__category {
+    margin: 20px 0 0 0;
+    @extend .half;
+  }
+  &__badges {
+    margin: 16px 0 0 0;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: auto;
+  }
+  &__badge {
+    @include text-simple;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 125px;
+    background-color: rgba(0, 131, 199, 0.1);
+    padding: 6px 7px;
+    color: $blue;
+    font-weight: 400;
+    font-size: 16px;
+    border: none;
+    border-radius: 44px;
+    align-items: center;
+  }
+  &__alert {
+    @include text-simple;
+    margin: 5px 0 0 0;
+    font-weight: 400;
+    font-size: 16px;
+    color: $red;
+    @extend .half;
+  }
+}
+
+.spec {
+  &__category {
+    display: grid;
+    grid-template-columns: 7fr 1fr;
+    grid-gap: 10px;
+    align-items: center;
+    @extend .half;
+  }
+  &__subcategory {
+    margin: 20px 0 0 0;
+    @extend .half;
   }
 }
 

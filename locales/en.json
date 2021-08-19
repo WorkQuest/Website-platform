@@ -258,6 +258,15 @@
       "months": "Months",
       "years": "Years"
     },
+    "spec": {
+      "spec": "Specialization",
+      "addSpec": "Add specialization"
+    },
+    "skills": {
+      "skills": "Skills",
+      "chooseSkills": "Choose skills",
+      "limit": "You can choose up to 5 skills"
+    },
     "hours": "hours",
     "invited": "Invited",
     "active": "Active",
