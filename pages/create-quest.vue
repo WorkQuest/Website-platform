@@ -1,50 +1,52 @@
 <template>
-  <div class="main-white">
-    <div class="main__body">
-      <h2 class="page__title">
-        {{ $t('quests.createAQuest') }}
-      </h2>
-      <div class="page__category">
-        <div class="runtime">
-          <div class="runtime__container">
+  <div class="main main-white">
+    <div class="main__body page">
+      <div class="page">
+        <h2 class="page__title">
+          {{ $t('quests.createAQuest') }}
+        </h2>
+        <div class="page__category">
+          <div class="page runtime">
+            <div class="runtime__container">
+              <base-field
+                v-model="runtimeValue"
+                :label="$t('quests.runtime.runtime')"
+                :placeholder="0"
+              />
+              <base-dd
+                v-model="runtimeIndex"
+                class="runtime__dd"
+                type="blue"
+                :items="runtime"
+                :placeholder="runtime[0]"
+              />
+            </div>
+          </div>
+          <div class="page__input">
             <base-field
-              v-model="runtimeValue"
-              :label="$t('quests.runtime.runtime')"
-              :placeholder="0"
+              v-model="price"
+              :label="$t('quests.price')"
+              :placeholder="+0 + currency"
             />
+          </div>
+          <div class="page__dd">
             <base-dd
-              v-model="runtimeIndex"
-              class="runtime__dd"
-              type="blue"
-              :items="runtime"
-              :placeholder="runtime[0]"
+              v-model="priorityIndex"
+              :label="$t('quests.employment.employment')"
+              type="gray"
+              :items="employment"
+            />
+          </div>
+          <div class="page__dd">
+            <base-dd
+              v-model="categoryIndex"
+              :label="$t('quests.distantWork.distantWork')"
+              type="gray"
+              :items="distantWork"
             />
           </div>
         </div>
-        <base-field
-          v-model="price"
-          :label="$t('quests.price')"
-          :placeholder="+0 + currency"
-        />
-        <div class="page__dd">
-          <base-dd
-            v-model="priorityIndex"
-            :label="$t('quests.employment.employment')"
-            type="gray"
-            :items="employment"
-          />
-        </div>
-        <div class="page__dd">
-          <base-dd
-            v-model="categoryIndex"
-            :label="$t('quests.distantWork.distantWork')"
-            type="gray"
-            :items="distantWork"
-          />
-        </div>
-      </div>
-      <div class="page__address">
-        <div>
+        <div class="page__address">
           <base-field
             v-model="address"
             :label="$t('quests.address')"
@@ -75,37 +77,37 @@
             </template>
           </base-field>
         </div>
-      </div>
-      <div>
-        <base-field
-          v-model="questTitle"
-          :placeholder="$t('quests.questTitle')"
-        />
-      </div>
-      <div>
-        <textarea
-          id="textarea"
-          v-model="textarea"
-          class="page__textarea"
-          :placeholder="$t('quests.questDesc')"
-        />
-      </div>
-      <div class="upload__container">
-        <div class="upload__title">
-          {{ $t('quests.uploadMaterials') }}
+        <div class="page__input">
+          <base-field
+            v-model="questTitle"
+            :placeholder="$t('quests.questTitle')"
+          />
         </div>
-        <dropzone
-          id="uploader"
-          ref="el"
-          :options="optionsModal"
-          :include-styling="true"
-        />
-      </div>
-      <div class="btn__container btn__container_right">
-        <div class="btn">
-          <base-btn @click="showQuestCreatedModal()">
-            {{ $t('quests.createAQuest') }}
-          </base-btn>
+        <div class="page__input">
+          <textarea
+            id="textarea"
+            v-model="textarea"
+            class="page__textarea"
+            :placeholder="$t('quests.questDesc')"
+          />
+        </div>
+        <div class="upload__container">
+          <div class="upload__title">
+            {{ $t('quests.uploadMaterials') }}
+          </div>
+          <dropzone
+            id="uploader"
+            ref="el"
+            :options="optionsModal"
+            :include-styling="true"
+          />
+        </div>
+        <div class="btn__container btn__container_right">
+          <div class="btn">
+            <base-btn @click="showQuestCreatedModal()">
+              {{ $t('quests.createAQuest') }}
+            </base-btn>
+          </div>
         </div>
       </div>
     </div>
@@ -370,7 +372,7 @@ export default {
     &_right {
       justify-content: flex-end;
       width: 100%;
-      margin: 0 0 20px 0;
+      margin: 20px 0 20px 0;
     }
   }
 }
