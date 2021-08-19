@@ -433,17 +433,25 @@
                   :label="$t('settings.specialization')"
                   @input="switchSkill($event, key)"
                 />
-                <base-dd
-                  v-model="skillIndex[key]"
-                  class="specialization__dd"
-                  :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
-                  :disabled="specIndex[key] < 0"
-                  :placeholder="$t('settings.selectSkills')"
-                  :items="specializations.skills[specIndex[key]]"
-                  :mode="'small'"
-                  :label="$t('settings.skillsInput')"
-                  @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
-                />
+                <div class="specialization__skills skills">
+                  <base-dd
+                    v-model="skillIndex[key]"
+                    class="specialization__dd"
+                    :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
+                    :disabled="specIndex[key] < 0"
+                    :placeholder="$t('settings.selectSkills')"
+                    :items="specializations.skills[specIndex[key]]"
+                    :mode="'small'"
+                    :label="$t('settings.skillsInput')"
+                    @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
+                  />
+                  <div
+                    v-if="selectedSkills[key].length === 5"
+                    class="skills__error"
+                  >
+                    {{ $t('ui.buttons.errors.manySkills') }}
+                  </div>
+                </div>
               </div>
               <div class="block__skill skill">
                 <div
@@ -1599,7 +1607,7 @@ export default {
       }
       &__specialization {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         flex-direction: row;
         grid-gap: 20px;
       }
@@ -1714,6 +1722,7 @@ export default {
   }
   &__error {
     color: #f36262;
+    margin-bottom: 10px;
   }
 }
 .dd {
@@ -1724,7 +1733,7 @@ export default {
 }
 .specialization {
   &__dd {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     width: 100%;
   }
   &__skills {

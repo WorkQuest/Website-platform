@@ -999,7 +999,8 @@
     },
     "buttons": {
       "errors": {
-        "manySpec": "You can only add 3 specializations"
+        "manySpec": "You can only add 3 specializations",
+        "manySkills": "You can only add 5 skills"
       }
     }
   },
