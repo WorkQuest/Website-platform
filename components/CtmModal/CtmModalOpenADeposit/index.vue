@@ -4,47 +4,56 @@
     :title="$t('saving.openADeposit')"
   >
     <div class="deposit__content content">
-      <div class="content__field">
-        <label
-          for="saving__input"
-          class="content__label"
-        >{{ $t("modals.lockedSavings") }}
-        </label>
-        <base-field
-          id="saving__input"
-          :is-hide-error="true"
-          :placeholder="'3 500'"
-          class="content__input"
-        />
-      </div>
-      <div class="content__field">
-        <label
-          for="amount__input"
-          class="content__label"
-        >{{ $t("modals.durationDays") }}
-        </label>
-        <base-field
-          id="amount__input"
-          :is-hide-error="true"
-          :placeholder="'180'"
-          class="content__input"
-        />
-      </div>
-      <div class="content__buttons buttons">
-        <base-btn
-          class="buttons__button"
-          mode="outline"
-          @click="hide()"
-        >
-          {{ $t('meta.cancel') }}
-        </base-btn>
-        <base-btn
-          class="buttons__button"
-          @click="showDepositIsOpenedModal()"
-        >
-          {{ $t('meta.submit') }}
-        </base-btn>
-      </div>
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
+        <div class="content__field">
+          <label
+            for="saving__input"
+            class="content__label"
+          >{{ $t("modals.lockedSavings") }}
+          </label>
+          <base-field
+            id="saving__input"
+            v-model="saving"
+            :placeholder="'3 500'"
+            class="content__input"
+            rules="required|numeric"
+            :name="$t('modals.lockedSavingsField')"
+          />
+        </div>
+        <div class="content__field">
+          <label
+            for="amount__input"
+            class="content__label"
+          >{{ $t("modals.durationDays") }}
+          </label>
+          <base-field
+            id="amount__input"
+            v-model="duration"
+            :placeholder="'180'"
+            class="content__input"
+            rules="required|numeric"
+            :name="$t('modals.durationDaysField')"
+          />
+        </div>
+        <div class="content__buttons buttons">
+          <base-btn
+            class="buttons__button"
+            mode="outline"
+            @click="hide()"
+          >
+            {{ $t('meta.cancel') }}
+          </base-btn>
+          <base-btn
+            class="buttons__button"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(showDepositIsOpenedModal)"
+          >
+            {{ $t('meta.submit') }}
+          </base-btn>
+        </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -56,7 +65,10 @@ import modals from '~/store/modals/modals';
 export default {
   name: 'ModalOpenADeposit',
   data() {
-    return {};
+    return {
+      duration: '',
+      saving: '',
+    };
   },
   computed: {
     ...mapGetters({
@@ -83,21 +95,21 @@ export default {
 <style lang="scss" scoped>
 
 .deposit {
-  max-width: 495px !important;
+  max-width: 487px !important;
   &__content {
-    padding: 0 28px 30px 28px!important;
+    padding: 20px 28px 30px 28px!important;
   }
 }
 .content{
   &__label{
-  margin: 25px 0 4px 0!important;
+  margin: 2px 0 4px 0!important;
   }
   &__buttons{
     display: grid;
     grid-template-columns: repeat(2, calc(50% - 10px));
     grid-gap: 20px;
     gap: 20px;
-    margin-top: 25px;
+    margin-top: 2px;
   }
 }
 </style>

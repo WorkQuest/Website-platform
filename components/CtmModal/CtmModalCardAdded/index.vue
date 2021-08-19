@@ -6,7 +6,7 @@
     <div class="cardAdded__content">
       <img
         src="~assets/img/ui/cardHasBeenAdded.svg"
-        alt="RequestSend"
+        alt="Card added"
         class="cardAdded__picture"
       >
       <div class="cardAdded__title">

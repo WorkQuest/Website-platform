@@ -4,35 +4,41 @@
     :title="$t('modals.changePercent')"
   >
     <div class="percent__content content">
-      <div class="content__text">
-        {{ $t('modals.changePercentText') }}
-      </div>
-      <div class="content__field">
-        <div class="content__title">
-          {{ $t('modals.currentPercentTitle') }}
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
+        <div class="content__text">
+          {{ $t('modals.changePercentText') }}
         </div>
-        <base-field
-          v-model="amount"
-          :is-hide-error="true"
-          :placeholder="$tc('modals.percentsCount', 15)"
-          class="content__input"
-        />
-      </div>
-      <div class="content__buttons buttons">
-        <base-btn
-          class="buttons__button"
-          mode="outline"
-          @click="hide"
-        >
-          {{ $t('meta.cancel') }}
-        </base-btn>
-        <base-btn
-          class="buttons__button"
-          @click="showPercentIsChanged"
-        >
-          {{ $t('meta.submit') }}
-        </base-btn>
-      </div>
+        <div class="content__field">
+          <div class="content__title">
+            {{ $t('modals.currentPercentTitle') }}
+          </div>
+          <base-field
+            v-model="amount"
+            :placeholder="$tc('modals.percentsCount', 15)"
+            class="content__input"
+            :name="$t('modals.currentPercentErr')"
+            rules="required|numeric"
+          />
+        </div>
+        <div class="content__buttons buttons">
+          <base-btn
+            class="buttons__button"
+            mode="outline"
+            @click="hide"
+          >
+            {{ $t('meta.cancel') }}
+          </base-btn>
+          <base-btn
+            class="buttons__button"
+            :disabled="!validated || !passed || invalid"
+            @click="showPercentIsChanged"
+          >
+            {{ $t('meta.submit') }}
+          </base-btn>
+        </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -95,7 +101,7 @@ export default {
     grid-template-columns: repeat(2, calc(50% - 10px));
     grid-gap: 20px;
     gap: 20px;
-    margin-top: 25px;
+    margin-top: 10px;
   }
 }
 </style>

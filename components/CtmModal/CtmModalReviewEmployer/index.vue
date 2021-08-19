@@ -1,49 +1,46 @@
 <template>
   <ctm-modal-box
-    class="message"
+    class="review"
     :title="$t('modals.reviewOnEmployer')"
   >
-    <div class="body">
-      <div class="btn-rating">
-        <button>
+    <div class="review__body body">
+      <div class="body__rating">
+        <button class="body__button">
           <b-form-rating
             v-model="localRating"
           />
         </button>
       </div>
-      <div class="ctm-modal__content">
-        <div class="message">
-          <div class="message__content">
-            <div class="modal__desc">
-              <div class="message__wrapper">
-                <p class="modal__labelMessage">
-                  {{ $t('modals.couple') }}
-                </p>
-                <div>
-                  <textarea
-                    class="message__textarea"
-                    :placeholder="$t('modals.hello')"
-                  />
-                </div>
-              </div>
-              <div class="btn__container">
-                <div class="btn__wrapper">
-                  <base-btn
-                    class="message__action"
-                    @click="showThanksModal() "
-                  >
-                    {{ $t('meta.send') }}
-                  </base-btn>
-                </div>
-                <div class="btn__wrapper">
-                  <base-btn
-                    class="message__action"
-                    @click="hide()"
-                  >
-                    {{ $t('meta.cancel') }}
-                  </base-btn>
-                </div>
-              </div>
+      <div class="body__content content">
+        <div class="content__desc">
+          <div class="content__wrapper">
+            <p class="content__labelMessage">
+              {{ $t('modals.couple') }}
+            </p>
+            <div>
+              <textarea
+                class="content__textarea"
+                :placeholder="$t('modals.hello')"
+              />
+            </div>
+          </div>
+          <div class="content__buttons buttons">
+            <div class="buttons__wrapper">
+              <base-btn
+                class="buttons__action"
+                @click="showThanksModal() "
+              >
+                {{ $t('meta.send') }}
+              </base-btn>
+            </div>
+            <div class="buttons__wrapper">
+              <base-btn
+                class="buttons__action"
+                mode="outline"
+                @click="hide()"
+              >
+                {{ $t('meta.cancel') }}
+              </base-btn>
             </div>
           </div>
         </div>
@@ -71,9 +68,9 @@ export default {
       options: 'modals/getOptions',
     }),
   },
-  mounted() {
-    this.localRating = JSON.parse(JSON.stringify(this.options.rating));
-  },
+  // mounted() {
+  //   this.localRating = JSON.parse(JSON.stringify(this.options.rating));
+  // },
   methods: {
     hide() {
       this.CloseModal();
@@ -88,39 +85,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ctm-modal {
-  @include modalKit;
 
-  &__content {
-    padding: 0 !important;
-  }
-
-  &__box {
-    max-width: 679px !important;
-  }
-
-  &__message {
-    max-width: 679px;
-  }
-
-  input {
-    width: 623px;
-    height: 214px;
-  }
-}
-
-.body {
-  padding: 0 28px 28px 25px;
-}
-
-.modal {
-  &__title {
-    @include text-simple;
-    justify-self: left;
-    font-weight: 500;
-    font-size: 23px;
-  }
-
+.review {
+  max-width: 679px !important;
   &__desc {
     @include text-simple;
     width: 100%;
@@ -132,30 +99,19 @@ export default {
     color: $black800;
     padding: 0 0 5px 0;
   }
+  &__body{
+    padding: 15px 30px 15px 30px;
+  }
 }
-
-.file {
+.content {
   &__wrapper {
     margin: 0 0 25px 0;
   }
-}
-
-.message {
-  &__wrapper {
-    margin: 0 0 25px 0;
+  &__buttons{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
   }
-
-  &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    grid-gap: 20px;
-  }
-
-  &__action {
-    margin-top: 10px;
-  }
-
   &__textarea {
     border-radius: 6px;
     padding: 11px 20px 11px 15px;
@@ -164,42 +120,19 @@ export default {
     border: 0;
     background-color: $black0;
     resize: none;
-
     &::placeholder {
       color: $black200;
     }
   }
 }
-
-.btn {
-  &__container {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    margin: 15px 0 0 0;
-  }
-
+.buttons{
   &__wrapper {
     width: 45%;
   }
 }
-
-.ctm-modal {
-  &__box {
-    max-width: 679px !important;
+.body{
+  &__rating{
+    padding-bottom: 15px;
   }
-
-  &__title {
-    margin: 0 0 0 9% !important;
-  }
-}
-
-.btn-rating {
-  padding: 25px 0;
-}
-
-.form-control {
-  padding: 0;
-  height: 0 !important;
 }
 </style>

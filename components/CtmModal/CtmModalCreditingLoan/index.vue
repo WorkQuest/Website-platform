@@ -4,86 +4,97 @@
     :title="$t('modals.loan')"
   >
     <div class="loan__content content">
-      <div class="content__body">
-        <div class="content__checkpoints checkpoints">
-          <label
-            for="checkpoints__main"
-            class="checkpoints__label"
-          >
-            {{ $t('modals.chooseTheCurrency') }}
-          </label>
-          <div
-            id="checkpoints__main"
-            class="checkpoints__main"
-          >
-            <div
-              v-for="(item, i) in checkpoints"
-              :key="i"
-              class="checkpoints__array"
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
+        <div class="content__body">
+          <div class="content__checkpoints checkpoints">
+            <label
+              for="checkpoints__main"
+              class="checkpoints__label"
             >
-              <input
-                :id="item.name"
-                v-model="selCurrencyID"
-                type="radio"
-                class="checkpoints__item"
-                :value="item.id"
+              {{ $t('modals.chooseTheCurrency') }}
+            </label>
+            <div
+              id="checkpoints__main"
+              class="checkpoints__main"
+            >
+              <div
+                v-for="(item, i) in checkpoints"
+                :key="i"
+                class="checkpoints__array"
               >
-              <label
-                class=""
-                :for="item.name"
-              >
-                {{ item.name }}
-              </label>
+                <input
+                  :id="item.name"
+                  v-model="selCurrencyID"
+                  type="radio"
+                  class="checkpoints__item"
+                  :value="item.id"
+                >
+                <label
+                  class="checkpoints__name"
+                  :for="item.name"
+                >
+                  {{ item.name }}
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="content__field">
+            <base-field
+              v-model="quantity"
+              class="content__input"
+              :label="$t('modals.howMuchETHWouldYouLikeToOpen')"
+              :tip="$t('modals.smallTemp')"
+              :placeholder="'10 ETH'"
+              rules="required|numeric"
+              :name="$t('modals.quantityField')"
+            />
+          </div>
+          <div class="content__field">
+            <base-field
+              id="amountOfPercents_input"
+              v-model="percents"
+              class="content__input"
+              :label="$t('modals.howMuchPercentWouldYouLikeToSet')"
+              :tip="$t('modals.smallTemp')"
+              :placeholder="'10 ETH'"
+              rules="required|numeric"
+              :name="$t('modals.percentField')"
+            />
+          </div>
+          <div class="content__field">
+            <base-field
+              v-model="debt"
+              :label="$t('modals.enterTermToReturnDebtBack')"
+              :tip="$t('modals.smallTemp')"
+              class="content__input"
+              :placeholder="'10 ETH'"
+              rules="required|numeric"
+              :name="$t('modals.amountField')"
+            />
+            <div class="content__text">
+              {{ $t('modals.loanText') }}
             </div>
           </div>
         </div>
-        <div class="content__field">
-          <base-field
-            :is-hide-error="true"
-            class="content__input"
-            :label="$t('modals.howMuchETHWouldYouLikeToOpen')"
-            :tip="$t('modals.smallTemp')"
-            :placeholder="'10 ETH'"
-          />
+        <div class="content__buttons buttons">
+          <base-btn
+            class="buttons__button"
+            mode="outline"
+            @click="hide"
+          >
+            {{ $t('meta.cancel') }}
+          </base-btn>
+          <base-btn
+            class="buttons__button"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(openConfirmDetailsModal)"
+          >
+            {{ $t('meta.submit') }}
+          </base-btn>
         </div>
-        <div class="content__field">
-          <base-field
-            id="amountOfPercents_input"
-            :is-hide-error="true"
-            class="content__input"
-            :label="$t('modals.howMuchPercentWouldYouLikeToSet')"
-            :tip="$t('modals.smallTemp')"
-            :placeholder="'10 ETH'"
-          />
-        </div>
-        <div class="content__field">
-          <base-field
-            :is-hide-error="true"
-            :label="$t('modals.enterTermToReturnDebtBack')"
-            :tip="$t('modals.smallTemp')"
-            class="content__input"
-            :placeholder="'10 ETH'"
-          />
-          <div class="content__text">
-            {{ $t('modals.loanText') }}
-          </div>
-        </div>
-      </div>
-      <div class="content__buttons buttons">
-        <base-btn
-          class="buttons__button"
-          mode="outline"
-          @click="hide()"
-        >
-          {{ $t('meta.cancel') }}
-        </base-btn>
-        <base-btn
-          class="buttons__button"
-          @click="openConfirmDetailsModal()"
-        >
-          {{ $t('meta.submit') }}
-        </base-btn>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -97,6 +108,9 @@ export default {
   data() {
     return {
       selCurrencyID: 1,
+      quantity: '',
+      debt: '',
+      percents: '',
       checkpoints: [
         {
           name: this.$t('modals.bnb'),
@@ -147,21 +161,20 @@ export default {
     grid-template-columns: repeat(2, calc(50% - 10px));
     grid-gap: 20px;
     gap: 20px;
-    margin-top: 25px;
+    margin-top: 40px;
   }
 .content{
-  &__body{
-  }
   &__field{
-    margin: 25px 0 0 0;
+    margin-top: 3px;
   }
   &__text {
     color: #7C838D;
     font-weight: 400;
     font-size: 14px;
-    margin-top: 25px;
+    margin-top: 3px;
   }
   &__checkpoints {
+    margin-bottom: 25px;
     &_label {
       margin-bottom: 10px;
     }

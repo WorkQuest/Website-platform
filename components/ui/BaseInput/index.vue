@@ -8,6 +8,7 @@
       {'ctm-field_disabled': disabled},
       {'ctm-field_search': isSearch},
       {'ctm-field_icon': mode === 'icon'},
+      {'ctm-field_smallError': mode === 'smallError'},
       {'ctm-field_white': mode === 'white'}]"
     :rules="rules"
     :name="name"
@@ -283,6 +284,13 @@ export default {
     .ctm-field {
       &__input {
         padding: 0 20px 0 50px;
+      }
+    }
+  }
+  &_smallError{
+    .ctm-field{
+      &__err{
+        min-height: 15px;
       }
     }
   }

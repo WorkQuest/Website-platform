@@ -5,78 +5,80 @@
   >
     <div class="card__content content">
       <ValidationObserver
-        v-slot="{ handleSubmit }"
+        v-slot="{handleSubmit, validated, passed, invalid}"
         class="content__observer"
         tag="div"
       >
-        <form
-          class="restore__body"
-          action=""
-          @submit.prevent="handleSubmit(card)"
-        >
-          <div class="content__input input">
-            <div class="input__title">
-              {{ $t('modals.numberCard') }}
+        <div class="content__input input">
+          <div class="input__title">
+            {{ $t('modals.numberCard') }}
+          </div>
+          <base-field
+            v-model="cardNumberInput"
+            class="input__field"
+            :placeholder="'1234 1234 1234 1234'"
+            rules="required|numberOfCard"
+            :name="$t('modals.creditCardNumber')"
+            mode="smallError"
+          />
+        </div>
+        <div class="content__input input">
+          <div class="input__title">
+            {{ $t('modals.cardHolder') }}
+          </div>
+          <base-field
+            v-model="cardHolder"
+            class="input__field"
+            :placeholder="'AAAA AAAAAAAAA'"
+            rules="required|alpha_spaces"
+            :name="$t('modals.cardHolder')"
+            mode="smallError"
+          />
+        </div>
+        <div class="content__grid grid">
+          <div class="grid__field">
+            <div class="grid__title">
+              {{ $t('modals.date') }}
             </div>
             <base-field
-              v-model="cardNumberInput"
-              class="input__field"
-              :placeholder="'1234 1234 1234 1234'"
-              rules="required|CardNumber"
-              :name="$t('modals.creditCardNumber')"
+              v-model="dateInput"
+              class="grid__input"
+              :placeholder="'02/24'"
+              rules="required"
+              :name="$t('modals.dateName')"
+              mode="smallError"
             />
           </div>
-          <div class="content__input input">
-            <div class="input__title">
-              {{ $t('modals.cardHolder') }}
-            </div>
+          <div class="grid__field">
+            <span class="grid__title">
+              {{ $t('modals.cvv') }}
+            </span>
             <base-field
-              v-model="cardHolder"
-              class="input__field"
-              :placeholder="'AAAA AAAAAAAAA'"
-              is-hide-error="true"
+              v-model="cvvInput"
+              class="grid__field"
+              placeholder="242"
+              rules="required|cvv"
+              :name="$t('modals.cvv')"
+              mode="smallError"
             />
           </div>
-          <div class="content__grid grid">
-            <div class="grid__field">
-              <div class="grid__title">
-                {{ $t('modals.date') }}
-              </div>
-              <base-field
-                v-model="dateInput"
-                class="grid__input"
-                :placeholder="'02/24'"
-                is-hide-error="true"
-              />
-            </div>
-            <div class="grid__field">
-              <span class="grid__title">
-                {{ $t('modals.cvv') }}
-              </span>
-              <base-field
-                v-model="cvvInput"
-                class="grid__field"
-                placeholder="242"
-                is-hide-error="true"
-              />
-            </div>
-          </div>
-          <div class="content__buttons buttons">
-            <base-btn
-              :mode="'outline'"
-              class="buttons__action"
-              @click="hide"
-            >
-              {{ $t('meta.cancel') }}
-            </base-btn>
-            <base-btn
-              class="buttons__action"
-              @click="showCardHasBeenAddedModal"
-            >
-              {{ $t('modals.add') }}
-            </base-btn>
-          </div>
-        </form>
+        </div>
+        <div class="content__buttons buttons">
+          <base-btn
+            :mode="'outline'"
+            class="buttons__action"
+            @click="hide"
+          >
+            {{ $t('meta.cancel') }}
+          </base-btn>
+          <base-btn
+            class="buttons__action"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(showCardHasBeenAddedModal)"
+          >
+            {{ $t('modals.add') }}
+          </base-btn>
+        </div>
       </ValidationObserver>
     </div>
   </ctm-modal-box>
@@ -140,11 +142,8 @@ export default {
 }
 
 .input{
-  &__field{
-    cursor: pointer;
-  }
   &__title{
-    margin: 15px 0 4px 0;
+    margin-bottom: 4px;
   }
 }
 .content{
@@ -156,12 +155,12 @@ export default {
     grid-gap: 10px;
   }
   &__buttons{
-    margin-top: 25px;
+    margin-top: 10px;
   }
 }
 .grid{
   &__title{
-    margin: 15px 0 4px 0;
+    margin-bottom:4px;
   }
 }
 

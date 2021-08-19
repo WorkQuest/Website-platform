@@ -1,30 +1,36 @@
 <template>
   <ctm-modal-box
-    class="info"
-    :title="options.title|| 'Withdrawal info'"
+    class="claim"
+    :title="$t('modals.claim') "
   >
-    <div class="info__content content">
+    <div class="claim__content content">
+      <div class="content__step">
+        <div
+          class="content__panel"
+          :class="{'content__panel_active': step === 1}"
+          @click="previousStep"
+        >
+          {{ $t('modals.walletAddress') }}
+        </div>
+        <div
+          class="content__panel"
+          :class="{'content__panel_active': step === 2}"
+          @click="nextStep"
+        >
+          {{ $t('wallet.bankCard') }}
+        </div>
+      </div>
       <div class="content__field field">
         <div
-          v-if="options.cardNumber"
+          v-if="step===1"
           class="field__header header"
         >
           <div class="header__title">
             {{ $t('modals.bankCard') }}
           </div>
           <div class="header__subtitle">
-            {{ options.cardNumber }} <div class="icon-show header__icon" />
-          </div>
-        </div>
-        <div
-          v-if="options.recepientAddress"
-          class="field__header header"
-        >
-          <div class="header__title">
-            {{ $t(options.recepientAddress) }}
-          </div>
-          <div class="header__subtitle">
-            {{ this.walletAddress }}
+            {{ cardNumber }}
+            <div class="icon-show header__icon" />
           </div>
         </div>
         <div
@@ -35,7 +41,7 @@
             {{ $t('modals.walletAddress') }}
           </div>
           <div class="header__subtitle">
-            {{ this.walletAddress }}
+            {{ walletAddress }}
           </div>
         </div>
         <div
@@ -73,14 +79,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalDepositInfo',
+  name: 'ModalClaim',
   data() {
     return {
+      step: 1,
       walletAddress: '83479B2E7809F7D7C0A9184EEDA74CCF122ABF3147CB4572BDEBD252F8E352A8',
+      cardNumber: '**** **** **** 0000',
       items: [
         {
           title: this.$t('modals.amount'),
@@ -93,14 +100,6 @@ export default {
       ],
     };
   },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
-    getCardNumber() {
-      return (this.options.cardNumber);
-    },
-  },
   methods: {
     hide() {
       this.CloseModal();
@@ -110,13 +109,23 @@ export default {
         key: modals.transactionSend,
       });
     },
-
+    nextStep() {
+      this.step = 2;
+    },
+    previousStep() {
+      this.step = 1;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
+.claim{
+  max-width: 616px!important;
+  &__content{
+    padding: 22px 28px 30px 28px!important;
+  }
+}
 .field{
   &__item{
     margin-bottom: 20px;
@@ -137,13 +146,29 @@ export default {
   }
 }
 .content{
-  padding: 0 28px 30px 28px!important;
   &__field{
-    padding: 20px 20px 20px;
+    padding:20px;
     background-color: #F7F8FA;
     border-radius: 5px;
     margin-top: 25px;
-    margin-right: 13px;
+  }
+  &__step {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  &__panel{
+    @include text-simple;
+    font-weight: 400;
+    font-size: 16px;
+    color: $black500;
+    margin: 0 20px 0 0;
+    cursor: pointer;
+    &_active {
+      color: $black800;
+      border-bottom: 2px solid $blue;
+      padding: 0 0 12px 0;
+    }
   }
 }
 .buttons{

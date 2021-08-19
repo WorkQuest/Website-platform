@@ -1,55 +1,83 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
+    class="views"
     :title="$t('modals.raiseViews')"
   >
-    <div class="ctm-modal__content">
-      <div class="grid__1col">
-        <base-field
-          id="priceOfAClick"
-          v-model="priceOfAClick"
-          :label="$t('modals.priceOfAClick')"
-          :placeholder="'0 WUSD'"
-        />
-        <base-field
-          id="city"
-          v-model="city"
-          :label="$t('modals.city')"
-          :placeholder="'Moscow'"
-        />
-        <base-field
-          id="period"
-          v-model="period"
-          :label="$t('modals.period')"
-          :placeholder="'Week'"
-        />
-      </div>
-      <div class="payment__container">
-        <div class="payment__title">
-          {{ $t('modals.estimatedPayment') }}
+    <div class="views__content content">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
+        <div class="content__field">
+          <div class="field__subtitle">
+            {{ $t('modals.priceOfAClick') }}
+          </div>
+          <base-field
+            id="priceOfAClick"
+            v-model="priceOfAClick"
+            :placeholder="'0 WUSD'"
+            class="field__input"
+            mode="white"
+            rules="required|numeric"
+            :name="$t('modals.priceOfAClickField')"
+          />
+          <div class="field__subtitle">
+            {{ $t('modals.city') }}
+          </div>
+          <base-field
+            id="city"
+            v-model="city"
+            :placeholder="'Moscow'"
+            class="field__input"
+            mode="white"
+            rules="required|alpha"
+            :name="$t('modals.cityField')"
+          />
+          <div class="field__subtitle">
+            {{ $t('modals.period') }}
+          </div>
+          <base-dd
+            v-model="period"
+            class="field__drop"
+            :items="items"
+          >
+            <template
+              v-slot:choose
+              class="field__choose"
+            >
+              <span
+                v-if="period===-1"
+                class="field__placeholder"
+              >
+                {{ $t('placeholders.default') }}
+              </span>
+            </template>
+          </base-dd>
         </div>
-        <div class="payment__cost">
-          0 WUSD
+        <div class="content__container container">
+          <div class="container__title">
+            {{ $t('modals.estimatedPayment') }}
+          </div>
+          <div class="container__cost">
+            {{ $t('modals.estimatedPaymentField') }}
+          </div>
         </div>
-      </div>
-      <div class="btn__container">
-        <div class="btn__wrapper">
+        <div class="content__buttons buttons">
           <base-btn
-            class="message__action"
-            @click="showTransactionSendModal()"
+            class="buttons__action"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(hide)"
           >
             {{ $t('meta.ok') }}
           </base-btn>
-        </div>
-        <div class="btn__wrapper">
           <base-btn
             :mode="'outline'"
-            @click="hide()"
+            class="buttons__action"
+            @click="hide"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
         </div>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -64,13 +92,21 @@ export default {
     return {
       priceOfAClick: '',
       city: '',
-      period: '',
+      period: -1,
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+    items() {
+      return [
+        'Day',
+        'Week',
+        'Month',
+        'Year',
+      ];
+    },
   },
   methods: {
     hide() {
@@ -86,16 +122,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.payment {
+
+.views {
+  max-width: 650px !important;
+  &__content {
+    padding: 20px 28px 30px;
+  }
+
+}
+.content{
   &__container {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    margin-top: 25px;
   }
+  &__buttons{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    margin-top: 25px;
+  }
+}
+.container {
   &__title {
     color: $black500;
-    font-weight:400;
+    font-weight: 400;
     font-size: 16px;
   }
   &__cost {
@@ -105,83 +158,25 @@ export default {
     padding: 0 0 0 5px;
   }
 }
-
-.btn {
-  &__cancel {
-    &_white {
-      background: $white;
-    }
+.buttons{
+  &__action{
+    max-width: 271px!important;
   }
 }
-
-.link {
-  text-align: right;
-}
-.ctm-modal {
-  &__content-field {
-    margin: 15px 0 0 0;
+.field{
+  &__subtitle{
+    margin-bottom: 4px;
   }
-  &__equal {
-    margin: 0 0 35px 10px;
+  &__placeholder{
+    color: $black300;
+    font-size: 16px;
+    line-height: 130%;
+    margin-right: auto;
   }
-}
-
-.ctm-modal {
-  @include modalKit;
-}
-
-.input {
-  &_white {
+  &__drop{
+    border: 1px solid #F7F8FA;
     border-radius: 6px;
-    border: 1px solid $black0;
-    padding: 11px 20px 11px 15px;
-    height: 46px;
-    width: 100%;
-    background-color: $white;
-    resize: none;
-    &::placeholder {
-      color: $black800;
-    }
-  }
-}
-.grid {
-  &__2col {
-    display: grid;
-    grid-template-columns: 49% 49%;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-}
-.grid {
-  &__3col {
-    display: grid;
-    grid-template-columns: 47% 6% 47%;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-}
-.btn {
-  &__container {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    margin: 15px 0 0 0;
-  }
-  &__wrapper {
-    width: 45%;
-  }
-}
-
-.messageSend {
-  max-width: 650px !important;
-  &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    grid-gap: 20px;
-  }
-  &__action {
-    margin-top: 10px;
+    color: $black800!important;
   }
 }
 </style>

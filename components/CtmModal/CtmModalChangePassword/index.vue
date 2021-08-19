@@ -6,7 +6,7 @@
     <div class="change__content">
       <img
         src="~assets/img/ui/password_changed.svg"
-        alt="Email"
+        alt="Password changed"
         class="change__image"
       >
       <div class="change__title">
@@ -14,7 +14,7 @@
       </div>
       <base-btn
         class="change__action"
-        @click="hide()"
+        @click="hide"
       >
         {{ $t('meta.ok') }}
       </base-btn>
@@ -42,9 +42,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ctm-modal {
-  @include modalKit;
-}
 
 .change {
   max-width: 307px !important;

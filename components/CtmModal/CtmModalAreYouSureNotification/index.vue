@@ -21,13 +21,13 @@
         <base-btn
           class="buttons__button"
           mode="outline"
-          @click="hide()"
+          @click="hide"
         >
           {{ $t('meta.cancel') }}
         </base-btn>
         <base-btn
           class="buttons__button"
-          @click="hide()"
+          @click="hide"
         >
           {{ $t('meta.submit') }}
         </base-btn>
@@ -40,7 +40,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'ModalAreYouSure',
+  name: 'ModalAreYouSureNotification',
   data() {
     return {};
   },

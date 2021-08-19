@@ -21,13 +21,13 @@
         <base-btn
           class="buttons__button"
           mode="outline"
-          @click="hide()"
+          @click="hide"
         >
           {{ $t('meta.cancel') }}
         </base-btn>
         <base-btn
           class="buttons__button"
-          @click="openStatusModal()"
+          @click="openStatusModal"
         >
           {{ $t('meta.submit') }}
         </base-btn>

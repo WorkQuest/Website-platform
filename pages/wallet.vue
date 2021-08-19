@@ -123,6 +123,7 @@ export default {
       transactions: 'data/getTransactions',
       transactionsData: 'data/getTransactionsData',
     }),
+
   },
   async mounted() {
     this.SetLoader(true);
@@ -139,17 +140,17 @@ export default {
     },
     showDepositModal() {
       this.ShowModal({
-        key: modals.changeRoleWarning,
+        key: modals.takeCreditingDeposit,
       });
     },
     showWithdrawModal() {
       this.ShowModal({
-        key: modals.restore,
+        key: modals.openADeposit,
       });
     },
     showAddCardModal() {
       this.ShowModal({
-        key: modals.addingCard,
+        key: modals.review,
         branch: 'adding',
       });
     },

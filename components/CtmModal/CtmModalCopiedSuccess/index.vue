@@ -6,7 +6,7 @@
     <div class="copied__content">
       <img
         src="~/assets/img/ui/questAgreed.svg"
-        alt="Agreed"
+        alt="Success"
         class="copied__picture"
       >
       <div class="copied__title">

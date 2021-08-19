@@ -4,31 +4,38 @@
     :title="$t('modals.depositTitle')"
   >
     <div class="deposit__content content">
-      <div class="content__field">
-        <div class="content__text">
-          {{ $t('modals.depositAmount') }}
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
+        <div class="content__field">
+          <div class="content__text">
+            {{ $t('modals.depositAmount') }}
+          </div>
+          <base-field
+            v-model="amountInput"
+            :placeholder="'3500'"
+            class="content__input"
+            rules="required|numeric"
+            :name="$t('modals.depositAmountField')"
+          />
         </div>
-        <base-field
-          v-model="amountInput"
-          :is-hide-error="true"
-          :placeholder="'3500'"
-          class="content__input"
-        />
-      </div>
-      <div class="content__buttons">
-        <base-btn
-          class="buttons__button"
-          @click="hide()"
-        >
-          {{ $t('meta.cancel') }}
-        </base-btn>
-        <base-btn
-          class="buttons__button"
-          @click="showPensionIsRegisteredModal()"
-        >
-          {{ $t('meta.submit') }}
-        </base-btn>
-      </div>
+        <div class="content__buttons">
+          <base-btn
+            class="buttons__button"
+            mode="outline"
+            @click="hide()"
+          >
+            {{ $t('meta.cancel') }}
+          </base-btn>
+          <base-btn
+            class="buttons__button"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(showPensionIsRegisteredModal)"
+          >
+            {{ $t('meta.submit') }}
+          </base-btn>
+        </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -81,7 +88,7 @@ export default {
     grid-template-columns: repeat(2, calc(50% - 10px));
     grid-gap: 20px;
     gap: 20px;
-    margin-top: 25px;
+    margin-top: 2px;
   }
   &__text{
     margin: 22px 0 4px 0;
