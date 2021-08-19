@@ -213,6 +213,7 @@
                   type="grey"
                   mode="convertDate"
                   class="knowledge__data"
+                  :disabled="true"
                   :placeholder="$t('settings.education.from')"
                 />
                 <div class="knowledge__dash">
@@ -223,6 +224,7 @@
                   type="grey"
                   mode="convertDate"
                   class="knowledge__data"
+                  :disabled="true"
                   :placeholder="$t('settings.education.to')"
                 />
               </div>
@@ -231,6 +233,7 @@
                   v-model="localUserData.additionalInfo.educations[i].place"
                   type="grey"
                   class="knowledge__data knowledge__data_big"
+                  :disabled="true"
                   :placeholder="$t('settings.education.educationalInstitution')"
                 />
                 <base-btn
@@ -296,6 +299,7 @@
                   type="date"
                   mode="convertDate"
                   class="knowledge__data"
+                  :disabled="true"
                   :placeholder="$t('settings.term')"
                 />
                 <div class="knowledge__dash">
@@ -306,6 +310,7 @@
                   type="date"
                   mode="convertDate"
                   class="knowledge__data"
+                  :disabled="true"
                   :placeholder="$t('settings.term')"
                 />
               </div>
@@ -314,6 +319,7 @@
                   v-model="localUserData.additionalInfo.workExperiences[i].place"
                   type="grey"
                   class="knowledge__data knowledge__data_big"
+                  :disabled="true"
                   :placeholder="$t('settings.workExps.companyName')"
                 />
                 <base-btn
@@ -682,7 +688,6 @@
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import VuePhoneNumberInput from 'vue-phone-number-input';
-import moment from 'moment';
 import modals from '~/store/modals/modals';
 import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 
@@ -782,12 +787,12 @@ export default {
       getUserAddress: 'user/getUserAddress',
     }),
     specializations() {
+      const specializations = Object.keys(this.$t('settings.specializations')).length;
       const specs = {
         titles: [],
         skills: [],
       };
-      let i;
-      for (i = 1; i < Object.keys(this.$t('settings.specializations')).length; i += 1) {
+      for (let i = 1; i < specializations; i += 1) {
         specs.skills.push(this.$t(`settings.specializations.${i}.sub`));
         specs.titles.push(this.$t(`settings.specializations.${i}.title`));
       }
