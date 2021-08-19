@@ -807,7 +807,7 @@ export default {
   },
   methods: {
     addSkillToBadge(event, object, index, key) {
-      if (!this.selectedSkills[key].includes(object[index])) {
+      if (!this.selectedSkills[key].includes(object[index]) && this.selectedSkills[key].length <= 4) {
         this.selectedSkills[key].push(object[index]);
       }
     },
@@ -820,6 +820,7 @@ export default {
     },
     switchSkill(event, key) {
       this.skillIndex[key] = -1;
+      this.selectedSkills[key] = [];
     },
     addSpecialization() {
       if (this.specCount <= 2) {
@@ -1703,7 +1704,8 @@ export default {
       color: #0083C7;
       border: 1px solid #bce8ff;
       &_disabled {
-        background: #aaaaaa !important;
+        color: #aaaaaa !important;
+        border: 0.5px solid #aaaaaa;
       }
     }
     &-add:hover {
