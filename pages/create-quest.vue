@@ -72,6 +72,14 @@
                 :placeholder="$t('quests.skills.chooseSkills')"
                 type="gray"
               />
+              <div class="skills btn">
+                <base-btn
+                  mode="agree"
+                  class="btn__add"
+                >
+                  <span class="icon-check_big" />
+                </base-btn>
+              </div>
             </div>
             <div class="skills__alert">
               {{ $t('quests.skills.limit') }}
@@ -314,6 +322,11 @@ export default {
     color: $red;
     font-size: 20px;
   }
+  &-check_big:before {
+    content: "\ea02";
+    color: $white;
+    font-size: 20px;
+  }
   &-off_outline_close::before {
     content: "\ea2a";
     color: $white;
@@ -415,13 +428,13 @@ export default {
 }
 
 .btn {
+  padding: 0;
   &__create {
     width: 220px;
   }
   &__add {
-    width: 220px;
-    margin: 20px 0 0 0;
-    padding: 0;
+    width: 100%;
+    margin: 12px 0 0 0;
   }
   &__container {
     width: 100%;
@@ -447,7 +460,11 @@ export default {
 
 .skills {
   &__category {
+    display: grid;
     margin: 20px 0 0 0;
+    grid-template-columns: 7fr 1fr;
+    grid-gap: 10px;
+    align-items: center;
     @extend .half;
   }
   &__badges {
