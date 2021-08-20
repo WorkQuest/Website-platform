@@ -7,14 +7,6 @@
       <div class="message">
         <div class="message__content">
           <div class="modal__desc">
-            <!--            <div>-->
-            <!--              <dropzone-->
-            <!--                id="uploader"-->
-            <!--                ref="el"-->
-            <!--                :options="optionsModal"-->
-            <!--                :include-styling="true"-->
-            <!--              />-->
-            <!--            </div>-->
             <ValidationProvider
               v-slot="{ validate }"
               rules="required|ext:png,jpeg,jpg,gif"
@@ -22,7 +14,7 @@
             >
               <input
                 id="coverUpload"
-                class="edit_avatar"
+                class="edit__avatar"
                 type="file"
                 accept="image/*"
                 @change="processFile($event, validate)"
@@ -75,7 +67,6 @@
 </template>
 
 <script>
-/* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
@@ -86,7 +77,7 @@ export default {
     return {
       caseTitle: '',
       caseDescription: '',
-      portfolio_change: {
+      portfolio: {
         data: {},
         file: {},
       },
@@ -99,12 +90,10 @@ export default {
       medias: 'user/getUserPortfolio',
     }),
   },
-  mounted() {},
   methods: {
     hide() {
       this.CloseModal();
     },
-    // eslint-disable-next-line consistent-return
     async processFile(e, validate) {
       const isValid = await validate(e);
       const file = e.target.files[0];
@@ -114,34 +103,35 @@ export default {
         }
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        this.portfolio_change.data = await this.$store.dispatch('user/imageCaseType', { contentType: file.type });
-        this.portfolio_change.file = file;
+        this.portfolio.data = await this.$store.dispatch('user/imageCaseType', { contentType: file.type });
+        this.portfolio.file = file;
       }
+      return this.portfolio;
     },
     async addUserCase() {
+      const { file, data } = this.portfolio;
       try {
         const formData = new FormData();
-        formData.append('image', this.portfolio_change.file);
-        if (this.portfolio_change.data.ok) {
-          const data = {
-            url: this.portfolio_change.data.result.url,
-            formData: this.portfolio_change.file,
-            type: this.portfolio_change.file.type,
+        formData.append('image', file);
+        if (data.ok) {
+          const payload = {
+            url: data.result.url,
+            formData: file,
+            type: file.type,
           };
-          await this.$store.dispatch('user/setCaseImage', data);
+          await this.$store.dispatch('user/setCaseImage', payload);
         }
+        const payload = {
+          title: this.caseTitle,
+          description: this.caseDescription,
+          medias: [data.result.mediaId],
+        };
+        await this.$store.dispatch('user/setCaseData', payload);
+        this.hide();
       } catch (error) {
-        console.log(error);
+        console.error(error);
+        this.hide();
       }
-      let payload = {};
-      const checkAvatarID = this.portfolio_change.data.ok ? this.portfolio_change.data.result.mediaId : this.medias.mediaId;
-      payload = {
-        title: this.caseTitle,
-        description: this.caseDescription,
-        medias: [checkAvatarID],
-      };
-      await this.$store.dispatch('user/setCaseData', payload);
-      this.hide();
     },
     showRequestSendModal() {
       this.ShowModal({
@@ -153,6 +143,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.ctm-modal {
+  @include modalKit;
+  &__box {
+    max-width: 800px !important;
+  }
+  &__title {
+    margin: 0 0 0 9% !important;
+  }
+}
 
 .file {
   &__wrapper {
@@ -191,12 +191,6 @@ export default {
   }
 }
 
-.ctm-modal {
-  @include modalKit;
-  &__box {
-    max-width: 800px;
-  }
-}
 .modal {
   &__title {
     @include text-simple;
@@ -253,14 +247,6 @@ export default {
   }
   &__wrapper {
     width: 45%;
-  }
-}
-.ctm-modal{
-  &__box {
-    max-width: 800px !important;
-  }
-  &__title {
-    margin: 0 0 0 9% !important;
   }
 }
 </style>

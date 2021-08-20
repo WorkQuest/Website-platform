@@ -67,9 +67,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-//TODO: Почистить стили
-
 .title {
   font-style: normal;
   font-weight: 500;

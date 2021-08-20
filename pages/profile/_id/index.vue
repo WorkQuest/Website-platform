@@ -74,7 +74,6 @@
           </div>
           <portfolioTab />
         </div>
-
         <div
           v-if="userData.role === 'worker'"
           class="button"
@@ -150,8 +149,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-//TODO: Почистить стили
 
 .add-btn {
   &__container {

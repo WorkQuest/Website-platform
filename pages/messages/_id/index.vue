@@ -38,7 +38,6 @@
               </div>
             </div>
           </div>
-          <!--          TODO: Заменить на компонент Messages-->
           <div
             v-for="(item, i) in messages"
             :key="i"

@@ -1,6 +1,4 @@
 export default {
-
-  // Replaced
   setAllQuests(state, data) {
     state.allQuests = data;
   },
@@ -14,7 +12,6 @@ export default {
     state.questsLocation = data;
   },
 
-  // Experimental
   setQuestData(state, data) {
     state.questData = data;
   },

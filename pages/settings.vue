@@ -108,7 +108,7 @@
                   </template>
                 </base-field>
               </div>
-              <div class="profile__row-data">
+              <div class="profile__row-data profile__row-data_big">
                 <VuePhoneNumberInput
                   v-model="localUserData.additionalInfo.firstMobileNumber"
                   class="Phone"
@@ -194,10 +194,10 @@
         </div>
         <div
           v-if="userRole === 'worker'"
+          class="page__knowledge knowledge"
         >
           <label
             class="knowledge__label"
-            for="knowledge"
           >{{ $t('settings.educations') }}</label>
           <div
             v-if="localUserData.additionalInfo.educations.length !==0"
@@ -207,64 +207,83 @@
               :key="k.id"
               class="knowledge__container"
             >
-              <base-field
-                id="knowledge"
-                v-model="localUserData.additionalInfo.educations[i].from"
-                type="grey"
-                :placeholder="$t('settings.education.from')"
-              />
-              <div class="knowledge__dash">
-                -
+              <div class="knowledge__content">
+                <base-field
+                  v-model="localUserData.additionalInfo.educations[i].from"
+                  type="grey"
+                  mode="convertDate"
+                  class="knowledge__data"
+                  :disabled="true"
+                  :placeholder="$t('settings.education.from')"
+                />
+                <div class="knowledge__dash">
+                  -
+                </div>
+                <base-field
+                  v-model="localUserData.additionalInfo.educations[i].to"
+                  type="grey"
+                  mode="convertDate"
+                  class="knowledge__data"
+                  :disabled="true"
+                  :placeholder="$t('settings.education.to')"
+                />
               </div>
-              <base-field
-                v-model="localUserData.additionalInfo.educations[i].to"
-                type="grey"
-                :placeholder="$t('settings.education.to')"
-              />
-              <div />
-              <base-field
-                v-model="localUserData.additionalInfo.educations[i].place"
-                type="grey"
-                :placeholder="$t('settings.education.educationalInstitution')"
-              />
-              <div />
-              <base-btn @click="deleteKnowledge(i)">
-                {{ $t('settings.delete') }}
-              </base-btn>
+              <div class="knowledge__content">
+                <base-field
+                  v-model="localUserData.additionalInfo.educations[i].place"
+                  type="grey"
+                  class="knowledge__data knowledge__data_big"
+                  :disabled="true"
+                  :placeholder="$t('settings.education.educationalInstitution')"
+                />
+                <base-btn
+                  class="knowledge__btn"
+                  @click="deleteKnowledge(i)"
+                >
+                  {{ $t('settings.delete') }}
+                </base-btn>
+              </div>
             </div>
           </div>
           <div
             class="knowledge__container"
           >
-            <base-field
-              v-model="newKnowledge.from"
-              type="date"
-              :placeholder="$t('settings.workExps.from')"
-            />
-            <div class="knowledge__dash">
-              -
+            <div class="knowledge__content">
+              <base-field
+                v-model="newKnowledge.from"
+                type="date"
+                class="knowledge__data"
+                :placeholder="$t('settings.workExps.from')"
+              />
+              <div class="knowledge__dash">
+                -
+              </div>
+              <base-field
+                v-model="newKnowledge.to"
+                type="date"
+                class="knowledge__data"
+                :placeholder="$t('settings.workExps.to')"
+              />
             </div>
-            <base-field
-              v-model="newKnowledge.to"
-              type="date"
-              :placeholder="$t('settings.workExps.to')"
-            />
-            <div />
-            <base-field
-              v-model="newKnowledge.place"
-              type="grey"
-              :placeholder="$t('settings.workExps.companyName')"
-            />
-            <div />
-            <base-btn @click="addNewKnowledge()">
-              {{ $t('settings.add') }}
-            </base-btn>
+            <div class="knowledge__content">
+              <base-field
+                v-model="newKnowledge.place"
+                type="grey"
+                class="knowledge__data knowledge__data_big"
+                :placeholder="$t('settings.education.educationalInstitution')"
+              />
+              <base-btn
+                class="knowledge__btn"
+                @click="addNewKnowledge()"
+              >
+                {{ $t('settings.add') }}
+              </base-btn>
+            </div>
           </div>
 
           <label
             v-if="userRole === 'worker'"
             class="knowledge__label"
-            for="workExp"
           >{{ $t('settings.workExp') }}</label>
           <div
             v-if="localUserData.additionalInfo.workExperiences.length !==0"
@@ -274,56 +293,76 @@
               :key="k.id"
               class="knowledge__container"
             >
+              <div class="knowledge__content">
+                <base-field
+                  v-model="localUserData.additionalInfo.workExperiences[i].from"
+                  type="date"
+                  mode="convertDate"
+                  class="knowledge__data"
+                  :disabled="true"
+                  :placeholder="$t('settings.term')"
+                />
+                <div class="knowledge__dash">
+                  -
+                </div>
+                <base-field
+                  v-model="localUserData.additionalInfo.workExperiences[i].to"
+                  type="date"
+                  mode="convertDate"
+                  class="knowledge__data"
+                  :disabled="true"
+                  :placeholder="$t('settings.term')"
+                />
+              </div>
+              <div class="knowledge__content">
+                <base-field
+                  v-model="localUserData.additionalInfo.workExperiences[i].place"
+                  type="grey"
+                  class="knowledge__data knowledge__data_big"
+                  :disabled="true"
+                  :placeholder="$t('settings.workExps.companyName')"
+                />
+                <base-btn
+                  class="knowledge__btn"
+                  @click="deleteWorkExp(i)"
+                >
+                  {{ $t('settings.delete') }}
+                </base-btn>
+              </div>
+            </div>
+          </div>
+          <div class="knowledge__container">
+            <div class="knowledge__content">
               <base-field
-                id="workExp"
-                v-model="localUserData.additionalInfo.workExperiences[i].from"
+                v-model="newWorkExp.from"
                 type="date"
+                class="knowledge__data"
                 :placeholder="$t('settings.term')"
               />
               <div class="knowledge__dash">
                 -
               </div>
               <base-field
-                v-model="localUserData.additionalInfo.workExperiences[i].to"
+                v-model="newWorkExp.to"
                 type="date"
+                class="knowledge__data"
                 :placeholder="$t('settings.term')"
               />
-              <div />
+            </div>
+            <div class="knowledge__content">
               <base-field
-                v-model="localUserData.additionalInfo.workExperiences[i].place"
+                v-model="newWorkExp.place"
                 type="grey"
-                :placeholder="$t('settings.placeOfStudying')"
+                class="knowledge__data knowledge__data_big"
+                :placeholder="$t('settings.workExps.companyName')"
               />
-              <div />
-              <base-btn @click="deleteWorkExp(i)">
-                {{ $t('settings.delete') }}
+              <base-btn
+                class="knowledge__btn"
+                @click="addNewWorkExp()"
+              >
+                {{ $t('settings.add') }}
               </base-btn>
             </div>
-          </div>
-          <div class="knowledge__container">
-            <base-field
-              v-model="newWorkExp.from"
-              type="date"
-              :placeholder="$t('settings.term')"
-            />
-            <div class="knowledge__dash">
-              -
-            </div>
-            <base-field
-              v-model="newWorkExp.to"
-              type="date"
-              :placeholder="$t('settings.term')"
-            />
-            <div />
-            <base-field
-              v-model="newWorkExp.place"
-              type="grey"
-              :placeholder="$t('settings.placeOfStudying')"
-            />
-            <div />
-            <base-btn @click="addNewWorkExp()">
-              {{ $t('settings.add') }}
-            </base-btn>
           </div>
         </div>
         <div class="profile__row-4col">
@@ -364,7 +403,10 @@
             </template>
           </base-field>
         </div>
-        <div class="profile__row-4col">
+        <div
+          v-if="userRole === 'employer'"
+          class="page__btn btn"
+        >
           <base-btn
             class="btn__save"
             @click="editUserData()"
@@ -373,30 +415,125 @@
           </base-btn>
         </div>
       </div>
-      <div class="main-white">
-        <div
-          v-if="userRole === 'worker'"
-          class="page__skills"
-        >
-          <div class="page__badge-skills">
-            {{ $t('settings.skills') }}
-          </div>
-          <!--          TODO: Вывести баджи со скилами из state, полученные из модалки-->
+      <h2
+        v-if="userRole === 'worker'"
+        class="page__title"
+      >
+        {{ $t('settings.employmentInfo') }}
+      </h2>
+      <div
+        v-if="userRole === 'worker'"
+        class="main-white"
+      >
+        <div class="page__skills skills">
           <div
-            v-for="(item, i) in userSkills"
-            :key="i"
+            v-for="key in specCount"
+            :key="key"
+            class="skills__block block"
           >
-            <div class="page__badge">
-              {{ item.title }}
+            <div class="block__skill-spec">
+              <div class="block__specialization specialization">
+                <base-dd
+                  v-model="specIndex[key]"
+                  class="specialization__dd"
+                  type="gray"
+                  :placeholder="$t('settings.selectSpec')"
+                  :items="specializations.titles"
+                  :mode="'small'"
+                  :label="$t('settings.specialization')"
+                  @input="switchSkill($event, key)"
+                />
+                <div class="specialization__skills skills">
+                  <base-dd
+                    v-model="skillIndex[key]"
+                    class="specialization__dd"
+                    :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
+                    :disabled="specIndex[key] < 0"
+                    :placeholder="$t('settings.selectSkills')"
+                    :items="specializations.skills[specIndex[key]]"
+                    :mode="'small'"
+                    :label="$t('settings.skillsInput')"
+                    @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
+                  />
+                  <div
+                    v-if="selectedSkills[key].length === 5"
+                    class="skills__error"
+                  >
+                    {{ $t('ui.buttons.errors.manySkills') }}
+                  </div>
+                </div>
+              </div>
+              <div class="block__skill skill">
+                <div
+                  v-for="(item, i) in selectedSkills[key]"
+                  :key="i"
+                  class="skill__badge"
+                >
+                  {{ item }}
+                  <button
+                    class="skill__remove"
+                    @click="removeSkillToBadge(item, key)"
+                  >
+                    <img
+                      src="~assets/img/ui/close_blue.svg"
+                      alt="x"
+                    >
+                  </button>
+                </div>
+              </div>
             </div>
+            <base-btn
+              :text="$t('settings.removeSpec')"
+              class="specialization__btn specialization__btn_remove"
+              @click="removeSpecialization(key)"
+            />
           </div>
-          <div class="btn__container">
-            <button
-              class="btn__plus"
-              @click="chooseNecessarySkills()"
+          <base-btn
+            :text="$t('settings.addSpec')"
+            :disabled="specCount === 3"
+            class="skills__btn-add"
+            :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
+            @click="addSpecialization"
+          />
+          <div
+            v-if="specCount === 3"
+            class="skills__error"
+          >
+            {{ $t('ui.buttons.errors.manySpec') }}
+          </div>
+          <div class="skills__add-info">
+            <base-dd
+              v-model="priorityIndex"
+              class="specialization__dd"
+              type="gray"
+              :placeholder="$t('priority.title')"
+              :items="priority"
+              :mode="'small'"
+              :label="$t('settings.priority')"
+            />
+            <base-dd
+              v-model="distantIndex"
+              class="specialization__dd"
+              type="gray"
+              :placeholder="$t('settings.distantWork.select')"
+              :items="distantWork"
+              :mode="'small'"
+              :label="$t('settings.distantWork.title')"
+            />
+            <base-field
+              v-model="perHour"
+              class="specialization__skills"
+              :label="$t('settings.costPerHour')"
+              type="gray"
+            />
+          </div>
+          <div class="page__btn btn">
+            <base-btn
+              class="btn__save"
+              @click="editUserData()"
             >
-              <span class="icon-plus_circle" />
-            </button>
+              {{ $t('settings.save') }}
+            </base-btn>
           </div>
         </div>
       </div>
@@ -564,16 +701,28 @@ export default {
   },
   data() {
     return {
+      specCount: 0,
+      perHour: '0',
+      specIndex: {
+        1: -1,
+        2: -1,
+        3: -1,
+      },
+      skillIndex: {
+        1: -1,
+        2: -1,
+        3: -1,
+      },
+      selectedSkills: {
+        1: [],
+        2: [],
+        3: [],
+      },
+      priorityIndex: -1,
+      distantIndex: -1,
       updatedPhone: null,
       addresses: [],
       sms: false,
-      allRegisterUser: false,
-      allPeopleInInternet: false,
-      onlyWhenSubmitedWork: false,
-      onlyUrgentProposals: false,
-      onlyInplemention: false,
-      onlyReadyForExecution: false,
-      allRegisteredUsers: false,
       isShowInfo: true,
       localUserData: {
         avatarId: null,
@@ -632,13 +781,37 @@ export default {
       userTwitter: 'user/getUserTwitter',
       userLinkedin: 'user/getUserLinkedin',
       userFacebook: 'user/getUserFacebook',
-      firstMobileNumder: 'user/getUserFirstMobileNumber',
       secondMobileNumder: 'user/getUserSecondMobileNumber',
-      userSkills: 'data/getSkills',
       imageData: 'user/getImageData',
       additionalInfo: 'user/getAdditionalInfo',
       getUserAddress: 'user/getUserAddress',
     }),
+    specializations() {
+      const specializations = Object.keys(this.$t('settings.specializations')).length;
+      const specs = {
+        titles: [],
+        skills: [],
+      };
+      for (let i = 1; i < specializations; i += 1) {
+        specs.skills.push(this.$t(`settings.specializations.${i}.sub`));
+        specs.titles.push(this.$t(`settings.specializations.${i}.title`));
+      }
+      return specs;
+    },
+    distantWork() {
+      return [
+        this.$t('settings.distantWork.distantWork'),
+        this.$t('settings.distantWork.workInOffice'),
+        this.$t('settings.distantWork.bothVariant'),
+      ];
+    },
+    priority() {
+      return [
+        this.$t('priority.employee.low'),
+        this.$t('priority.employee.normal'),
+        this.$t('priority.employee.urgent'),
+      ];
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -651,6 +824,33 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    addSkillToBadge(event, object, index, key) {
+      if (!this.selectedSkills[key].includes(object[index]) && this.selectedSkills[key].length <= 4) {
+        this.selectedSkills[key].push(object[index]);
+      }
+    },
+    removeSkillToBadge(skillName, key) {
+      const numberInArray = this.selectedSkills[key].indexOf(skillName);
+      this.selectedSkills[key].splice(numberInArray, 1);
+      if (!this.selectedSkills[key].length) {
+        this.skillIndex[key] = -1;
+      }
+    },
+    switchSkill(event, key) {
+      this.skillIndex[key] = -1;
+      this.selectedSkills[key] = [];
+    },
+    addSpecialization() {
+      if (this.specCount <= 2) {
+        this.specCount += 1;
+      }
+    },
+    removeSpecialization(key) {
+      this.selectedSkills[key] = [];
+      this.specIndex[key] = -1;
+      this.skillIndex[key] = -1;
+      this.specCount -= 1;
+    },
     disable2FA() {
       this.ShowModal({
         key: modals.disable2FA,
@@ -918,10 +1118,19 @@ export default {
 
 .knowledge {
   &__container {
-    display: grid;
-    grid-template-columns: 5fr 28px 5fr 28px 7fr 28px 2fr;
+    display: flex;
+    grid-gap: 30px;
     margin: 0 19px 10px 20px;
     max-height: 44px;
+  }
+  &__content {
+      display: flex;
+      justify-content: space-between;
+      grid-gap: 20px;
+      width: 50%;
+  }
+  &__data {
+    width: 100%;
   }
   &__dash {
     display: flex;
@@ -930,7 +1139,7 @@ export default {
     justify-content: center;
   }
   &__label {
-    margin: 20px 0 15px 20px;
+    margin: 10px 20px;
   }
 }
 
@@ -1248,62 +1457,14 @@ export default {
   }
   &__save {
     @extend .btn;
-    margin-bottom: 20px;
-    grid-column: 5/17;
+    width: 250px;
+    float: right;
   }
 }
 .quests {
-  &__cards {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 20px;
-    padding-top: 20px;
-  }
   &__top {
     position: relative;
     min-height: 160px;
-  }
-  &__search {
-    position: absolute;
-    max-width: 1180px;
-    height: 83px;
-    bottom: 30px;
-    left: 0;
-    right: 0;
-    margin: auto;
-    z-index: 1200;
-    @include box;
-  }
-  &__content {
-    display: flex;
-    justify-content: center;
-  }
-  &__body {
-    padding-top: 30px;
-    max-width: 1180px;
-    width: 100%;
-    height: 100%;
-    &_wrap {
-      padding-top: 10px;
-    }
-  }
-  &__text {
-    @include text-simple;
-    font-style: normal;
-    &_title  {
-      @extend .quests__text;
-      font-weight: 500;
-      font-size: 25px;
-      line-height: 130%;
-      color: $black800;
-    }
-  }
-  &__tags {
-    padding-top: 30px;
-    max-width: 1180px;
-  }
-  &__tools {
-    padding-top:  20px;
   }
 }
 
@@ -1443,6 +1604,47 @@ export default {
   }
 }
 .page {
+  &__skills {
+    width: 100%;
+    padding: 0 20px 20px 20px;
+    .block {
+      display: flex;
+      grid-gap: 20px;
+      justify-content: space-between;
+      margin-top: 20px;
+      &__skill-spec {
+        width: 100%;
+      }
+      &__specialization {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: row;
+        grid-gap: 20px;
+      }
+      &__skill {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        grid-gap: 10px;
+        .skill {
+          &__badge {
+            background: rgba(0, 131, 199, 0.1);
+            border-radius: 44px;
+            color: $blue;
+            white-space: nowrap;
+            grid-gap: 8px;
+            padding: 5px 10px 5px 10px;
+            display: flex;
+            text-align: center;
+            &-skills {
+              padding: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
   &__grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -1491,19 +1693,7 @@ export default {
       font-weight: 400;
     }
   }
-  &__badge {
-    background: rgba(0, 131, 199, 0.1);
-    border-radius: 44px;
-    margin: 10px;
-    color: $blue;
-    padding: 5px 6px;
-    display: flex;
-    text-align: center;
-    &-skills {
-      padding: 15px;
-    }
-  }
-  &__skills {
+  &__spec {
     flex-direction: row;
     flex-wrap: wrap;
     display: flex;
@@ -1511,6 +1701,66 @@ export default {
     width: 100%;
     justify-content: flex-start;
     //padding: 0 20px 0 0;
+  }
+  &__btn {
+    margin-bottom: 10px;
+  }
+}
+.skills {
+  &__add-info {
+    display: flex;
+    flex-wrap: nowrap;
+    grid-gap: 20px;
+    margin-top: 20px;
+  }
+  &__btn {
+    &-add {
+      text-align: center;
+      margin-top: 20px;
+      width: 250px;
+      background: #FFFFFF;
+      color: #0083C7;
+      border: 1px solid #bce8ff;
+      &_disabled {
+        color: #aaaaaa !important;
+        border: 0.5px solid #aaaaaa;
+      }
+    }
+    &-add:hover {
+      background: #bce8ff;
+    }
+  }
+  &__error {
+    color: #f36262;
+    margin-bottom: 10px;
+  }
+}
+.dd {
+  &__items {
+    height: 200px;
+    overflow: hidden;
+  }
+}
+.specialization {
+  &__dd {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  &__skills {
+    width: 100%;
+  }
+  &__btn {
+    text-align: center;
+    &_remove {
+      margin-top: 37px;
+      width: 50%;
+      background: #ffffff;
+      color: #d73838;
+      border: 1px solid #e79a9a;
+    }
+    &_remove:hover {
+      background: #e79a9a;
+    }
   }
 }
 .option {
@@ -1525,14 +1775,6 @@ export default {
   }
 }
 
-.instruments {
-  &__title {
-    @include text-simple;
-    font-size: 16px;
-    color: $black800;
-    margin: 15px 0 15px 0;
-  }
-}
 .user {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1608,7 +1850,7 @@ export default {
     &__title {
       margin: 20px 0 20px 20px;
     }
-    &__skills {
+    &__spec {
       margin: 0 0 10px 20px;
     }
     &__badge {
@@ -1617,6 +1859,11 @@ export default {
     &__profile {
       margin: 20px;
     }
+    &__info {
+      &-title {
+        font-size: 20px;
+      }
+    }
   }
   .settings {
     margin: 20px;
@@ -1624,9 +1871,18 @@ export default {
 }
 @include _991 {
   .knowledge {
+    padding: 20px;
     &__container {
-      grid-template-columns: 5fr 28px 5fr 0;
+      flex-direction: column;
+      margin: 20px 0;
+      grid-gap: 10px;
       max-height: 100%;
+    }
+    &__content {
+      width: 100%;
+    }
+    &__label {
+      margin: 10px 0;
     }
   }
   .settings {
@@ -1635,17 +1891,17 @@ export default {
   }
   .page {
     &__grid {
-      grid-template-columns: 11fr 1fr;
+      grid-template-columns: 1fr;
+    }
+    &__info {
+      &-title {
+        margin: 5px 20px 0 20px;
+      }
     }
   }
   .profile {
     &__row-3col {
       grid-template-columns: repeat(2, 1fr);
-    }
-    &__row-4col {
-      grid-template-rows: auto auto;
-      grid-template-columns: 1fr;
-      max-height: 100%;
     }
   }
   .higher {
@@ -1658,9 +1914,58 @@ export default {
 }
 
 @include _767 {
+  .page {
+    &__skills {
+      .block {
+        &__skill-spec {
+          width: 100%;
+        }
+        &__specialization {
+          display: flex;
+          flex-direction: row;
+        }
+      }
+    }
+    &__btn {
+      padding: 0;
+      .btn__save {
+        width: 100%;
+      }
+    }
+  }
+
+  .specialization {
+    &__btn {
+      &_remove {
+        margin-top: 0;
+        width: 100%;
+      }
+    }
+  }
+  .skills {
+    &__btn-add {
+      width: 100%;
+      margin-top: 0;
+    }
+    &__block {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin-bottom: 50px;
+    }
+    &__add-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  }
   .avatar {
     &__row {
       margin: 20px 20px 0 20px;
+      flex-direction: column;
+    }
+    &__container {
+      justify-self: center;
     }
   }
   .company {
@@ -1674,20 +1979,21 @@ export default {
       max-height: 100%;
     }
   }
-  .avatar {
-    &__row {
-      flex-direction: column;
-    }
-    &__container {
-      justify-self: center;
-    }
-  }
   .profile {
     &__row-3col {
       grid-template-columns: 1fr;
     }
     &__row-4col {
+      grid-template-rows: auto auto;
       grid-template-columns: 1fr;
+      max-height: 100%;
+    }
+    &__row-data {
+      &_big {
+        grid-template-rows: repeat(2, 1fr);
+        grid-template-columns: 1fr;
+        grid-gap: 20px;
+      }
     }
   }
 
@@ -1700,10 +2006,18 @@ export default {
 }
 
 @include _575 {
-  .profile {
-    &__row-data {
-      grid-template-columns: 1fr;
-      grid-gap: 20px;
+  .page {
+    &__skills {
+      .block {
+        &__specialization {
+          flex-direction: column;
+        }
+      }
+    }
+  }
+  .knowledge {
+    &__container {
+      width: 100%;
     }
   }
   .avatar {
@@ -1740,22 +2054,33 @@ export default {
   }
 }
 @include _480 {
-  .main-white {
-    width: calc(98vw - 71px);
+  .knowledge {
+    &__data {
+      width: 150px;
+      &_big {
+        width: 100% !important;
+      }
+    }
+    &__btn {
+      width: 30%;
+    }
   }
   .btn {
     &__save {
       margin-bottom: 20px;
-      grid-column: 5/14;
     }
   }
 }
 
 @include _380 {
+  .knowledge {
+    &__data {
+      width: 120px;
+    }
+  }
   .btn {
     &__save {
       margin-bottom: 20px;
-      grid-column: 5/14;
     }
   }
   .option {
@@ -1769,6 +2094,13 @@ export default {
   }
   .icons {
     padding: 16px 0 0 16px;
+  }
+}
+@include _350 {
+  .knowledge {
+    &__data {
+      width: 90px;
+    }
   }
 }
 </style>

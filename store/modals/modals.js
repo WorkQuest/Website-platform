@@ -58,7 +58,6 @@ export default {
   chatCreate: 'chatCreate',
   payment: 'payment',
   disable2FA: 'disable2FA',
-  questFilter: 'questFilter',
   questFilterFull: 'questFilterFull',
   showImage: 'showImage',
   depositOptions: 'depositOptions',

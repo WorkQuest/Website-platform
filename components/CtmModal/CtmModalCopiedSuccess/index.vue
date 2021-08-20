@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="copied"
-    is-header="false"
+    :is-header="false"
   >
     <div class="copied__content">
       <img
