@@ -46,17 +46,22 @@
             />
           </div>
         </div>
-        <div class="page__spec spec skills">
-          <div class="spec">
+        <div
+          v-for="key in specCount"
+          :key="key"
+          class="page__spec spec skills"
+        >
+          <div
+            class="spec"
+          >
             <div
-              v-for="key in specCount"
-              :key="key"
               class="spec__category"
             >
               <base-dd
                 v-model="specIndex[key]"
                 type="gray"
                 :items="specializations.titles"
+                :placeholder="specializations.titles[0]"
                 @input="switchSkill($event, key)"
               />
               <base-btn
@@ -66,40 +71,20 @@
                 <span class="icon-off_outline_close" />
               </base-btn>
             </div>
-            <div
-              v-for="key in specCount"
-              :key="key"
-              class="spec__subcategory"
-            >
+          </div>
+          <div
+            class="skills"
+          >
+            <div class="skills__category">
               <base-dd
                 v-model="skillIndex[key]"
-                :label="$t('quests.spec.spec')"
+                :label="$t('quests.skills.skills')"
+                :placeholder="$t('quests.skills.chooseSkills')"
                 :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
                 :disabled="specIndex[key] < 0"
                 :items="specializations.skills[specIndex[key]]"
                 @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
               />
-            </div>
-          </div>
-          <div
-            v-for="key in specCount"
-            :key="key"
-            class="skills"
-          >
-            <div class="skills__category">
-              <base-field
-                :label="$t('quests.skills.skills')"
-                :placeholder="$t('quests.skills.chooseSkills')"
-                type="gray"
-              />
-              <div class="skills btn">
-                <base-btn
-                  mode="agree"
-                  class="btn__add"
-                >
-                  <span class="icon-check_big" />
-                </base-btn>
-              </div>
             </div>
             <div
               v-if="selectedSkills[key].length === 5"
@@ -122,16 +107,17 @@
                 />
               </div>
             </div>
-            <div class="skills btn">
-              <base-btn
-                :text="$t('quests.spec.addSpec')"
-                :disabled="specCount === 3"
-                mode="outline"
-                :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
-                @click="addSpecialization"
-              />
-            </div>
           </div>
+        </div>
+        <div class="page btn">
+          <base-btn
+            :text="$t('quests.spec.addSpec')"
+            :disabled="specCount === 3"
+            mode="outline"
+            class="btn__spec"
+            :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
+            @click="addSpecialization"
+          />
         </div>
         <div class="page__address">
           <base-field
@@ -221,7 +207,7 @@ export default {
   },
   data() {
     return {
-      specCount: 1,
+      specCount: 0,
       specIndex: {
         1: -1,
         2: -1,
@@ -520,9 +506,14 @@ export default {
   &__create {
     width: 220px;
   }
+  &__spec {
+    width: 100%;
+    padding: 6px 5px;
+  }
   &__add {
     width: 100%;
     margin: 12px 0 0 0;
+    padding: 6px 5px;
   }
   &__container {
     width: 100%;
@@ -556,9 +547,10 @@ export default {
     @extend .half;
   }
   &__badges {
-    margin: 16px 0 0 0;
+    margin: 16px 0 16px 0;
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 20px;
     grid-template-rows: auto;
   }
   &__badge {
@@ -569,10 +561,10 @@ export default {
     width: 100%;
     min-width: 125px;
     background-color: rgba(0, 131, 199, 0.1);
-    padding: 6px 7px;
+    padding: 6px 10px;
     color: $blue;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 14px;
     border: none;
     border-radius: 44px;
     align-items: center;
@@ -592,6 +584,7 @@ export default {
     display: grid;
     grid-template-columns: 7fr 1fr;
     grid-gap: 10px;
+    margin: 20px 0 0 0;
     align-items: center;
     @extend .half;
   }
@@ -633,10 +626,10 @@ export default {
     height: 214px;
     width: 100%;
     border: 0;
-    background-color: $black0;
+    background-color: #F3F7FA;
     resize: none;
     &::placeholder {
-      color: $black200;
+      color: $black300;
     }
   }
 }
