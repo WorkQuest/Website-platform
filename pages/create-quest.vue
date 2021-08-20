@@ -48,24 +48,44 @@
         </div>
         <div class="page__spec spec skills">
           <div class="spec">
-            <div class="spec__category">
+            <div
+              v-for="key in specCount"
+              :key="key"
+              class="spec__category"
+            >
               <base-dd
-                placeholder="1. Specialization: IT"
+                v-model="specIndex[key]"
                 type="gray"
+                :items="specializations.titles"
+                @input="switchSkill($event, key)"
               />
-              <base-btn mode="delete">
+              <base-btn
+                mode="delete"
+                @click="removeSpecialization(key)"
+              >
                 <span class="icon-off_outline_close" />
               </base-btn>
             </div>
-            <div class="spec__subcategory">
+            <div
+              v-for="key in specCount"
+              :key="key"
+              class="spec__subcategory"
+            >
               <base-dd
+                v-model="skillIndex[key]"
                 :label="$t('quests.spec.spec')"
-                placeholder="IT"
-                type="gray"
+                :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
+                :disabled="specIndex[key] < 0"
+                :items="specializations.skills[specIndex[key]]"
+                @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
               />
             </div>
           </div>
-          <div class="skills">
+          <div
+            v-for="key in specCount"
+            :key="key"
+            class="skills"
+          >
             <div class="skills__category">
               <base-field
                 :label="$t('quests.skills.skills')"
@@ -81,22 +101,35 @@
                 </base-btn>
               </div>
             </div>
-            <div class="skills__alert">
+            <div
+              v-if="selectedSkills[key].length === 5"
+              class="skills__alert"
+            >
               {{ $t('quests.skills.limit') }}
             </div>
-            <div class="skills__badges">
-              <div class="skills__badge">
-                Painting works
-                <span class="icon-close_small" />
+            <div
+              class="skills__badges"
+            >
+              <div
+                v-for="(item, i) in selectedSkills[key]"
+                :key="i"
+                class="skills__badge"
+              >
+                {{ item }}
+                <span
+                  class="icon-close_small"
+                  @click="removeSkillToBadge(item, key)"
+                />
               </div>
             </div>
             <div class="skills btn">
               <base-btn
-                class="btn__add"
+                :text="$t('quests.spec.addSpec')"
+                :disabled="specCount === 3"
                 mode="outline"
-              >
-                {{ $t('quests.spec.addSpec') }}
-              </base-btn>
+                :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
+                @click="addSpecialization"
+              />
             </div>
           </div>
         </div>
@@ -188,6 +221,22 @@ export default {
   },
   data() {
     return {
+      specCount: 1,
+      specIndex: {
+        1: -1,
+        2: -1,
+        3: -1,
+      },
+      skillIndex: {
+        1: -1,
+        2: -1,
+        3: -1,
+      },
+      selectedSkills: {
+        1: [],
+        2: [],
+        3: [],
+      },
       priorityIndex: 0,
       categoryIndex: 0,
       runtimeIndex: 0,
@@ -220,6 +269,18 @@ export default {
     };
   },
   computed: {
+    specializations() {
+      const specializations = Object.keys(this.$t('settings.specializations')).length;
+      const specs = {
+        titles: [],
+        skills: [],
+      };
+      for (let i = 1; i < specializations; i += 1) {
+        specs.skills.push(this.$t(`settings.specializations.${i}.sub`));
+        specs.titles.push(this.$t(`settings.specializations.${i}.title`));
+      }
+      return specs;
+    },
     runtime() {
       return [
         this.$t('quests.runtime.days'),
@@ -248,6 +309,33 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    addSkillToBadge(event, object, index, key) {
+      if (!this.selectedSkills[key].includes(object[index]) && this.selectedSkills[key].length <= 4) {
+        this.selectedSkills[key].push(object[index]);
+      }
+    },
+    removeSkillToBadge(skillName, key) {
+      const numberInArray = this.selectedSkills[key].indexOf(skillName);
+      this.selectedSkills[key].splice(numberInArray, 1);
+      if (!this.selectedSkills[key].length) {
+        this.skillIndex[key] = -1;
+      }
+    },
+    switchSkill(event, key) {
+      this.skillIndex[key] = -1;
+      this.selectedSkills[key] = [];
+    },
+    addSpecialization() {
+      if (this.specCount <= 2) {
+        this.specCount += 1;
+      }
+    },
+    removeSpecialization(key) {
+      this.selectedSkills[key] = [];
+      this.specIndex[key] = -1;
+      this.skillIndex[key] = -1;
+      this.specCount -= 1;
+    },
     selectAddress(address) {
       this.addresses = [];
       this.address = address.formatted;
