@@ -601,6 +601,11 @@ export default {
         key: modals.raiseViews,
       });
     },
+    showRemoveLiquidityNew() {
+      this.ShowModal({
+        key: modals.removeLiquidity,
+      });
+    },
     showRestore() {
       this.ShowModal({
         key: modals.restore,

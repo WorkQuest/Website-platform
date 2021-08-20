@@ -215,7 +215,7 @@ export default {
 }
 .drop{
   &__field{
-    border: 1px solid $black0;
+    border: 1px solid $grey200;
     border-radius: 6px;
   }
   &__title{

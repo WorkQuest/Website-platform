@@ -12,17 +12,8 @@
         type="gray"
         :items="items"
         class="content__drop"
-      >
-        <template
-          v-if="drop===-1"
-          v-slot:choose
-          class="content__placeholder"
-        >
-          <span class="content__choose">
-            {{ $t('modals.choose') }}
-          </span>
-        </template>
-      </base-dd>
+        :placeholder="$t('placeholders.default')"
+      />
       <div class="content__buttons buttons">
         <base-btn
           class="buttons__button"
@@ -50,7 +41,7 @@ export default {
   name: 'ModalOpenADispute',
   data() {
     return {
-      drop: -1,
+      drop: '',
     };
   },
   computed: {

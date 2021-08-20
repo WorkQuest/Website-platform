@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="sure"
-    is-header="false"
+    :is-header="false"
   >
     <div class="sure__content content">
       <img

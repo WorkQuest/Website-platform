@@ -37,19 +37,8 @@
             v-model="period"
             class="field__drop"
             :items="items"
-          >
-            <template
-              v-slot:choose
-              class="field__choose"
-            >
-              <span
-                v-if="period===-1"
-                class="field__placeholder"
-              >
-                {{ $t('placeholders.default') }}
-              </span>
-            </template>
-          </base-dd>
+            :placeholder="$t('placeholders.default')"
+          />
         </div>
         <div class="content__container container">
           <div class="container__title">
@@ -90,7 +79,8 @@ export default {
     return {
       priceOfAClick: '',
       city: '',
-      period: -1,
+      period: '',
+      example: 'sdf',
     };
   },
   computed: {

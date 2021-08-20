@@ -46,7 +46,6 @@
         >
           {{ placeholder }}
         </span>
-        <slot name="choose" />
         <span
           v-if="type === 'sort'"
           class="dd__caret dd__caret_dark icon-Sorting_descending"

@@ -192,7 +192,7 @@ export default {
     height: 214px;
     width: 100%;
     border: 0;
-    background-color: $black0;
+    background-color: $grey200;
     resize: none;
 
     &::placeholder {
@@ -217,7 +217,7 @@ export default {
 .input {
   &_white {
     border-radius: 6px;
-    border: 1px solid $black0;
+    border: 1px solid $grey200;
     padding: 11px 20px 11px 15px;
     height: 46px;
     width: 100%;

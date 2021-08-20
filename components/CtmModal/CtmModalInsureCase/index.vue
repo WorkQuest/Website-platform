@@ -87,7 +87,7 @@ export default {
   &__user{
     display: flex;
     align-items: center;
-    background-color: $black0;
+    background-color: $grey200;
     border-radius: 5px;
     height: 42px;
     width: 100%;

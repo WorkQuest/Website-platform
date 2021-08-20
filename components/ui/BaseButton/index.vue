@@ -136,19 +136,19 @@ export default {
     }
   }
   &_share {
-    background-color: $black0;
+    background-color: $grey200;
     &:hover {
       background: $blue;
     }
   }
   &_max{
-    background-color: $black0;
+    background-color: $grey200;
     color: $blue;
     font-weight: 600;
     font-size: 16px;
     line-height: 130%;
     &:hover{
-      background-color: $black0;
+      background-color: $grey200;
     }
   }
   &_back {

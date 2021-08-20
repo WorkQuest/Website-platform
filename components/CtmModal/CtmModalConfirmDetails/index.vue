@@ -114,7 +114,7 @@ export default {
 }
 .content{
   &__field {
-    background-color: $black0;
+    background-color: $grey200;
     border-radius: 5px;
     padding: 20px;
     display: grid;

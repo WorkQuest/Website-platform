@@ -20,23 +20,12 @@
           class="content__body body"
         >
           <base-dd
-            v-model="elem.sign"
+            v-model="elem.id"
             :type="'gray'"
             :items="items"
             class="body__drop"
-          >
-            <template
-              v-slot:choose
-              class="body__block"
-            >
-              <span
-                v-if="elem.sign===-1"
-                class="body__placeholder"
-              >
-                {{ $t('placeholders.default') }}
-              </span>
-            </template>
-          </base-dd>
+            :placeholder="$t('placeholders.default')"
+          />
           <base-btn
             v-if="skillsArray.length===index+1"
             :mode="'grey'"
@@ -90,7 +79,7 @@ export default {
   name: 'ModalWelcome',
   data() {
     return {
-      skillsArray: [{ sign: -1, id: Date.now() }],
+      skillsArray: [{ id: Date.now() }],
     };
   },
   computed: {
@@ -111,7 +100,7 @@ export default {
       this.CloseModal();
     },
     addSkill() {
-      return this.skillsArray.push({ id: Date.now(), sign: -1 });
+      return this.skillsArray.push({ id: Date.now() });
     },
     removeSkill(id) {
       this.skillsArray = this.skillsArray.filter((item) => item.id !== id);
@@ -144,7 +133,6 @@ export default {
 .body{
   justify-content: space-between;
   &__drop{
-    display: block;
     width: 314px!important;
     margin-right: 10px;
   }
@@ -163,12 +151,6 @@ export default {
   &__remove:before{
     font-size: 24px;
     color: $red;
-  }
-  &__placeholder{
-    color: #D8DFE3;
-    font-size: 16px;
-    line-height: 130%;
-    margin-right: auto;
   }
 }
 .header {
