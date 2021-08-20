@@ -641,17 +641,33 @@ export default {
   .main__body {
     padding: 10px;
   }
+}
+
+@include _991 {
   .page {
-    &__address {
-      grid-template-columns: 5fr 1fr;
+    &__category {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 }
 
 @include _767 {
-  .page {
-    &__address {
-      grid-template-columns: 1fr 1fr;
+  .spec {
+    &__category {
+      max-width: 100%;
+    }
+  }
+  .skills {
+    &__category {
+      max-width: 100%;
+      grid-template-columns: 1fr;
+    }
+  }
+  .btn {
+    margin-top: 20px;
+    width: 100%;
+    &__create {
+      width: 100%;
     }
   }
 }
