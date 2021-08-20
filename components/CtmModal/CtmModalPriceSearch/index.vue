@@ -55,6 +55,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      quests: 'quests/getAllQuests',
     }),
   },
   methods: {
