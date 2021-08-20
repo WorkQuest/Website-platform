@@ -548,18 +548,13 @@ export default {
   }
   &__badges {
     margin: 16px 0 16px 0;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-gap: 20px;
-    grid-template-rows: auto;
+    display: flex;
   }
   &__badge {
     @include text-simple;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    min-width: 125px;
+    margin-right: 10px;
     background-color: rgba(0, 131, 199, 0.1);
     padding: 6px 10px;
     color: $blue;
