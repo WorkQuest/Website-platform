@@ -38,7 +38,7 @@
       <input
         class="ctm-field__input"
         :placeholder="placeholder"
-        :value="value"
+        :value="mode === 'convertDate' ? convertDate(value) : value"
         :type="type"
         :autocomplete="autocomplete"
         @input="input"
@@ -69,6 +69,8 @@
   </ValidationProvider>
 </template>
 <script>
+import moment from 'moment';
+
 export default {
   props: {
     value: {
@@ -147,6 +149,9 @@ export default {
     },
     clear() {
       this.$emit('input', '');
+    },
+    convertDate(date) {
+      return moment(date).format('DD.MM.YYYY');
     },
   },
 };

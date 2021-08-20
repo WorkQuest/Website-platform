@@ -14,6 +14,7 @@
       <button
         class="dd__btn"
         :class="ddClass"
+        :disabled="disabled"
         @click="isShown = !isShown"
       >
         <div
@@ -60,6 +61,7 @@
         <div
           v-if="isShown && isIcon"
           class="dd__items"
+          :class="mode === 'small' ? 'dd__items_small' : ''"
         >
           <button
             v-for="(item, i) in items"
@@ -77,6 +79,7 @@
         <div
           v-if="isShown && !isIcon"
           class="dd__items"
+          :class="mode === 'small' ? 'dd__items_small' : ''"
         >
           <button
             v-for="(item, i) in items"
@@ -102,7 +105,7 @@ export default {
   },
   props: {
     items: {
-      type: Array,
+      type: [Array, Object],
       default: () => [],
     },
     label: {
@@ -133,6 +136,10 @@ export default {
       type: String,
       default: '',
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => ({
     isShown: false,
@@ -142,6 +149,7 @@ export default {
       const { type } = this;
       return [
         { dd__btn_dark: type === 'dark' },
+        { dd__btn_disabled: type === 'disabled' },
         { dd__btn_gray: type === 'gray' },
         { dd__btn_blue: type === 'blue' },
         { dd__btn_border: type === 'border' },
@@ -200,6 +208,10 @@ export default {
     grid-gap: 15px;
     padding: 15px 20px;
     z-index: 1;
+    &_small {
+      height: 200px;
+      overflow: scroll;
+    }
   }
   &__item {
     text-align: left;
@@ -256,7 +268,10 @@ export default {
       background: #151552;
     }
     &_gray {
-      background-color: $black0;
+      background-color: #F7F8FA;
+    }
+    &_disabled {
+      background-color: #E6E6E7;
     }
     &_border {
       border: 1px solid #F7F8FA;
