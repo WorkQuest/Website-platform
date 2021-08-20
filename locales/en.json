@@ -767,6 +767,8 @@
       "participants": "Participants",
       "chatName": "Chat name"
     },
+    "price": "Price",
+    "enterPriceRange": "Enter price range",
     "changePercentDesc": "A percentage of the quest amount that will be automatically credited to your retirement account",
     "yourSkillsHaveBeenAdded": "Your skills have been successfully added.",
     "yourAccountVerified": "Your account has been successfully verified",
