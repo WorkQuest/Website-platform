@@ -88,7 +88,7 @@ export default {
   &__field{
     font-size: 16px;
     line-height: 130%;
-    color: #4C5767;
+    color: $black600;
     margin-bottom: 20px;
   }
   &__action{

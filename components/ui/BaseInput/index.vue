@@ -287,13 +287,6 @@ export default {
       }
     }
   }
-  &_smallError{
-    .ctm-field{
-      &__err{
-        min-height: 15px;
-      }
-    }
-  }
   &_big {
     .ctm-field {
       &__input {

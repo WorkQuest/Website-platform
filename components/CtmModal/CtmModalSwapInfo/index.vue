@@ -18,7 +18,7 @@
           </div>
         </div>
       </div>
-      <div class="сontent__buttons buttons">
+      <div class="content__buttons buttons">
         <div class="buttons__group">
           <base-btn
             class="buttons__button"

@@ -4,99 +4,107 @@
     :title="$t('modals.withdrawal')"
   >
     <div class="withdrawal__content content">
-      <div class="content__step">
-        <div
-          class="content__panel"
-          :class="{'content__panel_active': step === 1}"
-          @click="previousStep"
-        >
-          {{ $t('modals.walletAddress') }}
-        </div>
-        <div
-          class="content__panel"
-          :class="{'content__panel_active': step === 2}"
-          @click="nextStep"
-        >
-          {{ $t('wallet.bankCard') }}
-        </div>
-      </div>
-      <div
-        v-if="step === 1"
-        class="content__container"
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
       >
-        <div class="content__input input">
-          <span class="input__title">
+        <div class="content__step">
+          <div
+            class="content__panel"
+            :class="{'content__panel_active': step === 1}"
+            @click="previousStep"
+          >
             {{ $t('modals.walletAddress') }}
-          </span>
-          <base-field
-            v-model="walletAddress"
-            class="input__field"
-            :placeholder="'Enter address'"
-            is-hide-error
-          />
-        </div>
-        <div class="content__input input">
-          <span class="input__title">
-            {{ $t('modals.amount') }}
-          </span>
-          <base-field
-            v-model="amount"
-            class="input__field"
-            :placeholder="'Enter amount'"
-            is-hide-error
+          </div>
+          <div
+            class="content__panel"
+            :class="{'content__panel_active': step === 2}"
+            @click="nextStep"
           >
-            <template
-              v-slot:right-absolute
-              class="content__max max"
+            {{ $t('wallet.bankCard') }}
+          </div>
+        </div>
+        <div
+          v-if="step === 1"
+          class="content__container"
+        >
+          <div class="content__input input">
+            <span class="input__title">
+              {{ $t('modals.walletAddress') }}
+            </span>
+            <base-field
+              v-model="walletAddress"
+              class="input__field"
+              :placeholder="'Enter address'"
+              rules="required"
+              :name="$t('modals.walletAddressField')"
+            />
+          </div>
+          <div class="content__input input">
+            <span class="input__title">
+              {{ $t('modals.amount') }}
+            </span>
+            <base-field
+              v-model="amount"
+              class="input__field"
+              :placeholder="'Enter amount'"
+              rules="required|numeric"
+              :name="$t('modals.amountField')"
             >
-              <base-btn
-                mode="max"
-                class="max__button"
               >
-                <span class="max__text">{{ $t('modals.maximum') }}</span>
-              </base-btn>
-            </template>
-          </base-field>
+              <template
+                v-slot:right-absolute
+                class="content__max max"
+              >
+                <base-btn
+                  mode="max"
+                  class="max__button"
+                >
+                  <span class="max__text">{{ $t('modals.maximum') }}</span>
+                </base-btn>
+              </template>
+            </base-field>
+          </div>
         </div>
-      </div>
-      <div
-        v-if="step === 2"
-        class="content__container"
-      >
-        <div>
-          <img
-            alt="card"
-            src="~assets/img/ui/creditCard.svg"
-            class="content__card"
+        <div
+          v-if="step === 2"
+          class="content__container"
+        >
+          <div>
+            <img
+              alt="card"
+              src="~assets/img/ui/creditCard.svg"
+              class="content__card"
+            >
+          </div>
+          <div class="content__text">
+            {{ $t('modals.addYourCard') }}
+          </div>
+        </div>
+        <div class="content__buttons buttons">
+          <base-btn
+            :mode="'outline'"
+            class="buttons__action"
+            @click="hide"
           >
+            {{ $t('meta.cancel') }}
+          </base-btn>
+          <base-btn
+            v-if="step=== 1"
+            class="buttons__action"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(showWithdrawInfo)"
+          >
+            {{ $t('meta.confirm') }}
+          </base-btn>
+          <base-btn
+            v-if="step=== 2"
+            class="buttons__action"
+            @click="showAddingCard"
+          >
+            {{ $t('modals.addCard') }}
+          </base-btn>
         </div>
-        <div class="content__text">
-          {{ $t('modals.addYourCard') }}
-        </div>
-      </div>
-      <div class="content__buttons buttons">
-        <base-btn
-          :mode="'outline'"
-          class="buttons__action"
-          @click="hide"
-        >
-          {{ $t('meta.cancel') }}
-        </base-btn>
-        <base-btn
-          v-if="step=== 1"
-          class="buttons__action"
-          @click="showWithdrawInfo"
-        >
-          {{ $t('meta.confirm') }}
-        </base-btn>
-        <base-btn
-          v-if="step=== 2"
-          class="buttons__action"
-          @click="showAddingCard"
-        >
-          {{ $t('modals.addCard') }}
-        </base-btn>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -126,7 +134,7 @@ export default {
     showAddingCard() {
       this.ShowModal({
         key: modals.addingCard,
-        branch: 'widthdraw',
+        branch: 'withdraw',
       });
     },
     nextStep() {
@@ -134,6 +142,8 @@ export default {
     },
     previousStep() {
       this.step = 1;
+      this.amount = '';
+      this.walletAddress = '';
     },
   },
 };
@@ -162,9 +172,6 @@ export default {
   }
 }
 .content{
-  &__input{
-    margin-top: 15px;
-  }
   &__step {
     display: flex;
     flex-direction: row;
@@ -175,7 +182,7 @@ export default {
     font-weight: 400;
     font-size: 16px;
     color: $black500;
-    margin: 0 20px 0 0;
+    margin: 0 20px 15px 0;
     cursor: pointer;
     &_active {
       color: $black800;
@@ -184,16 +191,17 @@ export default {
     }
   }
   &__buttons{
-    margin-top: 25px;
+    margin-top: 2px;
   }
   &__card{
-    margin: 40px auto;
+    margin: 25px auto 40px;
   }
   &__text {
       font-size: 16px;
       line-height: 130%;
       color: #D8DFE3;
       text-align: center;
+      margin-bottom: 25px;
   }
 }
 .grid{

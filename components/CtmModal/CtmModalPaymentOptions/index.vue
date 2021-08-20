@@ -61,11 +61,15 @@
             class="drop__field"
             :items="items"
           >
-            <template v-slot:card>
+            <template
+              v-slot:card
+              class="drop__template"
+            >
               <span class="icon-credit_card drop__card" />
             </template>
             <template
               v-slot:buttonCard
+              class="drop__footer"
             >
               <base-btn
                 mode="add"
@@ -158,7 +162,7 @@ export default {
     showRaiseLevel() {
       this.ShowModal({
         key: modals.status,
-        img: require('~/assets/img/ui/success.svg'),
+        img: require('~/assets/img/ui/questAgreed.svg'),
         title: this.$t('modals.yourLevelHasBeenRaised'),
       });
     },
@@ -173,9 +177,6 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-  }
-  &__drop{
-    margin: 15px 0;
   }
   &__drop:last-child{
     margin: 0;
@@ -214,7 +215,7 @@ export default {
 }
 .drop{
   &__field{
-    border: 1px solid #F7F8FA;
+    border: 1px solid $black0;
     border-radius: 6px;
   }
   &__title{
@@ -223,6 +224,7 @@ export default {
     font-size: 16px;
     color: $black800;
     margin-bottom: 4px;
+    margin-top: 15px;
   }
   &__image{
     margin-left:15px;

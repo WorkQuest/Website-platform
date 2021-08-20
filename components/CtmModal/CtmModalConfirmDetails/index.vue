@@ -8,6 +8,7 @@
         <div
           v-for="(item, i) in abouts"
           :key="i"
+          class="field__body"
         >
           <div class="field__title">
             {{ item.title }}
@@ -105,19 +106,15 @@ export default {
 <style lang="scss" scoped>
 
 .confirm {
-  @include modalKit;
-  padding: 0px!important;
-  margin: 0!important;
   max-width: 490px !important;
-  max-height: 715px ! important;
-
+  height: auto;
   &__content {
     padding: 22px 28px 30px 28px!important;
   }
 }
 .content{
   &__field {
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     padding: 20px;
     display: grid;
@@ -138,7 +135,7 @@ export default {
     color: #353C47;
   }
   &__subtitle {
-    color: #7C838D;
+    color: $black500;
     font-weight: 500;
     font-size: 14px;
   }

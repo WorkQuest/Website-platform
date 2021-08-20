@@ -135,22 +135,23 @@ export default {
     },
     showTransferModal() {
       this.ShowModal({
-        key: modals.openADispute,
+        key: modals.giveTransfer,
       });
     },
     showDepositModal() {
       this.ShowModal({
-        key: modals.takeCreditingDeposit,
+        key: modals.giveDeposit,
       });
     },
     showWithdrawModal() {
       this.ShowModal({
-        key: modals.openADeposit,
+        key: modals.takeWithdraw,
+        branch: 'withdraw',
       });
     },
     showAddCardModal() {
       this.ShowModal({
-        key: modals.review,
+        key: modals.addingCard,
         branch: 'adding',
       });
     },

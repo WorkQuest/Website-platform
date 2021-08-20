@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="$t('modals.claim') "
+    :title="$t('modals.claim')"
   >
     <div class="claim__content content">
       <div class="content__step">
@@ -190,15 +190,15 @@ export default {
     display: flex;
     font-weight: 500;
     font-size: 14px;
-    line-height: 130%;
+    line-height: 125%;
     color: $black500;
     margin: 5px 0 20px 0;
   }
   &__icon:before{
     font-size: 16px;
     color: $black500;
-    vertical-align: middle;
     margin-left: 6px;
+    line-height: 120%;
   }
 }
 </style>

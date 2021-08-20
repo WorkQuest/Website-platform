@@ -4,11 +4,6 @@
     :is-header="false"
   >
     <div class="notice__content content">
-      <!--      <img-->
-      <!--        alt="notice"-->
-      <!--        src="~/assets/img/ui/notice.svg"-->
-      <!--        class="content__icon"-->
-      <!--      >-->
       <span class="icon-warning content__icon" />
       <div class="content__title">
         {{ $t('modals.noticeTitle') }}
@@ -18,7 +13,7 @@
       </div>
       <base-btn
         class="content__action"
-        @click="hide()"
+        @click="hide"
       >
         {{ $t('meta.iAgree') }}
       </base-btn>

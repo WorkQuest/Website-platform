@@ -27,6 +27,7 @@
           >
             <template
               v-slot:choose
+              class="body__block"
             >
               <span
                 v-if="elem.sign===-1"
@@ -125,9 +126,6 @@ export default {
   overflow: visible;
   max-width: 413px !important;
   height: auto;
-  &__content {
-
-  }
 }
 .content{
   &__header {

@@ -38,12 +38,11 @@ export default {
   },
   methods: {
     showOptions() {
-      if (this.options.branch === 'widthdraw') {
+      if (this.options.branch === 'withdraw') {
         this.ShowModal({
           key: modals.withdrawOptions,
         });
-      }
-      if (this.options.branch === 'adding') {
+      } else if (this.options.branch === 'adding') {
         this.CloseModal();
       } else {
         this.ShowModal({

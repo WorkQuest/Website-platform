@@ -13,7 +13,8 @@
             {{ $t('modals.bankCard') }}
           </div>
           <div class="header__subtitle">
-            {{ options.cardNumber }} <div class="icon-show header__icon" />
+            {{ options.cardNumber }}
+            <div class="icon-show header__icon" />
           </div>
         </div>
         <div
@@ -24,7 +25,7 @@
             {{ $t(options.recepientAddress) }}
           </div>
           <div class="header__subtitle">
-            {{ this.walletAddress }}
+            {{ walletAddress }}
           </div>
         </div>
         <div

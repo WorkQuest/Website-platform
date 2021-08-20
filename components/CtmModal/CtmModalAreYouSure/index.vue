@@ -6,7 +6,7 @@
     <div class="sure__content content">
       <img
         src="~assets/img/ui/sureDelete.svg"
-        alt="AreYouSure"
+        alt="Are you sure?"
       >
       <div class="content__title">
         {{ $t('modals.areYouSure') }}

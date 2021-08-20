@@ -6,6 +6,7 @@
     <div class="liquidity__content content">
       <validation-observer
         v-slot="{handleSubmit, validated, passed, invalid}"
+        class="content__observer"
       >
         <div class="content__grid">
           <div class="content__field field">
@@ -14,18 +15,18 @@
             </div>
             <base-field
               v-model="amountOfWusd"
-              :placeholder="'0 ETH'"
+              :placeholder="$t('modals.addLiquidityAmountWusd')"
               class="field__input"
               rules="required|numeric"
               :name="$t('modals.amountOfWusdField')"
             />
-            <div class="field__field">
+            <div class="field__container">
               <div class="field__title">
                 {{ $t('modals.amountOfEth') }}
               </div>
               <base-field
                 v-model="amountOfEth"
-                :placeholder="'0 WUSD'"
+                :placeholder="$t('modals.addLiquidityAmountEth')"
                 class="field__input"
                 rules="required|numeric"
                 :name="$t('modals.amountOfEthField')"
@@ -59,14 +60,14 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            @click="hide()"
+            @click="hide"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
             class="buttons__button"
             :disabled="!validated || !passed || invalid"
-            @click="hide()"
+            @click="handleSubmit(hide)"
           >
             {{ $t('modals.connectWallet') }}
           </base-btn>
@@ -145,13 +146,11 @@ export default {
       font-size: 14px;
     }
   }
-
   &__zone {
     background-color: #F7F8FA;
     border-radius: 5px;
     padding: 15px 20px 20px 20px;
   }
-
   &__buttons {
     display: grid;
     grid-template-columns: repeat(2, calc(50% - 10px));
@@ -181,7 +180,6 @@ export default {
     font-size: 16px;
   }
 }
-
   @include _575 {
     .content{
       &__grid{

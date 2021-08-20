@@ -1,62 +1,71 @@
 <template>
   <ctm-modal-box
-    class="withdrawal"
+    class="transfer"
     :title="$t('modals.transfer')"
   >
-    <div class="withdrawal__content content">
-      <div
-        class="content__container"
+    <div class="transfer__content content">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
       >
-        <div class="content__input input">
-          <span class="input__title">
-            {{ $t('modals.recepient') }}
-          </span>
-          <base-field
-            v-model="recepient"
-            class="input__field"
-            :placeholder="'Enter address'"
-            is-hide-error
-          />
-        </div>
-        <div class="content__input input">
-          <span class="input__title">
-            {{ $t('modals.amount') }}
-          </span>
-          <base-field
-            v-model="amount"
-            class="input__field"
-            :placeholder="'Enter amount'"
-            is-hide-error
-          >
-            <template
-              v-slot:right-absolute
-              class="content__max max"
+        <div
+          class="content__container"
+        >
+          <div class="content__input input">
+            <span class="input__title">
+              {{ $t('modals.recepient') }}
+            </span>
+            <base-field
+              v-model="recepient"
+              class="input__field"
+              :placeholder="'Enter address'"
+              rules="required"
+              :name="$t('modals.addressField')"
+            />
+          </div>
+          <div class="content__input input">
+            <span class="input__title">
+              {{ $t('modals.amount') }}
+            </span>
+            <base-field
+              v-model="amount"
+              class="input__field"
+              :placeholder="'Enter amount'"
+              rules="required|numeric"
+              :name="$t('modals.amountField')"
             >
-              <base-btn
-                mode="max"
-                class="max__button"
+              <template
+                v-slot:right-absolute
+                class="content__max max"
               >
-                <span class="max__text">{{ $t('modals.maximum') }}</span>
-              </base-btn>
-            </template>
-          </base-field>
+                <base-btn
+                  mode="max"
+                  class="max__button"
+                >
+                  <span class="max__text">
+                    {{ $t('modals.maximum') }}
+                  </span>
+                </base-btn>
+              </template>
+            </base-field>
+          </div>
         </div>
-      </div>
-      <div class="content__buttons buttons">
-        <base-btn
-          :mode="'outline'"
-          class="buttons__action"
-          @click="hide"
-        >
-          {{ $t('meta.cancel') }}
-        </base-btn>
-        <base-btn
-          class="buttons__action"
-          @click="showWithdrawInfo"
-        >
-          {{ $t('meta.next') }}
-        </base-btn>
-      </div>
+        <div class="content__buttons buttons">
+          <base-btn
+            :mode="'outline'"
+            class="buttons__action"
+            @click="hide"
+          >
+            {{ $t('meta.cancel') }}
+          </base-btn>
+          <base-btn
+            class="buttons__action"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(showWithdrawInfo)"
+          >
+            {{ $t('meta.next') }}
+          </base-btn>
+        </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -65,7 +74,7 @@
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalTakeWithdrawal',
+  name: 'ModalTakeTransfer',
   data() {
     return {
       recepient: '',
@@ -90,11 +99,11 @@ export default {
 
 <style lang="scss" scoped>
 
-.withdrawal{
+.transfer{
   max-width: 500px !important;
   padding: 0!important;
   &__content{
-    padding: 10px 28px 30px 28px!important;
+    padding: 20px 28px 30px 28px!important;
   }
 }
 .buttons {
@@ -111,9 +120,6 @@ export default {
   }
 }
 .content{
-  &__input{
-    margin-top: 15px;
-  }
   &__step {
     display: flex;
     flex-direction: row;
@@ -131,9 +137,6 @@ export default {
       border-bottom: 2px solid $blue;
       padding: 0 0 12px 0;
     }
-  }
-  &__buttons{
-    margin-top: 25px;
   }
   &__card{
     margin: 40px auto;

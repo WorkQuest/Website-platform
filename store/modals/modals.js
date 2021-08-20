@@ -72,7 +72,6 @@ export default {
   swap: 'swap',
   swapInfo: 'swapInfo',
   areYouSureNotification: 'areYouSureNotification',
-  takeCreditingDeposit: 'takeCreditingDeposit',
   claim: 'claim',
   price: 'price',
 };

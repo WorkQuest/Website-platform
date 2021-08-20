@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="quest"
-    is-header="false"
+    :is-header="false"
   >
     <div class="quest__content">
       <img
@@ -13,7 +13,7 @@
       </div>
       <base-btn
         class="quest__action"
-        @click="hide()"
+        @click="hide"
       >
         {{ $t('meta.ok') }}
       </base-btn>

@@ -210,19 +210,19 @@ export default {
   }
 }
 
-//  @include _575 {
-//    .ctm-modal {
-//      &__grid-cont {
-//        grid-template-rows: repeat(2, auto);
-//        grid-template-columns: unset;
-//      }
-//      &__gray-zone {
-//        display: grid;
-//        grid-template-columns: repeat(2, 1fr);
-//        gap: 10px;
-//        margin: 0;
-//      }
-//    }
-//  }
-//}
+  @include _575 {
+    .content {
+      &__grid {
+        grid-template-rows: repeat(2, auto);
+        grid-template-columns: unset;
+      }
+      &__zone {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin: 0;
+      }
+    }
+  }
+
 </style>

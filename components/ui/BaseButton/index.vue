@@ -131,10 +131,9 @@ export default {
     }
   }
   &_share {
-    background-color: $white;
-    border: 1px solid $black0;
+    background-color: $black0;
     &:hover {
-      background: $black0;
+      background: $blue;
     }
   }
   &_max{

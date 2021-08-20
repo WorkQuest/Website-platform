@@ -9,12 +9,12 @@
       >
         <div class="content__field">
           <label
-            for="saving__input"
+            for="deposit__input"
             class="content__label"
           >{{ $t("modals.lockedSavings") }}
           </label>
           <base-field
-            id="saving__input"
+            id="deposit__input"
             v-model="saving"
             :placeholder="'3 500'"
             class="content__input"
@@ -41,7 +41,7 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            @click="hide()"
+            @click="hide"
           >
             {{ $t('meta.cancel') }}
           </base-btn>

@@ -12,7 +12,6 @@
             {{ $t('modals.priceOfAClick') }}
           </div>
           <base-field
-            id="priceOfAClick"
             v-model="priceOfAClick"
             :placeholder="'0 WUSD'"
             class="field__input"
@@ -24,12 +23,11 @@
             {{ $t('modals.city') }}
           </div>
           <base-field
-            id="city"
             v-model="city"
             :placeholder="'Moscow'"
             class="field__input"
             mode="white"
-            rules="required|alpha"
+            rules="required|alpha_spaces"
             :name="$t('modals.cityField')"
           />
           <div class="field__subtitle">
@@ -65,7 +63,7 @@
           <base-btn
             class="buttons__action"
             :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(hide)"
+            @click="handleSubmit(showTransactionSendModal)"
           >
             {{ $t('meta.ok') }}
           </base-btn>
@@ -128,7 +126,6 @@ export default {
   &__content {
     padding: 20px 28px 30px;
   }
-
 }
 .content{
   &__container {

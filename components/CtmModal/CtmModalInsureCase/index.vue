@@ -8,7 +8,7 @@
         <img
           class="user__avatar"
           src="~/assets/img/temp/avatar-small.jpg"
-          alt="userAvatar"
+          alt="user avatar"
         >
         <span class="user__name">
           {{ $t('insuring.userNameCase') }}
@@ -33,7 +33,7 @@
         <base-btn
           class="buttons__button"
           mode="outline"
-          @click="hide()"
+          @click="hide"
         >
           {{ $t('meta.cancel') }}
         </base-btn>
@@ -47,7 +47,7 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalApplyForAPension',
+  name: 'ModalInsureCase',
   data() {
     return {
       pics: [
@@ -65,8 +65,6 @@ export default {
   methods: {
     hide() {
       this.CloseModal();
-    },
-    showPensionIsRegisteredModal() {
     },
   },
 };
@@ -89,7 +87,7 @@ export default {
   &__user{
     display: flex;
     align-items: center;
-    background-color: #F7F8FA;
+    background-color: $black0;
     border-radius: 5px;
     height: 42px;
     width: 100%;
@@ -100,7 +98,7 @@ export default {
     font-size: 16px;
     font-weight: 400;
     line-height: 21px;
-    color: #4C5767;
+    color: $black500;
   }
   &__pictures{
     display: grid;
@@ -118,9 +116,9 @@ export default {
     margin: 0 5px 0 15px;
   }
   &__text{
-    font-weight: 400;
+    weight: 400;
     font-size: 16px;
-    color: #7C838D;
+    color: $black500;
 
   }
   &__avatar{

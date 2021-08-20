@@ -1,96 +1,109 @@
 <template>
   <ctm-modal-box
-    class="addLiquidity"
+    class="deposit"
     :title="$t('crediting.deposit')"
   >
-    <div class="ctm-modal__content">
-      <div class="ctm-modal__grid-cont">
-        <div>
-          <div class="ctm-modal__checkpoints">
-            <label
-              for="checkpoints-cont"
-              class="ctm-modal__label"
-            >
-              {{ $t('modals.chooseTheCurrency') }}
-            </label>
+    <div class="deposit__content content">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
+        <div class="content__grid">
+          <div class="content__body">
             <div
-              id="checkpoints-cont"
-              class="checkpoints-cont"
+              v-if="userRole==='employer'"
+              class="content__checkpoints checkpoints"
             >
-              <div
-                v-for="(item, i) in checkpoints"
-                :key="i"
-                class="checkpoint-cont"
+              <label
+                for="checkpoints__main"
+                class="checkpoints__label"
               >
-                <input
-                  :id="item.name"
-                  v-model="selCurrencyID"
-                  type="radio"
-                  class="checkpoint"
-                  :value="item.id"
+                {{ $t('modals.chooseTheCurrency') }}
+              </label>
+              <div
+                id="checkpoints__main"
+                class="checkpoints__main"
+              >
+                <div
+                  v-for="(item, i) in checkpoints"
+                  :key="i"
+                  class="checkpoints__array"
                 >
-                <label
-                  class=""
-                  :for="item.name"
-                >
-                  {{ item.name }}
-                </label>
+                  <input
+                    :id="item.name"
+                    v-model="selCurrencyID"
+                    type="radio"
+                    class="checkpoints__item"
+                    :value="item.id"
+                  >
+                  <label
+                    class="checkpoints__name"
+                    :for="item.name"
+                  >
+                    {{ item.name }}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="content__field">
+              <base-field
+                v-model="quantity"
+                class="content__input"
+                :label="$t('modals.howMuchEthWouldYouLikeToLock')"
+                :tip="$t('modals.smallTemp')"
+                :placeholder="'1000 ETH'"
+                rules="required|numeric"
+                :name="$t('modals.quantityField')"
+              />
+            </div>
+            <div class="content__field">
+              <base-field
+                id="amountOfPercents_input"
+                v-model="generate"
+                class="content__input"
+                :label="$t('modals.howMuchWusdWouldYouLikeToGenerate')"
+                :tip="$t('modals.smallTemp')"
+                :placeholder="'10 ETH'"
+                rules="required|numeric"
+                :name="$t('modals.generateField')"
+              />
+            </div>
+            <div class="content__field">
+              <div class="content__text">
+                {{ $t('modals.creditingDepositText') }}
               </div>
             </div>
           </div>
-          <div class="ctm-modal__content-field">
-            <base-field
-              :is-hide-error="true"
-              class="input"
-              :placeholder="'0 ETH'"
-              :label="$t('modals.howMuchEthWouldYouLikeToLock')"
-              :tip="$t('modals.smallTemp')"
-            />
-          </div>
-          <div class="ctm-modal__content-field">
-            <base-field
-              :is-hide-error="true"
-              class="input"
-              :placeholder="'0 WUSD'"
-              :label="$t('modals.howMuchWusdWouldYouLikeToGenerate')"
-              :tip="$t('modals.smallTemp')"
-            />
-            <div class="ctm-modal__title-head" />
-            <div class="ctm-modal__subtitle">
-              {{ $t('modals.tipAbout') }}
+          <div class="content__zone zone">
+            <div
+              v-for="(item, i) in abouts"
+              :key="i"
+            >
+              <div class="zone__title">
+                {{ item.title }}
+              </div>
+              <div class="zone__subtitle">
+                {{ item.subtitle }}
+              </div>
             </div>
           </div>
         </div>
-        <div class="ctm-modal__gray-zone">
-          <div
-            v-for="(item, i) in abouts"
-            :key="i"
-          >
-            <div class="ctm-modal__title-head">
-              {{ item.title }}
-            </div>
-            <div class="ctm-modal__subtitle_small">
-              {{ item.subtitle }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="ctm-modal__content-btns">
-        <div class="btn-group">
+        <div class="content__buttons buttons">
           <base-btn
-            class="btn"
-            @click="hide()"
+            class="buttons__button"
+            mode="outline"
+            @click="hide"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            class="btn_bl"
-            @click="openConfirmDetailsModal()"
+            class="buttons__button"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(openConfirmDetailsModal)"
           >
             {{ $t('meta.submit') }}
           </base-btn>
         </div>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -100,10 +113,12 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalCreditingDeposit',
+  name: 'ModalTakeCreditingDeposit',
   data() {
     return {
       selCurrencyID: 1,
+      quantity: '',
+      generate: '',
       checkpoints: [
         {
           name: this.$t('modals.bnb'),
@@ -149,6 +164,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      userRole: 'user/getUserRole',
     }),
   },
   methods: {
@@ -159,156 +175,106 @@ export default {
       this.ShowModal({
         key: modals.confirmDetails,
         needChangeModal: this.options.needChangeModal || undefined,
+
       });
     },
   },
+
 };
 </script>
 
 <style lang="scss" scoped>
 
-.ctm-modal {
-  @include modalKit;
-
-  .addLiquidity {
-    max-width: 945px !important;
-    max-height: 80vh;
+.deposit {
+  max-width: 943px !important;
+  height: auto !important;
+  padding: 0!important;
+  &__content{
+    padding: 20px 28px 30px 28px;
   }
-  &__content-field,
-  &__checkpoints{
-    margin: 15px 0 0 0;
+}
+.buttons{
+  display: grid;
+  grid-template-columns: repeat(2, calc(50% - 10px));
+  grid-gap: 20px;
+  gap: 20px;
+  margin-top: 25px;
+}
+.content{
+  &__body{
   }
-
+  &__field{
+    margin-top: 3px;
+    font-weight: 500;
+  }
+  &__text {
+    color: $black500;
+    font-size: 14px;
+    margin: 3px 0 15px 0;
+    line-height: 130%;
+    font-weight: 400;
+  }
+  &__grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
   &__checkpoints {
-    .ctm-modal__label {
+    margin-bottom: 25px;
+    &_label {
       margin-bottom: 10px;
     }
   }
-
-  .checkpoints-cont {
-    display: grid;
-    grid-template-rows: repeat(3, 1fr);
-    text-align: left;
-    justify-content: flex-start;
-    gap: 15px;
-
-    .checkpoint-cont {
-      display: grid;
-      grid-template-columns: repeat(2, auto);
-      gap: 10px;
-
-      >label {
-        margin: unset;
-      }
-
-      .checkpoint {
-        font-size: 16px;
-        font-weight: 400;
-        border-radius: 50%;
-        width: 25px;
-        height: 25px;
-        border: 1px solid #0083C7;
-        cursor: pointer;
-      }
-    }
-  }
-
-  &__gray-zone {
+  &__zone {
     background-color: #F7F8FA;
     border-radius: 5px;
     margin-top: 15px;
     padding: 0 20px 20px 20px;
     height: fit-content;
   }
-
-  &__grid-cont {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+}
+.checkpoints{
+  &__label {
+    margin-bottom: 15px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 130%;
   }
-
-  &__content-btns {
-    .btn-group{
-      display: grid;
-      grid-template-columns: repeat(2, calc(50% - 10px));
-      grid-gap: 20px;
-      gap: 20px;
-      margin-top: 25px;
-
-      .btn {
-        box-sizing: border-box;
-        font-weight: 400;
-        font-size: 16px;
-        color: #0083C7;
-        border: 1px solid #0083C71A;
-        border-radius: 6px;
-        transition: .3s;
-        background-color: #fff;
-
-        &:hover {
-          background-color: #0083C71A;
-          border: 0px;
-        }
-
-        &_bl {
-          @extend .btn;
-          background-color: #0083C7;
-          border: unset;
-          color: #fff;
-
-          &:hover {
-            background-color: #103d7c;
-          }
-        }
-      }
+  &__main{
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    text-align: left;
+    justify-content: flex-start;
+    gap: 13px;
+  }
+  &__array {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 10px;
+    > label {
+      margin: unset;
     }
   }
-
-  &__label {
-    margin-bottom: 5px;
+  &__item{
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    border: 1px solid #0083C7;
+    cursor: pointer;
   }
-
-  &__content {
-    padding-top: 0 !important;
-  }
-
-  &__title-head {
+}
+.zone{
+  &__title {
     font-size: 16px;
     font-weight: 400;
     margin-top: 20px;
   }
-
   &__subtitle {
-    color: #7C838D;
-    font-weight: 400;
-    font-size: 16px;
-
-    &_small {
       color: #7C838D;
       font-weight: 500;
       font-size: 14px;
-    }
   }
-
-  @include _575 {
-    .ctm-modal {
-      &__grid-cont {
-        grid-template-rows: repeat(2, auto);
-        grid-template-columns: unset;
-        overflow: auto;
-        height: calc(80vh - 170px);
-      }
-      &__gray-zone {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin: 0;
-      }
-    }
-  }
-}
-
-.input {
-    margin-top: 10px;
 }
 </style>

@@ -19,7 +19,6 @@
             :placeholder="'1234 1234 1234 1234'"
             rules="required|numberOfCard"
             :name="$t('modals.creditCardNumber')"
-            mode="smallError"
           />
         </div>
         <div class="content__input input">
@@ -31,8 +30,7 @@
             class="input__field"
             :placeholder="'AAAA AAAAAAAAA'"
             rules="required|alpha_spaces"
-            :name="$t('modals.cardHolder')"
-            mode="smallError"
+            :name="$t('modals.cardHolderField')"
           />
         </div>
         <div class="content__grid grid">
@@ -46,20 +44,18 @@
               :placeholder="'02/24'"
               rules="required"
               :name="$t('modals.dateName')"
-              mode="smallError"
             />
           </div>
           <div class="grid__field">
-            <span class="grid__title">
+            <div class="grid__title">
               {{ $t('modals.cvv') }}
-            </span>
+            </div>
             <base-field
               v-model="cvvInput"
               class="grid__field"
               placeholder="242"
               rules="required|cvv"
               :name="$t('modals.cvv')"
-              mode="smallError"
             />
           </div>
         </div>
@@ -137,7 +133,7 @@ export default {
   max-width: 500px !important;
   padding: 0!important;
   &__content{
-    padding: 7px 28px 30px 28px!important;
+    padding: 20px 28px 30px 28px!important;
   }
 }
 

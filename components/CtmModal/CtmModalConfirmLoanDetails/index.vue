@@ -8,6 +8,7 @@
         <div
           v-for="(item, i) in abouts"
           :key="i"
+          class="content__body"
         >
           <div class="content__title">
             {{ item.title }}
@@ -41,7 +42,7 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalConfirmDetails',
+  name: 'ModalConfirmLoanDetails',
   data() {
     return {
       abouts: [
@@ -99,7 +100,7 @@ export default {
   &__field {
     background-color: #F7F8FA;
     border-radius: 5px;
-    margin-top: 15px;
+    margin-top: 20px;
     padding: 20px;
     display: grid;
     gap: 20px;

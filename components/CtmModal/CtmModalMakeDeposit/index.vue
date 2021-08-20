@@ -13,7 +13,7 @@
           </div>
           <base-field
             v-model="amountInput"
-            :placeholder="'3500'"
+            :placeholder="'3 500'"
             class="content__input"
             rules="required|numeric"
             :name="$t('modals.depositAmountField')"
@@ -23,7 +23,7 @@
           <base-btn
             class="buttons__button"
             mode="outline"
-            @click="hide()"
+            @click="hide"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
@@ -45,7 +45,7 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalApplyForAPension',
+  name: 'ModalMakeDeposit',
   data() {
     return {
       amountInput: '',

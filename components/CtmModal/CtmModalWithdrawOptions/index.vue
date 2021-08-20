@@ -4,102 +4,107 @@
     :title="$t('modals.withdrawal')"
   >
     <div class="withdraw__content content">
-      <div
-        class="content__step"
+      <validation-observer
+        v-slot="{handleSubmit, invalid}"
       >
         <div
-          class="content__panel"
-          @click="showTakeWithdraw"
+          class="content__step"
         >
-          {{ $t('modals.walletAddress') }}
-        </div>
-        <div
-          class="content__panel_active"
-        >
-          {{ $t('wallet.bankCard') }}
-        </div>
-      </div>
-      <div class="content__grid grid">
-        <div class="grid__title">
-          {{ $t('modals.amount') }}
-        </div>
-        <div class="grid__body">
-          <base-field
-            v-model="amount"
-            :is-hide-error="true"
-            :placeholder="'0 WUSD'"
-            class="grid__input"
-          />
-          <div class="grid__equal">
-            =
+          <div
+            class="content__panel"
+            @click="showTakeWithdraw"
+          >
+            {{ $t('modals.walletAddress') }}
           </div>
-          <div class="grid__field">
+          <div
+            class="content__panel_active"
+          >
+            {{ $t('wallet.bankCard') }}
+          </div>
+        </div>
+        <div class="content__grid grid">
+          <div class="grid__title">
+            {{ $t('modals.amount') }}
+          </div>
+          <div class="grid__body">
             <base-field
-              v-model="dollars"
-              :is-hide-error="true"
+              v-model="amount"
+              :placeholder="'0 WUSD'"
+              class="grid__input"
+              rules="required|numeric"
+              :name="$t('modals.amountField')"
+            />
+            <div class="grid__equal">
+              =
+            </div>
+            <div class="grid__field">
+              <base-field
+                v-model="dollars"
+                mode="white"
+                :disabled="true"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="content__body body">
+          <div>
+            <div class="body__title">
+              {{ $t('modals.totalFee') }}
+            </div>
+            <base-field
+              v-model="fee"
               mode="white"
+              class="body__input"
               :disabled="true"
+              :is-hide-error="true"
             />
           </div>
         </div>
-      </div>
-      <div class="content__body body">
-        <div>
-          <div class="body__title">
-            {{ $t('modals.totalFee') }}
+        <div class="content__drop drop">
+          <div class="drop__title">
+            {{ $t('modals.chooseCard') }}
           </div>
-          <base-field
-            v-model="fee"
-            mode="white"
-            class="body__input"
-            :disabled="true"
-            :is-hide-error="true"
-          />
-        </div>
-      </div>
-      <div class="content__drop drop">
-        <div class="drop__title">
-          {{ $t('modals.chooseCard') }}
-        </div>
-        <base-dd
-          v-model="card"
-          class="drop__field"
-          :items="items"
-        >
-          <template v-slot:card>
-            <span class="icon-credit_card drop__card" />
-          </template>
-          <template
-            v-slot:buttonCard
+          <base-dd
+            v-model="card"
+            class="drop__field"
+            :items="items"
           >
-            <base-btn
-              mode="outline"
-              class="drop__button button"
-              @click="showAddingCard"
+            <template v-slot:card>
+              <span class="icon-credit_card drop__card" />
+            </template>
+            <template
+              v-slot:buttonCard
             >
-              <span class="icon-plus_circle_outline button__icon" />
-              <span class="button__text">
-                {{ $t('modals.addNewCard') }}
-              </span>
-            </base-btn>
-          </template>
-        </base-dd>
-      </div>
-      <div class="content__buttons buttons">
-        <base-btn
-          class="buttons__button"
-          mode="outline"
-          @click="hide"
-        >
-          {{ $t('meta.cancel') }}
-        </base-btn>
-        <base-btn
-          class="buttons__button"
-          @click="showTransactionSendModal"
-        >
-          {{ $t('meta.submit') }}
-        </base-btn>
-      </div>
+              <base-btn
+                mode="outline"
+                class="drop__button button"
+                @click="showAddingCard"
+              >
+                <span class="icon-plus_circle_outline button__icon" />
+                <span class="button__text">
+                  {{ $t('modals.addNewCard') }}
+                </span>
+              </base-btn>
+            </template>
+          </base-dd>
+        </div>
+        <div class="content__buttons buttons">
+          <base-btn
+            class="buttons__button"
+            mode="outline"
+            @click="hide"
+          >
+            {{ $t('meta.cancel') }}
+          </base-btn>
+          <base-btn
+            class="buttons__button"
+            :disabled="invalid"
+            @click="handleSubmit(showTransactionSendModal)"
+          >
+            {{ $t('meta.submit') }}
+          </base-btn>
+        </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -145,7 +150,7 @@ export default {
     showAddingCard() {
       this.ShowModal({
         key: modals.addingCard,
-        branch: 'widthdraw',
+        branch: 'withdraw',
       });
     },
   },
@@ -210,7 +215,6 @@ export default {
     grid-template-columns: 47% 6% 47%;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 15px;
   }
   &__title{
     @include text-simple;
@@ -219,7 +223,7 @@ export default {
     color: $black800;
   }
   &__equal {
-    margin: 12px 10px;
+    margin: 0 10px 36px 10px;
   }
 }
 .body{

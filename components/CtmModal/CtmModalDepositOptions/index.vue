@@ -4,112 +4,119 @@
     :title="$t('modals.depositTitle')"
   >
     <div class="deposit__content content">
-      <div
-        class="content__step"
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+        class="content__validator"
       >
         <div
-          class="content__panel"
-          @click="showGiveDeposit"
+          class="content__step"
         >
-          {{ $t('modals.walletAddress') }}
-        </div>
-        <div
-          class="content__panel_active"
-        >
-          {{ $t('wallet.bankCard') }}
-        </div>
-      </div>
-      <div class="content__drop drop">
-        <span class="drop__title">
-          {{ $t('modals.chooseCard') }}
-        </span>
-        <base-dd
-          v-model="card"
-          class="drop__field"
-          :items="items"
-        >
-          <template v-slot:card>
-            <span class="icon-credit_card drop__card" />
-          </template>
-          <template
-            v-slot:buttonCard
+          <div
+            class="content__panel"
+            @click="showGiveDeposit"
           >
-            <base-btn
-              mode="add"
-              class="drop__button button"
-              @click="showAddingCard"
-            >
-              <span class="icon-plus_circle_outline button__icon" />
-              <span class="button__text">
-                {{ $t('modals.addNewCard') }}
-              </span>
-            </base-btn>
-          </template>
-        </base-dd>
-      </div>
-      <div class="content__grid grid">
-        <span class="grid__title">
-          {{ $t('modals.amount') }}
-        </span>
-        <div class="grid__body">
-          <base-field
-            v-model="amount"
-            :is-hide-error="true"
-            :placeholder="'0 WUSD'"
-            class="grid__input"
-          />
-          <div class="grid__equal">
-            =
+            {{ $t('modals.walletAddress') }}
           </div>
-          <div class="grid__field">
+          <div
+            class="content__panel_active"
+          >
+            {{ $t('wallet.bankCard') }}
+          </div>
+        </div>
+        <div class="content__drop drop">
+          <div class="drop__title">
+            {{ $t('modals.chooseCard') }}
+          </div>
+          <base-dd
+            v-model="card"
+            class="drop__field"
+            :items="items"
+          >
+            <template v-slot:card>
+              <span class="icon-credit_card drop__card" />
+            </template>
+            <template
+              v-slot:buttonCard
+              class="drop__block"
+            >
+              <base-btn
+                mode="add"
+                class="drop__button button"
+                @click="showAddingCard"
+              >
+                <span class="icon-plus_circle_outline button__icon" />
+                <span class="button__text">
+                  {{ $t('modals.addNewCard') }}
+                </span>
+              </base-btn>
+            </template>
+          </base-dd>
+        </div>
+        <div class="content__grid grid">
+          <div class="grid__title">
+            {{ $t('modals.amount') }}
+          </div>
+          <div class="grid__body">
             <base-field
-              v-model="dollars"
-              :is-hide-error="true"
+              v-model="amount"
+              :placeholder="'0 WUSD'"
+              class="grid__input"
+              :name="$t('modals.amountField')"
+              rules="required|numeric"
+            />
+            <div class="grid__equal">
+              =
+            </div>
+            <div class="grid__field">
+              <base-field
+                v-model="dollars"
+                mode="white"
+                :disabled="true"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="content__body body">
+          <div>
+            <div class="body__title">
+              {{ $t('modals.totalFee') }}
+            </div>
+            <base-field
+              v-model="fee"
               mode="white"
+              class="body__input"
+              :disabled="true"
+            />
+          </div>
+          <div class="body__container">
+            <div class="body__title">
+              {{ $t('modals.processing') }}
+            </div>
+            <base-field
+              v-model="time"
+              mode="white"
+              class="body__input"
               :disabled="true"
             />
           </div>
         </div>
-      </div>
-      <div class="content__body body">
-        <div>
-          <span class="body__title">
-            {{ $t('modals.totalFee') }}
-          </span>
-          <base-field
-            v-model="fee"
-            mode="white"
-            class="body__input"
-            :disabled="true"
-          />
+        <div class="content__buttons buttons">
+          <base-btn
+            class="buttons__button"
+            mode="outline"
+            @click="hide"
+          >
+            {{ $t('meta.cancel') }}
+          </base-btn>
+          <base-btn
+            class="buttons__button"
+            :disabled="invalid"
+            @click="handleSubmit(showTransactionSendModal)"
+          >
+            {{ $t('meta.buyWUSD') }}
+          </base-btn>
         </div>
-        <div>
-          <span class="body__title">
-            {{ $t('modals.processing') }}
-          </span>
-          <base-field
-            v-model="time"
-            mode="white"
-            class="body__input"
-            :disabled="true"
-          />
-        </div>
-      </div>
-      <div class="content__buttons buttons">
-        <base-btn
-          class="buttons__button"
-          mode="outline"
-          @click="hide"
-        >
-          {{ $t('meta.cancel') }}
-        </base-btn>
-        <base-btn
-          class="buttons__button"
-          @click="showTransactionSendModal"
-        >
-          {{ $t('meta.buyWUSD') }}
-        </base-btn>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -203,6 +210,7 @@ export default {
     font-weight: 400;
     font-size: 16px;
     color: $black800;
+    margin-bottom: 4px;
   }
   &__card:before{
     font-size: 25px;
@@ -226,13 +234,16 @@ export default {
     color: $black800;
   }
   &__equal {
-    margin: 12px 10px;
+    margin: 0px 10px 36px 10px;
   }
 }
 .body{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
+  &__title{
+    margin-bottom: 4px;
+  }
 }
 .buttons {
   display: grid;

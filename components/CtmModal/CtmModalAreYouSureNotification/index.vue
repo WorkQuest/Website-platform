@@ -8,7 +8,7 @@
         <div class="header__warning icon-warning_outline" />
         <div
           class="header__close icon-close_big"
-          @click="hide()"
+          @click="hide"
         />
       </div>
       <div class="content__subtitle">
@@ -82,6 +82,7 @@ export default {
   &__desc{
     font-size: 16px;
     line-height: 130%;
+    color: $black600;
   }
   &__subtitle{
     font-weight: 500;

@@ -4,30 +4,38 @@
     :title="$t('securityCheck.title')"
   >
     <div class="check__content">
-      <div class="content__msg">
-        {{ errorMsg ? $t('errors.incorrectPass') : null }}
-      </div>
-      <div class="content__field">
-        <div class="content__title">
-          {{ $t('securityCheck.confCode') }}
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+        class="content__validator"
+      >
+        <div class="content__msg">
+          {{ errorMsg ? $t('errors.incorrectPass') : null }}
         </div>
-        <base-field
-          v-model="securityCode"
-          :is-hide-error="true"
-          :placeholder="$t('securityCheck.placeholder')"
-        />
-        <div class="content__input">
-          {{ $t('securityCheck.confCodeDesc') }}
+        <div class="content__field">
+          <div class="content__title">
+            {{ $t('securityCheck.confCode') }}
+          </div>
+          <base-field
+            v-model="securityCode"
+            :placeholder="$t('securityCheck.placeholder')"
+            :name="$t('modals.securityCheckField')"
+            rules="required|numeric"
+            class="content__input"
+          />
+          <div class="content__body">
+            {{ $t('securityCheck.confCodeDesc') }}
+          </div>
         </div>
-      </div>
-      <div class="content__buttons buttons">
-        <base-btn
-          class="buttons__button"
-          @click="hide()"
-        >
-          {{ $t('meta.send') }}
-        </base-btn>
-      </div>
+        <div class="content__buttons buttons">
+          <base-btn
+            class="buttons__button"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(hide)"
+          >
+            {{ $t('meta.send') }}
+          </base-btn>
+        </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -63,7 +71,6 @@ export default {
     justify-items: center;
     padding: 0 28px 30px 28px!important;
   }
-
 }
 .content{
   &__msg{
@@ -80,10 +87,9 @@ export default {
   &__buttons{
     margin-top: 25px;
   }
-  &__input{
+  &__body{
     font-size: 14px;
-    margin-top: 10px;
-    color: #8D96A2;
+    color: $black400;
   }
 }
 

@@ -216,7 +216,7 @@ export default {
     &_light{
       font-size: 16px;
       line-height: 130%;
-      color: #D8DFE3;
+      color: $grey100;
     }
   }
   &__qr{
@@ -256,6 +256,9 @@ export default {
   &__content{
     padding: 20px 30px 28px 30px;
   }
+}
+.code__share:hover .code__chain:before{
+  color: $white!important;
 }
 
 </style>

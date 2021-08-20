@@ -6,7 +6,8 @@
     <div class="status__content">
       <img
         :src="options.img"
-        alt="RequestSend"
+        alt="Status"
+        class="content__picture"
       >
       <div class="status__title">
         {{ options.title }}
@@ -20,8 +21,18 @@
         class="status__action"
         @click="hide()"
       >
-        <span v-if="options.button">{{ options.button }}</span>
-        <span v-else>{{ $t('meta.ok') }}</span>
+        <span
+          v-if="options.button"
+          class="status__text"
+        >
+          {{ options.button }}
+        </span>
+        <span
+          v-else
+          class="status__text"
+        >
+          {{ $t('meta.ok') }}
+        </span>
       </base-btn>
     </div>
   </ctm-modal-box>
@@ -76,6 +87,7 @@ export default {
     font-size: 16px;
     line-height: 130%;
     text-align: center;
+    color: $black600;
   }
 }
 </style>

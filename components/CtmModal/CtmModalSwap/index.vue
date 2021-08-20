@@ -4,59 +4,66 @@
     :title="$t('modals.swapTitle')"
   >
     <div class="swap__content content">
-      <div class="content__grid grid">
-        <div class="grid__body">
-          <div class="grid__field">
-            <div class="grid__title">
-              {{ $t('modals.coin') }}
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
+        <div class="content__grid grid">
+          <div class="grid__body">
+            <div class="grid__field">
+              <div class="grid__title">
+                {{ $t('modals.coin') }}
+              </div>
+              <base-dd
+                v-model="token"
+                class="grid__drop"
+                :items="tokens"
+              />
             </div>
-            <base-dd
-              v-model="token"
-              class="grid__drop"
-              :items="tokens"
-            />
+            <div class="grid__field">
+              <div class="grid__title">
+                {{ $t('modals.amount') }}
+              </div>
+              <base-field
+                v-model="amount"
+                :placeholder="'0,05'"
+                class="grid__input"
+                rules="required"
+                :name="$t('modals.amountField')"
+              />
+            </div>
           </div>
-          <div class="grid__field">
-            <div class="grid__title">
-              {{ $t('modals.amount') }}
+        </div>
+        <div class="content__body body">
+          <div>
+            <div class="body__title">
+              {{ $t('modals.recepientBinance') }}
             </div>
             <base-field
-              v-model="amount"
-              :is-hide-error="true"
-              :placeholder="'0,05'"
-              class="grid__input"
+              v-model="address"
+              class="body__input"
+              placeholder="Enter binance address"
+              rules="required|alpha_spaces"
+              :name="$t('modals.recepientAddressField')"
             />
           </div>
         </div>
-      </div>
-      <div class="content__body body">
-        <div>
-          <div class="body__title">
-            {{ $t('modals.recepientBinance') }}
-          </div>
-          <base-field
-            v-model="address"
-            class="body__input"
-            placeholder="Enter binance address"
-            :is-hide-error="true"
-          />
+        <div class="content__buttons buttons">
+          <base-btn
+            class="buttons__button"
+            mode="outline"
+            @click="hide"
+          >
+            {{ $t('meta.cancel') }}
+          </base-btn>
+          <base-btn
+            class="buttons__button"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(showSwapInfoModal)"
+          >
+            {{ $t('modals.createSwap') }}
+          </base-btn>
         </div>
-      </div>
-      <div class="content__buttons buttons">
-        <base-btn
-          class="buttons__button"
-          mode="outline"
-          @click="hide"
-        >
-          {{ $t('meta.cancel') }}
-        </base-btn>
-        <base-btn
-          class="buttons__button"
-          @click="showSwapInfoModal"
-        >
-          {{ $t('modals.createSwap') }}
-        </base-btn>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -136,6 +143,7 @@ export default {
   &__drop{
     border: 1px solid #F7F8FA;
     border-radius: 6px;
+    margin-bottom: 23px;
   }
 }
 

@@ -6,6 +6,7 @@
     <div class="percent__content content">
       <validation-observer
         v-slot="{handleSubmit, validated, passed, invalid}"
+        class="content__validator"
       >
         <div class="content__text">
           {{ $t('modals.changePercentText') }}
@@ -33,7 +34,7 @@
           <base-btn
             class="buttons__button"
             :disabled="!validated || !passed || invalid"
-            @click="showPercentIsChanged"
+            @click="handleSubmit(showPercentIsChanged)"
           >
             {{ $t('meta.submit') }}
           </base-btn>
@@ -91,7 +92,7 @@ export default {
     font-size: 16px;
     font-weight: 400;
     line-height: 21px;
-    color: #4C5767;
+    color: $black600
   }
   &__title{
   margin-bottom: 4px;

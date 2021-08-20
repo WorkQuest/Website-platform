@@ -16,8 +16,7 @@
             :placeholder="$tc('modals.percentsCount', 13)"
             class="content__input"
             :name="$t('modals.depositPercent')"
-            rules="required"
-            mode="smallError"
+            rules="required|numeric"
           />
         </div>
         <div class="content__amount">
@@ -28,9 +27,8 @@
             v-model="firstDepositAmount"
             :placeholder="$tc('pension.wusdCount', 130)"
             class="content__input"
-            :name="$t('modals.firstDepositAmount')"
-            rules="required"
-            mode="smallError"
+            :name="$t('modals.firstDepositAmountField')"
+            rules="required|numeric"
           />
           <div class="content__text">
             {{ $t('modals.firstDepositText') }}
@@ -47,7 +45,7 @@
           <base-btn
             class="buttons__button"
             :disabled="!validated || !passed || invalid"
-            @click="showPensionIsRegisteredModal"
+            @click="handleSubmit(showPensionIsRegisteredModal)"
           >
             {{ $t('meta.submit') }}
           </base-btn>
@@ -101,7 +99,7 @@ export default {
 }
 .content{
   &__text {
-    color: #7C838D;
+    color: $black500;
     font-weight: 400;
     font-size: 14px;
   }

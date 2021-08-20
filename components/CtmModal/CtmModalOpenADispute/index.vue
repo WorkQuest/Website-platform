@@ -8,7 +8,6 @@
         {{ $t('modals.reason') }}
       </div>
       <base-dd
-        id="reason-dd"
         v-model="drop"
         type="gray"
         :items="items"
@@ -17,6 +16,7 @@
         <template
           v-if="drop===-1"
           v-slot:choose
+          class="content__placeholder"
         >
           <span class="content__choose">
             {{ $t('modals.choose') }}
@@ -26,14 +26,14 @@
       <div class="content__buttons buttons">
         <base-btn
           class="buttons__button"
-          @click="showRequestSendModal() "
+          @click="showRequestSendModal"
         >
           {{ $t('meta.send') }}
         </base-btn>
         <base-btn
           :mode="'outline'"
           class="buttons__button"
-          @click="hide()"
+          @click="hide"
         >
           {{ $t('meta.cancel') }}
         </base-btn>

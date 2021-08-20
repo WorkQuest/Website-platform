@@ -63,14 +63,14 @@
         <base-btn
           v-if="step === 1"
           class="buttons__button"
-          @click="nextStep()"
+          @click="nextStep"
         >
           {{ $t('meta.next') }}
         </base-btn>
         <base-btn
           v-if="step === 2"
           class="buttons__button"
-          @click="success()"
+          @click="success"
         >
           {{ $t('meta.confirm') }}
         </base-btn>

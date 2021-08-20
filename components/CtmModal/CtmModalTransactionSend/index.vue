@@ -6,7 +6,7 @@
     <div class="transaction__content">
       <img
         src="~assets/img/ui/transactionSend.svg"
-        alt="RequestSend"
+        alt="Transaction send"
         class="transaction__image"
       >
       <div class="transaction__title">

@@ -51,7 +51,7 @@
             :disabled="!validated || !passed || invalid"
             @click="handleSubmit(hide)"
           >
-            {{ $t('modals.add') }}
+            {{ $t('meta.submit') }}
           </base-btn>
         </div>
       </ValidationObserver>
@@ -115,7 +115,7 @@ export default {
     grid-gap: 10px;
   }
   &__buttons{
-    margin-top: 10px;
+    margin-top: 30px;
   }
   &__title{
     color: $black600;
@@ -126,6 +126,12 @@ export default {
 .grid{
   &__title{
     margin:20px 0 4px;
+  }
+  &__input{
+    height: 100px;
+  }
+  &__field{
+    height: 100px;
   }
 }
 

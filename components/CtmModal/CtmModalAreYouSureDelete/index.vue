@@ -6,7 +6,7 @@
     <div class="sure__content content">
       <img
         src="~assets/img/ui/sureDelete.svg"
-        alt="AreYouSure"
+        alt="Are you sure to delete?"
         class="content__picture"
       >
       <div class="content__title">
@@ -16,15 +16,13 @@
         {{ $t('modals.sureDeleteText') }}
       </div>
       <div class="content__action action">
-        <div>
-          <base-btn
-            class="action__button"
-            mode="outline"
-            @click="hide()"
-          >
-            {{ $t('meta.cancel') }}
-          </base-btn>
-        </div>
+        <base-btn
+          class="action__button"
+          mode="outline"
+          @click="hide()"
+        >
+          {{ $t('meta.cancel') }}
+        </base-btn>
         <base-btn
           class="action__button"
           @click="showErrorModal"
@@ -59,7 +57,7 @@ export default {
         key: modals.status,
         img: require('~/assets/img/ui/deleteError.svg'),
         title: this.$t('modals.error'),
-        subtitle: this.$t('modals.errorDeleteText'),
+        subtitle: this.$t('modals.youCan’tDeleteActiveQuest'),
         button: this.$t('modals.close'),
       });
     },
