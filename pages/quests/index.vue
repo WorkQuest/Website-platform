@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="quests__tools tools">
-          <div class="tools__left">
+          <div class="tools__panel">
             <base-filter-dd class="tools__item" />
             <base-dd
               v-model="selectedQuest"
@@ -58,8 +58,6 @@
                 />
               </template>
             </base-btn>
-          </div>
-          <div class="tools__right">
             <base-btn
               class="tools__item"
               :mode="'light'"
@@ -654,9 +652,9 @@ export default {
   &__item {
     justify-content: space-around;
   }
-  &__left {
+  &__panel {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     grid-gap: 10px;
     margin-left: 10px;
     span::before {
@@ -696,6 +694,12 @@ export default {
   }
 }
 @include _991 {
+  .tools {
+    justify-content: center;
+    &__panel {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
   .quests {
     .limit__container {
       display: grid;
@@ -740,19 +744,8 @@ export default {
     }
   }
   .tools {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    justify-content: initial;
-    &__left {
-      grid-template-columns: repeat(2, 1fr);
-      grid-column: 1/3;
-      grid-row: 2/3;
-    }
-    &__right {
-      grid-template-columns: repeat(2, 1fr);
-      grid-column: 1/2;
-      grid-row: 2/3;
+    &__panel {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
   .dd {
@@ -784,6 +777,11 @@ export default {
 }
 
 @include _480 {
+  .tools {
+    &__panel {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
   .quests {
     &__top {
       min-height: 125px;
