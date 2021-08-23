@@ -65,7 +65,8 @@
                 @input="switchSkill($event, key)"
               />
               <base-btn
-                mode="delete"
+                class="btn__delete"
+                mode="cross"
                 @click="removeSpecialization(key)"
               >
                 <span class="icon-off_outline_close" />
@@ -223,7 +224,7 @@ export default {
         2: [],
         3: [],
       },
-      priorityIndex: 0,
+      priorityIndex: 1,
       categoryIndex: 0,
       runtimeIndex: 0,
       periodIndex: 0,
@@ -339,19 +340,15 @@ export default {
         console.log(e);
       }
     },
-    setAd() {
-      this.adMode1 = !this.adMode1;
-      this.adMode2 = !this.adMode2;
-    },
     showQuestCreatedModal() {
       const createQuestData = {
         priority: this.priorityIndex,
-        category: this.categories[this.categoryIndex],
+        category: '1',
         title: this.questTitle,
         description: this.textarea,
         price: this.price,
         medias: [],
-        adType: this.adMode1 ? 1 : 0,
+        adType: 0,
         location: {
           longitude: this.coordinates.lng,
           latitude: this.coordinates.lat,
@@ -365,7 +362,6 @@ export default {
             img: require('~/assets/img/ui/questAgreed.svg'),
             title: this.$t('modals.yourSkillsHaveBeenAdded'),
             subtitle: this.$t('modals.youCanUpdateThisInYourProfile'),
-            path: '/settings',
           });
         }
       } catch (e) {
@@ -395,6 +391,7 @@ export default {
     content: "\e949";
     color: $red;
     font-size: 20px;
+    cursor: pointer;
   }
   &-check_big:before {
     content: "\ea02";
@@ -403,7 +400,7 @@ export default {
   }
   &-off_outline_close::before {
     content: "\ea2a";
-    color: $white;
+    color: $red;
     font-size: 20px;
   }
   &-map::before {
@@ -503,6 +500,11 @@ export default {
 
 .btn {
   padding: 0;
+  &__delete {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+  }
   &__create {
     width: 220px;
   }

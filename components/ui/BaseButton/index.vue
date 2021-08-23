@@ -72,6 +72,7 @@ export default {
         { 'base-btn_messages': mode === 'goToMessages' },
         { 'base-btn_show-messages': mode === 'showYourMessage' },
         { 'base-btn_delete': mode === 'delete' },
+        { 'base-btn_cross': mode === 'cross' },
         { 'base-btn_approve': mode === 'approve' },
         { 'base-btn_back': mode === 'back' },
         { 'base-btn_grey': mode === 'grey' },
@@ -160,6 +161,13 @@ export default {
       background-color: $green !important;
       color: $white !important;
       box-shadow: 0 0 5px rgba(0,0,0,0.5) !important;
+    }
+  }
+  &_cross {
+    background: transparent !important;
+    color: $red !important;
+    &:hover {
+      color: #cc0000 !important;
     }
   }
   &_delete {
