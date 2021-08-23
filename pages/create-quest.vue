@@ -510,7 +510,7 @@ export default {
   }
   &__spec {
     width: 100%;
-    padding: 6px 5px;
+    padding: 6px 4px 6px 12px;
   }
   &__add {
     width: 100%;
