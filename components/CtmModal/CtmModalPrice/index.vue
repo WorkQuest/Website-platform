@@ -1,4 +1,4 @@
-<t<template>
+<template>
   <ctm-modal-box
     class="price"
     :title="$t('modals.priceTitle')"

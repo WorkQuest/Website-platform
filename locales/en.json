@@ -243,7 +243,13 @@
   "quests": {
     "quests": "Quests",
     "urgent": "Urgent",
+    "specQuests": "Specialized quests",
+    "permanentJob": "Permanent job",
     "typeOfJob": "Type of job",
+    "partTime": "Part-time",
+    "fixedTerm": "Fixed term",
+    "contract": "Contract",
+    "remoteWork": "Remote work",
     "distantWork": {
       "title": "Distant work",
       "distantWork": "Distant work",

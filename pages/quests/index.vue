@@ -149,14 +149,22 @@ export default {
       search: '',
       quests: [
         this.$t('quests.quests'),
+        this.$t('quests.specQuests'),
+        this.$t('quests.permanentJob'),
       ],
       selectedQuest: '',
       urgent: [
-        this.$t('quests.urgent'),
+        this.$t('priority.urgent'),
+        this.$t('priority.normal'),
+        this.$t('priority.low'),
       ],
       selectedUrgent: '',
       typeOfJob: [
-        this.$t('quests.priority.all'),
+        this.$t('quests.fullTime'),
+        this.$t('quests.partTime'),
+        this.$t('quests.fixedTerm'),
+        this.$t('quests.contract'),
+        this.$t('quests.remoteWork'),
       ],
       selectedTypeOfJob: '',
       distantWork: [
