@@ -57,5 +57,6 @@ export default {
   disable2FA: 'disable2FA',
   questFilterFull: 'questFilterFull',
   showImage: 'showImage',
+  priceSearch: 'priceSearch',
   areYouSureDeleteQuest: 'areYouSureDeleteQuest',
 };

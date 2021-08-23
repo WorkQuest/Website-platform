@@ -68,6 +68,7 @@
       <CtmModalDisable2FA v-if="modals.disable2FA === currentModalKey" />
       <CtmModalQuestFilterFull v-if="modals.questFilterFull === currentModalKey" />
       <CtmModalShowImage v-if="modals.showImage === currentModalKey" />
+      <CtmModalPriceSearch v-if="modals.priceSearch === currentModalKey" />
       <CtmModalAreYouSureDeleteQuest v-if="modals.areYouSureDeleteQuest === currentModalKey" />
     </div>
   </transition>
@@ -132,6 +133,7 @@ import CtmModalDisable2FA from './CtmModalDisable2FA';
 import CtmModalQuestFilterFull from './CtmModalQuestFilterFull';
 import CtmModalShowImage from './CtmModalShowImage';
 import CtmModalAreYouSureDeleteQuest from './CtmModalAreYouSureDeleteQuest';
+import CtmModalPriceSearch from './CtmModalPrice';
 
 export default {
   name: 'ModalBox',
@@ -193,6 +195,7 @@ export default {
     CtmModalDisable2FA,
     CtmModalShowImage,
     CtmModalAreYouSureDeleteQuest,
+    CtmModalPriceSearch,
   },
   data: () => ({
     modals,
