@@ -49,7 +49,6 @@
                 v-model="quantity"
                 class="content__input"
                 :label="$t('modals.howMuchEthWouldYouLikeToLock')"
-                :tip="$t('modals.smallTemp')"
                 :placeholder="'1000 ETH'"
                 rules="required|decimal"
                 :name="$t('modals.quantityField')"
@@ -61,7 +60,6 @@
                 v-model="generate"
                 class="content__input"
                 :label="$t('modals.howMuchWusdWouldYouLikeToGenerate')"
-                :tip="$t('modals.smallTemp')"
                 :placeholder="'10 ETH'"
                 rules="required|decimal"
                 :name="$t('modals.generateField')"
@@ -69,7 +67,7 @@
             </div>
             <div class="content__field">
               <div class="content__text">
-                {{ $t('modals.creditingDepositText') }}
+                {{ $t('modals.tipAbout') }}
               </div>
             </div>
           </div>

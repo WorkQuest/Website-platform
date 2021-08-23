@@ -45,7 +45,6 @@
               v-model="quantity"
               class="content__input"
               :label="$t('modals.howMuchETHWouldYouLikeToOpen')"
-              :tip="$t('modals.smallTemp')"
               :placeholder="'10 ETH'"
               rules="required|decimal"
               :name="$t('modals.quantityField')"
@@ -57,7 +56,6 @@
               v-model="percents"
               class="content__input"
               :label="$t('modals.howMuchPercentWouldYouLikeToSet')"
-              :tip="$t('modals.smallTemp')"
               :placeholder="'10 ETH'"
               rules="required|decimal"
               :name="$t('modals.percentField')"
@@ -67,14 +65,13 @@
             <base-field
               v-model="debt"
               :label="$t('modals.enterTermToReturnDebtBack')"
-              :tip="$t('modals.smallTemp')"
               class="content__input"
               :placeholder="'10 ETH'"
               rules="required|decimal"
               :name="$t('modals.amountField')"
             />
             <div class="content__text">
-              {{ $t('modals.loanText') }}
+              {{ $t('modals.tipAbout') }}
             </div>
           </div>
         </div>

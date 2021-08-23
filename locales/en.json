@@ -206,7 +206,7 @@
   },
   "forgot": {
     "title": "Forgot password?",
-    "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor"
+    "desc": "We will send you instructions on how to reset your password."
   },
   "restore": {
     "title": "Restore password",
@@ -1877,7 +1877,7 @@
     "deposit": "Deposit",
     "withdraw": "Withdraw",
     "depositIsOpenedText": "",
-    "winthdrawText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor"
+    "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
     "liquidityManning": "Liquidity manning",

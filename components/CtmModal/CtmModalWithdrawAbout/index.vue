@@ -5,7 +5,7 @@
   >
     <div class="withdraw__content content">
       <div class="content__desc">
-        {{ $t('saving.winthdrawText') }}
+        {{ $t('saving.withdrawText') }}
       </div>
       <div class="content__buttons buttons">
         <base-btn

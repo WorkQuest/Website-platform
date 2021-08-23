@@ -9,7 +9,7 @@
         class="content__validator"
       >
         <div class="content__text">
-          {{ $t('modals.changePercentText') }}
+          {{ $t('modals.changePercentDesc') }}
         </div>
         <div class="content__field">
           <div class="content__title">
