@@ -140,7 +140,6 @@ export default {
       filters: {
         categories: {
           0: {
-            id: 0,
             title: this.$t('filters.items.1.title'),
             visible: false,
             items: {
@@ -183,7 +182,6 @@ export default {
             },
           },
           1: {
-            id: 1,
             title: this.$t('filters.items.2.title'),
             visible: false,
             items: {
@@ -217,7 +215,6 @@ export default {
             },
           },
           2: {
-            id: 2,
             title: this.$t('filters.items.3.title'),
             visible: false,
             items: {
@@ -251,7 +248,6 @@ export default {
             },
           },
           3: {
-            id: 3,
             title: this.$t('filters.items.4.title'),
             visible: false,
             items: {
@@ -273,7 +269,6 @@ export default {
             },
           },
           4: {
-            id: 4,
             title: this.$t('filters.items.5.title'),
             visible: false,
             items: {
@@ -304,7 +299,6 @@ export default {
             },
           },
           5: {
-            id: 5,
             title: this.$t('filters.items.6.title'),
             visible: false,
             items: {
@@ -341,7 +335,6 @@ export default {
             },
           },
           6: {
-            id: 6,
             title: this.$t('filters.items.7.title'),
             visible: false,
             items: {
@@ -378,7 +371,6 @@ export default {
             },
           },
           7: {
-            id: 7,
             title: this.$t('filters.items.8.title'),
             visible: false,
             items: {
@@ -400,7 +392,6 @@ export default {
             },
           },
           8: {
-            id: 8,
             title: this.$t('filters.items.9.title'),
             visible: false,
             items: {
@@ -428,7 +419,6 @@ export default {
             },
           },
           9: {
-            id: 9,
             title: this.$t('filters.items.10.title'),
             visible: false,
             items: {
@@ -441,7 +431,6 @@ export default {
             },
           },
           10: {
-            id: 10,
             title: this.$t('filters.items.11.title'),
             visible: false,
             items: {
@@ -466,7 +455,6 @@ export default {
             },
           },
           11: {
-            id: 11,
             title: this.$t('filters.items.12.title'),
             visible: false,
             items: {
@@ -491,7 +479,6 @@ export default {
             },
           },
           12: {
-            id: 12,
             title: this.$t('filters.items.13.title'),
             visible: false,
             items: {
@@ -519,7 +506,6 @@ export default {
             },
           },
           13: {
-            id: 13,
             title: this.$t('filters.items.14.title'),
             visible: false,
             items: {
@@ -541,7 +527,6 @@ export default {
             },
           },
           14: {
-            id: 14,
             title: this.$t('filters.items.15.title'),
             visible: false,
             items: {
@@ -569,7 +554,6 @@ export default {
             },
           },
           15: {
-            id: 15,
             title: this.$t('filters.items.16.title'),
             visible: false,
             items: {
@@ -600,7 +584,6 @@ export default {
             },
           },
           16: {
-            id: 16,
             title: this.$t('filters.items.17.title'),
             visible: false,
             items: {
@@ -628,7 +611,6 @@ export default {
             },
           },
           17: {
-            id: 17,
             title: this.$t('filters.items.18.title'),
             visible: false,
             items: {
@@ -674,7 +656,6 @@ export default {
             },
           },
           18: {
-            id: 18,
             title: this.$t('filters.items.19.title'),
             visible: false,
             items: {
@@ -708,7 +689,6 @@ export default {
             },
           },
           19: {
-            id: 19,
             title: this.$t('filters.items.20.title'),
             visible: false,
             items: {
@@ -774,7 +754,6 @@ export default {
           20: {
             title: this.$t('filters.items.21.title'),
             visible: false,
-            id: 20,
             items: {
               0: {
                 title: this.$t('filters.items.21.sub.1'),
@@ -812,7 +791,6 @@ export default {
             },
           },
           21: {
-            id: 21,
             title: this.$t('filters.items.22.title'),
             visible: false,
             items: {
@@ -843,7 +821,6 @@ export default {
             },
           },
           22: {
-            id: 22,
             title: this.$t('filters.items.23.title'),
             visible: false,
             items: {
@@ -877,7 +854,6 @@ export default {
             },
           },
           23: {
-            id: 23,
             title: this.$t('filters.items.24.title'),
             visible: false,
             items: {
@@ -911,7 +887,6 @@ export default {
             },
           },
           24: {
-            id: 24,
             title: this.$t('filters.items.25.title'),
             visible: false,
             items: {
@@ -945,7 +920,6 @@ export default {
             },
           },
           25: {
-            id: 25,
             title: this.$t('filters.items.26.title'),
             visible: false,
             items: {
@@ -982,7 +956,6 @@ export default {
             },
           },
           26: {
-            id: 26,
             title: this.$t('filters.items.27.title'),
             visible: false,
             items: {
@@ -1004,7 +977,6 @@ export default {
             },
           },
           27: {
-            id: 27,
             title: this.$t('filters.items.28.title'),
             visible: false,
             items: {
@@ -1029,7 +1001,6 @@ export default {
             },
           },
           28: {
-            id: 28,
             title: this.$t('filters.items.29.title'),
             visible: false,
             items: {
@@ -1051,7 +1022,6 @@ export default {
             },
           },
           29: {
-            id: 29,
             title: this.$t('filters.items.30.title'),
             visible: false,
             items: {
@@ -1073,7 +1043,6 @@ export default {
             },
           },
           30: {
-            id: 30,
             title: this.$t('filters.items.31.title'),
             visible: false,
             items: {
@@ -1089,7 +1058,6 @@ export default {
             },
           },
           31: {
-            id: 31,
             title: this.$t('filters.items.32.title'),
             visible: false,
             items: {
@@ -1098,38 +1066,6 @@ export default {
               },
               1: {
                 title: this.$t('filters.items.32.sub.2'),
-              },
-            },
-          },
-          32: {
-            id: 32,
-            title: this.$t('filters.items.33.title'),
-            visible: false,
-            items: {
-              0: {
-                title: this.$t('filters.items.33.sub.1'),
-              },
-              1: {
-                title: this.$t('filters.items.33.sub.2'),
-              },
-              2: {
-                title: this.$t('filters.items.33.sub.3'),
-              },
-            },
-          },
-          33: {
-            id: 33,
-            title: this.$t('filters.items.34.title'),
-            visible: false,
-            items: {
-              0: {
-                title: this.$t('filters.items.34.sub.1'),
-              },
-              1: {
-                title: this.$t('filters.items.34.sub.2'),
-              },
-              2: {
-                title: this.$t('filters.items.34.sub.3'),
               },
             },
           },
