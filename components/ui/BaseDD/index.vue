@@ -27,7 +27,7 @@
           >
           <span
             class="dd__title"
-            :class="[{'dd__title_white': type === 'blue' }]"
+            :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
           >
             {{ items[value].title }}
           </span>
@@ -35,14 +35,14 @@
         <span
           v-else-if="items[value]"
           class="dd__title"
-          :class="[{'dd__title_white': type === 'blue' }]"
+          :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
         >
           {{ items[value] }}
         </span>
         <span
           v-else-if="!items[value] && placeholder"
           class="dd__title"
-          :class="[{'dd__title_white': type === 'blue' }]"
+          :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
         >
           {{ placeholder }}
         </span>
@@ -191,6 +191,9 @@ export default {
     color: $black500;
     &_white {
       color: $white;
+    }
+    &_black {
+      color: $black800 !important;
     }
   }
   &__top {
