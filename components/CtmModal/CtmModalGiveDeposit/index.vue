@@ -163,7 +163,7 @@ export default {
 .code {
   &__container {
     display: flex;
-    border: 1px solid $grey200;
+    border: 1px solid $black0;
     border-radius: 6px;
     justify-content: space-between;
     padding: 12px;
