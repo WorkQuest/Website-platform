@@ -192,7 +192,8 @@
     "title": "Security check",
     "confCode": "Google confirmation code",
     "placeholder": "Placeholder",
-    "confCodeDesc": "Enter the 6-digit code from the Google Authentication app"
+    "confCodeDesc": "Enter the 6-digit code from the Google Authentication app",
+    "confCodeField": "google verification"
   },
   "signUp": {
     "title": "Sign Up",
@@ -802,9 +803,11 @@
     "haventSMS": "Haven’t got SMS?",
     "SMSVerConnected": "SMS Verification connected",
     "phoneNumber": "Phone number",
+    "phoneNumberField": "phone number",
     "enterPhone": "Enter your phone number to confirm SMS verification",
     "enterSMSCode": "We have sent verification code to your phone number. Enter this code",
     "codeFromSMS": "Code from SMS",
+    "codeFromSMSField": "code from SMS",
     "smsVerification": "SMS verification",
     "saved": "Saved",
     "userDataHasBeenSaved": "User data has been saved",
@@ -1058,7 +1061,8 @@
     "securityCheckField": "security check",
     "recepientAddressField": "recepient address",
     "walletAddressField": "wallet address",
-    "thanksText": ""
+    "thanksText": "",
+    "emailVerificationCodeField": "email verification"
   },
   "ui": {
     "jobQuestors": "Job Questors",

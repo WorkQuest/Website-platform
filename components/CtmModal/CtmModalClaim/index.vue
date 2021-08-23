@@ -39,14 +39,19 @@
           <div class="header__title">
             {{ $t('modals.bankCard') }}
           </div>
-          <div class="header__subtitle">
+          <div
+            class="header__subtitle"
+            @click="showNumber"
+          >
             {{ getCardNumber }}
             <base-btn
               mode="max"
               class="header__button"
-              @click="showNumber"
             >
-              <div class="icon-show header__icon" />
+              <div
+                class="header__icon"
+                :class="{'icon-show': isCardNumberVisible, 'icon-hide': !isCardNumberVisible}"
+              />
             </base-btn>
           </div>
         </div>
@@ -223,6 +228,7 @@ export default {
     line-height: 125%;
     color: $black500;
     margin: 5px 0 20px 0;
+    cursor: pointer;
   }
   &__icon:before{
     font-size: 16px;

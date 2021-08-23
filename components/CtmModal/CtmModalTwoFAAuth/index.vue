@@ -4,7 +4,9 @@
     :title="$t('modals.twoFAAuth')"
   >
     <div class="ctm-modal__content">
-      <validation-observer>
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
         <div
           class="step-panel"
         >
@@ -214,18 +216,20 @@
             <base-field
               id="confirmEmailCode"
               v-model="confirmEmailCode"
-              :is-hide-error="true"
               :label="$t('modals.emailVerificationCode')"
               :placeholder="$t('modals.emailPlaceholder')"
+              rules="required|alpha_num"
+              :name="$t('modals.emailVerificationCodeField')"
             />
           </div>
           <div class="ctm-modal__content-field">
             <base-field
               id="twoFACode"
               v-model="twoFACode"
-              :is-hide-error="true"
               :label="$t('modals.googleVerificationCode')"
               :placeholder="$t('modals.codePlaceholder')"
+              rules="required|alpha_num"
+              :name="$t('securityCheck.confCodeField')"
             />
           </div>
         </div>
@@ -279,7 +283,8 @@
             >
               <base-btn
                 class="message__action"
-                @click="confirmEnable2FA()"
+                :disabled="!validated || !passed || invalid"
+                @click="handleSubmit(confirmEnable2FA)"
               >
                 {{ $t('meta.next') }}
               </base-btn>
@@ -538,7 +543,6 @@ export default {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
-    margin: 15px 0 0 0;
   }
   &__wrapper {
     width: 45%;

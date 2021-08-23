@@ -4,33 +4,27 @@
     :title="$t('forgot.title')"
   >
     <div class="restore__content content">
-      <ValidationObserver
-        v-slot="{ handleSubmit }"
-        class="content__observer"
-        tag="div"
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
       >
-        <form
-          class="restore__body"
-          action=""
-          @submit.prevent="handleSubmit(restore)"
+        <div class="content__field">
+          {{ $t('forgot.desc') }}
+        </div>
+        <base-field
+          v-model="emailInput"
+          :name="$t('placeholders.email')"
+          :placeholder="$t('placeholders.default')"
+          rules="required|email"
+          class="content__input"
+        />
+        <base-btn
+          class="content__action"
+          :disabled="!validated || !passed || invalid"
+          @click="handleSubmit(hide)"
         >
-          <div class="content__field">
-            {{ $t('forgot.desc') }}
-          </div>
-          <base-field
-            v-model="emailInput"
-            :name="$t('placeholders.email')"
-            :placeholder="$t('placeholders.default')"
-            rules="required|email"
-            class="content__input"
-          />
-          <base-btn
-            class="content__action"
-          >
-            {{ $t('meta.send') }}
-          </base-btn>
-        </form>
-      </ValidationObserver>
+          {{ $t('meta.send') }}
+        </base-btn>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>

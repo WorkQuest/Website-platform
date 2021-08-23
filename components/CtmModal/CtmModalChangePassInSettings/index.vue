@@ -30,69 +30,77 @@
             <base-btn
               mode="max"
               class="field__button"
+              :disabled="currentPasswordInput===''"
               @click="isVisibleCurrent=!isVisibleCurrent"
             >
-              <span class="icon-Lock field__picture" />
+              <span
+                class="field__picture"
+                :class="{'icon-show': isVisibleCurrent, 'icon-hide': !isVisibleCurrent }"
+              />
             </base-btn>
           </template>
         </base-field>
       </div>
-      <div class="ctm-modal__content-field field">
-        <base-field
-          v-model="newPasswordInput"
-          :is-hide-error="true"
-          :placeholder="'******'"
-          :label="$t('modals.newPassword')"
-          mode="icon"
-          :type="isVisible ? 'text': 'password'"
-          class="field__input"
+      <base-field
+        v-model="newPasswordInput"
+        :is-hide-error="true"
+        :placeholder="'******'"
+        :label="$t('modals.newPassword')"
+        mode="icon"
+        :type="isVisible ? 'text': 'password'"
+        class="field__input"
+      >
+        <template
+          v-slot:left
+          class="field__template"
         >
-          <template
-            v-slot:left
-            class="field__template"
-          >
-            <span class="icon-Lock field__picture" />
-          </template>
-          <template
-            v-slot:right-absolute
-            class="field__block"
-          >
-            <base-btn
-              mode="max"
-              class="field__button"
-              @click="isVisible=!isVisible"
-            >
-              <span class="icon-Lock field__picture" />
-            </base-btn>
-          </template>
-        </base-field>
-      </div>
-      <div class="ctm-modal__content-field">
-        <base-field
-          v-model="confirmNewPasswordInput"
-          :is-hide-error="true"
-          :placeholder="'******'"
-          :label="$t('modals.confirmNewPassword')"
-          mode="icon"
-          :type="isVisibleConfirm ? 'text': 'password'"
+          <span class="icon-Lock field__picture" />
+        </template>
+        <template
+          v-slot:right-absolute
+          class="field__block"
         >
-          <template v-slot:left>
-            <span class="icon-Lock" />
-          </template>
-          <template
-            v-slot:right-absolute
-            class="field__block"
+          <base-btn
+            mode="max"
+            class="field__button"
+            :disabled="newPasswordInput===''"
+            @click="isVisible=!isVisible"
           >
-            <base-btn
-              mode="max"
-              class="field__button"
-              @click="isVisibleConfirm=!isVisibleConfirm"
-            >
-              <span class="icon-Lock field__picture" />
-            </base-btn>
-          </template>
-        </base-field>
-      </div>
+            <span
+              class="field__picture"
+              :class="{'icon-show': isVisible, 'icon-hide': !isVisible }"
+            />
+          </base-btn>
+        </template>
+      </base-field>
+      <base-field
+        v-model="confirmNewPasswordInput"
+        :is-hide-error="true"
+        :placeholder="'******'"
+        :label="$t('modals.confirmNewPassword')"
+        mode="icon"
+        :type="isVisibleConfirm ? 'text': 'password'"
+      >
+        <template v-slot:left>
+          <span class="icon-Lock" />
+        </template>
+        <template
+          v-slot:right-absolute
+          class="field__block"
+        >
+          <base-btn
+            mode="max"
+            class="field__button"
+            :disabled="confirmNewPasswordInput===''"
+            @click="isVisibleConfirm=!isVisibleConfirm"
+          >
+            <span
+              class="field__picture"
+              :class="{'icon-show': isVisibleConfirm, 'icon-hide': !isVisibleConfirm }"
+            />
+          </base-btn>
+        </template>
+      </base-field>
       <div class="content__buttons buttons">
         <div class="buttons__group">
           <base-btn

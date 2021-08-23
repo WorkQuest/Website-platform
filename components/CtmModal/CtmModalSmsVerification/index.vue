@@ -4,77 +4,85 @@
     class="verification"
   >
     <div class="verification__content content">
-      <div class="content__subtitle">
-        <span v-if="step === 1">{{ $t('modals.enterPhone') }}</span>
-        <span v-if="step === 2">{{ $t('modals.enterSMSCode') }}</span>
-      </div>
-      <span
-        v-if="step === 1"
-        class="content__top"
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
       >
-        {{ $t('modals.phoneNumber') }}
-      </span>
-      <span
-        v-if="step === 2"
-        class="content__top"
-      >
-        {{ $t('modals.codeFromSMS') }}
-      </span>
-      <base-field
-        v-if="step === 1"
-        v-model="phoneNumber"
-        class="content__action"
-        :placeholder="$t('modals.phoneNumber')"
-        :is-hide-error="true"
-        mode="icon"
-      >
-        <template
-          v-slot:left
-          class="content__picture"
-        >
-          <div class="icon-phone_outline content__icon" />
-        </template>
-      </base-field>
-      <base-field
-        v-if="step === 2"
-        v-model="confirmCode"
-        class="content__action"
-        :placeholder="$t('modals.codeFromSMS')"
-        :is-hide-error="true"
-        mode="icon"
-      >
-        <template
-          v-slot:left
-          class="content__picture"
-        >
-          <span class="icon-Lock content__icon" />
-        </template>
-      </base-field>
-      <div
-        v-if="step === 2"
-        class="content__bottom"
-      >
-        {{ $t('modals.haventSMS') }}
-        <button class="content__resend">
-          {{ $t('meta.resendSMS') }}
-        </button>
-      </div>
-      <div class="content__buttons buttons">
-        <base-btn
+        <div class="content__subtitle">
+          <span v-if="step === 1">{{ $t('modals.enterPhone') }}</span>
+          <span v-if="step === 2">{{ $t('modals.enterSMSCode') }}</span>
+        </div>
+        <span
           v-if="step === 1"
-          class="buttons__button"
-          @click="nextStep"
+          class="content__top"
         >
-          {{ $t('meta.next') }}
-        </base-btn>
-        <base-btn
+          {{ $t('modals.phoneNumber') }}
+        </span>
+        <span
           v-if="step === 2"
-          class="buttons__button"
-          @click="success"
+          class="content__top"
         >
-          {{ $t('meta.confirm') }}
-        </base-btn>
-      </div>
+          {{ $t('modals.codeFromSMS') }}
+        </span>
+        <base-field
+          v-if="step === 1"
+          v-model="phoneNumber"
+          class="content__action"
+          :placeholder="$t('modals.phoneNumber')"
+          mode="icon"
+          rules="required|alpha_num"
+          :name="$t('modals.phoneNumberField')"
+        >
+          <template
+            v-slot:left
+            class="content__picture"
+          >
+            <div class="icon-phone_outline content__icon" />
+          </template>
+        </base-field>
+        <base-field
+          v-if="step === 2"
+          v-model="confirmCode"
+          class="content__action"
+          :placeholder="$t('modals.codeFromSMSField')"
+          mode="icon"
+          rules="required|alpha_num"
+          :name="$t('modals.codeFromSMS')"
+        >
+          <template
+            v-slot:left
+            class="content__picture"
+          >
+            <span class="icon-Lock content__icon" />
+          </template>
+        </base-field>
+        <div
+          v-if="step === 2"
+          class="content__bottom"
+        >
+          {{ $t('modals.haventSMS') }}
+          <button class="content__resend">
+            {{ $t('meta.resendSMS') }}
+          </button>
+        </div>
+        <div class="content__buttons buttons">
+          <base-btn
+            v-if="step === 1"
+            class="buttons__button"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(nextStep)"
+          >
+            {{ $t('meta.next') }}
+          </base-btn>
+          <base-btn
+            v-if="step === 2"
+            class="buttons__button"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(success)"
+          >
+            {{ $t('meta.confirm') }}
+          </base-btn>
+        </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -168,9 +176,11 @@ export default {
     margin-top: 15px;
     font-weight: 400;
     font-size: 14px;
+    margin-bottom: 23px;
+
   }
   &__buttons {
-    margin: 25px 0 0 0;
+    margin: 2px 0 0 0;
     width: 100%;
   }
   &__resend {
