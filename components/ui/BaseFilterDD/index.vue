@@ -115,7 +115,7 @@
           </div>
           <div class="dd__btn">
             <base-btn @click="hideDd()">
-              {{ $t('meta.submit') }}
+              {{ $t('meta.apply') }}
             </base-btn>
           </div>
         </div>
