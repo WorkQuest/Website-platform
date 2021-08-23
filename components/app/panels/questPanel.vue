@@ -31,9 +31,11 @@
               {{ convertDate() }}
             </span>
             <button
+              v-if="userRole === 'worker'"
               class="icon-share_outline icon_fs-20"
               @click="shareModal()"
             />
+            <quest-dd v-if="userRole === 'employer'" />
           </div>
         </div>
         <div class="location__container">
@@ -142,13 +144,13 @@ export default {
         this.userLng,
       );
     },
-    showProfile() {
-      this.$router.push('/show-profile');
-    },
     shareModal() {
       this.ShowModal({
         key: modals.sharingQuest,
       });
+    },
+    showProfile() {
+      this.$router.push('/show-profile');
     },
     convertDate() {
       if (this.questData.createdAt) {

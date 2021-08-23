@@ -127,6 +127,8 @@
     }
   },
   "meta": {
+    "close": "Close",
+    "delete": "Delete",
     "back": "Back",
     "ok": "Ok",
     "send": "Send",
@@ -767,6 +769,12 @@
       "participants": "Participants",
       "chatName": "Chat name"
     },
+    "error": "Error",
+    "share": "Share",
+    "edit": "Edit",
+    "delete": "Delete",
+    "youCan’tDeleteActiveQuest": "You can’t delete active quest",
+    "sureDeleteText": "Do you really want to delete this quest?",
     "priceTitle": "Price",
     "enterPriceRange": "Enter price range",
     "priceForm": "From",

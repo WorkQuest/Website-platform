@@ -58,4 +58,5 @@ export default {
   questFilterFull: 'questFilterFull',
   showImage: 'showImage',
   priceSearch: 'priceSearch',
+  areYouSureDeleteQuest: 'areYouSureDeleteQuest',
 };
