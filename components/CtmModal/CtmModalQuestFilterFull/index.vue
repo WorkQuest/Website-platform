@@ -1096,11 +1096,10 @@ export default {
   },
   methods: {
     selectAll(idx) {
-      const { length } = Object.keys(this.$refs.[`checkbox${idx}`]);
       const selectAllCheckbox = this.$refs.[`allCheckbox${idx}`];
       const checkboxes = this.$refs.[`checkbox${idx}`];
       selectAllCheckbox[0].checked = !selectAllCheckbox[0].checked;
-      for (let i = 0; i < length; i += 1) {
+      for (let i = 0; i < Object.keys(this.$refs.[`checkbox${idx}`]).length; i += 1) {
         checkboxes[i].checked = selectAllCheckbox[0].checked;
       }
     },
