@@ -343,7 +343,7 @@ export default {
     showQuestCreatedModal() {
       const createQuestData = {
         priority: this.priorityIndex,
-        category: '1',
+        category: 'Default',
         title: this.questTitle,
         description: this.textarea,
         price: this.price,
