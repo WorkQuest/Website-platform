@@ -68,6 +68,7 @@
       <CtmModalDisable2FA v-if="modals.disable2FA === currentModalKey" />
       <CtmModalQuestFilterFull v-if="modals.questFilterFull === currentModalKey" />
       <CtmModalShowImage v-if="modals.showImage === currentModalKey" />
+      <CtmModalPriceSearch v-if="modals.priceSearch === currentModalKey" />
       <CtmModalGiveDeposit v-if="modals.giveDeposit === currentModalKey" />
       <CtmModalAddingCard v-if="modals.addingCard === currentModalKey" />
       <CtmModalDepositOptions v-if="modals.depositOptions === currentModalKey" />
@@ -162,6 +163,7 @@ import CtmModalSwapInfo from './CtmModalSwapInfo';
 import CtmModalAreYouSureNotification from './CtmModalAreYouSureNotification';
 import CtmModalClaim from './CtmModalClaim';
 import CtmModalPrice from './CtmModalPrice';
+import CtmModalPriceSearch from './CtmModalPrice';
 
 export default {
   name: 'ModalBox',
@@ -238,6 +240,7 @@ export default {
     CtmModalClaim,
     CtmModalPrice,
     CtmModalAreYouSureDeleteQuest,
+    CtmModalPriceSearch,
   },
   data: () => ({
     modals,

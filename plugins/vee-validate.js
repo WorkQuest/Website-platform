@@ -32,8 +32,8 @@ extend('numberOfCard', {
     const cardNumber = value.replaceAll(/[^0-9]/g, '');
     const maxNumberLength = 19;
     const checkCardNumber = (number) => (americanExpress.test(number)
-      || dinersClub.test(number) || discover.test(number) || jcb.test(number)
-      || maestro.test(number) || mastercard.test(number) || visa.test(number))
+        || dinersClub.test(number) || discover.test(number) || jcb.test(number)
+        || maestro.test(number) || mastercard.test(number) || visa.test(number))
       && number.length <= maxNumberLength;
     return {
       required: true,

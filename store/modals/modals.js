@@ -72,5 +72,6 @@ export default {
   areYouSureNotification: 'areYouSureNotification',
   claim: 'claim',
   price: 'price',
+  priceSearch: 'priceSearch',
   areYouSureDeleteQuest: 'areYouSureDeleteQuest',
 };

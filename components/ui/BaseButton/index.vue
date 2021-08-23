@@ -228,6 +228,7 @@ export default {
     border: 1px solid rgba(0, 131, 199, 0.1);
     background: #FFFFFF;
     color: $blue;
+    padding: 0;
     &:hover {
       background: #F7F8FA;
       color: $blue;
@@ -260,6 +261,7 @@ export default {
   &_light {
     background: #FFFFFF;
     color: $black800;
+    transition: 0.5s;
     &:hover {
       background: $black100;
     }
