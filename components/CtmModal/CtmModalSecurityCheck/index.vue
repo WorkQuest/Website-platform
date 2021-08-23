@@ -19,7 +19,7 @@
             v-model="securityCode"
             :placeholder="$t('securityCheck.placeholder')"
             :name="$t('modals.securityCheckField')"
-            rules="required|numeric"
+            rules="required|alpha_num|length:6"
             class="content__input"
           />
           <div class="content__body">

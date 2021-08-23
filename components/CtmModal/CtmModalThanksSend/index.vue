@@ -14,7 +14,7 @@
             {{ $t('modals.thanks') }}
           </div>
           <div class="ctm-modal__desc">
-            {{ $t('modals.smallTemp') }}
+            {{ $t('modals.thanksText') }}
           </div>
           <base-btn
             class="email__action"

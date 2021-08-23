@@ -20,7 +20,7 @@
           class="content__body body"
         >
           <base-dd
-            v-model="elem.id"
+            v-model="elem.name"
             :type="'gray'"
             :items="items"
             class="body__drop"
@@ -51,7 +51,8 @@
           <div class="buttons__container">
             <base-btn
               class="buttons__action"
-              @click="hide()"
+              :disabled="checkSkills"
+              @click="hide"
             >
               {{ $t('meta.submit') }}
             </base-btn>
@@ -59,7 +60,7 @@
             <base-btn
               :mode="'outline'"
               class="buttons__action"
-              @click="hide()"
+              @click="hide"
             >
               {{ $t('meta.later') }}
             </base-btn>
@@ -75,11 +76,10 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  element: Date.now(),
   name: 'ModalWelcome',
   data() {
     return {
-      skillsArray: [{ id: Date.now() }],
+      skillsArray: [{ id: Math.ceil(Math.random() * 10000), name: '' }],
     };
   },
   computed: {
@@ -94,13 +94,17 @@ export default {
         this.$t('modals.coding'),
       ];
     },
+    checkSkills() {
+      const emptySkills = this.skillsArray.filter((item) => item.name === '');
+      return emptySkills.length !== 0;
+    },
   },
   methods: {
     hide() {
       this.CloseModal();
     },
     addSkill() {
-      return this.skillsArray.push({ id: Date.now() });
+      return this.skillsArray.push({ id: Math.ceil(Math.random() * 10000), name: '' });
     },
     removeSkill(id) {
       this.skillsArray = this.skillsArray.filter((item) => item.id !== id);

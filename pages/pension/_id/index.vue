@@ -497,7 +497,6 @@ export default {
       font-size: 45px;
       line-height: 110%;
       margin: 0 0 24px;
-      //update
       &_sub {
         @extend .title;
         font-size: 16px;

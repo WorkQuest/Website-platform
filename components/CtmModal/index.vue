@@ -22,7 +22,6 @@
       <CtmModalRequestSend v-if="modals.requestSend === currentModalKey" />
       <CtmModalThanksSend v-if="modals.thanks === currentModalKey" />
       <CtmModalQuestAgreed v-if="modals.questAgreed === currentModalKey" />
-      <CtmModalAreYouSure v-if="modals.areYouSure === currentModalKey" />
       <CtmModalTransactionSend v-if="modals.transactionSend === currentModalKey" />
       <CtmModalCardHasBeenAdded v-if="modals.cardHasBeenAdded === currentModalKey" />
       <CtmModalDeposit v-if="modals.deposit === currentModalKey" />
@@ -100,7 +99,6 @@ import CtmModalSendARequest from './CtmModalSendARequest';
 import CtmModalRequestSend from './CtmModalRequestSend';
 import CtmModalThanksSend from './CtmModalThanksSend';
 import CtmModalQuestAgreed from './CtmModalQuestAgreed';
-import CtmModalAreYouSure from './CtmModalAreYouSure';
 import CtmModalReviewEmployer from './CtmModalReviewEmployer';
 import CtmModalTransactionSend from './CtmModalTransactionSend';
 import CtmModalCardHasBeenAdded from './CtmModalCardHasBeenAdded';
@@ -176,7 +174,6 @@ export default {
     CtmModalSendARequest,
     CtmModalRequestSend,
     CtmModalQuestAgreed,
-    CtmModalAreYouSure,
     CtmModalTransactionSend,
     CtmModalCardHasBeenAdded,
     CtmModalDeposit,

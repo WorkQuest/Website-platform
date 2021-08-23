@@ -13,8 +13,14 @@
             {{ $t('modals.bankCard') }}
           </div>
           <div class="header__subtitle">
-            {{ options.cardNumber }}
-            <div class="icon-show header__icon" />
+            {{ getCardNumber }}
+            <base-btn
+              mode="max"
+              class="header__button"
+              @click="showNumber"
+            >
+              <div class="icon-show header__icon" />
+            </base-btn>
           </div>
         </div>
         <div
@@ -36,7 +42,7 @@
             {{ $t('modals.walletAddress') }}
           </div>
           <div class="header__subtitle">
-            {{ this.walletAddress }}
+            {{ walletAddress }}
           </div>
         </div>
         <div
@@ -81,6 +87,7 @@ export default {
   name: 'ModalDepositInfo',
   data() {
     return {
+      isCardNumberVisible: false,
       walletAddress: '83479B2E7809F7D7C0A9184EEDA74CCF122ABF3147CB4572BDEBD252F8E352A8',
       items: [
         {
@@ -99,7 +106,19 @@ export default {
       options: 'modals/getOptions',
     }),
     getCardNumber() {
-      return (this.options.cardNumber);
+      const str = this.options.cardNumber;
+      if (this.isCardNumberVisible) {
+        return `${str.slice(0, 4)} ${str.slice(4, 8)} ${str.slice(8, 12)} ${str.slice(12)}`;
+      }
+      let star = [];
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < str.length; i++) {
+        if (i < str.length - 4) { star.push('*'); } else {
+          star.push(str[i]);
+        }
+      }
+      star = star.join('');
+      return `${star.slice(0, 4)} ${star.slice(4, 8)} ${star.slice(8, 12)} ${star.slice(12)}`;
     },
   },
   methods: {
@@ -111,7 +130,9 @@ export default {
         key: modals.transactionSend,
       });
     },
-
+    showNumber() {
+      this.isCardNumberVisible = !this.isCardNumberVisible;
+    },
   },
 };
 </script>
@@ -175,6 +196,10 @@ export default {
     color: $black500;
     vertical-align: middle;
     margin-left: 6px;
+  }
+  &__button{
+    width: 16px!important;
+    height: 16px!important;
   }
 }
 </style>

@@ -51,7 +51,7 @@
                 :label="$t('modals.howMuchEthWouldYouLikeToLock')"
                 :tip="$t('modals.smallTemp')"
                 :placeholder="'1000 ETH'"
-                rules="required|numeric"
+                rules="required|decimal"
                 :name="$t('modals.quantityField')"
               />
             </div>
@@ -63,7 +63,7 @@
                 :label="$t('modals.howMuchWusdWouldYouLikeToGenerate')"
                 :tip="$t('modals.smallTemp')"
                 :placeholder="'10 ETH'"
-                rules="required|numeric"
+                rules="required|decimal"
                 :name="$t('modals.generateField')"
               />
             </div>

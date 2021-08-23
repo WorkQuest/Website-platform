@@ -4,7 +4,7 @@
     :title="$t('modals.priceTitle')"
   >
     <div class="price__content content">
-      <ValidationObserver
+      <validation-observer
         v-slot="{handleSubmit, validated, passed, invalid}"
         class="content__observer"
         tag="div"
@@ -21,8 +21,8 @@
               v-model="priceFrom"
               class="grid__input"
               :placeholder="$t('modals.priceFromAmount')"
-              rules="required|numeric"
-              :name="$t('modals.priceField')"
+              rules="required|decimal"
+              :name="$t('modals.priceFieldFrom')"
             />
           </div>
           <div class="grid__field">
@@ -33,8 +33,8 @@
               v-model="priceTo"
               class="grid__field"
               :placeholder="$t('modals.priceToAmount')"
-              rules="required|numeric"
-              :name="$t('modals.priceField')"
+              rules="required|decimal"
+              :name="$t('modals.priceFieldTo')"
             />
           </div>
         </div>
@@ -54,7 +54,7 @@
             {{ $t('meta.submit') }}
           </base-btn>
         </div>
-      </ValidationObserver>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>

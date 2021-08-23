@@ -10,7 +10,6 @@ export default {
   sendARequest: 'sendARequest',
   requestSend: 'requestSend',
   questAgreed: 'questAgreed',
-  areYouSure: 'areYouSure',
   transactionSend: 'transactionSend',
   cardHasBeenAdded: 'cardHasBeenAdded',
   deposit: 'deposit',

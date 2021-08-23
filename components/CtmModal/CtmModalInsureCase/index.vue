@@ -24,7 +24,7 @@
         <img
           v-for="(pic, i) in pics"
           :key="i"
-          class="picture"
+          class="content__picture picture"
           :src="pic"
           alt="picture"
         >

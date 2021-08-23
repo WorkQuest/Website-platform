@@ -26,11 +26,10 @@
           class="field__header header"
         >
           <div class="header__title">
-            {{ $t('modals.bankCard') }}
+            {{ $t('modals.walletAddress') }}
           </div>
           <div class="header__subtitle">
-            {{ cardNumber }}
-            <div class="icon-show header__icon" />
+            {{ walletAddress }}
           </div>
         </div>
         <div
@@ -38,10 +37,17 @@
           class="field__header header"
         >
           <div class="header__title">
-            {{ $t('modals.walletAddress') }}
+            {{ $t('modals.bankCard') }}
           </div>
           <div class="header__subtitle">
-            {{ walletAddress }}
+            {{ getCardNumber }}
+            <base-btn
+              mode="max"
+              class="header__button"
+              @click="showNumber"
+            >
+              <div class="icon-show header__icon" />
+            </base-btn>
           </div>
         </div>
         <div
@@ -79,15 +85,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalClaim',
   data() {
     return {
+      isCardNumberVisible: false,
       step: 1,
       walletAddress: '83479B2E7809F7D7C0A9184EEDA74CCF122ABF3147CB4572BDEBD252F8E352A8',
-      cardNumber: '**** **** **** 0000',
       items: [
         {
           title: this.$t('modals.amount'),
@@ -99,6 +106,26 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+    getCardNumber() {
+      const str = this.options.cardNumber || '0000000000000000';
+      if (this.isCardNumberVisible) {
+        return `${str.slice(0, 4)} ${str.slice(4, 8)} ${str.slice(8, 12)} ${str.slice(12)}`;
+      }
+      let star = [];
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < str.length; i++) {
+        if (i < str.length - 4) { star.push('*'); } else {
+          star.push(str[i]);
+        }
+      }
+      star = star.join('');
+      return `${star.slice(0, 4)} ${star.slice(4, 8)} ${star.slice(8, 12)} ${star.slice(12)}`;
+    },
   },
   methods: {
     hide() {
@@ -114,6 +141,9 @@ export default {
     },
     previousStep() {
       this.step = 1;
+    },
+    showNumber() {
+      this.isCardNumberVisible = !this.isCardNumberVisible;
     },
   },
 };
@@ -199,6 +229,10 @@ export default {
     color: $black500;
     margin-left: 6px;
     line-height: 120%;
+  }
+  &__button{
+    width: 18px!important;
+    height: 18px!important;
   }
 }
 </style>

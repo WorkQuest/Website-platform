@@ -15,7 +15,7 @@
             v-model="amountInput"
             :placeholder="'3 500'"
             class="content__input"
-            rules="required|numeric"
+            rules="required|decimal"
             :name="$t('modals.depositAmountField')"
           />
         </div>

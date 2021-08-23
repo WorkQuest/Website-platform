@@ -30,7 +30,7 @@
               v-model="amount"
               class="input__field"
               :placeholder="'Enter amount'"
-              rules="required|numeric"
+              rules="required|decimal"
               :name="$t('modals.amountField')"
             >
               <template
@@ -156,6 +156,7 @@ export default {
 .max{
   &__button{
     margin-right: 10px!important;
+    background-color: transparent!important;
   }
 }
 </style>

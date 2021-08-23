@@ -47,7 +47,7 @@
               :label="$t('modals.howMuchETHWouldYouLikeToOpen')"
               :tip="$t('modals.smallTemp')"
               :placeholder="'10 ETH'"
-              rules="required|numeric"
+              rules="required|decimal"
               :name="$t('modals.quantityField')"
             />
           </div>
@@ -59,7 +59,7 @@
               :label="$t('modals.howMuchPercentWouldYouLikeToSet')"
               :tip="$t('modals.smallTemp')"
               :placeholder="'10 ETH'"
-              rules="required|numeric"
+              rules="required|decimal"
               :name="$t('modals.percentField')"
             />
           </div>
@@ -70,7 +70,7 @@
               :tip="$t('modals.smallTemp')"
               class="content__input"
               :placeholder="'10 ETH'"
-              rules="required|numeric"
+              rules="required|decimal"
               :name="$t('modals.amountField')"
             />
             <div class="content__text">

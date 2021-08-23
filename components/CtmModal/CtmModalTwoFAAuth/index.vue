@@ -9,21 +9,24 @@
           class="step-panel"
         >
           <div
-            class="step-panel__step"
+            class="__step"
             :class="[
               {'step-panel__step_active': step === 1 || step === 2 || step === 3 || step === 4},
             ]"
           >
-            <span
-              :class="[
-                {'hide': step === 2 || step === 3 || step === 4},
-              ]"
-            >{{ $t('modals.step') }}</span>
-            <span
-              :class="[
-                {'step__number': step === 2 || step === 3 || step === 4},
-              ]"
-            >1</span>
+            <span class="step-panel__block">
+              <span
+                :class="[
+                  {'hide': step === 2 || step === 3 || step === 4},
+                ]"
+              >{{ $t('modals.step') }}
+              </span>
+              <span
+                :class="[
+                  {'step__number': step === 2 || step === 3 || step === 4},
+                ]"
+              >1</span>
+            </span>
           </div>
           <div
             class="line"
@@ -37,16 +40,18 @@
               {'step-panel__step_active': step === 2 || step === 3 || step === 4},
             ]"
           >
-            <span
-              :class="[
-                {'hide': step === 3 || step === 4},
-              ]"
-            >{{ $t('modals.step') }}</span>
-            <span
-              :class="[
-                {'step__number': step === 3 || step === 4},
-              ]"
-            >2</span>
+            <span class="step-panel__block">
+              <span
+                :class="[
+                  {'hide': step === 3 || step === 4},
+                ]"
+              >{{ $t('modals.step') }}</span>
+              <span
+                :class="[
+                  {'step__number': step === 3 || step === 4},
+                ]"
+              >2</span>
+            </span>
           </div>
           <div
             class="line"
@@ -60,16 +65,18 @@
               {'step-panel__step_active': step === 3 || step === 4},
             ]"
           >
-            <span
-              :class="[
-                {'hide': step === 4},
-              ]"
-            >{{ $t('modals.step') }}</span>
-            <span
-              :class="[
-                {'step__number': step === 2 || step === 3 || step === 4},
-              ]"
-            >3</span>
+            <span class="step-panel__block">
+              <span
+                :class="[
+                  {'hide': step === 4},
+                ]"
+              >{{ $t('modals.step') }}</span>
+              <span
+                :class="[
+                  {'step__number': step === 2 || step === 3 || step === 4},
+                ]"
+              >3</span>
+            </span>
           </div>
           <div
             class="line"
@@ -81,8 +88,10 @@
             class="step-panel__step"
             :class="[{'step-panel__step_active': step === 4}]"
           >
-            <span> {{ $t('modals.step') }}</span>
-            <span>4</span>
+            <span class="step-panel__block">
+              <span> {{ $t('modals.step') }}</span>
+              <span>4</span>
+            </span>
           </div>
         </div>
         <!-- Steps -->
@@ -467,6 +476,9 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  &__block{
+    white-space: nowrap;
+  }
   &__step {
     @include text-simple;
     background: rgba(0, 131, 199, 0.1);

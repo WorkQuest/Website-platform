@@ -18,7 +18,7 @@
             {{ $t('modals.walletAddress') }}
           </div>
           <div
-            class="content__panel_active"
+            class="content__panel content__panel_active"
           >
             {{ $t('wallet.bankCard') }}
           </div>
@@ -62,7 +62,7 @@
               :placeholder="'0 WUSD'"
               class="grid__input"
               :name="$t('modals.amountField')"
-              rules="required|numeric"
+              rules="required|decimal"
             />
             <div class="grid__equal">
               =
@@ -223,7 +223,7 @@ export default {
     display: grid;
     grid-template-columns: 47% 6% 47%;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: flex-start;
     margin-bottom: 15px;
   }
   &__title{
@@ -234,7 +234,7 @@ export default {
     color: $black800;
   }
   &__equal {
-    margin: 0px 10px 36px 10px;
+    margin: 10px 10px 36px 10px;
   }
 }
 .body{

@@ -35,7 +35,7 @@
               v-model="walletAddress"
               class="input__field"
               :placeholder="'Enter address'"
-              rules="required"
+              rules="required|alpha_num"
               :name="$t('modals.walletAddressField')"
             />
           </div>
@@ -47,7 +47,7 @@
               v-model="amount"
               class="input__field"
               :placeholder="'Enter amount'"
-              rules="required|numeric"
+              rules="required|decimal"
               :name="$t('modals.amountField')"
             >
               >
@@ -212,6 +212,7 @@ export default {
 .max{
   &__button{
     margin-right: 10px!important;
+    background-color: transparent!important;
   }
 }
 </style>

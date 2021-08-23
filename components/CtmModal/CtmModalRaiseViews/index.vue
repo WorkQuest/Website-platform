@@ -16,7 +16,7 @@
             :placeholder="'0 WUSD'"
             class="field__input"
             mode="white"
-            rules="required|numeric"
+            rules="required|decimal"
             :name="$t('modals.priceOfAClickField')"
           />
           <div class="field__subtitle">
@@ -51,7 +51,7 @@
         <div class="content__buttons buttons">
           <base-btn
             class="buttons__action"
-            :disabled="!validated || !passed || invalid"
+            :disabled="!validated || !passed || invalid || period===''"
             @click="handleSubmit(showTransactionSendModal)"
           >
             {{ $t('meta.ok') }}

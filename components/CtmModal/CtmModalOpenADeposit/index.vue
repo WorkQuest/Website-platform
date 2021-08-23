@@ -18,7 +18,7 @@
             v-model="saving"
             :placeholder="'3 500'"
             class="content__input"
-            rules="required|numeric"
+            rules="required|decimal"
             :name="$t('modals.lockedSavingsField')"
           />
         </div>

@@ -27,7 +27,7 @@
                 v-model="amount"
                 :placeholder="'0,05'"
                 class="grid__input"
-                rules="required"
+                rules="required|decimal"
                 :name="$t('modals.amountField')"
               />
             </div>
@@ -42,7 +42,7 @@
               v-model="address"
               class="body__input"
               placeholder="Enter binance address"
-              rules="required|alpha_spaces"
+              rules="required|alpha_num"
               :name="$t('modals.recepientAddressField')"
             />
           </div>

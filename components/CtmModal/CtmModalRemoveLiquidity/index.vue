@@ -17,7 +17,7 @@
                 v-model="withdraw"
                 class="field__body"
                 :placeholder="'1000 WUSD'"
-                rules="required|numeric"
+                rules="required|decimal"
                 :name="$t('modals.withdrawalAmountField')"
               />
             </div>

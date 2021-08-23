@@ -16,7 +16,7 @@
             :placeholder="$tc('modals.percentsCount', 13)"
             class="content__input"
             :name="$t('modals.depositPercent')"
-            rules="required|numeric"
+            rules="required|percent"
           />
         </div>
         <div class="content__amount">
@@ -28,7 +28,7 @@
             :placeholder="$tc('pension.wusdCount', 130)"
             class="content__input"
             :name="$t('modals.firstDepositAmountField')"
-            rules="required|numeric"
+            rules="required|decimal"
           />
           <div class="content__text">
             {{ $t('modals.firstDepositText') }}

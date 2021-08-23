@@ -41,12 +41,14 @@ export default {
       if (this.options.branch === 'withdraw') {
         this.ShowModal({
           key: modals.withdrawOptions,
+          cardNumber: this.options.cardNumber,
         });
       } else if (this.options.branch === 'adding') {
         this.CloseModal();
       } else {
         this.ShowModal({
           key: modals.depositOptions,
+          cardNumber: this.options.cardNumber,
         });
       }
     },

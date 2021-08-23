@@ -92,11 +92,7 @@
     >
       showSendARequestModal
     </base-btn>
-    <base-btn
-      @click="showAreYouSureModal()"
-    >
-      showAreYouSureModal
-    </base-btn>
+
     <base-btn
       @click="showTransactionSendModal()"
     >
@@ -285,11 +281,7 @@
     >
       Apply For A Pension
     </base-btn>
-    <base-btn
-      @click="showAreYouSure()"
-    >
-      Are you sure?
-    </base-btn>
+
     <base-btn
       @click="showAreYouSureDelete()"
     >
@@ -389,6 +381,16 @@
       @click="showOpenADispute()"
     >
       Open a dispute
+    </base-btn>
+    <base-btn
+      @click="showChangePasswordNew()"
+    >
+      Change password
+    </base-btn>
+    <base-btn
+      @click="show2Fa()"
+    >
+      2 FA
     </base-btn>
   </div>
 </template>
@@ -538,11 +540,6 @@ export default {
     showSendARequestModal() {
       this.ShowModal({
         key: modals.sendARequest,
-      });
-    },
-    showAreYouSureModal() {
-      this.ShowModal({
-        key: modals.areYouSure,
       });
     },
     showThanksModal() {
@@ -699,11 +696,7 @@ export default {
         key: modals.applyForAPension,
       });
     },
-    showAreYouSure() {
-      this.ShowModal({
-        key: modals.areYouSure,
-      });
-    },
+
     showAreYouSureDelete() {
       this.ShowModal({
         key: modals.areYouSureDelete,
@@ -797,6 +790,16 @@ export default {
     showOpenADispute() {
       this.ShowModal({
         key: modals.openADispute,
+      });
+    },
+    showChangePasswordNew() {
+      this.ShowModal({
+        key: modals.changePassInSettings,
+      });
+    },
+    show2Fa() {
+      this.ShowModal({
+        key: modals.twoFAAuth,
       });
     },
   },

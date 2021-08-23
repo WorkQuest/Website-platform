@@ -55,6 +55,7 @@
           <base-btn
             class="code__share"
             mode="share"
+            @click="showShareModal"
           >
             <span class="icon-share_outline code__chain" />
           </base-btn>
@@ -138,6 +139,11 @@ export default {
     showSuccessCopied() {
       this.ShowModal({
         key: modals.copiedSuccess,
+      });
+    },
+    showShareModal() {
+      this.ShowModal({
+        key: modals.sharingQuest,
       });
     },
     showAddingCard() {

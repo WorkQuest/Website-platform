@@ -53,7 +53,38 @@ extend('cvv', {
   },
   message: 'Please enter correct {_field_}',
 });
+extend('date', {
+  validate(value) {
+    const regex = /(?:0[1-9]|1[0-2])\/[0-9]{2}/;
+    return {
+      required: true,
+      valid: regex.test(value),
+    };
+  },
+  message: 'Please enter correct {_field_}',
+});
 
+extend('decimal', {
+  validate(value) {
+    const regex = /^[0-9]*[.,]?[0-9]+$/;
+    return {
+      required: true,
+      valid: regex.test(value),
+    };
+  },
+  message: 'Please enter correct {_field_}',
+});
+
+extend('percent', {
+  validate(value) {
+    const regex = /^100%?$|^\s*(\d{0,2})((\.|,)(\d*))?\s*%?\s*$/;
+    return {
+      required: true,
+      valid: regex.test(value),
+    };
+  },
+  message: 'Please enter correct {_field_}',
+});
 export default ({ app }) => {
   configure({
     defaultMessage: (_field_, values) => app.i18n.t(`messages.${values._rule_}`, values),

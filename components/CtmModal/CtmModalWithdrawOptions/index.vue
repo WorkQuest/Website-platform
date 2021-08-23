@@ -31,7 +31,7 @@
               v-model="amount"
               :placeholder="'0 WUSD'"
               class="grid__input"
-              rules="required|numeric"
+              rules="required|decimal"
               :name="$t('modals.amountField')"
             />
             <div class="grid__equal">
@@ -68,6 +68,7 @@
             v-model="card"
             class="drop__field"
             :items="items"
+            :placeholder="$t('modals.addNewCard')"
           >
             <template v-slot:card>
               <span class="icon-credit_card drop__card" />
@@ -76,7 +77,7 @@
               v-slot:buttonCard
             >
               <base-btn
-                mode="outline"
+                mode="add"
                 class="drop__button button"
                 @click="showAddingCard"
               >
@@ -98,7 +99,7 @@
           </base-btn>
           <base-btn
             class="buttons__button"
-            :disabled="invalid"
+            :disabled="invalid||items.length===0"
             @click="handleSubmit(showTransactionSendModal)"
           >
             {{ $t('meta.submit') }}
@@ -110,6 +111,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -124,6 +126,9 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
     items() {
       return [
         'Visa *0000',
@@ -139,7 +144,7 @@ export default {
       this.ShowModal({
         key: modals.withdrawInfo,
         title: this.$t('modals.withdrawInfo'),
-        cardNumber: '**** **** **** 0000',
+        cardNumber: this.options.cardNumber || '0000000000000000',
       });
     },
     showTakeWithdraw() {
@@ -214,7 +219,7 @@ export default {
     display: grid;
     grid-template-columns: 47% 6% 47%;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: flex-start;
   }
   &__title{
     @include text-simple;
@@ -223,7 +228,7 @@ export default {
     color: $black800;
   }
   &__equal {
-    margin: 0 10px 36px 10px;
+    margin: 10px 10px 30px 10px;
   }
 }
 .body{
@@ -254,5 +259,8 @@ export default {
     color:$blue!important;
     margin-right: 12px;
   }
+}
+.button:hover .button__icon:before{
+  color: $white!important;
 }
 </style>

@@ -14,7 +14,7 @@
             {{ $t('modals.numberCard') }}
           </div>
           <base-field
-            v-model="cardNumberInput"
+            v-model="cardNumber"
             class="input__field"
             :placeholder="'1234 1234 1234 1234'"
             rules="required|numberOfCard"
@@ -28,7 +28,7 @@
           <base-field
             v-model="cardHolder"
             class="input__field"
-            :placeholder="'AAAA AAAAAAAAA'"
+            :placeholder="'John Doe'"
             rules="required|alpha_spaces"
             :name="$t('modals.cardHolderField')"
           />
@@ -42,7 +42,7 @@
               v-model="dateInput"
               class="grid__input"
               :placeholder="'02/24'"
-              rules="required"
+              rules="required|date"
               :name="$t('modals.dateName')"
             />
           </div>
@@ -88,7 +88,7 @@ export default {
   name: 'ModalAddingCard',
   data() {
     return {
-      cardNumberInput: '',
+      cardNumber: '',
       cardHolder: '',
       dateInput: '',
       cvvInput: '',
@@ -108,11 +108,13 @@ export default {
         this.ShowModal({
           key: modals.paymentOptions,
           step: 2,
+          cardNumber: this.cardNumber.split(' ').join(''),
         });
       } else {
         this.ShowModal({
           key: modals.cardAdded,
           branch: this.options.branch,
+          cardNumber: this.cardNumber.split(' ').join(''),
         });
       }
     },

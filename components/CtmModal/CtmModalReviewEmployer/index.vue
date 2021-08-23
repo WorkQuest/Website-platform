@@ -17,8 +17,9 @@
             <p class="content__labelMessage">
               {{ $t('modals.couple') }}
             </p>
-            <div>
+            <div class="content__body">
               <textarea
+                v-model="textArea"
                 class="content__textarea"
                 :placeholder="$t('modals.hello')"
               />
@@ -28,7 +29,7 @@
             <div class="buttons__wrapper">
               <base-btn
                 class="buttons__action"
-                @click="showThanksModal() "
+                @click="showThanksModal"
               >
                 {{ $t('meta.send') }}
               </base-btn>
@@ -37,7 +38,7 @@
               <base-btn
                 class="buttons__action"
                 mode="outline"
-                @click="hide()"
+                @click="hide"
               >
                 {{ $t('meta.cancel') }}
               </base-btn>
@@ -59,6 +60,7 @@ export default {
   components: {},
   data() {
     return {
+      textArea: '',
       rating: '',
       localRating: 0,
     };
@@ -68,9 +70,6 @@ export default {
       options: 'modals/getOptions',
     }),
   },
-  // mounted() {
-  //   this.localRating = JSON.parse(JSON.stringify(this.options.rating));
-  // },
   methods: {
     hide() {
       this.CloseModal();

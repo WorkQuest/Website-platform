@@ -1,37 +1,69 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
+    class="password"
     :title="$t('settings.changePass')"
   >
-    <div class="ctm-modal__content">
-      <div class="error-msg">
+    <div class="password__content content">
+      <div class="content__error">
         {{ errorMsg ? $t('errors.incorrectPass') : null }}
       </div>
-      <div class="ctm-modal__content-field">
+      <div class="content__field field">
         <base-field
           v-model="currentPasswordInput"
           :is-hide-error="true"
           :placeholder="'******'"
           :label="$t('modals.currentPassword')"
           mode="icon"
-          type="password"
+          :type="isVisibleCurrent ? 'text': 'password'"
+          class="field__input"
         >
-          <template v-slot:left>
-            <span class="icon-Lock" />
+          <template
+            v-slot:left
+            class="field__template"
+          >
+            <span class="icon-Lock field__picture" />
+          </template>
+          <template
+            v-slot:right-absolute
+            class="field__block"
+          >
+            <base-btn
+              mode="max"
+              class="field__button"
+              @click="isVisibleCurrent=!isVisibleCurrent"
+            >
+              <span class="icon-Lock field__picture" />
+            </base-btn>
           </template>
         </base-field>
       </div>
-      <div class="ctm-modal__content-field">
+      <div class="ctm-modal__content-field field">
         <base-field
           v-model="newPasswordInput"
           :is-hide-error="true"
           :placeholder="'******'"
           :label="$t('modals.newPassword')"
           mode="icon"
-          type="password"
+          :type="isVisible ? 'text': 'password'"
+          class="field__input"
         >
-          <template v-slot:left>
-            <span class="icon-Lock" />
+          <template
+            v-slot:left
+            class="field__template"
+          >
+            <span class="icon-Lock field__picture" />
+          </template>
+          <template
+            v-slot:right-absolute
+            class="field__block"
+          >
+            <base-btn
+              mode="max"
+              class="field__button"
+              @click="isVisible=!isVisible"
+            >
+              <span class="icon-Lock field__picture" />
+            </base-btn>
           </template>
         </base-field>
       </div>
@@ -42,16 +74,29 @@
           :placeholder="'******'"
           :label="$t('modals.confirmNewPassword')"
           mode="icon"
-          type="password"
+          :type="isVisibleConfirm ? 'text': 'password'"
         >
           <template v-slot:left>
             <span class="icon-Lock" />
           </template>
+          <template
+            v-slot:right-absolute
+            class="field__block"
+          >
+            <base-btn
+              mode="max"
+              class="field__button"
+              @click="isVisibleConfirm=!isVisibleConfirm"
+            >
+              <span class="icon-Lock field__picture" />
+            </base-btn>
+          </template>
         </base-field>
       </div>
-      <div class="ctm-modal__content-btns">
-        <div class="btn-group">
+      <div class="content__buttons buttons">
+        <div class="buttons__group">
           <base-btn
+            class="buttons__button"
             @click="hide()"
           >
             {{ $t('modals.change') }}
@@ -67,9 +112,12 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalOpenADeposit',
+  name: 'ModalChangePassSetting',
   data() {
     return {
+      isVisible: false,
+      isVisibleCurrent: false,
+      isVisibleConfirm: false,
       currentPasswordInput: '',
       newPasswordInput: '',
       confirmNewPasswordInput: '',
@@ -104,7 +152,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.password {
+  max-width: 382px !important;
+  &__content {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+    padding: 0 28px 30px 28px;
+  }
+}
+.content{
+  &__error{
+    color:red;
+  }
+}
 .icon {
   &-Lock:before {
     content: "\ea24";
@@ -112,43 +173,19 @@ export default {
     font-size: 25px;
   }
 }
-.error-msg {
-  color:red;
-}
-.ctm-modal {
-  @include modalKit;
-  &__content-field {
-    margin: 15px 0 0 0;
-  }
 
-  &__content-btns {
-    .btn-group{
+.buttons {
+    &__group{
       display: grid;
       grid-gap: 20px;
       gap: 20px;
       margin-top: 25px;
     }
-  }
-
-  &__label {
-    margin-bottom: 5px;
-  }
-
-  &__content {
-    padding-top: 0 !important;
+}
+.field{
+  &__button{
+    background-color: transparent!important;
   }
 }
 
-.messageSend {
-  max-width: 382px !important;
-  &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    grid-gap: 20px;
-  }
-  &__action {
-    margin-top: 10px;
-  }
-}
 </style>

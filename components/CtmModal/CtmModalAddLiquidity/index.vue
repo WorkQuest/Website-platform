@@ -17,7 +17,7 @@
               v-model="amountOfWusd"
               :placeholder="$t('modals.addLiquidityAmountWusd')"
               class="field__input"
-              rules="required|numeric"
+              rules="required|decimal"
               :name="$t('modals.amountOfWusdField')"
             />
             <div class="field__container">
@@ -28,7 +28,7 @@
                 v-model="amountOfEth"
                 :placeholder="$t('modals.addLiquidityAmountEth')"
                 class="field__input"
-                rules="required|numeric"
+                rules="required|decimal"
                 :name="$t('modals.amountOfEthField')"
               />
               <div class="field__heading">
