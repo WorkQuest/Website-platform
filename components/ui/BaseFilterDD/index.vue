@@ -113,6 +113,11 @@
               </div>
             </div>
           </div>
+          <div class="dd__btn">
+            <base-btn @click="hideDd()">
+              {{ $t('meta.submit') }}
+            </base-btn>
+          </div>
         </div>
       </transition>
     </div>
