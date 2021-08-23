@@ -83,6 +83,7 @@
       <CtmModalSwapInfo v-if="modals.swapInfo === currentModalKey" />
       <CtmModalClaim v-if="modals.claim === currentModalKey" />
       <CtmModalPrice v-if="modals.price === currentModalKey" />
+      <CtmModalAreYouSureDeleteQuest v-if="modals.areYouSureDeleteQuest === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -145,6 +146,7 @@ import CtmModalPayment from './CtmModalPayment';
 import CtmModalDisable2FA from './CtmModalDisable2FA';
 import CtmModalQuestFilterFull from './CtmModalQuestFilterFull';
 import CtmModalShowImage from './CtmModalShowImage';
+import CtmModalAreYouSureDeleteQuest from './CtmModalAreYouSureDeleteQuest';
 import CtmModalGiveDeposit from './CtmModalGiveDeposit';
 import CtmModalAddingCard from './CtmModalAddingCard';
 import CtmModalDepositOptions from './CtmModalDepositOptions';
@@ -235,6 +237,7 @@ export default {
     CtmModalAreYouSureNotification,
     CtmModalClaim,
     CtmModalPrice,
+    CtmModalAreYouSureDeleteQuest,
   },
   data: () => ({
     modals,

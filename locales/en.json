@@ -127,6 +127,8 @@
     }
   },
   "meta": {
+    "close": "Close",
+    "delete": "Delete",
     "back": "Back",
     "ok": "Ok",
     "send": "Send",
@@ -768,6 +770,12 @@
       "participants": "Participants",
       "chatName": "Chat name"
     },
+    "error": "Error",
+    "share": "Share",
+    "edit": "Edit",
+    "delete": "Delete",
+    "youCan’tDeleteActiveQuest": "You can’t delete active quest",
+    "sureDeleteText": "Do you really want to delete this quest?",
     "changePercentDesc": "A percentage of the quest amount that will be automatically credited to your retirement account",
     "yourSkillsHaveBeenAdded": "Your skills have been successfully added.",
     "yourAccountVerified": "Your account has been successfully verified",
