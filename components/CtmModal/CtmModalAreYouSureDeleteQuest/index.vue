@@ -1,69 +1,34 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
+    class="sure"
     :is-header="false"
   >
-    <div class="ctm-modal__content">
-      <div class="messageSend">
-        <div class="messageSend__content">
-          <img
-            v-if="step === 1"
-            src="~assets/img/ui/message.svg"
-            alt="AreYouSure"
-          >
-          <img
-            v-if="step === 2"
-            src="~assets/img/ui/error.svg"
-            alt="error"
-          >
-          <div
-            v-if="step === 1"
-            class="ctm-modal__title"
-          >
-            {{ $t('modals.areYouSure') }}
-          </div>
-          <div
-            v-if="step === 2"
-            class="ctm-modal__title"
-          >
-            {{ $t('modals.error') }}
-          </div>
-          <div
-            v-if="step === 1"
-            class="ctm-modal__desc"
-          >
-            {{ $t('modals.doYouWantToDeleteThisQuest') }}
-          </div>
-          <div
-            v-if="step === 2"
-            class="ctm-modal__desc"
-          >
-            {{ $t('modals.youCantDeleteActiveQuest') }}
-          </div>
-          <div
-            v-if="step === 1"
-            class="messageSend__container"
-          >
-            <base-btn
-              mode="outline"
-              @click="hide()"
-            >
-              {{ $t('meta.cancel') }}
-            </base-btn>
-            <base-btn
-              @click="nextStep()"
-            >
-              {{ $t('meta.delete') }}
-            </base-btn>
-          </div>
-          <base-btn
-            v-if="step === 2"
-            mode="outline"
-            @click="hide()"
-          >
-            {{ $t('meta.close') }}
-          </base-btn>
-        </div>
+    <div class="sure__content content">
+      <img
+        src="~assets/img/ui/message.svg"
+        alt="Are you sure to delete?"
+        class="content__picture"
+      >
+      <div class="content__title">
+        {{ $t('modals.areYouSure') }}
+      </div>
+      <div class="content__desc">
+        {{ $t('modals.sureDeleteText') }}
+      </div>
+      <div class="content__action action">
+        <base-btn
+          class="action__button"
+          mode="outline"
+          @click="hide()"
+        >
+          {{ $t('meta.cancel') }}
+        </base-btn>
+        <base-btn
+          class="action__button"
+          @click="showErrorModal"
+        >
+          {{ $t('meta.delete') }}
+        </base-btn>
       </div>
     </div>
   </ctm-modal-box>
@@ -71,13 +36,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalAreYouSure',
+  name: 'ModalAreYouSureDelete',
   data() {
-    return {
-      step: 1,
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
@@ -88,31 +52,55 @@ export default {
     hide() {
       this.CloseModal();
     },
-    nextStep() {
-      this.step += 1;
+    showErrorModal() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/error.svg'),
+        title: this.$t('modals.error'),
+        subtitle: this.$t('modals.youCan’tDeleteActiveQuest'),
+        button: this.$t('modals.close'),
+      });
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.ctm-modal {
-  @include modalKit;
-}
 
-.messageSend {
+.sure{
   max-width: 337px !important;
   &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    grid-gap: 20px;
+    padding: 30px!important;
   }
-  &__container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 10px;
-    width: 100%;
+}
+.content{
+  &__title{
+    font-weight: 500;
+    font-size: 23px;
+    line-height: 130%;
+    margin: 30px 0 20px 0;
+    text-align: center;
+  }
+  &__desc{
+    color: #4C5767;
+    font-size: 16px;
+    line-height: 130%;
+    text-align: center;
+  }
+  &__picture{
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+}
+.action{
+  display: grid;
+  grid-gap: 20px;
+  gap: 20px;
+  margin-top: 30px;
+  grid-auto-flow: column;
+  &__button{
+    max-width: 129px!important;
   }
 }
 </style>

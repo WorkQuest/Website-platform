@@ -24,7 +24,7 @@
                 <div
                   class="menu__text"
                 >
-                  Raise views
+                  {{ $t('modals.raiseViews') }}
                 </div>
               </div>
               <div
@@ -34,7 +34,7 @@
                 <div
                   class="menu__text"
                 >
-                  Share
+                  {{ $t('modals.share') }}
                 </div>
               </div>
               <div
@@ -43,7 +43,7 @@
                 <div
                   class="menu__text"
                 >
-                  Edit
+                  {{ $t('modals.edit') }}
                 </div>
               </div>
               <div
@@ -53,7 +53,7 @@
                 <div
                   class="menu__text"
                 >
-                  Delete
+                  {{ $t('modals.delete') }}
                 </div>
               </div>
             </span>
