@@ -585,7 +585,7 @@ export default {
     },
     showPrice() {
       this.ShowModal({
-        key: modals.price,
+        key: modals.priceSearch,
       });
     },
     showQuestQreated() {

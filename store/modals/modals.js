@@ -71,7 +71,6 @@ export default {
   swapInfo: 'swapInfo',
   areYouSureNotification: 'areYouSureNotification',
   claim: 'claim',
-  price: 'price',
   priceSearch: 'priceSearch',
   areYouSureDeleteQuest: 'areYouSureDeleteQuest',
 };

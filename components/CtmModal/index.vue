@@ -83,7 +83,6 @@
       <CtmModalSwap v-if="modals.swap === currentModalKey" />
       <CtmModalSwapInfo v-if="modals.swapInfo === currentModalKey" />
       <CtmModalClaim v-if="modals.claim === currentModalKey" />
-      <CtmModalPrice v-if="modals.price === currentModalKey" />
       <CtmModalAreYouSureDeleteQuest v-if="modals.areYouSureDeleteQuest === currentModalKey" />
     </div>
   </transition>
@@ -162,7 +161,6 @@ import CtmModalSwap from './CtmModalSwap';
 import CtmModalSwapInfo from './CtmModalSwapInfo';
 import CtmModalAreYouSureNotification from './CtmModalAreYouSureNotification';
 import CtmModalClaim from './CtmModalClaim';
-import CtmModalPrice from './CtmModalPrice';
 import CtmModalPriceSearch from './CtmModalPrice';
 
 export default {
@@ -238,7 +236,6 @@ export default {
     CtmModalSwapInfo,
     CtmModalAreYouSureNotification,
     CtmModalClaim,
-    CtmModalPrice,
     CtmModalAreYouSureDeleteQuest,
     CtmModalPriceSearch,
   },
