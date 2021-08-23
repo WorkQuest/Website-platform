@@ -131,7 +131,7 @@ import CtmModalPayment from './CtmModalPayment';
 import CtmModalDisable2FA from './CtmModalDisable2FA';
 import CtmModalQuestFilterFull from './CtmModalQuestFilterFull';
 import CtmModalShowImage from './CtmModalShowImage';
-import CtmModalPriceSearch from './CtmModalPriceSearch';
+import CtmModalPriceSearch from './CtmModalPrice';
 
 export default {
   name: 'ModalBox',
