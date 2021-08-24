@@ -168,7 +168,10 @@
               >
                 {{ $t('pension.cancel') }}
               </base-btn>
-              <base-btn class="btn_bl">
+              <base-btn
+                class="btn_bl"
+                @click="showWithdrawModal"
+              >
                 {{ $t('pension.withdraw') }}
               </base-btn>
               <base-btn
@@ -432,6 +435,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    showWithdrawModal() {
+      this.ShowModal({
+        key: modals.takeWithdraw,
+      });
+    },
     openApplyForAPensionModal() {
       this.ShowModal({
         key: modals.applyForAPension,
@@ -489,7 +497,6 @@ export default {
       font-size: 45px;
       line-height: 110%;
       margin: 0 0 24px;
-//update
       &_sub {
         @extend .title;
         font-size: 16px;

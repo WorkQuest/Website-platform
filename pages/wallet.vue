@@ -46,7 +46,7 @@
                 class="balance__btn"
                 @click=" showTransferModal()"
               >
-                {{ $t('wallet.transfer') }}
+                {{ $t('modals.transfer') }}
               </base-btn>
             </div>
           </div>
@@ -123,6 +123,7 @@ export default {
       transactions: 'data/getTransactions',
       transactionsData: 'data/getTransactionsData',
     }),
+
   },
   async mounted() {
     this.SetLoader(true);
@@ -134,22 +135,24 @@ export default {
     },
     showTransferModal() {
       this.ShowModal({
-        key: modals.transfer,
+        key: modals.giveTransfer,
       });
     },
     showDepositModal() {
       this.ShowModal({
-        key: modals.deposit,
+        key: modals.giveDeposit,
       });
     },
     showWithdrawModal() {
       this.ShowModal({
-        key: modals.withdraw,
+        key: modals.takeWithdraw,
+        branch: 'withdraw',
       });
     },
     showAddCardModal() {
       this.ShowModal({
-        key: modals.addCard,
+        key: modals.addingCard,
+        branch: 'adding',
       });
     },
     showSuccessCopied() {

@@ -13,8 +13,6 @@
               id="twoFACode"
               v-model="twoFACode"
               :is-hide-error="true"
-              :label="$t('modals.twoFAConfirmationCode')"
-              :placeholder="$t('modals.twoFAConfirmationCode')"
             />
           </div>
         </div>

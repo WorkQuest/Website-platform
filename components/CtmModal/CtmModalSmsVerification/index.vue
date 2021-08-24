@@ -1,75 +1,88 @@
 <template>
   <ctm-modal-box
     :title="$t('modals.smsVerification')"
-    class="messageSend"
+    class="verification"
   >
-    <div class="ctm-modal__content">
-      <div class="message__sub">
-        <span v-if="step === 1">{{ $t('modals.enterPhone') }}</span>
-        <span v-if="step === 2">{{ $t('modals.enterSMSCode') }}</span>
-      </div>
-      <div class="messageSend">
-        <div class="messageSend__content">
-          <span
-            v-if="step === 1"
-            class="message__top"
-          >
-            {{ $t('modals.phoneNumber') }}
-          </span>
-          <span
-            v-if="step === 2"
-            class="message__top"
-          >
-            {{ $t('modals.codeFromSMS') }}
-          </span>
-          <base-field
-            v-if="step === 1"
-            v-model="phoneNumber"
-            class="message__action"
-            :placeholder="$t('modals.phoneNumber')"
-            :is-hide-error="true"
-            mode="icon"
-          >
-            <template v-slot:left>
-              <span class="icon-phone_outline" />
-            </template>
-          </base-field>
-          <base-field
-            v-if="step === 2"
-            v-model="confirmCode"
-            class="message__action"
-            :placeholder="$t('modals.codeFromSMS')"
-            :is-hide-error="true"
-            mode="icon"
-          >
-            <template v-slot:left>
-              <span class="icon-Lock" />
-            </template>
-          </base-field>
-          <span
-            v-if="step === 2"
-            class="message__bottom"
-          >
-            {{ $t('modals.haventSMS') }} <button class="btn__resend">{{ $t('meta.resendSMS') }}</button>
-          </span>
-          <div class="btn__container">
-            <base-btn
-              v-if="step === 1"
-              class="message__action"
-              @click="nextStep()"
-            >
-              {{ $t('meta.next') }}
-            </base-btn>
-            <base-btn
-              v-if="step === 2"
-              class="message__action"
-              @click="success()"
-            >
-              {{ $t('meta.connectSMSVer') }}
-            </base-btn>
-          </div>
+    <div class="verification__content content">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
+        <div class="content__subtitle">
+          <span v-if="step === 1">{{ $t('modals.enterPhone') }}</span>
+          <span v-if="step === 2">{{ $t('modals.enterSMSCode') }}</span>
         </div>
-      </div>
+        <span
+          v-if="step === 1"
+          class="content__top"
+        >
+          {{ $t('modals.phoneNumber') }}
+        </span>
+        <span
+          v-if="step === 2"
+          class="content__top"
+        >
+          {{ $t('modals.codeFromSMS') }}
+        </span>
+        <base-field
+          v-if="step === 1"
+          v-model="phoneNumber"
+          class="content__action"
+          :placeholder="$t('modals.phoneNumber')"
+          mode="icon"
+          rules="required|alpha_num"
+          :name="$t('modals.phoneNumberField')"
+        >
+          <template
+            v-slot:left
+            class="content__picture"
+          >
+            <div class="icon-phone_outline content__icon" />
+          </template>
+        </base-field>
+        <base-field
+          v-if="step === 2"
+          v-model="confirmCode"
+          class="content__action"
+          :placeholder="$t('modals.codeFromSMSField')"
+          mode="icon"
+          rules="required|alpha_num"
+          :name="$t('modals.codeFromSMS')"
+        >
+          <template
+            v-slot:left
+            class="content__picture"
+          >
+            <span class="icon-Lock content__icon" />
+          </template>
+        </base-field>
+        <div
+          v-if="step === 2"
+          class="content__bottom"
+        >
+          {{ $t('modals.haventSMS') }}
+          <button class="content__resend">
+            {{ $t('meta.resendSMS') }}
+          </button>
+        </div>
+        <div class="content__buttons buttons">
+          <base-btn
+            v-if="step === 1"
+            class="buttons__button"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(nextStep)"
+          >
+            {{ $t('meta.next') }}
+          </base-btn>
+          <base-btn
+            v-if="step === 2"
+            class="buttons__button"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(success)"
+          >
+            {{ $t('meta.confirm') }}
+          </base-btn>
+        </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -78,7 +91,7 @@
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'CtmModalChangeRoleWarning',
+  name: 'CtmModalSmsVerification',
   data() {
     return {
       confirmCode: '',
@@ -133,52 +146,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ctm-modal {
-  @include modalKit;
-}
-
-.icon {
-  color: $blue;
-  font-size: 20px;
-  &-Lock:before {
-    content: "\ea24";
-    @extend .icon;
-  }
-  &-phone_outline:before {
-    content: "\ea2c";
-    @extend .icon;
+.verification {
+  max-width: 382px !important;
+  &__content {
+    padding: 0 28px 30px 28px!important;
   }
 }
-
-.message {
-  &__action {
-    width: 100%;
-  }
-  &__top {
-    margin: 25px 0 0 0;
-    display: flex;
-    justify-self: flex-start;
-  }
-  &__bottom {
-    @extend .message__top;
-    margin: 0;
-    font-weight: 400;
-    font-size: 14px;
-  }
-  &__sub {
+.content{
+  &__subtitle {
     @include text-simple;
     font-weight: 400;
     color: $black400;
     font-size: 16px;
+    margin-top: 10px;
   }
-}
-
-.btn {
-  &__container {
+  &__top {
+    margin: 25px 0 4px 0;
     display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    margin: 25px 0 0 0;
+    justify-self: flex-start;
+  }
+  &__action {
+    width: 100%;
+  }
+  &__icon:before{
+    font-size: 25px!important;
+    color: $blue;
+  }
+  &__bottom {
+    margin-top: 15px;
+    font-weight: 400;
+    font-size: 14px;
+    margin-bottom: 23px;
+
+  }
+  &__buttons {
+    margin: 2px 0 0 0;
     width: 100%;
   }
   &__resend {
@@ -188,22 +190,6 @@ export default {
     font-size: 14px;
     margin: 0 0 0 5px;
   }
-  &__wrapper {
-    width: 45%;
-  }
 }
 
-.messageSend {
-  max-width: 400px !important;
-  &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    grid-gap: 10px;
-  }
-  &__action {
-    margin-top: 10px;
-    width: 100%;
-  }
-}
 </style>

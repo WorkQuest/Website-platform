@@ -1,74 +1,84 @@
 <template>
   <ctm-modal-box
-    class="addLiquidity"
+    class="liquidity"
     :title="$t('modals.addLiquidity')"
   >
-    <div class="ctm-modal__content">
-      <div class="ctm-modal__grid-cont">
-        <div>
-          <div class="ctm-modal__content-field">
+    <div class="liquidity__content content">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+        class="content__observer"
+      >
+        <div class="content__grid">
+          <div class="content__field field">
+            <div class="field__title">
+              {{ $t('modals.amountOfWusd') }}
+            </div>
             <base-field
               v-model="amountOfWusd"
-              :is-hide-error="true"
-              :placeholder="'0 ETH'"
-              :label="$t('modals.amountOfWusd')"
+              :placeholder="$t('modals.addLiquidityAmountWusd')"
+              class="field__input"
+              rules="required|decimal"
+              :name="$t('modals.amountOfWusdField')"
             />
-          </div>
-          <div class="ctm-modal__content-field">
-            <base-field
-              v-model="amountOfEth"
-              :is-hide-error="true"
-              :placeholder="'0 WUSD'"
-              :label="$t('modals.amountOfEth')"
-            />
-            <div class="ctm-modal__title-head">
-              {{ $t('modals.tip') }}
+            <div class="field__container">
+              <div class="field__title">
+                {{ $t('modals.amountOfEth') }}
+              </div>
+              <base-field
+                v-model="amountOfEth"
+                :placeholder="$t('modals.addLiquidityAmountEth')"
+                class="field__input"
+                rules="required|decimal"
+                :name="$t('modals.amountOfEthField')"
+              />
+              <div class="field__heading">
+                {{ $t('modals.tip') }}
+              </div>
+              <div class="field__about">
+                {{ $t('modals.tipAbout') }}
+              </div>
             </div>
-            <div class="ctm-modal__subtitle">
-              {{ $t('modals.tipAbout') }}
+          </div>
+          <div class="content__zone">
+            <div class="content__subtitle">
+              {{ $t('modals.byAddingLiquidityYouWillEarn') }}
+            </div>
+            <div
+              v-for="(item, i) in abouts"
+              :key="i"
+            >
+              <div class="content__title">
+                {{ item.title }}
+              </div>
+              <div class="content__subtitle_small">
+                {{ item.subtitle }}
+              </div>
             </div>
           </div>
         </div>
-        <div class="ctm-modal__gray-zone">
-          <div class="ctm-modal__subtitle">
-            {{ $t('modals.byAddingLiquidityYouWillEarn') }}
-          </div>
-          <div
-            v-for="(item, i) in abouts"
-            :key="i"
-          >
-            <div class="ctm-modal__title-head">
-              {{ item.title }}
-            </div>
-            <div class="ctm-modal__subtitle_small">
-              {{ item.subtitle }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="ctm-modal__content-btns">
-        <div class="btn-group">
+        <div class="content__buttons buttons">
           <base-btn
-            class="btn"
-            @click="hide()"
+            class="buttons__button"
+            mode="outline"
+            @click="hide"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            class="btn_bl"
-            @click="hide()"
+            class="buttons__button"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(hide)"
           >
             {{ $t('modals.connectWallet') }}
           </base-btn>
         </div>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalAddLiquidity',
@@ -107,112 +117,88 @@ export default {
 
 <style lang="scss" scoped>
 
-.ctm-modal {
-  @include modalKit;
-
-  .addLiquidity {
+.liquidity {
     max-width: 945px !important;
     max-height: 80vh;
+  &__content{
+  padding: 20px 28px 30px;
   }
-  &__content-field {
-    margin: 15px 0 0 0;
-  }
+}
 
-  &__gray-zone {
-    background-color: #F7F8FA;
-    border-radius: 5px;
-    margin-top: 15px;
-    padding: 20px;
-  }
-
-  &__grid-cont {
+.content {
+  &__grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
-
-  &__content-btns {
-    .btn-group{
-      display: grid;
-      grid-template-columns: repeat(2, calc(50% - 10px));
-      grid-gap: 20px;
-      gap: 20px;
-      margin-top: 25px;
-
-      .btn {
-        box-sizing: border-box;
-        font-weight: 400;
-        font-size: 16px;
-        color: #0083C7;
-        border: 1px solid #0083C71A;
-        border-radius: 6px;
-        transition: .3s;
-        background-color: #fff;
-
-        &:hover {
-          background-color: #0083C71A;
-          border: 0px;
-        }
-
-        &_bl {
-          @extend .btn;
-          background-color: #0083C7;
-          border: unset;
-          color: #fff;
-
-          &:hover {
-            background-color: #103d7c;
-          }
-        }
-      }
-    }
-  }
-
-  &__label {
-    margin-bottom: 5px;
-  }
-
-  &__content {
-    padding-top: 0 !important;
-  }
-
-  &__title-head {
+  &__title{
     font-size: 16px;
-    font-weight: 400;
-    margin-top: 20px;
+    line-height: 130%;
+    margin: 20px 0 5px 0;
   }
-
   &__subtitle {
     color: #7C838D;
     font-weight: 400;
     font-size: 16px;
-
     &_small {
       color: #7C838D;
       font-weight: 500;
       font-size: 14px;
     }
   }
-
+  &__zone {
+    background-color: #F7F8FA;
+    border-radius: 5px;
+    padding: 15px 20px 20px 20px;
+  }
+  &__buttons {
+    display: grid;
+    grid-template-columns: repeat(2, calc(50% - 10px));
+    grid-gap: 20px;
+    gap: 20px;
+    margin-top: 25px;
+  }
+}
+.field{
+  &__title{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 130%;
+    margin-bottom: 5px;
+  }
+  &__input{
+    margin-bottom: 2px;
+  }
+  &__heading{
+    font-size: 16px;
+    line-height: 130%;
+  }
+  &__about{
+    color: #7C838D;
+    font-weight: 400;
+    line-height: 130%;
+    font-size: 16px;
+  }
+}
   @include _575 {
-    .ctm-modal {
-      &__grid-cont {
+    .content{
+      &__grid{
         grid-template-rows: repeat(2, auto);
         grid-template-columns: unset;
         overflow: auto;
         height: calc(80vh - 170px);
       }
-      &__gray-zone {
+      &__zone {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
         margin: 0;
-        .ctm-modal__subtitle {
-          grid-column-start: 1;
-          grid-column-end: 3;
-        }
+      }
+      &__subtitle {
+        grid-column-start: 1;
+        grid-column-end: 3;
       }
     }
   }
-}
+
 </style>
