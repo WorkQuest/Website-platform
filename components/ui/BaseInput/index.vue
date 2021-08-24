@@ -87,7 +87,7 @@ export default {
       default: false,
     },
     placeholder: {
-      type: String,
+      type: [String, Number],
       default: '',
     },
     errorText: {
