@@ -1,50 +1,57 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
+    class="deposit"
     :title="$t('saving.openADeposit')"
   >
-    <div class="ctm-modal__content">
-      <validation-observer v-slot="{ handleSubmit, validated, passed, invalid }">
-        <div class="ctm-modal__content-field">
+    <div class="deposit__content content">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
+        <div class="content__field">
           <label
-            for="depositPercent_input"
-            class="ctm-modal__label"
-          >{{ $t("modals.lockedSavings") }}</label>
+            for="deposit__input"
+            class="content__label"
+          >{{ $t("modals.lockedSavings") }}
+          </label>
           <base-field
-            id="depositPercent_input"
-            :is-hide-error="true"
-            :placeholder="'0'"
-            rules="required|min_value:0"
-            name="deposit percent"
+            id="deposit__input"
+            v-model="saving"
+            :placeholder="'3 500'"
+            class="content__input"
+            rules="required|decimal"
+            :name="$t('modals.lockedSavingsField')"
           />
         </div>
-        <div class="ctm-modal__content-field">
+        <div class="content__field">
           <label
-            for="amount_input"
-            class="ctm-modal__label"
-          >{{ $t("modals.durationDays") }}</label>
+            for="amount__input"
+            class="content__label"
+          >{{ $t("modals.durationDays") }}
+          </label>
           <base-field
-            id="amount_input"
-            :is-hide-error="true"
-            :placeholder="'0'"
+            id="amount__input"
+            v-model="duration"
+            :placeholder="'180'"
+            class="content__input"
+            rules="required|numeric"
+            :name="$t('modals.durationDaysField')"
           />
         </div>
-        <div class="ctm-modal__content-btns">
-          <div class="btn-group">
-            <base-btn
-              class="btn"
-              @click="hide()"
-            >
-              {{ $t('meta.cancel') }}
-            </base-btn>
-            <base-btn
-              class="base-btn btn_bl"
-              :disabled="!validated || !passed || invalid"
-              @click="handleSubmit(showDepositIsOpenedModal)"
-            >
-              {{ $t('meta.submit') }}
-            </base-btn>
-          </div>
+        <div class="content__buttons buttons">
+          <base-btn
+            class="buttons__button"
+            mode="outline"
+            @click="hide"
+          >
+            {{ $t('meta.cancel') }}
+          </base-btn>
+          <base-btn
+            class="buttons__button"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(showDepositIsOpenedModal)"
+          >
+            {{ $t('meta.submit') }}
+          </base-btn>
         </div>
       </validation-observer>
     </div>
@@ -58,7 +65,10 @@ import modals from '~/store/modals/modals';
 export default {
   name: 'ModalOpenADeposit',
   data() {
-    return {};
+    return {
+      duration: '',
+      saving: '',
+    };
   },
   computed: {
     ...mapGetters({
@@ -73,8 +83,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/transactionSend.svg'),
-        title: this.$t('saving.depositIsOpened'),
-        subtitle: this.$t('saving.depositModalBody'),
+        title: this.$t('modals.depositIsOpened'),
+        subtitle: this.$t('saving.depositIsOpenedText'),
         path: '/savings/1',
       });
     },
@@ -84,74 +94,22 @@ export default {
 
 <style lang="scss" scoped>
 
-.ctm-modal {
-  @include modalKit;
-  &__content-field {
-    margin: 15px 0 0 0;
-  }
-
-  &__content-btns {
-    .btn-group{
-      display: grid;
-      grid-template-columns: repeat(2, calc(50% - 10px));
-      grid-gap: 20px;
-      gap: 20px;
-      margin-top: 25px;
-
-      .btn {
-        box-sizing: border-box;
-        font-weight: 400;
-        font-size: 16px;
-        color: #0083C7;
-        border: 1px solid #0083C71A;
-        border-radius: 6px;
-        transition: .3s;
-        background-color: #fff;
-
-        &:hover {
-          background-color: #0083C71A;
-          border: 0;
-        }
-
-        &_bl {
-          @extend .btn;
-          background-color: #0083C7;
-          border: unset;
-          color: #fff;
-
-          &:hover {
-            background-color: #103d7c;
-          }
-        }
-      }
-    }
-  }
-
-  &__label {
-    margin-bottom: 5px;
-  }
-
+.deposit {
+  max-width: 487px !important;
   &__content {
-    padding-top: 0 !important;
+    padding: 20px 28px 30px 28px!important;
   }
 }
-
-.base-btn {
-  &_disabled {
-    background: #D1D1CF !important;
+.content{
+  &__label{
+  margin: 2px 0 4px 0!important;
   }
-}
-
-.messageSend {
-  max-width: 495px !important;
-  &__content {
+  &__buttons{
     display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
+    grid-template-columns: repeat(2, calc(50% - 10px));
     grid-gap: 20px;
-  }
-  &__action {
-    margin-top: 10px;
+    gap: 20px;
+    margin-top: 2px;
   }
 }
 </style>

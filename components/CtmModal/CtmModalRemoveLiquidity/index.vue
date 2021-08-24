@@ -1,80 +1,94 @@
 <template>
   <ctm-modal-box
-    class="addLiquidity"
+    class="remove"
     :title="$t('modals.removeLiquidity')"
   >
-    <div class="ctm-modal__content">
-      <div class="ctm-modal__grid-cont">
-        <div>
-          <div class="ctm-modal__content-field">
-            <base-field
-              id="withdrawalAmount"
-              :is-hide-error="true"
-              :label="$t('modals.withdrawalAmount')"
-              :placeholder="'0 WUSD'"
-            />
-          </div>
-          <div class="ctm-modal__content-field">
-            <div
-              v-for="(item, i) in currencies"
-              :key="i"
-              class="ctm-modal__currency"
-            >
-              <img
-                :src="item.url"
-                alt=""
+    <div class="remove__content content">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
+        <div class="content__grid">
+          <div>
+            <div class="content__field field">
+              <div class="field__title">
+                {{ $t('modals.withdrawalAmount') }}
+              </div>
+              <base-field
+                v-model="withdraw"
+                class="field__body"
+                :placeholder="'1000 WUSD'"
+                rules="required|decimal"
+                :name="$t('modals.withdrawalAmountField')"
+              />
+            </div>
+            <div class="content__currencies currencies">
+              <div
+                v-for="(item, i) in currencies"
+                :key="i"
+                class="currencies__body"
+                :class="{'currencies__body_last':i=== currencies.length-1}"
               >
-              <div class="name">
-                {{ item.name }}
+                <img
+                  :src="item.url"
+                  alt="tokens"
+                  class="currencies__picture"
+                >
+                <div class="currencies__name">
+                  {{ item.name }}
+                </div>
+                <div class="currencies__value">
+                  {{ item.value }}
+                </div>
               </div>
-              <div class="val">
-                {{ item.value }}
+            </div>
+          </div>
+          <div class="content__zone zone">
+            <div
+              v-for="(item, i) in abouts"
+              :key="i"
+              class="zone__field"
+            >
+              <div class="zone__title">
+                {{ item.title }}
+              </div>
+              <div
+                class="zone__subtitle"
+                :class="{'zone__subtitle_last':i=== abouts.length-1}"
+              >
+                {{ item.subtitle }}
               </div>
             </div>
           </div>
         </div>
-        <div class="ctm-modal__gray-zone">
-          <div
-            v-for="(item, i) in abouts"
-            :key="i"
-          >
-            <div class="ctm-modal__title-head">
-              {{ item.title }}
-            </div>
-            <div class="ctm-modal__subtitle_small">
-              {{ item.subtitle }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="ctm-modal__content-btns">
-        <div class="btn-group">
+        <div class="content__buttons buttons">
           <base-btn
-            class="btn"
+            class="buttons__button"
+            mode="outline"
             @click="hide()"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            class="btn_bl"
-            @click="hide()"
+            class="buttons__button"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(hide)"
           >
             {{ $t('modals.removeLiquidity') }}
           </base-btn>
         </div>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalRemoveLiquidity',
   data() {
     return {
+      withdraw: '',
       abouts: [
         {
           title: this.$t('modals.exchangeRate'),
@@ -82,11 +96,11 @@ export default {
         },
         {
           title: this.$t('modals.currentPoolSize'),
-          subtitle: this.$t('modals.tempForRemove'),
+          subtitle: this.$t('modals.removeLiquidityCurrentPoolSize'),
         },
         {
           title: this.$t('modals.yourPoolShare'),
-          subtitle: this.$t('modals.tempForRemove'),
+          subtitle: this.$t('modals.removeLiquidityYourPoolShare'),
         },
       ],
       currencies: [
@@ -118,122 +132,91 @@ export default {
 
 <style lang="scss" scoped>
 
-.ctm-modal {
-  @include modalKit;
+.remove {
+  max-width: 875px !important;
+  max-height: 80vh;
 
-  .addLiquidity {
-    max-width: 875px !important;
-    max-height: 80vh;
+  &__content {
+  padding: 20px 28px 30px 28px;
   }
-  &__content-field {
-    margin: 15px 0 0 0;
-  }
-
-  &__currency {
-    display: grid;
-    grid-template-columns: 45px 3fr auto;
-    align-items: center;
-    gap: 10px;
-
-    &:not(:last-child) {
-      margin-bottom: 20px;
-    }
-
-    .name {
-      font-weight: 400;
-      font-size: 16px;
-      color: #1D2127;
-    }
-
-    .val {
-      @extend .name;
-      text-align: right;
-    }
-  }
-
-  &__gray-zone {
+}
+.content {
+  &__zone {
     background-color: #F7F8FA;
     border-radius: 5px;
-    margin-top: 15px;
-    padding: 0 20px 20px 20px;
+    padding: 20px;
   }
-
-  &__grid-cont {
+  &__grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
-
-  &__content-btns {
-    .btn-group{
-      display: grid;
-      grid-template-columns: repeat(2, calc(50% - 10px));
-      grid-gap: 20px;
-      gap: 20px;
-      margin-top: 25px;
-
-      .btn {
-        box-sizing: border-box;
-        font-weight: 400;
-        font-size: 16px;
-        color: #0083C7;
-        border: 1px solid #0083C71A;
-        border-radius: 6px;
-        transition: .3s;
-        background-color: #fff;
-
-        &:hover {
-          background-color: #0083C71A;
-          border: 0px;
-        }
-
-        &_bl {
-          @extend .btn;
-          background-color: #0083C7;
-          border: unset;
-          color: #fff;
-
-          &:hover {
-            background-color: #103d7c;
-          }
-        }
-      }
-    }
+  &__buttons {
+    display: grid;
+    grid-template-columns: repeat(2, calc(50% - 10px));
+    grid-gap: 20px;
+    gap: 20px;
+    margin-top: 25px;
   }
-
-  &__label {
+}
+.currencies{
+  &__body {
+    display: grid;
+    grid-template-columns: 45px 3fr auto;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 23px;
+    &_last{
+      margin-bottom: 0;
+    }
+    }
+    &__picture{
+      box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.15);
+      border-radius: 50%;
+    }
+    &__name {
+      font-weight: 400;
+      font-size: 16px;
+      color: #1D2127;
+    }
+    &__value {
+      @extend .currencies__name;
+      text-align: right;
+    }
+}
+.zone {
+  &__title {
+    font-size: 16px;
+    font-weight: 400;
     margin-bottom: 5px;
   }
-
-  &__content {
-    padding-top: 0 !important;
-  }
-
-  &__title-head {
-    font-size: 16px;
-    font-weight: 400;
-    margin-top: 20px;
-  }
-
   &__subtitle {
-    color: #7C838D;
-    font-weight: 400;
-    font-size: 16px;
-
-    &_small {
       color: #7C838D;
       font-weight: 500;
       font-size: 14px;
+      margin-bottom: 20px;
+      line-height: 130%;
+    &_last{
+      margin-bottom: 0;
     }
   }
+}
+.field{
+  &__title{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 130%;
+    margin-bottom: 10px;
+  }
+}
 
   @include _575 {
-    .ctm-modal {
-      &__grid-cont {
+    .content {
+      &__grid {
         grid-template-rows: repeat(2, auto);
         grid-template-columns: unset;
       }
-      &__gray-zone {
+      &__zone {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
@@ -241,5 +224,5 @@ export default {
       }
     }
   }
-}
+
 </style>

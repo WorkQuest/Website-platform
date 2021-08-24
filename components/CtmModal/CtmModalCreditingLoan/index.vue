@@ -1,91 +1,97 @@
 <template>
   <ctm-modal-box
-    class="addLiquidity"
+    class="loan"
     :title="$t('modals.loan')"
   >
-    <div class="ctm-modal__content">
-      <div class="ctm-modal__scroll-cont">
-        <div class="ctm-modal__checkpoints">
-          <label
-            for="checkpoints-cont"
-            class="ctm-modal__label"
-          >
-            {{ $t('modals.chooseTheCurrency') }}
-          </label>
-          <div
-            id="checkpoints-cont"
-            class="checkpoints-cont"
-          >
-            <div
-              v-for="(item, i) in checkpoints"
-              :key="i"
-              class="checkpoint-cont"
+    <div class="loan__content content">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
+        <div class="content__body">
+          <div class="content__checkpoints checkpoints">
+            <label
+              for="checkpoints__main"
+              class="checkpoints__label"
             >
-              <input
-                :id="item.name"
-                v-model="selCurrencyID"
-                type="radio"
-                class="checkpoint"
-                :value="item.id"
+              {{ $t('modals.chooseTheCurrency') }}
+            </label>
+            <div
+              id="checkpoints__main"
+              class="checkpoints__main"
+            >
+              <div
+                v-for="(item, i) in checkpoints"
+                :key="i"
+                class="checkpoints__array"
               >
-              <label
-                class=""
-                :for="item.name"
-              >
-                {{ item.name }}
-              </label>
+                <input
+                  :id="item.name"
+                  v-model="selCurrencyID"
+                  type="radio"
+                  class="checkpoints__item"
+                  :value="item.id"
+                >
+                <label
+                  class="checkpoints__name"
+                  :for="item.name"
+                >
+                  {{ item.name }}
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="content__field">
+            <base-field
+              v-model="quantity"
+              class="content__input"
+              :label="$t('modals.howMuchETHWouldYouLikeToOpen')"
+              :placeholder="'10 ETH'"
+              rules="required|decimal"
+              :name="$t('modals.quantityField')"
+            />
+          </div>
+          <div class="content__field">
+            <base-field
+              id="amountOfPercents_input"
+              v-model="percents"
+              class="content__input"
+              :label="$t('modals.howMuchPercentWouldYouLikeToSet')"
+              :placeholder="'10 ETH'"
+              rules="required|decimal"
+              :name="$t('modals.percentField')"
+            />
+          </div>
+          <div class="content__field">
+            <base-field
+              v-model="debt"
+              :label="$t('modals.enterTermToReturnDebtBack')"
+              class="content__input"
+              :placeholder="'10 ETH'"
+              rules="required|decimal"
+              :name="$t('modals.amountField')"
+            />
+            <div class="content__text">
+              {{ $t('modals.tipAbout') }}
             </div>
           </div>
         </div>
-        <div class="ctm-modal__content-field">
-          <base-field
-            :is-hide-error="true"
-            class="input"
-            :label="$t('modals.howMuchETHWouldYouLikeToOpen')"
-            :tip="$t('modals.smallTemp')"
-            :placeholder="'10 ETH'"
-          />
-        </div>
-        <div class="ctm-modal__content-field">
-          <base-field
-            id="amountOfPercents_input"
-            :is-hide-error="true"
-            class="input"
-            :label="$t('modals.howMuchPercentWouldYouLikeToSet')"
-            :tip="$t('modals.smallTemp')"
-            :placeholder="'10 ETH'"
-          />
-        </div>
-        <div class="ctm-modal__content-field">
-          <base-field
-            :is-hide-error="true"
-            :label="$t('modals.enterTermToReturnDebtBack')"
-            :tip="$t('modals.smallTemp')"
-            class="input"
-            :placeholder="'10 ETH'"
-          />
-          <div class="ctm-modal__title-head" />
-          <div class="ctm-modal__subtitle">
-            {{ $t('modals.tipAbout') }}
-          </div>
-        </div>
-      </div>
-      <div class="ctm-modal__content-btns">
-        <div class="btn-group">
+        <div class="content__buttons buttons">
           <base-btn
-            class="btn"
-            @click="hide()"
+            class="buttons__button"
+            mode="outline"
+            @click="hide"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            class="btn_bl"
-            @click="openConfirmDetailsModal()"
+            class="buttons__button"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(openConfirmDetailsModal)"
           >
             {{ $t('meta.submit') }}
           </base-btn>
         </div>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -99,6 +105,9 @@ export default {
   data() {
     return {
       selCurrencyID: 1,
+      quantity: '',
+      debt: '',
+      percents: '',
       checkpoints: [
         {
           name: this.$t('modals.bnb'),
@@ -111,32 +120,6 @@ export default {
         {
           name: this.$t('modals.wqt'),
           id: 3,
-        },
-      ],
-      abouts: [
-        {
-          title: this.$t('modals.collateralization'),
-          subtitle: this.$tc('modals.percentsCount', 0),
-        },
-        {
-          title: this.$t('modals.liquidationPrice'),
-          subtitle: this.$tc('modals.percentsCount', 0),
-        },
-        {
-          title: this.$t('modals.currentPrice'),
-          subtitle: this.$tc('modals.percentsCount', 0),
-        },
-        {
-          title: this.$t('modals.stabilityFee'),
-          subtitle: this.$tc('modals.percentsCount', 0),
-        },
-        {
-          title: this.$t('modals.liquidationRatio'),
-          subtitle: this.$tc('modals.percentsCount', 0),
-        },
-        {
-          title: this.$t('modals.liquidationPenalty'),
-          subtitle: this.$tc('modals.percentsCount', 0),
         },
       ],
     };
@@ -162,114 +145,68 @@ export default {
 
 <style lang="scss" scoped>
 
-.ctm-modal {
-  @include modalKit;
-
-  .addLiquidity {
-    max-width: 490px !important;
-    max-height: 80vh;
+.loan {
+  max-width: 490px !important;
+  height: auto !important;
+  padding: 0!important;
+  &__content{
+    padding: 25px 28px 30px 28px;
   }
-
-  &__scroll-cont {
-    max-height: calc(80vh - 170px);
-    overflow: auto;
+}
+  .buttons{
+    display: grid;
+    grid-template-columns: repeat(2, calc(50% - 10px));
+    grid-gap: 20px;
+    gap: 20px;
+    margin-top: 40px;
   }
-  &__content-field,
-  &__checkpoints{
-    margin: 15px 0 0 0;
+.content{
+  &__field{
+    margin-top: 3px;
   }
-
+  &__text {
+    color: #7C838D;
+    font-weight: 400;
+    font-size: 14px;
+    margin-top: 3px;
+  }
   &__checkpoints {
-    .ctm-modal__label {
+    margin-bottom: 25px;
+    &_label {
       margin-bottom: 10px;
     }
   }
-
-  .checkpoints-cont {
+}
+.checkpoints{
+  &__label {
+    margin-bottom: 15px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 130%;
+  }
+  &__main{
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     text-align: left;
     justify-content: flex-start;
-    gap: 15px;
-
-    .checkpoint-cont {
-      display: grid;
-      grid-template-columns: repeat(2, auto);
-      gap: 10px;
-
-      >label {
-        margin: unset;
-      }
-
-      .checkpoint {
-        font-size: 16px;
-        font-weight: 400;
-        border-radius: 50%;
-        width: 25px;
-        height: 25px;
-        border: 1px solid #0083C7;
-        cursor: pointer;
-      }
+    gap: 13px;
+  }
+  &__array {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 10px;
+    > label {
+      margin: unset;
     }
   }
-
-  &__content-btns {
-    .btn-group{
-      display: grid;
-      grid-template-columns: repeat(2, calc(50% - 10px));
-      grid-gap: 20px;
-      gap: 20px;
-      margin-top: 25px;
-
-      .btn {
-        box-sizing: border-box;
-        font-weight: 400;
-        font-size: 16px;
-        color: #0083C7;
-        border: 1px solid #0083C71A;
-        border-radius: 6px;
-        transition: .3s;
-        background-color: #fff;
-
-        &:hover {
-          background-color: #0083C71A;
-          border: 0px;
-        }
-
-        &_bl {
-          @extend .btn;
-          background-color: #0083C7;
-          border: unset;
-          color: #fff;
-
-          &:hover {
-            background-color: #103d7c;
-          }
-        }
-      }
-    }
-  }
-
-  &__content {
-    padding-top: 0 !important;
-  }
-
-  &__title-head {
-    font-size: 16px;
-    font-weight: 400;
-    margin-top: 20px;
-  }
-
-  &__subtitle {
-    color: #7C838D;
-    font-weight: 400;
-    font-size: 16px;
-  }
-}
-</style>
-
-<style lang="scss">
-.ctm-field__header {
-  color: #212529 !important;
+  &__item{
+   font-size: 16px;
+   font-weight: 400;
+   border-radius: 50%;
+   width: 25px;
+   height: 25px;
+   border: 1px solid #0083C7;
+   cursor: pointer;
+ }
 }
 </style>
