@@ -385,8 +385,8 @@ export default {
             title: this.$t('modals.yourSkillsHaveBeenAdded'),
             subtitle: this.$t('modals.youCanUpdateThisInYourProfile'),
           });
+          await this.$router.push(`/quests/${response.result.id}`);
         }
-        await this.$router.push(`/quests/${response.result.id}`);
       } catch (e) {
         console.log(e);
       }
