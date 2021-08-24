@@ -82,6 +82,10 @@
               </div>
             </div>
           </div>
+          <div class="filter__btns">
+            <base-btn>{{ $t('meta.cleanUp') }}</base-btn>
+            <base-btn>{{ $t('meta.apply') }}</base-btn>
+          </div>
         </div>
       </div>
     </div>
@@ -1128,6 +1132,10 @@ export default {
 .filter {
   max-width: 100% !important;
   justify-content: center;
+  &__btns {
+    display: flex;
+    justify-self: self-end;
+  }
   &__container {
     overflow-y: auto;
     display: grid;
