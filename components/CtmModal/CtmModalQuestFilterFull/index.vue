@@ -1168,14 +1168,18 @@ export default {
     justify-content: center;
   }
   &__body {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: minmax(0, auto);
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
     margin: 10px 0 0 0;
     padding: 10px 0 0 0;
-    grid-gap: 20px 250px;
+    gap: 20px 20px;
   }
   &__items {
+    width: 24%;
+    position: relative;
+    display: inline-block;
     margin: 0 0 10px 0;
     cursor: pointer;
     &:hover {
