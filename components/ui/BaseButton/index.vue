@@ -77,6 +77,9 @@ export default {
         { 'base-btn_grey': mode === 'grey' },
         { 'base-btn_verification': mode === 'ver' },
         { 'base-btn_black': mode === 'black' },
+        { 'base-btn_max': mode === 'max' },
+        { 'base-btn_share': mode === 'share' },
+        { 'base-btn_add': mode === 'add' },
       ];
     },
   },
@@ -130,6 +133,22 @@ export default {
     background-color: $black0;
     &:hover {
       background: $black100;
+    }
+  }
+  &_share {
+    background-color: $black0;
+    &:hover {
+      background: $blue;
+    }
+  }
+  &_max{
+    background-color: $black0;
+    color: $blue;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 130%;
+    &:hover{
+      background-color: $black0;
     }
   }
   &_back {
@@ -245,6 +264,14 @@ export default {
     transition: 0.5s;
     &:hover {
       background: $black100;
+    }
+  }
+  &_add{
+    background-color: $white;
+    color: $blue;
+    &:hover{
+      background-color: $blue;
+      color: $white;
     }
   }
 }

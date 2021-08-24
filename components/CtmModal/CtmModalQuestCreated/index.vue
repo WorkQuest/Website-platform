@@ -1,26 +1,22 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
+    class="quest"
     :is-header="false"
   >
-    <div class="ctm-modal__content">
-      <div class="messageSend">
-        <div class="messageSend__content">
-          <img
-            src="~/assets/img/ui/inviteSend.svg"
-            alt="MessageSend"
-          >
-          <div class="ctm-modal__title">
-            {{ $t('modals.questCreated') }}
-          </div>
-          <base-btn
-            class="email__action"
-            @click="hide()"
-          >
-            {{ $t('meta.ok') }}
-          </base-btn>
-        </div>
+    <div class="quest__content">
+      <img
+        src="~/assets/img/ui/questCreated.svg"
+        alt="Quest created"
+      >
+      <div class="quest__title">
+        {{ $t('modals.questCreated') }}
       </div>
+      <base-btn
+        class="quest__action"
+        @click="hide"
+      >
+        {{ $t('meta.ok') }}
+      </base-btn>
     </div>
   </ctm-modal-box>
 </template>
@@ -29,7 +25,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'ModalMessageSend',
+  name: 'ModalQuestCreated',
   data() {
     return {};
   },
@@ -47,20 +43,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ctm-modal {
-  @include modalKit;
-}
 
-.messageSend {
-  max-width: 337px !important;
+.quest {
+  max-width: 307px !important;
   &__content {
+    padding: 30px;
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
-    grid-gap: 20px;
+    grid-gap: 30px;
   }
-  &__action {
-    margin-top: 10px;
+  &__title{
+    font-weight: 500;
+    font-size: 23px;
+    line-height: 130%;
+    text-align: center;
   }
 }
 </style>

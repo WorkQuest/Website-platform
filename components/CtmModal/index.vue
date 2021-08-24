@@ -22,7 +22,6 @@
       <CtmModalRequestSend v-if="modals.requestSend === currentModalKey" />
       <CtmModalThanksSend v-if="modals.thanks === currentModalKey" />
       <CtmModalQuestAgreed v-if="modals.questAgreed === currentModalKey" />
-      <CtmModalAreYouSure v-if="modals.areYouSure === currentModalKey" />
       <CtmModalTransactionSend v-if="modals.transactionSend === currentModalKey" />
       <CtmModalCardHasBeenAdded v-if="modals.cardHasBeenAdded === currentModalKey" />
       <CtmModalDeposit v-if="modals.deposit === currentModalKey" />
@@ -48,6 +47,7 @@
       <CtmModalWelcome v-if="modals.welcome === currentModalKey" />
       <CtmModalOpenADispute v-if="modals.openADispute === currentModalKey" />
       <CtmModalNotice v-if="modals.notice === currentModalKey" />
+      <CtmModalNoticeChat v-if="modals.noticeChat === currentModalKey" />
       <CtmModalTransfer v-if="modals.transfer === currentModalKey" />
       <CtmModalChangePassInSettings v-if="modals.changePassInSettings === currentModalKey" />
       <CtmModalTwoFAAuth v-if="modals.twoFAAuth === currentModalKey" />
@@ -69,6 +69,20 @@
       <CtmModalQuestFilterFull v-if="modals.questFilterFull === currentModalKey" />
       <CtmModalShowImage v-if="modals.showImage === currentModalKey" />
       <CtmModalPriceSearch v-if="modals.priceSearch === currentModalKey" />
+      <CtmModalGiveDeposit v-if="modals.giveDeposit === currentModalKey" />
+      <CtmModalAddingCard v-if="modals.addingCard === currentModalKey" />
+      <CtmModalDepositOptions v-if="modals.depositOptions === currentModalKey" />
+      <CtmModalCardAdded v-if="modals.cardAdded === currentModalKey" />
+      <CtmModalTakeWithdraw v-if="modals.takeWithdraw === currentModalKey" />
+      <CtmModalWithdrawInfo v-if="modals.withdrawInfo === currentModalKey" />
+      <CtmModalWithdrawOptions v-if="modals.withdrawOptions === currentModalKey" />
+      <CtmModalGiveTransfer v-if="modals.giveTransfer === currentModalKey" />
+      <CtmModalPaymentOptions v-if="modals.paymentOptions === currentModalKey" />
+      <CtmModalAreYouSureDelete v-if="modals.areYouSureDelete === currentModalKey" />
+      <CtmModalAreYouSureNotification v-if="modals.areYouSureNotification === currentModalKey" />
+      <CtmModalSwap v-if="modals.swap === currentModalKey" />
+      <CtmModalSwapInfo v-if="modals.swapInfo === currentModalKey" />
+      <CtmModalClaim v-if="modals.claim === currentModalKey" />
       <CtmModalAreYouSureDeleteQuest v-if="modals.areYouSureDeleteQuest === currentModalKey" />
     </div>
   </transition>
@@ -86,7 +100,6 @@ import CtmModalSendARequest from './CtmModalSendARequest';
 import CtmModalRequestSend from './CtmModalRequestSend';
 import CtmModalThanksSend from './CtmModalThanksSend';
 import CtmModalQuestAgreed from './CtmModalQuestAgreed';
-import CtmModalAreYouSure from './CtmModalAreYouSure';
 import CtmModalReviewEmployer from './CtmModalReviewEmployer';
 import CtmModalTransactionSend from './CtmModalTransactionSend';
 import CtmModalCardHasBeenAdded from './CtmModalCardHasBeenAdded';
@@ -112,6 +125,7 @@ import CtmModalAddCase from './CtmModalAddCase';
 import CtmModalWelcome from './CtmModalWelcome';
 import CtmModalOpenADispute from './CtmModalOpenADispute';
 import CtmModalNotice from './CtmModalNotice';
+import CtmModalNoticeChat from './CtmModalNoticeChat';
 import CtmModalTransfer from './CtmModalTransfer';
 import CtmModalChangePassInSettings from './CtmModalChangePassInSettings';
 import CtmModalTwoFAAuth from './CtmModalTwoFAAuth';
@@ -133,6 +147,20 @@ import CtmModalDisable2FA from './CtmModalDisable2FA';
 import CtmModalQuestFilterFull from './CtmModalQuestFilterFull';
 import CtmModalShowImage from './CtmModalShowImage';
 import CtmModalAreYouSureDeleteQuest from './CtmModalAreYouSureDeleteQuest';
+import CtmModalGiveDeposit from './CtmModalGiveDeposit';
+import CtmModalAddingCard from './CtmModalAddingCard';
+import CtmModalDepositOptions from './CtmModalDepositOptions';
+import CtmModalCardAdded from './CtmModalCardAdded';
+import CtmModalTakeWithdraw from './CtmModalTakeWithdraw';
+import CtmModalWithdrawInfo from './CtmModalWithdrawInfo';
+import CtmModalWithdrawOptions from './CtmModalWithdrawOptions';
+import CtmModalGiveTransfer from './CtmModalGiveTransfer';
+import CtmModalPaymentOptions from './CtmModalPaymentOptions';
+import CtmModalAreYouSureDelete from './CtmModalAreYouSureDelete';
+import CtmModalSwap from './CtmModalSwap';
+import CtmModalSwapInfo from './CtmModalSwapInfo';
+import CtmModalAreYouSureNotification from './CtmModalAreYouSureNotification';
+import CtmModalClaim from './CtmModalClaim';
 import CtmModalPriceSearch from './CtmModalPrice';
 
 export default {
@@ -148,7 +176,6 @@ export default {
     CtmModalSendARequest,
     CtmModalRequestSend,
     CtmModalQuestAgreed,
-    CtmModalAreYouSure,
     CtmModalTransactionSend,
     CtmModalCardHasBeenAdded,
     CtmModalDeposit,
@@ -175,6 +202,7 @@ export default {
     CtmModalWelcome,
     CtmModalOpenADispute,
     CtmModalNotice,
+    CtmModalNoticeChat,
     CtmModalTransfer,
     CtmModalChangePassInSettings,
     CtmModalTwoFAAuth,
@@ -194,6 +222,20 @@ export default {
     CtmModalPayment,
     CtmModalDisable2FA,
     CtmModalShowImage,
+    CtmModalGiveDeposit,
+    CtmModalAddingCard,
+    CtmModalDepositOptions,
+    CtmModalCardAdded,
+    CtmModalTakeWithdraw,
+    CtmModalWithdrawInfo,
+    CtmModalWithdrawOptions,
+    CtmModalGiveTransfer,
+    CtmModalPaymentOptions,
+    CtmModalAreYouSureDelete,
+    CtmModalSwap,
+    CtmModalSwapInfo,
+    CtmModalAreYouSureNotification,
+    CtmModalClaim,
     CtmModalAreYouSureDeleteQuest,
     CtmModalPriceSearch,
   },

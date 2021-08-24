@@ -109,7 +109,9 @@
             </div>
           </div>
           <div class="info-block__btns-cont">
-            <base-btn>
+            <base-btn
+              @click="showSwapModal"
+            >
               {{ $t('crosschain.createSwap') }}
             </base-btn>
           </div>
@@ -287,6 +289,11 @@ export default {
         this.targetAddressInd = selInd ? 0 : 1;
       }
       this.sourceAddressInd = selInd;
+    },
+    showSwapModal() {
+      this.ShowModal({
+        key: modals.swap,
+      });
     },
   },
 };

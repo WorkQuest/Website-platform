@@ -77,7 +77,7 @@ extend('decimal', {
 
 extend('percent', {
   validate(value) {
-    const regex = /^100%?$|^\s*(\d{0,2})((\.|,%)(\d*))?\s*%?\s*$/;
+    const regex = /^100%?$|^\s*(\d{0,2})((\.|,)(\d*))?\s*%?\s*$/;
     return {
       required: true,
       valid: regex.test(value),

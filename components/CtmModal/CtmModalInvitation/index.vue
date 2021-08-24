@@ -128,7 +128,10 @@ export default {
     },
     showTransactionSendModal() {
       this.ShowModal({
-        key: modals.inviteSend,
+        key: modals.status,
+        img: require('~/assets/img/ui/inviteSend.svg'),
+        title: this.$t('modals.inviteSend'),
+        subtitle: this.$t('modals.invitationSendText'),
       });
     },
   },

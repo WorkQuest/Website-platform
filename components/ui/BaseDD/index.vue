@@ -11,6 +11,8 @@
       class="dd"
       :class="[{'dd__top': mode === 'top' }]"
     >
+      <slot name="card" />
+
       <button
         class="dd__btn"
         :class="ddClass"
@@ -32,6 +34,7 @@
             {{ items[value].title }}
           </span>
         </div>
+
         <span
           v-else-if="items[value]"
           class="dd__title"
@@ -72,6 +75,7 @@
               :alt="item.title"
             >
             {{ item.title }}
+            <slot name="picture" />
           </button>
         </div>
         <div
@@ -87,6 +91,7 @@
           >
             {{ item }}
           </button>
+          <slot name="buttonCard" />
         </div>
       </transition>
     </div>
