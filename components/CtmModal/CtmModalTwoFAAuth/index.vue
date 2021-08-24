@@ -108,7 +108,7 @@
               <span class="content__text">{{ $t('modals.installGoogleAuth') }}</span>
             </div>
             <div class="btn__container">
-              <div class="btn__wrapper">
+              <div class="btn__store">
                 <div>
                   <base-btn
                     mode="black"
@@ -124,7 +124,7 @@
                   </base-btn>
                 </div>
               </div>
-              <div class="btn__wrapper">
+              <div class="btn__store">
                 <div>
                   <base-btn
                     mode="black"
@@ -546,6 +546,10 @@ export default {
   }
   &__wrapper {
     width: 45%;
+  }
+  &__store{
+    width: 47%;
+    margin-bottom: 25px;
   }
   &__onebtn {
     width: 100%;
