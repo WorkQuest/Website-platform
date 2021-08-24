@@ -1,189 +1,211 @@
 <template>
   <div class="main main-white">
     <div class="main__body page">
-      <div class="page">
-        <h2 class="page__title">
-          {{ $t('quests.createAQuest') }}
-        </h2>
-        <div class="page__category">
-          <div class="page runtime">
-            <div class="runtime__container">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
+        <div class="page">
+          <h2 class="page__title">
+            {{ $t('quests.createAQuest') }}
+          </h2>
+          <div class="page__category">
+            <div class="page runtime">
+              <div class="runtime__container">
+                <base-field
+                  v-model="runtimeValue"
+                  :label="$t('quests.runtime.runtime')"
+                  :placeholder="0"
+                  :name="$t('quests.runtime.runtime')"
+                  rules="required|decimal"
+                />
+                <div class="runtime__dd">
+                  <base-dd
+                    v-model="runtimeIndex"
+                    type="blue"
+                    :items="runtime"
+                    :placeholder="$t('quests.createQuest.choosePeriod')"
+                    rules="required"
+                    :name="$t('quests.createQuest.choosePeriod')"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="page__input">
               <base-field
-                v-model="runtimeValue"
-                :label="$t('quests.runtime.runtime')"
-                :placeholder="0"
-              />
-              <base-dd
-                v-model="runtimeIndex"
-                class="runtime__dd"
-                type="blue"
-                :items="runtime"
-                :placeholder="runtime[0]"
+                v-model="price"
+                :label="$t('quests.price')"
+                :placeholder="+0 + currency"
+                rules="required|decimal"
+                :name="$t('quests.price')"
               />
             </div>
+            <div class="page__dd">
+              <base-dd
+                v-model="priorityIndex"
+                :label="$t('quests.employment.employment')"
+                type="gray"
+                :items="employment"
+                rules="required"
+                :name="$t('quests.employment.employment')"
+              />
+            </div>
+            <div class="page__dd">
+              <base-dd
+                v-model="categoryIndex"
+                :label="$t('quests.distantWork.distantWork')"
+                type="gray"
+                :items="distantWork"
+                rules="required"
+                :name="$t('quests.distantWork.distantWork')"
+              />
+            </div>
+          </div>
+          <div
+            v-for="key in specCount"
+            :key="key"
+            class="page__spec spec skills"
+          >
+            <div
+              class="spec"
+            >
+              <div
+                class="spec__category"
+              >
+                <base-dd
+                  v-model="specIndex[key]"
+                  type="gray"
+                  :items="specializations.titles"
+                  :placeholder="specializations.titles[0]"
+                  @input="switchSkill($event, key)"
+                />
+                <base-btn
+                  class="btn__delete"
+                  mode="cross"
+                  @click="removeSpecialization(key)"
+                >
+                  <span class="icon-off_outline_close" />
+                </base-btn>
+              </div>
+            </div>
+            <div
+              class="skills"
+            >
+              <div class="skills__category">
+                <base-dd
+                  v-model="skillIndex[key]"
+                  :label="$t('quests.skills.skills')"
+                  :placeholder="$t('quests.skills.chooseSkills')"
+                  :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
+                  :disabled="specIndex[key] < 0"
+                  :items="specializations.skills[specIndex[key]]"
+                  @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
+                />
+              </div>
+              <div
+                v-if="selectedSkills[key].length === 5"
+                class="skills__alert"
+              >
+                {{ $t('quests.skills.limit') }}
+              </div>
+              <div
+                class="skills__badges"
+              >
+                <div
+                  v-for="(item, i) in selectedSkills[key]"
+                  :key="i"
+                  class="skills__badge"
+                >
+                  {{ item }}
+                  <span
+                    class="icon-close_small"
+                    @click="removeSkillToBadge(item, key)"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="page btn">
+            <base-btn
+              :text="$t('quests.spec.addSpec')"
+              :disabled="specCount === 3"
+              mode="outline"
+              class="btn__spec"
+              :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
+              @click="addSpecialization"
+            />
+          </div>
+          <div class="page__address">
+            <base-field
+              v-model="address"
+              :label="$t('quests.address')"
+              :placeholder="$t('quests.address')"
+              mode="icon"
+              :selector="true"
+              rules="required"
+              :name="$t('quests.address')"
+              @selector="getAddressInfo(address)"
+            >
+              <template v-slot:left>
+                <span class="icon-map" />
+              </template>
+              <template v-slot:selector>
+                <div
+                  v-if="addresses.length"
+                  class="selector"
+                >
+                  <div class="selector__items">
+                    <div
+                      v-for="(item, i) in addresses"
+                      :key="i"
+                      class="selector__item"
+                      @click="selectAddress(item)"
+                    >
+                      {{ item.formatted }}
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </base-field>
           </div>
           <div class="page__input">
             <base-field
-              v-model="price"
-              :label="$t('quests.price')"
-              :placeholder="+0 + currency"
+              v-model="questTitle"
+              rules="required"
+              :name="$t('quests.questTitle')"
+              :placeholder="$t('quests.questTitle')"
             />
           </div>
-          <div class="page__dd">
-            <base-dd
-              v-model="priorityIndex"
-              :label="$t('quests.employment.employment')"
-              type="gray"
-              :items="employment"
+          <div class="page__input">
+            <textarea
+              id="textarea"
+              v-model="textarea"
+              class="page__textarea"
+              :placeholder="$t('quests.questDesc')"
             />
           </div>
-          <div class="page__dd">
-            <base-dd
-              v-model="categoryIndex"
-              :label="$t('quests.distantWork.distantWork')"
-              type="gray"
-              :items="distantWork"
+          <div class="page upload__container">
+            <div class="upload__title">
+              {{ $t('quests.uploadMaterials') }}
+            </div>
+            <dropzone
+              id="uploader"
+              ref="el"
+              :options="optionsModal"
+              :include-styling="true"
             />
           </div>
-        </div>
-        <div
-          v-for="key in specCount"
-          :key="key"
-          class="page__spec spec skills"
-        >
-          <div
-            class="spec"
-          >
-            <div
-              class="spec__category"
-            >
-              <base-dd
-                v-model="specIndex[key]"
-                type="gray"
-                :items="specializations.titles"
-                :placeholder="specializations.titles[0]"
-                @input="switchSkill($event, key)"
-              />
+          <div class="upload btn btn__container btn__container_right">
+            <div class="btn__create">
               <base-btn
-                class="btn__delete"
-                mode="cross"
-                @click="removeSpecialization(key)"
+                :disabled="!validated || !passed || invalid"
+                @click="handleSubmit(showQuestCreatedModal)"
               >
-                <span class="icon-off_outline_close" />
+                {{ $t('quests.createAQuest') }}
               </base-btn>
             </div>
           </div>
-          <div
-            class="skills"
-          >
-            <div class="skills__category">
-              <base-dd
-                v-model="skillIndex[key]"
-                :label="$t('quests.skills.skills')"
-                :placeholder="$t('quests.skills.chooseSkills')"
-                :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
-                :disabled="specIndex[key] < 0"
-                :items="specializations.skills[specIndex[key]]"
-                @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
-              />
-            </div>
-            <div
-              v-if="selectedSkills[key].length === 5"
-              class="skills__alert"
-            >
-              {{ $t('quests.skills.limit') }}
-            </div>
-            <div
-              class="skills__badges"
-            >
-              <div
-                v-for="(item, i) in selectedSkills[key]"
-                :key="i"
-                class="skills__badge"
-              >
-                {{ item }}
-                <span
-                  class="icon-close_small"
-                  @click="removeSkillToBadge(item, key)"
-                />
-              </div>
-            </div>
-          </div>
         </div>
-        <div class="page btn">
-          <base-btn
-            :text="$t('quests.spec.addSpec')"
-            :disabled="specCount === 3"
-            mode="outline"
-            class="btn__spec"
-            :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
-            @click="addSpecialization"
-          />
-        </div>
-        <div class="page__address">
-          <base-field
-            v-model="address"
-            :label="$t('quests.address')"
-            :placeholder="$t('quests.address')"
-            mode="icon"
-            :selector="true"
-            @selector="getAddressInfo(address)"
-          >
-            <template v-slot:left>
-              <span class="icon-map" />
-            </template>
-            <template v-slot:selector>
-              <div
-                v-if="addresses.length"
-                class="selector"
-              >
-                <div class="selector__items">
-                  <div
-                    v-for="(item, i) in addresses"
-                    :key="i"
-                    class="selector__item"
-                    @click="selectAddress(item)"
-                  >
-                    {{ item.formatted }}
-                  </div>
-                </div>
-              </div>
-            </template>
-          </base-field>
-        </div>
-        <div class="page__input">
-          <base-field
-            v-model="questTitle"
-            :placeholder="$t('quests.questTitle')"
-          />
-        </div>
-        <div class="page__input">
-          <textarea
-            id="textarea"
-            v-model="textarea"
-            class="page__textarea"
-            :placeholder="$t('quests.questDesc')"
-          />
-        </div>
-        <div class="page upload__container">
-          <div class="upload__title">
-            {{ $t('quests.uploadMaterials') }}
-          </div>
-          <dropzone
-            id="uploader"
-            ref="el"
-            :options="optionsModal"
-            :include-styling="true"
-          />
-        </div>
-        <div class="upload btn btn__container btn__container_right">
-          <div class="btn__create">
-            <base-btn @click="showQuestCreatedModal()">
-              {{ $t('quests.createAQuest') }}
-            </base-btn>
-          </div>
-        </div>
-      </div>
+      </validation-observer>
     </div>
   </div>
 </template>
@@ -379,10 +401,13 @@ export default {
     display: grid;
     grid-template-columns: 6fr 2fr;
     grid-gap: 10px;
-    align-items: center;
+    align-items: flex-start;
   }
   &__dd {
-    margin: 13px 0 0 0;
+    padding-top: 37px;
+    height: 139px;
+    display: flex;
+    align-items: flex-start;
   }
 }
 
