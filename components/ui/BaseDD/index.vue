@@ -29,7 +29,7 @@
           >
           <span
             class="dd__title"
-            :class="[{ 'dd__title_black': mode === 'blackFont' }]"
+            :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
           >
             {{ items[value].title }}
           </span>
@@ -38,24 +38,26 @@
         <span
           v-else-if="items[value]"
           class="dd__title"
-          :class="[{ 'dd__title_black': mode === 'blackFont' }]"
+          :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
         >
           {{ items[value] }}
         </span>
         <span
           v-else-if="!items[value] && placeholder"
           class="dd__title"
-          :class="[{ 'dd__title_black': mode === 'blackFont' }]"
+          :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
         >
           {{ placeholder }}
         </span>
         <span
           v-if="type === 'sort'"
           class="dd__caret dd__caret_dark icon-Sorting_descending"
+          :class="[{'dd__caret_white': type === 'blue' }]"
         />
         <span
           v-else
           class="dd__caret icon-caret_down"
+          :class="[{'dd__caret_white': type === 'blue' }]"
         />
       </button>
       <transition name="fade">
@@ -154,6 +156,7 @@ export default {
         { dd__btn_dark: type === 'dark' },
         { dd__btn_disabled: type === 'disabled' },
         { dd__btn_gray: type === 'gray' },
+        { dd__btn_blue: type === 'blue' },
         { dd__btn_border: type === 'border' },
       ];
     },
@@ -191,6 +194,9 @@ export default {
   text-align: left;
   &__title {
     color: $black500;
+    &_white {
+      color: $white;
+    }
     &_black {
       color: $black800 !important;
     }
@@ -246,14 +252,16 @@ export default {
       padding-left: 10px;
       color: $blue;
       font-size: 24px;
-
     }
     &_dark::before {
       color: $black700;
     }
+    &_white::before {
+      color: $white;
+    }
   }
   &__btn {
-    height: 43px;
+    height: 46px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -261,6 +269,9 @@ export default {
     width: 100%;
     background: #FFFFFF;
     border-radius: 6px;
+    &_blue {
+      background-color: $blue;
+    }
     &_dark {
       background: #151552;
     }
