@@ -130,7 +130,7 @@ export default {
   @include modalKit;
 
   &__equal {
-    margin: 0 0 35px 12px;
+    margin: 0 auto 35px;
   }
 
   .grid {
@@ -268,4 +268,5 @@ export default {
     }
   }
 }
+
 </style>

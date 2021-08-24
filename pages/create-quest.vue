@@ -326,9 +326,7 @@ export default {
           this.ShowModal({
             key: modals.status,
             img: require('~/assets/img/ui/questAgreed.svg'),
-            title: this.$t('modals.yourSkillsHaveBeenAdded'),
-            subtitle: this.$t('modals.youCanUpdateThisInYourProfile'),
-            path: '/settings',
+            title: this.$t('modals.questCreated'),
           });
         }
       } catch (e) {

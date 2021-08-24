@@ -475,6 +475,7 @@ export default {
     font-size: 16px;
     color: $black500;
     padding: 10px;
+    text-align: center;
     &_active {
       @extend .step-panel__step;
       color: $white;

@@ -75,7 +75,7 @@ export default {
         const payload = {
           totp: this.twoFACode,
         };
-        await this.$store.dispatch('data/disable2FA', payload);
+        await this.$store.dispatch('user/disable2FA', payload);
       } catch (e) {
         console.log(e);
       }

@@ -98,4 +98,7 @@ export default {
     width: 100%;
   }
 }
+.ctm-field__header {
+  height: auto;
+}
 </style>
