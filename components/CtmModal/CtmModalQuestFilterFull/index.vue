@@ -3,90 +3,89 @@
     :title="$t('filters.titleAll')"
     class="filter"
   >
-    <div class="filter ctm-modal__content filter">
-      <div class="filter">
-        <div class="filter__container">
-          <div class="filter__body">
+    <div class="filter__container">
+      <div class="filter__body">
+        <div
+          v-for="(item, i) in filters.categories"
+          :id="i"
+          :key="i"
+          class="filter__items"
+        >
+          <div
+            class="filter__item item"
+          >
             <div
-              v-for="(item, i) in filters.categories"
-              :id="i"
-              :key="i"
-              class="filter__items"
+              class="item"
+              @click="toggleCategory(filters, item, i)"
             >
-              <div
-                class="filter__item item"
-              >
-                <div
-                  class="item"
-                  @click="toggleCategory(filters, item, i)"
-                >
-                  <span
-                    class="item__title"
-                  >{{ item.title }}</span>
-                  <span
-                    v-if="!item.visible"
-                    class="icon-caret_down"
-                  />
-                  <span
-                    v-else
-                    class="icon-caret_up"
-                  />
-                </div>
-                <transition name="fade">
-                  <div class="filter filter__item sub">
-                    <div
-                      v-if="item.visible"
-                      :class="{'hide': !item.visible}"
-                      class="sub__item"
-                      @click="selectAll(i)"
-                    >
-                      <input
-                        :id="i"
-                        :ref="`allCheckbox${i}`"
-                        type="checkbox"
-                        :name="$t('filters.commonSub.selectAll')"
-                        @change="selectAll(i)"
-                      >
-                      <label
-                        :for="i"
-                        class="sub__label"
-                      >{{ $t('filters.commonSub.selectAll') }}</label>
-                    </div>
-                    <div
-                      v-for="(sub, idx) in item.items"
-                      :key="idx"
-                      class="sub__body"
-                      :class="{'hide': !item.visible}"
-                    >
-                      <div
-                        :id="idx"
-                        class="sub__item"
-                        @click="selectSub(idx, i)"
-                      >
-                        <input
-                          :id="sub.id"
-                          :ref="`checkbox${i}`"
-                          class="checkbox checkbox__box sub"
-                          type="checkbox"
-                          :name="sub.title"
-                          @change="selectSub(idx, i)"
-                        >
-                        <label
-                          :for="sub.title"
-                          class="sub__label"
-                        >{{ sub.title }}</label>
-                      </div>
-                    </div>
-                  </div>
-                </transition>
-              </div>
+              <span
+                class="item__title"
+              >{{ item.title }}</span>
+              <span
+                v-if="!item.visible"
+                class="icon-caret_down"
+              />
+              <span
+                v-else
+                class="icon-caret_up"
+              />
             </div>
-          </div>
-          <div class="filter__btns">
-            <base-btn>{{ $t('meta.cleanUp') }}</base-btn>
-            <base-btn>{{ $t('meta.apply') }}</base-btn>
+            <transition name="fade">
+              <div class="filter filter__item sub">
+                <div
+                  v-if="item.visible"
+                  :class="{'hide': !item.visible}"
+                  class="sub__item"
+                  @click="selectAll(i)"
+                >
+                  <input
+                    :id="i"
+                    :ref="`allCheckbox${i}`"
+                    class="checkbox checkbox__box sub"
+                    type="checkbox"
+                    :name="$t('filters.commonSub.selectAll')"
+                    @change="selectAll(i)"
+                  >
+                  <label
+                    :for="i"
+                    class="sub__label"
+                  >{{ $t('filters.commonSub.selectAll') }}</label>
+                </div>
+                <div
+                  v-for="(sub, idx) in item.items"
+                  :key="idx"
+                  class="sub__body"
+                  :class="{'hide': !item.visible}"
+                >
+                  <div
+                    :id="idx"
+                    class="sub__item"
+                    @click="selectSub(idx, i)"
+                  >
+                    <input
+                      :id="sub.id"
+                      :ref="`checkbox${i}`"
+                      class="checkbox checkbox__box sub"
+                      type="checkbox"
+                      :name="sub.title"
+                      @change="selectSub(idx, i)"
+                    >
+                    <label
+                      :for="sub.title"
+                      class="sub__label"
+                    >{{ sub.title }}</label>
+                  </div>
+                </div>
+              </div>
+            </transition>
           </div>
         </div>
+      </div>
+      <div class="filter__btns">
+        <base-btn mode="outline">
+          {{ $t('meta.cleanUp') }}
+        </base-btn>
+        <base-btn>{{ $t('meta.apply') }}</base-btn>
       </div>
     </div>
   </ctm-modal-box>
@@ -1133,13 +1132,16 @@ export default {
   max-width: 100% !important;
   justify-content: center;
   &__btns {
+    margin: 44px 8% 20px 0;
     display: flex;
     justify-self: self-end;
+    width: 320px;
+    gap: 10px;
   }
   &__container {
     overflow-y: auto;
     display: grid;
-    justify-content: space-between;
+    justify-content: center;
   }
   &__body {
     display: grid;
@@ -1147,7 +1149,7 @@ export default {
     grid-template-rows: auto;
     margin: 10px 0 0 0;
     padding: 10px 0 0 0;
-    grid-gap: 20px;
+    grid-gap: 20px 260px;
   }
   &__items {
     margin: 0 0 10px 0;

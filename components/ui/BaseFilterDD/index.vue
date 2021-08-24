@@ -71,12 +71,13 @@
                       :class="[{'hide': !item.visible}]"
                     >
                       <div
-                        class="sub__item"
+                        class="sub__item checkbox"
                         @click="selectAll(i)"
                       >
                         <input
                           :id="i"
                           :ref="`allCheckbox${i}`"
+                          class="checkbox checkbox__box sub"
                           type="checkbox"
                           :name="$t('filters.commonSub.selectAll')"
                           @change="selectAll(i)"
@@ -1117,6 +1118,9 @@ export default {
 
 .checkbox {
   z-index: 3;
+  &:hover {
+    cursor: pointer;
+  }
   &__box {
     cursor: pointer;
   }
