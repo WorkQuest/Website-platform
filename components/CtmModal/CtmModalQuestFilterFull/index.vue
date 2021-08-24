@@ -1162,6 +1162,7 @@ export default {
     gap: 10px;
   }
   &__container {
+    margin: 0 0 0 27px;
     overflow-y: auto;
     display: grid;
     justify-content: center;
@@ -1170,7 +1171,7 @@ export default {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: minmax(0, auto);
-    margin: 10px 0 0 25px;
+    margin: 10px 0 0 0;
     padding: 10px 0 0 0;
     grid-gap: 20px 250px;
   }
