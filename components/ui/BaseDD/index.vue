@@ -27,6 +27,7 @@
           >
           <span
             class="dd__title"
+            :class="[{ 'dd__title_black': mode === 'blackFont' }]"
           >
             {{ items[value].title }}
           </span>
@@ -34,12 +35,14 @@
         <span
           v-else-if="items[value]"
           class="dd__title"
+          :class="[{ 'dd__title_black': mode === 'blackFont' }]"
         >
           {{ items[value] }}
         </span>
         <span
           v-else-if="!items[value] && placeholder"
           class="dd__title"
+          :class="[{ 'dd__title_black': mode === 'blackFont' }]"
         >
           {{ placeholder }}
         </span>
@@ -183,6 +186,9 @@ export default {
   text-align: left;
   &__title {
     color: $black500;
+    &_black {
+      color: $black800 !important;
+    }
   }
   &__top {
     align-items: flex-start;
