@@ -22,18 +22,18 @@
                 class="item__title"
               >{{ item.title }}</span>
               <span
-                v-if="!item.visible"
+                v-show="!item.visible"
                 class="icon-caret_down"
               />
               <span
-                v-else
+                v-show="item.visible"
                 class="icon-caret_up"
               />
             </div>
             <transition name="fade">
               <div class="filter filter__item sub">
                 <div
-                  v-if="item.visible"
+                  v-show="item.visible"
                   :class="{'hide': !item.visible}"
                   class="sub__item"
                   @click="selectAll(i)"
@@ -82,10 +82,15 @@
         </div>
       </div>
       <div class="filter__btns">
-        <base-btn mode="outline">
+        <base-btn
+          mode="outline"
+          @click="cleanUp()"
+        >
           {{ $t('meta.cleanUp') }}
         </base-btn>
-        <base-btn>{{ $t('meta.apply') }}</base-btn>
+        <base-btn @click="hide">
+          {{ $t('meta.apply') }}
+        </base-btn>
       </div>
     </div>
   </ctm-modal-box>
@@ -1035,6 +1040,24 @@ export default {
     };
   },
   methods: {
+    cleanUp() {
+      for (let idx = 0; idx < Object.keys(`this.$refs.checkbox${idx}`).length; idx += 1) {
+        const checkboxes = this.$refs.[`checkbox${idx}`];
+        for (let i = 0; i < Object.keys(checkboxes).length; i += 1) {
+          if (checkboxes[i].checked) {
+            checkboxes[i].checked = false;
+          }
+        }
+      }
+      for (let idx = 0; idx < Object.keys(`this.$refs.allCheckbox${idx}`).length; idx += 1) {
+        const selectAllCheckbox = this.$refs.[`allCheckbox${idx}`];
+        for (let i = 0; i < Object.keys(selectAllCheckbox).length; i += 1) {
+          if (selectAllCheckbox[i].checked) {
+            selectAllCheckbox[i].checked = false;
+          }
+        }
+      }
+    },
     selectAll(idx) {
       const selectAllCheckbox = this.$refs.[`allCheckbox${idx}`];
       const checkboxes = this.$refs.[`checkbox${idx}`];
@@ -1146,10 +1169,10 @@ export default {
   &__body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: auto;
-    margin: 10px 0 0 0;
+    grid-auto-rows: minmax(0, auto);
+    margin: 10px 0 0 25px;
     padding: 10px 0 0 0;
-    grid-gap: 20px 260px;
+    grid-gap: 20px 250px;
   }
   &__items {
     margin: 0 0 10px 0;
