@@ -14,6 +14,7 @@
           </base-btn>
           <base-btn
             class="btn_wh"
+            @click="showClaimModal"
           >
             {{ $t('staking.claimRewards') }}
           </base-btn>
@@ -138,7 +139,10 @@
             <base-btn>
               {{ $t('staking.autoRenewal') }}
             </base-btn>
-            <base-btn mode="outline">
+            <base-btn
+              mode="outline"
+              @click="showWithdrawalModal"
+            >
               {{ $t('staking.withdraw') }}
             </base-btn>
           </div>
@@ -252,6 +256,16 @@ export default {
     doCopy(ev) {
       ev.stopPropagation();
       this.$copyText(this.templateLink).then(() => {
+      });
+    },
+    showClaimModal() {
+      this.ShowModal({
+        key: modals.claim,
+      });
+    },
+    showWithdrawalModal() {
+      this.ShowModal({
+        key: modals.takeWithdraw,
       });
     },
   },

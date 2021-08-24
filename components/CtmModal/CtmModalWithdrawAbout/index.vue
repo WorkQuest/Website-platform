@@ -1,27 +1,26 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
-    :title="$t('modals.withdraw')"
+    class="withdraw"
+    :title="$t('saving.withdraw')"
   >
-    <div class="ctm-modal__content">
-      <div class="ctm-modal__desc">
-        {{ $t('saving.withdrawModalBody') }}
+    <div class="withdraw__content content">
+      <div class="content__desc">
+        {{ $t('saving.withdrawText') }}
       </div>
-      <div class="ctm-modal__content-btns">
-        <div class="btn-group">
-          <base-btn
-            class="btn"
-            @click="hide()"
-          >
-            {{ $t('meta.cancel') }}
-          </base-btn>
-          <base-btn
-            class="btn_bl"
-            @click="hide()"
-          >
-            {{ $t('meta.confirm') }}
-          </base-btn>
-        </div>
+      <div class="content__buttons buttons">
+        <base-btn
+          class="buttons__button"
+          mode="outline"
+          @click="hide"
+        >
+          {{ $t('meta.cancel') }}
+        </base-btn>
+        <base-btn
+          class="buttons__button"
+          @click="hide"
+        >
+          {{ $t('meta.submit') }}
+        </base-btn>
       </div>
     </div>
   </ctm-modal-box>
@@ -50,70 +49,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.ctm-modal {
-  @include modalKit;
-  &__content-field {
-    margin: 15px 0 0 0;
-  }
-
-  &__desc {
-      text-align: left;
-      font-size: 16px;
-      font-weight: 400;
-      line-height: 21px;
-      color: #4C5767;
-  }
-
-  &__content-btns {
-    .btn-group {
-      display: grid;
-      grid-template-columns: repeat(2, calc(50% - 10px));
-      grid-gap: 20px;
-      gap: 20px;
-      margin-top: 25px;
-
-      .btn {
-        box-sizing: border-box;
-        font-weight: 400;
-        font-size: 16px;
-        color: #0083C7;
-        border: 1px solid #0083C71A;
-        border-radius: 6px;
-        transition: .3s;
-        background-color: #fff;
-
-        &:hover {
-          background-color: #0083C71A;
-          border: 0px;
-        }
-
-        &_bl {
-          @extend .btn;
-          background-color: #0083C7;
-          border: unset;
-          color: #fff;
-
-          &:hover {
-            background-color: #103d7c;
-          }
-        }
-      }
-    }
-  }
-
-  &__label {
-    margin-bottom: 5px;
-  }
-}
-
-.messageSend {
+.withdraw {
   max-width: 390px !important;
   &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    grid-gap: 20px;
+  padding: 0px 28px 30px 28px;
   }
 }
+.content{
+  &__desc {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 21px;
+    color: #4C5767;
+    margin-top: 22px;
+  }
+  &__buttons{
+    display: grid;
+    grid-template-columns: repeat(2, calc(50% - 10px));
+    grid-gap: 20px;
+    gap: 20px;
+    margin-top: 25px;
+  }
+}
+
 </style>

@@ -1,42 +1,51 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
-    :title="$t('modals.deposit')"
+    class="deposit"
+    :title="$t('modals.depositTitle')"
   >
-    <div class="ctm-modal__content">
-      <div class="ctm-modal__content-field">
-        <base-field
-          v-model="amountInput"
-          :is-hide-error="true"
-          :label="$t('modals.depositAmount') "
-          :placeholder="'0 WUSD'"
-        />
-      </div>
-      <div class="ctm-modal__content-btns">
-        <div class="btn-group">
+    <div class="deposit__content content">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
+        <div class="content__field">
+          <div class="content__text">
+            {{ $t('modals.depositAmount') }}
+          </div>
+          <base-field
+            v-model="amountInput"
+            :placeholder="'3 500'"
+            class="content__input"
+            rules="required|decimal"
+            :name="$t('modals.depositAmountField')"
+          />
+        </div>
+        <div class="content__buttons">
           <base-btn
-            class="btn"
-            @click="hide()"
+            class="buttons__button"
+            mode="outline"
+            @click="hide"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            class="btn_bl"
-            @click="showPensionIsRegisteredModal()"
+            class="buttons__button"
+            :disabled="!validated || !passed || invalid"
+            @click="handleSubmit(showPensionIsRegisteredModal)"
           >
-            {{ $t('meta.confirm') }}
+            {{ $t('meta.submit') }}
           </base-btn>
         </div>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalApplyForAPension',
+  name: 'ModalMakeDeposit',
   data() {
     return {
       amountInput: '',
@@ -52,74 +61,40 @@ export default {
       this.CloseModal();
     },
     showPensionIsRegisteredModal() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/transactionSend.svg'),
+        title: this.$t('modals.depositIsDone'),
+        subtitle: this.$t('modals.pensionIsRegisteredText'),
+      });
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.ctm-modal {
-  @include modalKit;
-  &__content-field {
-    margin: 15px 0 0 0;
-  }
-
-  &__content-btns {
-    .btn-group {
-      display: grid;
-      grid-template-columns: repeat(2, calc(50% - 10px));
-      grid-gap: 20px;
-      gap: 20px;
-      margin-top: 25px;
-
-      .btn {
-        box-sizing: border-box;
-        font-weight: 400;
-        font-size: 16px;
-        color: #0083C7;
-        border: 1px solid #0083C71A;
-        border-radius: 6px;
-        transition: .3s;
-        background-color: #fff;
-
-        &:hover {
-          background-color: #0083C71A;
-          border: 0px;
-        }
-
-        &_bl {
-          @extend .btn;
-          background-color: #0083C7;
-          border: unset;
-          color: #fff;
-
-          &:hover {
-            background-color: #103d7c;
-          }
-        }
-      }
-    }
-  }
-
-  &__label {
-    margin-bottom: 5px;
-  }
-
-  &__content {
-    padding-top: 0 !important;
-  }
-}
-
-.messageSend {
+.deposit {
   max-width: 495px !important;
   &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    grid-gap: 20px;
-  }
-  &__action {
-    margin-top: 10px;
+    padding: 0 28px 30px 28px!important;
   }
 }
+.content{
+  &__field {
+    margin: 15px 0 0 0;
+  }
+  &__buttons{
+    display: grid;
+    grid-template-columns: repeat(2, calc(50% - 10px));
+    grid-gap: 20px;
+    gap: 20px;
+    margin-top: 2px;
+  }
+  &__text{
+    margin: 22px 0 4px 0;
+    font-size: 16px;
+    line-height: 130%;
+  }
+}
+
 </style>

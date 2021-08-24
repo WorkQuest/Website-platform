@@ -293,7 +293,8 @@ export default {
     },
     showPaymentModal() {
       this.ShowModal({
-        key: modals.payment,
+        key: modals.paymentOptions,
+        step: 1,
       });
     },
   },

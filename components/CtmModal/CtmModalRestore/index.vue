@@ -3,33 +3,28 @@
     class="restore"
     :title="$t('forgot.title')"
   >
-    <div class="ctm-modal__content">
-      <ValidationObserver
-        v-slot="{ handleSubmit }"
-        class="restore"
-        tag="div"
+    <div class="restore__content content">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
       >
-        <form
-          class="restore__content"
-          action=""
-          @submit.prevent="handleSubmit(restore)"
+        <div class="content__field">
+          {{ $t('forgot.desc') }}
+        </div>
+        <base-field
+          v-model="emailInput"
+          :name="$t('placeholders.email')"
+          :placeholder="$t('placeholders.default')"
+          rules="required|email"
+          class="content__input"
+        />
+        <base-btn
+          class="content__action"
+          :disabled="!validated || !passed || invalid"
+          @click="handleSubmit(hide)"
         >
-          <div class="ctm-modal__desc">
-            {{ $t('forgot.desc') }}
-          </div>
-          <base-field
-            v-model="emailInput"
-            :name="$t('placeholders.email')"
-            :placeholder="$t('placeholders.email')"
-            rules="required|email"
-          />
-          <base-btn
-            class="restore__action"
-          >
-            {{ $t('meta.send') }}
-          </base-btn>
-        </form>
-      </ValidationObserver>
+          {{ $t('meta.send') }}
+        </base-btn>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -75,21 +70,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ctm-modal {
-  @include modalKit;
-  &__desc {
-    text-align: left;
-  }
-}
+
 .restore {
   max-width: 382px !important;
+
   &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 20px;
+    padding: 25px 28px 30px 28px !important;
   }
-  &__action {
-    margin-top: 5px;
+}
+.content{
+  &__field{
+    font-size: 16px;
+    line-height: 130%;
+    color: $black600;
+    margin-bottom: 20px;
+  }
+  &__action{
+    margin-top: 3px;
   }
 }
 </style>
