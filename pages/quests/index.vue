@@ -1,8 +1,6 @@
 <template>
   <div class="quests">
-    <GmapSearchBlock
-      :locations="questsLocation"
-    />
+    <GmapSearchBlock />
     <div class="quests__content">
       <div
         class="quests__body"
@@ -94,10 +92,14 @@
           </div>
         </div>
         <quests
-          v-if="questsObjects.count !== 0"
-          :limit="100"
+          v-if="questsArray.length > 0"
           :object="questsObjects"
           :page="'quests'"
+        />
+        <base-pager
+          v-if="questsArray.length > 0 && totalPagesValue !== 1"
+          v-model="page"
+          :total-pages="totalPagesValue"
         />
         <emptyData
           v-else
@@ -171,9 +173,15 @@ export default {
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
-      questLimits: 100,
+      questLimits: 10,
       questsObjects: {},
+      questsArray: [],
       questsLocation: {},
+      sortData: '',
+      page: 1,
+      perPager: 11,
+      totalPagesValue: 1,
+      additionalValue: '',
     };
   },
   computed: {
@@ -181,11 +189,38 @@ export default {
       tags: 'ui/getTags',
       checkWelcomeModal: 'modals/getIsShowWelcome',
       userRole: 'user/getUserRole',
+      mapBounds: 'quests/getMapBounds',
     }),
+    totalPages() {
+      if (this.questsObjects) {
+        return Math.ceil(this.questsObjects.count / this.perPager);
+      }
+      return 0;
+    },
+  },
+  watch: {
+    async isShowMap() {
+      this.SetLoader(true);
+      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      await this.getQuests(additionalValue);
+      this.SetLoader(false);
+    },
+    async page() {
+      this.SetLoader(true);
+      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      await this.getQuests(additionalValue);
+      this.SetLoader(false);
+    },
+    async mapBounds() {
+      this.SetLoader(true);
+      const additionalValue = `${this.sortData}`;
+      await this.getQuests(additionalValue);
+      this.totalPagesValue = this.totalPages;
+      this.SetLoader(false);
+    },
   },
   async mounted() {
     this.SetLoader(true);
-    await this.getQuests();
     this.SetLoader(false);
   },
   methods: {
@@ -194,10 +229,22 @@ export default {
         key: modals.questFilter,
       });
     },
-    async getQuests(specialSort = '') {
-      const additionalValue = `?limit=${this.questLimits}&offset=0${specialSort}`;
-      this.questsObjects = await this.$store.dispatch('quests/getAllQuests', additionalValue);
-      // this.questsLocation = await this.$store.dispatch('quests/getQuestsLocation');
+    async getQuests(payload = '') {
+      if (!this.isShowMap) {
+        this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
+      } else {
+        this.additionalValue = payload;
+        // eslint-disable-next-line no-lonely-if
+        if (!Object.keys(this.mapBounds).length) {
+          this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
+        } else {
+          const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
+          this.questsObjects = await this.$store.dispatch('quests/getQuestsOnMap', `${bounds}&${payload}`);
+          await this.$store.dispatch('quests/getQuestsLocation', `${bounds}&${payload}`);
+          this.questsArray = this.questsObjects.quests;
+        }
+        // const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
+      }
     },
     toNotifications() {
       this.$router.push('/notification');

@@ -25,7 +25,7 @@ export default {
     },
     zoom: {
       type: Number,
-      default: 10,
+      default: 8,
     },
     cluster: {
       type: Object,
@@ -46,6 +46,7 @@ export default {
       google: null,
       markerCluster: null,
       markers: [],
+      bounds: null,
       events: [
         'bounds_changed',
         'center_changed',
@@ -67,33 +68,19 @@ export default {
         'tilt_changed',
         'zoom_changed',
       ],
+      newCenter: null,
     };
   },
-
+  watch: {
+    async zoom() {
+      await this.mapLoaded();
+    },
+    async center() {
+      await this.mapLoaded();
+    },
+  },
   async mounted() {
-    if (this.$GMaps.loaded === false) {
-      this.$GMaps.loaded = true;
-      try {
-        const GMapSettings = {
-          apiKey: this.$GMaps.apiKey,
-          language: this.language,
-        };
-
-        if (this.$GMaps.libraries !== undefined) {
-          GMapSettings.libraries = this.$GMaps.libraries;
-        }
-
-        const google = GoogleMapsApiLoader(GMapSettings);
-        this.$GMaps.google = google;
-      } catch (e) {
-        console.log(e);
-      }
-    }
-
-    this.google = await this.$GMaps.google;
-    this.initMap();
-    this.$emit('init', this.google);
-    this.$emit('loaded', this.google);
+    await this.mapLoaded();
   },
 
   beforeDestroy() {
@@ -101,21 +88,85 @@ export default {
   },
 
   methods: {
-    initMap() {
+    initMap(listener) {
       this.map = new google.maps.Map(this.$refs.map, {
-        center: this.center,
+        center: this.newCenter !== null ? this.newCenter : this.center,
         zoom: this.zoom,
         ...this.options,
       });
-
+      // eslint-disable-next-line no-implied-eval
+      setTimeout(this.getMapBounds, 100);
       this.initChildren();
       this.events.forEach((event) => {
-        this.map.addListener(event, (e) => {
-          this.$emit(event, { map: this.map, event: e });
-        });
+        if (event === 'dragend') {
+          this.map.addListener(event, (e) => {
+            this.getMapBounds(event);
+            this.$emit(event, {
+              map: this.map,
+              event: e,
+            });
+          });
+        } else {
+          this.map.addListener(event, (e) => {
+            this.$emit(event, {
+              map: this.map,
+              event: e,
+            });
+          });
+        }
       });
     },
+    async mapLoaded() {
+      if (this.$GMaps.loaded === false) {
+        this.$GMaps.loaded = true;
+        try {
+          const GMapSettings = {
+            apiKey: this.$GMaps.apiKey,
+            language: this.language,
+          };
 
+          if (this.$GMaps.libraries !== undefined) {
+            GMapSettings.libraries = this.$GMaps.libraries;
+          }
+
+          const google = GoogleMapsApiLoader(GMapSettings);
+          this.$GMaps.google = google;
+        } catch (e) {
+          console.log(e);
+        }
+      }
+
+      this.google = await this.$GMaps.google;
+      this.initMap();
+      this.$emit('init', this.google);
+      this.$emit('loaded', this.google);
+    },
+    getMapBounds(eventName) {
+      const bounds = this.map.getBounds();
+      const mapCenterString = this.map.getCenter();
+      const mapCenterArray = mapCenterString.toString().replace(/[()]/g, '').split(', ');
+      this.newCenter = {
+        lat: parseFloat(mapCenterArray[0]),
+        lng: parseFloat(mapCenterArray[1]),
+      };
+      const coordinates = {
+        center: {
+          lat: parseFloat(mapCenterArray[0]),
+          lng: parseFloat(mapCenterArray[1]),
+        },
+        southWest: {
+          lat: bounds.tc.g,
+          lng: bounds.Hb.g,
+        },
+        northEast: {
+          lat: bounds.tc.i,
+          lng: bounds.Hb.i,
+        },
+      };
+      if (eventName === 'dragend') {
+        this.$store.dispatch('quests/setMapBounds', coordinates);
+      }
+    },
     initChildren() {
       if (this.markerCluster !== null) this.markerCluster.clearMarkers();
       if (this.markers.length > 0) this.markers = [];

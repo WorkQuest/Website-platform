@@ -7,4 +7,5 @@ export default () => ({
 
   starredQuests: {},
   responses: {},
+  mapBounds: {},
 });

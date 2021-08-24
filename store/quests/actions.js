@@ -4,7 +4,7 @@ export default {
     return await this.$axios.$post('/v1/quest/create', payload);
   },
   async getAllQuests({ commit }, payload) {
-    const response = await this.$axios.$get(`/v1/quests${payload}`);
+    const response = await this.$axios.$get(`/v1/quests?${payload}`);
     commit('setAllQuests', response.result);
     return response.result;
   },
@@ -19,9 +19,15 @@ export default {
     return response.result;
   },
 
-  async getQuestsLocation({ commit }) {
-    const response = await this.$axios.$get('/v1/quests/map/list-points');
+  async getQuestsOnMap({ commit }, payload) {
+    const response = await this.$axios.$get(`/v1/quests/map/list-points?${payload}`);
     commit('setAllQuests', response.result);
+    return response.result;
+  },
+
+  async getQuestsLocation({ commit }, payload) {
+    const response = await this.$axios.$get(`/v1/quests/map/points?${payload}`);
+    commit('setQuestsLocation', response.result);
     return response.result;
   },
 
@@ -106,4 +112,7 @@ export default {
     return data.result;
   },
 
+  setMapBounds({ commit }, payload) {
+    commit('setMapBounds', payload);
+  },
 };

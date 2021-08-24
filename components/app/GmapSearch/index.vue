@@ -13,10 +13,11 @@
           ref="gMap"
           language="en"
           :options="{fullscreenControl: false}"
-          :zoom="10"
+          :center="testLocations"
+          :zoom="zoomNumber"
         >
           <GMapMarker
-            v-for="location in locations"
+            v-for="location in questsLocations"
             :key="location.id"
             :position="{lat: location.lat, lng: location.lng}"
             :options="{icon: location === currentLocation ? pins.selected : pins.notSelected}"
@@ -54,7 +55,10 @@
             />
           </div>
           <div class="search__actions">
-            <base-btn class="search__btn">
+            <base-btn
+              class="search__btn"
+              @click="testFunction"
+            >
               {{ userRole === 'worker' ? $t('quests.searchResults') : $t('workers.searchWorkers') }}
             </base-btn>
           </div>
@@ -86,14 +90,10 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'Index',
-  props: {
-    locations: {
-      type: Object,
-      default: null,
-    },
-  },
   data() {
     return {
+      testLocations: { lat: 19.4326, lng: 99.1332 },
+      zoomNumber: 15,
       currentLocation: {},
       circleOptions: {},
       pins: {
@@ -128,7 +128,26 @@ export default {
       userPosition: 'user/getUserCurrentPosition',
       userRole: 'user/getUserRole',
       questsLocations: 'quests/getQuestsLocation',
+      mapBounds: 'quests/getMapBounds',
     }),
+  },
+  watch: {
+    distanceIndex() {
+      const zoom = {
+        0: 15,
+        1: 10,
+        2: 8,
+      };
+      this.zoomNumber = zoom[this.distanceIndex];
+    },
+  },
+  methods: {
+    testFunction() {
+      this.testLocations = {
+        lat: 55.7558,
+        lng: 37.6173,
+      };
+    },
   },
 };
 </script>
