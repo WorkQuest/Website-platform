@@ -6,12 +6,12 @@
   >
     <div class="ctm-modal__content">
       <div class="messageSend">
+        <span class="messageSend__title">{{ $t('modals.pleaseDescribe') }}</span>
         <div class="messageSend__content">
           <base-field
             v-model="reasonInput"
             class="message__action"
             :placeholder="$t('modals.reason')"
-            :label="$t('modals.pleaseDescribe')"
           />
           <div class="btn__container">
             <div class="btn__wrapper">
@@ -42,7 +42,7 @@
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'CtmModalChangeRoleWarning',
+  name: 'CtmModalChangeRoleReason',
   data() {
     return {
       reasonInput: '',
@@ -87,6 +87,13 @@ export default {
 
 .messageSend {
   max-width: 400px !important;
+  display: flex;
+  flex-direction: column;
+  &__title {
+    letter-spacing: -0.025em;
+    margin-bottom: 13px;
+    color: #212529;
+  }
   &__content {
     display: grid;
     grid-template-columns: 1fr;
@@ -98,7 +105,7 @@ export default {
     width: 100%;
   }
 }
-.ctm-field__header {
-  height: auto;
+.messageSend__content div div {
+  height: auto !important;
 }
 </style>
