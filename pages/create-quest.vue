@@ -362,7 +362,7 @@ export default {
         console.log(e);
       }
     },
-    showQuestCreatedModal() {
+    async showQuestCreatedModal() {
       const createQuestData = {
         priority: this.priorityIndex,
         category: 'Default',
@@ -377,7 +377,7 @@ export default {
         },
       };
       try {
-        const response = this.$store.dispatch('quests/questCreate', createQuestData);
+        const response = await this.$store.dispatch('quests/questCreate', createQuestData);
         if (response) {
           this.ShowModal({
             key: modals.status,
@@ -386,6 +386,7 @@ export default {
             subtitle: this.$t('modals.youCanUpdateThisInYourProfile'),
           });
         }
+        await this.$router.push(`/quests/${response.result.id}`);
       } catch (e) {
         console.log(e);
       }
