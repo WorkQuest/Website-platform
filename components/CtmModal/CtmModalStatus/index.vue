@@ -1,30 +1,39 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
+    class="status"
     :is-header="false"
   >
-    <div class="ctm-modal__content">
-      <div class="messageSend">
-        <div class="messageSend__content">
-          <img
-            :src="options.img"
-            alt="RequestSend"
-          >
-          <div class="ctm-modal__title">
-            {{ options.title }}
-          </div>
-          <div class="ctm-modal__desc">
-            <span v-if="!options.subtitle" />
-            <span v-if="options.subtitle">{{ options.subtitle }}</span>
-          </div>
-          <base-btn
-            class="email__action"
-            @click="hide()"
-          >
-            {{ $t('meta.ok') }}
-          </base-btn>
-        </div>
+    <div class="status__content">
+      <img
+        :src="options.img"
+        alt="Status"
+        class="content__picture"
+      >
+      <div class="status__title">
+        {{ options.title }}
       </div>
+      <div class="status__desc">
+        <span v-if="options.subtitle">
+          {{ options.subtitle }}
+        </span>
+      </div>
+      <base-btn
+        class="status__action"
+        @click="hide()"
+      >
+        <span
+          v-if="options.button"
+          class="status__text"
+        >
+          {{ options.button }}
+        </span>
+        <span
+          v-else
+          class="status__text"
+        >
+          {{ $t('meta.ok') }}
+        </span>
+      </base-btn>
     </div>
   </ctm-modal-box>
 </template>
@@ -33,7 +42,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'Status',
+  name: 'ModalStatus',
   data() {
     return {};
   },
@@ -52,23 +61,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ctm-modal {
-  @include modalKit;
-  &__title {
-    text-align: center;
-  }
-}
 
-.messageSend {
+.status {
   max-width: 337px !important;
+  height: auto !important;
+  padding: 0!important;
   &__content {
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
     grid-gap: 20px;
+    padding: 30px!important;
+  }
+  &__title {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: 500;
+    font-size: 23px;
+    line-height: 130%;
   }
   &__action {
     margin-top: 10px;
+  }
+  &__desc{
+    font-size: 16px;
+    line-height: 130%;
+    text-align: center;
+    color: $black600;
   }
 }
 </style>

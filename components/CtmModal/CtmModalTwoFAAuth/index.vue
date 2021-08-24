@@ -4,26 +4,31 @@
     :title="$t('modals.twoFAAuth')"
   >
     <div class="ctm-modal__content">
-      <validation-observer>
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
         <div
           class="step-panel"
         >
           <div
-            class="step-panel__step"
+            class="__step"
             :class="[
               {'step-panel__step_active': step === 1 || step === 2 || step === 3 || step === 4},
             ]"
           >
-            <span
-              :class="[
-                {'hide': step === 2 || step === 3 || step === 4},
-              ]"
-            >{{ $t('modals.step') }}</span>
-            <span
-              :class="[
-                {'step__number': step === 2 || step === 3 || step === 4},
-              ]"
-            >1</span>
+            <span class="step-panel__block">
+              <span
+                :class="[
+                  {'hide': step === 2 || step === 3 || step === 4},
+                ]"
+              >{{ $t('modals.step') }}
+              </span>
+              <span
+                :class="[
+                  {'step__number': step === 2 || step === 3 || step === 4},
+                ]"
+              >1</span>
+            </span>
           </div>
           <div
             class="line"
@@ -37,16 +42,18 @@
               {'step-panel__step_active': step === 2 || step === 3 || step === 4},
             ]"
           >
-            <span
-              :class="[
-                {'hide': step === 3 || step === 4},
-              ]"
-            >{{ $t('modals.step') }}</span>
-            <span
-              :class="[
-                {'step__number': step === 3 || step === 4},
-              ]"
-            >2</span>
+            <span class="step-panel__block">
+              <span
+                :class="[
+                  {'hide': step === 3 || step === 4},
+                ]"
+              >{{ $t('modals.step') }}</span>
+              <span
+                :class="[
+                  {'step__number': step === 3 || step === 4},
+                ]"
+              >2</span>
+            </span>
           </div>
           <div
             class="line"
@@ -60,16 +67,18 @@
               {'step-panel__step_active': step === 3 || step === 4},
             ]"
           >
-            <span
-              :class="[
-                {'hide': step === 4},
-              ]"
-            >{{ $t('modals.step') }}</span>
-            <span
-              :class="[
-                {'step__number': step === 2 || step === 3 || step === 4},
-              ]"
-            >3</span>
+            <span class="step-panel__block">
+              <span
+                :class="[
+                  {'hide': step === 4},
+                ]"
+              >{{ $t('modals.step') }}</span>
+              <span
+                :class="[
+                  {'step__number': step === 2 || step === 3 || step === 4},
+                ]"
+              >3</span>
+            </span>
           </div>
           <div
             class="line"
@@ -81,8 +90,10 @@
             class="step-panel__step"
             :class="[{'step-panel__step_active': step === 4}]"
           >
-            <span> {{ $t('modals.step') }}</span>
-            <span>4</span>
+            <span class="step-panel__block">
+              <span> {{ $t('modals.step') }}</span>
+              <span>4</span>
+            </span>
           </div>
         </div>
         <!-- Steps -->
@@ -97,7 +108,7 @@
               <span class="content__text">{{ $t('modals.installGoogleAuth') }}</span>
             </div>
             <div class="btn__container">
-              <div class="btn__wrapper">
+              <div class="btn__store">
                 <div>
                   <base-btn
                     mode="black"
@@ -113,7 +124,7 @@
                   </base-btn>
                 </div>
               </div>
-              <div class="btn__wrapper">
+              <div class="btn__store">
                 <div>
                   <base-btn
                     mode="black"
@@ -205,18 +216,20 @@
             <base-field
               id="confirmEmailCode"
               v-model="confirmEmailCode"
-              :is-hide-error="true"
               :label="$t('modals.emailVerificationCode')"
               :placeholder="$t('modals.emailPlaceholder')"
+              rules="required|alpha_num"
+              :name="$t('modals.emailVerificationCodeField')"
             />
           </div>
           <div class="ctm-modal__content-field">
             <base-field
               id="twoFACode"
               v-model="twoFACode"
-              :is-hide-error="true"
               :label="$t('modals.googleVerificationCode')"
               :placeholder="$t('modals.codePlaceholder')"
+              rules="required|alpha_num"
+              :name="$t('securityCheck.confCodeField')"
             />
           </div>
         </div>
@@ -270,7 +283,8 @@
             >
               <base-btn
                 class="message__action"
-                @click="confirmEnable2FA()"
+                :disabled="!validated || !passed || invalid"
+                @click="handleSubmit(confirmEnable2FA)"
               >
                 {{ $t('meta.next') }}
               </base-btn>
@@ -467,6 +481,9 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  &__block{
+    white-space: nowrap;
+  }
   &__step {
     @include text-simple;
     background: rgba(0, 131, 199, 0.1);
@@ -526,10 +543,13 @@ export default {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
-    margin: 15px 0 0 0;
   }
   &__wrapper {
     width: 45%;
+  }
+  &__store{
+    width: 47%;
+    margin-bottom: 25px;
   }
   &__onebtn {
     width: 100%;

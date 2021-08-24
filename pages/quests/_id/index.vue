@@ -212,12 +212,17 @@
                   class="buttons__wrapper"
                 >
                   <div class="btn__wrapper">
-                    <base-btn>
+                    <base-btn
+                      @click="showRaiseViewsModal"
+                    >
                       {{ $t('quests.raiseViews') }}
                     </base-btn>
                   </div>
                   <div class="btn__wrapper">
-                    <base-btn mode="delete">
+                    <base-btn
+                      mode="delete"
+                      @click="showDeleteQuestModal"
+                    >
                       {{ $t('quests.deleteQuest') }}
                     </base-btn>
                   </div>
@@ -473,6 +478,16 @@ export default {
     showMessageModal() {
       this.ShowModal({
         key: modals.sendARequest,
+      });
+    },
+    showRaiseViewsModal() {
+      this.ShowModal({
+        key: modals.raiseViews,
+      });
+    },
+    showDeleteQuestModal() {
+      this.ShowModal({
+        key: modals.areYouSureDelete,
       });
     },
     openImage(src) {

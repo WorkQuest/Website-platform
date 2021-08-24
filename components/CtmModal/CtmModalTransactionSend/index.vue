@@ -1,47 +1,34 @@
 <template>
   <ctm-modal-box
-    class="messageSend"
+    class="transaction"
     :is-header="false"
   >
-    <div class="ctm-modal__content">
-      <div class="messageSend">
-        <div class="messageSend__content">
-          <img
-            src="~assets/img/ui/transactionSend.svg"
-            alt="RequestSend"
-          >
-          <div class="ctm-modal__title">
-            {{ $t('modals.transactionSend') }}
-          </div>
-          <div class="ctm-modal__desc">
-            {{ $t('modals.smallTemp') }}
-          </div>
-          <base-btn
-            class="email__action"
-            @click="hide()"
-          >
-            {{ $t('meta.ok') }}
-          </base-btn>
-        </div>
+    <div class="transaction__content">
+      <img
+        src="~assets/img/ui/transactionSend.svg"
+        alt="Transaction send"
+        class="transaction__image"
+      >
+      <div class="transaction__title">
+        {{ $t('modals.transactionSend') }}
       </div>
+      <div class="transaction__desc">
+        {{ $t('modals.transactionSentText') }}
+      </div>
+      <base-btn
+        class="transaction__action"
+        @click="hide"
+      >
+        {{ $t('meta.ok') }}
+      </base-btn>
     </div>
   </ctm-modal-box>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 
 export default {
   name: 'ModalTransactionSend',
-  data() {
-    return {
-    };
-  },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
-  },
   methods: {
     hide() {
       this.CloseModal();
@@ -55,9 +42,10 @@ export default {
   @include modalKit;
 }
 
-.messageSend {
+.transaction {
   max-width: 337px !important;
   &__content {
+    padding: 30px;
     display: grid;
     grid-template-columns: 1fr;
     justify-items: center;
@@ -65,6 +53,19 @@ export default {
   }
   &__action {
     margin-top: 10px;
+  }
+  &__title{
+    font-weight: 500;
+    font-size: 23px;
+    line-height: 130%;
+    color: #1D2127;
+    margin-top: 10px;
+  }
+  &__desc{
+    font-size: 16px;
+    line-height: 130%;
+    color: #4C5767;
+    text-align: center;
   }
 }
 </style>
