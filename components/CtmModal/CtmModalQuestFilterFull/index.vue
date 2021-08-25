@@ -1101,6 +1101,9 @@ export default {
     display: grid;
     justify-items: flex-end;
   }
+  &__header {
+    padding: 30px 28px 0 40px !important;
+  }
 }
 
 .message {
@@ -1152,7 +1155,8 @@ export default {
 }
 
 .filter {
-  max-width: 100% !important;
+  min-height: 50%;
+  min-width: 65% !important;
   justify-content: center;
   &__btns {
     margin: 44px 8% 20px 0;
@@ -1162,25 +1166,20 @@ export default {
     gap: 10px;
   }
   &__container {
-    margin: 0 0 0 27px;
+    margin: 0 0 0 13px;
     overflow-y: auto;
-    display: grid;
+    display: inline-grid;
     justify-content: center;
   }
   &__body {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    margin: 10px 0 0 0;
-    padding: 10px 0 0 0;
-    gap: 20px 20px;
+    height: 100%;
+    max-height: max-content;
+    column-count: 4;
+    column-gap: 0;
   }
   &__items {
-    width: 24%;
-    position: relative;
-    display: inline-block;
-    margin: 0 0 10px 0;
+    break-inside: avoid;
+    padding: 15px;
     cursor: pointer;
     &:hover {
       text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
