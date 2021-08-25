@@ -1041,20 +1041,12 @@ export default {
   },
   methods: {
     cleanUp() {
-      for (let idx = 0; idx < Object.keys(`this.$refs.checkbox${idx}`).length; idx += 1) {
-        const checkboxes = this.$refs.[`checkbox${idx}`];
-        for (let i = 0; i < Object.keys(checkboxes).length; i += 1) {
-          if (checkboxes[i].checked) {
-            checkboxes[i].checked = false;
-          }
-        }
-      }
-      for (let idx = 0; idx < Object.keys(`this.$refs.allCheckbox${idx}`).length; idx += 1) {
+      for (let idx = 0; idx < Object.keys(this.$refs).length / 2; idx += 1) {
         const selectAllCheckbox = this.$refs.[`allCheckbox${idx}`];
-        for (let i = 0; i < Object.keys(selectAllCheckbox).length; i += 1) {
-          if (selectAllCheckbox[i].checked) {
-            selectAllCheckbox[i].checked = false;
-          }
+        const checkboxes = this.$refs.[`checkbox${idx}`];
+        selectAllCheckbox[0].checked = false;
+        for (let i = 0; i < Object.keys(checkboxes).length; i += 1) {
+          checkboxes[i].checked = selectAllCheckbox[0].checked;
         }
       }
     },
