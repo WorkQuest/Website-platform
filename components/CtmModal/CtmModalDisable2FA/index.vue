@@ -4,7 +4,7 @@
     :title="$t('modals.disable2Fa')"
   >
     <div class="ctm-modal__content">
-      <validation-observer>
+      <validation-observer v-slot="{ handleSubmit, validated, passed, invalid }">
         <div
           class="step__container"
         >
@@ -12,7 +12,10 @@
             <base-field
               id="twoFACode"
               v-model="twoFACode"
-              :is-hide-error="true"
+              :placeholder="errorMessage || $t('modals.enterCode')"
+              rules="required|min:6|numeric"
+              name="disable 2FA"
+              :is-hide-error="false"
             />
           </div>
         </div>
@@ -25,7 +28,8 @@
             >
               <base-btn
                 class="message__action"
-                @click="disable2FA"
+                :disabled="!validated || !passed || invalid"
+                @click="handleSubmit(disable2FA)"
               >
                 {{ $t('meta.disable') }}
               </base-btn>
@@ -56,6 +60,7 @@ export default {
   data() {
     return {
       twoFACode: '',
+      errorMessage: '',
     };
   },
   computed: {
@@ -73,9 +78,13 @@ export default {
         const payload = {
           totp: this.twoFACode,
         };
-        await this.$store.dispatch('user/disable2FA', payload);
+        this.twoFACode = '';
+        const response = await this.$store.dispatch('user/disable2FA', payload);
+        if (response.ok) {
+          this.CloseModal();
+        }
       } catch (e) {
-        console.log(e);
+        this.errorMessage = e.response.data.msg;
       }
     },
   },
