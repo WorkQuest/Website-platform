@@ -127,6 +127,7 @@
     }
   },
   "meta": {
+    "cleanUp": "Clean up",
     "close": "Close",
     "delete": "Delete",
     "back": "Back",
