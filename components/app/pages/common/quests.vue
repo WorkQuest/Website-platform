@@ -43,7 +43,7 @@
                 <div class="block__text block__text_title">
                   {{ `${item.user.firstName} ${item.user.lastName}` }}
                   <span
-                    v-if="userCompany.company"
+                    v-if="userCompany"
                     class="block__text block__text_grey"
                   >from {{ item.user.additionalInfo.company }}</span>
                 </div>
@@ -208,7 +208,7 @@ export default {
       userData: 'user/getUserData',
     }),
     userCompany() {
-      return this.userData.additionalInfo?.company;
+      return this.userData.additionalInfo?.company || null;
     },
   },
   async mounted() {
