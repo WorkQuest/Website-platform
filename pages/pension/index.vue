@@ -531,7 +531,7 @@ export default {
     background: linear-gradient(to bottom, #103D7C 245px, #f6f8fa 245px);
     &__container {
       gap: 15px;
-      grid-template-rows: 150px auto;
+      //grid-template-rows: 150px auto;
     }
   }
 

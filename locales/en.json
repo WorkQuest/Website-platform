@@ -1737,7 +1737,8 @@
     "based": "Based",
     "reviews": "reviews",
     "portfolio": "Portfolio",
-    "showAllCases": "Show all cases"
+    "showAllCases": "Show all cases",
+    "costTitle": "Cost per hour"
   },
   "levels": {
     "reliableEmp": "RELIABLE EMP.",
