@@ -15,7 +15,7 @@
       <base-btn
         v-if="link !== ''"
         class="absence__button"
-        :nuxt-link="buttonLink"
+        @click="toCreateQuest"
       >
         {{ btnText }}
       </base-btn>
@@ -38,6 +38,11 @@ export default {
     link: {
       type: String,
       default: '',
+    },
+  },
+  methods: {
+    toCreateQuest() {
+      this.$router.push(this.link);
     },
   },
 };

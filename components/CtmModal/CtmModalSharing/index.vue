@@ -6,8 +6,12 @@
     <div class="ctm-modal__content">
       <span>{{ $t('sharing.socialText') }}</span>
       <div class="social__icons">
-        <button class="social__btn social__btn_google">
-          <span class="icon-google" />
+        <button class="social__btn social__btn_telegram">
+          <img
+            class="social__btn_telegram"
+            alt=""
+            src="~assets/img/icons/telegram.png"
+          >
         </button>
         <button class="social__btn social__btn_twitter">
           <span class="icon-twitter" />
@@ -153,6 +157,16 @@ export default {
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
+      img {
+        transition: 0.5s;
+        filter: brightness(1000%) grayscale(100%);
+      }
+    }
+    &_telegram {
+      img {
+        height: 14px;
+        width: 16px;
+      }
     }
     &_instagram {
       span:before {
@@ -166,12 +180,6 @@ export default {
       span:before {
         font-size: 18px;
         color: #24CAFF;
-      }
-    }
-    &_google {
-      span:before {
-        font-size: 18px;
-        color: #094EFF;
       }
     }
     &_facebook {
