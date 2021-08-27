@@ -281,91 +281,11 @@
                 {{ $t('raising-views.chooseLevel') }}
               </div>
               <div
-                v-if="period === 1"
+                v-if="period"
                 class="level__container"
               >
                 <div
-                  v-for="(item, i) in days"
-                  :key="i"
-                  class="level__card"
-                  :class="{'level__card_gold': item.code === 1}"
-                  @click="selectRadio(i)"
-                >
-                  <div class="level__option">
-                    <input
-                      :ref="`radio${i}`"
-                      name="higherLevel"
-                      type="radio"
-                      class="radio__input"
-                    >
-                  </div>
-                  <div class="level card">
-                    <div
-                      class="card__level"
-                      :class="[
-                        {'card__level_reliable': item.code === 3},
-                        {'card__level_checked': item.code === 4}
-                      ]"
-                    >
-                      {{ item.level }}
-                    </div>
-                    <div class="card__desc">
-                      {{ item.desc }}
-                    </div>
-                  </div>
-                  <div class="cost__container">
-                    <div class="card__cost">
-                      {{ item.cost }}$
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                v-if="period === 2"
-                class="level__container"
-              >
-                <div
-                  v-for="(item, i) in weeks"
-                  :key="i"
-                  class="level__card"
-                  :class="{'level__card_gold': item.code === 1}"
-                  @click="selectRadio(i)"
-                >
-                  <div class="level__option">
-                    <input
-                      :ref="`radio${i}`"
-                      name="higherLevel"
-                      type="radio"
-                      class="radio__input"
-                    >
-                  </div>
-                  <div class="level card">
-                    <div
-                      class="card__level"
-                      :class="[
-                        {'card__level_reliable': item.code === 3},
-                        {'card__level_checked': item.code === 4}
-                      ]"
-                    >
-                      {{ item.level }}
-                    </div>
-                    <div class="card__desc">
-                      {{ item.desc }}
-                    </div>
-                  </div>
-                  <div class="cost__container">
-                    <div class="card__cost">
-                      {{ item.cost }}$
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                v-if="period === 3"
-                class="level__container"
-              >
-                <div
-                  v-for="(item, i) in months"
+                  v-for="(item, i) in periods(period)"
                   :key="i"
                   class="level__card"
                   :class="{'level__card_gold': item.code === 1}"
@@ -613,6 +533,17 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    periods(period) {
+      let val;
+      if (period === 1) {
+        val = this.days;
+      } if (period === 2) {
+        val = this.weeks;
+      } if (period === 3) {
+        val = this.months;
+      }
+      return val;
+    },
     selectRadio(idx) {
       const radio = this.$refs.[`radio${idx}`];
       for (let i = 0; i < Object.keys(this.$refs.[`radio${i}`]).length; i += 1) {
