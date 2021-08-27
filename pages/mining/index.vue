@@ -9,6 +9,12 @@
           {{ $t('mining.templateText') }}
         </div>
       </div>
+      <base-btn
+        mode="light"
+        class="mining-page__head-btn"
+      >
+        {{ $t('mining.connectWallet') }}
+      </base-btn>
       <div class="mining-page__content">
         <div class="info-block">
           <div class="info-block__name_bold">
@@ -122,6 +128,7 @@ export default {
       ],
       items: [
         {
+          id: 'ETH',
           poolAddress: this.$t('mining.table.poolAddress'),
           assets: this.$t('mining.table.assets'),
           template1: this.$t('mining.table.sdsdsdsd'),
@@ -131,8 +138,9 @@ export default {
           chooseBtn: this.$t('mining.choose'),
         },
         {
+          id: 'BNB',
           poolAddress: this.$t('mining.table.poolAddress'),
-          assets: this.$t('mining.table.assets'),
+          assets: this.$t('mining.table.assets2'),
           template1: this.$t('mining.table.sdsdsdsd'),
           template2: this.$t('mining.table.sdsdsdsd'),
           template3: this.$t('mining.sdsdsdsd'),
@@ -239,6 +247,11 @@ export default {
   },
   methods: {
     handleOpenPool(el) {
+      if (localStorage.getItem('miningPoolId')) {
+        localStorage.removeItem('miningPoolId');
+      }
+      console.log(el.item.id);
+      localStorage.setItem('miningPoolId', el.item.id);
       this.$router.push('/mining/1');
     },
   },
@@ -247,7 +260,7 @@ export default {
 
 <style lang="scss" scoped>
 .mining-page {
-  background: linear-gradient(to bottom, #103D7C 320px, #f6f8fa 320px);
+  background: linear-gradient(to bottom, #103D7C 380px, #f6f8fa 380px);
   display: flex;
   justify-content: center;
 
@@ -259,6 +272,10 @@ export default {
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
+  }
+
+  &__head-btn {
+    width: 150px;
   }
 
   &__header {

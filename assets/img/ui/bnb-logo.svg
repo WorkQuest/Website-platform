@@ -1,0 +1,15 @@
+<svg width="67" height="67" viewBox="9 5 67 67" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d)">
+<path d="M9 38.5C9 19.9985 23.9985 5 42.5 5C61.0015 5 76 19.9985 76 38.5C76 57.0015 61.0015 72 42.5 72C23.9985 72 9 57.0015 9 38.5Z" fill="#272626"/>
+<path d="M33.827 34.9356L42.5013 26.2614L51.18 34.9401L56.2274 29.8928L42.5013 16.1667L28.7797 29.8883L33.827 34.9356Z" fill="#FFC500"/>
+<path d="M47.6201 38.4956H47.6223L42.5013 33.3768L38.7158 37.16L38.2803 37.5955L37.3847 38.4933L37.3758 38.5L37.3847 38.5067L42.4991 43.6233L47.6223 38.5023L47.6246 38.5L47.6201 38.4978V38.4956Z" fill="#FFC500"/>
+<path d="M33.827 42.0644L28.773 47.1051L28.7797 47.1118L42.5013 60.8334L56.2274 47.1073V47.1051L51.18 42.0577L42.5013 50.7387L33.827 42.0644Z" fill="#FFC500"/>
+<path d="M20.168 38.5L25.2153 43.5474L30.2626 38.5L25.2153 33.4527L20.168 38.5Z" fill="#FFC500"/>
+<path d="M54.74 38.5L59.7873 43.5474L64.8346 38.5L59.7873 33.4527L54.74 38.5Z" fill="#FFC500"/>
+</g>
+<defs>
+<filter id="filter0_d" x="0" y="0" width="85" height="85" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+</defs>
+</svg>
