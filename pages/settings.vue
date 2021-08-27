@@ -114,7 +114,6 @@
                   class="Phone"
                   error-color="#EB5757"
                   clearable
-                  size="lg"
                   show-code-on-list
                   @update="updatedPhone = $event"
                 />
@@ -781,7 +780,7 @@ export default {
       userTwitter: 'user/getUserTwitter',
       userLinkedin: 'user/getUserLinkedin',
       userFacebook: 'user/getUserFacebook',
-      secondMobileNumder: 'user/getUserSecondMobileNumber',
+      secondMobileNumber: 'user/getUserSecondMobileNumber',
       imageData: 'user/getImageData',
       additionalInfo: 'user/getAdditionalInfo',
       getUserAddress: 'user/getUserAddress',
