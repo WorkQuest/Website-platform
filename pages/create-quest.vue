@@ -285,7 +285,7 @@
                 class="level__container"
               >
                 <div
-                  v-for="(item, i) in levels1Day"
+                  v-for="(item, i) in days"
                   :key="i"
                   class="level__card"
                   :class="{'level__card_gold': item.code === 1}"
@@ -325,7 +325,7 @@
                 class="level__container"
               >
                 <div
-                  v-for="(item, i) in levels1Week"
+                  v-for="(item, i) in weeks"
                   :key="i"
                   class="level__card"
                   :class="{'level__card_gold': item.code === 1}"
@@ -365,7 +365,7 @@
                 class="level__container"
               >
                 <div
-                  v-for="(item, i) in levels1Month"
+                  v-for="(item, i) in months"
                   :key="i"
                   class="level__card"
                   :class="{'level__card_gold': item.code === 1}"
@@ -447,7 +447,7 @@ export default {
     return {
       step: 1,
       period: 1,
-      levels1Day: [
+      days: [
         {
           level: this.$t('quests.levels.1.title'),
           code: 1,
@@ -473,7 +473,7 @@ export default {
           cost: '10',
         },
       ],
-      levels1Week: [
+      weeks: [
         {
           level: this.$t('quests.levels.1.title'),
           code: 1,
@@ -499,7 +499,7 @@ export default {
           cost: '40',
         },
       ],
-      levels1Month: [
+      months: [
         {
           level: this.$t('quests.levels.1.title'),
           code: 1,
