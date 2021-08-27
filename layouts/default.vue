@@ -691,73 +691,18 @@ export default {
       isMobileMenu: false,
       isNotFlexContainer: true,
       notification: 1,
-      mobileMenuLinks: [
-        {
-          path: '/quests',
-          title: this.$t('ui.quests'),
-        },
-        {
-          path: '/my',
-          title: this.$t('ui.myQuests'),
-        },
-        {
-          path: '/wallet',
-          title: this.$t('ui.wallet'),
-        },
-      ],
-      instrumentDDLinks: [
-        {
-          link: '/pension',
-          title: this.$t('ui.menu.pension.title'),
-        },
-        {
-          link: '/referral',
-          title: this.$t('ui.menu.referral.title'),
-        },
-        {
-          link: '/insuring',
-          title: this.$t('ui.menu.p2p.title'),
-        },
-        {
-          link: '/savings',
-          title: this.$t('ui.menu.savings.title'),
-        },
-        {
-          link: '/crediting',
-          title: this.$t('ui.menu.crediting.title'),
-        },
-        {
-          link: '/mining',
-          title: this.$t('ui.menu.mining.title'),
-        },
-        {
-          link: '/crosschain',
-          title: this.$t('ui.menu.crosschain.title'),
-        },
-        {
-          link: '/staking',
-          title: this.$t('ui.menu.staking.title'),
-        },
-      ],
-      userDDLinks: [
-        {
-          link: '/profile',
-          title: 'My profile',
-        },
-        {
-          link: '/settings',
-          title: 'Settings',
-        },
-        {
-          link: '/disputes',
-          title: 'Disputes',
-        },
-        {
-          link: '/',
-          title: 'Logout',
-        },
-      ],
-      locales: [
+      currentLocale: '',
+    };
+  },
+  computed: {
+    ...mapGetters({
+      isLoading: 'main/getIsLoading',
+      userData: 'user/getUserData',
+      imageData: 'user/getImageData',
+      userRole: 'user/getUserRole',
+    }),
+    locales() {
+      return [
         {
           localeSrc: '/img/app/en.svg',
           localeText: this.$t('ui.locals.en'),
@@ -798,17 +743,80 @@ export default {
           localeSrc: '/img/app/ae.svg',
           localeText: this.$t('ui.locals.ae'),
         },
-      ],
-      currentLocale: '',
-    };
-  },
-  computed: {
-    ...mapGetters({
-      isLoading: 'main/getIsLoading',
-      userData: 'user/getUserData',
-      imageData: 'user/getImageData',
-      userRole: 'user/getUserRole',
-    }),
+      ];
+    },
+    instrumentDDLinks() {
+      return [
+        {
+          link: '/pension',
+          title: this.$t('ui.menu.pension.title'),
+        },
+        {
+          link: '/referral',
+          title: this.$t('ui.menu.referral.title'),
+        },
+        {
+          link: '/insuring',
+          title: this.$t('ui.menu.p2p.title'),
+        },
+        {
+          link: '/savings',
+          title: this.$t('ui.menu.savings.title'),
+        },
+        {
+          link: '/crediting',
+          title: this.$t('ui.menu.crediting.title'),
+        },
+        {
+          link: '/mining',
+          title: this.$t('ui.menu.mining.title'),
+        },
+        {
+          link: '/crosschain',
+          title: this.$t('ui.menu.crosschain.title'),
+        },
+        {
+          link: '/staking',
+          title: this.$t('ui.menu.staking.title'),
+        },
+      ];
+    },
+    mobileMenuLinks() {
+      return [
+        {
+          path: '/quests',
+          title: this.$t('ui.quests'),
+        },
+        {
+          path: '/my',
+          title: this.$t('ui.myQuests'),
+        },
+        {
+          path: '/wallet',
+          title: this.$t('ui.wallet'),
+        },
+      ];
+    },
+    userDDLinks() {
+      return [
+        {
+          link: `/profile/${this.userData.id}`,
+          title: this.$t('ui.profile.myProfile'),
+        },
+        {
+          link: '/settings',
+          title: this.$t('ui.profile.settings'),
+        },
+        {
+          link: '/disputes',
+          title: this.$t('ui.profile.disputes'),
+        },
+        {
+          link: '/',
+          title: this.$t('ui.profile.logout'),
+        },
+      ];
+    },
     profileLinks() {
       return [
         {
