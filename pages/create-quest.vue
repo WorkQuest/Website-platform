@@ -297,6 +297,8 @@
                       name="higherLevel"
                       type="radio"
                       class="radio__input"
+                      :value="item.cost"
+                      @input="selectRadio(i)"
                     >
                   </div>
                   <div class="level card">
@@ -329,6 +331,7 @@
               </div>
               <div class="btn-container__btn">
                 <base-btn
+                  :disabled="ads.currentAdPrice === ''"
                   @click="showPaymentModal"
                 >
                   {{ $t('meta.pay') }}
@@ -362,6 +365,9 @@ export default {
   },
   data() {
     return {
+      ads: {
+        currentAdPrice: '',
+      },
       step: 1,
       period: 1,
       days: [
@@ -555,7 +561,14 @@ export default {
     selectRadio(idx) {
       const radio = this.$refs.[`radio${idx}`];
       for (let i = 0; i < Object.keys(this.$refs.[`radio${i}`]).length; i += 1) {
-        radio[i].checked = !radio[i].checked;
+        if (radio[i].checked) {
+          radio[i].checked = false;
+          this.ads.currentAdPrice = '';
+        } else if (!radio[i].checked) {
+          radio[i].checked = true;
+          this.ads.currentAdPrice = radio[i].value;
+        }
+        console.log(this.ads.currentAdPrice);
       }
     },
     toFirstPeriod() {
