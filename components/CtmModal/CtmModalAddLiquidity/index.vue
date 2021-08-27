@@ -22,9 +22,18 @@
             />
             <div class="field__container">
               <div class="field__title">
-                {{ $t('modals.amountOfEth') }}
+                {{ $t(`modals.${options.isBNB ? 'amountOfBnb': 'amountOfEth'}`) }}
               </div>
               <base-field
+                v-if="options.isBNB"
+                v-model="amountOfBnb"
+                :placeholder="$t('modals.addLiquidityAmountBnb')"
+                class="field__input"
+                rules="required|decimal"
+                :name="$t('modals.amountOfBnbField')"
+              />
+              <base-field
+                v-else
                 v-model="amountOfEth"
                 :placeholder="$t('modals.addLiquidityAmountEth')"
                 class="field__input"
@@ -44,7 +53,7 @@
               {{ $t('modals.byAddingLiquidityYouWillEarn') }}
             </div>
             <div
-              v-for="(item, i) in abouts"
+              v-for="(item, i) in abouts()"
               :key="i"
             >
               <div class="content__title">
@@ -86,20 +95,7 @@ export default {
     return {
       amountOfWusd: '',
       amountOfEth: '',
-      abouts: [
-        {
-          title: this.$t('modals.amountEthPerWusd'),
-          subtitle: 54,
-        },
-        {
-          title: this.$t('modals.amountEthPerWusd'),
-          subtitle: 65,
-        },
-        {
-          title: this.$t('modals.shareOfPool'),
-          subtitle: '5%',
-        },
-      ],
+      amountOfBnb: '',
     };
   },
   computed: {
@@ -110,6 +106,23 @@ export default {
   methods: {
     hide() {
       this.CloseModal();
+    },
+    abouts() {
+      const { isBNB } = this.options;
+      return [
+        {
+          title: this.$t(`modals.${isBNB ? 'amountBnbPerWusd' : 'amountEthPerWusd'}`),
+          subtitle: 54,
+        },
+        {
+          title: this.$t(`modals.${isBNB ? 'amountBnbPerWusd' : 'amountEthPerWusd'}`),
+          subtitle: 65,
+        },
+        {
+          title: this.$t('modals.shareOfPool'),
+          subtitle: '5%',
+        },
+      ];
     },
   },
 };
