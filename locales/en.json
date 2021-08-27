@@ -1110,6 +1110,15 @@
       "invite": "Invites you to complete the quest"
     },
     "menu": {
+      "instruments": "Instruments",
+      "crosschain": {
+        "title": "Crosschain",
+        "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      },
+      "staking": {
+        "title": "Staking",
+        "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      },
       "pension": {
         "title": "Retirement program",
         "desc": "You can select a percentage of each completed quest which will then be automatically credited to your retirement account, or simply deposit an amount of your choice. The pool of funds is invested on the employee's behalf, and the earnings on the investments generate income to the worker upon their retirement."

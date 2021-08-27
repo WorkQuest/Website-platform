@@ -508,7 +508,7 @@
                     class="mobile-dropdown__btn"
                   >
                     <div class="mobile-dropdown__title">
-                      Instruments
+                      {{ $t('ui.menu.instruments') }}
                     </div>
                     <div class="mobile-dropdown__arrow">
                       <span
@@ -730,6 +730,14 @@ export default {
           link: '/mining',
           title: this.$t('ui.menu.mining.title'),
         },
+        {
+          link: '/crosschain',
+          title: this.$t('ui.menu.crosschain.title'),
+        },
+        {
+          link: '/staking',
+          title: this.$t('ui.menu.staking.title'),
+        },
       ],
       userDDLinks: [
         {
@@ -848,6 +856,16 @@ export default {
           title: this.$t('ui.menu.mining.title'),
           desc: this.$t('ui.menu.mining.desc'),
           path: '/mining',
+        },
+        {
+          title: this.$t('ui.menu.crosschain.title'),
+          desc: this.$t('ui.menu.crosschain.desc'),
+          path: '/crosschain',
+        },
+        {
+          title: this.$t('ui.menu.staking.title'),
+          desc: this.$t('ui.menu.staking.desc'),
+          path: '/staking',
         },
       ];
     },
