@@ -288,7 +288,7 @@
                   v-for="(item, i) in periods(period)"
                   :key="i"
                   class="level__card"
-                  :class="{'level__card_gold': item.code === 1}"
+                  :class="cardStatus(item)"
                   @click="selectRadio(i)"
                 >
                   <div class="level__option">
@@ -302,10 +302,7 @@
                   <div class="level card">
                     <div
                       class="card__level"
-                      :class="[
-                        {'card__level_reliable': item.code === 3},
-                        {'card__level_checked': item.code === 4}
-                      ]"
+                      :class="cardStatus(item)"
                     >
                       {{ item.level }}
                     </div>
@@ -533,6 +530,17 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    cardStatus(item) {
+      let style;
+      if (item.code === 1) {
+        style = 'level__card_gold';
+      } if (item.code === 3) {
+        style = 'card__level_reliable';
+      } if (item.code === 4) {
+        style = 'card__level_checked';
+      }
+      return style;
+    },
     periods(period) {
       let val;
       if (period === 1) {
@@ -693,7 +701,6 @@ export default {
     }
     &_checked {
       background: #B79768;
-      width: 120px;
     }
   }
   &__desc {
