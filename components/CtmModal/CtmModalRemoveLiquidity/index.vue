@@ -23,7 +23,7 @@
             </div>
             <div class="content__currencies currencies">
               <div
-                v-for="(item, i) in currencies"
+                v-for="(item, i) in currencies()"
                 :key="i"
                 class="currencies__body"
                 :class="{'currencies__body_last':i=== currencies.length-1}"
@@ -44,7 +44,7 @@
           </div>
           <div class="content__zone zone">
             <div
-              v-for="(item, i) in abouts"
+              v-for="(item, i) in abouts()"
               :key="i"
               class="zone__field"
             >
@@ -89,32 +89,6 @@ export default {
   data() {
     return {
       withdraw: '',
-      abouts: [
-        {
-          title: this.$t('modals.exchangeRate'),
-          subtitle: this.$t('modals.tempForRemove'),
-        },
-        {
-          title: this.$t('modals.currentPoolSize'),
-          subtitle: this.$t('modals.removeLiquidityCurrentPoolSize'),
-        },
-        {
-          title: this.$t('modals.yourPoolShare'),
-          subtitle: this.$t('modals.removeLiquidityYourPoolShare'),
-        },
-      ],
-      currencies: [
-        {
-          url: require('~/assets/img/ui/hromb-logo.svg'),
-          name: this.$t('modals.eth'),
-          value: '25.0256',
-        },
-        {
-          url: require('~/assets/img/ui/w-logo.svg'),
-          name: this.$t('modals.wusd'),
-          value: '25.0256',
-        },
-      ],
     };
   },
   computed: {
@@ -125,6 +99,38 @@ export default {
   methods: {
     hide() {
       this.CloseModal();
+    },
+    abouts() {
+      const { isBNB } = this.options;
+      return [
+        {
+          title: this.$t('modals.exchangeRate'),
+          subtitle: this.$t(`modals.tempForRemove${isBNB ? '2' : ''}`),
+        },
+        {
+          title: this.$t('modals.currentPoolSize'),
+          subtitle: this.$t(`modals.removeLiquidityCurrentPoolSize${isBNB ? '2' : ''}`),
+        },
+        {
+          title: this.$t('modals.yourPoolShare'),
+          subtitle: this.$t(`modals.removeLiquidityYourPoolShare${isBNB ? '2' : ''}`),
+        },
+      ];
+    },
+    currencies() {
+      const { isBNB } = this.options;
+      return [
+        {
+          url: require(`~/assets/img/ui/${isBNB ? 'bnb' : 'hromb'}-logo.svg`),
+          name: this.$t(`modals.${isBNB ? 'bnb' : 'eth'}`),
+          value: '25.0256',
+        },
+        {
+          url: require('~/assets/img/ui/w-logo.svg'),
+          name: this.$t('modals.wusd'),
+          value: '25.0256',
+        },
+      ];
     },
   },
 };

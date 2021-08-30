@@ -180,7 +180,8 @@ export default {
       this.$router.push('/messages/1');
     },
     toRaisedViews() {
-      this.$router.push('/raising-views');
+      this.$router.push('/create-quest');
+      this.$store.dispatch('quests/getCurrentStepCreateQuest', 2);
     },
   },
 };

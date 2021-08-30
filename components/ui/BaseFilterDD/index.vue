@@ -1115,6 +1115,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.icon {
+  cursor: pointer;
+  font-size: 25px;
+  color: $blue !important;
+  &-caret_up::before {
+    @extend .icon;
+    content: "\ea4b";
+  }
+  &-caret_down::before {
+    @extend .icon;
+    content: "\ea48";
+  }
+}
 
 .checkbox {
   z-index: 3;
@@ -1195,6 +1208,7 @@ export default {
     max-width: 400px;
     background: #FFFFFF;
     border-radius: 6px;
+    justify-items: center;
     &_gray {
       background-color: $black0;
     }
