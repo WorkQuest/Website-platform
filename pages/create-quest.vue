@@ -333,9 +333,6 @@ const { GeoCode } = require('geo-coder');
 
 export default {
   name: 'CreateQuest',
-  ...mapGetters({
-    userData: 'user/getUserData',
-  }),
   components: {
     Dropzone,
   },
@@ -344,7 +341,6 @@ export default {
       ads: {
         currentAdPrice: '',
       },
-      step: 1,
       period: 1,
       specCount: 0,
       specIndex: {
@@ -394,6 +390,10 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      userData: 'user/getUserData',
+      step: 'quests/getCurrentStepCreateQuest',
+    }),
     days() {
       return [
         {
@@ -581,7 +581,7 @@ export default {
       }
     },
     toRiseViews() {
-      this.step += 1;
+      this.$store.dispatch('quests/getCurrentStepCreateQuest', 2);
     },
     showPaymentModal() {
       this.ShowModal({

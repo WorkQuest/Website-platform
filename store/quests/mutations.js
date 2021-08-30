@@ -1,4 +1,7 @@
 export default {
+  setCurrentStepCreateQuest(state, data) {
+    state.currentStepCreateQuest = data;
+  },
   setAllQuests(state, data) {
     state.allQuests = data;
   },
@@ -11,7 +14,6 @@ export default {
   setQuestsLocation(state, data) {
     state.questsLocation = data;
   },
-
   setQuestData(state, data) {
     state.questData = data;
   },
