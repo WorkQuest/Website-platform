@@ -566,13 +566,11 @@ export default {
           radio[i].checked = true;
           this.ads.currentAdPrice = radio[i].value;
         }
-        console.log(this.ads.currentAdPrice);
       }
     },
     switchPeriod(item) {
       for (let idx = 0; idx < Object.keys(this.$refs).length - 1; idx += 1) {
         const radio = this.$refs.[`radio${idx}`];
-        console.log(Object.keys(radio).length);
         for (let i = 0; i < Object.keys(radio).length; i += 1) {
           radio[0].checked = false;
         }
