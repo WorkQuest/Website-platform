@@ -13,14 +13,24 @@
               :key="j"
               class="portfolio__img"
             >
-              <button
-                class="portfolio__close"
-                @click="deletePortfolio(item.id)"
-              >
-                <span
-                  class="icon-close_big"
-                />
-              </button>
+              <div class="portfolio__btns">
+                <button
+                  class="portfolio__close"
+                  @click="deletePortfolio(item.id)"
+                >
+                  <span
+                    class="icon-close_big"
+                  />
+                </button>
+                <button
+                  class="portfolio__edit"
+                  @click=""
+                >
+                  <span
+                    class="icon-edit"
+                  />
+                </button>
+              </div>
               <img
                 class="portfolio__image"
                 :src="img.url"
@@ -97,6 +107,18 @@ export default {
 <style lang="scss" scoped>
 
 .portfolio {
+  &__btns {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25px;
+    width: 60px;
+    border-radius: 6px;
+    padding: 2px;
+  }
   &__close {
     position: absolute;
     left: 5px;
@@ -111,6 +133,22 @@ export default {
     transition: 0.5s;
     &:hover {
       background: $red;
+    }
+    &__edit {
+      position: absolute;
+      left: 25px;
+      top: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 20px;
+      width: 20px;
+      border-radius: 6px;
+      padding: 2px;
+      transition: 0.5s;
+      &:hover {
+        background: $red;
+      }
     }
   }
   &__card {
