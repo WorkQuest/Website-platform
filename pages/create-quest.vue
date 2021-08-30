@@ -237,42 +237,18 @@
             </h3>
             <div class="period__container">
               <div
+                v-for="(item, i) in periodTabs"
+                :key="i"
                 class="period__period"
-                :class="{'period__period_active': period === 1}"
-                @click="toFirstPeriod"
+                :class="{'period__period_active': period === item.number}"
+                @click="switchPeriod(item, i)"
               >
                 <h2
                   class="period__title"
-                  :class="{'period__title_active': period === 1}"
+                  :class="{'period__title_active': period === item.number}"
                 >
-                  {{ $t('raising-views.forOneDay') }}
+                  {{ item.title }}
                 </h2>
-              </div>
-
-              <div
-                class="period__period"
-                :class="{'period__period_active': period === 2}"
-                @click="toSecondPeriod"
-              >
-                <h2
-                  class="period__title"
-                  :class="{'period__title_active': period === 2}"
-                >
-                  {{ $t('raising-views.forOneWeek') }}
-                </h2>
-              </div>
-
-              <div
-                class="period__period"
-                :class="{'period__period_active': period === 3}"
-                @click="toThirdPeriod"
-              >
-                <h3
-                  class="period__title"
-                  :class="{'period__title_active': period === 3}"
-                >
-                  {{ $t('raising-views.forOneMonth') }}
-                </h3>
               </div>
             </div>
 
@@ -370,84 +346,6 @@ export default {
       },
       step: 1,
       period: 1,
-      days: [
-        {
-          level: this.$t('quests.levels.1.title'),
-          code: 1,
-          desc: this.$t('quests.levels.1.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.2.title'),
-          code: 2,
-          desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.3.title'),
-          code: 3,
-          desc: this.$t('quests.levels.3.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.4.title'),
-          code: 4,
-          desc: this.$t('quests.levels.4.desc'),
-          cost: '10',
-        },
-      ],
-      weeks: [
-        {
-          level: this.$t('quests.levels.1.title'),
-          code: 1,
-          desc: this.$t('quests.levels.1.desc'),
-          cost: '40',
-        },
-        {
-          level: this.$t('quests.levels.2.title'),
-          code: 2,
-          desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.3.title'),
-          code: 3,
-          desc: this.$t('quests.levels.3.desc'),
-          cost: '40',
-        },
-        {
-          level: this.$t('quests.levels.4.title'),
-          code: 4,
-          desc: this.$t('quests.levels.4.desc'),
-          cost: '40',
-        },
-      ],
-      months: [
-        {
-          level: this.$t('quests.levels.1.title'),
-          code: 1,
-          desc: this.$t('quests.levels.1.desc'),
-          cost: '70',
-        },
-        {
-          level: this.$t('quests.levels.2.title'),
-          code: 2,
-          desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.3.title'),
-          code: 3,
-          desc: this.$t('quests.levels.3.desc'),
-          cost: '70',
-        },
-        {
-          level: this.$t('quests.levels.4.title'),
-          code: 4,
-          desc: this.$t('quests.levels.4.desc'),
-          cost: '70',
-        },
-      ],
       specCount: 0,
       specIndex: {
         1: -1,
@@ -496,6 +394,106 @@ export default {
     };
   },
   computed: {
+    days() {
+      return [
+        {
+          level: this.$t('quests.levels.1.title'),
+          code: 1,
+          desc: this.$t('quests.levels.1.desc'),
+          cost: '10',
+        },
+        {
+          level: this.$t('quests.levels.2.title'),
+          code: 2,
+          desc: this.$t('quests.levels.2.desc'),
+          cost: '10',
+        },
+        {
+          level: this.$t('quests.levels.3.title'),
+          code: 3,
+          desc: this.$t('quests.levels.3.desc'),
+          cost: '10',
+        },
+        {
+          level: this.$t('quests.levels.4.title'),
+          code: 4,
+          desc: this.$t('quests.levels.4.desc'),
+          cost: '10',
+        },
+      ];
+    },
+    weeks() {
+      return [
+        {
+          level: this.$t('quests.levels.1.title'),
+          code: 1,
+          desc: this.$t('quests.levels.1.desc'),
+          cost: '40',
+        },
+        {
+          level: this.$t('quests.levels.2.title'),
+          code: 2,
+          desc: this.$t('quests.levels.2.desc'),
+          cost: '10',
+        },
+        {
+          level: this.$t('quests.levels.3.title'),
+          code: 3,
+          desc: this.$t('quests.levels.3.desc'),
+          cost: '40',
+        },
+        {
+          level: this.$t('quests.levels.4.title'),
+          code: 4,
+          desc: this.$t('quests.levels.4.desc'),
+          cost: '40',
+        },
+      ];
+    },
+    months() {
+      return [
+        {
+          level: this.$t('quests.levels.1.title'),
+          code: 1,
+          desc: this.$t('quests.levels.1.desc'),
+          cost: '70',
+        },
+        {
+          level: this.$t('quests.levels.2.title'),
+          code: 2,
+          desc: this.$t('quests.levels.2.desc'),
+          cost: '10',
+        },
+        {
+          level: this.$t('quests.levels.3.title'),
+          code: 3,
+          desc: this.$t('quests.levels.3.desc'),
+          cost: '70',
+        },
+        {
+          level: this.$t('quests.levels.4.title'),
+          code: 4,
+          desc: this.$t('quests.levels.4.desc'),
+          cost: '70',
+        },
+      ];
+    },
+    periodTabs() {
+      return [
+        {
+          number: 1,
+          title: this.$t('raising-views.forOneDay'),
+        },
+        {
+          number: 2,
+          title: this.$t('raising-views.forOneWeek'),
+        },
+        {
+          number: 3,
+          title: this.$t('raising-views.forOneMonth'),
+        },
+      ];
+    },
     specializations() {
       const specializations = Object.keys(this.$t('settings.specializations')).length;
       const specs = {
@@ -571,14 +569,16 @@ export default {
         console.log(this.ads.currentAdPrice);
       }
     },
-    toFirstPeriod() {
-      this.period = 1;
-    },
-    toSecondPeriod() {
-      this.period = 2;
-    },
-    toThirdPeriod() {
-      this.period = 3;
+    switchPeriod(item) {
+      for (let idx = 0; idx < Object.keys(this.$refs).length - 1; idx += 1) {
+        const radio = this.$refs.[`radio${idx}`];
+        console.log(Object.keys(radio).length);
+        for (let i = 0; i < Object.keys(radio).length; i += 1) {
+          radio[0].checked = false;
+        }
+        this.period = item.number;
+        this.ads.currentAdPrice = '';
+      }
     },
     toRiseViews() {
       this.step += 1;
