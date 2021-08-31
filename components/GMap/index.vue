@@ -10,6 +10,7 @@
 
 <script>
 import GoogleMapsApiLoader from 'google-maps-api-loader';
+import { mapGetters } from 'vuex';
 
 const MarkerClusterer = require('node-js-marker-clusterer');
 
@@ -71,15 +72,22 @@ export default {
       newCenter: null,
     };
   },
+  computed: {
+    ...mapGetters({
+      mapCenter: 'quests/getMapCenter',
+    }),
+  },
   watch: {
     async zoom() {
       await this.mapLoaded();
     },
-    async center() {
+    async mapCenter() {
+      this.newCenter = this.mapCenter;
       await this.mapLoaded();
     },
   },
   async mounted() {
+    this.newCenter = this.center;
     await this.mapLoaded();
   },
 
@@ -88,34 +96,6 @@ export default {
   },
 
   methods: {
-    initMap(listener) {
-      this.map = new google.maps.Map(this.$refs.map, {
-        center: this.newCenter !== null ? this.newCenter : this.center,
-        zoom: this.zoom,
-        ...this.options,
-      });
-      // eslint-disable-next-line no-implied-eval
-      setTimeout(this.getMapBounds, 100);
-      this.initChildren();
-      this.events.forEach((event) => {
-        if (event === 'dragend') {
-          this.map.addListener(event, (e) => {
-            this.getMapBounds(event);
-            this.$emit(event, {
-              map: this.map,
-              event: e,
-            });
-          });
-        } else {
-          this.map.addListener(event, (e) => {
-            this.$emit(event, {
-              map: this.map,
-              event: e,
-            });
-          });
-        }
-      });
-    },
     async mapLoaded() {
       if (this.$GMaps.loaded === false) {
         this.$GMaps.loaded = true;
@@ -141,6 +121,23 @@ export default {
       this.$emit('init', this.google);
       this.$emit('loaded', this.google);
     },
+    initMap(listener) {
+      this.map = new google.maps.Map(this.$refs.map, {
+        center: this.newCenter,
+        zoom: this.zoom,
+        ...this.options,
+      });
+      setTimeout(this.getMapBounds, 100);
+      this.events.forEach((event) => {
+        this.map.addListener(event, (e) => {
+          this.getMapBounds(event);
+          this.$emit(event, {
+            map: this.map,
+            event: e,
+          });
+        });
+      });
+    },
     getMapBounds(eventName) {
       const bounds = this.map.getBounds();
       const mapCenterString = this.map.getCenter();
@@ -163,7 +160,8 @@ export default {
           lng: bounds.Hb.i,
         },
       };
-      if (eventName === 'dragend') {
+      if (eventName === 'dragend' || eventName === 'tilesloaded' || eventName === 'zoom_changed') {
+        this.initChildren();
         this.$store.dispatch('quests/setMapBounds', coordinates);
       }
     },
@@ -176,7 +174,6 @@ export default {
       });
 
       this.map.markers = this.markers;
-
       if (Object.keys(this.cluster).length > 0) {
         this.markerCluster = new MarkerClusterer(this.map, this.markers, { ...this.cluster.options });
       }

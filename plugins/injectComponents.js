@@ -1,5 +1,6 @@
 import Vue from 'vue';
 
+import VuePhoneNumberInput from 'vue-phone-number-input';
 import CtmModal from '~/components/CtmModal';
 import CtmModalBox from '~/components/CtmModal/CtmModalBox';
 import Loader from '~/components/ui/Loader';
@@ -31,3 +32,4 @@ Vue.component('GMapInfoWindow', GMapInfoWindow);
 Vue.component('base-table', BaseTable);
 Vue.component('base-pager', BasePager);
 Vue.component('quest-dd', QuestDD);
+Vue.component('vue-phone-number-input', VuePhoneNumberInput);

@@ -1,5 +1,5 @@
 <template>
-  <div class="GMap__InfoWindow">
+  <div class="GMap__InfoWindow info-window">
     <slot />
   </div>
 </template>

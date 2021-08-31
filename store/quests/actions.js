@@ -115,4 +115,7 @@ export default {
   setMapBounds({ commit }, payload) {
     commit('setMapBounds', payload);
   },
+  setMapCenter({ commit }, payload) {
+    commit('setMapCenter', payload);
+  },
 };

@@ -1,6 +1,85 @@
 <template>
   <div>
-    <GmapSearchBlock />
+    <GmapSearchBlock
+      :is-show-map="isShowMap"
+    />
+    <div
+      class="gmap-block search"
+      :class="!isShowMap ? 'gmap-block_shift' : ''"
+    >
+      <div class="search__block">
+        <div class="search__content">
+          <div class="search__toggle">
+            <base-checkbox
+              v-model="isShowMap"
+              name="map"
+              :label="$t('quests.ui.showMap')"
+            />
+          </div>
+          <div class="search__inputs">
+            <base-field
+              v-model="search"
+              class="search__input"
+              is-search
+              :placeholder="$t('quests.ui.search')"
+              mode="icon"
+              :selector="true"
+              @selector="getAddressInfo(search)"
+            >
+              <template v-slot:left />
+              <template v-slot:selector>
+                <div
+                  v-if="addresses.length"
+                  class="selector"
+                >
+                  <div class="selector__items">
+                    <div
+                      v-for="(item, i) in addresses"
+                      :key="i"
+                      class="selector__item"
+                      @click="selectAddress(item)"
+                    >
+                      {{ item.formatted }}
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </base-field>
+          </div>
+          <div class="search__dd">
+            <base-dd
+              v-model="distanceIndex"
+              :items="distance"
+            />
+          </div>
+          <div class="search__actions">
+            <base-btn
+              class="search__btn"
+              @click="centerChange"
+            >
+              {{ userRole === 'worker' ? $t('quests.searchResults') : $t('workers.searchWorkers') }}
+            </base-btn>
+          </div>
+        </div>
+      </div>
+      <div class="search__filter filter">
+        <div
+          class="filter__dd"
+        >
+          <base-dd
+            v-model="distanceIndex"
+            :items="distance"
+          />
+        </div>
+        <div class="filter__toggle">
+          <base-checkbox
+            v-model="isShowMap"
+            name="map"
+            :label="$t('quests.ui.showMap')"
+          />
+        </div>
+      </div>
+    </div>
     <div class="main">
       <div class="main__body">
         <h2 class="main__title">
@@ -130,6 +209,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { GeoCode } from 'geo-coder';
 import GmapSearchBlock from '~/components/app/GmapSearch';
 import modals from '~/store/modals/modals';
 
@@ -140,6 +220,7 @@ export default {
   },
   data() {
     return {
+      isShowMap: true,
       currentLocation: {},
       circleOptions: {},
       locations: [
@@ -475,11 +556,15 @@ export default {
         this.$t('quests.priority.normal'),
         this.$t('quests.priority.urgent'),
       ],
+      addresses: [],
+      coordinates: null,
     };
   },
   computed: {
     ...mapGetters({
       userPosition: 'user/getUserCurrentPosition',
+      userRole: 'user/getUserRole',
+      mapBounds: 'quests/getMapBounds',
     }),
     cardLevelClass(idx) {
       const { cards } = this;
@@ -539,6 +624,26 @@ export default {
         2: 'block__priority_urgent',
       };
       return priority[index] || '';
+    },
+    centerChange() {
+      this.$store.dispatch('quests/setMapCenter', this.coordinates);
+    },
+    selectAddress(address) {
+      this.search = address.formatted;
+      this.addresses = [];
+    },
+    async getAddressInfo(address) {
+      let response = [];
+      const geoCode = new GeoCode('google', { key: process.env.GMAPKEY });
+      try {
+        if (address.length) {
+          response = await geoCode.geolookup(address);
+          this.addresses = JSON.parse(JSON.stringify(response));
+          this.coordinates = JSON.parse(JSON.stringify({ lng: response[0].lng, lat: response[0].lat }));
+        }
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };
@@ -801,7 +906,100 @@ export default {
     font-size: 16px;
   }
 }
+.gmap-block {
+  height: 0;
+  .search {
+    &__block {
+      position: relative;
+      max-width: 1180px;
+      height: 83px;
+      bottom: 100px;
+      left: 0;
+      right: 0;
+      margin: auto;
+      z-index: 1200;
+      @include box;
+    }
+    &__content {
+      display: grid;
+      grid-template-columns: 154px 1fr 143px 260px;
+      align-items: center;
+      height: 100%;
+      justify-items: center;
+    }
+    &__dd {
+      display: flex;
+      border-left: 1px solid #F7F8FA;
+      justify-items: center;
+      align-items: center;
+      height: 100%;
+      width: 144px;
+    }
+    &__icon {
+      margin-bottom: -10px;
+      &::before {
+        font-size: 24px;
+        color: $blue;
+      }
+    }
+    &__inputs {
+      padding: 0 20px;
+      width: 100%;
+      display: grid;
+      align-items: center;
+    }
+    &__input {
+      display: flex;
+      align-items: center;
+    }
+    &__btn {
+      max-width: 220px;
+    }
+    &__toggle {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid #F7F8FA;
+    }
+    &__actions {
+      height: 100%;
+      border-left: 1px solid #F7F8FA;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+    &__filter {
+      display: none;
+    }
+  }
+  &_shift {
+    padding: 20px 0;
+    height: auto;
+    .search__block {
+      bottom: 0;
+    }
+  }
+}
+@include _1300 {
+  .gmap-block {
+    .search {
+      &__content {
+        grid-template-columns: repeat(4, auto);
+      }
 
+      &__actions, &__toggle {
+        padding: 10px;
+      }
+
+      &__block {
+        width: 80%;
+      }
+    }
+  }
+}
 @include _1199 {
   .main {
     padding-left: 20px;
@@ -827,6 +1025,61 @@ export default {
     display: block;
     .content {
       grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .tools {
+    &__panel {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .dd {
+    grid-column: 1/3;
+  }
+  .gmap-block {
+    width: 100%;
+    position: initial;
+    padding: 20px;
+    height: auto;
+    .search {
+      &__block {
+        width: 100%;
+        position: initial;
+      }
+      &__content {
+        grid-template-columns: 1fr 0.5fr;
+        padding: 0 10px;
+        grid-gap: 10px;
+      }
+      &__toggle, &__dd {
+        display: none;
+      }
+      &__actions {
+        border: none;
+      }
+      &__inputs {
+        padding: 0 10px;
+      }
+      &__filter {
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        justify-content: space-between;
+        top: 20px;
+        align-content: center;
+      }
+    }
+  }
+  .dd__btn {
+    justify-content: center;
+    padding: 0 0;
+  }
+  .filter {
+    &__toggle {
+      text-align: center;
+      display: flex;
+      padding: 10px;
+      border-radius: 6px;
+      background: #FFFFFF;
     }
   }
 }

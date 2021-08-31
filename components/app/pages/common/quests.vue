@@ -34,18 +34,18 @@
                 <div
                   class="block__avatar avatar"
                 >
-                  <img
+                  <!--<img
                     class="avatar__image"
                     :src="item.user.avatar ? item.user.avatar.url : '~/assets/img/app/avatar_empty.png'"
                     :alt="item.user.firstName"
-                  >
+                  >-->
                 </div>
                 <div class="block__text block__text_title">
-                  {{ `${item.user.firstName} ${item.user.lastName}` }}
+                  {{ '${item.user.firstName} ${item.user.lastName}' }}
                   <span
                     v-if="userData.additionalInfo.company"
                     class="block__text block__text_grey"
-                  >from {{ item.user.additionalInfo.company }}</span>
+                  >from item.user.additionalInfo.company</span>
                 </div>
               </div>
               <div

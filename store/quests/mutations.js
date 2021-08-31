@@ -27,4 +27,7 @@ export default {
   setMapBounds(state, data) {
     state.mapBounds = data;
   },
+  setMapCenter(state, data) {
+    state.mapCenter = data;
+  },
 };
