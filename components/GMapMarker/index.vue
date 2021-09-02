@@ -57,6 +57,7 @@ export default {
         map: this.$parent.map,
         ...this.options,
       });
+
       this.$parent.markers.push(this.marker);
       if (this.$children.length > 0) {
         // eslint-disable-next-line prefer-destructuring
@@ -65,16 +66,11 @@ export default {
       }
       this.events.forEach((event) => {
         this.$parent.google.maps.event.addListener(this.marker, event, (e) => {
-          if (event === 'click') {
-            console.log(child);
-          }
           if (child !== undefined && event === 'click') {
-            if (!this.options.show) {
+            if (!this.markerLoaded) {
               child.infoWindow.open(this.$parent.map, this.marker);
-              this.markerLoaded = true;
             } else {
               child.infoWindow.close(this.$parent.map, this.marker);
-              this.markerLoaded = false;
             }
           }
           this.$emit(event, {

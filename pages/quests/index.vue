@@ -181,11 +181,11 @@
           :object="questsObjects"
           :page="'quests'"
         />
-        <!--<base-pager
+        <base-pager
           v-if="totalPagesValue !== 1"
           v-model="page"
           :total-pages="totalPagesValue"
-        />-->
+        />
         <emptyData
           v-else-if="questsArray.length === 0"
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
@@ -214,21 +214,6 @@ export default {
   data() {
     return {
       isShowMap: true,
-      currentLocation: {},
-      circleOptions: {},
-      pins: {
-        selected: '/img/app/marker_blue.svg',
-        notSelected: '/img/app/marker_red.svg',
-      },
-      clusterStyle: [
-        {
-          url:
-            'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m1.png',
-          width: 56,
-          height: 56,
-          textColor: '#fff',
-        },
-      ],
       search: '',
       quests: [
         this.$t('quests.quests'),
@@ -241,7 +226,6 @@ export default {
         this.$t('priority.normal'),
         this.$t('priority.low'),
       ],
-      selectedUrgent: '',
       typeOfJob: [
         this.$t('quests.fullTime'),
         this.$t('quests.partTime'),
@@ -262,18 +246,14 @@ export default {
         this.$t('quests.priority.normal'),
         this.$t('quests.priority.urgent'),
       ],
-      selectedPriority: '',
-      priorityIndex: 0,
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
-      questLimits: 10,
       questsObjects: {},
       questsArray: [],
-      questsLocation: {},
       sortData: '',
       page: 1,
-      perPager: 11,
+      perPager: 10,
       totalPagesValue: 1,
       additionalValue: '',
       zoomNumber: 15,
@@ -303,24 +283,14 @@ export default {
   watch: {
     async isShowMap() {
       this.SetLoader(true);
-      let additionalValue = '';
-      if (!this.isShowMap) {
-        additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      } else {
-        additionalValue = `${this.sortData}`;
-      }
+      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
       await this.getQuests(additionalValue);
       this.totalPagesValue = this.totalPages;
       this.SetLoader(false);
     },
     async page() {
       this.SetLoader(true);
-      let additionalValue = '';
-      if (!this.isShowMap) {
-        additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      } else {
-        additionalValue = `${this.sortData}`;
-      }
+      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
       await this.getQuests(additionalValue);
       this.SetLoader(false);
     },
@@ -365,8 +335,8 @@ export default {
           this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
         } else {
           const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
-          this.questsObjects = await this.$store.dispatch('quests/getQuestsOnMap', `${bounds}&${payload}`);
-          await this.$store.dispatch('quests/getQuestsLocation', `${bounds}&${payload}`);
+          this.questsObjects = await this.$store.dispatch('quests/getAllQuests', `${bounds}&${payload}`);
+          await this.$store.dispatch('quests/getQuestsLocation', `${bounds}`);
           this.questsArray = this.questsObjects.quests;
         }
         // const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;

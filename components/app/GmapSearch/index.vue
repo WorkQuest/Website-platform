@@ -21,13 +21,13 @@
             v-for="(item, key) in locations"
             :key="key"
             :position="{lat: item.coordinates[1], lng: item.coordinates[0]}"
-            :options="{
-              icon: item === currentLocation ? pins.selected : pins.notSelected,
-              show: item === currentLocation
-            }"
-            @click="testFunction(item)"
+            :options="item.type !== 'cluster' ? getPriorityMarker(item) : { icon: pins.quest.blue, show: item === currentLocation} "
+            @click="coordinatesChange(item)"
           >
-            <GMapInfoWindow :options="{maxWidth: 280}">
+            <GMapInfoWindow
+              v-if="hiddenWindowInfo"
+              :options="{maxWidth: 280}"
+            >
               <div class="info-window__content">
                 <div class="info-window__block">
                   <div class="info-window__user">
@@ -36,19 +36,19 @@
                     >
                       <img
                         class="avatar__image"
-                        :src="item.useravatarurl ? item.useravatarurl : '~/assets/img/app/avatar_empty.png'"
-                        :alt="item.userfirstName"
+                        :src="item.userAvatarUrl ? item.userAvatarUrl : '~/assets/img/app/avatar_empty.png'"
+                        :alt="item.userFirstName"
                       >
                     </div>
                     <div class="info-window__name">
-                      {{ `${item.userfirstname} ${item.userlastname}` }}
+                      {{ `${item.userFirstName} ${item.userLastName}` }}
                     </div>
                   </div>
                   <div
                     class="info-window__status"
-                    :class="getPriorityClass(item.questpriority)"
+                    :class="getPriorityClass(item.questPriority)"
                   >
-                    {{ getPriority(item.questpriority) }}
+                    {{ getPriority(item.questPriority) }}
                   </div>
                 </div>
                 <div class="info-window__block">
@@ -57,12 +57,12 @@
                       Cost per hour
                     </p>
                     <p class="info-window__value">
-                      {{ `${item.questprice} WUSD` }}
+                      {{ `${item.questPrice} WUSD` }}
                     </p>
                   </div>
                   <button
                     class="info-window__switch"
-                    @click="showDetails(item.questid)"
+                    @click="showDetails(item.questId)"
                   >
                     <span class="icon-caret_right" />
                   </button>
@@ -97,6 +97,12 @@ export default {
       currentLocation: {},
       circleOptions: {},
       pins: {
+        quest: {
+          red: '/img/app/marker_red.svg',
+          green: '/img/app/marker_red.svg',
+          yellow: '/img/app/marker_red.svg',
+          blue: '/img/app/marker_blue.svg',
+        },
         selected: '/img/app/marker_blue.svg',
         notSelected: '/img/app/marker_red.svg',
       },
@@ -113,6 +119,7 @@ export default {
       coordinates: null,
       locations: {},
       questData: [],
+      hiddenWindowInfo: false,
     };
   },
   computed: {
@@ -130,7 +137,7 @@ export default {
     },
   },
   methods: {
-    testFunction(item) {
+    coordinatesChange(item) {
       if (Object.keys(this.currentLocation).length > 0) {
         this.currentLocation = {};
       } else {
@@ -158,6 +165,27 @@ export default {
       };
       return priority[index] || '';
     },
+    getPriorityMarker(item) {
+      const priority = {
+        0: {
+          icon: this.pins.quest.blue,
+          show: item === this.currentLocation,
+        },
+        1: {
+          icon: this.pins.quest.green,
+          show: item === this.currentLocation,
+        },
+        2: {
+          icon: this.pins.quest.yellow,
+          show: item === this.currentLocation,
+        },
+        3: {
+          icon: this.pins.quest.red,
+          show: item === this.currentLocation,
+        },
+      };
+      return priority[item.questPriority] || '';
+    },
   },
 };
 </script>
@@ -170,6 +198,9 @@ export default {
   }
   .ctm-field__left {
     padding-top: 6px;
+  }
+  button.gm-ui-hover-effect {
+    display: none !important;
   }
 }
 .map__container_small::v-deep {
@@ -390,6 +421,7 @@ export default {
   &__user {
     display: flex;
     grid-gap: 5px;
+    align-items: center;
   }
   &__avatar {
     max-width: 30px;
@@ -415,6 +447,7 @@ export default {
     color: #00AA5B;
   }
   &__switch {
+    display: block !important;
     background: #F7F8FA;
     border-radius: 6px;
     width: 30px;
