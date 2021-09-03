@@ -226,6 +226,7 @@ export default {
         this.$t('priority.normal'),
         this.$t('priority.low'),
       ],
+      selectedUrgent: '',
       typeOfJob: [
         this.$t('quests.fullTime'),
         this.$t('quests.partTime'),
