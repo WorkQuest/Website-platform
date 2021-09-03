@@ -102,7 +102,7 @@
               :placeholder="$t('quests.quests')"
             />
             <base-dd
-              v-model="selectedTypeOfJob"
+              v-model="selectedUrgent"
               class="tools__item"
               :items="urgent"
               mode="blackFont"
@@ -736,7 +736,6 @@ export default {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-gap: 10px;
-    margin-left: 10px;
     span::before {
       padding-left: 10px;
       margin-right: 10px;

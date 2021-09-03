@@ -34,7 +34,7 @@
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'CtmModalChangeRoleWarning',
+  name: 'CtmModalChangeRoleSecureCheck',
   data() {
     return {
       codeInput: '',

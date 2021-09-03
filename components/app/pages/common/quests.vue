@@ -43,7 +43,7 @@
                 <div class="block__text block__text_title">
                   {{ `${item.user.firstName} ${item.user.lastName}` }}
                   <span
-                    v-if="userData.additionalInfo.company"
+                    v-if="userCompany"
                     class="block__text block__text_grey"
                   >{{ `${$t('quests.fromSmall')} ${item.user.additionalInfo.company}` }}</span>
                 </div>
@@ -83,6 +83,7 @@
                   <img
                     class="user__avatar"
                     :src="item.user.avatar ? item.user.avatar.url : './assets/img/app/avatar_empty.png'"
+                    :alt="`${item.user.firstName} ${item.user.lastName}`"
                   >
                   <div class="user__name">
                     test
@@ -208,6 +209,9 @@ export default {
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
     }),
+    userCompany() {
+      return this.userData.additionalInfo?.company || null;
+    },
   },
   async mounted() {
     this.SetLoader(true);

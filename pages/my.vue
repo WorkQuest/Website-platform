@@ -31,7 +31,7 @@
           v-else
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-          :link="userRole === 'employer' ? '/create-quest' : ''"
+          link="/create-quest"
         />
         <base-pager
           v-if="questsData.count !== 0 && totalPagesValue !== 1"

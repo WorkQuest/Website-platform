@@ -199,6 +199,14 @@
               <div class="card__address">
                 {{ card.address }}
               </div>
+              <div class="card__cost cost">
+                <div class="cost__title">
+                  {{ $t('workers.costTitle') }}
+                </div>
+                <div class="cost__value">
+                  {{ card.cost }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -269,6 +277,7 @@ export default {
           ],
           about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
           address: 'Moscos, Lenina street, 3',
+          cost: '1500 WUSD',
         },
         {
           name: 'Rosalia Vans',
@@ -287,6 +296,7 @@ export default {
           ],
           about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
           address: 'Moscos, Lenina street, 3',
+          cost: '1500 WUSD',
         },
         {
           name: 'Rosalia Vans',
@@ -305,6 +315,7 @@ export default {
           ],
           about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
           address: 'Moscos, Lenina street, 3',
+          cost: '1500 WUSD',
         },
         {
           name: 'Rosalia Vans',
@@ -323,6 +334,7 @@ export default {
           ],
           about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
           address: 'Moscos, Lenina street, 3',
+          cost: '1500 WUSD',
         },
         {
           name: 'Rosalia Vans',
@@ -341,6 +353,7 @@ export default {
           ],
           about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
           address: 'Moscos, Lenina street, 3',
+          cost: '1500 WUSD',
         },
         {
           name: 'Rosalia Vans',
@@ -359,6 +372,7 @@ export default {
           ],
           about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
           address: 'Moscos, Lenina street, 3',
+          cost: '1500 WUSD',
         },
         {
           name: 'Rosalia Vans',
@@ -377,6 +391,7 @@ export default {
           ],
           about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
           address: 'Moscos, Lenina street, 3',
+          cost: '1500 WUSD',
         },
         {
           name: 'Rosalia Vans',
@@ -395,6 +410,7 @@ export default {
           ],
           about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
           address: 'Moscos, Lenina street, 3',
+          cost: '1500 WUSD',
         },
         {
           name: 'Rosalia Vans',
@@ -413,6 +429,7 @@ export default {
           ],
           about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
           address: 'Moscos, Lenina street, 3',
+          cost: '1500 WUSD',
         },
         {
           name: 'Rosalia Vans',
@@ -431,6 +448,7 @@ export default {
           ],
           about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
           address: 'Moscos, Lenina street, 3',
+          cost: '1500 WUSD',
         },
         {
           name: 'Rosalia Vans',
@@ -449,6 +467,7 @@ export default {
           ],
           about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
           address: 'Moscos, Lenina street, 3',
+          cost: '1500 WUSD',
         },
         {
           name: 'Rosalia Vans',
@@ -467,6 +486,7 @@ export default {
           ],
           about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
           address: 'Moscos, Lenina street, 3',
+          cost: '1500 WUSD',
         },
         {
           name: 'Rosalia Vans',
@@ -485,6 +505,7 @@ export default {
           ],
           about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
           address: 'Moscos, Lenina street, 3',
+          cost: '1500 WUSD',
         },
         {
           name: 'Rosalia Vans',
@@ -503,6 +524,7 @@ export default {
           ],
           about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
           address: 'Moscos, Lenina street, 3',
+          cost: '1500 WUSD',
         },
         {
           name: 'Rosalia Vans',
@@ -521,6 +543,7 @@ export default {
           ],
           about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
           address: 'Moscos, Lenina street, 3',
+          cost: '1500 WUSD',
         },
         {
           name: 'Rosalia Vans',
@@ -539,6 +562,7 @@ export default {
           ],
           about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
           address: 'Moscos, Lenina street, 3',
+          cost: '1500 WUSD',
         },
       ],
       distance: [
@@ -745,7 +769,7 @@ export default {
 .content {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 300px;
+  grid-template-rows: 360px;
   grid-gap: 20px;
   margin-top: 20px;
 }
@@ -776,8 +800,8 @@ export default {
 
 .card {
   width: 100%;
-  max-height: 300px;
-  height: 100%;
+  max-height: 360px;
+  height: 360px;
   box-sizing: border-box;
   border-radius: 6px;
   align-items: center;
@@ -893,6 +917,24 @@ export default {
     color: $black500;
   }
 }
+
+.cost {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+
+  &__title {
+    font-size: 14px;
+    line-height: 18px;
+    margin-bottom: 5px;
+  }
+  &__value {
+    font-size: 18px;
+    line-height: 23px;
+    color: $green;
+  }
+}
+
 .checkbox {
   &-input {
     width: 24px;

@@ -30,12 +30,7 @@
             <span class="user__date">
               {{ convertDate() }}
             </span>
-            <button
-              v-if="userRole === 'worker'"
-              class="icon-share_outline icon_fs-20"
-              @click="shareModal()"
-            />
-            <quest-dd v-if="userRole === 'employer'" />
+            <quest-dd />
           </div>
         </div>
         <div class="location__container">
@@ -58,7 +53,7 @@
             class="runtime__container"
           >
             <span class="icon icon-clock" />
-            <span class="runtime__title">{{ $t('quests.runtime') }}</span>
+            <span class="runtime__title">{{ $t('quests.runtime.runtime') }}</span>
             <span
               class="runtime__link"
             >

@@ -127,6 +127,9 @@
     }
   },
   "meta": {
+    "pay": "Pay",
+    "skipAndEnd": "Skip and end",
+    "cleanUp": "Clean up",
     "close": "Close",
     "delete": "Delete",
     "back": "Back",
@@ -253,6 +256,24 @@
     "fixedTerm": "Fixed term",
     "contract": "Contract",
     "remoteWork": "Remote work",
+    "levels": {
+      "1": {
+        "title": "Gold Plus Package",
+        "desc": "Notifications for employees who were looking for quests, via an offer to review the quest that has been promoted by the employer. The employee will be invited to complete the quest in based on the most recent search categories of the employee. Plus the ability to choose any category and any location to promote the quest."
+      },
+      "2": {
+        "title": "Gold Package",
+        "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
+      },
+      "3": {
+        "title": "Silver Package",
+        "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
+      },
+      "4": {
+        "title": "Bronze Package",
+        "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
+      }
+    },
     "createQuest": {
       "choosePeriod": "Choose period"
     },
@@ -941,15 +962,18 @@
     "addLiquidity": "Add liquidity",
     "amountOfWusd": "Amount of WUSD",
     "amountOfEth": "Amount of ETH",
+    "amountOfBnb": "Amount of BNB",
     "tip": "Tip:",
     "tipAbout": "When you add liquidity, you will receive pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.",
     "byAddingLiquidityYouWillEarn": "By adding liquidity you'll earn 0.3% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
     "amountEthPerWusd": "Amount ETH per WUSD",
+    "amountBnbPerWusd": "Amount BNB per WUSD",
     "shareOfPool": "Share of pool",
     "removeLiquidity": "Remove liquidity",
     "withdrawalAmount": "Withdrawal amount",
     "exchangeRate": "Exchange rate",
     "tempForRemove": "1 ETH = ... WUSD",
+    "tempForRemove2": "1 BNB = ... WUSD",
     "currentPoolSize": "Current pool size",
     "yourPoolShare": "Your pool share",
     "eth": "ETH",
@@ -1058,9 +1082,12 @@
     "generateField": "generate",
     "amountOfWusdField": "amount of WUSD",
     "amountOfEthField": "amount of ETH",
+    "amountOfBnbField": "amount of BNB",
     "withdrawalAmountField": "withdrawal amount",
     "removeLiquidityCurrentPoolSize": "1 ETH + 456 WUSD",
+    "removeLiquidityCurrentPoolSize2": "1 BNB + 456 WUSD",
     "removeLiquidityYourPoolShare": "10% = 1% ETH + 4% WUSD",
+    "removeLiquidityYourPoolShare2": "10% = 1% BNB + 4% WUSD",
     "lockedSavingsField": "locked savings",
     "durationDaysField": "duration days",
     "depositAmountField": "deposit amount",
@@ -1070,6 +1097,7 @@
     "cityField": "city",
     "addLiquidityAmountWusd": "1000 WUSD",
     "addLiquidityAmountEth": "10 ETH",
+    "addLiquidityAmountBnb": "10 BNB",
     "cardHolderField": "card holder",
     "addressField": "address",
     "securityCheckField": "security check",
@@ -1110,6 +1138,15 @@
       "invite": "Invites you to complete the quest"
     },
     "menu": {
+      "instruments": "Instruments",
+      "crosschain": {
+        "title": "Crosschain",
+        "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      },
+      "staking": {
+        "title": "Staking",
+        "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      },
       "pension": {
         "title": "Retirement program",
         "desc": "You can select a percentage of each completed quest which will then be automatically credited to your retirement account, or simply deposit an amount of your choice. The pool of funds is invested on the employee's behalf, and the earnings on the investments generate income to the worker upon their retirement."
@@ -1737,7 +1774,8 @@
     "based": "Based",
     "reviews": "reviews",
     "portfolio": "Portfolio",
-    "showAllCases": "Show all cases"
+    "showAllCases": "Show all cases",
+    "costTitle": "Cost per hour"
   },
   "levels": {
     "reliableEmp": "RELIABLE EMP.",
@@ -1936,13 +1974,15 @@
     },
     "table": {
       "poolAddress": "0sjs3892...sd45",
-      "assets": "50% WUSD / 50%ETH",
+      "assets": "50% WUSD / 50% ETH",
+      "assets2": "50% WUSD / 50% BNB",
       "sdsdsdsd": "sdsdsdsd",
       "volume": "$4.5M"
     },
     "mb": "{count} MB",
     "back": "Back",
     "wusdEthPool": "WUSD/ETH pool",
+    "wusdBnbPool": "WUSD/BNB pool",
     "dollarsCount": "$ {count}",
     "addLiquidity": "Add liquidity",
     "removeLiquidity": "Remove liquidity",
@@ -1951,7 +1991,8 @@
     "myPoolShare": "My pool share",
     "liquidityPoolProviders": "Liquidity pool providers",
     "liquidityProvidersEarn": "Liquidity providers earn a 0.3% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
-    "transactions": "Transactions"
+    "transactions": "Transactions",
+    "connectWallet": "Connect wallet"
   },
   "crediting": {
     "lending": "WorkQuest Lending Protocol",

@@ -16,7 +16,7 @@
         <div class="info-block__grid">
           <div class="info-block__icons">
             <div
-              v-for="(item, i) in iconUrls"
+              v-for="(item, i) in iconUrls()"
               :key="i"
               class="icon-cont"
             >
@@ -29,7 +29,7 @@
           </div>
           <div class="info-block__about">
             <div class="info-block__title_black info-block__title_big">
-              {{ $t('mining.wusdEthPool') }}
+              {{ $t(`mining.${miningPoolId === 'BNB' ? 'wusdBnbPool' : 'wusdEthPool'}`) }}
             </div>
             <div class="info-block__title">
               {{ $tc('mining.dollarsCount', "176 904.49") }}
@@ -138,6 +138,7 @@ import modals from '~/store/modals/modals';
 export default {
   data() {
     return {
+      miningPoolId: localStorage.getItem('miningPoolId'),
       items: [
         {
           userName: this.$t('pension.table.userName'),
@@ -232,16 +233,13 @@ export default {
           },
         },
       ],
-      iconUrls: [
-        require('~/assets/img/ui/w-logo.svg'),
-        require('~/assets/img/ui/hromb-logo.svg'),
-      ],
       btns: [
         {
           name: this.$t('mining.addLiquidity'),
           clickFunc: () => {
             this.ShowModal({
               key: modals.addLiquidity,
+              isBNB: this.miningPoolId === 'BNB',
             });
           },
         },
@@ -250,6 +248,7 @@ export default {
           clickFunc: () => {
             this.ShowModal({
               key: modals.removeLiquidity,
+              isBNB: this.miningPoolId === 'BNB',
             });
           },
         },
@@ -282,6 +281,12 @@ export default {
   methods: {
     handleBackToMainMining() {
       this.$router.push('/mining');
+    },
+    iconUrls() {
+      return [
+        require('~/assets/img/ui/w-logo.svg'),
+        require(`~/assets/img/ui/${this.miningPoolId === 'BNB' ? 'bnb' : 'hromb'}-logo.svg`),
+      ];
     },
   },
 };
