@@ -1,3 +1,7 @@
 /* eslint-disable no-param-reassign */
 
-export default {};
+export default {
+  setChatsList(state, payload) {
+    state.chats = payload;
+  },
+};
