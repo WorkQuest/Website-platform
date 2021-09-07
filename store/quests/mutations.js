@@ -26,4 +26,10 @@ export default {
   setResponsesMy(state, data) {
     state.responsesMy = data;
   },
+  setMapBounds(state, data) {
+    state.mapBounds = data;
+  },
+  setMapCenter(state, data) {
+    state.mapCenter = data;
+  },
 };

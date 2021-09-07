@@ -109,7 +109,7 @@
                 </base-field>
               </div>
               <div class="profile__row-data profile__row-data_big">
-                <VuePhoneNumberInput
+                <vue-phone-number-input
                   v-model="localUserData.additionalInfo.firstMobileNumber"
                   class="Phone"
                   error-color="#EB5757"
@@ -684,20 +684,13 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import { mapGetters } from 'vuex';
-import VuePhoneNumberInput from 'vue-phone-number-input';
+import { GeoCode } from 'geo-coder';
 import modals from '~/store/modals/modals';
 import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 
-Vue.component('vue-phone-number-input', VuePhoneNumberInput);
-const { GeoCode } = require('geo-coder');
-
 export default {
   name: 'Settings',
-  components: {
-    VuePhoneNumberInput,
-  },
   data() {
     return {
       specCount: 0,

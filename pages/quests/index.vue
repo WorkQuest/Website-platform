@@ -1,8 +1,86 @@
 <template>
   <div class="quests">
     <GmapSearchBlock
-      :locations="questsLocation"
+      :is-show-map="isShowMap"
+      :zoom="zoomNumber"
     />
+    <div
+      class="quests__search-gmap search-gmap"
+      :class="!isShowMap ? 'quests__search-gmap_shift' : ''"
+    >
+      <div class="search-gmap__search">
+        <div class="search">
+          <div class="search__toggle">
+            <base-checkbox
+              v-model="isShowMap"
+              name="map"
+              :label="$t('quests.ui.showMap')"
+            />
+          </div>
+          <div class="search__inputs">
+            <base-field
+              v-model="search"
+              class="search__input"
+              is-search
+              :placeholder="$t('quests.ui.search')"
+              mode="icon"
+              :selector="true"
+              @selector="getAddressInfo(search)"
+            >
+              <template v-slot:left />
+              <template v-slot:selector>
+                <div
+                  v-if="addresses.length"
+                  class="selector"
+                >
+                  <div class="selector__items">
+                    <div
+                      v-for="(item, i) in addresses"
+                      :key="i"
+                      class="selector__item"
+                      @click="selectAddress(item)"
+                    >
+                      {{ item.formatted }}
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </base-field>
+          </div>
+          <div class="search__dd">
+            <base-dd
+              v-model="distanceIndex"
+              :items="distance"
+            />
+          </div>
+          <div class="search__actions">
+            <base-btn
+              class="search__btn"
+              @click="centerChange"
+            >
+              {{ userRole === 'worker' ? $t('quests.searchResults') : $t('workers.searchWorkers') }}
+            </base-btn>
+          </div>
+        </div>
+      </div>
+      <div class="search-gmap__filter">
+        <div
+          class="filter__dd"
+        >
+          <base-dd
+            v-model="distanceIndex"
+            :items="distance"
+          />
+        </div>
+        <div class="filter__toggle">
+          <base-checkbox
+            v-model="isShowMap"
+            name="map"
+            :label="$t('quests.ui.showMap')"
+          />
+        </div>
+      </div>
+    </div>
     <div class="quests__content">
       <div
         class="quests__body"
@@ -99,13 +177,17 @@
           </div>
         </div>
         <quests
-          v-if="questsObjects.count !== 0"
-          :limit="100"
+          v-if="questsArray.length > 0"
           :object="questsObjects"
           :page="'quests'"
         />
+        <base-pager
+          v-if="totalPagesValue !== 1"
+          v-model="page"
+          :total-pages="totalPagesValue"
+        />
         <emptyData
-          v-else
+          v-else-if="questsArray.length === 0"
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
           :link="userRole === 'employer' ? '/create-quest' : ''"
@@ -116,6 +198,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import { GeoCode } from 'geo-coder';
 import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
 import quests from '~/components/app/pages/common/quests';
@@ -131,21 +214,6 @@ export default {
   data() {
     return {
       isShowMap: true,
-      currentLocation: {},
-      circleOptions: {},
-      pins: {
-        selected: '/img/app/marker_blue.svg',
-        notSelected: '/img/app/marker_red.svg',
-      },
-      clusterStyle: [
-        {
-          url:
-            'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m1.png',
-          width: 56,
-          height: 56,
-          textColor: '#fff',
-        },
-      ],
       search: '',
       quests: [
         this.$t('quests.quests'),
@@ -179,14 +247,24 @@ export default {
         this.$t('quests.priority.normal'),
         this.$t('quests.priority.urgent'),
       ],
-      selectedPriority: '',
-      priorityIndex: 0,
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
-      questLimits: 100,
       questsObjects: {},
-      questsLocation: {},
+      questsArray: [],
+      sortData: '',
+      page: 1,
+      perPager: 10,
+      totalPagesValue: 1,
+      additionalValue: '',
+      zoomNumber: 15,
+      distance: [
+        '+ 100 m',
+        '+ 500 m',
+        '+ 1000 m',
+      ],
+      addresses: [],
+      coordinates: null,
     };
   },
   computed: {
@@ -194,11 +272,47 @@ export default {
       tags: 'ui/getTags',
       checkWelcomeModal: 'modals/getIsShowWelcome',
       userRole: 'user/getUserRole',
+      mapBounds: 'quests/getMapBounds',
     }),
+    totalPages() {
+      if (this.questsObjects) {
+        return Math.ceil(this.questsObjects.count / this.perPager);
+      }
+      return 0;
+    },
+  },
+  watch: {
+    async isShowMap() {
+      this.SetLoader(true);
+      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      await this.getQuests(additionalValue);
+      this.totalPagesValue = this.totalPages;
+      this.SetLoader(false);
+    },
+    async page() {
+      this.SetLoader(true);
+      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      await this.getQuests(additionalValue);
+      this.SetLoader(false);
+    },
+    async mapBounds() {
+      this.SetLoader(true);
+      const additionalValue = `${this.sortData}`;
+      await this.getQuests(additionalValue);
+      this.totalPagesValue = this.totalPages;
+      this.SetLoader(false);
+    },
+    distanceIndex() {
+      const zoom = {
+        0: 15,
+        1: 10,
+        2: 8,
+      };
+      this.zoomNumber = zoom[this.distanceIndex];
+    },
   },
   async mounted() {
     this.SetLoader(true);
-    await this.getQuests();
     this.SetLoader(false);
   },
   methods: {
@@ -212,10 +326,22 @@ export default {
         key: modals.questFilter,
       });
     },
-    async getQuests(specialSort = '') {
-      const additionalValue = `?limit=${this.questLimits}&offset=0${specialSort}`;
-      this.questsObjects = await this.$store.dispatch('quests/getAllQuests', additionalValue);
-      // this.questsLocation = await this.$store.dispatch('quests/getQuestsLocation');
+    async getQuests(payload = '') {
+      if (!this.isShowMap) {
+        this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
+        this.questsArray = this.questsObjects.quests;
+      } else {
+        this.additionalValue = payload;
+        if (!Object.keys(this.mapBounds).length) {
+          this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
+        } else {
+          const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
+          this.questsObjects = await this.$store.dispatch('quests/getAllQuests', `${bounds}&${payload}`);
+          await this.$store.dispatch('quests/getQuestsLocation', `${bounds}`);
+          this.questsArray = this.questsObjects.quests;
+        }
+        // const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
+      }
     },
     toNotifications() {
       this.$router.push('/notification');
@@ -226,7 +352,7 @@ export default {
     showDetails() {
       this.$router.push('/quests/1');
     },
-    changeSorting(type) {
+    async changeSorting(type) {
       let sortValue = '';
       if (type === 'price') {
         if (this.priceSort === 'desc') {
@@ -248,7 +374,9 @@ export default {
         }
         sortValue = `&sort[createdAt]=${this.timeSort}`;
       }
-      this.getQuests(sortValue);
+      this.sortData = sortValue;
+      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      await this.getQuests(additionalValue);
     },
     deleteTag(tag) {
       this.$store.dispatch('ui/deleteTags', tag);
@@ -275,6 +403,26 @@ export default {
         3: 'block__priority_urgent',
       };
       return priority[index] || '';
+    },
+    centerChange() {
+      this.$store.dispatch('quests/setMapCenter', this.coordinates);
+    },
+    selectAddress(address) {
+      this.search = address.formatted;
+      this.addresses = [];
+    },
+    async getAddressInfo(address) {
+      let response = [];
+      const geoCode = new GeoCode('google', { key: process.env.GMAPKEY });
+      try {
+        if (address.length) {
+          response = await geoCode.geolookup(address);
+          this.addresses = JSON.parse(JSON.stringify(response));
+          this.coordinates = JSON.parse(JSON.stringify({ lng: response[0].lng, lat: response[0].lat }));
+        }
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };
@@ -325,55 +473,6 @@ export default {
   }
 }
 
-.quest-cards {
-  padding: 20px 0 0 0;
-  margin: 10px 0 0 0;
-  @extend .bg_white;
-  &__title {
-    font-weight: 500;
-    font-size: 18px;
-    color: $black800;
-  }
-  &__value {
-    font-weight: 700;
-    font-size: 18px;
-    color: rgba(0, 170, 91, 1);
-  }
-  &__description {
-    margin: 10px 0 0 0;
-    font-weight: 400;
-    font-size: 14px;
-    color: $black600;
-  }
-  &__header {
-    display: grid;
-    grid-template-columns: 1fr 10fr 1fr;
-    margin: 0 20px 0 20px;
-  }
-  &__bottom {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin: 15px 20px 0 20px;
-    padding: 0 0 16px 0;
-  }
-  &__priority {
-    font-weight: 400;
-    font-size: 12px;
-    padding: 4px 5px;
-    border-radius: 3px;
-    &_low {
-      @extend .quest-cards__priority;
-      color: #22CC14;
-      background: rgba(34, 204, 20, 0.1);
-    }
-  }
-  &__text {
-    margin: 10px 20px 0 20px;
-  }
-}
-
 .icon {
   cursor: pointer;
   font-size: 25px;
@@ -399,32 +498,7 @@ export default {
     font-size: 20px;
   }
 }
-.mobile {
-  width: 100%;
-  height: 100%;
-  max-height: 900px;
-  &__title {
-    @include text-simple;
-    font-weight: 700;
-    font-size: 30px;
-    color: $black800;
-  }
-  &__header {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 18px;
-  }
-}
 
-.link {
-  cursor: pointer;
-  &:hover {
-    @extend .link;
-  }
-}
 .star {
   &__default {
     display: flex;
@@ -593,16 +667,15 @@ export default {
     position: relative;
     min-height: 160px;
   }
-  &__search {
-    position: absolute;
-    max-width: 1180px;
-    height: 83px;
-    bottom: 30px;
-    left: 0;
-    right: 0;
-    margin: auto;
-    z-index: 1200;
-    @include box;
+  &__search-gmap {
+    height: 0;
+    &_shift {
+      padding: 20px 0;
+      height: auto;
+      .search-gmap__search {
+        bottom: 0;
+      }
+    }
   }
   &__content {
     display: flex;
@@ -692,7 +765,174 @@ export default {
     }
   }
 }
+.search-gmap{
+  &__top {
+    height:435px;
+  }
+  &__search {
+    position: relative;
+    max-width: 1180px;
+    height: 83px;
+    bottom: 100px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 1200;
+    @include box;
+  }
+  &__filter {
+    display: none;
+  }
+  &__search, &__filter {
+    transition: all 0.5s ease;
+  }
+}
+.search {
+  display: grid;
+  grid-template-columns: 154px 1fr 143px 260px;
+  align-items: center;
+  height: 100%;
+  justify-items: center;
+  &__dd {
+    display: flex;
+    border-left: 1px solid #F7F8FA;
+    justify-items: center;
+    align-items: center;
+    height: 100%;
+    width: 144px;
+  }
+  &__icon {
+    margin-bottom: -10px;
+    &::before {
+      font-size: 24px;
+      color: $blue;
+    }
+  }
+  &__inputs {
+    padding: 0 20px;
+    width: 100%;
+    display: grid;
+    align-items: center;
+  }
+  &__input {
+    display: flex;
+    align-items: center;
+  }
+  &__btn {
+    max-width: 220px;
+  }
+  &__toggle {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #F7F8FA;
+  }
+  &__actions {
+    height: 100%;
+    border-left: 1px solid #F7F8FA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+}
+.selector {
+  @include box;
+  width: 100%;
+  z-index: 140;
+  &__items {
+    background: #FFFFFF;
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  &__item {
+    @include text-simple;
+    padding: 15px 20px;
+    background: #FFFFFF;
+    font-weight: 500;
+    font-size: 16px;
+    color: $black800;
+    cursor: pointer;
+    transition: .3s;
+    &:hover {
+      background: #F3F7FA;
+    }
+  }
+}
+.checkbox {
+  &__isShowMap {
+    margin: 30px 50px 0 10px;
+    display: flex;
+    flex-direction: row;
+    height: 25px;
+    align-items: center;
+  }
+  &-input {
+    width: 24px;
+    height: 24px;
+  }
+  &__label {
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    margin: 0 0 0 5px;
+    font-size: 16px;
+  }
+}
+.search-bar {
+  left: 18%;
+  bottom: 30px;
+  margin: 10px 0 0 0;
+  position: absolute;
+  max-width: 1180px;
+  width: 100%;
+  height: 84px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  background-color: $white;
+  z-index: 10;
+  box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
+  &__body {
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+  }
+  &__input {
+    margin: 30px 10px 0 0;
+    height: 25px;
+    width: 510px;
+  }
+  &__btn {
+    margin: 30px 10px 0 0;
+    flex-shrink: 0;
+  }
+  &__btn-search {
+    margin: 30px 10px 0 0;
+    width: 220px;
+  }
+}
 
+@include _1300 {
+  .search {
+    grid-template-columns: repeat(4, auto);
+    &__actions, &__toggle {
+      padding: 10px;
+    }
+  }
+  .search-gmap {
+    &__search {
+      width: 80%;
+    }
+  }
+}
 @include _1199 {
   .quests {
     &__content {
@@ -743,6 +983,10 @@ export default {
         }
       }
     }
+    &__search-gmap {
+      padding: 20px;
+      height: auto;
+    }
   }
   .quests {
     &__tools {
@@ -758,8 +1002,14 @@ export default {
   .dd {
     grid-column: 1/3;
   }
+  .search-gmap {
+    &__search {
+      width: 100%;
+      position: initial;
+    }
+  }
   .search {
-    grid-template-columns: auto auto;
+    grid-template-columns: 1fr 0.5fr;
     padding: 0 10px;
     grid-gap: 10px;
     &__toggle, &__dd {
@@ -767,6 +1017,32 @@ export default {
     }
     &__actions {
       border: none;
+    }
+    &__inputs {
+      padding: 0 10px;
+    }
+  }
+  .dd__btn {
+    justify-content: center;
+    padding: 0 0;
+  }
+  .search-gmap {
+    &__filter {
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      justify-content: space-between;
+      top: 20px;
+      align-content: center;
+    }
+  }
+  .filter {
+    &__toggle {
+      text-align: center;
+      display: flex;
+      padding: 10px;
+      border-radius: 6px;
+      background: #FFFFFF;
     }
   }
 }
@@ -804,12 +1080,6 @@ export default {
   }
   .dd__btn {
     justify-content: space-around;
-  }
-  .search {
-    display: flex;
-    &__actions {
-      width: 50%;
-    }
   }
   .base-btn {
     justify-content: space-between;

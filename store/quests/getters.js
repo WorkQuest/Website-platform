@@ -7,4 +7,6 @@ export default {
   getQuestUserCompany: (state) => state.quest?.user?.additionalInfo?.company || '',
   getQuestsLocation: (state) => state.questsLocation || '',
   getCurrentStepCreateQuest: (state) => state.currentStepCreateQuest || '',
+  getMapBounds: (state) => state.mapBounds || '',
+  getMapCenter: (state) => state.mapCenter || '',
 };

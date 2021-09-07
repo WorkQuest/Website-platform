@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   props: {
     position: {
@@ -25,20 +27,28 @@ export default {
       marker: null,
       markerLoaded: false,
       events: ['click', 'mouseover', 'mouseout'],
+      newChild: null,
     };
   },
-
+  computed: {
+    ...mapGetters({
+      mapCenter: 'quests/getMapCenter',
+    }),
+  },
   watch: {
-    options(value) {
-      if (value.icon) {
-        this.marker.setIcon = value;
+    options() {
+      if (this.options) {
+        this.marker.setIcon = this.options.icon;
+        this.markerLoaded = this.options.show;
       }
     },
+  },
+  mounted() {
+    this.init();
   },
   methods: {
     init() {
       let child;
-      this.marker = null;
       this.markerLoaded = false;
       this.position.lat = parseFloat(this.position.lat);
       this.position.lng = parseFloat(this.position.lng);
@@ -49,17 +59,20 @@ export default {
       });
 
       this.$parent.markers.push(this.marker);
-      this.markerLoaded = true;
-
       if (this.$children.length > 0) {
         // eslint-disable-next-line prefer-destructuring
         child = this.$children[0];
         child.initInfoWindow();
       }
-
       this.events.forEach((event) => {
         this.$parent.google.maps.event.addListener(this.marker, event, (e) => {
-          if (child !== undefined && event === 'click') child.infoWindow.open(this.$parent.map, this.marker);
+          if (child !== undefined && event === 'click') {
+            if (!this.markerLoaded) {
+              child.infoWindow.open(this.$parent.map, this.marker);
+            } else {
+              child.infoWindow.close(this.$parent.map, this.marker);
+            }
+          }
           this.$emit(event, {
             position: this.position, event: e, map: this.$parent.map, marker: this.marker,
           });
@@ -69,3 +82,8 @@ export default {
   },
 };
 </script>
+<style>
+.GMap__Marker{
+  display: none;
+}
+</style>

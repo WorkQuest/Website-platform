@@ -1042,8 +1042,8 @@ export default {
   methods: {
     cleanUp() {
       for (let idx = 0; idx < Object.keys(this.$refs).length / 2; idx += 1) {
-        const selectAllCheckbox = this.$refs.[`allCheckbox${idx}`];
-        const checkboxes = this.$refs.[`checkbox${idx}`];
+        const selectAllCheckbox = this.$refs[`allCheckbox${idx}`];
+        const checkboxes = this.$refs[`checkbox${idx}`];
         selectAllCheckbox[0].checked = false;
         for (let i = 0; i < Object.keys(checkboxes).length; i += 1) {
           checkboxes[i].checked = selectAllCheckbox[0].checked;
@@ -1051,15 +1051,15 @@ export default {
       }
     },
     selectAll(idx) {
-      const selectAllCheckbox = this.$refs.[`allCheckbox${idx}`];
-      const checkboxes = this.$refs.[`checkbox${idx}`];
+      const selectAllCheckbox = this.$refs[`allCheckbox${idx}`];
+      const checkboxes = this.$refs[`checkbox${idx}`];
       selectAllCheckbox[0].checked = !selectAllCheckbox[0].checked;
       for (let i = 0; i < Object.keys(checkboxes).length; i += 1) {
         checkboxes[i].checked = selectAllCheckbox[0].checked;
       }
     },
     selectSub(item, category) {
-      const checkbox = this.$refs.[`checkbox${category}`][item];
+      const checkbox = this.$refs[`checkbox${category}`][item];
       checkbox.checked = !checkbox.checked;
     },
     hide() {

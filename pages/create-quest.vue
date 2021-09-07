@@ -557,8 +557,8 @@ export default {
       return val;
     },
     selectRadio(idx) {
-      const radio = this.$refs.[`radio${idx}`];
-      for (let i = 0; i < Object.keys(this.$refs.[`radio${i}`]).length; i += 1) {
+      const radio = this.$refs[`radio${idx}`];
+      for (let i = 0; i < Object.keys(this.$refs[`radio${i}`]).length; i += 1) {
         if (radio[i].checked) {
           radio[i].checked = false;
           this.ads.currentAdPrice = '';
@@ -570,7 +570,7 @@ export default {
     },
     switchPeriod(item) {
       for (let idx = 0; idx < Object.keys(this.$refs).length - 1; idx += 1) {
-        const radio = this.$refs.[`radio${idx}`];
+        const radio = this.$refs[`radio${idx}`];
         for (let i = 0; i < Object.keys(radio).length; i += 1) {
           radio[0].checked = false;
         }

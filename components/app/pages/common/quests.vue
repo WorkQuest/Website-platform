@@ -45,7 +45,7 @@
                   <span
                     v-if="userCompany"
                     class="block__text block__text_grey"
-                  >from {{ item.user.additionalInfo.company }}</span>
+                  >{{ `${$t('quests.fromSmall')} ${item.user.additionalInfo.company}` }}</span>
                 </div>
               </div>
               <div
@@ -100,7 +100,9 @@
               </div>
             </div>
             <div class="block__locate">
-              <span class="block__icon" />
+              <span
+                class="icon-location"
+              />
               <span class="block__text block__text_locate">
                 {{ showDistance(item.location.latitude, item.location.longitude) }}
                 {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
