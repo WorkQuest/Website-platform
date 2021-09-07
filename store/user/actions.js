@@ -17,7 +17,13 @@ export default {
   async setCaseData({ commit }, payload) {
     const response = await this.$axios.$post('/v1/portfolio/add-case', payload);
     commit('setCaseData', response.result);
+    return response;
+  },
+  async editCaseData({ commit }, { payload, id }) {
+    const response = await this.$axios.$put(`/v1/portfolio/${id}`, payload);
     console.log(response);
+    console.log(id);
+    commit('setCaseData', response.result);
     return response;
   },
   async deletePortfolio({ commit }, id) {
@@ -93,7 +99,6 @@ export default {
     return response;
   },
 
-  // Change avatar
   async imageType({ commit }, payload) {
     const response = await this.$axios.$post('/v1/storage/get-upload-link', payload);
     commit('setImageType', response.result);

@@ -73,4 +73,5 @@ export default {
   claim: 'claim',
   priceSearch: 'priceSearch',
   areYouSureDeleteQuest: 'areYouSureDeleteQuest',
+  editCase: 'editCase',
 };

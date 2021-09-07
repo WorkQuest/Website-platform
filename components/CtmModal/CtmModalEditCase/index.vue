@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="message"
-    :title="$t('modals.addCase')"
+    :title="$t('modals.editCase')"
   >
     <div class="ctm-modal__content">
       <div class="message">
@@ -45,7 +45,7 @@
                 <base-btn
                   class="message__action"
                   :disabled="!valid"
-                  @click="addUserCase"
+                  @click="editUserCase(options.id)"
                 >
                   {{ $t('meta.send') }}
                 </base-btn>
@@ -88,6 +88,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      portfolios: 'user/getUserPortfolios',
       medias: 'user/getUserPortfolio',
     }),
   },
@@ -110,7 +111,8 @@ export default {
       }
       return this.portfolio;
     },
-    async addUserCase() {
+    async editUserCase(id) {
+      console.log(id);
       const { file, data } = this.portfolio;
       try {
         const formData = new FormData();
@@ -128,8 +130,7 @@ export default {
           description: this.caseDescription,
           medias: [data.result.mediaId],
         };
-        console.log(payload);
-        await this.$store.dispatch('user/setCaseData', payload);
+        await this.$store.dispatch('user/editCaseData', { payload, id });
         this.hide();
       } catch (error) {
         console.error(error);

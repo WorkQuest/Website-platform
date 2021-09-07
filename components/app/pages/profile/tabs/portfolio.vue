@@ -24,7 +24,7 @@
                 </button>
                 <button
                   class="portfolio__edit"
-                  @click=""
+                  @click="showEditCaseModal(item.id)"
                 >
                   <span
                     class="icon-edit"
@@ -90,11 +90,17 @@ export default {
         console.log(e);
       }
     },
+    showEditCaseModal(id) {
+      this.ShowModal({
+        key: modals.editCase,
+        id,
+      });
+    },
     async deletePortfolio(id) {
       try {
         const response = this.$store.dispatch('user/deletePortfolio', id);
         if (response?.ok) {
-          console.log('response ok');
+          console.log(response.ok);
         }
       } catch (e) {
         console.log(e);
@@ -119,6 +125,22 @@ export default {
     border-radius: 6px;
     padding: 2px;
   }
+  &__edit {
+    position: absolute;
+    left: 25px;
+    top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    width: 20px;
+    border-radius: 6px;
+    padding: 2px;
+    transition: 0.5s;
+    &:hover {
+      background: $yellow;
+    }
+  }
   &__close {
     position: absolute;
     left: 5px;
@@ -133,22 +155,6 @@ export default {
     transition: 0.5s;
     &:hover {
       background: $red;
-    }
-    &__edit {
-      position: absolute;
-      left: 25px;
-      top: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 20px;
-      width: 20px;
-      border-radius: 6px;
-      padding: 2px;
-      transition: 0.5s;
-      &:hover {
-        background: $red;
-      }
     }
   }
   &__card {
@@ -185,6 +191,8 @@ export default {
     font-size: 18px;
     font-weight: 500;
     margin-left: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   &__footer {
     position: absolute;
