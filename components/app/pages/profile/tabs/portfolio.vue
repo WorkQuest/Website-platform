@@ -17,7 +17,7 @@
                 <base-btn
                   class="portfolio__close"
                   mode="portfolioClose"
-                  @click="deletePortfolio(item.id)"
+                  @click="showDeleteCaseModal(item.id)"
                 >
                   <span
                     class="icon-close_big"
@@ -91,36 +91,16 @@ export default {
         this.SetLoader(false);
       }
     },
+    showDeleteCaseModal(id) {
+      this.ShowModal({
+        key: modals.deleteCase,
+        id,
+      });
+    },
     showEditCaseModal(id) {
       this.ShowModal({
         key: modals.editCase,
         id,
-      });
-    },
-    async deletePortfolio(id) {
-      try {
-        this.SetLoader(true);
-        await this.$store.dispatch('user/deletePortfolio', id);
-        this.showToastDeleted();
-        this.SetLoader(false);
-      } catch (e) {
-        this.showToastError(e);
-        this.SetLoader(false);
-      }
-      await this.getAllPortfolios();
-    },
-    showToastDeleted() {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.caseDeleted'),
-        variant: 'success',
-        text: this.$t('toasts.caseDeleted'),
-      });
-    },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: `${e}`,
       });
     },
   },
@@ -175,7 +155,6 @@ export default {
     @include text-simple;
     font-size: 18px;
     font-weight: 500;
-    margin-left: 10px;
     text-overflow: ellipsis;
     overflow: hidden;
   }
@@ -187,6 +166,7 @@ export default {
     background: $black700;
     height: 71px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     padding-left: 20px;
     border-radius: 0 0 6px 6px;

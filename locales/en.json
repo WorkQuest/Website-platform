@@ -829,6 +829,7 @@
       "participants": "Participants",
       "chatName": "Chat name"
     },
+    "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",
     "editCase": "Edit Case",

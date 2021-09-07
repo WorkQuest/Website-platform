@@ -74,4 +74,5 @@ export default {
   priceSearch: 'priceSearch',
   areYouSureDeleteQuest: 'areYouSureDeleteQuest',
   editCase: 'editCase',
+  deleteCase: 'deleteCase',
 };

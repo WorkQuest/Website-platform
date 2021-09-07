@@ -64,11 +64,15 @@ export default {
   }
 }
 .desc {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
   &__title {
     @include text-simple;
     margin: 10px 10px 0 0;
     font-size: 18px;
     font-weight: 500;
+    display: flex;
   }
   &__desc {
     margin: 10px 10px 0 0;
