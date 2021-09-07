@@ -24,6 +24,7 @@
               <base-field
                 v-model="caseTitle"
                 :label="$t('modals.title')"
+                :placeholder="$t('modals.addTitle')"
                 :mode="'gray'"
               />
             </div>
@@ -36,7 +37,7 @@
                   id="textarea"
                   v-model="caseDescription"
                   class="message__textarea"
-                  :placeholder="$t('modals.hello')"
+                  :placeholder="$t('modals.addDesc')"
                 />
               </div>
             </div>
@@ -89,6 +90,7 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
       portfolios: 'user/getUserPortfolios',
+      userData: 'user/getUserData',
       medias: 'user/getUserPortfolio',
     }),
   },
@@ -112,9 +114,9 @@ export default {
       return this.portfolio;
     },
     async editUserCase(id) {
-      console.log(id);
       const { file, data } = this.portfolio;
       try {
+        this.SetLoader(true);
         const formData = new FormData();
         formData.append('image', file);
         if (data.ok) {
@@ -131,7 +133,9 @@ export default {
           medias: [data.result.mediaId],
         };
         await this.$store.dispatch('user/editCaseData', { payload, id });
+        await this.$store.dispatch('user/getUserPortfolios', this.userData.id);
         this.hide();
+        this.SetLoader(false);
       } catch (error) {
         console.error(error);
         this.hide();

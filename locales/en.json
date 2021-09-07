@@ -823,6 +823,8 @@
       "participants": "Participants",
       "chatName": "Chat name"
     },
+    "addTitle": "Please add title...",
+    "addDesc": "Please add description...",
     "editCase": "Edit Case",
     "error": "Error",
     "share": "Share",

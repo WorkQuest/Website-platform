@@ -21,8 +21,6 @@ export default {
   },
   async editCaseData({ commit }, { payload, id }) {
     const response = await this.$axios.$put(`/v1/portfolio/${id}`, payload);
-    console.log(response);
-    console.log(id);
     commit('setCaseData', response.result);
     return response;
   },
