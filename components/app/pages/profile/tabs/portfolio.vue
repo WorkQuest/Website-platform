@@ -14,28 +14,29 @@
               class="portfolio__img"
             >
               <div class="portfolio__btns">
-                <button
+                <base-btn
                   class="portfolio__close"
+                  mode="portfolioClose"
                   @click="deletePortfolio(item.id)"
                 >
                   <span
                     class="icon-close_big"
                   />
-                </button>
-                <button
+                </base-btn>
+                <base-btn
                   class="portfolio__edit"
+                  mode="portfolioEdit"
                   @click="showEditCaseModal(item.id)"
                 >
                   <span
                     class="icon-edit"
                   />
-                </button>
+                </base-btn>
               </div>
               <img
                 class="portfolio__image"
                 :src="img.url"
                 :alt="item.title"
-                loading="lazy"
                 @click="openImage(img.url, item.title, item.description)"
               >
             </div>
@@ -83,14 +84,11 @@ export default {
     async getAllPortfolios() {
       try {
         this.SetLoader(true);
-        const response = await this.$store.dispatch('user/getUserPortfolios', this.userData.id);
+        await this.$store.dispatch('user/getUserPortfolios', this.userData.id);
         this.SetLoader(false);
-        if (response?.ok) {
-          this.hide();
-          this.SetLoader(false);
-        }
       } catch (e) {
         console.log(e);
+        this.SetLoader(false);
       }
     },
     showEditCaseModal(id) {
@@ -102,17 +100,28 @@ export default {
     async deletePortfolio(id) {
       try {
         this.SetLoader(true);
-        const response = await this.$store.dispatch('user/deletePortfolio', id);
-        if (response?.ok) {
-          this.hide();
-          this.SetLoader(false);
-        }
+        await this.$store.dispatch('user/deletePortfolio', id);
+        this.showToastDeleted();
+        this.SetLoader(false);
       } catch (e) {
-        console.log(e);
+        this.showToastError(e);
+        this.SetLoader(false);
       }
-      this.SetLoader(true);
-      await this.$store.dispatch('user/getUserPortfolios', this.userData.id);
-      this.SetLoader(false);
+      await this.getAllPortfolios();
+    },
+    showToastDeleted() {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.caseDeleted'),
+        variant: 'success',
+        text: this.$t('toasts.caseDeleted'),
+      });
+    },
+    showToastError(e) {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.error'),
+        variant: 'warning',
+        text: `${e}`,
+      });
     },
   },
 };
@@ -132,38 +141,6 @@ export default {
     width: 60px;
     border-radius: 6px;
     padding: 2px;
-  }
-  &__edit {
-    position: absolute;
-    left: 25px;
-    top: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 20px;
-    width: 20px;
-    border-radius: 6px;
-    padding: 2px;
-    transition: 0.5s;
-    &:hover {
-      background: $yellow;
-    }
-  }
-  &__close {
-    position: absolute;
-    left: 5px;
-    top: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 20px;
-    width: 20px;
-    border-radius: 6px;
-    padding: 2px;
-    transition: 0.5s;
-    &:hover {
-      background: $red;
-    }
   }
   &__card {
     border-radius: 6px;
