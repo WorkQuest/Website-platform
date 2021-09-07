@@ -35,6 +35,7 @@
                 class="portfolio__image"
                 :src="img.url"
                 :alt="item.title"
+                loading="lazy"
                 @click="openImage(img.url, item.title, item.description)"
               >
             </div>
@@ -81,10 +82,12 @@ export default {
     },
     async getAllPortfolios() {
       try {
-        const { id } = this.userData;
-        const response = await this.$store.dispatch('user/getUserPortfolios', id);
+        this.SetLoader(true);
+        const response = await this.$store.dispatch('user/getUserPortfolios', this.userData.id);
+        this.SetLoader(false);
         if (response?.ok) {
           this.hide();
+          this.SetLoader(false);
         }
       } catch (e) {
         console.log(e);
@@ -98,13 +101,18 @@ export default {
     },
     async deletePortfolio(id) {
       try {
-        const response = this.$store.dispatch('user/deletePortfolio', id);
+        this.SetLoader(true);
+        const response = await this.$store.dispatch('user/deletePortfolio', id);
         if (response?.ok) {
-          console.log(response.ok);
+          this.hide();
+          this.SetLoader(false);
         }
       } catch (e) {
         console.log(e);
       }
+      this.SetLoader(true);
+      await this.$store.dispatch('user/getUserPortfolios', this.userData.id);
+      this.SetLoader(false);
     },
   },
 };
