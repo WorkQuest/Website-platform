@@ -98,11 +98,64 @@ export default {
     hide() {
       this.CloseModal();
     },
+    async editUserCase(id) {
+      try {
+        this.SetLoader(true);
+        await this.setCaseImage();
+        await this.setCaseData(id);
+        await this.getPortfolios();
+        this.showToastEdited();
+        this.hide();
+        this.SetLoader(false);
+      } catch (e) {
+        this.hide();
+        this.showToastError(e);
+        this.SetLoader(false);
+      }
+    },
+    showToastEdited() {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.caseEdited'),
+        variant: 'success',
+        text: this.$t('toasts.caseEdited'),
+      });
+    },
+    showToastError(e) {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.error'),
+        variant: 'warning',
+        text: `${e}`,
+      });
+    },
+    async getPortfolios() {
+      return await this.$store.dispatch('user/getUserPortfolios', this.userData.id);
+    },
+    async setCaseImage() {
+      const { file, data } = this.portfolio;
+      const formData = new FormData();
+      formData.append('image', file);
+      if (data.ok) {
+        const payload = {
+          url: data.result.url,
+          formData: file,
+          type: file.type,
+        };
+        await this.$store.dispatch('user/setCaseImage', payload);
+      }
+    },
+    async setCaseData(id) {
+      const { data } = this.portfolio;
+      const payload = {
+        title: this.caseTitle,
+        description: this.caseDescription,
+        medias: [data.result.mediaId],
+      };
+      await this.$store.dispatch('user/editCaseData', { payload, id });
+    },
     async processFile(e, validate) {
-      const isValid = await validate(e);
-      this.valid = isValid;
+      this.valid = await validate(e);
       const file = e.target.files[0];
-      if (isValid.valid) {
+      if (this.valid.valid) {
         if (!file) {
           return false;
         }
@@ -112,34 +165,6 @@ export default {
         this.portfolio.file = file;
       }
       return this.portfolio;
-    },
-    async editUserCase(id) {
-      const { file, data } = this.portfolio;
-      try {
-        this.SetLoader(true);
-        const formData = new FormData();
-        formData.append('image', file);
-        if (data.ok) {
-          const payload = {
-            url: data.result.url,
-            formData: file,
-            type: file.type,
-          };
-          await this.$store.dispatch('user/setCaseImage', payload);
-        }
-        const payload = {
-          title: this.caseTitle,
-          description: this.caseDescription,
-          medias: [data.result.mediaId],
-        };
-        await this.$store.dispatch('user/editCaseData', { payload, id });
-        await this.$store.dispatch('user/getUserPortfolios', this.userData.id);
-        this.hide();
-        this.SetLoader(false);
-      } catch (error) {
-        console.error(error);
-        this.hide();
-      }
     },
     showRequestSendModal() {
       this.ShowModal({

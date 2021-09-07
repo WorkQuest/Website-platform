@@ -816,6 +816,12 @@
       }
     }
   },
+  "toasts": {
+    "caseDeleted": "Case deleted!",
+    "caseAdded": "Case added!",
+    "caseEdited": "Case edited!",
+    "error": "Error!"
+  },
   "modals": {
     "chatCreate": {
       "title": "Create group chat",
