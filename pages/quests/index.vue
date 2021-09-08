@@ -296,11 +296,9 @@ export default {
       this.SetLoader(false);
     },
     async mapBounds() {
-      this.SetLoader(true);
       const additionalValue = `${this.sortData}`;
       await this.getQuests(additionalValue);
       this.totalPagesValue = this.totalPages;
-      this.SetLoader(false);
     },
     distanceIndex() {
       const zoom = {

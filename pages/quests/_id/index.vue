@@ -332,19 +332,19 @@
             :zoom="zoom"
             :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
           >
-            <GMapMarker
-              v-for="(item, key) in locations"
-              :key="key"
-              :position="{lat: item.lat, lng: item.lng}"
-              :options="{ icon: pins.quest.blue, show: true} "
-              @click="coordinatesChange(item)"
-            >
-              <GMapInfoWindow
-                :options="{maxWidth: 280}"
-              >
-                test
-              </GMapInfoWindow>
-            </GMapMarker>
+            <!--            <GMapMarker-->
+            <!--              v-for="(item, key) in locations"-->
+            <!--              :key="key"-->
+            <!--              :position="questLocation"-->
+            <!--              :options="{ icon: pins.quest.blue, show: true}"-->
+            <!--              @click="coordinatesChange(item)"-->
+            <!--            >-->
+            <!--              <GMapInfoWindow-->
+            <!--                :options="{maxWidth: 280}"-->
+            <!--              >-->
+            <!--                test-->
+            <!--              </GMapInfoWindow>-->
+            <!--            </GMapMarker>-->
           </Gmap>
         </transition>
       </div>
@@ -460,7 +460,7 @@ export default {
       questLocation: { lat: 0, lng: 0 },
       locations: {},
       currentLocation: {},
-      zoom: 10,
+      zoom: 15,
       pins: {
         quest: {
           red: '/img/app/marker_red.svg',
