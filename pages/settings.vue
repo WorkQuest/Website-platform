@@ -820,7 +820,7 @@ export default {
       return this.$store.dispatch('main/showToast', {
         title: this.$t('toasts.error'),
         variant: 'warning',
-        text: `${e}`,
+        text: e.response?.data?.msg || e.message,
       });
     },
     addSkillToBadge(event, object, index, key) {
