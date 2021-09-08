@@ -80,7 +80,6 @@ export default {
 .desc {
   display: flex;
   flex-direction: column;
-  text-align: center;
   &__title {
     @include text-simple;
     justify-content: center;
@@ -94,6 +93,7 @@ export default {
   &__desc {
     @include text-simple;
     display: flex;
+    text-align: left;
     margin: 10px 10px 0 0;
     font-size: 16px;
     font-weight: 400;
