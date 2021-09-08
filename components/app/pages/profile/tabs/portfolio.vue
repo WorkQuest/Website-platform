@@ -6,12 +6,15 @@
         :key="i"
         class="portfolio__item"
       >
-        <div class="portfolio__card">
+        <div
+          class="portfolio__card"
+        >
           <div class="portfolio__body">
             <div
               v-for="(img, j) in item.medias"
               :key="j"
               class="portfolio__img"
+              @click="openImage(img.url, item.title, item.description)"
             >
               <div class="portfolio__btns">
                 <base-btn
@@ -37,16 +40,15 @@
                 class="portfolio__image"
                 :src="img.url"
                 :alt="item.title"
-                @click="openImage(img.url, item.title, item.description)"
               >
-            </div>
-          </div>
-          <div class="portfolio__footer footer">
-            <div class="footer__name">
-              {{ item.title }}
-            </div>
-            <div class="footer__description">
-              {{ item.description }}
+              <div class="portfolio__footer footer">
+                <div class="footer__name">
+                  {{ item.title }}
+                </div>
+                <div class="footer__description">
+                  {{ item.description }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
