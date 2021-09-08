@@ -46,6 +46,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      userData: 'user/getUserData',
     }),
   },
   methods: {
@@ -57,23 +58,21 @@ export default {
         this.SetLoader(true);
         await this.$store.dispatch('user/deletePortfolio', id);
         this.showToastDeleted();
+        await this.getAllPortfolios();
         this.hide();
         this.SetLoader(false);
       } catch (e) {
+        await this.getAllPortfolios();
         this.hide();
         this.showToastError(e);
         this.SetLoader(false);
       }
-      await this.getAllPortfolios();
     },
     async getAllPortfolios() {
       try {
-        this.SetLoader(true);
         await this.$store.dispatch('user/getUserPortfolios', this.userData.id);
-        this.SetLoader(false);
       } catch (e) {
-        console.log(e);
-        this.SetLoader(false);
+        this.showToastError(e);
       }
     },
     showToastDeleted() {

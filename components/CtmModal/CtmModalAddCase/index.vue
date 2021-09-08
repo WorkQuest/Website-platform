@@ -108,7 +108,7 @@ export default {
         this.hide();
         this.SetLoader(false);
       } catch (e) {
-        console.log(e);
+        await this.getPortfolios();
         this.hide();
         this.showToastError(e);
         this.SetLoader(false);
