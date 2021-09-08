@@ -179,7 +179,6 @@ export default {
   &__name {
     @include text-simple;
     margin-top: 16px;
-    text-align: left;
     color: $black800;
     white-space: nowrap;
     overflow: hidden;
@@ -187,6 +186,7 @@ export default {
     font-size: 18px;
     font-weight: 500;
     width: 100%;
+    text-align: center;
   }
   &__description {
     @include text-simple;
