@@ -484,16 +484,19 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
-    this.userAvatar = this.questData.user.avatar.url || require('~/assets/img/app/fakeavatar.svg');
-    this.questLocation = {
-      lat: this.questData.location.latitude,
-      lng: this.questData.location.longitude,
-    };
-    this.locations = this.questLocation;
+    await this.initData();
     this.SetLoader(false);
   },
   methods: {
+    async initData() {
+      this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+      this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/fakeavatar.svg');
+      this.questLocation = {
+        lat: this.questData.location.latitude,
+        lng: this.questData.location.longitude,
+      };
+      this.locations = this.questLocation;
+    },
     coordinatesChange(item) {
       if (Object.keys(this.currentLocation).length > 0) {
         this.currentLocation = {};
