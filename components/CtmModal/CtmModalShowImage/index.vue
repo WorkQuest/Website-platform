@@ -99,6 +99,8 @@ export default {
     font-weight: 400;
     overflow: hidden;
     width: 100%;
+    word-break: break-word;
+    white-space: pre-line;
   }
 }
 
