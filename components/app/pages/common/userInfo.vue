@@ -123,7 +123,10 @@
         </div>
       </div>
     </div>
-    <div class="share-btn" />
+    <base-btn
+      mode="share-btn"
+      @click="shareModal()"
+    />
   </div>
 </template>
 
@@ -131,6 +134,7 @@
 import { mapGetters } from 'vuex';
 import contactPanel from '~/components/app/panels/contact';
 import socialPanel from '~/components/app/panels/social';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'UserInfo',
@@ -166,6 +170,11 @@ export default {
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
   },
   methods: {
+    shareModal() {
+      this.ShowModal({
+        key: modals.sharingQuest,
+      });
+    },
     showMessages() {
       this.$router.push('/messages/1');
     },
@@ -267,21 +276,6 @@ export default {
   padding: 25px 0 0 0;
   position: relative;
 
-  .share-btn {
-    height: 24px;
-    width: 24px;
-    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a         %3Cpath d='M17.5 22C16.4179 22.0125 15.3923 21.5181 14.7282 20.6637C14.0641 19.8094 13.8379 18.6935 14.117 17.648L7.85697 14.07C6.77525 15.0611 5.18965 15.2708 3.88746 14.5951C2.58526 13.9194 1.84384 12.5023 2.03134 11.0472C2.21883 9.5922 3.2953 8.40926 4.72625 8.08577C6.15719 7.76227 7.63783 8.36714 8.43297 9.60002L14.116 6.35102C14.0424 6.07321 14.0035 5.78738 14 5.50002C13.9856 3.82674 15.1478 2.37316 16.7832 2.01884C18.4186 1.66452 20.0781 2.50676 20.7576 4.03594C21.4371 5.56511 20.95 7.36125 19.5909 8.33753C18.2319 9.31381 16.3742 9.20211 15.142 8.07002L8.99097 11.585C8.98488 11.8443 8.94863 12.1021 8.88297 12.353L15.142 15.93C16.2942 14.8726 18.0087 14.7093 19.3399 15.5303C20.671 16.3514 21.2946 17.9568 20.8668 19.461C20.439 20.9653 19.0639 22.0023 17.5 22ZM17.5 17C16.6715 17 16 17.6716 16 18.5C16 19.3284 16.6715 20 17.5 20C18.3284 20 19 19.3284 19 18.5C19 17.6716 18.3284 17 17.5 17ZM5.49997 10C4.67154 10 3.99997 10.6716 3.99997 11.5C3.99997 12.3284 4.67154 13 5.49997 13C6.3284 13 6.99997 12.3284 6.99997 11.5C6.99997 10.6716 6.3284 10 5.49997 10ZM17.5 4.00002C16.6715 4.00002 16 4.67159 16 5.50002C16 6.32845 16.6715 7.00002 17.5 7.00002C18.3284 7.00002 19 6.32845 19 5.50002C19 4.67159 18.3284 4.00002 17.5 4.00002Z' fill='%237C838D'/%3E\a         %3C/svg%3E                                                                   \a         ");
-    background-repeat: no-repeat;
-    background-position: center;
-    position: absolute;
-    right: 0;
-    top: 28px;
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
-
   .col {
     @extend .styles__flex;
     align-self: flex-start;
@@ -350,6 +344,7 @@ export default {
     object-fit: cover;
   }
   &__col {
+    padding-right: 0;
     &_left {
       max-width: 142px;
       padding: 0 15px 0 0;

@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="message"
-    :title="$t('modals.addCase')"
+    :title="$t('modals.editCase')"
   >
     <div class="ctm-modal__content">
       <div class="message">
@@ -46,7 +46,7 @@
                 <base-btn
                   class="message__action"
                   :disabled="!valid"
-                  @click="addUserCase"
+                  @click="editUserCase(options.id)"
                 >
                   {{ $t('meta.send') }}
                 </base-btn>
@@ -80,7 +80,6 @@ export default {
       valid: '',
       caseTitle: '',
       caseDescription: '',
-
       portfolio: {
         data: {},
         file: {},
@@ -90,6 +89,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      portfolios: 'user/getUserPortfolios',
       userData: 'user/getUserData',
       medias: 'user/getUserPortfolio',
     }),
@@ -98,27 +98,26 @@ export default {
     hide() {
       this.CloseModal();
     },
-    async addUserCase() {
+    async editUserCase(id) {
       try {
         this.SetLoader(true);
         await this.setCaseImage();
-        await this.setCaseData();
+        await this.setCaseData(id);
         await this.getPortfolios();
-        this.showToastAdded();
+        this.showToastEdited();
         this.hide();
         this.SetLoader(false);
       } catch (e) {
-        await this.getPortfolios();
         this.hide();
         this.showToastError(e);
         this.SetLoader(false);
       }
     },
-    showToastAdded() {
+    showToastEdited() {
       return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.caseAdded'),
+        title: this.$t('toasts.caseEdited'),
         variant: 'success',
-        text: this.$t('toasts.caseAdded'),
+        text: this.$t('toasts.caseEdited'),
       });
     },
     showToastError(e) {
@@ -144,14 +143,14 @@ export default {
         await this.$store.dispatch('user/setCaseImage', payload);
       }
     },
-    async setCaseData() {
+    async setCaseData(id) {
       const { data } = this.portfolio;
       const payload = {
         title: this.caseTitle,
         description: this.caseDescription,
         medias: [data.result.mediaId],
       };
-      await this.$store.dispatch('user/setCaseData', payload);
+      await this.$store.dispatch('user/editCaseData', { payload, id });
     },
     async processFile(e, validate) {
       this.valid = await validate(e);
