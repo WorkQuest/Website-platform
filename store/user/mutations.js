@@ -54,4 +54,10 @@ export default {
   setUserReviews(state, data) {
     state.userReviews = data;
   },
+  setEnable2FA(state, data) {
+    state.userEnable2FA = data;
+  },
+  setDisable2FA(state, data) {
+    state.userDisable2FA = data;
+  },
 };
