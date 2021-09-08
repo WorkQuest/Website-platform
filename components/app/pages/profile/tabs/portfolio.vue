@@ -41,11 +41,11 @@
               >
             </div>
           </div>
-          <div class="portfolio__footer">
-            <div class="portfolio__name">
+          <div class="portfolio__footer footer">
+            <div class="footer__name">
               {{ item.title }}
             </div>
-            <div class="portfolio__description">
+            <div class="footer__description">
               {{ item.description }}
             </div>
           </div>
@@ -140,36 +140,48 @@ export default {
     height: 350px;
     width: 100%;
     border-radius: 6px;
-  }
-  &__name {
-    @include text-simple;
-    text-align: left;
-    color: $white;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 18px;
-    font-weight: 500;
-  }
-  &__description {
-    @include text-simple;
-    font-size: 18px;
-    font-weight: 500;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    object-fit: cover;
   }
   &__footer {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    background: $black700;
+    background: $white;
     height: 71px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-left: 20px;
-    border-radius: 0 0 6px 6px;
+    width: 100%;
+  }
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px 16px 16px;
+  border-radius: 0 0 6px 6px;
+  text-overflow: ellipsis;
+  &__name {
+    @include text-simple;
+    margin-top: 16px;
+    text-align: left;
+    color: $black800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+    font-weight: 500;
+    width: 100%;
+  }
+  &__description {
+    @include text-simple;
+    color: $black800;
+    font-size: 12px;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
   }
 }
 
