@@ -10,32 +10,32 @@
           class="portfolio__card"
         >
           <div class="portfolio__body">
+            <div class="portfolio__btns">
+              <base-btn
+                class="portfolio__close"
+                mode="portfolioClose"
+                @click="showDeleteCaseModal(item.id)"
+              >
+                <span
+                  class="icon-close_big"
+                />
+              </base-btn>
+              <base-btn
+                class="portfolio__edit"
+                mode="portfolioEdit"
+                @click="showEditCaseModal(item.id)"
+              >
+                <span
+                  class="icon-edit"
+                />
+              </base-btn>
+            </div>
             <div
               v-for="(img, j) in item.medias"
               :key="j"
               class="portfolio__img"
               @click="openImage(img.url, item.title, item.description)"
             >
-              <div class="portfolio__btns">
-                <base-btn
-                  class="portfolio__close"
-                  mode="portfolioClose"
-                  @click="showDeleteCaseModal(item.id)"
-                >
-                  <span
-                    class="icon-close_big"
-                  />
-                </base-btn>
-                <base-btn
-                  class="portfolio__edit"
-                  mode="portfolioEdit"
-                  @click="showEditCaseModal(item.id)"
-                >
-                  <span
-                    class="icon-edit"
-                  />
-                </base-btn>
-              </div>
               <img
                 class="portfolio__image"
                 :src="img.url"
@@ -89,9 +89,16 @@ export default {
         await this.$store.dispatch('user/getUserPortfolios', this.userData.id);
         this.SetLoader(false);
       } catch (e) {
-        console.log(e);
+        this.showToastError(e);
         this.SetLoader(false);
       }
+    },
+    showToastError(e) {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.error'),
+        variant: 'warning',
+        text: `${e}`,
+      });
     },
     showDeleteCaseModal(id) {
       this.ShowModal({
@@ -124,6 +131,12 @@ export default {
     border-radius: 6px;
     padding: 2px;
   }
+  &__edit {
+    z-index: 10000;
+  }
+  &__close {
+    z-index: 10000;
+  }
   &__card {
     border-radius: 6px;
     cursor: pointer;
@@ -150,7 +163,7 @@ export default {
     left: 0;
     right: 0;
     background: $white;
-    height: 71px;
+    height: 77px;
     display: flex;
     width: 100%;
   }
@@ -177,6 +190,7 @@ export default {
   }
   &__description {
     @include text-simple;
+    margin-top: 4px;
     color: $black800;
     font-size: 12px;
     font-weight: 400;
