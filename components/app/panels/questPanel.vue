@@ -41,7 +41,7 @@
             <span
               class="icon icon-location icon_fs-20"
             />
-            <span class="quest__address">Хардкод</span>
+            <span class="quest__address">{{ questData.locationPlaceName ? questData.locationPlaceName : '' }}</span>
             <span
               class="user__distance"
             >
@@ -98,10 +98,19 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'QuestPanel',
+  props: {
+    avatarUrl: {
+      type: String,
+      default: '',
+    },
+    location: {
+      type: Object,
+      default: null,
+    },
+  },
   data() {
     return {
       localsTime: '',
-      avatarUrl: '',
       questLat: 0,
       questLng: 0,
       userLat: 0,
@@ -121,20 +130,20 @@ export default {
       userCompany: 'quests/getQuestUserCompany',
     }),
   },
-  mounted() {
-    this.SetLoader(true);
-    this.avatarUrl = this.userInfo.avatarId ? this.userInfo.avatar.url : '~/assets/img/app/avatar_empty.png';
-    this.questLat = this.questData?.location?.latitude;
-    this.questLng = this.questData?.location?.longitude;
-    this.userLat = this.userData?.location?.longitude;
-    this.userLng = this.userData?.location?.longitude;
-    this.SetLoader(false);
-  },
+  // mounted() {
+  //   this.SetLoader(true);
+  //   this.avatarUrl = this.userInfo.avatarId ? this.userInfo.avatar.url : '~/assets/img/app/avatar_empty.png';
+  //   this.questLat = this.questData?.location?.latitude;
+  //   this.questLng = this.questData?.location?.longitude;
+  //   this.userLat = this.userData?.location?.longitude;
+  //   this.userLng = this.userData?.location?.longitude;
+  //   this.SetLoader(false);
+  // },
   methods: {
     showDistance() {
       return this.getDistanceFromLatLonInKm(
-        this.questLat,
-        this.questLng,
+        this.location.lat,
+        this.location.lng,
         this.userLat,
         this.userLng,
       );
@@ -288,6 +297,7 @@ export default {
     width:30px;
     height: 30px;
     border-radius: 50%;
+    object-fit: cover;
   }
   &__username{
     @extend .user;

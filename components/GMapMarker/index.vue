@@ -57,7 +57,6 @@ export default {
         map: this.$parent.map,
         ...this.options,
       });
-
       this.$parent.markers.push(this.marker);
       if (this.$children.length > 0) {
         // eslint-disable-next-line prefer-destructuring
