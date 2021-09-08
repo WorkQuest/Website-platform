@@ -1030,7 +1030,6 @@ export default {
         }
       } catch (e) {
         console.log(e);
-        this.showToastError(e);
       }
       this.localUserData.additionalInfo.firstMobileNumber = this.updatedPhone.formatInternational;
       let payload = {};
@@ -1071,7 +1070,6 @@ export default {
         this.showModalSave();
       } catch (e) {
         console.log(e);
-        this.showToastError(e);
       }
     },
     filterEmpty(obj) {

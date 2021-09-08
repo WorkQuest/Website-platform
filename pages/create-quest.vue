@@ -626,13 +626,6 @@ export default {
       this.addresses = [];
       this.address = address.formatted;
     },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: e.response?.data?.msg || e.message,
-      });
-    },
     async getAddressInfo(address) {
       let response = [];
       const geoCode = new GeoCode('google', { key: 'AIzaSyD32Aorm6CU9xUIrUznzYyw2d_0NTqt3Zw' });
@@ -644,7 +637,6 @@ export default {
         }
       } catch (e) {
         console.log(e);
-        this.showToastError(e);
       }
     },
     async showQuestCreatedModal() {
@@ -676,7 +668,6 @@ export default {
         }
       } catch (e) {
         console.log(e);
-        this.showToastError(e);
       }
     },
   },
