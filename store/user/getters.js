@@ -28,4 +28,5 @@ export default {
   getUserPortfolios: (state) => state.portfolios || '',
   getUserPortfolio: (state) => state.medias || '',
   getAllUserReviews: (state) => state.userReviews || '',
+  getUser2FA: (state) => state.userEnable2FA || '',
 };
