@@ -1,6 +1,4 @@
 export default {
-
-  // Portfolios
   async getUserPortfolios({ commit }, id) {
     const response = await this.$axios.$get(`/v1/user/${id}/portfolio/cases`);
     commit('setUserPortfolioCases', response.result);
@@ -19,24 +17,25 @@ export default {
   async setCaseData({ commit }, payload) {
     const response = await this.$axios.$post('/v1/portfolio/add-case', payload);
     commit('setCaseData', response.result);
-    console.log(response);
+    return response;
+  },
+  async editCaseData({ commit }, { payload, id }) {
+    const response = await this.$axios.$put(`/v1/portfolio/${id}`, payload);
+    commit('setCaseData', response.result);
     return response;
   },
   async deletePortfolio({ commit }, id) {
-    // needed portfolio id
     const response = await this.$axios.$delete(`/v1/portfolio/${id}`);
     commit('setUserPortfolioCases', response.result);
     return response;
   },
 
-  // Reviews
   async getAllUserReviews({ commit }, id) {
     const response = await this.$axios.$get(`/v1/user/${id}/reviews`);
     commit('setUserReviews', response.result);
     return response;
   },
 
-  // Auth
   async signIn({ commit, dispatch }, payload) {
     const response = await this.$axios.$post('/v1/auth/login', payload);
     commit('setTokens', response.result);
@@ -98,7 +97,6 @@ export default {
     return response;
   },
 
-  // Change avatar
   async imageType({ commit }, payload) {
     const response = await this.$axios.$post('/v1/storage/get-upload-link', payload);
     commit('setImageType', response.result);
@@ -114,8 +112,6 @@ export default {
     commit('setImage', response.result);
     return response;
   },
-
-  // 2FA
   async disable2FA({ commit }, payload) {
     const response = await this.$axios.$post('/v1/totp/disable', payload);
     commit('setDisable2FA', response.result);
@@ -130,7 +126,6 @@ export default {
     return response;
   },
 
-  // SMS Ver
   async sendPhone(payload) {
     return await this.$axios.$post('/v1/profile/phone/send-code', payload);
   },

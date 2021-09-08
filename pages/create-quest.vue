@@ -19,6 +19,7 @@
               <div class="runtime__container">
                 <base-field
                   v-model="runtimeValue"
+                  :type="'number'"
                   :label="$t('quests.runtime.runtime')"
                   :placeholder="0"
                   :name="$t('quests.runtime.runtime')"
@@ -39,6 +40,7 @@
             <div class="page__input">
               <base-field
                 v-model="price"
+                :type="'number'"
                 :label="$t('quests.price')"
                 :placeholder="+0 + currency"
                 rules="required|decimal"
@@ -66,79 +68,82 @@
               />
             </div>
           </div>
-          <div
-            v-for="key in specCount"
-            :key="key"
-            class="page__spec spec skills"
-          >
+          <div class="page__skills skills">
             <div
-              class="spec"
+              v-for="key in specCount"
+              :key="key"
+              class="skills__block block"
             >
-              <div
-                class="spec__category"
-              >
-                <base-dd
-                  v-model="specIndex[key]"
-                  type="gray"
-                  :items="specializations.titles"
-                  :placeholder="specializations.titles[0]"
-                  @input="switchSkill($event, key)"
-                />
-                <base-btn
-                  class="btn__delete"
-                  mode="cross"
-                  @click="removeSpecialization(key)"
-                >
-                  <span class="icon-off_outline_close" />
-                </base-btn>
-              </div>
-            </div>
-            <div
-              class="skills"
-            >
-              <div class="skills__category">
-                <base-dd
-                  v-model="skillIndex[key]"
-                  :label="$t('quests.skills.skills')"
-                  :placeholder="$t('quests.skills.chooseSkills')"
-                  :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
-                  :disabled="specIndex[key] < 0"
-                  :items="specializations.skills[specIndex[key]]"
-                  @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
-                />
-              </div>
-              <div
-                v-if="selectedSkills[key].length === 5"
-                class="skills__alert"
-              >
-                {{ $t('quests.skills.limit') }}
-              </div>
-              <div
-                class="skills__badges"
-              >
-                <div
-                  v-for="(item, i) in selectedSkills[key]"
-                  :key="i"
-                  class="skills__badge"
-                >
-                  {{ item }}
-                  <span
-                    class="icon-close_small"
-                    @click="removeSkillToBadge(item, key)"
+              <div class="block__skill-spec">
+                <div class="block__specialization specialization">
+                  <base-dd
+                    v-model="specIndex[key]"
+                    class="specialization__dd"
+                    type="gray"
+                    :placeholder="$t('settings.selectSpec')"
+                    :items="specializations.titles"
+                    :mode="'small'"
+                    :label="$t('settings.specialization')"
+                    @input="switchSkill($event, key)"
                   />
+                  <div class="specialization__skills skills">
+                    <base-dd
+                      v-model="skillIndex[key]"
+                      class="specialization__dd"
+                      :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
+                      :disabled="specIndex[key] < 0"
+                      :placeholder="$t('settings.selectSkills')"
+                      :items="specializations.skills[specIndex[key]]"
+                      :mode="'small'"
+                      :label="$t('settings.skillsInput')"
+                      @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
+                    />
+                    <div
+                      v-if="selectedSkills[key].length === 5"
+                      class="skills__error"
+                    >
+                      {{ $t('ui.buttons.errors.manySkills') }}
+                    </div>
+                  </div>
+                </div>
+                <div class="block__skill skill">
+                  <div
+                    v-for="(item, i) in selectedSkills[key]"
+                    :key="i"
+                    class="skill__badge"
+                  >
+                    {{ item }}
+                    <button
+                      class="skill__remove"
+                      @click="removeSkillToBadge(item, key)"
+                    >
+                      <img
+                        src="~assets/img/ui/close_blue.svg"
+                        alt="x"
+                      >
+                    </button>
+                  </div>
                 </div>
               </div>
+              <base-btn
+                :text="$t('settings.removeSpec')"
+                class="specialization__btn specialization__btn_remove"
+                @click="removeSpecialization(key)"
+              />
             </div>
-          </div>
-          <div class="page btn">
             <base-btn
-              :text="$t('quests.spec.addSpec')"
+              :text="$t('settings.addSpec')"
               :disabled="specCount === 3"
-              mode="outline"
-              class="btn__spec"
+              class="skills__btn-add"
               :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
               @click="addSpecialization"
             />
+            <div
+              v-if="specCount === 3"
+              class="skills__error"
+            >
+              {{ $t('ui.buttons.errors.manySpec') }}
+            </div>
           </div>
           <div class="page__address">
             <base-field
@@ -203,7 +208,7 @@
           <div class="upload btn btn__container btn__container_right">
             <div class="btn__create">
               <base-btn
-                :disabled="!validated || !passed || invalid"
+                :disabled="invalid"
                 @click="handleSubmit(toRiseViews)"
               >
                 {{ $t('quests.createAQuest') }}
@@ -588,7 +593,7 @@ export default {
       });
     },
     goBack() {
-      this.$router.go(-1);
+      this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
     },
     addSkillToBadge(event, object, index, key) {
       if (!this.selectedSkills[key].includes(object[index]) && this.selectedSkills[key].length <= 4) {
@@ -651,6 +656,7 @@ export default {
         price: this.price,
         medias: [],
         adType: 0,
+        locationPlaceName: this.address,
         location: {
           longitude: this.coordinates.lng,
           latitude: this.coordinates.lat,
@@ -666,6 +672,7 @@ export default {
             subtitle: this.$t('modals.youCanUpdateThisInYourProfile'),
           });
           await this.$router.push(`/quests/${response.result.id}`);
+          this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
         }
       } catch (e) {
         console.log(e);
@@ -866,7 +873,6 @@ export default {
   }
   &__dd {
     padding-top: 37px;
-    height: 139px;
     display: flex;
     align-items: flex-start;
   }
@@ -1078,6 +1084,55 @@ export default {
 }
 
 .page {
+  &__skills {
+    width: 100%;
+    .block {
+      display: flex;
+      grid-gap: 20px;
+      justify-content: space-between;
+      margin-top: 20px;
+      &__skill-spec {
+        width: 100%;
+      }
+      &__specialization {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: row;
+        grid-gap: 20px;
+      }
+      &__skill {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        grid-gap: 10px;
+        .skill {
+          &__badge {
+            background: rgba(0, 131, 199, 0.1);
+            border-radius: 44px;
+            color: $blue;
+            white-space: nowrap;
+            grid-gap: 8px;
+            padding: 5px 10px 5px 10px;
+            display: flex;
+            text-align: center;
+            &-skills {
+              padding: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+  &__spec {
+    flex-direction: row;
+    flex-wrap: wrap;
+    display: flex;
+    max-width: 1180px;
+    width: 100%;
+    justify-content: flex-start;
+    //padding: 0 20px 0 0;
+  }
   &__title {
     @include text-simple;
     margin: 30px 0 0 0;
@@ -1123,7 +1178,57 @@ export default {
     }
   }
 }
-
+.specialization {
+  &__dd {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  &__skills {
+    width: 100%;
+  }
+  &__btn {
+    text-align: center;
+    &_remove {
+      margin-top: 37px;
+      width: 50%;
+      background: #ffffff;
+      color: #d73838;
+      border: 1px solid #e79a9a;
+    }
+    &_remove:hover {
+      background: #e79a9a;
+    }
+  }
+}
+.skills {
+  &__add-info {
+    display: flex;
+    flex-wrap: nowrap;
+    grid-gap: 20px;
+    margin-top: 20px;
+  }
+  &__btn {
+    &-add {
+      text-align: center;
+      margin-top: 20px;
+      width: 250px;
+      background: #FFFFFF;
+      color: #0083C7;
+      border: 1px solid #bce8ff;
+      &_disabled {
+        color: #aaaaaa !important;
+        border: 0.5px solid #aaaaaa;
+      }
+    }
+    &-add:hover {
+      background: #bce8ff;
+    }
+  }
+  &__error {
+    color: #f36262;
+    margin-bottom: 10px;
+  }
+}
 .main {
   @include main;
   &-white {
@@ -1158,6 +1263,44 @@ export default {
       grid-template-columns: 1fr;
     }
   }
+  .page {
+    &__skills {
+      .block {
+        &__skill-spec {
+          width: 100%;
+        }
+        &__specialization {
+          display: flex;
+          flex-direction: row;
+        }
+      }
+    }
+  }
+  .specialization {
+    &__btn {
+      &_remove {
+        margin-top: 0;
+        width: 100%;
+      }
+    }
+  }
+  .skills {
+    &__btn-add {
+      width: 100%;
+      margin-top: 0;
+    }
+    &__block {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin-bottom: 50px;
+    }
+    &__add-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  }
   .btn {
     margin-top: 20px;
     width: 100%;
@@ -1168,6 +1311,23 @@ export default {
 }
 
 @include _575 {
+  .page {
+    &__skill {
+      padding: 40px 0;
+    }
+    &__skills {
+      padding: 50px 0 20px 0;
+      .block {
+        margin-top: 0;
+        grid-gap: 0;
+        margin-bottom: 15px;
+        &__specialization {
+          grid-gap: 0;
+          flex-direction: column;
+        }
+      }
+    }
+  }
   .page__category {
     grid-template-columns: auto;
   }

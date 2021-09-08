@@ -816,6 +816,12 @@
       }
     }
   },
+  "toasts": {
+    "caseDeleted": "Case deleted!",
+    "caseAdded": "Case added!",
+    "caseEdited": "Case edited!",
+    "error": "Error!"
+  },
   "modals": {
     "chatCreate": {
       "title": "Create group chat",
@@ -823,6 +829,10 @@
       "participants": "Participants",
       "chatName": "Chat name"
     },
+    "deletePortfolio": "Are you sure delete portfolio?",
+    "addTitle": "Please add title...",
+    "addDesc": "Please add description...",
+    "editCase": "Edit Case",
     "error": "Error",
     "share": "Share",
     "edit": "Edit",

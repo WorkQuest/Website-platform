@@ -7,26 +7,13 @@
         <userInfo :selected="selected" />
 
         <button
+          v-for="(item, i) in pageTabs"
+          :key="i"
           class="tab__btn"
-          :class="{tab__btn_active: selected === 1}"
-          @click="selected = 1"
+          :class="{tab__btn_active: selected === item.number}"
+          @click="selected = item.number"
         >
-          {{ $t('profile.quests') }}
-        </button>
-        <button
-          class="tab__btn"
-          :class="{tab__btn_active: selected === 2}"
-          @click="selected = 2"
-        >
-          {{ $t('profile.reviews') }}
-        </button>
-        <button
-          v-if="userRole === 'worker'"
-          class="tab__btn"
-          :class="{tab__btn_active: selected === 3}"
-          @click="selected = 3"
-        >
-          {{ $t('profile.portfolio') }}
+          {{ item.title }}
         </button>
       </div>
     </div>
@@ -122,6 +109,22 @@ export default {
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
     }),
+    pageTabs() {
+      return [
+        {
+          number: 1,
+          title: this.$t('profile.quests'),
+        },
+        {
+          number: 2,
+          title: this.$t('profile.reviews'),
+        },
+        {
+          number: 3,
+          title: this.$t('profile.portfolio'),
+        },
+      ];
+    },
     cardLevelClass(idx) {
       const { cards } = this;
       return [

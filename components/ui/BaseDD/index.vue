@@ -218,6 +218,7 @@ export default {
     z-index: 1;
     &_small {
       height: 200px;
+      grid-gap: 10px;
       overflow: scroll;
     }
   }
@@ -284,12 +285,6 @@ export default {
     &_border {
       border: 1px solid #F7F8FA;
     }
-  }
-}
-@include _767 {
-  .dd__btn {
-    justify-content: center;
-    padding: 0px 0px;
   }
 }
 </style>
