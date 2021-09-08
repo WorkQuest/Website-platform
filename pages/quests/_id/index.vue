@@ -7,7 +7,10 @@
       class="main-white"
     >
       <div class="main__body">
-        <questPanel />
+        <questPanel
+          :avatar-url="userAvatar"
+          :location="questLocation"
+        />
 
         <div class="quest__container">
           <h2 class="quest__title">
@@ -322,14 +325,27 @@
       <div class="gmap__block">
         <transition name="fade-fast">
           <GMap
-            v-if="isShowMap"
             ref="gMap"
             class="quests__map"
             language="en"
             :center="questLocation"
             :zoom="zoom"
             :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
-          />
+          >
+            <GMapMarker
+              v-for="(item, key) in locations"
+              :key="key"
+              :position="{lat: item.lat, lng: item.lng}"
+              :options="{ icon: pins.quest.blue, show: true} "
+              @click="coordinatesChange(item)"
+            >
+              <GMapInfoWindow
+                :options="{maxWidth: 280}"
+              >
+                test
+              </GMapInfoWindow>
+            </GMapMarker>
+          </Gmap>
         </transition>
       </div>
     </div>
@@ -428,12 +444,6 @@ export default {
         ],
       },
       isShowMap: true,
-      locations: [
-        {
-          lat: 56.475565,
-          lng: 84.967270,
-        },
-      ],
       priority: [
         this.$t('quests.priority.low'),
         this.$t('quests.priority.normal'),
@@ -446,8 +456,21 @@ export default {
       questLimits: 1,
       questsObjects: {},
       questData: {},
+      userAvatar: '',
       questLocation: { lat: 0, lng: 0 },
+      locations: {},
+      currentLocation: {},
       zoom: 10,
+      pins: {
+        quest: {
+          red: '/img/app/marker_red.svg',
+          green: '/img/app/marker_red.svg',
+          yellow: '/img/app/marker_red.svg',
+          blue: '/img/app/marker_blue.svg',
+        },
+        selected: '/img/app/marker_blue.svg',
+        notSelected: '/img/app/marker_red.svg',
+      },
     };
   },
   computed: {
@@ -462,13 +485,22 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+    this.userAvatar = this.questData.user.avatar.url || require('~/assets/img/app/fakeavatar.svg');
     this.questLocation = {
       lat: this.questData.location.latitude,
       lng: this.questData.location.longitude,
     };
+    this.locations = this.questLocation;
     this.SetLoader(false);
   },
   methods: {
+    coordinatesChange(item) {
+      if (Object.keys(this.currentLocation).length > 0) {
+        this.currentLocation = {};
+      } else {
+        this.currentLocation = item;
+      }
+    },
     back() {
       this.$router.go(-1);
     },

@@ -42,6 +42,9 @@ export default {
         this.markerLoaded = this.options.show;
       }
     },
+    position() {
+      console.log(this.position);
+    },
   },
   mounted() {
     this.init();
@@ -57,7 +60,7 @@ export default {
         map: this.$parent.map,
         ...this.options,
       });
-
+      console.log(this.position);
       this.$parent.markers.push(this.marker);
       if (this.$children.length > 0) {
         // eslint-disable-next-line prefer-destructuring

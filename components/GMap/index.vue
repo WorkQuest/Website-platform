@@ -85,6 +85,10 @@ export default {
       this.newCenter = this.mapCenter;
       await this.mapLoaded();
     },
+    async center() {
+      this.newCenter = this.center;
+      await this.mapLoaded();
+    },
   },
   async mounted() {
     this.newCenter = this.center;
@@ -152,12 +156,12 @@ export default {
           lng: parseFloat(mapCenterArray[1]),
         },
         southWest: {
-          lat: bounds.tc.g,
-          lng: bounds.Hb.g,
+          lat: bounds?.tc?.g,
+          lng: bounds?.Hb?.g,
         },
         northEast: {
-          lat: bounds.tc.i,
-          lng: bounds.Hb.i,
+          lat: bounds?.tc?.i,
+          lng: bounds?.Hb?.i,
         },
       };
       if (eventName === 'dragend' || eventName === 'tilesloaded' || eventName === 'zoom_changed') {

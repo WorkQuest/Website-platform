@@ -311,10 +311,6 @@ export default {
       this.zoomNumber = zoom[this.distanceIndex];
     },
   },
-  async mounted() {
-    this.SetLoader(true);
-    this.SetLoader(false);
-  },
   methods: {
     showPriceSearch() {
       this.ShowModal({
