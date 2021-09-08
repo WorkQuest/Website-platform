@@ -816,6 +816,13 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    showToastError(e) {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.error'),
+        variant: 'warning',
+        text: `${e}`,
+      });
+    },
     addSkillToBadge(event, object, index, key) {
       if (!this.selectedSkills[key].includes(object[index]) && this.selectedSkills[key].length <= 4) {
         this.selectedSkills[key].push(object[index]);
@@ -868,6 +875,7 @@ export default {
         }
       } catch (e) {
         console.log(e);
+        this.showToastError(e);
       }
     },
     addNewKnowledge() {
@@ -920,6 +928,7 @@ export default {
         this.showModalImageOk();
         reader.onerror = (evt) => {
           console.error(evt);
+          this.showToastError(evt);
         };
       }
     },
@@ -1004,6 +1013,7 @@ export default {
         });
       } catch (e) {
         console.log(e);
+        this.showToastError(e);
       }
     },
     async editUserData() {
@@ -1018,8 +1028,9 @@ export default {
           };
           await this.$store.dispatch('user/setImage', data);
         }
-      } catch (error) {
-        console.log(error);
+      } catch (e) {
+        console.log(e);
+        this.showToastError(e);
       }
       this.localUserData.additionalInfo.firstMobileNumber = this.updatedPhone.formatInternational;
       let payload = {};
@@ -1060,6 +1071,7 @@ export default {
         this.showModalSave();
       } catch (e) {
         console.log(e);
+        this.showToastError(e);
       }
     },
     filterEmpty(obj) {
