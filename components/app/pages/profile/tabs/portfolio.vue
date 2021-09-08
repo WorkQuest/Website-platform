@@ -163,7 +163,7 @@ export default {
     left: 0;
     right: 0;
     background: $white;
-    height: 77px;
+    height: 82px;
     display: flex;
     width: 100%;
   }
