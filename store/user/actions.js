@@ -116,14 +116,18 @@ export default {
   },
 
   // 2FA
-  async disable2FA(payload) {
-    return await this.$axios.$post('/v1/totp/disable', payload);
+  async disable2FA({ commit }, payload) {
+    const response = await this.$axios.$post('/v1/totp/disable', payload);
+    commit('setDisable2FA', response.result);
+    return response;
   },
   async enable2FA(payload) {
     return await this.$axios.$post('/v1/totp/enable', payload);
   },
-  async confirmEnable2FA(payload) {
-    return await this.$axios.$post('/v1/totp/confirm', payload);
+  async confirmEnable2FA({ commit }, payload) {
+    const response = await this.$axios.$post('/v1/totp/confirm', payload);
+    commit('setEnable2FA', response.result);
+    return response;
   },
 
   // SMS Ver
