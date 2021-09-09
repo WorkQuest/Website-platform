@@ -570,57 +570,175 @@
                     >
                     <span>WorkQuest</span>
                   </div>
+                  <div class="footer__links links footer__links_pc">
+                    <div class="links__block">
+                      <div class="links__title">
+                        {{ $t('footer.download') }}
+                      </div>
+                      <div class="links__big">
+                        <img
+                          src="/img/app/app_store_button.svg"
+                          alt="appStore"
+                        >
+                        <img
+                          src="/img/app/play_market_button.svg"
+                          alt="playMarket"
+                        >
+                      </div>
+                    </div>
+                    <div class="links__block">
+                      <div class="links__title">
+                        {{ $t('footer.follow') }}
+                      </div>
+                      <div class="links__small">
+                        <img
+                          src="~assets/img/social/footer_twitter.svg"
+                          alt="twitter"
+                        >
+                        <img
+                          src="~assets/img/social/footer_youtube.svg"
+                          alt="youtube"
+                        >
+                        <img
+                          src="~assets/img/social/footer_redit.svg"
+                          alt="reddit"
+                        >
+                        <img
+                          src="~assets/img/social/footer_facebook.svg"
+                          alt="facebook"
+                        >
+                        <img
+                          src="~assets/img/social/footer_linkedin.svg"
+                          alt="linkedin"
+                        >
+                        <img
+                          src="~assets/img/social/footer_instagram.svg"
+                          alt="instagram"
+                        >
+                        <img
+                          src="~assets/img/social/footer_telegram.svg"
+                          alt="telegram"
+                        >
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="footer__right">
                   <div class="footer__menus">
-                    <div class="footer__items">
-                      <div class="footer__item">
-                        <div class="footer__text footer__text_black">
-                          Menu
+                    <div class="footer__items footer__items_main">
+                      <div class="footer__block">
+                        <div class="footer__item">
+                          <div class="footer__text footer__text_black">
+                            {{ $t('footer.company.title') }}
+                          </div>
+                          <div class="footer__items footer__items_links">
+                            <n-link
+                              v-for="(item,key) in companyLinks"
+                              :key="key"
+                              :to="item.path"
+                              class="footer__text footer__text_grey"
+                            >
+                              {{ item.title }}
+                            </n-link>
+                          </div>
                         </div>
-                        <div class="footer__items footer__items_links">
-                          <div class="footer__text footer__text_grey">
-                            First page
+                        <div class="footer__item">
+                          <div class="footer__text footer__text_black">
+                            {{ $t('footer.legalInfo.title') }}
                           </div>
-                          <div class="footer__text footer__text_grey">
-                            Second page
-                          </div>
-                          <div class="footer__text footer__text_grey">
-                            Third page
+                          <div class="footer__items footer__items_links">
+                            <n-link
+                              v-for="(item,key) in legalInfoLinks"
+                              :key="key"
+                              :to="item.path"
+                              class="footer__text footer__text_grey"
+                            >
+                              {{ item.title }}
+                            </n-link>
                           </div>
                         </div>
                       </div>
-                      <div class="footer__item">
-                        <div class="footer__text footer__text_black">
-                          Menu
+                      <div class="footer__block">
+                        <div class="footer__item">
+                          <div class="footer__text footer__text_black">
+                            {{ $t('footer.DeFi.title') }}
+                          </div>
+                          <div class="footer__items footer__items_links">
+                            <n-link
+                              v-for="(item,key) in DeFiLinks[0].firstColumn"
+                              :key="key"
+                              :to="item.path"
+                              class="footer__text footer__text_grey"
+                            >
+                              {{ item.title }}
+                            </n-link>
+                          </div>
                         </div>
-                        <div class="footer__items footer__items_links">
-                          <div class="footer__text footer__text_grey">
-                            First page
-                          </div>
-                          <div class="footer__text footer__text_grey">
-                            Second page
-                          </div>
-                          <div class="footer__text footer__text_grey">
-                            Third page
+                        <div class="footer__item">
+                          <div class="footer__text footer__text_black" />
+                          <div class="footer__items footer__items_links">
+                            <n-link
+                              v-for="(item,key) in DeFiLinks[0].secondColumn"
+                              :key="key"
+                              :to="item.path"
+                              class="footer__text footer__text_grey"
+                            >
+                              {{ item.title }}
+                            </n-link>
                           </div>
                         </div>
                       </div>
-                      <div class="footer__item">
-                        <div class="footer__text footer__text_black">
-                          Menu
-                        </div>
-                        <div class="footer__items footer__items_links">
-                          <div class="footer__text footer__text_grey">
-                            First page
-                          </div>
-                          <div class="footer__text footer__text_grey">
-                            Second page
-                          </div>
-                          <div class="footer__text footer__text_grey">
-                            Third page
-                          </div>
-                        </div>
+                    </div>
+                  </div>
+                  <div class="footer__links links footer__links_mobile">
+                    <div class="links__block">
+                      <div class="links__title">
+                        {{ $t('footer.download') }}
+                      </div>
+                      <div class="links__big">
+                        <img
+                          src="/img/app/app_store_button.svg"
+                          alt="appStore"
+                        >
+                        <img
+                          src="/img/app/play_market_button.svg"
+                          alt="playMarket"
+                        >
+                      </div>
+                    </div>
+                    <div class="links__block">
+                      <div class="links__title">
+                        {{ $t('footer.follow') }}
+                      </div>
+                      <div class="links__small">
+                        <img
+                          src="~assets/img/social/footer_twitter.svg"
+                          alt="playMarket"
+                        >
+                        <img
+                          src="~assets/img/social/footer_youtube.svg"
+                          alt="playMarket"
+                        >
+                        <img
+                          src="~assets/img/social/footer_redit.svg"
+                          alt="playMarket"
+                        >
+                        <img
+                          src="~assets/img/social/footer_facebook.svg"
+                          alt="playMarket"
+                        >
+                        <img
+                          src="~assets/img/social/footer_linkedin.svg"
+                          alt="playMarket"
+                        >
+                        <img
+                          src="~assets/img/social/footer_instagram.svg"
+                          alt="playMarket"
+                        >
+                        <img
+                          src="~assets/img/social/footer_telegram.svg"
+                          alt="playMarket"
+                        >
                       </div>
                     </div>
                   </div>
@@ -635,24 +753,6 @@
                     <div class="footer__text footer__text_rights">
                       {{ $t('ui.footer.rights') }}
                     </div>
-                  </div>
-                </div>
-                <div class="footer__right">
-                  <div class="footer__links">
-                    <a
-                      class="footer__link"
-                      href="/docs/terms.pdf"
-                      target="_blank"
-                    >
-                      {{ $t('layout.links.terms') }}
-                    </a>
-                    <a
-                      class="footer__link"
-                      href="/docs/privacy.pdf"
-                      target="_blank"
-                    >
-                      {{ $t('layout.links.privacy') }}
-                    </a>
                   </div>
                 </div>
               </div>
@@ -874,6 +974,100 @@ export default {
           title: this.$t('ui.menu.staking.title'),
           desc: this.$t('ui.menu.staking.desc'),
           path: '/staking',
+        },
+      ];
+    },
+    companyLinks() {
+      return [
+        {
+          title: this.$t('footer.company.wqWiki'),
+          path: '#',
+        },
+        {
+          title: this.$t('footer.company.aboutUs'),
+          path: '#',
+        },
+        {
+          title: this.$t('footer.company.leadership'),
+          path: '#',
+        },
+        {
+          title: this.$t('footer.company.contactUs'),
+          path: '#',
+        },
+        {
+          title: this.$t('footer.company.support'),
+          path: '#',
+        },
+      ];
+    },
+    legalInfoLinks() {
+      return [
+        {
+          title: this.$t('footer.legalInfo.risks'),
+          path: '#',
+        },
+        {
+          title: this.$t('footer.legalInfo.privacyPolicy'),
+          path: '#',
+        },
+        {
+          title: this.$t('footer.legalInfo.terms'),
+          path: '#',
+        },
+        {
+          title: this.$t('footer.legalInfo.aml'),
+          path: '#',
+        },
+        {
+          title: this.$t('footer.legalInfo.cookiePolicy'),
+          path: '#',
+        },
+      ];
+    },
+    DeFiLinks() {
+      return [
+        {
+          firstColumn: {
+            0: {
+              title: this.$t('footer.DeFi.retirement'),
+              path: '/pension',
+            },
+            1: {
+              title: this.$t('footer.DeFi.referral'),
+              path: '/referral',
+            },
+            2: {
+              title: this.$t('footer.DeFi.P2P'),
+              path: '/insuring',
+            },
+            3: {
+              title: this.$t('footer.DeFi.savingsProduct'),
+              path: '/savings',
+            },
+            4: {
+              title: this.$t('footer.DeFi.lending'),
+              path: '/crediting',
+            },
+          },
+          secondColumn: {
+            0: {
+              title: this.$t('footer.DeFi.liquidityMining'),
+              path: '/mining',
+            },
+            1: {
+              title: this.$t('footer.DeFi.wqBridge'),
+              path: '/crosschain',
+            },
+            2: {
+              title: this.$t('footer.DeFi.staking'),
+              path: '/staking',
+            },
+            3: {
+              title: this.$t('footer.DeFi.wqDAO'),
+              path: '#',
+            },
+          },
         },
       ];
     },
@@ -1193,7 +1387,7 @@ export default {
   background: #F7F8FA;
   &__content {
     display: grid;
-    grid-template-rows: 72px 1fr 256px;
+    grid-template-rows: 72px 1fr auto;
     min-height: 100vh;
   }
   &__main {
@@ -1626,7 +1820,7 @@ export default {
   justify-content: center;
   &__items {
     display: grid;
-    grid-template-columns: repeat(3, minmax(170px, auto));
+    grid-template-columns: repeat(2, minmax(170px, auto));
     grid-gap: 50px;
     &_links {
       grid-template-columns: 1fr;
@@ -1655,14 +1849,16 @@ export default {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    border-top: 1px solid $black100;
     height: 72px;
     align-items: center;
   }
   &__links {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
+    display: flex;
     grid-gap: 20px;
+    flex-direction: column;
+    &_mobile {
+      display: none;
+    }
   }
   &__link {
     font-family: 'Inter', sans-serif;
@@ -1699,8 +1895,10 @@ export default {
       color: $black500;
     }
     &_black {
+      height: 24px;
       font-weight: 500;
       font-size: 16px;
+      line-height: 130%;
       color: $black700;
     }
     &_rights {
@@ -1713,6 +1911,44 @@ export default {
     display: grid;
     grid-template-columns: repeat(2, auto);
     grid-gap: 20px;
+  }
+  &__right {
+    display: flex;
+    align-items: flex-end;
+  }
+  &__left {
+    display: flex;
+    grid-gap: 20px;
+    flex-direction: column;
+  }
+  &__block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 30px;
+    &_links {
+      display: flex;
+      grid-gap: 25px;
+    }
+  }
+  .links {
+    &__block {
+      display: flex;
+      flex-direction: column;
+      grid-gap: 10px;
+    }
+    &__title {
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+    }
+    &__big {
+      display: flex;
+      grid-gap: 10px;
+    }
+    &__small {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 }
 .ctm-menu {
@@ -1752,6 +1988,41 @@ export default {
   }
   .footer {
     padding: 0 20px;
+    &__menus {
+      width: 100%;
+      margin: 20px 0;
+    }
+    &__top {
+      flex-direction: column;
+    }
+    &__right {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    &__links {
+      &_pc {
+        display: none;
+      }
+      &_mobile {
+        display: flex;
+        width: 80%;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+    &__items {
+      &_main {
+        grid-template-columns: auto auto;
+        width: 82%;
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+    .links {
+      &__small {
+        grid-gap: 10px;
+      }
+    }
   }
 }
 @include _991 {
@@ -1761,19 +2032,24 @@ export default {
     }
   }
   .footer {
-    &__top {
-      display: grid;
-      grid-template-rows: auto 1fr;
-      grid-gap: 30px;
-      margin-bottom: 10px;
-    }
-    &__items {
-      grid-template-columns: 1fr;
-      grid-gap: 20px;
+    &__links {
+      &_mobile {
+        width: auto;
+        flex-direction: column;
+      }
+      width: auto;
     }
   }
 }
-@include _991 {}
+@include _767 {
+  .footer {
+    &__items {
+      &_main {
+        width: 100%;
+      }
+    }
+  }
+}
 @include _575 {
   .header {
     &__logo {
@@ -1807,17 +2083,13 @@ export default {
     &__rights {
       display: flex;
     }
-    &__links {
-      display: flex;
-    }
     &__top {
       display: grid;
       grid-template-columns: 1fr;
       grid-gap: 30px;
     }
     &__items {
-      grid-template-columns: repeat(2, 1fr);
-      grid-gap: 20px;
+      flex-direction: column;
       &_links {
         grid-template-columns: 1fr;
       }
@@ -1826,8 +2098,22 @@ export default {
 }
 
 @include _480 {
-  .notify {
-    min-width: 300px;
+  .footer {
+    &__links {
+      &_mobile {
+        width: 100%;
+        flex-direction: column;
+      }
+    }
+    .links {
+      &__block {
+        width: 100%;
+      }
+      &__big {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
   }
 }
 
