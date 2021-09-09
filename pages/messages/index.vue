@@ -7,33 +7,39 @@
       <div class="chats-container">
         <div class="chats-container__header">
           <div>{{ $t('chat.chat') }}</div>
-          <div class="icon-more">
-            <ChatMenu />
-          </div>
+          <ChatMenu />
         </div>
         <div class="chats-container__list">
           <div
-            v-for="(item, i) in messages"
-            :key="i"
+            v-for="chat in chats.list"
+            :key="chat.id"
             class="chats-container__chat chat"
-            @click="showDetails()"
+            @click="handleSelChat(chat.id)"
           >
             <div class="chat__body">
               <div class="chat__data">
                 <div class="chat__row">
                   <div class="chat__avas-cont">
-                    <div class="chat__ava-cont">
+                    <div
+                      v-for="user in chat.members"
+                      :key="user.id"
+                      class="chat__ava-cont"
+                    >
                       <img
                         class="chat__avatar"
-                        src="~/assets/img/temp/profile.svg"
+                        :src="user.avatar ? user.avatar.url : require('~/assets/img/ui/template_avatar.svg')"
+                        alt=""
                       >
                     </div>
                   </div>
                   <div class="chat__title chat__title_bold">
-                    {{ item.name }}
+                    {{ chat.members.length > 1 ? 'Group Chat' : chat.members[0].firstName + ' ' + chat.members[0].lastName }}
                   </div>
-                  <div class="chat__title chat__title_gray">
-                    {{ item.company }}
+                  <div
+                    v-if="chat.members[0].additionalInfo.company"
+                    class="chat__title chat__title_gray"
+                  >
+                    {{ chat.members[0].additionalInfo.company }}
                   </div>
                 </div>
                 <div class="chat__row">
@@ -44,43 +50,46 @@
                     href="#"
                     class="chat__title"
                   >
-                    {{ item.questName }}
+                    questName
                   </a>
                 </div>
                 <div class="chat__row">
-                  <div class="chat__title">
+                  <div
+                    v-if="userData.id === chat.lastMessage.sender.id"
+                    class="chat__title"
+                  >
                     {{ $t('chat.you') }}
                   </div>
-                  <div class="chat__title chat__title_gray">
-                    {{ item.body }}
+                  <div class="chat__title chat__title_gray chat__title_ellipsis">
+                    {{ chat.lastMessage.text }}
                   </div>
                 </div>
               </div>
               <div class="chat__status">
                 <div class="chat__unread-dot" />
-                <div
-                  v-if="isHideStar(item.type)"
-                  class="block__icon block__icon_fav star"
-                  @click="item.isFavourite = !item.isFavourite"
-                >
-                  <img
-                    class="star__hover"
-                    src="~assets/img/ui/star_hover.svg"
-                    alt=""
-                  >
-                  <img
-                    v-if="item.isFavourite"
-                    class="star__checked"
-                    src="~assets/img/ui/star_checked.svg"
-                    alt=""
-                  >
-                  <img
-                    v-else
-                    class="star__default"
-                    src="~assets/img/ui/star_simple.svg"
-                    alt=""
-                  >
-                </div>
+                <!--                <div-->
+                <!--                  v-if="isHideStar(chat.type)"-->
+                <!--                  class="block__icon block__icon_fav star"-->
+                <!--                  @click="item.isFavourite = !item.isFavourite"-->
+                <!--                >-->
+                <!--                  <img-->
+                <!--                    class="star__hover"-->
+                <!--                    src="~assets/img/ui/star_hover.svg"-->
+                <!--                    alt=""-->
+                <!--                  >-->
+                <!--                  <img-->
+                <!--                    v-if="item.isFavourite"-->
+                <!--                    class="star__checked"-->
+                <!--                    src="~assets/img/ui/star_checked.svg"-->
+                <!--                    alt=""-->
+                <!--                  >-->
+                <!--                  <img-->
+                <!--                    v-else-->
+                <!--                    class="star__default"-->
+                <!--                    src="~assets/img/ui/star_simple.svg"-->
+                <!--                    alt=""-->
+                <!--                  >-->
+                <!--                </div>-->
               </div>
             </div>
           </div>
@@ -101,19 +110,28 @@ export default {
   },
   data() {
     return {
+      filter: {
+        limit: 10,
+        offset: 0,
+      },
     };
   },
   computed: {
     ...mapGetters({
-      messages: 'data/getMessages',
+      chats: 'data/getChats',
+      userData: 'user/getUserData',
     }),
   },
   async mounted() {
+    this.getChats();
     this.SetLoader(false);
   },
   methods: {
-    showDetails() {
-      this.$router.push('/messages/1');
+    async getChats() {
+      await this.$store.dispatch('data/getChatsList', this.filter);
+    },
+    handleSelChat(chatId) {
+      this.$router.push(`/messages/${chatId}`);
     },
     isHideStar(type) {
       return !(type === 4 || type === 3);
@@ -188,15 +206,15 @@ export default {
     display: flex;
     flex-wrap: wrap;
     position: relative;
-    height: 33px;
-    min-width: 33px;
+    height: 43px;
+    min-width: 43px;
   }
   &__ava-cont {
     width: 25px;
   }
   &__avatar {
-    width: 33px;
-    height: 33px;
+    width: 43px;
+    height: 43px;
     border-radius: 50%;
     flex: none;
     position: absolute;
@@ -211,6 +229,12 @@ export default {
 
     &_gray {
       color: #7C838D;
+    }
+
+    &_ellipsis {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 }
