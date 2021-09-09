@@ -23,7 +23,10 @@
                     {{ $t('settings.alsoRating') }}
                   </div>
                   <div class="ver-btn__container">
-                    <base-btn mode="ver">
+                    <base-btn
+                      mode="ver"
+                      @click="goToSumSub"
+                    >
                       {{ $t('settings.getVerification') }}
                     </base-btn>
                   </div>
@@ -816,6 +819,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    goToSumSub() {
+      this.$router.push('/sumsub');
+    },
     addSkillToBadge(event, object, index, key) {
       if (!this.selectedSkills[key].includes(object[index]) && this.selectedSkills[key].length <= 4) {
         this.selectedSkills[key].push(object[index]);
