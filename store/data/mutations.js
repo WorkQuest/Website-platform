@@ -6,7 +6,10 @@ export default {
     state.chats.count = count;
   },
   setMessagesList(state, { messages, count }) {
-    state.messages.list = messages;
+    state.messages.list = messages.reverse();
     state.messages.count = count;
+  },
+  updateConnectionsStatus(state, { name, value }) {
+    state.connections[name] = value;
   },
 };

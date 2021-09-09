@@ -42,17 +42,17 @@
                     {{ chat.members[0].additionalInfo.company }}
                   </div>
                 </div>
-                <div class="chat__row">
-                  <div class="chat__title">
-                    {{ $t('chat.quest') }}
-                  </div>
-                  <a
-                    href="#"
-                    class="chat__title"
-                  >
-                    questName
-                  </a>
-                </div>
+<!--                <div class="chat__row">-->
+<!--                  <div class="chat__title">-->
+<!--                    {{ $t('chat.quest') }}-->
+<!--                  </div>-->
+<!--                  <a-->
+<!--                    href="#"-->
+<!--                    class="chat__title"-->
+<!--                  >-->
+<!--                    questName-->
+<!--                  </a>-->
+<!--                </div>-->
                 <div class="chat__row">
                   <div
                     v-if="userData.id === chat.lastMessage.sender.id"

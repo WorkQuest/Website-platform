@@ -383,6 +383,10 @@ export default () => ({
     list: [],
     count: 0,
   },
+  connections: {
+    notifsConnection: false,
+    chatConnection: false,
+  },
   transactions: [
     {
       mode: 1,

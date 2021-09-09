@@ -18,8 +18,14 @@
           </div>
           <ChatMenu />
         </div>
-        <div class="chat-container__scroll-cont">
-          <div class="chat-container__messages">
+        <div
+          class="chat-container__scroll-cont"
+          @scroll="handleScroll($event)"
+        >
+          <div
+            ref="ScrollContainer"
+            class="chat-container__messages"
+          >
             <div
               v-for="message in messages.list"
               :key="message.id"
@@ -53,95 +59,20 @@
                 {{}}
               </div>
             </div>
-            <!--          <div class="chat__info-message">-->
-            <!--            <div class="name__underline">-->
-            <!--              Samantha Sparcs-->
-            <!--            </div>-->
-            <!--            <div class="event">-->
-            <!--              {{ $t('chat.invitedYou') }}-->
-            <!--            </div>-->
-            <!--          </div>-->
-            <!--          <div class="info">-->
-            <!--            <div class="quest__info">-->
-            <!--              <div class="quest__name">-->
-            <!--                Paint the garage quickly-->
-            <!--              </div>-->
-            <!--            </div>-->
-            <!--          </div>-->
-            <!--          <div-->
-            <!--            v-for="(item, i) in messages"-->
-            <!--            :key="i"-->
-            <!--          >-->
-            <!--            <div-->
-            <!--              class="chat__message"-->
-            <!--            >-->
-            <!--              <div>-->
-            <!--                <div class="row__container">-->
-            <!--                  <div class="chat__img-container">-->
-            <!--                    <img-->
-            <!--                      class="chat__img"-->
-            <!--                      src="~/assets/img/temp/profile.svg"-->
-            <!--                    >-->
-            <!--                  </div>-->
-            <!--                  <div class="chat__name-container">-->
-            <!--                    <div class="chat__name">-->
-            <!--                      {{ item.userName }}-->
-            <!--                    </div>-->
-            <!--                    <div class="chat__star">-->
-            <!--                      <div-->
-            <!--                        class="block__icon block__icon_fav star"-->
-            <!--                        @click="favoritesHandler(item)"-->
-            <!--                      >-->
-            <!--                        <img-->
-            <!--                          v-if="!item.isFavourite"-->
-            <!--                          class="star__hover"-->
-            <!--                          src="~assets/img/ui/star_hover.svg"-->
-            <!--                          alt=""-->
-            <!--                        >-->
-            <!--                        <img-->
-            <!--                          v-if="!item.isFavourite"-->
-            <!--                          class="star__default"-->
-            <!--                          src="~assets/img/ui/star_simple.svg"-->
-            <!--                          alt=""-->
-            <!--                        >-->
-            <!--                        <img-->
-            <!--                          v-if="item.isFavourite"-->
-            <!--                          class="star__checked"-->
-            <!--                          src="~assets/img/ui/star_checked.svg"-->
-            <!--                          alt=""-->
-            <!--                        >-->
-            <!--                      </div>-->
-            <!--                    </div>-->
-            <!--                  </div>-->
-            <!--                </div>-->
-            <!--                <div-->
-            <!--                  class="message__interlocutor"-->
-            <!--                  :class="{ message__owner: +item.type === 2 }"-->
-            <!--                >-->
-            <!--                  <span class="message__body">-->
-            <!--                    {{ item.body }}-->
-            <!--                  </span>-->
-            <!--                  <div class="message__time">-->
-            <!--                    {{ item.messageTime }}-->
-            <!--                  </div>-->
-            <!--                </div>-->
-            <!--              </div>-->
-            <!--            </div>-->
-            <!--          </div>-->
           </div>
         </div>
         <div class="chat-container__footer">
-          <div class="input__wrapper">
+          <div class="chat-container__file-cont">
             <input
               id="input__file"
               name="file"
               type="file"
-              class="input input__file chat__btn_add"
+              class="chat-container__file-input"
               multiple
             >
             <label
               for="input__file"
-              class="input__file-button"
+              class="chat-container__file-button"
             >
               <span class="icon-link" />
             </label>
@@ -149,9 +80,11 @@
           <base-field
             v-model="messageText"
             :placeholder="$t('chat.writeYouMessage')"
+            is-hide-error
           />
           <button
-            class="chat__btn_spend"
+            class="chat-container__send-btn"
+            :class="{'chat-container__send-btn_active' : messageText}"
             @click="handleSendMessage()"
           >
             <span class="icon-send" />
@@ -192,18 +125,22 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.getMessages();
+    this.scrollToBottom();
     this.SetLoader(false);
     const isChatNotificationShown = !!localStorage.getItem('isChatNotificationShown');
     if (!isChatNotificationShown) this.showNoticeModal();
   },
   methods: {
-    getMessages() {
+    handleScroll(ev) {
+      // console.log(ev.target);
+    },
+    async getMessages() {
       const payload = {
         params: this.filter,
         chatId: this.$route.params.id,
       };
       try {
-        this.$store.dispatch('data/getMessagesList', payload);
+        await this.$store.dispatch('data/getMessagesList', payload);
       } catch (e) {
         console.log(e);
       }
@@ -222,11 +159,8 @@ export default {
 
       return momentDate.format(`${format}HH:mm`);
     },
-    scrollChat() {
-      const chat = this.$el.querySelector('#chat__messages');
-      setTimeout(() => {
-        chat.scrollTop = chat.scrollHeight;
-      }, 100);
+    scrollToBottom() {
+      setTimeout(() => this.$refs.ScrollContainer.scrollIntoView(false), 100);
     },
     showNoticeModal() {
       this.ShowModal({
@@ -239,33 +173,39 @@ export default {
     goBackToChatsList() {
       this.$router.push('/messages');
     },
-    handleSendMessage() {
+    async handleSendMessage() {
+      // const payload = {
+      //   config: {
+      //     text: this.messageText,
+      //     medias: [],
+      //   },
+      //   userId: '8407b757-95b3-4862-95b6-e6d8d6d03341',
+      // };
+      // this.messageText = '';
+      //
+      // try {
+      //   this.$store.dispatch('data/handleCreateChat', payload);
+      // } catch (e) {
+      //   console.log(e);
+      // }
+
+      if (!this.messageText) return;
+
       const payload = {
         config: {
           text: this.messageText,
           medias: [],
         },
-        userId: '8407b757-95b3-4862-95b6-e6d8d6d03341',
+        chatId: this.$route.params.id,
       };
       this.messageText = '';
-
       try {
-        this.$store.dispatch('data/handleCreateChat', payload);
+        await this.$store.dispatch('data/handleSendMessage', payload);
+        await this.getMessages();
+        this.scrollToBottom();
       } catch (e) {
         console.log(e);
       }
-
-      if (!this.messageText) return;
-
-      const message = {
-        userName: 'Rosalia Vanse',
-        type: 2,
-        body: this.messageText,
-        isFavourite: false,
-        messageTime: moment().format('HH:mm'),
-      };
-      this.messageText = '';
-      this.scrollChat();
     },
     onEnter(e, callback) {
       if (!e.ctrlKey) {
@@ -344,7 +284,7 @@ export default {
 
   &__scroll-cont {
     overflow: auto;
-    padding: 20px;
+    padding: 20px 20px 0;
     height: calc(100vh - 420px);
     display: grid;
     align-items: end;
@@ -352,8 +292,56 @@ export default {
 
   &__footer {
     height: 70px;
+    padding: 0 15px;
     border-top: 1px solid #E9EDF2;
     display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    gap: 10px;
+    align-items: center;
+  }
+
+  &__file-cont {
+    height: 40px;
+  }
+
+  &__file-button {
+    height: 40px;
+    background: #F7F8FA;
+    color: #fff;
+    font-size: 1.125rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: .2s;
+    &:hover {
+      box-shadow: 0 0 6px rgba(0,0,0,0.2);
+    }
+  }
+
+  &__file-input {
+    display: none;
+  }
+
+  &__send-btn {
+    height: 40px;
+    border-radius: 6px;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.5;
+    transition: .2s;
+    background-color: $black0;
+    &_active {
+      pointer-events: all;
+      opacity: 1;
+      &:hover {
+        box-shadow: 0 0 6px rgba(0,0,0,0.2);
+      }
+    }
   }
 
   &__messages {
@@ -367,6 +355,10 @@ export default {
   grid-template-columns: 43px 0.7fr max-content;
   gap: 10px;
   height: max-content;
+
+  &:last-child {
+    padding-bottom: 20px;
+  }
 
   &__time {
     justify-self: end;
@@ -452,9 +444,7 @@ export default {
 
 .input {
   &__wrapper {
-    width: 100%;
-    position: relative;
-    text-align: center;
+    height: 40px;
   }
   &__file {
     opacity: 0;
@@ -475,26 +465,6 @@ export default {
   &__file-button-text {
     line-height: 1;
     margin-top: 1px;
-  }
-  &__file-button {
-    width: 100%;
-    max-width: 40px;
-    height: 40px;
-    background: #F7F8FA;
-    color: #fff;
-    font-size: 1.125rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 3px;
-    cursor: pointer;
-    margin: 0 0 0 10px;
-    transition: .2s;
-    &:hover {
-      @extend .input__file-button;
-      box-shadow: 0 0 6px rgba(0,0,0,0.2);
-    }
   }
 }
 
@@ -539,11 +509,6 @@ export default {
   }
 }
 
-.info {
-  display: flex;
-  justify-content: center;
-}
-
 .quest {
   &__info {
     background: rgba(0, 131, 199, 0.1);
@@ -566,13 +531,7 @@ export default {
 }
 
 .name {
-  &__underline {
-    text-decoration: underline;
-    margin: 20px 10px 20px 0;
-    font-size: 16px;
-    color: $black800;
-    font-weight: 400;
-  }
+
 }
 
 .input {
@@ -603,41 +562,9 @@ export default {
 }
 
 .chat {
-  &__info-message {
-    display: flex;
-    justify-content: center;
-  }
   &__header {
     border: 1px solid #E9EDF2;
     border-radius: 6px 0 0 0;
-  }
-  &__btn {
-    width: 100%;
-    height: 100%;
-    max-width:40px;
-    max-height: 40px;
-    border-radius: 6px;
-    transition: .2s;
-    background-color: $black0;
-    &_spend {
-      @extend .chat__btn;
-      margin: 0 11px 0 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      &:hover {
-        @extend .chat__btn_spend;
-        box-shadow: 0 0 6px rgba(0,0,0,0.2);
-      }
-    }
-    &_add {
-      @extend .chat__btn;
-      margin: 0 -11px 0 0;
-      &:hover {
-        @extend .chat__btn_add;
-        box-shadow: 0 0 6px rgba(0,0,0,0.2);
-      }
-    }
   }
   &__panel {
     height: 100%;
