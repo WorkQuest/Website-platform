@@ -28,6 +28,7 @@
                   :placeholder="$t('modals.addTitle')"
                   rules="required|text-title"
                   :mode="'gray'"
+                  :name="$t('modals.title')"
                 />
               </div>
               <div class="message__wrapper">
