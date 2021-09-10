@@ -63,13 +63,19 @@
         </div>
         <div class="chat-container__footer">
           <div class="chat-container__file-cont">
-            <input
-              id="input__file"
-              name="file"
-              type="file"
-              class="chat-container__file-input"
-              multiple
+            <ValidationProvider
+              v-slot="{validate}"
+              rules="required|ext:png,jpeg,jpg,gif,mp4,mkv,mov,avi,xml,pdf,doc,tiff,txt,docx"
             >
+              <input
+                id="input__file"
+                name="file"
+                type="file"
+                class="chat-container__file-input"
+                multiple
+                @change="getFiles($event, validate)"
+              >
+            </ValidationProvider>
             <label
               for="input__file"
               class="chat-container__file-button"
@@ -131,6 +137,27 @@ export default {
     if (!isChatNotificationShown) this.showNoticeModal();
   },
   methods: {
+    async getFiles(ev, validate) {
+      const { files } = ev.target;
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        // eslint-disable-next-line no-await-in-loop
+        const isValid = await validate(file);
+        console.log(isValid);
+      }
+
+      // console.log(validate);
+      // const isValid = await validate(ev);
+      // console.log(isValid);
+
+      ev.target.value = null;
+      // if (!isValid.valid || !files.length) return;
+
+      // for (let i = 0; i < files.length; i++) {
+      //   const file = files[i];
+      // }
+    },
     handleScroll(ev) {
       // console.log(ev.target);
     },
