@@ -4,6 +4,29 @@
     :is-header="false"
   >
     <div class="ctm-modal__content content">
+      <div
+        v-if="options.portfolio"
+        class="content__btns"
+      >
+        <base-btn
+          class="portfolio__close"
+          mode="portfolioClose"
+          @click="showDeleteCaseModal(id)"
+        >
+          <span
+            class="icon-close_big"
+          />
+        </base-btn>
+        <base-btn
+          class="portfolio__edit"
+          mode="portfolioEdit"
+          @click="showEditCaseModal(id)"
+        >
+          <span
+            class="icon-edit"
+          />
+        </base-btn>
+      </div>
       <img
         class="content__img"
         :src="options.imageSrc"
@@ -29,6 +52,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'ShowImage',
@@ -40,6 +64,18 @@ export default {
   methods: {
     hide() {
       this.CloseModal();
+    },
+    showDeleteCaseModal(id) {
+      this.ShowModal({
+        key: modals.deleteCase,
+        id,
+      });
+    },
+    showEditCaseModal(id) {
+      this.ShowModal({
+        key: modals.editCase,
+        id,
+      });
     },
   },
 };
@@ -71,6 +107,18 @@ export default {
   overflow-y: auto;
   max-height: 800px;
   height: 100%;
+  &__btns {
+    position: absolute;
+    left: 25px;
+    top: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25px;
+    width: 60px;
+    border-radius: 6px;
+    padding: 2px;
+  }
   &__img {
     width: 100%;
     border-radius: 6px;
