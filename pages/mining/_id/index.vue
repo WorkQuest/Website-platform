@@ -11,6 +11,22 @@
           </template>
           {{ $t('mining.back') }}
         </base-btn>
+        <base-btn
+          v-if="!isConnected"
+          mode="light"
+          class="mining-page__connect"
+          @click="connectToMetamask"
+        >
+          {{ $t('mining.connectWallet') }}
+        </base-btn>
+        <base-btn
+          v-else
+          mode="light"
+          :disabled="true"
+          class="mining-page__connect"
+        >
+          {{ $t('meta.connected') }}
+        </base-btn>
       </div>
       <div class="mining-page__content">
         <div class="info-block__grid">
@@ -272,6 +288,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      isConnected: 'web3/isConnected',
     }),
   },
   async mounted() {
@@ -279,6 +296,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async connectToMetamask() {
+      await this.$store.dispatch('web3/connect');
+    },
     handleBackToMainMining() {
       this.$router.push('/mining');
     },
@@ -298,6 +318,10 @@ export default {
   display: flex;
   justify-content: center;
 
+  &__connect {
+    width: 150px;
+  }
+
   &__container {
     display: grid;
     grid-template-rows: 65px max-content;
@@ -312,6 +336,7 @@ export default {
   &__header {
     align-self: flex-end;
     display: flex;
+    justify-content: space-between;
     align-items: center;
 
     .btn {

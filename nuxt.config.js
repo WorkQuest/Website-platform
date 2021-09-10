@@ -53,6 +53,11 @@ export default {
     },
   },
   build: {
+    extend(config) {
+      config.node = {
+        fs: 'empty',
+      };
+    },
     transpile: [
       'vee-validate/dist/rules',
     ],
