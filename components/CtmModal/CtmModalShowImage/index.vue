@@ -85,9 +85,9 @@ export default {
 .ctm-modal {
   @include modalKit;
   &__box {
-    max-width: 80% !important;
+    max-width: 1200px !important;
     max-height: 100% !important;
-    width: auto !important;
+    width: 100% !important;
     height: auto !important;
     padding: 0 !important;
   }
@@ -107,6 +107,8 @@ export default {
   overflow-y: auto;
   max-height: 800px;
   height: 100%;
+  max-width: 1200px;
+  width: 100%;
   &__btns {
     position: absolute;
     left: 25px;
@@ -120,6 +122,7 @@ export default {
     padding: 2px;
   }
   &__img {
+    max-width: 1200px;
     width: 100%;
     border-radius: 6px;
     object-fit: cover;
