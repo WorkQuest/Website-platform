@@ -23,7 +23,7 @@
               <base-btn
                 class="portfolio__edit"
                 mode="portfolioEdit"
-                @click="showEditCaseModal(item.id)"
+                @click="showEditCaseModal(item.id, item.title, item.description)"
               >
                 <span
                   class="icon-edit"
@@ -104,10 +104,12 @@ export default {
         id,
       });
     },
-    showEditCaseModal(id) {
+    showEditCaseModal(id, title, desc) {
       this.ShowModal({
         key: modals.editCase,
         id,
+        title,
+        desc,
       });
     },
   },

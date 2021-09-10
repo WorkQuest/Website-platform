@@ -76,7 +76,6 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalAddCase',
-  components: {},
   data() {
     return {
       valid: '',
