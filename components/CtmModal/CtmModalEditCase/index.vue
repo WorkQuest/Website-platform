@@ -96,9 +96,6 @@ export default {
       medias: 'user/getUserPortfolio',
     }),
   },
-  mounted() {
-    this.addTextToFields();
-  },
   methods: {
     hide() {
       this.CloseModal();
@@ -117,12 +114,6 @@ export default {
         this.showToastError(e);
         this.SetLoader(false);
       }
-    },
-    addTextToFields() {
-      // eslint-disable-next-line prefer-destructuring
-      this.caseTitle = this.portfolios[0].title;
-      // eslint-disable-next-line prefer-destructuring
-      this.caseDescription = this.portfolios[0].description;
     },
     showToastEdited() {
       return this.$store.dispatch('main/showToast', {
