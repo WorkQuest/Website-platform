@@ -77,7 +77,7 @@ extend('decimal', {
 
 extend('text-title', {
   validate(value) {
-    const regex = /^[a-zа-яё\s]{0,280}$/;
+    const regex = /\d{0,280}$/;
     return {
       required: true,
       valid: regex.test(value),
@@ -87,7 +87,7 @@ extend('text-title', {
 });
 extend('text-desc', {
   validate(value) {
-    const regex = /^[a-zа-яё\s]{0,1000}$/;
+    const regex = /\d{0,1000}$/;
     return {
       required: true,
       valid: regex.test(value),
