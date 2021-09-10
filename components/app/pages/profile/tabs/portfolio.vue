@@ -45,9 +45,6 @@
                 <div class="footer__name">
                   {{ item.title }}
                 </div>
-                <div class="footer__description">
-                  {{ item.description }}
-                </div>
               </div>
             </div>
           </div>
@@ -133,9 +130,15 @@ export default {
   }
   &__edit {
     z-index: 10000;
+    transition: .5s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
   }
   &__close {
     z-index: 10000;
+    transition: .5s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
   }
   &__card {
     border-radius: 6px;
@@ -168,6 +171,12 @@ export default {
     width: 100%;
   }
 }
+.portfolio__item:hover .portfolio__edit,
+.portfolio__item:hover .portfolio__close {
+  transition: .5s ease-in-out;
+  opacity: 1;
+  visibility: visible;
+}
 
 .footer {
   display: flex;
@@ -187,17 +196,6 @@ export default {
     font-weight: 500;
     width: 100%;
     text-align: center;
-  }
-  &__description {
-    @include text-simple;
-    margin-top: 4px;
-    color: $black800;
-    font-size: 12px;
-    font-weight: 400;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
   }
 }
 
