@@ -82,6 +82,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.portfolio {
+  &__edit {
+    transition: .5s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+  }
+  &__close {
+    transition: .5s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.ctm-modal__content:hover .portfolio__close,
+.ctm-modal__content:hover .portfolio__edit {
+  transition: .5s ease-in-out;
+  opacity: 1;
+  visibility: visible;
+}
+
 .ctm-modal {
   @include modalKit;
   &__box {
