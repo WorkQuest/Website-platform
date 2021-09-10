@@ -75,6 +75,26 @@ extend('decimal', {
   message: 'Please enter correct {_field_}',
 });
 
+extend('text-title', {
+  validate(value) {
+    const regex = /^[a-zа-яё\s]{0,280}$/;
+    return {
+      required: true,
+      valid: regex.test(value),
+    };
+  },
+  message: 'Please enter correct {_field_}',
+});
+extend('text-desc', {
+  validate(value) {
+    const regex = /^[a-zа-яё\s]{0,1000}$/;
+    return {
+      required: true,
+      valid: regex.test(value),
+    };
+  },
+  message: 'Please enter correct {_field_}',
+});
 extend('percent', {
   validate(value) {
     const regex = /^100%?$|^\s*(\d{0,2})((\.|,)(\d*))?\s*%?\s*$/;
