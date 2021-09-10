@@ -20,47 +20,48 @@
                 @change="processFile($event, validate)"
               >
             </ValidationProvider>
-            <div>
-              <base-field
-                v-model="caseTitle"
-                :label="$t('modals.title')"
-                :placeholder="$t('modals.addTitle')"
-                :mode="'gray'"
-              />
-            </div>
-            <div class="message__wrapper">
-              <p class="modal__labelMessage">
-                {{ $t('modals.description') }}
-              </p>
+            <validation-observer v-slot="{ validated, passed, invalid }">
               <div>
-                <textarea
-                  id="textarea"
-                  v-model="caseDescription"
-                  class="message__textarea"
-                  :placeholder="$t('modals.addDesc')"
+                <base-field
+                  v-model="caseTitle"
+                  :label="$t('modals.title')"
+                  :placeholder="$t('modals.addTitle')"
+                  rules="required|text-title"
+                  :mode="'gray'"
                 />
               </div>
-            </div>
-            <div class="btn__container">
-              <div class="btn__wrapper">
-                <base-btn
-                  class="message__action"
-                  :disabled="!valid"
-                  @click="editUserCase(options.id)"
-                >
-                  {{ $t('meta.send') }}
-                </base-btn>
+              <div class="message__wrapper">
+                <base-textarea
+                  id="textarea"
+                  v-model="caseDescription"
+                  :label="$t('modals.description')"
+                  class="message__textarea"
+                  :placeholder="$t('modals.addDesc')"
+                  rules="required|text-desc"
+                  :name="$t('modals.description')"
+                />
               </div>
-              <div class="btn__wrapper">
-                <base-btn
-                  :mode="'outline'"
-                  class="message__action"
-                  @click="hide()"
-                >
-                  {{ $t('meta.cancel') }}
-                </base-btn>
+              <div class="btn__container">
+                <div class="btn__wrapper">
+                  <base-btn
+                    class="message__action"
+                    :disabled="!valid || !validated || !passed || invalid"
+                    @click="editUserCase(options.id)"
+                  >
+                    {{ $t('meta.send') }}
+                  </base-btn>
+                </div>
+                <div class="btn__wrapper">
+                  <base-btn
+                    :mode="'outline'"
+                    class="message__action"
+                    @click="hide()"
+                  >
+                    {{ $t('meta.cancel') }}
+                  </base-btn>
+                </div>
               </div>
-            </div>
+            </validation-observer>
           </div>
         </div>
       </div>
@@ -255,20 +256,6 @@ export default {
   }
   &__action {
     margin-top: 10px;
-  }
-
-  &__textarea {
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 214px;
-    width: 100%;
-    border: 0;
-    background-color: $black0;
-    resize: none;
-
-    &::placeholder {
-      color: $black200;
-    }
   }
 }
 .btn {
