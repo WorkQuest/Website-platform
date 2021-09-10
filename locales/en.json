@@ -2277,5 +2277,37 @@
       "active": "Active quests",
       "invited": "Invited quests"
     }
+  },
+  "footer": {
+    "download": "Download Mobile App",
+    "follow": "Follow Us",
+    "company": {
+      "title": "Company",
+      "wqWiki": "WorkQuest Wiki",
+      "aboutUs": "About Us",
+      "leadership": "Leadership",
+      "contactUs": "Contact Us",
+      "support": "Help & Support"
+    },
+    "legalInfo": {
+      "title": "Legal Info",
+      "risks": "Risks Disclaimer",
+      "privacyPolicy": "Privacy Policy",
+      "terms": "Terms & Conditions",
+      "aml": "AML & CTF Policy",
+      "cookiePolicy": "Cookie Policy"
+    },
+    "DeFi": {
+      "title": "DeFi functionality",
+      "retirement": "Retirement program",
+      "referral": "Referral program",
+      "P2P": "P2P insurance",
+      "savingsProduct": "Savings product",
+      "lending": "Lending",
+      "liquidityMining": "Liquidity mining",
+      "wqBridge": "WorkQuest bridge",
+      "staking": "Staking",
+      "wqDAO": "WorkQuest DAO"
+    }
   }
 }
