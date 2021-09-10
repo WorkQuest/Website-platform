@@ -110,7 +110,7 @@ export default {
   &__btns {
     position: absolute;
     left: 25px;
-    top: 25px;
+    top: -3px;
     display: flex;
     align-items: center;
     justify-content: center;
