@@ -382,6 +382,7 @@ export default () => ({
   messages: {
     list: [],
     count: 0,
+    chatId: '',
   },
   connections: {
     notifsConnection: false,

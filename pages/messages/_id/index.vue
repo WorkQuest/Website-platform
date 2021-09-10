@@ -14,7 +14,7 @@
             <span>{{ $t('chat.chat') }}</span>
           </div>
           <div class="chat-container__chat-name">
-            {{}}
+            <!--            {{}}-->
           </div>
           <ChatMenu />
         </div>
@@ -30,17 +30,25 @@
               v-for="message in messages.list"
               :key="message.id"
               class="chat-container__message message"
+              :class="{'message_right' : message.itsMe}"
             >
               <img
-                src=""
+                v-if="!message.itsMe"
+                :src="message.sender.avatar ? message.sender.avatar.url : require('~/assets/img/ui/template_avatar.svg')"
                 alt=""
                 class="message__avatar"
               >
               <div class="message__data">
-                <div class="message__title">
-                  {{}}
+                <div
+                  v-if="!message.itsMe"
+                  class="message__title"
+                >
+                  {{ message.sender.firstName + ' ' + message.sender.lastName }}
                 </div>
-                <div class="message__bubble">
+                <div
+                  class="message__bubble"
+                  :class="{'message__bubble_bl' : message.itsMe}"
+                >
                   <div class="message__title">
                     {{ message.text }}
                   </div>
@@ -50,12 +58,18 @@
                   >
                     {{}}
                   </div>
-                  <div class="message__time message__title message__title_gray">
+                  <div
+                    class="message__time message__title message__title_gray"
+                    :class="{'message__title_white' : message.itsMe}"
+                  >
                     {{ setCurrDate(message.createdAt) }}
                   </div>
                 </div>
               </div>
-              <div class="message__star-cont">
+              <div
+                class="message__star-cont"
+                :class="{'message__star-cont_left' : message.itsMe}"
+              >
                 {{}}
               </div>
             </div>
@@ -126,6 +140,7 @@ export default {
   computed: {
     ...mapGetters({
       messages: 'data/getMessages',
+      userData: 'user/getUserData',
     }),
   },
   async mounted() {
@@ -139,27 +154,41 @@ export default {
   methods: {
     async getFiles(ev, validate) {
       const { files } = ev.target;
+      const validFiles = [];
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         // eslint-disable-next-line no-await-in-loop
         const isValid = await validate(file);
-        console.log(isValid);
+        if (isValid.valid) validFiles.push(file);
       }
 
-      // console.log(validate);
-      // const isValid = await validate(ev);
-      // console.log(isValid);
-
       ev.target.value = null;
-      // if (!isValid.valid || !files.length) return;
+      if (!validFiles.length) return;
 
-      // for (let i = 0; i < files.length; i++) {
-      //   const file = files[i];
-      // }
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < validFiles.length; i++) {
+        const file = validFiles[i];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        // eslint-disable-next-line no-await-in-loop
+        const result = await this.$store.dispatch('data/uploadFile', { contentType: file.type });
+        console.log(result);
+
+        // eslint-disable-next-line no-shadow
+        // reader.onload = async (e) => {
+        //   const base64 = e.target.result;
+        //   const { mediaId, url } = await this.$store.dispatch('data/uploadFile', { contentType: base64 });
+        //   console.log(mediaId, url);
+        // };
+        reader.onerror = (evt) => {
+          console.error(evt);
+        };
+      }
     },
     handleScroll(ev) {
-      // console.log(ev.target);
+      // console.log(ev.target.scrollTop, ev.target.scrollHeight);
     },
     async getMessages() {
       const payload = {
@@ -201,21 +230,6 @@ export default {
       this.$router.push('/messages');
     },
     async handleSendMessage() {
-      // const payload = {
-      //   config: {
-      //     text: this.messageText,
-      //     medias: [],
-      //   },
-      //   userId: '8407b757-95b3-4862-95b6-e6d8d6d03341',
-      // };
-      // this.messageText = '';
-      //
-      // try {
-      //   this.$store.dispatch('data/handleCreateChat', payload);
-      // } catch (e) {
-      //   console.log(e);
-      // }
-
       if (!this.messageText) return;
 
       const payload = {
@@ -379,9 +393,22 @@ export default {
 
 .message {
   display: grid;
-  grid-template-columns: 43px 0.7fr max-content;
+  grid-template-columns: 43px minmax(100px, 0.7fr) max-content;
   gap: 10px;
   height: max-content;
+
+  &_right {
+    grid-template-columns: max-content minmax(100px, 0.7fr);
+    justify-content: flex-end;
+  }
+
+  &__star-cont {
+    visibility: hidden;
+    &_left {
+      grid-column: 1;
+      grid-row: 1;
+    }
+  }
 
   &:last-child {
     padding-bottom: 20px;
@@ -400,6 +427,16 @@ export default {
       color: #AAB0B9;
       font-size: 14px;
     }
+
+    &_white {
+      color: #fff;
+    }
+  }
+
+  &__avatar {
+    height: 43px;
+    width: 43px;
+    border-radius: 50%;
   }
 
   &__data {
@@ -413,6 +450,11 @@ export default {
     padding: 15px;
     border-radius: 6px;
     background-color: #F7F8FA;
+
+    &_bl {
+      background-color: #0083C7;
+      color: #fff;
+    }
   }
 }
 

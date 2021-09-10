@@ -1219,7 +1219,8 @@
     "quest": "Quest:",
     "you": "You:",
     "invitedYou": "invited you to a quest",
-    "writeYouMessage": "Write you message"
+    "writeYouMessage": "Write you message",
+    "group": "Group"
   },
   "settings": {
     "placeOfStudying": "Place of studying",

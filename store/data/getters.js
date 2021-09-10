@@ -26,4 +26,5 @@ export default {
   getUserDesc: (state) => state.userInfo?.desc,
   getChats: (state) => state.chats,
   notificationsConnectionStatus: (state) => state.connections,
+  getCurrChatId: (state) => state.messages.chatId,
 };

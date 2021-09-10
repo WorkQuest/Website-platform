@@ -4,6 +4,9 @@
       <h2 class="chats-page__header">
         {{ $t('chat.messages') }}
       </h2>
+      <!--      <base-btn @click="testCreateChat">-->
+      <!--        Test create chat-->
+      <!--      </base-btn>-->
       <div class="chats-container">
         <div class="chats-container__header">
           <div>{{ $t('chat.chat') }}</div>
@@ -36,23 +39,23 @@
                     {{ chat.members.length > 1 ? 'Group Chat' : chat.members[0].firstName + ' ' + chat.members[0].lastName }}
                   </div>
                   <div
-                    v-if="chat.members[0].additionalInfo.company"
+                    v-if="chat.members.length > 1 || (chat.members[0].additionalInfo && chat.members[0].additionalInfo.company)"
                     class="chat__title chat__title_gray"
                   >
-                    {{ chat.members[0].additionalInfo.company }}
+                    {{ chat.members.length > 1 ? $t('chat.group') : chat.members[0].additionalInfo.company }}
                   </div>
                 </div>
-<!--                <div class="chat__row">-->
-<!--                  <div class="chat__title">-->
-<!--                    {{ $t('chat.quest') }}-->
-<!--                  </div>-->
-<!--                  <a-->
-<!--                    href="#"-->
-<!--                    class="chat__title"-->
-<!--                  >-->
-<!--                    questName-->
-<!--                  </a>-->
-<!--                </div>-->
+                <!--                <div class="chat__row">-->
+                <!--                  <div class="chat__title">-->
+                <!--                    {{ $t('chat.quest') }}-->
+                <!--                  </div>-->
+                <!--                  <a-->
+                <!--                    href="#"-->
+                <!--                    class="chat__title"-->
+                <!--                  >-->
+                <!--                    questName-->
+                <!--                  </a>-->
+                <!--                </div>-->
                 <div class="chat__row">
                   <div
                     v-if="userData.id === chat.lastMessage.sender.id"
@@ -127,6 +130,21 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    testCreateChat() {
+      const payload = {
+        config: {
+          text: 'Hello! It it test message',
+          medias: [],
+        },
+        userId: '128ddf57-94d3-4b66-867b-550652172ac0',
+        // userId: '8407b757-95b3-4862-95b6-e6d8d6d03341', // исполнитель
+      };
+      try {
+        this.$store.dispatch('data/handleCreateChat', payload);
+      } catch (e) {
+        console.log(e);
+      }
+    },
     async getChats() {
       await this.$store.dispatch('data/getChatsList', this.filter);
     },
