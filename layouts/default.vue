@@ -591,33 +591,33 @@
                         {{ $t('footer.follow') }}
                       </div>
                       <div class="links__small">
-                        <n-link
+                        <a
                           class="links__social links__social_twitter"
-                          to="#"
+                          href="#"
                         />
-                        <n-link
+                        <a
                           class="links__social links__social_youtube"
-                          to="#"
+                          href="#"
                         />
-                        <n-link
+                        <a
                           class="links__social links__social_reddit"
-                          to="#"
+                          href="#"
                         />
-                        <n-link
+                        <a
                           class="links__social links__social_facebook"
-                          to="#"
+                          href="#"
                         />
-                        <n-link
+                        <a
                           class="links__social links__social_linkedin"
-                          to="#"
+                          href="#"
                         />
-                        <n-link
+                        <a
                           class="links__social links__social_instagram"
-                          to="#"
+                          href="#"
                         />
-                        <n-link
+                        <a
                           class="links__social links__social_telegram"
-                          to="#"
+                          href="#"
                         />
                       </div>
                     </div>
@@ -711,33 +711,33 @@
                         {{ $t('footer.follow') }}
                       </div>
                       <div class="links__small">
-                        <n-link
+                        <a
                           class="links__social links__social_twitter"
-                          to="#"
+                          href="#"
                         />
-                        <n-link
+                        <a
                           class="links__social links__social_youtube"
-                          to="#"
+                          href="#"
                         />
-                        <n-link
+                        <a
                           class="links__social links__social_reddit"
-                          to="#"
+                          href="#"
                         />
-                        <n-link
+                        <a
                           class="links__social links__social_facebook"
-                          to="#"
+                          href="#"
                         />
-                        <n-link
+                        <a
                           class="links__social links__social_linkedin"
-                          to="#"
+                          href="#"
                         />
-                        <n-link
+                        <a
                           class="links__social links__social_instagram"
-                          to="#"
+                          href="#"
                         />
-                        <n-link
+                        <a
                           class="links__social links__social_telegram"
-                          to="#"
+                          href="#"
                         />
                       </div>
                     </div>
@@ -1962,6 +1962,7 @@ export default {
     &__social {
       width: 40px;
       height: 40px;
+      transition: all 0.5s;
       &_twitter {
         background-image: url('~assets/img/social/footer_twitter.svg')
       }
