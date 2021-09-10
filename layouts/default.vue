@@ -576,14 +576,14 @@
                         {{ $t('footer.download') }}
                       </div>
                       <div class="links__big">
-                        <img
-                          src="/img/app/app_store_button.svg"
-                          alt="appStore"
-                        >
-                        <img
-                          src="/img/app/play_market_button.svg"
-                          alt="playMarket"
-                        >
+                        <n-link
+                          class="links__store links__store_app-store"
+                          to="#"
+                        />
+                        <n-link
+                          class="links__store links__store_play-market"
+                          to="#"
+                        />
                       </div>
                     </div>
                     <div class="links__block">
@@ -591,34 +591,34 @@
                         {{ $t('footer.follow') }}
                       </div>
                       <div class="links__small">
-                        <img
-                          src="~assets/img/social/footer_twitter.svg"
-                          alt="twitter"
-                        >
-                        <img
-                          src="~assets/img/social/footer_youtube.svg"
-                          alt="youtube"
-                        >
-                        <img
-                          src="~assets/img/social/footer_redit.svg"
-                          alt="reddit"
-                        >
-                        <img
-                          src="~assets/img/social/footer_facebook.svg"
-                          alt="facebook"
-                        >
-                        <img
-                          src="~assets/img/social/footer_linkedin.svg"
-                          alt="linkedin"
-                        >
-                        <img
-                          src="~assets/img/social/footer_instagram.svg"
-                          alt="instagram"
-                        >
-                        <img
-                          src="~assets/img/social/footer_telegram.svg"
-                          alt="telegram"
-                        >
+                        <n-link
+                          class="links__social links__social_twitter"
+                          to="#"
+                        />
+                        <n-link
+                          class="links__social links__social_youtube"
+                          to="#"
+                        />
+                        <n-link
+                          class="links__social links__social_reddit"
+                          to="#"
+                        />
+                        <n-link
+                          class="links__social links__social_facebook"
+                          to="#"
+                        />
+                        <n-link
+                          class="links__social links__social_linkedin"
+                          to="#"
+                        />
+                        <n-link
+                          class="links__social links__social_instagram"
+                          to="#"
+                        />
+                        <n-link
+                          class="links__social links__social_telegram"
+                          to="#"
+                        />
                       </div>
                     </div>
                   </div>
@@ -696,14 +696,14 @@
                         {{ $t('footer.download') }}
                       </div>
                       <div class="links__big">
-                        <img
-                          src="/img/app/app_store_button.svg"
-                          alt="appStore"
-                        >
-                        <img
-                          src="/img/app/play_market_button.svg"
-                          alt="playMarket"
-                        >
+                        <n-link
+                          class="links__store links__store_app-store"
+                          to="#"
+                        />
+                        <n-link
+                          class="links__store links__store_play-market"
+                          to="#"
+                        />
                       </div>
                     </div>
                     <div class="links__block">
@@ -711,34 +711,34 @@
                         {{ $t('footer.follow') }}
                       </div>
                       <div class="links__small">
-                        <img
-                          src="~assets/img/social/footer_twitter.svg"
-                          alt="playMarket"
-                        >
-                        <img
-                          src="~assets/img/social/footer_youtube.svg"
-                          alt="playMarket"
-                        >
-                        <img
-                          src="~assets/img/social/footer_redit.svg"
-                          alt="playMarket"
-                        >
-                        <img
-                          src="~assets/img/social/footer_facebook.svg"
-                          alt="playMarket"
-                        >
-                        <img
-                          src="~assets/img/social/footer_linkedin.svg"
-                          alt="playMarket"
-                        >
-                        <img
-                          src="~assets/img/social/footer_instagram.svg"
-                          alt="playMarket"
-                        >
-                        <img
-                          src="~assets/img/social/footer_telegram.svg"
-                          alt="playMarket"
-                        >
+                        <n-link
+                          class="links__social links__social_twitter"
+                          to="#"
+                        />
+                        <n-link
+                          class="links__social links__social_youtube"
+                          to="#"
+                        />
+                        <n-link
+                          class="links__social links__social_reddit"
+                          to="#"
+                        />
+                        <n-link
+                          class="links__social links__social_facebook"
+                          to="#"
+                        />
+                        <n-link
+                          class="links__social links__social_linkedin"
+                          to="#"
+                        />
+                        <n-link
+                          class="links__social links__social_instagram"
+                          to="#"
+                        />
+                        <n-link
+                          class="links__social links__social_telegram"
+                          to="#"
+                        />
                       </div>
                     </div>
                   </div>
@@ -1949,6 +1949,63 @@ export default {
       display: flex;
       justify-content: space-between;
     }
+    &__store {
+      width: 170px;
+      height: 56px;
+      &_app-store {
+        background-image: url('/img/app/app_store_button.svg');
+      }
+      &_play-market {
+        background-image: url('/img/app/play_market_button.svg');
+      }
+    }
+    &__social {
+      width: 40px;
+      height: 40px;
+      &_twitter {
+        background-image: url('~assets/img/social/footer_twitter.svg')
+      }
+      &_twitter:hover {
+        background-image: url('~assets/img/social/footer_twitter_active.svg')
+      }
+      &_youtube {
+        background-image: url('~assets/img/social/footer_youtube.svg')
+      }
+      &_youtube:hover {
+        background-image: url('~assets/img/social/footer_youtube_active.svg')
+      }
+      &_reddit {
+        background-image: url('~assets/img/social/footer_reddit.svg')
+      }
+      &_reddit:hover {
+        background-image: url('~assets/img/social/footer_reddit_active.svg')
+      }
+      &_facebook {
+        background-image: url('~assets/img/social/footer_facebook.svg')
+      }
+      &_facebook:hover {
+        background-image: url('~assets/img/social/footer_facebook_active.svg')
+      }
+      &_linkedin {
+        background-image: url('~assets/img/social/footer_linkedin.svg')
+      }
+      &_linkedin:hover {
+        background-image: url('~assets/img/social/footer_linkedin_active.svg')
+      }
+      &_instagram {
+        background-image: url('~assets/img/social/footer_instagram.svg')
+      }
+      &_instagram:hover {
+        background-image: url('~assets/img/social/footer_instagram_active.svg')
+      }
+      &_telegram {
+        background-image: url('~assets/img/social/footer_telegram.svg');
+        border-radius: 4px;
+      }
+      &_telegram:hover {
+        background-image: url('~assets/img/social/footer_telegram_active.svg')
+      }
+    }
   }
 }
 .ctm-menu {
@@ -2112,6 +2169,11 @@ export default {
       &__big {
         flex-direction: column;
         align-items: flex-start;
+      }
+      &__small {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
       }
     }
   }
