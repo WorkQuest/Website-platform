@@ -75,40 +75,53 @@
             </div>
           </div>
         </div>
-        <div class="chat-container__footer">
-          <div class="chat-container__file-cont">
-            <ValidationProvider
-              v-slot="{validate}"
-              rules="required|ext:png,jpeg,jpg,gif,mp4,mkv,mov,avi,xml,pdf,doc,tiff,txt,docx"
-            >
-              <input
-                id="input__file"
-                name="file"
-                type="file"
-                class="chat-container__file-input"
-                multiple
-                @change="getFiles($event, validate)"
+        <div class="chat-container__footer footer">
+          <div class="footer__controls">
+            <div class="chat-container__file-cont">
+              <ValidationProvider
+                v-slot="{validate}"
+                rules="required|ext:png,jpeg,jpg,gif,mp4,mkv,mov,avi,xml,pdf,doc,tiff,txt,docx"
               >
-            </ValidationProvider>
-            <label
-              for="input__file"
-              class="chat-container__file-button"
+                <input
+                  id="input__file"
+                  name="file"
+                  type="file"
+                  class="chat-container__file-input"
+                  multiple
+                  @change="getFiles($event, validate)"
+                >
+              </ValidationProvider>
+              <label
+                for="input__file"
+                class="chat-container__file-button"
+              >
+                <span class="icon-link" />
+              </label>
+            </div>
+            <base-field
+              v-model="messageText"
+              :placeholder="$t('chat.writeYouMessage')"
+              is-hide-error
+            />
+            <button
+              class="chat-container__send-btn"
+              :class="{'chat-container__send-btn_active' : messageText}"
+              @click="handleSendMessage()"
             >
-              <span class="icon-link" />
-            </label>
+              <span class="icon-send" />
+            </button>
           </div>
-          <base-field
-            v-model="messageText"
-            :placeholder="$t('chat.writeYouMessage')"
-            is-hide-error
-          />
-          <button
-            class="chat-container__send-btn"
-            :class="{'chat-container__send-btn_active' : messageText}"
-            @click="handleSendMessage()"
+          <div
+            v-if="files.length"
+            class="footer__medias"
           >
-            <span class="icon-send" />
-          </button>
+            <img
+              v-for="(file, i) in files"
+              :key="i"
+              :src="file.url"
+              alt=""
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -130,6 +143,7 @@ export default {
     return {
       isShowFavourite: false,
       messageText: '',
+      files: [],
       filter: {
         offset: 0,
         limit: 20,
@@ -177,11 +191,13 @@ export default {
         console.log(result);
 
         // eslint-disable-next-line no-shadow
-        // reader.onload = async (e) => {
-        //   const base64 = e.target.result;
-        //   const { mediaId, url } = await this.$store.dispatch('data/uploadFile', { contentType: base64 });
-        //   console.log(mediaId, url);
-        // };
+        reader.onload = async (e) => {
+          const base64 = e.target.result;
+          const { mediaId, url } = await this.$store.dispatch('data/uploadFile', { contentType: base64 });
+          this.files.push({ mediaId, url });
+          this.$forceUpdate();
+          console.log(this.files);
+        };
         reader.onerror = (evt) => {
           console.error(evt);
         };
@@ -332,13 +348,7 @@ export default {
   }
 
   &__footer {
-    height: 70px;
-    padding: 0 15px;
-    border-top: 1px solid #E9EDF2;
-    display: grid;
-    grid-template-columns: 40px 1fr 40px;
-    gap: 10px;
-    align-items: center;
+
   }
 
   &__file-cont {
@@ -388,6 +398,27 @@ export default {
   &__messages {
     display: grid;
     gap: 20px;
+  }
+}
+
+.footer {
+  &__controls {
+    height: 70px;
+    padding: 0 15px;
+    border-top: 1px solid #E9EDF2;
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    gap: 10px;
+    align-items: center;
+  }
+
+  &__medias {
+    padding: 10px 0 10px 10px;
+    width: calc(100% - 10px);
+    overflow: auto;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 10px;
   }
 }
 
