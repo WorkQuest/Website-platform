@@ -80,7 +80,7 @@
             <div class="chat-container__file-cont">
               <ValidationProvider
                 v-slot="{validate}"
-                rules="required|ext:png,jpeg,jpg,gif,mp4,mkv,mov,avi,xml,pdf,doc,tiff,txt,docx"
+                rules="required|ext:png,jpeg,jpg,gif"
               >
                 <input
                   id="input__file"
@@ -119,6 +119,7 @@
               v-for="(file, i) in files"
               :key="i"
               :src="file.url"
+              class="image"
               alt=""
             >
           </div>
@@ -187,17 +188,10 @@ export default {
         reader.readAsDataURL(file);
 
         // eslint-disable-next-line no-await-in-loop
-        const result = await this.$store.dispatch('data/uploadFile', { contentType: file.type });
-        console.log(result);
+        const { mediaId } = await this.$store.dispatch('data/uploadFile', { contentType: file.type });
+        const url = URL.createObjectURL(file);
+        this.files.push({ url, id: mediaId });
 
-        // eslint-disable-next-line no-shadow
-        reader.onload = async (e) => {
-          const base64 = e.target.result;
-          const { mediaId, url } = await this.$store.dispatch('data/uploadFile', { contentType: base64 });
-          this.files.push({ mediaId, url });
-          this.$forceUpdate();
-          console.log(this.files);
-        };
         reader.onerror = (evt) => {
           console.error(evt);
         };
@@ -246,12 +240,13 @@ export default {
       this.$router.push('/messages');
     },
     async handleSendMessage() {
-      if (!this.messageText) return;
-
+      const { messageText, files } = this;
+      if (!messageText) return;
+      const medias = files.map((file) => file.id);
       const payload = {
         config: {
-          text: this.messageText,
-          medias: [],
+          text: messageText,
+          medias,
         },
         chatId: this.$route.params.id,
       };
@@ -356,6 +351,7 @@ export default {
   }
 
   &__file-button {
+    pointer-events: none;
     height: 40px;
     background: #F7F8FA;
     color: #fff;
@@ -413,24 +409,34 @@ export default {
   }
 
   &__medias {
-    padding: 10px 0 10px 10px;
+    padding: 0 0 10px 10px;
     width: calc(100% - 10px);
     overflow: auto;
     display: grid;
     grid-auto-flow: column;
     gap: 10px;
+    justify-content: start;
   }
 }
 
+.image {
+  height: 105px;
+  width: 130px;
+  border-radius: 6px;
+  min-width: 130px;
+}
+
 .message {
+  width: 70%;
   display: grid;
-  grid-template-columns: 43px minmax(100px, 0.7fr) max-content;
+  grid-template-columns: 43px minmax(auto, max-content) max-content;
   gap: 10px;
   height: max-content;
 
   &_right {
-    grid-template-columns: max-content minmax(100px, 0.7fr);
+    grid-template-columns: max-content minmax(auto, max-content);
     justify-content: flex-end;
+    margin-left: 30%;
   }
 
   &__star-cont {
