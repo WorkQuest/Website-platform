@@ -545,6 +545,7 @@ export default {
   methods: {
     async editQuestFill() {
       console.log(this.questData);
+      this.runtimeValue = 1;
       this.questTitle = this.questData.title;
       this.address = this.questData.locationPlaceName;
       this.price = this.questData.price;
@@ -651,7 +652,7 @@ export default {
       }
     },
     async showQuestCreatedModal() {
-      const specAndSkills = {};
+      const specAndSkills = {}; // TODO: Добавить квесты
       // eslint-disable-next-line guard-for-in,no-restricted-syntax
       for (const spec in this.specIndex) {
         if (this.specIndex[spec] !== -1) {
