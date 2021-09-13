@@ -95,6 +95,9 @@ export default {
       medias: 'user/getUserPortfolio',
     }),
   },
+  mounted() {
+    this.editTitle();
+  },
   methods: {
     hide() {
       this.CloseModal();
@@ -113,6 +116,10 @@ export default {
         this.showToastError(e);
         this.SetLoader(false);
       }
+    },
+    async editTitle() {
+      this.caseTitle = await this.options.title;
+      this.caseDescription = await this.options.desc;
     },
     showToastEdited() {
       return this.$store.dispatch('main/showToast', {
