@@ -11,14 +11,14 @@
         <div class="content__grid">
           <div class="content__field field">
             <div class="field__title">
-              {{ $t('modals.amountOfWusd') }}
+              {{ $t('modals.amountOfWqt') }}
             </div>
             <base-field
-              v-model="amountOfWusd"
-              :placeholder="$t('modals.addLiquidityAmountWusd')"
+              v-model="amountOfWqt"
+              :placeholder="$t('modals.addLiquidityAmountWqt')"
               class="field__input"
               rules="required|decimal"
-              :name="$t('modals.amountOfWusdField')"
+              :name="$t('modals.amountOfWqtField')"
             />
             <div class="field__container">
               <div class="field__title">
@@ -93,7 +93,7 @@ export default {
   name: 'ModalAddLiquidity',
   data() {
     return {
-      amountOfWusd: '',
+      amountOfWqt: '',
       amountOfEth: '',
       amountOfBnb: '',
     };
@@ -111,11 +111,11 @@ export default {
       const { isBNB } = this.options;
       return [
         {
-          title: this.$t(`modals.${isBNB ? 'amountBnbPerWusd' : 'amountEthPerWusd'}`),
+          title: this.$t(`modals.${isBNB ? 'amountBnbPerWqt' : 'amountEthPerWqt'}`),
           subtitle: 54,
         },
         {
-          title: this.$t(`modals.${isBNB ? 'amountBnbPerWusd' : 'amountEthPerWusd'}`),
+          title: this.$t(`modals.${isBNB ? 'amountBnbPerWqt' : 'amountBnbPerWqt'}`),
           subtitle: 65,
         },
         {

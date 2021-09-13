@@ -83,6 +83,7 @@
                     :placeholder="$t('settings.selectSpec')"
                     :items="specializations.titles"
                     :mode="'small'"
+                    rules="required"
                     :label="$t('settings.specialization')"
                     @input="switchSkill($event, key)"
                   />
@@ -95,6 +96,7 @@
                       :placeholder="$t('settings.selectSkills')"
                       :items="specializations.skills[specIndex[key]]"
                       :mode="'small'"
+                      rules="required"
                       :label="$t('settings.skillsInput')"
                       @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
                     />
@@ -208,7 +210,7 @@
           <div class="upload btn btn__container btn__container_right">
             <div class="btn__create">
               <base-btn
-                :disabled="invalid"
+                :disabled="!(invalid === false && !(selectedSkills[1].length === 0))"
                 @click="handleSubmit(toRiseViews)"
               >
                 {{ $t('quests.createAQuest') }}
@@ -640,6 +642,14 @@ export default {
       }
     },
     async showQuestCreatedModal() {
+      const specAndSkills = {};
+      // eslint-disable-next-line guard-for-in,no-restricted-syntax
+      for (const spec in this.specIndex) {
+        if (this.specIndex[spec] !== -1) {
+          const specName = this.specializations.titles[this.specIndex[spec]];
+          specAndSkills[specName] = this.selectedSkills[spec];
+        }
+      }
       const createQuestData = {
         priority: this.priorityIndex,
         category: 'Default',
@@ -649,6 +659,7 @@ export default {
         medias: [],
         adType: 0,
         locationPlaceName: this.address,
+        skillFilters: specAndSkills,
         location: {
           longitude: this.coordinates.lng,
           latitude: this.coordinates.lat,
@@ -664,7 +675,7 @@ export default {
             subtitle: this.$t('modals.youCanUpdateThisInYourProfile'),
           });
           await this.$router.push(`/quests/${response.result.id}`);
-          this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
+          await this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
         }
       } catch (e) {
         console.log(e);

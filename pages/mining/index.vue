@@ -9,12 +9,6 @@
           {{ $t('mining.templateText') }}
         </div>
       </div>
-      <base-btn
-        mode="light"
-        class="mining-page__head-btn"
-      >
-        {{ $t('mining.connectWallet') }}
-      </base-btn>
       <div class="mining-page__content">
         <div class="info-block">
           <div class="info-block__name_bold">
