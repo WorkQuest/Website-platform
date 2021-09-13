@@ -2,6 +2,9 @@ export default {
   async getCurrentStepCreateQuest({ commit }, data) {
     commit('setCurrentStepCreateQuest', data);
   },
+  async getCurrentStepEditQuest({ commit }, data) {
+    commit('setCurrentStepEditQuest', data);
+  },
   async questCreate({ commit }, payload) {
     return await this.$axios.$post('/v1/quest/create', payload);
   },

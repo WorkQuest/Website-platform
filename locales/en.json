@@ -344,6 +344,7 @@
     "period": "Period of time",
     "EstimatedPayment": "Estimated payment:",
     "createAQuest": "Create a quest",
+    "editAQuest": "Edit a quest",
     "activeQuests": "Active quests",
     "completedQuests": "Completed quests",
     "oneTime": "One time",
