@@ -508,7 +508,7 @@
                     class="mobile-dropdown__btn"
                   >
                     <div class="mobile-dropdown__title">
-                      {{ $t('ui.menu.instruments') }}
+                      {{ $t('ui.profile.DeFi') }}
                     </div>
                     <div class="mobile-dropdown__arrow">
                       <span
