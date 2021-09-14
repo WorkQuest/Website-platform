@@ -53,12 +53,10 @@
           </div>
           <div class="info-block__btns">
             <base-btn
-              v-for="(item, i) in btns"
-              :key="i"
+              :link="'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH'"
               class="btn_bl"
-              @click="item.clickFunc()"
             >
-              {{ item.name }}
+              {{ $t('mining.addLiquidity') }}
             </base-btn>
           </div>
         </div>
@@ -268,10 +266,8 @@ export default {
         {
           name: this.$t('mining.addLiquidity'),
           clickFunc: () => {
-            this.ShowModal({
-              key: modals.addLiquidity,
-              isBNB: this.miningPoolId === 'BNB',
-            });
+            window.location.href = 'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH';
+            return false;
           },
         },
       ],
