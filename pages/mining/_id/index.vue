@@ -81,6 +81,7 @@
                     v-if="item.button"
                     :mode="'outline'"
                     class="bnt__claim"
+                    @click="openModalClaimRewards()"
                   >
                     {{ $t('mining.claimReward') }}
                   </base-btn>
@@ -287,6 +288,11 @@ export default {
   methods: {
     async connectToMetamask() {
       await this.$store.dispatch('web3/connect');
+    },
+    openModalClaimRewards() {
+      this.ShowModal({
+        key: modals.claimRewards,
+      });
     },
     handleBackToMainMining() {
       this.$router.push('/mining');
@@ -578,6 +584,11 @@ export default {
         }
       }
     }
+  }
+}
+.btn {
+  &_bl {
+    text-decoration: none;
   }
 }
 .third {
