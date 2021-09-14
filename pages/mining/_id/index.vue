@@ -120,36 +120,36 @@
               thead-class="table__header"
               tbody-tr-class="table__row"
             >
-              <template #cell(userName)="el">
+              <template #cell(poolAddress)="el">
                 <div class="user__info">
-                  <img
-                    class="ava"
-                    src="~/assets/img/temp/avatar-small.jpg"
-                    alt=""
-                  >
                   <div class="user__name">
-                    {{ el.item.userName }}
+                    {{ el.item.poolAddress }}
                   </div>
                 </div>
               </template>
-              <template #cell(userID)="el">
+              <template #cell(totalValue)="el">
                 <div class="user__value_gray">
-                  {{ el.item.userID }}
+                  {{ el.item.totalValue }}
                 </div>
               </template>
-              <template #cell(txHash)="el">
+              <template #cell(tokenAmount0)="el">
                 <div class="user__value_gray">
-                  {{ el.item.txHash }}
+                  {{ el.item.tokenAmount0 }}
+                </div>
+              </template>
+              <template #cell(tokenAmount1)="el">
+                <div class="user__value_gray">
+                  {{ el.item.tokenAmount1 }}
+                </div>
+              </template>
+              <template #cell(account)="el">
+                <div class="user__value_green">
+                  {{ el.item.account }}
                 </div>
               </template>
               <template #cell(time)="el">
-                <div class="user__value_gray">
-                  {{ el.item.time }}
-                </div>
-              </template>
-              <template #cell(status)="el">
                 <div class="user__value_green">
-                  {{ el.item.status }}
+                  {{ el.item.time }}
                 </div>
               </template>
             </b-table>
@@ -170,28 +170,26 @@ export default {
       miningPoolId: localStorage.getItem('miningPoolId'),
       items: [
         {
-          userName: this.$t('pension.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('pension.table.userId'),
-          txHash: this.$t('pension.table.txHash'),
-          time: this.$t('pension.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('pension.table.status'),
+          poolAddress: 'Swap WQT for ETH',
+          totalValue: '2 382 $',
+          tokenAmount0: '0.3467 ETH',
+          tokenAmount1: '0.3467 ETH',
+          account: '0xfece...55c2',
+          time: '46 days ago',
         },
         {
-          userName: this.$t('pension.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('pension.table.userId'),
-          txHash: this.$t('pension.table.txHash'),
-          time: this.$t('pension.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('pension.table.status'),
+          poolAddress: 'Swap WQT for ETH',
+          totalValue: '2 382 $',
+          tokenAmount0: '0.3467 ETH',
+          tokenAmount1: '0.3467 ETH',
+          account: '0xfece...55c2',
+          time: '46 days ago',
         },
       ],
       testFields: [
         {
-          key: 'userName',
-          label: this.$t('referral.tableHead.name'),
+          key: 'poolAddress',
+          label: this.$t('mining.tableHead.poolAddress'),
           thStyle: {
             padding: '0 0 0 23px',
             height: '27px',
@@ -202,8 +200,8 @@ export default {
           },
         },
         {
-          key: 'userID',
-          label: this.$t('referral.tableHead.userID'),
+          key: 'totalValue',
+          label: this.$t('mining.tableHead.totalValue'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -214,8 +212,32 @@ export default {
           },
         },
         {
-          key: 'txHash',
-          label: this.$t('referral.tableHead.txHash'),
+          key: 'tokenAmount0',
+          label: this.$t('mining.tableHead.tokenAmount'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
+        },
+        {
+          key: 'tokenAmount1',
+          label: this.$t('mining.tableHead.tokenAmount'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
+        },
+        {
+          key: 'account',
+          label: this.$t('mining.tableHead.account'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -227,31 +249,7 @@ export default {
         },
         {
           key: 'time',
-          label: this.$t('referral.tableHead.time'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'amount',
-          label: this.$t('referral.tableHead.amount'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'status',
-          label: this.$t('referral.tableHead.status'),
+          label: this.$t('mining.tableHead.time'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -480,7 +478,6 @@ export default {
 
       &__info {
         display: grid;
-        grid-template-columns: 33px 1fr;
         align-items: center;
         gap: 10px;
       }
