@@ -83,7 +83,6 @@
                     :placeholder="$t('settings.selectSpec')"
                     :items="specializations.titles"
                     :mode="'small'"
-                    rules="required"
                     :label="$t('settings.specialization')"
                     @input="switchSkill($event, key)"
                   />
@@ -96,7 +95,6 @@
                       :placeholder="$t('settings.selectSkills')"
                       :items="specializations.skills[specIndex[key]]"
                       :mode="'small'"
-                      rules="required"
                       :label="$t('settings.skillsInput')"
                       @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
                     />
@@ -307,7 +305,7 @@
               <div class="btn-container__btn">
                 <base-btn
                   :mode="'outline'"
-                  @click="showQuestCreatedModal()"
+                  @click="toEditQuest()"
                 >
                   {{ $t('meta.skipAndEnd') }}
                 </base-btn>
@@ -546,10 +544,12 @@ export default {
     async editQuestFill() {
       console.log(this.questData);
       this.runtimeValue = 1;
-      this.questTitle = this.questData.title;
-      this.address = this.questData.locationPlaceName;
-      this.price = this.questData.price;
-      this.textarea = this.questData.description;
+      this.questTitle = await this.questData.title;
+      this.address = await this.questData.locationPlaceName;
+      this.price = await this.questData.price;
+      this.textarea = await this.questData.description;
+      this.coordinates.lng = await this.questData.location.longitude;
+      this.coordinates.lat = await this.questData.location.latitude;
     },
     cardStatus(item) {
       let style;
@@ -640,7 +640,7 @@ export default {
     },
     async getAddressInfo(address) {
       let response = [];
-      const geoCode = new GeoCode('google', { key: 'AIzaSyD32Aorm6CU9xUIrUznzYyw2d_0NTqt3Zw' });
+      const geoCode = new GeoCode('google', { key: process.env.GMAPKEY });
       try {
         if (address.length) {
           response = await geoCode.geolookup(address);
@@ -651,16 +651,8 @@ export default {
         console.log(e);
       }
     },
-    async showQuestCreatedModal() {
-      const specAndSkills = {}; // TODO: Добавить квесты
-      // eslint-disable-next-line guard-for-in,no-restricted-syntax
-      for (const spec in this.specIndex) {
-        if (this.specIndex[spec] !== -1) {
-          const specName = this.specializations.titles[this.specIndex[spec]];
-          specAndSkills[specName] = this.selectedSkills[spec];
-        }
-      }
-      const createQuestData = {
+    async editQuest(specAndSkills) {
+      const payload = {
         priority: this.priorityIndex,
         category: 'Default',
         title: this.questTitle,
@@ -676,20 +668,51 @@ export default {
         },
       };
       try {
-        const response = await this.$store.dispatch('quests/questCreate', createQuestData);
+        const questId = await this.questData.id;
+        const response = await this.$store.dispatch('quests/editQuest', { payload, questId });
         if (response) {
-          this.ShowModal({
-            key: modals.status,
-            img: require('~/assets/img/ui/questAgreed.svg'),
-            title: this.$t('modals.yourSkillsHaveBeenAdded'),
-            subtitle: this.$t('modals.youCanUpdateThisInYourProfile'),
-          });
-          await this.$router.push(`/quests/${response.result.id}`);
-          await this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
+          this.showModalEditQuest();
+          this.showToastEdited();
+          await this.$router.push(`/quests/${questId}`);
+          await this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
         }
       } catch (e) {
         console.log(e);
+        this.showToastError(e);
       }
+    },
+    showModalEditQuest() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: this.$t('modals.yourSkillsHaveBeenAdded'),
+        subtitle: this.$t('modals.youCanUpdateThisInYourProfile'),
+      });
+    },
+    showToastEdited() {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.questEdited'),
+        variant: 'success',
+        text: this.$t('toasts.questEdited'),
+      });
+    },
+    showToastError(e) {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.error'),
+        variant: 'warning',
+        text: e.response?.data?.msg,
+      });
+    },
+    async toEditQuest() {
+      const specAndSkills = this.questData?.skillFilters || {};
+      // eslint-disable-next-line guard-for-in,no-restricted-syntax
+      for (const spec in this.specIndex) {
+        if (this.specIndex[spec] !== -1) {
+          const specName = this.specializations.titles[this.specIndex[spec]];
+          specAndSkills[specName] = this.selectedSkills[spec];
+        }
+      }
+      await this.editQuest(specAndSkills);
     },
   },
 };

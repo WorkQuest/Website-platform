@@ -307,7 +307,7 @@
               <div class="btn-container__btn">
                 <base-btn
                   :mode="'outline'"
-                  @click="showQuestCreatedModal()"
+                  @click="toCreateQuest()"
                 >
                   {{ $t('meta.skipAndEnd') }}
                 </base-btn>
@@ -630,7 +630,7 @@ export default {
     },
     async getAddressInfo(address) {
       let response = [];
-      const geoCode = new GeoCode('google', { key: 'AIzaSyD32Aorm6CU9xUIrUznzYyw2d_0NTqt3Zw' });
+      const geoCode = new GeoCode('google', { key: process.env.GMAPKEY });
       try {
         if (address.length) {
           response = await geoCode.geolookup(address);
@@ -641,7 +641,7 @@ export default {
         console.log(e);
       }
     },
-    async showQuestCreatedModal() {
+    async toCreateQuest() {
       const specAndSkills = {};
       // eslint-disable-next-line guard-for-in,no-restricted-syntax
       for (const spec in this.specIndex) {
@@ -650,7 +650,10 @@ export default {
           specAndSkills[specName] = this.selectedSkills[spec];
         }
       }
-      const createQuestData = {
+      await this.createQuest(specAndSkills);
+    },
+    async createQuest(specAndSkills) {
+      const payload = {
         priority: this.priorityIndex,
         category: 'Default',
         title: this.questTitle,
@@ -666,20 +669,39 @@ export default {
         },
       };
       try {
-        const response = await this.$store.dispatch('quests/questCreate', createQuestData);
+        const response = await this.$store.dispatch('quests/questCreate', payload);
         if (response) {
-          this.ShowModal({
-            key: modals.status,
-            img: require('~/assets/img/ui/questAgreed.svg'),
-            title: this.$t('modals.yourSkillsHaveBeenAdded'),
-            subtitle: this.$t('modals.youCanUpdateThisInYourProfile'),
-          });
+          this.showModalCreatedQuest();
+          this.showToastCreated();
           await this.$router.push(`/quests/${response.result.id}`);
           await this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
         }
       } catch (e) {
         console.log(e);
+        this.showToastError(e);
       }
+    },
+    showModalCreatedQuest() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: this.$t('modals.yourSkillsHaveBeenAdded'),
+        subtitle: this.$t('modals.youCanUpdateThisInYourProfile'),
+      });
+    },
+    showToastCreated() {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.questCreated'),
+        variant: 'success',
+        text: this.$t('toasts.questCreated'),
+      });
+    },
+    showToastError(e) {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.error'),
+        variant: 'warning',
+        text: e.response?.data?.msg,
+      });
     },
   },
 };

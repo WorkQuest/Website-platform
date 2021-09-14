@@ -36,14 +36,15 @@ export default {
     return response.result;
   },
 
-  async editQuest({ commit }, payload, id) {
-    const response = await this.$axios.$put(`/v1/quest/${id}`, payload);
+  async editQuest({ commit }, { payload, questId }) {
+    const response = await this.$axios.$put(`/v1/quest/${questId}`, payload);
     commit('setQuestData', response.result);
-    return response;
+    return response.result;
   },
 
-  async deleteQuest(id) {
-    await this.$axios.$delete(`/v1/quest/${id}`);
+  async deleteQuest({ commit }, { questId }) {
+    const response = await this.$axios.$delete(`/v1/quest/${questId}`);
+    return response.result;
   },
 
   async acceptCompletedWorkOnQuest(id) {
