@@ -262,15 +262,6 @@ export default {
           },
         },
       ],
-      btns: [
-        {
-          name: this.$t('mining.addLiquidity'),
-          clickFunc: () => {
-            window.location.href = 'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH';
-            return false;
-          },
-        },
-      ],
       cards: [
         {
           title: this.$tc('mining.dollarsCount', '417.1M'),
