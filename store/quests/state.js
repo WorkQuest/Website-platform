@@ -6,6 +6,7 @@ export default () => ({
   starredQuests: {},
   responses: {},
   currentStepCreateQuest: 1,
+  currentStepEditQuest: 1,
   mapBounds: {},
   mapCenter: {},
 });

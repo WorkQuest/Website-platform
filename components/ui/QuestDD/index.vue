@@ -42,6 +42,7 @@
               >
                 <div
                   class="menu__text"
+                  @click="toEditQuest()"
                 >
                   {{ $t('modals.edit') }}
                 </div>
@@ -79,8 +80,13 @@ export default {
     };
   },
   methods: {
+    toEditQuest() {
+      this.$router.push('/edit-quest');
+      this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
+    },
     toRaisingViews() {
-      this.$router.push('/raising-views');
+      this.$router.push('/edit-quest');
+      this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
     },
     shareModal() {
       this.ShowModal({

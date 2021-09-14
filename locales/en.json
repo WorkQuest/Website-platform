@@ -344,6 +344,7 @@
     "period": "Period of time",
     "EstimatedPayment": "Estimated payment:",
     "createAQuest": "Create a quest",
+    "editAQuest": "Edit a quest",
     "activeQuests": "Active quests",
     "completedQuests": "Completed quests",
     "oneTime": "One time",
@@ -818,6 +819,9 @@
     }
   },
   "toasts": {
+    "questEdited": "Quest edited!",
+    "questCreated": "Quest created!",
+    "questDeleted": "Quest deleted!",
     "caseDeleted": "Case deleted!",
     "caseAdded": "Case added!",
     "caseEdited": "Case edited!",
