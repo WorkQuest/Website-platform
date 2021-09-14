@@ -9,7 +9,7 @@
         <!--          v-if="isShowMap && userPosition"-->
         <!--          :cluster="{options: {styles: clusterStyle}}"-->
         <!--          :center="{lat: userPosition.latitude, lng: userPosition.longitude}"-->
-        <GMap
+        <GmapMap
           ref="gMap"
           language="en"
           :cluster="{options: {styles: clusterStyle}}"
@@ -70,7 +70,7 @@
               </div>
             </GMapInfoWindow>
           </GMapMarker>
-        </GMap>
+        </GmapMap>
       </transition>
     </div>
   </div>

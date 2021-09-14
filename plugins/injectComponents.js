@@ -27,7 +27,7 @@ Vue.component('base-dd', BaseDD);
 Vue.component('base-filter-dd', BaseFilterDD);
 Vue.component('base-checkbox', BaseCheckbox);
 Vue.component('loader', Loader);
-Vue.component('GMap', GMap);
+Vue.component('GmapMap', GMap);
 Vue.component('GMapMarker', GMapMarker);
 Vue.component('GMapInfoWindow', GMapInfoWindow);
 Vue.component('base-table', BaseTable);
