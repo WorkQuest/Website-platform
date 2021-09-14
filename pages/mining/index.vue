@@ -3,10 +3,10 @@
     <div class="mining-page__container">
       <div class="mining-page__header">
         <div class="title">
-          {{ $t('mining.liquidityManning') }}
+          {{ $t('mining.liquidityMining') }}
         </div>
         <div class="title_sub">
-          {{ $t('mining.liquidityManningSub') }}
+          {{ $t('mining.liquidityMiningSub') }}
         </div>
       </div>
       <div class="mining-page__content">
@@ -81,8 +81,8 @@
                 </div>
               </div>
               <a
-                href="../../static/docs/agreement.docx"
-                download=""
+                href="/docs/agreement.pdf"
+                target="_blank"
                 class="btn__doc"
               >
                 {{ $t('pension.download') }}
@@ -110,7 +110,7 @@ export default {
       documents: [
         {
           name: this.$t('mining.agreement'),
-          size: this.$tc('mining.kb', '9.6'),
+          size: this.$tc('mining.kb', '27.1'),
           url: '',
         },
       ],

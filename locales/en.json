@@ -834,6 +834,7 @@
       "participants": "Participants",
       "chatName": "Chat name"
     },
+    "yourRewardBalance": "Your reward balance:",
     "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",
@@ -1973,15 +1974,15 @@
     "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
-    "liquidityManning": "Liquidity manning",
+    "claimRewards": "Claim rewards",
     "liquidityMining": "Liquidity mining",
-    "liquidityManningSub": "Is a DeFi (decentralized finance) mechanism in which participants supply cryptocurrencies into liquidity pools, and being rewarded with fees and tokens based on their share of the total pool liquidity.",
+    "liquidityMiningSub": "Is a DeFi (decentralized finance) mechanism in which participants supply cryptocurrencies into liquidity pools, and being rewarded with fees and tokens based on their share of the total pool liquidity.",
     "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "pools": "Pools",
     "choose": "Choose",
     "information": "Information",
     "docName": "Some_document.pdf",
-    "agreement": "WorkQuest Liquidity Mining User Agreement.docx",
+    "agreement": "WorkQuest Liquidity Mining User Agreement.pdf",
     "kb": "{count} KB",
     "download": "Download",
     "tableHead": {
