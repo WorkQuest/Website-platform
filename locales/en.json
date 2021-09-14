@@ -2002,6 +2002,8 @@
     "addLiquidity": "Add liquidity",
     "removeLiquidity": "Remove liquidity",
     "liquidity": "Liquidity",
+    "claimReward": "Claim Reward",
+    "totalReward": "Total reward",
     "volume24h": "Volume (24h)",
     "myPoolShare": "My pool share",
     "liquidityPoolProviders": "Liquidity pool providers",
