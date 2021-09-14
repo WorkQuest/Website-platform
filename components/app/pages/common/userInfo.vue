@@ -179,8 +179,7 @@ export default {
       this.$router.push('/messages/1');
     },
     toRaisedViews() {
-      this.$router.push('/create-quest');
-      this.$store.dispatch('quests/getCurrentStepCreateQuest', 2);
+      this.$router.push('/rised-views');
     },
   },
 };
