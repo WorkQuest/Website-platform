@@ -271,7 +271,6 @@
                   v-for="(item, i) in periods(period)"
                   :key="i"
                   class="level__card"
-                  :class="cardStatus(item)"
                   @click="selectRadio(i)"
                 >
                   <div class="level__option">
