@@ -62,17 +62,32 @@
             </base-btn>
           </div>
         </div>
-        <div class="info-block__triple">
+        <div class="info-block__double">
           <div
             v-for="(item, i) in cards"
             :key="i"
             class="info-block__third"
           >
-            <div class="info-block__title_big info-block__title_blue">
-              {{ item.title }}
-            </div>
-            <div class="info-block__title_small">
-              {{ item.subtitle }}
+            <div class="info-block third">
+              <div class="third__wrapper">
+                <div class="third__container">
+                  <div class="third info-block__title_big info-block__title_blue">
+                    {{ item.title }}
+                  </div>
+                  <div class="info-block__title_small">
+                    {{ item.subtitle }}
+                  </div>
+                </div>
+                <div class="third bnt__container">
+                  <base-btn
+                    v-if="item.button"
+                    :mode="'outline'"
+                    class="bnt__claim"
+                  >
+                    {{ $t('mining.claimReward') }}
+                  </base-btn>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -259,28 +274,17 @@ export default {
             });
           },
         },
-        {
-          name: this.$t('mining.removeLiquidity'),
-          clickFunc: () => {
-            this.ShowModal({
-              key: modals.removeLiquidity,
-              isBNB: this.miningPoolId === 'BNB',
-            });
-          },
-        },
       ],
       cards: [
         {
           title: this.$tc('mining.dollarsCount', '417.1M'),
           subtitle: this.$t('mining.liquidity'),
+          button: false,
         },
         {
           title: this.$tc('mining.dollarsCount', '417.1M'),
-          subtitle: this.$t('mining.volume24h'),
-        },
-        {
-          title: '-',
-          subtitle: this.$t('mining.myPoolShare'),
+          subtitle: this.$t('mining.totalReward'),
+          button: true,
         },
       ],
     };
@@ -404,6 +408,7 @@ export default {
       &__btns {
         display: grid;
         gap: 10px;
+        align-content: center;
       }
 
       &__about {
@@ -439,9 +444,9 @@ export default {
         position: relative;
       }
 
-      &__triple {
+      &__double {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 20px;
       }
 
@@ -450,7 +455,7 @@ export default {
         padding: 20px;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         gap: 10px;
       }
 
@@ -578,7 +583,7 @@ export default {
             grid-column-start: 1;
           }
         }
-        &__triple {
+        &__double {
           grid-template-columns: repeat(2, 1fr);
         }
         &__title {
@@ -589,6 +594,14 @@ export default {
         }
       }
     }
+  }
+}
+.third {
+  width: 100%;
+  align-self: center;
+  &__wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 </style>
