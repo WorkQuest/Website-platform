@@ -182,7 +182,7 @@
           :page="'quests'"
         />
         <base-pager
-          v-if="totalPagesValue !== 1"
+          v-if="totalPagesValue > 1"
           v-model="page"
           :total-pages="totalPagesValue"
         />
@@ -308,6 +308,10 @@ export default {
       };
       this.zoomNumber = zoom[this.distanceIndex];
     },
+  },
+  mounted() {
+    this.SetLoader(true);
+    this.SetLoader(false);
   },
   methods: {
     showPriceSearch() {
