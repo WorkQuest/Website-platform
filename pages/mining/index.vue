@@ -79,7 +79,7 @@
               </div>
               <a
                 class="btn__doc"
-                href="/docs/agreement.pdf"
+                href="/docs/terms.pdf"
                 target="_blank"
               >
                 {{ $t('pension.download') }}
