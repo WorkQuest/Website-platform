@@ -292,10 +292,9 @@
     },
     "runtime": {
       "runtime": "Runtime",
-      "days": "Days",
-      "weeks": "Weeks",
-      "months": "Months",
-      "years": "Years"
+      "urgent": "Urgent",
+      "shortTerm": "Short term",
+      "fixedDelivery": "Fixed delivery"
     },
     "spec": {
       "spec": "Specialization",
