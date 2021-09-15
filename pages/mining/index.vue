@@ -55,6 +55,7 @@
           </div>
         </div>
         <div
+          v-if="documents.length"
           class="info-block"
         >
           <div class="info-block__name_bold">
@@ -62,6 +63,8 @@
           </div>
           <div class="info-block__documents">
             <div
+              v-for="(item, i) in documents"
+              :key="i"
               class="document"
             >
               <img
@@ -71,16 +74,16 @@
               >
               <div class="document__title">
                 <div class="document__name">
-                  {{ $t('mining.agreement') }}
+                  {{ item.name }}
                 </div>
                 <div class="document__size">
-                  {{ $tc('mining.kb', '150') }}
+                  {{ item.size }}
                 </div>
               </div>
               <a
-                class="btn__doc"
-                href="/docs/agreement.pdf"
+                :href="item.url"
                 target="_blank"
+                class="btn__doc"
               >
                 {{ $t('pension.download') }}
                 <img
@@ -104,6 +107,13 @@ import modals from '~/store/modals/modals';
 export default {
   data() {
     return {
+      documents: [
+        {
+          name: this.$t('mining.agreement'),
+          size: this.$tc('mining.kb', '47'),
+          url: '/docs/agreement.pdf',
+        },
+      ],
       items: [
         {
           id: 'ETH',
