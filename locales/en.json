@@ -1989,6 +1989,7 @@
     "download": "Download",
     "tableHead": {
       "poolAddress": "Pool address",
+      "swaps": "Swaps",
       "totalValue": "Total value",
       "tokenAmount": "Token amount",
       "account": "Account",
@@ -2012,6 +2013,8 @@
     "addLiquidity": "Add liquidity",
     "removeLiquidity": "Remove liquidity",
     "liquidity": "Liquidity",
+    "totalLiquidity": "Total liquidity",
+    "reward": "Reward",
     "claimReward": "Claim Reward",
     "totalReward": "Total reward",
     "volume24h": "Volume (24h)",
