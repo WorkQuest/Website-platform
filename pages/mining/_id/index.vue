@@ -71,7 +71,7 @@
                     {{ $tc('mining.dollarsCount', '417.1M') }}
                   </div>
                   <div class="info-block__title_small">
-                    {{ $t('mining.liquidity') }}
+                    {{ $t('mining.totalLiquidity') }}
                   </div>
                 </div>
               </div>
@@ -85,7 +85,7 @@
                     {{ $tc('mining.dollarsCount', '417.1M') }}
                   </div>
                   <div class="info-block__title_small">
-                    {{ $t('mining.liquidity') }}
+                    {{ $t('mining.stake') }}
                   </div>
                 </div>
                 <div class="third__container">
@@ -93,7 +93,7 @@
                     {{ $tc('mining.dollarsCount', '417.1M') }}
                   </div>
                   <div class="info-block__title_small">
-                    {{ $t('mining.liquidity') }}
+                    {{ $t('mining.reward') }}
                   </div>
                 </div>
               </div>
@@ -136,7 +136,7 @@
           <div class="info-block__name">
             {{ $t('mining.liquidity') }}
           </div>
-          <chart :special-chart-data="liquidityData" />
+          <chart :special-chart-data="chartData" />
         </div>
         <div class="info-block">
           <div class="info-block__name">
@@ -348,10 +348,12 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
       isConnected: 'web3/isConnected',
+      chartData: 'defi/getTokensData',
     }),
   },
   async mounted() {
     this.SetLoader(true);
+    await this.$store.dispatch('defi/getTokensData');
     this.SetLoader(false);
   },
   methods: {
