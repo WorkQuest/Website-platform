@@ -84,6 +84,7 @@
                 :href="item.url"
                 target="_blank"
                 class="btn__doc"
+                :download="item.name"
               >
                 {{ $t('pension.download') }}
                 <img
