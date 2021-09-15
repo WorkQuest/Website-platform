@@ -74,7 +74,7 @@
                   {{ $t('mining.agreement') }}
                 </div>
                 <div class="document__size">
-                  {{ $tc('mining.kb', '46') }}
+                  {{ $tc('mining.kb', '150') }}
                 </div>
               </div>
               <a
