@@ -125,11 +125,7 @@
           <div class="info-block__name">
             {{ $t('mining.liquidity') }}
           </div>
-          <img
-            class="info-block__chart"
-            src="~assets/img/ui/chart.svg"
-            alt=""
-          >
+          <chart :special-chart-data="liquidityData" />
         </div>
         <div class="info-block">
           <div class="info-block__name">
@@ -187,11 +183,50 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import chart from './graphics_data';
 
 export default {
+  components: {
+    chart,
+  },
   data() {
     return {
       miningPoolId: localStorage.getItem('miningPoolId'),
+      liquidityData: [
+        {
+          dailyVolumeETH: '17024018.188059142832868675',
+          dailyVolumeToken: '17024018.188059142832868675',
+          dailyVolumeUSD: '18865334.03201155184017137387479776',
+          date: 1617580800,
+          id: '0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf-18722',
+          priceUSD: '1.003018917709787311907788752458121',
+          totalLiquidityETH: '367.346836145411334464',
+          totalLiquidityToken: '769041.766283502030565438',
+          totalLiquidityUSD: '771363.4400913014097002313559314181',
+        },
+        {
+          dailyVolumeETH: '5841734.084398305890412297',
+          dailyVolumeToken: '5841734.084398305890412297',
+          dailyVolumeUSD: '5685951.351345564322103218925444859',
+          date: 1617667200,
+          id: '0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf-18723',
+          priceUSD: '0.7437987859035461475125111386347728',
+          totalLiquidityETH: '316.418637874359603048',
+          totalLiquidityToken: '900640.392659958350620848',
+          totalLiquidityUSD: '669895.2305961700964244514200962465',
+        },
+        {
+          dailyVolumeETH: '3192762.922141697249920307',
+          dailyVolumeToken: '3192762.922141697249920307',
+          dailyVolumeUSD: '1996757.963445969928940738680242677',
+          date: 1617753600,
+          id: '0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf-18724',
+          priceUSD: '0.4865065018888760508688608146106165',
+          totalLiquidityETH: '288.645994130591875628',
+          totalLiquidityToken: '1171186.155417468928646151',
+          totalLiquidityUSD: '569789.6795328343274116212294770718',
+        },
+      ],
       items: [
         {
           poolAddress: 'Swap WQT for ETH',
