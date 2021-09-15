@@ -663,14 +663,26 @@ export default {
 .third {
   width: 100%;
   align-self: center;
+  @include _575 {
+    &__container {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+  }
   &__triple {
     display: grid;
     grid-gap: 20px;
     grid-template-columns: repeat(3, 1fr);
+    @include _575 {
+      grid-template-columns: auto;
+    }
   }
   &__wrapper {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    @include _575 {
+      grid-template-columns: auto;
+    }
   }
 }
 </style>

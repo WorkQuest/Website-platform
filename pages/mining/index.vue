@@ -81,7 +81,7 @@
                 </div>
               </div>
               <a
-                href="/docs/agreement.pdf"
+                :href="item.url"
                 target="_blank"
                 class="btn__doc"
               >
@@ -110,8 +110,8 @@ export default {
       documents: [
         {
           name: this.$t('mining.agreement'),
-          size: this.$tc('mining.kb', '27.1'),
-          url: '',
+          size: this.$tc('mining.kb', '47'),
+          url: '/docs/agreement.pdf',
         },
       ],
       items: [
