@@ -90,5 +90,7 @@ export default {
   },
   env: {
     baseUrl: process.env.BASE_URL,
+    GMAPKEY: process.env.GMAPKEY,
+    PROD: process.env.PROD,
   },
 };
