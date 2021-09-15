@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="$t('mining.claimRewards')"
+    :title="$t('mining.stake')"
   >
     <div class="claim__content content">
       <validation-observer
@@ -15,12 +15,6 @@
           rules="required|decimal"
           :name="$t('modals.amount')"
         />
-        <div class="content__subtitle">
-          {{ $t('modals.yourRewardBalance') }}
-          <span class="content__subtitle_blue">
-            {{ balance }} {{ currency }}
-          </span>
-        </div>
         <div class="content__container">
           <base-btn
             :mode="'outline'"

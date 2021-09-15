@@ -62,29 +62,39 @@
         </div>
         <div class="info-block__double">
           <div
-            v-for="(item, i) in cards"
-            :key="i"
             class="info-block__third"
           >
             <div class="info-block third">
               <div class="third__wrapper">
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ item.title }}
+                    {{ $tc('mining.dollarsCount', '417.1M') }}
                   </div>
                   <div class="info-block__title_small">
-                    {{ item.subtitle }}
+                    {{ $t('mining.liquidity') }}
                   </div>
                 </div>
-                <div class="third bnt__container">
-                  <base-btn
-                    v-if="item.button"
-                    :mode="'outline'"
-                    class="bnt__claim"
-                    @click="openModalClaimRewards()"
-                  >
-                    {{ $t('mining.claimReward') }}
-                  </base-btn>
+              </div>
+            </div>
+          </div>
+          <div class="info-block__third">
+            <div class="info-block third">
+              <div class="third__wrapper">
+                <div class="third__container">
+                  <div class="third info-block__title_big info-block__title_blue">
+                    {{ $tc('mining.dollarsCount', '417.1M') }}
+                  </div>
+                  <div class="info-block__title_small">
+                    {{ $t('mining.liquidity') }}
+                  </div>
+                </div>
+                <div class="third__container">
+                  <div class="third info-block__title_big info-block__title_blue">
+                    {{ $tc('mining.dollarsCount', '417.1M') }}
+                  </div>
+                  <div class="info-block__title_small">
+                    {{ $t('mining.liquidity') }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -95,12 +105,7 @@
             <div class="third__triple">
               <base-btn
                 class="btn_bl"
-              >
-                {{ $t('mining.approve') }}
-              </base-btn>
-              <base-btn
-                class="btn_bl"
-                mode="outline"
+                @click="openModalClaimRewards()"
               >
                 {{ $t('mining.stake') }}
               </base-btn>
@@ -109,6 +114,12 @@
                 mode="outline"
               >
                 {{ $t('mining.unstake') }}
+              </base-btn>
+              <base-btn
+                :mode="'outline'"
+                class="bnt__claim"
+              >
+                {{ $t('mining.claimReward') }}
               </base-btn>
             </div>
           </div>
@@ -248,7 +259,7 @@ export default {
       testFields: [
         {
           key: 'poolAddress',
-          label: this.$t('mining.tableHead.poolAddress'),
+          label: this.$t('mining.tableHead.poolAddress'), // изменить на  Swaps
           thStyle: {
             padding: '0 0 0 23px',
             height: '27px',
