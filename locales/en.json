@@ -292,10 +292,9 @@
     },
     "runtime": {
       "runtime": "Runtime",
-      "days": "Days",
-      "weeks": "Weeks",
-      "months": "Months",
-      "years": "Years"
+      "urgent": "Urgent",
+      "shortTerm": "Short term",
+      "fixedDelivery": "Fixed delivery"
     },
     "spec": {
       "spec": "Specialization",
@@ -1976,6 +1975,9 @@
   "mining": {
     "claimRewards": "Claim rewards",
     "liquidityMining": "Liquidity mining",
+    "approve": "Approve",
+    "stake": "Stake",
+    "unstake": "Unstake",
     "liquidityMiningSub": "Is a DeFi (decentralized finance) mechanism in which participants supply cryptocurrencies into liquidity pools, and being rewarded with fees and tokens based on their share of the total pool liquidity.",
     "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "pools": "Pools",

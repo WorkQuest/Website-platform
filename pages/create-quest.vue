@@ -17,22 +17,15 @@
           <div class="page__category">
             <div class="page runtime">
               <div class="runtime__container">
-                <base-field
-                  v-model="runtimeValue"
-                  :type="'number'"
-                  :label="$t('quests.runtime.runtime')"
-                  :placeholder="0"
-                  :name="$t('quests.runtime.runtime')"
-                  rules="required|decimal"
-                />
-                <div class="runtime__dd">
+                <div class="runtime page__dd">
                   <base-dd
-                    v-model="runtimeIndex"
-                    type="blue"
+                    v-model="runtimeValue"
                     :items="runtime"
-                    :placeholder="$t('quests.createQuest.choosePeriod')"
+                    type="gray"
+                    :label="$t('quests.runtime.runtime')"
+                    :placeholder="runtime[0]"
+                    :name="$t('quests.runtime.runtime')"
                     rules="required"
-                    :name="$t('quests.createQuest.choosePeriod')"
                   />
                 </div>
               </div>
@@ -379,7 +372,7 @@ export default {
       currency: ' WUSD',
       addresses: [],
       optionsModal: {
-        url: 'http://httpbin.org/anything',
+        url: process.env.BASE_URL,
         addRemoveLinks: true,
         dictRemoveFile: '<span class="icon-close_big"></span>',
         dictCancelUpload: '<span class="icon-close_big"></span>',
@@ -514,10 +507,9 @@ export default {
     },
     runtime() {
       return [
-        this.$t('quests.runtime.days'),
-        this.$t('quests.runtime.weeks'),
-        this.$t('quests.runtime.months'),
-        this.$t('quests.runtime.years'),
+        this.$t('quests.runtime.urgent'),
+        this.$t('quests.runtime.shortTerm'),
+        this.$t('quests.runtime.fixedDelivery'),
       ];
     },
     employment() {
@@ -537,6 +529,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    console.log(this.$refs.el);
     this.SetLoader(false);
   },
   methods: {
@@ -890,12 +883,10 @@ export default {
 .runtime {
   &__container {
     display: grid;
-    grid-template-columns: 6fr 2fr;
     grid-gap: 10px;
     align-items: flex-start;
   }
   &__dd {
-    padding-top: 37px;
     display: flex;
     align-items: flex-start;
   }
