@@ -90,6 +90,29 @@
             </div>
           </div>
         </div>
+        <div class="info-block__third">
+          <div class="info-block third">
+            <div class="third__triple">
+              <base-btn
+                class="btn_bl"
+              >
+                {{ $t('mining.approve') }}
+              </base-btn>
+              <base-btn
+                class="btn_bl"
+                mode="outline"
+              >
+                {{ $t('mining.stake') }}
+              </base-btn>
+              <base-btn
+                class="btn_bl"
+                mode="outline"
+              >
+                {{ $t('mining.unstake') }}
+              </base-btn>
+            </div>
+          </div>
+        </div>
         <div class="info-block">
           <div class="info-block__name_bold">
             {{ $t('mining.liquidityPoolProviders') }}
@@ -594,6 +617,11 @@ export default {
 .third {
   width: 100%;
   align-self: center;
+  &__triple {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+  }
   &__wrapper {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
