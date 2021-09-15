@@ -372,7 +372,7 @@ export default {
       currency: ' WUSD',
       addresses: [],
       optionsModal: {
-        url: 'http://httpbin.org/anything',
+        url: process.env.BASE_URL,
         addRemoveLinks: true,
         dictRemoveFile: '<span class="icon-close_big"></span>',
         dictCancelUpload: '<span class="icon-close_big"></span>',
@@ -529,6 +529,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    console.log(this.$refs.el);
     this.SetLoader(false);
   },
   methods: {
