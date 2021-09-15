@@ -18,12 +18,13 @@ export default {
   computed: {
     ...mapGetters({
       accessToken: 'sumsub/getSumSubBackendToken',
+      userData: 'user/getUserData',
     }),
   },
   async mounted() {
     this.SetLoader(true);
     await this.createAccessToken();
-    await this.getApiHealthStatus();
+    // await this.getApiHealthStatus();
     this.initSumSub();
     this.SetLoader(false);
   },
@@ -47,37 +48,26 @@ export default {
       }
     },
     initSumSub() {
-      const { token } = this.accessToken;
-      function launchWebSdk() {
-        const snsWebSdkInstance = snsWebSdk.init(
-          token,
-          (newAccessTokenCallback) => {
-            // Access token expired
-            // get a new one and pass it to the callback to re-initiate the WebSDK
-            newAccessTokenCallback(token);
-          },
-        )
-          // flag to start SDK for the test environment
-          // please remove it as soon as migrating to the production environment
-          .onTestEnv()
-          .withConf({
-            lang: 'en', // language of WebSDK texts and comments (ISO 639-1 format)
-            onMessage: (type, payload) => {
-              // see below what kind of messages the WebSDK generates
-              console.log('WebSDK onMessage', type, payload);
-            },
-            uiConf: {
-              customCss: 'https://url.com/styles.css',
-            },
-            onError: (error) => {
-              console.error('WebSDK onError', error);
-            },
-          })
-          .build();
+      const accessToken = this.accessToken.token;
+      const applicantEmail = this.userData.email;
+      const applicantPhone = this.userData.phone;
 
-        snsWebSdkInstance.launch('#sumsub-websdk-container');
-      }
-      launchWebSdk();
+      const snsWebSdkInstance = snsWebSdk.Builder('https://test-api.sumsub.com', 'basic-kyc')
+        .withAccessToken(accessToken, () => {
+        })
+        .withConf({
+          lang: 'en',
+          email: applicantEmail,
+          phone: applicantPhone, // if available
+          onMessage: (type, payload) => {
+            console.log('WebSDK onMessage', type, payload);
+          },
+          onError: (error) => {
+            console.log('WebSDK onError', error);
+          },
+        }).build();
+
+      snsWebSdkInstance.launch('#sumsub-websdk-container');
     },
   },
 };
