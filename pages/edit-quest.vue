@@ -12,7 +12,7 @@
           class="page"
         >
           <h2 class="page__title">
-            {{ $t('quests.createAQuest') }}
+            {{ $t('quests.editAQuest') }}
           </h2>
           <div class="page__category">
             <div class="page runtime">
@@ -76,7 +76,6 @@
                     :placeholder="$t('settings.selectSpec')"
                     :items="specializations.titles"
                     :mode="'small'"
-                    rules="required"
                     :label="$t('settings.specialization')"
                     @input="switchSkill($event, key)"
                   />
@@ -89,7 +88,6 @@
                       :placeholder="$t('settings.selectSkills')"
                       :items="specializations.skills[specIndex[key]]"
                       :mode="'small'"
-                      rules="required"
                       :label="$t('settings.skillsInput')"
                       @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
                     />
@@ -206,7 +204,7 @@
                 :disabled="!(invalid === false && !(selectedSkills[1].length === 0))"
                 @click="handleSubmit(toRiseViews)"
               >
-                {{ $t('quests.createAQuest') }}
+                {{ $t('quests.editAQuest') }}
               </base-btn>
             </div>
           </div>
@@ -299,7 +297,7 @@
               <div class="btn-container__btn">
                 <base-btn
                   :mode="'outline'"
-                  @click="toCreateQuest()"
+                  @click="toEditQuest()"
                 >
                   {{ $t('meta.skipAndEnd') }}
                 </base-btn>
@@ -390,8 +388,9 @@ export default {
   },
   computed: {
     ...mapGetters({
+      questData: 'quests/getQuest',
       userData: 'user/getUserData',
-      step: 'quests/getCurrentStepCreateQuest',
+      step: 'quests/getCurrentStepEditQuest',
     }),
     days() {
       return [
@@ -529,10 +528,21 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    await this.editQuestFill();
     console.log(this.$refs.el);
     this.SetLoader(false);
   },
   methods: {
+    async editQuestFill() {
+      console.log(this.questData);
+      this.runtimeValue = 1;
+      this.questTitle = await this.questData.title;
+      this.address = await this.questData.locationPlaceName;
+      this.price = await this.questData.price;
+      this.textarea = await this.questData.description;
+      this.coordinates.lng = await this.questData.location.longitude;
+      this.coordinates.lat = await this.questData.location.latitude;
+    },
     cardStatus(item) {
       let style;
       if (item.code === 1) {
@@ -578,7 +588,7 @@ export default {
       }
     },
     toRiseViews() {
-      this.$store.dispatch('quests/getCurrentStepCreateQuest', 2);
+      this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
     },
     showPaymentModal() {
       this.ShowModal({
@@ -587,7 +597,7 @@ export default {
       });
     },
     goBack() {
-      this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
+      this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
     },
     addSkillToBadge(event, object, index, key) {
       if (!this.selectedSkills[key].includes(object[index]) && this.selectedSkills[key].length <= 4) {
@@ -633,18 +643,7 @@ export default {
         console.log(e);
       }
     },
-    async toCreateQuest() {
-      const specAndSkills = {};
-      // eslint-disable-next-line guard-for-in,no-restricted-syntax
-      for (const spec in this.specIndex) {
-        if (this.specIndex[spec] !== -1) {
-          const specName = this.specializations.titles[this.specIndex[spec]];
-          specAndSkills[specName] = this.selectedSkills[spec];
-        }
-      }
-      await this.createQuest(specAndSkills);
-    },
-    async createQuest(specAndSkills) {
+    async editQuest(specAndSkills) {
       const payload = {
         priority: this.priorityIndex,
         category: 'Default',
@@ -661,19 +660,20 @@ export default {
         },
       };
       try {
-        const response = await this.$store.dispatch('quests/questCreate', payload);
+        const questId = await this.questData.id;
+        const response = await this.$store.dispatch('quests/editQuest', { payload, questId });
         if (response) {
-          this.showModalCreatedQuest();
-          this.showToastCreated();
-          await this.$router.push(`/quests/${response.result.id}`);
-          await this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
+          this.showModalEditQuest();
+          this.showToastEdited();
+          await this.$router.push(`/quests/${questId}`);
+          await this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
         }
       } catch (e) {
         console.log(e);
         this.showToastError(e);
       }
     },
-    showModalCreatedQuest() {
+    showModalEditQuest() {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
@@ -681,11 +681,11 @@ export default {
         subtitle: this.$t('modals.youCanUpdateThisInYourProfile'),
       });
     },
-    showToastCreated() {
+    showToastEdited() {
       return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.questCreated'),
+        title: this.$t('toasts.questEdited'),
         variant: 'success',
-        text: this.$t('toasts.questCreated'),
+        text: this.$t('toasts.questEdited'),
       });
     },
     showToastError(e) {
@@ -694,6 +694,17 @@ export default {
         variant: 'warning',
         text: e.response?.data?.msg,
       });
+    },
+    async toEditQuest() {
+      const specAndSkills = this.questData?.skillFilters || {};
+      // eslint-disable-next-line guard-for-in,no-restricted-syntax
+      for (const spec in this.specIndex) {
+        if (this.specIndex[spec] !== -1) {
+          const specName = this.specializations.titles[this.specIndex[spec]];
+          specAndSkills[specName] = this.selectedSkills[spec];
+        }
+      }
+      await this.editQuest(specAndSkills);
     },
   },
 };

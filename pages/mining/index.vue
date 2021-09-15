@@ -3,10 +3,10 @@
     <div class="mining-page__container">
       <div class="mining-page__header">
         <div class="title">
-          {{ $t('mining.liquidityManning') }}
+          {{ $t('mining.liquidityMining') }}
         </div>
         <div class="title_sub">
-          {{ $t('mining.templateText') }}
+          {{ $t('mining.liquidityMiningSub') }}
         </div>
       </div>
       <div class="mining-page__content">
@@ -80,14 +80,18 @@
                   {{ item.size }}
                 </div>
               </div>
-              <button class="btn__doc">
+              <a
+                :href="item.url"
+                target="_blank"
+                class="btn__doc"
+              >
                 {{ $t('pension.download') }}
                 <img
                   class="download"
                   src="~/assets/img/ui/download.svg"
                   alt=""
                 >
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -105,19 +109,9 @@ export default {
     return {
       documents: [
         {
-          name: this.$t('mining.docName'),
-          size: this.$tc('mining.mb', '1.2'),
-          url: '',
-        },
-        {
-          name: this.$t('mining.docName'),
-          size: this.$tc('mining.mb', '1.2'),
-          url: '',
-        },
-        {
-          name: this.$t('mining.docName'),
-          size: this.$tc('mining.mb', '1.2'),
-          url: '',
+          name: this.$t('mining.agreement'),
+          size: this.$tc('mining.kb', '47'),
+          url: '/docs/agreement.pdf',
         },
       ],
       items: [
@@ -125,16 +119,6 @@ export default {
           id: 'ETH',
           poolAddress: this.$t('mining.table.poolAddress'),
           assets: this.$t('mining.table.assets'),
-          template1: this.$t('mining.table.sdsdsdsd'),
-          template2: this.$t('mining.table.sdsdsdsd'),
-          template3: this.$t('mining.sdsdsdsd'),
-          volume: this.$t('mining.table.volume'),
-          chooseBtn: this.$t('mining.choose'),
-        },
-        {
-          id: 'BNB',
-          poolAddress: this.$t('mining.table.poolAddress'),
-          assets: this.$t('mining.table.assets2'),
           template1: this.$t('mining.table.sdsdsdsd'),
           template2: this.$t('mining.table.sdsdsdsd'),
           template3: this.$t('mining.sdsdsdsd'),
@@ -322,9 +306,13 @@ export default {
 
       &__doc {
         @extend .btn;
+        display: flex;
         width: 220px;
         height: 46px;
+        justify-content: center;
+        align-items: center;
         margin: 0;
+        text-decoration: none;
 
         .download {
           display: unset;
@@ -475,8 +463,8 @@ export default {
   &__table {
 
     .table {
-      margin: 0;
       border-radius: 0 !important;
+      margin: 0 0 40px;
 
       &__value {
         font-weight: 400;
@@ -538,6 +526,7 @@ export default {
       }
       .btn {
         &__doc {
+          text-decoration: none;
           border: 0;
           width: 23px;
           font-size: 0;

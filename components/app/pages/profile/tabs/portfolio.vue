@@ -23,7 +23,7 @@
               <base-btn
                 class="portfolio__edit"
                 mode="portfolioEdit"
-                @click="showEditCaseModal(item.id)"
+                @click="showEditCaseModal(item.id, item.title, item.description)"
               >
                 <span
                   class="icon-edit"
@@ -34,7 +34,7 @@
               v-for="(img, j) in item.medias"
               :key="j"
               class="portfolio__img"
-              @click="openImage(img.url, item.title, item.description)"
+              @click="openImage(img.url, item.title, item.description, item.id)"
             >
               <img
                 class="portfolio__image"
@@ -44,9 +44,6 @@
               <div class="portfolio__footer footer">
                 <div class="footer__name">
                   {{ item.title }}
-                </div>
-                <div class="footer__description">
-                  {{ item.description }}
                 </div>
               </div>
             </div>
@@ -77,6 +74,7 @@ export default {
       if (window.innerWidth >= 761) {
         this.ShowModal({
           key: modals.showImage,
+          portfolio: true,
           imageSrc: src,
           title: name,
           desc,
@@ -97,7 +95,7 @@ export default {
       return this.$store.dispatch('main/showToast', {
         title: this.$t('toasts.error'),
         variant: 'warning',
-        text: `${e}`,
+        text: e.response?.data?.msg,
       });
     },
     showDeleteCaseModal(id) {
@@ -106,10 +104,12 @@ export default {
         id,
       });
     },
-    showEditCaseModal(id) {
+    showEditCaseModal(id, title, desc) {
       this.ShowModal({
         key: modals.editCase,
         id,
+        title,
+        desc,
       });
     },
   },
@@ -133,9 +133,15 @@ export default {
   }
   &__edit {
     z-index: 10000;
+    transition: .5s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
   }
   &__close {
     z-index: 10000;
+    transition: .5s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
   }
   &__card {
     border-radius: 6px;
@@ -168,6 +174,12 @@ export default {
     width: 100%;
   }
 }
+.portfolio__item:hover .portfolio__edit,
+.portfolio__item:hover .portfolio__close {
+  transition: .5s ease-in-out;
+  opacity: 1;
+  visibility: visible;
+}
 
 .footer {
   display: flex;
@@ -187,17 +199,6 @@ export default {
     font-weight: 500;
     width: 100%;
     text-align: center;
-  }
-  &__description {
-    @include text-simple;
-    margin-top: 4px;
-    color: $black800;
-    font-size: 12px;
-    font-weight: 400;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
   }
 }
 

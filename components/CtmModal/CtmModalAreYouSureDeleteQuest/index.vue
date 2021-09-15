@@ -25,7 +25,7 @@
         </base-btn>
         <base-btn
           class="action__button"
-          @click="showErrorModal"
+          @click="deleteQuest()"
         >
           {{ $t('meta.delete') }}
         </base-btn>
@@ -46,11 +46,41 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      questData: 'quests/getQuest',
     }),
   },
   methods: {
     hide() {
       this.CloseModal();
+    },
+    async deleteQuest() {
+      try {
+        const questId = this.questData.id;
+        await this.$store.dispatch('quests/deleteQuest', { questId });
+        this.hide();
+        this.toMyQuests();
+        this.showToastDeleted();
+      } catch (e) {
+        console.log(e);
+        this.showToastError(e);
+      }
+    },
+    toMyQuests() {
+      this.$router.push('/my');
+    },
+    showToastDeleted() {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.questDeleted'),
+        variant: 'success',
+        text: this.$t('toasts.questDeleted'),
+      });
+    },
+    showToastError(e) {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.error'),
+        variant: 'warning',
+        text: e.response?.data?.msg,
+      });
     },
     showErrorModal() {
       this.ShowModal({

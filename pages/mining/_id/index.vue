@@ -53,26 +53,74 @@
           </div>
           <div class="info-block__btns">
             <base-btn
-              v-for="(item, i) in btns"
-              :key="i"
+              :link="'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH'"
               class="btn_bl"
-              @click="item.clickFunc()"
             >
-              {{ item.name }}
+              {{ $t('mining.addLiquidity') }}
             </base-btn>
           </div>
         </div>
-        <div class="info-block__triple">
+        <div class="info-block__double">
           <div
-            v-for="(item, i) in cards"
-            :key="i"
             class="info-block__third"
           >
-            <div class="info-block__title_big info-block__title_blue">
-              {{ item.title }}
+            <div class="info-block third">
+              <div class="third__wrapper">
+                <div class="third__container">
+                  <div class="third info-block__title_big info-block__title_blue">
+                    {{ $tc('mining.dollarsCount', '417.1M') }}
+                  </div>
+                  <div class="info-block__title_small">
+                    {{ $t('mining.liquidity') }}
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="info-block__title_small">
-              {{ item.subtitle }}
+          </div>
+          <div class="info-block__third">
+            <div class="info-block third">
+              <div class="third__wrapper">
+                <div class="third__container">
+                  <div class="third info-block__title_big info-block__title_blue">
+                    {{ $tc('mining.dollarsCount', '417.1M') }}
+                  </div>
+                  <div class="info-block__title_small">
+                    {{ $t('mining.liquidity') }}
+                  </div>
+                </div>
+                <div class="third__container">
+                  <div class="third info-block__title_big info-block__title_blue">
+                    {{ $tc('mining.dollarsCount', '417.1M') }}
+                  </div>
+                  <div class="info-block__title_small">
+                    {{ $t('mining.liquidity') }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="info-block__third">
+          <div class="info-block third">
+            <div class="third__triple">
+              <base-btn
+                class="btn_bl"
+                @click="openModalClaimRewards()"
+              >
+                {{ $t('mining.stake') }}
+              </base-btn>
+              <base-btn
+                class="btn_bl"
+                mode="outline"
+              >
+                {{ $t('mining.unstake') }}
+              </base-btn>
+              <base-btn
+                :mode="'outline'"
+                class="bnt__claim"
+              >
+                {{ $t('mining.claimReward') }}
+              </base-btn>
             </div>
           </div>
         </div>
@@ -88,11 +136,7 @@
           <div class="info-block__name">
             {{ $t('mining.liquidity') }}
           </div>
-          <img
-            class="info-block__chart"
-            src="~assets/img/ui/chart.svg"
-            alt=""
-          >
+          <chart :special-chart-data="liquidityData" />
         </div>
         <div class="info-block">
           <div class="info-block__name">
@@ -107,36 +151,36 @@
               thead-class="table__header"
               tbody-tr-class="table__row"
             >
-              <template #cell(userName)="el">
+              <template #cell(poolAddress)="el">
                 <div class="user__info">
-                  <img
-                    class="ava"
-                    src="~/assets/img/temp/avatar-small.jpg"
-                    alt=""
-                  >
                   <div class="user__name">
-                    {{ el.item.userName }}
+                    {{ el.item.poolAddress }}
                   </div>
                 </div>
               </template>
-              <template #cell(userID)="el">
+              <template #cell(totalValue)="el">
                 <div class="user__value_gray">
-                  {{ el.item.userID }}
+                  {{ el.item.totalValue }}
                 </div>
               </template>
-              <template #cell(txHash)="el">
+              <template #cell(tokenAmount0)="el">
                 <div class="user__value_gray">
-                  {{ el.item.txHash }}
+                  {{ el.item.tokenAmount0 }}
+                </div>
+              </template>
+              <template #cell(tokenAmount1)="el">
+                <div class="user__value_gray">
+                  {{ el.item.tokenAmount1 }}
+                </div>
+              </template>
+              <template #cell(account)="el">
+                <div class="user__value_green">
+                  {{ el.item.account }}
                 </div>
               </template>
               <template #cell(time)="el">
-                <div class="user__value_gray">
-                  {{ el.item.time }}
-                </div>
-              </template>
-              <template #cell(status)="el">
                 <div class="user__value_green">
-                  {{ el.item.status }}
+                  {{ el.item.time }}
                 </div>
               </template>
             </b-table>
@@ -150,35 +194,72 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import chart from './graphics_data';
 
 export default {
+  components: {
+    chart,
+  },
   data() {
     return {
       miningPoolId: localStorage.getItem('miningPoolId'),
-      items: [
+      liquidityData: [
         {
-          userName: this.$t('pension.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('pension.table.userId'),
-          txHash: this.$t('pension.table.txHash'),
-          time: this.$t('pension.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('pension.table.status'),
+          dailyVolumeETH: '17024018.188059142832868675',
+          dailyVolumeToken: '17024018.188059142832868675',
+          dailyVolumeUSD: '18865334.03201155184017137387479776',
+          date: 1617580800,
+          id: '0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf-18722',
+          priceUSD: '1.003018917709787311907788752458121',
+          totalLiquidityETH: '367.346836145411334464',
+          totalLiquidityToken: '769041.766283502030565438',
+          totalLiquidityUSD: '771363.4400913014097002313559314181',
         },
         {
-          userName: this.$t('pension.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('pension.table.userId'),
-          txHash: this.$t('pension.table.txHash'),
-          time: this.$t('pension.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('pension.table.status'),
+          dailyVolumeETH: '5841734.084398305890412297',
+          dailyVolumeToken: '5841734.084398305890412297',
+          dailyVolumeUSD: '5685951.351345564322103218925444859',
+          date: 1617667200,
+          id: '0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf-18723',
+          priceUSD: '0.7437987859035461475125111386347728',
+          totalLiquidityETH: '316.418637874359603048',
+          totalLiquidityToken: '900640.392659958350620848',
+          totalLiquidityUSD: '669895.2305961700964244514200962465',
+        },
+        {
+          dailyVolumeETH: '3192762.922141697249920307',
+          dailyVolumeToken: '3192762.922141697249920307',
+          dailyVolumeUSD: '1996757.963445969928940738680242677',
+          date: 1617753600,
+          id: '0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf-18724',
+          priceUSD: '0.4865065018888760508688608146106165',
+          totalLiquidityETH: '288.645994130591875628',
+          totalLiquidityToken: '1171186.155417468928646151',
+          totalLiquidityUSD: '569789.6795328343274116212294770718',
+        },
+      ],
+      items: [
+        {
+          poolAddress: 'Swap WQT for ETH',
+          totalValue: '2 382 $',
+          tokenAmount0: '0.3467 ETH',
+          tokenAmount1: '0.3467 ETH',
+          account: '0xfece...55c2',
+          time: '46 days ago',
+        },
+        {
+          poolAddress: 'Swap WQT for ETH',
+          totalValue: '2 382 $',
+          tokenAmount0: '0.3467 ETH',
+          tokenAmount1: '0.3467 ETH',
+          account: '0xfece...55c2',
+          time: '46 days ago',
         },
       ],
       testFields: [
         {
-          key: 'userName',
-          label: this.$t('referral.tableHead.name'),
+          key: 'poolAddress',
+          label: this.$t('mining.tableHead.poolAddress'), // изменить на  Swaps
           thStyle: {
             padding: '0 0 0 23px',
             height: '27px',
@@ -189,8 +270,8 @@ export default {
           },
         },
         {
-          key: 'userID',
-          label: this.$t('referral.tableHead.userID'),
+          key: 'totalValue',
+          label: this.$t('mining.tableHead.totalValue'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -201,8 +282,32 @@ export default {
           },
         },
         {
-          key: 'txHash',
-          label: this.$t('referral.tableHead.txHash'),
+          key: 'tokenAmount0',
+          label: this.$t('mining.tableHead.tokenAmount'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
+        },
+        {
+          key: 'tokenAmount1',
+          label: this.$t('mining.tableHead.tokenAmount'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
+        },
+        {
+          key: 'account',
+          label: this.$t('mining.tableHead.account'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -214,7 +319,7 @@ export default {
         },
         {
           key: 'time',
-          label: this.$t('referral.tableHead.time'),
+          label: this.$t('mining.tableHead.time'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -222,50 +327,6 @@ export default {
           },
           tdAttr: {
             style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'amount',
-          label: this.$t('referral.tableHead.amount'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'status',
-          label: this.$t('referral.tableHead.status'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-      ],
-      btns: [
-        {
-          name: this.$t('mining.addLiquidity'),
-          clickFunc: () => {
-            this.ShowModal({
-              key: modals.addLiquidity,
-              isBNB: this.miningPoolId === 'BNB',
-            });
-          },
-        },
-        {
-          name: this.$t('mining.removeLiquidity'),
-          clickFunc: () => {
-            this.ShowModal({
-              key: modals.removeLiquidity,
-              isBNB: this.miningPoolId === 'BNB',
-            });
           },
         },
       ],
@@ -273,14 +334,12 @@ export default {
         {
           title: this.$tc('mining.dollarsCount', '417.1M'),
           subtitle: this.$t('mining.liquidity'),
+          button: false,
         },
         {
           title: this.$tc('mining.dollarsCount', '417.1M'),
-          subtitle: this.$t('mining.volume24h'),
-        },
-        {
-          title: '-',
-          subtitle: this.$t('mining.myPoolShare'),
+          subtitle: this.$t('mining.totalReward'),
+          button: true,
         },
       ],
     };
@@ -298,6 +357,11 @@ export default {
   methods: {
     async connectToMetamask() {
       await this.$store.dispatch('web3/connect');
+    },
+    openModalClaimRewards() {
+      this.ShowModal({
+        key: modals.claimRewards,
+      });
     },
     handleBackToMainMining() {
       this.$router.push('/mining');
@@ -404,6 +468,7 @@ export default {
       &__btns {
         display: grid;
         gap: 10px;
+        align-content: center;
       }
 
       &__about {
@@ -439,9 +504,9 @@ export default {
         position: relative;
       }
 
-      &__triple {
+      &__double {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 20px;
       }
 
@@ -450,7 +515,7 @@ export default {
         padding: 20px;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         gap: 10px;
       }
 
@@ -488,7 +553,6 @@ export default {
 
       &__info {
         display: grid;
-        grid-template-columns: 33px 1fr;
         align-items: center;
         gap: 10px;
       }
@@ -578,7 +642,7 @@ export default {
             grid-column-start: 1;
           }
         }
-        &__triple {
+        &__double {
           grid-template-columns: repeat(2, 1fr);
         }
         &__title {
@@ -588,6 +652,36 @@ export default {
           }
         }
       }
+    }
+  }
+}
+.btn {
+  &_bl {
+    text-decoration: none;
+  }
+}
+.third {
+  width: 100%;
+  align-self: center;
+  @include _575 {
+    &__container {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+  }
+  &__triple {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    @include _575 {
+      grid-template-columns: auto;
+    }
+  }
+  &__wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    @include _575 {
+      grid-template-columns: auto;
     }
   }
 }

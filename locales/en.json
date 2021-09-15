@@ -292,10 +292,9 @@
     },
     "runtime": {
       "runtime": "Runtime",
-      "days": "Days",
-      "weeks": "Weeks",
-      "months": "Months",
-      "years": "Years"
+      "urgent": "Urgent",
+      "shortTerm": "Short term",
+      "fixedDelivery": "Fixed delivery"
     },
     "spec": {
       "spec": "Specialization",
@@ -344,6 +343,7 @@
     "period": "Period of time",
     "EstimatedPayment": "Estimated payment:",
     "createAQuest": "Create a quest",
+    "editAQuest": "Edit a quest",
     "activeQuests": "Active quests",
     "completedQuests": "Completed quests",
     "oneTime": "One time",
@@ -818,6 +818,9 @@
     }
   },
   "toasts": {
+    "questEdited": "Quest edited!",
+    "questCreated": "Quest created!",
+    "questDeleted": "Quest deleted!",
     "caseDeleted": "Case deleted!",
     "caseAdded": "Case added!",
     "caseEdited": "Case edited!",
@@ -830,6 +833,7 @@
       "participants": "Participants",
       "chatName": "Chat name"
     },
+    "yourRewardBalance": "Your reward balance:",
     "deletePortfolio": "Are you sure delete portfolio?",
     "addTitle": "Please add title...",
     "addDesc": "Please add description...",
@@ -1969,16 +1973,26 @@
     "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
-    "liquidityManning": "Liquidity manning",
+    "claimRewards": "Claim rewards",
     "liquidityMining": "Liquidity mining",
+    "approve": "Approve",
+    "stake": "Stake",
+    "unstake": "Unstake",
+    "liquidityMiningSub": "Is a DeFi (decentralized finance) mechanism in which participants supply cryptocurrencies into liquidity pools, and being rewarded with fees and tokens based on their share of the total pool liquidity.",
     "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "pools": "Pools",
     "choose": "Choose",
     "information": "Information",
     "docName": "Some_document.pdf",
+    "agreement": "WorkQuest Liquidity Mining User Agreement.pdf",
+    "kb": "{count} KB",
     "download": "Download",
     "tableHead": {
       "poolAddress": "Pool address",
+      "totalValue": "Total value",
+      "tokenAmount": "Token amount",
+      "account": "Account",
+      "time": "Time",
       "assets": "Assets",
       "sdsdsdsd": "sdsdsdsd",
       "volume": "Volume"
@@ -1998,6 +2012,8 @@
     "addLiquidity": "Add liquidity",
     "removeLiquidity": "Remove liquidity",
     "liquidity": "Liquidity",
+    "claimReward": "Claim Reward",
+    "totalReward": "Total reward",
     "volume24h": "Volume (24h)",
     "myPoolShare": "My pool share",
     "liquidityPoolProviders": "Liquidity pool providers",

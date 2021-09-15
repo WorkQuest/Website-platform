@@ -86,6 +86,7 @@
       <CtmModalAreYouSureDeleteQuest v-if="modals.areYouSureDeleteQuest === currentModalKey" />
       <CtmModalEditCase v-if="modals.editCase === currentModalKey" />
       <CtmModalDeleteCase v-if="modals.deleteCase === currentModalKey" />
+      <CtmModalClaimRewards v-if="modals.claimRewards === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -166,6 +167,7 @@ import CtmModalClaim from './CtmModalClaim';
 import CtmModalPriceSearch from './CtmModalPrice';
 import CtmModalEditCase from './CtmModalEditCase';
 import CtmModalDeleteCase from './CtmModalDeleteCase';
+import CtmModalClaimRewards from './CtmModalClaimRewards';
 
 export default {
   name: 'ModalBox',
@@ -244,6 +246,7 @@ export default {
     CtmModalPriceSearch,
     CtmModalEditCase,
     CtmModalDeleteCase,
+    CtmModalClaimRewards,
   },
   data: () => ({
     modals,

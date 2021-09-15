@@ -75,4 +75,5 @@ export default {
   areYouSureDeleteQuest: 'areYouSureDeleteQuest',
   editCase: 'editCase',
   deleteCase: 'deleteCase',
+  claimRewards: 'claimRewards',
 };
