@@ -34,7 +34,7 @@ export default {
           intersect: false,
           callbacks: {
             title: () => '',
-            label: (tooltipItem) => tooltipItem.value,
+            label: (tooltipItem) => `${tooltipItem.value} $`,
           },
           displayColors: false,
           titleFontSize: 16,
