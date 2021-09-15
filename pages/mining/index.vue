@@ -74,12 +74,12 @@
                   {{ $t('mining.agreement') }}
                 </div>
                 <div class="document__size">
-                  {{ $tc('mining.kb', '189') }}
+                  {{ $tc('mining.kb', '46') }}
                 </div>
               </div>
               <a
                 class="btn__doc"
-                href="/docs/terms.pdf"
+                href="/docs/agreement.pdf"
                 target="_blank"
               >
                 {{ $t('pension.download') }}
