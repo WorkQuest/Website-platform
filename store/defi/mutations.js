@@ -5,4 +5,7 @@ export default {
   setSwapsData(state, data) {
     state.swapsData = data;
   },
+  setTokensDayData(state, data) {
+    state.tokensDayData = data;
+  },
 };
