@@ -68,7 +68,7 @@
               <div class="third__wrapper">
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.dollarsCount', '417.1M') }}
+                    {{ $tc('mining.dollarsCount', liquidityUSD) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.totalLiquidity') }}
@@ -292,6 +292,7 @@ export default {
           },
         },
       ],
+      totalLiquidityUSD: '',
       page: 1,
       perPager: 10,
       totalPagesValue: 1,
@@ -303,6 +304,7 @@ export default {
       isConnected: 'web3/isConnected',
       chartData: 'defi/getTokensData',
       tableData: 'defi/getSwapsData',
+      tokensDayData: 'defi/getTokensDayData',
     }),
     totalPages() {
       if (this.tableData) {
@@ -319,6 +321,9 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    await this.getTokensData();
+    await this.getTokensDayData();
+    await this.roundLiquidityUSD();
     await this.$store.dispatch('defi/getTokensData', 'limit=100&offset=0');
     await this.$store.dispatch('defi/getSwapsData', `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
     this.tableDataInit();
@@ -327,6 +332,17 @@ export default {
   methods: {
     async connectToMetamask() {
       await this.$store.dispatch('web3/connect');
+    },
+    async roundLiquidityUSD() {
+      const item = await this.tokensDayData?.totalLiquidityUSD;
+      this.liquidityUSD = Math.floor(item);
+    },
+    async getTokensData() {
+      await this.$store.dispatch('defi/getTokensData');
+    },
+    async getTokensDayData() {
+      const query = 'limit=1';
+      await this.$store.dispatch('defi/getTokensDayData', query);
     },
     tableDataInit() {
       this.items = [];

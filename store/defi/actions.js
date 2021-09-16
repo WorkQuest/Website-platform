@@ -1,4 +1,9 @@
 export default {
+  async getTokensDayData({ commit }, query) {
+    const response = await this.$axios.$get(`/v1/liquidity/tokenDay?${query || ''}`);
+    commit('setTokensDayData', response.result);
+    return response;
+  },
   async getTokensData({ commit }, query) {
     const response = await this.$axios.$get(`/v1/liquidity/tokenDay?${query || ''}`);
     commit('setTokensData', response.result);
