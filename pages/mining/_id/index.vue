@@ -331,11 +331,8 @@ export default {
   },
   watch: {
     async page() {
-      this.SetLoader(true);
-      this.items = [];
       await this.$store.dispatch('defi/getSwapsData', `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
       this.tableDataInit();
-      this.SetLoader(false);
     },
   },
   async mounted() {
@@ -350,6 +347,7 @@ export default {
       await this.$store.dispatch('web3/connect');
     },
     tableDataInit() {
+      this.items = [];
       this.tableData.forEach((data) => {
         let poolAddress = '';
         let tokenAmount0 = '';
