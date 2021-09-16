@@ -780,6 +780,8 @@ export default {
       imageData: 'user/getImageData',
       additionalInfo: 'user/getAdditionalInfo',
       getUserAddress: 'user/getUserAddress',
+      applicantStatus: 'sumsub/getApplicantStatus',
+      accessToken: 'sumsub/getSumSubBackendToken',
     }),
     specializations() {
       const specializations = Object.keys(this.$t('settings.specializations')).length;
@@ -819,6 +821,14 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    getApplicantStatus() {
+      const id = this.accessToken.userId;
+      try {
+        this.$store.dispatch('sumsub/applicantStatus', id);
+      } catch (e) {
+        console.log(e);
+      }
+    },
     goToSumSub() {
       this.$router.push('/sumsub');
     },

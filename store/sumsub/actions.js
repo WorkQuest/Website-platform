@@ -3,8 +3,17 @@ export default {
     const response = await this.$axios.$get('/v1/sumsub/create-access-token');
     commit('setAccessTokenBackend', response.result);
     return response.result;
-  }, // work
-
+  },
+  async verifySumsubSender() {
+    const response = await this.$axios.$post(`/resources/inspectionCallbacks/testDigest?secretKey=${process.env.SECRET_SUMSUB}`);
+    console.log(response);
+    return response.result;
+  },
+  async applicantStatus({ commit }, id) {
+    const response = await this.$axios.$post('/v1/sumsub/applicant-reviewed', id);
+    commit('setApplicantStatus', response.result);
+    return response.result;
+  },
   async getAccessToken({ commit }, payload) {
     const response = await this.$axios.$post(`https://test-api.sumsub.com/resources/accessTokens?userId=${payload.userId}&levelName=${payload.levelName}`);
     commit('setAccessToken', response.result);
@@ -39,11 +48,6 @@ export default {
   async changingProvidedInfo({ commit }, payload) {
     const response = await this.$axios.$patch(`https://test-api.sumsub.com/resources/applicants/${payload.applicantId}/fixedInfo`);
     commit('setProvidedInfo', response.result);
-    return response.result;
-  },
-  async getApplicantStatus({ commit }, payload) {
-    const response = await this.$axios.$get(`https://test-api.sumsub.com/resources/applicants/${payload.applicantId}/status`);
-    commit('setApplicantStatus', response.result);
     return response.result;
   },
   async requestApplicantCheck({ commit }, payload) {
