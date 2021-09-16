@@ -20,7 +20,7 @@ export default function ({ $axios, store, app }, inject) {
       return $axios(originalRequest);
     } else if (error.response.data.code !== 400010) {
       console.log(error);
-      store.dispatch('main/showToast', {
+      await store.dispatch('main/showToast', {
         title: 'Error',
         text: error.response.data.msg,
       });
