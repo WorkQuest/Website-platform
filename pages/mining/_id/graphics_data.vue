@@ -16,7 +16,7 @@ export default {
   },
   props: {
     specialChartData: {
-      type: Array,
+      type: [Array, Object],
       default: () => [],
     },
   },
@@ -100,8 +100,6 @@ export default {
         for (let i = 0; i < chartDataCount; i += 1) {
           labels.push(this.specialChartData[i].date * 1000);
         }
-        console.log(chartData);
-        console.log(labels);
         return {
           labels,
           datasets: [

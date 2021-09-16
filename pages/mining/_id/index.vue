@@ -174,9 +174,13 @@
                 </div>
               </template>
               <template #cell(account)="el">
-                <div class="user__value_green">
+                <a
+                  class="user__value_green"
+                  :href="`https://etherscan.io/address/${el.item.account}`"
+                  target="_blank"
+                >
                   {{ el.item.account }}
-                </div>
+                </a>
               </template>
               <template #cell(time)="el">
                 <div class="user__value_green">
@@ -186,6 +190,15 @@
             </b-table>
           </div>
         </div>
+        <div
+          class="pager__block"
+        >
+          <base-pager
+            v-if="totalPagesValue > 1"
+            v-model="page"
+            :total-pages="totalPagesValue"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -193,6 +206,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 import modals from '~/store/modals/modals';
 import chart from './graphics_data';
 
@@ -203,63 +217,11 @@ export default {
   data() {
     return {
       miningPoolId: localStorage.getItem('miningPoolId'),
-      liquidityData: [
-        {
-          dailyVolumeETH: '17024018.188059142832868675',
-          dailyVolumeToken: '17024018.188059142832868675',
-          dailyVolumeUSD: '18865334.03201155184017137387479776',
-          date: 1617580800,
-          id: '0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf-18722',
-          priceUSD: '1.003018917709787311907788752458121',
-          totalLiquidityETH: '367.346836145411334464',
-          totalLiquidityToken: '769041.766283502030565438',
-          totalLiquidityUSD: '771363.4400913014097002313559314181',
-        },
-        {
-          dailyVolumeETH: '5841734.084398305890412297',
-          dailyVolumeToken: '5841734.084398305890412297',
-          dailyVolumeUSD: '5685951.351345564322103218925444859',
-          date: 1617667200,
-          id: '0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf-18723',
-          priceUSD: '0.7437987859035461475125111386347728',
-          totalLiquidityETH: '316.418637874359603048',
-          totalLiquidityToken: '900640.392659958350620848',
-          totalLiquidityUSD: '669895.2305961700964244514200962465',
-        },
-        {
-          dailyVolumeETH: '3192762.922141697249920307',
-          dailyVolumeToken: '3192762.922141697249920307',
-          dailyVolumeUSD: '1996757.963445969928940738680242677',
-          date: 1617753600,
-          id: '0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf-18724',
-          priceUSD: '0.4865065018888760508688608146106165',
-          totalLiquidityETH: '288.645994130591875628',
-          totalLiquidityToken: '1171186.155417468928646151',
-          totalLiquidityUSD: '569789.6795328343274116212294770718',
-        },
-      ],
-      items: [
-        {
-          poolAddress: 'Swap WQT for ETH',
-          totalValue: '2 382 $',
-          tokenAmount0: '0.3467 ETH',
-          tokenAmount1: '0.3467 ETH',
-          account: '0xfece...55c2',
-          time: '46 days ago',
-        },
-        {
-          poolAddress: 'Swap WQT for ETH',
-          totalValue: '2 382 $',
-          tokenAmount0: '0.3467 ETH',
-          tokenAmount1: '0.3467 ETH',
-          account: '0xfece...55c2',
-          time: '46 days ago',
-        },
-      ],
+      items: [],
       testFields: [
         {
           key: 'poolAddress',
-          label: this.$t('mining.tableHead.poolAddress'), // изменить на  Swaps
+          label: this.$t('mining.tableHead.swaps'),
           thStyle: {
             padding: '0 0 0 23px',
             height: '27px',
@@ -330,18 +292,9 @@ export default {
           },
         },
       ],
-      cards: [
-        {
-          title: this.$tc('mining.dollarsCount', '417.1M'),
-          subtitle: this.$t('mining.liquidity'),
-          button: false,
-        },
-        {
-          title: this.$tc('mining.dollarsCount', '417.1M'),
-          subtitle: this.$t('mining.totalReward'),
-          button: true,
-        },
-      ],
+      page: 1,
+      perPager: 10,
+      totalPagesValue: 1,
     };
   },
   computed: {
@@ -349,16 +302,61 @@ export default {
       options: 'modals/getOptions',
       isConnected: 'web3/isConnected',
       chartData: 'defi/getTokensData',
+      tableData: 'defi/getSwapsData',
     }),
+    totalPages() {
+      if (this.tableData) {
+        return Math.ceil(30 / this.perPager);
+      }
+      return 0;
+    },
+  },
+  watch: {
+    async page() {
+      await this.$store.dispatch('defi/getSwapsData', `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
+      this.tableDataInit();
+    },
   },
   async mounted() {
     this.SetLoader(true);
-    await this.$store.dispatch('defi/getTokensData');
+    await this.$store.dispatch('defi/getTokensData', 'limit=100&offset=0');
+    await this.$store.dispatch('defi/getSwapsData', `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
+    this.tableDataInit();
     this.SetLoader(false);
   },
   methods: {
     async connectToMetamask() {
       await this.$store.dispatch('web3/connect');
+    },
+    tableDataInit() {
+      this.items = [];
+      this.tableData.forEach((data) => {
+        let poolAddress = '';
+        let tokenAmount0 = '';
+        let tokenAmount1 = '';
+        if (data.amount0Out > 0) {
+          poolAddress = `Swap ${data.pair.token0.symbol} for ${data.pair.token1.symbol}`;
+          tokenAmount0 = `${(parseInt((data.amount0Out) * 1000, 10)) / 1000} ${data.pair.token0.symbol}`;
+          tokenAmount1 = `${(parseInt((data.amount1In) * 1000, 10)) / 1000} ${data.pair.token1.symbol}`;
+        } else {
+          poolAddress = `Swap ${data.pair.token1.symbol} for ${data.pair.token0.symbol}`;
+          tokenAmount0 = `${(parseInt((data.amount1Out) * 1000, 10)) / 1000} ${data.pair.token1.symbol}`;
+          tokenAmount1 = `${(parseInt((data.amount0In) * 1000, 10)) / 1000} ${data.pair.token0.symbol}`;
+        }
+        const totalValue = `${Math.round(data.amountUSD)} $`;
+        const account = data.to;
+        const date = new Date(data.timestamp * 1000);
+        const time = moment(date).startOf('hour').fromNow();
+        this.items.push({
+          poolAddress,
+          totalValue,
+          tokenAmount0,
+          tokenAmount1,
+          account,
+          time,
+        });
+      });
+      this.totalPagesValue = this.totalPages;
     },
     openModalClaimRewards() {
       this.ShowModal({
@@ -685,6 +683,11 @@ export default {
     @include _575 {
       grid-template-columns: auto;
     }
+  }
+}
+.pager {
+  &__block {
+    width: auto;
   }
 }
 </style>
