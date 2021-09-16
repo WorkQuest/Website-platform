@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="$t('mining.stake')"
+    :title="options.type === 1 ? $t('mining.stake') : 'Unstake'"
   >
     <div class="claim__content content">
       <validation-observer
@@ -24,7 +24,7 @@
           </base-btn>
           <base-btn
             :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(hide)"
+            @click="handleSubmit(options.type === 1 ? staking : unstaking)"
           >
             {{ $t('meta.submit') }}
           </base-btn>
@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'CtmModalClaimRewards',
   data() {
@@ -44,9 +46,29 @@ export default {
       currency: 'WUSD',
     };
   },
+  computed: {
+    ...mapGetters({
+      accountData: 'web3/getAccountData',
+      options: 'modals/getOptions',
+    }),
+  },
   methods: {
     hide() {
       this.CloseModal();
+    },
+    async staking() {
+      console.log('wqqqwqwqw', this.accountData.decimals.stakeDecimal);
+      await this.$store.dispatch('web3/stake', {
+        decimals: this.accountData.decimals.stakeDecimal,
+        amount: this.amount,
+      });
+    },
+    async unstaking() {
+      console.log('unstacking');
+      await this.$store.dispatch('web3/unstake', {
+        decimals: this.accountData?.decimals?.stakeDecimal,
+        amount: this.amount,
+      });
     },
   },
 };

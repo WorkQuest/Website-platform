@@ -6,4 +6,6 @@ export default () => ({
   },
   balance: {},
   account: {},
+  tokenWETH: {},
+  accountData: {},
 });
