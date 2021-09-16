@@ -1,11 +1,26 @@
 import Web3 from 'web3';
 import Web4 from '@cryptonteam/web4';
+import BigNumber from 'bignumber.js';
+import * as abi from '~/abi/abi';
 
 let web3 = null;
 let web4 = null;
 
 let pingTimer = null;
 let account = {};
+
+let stakeTokenDecimalsMain;
+let stakeTokenDecimalsLp;
+
+let store;
+let axios;
+
+if (process.browser) {
+  window.onNuxtReady(({ $store, $axios }) => {
+    store = $store;
+    axios = $axios;
+  });
+}
 
 export const success = (res) => ({
   ok: true,
@@ -18,6 +33,27 @@ export const error = (code = 90000, msg = '', data = null) => ({
   msg,
   data,
 });
+
+const getStakeTokenDecimals = (postFix) => {
+  if (postFix === 'Main') {
+    return stakeTokenDecimalsMain;
+  } if (postFix === 'Lp') {
+    return stakeTokenDecimalsLp;
+  }
+  console.log('unknown postfix');
+  return false;
+};
+
+export const fetchContractData = async (_method, _abi, _address, _params, _provider = web3) => {
+  try {
+    if (_provider === undefined) return {};
+    const Contract = new _provider.eth.Contract(_abi, _address);
+    return await Contract.methods[_method].apply(this, _params).call();
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
 
 const getChainTypeById = (chainId) => {
   if (+chainId === 1 || +chainId === 4) {
@@ -52,15 +88,6 @@ export const startPingingMetamask = async (callback) => {
     return success();
   } catch (err) {
     return error(500, 'pingingMetamask err', err);
-  }
-};
-
-export const initWeb3Contract = async (abi, address) => {
-  try {
-    const contract = await new web3.eth.Contract(abi, address, { from: account.address });
-    return contract;
-  } catch (e) {
-    return error(500, '', e.message);
   }
 };
 
@@ -106,37 +133,75 @@ export const disconnectWeb3 = () => {
   account = {};
 };
 
-export const createInstance = async (abi, address) => {
-  const abs = web4.getContractAbstraction(abi);
+export const createInstance = async (ab, address) => {
+  const abs = web4.getContractAbstraction(ab);
   return await abs.getInstance(address);
 };
 
 export const getAccount = () => account;
 
-export const stake = async (_stakeType, _amount) => {
+export const staking = async (_decimals, _amount) => {
   try {
-    await preInitStake();
-    const stakeInstanse = getStakeInstance(_stakeType);
-    const tokenInstance = getStakeTokenInstanse(_stakeType);
-    const recipient = stakeInstanse.address;
-    const decimals = getStakeTokenDecimals(_stakeType);
-    const form = 10 ** decimals;
+    const form = 10 ** _decimals;
     let amount = Math.floor(_amount * form) / form;
-    amount = new BigNumber(amount.toString()).shiftedBy(+decimals).toString();
+    amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
     console.log('amount with precision', amount);
-    const allowance = new BigNumber(await tokenInstance.allowance(userAddress, recipient)).toString();
+    const allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS])).toString();
     console.log('Allowance: ', allowance);
     if (+allowance < +amount) {
       store.dispatch('main/setStatusText', 'Approving');
       console.log('Approving...');
-      await tokenInstance.approve(recipient, new BigNumber('1000000').shiftedBy(+decimals).toString());
+      const instance = await createInstance(abi.ERC20, process.env.LP_TOKEN);
+      console.log(instance);
+      const re = await instance.approve(process.env.STAKING_ADDRESS, amount);
+      console.log(re);
+      // const approve = await fetchContractData('approve', abi.ERC20, process.env.LP_TOKEN, [process.env.STAKING_ADDRESS, amount]);
+      // console.log(approve);
     }
     console.log('Staking...');
     store.dispatch('main/setStatusText', 'Staking');
-    const response = await stakeInstanse.stake(amount);
+    const contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
+    const days = 30;
+    console.log(contractInstance);
+    // const stakeRes = new BigNumber(await contractInstance.minStake()).shiftedBy(-18).toString();
+    const stakeRes = await contractInstance.stake(amount, '30');
+    console.log('stakeRes', stakeRes);
+    // const response = await fetchContractData('stake', abi.Stake3, process.env.STAKING_ADDRESS, [amount]);
     console.log('Staking done');
-    return output(response);
+    return response;
   } catch (err) {
     return error(500, 'stake error', err);
+  }
+};
+
+export const unStaking = async (_decimals, _amount) => {
+  console.log(3);
+  try {
+    const form = 10 ** _decimals;
+    let amount = Math.floor(_amount * form) / form;
+    console.log(4, _decimals, amount);
+    amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+    console.log('amount with precision', amount);
+    console.log('Unstaking...');
+    store.dispatch('main/setStatusText', 'Staking');
+    const contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
+    console.log(contractInstance);
+    const stakeRes = await contractInstance.unstake(amount);
+    console.log('stakeRes', stakeRes);
+    console.log('Unstaking done');
+    return response;
+  } catch (err) {
+    return error(500, 'stake error', err);
+  }
+};
+
+export const unstakeOfStake = async (_postFix, _amount) => {
+  try {
+    const stakeInstanse = getStakeInstance(_postFix);
+    const decimals = getStakeTokenDecimals(_postFix);
+    const response = await stakeInstanse.unstake(new BigNumber(_amount).shiftedBy(+decimals).toString());
+    return output(response);
+  } catch (err) {
+    return error(500, 'unstake error', err);
   }
 };
