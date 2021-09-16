@@ -5,12 +5,7 @@ import {
   disconnectWeb3,
   startPingingMetamask,
 } from '~/utils/web3';
-// import * as abi from '~/abis';
-
-const abi = {
-  EXAMPLE: '',
-  EXAMPLE_WEB3: '',
-};
+import * as abi from '~/abi/abi';
 
 export default {
   disconnect({ commit }) {
@@ -41,15 +36,15 @@ export default {
     }
   },
 
-  async initExampleContract({ commit }) {
-    const [abs, address] = [abi.EXAMPLE, process.env.EXAMPLE_ADDRESS];
+  async initWETHToken({ commit }) {
+    const [abs, address] = [abi.ERC20, process.env.WETH_TOKEN];
     const instance = await createInstance(abs, address);
 
     const payload = {
       address,
       instance,
     };
-    commit('setExampleContract', payload);
+    commit('setWETHToken', payload);
   },
 
   async initWeb3ExampleContract({ commit }) {

@@ -112,3 +112,31 @@ export const createInstance = async (abi, address) => {
 };
 
 export const getAccount = () => account;
+
+export const stake = async (_stakeType, _amount) => {
+  try {
+    await preInitStake();
+    const stakeInstanse = getStakeInstance(_stakeType);
+    const tokenInstance = getStakeTokenInstanse(_stakeType);
+    const recipient = stakeInstanse.address;
+    const decimals = getStakeTokenDecimals(_stakeType);
+    const form = 10 ** decimals;
+    let amount = Math.floor(_amount * form) / form;
+    amount = new BigNumber(amount.toString()).shiftedBy(+decimals).toString();
+    console.log('amount with precision', amount);
+    const allowance = new BigNumber(await tokenInstance.allowance(userAddress, recipient)).toString();
+    console.log('Allowance: ', allowance);
+    if (+allowance < +amount) {
+      store.dispatch('main/setStatusText', 'Approving');
+      console.log('Approving...');
+      await tokenInstance.approve(recipient, new BigNumber('1000000').shiftedBy(+decimals).toString());
+    }
+    console.log('Staking...');
+    store.dispatch('main/setStatusText', 'Staking');
+    const response = await stakeInstanse.stake(amount);
+    console.log('Staking done');
+    return output(response);
+  } catch (err) {
+    return error(500, 'stake error', err);
+  }
+};

@@ -305,6 +305,7 @@ export default {
       chartData: 'defi/getTokensData',
       tableData: 'defi/getSwapsData',
       tokensDayData: 'defi/getTokensDayData',
+      tokenWETH: 'web3/getTokenWETH',
     }),
     totalPages() {
       if (this.tableData) {
@@ -332,6 +333,8 @@ export default {
   methods: {
     async connectToMetamask() {
       await this.$store.dispatch('web3/connect');
+      await this.$store.dispatch('web3/initWETHToken');
+      console.log(this.tokenWETH);
     },
     async roundLiquidityUSD() {
       const item = await this.tokensDayData?.totalLiquidityUSD;
@@ -351,13 +354,13 @@ export default {
         let tokenAmount0 = '';
         let tokenAmount1 = '';
         if (data.amount0Out > 0) {
-          poolAddress = `Swap ${data.pair.token0.symbol} for ${data.pair.token1.symbol}`;
-          tokenAmount0 = `${(parseInt((data.amount0Out) * 1000, 10)) / 1000} ${data.pair.token0.symbol}`;
-          tokenAmount1 = `${(parseInt((data.amount1In) * 1000, 10)) / 1000} ${data.pair.token1.symbol}`;
+          poolAddress = 'Swap WQT for WETH';
+          tokenAmount0 = `${(parseInt((data.amount0Out) * 1000, 10)) / 1000} WQT`;
+          tokenAmount1 = `${(parseInt((data.amount1In) * 1000, 10)) / 1000} WETH`;
         } else {
-          poolAddress = `Swap ${data.pair.token1.symbol} for ${data.pair.token0.symbol}`;
-          tokenAmount0 = `${(parseInt((data.amount1Out) * 1000, 10)) / 1000} ${data.pair.token1.symbol}`;
-          tokenAmount1 = `${(parseInt((data.amount0In) * 1000, 10)) / 1000} ${data.pair.token0.symbol}`;
+          poolAddress = 'Swap WETH for WQT';
+          tokenAmount0 = `${(parseInt((data.amount1Out) * 1000, 10)) / 1000} WETH`;
+          tokenAmount1 = `${(parseInt((data.amount0In) * 1000, 10)) / 1000} WQT`;
         }
         const totalValue = `${Math.round(data.amountUSD)} $`;
         const account = data.to;

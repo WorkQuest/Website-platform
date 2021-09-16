@@ -5,11 +5,8 @@ export default {
   setBalance(state, payload) {
     state.balance = payload;
   },
-  setExampleContract(state, payload) {
-    state.tokens = {
-      ...state.tokens,
-      exampleContract: payload,
-    };
+  setWETHToken(state, payload) {
+    state.tokenWETH = payload;
   },
   setWeb3ExampleToken(state, payload) {
     state.tokens = {
