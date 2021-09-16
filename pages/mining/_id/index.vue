@@ -217,29 +217,11 @@ export default {
   data() {
     return {
       miningPoolId: localStorage.getItem('miningPoolId'),
-      items1: [
-        {
-          poolAddress: 'Swap WQT for ETH',
-          totalValue: '2 382 $',
-          tokenAmount0: '0.3467 ETH',
-          tokenAmount1: '0.3467 ETH',
-          account: '0xfece...55c2',
-          time: '46 days ago',
-        },
-        {
-          poolAddress: 'Swap WQT for ETH',
-          totalValue: '2 382 $',
-          tokenAmount0: '0.3467 ETH',
-          tokenAmount1: '0.3467 ETH',
-          account: '0xfece...55c2',
-          time: '46 days ago',
-        },
-      ],
       items: [],
       testFields: [
         {
           key: 'poolAddress',
-          label: this.$t('mining.tableHead.poolAddress'), // изменить на  Swaps
+          label: this.$t('mining.tableHead.swaps'),
           thStyle: {
             padding: '0 0 0 23px',
             height: '27px',
