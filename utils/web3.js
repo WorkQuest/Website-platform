@@ -191,6 +191,22 @@ export const unStaking = async (_decimals, _amount) => {
   }
 };
 
+export const claimRewards = async (_decimals, _amount) => {
+  console.log('ClaimRewards');
+  try {
+    console.log('claiming...');
+    const contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
+    console.log(contractInstance);
+    const stakeRes = await contractInstance.claim();
+    const rewards = await contractInstance.rewardTotal();
+    console.log('rewards', rewards);
+    console.log('stakeRes', stakeRes);
+    console.log('claiming done');
+    return '';
+  } catch (err) {
+    return error(500, 'claim error', err);
+  }
+};
 export const unstakeOfStake = async (_postFix, _amount) => {
   try {
     const stakeInstanse = getStakeInstance(_postFix);
