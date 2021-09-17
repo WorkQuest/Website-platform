@@ -25,7 +25,7 @@
           class="mining-page__connect"
           @click="disconnectFromMetamask"
         >
-          {{ $t('meta.connected') }}
+          {{ $t('meta.disconnect') }}
         </base-btn>
       </div>
       <div class="mining-page__content">
