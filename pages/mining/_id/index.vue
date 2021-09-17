@@ -82,7 +82,7 @@
               <div class="third__wrapper">
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.dollarsCount', stakedAmount) }}
+                    {{ $tc('mining.lpCount', stakedAmount) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.stake') }}
@@ -90,7 +90,7 @@
                 </div>
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.dollarsCount', rewardAmount) }}
+                    {{ $tc('mining.wqtCount', rewardAmount) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.reward') }}
