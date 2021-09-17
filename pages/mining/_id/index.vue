@@ -364,7 +364,7 @@ export default {
         }
         const totalValue = `${Math.round(data.amountUSD)} $`;
         const account = data.to;
-        const date = new Date(data.timestamp * 1000);
+        const date = new Date(data.transaction.timestamp * 1000);
         const time = moment(date).startOf('hour').fromNow();
         this.items.push({
           poolAddress,
