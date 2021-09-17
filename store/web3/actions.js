@@ -12,7 +12,7 @@ import * as abi from '~/abi/abi';
 BigNumber.config({ EXPONENTIAL_AT: 60 });
 
 export default {
-  async disconnect({ commit }) {
+  disconnect({ commit }) {
     disconnectWeb3();
     commit('setIsConnected', false);
     commit('clearTokens');
