@@ -22,8 +22,8 @@
         <base-btn
           v-else
           mode="light"
-          :disabled="true"
           class="mining-page__connect"
+          @click="disconnectFromMetamask"
         >
           {{ $t('meta.connected') }}
         </base-btn>
@@ -119,6 +119,7 @@
               <base-btn
                 :mode="'outline'"
                 class="bnt__claim"
+                @click="claimRewards()"
               >
                 {{ $t('mining.claimReward') }}
               </base-btn>
@@ -332,6 +333,14 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async disconnectFromMetamask() {
+      await this.$store.dispatch('web3/disconnect');
+      console.log('disconnectFromMetamask');
+    },
+    async claimRewards() {
+      await this.$store.dispatch('web3/claimRewards');
+      console.log('start claimRewards');
+    },
     async connectToMetamask() {
       await this.$store.dispatch('web3/connect');
       await this.$store.dispatch('web3/initWeb3ExampleContract');
