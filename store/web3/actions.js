@@ -53,8 +53,6 @@ export default {
     const stakeBalance = await fetchContractData('balanceOf', abi.ERC20, stakeTokenAddress, [getAccount().address]);
     const rewardBalance = await fetchContractData('balanceOf', abi.ERC20, rewardTokenAddress, [getAccount().address]);
     console.log('1', stakeDecimal, stakeSymbol, new BigNumber(stakeBalance).shiftedBy(-stakeDecimal).toString(), rewardDecimal, rewardSymbol, new BigNumber(rewardBalance).shiftedBy(-rewardDecimal).toString());
-    const userInfo = await fetchContractData('getInfoByAddress', abi.StakingWQ, process.env.STAKING_ADDRESS, [getAccount().address]);
-    console.log(userInfo);
 
     const payload = {
       userPurse: {
@@ -68,7 +66,18 @@ export default {
         rewardDecimal,
       },
     };
+    console.log(payload);
     commit('setAccountData', payload);
+  },
+
+  async getTokensData({ commit }, { rewardDecimal, stakeDecimal }) {
+    const userInfo = await fetchContractData('getInfoByAddress', abi.StakingWQ, process.env.STAKING_ADDRESS, [getAccount().address]);
+    const payload = {
+      stakeTokenAmount: new BigNumber(userInfo.staked_).shiftedBy(-stakeDecimal).toString(),
+      rewardTokenAmount: new BigNumber(userInfo.claim_).shiftedBy(-rewardDecimal).toString(),
+    };
+    commit('setStakeAndRewardData', payload);
+    return payload;
   },
 
   async stake({ commit }, { decimals, amount }) {

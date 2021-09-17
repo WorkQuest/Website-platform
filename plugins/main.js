@@ -10,6 +10,15 @@ Vue.component('tippy', TippyComponent);
 Vue.mixin({
 
   methods: {
+    async signerUser(callback) {
+      if (this.$store.getters['user/hasUserAddress']) {
+        callback();
+      } else {
+        const r = await this.$store.dispatch('user/checkWallet');
+        // eslint-disable-next-line no-unused-expressions
+        r.ok && callback();
+      }
+    },
     ShowModal(payload) {
       this.$store.dispatch('modals/show', {
         key: modals.default,

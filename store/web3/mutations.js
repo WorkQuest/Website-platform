@@ -26,4 +26,10 @@ export default {
   clearAccount(state) {
     state.account = {};
   },
+  setStakeAndRewardData(state, payload) {
+    state.tokensAmount = payload;
+  },
+  setLpTokenPrice(state) {
+    state.tokenLPAmount = {};
+  },
 };
