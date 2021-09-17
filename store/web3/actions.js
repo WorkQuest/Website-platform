@@ -40,15 +40,9 @@ export default {
   },
 
   async initWeb3ExampleContract({ commit }) {
-    // const [abs, address] = [abi.StakingWQ, process.env.STAKING_ADDRESS];
-    // const contract = await initWeb3Contract(abs, address);
-    // const instance = await contract.getInstance(address);
-    // const resp = await instance.getStakingInfo();
     const stakingInfo = await fetchContractData('getStakingInfo', abi.StakingWQ, process.env.STAKING_ADDRESS);
-    // await fetchContractData('approve', abi.StakingWQ, process.env.STAKING_ADDRESS, [address, amount]);
-    // await fetchContractData('stake', abi.StakingWQ, process.env.STAKING_ADDRESS, [amount]);
-    console.log('stakingInfo', stakingInfo);
     const { stakeTokenAddress } = stakingInfo;
+    console.log('stakingInfo', stakingInfo, process.env.STAKING_ADDRESS);
     const { rewardTokenAddress } = stakingInfo;
     const stakeDecimal = await fetchContractData('decimals', abi.ERC20, stakeTokenAddress);
     const stakeSymbol = await fetchContractData('symbol', abi.ERC20, stakeTokenAddress);
@@ -58,11 +52,7 @@ export default {
     const rewardBalance = await fetchContractData('balanceOf', abi.ERC20, rewardTokenAddress, [getAccount().address]);
     console.log('1', stakeDecimal, stakeSymbol, new BigNumber(stakeBalance).shiftedBy(-stakeDecimal).toString(), rewardDecimal, rewardSymbol, new BigNumber(rewardBalance).shiftedBy(-rewardDecimal).toString());
     const userInfo = await fetchContractData('getInfoByAddress', abi.StakingWQ, process.env.STAKING_ADDRESS, [getAccount().address]);
-    // console.log(userInfo);
-    // const [symbol, decimals] = await Promise.all([
-    //   instance.methods.symbol().call(),
-    //   instance.methods.decimals().call(),
-    // ]);
+    console.log(userInfo);
 
     const payload = {
       userPurse: {

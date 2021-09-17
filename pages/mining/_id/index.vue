@@ -337,7 +337,7 @@ export default {
       await this.$store.dispatch('web3/initWeb3ExampleContract');
     },
     async roundLiquidityUSD() {
-      const item = await this.tokensDayData?.totalLiquidityUSD;
+      const item = this.tokensDayData?.totalLiquidityUSD;
       this.liquidityUSD = Math.floor(item);
     },
     async getTokensData() {
