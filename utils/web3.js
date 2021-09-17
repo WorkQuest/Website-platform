@@ -160,8 +160,8 @@ export const staking = async (_decimals, _amount) => {
     store.dispatch('main/setStatusText', 'Staking');
     const contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
     const days = 30;
-    console.log(contractInstance);
-    const stakeRes = await contractInstance.stake(amount, '30');
+    console.log('amount', amount);
+    const stakeRes = await contractInstance.stake(amount);
     console.log('stakeRes', stakeRes);
     console.log('Staking done');
     return '';
