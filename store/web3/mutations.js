@@ -14,6 +14,9 @@ export default {
       exampleWeb3: payload,
     };
   },
+  setAccountData(state, payload) {
+    state.accountData = payload;
+  },
   clearTokens(state) {
     state.tokens = {};
   },

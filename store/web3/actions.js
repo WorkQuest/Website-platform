@@ -1,11 +1,14 @@
+import BigNumber from 'bignumber.js';
 import {
   initWeb3,
-  createInstance,
-  initWeb3Contract,
+  staking,
+  unStaking,
   disconnectWeb3,
-  startPingingMetamask,
+  startPingingMetamask, fetchContractData, getAccount,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
+
+BigNumber.config({ EXPONENTIAL_AT: 60 });
 
 export default {
   disconnect({ commit }) {
@@ -36,31 +39,51 @@ export default {
     }
   },
 
-  async initWETHToken({ commit }) {
-    const [abs, address] = [abi.ERC20, process.env.WETH_TOKEN];
-    const instance = await createInstance(abs, address);
+  async initWeb3ExampleContract({ commit }) {
+    // const [abs, address] = [abi.StakingWQ, process.env.STAKING_ADDRESS];
+    // const contract = await initWeb3Contract(abs, address);
+    // const instance = await contract.getInstance(address);
+    // const resp = await instance.getStakingInfo();
+    const stakingInfo = await fetchContractData('getStakingInfo', abi.StakingWQ, process.env.STAKING_ADDRESS);
+    // await fetchContractData('approve', abi.StakingWQ, process.env.STAKING_ADDRESS, [address, amount]);
+    // await fetchContractData('stake', abi.StakingWQ, process.env.STAKING_ADDRESS, [amount]);
+    console.log('stakingInfo', stakingInfo);
+    const { stakeTokenAddress } = stakingInfo;
+    const { rewardTokenAddress } = stakingInfo;
+    const stakeDecimal = await fetchContractData('decimals', abi.ERC20, stakeTokenAddress);
+    const stakeSymbol = await fetchContractData('symbol', abi.ERC20, stakeTokenAddress);
+    const rewardDecimal = await fetchContractData('decimals', abi.ERC20, rewardTokenAddress);
+    const rewardSymbol = await fetchContractData('symbol', abi.ERC20, rewardTokenAddress);
+    const stakeBalance = await fetchContractData('balanceOf', abi.ERC20, stakeTokenAddress, [getAccount().address]);
+    const rewardBalance = await fetchContractData('balanceOf', abi.ERC20, rewardTokenAddress, [getAccount().address]);
+    console.log('1', stakeDecimal, stakeSymbol, new BigNumber(stakeBalance).shiftedBy(-stakeDecimal).toString(), rewardDecimal, rewardSymbol, new BigNumber(rewardBalance).shiftedBy(-rewardDecimal).toString());
+    const userInfo = await fetchContractData('getInfoByAddress', abi.StakingWQ, process.env.STAKING_ADDRESS, [getAccount().address]);
+    // console.log(userInfo);
+    // const [symbol, decimals] = await Promise.all([
+    //   instance.methods.symbol().call(),
+    //   instance.methods.decimals().call(),
+    // ]);
 
     const payload = {
-      address,
-      instance,
+      userPurse: {
+        stakeBalance: new BigNumber(stakeBalance).shiftedBy(-stakeDecimal).toString(),
+        stakeSymbol,
+        rewardBalance: new BigNumber(rewardBalance).shiftedBy(-rewardDecimal).toString(),
+        rewardSymbol,
+      },
+      decimals: {
+        stakeDecimal,
+        rewardDecimal,
+      },
     };
-    commit('setWETHToken', payload);
+    commit('setAccountData', payload);
   },
 
-  async initWeb3ExampleContract({ commit }) {
-    const [abs, address] = [abi.EXAMPLE_WEB3, process.env.EXAMPLE_WEB3_ADDRESS];
-    const instance = await initWeb3Contract(abs, address);
-    const [symbol, decimals] = await Promise.all([
-      instance.methods.symbol().call(),
-      instance.methods.decimals().call(),
-    ]);
-
-    const payload = {
-      symbol,
-      address,
-      decimals: +decimals,
-      instance,
-    };
-    commit('setWeb3ExampleToken', payload);
+  async stake({ commit }, { decimals, amount }) {
+    return await staking(decimals, amount);
+  },
+  async unstake({ commit }, { decimals, amount }) {
+    console.log(2);
+    return await unStaking(decimals, amount);
   },
 };

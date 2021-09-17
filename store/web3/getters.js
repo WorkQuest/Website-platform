@@ -4,4 +4,5 @@ export default {
   getAccount: (state) => state.account,
   getBalance: (state) => state.balance,
   getTokenWETH: (state) => state.tokenWETH,
+  getAccountData: (state) => state.accountData,
 };

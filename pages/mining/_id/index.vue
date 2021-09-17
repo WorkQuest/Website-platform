@@ -112,6 +112,7 @@
               <base-btn
                 class="btn_bl"
                 mode="outline"
+                @click="openModalUnstaking()"
               >
                 {{ $t('mining.unstake') }}
               </base-btn>
@@ -305,7 +306,7 @@ export default {
       chartData: 'defi/getTokensData',
       tableData: 'defi/getSwapsData',
       tokensDayData: 'defi/getTokensDayData',
-      tokenWETH: 'web3/getTokenWETH',
+      accountData: 'web3/getAccountData',
     }),
     totalPages() {
       if (this.tableData) {
@@ -333,8 +334,7 @@ export default {
   methods: {
     async connectToMetamask() {
       await this.$store.dispatch('web3/connect');
-      await this.$store.dispatch('web3/initWETHToken');
-      console.log(this.tokenWETH);
+      await this.$store.dispatch('web3/initWeb3ExampleContract');
     },
     async roundLiquidityUSD() {
       const item = await this.tokensDayData?.totalLiquidityUSD;
@@ -377,9 +377,16 @@ export default {
       });
       this.totalPagesValue = this.totalPages;
     },
+    openModalUnstaking() {
+      this.ShowModal({
+        key: modals.claimRewards,
+        type: 2,
+      });
+    },
     openModalClaimRewards() {
       this.ShowModal({
         key: modals.claimRewards,
+        type: 1,
       });
     },
     handleBackToMainMining() {
