@@ -44,10 +44,12 @@ export default {
     const { stakeTokenAddress } = stakingInfo;
     console.log('stakingInfo', stakingInfo, process.env.STAKING_ADDRESS);
     const { rewardTokenAddress } = stakingInfo;
+    console.log('stakeTokenAddress', stakeTokenAddress, 'rewardTokenAddress', rewardTokenAddress);
     const stakeDecimal = await fetchContractData('decimals', abi.ERC20, stakeTokenAddress);
     const stakeSymbol = await fetchContractData('symbol', abi.ERC20, stakeTokenAddress);
     const rewardDecimal = await fetchContractData('decimals', abi.ERC20, rewardTokenAddress);
     const rewardSymbol = await fetchContractData('symbol', abi.ERC20, rewardTokenAddress);
+    console.log(rewardSymbol);
     const stakeBalance = await fetchContractData('balanceOf', abi.ERC20, stakeTokenAddress, [getAccount().address]);
     const rewardBalance = await fetchContractData('balanceOf', abi.ERC20, rewardTokenAddress, [getAccount().address]);
     console.log('1', stakeDecimal, stakeSymbol, new BigNumber(stakeBalance).shiftedBy(-stakeDecimal).toString(), rewardDecimal, rewardSymbol, new BigNumber(rewardBalance).shiftedBy(-rewardDecimal).toString());
