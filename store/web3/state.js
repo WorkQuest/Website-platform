@@ -8,4 +8,6 @@ export default () => ({
   account: {},
   tokenWETH: {},
   accountData: {},
+  tokensAmount: {},
+  tokenLPAmount: {},
 });

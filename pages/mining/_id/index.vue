@@ -47,9 +47,9 @@
             <div class="info-block__title_black info-block__title_big">
               {{ $t(`mining.${miningPoolId === 'BNB' ? 'wusdBnbPool' : 'wusdEthPool'}`) }}
             </div>
-            <div class="info-block__title">
-              {{ $tc('mining.dollarsCount', "176 904.49") }}
-            </div>
+            <!--            <div class="info-block__title">-->
+            <!--              {{ $tc('mining.dollarsCount', "176 904.49") }}-->
+            <!--            </div>-->
           </div>
           <div class="info-block__btns">
             <base-btn
@@ -82,7 +82,7 @@
               <div class="third__wrapper">
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.dollarsCount', '417.1M') }}
+                    {{ $tc('mining.lpCount', stakedAmount) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.stake') }}
@@ -90,7 +90,7 @@
                 </div>
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.dollarsCount', '417.1M') }}
+                    {{ $tc('mining.wqtCount', rewardAmount) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.reward') }}
@@ -298,6 +298,8 @@ export default {
       page: 1,
       perPager: 10,
       totalPagesValue: 1,
+      rewardAmount: 0,
+      stakedAmount: 0,
     };
   },
   computed: {
@@ -308,6 +310,8 @@ export default {
       tableData: 'defi/getSwapsData',
       tokensDayData: 'defi/getTokensDayData',
       accountData: 'web3/getAccountData',
+      tokensData: 'web3/getTokensAmount',
+      tokenLP: 'web3/getLPTokenPrice',
     }),
     totalPages() {
       if (this.tableData) {
@@ -330,9 +334,15 @@ export default {
     await this.$store.dispatch('defi/getTokensData', 'limit=100&offset=0');
     await this.$store.dispatch('defi/getSwapsData', `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
     this.tableDataInit();
+    setInterval(() => this.tokensDataUpdate(), 15000);
     this.SetLoader(false);
   },
   methods: {
+    async tokensDataUpdate() {
+      const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
+      this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
+      this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
+    },
     async disconnectFromMetamask() {
       await this.$store.dispatch('web3/disconnect');
       console.log('disconnectFromMetamask');
@@ -344,6 +354,7 @@ export default {
     async connectToMetamask() {
       await this.$store.dispatch('web3/connect');
       await this.$store.dispatch('web3/initWeb3ExampleContract');
+      await this.tokensDataUpdate();
     },
     async roundLiquidityUSD() {
       const item = this.tokensDayData?.totalLiquidityUSD;

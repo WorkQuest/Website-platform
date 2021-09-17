@@ -5,4 +5,6 @@ export default {
   getBalance: (state) => state.balance,
   getTokenWETH: (state) => state.tokenWETH,
   getAccountData: (state) => state.accountData,
+  getTokensAmount: (state) => state.tokensAmount,
+  getLPTokenPrice: (state) => state.tokenLPAmount,
 };

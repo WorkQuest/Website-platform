@@ -2011,6 +2011,8 @@
     "wusdEthPool": "WQT/ETH pool",
     "wusdBnbPool": "WQT/BNB pool",
     "dollarsCount": "$ {count}",
+    "lpCount": "{count} LP",
+    "wqtCount": "{count} WQT",
     "addLiquidity": "Add liquidity",
     "removeLiquidity": "Remove liquidity",
     "liquidity": "Liquidity",
