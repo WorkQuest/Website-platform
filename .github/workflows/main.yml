@@ -59,7 +59,7 @@ jobs:
         run: yarn install
 
       - name: Run generate static task
-        run: GMAPKEY=${{ secrets.GMAPKEY }} BASE_URL=${{ secrets.BASE_URL }} npm run generate
+        run: GMAPKEY=${{ secrets.GMAPKEY }} BASE_URL=${{ secrets.BASE_URL }} STAKING_ADDRESS=${{ secrets.STAKING_ADDRESS }} LP_TOKEN=${{ secrets.LP_TOKEN }} PROD=${{ secrets.PROD }} WQT_TOKEN=${{ secrets.WQT_TOKEN }} npm run generate
 
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v2.1.4
