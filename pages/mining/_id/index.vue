@@ -22,10 +22,10 @@
         <base-btn
           v-else
           mode="light"
-          :disabled="true"
           class="mining-page__connect"
+          @click="disconnectFromMetamask"
         >
-          {{ $t('meta.connected') }}
+          {{ $t('meta.disconnect') }}
         </base-btn>
       </div>
       <div class="mining-page__content">
@@ -119,6 +119,7 @@
               <base-btn
                 :mode="'outline'"
                 class="bnt__claim"
+                @click="claimRewards()"
               >
                 {{ $t('mining.claimReward') }}
               </base-btn>
@@ -324,9 +325,6 @@ export default {
       await this.$store.dispatch('defi/getSwapsData', `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
       this.tableDataInit();
     },
-    tokenLP() {
-      console.log(this.tokenLP);
-    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -344,6 +342,14 @@ export default {
       const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
+    },
+    async disconnectFromMetamask() {
+      await this.$store.dispatch('web3/disconnect');
+      console.log('disconnectFromMetamask');
+    },
+    async claimRewards() {
+      await this.$store.dispatch('web3/claimRewards');
+      console.log('start claimRewards');
     },
     async connectToMetamask() {
       await this.$store.dispatch('web3/connect');

@@ -3,6 +3,7 @@ import {
   initWeb3,
   staking,
   unStaking,
+  claimRewards,
   disconnectWeb3,
   startPingingMetamask, fetchContractData, getAccount,
 } from '~/utils/web3';
@@ -86,5 +87,8 @@ export default {
   async unstake({ commit }, { decimals, amount }) {
     console.log(2);
     return await unStaking(decimals, amount);
+  },
+  async claimRewards({ commit }) {
+    return await claimRewards();
   },
 };
