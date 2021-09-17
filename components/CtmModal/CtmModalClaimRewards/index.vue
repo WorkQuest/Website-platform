@@ -57,18 +57,18 @@ export default {
       this.CloseModal();
     },
     async staking() {
-      console.log('wqqqwqwqw', this.accountData.decimals.stakeDecimal);
       await this.$store.dispatch('web3/stake', {
         decimals: this.accountData.decimals.stakeDecimal,
         amount: this.amount,
       });
+      this.hide();
     },
     async unstaking() {
-      console.log('unstacking');
       await this.$store.dispatch('web3/unstake', {
         decimals: this.accountData?.decimals?.stakeDecimal,
         amount: this.amount,
       });
+      this.hide();
     },
   },
 };
