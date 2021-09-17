@@ -7237,19 +7237,6 @@ export const StakingWQ = [
   },
   {
     "inputs": [],
-    "name": "claimPeriod",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "distributionTime",
     "outputs": [
       {
@@ -7351,26 +7338,6 @@ export const StakingWQ = [
           },
           {
             "internalType": "uint256",
-            "name": "stakePeriod",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "claimPeriod",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "minStake",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "maxStake",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
             "name": "totalStaked",
             "type": "uint256"
           },
@@ -7390,7 +7357,7 @@ export const StakingWQ = [
             "type": "address"
           }
         ],
-        "internalType": "struct WQStaking.StakeInfo",
+        "internalType": "struct WQLiquidityMining.StakeInfo",
         "name": "info_",
         "type": "tuple"
       }
@@ -7458,26 +7425,6 @@ export const StakingWQ = [
         "type": "uint256"
       },
       {
-        "internalType": "uint256",
-        "name": "_stakePeriod",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_claimPeriod",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_minStake",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_maxStake",
-        "type": "uint256"
-      },
-      {
         "internalType": "address",
         "name": "_rewardToken",
         "type": "address"
@@ -7491,32 +7438,6 @@ export const StakingWQ = [
     "name": "initialize",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "maxStake",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "minStake",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -7624,31 +7545,49 @@ export const StakingWQ = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_amount",
+        "name": "_startTime",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "duration",
+        "name": "_distributionTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "setTime",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_rewardToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_stakeToken",
+        "type": "address"
+      }
+    ],
+    "name": "setTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_amount",
         "type": "uint256"
       }
     ],
     "name": "stake",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "stakePeriod",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -7692,21 +7631,6 @@ export const StakingWQ = [
       {
         "internalType": "uint256",
         "name": "distributed",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "stakedAt",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "claimedAt",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "unstakeTime",
         "type": "uint256"
       }
     ],
@@ -7856,6 +7780,19 @@ export const StakingWQ = [
       }
     ],
     "name": "updateStakingInfo",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_startTimeNew",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateStartTime",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
