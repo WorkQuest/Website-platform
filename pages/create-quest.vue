@@ -646,6 +646,7 @@ export default {
     },
     async createQuest(specAndSkills) {
       const payload = {
+        workplace: 'distant',
         priority: this.priorityIndex,
         category: 'Default',
         title: this.questTitle,

@@ -645,6 +645,7 @@ export default {
     },
     async editQuest(specAndSkills) {
       const payload = {
+        workplace: 'distant',
         priority: this.priorityIndex,
         category: 'Default',
         title: this.questTitle,

@@ -155,20 +155,16 @@ export const staking = async (_decimals, _amount) => {
       console.log(instance);
       const re = await instance.approve(process.env.STAKING_ADDRESS, amount);
       console.log(re);
-      // const approve = await fetchContractData('approve', abi.ERC20, process.env.LP_TOKEN, [process.env.STAKING_ADDRESS, amount]);
-      // console.log(approve);
     }
     console.log('Staking...');
     store.dispatch('main/setStatusText', 'Staking');
     const contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
     const days = 30;
     console.log(contractInstance);
-    // const stakeRes = new BigNumber(await contractInstance.minStake()).shiftedBy(-18).toString();
     const stakeRes = await contractInstance.stake(amount, '30');
     console.log('stakeRes', stakeRes);
-    // const response = await fetchContractData('stake', abi.Stake3, process.env.STAKING_ADDRESS, [amount]);
     console.log('Staking done');
-    return response;
+    return '';
   } catch (err) {
     return error(500, 'stake error', err);
   }
@@ -189,7 +185,7 @@ export const unStaking = async (_decimals, _amount) => {
     const stakeRes = await contractInstance.unstake(amount);
     console.log('stakeRes', stakeRes);
     console.log('Unstaking done');
-    return response;
+    return '';
   } catch (err) {
     return error(500, 'stake error', err);
   }
