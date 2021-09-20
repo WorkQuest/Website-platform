@@ -42,7 +42,7 @@
             </div>
             <div class="page__dd">
               <base-dd
-                v-model="priorityIndex"
+                v-model="employmentIndex"
                 :label="$t('quests.employment.employment')"
                 type="gray"
                 :items="employment"
@@ -52,7 +52,7 @@
             </div>
             <div class="page__dd">
               <base-dd
-                v-model="categoryIndex"
+                v-model="workplaceIndex"
                 :label="$t('quests.distantWork.distantWork')"
                 type="gray"
                 :items="distantWork"
@@ -357,8 +357,8 @@ export default {
         2: [],
         3: [],
       },
-      priorityIndex: 1,
-      categoryIndex: 0,
+      employmentIndex: 0,
+      workplaceIndex: 0,
       runtimeIndex: 0,
       periodIndex: 0,
       runtimeValue: '',
@@ -529,7 +529,6 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    console.log(this.$refs.el);
     this.SetLoader(false);
   },
   methods: {
@@ -620,6 +619,22 @@ export default {
       this.addresses = [];
       this.address = address.formatted;
     },
+    convertEmployment(employmentId) {
+      const employments = [
+        'fullTime',
+        'partTime',
+        'fixedTerm',
+      ];
+      return employments[employmentId];
+    },
+    convertWorkplace(workplaceId) {
+      const workplaces = [
+        'distant',
+        'office',
+        'both',
+      ];
+      return workplaces[workplaceId];
+    },
     async getAddressInfo(address) {
       let response = [];
       const geoCode = new GeoCode('google', { key: process.env.GMAPKEY });
@@ -646,8 +661,9 @@ export default {
     },
     async createQuest(specAndSkills) {
       const payload = {
-        workplace: 'distant',
-        priority: this.priorityIndex,
+        workplace: this.convertWorkplace(this.workplaceIndex),
+        priority: this.runtimeIndex,
+        employment: this.convertEmployment(this.employmentIndex),
         category: 'Default',
         title: this.questTitle,
         description: this.textarea,
@@ -661,6 +677,7 @@ export default {
           latitude: this.coordinates.lat,
         },
       };
+      console.log(payload);
       try {
         const response = await this.$store.dispatch('quests/questCreate', payload);
         if (response) {
