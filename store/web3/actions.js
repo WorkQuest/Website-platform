@@ -20,6 +20,13 @@ export default {
     }, { root: true });
   },
 
+  switchBusyStatusTrue({ commit }) {
+    commit('setBusy', true);
+  },
+  switchBusyStatusFalse({ commit }) {
+    commit('setBusy', false);
+  },
+
   disconnect({ commit }) {
     disconnectWeb3();
     commit('setIsConnected', false);

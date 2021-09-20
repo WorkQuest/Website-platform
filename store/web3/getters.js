@@ -7,4 +7,5 @@ export default {
   getAccountData: (state) => state.accountData,
   getTokensAmount: (state) => state.tokensAmount,
   getLPTokenPrice: (state) => state.tokenLPAmount,
+  getStatusBusy: (state) => state.busy,
 };
