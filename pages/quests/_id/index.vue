@@ -10,6 +10,7 @@
         <questPanel
           :avatar-url="userAvatar"
           :location="questLocation"
+          :quest-data="questData"
         />
 
         <div class="quest__container">
@@ -362,9 +363,6 @@
             </nuxt-link>
           </h2>
         </div>
-        <p class="quest__count">
-          {{ `${payload.amount} ${$t('quests.questAmount')}` }}
-        </p>
         <div class="quest__card">
           <quests
             v-if="questsObjects.count !== 0"
@@ -454,7 +452,9 @@ export default {
       priceSort: 'desc',
       timeSort: 'desc',
       questLimits: 1,
-      questsObjects: {},
+      questsObjects: {
+        count: 0,
+      },
       questData: {},
       userAvatar: '',
       questLocation: { lat: 0, lng: 0 },
