@@ -78,13 +78,17 @@
       </div>
     </div>
     <div class="badge__container">
-      <ul class="badge-list">
+      <ul
+        v-for="(skills, spec) in questData.skillFilters"
+        :key="spec"
+        class="badge-list"
+      >
         <li
-          v-for="item in badgeList"
-          :key="`item-${item.id}`"
+          v-for="(skill, key) in skills"
+          :key="key"
           class="badge__item badge__item_blue"
         >
-          {{ item.text }}
+          {{ skill }}
         </li>
       </ul>
     </div>
@@ -107,6 +111,10 @@ export default {
       type: Object,
       default: null,
     },
+    questData: {
+      type: Object,
+      default: null,
+    },
   },
   data() {
     return {
@@ -115,6 +123,7 @@ export default {
       questLng: 0,
       userLat: 0,
       userLng: 0,
+      questSkills: [],
     };
   },
   computed: {
@@ -124,21 +133,20 @@ export default {
       userData: 'user/getUserData',
       imageData: 'user/getImageData',
       badgeList: 'data/getBadgeList',
-      questData: 'quests/getQuest',
       userInfo: 'quests/getQuestUser',
       userAvatar: 'quests/getQuestUserAvatar',
       userCompany: 'quests/getQuestUserCompany',
     }),
   },
-  // mounted() {
-  //   this.SetLoader(true);
-  //   this.avatarUrl = this.userInfo.avatarId ? this.userInfo.avatar.url : '~/assets/img/app/avatar_empty.png';
-  //   this.questLat = this.questData?.location?.latitude;
-  //   this.questLng = this.questData?.location?.longitude;
-  //   this.userLat = this.userData?.location?.longitude;
-  //   this.userLng = this.userData?.location?.longitude;
-  //   this.SetLoader(false);
-  // },
+  async mounted() {
+    this.SetLoader(true);
+    // this.avatarUrl = this.userInfo.avatarId ? this.userInfo.avatar.url : '~/assets/img/app/avatar_empty.png';
+    // this.questLat = this.questData?.location?.latitude;
+    // this.questLng = this.questData?.location?.longitude;
+    // this.userLat = this.userData?.location?.longitude;
+    // this.userLng = this.userData?.location?.longitude;
+    this.SetLoader(false);
+  },
   methods: {
     showDistance() {
       return this.getDistanceFromLatLonInKm(
@@ -154,7 +162,11 @@ export default {
       });
     },
     showProfile() {
-      this.$router.push('/show-profile');
+      if (this.questData.user.id === this.userData.id) {
+        this.$router.push(`/profile/${this.userData.id}`);
+      } else {
+        this.$router.push('/show-profile');
+      }
     },
     convertDate() {
       if (this.questData.createdAt) {
@@ -180,6 +192,7 @@ export default {
     margin-top: 20px;
     display: flex;
     justify-content: flex-start;
+    flex-wrap: wrap;
     align-items: center;
   }
 }
@@ -227,6 +240,8 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
 }
 .badge {
   &__container {
@@ -255,7 +270,7 @@ export default {
     &_blue {
       @extend .badge__item;
       background-color: rgba(0, 131, 199, 0.1);
-      margin: 0 9px 0 0;
+      margin: 0 9px 5px 0;
       border-radius: 44px;
       font-size: 16px;
       color: $blue;
@@ -277,6 +292,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
   }
   &__container {
     padding: 35px 0 25px 0;
