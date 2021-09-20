@@ -130,36 +130,36 @@ export default {
           key: 'poolAddress',
           label: this.$t('mining.tableHead.poolAddress'),
           thStyle: {
-            padding: '0 0 0 23px',
+            padding: '0 25px',
             height: '27px',
             lineHeight: '27px',
           },
           tdAttr: {
-            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
+            style: 'padding: 0 25px; height: 64px; line-height: 64px',
           },
         },
         {
           key: 'assets',
           label: this.$t('mining.tableHead.assets'),
           thStyle: {
-            padding: '0',
+            padding: '0 25px',
             height: '27px',
             lineHeight: '27px',
           },
           tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
+            style: 'padding: 0 25px; height: 64px; line-height: 64px',
           },
         },
         {
           key: 'volume',
           label: this.$t('mining.tableHead.volume'),
           thStyle: {
-            padding: '0',
+            padding: '0 25px',
             height: '27px',
             lineHeight: '27px',
           },
           tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
+            style: 'padding: 0 25px; height: 64px; line-height: 64px',
           },
         },
         {
@@ -453,10 +453,6 @@ export default {
     &__table {
       overflow: auto;
       width: calc(100vw - 20px);
-
-      .table {
-        width: 1180px;
-      }
     }
   }
 
@@ -487,7 +483,7 @@ export default {
       .info-block {
         &__documents {
           .document {
-            grid-template-columns: 33px auto 23px;
+            grid-template-columns: repeat(3, auto);
           }
         }
       }
@@ -495,8 +491,12 @@ export default {
         &__doc {
           text-decoration: none;
           border: 0;
-          width: 23px;
+          width: 30px;
+          height: 30px;
           font-size: 0;
+          .download {
+            margin-left: 0;
+          }
         }
       }
     }

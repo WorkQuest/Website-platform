@@ -1854,7 +1854,7 @@ export default {
   }
   &__links {
     display: flex;
-    grid-gap: 20px;
+    grid-gap: 35px;
     flex-direction: column;
     &_mobile {
       display: none;
