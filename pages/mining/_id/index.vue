@@ -15,6 +15,7 @@
           v-if="!isConnected"
           mode="light"
           class="mining-page__connect"
+          :disabled="miningPoolId === 'BNB'"
           @click="connectToMetamask"
         >
           {{ $t('mining.connectWallet') }}
@@ -23,6 +24,7 @@
           v-else
           mode="light"
           class="mining-page__connect"
+          :disabled="miningPoolId === 'BNB'"
           @click="disconnectFromMetamask"
         >
           {{ $t('meta.disconnect') }}
@@ -55,6 +57,7 @@
             <base-btn
               :link="'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH'"
               class="btn_bl"
+              :disabled="miningPoolId === 'BNB'"
             >
               {{ $t('mining.addLiquidity') }}
             </base-btn>
@@ -105,6 +108,7 @@
             <div class="third__triple">
               <base-btn
                 class="btn_bl"
+                :disabled="miningPoolId === 'BNB'"
                 @click="openModalClaimRewards()"
               >
                 {{ $t('mining.stake') }}
@@ -112,6 +116,7 @@
               <base-btn
                 class="btn_bl"
                 mode="outline"
+                :disabled="miningPoolId === 'BNB'"
                 @click="openModalUnstaking()"
               >
                 {{ $t('mining.unstake') }}
@@ -119,6 +124,7 @@
               <base-btn
                 :mode="'outline'"
                 class="bnt__claim"
+                :disabled="miningPoolId === 'BNB'"
                 @click="claimRewards()"
               >
                 {{ $t('mining.claimReward') }}
@@ -181,7 +187,7 @@
                   :href="`https://etherscan.io/address/${el.item.account}`"
                   target="_blank"
                 >
-                  {{ el.item.account }}
+                  {{ el.item.accountView }}
                 </a>
               </template>
               <template #cell(time)="el">
@@ -367,6 +373,10 @@ export default {
       const query = 'limit=1';
       await this.$store.dispatch('defi/getTokensDayData', query);
     },
+    cropTxt(str) {
+      if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
+      return str;
+    },
     tableDataInit() {
       this.items = [];
       this.tableData.forEach((data) => {
@@ -384,6 +394,7 @@ export default {
         }
         const totalValue = `${Math.round(data.amountUSD)} $`;
         const account = data.to;
+        const accountView = this.cropTxt(data.to);
         const date = new Date(data.transaction.timestamp * 1000);
         const time = moment(date).startOf('hour').fromNow();
         this.items.push({
@@ -392,6 +403,7 @@ export default {
           tokenAmount0,
           tokenAmount1,
           account,
+          accountView,
           time,
         });
       });
