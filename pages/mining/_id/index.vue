@@ -15,7 +15,7 @@
           v-if="!isConnected"
           mode="light"
           class="mining-page__connect"
-          :disabled="miningPoolId === 'BNB'"
+          :disabled="miningPoolId === 'BNB' || statusBusy"
           @click="connectToMetamask"
         >
           {{ $t('mining.connectWallet') }}
@@ -24,7 +24,7 @@
           v-else
           mode="light"
           class="mining-page__connect"
-          :disabled="miningPoolId === 'BNB'"
+          :disabled="miningPoolId === 'BNB' || statusBusy"
           @click="disconnectFromMetamask"
         >
           {{ $t('meta.disconnect') }}
@@ -57,7 +57,7 @@
             <base-btn
               :link="'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH'"
               class="btn_bl"
-              :disabled="miningPoolId === 'BNB'"
+              :disabled="miningPoolId === 'BNB' || statusBusy"
             >
               {{ $t('mining.addLiquidity') }}
             </base-btn>
@@ -109,7 +109,7 @@
               <base-btn
                 class="btn_bl"
                 :disabled="miningPoolId === 'BNB'"
-                @click="openModalClaimRewards()"
+                @click="openModalClaimRewards() || statusBusy"
               >
                 {{ $t('mining.stake') }}
               </base-btn>
@@ -117,14 +117,14 @@
                 class="btn_bl"
                 mode="outline"
                 :disabled="miningPoolId === 'BNB'"
-                @click="openModalUnstaking()"
+                @click="openModalUnstaking() || statusBusy"
               >
                 {{ $t('mining.unstake') }}
               </base-btn>
               <base-btn
                 :mode="'outline'"
                 class="bnt__claim"
-                :disabled="miningPoolId === 'BNB'"
+                :disabled="miningPoolId === 'BNB' || statusBusy"
                 @click="claimRewards()"
               >
                 {{ $t('mining.claimReward') }}
@@ -318,6 +318,7 @@ export default {
       accountData: 'web3/getAccountData',
       tokensData: 'web3/getTokensAmount',
       tokenLP: 'web3/getLPTokenPrice',
+      statusBusy: 'web3/getStatusBusy',
     }),
     totalPages() {
       if (this.tableData) {
@@ -354,8 +355,10 @@ export default {
       console.log('disconnectFromMetamask');
     },
     async claimRewards() {
+      this.SetLoader(true);
       await this.$store.dispatch('web3/claimRewards');
       console.log('start claimRewards');
+      this.SetLoader(false);
     },
     async connectToMetamask() {
       await this.$store.dispatch('web3/connect');

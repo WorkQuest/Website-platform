@@ -18,12 +18,13 @@
         <div class="content__container">
           <base-btn
             :mode="'outline'"
+            :disabled="statusBusy"
             @click="hide()"
           >
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            :disabled="!validated || !passed || invalid"
+            :disabled="!validated || !passed || invalid || statusBusy"
             @click="handleSubmit(options.type === 1 ? staking : unstaking)"
           >
             {{ $t('meta.submit') }}
@@ -50,6 +51,7 @@ export default {
     ...mapGetters({
       accountData: 'web3/getAccountData',
       options: 'modals/getOptions',
+      statusBusy: 'web3/getStatusBusy',
     }),
   },
   methods: {
@@ -57,18 +59,22 @@ export default {
       this.CloseModal();
     },
     async staking() {
+      this.SetLoader(true);
+      this.hide();
       await this.$store.dispatch('web3/stake', {
         decimals: this.accountData.decimals.stakeDecimal,
         amount: this.amount,
       });
-      this.hide();
+      this.SetLoader(false);
     },
     async unstaking() {
+      this.SetLoader(true);
+      this.hide();
       await this.$store.dispatch('web3/unstake', {
         decimals: this.accountData?.decimals?.stakeDecimal,
         amount: this.amount,
       });
-      this.hide();
+      this.SetLoader(false);
     },
   },
 };
