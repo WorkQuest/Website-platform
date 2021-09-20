@@ -33,11 +33,6 @@
                   {{ el.item.assets }}
                 </div>
               </template>
-              <template #cell(sdsdsdsd)="el">
-                <div class="table__value">
-                  {{ el.item.sdsdsdsd }}
-                </div>
-              </template>
               <template #cell(volume)="el">
                 <div class="table__value">
                   {{ el.item.volume }}
@@ -102,11 +97,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   data() {
     return {
+      poolAddress: '',
       documents: [
         {
           name: this.$t('mining.agreement'),
@@ -117,11 +112,15 @@ export default {
       items: [
         {
           id: 'ETH',
-          poolAddress: this.$t('mining.table.poolAddress'),
+          poolAddress: this.cropTxt(process.env.STAKING_ADDRESS),
           assets: this.$t('mining.table.assets'),
-          template1: this.$t('mining.table.sdsdsdsd'),
-          template2: this.$t('mining.table.sdsdsdsd'),
-          template3: this.$t('mining.sdsdsdsd'),
+          volume: this.$t('mining.table.volume'),
+          chooseBtn: this.$t('mining.choose'),
+        },
+        {
+          id: 'BNB',
+          poolAddress: this.$t('mining.table.poolAddress'),
+          assets: this.$t('mining.table.assets2'),
           volume: this.$t('mining.table.volume'),
           chooseBtn: this.$t('mining.choose'),
         },
@@ -142,42 +141,6 @@ export default {
         {
           key: 'assets',
           label: this.$t('mining.tableHead.assets'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'template1',
-          label: this.$t('mining.tableHead.sdsdsdsd'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'template2',
-          label: this.$t('mining.tableHead.sdsdsdsd'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'template3',
-          label: this.$t('mining.tableHead.sdsdsdsd'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -224,13 +187,17 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    cropTxt(str) {
+      if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
+      return str;
+    },
     handleOpenPool(el) {
       if (localStorage.getItem('miningPoolId')) {
         localStorage.removeItem('miningPoolId');
       }
       console.log(el.item.id);
       localStorage.setItem('miningPoolId', el.item.id);
-      this.$router.push('/mining/1');
+      this.$router.push(`/mining/${el.item.id}`);
     },
   },
 };
