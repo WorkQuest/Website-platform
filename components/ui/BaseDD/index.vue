@@ -225,8 +225,8 @@ export default {
   &__item {
     text-align: left;
     width: 100%;
+    height: 100%;
     color: $black500;
-    min-height: 21px;
     &:hover {
       color: $black800;
     }
