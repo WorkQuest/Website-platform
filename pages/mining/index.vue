@@ -16,7 +16,7 @@
           </div>
           <div class="mining-page__table">
             <b-table
-              :items="items"
+              :items="pools"
               :fields="testFields"
               borderless
               caption-top
@@ -102,7 +102,14 @@ export default {
   data() {
     return {
       poolAddress: '',
-      items: [
+    };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+    pools() {
+      return [
         {
           id: 'ETH',
           poolAddress: this.cropTxt(process.env.STAKING_ADDRESS),
@@ -117,13 +124,8 @@ export default {
           volume: this.$t('mining.table.volume'),
           chooseBtn: this.$t('mining.choose'),
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
+      ];
+    },
     documents() {
       return [
         {
