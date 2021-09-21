@@ -55,6 +55,15 @@
           </div>
           <div class="info-block__btns">
             <base-btn
+              v-if="miningPoolId === 'BNB'"
+              class="btn_bl"
+              mode="outline"
+              :disabled="statusBusy"
+              @click="openSwapTokens()"
+            >
+              {{ $t('mining.swapTokens.title') }}
+            </base-btn>
+            <base-btn
               :link="'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH'"
               class="btn_bl"
               :disabled="miningPoolId === 'BNB' || statusBusy"
@@ -108,23 +117,23 @@
             <div class="third__triple">
               <base-btn
                 class="btn_bl"
-                :disabled="miningPoolId === 'BNB'"
-                @click="openModalClaimRewards() || statusBusy"
+                :disabled="miningPoolId === 'BNB' || !isConnected || statusBusy"
+                @click="openModalClaimRewards()"
               >
                 {{ $t('mining.stake') }}
               </base-btn>
               <base-btn
                 class="btn_bl"
                 mode="outline"
-                :disabled="miningPoolId === 'BNB'"
-                @click="openModalUnstaking() || statusBusy"
+                :disabled="miningPoolId === 'BNB' || !isConnected || statusBusy"
+                @click="openModalUnstaking()"
               >
                 {{ $t('mining.unstake') }}
               </base-btn>
               <base-btn
                 :mode="'outline'"
                 class="bnt__claim"
-                :disabled="miningPoolId === 'BNB' || statusBusy"
+                :disabled="miningPoolId === 'BNB' || !isConnected || statusBusy"
                 @click="claimRewards()"
               >
                 {{ $t('mining.claimReward') }}
@@ -352,17 +361,15 @@ export default {
     },
     async disconnectFromMetamask() {
       await this.$store.dispatch('web3/disconnect');
-      console.log('disconnectFromMetamask');
     },
     async claimRewards() {
       this.SetLoader(true);
       await this.$store.dispatch('web3/claimRewards');
-      console.log('start claimRewards');
       this.SetLoader(false);
     },
     async connectToMetamask() {
       await this.$store.dispatch('web3/connect');
-      await this.$store.dispatch('web3/initWeb3ExampleContract');
+      await this.$store.dispatch('web3/initContract');
       await this.tokensDataUpdate();
     },
     async roundLiquidityUSD() {
@@ -411,6 +418,11 @@ export default {
         });
       });
       this.totalPagesValue = this.totalPages;
+    },
+    openSwapTokens() {
+      this.ShowModal({
+        key: modals.swapTokens,
+      });
     },
     openModalUnstaking() {
       this.ShowModal({
@@ -681,6 +693,7 @@ export default {
           grid-template-columns: 105px auto;
 
           .info-block__btns {
+            display: grid;
             grid-column-start: 2;
             grid-column-end: 3;
             grid-template-columns: repeat(2, 1fr);

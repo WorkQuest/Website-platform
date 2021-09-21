@@ -35,6 +35,7 @@ export default {
   },
   async startPingingMetamask({ dispatch }) {
     await startPingingMetamask(() => {
+      showToast('Connect to Metamask', 'Disconnected', 'success');
       dispatch('disconnect');
     });
   },
@@ -52,7 +53,7 @@ export default {
     }
   },
 
-  async initWeb3ExampleContract({ commit }) {
+  async initContract({ commit }) {
     const stakingInfo = await fetchContractData('getStakingInfo', abi.StakingWQ, process.env.STAKING_ADDRESS);
     const { stakeTokenAddress } = stakingInfo;
     const { rewardTokenAddress } = stakingInfo;
