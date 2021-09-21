@@ -108,7 +108,7 @@
                 </span>
                 <template v-slot:right>
                   <span
-                    class="icon-caret_down"
+                    class="icon-caret_down icon_blue"
                   />
                 </template>
               </base-btn>
