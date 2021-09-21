@@ -89,6 +89,7 @@ export default {
     font-weight: 400;
     font-size: 14px;
     color: $black500;
+    margin-bottom: 10px;
     &_blue {
       @extend .content__subtitle;
       color: $blue;
