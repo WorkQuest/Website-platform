@@ -215,38 +215,10 @@ export default {
     return {
       isShowMap: true,
       search: '',
-      quests: [
-        this.$t('quests.quests'),
-        this.$t('quests.specQuests'),
-        this.$t('quests.permanentJob'),
-      ],
       selectedQuest: '',
-      urgent: [
-        this.$t('priority.urgent'),
-        this.$t('priority.normal'),
-        this.$t('priority.low'),
-      ],
       selectedUrgent: '',
-      typeOfJob: [
-        this.$t('quests.fullTime'),
-        this.$t('quests.partTime'),
-        this.$t('quests.fixedTerm'),
-        this.$t('quests.contract'),
-        this.$t('quests.remoteWork'),
-      ],
       selectedTypeOfJob: '',
-      distantWork: [
-        this.$t('quests.distantWork.distantWork'),
-        this.$t('quests.distantWork.workInOffice'),
-        this.$t('quests.distantWork.bothVariant'),
-      ],
       selectedDistantWork: '',
-      priority: [
-        this.$t('quests.priority.all'),
-        this.$t('quests.priority.low'),
-        this.$t('quests.priority.normal'),
-        this.$t('quests.priority.urgent'),
-      ],
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
@@ -258,11 +230,6 @@ export default {
       totalPagesValue: 1,
       additionalValue: '',
       zoomNumber: 15,
-      distance: [
-        '+ 100 m',
-        '+ 500 m',
-        '+ 1000 m',
-      ],
       addresses: [],
       coordinates: null,
     };
@@ -274,6 +241,51 @@ export default {
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
     }),
+    distance() {
+      return [
+        '+ 100 m',
+        '+ 500 m',
+        '+ 1000 m',
+      ];
+    },
+    priority() {
+      return [
+        this.$t('quests.priority.all'),
+        this.$t('quests.priority.low'),
+        this.$t('quests.priority.normal'),
+        this.$t('quests.priority.urgent'),
+      ];
+    },
+    distantWork() {
+      return [
+        this.$t('quests.distantWork.distantWork'),
+        this.$t('quests.distantWork.workInOffice'),
+        this.$t('quests.distantWork.bothVariant'),
+      ];
+    },
+    typeOfJob() {
+      return [
+        this.$t('quests.fullTime'),
+        this.$t('quests.partTime'),
+        this.$t('quests.fixedTerm'),
+        this.$t('quests.contract'),
+        this.$t('quests.remoteWork'),
+      ];
+    },
+    quests() {
+      return [
+        this.$t('quests.quests'),
+        this.$t('quests.specQuests'),
+        this.$t('quests.permanentJob'),
+      ];
+    },
+    urgent() {
+      return [
+        this.$t('priority.urgent'),
+        this.$t('priority.normal'),
+        this.$t('priority.low'),
+      ];
+    },
     totalPages() {
       if (this.questsObjects) {
         return Math.ceil(this.questsObjects.count / this.perPager);
