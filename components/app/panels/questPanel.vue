@@ -48,32 +48,6 @@
               {{ showDistance() }} {{ $t('meta.fromYou') }}
             </span>
           </div>
-          <!--<div
-            v-if="userRole === 'worker'"
-            class="runtime__container"
-          >
-            <span class="icon icon-clock" />
-            <span class="runtime__title">{{ $t('quests.runtime.runtime') }}</span>
-            <span
-              class="runtime__link"
-            >
-              {{ getPriority(questData.priority) }}
-            </span>
-          </div>
-          <div
-            v-if="userRole === 'employer'"
-            class="runtime__container"
-          >
-            <span class="icon icon-clock" />
-            <span class="runtime__title">
-              {{ $t('quests.performanceTimer') }}
-            </span>
-            <span
-              class="runtime__link"
-            >
-              {{ getPriority(questData.priority) }}
-            </span>
-          </div>-->
           <div
             class="priority__container"
           >
@@ -151,6 +125,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    console.log(this.userData);
     // this.avatarUrl = this.userInfo.avatarId ? this.userInfo.avatar.url : '~/assets/img/app/avatar_empty.png';
     // this.questLat = this.questData?.location?.latitude;
     // this.questLng = this.questData?.location?.longitude;
@@ -163,8 +138,8 @@ export default {
       return this.getDistanceFromLatLonInKm(
         this.location.lat,
         this.location.lng,
-        this.userLat,
-        this.userLng,
+        this.userData.location ? this.userData.location.latitude : 0,
+        this.userData.location ? this.userData.location.longitude : 0,
       );
     },
     shareModal() {
