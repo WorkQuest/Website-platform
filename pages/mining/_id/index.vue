@@ -352,12 +352,10 @@ export default {
     },
     async disconnectFromMetamask() {
       await this.$store.dispatch('web3/disconnect');
-      console.log('disconnectFromMetamask');
     },
     async claimRewards() {
       this.SetLoader(true);
       await this.$store.dispatch('web3/claimRewards');
-      console.log('start claimRewards');
       this.SetLoader(false);
     },
     async connectToMetamask() {
