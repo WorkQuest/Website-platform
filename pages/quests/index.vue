@@ -95,32 +95,13 @@
           <div class="tools__panel">
             <base-filter-dd class="tools__item" />
             <base-dd
-              v-model="selectedQuest"
-              class="tools__item"
-              :items="quests"
-              mode="blackFont"
-              :placeholder="$t('quests.quests')"
-            />
-            <base-dd
-              v-model="selectedUrgent"
-              class="tools__item"
-              :items="urgent"
-              mode="blackFont"
-              :placeholder="$t('quests.urgent')"
-            />
-            <base-dd
-              v-model="selectedTypeOfJob"
-              class="tools__item"
-              :items="typeOfJob"
-              mode="blackFont"
-              :placeholder="$t('quests.typeOfJob')"
-            />
-            <base-dd
-              v-model="selectedDistantWork"
-              class="tools__item"
-              :items="distantWork"
-              mode="blackFont"
-              :placeholder="$t('quests.distantWork.title')"
+              v-for="(item, i) in panelDD"
+              :key="i"
+              v-model="item.vmodel"
+              :class="item.class"
+              :items="item.items"
+              :mode="item.mode"
+              :placeholder="item.placeholder"
             />
             <base-btn
               class="tools__item"
@@ -215,38 +196,10 @@ export default {
     return {
       isShowMap: true,
       search: '',
-      quests: [
-        this.$t('quests.quests'),
-        this.$t('quests.specQuests'),
-        this.$t('quests.permanentJob'),
-      ],
       selectedQuest: '',
-      urgent: [
-        this.$t('priority.urgent'),
-        this.$t('priority.normal'),
-        this.$t('priority.low'),
-      ],
       selectedUrgent: '',
-      typeOfJob: [
-        this.$t('quests.fullTime'),
-        this.$t('quests.partTime'),
-        this.$t('quests.fixedTerm'),
-        this.$t('quests.contract'),
-        this.$t('quests.remoteWork'),
-      ],
       selectedTypeOfJob: '',
-      distantWork: [
-        this.$t('quests.distantWork.distantWork'),
-        this.$t('quests.distantWork.workInOffice'),
-        this.$t('quests.distantWork.bothVariant'),
-      ],
       selectedDistantWork: '',
-      priority: [
-        this.$t('quests.priority.all'),
-        this.$t('quests.priority.low'),
-        this.$t('quests.priority.normal'),
-        this.$t('quests.priority.urgent'),
-      ],
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
@@ -258,11 +211,6 @@ export default {
       totalPagesValue: 1,
       additionalValue: '',
       zoomNumber: 15,
-      distance: [
-        '+ 100 m',
-        '+ 500 m',
-        '+ 1000 m',
-      ],
       addresses: [],
       coordinates: null,
     };
@@ -274,6 +222,83 @@ export default {
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
     }),
+    panelDD() {
+      return [
+        {
+          vmodel: this.selectedQuest,
+          class: 'tools__item',
+          items: this.quests,
+          mode: 'blackFont',
+          placeholder: this.$t('quests.quests'),
+        },
+        {
+          vmodel: this.selectedUrgent,
+          class: 'tools__item',
+          items: this.urgent,
+          mode: 'blackFont',
+          placeholder: this.$t('quests.urgent'),
+        },
+        {
+          vmodel: this.selectedTypeOfJob,
+          class: 'tools__item',
+          items: this.typeOfJob,
+          mode: 'blackFont',
+          placeholder: this.$t('quests.typeOfJob'),
+        },
+        {
+          vmodel: this.selectedDistantWork,
+          class: 'tools__item',
+          items: this.distantWork,
+          mode: 'blackFont',
+          placeholder: this.$t('quests.distantWork.title'),
+        },
+      ];
+    },
+    distance() {
+      return [
+        '+ 100 m',
+        '+ 500 m',
+        '+ 1000 m',
+      ];
+    },
+    priority() {
+      return [
+        this.$t('quests.priority.all'),
+        this.$t('quests.priority.low'),
+        this.$t('quests.priority.normal'),
+        this.$t('quests.priority.urgent'),
+      ];
+    },
+    distantWork() {
+      return [
+        this.$t('quests.distantWork.distantWork'),
+        this.$t('quests.distantWork.workInOffice'),
+        this.$t('quests.distantWork.bothVariant'),
+      ];
+    },
+    typeOfJob() {
+      return [
+        this.$t('quests.fullTime'),
+        this.$t('quests.partTime'),
+        this.$t('quests.fixedTerm'),
+        this.$t('quests.contract'),
+        this.$t('quests.remoteWork'),
+      ];
+    },
+    quests() {
+      return [
+        this.$t('quests.quests'),
+        this.$t('quests.specQuests'),
+        this.$t('quests.permanentJob'),
+      ];
+    },
+    urgent() {
+      return [
+        this.$t('priority.urgent'),
+        this.$t('priority.normal'),
+        this.$t('priority.low'),
+      ];
+    },
     totalPages() {
       if (this.questsObjects) {
         return Math.ceil(this.questsObjects.count / this.perPager);

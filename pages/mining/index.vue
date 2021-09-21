@@ -16,7 +16,7 @@
           </div>
           <div class="mining-page__table">
             <b-table
-              :items="items"
+              :items="pools"
               :fields="testFields"
               borderless
               caption-top
@@ -102,14 +102,14 @@ export default {
   data() {
     return {
       poolAddress: '',
-      documents: [
-        {
-          name: this.$t('mining.agreement'),
-          size: this.$tc('mining.kb', '47'),
-          url: '/docs/agreement.pdf',
-        },
-      ],
-      items: [
+    };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+    pools() {
+      return [
         {
           id: 'ETH',
           poolAddress: this.cropTxt(process.env.STAKING_ADDRESS),
@@ -124,8 +124,19 @@ export default {
           volume: this.$t('mining.table.volume'),
           chooseBtn: this.$t('mining.choose'),
         },
-      ],
-      testFields: [
+      ];
+    },
+    documents() {
+      return [
+        {
+          name: this.$t('mining.agreement'),
+          size: this.$tc('mining.kb', '47'),
+          url: '/docs/agreement.pdf',
+        },
+      ];
+    },
+    testFields() {
+      return [
         {
           key: 'poolAddress',
           label: this.$t('mining.tableHead.poolAddress'),
@@ -174,13 +185,8 @@ export default {
             style: 'padding-left: 0; padding-right: 20px',
           },
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
+      ];
+    },
   },
   async mounted() {
     this.SetLoader(true);

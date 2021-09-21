@@ -247,6 +247,7 @@
     "title": "Skills"
   },
   "quests": {
+    "rating": "Rating",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
     "quests": "Quests",
