@@ -1045,7 +1045,9 @@ export default {
       }
       this.localUserData.additionalInfo.secondMobileNumber = this.updatedPhone.formatInternational.replace(/\s/g, '');
       delete this.localUserData.additionalInfo.firstMobileNumber;
-      this.localUserData.location = { longitude: this.coordinates.lng, latitude: this.coordinates.lat };
+      if (this.coordinates !== undefined) {
+        this.localUserData.location = { longitude: this.coordinates.lng, latitude: this.coordinates.lat };
+      }
       let payload = {};
       const checkAvatarID = this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : this.userData.avatarId;
       const additionalInfo = {
