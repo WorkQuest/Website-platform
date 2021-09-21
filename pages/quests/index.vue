@@ -95,32 +95,13 @@
           <div class="tools__panel">
             <base-filter-dd class="tools__item" />
             <base-dd
-              v-model="selectedQuest"
-              class="tools__item"
-              :items="quests"
-              mode="blackFont"
-              :placeholder="$t('quests.quests')"
-            />
-            <base-dd
-              v-model="selectedUrgent"
-              class="tools__item"
-              :items="urgent"
-              mode="blackFont"
-              :placeholder="$t('quests.urgent')"
-            />
-            <base-dd
-              v-model="selectedTypeOfJob"
-              class="tools__item"
-              :items="typeOfJob"
-              mode="blackFont"
-              :placeholder="$t('quests.typeOfJob')"
-            />
-            <base-dd
-              v-model="selectedDistantWork"
-              class="tools__item"
-              :items="distantWork"
-              mode="blackFont"
-              :placeholder="$t('quests.distantWork.title')"
+              v-for="(item, i) in panelDD"
+              :key="i"
+              v-model="item.vmodel"
+              :class="item.class"
+              :items="item.items"
+              :mode="item.mode"
+              :placeholder="item.placeholder"
             />
             <base-btn
               class="tools__item"
@@ -241,6 +222,38 @@ export default {
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
     }),
+    panelDD() {
+      return [
+        {
+          vmodel: this.selectedQuest,
+          class: 'tools__item',
+          items: this.quests,
+          mode: 'blackFont',
+          placeholder: this.$t('quests.quests'),
+        },
+        {
+          vmodel: this.selectedUrgent,
+          class: 'tools__item',
+          items: this.urgent,
+          mode: 'blackFont',
+          placeholder: this.$t('quests.urgent'),
+        },
+        {
+          vmodel: this.selectedTypeOfJob,
+          class: 'tools__item',
+          items: this.typeOfJob,
+          mode: 'blackFont',
+          placeholder: this.$t('quests.typeOfJob'),
+        },
+        {
+          vmodel: this.selectedDistantWork,
+          class: 'tools__item',
+          items: this.distantWork,
+          mode: 'blackFont',
+          placeholder: this.$t('quests.distantWork.title'),
+        },
+      ];
+    },
     distance() {
       return [
         '+ 100 m',

@@ -240,9 +240,9 @@ export default {
         },
       ],
       rating: [],
-      selectedRating: '',
       selectedUrgent: '',
       selectedDistantWork: '',
+      selectedTypeOfJob: '',
       pins: {
         selected: '/img/app/marker_blue.svg',
         notSelected: '/img/app/marker_red.svg',
@@ -584,6 +584,15 @@ export default {
         this.$t('quests.distantWork.bothVariant'),
       ];
     },
+    typeOfJob() {
+      return [
+        this.$t('quests.fullTime'),
+        this.$t('quests.partTime'),
+        this.$t('quests.fixedTerm'),
+        this.$t('quests.contract'),
+        this.$t('quests.remoteWork'),
+      ];
+    },
     urgent() {
       return [
         this.$t('priority.urgent'),
@@ -609,11 +618,11 @@ export default {
     panelDDLeft() {
       return [
         {
-          vmodel: this.selectedRating,
+          vmodel: this.selectedTypeOfJob,
           class: 'panel__item',
-          items: this.rating,
+          items: this.typeOfJob,
           mode: 'blackFont',
-          placeholder: this.$t('quests.rating'),
+          placeholder: this.$t('quests.typeOfJob'),
         },
         {
           vmodel: this.selectedUrgent,
