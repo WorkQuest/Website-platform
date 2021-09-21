@@ -1075,7 +1075,6 @@ export default {
             specAndSkills[specName] = this.selectedSkills[spec];
           }
         }
-        console.log(specAndSkills);
         payload = {
           ...this.localUserData,
           avatarId: checkAvatarID,
@@ -1090,7 +1089,6 @@ export default {
           },
         };
       }
-      console.log(payload);
       try {
         await this.$store.dispatch('user/editUserData', payload);
         this.showModalSave();

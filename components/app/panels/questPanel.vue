@@ -125,7 +125,6 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    console.log(this.userData);
     // this.avatarUrl = this.userInfo.avatarId ? this.userInfo.avatar.url : '~/assets/img/app/avatar_empty.png';
     // this.questLat = this.questData?.location?.latitude;
     // this.questLng = this.questData?.location?.longitude;
