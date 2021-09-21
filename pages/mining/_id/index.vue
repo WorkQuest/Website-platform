@@ -55,6 +55,15 @@
           </div>
           <div class="info-block__btns">
             <base-btn
+              v-if="miningPoolId === 'BNB'"
+              class="btn_bl"
+              mode="outline"
+              :disabled="statusBusy"
+              @click="openSwapTokens()"
+            >
+              {{ $t('mining.swapTokens.title') }}
+            </base-btn>
+            <base-btn
               :link="'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH'"
               class="btn_bl"
               :disabled="miningPoolId === 'BNB' || statusBusy"
@@ -410,6 +419,11 @@ export default {
       });
       this.totalPagesValue = this.totalPages;
     },
+    openSwapTokens() {
+      this.ShowModal({
+        key: modals.swapTokens,
+      });
+    },
     openModalUnstaking() {
       this.ShowModal({
         key: modals.claimRewards,
@@ -679,6 +693,7 @@ export default {
           grid-template-columns: 105px auto;
 
           .info-block__btns {
+            display: grid;
             grid-column-start: 2;
             grid-column-end: 3;
             grid-template-columns: repeat(2, 1fr);

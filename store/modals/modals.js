@@ -76,4 +76,5 @@ export default {
   editCase: 'editCase',
   deleteCase: 'deleteCase',
   claimRewards: 'claimRewards',
+  swapTokens: 'swapTokens',
 };

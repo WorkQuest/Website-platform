@@ -1976,6 +1976,13 @@
   "mining": {
     "claimRewards": "Claim rewards",
     "liquidityMining": "Liquidity mining",
+    "swapTokens": {
+      "title": "Swap tokens",
+      "swap": "Swap",
+      "oldTokens": "Enter amount of old tokens",
+      "newTokens": "You will get new tokens",
+      "balance": "Your balance:"
+    },
     "approve": "Approve",
     "stake": "Stake",
     "unstake": "Unstake",
