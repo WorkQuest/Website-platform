@@ -98,8 +98,8 @@ export const startPingingMetamask = async (callback) => {
       }, 2000);
     }
     return success();
-  } catch (err) {
-    return error(500, 'pingingMetamask err', err);
+  } catch (e) {
+    return error(500, 'pingingMetamask err', e);
   }
 };
 
@@ -134,8 +134,8 @@ export const initWeb3 = async () => {
       return success(account);
     }
     return 'ok';
-  } catch (err) {
-    return error(500, '', err.message);
+  } catch (e) {
+    return error(500, '', e.message);
   }
 };
 
@@ -213,7 +213,7 @@ export const unstakeOfStake = async (_postFix, _amount) => {
     const decimals = getStakeTokenDecimals(_postFix);
     const response = await stakeInstanse.unstake(new BigNumber(_amount).shiftedBy(+decimals).toString());
     return output(response);
-  } catch (err) {
-    return error(500, 'unstake error', err);
+  } catch (e) {
+    return error(500, 'unstake error', e);
   }
 };

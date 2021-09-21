@@ -108,23 +108,23 @@
             <div class="third__triple">
               <base-btn
                 class="btn_bl"
-                :disabled="miningPoolId === 'BNB'"
-                @click="openModalClaimRewards() || statusBusy"
+                :disabled="miningPoolId === 'BNB' || !isConnected || statusBusy"
+                @click="openModalClaimRewards()"
               >
                 {{ $t('mining.stake') }}
               </base-btn>
               <base-btn
                 class="btn_bl"
                 mode="outline"
-                :disabled="miningPoolId === 'BNB'"
-                @click="openModalUnstaking() || statusBusy"
+                :disabled="miningPoolId === 'BNB' || !isConnected || statusBusy"
+                @click="openModalUnstaking()"
               >
                 {{ $t('mining.unstake') }}
               </base-btn>
               <base-btn
                 :mode="'outline'"
                 class="bnt__claim"
-                :disabled="miningPoolId === 'BNB' || statusBusy"
+                :disabled="miningPoolId === 'BNB' || !isConnected || statusBusy"
                 @click="claimRewards()"
               >
                 {{ $t('mining.claimReward') }}
@@ -362,7 +362,7 @@ export default {
     },
     async connectToMetamask() {
       await this.$store.dispatch('web3/connect');
-      await this.$store.dispatch('web3/initWeb3ExampleContract');
+      await this.$store.dispatch('web3/initContract');
       await this.tokensDataUpdate();
     },
     async roundLiquidityUSD() {
