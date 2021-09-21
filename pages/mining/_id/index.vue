@@ -15,7 +15,7 @@
           v-if="!isConnected"
           mode="light"
           class="mining-page__connect"
-          :disabled="miningPoolId === 'BNB' || statusBusy"
+          :disabled="statusBusy"
           @click="connectToMetamask"
         >
           {{ $t('mining.connectWallet') }}
@@ -24,7 +24,7 @@
           v-else
           mode="light"
           class="mining-page__connect"
-          :disabled="miningPoolId === 'BNB' || statusBusy"
+          :disabled="statusBusy"
           @click="disconnectFromMetamask"
         >
           {{ $t('meta.disconnect') }}
@@ -72,7 +72,7 @@
             <base-btn
               :link="'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH'"
               class="btn_bl"
-              :disabled="miningPoolId === 'BNB' || statusBusy"
+              :disabled="statusBusy"
             >
               {{ $t('mining.addLiquidity') }}
             </base-btn>
@@ -123,7 +123,7 @@
             <div class="third__triple">
               <base-btn
                 class="btn_bl"
-                :disabled="miningPoolId === 'BNB' || !isConnected || statusBusy"
+                :disabled="!isConnected || statusBusy"
                 @click="openModalClaimRewards()"
               >
                 {{ $t('mining.stake') }}
@@ -131,7 +131,7 @@
               <base-btn
                 class="btn_bl"
                 mode="outline"
-                :disabled="miningPoolId === 'BNB' || !isConnected || statusBusy"
+                :disabled="!isConnected || statusBusy"
                 @click="openModalUnstaking()"
               >
                 {{ $t('mining.unstake') }}
@@ -139,7 +139,7 @@
               <base-btn
                 :mode="'outline'"
                 class="bnt__claim"
-                :disabled="miningPoolId === 'BNB' || !isConnected || statusBusy"
+                :disabled="!isConnected || statusBusy"
                 @click="claimRewards()"
               >
                 {{ $t('mining.claimReward') }}

@@ -1199,7 +1199,7 @@ export default {
     text-align: left;
   }
   &__btn {
-    height: 43px;
+    height: 46px;
     display: flex;
     align-items: center;
     justify-content: space-between;

@@ -85,58 +85,52 @@
         <h2 class="main__title">
           {{ $t('workers.topWorkers') }}
         </h2>
-        <div class="main__menu menu">
-          <div class="menu__left">
-            <base-btn
-              class="btn_white"
-            >
-              <template v-slot:right>
-                <span class="icon-Sorting_descending" />
-              </template>
-              {{ $t('workers.price') }}
-            </base-btn>
-            <base-btn
-              class="btn_white"
-            >
-              <template v-slot:right>
-                <span class="icon-Sorting_descending" />
-              </template>
-              {{ $t('workers.addedTime') }}
-            </base-btn>
-          </div>
-          <div class="menu__right">
-            <base-btn
-              class="btn_white"
-            >
-              <template v-slot:right>
-                <span class="icon-caret_down" />
-              </template>
-              {{ $t('workers.quests') }}
-            </base-btn>
-            <base-btn
-              class="btn_white"
-            >
-              <template v-slot:right>
-                <span class="icon-caret_down" />
-              </template>
-              {{ $t('workers.urgent') }}
-            </base-btn>
-            <base-btn
-              class="btn_white"
-            >
-              <template v-slot:right>
-                <span class="icon-caret_down" />
-              </template>
-              {{ $t('workers.specialized') }}
-            </base-btn>
-            <base-btn
-              class="btn_white"
-            >
-              <template v-slot:right>
-                <span class="icon-caret_down" />
-              </template>
-              {{ $t('workers.typeOfJob') }}
-            </base-btn>
+        <div class="quests__tools panel">
+          <div class="panel">
+            <div class="panel__left">
+              <base-filter-dd class="panel__item" />
+              <base-dd
+                v-for="(item, i) in panelDDLeft"
+                :key="i"
+                v-model="item.vmodel"
+                :class="item.class"
+                :items="item.items"
+                :mode="item.mode"
+                :placeholder="item.placeholder"
+              />
+              <base-btn
+                class="panel__item"
+                :mode="'light'"
+                @click="showPriceSearch"
+              >
+                <span class="tools__text">
+                  {{ $t('quests.price') }}
+                </span>
+                <template v-slot:right>
+                  <span
+                    class="icon-caret_down icon_blue"
+                  />
+                </template>
+              </base-btn>
+            </div>
+            <div class="panel__right">
+              <base-btn
+                class="tools__item"
+                :mode="'light'"
+              >
+                <span class="tools__text">
+                  {{ $t('quests.time') }}
+                </span>
+                <span
+                  v-if="timeSort === 'desc'"
+                  class="icon-Sorting_descending"
+                />
+                <span
+                  v-if="timeSort === 'asc'"
+                  class="icon-Sorting_ascending"
+                />
+              </base-btn>
+            </div>
           </div>
         </div>
         <div class="content">
@@ -222,7 +216,7 @@ import GmapSearchBlock from '~/components/app/GmapSearch';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'IndexVue',
+  name: 'Workers',
   components: {
     GmapSearchBlock,
   },
@@ -245,6 +239,10 @@ export default {
           lng: '16.21',
         },
       ],
+      rating: [],
+      selectedUrgent: '',
+      selectedDistantWork: '',
+      selectedTypeOfJob: '',
       pins: {
         selected: '/img/app/marker_blue.svg',
         notSelected: '/img/app/marker_red.svg',
@@ -565,21 +563,10 @@ export default {
           cost: '1500 WUSD',
         },
       ],
-      distance: [
-        '+ 100 m',
-        '+ 500 m',
-        '+ 1000 m',
-      ],
       priorityIndex: 0,
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
-      priority: [
-        this.$t('quests.priority.all'),
-        this.$t('quests.priority.low'),
-        this.$t('quests.priority.normal'),
-        this.$t('quests.priority.urgent'),
-      ],
       addresses: [],
       coordinates: null,
     };
@@ -590,6 +577,69 @@ export default {
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
     }),
+    distantWork() {
+      return [
+        this.$t('quests.distantWork.distantWork'),
+        this.$t('quests.distantWork.workInOffice'),
+        this.$t('quests.distantWork.bothVariant'),
+      ];
+    },
+    typeOfJob() {
+      return [
+        this.$t('quests.fullTime'),
+        this.$t('quests.partTime'),
+        this.$t('quests.fixedTerm'),
+        this.$t('quests.contract'),
+        this.$t('quests.remoteWork'),
+      ];
+    },
+    urgent() {
+      return [
+        this.$t('priority.urgent'),
+        this.$t('priority.normal'),
+        this.$t('priority.low'),
+      ];
+    },
+    distance() {
+      return [
+        '+ 100 m',
+        '+ 500 m',
+        '+ 1000 m',
+      ];
+    },
+    priority() {
+      return [
+        this.$t('quests.priority.all'),
+        this.$t('quests.priority.low'),
+        this.$t('quests.priority.normal'),
+        this.$t('quests.priority.urgent'),
+      ];
+    },
+    panelDDLeft() {
+      return [
+        {
+          vmodel: this.selectedTypeOfJob,
+          class: 'panel__item',
+          items: this.typeOfJob,
+          mode: 'blackFont',
+          placeholder: this.$t('quests.typeOfJob'),
+        },
+        {
+          vmodel: this.selectedUrgent,
+          class: 'panel__item',
+          items: this.urgent,
+          mode: 'blackFont',
+          placeholder: this.$t('quests.urgent'),
+        },
+        {
+          vmodel: this.selectedDistantWork,
+          class: 'panel__item',
+          items: this.distantWork,
+          mode: 'blackFont',
+          placeholder: this.$t('quests.distantWork.title'),
+        },
+      ];
+    },
     cardLevelClass(idx) {
       const { cards } = this;
       return [
@@ -606,6 +656,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    showPriceSearch() {
+      this.ShowModal({
+        key: modals.priceSearch,
+      });
+    },
     showWelcomeModal() {
       if (this.checkWelcomeModal === true) {
         this.ShowModal({
@@ -674,6 +729,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.panel {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  &__left {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+  }
+  &__right {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr;
+  }
+}
 .quests {
   &__cards {
     display: grid;
@@ -725,6 +796,7 @@ export default {
   }
   &__tools {
     padding-top:  20px;
+    margin-bottom: 20px;
   }
 }
 .main {
@@ -1043,6 +1115,13 @@ export default {
   }
 }
 @include _1199 {
+  .panel {
+    display: flex;
+    flex-direction: column;
+    &__right {
+      margin-top: 10px;
+    }
+  }
   .main {
     padding-left: 20px;
     padding-right: 20px;
@@ -1063,6 +1142,11 @@ export default {
   }
 }
 @include _767 {
+  .panel {
+    &__left {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
   .main {
     display: block;
     .content {
