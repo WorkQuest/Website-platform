@@ -14,7 +14,19 @@
           :label="$t('modals.amount')"
           rules="required|decimal"
           :name="$t('modals.amount')"
-        />
+        >
+          <template
+            v-slot:right-absolute
+            class="content__max max"
+          >
+            <base-btn
+              mode="max"
+              class="max__button"
+            >
+              <span class="max__text">{{ $t('modals.maximum') }}</span>
+            </base-btn>
+          </template>
+        </base-field>
         <div class="content__container">
           <base-btn
             :mode="'outline'"
