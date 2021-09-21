@@ -22,6 +22,7 @@
             <base-btn
               mode="max"
               class="max__button"
+              @click="maxBalance()"
             >
               <span class="max__text">{{ $t('modals.maximum') }}</span>
             </base-btn>
@@ -64,11 +65,20 @@ export default {
       accountData: 'web3/getAccountData',
       options: 'modals/getOptions',
       statusBusy: 'web3/getStatusBusy',
+      userBalance: 'web3/getUserBalance',
+      userStake: 'web3/getUserStake',
     }),
   },
   methods: {
     hide() {
       this.CloseModal();
+    },
+    maxBalance() {
+      if (this.options.type === 1) {
+        this.amount = this.userBalance;
+      } else if (this.options.type === 2) {
+        this.amount = this.userStake;
+      }
     },
     async staking() {
       this.SetLoader(true);
@@ -93,6 +103,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.max {
+  &__button {
+    margin-right: 10px !important;
+    background-color: transparent !important;
+  }
+}
 .claim {
   max-width: 487px!important;
   &__content {
