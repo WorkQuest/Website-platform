@@ -31,7 +31,10 @@
         </base-btn>
       </div>
       <div class="mining-page__content">
-        <div class="info-block__grid">
+        <div
+          class="info-block__grid"
+          :class="commonBtnContainerWidth()"
+        >
           <div class="info-block__icons">
             <div
               v-for="(item, i) in iconUrls()"
@@ -53,7 +56,10 @@
             <!--              {{ $tc('mining.dollarsCount', "176 904.49") }}-->
             <!--            </div>-->
           </div>
-          <div class="info-block__btns">
+          <div
+            class="info-block__btns"
+            :class="buttonContainerStyles()"
+          >
             <base-btn
               v-if="miningPoolId === 'BNB'"
               class="btn_bl"
@@ -354,6 +360,20 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    commonBtnContainerWidth() {
+      let style;
+      if (this.miningPoolId === 'BNB') {
+        style = 'info-block__grid_double';
+      }
+      return style;
+    },
+    buttonContainerStyles() {
+      let style;
+      if (this.miningPoolId === 'BNB') {
+        style = 'info-block__btns_double';
+      }
+      return style;
+    },
     async tokensDataUpdate() {
       const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
@@ -542,6 +562,9 @@ export default {
         display: grid;
         gap: 10px;
         align-content: center;
+        &_double {
+          grid-template-columns: repeat(2, 1fr);
+        }
       }
 
       &__about {
@@ -575,6 +598,9 @@ export default {
         gap: 20px;
         padding: 20px;
         position: relative;
+        &_double {
+          grid-template-columns: 1fr 5fr 4fr;
+        }
       }
 
       &__double {
