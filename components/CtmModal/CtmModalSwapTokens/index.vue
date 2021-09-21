@@ -1,19 +1,33 @@
 <template>
   <ctm-modal-box
     class="claim"
-    :title="options.type === 1 ? $t('mining.stake') : 'Unstake'"
+    :title="$t('mining.swapTokens.title')"
   >
     <div class="claim__content content">
       <validation-observer
         v-slot="{handleSubmit, validated, passed, invalid}"
       >
         <base-field
-          v-model="amount"
+          v-model="oldTokens"
           class="content__field"
           :placeholder="3500"
-          :label="$t('modals.amount')"
+          :label="$t('mining.swapTokens.oldTokens')"
           rules="required|decimal"
-          :name="$t('modals.amount')"
+          :name="$t('mining.swapTokens.oldTokens')"
+        />
+        <div class="content__subtitle">
+          {{ $t('mining.swapTokens.balance') }}
+          <span class="content__subtitle_blue">
+            {{ balance }} {{ currency }}
+          </span>
+        </div>
+        <base-field
+          v-model="newTokens"
+          class="content__field"
+          :placeholder="3500"
+          :label="$t('mining.swapTokens.newTokens')"
+          rules="required|decimal"
+          :name="$t('mining.swapTokens.newTokens')"
         />
         <div class="content__container">
           <base-btn
@@ -25,9 +39,8 @@
           </base-btn>
           <base-btn
             :disabled="!validated || !passed || invalid || statusBusy"
-            @click="handleSubmit(options.type === 1 ? staking : unstaking)"
           >
-            {{ $t('meta.submit') }}
+            {{ $t('mining.swapTokens.swap') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -39,10 +52,11 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'CtmModalClaimRewards',
+  name: 'CtmModalSwapTokens',
   data() {
     return {
-      amount: '',
+      oldTokens: '',
+      newTokens: '',
       balance: 10,
       currency: 'WUSD',
     };
@@ -57,24 +71,6 @@ export default {
   methods: {
     hide() {
       this.CloseModal();
-    },
-    async staking() {
-      this.SetLoader(true);
-      this.hide();
-      await this.$store.dispatch('web3/stake', {
-        decimals: this.accountData.decimals.stakeDecimal,
-        amount: this.amount,
-      });
-      this.SetLoader(false);
-    },
-    async unstaking() {
-      this.SetLoader(true);
-      this.hide();
-      await this.$store.dispatch('web3/unstake', {
-        decimals: this.accountData?.decimals?.stakeDecimal,
-        amount: this.amount,
-      });
-      this.SetLoader(false);
     },
   },
 };
@@ -93,6 +89,7 @@ export default {
     font-weight: 400;
     font-size: 14px;
     color: $black500;
+    margin-bottom: 10px;
     &_blue {
       @extend .content__subtitle;
       color: $blue;

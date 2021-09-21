@@ -1,4 +1,7 @@
 export default {
+  setBusy(state, payload) {
+    state.busy = payload;
+  },
   setIsConnected(state, payload) {
     state.isConnected = payload;
   },

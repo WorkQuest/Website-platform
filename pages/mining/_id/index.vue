@@ -15,7 +15,7 @@
           v-if="!isConnected"
           mode="light"
           class="mining-page__connect"
-          :disabled="miningPoolId === 'BNB'"
+          :disabled="miningPoolId === 'BNB' || statusBusy"
           @click="connectToMetamask"
         >
           {{ $t('mining.connectWallet') }}
@@ -24,14 +24,17 @@
           v-else
           mode="light"
           class="mining-page__connect"
-          :disabled="miningPoolId === 'BNB'"
+          :disabled="miningPoolId === 'BNB' || statusBusy"
           @click="disconnectFromMetamask"
         >
           {{ $t('meta.disconnect') }}
         </base-btn>
       </div>
       <div class="mining-page__content">
-        <div class="info-block__grid">
+        <div
+          class="info-block__grid"
+          :class="commonBtnContainerWidth()"
+        >
           <div class="info-block__icons">
             <div
               v-for="(item, i) in iconUrls()"
@@ -53,11 +56,23 @@
             <!--              {{ $tc('mining.dollarsCount', "176 904.49") }}-->
             <!--            </div>-->
           </div>
-          <div class="info-block__btns">
+          <div
+            class="info-block__btns"
+            :class="buttonContainerStyles()"
+          >
+            <base-btn
+              v-if="miningPoolId === 'BNB'"
+              class="btn_bl"
+              mode="outline"
+              :disabled="statusBusy"
+              @click="openSwapTokens()"
+            >
+              {{ $t('mining.swapTokens.title') }}
+            </base-btn>
             <base-btn
               :link="'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH'"
               class="btn_bl"
-              :disabled="miningPoolId === 'BNB'"
+              :disabled="miningPoolId === 'BNB' || statusBusy"
             >
               {{ $t('mining.addLiquidity') }}
             </base-btn>
@@ -108,7 +123,7 @@
             <div class="third__triple">
               <base-btn
                 class="btn_bl"
-                :disabled="miningPoolId === 'BNB'"
+                :disabled="miningPoolId === 'BNB' || !isConnected || statusBusy"
                 @click="openModalClaimRewards()"
               >
                 {{ $t('mining.stake') }}
@@ -116,7 +131,7 @@
               <base-btn
                 class="btn_bl"
                 mode="outline"
-                :disabled="miningPoolId === 'BNB'"
+                :disabled="miningPoolId === 'BNB' || !isConnected || statusBusy"
                 @click="openModalUnstaking()"
               >
                 {{ $t('mining.unstake') }}
@@ -124,7 +139,7 @@
               <base-btn
                 :mode="'outline'"
                 class="bnt__claim"
-                :disabled="miningPoolId === 'BNB'"
+                :disabled="miningPoolId === 'BNB' || !isConnected || statusBusy"
                 @click="claimRewards()"
               >
                 {{ $t('mining.claimReward') }}
@@ -318,6 +333,7 @@ export default {
       accountData: 'web3/getAccountData',
       tokensData: 'web3/getTokensAmount',
       tokenLP: 'web3/getLPTokenPrice',
+      statusBusy: 'web3/getStatusBusy',
     }),
     totalPages() {
       if (this.tableData) {
@@ -344,6 +360,20 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    commonBtnContainerWidth() {
+      let style;
+      if (this.miningPoolId === 'BNB') {
+        style = 'info-block__grid_double';
+      }
+      return style;
+    },
+    buttonContainerStyles() {
+      let style;
+      if (this.miningPoolId === 'BNB') {
+        style = 'info-block__btns_double';
+      }
+      return style;
+    },
     async tokensDataUpdate() {
       const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
@@ -351,15 +381,15 @@ export default {
     },
     async disconnectFromMetamask() {
       await this.$store.dispatch('web3/disconnect');
-      console.log('disconnectFromMetamask');
     },
     async claimRewards() {
+      this.SetLoader(true);
       await this.$store.dispatch('web3/claimRewards');
-      console.log('start claimRewards');
+      this.SetLoader(false);
     },
     async connectToMetamask() {
       await this.$store.dispatch('web3/connect');
-      await this.$store.dispatch('web3/initWeb3ExampleContract');
+      await this.$store.dispatch('web3/initContract');
       await this.tokensDataUpdate();
     },
     async roundLiquidityUSD() {
@@ -408,6 +438,11 @@ export default {
         });
       });
       this.totalPagesValue = this.totalPages;
+    },
+    openSwapTokens() {
+      this.ShowModal({
+        key: modals.swapTokens,
+      });
     },
     openModalUnstaking() {
       this.ShowModal({
@@ -527,6 +562,9 @@ export default {
         display: grid;
         gap: 10px;
         align-content: center;
+        &_double {
+          grid-template-columns: repeat(2, 1fr);
+        }
       }
 
       &__about {
@@ -560,6 +598,9 @@ export default {
         gap: 20px;
         padding: 20px;
         position: relative;
+        &_double {
+          grid-template-columns: 1fr 5fr 4fr;
+        }
       }
 
       &__double {
@@ -678,6 +719,7 @@ export default {
           grid-template-columns: 105px auto;
 
           .info-block__btns {
+            display: grid;
             grid-column-start: 2;
             grid-column-end: 3;
             grid-template-columns: repeat(2, 1fr);

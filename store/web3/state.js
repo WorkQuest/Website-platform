@@ -10,4 +10,5 @@ export default () => ({
   accountData: {},
   tokensAmount: {},
   tokenLPAmount: {},
+  busy: false,
 });
