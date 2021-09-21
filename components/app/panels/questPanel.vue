@@ -48,7 +48,7 @@
               {{ showDistance() }} {{ $t('meta.fromYou') }}
             </span>
           </div>
-          <div
+          <!--<div
             v-if="userRole === 'worker'"
             class="runtime__container"
           >
@@ -57,7 +57,7 @@
             <span
               class="runtime__link"
             >
-              Хардко
+              {{ getPriority(questData.priority) }}
             </span>
           </div>
           <div
@@ -71,8 +71,18 @@
             <span
               class="runtime__link"
             >
-              Хардкод
+              {{ getPriority(questData.priority) }}
             </span>
+          </div>-->
+          <div
+            class="priority__container"
+          >
+            <div
+              class="priority__title"
+              :class="getPriorityClass(questData.priority)"
+            >
+              {{ getPriority(questData.priority) }}
+            </div>
           </div>
         </div>
       </div>
@@ -173,6 +183,22 @@ export default {
         return moment(this.questData.createdAt).format('MMMM Do YYYY, h:mm');
       }
       return '';
+    },
+    getPriority(index) {
+      const priority = {
+        0: this.$t('priority.low'),
+        1: this.$t('priority.normal'),
+        2: this.$t('priority.urgent'),
+      };
+      return priority[index] || '';
+    },
+    getPriorityClass(index) {
+      const priority = {
+        0: 'priority__title_low',
+        1: 'priority__title_normal',
+        2: 'priority__title_urgent',
+      };
+      return priority[index] || '';
     },
   },
 };
@@ -345,5 +371,29 @@ export default {
     color: $black500;
   }
 }
-
+.priority {
+  &__title {
+    @include text-simple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 130%;
+    height: 24px;
+    padding: 0 5px;
+    &_low {
+      background: rgba(34, 204, 20, 0.1);
+      color: #22CC14;
+    }
+    &_urgent {
+      background: rgba(223, 51, 51, 0.1);
+      color: #DF3333;
+    }
+    &_normal {
+      background: rgba(232, 210, 13, 0.1);
+      color: #E8D20D;
+    }
+  }
+}
 </style>

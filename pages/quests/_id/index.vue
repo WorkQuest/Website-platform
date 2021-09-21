@@ -309,11 +309,8 @@
             <span v-if="infoData.mode !== 4">
               <div class="price__container">
                 <span class="price__value">
-                  {{ questData.price }}
+                  {{ questData.price }} WQT
                 </span>
-                <div class="badge__wrapper">
-                  <span class="badge__item_green">{{ payload.badgeGreen }}</span>
-                </div>
               </div>
             </span>
           </div>
