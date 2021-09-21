@@ -216,7 +216,7 @@ import GmapSearchBlock from '~/components/app/GmapSearch';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'IndexVue',
+  name: 'Workers',
   components: {
     GmapSearchBlock,
   },
@@ -241,17 +241,7 @@ export default {
       ],
       rating: [],
       selectedRating: '',
-      urgent: [
-        this.$t('priority.urgent'),
-        this.$t('priority.normal'),
-        this.$t('priority.low'),
-      ],
       selectedUrgent: '',
-      distantWork: [
-        this.$t('quests.distantWork.distantWork'),
-        this.$t('quests.distantWork.workInOffice'),
-        this.$t('quests.distantWork.bothVariant'),
-      ],
       selectedDistantWork: '',
       pins: {
         selected: '/img/app/marker_blue.svg',
@@ -573,21 +563,10 @@ export default {
           cost: '1500 WUSD',
         },
       ],
-      distance: [
-        '+ 100 m',
-        '+ 500 m',
-        '+ 1000 m',
-      ],
       priorityIndex: 0,
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
-      priority: [
-        this.$t('quests.priority.all'),
-        this.$t('quests.priority.low'),
-        this.$t('quests.priority.normal'),
-        this.$t('quests.priority.urgent'),
-      ],
       addresses: [],
       coordinates: null,
     };
@@ -598,6 +577,35 @@ export default {
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
     }),
+    distantWork() {
+      return [
+        this.$t('quests.distantWork.distantWork'),
+        this.$t('quests.distantWork.workInOffice'),
+        this.$t('quests.distantWork.bothVariant'),
+      ];
+    },
+    urgent() {
+      return [
+        this.$t('priority.urgent'),
+        this.$t('priority.normal'),
+        this.$t('priority.low'),
+      ];
+    },
+    distance() {
+      return [
+        '+ 100 m',
+        '+ 500 m',
+        '+ 1000 m',
+      ];
+    },
+    priority() {
+      return [
+        this.$t('quests.priority.all'),
+        this.$t('quests.priority.low'),
+        this.$t('quests.priority.normal'),
+        this.$t('quests.priority.urgent'),
+      ];
+    },
     panelDDLeft() {
       return [
         {
