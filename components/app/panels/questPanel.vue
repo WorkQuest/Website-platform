@@ -77,6 +77,7 @@
           <div
             class="priority__container"
           >
+            {{ `${$t('quests.priority.title')}: ` }}
             <div
               class="priority__title"
               :class="getPriorityClass(questData.priority)"
@@ -372,6 +373,14 @@ export default {
   }
 }
 .priority {
+  &__container {
+    @include text-simple;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    display: flex;
+    grid-gap: 10px;
+  }
   &__title {
     @include text-simple;
     display: flex;

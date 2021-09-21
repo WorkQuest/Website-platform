@@ -309,7 +309,7 @@
             <span v-if="infoData.mode !== 4">
               <div class="price__container">
                 <span class="price__value">
-                  {{ questData.price }} WQT
+                  {{ questData.price }} WUSD
                 </span>
               </div>
             </span>
