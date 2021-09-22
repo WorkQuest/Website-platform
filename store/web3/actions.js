@@ -79,6 +79,32 @@ export default {
     commit('setAccountData', payload);
   },
 
+  async initBridge({ commit }) {
+    const stakingInfo = await fetchContractData('getStakingInfo', abi.StakingWQ, process.env.STAKING_ADDRESS);
+    const { stakeTokenAddress } = stakingInfo;
+    const { rewardTokenAddress } = stakingInfo;
+    const stakeDecimal = await fetchContractData('decimals', abi.ERC20, stakeTokenAddress);
+    const stakeSymbol = await fetchContractData('symbol', abi.ERC20, stakeTokenAddress);
+    const rewardDecimal = await fetchContractData('decimals', abi.ERC20, rewardTokenAddress);
+    const rewardSymbol = await fetchContractData('symbol', abi.ERC20, rewardTokenAddress);
+    const stakeBalance = await fetchContractData('balanceOf', abi.ERC20, stakeTokenAddress, [getAccount().address]);
+    const rewardBalance = await fetchContractData('balanceOf', abi.ERC20, rewardTokenAddress, [getAccount().address]);
+
+    const payload = {
+      userPurse: {
+        stakeBalance: new BigNumber(stakeBalance).shiftedBy(-stakeDecimal).toString(),
+        stakeSymbol,
+        rewardBalance: new BigNumber(rewardBalance).shiftedBy(-rewardDecimal).toString(),
+        rewardSymbol,
+      },
+      decimals: {
+        stakeDecimal,
+        rewardDecimal,
+      },
+    };
+    commit('setAccountData', payload);
+  },
+
   async getTokensData({ commit }, { rewardDecimal, stakeDecimal }) {
     const userInfo = await fetchContractData('getInfoByAddress', abi.StakingWQ, process.env.STAKING_ADDRESS, [getAccount().address]);
     const payload = {

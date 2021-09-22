@@ -245,6 +245,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async connectToMetamask() {
+      await this.$store.dispatch('web3/connect');
+      await this.$store.dispatch('web3/initContract');
+      await this.tokensDataUpdate();
+    },
     showToast(title, text, variant) {
       this.$store.dispatch('defi/showToast', { title, text, variant });
     },
