@@ -242,6 +242,8 @@ export default {
     display: flex;
     align-items: center;
     img {
+      height: 25px;
+      width: 25px;
       margin-right: 5px;
     }
     span {

@@ -29,32 +29,6 @@
                     @input="handleChangeSource"
                   />
                 </div>
-                <div>
-                  <div class="contract-data__title">
-                    {{ $t('crosschain.yourWQTAddress') }}
-                  </div>
-                  <div class="contract-data__link">
-                    <div class="address">
-                      {{ referLink }}
-                    </div>
-                    <button
-                      type="button"
-                      @click="doCopy"
-                    >
-                      <span class="icon-copy address__icon" />
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <div class="contract-data__title">
-                    {{ $t('crosschain.balance') }}
-                  </div>
-                  <div class="contract-data__balance">
-                    <div class="title">
-                      15 000 WQT
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
             <img
@@ -78,32 +52,6 @@
                     :is-icon="true"
                     @input="handleChangeTarget"
                   />
-                </div>
-                <div>
-                  <div class="contract-data__title">
-                    {{ $t('crosschain.YourBSCAddress') }}
-                  </div>
-                  <div class="contract-data__link">
-                    <div class="address">
-                      {{ referLink }}
-                    </div>
-                    <button
-                      type="button"
-                      @click="doCopy"
-                    >
-                      <span class="icon-copy address__icon" />
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <div class="contract-data__title">
-                    {{ $t('crosschain.balance') }}
-                  </div>
-                  <div class="contract-data__balance">
-                    <div class="title">
-                      15 000 WQT
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -161,6 +109,16 @@
                   {{ el.item.created }}
                 </div>
               </template>
+              <template #cell(redeem)>
+                <div class="table__value table__value_blue">
+                  <base-btn
+                    class="btn__redeem"
+                    mode="outline"
+                  >
+                    {{ $t('meta.redeem') }}
+                  </base-btn>
+                </div>
+              </template>
             </b-table>
           </div>
         </div>
@@ -176,14 +134,14 @@ import modals from '~/store/modals/modals';
 export default {
   data() {
     return {
-      referLink: 'https://www.workquest.com/ref?v=44T7iUSo1vU',
+      referLink: '0xnf8o2…9b74thb3',
       sourceAddressInd: 0,
       targetAddressInd: 1,
       items: [
         {
           direction: [
-            require('~/assets/img/ui/WQT.png'),
-            require('~/assets/img/ui/Binance.png'),
+            require('~/assets/img/ui/ethereum.svg'),
+            require('~/assets/img/ui/bnb-logo.svg'),
           ],
           recipient: this.$t('crosschain.recipTemp'),
           tx: this.$t('crosschain.recipTemp'),
@@ -191,15 +149,22 @@ export default {
         },
         {
           direction: [
-            require('~/assets/img/ui/WQT.png'),
-            require('~/assets/img/ui/Binance.png'),
+            require('~/assets/img/ui/ethereum.svg'),
+            require('~/assets/img/ui/bnb-logo.svg'),
           ],
           recipient: this.$t('crosschain.recipTemp'),
           tx: this.$t('crosschain.recipTemp'),
           created: this.$t('crosschain.dateTemp'),
         },
       ],
-      testFields: [
+    };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+    testFields() {
+      return [
         {
           key: 'direction',
           label: this.$t('crosschain.tableHead.direction'),
@@ -248,21 +213,28 @@ export default {
             style: 'padding: 0; height: 64px; line-height: 64px',
           },
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
+        {
+          key: 'redeem',
+          label: '',
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'display: flex; align-items: center; height: 64px; line-height: 64px',
+          },
+        },
+      ];
+    },
     addresses() {
       return [
         {
-          icon: require('~/assets/img/ui/WQT.png'),
-          title: this.$t('crosschain.worknet'),
+          icon: require('~/assets/img/ui/ethereum.svg'),
+          title: this.$t('crosschain.eth'),
         },
         {
-          icon: require('~/assets/img/ui/Binance.png'),
+          icon: require('~/assets/img/ui/bnb-logo.svg'),
           title: this.$t('crosschain.bsc'),
         },
       ];
@@ -273,10 +245,8 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    doCopy(ev) {
-      ev.stopPropagation();
-      this.$copyText(this.referLink).then(() => {
-      });
+    showToast(title, text, variant) {
+      this.$store.dispatch('defi/showToast', { title, text, variant });
     },
     handleChangeTarget(selInd) {
       if (selInd === this.sourceAddressInd) {
@@ -353,7 +323,7 @@ export default {
 
       &:hover {
         background-color: #0083C71A;
-        border: 0px;
+        border: 0;
       }
 
       &_bl {
@@ -379,9 +349,15 @@ export default {
         align-items: center;
         padding: 20px;
 
+        img {
+          display: flex;
+          align-self: flex-end;
+          margin-bottom: 5px;
+        }
+
         .contract-data {
           display: grid;
-          grid-template-rows: repeat(3, 1fr);
+          grid-template-rows: repeat(1, 1fr);
           gap: 15px;
           margin-top: 20px;
 
@@ -478,6 +454,7 @@ export default {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        width: 100%;
 
         &_blue {
           color: #0083C7;
