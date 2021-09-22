@@ -140,8 +140,8 @@ export default {
       items: [
         {
           direction: [
-            require('~/assets/img/ui/WQT.png'),
-            require('~/assets/img/ui/Binance.png'),
+            require('~/assets/img/ui/ethereum.svg'),
+            require('~/assets/img/ui/bnb-logo.svg'),
           ],
           recipient: this.$t('crosschain.recipTemp'),
           tx: this.$t('crosschain.recipTemp'),
@@ -149,8 +149,8 @@ export default {
         },
         {
           direction: [
-            require('~/assets/img/ui/WQT.png'),
-            require('~/assets/img/ui/Binance.png'),
+            require('~/assets/img/ui/ethereum.svg'),
+            require('~/assets/img/ui/bnb-logo.svg'),
           ],
           recipient: this.$t('crosschain.recipTemp'),
           tx: this.$t('crosschain.recipTemp'),
@@ -230,11 +230,11 @@ export default {
     addresses() {
       return [
         {
-          icon: require('~/assets/img/ui/WQT.png'),
+          icon: require('~/assets/img/ui/ethereum.svg'),
           title: this.$t('crosschain.eth'),
         },
         {
-          icon: require('~/assets/img/ui/Binance.png'),
+          icon: require('~/assets/img/ui/bnb-logo.svg'),
           title: this.$t('crosschain.bsc'),
         },
       ];
@@ -348,6 +348,12 @@ export default {
         gap: 20px;
         align-items: center;
         padding: 20px;
+
+        img {
+          display: flex;
+          align-self: flex-end;
+          margin-bottom: 5px;
+        }
 
         .contract-data {
           display: grid;
