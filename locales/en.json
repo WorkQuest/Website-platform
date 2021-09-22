@@ -127,6 +127,7 @@
     }
   },
   "meta": {
+    "redeem": "Redeem",
     "pay": "Pay",
     "skipAndEnd": "Skip and end",
     "cleanUp": "Clean up",
@@ -1078,10 +1079,10 @@
     "createSwap": "Create swap",
     "swapInfo": "Swap info",
     "crosschain": "Crosschain",
-    "crosschainText": "Worknet > Binance",
+    "crosschainText": "Eth > Binance",
     "senderAddress": "Sender address",
     "recepientAddress": "Recepient address",
-    "worknetFee": "Worknet fee",
+    "worknetFee": "Eth fee",
     "binanceFee": "Binance fee",
     "welcomeText": "Please, tell us about your skills below",
     "areYouSureText": "",
@@ -2235,6 +2236,7 @@
     "balance": "Balance",
     "createSwap": "Create swap",
     "mySwaps": "My swaps",
+    "eth": "ETH",
     "worknet": "Worknet",
     "bsc": "BSC",
     "tableHead": {

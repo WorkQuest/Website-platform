@@ -1,4 +1,11 @@
 export default {
+  showToast({ dispatch }, { title, text, variant }) {
+    dispatch('main/showToast', {
+      title,
+      text,
+      variant,
+    }, { root: true });
+  },
   async getTokensDayData({ commit }, query) {
     const response = await this.$axios.$get(`/v1/liquidity/tokenDay?${query || ''}`);
     commit('setTokensDayData', response.result);
