@@ -247,7 +247,7 @@ export default {
   methods: {
     async connectToMetamask() {
       await this.$store.dispatch('web3/connect');
-      await this.$store.dispatch('web3/initContract');
+      await this.$store.dispatch('web3/initBridge');
       await this.tokensDataUpdate();
     },
     showToast(title, text, variant) {
@@ -266,6 +266,7 @@ export default {
       this.sourceAddressInd = selInd;
     },
     showSwapModal() {
+      this.connectToMetamask();
       this.ShowModal({
         key: modals.swap,
       });

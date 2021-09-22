@@ -8,6 +8,7 @@ import {
   startPingingMetamask, fetchContractData, getAccount, createInstance, showToast,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
+import { WQBridgeToken } from '~/abi/abi';
 
 BigNumber.config({ EXPONENTIAL_AT: 60 });
 
@@ -80,15 +81,18 @@ export default {
   },
 
   async initBridge({ commit }) {
-    const stakingInfo = await fetchContractData('getStakingInfo', abi.StakingWQ, process.env.STAKING_ADDRESS);
+    const stakingInfo = await fetchContractData('getStakingInfo', abi.StakingWQ, process.env.BRIDGE_ADDRESS_RINKEBY);
     const { stakeTokenAddress } = stakingInfo;
+    console.log(stakeTokenAddress);
     const { rewardTokenAddress } = stakingInfo;
-    const stakeDecimal = await fetchContractData('decimals', abi.ERC20, stakeTokenAddress);
-    const stakeSymbol = await fetchContractData('symbol', abi.ERC20, stakeTokenAddress);
-    const rewardDecimal = await fetchContractData('decimals', abi.ERC20, rewardTokenAddress);
-    const rewardSymbol = await fetchContractData('symbol', abi.ERC20, rewardTokenAddress);
-    const stakeBalance = await fetchContractData('balanceOf', abi.ERC20, stakeTokenAddress, [getAccount().address]);
-    const rewardBalance = await fetchContractData('balanceOf', abi.ERC20, rewardTokenAddress, [getAccount().address]);
+    console.log(rewardTokenAddress);
+    const stakeDecimal = await fetchContractData('decimals', abi.WQBridgeToken, stakeTokenAddress);
+    const stakeSymbol = await fetchContractData('symbol', abi.WQBridgeToken, stakeTokenAddress);
+    const rewardDecimal = await fetchContractData('decimals', abi.WQBridgeToken, rewardTokenAddress);
+    const rewardSymbol = await fetchContractData('symbol', abi.WQBridgeToken, rewardTokenAddress);
+    const stakeBalance = await fetchContractData('balanceOf', abi.WQBridgeToken, stakeTokenAddress, [getAccount().address]);
+    const rewardBalance = await fetchContractData('balanceOf', abi.WQBridgeToken, rewardTokenAddress, [getAccount().address]);
+    console.log(stakeDecimal, stakeSymbol, rewardDecimal, rewardSymbol, stakeBalance, rewardBalance);
 
     const payload = {
       userPurse: {
