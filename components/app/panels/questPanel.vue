@@ -49,30 +49,15 @@
             </span>
           </div>
           <div
-            v-if="userRole === 'worker'"
-            class="runtime__container"
+            class="priority__container"
           >
-            <span class="icon icon-clock" />
-            <span class="runtime__title">{{ $t('quests.runtime.runtime') }}</span>
-            <span
-              class="runtime__link"
+            {{ `${$t('quests.priority.title')}: ` }}
+            <div
+              class="priority__title"
+              :class="getPriorityClass(questData.priority)"
             >
-              Хардко
-            </span>
-          </div>
-          <div
-            v-if="userRole === 'employer'"
-            class="runtime__container"
-          >
-            <span class="icon icon-clock" />
-            <span class="runtime__title">
-              {{ $t('quests.performanceTimer') }}
-            </span>
-            <span
-              class="runtime__link"
-            >
-              Хардкод
-            </span>
+              {{ getPriority(questData.priority) }}
+            </div>
           </div>
         </div>
       </div>
@@ -152,8 +137,8 @@ export default {
       return this.getDistanceFromLatLonInKm(
         this.location.lat,
         this.location.lng,
-        this.userLat,
-        this.userLng,
+        this.userData.location ? this.userData.location.latitude : 0,
+        this.userData.location ? this.userData.location.longitude : 0,
       );
     },
     shareModal() {
@@ -173,6 +158,22 @@ export default {
         return moment(this.questData.createdAt).format('MMMM Do YYYY, h:mm');
       }
       return '';
+    },
+    getPriority(index) {
+      const priority = {
+        0: this.$t('priority.low'),
+        1: this.$t('priority.normal'),
+        2: this.$t('priority.urgent'),
+      };
+      return priority[index] || '';
+    },
+    getPriorityClass(index) {
+      const priority = {
+        0: 'priority__title_low',
+        1: 'priority__title_normal',
+        2: 'priority__title_urgent',
+      };
+      return priority[index] || '';
     },
   },
 };
@@ -345,5 +346,37 @@ export default {
     color: $black500;
   }
 }
-
+.priority {
+  &__container {
+    @include text-simple;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    display: flex;
+    grid-gap: 10px;
+  }
+  &__title {
+    @include text-simple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 130%;
+    height: 24px;
+    padding: 0 5px;
+    &_low {
+      background: rgba(34, 204, 20, 0.1);
+      color: #22CC14;
+    }
+    &_urgent {
+      background: rgba(223, 51, 51, 0.1);
+      color: #DF3333;
+    }
+    &_normal {
+      background: rgba(232, 210, 13, 0.1);
+      color: #E8D20D;
+    }
+  }
+}
 </style>

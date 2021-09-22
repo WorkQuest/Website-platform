@@ -361,6 +361,7 @@
     "type": "Type of job",
     "time": "Added time",
     "priority": {
+      "title": "Priority",
       "all": "All priority",
       "low": "Low",
       "normal": "Normal",

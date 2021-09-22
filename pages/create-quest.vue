@@ -677,7 +677,6 @@ export default {
           latitude: this.coordinates.lat,
         },
       };
-      console.log(payload);
       try {
         const response = await this.$store.dispatch('quests/questCreate', payload);
         if (response) {
