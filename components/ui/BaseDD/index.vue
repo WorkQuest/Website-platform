@@ -235,6 +235,8 @@ export default {
       align-items: center;
       img {
         margin-right: 5px;
+        height: 25px;
+        width: 25px;
       }
     }
   }
