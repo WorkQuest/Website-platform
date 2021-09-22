@@ -322,7 +322,7 @@
     >
       <div class="gmap__block">
         <transition name="fade-fast">
-          <GMap
+          <GmapMap
             ref="gMap"
             class="quests__map"
             language="en"
@@ -343,7 +343,7 @@
             <!--                test-->
             <!--              </GMapInfoWindow>-->
             <!--            </GMapMarker>-->
-          </Gmap>
+          </GmapMap>
         </transition>
       </div>
     </div>
@@ -479,6 +479,18 @@ export default {
       distance: 'data/getDistance',
     }),
   },
+  watch: {
+    questData: {
+      deep: true,
+      handler() {
+        this.questLocation = {
+          lat: this.questData.location.latitude,
+          lng: this.questData.location.longitude,
+        };
+        this.locations = this.questLocation;
+      },
+    },
+  },
   async mounted() {
     this.SetLoader(true);
     await this.initData();
@@ -488,11 +500,6 @@ export default {
     async initData() {
       this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
       this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
-      this.questLocation = {
-        lat: this.questData.location.latitude,
-        lng: this.questData.location.longitude,
-      };
-      this.locations = this.questLocation;
     },
     coordinatesChange(item) {
       if (Object.keys(this.currentLocation).length > 0) {
