@@ -39,7 +39,7 @@
               {{ $t('modals.recepientBinance') }}
             </div>
             <base-field
-              v-model="address"
+              v-model="recipientAddress"
               class="body__input"
               placeholder="Enter binance address"
               rules="required|alpha_num"
@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -76,28 +77,69 @@ export default {
   data() {
     return {
       token: 0,
-      address: '',
+      fromToken: '',
+      toToken: '',
+      recipientAddress: '',
+      userAddress: '',
       amount: '',
     };
   },
   computed: {
+    ...mapGetters({
+      account: 'web3/getAccount',
+      options: 'modals/getOptions',
+    }),
     tokens() {
       return [
         'WQT',
-        'WUSD',
       ];
     },
+    addresses() {
+      return [
+        {
+          id: 0,
+          icon: require('~/assets/img/ui/bnb-logo.svg'),
+          title: this.$t('crosschain.bsc'),
+        },
+        {
+          id: 1,
+          icon: require('~/assets/img/ui/ethereum.svg'),
+          title: this.$t('crosschain.eth'),
+        },
+      ];
+    },
+  },
+  async mounted() {
+    await this.fillAddress();
+    await this.crosschainFlow();
   },
   methods: {
     hide() {
       this.CloseModal();
     },
-    showSwapInfoModal() {
+    async fillAddress() {
+      this.recipientAddress = await this.account.address;
+      this.userAddress = await this.account.address;
+    },
+    async setSwapAddress() {
+      await this.$store.dispatch('defi/setSwapAddress');
+    },
+    async crosschainFlow() {
+      if (this.options.crosschainId === 0) {
+        this.fromToken = this.addresses[0].title;
+        this.toToken = this.addresses[1].title;
+      } else if (this.options.crosschainId === 1) {
+        this.fromToken = this.addresses[1].title;
+        this.toToken = this.addresses[0].title;
+      }
+    },
+    async showSwapInfoModal() {
       this.ShowModal({
         key: modals.swapInfo,
-        amount: '10 000 WQT',
-        sender: '0xnf8o29837hrvbn42o37hsho3b74thb3',
-        recepient: '0xnf8o29837hrvbn42o37hsho3b74thb3',
+        crosschain: `${this.fromToken} > ${this.toToken}`,
+        amount: `${this.amount} WQT`,
+        sender: this.cropTxt(this.userAddress),
+        recepient: this.cropTxt(this.recipientAddress),
         worknetFee: '0,5 WQT',
         binanceFee: '0,0009 BNB',
       });
@@ -106,6 +148,10 @@ export default {
       this.ShowModal({
         key: modals.giveDeposit,
       });
+    },
+    cropTxt(str) {
+      if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
+      return str;
     },
     showAddingCard() {
       this.ShowModal({
