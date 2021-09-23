@@ -65,13 +65,13 @@ jobs:
           echo LP_TOKEN=${{ secrets.LP_TOKEN }} >> .env
           echo PROD=${{ secrets.PROD }} >> .env
           echo WQT_TOKEN=${{ secrets.WQT_TOKEN }} >> .env
-          echo BRIDGE_ADDRESS_RINKEBY=${{ BRIDGE_ADDRESS_RINKEBY }} >> .env
-          echo BRIDGE_ADDRESS_BSCTESTNET=${{ BRIDGE_ADDRESS_BSCTESTNET }} >> .env
-          echo TOKEN_WQT_NEW_ADDRESS_BSCTESTNET=${{ TOKEN_WQT_NEW_ADDRESS_BSCTESTNET }} >> .env
-          echo TOKEN_WQT_OLD_ADDRESS_BSCTESTNET=${{ TOKEN_WQT_OLD_ADDRESS_BSCTESTNET }} >> .env
-          echo TOKEN_ETH_ADDRESS_BSCTESTNET=${{ TOKEN_ETH_ADDRESS_BSCTESTNET }} >> .env
-          echo EXCHANGE_ADDRESS_BSCTESTNET=${{ EXCHANGE_ADDRESS_BSCTESTNET }} >> .env
-          echo EXCHANGE_ADDRESS_RINKEBY=${{ EXCHANGE_ADDRESS_RINKEBY }} >> .env
+          echo BRIDGE_ADDRESS_RINKEBY=${{ secrets.BRIDGE_ADDRESS_RINKEBY }} >> .env
+          echo BRIDGE_ADDRESS_BSCTESTNET=${{ secrets.BRIDGE_ADDRESS_BSCTESTNET }} >> .env
+          echo TOKEN_WQT_NEW_ADDRESS_BSCTESTNET=${{ secrets.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET }} >> .env
+          echo TOKEN_WQT_OLD_ADDRESS_BSCTESTNET=${{ secrets.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET }} >> .env
+          echo TOKEN_ETH_ADDRESS_BSCTESTNET=${{ secrets.TOKEN_ETH_ADDRESS_BSCTESTNET }} >> .env
+          echo EXCHANGE_ADDRESS_BSCTESTNET=${{ secrets.EXCHANGE_ADDRESS_BSCTESTNET }} >> .env
+          echo EXCHANGE_ADDRESS_RINKEBY=${{ secrets.EXCHANGE_ADDRESS_RINKEBY }} >> .env
          
       - name: Run generate static task
         run: npm run generate
