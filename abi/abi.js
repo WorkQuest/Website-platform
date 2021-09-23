@@ -7896,15 +7896,9 @@ export const WQBridge = [
         "type": "uint256"
       },
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "nonce",
-        "type": "uint256"
-      },
-      {
         "indexed": true,
         "internalType": "address",
-        "name": "initiator",
+        "name": "sender",
         "type": "address"
       },
       {
@@ -7922,7 +7916,19 @@ export const WQBridge = [
       {
         "indexed": false,
         "internalType": "uint256",
+        "name": "chainFrom",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
         "name": "chainTo",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "nonce",
         "type": "uint256"
       }
     ],
@@ -7939,16 +7945,40 @@ export const WQBridge = [
         "type": "uint256"
       },
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "chainFrom",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "chainTo",
+        "type": "uint256"
+      },
+      {
         "indexed": false,
         "internalType": "uint256",
         "name": "nonce",
         "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "initiator",
-        "type": "address"
       }
     ],
     "name": "SwapRedeemed",
