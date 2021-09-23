@@ -346,9 +346,8 @@ export default {
     isConnected() {
       let newInterval;
       if (this.miningPoolId === 'ETH') {
-        if (this.isConnected) {
-          newInterval = setInterval(() => this.tokensDataUpdate(), 15000);
-        } else {
+        newInterval = setInterval(() => this.tokensDataUpdate(), 15000);
+        if (!this.isConnected) {
           clearInterval(newInterval);
         }
       }
