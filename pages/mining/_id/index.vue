@@ -452,7 +452,8 @@ export default {
       });
       this.totalPagesValue = this.totalPages;
     },
-    openSwapTokens() {
+    async openSwapTokens() {
+      await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
       if (!this.isConnected) {
         this.connectToMetamask();
       }
