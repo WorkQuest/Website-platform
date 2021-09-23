@@ -5,7 +5,8 @@ import {
   unStaking,
   claimRewards,
   disconnectWeb3,
-  startPingingMetamask, fetchContractData, getAccount, createInstance, showToast,
+  swap,
+  startPingingMetamask, fetchContractData, getAccount, createInstance, showToast, goToChain,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 
@@ -78,6 +79,29 @@ export default {
     commit('setAccountData', payload);
   },
 
+  async initTokensData({ commit }) {
+    const oldTokenDecimal = await fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
+    const oldTokenSymbol = await fetchContractData('symbol', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
+    const oldTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccount().address]);
+    const newTokenDecimal = await fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET);
+    const newTokenSymbol = await fetchContractData('symbol', abi.ERC20, process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET);
+    const newTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET, [getAccount().address]);
+
+    const payload = {
+      userPurse: {
+        oldTokenBalance: new BigNumber(oldTokenBalance).shiftedBy(-oldTokenDecimal).toString(),
+        oldTokenSymbol,
+        newTokenBalance: new BigNumber(newTokenBalance).shiftedBy(-newTokenDecimal).toString(),
+        newTokenSymbol,
+      },
+      decimals: {
+        oldTokenDecimal,
+        newTokenDecimal,
+      },
+    };
+    commit('setAccountData', payload);
+  },
+
   async getTokensData({ commit }, { rewardDecimal, stakeDecimal }) {
     const userInfo = await fetchContractData('getInfoByAddress', abi.StakingWQ, process.env.STAKING_ADDRESS, [getAccount().address]);
     const payload = {
@@ -88,6 +112,7 @@ export default {
     commit('setStakeAndRewardData', payload);
     return payload;
   },
+
   async stake({ commit }, { decimals, amount }) {
     return await staking(decimals, amount);
   },
@@ -96,5 +121,11 @@ export default {
   },
   async claimRewards({ commit }) {
     return await claimRewards();
+  },
+  async swap({ commit }, { decimals, amount }) {
+    return await swap(decimals, amount);
+  },
+  async goToChain({ commit }, { chain }) {
+    return await goToChain(chain);
   },
 };

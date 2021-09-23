@@ -114,12 +114,10 @@ export const initWeb3 = async () => {
         web3.eth.getCoinbase(),
         web3.eth.net.getId(),
       ]);
-
       if (process.env.PROD === 'true' && (+chainId !== 1)) {
         return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
       }
-
-      if (process.env.PROD === 'false' && (+chainId !== 4)) {
+      if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
         return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
       }
 
@@ -214,5 +212,60 @@ export const unstakeOfStake = async (_postFix, _amount) => {
     return output(response);
   } catch (e) {
     return error(500, 'unstake error', e);
+  }
+};
+
+export const swap = async (_decimals, _amount) => {
+  const instance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
+  const contractInstance = await createInstance(abi.WQTExchange, process.env.EXCHANGE_ADDRESS_BSCTESTNET);
+  const allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccount().address, process.env.EXCHANGE_ADDRESS_BSCTESTNET])).toString();
+  const form = 10 ** _decimals;
+  let amount = Math.floor(_amount * form) / form;
+  try {
+    amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+    if (+allowance < +amount) {
+      store.dispatch('main/setStatusText', 'Approving');
+      showToast('Swapping', 'Approving...', 'success');
+      await instance.approve(process.env.EXCHANGE_ADDRESS_BSCTESTNET, amount);
+      showToast('Swapping', 'Approving done', 'success');
+      showToast('Swapping', 'Swapping...', 'success');
+      store.dispatch('main/setStatusText', 'Swapping');
+      await contractInstance.swap(amount);
+      showToast('Swapping', 'Swapping done', 'success');
+    }
+    return '';
+  } catch (e) {
+    showToast('Swapping error', `${e.message}`, 'danger');
+    return error(500, 'stake error', e);
+  }
+};
+
+export const goToChain = async (chain) => {
+  if (chain === 'ETH') {
+    if (process.env.PROD === 'false') {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x4' }],
+      });
+    }
+    if (process.env.PROD === 'true') {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x188C' }],
+      });
+    }
+  } else {
+    if (process.env.PROD === 'false') {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x61' }],
+      });
+    }
+    if (process.env.PROD === 'true') {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x89' }],
+      });
+    }
   }
 };

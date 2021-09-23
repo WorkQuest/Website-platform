@@ -343,6 +343,15 @@ export default {
     },
   },
   watch: {
+    isConnected() {
+      let newInterval;
+      if (this.miningPoolId === 'ETH') {
+        newInterval = setInterval(() => this.tokensDataUpdate(), 15000);
+        if (!this.isConnected) {
+          clearInterval(newInterval);
+        }
+      }
+    },
     async page() {
       await this.$store.dispatch('defi/getSwapsData', `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
       this.tableDataInit();
@@ -350,13 +359,13 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
     await this.getTokensData();
     await this.getTokensDayData();
     await this.roundLiquidityUSD();
     await this.$store.dispatch('defi/getTokensData', 'limit=100&offset=0');
     await this.$store.dispatch('defi/getSwapsData', `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
     this.tableDataInit();
-    setInterval(() => this.tokensDataUpdate(), 15000);
     this.SetLoader(false);
   },
   methods: {
@@ -389,8 +398,12 @@ export default {
     },
     async connectToMetamask() {
       await this.$store.dispatch('web3/connect');
-      await this.$store.dispatch('web3/initContract');
-      await this.tokensDataUpdate();
+      if (this.miningPoolId === 'ETH') {
+        await this.$store.dispatch('web3/initContract');
+        await this.tokensDataUpdate();
+      } else {
+        await this.$store.dispatch('web3/initTokensData');
+      }
     },
     async roundLiquidityUSD() {
       const item = this.tokensDayData?.totalLiquidityUSD;
@@ -440,6 +453,9 @@ export default {
       this.totalPagesValue = this.totalPages;
     },
     openSwapTokens() {
+      if (!this.isConnected) {
+        this.connectToMetamask();
+      }
       this.ShowModal({
         key: modals.swapTokens,
       });
