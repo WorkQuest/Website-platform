@@ -5,16 +5,31 @@
   >
     <div class="claim__content content">
       <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-slot="{invalid}"
       >
         <base-field
           v-model="oldTokens"
           class="content__field"
           :placeholder="3500"
+          :type="'number'"
           :label="$t('mining.swapTokens.oldTokens')"
-          rules="required|decimal"
+          rules="required"
           :name="$t('mining.swapTokens.oldTokens')"
-        />
+        >
+          <template
+            v-slot:right-absolute
+            class="content__max max"
+          >
+            <base-btn
+              mode="max"
+              class="max__button"
+              :disabled="balance === 0"
+              @click="maxBalance()"
+            >
+              <span class="max__text">{{ $t('modals.maximum') }}</span>
+            </base-btn>
+          </template>
+        </base-field>
         <div class="content__subtitle">
           {{ $t('mining.swapTokens.balance') }}
           <span class="content__subtitle_blue">
@@ -26,7 +41,7 @@
           class="content__field"
           :placeholder="3500"
           :label="$t('mining.swapTokens.newTokens')"
-          rules="required|decimal"
+          :disabled="true"
           :name="$t('mining.swapTokens.newTokens')"
         />
         <div class="content__container">
@@ -38,7 +53,8 @@
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            :disabled="!validated || !passed || invalid || statusBusy"
+            :disabled="invalid || statusBusy"
+            @click="initSwap()"
           >
             {{ $t('mining.swapTokens.swap') }}
           </base-btn>
@@ -57,8 +73,8 @@ export default {
     return {
       oldTokens: '',
       newTokens: '',
-      balance: 10,
-      currency: 'WUSD',
+      balance: 0,
+      currency: 'WQT',
     };
   },
   computed: {
@@ -68,15 +84,51 @@ export default {
       statusBusy: 'web3/getStatusBusy',
     }),
   },
+  watch: {
+    oldTokens() {
+      this.newTokens = this.oldTokens;
+    },
+    accountData() {
+      this.initBalanceAndCurrency();
+    },
+  },
+  mounted() {
+    if (this.accountData.userPurse !== undefined) {
+      this.initBalanceAndCurrency();
+    }
+  },
   methods: {
     hide() {
       this.CloseModal();
+    },
+    maxBalance() {
+      this.oldTokens = this.accountData.userPurse.oldTokenBalance;
+    },
+    initBalanceAndCurrency() {
+      this.balance = parseInt((this.accountData.userPurse.oldTokenBalance) * 10000, 10) / 10000;
+      this.currency = this.accountData.userPurse.oldTokenSymbol;
+    },
+    async initSwap() {
+      this.SetLoader(true);
+      this.hide();
+      await this.$store.dispatch('web3/swap', {
+        decimals: this.accountData.decimals.oldTokenDecimal,
+        amount: this.oldTokens,
+      });
+      await this.$store.dispatch('web3/initTokensData');
+      this.SetLoader(false);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.max {
+  &__button {
+    margin-right: 10px !important;
+    background-color: transparent !important;
+  }
+}
 .claim {
   max-width: 487px!important;
   &__content {
