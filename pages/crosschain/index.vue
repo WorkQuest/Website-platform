@@ -161,7 +161,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      options: 'modals/getOptions',
+      tokens: 'web3/getTokens',
+      account: 'web3/getAccount',
     }),
     testFields() {
       return [
@@ -242,16 +243,18 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    await this.connectToMetamask();
     this.SetLoader(false);
   },
   methods: {
-    async connectToMetamask() {
-      await this.$store.dispatch('web3/connect');
-      await this.$store.dispatch('web3/initBridge');
-      await this.tokensDataUpdate();
-    },
     showToast(title, text, variant) {
       this.$store.dispatch('defi/showToast', { title, text, variant });
+    },
+    connectToMetamask() {
+      this.$store.dispatch('web3/connect');
+    },
+    swapsTest() {
+      this.$store.dispatch('defi/swapsTest');
     },
     handleChangeTarget(selInd) {
       if (selInd === this.sourceAddressInd) {
@@ -265,10 +268,11 @@ export default {
       }
       this.sourceAddressInd = selInd;
     },
-    showSwapModal() {
-      this.connectToMetamask();
+    async showSwapModal() {
+      // this.swapsTest();
       this.ShowModal({
         key: modals.swap,
+        crosschainId: this.targetAddressInd,
       });
     },
   },

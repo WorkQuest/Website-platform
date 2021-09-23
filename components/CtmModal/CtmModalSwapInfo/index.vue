@@ -57,7 +57,7 @@ export default {
       return [
         {
           title: this.$t('modals.crosschain'),
-          subtitle: this.$t('modals.crosschainText'),
+          subtitle: this.options.crosschain,
         },
         {
           title: this.$t('modals.amount'),

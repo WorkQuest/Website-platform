@@ -1074,7 +1074,7 @@
     "wallet": "Wallet",
     "coinpaymebts": "Сoinpaymebts",
     "errorDeleteText": "Do you really want to delete this quest?",
-    "swapTitle": "Crosschain exchange from Worknet to Binance",
+    "swapTitle": "Crosschain exchange from ETH to Binance",
     "coin": "Coin",
     "recepientBinance": "Recipient binance address",
     "createSwap": "Create swap",

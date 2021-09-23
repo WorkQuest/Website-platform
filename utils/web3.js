@@ -193,7 +193,6 @@ export const unStaking = async (_decimals, _amount) => {
     return error(500, 'stake error', e);
   }
 };
-
 export const claimRewards = async (_decimals, _amount) => {
   const contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
   try {
