@@ -22,8 +22,8 @@ export default {
     commit('setWqtWbnbSwaps', response.result);
     return response;
   },
-  async wqtWbnbTokenDay({ commit }) {
-    const response = await this.$axios.$get('/v1/pool-liquidity/wqt-wbnb/tokenDay');
+  async wqtWbnbTokenDay({ commit }, query) {
+    const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-wbnb/tokenDay?${query || ''}`);
     commit('setWqtWbnbTokenDay', response.result);
     return response;
   },
@@ -49,8 +49,8 @@ export default {
     commit('setWqtWethSwaps', response.result);
     return response;
   },
-  async wqtWethTokenDay({ commit }) {
-    const response = await this.$axios.$get('/v1/pool-liquidity/wqt-weth/tokenDay?');
+  async wqtWethTokenDay({ commit }, query) {
+    const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-weth/tokenDay?${query || ''}`);
     commit('setWqtWethTokenDay', response.result);
     return response;
   },
