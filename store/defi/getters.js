@@ -1,6 +1,13 @@
 export default {
-  getTokensData: (state) => state.tokensData || '',
-  getSwapsData: (state) => state.swapsData || '',
-  getTokensDayData: (state) => state.tokensDayData[0] || '',
-  getSwapAddress: (state) => state.swapAddress || '',
+  getWqtWbnbBurns: (state) => state.wqtWbnbBurns || '',
+  getWqtWbnbMints: (state) => state.wqtWbnbMints || '',
+  getWqtWbnbSwaps: (state) => state.wqtWbnbSwaps || '',
+  getWqtWbnbTokenDay: (state) => state.wqtWbnbTokenDay || '',
+  getWqtWbnbTokenDayLast: (state) => state.wqtWbnbTokenDayLast || '',
+
+  getWqtWethBurns: (state) => state.wqtWethBurns || '',
+  getWqtWethMints: (state) => state.wqtWethMints || '',
+  getWqtWethSwaps: (state) => state.wqtWethSwaps || '',
+  getWqtWethTokenDay: (state) => state.wqtWethTokenDay || '',
+  getWqtWethTokenDayLast: (state) => state.wqtWethTokenDayLast || '',
 };
