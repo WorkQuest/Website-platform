@@ -31,7 +31,6 @@ export default {
   async wqtWbnbTokenDayLast({ commit }, query) {
     const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-wbnb/tokenDay?${query}`);
     commit('setWqtWbnbTokenDayLast', response.result);
-    console.log(response);
     return response;
   },
 
@@ -58,7 +57,6 @@ export default {
   async wqtWethTokenDayLast({ commit }, query) {
     const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-weth/tokenDay?${query}`);
     commit('setWqtWethTokenDayLast', response.result);
-    console.log(response);
     return response;
   },
 

@@ -410,9 +410,12 @@ export default {
 
   methods: {
     async initPairData() {
-      console.log(this.accountData);
       await this.initTokenDays();
       await this.initTableData();
+      await this.getWqtWbnbTokenDay();
+      await this.getWqtWbnbTokenDayLast();
+      await this.getWqtWethTokenDay();
+      await this.getWqtWethTokenDayLast();
       if (this.miningPoolId === 'BNB') {
         await this.getWqtWbnbBurns();
         await this.getWqtWbnbMints();
@@ -426,16 +429,11 @@ export default {
 
     async initTokenDays() {
       if (this.miningPoolId === 'BNB') {
-        await this.getWqtWbnbTokenDay();
-        await this.getWqtWbnbTokenDayLast();
         await this.$store.dispatch('defi/wqtWbnbTokenDay', 'limit=100&offset=0');
         this.totalLiquidityUSD = Math.floor(await this.wqtWbnbTokenDayLast[0]?.totalLiquidityUSD);
       } else if (this.miningPoolId === 'ETH') {
-        await this.getWqtWethTokenDay();
-        await this.getWqtWethTokenDayLast();
         await this.$store.dispatch('defi/wqtWethTokenDay', 'limit=100&offset=0');
         this.totalLiquidityUSD = Math.floor(await this.wqtWethTokenDayLast[0]?.reserveUSD);
-        console.log(await this.wqtWethTokenDayLast[0]);
       }
     },
     async initTableData() {
@@ -477,7 +475,6 @@ export default {
         });
       });
       this.totalPagesValue = this.totalPages;
-      console.log(this.items);
     },
 
     async getWqtWbnbBurns() {
