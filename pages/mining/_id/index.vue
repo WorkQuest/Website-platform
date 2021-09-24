@@ -431,9 +431,7 @@ export default {
     },
     async initGraphData() {
       this.wqtWbnbData = await this.wqtWbnbTokenDay;
-      console.log(this.wqtWbnbData);
       this.wqtWethData = await this.wqtWethTokenDay;
-      console.log(this.wqtWethData);
     },
     async initTableData(wqtWbnbSwaps, wqtWethSwaps) {
       let tableArr = [];
