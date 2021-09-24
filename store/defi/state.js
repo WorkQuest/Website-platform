@@ -1,5 +1,14 @@
 export default () => ({
-  tokensData: {},
-  swapsData: {},
-  tokensDayData: {},
+  wqtWbnbBurns: {},
+  wqtWbnbMints: {},
+  wqtWbnbSwaps: {},
+  wqtWbnbTokenDay: {},
+  wqtWbnbTokenDayLast: {},
+
+  wqtWethBurns: {},
+  wqtWethMints: {},
+  wqtWethSwaps: {},
+  wqtWethTokenDay: {},
+  wqtWethTokenDayLast: {},
+
 });
