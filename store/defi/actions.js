@@ -62,7 +62,6 @@ export default {
 
   async swapsTest({ commit }, payload) {
     const response = await this.$axios.$get('/v1/swaps/take');
-    console.log(response);
     return response;
   },
 };

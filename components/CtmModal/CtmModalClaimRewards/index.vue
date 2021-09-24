@@ -55,6 +55,7 @@ export default {
   name: 'CtmModalClaimRewards',
   data() {
     return {
+      miningPoolId: localStorage.getItem('miningPoolId'),
       amount: '',
       balance: 10,
       currency: 'WUSD',
@@ -74,10 +75,14 @@ export default {
       this.CloseModal();
     },
     maxBalance() {
-      if (this.options.type === 1) {
-        this.amount = this.userBalance;
-      } else if (this.options.type === 2) {
-        this.amount = this.userStake;
+      if (this.miningPoolId === 'ETH') {
+        if (this.options.type === 1) {
+          this.amount = this.userBalance;
+        } else if (this.options.type === 2) {
+          this.amount = this.userStake;
+        }
+      } if (this.miningPoolId === 'BNB') {
+        this.amount = this.accountData.userPurse.oldTokenBalance;
       }
     },
     async staking() {

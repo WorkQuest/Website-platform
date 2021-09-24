@@ -67,7 +67,16 @@
               {{ $t('mining.swapTokens.title') }}
             </base-btn>
             <base-btn
+              v-if="miningPoolId === 'ETH'"
               :link="'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH'"
+              class="btn_bl"
+              :disabled="statusBusy"
+            >
+              {{ $t('mining.addLiquidity') }}
+            </base-btn>
+            <base-btn
+              v-if="miningPoolId === 'BNB'"
+              :link="'https://pancakeswap.finance/add/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'"
               class="btn_bl"
               :disabled="statusBusy"
             >
@@ -204,8 +213,17 @@
               </template>
               <template #cell(account)="el">
                 <a
+                  v-if="miningPoolId === 'ETH'"
                   class="user__value_green"
                   :href="`https://etherscan.io/address/${el.item.account}`"
+                  target="_blank"
+                >
+                  {{ el.item.accountView }}
+                </a>
+                <a
+                  v-if="miningPoolId === 'BNB'"
+                  class="user__value_green"
+                  :href="`https://bscscan.com/address/${el.item.account}`"
                   target="_blank"
                 >
                   {{ el.item.accountView }}
@@ -394,6 +412,10 @@ export default {
     async initPairData() {
       await this.initTokenDays();
       await this.initTableData();
+      await this.getWqtWbnbTokenDay();
+      await this.getWqtWbnbTokenDayLast();
+      await this.getWqtWethTokenDay();
+      await this.getWqtWethTokenDayLast();
       if (this.miningPoolId === 'BNB') {
         await this.getWqtWbnbBurns();
         await this.getWqtWbnbMints();
@@ -407,15 +429,11 @@ export default {
 
     async initTokenDays() {
       if (this.miningPoolId === 'BNB') {
-        await this.getWqtWbnbTokenDay();
-        await this.getWqtWbnbTokenDayLast();
         await this.$store.dispatch('defi/wqtWbnbTokenDay', 'limit=100&offset=0');
         this.totalLiquidityUSD = Math.floor(await this.wqtWbnbTokenDayLast[0]?.totalLiquidityUSD);
       } else if (this.miningPoolId === 'ETH') {
-        await this.getWqtWethTokenDay();
-        await this.getWqtWethTokenDayLast();
         await this.$store.dispatch('defi/wqtWethTokenDay', 'limit=100&offset=0');
-        this.totalLiquidityUSD = Math.floor(await this.wqtWethTokenDayLast[0]?.totalLiquidityUSD);
+        this.totalLiquidityUSD = Math.floor(await this.wqtWethTokenDayLast[0]?.reserveUSD);
       }
     },
     async initTableData() {
@@ -457,7 +475,6 @@ export default {
         });
       });
       this.totalPagesValue = this.totalPages;
-      console.log(this.items);
     },
 
     async getWqtWbnbBurns() {
