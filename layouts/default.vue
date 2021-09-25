@@ -593,31 +593,38 @@
                       <div class="links__small">
                         <a
                           class="links__social links__social_twitter"
-                          href="#"
+                          href="https://twitter.com/workquest_co"
+                          target="_blank"
                         />
                         <a
                           class="links__social links__social_youtube"
-                          href="#"
+                          href="https://www.youtube.com/channel/UCpQTdOMynXejrRTVf4ksKPA"
+                          target="_blank"
                         />
                         <a
                           class="links__social links__social_reddit"
-                          href="#"
+                          href="https://www.reddit.com/user/WorkQuest_co"
+                          target="_blank"
                         />
                         <a
                           class="links__social links__social_facebook"
-                          href="#"
+                          href="https://m.facebook.com/WorkQuestOfficial/"
+                          target="_blank"
                         />
                         <a
                           class="links__social links__social_linkedin"
-                          href="#"
+                          href="https://www.linkedin.com/company/workquestofficial"
+                          target="_blank"
                         />
                         <a
                           class="links__social links__social_instagram"
-                          href="#"
+                          href="https://www.instagram.com/workquestofficial/"
+                          target="_blank"
                         />
                         <a
                           class="links__social links__social_telegram"
-                          href="#"
+                          href="https://t.me/WorkQuest"
+                          target="_blank"
                         />
                       </div>
                     </div>
@@ -647,14 +654,16 @@
                             {{ $t('footer.legalInfo.title') }}
                           </div>
                           <div class="footer__items footer__items_links">
-                            <n-link
+                            <a
                               v-for="(item,key) in legalInfoLinks"
                               :key="key"
-                              :to="item.path"
+                              target="_blank"
+                              type="link"
+                              :href="item.path"
                               class="footer__text footer__text_grey"
                             >
                               {{ item.title }}
-                            </n-link>
+                            </a>
                           </div>
                         </div>
                       </div>
@@ -713,31 +722,38 @@
                       <div class="links__small">
                         <a
                           class="links__social links__social_twitter"
-                          href="#"
+                          href="https://twitter.com/workquest_co"
+                          target="_blank"
                         />
                         <a
                           class="links__social links__social_youtube"
-                          href="#"
+                          href="https://www.youtube.com/channel/UCpQTdOMynXejrRTVf4ksKPA"
+                          target="_blank"
                         />
                         <a
                           class="links__social links__social_reddit"
-                          href="#"
+                          href="https://www.reddit.com/user/WorkQuest_co"
+                          target="_blank"
                         />
                         <a
                           class="links__social links__social_facebook"
-                          href="#"
+                          href="https://m.facebook.com/WorkQuestOfficial/"
+                          target="_blank"
                         />
                         <a
                           class="links__social links__social_linkedin"
-                          href="#"
+                          href="https://www.linkedin.com/company/workquestofficial"
+                          target="_blank"
                         />
                         <a
                           class="links__social links__social_instagram"
-                          href="#"
+                          href="https://www.instagram.com/workquestofficial/"
+                          target="_blank"
                         />
                         <a
                           class="links__social links__social_telegram"
-                          href="#"
+                          href="https://t.me/WorkQuest"
+                          target="_blank"
                         />
                       </div>
                     </div>
@@ -1005,19 +1021,19 @@ export default {
       return [
         {
           title: this.$t('footer.legalInfo.risks'),
-          path: '#',
+          path: 'https://workquest.co/risk_disclaimer',
         },
         {
           title: this.$t('footer.legalInfo.privacyPolicy'),
-          path: '#',
+          path: 'https://workquest.co/privacy_policy',
         },
         {
           title: this.$t('footer.legalInfo.terms'),
-          path: '#',
+          path: 'https://workquest.co/terms_conditions',
         },
         {
           title: this.$t('footer.legalInfo.aml'),
-          path: '#',
+          path: 'https://workquest.co/aml_ctf_policy',
         },
         {
           title: this.$t('footer.legalInfo.cookiePolicy'),
