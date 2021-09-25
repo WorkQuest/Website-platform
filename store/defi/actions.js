@@ -23,7 +23,7 @@ export default {
     return response;
   },
   async wqtWbnbTokenDay({ commit }, query) {
-    const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-wbnb/tokenDay?${query || ''}`);
+    const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-wbnb/tokenDay?${query || 'limit=100'}`);
     commit('setWqtWbnbTokenDay', response.result);
     return response;
   },
@@ -50,7 +50,7 @@ export default {
     return response;
   },
   async wqtWethTokenDay({ commit }, query) {
-    const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-weth/tokenDay?${query || ''}`);
+    const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-weth/tokenDay?${query || 'limit=100'}`);
     commit('setWqtWethTokenDay', response.result);
     return response;
   },

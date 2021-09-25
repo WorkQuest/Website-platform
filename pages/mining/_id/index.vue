@@ -390,16 +390,16 @@ export default {
         }
       }
     },
-    async page() {
-      // TODO: FIX
-      if (this.miningPoolId === 'BNB') {
-        await this.getWqtWbnbTokenDay(`limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
-        await this.initTableData();
-      } else if (this.miningPoolId === 'ETH') {
-        await this.getWqtWethTokenDay(`limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
-        await this.initTableData();
-      }
-    },
+    // async page() {
+    //   // TODO: FIX
+    //   if (this.miningPoolId === 'BNB') {
+    //     await this.getWqtWbnbTokenDay(`limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
+    //     await this.initTableData();
+    //   } else if (this.miningPoolId === 'ETH') {
+    //     await this.getWqtWethTokenDay(`limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
+    //     await this.initTableData();
+    //   }
+    // },
   },
   async mounted() {
     this.SetLoader(true);
