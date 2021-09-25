@@ -1079,7 +1079,7 @@
     "recepientBinance": "Recipient binance address",
     "createSwap": "Create swap",
     "swapInfo": "Swap info",
-    "crosschain": "Crosschain",
+    "crosschain": "WorkQuest Bridge",
     "crosschainText": "Eth > Binance",
     "senderAddress": "Sender address",
     "recepientAddress": "Recepient address",
@@ -1159,12 +1159,12 @@
     "menu": {
       "instruments": "Instruments",
       "crosschain": {
-        "title": "Crosschain",
-        "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        "title": "WorkQuest Bridge",
+        "desc": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain."
       },
       "staking": {
-        "title": "Staking",
-        "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        "title": "WorkQuest Staking",
+        "desc": "Make your assets work. Stake your assets into DeFi staking or Locked staking to increase staking income."
       },
       "pension": {
         "title": "Retirement program",
@@ -2227,8 +2227,8 @@
     "share": "Share link"
   },
   "crosschain": {
-    "pageName": "Crosschain",
-    "pageAbout": "Send Work Quest tokens to Ethereum and Binance Smart Chain blockchains, and remember that the sender pays a crosschain swap fee in both the source and target blockchain",
+    "pageName": "WorkQuest Bridge",
+    "pageAbout": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain.",
     "sourceBlockchain": "Source blockchain",
     "targetBlockchain": "Target blockchain",
     "blockchain": "Blockchain",
@@ -2340,7 +2340,7 @@
       "lending": "Lending",
       "liquidityMining": "Liquidity mining",
       "wqBridge": "WorkQuest bridge",
-      "staking": "Staking",
+      "staking": "WorkQuest Staking",
       "wqDAO": "WorkQuest DAO"
     }
   }
