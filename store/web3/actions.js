@@ -6,7 +6,7 @@ import {
   claimRewards,
   disconnectWeb3,
   swap,
-  startPingingMetamask, fetchContractData, getAccount, createInstance, showToast, goToChain,
+  startPingingMetamask, fetchContractData, getAccount, createInstance, showToast, goToChain, swapWithBridge, redeemSwap,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 
@@ -47,6 +47,7 @@ export default {
       dispatch('startPingingMetamask');
       commit('setAccount', response.result);
       commit('setIsConnected', true);
+      commit('setPurseData', getAccount().address);
       showToast('Connect to Metamask', 'Connected', 'success');
     } else {
       commit('setIsConnected', false);
@@ -66,6 +67,7 @@ export default {
     const rewardBalance = await fetchContractData('balanceOf', abi.ERC20, rewardTokenAddress, [getAccount().address]);
     const payload = {
       userPurse: {
+        address: getAccount().address,
         stakeBalance: new BigNumber(stakeBalance).shiftedBy(-stakeDecimal).toString(),
         stakeSymbol,
         rewardBalance: new BigNumber(rewardBalance).shiftedBy(-rewardDecimal).toString(),
@@ -89,6 +91,7 @@ export default {
 
     const payload = {
       userPurse: {
+        address: getAccount().address,
         oldTokenBalance: new BigNumber(oldTokenBalance).shiftedBy(-oldTokenDecimal).toString(),
         oldTokenSymbol,
         newTokenBalance: new BigNumber(newTokenBalance).shiftedBy(-newTokenDecimal).toString(),
@@ -125,7 +128,16 @@ export default {
   async swap({ commit }, { decimals, amount }) {
     return await swap(decimals, amount);
   },
+  async swapWithBridge({ commit }, {
+    _decimals, _amount, chain, chainTo, userAddress, recipient, symbol,
+  }) {
+    return await swapWithBridge(_decimals, _amount, chain, chainTo, userAddress, recipient, symbol);
+  },
   async goToChain({ commit }, { chain }) {
     return await goToChain(chain);
+  },
+  async redeemSwap({ commit }, payload) {
+    console.log(payload.signData);
+    return await redeemSwap(payload);
   },
 };

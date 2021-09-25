@@ -8,4 +8,7 @@ export default {
   setTokensDayData(state, data) {
     state.tokensDayData = data;
   },
+  swapsForCrosschain(state, data) {
+    state.crosschainTokensData = data;
+  },
 };

@@ -25,6 +25,7 @@
               </div>
               <base-field
                 v-model="amount"
+                type="number"
                 :placeholder="'0,05'"
                 class="grid__input"
                 rules="required|decimal"
@@ -41,8 +42,8 @@
             <base-field
               v-model="recipientAddress"
               class="body__input"
+              :disabled="true"
               placeholder="Enter binance address"
-              rules="required|alpha_num"
               :name="$t('modals.recepientAddressField')"
             />
           </div>
@@ -57,7 +58,7 @@
           </base-btn>
           <base-btn
             class="buttons__button"
-            :disabled="!validated || !passed || invalid"
+            :disabled="invalid"
             @click="handleSubmit(showSwapInfoModal)"
           >
             {{ $t('modals.createSwap') }}
@@ -137,9 +138,13 @@ export default {
       this.ShowModal({
         key: modals.swapInfo,
         crosschain: `${this.fromToken} > ${this.toToken}`,
+        chain: this.fromToken,
         amount: `${this.amount} WQT`,
+        amountInt: this.amount,
         sender: this.cropTxt(this.userAddress),
+        senderFull: this.userAddress,
         recepient: this.cropTxt(this.recipientAddress),
+        recepientFull: this.recipientAddress,
         worknetFee: '0,5 WQT',
         binanceFee: '0,0009 BNB',
       });
