@@ -10,4 +10,6 @@ export default {
   getWqtWethSwaps: (state) => state.wqtWethSwaps || '',
   getWqtWethTokenDay: (state) => state.wqtWethTokenDay || '',
   getWqtWethTokenDayLast: (state) => state.wqtWethTokenDayLast || '',
+  getSwapAddress: (state) => state.swapAddress || '',
+  getCrosschainTokensData: (state) => state.crosschainTokensData || '',
 };

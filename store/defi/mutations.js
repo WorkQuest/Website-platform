@@ -32,4 +32,7 @@ export default {
     state.wqtWethTokenDayLast = data;
   },
 
+  swapsForCrosschain(state, data) {
+    state.crosschainTokensData = data;
+  },
 };

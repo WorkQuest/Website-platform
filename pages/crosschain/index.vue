@@ -70,7 +70,7 @@
           </div>
           <div class="crosschain-page__table">
             <b-table
-              :items="items"
+              :items="crosschainTableData"
               :fields="testFields"
               borderless
               caption-top
@@ -109,11 +109,12 @@
                   {{ el.item.created }}
                 </div>
               </template>
-              <template #cell(redeem)>
+              <template #cell(redeem)="el">
                 <div class="table__value table__value_blue">
                   <base-btn
                     class="btn__redeem"
                     mode="outline"
+                    @click="redeemAction(el.item)"
                   >
                     {{ $t('meta.redeem') }}
                   </base-btn>
@@ -129,40 +130,28 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
+import moment from 'moment';
 import modals from '~/store/modals/modals';
 
 export default {
   data() {
     return {
+      miningPoolId: localStorage.getItem('miningPoolId'),
       referLink: '0xnf8o2…9b74thb3',
       sourceAddressInd: 0,
       targetAddressInd: 1,
-      items: [
-        {
-          direction: [
-            require('~/assets/img/ui/ethereum.svg'),
-            require('~/assets/img/ui/bnb-logo.svg'),
-          ],
-          recipient: this.$t('crosschain.recipTemp'),
-          tx: this.$t('crosschain.recipTemp'),
-          created: this.$t('crosschain.dateTemp'),
-        },
-        {
-          direction: [
-            require('~/assets/img/ui/ethereum.svg'),
-            require('~/assets/img/ui/bnb-logo.svg'),
-          ],
-          recipient: this.$t('crosschain.recipTemp'),
-          tx: this.$t('crosschain.recipTemp'),
-          created: this.$t('crosschain.dateTemp'),
-        },
-      ],
+      tableItems: {},
+      items: [],
     };
   },
   computed: {
     ...mapGetters({
       tokens: 'web3/getTokens',
       account: 'web3/getAccount',
+      purseData: 'web3/getPurseData',
+      isConnected: 'web3/isConnected',
+      crosschainTableData: 'defi/getCrosschainTokensData',
     }),
     testFields() {
       return [
@@ -241,20 +230,44 @@ export default {
       ];
     },
   },
+  watch: {
+    async purseData() {
+      let newInterval;
+      if (this.purseData) {
+        await this.swapsTest(this.purseData);
+        newInterval = setInterval(() => this.swapsTest(this.purseData), 5000);
+        if (this.$route.name !== 'crosschain') {
+          clearInterval(newInterval);
+        }
+      }
+    },
+  },
   async mounted() {
     this.SetLoader(true);
     await this.connectToMetamask();
+    await this.swapsTest(this.purseData);
     this.SetLoader(false);
   },
   methods: {
+    async redeemAction(data) {
+      this.SetLoader(true);
+      await this.$store.dispatch('web3/goToChain', { chain: data.chain });
+      await this.connectToMetamask();
+      const payload = {
+        signData: data.clearData,
+        chainId: data.chainId,
+      };
+      await this.$store.dispatch('web3/redeemSwap', payload);
+      this.SetLoader(false);
+    },
     showToast(title, text, variant) {
       this.$store.dispatch('defi/showToast', { title, text, variant });
     },
     connectToMetamask() {
       this.$store.dispatch('web3/connect');
     },
-    swapsTest() {
-      this.$store.dispatch('defi/swapsTest');
+    async swapsTest(address) {
+      await this.$store.dispatch('defi/swapsForCrosschain', `${address}&offset=0&limit=10`);
     },
     handleChangeTarget(selInd) {
       if (selInd === this.sourceAddressInd) {
@@ -269,11 +282,21 @@ export default {
       this.sourceAddressInd = selInd;
     },
     async showSwapModal() {
-      // this.swapsTest();
+      this.SetLoader(true);
+      let chain;
+      if (this.sourceAddressInd === 0) {
+        chain = 'ETH';
+      } else {
+        chain = 'BNB';
+      }
+      await this.$store.dispatch('web3/goToChain', { chain });
+      await this.connectToMetamask();
+      await this.swapsTest();
       this.ShowModal({
         key: modals.swap,
         crosschainId: this.targetAddressInd,
       });
+      this.SetLoader(false);
     },
   },
 };

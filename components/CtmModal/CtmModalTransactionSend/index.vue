@@ -27,8 +27,20 @@
 
 <script>
 
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'ModalTransactionSend',
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+  },
+  async mounted() {
+    if (this.options.recipient) {
+      await this.$store.dispatch('defi/swapsForCrosschain', this.options.recipient);
+    }
+  },
   methods: {
     hide() {
       this.CloseModal();

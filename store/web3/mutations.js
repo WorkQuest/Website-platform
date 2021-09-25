@@ -35,4 +35,7 @@ export default {
   setLpTokenPrice(state) {
     state.tokenLPAmount = {};
   },
+  setPurseData(state, payload) {
+    state.purseData = payload;
+  },
 };

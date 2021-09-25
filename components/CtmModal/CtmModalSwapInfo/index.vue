@@ -86,10 +86,28 @@ export default {
     hide() {
       this.CloseModal();
     },
-    showTransactionSend() {
+    async showTransactionSend() {
+      this.SetLoader(true);
+      let chainTo = 0;
+      if (this.options.chain === 'ETH') {
+        chainTo = 3;
+      } else {
+        chainTo = 2;
+      }
+      await this.$store.dispatch('web3/swapWithBridge', {
+        _decimals: 18,
+        _amount: this.options.amountInt,
+        chain: this.options.chain,
+        chainTo,
+        userAddress: this.options.senderFull,
+        recipient: this.options.recepientFull,
+        symbol: 'WQT',
+      });
       this.ShowModal({
         key: modals.transactionSend,
+        recipient: this.options.recepientFull,
       });
+      this.SetLoader(false);
     },
 
   },

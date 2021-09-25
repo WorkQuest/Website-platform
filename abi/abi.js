@@ -7801,17 +7801,6 @@ export const StakingWQ = [
 
 export const WQBridge = [
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_chainId",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
     "anonymous": false,
     "inputs": [
       {
@@ -8139,6 +8128,37 @@ export const WQBridge = [
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "_chainId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_pool",
+        "type": "address"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pool",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "nonce",
         "type": "uint256"
       },
@@ -8319,6 +8339,11 @@ export const WQBridge = [
         "internalType": "bool",
         "name": "native",
         "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "lockable",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -8346,6 +8371,19 @@ export const WQBridge = [
     "inputs": [
       {
         "internalType": "address",
+        "name": "_pool",
+        "type": "address"
+      }
+    ],
+    "name": "updatePool",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "token",
         "type": "address"
       },
@@ -8357,6 +8395,11 @@ export const WQBridge = [
       {
         "internalType": "bool",
         "name": "native",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "lockable",
         "type": "bool"
       },
       {
