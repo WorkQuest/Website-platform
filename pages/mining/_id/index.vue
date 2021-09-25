@@ -390,16 +390,16 @@ export default {
         }
       }
     },
-    async page() {
-      // TODO: FIX
-      if (this.miningPoolId === 'BNB') {
-        await this.getWqtWbnbTokenDay(`limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
-        await this.initTableData();
-      } else if (this.miningPoolId === 'ETH') {
-        await this.getWqtWethTokenDay(`limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
-        await this.initTableData();
-      }
-    },
+    // async page() {
+    //   // TODO: FIX
+    //   if (this.miningPoolId === 'BNB') {
+    //     await this.getWqtWbnbTokenDay(`limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
+    //     await this.initTableData();
+    //   } else if (this.miningPoolId === 'ETH') {
+    //     await this.getWqtWethTokenDay(`limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
+    //     await this.initTableData();
+    //   }
+    // },
   },
   async mounted() {
     this.SetLoader(true);
@@ -445,12 +445,12 @@ export default {
         let tokenAmount0 = '';
         let tokenAmount1 = '';
         if (data.amount0Out > 0) {
-          poolAddress = 'Swap WQT for WETH';
+          poolAddress = 'Swap WQT for WBNB';
           tokenAmount0 = `${(parseInt((data.amount0Out) * 1000, 10)) / 1000} WQT`;
-          tokenAmount1 = `${(parseInt((data.amount1In) * 1000, 10)) / 1000} WETH`;
+          tokenAmount1 = `${(parseInt((data.amount1In) * 1000, 10)) / 1000} WBNB`;
         } else {
-          poolAddress = 'Swap WETH for WQT';
-          tokenAmount0 = `${(parseInt((data.amount1Out) * 1000, 10)) / 1000} WETH`;
+          poolAddress = 'Swap WBNB for WQT';
+          tokenAmount0 = `${(parseInt((data.amount1Out) * 1000, 10)) / 1000} WBNB`;
           tokenAmount1 = `${(parseInt((data.amount0In) * 1000, 10)) / 1000} WQT`;
         }
         const totalValue = `${Math.round(data.amountUSD)} $`;

@@ -23,6 +23,7 @@ export default {
 
   data() {
     return {
+      miningPoolId: localStorage.getItem('miningPoolId'),
       chartOptions: {
         responsive: true,
         maintainAspectRatio: false,
@@ -92,8 +93,14 @@ export default {
       if (this.specialChartData.length) {
         const chartDataCount = this.specialChartData.length;
         const chartData = [];
-        for (let i = 0; i < chartDataCount; i += 1) {
-          chartData.push(Math.round(this.specialChartData[i].totalLiquidityUSD));
+        if (this.miningPoolId === 'ETH') {
+          for (let i = 0; i < chartDataCount; i += 1) {
+            chartData.push(Math.round(this.specialChartData[i].reserveUSD));
+          }
+        } if (this.miningPoolId === 'BNB') {
+          for (let i = 0; i < chartDataCount; i += 1) {
+            chartData.push(Math.round(this.specialChartData[i]?.totalLiquidityUSD));
+          }
         }
         const data = chartData;
         const labels = [];
