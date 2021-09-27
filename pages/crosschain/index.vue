@@ -245,7 +245,6 @@ export default {
       let newInterval;
       if (this.purseData) {
         await this.swapsTest(this.purseData);
-        console.log(this.crosschainTableData);
         newInterval = setInterval(() => this.swapsTest(this.purseData), 5000);
         if (this.$route.name !== 'crosschain') {
           clearInterval(newInterval);
@@ -262,7 +261,6 @@ export default {
   methods: {
     doCopy(ev, link) {
       ev.stopPropagation();
-      console.log(link);
       this.$copyText(link).then(() => {
       });
     },
