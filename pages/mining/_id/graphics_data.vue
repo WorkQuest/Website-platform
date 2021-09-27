@@ -93,14 +93,8 @@ export default {
       if (this.specialChartData.length) {
         const chartDataCount = this.specialChartData.length;
         const chartData = [];
-        if (this.miningPoolId === 'ETH') {
-          for (let i = 0; i < chartDataCount; i += 1) {
-            chartData.push(Math.round(this.specialChartData[i].reserveUSD));
-          }
-        } if (this.miningPoolId === 'BNB') {
-          for (let i = 0; i < chartDataCount; i += 1) {
-            chartData.push(Math.round(this.specialChartData[i]?.totalLiquidityUSD));
-          }
+        for (let i = 0; i < chartDataCount; i += 1) {
+          chartData.push(Math.round(this.specialChartData[i].reserveUSD));
         }
         const data = chartData;
         const labels = [];

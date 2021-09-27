@@ -423,7 +423,7 @@ export default {
   methods: {
 
     async initTokenDays() {
-      const totalLiquidity = this.miningPoolId === 'BNB' ? this.wqtWbnbTokenDay[0].totalLiquidityUSD : this.wqtWethTokenDay[0].reserveUSD;
+      const totalLiquidity = this.miningPoolId === 'BNB' ? this.wqtWbnbTokenDay[0].reserveUSD : this.wqtWethTokenDay[0].reserveUSD;
       this.totalLiquidityUSD = Math.floor(await totalLiquidity);
     },
     async initGraphData() {
