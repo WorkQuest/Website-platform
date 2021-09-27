@@ -75,11 +75,7 @@ export default {
       this.CloseModal();
     },
     maxBalance() {
-      if (this.options.type === 1) {
-        this.amount = this.userBalance;
-      } else if (this.options.type === 2) {
-        this.amount = this.userStake;
-      }
+      this.amount = this.options.type === 1 ? this.userBalance : this.userStake;
     },
     async staking() {
       this.SetLoader(true);
