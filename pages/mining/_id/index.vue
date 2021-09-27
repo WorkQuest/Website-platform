@@ -541,6 +541,7 @@ export default {
       this.SetLoader(true);
       const action = this.miningPoolId === 'ETH' ? 'web3/claimRewards' : 'web3/claimRewardsBSC';
       await this.$store.dispatch(action);
+      await this.tokensDataUpdate();
       this.SetLoader(false);
     },
     async connectToMetamask() {
