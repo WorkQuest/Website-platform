@@ -179,11 +179,11 @@ export const staking = async (_decimals, _amount) => {
       showToast('Stacking', 'Approving...', 'success');
       await instance.approve(process.env.STAKING_ADDRESS, amount);
       showToast('Stacking', 'Approving done', 'success');
-      showToast('Stacking', 'Staking...', 'success');
-      store.dispatch('main/setStatusText', 'Staking');
-      await contractInstance.stake(amount);
-      showToast('Stacking', 'Staking done', 'success');
     }
+    showToast('Stacking', 'Staking...', 'success');
+    store.dispatch('main/setStatusText', 'Staking');
+    await contractInstance.stake(amount);
+    showToast('Stacking', 'Staking done', 'success');
     return '';
   } catch (e) {
     showToast('Stacking error', `${e.message}`, 'danger');
@@ -204,11 +204,11 @@ export const stakingBSC = async (_decimals, _amount) => {
       showToast('Stacking', 'Approving...', 'success');
       await instance.approve(process.env.STAKING_ADDRESS_BSC, amount);
       showToast('Stacking', 'Approving done', 'success');
-      showToast('Stacking', 'Staking...', 'success');
-      store.dispatch('main/setStatusText', 'Staking');
-      await contractInstance.stake(amount);
-      showToast('Stacking', 'Staking done', 'success');
     }
+    showToast('Stacking', 'Staking...', 'success');
+    store.dispatch('main/setStatusText', 'Staking');
+    await contractInstance.stake(amount);
+    showToast('Stacking', 'Staking done', 'success');
     return '';
   } catch (e) {
     showToast('Stacking error', `${e.message}`, 'danger');
@@ -328,29 +328,23 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
     bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
   }
   const instance = await createInstance(abi.ERC20, tokenAddress);
-  console.log(instance);
   const contractInstance = await createInstance(abi.WQBridge, bridgeAddress);
-  console.log(contractInstance);
-  console.log('bridgeAddress:', bridgeAddress);
   const allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
   const nonce = await web3.eth.getTransactionCount(userAddress);
   const form = 10 ** _decimals;
   let amount = Math.floor(_amount * form) / form;
   try {
     amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
-    console.log(+allowance, +amount);
     if (+allowance < +amount) {
-      store.dispatch('main/setStatusText', 'Approving');
+      store.dispatch('main/setStatusText', 'A pproving');
       showToast('Swapping', 'Approving...', 'success');
       await instance.approve(bridgeAddress, amount);
       showToast('Swapping', 'Approving done', 'success');
     }
     showToast('Swapping', 'Swapping...', 'success');
-    console.log('Swapping...');
     store.dispatch('main/setStatusText', 'Swapping');
     await contractInstance.swap(nonce, chainTo, amount, recipient, symbol);
     showToast('Swapping', 'Swapping done', 'success');
-    console.log('Swapping done');
     return '';
   } catch (e) {
     showToast('Swapping error', `${e.message}`, 'danger');

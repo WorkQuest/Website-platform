@@ -10,6 +10,25 @@ export default async function ({ app, redirect, store }) {
       refresh,
       userData,
     };
+    // let privatePage;
+    // switch (window.location.pathname) {
+    //   case '/crosschain':
+    //     privatePage = false;
+    //     break;
+    //   case '/mining':
+    //     privatePage = false;
+    //     break;
+    //   case '/mining/ETH':
+    //     privatePage = false;
+    //     break;
+    //   case '/mining/BNB':
+    //     privatePage = false;
+    //     break;
+    //   default:
+    //     privatePage = true;
+    //     break;
+    // }
+    // if (privatePage) {
     if (access && refresh) {
       store.commit('user/setTokens', payload);
     }
@@ -22,6 +41,7 @@ export default async function ({ app, redirect, store }) {
     if (userStatus === 2) {
       return redirect('/role');
     }
+    // }
     return true;
   } catch (e) {
     console.log(e);
