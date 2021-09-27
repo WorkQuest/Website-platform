@@ -290,7 +290,6 @@ export const claimRewardsBSC = async (_decimals, _amount) => {
 };
 
 export const swap = async (_decimals, _amount) => {
-  console.log('swap start');
   const instance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
   const contractInstance = await createInstance(abi.WQTExchange, process.env.EXCHANGE_ADDRESS_BSCTESTNET);
   const allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccount().address, process.env.EXCHANGE_ADDRESS_BSCTESTNET])).toString();
@@ -298,18 +297,15 @@ export const swap = async (_decimals, _amount) => {
   let amount = Math.floor(_amount * form) / form;
   try {
     amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
-    console.log(+allowance, +amount);
     if (+allowance < +amount) {
       store.dispatch('main/setStatusText', 'Approving');
       showToast('Swapping', 'Approving...', 'success');
       await instance.approve(process.env.EXCHANGE_ADDRESS_BSCTESTNET, amount);
       showToast('Swapping', 'Approving done', 'success');
     }
-    console.log('Swapping...');
     showToast('Swapping', 'Swapping...', 'success');
     await contractInstance.swap(amount);
     store.dispatch('main/setStatusText', 'Swapping');
-    console.log('Swapping done');
     showToast('Swapping', 'Swapping done', 'success');
     return '';
   } catch (e) {
@@ -332,23 +328,29 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
     bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
   }
   const instance = await createInstance(abi.ERC20, tokenAddress);
+  console.log(instance);
   const contractInstance = await createInstance(abi.WQBridge, bridgeAddress);
+  console.log(contractInstance);
+  console.log('bridgeAddress:', bridgeAddress);
   const allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
   const nonce = await web3.eth.getTransactionCount(userAddress);
   const form = 10 ** _decimals;
   let amount = Math.floor(_amount * form) / form;
   try {
     amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+    console.log(+allowance, +amount);
     if (+allowance < +amount) {
       store.dispatch('main/setStatusText', 'Approving');
       showToast('Swapping', 'Approving...', 'success');
       await instance.approve(bridgeAddress, amount);
       showToast('Swapping', 'Approving done', 'success');
-      showToast('Swapping', 'Swapping...', 'success');
-      store.dispatch('main/setStatusText', 'Swapping');
-      await contractInstance.swap(nonce, chainTo, amount, recipient, symbol);
-      showToast('Swapping', 'Swapping done', 'success');
     }
+    showToast('Swapping', 'Swapping...', 'success');
+    console.log('Swapping...');
+    store.dispatch('main/setStatusText', 'Swapping');
+    await contractInstance.swap(nonce, chainTo, amount, recipient, symbol);
+    showToast('Swapping', 'Swapping done', 'success');
+    console.log('Swapping done');
     return '';
   } catch (e) {
     showToast('Swapping error', `${e.message}`, 'danger');
