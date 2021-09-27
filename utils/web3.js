@@ -231,6 +231,7 @@ export const unstakeOfStake = async (_postFix, _amount) => {
 };
 
 export const swap = async (_decimals, _amount) => {
+  console.log('swap');
   const instance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
   const contractInstance = await createInstance(abi.WQTExchange, process.env.EXCHANGE_ADDRESS_BSCTESTNET);
   const allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccount().address, process.env.EXCHANGE_ADDRESS_BSCTESTNET])).toString();
@@ -238,16 +239,17 @@ export const swap = async (_decimals, _amount) => {
   let amount = Math.floor(_amount * form) / form;
   try {
     amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+    console.log(+allowance, +amount);
     if (+allowance < +amount) {
       store.dispatch('main/setStatusText', 'Approving');
       showToast('Swapping', 'Approving...', 'success');
       await instance.approve(process.env.EXCHANGE_ADDRESS_BSCTESTNET, amount);
       showToast('Swapping', 'Approving done', 'success');
-      showToast('Swapping', 'Swapping...', 'success');
-      store.dispatch('main/setStatusText', 'Swapping');
-      await contractInstance.swap(amount);
-      showToast('Swapping', 'Swapping done', 'success');
     }
+    showToast('Swapping', 'Swapping...', 'success');
+    await contractInstance.swap(amount);
+    store.dispatch('main/setStatusText', 'Swapping');
+    showToast('Swapping', 'Swapping done', 'success');
     return '';
   } catch (e) {
     showToast('Swapping error', `${e.message}`, 'danger');
