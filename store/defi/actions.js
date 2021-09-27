@@ -94,6 +94,7 @@ export default {
         direction,
         recipient,
         tx,
+        txFull: data.transactionHash,
         created,
       };
       items.push(tableItems);

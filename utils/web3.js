@@ -70,6 +70,16 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
   }
 };
 
+export const sendTransaction = async (_method, _abi, _address, _params, _userAddress, _provider = web3) => {
+  const inst = new web3.eth.Contract(_abi, _address);
+  const data = inst.methods[_method].apply(null, _params).encodeABI();
+  return await web3.eth.sendTransaction({
+    to: _address,
+    data,
+    from: _userAddress,
+  });
+};
+
 const getChainTypeById = (chainId) => {
   if (+chainId === 1 || +chainId === 4) {
     return 0;
@@ -316,13 +326,23 @@ export const goToChain = async (chain) => {
 export const redeemSwap = async (props) => {
   const { signData, chainId } = props;
   let bridgeAddress;
-  if (chainId === 2) {
+  console.log(chainId);
+  if (chainId !== 2) {
+    console.log('RINKEBY');
     bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
   } else {
+    console.log('BSC');
     bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
   }
+  // const contractInstance = await createInstance(abi.WQBridge, bridgeAddress);
   try {
-    await fetchContractData('redeem', abi.WQBridge, bridgeAddress, signData);
+    console.log('start redeem');
+    console.log(bridgeAddress);
+    console.log(signData[3]);
+    // await contractInstance.SwapRedeemed(bridgeAddress, signData);
+    const test = await sendTransaction('redeem', abi.WQBridge, bridgeAddress, signData, signData[3]);
+    console.log(test);
+    console.log('end redeem');
   } catch (err) {
     console.log(err);
   }
