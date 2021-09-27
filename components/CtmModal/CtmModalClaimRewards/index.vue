@@ -80,36 +80,22 @@ export default {
     async staking() {
       this.SetLoader(true);
       this.hide();
-      if (this.miningPoolId === 'ETH') {
-        await this.$store.dispatch('web3/stake', {
-          decimals: this.accountData.decimals.stakeDecimal,
-          amount: this.amount,
-        });
-      }
-      if (this.miningPoolId === 'BNB') {
-        await this.$store.dispatch('web3/stakeBSC', {
-          decimals: this.accountData.decimals.stakeDecimal,
-          amount: this.amount,
-        });
-      }
+      const action = this.miningPoolId === 'ETH' ? 'web3/stake' : 'web3/stakeBSC';
+      await this.$store.dispatch(action, {
+        decimals: this.accountData.decimals.stakeDecimal,
+        amount: this.amount,
+      });
       this.SetLoader(false);
     },
     async unstaking() {
       this.SetLoader(true);
       this.hide();
-      if (this.miningPoolId === 'ETH') {
-        await this.$store.dispatch('web3/unstake', {
-          decimals: this.accountData?.decimals?.stakeDecimal,
-          amount: this.amount,
-        });
-      }
-      if (this.miningPoolId === 'BNB') {
-        await this.$store.dispatch('web3/unstakeBSC', {
-          decimals: this.accountData?.decimals?.stakeDecimal,
-          amount: this.amount,
-        });
-        this.SetLoader(false);
-      }
+      const action = this.miningPoolId === 'ETH' ? 'web3/unstake' : 'web3/unstakeBSC';
+      await this.$store.dispatch(action, {
+        decimals: this.accountData?.decimals?.stakeDecimal,
+        amount: this.amount,
+      });
+      this.SetLoader(false);
     },
   },
 };
