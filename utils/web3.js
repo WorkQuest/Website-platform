@@ -243,11 +243,11 @@ export const swap = async (_decimals, _amount) => {
       showToast('Swapping', 'Approving...', 'success');
       await instance.approve(process.env.EXCHANGE_ADDRESS_BSCTESTNET, amount);
       showToast('Swapping', 'Approving done', 'success');
-      showToast('Swapping', 'Swapping...', 'success');
-      store.dispatch('main/setStatusText', 'Swapping');
-      await contractInstance.swap(amount);
-      showToast('Swapping', 'Swapping done', 'success');
     }
+    showToast('Swapping', 'Swapping...', 'success');
+    await contractInstance.swap(amount);
+    store.dispatch('main/setStatusText', 'Swapping');
+    showToast('Swapping', 'Swapping done', 'success');
     return '';
   } catch (e) {
     showToast('Swapping error', `${e.message}`, 'danger');
