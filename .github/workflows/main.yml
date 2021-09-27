@@ -26,7 +26,7 @@ jobs:
         run: npm install
 
       - name: Run generate static task
-        run: GMAPKEY=${{ secrets.GMAPKEY }} BASE_URL=${{ secrets.BASE_URL }} STAKING_ADDRESS=${{ secrets.STAKING_ADDRESS }} LP_TOKEN=${{ secrets.LP_TOKEN }} PROD=${{ secrets.PROD }} WQT_TOKEN=${{ secrets.WQT_TOKEN }} npm run generate 
+        run: GMAPKEY=${{ secrets.GMAPKEY }} BASE_URL=${{ secrets.BASE_URL }} STAKING_ADDRESS=${{ secrets.STAKING_ADDRESS }} LP_TOKEN=${{ secrets.LP_TOKEN }} PROD=${{ secrets.PROD }} WQT_TOKEN=${{ secrets.WQT_TOKEN }} npm run generate
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v2.1.4
         env:
@@ -58,8 +58,8 @@ jobs:
         run: npm install
 
       - name: Create .env file
-        run: | 
-          echo GMAPKEY=${{ secrets.GMAPKEY }} > .env 
+        run: |
+          echo GMAPKEY=${{ secrets.GMAPKEY }} > .env
           echo BASE_URL=${{ secrets.BASE_URL }} >> .env
           echo STAKING_ADDRESS=${{ secrets.STAKING_ADDRESS }} >> .env
           echo LP_TOKEN=${{ secrets.LP_TOKEN }} >> .env
@@ -72,15 +72,18 @@ jobs:
           echo TOKEN_ETH_ADDRESS_BSCTESTNET=${{ secrets.TOKEN_ETH_ADDRESS_BSCTESTNET }} >> .env
           echo EXCHANGE_ADDRESS_BSCTESTNET=${{ secrets.EXCHANGE_ADDRESS_BSCTESTNET }} >> .env
           echo EXCHANGE_ADDRESS_RINKEBY=${{ secrets.EXCHANGE_ADDRESS_RINKEBY }} >> .env
-         
+          echo CAKE_LP_TOKEN=${{ secrets.CAKE_LP_TOKEN }} >> .env
+          echo CAKE_WQT_TOKEN=${{ secrets.CAKE_WQT_TOKEN }} >> .env
+          echo STAKING_ADDRESS_BSC=${{ secrets.STAKING_ADDRESS_BSC }} >> .env
+
       - name: Run generate static task
         run: npm run generate
-    #    env: 
+    #    env:
     #      GMAPKEY: ${{ secrets.GMAPKEY }}
-    #      BASE_URL: ${{ secrets.BASE_URL }} 
+    #      BASE_URL: ${{ secrets.BASE_URL }}
     #      STAKING_ADDRESS: ${{ secrets.STAKING_ADDRESS }}
-    #      LP_TOKEN: ${{ secrets.LP_TOKEN }} 
-    #      PROD: ${{ secrets.PROD }} 
+    #      LP_TOKEN: ${{ secrets.LP_TOKEN }}
+    #      PROD: ${{ secrets.PROD }}
     #      WQT_TOKEN: ${{ secrets.WQT_TOKEN }}
 
       - name: Deploy to Server
