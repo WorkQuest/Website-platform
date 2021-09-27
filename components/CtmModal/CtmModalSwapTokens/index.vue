@@ -102,17 +102,17 @@ export default {
       this.CloseModal();
     },
     maxBalance() {
-      this.oldTokens = this.accountData.userPurse.oldTokenBalance;
+      this.oldTokens = this.accountData.userPurse.rewardBalance;
     },
     initBalanceAndCurrency() {
-      this.balance = parseInt((this.accountData.userPurse.oldTokenBalance) * 10000, 10) / 10000;
-      this.currency = this.accountData.userPurse.oldTokenSymbol;
+      this.balance = parseInt((this.accountData.userPurse.rewardBalance) * 10000, 10) / 10000;
+      this.currency = this.accountData.userPurse.rewardSymbol;
     },
     async initSwap() {
       this.SetLoader(true);
       this.hide();
       await this.$store.dispatch('web3/swap', {
-        decimals: this.accountData.decimals.oldTokenDecimal,
+        decimals: this.accountData.decimals.stakeDecimal,
         amount: this.oldTokens,
       });
       await this.$store.dispatch('web3/initTokensData');

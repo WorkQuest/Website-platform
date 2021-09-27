@@ -51,6 +51,9 @@ export default {
       commit('setIsConnected', true);
       commit('setPurseData', getAccount().address);
       showToast('Connect to Metamask', 'Connected', 'success');
+    } if (typeof window.ethereum === 'undefined') {
+      showToast('Error connect to Metamask', 'Metamask not installed! Please install Metamask!', 'danger');
+      setTimeout(window.open('https://metamask.io/download.html'), 3000);
     } else {
       commit('setIsConnected', false);
       showToast('Error connect to Metamask', `${response.data}`, 'danger');

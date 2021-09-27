@@ -423,11 +423,8 @@ export default {
   methods: {
 
     async initTokenDays() {
-      if (this.miningPoolId === 'BNB') {
-        this.totalLiquidityUSD = Math.floor(await this.wqtWbnbTokenDay[0].totalLiquidityUSD);
-      } else if (this.miningPoolId === 'ETH') {
-        this.totalLiquidityUSD = Math.floor(await this.wqtWethTokenDay[0].reserveUSD);
-      }
+      const totalLiquidity = this.miningPoolId === 'BNB' ? this.wqtWbnbTokenDay[0].reserveUSD : this.wqtWethTokenDay[0].reserveUSD;
+      this.totalLiquidityUSD = Math.floor(await totalLiquidity);
     },
     async initGraphData() {
       this.wqtWbnbData = await this.wqtWbnbTokenDay;
@@ -532,37 +529,28 @@ export default {
       return style;
     },
     async tokensDataUpdate() {
-      if (this.miningPoolId === 'ETH') {
-        const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
-        this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
-        this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
-      } if (this.miningPoolId === 'BNB') {
-        const tokensData = await this.$store.dispatch('web3/getTokensDataBSC', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
-        this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
-        this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
-      }
+      const action = this.miningPoolId === 'ETH' ? 'web3/getTokensData' : 'web3/getTokensDataBSC';
+      const tokensData = await this.$store.dispatch(action, { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
+      this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
+      this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
     },
     async disconnectFromMetamask() {
       await this.$store.dispatch('web3/disconnect');
     },
     async claimRewards() {
       this.SetLoader(true);
-      if (this.miningPoolId === 'ETH') {
-        await this.$store.dispatch('web3/claimRewards');
-      } if (this.miningPoolId === 'BNB') {
-        await this.$store.dispatch('web3/claimRewardsBSC');
-      }
+      const action = this.miningPoolId === 'ETH' ? 'web3/claimRewards' : 'web3/claimRewardsBSC';
+      await this.$store.dispatch(action);
+      await this.tokensDataUpdate();
       this.SetLoader(false);
     },
     async connectToMetamask() {
-      await this.$store.dispatch('web3/connect');
-      if (this.miningPoolId === 'ETH') {
-        await this.$store.dispatch('web3/initContract');
-        await this.tokensDataUpdate();
-      } else {
-        await this.$store.dispatch('web3/initContractBSC');
-        await this.tokensDataUpdate();
-      }
+      let action;
+      action = 'web3/connect';
+      await this.$store.dispatch(action);
+      action = this.miningPoolId === 'ETH' ? 'web3/initContract' : 'web3/initContractBSC';
+      await this.$store.dispatch(action);
+      await this.tokensDataUpdate();
     },
     cropTxt(str) {
       if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
