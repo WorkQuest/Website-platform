@@ -102,11 +102,12 @@ export default {
       this.CloseModal();
     },
     maxBalance() {
-      this.oldTokens = this.accountData.userPurse.rewardBalance;
+      this.oldTokens = this.accountData.userPurse.stakeBalance;
+      console.log(this.accountData);
     },
     initBalanceAndCurrency() {
-      this.balance = parseInt((this.accountData.userPurse.rewardBalance) * 10000, 10) / 10000;
-      this.currency = this.accountData.userPurse.rewardSymbol;
+      this.balance = parseInt((this.accountData.userPurse.stakeBalance) * 10000, 10) / 10000;
+      this.currency = this.accountData.userPurse.stakeSymbol;
     },
     async initSwap() {
       this.SetLoader(true);
