@@ -377,17 +377,9 @@ export default {
   },
   watch: {
     isConnected() {
-      let newInterval;
-      if (this.miningPoolId === 'ETH') {
-        newInterval = setInterval(() => this.tokensDataUpdate(), 15000);
-        if (!this.isConnected) {
-          clearInterval(newInterval);
-        }
-      } else if (this.miningPoolId === 'BNB') {
-        newInterval = setInterval(() => this.tokensDataUpdate(), 15000);
-        if (!this.isConnected) {
-          clearInterval(newInterval);
-        }
+      const newInterval = setInterval(() => this.tokensDataUpdate(), 15000);
+      if (!this.isConnected) {
+        clearInterval(newInterval);
       }
     },
     // async page() {
@@ -545,12 +537,14 @@ export default {
       this.SetLoader(false);
     },
     async connectToMetamask() {
-      let action;
-      action = 'web3/connect';
-      await this.$store.dispatch(action);
-      action = this.miningPoolId === 'ETH' ? 'web3/initContract' : 'web3/initContractBSC';
-      await this.$store.dispatch(action);
-      await this.tokensDataUpdate();
+      if (!this.isConnected) {
+        let action;
+        action = 'web3/connect';
+        await this.$store.dispatch(action);
+        action = this.miningPoolId === 'ETH' ? 'web3/initContract' : 'web3/initContractBSC';
+        await this.$store.dispatch(action);
+        await this.tokensDataUpdate();
+      }
     },
     cropTxt(str) {
       if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
