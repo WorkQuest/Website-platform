@@ -945,6 +945,7 @@
     "bodyMessage": "Hello",
     "areYouSure": "Are You Sure?",
     "transactionSend": "Transaction send",
+    "transactionFail": "Transaction fail",
     "cardHasBeenAdded": "Card has been added",
     "deposit": "Receive",
     "numberOfCard": "Card number",
