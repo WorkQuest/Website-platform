@@ -33,11 +33,6 @@
                   {{ el.item.assets }}
                 </div>
               </template>
-              <template #cell(volume)="el">
-                <div class="table__value">
-                  {{ el.item.volume }}
-                </div>
-              </template>
               <template #cell(choose)="el">
                 <base-btn
                   class="btn_bl"
@@ -112,16 +107,14 @@ export default {
       return [
         {
           id: 'ETH',
-          poolAddress: this.cropTxt(process.env.STAKING_ADDRESS),
+          poolAddress: '0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf',
           assets: this.$t('mining.table.assets'),
-          volume: this.$t('mining.table.volume'),
           chooseBtn: this.$t('mining.choose'),
         },
         {
           id: 'BNB',
-          poolAddress: this.$t('mining.table.poolAddress'),
+          poolAddress: '0x323bE7bDa98E91b01c2369B98a4325fF62eaF49c',
           assets: this.$t('mining.table.assets2'),
-          volume: this.$t('mining.table.volume'),
           chooseBtn: this.$t('mining.choose'),
         },
       ];
@@ -152,18 +145,6 @@ export default {
         {
           key: 'assets',
           label: this.$t('mining.tableHead.assets'),
-          thStyle: {
-            padding: '0 25px',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0 25px; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'volume',
-          label: this.$t('mining.tableHead.volume'),
           thStyle: {
             padding: '0 25px',
             height: '27px',
