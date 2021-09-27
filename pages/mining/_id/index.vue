@@ -444,14 +444,26 @@ export default {
         let poolAddress = '';
         let tokenAmount0 = '';
         let tokenAmount1 = '';
-        if (data.amount0Out > 0) {
-          poolAddress = 'Swap WQT for WBNB';
-          tokenAmount0 = `${(parseInt((data.amount0Out) * 1000, 10)) / 1000} WQT`;
-          tokenAmount1 = `${(parseInt((data.amount1In) * 1000, 10)) / 1000} WBNB`;
-        } else {
-          poolAddress = 'Swap WBNB for WQT';
-          tokenAmount0 = `${(parseInt((data.amount1Out) * 1000, 10)) / 1000} WBNB`;
-          tokenAmount1 = `${(parseInt((data.amount0In) * 1000, 10)) / 1000} WQT`;
+        if (this.miningPoolId === 'BNB') {
+          if (data.amount0Out > 0) {
+            poolAddress = 'Swap WQT for WBNB';
+            tokenAmount0 = `${(parseInt((data.amount0Out) * 1000, 10)) / 1000} WQT`;
+            tokenAmount1 = `${(parseInt((data.amount1In) * 1000, 10)) / 1000} WBNB`;
+          } else {
+            poolAddress = 'Swap WBNB for WQT';
+            tokenAmount0 = `${(parseInt((data.amount1Out) * 1000, 10)) / 1000} WBNB`;
+            tokenAmount1 = `${(parseInt((data.amount0In) * 1000, 10)) / 1000} WQT`;
+          }
+        } if (this.miningPoolId === 'ETH') {
+          if (data.amount0Out > 0) {
+            poolAddress = 'Swap WQT for WETH';
+            tokenAmount0 = `${(parseInt((data.amount0Out) * 1000, 10)) / 1000} WQT`;
+            tokenAmount1 = `${(parseInt((data.amount1In) * 1000, 10)) / 1000} WETH`;
+          } else {
+            poolAddress = 'Swap WETH for WQT';
+            tokenAmount0 = `${(parseInt((data.amount1Out) * 1000, 10)) / 1000} WETH`;
+            tokenAmount1 = `${(parseInt((data.amount0In) * 1000, 10)) / 1000} WQT`;
+          }
         }
         const totalValue = `${Math.round(data.amountUSD)} $`;
         const account = data.to;
