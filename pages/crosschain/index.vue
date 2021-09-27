@@ -107,6 +107,7 @@
                     v-clipboard:success="ClipboardSuccessHandler"
                     v-clipboard:error="ClipboardErrorHandler"
                     type="button"
+                    @click="doCopy"
                   >
                     <span class="icon-copy link-cont__icon" />
                   </button>
@@ -259,9 +260,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    doCopy(ev, link) {
-      ev.stopPropagation();
-      this.$copyText(link).then(() => {
+    doCopy() {
+      this.ShowModal({
+        key: modals.copiedSuccess,
       });
     },
     async redeemAction(data) {

@@ -71,14 +71,14 @@ export default {
           title: this.$t('modals.recepientAddress'),
           subtitle: this.options.recepient,
         },
-        {
-          title: this.$t('modals.worknetFee'),
-          subtitle: this.options.worknetFee,
-        },
-        {
-          title: this.$t('modals.binanceFee'),
-          subtitle: this.options.binanceFee,
-        },
+        // {
+        //   title: this.$t('modals.worknetFee'),
+        //   subtitle: this.options.worknetFee,
+        // },
+        // {
+        //   title: this.$t('modals.binanceFee'),
+        //   subtitle: this.options.binanceFee,
+        // },
       ];
     },
   },
@@ -94,18 +94,20 @@ export default {
       } else {
         chainTo = 2;
       }
+      const optionsData = this.options;
+      this.hide();
       await this.$store.dispatch('web3/swapWithBridge', {
         _decimals: 18,
-        _amount: this.options.amountInt,
-        chain: this.options.chain,
+        _amount: optionsData.amountInt,
+        chain: optionsData.chain,
         chainTo,
-        userAddress: this.options.senderFull,
-        recipient: this.options.recepientFull,
+        userAddress: optionsData.senderFull,
+        recipient: optionsData.recepientFull,
         symbol: 'WQT',
       });
       this.ShowModal({
         key: modals.transactionSend,
-        recipient: this.options.recepientFull,
+        recipient: optionsData.recipient,
       });
       this.SetLoader(false);
     },
