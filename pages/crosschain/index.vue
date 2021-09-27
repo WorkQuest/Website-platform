@@ -102,6 +102,14 @@
               <template #cell(tx)="el">
                 <div class="table__value">
                   {{ el.item.tx }}
+                  <button
+                    v-clipboard:copy="el.item.txFull"
+                    v-clipboard:success="ClipboardSuccessHandler"
+                    v-clipboard:error="ClipboardErrorHandler"
+                    type="button"
+                  >
+                    <span class="icon-copy link-cont__icon" />
+                  </button>
                 </div>
               </template>
               <template #cell(created)="el">
@@ -113,10 +121,12 @@
                 <div class="table__value table__value_blue">
                   <base-btn
                     class="btn__redeem"
+                    :class="!el.item.status ? 'btn__redeem_disabled' : ''"
                     mode="outline"
+                    :disabled="!el.item.status"
                     @click="redeemAction(el.item)"
                   >
-                    {{ $t('meta.redeem') }}
+                    {{ el.item.status ? $t('meta.redeem') : $t('meta.redeemed') }}
                   </base-btn>
                 </div>
               </template>
@@ -235,6 +245,7 @@ export default {
       let newInterval;
       if (this.purseData) {
         await this.swapsTest(this.purseData);
+        console.log(this.crosschainTableData);
         newInterval = setInterval(() => this.swapsTest(this.purseData), 5000);
         if (this.$route.name !== 'crosschain') {
           clearInterval(newInterval);
@@ -249,6 +260,12 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    doCopy(ev, link) {
+      ev.stopPropagation();
+      console.log(link);
+      this.$copyText(link).then(() => {
+      });
+    },
     async redeemAction(data) {
       this.SetLoader(true);
       await this.$store.dispatch('web3/goToChain', { chain: data.chain });
@@ -367,6 +384,11 @@ export default {
 
         &:hover {
           background-color: #103d7c;
+        }
+      }
+      &__redeem {
+        &_disabled {
+          color: #D8DFE3 !important;
         }
       }
     }

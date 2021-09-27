@@ -143,7 +143,6 @@ export default {
     return await goToChain(chain);
   },
   async redeemSwap({ commit }, payload) {
-    console.log(payload.signData);
     return await redeemSwap(payload);
   },
 };

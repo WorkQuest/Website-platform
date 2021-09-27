@@ -128,6 +128,7 @@
   },
   "meta": {
     "redeem": "Redeem",
+    "redeemed": "Redeemed",
     "pay": "Pay",
     "skipAndEnd": "Skip and end",
     "cleanUp": "Clean up",
