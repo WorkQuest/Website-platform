@@ -75,33 +75,45 @@ export default {
       this.CloseModal();
     },
     maxBalance() {
-      if (this.miningPoolId === 'ETH') {
-        if (this.options.type === 1) {
-          this.amount = this.userBalance;
-        } else if (this.options.type === 2) {
-          this.amount = this.userStake;
-        }
-      } if (this.miningPoolId === 'BNB') {
-        this.amount = this.accountData.userPurse.oldTokenBalance;
+      if (this.options.type === 1) {
+        this.amount = this.userBalance;
+      } else if (this.options.type === 2) {
+        this.amount = this.userStake;
       }
     },
     async staking() {
       this.SetLoader(true);
       this.hide();
-      await this.$store.dispatch('web3/stake', {
-        decimals: this.accountData.decimals.stakeDecimal,
-        amount: this.amount,
-      });
+      if (this.miningPoolId === 'ETH') {
+        await this.$store.dispatch('web3/stake', {
+          decimals: this.accountData.decimals.stakeDecimal,
+          amount: this.amount,
+        });
+      }
+      if (this.miningPoolId === 'BNB') {
+        await this.$store.dispatch('web3/stakeBSC', {
+          decimals: this.accountData.decimals.stakeDecimal,
+          amount: this.amount,
+        });
+      }
       this.SetLoader(false);
     },
     async unstaking() {
       this.SetLoader(true);
       this.hide();
-      await this.$store.dispatch('web3/unstake', {
-        decimals: this.accountData?.decimals?.stakeDecimal,
-        amount: this.amount,
-      });
-      this.SetLoader(false);
+      if (this.miningPoolId === 'ETH') {
+        await this.$store.dispatch('web3/unstake', {
+          decimals: this.accountData?.decimals?.stakeDecimal,
+          amount: this.amount,
+        });
+      }
+      if (this.miningPoolId === 'BNB') {
+        await this.$store.dispatch('web3/unstakeBSC', {
+          decimals: this.accountData?.decimals?.stakeDecimal,
+          amount: this.amount,
+        });
+        this.SetLoader(false);
+      }
     },
   },
 };

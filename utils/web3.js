@@ -2,6 +2,7 @@ import Web3 from 'web3';
 import Web4 from '@cryptonteam/web4';
 import BigNumber from 'bignumber.js';
 import * as abi from '~/abi/abi';
+import { StakingWQ, WQLiquidityMining } from '~/abi/abi';
 
 let web3 = null;
 let web4 = null;
@@ -190,6 +191,31 @@ export const staking = async (_decimals, _amount) => {
   }
 };
 
+export const stakingBSC = async (_decimals, _amount) => {
+  const instance = await createInstance(abi.ERC20, process.env.CAKE_LP_TOKEN);
+  const contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS_BSC);
+  const allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.CAKE_LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS_BSC])).toString();
+  const form = 10 ** _decimals;
+  let amount = Math.floor(_amount * form) / form;
+  try {
+    amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+    if (+allowance < +amount) {
+      store.dispatch('main/setStatusText', 'Approving');
+      showToast('Stacking', 'Approving...', 'success');
+      await instance.approve(process.env.STAKING_ADDRESS_BSC, amount);
+      showToast('Stacking', 'Approving done', 'success');
+      showToast('Stacking', 'Staking...', 'success');
+      store.dispatch('main/setStatusText', 'Staking');
+      await contractInstance.stake(amount);
+      showToast('Stacking', 'Staking done', 'success');
+    }
+    return '';
+  } catch (e) {
+    showToast('Stacking error', `${e.message}`, 'danger');
+    return error(500, 'stake error', e);
+  }
+};
+
 export const unStaking = async (_decimals, _amount) => {
   const contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
   const form = 10 ** _decimals;
@@ -206,6 +232,24 @@ export const unStaking = async (_decimals, _amount) => {
     return error(500, 'stake error', e);
   }
 };
+
+export const unStakingBSC = async (_decimals, _amount) => {
+  const contractInstance = await createInstance(abi.WQLiquidityMining, process.env.STAKING_ADDRESS_BSC);
+  const form = 10 ** _decimals;
+  let amount = Math.floor(_amount * form) / form;
+  try {
+    amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+    showToast('Unstacking', 'Unstacking...', 'success');
+    store.dispatch('main/setStatusText', 'Staking');
+    await contractInstance.unstake(amount);
+    showToast('Unstacking', 'Unstaking done', 'success');
+    return '';
+  } catch (e) {
+    showToast('Unstacking error', `${e.message}`, 'danger');
+    return error(500, 'stake error', e);
+  }
+};
+
 export const claimRewards = async (_decimals, _amount) => {
   const contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
   try {
@@ -219,6 +263,7 @@ export const claimRewards = async (_decimals, _amount) => {
     return error(500, 'claim error', e);
   }
 };
+
 export const unstakeOfStake = async (_postFix, _amount) => {
   try {
     const stakeInstanse = getStakeInstance(_postFix);
@@ -227,6 +272,20 @@ export const unstakeOfStake = async (_postFix, _amount) => {
     return output(response);
   } catch (e) {
     return error(500, 'unstake error', e);
+  }
+};
+
+export const claimRewardsBSC = async (_decimals, _amount) => {
+  const contractInstance = await createInstance(abi.WQLiquidityMining, process.env.STAKING_ADDRESS_BSC);
+  try {
+    showToast('Claiming', 'Claiming...', 'success');
+    await contractInstance.claim();
+    await contractInstance.rewardTotal();
+    showToast('Claiming', 'Claiming done', 'success');
+    return '';
+  } catch (e) {
+    showToast('Claim error', `${e.message}`, 'danger');
+    return error(500, 'claim error', e);
   }
 };
 
