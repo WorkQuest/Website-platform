@@ -16,7 +16,7 @@
           mode="light"
           class="mining-page__connect"
           :disabled="statusBusy"
-          @click="connectToMetamask"
+          @click="checkMetamaskStatus()"
         >
           {{ $t('mining.connectWallet') }}
         </base-btn>
@@ -395,7 +395,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+    await this.checkMetamaskStatus();
     await this.getWqtWbnbTokenDay();
     await this.getWqtWethTokenDay();
     await this.getWqtWbnbTokenDayLast();
@@ -413,7 +413,21 @@ export default {
   },
 
   methods: {
-
+    async checkMetamaskStatus() {
+      if (typeof window.ethereum === 'undefined') {
+        this.ShowModal({
+          key: modals.status,
+          img: '~assets/img/ui/cardHasBeenAdded.svg',
+          title: 'Please install Metamask!',
+          subtitle: 'Please click install...',
+          button: 'Install',
+          type: 'installMetamask',
+        });
+      } else {
+        await this.connectToMetamask();
+        await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+      }
+    },
     async initTokenDays() {
       const totalLiquidity = this.miningPoolId === 'BNB' ? this.wqtWbnbTokenDay[0].reserveUSD : this.wqtWethTokenDay[0].reserveUSD;
       this.totalLiquidityUSD = Math.floor(await totalLiquidity);

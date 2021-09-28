@@ -24,7 +24,7 @@
                 {{ $t('modals.amount') }}
               </div>
               <base-field
-                v-model="amount"
+                v-model.lazy="amount"
                 type="number"
                 :placeholder="'0,05'"
                 class="grid__input"

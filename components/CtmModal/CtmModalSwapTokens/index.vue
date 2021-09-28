@@ -103,7 +103,6 @@ export default {
     },
     maxBalance() {
       this.oldTokens = this.accountData.userPurse.stakeBalance;
-      console.log(this.accountData);
     },
     initBalanceAndCurrency() {
       this.balance = parseInt((this.accountData.userPurse.stakeBalance) * 10000, 10) / 10000;

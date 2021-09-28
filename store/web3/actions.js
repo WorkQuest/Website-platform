@@ -53,7 +53,6 @@ export default {
       showToast('Connect to Metamask', 'Connected', 'success');
     } else if (typeof window.ethereum === 'undefined') {
       showToast('Error connect to Metamask', 'Metamask not installed! Please install Metamask!', 'danger');
-      setTimeout(window.open('https://metamask.io/download.html'), 3000);
     } else {
       commit('setIsConnected', false);
       showToast('Error connect to Metamask', `${response.data}`, 'danger');
