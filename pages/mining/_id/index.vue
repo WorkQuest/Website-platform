@@ -61,7 +61,7 @@
               v-if="miningPoolId === 'BNB'"
               class="btn_bl"
               mode="outline"
-              :disabled="statusBusy"
+              :disabled="statusBusy || metamaskStatus === 'notInstalled'"
               @click="openSwapTokens()"
             >
               {{ $t('mining.swapTokens.title') }}
@@ -263,6 +263,7 @@ export default {
   data() {
     return {
       miningPoolId: localStorage.getItem('miningPoolId'),
+      metamaskStatus: localStorage.getItem('metamaskStatus'),
       items: [],
       testFields: [
         {
@@ -416,6 +417,7 @@ export default {
   methods: {
     async checkMetamaskStatus() {
       if (typeof window.ethereum === 'undefined') {
+        localStorage.setItem('metamaskStatus', 'notInstalled');
         this.ShowModal({
           key: modals.status,
           img: '~assets/img/ui/cardHasBeenAdded.svg',
@@ -426,6 +428,7 @@ export default {
         });
       } else {
         await this.connectToMetamask();
+        localStorage.setItem('metamaskStatus', 'installed');
         await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
       }
     },
