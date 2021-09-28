@@ -501,10 +501,16 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
       exchangeAddress = process.env.EXCHANGE_ADDRESS_BSCTESTNET;
       bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
     }
+    console.log('tokenAddress', tokenAddress);
+    console.log('bridgeAddress', bridgeAddress);
     instance = await createInstance(abi.ERC20, tokenAddress);
+    console.log(instance);
     contractInstance = await createInstance(abi.WQBridge, bridgeAddress);
+    console.log(contractInstance);
     allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
+    console.log(allowance);
     nonce = await web3.eth.getTransactionCount(userAddress);
+    console.log(nonce);
     try {
       amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
       if (+allowance < +amount) {
