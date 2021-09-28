@@ -256,6 +256,7 @@ import modals from '~/store/modals/modals';
 import chart from './graphics_data';
 
 export default {
+  layout: 'guest',
   components: {
     chart,
   },

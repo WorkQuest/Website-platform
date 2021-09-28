@@ -148,6 +148,7 @@ import moment from 'moment';
 import modals from '~/store/modals/modals';
 
 export default {
+  layout: 'guest',
   data() {
     return {
       miningPoolId: localStorage.getItem('miningPoolId'),

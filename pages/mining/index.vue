@@ -94,6 +94,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
+  layout: 'guest',
   data() {
     return {
       poolAddress: '',
