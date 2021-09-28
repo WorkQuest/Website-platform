@@ -96,7 +96,7 @@ export default {
       }
       const optionsData = this.options;
       this.hide();
-      const { ok } = await this.$store.dispatch('web3/swapWithBridge', {
+      const swapObj = await this.$store.dispatch('web3/swapWithBridge', {
         _decimals: 18,
         _amount: optionsData.amountInt,
         chain: optionsData.chain,
@@ -107,8 +107,8 @@ export default {
       });
       this.ShowModal({
         key: modals.status,
-        img: ok ? require('~/assets/img/ui/success.svg') : require('~/assets/img/ui/warning.svg'),
-        title: ok ? this.$t('modals.transactionSend') : this.$t('modals.transactionFail'),
+        img: swapObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
+        title: swapObj.code === 500 ? this.$t('modals.transactionFail') : this.$t('modals.transactionSend'),
         recipient: optionsData.recepientFull,
         subtitle: '',
       });
