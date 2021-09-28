@@ -166,190 +166,365 @@ export const createInstance = async (ab, address) => {
 
 export const getAccount = () => account;
 
+let instance;
+let contractInstance;
+let allowance;
+let form;
+let amount;
+let exchangeAddress;
+let tokenAddress;
+let bridgeAddress;
+let nonce;
+
 export const staking = async (_decimals, _amount) => {
-  const instance = await createInstance(abi.ERC20, process.env.LP_TOKEN);
-  const contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
-  const allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS])).toString();
-  const form = 10 ** _decimals;
-  let amount = Math.floor(_amount * form) / form;
-  try {
-    amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
-    if (+allowance < +amount) {
-      store.dispatch('main/setStatusText', 'Approving');
-      showToast('Stacking', 'Approving...', 'success');
-      await instance.approve(process.env.STAKING_ADDRESS, amount);
-      showToast('Stacking', 'Approving done', 'success');
+  form = 10 ** _decimals;
+  amount = Math.floor(_amount * form) / form;
+  if (process.env.PROD === 'true') {
+    // instance = await createInstance(abi.ERC20, process.env.LP_TOKEN);
+    // contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
+    // allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS])).toString();
+    // try {
+    // amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+    //   if (+allowance < +amount) {
+    //     store.dispatch('main/setStatusText', 'Approving');
+    //     showToast('Stacking', 'Approving...', 'success');
+    //     await instance.approve(process.env.STAKING_ADDRESS, amount);
+    //     showToast('Stacking', 'Approving done', 'success');
+    //   }
+    //   showToast('Stacking', 'Staking...', 'success');
+    //   store.dispatch('main/setStatusText', 'Staking');
+    //   await contractInstance.stake(amount);
+    //   showToast('Stacking', 'Staking done', 'success');
+    //   return '';
+    // } catch (e) {
+    //   showToast('Stacking error', `${e.message}`, 'danger');
+    //   return error(500, 'stake error', e);
+    // }
+  } if (process.env.PROD === 'false') {
+    instance = await createInstance(abi.ERC20, process.env.LP_TOKEN);
+    contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
+    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS])).toString();
+    try {
+      amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+      if (+allowance < +amount) {
+        store.dispatch('main/setStatusText', 'Approving');
+        showToast('Stacking', 'Approving...', 'success');
+        await instance.approve(process.env.STAKING_ADDRESS, amount);
+        showToast('Stacking', 'Approving done', 'success');
+      }
+      showToast('Stacking', 'Staking...', 'success');
+      store.dispatch('main/setStatusText', 'Staking');
+      await contractInstance.stake(amount);
+      showToast('Stacking', 'Staking done', 'success');
+      return '';
+    } catch (e) {
+      showToast('Stacking error', `${e.message}`, 'danger');
+      return error(500, 'stake error', e);
     }
-    showToast('Stacking', 'Staking...', 'success');
-    store.dispatch('main/setStatusText', 'Staking');
-    await contractInstance.stake(amount);
-    showToast('Stacking', 'Staking done', 'success');
-    return '';
-  } catch (e) {
-    showToast('Stacking error', `${e.message}`, 'danger');
-    return error(500, 'stake error', e);
   }
+  return '';
 };
 
 export const stakingBSC = async (_decimals, _amount) => {
-  const instance = await createInstance(abi.ERC20, process.env.CAKE_LP_TOKEN);
-  const contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS_BSC);
-  const allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.CAKE_LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS_BSC])).toString();
-  const form = 10 ** _decimals;
-  let amount = Math.floor(_amount * form) / form;
-  try {
-    amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
-    if (+allowance < +amount) {
-      store.dispatch('main/setStatusText', 'Approving');
-      showToast('Stacking', 'Approving...', 'success');
-      await instance.approve(process.env.STAKING_ADDRESS_BSC, amount);
-      showToast('Stacking', 'Approving done', 'success');
+  form = 10 ** _decimals;
+  amount = Math.floor(_amount * form) / form;
+  if (process.env.PROD === 'true') {
+    // instance = await createInstance(abi.ERC20, process.env.CAKE_LP_TOKEN);
+    // contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS_BSC);
+    // allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.CAKE_LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS_BSC])).toString();
+    // try {
+    //   amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+    //   if (+allowance < +amount) {
+    //     store.dispatch('main/setStatusText', 'Approving');
+    //     showToast('Stacking', 'Approving...', 'success');
+    //     await instance.approve(process.env.STAKING_ADDRESS_BSC, amount);
+    //     showToast('Stacking', 'Approving done', 'success');
+    //   }
+    //   showToast('Stacking', 'Staking...', 'success');
+    //   store.dispatch('main/setStatusText', 'Staking');
+    //   await contractInstance.stake(amount);
+    //   showToast('Stacking', 'Staking done', 'success');
+    //   return '';
+    // } catch (e) {
+    //   showToast('Stacking error', `${e.message}`, 'danger');
+    //   return error(500, 'stake error', e);
+    // }
+  } if (process.env.PROD === 'false') {
+    instance = await createInstance(abi.ERC20, process.env.CAKE_LP_TOKEN);
+    contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS_BSC);
+    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.CAKE_LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS_BSC])).toString();
+    try {
+      amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+      if (+allowance < +amount) {
+        store.dispatch('main/setStatusText', 'Approving');
+        showToast('Stacking', 'Approving...', 'success');
+        await instance.approve(process.env.STAKING_ADDRESS_BSC, amount);
+        showToast('Stacking', 'Approving done', 'success');
+      }
+      showToast('Stacking', 'Staking...', 'success');
+      store.dispatch('main/setStatusText', 'Staking');
+      await contractInstance.stake(amount);
+      showToast('Stacking', 'Staking done', 'success');
+      return '';
+    } catch (e) {
+      showToast('Stacking error', `${e.message}`, 'danger');
+      return error(500, 'stake error', e);
     }
-    showToast('Stacking', 'Staking...', 'success');
-    store.dispatch('main/setStatusText', 'Staking');
-    await contractInstance.stake(amount);
-    showToast('Stacking', 'Staking done', 'success');
-    return '';
-  } catch (e) {
-    showToast('Stacking error', `${e.message}`, 'danger');
-    return error(500, 'stake error', e);
   }
+  return '';
 };
 
 export const unStaking = async (_decimals, _amount) => {
-  const contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
-  const form = 10 ** _decimals;
-  let amount = Math.floor(_amount * form) / form;
-  try {
-    amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
-    showToast('Unstacking', 'Unstacking...', 'success');
-    store.dispatch('main/setStatusText', 'Staking');
-    await contractInstance.unstake(amount);
-    showToast('Unstacking', 'Unstaking done', 'success');
-    return '';
-  } catch (e) {
-    showToast('Unstacking error', `${e.message}`, 'danger');
-    return error(500, 'stake error', e);
+  form = 10 ** _decimals;
+  amount = Math.floor(_amount * form) / form;
+  if (process.env.PROD === 'true') {
+    // contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
+    // try {
+    //   amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+    //   showToast('Unstacking', 'Unstacking...', 'success');
+    //   store.dispatch('main/setStatusText', 'Staking');
+    //   await contractInstance.unstake(amount);
+    //   showToast('Unstacking', 'Unstaking done', 'success');
+    //   return '';
+    // } catch (e) {
+    //   showToast('Unstacking error', `${e.message}`, 'danger');
+    //   return error(500, 'stake error', e);
+    // }
+  } if (process.env.PROD === 'false') {
+    contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
+    try {
+      amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+      showToast('Unstacking', 'Unstacking...', 'success');
+      store.dispatch('main/setStatusText', 'Staking');
+      await contractInstance.unstake(amount);
+      showToast('Unstacking', 'Unstaking done', 'success');
+      return '';
+    } catch (e) {
+      showToast('Unstacking error', `${e.message}`, 'danger');
+      return error(500, 'stake error', e);
+    }
   }
+  return '';
 };
 
 export const unStakingBSC = async (_decimals, _amount) => {
-  const contractInstance = await createInstance(abi.WQLiquidityMining, process.env.STAKING_ADDRESS_BSC);
-  const form = 10 ** _decimals;
-  let amount = Math.floor(_amount * form) / form;
-  try {
-    amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
-    showToast('Unstacking', 'Unstacking...', 'success');
-    store.dispatch('main/setStatusText', 'Staking');
-    await contractInstance.unstake(amount);
-    showToast('Unstacking', 'Unstaking done', 'success');
-    return '';
-  } catch (e) {
-    showToast('Unstacking error', `${e.message}`, 'danger');
-    return error(500, 'stake error', e);
+  form = 10 ** _decimals;
+  amount = Math.floor(_amount * form) / form;
+  if (process.env.PROD === 'true') {
+    // contractInstance = await createInstance(abi.WQLiquidityMining, process.env.STAKING_ADDRESS_BSC);
+    // try {
+    //   amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+    //   showToast('Unstacking', 'Unstacking...', 'success');
+    //   store.dispatch('main/setStatusText', 'Staking');
+    //   await contractInstance.unstake(amount);
+    //   showToast('Unstacking', 'Unstaking done', 'success');
+    //   return '';
+    // } catch (e) {
+    //   showToast('Unstacking error', `${e.message}`, 'danger');
+    //   return error(500, 'stake error', e);
+    // }
+  } if (process.env.PROD === 'false') {
+    contractInstance = await createInstance(abi.WQLiquidityMining, process.env.STAKING_ADDRESS_BSC);
+    try {
+      amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+      showToast('Unstacking', 'Unstacking...', 'success');
+      store.dispatch('main/setStatusText', 'Staking');
+      await contractInstance.unstake(amount);
+      showToast('Unstacking', 'Unstaking done', 'success');
+      return '';
+    } catch (e) {
+      showToast('Unstacking error', `${e.message}`, 'danger');
+      return error(500, 'stake error', e);
+    }
   }
+  return '';
 };
 
 export const claimRewards = async (_decimals, _amount) => {
-  const contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
-  try {
-    showToast('Claiming', 'Claiming...', 'success');
-    await contractInstance.claim();
-    await contractInstance.rewardTotal();
-    showToast('Claiming', 'Claiming done', 'success');
-    return '';
-  } catch (e) {
-    showToast('Claim error', `${e.message}`, 'danger');
-    return error(500, 'claim error', e);
+  if (process.env.PROD === 'true') {
+    // contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
+    // try {
+    //   showToast('Claiming', 'Claiming...', 'success');
+    //   await contractInstance.claim();
+    //   await contractInstance.rewardTotal();
+    //   showToast('Claiming', 'Claiming done', 'success');
+    //   return '';
+    // } catch (e) {
+    //   showToast('Claim error', `${e.message}`, 'danger');
+    //   return error(500, 'claim error', e);
+    // }
+  } if (process.env.PROD === 'false') {
+    contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
+    try {
+      showToast('Claiming', 'Claiming...', 'success');
+      await contractInstance.claim();
+      await contractInstance.rewardTotal();
+      showToast('Claiming', 'Claiming done', 'success');
+      return '';
+    } catch (e) {
+      showToast('Claim error', `${e.message}`, 'danger');
+      return error(500, 'claim error', e);
+    }
   }
+  return '';
 };
 
-export const unstakeOfStake = async (_postFix, _amount) => {
-  try {
-    const stakeInstanse = getStakeInstance(_postFix);
-    const decimals = getStakeTokenDecimals(_postFix);
-    const response = await stakeInstanse.unstake(new BigNumber(_amount).shiftedBy(+decimals).toString());
-    return output(response);
-  } catch (e) {
-    return error(500, 'unstake error', e);
-  }
-};
+// export const unstakeOfStake = async (_postFix, _amount) => {
+//   try {
+//     const stakeInstanse = getStakeInstance(_postFix);
+//     const decimals = getStakeTokenDecimals(_postFix);
+//     const response = await stakeInstanse.unstake(new BigNumber(_amount).shiftedBy(+decimals).toString());
+//     return output(response);
+//   } catch (e) {
+//     return error(500, 'unstake error', e);
+//   }
+// };
 
 export const claimRewardsBSC = async (_decimals, _amount) => {
-  const contractInstance = await createInstance(abi.WQLiquidityMining, process.env.STAKING_ADDRESS_BSC);
-  try {
-    showToast('Claiming', 'Claiming...', 'success');
-    await contractInstance.claim();
-    await contractInstance.rewardTotal();
-    showToast('Claiming', 'Claiming done', 'success');
-    return '';
-  } catch (e) {
-    showToast('Claim error', `${e.message}`, 'danger');
-    return error(500, 'claim error', e);
+  if (process.env.PROD === 'true') {
+    // contractInstance = await createInstance(abi.WQLiquidityMining, process.env.STAKING_ADDRESS_BSC);
+    // try {
+    //   showToast('Claiming', 'Claiming...', 'success');
+    //   await contractInstance.claim();
+    //   await contractInstance.rewardTotal();
+    //   showToast('Claiming', 'Claiming done', 'success');
+    //   return '';
+    // } catch (e) {
+    //   showToast('Claim error', `${e.message}`, 'danger');
+    //   return error(500, 'claim error', e);
+    // }
+  } if (process.env.PROD === 'false') {
+    contractInstance = await createInstance(abi.WQLiquidityMining, process.env.STAKING_ADDRESS_BSC);
+    try {
+      showToast('Claiming', 'Claiming...', 'success');
+      await contractInstance.claim();
+      await contractInstance.rewardTotal();
+      showToast('Claiming', 'Claiming done', 'success');
+      return '';
+    } catch (e) {
+      showToast('Claim error', `${e.message}`, 'danger');
+      return error(500, 'claim error', e);
+    }
   }
+  return '';
 };
 
 export const swap = async (_decimals, _amount) => {
-  const instance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
-  const contractInstance = await createInstance(abi.WQTExchange, process.env.EXCHANGE_ADDRESS_BSCTESTNET);
-  const allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccount().address, process.env.EXCHANGE_ADDRESS_BSCTESTNET])).toString();
-  const form = 10 ** _decimals;
-  let amount = Math.floor(_amount * form) / form;
-  try {
-    amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
-    if (+allowance < +amount) {
-      store.dispatch('main/setStatusText', 'Approving');
-      showToast('Swapping', 'Approving...', 'success');
-      await instance.approve(process.env.EXCHANGE_ADDRESS_BSCTESTNET, amount);
-      showToast('Swapping', 'Approving done', 'success');
+  form = 10 ** _decimals;
+  amount = Math.floor(_amount * form) / form;
+  if (process.env.PROD === 'true') {
+    // instance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
+    // contractInstance = await createInstance(abi.WQTExchange, process.env.EXCHANGE_ADDRESS_BSCTESTNET);
+    // allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccount().address, process.env.EXCHANGE_ADDRESS_BSCTESTNET])).toString();
+    // try {
+    //   amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+    //   if (+allowance < +amount) {
+    //     store.dispatch('main/setStatusText', 'Approving');
+    //     showToast('Swapping', 'Approving...', 'success');
+    //     await instance.approve(process.env.EXCHANGE_ADDRESS_BSCTESTNET, amount);
+    //     showToast('Swapping', 'Approving done', 'success');
+    //   }
+    //   showToast('Swapping', 'Swapping...', 'success');
+    //   await contractInstance.swap(amount);
+    //   store.dispatch('main/setStatusText', 'Swapping');
+    //   showToast('Swapping', 'Swapping done', 'success');
+    //   return '';
+    // } catch (e) {
+    //   showToast('Swapping error', `${e.message}`, 'danger');
+    //   return error(500, 'stake error', e);
+    // }
+  } if (process.env.PROD === 'false') {
+    instance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
+    contractInstance = await createInstance(abi.WQTExchange, process.env.EXCHANGE_ADDRESS_BSCTESTNET);
+    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccount().address, process.env.EXCHANGE_ADDRESS_BSCTESTNET])).toString();
+    try {
+      amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+      if (+allowance < +amount) {
+        store.dispatch('main/setStatusText', 'Approving');
+        showToast('Swapping', 'Approving...', 'success');
+        await instance.approve(process.env.EXCHANGE_ADDRESS_BSCTESTNET, amount);
+        showToast('Swapping', 'Approving done', 'success');
+      }
+      showToast('Swapping', 'Swapping...', 'success');
+      await contractInstance.swap(amount);
+      store.dispatch('main/setStatusText', 'Swapping');
+      showToast('Swapping', 'Swapping done', 'success');
+      return '';
+    } catch (e) {
+      showToast('Swapping error', `${e.message}`, 'danger');
+      return error(500, 'stake error', e);
     }
-    showToast('Swapping', 'Swapping...', 'success');
-    await contractInstance.swap(amount);
-    store.dispatch('main/setStatusText', 'Swapping');
-    showToast('Swapping', 'Swapping done', 'success');
-    return '';
-  } catch (e) {
-    showToast('Swapping error', `${e.message}`, 'danger');
-    return error(500, 'stake error', e);
   }
+  return '';
 };
 
 export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAddress, recipient, symbol) => {
-  let exchangeAddress;
-  let tokenAddress;
-  let bridgeAddress;
-  if (chain === 'ETH') {
-    tokenAddress = process.env.WQT_TOKEN;
-    exchangeAddress = process.env.EXCHANGE_ADDRESS_RINKEBY;
-    bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
-  } else {
-    tokenAddress = process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET;
-    exchangeAddress = process.env.EXCHANGE_ADDRESS_BSCTESTNET;
-    bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
-  }
-  const instance = await createInstance(abi.ERC20, tokenAddress);
-  const contractInstance = await createInstance(abi.WQBridge, bridgeAddress);
-  const allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
-  const nonce = await web3.eth.getTransactionCount(userAddress);
-  const form = 10 ** _decimals;
-  let amount = Math.floor(_amount * form) / form;
-  try {
-    amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
-    if (+allowance < +amount) {
-      store.dispatch('main/setStatusText', 'A pproving');
-      showToast('Swapping', 'Approving...', 'success');
-      await instance.approve(bridgeAddress, amount);
-      showToast('Swapping', 'Approving done', 'success');
+  form = 10 ** _decimals;
+  amount = Math.floor(_amount * form) / form;
+  if (process.env.PROD === 'true') {
+    // if (chain === 'ETH') {
+    //   tokenAddress = process.env.WQT_TOKEN;
+    //   exchangeAddress = process.env.EXCHANGE_ADDRESS_RINKEBY;
+    //   bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
+    // } else {
+    //   tokenAddress = process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET;
+    //   exchangeAddress = process.env.EXCHANGE_ADDRESS_BSCTESTNET;
+    //   bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
+    // }
+    // instance = await createInstance(abi.ERC20, tokenAddress);
+    // contractInstance = await createInstance(abi.WQBridge, bridgeAddress);
+    // allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
+    // nonce = await web3.eth.getTransactionCount(userAddress);
+    // try {
+    //   amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+    //   if (+allowance < +amount) {
+    //     store.dispatch('main/setStatusText', 'A pproving');
+    //     showToast('Swapping', 'Approving...', 'success');
+    //     await instance.approve(bridgeAddress, amount);
+    //     showToast('Swapping', 'Approving done', 'success');
+    //   }
+    //   showToast('Swapping', 'Swapping...', 'success');
+    //   store.dispatch('main/setStatusText', 'Swapping');
+    //   await contractInstance.swap(nonce, chainTo, amount, recipient, symbol);
+    //   showToast('Swapping', 'Swapping done', 'success');
+    //   return '';
+    // } catch (e) {
+    //   showToast('Swapping error', `${e.message}`, 'danger');
+    //   return error(500, 'stake error', e);
+    // }
+  } if (process.env.PROD === 'false') {
+    if (chain === 'ETH') {
+      tokenAddress = process.env.WQT_TOKEN;
+      exchangeAddress = process.env.EXCHANGE_ADDRESS_RINKEBY;
+      bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
+    } else {
+      tokenAddress = process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET;
+      exchangeAddress = process.env.EXCHANGE_ADDRESS_BSCTESTNET;
+      bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
     }
-    showToast('Swapping', 'Swapping...', 'success');
-    store.dispatch('main/setStatusText', 'Swapping');
-    await contractInstance.swap(nonce, chainTo, amount, recipient, symbol);
-    showToast('Swapping', 'Swapping done', 'success');
-    return '';
-  } catch (e) {
-    showToast('Swapping error', `${e.message}`, 'danger');
-    return error(500, 'stake error', e);
+    instance = await createInstance(abi.ERC20, tokenAddress);
+    contractInstance = await createInstance(abi.WQBridge, bridgeAddress);
+    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
+    nonce = await web3.eth.getTransactionCount(userAddress);
+    try {
+      amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+      if (+allowance < +amount) {
+        store.dispatch('main/setStatusText', 'A pproving');
+        showToast('Swapping', 'Approving...', 'success');
+        await instance.approve(bridgeAddress, amount);
+        showToast('Swapping', 'Approving done', 'success');
+      }
+      showToast('Swapping', 'Swapping...', 'success');
+      store.dispatch('main/setStatusText', 'Swapping');
+      await contractInstance.swap(nonce, chainTo, amount, recipient, symbol);
+      showToast('Swapping', 'Swapping done', 'success');
+      return '';
+    } catch (e) {
+      showToast('Swapping error', `${e.message}`, 'danger');
+      return error(500, 'stake error', e);
+    }
   }
+  return '';
 };
 
 export const goToChain = async (chain) => {
@@ -387,17 +562,28 @@ export const goToChain = async (chain) => {
 
 export const redeemSwap = async (props) => {
   const { signData, chainId } = props;
-  let bridgeAddress;
-  if (chainId !== 2) {
-    bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
-  } else {
-    bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
+  if (process.env.PROD === 'true') {
+    // if (chainId !== 2) {
+    //   bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
+    // } else {
+    //   bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
+    // }
+    // try {
+    //   return await sendTransaction('redeem', abi.WQBridge, bridgeAddress, signData, signData[3]);
+    // } catch (err) {
+    //   return error(500, 'redeem error', err);
+    // }
+  } if (process.env.PROD === 'false') {
+    if (chainId !== 2) {
+      bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
+    } else {
+      bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
+    }
+    try {
+      return await sendTransaction('redeem', abi.WQBridge, bridgeAddress, signData, signData[3]);
+    } catch (err) {
+      return error(500, 'redeem error', err);
+    }
   }
-  // const contractInstance = await createInstance(abi.WQBridge, bridgeAddress);
-  try {
-    // await contractInstance.SwapRedeemed(bridgeAddress, signData);
-    return await sendTransaction('redeem', abi.WQBridge, bridgeAddress, signData, signData[3]);
-  } catch (err) {
-    return error(500, 'redeem error', err);
-  }
+  return '';
 };
