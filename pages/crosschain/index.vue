@@ -274,7 +274,13 @@ export default {
         signData: data.clearData,
         chainId: data.chainId,
       };
-      await this.$store.dispatch('web3/redeemSwap', payload);
+      const { ok } = await this.$store.dispatch('web3/redeemSwap', payload);
+      this.ShowModal({
+        key: modals.status,
+        img: ok ? require('~/assets/img/ui/success.svg') : require('~/assets/img/ui/warning.svg'),
+        title: ok ? this.$t('modals.redeemSuccess') : this.$t('modals.redeemFail'),
+        subtitle: '',
+      });
       this.SetLoader(false);
     },
     showToast(title, text, variant) {

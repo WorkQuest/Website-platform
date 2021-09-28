@@ -385,24 +385,16 @@ export const goToChain = async (chain) => {
 export const redeemSwap = async (props) => {
   const { signData, chainId } = props;
   let bridgeAddress;
-  console.log(chainId);
   if (chainId !== 2) {
-    console.log('RINKEBY');
     bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
   } else {
-    console.log('BSC');
     bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
   }
   // const contractInstance = await createInstance(abi.WQBridge, bridgeAddress);
   try {
-    console.log('start redeem');
-    console.log(bridgeAddress);
-    console.log(signData[3]);
     // await contractInstance.SwapRedeemed(bridgeAddress, signData);
-    const test = await sendTransaction('redeem', abi.WQBridge, bridgeAddress, signData, signData[3]);
-    console.log(test);
-    console.log('end redeem');
+    return await sendTransaction('redeem', abi.WQBridge, bridgeAddress, signData, signData[3]);
   } catch (err) {
-    console.log(err);
+    return error(500, 'redeem error', err);
   }
 };

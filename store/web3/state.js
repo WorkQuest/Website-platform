@@ -12,4 +12,5 @@ export default () => ({
   tokenLPAmount: {},
   busy: false,
   purseData: {},
+  tokensBSC: {},
 });

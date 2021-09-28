@@ -832,6 +832,8 @@
     "error": "Error!"
   },
   "modals": {
+    "redeemSuccess": "Redeem success!",
+    "redeemFail": "Redeem fail",
     "chatCreate": {
       "title": "Create group chat",
       "desc": "Create name of group chat and choose people from you chat list",
@@ -945,6 +947,7 @@
     "bodyMessage": "Hello",
     "areYouSure": "Are You Sure?",
     "transactionSend": "Transaction send",
+    "transactionFail": "Transaction fail",
     "cardHasBeenAdded": "Card has been added",
     "deposit": "Receive",
     "numberOfCard": "Card number",

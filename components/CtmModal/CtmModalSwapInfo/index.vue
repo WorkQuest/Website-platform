@@ -96,7 +96,7 @@ export default {
       }
       const optionsData = this.options;
       this.hide();
-      await this.$store.dispatch('web3/swapWithBridge', {
+      const { ok } = await this.$store.dispatch('web3/swapWithBridge', {
         _decimals: 18,
         _amount: optionsData.amountInt,
         chain: optionsData.chain,
@@ -106,8 +106,11 @@ export default {
         symbol: 'WQT',
       });
       this.ShowModal({
-        key: modals.transactionSend,
-        recipient: optionsData.recipient,
+        key: modals.status,
+        img: ok ? require('~/assets/img/ui/success.svg') : require('~/assets/img/ui/warning.svg'),
+        title: ok ? this.$t('modals.transactionSend') : this.$t('modals.transactionFail'),
+        recipient: optionsData.recepientFull,
+        subtitle: '',
       });
       this.SetLoader(false);
     },
