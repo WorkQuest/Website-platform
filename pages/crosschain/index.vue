@@ -59,6 +59,7 @@
           </div>
           <div class="info-block__btns-cont">
             <base-btn
+              :disabled="metamaskStatus === 'notInstalled'"
               @click="showSwapModal"
             >
               {{ $t('crosschain.createSwap') }}
@@ -150,6 +151,7 @@ export default {
   data() {
     return {
       miningPoolId: localStorage.getItem('miningPoolId'),
+      metamaskStatus: localStorage.getItem('metamaskStatus'),
       referLink: '0xnf8o2…9b74thb3',
       sourceAddressInd: 0,
       targetAddressInd: 1,
@@ -268,6 +270,7 @@ export default {
     },
     async checkMetamaskStatus() {
       if (typeof window.ethereum === 'undefined') {
+        localStorage.setItem('metamaskStatus', 'notInstalled');
         this.ShowModal({
           key: modals.status,
           img: '~assets/img/ui/cardHasBeenAdded.svg',
@@ -277,6 +280,7 @@ export default {
           type: 'installMetamask',
         });
       } else {
+        localStorage.setItem('metamaskStatus', 'installed');
         await this.connectToMetamask();
       }
     },
