@@ -49,6 +49,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      isConnected: 'web3/isConnected',
     }),
     getCardNumber() {
       return (this.options.cardNumber);
@@ -88,6 +89,7 @@ export default {
     },
     async showTransactionSend() {
       this.SetLoader(true);
+      await this.checkMetamaskStatus();
       let chainTo = 0;
       if (this.options.chain === 'ETH') {
         chainTo = 3;
@@ -114,7 +116,26 @@ export default {
       });
       this.SetLoader(false);
     },
-
+    connectToMetamask() {
+      if (!this.isConnected) {
+        this.$store.dispatch('web3/connect');
+      }
+    },
+    async checkMetamaskStatus() {
+      if (typeof window.ethereum === 'undefined') {
+        localStorage.setItem('metamaskStatus', 'notInstalled');
+        this.ShowModal({
+          key: modals.status,
+          title: 'Please install Metamask!',
+          subtitle: 'Please click install...',
+          button: 'Install',
+          type: 'installMetamask',
+        });
+      } else {
+        localStorage.setItem('metamaskStatus', 'installed');
+        await this.connectToMetamask();
+      }
+    },
   },
 };
 </script>
