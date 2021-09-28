@@ -147,10 +147,10 @@ import moment from 'moment';
 import modals from '~/store/modals/modals';
 
 export default {
+  layout: 'guest',
   data() {
     return {
       miningPoolId: localStorage.getItem('miningPoolId'),
-      referLink: '0xnf8o2…9b74thb3',
       sourceAddressInd: 0,
       targetAddressInd: 1,
       tableItems: {},
