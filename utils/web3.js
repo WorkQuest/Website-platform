@@ -2,7 +2,6 @@ import Web3 from 'web3';
 import Web4 from '@cryptonteam/web4';
 import BigNumber from 'bignumber.js';
 import * as abi from '~/abi/abi';
-import { StakingWQ, WQLiquidityMining } from '~/abi/abi';
 
 let web3 = null;
 let web4 = null;
@@ -502,14 +501,16 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
       exchangeAddress = process.env.EXCHANGE_ADDRESS_BSCTESTNET;
       bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
     }
+    console.log(tokenAddress, exchangeAddress, bridgeAddress);
     instance = await createInstance(abi.ERC20, tokenAddress);
     contractInstance = await createInstance(abi.WQBridge, bridgeAddress);
     allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
     nonce = await web3.eth.getTransactionCount(userAddress);
+    console.log('instance', instance, 'contractInstance', contractInstance, 'allowance', allowance, 'nonce', nonce);
     try {
       amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
       if (+allowance < +amount) {
-        store.dispatch('main/setStatusText', 'A pproving');
+        store.dispatch('main/setStatusText', 'Approving');
         showToast('Swapping', 'Approving...', 'success');
         await instance.approve(bridgeAddress, amount);
         showToast('Swapping', 'Approving done', 'success');
@@ -529,7 +530,7 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
 
 export const goToChain = async (chain) => {
   if (chain === 'undefined') {
-    showToast('Error connect to Metamask', `${e.message}`, 'danger');
+    showToast('Error connect to Metamask', 'Wrong chain ID', 'danger');
   }
   if (chain === 'ETH') {
     if (process.env.PROD === 'false') {
