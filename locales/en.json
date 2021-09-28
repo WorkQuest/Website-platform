@@ -832,6 +832,8 @@
     "error": "Error!"
   },
   "modals": {
+    "redeemSuccess": "Redeem success!",
+    "redeemFail": "Redeem fail",
     "chatCreate": {
       "title": "Create group chat",
       "desc": "Create name of group chat and choose people from you chat list",
