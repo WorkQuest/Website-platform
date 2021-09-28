@@ -493,7 +493,7 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
     // }
   } if (process.env.PROD === 'false') {
     if (chain === 'ETH') {
-      tokenAddress = process.env.WQT_TOKEN;
+      tokenAddress = process.env.NEW_WQT_TOKEN;
       exchangeAddress = process.env.EXCHANGE_ADDRESS_RINKEBY;
       bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
     } else {

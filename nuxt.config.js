@@ -94,6 +94,7 @@ export default {
     GMAPKEY: process.env.GMAPKEY,
     PROD: process.env.PROD,
     WQT_TOKEN: process.env.WQT_TOKEN,
+    NEW_WQT_TOKEN: process.env.NEW_WQT_TOKEN,
     LP_TOKEN: process.env.LP_TOKEN,
     STAKING_ADDRESS: process.env.STAKING_ADDRESS,
     SECRET_SUMSUB: process.env.SECRET_SUMSUB,
