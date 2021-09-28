@@ -131,7 +131,7 @@ export const initWeb3 = async () => {
         web3.eth.getCoinbase(),
         web3.eth.net.getId(),
       ]);
-      if (process.env.PROD === 'true' && (+chainId !== 1)) {
+      if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
         return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
       }
       if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
@@ -170,7 +170,6 @@ let contractInstance;
 let allowance;
 let form;
 let amount;
-let exchangeAddress;
 let tokenAddress;
 let bridgeAddress;
 let nonce;
@@ -461,44 +460,40 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
   form = 10 ** _decimals;
   amount = Math.floor(_amount * form) / form;
   if (process.env.PROD === 'true') {
-    // if (chain === 'ETH') {
-    //   tokenAddress = process.env.WQT_TOKEN;
-    //   exchangeAddress = process.env.EXCHANGE_ADDRESS_RINKEBY;
-    //   bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
-    // } else {
-    //   tokenAddress = process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET;
-    //   exchangeAddress = process.env.EXCHANGE_ADDRESS_BSCTESTNET;
-    //   bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
-    // }
-    // instance = await createInstance(abi.ERC20, tokenAddress);
-    // contractInstance = await createInstance(abi.WQBridge, bridgeAddress);
-    // allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
-    // nonce = await web3.eth.getTransactionCount(userAddress);
-    // try {
-    //   amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
-    //   if (+allowance < +amount) {
-    //     store.dispatch('main/setStatusText', 'Approving');
-    //     showToast('Swapping', 'Approving...', 'success');
-    //     await instance.approve(bridgeAddress, amount);
-    //     showToast('Swapping', 'Approving done', 'success');
-    //   }
-    //   showToast('Swapping', 'Swapping...', 'success');
-    //   store.dispatch('main/setStatusText', 'Swapping');
-    //   await contractInstance.swap(nonce, chainTo, amount, recipient, symbol);
-    //   showToast('Swapping', 'Swapping done', 'success');
-    //   return '';
-    // } catch (e) {
-    //   showToast('Swapping error', `${e.message}`, 'danger');
-    //   return error(500, 'stake error', e);
-    // }
+    if (chain === 'ETH') {
+      tokenAddress = process.env.MAINNET_ETH_WQT_TOKEN;
+      bridgeAddress = process.env.MAINNET_ETH_BRIDGE;
+    } else {
+      tokenAddress = process.env.MAINNET_BSC_WQT_TOKEN;
+      bridgeAddress = process.env.MAINNET_BSC_BRIDGE;
+    }
+    instance = await createInstance(abi.ERC20, tokenAddress);
+    contractInstance = await createInstance(abi.MainNetWQBridge, bridgeAddress);
+    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
+    nonce = await web3.eth.getTransactionCount(userAddress);
+    try {
+      amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+      if (+allowance < +amount) {
+        store.dispatch('main/setStatusText', 'Approving');
+        showToast('Swapping', 'Approving...', 'success');
+        await instance.approve(bridgeAddress, amount);
+        showToast('Swapping', 'Approving done', 'success');
+      }
+      showToast('Swapping', 'Swapping...', 'success');
+      store.dispatch('main/setStatusText', 'Swapping');
+      await contractInstance.swap(nonce, chainTo, amount, recipient, symbol);
+      showToast('Swapping', 'Swapping done', 'success');
+      return '';
+    } catch (e) {
+      showToast('Swapping error', `${e.message}`, 'danger');
+      return error(500, 'stake error', e);
+    }
   } if (process.env.PROD === 'false') {
     if (chain === 'ETH') {
       tokenAddress = process.env.NEW_WQT_TOKEN;
-      exchangeAddress = process.env.EXCHANGE_ADDRESS_RINKEBY;
       bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
     } else {
       tokenAddress = process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET;
-      exchangeAddress = process.env.EXCHANGE_ADDRESS_BSCTESTNET;
       bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
     }
     console.log('tokenAddress', tokenAddress);
@@ -546,7 +541,7 @@ export const goToChain = async (chain) => {
     if (process.env.PROD === 'true') {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x188C' }],
+        params: [{ chainId: '0x1' }],
       });
     }
   } else {
@@ -559,7 +554,7 @@ export const goToChain = async (chain) => {
     if (process.env.PROD === 'true') {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x89' }],
+        params: [{ chainId: '0x38' }],
       });
     }
   }
