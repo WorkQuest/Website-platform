@@ -563,16 +563,16 @@ export const goToChain = async (chain) => {
 export const redeemSwap = async (props) => {
   const { signData, chainId } = props;
   if (process.env.PROD === 'true') {
-    // if (chainId !== 2) {
-    //   bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
-    // } else {
-    //   bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
-    // }
-    // try {
-    //   return await sendTransaction('redeem', abi.WQBridge, bridgeAddress, signData, signData[3]);
-    // } catch (err) {
-    //   return error(500, 'redeem error', err);
-    // }
+    if (chainId !== 2) {
+      bridgeAddress = process.env.MAINNET_ETH_BRIDGE;
+    } else {
+      bridgeAddress = process.env.MAINNET_BSC_BRIDGE;
+    }
+    try {
+      return await sendTransaction('redeem', abi.MainNetWQBridge, bridgeAddress, signData, signData[3]);
+    } catch (err) {
+      return error(500, 'redeem error', err);
+    }
   } if (process.env.PROD === 'false') {
     if (chainId !== 2) {
       bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;

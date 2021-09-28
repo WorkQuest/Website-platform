@@ -292,10 +292,7 @@ export default {
         signData: data.clearData,
         chainId: data.chainId,
       };
-      console.log(data);
-      console.log(payload);
       await this.connectToMetamask();
-      console.log('isConnected:', this.isConnected);
       const redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
       this.ShowModal({
         key: modals.status,
