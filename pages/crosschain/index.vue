@@ -35,6 +35,7 @@
               src="~assets/img/ui/swap.png"
               alt=""
               class="swap-icon"
+              @click="togglePools()"
             >
             <div>
               <div class="info-block__name_bold">
@@ -291,6 +292,15 @@ export default {
     async swapsTest(address) {
       await this.$store.dispatch('defi/swapsForCrosschain', `${address}&offset=0&limit=10`);
     },
+    togglePools(selInd) {
+      if (this.sourceAddressInd === 0) {
+        this.sourceAddressInd = selInd ? 0 : 1;
+        this.targetAddressInd = selInd ? 1 : 0;
+      } else if (this.sourceAddressInd === 1) {
+        this.sourceAddressInd = selInd ? 1 : 0;
+        this.targetAddressInd = selInd ? 0 : 1;
+      }
+    },
     handleChangeTarget(selInd) {
       if (selInd === this.sourceAddressInd) {
         this.sourceAddressInd = selInd ? 0 : 1;
@@ -325,6 +335,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.swap-icon {
+  transition: .3s ease-in-out;
+  &:hover {
+    filter: drop-shadow(0 0 3px rgba(72, 72, 72, 0.5));
+    cursor: pointer;
+  }
+}
 .crosschain-page {
   background: linear-gradient(to bottom, #103D7C 420px, #f6f8fa 420px);
   display: flex;
