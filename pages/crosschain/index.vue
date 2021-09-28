@@ -292,11 +292,11 @@ export default {
         signData: data.clearData,
         chainId: data.chainId,
       };
-      const { ok } = await this.$store.dispatch('web3/redeemSwap', payload);
+      const redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
       this.ShowModal({
         key: modals.status,
-        img: ok ? require('~/assets/img/ui/success.svg') : require('~/assets/img/ui/warning.svg'),
-        title: ok ? this.$t('modals.redeemSuccess') : this.$t('modals.redeemFail'),
+        img: redeemObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
+        title: redeemObj.code === 500 ? this.$t('modals.redeemFail') : this.$t('modals.redeemSuccess'),
         subtitle: '',
       });
       this.SetLoader(false);
