@@ -152,7 +152,10 @@
                 </button>
               </div>
             </div>
-            <div class="header__right">
+            <div
+              class="header__right"
+              :class="Object.keys(userData).length !== 0 ? (userRole === 'worker' ? 'header__right_employee' : 'header__right_employer') : 'header__right_guest'"
+            >
               <button
                 class="header__button header__button_locale"
                 @click="showLocale()"
@@ -1700,9 +1703,19 @@ export default {
     grid-gap: 25px;
   }
   &__right {
-    display: flex;
     grid-gap: 10px;
     align-items: center;
+    &_guest {
+      display: flex;
+    }
+    &_employer {
+      display: grid;
+      grid-template-columns: repeat(5, auto);
+    }
+    &_employee {
+      display: grid;
+      grid-template-columns: repeat(4, auto);
+    }
   }
   &__btn {
     min-width: 163px;
