@@ -274,7 +274,6 @@ export default {
         localStorage.setItem('metamaskStatus', 'notInstalled');
         this.ShowModal({
           key: modals.status,
-          img: '~assets/img/ui/cardHasBeenAdded.svg',
           title: 'Please install Metamask!',
           subtitle: 'Please click install...',
           button: 'Install',
