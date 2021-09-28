@@ -184,6 +184,7 @@ export default {
     return await swapWithBridge(_decimals, _amount, chain, chainTo, userAddress, recipient, symbol);
   },
   async goToChain({ commit }, { chain }) {
+    commit('setIsConnected', false);
     return await goToChain(chain);
   },
   async redeemSwap({ commit }, payload) {

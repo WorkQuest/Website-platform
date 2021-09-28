@@ -477,7 +477,7 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
     // try {
     //   amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
     //   if (+allowance < +amount) {
-    //     store.dispatch('main/setStatusText', 'A pproving');
+    //     store.dispatch('main/setStatusText', 'Approving');
     //     showToast('Swapping', 'Approving...', 'success');
     //     await instance.approve(bridgeAddress, amount);
     //     showToast('Swapping', 'Approving done', 'success');

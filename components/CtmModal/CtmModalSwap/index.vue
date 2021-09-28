@@ -89,6 +89,7 @@ export default {
     ...mapGetters({
       account: 'web3/getAccount',
       options: 'modals/getOptions',
+      isConnected: 'web3/isConnected',
     }),
     tokens() {
       return [
@@ -135,6 +136,8 @@ export default {
       }
     },
     async showSwapInfoModal() {
+      this.SetLoader(true);
+      this.connectToMetamask();
       this.ShowModal({
         key: modals.swapInfo,
         crosschain: `${this.fromToken} > ${this.toToken}`,
@@ -148,6 +151,12 @@ export default {
         worknetFee: '0,5 WQT',
         binanceFee: '0,0009 BNB',
       });
+      this.SetLoader(false);
+    },
+    connectToMetamask() {
+      if (!this.isConnected) {
+        this.$store.dispatch('web3/connect');
+      }
     },
     showGiveDeposit() {
       this.ShowModal({
