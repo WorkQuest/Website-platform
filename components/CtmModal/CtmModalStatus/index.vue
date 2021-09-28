@@ -5,7 +5,14 @@
   >
     <div class="status__content">
       <img
+        v-if="options.img"
         :src="options.img"
+        alt="Status"
+        class="content__picture"
+      >
+      <img
+        v-if="options.type === 'installMetamask'"
+        src="~/assets/img/ui/warning.svg"
         alt="Status"
         class="content__picture"
       >
