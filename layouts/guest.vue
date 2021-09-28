@@ -308,6 +308,7 @@
                 </transition>
               </button>
               <div
+                v-if="Object.keys(userData).length !== 0"
                 class="ctm-menu__toggle"
                 @click="toggleMobileMenu()"
               >
@@ -325,6 +326,7 @@
                 </button>
               </div>
               <button
+                v-if="Object.keys(userData).length !== 0"
                 class="header__button header__button_profile"
                 @click="showProfile()"
               >
@@ -1698,8 +1700,7 @@ export default {
     grid-gap: 25px;
   }
   &__right {
-    display: grid;
-    grid-template-columns: repeat(5, auto);
+    display: flex;
     grid-gap: 10px;
     align-items: center;
   }
