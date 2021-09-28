@@ -493,7 +493,7 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
     // }
   } if (process.env.PROD === 'false') {
     if (chain === 'ETH') {
-      tokenAddress = process.env.WQT_TOKEN;
+      tokenAddress = process.env.TOKEN_WQT_ADDRESS_RINKEBY;
       exchangeAddress = process.env.EXCHANGE_ADDRESS_RINKEBY;
       bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
     } else {
@@ -501,12 +501,10 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
       exchangeAddress = process.env.EXCHANGE_ADDRESS_BSCTESTNET;
       bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
     }
-    console.log(tokenAddress, exchangeAddress, bridgeAddress);
     instance = await createInstance(abi.ERC20, tokenAddress);
     contractInstance = await createInstance(abi.WQBridge, bridgeAddress);
     allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
     nonce = await web3.eth.getTransactionCount(userAddress);
-    console.log('instance', instance, 'contractInstance', contractInstance, 'allowance', allowance, 'nonce', nonce);
     try {
       amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
       if (+allowance < +amount) {
