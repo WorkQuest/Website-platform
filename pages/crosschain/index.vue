@@ -294,14 +294,15 @@ export default {
       };
       console.log(data);
       console.log(payload);
+      await this.connectToMetamask();
       console.log('isConnected:', this.isConnected);
-      // const redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
-      // this.ShowModal({
-      //   key: modals.status,
-      //   img: redeemObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
-      //   title: redeemObj.code === 500 ? this.$t('modals.redeemFail') : this.$t('modals.redeemSuccess'),
-      //   subtitle: '',
-      // });
+      const redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
+      this.ShowModal({
+        key: modals.status,
+        img: redeemObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
+        title: redeemObj.code === 500 ? this.$t('modals.redeemFail') : this.$t('modals.redeemSuccess'),
+        subtitle: '',
+      });
       this.SetLoader(false);
     },
     showToast(title, text, variant) {
