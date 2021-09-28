@@ -353,6 +353,9 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
 };
 
 export const goToChain = async (chain) => {
+  if (chain === 'undefined') {
+    showToast('Error connect to Metamask', `${e.message}`, 'danger');
+  }
   if (chain === 'ETH') {
     if (process.env.PROD === 'false') {
       await window.ethereum.request({

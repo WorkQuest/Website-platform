@@ -207,10 +207,12 @@ export default {
   &__items {
     @include box;
     width: 100%;
+    flex-basis: 100%;
     position: absolute;
     background: #FFFFFF;
     top: calc(100% + 4px);
-    display: grid;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     grid-gap: 15px;
@@ -224,6 +226,7 @@ export default {
   }
   &__item {
     text-align: left;
+    flex-basis: 100%;
     width: 100%;
     height: 100%;
     color: $black500;

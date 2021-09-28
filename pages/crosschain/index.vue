@@ -256,8 +256,8 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    await this.connectToMetamask();
     await this.swapsTest(this.purseData);
+    await this.checkMetamaskStatus();
     this.SetLoader(false);
   },
   methods: {
@@ -266,10 +266,24 @@ export default {
         key: modals.copiedSuccess,
       });
     },
+    async checkMetamaskStatus() {
+      if (typeof window.ethereum === 'undefined') {
+        this.ShowModal({
+          key: modals.status,
+          img: '~assets/img/ui/cardHasBeenAdded.svg',
+          title: 'Please install Metamask!',
+          subtitle: 'Please click install...',
+          button: 'Install',
+          type: 'installMetamask',
+        });
+      } else {
+        await this.connectToMetamask();
+      }
+    },
     async redeemAction(data) {
       this.SetLoader(true);
       await this.$store.dispatch('web3/goToChain', { chain: data.chain });
-      await this.connectToMetamask();
+      await this.checkMetamaskStatus();
       const payload = {
         signData: data.clearData,
         chainId: data.chainId,
@@ -287,7 +301,9 @@ export default {
       this.$store.dispatch('defi/showToast', { title, text, variant });
     },
     connectToMetamask() {
-      this.$store.dispatch('web3/connect');
+      if (!this.isConnected) {
+        this.$store.dispatch('web3/connect');
+      }
     },
     async swapsTest(address) {
       await this.$store.dispatch('defi/swapsForCrosschain', `${address}&offset=0&limit=10`);
@@ -322,7 +338,7 @@ export default {
         chain = 'BNB';
       }
       await this.$store.dispatch('web3/goToChain', { chain });
-      await this.connectToMetamask();
+      await this.checkMetamaskStatus();
       await this.swapsTest();
       this.ShowModal({
         key: modals.swap,
