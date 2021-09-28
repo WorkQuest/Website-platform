@@ -79,7 +79,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      accountData: 'web3/getAccountData',
+      tokensData: 'web3/getBSCTokensData',
       options: 'modals/getOptions',
       statusBusy: 'web3/getStatusBusy',
     }),
@@ -88,31 +88,29 @@ export default {
     oldTokens() {
       this.newTokens = this.oldTokens;
     },
-    accountData() {
-      this.initBalanceAndCurrency();
+    async tokensData() {
+      await this.initBalanceAndCurrency();
     },
   },
-  mounted() {
-    if (this.accountData.userPurse !== undefined) {
-      this.initBalanceAndCurrency();
-    }
+  async mounted() {
+    await this.$store.dispatch('web3/initTokensData');
   },
   methods: {
     hide() {
       this.CloseModal();
     },
     maxBalance() {
-      this.oldTokens = this.accountData.userPurse.stakeBalance;
+      this.oldTokens = this.tokensData.userPurse.oldTokenBalance;
     },
     initBalanceAndCurrency() {
-      this.balance = parseInt((this.accountData.userPurse.stakeBalance) * 10000, 10) / 10000;
-      this.currency = this.accountData.userPurse.stakeSymbol;
+      this.balance = parseInt((this.tokensData.userPurse.oldTokenBalance) * 10000, 10) / 10000;
+      this.currency = this.tokensData.userPurse.oldTokenSymbol;
     },
     async initSwap() {
       this.SetLoader(true);
       this.hide();
       await this.$store.dispatch('web3/swap', {
-        decimals: this.accountData.decimals.stakeDecimal,
+        decimals: this.tokensData.decimals.oldTokenDecimal,
         amount: this.oldTokens,
       });
       await this.$store.dispatch('web3/initTokensData');
@@ -126,7 +124,7 @@ export default {
 .max {
   &__button {
     margin-right: 10px !important;
-    background-color: transparent !important;
+    background: #f3f7fa !important;
   }
 }
 .claim {

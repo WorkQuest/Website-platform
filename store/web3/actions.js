@@ -131,7 +131,7 @@ export default {
         newTokenDecimal,
       },
     };
-    commit('setAccountData', payload);
+    commit('setBSCTokensData', payload);
   },
 
   async getTokensData({ commit }, { rewardDecimal, stakeDecimal }) {

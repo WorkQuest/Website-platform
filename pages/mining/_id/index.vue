@@ -536,7 +536,6 @@ export default {
     },
     async tokensDataUpdate() {
       const action = this.miningPoolId === 'ETH' ? 'web3/getTokensData' : 'web3/getTokensDataBSC';
-
       const tokensData = await this.$store.dispatch(action, { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
