@@ -10,4 +10,5 @@ export default {
   getLPTokenPrice: (state) => state.tokenLPAmount || '',
   getStatusBusy: (state) => state.busy,
   getPurseData: (state) => state.purseData,
+  getBSCTokensData: (state) => state.tokensBSC,
 };

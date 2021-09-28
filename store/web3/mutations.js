@@ -26,6 +26,9 @@ export default {
   setAccount(state, payload) {
     state.account = payload;
   },
+  setBSCTokensData(state, payload) {
+    state.tokensBSC = payload;
+  },
   clearAccount(state) {
     state.account = {};
   },
