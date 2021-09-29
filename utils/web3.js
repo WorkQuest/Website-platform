@@ -2,6 +2,7 @@ import Web3 from 'web3';
 import Web4 from '@cryptonteam/web4';
 import BigNumber from 'bignumber.js';
 import * as abi from '~/abi/abi';
+import { MainNetWQTExchange } from '~/abi/abi';
 
 let web3 = null;
 let web4 = null;
@@ -269,14 +270,14 @@ export const swap = async (_decimals, _amount) => {
   amount = Math.floor(_amount * form) / form;
   if (process.env.PROD === 'true') {
     instance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
-    contractInstance = await createInstance(abi.WQTExchange, process.env.EXCHANGE_ADDRESS_BSCTESTNET);
+    contractInstance = await createInstance(abi.MainNetWQTExchange, process.env.EXCHANGE_ADDRESS_BSCMAINNET);
     allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccount().address, process.env.EXCHANGE_ADDRESS_BSCTESTNET])).toString();
     try {
       amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
       if (+allowance < +amount) {
         store.dispatch('main/setStatusText', 'Approving');
         showToast('Swapping', 'Approving...', 'success');
-        await instance.approve(process.env.EXCHANGE_ADDRESS_BSCTESTNET, amount);
+        await instance.approve(process.env.EXCHANGE_ADDRESS_BSCMAINNET, amount);
         showToast('Swapping', 'Approving done', 'success');
       }
       showToast('Swapping', 'Swapping...', 'success');
