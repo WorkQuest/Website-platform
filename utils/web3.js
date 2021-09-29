@@ -340,6 +340,7 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
     contractInstance = await createInstance(abi.WQBridge, bridgeAddress);
     allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
     nonce = await web3.eth.getTransactionCount(userAddress);
+    let swapData = '';
     try {
       amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
       if (+allowance < +amount) {
@@ -350,9 +351,9 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
       }
       showToast('Swapping', 'Swapping...', 'success');
       store.dispatch('main/setStatusText', 'Swapping');
-      await contractInstance.swap(nonce, chainTo, amount, recipient, symbol);
+      swapData = await contractInstance.swap(nonce, chainTo, amount, recipient, symbol);
       showToast('Swapping', 'Swapping done', 'success');
-      return '';
+      return swapData;
     } catch (e) {
       showToast('Swapping error', `${e.message}`, 'danger');
       return error(500, 'stake error', e);

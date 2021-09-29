@@ -24,6 +24,12 @@
           {{ options.subtitle }}
         </span>
       </div>
+      <a
+        v-if="options.txHash"
+        :href="link"
+      >
+        {{ $t('modals.transactionCheck') }}
+      </a>
       <base-btn
         v-if="options.type === 'installMetamask'"
         class="status__action"
@@ -70,12 +76,20 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'ModalStatus',
   data() {
-    return {};
+    return {
+      link: '',
+    };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+  },
+  async mounted() {
+    this.initLink();
+    if (this.options.recipient) {
+      await this.$store.dispatch('defi/swapsForCrosschain', this.options.recipient);
+    }
   },
   methods: {
     installMetamask() {
@@ -84,6 +98,21 @@ export default {
     hide() {
       if (this.options.path) this.$router.push(this.options.path);
       this.CloseModal();
+    },
+    initLink() {
+      if (process.env.PROD === 'false') {
+        if (this.options.chainTo === 3) {
+          this.link = `https://rinkeby.etherscan.io/tx/${this.options.txHash}`;
+        } else {
+          this.link = `https://testnet.bscscan.com/tx/${this.options.txHash}`;
+        }
+      } else if (process.env.PROD === 'true') {
+        if (this.options.chainTo === 3) {
+          this.link = `https://etherscan.io/tx/${this.options.txHash}`;
+        } else {
+          this.link = `https://bscscan.com/tx/${this.options.txHash}`;
+        }
+      }
     },
   },
 };

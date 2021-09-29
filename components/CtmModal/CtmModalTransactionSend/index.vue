@@ -36,11 +36,6 @@ export default {
       options: 'modals/getOptions',
     }),
   },
-  async mounted() {
-    if (this.options.recipient) {
-      await this.$store.dispatch('defi/swapsForCrosschain', this.options.recipient);
-    }
-  },
   methods: {
     hide() {
       this.CloseModal();
