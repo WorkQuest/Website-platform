@@ -1143,7 +1143,8 @@
       "disputes": "Disputes",
       "instruments": "Instruments",
       "DeFi": "DeFi functionality",
-      "logout": "Logout"
+      "logout": "Logout",
+      "login": "Login"
     },
     "locals": {
       "en": "EN",
@@ -1162,6 +1163,7 @@
       "invite": "Invites you to complete the quest"
     },
     "menu": {
+      "unauthorized": "Not logged",
       "instruments": "Instruments",
       "crosschain": {
         "title": "WorkQuest Bridge",
