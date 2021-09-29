@@ -60,7 +60,13 @@ export default {
   },
 
   async initContract({ commit }) {
-    const stakingInfo = await fetchContractData('getStakingInfo', abi.StakingWQ, process.env.STAKING_ADDRESS);
+    const miningPoolId = localStorage.getItem('miningPoolId');
+    let stakingInfo;
+    if (miningPoolId === 'ETH') {
+      stakingInfo = await fetchContractData('getStakingInfo', abi.StakingWQ, process.env.STAKING_ADDRESS);
+    } else {
+      stakingInfo = await fetchContractData('getStakingInfo', abi.StakingWQ, process.env.STAKING_ADDRESS_BSC);
+    }
     const { stakeTokenAddress } = stakingInfo;
     const { rewardTokenAddress } = stakingInfo;
     const stakeDecimal = await fetchContractData('decimals', abi.ERC20, stakeTokenAddress);
@@ -72,31 +78,6 @@ export default {
     const payload = {
       userPurse: {
         address: getAccount().address,
-        stakeBalance: new BigNumber(stakeBalance).shiftedBy(-stakeDecimal).toString(),
-        stakeSymbol,
-        rewardBalance: new BigNumber(rewardBalance).shiftedBy(-rewardDecimal).toString(),
-        rewardSymbol,
-      },
-      decimals: {
-        stakeDecimal,
-        rewardDecimal,
-      },
-    };
-    commit('setAccountData', payload);
-  },
-
-  async initContractBSC({ commit }) {
-    const stakingInfo = await fetchContractData('getStakingInfo', abi.StakingWQ, process.env.STAKING_ADDRESS_BSC);
-    const { stakeTokenAddress } = stakingInfo;
-    const { rewardTokenAddress } = stakingInfo;
-    const stakeDecimal = await fetchContractData('decimals', abi.ERC20, stakeTokenAddress);
-    const stakeSymbol = await fetchContractData('symbol', abi.ERC20, stakeTokenAddress);
-    const rewardDecimal = await fetchContractData('decimals', abi.ERC20, rewardTokenAddress);
-    const rewardSymbol = await fetchContractData('symbol', abi.ERC20, rewardTokenAddress);
-    const stakeBalance = await fetchContractData('balanceOf', abi.ERC20, stakeTokenAddress, [getAccount().address]);
-    const rewardBalance = await fetchContractData('balanceOf', abi.ERC20, rewardTokenAddress, [getAccount().address]);
-    const payload = {
-      userPurse: {
         stakeBalance: new BigNumber(stakeBalance).shiftedBy(-stakeDecimal).toString(),
         stakeSymbol,
         rewardBalance: new BigNumber(rewardBalance).shiftedBy(-rewardDecimal).toString(),
@@ -135,18 +116,13 @@ export default {
   },
 
   async getTokensData({ commit }, { rewardDecimal, stakeDecimal }) {
-    const userInfo = await fetchContractData('getInfoByAddress', abi.StakingWQ, process.env.STAKING_ADDRESS, [getAccount().address]);
-    const payload = {
-      balanceTokenAmount: new BigNumber(userInfo._balance).shiftedBy(-stakeDecimal).toString(),
-      stakeTokenAmount: new BigNumber(userInfo.staked_).shiftedBy(-stakeDecimal).toString(),
-      rewardTokenAmount: new BigNumber(userInfo.claim_).shiftedBy(-rewardDecimal).toString(),
-    };
-    commit('setStakeAndRewardData', payload);
-    return payload;
-  },
-
-  async getTokensDataBSC({ commit }, { rewardDecimal, stakeDecimal }) {
-    const userInfo = await fetchContractData('getInfoByAddress', abi.StakingWQ, process.env.STAKING_ADDRESS_BSC, [getAccount().address]);
+    const miningPoolId = localStorage.getItem('miningPoolId');
+    let userInfo;
+    if (miningPoolId === 'ETH') {
+      userInfo = await fetchContractData('getInfoByAddress', abi.StakingWQ, process.env.STAKING_ADDRESS, [getAccount().address]);
+    } else {
+      userInfo = await fetchContractData('getInfoByAddress', abi.StakingWQ, process.env.STAKING_ADDRESS_BSC, [getAccount().address]);
+    }
     const payload = {
       balanceTokenAmount: new BigNumber(userInfo._balance).shiftedBy(-stakeDecimal).toString(),
       stakeTokenAmount: new BigNumber(userInfo.staked_).shiftedBy(-stakeDecimal).toString(),
@@ -159,21 +135,11 @@ export default {
   async stake({ commit }, { decimals, amount }) {
     return await staking(decimals, amount);
   },
-  async stakeBSC({ commit }, { decimals, amount }) {
-    return await stakingBSC(decimals, amount);
-  },
   async unstake({ commit }, { decimals, amount }) {
     return await unStaking(decimals, amount);
   },
-  async unstakeBSC({ commit }, { decimals, amount }) {
-    return await unStakingBSC(decimals, amount);
-  },
-
   async claimRewards({ commit }) {
     return await claimRewards();
-  },
-  async claimRewardsBSC({ commit }) {
-    return await claimRewardsBSC();
   },
   async swap({ commit }, { decimals, amount }) {
     return await swap(decimals, amount);
@@ -184,7 +150,7 @@ export default {
     return await swapWithBridge(_decimals, _amount, chain, chainTo, userAddress, recipient, symbol);
   },
   async goToChain({ commit }, { chain }) {
-    commit('setIsConnected', false);
+    // commit('setIsConnected', false);
     return await goToChain(chain);
   },
   async redeemSwap({ commit }, payload) {

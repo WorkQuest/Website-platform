@@ -539,8 +539,7 @@ export default {
       return style;
     },
     async tokensDataUpdate() {
-      const action = this.miningPoolId === 'ETH' ? 'web3/getTokensData' : 'web3/getTokensDataBSC';
-      const tokensData = await this.$store.dispatch(action, { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
+      const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
     },
@@ -549,18 +548,14 @@ export default {
     },
     async claimRewards() {
       this.SetLoader(true);
-      const action = this.miningPoolId === 'ETH' ? 'web3/claimRewards' : 'web3/claimRewardsBSC';
-      await this.$store.dispatch(action);
+      await this.$store.dispatch('web3/claimRewards');
       await this.tokensDataUpdate();
       this.SetLoader(false);
     },
     async connectToMetamask() {
       if (!this.isConnected) {
-        let action;
-        action = 'web3/connect';
-        await this.$store.dispatch(action);
-        action = this.miningPoolId === 'ETH' ? 'web3/initContract' : 'web3/initContractBSC';
-        await this.$store.dispatch(action);
+        await this.$store.dispatch('web3/connect');
+        await this.$store.dispatch('web3/initContract');
         await this.tokensDataUpdate();
       }
     },
