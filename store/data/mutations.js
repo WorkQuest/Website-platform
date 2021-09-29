@@ -10,6 +10,9 @@ export default {
     state.messages.count = count;
     state.messages.chatId = chatId;
   },
+  addMessageToList(state, message) {
+    state.messages.list.push(message);
+  },
   updateConnectionsStatus(state, { name, value }) {
     state.connections[name] = value;
   },

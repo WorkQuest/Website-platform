@@ -19,6 +19,7 @@
           <ChatMenu />
         </div>
         <div
+          ref="HandleScrollContainer"
           class="chat-container__scroll-cont"
           @scroll="handleScroll($event)"
         >
@@ -76,6 +77,17 @@
           </div>
         </div>
         <div class="chat-container__footer footer">
+          <div
+            v-if="isScrollBtnVis"
+            class="footer__scroll-btn"
+            @click="scrollToBottom"
+          >
+            <img
+              src="~assets/img/ui/arrow-down.svg"
+              alt=""
+              class="footer__scroll-svg"
+            >
+          </div>
           <div class="footer__controls">
             <div class="chat-container__file-cont">
               <ValidationProvider
@@ -134,6 +146,7 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
+import messages from '~/components/app/pages/common/messages';
 
 export default {
   name: 'Messages',
@@ -150,21 +163,40 @@ export default {
         limit: 20,
       },
       today: moment(new Date()),
+      minScrollDifference: 0,
+      isScrollBtnVis: false,
     };
+  },
+  watch: {
+    getMessages() {
+      console.log(this.messages.list);
+    },
   },
   computed: {
     ...mapGetters({
       messages: 'data/getMessages',
       userData: 'user/getUserData',
+      lastMessageId: 'data/getLastMessageId',
     }),
   },
   async mounted() {
+    this.$watch(
+      'lastMessageId',
+      (newVal, oldVal) => {
+        if (!this.isScrollBtnVis) this.scrollToBottom();
+      },
+      { immediate: true },
+    );
+
     this.SetLoader(true);
     await this.getMessages();
     this.scrollToBottom();
     this.SetLoader(false);
     const isChatNotificationShown = !!localStorage.getItem('isChatNotificationShown');
     if (!isChatNotificationShown) this.showNoticeModal();
+  },
+  destroyed() {
+    this.$store.commit('data/setMessagesList', { messages: [], count: 0, chatId: '' });
   },
   methods: {
     async getFiles(ev, validate) {
@@ -198,7 +230,9 @@ export default {
       }
     },
     handleScroll(ev) {
-      // console.log(ev.target.scrollTop, ev.target.scrollHeight);
+      const { minScrollDifference } = this;
+
+      this.isScrollBtnVis = minScrollDifference > 500 && minScrollDifference > ev.target.scrollTop;
     },
     async getMessages() {
       const payload = {
@@ -226,7 +260,11 @@ export default {
       return momentDate.format(`${format}HH:mm`);
     },
     scrollToBottom() {
-      setTimeout(() => this.$refs.ScrollContainer.scrollIntoView(false), 100);
+      setTimeout(() => {
+        const { HandleScrollContainer, ScrollContainer } = this.$refs;
+        ScrollContainer.scrollIntoView(false);
+        this.minScrollDifference = HandleScrollContainer.scrollHeight - HandleScrollContainer.scrollTop;
+      }, 100);
     },
     showNoticeModal() {
       this.ShowModal({
@@ -240,12 +278,13 @@ export default {
       this.$router.push('/messages');
     },
     async handleSendMessage() {
-      const { messageText, files } = this;
+      const { messageText, files, isScrollBtnVis } = this;
       if (!messageText) return;
       const medias = files.map((file) => file.id);
+      const text = messageText;
       const payload = {
         config: {
-          text: messageText,
+          text,
           medias,
         },
         chatId: this.$route.params.id,
@@ -253,8 +292,13 @@ export default {
       this.messageText = '';
       try {
         await this.$store.dispatch('data/handleSendMessage', payload);
-        await this.getMessages();
-        this.scrollToBottom();
+        const newMessage = {
+          medias,
+          text,
+          itsMe: true,
+          createdAt: new Date(),
+        };
+        this.$store.commit('data/addMessageToList', newMessage);
       } catch (e) {
         console.log(e);
       }
@@ -398,6 +442,34 @@ export default {
 }
 
 .footer {
+  position: relative;
+
+  &__scroll-btn {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 1px solid #E9EDF2;
+    right: 20px;
+    top: -50px;
+    opacity: .5;
+    transition: .3s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #F7F8FA;
+      opacity: .8;
+      box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.3);
+    }
+  }
+  &__scroll-svg {
+    height: 20px;
+    width: 20px;
+  }
   &__controls {
     height: 70px;
     padding: 0 15px;

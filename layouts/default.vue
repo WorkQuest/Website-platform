@@ -1110,31 +1110,17 @@ export default {
   },
   methods: {
     async initWSListeners() {
-      console.log(this.$route);
       const { chatConnection, notifsConnection } = this.connections;
       if (!chatConnection) {
         await this.$wsChat.connect(this.token);
-        this.$wsChat.subscribe('/notifications/chat', async (chatEv) => {
-          console.log(chatEv);
-          const { name, params } = this.$route;
-          if (name === 'messages') {
-            this.$store.dispatch('data/getChatsList', {
+        this.$wsChat.subscribe('/notifications/chat', async ({ data, action }) => {
+          if (this.$route.name === 'messages') {
+            await this.$store.dispatch('data/getChatsList', {
               limit: 10,
               offset: 0,
             });
-          } else if (name === 'messages-id' && params.id === this.chatId) {
-            const payload = {
-              params: {
-                offset: 0,
-                limit: 20,
-              },
-              chatId: this.chatId,
-            };
-            try {
-              await this.$store.dispatch('data/getMessagesList', payload);
-            } catch (e) {
-              console.log(e);
-            }
+          } else if (action === 'newMessage' && data.chatId === this.chatId) {
+            this.$store.commit('data/addMessageToList', data);
           }
         });
       }
