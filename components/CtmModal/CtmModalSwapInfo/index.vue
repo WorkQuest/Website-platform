@@ -49,6 +49,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      isConnected: 'web3/isConnected',
     }),
     getCardNumber() {
       return (this.options.cardNumber);
@@ -57,7 +58,7 @@ export default {
       return [
         {
           title: this.$t('modals.crosschain'),
-          subtitle: this.$t('modals.crosschainText'),
+          subtitle: this.options.crosschain,
         },
         {
           title: this.$t('modals.amount'),
@@ -71,14 +72,14 @@ export default {
           title: this.$t('modals.recepientAddress'),
           subtitle: this.options.recepient,
         },
-        {
-          title: this.$t('modals.worknetFee'),
-          subtitle: this.options.worknetFee,
-        },
-        {
-          title: this.$t('modals.binanceFee'),
-          subtitle: this.options.binanceFee,
-        },
+        // {
+        //   title: this.$t('modals.worknetFee'),
+        //   subtitle: this.options.worknetFee,
+        // },
+        // {
+        //   title: this.$t('modals.binanceFee'),
+        //   subtitle: this.options.binanceFee,
+        // },
       ];
     },
   },
@@ -86,12 +87,55 @@ export default {
     hide() {
       this.CloseModal();
     },
-    showTransactionSend() {
-      this.ShowModal({
-        key: modals.transactionSend,
+    async showTransactionSend() {
+      this.SetLoader(true);
+      await this.checkMetamaskStatus();
+      let chainTo = 0;
+      if (this.options.chain === 'ETH') {
+        chainTo = 3;
+      } else {
+        chainTo = 2;
+      }
+      const optionsData = this.options;
+      this.hide();
+      const swapObj = await this.$store.dispatch('web3/swapWithBridge', {
+        _decimals: 18,
+        _amount: optionsData.amountInt,
+        chain: optionsData.chain,
+        chainTo,
+        userAddress: optionsData.senderFull,
+        recipient: optionsData.recepientFull,
+        symbol: 'WQT',
       });
+      this.ShowModal({
+        key: modals.status,
+        img: swapObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
+        title: swapObj.code === 500 ? this.$t('modals.transactionFail') : this.$t('modals.transactionSend'),
+        recipient: optionsData.recepientFull,
+        subtitle: '',
+      });
+      this.SetLoader(false);
     },
-
+    connectToMetamask() {
+      if (!this.isConnected) {
+        this.$store.dispatch('web3/connect');
+      }
+    },
+    async checkMetamaskStatus() {
+      if (typeof window.ethereum === 'undefined') {
+        localStorage.setItem('metamaskStatus', 'notInstalled');
+        this.ShowModal({
+          key: modals.status,
+          title: 'Please install Metamask!',
+          subtitle: 'Please click install...',
+          button: 'Install',
+          type: 'installMetamask',
+        });
+      } else {
+        localStorage.setItem('metamaskStatus', 'installed');
+        await this.connectToMetamask();
+      }
+    },
   },
 };
 </script>

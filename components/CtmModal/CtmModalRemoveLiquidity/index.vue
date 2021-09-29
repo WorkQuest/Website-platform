@@ -16,7 +16,7 @@
               <base-field
                 v-model="withdraw"
                 class="field__body"
-                :placeholder="'1000 WUSD'"
+                :placeholder="'1000 WQT'"
                 rules="required|decimal"
                 :name="$t('modals.withdrawalAmountField')"
               />
@@ -126,8 +126,8 @@ export default {
           value: '25.0256',
         },
         {
-          url: require('~/assets/img/ui/w-logo.svg'),
-          name: this.$t('modals.wusd'),
+          url: require('~/assets/img/ui/wqt-logo.svg'),
+          name: this.$t('modals.wqt'),
           value: '25.0256',
         },
       ];

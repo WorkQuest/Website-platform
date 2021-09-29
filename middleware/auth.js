@@ -10,6 +10,7 @@ export default async function ({ app, redirect, store }) {
       refresh,
       userData,
     };
+
     if (access && refresh) {
       store.commit('user/setTokens', payload);
     }

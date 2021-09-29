@@ -127,10 +127,14 @@
     }
   },
   "meta": {
+    "redeem": "Redeem",
+    "redeemed": "Redeemed",
     "pay": "Pay",
     "skipAndEnd": "Skip and end",
     "cleanUp": "Clean up",
     "close": "Close",
+    "connected": "Connected",
+    "disconnect": "Disconnect wallet",
     "delete": "Delete",
     "back": "Back",
     "ok": "Ok",
@@ -245,6 +249,7 @@
     "title": "Skills"
   },
   "quests": {
+    "rating": "Rating",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
     "quests": "Quests",
@@ -291,10 +296,9 @@
     },
     "runtime": {
       "runtime": "Runtime",
-      "days": "Days",
-      "weeks": "Weeks",
-      "months": "Months",
-      "years": "Years"
+      "urgent": "Urgent",
+      "shortTerm": "Short term",
+      "fixedDelivery": "Fixed delivery"
     },
     "spec": {
       "spec": "Specialization",
@@ -343,6 +347,7 @@
     "period": "Period of time",
     "EstimatedPayment": "Estimated payment:",
     "createAQuest": "Create a quest",
+    "editAQuest": "Edit a quest",
     "activeQuests": "Active quests",
     "completedQuests": "Completed quests",
     "oneTime": "One time",
@@ -358,6 +363,7 @@
     "type": "Type of job",
     "time": "Added time",
     "priority": {
+      "title": "Priority",
       "all": "All priority",
       "low": "Low",
       "normal": "Normal",
@@ -816,13 +822,29 @@
       }
     }
   },
+  "toasts": {
+    "questEdited": "Quest edited!",
+    "questCreated": "Quest created!",
+    "questDeleted": "Quest deleted!",
+    "caseDeleted": "Case deleted!",
+    "caseAdded": "Case added!",
+    "caseEdited": "Case edited!",
+    "error": "Error!"
+  },
   "modals": {
+    "redeemSuccess": "Redeem success!",
+    "redeemFail": "Redeem fail",
     "chatCreate": {
       "title": "Create group chat",
       "desc": "Create name of group chat and choose people from you chat list",
       "participants": "Participants",
       "chatName": "Chat name"
     },
+    "yourRewardBalance": "Your reward balance:",
+    "deletePortfolio": "Are you sure delete portfolio?",
+    "addTitle": "Please add title...",
+    "addDesc": "Please add description...",
+    "editCase": "Edit Case",
     "error": "Error",
     "share": "Share",
     "edit": "Edit",
@@ -925,6 +947,7 @@
     "bodyMessage": "Hello",
     "areYouSure": "Are You Sure?",
     "transactionSend": "Transaction send",
+    "transactionFail": "Transaction fail",
     "cardHasBeenAdded": "Card has been added",
     "deposit": "Receive",
     "numberOfCard": "Card number",
@@ -960,20 +983,20 @@
     "durationDays": "Duration (days)",
     "depositIsOpened": "Deposit is opened",
     "addLiquidity": "Add liquidity",
-    "amountOfWusd": "Amount of WUSD",
+    "amountOfWqt": "Amount of WQT",
     "amountOfEth": "Amount of ETH",
     "amountOfBnb": "Amount of BNB",
     "tip": "Tip:",
     "tipAbout": "When you add liquidity, you will receive pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.",
     "byAddingLiquidityYouWillEarn": "By adding liquidity you'll earn 0.3% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
-    "amountEthPerWusd": "Amount ETH per WUSD",
-    "amountBnbPerWusd": "Amount BNB per WUSD",
+    "amountEthPerWqt": "Amount ETH per WQT",
+    "amountBnbPerWqt": "Amount BNB per WQT",
     "shareOfPool": "Share of pool",
     "removeLiquidity": "Remove liquidity",
     "withdrawalAmount": "Withdrawal amount",
     "exchangeRate": "Exchange rate",
-    "tempForRemove": "1 ETH = ... WUSD",
-    "tempForRemove2": "1 BNB = ... WUSD",
+    "tempForRemove": "1 ETH = ... WQT",
+    "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "Current pool size",
     "yourPoolShare": "Your pool share",
     "eth": "ETH",
@@ -1015,6 +1038,7 @@
     "depositTitle": "Deposit",
     "addYourCard": "You have to add your card to continue",
     "walletCopy": "Wallet number has been copied",
+    "textCopy": "Text has been copied",
     "addingCard": "Adding card",
     "add": "Add",
     "totalFee": "Total fee",
@@ -1055,16 +1079,16 @@
     "wallet": "Wallet",
     "coinpaymebts": "Сoinpaymebts",
     "errorDeleteText": "Do you really want to delete this quest?",
-    "swapTitle": "Crosschain exchange from Worknet to Binance",
+    "swapTitle": "Crosschain exchange",
     "coin": "Coin",
     "recepientBinance": "Recipient binance address",
     "createSwap": "Create swap",
     "swapInfo": "Swap info",
-    "crosschain": "Crosschain",
-    "crosschainText": "Worknet > Binance",
+    "crosschain": "WorkQuest Bridge",
+    "crosschainText": "Eth > Binance",
     "senderAddress": "Sender address",
     "recepientAddress": "Recepient address",
-    "worknetFee": "Worknet fee",
+    "worknetFee": "Eth fee",
     "binanceFee": "Binance fee",
     "welcomeText": "Please, tell us about your skills below",
     "areYouSureText": "",
@@ -1080,14 +1104,14 @@
     "quantityField": "quantity",
     "creditingDepositText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
     "generateField": "generate",
-    "amountOfWusdField": "amount of WUSD",
+    "amountOfWqtField": "amount of WQT",
     "amountOfEthField": "amount of ETH",
     "amountOfBnbField": "amount of BNB",
     "withdrawalAmountField": "withdrawal amount",
-    "removeLiquidityCurrentPoolSize": "1 ETH + 456 WUSD",
-    "removeLiquidityCurrentPoolSize2": "1 BNB + 456 WUSD",
-    "removeLiquidityYourPoolShare": "10% = 1% ETH + 4% WUSD",
-    "removeLiquidityYourPoolShare2": "10% = 1% BNB + 4% WUSD",
+    "removeLiquidityCurrentPoolSize": "1 ETH + 456 WQT",
+    "removeLiquidityCurrentPoolSize2": "1 BNB + 456 WQT",
+    "removeLiquidityYourPoolShare": "10% = 1% ETH + 4% WQT",
+    "removeLiquidityYourPoolShare2": "10% = 1% BNB + 4% WQT",
     "lockedSavingsField": "locked savings",
     "durationDaysField": "duration days",
     "depositAmountField": "deposit amount",
@@ -1095,7 +1119,7 @@
     "estimatedPaymentField": "120 WUSD",
     "priceOfAClickField": "price of a click",
     "cityField": "city",
-    "addLiquidityAmountWusd": "1000 WUSD",
+    "addLiquidityAmountWqt": "1000 WQT",
     "addLiquidityAmountEth": "10 ETH",
     "addLiquidityAmountBnb": "10 BNB",
     "cardHolderField": "card holder",
@@ -1140,12 +1164,12 @@
     "menu": {
       "instruments": "Instruments",
       "crosschain": {
-        "title": "Crosschain",
-        "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        "title": "WorkQuest Bridge",
+        "desc": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain."
       },
       "staking": {
-        "title": "Staking",
-        "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        "title": "WorkQuest Staking",
+        "desc": "Make your assets work. Stake your assets into DeFi staking or Locked staking to increase staking income."
       },
       "pension": {
         "title": "Retirement program",
@@ -1959,35 +1983,59 @@
     "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
-    "liquidityManning": "Liquidity manning",
+    "claimRewards": "Claim rewards",
     "liquidityMining": "Liquidity mining",
+    "swapTokens": {
+      "title": "Swap tokens",
+      "swap": "Swap",
+      "oldTokens": "Enter amount of old tokens",
+      "newTokens": "You will get new tokens",
+      "balance": "Your balance:"
+    },
+    "approve": "Approve",
+    "stake": "Stake",
+    "unstake": "Unstake",
+    "liquidityMiningSub": "Is a DeFi (decentralized finance) mechanism in which participants supply cryptocurrencies into liquidity pools, and being rewarded with fees and tokens based on their share of the total pool liquidity.",
     "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "pools": "Pools",
     "choose": "Choose",
     "information": "Information",
     "docName": "Some_document.pdf",
+    "agreement": "WorkQuest Liquidity Mining User Agreement.pdf",
+    "kb": "{count} KB",
     "download": "Download",
     "tableHead": {
       "poolAddress": "Pool address",
+      "swaps": "Swaps",
+      "totalValue": "Total value",
+      "tokenAmount": "Token amount",
+      "account": "Account",
+      "time": "Time",
       "assets": "Assets",
       "sdsdsdsd": "sdsdsdsd",
       "volume": "Volume"
     },
     "table": {
       "poolAddress": "0sjs3892...sd45",
-      "assets": "50% WUSD / 50% ETH",
-      "assets2": "50% WUSD / 50% BNB",
+      "assets": "50% WQT / 50% ETH",
+      "assets2": "50% WQT / 50% BNB",
       "sdsdsdsd": "sdsdsdsd",
       "volume": "$4.5M"
     },
     "mb": "{count} MB",
     "back": "Back",
-    "wusdEthPool": "WUSD/ETH pool",
-    "wusdBnbPool": "WUSD/BNB pool",
+    "wusdEthPool": "WQT/ETH pool",
+    "wusdBnbPool": "WQT/BNB pool",
     "dollarsCount": "$ {count}",
+    "lpCount": "{count} LP",
+    "wqtCount": "{count} WQT",
     "addLiquidity": "Add liquidity",
     "removeLiquidity": "Remove liquidity",
     "liquidity": "Liquidity",
+    "totalLiquidity": "Total liquidity",
+    "reward": "Reward",
+    "claimReward": "Claim Reward",
+    "totalReward": "Total reward",
     "volume24h": "Volume (24h)",
     "myPoolShare": "My pool share",
     "liquidityPoolProviders": "Liquidity pool providers",
@@ -2185,8 +2233,8 @@
     "share": "Share link"
   },
   "crosschain": {
-    "pageName": "Crosschain",
-    "pageAbout": "Send Work Quest tokens to Ethereum and Binance Smart Chain blockchains, and remember that the sender pays a crosschain swap fee in both the source and target blockchain",
+    "pageName": "WorkQuest Bridge",
+    "pageAbout": "Secure and fast way to bring cross-chain assets between WorkNet, Ethereum and Binance Smart Chain.",
     "sourceBlockchain": "Source blockchain",
     "targetBlockchain": "Target blockchain",
     "blockchain": "Blockchain",
@@ -2195,6 +2243,7 @@
     "balance": "Balance",
     "createSwap": "Create swap",
     "mySwaps": "My swaps",
+    "eth": "ETH",
     "worknet": "Worknet",
     "bsc": "BSC",
     "tableHead": {
@@ -2267,6 +2316,38 @@
       "completed": "Completed quests",
       "active": "Active quests",
       "invited": "Invited quests"
+    }
+  },
+  "footer": {
+    "download": "Download Mobile App",
+    "follow": "Follow Us",
+    "company": {
+      "title": "Company",
+      "wqWiki": "WorkQuest Wiki",
+      "aboutUs": "About Us",
+      "leadership": "Leadership",
+      "contactUs": "Contact Us",
+      "support": "Help & Support"
+    },
+    "legalInfo": {
+      "title": "Legal Info",
+      "risks": "Risks Disclaimer",
+      "privacyPolicy": "Privacy Policy",
+      "terms": "Terms & Conditions",
+      "aml": "AML & CTF Policy",
+      "cookiePolicy": "Cookie Policy"
+    },
+    "DeFi": {
+      "title": "DeFi functionality",
+      "retirement": "Retirement program",
+      "referral": "Referral program",
+      "P2P": "P2P insurance",
+      "savingsProduct": "Savings product",
+      "lending": "Lending",
+      "liquidityMining": "Liquidity mining",
+      "wqBridge": "WorkQuest bridge",
+      "staking": "WorkQuest Staking",
+      "wqDAO": "WorkQuest DAO"
     }
   }
 }

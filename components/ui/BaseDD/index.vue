@@ -207,10 +207,12 @@ export default {
   &__items {
     @include box;
     width: 100%;
+    flex-basis: 100%;
     position: absolute;
     background: #FFFFFF;
     top: calc(100% + 4px);
-    display: grid;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     grid-gap: 15px;
@@ -218,14 +220,16 @@ export default {
     z-index: 1;
     &_small {
       height: 200px;
+      grid-gap: 10px;
       overflow: scroll;
     }
   }
   &__item {
     text-align: left;
+    flex-basis: 100%;
     width: 100%;
+    height: 100%;
     color: $black500;
-    min-height: 21px;
     &:hover {
       color: $black800;
     }
@@ -234,6 +238,8 @@ export default {
       align-items: center;
       img {
         margin-right: 5px;
+        height: 25px;
+        width: 25px;
       }
     }
   }
@@ -241,6 +247,8 @@ export default {
     display: flex;
     align-items: center;
     img {
+      height: 25px;
+      width: 25px;
       margin-right: 5px;
     }
     span {
@@ -284,12 +292,6 @@ export default {
     &_border {
       border: 1px solid #F7F8FA;
     }
-  }
-}
-@include _767 {
-  .dd__btn {
-    justify-content: center;
-    padding: 0px 0px;
   }
 }
 </style>

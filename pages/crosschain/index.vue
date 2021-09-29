@@ -29,38 +29,13 @@
                     @input="handleChangeSource"
                   />
                 </div>
-                <div>
-                  <div class="contract-data__title">
-                    {{ $t('crosschain.yourWQTAddress') }}
-                  </div>
-                  <div class="contract-data__link">
-                    <div class="address">
-                      {{ referLink }}
-                    </div>
-                    <button
-                      type="button"
-                      @click="doCopy"
-                    >
-                      <span class="icon-copy address__icon" />
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <div class="contract-data__title">
-                    {{ $t('crosschain.balance') }}
-                  </div>
-                  <div class="contract-data__balance">
-                    <div class="title">
-                      15 000 WQT
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
             <img
               src="~assets/img/ui/swap.png"
               alt=""
               class="swap-icon"
+              @click="togglePools()"
             >
             <div>
               <div class="info-block__name_bold">
@@ -79,37 +54,12 @@
                     @input="handleChangeTarget"
                   />
                 </div>
-                <div>
-                  <div class="contract-data__title">
-                    {{ $t('crosschain.YourBSCAddress') }}
-                  </div>
-                  <div class="contract-data__link">
-                    <div class="address">
-                      {{ referLink }}
-                    </div>
-                    <button
-                      type="button"
-                      @click="doCopy"
-                    >
-                      <span class="icon-copy address__icon" />
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <div class="contract-data__title">
-                    {{ $t('crosschain.balance') }}
-                  </div>
-                  <div class="contract-data__balance">
-                    <div class="title">
-                      15 000 WQT
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
           <div class="info-block__btns-cont">
             <base-btn
+              :disabled="metamaskStatus === 'notInstalled'"
               @click="showSwapModal"
             >
               {{ $t('crosschain.createSwap') }}
@@ -122,7 +72,7 @@
           </div>
           <div class="crosschain-page__table">
             <b-table
-              :items="items"
+              :items="crosschainTableData"
               :fields="testFields"
               borderless
               caption-top
@@ -154,11 +104,33 @@
               <template #cell(tx)="el">
                 <div class="table__value">
                   {{ el.item.tx }}
+                  <button
+                    v-clipboard:copy="el.item.txFull"
+                    v-clipboard:success="ClipboardSuccessHandler"
+                    v-clipboard:error="ClipboardErrorHandler"
+                    type="button"
+                    @click="doCopy"
+                  >
+                    <span class="icon-copy link-cont__icon" />
+                  </button>
                 </div>
               </template>
               <template #cell(created)="el">
                 <div class="table__value table__value_blue">
                   {{ el.item.created }}
+                </div>
+              </template>
+              <template #cell(redeem)="el">
+                <div class="table__value table__value_blue">
+                  <base-btn
+                    class="btn__redeem"
+                    :class="!el.item.status ? 'btn__redeem_disabled' : ''"
+                    mode="outline"
+                    :disabled="!el.item.status"
+                    @click="redeemAction(el.item)"
+                  >
+                    {{ el.item.status ? $t('meta.redeem') : $t('meta.redeemed') }}
+                  </base-btn>
                 </div>
               </template>
             </b-table>
@@ -171,35 +143,33 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
+import moment from 'moment';
 import modals from '~/store/modals/modals';
 
 export default {
+  layout: 'guest',
   data() {
     return {
-      referLink: 'https://www.workquest.com/ref?v=44T7iUSo1vU',
+      miningPoolId: localStorage.getItem('miningPoolId'),
+      metamaskStatus: localStorage.getItem('metamaskStatus'),
+      referLink: '0xnf8o2…9b74thb3',
       sourceAddressInd: 0,
       targetAddressInd: 1,
-      items: [
-        {
-          direction: [
-            require('~/assets/img/ui/WQT.png'),
-            require('~/assets/img/ui/Binance.png'),
-          ],
-          recipient: this.$t('crosschain.recipTemp'),
-          tx: this.$t('crosschain.recipTemp'),
-          created: this.$t('crosschain.dateTemp'),
-        },
-        {
-          direction: [
-            require('~/assets/img/ui/WQT.png'),
-            require('~/assets/img/ui/Binance.png'),
-          ],
-          recipient: this.$t('crosschain.recipTemp'),
-          tx: this.$t('crosschain.recipTemp'),
-          created: this.$t('crosschain.dateTemp'),
-        },
-      ],
-      testFields: [
+      tableItems: {},
+      items: [],
+    };
+  },
+  computed: {
+    ...mapGetters({
+      tokens: 'web3/getTokens',
+      account: 'web3/getAccount',
+      purseData: 'web3/getPurseData',
+      isConnected: 'web3/isConnected',
+      crosschainTableData: 'defi/getCrosschainTokensData',
+    }),
+    testFields() {
+      return [
         {
           key: 'direction',
           label: this.$t('crosschain.tableHead.direction'),
@@ -248,35 +218,109 @@ export default {
             style: 'padding: 0; height: 64px; line-height: 64px',
           },
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
+        {
+          key: 'redeem',
+          label: '',
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'display: flex; align-items: center; height: 64px; line-height: 64px',
+          },
+        },
+      ];
+    },
     addresses() {
       return [
         {
-          icon: require('~/assets/img/ui/WQT.png'),
-          title: this.$t('crosschain.worknet'),
+          icon: require('~/assets/img/ui/ethereum.svg'),
+          title: this.$t('crosschain.eth'),
         },
         {
-          icon: require('~/assets/img/ui/Binance.png'),
+          icon: require('~/assets/img/ui/bnb-logo.svg'),
           title: this.$t('crosschain.bsc'),
         },
       ];
     },
   },
+  watch: {
+    async purseData() {
+      let newInterval;
+      if (this.purseData) {
+        await this.swapsTest(this.purseData);
+        newInterval = setInterval(() => this.swapsTest(this.purseData), 5000);
+        if (this.$route.name !== 'crosschain') {
+          clearInterval(newInterval);
+        }
+      }
+    },
+  },
   async mounted() {
     this.SetLoader(true);
+    await this.swapsTest(this.purseData);
+    await this.checkMetamaskStatus();
     this.SetLoader(false);
   },
   methods: {
-    doCopy(ev) {
-      ev.stopPropagation();
-      this.$copyText(this.referLink).then(() => {
+    doCopy() {
+      this.ShowModal({
+        key: modals.copiedSuccess,
       });
+    },
+    async checkMetamaskStatus() {
+      if (typeof window.ethereum === 'undefined') {
+        localStorage.setItem('metamaskStatus', 'notInstalled');
+        this.ShowModal({
+          key: modals.status,
+          title: 'Please install Metamask!',
+          subtitle: 'Please click install...',
+          button: 'Install',
+          type: 'installMetamask',
+        });
+      } else {
+        localStorage.setItem('metamaskStatus', 'installed');
+        await this.connectToMetamask();
+      }
+    },
+    async redeemAction(data) {
+      this.SetLoader(true);
+      await this.$store.dispatch('web3/goToChain', { chain: data.chain });
+      await this.checkMetamaskStatus();
+      const payload = {
+        signData: data.clearData,
+        chainId: data.chainId,
+      };
+      await this.connectToMetamask();
+      const redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
+      this.ShowModal({
+        key: modals.status,
+        img: redeemObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
+        title: redeemObj.code === 500 ? this.$t('modals.redeemFail') : this.$t('modals.redeemSuccess'),
+        subtitle: '',
+      });
+      this.SetLoader(false);
+    },
+    showToast(title, text, variant) {
+      this.$store.dispatch('defi/showToast', { title, text, variant });
+    },
+    connectToMetamask() {
+      if (!this.isConnected) {
+        this.$store.dispatch('web3/connect');
+      }
+    },
+    async swapsTest(address) {
+      await this.$store.dispatch('defi/swapsForCrosschain', `${address}&offset=0&limit=10`);
+    },
+    togglePools(selInd) {
+      if (this.sourceAddressInd === 0) {
+        this.sourceAddressInd = selInd ? 0 : 1;
+        this.targetAddressInd = selInd ? 1 : 0;
+      } else if (this.sourceAddressInd === 1) {
+        this.sourceAddressInd = selInd ? 1 : 0;
+        this.targetAddressInd = selInd ? 0 : 1;
+      }
     },
     handleChangeTarget(selInd) {
       if (selInd === this.sourceAddressInd) {
@@ -290,16 +334,35 @@ export default {
       }
       this.sourceAddressInd = selInd;
     },
-    showSwapModal() {
+    async showSwapModal() {
+      this.SetLoader(true);
+      let chain;
+      if (this.sourceAddressInd === 0) {
+        chain = 'ETH';
+      } else {
+        chain = 'BNB';
+      }
+      await this.$store.dispatch('web3/goToChain', { chain });
+      await this.checkMetamaskStatus();
+      await this.swapsTest();
       this.ShowModal({
         key: modals.swap,
+        crosschainId: this.targetAddressInd,
       });
+      this.SetLoader(false);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.swap-icon {
+  transition: .3s ease-in-out;
+  &:hover {
+    filter: drop-shadow(0 0 3px rgba(72, 72, 72, 0.5));
+    cursor: pointer;
+  }
+}
 .crosschain-page {
   background: linear-gradient(to bottom, #103D7C 420px, #f6f8fa 420px);
   display: flex;
@@ -353,7 +416,7 @@ export default {
 
       &:hover {
         background-color: #0083C71A;
-        border: 0px;
+        border: 0;
       }
 
       &_bl {
@@ -364,6 +427,11 @@ export default {
 
         &:hover {
           background-color: #103d7c;
+        }
+      }
+      &__redeem {
+        &_disabled {
+          color: #D8DFE3 !important;
         }
       }
     }
@@ -379,9 +447,15 @@ export default {
         align-items: center;
         padding: 20px;
 
+        img {
+          display: flex;
+          align-self: flex-end;
+          margin-bottom: 5px;
+        }
+
         .contract-data {
           display: grid;
-          grid-template-rows: repeat(3, 1fr);
+          grid-template-rows: repeat(1, 1fr);
           gap: 15px;
           margin-top: 20px;
 
@@ -478,6 +552,7 @@ export default {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        width: 100%;
 
         &_blue {
           color: #0083C7;

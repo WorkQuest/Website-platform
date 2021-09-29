@@ -81,6 +81,9 @@ export default {
         { 'base-btn_max': mode === 'max' },
         { 'base-btn_share': mode === 'share' },
         { 'base-btn_add': mode === 'add' },
+        { 'base-btn_portfolio-edit': mode === 'portfolioEdit' },
+        { 'base-btn_portfolio-close': mode === 'portfolioClose' },
+        { 'base-btn_share-user-info': mode === 'share-btn' },
       ];
     },
   },
@@ -115,6 +118,58 @@ export default {
   border-radius: 6px;
   &:hover {
     background: #103D7C;
+  }
+  &_share-user-info {
+    @include share-user;
+    transition: .5s;
+    height: 24px;
+    width: 24px;
+    position: absolute;
+    right: 0;
+    top: 28px;
+    &:hover {
+      @include share-user;
+      filter: brightness(70%);
+      cursor: pointer;
+    }
+  }
+  &_portfolio-edit {
+    position: absolute;
+    left: 30px;
+    top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    width: 20px;
+    border-radius: 6px;
+    padding: 2px;
+    transition: 0.5s;
+    background: $yellow;
+    filter: grayscale(50%);
+    &:hover {
+      filter: grayscale(0);
+      background: $yellow;
+    }
+  }
+  &_portfolio-close {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    width: 20px;
+    border-radius: 6px;
+    padding: 2px;
+    transition: 0.5s;
+    filter: grayscale(50%);
+    background: $red;
+    &:hover {
+      filter: grayscale(0);
+      background: $red;
+    }
   }
   &_black {
     background: $black800 !important;
@@ -286,9 +341,4 @@ export default {
   }
 }
 
-@include _575 {
-  .base-btn {
-    font-size: 14px;
-  }
-}
 </style>

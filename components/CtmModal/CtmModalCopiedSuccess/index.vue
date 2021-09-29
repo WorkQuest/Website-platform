@@ -10,7 +10,7 @@
         class="copied__picture"
       >
       <div class="copied__title">
-        {{ $t('modals.walletCopy') }}
+        {{ $t('modals.textCopy') }}
       </div>
       <base-btn
         class="copied__action"
@@ -24,8 +24,15 @@
 
 <script>
 
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'ModalCopiedSuccess',
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+  },
   methods: {
     hide() {
       this.CloseModal();

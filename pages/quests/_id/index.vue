@@ -7,7 +7,11 @@
       class="main-white"
     >
       <div class="main__body">
-        <questPanel />
+        <questPanel
+          :avatar-url="userAvatar"
+          :location="questLocation"
+          :quest-data="questData"
+        />
 
         <div class="quest__container">
           <h2 class="quest__title">
@@ -305,11 +309,8 @@
             <span v-if="infoData.mode !== 4">
               <div class="price__container">
                 <span class="price__value">
-                  {{ questData.price }}
+                  {{ questData.price }} WUSD
                 </span>
-                <div class="badge__wrapper">
-                  <span class="badge__item_green">{{ payload.badgeGreen }}</span>
-                </div>
               </div>
             </span>
           </div>
@@ -321,15 +322,28 @@
     >
       <div class="gmap__block">
         <transition name="fade-fast">
-          <GMap
-            v-if="isShowMap"
+          <GmapMap
             ref="gMap"
             class="quests__map"
             language="en"
             :center="questLocation"
             :zoom="zoom"
             :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
-          />
+          >
+            <!--            <GMapMarker-->
+            <!--              v-for="(item, key) in locations"-->
+            <!--              :key="key"-->
+            <!--              :position="questLocation"-->
+            <!--              :options="{ icon: pins.quest.blue, show: true}"-->
+            <!--              @click="coordinatesChange(item)"-->
+            <!--            >-->
+            <!--              <GMapInfoWindow-->
+            <!--                :options="{maxWidth: 280}"-->
+            <!--              >-->
+            <!--                test-->
+            <!--              </GMapInfoWindow>-->
+            <!--            </GMapMarker>-->
+          </GmapMap>
         </transition>
       </div>
     </div>
@@ -346,9 +360,6 @@
             </nuxt-link>
           </h2>
         </div>
-        <p class="quest__count">
-          {{ `${payload.amount} ${$t('quests.questAmount')}` }}
-        </p>
         <div class="quest__card">
           <quests
             v-if="questsObjects.count !== 0"
@@ -428,12 +439,6 @@ export default {
         ],
       },
       isShowMap: true,
-      locations: [
-        {
-          lat: 56.475565,
-          lng: 84.967270,
-        },
-      ],
       priority: [
         this.$t('quests.priority.low'),
         this.$t('quests.priority.normal'),
@@ -444,10 +449,25 @@ export default {
       priceSort: 'desc',
       timeSort: 'desc',
       questLimits: 1,
-      questsObjects: {},
+      questsObjects: {
+        count: 0,
+      },
       questData: {},
+      userAvatar: '',
       questLocation: { lat: 0, lng: 0 },
-      zoom: 10,
+      locations: {},
+      currentLocation: {},
+      zoom: 15,
+      pins: {
+        quest: {
+          red: '/img/app/marker_red.svg',
+          green: '/img/app/marker_red.svg',
+          yellow: '/img/app/marker_red.svg',
+          blue: '/img/app/marker_blue.svg',
+        },
+        selected: '/img/app/marker_blue.svg',
+        notSelected: '/img/app/marker_red.svg',
+      },
     };
   },
   computed: {
@@ -459,16 +479,35 @@ export default {
       distance: 'data/getDistance',
     }),
   },
+  watch: {
+    questData: {
+      deep: true,
+      handler() {
+        this.questLocation = {
+          lat: this.questData.location.latitude,
+          lng: this.questData.location.longitude,
+        };
+        this.locations = this.questLocation;
+      },
+    },
+  },
   async mounted() {
     this.SetLoader(true);
-    this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
-    this.questLocation = {
-      lat: this.questData.location.latitude,
-      lng: this.questData.location.longitude,
-    };
+    await this.initData();
     this.SetLoader(false);
   },
   methods: {
+    async initData() {
+      this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+      this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
+    },
+    coordinatesChange(item) {
+      if (Object.keys(this.currentLocation).length > 0) {
+        this.currentLocation = {};
+      } else {
+        this.currentLocation = item;
+      }
+    },
     back() {
       this.$router.go(-1);
     },

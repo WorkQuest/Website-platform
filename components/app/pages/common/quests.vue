@@ -36,7 +36,7 @@
                 >
                   <img
                     class="avatar__image"
-                    :src="item.user.avatar ? item.user.avatar.url : '~/assets/img/app/avatar_empty.png'"
+                    :src="item.user.avatar ? item.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                     :alt="item.user.firstName"
                   >
                 </div>
@@ -82,7 +82,7 @@
                 <div class="container__user user">
                   <img
                     class="user__avatar"
-                    :src="item.user.avatar ? item.user.avatar.url : './assets/img/app/avatar_empty.png'"
+                    :src="item.user.avatar ? item.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                     :alt="`${item.user.firstName} ${item.user.lastName}`"
                   >
                   <div class="user__name">

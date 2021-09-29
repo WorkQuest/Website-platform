@@ -5,7 +5,14 @@
   >
     <div class="status__content">
       <img
+        v-if="options.img"
         :src="options.img"
+        alt="Status"
+        class="content__picture"
+      >
+      <img
+        v-if="options.type === 'installMetamask'"
+        src="~/assets/img/ui/warning.svg"
         alt="Status"
         class="content__picture"
       >
@@ -18,6 +25,25 @@
         </span>
       </div>
       <base-btn
+        v-if="options.type === 'installMetamask'"
+        class="status__action"
+        @click="installMetamask()"
+      >
+        <span
+          v-if="options.button"
+          class="status__text"
+        >
+          {{ options.button }}
+        </span>
+        <span
+          v-else
+          class="status__text"
+        >
+          {{ $t('meta.ok') }}
+        </span>
+      </base-btn>
+      <base-btn
+        v-else
         class="status__action"
         @click="hide()"
       >
@@ -52,6 +78,9 @@ export default {
     }),
   },
   methods: {
+    installMetamask() {
+      window.open('https://metamask.io/download.html');
+    },
     hide() {
       if (this.options.path) this.$router.push(this.options.path);
       this.CloseModal();

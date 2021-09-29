@@ -16,4 +16,7 @@ export default () => ({
   portfolio: {},
   medias: null,
   userReviews: {},
+  userEnable2FA: {},
+  userDisable2FA: {},
+  user2FA: false,
 });

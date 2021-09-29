@@ -54,6 +54,11 @@ export default {
     },
   },
   build: {
+    extend(config) {
+      config.node = {
+        fs: 'empty',
+      };
+    },
     transpile: [
       'vee-validate/dist/rules',
     ],
@@ -85,6 +90,28 @@ export default {
     },
   },
   env: {
+    BASE_URL: process.env.BASE_URL,
     baseUrl: process.env.BASE_URL,
+    GMAPKEY: process.env.GMAPKEY,
+    PROD: process.env.PROD,
+    WQT_TOKEN: process.env.WQT_TOKEN,
+    NEW_WQT_TOKEN: process.env.NEW_WQT_TOKEN,
+    LP_TOKEN: process.env.LP_TOKEN,
+    STAKING_ADDRESS: process.env.STAKING_ADDRESS,
+    SECRET_SUMSUB: process.env.SECRET_SUMSUB,
+    BRIDGE_ADDRESS_RINKEBY: process.env.BRIDGE_ADDRESS_RINKEBY,
+    BRIDGE_ADDRESS_BSCTESTNET: process.env.BRIDGE_ADDRESS_BSCTESTNET,
+    TOKEN_WQT_NEW_ADDRESS_BSCTESTNET: process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET,
+    TOKEN_WQT_OLD_ADDRESS_BSCTESTNET: process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET,
+    TOKEN_ETH_ADDRESS_BSCTESTNET: process.env.TOKEN_ETH_ADDRESS_BSCTESTNET,
+    EXCHANGE_ADDRESS_BSCTESTNET: process.env.EXCHANGE_ADDRESS_BSCTESTNET,
+    EXCHANGE_ADDRESS_RINKEBY: process.env.EXCHANGE_ADDRESS_RINKEBY,
+    STAKING_ADDRESS_BSC: process.env.STAKING_ADDRESS_BSC,
+    CAKE_LP_TOKEN: process.env.CAKE_LP_TOKEN,
+    CAKE_WQT_TOKEN: process.env.CAKE_WQT_TOKEN,
+    MAINNET_BSC_WQT_TOKEN: process.env.MAINNET_BSC_WQT_TOKEN,
+    MAINNET_BSC_BRIDGE: process.env.MAINNET_BSC_BRIDGE,
+    MAINNET_ETH_WQT_TOKEN: process.env.MAINNET_ETH_WQT_TOKEN,
+    MAINNET_ETH_BRIDGE: process.env.MAINNET_ETH_BRIDGE,
   },
 };

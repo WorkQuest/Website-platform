@@ -23,7 +23,10 @@
                     {{ $t('settings.alsoRating') }}
                   </div>
                   <div class="ver-btn__container">
-                    <base-btn mode="ver">
+                    <base-btn
+                      mode="ver"
+                      @click="goToSumSub"
+                    >
                       {{ $t('settings.getVerification') }}
                     </base-btn>
                   </div>
@@ -295,7 +298,7 @@
               <div class="knowledge__content">
                 <base-field
                   v-model="localUserData.additionalInfo.workExperiences[i].from"
-                  type="date"
+                  type="gray"
                   mode="convertDate"
                   class="knowledge__data"
                   :disabled="true"
@@ -306,7 +309,7 @@
                 </div>
                 <base-field
                   v-model="localUserData.additionalInfo.workExperiences[i].to"
-                  type="date"
+                  type="gray"
                   mode="convertDate"
                   class="knowledge__data"
                   :disabled="true"
@@ -720,8 +723,9 @@ export default {
         avatarId: null,
         firstName: null,
         lastName: null,
+        skillFilters: null,
         additionalInfo: {
-          firstMobileNumber: null,
+          // firstMobileNumber: null,
           secondMobileNumber: null,
           address: null,
           socialNetwork: {
@@ -737,6 +741,10 @@ export default {
           CEO: null,
           company: null,
           website: null,
+        },
+        location: {
+          longitude: 0,
+          latitude: 0,
         },
       },
       avatar_change: {
@@ -777,6 +785,8 @@ export default {
       imageData: 'user/getImageData',
       additionalInfo: 'user/getAdditionalInfo',
       getUserAddress: 'user/getUserAddress',
+      applicantStatus: 'sumsub/getApplicantStatus',
+      accessToken: 'sumsub/getSumSubBackendToken',
     }),
     specializations() {
       const specializations = Object.keys(this.$t('settings.specializations')).length;
@@ -812,10 +822,22 @@ export default {
       firstName: this.userData.firstName,
       lastName: this.userData.lastName,
       additionalInfo: JSON.parse(JSON.stringify(this.userData.additionalInfo)),
+      location: this.userData.location,
     };
     this.SetLoader(false);
   },
   methods: {
+    getApplicantStatus() {
+      const id = this.accessToken.userId;
+      try {
+        this.$store.dispatch('sumsub/applicantStatus', id);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    goToSumSub() {
+      this.$router.push('/sumsub');
+    },
     addSkillToBadge(event, object, index, key) {
       if (!this.selectedSkills[key].includes(object[index]) && this.selectedSkills[key].length <= 4) {
         this.selectedSkills[key].push(object[index]);
@@ -1021,7 +1043,11 @@ export default {
       } catch (error) {
         console.log(error);
       }
-      this.localUserData.additionalInfo.firstMobileNumber = this.updatedPhone.formatInternational;
+      this.localUserData.additionalInfo.secondMobileNumber = this.updatedPhone.formatInternational.replace(/\s/g, '');
+      delete this.localUserData.additionalInfo.firstMobileNumber;
+      if (this.coordinates !== undefined) {
+        this.localUserData.location = { longitude: this.coordinates.lng, latitude: this.coordinates.lat };
+      }
       let payload = {};
       const checkAvatarID = this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : this.userData.avatarId;
       const additionalInfo = {
@@ -1032,6 +1058,7 @@ export default {
         payload = {
           ...this.localUserData,
           avatarId: checkAvatarID,
+          skillFilters: { test: ['test'] },
           additionalInfo: {
             ...additionalInfo,
             ...{
@@ -1042,9 +1069,18 @@ export default {
           },
         };
       } else {
+        const specAndSkills = {};
+        // eslint-disable-next-line no-restricted-syntax
+        for (const spec in this.specIndex) {
+          if (this.specIndex[spec] !== -1) {
+            const specName = this.specializations.titles[this.specIndex[spec]];
+            specAndSkills[specName] = this.selectedSkills[spec];
+          }
+        }
         payload = {
           ...this.localUserData,
           avatarId: checkAvatarID,
+          skillFilters: specAndSkills,
           additionalInfo: {
             ...additionalInfo,
             ...{

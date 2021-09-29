@@ -6,34 +6,46 @@
         :key="i"
         class="portfolio__item"
       >
-        <div class="portfolio__card">
-          <button
-            class="portfolio__close"
-            @click="deletePortfolio(item.id)"
-          >
-            <span
-              class="icon-close_big"
-            />
-          </button>
+        <div
+          class="portfolio__card"
+        >
           <div class="portfolio__body">
+            <div class="portfolio__btns">
+              <base-btn
+                class="portfolio__close"
+                mode="portfolioClose"
+                @click="showDeleteCaseModal(item.id)"
+              >
+                <span
+                  class="icon-close_big"
+                />
+              </base-btn>
+              <base-btn
+                class="portfolio__edit"
+                mode="portfolioEdit"
+                @click="showEditCaseModal(item.id, item.title, item.description)"
+              >
+                <span
+                  class="icon-edit"
+                />
+              </base-btn>
+            </div>
             <div
               v-for="(img, j) in item.medias"
               :key="j"
               class="portfolio__img"
+              @click="openImage(img.url, item.title, item.description, item.id)"
             >
               <img
                 class="portfolio__image"
                 :src="img.url"
-                :alt="img.name"
+                :alt="item.title"
               >
-            </div>
-          </div>
-          <div class="portfolio__footer">
-            <div class="portfolio__name">
-              {{ item.title }}
-            </div>
-            <div class="portfolio__description">
-              {{ item.description }}
+              <div class="portfolio__footer footer">
+                <div class="footer__name">
+                  {{ item.title }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -44,6 +56,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'PortfolioTab',
@@ -57,19 +70,47 @@ export default {
     await this.getAllPortfolios();
   },
   methods: {
-    async getAllPortfolios() {
-      try {
-        const { id } = this.userData;
-        const response = await this.$store.dispatch('user/getUserPortfolios', id);
-        if (response?.ok) {
-          this.hide();
-        }
-      } catch (e) {
-        console.log(e);
+    openImage(src, name, desc) {
+      if (window.innerWidth >= 761) {
+        this.ShowModal({
+          key: modals.showImage,
+          portfolio: true,
+          imageSrc: src,
+          title: name,
+          desc,
+        });
       }
     },
-    async deletePortfolio(id) {
-      await this.$store.dispatch('user/deletePortfolio', id);
+    async getAllPortfolios() {
+      try {
+        this.SetLoader(true);
+        await this.$store.dispatch('user/getUserPortfolios', this.userData.id);
+        this.SetLoader(false);
+      } catch (e) {
+        this.showToastError(e);
+        this.SetLoader(false);
+      }
+    },
+    showToastError(e) {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.error'),
+        variant: 'warning',
+        text: e.response?.data?.msg,
+      });
+    },
+    showDeleteCaseModal(id) {
+      this.ShowModal({
+        key: modals.deleteCase,
+        id,
+      });
+    },
+    showEditCaseModal(id, title, desc) {
+      this.ShowModal({
+        key: modals.editCase,
+        id,
+        title,
+        desc,
+      });
     },
   },
 };
@@ -78,17 +119,38 @@ export default {
 <style lang="scss" scoped>
 
 .portfolio {
-  &__close {
-    background: $red;
-    border: 1px solid $black400;
+  &__btns {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25px;
+    width: 60px;
     border-radius: 6px;
     padding: 2px;
+  }
+  &__edit {
+    z-index: 10000;
+    transition: .5s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+  }
+  &__close {
+    z-index: 10000;
+    transition: .5s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
   }
   &__card {
     border-radius: 6px;
     cursor: pointer;
     position: relative;
-    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
+    transition: 0.3s;
+    &:hover {
+      box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.3);
+    }
   }
   &__items {
     display: grid;
@@ -97,36 +159,46 @@ export default {
   }
   &__image {
     height: 350px;
-    object-fit: scale-down;
+    width: 100%;
     border-radius: 6px;
-  }
-  &__name {
-    @include text-simple;
-    text-align: left;
-    color: $white;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 18px;
-    font-weight: 500;
-  }
-  &__description {
-    @include text-simple;
-    font-size: 18px;
-    font-weight: 500;
-    margin-left: 10px;
+    object-fit: cover;
   }
   &__footer {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    background: $black700;
-    height: 71px;
+    background: $white;
+    height: 82px;
     display: flex;
-    align-items: center;
-    padding-left: 20px;
-    border-radius: 0 0 6px 6px;
+    width: 100%;
+  }
+}
+.portfolio__item:hover .portfolio__edit,
+.portfolio__item:hover .portfolio__close {
+  transition: .5s ease-in-out;
+  opacity: 1;
+  visibility: visible;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px 16px 16px;
+  border-radius: 0 0 6px 6px;
+  text-overflow: ellipsis;
+  &__name {
+    @include text-simple;
+    margin-top: 16px;
+    color: $black800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+    font-weight: 500;
+    width: 100%;
+    text-align: center;
   }
 }
 

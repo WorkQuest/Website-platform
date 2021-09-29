@@ -1,4 +1,7 @@
 export default {
+  setCurrentStepEditQuest(state, data) {
+    state.currentStepEditQuest = data;
+  },
   setCurrentStepCreateQuest(state, data) {
     state.currentStepCreateQuest = data;
   },

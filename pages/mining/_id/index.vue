@@ -11,9 +11,30 @@
           </template>
           {{ $t('mining.back') }}
         </base-btn>
+        <base-btn
+          v-if="!isConnected"
+          mode="light"
+          class="mining-page__connect"
+          :disabled="statusBusy"
+          @click="checkMetamaskStatus()"
+        >
+          {{ $t('mining.connectWallet') }}
+        </base-btn>
+        <base-btn
+          v-else
+          mode="light"
+          class="mining-page__connect"
+          :disabled="statusBusy"
+          @click="disconnectFromMetamask"
+        >
+          {{ $t('meta.disconnect') }}
+        </base-btn>
       </div>
       <div class="mining-page__content">
-        <div class="info-block__grid">
+        <div
+          class="info-block__grid"
+          :class="commonBtnContainerWidth()"
+        >
           <div class="info-block__icons">
             <div
               v-for="(item, i) in iconUrls()"
@@ -31,32 +52,104 @@
             <div class="info-block__title_black info-block__title_big">
               {{ $t(`mining.${miningPoolId === 'BNB' ? 'wusdBnbPool' : 'wusdEthPool'}`) }}
             </div>
-            <div class="info-block__title">
-              {{ $tc('mining.dollarsCount', "176 904.49") }}
-            </div>
           </div>
-          <div class="info-block__btns">
+          <div
+            class="info-block__btns"
+            :class="buttonContainerStyles()"
+          >
             <base-btn
-              v-for="(item, i) in btns"
-              :key="i"
+              v-if="miningPoolId === 'BNB'"
               class="btn_bl"
-              @click="item.clickFunc()"
+              mode="outline"
+              :disabled="statusBusy || metamaskStatus === 'notInstalled'"
+              @click="openSwapTokens()"
             >
-              {{ item.name }}
+              {{ $t('mining.swapTokens.title') }}
+            </base-btn>
+            <base-btn
+              v-if="miningPoolId === 'ETH'"
+              :link="'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH'"
+              class="btn_bl"
+              :disabled="statusBusy"
+            >
+              {{ $t('mining.addLiquidity') }}
+            </base-btn>
+            <base-btn
+              v-if="miningPoolId === 'BNB'"
+              :link="'https://pancakeswap.finance/add/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'"
+              class="btn_bl"
+              :disabled="statusBusy"
+            >
+              {{ $t('mining.addLiquidity') }}
             </base-btn>
           </div>
         </div>
-        <div class="info-block__triple">
+        <div class="info-block__double">
           <div
-            v-for="(item, i) in cards"
-            :key="i"
             class="info-block__third"
           >
-            <div class="info-block__title_big info-block__title_blue">
-              {{ item.title }}
+            <div class="info-block third">
+              <div class="third__wrapper">
+                <div class="third__container">
+                  <div class="third info-block__title_big info-block__title_blue">
+                    {{ $tc('mining.dollarsCount', totalLiquidityUSD) }}
+                  </div>
+                  <div class="info-block__title_small">
+                    {{ $t('mining.totalLiquidity') }}
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="info-block__title_small">
-              {{ item.subtitle }}
+          </div>
+          <div class="info-block__third">
+            <div class="info-block third">
+              <div class="third__wrapper">
+                <div class="third__container">
+                  <div class="third info-block__title_big info-block__title_blue">
+                    {{ $tc('mining.lpCount', stakedAmount) }}
+                  </div>
+                  <div class="info-block__title_small">
+                    {{ $t('mining.stake') }}
+                  </div>
+                </div>
+                <div class="third__container">
+                  <div class="third info-block__title_big info-block__title_blue">
+                    {{ $tc('mining.wqtCount', rewardAmount) }}
+                  </div>
+                  <div class="info-block__title_small">
+                    {{ $t('mining.reward') }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="info-block__third">
+          <div class="info-block third">
+            <div class="third__triple">
+              <base-btn
+                class="btn_bl"
+                :disabled="!isConnected || statusBusy"
+                @click="openModalClaimRewards()"
+              >
+                {{ $t('mining.stake') }}
+              </base-btn>
+              <base-btn
+                class="btn_bl"
+                mode="outline"
+                :disabled="!isConnected || statusBusy"
+                @click="openModalUnstaking()"
+              >
+                {{ $t('mining.unstake') }}
+              </base-btn>
+              <base-btn
+                :mode="'outline'"
+                class="bnt__claim"
+                :disabled="!isConnected || statusBusy"
+                @click="claimRewards()"
+              >
+                {{ $t('mining.claimReward') }}
+              </base-btn>
             </div>
           </div>
         </div>
@@ -72,11 +165,14 @@
           <div class="info-block__name">
             {{ $t('mining.liquidity') }}
           </div>
-          <img
-            class="info-block__chart"
-            src="~assets/img/ui/chart.svg"
-            alt=""
-          >
+          <chart
+            :class="miningPoolId === 'ETH' ? 'hide' : ''"
+            :special-chart-data="wqtWbnbData"
+          />
+          <chart
+            :class="miningPoolId === 'BNB' ? 'hide' : ''"
+            :special-chart-data="wqtWethData"
+          />
         </div>
         <div class="info-block">
           <div class="info-block__name">
@@ -91,40 +187,62 @@
               thead-class="table__header"
               tbody-tr-class="table__row"
             >
-              <template #cell(userName)="el">
+              <template #cell(poolAddress)="el">
                 <div class="user__info">
-                  <img
-                    class="ava"
-                    src="~/assets/img/temp/avatar-small.jpg"
-                    alt=""
-                  >
                   <div class="user__name">
-                    {{ el.item.userName }}
+                    {{ el.item.poolAddress }}
                   </div>
                 </div>
               </template>
-              <template #cell(userID)="el">
+              <template #cell(totalValue)="el">
                 <div class="user__value_gray">
-                  {{ el.item.userID }}
+                  {{ el.item.totalValue }}
                 </div>
               </template>
-              <template #cell(txHash)="el">
+              <template #cell(tokenAmount0)="el">
                 <div class="user__value_gray">
-                  {{ el.item.txHash }}
+                  {{ el.item.tokenAmount0 }}
                 </div>
+              </template>
+              <template #cell(tokenAmount1)="el">
+                <div class="user__value_gray">
+                  {{ el.item.tokenAmount1 }}
+                </div>
+              </template>
+              <template #cell(account)="el">
+                <a
+                  v-if="miningPoolId === 'ETH'"
+                  class="user__value_green"
+                  :href="`https://etherscan.io/address/${el.item.account}`"
+                  target="_blank"
+                >
+                  {{ el.item.accountView }}
+                </a>
+                <a
+                  v-if="miningPoolId === 'BNB'"
+                  class="user__value_green"
+                  :href="`https://bscscan.com/address/${el.item.account}`"
+                  target="_blank"
+                >
+                  {{ el.item.accountView }}
+                </a>
               </template>
               <template #cell(time)="el">
-                <div class="user__value_gray">
-                  {{ el.item.time }}
-                </div>
-              </template>
-              <template #cell(status)="el">
                 <div class="user__value_green">
-                  {{ el.item.status }}
+                  {{ el.item.time }}
                 </div>
               </template>
             </b-table>
           </div>
+        </div>
+        <div
+          class="pager__block"
+        >
+          <base-pager
+            v-if="totalPagesValue > 1"
+            v-model="page"
+            :total-pages="totalPagesValue"
+          />
         </div>
       </div>
     </div>
@@ -133,36 +251,24 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 import modals from '~/store/modals/modals';
+import chart from './graphics_data';
 
 export default {
+  layout: 'guest',
+  components: {
+    chart,
+  },
   data() {
     return {
       miningPoolId: localStorage.getItem('miningPoolId'),
-      items: [
-        {
-          userName: this.$t('pension.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('pension.table.userId'),
-          txHash: this.$t('pension.table.txHash'),
-          time: this.$t('pension.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('pension.table.status'),
-        },
-        {
-          userName: this.$t('pension.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('pension.table.userId'),
-          txHash: this.$t('pension.table.txHash'),
-          time: this.$t('pension.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('pension.table.status'),
-        },
-      ],
+      metamaskStatus: localStorage.getItem('metamaskStatus'),
+      items: [],
       testFields: [
         {
-          key: 'userName',
-          label: this.$t('referral.tableHead.name'),
+          key: 'poolAddress',
+          label: this.$t('mining.tableHead.swaps'),
           thStyle: {
             padding: '0 0 0 23px',
             height: '27px',
@@ -173,8 +279,8 @@ export default {
           },
         },
         {
-          key: 'userID',
-          label: this.$t('referral.tableHead.userID'),
+          key: 'totalValue',
+          label: this.$t('mining.tableHead.totalValue'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -185,8 +291,32 @@ export default {
           },
         },
         {
-          key: 'txHash',
-          label: this.$t('referral.tableHead.txHash'),
+          key: 'tokenAmount0',
+          label: this.$t('mining.tableHead.tokenAmount'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
+        },
+        {
+          key: 'tokenAmount1',
+          label: this.$t('mining.tableHead.tokenAmount'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
+        },
+        {
+          key: 'account',
+          label: this.$t('mining.tableHead.account'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -198,31 +328,7 @@ export default {
         },
         {
           key: 'time',
-          label: this.$t('referral.tableHead.time'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'amount',
-          label: this.$t('referral.tableHead.amount'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'status',
-          label: this.$t('referral.tableHead.status'),
+          label: this.$t('mining.tableHead.time'),
           thStyle: {
             padding: '0',
             height: '27px',
@@ -233,58 +339,261 @@ export default {
           },
         },
       ],
-      btns: [
-        {
-          name: this.$t('mining.addLiquidity'),
-          clickFunc: () => {
-            this.ShowModal({
-              key: modals.addLiquidity,
-              isBNB: this.miningPoolId === 'BNB',
-            });
-          },
-        },
-        {
-          name: this.$t('mining.removeLiquidity'),
-          clickFunc: () => {
-            this.ShowModal({
-              key: modals.removeLiquidity,
-              isBNB: this.miningPoolId === 'BNB',
-            });
-          },
-        },
-      ],
-      cards: [
-        {
-          title: this.$tc('mining.dollarsCount', '417.1M'),
-          subtitle: this.$t('mining.liquidity'),
-        },
-        {
-          title: this.$tc('mining.dollarsCount', '417.1M'),
-          subtitle: this.$t('mining.volume24h'),
-        },
-        {
-          title: '-',
-          subtitle: this.$t('mining.myPoolShare'),
-        },
-      ],
+      totalLiquidityUSD: '',
+      page: 1,
+      perPager: 10,
+      totalPagesValue: 1,
+      rewardAmount: 0,
+      stakedAmount: 0,
+      wqtWbnbData: [],
+      wqtWethData: [],
     };
   },
   computed: {
     ...mapGetters({
-      options: 'modals/getOptions',
+      wqtWbnbBurns: 'defi/getWqtWbnbBurns',
+      wqtWbnbMints: 'defi/getWqtWbnbMints',
+      wqtWbnbSwaps: 'defi/getWqtWbnbSwaps',
+      wqtWbnbTokenDay: 'defi/getWqtWbnbTokenDay',
+      wqtWbnbTokenDayLast: 'defi/getWqtWbnbTokenDayLast',
+      wqtWethBurns: 'defi/getWqtWethBurns',
+      wqtWethMints: 'defi/getWqtWethMints',
+      wqtWethSwaps: 'defi/getWqtWethSwaps',
+      wqtWethTokenDay: 'defi/getWqtWethTokenDay',
+      wqtWethTokenDayLast: 'defi/getWqtWethTokenDayLast',
+      isConnected: 'web3/isConnected',
+      accountData: 'web3/getAccountData',
+      tokensData: 'web3/getTokensAmount',
+      tokenLP: 'web3/getLPTokenPrice',
+      statusBusy: 'web3/getStatusBusy',
     }),
+    totalPages() {
+      if (this.wqtWbnbSwaps) {
+        return Math.ceil(30 / this.perPager);
+      }
+      if (this.wqtWethSwaps) {
+        return Math.ceil(30 / this.perPager);
+      }
+      return 0;
+    },
+  },
+  watch: {
+    isConnected() {
+      const newInterval = setInterval(() => this.tokensDataUpdate(), 15000);
+      if (!this.isConnected) {
+        clearInterval(newInterval);
+      }
+    },
+    // async page() {
+    //   // TODO: FIX
+    //   if (this.miningPoolId === 'BNB') {
+    //     await this.getWqtWbnbTokenDay(`limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
+    //     await this.initTableData();
+    //   } else if (this.miningPoolId === 'ETH') {
+    //     await this.getWqtWethTokenDay(`limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
+    //     await this.initTableData();
+    //   }
+    // },
   },
   async mounted() {
     this.SetLoader(true);
+    await this.checkMetamaskStatus();
+    await this.getWqtWbnbTokenDay();
+    await this.getWqtWethTokenDay();
+    await this.getWqtWbnbTokenDayLast();
+    await this.getWqtWethTokenDayLast();
+    await this.getWqtWbnbBurns();
+    await this.getWqtWbnbMints();
+    await this.getWqtWethBurns();
+    await this.getWqtWethMints();
+    await this.getWqtWethSwaps();
+    await this.getWqtWbnbSwaps();
+    await this.initTokenDays();
+    await this.initGraphData();
+    await this.initTableData(this.wqtWbnbSwaps, this.wqtWethSwaps);
     this.SetLoader(false);
   },
+
   methods: {
+    async checkMetamaskStatus() {
+      if (typeof window.ethereum === 'undefined') {
+        localStorage.setItem('metamaskStatus', 'notInstalled');
+        this.ShowModal({
+          key: modals.status,
+          img: '~assets/img/ui/cardHasBeenAdded.svg',
+          title: 'Please install Metamask!',
+          subtitle: 'Please click install...',
+          button: 'Install',
+          type: 'installMetamask',
+        });
+      } else {
+        await this.connectToMetamask();
+        localStorage.setItem('metamaskStatus', 'installed');
+        await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+      }
+    },
+    async initTokenDays() {
+      const totalLiquidity = this.miningPoolId === 'BNB' ? this.wqtWbnbTokenDay[0].reserveUSD : this.wqtWethTokenDay[0].reserveUSD;
+      this.totalLiquidityUSD = Math.floor(await totalLiquidity);
+    },
+    async initGraphData() {
+      this.wqtWbnbData = await this.wqtWbnbTokenDay;
+      this.wqtWethData = await this.wqtWethTokenDay;
+    },
+    async initTableData(wqtWbnbSwaps, wqtWethSwaps) {
+      let tableArr = [];
+      if (this.miningPoolId === 'BNB') {
+        tableArr = wqtWbnbSwaps;
+      } if (this.miningPoolId === 'ETH') {
+        tableArr = wqtWethSwaps;
+      }
+      tableArr.forEach((data) => {
+        let poolAddress = '';
+        let tokenAmount0 = '';
+        let tokenAmount1 = '';
+        if (this.miningPoolId === 'BNB') {
+          if (data.amount0Out > 0) {
+            poolAddress = 'Swap WQT for WBNB';
+            tokenAmount0 = `${(parseInt((data.amount0Out) * 1000, 10)) / 1000} WQT`;
+            tokenAmount1 = `${(parseInt((data.amount1In) * 1000, 10)) / 1000} WBNB`;
+          } else {
+            poolAddress = 'Swap WBNB for WQT';
+            tokenAmount0 = `${(parseInt((data.amount1Out) * 1000, 10)) / 1000} WBNB`;
+            tokenAmount1 = `${(parseInt((data.amount0In) * 1000, 10)) / 1000} WQT`;
+          }
+        } if (this.miningPoolId === 'ETH') {
+          if (data.amount0Out > 0) {
+            poolAddress = 'Swap WQT for WETH';
+            tokenAmount0 = `${(parseInt((data.amount0Out) * 1000, 10)) / 1000} WQT`;
+            tokenAmount1 = `${(parseInt((data.amount1In) * 1000, 10)) / 1000} WETH`;
+          } else {
+            poolAddress = 'Swap WETH for WQT';
+            tokenAmount0 = `${(parseInt((data.amount1Out) * 1000, 10)) / 1000} WETH`;
+            tokenAmount1 = `${(parseInt((data.amount0In) * 1000, 10)) / 1000} WQT`;
+          }
+        }
+        const totalValue = `${Math.round(data.amountUSD)} $`;
+        const account = data.to;
+        const accountView = this.cropTxt(data.to);
+        const date = new Date(data.transaction.timestamp * 1000);
+        const time = moment(date).startOf('hour').fromNow();
+        this.items.push({
+          poolAddress,
+          totalValue,
+          tokenAmount0,
+          tokenAmount1,
+          account,
+          accountView,
+          time,
+        });
+      });
+      this.totalPagesValue = this.totalPages;
+    },
+
+    async getWqtWbnbBurns() {
+      await this.$store.dispatch('defi/wqtWbnbBurns');
+    },
+    async getWqtWbnbMints() {
+      await this.$store.dispatch('defi/wqtWbnbMints');
+    },
+    async getWqtWbnbSwaps() {
+      await this.$store.dispatch('defi/wqtWbnbSwaps');
+    },
+    async getWqtWbnbTokenDay(query) {
+      await this.$store.dispatch('defi/wqtWbnbTokenDay', query);
+    },
+    async getWqtWbnbTokenDayLast() {
+      const query = 'limit=1';
+      await this.$store.dispatch('defi/wqtWbnbTokenDayLast', query);
+    },
+
+    async getWqtWethBurns() {
+      await this.$store.dispatch('defi/wqtWethBurns');
+    },
+    async getWqtWethMints() {
+      await this.$store.dispatch('defi/wqtWethMints');
+    },
+    async getWqtWethSwaps() {
+      await this.$store.dispatch('defi/wqtWethSwaps');
+    },
+    async getWqtWethTokenDay(query) {
+      await this.$store.dispatch('defi/wqtWethTokenDay', query);
+    },
+    async getWqtWethTokenDayLast() {
+      const query = 'limit=1';
+      await this.$store.dispatch('defi/wqtWethTokenDayLast', query);
+    },
+
+    commonBtnContainerWidth() {
+      let style;
+      if (this.miningPoolId === 'BNB') {
+        style = 'info-block__grid_double';
+      }
+      return style;
+    },
+    buttonContainerStyles() {
+      let style;
+      if (this.miningPoolId === 'BNB') {
+        style = 'info-block__btns_double';
+      }
+      return style;
+    },
+    async tokensDataUpdate() {
+      const action = this.miningPoolId === 'ETH' ? 'web3/getTokensData' : 'web3/getTokensDataBSC';
+      const tokensData = await this.$store.dispatch(action, { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
+      this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
+      this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
+    },
+    async disconnectFromMetamask() {
+      await this.$store.dispatch('web3/disconnect');
+    },
+    async claimRewards() {
+      this.SetLoader(true);
+      const action = this.miningPoolId === 'ETH' ? 'web3/claimRewards' : 'web3/claimRewardsBSC';
+      await this.$store.dispatch(action);
+      await this.tokensDataUpdate();
+      this.SetLoader(false);
+    },
+    async connectToMetamask() {
+      if (!this.isConnected) {
+        let action;
+        action = 'web3/connect';
+        await this.$store.dispatch(action);
+        action = this.miningPoolId === 'ETH' ? 'web3/initContract' : 'web3/initContractBSC';
+        await this.$store.dispatch(action);
+        await this.tokensDataUpdate();
+      }
+    },
+    cropTxt(str) {
+      if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
+      return str;
+    },
+    openSwapTokens() {
+      if (!this.isConnected) {
+        this.connectToMetamask();
+      }
+      this.ShowModal({
+        key: modals.swapTokens,
+      });
+    },
+    openModalUnstaking() {
+      this.ShowModal({
+        key: modals.claimRewards,
+        type: 2,
+      });
+    },
+    openModalClaimRewards() {
+      this.ShowModal({
+        key: modals.claimRewards,
+        type: 1,
+      });
+    },
     handleBackToMainMining() {
       this.$router.push('/mining');
     },
     iconUrls() {
       return [
-        require('~/assets/img/ui/w-logo.svg'),
+        require('~/assets/img/ui/wqt-logo.svg'),
         require(`~/assets/img/ui/${this.miningPoolId === 'BNB' ? 'bnb' : 'hromb'}-logo.svg`),
       ];
     },
@@ -293,10 +602,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.hide {
+  display: none;
+}
+
 .mining-page {
   background: linear-gradient(to bottom, #103D7C 325px, #f6f8fa 325px);
   display: flex;
   justify-content: center;
+
+  &__connect {
+    width: 150px;
+  }
 
   &__container {
     display: grid;
@@ -312,6 +630,7 @@ export default {
   &__header {
     align-self: flex-end;
     display: flex;
+    justify-content: space-between;
     align-items: center;
 
     .btn {
@@ -379,6 +698,10 @@ export default {
       &__btns {
         display: grid;
         gap: 10px;
+        align-content: center;
+        &_double {
+          grid-template-columns: repeat(2, 1fr);
+        }
       }
 
       &__about {
@@ -412,11 +735,14 @@ export default {
         gap: 20px;
         padding: 20px;
         position: relative;
+        &_double {
+          grid-template-columns: 1fr 5fr 4fr;
+        }
       }
 
-      &__triple {
+      &__double {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 20px;
       }
 
@@ -425,7 +751,8 @@ export default {
         padding: 20px;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
+        justify-content: center;
         gap: 10px;
       }
 
@@ -463,7 +790,6 @@ export default {
 
       &__info {
         display: grid;
-        grid-template-columns: 33px 1fr;
         align-items: center;
         gap: 10px;
       }
@@ -530,6 +856,7 @@ export default {
           grid-template-columns: 105px auto;
 
           .info-block__btns {
+            display: grid;
             grid-column-start: 2;
             grid-column-end: 3;
             grid-template-columns: repeat(2, 1fr);
@@ -553,7 +880,7 @@ export default {
             grid-column-start: 1;
           }
         }
-        &__triple {
+        &__double {
           grid-template-columns: repeat(2, 1fr);
         }
         &__title {
@@ -564,6 +891,41 @@ export default {
         }
       }
     }
+  }
+}
+.btn {
+  &_bl {
+    text-decoration: none;
+  }
+}
+.third {
+  width: 100%;
+  align-self: center;
+  @include _575 {
+    &__container {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+  }
+  &__triple {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    @include _575 {
+      grid-template-columns: auto;
+    }
+  }
+  &__wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    @include _575 {
+      grid-template-columns: auto;
+    }
+  }
+}
+.pager {
+  &__block {
+    width: auto;
   }
 }
 </style>

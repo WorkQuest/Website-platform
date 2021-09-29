@@ -73,6 +73,7 @@ export default {
             socialPath = `https://${socialNetwork}.com/${this.userTwitter}` || '';
             break;
           case 'instagram':
+            console.log(this.userInstagram);
             socialPath = `https://${socialNetwork}.com/${this.userInstagram}` || '';
             break;
           case 'linkedin':

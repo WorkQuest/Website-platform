@@ -3,18 +3,12 @@
     <div class="mining-page__container">
       <div class="mining-page__header">
         <div class="title">
-          {{ $t('mining.liquidityManning') }}
+          {{ $t('mining.liquidityMining') }}
         </div>
         <div class="title_sub">
-          {{ $t('mining.templateText') }}
+          {{ $t('mining.liquidityMiningSub') }}
         </div>
       </div>
-      <base-btn
-        mode="light"
-        class="mining-page__head-btn"
-      >
-        {{ $t('mining.connectWallet') }}
-      </base-btn>
       <div class="mining-page__content">
         <div class="info-block">
           <div class="info-block__name_bold">
@@ -22,7 +16,7 @@
           </div>
           <div class="mining-page__table">
             <b-table
-              :items="items"
+              :items="pools"
               :fields="testFields"
               borderless
               caption-top
@@ -37,16 +31,6 @@
               <template #cell(assets)="el">
                 <div class="table__value">
                   {{ el.item.assets }}
-                </div>
-              </template>
-              <template #cell(sdsdsdsd)="el">
-                <div class="table__value">
-                  {{ el.item.sdsdsdsd }}
-                </div>
-              </template>
-              <template #cell(volume)="el">
-                <div class="table__value">
-                  {{ el.item.volume }}
                 </div>
               </template>
               <template #cell(choose)="el">
@@ -86,14 +70,18 @@
                   {{ item.size }}
                 </div>
               </div>
-              <button class="btn__doc">
+              <a
+                :href="item.url"
+                target="_blank"
+                class="btn__doc"
+              >
                 {{ $t('pension.download') }}
                 <img
                   class="download"
                   src="~/assets/img/ui/download.svg"
                   alt=""
                 >
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -104,121 +92,67 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
+  layout: 'guest',
   data() {
     return {
-      documents: [
-        {
-          name: this.$t('mining.docName'),
-          size: this.$tc('mining.mb', '1.2'),
-          url: '',
-        },
-        {
-          name: this.$t('mining.docName'),
-          size: this.$tc('mining.mb', '1.2'),
-          url: '',
-        },
-        {
-          name: this.$t('mining.docName'),
-          size: this.$tc('mining.mb', '1.2'),
-          url: '',
-        },
-      ],
-      items: [
+      poolAddress: '',
+    };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+    pools() {
+      return [
         {
           id: 'ETH',
-          poolAddress: this.$t('mining.table.poolAddress'),
+          poolAddress: '0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf',
           assets: this.$t('mining.table.assets'),
-          template1: this.$t('mining.table.sdsdsdsd'),
-          template2: this.$t('mining.table.sdsdsdsd'),
-          template3: this.$t('mining.sdsdsdsd'),
-          volume: this.$t('mining.table.volume'),
           chooseBtn: this.$t('mining.choose'),
         },
         {
           id: 'BNB',
-          poolAddress: this.$t('mining.table.poolAddress'),
+          poolAddress: '0x323bE7bDa98E91b01c2369B98a4325fF62eaF49c',
           assets: this.$t('mining.table.assets2'),
-          template1: this.$t('mining.table.sdsdsdsd'),
-          template2: this.$t('mining.table.sdsdsdsd'),
-          template3: this.$t('mining.sdsdsdsd'),
-          volume: this.$t('mining.table.volume'),
           chooseBtn: this.$t('mining.choose'),
         },
-      ],
-      testFields: [
+      ];
+    },
+    documents() {
+      return [
+        {
+          name: this.$t('mining.agreement'),
+          size: this.$tc('mining.kb', '47'),
+          url: '/docs/agreement.pdf',
+        },
+      ];
+    },
+    testFields() {
+      return [
         {
           key: 'poolAddress',
           label: this.$t('mining.tableHead.poolAddress'),
           thStyle: {
-            padding: '0 0 0 23px',
+            padding: '0 25px',
             height: '27px',
             lineHeight: '27px',
           },
           tdAttr: {
-            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
+            style: 'padding: 0 25px; height: 64px; line-height: 64px',
           },
         },
         {
           key: 'assets',
           label: this.$t('mining.tableHead.assets'),
           thStyle: {
-            padding: '0',
+            padding: '0 25px',
             height: '27px',
             lineHeight: '27px',
           },
           tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'template1',
-          label: this.$t('mining.tableHead.sdsdsdsd'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'template2',
-          label: this.$t('mining.tableHead.sdsdsdsd'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'template3',
-          label: this.$t('mining.tableHead.sdsdsdsd'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'volume',
-          label: this.$t('mining.tableHead.volume'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
+            style: 'padding: 0 25px; height: 64px; line-height: 64px',
           },
         },
         {
@@ -233,26 +167,25 @@ export default {
             style: 'padding-left: 0; padding-right: 20px',
           },
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
+      ];
+    },
   },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
   },
   methods: {
+    cropTxt(str) {
+      if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
+      return str;
+    },
     handleOpenPool(el) {
       if (localStorage.getItem('miningPoolId')) {
         localStorage.removeItem('miningPoolId');
       }
       console.log(el.item.id);
       localStorage.setItem('miningPoolId', el.item.id);
-      this.$router.push('/mining/1');
+      this.$router.push(`/mining/${el.item.id}`);
     },
   },
 };
@@ -328,9 +261,13 @@ export default {
 
       &__doc {
         @extend .btn;
+        display: flex;
         width: 220px;
         height: 46px;
+        justify-content: center;
+        align-items: center;
         margin: 0;
+        text-decoration: none;
 
         .download {
           display: unset;
@@ -481,8 +418,8 @@ export default {
   &__table {
 
     .table {
-      margin: 0;
       border-radius: 0 !important;
+      margin: 0 0 40px;
 
       &__value {
         font-weight: 400;
@@ -504,10 +441,6 @@ export default {
     &__table {
       overflow: auto;
       width: calc(100vw - 20px);
-
-      .table {
-        width: 1180px;
-      }
     }
   }
 
@@ -538,15 +471,20 @@ export default {
       .info-block {
         &__documents {
           .document {
-            grid-template-columns: 33px auto 23px;
+            grid-template-columns: repeat(3, auto);
           }
         }
       }
       .btn {
         &__doc {
+          text-decoration: none;
           border: 0;
-          width: 23px;
+          width: 30px;
+          height: 30px;
           font-size: 0;
+          .download {
+            margin-left: 0;
+          }
         }
       }
     }
