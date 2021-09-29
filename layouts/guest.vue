@@ -24,7 +24,7 @@
                 <span class="header__text">WorkQuest</span>
               </div>
               <div
-                v-if="userRole === 'employer'"
+                v-if="userLogin === 'true' && userRole === 'employer'"
                 class="header__links"
               >
                 <nuxt-link
@@ -88,7 +88,7 @@
                 </button>
               </div>
               <div
-                v-if="userRole === 'worker'"
+                v-if="userLogin === 'true' && userRole === 'worker'"
                 class="header__links"
               >
                 <nuxt-link
