@@ -948,6 +948,7 @@
     "areYouSure": "Are You Sure?",
     "transactionSend": "Transaction send",
     "transactionFail": "Transaction fail",
+    "transactionCheck": "Check transaction",
     "cardHasBeenAdded": "Card has been added",
     "deposit": "Receive",
     "numberOfCard": "Card number",
@@ -1143,7 +1144,8 @@
       "disputes": "Disputes",
       "instruments": "Instruments",
       "DeFi": "DeFi functionality",
-      "logout": "Logout"
+      "logout": "Logout",
+      "login": "Login"
     },
     "locals": {
       "en": "EN",
@@ -1162,6 +1164,7 @@
       "invite": "Invites you to complete the quest"
     },
     "menu": {
+      "unauthorized": "Not logged",
       "instruments": "Instruments",
       "crosschain": {
         "title": "WorkQuest Bridge",

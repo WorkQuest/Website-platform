@@ -124,7 +124,7 @@ export default {
 .max {
   &__button {
     margin-right: 10px !important;
-    background: #f3f7fa !important;
+    background: transparent !important;
   }
 }
 .claim {
