@@ -1,23 +1,32 @@
 // eslint-disable-next-line func-names
-export default async function ({
-  store, error, redirect, app, route,
-}) {
+export default async function ({ app, redirect, store }) {
   try {
-    const hasAccess = !!app.$cookies.get('access');
-    const hasRefresh = !!app.$cookies.get('refresh');
-    // const isEmailConfirmed = app.$cookies.get('status');
-    const { role } = store.getters['user/getUserData'];
-    // || isEmailConfirmed === 0
-    if (!hasAccess || !hasRefresh) {
+    const access = app.$cookies.get('access');
+    const refresh = app.$cookies.get('refresh');
+    const userStatus = app.$cookies.get('userStatus');
+    const userData = store.getters['user/getUserData'];
+    const payload = {
+      access,
+      refresh,
+      userData,
+    };
+
+    if (access && refresh) {
+      store.commit('user/setTokens', payload);
+    }
+    if (!access || !refresh) {
       return redirect('/sign-in');
     }
-    if (!role && (hasAccess || hasRefresh)) {
+    if (!Object.keys(userData).length) {
       await store.dispatch('user/getUserData');
+    }
+    if (userStatus === 2) {
+      return redirect('/role');
     }
     return true;
   } catch (e) {
     console.log(e);
-    await store.commit('user/logOut');
+    await store.dispatch('user/logout');
     return redirect('/sign-in');
   }
 }

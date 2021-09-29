@@ -1,0 +1,1230 @@
+<template>
+  <div
+    v-click-outside="hideDd"
+    class="dd"
+  >
+    <div
+      class="dd dd__container"
+    >
+      <button
+        class="dd__btn"
+        @click="toggleDd"
+      >
+        {{ $t('filters.dd.1') }}
+        <span
+          v-if="isOpenDD"
+          class="icon-caret_down"
+        />
+        <span
+          v-else
+          class="icon-caret_up"
+        />
+      </button>
+      <transition name="fade">
+        <div
+          v-if="!isOpenDD"
+          class="dd__list"
+          :class="{'hide': isOpenDD}"
+        >
+          <div
+            class="dd filter"
+            :class="{'hide': isOpenDD}"
+          >
+            <div class="filter__btn">
+              <base-btn
+                mode="outline"
+                @click="showFilterFull"
+              >
+                {{ $t('filters.filterBtn') }}
+              </base-btn>
+            </div>
+            <div class="filter__body">
+              <div
+                v-for="(item, i) in filters.categories"
+                :id="i"
+                :key="i"
+              >
+                <div
+                  class="filter__item item"
+                >
+                  <div
+                    class="item"
+                    @click="toggleCategory(filters, item, i)"
+                  >
+                    <span
+                      class="item__title"
+                    >{{ item.title }}</span>
+                    <span
+                      v-if="!item.visible"
+                      class="icon-caret_down"
+                    />
+                    <span
+                      v-else
+                      class="icon-caret_up"
+                    />
+                  </div>
+                  <div
+                    class="filter__item sub"
+                  >
+                    <div
+                      class="sub__body"
+                      :class="[{'hide': !item.visible}]"
+                    >
+                      <div
+                        class="sub__item checkbox"
+                        @click="selectAll(i)"
+                      >
+                        <input
+                          :id="i"
+                          :ref="`allCheckbox${i}`"
+                          class="checkbox checkbox__box sub"
+                          type="checkbox"
+                          :name="$t('filters.commonSub.selectAll')"
+                          @change="selectAll(i)"
+                        >
+                        <label
+                          :for="i"
+                          class="sub__label"
+                        >{{ $t('filters.commonSub.selectAll') }}</label>
+                      </div>
+
+                      <div
+                        v-for="(sub, idx) in item.items"
+                        :id="idx"
+                        :key="idx"
+                        class="sub__item"
+                        @click="selectSub(idx, i)"
+                      >
+                        <input
+                          :id="sub.id"
+                          :ref="`checkbox${i}`"
+                          class="checkbox checkbox__box sub"
+                          type="checkbox"
+                          :name="sub.title"
+                          @change="selectSub(idx, i)"
+                        >
+                        <label
+                          :id="idx"
+                          class="sub__label"
+                        >{{ sub.title }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="dd__btn">
+            <base-btn @click="hideDd()">
+              {{ $t('meta.apply') }}
+            </base-btn>
+          </div>
+        </div>
+      </transition>
+    </div>
+  </div>
+</template>
+
+<script>
+import ClickOutside from 'vue-click-outside';
+import modals from '~/store/modals/modals';
+
+export default {
+  name: 'Dd',
+  directives: {
+    ClickOutside,
+  },
+  data() {
+    return {
+      isOpenDD: true,
+      selected: [],
+      filters: {
+        categories: {
+          0: {
+            title: this.$t('filters.items.1.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.1.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.1.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.1.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.1.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.1.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.1.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.1.sub.7'),
+              },
+              7: {
+                title: this.$t('filters.items.1.sub.8'),
+              },
+              8: {
+                title: this.$t('filters.items.1.sub.9'),
+              },
+              9: {
+                title: this.$t('filters.items.1.sub.10'),
+              },
+              10: {
+                title: this.$t('filters.items.1.sub.11'),
+              },
+              11: {
+                title: this.$t('filters.items.1.sub.12'),
+              },
+            },
+          },
+          1: {
+            title: this.$t('filters.items.2.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.2.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.2.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.2.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.2.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.2.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.2.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.2.sub.7'),
+              },
+              7: {
+                title: this.$t('filters.items.2.sub.8'),
+              },
+              8: {
+                title: this.$t('filters.items.2.sub.9'),
+              },
+            },
+          },
+          2: {
+            title: this.$t('filters.items.3.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.3.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.3.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.3.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.3.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.3.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.3.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.3.sub.7'),
+              },
+              7: {
+                title: this.$t('filters.items.3.sub.8'),
+              },
+              8: {
+                title: this.$t('filters.items.3.sub.9'),
+              },
+            },
+          },
+          3: {
+            title: this.$t('filters.items.4.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.4.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.4.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.4.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.4.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.4.sub.5'),
+              },
+            },
+          },
+          4: {
+            title: this.$t('filters.items.5.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.5.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.5.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.5.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.5.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.5.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.5.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.5.sub.7'),
+              },
+              7: {
+                title: this.$t('filters.items.5.sub.8'),
+              },
+            },
+          },
+          5: {
+            title: this.$t('filters.items.6.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.6.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.6.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.6.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.6.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.6.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.6.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.6.sub.7'),
+              },
+              7: {
+                title: this.$t('filters.items.6.sub.8'),
+              },
+              8: {
+                title: this.$t('filters.items.6.sub.9'),
+              },
+              9: {
+                title: this.$t('filters.items.6.sub.10'),
+              },
+            },
+          },
+          6: {
+            title: this.$t('filters.items.7.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.7.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.7.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.7.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.7.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.7.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.7.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.7.sub.7'),
+              },
+              7: {
+                title: this.$t('filters.items.7.sub.8'),
+              },
+              8: {
+                title: this.$t('filters.items.7.sub.9'),
+              },
+              9: {
+                title: this.$t('filters.items.7.sub.10'),
+              },
+            },
+          },
+          7: {
+            title: this.$t('filters.items.8.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.8.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.8.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.8.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.8.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.8.sub.5'),
+              },
+            },
+          },
+          8: {
+            title: this.$t('filters.items.9.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.9.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.9.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.9.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.9.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.9.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.9.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.9.sub.7'),
+              },
+            },
+          },
+          9: {
+            title: this.$t('filters.items.10.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.10.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.10.sub.2'),
+              },
+            },
+          },
+          10: {
+            title: this.$t('filters.items.11.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.11.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.11.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.11.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.11.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.11.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.11.sub.6'),
+              },
+            },
+          },
+          11: {
+            title: this.$t('filters.items.12.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.12.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.12.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.12.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.12.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.12.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.12.sub.6'),
+              },
+            },
+          },
+          12: {
+            title: this.$t('filters.items.13.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.13.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.13.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.13.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.13.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.13.sub.4'),
+              },
+              5: {
+                title: this.$t('filters.items.13.sub.5'),
+              },
+              6: {
+                title: this.$t('filters.items.13.sub.6'),
+              },
+            },
+          },
+          13: {
+            title: this.$t('filters.items.14.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.14.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.14.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.14.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.14.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.14.sub.5'),
+              },
+            },
+          },
+          14: {
+            title: this.$t('filters.items.15.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.15.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.15.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.15.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.15.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.15.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.15.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.15.sub.7'),
+              },
+            },
+          },
+          15: {
+            title: this.$t('filters.items.16.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.16.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.16.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.16.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.16.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.16.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.16.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.16.sub.7'),
+              },
+              7: {
+                title: this.$t('filters.items.16.sub.8'),
+              },
+            },
+          },
+          16: {
+            title: this.$t('filters.items.17.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.17.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.17.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.17.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.17.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.17.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.17.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.17.sub.7'),
+              },
+            },
+          },
+          17: {
+            title: this.$t('filters.items.18.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.18.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.18.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.18.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.18.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.18.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.18.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.18.sub.7'),
+              },
+              7: {
+                title: this.$t('filters.items.18.sub.8'),
+              },
+              8: {
+                title: this.$t('filters.items.18.sub.9'),
+              },
+              10: {
+                title: this.$t('filters.items.18.sub.10'),
+              },
+              11: {
+                title: this.$t('filters.items.18.sub.11'),
+              },
+              12: {
+                title: this.$t('filters.items.18.sub.12'),
+              },
+              13: {
+                title: this.$t('filters.items.18.sub.13'),
+              },
+            },
+          },
+          18: {
+            title: this.$t('filters.items.19.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.19.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.19.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.19.sub.4'),
+              },
+              3: {
+                title: this.$t('filters.items.19.sub.5'),
+              },
+              4: {
+                title: this.$t('filters.items.19.sub.6'),
+              },
+              5: {
+                title: this.$t('filters.items.19.sub.7'),
+              },
+              6: {
+                title: this.$t('filters.items.19.sub.8'),
+              },
+              7: {
+                title: this.$t('filters.items.19.sub.9'),
+              },
+              8: {
+                title: this.$t('filters.items.19.sub.10'),
+              },
+            },
+          },
+          19: {
+            title: this.$t('filters.items.20.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.20.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.20.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.20.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.20.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.20.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.20.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.20.sub.7'),
+              },
+              7: {
+                title: this.$t('filters.items.20.sub.8'),
+              },
+              8: {
+                title: this.$t('filters.items.20.sub.9'),
+              },
+              9: {
+                title: this.$t('filters.items.20.sub.10'),
+              },
+              10: {
+                title: this.$t('filters.items.20.sub.11'),
+              },
+              11: {
+                title: this.$t('filters.items.20.sub.12'),
+              },
+              12: {
+                title: this.$t('filters.items.20.sub.13'),
+              },
+              13: {
+                title: this.$t('filters.items.20.sub.14'),
+              },
+              14: {
+                title: this.$t('filters.items.20.sub.15'),
+              },
+              15: {
+                title: this.$t('filters.items.20.sub.16'),
+              },
+              16: {
+                title: this.$t('filters.items.20.sub.17'),
+              },
+              17: {
+                title: this.$t('filters.items.20.sub.18'),
+              },
+              18: {
+                title: this.$t('filters.items.20.sub.19'),
+              },
+            },
+          },
+          20: {
+            title: this.$t('filters.items.21.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.21.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.21.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.21.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.21.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.21.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.21.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.21.sub.7'),
+              },
+              7: {
+                title: this.$t('filters.items.21.sub.8'),
+              },
+              8: {
+                title: this.$t('filters.items.21.sub.9'),
+              },
+              9: {
+                title: this.$t('filters.items.21.sub.10'),
+              },
+              10: {
+                title: this.$t('filters.items.21.sub.11'),
+              },
+            },
+          },
+          21: {
+            title: this.$t('filters.items.22.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.22.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.22.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.22.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.22.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.22.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.22.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.22.sub.7'),
+              },
+              7: {
+                title: this.$t('filters.items.22.sub.8'),
+              },
+            },
+          },
+          22: {
+            title: this.$t('filters.items.23.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.23.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.23.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.23.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.23.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.23.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.23.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.23.sub.7'),
+              },
+              7: {
+                title: this.$t('filters.items.23.sub.8'),
+              },
+              8: {
+                title: this.$t('filters.items.23.sub.9'),
+              },
+            },
+          },
+          23: {
+            title: this.$t('filters.items.24.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.24.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.24.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.24.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.24.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.24.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.24.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.24.sub.7'),
+              },
+              7: {
+                title: this.$t('filters.items.24.sub.8'),
+              },
+              8: {
+                title: this.$t('filters.items.24.sub.9'),
+              },
+            },
+          },
+          24: {
+            title: this.$t('filters.items.25.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.25.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.25.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.25.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.25.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.25.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.25.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.25.sub.7'),
+              },
+              7: {
+                title: this.$t('filters.items.25.sub.8'),
+              },
+              8: {
+                title: this.$t('filters.items.25.sub.9'),
+              },
+            },
+          },
+          25: {
+            title: this.$t('filters.items.26.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.26.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.26.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.26.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.26.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.26.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.26.sub.6'),
+              },
+              6: {
+                title: this.$t('filters.items.26.sub.7'),
+              },
+              7: {
+                title: this.$t('filters.items.26.sub.8'),
+              },
+              8: {
+                title: this.$t('filters.items.26.sub.9'),
+              },
+              9: {
+                title: this.$t('filters.items.26.sub.10'),
+              },
+            },
+          },
+          26: {
+            title: this.$t('filters.items.27.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.27.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.27.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.27.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.27.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.27.sub.5'),
+              },
+            },
+          },
+          27: {
+            title: this.$t('filters.items.28.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.28.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.28.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.28.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.28.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.28.sub.5'),
+              },
+              5: {
+                title: this.$t('filters.items.28.sub.6'),
+              },
+            },
+          },
+          28: {
+            title: this.$t('filters.items.29.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.29.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.29.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.29.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.29.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.29.sub.5'),
+              },
+            },
+          },
+          29: {
+            title: this.$t('filters.items.30.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.30.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.30.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.30.sub.3'),
+              },
+              3: {
+                title: this.$t('filters.items.30.sub.4'),
+              },
+              4: {
+                title: this.$t('filters.items.30.sub.5'),
+              },
+            },
+          },
+          30: {
+            title: this.$t('filters.items.31.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.31.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.31.sub.2'),
+              },
+              2: {
+                title: this.$t('filters.items.31.sub.3'),
+              },
+            },
+          },
+          31: {
+            title: this.$t('filters.items.32.title'),
+            visible: false,
+            items: {
+              0: {
+                title: this.$t('filters.items.32.sub.1'),
+              },
+              1: {
+                title: this.$t('filters.items.32.sub.2'),
+              },
+            },
+          },
+        },
+      },
+    };
+  },
+  methods: {
+    selectAll(idx) {
+      const selectAllCheckbox = this.$refs[`allCheckbox${idx}`];
+      const checkboxes = this.$refs[`checkbox${idx}`];
+      selectAllCheckbox[0].checked = !selectAllCheckbox[0].checked;
+      for (let i = 0; i < Object.keys(checkboxes).length; i += 1) {
+        checkboxes[i].checked = selectAllCheckbox[0].checked;
+      }
+    },
+    selectSub(item, category) {
+      const checkbox = this.$refs[`checkbox${category}`][item];
+      checkbox.checked = !checkbox.checked;
+    },
+    hideDd() {
+      this.isOpenDD = true;
+    },
+    toggleDd() {
+      this.isOpenDD = !this.isOpenDD;
+    },
+    toggleCategory(filters, item, index) {
+      const { categories } = filters;
+      const { length } = Object.keys(filters.categories);
+      const numIndex = Number(index);
+      for (let i = 0; i < length; i += 1) {
+        if (i !== numIndex) {
+          categories[i].visible = false;
+        } else if (i === numIndex) {
+          categories[i].visible = !categories[i].visible;
+        }
+      }
+    },
+    showFilterFull() {
+      this.ShowModal({
+        key: modals.questFilterFull,
+      });
+    },
+  },
+};
+</script>
+
+<style scoped lang="scss">
+.icon {
+  cursor: pointer;
+  font-size: 25px;
+  color: $blue !important;
+  &-caret_up::before {
+    @extend .icon;
+    content: "\ea4b";
+  }
+  &-caret_down::before {
+    @extend .icon;
+    content: "\ea48";
+  }
+}
+
+.checkbox {
+  z-index: 3;
+  &:hover {
+    cursor: pointer;
+  }
+  &__box {
+    cursor: pointer;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+.filter {
+  &__body {
+    overflow-y: auto;
+    height: 400px;
+    margin: 10px 0 0 0;
+    padding: 10px 0 0 0;
+  }
+  &__item {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.item {
+  width: 100%;
+}
+
+.sub {
+  &__label {
+    text-overflow: ellipsis;
+    display: contents;
+    &:hover {
+      text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
+      cursor: pointer;
+    }
+  }
+  &__item {
+    width: 100%;
+    margin: 0 0 5px 0;
+    z-index: 1;
+    &:hover {
+      text-shadow: 0px -1px 10px -3px rgba(34, 60, 80, 0.4);
+      cursor: pointer;
+    }
+    &:last-child {
+      margin: 0;
+    }
+  }
+}
+
+.dd {
+  &__container {
+    display: flex;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 130%;
+    color: $black500;
+    min-width: 131px;
+    position: relative;
+    text-align: left;
+  }
+  &__btn {
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    width: 100%;
+    max-width: 400px;
+    background: #FFFFFF;
+    border-radius: 6px;
+    justify-items: center;
+    &_gray {
+      background-color: $black0;
+    }
+  }
+  &__list {
+    @include box;
+    width: 400px;
+    position: absolute;
+    background: #FFFFFF;
+    top: calc(100% + 4px);
+    display: grid;
+    align-items: center;
+    justify-content: flex-start;
+    grid-gap: 15px;
+    padding: 15px 20px;
+    z-index: 1;
+  }
+}
+</style>

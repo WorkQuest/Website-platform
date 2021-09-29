@@ -1,0 +1,169 @@
+<template>
+  <ctm-modal-box
+    class="views"
+    :title="$t('modals.raiseViews')"
+  >
+    <div class="views__content content">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+      >
+        <div class="content__field">
+          <div class="field__subtitle">
+            {{ $t('modals.priceOfAClick') }}
+          </div>
+          <base-field
+            v-model="priceOfAClick"
+            :placeholder="'0 WUSD'"
+            class="field__input"
+            mode="white"
+            rules="required|decimal"
+            :name="$t('modals.priceOfAClickField')"
+          />
+          <div class="field__subtitle">
+            {{ $t('modals.city') }}
+          </div>
+          <base-field
+            v-model="city"
+            :placeholder="'Moscow'"
+            class="field__input"
+            mode="white"
+            rules="required|alpha_spaces"
+            :name="$t('modals.cityField')"
+          />
+          <div class="field__subtitle">
+            {{ $t('modals.period') }}
+          </div>
+          <base-dd
+            v-model="period"
+            class="field__drop"
+            :items="items"
+            :placeholder="$t('placeholders.default')"
+          />
+        </div>
+        <div class="content__container container">
+          <div class="container__title">
+            {{ $t('modals.estimatedPayment') }}
+          </div>
+          <div class="container__cost">
+            {{ $t('modals.estimatedPaymentField') }}
+          </div>
+        </div>
+        <div class="content__buttons buttons">
+          <base-btn
+            class="buttons__action"
+            :disabled="!validated || !passed || invalid || period===''"
+            @click="handleSubmit(showTransactionSendModal)"
+          >
+            {{ $t('meta.ok') }}
+          </base-btn>
+          <base-btn
+            :mode="'outline'"
+            class="buttons__action"
+            @click="hide"
+          >
+            {{ $t('meta.cancel') }}
+          </base-btn>
+        </div>
+      </validation-observer>
+    </div>
+  </ctm-modal-box>
+</template>
+
+<script>
+import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
+
+export default {
+  name: 'ModalRaiseViews',
+  data() {
+    return {
+      priceOfAClick: '',
+      city: '',
+      period: '',
+      example: 'sdf',
+    };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+    items() {
+      return [
+        'Day',
+        'Week',
+        'Month',
+        'Year',
+      ];
+    },
+  },
+  methods: {
+    hide() {
+      this.CloseModal();
+    },
+    showTransactionSendModal() {
+      this.ShowModal({
+        key: modals.transactionSend,
+      });
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+
+.views {
+  max-width: 650px !important;
+  &__content {
+    padding: 20px 28px 30px;
+  }
+}
+.content{
+  &__container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 25px;
+  }
+  &__buttons{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    margin-top: 25px;
+  }
+}
+.container {
+  &__title {
+    color: $black500;
+    font-weight: 400;
+    font-size: 16px;
+  }
+  &__cost {
+    color: $blue;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 0 0 0 5px;
+  }
+}
+.buttons{
+  &__action{
+    max-width: 271px!important;
+  }
+}
+.field{
+  &__subtitle{
+    margin-bottom: 4px;
+  }
+  &__placeholder{
+    color: $black300;
+    font-size: 16px;
+    line-height: 130%;
+    margin-right: auto;
+  }
+  &__drop{
+    border: 1px solid #F7F8FA;
+    border-radius: 6px;
+    color: $black800!important;
+  }
+}
+</style>

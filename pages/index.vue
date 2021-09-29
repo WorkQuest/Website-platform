@@ -4,6 +4,8 @@
 <script>
 export default {
   name: 'Index',
-  layout: 'landing',
+  created() {
+    this.$router.push('/sign-in');
+  },
 };
 </script>
