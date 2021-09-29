@@ -135,10 +135,4 @@ export default {
   async confirmPhone(payload) {
     return await this.$axios.$post('/v1/profile/phone/confirm', payload);
   },
-  async getUserData({ commit }) {
-    const response = await this.$axios.$get('/v1/profile/me');
-    console.log(response);
-    commit('setUserData', response.result);
-    return response.result;
-  },
 };
