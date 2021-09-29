@@ -49,6 +49,7 @@ jobs:
           echo MAINNET_ETH_WQT_TOKEN=${{ secrets.MAINNET_ETH_WQT_TOKEN }} >> .env
           echo MAINNET_ETH_BRIDGE=${{ secrets.MAINNET_ETH_BRIDGE }} >> .env
           echo EXCHANGE_ADDRESS_BSCMAINNET=${{ secrets.EXCHANGE_ADDRESS_BSCMAINNET }} >> .env
+          echo TOKEN_WQT_OLD_ADDRESS_BSCMAINNET=${{ secrets.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET }} >> .env
       - name: Run generate static task
         run: npm run generate
                  #    env:
@@ -113,6 +114,7 @@ jobs:
           echo MAINNET_ETH_WQT_TOKEN=${{ secrets.MAINNET_ETH_WQT_TOKEN }} >> .env
           echo MAINNET_ETH_BRIDGE=${{ secrets.MAINNET_ETH_BRIDGE }} >> .env
           echo EXCHANGE_ADDRESS_BSCMAINNET=${{ secrets.EXCHANGE_ADDRESS_BSCMAINNET }} >> .env
+          echo TOKEN_WQT_OLD_ADDRESS_BSCMAINNET=${{ secrets.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET }} >> .env
       - name: Run generate static task
         run: npm run generate
     #    env:
