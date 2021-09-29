@@ -78,16 +78,14 @@ export default {
       this.amount = this.options.type === 1 ? this.userBalance : this.userStake;
     },
     async tokensDataUpdate() {
-      const action = this.miningPoolId === 'ETH' ? 'web3/getTokensData' : 'web3/getTokensDataBSC';
-      const tokensData = await this.$store.dispatch(action, { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
+      const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
     },
     async staking() {
       this.SetLoader(true);
       this.hide();
-      const action = this.miningPoolId === 'ETH' ? 'web3/stake' : 'web3/stakeBSC';
-      await this.$store.dispatch(action, {
+      await this.$store.dispatch('web3/stake', {
         decimals: this.accountData.decimals.stakeDecimal,
         amount: this.amount,
       });
@@ -97,8 +95,7 @@ export default {
     async unstaking() {
       this.SetLoader(true);
       this.hide();
-      const action = this.miningPoolId === 'ETH' ? 'web3/unstake' : 'web3/unstakeBSC';
-      await this.$store.dispatch(action, {
+      await this.$store.dispatch('web3/unstake', {
         decimals: this.accountData?.decimals?.stakeDecimal,
         amount: this.amount,
       });

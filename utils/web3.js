@@ -15,13 +15,6 @@ let stakeTokenDecimalsLp;
 let store;
 let axios;
 
-const web3ByChainId = {};
-
-const testNetworksAddress = {
-  0: 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-  1: 'https://data-seed-prebsc-2-s1.binance.org:8545/',
-};
-
 if (process.browser) {
   window.onNuxtReady(({ $store, $axios }) => {
     store = $store;
@@ -48,16 +41,6 @@ export const error = (code = 90000, msg = '', data = null) => ({
   msg,
   data,
 });
-
-const getStakeTokenDecimals = (postFix) => {
-  if (postFix === 'Main') {
-    return stakeTokenDecimalsMain;
-  } if (postFix === 'Lp') {
-    return stakeTokenDecimalsLp;
-  }
-  console.log('unknown postfix');
-  return false;
-};
 
 export const fetchContractData = async (_method, _abi, _address, _params, _provider = web3) => {
   try {
@@ -177,85 +160,35 @@ let nonce;
 export const staking = async (_decimals, _amount) => {
   form = 10 ** _decimals;
   amount = Math.floor(_amount * form) / form;
+  const miningPoolId = localStorage.getItem('miningPoolId');
   if (process.env.PROD === 'true') {
-    // instance = await createInstance(abi.ERC20, process.env.LP_TOKEN);
-    // contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
-    // allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS])).toString();
-    // try {
-    // amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
-    //   if (+allowance < +amount) {
-    //     store.dispatch('main/setStatusText', 'Approving');
-    //     showToast('Stacking', 'Approving...', 'success');
-    //     await instance.approve(process.env.STAKING_ADDRESS, amount);
-    //     showToast('Stacking', 'Approving done', 'success');
-    //   }
-    //   showToast('Stacking', 'Staking...', 'success');
-    //   store.dispatch('main/setStatusText', 'Staking');
-    //   await contractInstance.stake(amount);
-    //   showToast('Stacking', 'Staking done', 'success');
-    //   return '';
-    // } catch (e) {
-    //   showToast('Stacking error', `${e.message}`, 'danger');
-    //   return error(500, 'stake error', e);
-    // }
-  } if (process.env.PROD === 'false') {
-    instance = await createInstance(abi.ERC20, process.env.LP_TOKEN);
-    contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
-    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS])).toString();
-    try {
-      amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
-      if (+allowance < +amount) {
-        store.dispatch('main/setStatusText', 'Approving');
-        showToast('Stacking', 'Approving...', 'success');
-        await instance.approve(process.env.STAKING_ADDRESS, amount);
-        showToast('Stacking', 'Approving done', 'success');
-      }
-      showToast('Stacking', 'Staking...', 'success');
-      store.dispatch('main/setStatusText', 'Staking');
-      await contractInstance.stake(amount);
-      showToast('Stacking', 'Staking done', 'success');
-      return '';
-    } catch (e) {
-      showToast('Stacking error', `${e.message}`, 'danger');
-      return error(500, 'stake error', e);
+    if (miningPoolId === 'ETH') {
+      instance = await createInstance(abi.ERC20, process.env.LP_TOKEN);
+      contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
+      allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS])).toString();
+    } else {
+      instance = await createInstance(abi.ERC20, process.env.CAKE_LP_TOKEN);
+      contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS_BSC);
+      allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.CAKE_LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS_BSC])).toString();
     }
-  }
-  return '';
-};
-
-export const stakingBSC = async (_decimals, _amount) => {
-  form = 10 ** _decimals;
-  amount = Math.floor(_amount * form) / form;
-  if (process.env.PROD === 'true') {
-    // instance = await createInstance(abi.ERC20, process.env.CAKE_LP_TOKEN);
-    // contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS_BSC);
-    // allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.CAKE_LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS_BSC])).toString();
-    // try {
-    //   amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
-    //   if (+allowance < +amount) {
-    //     store.dispatch('main/setStatusText', 'Approving');
-    //     showToast('Stacking', 'Approving...', 'success');
-    //     await instance.approve(process.env.STAKING_ADDRESS_BSC, amount);
-    //     showToast('Stacking', 'Approving done', 'success');
-    //   }
-    //   showToast('Stacking', 'Staking...', 'success');
-    //   store.dispatch('main/setStatusText', 'Staking');
-    //   await contractInstance.stake(amount);
-    //   showToast('Stacking', 'Staking done', 'success');
-    //   return '';
-    // } catch (e) {
-    //   showToast('Stacking error', `${e.message}`, 'danger');
-    //   return error(500, 'stake error', e);
-    // }
   } if (process.env.PROD === 'false') {
-    instance = await createInstance(abi.ERC20, process.env.CAKE_LP_TOKEN);
-    contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS_BSC);
-    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.CAKE_LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS_BSC])).toString();
+    if (miningPoolId === 'ETH') {
+      instance = await createInstance(abi.ERC20, process.env.LP_TOKEN);
+      contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
+      allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS])).toString();
+    } else {
+      instance = await createInstance(abi.ERC20, process.env.CAKE_LP_TOKEN);
+      contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS_BSC);
+      allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.CAKE_LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS_BSC])).toString();
+    }
     try {
       amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
       if (+allowance < +amount) {
         store.dispatch('main/setStatusText', 'Approving');
         showToast('Stacking', 'Approving...', 'success');
+        if (miningPoolId === 'ETH') {
+          await instance.approve(process.env.STAKING_ADDRESS, amount);
+        }
         await instance.approve(process.env.STAKING_ADDRESS_BSC, amount);
         showToast('Stacking', 'Approving done', 'success');
       }
@@ -275,54 +208,19 @@ export const stakingBSC = async (_decimals, _amount) => {
 export const unStaking = async (_decimals, _amount) => {
   form = 10 ** _decimals;
   amount = Math.floor(_amount * form) / form;
+  const miningPoolId = localStorage.getItem('miningPoolId');
   if (process.env.PROD === 'true') {
-    // contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
-    // try {
-    //   amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
-    //   showToast('Unstacking', 'Unstacking...', 'success');
-    //   store.dispatch('main/setStatusText', 'Staking');
-    //   await contractInstance.unstake(amount);
-    //   showToast('Unstacking', 'Unstaking done', 'success');
-    //   return '';
-    // } catch (e) {
-    //   showToast('Unstacking error', `${e.message}`, 'danger');
-    //   return error(500, 'stake error', e);
-    // }
-  } if (process.env.PROD === 'false') {
-    contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
-    try {
-      amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
-      showToast('Unstacking', 'Unstacking...', 'success');
-      store.dispatch('main/setStatusText', 'Staking');
-      await contractInstance.unstake(amount);
-      showToast('Unstacking', 'Unstaking done', 'success');
-      return '';
-    } catch (e) {
-      showToast('Unstacking error', `${e.message}`, 'danger');
-      return error(500, 'stake error', e);
+    if (miningPoolId === 'ETH') {
+      contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
+    } else {
+      contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS_BSC);
     }
-  }
-  return '';
-};
-
-export const unStakingBSC = async (_decimals, _amount) => {
-  form = 10 ** _decimals;
-  amount = Math.floor(_amount * form) / form;
-  if (process.env.PROD === 'true') {
-    // contractInstance = await createInstance(abi.WQLiquidityMining, process.env.STAKING_ADDRESS_BSC);
-    // try {
-    //   amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
-    //   showToast('Unstacking', 'Unstacking...', 'success');
-    //   store.dispatch('main/setStatusText', 'Staking');
-    //   await contractInstance.unstake(amount);
-    //   showToast('Unstacking', 'Unstaking done', 'success');
-    //   return '';
-    // } catch (e) {
-    //   showToast('Unstacking error', `${e.message}`, 'danger');
-    //   return error(500, 'stake error', e);
-    // }
   } if (process.env.PROD === 'false') {
-    contractInstance = await createInstance(abi.WQLiquidityMining, process.env.STAKING_ADDRESS_BSC);
+    if (miningPoolId === 'ETH') {
+      contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
+    } else {
+      contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS_BSC);
+    }
     try {
       amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
       showToast('Unstacking', 'Unstacking...', 'success');
@@ -339,60 +237,19 @@ export const unStakingBSC = async (_decimals, _amount) => {
 };
 
 export const claimRewards = async (_decimals, _amount) => {
+  const miningPoolId = localStorage.getItem('miningPoolId');
   if (process.env.PROD === 'true') {
-    // contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
-    // try {
-    //   showToast('Claiming', 'Claiming...', 'success');
-    //   await contractInstance.claim();
-    //   await contractInstance.rewardTotal();
-    //   showToast('Claiming', 'Claiming done', 'success');
-    //   return '';
-    // } catch (e) {
-    //   showToast('Claim error', `${e.message}`, 'danger');
-    //   return error(500, 'claim error', e);
-    // }
-  } if (process.env.PROD === 'false') {
-    contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
-    try {
-      showToast('Claiming', 'Claiming...', 'success');
-      await contractInstance.claim();
-      await contractInstance.rewardTotal();
-      showToast('Claiming', 'Claiming done', 'success');
-      return '';
-    } catch (e) {
-      showToast('Claim error', `${e.message}`, 'danger');
-      return error(500, 'claim error', e);
+    if (miningPoolId === 'ETH') {
+      contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
+    } else {
+      contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS_BSC);
     }
-  }
-  return '';
-};
-
-// export const unstakeOfStake = async (_postFix, _amount) => {
-//   try {
-//     const stakeInstanse = getStakeInstance(_postFix);
-//     const decimals = getStakeTokenDecimals(_postFix);
-//     const response = await stakeInstanse.unstake(new BigNumber(_amount).shiftedBy(+decimals).toString());
-//     return output(response);
-//   } catch (e) {
-//     return error(500, 'unstake error', e);
-//   }
-// };
-
-export const claimRewardsBSC = async (_decimals, _amount) => {
-  if (process.env.PROD === 'true') {
-    // contractInstance = await createInstance(abi.WQLiquidityMining, process.env.STAKING_ADDRESS_BSC);
-    // try {
-    //   showToast('Claiming', 'Claiming...', 'success');
-    //   await contractInstance.claim();
-    //   await contractInstance.rewardTotal();
-    //   showToast('Claiming', 'Claiming done', 'success');
-    //   return '';
-    // } catch (e) {
-    //   showToast('Claim error', `${e.message}`, 'danger');
-    //   return error(500, 'claim error', e);
-    // }
   } if (process.env.PROD === 'false') {
-    contractInstance = await createInstance(abi.WQLiquidityMining, process.env.STAKING_ADDRESS_BSC);
+    if (miningPoolId === 'ETH') {
+      contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS);
+    } else {
+      contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS_BSC);
+    }
     try {
       showToast('Claiming', 'Claiming...', 'success');
       await contractInstance.claim();
@@ -411,26 +268,9 @@ export const swap = async (_decimals, _amount) => {
   form = 10 ** _decimals;
   amount = Math.floor(_amount * form) / form;
   if (process.env.PROD === 'true') {
-    // instance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
-    // contractInstance = await createInstance(abi.WQTExchange, process.env.EXCHANGE_ADDRESS_BSCTESTNET);
-    // allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccount().address, process.env.EXCHANGE_ADDRESS_BSCTESTNET])).toString();
-    // try {
-    //   amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
-    //   if (+allowance < +amount) {
-    //     store.dispatch('main/setStatusText', 'Approving');
-    //     showToast('Swapping', 'Approving...', 'success');
-    //     await instance.approve(process.env.EXCHANGE_ADDRESS_BSCTESTNET, amount);
-    //     showToast('Swapping', 'Approving done', 'success');
-    //   }
-    //   showToast('Swapping', 'Swapping...', 'success');
-    //   await contractInstance.swap(amount);
-    //   store.dispatch('main/setStatusText', 'Swapping');
-    //   showToast('Swapping', 'Swapping done', 'success');
-    //   return '';
-    // } catch (e) {
-    //   showToast('Swapping error', `${e.message}`, 'danger');
-    //   return error(500, 'stake error', e);
-    // }
+    instance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
+    contractInstance = await createInstance(abi.WQTExchange, process.env.EXCHANGE_ADDRESS_BSCTESTNET);
+    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccount().address, process.env.EXCHANGE_ADDRESS_BSCTESTNET])).toString();
   } if (process.env.PROD === 'false') {
     instance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
     contractInstance = await createInstance(abi.WQTExchange, process.env.EXCHANGE_ADDRESS_BSCTESTNET);
@@ -496,16 +336,10 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
       tokenAddress = process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET;
       bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
     }
-    console.log('tokenAddress', tokenAddress);
-    console.log('bridgeAddress', bridgeAddress);
     instance = await createInstance(abi.ERC20, tokenAddress);
-    console.log(instance);
     contractInstance = await createInstance(abi.WQBridge, bridgeAddress);
-    console.log(contractInstance);
     allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
-    console.log(allowance);
     nonce = await web3.eth.getTransactionCount(userAddress);
-    console.log(nonce);
     try {
       amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
       if (+allowance < +amount) {
