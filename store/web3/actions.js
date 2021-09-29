@@ -113,6 +113,7 @@ export default {
           newTokenDecimal,
         },
       };
+      console.log(oldTokenDecimal, oldTokenSymbol, oldTokenBalance, newTokenDecimal, newTokenSymbol, newTokenBalance);
       commit('setBSCTokensData', payload);
     } if (process.env.PROD === 'false') {
       const oldTokenDecimal = await fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
@@ -135,6 +136,7 @@ export default {
           newTokenDecimal,
         },
       };
+      console.log(oldTokenDecimal, oldTokenSymbol, oldTokenBalance, newTokenDecimal, newTokenSymbol, newTokenBalance);
       commit('setBSCTokensData', payload);
     }
   },
