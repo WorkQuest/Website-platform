@@ -144,6 +144,7 @@ export const disconnectWeb3 = () => {
 
 export const createInstance = async (ab, address) => {
   const abs = web4.getContractAbstraction(ab);
+  console.log(abs);
   return await abs.getInstance(address);
 };
 
