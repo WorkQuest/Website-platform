@@ -24,7 +24,7 @@
                 <span class="header__text">WorkQuest</span>
               </div>
               <div
-                v-if="userLogin === 'true' && userRole === 'employer'"
+                v-if="userRole === 'employer'"
                 class="header__links"
               >
                 <nuxt-link
@@ -88,7 +88,7 @@
                 </button>
               </div>
               <div
-                v-if="userLogin === 'true' && userRole === 'worker'"
+                v-if="userRole === 'worker'"
                 class="header__links"
               >
                 <nuxt-link
@@ -1146,7 +1146,7 @@ export default {
   },
   async mounted() {
     this.GetLocation();
-    await this.loginCheck();
+    await this.loginCheck(this.userData);
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
   },
   created() {
@@ -1158,12 +1158,11 @@ export default {
   methods: {
     async loginCheck(userData) {
       localStorage.removeItem('userLogin');
-      if (typeof userData === 'undefined') {
+      if (userData === undefined) {
         localStorage.setItem('userLogin', false);
-      } else {
+      } if (userData === Object) {
         localStorage.setItem('userLogin', true);
       }
-      console.log(userData);
     },
     setLocale(item) {
       this.currentLocale = item.localeText;

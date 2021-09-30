@@ -143,8 +143,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import BigNumber from 'bignumber.js';
-import moment from 'moment';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -165,6 +163,7 @@ export default {
       tokens: 'web3/getTokens',
       account: 'web3/getAccount',
       purseData: 'web3/getPurseData',
+      userData: 'user/getUserData',
       isConnected: 'web3/isConnected',
       crosschainTableData: 'defi/getCrosschainTokensData',
     }),
