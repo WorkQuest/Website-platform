@@ -109,7 +109,6 @@ export default {
     async initSwap() {
       this.SetLoader(true);
       this.hide();
-      console.log(this.oldTokens);
       await this.$store.dispatch('web3/swap', {
         decimals: this.tokensData.decimals.oldTokenDecimal,
         amount: this.oldTokens,
