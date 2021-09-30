@@ -262,7 +262,7 @@ export default {
   },
   data() {
     return {
-      disabled: true,
+      disabled: false,
       miningPoolId: '',
       metamaskStatus: localStorage.getItem('metamaskStatus'),
       items: [],
