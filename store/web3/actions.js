@@ -157,8 +157,8 @@ export default {
         stakingAddress = process.env.STAKING_ADDRESS;
         stakingAbi = abi.StakingWQ;
       } else {
-        stakingAddress = process.env.STAKING_ADDRESS;
-        stakingAbi = abi.StakingWQ;
+        stakingAddress = process.env.MAINNET_BSC_STAKING;
+        stakingAbi = abi.WQLiquidityMining;
       }
     }
     const userInfo = await fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccount().address]);
