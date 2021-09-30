@@ -434,7 +434,8 @@ export default {
       }
     },
     async initTokenDays() {
-      const totalLiquidity = this.miningPoolId === 'BNB' ? this.wqtWbnbTokenDay[0].reserveUSD : this.wqtWethTokenDay[0].reserveUSD;
+      // const totalLiquidity = this.miningPoolId === 'BNB' ? this.wqtWbnbTokenDay[0].reserveUSD : this.wqtWethTokenDay[0].reserveUSD;
+      const totalLiquidity = 0;
       this.totalLiquidityUSD = Math.floor(await totalLiquidity);
     },
     async initGraphData() {
