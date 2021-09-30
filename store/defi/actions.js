@@ -50,7 +50,6 @@ export default {
   },
   async wqtWethSwaps({ commit }) {
     const response = await this.$axios.$get('/v1/pool-liquidity/wqt-weth/swaps');
-    console.log('wqtWethSwaps', response);
     commit('setWqtWethSwaps', response.result);
     return response;
   },
@@ -66,10 +65,8 @@ export default {
   },
   async swapsForCrosschain({ commit }, payload) {
     const response = await this.$axios.$get(`/v1/swaps/take?recipient=${payload}`);
-    console.log('swapsForCrosschain', response);
     const items = [];
     response.result.swaps.forEach((data) => {
-      console.log('data', data);
       let direction = [];
       if (data.chainFrom === 2) {
         direction = [
