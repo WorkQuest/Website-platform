@@ -76,7 +76,7 @@
             </base-btn>
             <base-btn
               v-if="miningPoolId === 'BNB'"
-              :link="'https://pancakeswap.finance/add/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'"
+              :link="'https://pancakeswap.finance/add/BNB/0xe89508D74579A06A65B907c91F697CF4F8D9Fac7'"
               class="btn_bl"
               :disabled="statusBusy"
             >
@@ -129,7 +129,7 @@
             <div class="third__triple">
               <base-btn
                 class="btn_bl"
-                :disabled="!isConnected || statusBusy"
+                :disabled="!isConnected || statusBusy || disabled"
                 @click="openModalClaimRewards()"
               >
                 {{ $t('mining.stake') }}
@@ -137,7 +137,7 @@
               <base-btn
                 class="btn_bl"
                 mode="outline"
-                :disabled="!isConnected || statusBusy"
+                :disabled="!isConnected || statusBusy || disabled"
                 @click="openModalUnstaking()"
               >
                 {{ $t('mining.unstake') }}
@@ -145,7 +145,7 @@
               <base-btn
                 :mode="'outline'"
                 class="bnt__claim"
-                :disabled="!isConnected || statusBusy"
+                :disabled="!isConnected || statusBusy || disabled"
                 @click="claimRewards()"
               >
                 {{ $t('mining.claimReward') }}
@@ -262,7 +262,8 @@ export default {
   },
   data() {
     return {
-      miningPoolId: localStorage.getItem('miningPoolId'),
+      disabled: true,
+      miningPoolId: '',
       metamaskStatus: localStorage.getItem('metamaskStatus'),
       items: [],
       testFields: [
@@ -366,6 +367,7 @@ export default {
       tokensData: 'web3/getTokensAmount',
       tokenLP: 'web3/getLPTokenPrice',
       statusBusy: 'web3/getStatusBusy',
+      userData: 'user/getUserData',
     }),
     totalPages() {
       if (this.wqtWbnbSwaps) {
@@ -397,6 +399,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    await this.checkPool();
     await this.checkMetamaskStatus();
     await this.getWqtWbnbTokenDay();
     await this.getWqtWethTokenDay();
@@ -415,6 +418,11 @@ export default {
   },
 
   methods: {
+    async checkPool() {
+      localStorage.setItem('miningPoolId', 'BNB');
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      this.miningPoolId = localStorage.getItem('miningPoolId');
+    },
     async checkMetamaskStatus() {
       if (typeof window.ethereum === 'undefined') {
         localStorage.setItem('metamaskStatus', 'notInstalled');
@@ -588,8 +596,8 @@ export default {
     },
     iconUrls() {
       return [
-        require('~/assets/img/ui/wqt-logo.svg'),
         require(`~/assets/img/ui/${this.miningPoolId === 'BNB' ? 'bnb' : 'hromb'}-logo.svg`),
+        require('~/assets/img/ui/wqt-logo.svg'),
       ];
     },
   },

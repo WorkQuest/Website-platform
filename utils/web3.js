@@ -2,16 +2,12 @@ import Web3 from 'web3';
 import Web4 from '@cryptonteam/web4';
 import BigNumber from 'bignumber.js';
 import * as abi from '~/abi/abi';
-import { MainNetWQTExchange } from '~/abi/abi';
 
 let web3 = null;
 let web4 = null;
 
 let pingTimer = null;
 let account = {};
-
-let stakeTokenDecimalsMain;
-let stakeTokenDecimalsLp;
 
 let store;
 let axios;
@@ -144,7 +140,6 @@ export const disconnectWeb3 = () => {
 
 export const createInstance = async (ab, address) => {
   const abs = web4.getContractAbstraction(ab);
-  console.log(abs);
   return await abs.getInstance(address);
 };
 
