@@ -10259,6 +10259,29 @@ export const WQLiquidityMining = [
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "removeTokenByAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes32",
         "name": "role",
         "type": "bytes32"
@@ -10335,29 +10358,11 @@ export const WQLiquidityMining = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_rewardTotal",
+        "name": "_startTimeNew",
         "type": "uint256"
       }
     ],
-    "name": "setReward",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_startTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_distributionTime",
-        "type": "uint256"
-      }
-    ],
-    "name": "setTime",
+    "name": "setStartTime",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -10595,6 +10600,32 @@ export const WQLiquidityMining = [
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_distributionTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateDistributionTime",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_rewardTotal",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateReward",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "_user",
         "type": "address"
@@ -10652,7 +10683,7 @@ export const WQLiquidityMining = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_startTimeNew",
+        "name": "_startTime",
         "type": "uint256"
       }
     ],
