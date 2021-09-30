@@ -162,10 +162,11 @@ export default {
       }
     }
     const userInfo = await fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccount().address]);
+    console.log(stakeDecimal);
     const payload = {
-      balanceTokenAmount: new BigNumber(userInfo._balance).shiftedBy(-stakeDecimal).toString(),
-      stakeTokenAmount: new BigNumber(userInfo.staked_).shiftedBy(-stakeDecimal).toString(),
-      rewardTokenAmount: new BigNumber(userInfo.claim_).shiftedBy(-rewardDecimal).toString(),
+      balanceTokenAmount: new BigNumber(userInfo._balance).shiftedBy(-18).toString(),
+      stakeTokenAmount: new BigNumber(userInfo.staked_).shiftedBy(-18).toString(),
+      rewardTokenAmount: new BigNumber(userInfo.claim_).shiftedBy(-18).toString(),
     };
     commit('setStakeAndRewardData', payload);
     return payload;
