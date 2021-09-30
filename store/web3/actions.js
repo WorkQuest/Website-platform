@@ -141,12 +141,27 @@ export default {
 
   async getTokensData({ commit }, { rewardDecimal, stakeDecimal }) {
     const miningPoolId = localStorage.getItem('miningPoolId');
-    let userInfo;
-    if (miningPoolId === 'ETH') {
-      userInfo = await fetchContractData('getInfoByAddress', abi.StakingWQ, process.env.STAKING_ADDRESS, [getAccount().address]);
-    } else {
-      userInfo = await fetchContractData('getInfoByAddress', abi.StakingWQ, process.env.STAKING_ADDRESS_BSC, [getAccount().address]);
+    let stakingAddress;
+    let stakingAbi;
+    if (process.env.PROD === 'false') {
+      if (miningPoolId === 'ETH') {
+        stakingAddress = process.env.STAKING_ADDRESS;
+        stakingAbi = abi.StakingWQ;
+      } else {
+        stakingAddress = process.env.TESTNET_BSC_STAKING;
+        stakingAbi = abi.WQLiquidityMining;
+      }
     }
+    if (process.env.PROD === 'true') {
+      if (miningPoolId === 'ETH') {
+        stakingAddress = process.env.STAKING_ADDRESS;
+        stakingAbi = abi.StakingWQ;
+      } else {
+        stakingAddress = process.env.STAKING_ADDRESS;
+        stakingAbi = abi.StakingWQ;
+      }
+    }
+    const userInfo = await fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccount().address]);
     const payload = {
       balanceTokenAmount: new BigNumber(userInfo._balance).shiftedBy(-stakeDecimal).toString(),
       stakeTokenAmount: new BigNumber(userInfo.staked_).shiftedBy(-stakeDecimal).toString(),
