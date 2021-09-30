@@ -107,14 +107,13 @@ export default {
         recipient: optionsData.recepientFull,
         symbol: 'WQT',
       });
-      console.log(swapObj.receipt.from);
-      console.log(swapObj.tx);
+      console.log(swapObj);
       this.ShowModal({
         key: modals.status,
         img: swapObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
         title: swapObj.code === 500 ? this.$t('modals.transactionFail') : this.$t('modals.transactionSend'),
-        recipient: swapObj.receipt.from,
-        txHash: swapObj.tx,
+        recipient: '',
+        txHash: '',
         chainTo,
         subtitle: '',
       });

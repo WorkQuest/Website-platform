@@ -129,7 +129,7 @@
             <div class="third__triple">
               <base-btn
                 class="btn_bl"
-                :disabled="!isConnected || statusBusy"
+                :disabled="!isConnected || statusBusy || disabled"
                 @click="openModalClaimRewards()"
               >
                 {{ $t('mining.stake') }}
@@ -137,7 +137,7 @@
               <base-btn
                 class="btn_bl"
                 mode="outline"
-                :disabled="!isConnected || statusBusy"
+                :disabled="!isConnected || statusBusy || disabled"
                 @click="openModalUnstaking()"
               >
                 {{ $t('mining.unstake') }}
@@ -145,7 +145,7 @@
               <base-btn
                 :mode="'outline'"
                 class="bnt__claim"
-                :disabled="!isConnected || statusBusy"
+                :disabled="!isConnected || statusBusy || disabled"
                 @click="claimRewards()"
               >
                 {{ $t('mining.claimReward') }}
@@ -262,7 +262,8 @@ export default {
   },
   data() {
     return {
-      miningPoolId: localStorage.getItem('miningPoolId'),
+      disabled: false,
+      miningPoolId: '',
       metamaskStatus: localStorage.getItem('metamaskStatus'),
       items: [],
       testFields: [
@@ -398,6 +399,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    await this.checkPool();
     await this.checkMetamaskStatus();
     await this.getWqtWbnbTokenDay();
     await this.getWqtWethTokenDay();
@@ -416,6 +418,11 @@ export default {
   },
 
   methods: {
+    async checkPool() {
+      localStorage.setItem('miningPoolId', 'BNB');
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      this.miningPoolId = localStorage.getItem('miningPoolId');
+    },
     async checkMetamaskStatus() {
       if (typeof window.ethereum === 'undefined') {
         localStorage.setItem('metamaskStatus', 'notInstalled');

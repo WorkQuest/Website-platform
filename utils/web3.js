@@ -166,9 +166,9 @@ export const staking = async (_decimals, _amount) => {
       stakingAddress = process.env.STAKING_ADDRESS;
       stakingAbi = abi.StakingWQ;
     } else {
-      tokenAddress = process.env.CAKE_LP_TOKEN;
-      stakingAddress = process.env.STAKING_ADDRESS_BSC;
-      stakingAbi = abi.StakingWQ;
+      tokenAddress = process.env.MAINNET_STAKING_LP_TOKEN;
+      stakingAddress = process.env.MAINNET_BSC_STAKING;
+      stakingAbi = abi.WQLiquidityMining;
     }
   }
   if (process.env.PROD === 'false') {
@@ -216,8 +216,8 @@ export const unStaking = async (_decimals, _amount) => {
       stakingAddress = process.env.STAKING_ADDRESS;
       stakingAbi = abi.StakingWQ;
     } else {
-      stakingAddress = process.env.STAKING_ADDRESS_BSC;
-      stakingAbi = abi.StakingWQ;
+      stakingAddress = process.env.MAINNET_BSC_STAKING;
+      stakingAbi = abi.WQLiquidityMining;
     }
   }
   if (process.env.PROD === 'false') {
@@ -250,8 +250,8 @@ export const claimRewards = async (_decimals, _amount) => {
       stakingAddress = process.env.STAKING_ADDRESS;
       stakingAbi = abi.StakingWQ;
     } else {
-      stakingAddress = process.env.STAKING_ADDRESS_BSC;
-      stakingAbi = abi.StakingWQ;
+      stakingAddress = process.env.MAINNET_BSC_STAKING;
+      stakingAbi = abi.WQLiquidityMining;
     }
   }
   if (process.env.PROD === 'false') {

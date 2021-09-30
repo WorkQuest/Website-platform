@@ -10005,7 +10005,13 @@ export const WQLiquidityMining = [
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_paused",
+        "type": "bool"
+      }
+    ],
     "name": "claimingPause",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -10022,13 +10028,6 @@ export const WQLiquidityMining = [
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "claimingUnpause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -10238,9 +10237,15 @@ export const WQLiquidityMining = [
   },
   {
     "inputs": [],
-    "name": "pause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "paused",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -10358,29 +10363,11 @@ export const WQLiquidityMining = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_startTimeNew",
+        "name": "_startTime",
         "type": "uint256"
       }
     ],
     "name": "setStartTime",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_rewardToken",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_stakeToken",
-        "type": "address"
-      }
-    ],
-    "name": "setTokens",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -10446,7 +10433,13 @@ export const WQLiquidityMining = [
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_paused",
+        "type": "bool"
+      }
+    ],
     "name": "stakingPause",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -10463,13 +10456,6 @@ export const WQLiquidityMining = [
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "stakingUnpause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -10544,13 +10530,6 @@ export const WQLiquidityMining = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "unpause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -10564,7 +10543,13 @@ export const WQLiquidityMining = [
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_paused",
+        "type": "bool"
+      }
+    ],
     "name": "unstakingPause",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -10585,27 +10570,7 @@ export const WQLiquidityMining = [
   },
   {
     "inputs": [],
-    "name": "unstakingUnpause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "update",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_distributionTime",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateDistributionTime",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -10619,6 +10584,32 @@ export const WQLiquidityMining = [
       }
     ],
     "name": "updateReward",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_rewardProduced",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateRewardProduced",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_rewardTotal",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateRewardTotal",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -10660,21 +10651,11 @@ export const WQLiquidityMining = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_tps",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_totalStaked",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
         "name": "_totalDistributed",
         "type": "uint256"
       }
     ],
-    "name": "updateStakingInfo",
+    "name": "updateTotalDistributed",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -10683,11 +10664,37 @@ export const WQLiquidityMining = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_startTime",
+        "name": "_totalStaked",
         "type": "uint256"
       }
     ],
-    "name": "updateStartTime",
+    "name": "updateTotalStaked",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tps",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateTps",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_paused",
+        "type": "bool"
+      }
+    ],
+    "name": "updatingPause",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
