@@ -187,7 +187,6 @@ export default {
       if (localStorage.getItem('miningPoolId')) {
         localStorage.removeItem('miningPoolId');
       }
-      console.log(el.item.id);
       localStorage.setItem('miningPoolId', el.item.id);
       this.$router.push(`/mining/${el.item.id}`);
     },

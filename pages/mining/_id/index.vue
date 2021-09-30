@@ -399,6 +399,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    await this.checkPool();
     await this.checkMetamaskStatus();
     await this.getWqtWbnbTokenDay();
     await this.getWqtWethTokenDay();
@@ -417,6 +418,12 @@ export default {
   },
 
   methods: {
+    async checkPool() {
+      if (localStorage.getItem('miningPoolId')) {
+        localStorage.removeItem('miningPoolId');
+      }
+      localStorage.setItem('miningPoolId', 'BNB');
+    },
     async checkMetamaskStatus() {
       if (typeof window.ethereum === 'undefined') {
         localStorage.setItem('metamaskStatus', 'notInstalled');
