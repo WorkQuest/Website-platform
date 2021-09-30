@@ -117,6 +117,9 @@ jobs:
           echo EXCHANGE_ADDRESS_BSCMAINNET=${{ secrets.EXCHANGE_ADDRESS_BSCMAINNET }} >> .env
           echo TOKEN_WQT_OLD_ADDRESS_BSCMAINNET=${{ secrets.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET }} >> .env
           echo TESTNET_BSC_STAKING=${{ secrets.TESTNET_BSC_STAKING }} >> .env
+          echo MAINNET_STAKING_WQT_TOKEN=${{ secrets.MAINNET_STAKING_WQT_TOKEN }} >> .env
+          echo MAINNET_STAKING_LP_TOKEN=${{ secrets.MAINNET_STAKING_LP_TOKEN }} >> .env
+          echo MAINNET_BSC_STAKING=${{ secrets.MAINNET_BSC_STAKING }} >> .env
       - name: Run generate static task
         run: npm run generate
     #    env:
