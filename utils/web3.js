@@ -187,6 +187,9 @@ export const staking = async (_decimals, _amount) => {
       stakingAbi = abi.WQLiquidityMining;
     }
   }
+  console.log('tokenAddress', tokenAddress);
+  console.log('stakingAddress', stakingAddress);
+  console.log('stakingAbi', stakingAbi);
   instance = await createInstance(abi.ERC20, tokenAddress);
   contractInstance = await createInstance(stakingAbi, stakingAddress);
   allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, stakingAddress])).toString();
