@@ -21,14 +21,20 @@
         <div
           ref="HandleScrollContainer"
           class="chat-container__scroll-cont"
-          @scroll="handleScroll($event)"
+          @scroll="handleScroll"
         >
           <div
             ref="ScrollContainer"
             class="chat-container__messages"
           >
             <div
-              v-for="message in messages.list"
+              v-if="isChatsLoading"
+              class="chat-container__loader-cont"
+            >
+              <loader class="chat-container__loader" />
+            </div>
+            <div
+              v-for="(message, i) in messages.list"
               :key="message.id"
               class="chat-container__message message"
               :class="{'message_right' : message.itsMe}"
@@ -38,10 +44,11 @@
                 :src="message.sender.avatar ? message.sender.avatar.url : require('~/assets/img/ui/template_avatar.svg')"
                 alt=""
                 class="message__avatar"
+                :class="{'message__avatar_hidden' : i && messages.list[i - 1].senderUserId == message.senderUserId}"
               >
               <div class="message__data">
                 <div
-                  v-if="!message.itsMe"
+                  v-if="!message.itsMe && (!i || (i && messages.list[i - 1].senderUserId != message.senderUserId))"
                   class="message__title"
                 >
                   {{ message.sender.firstName + ' ' + message.sender.lastName }}
@@ -146,7 +153,6 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
-import messages from '~/components/app/pages/common/messages';
 
 export default {
   name: 'Messages',
@@ -155,7 +161,8 @@ export default {
   },
   data() {
     return {
-      isShowFavourite: false,
+      isChatsLoading: false,
+      isShowFavorite: false,
       messageText: '',
       files: [],
       filter: {
@@ -166,11 +173,6 @@ export default {
       minScrollDifference: 0,
       isScrollBtnVis: false,
     };
-  },
-  watch: {
-    getMessages() {
-      console.log(this.messages.list);
-    },
   },
   computed: {
     ...mapGetters({
@@ -229,10 +231,17 @@ export default {
         };
       }
     },
-    handleScroll(ev) {
-      const { minScrollDifference } = this;
+    async handleScroll({ target: { scrollTop, scrollHeight } }) {
+      const { minScrollDifference, filter, messages: { list, count } } = this;
 
-      this.isScrollBtnVis = minScrollDifference > 500 && minScrollDifference > ev.target.scrollTop;
+      this.isScrollBtnVis = scrollHeight - scrollTop > minScrollDifference;
+
+      if (scrollTop < 100 && count > 20 && list.length < count && !this.isChatsLoading) {
+        this.isChatsLoading = true;
+        this.filter.offset = filter.offset + list.length;
+        await this.getMessages();
+        this.isChatsLoading = false;
+      }
     },
     async getMessages() {
       const payload = {
@@ -263,7 +272,7 @@ export default {
       setTimeout(() => {
         const { HandleScrollContainer, ScrollContainer } = this.$refs;
         ScrollContainer.scrollIntoView(false);
-        this.minScrollDifference = HandleScrollContainer.scrollHeight - HandleScrollContainer.scrollTop;
+        this.minScrollDifference = (HandleScrollContainer.scrollHeight - HandleScrollContainer.scrollTop) * 2;
       }, 100);
     },
     showNoticeModal() {
@@ -382,6 +391,7 @@ export default {
     overflow: auto;
     padding: 20px 20px 0;
     height: calc(100vh - 420px);
+    min-height: 400px;
     display: grid;
     align-items: end;
   }
@@ -438,6 +448,16 @@ export default {
   &__messages {
     display: grid;
     gap: 20px;
+  }
+
+  &__loader-cont {
+    height: 60px;
+    position: relative;
+  }
+
+  &__loader {
+    position: absolute !important;
+    background: rgba(255, 255, 255, 1) !important;
   }
 }
 
@@ -546,6 +566,10 @@ export default {
     height: 43px;
     width: 43px;
     border-radius: 50%;
+
+    &_hidden {
+      visibility: hidden;
+    }
   }
 
   &__data {

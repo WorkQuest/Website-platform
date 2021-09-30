@@ -11,9 +11,16 @@ export default {
   async getMessagesList({ commit, rootState }, { params, chatId }) {
     const { result } = await this.$axios.$get(`/v1/user/me/chat/${chatId}/messages`, { params });
     const myId = rootState.user.userData.id;
+
+    result.messages.reverse();
     result.messages.forEach((message) => {
       message.itsMe = message.sender.id === myId;
     });
+
+    if (params.offset) {
+      result.messages = result.messages.concat(rootState.data.messages.list);
+    }
+
     commit('setMessagesList', { ...result, chatId });
   },
   handleCreateChat({ commit }, { config, userId }) {

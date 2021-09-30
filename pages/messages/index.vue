@@ -10,7 +10,7 @@
       <div class="chats-container">
         <div class="chats-container__header">
           <div>{{ $t('chat.chat') }}</div>
-          <ChatMenu />
+          <chat-menu />
         </div>
         <div class="chats-container__list">
           <div

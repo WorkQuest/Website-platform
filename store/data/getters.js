@@ -27,5 +27,5 @@ export default {
   getChats: (state) => state.chats,
   notificationsConnectionStatus: (state) => state.connections,
   getCurrChatId: (state) => state.messages.chatId,
-  getLastMessageId: (state) => (state.messages.list.length ? state.messages.list[state.messages.list.length - 1].id : ''),
+  getLastMessageId: (state) => (state.messages.count ? state.messages.list[state.messages.list.length - 1].id : ''),
 };
