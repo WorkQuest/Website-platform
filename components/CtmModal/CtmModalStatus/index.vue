@@ -27,6 +27,7 @@
       <a
         v-if="options.txHash"
         :href="link"
+        target="_blank"
       >
         {{ $t('modals.transactionCheck') }}
       </a>
