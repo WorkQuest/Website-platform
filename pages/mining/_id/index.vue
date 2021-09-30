@@ -589,8 +589,8 @@ export default {
     },
     iconUrls() {
       return [
-        require('~/assets/img/ui/wqt-logo.svg'),
         require(`~/assets/img/ui/${this.miningPoolId === 'BNB' ? 'bnb' : 'hromb'}-logo.svg`),
+        require('~/assets/img/ui/wqt-logo.svg'),
       ];
     },
   },

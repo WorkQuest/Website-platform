@@ -23,7 +23,6 @@ export default {
   async wqtWbnbSwaps({ commit }) {
     const response = await this.$axios.$get('/v1/pool-liquidity/wqt-wbnb/swaps');
     commit('setWqtWbnbSwaps', response.result);
-    console.log('wqtWbnbSwaps', response);
     return response;
   },
   async wqtWbnbTokenDay({ commit }, query) {
