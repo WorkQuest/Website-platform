@@ -61,12 +61,27 @@ export default {
 
   async initContract({ commit }) {
     const miningPoolId = localStorage.getItem('miningPoolId');
-    let stakingInfo;
-    if (miningPoolId === 'ETH') {
-      stakingInfo = await fetchContractData('getStakingInfo', abi.StakingWQ, process.env.STAKING_ADDRESS);
-    } else {
-      stakingInfo = await fetchContractData('getStakingInfo', abi.StakingWQ, process.env.STAKING_ADDRESS_BSC);
+    let stakingAddress;
+    let stakingAbi;
+    if (process.env.PROD === 'false') {
+      if (miningPoolId === 'ETH') {
+        stakingAddress = process.env.STAKING_ADDRESS;
+        stakingAbi = abi.StakingWQ;
+      } else {
+        stakingAddress = process.env.TESTNET_BSC_STAKING;
+        stakingAbi = abi.WQLiquidityMining;
+      }
     }
+    if (process.env.PROD === 'true') {
+      if (miningPoolId === 'ETH') {
+        stakingAddress = process.env.STAKING_ADDRESS;
+        stakingAbi = abi.StakingWQ;
+      } else {
+        stakingAddress = process.env.MAINNET_BSC_STAKING;
+        stakingAbi = abi.WQLiquidityMining;
+      }
+    }
+    const stakingInfo = await fetchContractData('getStakingInfo', stakingAbi, stakingAddress);
     const { stakeTokenAddress } = stakingInfo;
     const { rewardTokenAddress } = stakingInfo;
     const stakeDecimal = await fetchContractData('decimals', abi.ERC20, stakeTokenAddress);
@@ -75,6 +90,7 @@ export default {
     const rewardSymbol = await fetchContractData('symbol', abi.ERC20, rewardTokenAddress);
     const stakeBalance = await fetchContractData('balanceOf', abi.ERC20, stakeTokenAddress, [getAccount().address]);
     const rewardBalance = await fetchContractData('balanceOf', abi.ERC20, rewardTokenAddress, [getAccount().address]);
+    console.log(stakeDecimal, rewardDecimal);
     const payload = {
       userPurse: {
         address: getAccount().address,
