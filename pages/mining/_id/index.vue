@@ -263,7 +263,7 @@ export default {
   data() {
     return {
       disabled: true,
-      miningPoolId: localStorage.getItem('miningPoolId'),
+      miningPoolId: '',
       metamaskStatus: localStorage.getItem('metamaskStatus'),
       items: [],
       testFields: [
@@ -419,13 +419,9 @@ export default {
 
   methods: {
     async checkPool() {
-      if (localStorage.getItem('miningPoolId')) {
-        localStorage.removeItem('miningPoolId');
-      }
-      if (this.$route.path === '/mining/BNB') {
-        await localStorage.setItem('miningPoolId', 'BNB');
-        console.log(localStorage.getItem('miningPoolId'));
-      }
+      localStorage.setItem('miningPoolId', 'BNB');
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      this.miningPoolId = localStorage.getItem('miningPoolId');
     },
     async checkMetamaskStatus() {
       if (typeof window.ethereum === 'undefined') {
