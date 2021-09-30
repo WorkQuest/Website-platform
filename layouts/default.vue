@@ -1096,6 +1096,7 @@ export default {
   },
   async mounted() {
     this.GetLocation();
+    await this.loginCheck();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
   },
   created() {
@@ -1105,6 +1106,9 @@ export default {
     window.removeEventListener('resize', this.userWindowChange);
   },
   methods: {
+    async loginCheck() {
+      localStorage.setItem('userLogin', true);
+    },
     setLocale(item) {
       this.currentLocale = item.localeText;
     },

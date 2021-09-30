@@ -76,7 +76,7 @@
             </base-btn>
             <base-btn
               v-if="miningPoolId === 'BNB'"
-              :link="'https://pancakeswap.finance/add/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'"
+              :link="'https://pancakeswap.finance/add/BNB/0xe89508D74579A06A65B907c91F697CF4F8D9Fac7'"
               class="btn_bl"
               :disabled="statusBusy"
             >
@@ -366,6 +366,7 @@ export default {
       tokensData: 'web3/getTokensAmount',
       tokenLP: 'web3/getLPTokenPrice',
       statusBusy: 'web3/getStatusBusy',
+      userData: 'user/getUserData',
     }),
     totalPages() {
       if (this.wqtWbnbSwaps) {

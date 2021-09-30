@@ -36,6 +36,7 @@
               <template #cell(choose)="el">
                 <base-btn
                   class="btn_bl"
+                  :disabled="el.item.disabled"
                   @click="handleOpenPool(el)"
                 >
                   {{ el.item.chooseBtn }}
@@ -103,6 +104,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      userData: 'user/getUserData',
     }),
     pools() {
       return [
@@ -111,12 +113,14 @@ export default {
           poolAddress: '0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf',
           assets: this.$t('mining.table.assets'),
           chooseBtn: this.$t('mining.choose'),
+          disabled: true,
         },
         {
           id: 'BNB',
-          poolAddress: '0x323bE7bDa98E91b01c2369B98a4325fF62eaF49c',
+          poolAddress: '0xe89508D74579A06A65B907c91F697CF4F8D9Fac7',
           assets: this.$t('mining.table.assets2'),
           chooseBtn: this.$t('mining.choose'),
+          disabled: false,
         },
       ];
     },
