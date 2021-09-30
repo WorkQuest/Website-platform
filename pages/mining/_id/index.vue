@@ -129,7 +129,7 @@
             <div class="third__triple">
               <base-btn
                 class="btn_bl"
-                :disabled="!isConnected || statusBusy"
+                :disabled="!isConnected || statusBusy || disabled"
                 @click="openModalClaimRewards()"
               >
                 {{ $t('mining.stake') }}
@@ -137,7 +137,7 @@
               <base-btn
                 class="btn_bl"
                 mode="outline"
-                :disabled="!isConnected || statusBusy"
+                :disabled="!isConnected || statusBusy || disabled"
                 @click="openModalUnstaking()"
               >
                 {{ $t('mining.unstake') }}
@@ -145,7 +145,7 @@
               <base-btn
                 :mode="'outline'"
                 class="bnt__claim"
-                :disabled="!isConnected || statusBusy"
+                :disabled="!isConnected || statusBusy || disabled"
                 @click="claimRewards()"
               >
                 {{ $t('mining.claimReward') }}
@@ -262,6 +262,7 @@ export default {
   },
   data() {
     return {
+      disabled: true,
       miningPoolId: localStorage.getItem('miningPoolId'),
       metamaskStatus: localStorage.getItem('metamaskStatus'),
       items: [],
