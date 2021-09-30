@@ -160,8 +160,8 @@ let bridgeAddress;
 let nonce;
 
 export const staking = async (_decimals, _amount) => {
-  form = 10 ** _decimals;
-  amount = Math.floor(_amount * form) / form;
+  // form = 10 ** _decimals;
+  // amount = Math.floor(_amount * form) / form;
   const miningPoolId = localStorage.getItem('miningPoolId');
   if (process.env.PROD === 'true') {
     if (miningPoolId === 'ETH') {
@@ -184,7 +184,7 @@ export const staking = async (_decimals, _amount) => {
       allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.CAKE_LP_TOKEN, [getAccount().address, process.env.STAKING_ADDRESS_BSC])).toString();
     }
     try {
-      amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+      amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
       if (+allowance < +amount) {
         store.dispatch('main/setStatusText', 'Approving');
         showToast('Stacking', 'Approving...', 'success');
@@ -208,8 +208,8 @@ export const staking = async (_decimals, _amount) => {
 };
 
 export const unStaking = async (_decimals, _amount) => {
-  form = 10 ** _decimals;
-  amount = Math.floor(_amount * form) / form;
+  // form = 10 ** _decimals;
+  // amount = Math.floor(_amount * form) / form;
   const miningPoolId = localStorage.getItem('miningPoolId');
   if (process.env.PROD === 'true') {
     if (miningPoolId === 'ETH') {
@@ -224,7 +224,7 @@ export const unStaking = async (_decimals, _amount) => {
       contractInstance = await createInstance(abi.StakingWQ, process.env.STAKING_ADDRESS_BSC);
     }
     try {
-      amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+      amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
       showToast('Unstacking', 'Unstacking...', 'success');
       store.dispatch('main/setStatusText', 'Staking');
       await contractInstance.unstake(amount);
@@ -267,15 +267,15 @@ export const claimRewards = async (_decimals, _amount) => {
 };
 
 export const swap = async (_decimals, _amount) => {
-  form = 10 ** _decimals;
-  amount = Math.floor(_amount * form) / form;
+  // form = 10 ** _decimals;
+  // amount = Math.floor(_amount * form) / form;
   if (process.env.PROD === 'true') {
     instance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET);
     contractInstance = await createInstance(abi.MainNetWQTExchange, process.env.EXCHANGE_ADDRESS_BSCMAINNET);
     allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET, [getAccount().address, process.env.EXCHANGE_ADDRESS_BSCMAINNET])).toString();
     console.log(instance, contractInstance, allowance);
     try {
-      amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+      amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
       if (+allowance < +amount) {
         store.dispatch('main/setStatusText', 'Approving');
         showToast('Swapping', 'Approving...', 'success');
@@ -297,7 +297,9 @@ export const swap = async (_decimals, _amount) => {
     allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccount().address, process.env.EXCHANGE_ADDRESS_BSCTESTNET])).toString();
     console.log(instance, contractInstance, allowance);
     try {
-      amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+      amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
+      console.log('amount:', amount);
+      console.log('allowance:', allowance);
       if (+allowance < +amount) {
         store.dispatch('main/setStatusText', 'Approving');
         showToast('Swapping', 'Approving...', 'success');
@@ -318,8 +320,8 @@ export const swap = async (_decimals, _amount) => {
 };
 
 export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAddress, recipient, symbol) => {
-  form = 10 ** _decimals;
-  amount = Math.floor(_amount * form) / form;
+  // form = 10 ** _decimals;
+  // amount = Math.floor(_amount * form) / form;
   if (process.env.PROD === 'true') {
     if (chain === 'ETH') {
       tokenAddress = process.env.MAINNET_ETH_WQT_TOKEN;
@@ -333,7 +335,7 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
     allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
     nonce = await web3.eth.getTransactionCount(userAddress);
     try {
-      amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+      amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
       if (+allowance < +amount) {
         store.dispatch('main/setStatusText', 'Approving');
         showToast('Swapping', 'Approving...', 'success');
@@ -363,7 +365,7 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
     nonce = await web3.eth.getTransactionCount(userAddress);
     let swapData = '';
     try {
-      amount = new BigNumber(amount.toString()).shiftedBy(+_decimals).toString();
+      amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
       if (+allowance < +amount) {
         store.dispatch('main/setStatusText', 'Approving');
         showToast('Swapping', 'Approving...', 'success');
