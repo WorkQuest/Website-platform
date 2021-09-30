@@ -422,7 +422,10 @@ export default {
       if (localStorage.getItem('miningPoolId')) {
         localStorage.removeItem('miningPoolId');
       }
-      localStorage.setItem('miningPoolId', 'BNB');
+      if (this.$route.path === '/mining/BNB') {
+        await localStorage.setItem('miningPoolId', 'BNB');
+        console.log(localStorage.getItem('miningPoolId'));
+      }
     },
     async checkMetamaskStatus() {
       if (typeof window.ethereum === 'undefined') {
