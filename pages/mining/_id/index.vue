@@ -352,13 +352,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      wqtWbnbBurns: 'defi/getWqtWbnbBurns',
-      wqtWbnbMints: 'defi/getWqtWbnbMints',
       wqtWbnbSwaps: 'defi/getWqtWbnbSwaps',
       wqtWbnbTokenDay: 'defi/getWqtWbnbTokenDay',
       wqtWbnbTokenDayLast: 'defi/getWqtWbnbTokenDayLast',
-      wqtWethBurns: 'defi/getWqtWethBurns',
-      wqtWethMints: 'defi/getWqtWethMints',
       wqtWethSwaps: 'defi/getWqtWethSwaps',
       wqtWethTokenDay: 'defi/getWqtWethTokenDay',
       wqtWethTokenDayLast: 'defi/getWqtWethTokenDayLast',
@@ -397,18 +393,17 @@ export default {
     //   }
     // },
   },
+  created() {
+    localStorage.setItem('miningPoolId', 'BNB');
+    this.miningPoolId = localStorage.getItem('miningPoolId');
+  },
   async mounted() {
     this.SetLoader(true);
-    await this.checkPool();
     await this.checkMetamaskStatus();
     await this.getWqtWbnbTokenDay();
     await this.getWqtWethTokenDay();
     await this.getWqtWbnbTokenDayLast();
     await this.getWqtWethTokenDayLast();
-    await this.getWqtWbnbBurns();
-    await this.getWqtWbnbMints();
-    await this.getWqtWethBurns();
-    await this.getWqtWethMints();
     await this.getWqtWethSwaps();
     await this.getWqtWbnbSwaps();
     await this.initTokenDays();
@@ -418,11 +413,6 @@ export default {
   },
 
   methods: {
-    async checkPool() {
-      localStorage.setItem('miningPoolId', 'BNB');
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      this.miningPoolId = localStorage.getItem('miningPoolId');
-    },
     async checkMetamaskStatus() {
       if (typeof window.ethereum === 'undefined') {
         localStorage.setItem('metamaskStatus', 'notInstalled');
@@ -498,12 +488,6 @@ export default {
       this.totalPagesValue = this.totalPages;
     },
 
-    async getWqtWbnbBurns() {
-      await this.$store.dispatch('defi/wqtWbnbBurns');
-    },
-    async getWqtWbnbMints() {
-      await this.$store.dispatch('defi/wqtWbnbMints');
-    },
     async getWqtWbnbSwaps() {
       await this.$store.dispatch('defi/wqtWbnbSwaps');
     },
@@ -515,12 +499,6 @@ export default {
       await this.$store.dispatch('defi/wqtWbnbTokenDayLast', query);
     },
 
-    async getWqtWethBurns() {
-      await this.$store.dispatch('defi/wqtWethBurns');
-    },
-    async getWqtWethMints() {
-      await this.$store.dispatch('defi/wqtWethMints');
-    },
     async getWqtWethSwaps() {
       await this.$store.dispatch('defi/wqtWethSwaps');
     },

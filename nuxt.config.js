@@ -53,6 +53,10 @@ export default {
     },
   },
   build: {
+    analyze: true,
+    productionSourceMap: false,
+    productionGzip: true,
+    productionGzipExtensions: ['js', 'css', 'svg'],
     extend(config) {
       config.node = {
         fs: 'empty',

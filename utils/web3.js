@@ -189,7 +189,8 @@ export const staking = async (_decimals, _amount) => {
   contractInstance = await createInstance(stakingAbi, stakingAddress);
   allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, stakingAddress])).toString();
   try {
-    amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
+    console.log(_decimals);
+    amount = new BigNumber(_amount.toString()).shiftedBy(+18).toString();
     if (+allowance < +amount) {
       store.dispatch('main/setStatusText', 'Approving');
       showToast('Stacking', 'Approving...', 'success');
@@ -231,7 +232,8 @@ export const unStaking = async (_decimals, _amount) => {
   }
   contractInstance = await createInstance(stakingAbi, stakingAddress);
   try {
-    amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
+    console.log(_decimals);
+    amount = new BigNumber(_amount.toString()).shiftedBy(+18).toString();
     showToast('Unstacking', 'Unstacking...', 'success');
     store.dispatch('main/setStatusText', 'Staking');
     await contractInstance.unstake(amount);
