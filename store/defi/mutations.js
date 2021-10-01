@@ -1,5 +1,4 @@
 export default {
-
   setWqtWbnbBurns(state, data) {
     state.wqtWbnbBurns = data;
   },
@@ -15,7 +14,6 @@ export default {
   setWqtWbnbTokenDayLast(state, data) {
     state.wqtWbnbTokenDayLast = data;
   },
-
   setWqtWethBurns(state, data) {
     state.wqtWethBurns = data;
   },

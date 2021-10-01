@@ -4,7 +4,6 @@ export default {
   getWqtWbnbSwaps: (state) => state.wqtWbnbSwaps || '',
   getWqtWbnbTokenDay: (state) => state.wqtWbnbTokenDay || '',
   getWqtWbnbTokenDayLast: (state) => state.wqtWbnbTokenDayLast || '',
-
   getWqtWethBurns: (state) => state.wqtWethBurns || '',
   getWqtWethMints: (state) => state.wqtWethMints || '',
   getWqtWethSwaps: (state) => state.wqtWethSwaps || '',
