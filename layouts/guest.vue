@@ -152,7 +152,7 @@
                 </button>
               </div>
               <div
-                v-if="userLogin === 'false'"
+                v-if="userLogin === false"
                 class="header__links"
               >
                 <button
@@ -265,11 +265,11 @@
                   <div
                     v-if="isShowProfile"
                     class="profile"
-                    :class="{'profile__quest': userLogin === 'false'}"
+                    :class="{'profile__quest': userLogin === false}"
                   >
                     <div class="profile__header">
                       <div
-                        v-if="userLogin === 'false'"
+                        v-if="userLogin === false"
                         class="profile__avatar"
                       >
                         <img
@@ -289,13 +289,13 @@
                       </div>
                       <div class="profile__info">
                         <div
-                          v-if="userLogin === 'true'"
+                          v-if="userLogin === true"
                           class="profile__text"
                         >
                           {{ userData.firstName }} {{ userData.lastName }}
                         </div>
                         <div
-                          v-if="userLogin === 'false'"
+                          v-if="userLogin === false"
                           class="profile__text"
                         >
                           {{ $t('ui.menu.unauthorized') }}
@@ -315,7 +315,7 @@
                       </div>
                     </div>
                     <div class="profile__items">
-                      <span v-if="userLogin === 'true'">
+                      <span v-if="userLogin === true">
                         <nuxt-link
                           v-for="item in profileLinks"
                           :key="`item-${item.title}`"
@@ -327,7 +327,7 @@
                           {{ item.title }}
                         </nuxt-link>
                       </span>
-                      <span v-if="userLogin === 'false'">
+                      <span v-if="userLogin === false">
                         <nuxt-link
                           v-for="item in profileLinksGuest"
                           :key="`item-${item.title}`"
@@ -340,14 +340,14 @@
                         </nuxt-link>
                       </span>
                       <button
-                        v-if="userLogin === 'true'"
+                        v-if="userLogin === true"
                         class="profile__item profile__item_red"
                         @click="logout()"
                       >
                         {{ $t('ui.profile.logout') }}
                       </button>
                       <button
-                        v-if="userLogin === 'false'"
+                        v-if="userLogin === false"
                         class="profile__item profile__item_red"
                         @click="logout()"
                       >
@@ -403,13 +403,13 @@
                     </div>
                     <div class="user-container__user">
                       <div
-                        v-if="userLogin === 'true'"
+                        v-if="userLogin === true"
                         class="user__name"
                       >
                         {{ userData.firstName }} {{ userData.lastName }}
                       </div>
                       <div
-                        v-if="userLogin === 'false'"
+                        v-if="userLogin === false"
                         class="user__name"
                       >
                         {{ $t('ui.menu.unauthorized') }}
@@ -446,7 +446,7 @@
                   </div>
                 </div>
                 <div
-                  v-if="userLogin === 'true' && isUserDDOpened === true"
+                  v-if="userLogin === true && isUserDDOpened === true"
                   class="user-dropdown__container"
                 >
                   <div
@@ -463,7 +463,7 @@
                   </div>
                 </div>
                 <div
-                  v-if="userLogin === 'false' && isUserDDOpened === true"
+                  v-if="userLogin === false && isUserDDOpened === true"
                   class="user-dropdown__container"
                 >
                   <div
@@ -480,7 +480,7 @@
                   </div>
                 </div>
                 <div
-                  v-if="userLogin === 'true' && isMobileMenu"
+                  v-if="userLogin === true && isMobileMenu"
                   class="mobile__links"
                 >
                   <div
@@ -519,7 +519,7 @@
                   </div>
                 </div>
                 <div
-                  v-if="userLogin === 'true' && isInstrumentDropdownOpened"
+                  v-if="userLogin === true && isInstrumentDropdownOpened"
                   class="mobile-dropdown__container"
                 >
                   <div
@@ -536,7 +536,7 @@
                   </div>
                 </div>
                 <div
-                  v-if="userLogin === 'false' && isInstrumentDropdownOpened"
+                  v-if="userLogin === false && isInstrumentDropdownOpened"
                   class="mobile-dropdown__container"
                 >
                   <div
@@ -554,7 +554,7 @@
                 </div>
                 <div class="ctm__actions">
                   <base-btn
-                    v-if="userLogin === 'true' && userRole === 'employer'"
+                    v-if="userLogin === true && userRole === 'employer'"
                     class="ctm__btn"
                     @click="createNewQuest('mobile')"
                   >
@@ -809,7 +809,7 @@ export default {
   },
   data() {
     return {
-      userLogin: localStorage.getItem('userLogin'),
+      userLogin: false,
       localUserData: {},
       isInstrumentDropdownOpened: false,
       isUserDDOpened: false,
@@ -1146,7 +1146,7 @@ export default {
   },
   async mounted() {
     this.GetLocation();
-    await this.loginCheck(this.userData);
+    await this.loginCheck();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
   },
   created() {
@@ -1156,13 +1156,16 @@ export default {
     window.removeEventListener('resize', this.userWindowChange);
   },
   methods: {
-    async loginCheck(userData) {
-      localStorage.removeItem('userLogin');
-      if (userData === undefined) {
+    async loginCheck() {
+      this.userLogin = localStorage.getItem('userLogin');
+      if (this.userData === undefined) {
         localStorage.setItem('userLogin', false);
-      } if (userData === Object) {
+        console.log(this.userData);
+      } if (this.userData === Object) {
         localStorage.setItem('userLogin', true);
+        console.log(this.userData);
       }
+      this.userLogin = localStorage.getItem('userLogin');
     },
     setLocale(item) {
       this.currentLocale = item.localeText;
