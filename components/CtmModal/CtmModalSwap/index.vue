@@ -5,7 +5,7 @@
   >
     <div class="swap__content content">
       <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-slot="{handleSubmit}"
       >
         <div class="content__grid grid">
           <div class="grid__body">
@@ -58,7 +58,6 @@
           </base-btn>
           <base-btn
             class="buttons__button"
-            :disabled="invalid"
             @click="handleSubmit(showSwapInfoModal)"
           >
             {{ $t('modals.createSwap') }}
