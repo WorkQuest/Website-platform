@@ -71,7 +71,19 @@ export default {
     hide() {
       this.CloseModal();
     },
-    showRequestSendModal() {
+    async respondOnQuest() {
+      const { questId } = this.options;
+      const data = {
+        message: this.text,
+      };
+      try {
+        await this.$store.dispatch('quests/respondOnQuest', { data, questId });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async showRequestSendModal() {
+      await this.respondOnQuest();
       this.ShowModal({
         key: modals.requestSend,
       });

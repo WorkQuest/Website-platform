@@ -94,8 +94,9 @@ export default {
     return await this.$axios.$post(`/v1/quest/${id}/invite`, payload);
   },
 
-  async respondOnQuest({ commit }, payload, id) {
-    return await this.$axios.$post(`/v1/quest/${id}/response`, payload);
+  async respondOnQuest({ commit }, { data, questId }) {
+    const response = await this.$axios.$post(`/v1/quest/${questId}/response`, data);
+    return response.result;
   },
 
   async getResponsesToQuest({ commit }, id) {

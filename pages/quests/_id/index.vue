@@ -238,7 +238,10 @@
                   class="buttons__wrapper"
                 >
                   <div class="btn__wrapper">
-                    <base-btn @click="showMessageModal()">
+                    <base-btn
+                      :disabled="checkStatusRespondOnQuest"
+                      @click="showMessageModal()"
+                    >
                       {{ $t('btn.sendARequest') }}
                     </base-btn>
                   </div>
@@ -497,6 +500,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    checkStatusRespondOnQuest() {
+      return this.questData.userId === this.userData.id;
+    },
     async initData() {
       this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
       this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
@@ -517,6 +523,7 @@ export default {
     showMessageModal() {
       this.ShowModal({
         key: modals.sendARequest,
+        questId: this.questData.id,
       });
     },
     showRaiseViewsModal() {
