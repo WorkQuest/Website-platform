@@ -442,7 +442,7 @@ export default {
     },
     async initTableData() {
       if (this.items.length !== 0) {
-        this.items.splice(1, this.perPager);
+        this.items.splice(0, this.perPager);
       }
       let tableArr = [];
       if (this.miningPoolId === 'BNB') {
