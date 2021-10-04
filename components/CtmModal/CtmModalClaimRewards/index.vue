@@ -5,9 +5,10 @@
   >
     <div class="claim__content content">
       <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-slot="{handleSubmit}"
       >
         <base-field
+          id="amount"
           v-model="amount"
           class="content__field"
           :placeholder="3500"
@@ -37,7 +38,7 @@
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            :disabled="invalid || statusBusy"
+            :disabled="statusBusy"
             @click="handleSubmit(options.type === 1 ? staking : unstaking)"
           >
             {{ $t('meta.submit') }}

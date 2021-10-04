@@ -5,7 +5,7 @@
   >
     <div class="liquidity__content content">
       <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-slot="{handleSubmit}"
         class="content__observer"
       >
         <div class="content__grid">
@@ -75,7 +75,6 @@
           </base-btn>
           <base-btn
             class="buttons__button"
-            :disabled="!validated || !passed || invalid"
             @click="handleSubmit(hide)"
           >
             {{ $t('modals.connectWallet') }}
