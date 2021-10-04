@@ -369,10 +369,10 @@ export default {
     }),
     totalPages() {
       if (this.wqtWbnbTableData) {
-        return Math.ceil(30 / this.perPager);
+        return Math.ceil(100 / this.perPager);
       }
       if (this.wqtWethTableData) {
-        return Math.ceil(30 / this.perPager);
+        return Math.ceil(100 / this.perPager);
       }
       return 0;
     },
@@ -410,6 +410,8 @@ export default {
     await this.getWqtWbnbSwaps();
     await this.initTokenDays();
     await this.initGraphData();
+    await this.tableWqtWbnbTokenDay();
+    await this.tableWqtWethTokenDay();
     await this.initTableData();
     this.SetLoader(false);
   },
