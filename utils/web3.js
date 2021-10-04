@@ -57,7 +57,7 @@ export const sendTransaction = async (_method, _abi, _address, _params, _userAdd
     to: _address,
     data,
     from: _userAddress,
-    gasPrice: new BigNumber(0.004).shiftedBy(9).toString(),
+    gasPrice: new BigNumber(0.005).shiftedBy(9).toString(),
   });
 };
 
