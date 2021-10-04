@@ -5,7 +5,7 @@
   >
     <div class="claim__content content">
       <validation-observer
-        v-slot="{invalid}"
+        v-slot="{handleSubmit}"
       >
         <base-field
           v-model="oldTokens"
@@ -13,7 +13,7 @@
           :placeholder="3500"
           :type="'number'"
           :label="$t('mining.swapTokens.oldTokens')"
-          rules="required"
+          rules="required|decimal"
           :name="$t('mining.swapTokens.oldTokens')"
         >
           <template
@@ -53,8 +53,8 @@
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            :disabled="invalid || statusBusy"
-            @click="initSwap()"
+            :disabled="statusBusy"
+            @click="handleSubmit(initSwap)"
           >
             {{ $t('mining.swapTokens.swap') }}
           </base-btn>
