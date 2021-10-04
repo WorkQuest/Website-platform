@@ -10,4 +10,6 @@ export default () => ({
   wqtWethTokenDay: {},
   wqtWethTokenDayLast: {},
   crosschainTokensData: {},
+  tableWqtWbnbTokenDay: [],
+  tableWqtWethTokenDay: [],
 });
