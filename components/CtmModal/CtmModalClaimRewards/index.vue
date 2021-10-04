@@ -13,7 +13,7 @@
           class="content__field"
           :placeholder="3500"
           :label="$t('modals.amount')"
-          rules="required|decimal"
+          rules="required|decimal|min_value:0.00001"
           :name="$t('modals.amount')"
         >
           <template

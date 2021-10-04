@@ -28,7 +28,7 @@
                 type="number"
                 :placeholder="'0,05'"
                 class="grid__input"
-                rules="required|decimal"
+                rules="required|decimal|min_value:0.00001"
                 :name="$t('modals.amountField')"
               />
             </div>
