@@ -37,7 +37,7 @@
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            :disabled="!validated || !passed || invalid || statusBusy"
+            :disabled="invalid || statusBusy"
             @click="handleSubmit(options.type === 1 ? staking : unstaking)"
           >
             {{ $t('meta.submit') }}
