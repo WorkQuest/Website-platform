@@ -57,7 +57,7 @@ export const sendTransaction = async (_method, _abi, _address, _params, _userAdd
     to: _address,
     data,
     from: _userAddress,
-    gasPrice: new BigNumber(0.005).shiftedBy(9).toString(),
+    // gasPrice: new BigNumber(0.005).shiftedBy(9).toString(),
   });
 };
 
@@ -437,6 +437,7 @@ export const redeemSwap = async (props) => {
     }
     try {
       showToast('Redeeming', 'Redeem...', 'success');
+      console.log(signData);
       const sendResponse = await sendTransaction('redeem', abi.MainNetWQBridge, bridgeAddress, signData, signData[3]);
       console.log(sendResponse);
       return sendResponse;
@@ -452,6 +453,7 @@ export const redeemSwap = async (props) => {
     }
     try {
       showToast('Redeeming', 'Redeem...', 'success');
+      console.log(signData);
       const sendResponse = await sendTransaction('redeem', abi.WQBridge, bridgeAddress, signData, signData[3]);
       console.log(sendResponse);
       return sendResponse;
