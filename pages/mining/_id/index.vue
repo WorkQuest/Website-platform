@@ -343,7 +343,7 @@ export default {
       totalLiquidityUSD: '',
       page: 1,
       perPager: 10,
-      totalPagesValue: 1,
+      totalPagesValue: this.totalPages,
       rewardAmount: 0,
       stakedAmount: 0,
       wqtWbnbData: [],
@@ -354,9 +354,11 @@ export default {
     ...mapGetters({
       wqtWbnbSwaps: 'defi/getWqtWbnbSwaps',
       wqtWbnbTokenDay: 'defi/getWqtWbnbTokenDay',
+      wqtWbnbTableData: 'defi/getTableWqtWbnbTokenDay',
       wqtWbnbTokenDayLast: 'defi/getWqtWbnbTokenDayLast',
       wqtWethSwaps: 'defi/getWqtWethSwaps',
       wqtWethTokenDay: 'defi/getWqtWethTokenDay',
+      wqtWethTableData: 'defi/getTableWqtWethTokenDay',
       wqtWethTokenDayLast: 'defi/getWqtWethTokenDayLast',
       isConnected: 'web3/isConnected',
       accountData: 'web3/getAccountData',
@@ -366,10 +368,10 @@ export default {
       userData: 'user/getUserData',
     }),
     totalPages() {
-      if (this.wqtWbnbSwaps) {
+      if (this.wqtWbnbTableData) {
         return Math.ceil(30 / this.perPager);
       }
-      if (this.wqtWethSwaps) {
+      if (this.wqtWethTableData) {
         return Math.ceil(30 / this.perPager);
       }
       return 0;
@@ -382,16 +384,16 @@ export default {
         clearInterval(newInterval);
       }
     },
-    // async page() {
-    //   // TODO: FIX
-    //   if (this.miningPoolId === 'BNB') {
-    //     await this.getWqtWbnbTokenDay(`limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
-    //     await this.initTableData();
-    //   } else if (this.miningPoolId === 'ETH') {
-    //     await this.getWqtWethTokenDay(`limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
-    //     await this.initTableData();
-    //   }
-    // },
+    async page() {
+      // TODO: FIX
+      if (this.miningPoolId === 'BNB') {
+        await this.tableWqtWbnbTokenDay(`limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
+        await this.initTableData();
+      } else if (this.miningPoolId === 'ETH') {
+        await this.tableWqtWethTokenDay(`limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
+        await this.initTableData();
+      }
+    },
   },
   created() {
     localStorage.setItem('miningPoolId', 'BNB');
@@ -408,7 +410,7 @@ export default {
     await this.getWqtWbnbSwaps();
     await this.initTokenDays();
     await this.initGraphData();
-    await this.initTableData(this.wqtWbnbSwaps, this.wqtWethSwaps);
+    await this.initTableData();
     this.SetLoader(false);
   },
 
@@ -438,12 +440,15 @@ export default {
       this.wqtWbnbData = await this.wqtWbnbTokenDay;
       this.wqtWethData = await this.wqtWethTokenDay;
     },
-    async initTableData(wqtWbnbSwaps, wqtWethSwaps) {
+    async initTableData() {
+      if (this.items.length !== 0) {
+        this.items.splice(0, this.perPager);
+      }
       let tableArr = [];
       if (this.miningPoolId === 'BNB') {
-        tableArr = wqtWbnbSwaps;
+        tableArr = this.wqtWbnbTableData;
       } if (this.miningPoolId === 'ETH') {
-        tableArr = wqtWethSwaps;
+        tableArr = this.wqtWethTableData;
       }
       tableArr.forEach((data) => {
         let poolAddress = '';
@@ -494,6 +499,9 @@ export default {
     async getWqtWbnbTokenDay(query) {
       await this.$store.dispatch('defi/wqtWbnbTokenDay', query);
     },
+    async tableWqtWbnbTokenDay(query) {
+      await this.$store.dispatch('defi/tableWqtWbnbTokenDay', query);
+    },
     async getWqtWbnbTokenDayLast() {
       const query = 'limit=1';
       await this.$store.dispatch('defi/wqtWbnbTokenDayLast', query);
@@ -501,6 +509,9 @@ export default {
 
     async getWqtWethSwaps() {
       await this.$store.dispatch('defi/wqtWethSwaps');
+    },
+    async tableWqtWethTokenDay(query) {
+      await this.$store.dispatch('defi/tableWqtWethTokenDay', query);
     },
     async getWqtWethTokenDay(query) {
       await this.$store.dispatch('defi/wqtWethTokenDay', query);

@@ -193,14 +193,14 @@ export const staking = async (_decimals, _amount) => {
     amount = new BigNumber(_amount.toString()).shiftedBy(+18).toString();
     if (+allowance < +amount) {
       store.dispatch('main/setStatusText', 'Approving');
-      showToast('Stacking', 'Approving...', 'success');
+      showToast('Staking', 'Approving...', 'success');
       await instance.approve(stakingAddress, amount);
-      showToast('Stacking', 'Approving done', 'success');
+      showToast('Staking', 'Approving done', 'success');
     }
-    showToast('Stacking', 'Staking...', 'success');
+    showToast('Staking', 'Staking...', 'success');
     store.dispatch('main/setStatusText', 'Staking');
     await contractInstance.stake(amount);
-    showToast('Stacking', 'Staking done', 'success');
+    showToast('Staking', 'Staking done', 'success');
     return '';
   } catch (e) {
     showToast('Stacking error', `${e.message}`, 'danger');
@@ -234,13 +234,13 @@ export const unStaking = async (_decimals, _amount) => {
   try {
     console.log(_decimals);
     amount = new BigNumber(_amount.toString()).shiftedBy(+18).toString();
-    showToast('Unstacking', 'Unstacking...', 'success');
+    showToast('Unstaking', 'Unstaking...', 'success');
     store.dispatch('main/setStatusText', 'Staking');
     await contractInstance.unstake(amount);
-    showToast('Unstacking', 'Unstaking done', 'success');
+    showToast('Unstaking', 'Unstaking done', 'success');
     return '';
   } catch (e) {
-    showToast('Unstacking error', `${e.message}`, 'danger');
+    showToast('Unstaking error', `${e.message}`, 'danger');
     return error(500, 'stake error', e);
   }
 };
