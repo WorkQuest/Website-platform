@@ -517,6 +517,7 @@ export default {
     showMessageModal() {
       this.ShowModal({
         key: modals.sendARequest,
+        questId: this.questData.id,
       });
     },
     showRaiseViewsModal() {

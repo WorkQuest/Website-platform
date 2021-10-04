@@ -11,12 +11,12 @@ export default {
   },
 
   async wqtWbnbBurns({ commit }) {
-    const response = await this.$axios.$get('https://app.workquest.co/api/v1/pool-liquidity/wqt-wbnb/burns');
+    const response = await this.$axios.$get('/v1/pool-liquidity/wqt-wbnb/burns');
     commit('setWqtWbnbBurns', response.result);
     return response;
   },
   async wqtWbnbMints({ commit }) {
-    const response = await this.$axios.$get('https://app.workquest.co/api/v1/pool-liquidity/wqt-wbnb/mints');
+    const response = await this.$axios.$get('/v1/pool-liquidity/wqt-wbnb/mints');
     commit('setWqtWbnbMints', response.result);
     return response;
   },
@@ -26,7 +26,7 @@ export default {
     return response;
   },
   async wqtWbnbTokenDay({ commit }, query) {
-    const response = await this.$axios.$get(`https://app.workquest.co/api/v1/pool-liquidity/wqt-wbnb/tokenDay?${query || 'limit=100'}`);
+    const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-wbnb/tokenDay?${query || 'limit=100'}`);
     commit('setWqtWbnbTokenDay', response.result);
     return response;
   },
@@ -37,18 +37,18 @@ export default {
   },
 
   async wqtWbnbTokenDayLast({ commit }, query) {
-    const response = await this.$axios.$get(`https://app.workquest.co/api/v1/pool-liquidity/wqt-wbnb/tokenDay?${query}`);
+    const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-wbnb/tokenDay?${query}`);
     commit('setWqtWbnbTokenDayLast', response.result);
     return response;
   },
 
   async wqtWethBurns({ commit }) {
-    const response = await this.$axios.$get('https://app.workquest.co/api/v1/pool-liquidity/wqt-weth/burns');
+    const response = await this.$axios.$get('/v1/pool-liquidity/wqt-weth/burns');
     commit('setWqtWethBurns', response.result);
     return response;
   },
   async wqtWethMints({ commit }) {
-    const response = await this.$axios.$get('https://app.workquest.co/api/v1/pool-liquidity/wqt-weth/mints');
+    const response = await this.$axios.$get('/v1/pool-liquidity/wqt-weth/mints');
     commit('setWqtWethMints', response.result);
     return response;
   },
@@ -63,17 +63,17 @@ export default {
     return response;
   },
   async wqtWethTokenDay({ commit }, query) {
-    const response = await this.$axios.$get(`https://app.workquest.co/api/v1/pool-liquidity/wqt-weth/tokenDay?${query || 'limit=100'}`);
+    const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-weth/tokenDay?${query || 'limit=100'}`);
     commit('setWqtWethTokenDay', response.result);
     return response;
   },
   async wqtWethTokenDayLast({ commit }, query) {
-    const response = await this.$axios.$get(`https://app.workquest.co/api/v1/pool-liquidity/wqt-weth/tokenDay?${query}`);
+    const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-weth/tokenDay?${query}`);
     commit('setWqtWethTokenDayLast', response.result);
     return response;
   },
   async swapsForCrosschain({ commit }, payload) {
-    const response = await this.$axios.$get(`https://app.workquest.co/api/v1/swaps/take?recipient=${payload}`);
+    const response = await this.$axios.$get(`/v1/swaps/take?recipient=${payload}`);
     const items = [];
     response.result.swaps.forEach((data) => {
       let direction = [];
