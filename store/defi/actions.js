@@ -30,6 +30,11 @@ export default {
     commit('setWqtWbnbTokenDay', response.result);
     return response;
   },
+  async tableWqtWbnbTokenDay({ commit }, query) {
+    const response = await this.$axios.$get(`https://app.workquest.co/api/v1/pool-liquidity/wqt-wbnb/swaps?${query}`);
+    commit('setTableWqtWbnbTokenDay', response.result);
+    return response;
+  },
 
   async wqtWbnbTokenDayLast({ commit }, query) {
     const response = await this.$axios.$get(`https://app.workquest.co/api/v1/pool-liquidity/wqt-wbnb/tokenDay?${query}`);
@@ -50,6 +55,11 @@ export default {
   async wqtWethSwaps({ commit }) {
     const response = await this.$axios.$get('https://app.workquest.co/api/v1/pool-liquidity/wqt-weth/swaps');
     commit('setWqtWethSwaps', response.result);
+    return response;
+  },
+  async tableWqtWethTokenDay({ commit }, query) {
+    const response = await this.$axios.$get(`https://app.workquest.co/api/v1/pool-liquidity/wqt-weth/swaps?${query}`);
+    commit('setTableWqtWethTokenDay', response.result);
     return response;
   },
   async wqtWethTokenDay({ commit }, query) {
