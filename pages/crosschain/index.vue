@@ -286,12 +286,11 @@ export default {
     async redeemAction(data) {
       this.SetLoader(true);
       await this.$store.dispatch('web3/goToChain', { chain: data.chain });
-      await this.checkMetamaskStatus();
+      await this.connectToMetamask();
       const payload = {
         signData: data.clearData,
         chainId: data.chainId,
       };
-      await this.connectToMetamask();
       const redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
       this.ShowModal({
         key: modals.status,
