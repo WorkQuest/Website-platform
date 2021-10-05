@@ -77,77 +77,85 @@
             <div v-if="infoData.mode === 3">
               <div class="worker__title">{{ $t('response.title') }}</div>
               <span
-                v-for="(item, i) in respondedList"
+                v-for="(response, i) in responsesToQuest"
                 :key="i"
               >
-                <div class="worker__container">
-                  <div>
-                    <img
-                      class="worker__avatar"
-                      src="~/assets/img/temp/avatar.jpg"
-                      alt=""
-                    >
-                  </div>
-                  <div class="worker__name">
-                    {{ item.name }}
-                  </div>
-                  <div>
-                    <div
-                      v-if="item.badge.code !== 0"
-                      class="card__level_higher"
-                      :class="[
-                        {'card__level_higher': item.badge.code === 1},
-                        {'card__level_reliable': item.badge.code === 2},
-                        {'card__level_checked': item.badge.code === 3}
-                      ]"
-                    >
-                      <span v-if="item.badge.code === 1">
-                        {{ $t('levels.higher') }}
-                      </span>
-                      <span v-if="item.badge.code === 2">
-                        {{ $t('levels.reliableEmp') }}
-                      </span>
-                      <span v-if="item.badge.code === 3">
-                        {{ $t('levels.checkedByTime') }}
-                      </span>
+                <span
+                  v-for="(worker, j) in response"
+                  :key="j"
+                >
+                  <div
+                    v-if="worker.firstName && worker.lastName"
+                    class="worker__container"
+                  >
+                    <div>
+                      <img
+                        class="worker__avatar"
+                        :src="worker.avatar.url"
+                        alt=""
+                      >
+                    </div>
+                    <div class="worker__name">
+                      {{ worker.firstName }} {{ worker.lastName }}
+                    </div>
+                    <div>
+                    <!--                    <div-->
+                    <!--                      v-if="item.badge.code !== 0"-->
+                    <!--                      class="card__level_higher"-->
+                    <!--                      :class="[-->
+                    <!--                        {'card__level_higher': item.badge.code === 1},-->
+                    <!--                        {'card__level_reliable': item.badge.code === 2},-->
+                    <!--                        {'card__level_checked': item.badge.code === 3}-->
+                    <!--                      ]"-->
+                    <!--                    >-->
+                    <!--                      <span v-if="item.badge.code === 1">-->
+                    <!--                        {{ $t('levels.higher') }}-->
+                    <!--                      </span>-->
+                    <!--                      <span v-if="item.badge.code === 2">-->
+                    <!--                        {{ $t('levels.reliableEmp') }}-->
+                    <!--                      </span>-->
+                    <!--                      <span v-if="item.badge.code === 3">-->
+                    <!--                        {{ $t('levels.checkedByTime') }}-->
+                    <!--                      </span>-->
+                    <!--                    </div>-->
                     </div>
                   </div>
-                </div>
+                </span>
               </span>
-              <div class="worker__title">{{ $t('quests.youInvited') }}</div>
-              <div class="worker__container">
-                <div>
-                  <img
-                    class="worker__avatar"
-                    src="~/assets/img/temp/avatar.jpg"
-                    alt=""
-                  >
-                </div>
-                <div class="worker__name">
-                  Rosalia Vans
-                </div>
-                <div>
-                  <div
-                    v-if="badge.code !== 0"
-                    class="card__level_higher"
-                    :class="[
-                      {'card__level_higher': badge.code === 1},
-                      {'card__level_reliable': badge.code === 2},
-                      {'card__level_checked': badge.code === 3}
-                    ]"
-                  >
-                    <span v-if="badge.code === 1">
-                      {{ $t('levels.higher') }}
-                    </span>
-                    <span v-if="badge.code === 2">
-                      {{ $t('levels.reliableEmp') }}
-                    </span>
-                    <span v-if="badge.code === 3">
-                      {{ $t('levels.checkedByTime') }}
-                    </span>
-                  </div>
-                </div>
-              </div>
+              <!--              <div class="worker__title">{{ $t('quests.youInvited') }}</div>-->
+              <!--              <div class="worker__container">-->
+              <!--                <div>-->
+              <!--                  <img-->
+              <!--                    class="worker__avatar"-->
+              <!--                    src="~/assets/img/temp/avatar.jpg"-->
+              <!--                    alt=""-->
+              <!--                  >-->
+              <!--                </div>-->
+              <!--                <div class="worker__name">-->
+              <!--                  Rosalia Vans-->
+              <!--                </div>-->
+              <!--                <div>-->
+              <!--                  <div-->
+              <!--                    v-if="badge.code !== 0"-->
+              <!--                    class="card__level_higher"-->
+              <!--                    :class="[-->
+              <!--                      {'card__level_higher': badge.code === 1},-->
+              <!--                      {'card__level_reliable': badge.code === 2},-->
+              <!--                      {'card__level_checked': badge.code === 3}-->
+              <!--                    ]"-->
+              <!--                  >-->
+              <!--                    <span v-if="badge.code === 1">-->
+              <!--                      {{ $t('levels.higher') }}-->
+              <!--                    </span>-->
+              <!--                    <span v-if="badge.code === 2">-->
+              <!--                      {{ $t('levels.reliableEmp') }}-->
+              <!--                    </span>-->
+              <!--                    <span v-if="badge.code === 3">-->
+              <!--                      {{ $t('levels.checkedByTime') }}-->
+              <!--                    </span>-->
+              <!--                  </div>-->
+              <!--                </div>-->
+              <!--              </div>-->
             </div>
             <div v-if="infoData.mode === 4">
               <div class="worker__title">{{ $t('quests.worker') }}</div>
@@ -217,7 +225,7 @@
                 >
                   <div class="btn__wrapper">
                     <base-btn
-                      @click="showRaiseViewsModal"
+                      @click="toRaisingViews()"
                     >
                       {{ $t('quests.raiseViews') }}
                     </base-btn>
@@ -225,7 +233,7 @@
                   <div class="btn__wrapper">
                     <base-btn
                       mode="delete"
-                      @click="showDeleteQuestModal"
+                      @click="showAreYouSureDeleteQuestModal()"
                     >
                       {{ $t('quests.deleteQuest') }}
                     </base-btn>
@@ -238,8 +246,8 @@
                   class="buttons__wrapper"
                 >
                   <div class="btn__wrapper">
+                    <!--                    :disabled="checkStatusRespondOnQuest"-->
                     <base-btn
-                      :disabled="checkStatusRespondOnQuest"
                       @click="showMessageModal()"
                     >
                       {{ $t('btn.sendARequest') }}
@@ -363,6 +371,8 @@
             </nuxt-link>
           </h2>
         </div>
+        {{ responsesToQuest.responses }}
+        <!--        {{ responsesMy }}-->
         <div class="quest__card">
           <quests
             v-if="questsObjects.count !== 0"
@@ -403,7 +413,7 @@ export default {
         code: 1,
       },
       infoData: {
-        mode: 5,
+        mode: 1,
         date: '15:30:20',
         hasRequest: 'false',
       },
@@ -480,6 +490,9 @@ export default {
       userData: 'user/getUserData',
       respondedList: 'data/getRespondedList',
       distance: 'data/getDistance',
+      responsesToQuest: 'quests/getResponsesToQuest',
+      responsesData: 'quests/getResponsesData',
+      // responsesMy: 'quests/getResponsesMy',
     }),
   },
   watch: {
@@ -497,12 +510,30 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.initData();
+    await this.getResponsesToQuest();
+    await this.checkPageMode();
+    // await this.getResponsesToQuestForAuthUser();
     this.SetLoader(false);
   },
   methods: {
-    checkStatusRespondOnQuest() {
-      return this.questData.userId === this.userData.id;
+    async checkPageMode() {
+      if (this.responsesData.count === 0) {
+        this.infoData.mode = 1;
+      } if (this.responsesData.count > 0) {
+        this.infoData.mode = 3;
+      }
+      console.log(this.responsesData.count);
+      console.log(this.infoData.mode);
     },
+    async getResponsesToQuest() {
+      await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
+    },
+    // checkStatusRespondOnQuest() {
+    //   // return this.questData.userId === this.userData.id;
+    // },
+    // async getResponsesToQuestForAuthUser() {
+    //   this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
+    // },
     async initData() {
       this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
       this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
@@ -526,14 +557,18 @@ export default {
         questId: this.questData.id,
       });
     },
+    toRaisingViews() {
+      this.$router.push('/edit-quest');
+      this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
+    },
     showRaiseViewsModal() {
       this.ShowModal({
         key: modals.raiseViews,
       });
     },
-    showDeleteQuestModal() {
+    showAreYouSureDeleteQuestModal() {
       this.ShowModal({
-        key: modals.areYouSureDelete,
+        key: modals.areYouSureDeleteQuest,
       });
     },
     openImage(src) {
@@ -669,10 +704,9 @@ export default {
     margin: 20px 0 20px 0;
   }
   &__avatar {
-    max-width: 40px;
-    max-height: 40px;
-    width: 100%;
-    height: 100%;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
   }
   &__name {
     @extend .worker;
