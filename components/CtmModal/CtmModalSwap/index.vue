@@ -88,6 +88,8 @@ export default {
     ...mapGetters({
       account: 'web3/getAccount',
       options: 'modals/getOptions',
+      tokenWQT: 'web3/getTokens',
+      tokens: 'web3/getTokens',
       isConnected: 'web3/isConnected',
     }),
     tokens() {
@@ -110,6 +112,15 @@ export default {
       ];
     },
   },
+  // watch: {
+  //   amount() {
+  //     if (!isNaN(this.amount)) {
+  //       this.amount = this.amount.replace(/./, ',');
+  //       this.amount = Number.parseFloat(this.amount).toFixed(20);
+  //       console.log(this.amount);
+  //     }
+  //   },
+  // },
   async mounted() {
     await this.fillAddress();
     await this.crosschainFlow();
@@ -137,6 +148,7 @@ export default {
     async showSwapInfoModal() {
       this.SetLoader(true);
       this.connectToMetamask();
+      this.amount = this.amount.replace(/[,]/g, '.');
       this.ShowModal({
         key: modals.swapInfo,
         crosschain: `${this.fromToken} > ${this.toToken}`,

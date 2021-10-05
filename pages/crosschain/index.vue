@@ -309,8 +309,12 @@ export default {
         this.$store.dispatch('web3/connect');
       }
     },
-    async swapsTest(address) {
-      await this.$store.dispatch('defi/swapsForCrosschain', `${address}&offset=0&limit=10`);
+    async swapsTest(recipientAddress) {
+      const payload = {
+        recipientAddress,
+        query: '&offset=0&limit=10',
+      };
+      await this.$store.dispatch('defi/swapsForCrosschain', payload);
     },
     togglePools(selInd) {
       if (this.sourceAddressInd === 0) {
