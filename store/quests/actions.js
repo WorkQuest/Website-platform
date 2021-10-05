@@ -99,10 +99,16 @@ export default {
     return response.result;
   },
 
-  async getResponsesToQuest({ commit }, id) {
-    const { data } = await this.$axios.$get(`/v1/quest/${id}/responses`);
-    commit('setResponses', data.result);
-    return data.result;
+  async responsesToQuest({ commit }, questId) {
+    const response = await this.$axios.$get(`/v1/quest/${questId}/responses`);
+    commit('setResponses', response.result);
+    return response.result;
+  },
+
+  async getResponsesToQuestForAuthUser({ commit }) {
+    const response = await this.$axios.$get('/v1/quest/responses/my');
+    commit('setResponsesMy', response.result);
+    return response.result;
   },
 
   async acceptQuestInvitation(id) {
@@ -111,12 +117,6 @@ export default {
 
   async rejectQuestInvitation(id) {
     return await this.$axios.$post(`/v1/quest/response/${id}/reject`, id);
-  },
-
-  async getResponsesToQuestForAuthorizedUser({ commit }) {
-    const { data } = await this.$axios.$get('/v1/quest/responses/my');
-    commit('setResponsesMy', data.result);
-    return data.result;
   },
 
   setMapBounds({ commit }, payload) {

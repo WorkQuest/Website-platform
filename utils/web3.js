@@ -53,11 +53,14 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
 export const sendTransaction = async (_method, _abi, _address, _params, _userAddress, _provider = web3) => {
   const inst = new web3.eth.Contract(_abi, _address);
   const data = inst.methods[_method].apply(null, _params).encodeABI();
+  const gasPrice = await web3.eth.getGasPrice();
+  const gasEstimate = await inst.methods[_method].apply(null, _params).estimateGas({ from: _userAddress });
   return await web3.eth.sendTransaction({
     to: _address,
     data,
     from: _userAddress,
-    // gasPrice: new BigNumber(0.005).shiftedBy(9).toString(),
+    gasPrice,
+    gas: gasEstimate,
   });
 };
 
@@ -446,6 +449,7 @@ export const redeemSwap = async (props) => {
       return error(500, 'redeem error', e);
     }
   } if (process.env.PROD === 'false') {
+    console.log(signData);
     if (chainId !== 2) {
       bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
     } else {
@@ -453,11 +457,9 @@ export const redeemSwap = async (props) => {
     }
     try {
       showToast('Redeeming', 'Redeem...', 'success');
-      console.log(signData);
-      const sendResponse = await sendTransaction('redeem', abi.WQBridge, bridgeAddress, signData, signData[3]);
-      console.log(sendResponse);
-      return sendResponse;
+      return await sendTransaction('redeem', abi.WQBridge, bridgeAddress, signData, signData[3]);
     } catch (e) {
+      console.log(e);
       showToast('Redeeming', `${e.message}`, 'warning');
       return error(500, 'redeem error', e);
     }
