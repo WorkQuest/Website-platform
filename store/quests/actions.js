@@ -80,8 +80,9 @@ export default {
     return await this.$axios.$delete(`/v1/quest/${id}/star`, id);
   },
 
-  async startQuest(id) {
-    return await this.$axios.$post(`/v1/quest/${id}/start`, id);
+  async startQuest(workerId) {
+    const response = await this.$axios.$post(`/v1/quest/${workerId}/start`, workerId);
+    return response.result;
   },
 
   async getStarredQuests({ commit }) {
@@ -111,12 +112,14 @@ export default {
     return response.result;
   },
 
-  async acceptQuestInvitation(id) {
-    return await this.$axios.$post(`/v1/quest/response/${id}/accept`, id);
+  async acceptQuestInvitation({ commit }, responseId) {
+    const response = await this.$axios.$post(`/v1/quest/employer/${responseId}/accept`);
+    return response.result;
   },
 
-  async rejectQuestInvitation(id) {
-    return await this.$axios.$post(`/v1/quest/response/${id}/reject`, id);
+  async rejectQuestInvitation({ commit }, responseId) {
+    const response = await this.$axios.$post(`/v1/quest/employer/${responseId}/reject`);
+    return response.result;
   },
 
   setMapBounds({ commit }, payload) {

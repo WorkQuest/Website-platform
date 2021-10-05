@@ -80,6 +80,7 @@
                 v-for="(response, i) in responsesToQuest"
                 :key="i"
               >
+                <!--                :class="{'hide': response.status === -1}"-->
                 <span
                   v-for="(worker, j) in response"
                   :key="j"
@@ -89,16 +90,22 @@
                     class="worker__container"
                   >
                     <div>
-                      <img
-                        class="worker__avatar"
-                        :src="worker.avatar.url"
-                        alt=""
-                      >
+                      <!--                      TODO: ПОЧИНИТЬ ВЫВОД КАРТИНКИ-->
+                      <!--                      <img-->
+                      <!--                        class="worker__avatar"-->
+                      <!--                        :src="worker.avatar.url"-->
+                      <!--                        alt=""-->
+                      <!--                      >-->
                     </div>
                     <div class="worker__name">
-                      {{ worker.firstName }} {{ worker.lastName }}
+                      {{ worker.firstName }} {{ worker.lastName }} {{ response.status }}
+                      <div>
+                        <base-btn @click="acceptQuestInvitation(response.id)">+</base-btn>
+                        <base-btn @click="rejectQuestInvitation(response.id)">-</base-btn>
+                      </div>
                     </div>
                     <div>
+                      <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
                     <!--                    <div-->
                     <!--                      v-if="item.badge.code !== 0"-->
                     <!--                      class="card__level_higher"-->
@@ -122,6 +129,7 @@
                   </div>
                 </span>
               </span>
+              <!--                      TODO: НАСТРОИТЬ ВЫВОД ЕСЛИ ПОЛЬЗОВАТЕЛЬ ПРИГЛАШЕН КЕМ-ТО INVITED-->
               <!--              <div class="worker__title">{{ $t('quests.youInvited') }}</div>-->
               <!--              <div class="worker__container">-->
               <!--                <div>-->
@@ -485,10 +493,11 @@ export default {
   },
   computed: {
     ...mapGetters({
+      quest: 'quests/getQuest',
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      respondedList: 'data/getRespondedList',
+      // respondedList: 'data/getRespondedList',
       distance: 'data/getDistance',
       responsesToQuest: 'quests/getResponsesToQuest',
       responsesData: 'quests/getResponsesData',
@@ -512,27 +521,49 @@ export default {
     await this.initData();
     await this.getResponsesToQuest();
     await this.checkPageMode();
-    // await this.getResponsesToQuestForAuthUser();
+    await this.getResponsesToQuestForAuthUser();
     this.SetLoader(false);
   },
   methods: {
     async checkPageMode() {
-      if (this.responsesData.count === 0) {
-        this.infoData.mode = 1;
-      } if (this.responsesData.count > 0) {
-        this.infoData.mode = 3;
+      // TODO: ПРОПИСАТЬ ЛОГИКУ СТРАНИЦЫ
+      if (this.userRole === 'employer') {
+        console.log(this.responsesData);
+        // TODO: ДОБАВИТЬ ПЕРЕБОР СТАТУСОВ ЗАПРОСОВ
+        if (this.responsesData.count === 0) {
+          this.infoData.mode = 1;
+        } if (this.responsesData.count > 0) {
+          this.infoData.mode = 3;
+        }
+      } if (this.userRole === 'worker') {
+        this.infoData.mode = 5;
       }
-      console.log(this.responsesData.count);
-      console.log(this.infoData.mode);
+    },
+    async startQuest() {
+      // TODO: ДОБАВИТЬ ID ПОЛЬЗОВАТЕЛЯ
+      const data = {
+        assignedWorkerId: '',
+      };
+      await this.$store.dispatch('quests/startQuest', data);
+    },
+    async acceptQuestInvitation(responseId) {
+      await this.$store.dispatch('quests/acceptQuestInvitation', responseId);
+    },
+    async rejectQuestInvitation(responseId) {
+      await this.$store.dispatch('quests/rejectQuestInvitation', responseId);
     },
     async getResponsesToQuest() {
-      await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
+      if (this.userRole === 'employer') {
+        await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
+      }
+    },
+    async getResponsesToQuestForAuthUser() {
+      if (this.userRole === 'worker') {
+        await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
+      }
     },
     // checkStatusRespondOnQuest() {
     //   // return this.questData.userId === this.userData.id;
-    // },
-    // async getResponsesToQuestForAuthUser() {
-    //   this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
     // },
     async initData() {
       this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
@@ -584,6 +615,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hide {
+  display: none;
+}
 .gallery {
   &__image {
     border-radius: 6px;
