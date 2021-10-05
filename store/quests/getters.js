@@ -10,4 +10,7 @@ export default {
   getCurrentStepCreateQuest: (state) => state.currentStepCreateQuest || '',
   getMapBounds: (state) => state.mapBounds || '',
   getMapCenter: (state) => state.mapCenter || '',
+  getResponsesToQuest: (state) => state.responses.responses || '',
+  getResponsesData: (state) => state.responses || '',
+  getResponsesMy: (state) => state.responsesMy || '',
 };
