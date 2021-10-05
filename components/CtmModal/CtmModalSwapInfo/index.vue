@@ -89,7 +89,7 @@ export default {
     },
     async showTransactionSend() {
       this.SetLoader(true);
-      await this.checkMetamaskStatus();
+      await this.connectToMetamask();
       let chainTo = 0;
       if (this.options.chain === 'ETH') {
         chainTo = 3;
@@ -107,7 +107,6 @@ export default {
         recipient: optionsData.recepientFull,
         symbol: 'WQT',
       });
-      console.log(swapObj);
       this.ShowModal({
         key: modals.status,
         img: swapObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),

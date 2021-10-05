@@ -89,7 +89,11 @@ export default {
   async mounted() {
     this.initLink();
     if (this.options.recipient) {
-      await this.$store.dispatch('defi/swapsForCrosschain', this.options.recipient);
+      const payload = {
+        recipientAddress: this.options.recipient,
+        query: '',
+      };
+      await this.$store.dispatch('defi/swapsForCrosschain', payload);
     }
   },
   methods: {

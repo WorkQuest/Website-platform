@@ -286,12 +286,11 @@ export default {
     async redeemAction(data) {
       this.SetLoader(true);
       await this.$store.dispatch('web3/goToChain', { chain: data.chain });
-      await this.checkMetamaskStatus();
+      await this.connectToMetamask();
       const payload = {
         signData: data.clearData,
         chainId: data.chainId,
       };
-      await this.connectToMetamask();
       const redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
       this.ShowModal({
         key: modals.status,
@@ -309,8 +308,12 @@ export default {
         this.$store.dispatch('web3/connect');
       }
     },
-    async swapsTest(address) {
-      await this.$store.dispatch('defi/swapsForCrosschain', `${address}&offset=0&limit=10`);
+    async swapsTest(recipientAddress) {
+      const payload = {
+        recipientAddress,
+        query: '&offset=0&limit=10',
+      };
+      await this.$store.dispatch('defi/swapsForCrosschain', payload);
     },
     togglePools(selInd) {
       if (this.sourceAddressInd === 0) {
