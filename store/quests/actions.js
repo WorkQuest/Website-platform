@@ -9,7 +9,7 @@ export default {
     return await this.$axios.$post('/v1/quest/create', payload);
   },
   async getAllQuests({ commit }, payload) {
-    const response = await this.$axios.$get(`/v1/quests?${payload}`);
+    const response = await this.$axios.$get(`/v1/quests?${payload || ''}`);
     commit('setAllQuests', response.result);
     return response.result;
   },
@@ -114,7 +114,7 @@ export default {
   },
 
   async acceptQuestInvitation({ commit }, responseId) {
-    const response = await this.$axios.$post(`/v1/quest/employer/${responseId}/accept`);
+    const response = await this.$axios.$post(`/v1/quest/response/${responseId}/accept`);
     return response.result;
   }, // unused
 

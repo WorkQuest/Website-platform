@@ -212,8 +212,10 @@
                   class="buttons__wrapper"
                 >
                   <div class="btn__wrapper">
+                    <!--                    TODO: ПЕРЕДАТЬ ID RESPONSE-->
                     <base-btn
                       class="base-btn_agree"
+                      @click="acceptQuestInvitationWorker(filteredResponses[i].id)"
                     >
                       {{ $t('btn.agree') }}
                     </base-btn>
@@ -558,8 +560,14 @@ export default {
         if (this.questData.assignedWorker !== null) {
           this.infoData.mode = 4;
         }
-      } if (this.userRole === 'worker') {
-        this.infoData.mode = 5;
+      }
+      if (this.userRole === 'worker') {
+        if (this.questData.assignedWorker === null) {
+          this.infoData.mode = 5;
+        }
+        if (this.questData.assignedWorkerId === this.userData.id) {
+          this.infoData.mode = 1;
+        }
       }
     },
     async startQuest() {
@@ -569,9 +577,11 @@ export default {
       const questId = this.questData.id;
       await this.$store.dispatch('quests/startQuest', { questId, data });
     },
-    // async acceptStartWorkOnQuest() {
-    //   await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id);
-    // }, // worker
+    async acceptQuestInvitationWorker(responseId) {
+      if (this.userRole === 'worker') {
+        await this.$store.dispatch('quests/acceptQuestInvitation', responseId);
+      }
+    },
     async rejectQuestInvitation(responseId) {
       await this.$store.dispatch('quests/rejectQuestInvitation', responseId);
     },
@@ -585,9 +595,6 @@ export default {
         await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
       }
     },
-    // checkStatusRespondOnQuest() {
-    //   // return this.questData.userId === this.userData.id;
-    // },
     async initData() {
       this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
       this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
