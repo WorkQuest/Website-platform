@@ -90,12 +90,12 @@
                   </div>
                 </div>
                 <div class="container__status status">
-                  <span
-                    class="status__level"
-                    :class="getStatusCard(item.level)"
-                  >
-                    {{ $t(`levels.${item.level}`) }}
-                  </span>
+                  <!--                  <span-->
+                  <!--                    class="status__level"-->
+                  <!--                    :class="getStatusCard(item.level)"-->
+                  <!--                  >-->
+                  <!--                    {{ $t(`levels.${item.level}`) }}-->
+                  <!--                  </span>-->
                 </div>
               </div>
             </div>
