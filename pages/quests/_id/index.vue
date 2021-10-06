@@ -77,10 +77,9 @@
             <div v-if="infoData.mode === 3">
               <div class="worker__title">{{ $t('response.title') }}</div>
               <span
-                v-for="(response, i) in responsesToQuest"
+                v-for="(response, i) in filteredResponses"
                 :key="i"
               >
-                <!--                :class="{'hide': response.status === -1}"-->
                 <span
                   v-for="(worker, j) in response"
                   :key="j"
@@ -90,15 +89,21 @@
                     class="worker__container"
                   >
                     <div>
-                      <!--                      TODO: ПОЧИНИТЬ ВЫВОД КАРТИНКИ-->
-                      <!--                      <img-->
-                      <!--                        class="worker__avatar"-->
-                      <!--                        :src="worker.avatar.url"-->
-                      <!--                        alt=""-->
-                      <!--                      >-->
+                      <img
+                        v-if="worker.avatar"
+                        class="worker__avatar"
+                        :src="worker.avatar.url"
+                        alt=""
+                      >
+                      <img
+                        v-if="!worker.avatar"
+                        class="worker__avatar"
+                        src="../../../assets/img/ui/user.png"
+                        alt=""
+                      >
                     </div>
                     <div class="worker__name">
-                      {{ worker.firstName }} {{ worker.lastName }} {{ response.status }}
+                      {{ worker.firstName }} {{ worker.lastName }}
                       <div>
                         <base-btn @click="acceptQuestInvitation(response.id)">+</base-btn>
                         <base-btn @click="rejectQuestInvitation(response.id)">-</base-btn>
@@ -420,6 +425,7 @@ export default {
       badge: {
         code: 1,
       },
+      filteredResponses: [],
       infoData: {
         mode: 1,
         date: '15:30:20',
@@ -520,11 +526,16 @@ export default {
     this.SetLoader(true);
     await this.initData();
     await this.getResponsesToQuest();
+    await this.getFilteredResponses();
     await this.checkPageMode();
     await this.getResponsesToQuestForAuthUser();
     this.SetLoader(false);
   },
   methods: {
+    async getFilteredResponses() {
+      this.filteredResponses = this.responsesToQuest.filter((response) => response.status === 0);
+      return this.filteredResponses;
+    },
     async checkPageMode() {
       // TODO: ПРОПИСАТЬ ЛОГИКУ СТРАНИЦЫ
       if (this.userRole === 'employer') {
