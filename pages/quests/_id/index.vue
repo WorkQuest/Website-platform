@@ -534,8 +534,11 @@ export default {
   },
   methods: {
     async getFilteredResponses() {
-      this.filteredResponses = this.responsesToQuest.filter((response) => response.status === 0);
-      return this.filteredResponses;
+      if (this.userRole === 'employer') {
+        this.filteredResponses = this.responsesToQuest.filter((response) => response.status === 0);
+        return this.filteredResponses;
+      }
+      return '';
     },
     async selectWorker(i) {
       const { worker } = this.responsesToQuest[i];
