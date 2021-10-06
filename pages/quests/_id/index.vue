@@ -195,25 +195,25 @@
                 </div>
                 <div>
                   <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
-                  <!--                  <div-->
-                  <!--                    v-if="badge.code !== 0"-->
-                  <!--                    class="card__level_higher"-->
-                  <!--                    :class="[-->
-                  <!--                      {'card__level_higher': badge.code === 1},-->
-                  <!--                      {'card__level_reliable': badge.code === 2},-->
-                  <!--                      {'card__level_checked': badge.code === 3}-->
-                  <!--                    ]"-->
-                  <!--                  >-->
-                  <!--                    <span v-if="badge.code === 1">-->
-                  <!--                      {{ $t('levels.higher') }}-->
-                  <!--                    </span>-->
-                  <!--                    <span v-if="badge.code === 2">-->
-                  <!--                      {{ $t('levels.reliableEmp') }}-->
-                  <!--                    </span>-->
-                  <!--                    <span v-if="badge.code === 3">-->
-                  <!--                      {{ $t('levels.checkedByTime') }}-->
-                  <!--                    </span>-->
-                  <!--                  </div>-->
+                  <div
+                    v-if="badge.code !== 0"
+                    class="card__level_higher"
+                    :class="[
+                      {'card__level_higher': badge.code === 1},
+                      {'card__level_reliable': badge.code === 2},
+                      {'card__level_checked': badge.code === 3}
+                    ]"
+                  >
+                    <span v-if="badge.code === 1">
+                      {{ $t('levels.higher') }}
+                    </span>
+                    <span v-if="badge.code === 2">
+                      {{ $t('levels.reliableEmp') }}
+                    </span>
+                    <span v-if="badge.code === 3">
+                      {{ $t('levels.checkedByTime') }}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -518,7 +518,7 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      // respondedList: 'data/getRespondedList',
+      respondedList: 'data/getRespondedList',
       distance: 'data/getDistance',
       responsesToQuest: 'quests/getResponsesToQuest',
       responsesData: 'quests/getResponsesData',
