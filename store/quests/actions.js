@@ -51,8 +51,9 @@ export default {
     return await this.$axios.$post(`/v1/quest/${id}/accept-completed-work`, id);
   },
 
-  async acceptWorkOnQuest(id) {
-    return await this.$axios.$post(`/v1/quest/${id}/accept-work`, id);
+  async acceptWorkOnQuest({ commit }, questId) {
+    const response = await this.$axios.$post(`/v1/quest/${questId}/accept-work`);
+    return response.result; // worker
   },
 
   async closeQuest(id) {
@@ -80,8 +81,8 @@ export default {
     return await this.$axios.$delete(`/v1/quest/${id}/star`, id);
   },
 
-  async startQuest(workerId) {
-    const response = await this.$axios.$post(`/v1/quest/${workerId}/start`, workerId);
+  async startQuest({ commit }, { questId, data }) {
+    const response = await this.$axios.$post(`/v1/quest/${questId}/start`, data);
     return response.result;
   },
 
@@ -89,7 +90,7 @@ export default {
     const { data } = await this.$axios.$get('/v1/quests/starred');
     commit('setStarredQuests', data.result);
     return data.result;
-  },
+  }, // unused
 
   async inviteOnQuest({ commit }, payload, id) {
     return await this.$axios.$post(`/v1/quest/${id}/invite`, payload);
@@ -115,7 +116,7 @@ export default {
   async acceptQuestInvitation({ commit }, responseId) {
     const response = await this.$axios.$post(`/v1/quest/employer/${responseId}/accept`);
     return response.result;
-  },
+  }, // unused
 
   async rejectQuestInvitation({ commit }, responseId) {
     const response = await this.$axios.$post(`/v1/quest/employer/${responseId}/reject`);

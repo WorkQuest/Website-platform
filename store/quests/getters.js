@@ -3,7 +3,7 @@ export default {
   getAllQuests: (state) => state.allQuests || '',
   getQuest: (state) => state.quest || '',
   getQuestUser: (state) => state.quest?.user || '',
-  getQuestUserAvatar: (state) => state.quest?.user?.avatar.url || '',
+  getQuestUserAvatar: (state) => state.quest?.user?.avatar?.url || null,
   getQuestUserCompany: (state) => state.quest?.user?.additionalInfo?.company || '',
   getQuestsLocation: (state) => state.questsLocation || '',
   getCurrentStepEditQuest: (state) => state.currentStepEditQuest || '',

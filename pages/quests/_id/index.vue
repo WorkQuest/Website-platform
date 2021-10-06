@@ -105,7 +105,10 @@
                     <div class="worker__name">
                       {{ worker.firstName }} {{ worker.lastName }}
                       <div>
-                        <base-btn @click="acceptQuestInvitation(response.id)">+</base-btn>
+                        <base-btn
+                          :disabled="selectedWorker[0]"
+                          @click="selectWorker(i)"
+                        >+</base-btn>
                         <base-btn @click="rejectQuestInvitation(response.id)">-</base-btn>
                       </div>
                     </div>
@@ -175,34 +178,42 @@
               <div class="worker__container">
                 <div>
                   <img
+                    v-if="!questData.assignedWorker.avatar"
                     class="worker__avatar"
-                    src="~/assets/img/temp/avatar.jpg"
+                    src="../../../assets/img/ui/user.png"
+                    alt=""
+                  >
+                  <img
+                    v-if="questData.assignedWorker.avatar"
+                    class="worker__avatar"
+                    :src="questData.assignedWorker.avatar.url"
                     alt=""
                   >
                 </div>
                 <div class="worker__name">
-                  Rosalia Vans
+                  {{ questData.assignedWorker.firstName }} {{ questData.assignedWorker.lastName }}
                 </div>
                 <div>
-                  <div
-                    v-if="badge.code !== 0"
-                    class="card__level_higher"
-                    :class="[
-                      {'card__level_higher': badge.code === 1},
-                      {'card__level_reliable': badge.code === 2},
-                      {'card__level_checked': badge.code === 3}
-                    ]"
-                  >
-                    <span v-if="badge.code === 1">
-                      {{ $t('levels.higher') }}
-                    </span>
-                    <span v-if="badge.code === 2">
-                      {{ $t('levels.reliableEmp') }}
-                    </span>
-                    <span v-if="badge.code === 3">
-                      {{ $t('levels.checkedByTime') }}
-                    </span>
-                  </div>
+                  <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
+                  <!--                  <div-->
+                  <!--                    v-if="badge.code !== 0"-->
+                  <!--                    class="card__level_higher"-->
+                  <!--                    :class="[-->
+                  <!--                      {'card__level_higher': badge.code === 1},-->
+                  <!--                      {'card__level_reliable': badge.code === 2},-->
+                  <!--                      {'card__level_checked': badge.code === 3}-->
+                  <!--                    ]"-->
+                  <!--                  >-->
+                  <!--                    <span v-if="badge.code === 1">-->
+                  <!--                      {{ $t('levels.higher') }}-->
+                  <!--                    </span>-->
+                  <!--                    <span v-if="badge.code === 2">-->
+                  <!--                      {{ $t('levels.reliableEmp') }}-->
+                  <!--                    </span>-->
+                  <!--                    <span v-if="badge.code === 3">-->
+                  <!--                      {{ $t('levels.checkedByTime') }}-->
+                  <!--                    </span>-->
+                  <!--                  </div>-->
                 </div>
               </div>
             </div>
@@ -322,7 +333,10 @@
                   class="buttons__wrapper"
                 >
                   <div class="btn__wrapper">
-                    <base-btn>
+                    <base-btn
+                      :disabled="!selectedWorker[0]"
+                      @click="startQuest()"
+                    >
                       {{ $t('quests.startQuest') }}
                     </base-btn>
                   </div>
@@ -425,6 +439,7 @@ export default {
       badge: {
         code: 1,
       },
+      selectedWorker: [],
       filteredResponses: [],
       infoData: {
         mode: 1,
@@ -536,8 +551,13 @@ export default {
       this.filteredResponses = this.responsesToQuest.filter((response) => response.status === 0);
       return this.filteredResponses;
     },
+    async selectWorker(i) {
+      const { worker } = this.responsesToQuest[i];
+      this.selectedWorker.push(worker);
+    },
     async checkPageMode() {
       // TODO: ПРОПИСАТЬ ЛОГИКУ СТРАНИЦЫ
+      console.log(this.questData);
       if (this.userRole === 'employer') {
         console.log(this.responsesData);
         // TODO: ДОБАВИТЬ ПЕРЕБОР СТАТУСОВ ЗАПРОСОВ
@@ -546,20 +566,23 @@ export default {
         } if (this.responsesData.count > 0) {
           this.infoData.mode = 3;
         }
+        if (this.questData.assignedWorker !== null) {
+          this.infoData.mode = 4;
+        }
       } if (this.userRole === 'worker') {
         this.infoData.mode = 5;
       }
     },
     async startQuest() {
-      // TODO: ДОБАВИТЬ ID ПОЛЬЗОВАТЕЛЯ
       const data = {
-        assignedWorkerId: '',
+        assignedWorkerId: this.selectedWorker[0].id,
       };
-      await this.$store.dispatch('quests/startQuest', data);
+      const questId = this.questData.id;
+      await this.$store.dispatch('quests/startQuest', { questId, data });
     },
-    async acceptQuestInvitation(responseId) {
-      await this.$store.dispatch('quests/acceptQuestInvitation', responseId);
-    },
+    // async acceptStartWorkOnQuest() {
+    //   await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id);
+    // }, // worker
     async rejectQuestInvitation(responseId) {
       await this.$store.dispatch('quests/rejectQuestInvitation', responseId);
     },
