@@ -90,16 +90,9 @@
                   >
                     <div>
                       <img
-                        v-if="worker.avatar"
                         class="worker__avatar"
-                        :src="worker.avatar.url"
-                        alt=""
-                      >
-                      <img
-                        v-if="!worker.avatar"
-                        class="worker__avatar"
-                        src="../../../assets/img/ui/user.png"
-                        alt=""
+                        :src="worker.avatar ? worker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                        :alt="`${worker.firstName} ${worker.lastName}`"
                       >
                     </div>
                     <div class="worker__name">
@@ -178,15 +171,8 @@
               <div class="worker__container">
                 <div>
                   <img
-                    v-if="!questData.assignedWorker.avatar"
                     class="worker__avatar"
-                    src="../../../assets/img/ui/user.png"
-                    alt=""
-                  >
-                  <img
-                    v-if="questData.assignedWorker.avatar"
-                    class="worker__avatar"
-                    :src="questData.assignedWorker.avatar.url"
+                    :src="questData.assignedWorker.avatar ? questData.assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                     alt=""
                   >
                 </div>

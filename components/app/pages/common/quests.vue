@@ -82,11 +82,11 @@
                 <div class="container__user user">
                   <img
                     class="user__avatar"
-                    :src="item.user.avatar ? item.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                    :alt="`${item.user.firstName} ${item.user.lastName}`"
+                    :src="item.assignedWorker.avatar ? item.assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                    :alt="`${item.assignedWorker.firstName} ${item.assignedWorker.lastName}`"
                   >
                   <div class="user__name">
-                    test
+                    {{ item.assignedWorker.firstName }} {{ item.assignedWorker.lastName }}
                   </div>
                 </div>
                 <div class="container__status status">
