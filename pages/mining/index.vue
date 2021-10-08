@@ -176,7 +176,6 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    console.log(process.env.BASE_URL);
     this.SetLoader(false);
   },
   methods: {
