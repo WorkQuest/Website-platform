@@ -191,7 +191,7 @@ export const staking = async (_decimals, _amount) => {
   allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, stakingAddress])).toString();
   try {
     console.log(_decimals);
-    amount = new BigNumber(_amount.toString()).shiftedBy(+18).toString();
+    amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
     if (+allowance < +amount) {
       store.dispatch('main/setStatusText', 'Approving');
       showToast('Staking', 'Approving...', 'success');
@@ -234,7 +234,7 @@ export const unStaking = async (_decimals, _amount) => {
   contractInstance = await createInstance(stakingAbi, stakingAddress);
   try {
     console.log(_decimals);
-    amount = new BigNumber(_amount.toString()).shiftedBy(+18).toString();
+    amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
     showToast('Unstaking', 'Unstaking...', 'success');
     store.dispatch('main/setStatusText', 'Staking');
     await contractInstance.unstake(amount);
@@ -398,6 +398,7 @@ export const goToChain = async (chain) => {
   if (chain === 'undefined') {
     showToast('Error connect to Metamask', 'Wrong chain ID', 'danger');
   }
+  console.log(chain);
   if (chain === 'ETH') {
     if (process.env.PROD === 'false') {
       await window.ethereum.request({
