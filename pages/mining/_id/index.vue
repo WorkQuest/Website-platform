@@ -396,7 +396,7 @@ export default {
     },
   },
   created() {
-    localStorage.setItem('miningPoolId', 'BNB');
+    localStorage.setItem('miningPoolId', this.$route.params.id);
     this.miningPoolId = localStorage.getItem('miningPoolId');
   },
   async mounted() {
