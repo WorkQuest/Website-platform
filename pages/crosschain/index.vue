@@ -58,8 +58,12 @@
             </div>
           </div>
           <div class="info-block__btns-cont">
+            <!--            <base-btn-->
+            <!--              :disabled="metamaskStatus === 'notInstalled'"-->
+            <!--              @click="showSwapModal"-->
+            <!--            >-->
             <base-btn
-              :disabled="metamaskStatus === 'notInstalled'"
+              :disabled="true"
               @click="showSwapModal"
             >
               {{ $t('crosschain.createSwap') }}
