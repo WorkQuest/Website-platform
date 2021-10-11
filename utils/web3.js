@@ -70,7 +70,28 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
   let transactionData = {};
   const inst = new web3.eth.Contract(payload.abi, payload.address);
   const gasPrice = await web3.eth.getGasPrice();
-  if (_method === 'redeem') {
+  // if (_method === 'redeem') {
+  //   const data = inst.methods[_method].apply(null, [payload.data]).encodeABI();
+  //   const gasEstimate = await inst.methods[_method].apply(null, [payload.data]).estimateGas({ from: getAccount().address });
+  //   transactionData = {
+  //     to: payload.address,
+  //     from: getAccount().address,
+  //     data,
+  //     gasPrice,
+  //     gas: gasEstimate,
+  //   };
+  // } else
+  if (_method === 'claim') {
+    const data = inst.methods[_method].apply(null).encodeABI();
+    const gasEstimate = await inst.methods[_method].apply(null).estimateGas({ from: getAccount().address });
+    transactionData = {
+      to: payload.address,
+      from: getAccount().address,
+      data,
+      gasPrice,
+      gas: gasEstimate,
+    };
+  } else if (_method === 'redeem') {
     const data = inst.methods[_method].apply(null, payload.data).encodeABI();
     const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: getAccount().address });
     transactionData = {
@@ -80,26 +101,9 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
       gasPrice,
       gas: gasEstimate,
     };
-  } else if (_method === 'claim') {
-    console.log(1);
-    const data = inst.methods[_method].apply(null, []).encodeABI();
-    console.log(data);
-    const gasEstimate = await inst.methods[_method].apply(null, []).estimateGas({ from: getAccount().address });
-    console.log(gasEstimate);
-    transactionData = {
-      to: payload.address,
-      from: getAccount().address,
-      data,
-      gasPrice,
-      gas: gasEstimate,
-    };
-    console.log(transactionData);
-  } else if (_method === 'stake' || _method === 'unstake') {
-    console.log(_method);
+  } else {
     const data = inst.methods[_method].apply(null, [payload.data]).encodeABI();
-    console.log(data);
     const gasEstimate = await inst.methods[_method].apply(null, [payload.data]).estimateGas({ from: getAccount().address });
-    console.log(gasEstimate);
     transactionData = {
       to: payload.address,
       from: getAccount().address,
@@ -107,7 +111,6 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
       gasPrice,
       gas: gasEstimate,
     };
-    console.log(transactionData);
   }
   return await web3.eth.sendTransaction(transactionData);
 };
@@ -250,7 +253,6 @@ export const staking = async (_decimals, _amount) => {
       abi: stakingAbi,
       address: stakingAddress,
       data: amount,
-      userAddress: getAccount().address,
     };
     await sendTransaction('stake', payload);
     // await contractInstance.stake(amount);
@@ -294,7 +296,6 @@ export const unStaking = async (_decimals, _amount) => {
       abi: stakingAbi,
       address: stakingAddress,
       data: amount,
-      userAddress: getAccount().address,
     };
     await sendTransaction('unstake', payload);
     // await contractInstance.unstake(amount);
@@ -334,7 +335,6 @@ export const claimRewards = async (_userAddress, _amount) => {
       abi: stakingAbi,
       address: stakingAddress,
       data: _amount,
-      userAddress: _userAddress,
     };
     await sendTransaction('claim', payload);
     await contractInstance.rewardTotal();
@@ -504,16 +504,22 @@ export const redeemSwap = async (props) => {
     }
     try {
       showToast('Redeeming', 'Redeem...', 'success');
-      console.log(signData);
-      const sendResponse = await sendTransaction('redeem', abi.MainNetWQBridge, bridgeAddress, signData, signData[3]);
-      console.log(sendResponse);
-      return sendResponse;
+      // console.log(signData);
+      // const sendResponse = await sendTransaction('redeem', abi.MainNetWQBridge, bridgeAddress, signData, signData[3]);
+      // console.log(sendResponse);
+      // return sendResponse;
+      const payload = {
+        abi: abi.MainNetWQBridge,
+        address: bridgeAddress,
+        data: signData,
+        userAddress: signData[3],
+      };
+      return await sendTransaction('redeem', payload);
     } catch (e) {
       showToast('Redeeming', `${e.message}`, 'warning');
       return error(500, 'redeem error', e);
     }
   } if (process.env.PROD === 'false') {
-    console.log(signData);
     if (chainId !== 2) {
       bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
     } else {
