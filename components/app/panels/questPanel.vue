@@ -12,6 +12,7 @@
                 class="user__img"
                 :src="avatarUrl"
                 alt=""
+                loading="lazy"
               >
             </span>
             <span

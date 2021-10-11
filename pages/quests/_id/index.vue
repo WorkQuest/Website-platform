@@ -37,309 +37,10 @@
             >
           </div>
           <div class="divider" />
-          <span v-if="userRole === 'employer'">
-            <div v-if="infoData.mode === 2">
-              <div class="worker__title">{{ $t('quests.worker') }}</div>
-              <div class="worker__container">
-                <div>
-                  <img
-                    class="worker__avatar"
-                    src="~/assets/img/temp/avatar.jpg"
-                    alt=""
-                  >
-                </div>
-                <div class="worker__name">
-                  Rosalia Vans
-                </div>
-                <div>
-                  <div
-                    v-if="badge.code !== 0"
-                    class="card__level_higher"
-                    :class="[
-                      {'card__level_higher': badge.code === 1},
-                      {'card__level_reliable': badge.code === 2},
-                      {'card__level_checked': badge.code === 3}
-                    ]"
-                  >
-                    <span v-if="badge.code === 1">
-                      {{ $t('levels.higher') }}
-                    </span>
-                    <span v-if="badge.code === 2">
-                      {{ $t('levels.reliableEmp') }}
-                    </span>
-                    <span v-if="badge.code === 3">
-                      {{ $t('levels.checkedByTime') }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div v-if="infoData.mode === 3">
-              <div class="worker__title">{{ $t('response.title') }}</div>
-              <span
-                v-for="(response, i) in filteredResponses"
-                :key="i"
-              >
-                <span
-                  v-for="(worker, j) in response"
-                  :key="j"
-                >
-                  <div
-                    v-if="worker.firstName && worker.lastName"
-                    class="worker__container"
-                  >
-                    <div>
-                      <img
-                        class="worker__avatar"
-                        :src="worker.avatar ? worker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                        :alt="`${worker.firstName} ${worker.lastName}`"
-                      >
-                    </div>
-                    <div class="worker__name">
-                      {{ worker.firstName }} {{ worker.lastName }}
-                      <div>
-                        <base-btn
-                          :disabled="selectedWorker[0]"
-                          @click="selectWorker(i)"
-                        >+</base-btn>
-                        <base-btn @click="rejectQuestInvitation(response.id)">-</base-btn>
-                      </div>
-                    </div>
-                    <div>
-                      <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
-                    <!--                    <div-->
-                    <!--                      v-if="item.badge.code !== 0"-->
-                    <!--                      class="card__level_higher"-->
-                    <!--                      :class="[-->
-                    <!--                        {'card__level_higher': item.badge.code === 1},-->
-                    <!--                        {'card__level_reliable': item.badge.code === 2},-->
-                    <!--                        {'card__level_checked': item.badge.code === 3}-->
-                    <!--                      ]"-->
-                    <!--                    >-->
-                    <!--                      <span v-if="item.badge.code === 1">-->
-                    <!--                        {{ $t('levels.higher') }}-->
-                    <!--                      </span>-->
-                    <!--                      <span v-if="item.badge.code === 2">-->
-                    <!--                        {{ $t('levels.reliableEmp') }}-->
-                    <!--                      </span>-->
-                    <!--                      <span v-if="item.badge.code === 3">-->
-                    <!--                        {{ $t('levels.checkedByTime') }}-->
-                    <!--                      </span>-->
-                    <!--                    </div>-->
-                    </div>
-                  </div>
-                </span>
-              </span>
-              <!--                      TODO: НАСТРОИТЬ ВЫВОД ЕСЛИ ПОЛЬЗОВАТЕЛЬ ПРИГЛАШЕН КЕМ-ТО INVITED-->
-              <!--              <div class="worker__title">{{ $t('quests.youInvited') }}</div>-->
-              <!--              <div class="worker__container">-->
-              <!--                <div>-->
-              <!--                  <img-->
-              <!--                    class="worker__avatar"-->
-              <!--                    src="~/assets/img/temp/avatar.jpg"-->
-              <!--                    alt=""-->
-              <!--                  >-->
-              <!--                </div>-->
-              <!--                <div class="worker__name">-->
-              <!--                  Rosalia Vans-->
-              <!--                </div>-->
-              <!--                <div>-->
-              <!--                  <div-->
-              <!--                    v-if="badge.code !== 0"-->
-              <!--                    class="card__level_higher"-->
-              <!--                    :class="[-->
-              <!--                      {'card__level_higher': badge.code === 1},-->
-              <!--                      {'card__level_reliable': badge.code === 2},-->
-              <!--                      {'card__level_checked': badge.code === 3}-->
-              <!--                    ]"-->
-              <!--                  >-->
-              <!--                    <span v-if="badge.code === 1">-->
-              <!--                      {{ $t('levels.higher') }}-->
-              <!--                    </span>-->
-              <!--                    <span v-if="badge.code === 2">-->
-              <!--                      {{ $t('levels.reliableEmp') }}-->
-              <!--                    </span>-->
-              <!--                    <span v-if="badge.code === 3">-->
-              <!--                      {{ $t('levels.checkedByTime') }}-->
-              <!--                    </span>-->
-              <!--                  </div>-->
-              <!--                </div>-->
-              <!--              </div>-->
-            </div>
-            <div v-if="infoData.mode === 4">
-              <div class="worker__title">{{ $t('quests.worker') }}</div>
-              <div class="worker__container">
-                <div>
-                  <img
-                    class="worker__avatar"
-                    :src="questData.assignedWorker.avatar ? questData.assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                    alt=""
-                  >
-                </div>
-                <div class="worker__name">
-                  {{ questData.assignedWorker.firstName }} {{ questData.assignedWorker.lastName }}
-                </div>
-                <div>
-                  <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
-                  <div
-                    v-if="badge.code !== 0"
-                    class="card__level_higher"
-                    :class="[
-                      {'card__level_higher': badge.code === 1},
-                      {'card__level_reliable': badge.code === 2},
-                      {'card__level_checked': badge.code === 3}
-                    ]"
-                  >
-                    <span v-if="badge.code === 1">
-                      {{ $t('levels.higher') }}
-                    </span>
-                    <span v-if="badge.code === 2">
-                      {{ $t('levels.reliableEmp') }}
-                    </span>
-                    <span v-if="badge.code === 3">
-                      {{ $t('levels.checkedByTime') }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </span>
-          <div class="btns__container">
-            <div>
-              <span v-if="userRole === 'worker'">
-                <div
-                  v-if="infoData.mode === 1"
-                  class="buttons__wrapper"
-                >
-                  <div class="btn__wrapper">
-                    <!--                    TODO: ПЕРЕДАТЬ ID RESPONSE-->
-                    <base-btn
-                      class="base-btn_agree"
-                      @click="acceptQuestInvitationWorker(filteredResponses[i].id)"
-                    >
-                      {{ $t('btn.agree') }}
-                    </base-btn>
-                  </div>
-                  <div class="btn__wrapper">
-                    <base-btn
-                      class="base-btn_goToChat"
-                    >
-                      {{ $t('btn.goToChat') }}
-                      <span class="icon-chat icon_fs-20" />
-                    </base-btn>
-                  </div>
-                </div>
-              </span>
-              <span v-if="userRole === 'employer'">
-                <div
-                  v-if="infoData.mode === 1"
-                  class="buttons__wrapper"
-                >
-                  <div class="btn__wrapper">
-                    <base-btn
-                      @click="toRaisingViews()"
-                    >
-                      {{ $t('quests.raiseViews') }}
-                    </base-btn>
-                  </div>
-                  <div class="btn__wrapper">
-                    <base-btn
-                      mode="delete"
-                      @click="showAreYouSureDeleteQuestModal()"
-                    >
-                      {{ $t('quests.deleteQuest') }}
-                    </base-btn>
-                  </div>
-                </div>
-              </span>
-              <span v-if="userRole === 'worker'">
-                <div
-                  v-if="infoData.mode === 5"
-                  class="buttons__wrapper"
-                >
-                  <div class="btn__wrapper">
-                    <!--                    :disabled="checkStatusRespondOnQuest"-->
-                    <base-btn
-                      @click="showMessageModal()"
-                    >
-                      {{ $t('btn.sendARequest') }}
-                    </base-btn>
-                  </div>
-                </div>
-              </span>
-              <span v-if="userRole === 'worker'">
-                <div
-                  v-if="infoData.mode === 2"
-                  class="buttons__wrapper"
-                >
-                  <div class="btn__wrapper">
-                    <base-btn
-                      class="base-btn_dispute"
-                    >
-                      {{ $t('btn.dispute') }}
-                    </base-btn>
-                  </div>
-                  <div class="btn__wrapper">
-                    <base-btn
-                      class="base-btn_goToChat"
-                    >
-                      {{ $t('btn.goToChat') }}
-                      <span class="icon-chat icon_fs-20" />
-                    </base-btn>
-                  </div>
-                </div>
-              </span>
-              <span v-if="userRole === 'employer'">
-                <div
-                  v-if="infoData.mode === 2"
-                  class="buttons__wrapper"
-                >
-                  <div class="btn__wrapper">
-                    <base-btn mode="approve">
-                      {{ $t('quests.approve') }}
-                    </base-btn>
-                  </div>
-                </div>
-              </span>
-              <span v-if="userRole === 'worker'">
-                <div
-                  v-if="infoData.mode === 3"
-                  class="buttons__wrapper"
-                >
-                  <div class="btn__wrapper">
-                    <base-btn
-                      :disabled="infoData.mode === 3"
-                    >
-                      {{ $t('btn.responded') }}
-                    </base-btn>
-                  </div>
-                </div>
-              </span>
-              <span v-if="userRole === 'employer'">
-                <div
-                  v-if="infoData.mode === 3"
-                  class="buttons__wrapper"
-                >
-                  <div class="btn__wrapper">
-                    <base-btn
-                      :disabled="!selectedWorker[0]"
-                      @click="startQuest()"
-                    >
-                      {{ $t('quests.startQuest') }}
-                    </base-btn>
-                  </div>
-                </div>
-              </span>
-              <span v-if="userRole === 'employer'" />
-            </div>
-            <span v-if="infoData.mode !== 4">
-              <div class="price__container">
-                <span class="price__value">
-                  {{ questData.price }} WUSD
-                </span>
-              </div>
-            </span>
-          </div>
+          <questIdEmployer
+            :info-data="infoData"
+          />
+          <questIdWorker :info-data="infoData" />
         </div>
       </div>
     </div>
@@ -413,6 +114,8 @@ import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
 import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
+import questIdEmployer from '~/components/app/pages/quests_id/employer';
+import questIdWorker from '~/components/app/pages/quests_id/worker';
 
 export default {
   name: 'Quests',
@@ -421,6 +124,8 @@ export default {
     questPanel,
     quests,
     emptyData,
+    questIdEmployer,
+    questIdWorker,
   },
   data() {
     return {
@@ -428,7 +133,6 @@ export default {
         code: 1,
       },
       selectedWorker: [],
-      filteredResponses: [],
       infoData: {
         mode: 1,
         date: '15:30:20',
@@ -529,28 +233,24 @@ export default {
     this.SetLoader(true);
     await this.initData();
     await this.getResponsesToQuest();
-    await this.getFilteredResponses();
     await this.checkPageMode();
-    await this.getResponsesToQuestForAuthUser();
+    console.log(this.responsesData);
     this.SetLoader(false);
   },
   methods: {
-    async getFilteredResponses() {
+    async getResponsesToQuest() {
       if (this.userRole === 'employer') {
-        this.filteredResponses = this.responsesToQuest.filter((response) => response.status === 0);
-        return this.filteredResponses;
+        await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
       }
-      return '';
     },
-    async selectWorker(i) {
-      const { worker } = this.responsesToQuest[i];
-      this.selectedWorker.push(worker);
+    async initData() {
+      this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+      this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
     },
     async checkPageMode() {
       // TODO: ПРОПИСАТЬ ЛОГИКУ СТРАНИЦЫ
-      console.log(this.questData);
+      // console.log(this.questData);
       if (this.userRole === 'employer') {
-        console.log(this.responsesData);
         // TODO: ДОБАВИТЬ ПЕРЕБОР СТАТУСОВ ЗАПРОСОВ
         if (this.responsesData.count === 0) {
           this.infoData.mode = 1;
@@ -570,35 +270,6 @@ export default {
         }
       }
     },
-    async startQuest() {
-      const data = {
-        assignedWorkerId: this.selectedWorker[0].id,
-      };
-      const questId = this.questData.id;
-      await this.$store.dispatch('quests/startQuest', { questId, data });
-    },
-    async acceptQuestInvitationWorker(responseId) {
-      if (this.userRole === 'worker') {
-        await this.$store.dispatch('quests/acceptQuestInvitation', responseId);
-      }
-    },
-    async rejectQuestInvitation(responseId) {
-      await this.$store.dispatch('quests/rejectQuestInvitation', responseId);
-    },
-    async getResponsesToQuest() {
-      if (this.userRole === 'employer') {
-        await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
-      }
-    },
-    async getResponsesToQuestForAuthUser() {
-      if (this.userRole === 'worker') {
-        await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
-      }
-    },
-    async initData() {
-      this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
-      this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
-    },
     coordinatesChange(item) {
       if (Object.keys(this.currentLocation).length > 0) {
         this.currentLocation = {};
@@ -612,24 +283,9 @@ export default {
     toggleMap() {
       this.isInvite = !this.isShowMap;
     },
-    showMessageModal() {
-      this.ShowModal({
-        key: modals.sendARequest,
-        questId: this.questData.id,
-      });
-    },
-    toRaisingViews() {
-      this.$router.push('/edit-quest');
-      this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
-    },
     showRaiseViewsModal() {
       this.ShowModal({
         key: modals.raiseViews,
-      });
-    },
-    showAreYouSureDeleteQuestModal() {
-      this.ShowModal({
-        key: modals.areYouSureDeleteQuest,
       });
     },
     openImage(src) {
@@ -703,7 +359,6 @@ export default {
   justify-content: flex-start;
   align-items: flex-start;
   margin: 20px 20px 0 20px;
-  &__icon {}
   &__distance {
     font-weight: 400;
     font-size: 14px;
@@ -756,61 +411,6 @@ export default {
   }
 }
 
-.worker {
-  font-size: 16px;
-  font-weight: 500;
-  color: $black800;
-  &__container {
-    display: flex;
-    flex-direction: row;
-    justify-items: center;
-    align-items: center;
-    margin: 20px 0 20px 0;
-  }
-  &__avatar {
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-  }
-  &__name {
-    @extend .worker;
-    margin: 0 10px 0 10px;
-  }
-  &__title {
-    @extend .worker;
-    font-size: 18px;
-  }
-}
-.card {
-  padding: 2px 8px;
-  align-items: center;
-  border-radius: 3px;
-  color: $white;
-  &__level {
-    display: grid;
-    grid-template-columns: 20px auto;
-    grid-gap: 7px;
-    font-size: 12px;
-    justify-content: flex-start;
-    align-items: center;
-    height: 20px;
-    &_higher {
-      @extend .card;
-      background-color: #F6CF00;
-
-    }
-    &_reliable {
-      @extend .card;
-      background-color: #BBC0C7;
-    }
-    &_checked {
-      background-color: #B79768;
-    }
-    &_disabled {
-      display: none;
-    }
-  }
-}
 .btns {
   &__container {
     display: grid;
@@ -829,25 +429,6 @@ export default {
   &-white {
     @include main-white;
   }
-}
-.btn {
-  &__wrapper {
-    width: 220px;
-    margin: 0 20px 0 0;
-  }
-}
-.buttons {
-  &__wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-}
-
-.badge-list{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 }
 
 .spec {
