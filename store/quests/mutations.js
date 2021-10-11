@@ -1,4 +1,7 @@
 export default {
+  setInfoDataMode(state, data) {
+    state.infoDataMode = data;
+  },
   setCurrentStepEditQuest(state, data) {
     state.currentStepEditQuest = data;
   },

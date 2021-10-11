@@ -4,7 +4,7 @@
     class="btns__container"
   >
     <div
-      v-if="infoData.mode === 1"
+      v-if="infoDataMode === 1"
       class="btns__wrapper"
     >
       <div class="btn__wrapper">
@@ -26,7 +26,7 @@
       </div>
     </div>
     <div
-      v-if="infoData.mode === 5"
+      v-if="infoDataMode === 5"
       class="btns__wrapper"
     >
       <div class="btn__wrapper">
@@ -38,7 +38,7 @@
       </div>
     </div>
     <div
-      v-if="infoData.mode === 2"
+      v-if="infoDataMode === 2"
       class="buttons__wrapper"
     >
       <div class="btn__wrapper">
@@ -58,7 +58,7 @@
       </div>
     </div>
     <div
-      v-if="infoData.mode !== 4"
+      v-if="infoDataMode !== 4"
       class="price__container"
     >
       <span class="price__value">
@@ -66,12 +66,12 @@
       </span>
     </div>
     <div
-      v-if="infoData.mode === 3"
+      v-if="infoDataMode === 3"
       class="btns__wrapper"
     >
       <div class="btn__wrapper">
         <base-btn
-          :disabled="infoData.mode === 3"
+          :disabled="infoDataMode === 3"
         >
           {{ $t('btn.responded') }}
         </base-btn>
@@ -102,6 +102,7 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
       userRole: 'user/getUserRole',
+      infoDataMode: 'quests/getInfoDataMode',
     }),
   },
   async mounted() {

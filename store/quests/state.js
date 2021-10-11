@@ -1,6 +1,7 @@
 export default () => ({
   allQuests: {},
   quest: {},
+  infoDataMode: '',
   userInfoQuests: {},
   questsLocation: {},
   starredQuests: {},

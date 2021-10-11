@@ -1,8 +1,6 @@
 <template>
   <div>
-    <info
-      :info="infoData"
-    />
+    <info />
     <div
       class="main-white"
     >
@@ -37,10 +35,10 @@
             >
           </div>
           <div class="divider" />
-          <questIdEmployer
-            :info-data="infoData"
-          />
-          <questIdWorker :info-data="infoData" />
+
+          <questIdEmployer />
+
+          <questIdWorker />
         </div>
       </div>
     </div>
@@ -133,11 +131,6 @@ export default {
         code: 1,
       },
       selectedWorker: [],
-      infoData: {
-        mode: 1,
-        date: '15:30:20',
-        hasRequest: 'false',
-      },
       payload: {
         type: 'active',
         favourite: true,
@@ -214,6 +207,7 @@ export default {
       distance: 'data/getDistance',
       responsesToQuest: 'quests/getResponsesToQuest',
       responsesData: 'quests/getResponsesData',
+      infoDataMode: 'quests/getInfoDataMode',
       // responsesMy: 'quests/getResponsesMy',
     }),
   },
@@ -234,7 +228,6 @@ export default {
     await this.initData();
     await this.getResponsesToQuest();
     await this.checkPageMode();
-    console.log(this.responsesData);
     this.SetLoader(false);
   },
   methods: {
@@ -242,6 +235,9 @@ export default {
       if (this.userRole === 'employer') {
         await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
       }
+    },
+    async setInfoDataMode(mode) {
+      await this.$store.dispatch('quests/setInfoDataMode', mode);
     },
     async initData() {
       this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
@@ -253,20 +249,20 @@ export default {
       if (this.userRole === 'employer') {
         // TODO: ДОБАВИТЬ ПЕРЕБОР СТАТУСОВ ЗАПРОСОВ
         if (this.responsesData.count === 0) {
-          this.infoData.mode = 1;
+          await this.setInfoDataMode(1);
         } if (this.responsesData.count > 0) {
-          this.infoData.mode = 3;
+          await this.setInfoDataMode(3);
         }
         if (this.questData.assignedWorker !== null) {
-          this.infoData.mode = 4;
+          await this.setInfoDataMode(4);
         }
       }
       if (this.userRole === 'worker') {
         if (this.questData.assignedWorker === null) {
-          this.infoData.mode = 5;
+          await this.setInfoDataMode(5);
         }
         if (this.questData.assignedWorkerId === this.userData.id) {
-          this.infoData.mode = 1;
+          await this.setInfoDataMode(1);
         }
       }
     },

@@ -1,9 +1,9 @@
 <template>
   <div>
     <span v-if="userRole === 'employer'">
-      <span v-if="info.mode !== 1">
-        <span v-if="info.mode !== 5">
-          <span v-if="info.mode !== 3">
+      <span v-if="infoDataMode !== 1">
+        <span v-if="infoDataMode !== 5">
+          <span v-if="infoDataMode !== 3">
             <div>
               <div
                 class="info"
@@ -14,10 +14,10 @@
                     <div
                       class="info__text info__text_white"
                     >
-                      <div v-if="info.mode === 2">
+                      <div v-if="infoDataMode === 2">
                         {{ $t('quests.activeQuest') }}
                       </div>
-                      <div v-if="info.mode === 4">
+                      <div v-if="infoDataMode === 4">
                         {{ $t('performed.title') }}
                       </div>
                     </div>
@@ -32,7 +32,7 @@
     <span v-if="userRole === 'worker'">
       <div>
         <div
-          v-if="info.mode !== 5"
+          v-if="infoDataMode !== 5"
           class="info"
           :class="infoClass"
         >
@@ -40,26 +40,26 @@
             <div class="info__left">
               <div
                 class="info__text info__text_white"
-                :class="[{'info__text_black': info.mode === 3}]"
+                :class="[{'info__text_black': infoDataMode === 3}]"
               >
-                <div v-if="info.mode === 1">
+                <div v-if="infoDataMode === 1">
                   {{ $t('invite.title') }}
                 </div>
-                <div v-if="info.mode === 2">
+                <div v-if="infoDataMode === 2">
                   {{ $t('quests.activeQuest') }}
                 </div>
-                <div v-if="info.mode === 3">
+                <div v-if="infoDataMode === 3">
                   {{ $t('response.title') }}
                 </div>
-                <div v-if="info.mode === 4">
+                <div v-if="infoDataMode === 4">
                   {{ $t('performed.title') }}
                 </div>
-                <div v-if="info.mode === 5" />
+                <div v-if="infoDataMode === 5" />
               </div>
             </div>
             <div class="info__right">
               <div
-                v-if="info.mode === 3"
+                v-if="infoDataMode === 3"
               >
                 <base-btn mode="showYourMessage">
                   <template v-slot:right>
@@ -68,22 +68,22 @@
                   {{ $t('info.showYourMessage') }}
                 </base-btn>
               </div>
-              <div
-                v-if="info.date"
-              >
-                <span v-if="info.mode !== 1">
-                  <span v-if="info.mode !== 4">
-                    <span v-if="info.mode !== 3">
-                      <span class="info__text info__text_white info__text_normal">
-                        {{ $t('quests.runtime') }}
-                      </span>
-                      <span class="info__text info__text_white info__text_bold">
-                        {{ info.date }}
-                      </span>
-                    </span>
-                  </span>
-                </span>
-              </div>
+              <!--              <div-->
+              <!--                v-if="info.date"-->
+              <!--              >-->
+              <!--                <span v-if="info.mode !== 1">-->
+              <!--                  <span v-if="info.mode !== 4">-->
+              <!--                    <span v-if="info.mode !== 3">-->
+              <!--                      <span class="info__text info__text_white info__text_normal">-->
+              <!--                        {{ $t('quests.runtime') }}-->
+              <!--                      </span>-->
+              <!--                      <span class="info__text info__text_white info__text_bold">-->
+              <!--                        {{ info.date }}-->
+              <!--                      </span>-->
+              <!--                    </span>-->
+              <!--                  </span>-->
+              <!--                </span>-->
+              <!--              </div>-->
             </div>
           </div>
         </div>
@@ -100,25 +100,24 @@ export default {
   name: 'InfoVue',
   props: {
     info: {
-      type: Object,
-      default: () => {},
+      type: Number,
+      default: () => 0,
     },
   },
   computed: {
     infoClass() {
-      const { mode } = this.info;
       return [
         {
-          'info_bg-yellow': mode === 1,
+          'info_bg-yellow': this.infoDataMode === 1,
         },
         {
-          'info_bg-green': mode === 2,
+          'info_bg-green': this.infoDataMode === 2,
         },
         {
-          'info_bg-grey': mode === 3,
+          'info_bg-grey': this.infoDataMode === 3,
         },
         {
-          'info_bg-blue': mode === 4,
+          'info_bg-blue': this.infoDataMode === 4,
         },
       ];
     },
@@ -126,6 +125,7 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      infoDataMode: 'quests/getInfoDataMode',
     }),
   },
   methods: {
@@ -139,10 +139,9 @@ export default {
       return texts[type] || '';
     },
     infoTextStyle() {
-      const { mode } = this.info;
       return [
         {
-          info_yellow: mode === 1,
+          info_yellow: this.infoDataMode === 1,
         },
       ];
     },

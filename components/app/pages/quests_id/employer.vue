@@ -1,6 +1,6 @@
 <template>
   <span v-if="userRole === 'employer'">
-    <div v-if="infoData.mode === 2">
+    <div v-if="infoDataMode === 2">
       <div class="worker__title">{{ $t('quests.worker') }}</div>
       <div class="worker__container">
         <div>
@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div v-if="infoData.mode === 3">
+    <div v-if="infoDataMode === 3">
       <div class="worker__title">{{ $t('response.title') }}</div>
       <span
         v-for="(response, i) in filteredResponses"
@@ -125,7 +125,7 @@
     <!--                </div>-->
     <!--              </div>-->
     <!--    </div>-->
-    <div v-if="infoData.mode === 4">
+    <div v-if="infoDataMode === 4">
       <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
@@ -167,7 +167,7 @@
     <div class="btns__container">
       <div>
         <div
-          v-if="infoData.mode === 1"
+          v-if="infoDataMode === 1"
           class="btns__wrapper"
         >
           <div class="btn__wrapper">
@@ -187,7 +187,7 @@
           </div>
         </div>
         <div
-          v-if="infoData.mode === 2"
+          v-if="infoDataMode === 2"
           class="btns__wrapper"
         >
           <div class="btn__wrapper">
@@ -197,7 +197,7 @@
           </div>
         </div>
         <div
-          v-if="infoData.mode === 3"
+          v-if="infoDataMode === 3"
           class="btns__wrapper"
         >
           <div class="btn__wrapper">
@@ -210,7 +210,7 @@
           </div>
         </div>
         <div
-          v-if="infoData.mode !== 4"
+          v-if="infoDataMode !== 4"
           class="price__container"
         >
           <span class="price__value">
@@ -251,6 +251,7 @@ export default {
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
       responsesToQuest: 'quests/getResponsesToQuest',
+      infoDataMode: 'quests/getInfoDataMode',
     }),
   },
   async mounted() {
@@ -261,6 +262,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async setInfoDataMode(mode) {
+      await this.$store.dispatch('quests/setInfoDataMode', mode);
+    },
     async initData() {
       this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
       this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
@@ -294,6 +298,7 @@ export default {
       };
       const questId = this.questData.id;
       await this.$store.dispatch('quests/startQuest', { questId, data });
+      await this.setInfoDataMode(4);
     },
     showAreYouSureDeleteQuestModal() {
       this.ShowModal({

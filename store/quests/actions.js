@@ -1,4 +1,7 @@
 export default {
+  async setInfoDataMode({ commit }, mode) {
+    commit('setInfoDataMode', mode);
+  },
   async getCurrentStepCreateQuest({ commit }, data) {
     commit('setCurrentStepCreateQuest', data);
   },

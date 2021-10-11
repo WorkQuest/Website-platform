@@ -1,4 +1,5 @@
 export default {
+  getInfoDataMode: (state) => state.infoDataMode || '',
   getUserInfoQuests: (state) => state.userInfoQuests || '',
   getAllQuests: (state) => state.allQuests || '',
   getQuest: (state) => state.quest || '',
