@@ -345,6 +345,7 @@ export default {
       perPager: 10,
       totalPagesValue: this.totalPages,
       rewardAmount: 0,
+      fullRewardAmount: 0,
       stakedAmount: 0,
       wqtWbnbData: [],
       wqtWethData: [],
@@ -539,6 +540,7 @@ export default {
     },
     async tokensDataUpdate() {
       const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
+      this.fullRewardAmount = tokensData.rewardTokenAmount;
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
     },
@@ -547,7 +549,8 @@ export default {
     },
     async claimRewards() {
       this.SetLoader(true);
-      await this.$store.dispatch('web3/claimRewards');
+      await this.connectToMetamask();
+      await this.$store.dispatch('web3/claimRewards', this.accountData.userPurse.address, this.fullRewardAmount);
       await this.tokensDataUpdate();
       this.SetLoader(false);
     },

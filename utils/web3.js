@@ -50,18 +50,66 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
   }
 };
 
-export const sendTransaction = async (_method, _abi, _address, _params, _userAddress, _provider = web3) => {
-  const inst = new web3.eth.Contract(_abi, _address);
-  const data = inst.methods[_method].apply(null, _params).encodeABI();
+// export const sendTransaction = async (_method, _abi, _address, _params, _userAddress, _provider = web3) => {
+//   const inst = new web3.eth.Contract(_abi, _address);
+//   const data = inst.methods[_method].apply(null, _params).encodeABI();
+//   const gasPrice = await web3.eth.getGasPrice();
+//   const gasEstimate = await inst.methods[_method].apply(null, _params).estimateGas({ from: _userAddress });
+//   return await web3.eth.sendTransaction({
+//     to: _address,
+//     data,
+//     from: _userAddress,
+//     gasPrice,
+//     gas: gasEstimate,
+//   });
+// };
+
+export const getAccount = () => account;
+
+export const sendTransaction = async (_method, payload, _provider = web3) => {
+  let transactionData = {};
+  const inst = new web3.eth.Contract(payload.abi, payload.address);
   const gasPrice = await web3.eth.getGasPrice();
-  const gasEstimate = await inst.methods[_method].apply(null, _params).estimateGas({ from: _userAddress });
-  return await web3.eth.sendTransaction({
-    to: _address,
-    data,
-    from: _userAddress,
-    gasPrice,
-    gas: gasEstimate,
-  });
+  if (_method === 'redeem') {
+    const data = inst.methods[_method].apply(null, payload.data).encodeABI();
+    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: getAccount().address });
+    transactionData = {
+      to: payload.address,
+      from: getAccount().address,
+      data,
+      gasPrice,
+      gas: gasEstimate,
+    };
+  } else if (_method === 'claim') {
+    console.log(1);
+    const data = inst.methods[_method].apply(null, []).encodeABI();
+    console.log(data);
+    const gasEstimate = await inst.methods[_method].apply(null, []).estimateGas({ from: getAccount().address });
+    console.log(gasEstimate);
+    transactionData = {
+      to: payload.address,
+      from: getAccount().address,
+      data,
+      gasPrice,
+      gas: gasEstimate,
+    };
+    console.log(transactionData);
+  } else if (_method === 'stake' || _method === 'unstake') {
+    console.log(_method);
+    const data = inst.methods[_method].apply(null, [payload.data]).encodeABI();
+    console.log(data);
+    const gasEstimate = await inst.methods[_method].apply(null, [payload.data]).estimateGas({ from: getAccount().address });
+    console.log(gasEstimate);
+    transactionData = {
+      to: payload.address,
+      from: getAccount().address,
+      data,
+      gasPrice,
+      gas: gasEstimate,
+    };
+    console.log(transactionData);
+  }
+  return await web3.eth.sendTransaction(transactionData);
 };
 
 const getChainTypeById = (chainId) => {
@@ -147,8 +195,6 @@ export const createInstance = async (ab, address) => {
   return await abs.getInstance(address);
 };
 
-export const getAccount = () => account;
-
 let instance;
 let contractInstance;
 let allowance;
@@ -191,7 +237,7 @@ export const staking = async (_decimals, _amount) => {
   allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, stakingAddress])).toString();
   try {
     console.log(_decimals);
-    amount = new BigNumber(_amount.toString()).shiftedBy(+18).toString();
+    amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
     if (+allowance < +amount) {
       store.dispatch('main/setStatusText', 'Approving');
       showToast('Staking', 'Approving...', 'success');
@@ -200,7 +246,14 @@ export const staking = async (_decimals, _amount) => {
     }
     showToast('Staking', 'Staking...', 'success');
     store.dispatch('main/setStatusText', 'Staking');
-    await contractInstance.stake(amount);
+    const payload = {
+      abi: stakingAbi,
+      address: stakingAddress,
+      data: amount,
+      userAddress: getAccount().address,
+    };
+    await sendTransaction('stake', payload);
+    // await contractInstance.stake(amount);
     showToast('Staking', 'Staking done', 'success');
     return '';
   } catch (e) {
@@ -234,10 +287,17 @@ export const unStaking = async (_decimals, _amount) => {
   contractInstance = await createInstance(stakingAbi, stakingAddress);
   try {
     console.log(_decimals);
-    amount = new BigNumber(_amount.toString()).shiftedBy(+18).toString();
+    amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
     showToast('Unstaking', 'Unstaking...', 'success');
     store.dispatch('main/setStatusText', 'Staking');
-    await contractInstance.unstake(amount);
+    const payload = {
+      abi: stakingAbi,
+      address: stakingAddress,
+      data: amount,
+      userAddress: getAccount().address,
+    };
+    await sendTransaction('unstake', payload);
+    // await contractInstance.unstake(amount);
     showToast('Unstaking', 'Unstaking done', 'success');
     return '';
   } catch (e) {
@@ -246,7 +306,7 @@ export const unStaking = async (_decimals, _amount) => {
   }
 };
 
-export const claimRewards = async (_decimals, _amount) => {
+export const claimRewards = async (_userAddress, _amount) => {
   const miningPoolId = localStorage.getItem('miningPoolId');
   if (process.env.PROD === 'true') {
     if (miningPoolId === 'ETH') {
@@ -269,7 +329,14 @@ export const claimRewards = async (_decimals, _amount) => {
   contractInstance = await createInstance(stakingAbi, stakingAddress);
   try {
     showToast('Claiming', 'Claiming...', 'success');
-    await contractInstance.claim();
+    // await contractInstance.claim();
+    const payload = {
+      abi: stakingAbi,
+      address: stakingAddress,
+      data: _amount,
+      userAddress: _userAddress,
+    };
+    await sendTransaction('claim', payload);
     await contractInstance.rewardTotal();
     showToast('Claiming', 'Claiming done', 'success');
     return '';
@@ -454,7 +521,13 @@ export const redeemSwap = async (props) => {
     }
     try {
       showToast('Redeeming', 'Redeem...', 'success');
-      return await sendTransaction('redeem', abi.WQBridge, bridgeAddress, signData, signData[3]);
+      const payload = {
+        abi: abi.WQBridge,
+        address: bridgeAddress,
+        data: signData,
+        userAddress: signData[3],
+      };
+      return await sendTransaction('redeem', payload);
     } catch (e) {
       console.log(e);
       showToast('Redeeming', `${e.message}`, 'warning');
