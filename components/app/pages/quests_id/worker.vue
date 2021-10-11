@@ -11,7 +11,7 @@
         <!--                    TODO: ПЕРЕДАТЬ ID RESPONSE-->
         <base-btn
           class="base-btn_agree"
-          @click="acceptQuestInvitationWorker(filteredResponses[i].id)"
+          @click="acceptWorkOnQuest"
         >
           {{ $t('btn.agree') }}
         </base-btn>
@@ -96,6 +96,8 @@ export default {
     return {
       questData: {},
       userAvatar: '',
+      questResponses: {},
+      response: {},
     };
   },
   computed: {
@@ -107,23 +109,36 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    await this.initData();
     await this.getResponsesToQuestForAuthUser();
+    await this.initData();
+    // await this.getResponseId();
     this.SetLoader(false);
   },
   methods: {
+    async setInfoDataMode(mode) {
+      await this.$store.dispatch('quests/setInfoDataMode', mode);
+    },
+    // async getResponseId() {
+    //   if (this.userRole === 'worker') {
+    //     const questId = this.$route.path.slice(8);
+    //     const { responses } = this.questResponses;
+    //     this.response = responses.filter((r) => r.quest.id === questId);
+    //   }
+    // },
+    async getResponsesToQuestForAuthUser() {
+      if (this.userRole === 'worker') {
+        this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
+      }
+    },
     async initData() {
       this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
       this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
-    },
-    async getResponsesToQuestForAuthUser() {
-      if (this.userRole === 'worker') {
-        await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
-      }
+      console.log(this.questData);
     },
     async acceptQuestInvitationWorker(responseId) {
       if (this.userRole === 'worker') {
         await this.$store.dispatch('quests/acceptQuestInvitation', responseId);
+        await this.$store.dispatch('quests/setInfoDataMode', 2);
       }
     },
     showMessageModal() {

@@ -208,7 +208,6 @@ export default {
       responsesToQuest: 'quests/getResponsesToQuest',
       responsesData: 'quests/getResponsesData',
       infoDataMode: 'quests/getInfoDataMode',
-      // responsesMy: 'quests/getResponsesMy',
     }),
   },
   watch: {
@@ -236,33 +235,27 @@ export default {
         await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
       }
     },
-    async setInfoDataMode(mode) {
-      await this.$store.dispatch('quests/setInfoDataMode', mode);
-    },
     async initData() {
       this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
       this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
     },
     async checkPageMode() {
-      // TODO: ПРОПИСАТЬ ЛОГИКУ СТРАНИЦЫ
-      // console.log(this.questData);
       if (this.userRole === 'employer') {
-        // TODO: ДОБАВИТЬ ПЕРЕБОР СТАТУСОВ ЗАПРОСОВ
         if (this.responsesData.count === 0) {
-          await this.setInfoDataMode(1);
+          await this.$store.dispatch('quests/setInfoDataMode', 1);
         } if (this.responsesData.count > 0) {
-          await this.setInfoDataMode(3);
-        }
-        if (this.questData.assignedWorker !== null) {
-          await this.setInfoDataMode(4);
+          await this.$store.dispatch('quests/setInfoDataMode', 3);
+        } if (this.questData.assignedWorker !== null) {
+          await this.$store.dispatch('quests/setInfoDataMode', 4);
         }
       }
       if (this.userRole === 'worker') {
         if (this.questData.assignedWorker === null) {
-          await this.setInfoDataMode(5);
-        }
-        if (this.questData.assignedWorkerId === this.userData.id) {
-          await this.setInfoDataMode(1);
+          await this.$store.dispatch('quests/setInfoDataMode', 5);
+        } if (this.questData.status === 1) {
+          await this.$store.dispatch('quests/setInfoDataMode', 2);
+        } if (this.questData.assignedWorkerId === this.userData.id) {
+          await this.$store.dispatch('quests/setInfoDataMode', 1);
         }
       }
     },

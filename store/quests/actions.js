@@ -56,7 +56,7 @@ export default {
 
   async acceptWorkOnQuest({ commit }, questId) {
     const response = await this.$axios.$post(`/v1/quest/${questId}/accept-work`);
-    return response.result; // worker
+    return response.result;
   },
 
   async closeQuest(id) {

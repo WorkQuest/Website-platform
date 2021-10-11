@@ -53,7 +53,6 @@ export default {
     },
   },
   build: {
-    analyze: true,
     productionSourceMap: false,
     productionGzip: true,
     productionGzipExtensions: ['js', 'css', 'svg'],
