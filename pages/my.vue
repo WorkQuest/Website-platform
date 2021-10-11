@@ -22,13 +22,13 @@
           </base-btn>
         </div>
         <quests
-          v-if="questsData.count !== 0"
+          v-if="questsData.count !== 0 && userRole === 'employer'"
           :limit="questLimits"
           :selected-tab="selectedTab"
           :object="questsData"
         />
         <quests
-          v-if="questsList.count !== 0"
+          v-if="questsList.count !== 0 && userRole === 'worker'"
           :limit="questLimits"
           :selected-tab="selectedTab"
           :object="questsList"
