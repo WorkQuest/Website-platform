@@ -380,6 +380,7 @@ export default {
         title: 'Quest info',
         subtitle: 'Quest closed!',
       });
+      await this.$store.dispatch('quests/deleteQuest', this.questData.id);
       await this.$router.push('/my');
     },
     async acceptCompletedWorkOnQuest() {
@@ -390,7 +391,6 @@ export default {
         title: 'Quest info',
         subtitle: 'Completed work on quest accepted!',
       });
-      await this.$store.dispatch('quests/deleteQuest', this.questData.id);
     },
     async rejectCompletedWorkOnQuest() {
       await this.$store.dispatch('quests/rejectCompletedWorkOnQuest', this.questData.id);
