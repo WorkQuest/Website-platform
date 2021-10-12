@@ -71,9 +71,6 @@ export default {
     const response = await this.$axios.$post(`/v1/quest/${questId}/accept-work`);
     return response.result;
   },
-
-  // Testing
-  // employer
   async rejectCompletedWorkOnQuest({ commit }, questId) {
     const response = await this.$axios.$post(`/v1/quest/${questId}/reject-completed-work`, questId);
     return response.result;
@@ -82,6 +79,9 @@ export default {
     const response = await this.$axios.$post(`/v1/quest/${questId}/close`, questId);
     return response.result; // Закрыть квест status = 0, 5
   },
+
+  // Testing
+  // employer
 
   async inviteOnQuest({ commit }, payload, id) {
     return await this.$axios.$post(`/v1/quest/${id}/invite`, payload);
