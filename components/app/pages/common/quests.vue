@@ -75,8 +75,17 @@
               v-if="item.assignedWorkerId"
               class="block__progress progress"
             >
-              <div class="progress__title">
+              <div
+                v-if="item.status !== 6"
+                class="progress__title"
+              >
                 {{ $t('quests.inProgressBy') }}
+              </div>
+              <div
+                v-if="item.status === 6"
+                class="progress__title"
+              >
+                {{ $t('quests.finishedBy') }}
               </div>
               <div class="progress__container container">
                 <div class="container__user user">

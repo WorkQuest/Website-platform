@@ -48,20 +48,34 @@
         >
           <div>
             <img
+              v-if="assignWorker.avatar"
               class="worker__avatar"
-              :src="response.worker.avatar ? response.worker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-              :alt="`${response.firstName} ${response.lastName}`"
-              loading="lazy"
+              :src="assignWorker.avatar.url"
+              alt=""
+            >
+            <img
+              v-if="assignWorker.avatar === null || assignWorker.avatar === ''"
+              class="worker__avatar"
+              :src="require('~/assets/img/app/avatar_empty.png')"
+              alt=""
             >
           </div>
           <div class="worker__name">
             {{ response.worker.firstName }} {{ response.worker.lastName }}
-            <div>
+          </div>
+          <div class="btns__wrapper">
+            <div class="btn__wrapper">
               <base-btn
                 :disabled="selectedWorker[0]"
+                mode="agree"
                 @click="selectWorker(i)"
-              >+</base-btn>
-              <base-btn @click="rejectQuestInvitation(response.id)">-</base-btn>
+              >Select</base-btn>
+            </div>
+            <div class="btn__wrapper">
+              <base-btn
+                mode="delete"
+                @click="rejectQuestInvitation(response.id)"
+              >Reject</base-btn>
             </div>
           </div>
           <div>
@@ -132,13 +146,20 @@
       <div class="worker__container">
         <div>
           <img
+            v-if="assignWorker"
             class="worker__avatar"
-            :src="questData.assignedWorker.avatar ? questData.assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+            :src="assignWorker.avatar.url"
+            alt=""
+          >
+          <img
+            v-if="assignWorker.avatar === null || assignWorker.avatar === ''"
+            class="worker__avatar"
+            :src="require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div class="worker__name">
-          {{ questData.assignedWorker.firstName }} {{ questData.assignedWorker.lastName }}
+          {{ assignWorker.firstName }} {{ assignWorker.lastName }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
@@ -180,11 +201,19 @@
           <div class="btn__wrapper">
             <base-btn
               mode="delete"
-              @click="showAreYouSureDeleteQuestModal()"
+              @click="closeQuest"
             >
-              {{ $t('quests.deleteQuest') }}
+              {{ $t('btn.closeQuest') }}
             </base-btn>
           </div>
+          <!--          <div class="btn__wrapper">-->
+          <!--            <base-btn-->
+          <!--              mode="delete"-->
+          <!--              @click="showAreYouSureDeleteQuestModal()"-->
+          <!--            >-->
+          <!--              {{ $t('quests.deleteQuest') }}-->
+          <!--            </base-btn>-->
+          <!--          </div>-->
         </div>
         <div
           v-if="infoDataMode === 2"
@@ -207,6 +236,79 @@
             >
               {{ $t('quests.startQuest') }}
             </base-btn>
+          </div>
+        </div>
+        <div
+          v-if="infoDataMode === 6"
+        >
+          <div class="worker__title">
+            {{ $t('quests.worker') }}
+          </div>
+          <div class="worker__container">
+            <div>
+              <img
+                v-if="assignWorker.avatar !== null"
+                class="worker__avatar"
+                :src="assignWorker.avatar.url"
+                alt=""
+              >
+              <img
+                v-if="assignWorker.avatar === null || assignWorker.avatar === undefined"
+                class="worker__avatar"
+                :src="require('~/assets/img/app/avatar_empty.png')"
+                alt=""
+              >
+            </div>
+            <div class="worker__name">
+              {{ assignWorker.firstName }} {{ assignWorker.lastName }}
+            </div>
+            <div>
+              <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
+              <div
+                v-if="badge.code !== 0"
+                class="card__level_higher"
+                :class="[
+                  {'card__level_higher': badge.code === 1},
+                  {'card__level_reliable': badge.code === 2},
+                  {'card__level_checked': badge.code === 3}
+                ]"
+              >
+                <span v-if="badge.code === 1">
+                  {{ $t('levels.higher') }}
+                </span>
+                <span v-if="badge.code === 2">
+                  {{ $t('levels.reliableEmp') }}
+                </span>
+                <span v-if="badge.code === 3">
+                  {{ $t('levels.checkedByTime') }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="btns__wrapper">
+            <div class="btn__wrapper">
+              <base-btn
+                mode="approve"
+                @click="acceptCompletedWorkOnQuest"
+              >
+                {{ $t('btn.acceptCompletedWorkOnQuest') }}
+              </base-btn>
+            </div>
+            <div class="btn__wrapper">
+              <base-btn
+                @click="rejectCompletedWorkOnQuest"
+              >
+                {{ $t('btn.rejectCompletedWorkOnQuest') }}
+              </base-btn>
+            </div>
+            <div class="btn__wrapper">
+              <base-btn
+                mode="delete"
+                @click="closeQuest"
+              >
+                {{ $t('btn.closeQuest') }}
+              </base-btn>
+            </div>
           </div>
         </div>
         <div
@@ -233,13 +335,19 @@ export default {
       type: Object,
       default: () => {},
     },
+    userAvatar: {
+      type: String,
+      default: () => '',
+    },
+    assignWorker: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {
       selectedWorker: [],
       filteredResponses: [],
-      questData: {},
-      userAvatar: '',
       badge: {
         code: 1,
       },
@@ -247,7 +355,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      quest: 'quests/getQuest',
+      questData: 'quests/getQuest',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
       responsesToQuest: 'quests/getResponsesToQuest',
@@ -262,12 +370,42 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async closeQuest() {
+      if (this.questData.status !== 2) {
+        await this.$store.dispatch('quests/closeQuest', this.questData.id);
+      }
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: 'Quest info',
+        subtitle: 'Quest closed!',
+      });
+      await this.$router.push('/my');
+    },
+    async acceptCompletedWorkOnQuest() {
+      await this.$store.dispatch('quests/acceptCompletedWorkOnQuest', this.questData.id);
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: 'Quest info',
+        subtitle: 'Completed work on quest accepted!',
+      });
+      await this.$store.dispatch('quests/deleteQuest', this.questData.id);
+    },
+    async rejectCompletedWorkOnQuest() {
+      await this.$store.dispatch('quests/rejectCompletedWorkOnQuest', this.questData.id);
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: 'Quest info',
+        subtitle: 'Completed work on quest rejected!',
+      });
+    },
     async setInfoDataMode(mode) {
       await this.$store.dispatch('quests/setInfoDataMode', mode);
     },
     async initData() {
       this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
-      this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
     },
     async getFilteredResponses() {
       if (this.userRole === 'employer') {
@@ -300,11 +438,11 @@ export default {
       await this.$store.dispatch('quests/startQuest', { questId, data });
       await this.setInfoDataMode(4);
     },
-    showAreYouSureDeleteQuestModal() {
-      this.ShowModal({
-        key: modals.areYouSureDeleteQuest,
-      });
-    },
+    // showAreYouSureDeleteQuestModal() {
+    //   this.ShowModal({
+    //     key: modals.areYouSureDeleteQuest,
+    //   });
+    // },
   },
 };
 </script>

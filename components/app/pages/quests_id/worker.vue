@@ -8,9 +8,7 @@
       class="btns__wrapper"
     >
       <div class="btn__wrapper">
-        <!--                    TODO: ПЕРЕДАТЬ ID RESPONSE-->
         <base-btn
-          class="base-btn_agree"
           @click="acceptWorkOnQuest"
         >
           {{ $t('btn.agree') }}
@@ -18,10 +16,65 @@
       </div>
       <div class="btn__wrapper">
         <base-btn
+          mode="outline"
+          @click="rejectWorkOnQuest"
+        >
+          {{ $t('btn.disagree') }}
+        </base-btn>
+      </div>
+      <div class="btn__wrapper">
+        <base-btn
           class="base-btn_goToChat"
+          @click="goToChat"
         >
           {{ $t('btn.goToChat') }}
-          <span class="icon-chat icon_fs-20" />
+          <template v-slot:right>
+            <span class="icon-chat icon_fs-20" />
+          </template>
+        </base-btn>
+      </div>
+    </div>
+    <div
+      v-if="infoDataMode === 2"
+      class="btns__wrapper"
+    >
+      <div class="btn__wrapper">
+        <base-btn
+          disabled="true"
+          class="base-btn_dispute"
+        >
+          {{ $t('btn.dispute') }}
+        </base-btn>
+      </div>
+      <div class="btn__wrapper">
+        <base-btn
+          @click="completeWorkOnQuest"
+        >
+          {{ $t('btn.completeWorkOnQuest') }}
+        </base-btn>
+      </div>
+      <div class="btn__wrapper">
+        <base-btn
+          class="base-btn_goToChat"
+          @click="goToChat"
+        >
+          {{ $t('btn.goToChat') }}
+          <template v-slot:right>
+            <span class="icon-chat icon_fs-20" />
+          </template>
+        </base-btn>
+      </div>
+    </div>
+    <div
+      v-if="infoDataMode === 3"
+      class="btns__wrapper"
+    >
+      <div class="btn__wrapper">
+        <base-btn
+          :disabled="true"
+          @click="sendARequestOnQuest"
+        >
+          {{ $t('btn.responded') }}
         </base-btn>
       </div>
     </div>
@@ -31,29 +84,9 @@
     >
       <div class="btn__wrapper">
         <base-btn
-          @click="showMessageModal()"
+          @click="sendARequestOnQuest"
         >
           {{ $t('btn.sendARequest') }}
-        </base-btn>
-      </div>
-    </div>
-    <div
-      v-if="infoDataMode === 2"
-      class="buttons__wrapper"
-    >
-      <div class="btn__wrapper">
-        <base-btn
-          class="base-btn_dispute"
-        >
-          {{ $t('btn.dispute') }}
-        </base-btn>
-      </div>
-      <div class="btn__wrapper">
-        <base-btn
-          class="base-btn_goToChat"
-        >
-          {{ $t('btn.goToChat') }}
-          <span class="icon-chat icon_fs-20" />
         </base-btn>
       </div>
     </div>
@@ -64,18 +97,6 @@
       <span class="price__value">
         {{ questData.price }} WUSD
       </span>
-    </div>
-    <div
-      v-if="infoDataMode === 3"
-      class="btns__wrapper"
-    >
-      <div class="btn__wrapper">
-        <base-btn
-          :disabled="infoDataMode === 3"
-        >
-          {{ $t('btn.responded') }}
-        </base-btn>
-      </div>
     </div>
   </div>
 </template>
@@ -110,13 +131,42 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.getResponsesToQuestForAuthUser();
-    await this.initData();
     // await this.getResponseId();
     this.SetLoader(false);
   },
   methods: {
-    async setInfoDataMode(mode) {
-      await this.$store.dispatch('quests/setInfoDataMode', mode);
+    async goToChat() {
+      await this.$router.push('/messages/1');
+    },
+    async acceptWorkOnQuest() {
+      await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id);
+      await this.$store.dispatch('quests/setInfoDataMode', 2);
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: 'Quest info',
+        subtitle: 'Work on quest accepted!',
+      });
+    },
+    async rejectWorkOnQuest() {
+      await this.$store.dispatch('quests/rejectWorkOnQuest', this.questData.id);
+      await this.$store.dispatch('quests/setInfoDataMode', 5);
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: 'Quest info',
+        subtitle: 'Work on quest rejected!',
+      });
+    },
+    async completeWorkOnQuest() {
+      await this.$store.dispatch('quests/completeWorkOnQuest', this.questData.id);
+      await this.$store.dispatch('quests/setInfoDataMode', 4);
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: 'Quest info',
+        subtitle: 'Work on quest completed! Please, wait your employer!',
+      });
     },
     // async getResponseId() {
     //   if (this.userRole === 'worker') {
@@ -130,18 +180,13 @@ export default {
         this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
       }
     },
-    async initData() {
-      this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
-      this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
-      console.log(this.questData);
-    },
-    async acceptQuestInvitationWorker(responseId) {
-      if (this.userRole === 'worker') {
-        await this.$store.dispatch('quests/acceptQuestInvitation', responseId);
-        await this.$store.dispatch('quests/setInfoDataMode', 2);
-      }
-    },
-    showMessageModal() {
+    // async acceptQuestInvitationWorker(responseId) {
+    //   if (this.userRole === 'worker') {
+    //     await this.$store.dispatch('quests/acceptQuestInvitation', responseId);
+    //     await this.$store.dispatch('quests/setInfoDataMode', 2);
+    //   }
+    // },
+    async sendARequestOnQuest() {
       this.ShowModal({
         key: modals.sendARequest,
         questId: this.questData.id,

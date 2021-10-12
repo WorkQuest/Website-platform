@@ -26,90 +26,89 @@ export default {
     commit('setUserQuests', response.result);
     return response.result;
   },
-
   async getQuestsOnMap({ commit }, payload) {
     const response = await this.$axios.$get(`/v1/quests/map/list-points?${payload}`);
     commit('setAllQuests', response.result);
     return response.result;
   },
-
   async getQuestsLocation({ commit }, payload) {
     const response = await this.$axios.$get(`/v1/quests/map/points?${payload}`);
     commit('setQuestsLocation', response.result);
     return response.result;
   },
-
   async editQuest({ commit }, { payload, questId }) {
     const response = await this.$axios.$put(`/v1/quest/${questId}`, payload);
     commit('setQuestData', response.result);
     return response.result;
   },
-
   async deleteQuest({ commit }, { questId }) {
     const response = await this.$axios.$delete(`/v1/quest/${questId}`);
     return response.result;
   },
-
-  async acceptCompletedWorkOnQuest(id) {
-    return await this.$axios.$post(`/v1/quest/${id}/accept-completed-work`, id);
+  async startQuest({ commit }, { questId, data }) {
+    const response = await this.$axios.$post(`/v1/quest/${questId}/start`, data);
+    return response.result;
   },
-
+  setMapBounds({ commit }, payload) {
+    commit('setMapBounds', payload);
+  },
+  setMapCenter({ commit }, payload) {
+    commit('setMapCenter', payload);
+  },
+  async completeWorkOnQuest({ commit }, questId) {
+    const response = await this.$axios.$post(`/v1/quest/${questId}/complete-work`, questId);
+    return response.result; // Сдать квест на проверку Работодателю
+  },
+  async rejectWorkOnQuest({ commit }, questId) {
+    const response = await this.$axios.$post(`/v1/quest/${questId}/reject-work`, questId);
+    return response.result;
+  },
+  async acceptCompletedWorkOnQuest({ commit }, questId) {
+    const response = await this.$axios.$post(`/v1/quest/${questId}/accept-completed-work`, questId);
+    return response.result;
+  },
   async acceptWorkOnQuest({ commit }, questId) {
     const response = await this.$axios.$post(`/v1/quest/${questId}/accept-work`);
     return response.result;
   },
 
-  async closeQuest(id) {
-    return await this.$axios.$post(`/v1/quest/${id}/close`, id);
-  },
-
-  async completeWorkOnQuest(id) {
-    return await this.$axios.$post(`/v1/quest/${id}/complete-work`, id);
-  },
-
-  async rejectCompletedWorkOnQuest(id) {
-    return await this.$axios.$post(`/v1/quest/${id}/reject-completed-work`, id);
-  },
-
-  async rejectWorkOnQuest(id) {
-    return await this.$axios.$post(`/v1/quest/${id}/reject-work`, id);
-  },
-
-  async setStarOnQuest({ commit }, id) {
-    // Needed to add quest id;
-    return await this.$axios.$post(`/v1/quest/${id}/star`);
-  },
-
-  async takeAwayStarOnQuest(id) {
-    return await this.$axios.$delete(`/v1/quest/${id}/star`, id);
-  },
-
-  async startQuest({ commit }, { questId, data }) {
-    const response = await this.$axios.$post(`/v1/quest/${questId}/start`, data);
+  // Testing
+  // employer
+  async rejectCompletedWorkOnQuest({ commit }, questId) {
+    const response = await this.$axios.$post(`/v1/quest/${questId}/reject-completed-work`, questId);
     return response.result;
   },
-
-  async getStarredQuests({ commit }) {
-    const { data } = await this.$axios.$get('/v1/quests/starred');
-    commit('setStarredQuests', data.result);
-    return data.result;
-  }, // unused
+  async closeQuest({ commit }, questId) {
+    const response = await this.$axios.$post(`/v1/quest/${questId}/close`, questId);
+    return response.result; // Закрыть квест status = 0, 5
+  },
 
   async inviteOnQuest({ commit }, payload, id) {
     return await this.$axios.$post(`/v1/quest/${id}/invite`, payload);
-  },
+  }, // Нужен список Воркеров
 
   async respondOnQuest({ commit }, { data, questId }) {
     const response = await this.$axios.$post(`/v1/quest/${questId}/response`, data);
     return response.result;
   },
-
   async responsesToQuest({ commit }, questId) {
     const response = await this.$axios.$get(`/v1/quest/${questId}/responses`);
     commit('setResponses', response.result);
     return response.result;
   },
 
+  // worker
+  async setStarOnQuest({ commit }, id) {
+    return await this.$axios.$post(`/v1/quest/${id}/star`);
+  },
+  async takeAwayStarOnQuest(id) {
+    return await this.$axios.$delete(`/v1/quest/${id}/star`, id);
+  },
+  async getStarredQuests({ commit }) {
+    const { data } = await this.$axios.$get('/v1/quests/starred');
+    commit('setStarredQuests', data.result);
+    return data.result;
+  }, // unused
   async getResponsesToQuestForAuthUser({ commit }) {
     const response = await this.$axios.$get('/v1/quest/responses/my');
     commit('setResponsesMy', response.result);
@@ -119,17 +118,10 @@ export default {
   async acceptQuestInvitation({ commit }, responseId) {
     const response = await this.$axios.$post(`/v1/quest/response/${responseId}/accept`);
     return response.result;
-  }, // unused
+  }, // согласие на приглашение на квест
 
   async rejectQuestInvitation({ commit }, responseId) {
     const response = await this.$axios.$post(`/v1/quest/employer/${responseId}/reject`);
     return response.result;
-  },
-
-  setMapBounds({ commit }, payload) {
-    commit('setMapBounds', payload);
-  },
-  setMapCenter({ commit }, payload) {
-    commit('setMapCenter', payload);
-  },
+  }, // отказ на приглашение на квест
 };

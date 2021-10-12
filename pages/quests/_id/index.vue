@@ -36,7 +36,10 @@
           </div>
           <div class="divider" />
 
-          <questIdEmployer />
+          <questIdEmployer
+            :user-avatar="userAvatar"
+            :assign-worker="quest.assignedWorker"
+          />
 
           <questIdWorker />
         </div>
@@ -225,6 +228,7 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.initData();
+    await this.initUserAvatar();
     await this.getResponsesToQuest();
     await this.checkPageMode();
     this.SetLoader(false);
@@ -237,6 +241,9 @@ export default {
     },
     async initData() {
       this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+      console.log(this.questData);
+    },
+    async initUserAvatar() {
       this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
     },
     async checkPageMode() {
@@ -247,15 +254,21 @@ export default {
           await this.$store.dispatch('quests/setInfoDataMode', 3);
         } if (this.questData.assignedWorker !== null) {
           await this.$store.dispatch('quests/setInfoDataMode', 4);
+        } if (this.questData.status === 5) {
+          await this.$store.dispatch('quests/setInfoDataMode', 6);
         }
       }
       if (this.userRole === 'worker') {
-        if (this.questData.assignedWorker === null) {
+        if (this.questData.assignedWorker === null && this.questData.status !== 1) {
           await this.$store.dispatch('quests/setInfoDataMode', 5);
         } if (this.questData.status === 1) {
           await this.$store.dispatch('quests/setInfoDataMode', 2);
-        } if (this.questData.assignedWorkerId === this.userData.id) {
+        } if (this.questData.assignedWorkerId === this.userData.id && this.questData.status !== 1) {
           await this.$store.dispatch('quests/setInfoDataMode', 1);
+        } if (this.questData.status === 5) {
+          await this.$store.dispatch('quests/setInfoDataMode', 4);
+        } if (this.questData.status === 6) {
+          await this.$store.dispatch('quests/setInfoDataMode', 4);
         }
       }
     },

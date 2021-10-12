@@ -1,32 +1,32 @@
 <template>
   <div>
     <span v-if="userRole === 'employer'">
-      <span v-if="infoDataMode !== 1">
-        <span v-if="infoDataMode !== 5">
-          <span v-if="infoDataMode !== 3">
-            <div>
-              <div
-                class="info"
-                :class="infoClass"
-              >
-                <div class="info__body">
-                  <div class="info__left">
-                    <div
-                      class="info__text info__text_white"
-                    >
-                      <div v-if="infoDataMode === 2">
-                        {{ $t('quests.activeQuest') }}
-                      </div>
-                      <div v-if="infoDataMode === 4">
-                        {{ $t('performed.title') }}
-                      </div>
-                    </div>
+      <span v-if="infoDataMode !== 1 && infoDataMode !== 5 && infoDataMode !== 3">
+        <div>
+          <div
+            class="info"
+            :class="infoClass"
+          >
+            <div class="info__body">
+              <div class="info__left">
+                <div
+                  class="info__text"
+                  :class="[{'info__text_white': infoDataMode !== 6 }]"
+                >
+                  <div v-if="infoDataMode === 2">
+                    {{ $t('quests.activeQuest') }}
+                  </div>
+                  <div v-if="infoDataMode === 4">
+                    {{ $t('performed.title') }}
+                  </div>
+                  <div v-if="infoDataMode === 6">
+                    Pending consideration
                   </div>
                 </div>
               </div>
             </div>
-          </span>
-        </span>
+          </div>
+        </div>
       </span>
     </span>
     <span v-if="userRole === 'worker'">
