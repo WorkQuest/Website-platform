@@ -249,28 +249,51 @@ export default {
       this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
     },
     async checkPageMode() {
+      // questStatus
+      // Created = 0,
+      // Active = 1
+      // Closed = 2
+      // Dispute = 3
+      // WaitWorker = 4
+      // WaitConfirm = 5
+      // Done = 6
+
       if (this.userRole === 'employer') {
         if (this.responsesData.count === 0) {
           await this.$store.dispatch('quests/setInfoDataMode', 1);
+        } if (this.questData.status === 1) {
+          await this.$store.dispatch('quests/setInfoDataMode', 2);
         } if (this.responsesData.count > 0) {
           await this.$store.dispatch('quests/setInfoDataMode', 3);
-        } if (this.questData.assignedWorker !== null) {
+        } if (this.questData.assignedWorker !== null
+          && this.questData.status !== 2) {
           await this.$store.dispatch('quests/setInfoDataMode', 4);
         } if (this.questData.status === 5) {
           await this.$store.dispatch('quests/setInfoDataMode', 6);
+        } if (this.questData.status === 3) {
+          await this.$store.dispatch('quests/setInfoDataMode', 7);
+        } if (this.questData.status === 2) {
+          await this.$store.dispatch('quests/setInfoDataMode', 8);
+        } if (this.questData.status === 6) {
+          await this.$store.dispatch('quests/setInfoDataMode', 9);
         }
       }
       if (this.userRole === 'worker') {
+        // TODO: Дописать логику вывода для воркера
         if (this.questData.assignedWorker === null && this.questData.status !== 1) {
           await this.$store.dispatch('quests/setInfoDataMode', 5);
         } if (this.questData.status === 1) {
           await this.$store.dispatch('quests/setInfoDataMode', 2);
-        } if (this.questData.assignedWorkerId === this.userData.id && this.questData.status !== 1) {
+        } if (this.questData.status === 3) {
+          await this.$store.dispatch('quests/setInfoDataMode', 7);
+        } if (this.questData.assignedWorkerId === this.userData.id
+          && this.questData.status !== 1
+          && this.questData.status !== 3) {
           await this.$store.dispatch('quests/setInfoDataMode', 1);
         } if (this.questData.status === 5) {
           await this.$store.dispatch('quests/setInfoDataMode', 4);
         } if (this.questData.status === 6) {
-          await this.$store.dispatch('quests/setInfoDataMode', 4);
+          await this.$store.dispatch('quests/setInfoDataMode', 9);
         }
       }
     },

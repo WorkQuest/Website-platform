@@ -11,16 +11,27 @@
               <div class="info__left">
                 <div
                   class="info__text"
-                  :class="[{'info__text_white': infoDataMode !== 6 }]"
+                  :class="[
+                    {'info__text_white': infoDataMode !== 6 && infoDataMode !== 8 && infoDataMode !== 9}
+                  ]"
                 >
                   <div v-if="infoDataMode === 2">
                     {{ $t('quests.activeQuest') }}
                   </div>
                   <div v-if="infoDataMode === 4">
-                    {{ $t('performed.title') }}
+                    Wait worker
                   </div>
                   <div v-if="infoDataMode === 6">
                     Pending consideration
+                  </div>
+                  <div v-if="infoDataMode === 7">
+                    Dispute
+                  </div>
+                  <div v-if="infoDataMode === 8">
+                    Quest Closed
+                  </div>
+                  <div v-if="infoDataMode === 9">
+                    Quest Finished
                   </div>
                 </div>
               </div>
@@ -39,8 +50,18 @@
           <div class="info__body">
             <div class="info__left">
               <div
-                class="info__text info__text_white"
-                :class="[{'info__text_black': infoDataMode === 3}]"
+                class="info__text"
+                :class="[
+                  {'info__text_white': infoDataMode !== 8
+                    && infoDataMode !== 9
+                    && infoDataMode !== 7
+                  },
+                  {'info__text_black': infoDataMode === 3
+                    && infoDataMode === 8
+                    && infoDataMode === 9
+                    && infoDataMode === 7
+                  }
+                ]"
               >
                 <div v-if="infoDataMode === 1">
                   {{ $t('invite.title') }}
@@ -55,6 +76,15 @@
                   {{ $t('performed.title') }}
                 </div>
                 <div v-if="infoDataMode === 5" />
+                <div v-if="infoDataMode === 7">
+                  Dispute
+                </div>
+                <div v-if="infoDataMode === 8">
+                  Quest Closed
+                </div>
+                <div v-if="infoDataMode === 9">
+                  Quest Finished
+                </div>
               </div>
             </div>
             <div class="info__right">

@@ -91,6 +91,16 @@
       </div>
     </div>
     <div
+      v-if="infoDataMode === 7"
+      class="btns__wrapper"
+    >
+      <div class="btn__wrapper">
+        <base-btn :disabled="true">
+          {{ $t('btn.dispute') }}
+        </base-btn>
+      </div>
+    </div>
+    <div
       v-if="infoDataMode !== 4"
       class="price__container"
     >

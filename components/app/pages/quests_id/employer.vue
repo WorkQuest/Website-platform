@@ -1,38 +1,73 @@
 <template>
   <span v-if="userRole === 'employer'">
+    <div
+      v-if="infoDataMode === 1"
+      class="btns__container"
+    >
+      <div
+        class="btns__wrapper"
+      >
+        <div class="btn__wrapper">
+          <base-btn
+            @click="toRaisingViews()"
+          >
+            {{ $t('quests.raiseViews') }}
+          </base-btn>
+        </div>
+        <div class="btn__wrapper">
+          <base-btn
+            mode="delete"
+            @click="closeQuest"
+          >
+            {{ $t('btn.closeQuest') }}
+          </base-btn>
+        </div>
+      </div>
+    </div>
     <div v-if="infoDataMode === 2">
       <div class="worker__title">{{ $t('quests.worker') }}</div>
       <div class="worker__container">
         <div>
           <img
+            v-if="assignWorker !== null"
             class="worker__avatar"
-            src="~/assets/img/temp/avatar.jpg"
+            :src="assignWorker.avatar.url"
+            alt=""
+          >
+          <img
+            v-if="assignWorker === null || assignWorker === undefined"
+            class="worker__avatar"
+            :src="require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
-        <div class="worker__name">
-          Rosalia Vans
+        <div
+          v-if="assignWorker === null || assignWorker === undefined"
+          class="worker__name"
+        >
+          {{ assignWorker.firstName }} {{ assignWorker.lastName }}
         </div>
         <div>
-          <div
-            v-if="badge.code !== 0"
-            class="card__level_higher"
-            :class="[
-              {'card__level_higher': badge.code === 1},
-              {'card__level_reliable': badge.code === 2},
-              {'card__level_checked': badge.code === 3}
-            ]"
-          >
-            <span v-if="badge.code === 1">
-              {{ $t('levels.higher') }}
-            </span>
-            <span v-if="badge.code === 2">
-              {{ $t('levels.reliableEmp') }}
-            </span>
-            <span v-if="badge.code === 3">
-              {{ $t('levels.checkedByTime') }}
-            </span>
-          </div>
+          <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
+          <!--          <div-->
+          <!--            v-if="badge.code !== 0"-->
+          <!--            class="card__level_higher"-->
+          <!--            :class="[-->
+          <!--              {'card__level_higher': badge.code === 1},-->
+          <!--              {'card__level_reliable': badge.code === 2},-->
+          <!--              {'card__level_checked': badge.code === 3}-->
+          <!--            ]"-->
+          <!--          >-->
+          <!--            <span v-if="badge.code === 1">-->
+          <!--              {{ $t('levels.higher') }}-->
+          <!--            </span>-->
+          <!--            <span v-if="badge.code === 2">-->
+          <!--              {{ $t('levels.reliableEmp') }}-->
+          <!--            </span>-->
+          <!--            <span v-if="badge.code === 3">-->
+          <!--              {{ $t('levels.checkedByTime') }}-->
+          <!--            </span>-->
+          <!--          </div>-->
         </div>
       </div>
     </div>
@@ -107,6 +142,20 @@
       <span v-if="filteredResponses.length === 0">
         <div class="info__message">Users have not yet responded to the quest</div>
       </span>
+      <div class="btns__container">
+        <div
+          class="btns__wrapper"
+        >
+          <div class="btn__wrapper">
+            <base-btn
+              :disabled="!selectedWorker[0]"
+              @click="startQuest()"
+            >
+              {{ $t('quests.startQuest') }}
+            </base-btn>
+          </div>
+        </div>
+      </div>
     </div>
     <!--                      TODO: НАСТРОИТЬ ВЫВОД ЕСЛИ ПОЛЬЗОВАТЕЛЬ ПРИГЛАШЕН КЕМ-ТО INVITED-->
     <!--              <div class="worker__title">{{ $t('quests.youInvited') }}</div>-->
@@ -164,7 +213,7 @@
           >
         </div>
         <div
-          v-if="assignWorker !== null || assignWorker !== ''"
+          v-if="assignWorker"
           class="worker__name"
         >
           {{ assignWorker.firstName }} {{ assignWorker.lastName }}
@@ -193,17 +242,72 @@
         </div>
       </div>
     </div>
-    <div class="btns__container">
+    <div
+      v-if="infoDataMode === 6"
+      class="btns__container"
+    >
       <div>
-        <div
-          v-if="infoDataMode === 1"
-          class="btns__wrapper"
-        >
+        <div class="worker__title">
+          {{ $t('quests.worker') }}
+        </div>
+        <div class="worker__container">
+          <div>
+            <img
+              v-if="assignWorker !== null"
+              class="worker__avatar"
+              :src="assignWorker.avatar.url"
+              alt=""
+            >
+            <img
+              v-if="assignWorker === null || assignWorker === undefined"
+              class="worker__avatar"
+              :src="require('~/assets/img/app/avatar_empty.png')"
+              alt=""
+            >
+          </div>
+          <div
+            v-if="assignWorker === null || assignWorker === undefined"
+            class="worker__name"
+          >
+            {{ assignWorker.firstName }} {{ assignWorker.lastName }}
+          </div>
+          <div>
+            <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
+            <div
+              v-if="badge.code !== 0"
+              class="card__level_higher"
+              :class="[
+                {'card__level_higher': badge.code === 1},
+                {'card__level_reliable': badge.code === 2},
+                {'card__level_checked': badge.code === 3}
+              ]"
+            >
+              <span v-if="badge.code === 1">
+                {{ $t('levels.higher') }}
+              </span>
+              <span v-if="badge.code === 2">
+                {{ $t('levels.reliableEmp') }}
+              </span>
+              <span v-if="badge.code === 3">
+                {{ $t('levels.checkedByTime') }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="btns__wrapper">
           <div class="btn__wrapper">
             <base-btn
-              @click="toRaisingViews()"
+              mode="approve"
+              @click="acceptCompletedWorkOnQuest"
             >
-              {{ $t('quests.raiseViews') }}
+              {{ $t('btn.acceptCompletedWorkOnQuest') }}
+            </base-btn>
+          </div>
+          <div class="btn__wrapper">
+            <base-btn
+              @click="rejectCompletedWorkOnQuest"
+            >
+              {{ $t('btn.rejectCompletedWorkOnQuest') }}
             </base-btn>
           </div>
           <div class="btn__wrapper">
@@ -215,105 +319,71 @@
             </base-btn>
           </div>
         </div>
+      </div>
+    </div>
+    <div v-if="infoDataMode === 7">
+      <div class="worker__title">
+        {{ $t('quests.worker') }}
+      </div>
+      <div class="worker__container">
+        <div>
+          <img
+            v-if="assignWorker"
+            class="worker__avatar"
+            :src="assignWorker.avatar.url"
+            alt=""
+          >
+          <img
+            v-if="assignWorker === null || assignWorker === ''"
+            class="worker__avatar"
+            :src="require('~/assets/img/app/avatar_empty.png')"
+            alt=""
+          >
+        </div>
         <div
-          v-if="infoDataMode === 2"
+          v-if="assignWorker !== null || assignWorker !== ''"
+          class="worker__name"
+        >
+          {{ assignWorker.firstName }} {{ assignWorker.lastName }}
+        </div>
+        <div>
+          <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
+          <div
+            v-if="badge.code !== 0"
+            class="card__level_higher"
+            :class="[
+              {'card__level_higher': badge.code === 1},
+              {'card__level_reliable': badge.code === 2},
+              {'card__level_checked': badge.code === 3}
+            ]"
+          >
+            <span v-if="badge.code === 1">
+              {{ $t('levels.higher') }}
+            </span>
+            <span v-if="badge.code === 2">
+              {{ $t('levels.reliableEmp') }}
+            </span>
+            <span v-if="badge.code === 3">
+              {{ $t('levels.checkedByTime') }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="btns__container">
+        <div
+          v-if="infoDataMode === 7"
           class="btns__wrapper"
         >
           <div class="btn__wrapper">
-            <base-btn mode="approve">
-              {{ $t('quests.approve') }}
+            <base-btn>
+              {{ $t('btn.dispute') }}
             </base-btn>
           </div>
         </div>
-        <div
-          v-if="infoDataMode === 3"
-          class="btns__wrapper"
-        >
-          <div class="btn__wrapper">
-            <base-btn
-              :disabled="!selectedWorker[0]"
-              @click="startQuest()"
-            >
-              {{ $t('quests.startQuest') }}
-            </base-btn>
-          </div>
-        </div>
-        <div
-          v-if="infoDataMode === 6"
-        >
-          <div class="worker__title">
-            {{ $t('quests.worker') }}
-          </div>
-          <div class="worker__container">
-            <div>
-              <img
-                v-if="assignWorker !== null"
-                class="worker__avatar"
-                :src="assignWorker.avatar.url"
-                alt=""
-              >
-              <img
-                v-if="assignWorker === null || assignWorker === undefined"
-                class="worker__avatar"
-                :src="require('~/assets/img/app/avatar_empty.png')"
-                alt=""
-              >
-            </div>
-            <div
-              v-if="assignWorker !== null || assignWorker !== ''"
-              class="worker__name"
-            >
-              {{ assignWorker.firstName }} {{ assignWorker.lastName }}
-            </div>
-            <div>
-              <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
-              <div
-                v-if="badge.code !== 0"
-                class="card__level_higher"
-                :class="[
-                  {'card__level_higher': badge.code === 1},
-                  {'card__level_reliable': badge.code === 2},
-                  {'card__level_checked': badge.code === 3}
-                ]"
-              >
-                <span v-if="badge.code === 1">
-                  {{ $t('levels.higher') }}
-                </span>
-                <span v-if="badge.code === 2">
-                  {{ $t('levels.reliableEmp') }}
-                </span>
-                <span v-if="badge.code === 3">
-                  {{ $t('levels.checkedByTime') }}
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="btns__wrapper">
-            <div class="btn__wrapper">
-              <base-btn
-                mode="approve"
-                @click="acceptCompletedWorkOnQuest"
-              >
-                {{ $t('btn.acceptCompletedWorkOnQuest') }}
-              </base-btn>
-            </div>
-            <div class="btn__wrapper">
-              <base-btn
-                @click="rejectCompletedWorkOnQuest"
-              >
-                {{ $t('btn.rejectCompletedWorkOnQuest') }}
-              </base-btn>
-            </div>
-            <div class="btn__wrapper">
-              <base-btn
-                mode="delete"
-                @click="closeQuest"
-              >
-                {{ $t('btn.closeQuest') }}
-              </base-btn>
-            </div>
-          </div>
-        </div>
+      </div>
+    </div>
+    <div class="btns__container">
+      <div>
         <div
           v-if="infoDataMode !== 4"
           class="price__container"
