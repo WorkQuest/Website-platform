@@ -140,7 +140,9 @@ export default {
       this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     },
     async goToChat() {
+      this.SetLoader(true);
       await this.$router.push('/messages/1');
+      this.SetLoader(false);
     },
     async acceptWorkOnQuest() {
       this.SetLoader(true);
