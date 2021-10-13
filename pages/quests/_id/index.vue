@@ -89,7 +89,6 @@
           </h2>
         </div>
         {{ responsesToQuest.responses }}
-        <!--        {{ responsesMy }}-->
         <div class="quest__card">
           <quests
             v-if="questsObjects.count !== 0"

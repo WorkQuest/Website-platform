@@ -54,7 +54,7 @@
               alt=""
             >
             <img
-              v-if="assignWorker.avatar === null || assignWorker.avatar === ''"
+              v-if="!assignWorker.avatar"
               class="worker__avatar"
               :src="require('~/assets/img/app/avatar_empty.png')"
               alt=""
@@ -371,6 +371,7 @@ export default {
   },
   methods: {
     async closeQuest() {
+      this.SetLoader(true);
       if (this.questData.status !== 2) {
         await this.$store.dispatch('quests/closeQuest', this.questData.id);
       }
@@ -381,8 +382,10 @@ export default {
         subtitle: 'Quest closed!',
       });
       await this.$router.push('/my');
+      this.SetLoader(false);
     },
     async acceptCompletedWorkOnQuest() {
+      this.SetLoader(true);
       await this.$store.dispatch('quests/acceptCompletedWorkOnQuest', this.questData.id);
       this.ShowModal({
         key: modals.status,
@@ -390,8 +393,10 @@ export default {
         title: 'Quest info',
         subtitle: 'Completed work on quest accepted!',
       });
+      this.SetLoader(false);
     },
     async rejectCompletedWorkOnQuest() {
+      this.SetLoader(true);
       await this.$store.dispatch('quests/rejectCompletedWorkOnQuest', this.questData.id);
       this.ShowModal({
         key: modals.status,
@@ -399,9 +404,7 @@ export default {
         title: 'Quest info',
         subtitle: 'Completed work on quest rejected!',
       });
-    },
-    async setInfoDataMode(mode) {
-      await this.$store.dispatch('quests/setInfoDataMode', mode);
+      this.SetLoader(false);
     },
     async initData() {
       this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
@@ -419,23 +422,29 @@ export default {
       }
     },
     async selectWorker(i) {
+      this.SetLoader(true);
       const { worker } = this.responsesToQuest[i];
       this.selectedWorker.push(worker);
+      this.SetLoader(false);
     },
     async rejectQuestInvitation(responseId) {
+      this.SetLoader(true);
       await this.$store.dispatch('quests/rejectQuestInvitation', responseId);
+      this.SetLoader(false);
     },
     toRaisingViews() {
       this.$router.push('/edit-quest');
       this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
     },
     async startQuest() {
+      this.SetLoader(true);
       const data = {
         assignedWorkerId: this.selectedWorker[0].id,
       };
       const questId = this.questData.id;
       await this.$store.dispatch('quests/startQuest', { questId, data });
       await this.setInfoDataMode(4);
+      this.SetLoader(false);
     },
     // showAreYouSureDeleteQuestModal() {
     //   this.ShowModal({

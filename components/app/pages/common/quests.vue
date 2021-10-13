@@ -375,7 +375,7 @@ export default {
       default: 0,
     },
     object: {
-      type: Object,
+      type: [Object, Array],
       default: null,
     },
   },

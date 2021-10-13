@@ -131,42 +131,52 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.getResponsesToQuestForAuthUser();
+    await this.initData();
     // await this.getResponseId();
     this.SetLoader(false);
   },
   methods: {
+    async initData() {
+      this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+    },
     async goToChat() {
       await this.$router.push('/messages/1');
     },
     async acceptWorkOnQuest() {
+      this.SetLoader(true);
       await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id);
-      await this.$store.dispatch('quests/setInfoDataMode', 2);
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
         title: 'Quest info',
         subtitle: 'Work on quest accepted!',
       });
+      await this.$store.dispatch('quests/setInfoDataMode', 2);
+      this.SetLoader(false);
     },
     async rejectWorkOnQuest() {
+      this.SetLoader(true);
       await this.$store.dispatch('quests/rejectWorkOnQuest', this.questData.id);
-      await this.$store.dispatch('quests/setInfoDataMode', 5);
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
         title: 'Quest info',
         subtitle: 'Work on quest rejected!',
       });
+      await this.$store.dispatch('quests/setInfoDataMode', 5);
+      this.SetLoader(false);
     },
     async completeWorkOnQuest() {
+      this.SetLoader(true);
       await this.$store.dispatch('quests/completeWorkOnQuest', this.questData.id);
-      await this.$store.dispatch('quests/setInfoDataMode', 4);
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
         title: 'Quest info',
         subtitle: 'Work on quest completed! Please, wait your employer!',
       });
+      await this.$store.dispatch('quests/setInfoDataMode', 4);
+      this.SetLoader(false);
     },
     // async getResponseId() {
     //   if (this.userRole === 'worker') {
