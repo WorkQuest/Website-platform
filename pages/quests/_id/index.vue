@@ -294,6 +294,8 @@ export default {
           await this.$store.dispatch('quests/setInfoDataMode', 4);
         } if (this.questData.status === 6) {
           await this.$store.dispatch('quests/setInfoDataMode', 9);
+        } if (this.questData.status === 2) {
+          await this.$store.dispatch('quests/setInfoDataMode', 8);
         }
       }
     },

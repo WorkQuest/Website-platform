@@ -77,10 +77,34 @@
               class="block__progress progress"
             >
               <div
-                v-if="item.status !== 6"
+                v-if="item.status !== 6 && item.status !== 2 && item.status !== 1"
                 class="progress__title"
               >
                 {{ $t('quests.inProgressBy') }}
+              </div>
+              <div
+                v-if="item.status !== 6 && item.status === 2"
+                class="progress__title"
+              >
+                Quest Closed:
+              </div>
+              <div
+                v-if="item.status === 1"
+                class="progress__title"
+              >
+                Quest Active:
+              </div>
+              <div
+                v-if="item.status === 3"
+                class="progress__title"
+              >
+                Quest Dispute:
+              </div>
+              <div
+                v-if="item.status === 5"
+                class="progress__title"
+              >
+                Quest wait confirm:
               </div>
               <div
                 v-if="item.status === 6"
