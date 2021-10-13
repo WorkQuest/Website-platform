@@ -11,7 +11,7 @@
         class="loader__modal"
       >
         <div class="loader__text">
-          Please, wait
+          {{ $t('modals.pleaseWait') }}
         </div>
       </div>
       <div
