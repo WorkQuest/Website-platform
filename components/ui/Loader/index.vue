@@ -31,7 +31,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import loaderModes from '~/store/main/loaderModes';
-import modals from '~/store/modals/modals';
 
 export default {
   data: () => ({
