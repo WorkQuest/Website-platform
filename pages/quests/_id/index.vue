@@ -58,19 +58,22 @@
             :zoom="zoom"
             :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
           >
-            <!--            <GMapMarker-->
-            <!--              v-for="(item, key) in locations"-->
-            <!--              :key="key"-->
-            <!--              :position="questLocation"-->
-            <!--              :options="{ icon: pins.quest.blue, show: true}"-->
-            <!--              @click="coordinatesChange(item)"-->
-            <!--            >-->
-            <!--              <GMapInfoWindow-->
-            <!--                :options="{maxWidth: 280}"-->
-            <!--              >-->
-            <!--                test-->
-            <!--              </GMapInfoWindow>-->
-            <!--            </GMapMarker>-->
+            <GMapMarker
+              v-for="(item, key) in locations"
+              :key="key"
+              :position="questLocation"
+              :options="{ icon: pins.quest.blue, show: true}"
+              @click="coordinatesChange(item)"
+            >
+              <GMapInfoWindow
+                :options="{maxWidth: 280}"
+              >
+                <div>
+                  <h3>{{ questData.title }}</h3>
+                  <span>{{ questData.description }}</span>
+                </div>
+              </GMapInfoWindow>
+            </GMapMarker>
           </GmapMap>
         </transition>
       </div>

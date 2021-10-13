@@ -38,47 +38,48 @@
     </div>
     <div v-if="infoDataMode === 3">
       <div class="worker__title">{{ $t('response.title') }}</div>
-      <span
-        v-for="(response, i) in filteredResponses"
-        :key="i"
-      >
-        <div
-          v-if="response.worker.firstName && response.worker.lastName"
-          class="worker__container"
+      <span v-if="filteredResponses.length !== 0">
+        <span
+          v-for="(response, i) in filteredResponses"
+          :key="i"
         >
-          <div>
-            <img
-              v-if="assignWorker.avatar"
-              class="worker__avatar"
-              :src="assignWorker.avatar.url"
-              alt=""
-            >
-            <img
-              v-if="!assignWorker.avatar"
-              class="worker__avatar"
-              :src="require('~/assets/img/app/avatar_empty.png')"
-              alt=""
-            >
-          </div>
-          <div class="worker__name">
-            {{ response.worker.firstName }} {{ response.worker.lastName }}
-          </div>
-          <div class="btns__wrapper">
-            <div class="btn__wrapper">
-              <base-btn
-                :disabled="selectedWorker[0]"
-                mode="agree"
-                @click="selectWorker(i)"
-              >Select</base-btn>
+          <div
+            v-if="response.worker.firstName && response.worker.lastName"
+            class="worker__container"
+          >
+            <div>
+              <img
+                v-if="assignWorker.avatar"
+                class="worker__avatar"
+                :src="assignWorker.avatar.url"
+                alt=""
+              >
+              <img
+                v-if="!assignWorker.avatar"
+                class="worker__avatar"
+                :src="require('~/assets/img/app/avatar_empty.png')"
+                alt=""
+              >
             </div>
-            <div class="btn__wrapper">
-              <base-btn
-                mode="delete"
-                @click="rejectQuestInvitation(response.id)"
-              >Reject</base-btn>
+            <div class="worker__name">
+              {{ response.worker.firstName }} {{ response.worker.lastName }}
             </div>
-          </div>
-          <div>
+            <div class="btns__wrapper">
+              <div class="btn__wrapper">
+                <base-btn
+                  :disabled="selectedWorker[0]"
+                  mode="agree"
+                  @click="selectWorker(i)"
+                >Select</base-btn>
+              </div>
+              <div class="btn__wrapper">
+                <base-btn
+                  mode="delete"
+                  @click="rejectQuestInvitation(response.id)"
+                >Reject</base-btn>
+              </div>
+            </div>
+            <div>
             <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
             <!--                    <div-->
             <!--                      v-if="item.badge.code !== 0"-->
@@ -99,8 +100,12 @@
             <!--                        {{ $t('levels.checkedByTime') }}-->
             <!--                      </span>-->
             <!--                    </div>-->
+            </div>
           </div>
-        </div>
+        </span>
+      </span>
+      <span v-if="filteredResponses.length === 0">
+        <div class="info__message">Users have not yet responded to the quest</div>
       </span>
     </div>
     <!--                      TODO: НАСТРОИТЬ ВЫВОД ЕСЛИ ПОЛЬЗОВАТЕЛЬ ПРИГЛАШЕН КЕМ-ТО INVITED-->
@@ -152,7 +157,7 @@
             alt=""
           >
           <img
-            v-if="assignWorker.avatar === null || assignWorker.avatar === ''"
+            v-if="assignWorker === null || assignWorker === ''"
             class="worker__avatar"
             :src="require('~/assets/img/app/avatar_empty.png')"
             alt=""
@@ -206,14 +211,6 @@
               {{ $t('btn.closeQuest') }}
             </base-btn>
           </div>
-          <!--          <div class="btn__wrapper">-->
-          <!--            <base-btn-->
-          <!--              mode="delete"-->
-          <!--              @click="showAreYouSureDeleteQuestModal()"-->
-          <!--            >-->
-          <!--              {{ $t('quests.deleteQuest') }}-->
-          <!--            </base-btn>-->
-          <!--          </div>-->
         </div>
         <div
           v-if="infoDataMode === 2"
@@ -247,13 +244,13 @@
           <div class="worker__container">
             <div>
               <img
-                v-if="assignWorker.avatar !== null"
+                v-if="assignWorker !== null"
                 class="worker__avatar"
                 :src="assignWorker.avatar.url"
                 alt=""
               >
               <img
-                v-if="assignWorker.avatar === null || assignWorker.avatar === undefined"
+                v-if="assignWorker === null || assignWorker === undefined"
                 class="worker__avatar"
                 :src="require('~/assets/img/app/avatar_empty.png')"
                 alt=""
@@ -446,16 +443,14 @@ export default {
       await this.setInfoDataMode(4);
       this.SetLoader(false);
     },
-    // showAreYouSureDeleteQuestModal() {
-    //   this.ShowModal({
-    //     key: modals.areYouSureDeleteQuest,
-    //   });
-    // },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.info__message {
+  margin: 10px 0;
+}
 .badge-list {
   display: flex;
   flex-direction: row;
