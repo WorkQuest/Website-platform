@@ -79,6 +79,11 @@ export default {
     const response = await this.$axios.$post(`/v1/quest/${questId}/close`, questId);
     return response.result; // Закрыть квест status = 0, 5
   },
+  async responsesToQuest({ commit }, questId) {
+    const response = await this.$axios.$get(`/v1/quest/${questId}/responses`);
+    commit('setResponses', response.result);
+    return response.result;
+  },
 
   // Testing
   // employer
@@ -89,11 +94,6 @@ export default {
 
   async respondOnQuest({ commit }, { data, questId }) {
     const response = await this.$axios.$post(`/v1/quest/${questId}/response`, data);
-    return response.result;
-  },
-  async responsesToQuest({ commit }, questId) {
-    const response = await this.$axios.$get(`/v1/quest/${questId}/responses`);
-    commit('setResponses', response.result);
     return response.result;
   },
 

@@ -3,6 +3,7 @@
     class="quests"
   >
     <div
+      v-if="userRole === 'employer'"
       class="quests__card card"
     >
       <div
@@ -175,6 +176,180 @@
         </div>
       </div>
     </div>
+    <div
+      v-if="userRole === 'worker'"
+      class="quests__card card"
+    >
+      <div
+        v-for="(item, i) in object"
+        :key="i"
+        class="card__content"
+      >
+        <div
+          class="card__block block"
+        >
+          <div
+            class="block__left"
+          >
+            <img
+              src="~/assets/img/temp/fake-card.svg"
+              class="block__image"
+              alt=""
+            >
+            <div
+              class="block__state"
+              :class="getStatusClass(item.quest.status)"
+            >
+              {{ getStatusCard(item.quest.status) }}
+            </div>
+          </div>
+          <div class="block__right">
+            <div class="block__head">
+              <div class="block__title">
+                <div
+                  class="block__avatar avatar"
+                >
+                  <img
+                    class="avatar__image"
+                    :src="item.quest.user.avatar ? item.quest.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                    :alt="item.quest.user.firstName"
+                  >
+                </div>
+                <div class="block__text block__text_title">
+                  {{ `${item.quest.user.firstName} ${item.quest.user.lastName}` }}
+                  <span
+                    v-if="userCompany"
+                    class="block__text block__text_grey"
+                  >{{ `${$t('quests.fromSmall')} ${item.quest.user.additionalInfo.company}` }}</span>
+                </div>
+              </div>
+              <div
+                class="block__icon block__icon_fav star"
+                @click="actionFavorite(item.quest.id)"
+              >
+                <img
+                  class="star__hover"
+                  src="~assets/img/ui/star_hover.svg"
+                  alt=""
+                >
+                <img
+                  v-if="item.star === null"
+                  class="star__default"
+                  src="~assets/img/ui/star_simple.svg"
+                  alt=""
+                >
+                <img
+                  v-else
+                  class="star__checked"
+                  src="~assets/img/ui/star_checked.svg"
+                  alt=""
+                >
+              </div>
+            </div>
+            <div
+              v-if="item.quest.assignedWorkerId"
+              class="block__progress progress"
+            >
+              <div
+                v-if="item.quest.status !== 6"
+                class="progress__title"
+              >
+                {{ $t('quests.inProgressBy') }}
+              </div>
+              <div
+                v-if="item.quest.status === 6"
+                class="progress__title"
+              >
+                {{ $t('quests.finishedBy') }}
+              </div>
+              <div class="progress__container container">
+                <div class="container__user user">
+                  <img
+                    class="user__avatar"
+                    :src="item.quest.assignedWorker.avatar ? item.quest.assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                    :alt="`${item.quest.assignedWorker.firstName} ${item.quest.assignedWorker.lastName}`"
+                  >
+                  <div class="user__name">
+                    {{ item.quest.assignedWorker.firstName }} {{ item.quest.assignedWorker.lastName }}
+                  </div>
+                </div>
+                <div class="container__status status">
+                  <!--                  <span-->
+                  <!--                    class="status__level"-->
+                  <!--                    :class="getStatusCard(item.level)"-->
+                  <!--                  >-->
+                  <!--                    {{ $t(`levels.${item.level}`) }}-->
+                  <!--                  </span>-->
+                </div>
+              </div>
+            </div>
+            <div class="block__locate">
+              <span
+                class="icon-location"
+              />
+              <span class="block__text block__text_locate">
+                {{ showDistance(item.quest.location.latitude, item.quest.location.longitude) }}
+                {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
+              </span>
+            </div>
+            <div class="block__text block__text_blue">
+              {{ item.quest.title }}
+            </div>
+            <div class="block__text block__text_desc">
+              {{ item.quest.description }}
+            </div>
+            <div class="block__actions">
+              <div
+                v-if="isHideStatus(item.quest.type)"
+                class="block__status"
+              >
+                <div
+                  class="block__priority"
+                  :class="getPriorityClass(item.quest.priority)"
+                >
+                  {{ getPriority(item.quest.priority) }}
+                </div>
+                <div class="block__amount block__amount_green">
+                  {{ `${item.quest.price}  ${currency}` }}
+                </div>
+              </div>
+              <div
+                v-else
+                class="block__amount block__amount_gray"
+              >
+                {{ `${item.quest.price}  ${currency}` }}
+              </div>
+              <div class="block__details">
+                <base-btn
+                  v-if="item.quest.type !== 3"
+                  mode="borderless-right"
+                  @click="showDetails(item.quest.id)"
+                >
+                  {{ $t('meta.details') }}
+                  <template v-slot:right>
+                    <span class="icon-short_right" />
+                  </template>
+                </base-btn>
+                <div
+                  v-else
+                  class="block__rating"
+                >
+                  <div class="block__rating block__rating_star">
+                    <button
+                      @click="showReviewModal(item.quest.user.ratingStatistic)"
+                    >
+                      <b-form-rating
+                        v-model="item.quest.user.ratingStatistic"
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -206,6 +381,7 @@ export default {
   },
   data() {
     return {
+      questResponses: [],
       isFavorite: false,
       localUserData: {},
       currency: 'WUSD',
@@ -230,6 +406,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async getResponsesToQuestForAuthUser() {
+      if (this.userRole === 'worker') {
+        this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
+      }
+    },
     showDistance(questLat, questLng) {
       return this.getDistanceFromLatLonInKm(
         questLat,

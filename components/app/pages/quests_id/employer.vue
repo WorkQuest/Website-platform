@@ -380,7 +380,6 @@ export default {
         title: 'Quest info',
         subtitle: 'Quest closed!',
       });
-      await this.$store.dispatch('quests/deleteQuest', this.questData.id);
       await this.$router.push('/my');
     },
     async acceptCompletedWorkOnQuest() {

@@ -27,12 +27,12 @@
           :selected-tab="selectedTab"
           :object="questsData"
         />
-        <!--        <quests-->
-        <!--          v-if="questsList.count !== 0 && userRole === 'worker'"-->
-        <!--          :limit="questLimits"-->
-        <!--          :selected-tab="selectedTab"-->
-        <!--          :object="responsesMy.responses[0].quest"-->
-        <!--        />-->
+        <quests
+          v-if="questsList.count !== 0 && userRole === 'worker'"
+          :limit="questLimits"
+          :selected-tab="selectedTab"
+          :object="questResponses.responses"
+        />
         <emptyData
           v-else
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
@@ -66,6 +66,7 @@ export default {
   },
   data() {
     return {
+      questResponses: {},
       selectedTab: 0,
       isShowFavourite: false,
       questLimits: 100,
@@ -135,6 +136,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    await this.getResponsesToQuestForAuthUser();
     await this.$store.dispatch('quests/getAllQuests');
     await this.$store.dispatch('quests/getUserQuests', {
       userId: this.userData.id,
@@ -144,6 +146,12 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async getResponsesToQuestForAuthUser() {
+      if (this.userRole === 'worker') {
+        this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
+        console.log(this.questResponses);
+      }
+    },
     async switchQuests(query, perPage, id) {
       this.SetLoader(true);
       this.page = 1;
