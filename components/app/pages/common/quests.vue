@@ -3,7 +3,7 @@
     class="quests"
   >
     <div
-      v-if="userRole === 'employer'"
+      v-if="userRole && $route.path !== '/my'"
       class="quests__card card"
     >
       <div
@@ -201,7 +201,7 @@
       </div>
     </div>
     <div
-      v-if="userRole === 'worker'"
+      v-if="userRole === 'worker' && $route.path === '/my'"
       class="quests__card card"
     >
       <div
@@ -220,12 +220,6 @@
               class="block__image"
               alt=""
             >
-            <div
-              class="block__state"
-              :class="getStatusClass(item.quest.status)"
-            >
-              {{ getStatusCard(item.quest.status) }}
-            </div>
           </div>
           <div class="block__right">
             <div class="block__head">
