@@ -58,14 +58,14 @@
             </div>
           </div>
           <div class="info-block__btns-cont">
-            <!--            <base-btn-->
-            <!--              :disabled="metamaskStatus === 'notInstalled'"-->
-            <!--              @click="showSwapModal"-->
-            <!--            >-->
             <base-btn
-              :disabled="true"
+              :disabled="metamaskStatus === 'notInstalled'"
               @click="showSwapModal"
             >
+              <!--            <base-btn-->
+              <!--              :disabled="true"-->
+              <!--              @click="showSwapModal"-->
+              <!--            >-->
               {{ $t('crosschain.createSwap') }}
             </base-btn>
           </div>
@@ -263,6 +263,7 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.swapsTest(this.purseData);
+    await this.checkMiningPoolId();
     await this.checkMetamaskStatus();
     this.SetLoader(false);
   },
@@ -307,10 +308,19 @@ export default {
     showToast(title, text, variant) {
       this.$store.dispatch('defi/showToast', { title, text, variant });
     },
-    connectToMetamask() {
+    async connectToMetamask() {
       if (!this.isConnected) {
-        this.$store.dispatch('web3/connect');
+        await this.$store.dispatch('web3/connect');
       }
+    },
+    async checkMiningPoolId() {
+      if (this.sourceAddressInd === 0) {
+        localStorage.setItem('miningPoolId', 'ETH');
+      } else {
+        localStorage.setItem('miningPoolId', 'BNB');
+      }
+      this.miningPoolId = localStorage.getItem('miningPoolId');
+      await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
     },
     async swapsTest(recipientAddress) {
       const payload = {
@@ -342,14 +352,9 @@ export default {
     },
     async showSwapModal() {
       this.SetLoader(true);
-      let chain;
-      if (this.sourceAddressInd === 0) {
-        chain = 'ETH';
-      } else {
-        chain = 'BNB';
-      }
-      await this.$store.dispatch('web3/goToChain', { chain });
+      await this.checkMiningPoolId();
       await this.checkMetamaskStatus();
+      await this.$store.dispatch('web3/getCrosschainTokensData');
       await this.swapsTest();
       this.ShowModal({
         key: modals.swap,

@@ -6,7 +6,18 @@
     <div
       class="loader__body"
     >
-      <div class="sk-chase">
+      <div
+        v-if="checkPage()"
+        class="loader__modal"
+      >
+        <div class="loader__text">
+          Please, wait
+        </div>
+      </div>
+      <div
+        v-else
+        class="sk-chase"
+      >
         <div class="sk-chase-dot" />
         <div class="sk-chase-dot" />
         <div class="sk-chase-dot" />
@@ -20,6 +31,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import loaderModes from '~/store/main/loaderModes';
+import modals from '~/store/modals/modals';
 
 export default {
   data: () => ({
@@ -32,6 +44,11 @@ export default {
       loaderProgress: 'main/getLoaderProgress',
       isLoaderBackgroundHider: 'main/getIsLoaderBackgroundHider',
     }),
+  },
+  methods: {
+    checkPage() {
+      return this.$route.path === '/mining/BNB' || this.$route.path === '/mining/ETH' || this.$route.path === '/crosschain';
+    },
   },
 };
 </script>
@@ -52,13 +69,29 @@ export default {
   &_hider {
     background: #F7F8FA;
   }
-  &__text {
-    margin-top: 16px;
-  }
   &__body {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  &__modal {
+    width: 200px;
+    position: relative;
+    display: flex;
+    height: 100px;
+    text-align: center;
+    background: #FFFFFF;
+    box-shadow: 0 85px 147px rgba(10, 27, 61, 0.17), 0 47.1676px 61.4131px rgba(10, 27, 61, 0.078707), 0 26.7219px 32.8344px rgba(10, 27, 61, 0.0629546), 0 14.4955px 18.4067px rgba(10, 27, 61, 0.0598272), 0 6.96225px 9.77565px rgba(10, 27, 61, 0.0584222), 0 2.43911px 4.06787px rgba(10, 27, 61, 0.0492837);
+    border-radius: 6px;
+    align-items: center;
+    justify-content: center;
+  }
+  &__text {
+    font-family: 'Inter', sans-serif;
+    font-size: 23px;
+    color: $black800;
+    font-weight: 500;
+    line-height: 130%;
   }
 }
 
@@ -66,6 +99,7 @@ export default {
   width: 40px;
   height: 40px;
   position: relative;
+  z-index: 1500;
   animation: sk-chase 2.5s infinite linear both;
 }
 

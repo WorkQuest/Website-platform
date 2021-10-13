@@ -396,8 +396,7 @@ export const swap = async (_decimals, _amount) => {
 };
 
 export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAddress, recipient, symbol) => {
-  // form = 10 ** _decimals;
-  // amount = Math.floor(_amount * form) / form;
+  let swapData = '';
   if (process.env.PROD === 'true') {
     if (chain === 'ETH') {
       tokenAddress = process.env.MAINNET_ETH_WQT_TOKEN;
@@ -406,28 +405,8 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
       tokenAddress = process.env.MAINNET_BSC_WQT_TOKEN;
       bridgeAddress = process.env.MAINNET_BSC_BRIDGE;
     }
-    instance = await createInstance(abi.ERC20, tokenAddress);
-    contractInstance = await createInstance(abi.MainNetWQBridge, bridgeAddress);
-    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
-    nonce = await web3.eth.getTransactionCount(userAddress);
-    try {
-      amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
-      if (+allowance < +amount) {
-        store.dispatch('main/setStatusText', 'Approving');
-        showToast('Swapping', 'Approving...', 'success');
-        await instance.approve(bridgeAddress, amount);
-        showToast('Swapping', 'Approving done', 'success');
-      }
-      showToast('Swapping', 'Swapping...', 'success');
-      store.dispatch('main/setStatusText', 'Swapping');
-      await contractInstance.swap(nonce, chainTo, amount, recipient, symbol);
-      showToast('Swapping', 'Swapping done', 'success');
-      return '';
-    } catch (e) {
-      showToast('Swapping error', `${e.message}`, 'danger');
-      return error(500, 'stake error', e);
-    }
-  } if (process.env.PROD === 'false') {
+  }
+  if (process.env.PROD === 'false') {
     if (chain === 'ETH') {
       tokenAddress = process.env.NEW_WQT_TOKEN;
       bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
@@ -435,30 +414,28 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
       tokenAddress = process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET;
       bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
     }
-    instance = await createInstance(abi.ERC20, tokenAddress);
-    contractInstance = await createInstance(abi.WQBridge, bridgeAddress);
-    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
-    nonce = await web3.eth.getTransactionCount(userAddress);
-    let swapData = '';
-    try {
-      amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
-      if (+allowance < +amount) {
-        store.dispatch('main/setStatusText', 'Approving');
-        showToast('Swapping', 'Approving...', 'success');
-        await instance.approve(bridgeAddress, amount);
-        showToast('Swapping', 'Approving done', 'success');
-      }
-      showToast('Swapping', 'Swapping...', 'success');
-      store.dispatch('main/setStatusText', 'Swapping');
-      swapData = await contractInstance.swap(nonce, chainTo, amount, recipient, symbol);
-      showToast('Swapping', 'Swapping done', 'success');
-      return swapData;
-    } catch (e) {
-      showToast('Swapping error', `${e.message}`, 'danger');
-      return error(500, 'stake error', e);
-    }
   }
-  return '';
+  instance = await createInstance(abi.ERC20, tokenAddress);
+  contractInstance = await createInstance(abi.MainNetWQBridge, bridgeAddress);
+  allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
+  nonce = await web3.eth.getTransactionCount(userAddress);
+  try {
+    amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
+    if (+allowance < +amount) {
+      store.dispatch('main/setStatusText', 'Approving');
+      showToast('Swapping', 'Approving...', 'success');
+      await instance.approve(bridgeAddress, amount);
+      showToast('Swapping', 'Approving done', 'success');
+    }
+    showToast('Swapping', 'Swapping...', 'success');
+    store.dispatch('main/setStatusText', 'Swapping');
+    swapData = await contractInstance.swap(nonce, chainTo, amount, recipient, symbol);
+    showToast('Swapping', 'Swapping done', 'success');
+    return swapData;
+  } catch (e) {
+    showToast('Swapping error', `${e.message}`, 'danger');
+    return error(500, 'stake error', e);
+  }
 };
 
 export const goToChain = async (chain) => {

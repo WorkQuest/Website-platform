@@ -112,9 +112,9 @@ export default {
       const oldTokenDecimal = await fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET);
       const oldTokenSymbol = await fetchContractData('symbol', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET);
       const oldTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET, [getAccount().address]);
-      const newTokenDecimal = await fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET);
-      const newTokenSymbol = await fetchContractData('symbol', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET);
-      const newTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET, [getAccount().address]);
+      const newTokenDecimal = await fetchContractData('decimals', abi.ERC20, process.env.MAINNET_BSC_WQT_TOKEN);
+      const newTokenSymbol = await fetchContractData('symbol', abi.ERC20, process.env.MAINNET_BSC_WQT_TOKEN);
+      const newTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.MAINNET_BSC_WQT_TOKEN, [getAccount().address]);
 
       const payload = {
         userPurse: {
@@ -185,6 +185,34 @@ export default {
       rewardTokenAmount: new BigNumber(userInfo.claim_).shiftedBy(-18).toString(),
     };
     commit('setStakeAndRewardData', payload);
+    return payload;
+  },
+
+  async getCrosschainTokensData({ commit }) {
+    const miningPoolId = localStorage.getItem('miningPoolId');
+    let token;
+    if (process.env.PROD === 'false') {
+      if (miningPoolId === 'ETH') {
+        token = process.env.TOKEN_WQT_ADDRESS_RINKEBY;
+      } else {
+        token = process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET;
+      }
+    }
+    if (process.env.PROD === 'true') {
+      if (miningPoolId === 'ETH') {
+        token = process.env.MAINNET_ETH_WQT_TOKEN;
+      } else {
+        token = process.env.MAINNET_BSC_WQT_TOKEN;
+      }
+    }
+    const tokenDecimal = await fetchContractData('decimals', abi.ERC20, token);
+    const tokenSymbol = await fetchContractData('symbol', abi.ERC20, token);
+    const tokenValue = await fetchContractData('balanceOf', abi.ERC20, token, [getAccount().address]);
+    const payload = {
+      tokenAmount: new BigNumber(tokenValue).shiftedBy(-tokenDecimal).toString(),
+      tokenSymbol,
+    };
+    commit('setCrosschainTokensData', payload);
     return payload;
   },
 

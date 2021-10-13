@@ -112,7 +112,7 @@ export default {
         img: swapObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
         title: swapObj.code === 500 ? this.$t('modals.transactionFail') : this.$t('modals.transactionSend'),
         recipient: '',
-        txHash: '',
+        txHash: swapObj.tx,
         chainTo,
         subtitle: '',
       });
