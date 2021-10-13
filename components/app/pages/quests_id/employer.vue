@@ -163,7 +163,10 @@
             alt=""
           >
         </div>
-        <div class="worker__name">
+        <div
+          v-if="assignWorker !== null || assignWorker !== ''"
+          class="worker__name"
+        >
           {{ assignWorker.firstName }} {{ assignWorker.lastName }}
         </div>
         <div>
@@ -256,7 +259,10 @@
                 alt=""
               >
             </div>
-            <div class="worker__name">
+            <div
+              v-if="assignWorker !== null || assignWorker !== ''"
+              class="worker__name"
+            >
               {{ assignWorker.firstName }} {{ assignWorker.lastName }}
             </div>
             <div>
