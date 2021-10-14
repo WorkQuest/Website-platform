@@ -314,12 +314,8 @@ export default {
       }
     },
     async checkMiningPoolId() {
-      if (this.sourceAddressInd === 0) {
-        localStorage.setItem('miningPoolId', 'ETH');
-      } else {
-        localStorage.setItem('miningPoolId', 'BNB');
-      }
-      this.miningPoolId = localStorage.getItem('miningPoolId');
+      this.miningPoolId = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
+      localStorage.setItem('miningPoolId', this.miningPoolId);
       await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
     },
     async swapsTest(recipientAddress) {

@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     checkPage() {
-      return this.$route.path === '/mining/BNB' || this.$route.path === '/mining/ETH' || this.$route.path === '/crosschain';
+      return ['/mining/BNB', '/mining/ETH', '/crosschain'].includes(this.$route.path);
     },
   },
 };

@@ -38,7 +38,7 @@
                   <base-btn
                     mode="max"
                     class="max__button"
-                    @click="switchToMaxValue()"
+                    @click="setMaxValue()"
                   >
                     <span class="max__text">{{ $t('modals.maximum') }}</span>
                   </base-btn>
@@ -130,7 +130,7 @@ export default {
     await this.crosschainFlow();
   },
   methods: {
-    switchToMaxValue() {
+    setMaxValue() {
       this.amount = this.tokensData.tokenAmount;
     },
     hide() {

@@ -64,49 +64,38 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
 //   });
 // };
 
-export const getAccount = () => account;
+export const getAccount = () => account?.address;
 
 export const sendTransaction = async (_method, payload, _provider = web3) => {
   let transactionData = {};
   const inst = new web3.eth.Contract(payload.abi, payload.address);
   const gasPrice = await web3.eth.getGasPrice();
-  // if (_method === 'redeem') {
-  //   const data = inst.methods[_method].apply(null, [payload.data]).encodeABI();
-  //   const gasEstimate = await inst.methods[_method].apply(null, [payload.data]).estimateGas({ from: getAccount().address });
-  //   transactionData = {
-  //     to: payload.address,
-  //     from: getAccount().address,
-  //     data,
-  //     gasPrice,
-  //     gas: gasEstimate,
-  //   };
-  // } else
   if (_method === 'claim') {
     const data = inst.methods[_method].apply(null).encodeABI();
-    const gasEstimate = await inst.methods[_method].apply(null).estimateGas({ from: getAccount().address });
+    const gasEstimate = await inst.methods[_method].apply(null).estimateGas({ from: account.address });
     transactionData = {
       to: payload.address,
-      from: getAccount().address,
+      from: account.address,
       data,
       gasPrice,
       gas: gasEstimate,
     };
   } else if (_method === 'redeem') {
     const data = inst.methods[_method].apply(null, payload.data).encodeABI();
-    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: getAccount().address });
+    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: account.address });
     transactionData = {
       to: payload.address,
-      from: getAccount().address,
+      from: account.address,
       data,
       gasPrice,
       gas: gasEstimate,
     };
   } else {
     const data = inst.methods[_method].apply(null, [payload.data]).encodeABI();
-    const gasEstimate = await inst.methods[_method].apply(null, [payload.data]).estimateGas({ from: getAccount().address });
+    const gasEstimate = await inst.methods[_method].apply(null, [payload.data]).estimateGas({ from: account.address });
     transactionData = {
       to: payload.address,
-      from: getAccount().address,
+      from: account.address,
       data,
       gasPrice,
       gas: gasEstimate,
@@ -198,8 +187,8 @@ export const createInstance = async (ab, address) => {
   return await abs.getInstance(address);
 };
 
-let instance;
-let contractInstance;
+let tokenInstance;
+let bridgeInstance;
 let allowance;
 let form;
 let amount;
@@ -210,8 +199,6 @@ let bridgeAddress;
 let nonce;
 
 export const staking = async (_decimals, _amount) => {
-  // form = 10 ** _decimals;
-  // amount = Math.floor(_amount * form) / form;
   const miningPoolId = localStorage.getItem('miningPoolId');
   if (process.env.PROD === 'true') {
     if (miningPoolId === 'ETH') {
@@ -235,16 +222,15 @@ export const staking = async (_decimals, _amount) => {
       stakingAbi = abi.WQLiquidityMining;
     }
   }
-  instance = await createInstance(abi.ERC20, tokenAddress);
-  contractInstance = await createInstance(stakingAbi, stakingAddress);
-  allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, stakingAddress])).toString();
+  tokenInstance = await createInstance(abi.ERC20, tokenAddress);
+  allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [account.address, stakingAddress])).toString();
   try {
     console.log(_decimals);
     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
     if (+allowance < +amount) {
       store.dispatch('main/setStatusText', 'Approving');
       showToast('Staking', 'Approving...', 'success');
-      await instance.approve(stakingAddress, amount);
+      await tokenInstance.approve(stakingAddress, amount);
       showToast('Staking', 'Approving done', 'success');
     }
     showToast('Staking', 'Staking...', 'success');
@@ -255,7 +241,6 @@ export const staking = async (_decimals, _amount) => {
       data: amount,
     };
     await sendTransaction('stake', payload);
-    // await contractInstance.stake(amount);
     showToast('Staking', 'Staking done', 'success');
     return '';
   } catch (e) {
@@ -265,8 +250,6 @@ export const staking = async (_decimals, _amount) => {
 };
 
 export const unStaking = async (_decimals, _amount) => {
-  // form = 10 ** _decimals;
-  // amount = Math.floor(_amount * form) / form;
   const miningPoolId = localStorage.getItem('miningPoolId');
   if (process.env.PROD === 'true') {
     if (miningPoolId === 'ETH') {
@@ -286,7 +269,6 @@ export const unStaking = async (_decimals, _amount) => {
       stakingAbi = abi.WQLiquidityMining;
     }
   }
-  contractInstance = await createInstance(stakingAbi, stakingAddress);
   try {
     console.log(_decimals);
     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
@@ -298,7 +280,6 @@ export const unStaking = async (_decimals, _amount) => {
       data: amount,
     };
     await sendTransaction('unstake', payload);
-    // await contractInstance.unstake(amount);
     showToast('Unstaking', 'Unstaking done', 'success');
     return '';
   } catch (e) {
@@ -327,17 +308,15 @@ export const claimRewards = async (_userAddress, _amount) => {
       stakingAbi = abi.WQLiquidityMining;
     }
   }
-  contractInstance = await createInstance(stakingAbi, stakingAddress);
   try {
     showToast('Claiming', 'Claiming...', 'success');
-    // await contractInstance.claim();
     const payload = {
       abi: stakingAbi,
       address: stakingAddress,
       data: _amount,
     };
     await sendTransaction('claim', payload);
-    await contractInstance.rewardTotal();
+    // await contractInstance.rewardTotal();
     showToast('Claiming', 'Claiming done', 'success');
     return '';
   } catch (e) {
@@ -347,22 +326,21 @@ export const claimRewards = async (_userAddress, _amount) => {
 };
 
 export const swap = async (_decimals, _amount) => {
-  // form = 10 ** _decimals;
-  // amount = Math.floor(_amount * form) / form;
+  let exchangeInstance;
   if (process.env.PROD === 'true') {
-    instance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET);
-    contractInstance = await createInstance(abi.MainNetWQTExchange, process.env.EXCHANGE_ADDRESS_BSCMAINNET);
-    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET, [getAccount().address, process.env.EXCHANGE_ADDRESS_BSCMAINNET])).toString();
+    tokenInstance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET);
+    exchangeInstance = await createInstance(abi.MainNetWQTExchange, process.env.EXCHANGE_ADDRESS_BSCMAINNET);
+    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET, [account.address, process.env.EXCHANGE_ADDRESS_BSCMAINNET])).toString();
     try {
       amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
       if (+allowance < +amount) {
         store.dispatch('main/setStatusText', 'Approving');
         showToast('Swapping', 'Approving...', 'success');
-        await instance.approve(process.env.EXCHANGE_ADDRESS_BSCMAINNET, amount);
+        await tokenInstance.approve(process.env.EXCHANGE_ADDRESS_BSCMAINNET, amount);
         showToast('Swapping', 'Approving done', 'success');
       }
       showToast('Swapping', 'Swapping...', 'success');
-      await contractInstance.swap(amount);
+      await exchangeInstance.swap(amount);
       store.dispatch('main/setStatusText', 'Swapping');
       showToast('Swapping', 'Swapping done', 'success');
       return '';
@@ -371,19 +349,19 @@ export const swap = async (_decimals, _amount) => {
       return error(500, 'stake error', e);
     }
   } if (process.env.PROD === 'false') {
-    instance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
-    contractInstance = await createInstance(abi.WQTExchange, process.env.EXCHANGE_ADDRESS_BSCTESTNET);
-    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccount().address, process.env.EXCHANGE_ADDRESS_BSCTESTNET])).toString();
+    tokenInstance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
+    exchangeInstance = await createInstance(abi.WQTExchange, process.env.EXCHANGE_ADDRESS_BSCTESTNET);
+    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [account.address, process.env.EXCHANGE_ADDRESS_BSCTESTNET])).toString();
     try {
       amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
       if (+allowance < +amount) {
         store.dispatch('main/setStatusText', 'Approving');
         showToast('Swapping', 'Approving...', 'success');
-        await instance.approve(process.env.EXCHANGE_ADDRESS_BSCTESTNET, amount);
+        await tokenInstance.approve(process.env.EXCHANGE_ADDRESS_BSCTESTNET, amount);
         showToast('Swapping', 'Approving done', 'success');
       }
       showToast('Swapping', 'Swapping...', 'success');
-      await contractInstance.swap(amount);
+      await exchangeInstance.swap(amount);
       store.dispatch('main/setStatusText', 'Swapping');
       showToast('Swapping', 'Swapping done', 'success');
       return '';
@@ -415,21 +393,21 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
       bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
     }
   }
-  instance = await createInstance(abi.ERC20, tokenAddress);
-  contractInstance = await createInstance(abi.MainNetWQBridge, bridgeAddress);
-  allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, bridgeAddress])).toString();
+  tokenInstance = await createInstance(abi.ERC20, tokenAddress);
+  bridgeInstance = await createInstance(abi.MainNetWQBridge, bridgeAddress);
+  allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [account.address, bridgeAddress])).toString();
   nonce = await web3.eth.getTransactionCount(userAddress);
   try {
     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
     if (+allowance < +amount) {
       store.dispatch('main/setStatusText', 'Approving');
       showToast('Swapping', 'Approving...', 'success');
-      await instance.approve(bridgeAddress, amount);
+      await tokenInstance.approve(bridgeAddress, amount);
       showToast('Swapping', 'Approving done', 'success');
     }
     showToast('Swapping', 'Swapping...', 'success');
     store.dispatch('main/setStatusText', 'Swapping');
-    swapData = await contractInstance.swap(nonce, chainTo, amount, recipient, symbol);
+    swapData = await bridgeInstance.swap(nonce, chainTo, amount, recipient, symbol);
     showToast('Swapping', 'Swapping done', 'success');
     return swapData;
   } catch (e) {
