@@ -642,6 +642,7 @@
                             <n-link
                               v-for="(item,key) in companyLinks"
                               :key="key"
+                              type="link"
                               :to="item.path"
                               class="footer__text footer__text_grey"
                             >
@@ -997,11 +998,11 @@ export default {
       return [
         {
           title: this.$t('footer.company.wqWiki'),
-          path: '#',
+          path: '/wiki',
         },
         {
           title: this.$t('footer.company.aboutUs'),
-          path: '#',
+          path: '/about',
         },
         {
           title: this.$t('footer.company.leadership'),

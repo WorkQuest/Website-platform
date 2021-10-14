@@ -2351,5 +2351,21 @@
       "staking": "WorkQuest Staking",
       "wqDAO": "WorkQuest DAO"
     }
+  },
+  "wiki": {
+    "title": "WorkQuest Wiki",
+    "searchPlaceholder": "Search by Address / Txn Hash / Block / Token",
+    "search": "Search",
+    "navigation": {
+      "header": "Header menu",
+      "profile": "Profile menu",
+      "instruments": "Instruments",
+      "statuses": "Statuses",
+      "buttons": "Buttons",
+      "employee": "Employee's office",
+      "employer": "Employer’s office",
+      "user": "User profile",
+      "quest": "Boosting quest"
+    }
   }
 }
