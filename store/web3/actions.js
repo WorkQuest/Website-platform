@@ -6,7 +6,7 @@ import {
   claimRewards,
   disconnectWeb3,
   swap,
-  startPingingMetamask, fetchContractData, getAccount, createInstance, showToast, goToChain, swapWithBridge, redeemSwap,
+  startPingingMetamask, fetchContractData, getAccountAddress, createInstance, showToast, goToChain, swapWithBridge, redeemSwap,
   stakingBSC, unStakingBSC, claimRewardsBSC,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
@@ -49,7 +49,7 @@ export default {
       dispatch('startPingingMetamask');
       commit('setAccount', response.result);
       commit('setIsConnected', true);
-      commit('setPurseData', getAccount());
+      commit('setPurseData', getAccountAddress());
       showToast('Connect to Metamask', 'Connected', 'success');
     } else if (typeof window.ethereum === 'undefined') {
       showToast('Error connect to Metamask', 'Metamask not installed! Please install Metamask!', 'danger');
@@ -88,12 +88,12 @@ export default {
     const stakeSymbol = await fetchContractData('symbol', abi.ERC20, stakeTokenAddress);
     const rewardDecimal = await fetchContractData('decimals', abi.ERC20, rewardTokenAddress);
     const rewardSymbol = await fetchContractData('symbol', abi.ERC20, rewardTokenAddress);
-    const stakeBalance = await fetchContractData('balanceOf', abi.ERC20, stakeTokenAddress, [getAccount()]);
-    const rewardBalance = await fetchContractData('balanceOf', abi.ERC20, rewardTokenAddress, [getAccount()]);
+    const stakeBalance = await fetchContractData('balanceOf', abi.ERC20, stakeTokenAddress, [getAccountAddress()]);
+    const rewardBalance = await fetchContractData('balanceOf', abi.ERC20, rewardTokenAddress, [getAccountAddress()]);
     console.log(stakeDecimal, rewardDecimal);
     const payload = {
       userPurse: {
-        address: getAccount(),
+        address: getAccountAddress(),
         stakeBalance: new BigNumber(stakeBalance).shiftedBy(-stakeDecimal).toString(),
         stakeSymbol,
         rewardBalance: new BigNumber(rewardBalance).shiftedBy(-rewardDecimal).toString(),
@@ -111,14 +111,14 @@ export default {
     if (process.env.PROD === 'true') {
       const oldTokenDecimal = await fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET);
       const oldTokenSymbol = await fetchContractData('symbol', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET);
-      const oldTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET, [getAccount()]);
+      const oldTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET, [getAccountAddress()]);
       const newTokenDecimal = await fetchContractData('decimals', abi.ERC20, process.env.MAINNET_BSC_WQT_TOKEN);
       const newTokenSymbol = await fetchContractData('symbol', abi.ERC20, process.env.MAINNET_BSC_WQT_TOKEN);
-      const newTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.MAINNET_BSC_WQT_TOKEN, [getAccount()]);
+      const newTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.MAINNET_BSC_WQT_TOKEN, [getAccountAddress()]);
 
       const payload = {
         userPurse: {
-          address: getAccount(),
+          address: getAccountAddress(),
           oldTokenBalance: new BigNumber(oldTokenBalance).shiftedBy(-oldTokenDecimal).toString(),
           oldTokenSymbol,
           newTokenBalance: new BigNumber(newTokenBalance).shiftedBy(-newTokenDecimal).toString(),
@@ -133,14 +133,14 @@ export default {
     } if (process.env.PROD === 'false') {
       const oldTokenDecimal = await fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
       const oldTokenSymbol = await fetchContractData('symbol', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
-      const oldTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccount()]);
+      const oldTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccountAddress()]);
       const newTokenDecimal = await fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET);
       const newTokenSymbol = await fetchContractData('symbol', abi.ERC20, process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET);
-      const newTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET, [getAccount()]);
+      const newTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET, [getAccountAddress()]);
 
       const payload = {
         userPurse: {
-          address: getAccount(),
+          address: getAccountAddress(),
           oldTokenBalance: new BigNumber(oldTokenBalance).shiftedBy(-oldTokenDecimal).toString(),
           oldTokenSymbol,
           newTokenBalance: new BigNumber(newTokenBalance).shiftedBy(-newTokenDecimal).toString(),
@@ -177,7 +177,7 @@ export default {
         stakingAbi = abi.WQLiquidityMining;
       }
     }
-    const userInfo = await fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccount()]);
+    const userInfo = await fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccountAddress()]);
     console.log(stakeDecimal);
     const payload = {
       balanceTokenAmount: new BigNumber(userInfo._balance).shiftedBy(-18).toString(),
@@ -207,7 +207,7 @@ export default {
     }
     const tokenDecimal = await fetchContractData('decimals', abi.ERC20, token);
     const tokenSymbol = await fetchContractData('symbol', abi.ERC20, token);
-    const tokenValue = await fetchContractData('balanceOf', abi.ERC20, token, [getAccount()]);
+    const tokenValue = await fetchContractData('balanceOf', abi.ERC20, token, [getAccountAddress()]);
     const payload = {
       tokenAmount: new BigNumber(tokenValue).shiftedBy(-tokenDecimal).toString(),
       tokenSymbol,

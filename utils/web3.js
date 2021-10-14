@@ -64,7 +64,7 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
 //   });
 // };
 
-export const getAccount = () => account?.address;
+export const getAccountAddress = () => account?.address;
 
 export const sendTransaction = async (_method, payload, _provider = web3) => {
   let transactionData = {};
