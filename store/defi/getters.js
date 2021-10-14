@@ -12,5 +12,5 @@ export default {
   getTableWqtWethTokenDay: (state) => state.tableWqtWethTokenDay || '',
   getWqtWethTokenDayLast: (state) => state.wqtWethTokenDayLast || '',
   getSwapAddress: (state) => state.swapAddress || '',
-  getCrosschainTokensData: (state) => state.crosschainTokensData || '',
+  getCrosschainTokensData: (state) => state.crosschainTokensData || [],
 };

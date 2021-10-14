@@ -420,32 +420,36 @@ export const goToChain = async (chain) => {
   if (chain === 'undefined') {
     showToast('Error connect to Metamask', 'Wrong chain ID', 'danger');
   }
+  let methodName;
+  let chainIdParam;
   if (chain === 'ETH') {
     if (process.env.PROD === 'false') {
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x4' }],
-      });
+      methodName = 'wallet_switchEthereumChain';
+      chainIdParam = [{ chainId: '0x4' }];
     }
     if (process.env.PROD === 'true') {
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x1' }],
-      });
+      methodName = 'wallet_switchEthereumChain';
+      chainIdParam = [{ chainId: '0x1' }];
     }
   } else {
     if (process.env.PROD === 'false') {
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x61' }],
-      });
+      methodName = 'wallet_switchEthereumChain';
+      chainIdParam = [{ chainId: '0x61' }];
     }
     if (process.env.PROD === 'true') {
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x38' }],
-      });
+      methodName = 'wallet_switchEthereumChain';
+      chainIdParam = [{ chainId: '0x38' }];
     }
+  }
+  try {
+    await window.ethereum.request({
+      method: methodName,
+      params: chainIdParam,
+    });
+    return { ok: true };
+  } catch (e) {
+    showToast('Switch chain error:', `${e.message}`, 'danger');
+    return error(500, 'stake error', e);
   }
 };
 
