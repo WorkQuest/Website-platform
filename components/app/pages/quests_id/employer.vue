@@ -84,13 +84,13 @@
           >
             <div>
               <img
-                v-if="assignWorker.avatar"
+                v-if="assignWorker"
                 class="worker__avatar"
                 :src="assignWorker.avatar.url"
                 alt=""
               >
               <img
-                v-if="!assignWorker.avatar"
+                v-if="!assignWorker"
                 class="worker__avatar"
                 :src="require('~/assets/img/app/avatar_empty.png')"
                 alt=""
@@ -206,7 +206,7 @@
             alt=""
           >
           <img
-            v-if="assignWorker === null || assignWorker === ''"
+            v-if="!assignWorker"
             class="worker__avatar"
             :src="require('~/assets/img/app/avatar_empty.png')"
             alt=""
@@ -253,20 +253,20 @@
         <div class="worker__container">
           <div>
             <img
-              v-if="assignWorker !== null"
+              v-if="assignWorker"
               class="worker__avatar"
               :src="assignWorker.avatar.url"
               alt=""
             >
             <img
-              v-if="assignWorker === null || assignWorker === undefined"
+              v-if="!assignWorker"
               class="worker__avatar"
               :src="require('~/assets/img/app/avatar_empty.png')"
               alt=""
             >
           </div>
           <div
-            v-if="assignWorker === null || assignWorker === undefined"
+            v-if="assignWorker !== null || assignWorker !== undefined"
             class="worker__name"
           >
             {{ assignWorker.firstName }} {{ assignWorker.lastName }}
@@ -466,6 +466,8 @@ export default {
         title: 'Quest info',
         subtitle: 'Completed work on quest accepted!',
       });
+      await this.$store.dispatch('quests/getCurrentStepEditQuest', 9);
+      // Проверить
       this.SetLoader(false);
     },
     async rejectCompletedWorkOnQuest() {
@@ -477,6 +479,8 @@ export default {
         title: 'Quest info',
         subtitle: 'Completed work on quest rejected!',
       });
+      await this.$store.dispatch('quests/setInfoDataMode', 9);
+      // Проверить
       this.SetLoader(false);
     },
     async initData() {
@@ -516,7 +520,7 @@ export default {
       };
       const questId = this.questData.id;
       await this.$store.dispatch('quests/startQuest', { questId, data });
-      await this.setInfoDataMode(4);
+      await this.$store.dispatch('quests/getCurrentStepEditQuest', 4);
       this.SetLoader(false);
     },
   },

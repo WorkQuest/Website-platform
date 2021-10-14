@@ -12,7 +12,11 @@
                 <div
                   class="info__text"
                   :class="[
-                    {'info__text_white': infoDataMode !== 6 && infoDataMode !== 8 && infoDataMode !== 9}
+                    {'info__text_white': infoDataMode !== 6
+                      && infoDataMode !== 8
+                      && infoDataMode !== 9
+                      && infoDataMode !== 7
+                    }
                   ]"
                 >
                   <div v-if="infoDataMode === 2">
