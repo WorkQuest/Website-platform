@@ -263,6 +263,7 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.swapsTest(this.purseData);
+    await this.checkMiningPoolId();
     await this.checkMetamaskStatus();
     this.SetLoader(false);
   },
@@ -289,13 +290,19 @@ export default {
     },
     async redeemAction(data) {
       this.SetLoader(true);
-      await this.$store.dispatch('web3/goToChain', { chain: data.chain });
+      let redeemObj;
+      let payload;
+      const switchChainStatus = await this.$store.dispatch('web3/goToChain', { chain: data.chain });
       await this.connectToMetamask();
-      const payload = {
-        signData: data.clearData,
-        chainId: data.chainId,
-      };
-      const redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
+      if (switchChainStatus.ok) {
+        payload = {
+          signData: data.clearData,
+          chainId: data.chainId,
+        };
+        redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
+      } else {
+        redeemObj = { code: 500 };
+      }
       this.ShowModal({
         key: modals.status,
         img: redeemObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
@@ -307,10 +314,15 @@ export default {
     showToast(title, text, variant) {
       this.$store.dispatch('defi/showToast', { title, text, variant });
     },
-    connectToMetamask() {
+    async connectToMetamask() {
       if (!this.isConnected) {
-        this.$store.dispatch('web3/connect');
+        await this.$store.dispatch('web3/connect');
       }
+    },
+    async checkMiningPoolId() {
+      this.miningPoolId = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
+      localStorage.setItem('miningPoolId', this.miningPoolId);
+      await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
     },
     async swapsTest(recipientAddress) {
       const payload = {
@@ -342,14 +354,9 @@ export default {
     },
     async showSwapModal() {
       this.SetLoader(true);
-      let chain;
-      if (this.sourceAddressInd === 0) {
-        chain = 'ETH';
-      } else {
-        chain = 'BNB';
-      }
-      await this.$store.dispatch('web3/goToChain', { chain });
+      await this.checkMiningPoolId();
       await this.checkMetamaskStatus();
+      await this.$store.dispatch('web3/getCrosschainTokensData');
       await this.swapsTest();
       this.ShowModal({
         key: modals.swap,
