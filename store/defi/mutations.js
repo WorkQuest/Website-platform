@@ -39,4 +39,7 @@ export default {
   swapsForCrosschain(state, data) {
     state.crosschainTokensData = data;
   },
+  setLPToken(state, data) {
+    state.lpTokenToProcenet = data;
+  },
 };

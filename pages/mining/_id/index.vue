@@ -98,6 +98,14 @@
                     {{ $t('mining.totalLiquidity') }}
                   </div>
                 </div>
+                <div class="third__container">
+                  <div class="third info-block__title_big info-block__title_blue">
+                    {{ $tc('mining.percentCount', totalLP) }}
+                  </div>
+                  <div class="info-block__title_small">
+                    {{ $t('mining.APY') }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -538,6 +546,8 @@ export default {
       return style;
     },
     async tokensDataUpdate() {
+      const tokenLP = await this.$store.dispatch('defi/getLPToken');
+      this.totalLP = this.Floor(tokenLP);
       const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
