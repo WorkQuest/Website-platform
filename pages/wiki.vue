@@ -121,9 +121,126 @@ export default {
             },
           },
         },
-        // 'instruments',
-        // 'statuses',
-        // 'buttons',
+        instruments: {
+          name: 'instruments',
+          cards: {
+            retirement: {
+              title: 'retirement',
+              subtitle: 'annual',
+              image: 'instruments-retirement',
+            },
+            referral: {
+              title: 'referral',
+              subtitle: 'inviting',
+              image: 'instruments-referral',
+            },
+            P2P: {
+              title: 'P2P',
+              subtitle: 'insurance',
+              image: 'instruments-P2P',
+            },
+            savings: {
+              title: 'savings',
+              subtitle: 'income',
+              image: 'instruments-savings',
+            },
+            lending: {
+              title: 'lending',
+              subtitle: 'loan',
+              image: 'instruments-lending',
+            },
+            liquidity: {
+              title: 'liquidity',
+              subtitle: 'providing',
+              image: 'instruments-liquidity',
+            },
+            crosschain: {
+              title: 'crosschain',
+              subtitle: 'way',
+              image: 'instruments-crosschain',
+            },
+            staking: {
+              title: 'staking',
+              subtitle: 'description',
+              image: 'instruments-staking',
+            },
+          },
+        },
+        statuses: {
+          name: 'statuses',
+          cards: {
+            delivery: {
+              title: 'delivery',
+              subtitle: 'agreement',
+              image: 'statuses-delivery',
+            },
+            short: {
+              title: 'short',
+              subtitle: 'quest',
+              image: 'statuses-short',
+            },
+            urgent: {
+              title: 'urgent',
+              subtitle: 'quest',
+              image: 'statuses-urgent',
+            },
+            top: {
+              title: 'top',
+              subtitle: 'ranked',
+              image: 'statuses-top',
+            },
+            reliable: {
+              title: 'reliable',
+              subtitle: 'number',
+              image: 'statuses-reliable',
+            },
+            verified: {
+              title: 'verified',
+              subtitle: 'validated',
+              image: 'statuses-verified',
+            },
+          },
+        },
+        buttons: {
+          name: 'buttons',
+          cards: {
+            create: {
+              title: 'create',
+              subtitle: 'work',
+              image: 'buttons-create',
+            },
+            results: {
+              title: 'results',
+              subtitle: 'offer',
+              image: 'buttons-results',
+            },
+            workers: {
+              title: 'workers',
+              subtitle: 'search',
+              image: 'buttons-workers',
+            },
+            details: {
+              title: 'details',
+              subtitle: 'information',
+              image: 'buttons-details',
+            },
+            map: {
+              title: 'map',
+              subtitle: 'enable',
+              image: 'buttons-map',
+            },
+            button: {
+              title: 'button',
+              subtitle: 'profile',
+              image: 'buttons-button',
+            },
+            raise: {
+              title: 'raise',
+              subtitle: 'promoting',
+              image: 'buttons-raise',
+            },
+          },
+        },
         // 'employee',
         // 'employer',
         // 'user',
