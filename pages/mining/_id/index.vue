@@ -98,6 +98,17 @@
                     {{ $t('mining.totalLiquidity') }}
                   </div>
                 </div>
+                <div
+                  v-if="miningPoolId === 'BNB'"
+                  class="third__container"
+                >
+                  <div class="third info-block__title_big info-block__title_blue">
+                    {{ $tc('mining.wqtCount', profitWQT) }}
+                  </div>
+                  <div class="info-block__title_small">
+                    {{ $t('mining.APY') }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -348,6 +359,7 @@ export default {
       stakedAmount: 0,
       wqtWbnbData: [],
       wqtWethData: [],
+      profitWQT: 0,
     };
   },
   computed: {
@@ -363,7 +375,6 @@ export default {
       isConnected: 'web3/isConnected',
       accountData: 'web3/getAccountData',
       tokensData: 'web3/getTokensAmount',
-      tokenLP: 'web3/getLPTokenPrice',
       statusBusy: 'web3/getStatusBusy',
       userData: 'user/getUserData',
     }),
@@ -541,6 +552,11 @@ export default {
       const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
+      const paramsAPY = await this.$store.dispatch('defi/getLPToken');
+      const priceLP = paramsAPY.reserveUSD / paramsAPY.totalSupply;
+      const APY = ((paramsAPY.rewardTotal * 12) * paramsAPY.priceUSD) / (paramsAPY.totalStaked * priceLP);
+      const profit = ((this.stakedAmount * priceLP) * APY) / paramsAPY.priceUSD;
+      this.profitWQT = this.Floor(profit);
     },
     async disconnectFromMetamask() {
       await this.$store.dispatch('web3/disconnect');

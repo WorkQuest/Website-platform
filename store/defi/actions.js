@@ -112,4 +112,11 @@ export default {
     commit('swapsForCrosschain', items);
     return response;
   },
+  async getLPToken() {
+    const response = await this.$axios.$get('/v1/pool-liquidity/wqt-wbnb/distribution');
+    if (response.ok) {
+      return response.result;
+    }
+    return response;
+  },
 };
