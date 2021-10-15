@@ -100,7 +100,7 @@
                 </div>
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.percentCount', totalLP) }}
+                    {{ $tc('mining.wqtCount', profitWQT) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.APY') }}
@@ -356,7 +356,7 @@ export default {
       stakedAmount: 0,
       wqtWbnbData: [],
       wqtWethData: [],
-      totalLP: 0,
+      profitWQT: 0,
     };
   },
   computed: {
@@ -549,9 +549,11 @@ export default {
       const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
-      let tokenLP = await this.$store.dispatch('defi/getLPToken');
-      tokenLP *= (tokensData.stakeTokenAmount / 100);
-      this.totalLP = this.Floor(tokenLP);
+      const paramsAPY = await this.$store.dispatch('defi/getLPToken');
+      const priceLP = paramsAPY.reserveUSD / paramsAPY.totalSupply;
+      const APY = ((paramsAPY.rewardTotal * 12) * paramsAPY.priceUSD) / (paramsAPY.totalStaked * priceLP);
+      const profit = ((this.stakedAmount * priceLP) * APY) / paramsAPY.priceUSD;
+      this.profitWQT = this.Floor(profit);
     },
     async disconnectFromMetamask() {
       await this.$store.dispatch('web3/disconnect');
