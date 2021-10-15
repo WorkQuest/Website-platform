@@ -9,6 +9,7 @@
           <BaseInput
             class="wiki__input"
             :is-search="true"
+            :is-hide-error="true"
             :placeholder="$t('wiki.searchPlaceholder')"
           />
           <BaseButton
@@ -27,55 +28,111 @@
           @click="selectTab(item)"
         >
           <li class="wiki__item">
-            {{ $t(`wiki.navigation.${item.name}`) }}
+            {{ $t(`wiki.navigation.${item.name}.${item.name}`) }}
           </li>
         </ul>
       </nav>
-      <Header
+      <Main
         v-if="currentTab !== ''"
         :current-tab="currentTab"
       />
-      <Header />
     </main>
   </div>
 </template>
 
 <script>
-import Header from '~/components/wiki/header.vue';
+import Main from '~/components/wiki/main.vue';
 
 export default {
   name: 'Wiki',
   components: {
-    Header,
+    Main,
   },
   data() {
     return {
       currentTab: '',
-      navigation: [
-        {
+      navigation: {
+        header: {
           name: 'header',
-          subtitle: 'There are two types of header: for employer and for employee.',
+          subtitle: 'twoTypes',
           cards: {
-            0: {
-              title: 'Header for employer',
-              image: '~/assets/img/wiki/header1.svg',
+            employer: {
+              title: 'employer',
+              image: 'header-employer',
             },
-            1: {
-              title: '',
-              subtitle: '',
-              image: '',
+            employee: {
+              title: 'employee',
+              image: 'header-employee',
+            },
+            quests: {
+              title: 'quests',
+              subtitle: 'general',
+              image: 'header-quests',
+            },
+            employees: {
+              title: 'employees',
+              subtitle: 'general',
+              image: 'header-employees',
+            },
+            myQuests: {
+              title: 'myQuests',
+              subtitle: 'offers',
+              image: 'header-my-quests',
+            },
+            wallet: {
+              title: 'wallet',
+              subtitle: 'walletFunc',
+              image: 'header-wallet',
+            },
+            instruments: {
+              title: 'instruments',
+              subtitle: 'DeFi',
+              image: 'header-instruments',
+            },
+            language: {
+              title: 'language',
+              subtitle: 'choose',
+              image: 'header-language',
             },
           },
         },
-        'profile',
-        'instruments',
-        'statuses',
-        'buttons',
-        'employee',
-        'employer',
-        'user',
-        'quest'],
+        profile: {
+          name: 'profile',
+          cards: {
+            profile: {
+              title: 'profile',
+              subtitle: 'access',
+              image: 'profile-profile',
+            },
+            settings: {
+              title: 'settings',
+              subtitle: 'change',
+              image: 'profile-settings',
+            },
+            disputes: {
+              title: 'disputes',
+              subtitle: 'disputesOn',
+              image: 'profile-disputes',
+            },
+            logout: {
+              title: 'logout',
+              subtitle: 'logoutFrom',
+              image: 'profile-logout',
+            },
+          },
+        },
+        // 'instruments',
+        // 'statuses',
+        // 'buttons',
+        // 'employee',
+        // 'employer',
+        // 'user',
+        // 'quest'
+      },
     };
+  },
+  mounted() {
+    this.currentTab = this.navigation.header;
   },
   methods: {
     selectTab(item) {
@@ -101,11 +158,11 @@ export default {
     margin: 0 auto;
   }
   &__title {
+    @include text-simple;
+    @include normal-font-size;
     margin-bottom: 20px;
     font-weight: 600;
     font-size: 34px;
-    font-family: 'Inter', sans-serif;
-    line-height: 130%;
     color:  $white;
   }
   &__search-field {
@@ -117,7 +174,6 @@ export default {
     padding: 0 20px;
   }
   &__input {
-    align-self: flex-end;
     width: 850px;
   }
   &__search-button {
@@ -128,10 +184,10 @@ export default {
     background: $white;
   }
   &__item {
+    @include text-simple;
+    @include normal-font-size;
     list-style-type: none;
-    font-family: 'Inter', sans-serif;
     font-size: 18px;
-    line-height: 130%;
     padding: 15px;
     cursor: pointer;
   }

@@ -2357,9 +2357,78 @@
     "searchPlaceholder": "Search by Address / Txn Hash / Block / Token",
     "search": "Search",
     "navigation": {
-      "header": "Header menu",
-      "profile": "Profile menu",
-      "instruments": "Instruments",
+      "header": {
+        "header": "Header menu",
+        "twoTypes": "There are two types of header: for employer and for employee.",
+        "cards": {
+          "employer": {
+            "employer": "Header for employer"
+          },
+          "employee": {
+            "employee": "Header for employee"
+          },
+          "quests": {
+            "quests": "Quests",
+            "general": "General list of job offers published on the platform."
+          },
+          "employees": {
+            "employees": "Employees",
+            "general": "General list of employees registered on the platform."
+          },
+          "myQuests": {
+            "myQuests": "My quests",
+            "offers": "All job offers you interact with."
+          },
+          "wallet": {
+            "wallet": "Wallet",
+            "walletFunc": "Your WorkQuest wallet, where WQT token and WUSD stablecoin transactions are available. It can also be used to work with platform instruments."
+          },
+          "instruments": {
+            "instruments": "Instruments",
+            "DeFi": "DeFi functionality that includes referral program, 2P2 insurance, retirement savings, savings product, liquidity mining, and landing."
+          },
+          "language": {
+            "language": "Language",
+            "choose": "Choose your language."
+          },
+          "chats": {
+            "chats": "Chats",
+            "communication": "Communication between employee and employer, group communication and saving important chats."
+          },
+          "notifications": {
+            "notifications": "Notifications",
+            "allNotifications": "All important notifications related to your profile and platform updates."
+          },
+          "menu": {
+            "menu": "Menu",
+            "main": "Main menu of the platform."
+          }
+        }
+      },
+      "profile": {
+        "profile": "Profile menu",
+        "cards": {
+          "profile": {
+            "profile": "My profile",
+            "access": "Access to the profile page of an employee or employer with basic information about them."
+          },
+          "settings": {
+            "settings": "Settings",
+            "change": "Change profile information, social network, change password and security settings."
+          },
+          "disputes": {
+            "disputes": "Disputes",
+            "disputesOn": "Disputes on your quests, decisions, status and other information."
+          },
+          "logout": {
+            "logout": "Logout",
+            "logoutFrom": "Logout from your profile to the main page of the platform."
+          }
+        }
+      },
+      "instruments": {
+        "instruments": "Instruments"
+      },
       "statuses": "Statuses",
       "buttons": "Buttons",
       "employee": "Employee's office",

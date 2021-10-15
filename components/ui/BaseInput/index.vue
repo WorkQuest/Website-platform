@@ -62,7 +62,7 @@
       </div>
     </div>
     <div
-      v-if="!isHideError"
+      v-if="!isHideError || !isSearch"
       class="ctm-field__err"
     >
       {{ errors[0] }}
