@@ -13,5 +13,4 @@ export default {
   getWqtWethTokenDayLast: (state) => state.wqtWethTokenDayLast || '',
   getSwapAddress: (state) => state.swapAddress || '',
   getCrosschainTokensData: (state) => state.crosschainTokensData || '',
-  getLPToken: (state) => state.lpTokenToProcenet?.lpToken,
 };

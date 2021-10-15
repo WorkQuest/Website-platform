@@ -12,5 +12,4 @@ export default () => ({
   crosschainTokensData: {},
   tableWqtWbnbTokenDay: [],
   tableWqtWethTokenDay: [],
-  getLPToken: {},
 });

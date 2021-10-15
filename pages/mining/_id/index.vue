@@ -98,7 +98,10 @@
                     {{ $t('mining.totalLiquidity') }}
                   </div>
                 </div>
-                <div class="third__container">
+                <div
+                  v-if="miningPoolId === 'BNB'"
+                  class="third__container"
+                >
                   <div class="third info-block__title_big info-block__title_blue">
                     {{ $tc('mining.wqtCount', profitWQT) }}
                   </div>
