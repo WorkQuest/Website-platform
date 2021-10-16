@@ -1,43 +1,20 @@
 <template>
   <div>
     <span v-if="userRole === 'employer'">
-      <span v-if="infoDataMode !== 1 && infoDataMode !== 5 && infoDataMode !== 3">
-        <div>
-          <div
-            class="info"
-            :class="infoClass"
-          >
-            <div class="info__body">
-              <div class="info__left">
-                <div
-                  class="info__text"
-                  :class="[
-                    {'info__text_white': infoDataMode !== 6
-                      && infoDataMode !== 8
-                      && infoDataMode !== 9
-                      && infoDataMode !== 7
-                    }
-                  ]"
-                >
-                  <div v-if="infoDataMode === 2">
-                    {{ $t('quests.activeQuest') }}
-                  </div>
-                  <div v-if="infoDataMode === 4">
-                    Wait worker
-                  </div>
-                  <div v-if="infoDataMode === 6">
-                    Pending consideration
-                  </div>
-                  <div v-if="infoDataMode === 7">
-                    Dispute
-                  </div>
-                  <div v-if="infoDataMode === 8">
-                    Quest Closed
-                  </div>
-                  <div v-if="infoDataMode === 9">
-                    Quest Finished
-                  </div>
-                </div>
+      <span v-if="![1,3,5].includes(infoDataMode)">
+        <div
+          class="info"
+          :class="infoClass"
+        >
+          <div class="info__body">
+            <div class="info__left">
+              <div
+                class="info__text"
+                :class="[
+                  {'info__text_white': ![3,6,7,8,9].includes(infoDataMode)}
+                ]"
+              >
+                {{ infoStatusText }}
               </div>
             </div>
           </div>
@@ -56,39 +33,15 @@
               <div
                 class="info__text"
                 :class="[
-                  {'info__text_white': infoDataMode !== 8
-                    && infoDataMode !== 9
-                    && infoDataMode !== 7
+                  {
+                    'info__text_white': ![3,7,8,9].includes(infoDataMode)
                   },
-                  {'info__text_black': infoDataMode === 3
-                    && infoDataMode === 8
-                    && infoDataMode === 9
-                    && infoDataMode === 7
+                  {
+                    'info__text_black': [3,7,8,9].includes(infoDataMode)
                   }
                 ]"
               >
-                <div v-if="infoDataMode === 1">
-                  {{ $t('invite.title') }}
-                </div>
-                <div v-if="infoDataMode === 2">
-                  {{ $t('quests.activeQuest') }}
-                </div>
-                <div v-if="infoDataMode === 3">
-                  {{ $t('response.title') }}
-                </div>
-                <div v-if="infoDataMode === 4">
-                  {{ $t('performed.title') }}
-                </div>
-                <div v-if="infoDataMode === 5" />
-                <div v-if="infoDataMode === 7">
-                  Dispute
-                </div>
-                <div v-if="infoDataMode === 8">
-                  Quest Closed
-                </div>
-                <div v-if="infoDataMode === 9">
-                  Quest Finished
-                </div>
+                {{ infoStatusText }}
               </div>
             </div>
             <div class="info__right">
@@ -102,22 +55,6 @@
                   {{ $t('info.showYourMessage') }}
                 </base-btn>
               </div>
-              <!--              <div-->
-              <!--                v-if="info.date"-->
-              <!--              >-->
-              <!--                <span v-if="info.mode !== 1">-->
-              <!--                  <span v-if="info.mode !== 4">-->
-              <!--                    <span v-if="info.mode !== 3">-->
-              <!--                      <span class="info__text info__text_white info__text_normal">-->
-              <!--                        {{ $t('quests.runtime') }}-->
-              <!--                      </span>-->
-              <!--                      <span class="info__text info__text_white info__text_bold">-->
-              <!--                        {{ info.date }}-->
-              <!--                      </span>-->
-              <!--                    </span>-->
-              <!--                  </span>-->
-              <!--                </span>-->
-              <!--              </div>-->
             </div>
           </div>
         </div>
@@ -139,6 +76,36 @@ export default {
     },
   },
   computed: {
+    infoStatusText() {
+      if (this.userRole === 'employer') {
+        if (this.infoDataMode === 2) {
+          return this.$t('quests.activeQuest');
+        } if (this.infoDataMode === 4) {
+          return 'Wait worker';
+        } if (this.infoDataMode === 6) {
+          return 'Pending consideration';
+        }
+      } if (this.userRole === 'worker') {
+        if (this.infoDataMode === 1) {
+          return this.$t('invite.title');
+        } if (this.infoDataMode === 2) {
+          return this.$t('quests.activeQuest');
+        } if (this.infoDataMode === 3) {
+          return this.$t('response.title');
+        } if (this.infoDataMode === 4) {
+          return this.$t('performed.title');
+        }
+      } if (this.userRole) {
+        if (this.infoDataMode === 7) {
+          return 'Dispute';
+        } if (this.infoDataMode === 8) {
+          return 'Quest Closed';
+        } if (this.infoDataMode === 9) {
+          return 'Quest Finished';
+        }
+      }
+      return '';
+    },
     infoClass() {
       return [
         {

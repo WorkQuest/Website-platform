@@ -3,7 +3,7 @@
     class="quests"
   >
     <div
-      v-if="userRole === 'employer' && $route.path !== '/my'"
+      v-if="userRole"
       class="quests__card card"
     >
       <div
@@ -77,436 +77,9 @@
               class="block__progress progress"
             >
               <div
-                v-if="item.status !== 6 && item.status !== 2 && item.status !== 1 && item.status !== 3"
                 class="progress__title"
               >
-                {{ $t('quests.inProgressBy') }}
-              </div>
-              <div
-                v-if="item.status !== 6 && item.status === 2"
-                class="progress__title"
-              >
-                Quest Closed:
-              </div>
-              <div
-                v-if="item.status === 1"
-                class="progress__title"
-              >
-                Quest Active:
-              </div>
-              <div
-                v-if="item.status === 3"
-                class="progress__title"
-              >
-                Quest Dispute:
-              </div>
-              <div
-                v-if="item.status === 5 && item.status !== 3"
-                class="progress__title"
-              >
-                Quest wait confirm:
-              </div>
-              <div
-                v-if="item.status === 6 && item.status !== 3"
-                class="progress__title"
-              >
-                {{ $t('quests.finishedBy') }}
-              </div>
-              <div class="progress__container container">
-                <div class="container__user user">
-                  <img
-                    class="user__avatar"
-                    :src="item.assignedWorker.avatar ? item.assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                    :alt="`${item.assignedWorker.firstName} ${item.assignedWorker.lastName}`"
-                  >
-                  <div class="user__name">
-                    {{ item.assignedWorker.firstName }} {{ item.assignedWorker.lastName }}
-                  </div>
-                </div>
-                <div class="container__status status">
-                  <!--                  <span-->
-                  <!--                    class="status__level"-->
-                  <!--                    :class="getStatusCard(item.level)"-->
-                  <!--                  >-->
-                  <!--                    {{ $t(`levels.${item.level}`) }}-->
-                  <!--                  </span>-->
-                </div>
-              </div>
-            </div>
-            <div class="block__locate">
-              <span
-                class="icon-location"
-              />
-              <span class="block__text block__text_locate">
-                {{ showDistance(item.location.latitude, item.location.longitude) }}
-                {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
-              </span>
-            </div>
-            <div class="block__text block__text_blue">
-              {{ item.title }}
-            </div>
-            <div class="block__text block__text_desc">
-              {{ item.description }}
-            </div>
-            <div class="block__actions">
-              <div
-                v-if="isHideStatus(item.type)"
-                class="block__status"
-              >
-                <div
-                  class="block__priority"
-                  :class="getPriorityClass(item.priority)"
-                >
-                  {{ getPriority(item.priority) }}
-                </div>
-                <div class="block__amount block__amount_green">
-                  {{ `${item.price}  ${currency}` }}
-                </div>
-              </div>
-              <div
-                v-else
-                class="block__amount block__amount_gray"
-              >
-                {{ `${item.price}  ${currency}` }}
-              </div>
-              <div class="block__details">
-                <base-btn
-                  v-if="item.type !== 3"
-                  mode="borderless-right"
-                  @click="showDetails(item.id)"
-                >
-                  {{ $t('meta.details') }}
-                  <template v-slot:right>
-                    <span class="icon-short_right" />
-                  </template>
-                </base-btn>
-                <div
-                  v-else
-                  class="block__rating"
-                >
-                  <div class="block__rating block__rating_star">
-                    <button
-                      @click="showReviewModal(item.user.ratingStatistic)"
-                    >
-                      <b-form-rating
-                        v-model="item.user.ratingStatistic"
-                      />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      v-if="userRole === 'employer' && $route.path === '/my'"
-      class="quests__card card"
-    >
-      <div
-        v-for="(item, i) in object.quests"
-        :key="i"
-        class="card__content"
-      >
-        <div
-          class="card__block block"
-        >
-          <div
-            class="block__left"
-          >
-            <img
-              src="~/assets/img/temp/fake-card.svg"
-              class="block__image"
-              alt=""
-            >
-            <div
-              class="block__state"
-              :class="getStatusClass(item.status)"
-            >
-              {{ getStatusCard(item.status) }}
-            </div>
-          </div>
-          <div class="block__right">
-            <div class="block__head">
-              <div class="block__title">
-                <div
-                  class="block__avatar avatar"
-                >
-                  <img
-                    class="avatar__image"
-                    :src="item.user.avatar ? item.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                    :alt="item.user.firstName"
-                  >
-                </div>
-                <div class="block__text block__text_title">
-                  {{ `${item.user.firstName} ${item.user.lastName}` }}
-                  <span
-                    v-if="userCompany"
-                    class="block__text block__text_grey"
-                  >{{ `${$t('quests.fromSmall')} ${item.user.additionalInfo.company}` }}</span>
-                </div>
-              </div>
-              <div
-                class="block__icon block__icon_fav star"
-                @click="actionFavorite(item.id)"
-              >
-                <img
-                  class="star__hover"
-                  src="~assets/img/ui/star_hover.svg"
-                  alt=""
-                >
-                <img
-                  v-if="item.star === null"
-                  class="star__default"
-                  src="~assets/img/ui/star_simple.svg"
-                  alt=""
-                >
-                <img
-                  v-else
-                  class="star__checked"
-                  src="~assets/img/ui/star_checked.svg"
-                  alt=""
-                >
-              </div>
-            </div>
-            <div
-              v-if="item.assignedWorkerId"
-              class="block__progress progress"
-            >
-              <div
-                v-if="item.status !== 6 && item.status !== 2 && item.status !== 1"
-                class="progress__title"
-              >
-                {{ $t('quests.inProgressBy') }}
-              </div>
-              <div
-                v-if="item.status !== 6 && item.status === 2"
-                class="progress__title"
-              >
-                Quest Closed:
-              </div>
-              <div
-                v-if="item.status === 1"
-                class="progress__title"
-              >
-                Quest Active:
-              </div>
-              <div
-                v-if="item.status === 3"
-                class="progress__title"
-              >
-                Quest Dispute:
-              </div>
-              <div
-                v-if="item.status === 5"
-                class="progress__title"
-              >
-                Quest wait confirm:
-              </div>
-              <div
-                v-if="item.status === 6"
-                class="progress__title"
-              >
-                {{ $t('quests.finishedBy') }}
-              </div>
-              <div class="progress__container container">
-                <div class="container__user user">
-                  <img
-                    class="user__avatar"
-                    :src="item.assignedWorker.avatar ? item.assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                    :alt="`${item.assignedWorker.firstName} ${item.assignedWorker.lastName}`"
-                  >
-                  <div class="user__name">
-                    {{ item.assignedWorker.firstName }} {{ item.assignedWorker.lastName }}
-                  </div>
-                </div>
-                <div class="container__status status">
-                  <!--                  <span-->
-                  <!--                    class="status__level"-->
-                  <!--                    :class="getStatusCard(item.level)"-->
-                  <!--                  >-->
-                  <!--                    {{ $t(`levels.${item.level}`) }}-->
-                  <!--                  </span>-->
-                </div>
-              </div>
-            </div>
-            <div class="block__locate">
-              <span
-                class="icon-location"
-              />
-              <span class="block__text block__text_locate">
-                {{ showDistance(item.location.latitude, item.location.longitude) }}
-                {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
-              </span>
-            </div>
-            <div class="block__text block__text_blue">
-              {{ item.title }}
-            </div>
-            <div class="block__text block__text_desc">
-              {{ item.description }}
-            </div>
-            <div class="block__actions">
-              <div
-                v-if="isHideStatus(item.type)"
-                class="block__status"
-              >
-                <div
-                  class="block__priority"
-                  :class="getPriorityClass(item.priority)"
-                >
-                  {{ getPriority(item.priority) }}
-                </div>
-                <div class="block__amount block__amount_green">
-                  {{ `${item.price}  ${currency}` }}
-                </div>
-              </div>
-              <div
-                v-else
-                class="block__amount block__amount_gray"
-              >
-                {{ `${item.price}  ${currency}` }}
-              </div>
-              <div class="block__details">
-                <base-btn
-                  v-if="item.type !== 3"
-                  mode="borderless-right"
-                  @click="showDetails(item.id)"
-                >
-                  {{ $t('meta.details') }}
-                  <template v-slot:right>
-                    <span class="icon-short_right" />
-                  </template>
-                </base-btn>
-                <div
-                  v-else
-                  class="block__rating"
-                >
-                  <div class="block__rating block__rating_star">
-                    <button
-                      @click="showReviewModal(item.user.ratingStatistic)"
-                    >
-                      <b-form-rating
-                        v-model="item.user.ratingStatistic"
-                      />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      v-if="userRole === 'worker' && $route.path !== '/my'"
-      class="quests__card card"
-    >
-      <div
-        v-for="(item, i) in object.quests"
-        :key="i"
-        class="card__content"
-      >
-        <div
-          class="card__block block"
-        >
-          <div
-            class="block__left"
-          >
-            <img
-              src="~/assets/img/temp/fake-card.svg"
-              class="block__image"
-              alt=""
-            >
-            <div
-              class="block__state"
-              :class="getStatusClass(item.status)"
-            >
-              {{ getStatusCard(item.status) }}
-            </div>
-          </div>
-          <div class="block__right">
-            <div class="block__head">
-              <div class="block__title">
-                <div
-                  class="block__avatar avatar"
-                >
-                  <img
-                    class="avatar__image"
-                    :src="item.user.avatar ? item.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                    :alt="item.user.firstName"
-                  >
-                </div>
-                <div class="block__text block__text_title">
-                  {{ `${item.user.firstName} ${item.user.lastName}` }}
-                  <span
-                    v-if="userCompany"
-                    class="block__text block__text_grey"
-                  >{{ `${$t('quests.fromSmall')} ${item.user.additionalInfo.company}` }}</span>
-                </div>
-              </div>
-              <div
-                class="block__icon block__icon_fav star"
-                @click="actionFavorite(item.id)"
-              >
-                <img
-                  class="star__hover"
-                  src="~assets/img/ui/star_hover.svg"
-                  alt=""
-                >
-                <img
-                  v-if="item.star === null"
-                  class="star__default"
-                  src="~assets/img/ui/star_simple.svg"
-                  alt=""
-                >
-                <img
-                  v-else
-                  class="star__checked"
-                  src="~assets/img/ui/star_checked.svg"
-                  alt=""
-                >
-              </div>
-            </div>
-            <div
-              v-if="item.assignedWorkerId"
-              class="block__progress progress"
-            >
-              <div
-                v-if="item.status !== 6 && item.status !== 2 && item.status !== 1"
-                class="progress__title"
-              >
-                {{ $t('quests.inProgressBy') }}
-              </div>
-              <div
-                v-if="item.status !== 6 && item.status === 2"
-                class="progress__title"
-              >
-                Quest Closed:
-              </div>
-              <div
-                v-if="item.status === 1"
-                class="progress__title"
-              >
-                Quest Active:
-              </div>
-              <div
-                v-if="item.status === 3"
-                class="progress__title"
-              >
-                Quest Dispute:
-              </div>
-              <div
-                v-if="item.status === 5"
-                class="progress__title"
-              >
-                Quest wait confirm:
-              </div>
-              <div
-                v-if="item.status === 6"
-                class="progress__title"
-              >
-                {{ $t('quests.finishedBy') }}
+                {{ progressQuestText(item.status) }}
               </div>
               <div class="progress__container container">
                 <div class="container__user user">
@@ -665,16 +238,9 @@
               class="block__progress progress"
             >
               <div
-                v-if="item.quest.status !== 6"
                 class="progress__title"
               >
-                {{ $t('quests.inProgressBy') }}
-              </div>
-              <div
-                v-if="item.quest.status === 6"
-                class="progress__title"
-              >
-                {{ $t('quests.finishedBy') }}
+                {{ progressQuestText(item.quest.status) }}
               </div>
               <div class="progress__container container">
                 <div class="container__user user">
@@ -820,6 +386,24 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    progressQuestText(status) {
+      if (this.userRole) {
+        if (status === 1) {
+          return 'Quest Active:';
+        } if (status === 2) {
+          return 'Quest Closed:';
+        } if (status === 3) {
+          return 'Quest Dispute:';
+        } if (status === 4) {
+          return this.$t('quests.inProgressBy');
+        } if (status === 5) {
+          return 'Quest wait confirm:';
+        } if (status === 6) {
+          return this.$t('quests.finishedBy');
+        }
+      }
+      return '';
+    },
     async getResponsesToQuestForAuthUser() {
       if (this.userRole === 'worker') {
         this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
