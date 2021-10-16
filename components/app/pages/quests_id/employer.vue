@@ -29,26 +29,26 @@
       <div class="worker__container">
         <div>
           <img
-            v-if="assignWorker !== null"
+            v-if="assignWorker"
             class="worker__avatar"
             :src="assignWorker.avatar.url"
             alt=""
           >
           <img
-            v-if="assignWorker === null || assignWorker === undefined"
+            v-if="!assignWorker"
             class="worker__avatar"
             :src="require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
-          v-if="assignWorker === null || assignWorker === undefined"
+          v-if="assignWorker"
           class="worker__name"
         >
           {{ assignWorker.firstName }} {{ assignWorker.lastName }}
         </div>
         <div>
-          <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
+          <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА Нет Бэка-->
           <!--          <div-->
           <!--            v-if="badge.code !== 0"-->
           <!--            class="card__level_higher"-->
@@ -73,7 +73,7 @@
     </div>
     <div v-if="infoDataMode === 3">
       <div class="worker__title">{{ $t('response.title') }}</div>
-      <span v-if="filteredResponses.length !== 0">
+      <span v-if="filteredResponses.length">
         <span
           v-for="(response, i) in filteredResponses"
           :key="i"
@@ -96,7 +96,9 @@
                 alt=""
               >
             </div>
-            <div class="worker__name">
+            <div
+              class="worker__name"
+            >
               {{ response.worker.firstName }} {{ response.worker.lastName }}
             </div>
             <div class="btns__wrapper">
@@ -115,7 +117,7 @@
               </div>
             </div>
             <div>
-            <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
+            <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
             <!--                    <div-->
             <!--                      v-if="item.badge.code !== 0"-->
             <!--                      class="card__level_higher"-->
@@ -139,7 +141,7 @@
           </div>
         </span>
       </span>
-      <span v-if="filteredResponses.length === 0">
+      <span v-if="!filteredResponses.length">
         <div class="info__message">Users have not yet responded to the quest</div>
       </span>
       <div class="btns__container">
@@ -219,25 +221,13 @@
           {{ assignWorker.firstName }} {{ assignWorker.lastName }}
         </div>
         <div>
-          <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
+          <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
           <div
             v-if="badge.code !== 0"
             class="card__level_higher"
-            :class="[
-              {'card__level_higher': badge.code === 1},
-              {'card__level_reliable': badge.code === 2},
-              {'card__level_checked': badge.code === 3}
-            ]"
+            :class="cardBadgeLevel"
           >
-            <span v-if="badge.code === 1">
-              {{ $t('levels.higher') }}
-            </span>
-            <span v-if="badge.code === 2">
-              {{ $t('levels.reliableEmp') }}
-            </span>
-            <span v-if="badge.code === 3">
-              {{ $t('levels.checkedByTime') }}
-            </span>
+            {{ cardBadgeLevelText }}
           </div>
         </div>
       </div>
@@ -266,7 +256,7 @@
             >
           </div>
           <div
-            v-if="assignWorker !== null || assignWorker !== undefined"
+            v-if="assignWorker"
             class="worker__name"
           >
             {{ assignWorker.firstName }} {{ assignWorker.lastName }}
@@ -276,21 +266,9 @@
             <div
               v-if="badge.code !== 0"
               class="card__level_higher"
-              :class="[
-                {'card__level_higher': badge.code === 1},
-                {'card__level_reliable': badge.code === 2},
-                {'card__level_checked': badge.code === 3}
-              ]"
+              :class="cardBadgeLevel"
             >
-              <span v-if="badge.code === 1">
-                {{ $t('levels.higher') }}
-              </span>
-              <span v-if="badge.code === 2">
-                {{ $t('levels.reliableEmp') }}
-              </span>
-              <span v-if="badge.code === 3">
-                {{ $t('levels.checkedByTime') }}
-              </span>
+              {{ cardBadgeLevelText }}
             </div>
           </div>
         </div>
@@ -334,38 +312,26 @@
             alt=""
           >
           <img
-            v-if="assignWorker === null || assignWorker === ''"
+            v-if="!assignWorker"
             class="worker__avatar"
             :src="require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
-          v-if="assignWorker !== null || assignWorker !== ''"
+          v-if="assignWorker"
           class="worker__name"
         >
           {{ assignWorker.firstName }} {{ assignWorker.lastName }}
         </div>
         <div>
-          <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
+          <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
           <div
             v-if="badge.code !== 0"
             class="card__level_higher"
-            :class="[
-              {'card__level_higher': badge.code === 1},
-              {'card__level_reliable': badge.code === 2},
-              {'card__level_checked': badge.code === 3}
-            ]"
+            :class="cardBadgeLevel"
           >
-            <span v-if="badge.code === 1">
-              {{ $t('levels.higher') }}
-            </span>
-            <span v-if="badge.code === 2">
-              {{ $t('levels.reliableEmp') }}
-            </span>
-            <span v-if="badge.code === 3">
-              {{ $t('levels.checkedByTime') }}
-            </span>
+            {{ cardBadgeLevelText }}
           </div>
         </div>
       </div>
@@ -427,6 +393,29 @@ export default {
     };
   },
   computed: {
+    cardBadgeLevel() {
+      return [
+        {
+          card__level_higher: this.badge.code === 1,
+        },
+        {
+          card__level_reliable: this.badge.code === 2,
+        },
+        {
+          card__level_checked: this.badge.code === 3,
+        },
+      ];
+    },
+    cardBadgeLevelText() {
+      if (this.badge.code === 1) {
+        return this.$t('levels.higher');
+      } if (this.badge.code === 2) {
+        return this.$t('levels.reliableEmp');
+      } if (this.badge.code === 3) {
+        return this.$t('levels.checkedByTime');
+      }
+      return '';
+    },
     ...mapGetters({
       questData: 'quests/getQuest',
       userRole: 'user/getUserRole',
