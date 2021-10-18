@@ -169,14 +169,19 @@
             {{ $t('mining.liquidityProvidersEarn') }}
           </div>
         </div>
-        <div class="info-block">
-          <div class="info-block__name">
-            {{ $t('mining.liquidity') }}
-          </div>
-          <chart
-            :special-chart-data="miningPoolId === 'ETH' ? wqtWethData : wqtWbnbData"
-          />
-        </div>
+        <!--        <div class="info-block">-->
+        <!--          <div class="info-block__name">-->
+        <!--            {{ $t('mining.liquidity') }}-->
+        <!--          </div>-->
+        <!--          <chart-->
+        <!--            :class="miningPoolId === 'ETH' ? 'hide' : ''"-->
+        <!--            :special-chart-data="wqtWbnbData"-->
+        <!--          />-->
+        <!--          <chart-->
+        <!--            :class="miningPoolId === 'BNB' ? 'hide' : ''"-->
+        <!--            :special-chart-data="wqtWethData"-->
+        <!--          />-->
+        <!--        </div>-->
         <div class="info-block">
           <div class="info-block__name">
             {{ $t('mining.transactions') }}
@@ -256,13 +261,13 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
-import chart from './graphics_data';
+// import chart from './graphics_data';
 
 export default {
   layout: 'guest',
-  components: {
-    chart,
-  },
+  // components: {
+  //   chart,
+  // },
   data() {
     return {
       disabled: false,
@@ -401,28 +406,24 @@ export default {
     },
   },
   created() {
-    localStorage.setItem('miningPoolId', this.$route.params.id);
+    localStorage.setItem('miningPoolId', 'BNB');
     this.miningPoolId = localStorage.getItem('miningPoolId');
   },
   async mounted() {
     this.SetLoader(true);
     await this.checkMetamaskStatus();
-    if (this.$route.params.id === 'ETH') {
-      await this.getWqtWethTokenDay();
-      await this.getWqtWethTokenDayLast();
-    } else {
-      await this.getWqtWbnbTokenDay();
-      await this.getWqtWbnbTokenDayLast();
-    }
+    // await this.getWqtWbnbTokenDay();
+    await this.getWqtWethTokenDay();
+    // await this.getWqtWbnbTokenDayLast();
+    await this.getWqtWethTokenDayLast();
+    await this.getWqtWethSwaps();
+    // await this.getWqtWbnbSwaps();
     await this.initTokenDays();
     await this.initGraphData();
-    this.SetLoader(false);
-    if (this.$route.params.id === 'ETH') {
-      await this.tableWqtWethTokenDay();
-    } else {
-      await this.tableWqtWbnbTokenDay();
-    }
+    // await this.tableWqtWbnbTokenDay();
+    // await this.tableWqtWethTokenDay();
     await this.initTableData();
+    this.SetLoader(false);
   },
 
   methods: {
@@ -438,9 +439,9 @@ export default {
           type: 'installMetamask',
         });
       } else {
+        await this.connectToMetamask();
         localStorage.setItem('metamaskStatus', 'installed');
         await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
-        await this.connectToMetamask();
       }
     },
     async initTokenDays() {
