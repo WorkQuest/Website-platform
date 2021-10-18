@@ -131,9 +131,9 @@ export default {
       });
       this.SetLoader(false);
     },
-    connectToMetamask() {
+    async connectToMetamask() {
       if (!this.isConnected) {
-        this.$store.dispatch('web3/connect');
+        await this.$store.dispatch('web3/connect');
       }
     },
     async checkMiningPoolId() {
