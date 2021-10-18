@@ -84,11 +84,9 @@
           <div class="block_title">
             {{ $t('workers.skills') }}
           </div>
-          <div
-            v-for="(skill, i) in userInfo.skills"
-            :key="i"
-          >
-            <span class="badge_blue">{{ skill.title }}</span>
+          <div>
+            <!-- TODO: Проверить механизм добавления скилов -->
+            <span class="badge_blue">Skills not specified...</span>
           </div>
         </div>
         <div class="block_16">
