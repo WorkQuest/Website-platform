@@ -627,68 +627,6 @@ export const ERC20 = [
 
 export const StakingWQ = [
   {
-    "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "previousAdmin",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "newAdmin",
-        "type": "address"
-      }
-    ],
-    "name": "AdminChanged",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "beacon",
-        "type": "address"
-      }
-    ],
-    "name": "BeaconUpgraded",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "time",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      }
-    ],
-    "name": "Claimed",
-    "type": "event"
-  },
-  {
     "anonymous": false,
     "inputs": [
       {
@@ -785,7 +723,7 @@ export const StakingWQ = [
         "type": "address"
       }
     ],
-    "name": "Staked",
+    "name": "tokensClaimed",
     "type": "event"
   },
   {
@@ -810,20 +748,32 @@ export const StakingWQ = [
         "type": "address"
       }
     ],
-    "name": "Unstaked",
+    "name": "tokensStaked",
     "type": "event"
   },
   {
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "time",
+        "type": "uint256"
+      },
+      {
         "indexed": true,
         "internalType": "address",
-        "name": "implementation",
+        "name": "sender",
         "type": "address"
       }
     ],
-    "name": "Upgraded",
+    "name": "tokensUnstaked",
     "type": "event"
   },
   {
@@ -854,19 +804,6 @@ export const StakingWQ = [
   },
   {
     "inputs": [],
-    "name": "UPGRADER_ROLE",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "allProduced",
     "outputs": [
       {
@@ -881,26 +818,6 @@ export const StakingWQ = [
   {
     "inputs": [],
     "name": "claim",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bool",
-        "name": "_paused",
-        "type": "bool"
-      }
-    ],
-    "name": "claimingPause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "claimingPaused",
     "outputs": [
       {
         "internalType": "bool",
@@ -908,7 +825,7 @@ export const StakingWQ = [
         "type": "bool"
       }
     ],
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1118,19 +1035,6 @@ export const StakingWQ = [
   },
   {
     "inputs": [],
-    "name": "paused",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "producedTime",
     "outputs": [
       {
@@ -1140,29 +1044,6 @@ export const StakingWQ = [
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_to",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "removeTokenByAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1219,7 +1100,7 @@ export const StakingWQ = [
     "name": "rewardToken",
     "outputs": [
       {
-        "internalType": "contract IERC20Upgradeable",
+        "internalType": "contract IERC20",
         "name": "",
         "type": "address"
       }
@@ -1244,11 +1125,47 @@ export const StakingWQ = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_startTime",
+        "name": "_rewardTotal",
         "type": "uint256"
       }
     ],
-    "name": "setStartTime",
+    "name": "setReward",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_startTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_distributionTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "setTime",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_rewardToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_stakeToken",
+        "type": "address"
+      }
+    ],
+    "name": "setTokens",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1271,7 +1188,7 @@ export const StakingWQ = [
     "name": "stakeToken",
     "outputs": [
       {
-        "internalType": "contract IERC20Upgradeable",
+        "internalType": "contract IERC20",
         "name": "",
         "type": "address"
       }
@@ -1308,32 +1225,6 @@ export const StakingWQ = [
         "internalType": "uint256",
         "name": "distributed",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bool",
-        "name": "_paused",
-        "type": "bool"
-      }
-    ],
-    "name": "stakingPause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "stakingPaused",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -1424,73 +1315,8 @@ export const StakingWQ = [
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "bool",
-        "name": "_paused",
-        "type": "bool"
-      }
-    ],
-    "name": "unstakingPause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "unstakingPaused",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "update",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_rewardTotal",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateReward",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_rewardProduced",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateRewardProduced",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_rewardTotal",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateRewardTotal",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1532,24 +1358,21 @@ export const StakingWQ = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_totalDistributed",
+        "name": "_tps",
         "type": "uint256"
-      }
-    ],
-    "name": "updateTotalDistributed",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
+      },
       {
         "internalType": "uint256",
         "name": "_totalStaked",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_totalDistributed",
+        "type": "uint256"
       }
     ],
-    "name": "updateTotalStaked",
+    "name": "updateStakingInfo",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1558,57 +1381,13 @@ export const StakingWQ = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_tps",
+        "name": "_startTimeNew",
         "type": "uint256"
       }
     ],
-    "name": "updateTps",
+    "name": "updateStartTime",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bool",
-        "name": "_paused",
-        "type": "bool"
-      }
-    ],
-    "name": "updatingPause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newImplementation",
-        "type": "address"
-      }
-    ],
-    "name": "upgradeTo",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newImplementation",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes",
-        "name": "data",
-        "type": "bytes"
-      }
-    ],
-    "name": "upgradeToAndCall",
-    "outputs": [],
-    "stateMutability": "payable",
     "type": "function"
   }
 ];
