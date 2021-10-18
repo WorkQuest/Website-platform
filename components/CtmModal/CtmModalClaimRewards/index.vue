@@ -38,8 +38,8 @@
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            :disabled="statusBusy || !amount"
-            @click="handleSubmit(callMethod)"
+            :disabled="statusBusy"
+            @click="handleSubmit(options.type === 1 ? staking : unstaking)"
           >
             {{ $t('meta.submit') }}
           </base-btn>
@@ -88,11 +88,11 @@ export default {
       const amount = this.options.type === 1 ? this.userBalance : this.userStake;
       return amount >= this.amount;
     },
-    async callMethod() {
+    async staking() {
       this.SetLoader(true);
       if (this.checkAmount()) {
         this.hide();
-        await this.$store.dispatch(`web3/${this.options.type === 1 ? 'stake' : 'unstake'}`, {
+        await this.$store.dispatch('web3/stake', {
           decimals: this.accountData.decimals.stakeDecimal,
           amount: this.amount,
         });
@@ -109,17 +109,27 @@ export default {
       }
       this.SetLoader(false);
     },
-    // async unstaking() {
-    //   console.log(this.options.type);
-    //   this.SetLoader(true);
-    //   this.hide();
-    //   await this.$store.dispatch('web3/unstake', {
-    //     decimals: this.accountData?.decimals?.stakeDecimal,
-    //     amount: this.amount,
-    //   });
-    //   await this.tokensDataUpdate();
-    //   this.SetLoader(false);
-    // },
+    async unstaking() {
+      this.SetLoader(true);
+      if (this.checkAmount()) {
+        this.hide();
+        await this.$store.dispatch('web3/unstake', {
+          decimals: this.accountData?.decimals?.stakeDecimal,
+          amount: this.amount,
+        });
+        await this.tokensDataUpdate();
+      } else {
+        this.hide();
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.incorrectAmount'),
+        });
+      }
+      this.SetLoader(false);
+    },
   },
 };
 </script>
