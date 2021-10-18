@@ -96,7 +96,7 @@ export default {
     },
     async showTransactionSend() {
       this.SetLoader(true);
-      const switchChainStatus = await this.checkMiningPoolId();
+      const switchChainStatus = await this.checkPool();
       await this.connectToMetamask();
       let chainTo = 0;
       if (this.options.chain === 'ETH') {
@@ -136,10 +136,8 @@ export default {
         await this.$store.dispatch('web3/connect');
       }
     },
-    async checkMiningPoolId() {
-      this.miningPoolId = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
-      localStorage.setItem('miningPoolId', this.miningPoolId);
-      return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+    async checkPool() {
+      return await this.$store.dispatch('web3/goToChain', { chain: this.options.chain });
     },
   },
 };
