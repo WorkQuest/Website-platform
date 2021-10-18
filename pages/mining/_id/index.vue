@@ -92,20 +92,20 @@
               <div class="third__wrapper">
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.dollarsCount', totalLiquidityUSD) }}
+                    {{ $tc('mining.dollarsCount', isNaN(totalLiquidityUSD) ? 'loading...' : totalLiquidityUSD) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.totalLiquidity') }}
                   </div>
                 </div>
-<!--                <div class="third__container">-->
-<!--                  <div class="third info-block__title_big info-block__title_blue">-->
-<!--                    {{ $tc('mining.procCount', totalLP) }}-->
-<!--                  </div>-->
-<!--                  <div class="info-block__title_small">-->
-<!--                    {{ $t('mining.APY') }}-->
-<!--                  </div>-->
-<!--                </div>-->
+                <!--                <div class="third__container">-->
+                <!--                  <div class="third info-block__title_big info-block__title_blue">-->
+                <!--                    {{ $tc('mining.procCount', totalLP) }}-->
+                <!--                  </div>-->
+                <!--                  <div class="info-block__title_small">-->
+                <!--                    {{ $t('mining.APY') }}-->
+                <!--                  </div>-->
+                <!--                </div>-->
               </div>
             </div>
           </div>
@@ -169,19 +169,19 @@
             {{ $t('mining.liquidityProvidersEarn') }}
           </div>
         </div>
-        <div class="info-block">
-          <div class="info-block__name">
-            {{ $t('mining.liquidity') }}
-          </div>
-          <chart
-            :class="miningPoolId === 'ETH' ? 'hide' : ''"
-            :special-chart-data="wqtWbnbData"
-          />
-          <chart
-            :class="miningPoolId === 'BNB' ? 'hide' : ''"
-            :special-chart-data="wqtWethData"
-          />
-        </div>
+        <!--        <div class="info-block">-->
+        <!--          <div class="info-block__name">-->
+        <!--            {{ $t('mining.liquidity') }}-->
+        <!--          </div>-->
+        <!--          <chart-->
+        <!--            :class="miningPoolId === 'ETH' ? 'hide' : ''"-->
+        <!--            :special-chart-data="wqtWbnbData"-->
+        <!--          />-->
+        <!--          <chart-->
+        <!--            :class="miningPoolId === 'BNB' ? 'hide' : ''"-->
+        <!--            :special-chart-data="wqtWethData"-->
+        <!--          />-->
+        <!--        </div>-->
         <div class="info-block">
           <div class="info-block__name">
             {{ $t('mining.transactions') }}
@@ -261,13 +261,13 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
-import chart from './graphics_data';
+// import chart from './graphics_data';
 
 export default {
   layout: 'guest',
-  components: {
-    chart,
-  },
+  // components: {
+  //   chart,
+  // },
   data() {
     return {
       disabled: false,
@@ -412,16 +412,16 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.checkMetamaskStatus();
-    await this.getWqtWbnbTokenDay();
+    // await this.getWqtWbnbTokenDay();
     await this.getWqtWethTokenDay();
-    await this.getWqtWbnbTokenDayLast();
+    // await this.getWqtWbnbTokenDayLast();
     await this.getWqtWethTokenDayLast();
     await this.getWqtWethSwaps();
-    await this.getWqtWbnbSwaps();
+    // await this.getWqtWbnbSwaps();
     await this.initTokenDays();
     await this.initGraphData();
-    await this.tableWqtWbnbTokenDay();
-    await this.tableWqtWethTokenDay();
+    // await this.tableWqtWbnbTokenDay();
+    // await this.tableWqtWethTokenDay();
     await this.initTableData();
     this.SetLoader(false);
   },
@@ -445,7 +445,7 @@ export default {
       }
     },
     async initTokenDays() {
-      const totalLiquidity = this.miningPoolId === 'BNB' ? this.wqtWbnbTokenDay[0].reserveUSD : this.wqtWethTokenDay[0].reserveUSD;
+      const totalLiquidity = this.miningPoolId === 'BNB' ? this.wqtWbnbTokenDay[0]?.reserveUSD : this.wqtWethTokenDay[0]?.reserveUSD;
       this.totalLiquidityUSD = Math.floor(await totalLiquidity);
     },
     async initGraphData() {
