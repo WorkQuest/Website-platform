@@ -113,7 +113,7 @@ export default {
           poolAddress: '0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf',
           assets: this.$t('mining.table.assets'),
           chooseBtn: this.$t('mining.choose'),
-          disabled: false,
+          disabled: true,
         },
         {
           id: 'BNB',
