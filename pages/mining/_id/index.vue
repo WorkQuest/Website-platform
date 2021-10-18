@@ -437,9 +437,9 @@ export default {
           type: 'installMetamask',
         });
       } else {
-        await this.connectToMetamask();
         localStorage.setItem('metamaskStatus', 'installed');
         await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+        await this.connectToMetamask();
       }
     },
     async initTokenDays() {
