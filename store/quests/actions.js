@@ -1,4 +1,13 @@
 export default {
+  async workersList({ commit }) {
+    const response = await this.$axios.$get('/v1/profile/workers');
+    commit('setWorkersList', response.result);
+    return response.result;
+  },
+  async setCurrentWorker({ commit }, data) {
+    commit('setCurrentWorker', data);
+    return data;
+  },
   async setInfoDataMode({ commit }, mode) {
     commit('setInfoDataMode', mode);
   },

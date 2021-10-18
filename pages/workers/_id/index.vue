@@ -11,8 +11,8 @@
                 <div class="info-grid__avatar">
                   <img
                     class="info-grid__avatar"
-                    src="~/assets/img/temp/avatar.jpg"
-                    alt=""
+                    :src="currentWorker.avatar !== null ? currentWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+                    :alt="currentWorker.firstName"
                   >
                 </div>
                 <div class="rating" />
@@ -20,18 +20,18 @@
                   class="reviews-amount"
                   to="/profile"
                 >
-                  23 {{ $t('quests.reviews') }}
+                  0 {{ $t('quests.reviews') }}
                 </nuxt-link>
               </div>
               <div class="col info-grid__col">
                 <div class="title title_inline">
-                  {{ user.name }}
+                  {{ currentWorker.firstName }} {{ currentWorker.lastName }}
                   <span class="level">
                     TOP RANKED EMP.
                   </span>
                 </div>
                 <div class="description">
-                  {{ user.desc }}
+                  {{ currentWorker.additionalInfo.description ? currentWorker.additionalInfo.description: "Nothing about me..." }}
                 </div>
                 <social />
                 <div class="contacts__grid">
@@ -44,15 +44,21 @@
                           <span
                             class="icon-location"
                           />
-                          <span class="contact__link">Moscow</span>
+                          <span class="contact__link">
+                            {{ currentWorker.additionalInfo.address ? currentWorker.additionalInfo.address : "Unknown address..." }}
+                          </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-phone" />
-                          <span class="contact__link">8-800-5553535</span>
+                          <span class="contact__link">
+                            {{ currentWorker.additionalInfo.phone ? currentWorker.additionalInfo.phone : "Unknown phone number..." }}
+                          </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-mail" />
-                          <span class="contact__link">worker@gmail.com</span>
+                          <span class="contact__link">
+                            {{ currentWorker.additionalInfo.email ? currentWorker.additionalInfo.email : "Unknown email address.." }}
+                          </span>
                         </span>
                       </span>
                     </div>
@@ -90,7 +96,7 @@
             {{ $t('workers.completedQuests') }}
           </div>
           <div class="numbers__big_blue">
-            12
+            0
           </div>
           <div>One time</div>
         </div>
@@ -99,7 +105,7 @@
             {{ $t('workers.openedQuests') }}
           </div>
           <div class="numbers__big_blue">
-            2
+            0
           </div>
           <n-link
             class="block__link"
@@ -121,7 +127,7 @@
               alt="star"
             >
           </div>
-          <div>{{ $t('workers.based') }} 23 {{ $t('workers.reviews') }}</div>
+          <div>{{ $t('workers.based') }} 0 {{ $t('workers.reviews') }}</div>
         </div>
       </div>
       <div class="information-section">
@@ -173,6 +179,7 @@ export default {
       userData: 'user/getUserData',
       userInfo: 'data/getUserInfo',
       user: 'data/getUserInfo',
+      currentWorker: 'quests/getCurrentWorker',
     }),
   },
   async mounted() {

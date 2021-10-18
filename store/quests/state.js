@@ -1,4 +1,6 @@
 export default () => ({
+  currentWorker: {},
+  workersList: {},
   allQuests: {},
   quest: {},
   infoDataMode: '',

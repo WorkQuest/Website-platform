@@ -135,12 +135,12 @@
         </div>
         <div class="content">
           <div
-            v-for="(card, i) in cards"
+            v-for="(card, i) in workersList.users"
             :key="i"
             class="card card_higher"
-            :class="cardsLevelsBorder(i)"
-            @click="showDetails()"
+            @click="showDetails(card)"
           >
+            <!-- :class="cardsLevelsBorder(i)" -->
             <div
               class="card__content"
             >
@@ -148,20 +148,19 @@
                 <div class="card__header_top">
                   <div class="card__header_left">
                     <img
-                      v-if="card.img"
                       class="card__img"
-                      :src="card.img"
-                      alt=""
+                      :src="card.avatar !== null ? card.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+                      :alt="card.firstName"
                     >
                   </div>
                   <div class="card__header_right">
                     <span
                       class="card__name"
-                      :class="{'card__name_center': card.level.code === '0'}"
                     >
-                      {{ card.name }}
+                      <!-- :class="{'card__name_center': card.level.code === '0'}" -->
+                      {{ card.firstName ? card.firstName : "Nameless worker" }} {{ card.lastName ? card.lastName : "" }}
                     </span>
-                    <div
+                    <!-- <div
                       class="card__level"
                       :class="{'card__level_disabled': card.level.code === '0'}"
                     >
@@ -170,37 +169,47 @@
                         class="card__level_higher"
                         :class="cardsLevels(i)"
                       >{{ card.level.title }}</span>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
-              <div class="card__spec_title">
+              <!-- <div class="card__spec_title">
                 {{ $t('workers.specializations') }}
               </div>
               <span
-                v-for="(spec, j) in card.specialization"
+                v-for="(spec, j) in card.userSpecializations"
                 :key="j"
                 class="card__spec"
               >
-                {{ spec.name }}
-              </span>
-              <div class="card__title">
+                TODO: Проверить добавление специализаций для воркеров.
+                {{ spec.title ? spec.title : "Doesn`t have specializations..." }}
+              </span> -->
+              <div
+                v-if="card.additionalInfo"
+                class="card__title"
+              >
                 {{ $t('workers.aboutMe') }}
               </div>
-              <div class="card__about">
-                {{ card.about }}
+              <div
+                v-if="card.additionalInfo"
+                class="card__about"
+              >
+                {{ card.additionalInfo.description ? card.additionalInfo.description: "Nothing about me..." }}
               </div>
-              <div class="card__address">
-                {{ card.address }}
+              <div
+                v-if="card.additionalInfo"
+                class="card__address"
+              >
+                {{ card.additionalInfo.address ? card.additionalInfo.address : "Unknown address..." }}
               </div>
-              <div class="card__cost cost">
+              <!-- <div class="card__cost cost">
                 <div class="cost__title">
                   {{ $t('workers.costTitle') }}
                 </div>
                 <div class="cost__value">
                   {{ card.cost }}
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -576,6 +585,7 @@ export default {
       userPosition: 'user/getUserCurrentPosition',
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
+      workersList: 'quests/getWorkersList',
     }),
     distantWork() {
       return [
@@ -651,6 +661,7 @@ export default {
   async mounted() {
     this.SetLoader(true);
     if (this.userRole === 'employer') {
+      await this.$store.dispatch('quests/workersList');
       this.showWelcomeModal();
     }
     this.SetLoader(false);
@@ -669,8 +680,9 @@ export default {
       }
       this.$store.dispatch('modals/checkWelcomeModal', false);
     },
-    showDetails() {
-      this.$router.push('/workers/1');
+    showDetails(worker) {
+      this.$store.dispatch('quests/setCurrentWorker', worker);
+      this.$router.push(`/workers/${worker.id}`);
     },
     cardsLevels(idx) {
       const { cards } = this;

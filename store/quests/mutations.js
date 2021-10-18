@@ -1,4 +1,10 @@
 export default {
+  setWorkersList(state, data) {
+    state.workersList = data;
+  },
+  setCurrentWorker(state, data) {
+    state.currentWorker = data;
+  },
   setInfoDataMode(state, data) {
     state.infoDataMode = data;
   },

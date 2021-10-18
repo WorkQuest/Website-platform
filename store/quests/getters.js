@@ -1,4 +1,6 @@
 export default {
+  getWorkersList: (state) => state.workersList || {},
+  getCurrentWorker: (state) => state.currentWorker || {},
   getInfoDataMode: (state) => state.infoDataMode || '',
   getUserInfoQuests: (state) => state.userInfoQuests || '',
   getAllQuests: (state) => state.allQuests || '',
