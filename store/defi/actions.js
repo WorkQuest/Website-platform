@@ -78,14 +78,24 @@ export default {
     return response;
   },
   async tableWqtWethTokenDay({ commit }, query) {
-    const response = await this.$axios.$get(`https://app.workquest.co/api/v1/pool-liquidity/wqt-weth/swaps?${query || 'limit=10'}`);
-    commit('setTableWqtWethTokenDay', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$get(`https://app.workquest.co/api/v1/pool-liquidity/wqt-weth/swaps?${query || 'limit=10'}`);
+      commit('setTableWqtWethTokenDay', response.result);
+      return response;
+    } catch (e) {
+      console.error('error in tableWqtWbnbTokenDay', e);
+      return false;
+    }
   },
   async wqtWethTokenDay({ commit }, query) {
-    const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-weth/tokenDay?${query || 'limit=10'}`);
-    commit('setWqtWethTokenDay', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-weth/tokenDay?${query || 'limit=10'}`);
+      commit('setWqtWethTokenDay', response.result);
+      return response;
+    } catch (e) {
+      console.error('error in tableWqtWbnbTokenDay', e);
+      return false;
+    }
   },
   async wqtWethTokenDayLast({ commit }, query) {
     const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-weth/tokenDay?${query}`);
