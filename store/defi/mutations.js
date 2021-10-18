@@ -35,7 +35,9 @@ export default {
   setWqtWethTokenDayLast(state, data) {
     state.wqtWethTokenDayLast = data;
   },
-
+  setLPToken(state, data) {
+    state.lpTokenToProcenet = data;
+  },
   swapsForCrosschain(state, data) {
     state.crosschainTokensData = data;
   },
