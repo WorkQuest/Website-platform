@@ -202,8 +202,8 @@ export const staking = async (_decimals, _amount) => {
   const miningPoolId = localStorage.getItem('miningPoolId');
   if (process.env.PROD === 'true') {
     if (miningPoolId === 'ETH') {
-      tokenAddress = process.env.LP_TOKEN;
-      stakingAddress = process.env.STAKING_ADDRESS;
+      tokenAddress = process.env.MAINNET_STAKING_ETH_LP_TOKEN;
+      stakingAddress = process.env.MAINNET_ETH_STAKING;
       stakingAbi = abi.StakingWQ;
     } else {
       tokenAddress = process.env.MAINNET_STAKING_LP_TOKEN;
@@ -253,7 +253,7 @@ export const unStaking = async (_decimals, _amount) => {
   const miningPoolId = localStorage.getItem('miningPoolId');
   if (process.env.PROD === 'true') {
     if (miningPoolId === 'ETH') {
-      stakingAddress = process.env.STAKING_ADDRESS;
+      stakingAddress = process.env.MAINNET_ETH_STAKING;
       stakingAbi = abi.StakingWQ;
     } else {
       stakingAddress = process.env.MAINNET_BSC_STAKING;
@@ -292,7 +292,7 @@ export const claimRewards = async (_userAddress, _amount) => {
   const miningPoolId = localStorage.getItem('miningPoolId');
   if (process.env.PROD === 'true') {
     if (miningPoolId === 'ETH') {
-      stakingAddress = process.env.STAKING_ADDRESS;
+      stakingAddress = process.env.MAINNET_ETH_STAKING;
       stakingAbi = abi.StakingWQ;
     } else {
       stakingAddress = process.env.MAINNET_BSC_STAKING;
