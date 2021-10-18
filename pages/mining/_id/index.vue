@@ -420,8 +420,8 @@ export default {
     }
     await this.initTokenDays();
     await this.initGraphData();
-    await this.initTableData();
     this.SetLoader(false);
+    await this.initTableData();
   },
 
   methods: {
