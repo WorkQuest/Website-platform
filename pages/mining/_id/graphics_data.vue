@@ -90,7 +90,6 @@ export default {
   },
   computed: {
     datacollection() {
-      console.log(this.specialChartData);
       if (this.specialChartData.length) {
         const chartDataCount = this.specialChartData.length;
         const chartData = [];
