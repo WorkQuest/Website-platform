@@ -45,7 +45,14 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalSwapInfo',
-
+  data() {
+    return {
+      miningPoolId: localStorage.getItem('miningPoolId'),
+      metamaskStatus: localStorage.getItem('metamaskStatus'),
+      sourceAddressInd: 0,
+      targetAddressInd: 1,
+    };
+  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
@@ -130,7 +137,9 @@ export default {
       }
     },
     async checkMiningPoolId() {
+      console.log(this.miningPoolId);
       this.miningPoolId = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
+      console.log(this.miningPoolId);
       localStorage.setItem('miningPoolId', this.miningPoolId);
       return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
     },
