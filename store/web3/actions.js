@@ -74,7 +74,7 @@ export default {
     }
     if (process.env.PROD === 'true') {
       if (miningPoolId === 'ETH') {
-        stakingAddress = process.env.STAKING_ADDRESS;
+        stakingAddress = process.env.MAINNET_ETH_STAKING;
         stakingAbi = abi.StakingWQ;
       } else {
         stakingAddress = process.env.MAINNET_BSC_STAKING;
@@ -170,7 +170,7 @@ export default {
     }
     if (process.env.PROD === 'true') {
       if (miningPoolId === 'ETH') {
-        stakingAddress = process.env.STAKING_ADDRESS;
+        stakingAddress = process.env.MAINNET_ETH_STAKING;
         stakingAbi = abi.StakingWQ;
       } else {
         stakingAddress = process.env.MAINNET_BSC_STAKING;
