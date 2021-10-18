@@ -410,13 +410,13 @@ export default {
     if (this.$route.params.id === 'ETH') {
       await this.getWqtWethTokenDay();
       await this.getWqtWethTokenDayLast();
-      await this.getWqtWethSwaps();
+      // await this.getWqtWethSwaps();
       await this.tableWqtWethTokenDay();
     } else {
       await this.getWqtWbnbTokenDay();
       await this.getWqtWbnbTokenDayLast();
       await this.tableWqtWbnbTokenDay();
-      await this.getWqtWbnbSwaps();
+      // await this.getWqtWbnbSwaps();
     }
     await this.initTokenDays();
     await this.initGraphData();
