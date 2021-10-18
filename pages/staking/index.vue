@@ -16,8 +16,8 @@
           </div>
           <div class="staking-page__table">
             <b-table
-              :items="items"
-              :fields="testFields"
+              :items="poolsData"
+              :fields="fields"
               borderless
               caption-top
               thead-class="table__header"
@@ -25,27 +25,27 @@
             >
               <template #cell(poolAddress)="el">
                 <div class="table__value table__value_gray">
-                  {{ el.item.poolAddress }}
+                  {{ getFormattedAddress(el.item.rewardTokenAddress) }}
                 </div>
               </template>
               <template #cell(totalStaked)="el">
                 <div class="table__value">
-                  {{ el.item.totalStaked }}
+                  {{ el.item.totalStaked }} {{ el.item.tokenSymbol }}
                 </div>
               </template>
               <template #cell(totalDistributed)="el">
                 <div class="table__value">
-                  {{ el.item.totalDistributed }}
+                  {{ el.item.totalDistributed }} {{ el.item.tokenSymbol }}
                 </div>
               </template>
               <template #cell(stakeTokenAddress)="el">
                 <div class="table__value table__value_blue">
-                  {{ el.item.stakeTokenAddress }}
+                  {{ getFormattedAddress(el.item.rewardTokenAddress) }}
                 </div>
               </template>
               <template #cell(rewardTokenAddress)="el">
                 <div class="table__value table__value_blue">
-                  {{ el.item.rewardTokenAddress }}
+                  {{ getFormattedAddress(el.item.rewardTokenAddress) }}
                 </div>
               </template>
               <template #cell(open)="el">
@@ -53,7 +53,7 @@
                   class="btn_bl"
                   @click="handleOpenPool(el)"
                 >
-                  {{ el.item.open }}
+                  {{ $t('staking.open') }}
                 </base-btn>
               </template>
             </b-table>
@@ -71,25 +71,7 @@ import modals from '~/store/modals/modals';
 export default {
   data() {
     return {
-      items: [
-        {
-          poolAddress: this.$t('staking.tempAddress'),
-          totalStaked: this.$t('staking.tempStaked'),
-          totalDistributed: this.$t('staking.tempStaked'),
-          stakeTokenAddress: this.$t('staking.tempAddress'),
-          rewardTokenAddress: this.$t('staking.tempAddress'),
-          open: this.$t('staking.open'),
-        },
-        {
-          poolAddress: this.$t('staking.tempAddress'),
-          totalStaked: this.$t('staking.tempStaked'),
-          totalDistributed: this.$t('staking.tempStaked'),
-          stakeTokenAddress: this.$t('staking.tempAddress'),
-          rewardTokenAddress: this.$t('staking.tempAddress'),
-          open: this.$t('staking.open'),
-        },
-      ],
-      testFields: [
+      fields: [
         {
           key: 'poolAddress',
           label: this.$t('staking.tableHead.poolAddress'),
@@ -163,20 +145,65 @@ export default {
           },
         },
       ],
+      poolsData: null,
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      isConnected: 'web3/isConnected',
     }),
+    // данные берутся из poolsData. Удалить, если все окей
+    // items() {
+    //   if (!this.poolsData) return [];
+    //   return [
+    //     {
+    //       poolAddress: this.$t('staking.tempAddress'),
+    //       totalStaked: `${this.poolsData.wqt.totalStaked} ${this.poolsData.wqt.tokenSymbol}`,
+    //       totalDistributed: `${this.poolsData.wqt.totalDistributed} ${this.poolsData.wqt.tokenSymbol}`,
+    //       stakeTokenAddress: this.stakeTokenAddresses.wqt,
+    //       rewardTokenAddress: this.stakeTokenAddresses.wqt,
+    //       open: this.$t('staking.open'),
+    //       link: 'wqt',
+    //     },
+    //     {
+    //       poolAddress: this.$t('staking.tempAddress'),
+    //       totalStaked: `${this.poolsData.wusd.totalStaked} ${this.poolsData.wusd.tokenSymbol}`,
+    //       totalDistributed: `${this.poolsData.wusd.totalDistributed} ${this.poolsData.wusd.tokenSymbol}`,
+    //       stakeTokenAddress: this.stakeTokenAddresses.wusd,
+    //       rewardTokenAddress: this.stakeTokenAddresses.wusd,
+    //       open: this.$t('staking.open'),
+    //       link: 'wusd',
+    //     },
+    //   ];
+    // },
+    stakeTokenAddresses() {
+      return {
+        wqt: process.env.STAKING,
+        wusd: process.env.STAKING_NATIVE,
+      };
+    },
   },
   async mounted() {
     this.SetLoader(true);
+
+    if (!this.isConnected) {
+      await this.$store.dispatch('web3/connect');
+    }
+    const [wqtPool, wusdPool] = await Promise.all([
+      this.$store.dispatch('web3/fetchStakingInfo', { native: false }),
+      this.$store.dispatch('web3/fetchStakingInfo', { native: true }),
+    ]);
+    console.log('wqt', wqtPool, 'wusdPool', wusdPool);
+    this.poolsData = [wqtPool, wusdPool];
     this.SetLoader(false);
   },
   methods: {
     handleOpenPool(el) {
-      this.$router.push('/staking/1');
+      this.$router.push(`/staking/${el.item.stakeTokenAddress}`);
+    },
+    getFormattedAddress(address) {
+      return `${address.slice(0, 8)}...${address.slice(-4)}`;
     },
   },
 };
@@ -268,10 +295,10 @@ export default {
   }
 
   &__table {
-
     .table {
       margin: 0;
-      border-radius: 0 !important;
+      box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5px 5px rgba(0, 0, 0, 0.03), 0 2px 2px rgba(0, 0, 0, 0.025), 0 0.7px 0.7px rgba(0, 0, 0, 0.01);
+      border-radius: 6px;
 
       &__value {
         font-weight: 400;

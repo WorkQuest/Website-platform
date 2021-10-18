@@ -8,10 +8,12 @@ import {
   swap,
   startPingingMetamask, fetchContractData, getAccount, createInstance, showToast, goToChain, swapWithBridge, redeemSwap,
   stakingBSC, unStakingBSC, claimRewardsBSC,
+  fetchStakingInfo,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { WQLiquidityMining } from '~/abi/abi';
 
+BigNumber.set({ ROUNDING_MODE: BigNumber.ROUND_DOWN });
 BigNumber.config({ EXPONENTIAL_AT: 60 });
 
 export default {
@@ -188,6 +190,55 @@ export default {
     return payload;
   },
 
+  async fetchStakingInfo({ commit }, { native }) {
+    let stakingAbi;
+    let stakingAddress;
+    if (process.env.PROD === 'false') {
+      if (native) {
+        stakingAbi = abi.WQStakingNative;
+        stakingAddress = process.env.STAKING;
+      } else {
+        stakingAbi = abi.WQStaking;
+        stakingAddress = process.env.STAKING;
+      }
+    } else {
+      console.log('dev only');
+    }
+    const res = await fetchContractData('getStakingInfo', stakingAbi, stakingAddress);
+    const {
+      rewardTokenAddress, totalStaked, totalDistributed, rewardTotal, maxStake,
+    } = res;
+    const reg = /\d{3,4}?(?=...)/g;
+    const rewardDecimal = await fetchContractData('decimals', abi.ERC20, rewardTokenAddress);
+    const tokenSymbol = await fetchContractData('symbol', abi.ERC20, rewardTokenAddress);
+    console.log(rewardTokenAddress, tokenSymbol, native);
+    return {
+      ...res,
+      rewardDecimal,
+      tokenSymbol,
+      claimPeriod: res.claimPeriod / 60 / 60,
+      stakePeriod: res.stakePeriod / 60 / 60,
+      totalStaked: new BigNumber(totalStaked).shiftedBy(-rewardDecimal).decimalPlaces(2).toString()
+        .replace(reg, '$& '),
+      totalDistributed: new BigNumber(totalDistributed).shiftedBy(-rewardDecimal).decimalPlaces(2).toString()
+        .replace(reg, '$& '),
+      rewardTotal: new BigNumber(rewardTotal).shiftedBy(-rewardDecimal).decimalPlaces(2).toString()
+        .replace(reg, '$& '),
+      maxStake: new BigNumber(maxStake).shiftedBy(-rewardDecimal).decimalPlaces(2).toString()
+        .replace(reg, '$& '),
+    };
+    // claimPeriod: "7200"
+    // distributionTime: "1800"
+    // maxStake: "100000000000000000000000" 100 000
+    // minStake: "1000000000000000000000" - 1 000
+    // rewardTokenAddress: "0xD8e8070b6cec220a86D336597E682F6E20f60c31"
+    // rewardTotal: "100000000000000000000000"
+    // stakePeriod: "900"
+    // stakeTokenAddress: "0xD8e8070b6cec220a86D336597E682F6E20f60c31"
+    // startTime: "1634538588"
+    // totalDistributed: "0"
+    // totalStaked: "0"
+  },
   async stake({ commit }, { decimals, amount }) {
     return await staking(decimals, amount);
   },

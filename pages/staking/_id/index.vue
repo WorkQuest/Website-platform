@@ -178,38 +178,6 @@ export default {
           },
         },
       ],
-      cards: [
-        {
-          title: this.$tc('staking.wqtCount', '255.5'),
-          subtitle: this.$t('staking.totalStaked'),
-        },
-        {
-          title: this.$tc('staking.wqtCount', '2,150.26'),
-          subtitle: this.$t('staking.totalDistributed'),
-        },
-      ],
-      stakingCards: [
-        {
-          name: this.$t('staking.stakingCards.distributionTime'),
-          about: this.$t('staking.stakingCards.distributionTimeData'),
-        },
-        {
-          name: this.$t('staking.stakingCards.rewardTotal'),
-          about: this.$t('staking.stakingCards.rewardTotalData'),
-        },
-        {
-          name: this.$t('staking.stakingCards.takePeriod'),
-          about: this.$t('staking.stakingCards.takePeriodData'),
-        },
-        {
-          name: this.$t('staking.stakingCards.claimPeriod'),
-          about: this.$t('staking.stakingCards.claimPeriodData'),
-        },
-        {
-          name: this.$t('staking.stakingCards.duration'),
-          about: this.$t('staking.stakingCards.durationData'),
-        },
-      ],
       userInfoCards: [
         {
           name: this.$t('staking.userInformationCards.staked'),
@@ -224,29 +192,79 @@ export default {
           about: this.$tc('staking.wqtCount', '10 000'),
         },
       ],
-      withdrawalCards: [
+      poolData: null,
+    };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+      isConnected: 'web3/isConnected',
+    }),
+    cards() {
+      if (!this.poolData) return [];
+      return [
+        {
+          title: this.$tc('staking.wqtCount', this.poolData.totalStaked),
+          subtitle: this.$t('staking.totalStaked'),
+        },
+        {
+          title: this.$tc('staking.wqtCount', this.poolData.totalDistributed),
+          subtitle: this.$t('staking.totalDistributed'),
+        },
+      ];
+    },
+    stakingCards() {
+      if (!this.poolData) return [];
+      return [
+        {
+          name: this.$t('staking.stakingCards.distributionTime'),
+          about: this.$t('staking.stakingCards.distributionTimeData'),
+        },
+        {
+          name: this.$t('staking.stakingCards.rewardTotal'),
+          about: `${this.poolData.rewardTotal} ${this.poolData.tokenSymbol}`,
+        },
+        {
+          name: this.$t('staking.stakingCards.takePeriod'),
+          about: this.$t('staking.stakingCards.takePeriodData'),
+        },
+        {
+          name: this.$t('staking.stakingCards.claimPeriod'),
+          about: this.$t('staking.stakingCards.claimPeriodData', { n: this.poolData.claimPeriod }),
+        },
+        {
+          name: this.$t('staking.stakingCards.duration'),
+          about: this.$t('staking.stakingCards.durationData'),
+        },
+      ];
+    },
+    withdrawalCards() {
+      if (!this.poolData) return [];
+      return [
         {
           name: this.$t('staking.withdrawalCards.displayedInTheCurrentPeriod'),
           about: this.$t('staking.withdrawalCards.displayedInTheCurrentPeriodData'),
         },
         {
           name: this.$t('staking.withdrawalCards.withdrawalLimit'),
-          about: this.$t('staking.withdrawalCards.withdrawalLimitData'),
+          about: this.poolData.maxStake, // this.$t('staking.withdrawalCards.withdrawalLimitData'),
         },
         {
           name: this.$t('staking.withdrawalCards.periodUpdate'),
-          about: this.$t('staking.withdrawalCards.periodUpdateData'),
+          about: this.poolData.stakePeriod, // this.$t('staking.withdrawalCards.periodUpdateData'),
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
+      ];
+    },
   },
   async mounted() {
     this.SetLoader(true);
+
+    if (!this.isConnected) {
+      await this.$store.dispatch('web3/connect');
+    }
+    const wusdPool = await this.$store.dispatch('web3/fetchStakingInfo', { native: true });
+    console.log('native:', wusdPool);
+    this.poolData = wusdPool;
     this.SetLoader(false);
   },
   methods: {
@@ -453,6 +471,8 @@ export default {
         flex-direction: column;
         align-items: center;
         gap: 10px;
+
+        box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5px 5px rgba(0, 0, 0, 0.03), 0 2px 2px rgba(0, 0, 0, 0.025), 0 0.7px 0.7px rgba(0, 0, 0, 0.01);
       }
 
       &__name {

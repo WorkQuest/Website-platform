@@ -2272,7 +2272,6 @@
     },
     "open": "Open",
     "tempAddress": "0sjs3892...sd45",
-    "tempStaked": "10 000 WQT",
     "back": "Back",
     "claimRewards": "Claim rewards",
     "pool": "Pool",
@@ -2280,19 +2279,20 @@
     "rewardTokenAddress": "Reward Token Address",
     "totalStaked": "Total Staked",
     "wqtCount": "{n} WQT",
+    "wusdCount": "{n} WUSD",
     "totalDistributed": "Total Distributed",
     "staking": "Staking",
     "stakingCards": {
       "distributionTime": "Distribution Time",
-      "distributionTimeData": "10 min",
+      "distributionTimeData": "{n} min",
       "rewardTotal": "Reward Total",
       "rewardTotalData": "3.00 WQT",
       "takePeriod": "Take Period",
-      "takePeriodData": "24 hours",
+      "takePeriodData": "{n} hours",
       "claimPeriod": "Claim Period",
-      "claimPeriodData": "24 hours",
+      "claimPeriodData": "{n} hours",
       "duration": "Duration",
-      "durationData": "30 days"
+      "durationData": "{n} days"
     },
     "userInformation": "User information",
     "userInformationCards": {
