@@ -38,8 +38,8 @@
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            :disabled="statusBusy"
-            @click="handleSubmit(options.type === 1 ? staking : unstaking)"
+            :disabled="statusBusy || !amount"
+            @click="handleSubmit(callMethod)"
           >
             {{ $t('meta.submit') }}
           </base-btn>
@@ -51,6 +51,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'CtmModalClaimRewards',
@@ -83,26 +84,42 @@ export default {
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
     },
-    async staking() {
+    checkAmount() {
+      const amount = this.options.type === 1 ? this.userBalance : this.userStake;
+      return amount >= this.amount;
+    },
+    async callMethod() {
       this.SetLoader(true);
-      this.hide();
-      await this.$store.dispatch('web3/stake', {
-        decimals: this.accountData.decimals.stakeDecimal,
-        amount: this.amount,
-      });
-      await this.tokensDataUpdate();
+      if (this.checkAmount()) {
+        this.hide();
+        await this.$store.dispatch(`web3/${this.options.type === 1 ? 'stake' : 'unstake'}`, {
+          decimals: this.accountData.decimals.stakeDecimal,
+          amount: this.amount,
+        });
+        await this.tokensDataUpdate();
+      } else {
+        this.hide();
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.incorrectAmount'),
+        });
+      }
       this.SetLoader(false);
     },
-    async unstaking() {
-      this.SetLoader(true);
-      this.hide();
-      await this.$store.dispatch('web3/unstake', {
-        decimals: this.accountData?.decimals?.stakeDecimal,
-        amount: this.amount,
-      });
-      await this.tokensDataUpdate();
-      this.SetLoader(false);
-    },
+    // async unstaking() {
+    //   console.log(this.options.type);
+    //   this.SetLoader(true);
+    //   this.hide();
+    //   await this.$store.dispatch('web3/unstake', {
+    //     decimals: this.accountData?.decimals?.stakeDecimal,
+    //     amount: this.amount,
+    //   });
+    //   await this.tokensDataUpdate();
+    //   this.SetLoader(false);
+    // },
   },
 };
 </script>
