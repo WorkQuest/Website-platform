@@ -559,9 +559,19 @@ export default {
     },
     async claimRewards() {
       this.SetLoader(true);
-      await this.connectToMetamask();
-      await this.$store.dispatch('web3/claimRewards', this.accountData.userPurse.address, this.fullRewardAmount);
-      await this.tokensDataUpdate();
+      if (this.fullRewardAmount > 0) {
+        await this.connectToMetamask();
+        await this.$store.dispatch('web3/claimRewards', this.accountData.userPurse.address, this.fullRewardAmount);
+        await this.tokensDataUpdate();
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.nothingToClaim'),
+        });
+      }
       this.SetLoader(false);
     },
     async connectToMetamask() {
