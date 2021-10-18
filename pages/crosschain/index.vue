@@ -58,14 +58,14 @@
             </div>
           </div>
           <div class="info-block__btns-cont">
-            <!--            <base-btn-->
-            <!--              :disabled="metamaskStatus === 'notInstalled'"-->
-            <!--              @click="showSwapModal"-->
-            <!--            >-->
             <base-btn
-              :disabled="true"
+              :disabled="metamaskStatus === 'notInstalled'"
               @click="showSwapModal"
             >
+<!--            <base-btn-->
+<!--              :disabled="true"-->
+<!--              @click="showSwapModal"-->
+<!--            >-->
               {{ $t('crosschain.createSwap') }}
             </base-btn>
           </div>
@@ -252,8 +252,8 @@ export default {
     async purseData() {
       let newInterval;
       if (this.purseData) {
-        await this.swapsTest(this.purseData);
-        newInterval = setInterval(() => this.swapsTest(this.purseData), 5000);
+        await this.swapsTableData(this.purseData);
+        newInterval = setInterval(() => this.swapsTableData(this.purseData), 5000);
         if (this.$route.name !== 'crosschain') {
           clearInterval(newInterval);
         }
@@ -262,7 +262,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    await this.swapsTest(this.purseData);
+    await this.swapsTableData(this.purseData);
     await this.checkMiningPoolId();
     await this.checkMetamaskStatus();
     this.SetLoader(false);
@@ -322,9 +322,9 @@ export default {
     async checkMiningPoolId() {
       this.miningPoolId = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
       localStorage.setItem('miningPoolId', this.miningPoolId);
-      await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+      return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
     },
-    async swapsTest(recipientAddress) {
+    async swapsTableData(recipientAddress) {
       const payload = {
         recipientAddress,
         query: '&offset=0&limit=10',
@@ -354,14 +354,25 @@ export default {
     },
     async showSwapModal() {
       this.SetLoader(true);
-      await this.checkMiningPoolId();
+      const switchChainStatus = await this.checkMiningPoolId();
       await this.checkMetamaskStatus();
-      await this.$store.dispatch('web3/getCrosschainTokensData');
-      await this.swapsTest();
-      this.ShowModal({
-        key: modals.swap,
-        crosschainId: this.targetAddressInd,
-      });
+      if (switchChainStatus.ok) {
+        await this.$store.dispatch('web3/getCrosschainTokensData');
+        await this.swapsTableData();
+        this.ShowModal({
+          key: modals.swap,
+          crosschainId: this.targetAddressInd,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          txHash: '',
+          subtitle: '',
+        });
+      }
       this.SetLoader(false);
     },
   },

@@ -45,7 +45,14 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalSwapInfo',
-
+  data() {
+    return {
+      miningPoolId: localStorage.getItem('miningPoolId'),
+      metamaskStatus: localStorage.getItem('metamaskStatus'),
+      sourceAddressInd: 0,
+      targetAddressInd: 1,
+    };
+  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
@@ -124,9 +131,9 @@ export default {
       });
       this.SetLoader(false);
     },
-    connectToMetamask() {
+    async connectToMetamask() {
       if (!this.isConnected) {
-        this.$store.dispatch('web3/connect');
+        await this.$store.dispatch('web3/connect');
       }
     },
     async checkMiningPoolId() {
