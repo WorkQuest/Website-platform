@@ -210,6 +210,7 @@ export const staking = async (_decimals, _amount) => {
       stakingAddress = process.env.MAINNET_BSC_STAKING;
       stakingAbi = abi.WQLiquidityMining;
     }
+    console.log(tokenAddress, stakingAddress);
   }
   if (process.env.PROD === 'false') {
     if (miningPoolId === 'ETH') {
