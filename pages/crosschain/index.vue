@@ -315,9 +315,9 @@ export default {
       this.$store.dispatch('defi/showToast', { title, text, variant });
     },
     async connectToMetamask() {
-      // if (!this.isConnected) {
-      await this.$store.dispatch('web3/connect');
-      // }
+      if (!this.isConnected) {
+        await this.$store.dispatch('web3/connect');
+      }
     },
     async checkMiningPoolId() {
       this.miningPoolId = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
