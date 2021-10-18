@@ -137,9 +137,7 @@ export default {
       }
     },
     async checkMiningPoolId() {
-      console.log(this.miningPoolId);
       this.miningPoolId = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
-      console.log(this.miningPoolId);
       localStorage.setItem('miningPoolId', this.miningPoolId);
       return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
     },
