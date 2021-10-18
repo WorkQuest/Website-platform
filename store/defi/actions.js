@@ -102,14 +102,6 @@ export default {
     commit('setWqtWethTokenDayLast', response.result);
     return response;
   },
-  async getLPToken({ commit }) {
-    const response = await this.$axios.$get('/v1/pool-liquidity/wqt-wbnb/getDistribution');
-    commit('setLPToken', response.result);
-    if (response.ok) {
-      return response.result.lpToken;
-    }
-    return response;
-  },
   async swapsForCrosschain({ commit }, { recipientAddress, query }) {
     const response = await this.$axios.$get(`/v1/bridge/recipient/${recipientAddress}/swaps?${query || ''}`);
     const items = [];
