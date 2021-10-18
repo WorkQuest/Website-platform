@@ -1002,7 +1002,7 @@ export default {
         },
         {
           title: this.$t('footer.company.aboutUs'),
-          path: '/about',
+          path: '#',
         },
         {
           title: this.$t('footer.company.leadership'),

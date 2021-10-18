@@ -2358,177 +2358,281 @@
     "search": "Search",
     "navigation": {
       "header": {
-        "header": "Header menu",
-        "twoTypes": "There are two types of header: for employer and for employee.",
+        "title": "Header menu",
+        "subtitle": "There are two types of header: for employer and for employee.",
         "cards": {
           "employer": {
-            "employer": "Header for employer"
+            "title": "Header for employer"
           },
           "employee": {
-            "employee": "Header for employee"
+            "title": "Header for employee"
           },
           "quests": {
-            "quests": "Quests",
-            "general": "General list of job offers published on the platform."
+            "title": "Quests",
+            "subtitle": "General list of job offers published on the platform."
           },
           "employees": {
-            "employees": "Employees",
-            "general": "General list of employees registered on the platform."
+            "title": "Employees",
+            "subtitle": "General list of employees registered on the platform."
           },
           "myQuests": {
-            "myQuests": "My quests",
-            "offers": "All job offers you interact with."
+            "title": "My quests",
+            "subtitle": "All job offers you interact with."
           },
           "wallet": {
-            "wallet": "Wallet",
-            "walletFunc": "Your WorkQuest wallet, where WQT token and WUSD stablecoin transactions are available. It can also be used to work with platform instruments."
+            "title": "Wallet",
+            "subtitle": "Your WorkQuest wallet, where WQT token and WUSD stablecoin transactions are available. It can also be used to work with platform instruments."
           },
           "instruments": {
-            "instruments": "Instruments",
-            "DeFi": "DeFi functionality that includes referral program, 2P2 insurance, retirement savings, savings product, liquidity mining, and landing."
+            "title": "Instruments",
+            "subtitle": "DeFi functionality that includes referral program, 2P2 insurance, retirement savings, savings product, liquidity mining, and landing."
           },
           "language": {
-            "language": "Language",
-            "choose": "Choose your language."
+            "title": "Language",
+            "subtitle": "Choose your language."
           },
           "chats": {
-            "chats": "Chats",
-            "communication": "Communication between employee and employer, group communication and saving important chats."
+            "title": "Chats",
+            "subtitle": "Communication between employee and employer, group communication and saving important chats."
           },
           "notifications": {
-            "notifications": "Notifications",
-            "allNotifications": "All important notifications related to your profile and platform updates."
+            "title": "Notifications",
+            "subtitle": "All important notifications related to your profile and platform updates."
           },
           "menu": {
-            "menu": "Menu",
-            "main": "Main menu of the platform."
+            "title": "Menu",
+            "subtitle": "Main menu of the platform."
           }
         }
       },
       "profile": {
-        "profile": "Profile menu",
+        "title": "Profile menu",
         "cards": {
           "profile": {
-            "profile": "My profile",
-            "access": "Access to the profile page of an employee or employer with basic information about them."
+            "title": "My profile",
+            "subtitle": "Access to the profile page of an employee or employer with basic information about them."
           },
           "settings": {
-            "settings": "Settings",
-            "change": "Change profile information, social network, change password and security settings."
+            "title": "Settings",
+            "subtitle": "Change profile information, social network, change password and security settings."
           },
           "disputes": {
-            "disputes": "Disputes",
-            "disputesOn": "Disputes on your quests, decisions, status and other information."
+            "title": "Disputes",
+            "subtitle": "Disputes on your quests, decisions, status and other information."
           },
           "logout": {
-            "logout": "Logout",
-            "logoutFrom": "Logout from your profile to the main page of the platform."
+            "title": "Logout",
+            "subtitle": "Logout from your profile to the main page of the platform."
           }
         }
       },
       "instruments": {
-        "instruments": "Instruments",
+        "title": "Instruments",
         "cards": {
           "retirement": {
-            "retirement": "Retirement program",
-            "annual": "That will generate an annual percentage of profit on the amount of savings."
+            "title": "Retirement program",
+            "subtitle": "That will generate an annual percentage of profit on the amount of savings."
           },
           "referral": {
-            "referral": "Referral program",
-            "inviting": "Is a program to expand the user base of the platform, where everyone receives a reward for inviting new users"
+            "title": "Referral program",
+            "subtitle": "Is a program to expand the user base of the platform, where everyone receives a reward for inviting new users"
           },
           "P2P": {
-            "P2P": "P2P insurance",
-            "insurance": "Decentralized insurance where fund members manage the insurance fund themselves by voting for important decisions."
+            "title": "P2P insurance",
+            "subtitle": "Decentralized insurance where fund members manage the insurance fund themselves by voting for important decisions."
           },
           "savings": {
-            "savings": "Savings product",
-            "income": "Brings additional income in the form of annual interest."
+            "title": "Savings product",
+            "subtitle": "Brings additional income in the form of annual interest."
           },
           "lending": {
-            "lending": "Lending",
-            "loan": "The ability to take out a loan or issue a loan for a specific period and interest rate."
+            "title": "Lending",
+            "subtitle": "The ability to take out a loan or issue a loan for a specific period and interest rate."
           },
           "liquidity": {
-            "liquidity": "Liquidity mining",
-            "providing": "Providing liquidity to pools to receive rewards based on your amount of liquidity in the pool."
+            "title": "Liquidity mining",
+            "subtitle": "Providing liquidity to pools to receive rewards based on your amount of liquidity in the pool."
           },
           "crosschain": {
-            "crosschain": "Crosschain",
-            "way": "Most secure and fast way to bring crosschain assets between WorkNet, ETH and BSC."
+            "title": "Crosschain",
+            "subtitle": "Most secure and fast way to bring crosschain assets between WorkNet, ETH and BSC."
           },
           "staking": {
-            "staking": "Staking",
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+            "title": "Staking",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
           }
         }
       },
       "statuses": {
-        "statuses": "Statuses",
+        "title": "Statuses",
         "cards": {
           "delivery": {
-            "delivery": "Fixed delivery",
-            "agreement": "After the employee has determined the optimal job offer and consented to the execution of the quest, an agreement is concluded between the employee and the employer."
+            "title": "Fixed delivery",
+            "subtitle": "After the employee has determined the optimal job offer and consented to the execution of the quest, an agreement is concluded between the employee and the employer."
           },
           "short": {
-            "short": "Short-term",
-            "quest": "A quest that needs to be completed over the coming days. To indicate short-term delivery (from 24 to 72 hours), you need to start the quest as soon as possible."
+            "title": "Short-term",
+            "subtitle": "A quest that needs to be completed over the coming days. To indicate short-term delivery (from 24 to 72 hours), you need to start the quest as soon as possible."
           },
           "urgent": {
-            "urgent": "Urgent",
-            "quest": "A quest that needs to be completed urgently. To indicate urgent delivery (from 1 to 24 hours), you need to start the quest almost immediately"
+            "title": "Urgent",
+            "subtitle": "A quest that needs to be completed urgently. To indicate urgent delivery (from 1 to 24 hours), you need to start the quest almost immediately"
           },
           "top": {
-            "top": "Top Ranked EMP.",
-            "ranked": "Top ranked employee/employer — this means that there has been a large number of successfully completed quests, with an average score from user reviews of over 4.5 points. Requires passing KYC (verified account), phone number verification, three social media verification, and filling out employment information."
+            "title": "Top Ranked EMP.",
+            "subtitle": "Top ranked employee/employer — this means that there has been a large number of successfully completed quests, with an average score from user reviews of over 4.5 points. Requires passing KYC (verified account), phone number verification, three social media verification, and filling out employment information."
           },
           "reliable": {
-            "reliable": "Reliable EMP.",
-            "number": "Reliable employee/employer a large number of successfully completed quests, with the average score from user reviews of at least 4 points. Requires passing KYC (verified account), phone number verification and verification in two social networks."
+            "title": "Reliable EMP.",
+            "subtitle": "Reliable employee/employer a large number of successfully completed quests, with the average score from user reviews of at least 4 points. Requires passing KYC (verified account), phone number verification and verification in two social networks."
           },
           "verified": {
-            "verified": "Verified EMP.",
-            "validated": "Verified employee/employer is a validated user with a small number of successfully completed quests, and an average user score of at least 3.5 points. Requires passing KYC (verified account) and verification of one of the social networks."
+            "title": "Verified EMP.",
+            "subtitle": "Verified employee/employer is a validated user with a small number of successfully completed quests, and an average user score of at least 3.5 points. Requires passing KYC (verified account) and verification of one of the social networks."
           }
         }
       },
       "buttons": {
-        "buttons": "Buttons",
+        "title": "Buttons",
         "cards": {
           "create": {
-            "create": "Create a quest",
-            "work": "Create a work proposal with a detailed description of the task, requirements for candidates and a technical description."
+            "title": "Create a quest",
+            "subtitle": "Create a work proposal with a detailed description of the task, requirements for candidates and a technical description."
           },
           "results": {
-            "results": "Search Results",
-            "offer": "Search for a job offer by selected search categories."
+            "title": "Search Results",
+            "subtitle": "Search for a job offer by selected search categories."
           },
           "workers": {
-            "workers": "Search Workers",
-            "search": "Search for workers by selected search categories."
+            "title": "Search Workers",
+            "subtitle": "Search for workers by selected search categories."
           },
           "details": {
-            "details": "View details",
-            "information": "Each work proposal (quest) is displayed with basic brief information, the user can use the \"View details\" button and view all detailed information related to this quest."
+            "title": "View details",
+            "subtitle": "Each work proposal (quest) is displayed with basic brief information, the user can use the \"View details\" button and view all detailed information related to this quest."
           },
           "map": {
-            "map": "Show map",
-            "enable": "Enable or Disable the map to search for employees or employers."
+            "title": "Show map",
+            "subtitle": "Enable or Disable the map to search for employees or employers."
           },
           "button": {
-            "button": "Share button",
-            "profile": "Share your profile or created quest on social networks"
+            "title": "Share button",
+            "subtitle": "Share your profile or created quest on social networks"
           },
           "raise": {
-            "raise": "Raise views",
-            "promoting": "Promoting a quest or profile of an employee and employer in the search."
+            "title": "Raise views",
+            "subtitle": "Promoting a quest or profile of an employee and employer in the search."
           }
         }
       },
-      "employee": "Employee's office",
-      "employer": "Employer’s office",
-      "user": "User profile",
-      "quest": "Boosting quest"
+      "employer": {
+        "title": "Employer's office",
+        "cards": {
+          "specialization": {
+            "title": "Specialization",
+            "subtitle": "List of industries requiring specialized skill sets."
+          },
+          "rating": {
+            "title": "Rating",
+            "subtitle": "Employee rating: Verified employee/Reliable employee/Higher level of trust employee."
+          },
+          "priority": {
+            "title": "All priority",
+            "subtitle": "Priority for delivery: Urgent, Short-term, Fixed Delivery."
+          },
+          "distant": {
+            "title": "Distant work",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+          },
+          "price": {
+            "title": "Price",
+            "subtitle": "Filter for finding employees by cost per hour of work, sorted from lowest to highest."
+          },
+          "time": {
+            "title": "Added time",
+            "subtitle": "Filter for searching employees by registration date, from new users to early users or vice versa."
+          }
+        }
+      },
+      "employee": {
+        "title": "Employee’s office",
+        "cards": {
+          "specialization": {
+            "title": "Specialization",
+            "subtitle": "List of industries requiring special skills."
+          },
+          "quests": {
+            "title": "Quests",
+            "subtitle": "Select a job offer: Quests (all type of work), Specialized quests (task that require specialized skills), permanent job (job search by categories)."
+          },
+          "delivery": {
+            "title": "Quest delivery time",
+            "subtitle": "Quest delivery time: Urgent, Short term, Fixed delivery."
+          },
+          "job": {
+            "title": "Type of job",
+            "subtitle": "Select the type of employment: Full-time, Part-time, Fixed term, Contract."
+          },
+          "distant": {
+            "title": "Distant work",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+          },
+          "price": {
+            "title": "Price",
+            "subtitle": "A filter to search for quests, ordered from the lowest price to the highest."
+          },
+          "time": {
+            "title": "Added time",
+            "subtitle": "Filter to search for quests by publication date, from the newest to the latest created, or vice versa."
+          }
+        }
+      },
+      "user": {
+        "title": "User profile",
+        "cards": {
+          "reviews": {
+            "title": "Reviews",
+            "subtitle": "Comments and reviews that users leave about each other after completing the quest."
+          },
+          "quests": {
+            "title": "All quests",
+            "subtitle": "List of all published quests."
+          },
+          "active": {
+            "title": "Active quests",
+            "subtitle": "The quest in which you are currently active."
+          },
+          "invited": {
+            "title": "Invited quests",
+            "subtitle": "List of quests that you have been invited to complete."
+          },
+          "favorite": {
+            "title": "Favorite",
+            "subtitle": "A quest that is added to favorites for frequent interaction."
+          }
+        }
+      },
+      "quest": {
+        "title": "Boosting quest",
+        "cards": {
+          "goldPlus": {
+            "title": "Gold Plus Package",
+            "subtitle": "Notifications for employees who were looking for quests, via an offer to review the quest that has been promoted by the employer. The employee will be invited to complete the quest in based on the most recent search categories of the employee. Plus the ability to choose any category and any location to promote the quest."
+          },
+          "gold": {
+            "title": "Gold package",
+            "subtitle": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
+          },
+          "silver": {
+            "title": "Silver package",
+            "subtitle": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
+          },
+          "bronze": {
+            "title": "Bronze package",
+            "subtitle": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
+          }
+        }
+      }
     }
   }
 }
