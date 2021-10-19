@@ -119,11 +119,11 @@
         </div>
         <div class="info-block">
           <div class="info-block__name_bold">
-            {{ $t('staking.withdrawal') }}
+            {{ $t('staking.stake') }}
           </div>
           <div class="info-block__info-cards">
             <div
-              v-for="(item, i) in withdrawalCards"
+              v-for="(item, i) in stakeCards"
               :key="i"
               class="info-card"
             >
@@ -141,9 +141,9 @@
             </base-btn>
             <base-btn
               mode="outline"
-              @click="showWithdrawalModal"
+              @click="showStakeModal"
             >
-              {{ $t('staking.withdraw') }}
+              {{ $t('staking.stake') }}
             </base-btn>
           </div>
         </div>
@@ -178,20 +178,6 @@ export default {
           },
         },
       ],
-      userInfoCards: [
-        {
-          name: this.$t('staking.userInformationCards.staked'),
-          about: this.$tc('staking.wqtCount', '10 000'),
-        },
-        {
-          name: this.$t('staking.userInformationCards.stakeBalance'),
-          about: this.$tc('staking.wqtCount', '10 000'),
-        },
-        {
-          name: this.$t('staking.userInformationCards.claimed'),
-          about: this.$tc('staking.wqtCount', '10 000'),
-        },
-      ],
       poolData: null,
     };
   },
@@ -218,7 +204,7 @@ export default {
       return [
         {
           name: this.$t('staking.stakingCards.distributionTime'),
-          about: this.$t('staking.stakingCards.distributionTimeData'),
+          about: this.$t('staking.min', { n: this.poolData.distributionTime }),
         },
         {
           name: this.$t('staking.stakingCards.rewardTotal'),
@@ -226,32 +212,49 @@ export default {
         },
         {
           name: this.$t('staking.stakingCards.takePeriod'),
-          about: this.$t('staking.stakingCards.takePeriodData'),
+          about: this.$t('staking.hours', { n: this.poolData.stakePeriod }),
         },
         {
           name: this.$t('staking.stakingCards.claimPeriod'),
-          about: this.$t('staking.stakingCards.claimPeriodData', { n: this.poolData.claimPeriod }),
+          about: this.$t('staking.hours', { n: this.poolData.claimPeriod }),
         },
         {
           name: this.$t('staking.stakingCards.duration'),
-          about: this.$t('staking.stakingCards.durationData'),
+          about: this.$t('staking.days', { n: '?' }),
         },
       ];
     },
-    withdrawalCards() {
+    userInfoCards() {
       if (!this.poolData) return [];
       return [
         {
-          name: this.$t('staking.withdrawalCards.displayedInTheCurrentPeriod'),
-          about: this.$t('staking.withdrawalCards.displayedInTheCurrentPeriodData'),
+          name: this.$t('staking.userInformationCards.staked'),
+          about: this.$tc('staking.wqtCount', this.poolData.userInfo.staked_),
         },
         {
-          name: this.$t('staking.withdrawalCards.withdrawalLimit'),
-          about: this.poolData.maxStake, // this.$t('staking.withdrawalCards.withdrawalLimitData'),
+          name: this.$t('staking.userInformationCards.stakeBalance'),
+          about: this.$tc('staking.wqtCount', this.poolData.userInfo._balance),
         },
         {
-          name: this.$t('staking.withdrawalCards.periodUpdate'),
-          about: this.poolData.stakePeriod, // this.$t('staking.withdrawalCards.periodUpdateData'),
+          name: this.$t('staking.userInformationCards.claimed'),
+          about: this.$tc('staking.wqtCount', this.poolData.userInfo.claim_),
+        },
+      ];
+    },
+    stakeCards() {
+      if (!this.poolData) return [];
+      return [
+        {
+          name: this.$t('staking.stakeCards.displayedInTheCurrentPeriod'),
+          about: this.$t('staking.wqtCount', { n: '?' }),
+        },
+        {
+          name: this.$t('staking.stakeCards.stakeLimit'),
+          about: this.$t('staking.wqtCount', { n: this.poolData.maxStake }),
+        },
+        {
+          name: this.$t('staking.stakeCards.periodUpdate'),
+          about: this.$t('staking.hours', { n: this.poolData.stakePeriod }),
         },
       ];
     },
@@ -281,7 +284,7 @@ export default {
         key: modals.claim,
       });
     },
-    showWithdrawalModal() {
+    showStakeModal() {
       this.ShowModal({
         key: modals.takeWithdraw,
       });

@@ -2271,7 +2271,6 @@
       "rewardTokenAddress": "Reward Token Address"
     },
     "open": "Open",
-    "tempAddress": "0sjs3892...sd45",
     "back": "Back",
     "claimRewards": "Claim rewards",
     "pool": "Pool",
@@ -2280,19 +2279,17 @@
     "totalStaked": "Total Staked",
     "wqtCount": "{n} WQT",
     "wusdCount": "{n} WUSD",
+    "hours": "{n} hours",
+    "days": "{n} days",
+    "min": "{n} min",
     "totalDistributed": "Total Distributed",
     "staking": "Staking",
     "stakingCards": {
       "distributionTime": "Distribution Time",
-      "distributionTimeData": "{n} min",
       "rewardTotal": "Reward Total",
-      "rewardTotalData": "3.00 WQT",
       "takePeriod": "Take Period",
-      "takePeriodData": "{n} hours",
       "claimPeriod": "Claim Period",
-      "claimPeriodData": "{n} hours",
-      "duration": "Duration",
-      "durationData": "{n} days"
+      "duration": "Duration"
     },
     "userInformation": "User information",
     "userInformationCards": {
@@ -2300,17 +2297,13 @@
       "stakeBalance": "Stake balance",
       "claimed": "Claimed"
     },
-    "withdrawal": "Withdrawal",
-    "withdrawalCards": {
+    "stakeCards": {
       "displayedInTheCurrentPeriod": "Displayed in the current period",
-      "displayedInTheCurrentPeriodData": "10 000 WQT",
-      "withdrawalLimit": "Withdrawal limit",
-      "withdrawalLimitData": "10 000 WQT",
-      "periodUpdate": "Period update",
-      "periodUpdateData": "10 000 WQT"
+      "stakeLimit": "Stake limit",
+      "periodUpdate": "Period update"
     },
-    "autoRenewal": "Auto Renewal",
-    "withdraw": "Withdraw"
+    "stake": "Stake",
+    "autoRenewal": "Auto Renewal"
   },
   "myQuests": {
     "statuses": {

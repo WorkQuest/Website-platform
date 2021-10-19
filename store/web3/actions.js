@@ -204,20 +204,27 @@ export default {
     } else {
       console.log('dev only');
     }
-    const res = await fetchContractData('getStakingInfo', stakingAbi, stakingAddress);
+    const [stakingInfo, userInfo] = await Promise.all([
+      fetchContractData('getStakingInfo', stakingAbi, stakingAddress),
+      fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccount().address]),
+    ]);
     const {
       rewardTokenAddress, totalStaked, totalDistributed, rewardTotal, maxStake,
-    } = res;
+    } = stakingInfo;
     const reg = /\d{3,4}?(?=...)/g;
-    const rewardDecimal = await fetchContractData('decimals', abi.ERC20, rewardTokenAddress);
-    const tokenSymbol = await fetchContractData('symbol', abi.ERC20, rewardTokenAddress);
-    console.log(rewardTokenAddress, tokenSymbol, native);
+    const [rewardDecimal, tokenSymbol] = await Promise.all([
+      fetchContractData('decimals', abi.ERC20, rewardTokenAddress),
+      fetchContractData('symbol', abi.ERC20, rewardTokenAddress),
+    ]);
+    console.log(rewardTokenAddress, tokenSymbol, native, '\nUSER INFO:', userInfo);
+
     return {
-      ...res,
+      ...stakingInfo,
       rewardDecimal,
       tokenSymbol,
-      claimPeriod: res.claimPeriod / 60 / 60,
-      stakePeriod: res.stakePeriod / 60 / 60,
+      claimPeriod: stakingInfo.claimPeriod / 60 / 60,
+      stakePeriod: stakingInfo.stakePeriod / 60 / 60,
+      distributionTime: stakingInfo.distributionTime / 60,
       totalStaked: new BigNumber(totalStaked).shiftedBy(-rewardDecimal).decimalPlaces(2).toString()
         .replace(reg, '$& '),
       totalDistributed: new BigNumber(totalDistributed).shiftedBy(-rewardDecimal).decimalPlaces(2).toString()
@@ -226,6 +233,7 @@ export default {
         .replace(reg, '$& '),
       maxStake: new BigNumber(maxStake).shiftedBy(-rewardDecimal).decimalPlaces(2).toString()
         .replace(reg, '$& '),
+      userInfo,
     };
     // claimPeriod: "7200"
     // distributionTime: "1800"
@@ -247,7 +255,7 @@ export default {
 
     stake - положить
 
-    getClaim - размер реварда avaiable для стейкера
+    getClaim - размер реварда available для стейкера
     claim - забрать
 
     (потом можно проверить getClaim)
