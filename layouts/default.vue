@@ -791,7 +791,7 @@ import ClickOutside from 'vue-click-outside';
 export default {
   scrollToTop: true,
   name: 'DefaultLayout',
-  // middleware: 'auth',
+  middleware: 'auth',
   components: {},
   directives: {
     ClickOutside,
