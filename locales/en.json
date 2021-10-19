@@ -832,6 +832,8 @@
     "error": "Error!"
   },
   "modals": {
+    "incorrectAmount": "Incorrect amount, your wallet does not have enough funds",
+    "pleaseWait": "Please, wait",
     "redeemSuccess": "Redeem success!",
     "redeemFail": "Redeem fail",
     "chatCreate": {
@@ -2029,8 +2031,10 @@
     "wusdEthPool": "ETH/WQT pool",
     "wusdBnbPool": "BNB/WQT pool",
     "dollarsCount": "$ {count}",
+    "percentCount": "{count} %",
     "lpCount": "{count} LP",
     "wqtCount": "{count} WQT",
+    "APY": "APY",
     "addLiquidity": "Add liquidity",
     "removeLiquidity": "Remove liquidity",
     "liquidity": "Liquidity",
