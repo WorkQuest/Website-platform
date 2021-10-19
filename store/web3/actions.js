@@ -238,6 +238,21 @@ export default {
     // startTime: "1634538588"
     // totalDistributed: "0"
     // totalStaked: "0"
+
+    /*
+
+    duration: start time - скорее всего считать нужно из него как-то
+
+    getInfoByAddress - по кошельку получаю инфу по юзеру
+
+    stake - положить
+
+    getClaim - размер реварда avaiable для стейкера
+    claim - забрать
+
+    (потом можно проверить getClaim)
+
+     */
   },
   async stake({ commit }, { decimals, amount }) {
     return await staking(decimals, amount);
