@@ -30,7 +30,16 @@
           class="wiki__ul"
           @click="selectTab(item)"
         >
-          <li class="wiki__item">
+          <li
+            v-if="item === currentTab"
+            class="wiki__item_bold"
+          >
+            {{ $t(`wiki.navigation.${item}.title`) }}
+          </li>
+          <li
+            v-else
+            class="wiki__item"
+          >
             {{ $t(`wiki.navigation.${item}.title`) }}
           </li>
         </ul>
@@ -207,6 +216,19 @@ export default {
       background: #E9EDF2;
       transition: 300ms;
     }
+    &_bold {
+      @include text-simple;
+      @include normal-font-size;
+      list-style-type: none;
+      font-size: 18px;
+      font-weight: 600;
+      padding: 15px;
+      cursor: pointer;
+      &:hover {
+        background: #E9EDF2;
+        transition: 300ms;
+    }
+    }
   }
 }
 .container {
@@ -214,7 +236,6 @@ export default {
   grid-template-columns: 1fr 3fr;
   grid-gap: 20px;
 }
-
 @include _1199 {
   .wiki {
     &__container {
