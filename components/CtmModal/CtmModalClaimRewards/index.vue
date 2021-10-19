@@ -86,7 +86,7 @@ export default {
     },
     checkAmount() {
       const amount = this.options.type === 1 ? this.userBalance : this.userStake;
-      return amount >= this.amount;
+      return +amount >= +this.amount;
     },
     async staking() {
       this.SetLoader(true);
