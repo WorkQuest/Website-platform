@@ -50,8 +50,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .main {
-  padding: 20px;
+  padding: 20px 20px 0 20px;
   background: $white;
+  border-radius: 6px;
   &__header {
     @include text-simple;
     @include normal-font-size;

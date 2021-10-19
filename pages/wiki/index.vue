@@ -7,15 +7,18 @@
         </h3>
         <div class="wiki__search-field">
           <base-field
+            v-model="search"
             class="wiki__input"
             :is-search="true"
             :is-hide-error="true"
             :placeholder="$t('wiki.searchPlaceholder')"
           />
-          <base-btn
-            class="wiki__search-button"
-            :text="$t('wiki.search')"
-          />
+          <div class="wiki__button-field">
+            <base-btn
+              class="wiki__search-button"
+              :text="$t('wiki.search')"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -32,7 +35,6 @@
           </li>
         </ul>
       </nav>
-      {{ }}
       <Content
         :current-tab="currentTab"
         :images="images[currentTab]"
@@ -52,6 +54,7 @@ export default {
   data() {
     return {
       currentTab: 'header',
+      search: '',
       images: {
         header: {
           employer: 'header-employer',
@@ -172,16 +175,26 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
+    border-radius: 6px;
   }
   &__input {
     width: 850px;
   }
+  &__button-field {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border-left: $black0 1px solid;
+  }
   &__search-button {
     width: 220px;
+    margin-left: 20px;
   }
   &__navigation {
     width: 280px;
     background: $white;
+    height: 477px;
+    border-radius: 6px;
   }
   &__item {
     @include text-simple;
@@ -190,11 +203,16 @@ export default {
     font-size: 18px;
     padding: 15px;
     cursor: pointer;
+    &:hover {
+      background: #E9EDF2;
+      transition: 300ms;
+    }
   }
 }
 .container {
   display: grid;
   grid-template-columns: 1fr 3fr;
+  grid-gap: 20px;
 }
 
 @include _1199 {
