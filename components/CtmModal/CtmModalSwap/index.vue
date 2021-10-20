@@ -152,23 +152,38 @@ export default {
         this.toToken = this.addresses[0].title;
       }
     },
+    checkAmount() {
+      const maxAmount = this.tokensData.tokenAmount;
+      return +maxAmount >= +this.amount;
+    },
     async showSwapInfoModal() {
       this.SetLoader(true);
       this.connectToMetamask();
-      this.amount = this.amount.replace(/[,]/g, '.');
-      this.ShowModal({
-        key: modals.swapInfo,
-        crosschain: `${this.fromToken} > ${this.toToken}`,
-        chain: this.fromToken,
-        amount: `${this.amount} WQT`,
-        amountInt: this.amount,
-        sender: this.cropTxt(this.userAddress),
-        senderFull: this.userAddress,
-        recepient: this.cropTxt(this.recipientAddress),
-        recepientFull: this.recipientAddress,
-        worknetFee: '0,5 WQT',
-        binanceFee: '0,0009 BNB',
-      });
+      if (this.checkAmount()) {
+        this.amount = this.amount.replace(/[,]/g, '.');
+        this.ShowModal({
+          key: modals.swapInfo,
+          crosschain: `${this.fromToken} > ${this.toToken}`,
+          chain: this.fromToken,
+          amount: `${this.amount} WQT`,
+          amountInt: this.amount,
+          sender: this.cropTxt(this.userAddress),
+          senderFull: this.userAddress,
+          recepient: this.cropTxt(this.recipientAddress),
+          recepientFull: this.recipientAddress,
+          worknetFee: '0,5 WQT',
+          binanceFee: '0,0009 BNB',
+        });
+      } else {
+        this.hide();
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.incorrectAmount'),
+        });
+      }
       this.SetLoader(false);
     },
     connectToMetamask() {

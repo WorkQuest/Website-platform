@@ -833,6 +833,7 @@
   },
   "modals": {
     "incorrectAmount": "Incorrect amount, your wallet does not have enough funds",
+    "nothingToClaim": "Nothing to claim",
     "pleaseWait": "Please, wait",
     "redeemSuccess": "Redeem success!",
     "redeemFail": "Redeem fail",
