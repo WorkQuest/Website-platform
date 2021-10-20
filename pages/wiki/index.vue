@@ -31,14 +31,8 @@
           @click="selectTab(item)"
         >
           <li
-            v-if="item === currentTab"
-            class="wiki__item_bold"
-          >
-            {{ $t(`wiki.navigation.${item}.title`) }}
-          </li>
-          <li
-            v-else
             class="wiki__item"
+            :class="{'wiki__item_bold': item === currentTab}"
           >
             {{ $t(`wiki.navigation.${item}.title`) }}
           </li>
@@ -217,17 +211,7 @@ export default {
       transition: 300ms;
     }
     &_bold {
-      @include text-simple;
-      @include normal-font-size;
-      list-style-type: none;
-      font-size: 18px;
       font-weight: 600;
-      padding: 15px;
-      cursor: pointer;
-      &:hover {
-        background: #E9EDF2;
-        transition: 300ms;
-    }
     }
   }
 }
