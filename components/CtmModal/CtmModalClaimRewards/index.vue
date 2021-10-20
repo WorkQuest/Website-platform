@@ -11,6 +11,7 @@
           id="amount"
           v-model="amount"
           class="content__field"
+          type="number"
           :placeholder="3500"
           :label="$t('modals.amount')"
           rules="required|decimal|min_value:0.00001"
@@ -90,6 +91,7 @@ export default {
     },
     async staking() {
       this.SetLoader(true);
+      await this.checkMetamaskStatus();
       if (this.checkAmount()) {
         this.hide();
         await this.$store.dispatch('web3/stake', {
@@ -111,6 +113,7 @@ export default {
     },
     async unstaking() {
       this.SetLoader(true);
+      await this.checkMetamaskStatus();
       if (this.checkAmount()) {
         this.hide();
         await this.$store.dispatch('web3/unstake', {
@@ -129,6 +132,28 @@ export default {
         });
       }
       this.SetLoader(false);
+    },
+    async connectToMetamask() {
+      if (!this.isConnected) {
+        await this.$store.dispatch('web3/connect');
+      }
+    },
+    async checkMetamaskStatus() {
+      if (typeof window.ethereum === 'undefined') {
+        localStorage.setItem('metamaskStatus', 'notInstalled');
+        this.ShowModal({
+          key: modals.status,
+          img: '~assets/img/ui/cardHasBeenAdded.svg',
+          title: 'Please install Metamask!',
+          subtitle: 'Please click install...',
+          button: 'Install',
+          type: 'installMetamask',
+        });
+      } else {
+        localStorage.setItem('metamaskStatus', 'installed');
+        await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+        await this.connectToMetamask();
+      }
     },
   },
 };

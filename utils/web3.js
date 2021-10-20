@@ -122,17 +122,17 @@ export const startPingingMetamask = async (callback) => {
     if (web3) {
       clearInterval(pingTimer);
       const referenceAddress = await web3.eth.getCoinbase();
-      const referenceChainId = await web3.eth.net.getId();
+      // const referenceChainId = await web3.eth.net.getId();
       pingTimer = setInterval(async () => {
         if (!web3) {
           callback();
           clearInterval(pingTimer);
         }
         const address = await web3.eth.getCoinbase();
-        const chainId = await web3.eth.net.getId();
+        // const chainId = await web3.eth.net.getId();
         const isChangedAddress = address !== referenceAddress;
-        const isChangedNetId = chainId !== referenceChainId;
-        if (isChangedAddress || isChangedNetId) {
+        // const isChangedNetId = chainId !== referenceChainId;
+        if (isChangedAddress) {
           callback();
           clearInterval(pingTimer);
         }

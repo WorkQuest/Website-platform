@@ -33,7 +33,6 @@ export default {
   disconnect({ commit }) {
     disconnectWeb3();
     commit('setIsConnected', false);
-    showToast('Connect to Metamask', 'Disconnected', 'success');
     commit('clearTokens');
     commit('clearAccount');
   },
@@ -47,7 +46,7 @@ export default {
   async connect({ commit, dispatch }) {
     const response = await initWeb3();
     if (response.ok) {
-      // await dispatch('startPingingMetamask');
+      await dispatch('startPingingMetamask');
       await commit('setAccount', response.result);
       await commit('setIsConnected', true);
       await commit('setPurseData', getAccountAddress());

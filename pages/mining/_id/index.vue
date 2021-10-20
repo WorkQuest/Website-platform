@@ -593,13 +593,15 @@ export default {
         key: modals.swapTokens,
       });
     },
-    openModalUnstaking() {
+    async openModalUnstaking() {
+      await this.checkMetamaskStatus();
       this.ShowModal({
         key: modals.claimRewards,
         type: 2,
       });
     },
-    openModalClaimRewards() {
+    async openModalClaimRewards() {
+      await this.checkMetamaskStatus();
       this.ShowModal({
         key: modals.claimRewards,
         type: 1,
