@@ -6,7 +6,7 @@ import {
   claimRewards,
   disconnectWeb3,
   swap,
-  startPingingMetamask, fetchContractData, getAccountAddress, createInstance, showToast, goToChain, swapWithBridge, redeemSwap,
+  startPingingMetamask, fetchContractData, getAccountAddress, createInstance, showToast, goToChain, swapWithBridge, redeemSwap, initStackingContract,
   stakingBSC, unStakingBSC, claimRewardsBSC,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
@@ -237,5 +237,26 @@ export default {
   },
   async redeemSwap({ commit }, payload) {
     return await redeemSwap(payload);
+  },
+  async getAPY() {
+    const apiCoingecko = this.$axios.create({
+      baseURL: 'https://api.coingecko.com/api/v3/coins/work-quest',
+    });
+
+    const api = this.$axios.create({
+      baseURL: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2',
+    });
+    try {
+      const result = await apiCoingecko.get('');
+      console.log(result);
+      // if (result.data.errors) {
+      //   return error(Errors.LiquidityError, 'Query error', result.data.errors);
+      // }
+
+      return result;
+    } catch (err) {
+      return error(err);
+    }
+    // return await initStackingContract();
   },
 };
