@@ -612,7 +612,7 @@ export default {
     },
     iconUrls() {
       return [
-        require(`~/assets/img/ui/${this.miningPoolId === 'BNB' ? 'bnb' : 'hromb'}-logo.svg`),
+        require(`~/assets/img/ui/${this.miningPoolId === 'BNB' ? 'bnb_yellow' : 'eth_white'}.svg`),
         require('~/assets/img/ui/wqt-logo.svg'),
       ];
     },

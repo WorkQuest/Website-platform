@@ -242,7 +242,7 @@ export default {
           title: this.$t('crosschain.eth'),
         },
         {
-          icon: require('~/assets/img/ui/bnb-logo.svg'),
+          icon: require('~/assets/img/ui/bnb_yellow.svg'),
           title: this.$t('crosschain.bsc'),
         },
       ];
@@ -263,8 +263,8 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.swapsTableData(this.purseData);
-    await this.checkMiningPoolId();
     await this.checkMetamaskStatus();
+    await this.checkMiningPoolId();
     this.SetLoader(false);
   },
   methods: {
