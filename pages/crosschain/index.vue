@@ -263,8 +263,8 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.swapsTableData(this.purseData);
-    await this.checkMiningPoolId();
     await this.checkMetamaskStatus();
+    await this.checkMiningPoolId();
     this.SetLoader(false);
   },
   methods: {

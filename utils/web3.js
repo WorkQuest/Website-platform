@@ -170,7 +170,7 @@ export const initWeb3 = async () => {
       await web4.setProvider(window.ethereum, userAddress);
       return success(account);
     }
-    return 'ok';
+    return false;
   } catch (e) {
     return error(500, '', e.message);
   }
@@ -449,7 +449,9 @@ export const goToChain = async (chain) => {
     });
     return { ok: true };
   } catch (e) {
-    showToast('Switch chain error:', `${e.message}`, 'danger');
+    if (typeof window.ethereum !== 'undefined') {
+      showToast('Switch chain error:', `${e.message}`, 'danger');
+    }
     return error(500, 'stake error', e);
   }
 };
