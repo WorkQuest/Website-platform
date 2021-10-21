@@ -17,8 +17,16 @@
       <p class="example__description">
         <span v-if="card.subtitle">{{ card.subtitle }}</span>
       </p>
-      <div class="example__image">
+      <div class="example__image-wrapper">
         <img
+          v-if="currentTab === 'instruments'"
+          :class="{example__mobile: currentTab === 'instruments'}"
+          :src="require('@/assets/img/wiki/'+currentTab+'-'+key+'-small.png')"
+          :alt="card.title"
+        >
+        <img
+          class="example__image"
+          :class="{example__desktop: currentTab === 'instruments'}"
           :src="require('@/assets/img/wiki/'+currentTab+'-'+key+'.png')"
           :alt="card.title"
         >
@@ -32,10 +40,6 @@ export default {
     currentTab: {
       type: String,
       default: '',
-    },
-    images: {
-      type: Object,
-      default: () => {},
     },
   },
   computed: {
@@ -82,10 +86,29 @@ export default {
     margin-bottom: 10px;
   }
   &__image {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    box-shadow: 0px 2px 10px rgba(56, 71, 79, 0.1);
+     box-shadow: 0px 2px 10px rgba(56, 71, 79, 0.1);
+    &-wrapper {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+  &__desktop {
+    display: block;
+  }
+  &__mobile {
+    display: none;
+  }
+}
+@include _767 {
+  .example {
+    &__desktop {
+      display: none;
+    }
+    &__mobile {
+      display: block;
+      box-shadow: 0px 2px 10px rgba(56, 71, 79, 0.1);
+    }
   }
 }
 </style>
