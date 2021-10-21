@@ -118,11 +118,11 @@ export default {
       if (data.chainFrom === 2) {
         direction = [
           require('~/assets/img/ui/ethereum.svg'),
-          require('~/assets/img/ui/bnb-logo.svg'),
+          require('~/assets/img/ui/bnb_yellow.svg'),
         ];
       } else {
         direction = [
-          require('~/assets/img/ui/bnb-logo.svg'),
+          require('~/assets/img/ui/bnb_yellow.svg'),
           require('~/assets/img/ui/ethereum.svg'),
         ];
       }
