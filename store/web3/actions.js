@@ -8,7 +8,7 @@ import {
   swap,
   startPingingMetamask, fetchContractData, getAccount, createInstance, showToast, goToChain, swapWithBridge, redeemSwap,
   stakingBSC, unStakingBSC, claimRewardsBSC,
-  fetchStakingInfo,
+  getClaimRewardAmount, getStakingDataByType,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { WQLiquidityMining } from '~/abi/abi';
@@ -190,34 +190,25 @@ export default {
     return payload;
   },
 
-  async fetchStakingInfo({ commit }, { native }) {
-    let stakingAbi;
-    let stakingAddress;
-    if (process.env.PROD === 'false') {
-      if (native) {
-        stakingAbi = abi.WQStakingNative;
-        stakingAddress = process.env.STAKING;
-      } else {
-        stakingAbi = abi.WQStaking;
-        stakingAddress = process.env.STAKING;
-      }
-    } else {
-      console.log('dev only');
-    }
+  getAccount() {
+    return getAccount();
+  },
+
+  async fetchStakingInfo({ commit }, { stakingType }) {
+    const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
     const [stakingInfo, userInfo] = await Promise.all([
       fetchContractData('getStakingInfo', stakingAbi, stakingAddress),
       fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccount().address]),
     ]);
+    if (!stakingInfo || !userInfo) return false;
     const {
-      rewardTokenAddress, totalStaked, totalDistributed, rewardTotal, maxStake,
+      rewardTokenAddress, totalStaked, totalDistributed, rewardTotal, maxStake, minStake,
     } = stakingInfo;
-    const reg = /\d{3,4}?(?=...)/g;
     const [rewardDecimal, tokenSymbol] = await Promise.all([
       fetchContractData('decimals', abi.ERC20, rewardTokenAddress),
       fetchContractData('symbol', abi.ERC20, rewardTokenAddress),
     ]);
-    console.log(rewardTokenAddress, tokenSymbol, native, '\nUSER INFO:', userInfo);
-
+    console.log(rewardTokenAddress, tokenSymbol, 'stakingType:', stakingType, '\nUSER INFO:', userInfo);
     return {
       ...stakingInfo,
       rewardDecimal,
@@ -225,51 +216,30 @@ export default {
       claimPeriod: stakingInfo.claimPeriod / 60 / 60,
       stakePeriod: stakingInfo.stakePeriod / 60 / 60,
       distributionTime: stakingInfo.distributionTime / 60,
-      totalStaked: new BigNumber(totalStaked).shiftedBy(-rewardDecimal).decimalPlaces(2).toString()
-        .replace(reg, '$& '),
-      totalDistributed: new BigNumber(totalDistributed).shiftedBy(-rewardDecimal).decimalPlaces(2).toString()
-        .replace(reg, '$& '),
-      rewardTotal: new BigNumber(rewardTotal).shiftedBy(-rewardDecimal).decimalPlaces(2).toString()
-        .replace(reg, '$& '),
-      maxStake: new BigNumber(maxStake).shiftedBy(-rewardDecimal).decimalPlaces(2).toString()
-        .replace(reg, '$& '),
-      userInfo,
+      totalStaked: new BigNumber(totalStaked).shiftedBy(-rewardDecimal).decimalPlaces(2).toString(),
+      totalDistributed: new BigNumber(totalDistributed).shiftedBy(-rewardDecimal).decimalPlaces(2).toString(),
+      rewardTotal: new BigNumber(rewardTotal).shiftedBy(-rewardDecimal).decimalPlaces(2).toString(),
+      maxStake: new BigNumber(maxStake).shiftedBy(-rewardDecimal).decimalPlaces(2).toString(),
+      minStake: new BigNumber(minStake).shiftedBy(-rewardDecimal).decimalPlaces(2).toString(),
+      userInfo: {
+        claim: new BigNumber(userInfo.claim_).shiftedBy(-rewardDecimal).decimalPlaces(2).toString(),
+        staked: new BigNumber(userInfo.staked_).shiftedBy(-rewardDecimal).decimalPlaces(2).toString(),
+        balance: new BigNumber(userInfo._balance).shiftedBy(-rewardDecimal).decimalPlaces(2).toString(),
+      },
     };
-    // claimPeriod: "7200"
-    // distributionTime: "1800"
-    // maxStake: "100000000000000000000000" 100 000
-    // minStake: "1000000000000000000000" - 1 000
-    // rewardTokenAddress: "0xD8e8070b6cec220a86D336597E682F6E20f60c31"
-    // rewardTotal: "100000000000000000000000"
-    // stakePeriod: "900"
-    // stakeTokenAddress: "0xD8e8070b6cec220a86D336597E682F6E20f60c31"
-    // startTime: "1634538588"
-    // totalDistributed: "0"
-    // totalStaked: "0"
-
-    /*
-
-    duration: start time - скорее всего считать нужно из него как-то
-
-    getInfoByAddress - по кошельку получаю инфу по юзеру
-
-    stake - положить
-
-    getClaim - размер реварда available для стейкера
-    claim - забрать
-
-    (потом можно проверить getClaim)
-
-     */
   },
-  async stake({ commit }, { decimals, amount }) {
-    return await staking(decimals, amount);
+  async stake({ commit }, {
+    decimals, amount, stakingType, duration,
+  }) {
+    const { tokenAddress, stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
+    return await staking(decimals, amount, tokenAddress, stakingAddress, stakingAbi, duration, stakingType);
   },
   async unstake({ commit }, { decimals, amount }) {
     return await unStaking(decimals, amount);
   },
-  async claimRewards({ commit }) {
-    return await claimRewards();
+  async claimRewards({ commit }, { stakingType }) {
+    const { stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
+    return await claimRewards(stakingAddress, stakingAbi);
   },
   async swap({ commit }, { decimals, amount }) {
     return await swap(decimals, amount);

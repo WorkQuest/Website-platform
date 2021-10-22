@@ -160,47 +160,34 @@ let stakingAbi;
 let bridgeAddress;
 let nonce;
 
-export const staking = async (_decimals, _amount) => {
-  // form = 10 ** _decimals;
-  // amount = Math.floor(_amount * form) / form;
-  const miningPoolId = localStorage.getItem('miningPoolId');
-  if (process.env.PROD === 'true') {
-    if (miningPoolId === 'ETH') {
-      tokenAddress = process.env.LP_TOKEN;
-      stakingAddress = process.env.STAKING_ADDRESS;
-      stakingAbi = abi.StakingWQ;
-    } else {
-      tokenAddress = process.env.MAINNET_STAKING_LP_TOKEN;
-      stakingAddress = process.env.MAINNET_BSC_STAKING;
-      stakingAbi = abi.WQLiquidityMining;
-    }
+export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress, _stakingAbi, duration, stakingType) => {
+  contractInstance = await createInstance(_stakingAbi, _stakingAddress);
+  const isNative = stakingType === 'WUSD';
+  if (!isNative) {
+    instance = await createInstance(abi.ERC20, _tokenAddress);
+    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, _tokenAddress, [getAccount().address, _stakingAddress])).toString();
   }
-  if (process.env.PROD === 'false') {
-    if (miningPoolId === 'ETH') {
-      tokenAddress = process.env.LP_TOKEN;
-      stakingAddress = process.env.STAKING_ADDRESS;
-      stakingAbi = abi.StakingWQ;
-    } else {
-      tokenAddress = process.env.CAKE_LP_TOKEN;
-      stakingAddress = process.env.TESTNET_BSC_STAKING;
-      stakingAbi = abi.WQLiquidityMining;
-    }
-  }
-  instance = await createInstance(abi.ERC20, tokenAddress);
-  contractInstance = await createInstance(stakingAbi, stakingAddress);
-  allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, tokenAddress, [getAccount().address, stakingAddress])).toString();
   try {
-    console.log(_decimals);
     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
-    if (+allowance < +amount) {
+    if (!isNative && +allowance < +amount) {
       store.dispatch('main/setStatusText', 'Approving');
       showToast('Staking', 'Approving...', 'success');
-      await instance.approve(stakingAddress, amount);
+      await instance.approve(_stakingAddress, amount);
       showToast('Staking', 'Approving done', 'success');
     }
     showToast('Staking', 'Staking...', 'success');
     store.dispatch('main/setStatusText', 'Staking');
-    await contractInstance.stake(amount);
+    if (stakingType === 'WQT') {
+      await contractInstance.stake(amount, duration);
+    } else if (stakingType === 'MINING') {
+      await contractInstance.stake(amount);
+    } else if (stakingType === 'WUSD') {
+      await contractInstance.stake({ value: amount });
+      return '';
+    } else {
+      console.error('[staking] wrong staking type:', stakingType);
+      return error(500, 'stake error');
+    }
     showToast('Staking', 'Staking done', 'success');
     return '';
   } catch (e) {
@@ -210,8 +197,6 @@ export const staking = async (_decimals, _amount) => {
 };
 
 export const unStaking = async (_decimals, _amount) => {
-  // form = 10 ** _decimals;
-  // amount = Math.floor(_amount * form) / form;
   const miningPoolId = localStorage.getItem('miningPoolId');
   if (process.env.PROD === 'true') {
     if (miningPoolId === 'ETH') {
@@ -246,27 +231,8 @@ export const unStaking = async (_decimals, _amount) => {
   }
 };
 
-export const claimRewards = async (_decimals, _amount) => {
-  const miningPoolId = localStorage.getItem('miningPoolId');
-  if (process.env.PROD === 'true') {
-    if (miningPoolId === 'ETH') {
-      stakingAddress = process.env.STAKING_ADDRESS;
-      stakingAbi = abi.StakingWQ;
-    } else {
-      stakingAddress = process.env.MAINNET_BSC_STAKING;
-      stakingAbi = abi.WQLiquidityMining;
-    }
-  }
-  if (process.env.PROD === 'false') {
-    if (miningPoolId === 'ETH') {
-      stakingAddress = process.env.STAKING_ADDRESS;
-      stakingAbi = abi.StakingWQ;
-    } else {
-      stakingAddress = process.env.TESTNET_BSC_STAKING;
-      stakingAbi = abi.WQLiquidityMining;
-    }
-  }
-  contractInstance = await createInstance(stakingAbi, stakingAddress);
+export const claimRewards = async (_stakingAddress, _stakingAbi) => {
+  contractInstance = await createInstance(_stakingAbi, _stakingAddress);
   try {
     showToast('Claiming', 'Claiming...', 'success');
     await contractInstance.claim();
@@ -280,8 +246,6 @@ export const claimRewards = async (_decimals, _amount) => {
 };
 
 export const swap = async (_decimals, _amount) => {
-  // form = 10 ** _decimals;
-  // amount = Math.floor(_amount * form) / form;
   if (process.env.PROD === 'true') {
     instance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET);
     contractInstance = await createInstance(abi.MainNetWQTExchange, process.env.EXCHANGE_ADDRESS_BSCMAINNET);
@@ -463,4 +427,61 @@ export const redeemSwap = async (props) => {
     }
   }
   return '';
+};
+
+export const getStakingDataByType = (stakingType) => {
+  let _stakingAddress;
+  let _stakingAbi;
+  let _tokenAddress;
+
+  const _miningPoolId = localStorage.getItem('miningPoolId');
+  switch (stakingType) {
+    case 'MINING':
+      if (process.env.PROD === 'true') {
+        if (_miningPoolId === 'ETH') {
+          _tokenAddress = process.env.LP_TOKEN;
+          _stakingAddress = process.env.STAKING_ADDRESS;
+          _stakingAbi = abi.StakingWQ;
+        } else {
+          _tokenAddress = process.env.MAINNET_STAKING_LP_TOKEN;
+          _stakingAddress = process.env.MAINNET_BSC_STAKING;
+          _stakingAbi = abi.WQLiquidityMining;
+        }
+      }
+      if (process.env.PROD === 'false') {
+        if (_miningPoolId === 'ETH') {
+          _tokenAddress = process.env.LP_TOKEN;
+          _stakingAddress = process.env.STAKING_ADDRESS;
+          _stakingAbi = abi.StakingWQ;
+        } else {
+          tokenAddress = process.env.CAKE_LP_TOKEN;
+          _stakingAddress = process.env.TESTNET_BSC_STAKING;
+          _stakingAbi = abi.WQLiquidityMining;
+        }
+      }
+      break;
+    case 'WQT':
+      // TODO: WQT & WUSD for prod
+      if (process.env.PROD === 'false') {
+        _tokenAddress = process.env.WQT_TOKEN;
+        _stakingAbi = abi.WQStaking;
+        _stakingAddress = process.env.STAKING;
+      }
+      break;
+    case 'WUSD': // native
+      if (process.env.PROD === 'false') {
+        _stakingAbi = abi.WQStakingNative;
+        _stakingAddress = process.env.STAKING_NATIVE;
+      }
+      break;
+    default:
+      console.error('wrong staking type: ', stakingType);
+      return false;
+  }
+
+  return {
+    stakingAddress: _stakingAddress,
+    stakingAbi: _stakingAbi,
+    tokenAddress: _tokenAddress,
+  };
 };

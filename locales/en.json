@@ -2277,8 +2277,8 @@
     "stakeTokenAddress": "Stake Token Address",
     "rewardTokenAddress": "Reward Token Address",
     "totalStaked": "Total Staked",
-    "wqtCount": "{n} WQT",
-    "wusdCount": "{n} WUSD",
+    "WQTCount": "{n} WQT",
+    "WUSDCount": "{n} WUSD",
     "hours": "{n} hours",
     "days": "{n} days",
     "min": "{n} min",
@@ -2287,7 +2287,7 @@
     "stakingCards": {
       "distributionTime": "Distribution Time",
       "rewardTotal": "Reward Total",
-      "takePeriod": "Take Period",
+      "takePeriod": "Stake Period",
       "claimPeriod": "Claim Period",
       "duration": "Duration"
     },
@@ -2298,10 +2298,11 @@
       "claimed": "Claimed"
     },
     "stakeCards": {
-      "displayedInTheCurrentPeriod": "Displayed in the current period",
+      "stakeMin": "Stake minimum",
       "stakeLimit": "Stake limit",
       "periodUpdate": "Period update"
     },
+    "stakeDays": "Stake days",
     "stake": "Stake",
     "autoRenewal": "Auto Renewal"
   },

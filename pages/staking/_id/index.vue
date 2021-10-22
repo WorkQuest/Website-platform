@@ -25,7 +25,7 @@
           </div>
           <div class="link-cont">
             <div class="link-cont__link link-cont__link_gray">
-              {{ templateLink }}
+              {{ getPoolAddress() }}
             </div>
             <button
               type="button"
@@ -37,23 +37,11 @@
         </div>
         <div class="link-cont">
           <div class="link-cont__link">
-            {{ $t('staking.stakeTokenAddress') }}
-          </div>
-          <button
-            type="button"
-          >
-            <img
-              src="~assets/img/ui/launch.svg"
-              alt=""
-              class="link-cont__icon"
-            >
-          </button>
-        </div>
-        <div class="link-cont">
-          <div class="link-cont__link">
             {{ $t('staking.rewardTokenAddress') }}
           </div>
-          <button
+          <a
+            :href="etherscanRef"
+            target="_blank"
             type="button"
           >
             <img
@@ -61,7 +49,7 @@
               alt=""
               class="link-cont__icon"
             >
-          </button>
+          </a>
         </div>
       </div>
       <div class="staking-page__content">
@@ -140,6 +128,7 @@
               {{ $t('staking.autoRenewal') }}
             </base-btn>
             <base-btn
+              v-if="poolData && poolData.userInfo.staked === '0'"
               mode="outline"
               @click="showStakeModal"
             >
@@ -186,15 +175,18 @@ export default {
       options: 'modals/getOptions',
       isConnected: 'web3/isConnected',
     }),
+    slug() {
+      return this.$route.params.id;
+    },
     cards() {
       if (!this.poolData) return [];
       return [
         {
-          title: this.$tc('staking.wqtCount', this.poolData.totalStaked),
+          title: this.$tc('staking.WQTCount', this.poolData.totalStaked),
           subtitle: this.$t('staking.totalStaked'),
         },
         {
-          title: this.$tc('staking.wqtCount', this.poolData.totalDistributed),
+          title: this.$tc('staking.WQTCount', this.poolData.totalDistributed),
           subtitle: this.$t('staking.totalDistributed'),
         },
       ];
@@ -229,15 +221,15 @@ export default {
       return [
         {
           name: this.$t('staking.userInformationCards.staked'),
-          about: this.$tc('staking.wqtCount', this.poolData.userInfo.staked_),
+          about: this.$tc(`staking.${this.slug}Count`, this.poolData.userInfo.staked),
         },
         {
           name: this.$t('staking.userInformationCards.stakeBalance'),
-          about: this.$tc('staking.wqtCount', this.poolData.userInfo._balance),
+          about: this.$tc(`staking.${this.slug}Count`, this.poolData.userInfo.balance),
         },
         {
           name: this.$t('staking.userInformationCards.claimed'),
-          about: this.$tc('staking.wqtCount', this.poolData.userInfo.claim_),
+          about: this.$tc('staking.wqtCount', this.poolData.userInfo.claim),
         },
       ];
     },
@@ -245,12 +237,12 @@ export default {
       if (!this.poolData) return [];
       return [
         {
-          name: this.$t('staking.stakeCards.displayedInTheCurrentPeriod'),
-          about: this.$t('staking.wqtCount', { n: '?' }),
+          name: this.$t('staking.stakeCards.stakeMin'),
+          about: this.$t('staking.WQTCount', { n: this.poolData.minStake }),
         },
         {
           name: this.$t('staking.stakeCards.stakeLimit'),
-          about: this.$t('staking.wqtCount', { n: this.poolData.maxStake }),
+          about: this.$t('staking.WQTCount', { n: this.poolData.maxStake }),
         },
         {
           name: this.$t('staking.stakeCards.periodUpdate'),
@@ -258,35 +250,52 @@ export default {
         },
       ];
     },
+    etherscanRef() {
+      if (!this.poolData) return '/';
+      return (process.env.PROD === 'true') ? `https://etherscan.io/address/${this.poolData.rewardTokenAddress}`
+        : `https://rinkeby.etherscan.io/address/${this.poolData.rewardTokenAddress}`;
+    },
   },
   async mounted() {
-    this.SetLoader(true);
-
-    if (!this.isConnected) {
-      await this.$store.dispatch('web3/connect');
-    }
-    const wusdPool = await this.$store.dispatch('web3/fetchStakingInfo', { native: true });
-    console.log('native:', wusdPool);
-    this.poolData = wusdPool;
-    this.SetLoader(false);
+    await this.getPoolData();
   },
   methods: {
+    async getPoolData() {
+      this.SetLoader(true);
+      if (!this.isConnected) await this.$store.dispatch('web3/connect');
+      const poolData = await this.$store.dispatch('web3/fetchStakingInfo', { stakingType: this.slug });
+      console.log(this.slug, ':', poolData);
+      this.poolData = poolData;
+      this.SetLoader(false);
+    },
+    getPoolAddress() {
+      if (this.slug === 'WQT') return process.env.STAKING;
+      if (this.slug === 'WUSD') return process.env.STAKING_NATIVE;
+      return '';
+    },
     handleBackToMainstaking() {
       this.$router.push('/staking');
     },
     doCopy(ev) {
       ev.stopPropagation();
-      this.$copyText(this.templateLink).then(() => {
-      });
+      this.$copyText(this.getPoolAddress()).then(() => {});
     },
-    showClaimModal() {
+    async showClaimModal() {
       this.ShowModal({
         key: modals.claim,
+        stakingType: this.slug,
+        updateMethod: this.getPoolData,
       });
     },
     showStakeModal() {
       this.ShowModal({
-        key: modals.takeWithdraw,
+        key: modals.claimRewards,
+        type: 1,
+        decimals: this.poolData.rewardDecimal,
+        stakingType: this.slug,
+        minStake: this.slug === 'WQT' ? this.poolData.minStake : '0.01',
+        maxStake: this.poolData.maxStake,
+        updateMethod: this.getPoolData,
       });
     },
   },
@@ -316,6 +325,7 @@ export default {
 
     .head-btns {
       display: flex;
+      align-items: center;
       justify-content: space-between;
     }
 

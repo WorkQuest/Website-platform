@@ -25,7 +25,7 @@
             >
               <template #cell(poolAddress)="el">
                 <div class="table__value table__value_gray">
-                  {{ getFormattedAddress(el.item.rewardTokenAddress) }}
+                  {{ getFormattedAddress(el.item.poolAddress) }}
                 </div>
               </template>
               <template #cell(totalStaked)="el">
@@ -153,36 +153,6 @@ export default {
       options: 'modals/getOptions',
       isConnected: 'web3/isConnected',
     }),
-    // данные берутся из poolsData. Удалить, если все окей
-    // items() {
-    //   if (!this.poolsData) return [];
-    //   return [
-    //     {
-    //       poolAddress: this.$t('staking.tempAddress'),
-    //       totalStaked: `${this.poolsData.wqt.totalStaked} ${this.poolsData.wqt.tokenSymbol}`,
-    //       totalDistributed: `${this.poolsData.wqt.totalDistributed} ${this.poolsData.wqt.tokenSymbol}`,
-    //       stakeTokenAddress: this.stakeTokenAddresses.wqt,
-    //       rewardTokenAddress: this.stakeTokenAddresses.wqt,
-    //       open: this.$t('staking.open'),
-    //       link: 'wqt',
-    //     },
-    //     {
-    //       poolAddress: this.$t('staking.tempAddress'),
-    //       totalStaked: `${this.poolsData.wusd.totalStaked} ${this.poolsData.wusd.tokenSymbol}`,
-    //       totalDistributed: `${this.poolsData.wusd.totalDistributed} ${this.poolsData.wusd.tokenSymbol}`,
-    //       stakeTokenAddress: this.stakeTokenAddresses.wusd,
-    //       rewardTokenAddress: this.stakeTokenAddresses.wusd,
-    //       open: this.$t('staking.open'),
-    //       link: 'wusd',
-    //     },
-    //   ];
-    // },
-    stakeTokenAddresses() {
-      return {
-        wqt: process.env.STAKING,
-        wusd: process.env.STAKING_NATIVE,
-      };
-    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -191,18 +161,25 @@ export default {
       await this.$store.dispatch('web3/connect');
     }
     const [wqtPool, wusdPool] = await Promise.all([
-      this.$store.dispatch('web3/fetchStakingInfo', { native: false }),
-      this.$store.dispatch('web3/fetchStakingInfo', { native: true }),
+      this.$store.dispatch('web3/fetchStakingInfo', { stakingType: 'WQT' }),
+      this.$store.dispatch('web3/fetchStakingInfo', { stakingType: 'WUSD' }),
     ]);
     console.log('wqt', wqtPool, 'wusdPool', wusdPool);
-    this.poolsData = [wqtPool, wusdPool];
+    if (wqtPool && wusdPool) {
+      wqtPool.poolAddress = process.env.STAKING;
+      wqtPool.link = 'WQT';
+      wusdPool.poolAddress = process.env.STAKING_NATIVE;
+      wusdPool.link = 'WUSD';
+      this.poolsData = [wqtPool, wusdPool];
+    }
     this.SetLoader(false);
   },
   methods: {
     handleOpenPool(el) {
-      this.$router.push(`/staking/${el.item.stakeTokenAddress}`);
+      this.$router.push(`/staking/${el.item.link}`);
     },
     getFormattedAddress(address) {
+      if (!address) return '';
       return `${address.slice(0, 8)}...${address.slice(-4)}`;
     },
   },

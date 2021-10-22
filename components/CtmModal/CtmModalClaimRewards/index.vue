@@ -13,7 +13,7 @@
           class="content__field"
           :placeholder="3500"
           :label="$t('modals.amount')"
-          rules="required|decimal|min_value:0.00001"
+          :rules="`required|decimal${getInputRules()}`"
           :name="$t('modals.amount')"
         >
           <template
@@ -29,6 +29,18 @@
             </base-btn>
           </template>
         </base-field>
+        <div
+          v-if="options.type === 1 && options.stakingType === 'WQT'"
+          class="content__days"
+        >
+          {{ $t('staking.stakeDays') }}
+          <base-dd
+            v-model="daysValue"
+            class="content__dd"
+            :placeholder="30"
+            :items="stakeDays"
+          />
+        </div>
         <div class="content__container">
           <base-btn
             :mode="'outline'"
@@ -60,6 +72,8 @@ export default {
       amount: '',
       balance: 10,
       currency: 'WUSD',
+      daysValue: 0,
+      stakeDays: [30, 60, 90],
     };
   },
   computed: {
@@ -71,9 +85,17 @@ export default {
       userStake: 'web3/getUserStake',
     }),
   },
+  mounted() {
+    console.log(this.options);
+  },
   methods: {
     hide() {
       this.CloseModal();
+    },
+    getInputRules() {
+      const min = this.options.minStake ? `|min_value:${this.options.minStake}` : '|min_value:0.00001';
+      const max = this.options.maxStake ? `|max_value:${this.options.maxStake}` : '';
+      return min + max;
     },
     maxBalance() {
       this.amount = this.options.type === 1 ? this.userBalance : this.userStake;
@@ -85,12 +107,16 @@ export default {
     },
     async staking() {
       this.SetLoader(true);
+      const { decimals, stakingType } = this.options;
       this.hide();
       await this.$store.dispatch('web3/stake', {
-        decimals: this.accountData.decimals.stakeDecimal,
+        decimals,
         amount: this.amount,
+        stakingType,
+        duration: this.stakeDays[this.daysValue],
       });
-      await this.tokensDataUpdate();
+      if (stakingType === 'MINING') await this.tokensDataUpdate();
+      else if (this.options.updateMethod) this.options.updateMethod();
       this.SetLoader(false);
     },
     async unstaking() {

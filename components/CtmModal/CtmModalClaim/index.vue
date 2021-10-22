@@ -122,8 +122,7 @@ export default {
         return `${str.slice(0, 4)} ${str.slice(4, 8)} ${str.slice(8, 12)} ${str.slice(12)}`;
       }
       let star = [];
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < str.length; i++) {
+      for (let i = 0; i < str.length; i += 1) {
         if (i < str.length - 4) { star.push('*'); } else {
           star.push(str[i]);
         }
@@ -132,11 +131,19 @@ export default {
       return `${star.slice(0, 4)} ${star.slice(4, 8)} ${star.slice(8, 12)} ${star.slice(12)}`;
     },
   },
+  async mounted() {
+    const account = await this.$store.dispatch('web3/getAccount');
+    this.walletAddress = account.address;
+  },
   methods: {
     hide() {
       this.CloseModal();
     },
-    showTransactionSend() {
+    async showTransactionSend() {
+      const { stakingType, updateMethod } = this.options;
+      this.hide();
+      await this.$store.dispatch('web3/claimRewards', { stakingType });
+      if (updateMethod) updateMethod();
       this.ShowModal({
         key: modals.transactionSend,
       });

@@ -563,7 +563,7 @@ export default {
     },
     async claimRewards() {
       this.SetLoader(true);
-      await this.$store.dispatch('web3/claimRewards');
+      await this.$store.dispatch('web3/claimRewards', { stakingType: 'MINING' });
       await this.tokensDataUpdate();
       this.SetLoader(false);
     },
@@ -590,6 +590,8 @@ export default {
       this.ShowModal({
         key: modals.claimRewards,
         type: 2,
+        decimals: this.accountData.decimals.stakeDecimal,
+        stakingType: 'MINING',
       });
     },
     openModalClaimRewards() {
