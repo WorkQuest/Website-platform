@@ -55,13 +55,11 @@ export default {
   async connect({ commit, dispatch }) {
     const response = await initWeb3();
     if (response.ok) {
-      dispatch('startPingingMetamask');
-      commit('setAccount', response.result);
-      commit('setIsConnected', true);
-      commit('setPurseData', getAccountAddress());
+      await dispatch('startPingingMetamask');
+      await commit('setAccount', response.result);
+      await commit('setIsConnected', true);
+      await commit('setPurseData', getAccountAddress());
       showToast('Connect to Metamask', 'Connected', 'success');
-    } else if (typeof window.ethereum === 'undefined') {
-      showToast('Error connect to Metamask', 'Metamask not installed! Please install Metamask!', 'danger');
     } else {
       commit('setIsConnected', false);
       showToast('Error connect to Metamask', `${response.data}`, 'danger');

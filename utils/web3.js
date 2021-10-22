@@ -108,17 +108,17 @@ export const startPingingMetamask = async (callback) => {
     if (web3) {
       clearInterval(pingTimer);
       const referenceAddress = await web3.eth.getCoinbase();
-      const referenceChainId = await web3.eth.net.getId();
+      // const referenceChainId = await web3.eth.net.getId();
       pingTimer = setInterval(async () => {
         if (!web3) {
           callback();
           clearInterval(pingTimer);
         }
         const address = await web3.eth.getCoinbase();
-        const chainId = await web3.eth.net.getId();
+        // const chainId = await web3.eth.net.getId();
         const isChangedAddress = address !== referenceAddress;
-        const isChangedNetId = chainId !== referenceChainId;
-        if (isChangedAddress || isChangedNetId) {
+        // const isChangedNetId = chainId !== referenceChainId;
+        if (isChangedAddress) {
           callback();
           clearInterval(pingTimer);
         }
@@ -156,7 +156,7 @@ export const initWeb3 = async () => {
       await web4.setProvider(window.ethereum, userAddress);
       return success(account);
     }
-    return 'ok';
+    return false;
   } catch (e) {
     return error(500, '', e.message);
   }
@@ -432,7 +432,9 @@ export const goToChain = async (chain) => {
     });
     return { ok: true };
   } catch (e) {
-    showToast('Switch chain error:', `${e.message}`, 'danger');
+    if (typeof window.ethereum !== 'undefined') {
+      showToast('Switch chain error:', `${e.message}`, 'danger');
+    }
     return error(500, 'stake error', e);
   }
 };
