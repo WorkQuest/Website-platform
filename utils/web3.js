@@ -505,16 +505,15 @@ export const redeemSwap = async (props) => {
   return '';
 };
 
-export const initStackingContract = async () => {
+export const initStackingContract = async (chain) => {
   stakingAbi = abi.WQLiquidityMining;
   let websocketProvider;
-  if (process.env.PROD === 'true') {
+  if (chain === 'ETH') {
     stakingAddress = process.env.MAINNET_ETH_STAKING;
     websocketProvider = process.env.MAINNET_ETH_INFURA;
-  }
-  if (process.env.PROD === 'false') {
-    stakingAddress = process.env.STAKING_ADDRESS;
-    websocketProvider = process.env.TESTNET_ETH_INFURA;
+  } else {
+    stakingAddress = process.env.MAINNET_BSC_STAKING;
+    websocketProvider = process.env.MAINNET_BSC_MORALIS;
   }
   const liquidityMiningProvider = new Web3(new Web3.providers.WebsocketProvider(websocketProvider, {
     clientConfig: {

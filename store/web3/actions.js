@@ -248,6 +248,7 @@ export default {
     return await redeemSwap(payload);
   },
   async getAPY({ commit }, payload) {
+    // TODO: add actual Data
     let token0;
     let token1;
     let chainId;
@@ -255,23 +256,24 @@ export default {
     let amountMax1;
     let api;
     let pair;
+    const stakingInfoEvent = await initStackingContract(payload.chain);
     if (payload.chain === 'ETH') {
       chainId = 1;
       amountMax0 = process.env.TOKEN_WQT_ETHEREUM_NETWORK_AMOUNT_MAX;
       amountMax1 = process.env.TOKEN_WETH_AMOUNT_MAX;
       token0 = new TokenUniswap(
         chainId,
-        process.env.TOKEN_WQT_ETHEREUM_NETWORK_ADDRESS,
-        process.env.TOKEN_WQT_ETHEREUM_NETWORK_DECIMAL,
-        process.env.TOKEN_WQT_ETHEREUM_NETWORK_SYMBOL,
-        process.env.TOKEN_WQT_ETHEREUM_NETWORK_NAME,
+        process.env.MAINNET_ETH_WQT_TOKEN,
+        18,
+        'WQT',
+        'Work Quest Token',
       );
       token1 = new TokenUniswap(
         chainId,
         process.env.TOKEN_WETH_ADDRESS,
-        process.env.TOKEN_WETH_DECIMAL,
-        process.env.TOKEN_WETH_SYMBOL,
-        process.env.TOKEN_WETH_NAME,
+        18,
+        'WETH',
+        'Wrapped Ether',
       );
       pair = new PairUniswap(
         new TokenAmountUniswap(token0, amountMax0),
@@ -286,17 +288,17 @@ export default {
       amountMax1 = process.env.TOKEN_WBNB_AMOUNT_MAX;
       token0 = new TokenPancake(
         chainId,
-        process.env.TOKEN_WQT_BSC_NETWORK_ADDRESS,
-        process.env.TOKEN_WQT_BSC_NETWORK_DECIMAL,
-        process.env.TOKEN_WQT_BSC_NETWORK_SYMBOL,
-        process.env.TOKEN_WQT_BSC_NETWORK_NAME,
+        process.env.MAINNET_BSC_WQT_TOKEN,
+        18,
+        'WQT',
+        'Work Quest Token',
       );
       token1 = new TokenPancake(
         chainId,
         process.env.TOKEN_WBNB_ADDRESS,
-        process.env.TOKEN_WBNB_DECIMAL,
-        process.env.TOKEN_WBNB_SYMBOL,
-        process.env.TOKEN_WBNB_NAME,
+        18,
+        'WETH',
+        'Wrapped BNB',
       );
       pair = new PairPancake(
         new TokenAmountPancake(token0, amountMax0),
@@ -311,7 +313,6 @@ export default {
     });
     try {
       const coingeckoResult = await apiCoingecko.get('');
-      const stakingInfoEvent = await initStackingContract();
       const priceWQT = coingeckoResult.data.market_data.current_price.usd;
       const result = await api.post('', {
         query: `{

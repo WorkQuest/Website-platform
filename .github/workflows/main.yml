@@ -53,6 +53,14 @@ jobs:
           echo TESTNET_BSC_STAKING=${{ secrets.TESTNET_BSC_STAKING }} >> .env
           echo MAINNET_ETH_STAKING=${{ secrets.MAINNET_ETH_STAKING }} >> .env
           echo MAINNET_STAKING_ETH_LP_TOKEN=${{ secrets.MAINNET_STAKING_ETH_LP_TOKEN }} >> .env
+          echo MAINNET_ETH_INFURA=${{ secrets.MAINNET_ETH_INFURA }} >> .env
+          echo MAINNET_BSC_MORALIS=${{ secrets.MAINNET_BSC_MORALIS }} >> .env
+          echo TOKEN_WBNB_ADDRESS=${{ secrets.TOKEN_WBNB_ADDRESS }} >> .env
+          echo TOKEN_WETH_ADDRESS=${{ secrets.TOKEN_WETH_ADDRESS }} >> .env
+          echo TOKEN_WBNB_AMOUNT_MAX=${{ secrets.TOKEN_WBNB_AMOUNT_MAX }} >> .env
+          echo TOKEN_WETH_AMOUNT_MAX=${{ secrets.TOKEN_WETH_AMOUNT_MAX }} >> .env
+          echo TOKEN_WQT_BSC_NETWORK_AMOUNT_MAX=${{ secrets.TOKEN_WQT_BSC_NETWORK_AMOUNT_MAX }} >> .env
+          echo TOKEN_WQT_ETHEREUM_NETWORK_AMOUNT_MAX=${{ secrets.TOKEN_WQT_ETHEREUM_NETWORK_AMOUNT_MAX }} >> .env
       - name: Run generate static task
         run: npm run generate
                  #    env:
@@ -124,6 +132,14 @@ jobs:
           echo MAINNET_BSC_STAKING=${{ secrets.MAINNET_BSC_STAKING }} >> .env
           echo MAINNET_ETH_STAKING=${{ secrets.MAINNET_ETH_STAKING }} >> .env
           echo MAINNET_STAKING_ETH_LP_TOKEN=${{ secrets.MAINNET_STAKING_ETH_LP_TOKEN }} >> .env
+          echo MAINNET_ETH_INFURA=${{ secrets.MAINNET_ETH_INFURA }} >> .env
+          echo MAINNET_BSC_MORALIS=${{ secrets.MAINNET_BSC_MORALIS }} >> .env
+          echo TOKEN_WBNB_ADDRESS=${{ secrets.TOKEN_WBNB_ADDRESS }} >> .env
+          echo TOKEN_WETH_ADDRESS=${{ secrets.TOKEN_WETH_ADDRESS }} >> .env
+          echo TOKEN_WBNB_AMOUNT_MAX=${{ secrets.TOKEN_WBNB_AMOUNT_MAX }} >> .env
+          echo TOKEN_WETH_AMOUNT_MAX=${{ secrets.TOKEN_WETH_AMOUNT_MAX }} >> .env
+          echo TOKEN_WQT_BSC_NETWORK_AMOUNT_MAX=${{ secrets.TOKEN_WQT_BSC_NETWORK_AMOUNT_MAX }} >> .env
+          echo TOKEN_WQT_ETHEREUM_NETWORK_AMOUNT_MAX=${{ secrets.TOKEN_WQT_ETHEREUM_NETWORK_AMOUNT_MAX }} >> .env
       - name: Run generate static task
         run: npm run generate
     #    env:
