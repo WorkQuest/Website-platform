@@ -202,6 +202,7 @@ export default {
     color: $blue;
     font-weight: 600;
     font-size: 16px;
+    height:40px;
     line-height: 130%;
     &:hover{
       background-color: $black0;

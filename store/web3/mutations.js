@@ -41,4 +41,7 @@ export default {
   setPurseData(state, payload) {
     state.purseData = payload;
   },
+  setCrosschainTokensData(state, payload) {
+    state.crosschainTokensData = payload;
+  },
 };
