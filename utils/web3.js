@@ -528,6 +528,5 @@ export const initStackingContract = async () => {
     },
   }));
   const liquidityMiningContract = new liquidityMiningProvider.eth.Contract(stakingAbi, stakingAddress);
-  console.log(liquidityMiningContract);
   return await liquidityMiningContract.methods.getStakingInfo().call();
 };
