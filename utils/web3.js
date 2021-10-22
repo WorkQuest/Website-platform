@@ -186,11 +186,11 @@ let nonce;
 
 export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress, _stakingAbi, duration, stakingType) => {
   let instance;
-  const contractInstance = await createInstance(_stakingAbi, _stakingAddress);
+  // const contractInstance = await createInstance(_stakingAbi, _stakingAddress);
   const isNative = stakingType === 'WUSD';
   if (!isNative) {
     instance = await createInstance(abi.ERC20, _tokenAddress);
-    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, _tokenAddress, [getAccount().address, _stakingAddress])).toString();
+    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, _tokenAddress, [getAccountAddress(), _stakingAddress])).toString();
   }
   try {
     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
@@ -249,7 +249,6 @@ export const unStaking = async (_decimals, _amount) => {
     }
   }
   try {
-    console.log(_decimals);
     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
     showToast('Unstaking', 'Unstaking...', 'success');
     store.dispatch('main/setStatusText', 'Staking');
@@ -505,7 +504,7 @@ export const getStakingDataByType = (stakingType) => {
       }
       break;
     default:
-      console.error('wrong staking type: ', stakingType);
+      console.error('[getStakingDataByType] wrong staking type: ', stakingType);
       return false;
   }
 

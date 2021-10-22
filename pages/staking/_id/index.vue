@@ -128,7 +128,7 @@
               {{ $t('staking.autoRenewal') }}
             </base-btn>
             <base-btn
-              v-if="poolData && poolData.userInfo.staked === '0'"
+              v-if="poolData && userInfo && userInfo.staked === '0'"
               mode="outline"
               @click="showStakeModal"
             >
@@ -168,6 +168,7 @@ export default {
         },
       ],
       poolData: null,
+      userInfo: null,
     };
   },
   computed: {
@@ -217,19 +218,19 @@ export default {
       ];
     },
     userInfoCards() {
-      if (!this.poolData) return [];
+      if (!this.userInfo) return [];
       return [
         {
           name: this.$t('staking.userInformationCards.staked'),
-          about: this.$tc(`staking.${this.slug}Count`, this.poolData.userInfo.staked),
+          about: this.$tc(`staking.${this.slug}Count`, this.userInfo.staked),
         },
         {
           name: this.$t('staking.userInformationCards.stakeBalance'),
-          about: this.$tc(`staking.${this.slug}Count`, this.poolData.userInfo.balance),
+          about: this.$tc(`staking.${this.slug}Count`, this.userInfo.balance),
         },
         {
           name: this.$t('staking.userInformationCards.claimed'),
-          about: this.$tc('staking.wqtCount', this.poolData.userInfo.claim),
+          about: this.$tc('staking.WQTCount', this.userInfo.claim),
         },
       ];
     },
@@ -257,16 +258,18 @@ export default {
     },
   },
   async mounted() {
+    this.SetLoader(true);
+    if (!this.isConnected) await this.$store.dispatch('web3/connect');
     await this.getPoolData();
+    await this.getUserInfo();
+    this.SetLoader(false);
   },
   methods: {
     async getPoolData() {
-      this.SetLoader(true);
-      if (!this.isConnected) await this.$store.dispatch('web3/connect');
-      const poolData = await this.$store.dispatch('web3/fetchStakingInfo', { stakingType: this.slug });
-      console.log(this.slug, ':', poolData);
-      this.poolData = poolData;
-      this.SetLoader(false);
+      this.poolData = await this.$store.dispatch('web3/fetchStakingInfo', { stakingType: this.slug });
+    },
+    async getUserInfo() {
+      this.userInfo = await this.$store.dispatch('web3/getStakingUserInfo', { stakingType: this.slug, decimals: this.poolData.decimals });
     },
     getPoolAddress() {
       if (this.slug === 'WQT') return process.env.STAKING;
@@ -284,7 +287,7 @@ export default {
       this.ShowModal({
         key: modals.claim,
         stakingType: this.slug,
-        updateMethod: this.getPoolData,
+        updateMethod: this.getUserInfo,
       });
     },
     showStakeModal() {
@@ -295,7 +298,7 @@ export default {
         stakingType: this.slug,
         minStake: this.slug === 'WQT' ? this.poolData.minStake : '0.01',
         maxStake: this.poolData.maxStake,
-        updateMethod: this.getPoolData,
+        updateMethod: this.getUserInfo,
       });
     },
   },

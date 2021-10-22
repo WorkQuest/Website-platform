@@ -18,10 +18,8 @@ import {
   unStakingBSC,
   claimRewardsBSC,
   getStakingDataByType,
-  getAccount,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
-import { WQLiquidityMining } from '~/abi/abi';
 
 BigNumber.set({ ROUNDING_MODE: BigNumber.ROUND_DOWN });
 BigNumber.config({ EXPONENTIAL_AT: 60 });
@@ -226,42 +224,45 @@ export default {
     return payload;
   },
 
-  getAccount() {
-    return getAccount();
+  getAccountAddress() {
+    return getAccountAddress();
   },
 
+  async getStakingUserInfo({ commit }, { stakingType, decimals }) {
+    const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
+    const userInfo = await fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccountAddress()]);
+    console.log('user info', userInfo);
+    return {
+      claim: new BigNumber(userInfo.claim_).shiftedBy(-decimals).decimalPlaces(2).toString(),
+      staked: new BigNumber(userInfo.staked_).shiftedBy(-decimals).decimalPlaces(2).toString(),
+      balance: new BigNumber(userInfo._balance).shiftedBy(-decimals).decimalPlaces(2).toString(),
+    };
+  },
   async fetchStakingInfo({ commit }, { stakingType }) {
     const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
-    const [stakingInfo, userInfo] = await Promise.all([
-      fetchContractData('getStakingInfo', stakingAbi, stakingAddress),
-      fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccount().address]),
-    ]);
-    if (!stakingInfo || !userInfo) return false;
+    const stakingInfo = await fetchContractData('getStakingInfo', stakingAbi, stakingAddress);
+    if (!stakingInfo) {
+      return false;
+    }
     const {
       rewardTokenAddress, totalStaked, totalDistributed, rewardTotal, maxStake, minStake,
     } = stakingInfo;
-    const [rewardDecimal, tokenSymbol] = await Promise.all([
+    const [decimals, tokenSymbol] = await Promise.all([
       fetchContractData('decimals', abi.ERC20, rewardTokenAddress),
       fetchContractData('symbol', abi.ERC20, rewardTokenAddress),
     ]);
-    console.log(rewardTokenAddress, tokenSymbol, 'stakingType:', stakingType, '\nUSER INFO:', userInfo);
     return {
       ...stakingInfo,
-      rewardDecimal,
+      decimals,
       tokenSymbol,
       claimPeriod: stakingInfo.claimPeriod / 60 / 60,
       stakePeriod: stakingInfo.stakePeriod / 60 / 60,
       distributionTime: stakingInfo.distributionTime / 60,
-      totalStaked: new BigNumber(totalStaked).shiftedBy(-rewardDecimal).decimalPlaces(2).toString(),
-      totalDistributed: new BigNumber(totalDistributed).shiftedBy(-rewardDecimal).decimalPlaces(2).toString(),
-      rewardTotal: new BigNumber(rewardTotal).shiftedBy(-rewardDecimal).decimalPlaces(2).toString(),
-      maxStake: new BigNumber(maxStake).shiftedBy(-rewardDecimal).decimalPlaces(2).toString(),
-      minStake: new BigNumber(minStake).shiftedBy(-rewardDecimal).decimalPlaces(2).toString(),
-      userInfo: {
-        claim: new BigNumber(userInfo.claim_).shiftedBy(-rewardDecimal).decimalPlaces(2).toString(),
-        staked: new BigNumber(userInfo.staked_).shiftedBy(-rewardDecimal).decimalPlaces(2).toString(),
-        balance: new BigNumber(userInfo._balance).shiftedBy(-rewardDecimal).decimalPlaces(2).toString(),
-      },
+      totalStaked: new BigNumber(totalStaked).shiftedBy(-decimals).decimalPlaces(2).toString(),
+      totalDistributed: new BigNumber(totalDistributed).shiftedBy(-decimals).decimalPlaces(2).toString(),
+      rewardTotal: new BigNumber(rewardTotal).shiftedBy(-decimals).decimalPlaces(2).toString(),
+      maxStake: new BigNumber(maxStake).shiftedBy(-decimals).decimalPlaces(2).toString(),
+      minStake: new BigNumber(minStake).shiftedBy(-decimals).decimalPlaces(2).toString(),
     };
   },
   async stake({ commit }, {

@@ -156,10 +156,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-
-    if (!this.isConnected) {
-      await this.$store.dispatch('web3/connect');
-    }
+    if (!this.isConnected) await this.$store.dispatch('web3/connect');
     const [wqtPool, wusdPool] = await Promise.all([
       this.$store.dispatch('web3/fetchStakingInfo', { stakingType: 'WQT' }),
       this.$store.dispatch('web3/fetchStakingInfo', { stakingType: 'WUSD' }),

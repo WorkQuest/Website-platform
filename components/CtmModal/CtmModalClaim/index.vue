@@ -132,8 +132,7 @@ export default {
     },
   },
   async mounted() {
-    const account = await this.$store.dispatch('web3/getAccount');
-    this.walletAddress = account.address;
+    this.walletAddress = await this.$store.dispatch('web3/getAccountAddress');
   },
   methods: {
     hide() {
