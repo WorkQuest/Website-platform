@@ -21,39 +21,26 @@
               />
             </div>
           </div>
-          <base-btn
-            class="wiki__header-button"
-            @click="handleClick"
-          >
-            <img
-              v-if="!isOpened"
-              src="../../assets/img/wiki/up.svg"
-              alt="menu"
-            >
-            <img
-              v-if="isOpened"
-              src="../../assets/img/wiki/down.svg"
-              alt="close menu"
-            >
-          </base-btn>
         </div>
       </div>
     </div>
     <main class="content wiki__content">
       <nav
         class="wiki__navigation"
-        :class="{opened: isOpened}"
       >
         <ul
-          v-for="(item, key) in navigation"
-          :key="key"
+          ref="nav"
           class="wiki__ul"
-          @click="selectTab(item)"
+          @wheel="(e) => scrollItems(e, 'nav')"
+          @mousedown="onMousedown"
+          @mousemove="(e) => moveItems(e, 'nav')"
         >
           <li
+            v-for="(item, key) in navigation"
+            :key="key"
             class="wiki__item"
-            :class="{'wiki__item_bold': item === currentTab}"
-            @click="handleClick"
+            :class="{'wiki__item_active': item === currentTab}"
+            @click="selectTab(item)"
           >
             {{ $t(`wiki.navigation.${item}.title`) }}
           </li>
@@ -78,7 +65,7 @@ export default {
     return {
       currentTab: 'header',
       search: '',
-      isOpened: false,
+      mouseX: 0,
     };
   },
   computed: {
@@ -94,12 +81,35 @@ export default {
     selectTab(item) {
       this.currentTab = item;
     },
-    handleClick() {
-      if (this.isOpened) {
-        this.isOpened = false;
-      } else {
-        this.isOpened = true;
+    scrollItems(event, payload) {
+      event = event || window.event;
+      event.preventDefault();
+      const htmlElement = this.$refs[payload];
+      if (!htmlElement) {
+        return;
       }
+      const delta = event.deltaY || event.detail || event.wheelDelta;
+      const scrollValue = htmlElement.scrollLeft;
+      if (delta > 0) {
+        htmlElement.scrollLeft = +scrollValue + 20;
+      } else {
+        htmlElement.scrollLeft = +scrollValue - 20;
+      }
+    },
+    moveItems(event, payload) {
+      console.log('Start Move');
+      console.log(event.buttons);
+      event.preventDefault();
+      if ((event.buttons === 1) && payload) {
+        const { x } = event;
+        const delta = this.mouseX - x;
+        this.$refs[payload].scrollLeft += delta;
+        this.mouseX = x;
+      }
+    },
+    onMousedown(event) {
+      console.log('Mouse pressed!');
+      this.mouseX = event.x;
     },
   },
 };
@@ -177,7 +187,7 @@ export default {
       background: #E9EDF2;
       transition: 300ms;
     }
-    &_bold {
+    &_active {
       font-weight: 600;
     }
   }
@@ -209,40 +219,67 @@ export default {
 }
 @include _767 {
   .wiki {
+    position: relative;
     &__title {
       font-weight: 28px;
     }
     &__header {
       height: 230px;
-      margin-bottom: 10px;
+      margin-bottom: 60px;
     }
     &__navigation {
-      display: none;
       position: absolute;
-      top: -10px;
-      width: 575px;
+      background: $darkblue;
+      top: 230px;
+      border-radius: 0;
+      left: 0;
+      width: 100vw;
+      height: 50px;
     }
-    &__header-button {
+    &__ul {
+      align-items: center;
+      justify-content: space-between;
       display: flex;
+      grid-gap: 5px;
+      height: 50px;
+      overflow: hidden;
+    }
+    &__item {
+      font-size: 14px;
+      width: 122px;
+      padding: 8px;
+      box-sizing: border-box;
+      white-space: nowrap;
+      margin: 7px;
+      color: $white;
+      border-radius: 6px;
+      &_active {
+        background: $blue;
+        color: $white;
+        font-weight: 400;
+      }
+      &:hover {
+        background: $blue;
+      }
     }
     &__search-button {
-      max-width: 100px;
+      width: 86px;
+      height: 37px;
       margin-left: 10px;
     }
      &__input {
-      width: 365px;
+      width: 443px;
     }
      &__content {
       width: 575px;
     }
      &__search-field {
-      height: 63px;
+      height: 53px;
       padding: 0 10px;
      }
   }
   .content {
     grid-template-columns: 1fr;
-    position: relative;
   }
   .opened {
   display: block;
@@ -254,10 +291,7 @@ export default {
       width: 480px;
     }
     &__input {
-      width: 273px;
-    }
-    &__navigation {
-      width: 480px;
+      width: 362px;
     }
   }
 }
@@ -267,10 +301,7 @@ export default {
       width: 380px;
     }
     &__input {
-      width: 195px;
-    }
-    &__navigation {
-      width: 380px;
+      width: 262px;
     }
   }
 }
@@ -280,13 +311,10 @@ export default {
       width: 343px;
     }
     &__input {
-      width: 168px;
+      width: 235px;
     }
     &__search-field {
       padding: 0 10px 0 0;
-    }
-    &__navigation {
-      width: 343px;
     }
   }
 }
