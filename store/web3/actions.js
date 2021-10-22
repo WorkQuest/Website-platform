@@ -1,16 +1,25 @@
 import BigNumber from 'bignumber.js';
+import { Pair as PairUniswap, Token as TokenUniswap, TokenAmount as TokenAmountUniswap } from '@uniswap/sdk';
 import {
-  initWeb3,
-  staking,
-  unStaking,
+  ChainId, Token as TokenPancake, TokenAmount as TokenAmountPancake, Pair as PairPancake,
+} from '@pancakeswap/sdk';
+import {
   claimRewards,
   disconnectWeb3,
+  fetchContractData,
+  getAccountAddress,
+  goToChain,
+  initStackingContract,
+  initWeb3,
+  redeemSwap,
+  showToast,
+  staking,
+  startPingingMetamask,
   swap,
-  startPingingMetamask, fetchContractData, getAccountAddress, createInstance, showToast, goToChain, swapWithBridge, redeemSwap,
-  stakingBSC, unStakingBSC, claimRewardsBSC,
+  swapWithBridge,
+  unStaking,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
-import { WQLiquidityMining } from '~/abi/abi';
 
 BigNumber.config({ EXPONENTIAL_AT: 60 });
 
@@ -237,5 +246,91 @@ export default {
   },
   async redeemSwap({ commit }, payload) {
     return await redeemSwap(payload);
+  },
+  async getAPY({ commit }, payload) {
+    // TODO: add actual Data
+    let token0;
+    let token1;
+    let chainId;
+    let amountMax0;
+    let amountMax1;
+    let api;
+    let pair;
+    const stakingInfoEvent = await initStackingContract(payload.chain);
+    if (payload.chain === 'ETH') {
+      chainId = 1;
+      amountMax0 = process.env.TOKEN_WQT_ETHEREUM_NETWORK_AMOUNT_MAX;
+      amountMax1 = process.env.TOKEN_WETH_AMOUNT_MAX;
+      token0 = new TokenUniswap(
+        chainId,
+        process.env.MAINNET_ETH_WQT_TOKEN,
+        18,
+        'WQT',
+        'Work Quest Token',
+      );
+      token1 = new TokenUniswap(
+        chainId,
+        process.env.TOKEN_WETH_ADDRESS,
+        18,
+        'WETH',
+        'Wrapped Ether',
+      );
+      pair = new PairUniswap(
+        new TokenAmountUniswap(token0, amountMax0),
+        new TokenAmountUniswap(token1, amountMax1),
+      );
+      api = this.$axios.create({
+        baseURL: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2',
+      });
+    } else {
+      chainId = 56;
+      amountMax0 = process.env.TOKEN_WQT_BSC_NETWORK_AMOUNT_MAX;
+      amountMax1 = process.env.TOKEN_WBNB_AMOUNT_MAX;
+      token0 = new TokenPancake(
+        chainId,
+        process.env.MAINNET_BSC_WQT_TOKEN,
+        18,
+        'WQT',
+        'Work Quest Token',
+      );
+      token1 = new TokenPancake(
+        chainId,
+        process.env.TOKEN_WBNB_ADDRESS,
+        18,
+        'WETH',
+        'Wrapped BNB',
+      );
+      pair = new PairPancake(
+        new TokenAmountPancake(token0, amountMax0),
+        new TokenAmountPancake(token1, amountMax1),
+      );
+      api = this.$axios.create({
+        baseURL: 'https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2',
+      });
+    }
+    const apiCoingecko = this.$axios.create({
+      baseURL: 'https://api.coingecko.com/api/v3/coins/work-quest',
+    });
+    try {
+      const coingeckoResult = await apiCoingecko.get('');
+      const priceWQT = coingeckoResult.data.market_data.current_price.usd;
+      const result = await api.post('', {
+        query: `{
+        pairDayDatas (first: 1, skip: 0,
+        orderBy:date, orderDirection: desc,
+        where: {pairAddress: "${pair.liquidityToken.address.toLowerCase()}"})
+        { totalSupply reserveUSD }}`,
+      });
+      const { totalSupply } = result.data.data.pairDayDatas[0];
+      const { reserveUSD } = result.data.data.pairDayDatas[0];
+      const totalStaked = new BigNumber(stakingInfoEvent.totalStaked).shiftedBy(-18).toNumber();
+      const rewardTotal = new BigNumber(stakingInfoEvent.rewardTotal).shiftedBy(-18).toNumber();
+      const priceLP = reserveUSD / totalSupply;
+      const APY = ((rewardTotal * 12) * priceWQT) / (totalStaked * priceLP);
+      const profit = ((payload.stakedAmount * priceLP) * APY) / priceWQT;
+      return profit;
+    } catch (err) {
+      return err;
+    }
   },
 };
