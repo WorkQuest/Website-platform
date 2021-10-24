@@ -85,7 +85,7 @@
             <div>
               <img
                 class="worker__avatar"
-                :src="assignWorker.avatar ? assignWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                :src="assignWorker ? assignWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                 alt=""
               >
             </div>
@@ -196,7 +196,7 @@
         <div>
           <img
             class="worker__avatar"
-            :src="assignWorker.avatar ? assignWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+            :src="assignWorker ? assignWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
@@ -230,7 +230,7 @@
           <div>
             <img
               class="worker__avatar"
-              :src="assignWorker.avatar ? assignWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+              :src="assignWorker ? assignWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
               alt=""
             >
           </div>
