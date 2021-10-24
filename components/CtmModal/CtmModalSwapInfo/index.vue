@@ -45,7 +45,14 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalSwapInfo',
-
+  data() {
+    return {
+      miningPoolId: localStorage.getItem('miningPoolId'),
+      metamaskStatus: localStorage.getItem('metamaskStatus'),
+      sourceAddressInd: 0,
+      targetAddressInd: 1,
+    };
+  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
@@ -89,6 +96,7 @@ export default {
     },
     async showTransactionSend() {
       this.SetLoader(true);
+      const switchChainStatus = await this.checkPool();
       await this.connectToMetamask();
       let chainTo = 0;
       if (this.options.chain === 'ETH') {
@@ -98,45 +106,38 @@ export default {
       }
       const optionsData = this.options;
       this.hide();
-      const swapObj = await this.$store.dispatch('web3/swapWithBridge', {
-        _decimals: 18,
-        _amount: optionsData.amountInt,
-        chain: optionsData.chain,
-        chainTo,
-        userAddress: optionsData.senderFull,
-        recipient: optionsData.recepientFull,
-        symbol: 'WQT',
-      });
+      let swapObj;
+      if (switchChainStatus.ok) {
+        swapObj = await this.$store.dispatch('web3/swapWithBridge', {
+          _decimals: 18,
+          _amount: optionsData.amountInt,
+          chain: optionsData.chain,
+          chainTo,
+          userAddress: optionsData.senderFull,
+          recipient: optionsData.recepientFull,
+          symbol: 'WQT',
+        });
+      } else {
+        swapObj = { code: 500 };
+      }
       this.ShowModal({
         key: modals.status,
         img: swapObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
         title: swapObj.code === 500 ? this.$t('modals.transactionFail') : this.$t('modals.transactionSend'),
         recipient: '',
-        txHash: '',
+        txHash: swapObj.tx,
         chainTo,
         subtitle: '',
       });
       this.SetLoader(false);
     },
-    connectToMetamask() {
+    async connectToMetamask() {
       if (!this.isConnected) {
-        this.$store.dispatch('web3/connect');
+        await this.$store.dispatch('web3/connect');
       }
     },
-    async checkMetamaskStatus() {
-      if (typeof window.ethereum === 'undefined') {
-        localStorage.setItem('metamaskStatus', 'notInstalled');
-        this.ShowModal({
-          key: modals.status,
-          title: 'Please install Metamask!',
-          subtitle: 'Please click install...',
-          button: 'Install',
-          type: 'installMetamask',
-        });
-      } else {
-        localStorage.setItem('metamaskStatus', 'installed');
-        await this.connectToMetamask();
-      }
+    async checkPool() {
+      return await this.$store.dispatch('web3/goToChain', { chain: this.options.chain });
     },
   },
 };

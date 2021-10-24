@@ -11,6 +11,7 @@
           id="amount"
           v-model="amount"
           class="content__field"
+          type="number"
           :placeholder="3500"
           :label="$t('modals.amount')"
           rules="required|decimal|min_value:0.00001"
@@ -51,6 +52,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'CtmModalClaimRewards',
@@ -83,25 +85,75 @@ export default {
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
     },
+    checkAmount() {
+      const amount = this.options.type === 1 ? this.userBalance : this.userStake;
+      return +amount >= +this.amount;
+    },
     async staking() {
       this.SetLoader(true);
-      this.hide();
-      await this.$store.dispatch('web3/stake', {
-        decimals: this.accountData.decimals.stakeDecimal,
-        amount: this.amount,
-      });
-      await this.tokensDataUpdate();
+      await this.checkMetamaskStatus();
+      if (this.checkAmount()) {
+        this.hide();
+        await this.$store.dispatch('web3/stake', {
+          decimals: this.accountData.decimals.stakeDecimal,
+          amount: this.amount,
+        });
+        await this.tokensDataUpdate();
+      } else {
+        this.hide();
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.incorrectAmount'),
+        });
+      }
       this.SetLoader(false);
     },
     async unstaking() {
       this.SetLoader(true);
-      this.hide();
-      await this.$store.dispatch('web3/unstake', {
-        decimals: this.accountData?.decimals?.stakeDecimal,
-        amount: this.amount,
-      });
-      await this.tokensDataUpdate();
+      await this.checkMetamaskStatus();
+      if (this.checkAmount()) {
+        this.hide();
+        await this.$store.dispatch('web3/unstake', {
+          decimals: this.accountData?.decimals?.stakeDecimal,
+          amount: this.amount,
+        });
+        await this.tokensDataUpdate();
+      } else {
+        this.hide();
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.incorrectAmount'),
+        });
+      }
       this.SetLoader(false);
+    },
+    async connectToMetamask() {
+      if (!this.isConnected) {
+        await this.$store.dispatch('web3/connect');
+      }
+    },
+    async checkMetamaskStatus() {
+      if (typeof window.ethereum === 'undefined') {
+        localStorage.setItem('metamaskStatus', 'notInstalled');
+        this.ShowModal({
+          key: modals.status,
+          img: '~assets/img/ui/cardHasBeenAdded.svg',
+          title: 'Please install Metamask!',
+          subtitle: 'Please click install...',
+          button: 'Install',
+          type: 'installMetamask',
+        });
+      } else {
+        localStorage.setItem('metamaskStatus', 'installed');
+        await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+        await this.connectToMetamask();
+      }
     },
   },
 };

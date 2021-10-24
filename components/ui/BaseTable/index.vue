@@ -45,7 +45,7 @@ export default {
       default: '',
     },
     items: {
-      type: [Array, Object],
+      type: Array,
       default: () => [],
     },
     fields: {

@@ -21,25 +21,45 @@ export default {
     return response;
   },
   async wqtWbnbSwaps({ commit }) {
-    const response = await this.$axios.$get('https://app.workquest.co/api/v1/pool-liquidity/wqt-wbnb/swaps');
-    commit('setWqtWbnbSwaps', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$get('https://app.workquest.co/api/v1/pool-liquidity/wqt-wbnb/swaps');
+      commit('setWqtWbnbSwaps', response.result);
+      return response;
+    } catch (e) {
+      console.error('error in wqtWbnbSwaps', e);
+      return false;
+    }
   },
   async wqtWbnbTokenDay({ commit }, query) {
-    const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-wbnb/tokenDay?${query || 'limit=100'}`);
-    commit('setWqtWbnbTokenDay', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-wbnb/tokenDay?${query || 'limit=10'}`);
+      commit('setWqtWbnbTokenDay', response.result);
+      return response;
+    } catch (e) {
+      console.error('error in wqtWbnbTokenDay', e);
+      return false;
+    }
   },
   async tableWqtWbnbTokenDay({ commit }, query) {
-    const response = await this.$axios.$get(`https://app.workquest.co/api/v1/pool-liquidity/wqt-wbnb/swaps?${query || 'limit=10'}`);
-    commit('setTableWqtWbnbTokenDay', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$get(`https://app.workquest.co/api/v1/pool-liquidity/wqt-wbnb/swaps?${query || 'limit=10'}`);
+      commit('setTableWqtWbnbTokenDay', response.result);
+      return response;
+    } catch (e) {
+      console.error('error in tableWqtWbnbTokenDay', e);
+      return false;
+    }
   },
 
   async wqtWbnbTokenDayLast({ commit }, query) {
-    const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-wbnb/tokenDay?${query}`);
-    commit('setWqtWbnbTokenDayLast', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-wbnb/tokenDay?${query}`);
+      commit('setWqtWbnbTokenDayLast', response.result);
+      return response;
+    } catch (e) {
+      console.error('error in wqtWbnbTokenDayLast', e);
+      return false;
+    }
   },
 
   async wqtWethBurns({ commit }) {
@@ -58,14 +78,24 @@ export default {
     return response;
   },
   async tableWqtWethTokenDay({ commit }, query) {
-    const response = await this.$axios.$get(`https://app.workquest.co/api/v1/pool-liquidity/wqt-weth/swaps?${query || 'limit=100'}`);
-    commit('setTableWqtWethTokenDay', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$get(`https://app.workquest.co/api/v1/pool-liquidity/wqt-weth/swaps?${query || 'limit=10'}`);
+      commit('setTableWqtWethTokenDay', response.result);
+      return response;
+    } catch (e) {
+      console.error('error in tableWqtWbnbTokenDay', e);
+      return false;
+    }
   },
   async wqtWethTokenDay({ commit }, query) {
-    const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-weth/tokenDay?${query || 'limit=100'}`);
-    commit('setWqtWethTokenDay', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-weth/tokenDay?${query || 'limit=10'}`);
+      commit('setWqtWethTokenDay', response.result);
+      return response;
+    } catch (e) {
+      console.error('error in tableWqtWbnbTokenDay', e);
+      return false;
+    }
   },
   async wqtWethTokenDayLast({ commit }, query) {
     const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-weth/tokenDay?${query}`);
@@ -80,11 +110,11 @@ export default {
       if (data.chainFrom === 2) {
         direction = [
           require('~/assets/img/ui/ethereum.svg'),
-          require('~/assets/img/ui/bnb-logo.svg'),
+          require('~/assets/img/ui/bnb_yellow.svg'),
         ];
       } else {
         direction = [
-          require('~/assets/img/ui/bnb-logo.svg'),
+          require('~/assets/img/ui/bnb_yellow.svg'),
           require('~/assets/img/ui/ethereum.svg'),
         ];
       }
@@ -110,6 +140,13 @@ export default {
       items.push(tableItems);
     });
     commit('swapsForCrosschain', items);
+    return response;
+  },
+  async getLPToken() {
+    const response = await this.$axios.$get('/v1/pool-liquidity/wqt-wbnb/distribution');
+    if (response.ok) {
+      return response.result;
+    }
     return response;
   },
 };

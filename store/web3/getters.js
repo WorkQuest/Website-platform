@@ -11,4 +11,5 @@ export default {
   getStatusBusy: (state) => state.busy,
   getPurseData: (state) => state.purseData,
   getBSCTokensData: (state) => state.tokensBSC,
+  getCrosschainTokensData: (state) => state.crosschainTokensData,
 };
