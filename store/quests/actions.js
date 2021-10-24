@@ -1,6 +1,7 @@
 export default {
   async questListForInvitation({ commit }, userId) {
-    const response = await this.$axios.$get(`/v1/employer/${userId}/quests?status=0`);
+    const response = await this.$axios.$get(`/v1/employer/${userId}/quests`);
+    console.log(response.result);
     commit('setQuestListForInvitation', response.result);
     return response.result;
   },

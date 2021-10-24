@@ -659,6 +659,7 @@ export default {
       }
       await this.createQuest(specAndSkills);
     },
+    // TODO: Удалить хардкод в создании квестов
     async createQuest(specAndSkills) {
       const payload = {
         workplace: this.convertWorkplace(this.workplaceIndex),
@@ -671,11 +672,14 @@ export default {
         medias: [],
         adType: 0,
         locationPlaceName: this.address,
-        skillFilters: specAndSkills,
+        specializationKeys: [
+          '1.501',
+        ],
         location: {
           longitude: this.coordinates.lng,
           latitude: this.coordinates.lat,
         },
+        /* skillFilters: specAndSkills, */
       };
       try {
         const response = await this.$store.dispatch('quests/questCreate', payload);

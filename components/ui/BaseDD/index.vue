@@ -110,7 +110,7 @@ export default {
   },
   props: {
     items: {
-      type: [Array, Object],
+      type: [Array],
       default: () => [],
     },
     label: {

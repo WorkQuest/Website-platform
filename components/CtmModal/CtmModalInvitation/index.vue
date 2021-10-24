@@ -38,10 +38,11 @@
         </div>
         <div class="grid__field">
           <div class="ctm-modal__content-field">
+            <!--TODO: Вывести тайтлы -->
             <base-dd
               v-model="questIndex"
               type="gray"
-              :items="questList"
+              :items="questList.quests"
               :label="$t('modals.chooseQuest')"
             />
           </div>
@@ -88,11 +89,6 @@ export default {
   data() {
     return {
       questIndex: 0,
-      quests: [
-        'Quest one',
-        'Quest two',
-        'Quest three',
-      ],
       message_input: '',
       chooseQuest_input: '',
       card: {
@@ -117,9 +113,8 @@ export default {
       ];
     },
   },
-  async mounted() {
+  async beforeMount() {
     await this.getQuestList();
-    console.log(this.questList);
   },
   methods: {
     async getQuestList() {
