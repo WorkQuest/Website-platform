@@ -1,4 +1,7 @@
 export default {
+  setQuestListForInvitation(state, data) {
+    state.questListForInvitation = data;
+  },
   setWorkersList(state, data) {
     state.workersList = data;
   },

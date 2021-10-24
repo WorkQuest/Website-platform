@@ -1,4 +1,9 @@
 export default {
+  async questListForInvitation({ commit }, userId) {
+    const response = await this.$axios.$get(`/v1/employer/${userId}/quests?status=0`);
+    commit('setQuestListForInvitation', response.result);
+    return response.result;
+  },
   async workersList({ commit }) {
     const response = await this.$axios.$get('/v1/profile/workers');
     commit('setWorkersList', response.result);
@@ -97,9 +102,9 @@ export default {
   // Testing
   // employer
 
-  async inviteOnQuest({ commit }, payload, id) {
-    return await this.$axios.$post(`/v1/quest/${id}/invite`, payload);
-  }, // Нужен список Воркеров
+  async inviteOnQuest({ commit }, payload, questId) {
+    return await this.$axios.$post(`/v1/quest/${questId}/invite`, payload);
+  },
 
   async respondOnQuest({ commit }, { data, questId }) {
     const response = await this.$axios.$post(`/v1/quest/${questId}/response`, data);

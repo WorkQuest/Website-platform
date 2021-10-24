@@ -1,4 +1,5 @@
 export default () => ({
+  questListForInvitation: {},
   currentWorker: {},
   workersList: {},
   allQuests: {},

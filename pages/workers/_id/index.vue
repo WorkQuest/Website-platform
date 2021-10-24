@@ -188,6 +188,7 @@ export default {
     showModalGiveQuest() {
       this.ShowModal({
         key: modals.invitation,
+        currentWorker: this.currentWorker,
       });
     },
   },
