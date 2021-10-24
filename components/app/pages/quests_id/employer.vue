@@ -84,15 +84,8 @@
           >
             <div>
               <img
-                v-if="assignWorker"
                 class="worker__avatar"
-                :src="assignWorker.avatar.url"
-                alt=""
-              >
-              <img
-                v-if="!assignWorker"
-                class="worker__avatar"
-                :src="require('~/assets/img/app/avatar_empty.png')"
+                :src="assignWorker.avatar ? assignWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                 alt=""
               >
             </div>
@@ -202,15 +195,8 @@
       <div class="worker__container">
         <div>
           <img
-            v-if="assignWorker"
             class="worker__avatar"
-            :src="assignWorker.avatar.url"
-            alt=""
-          >
-          <img
-            v-if="!assignWorker"
-            class="worker__avatar"
-            :src="require('~/assets/img/app/avatar_empty.png')"
+            :src="assignWorker.avatar ? assignWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
@@ -243,15 +229,8 @@
         <div class="worker__container">
           <div>
             <img
-              v-if="assignWorker"
               class="worker__avatar"
-              :src="assignWorker.avatar.url"
-              alt=""
-            >
-            <img
-              v-if="!assignWorker"
-              class="worker__avatar"
-              :src="require('~/assets/img/app/avatar_empty.png')"
+              :src="assignWorker.avatar ? assignWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
               alt=""
             >
           </div>
