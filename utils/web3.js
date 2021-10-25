@@ -313,7 +313,7 @@ export const unStaking = async (_decimals, _amount) => {
     const payload = {
       abi: stakingAbi,
       address: stakingAddress,
-      data: amount,
+      data: [amount],
     };
     await sendTransaction('unstake', payload);
     showToast('Unstaking', 'Unstaking done', 'success');

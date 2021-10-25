@@ -108,11 +108,11 @@ export default {
         this.amount = this.options.type === 1 ? this.userBalance : this.userStake;
       }
     },
-    async tokensDataUpdate() {
-      const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
-      this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
-      this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
-    },
+    // async tokensDataUpdate() {
+    //   const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
+    //   this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
+    //   this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
+    // },
     checkAmount() {
       if (this.options.stakingType !== 'MINING') {
         return +this.options.balance >= +this.amount;
@@ -132,10 +132,8 @@ export default {
           stakingType,
           duration: this.stakeDays[this.daysValue],
         });
-        if (stakingType === 'MINING') await this.tokensDataUpdate();
-        else if (updateMethod) {
-          await updateMethod();
-        }
+        // if (stakingType === 'MINING') await this.tokensDataUpdate(); else
+        if (updateMethod) await updateMethod();
       } else {
         this.hide();
         this.ShowModal({
@@ -152,12 +150,13 @@ export default {
       this.SetLoader(true);
       await this.checkMetamaskStatus();
       if (this.checkAmount()) {
+        const { updateMethod } = this.options;
         this.hide();
         await this.$store.dispatch('web3/unstake', {
           decimals: this.accountData?.decimals?.stakeDecimal,
           amount: this.amount,
         });
-        await this.tokensDataUpdate();
+        if (updateMethod) await updateMethod();
       } else {
         this.hide();
         this.ShowModal({
