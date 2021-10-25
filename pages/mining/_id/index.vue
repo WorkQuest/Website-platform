@@ -425,7 +425,6 @@ export default {
     await Promise.all([
       this.initTokenDays(),
       this.initGraphData(),
-      this.tokensDataUpdate(),
     ]);
     this.SetLoader(false);
     if (this.$route.params.id === 'ETH') {
@@ -435,7 +434,6 @@ export default {
     }
     await this.initTableData();
   },
-
   methods: {
     async checkMetamaskStatus() {
       if (typeof window.ethereum === 'undefined') {
@@ -558,6 +556,7 @@ export default {
       return style;
     },
     async tokensDataUpdate() {
+      if (!this.accountData?.decimals) return;
       const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
       this.fullRewardAmount = tokensData.rewardTokenAmount;
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);

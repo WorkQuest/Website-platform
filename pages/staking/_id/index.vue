@@ -260,6 +260,17 @@ export default {
         : `https://rinkeby.etherscan.io/address/${this.poolData.rewardTokenAddress}`;
     },
   },
+  watch: {
+    isConnected() {
+      const newInterval = setInterval(() => {
+        this.poolData();
+        this.userInfo();
+      }, 15000);
+      if (!this.isConnected) {
+        clearInterval(newInterval);
+      }
+    },
+  },
   async mounted() {
     this.SetLoader(true);
     await this.checkMetamaskStatus();
