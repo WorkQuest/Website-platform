@@ -6,7 +6,7 @@ import {
   claimRewards,
   disconnectWeb3,
   swap,
-  startPingingMetamask,
+  // startPingingMetamask, // TODO: remove later
   fetchContractData,
   getAccountAddress,
   showToast,
@@ -14,7 +14,7 @@ import {
   swapWithBridge,
   redeemSwap,
   getStakingDataByType,
-  getStakingRewardTxFee,
+  getStakingRewardTxFee, handleMetamaskStatus,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 
@@ -51,9 +51,11 @@ export default {
   },
 
   async connect({ commit, dispatch }) {
+    this.SetLoader(true);
     const response = await initWeb3();
     if (response.ok) {
-      await dispatch('startPingingMetamask');
+      handleMetamaskStatus(dispatch('handleMetamaskStatusChanged'));
+      // await dispatch('startPingingMetamask');
       await commit('setAccount', response.result);
       await commit('setIsConnected', true);
       await commit('setPurseData', getAccountAddress());
@@ -62,6 +64,11 @@ export default {
       commit('setIsConnected', false);
       showToast('Error connect to Metamask', `${response.data}`, 'danger');
     }
+    this.SetLoader(false);
+  },
+  async handleMetamaskStatusChanged({ commit, dispatch }) {
+    await dispatch('disconnect');
+    await dispatch('connect');
   },
 
   async initContract({ commit }) {

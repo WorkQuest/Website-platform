@@ -6,7 +6,7 @@ import * as abi from '~/abi/abi';
 let web3 = null;
 let web4 = null;
 
-let pingTimer = null;
+const pingTimer = null;
 let account = {};
 
 let store;
@@ -18,6 +18,8 @@ if (process.browser) {
     axios = $axios;
   });
 }
+
+export const getAccountAddress = () => account?.address;
 
 export function showToast(title, text, variant) {
   store.dispatch('main/showToast', {
@@ -107,8 +109,6 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
   }
 };
 
-export const getAccountAddress = () => account?.address;
-
 export const sendTransaction = async (_method, payload, _provider = web3) => {
   let transactionData;
   const inst = new web3.eth.Contract(payload.abi, payload.address);
@@ -160,39 +160,46 @@ const getChainTypeById = (chainId) => {
   return -1;
 };
 
-export const startPingingMetamask = async (callback) => {
-  try {
-    if (web3) {
-      clearInterval(pingTimer);
-      const referenceAddress = await web3.eth.getCoinbase();
-      // const referenceChainId = await web3.eth.net.getId();
-      pingTimer = setInterval(async () => {
-        if (!web3) {
-          callback();
-          clearInterval(pingTimer);
-        }
-        const address = await web3.eth.getCoinbase();
-        // const chainId = await web3.eth.net.getId();
-        const isChangedAddress = address !== referenceAddress;
-        // const isChangedNetId = chainId !== referenceChainId;
-        if (isChangedAddress) {
-          callback();
-          clearInterval(pingTimer);
-        }
-      }, 2000);
-    }
-    return success();
-  } catch (e) {
-    return error(500, 'pingingMetamask err', e);
-  }
+// export const startPingingMetamask = async (callback) => {
+//   try {
+//     if (web3) {
+//       clearInterval(pingTimer);
+//       const referenceAddress = await web3.eth.getCoinbase();
+//       // const referenceChainId = await web3.eth.net.getId();
+//       pingTimer = setInterval(async () => {
+//         if (!web3) {
+//           callback();
+//           clearInterval(pingTimer);
+//         }
+//         const address = await web3.eth.getCoinbase();
+//         // const chainId = await web3.eth.net.getId();
+//         const isChangedAddress = address !== referenceAddress;
+//         // const isChangedNetId = chainId !== referenceChainId;
+//         if (isChangedAddress) {
+//           callback();
+//           clearInterval(pingTimer);
+//         }
+//       }, 2000);
+//     }
+//     return success();
+//   } catch (e) {
+//     return error(500, 'pingingMetamask err', e);
+//   }
+// };
+
+export const handleMetamaskStatus = (callback) => {
+  const { ethereum } = window;
+  ethereum.on('chainChanged', callback);
+  ethereum.on('accountsChanged', callback);
 };
 
 export const initWeb3 = async () => {
   try {
-    if (window.ethereum) {
-      web3 = new Web3(window.ethereum);
+    const { ethereum } = window;
+    if (ethereum) {
+      web3 = new Web3(ethereum);
       if ((await web3.eth.getCoinbase()) === null) {
-        await window.ethereum.enable();
+        await ethereum.enable();
       }
       const [userAddress, chainId] = await Promise.all([
         web3.eth.getCoinbase(),
@@ -210,7 +217,7 @@ export const initWeb3 = async () => {
         netType: getChainTypeById(chainId),
       };
       web4 = new Web4();
-      await web4.setProvider(window.ethereum, userAddress);
+      await web4.setProvider(ethereum, userAddress);
       return success(account);
     }
     return false;

@@ -221,7 +221,7 @@ export default {
           about: this.$tc(`staking.${this.slug}Count`, this.userInfo.staked),
         },
         {
-          name: this.$t('staking.userInformationCards.stakeBalance'),
+          name: this.$t('staking.userInformationCards.yourBalance'),
           about: this.$tc(`staking.${this.slug}Count`, this.userInfo.balance),
         },
         {
@@ -229,7 +229,7 @@ export default {
           about: this.$tc('staking.WQTCount', this.userInfo.claim),
         },
       ];
-      if (this.userInfo.date) {
+      if (this.userInfo.date && this.userInfo.staked !== '0') {
         data.push({
           name: this.$t('staking.stakingCards.duration'),
           about: moment(this.userInfo.date).format('DD/MM/YYYY HH:MM'),
@@ -262,9 +262,10 @@ export default {
   },
   watch: {
     isConnected() {
+      // TOOD: сделать слушатель и обновлять данные
       const newInterval = setInterval(() => {
-        this.poolData();
-        this.userInfo();
+        this.getPoolData();
+        this.getUserInfo();
       }, 15000);
       if (!this.isConnected) {
         clearInterval(newInterval);

@@ -108,11 +108,6 @@ export default {
         this.amount = this.options.type === 1 ? this.userBalance : this.userStake;
       }
     },
-    // async tokensDataUpdate() {
-    //   const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
-    //   this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
-    //   this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
-    // },
     checkAmount() {
       if (this.options.stakingType !== 'MINING') {
         return +this.options.balance >= +this.amount;
@@ -187,7 +182,11 @@ export default {
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');
-        await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+        if (this.options.stakingType === 'MINING') {
+          await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+        } else {
+          await this.$store.dispatch('web3/goToChain', { chain: 'ETH' });
+        }
         await this.connectToMetamask();
       }
     },

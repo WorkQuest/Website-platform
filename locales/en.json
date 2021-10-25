@@ -2300,7 +2300,7 @@
     "userInformation": "User information",
     "userInformationCards": {
       "staked": "Staked",
-      "stakeBalance": "Stake balance",
+      "yourBalance": "Your balance",
       "claimed": "Claimed"
     },
     "stakeCards": {
