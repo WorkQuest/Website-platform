@@ -5,5 +5,5 @@ dist
 backup
 .idea
 .env
-package-lock.json
 .DS_Store
+package-lock.json
