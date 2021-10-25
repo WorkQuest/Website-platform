@@ -1,8 +1,14 @@
 <template>
   <div class="wiki">
-    <div class="wiki__header">
+    <div
+      class="wiki__header"
+      :class="{'wiki__header_cut': isMoved, 'wiki__header_hidden': isScrolledDown}"
+    >
       <div class="wiki__content">
-        <h3 class="wiki__title">
+        <h3
+          v-if="!isMoved"
+          class="wiki__title"
+        >
           {{ $t('wiki.title') }}
         </h3>
         <div class="wiki__fields">
@@ -24,22 +30,26 @@
         </div>
       </div>
     </div>
-    <main class="content wiki__content">
+    <main
+      class="content wiki__content"
+      @touchend="onTouchEnd"
+      @touchstart="onTouchstart"
+    >
       <nav
         class="wiki__navigation"
+        :class="{'wiki__navigation_cut': isMoved, 'wiki__navigation_hidden': isScrolledDown}"
       >
         <ul
           ref="nav"
           class="wiki__ul"
-          @wheel="(e) => scrollItems(e, 'nav')"
-          @mousedown="onMousedown"
-          @mousemove="(e) => moveItems(e, 'nav')"
+          @touchstart="onTouchstart"
+          @touchmove="(e) => moveItems(e, 'nav')"
         >
           <li
             v-for="(item, key) in navigation"
             :key="key"
             class="wiki__item"
-            :class="{'wiki__item_active': item === currentTab}"
+            :class="{'wiki__item_dark': isMoved && item !== currentTab, 'wiki__item_active': item === currentTab}"
             @click="selectTab(item)"
           >
             {{ $t(`wiki.navigation.${item}.title`) }}
@@ -65,7 +75,9 @@ export default {
     return {
       currentTab: 'header',
       search: '',
-      mouseX: 0,
+      pageX: 0,
+      isMoved: false,
+      isScrolledDown: false,
     };
   },
   computed: {
@@ -81,35 +93,23 @@ export default {
     selectTab(item) {
       this.currentTab = item;
     },
-    scrollItems(event, payload) {
-      event = event || window.event;
-      event.preventDefault();
-      const htmlElement = this.$refs[payload];
-      if (!htmlElement) {
-        return;
-      }
-      const delta = event.deltaY || event.detail || event.wheelDelta;
-      const scrollValue = htmlElement.scrollLeft;
-      if (delta > 0) {
-        htmlElement.scrollLeft = +scrollValue + 20;
-      } else {
-        htmlElement.scrollLeft = +scrollValue - 20;
-      }
-    },
     moveItems(event, payload) {
-      console.log('Start Move');
-      console.log(event.buttons);
       event.preventDefault();
-      if ((event.buttons === 1) && payload) {
-        const { x } = event;
-        const delta = this.mouseX - x;
-        this.$refs[payload].scrollLeft += delta;
-        this.mouseX = x;
-      }
+      const x = event.changedTouches[0].pageX;
+      const delta = this.pageX - x;
+      this.$refs[payload].scrollLeft += delta;
+      this.pageX = x;
     },
-    onMousedown(event) {
-      console.log('Mouse pressed!');
-      this.mouseX = event.x;
+    onTouchstart(event) {
+      this.isMoved = true;
+      this.pageX = event.changedTouches[0].pageX;
+    },
+    onTouchEnd(event) {
+      if (event.changedTouches[0].pageX > this.pageX) {
+        this.isScrolledDown = true;
+      } else {
+        this.isScrolledDown = false;
+      }
     },
   },
 };
@@ -226,6 +226,17 @@ export default {
     &__header {
       height: 230px;
       margin-bottom: 60px;
+      &_cut {
+        position: fixed;
+        height: 53px;
+        width: 100%;
+        background: $white;
+        transition: all ease 100ms;
+      }
+      &_hidden {
+        display: none;
+        transition: all ease 100ms;
+      }
     }
     &__navigation {
       position: absolute;
@@ -235,6 +246,15 @@ export default {
       left: 0;
       width: 100vw;
       height: 50px;
+      &_cut {
+        position: fixed;
+        top: 125px;
+        background: $black0;
+        transition: all ease 100ms;
+      }
+      &_hidden {
+        top: 70px;
+      }
     }
     &__ul {
       align-items: center;
@@ -257,6 +277,9 @@ export default {
         background: $blue;
         color: $white;
         font-weight: 400;
+      }
+      &_dark {
+        color: $black800;
       }
       &:hover {
         background: $blue;
