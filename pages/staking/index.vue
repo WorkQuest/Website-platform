@@ -156,7 +156,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    if (!this.isConnected) await this.$store.dispatch('web3/connect');
+    await this.checkMetamaskStatus();
     const [wqtPool, wusdPool] = await Promise.all([
       this.$store.dispatch('web3/fetchStakingInfo', { stakingType: 'WQT' }),
       this.$store.dispatch('web3/fetchStakingInfo', { stakingType: 'WUSD' }),
@@ -172,6 +172,23 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async checkMetamaskStatus() {
+      if (typeof window.ethereum === 'undefined') {
+        localStorage.setItem('metamaskStatus', 'notInstalled');
+        this.ShowModal({
+          key: modals.status,
+          img: '~assets/img/ui/cardHasBeenAdded.svg',
+          title: 'Please install Metamask!',
+          subtitle: 'Please click install...',
+          button: 'Install',
+          type: 'installMetamask',
+        });
+      } else {
+        localStorage.setItem('metamaskStatus', 'installed');
+        await this.$store.dispatch('web3/goToChain', { chain: 'ETH' });
+        await this.$store.dispatch('web3/connect');
+      }
+    },
     handleOpenPool(el) {
       this.$router.push(`/staking/${el.item.link}`);
     },

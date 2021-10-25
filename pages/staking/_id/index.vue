@@ -124,11 +124,10 @@
             </div>
           </div>
           <div class="info-block__btns-cont">
-            <base-btn>
+            <base-btn @click="handleAutoRenewal">
               {{ $t('staking.autoRenewal') }}
             </base-btn>
             <base-btn
-              v-if="poolData && userInfo && userInfo.staked === '0'"
               mode="outline"
               @click="showStakeModal"
             >
@@ -143,6 +142,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -183,7 +183,7 @@ export default {
       if (!this.poolData) return [];
       return [
         {
-          title: this.$tc('staking.WQTCount', this.poolData.totalStaked),
+          title: this.$tc(`staking.${this.slug}Count`, this.poolData.totalStaked),
           subtitle: this.$t('staking.totalStaked'),
         },
         {
@@ -211,15 +211,11 @@ export default {
           name: this.$t('staking.stakingCards.claimPeriod'),
           about: this.$t('staking.hours', { n: this.poolData.claimPeriod }),
         },
-        {
-          name: this.$t('staking.stakingCards.duration'),
-          about: this.$t('staking.days', { n: '?' }),
-        },
       ];
     },
     userInfoCards() {
       if (!this.userInfo) return [];
-      return [
+      const data = [
         {
           name: this.$t('staking.userInformationCards.staked'),
           about: this.$tc(`staking.${this.slug}Count`, this.userInfo.staked),
@@ -233,17 +229,24 @@ export default {
           about: this.$tc('staking.WQTCount', this.userInfo.claim),
         },
       ];
+      if (this.userInfo.date) {
+        data.push({
+          name: this.$t('staking.stakingCards.duration'),
+          about: moment(this.userInfo.date).format('DD/MM/YYYY HH:MM'),
+        });
+      }
+      return data;
     },
     stakeCards() {
       if (!this.poolData) return [];
       return [
         {
           name: this.$t('staking.stakeCards.stakeMin'),
-          about: this.$t('staking.WQTCount', { n: this.poolData.minStake }),
+          about: this.$t(`staking.${this.slug}Count`, { n: this.poolData.minStake }),
         },
         {
           name: this.$t('staking.stakeCards.stakeLimit'),
-          about: this.$t('staking.WQTCount', { n: this.poolData.maxStake }),
+          about: this.$t(`staking.${this.slug}Count`, { n: this.poolData.maxStake }),
         },
         {
           name: this.$t('staking.stakeCards.periodUpdate'),
@@ -259,17 +262,42 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    if (!this.isConnected) await this.$store.dispatch('web3/connect');
+    await this.checkMetamaskStatus();
     await this.getPoolData();
     await this.getUserInfo();
     this.SetLoader(false);
   },
   methods: {
+    async checkMetamaskStatus() {
+      if (typeof window.ethereum === 'undefined') {
+        localStorage.setItem('metamaskStatus', 'notInstalled');
+        this.ShowModal({
+          key: modals.status,
+          img: '~assets/img/ui/cardHasBeenAdded.svg',
+          title: 'Please install Metamask!',
+          subtitle: 'Please click install...',
+          button: 'Install',
+          type: 'installMetamask',
+        });
+      } else {
+        localStorage.setItem('metamaskStatus', 'installed');
+        await this.$store.dispatch('web3/goToChain', { chain: 'ETH' });
+        await this.$store.dispatch('web3/connect');
+      }
+    },
+    handleAutoRenewal() {
+      this.ShowModal({
+        key: modals.status,
+        title: this.$t('staking.notification'),
+        subtitle: this.$t('staking._inDev'),
+      });
+    },
     async getPoolData() {
       this.poolData = await this.$store.dispatch('web3/fetchStakingInfo', { stakingType: this.slug });
     },
     async getUserInfo() {
-      this.userInfo = await this.$store.dispatch('web3/getStakingUserInfo', { stakingType: this.slug, decimals: this.poolData.decimals });
+      this.userInfo = await this.$store.dispatch('web3/fetchStakingUserInfo', { stakingType: this.slug, decimals: this.poolData.decimals });
+      console.log(this.userInfo);
     },
     getPoolAddress() {
       if (this.slug === 'WQT') return process.env.STAKING;
@@ -282,23 +310,44 @@ export default {
     doCopy(ev) {
       ev.stopPropagation();
       this.$copyText(this.getPoolAddress()).then(() => {});
+      this.ShowModal({
+        key: modals.copiedSuccess,
+      });
     },
     async showClaimModal() {
+      if (!this.userInfo || !this.poolData) return;
+      await this.checkMetamaskStatus();
+      const txFeeData = await this.$store.dispatch('web3/getStakingRewardTxFee', this.slug);
+      if (txFeeData?.ok === false) {
+        await this.ShowModal({
+          key: modals.status,
+          title: this.$t('staking.notification'),
+          subtitle: this.$t('staking.cannotClaimYet'),
+        });
+        return;
+      }
       this.ShowModal({
         key: modals.claim,
+        txFee: txFeeData,
         stakingType: this.slug,
+        rewardAmount: this.userInfo.claim,
+        tokenSymbol: this.slug,
         updateMethod: this.getUserInfo,
       });
     },
-    showStakeModal() {
+    async showStakeModal() {
+      if (!this.userInfo || !this.poolData) return;
+      await this.checkMetamaskStatus();
       this.ShowModal({
         key: modals.claimRewards,
         type: 1,
-        decimals: this.poolData.rewardDecimal,
+        balance: this.userInfo._balance,
+        decimals: this.poolData.decimals,
         stakingType: this.slug,
-        minStake: this.slug === 'WQT' ? this.poolData.minStake : '0.01',
+        minStake: this.poolData.minStake,
         maxStake: this.poolData.maxStake,
         updateMethod: this.getUserInfo,
+        alreadyStaked: this.userInfo.staked !== '0',
       });
     },
   },

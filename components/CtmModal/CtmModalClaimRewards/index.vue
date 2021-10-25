@@ -31,7 +31,7 @@
           </template>
         </base-field>
         <div
-          v-if="options.type === 1 && options.stakingType === 'WQT'"
+          v-if="options.type === 1 && options.stakingType === 'WQT' && !options.alreadyStaked"
           class="content__days"
         >
           {{ $t('staking.stakeDays') }}
@@ -64,6 +64,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -87,6 +88,9 @@ export default {
       userStake: 'web3/getUserStake',
     }),
   },
+  mounted() {
+    this.balance = this.options.balance;
+  },
   methods: {
     hide() {
       this.CloseModal();
@@ -97,7 +101,12 @@ export default {
       return min + max;
     },
     maxBalance() {
-      this.amount = this.options.type === 1 ? this.userBalance : this.userStake;
+      if (this.options.stakingType !== 'MINING') {
+        this.amount = new BigNumber(this.options.balance).isGreaterThanOrEqualTo(this.options.maxStake)
+          ? this.options.maxStake : this.options.balance;
+      } else {
+        this.amount = this.options.type === 1 ? this.userBalance : this.userStake;
+      }
     },
     async tokensDataUpdate() {
       const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
@@ -105,6 +114,9 @@ export default {
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
     },
     checkAmount() {
+      if (this.options.stakingType !== 'MINING') {
+        return +this.options.balance >= +this.amount;
+      }
       const amount = this.options.type === 1 ? this.userBalance : this.userStake;
       return +amount >= +this.amount;
     },
@@ -112,7 +124,7 @@ export default {
       this.SetLoader(true);
       await this.checkMetamaskStatus();
       if (this.checkAmount()) {
-        const { decimals, stakingType } = this.options;
+        const { decimals, stakingType, updateMethod } = this.options;
         this.hide();
         await this.$store.dispatch('web3/stake', {
           decimals,
@@ -121,7 +133,9 @@ export default {
           duration: this.stakeDays[this.daysValue],
         });
         if (stakingType === 'MINING') await this.tokensDataUpdate();
-        else if (this.options.updateMethod) this.options.updateMethod();
+        else if (updateMethod) {
+          await updateMethod();
+        }
       } else {
         this.hide();
         this.ShowModal({
@@ -211,6 +225,10 @@ export default {
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 20px;
     margin-top: 25px;
+  }
+  &__dd {
+    border-radius: 6px;
+    border: 1px solid $black0;
   }
 }
 </style>

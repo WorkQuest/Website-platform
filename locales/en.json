@@ -2263,6 +2263,8 @@
     "dateTemp": "05.08.2021, 12:00"
   },
   "staking": {
+    "notification": "Notification",
+    "_inDev": "In development",
     "mainHeader": "Single staking",
     "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "pools": "Pools",
@@ -2276,6 +2278,7 @@
     "open": "Open",
     "back": "Back",
     "claimRewards": "Claim rewards",
+    "cannotClaimYet": "You cannot claim rewards yet",
     "pool": "Pool",
     "stakeTokenAddress": "Stake Token Address",
     "rewardTokenAddress": "Reward Token Address",

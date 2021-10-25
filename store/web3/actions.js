@@ -9,15 +9,12 @@ import {
   startPingingMetamask,
   fetchContractData,
   getAccountAddress,
-  createInstance,
   showToast,
   goToChain,
   swapWithBridge,
   redeemSwap,
-  stakingBSC,
-  unStakingBSC,
-  claimRewardsBSC,
   getStakingDataByType,
+  getStakingRewardTxFee,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 
@@ -68,37 +65,18 @@ export default {
   },
 
   async initContract({ commit }) {
-    const miningPoolId = localStorage.getItem('miningPoolId');
-    let stakingAddress;
-    let stakingAbi;
-    if (process.env.PROD === 'false') {
-      if (miningPoolId === 'ETH') {
-        stakingAddress = process.env.STAKING_ADDRESS;
-        stakingAbi = abi.StakingWQ;
-      } else {
-        stakingAddress = process.env.TESTNET_BSC_STAKING;
-        stakingAbi = abi.WQLiquidityMining;
-      }
-    }
-    if (process.env.PROD === 'true') {
-      if (miningPoolId === 'ETH') {
-        stakingAddress = process.env.MAINNET_ETH_STAKING;
-        stakingAbi = abi.StakingWQ;
-      } else {
-        stakingAddress = process.env.MAINNET_BSC_STAKING;
-        stakingAbi = abi.WQLiquidityMining;
-      }
-    }
+    const { stakingAddress, stakingAbi } = getStakingDataByType('MINING');
     const stakingInfo = await fetchContractData('getStakingInfo', stakingAbi, stakingAddress);
     const { stakeTokenAddress } = stakingInfo;
     const { rewardTokenAddress } = stakingInfo;
-    const stakeDecimal = await fetchContractData('decimals', abi.ERC20, stakeTokenAddress);
-    const stakeSymbol = await fetchContractData('symbol', abi.ERC20, stakeTokenAddress);
-    const rewardDecimal = await fetchContractData('decimals', abi.ERC20, rewardTokenAddress);
-    const rewardSymbol = await fetchContractData('symbol', abi.ERC20, rewardTokenAddress);
-    const stakeBalance = await fetchContractData('balanceOf', abi.ERC20, stakeTokenAddress, [getAccountAddress()]);
-    const rewardBalance = await fetchContractData('balanceOf', abi.ERC20, rewardTokenAddress, [getAccountAddress()]);
-    console.log(stakeDecimal, rewardDecimal);
+    const [stakeDecimal, stakeSymbol, rewardDecimal, rewardSymbol, stakeBalance, rewardBalance] = await Promise.all([
+      fetchContractData('decimals', abi.ERC20, stakeTokenAddress),
+      fetchContractData('symbol', abi.ERC20, stakeTokenAddress),
+      fetchContractData('decimals', abi.ERC20, rewardTokenAddress),
+      fetchContractData('symbol', abi.ERC20, rewardTokenAddress),
+      fetchContractData('balanceOf', abi.ERC20, stakeTokenAddress, [getAccountAddress()]),
+      fetchContractData('balanceOf', abi.ERC20, rewardTokenAddress, [getAccountAddress()]),
+    ]);
     const payload = {
       userPurse: {
         address: getAccountAddress(),
@@ -117,13 +95,14 @@ export default {
 
   async initTokensData({ commit }) {
     if (process.env.PROD === 'true') {
-      const oldTokenDecimal = await fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET);
-      const oldTokenSymbol = await fetchContractData('symbol', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET);
-      const oldTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET, [getAccountAddress()]);
-      const newTokenDecimal = await fetchContractData('decimals', abi.ERC20, process.env.MAINNET_BSC_WQT_TOKEN);
-      const newTokenSymbol = await fetchContractData('symbol', abi.ERC20, process.env.MAINNET_BSC_WQT_TOKEN);
-      const newTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.MAINNET_BSC_WQT_TOKEN, [getAccountAddress()]);
-
+      const [oldTokenDecimal, oldTokenSymbol, oldTokenBalance, newTokenDecimal, newTokenSymbol, newTokenBalance] = await Promise.all([
+        fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET),
+        fetchContractData('symbol', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET),
+        fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET, [getAccountAddress()]),
+        fetchContractData('decimals', abi.ERC20, process.env.MAINNET_BSC_WQT_TOKEN),
+        fetchContractData('symbol', abi.ERC20, process.env.MAINNET_BSC_WQT_TOKEN),
+        fetchContractData('balanceOf', abi.ERC20, process.env.MAINNET_BSC_WQT_TOKEN, [getAccountAddress()]),
+      ]);
       const payload = {
         userPurse: {
           address: getAccountAddress(),
@@ -139,13 +118,14 @@ export default {
       };
       commit('setBSCTokensData', payload);
     } if (process.env.PROD === 'false') {
-      const oldTokenDecimal = await fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
-      const oldTokenSymbol = await fetchContractData('symbol', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
-      const oldTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccountAddress()]);
-      const newTokenDecimal = await fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET);
-      const newTokenSymbol = await fetchContractData('symbol', abi.ERC20, process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET);
-      const newTokenBalance = await fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET, [getAccountAddress()]);
-
+      const [oldTokenDecimal, oldTokenSymbol, oldTokenBalance, newTokenDecimal, newTokenSymbol, newTokenBalance] = await Promise.all([
+        fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET),
+        fetchContractData('symbol', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET),
+        fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccountAddress()]),
+        fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET),
+        fetchContractData('symbol', abi.ERC20, process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET),
+        fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET, [getAccountAddress()]),
+      ]);
       const payload = {
         userPurse: {
           address: getAccountAddress(),
@@ -164,29 +144,8 @@ export default {
   },
 
   async getTokensData({ commit }, { rewardDecimal, stakeDecimal }) {
-    const miningPoolId = localStorage.getItem('miningPoolId');
-    let stakingAddress;
-    let stakingAbi;
-    if (process.env.PROD === 'false') {
-      if (miningPoolId === 'ETH') {
-        stakingAddress = process.env.STAKING_ADDRESS;
-        stakingAbi = abi.StakingWQ;
-      } else {
-        stakingAddress = process.env.TESTNET_BSC_STAKING;
-        stakingAbi = abi.WQLiquidityMining;
-      }
-    }
-    if (process.env.PROD === 'true') {
-      if (miningPoolId === 'ETH') {
-        stakingAddress = process.env.MAINNET_ETH_STAKING;
-        stakingAbi = abi.StakingWQ;
-      } else {
-        stakingAddress = process.env.MAINNET_BSC_STAKING;
-        stakingAbi = abi.WQLiquidityMining;
-      }
-    }
+    const { stakingAddress, stakingAbi } = getStakingDataByType('MINING');
     const userInfo = await fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccountAddress()]);
-    console.log(stakeDecimal);
     const payload = {
       balanceTokenAmount: new BigNumber(userInfo._balance).shiftedBy(-18).toString(),
       stakeTokenAmount: new BigNumber(userInfo.staked_).shiftedBy(-18).toString(),
@@ -197,25 +156,12 @@ export default {
   },
 
   async getCrosschainTokensData({ commit }) {
-    const miningPoolId = localStorage.getItem('miningPoolId');
-    let token;
-    if (process.env.PROD === 'false') {
-      if (miningPoolId === 'ETH') {
-        token = process.env.TOKEN_WQT_ADDRESS_RINKEBY;
-      } else {
-        token = process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET;
-      }
-    }
-    if (process.env.PROD === 'true') {
-      if (miningPoolId === 'ETH') {
-        token = process.env.MAINNET_ETH_WQT_TOKEN;
-      } else {
-        token = process.env.MAINNET_BSC_WQT_TOKEN;
-      }
-    }
-    const tokenDecimal = await fetchContractData('decimals', abi.ERC20, token);
-    const tokenSymbol = await fetchContractData('symbol', abi.ERC20, token);
-    const tokenValue = await fetchContractData('balanceOf', abi.ERC20, token, [getAccountAddress()]);
+    const { tokenAddress } = getStakingDataByType('MINING');
+    const [tokenDecimal, tokenSymbol, tokenValue] = await Promise.all([
+      fetchContractData('decimals', abi.ERC20, tokenAddress),
+      fetchContractData('symbol', abi.ERC20, tokenAddress),
+      fetchContractData('balanceOf', abi.ERC20, tokenAddress, [getAccountAddress()]),
+    ]);
     const payload = {
       tokenAmount: new BigNumber(tokenValue).shiftedBy(-tokenDecimal).toString(),
       tokenSymbol,
@@ -228,15 +174,25 @@ export default {
     return getAccountAddress();
   },
 
-  async getStakingUserInfo({ commit }, { stakingType, decimals }) {
+  async fetchStakingUserInfo({ commit }, { stakingType, decimals }) {
     const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
-    const userInfo = await fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccountAddress()]);
-    console.log('user info', userInfo);
+    const [userInfo, duration] = await Promise.all([
+      fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccountAddress()]),
+      fetchContractData('stakes', stakingAbi, stakingAddress, [getAccountAddress()]),
+    ]);
+    console.log(duration);
     return {
+      ...userInfo,
+      date: duration.unstakeTime ? new Date(duration.unstakeTime * 1000) : false,
       claim: new BigNumber(userInfo.claim_).shiftedBy(-decimals).decimalPlaces(2).toString(),
       staked: new BigNumber(userInfo.staked_).shiftedBy(-decimals).decimalPlaces(2).toString(),
       balance: new BigNumber(userInfo._balance).shiftedBy(-decimals).decimalPlaces(2).toString(),
+      _balance: new BigNumber(userInfo._balance).shiftedBy(-decimals).toString(),
     };
+  },
+
+  getStakingRewardTxFee({ commit }, stakingType) {
+    return getStakingRewardTxFee(stakingType);
   },
   async fetchStakingInfo({ commit }, { stakingType }) {
     const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
@@ -255,9 +211,9 @@ export default {
       ...stakingInfo,
       decimals,
       tokenSymbol,
-      claimPeriod: stakingInfo.claimPeriod / 60 / 60,
-      stakePeriod: stakingInfo.stakePeriod / 60 / 60,
-      distributionTime: stakingInfo.distributionTime / 60,
+      claimPeriod: new BigNumber(stakingInfo.claimPeriod / 60 / 60).decimalPlaces(3).toString(),
+      stakePeriod: new BigNumber(stakingInfo.stakePeriod / 60 / 60).decimalPlaces(3).toString(),
+      distributionTime: new BigNumber(stakingInfo.distributionTime / 60).decimalPlaces(3).toString(),
       totalStaked: new BigNumber(totalStaked).shiftedBy(-decimals).decimalPlaces(2).toString(),
       totalDistributed: new BigNumber(totalDistributed).shiftedBy(-decimals).decimalPlaces(2).toString(),
       rewardTotal: new BigNumber(rewardTotal).shiftedBy(-decimals).decimalPlaces(2).toString(),
@@ -268,15 +224,19 @@ export default {
   async stake({ commit }, {
     decimals, amount, stakingType, duration,
   }) {
-    const { tokenAddress, stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
+    const {
+      tokenAddress,
+      stakingAddress,
+      stakingAbi,
+    } = getStakingDataByType(stakingType);
     return await staking(decimals, amount, tokenAddress, stakingAddress, stakingAbi, duration, stakingType);
   },
   async unstake({ commit }, { decimals, amount }) {
     return await unStaking(decimals, amount);
   },
-  async claimRewards({ commit }, { stakingType }) {
+  async claimRewards({ commit }, { stakingType, amount }) {
     const { stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
-    return await claimRewards(stakingAddress, stakingAbi);
+    return await claimRewards(stakingAddress, stakingAbi, amount);
   },
   async swap({ commit }, { decimals, amount }) {
     return await swap(decimals, amount);
@@ -287,7 +247,6 @@ export default {
     return await swapWithBridge(_decimals, _amount, chain, chainTo, userAddress, recipient, symbol);
   },
   async goToChain({ commit }, { chain }) {
-    // commit('setIsConnected', false);
     return await goToChain(chain);
   },
   async redeemSwap({ commit }, payload) {

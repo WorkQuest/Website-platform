@@ -4,22 +4,23 @@
     :title="$t('modals.claim')"
   >
     <div class="claim__content content">
-      <div class="content__step">
-        <div
-          class="content__panel"
-          :class="{'content__panel_active': step === 1}"
-          @click="previousStep"
-        >
-          {{ $t('modals.walletAddress') }}
-        </div>
-        <div
-          class="content__panel"
-          :class="{'content__panel_active': step === 2}"
-          @click="nextStep"
-        >
-          {{ $t('wallet.bankCard') }}
-        </div>
-      </div>
+      <!--      Вывод на банковскую карту -->
+      <!--      <div class="content__step">-->
+      <!--        <div-->
+      <!--          class="content__panel"-->
+      <!--          :class="{'content__panel_active': step === 1}"-->
+      <!--          @click="previousStep"-->
+      <!--        >-->
+      <!--          {{ $t('modals.walletAddress') }}-->
+      <!--        </div>-->
+      <!--        <div-->
+      <!--          class="content__panel"-->
+      <!--          :class="{'content__panel_active': step === 2}"-->
+      <!--          @click="nextStep"-->
+      <!--        >-->
+      <!--          {{ $t('wallet.bankCard') }}-->
+      <!--        </div>-->
+      <!--      </div>-->
       <div class="content__field field">
         <div
           v-if="step===1"
@@ -91,7 +92,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalClaim',
@@ -99,17 +99,8 @@ export default {
     return {
       isCardNumberVisible: false,
       step: 1,
-      walletAddress: '83479B2E7809F7D7C0A9184EEDA74CCF122ABF3147CB4572BDEBD252F8E352A8',
-      items: [
-        {
-          title: this.$t('modals.amount'),
-          subtitle: '15 WUSD',
-        },
-        {
-          title: this.$t('modals.totalFee'),
-          subtitle: '$ 0,15',
-        },
-      ],
+      walletAddress: '...',
+      items: [],
     };
   },
   computed: {
@@ -133,6 +124,16 @@ export default {
   },
   async mounted() {
     this.walletAddress = await this.$store.dispatch('web3/getAccountAddress');
+    this.items = [
+      {
+        title: this.$t('modals.amount'),
+        subtitle: `${this.options.rewardAmount} ${this.options.tokenSymbol}`,
+      },
+      {
+        title: this.$t('modals.totalFee'),
+        subtitle: `$  ${this.options.txFee}`,
+      },
+    ];
   },
   methods: {
     hide() {
@@ -141,11 +142,10 @@ export default {
     async showTransactionSend() {
       const { stakingType, updateMethod } = this.options;
       this.hide();
+      this.SetLoader(true);
       await this.$store.dispatch('web3/claimRewards', { stakingType });
-      if (updateMethod) updateMethod();
-      this.ShowModal({
-        key: modals.transactionSend,
-      });
+      if (updateMethod) await updateMethod();
+      this.SetLoader(false);
     },
     nextStep() {
       this.step = 2;

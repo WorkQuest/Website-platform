@@ -412,14 +412,21 @@ export default {
     this.SetLoader(true);
     await this.checkMetamaskStatus();
     if (this.$route.params.id === 'ETH') {
-      await this.getWqtWethTokenDay();
-      await this.getWqtWethTokenDayLast();
+      await Promise.all([
+        this.getWqtWethTokenDay(),
+        this.getWqtWethTokenDayLast(),
+      ]);
     } else {
-      await this.getWqtWbnbTokenDay();
-      await this.getWqtWbnbTokenDayLast();
+      await Promise.all([
+        this.getWqtWbnbTokenDay(),
+        this.getWqtWbnbTokenDayLast(),
+      ]);
     }
-    await this.initTokenDays();
-    await this.initGraphData();
+    await Promise.all([
+      this.initTokenDays(),
+      this.initGraphData(),
+      this.tokensDataUpdate(),
+    ]);
     this.SetLoader(false);
     if (this.$route.params.id === 'ETH') {
       await this.tableWqtWethTokenDay();
@@ -568,9 +575,10 @@ export default {
       this.SetLoader(true);
       if (this.fullRewardAmount > 0) {
         await this.connectToMetamask();
-        // TODO: нужно передавать stakingType. Чекнуть что происходит в web3/claimRewards
-        // await this.$store.dispatch('web3/claimRewards', { stakingType: 'MINING' });
-        await this.$store.dispatch('web3/claimRewards', this.accountData.userPurse.address, this.fullRewardAmount);
+        await this.$store.dispatch('web3/claimRewards', {
+          amount: this.fullRewardAmount,
+          stakingType: 'MINING',
+        });
         await this.tokensDataUpdate();
       } else {
         this.ShowModal({
@@ -609,6 +617,7 @@ export default {
         type: 2,
         decimals: this.accountData.decimals.stakeDecimal,
         stakingType: 'MINING',
+        updateMethod: this.tokensDataUpdate,
       });
     },
     async openModalClaimRewards() {
@@ -616,6 +625,9 @@ export default {
       this.ShowModal({
         key: modals.claimRewards,
         type: 1,
+        stakingType: 'MINING',
+        decimals: this.accountData.decimals.stakeDecimal,
+        updateMethod: this.tokensDataUpdate,
       });
     },
     handleBackToMainMining() {

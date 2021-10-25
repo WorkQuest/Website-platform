@@ -39,6 +39,63 @@ export const error = (code = 90000, msg = '', data = null) => ({
   data,
 });
 
+export const getStakingDataByType = (stakingType) => {
+  let _stakingAddress;
+  let _stakingAbi;
+  let _tokenAddress;
+
+  const _miningPoolId = localStorage.getItem('miningPoolId');
+  switch (stakingType) {
+    case 'MINING':
+      if (process.env.PROD === 'true') {
+        if (_miningPoolId === 'ETH') {
+          _tokenAddress = process.env.MAINNET_STAKING_ETH_LP_TOKEN;
+          _stakingAddress = process.env.MAINNET_ETH_STAKING;
+          _stakingAbi = abi.StakingWQ;
+        } else {
+          _tokenAddress = process.env.MAINNET_STAKING_LP_TOKEN;
+          _stakingAddress = process.env.MAINNET_BSC_STAKING;
+          _stakingAbi = abi.WQLiquidityMining;
+        }
+      }
+      if (process.env.PROD === 'false') {
+        if (_miningPoolId === 'ETH') {
+          _tokenAddress = process.env.LP_TOKEN;
+          _stakingAddress = process.env.STAKING_ADDRESS;
+          _stakingAbi = abi.StakingWQ;
+        } else {
+          _tokenAddress = process.env.CAKE_LP_TOKEN;
+          _stakingAddress = process.env.TESTNET_BSC_STAKING;
+          _stakingAbi = abi.WQLiquidityMining;
+        }
+      }
+      break;
+    case 'WQT':
+      // TODOs: WQT & WUSD for prod
+      if (process.env.PROD === 'false') {
+        _tokenAddress = process.env.WQT_TOKEN;
+        _stakingAbi = abi.WQStaking;
+        _stakingAddress = process.env.STAKING;
+      }
+      break;
+    case 'WUSD': // native
+      if (process.env.PROD === 'false') {
+        _stakingAbi = abi.WQStakingNative;
+        _stakingAddress = process.env.STAKING_NATIVE;
+      }
+      break;
+    default:
+      console.error('[getStakingDataByType] wrong staking type: ', stakingType);
+      return false;
+  }
+
+  return {
+    stakingAddress: _stakingAddress,
+    stakingAbi: _stakingAbi,
+    tokenAddress: _tokenAddress,
+  };
+};
+
 export const fetchContractData = async (_method, _abi, _address, _params, _provider = web3) => {
   try {
     if (_provider === undefined) return {};
@@ -53,7 +110,7 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
 export const getAccountAddress = () => account?.address;
 
 export const sendTransaction = async (_method, payload, _provider = web3) => {
-  let transactionData = {};
+  let transactionData;
   const inst = new web3.eth.Contract(payload.abi, payload.address);
   const gasPrice = await web3.eth.getGasPrice();
   if (_method === 'claim') {
@@ -77,8 +134,8 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
       gas: gasEstimate,
     };
   } else {
-    const data = inst.methods[_method].apply(null, [payload.data]).encodeABI();
-    const gasEstimate = await inst.methods[_method].apply(null, [payload.data]).estimateGas({ from: account.address });
+    const data = inst.methods[_method].apply(null, payload.data).encodeABI();
+    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: account.address });
     transactionData = {
       to: payload.address,
       from: account.address,
@@ -176,17 +233,35 @@ export const createInstance = async (ab, address) => {
 let tokenInstance;
 let bridgeInstance;
 let allowance;
-let form;
 let amount;
-let tokenAddress;
-let stakingAddress;
-let stakingAbi;
-let bridgeAddress;
 let nonce;
+
+export const getStakingRewardTxFee = async (stakingType) => {
+  let inst;
+  // const data;
+  if (stakingType === 'WQT') {
+    inst = new web3.eth.Contract(abi.WQStaking, process.env.STAKING);
+  } else if (stakingType === 'WUSD') {
+    inst = new web3.eth.Contract(abi.WQStakingNative, process.env.STAKING_NATIVE);
+  } else {
+    console.error('[rewardTxFee] wrong staking type:', stakingType);
+    return 0;
+  }
+  try {
+    const gasPrice = await web3.eth.getGasPrice();
+    // const gasEstimate = await inst.methods.claim.apply(null, [data]).estimateGas({ from: account.address });
+    const gasEstimate = await inst.methods.claim.apply(null)
+      .estimateGas({ from: account.address });
+    return new BigNumber(gasPrice * gasEstimate).shiftedBy(-18)
+      .decimalPlaces(8)
+      .toString();
+  } catch (e) {
+    return error(500, 'TxFee error', e);
+  }
+};
 
 export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress, _stakingAbi, duration, stakingType) => {
   let instance;
-  // const contractInstance = await createInstance(_stakingAbi, _stakingAddress);
   const isNative = stakingType === 'WUSD';
   if (!isNative) {
     instance = await createInstance(abi.ERC20, _tokenAddress);
@@ -202,52 +277,35 @@ export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress
     }
     showToast('Staking', 'Staking...', 'success');
     store.dispatch('main/setStatusText', 'Staking');
-    // мой код
-    // if (stakingType === 'WQT') {
-    //   await contractInstance.stake(amount, duration);
-    // } else if (stakingType === 'MINING') {
-    //   await contractInstance.stake(amount);
-    // } else if (stakingType === 'WUSD') {
-    //   await contractInstance.stake({ value: amount });
-    //   return '';
-    // } else {
-    //   console.error('[staking] wrong staking type:', stakingType);
-    //   return error(500, 'stake error');
-    // }
     const payload = {
       abi: _stakingAbi,
       address: _stakingAddress,
-      data: amount,
     };
+    if (stakingType === 'MINING') {
+      payload.data = [amount];
+    } else if (stakingType === 'WQT') {
+      payload.data = [amount, duration];
+    } else if (stakingType === 'WUSD') {
+      payload.data = { value: amount };
+    } else {
+      console.error('[staking] wrong staking type:', stakingType);
+      return error(500, 'stake error');
+    }
     await sendTransaction('stake', payload);
     showToast('Staking', 'Staking done', 'success');
     return '';
   } catch (e) {
-    showToast('Stacking error', `${e.message}`, 'danger');
+    if (e.message.toString().includes('code": 3')) {
+      showToast('Stacking error', 'You cannot stake tokens yet', 'danger');
+    } else {
+      showToast('Stacking error', `${e.message}`, 'danger');
+    }
     return error(500, 'stake error', e);
   }
 };
 
 export const unStaking = async (_decimals, _amount) => {
-  const miningPoolId = localStorage.getItem('miningPoolId');
-  if (process.env.PROD === 'true') {
-    if (miningPoolId === 'ETH') {
-      stakingAddress = process.env.MAINNET_ETH_STAKING;
-      stakingAbi = abi.StakingWQ;
-    } else {
-      stakingAddress = process.env.MAINNET_BSC_STAKING;
-      stakingAbi = abi.WQLiquidityMining;
-    }
-  }
-  if (process.env.PROD === 'false') {
-    if (miningPoolId === 'ETH') {
-      stakingAddress = process.env.STAKING_ADDRESS;
-      stakingAbi = abi.StakingWQ;
-    } else {
-      stakingAddress = process.env.TESTNET_BSC_STAKING;
-      stakingAbi = abi.WQLiquidityMining;
-    }
-  }
+  const { stakingAddress, stakingAbi } = getStakingDataByType('MINING');
   try {
     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
     showToast('Unstaking', 'Unstaking...', 'success');
@@ -266,14 +324,14 @@ export const unStaking = async (_decimals, _amount) => {
   }
 };
 
-export const claimRewards = async (_stakingAddress, _stakingAbi, _userAddress, _amount) => {
+export const claimRewards = async (_stakingAddress, _stakingAbi, _amount) => {
   try {
     showToast('Claiming', 'Claiming...', 'success');
     const payload = {
-      abi: stakingAbi,
-      address: stakingAddress,
-      data: _amount,
+      abi: _stakingAbi,
+      address: _stakingAddress,
     };
+    if (_amount) payload.data = _amount;
     await sendTransaction('claim', payload);
     showToast('Claiming', 'Claiming done', 'success');
     return '';
@@ -333,6 +391,8 @@ export const swap = async (_decimals, _amount) => {
 
 export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAddress, recipient, symbol) => {
   let swapData = '';
+  let tokenAddress;
+  let bridgeAddress;
   if (process.env.PROD === 'true') {
     if (chain === 'ETH') {
       tokenAddress = process.env.MAINNET_ETH_WQT_TOKEN;
@@ -378,24 +438,20 @@ export const goToChain = async (chain) => {
   if (chain === 'undefined') {
     showToast('Error connect to Metamask', 'Wrong chain ID', 'danger');
   }
-  let methodName;
+  const methodName = 'wallet_switchEthereumChain';
   let chainIdParam;
   if (chain === 'ETH') {
     if (process.env.PROD === 'false') {
-      methodName = 'wallet_switchEthereumChain';
       chainIdParam = [{ chainId: '0x4' }];
     }
     if (process.env.PROD === 'true') {
-      methodName = 'wallet_switchEthereumChain';
       chainIdParam = [{ chainId: '0x1' }];
     }
   } else {
     if (process.env.PROD === 'false') {
-      methodName = 'wallet_switchEthereumChain';
       chainIdParam = [{ chainId: '0x61' }];
     }
     if (process.env.PROD === 'true') {
-      methodName = 'wallet_switchEthereumChain';
       chainIdParam = [{ chainId: '0x38' }];
     }
   }
@@ -415,6 +471,7 @@ export const goToChain = async (chain) => {
 
 export const redeemSwap = async (props) => {
   const { signData, chainId } = props;
+  let bridgeAddress;
   if (process.env.PROD === 'true') {
     if (chainId !== 2) {
       bridgeAddress = process.env.MAINNET_ETH_BRIDGE;
@@ -456,61 +513,4 @@ export const redeemSwap = async (props) => {
     }
   }
   return '';
-};
-
-export const getStakingDataByType = (stakingType) => {
-  let _stakingAddress;
-  let _stakingAbi;
-  let _tokenAddress;
-
-  const _miningPoolId = localStorage.getItem('miningPoolId');
-  switch (stakingType) {
-    case 'MINING':
-      if (process.env.PROD === 'true') {
-        if (_miningPoolId === 'ETH') {
-          _tokenAddress = process.env.MAINNET_STAKING_ETH_LP_TOKEN;
-          _stakingAddress = process.env.MAINNET_ETH_STAKING;
-          _stakingAbi = abi.StakingWQ;
-        } else {
-          _tokenAddress = process.env.MAINNET_STAKING_LP_TOKEN;
-          _stakingAddress = process.env.MAINNET_BSC_STAKING;
-          _stakingAbi = abi.WQLiquidityMining;
-        }
-      }
-      if (process.env.PROD === 'false') {
-        if (_miningPoolId === 'ETH') {
-          _tokenAddress = process.env.LP_TOKEN;
-          _stakingAddress = process.env.STAKING_ADDRESS;
-          _stakingAbi = abi.StakingWQ;
-        } else {
-          tokenAddress = process.env.CAKE_LP_TOKEN;
-          _stakingAddress = process.env.TESTNET_BSC_STAKING;
-          _stakingAbi = abi.WQLiquidityMining;
-        }
-      }
-      break;
-    case 'WQT':
-      // TODO: WQT & WUSD for prod
-      if (process.env.PROD === 'false') {
-        _tokenAddress = process.env.WQT_TOKEN;
-        _stakingAbi = abi.WQStaking;
-        _stakingAddress = process.env.STAKING;
-      }
-      break;
-    case 'WUSD': // native
-      if (process.env.PROD === 'false') {
-        _stakingAbi = abi.WQStakingNative;
-        _stakingAddress = process.env.STAKING_NATIVE;
-      }
-      break;
-    default:
-      console.error('[getStakingDataByType] wrong staking type: ', stakingType);
-      return false;
-  }
-
-  return {
-    stakingAddress: _stakingAddress,
-    stakingAbi: _stakingAbi,
-    tokenAddress: _tokenAddress,
-  };
 };
