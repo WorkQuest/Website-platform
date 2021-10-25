@@ -161,7 +161,6 @@ export default {
       this.$store.dispatch('web3/fetchStakingInfo', { stakingType: 'WQT' }),
       this.$store.dispatch('web3/fetchStakingInfo', { stakingType: 'WUSD' }),
     ]);
-    console.log('wqt', wqtPool, 'wusdPool', wusdPool);
     if (wqtPool && wusdPool) {
       wqtPool.poolAddress = process.env.STAKING;
       wqtPool.link = 'WQT';

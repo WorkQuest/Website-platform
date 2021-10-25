@@ -180,7 +180,6 @@ export default {
       fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccountAddress()]),
       fetchContractData('stakes', stakingAbi, stakingAddress, [getAccountAddress()]),
     ]);
-    console.log(duration);
     return {
       ...userInfo,
       date: duration.unstakeTime ? new Date(duration.unstakeTime * 1000) : false,
