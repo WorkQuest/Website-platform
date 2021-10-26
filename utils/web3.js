@@ -522,3 +522,29 @@ export const fetchStakingActions = async (stakingAbi, stakingAddress, callback) 
   tokensUnstakedListener = fetchContractAction(inst, 'tokensUnstaked', callback);
   tokensStakedListener = fetchContractAction(inst, 'tokensStaked', callback);
 };
+
+export const initStackingContract = async (chain) => {
+  const stakingAbi = abi.WQLiquidityMining;
+  let stakingAddress;
+  let websocketProvider;
+  if (chain === 'ETH') {
+    stakingAddress = process.env.MAINNET_ETH_STAKING;
+    websocketProvider = process.env.MAINNET_ETH_INFURA;
+  } else {
+    stakingAddress = process.env.MAINNET_BSC_STAKING;
+    websocketProvider = process.env.MAINNET_BSC_MORALIS;
+  }
+  const liquidityMiningProvider = new Web3(new Web3.providers.WebsocketProvider(websocketProvider, {
+    clientConfig: {
+      keepalive: true,
+      keepaliveInterval: 60000,
+    },
+    reconnect: {
+      auto: true,
+      delay: 1000,
+      onTimeout: false,
+    },
+  }));
+  const liquidityMiningContract = new liquidityMiningProvider.eth.Contract(stakingAbi, stakingAddress);
+  return await liquidityMiningContract.methods.getStakingInfo().call();
+};

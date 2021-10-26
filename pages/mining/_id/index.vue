@@ -98,8 +98,8 @@
                     {{ $t('mining.totalLiquidity') }}
                   </div>
                 </div>
+<!--                v-if="miningPoolId === 'BNB'" было в контейрене ниже TODO чек -->
                 <div
-                  v-if="miningPoolId === 'BNB'"
                   class="third__container"
                 >
                   <div class="third info-block__title_big info-block__title_blue">
@@ -260,6 +260,7 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
 import chart from './graphics_data';
+import { StakingTypes } from '~/utils/enums';
 
 export default {
   layout: 'guest',
@@ -356,8 +357,8 @@ export default {
       stakedAmount: 0,
       wqtWbnbData: [],
       wqtWethData: [],
-      profitWQT: 0,
       totalLP: 0,
+      profitWQT: 0,
     };
   },
   computed: {
@@ -581,10 +582,11 @@ export default {
       this.fullRewardAmount = tokensData.rewardTokenAmount;
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
-      const paramsAPY = await this.$store.dispatch('defi/getLPToken');
-      const priceLP = paramsAPY.reserveUSD / paramsAPY.totalSupply;
-      const APY = ((paramsAPY.rewardTotal * 12) * paramsAPY.priceUSD) / (paramsAPY.totalStaked * priceLP);
-      const profit = ((this.stakedAmount * priceLP) * APY) / paramsAPY.priceUSD;
+      const payload = {
+        chain: this.miningPoolId,
+        stakedAmount: tokensData.stakeTokenAmount,
+      };
+      const profit = await this.$store.dispatch('web3/getAPY', payload);
       this.profitWQT = this.Floor(profit);
     },
     async disconnectFromMetamask() {
@@ -596,7 +598,7 @@ export default {
         await this.connectToMetamask();
         await this.$store.dispatch('web3/claimRewards', {
           amount: this.fullRewardAmount,
-          stakingType: 'MINING',
+          stakingType: StakingTypes.MINING,
         });
         await this.tokensDataUpdate();
       } else {
@@ -628,7 +630,7 @@ export default {
         key: modals.claimRewards,
         type: 2,
         decimals: this.accountData.decimals.stakeDecimal,
-        stakingType: 'MINING',
+        stakingType: StakingTypes.MINING,
         updateMethod: this.tokensDataUpdate,
       });
     },
@@ -637,7 +639,7 @@ export default {
       this.ShowModal({
         key: modals.claimRewards,
         type: 1,
-        stakingType: 'MINING',
+        stakingType: StakingTypes.MINING,
         decimals: this.accountData.decimals.stakeDecimal,
         updateMethod: this.tokensDataUpdate,
       });
