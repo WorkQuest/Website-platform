@@ -220,6 +220,7 @@ export const initWeb3 = async () => {
         netType: getChainTypeById(chainId),
       };
       web4 = new Web4();
+      console.log(ethereum);
       await web4.setProvider(ethereum, userAddress);
       return success(account);
     }
@@ -487,24 +488,14 @@ export const redeemSwap = async (props) => {
   return '';
 };
 
-let tokensClaimedListener;
-let tokensStakedListener;
-let tokensUnstakedListener;
+let actionsListeners = [];
 let lastActionHash = null;
 
 export const unsubscirbeStakingListeners = () => {
-  if (tokensStakedListener) {
-    tokensStakedListener.unsubscribe((err, ok) => { if (ok) console.log('staked unsubscribed'); });
-    tokensStakedListener = null;
+  for (let i = 0; i < actionsListeners.length; i += 1) {
+    actionsListeners[i].unsubscribe();
   }
-  if (tokensClaimedListener) {
-    tokensClaimedListener.unsubscribe((err, ok) => { if (ok) console.log('claimed unsubscribed'); });
-    tokensClaimedListener = null;
-  }
-  if (tokensUnstakedListener) {
-    tokensUnstakedListener.unsubscribe((err, ok) => { if (ok) console.log('unstaked unsubscribed'); });
-    tokensUnstakedListener = null;
-  }
+  actionsListeners = [];
 };
 export const fetchContractAction = (inst, method, callback, params) => inst.events[method]({
   ...params,
@@ -515,12 +506,12 @@ export const fetchContractAction = (inst, method, callback, params) => inst.even
     callback(result);
   }
 });
-export const fetchStakingActions = async (stakingAbi, stakingAddress, callback) => {
+export const fetchStakingActions = async (stakingAbi, stakingAddress, callback, events) => {
   const inst = new web3.eth.Contract(stakingAbi, stakingAddress);
   await unsubscirbeStakingListeners();
-  tokensClaimedListener = fetchContractAction(inst, 'tokensClaimed', callback);
-  tokensUnstakedListener = fetchContractAction(inst, 'tokensUnstaked', callback);
-  tokensStakedListener = fetchContractAction(inst, 'tokensStaked', callback);
+  for (let i = 0; i < events.length; i += 1) {
+    actionsListeners.push(fetchContractAction(inst, events[i], callback));
+  }
 };
 
 export const initStackingContract = async (chain) => {

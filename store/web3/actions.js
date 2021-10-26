@@ -224,9 +224,9 @@ export default {
       minStake: new BigNumber(minStake).shiftedBy(-decimals).decimalPlaces(2).toString(),
     };
   },
-  async fetchStakingActions({ commit }, { stakingType, callback }) {
+  async fetchStakingActions({ commit }, { stakingType, callback, events }) {
     const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
-    await fetchStakingActions(stakingAbi, stakingAddress, callback);
+    await fetchStakingActions(stakingAbi, stakingAddress, callback, events);
   },
   unsubscribeStakingActions() {
     unsubscirbeStakingListeners();

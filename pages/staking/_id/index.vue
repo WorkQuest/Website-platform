@@ -259,7 +259,7 @@ export default {
       if (this.userInfo.date && this.userInfo.staked !== '0') {
         data.push({
           name: this.$t('staking.stakingCards.duration'),
-          about: moment(this.userInfo.date).format('DD/MM/YYYY HH:MM'),
+          about: Math.ceil(moment.duration(moment(this.userInfo.date).diff(moment.now())).asDays()),
         });
       }
       return data;
@@ -324,6 +324,9 @@ export default {
       await this.getUserInfo();
       await this.$store.dispatch('web3/fetchStakingActions', {
         stakingType: this.slug,
+        events: this.slug === StakingTypes.WQT
+          ? ['tokensClaimed', 'tokensUnstaked', 'tokensStaked']
+          : ['Claimed', 'Unstaked', 'Staked'],
         callback: () => {
           this.getPoolData();
           this.getUserInfo();
