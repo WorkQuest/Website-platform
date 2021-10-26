@@ -407,7 +407,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    // await this.checkMetamaskStatus();
+    await this.checkMetamaskStatus();
     if (this.$route.params.id === 'ETH') {
       await this.getWqtWethTokenDay();
       await this.getWqtWethTokenDayLast();
@@ -415,7 +415,7 @@ export default {
       await this.getWqtWbnbTokenDay();
       await this.getWqtWbnbTokenDayLast();
     }
-    // await this.tokensDataUpdate();
+    await this.tokensDataUpdate();
     await this.initTokenDays();
     await this.initGraphData();
     this.SetLoader(false);
@@ -441,8 +441,8 @@ export default {
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');
-        await this.connectToMetamask();
         await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+        await this.connectToMetamask();
       }
     },
     async initTokenDays() {
