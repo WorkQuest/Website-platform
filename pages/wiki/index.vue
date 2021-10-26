@@ -2,16 +2,22 @@
   <div class="wiki">
     <div
       class="wiki__header"
-      :class="{'wiki__header_cut': isMoved, 'wiki__header_hidden': isScrolledDown}"
+      :class="{'wiki__header_cut': isMoved, 'wiki__header_hidden': isScrolledDown && isMoved}"
     >
-      <div class="wiki__content">
+      <div
+        class="wiki__content"
+        :class="{'wiki__content_cut': isMoved}"
+      >
         <h3
           v-if="!isMoved"
           class="wiki__title"
         >
           {{ $t('wiki.title') }}
         </h3>
-        <div class="wiki__fields">
+        <div
+          class="wiki__fields"
+          :class="{'wiki__fields_cut': isMoved}"
+        >
           <div class="wiki__search-field">
             <base-field
               v-model="search"
@@ -19,6 +25,7 @@
               :is-search="true"
               :is-hide-error="true"
               :placeholder="$t('wiki.searchPlaceholder')"
+              :class="{'wiki__input_cut': isMoved}"
             />
             <div class="wiki__button-field">
               <base-btn
@@ -31,13 +38,14 @@
       </div>
     </div>
     <main
+      ref="content"
       class="content wiki__content"
       @touchend="onTouchEnd"
       @touchstart="onTouchstart"
     >
       <nav
         class="wiki__navigation"
-        :class="{'wiki__navigation_cut': isMoved, 'wiki__navigation_hidden': isScrolledDown}"
+        :class="{'wiki__navigation_cut': isMoved, 'wiki__navigation_hidden': isScrolledDown && isMoved}"
       >
         <ul
           ref="nav"
@@ -57,6 +65,8 @@
         </ul>
       </nav>
       <Content
+        class="wiki__main"
+        :class="{'wiki__main_hidden': isScrolledDown && isMoved, 'wiki__main_cut': isMoved}"
         :current-tab="currentTab"
       />
     </main>
@@ -101,7 +111,11 @@ export default {
       this.pageX = x;
     },
     onTouchstart(event) {
-      this.isMoved = true;
+      if (this.$refs.content.getBoundingClientRect().y >= 72) {
+        this.isMoved = false;
+      } else {
+        this.isMoved = true;
+      }
       this.pageX = event.changedTouches[0].pageX;
     },
     onTouchEnd(event) {
@@ -109,6 +123,11 @@ export default {
         this.isScrolledDown = true;
       } else {
         this.isScrolledDown = false;
+      }
+      if (this.$refs.content.getBoundingClientRect().y >= 72) {
+        this.isMoved = false;
+      } else {
+        this.isMoved = true;
       }
     },
   },
@@ -290,22 +309,27 @@ export default {
       height: 37px;
       margin-left: 10px;
     }
-     &__input {
+    &__input {
       width: 443px;
     }
-     &__content {
+    &__content {
       width: 575px;
     }
      &__search-field {
       height: 53px;
       padding: 0 10px;
      }
+     &__main {
+       &_cut {
+        margin-top: 100px;
+       }
+       &_hidden{
+         margin-top: 50px;
+       }
+     }
   }
   .content {
     grid-template-columns: 1fr;
-  }
-  .opened {
-  display: block;
   }
 }
 @include _575 {
@@ -332,9 +356,23 @@ export default {
   .wiki {
     &__content {
       width: 343px;
+       &_cut {
+        margin: 0;
+        width: 100%;
+      }
+    }
+    &__fields {
+      &_cut {
+        margin: 0;
+        display: block;
+        width: 100%;
+      }
     }
     &__input {
       width: 235px;
+       &_cut {
+        width: 365px;
+      }
     }
     &__search-field {
       padding: 0 10px 0 0;
