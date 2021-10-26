@@ -1,22 +1,19 @@
 <template>
   <div class="wiki">
     <div
+      ref="header"
       class="wiki__header"
-      :class="{'wiki__header_cut': isMoved, 'wiki__header_hidden': isScrolledDown && isMoved}"
     >
       <div
         class="wiki__content"
-        :class="{'wiki__content_cut': isMoved}"
       >
         <h3
-          v-if="!isMoved"
           class="wiki__title"
         >
           {{ $t('wiki.title') }}
         </h3>
         <div
           class="wiki__fields"
-          :class="{'wiki__fields_cut': isMoved}"
         >
           <div class="wiki__search-field">
             <base-field
@@ -25,7 +22,6 @@
               :is-search="true"
               :is-hide-error="true"
               :placeholder="$t('wiki.searchPlaceholder')"
-              :class="{'wiki__input_cut': isMoved}"
             />
             <div class="wiki__button-field">
               <base-btn
@@ -37,39 +33,52 @@
         </div>
       </div>
     </div>
-    <main
-      ref="content"
-      class="content wiki__content"
-      @touchend="onTouchEnd"
-      @touchstart="onTouchstart"
-    >
+    <div class="main-wrapper">
       <nav
-        class="wiki__navigation"
-        :class="{'wiki__navigation_cut': isMoved, 'wiki__navigation_hidden': isScrolledDown && isMoved}"
+        class="wiki__navigation navigation__mobile"
+        :class="{'wiki__navigation_light': isMoving}"
       >
         <ul
-          ref="nav"
           class="wiki__ul"
-          @touchstart="onTouchstart"
-          @touchmove="(e) => moveItems(e, 'nav')"
         >
           <li
             v-for="(item, key) in navigation"
             :key="key"
             class="wiki__item"
-            :class="{'wiki__item_dark': isMoved && item !== currentTab, 'wiki__item_active': item === currentTab}"
+            :class="{'wiki__item_dark': isMoving && item !== currentTab, 'wiki__item_active': item === currentTab}"
             @click="selectTab(item)"
           >
             {{ $t(`wiki.navigation.${item}.title`) }}
           </li>
         </ul>
       </nav>
-      <Content
-        class="wiki__main"
-        :class="{'wiki__main_hidden': isScrolledDown && isMoved, 'wiki__main_cut': isMoved}"
-        :current-tab="currentTab"
-      />
-    </main>
+      <main
+        class="content wiki__content"
+        @touchend="onTouchEnd"
+        @touchstart="onTouchstart"
+      >
+        <nav
+          class="wiki__navigation navigation__desktop"
+        >
+          <ul
+            class="wiki__ul"
+          >
+            <li
+              v-for="(item, key) in navigation"
+              :key="key"
+              class="wiki__item"
+              @click="selectTab(item)"
+            >
+              {{ $t(`wiki.navigation.${item}.title`) }}
+            </li>
+          </ul>
+        </nav>
+        <Content
+          class="wiki__main"
+          :current-tab="currentTab"
+        />
+      </main>
+    </div>
   </div>
 </template>
 
@@ -86,8 +95,7 @@ export default {
       currentTab: 'header',
       search: '',
       pageX: 0,
-      isMoved: false,
-      isScrolledDown: false,
+      isMoving: false,
     };
   },
   computed: {
@@ -111,24 +119,12 @@ export default {
       this.pageX = x;
     },
     onTouchstart(event) {
-      if (this.$refs.content.getBoundingClientRect().y >= 72) {
-        this.isMoved = false;
-      } else {
-        this.isMoved = true;
-      }
+      this.isMoving = this.$refs.header.getBoundingClientRect().y < -150;
       this.pageX = event.changedTouches[0].pageX;
+      console.log(this.$refs.header.getBoundingClientRect().y);
     },
     onTouchEnd(event) {
-      if (event.changedTouches[0].pageX > this.pageX) {
-        this.isScrolledDown = true;
-      } else {
-        this.isScrolledDown = false;
-      }
-      if (this.$refs.content.getBoundingClientRect().y >= 72) {
-        this.isMoved = false;
-      } else {
-        this.isMoved = true;
-      }
+      this.isMoving = this.$refs.header.getBoundingClientRect().y < -150;
     },
   },
 };
@@ -216,6 +212,14 @@ export default {
   grid-template-columns: 1fr 3fr;
   grid-gap: 20px;
 }
+.navigation {
+  &__desktop {
+    display: flex;
+  }
+  &__mobile {
+    display: none;
+  }
+}
 @include _1199 {
   .wiki {
     &__content {
@@ -244,35 +248,18 @@ export default {
     }
     &__header {
       height: 230px;
-      margin-bottom: 60px;
-      &_cut {
-        position: fixed;
-        height: 53px;
-        width: 100%;
-        background: $white;
-        transition: all ease 100ms;
-      }
-      &_hidden {
-        display: none;
-        transition: all ease 100ms;
-      }
+      margin-bottom: 0;
     }
     &__navigation {
-      position: absolute;
+      position: sticky;
       background: $darkblue;
-      top: 230px;
+      top: 70px;
       border-radius: 0;
       left: 0;
       width: 100vw;
       height: 50px;
-      &_cut {
-        position: fixed;
-        top: 125px;
-        background: $black0;
-        transition: all ease 100ms;
-      }
-      &_hidden {
-        top: 70px;
+      &_light {
+        background: $white;
       }
     }
     &__ul {
@@ -319,18 +306,18 @@ export default {
       height: 53px;
       padding: 0 10px;
      }
-     &__main {
-       &_cut {
-        margin-top: 100px;
-       }
-       &_hidden{
-         margin-top: 50px;
-       }
-     }
   }
   .content {
     grid-template-columns: 1fr;
   }
+  .navigation {
+    &__desktop {
+    display: none;
+  }
+  &__mobile {
+    display: flex;
+  }
+}
 }
 @include _575 {
   .wiki {
