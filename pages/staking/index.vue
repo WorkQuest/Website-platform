@@ -70,6 +70,7 @@ import modals from '~/store/modals/modals';
 import { Chains, NativeTokenSymbolByChainId, StakingTypes } from '~/utils/enums';
 
 export default {
+  name: 'Staking',
   data() {
     return {
       fields: [
@@ -154,6 +155,16 @@ export default {
       options: 'modals/getOptions',
       isConnected: 'web3/isConnected',
     }),
+  },
+  watch: {
+    async isConnected(newValue) {
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
+      if (newValue && rightChain) {
+        await this.getPoolsData();
+      } else {
+        this.poolsData = [];
+      }
+    },
   },
   async mounted() {
     this.SetLoader(true);

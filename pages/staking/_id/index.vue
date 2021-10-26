@@ -35,6 +35,25 @@
             </button>
           </div>
         </div>
+        <div
+          v-if="poolData && !poolData.isNative"
+          class="link-cont"
+        >
+          <div class="link-cont__link">
+            {{ $t('staking.stakeTokenAddress') }}
+          </div>
+          <a
+            :href="etherscanRef"
+            target="_blank"
+            type="button"
+          >
+            <img
+              src="~assets/img/ui/launch.svg"
+              alt=""
+              class="link-cont__icon"
+            >
+          </a>
+        </div>
         <div class="link-cont">
           <div class="link-cont__link">
             {{ $t('staking.rewardTokenAddress') }}
@@ -149,24 +168,6 @@ import { Chains, NativeTokenSymbolByChainId, StakingTypes } from '~/utils/enums'
 export default {
   data() {
     return {
-      btns: [
-        {
-          name: this.$t('staking.addLiquidity'),
-          clickFunc: () => {
-            this.ShowModal({
-              key: modals.addLiquidity,
-            });
-          },
-        },
-        {
-          name: this.$t('staking.removeLiquidity'),
-          clickFunc: () => {
-            this.ShowModal({
-              key: modals.removeLiquidity,
-            });
-          },
-        },
-      ],
       poolData: null,
       userInfo: null,
     };
@@ -180,7 +181,16 @@ export default {
       return this.$route.params.id;
     },
     cards() {
-      if (!this.poolData) return [];
+      if (!this.poolData) {
+        return [
+          {
+            subtitle: this.$t('staking.totalStaked'),
+          },
+          {
+            subtitle: this.$t('staking.totalDistributed'),
+          },
+        ];
+      }
       return [
         {
           title: this.$tc(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, this.poolData.totalStaked),
@@ -366,6 +376,7 @@ export default {
       if (this.slug === StakingTypes.WUSD) {
         const { netId } = await this.$store.dispatch('web3/getAccount');
         this.poolData.stakeTokenSymbol = NativeTokenSymbolByChainId[netId];
+        this.poolData.isNative = true;
       }
     },
     async getUserInfo() {
