@@ -144,11 +144,11 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
+import { Chains, StakingTypes } from '~/utils/enums';
 
 export default {
   data() {
     return {
-      templateLink: '0xnf8o29837hrvbn42o37hsho3b74thb3',
       btns: [
         {
           name: this.$t('staking.addLiquidity'),
@@ -193,7 +193,22 @@ export default {
       ];
     },
     stakingCards() {
-      if (!this.poolData) return [];
+      if (!this.poolData) {
+        return [
+          {
+            name: this.$t('staking.stakingCards.distributionTime'),
+          },
+          {
+            name: this.$t('staking.stakingCards.rewardTotal'),
+          },
+          {
+            name: this.$t('staking.stakingCards.takePeriod'),
+          },
+          {
+            name: this.$t('staking.stakingCards.claimPeriod'),
+          },
+        ];
+      }
       return [
         {
           name: this.$t('staking.stakingCards.distributionTime'),
@@ -214,7 +229,19 @@ export default {
       ];
     },
     userInfoCards() {
-      if (!this.userInfo) return [];
+      if (!this.userInfo) {
+        return [
+          {
+            name: this.$t('staking.userInformationCards.staked'),
+          },
+          {
+            name: this.$t('staking.userInformationCards.yourBalance'),
+          },
+          {
+            name: this.$t('staking.userInformationCards.claimed'),
+          },
+        ];
+      }
       const data = [
         {
           name: this.$t('staking.userInformationCards.staked'),
@@ -238,7 +265,19 @@ export default {
       return data;
     },
     stakeCards() {
-      if (!this.poolData) return [];
+      if (!this.poolData) {
+        return [
+          {
+            name: this.$t('staking.stakeCards.stakeMin'),
+          },
+          {
+            name: this.$t('staking.stakeCards.stakeLimit'),
+          },
+          {
+            name: this.$t('staking.stakeCards.periodUpdate'),
+          },
+        ];
+      }
       return [
         {
           name: this.$t('staking.stakeCards.stakeMin'),
@@ -261,40 +300,55 @@ export default {
     },
   },
   watch: {
-    isConnected() {
-      // TOOD: сделать слушатель и обновлять данные
-      const newInterval = setInterval(() => {
-        this.getPoolData();
-        this.getUserInfo();
-      }, 15000);
-      if (!this.isConnected) {
-        clearInterval(newInterval);
+    async isConnected(newValue) {
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
+      if (newValue && rightChain) {
+        await this.initPage();
+      } else {
+        this.userInfo = null;
+        this.poolData = null;
       }
     },
   },
   async mounted() {
-    this.SetLoader(true);
-    await this.checkMetamaskStatus();
-    await this.getPoolData();
-    await this.getUserInfo();
-    this.SetLoader(false);
+    await this.initPage();
+  },
+  async beforeDestroy() {
+    await this.$store.dispatch('web3/unsubscribeStakingActions');
   },
   methods: {
+    async initPage() {
+      this.SetLoader(true);
+      await this.checkMetamaskStatus();
+      await this.getPoolData();
+      await this.getUserInfo();
+      await this.$store.dispatch('web3/fetchStakingActions', {
+        stakingType: this.slug,
+        callback: () => {
+          this.getPoolData();
+          this.getUserInfo();
+        },
+      });
+      this.SetLoader(false);
+    },
     async checkMetamaskStatus() {
-      if (typeof window.ethereum === 'undefined') {
-        localStorage.setItem('metamaskStatus', 'notInstalled');
-        this.ShowModal({
-          key: modals.status,
-          img: '~assets/img/ui/cardHasBeenAdded.svg',
-          title: 'Please install Metamask!',
-          subtitle: 'Please click install...',
-          button: 'Install',
-          type: 'installMetamask',
-        });
-      } else {
-        localStorage.setItem('metamaskStatus', 'installed');
-        await this.$store.dispatch('web3/goToChain', { chain: 'ETH' });
-        await this.$store.dispatch('web3/connect');
+      if (!this.isConnected) {
+        if (typeof window.ethereum === 'undefined') {
+          localStorage.setItem('metamaskStatus', 'notInstalled');
+          this.ShowModal({
+            key: modals.status,
+            img: '~assets/img/ui/cardHasBeenAdded.svg',
+            title: 'Please install Metamask!',
+            subtitle: 'Please click install...',
+            button: 'Install',
+            type: 'installMetamask',
+          });
+        } else {
+          localStorage.setItem('metamaskStatus', 'installed');
+          const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
+          if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: Chains.ETHEREUM });
+          await this.$store.dispatch('web3/connect');
+        }
       }
     },
     handleAutoRenewal() {
@@ -311,8 +365,8 @@ export default {
       this.userInfo = await this.$store.dispatch('web3/fetchStakingUserInfo', { stakingType: this.slug, decimals: this.poolData.decimals });
     },
     getPoolAddress() {
-      if (this.slug === 'WQT') return process.env.STAKING;
-      if (this.slug === 'WUSD') return process.env.STAKING_NATIVE;
+      if (this.slug === StakingTypes.WQT) return process.env.STAKING;
+      if (this.slug === StakingTypes.WUSD) return process.env.STAKING_NATIVE;
       return '';
     },
     handleBackToMainstaking() {
@@ -343,7 +397,6 @@ export default {
         stakingType: this.slug,
         rewardAmount: this.userInfo.claim,
         tokenSymbol: this.slug,
-        updateMethod: this.getUserInfo,
       });
     },
     async showStakeModal() {
@@ -357,8 +410,7 @@ export default {
         stakingType: this.slug,
         minStake: this.poolData.minStake,
         maxStake: this.poolData.maxStake,
-        updateMethod: this.getUserInfo,
-        alreadyStaked: this.userInfo.staked !== '0',
+        alreadyStaked: this.userInfo.staked !== '0', // for duration selecting
       });
     },
   },

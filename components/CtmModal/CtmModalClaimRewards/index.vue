@@ -127,7 +127,6 @@ export default {
           stakingType,
           duration: this.stakeDays[this.daysValue],
         });
-        // if (stakingType === 'MINING') await this.tokensDataUpdate(); else
         if (updateMethod) await updateMethod();
       } else {
         this.hide();

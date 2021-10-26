@@ -6,15 +6,15 @@ import {
   claimRewards,
   disconnectWeb3,
   swap,
-  // startPingingMetamask, // TODO: remove later
   fetchContractData,
   getAccountAddress,
+  getAccount,
   showToast,
   goToChain,
   swapWithBridge,
   redeemSwap,
   getStakingDataByType,
-  getStakingRewardTxFee, handleMetamaskStatus,
+  getStakingRewardTxFee, handleMetamaskStatus, fetchStakingActions, unsubscirbeStakingListeners, getChainIdByChain,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 
@@ -43,32 +43,28 @@ export default {
     commit('clearTokens');
     commit('clearAccount');
   },
-  async startPingingMetamask({ dispatch }) {
-    await startPingingMetamask(() => {
-      showToast('Connect to Metamask', 'Disconnected', 'success');
-      dispatch('disconnect');
-    });
-  },
 
-  async connect({ commit, dispatch }) {
-    this.SetLoader(true);
+  async connect({ commit, dispatch, getters }, payload) {
+    const isReconnection = payload?.isReconnection;
     const response = await initWeb3();
     if (response.ok) {
-      handleMetamaskStatus(dispatch('handleMetamaskStatusChanged'));
-      // await dispatch('startPingingMetamask');
+      if (!getters.isHandlingMetamaskStatus) {
+        handleMetamaskStatus(() => dispatch('handleMetamaskStatusChanged'));
+        commit('setIsHandlingMetamaskStatus', true);
+      }
       await commit('setAccount', response.result);
       await commit('setIsConnected', true);
       await commit('setPurseData', getAccountAddress());
-      showToast('Connect to Metamask', 'Connected', 'success');
+      if (!isReconnection) showToast('Connect to Metamask', 'Connected', 'success');
     } else {
       commit('setIsConnected', false);
       showToast('Error connect to Metamask', `${response.data}`, 'danger');
     }
-    this.SetLoader(false);
   },
-  async handleMetamaskStatusChanged({ commit, dispatch }) {
+  async handleMetamaskStatusChanged({ dispatch }) {
+    console.log('handle status changes');
     await dispatch('disconnect');
-    await dispatch('connect');
+    await dispatch('connect', { isReconnection: true });
   },
 
   async initContract({ commit }) {
@@ -177,16 +173,13 @@ export default {
     return payload;
   },
 
-  getAccountAddress() {
-    return getAccountAddress();
-  },
-
   async fetchStakingUserInfo({ commit }, { stakingType, decimals }) {
     const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
     const [userInfo, duration] = await Promise.all([
       fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccountAddress()]),
       fetchContractData('stakes', stakingAbi, stakingAddress, [getAccountAddress()]),
     ]);
+    console.log(duration);
     return {
       ...userInfo,
       date: duration.unstakeTime ? new Date(duration.unstakeTime * 1000) : false,
@@ -196,7 +189,6 @@ export default {
       _balance: new BigNumber(userInfo._balance).shiftedBy(-decimals).toString(),
     };
   },
-
   getStakingRewardTxFee({ commit }, stakingType) {
     return getStakingRewardTxFee(stakingType);
   },
@@ -226,6 +218,13 @@ export default {
       maxStake: new BigNumber(maxStake).shiftedBy(-decimals).decimalPlaces(2).toString(),
       minStake: new BigNumber(minStake).shiftedBy(-decimals).decimalPlaces(2).toString(),
     };
+  },
+  async fetchStakingActions({ commit }, { stakingType, callback }) {
+    const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
+    await fetchStakingActions(stakingAbi, stakingAddress, callback);
+  },
+  unsubscribeStakingActions() {
+    unsubscirbeStakingListeners();
   },
   async stake({ commit }, {
     decimals, amount, stakingType, duration,
@@ -257,5 +256,11 @@ export default {
   },
   async redeemSwap({ commit }, payload) {
     return await redeemSwap(payload);
+  },
+  getAccountAddress() {
+    return getAccountAddress();
+  },
+  async chainIsCompareToCurrent({ dispatch }, chain) {
+    return +getChainIdByChain(chain) === +getAccount().netId;
   },
 };

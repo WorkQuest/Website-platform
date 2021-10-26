@@ -2,11 +2,11 @@ import Web3 from 'web3';
 import Web4 from '@cryptonteam/web4';
 import BigNumber from 'bignumber.js';
 import * as abi from '~/abi/abi';
+import { ChainsId, Chains, StakingTypes } from '~/utils/enums';
 
 let web3 = null;
 let web4 = null;
 
-const pingTimer = null;
 let account = {};
 
 let store;
@@ -20,6 +20,7 @@ if (process.browser) {
 }
 
 export const getAccountAddress = () => account?.address;
+export const getAccount = () => account;
 
 export function showToast(title, text, variant) {
   store.dispatch('main/showToast', {
@@ -41,6 +42,36 @@ export const error = (code = 90000, msg = '', data = null) => ({
   data,
 });
 
+export const getChainIdByChain = (chain) => {
+  const isProd = process.env.PROD === 'true';
+  switch (chain) {
+    case Chains.ETHEREUM:
+      if (!isProd) return ChainsId.ETH_TEST;
+      return ChainsId.ETH_MAIN;
+    case Chains.BINANCE:
+      if (!isProd) return ChainsId.BSC_TEST;
+      return ChainsId.BSC_MAIN;
+    default:
+      throw error(-1, `wrong chain id: ${chain}`);
+  }
+};
+export const goToChain = async (chain) => {
+  const methodName = 'wallet_switchEthereumChain';
+  const chainIdParam = [{ chainId: getChainIdByChain(chain) }];
+  try {
+    await window.ethereum.request({
+      method: methodName,
+      params: chainIdParam,
+    });
+    return { ok: true };
+  } catch (e) {
+    if (typeof window.ethereum !== 'undefined') {
+      showToast('Switch chain error:', `${e.message}`, 'danger');
+    }
+    return error(500, 'switch chain error', e);
+  }
+};
+
 export const getStakingDataByType = (stakingType) => {
   let _stakingAddress;
   let _stakingAbi;
@@ -48,7 +79,7 @@ export const getStakingDataByType = (stakingType) => {
 
   const _miningPoolId = localStorage.getItem('miningPoolId');
   switch (stakingType) {
-    case 'MINING':
+    case StakingTypes.MINING:
       if (process.env.PROD === 'true') {
         if (_miningPoolId === 'ETH') {
           _tokenAddress = process.env.MAINNET_STAKING_ETH_LP_TOKEN;
@@ -72,15 +103,14 @@ export const getStakingDataByType = (stakingType) => {
         }
       }
       break;
-    case 'WQT':
-      // TODOs: WQT & WUSD for prod
+    case StakingTypes.WQT:
       if (process.env.PROD === 'false') {
         _tokenAddress = process.env.WQT_TOKEN;
         _stakingAbi = abi.WQStaking;
         _stakingAddress = process.env.STAKING;
       }
       break;
-    case 'WUSD': // native
+    case StakingTypes.WUSD:
       if (process.env.PROD === 'false') {
         _stakingAbi = abi.WQStakingNative;
         _stakingAddress = process.env.STAKING_NATIVE;
@@ -148,44 +178,17 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
 };
 
 const getChainTypeById = (chainId) => {
-  if (+chainId === 1 || +chainId === 4) {
+  if (+chainId === +ChainsId.ETH_MAIN || +chainId === +ChainsId.ETH_TEST) {
     return 0;
   }
-  if (+chainId === 56 || +chainId === 97) {
+  if (+chainId === +ChainsId.BSC_MAIN || +chainId === +ChainsId.BSC_TEST) {
     return 1;
   }
-  if (+chainId === 80001 || +chainId === 137) {
+  if (+chainId === +ChainsId.MATIC_MAIN || +chainId === +ChainsId.MUMBAI_TEST) {
     return 2;
   }
   return -1;
 };
-
-// export const startPingingMetamask = async (callback) => {
-//   try {
-//     if (web3) {
-//       clearInterval(pingTimer);
-//       const referenceAddress = await web3.eth.getCoinbase();
-//       // const referenceChainId = await web3.eth.net.getId();
-//       pingTimer = setInterval(async () => {
-//         if (!web3) {
-//           callback();
-//           clearInterval(pingTimer);
-//         }
-//         const address = await web3.eth.getCoinbase();
-//         // const chainId = await web3.eth.net.getId();
-//         const isChangedAddress = address !== referenceAddress;
-//         // const isChangedNetId = chainId !== referenceChainId;
-//         if (isChangedAddress) {
-//           callback();
-//           clearInterval(pingTimer);
-//         }
-//       }, 2000);
-//     }
-//     return success();
-//   } catch (e) {
-//     return error(500, 'pingingMetamask err', e);
-//   }
-// };
 
 export const handleMetamaskStatus = (callback) => {
   const { ethereum } = window;
@@ -246,9 +249,9 @@ let nonce;
 export const getStakingRewardTxFee = async (stakingType) => {
   let inst;
   // const data;
-  if (stakingType === 'WQT') {
+  if (stakingType === StakingTypes.WQT) {
     inst = new web3.eth.Contract(abi.WQStaking, process.env.STAKING);
-  } else if (stakingType === 'WUSD') {
+  } else if (stakingType === StakingTypes.WUSD) {
     inst = new web3.eth.Contract(abi.WQStakingNative, process.env.STAKING_NATIVE);
   } else {
     console.error('[rewardTxFee] wrong staking type:', stakingType);
@@ -288,11 +291,11 @@ export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress
       abi: _stakingAbi,
       address: _stakingAddress,
     };
-    if (stakingType === 'MINING') {
+    if (stakingType === StakingTypes.MINING) {
       payload.data = [amount];
-    } else if (stakingType === 'WQT') {
+    } else if (stakingType === StakingTypes.WQT) {
       payload.data = [amount, duration];
-    } else if (stakingType === 'WUSD') {
+    } else if (stakingType === StakingTypes.WUSD) {
       payload.data = { value: amount };
     } else {
       console.error('[staking] wrong staking type:', stakingType);
@@ -401,22 +404,19 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
   let tokenAddress;
   let bridgeAddress;
   if (process.env.PROD === 'true') {
-    if (chain === 'ETH') {
+    if (chain === Chains.ETHEREUM) {
       tokenAddress = process.env.MAINNET_ETH_WQT_TOKEN;
       bridgeAddress = process.env.MAINNET_ETH_BRIDGE;
     } else {
       tokenAddress = process.env.MAINNET_BSC_WQT_TOKEN;
       bridgeAddress = process.env.MAINNET_BSC_BRIDGE;
     }
-  }
-  if (process.env.PROD === 'false') {
-    if (chain === 'ETH') {
-      tokenAddress = process.env.NEW_WQT_TOKEN;
-      bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
-    } else {
-      tokenAddress = process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET;
-      bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
-    }
+  } else if (chain === Chains.ETHEREUM) {
+    tokenAddress = process.env.NEW_WQT_TOKEN;
+    bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
+  } else {
+    tokenAddress = process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET;
+    bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
   }
   tokenInstance = await createInstance(abi.ERC20, tokenAddress);
   bridgeInstance = await createInstance(abi.MainNetWQBridge, bridgeAddress);
@@ -438,41 +438,6 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
   } catch (e) {
     showToast('Swapping error', `${e.message}`, 'danger');
     return error(500, 'stake error', e);
-  }
-};
-
-export const goToChain = async (chain) => {
-  if (chain === 'undefined') {
-    showToast('Error connect to Metamask', 'Wrong chain ID', 'danger');
-  }
-  const methodName = 'wallet_switchEthereumChain';
-  let chainIdParam;
-  if (chain === 'ETH') {
-    if (process.env.PROD === 'false') {
-      chainIdParam = [{ chainId: '0x4' }];
-    }
-    if (process.env.PROD === 'true') {
-      chainIdParam = [{ chainId: '0x1' }];
-    }
-  } else {
-    if (process.env.PROD === 'false') {
-      chainIdParam = [{ chainId: '0x61' }];
-    }
-    if (process.env.PROD === 'true') {
-      chainIdParam = [{ chainId: '0x38' }];
-    }
-  }
-  try {
-    await window.ethereum.request({
-      method: methodName,
-      params: chainIdParam,
-    });
-    return { ok: true };
-  } catch (e) {
-    if (typeof window.ethereum !== 'undefined') {
-      showToast('Switch chain error:', `${e.message}`, 'danger');
-    }
-    return error(500, 'switch chain error', e);
   }
 };
 
@@ -520,4 +485,40 @@ export const redeemSwap = async (props) => {
     }
   }
   return '';
+};
+
+let tokensClaimedListener;
+let tokensStakedListener;
+let tokensUnstakedListener;
+let lastActionHash = null;
+
+export const unsubscirbeStakingListeners = () => {
+  if (tokensStakedListener) {
+    tokensStakedListener.unsubscribe((err, ok) => { if (ok) console.log('staked unsubscribed'); });
+    tokensStakedListener = null;
+  }
+  if (tokensClaimedListener) {
+    tokensClaimedListener.unsubscribe((err, ok) => { if (ok) console.log('claimed unsubscribed'); });
+    tokensClaimedListener = null;
+  }
+  if (tokensUnstakedListener) {
+    tokensUnstakedListener.unsubscribe((err, ok) => { if (ok) console.log('unstaked unsubscribed'); });
+    tokensUnstakedListener = null;
+  }
+};
+export const fetchContractAction = (inst, method, callback, params) => inst.events[method]({
+  ...params,
+}, (err, result) => {
+  if (!err && callback && lastActionHash !== result.transactionHash) {
+    lastActionHash = result.transactionHash;
+    console.log(method, result);
+    callback(result);
+  }
+});
+export const fetchStakingActions = async (stakingAbi, stakingAddress, callback) => {
+  const inst = new web3.eth.Contract(stakingAbi, stakingAddress);
+  await unsubscirbeStakingListeners();
+  tokensClaimedListener = fetchContractAction(inst, 'tokensClaimed', callback);
+  tokensUnstakedListener = fetchContractAction(inst, 'tokensUnstaked', callback);
+  tokensStakedListener = fetchContractAction(inst, 'tokensStaked', callback);
 };

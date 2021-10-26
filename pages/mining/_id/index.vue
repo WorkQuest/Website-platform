@@ -268,6 +268,7 @@ export default {
   },
   data() {
     return {
+      updateInterval: null,
       disabled: false,
       miningPoolId: '',
       metamaskStatus: localStorage.getItem('metamaskStatus'),
@@ -387,10 +388,14 @@ export default {
     },
   },
   watch: {
-    isConnected() {
-      const newInterval = setInterval(() => this.tokensDataUpdate(), 15000);
-      if (!this.isConnected) {
-        clearInterval(newInterval);
+    async isConnected(newValue) {
+      await this.tokensDataUpdate();
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+      if (newValue && rightChain) {
+        await this.checkMetamaskStatus();
+        this.updateInterval = setInterval(() => this.tokensDataUpdate(), 15000);
+      } else {
+        clearInterval(this.updateInterval);
       }
     },
     async page() {
@@ -426,13 +431,13 @@ export default {
       this.initTokenDays(),
       this.initGraphData(),
     ]);
-    this.SetLoader(false);
     if (this.$route.params.id === 'ETH') {
       await this.tableWqtWethTokenDay();
     } else {
       await this.tableWqtWbnbTokenDay();
     }
     await this.initTableData();
+    this.SetLoader(false);
   },
   methods: {
     async checkMetamaskStatus() {
@@ -448,8 +453,16 @@ export default {
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');
-        await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+        const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+        if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
         await this.connectToMetamask();
+      }
+    },
+    async connectToMetamask() {
+      if (!this.isConnected) {
+        await this.$store.dispatch('web3/connect');
+        await this.$store.dispatch('web3/initContract');
+        await this.tokensDataUpdate();
       }
     },
     async initTokenDays() {
@@ -556,7 +569,14 @@ export default {
       return style;
     },
     async tokensDataUpdate() {
-      if (!this.accountData?.decimals) return;
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+      if (!rightChain || !this.accountData || !this.accountData.decimals) {
+        this.fullRewardAmount = 0;
+        this.rewardAmount = 0;
+        this.stakedAmount = 0;
+        this.profitWQT = 0;
+        return;
+      }
       const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
       this.fullRewardAmount = tokensData.rewardTokenAmount;
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
@@ -589,13 +609,6 @@ export default {
         });
       }
       this.SetLoader(false);
-    },
-    async connectToMetamask() {
-      if (!this.isConnected) {
-        await this.$store.dispatch('web3/connect');
-        await this.$store.dispatch('web3/initContract');
-        await this.tokensDataUpdate();
-      }
     },
     cropTxt(str) {
       if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;

@@ -67,6 +67,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { Chains, StakingTypes } from '~/utils/enums';
 
 export default {
   data() {
@@ -157,43 +158,54 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.checkMetamaskStatus();
-    const [wqtPool, wusdPool] = await Promise.all([
-      this.$store.dispatch('web3/fetchStakingInfo', { stakingType: 'WQT' }),
-      this.$store.dispatch('web3/fetchStakingInfo', { stakingType: 'WUSD' }),
-    ]);
-    if (wqtPool && wusdPool) {
-      wqtPool.poolAddress = process.env.STAKING;
-      wqtPool.link = 'WQT';
-      wusdPool.poolAddress = process.env.STAKING_NATIVE;
-      wusdPool.link = 'WUSD';
-      this.poolsData = [wqtPool, wusdPool];
-    }
+    await this.getPoolsData();
     this.SetLoader(false);
   },
+  async beforeDestroy() {
+    await this.$store.dispatch('web3/unsubscribeStakingActions');
+  },
   methods: {
+    async getPoolsData() {
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
+      if (!rightChain) {
+        this.poolsData = [];
+      }
+      const [wqtPool, wusdPool] = await Promise.all([
+        this.$store.dispatch('web3/fetchStakingInfo', { stakingType: StakingTypes.WQT }),
+        this.$store.dispatch('web3/fetchStakingInfo', { stakingType: StakingTypes.WUSD }),
+      ]);
+      if (wqtPool && wusdPool) {
+        wqtPool.poolAddress = process.env.STAKING;
+        wqtPool.link = StakingTypes.WQT;
+        wusdPool.poolAddress = process.env.STAKING_NATIVE;
+        wusdPool.link = StakingTypes.WUSD;
+        this.poolsData = [wqtPool, wusdPool];
+      }
+    },
     async checkMetamaskStatus() {
-      if (typeof window.ethereum === 'undefined') {
-        localStorage.setItem('metamaskStatus', 'notInstalled');
-        this.ShowModal({
-          key: modals.status,
-          img: '~assets/img/ui/cardHasBeenAdded.svg',
-          title: 'Please install Metamask!',
-          subtitle: 'Please click install...',
-          button: 'Install',
-          type: 'installMetamask',
-        });
-      } else {
-        localStorage.setItem('metamaskStatus', 'installed');
-        await this.$store.dispatch('web3/goToChain', { chain: 'ETH' });
-        await this.$store.dispatch('web3/connect');
+      if (!this.isConnected) {
+        if (typeof window.ethereum === 'undefined') {
+          localStorage.setItem('metamaskStatus', 'notInstalled');
+          this.ShowModal({
+            key: modals.status,
+            img: '~assets/img/ui/cardHasBeenAdded.svg',
+            title: 'Please install Metamask!',
+            subtitle: 'Please click install...',
+            button: 'Install',
+            type: 'installMetamask',
+          });
+        } else {
+          localStorage.setItem('metamaskStatus', 'installed');
+          await this.$store.dispatch('web3/goToChain', { chain: Chains.ETHEREUM });
+          await this.$store.dispatch('web3/connect');
+        }
       }
     },
     handleOpenPool(el) {
       this.$router.push(`/staking/${el.item.link}`);
     },
     getFormattedAddress(address) {
-      if (!address) return '';
-      return `${address.slice(0, 8)}...${address.slice(-4)}`;
+      return !address ? '' : `${address.slice(0, 8)}...${address.slice(-4)}`;
     },
   },
 };
