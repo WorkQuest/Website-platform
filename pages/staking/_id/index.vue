@@ -144,7 +144,7 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
-import { Chains, StakingTypes } from '~/utils/enums';
+import { Chains, NativeTokenSymbolByChainId, StakingTypes } from '~/utils/enums';
 
 export default {
   data() {
@@ -183,7 +183,7 @@ export default {
       if (!this.poolData) return [];
       return [
         {
-          title: this.$tc(`staking.${this.slug}Count`, this.poolData.totalStaked),
+          title: this.$tc(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, this.poolData.totalStaked),
           subtitle: this.$t('staking.totalStaked'),
         },
         {
@@ -245,11 +245,11 @@ export default {
       const data = [
         {
           name: this.$t('staking.userInformationCards.staked'),
-          about: this.$tc(`staking.${this.slug}Count`, this.userInfo.staked),
+          about: this.$tc(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, this.userInfo.staked),
         },
         {
           name: this.$t('staking.userInformationCards.yourBalance'),
-          about: this.$tc(`staking.${this.slug}Count`, this.userInfo.balance),
+          about: this.$tc(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, this.userInfo.balance),
         },
         {
           name: this.$t('staking.userInformationCards.claimed'),
@@ -281,11 +281,11 @@ export default {
       return [
         {
           name: this.$t('staking.stakeCards.stakeMin'),
-          about: this.$t(`staking.${this.slug}Count`, { n: this.poolData.minStake }),
+          about: this.$t(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, { n: this.poolData.minStake }),
         },
         {
           name: this.$t('staking.stakeCards.stakeLimit'),
-          about: this.$t(`staking.${this.slug}Count`, { n: this.poolData.maxStake }),
+          about: this.$t(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, { n: this.poolData.maxStake }),
         },
         {
           name: this.$t('staking.stakeCards.periodUpdate'),
@@ -363,6 +363,10 @@ export default {
     },
     async getPoolData() {
       this.poolData = await this.$store.dispatch('web3/fetchStakingInfo', { stakingType: this.slug });
+      if (this.slug === StakingTypes.WUSD) {
+        const { netId } = await this.$store.dispatch('web3/getAccount');
+        this.poolData.stakeTokenSymbol = NativeTokenSymbolByChainId[netId];
+      }
     },
     async getUserInfo() {
       this.userInfo = await this.$store.dispatch('web3/fetchStakingUserInfo', { stakingType: this.slug, decimals: this.poolData.decimals });
@@ -385,6 +389,16 @@ export default {
     async showClaimModal() {
       if (!this.userInfo || !this.poolData) return;
       await this.checkMetamaskStatus();
+      if (this.userInfo.claim === '0') {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('staking.notification'),
+          recipient: '',
+          subtitle: this.$t('modals.nothingToClaim'),
+        });
+        return;
+      }
       const txFeeData = await this.$store.dispatch('web3/getStakingRewardTxFee', this.slug);
       if (txFeeData?.ok === false) {
         await this.ShowModal({

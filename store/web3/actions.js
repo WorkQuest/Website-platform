@@ -67,7 +67,6 @@ export default {
     }
   },
   async handleMetamaskStatusChanged({ dispatch }) {
-    console.log('handle status changes');
     await dispatch('disconnect');
     await dispatch('connect', { isReconnection: true });
   },
@@ -184,7 +183,6 @@ export default {
       fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccountAddress()]),
       fetchContractData('stakes', stakingAbi, stakingAddress, [getAccountAddress()]),
     ]);
-    console.log(duration);
     return {
       ...userInfo,
       date: duration.unstakeTime ? new Date(duration.unstakeTime * 1000) : false,
@@ -214,6 +212,7 @@ export default {
       ...stakingInfo,
       decimals,
       tokenSymbol,
+      stakeTokenSymbol: tokenSymbol,
       claimPeriod: new BigNumber(stakingInfo.claimPeriod / 60 / 60).decimalPlaces(3).toString(),
       stakePeriod: new BigNumber(stakingInfo.stakePeriod / 60 / 60).decimalPlaces(3).toString(),
       distributionTime: new BigNumber(stakingInfo.distributionTime / 60).decimalPlaces(3).toString(),
@@ -264,6 +263,9 @@ export default {
   },
   getAccountAddress() {
     return getAccountAddress();
+  },
+  getAccount() {
+    return getAccount();
   },
   async chainIsCompareToCurrent({ dispatch }, chain) {
     return +getChainIdByChain(chain) === +getAccount().netId;

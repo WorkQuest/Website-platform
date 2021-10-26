@@ -220,7 +220,6 @@ export const initWeb3 = async () => {
         netType: getChainTypeById(chainId),
       };
       web4 = new Web4();
-      console.log(ethereum);
       await web4.setProvider(ethereum, userAddress);
       return success(account);
     }
@@ -502,7 +501,6 @@ export const fetchContractAction = (inst, method, callback, params) => inst.even
 }, (err, result) => {
   if (!err && callback && lastActionHash !== result.transactionHash) {
     lastActionHash = result.transactionHash;
-    console.log(method, result);
     callback(result);
   }
 });

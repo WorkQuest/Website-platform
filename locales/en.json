@@ -2285,6 +2285,8 @@
     "totalStaked": "Total Staked",
     "WQTCount": "{n} WQT",
     "WUSDCount": "{n} WUSD",
+    "ETHCount": "{n} ETH",
+    "BNBCount": "{n} BNB",
     "hours": "{n} hours",
     "days": "{n} days",
     "min": "{n} min",

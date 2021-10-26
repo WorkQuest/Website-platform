@@ -30,7 +30,7 @@
               </template>
               <template #cell(totalStaked)="el">
                 <div class="table__value">
-                  {{ el.item.totalStaked }} {{ el.item.tokenSymbol }}
+                  {{ el.item.totalStaked }} {{ el.item.stakeTokenSymbol }}
                 </div>
               </template>
               <template #cell(totalDistributed)="el">
@@ -67,7 +67,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { Chains, StakingTypes } from '~/utils/enums';
+import { Chains, NativeTokenSymbolByChainId, StakingTypes } from '~/utils/enums';
 
 export default {
   data() {
@@ -177,7 +177,10 @@ export default {
       if (wqtPool && wusdPool) {
         wqtPool.poolAddress = process.env.STAKING;
         wqtPool.link = StakingTypes.WQT;
+
+        const { netId } = await this.$store.dispatch('web3/getAccount');
         wusdPool.poolAddress = process.env.STAKING_NATIVE;
+        wusdPool.stakeTokenSymbol = NativeTokenSymbolByChainId[netId];
         wusdPool.link = StakingTypes.WUSD;
         this.poolsData = [wqtPool, wusdPool];
       }

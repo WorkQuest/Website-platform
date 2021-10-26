@@ -18,3 +18,10 @@ export const StakingTypes = {
   WUSD: 'WUSD',
   MINING: 'MINING',
 };
+
+export const NativeTokenSymbolByChainId = {
+  [+ChainsId.ETH_MAIN]: 'ETH',
+  [+ChainsId.ETH_TEST]: 'ETH',
+  [+ChainsId.BSC_MAIN]: 'BNB',
+  [+ChainsId.BSC_TEST]: 'BNB',
+};

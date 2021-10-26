@@ -98,7 +98,6 @@
                     {{ $t('mining.totalLiquidity') }}
                   </div>
                 </div>
-<!--                v-if="miningPoolId === 'BNB'" было в контейрене ниже TODO чек -->
                 <div
                   class="third__container"
                 >
