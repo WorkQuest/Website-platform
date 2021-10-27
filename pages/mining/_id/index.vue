@@ -444,6 +444,9 @@ export default {
     await this.initTableData();
     this.firstLoading = false;
   },
+  beforeDestroy() {
+    clearInterval(this.updateInterval);
+  },
   methods: {
     async checkMetamaskStatus() {
       if (typeof window.ethereum === 'undefined') {

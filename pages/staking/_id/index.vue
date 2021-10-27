@@ -321,7 +321,6 @@ export default {
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
       if (newValue && rightChain) {
         await this.initPage();
-        this.updateInterval = setInterval(() => this.getUserInfo(), 15000);
       } else {
         this.userInfo = null;
         this.poolData = null;
@@ -334,6 +333,7 @@ export default {
   },
   async beforeDestroy() {
     await this.$store.dispatch('web3/unsubscribeStakingActions');
+    clearInterval(this.updateInterval);
   },
   methods: {
     async initPage() {
@@ -352,6 +352,7 @@ export default {
           this.getUserInfo();
         },
       });
+      this.updateInterval = setInterval(() => this.getUserInfo(), 15000);
       this.firstLoading = false;
       this.SetLoader(false);
     },
@@ -392,6 +393,7 @@ export default {
       }
     },
     async getUserInfo() {
+      console.log('user info');
       this.userInfo = await this.$store.dispatch('web3/fetchStakingUserInfo', { stakingType: this.slug, decimals: this.poolData.decimals });
     },
     getPoolAddress() {
