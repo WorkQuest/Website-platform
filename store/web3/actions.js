@@ -1,8 +1,18 @@
 import BigNumber from 'bignumber.js';
-import { Pair as PairUniswap, Token as TokenUniswap, TokenAmount as TokenAmountUniswap } from '@uniswap/sdk';
+
 import {
-  ChainId, Token as TokenPancake, TokenAmount as TokenAmountPancake, Pair as PairPancake,
+  Pair as PairUniswap,
+  Token as TokenUniswap,
+  TokenAmount as TokenAmountUniswap,
+} from '@uniswap/sdk';
+
+import {
+  ChainId,
+  Token as TokenPancake,
+  TokenAmount as TokenAmountPancake,
+  Pair as PairPancake,
 } from '@pancakeswap/sdk';
+
 import {
   claimRewards,
   disconnectWeb3,

@@ -98,9 +98,7 @@
                     {{ $t('mining.totalLiquidity') }}
                   </div>
                 </div>
-                <div
-                  class="third__container"
-                >
+                <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
                     {{ $tc('mining.wqtCount', profitWQT) }}
                   </div>
@@ -437,13 +435,13 @@ export default {
       this.initTokenDays(),
       this.initGraphData(),
     ]);
+    this.SetLoader(false);
     if (this.$route.params.id === 'ETH') {
       await this.tableWqtWethTokenDay();
     } else {
       await this.tableWqtWbnbTokenDay();
     }
     await this.initTableData();
-    this.SetLoader(false);
     this.firstLoading = false;
   },
   methods: {
@@ -597,9 +595,7 @@ export default {
       this.SetLoader(true);
       if (this.fullRewardAmount > 0) {
         await this.tokensDataUpdate();
-        await this.$store.dispatch('web3/claimRewards', {
-          stakingType: StakingTypes.MINING,
-        });
+        await this.$store.dispatch('web3/claimRewards', { stakingType: StakingTypes.MINING });
         await this.tokensDataUpdate();
       } else {
         this.ShowModal({
