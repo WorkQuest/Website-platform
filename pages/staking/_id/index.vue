@@ -347,7 +347,6 @@ export default {
           ? ['tokensClaimed', 'tokensUnstaked', 'tokensStaked']
           : ['Claimed', 'Unstaked', 'Staked'],
         callback: (method, tx) => {
-          console.log(method, tx);
           this.getPoolData();
           this.getUserInfo();
         },
