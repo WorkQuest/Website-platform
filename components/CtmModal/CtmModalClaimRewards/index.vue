@@ -14,7 +14,7 @@
           type="number"
           :placeholder="3500"
           :label="$t('modals.amount')"
-          :rules="`required|decimal${getInputRules()}`"
+          :rules="`required|decimal|decimalPlaces:18${getInputRules()}`"
           :name="$t('modals.amount')"
         >
           <template
