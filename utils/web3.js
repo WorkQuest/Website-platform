@@ -241,7 +241,6 @@ let nonce;
 
 export const getStakingRewardTxFee = async (stakingType) => {
   let inst;
-  // const data;
   if (stakingType === StakingTypes.WQT) {
     inst = new web3.eth.Contract(abi.WQStaking, process.env.STAKING);
   } else if (stakingType === StakingTypes.WUSD) {
@@ -252,7 +251,6 @@ export const getStakingRewardTxFee = async (stakingType) => {
   }
   try {
     const gasPrice = await web3.eth.getGasPrice();
-    // const gasEstimate = await inst.methods.claim.apply(null, [data]).estimateGas({ from: account.address });
     const gasEstimate = await inst.methods.claim.apply(null)
       .estimateGas({ from: account.address });
     return new BigNumber(gasPrice * gasEstimate).shiftedBy(-18)
@@ -289,7 +287,11 @@ export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress
     } else if (stakingType === StakingTypes.WQT) {
       payload.data = [amount, duration];
     } else if (stakingType === StakingTypes.WUSD) {
-      payload.data = { value: amount };
+      // payload.data = { value: amount };
+      const contractInstance = await createInstance(_stakingAbi, _stakingAddress);
+      await contractInstance.stake({ value: amount });
+      showToast('Staking', 'Staking done', 'success');
+      return '';
     } else {
       console.error('[staking] wrong staking type:', stakingType);
       return error(500, 'stake error');
