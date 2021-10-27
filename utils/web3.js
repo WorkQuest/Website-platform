@@ -158,7 +158,6 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
     };
   } else {
     const data = inst.methods[_method].apply(null, payload.data).encodeABI();
-    console.log('send tx data', payload.data);
     const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: account.address });
     transactionData = {
       to: payload.address,
@@ -290,7 +289,6 @@ export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress
     } else if (stakingType === StakingTypes.WQT) {
       payload.data = [amount, duration];
     } else if (stakingType === StakingTypes.WUSD) {
-      console.log('staking WUSD amount:', _amount, amount);
       payload.data = { value: amount };
     } else {
       console.error('[staking] wrong staking type:', stakingType);

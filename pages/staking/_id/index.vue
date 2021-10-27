@@ -275,7 +275,7 @@ export default {
       if (this.userInfo.date && this.userInfo.staked !== '0') {
         data.push({
           name: this.$t('staking.stakingCards.duration'),
-          about: Math.ceil(moment.duration(moment(this.userInfo.date).diff(moment.now())).asDays()),
+          about: this.$t('staking.days', { n: Math.ceil(moment.duration(moment(this.userInfo.date).diff(moment.now())).asDays()) }),
         });
       }
       return data;
@@ -341,11 +341,12 @@ export default {
       await this.checkMetamaskStatus();
       await this.getPoolData();
       await this.getUserInfo();
+      const events = this.slug === StakingTypes.WQT
+        ? ['tokensStaked', 'tokensClaimed']
+        : ['Staked', 'Claimed'];
       await this.$store.dispatch('web3/fetchStakingActions', {
         stakingType: this.slug,
-        events: this.slug === StakingTypes.WQT
-          ? ['tokensClaimed', 'tokensUnstaked', 'tokensStaked']
-          : ['Claimed', 'Unstaked', 'Staked'],
+        events,
         callback: (method, tx) => {
           this.getPoolData();
           this.getUserInfo();
