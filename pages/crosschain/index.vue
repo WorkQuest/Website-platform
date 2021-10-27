@@ -1,12 +1,34 @@
 <template>
   <div class="crosschain-page">
     <div class="crosschain-page__container">
-      <div class="crosschain-page__header">
-        <div class="title">
-          {{ $t('crosschain.pageName') }}
+      <div class="crosschain-page__header header">
+        <div class="header__left">
+          <div class="title">
+            {{ $t('crosschain.pageName') }}
+          </div>
+          <div class="title_sub">
+            {{ $t('crosschain.pageAbout') }}
+          </div>
         </div>
-        <div class="title_sub">
-          {{ $t('crosschain.pageAbout') }}
+        <div class="header__right">
+          <base-btn
+            v-if="!isConnected"
+            mode="light"
+            class="header__btn header__btn_connect"
+            :disabled="statusBusy"
+            @click="checkMetamaskStatus()"
+          >
+            {{ $t('mining.connectWallet') }}
+          </base-btn>
+          <base-btn
+            v-else
+            mode="light"
+            class="header__btn header__btn_disconnect"
+            :disabled="statusBusy"
+            @click="disconnectFromMetamask"
+          >
+            {{ $t('meta.disconnect') }}
+          </base-btn>
         </div>
       </div>
       <div class="crosschain-page__content">
@@ -59,7 +81,7 @@
           </div>
           <div class="info-block__btns-cont">
             <base-btn
-              :disabled="metamaskStatus === 'notInstalled'"
+              :disabled="metamaskStatus === 'notInstalled' || !isConnected"
               @click="showSwapModal"
             >
               <!--            <base-btn-->
@@ -130,7 +152,7 @@
                     class="btn__redeem"
                     :class="!el.item.status ? 'btn__redeem_disabled' : ''"
                     mode="outline"
-                    :disabled="!el.item.status"
+                    :disabled="!el.item.status || !isConnected"
                     @click="redeemAction(el.item)"
                   >
                     {{ el.item.status ? $t('meta.redeem') : $t('meta.redeemed') }}
@@ -169,6 +191,7 @@ export default {
       purseData: 'web3/getPurseData',
       userData: 'user/getUserData',
       isConnected: 'web3/isConnected',
+      statusBusy: 'web3/getStatusBusy',
       crosschainTableData: 'defi/getCrosschainTokensData',
     }),
     testFields() {
@@ -261,13 +284,17 @@ export default {
     },
   },
   async mounted() {
-    this.SetLoader(true);
-    await this.swapsTableData(this.purseData);
-    await this.checkMetamaskStatus();
-    await this.checkMiningPoolId();
+    // this.SetLoader(true);
+    // await this.swapsTableData(this.purseData);
+    // await this.checkMetamaskStatus();
+    // await this.checkMiningPoolId();
+    // this.SetLoader(false);
     this.SetLoader(false);
   },
   methods: {
+    async disconnectFromMetamask() {
+      await this.$store.dispatch('web3/disconnect');
+    },
     doCopy() {
       this.ShowModal({
         key: modals.copiedSuccess,
@@ -293,7 +320,6 @@ export default {
       let redeemObj;
       let payload;
       const switchChainStatus = await this.$store.dispatch('web3/goToChain', { chain: data.chain });
-      await this.connectToMetamask();
       if (switchChainStatus.ok) {
         payload = {
           signData: data.clearData,
@@ -353,9 +379,9 @@ export default {
       this.sourceAddressInd = selInd;
     },
     async showSwapModal() {
-      this.SetLoader(true);
+      this.SetLoader(false);
+      // await this.checkMetamaskStatus();
       const switchChainStatus = await this.checkMiningPoolId();
-      await this.checkMetamaskStatus();
       if (switchChainStatus.ok) {
         await this.$store.dispatch('web3/getCrosschainTokensData');
         await this.swapsTableData();
@@ -373,7 +399,6 @@ export default {
           subtitle: '',
         });
       }
-      this.SetLoader(false);
     },
   },
 };
@@ -403,8 +428,15 @@ export default {
   }
 
   &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     align-self: flex-end;
-
+    .header {
+      &__btn {
+        width: 200px;
+      }
+    }
     .title {
       font-weight: 500;
       color: #FFF;
@@ -636,6 +668,15 @@ export default {
   }
 
   @include _575 {
+    .header {
+      flex-direction: column;
+      &__right {
+        width: 100%;
+      }
+      &__btn {
+        width: 100%;
+      }
+    }
     &__content {
       .info-block {
         &__swap-cont {
