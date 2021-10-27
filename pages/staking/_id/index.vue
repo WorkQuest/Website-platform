@@ -451,7 +451,8 @@ export default {
         stakingType: this.slug,
         minStake: this.poolData.minStake === '0' ? this.poolData._minStake : this.poolData.minStake,
         maxStake: this.poolData.maxStake,
-        alreadyStaked: this.userInfo.staked !== '0', // for duration selecting
+        staked: this.userInfo._staked,
+        alreadyStaked: +this.userInfo.staked !== 0, // for duration selecting
       });
     },
   },

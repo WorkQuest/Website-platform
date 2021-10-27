@@ -6430,6 +6430,43 @@ export const MainNetWQTExchange = [
 
 export const WQStakingNative = [
   {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "previousAdmin",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "newAdmin",
+        "type": "address"
+      }
+    ],
+    "name": "AdminChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "beacon",
+        "type": "address"
+      }
+    ],
+    "name": "BeaconUpgraded",
+    "type": "event"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -6452,6 +6489,31 @@ export const WQStakingNative = [
       }
     ],
     "name": "Claimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "time",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      }
+    ],
+    "name": "Received",
     "type": "event"
   },
   {
@@ -6580,6 +6642,19 @@ export const WQStakingNative = [
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "implementation",
+        "type": "address"
+      }
+    ],
+    "name": "Upgraded",
+    "type": "event"
+  },
+  {
     "inputs": [],
     "name": "ADMIN_ROLE",
     "outputs": [
@@ -6620,19 +6695,6 @@ export const WQStakingNative = [
   },
   {
     "inputs": [],
-    "name": "allProduced",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "claim",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -6654,6 +6716,19 @@ export const WQStakingNative = [
   {
     "inputs": [],
     "name": "distributionTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "earlierProduced",
     "outputs": [
       {
         "internalType": "uint256",
@@ -6781,11 +6856,6 @@ export const WQStakingNative = [
             "internalType": "uint256",
             "name": "totalDistributed",
             "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "rewardTokenAddress",
-            "type": "address"
           }
         ],
         "internalType": "struct WQStakingNative.StakeInfo",
@@ -6874,11 +6944,6 @@ export const WQStakingNative = [
         "internalType": "uint256",
         "name": "_maxStake",
         "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_rewardToken",
-        "type": "address"
       }
     ],
     "name": "initialize",
@@ -6976,19 +7041,6 @@ export const WQStakingNative = [
   },
   {
     "inputs": [],
-    "name": "rewardToken",
-    "outputs": [
-      {
-        "internalType": "contract IERC20Upgradeable",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "rewardTotal",
     "outputs": [
       {
@@ -7004,11 +7056,63 @@ export const WQStakingNative = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_amount",
+        "name": "_claimPeriod",
         "type": "uint256"
       }
     ],
-    "name": "setReward",
+    "name": "setClaimPeriod",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "setEarlierProduced",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMaxStake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMinStake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_stakePeriod",
+        "type": "uint256"
+      }
+    ],
+    "name": "setStakePeriod",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -7171,6 +7275,32 @@ export const WQStakingNative = [
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_distributionTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateDistributionTime",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateRewardTotal",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "_user",
         "type": "address"
@@ -7205,7 +7335,7 @@ export const WQStakingNative = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_tps",
+        "name": "_tokensPerStake",
         "type": "uint256"
       },
       {
@@ -7223,10 +7353,63 @@ export const WQStakingNative = [
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_startTimeNew",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateStartTime",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newImplementation",
+        "type": "address"
+      }
+    ],
+    "name": "upgradeTo",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newImplementation",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
+      }
+    ],
+    "name": "upgradeToAndCall",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
   }
-]; // WUSD
+];
 
 export const WQStaking = [
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
   {
     "anonymous": false,
     "inputs": [
@@ -7463,27 +7646,8 @@ export const WQStaking = [
   },
   {
     "inputs": [],
-    "name": "allProduced",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "claim",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -7503,6 +7667,19 @@ export const WQStaking = [
   {
     "inputs": [],
     "name": "distributionTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "earlierProduced",
     "outputs": [
       {
         "internalType": "uint256",
@@ -7555,6 +7732,11 @@ export const WQStaking = [
       {
         "internalType": "uint256",
         "name": "_balance",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "unstakeTime",
         "type": "uint256"
       }
     ],
@@ -7863,11 +8045,50 @@ export const WQStaking = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_rewardTotal",
+        "name": "_claimPeriod",
         "type": "uint256"
       }
     ],
-    "name": "setReward",
+    "name": "setClaimPeriod",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMaxStake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMinStake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_stakePeriod",
+        "type": "uint256"
+      }
+    ],
+    "name": "setStakePeriod",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -8060,11 +8281,24 @@ export const WQStaking = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_producedTime",
+        "name": "_distributionTime",
         "type": "uint256"
       }
     ],
-    "name": "updateProducedTime",
+    "name": "updateDistributionTime",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_rewardTotal",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateRewardTotal",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -8095,6 +8329,11 @@ export const WQStaking = [
         "internalType": "uint256",
         "name": "_distributed",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_unstakeTime",
+        "type": "uint256"
       }
     ],
     "name": "updateStakerInfo",
@@ -8106,7 +8345,7 @@ export const WQStaking = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_tps",
+        "name": "_tokensPerStake",
         "type": "uint256"
       },
       {
@@ -8169,4 +8408,4 @@ export const WQStaking = [
     "stateMutability": "payable",
     "type": "function"
   }
-]; // WQT
+];

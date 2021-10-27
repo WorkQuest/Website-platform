@@ -199,6 +199,7 @@ export default {
       date: duration.unstakeTime ? new Date(duration.unstakeTime * 1000) : false,
       claim: new BigNumber(userInfo.claim_).shiftedBy(-decimals).decimalPlaces(4).toString(),
       staked: new BigNumber(userInfo.staked_).shiftedBy(-decimals).decimalPlaces(4).toString(),
+      _staked: new BigNumber(userInfo.staked_).shiftedBy(-decimals).toString(),
       balance: new BigNumber(userInfo._balance).shiftedBy(-decimals).decimalPlaces(4).toString(),
       _balance: new BigNumber(userInfo._balance).shiftedBy(-decimals).toString(),
     };
@@ -215,10 +216,22 @@ export default {
     const {
       rewardTokenAddress, totalStaked, totalDistributed, rewardTotal, maxStake, minStake,
     } = stakingInfo;
-    const [decimals, tokenSymbol] = await Promise.all([
-      fetchContractData('decimals', abi.ERC20, rewardTokenAddress),
-      fetchContractData('symbol', abi.ERC20, rewardTokenAddress),
-    ]);
+
+    let decimals;
+    let tokenSymbol;
+    if (!rewardTokenAddress) {
+      decimals = 18;
+      tokenSymbol = null;
+    } else {
+      const [_decimals, _tokenSymbol] = await Promise.all([
+        fetchContractData('decimals', abi.ERC20, rewardTokenAddress),
+        fetchContractData('symbol', abi.ERC20, rewardTokenAddress),
+      ]);
+      decimals = _decimals;
+      tokenSymbol = _tokenSymbol;
+    }
+
+    console.log(stakingInfo);
 
     const min = new BigNumber(0.000001);
     const _minStake = new BigNumber(minStake).shiftedBy(-decimals).isLessThan(min)
