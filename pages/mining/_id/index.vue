@@ -240,9 +240,7 @@
             </b-table>
           </div>
         </div>
-        <div
-          class="pager__block"
-        >
+        <div class="pager__block">
           <base-pager
             v-if="totalPagesValue > 1"
             v-model="page"
@@ -462,50 +460,34 @@ export default {
       let tableArr = [];
       if (this.miningPoolId === 'BNB') {
         tableArr = this.wqtWbnbTableData;
-      } if (this.miningPoolId === 'ETH') {
+      }
+      if (this.miningPoolId === 'ETH') {
         tableArr = this.wqtWethTableData;
       }
       tableArr.forEach((data) => {
-        let poolAddress = '';
-        let tokenAmount0 = '';
-        let tokenAmount1 = '';
-        if (this.miningPoolId === 'BNB') {
-          if (data.amount0Out > 0) {
-            poolAddress = 'Swap WQT for WBNB';
-            tokenAmount0 = `${(parseInt((data.amount0Out) * 1000, 10)) / 1000} WQT`;
-            tokenAmount1 = `${(parseInt((data.amount1In) * 1000, 10)) / 1000} WBNB`;
-          } else {
-            poolAddress = 'Swap WBNB for WQT';
-            tokenAmount0 = `${(parseInt((data.amount1Out) * 1000, 10)) / 1000} WBNB`;
-            tokenAmount1 = `${(parseInt((data.amount0In) * 1000, 10)) / 1000} WQT`;
-          }
-        } if (this.miningPoolId === 'ETH') {
-          if (data.amount0Out > 0) {
-            poolAddress = 'Swap WQT for WETH';
-            tokenAmount0 = `${(parseInt((data.amount0Out) * 1000, 10)) / 1000} WQT`;
-            tokenAmount1 = `${(parseInt((data.amount1In) * 1000, 10)) / 1000} WETH`;
-          } else {
-            poolAddress = 'Swap WETH for WQT';
-            tokenAmount0 = `${(parseInt((data.amount1Out) * 1000, 10)) / 1000} WETH`;
-            tokenAmount1 = `${(parseInt((data.amount0In) * 1000, 10)) / 1000} WQT`;
-          }
-        }
-        const totalValue = `${Math.round(data.amountUSD)} $`;
-        const account = data.to;
-        const accountView = this.cropTxt(data.to);
-        const date = new Date(data.transaction.timestamp * 1000);
-        const time = moment(date).startOf('hour').fromNow();
         this.items.push({
-          poolAddress,
-          totalValue,
-          tokenAmount0,
-          tokenAmount1,
-          account,
-          accountView,
-          time,
+          totalValue: `${this.Floor(data.amountUSD, 2)} $`,
+          account: data.to,
+          accountView: this.cropTxt(data.to),
+          time: moment(new Date(data.transaction.timestamp * 1000)).startOf('hour').fromNow(),
+          ...this.getTokensAmount(data),
         });
       });
       this.totalPagesValue = this.totalPages;
+    },
+    getTokensAmount(data) {
+      if (data.amount0Out > 0) {
+        return {
+          poolAddress: this.miningPoolId === 'ETH' ? 'Swap WETH for WQT' : 'Swap WQT for WBNB',
+          tokenAmount0: `${this.Floor(data.amount1In, 3)} ${this.miningPoolId === 'ETH' ? 'WETH' : 'WQT'}`,
+          tokenAmount1: `${this.Floor(data.amount0Out, 3)} ${this.miningPoolId === 'ETH' ? 'WQT' : 'WBNB'}`,
+        };
+      }
+      return {
+        poolAddress: this.miningPoolId === 'ETH' ? 'Swap WQT for WETH' : 'Swap WBNB for WQT',
+        tokenAmount0: `${this.Floor(data.amount0In, 3)} ${this.miningPoolId === 'ETH' ? 'WQT' : 'WBNB'}`,
+        tokenAmount1: `${this.Floor(data.amount1Out, 3)} ${this.miningPoolId === 'ETH' ? 'WETH' : 'WQT'}`,
+      };
     },
 
     async getWqtWbnbSwaps() {
