@@ -352,7 +352,7 @@ export default {
           this.getUserInfo();
         },
       });
-      this.updateInterval = setInterval(() => this.getUserInfo(), 15000);
+      this.updateInterval = setInterval(() => this.getUserInfo(), 30000);
       this.firstLoading = false;
       this.SetLoader(false);
     },
@@ -393,7 +393,6 @@ export default {
       }
     },
     async getUserInfo() {
-      console.log('user info');
       this.userInfo = await this.$store.dispatch('web3/fetchStakingUserInfo', { stakingType: this.slug, decimals: this.poolData.decimals });
     },
     getPoolAddress() {
