@@ -437,7 +437,7 @@ export default {
         txFee: txFeeData,
         stakingType: this.slug,
         rewardAmount: this.userInfo.claim,
-        tokenSymbol: this.slug,
+        tokenSymbol: this.poolData.tokenSymbol,
       });
     },
     async showStakeModal() {
