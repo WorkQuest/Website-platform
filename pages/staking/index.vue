@@ -194,6 +194,7 @@ export default {
 
         const { netId } = await this.$store.dispatch('web3/getAccount');
         wusdPool.poolAddress = process.env.STAKING_NATIVE;
+        wusdPool.rewardTokenAddress = '';
         wusdPool.stakeTokenSymbol = NativeTokenSymbolByChainId[netId];
         wusdPool.tokenSymbol = NativeTokenSymbolByChainId[netId];
         wusdPool.link = StakingTypes.WUSD;
