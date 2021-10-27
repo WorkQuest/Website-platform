@@ -1,5 +1,8 @@
 <template>
-  <div class="wiki">
+  <div
+    class="wiki"
+    @touchmove="onTouchMove"
+  >
     <div
       ref="header"
       class="wiki__header"
@@ -35,8 +38,10 @@
     </div>
     <div class="main-wrapper">
       <nav
+        ref="nav"
         class="wiki__navigation navigation__mobile"
         :class="{'wiki__navigation_light': isMoving}"
+        @touchmove="(e) => moveItems(e, 'nav')"
       >
         <ul
           class="wiki__ul"
@@ -54,8 +59,6 @@
       </nav>
       <main
         class="content wiki__content"
-        @touchend="onTouchEnd"
-        @touchstart="onTouchstart"
       >
         <nav
           class="wiki__navigation navigation__desktop"
@@ -112,19 +115,16 @@ export default {
       this.currentTab = item;
     },
     moveItems(event, payload) {
-      event.preventDefault();
       const x = event.changedTouches[0].pageX;
       const delta = this.pageX - x;
       this.$refs[payload].scrollLeft += delta;
       this.pageX = x;
     },
     onTouchstart(event) {
-      this.isMoving = this.$refs.header.getBoundingClientRect().y < -150;
       this.pageX = event.changedTouches[0].pageX;
-      console.log(this.$refs.header.getBoundingClientRect().y);
     },
-    onTouchEnd(event) {
-      this.isMoving = this.$refs.header.getBoundingClientRect().y < -150;
+    onTouchMove() {
+      this.isMoving = this.$refs.header.getBoundingClientRect().y < -157;
     },
   },
 };
@@ -173,6 +173,7 @@ export default {
     height: 100%;
     display: flex;
     align-items: center;
+    margin-left: 20px;
     border-left: $black0 1px solid;
   }
   &__search-button {
@@ -214,7 +215,7 @@ export default {
 }
 .navigation {
   &__desktop {
-    display: flex;
+    display: block;
   }
   &__mobile {
     display: none;
@@ -258,8 +259,10 @@ export default {
       left: 0;
       width: 100vw;
       height: 50px;
+      transition: background linear 100ms;
       &_light {
         background: $white;
+        transition: background linear 100ms;
       }
     }
     &__ul {
@@ -268,7 +271,11 @@ export default {
       display: flex;
       grid-gap: 5px;
       height: 50px;
-      overflow: hidden;
+      overflow: scroll;
+      &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
     }
     &__item {
       font-size: 14px;
@@ -290,6 +297,9 @@ export default {
       &:hover {
         background: $blue;
       }
+    }
+    &__button-field {
+      margin-left: 10px;
     }
     &__search-button {
       width: 86px;
@@ -313,9 +323,10 @@ export default {
   .navigation {
     &__desktop {
     display: none;
-  }
+    }
   &__mobile {
-    display: flex;
+    display: block;
+    margin-bottom: 15px;
   }
 }
 }
@@ -362,7 +373,7 @@ export default {
       }
     }
     &__search-field {
-      padding: 0 10px 0 0;
+      padding: 0 4px 0 4px;
     }
   }
 }
