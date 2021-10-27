@@ -228,7 +228,7 @@ export default {
     width: 950px;
     }
     &__input {
-    width: 665px;
+    width: 650px;
     }
   }
 }
@@ -238,7 +238,7 @@ export default {
       width: 750px;
     }
     &__input {
-      width: 470px;
+      width: 450px;
     }
   }
 }
