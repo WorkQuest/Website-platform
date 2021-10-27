@@ -7,17 +7,11 @@
       ref="header"
       class="wiki__header"
     >
-      <div
-        class="wiki__content"
-      >
-        <h3
-          class="wiki__title"
-        >
+      <div class="wiki__content">
+        <h3 class="wiki__title">
           {{ $t('wiki.title') }}
         </h3>
-        <div
-          class="wiki__fields"
-        >
+        <div class="wiki__fields">
           <div class="wiki__search-field">
             <base-field
               v-model="search"
@@ -43,9 +37,7 @@
         :class="{'wiki__navigation_light': isMoving}"
         @touchmove="(e) => moveItems(e, 'nav')"
       >
-        <ul
-          class="wiki__ul"
-        >
+        <ul class="wiki__ul">
           <li
             v-for="(item, key) in navigation"
             :key="key"
@@ -57,15 +49,9 @@
           </li>
         </ul>
       </nav>
-      <main
-        class="content wiki__content"
-      >
-        <nav
-          class="wiki__navigation navigation__desktop"
-        >
-          <ul
-            class="wiki__ul"
-          >
+      <main class="content wiki__content">
+        <nav class="wiki__navigation navigation__desktop">
+          <ul class="wiki__ul">
             <li
               v-for="(item, key) in navigation"
               :key="key"
