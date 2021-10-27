@@ -231,9 +231,7 @@ export default {
       tokenSymbol = _tokenSymbol;
     }
 
-    console.log(stakingInfo);
-
-    const min = new BigNumber(0.000001);
+    const min = new BigNumber(0.0001);
     const _minStake = new BigNumber(minStake).shiftedBy(-decimals).isLessThan(min)
       ? min.toString() : new BigNumber(minStake).shiftedBy(-decimals).toString();
 
