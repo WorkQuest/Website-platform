@@ -51,8 +51,11 @@ export const getChainIdByChain = (chain) => {
     case Chains.BINANCE:
       if (!isProd) return ChainsId.BSC_TEST;
       return ChainsId.BSC_MAIN;
+    case Chains.BNB:
+      if (!isProd) return ChainsId.BSC_TEST;
+      return ChainsId.BSC_MAIN;
     default:
-      throw error(-1, `wrong chain id: ${chain}`);
+      throw error(-1, `wrong chain name: ${chain} ${Chains.BINANCE} ${Chains.ETHEREUM}`);
   }
 };
 export const goToChain = async (chain) => {
@@ -153,18 +156,9 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
       gasPrice,
       gas: gasEstimate,
     };
-  } else if (_method === 'redeem') {
-    const data = inst.methods[_method].apply(null, payload.data).encodeABI();
-    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: account.address });
-    transactionData = {
-      to: payload.address,
-      from: account.address,
-      data,
-      gasPrice,
-      gas: gasEstimate,
-    };
   } else {
     const data = inst.methods[_method].apply(null, payload.data).encodeABI();
+    console.log('send tx data', payload.data);
     const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: account.address });
     transactionData = {
       to: payload.address,
@@ -272,7 +266,7 @@ export const getStakingRewardTxFee = async (stakingType) => {
 
 export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress, _stakingAbi, duration, stakingType) => {
   let instance;
-  const isNative = stakingType === 'WUSD';
+  const isNative = stakingType === StakingTypes.WUSD;
   if (!isNative) {
     instance = await createInstance(abi.ERC20, _tokenAddress);
     allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, _tokenAddress, [getAccountAddress(), _stakingAddress])).toString();
@@ -296,6 +290,7 @@ export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress
     } else if (stakingType === StakingTypes.WQT) {
       payload.data = [amount, duration];
     } else if (stakingType === StakingTypes.WUSD) {
+      console.log('staking WUSD amount:', _amount, amount);
       payload.data = { value: amount };
     } else {
       console.error('[staking] wrong staking type:', stakingType);
@@ -305,7 +300,6 @@ export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress
     showToast('Staking', 'Staking done', 'success');
     return '';
   } catch (e) {
-    // code: -32603, message: 'execution reverted: WQStaking: Amount should be greater than minimum stake',
     if (e.message.toString().includes('You cannot stake tokens yet')) {
       showToast('Stacking error', 'You cannot stake tokens yet', 'danger');
     } else {
@@ -316,7 +310,7 @@ export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress
 };
 
 export const unStaking = async (_decimals, _amount) => {
-  const { stakingAddress, stakingAbi } = getStakingDataByType('MINING');
+  const { stakingAddress, stakingAbi } = getStakingDataByType(StakingTypes.MINING);
   try {
     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
     showToast('Unstaking', 'Unstaking...', 'success');
@@ -342,7 +336,6 @@ export const claimRewards = async (_stakingAddress, _stakingAbi, _amount) => {
       abi: _stakingAbi,
       address: _stakingAddress,
     };
-    if (_amount) payload.data = _amount;
     await sendTransaction('claim', payload);
     showToast('Claiming', 'Claiming done', 'success');
     return '';
@@ -502,7 +495,7 @@ export const fetchContractAction = (inst, method, callback, params) => inst.even
 }, (err, result) => {
   if (!err && callback && lastActionHash !== result.transactionHash) {
     lastActionHash = result.transactionHash;
-    callback(result);
+    callback(method, result);
   }
 });
 export const fetchStakingActions = async (stakingAbi, stakingAddress, callback, events) => {

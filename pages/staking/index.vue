@@ -73,6 +73,7 @@ export default {
   name: 'Staking',
   data() {
     return {
+      firstLoading: true,
       fields: [
         {
           key: 'poolAddress',
@@ -158,6 +159,7 @@ export default {
   },
   watch: {
     async isConnected(newValue) {
+      if (this.firstLoading) return;
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
       if (newValue && rightChain) {
         await this.getPoolsData();
@@ -171,6 +173,7 @@ export default {
     await this.checkMetamaskStatus();
     await this.getPoolsData();
     this.SetLoader(false);
+    this.firstLoading = false;
   },
   async beforeDestroy() {
     await this.$store.dispatch('web3/unsubscribeStakingActions');

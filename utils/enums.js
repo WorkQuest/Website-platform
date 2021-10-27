@@ -10,7 +10,8 @@ export const ChainsId = {
 
 export const Chains = {
   ETHEREUM: 'ETH',
-  BINANCE: 'BNB',
+  BINANCE: 'BSC',
+  BNB: 'BNB', // Same for swap
 };
 
 export const StakingTypes = {

@@ -391,12 +391,15 @@ export default {
   watch: {
     async isConnected(newValue) {
       if (this.firstLoading) return;
-      await this.tokensDataUpdate();
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
       if (newValue && rightChain) {
-        await this.checkMetamaskStatus();
+        await this.tokensDataUpdate();
         this.updateInterval = setInterval(() => this.tokensDataUpdate(), 15000);
       } else {
+        this.fullRewardAmount = 0;
+        this.rewardAmount = 0;
+        this.stakedAmount = 0;
+        this.profitWQT = 0;
         clearInterval(this.updateInterval);
       }
     },
@@ -430,6 +433,7 @@ export default {
       ]);
     }
     await Promise.all([
+      this.tokensDataUpdate(),
       this.initTokenDays(),
       this.initGraphData(),
     ]);
@@ -464,9 +468,8 @@ export default {
     async connectToMetamask() {
       if (!this.isConnected) {
         await this.$store.dispatch('web3/connect');
-        await this.$store.dispatch('web3/initContract');
-        await this.tokensDataUpdate();
       }
+      await this.$store.dispatch('web3/initContract');
     },
     async initTokenDays() {
       const totalLiquidity = this.miningPoolId === 'BNB' ? this.wqtWbnbTokenDay[0]?.reserveUSD : this.wqtWethTokenDay[0]?.reserveUSD;
@@ -574,13 +577,11 @@ export default {
     async tokensDataUpdate() {
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
       if (!rightChain) {
-        this.fullRewardAmount = 0;
-        this.rewardAmount = 0;
-        this.stakedAmount = 0;
-        this.profitWQT = 0;
+        console.log('wrong chain?');
         return;
       }
       const tokensData = await this.$store.dispatch('web3/getTokensData');
+      console.log('getting tokens data', tokensData);
       this.fullRewardAmount = tokensData.rewardTokenAmount;
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
@@ -597,9 +598,8 @@ export default {
     async claimRewards() {
       this.SetLoader(true);
       if (this.fullRewardAmount > 0) {
-        await this.connectToMetamask();
+        await this.tokensDataUpdate();
         await this.$store.dispatch('web3/claimRewards', {
-          amount: this.fullRewardAmount,
           stakingType: StakingTypes.MINING,
         });
         await this.tokensDataUpdate();

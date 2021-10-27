@@ -137,6 +137,7 @@ export default {
       }
     },
     async checkPool() {
+      console.log('check pool', this.options.chain);
       return await this.$store.dispatch('web3/goToChain', { chain: this.options.chain });
     },
   },

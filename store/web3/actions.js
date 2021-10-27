@@ -22,6 +22,7 @@ import {
   getStakingRewardTxFee, handleMetamaskStatus, fetchStakingActions, unsubscirbeStakingListeners, getChainIdByChain,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
+import { StakingTypes } from '~/utils/enums';
 
 BigNumber.set({ ROUNDING_MODE: BigNumber.ROUND_DOWN });
 BigNumber.config({ EXPONENTIAL_AT: 60 });
@@ -72,7 +73,7 @@ export default {
   },
 
   async initContract({ commit }) {
-    const { stakingAddress, stakingAbi } = getStakingDataByType('MINING');
+    const { stakingAddress, stakingAbi } = getStakingDataByType(StakingTypes.MINING);
     const stakingInfo = await fetchContractData('getStakingInfo', stakingAbi, stakingAddress);
     const { stakeTokenAddress } = stakingInfo;
     const { rewardTokenAddress } = stakingInfo;
@@ -151,7 +152,7 @@ export default {
   },
 
   async getTokensData({ commit }) {
-    const { stakingAddress, stakingAbi } = getStakingDataByType('MINING');
+    const { stakingAddress, stakingAbi } = getStakingDataByType(StakingTypes.MINING);
     const userInfo = await fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccountAddress()]);
     const payload = {
       balanceTokenAmount: new BigNumber(userInfo._balance).shiftedBy(-18).toString(),
@@ -163,7 +164,7 @@ export default {
   },
 
   async getCrosschainTokensData({ commit }) {
-    const { tokenAddress } = getStakingDataByType('MINING');
+    const { tokenAddress } = getStakingDataByType(StakingTypes.MINING);
     const [tokenDecimal, tokenSymbol, tokenValue] = await Promise.all([
       fetchContractData('decimals', abi.ERC20, tokenAddress),
       fetchContractData('symbol', abi.ERC20, tokenAddress),
@@ -244,9 +245,9 @@ export default {
   async unstake({ commit }, { decimals, amount }) {
     return await unStaking(decimals, amount);
   },
-  async claimRewards({ commit }, { stakingType, amount }) {
+  async claimRewards({ commit }, { stakingType }) {
     const { stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
-    return await claimRewards(stakingAddress, stakingAbi, amount);
+    return await claimRewards(stakingAddress, stakingAbi);
   },
   async swap({ commit }, { decimals, amount }) {
     return await swap(decimals, amount);

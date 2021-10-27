@@ -171,6 +171,7 @@ export default {
       poolData: null,
       userInfo: null,
       firstLoading: true,
+      updateInterval: null,
     };
   },
   computed: {
@@ -316,9 +317,11 @@ export default {
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
       if (newValue && rightChain) {
         await this.initPage();
+        this.updateInterval = setInterval(() => this.getUserInfo(), 15000);
       } else {
         this.userInfo = null;
         this.poolData = null;
+        clearInterval(this.updateInterval);
       }
     },
   },
@@ -339,7 +342,8 @@ export default {
         events: this.slug === StakingTypes.WQT
           ? ['tokensClaimed', 'tokensUnstaked', 'tokensStaked']
           : ['Claimed', 'Unstaked', 'Staked'],
-        callback: () => {
+        callback: (method, tx) => {
+          console.log(method, tx);
           this.getPoolData();
           this.getUserInfo();
         },
