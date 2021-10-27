@@ -2267,7 +2267,7 @@
     "notification": "Notification",
     "_inDev": "In development",
     "mainHeader": "Single staking",
-    "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "stakingSub": "Make your assets work. Stake your assets into DeFi staking or Locked staking to increase staking income.",
     "pools": "Pools",
     "tableHead": {
       "poolAddress": "Pool address",

@@ -8,6 +8,13 @@ export const ChainsId = {
   MUMBAI_TEST: '0x89',
 };
 
+export const NativeTokenSymbolByChainId = {
+  [+ChainsId.ETH_MAIN]: 'ETH',
+  [+ChainsId.ETH_TEST]: 'ETH',
+  [+ChainsId.BSC_MAIN]: 'BNB',
+  [+ChainsId.BSC_TEST]: 'BNB',
+};
+
 export const Chains = {
   ETHEREUM: 'ETH',
   BINANCE: 'BSC',
@@ -18,11 +25,4 @@ export const StakingTypes = {
   WQT: 'WQT',
   WUSD: 'WUSD',
   MINING: 'MINING',
-};
-
-export const NativeTokenSymbolByChainId = {
-  [+ChainsId.ETH_MAIN]: 'ETH',
-  [+ChainsId.ETH_TEST]: 'ETH',
-  [+ChainsId.BSC_MAIN]: 'BNB',
-  [+ChainsId.BSC_TEST]: 'BNB',
 };

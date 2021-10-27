@@ -577,11 +577,9 @@ export default {
     async tokensDataUpdate() {
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
       if (!rightChain) {
-        console.log('wrong chain?');
         return;
       }
       const tokensData = await this.$store.dispatch('web3/getTokensData');
-      console.log('getting tokens data', tokensData);
       this.fullRewardAmount = tokensData.rewardTokenAmount;
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);

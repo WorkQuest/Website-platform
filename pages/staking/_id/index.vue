@@ -54,7 +54,10 @@
             >
           </a>
         </div>
-        <div class="link-cont">
+        <div
+          v-if="poolData && !poolData.isNative"
+          class="link-cont"
+        >
           <div class="link-cont__link">
             {{ $t('staking.rewardTokenAddress') }}
           </div>
@@ -166,6 +169,7 @@ import modals from '~/store/modals/modals';
 import { Chains, NativeTokenSymbolByChainId, StakingTypes } from '~/utils/enums';
 
 export default {
+  name: 'StakingPool',
   data() {
     return {
       poolData: null,
@@ -199,7 +203,7 @@ export default {
           subtitle: this.$t('staking.totalStaked'),
         },
         {
-          title: this.$tc('staking.WQTCount', this.poolData.totalDistributed),
+          title: this.$tc(`staking.${this.poolData.tokenSymbol}Count`, this.poolData.totalDistributed),
           subtitle: this.$t('staking.totalDistributed'),
         },
       ];
@@ -265,7 +269,7 @@ export default {
         },
         {
           name: this.$t('staking.userInformationCards.claimed'),
-          about: this.$tc('staking.WQTCount', this.userInfo.claim),
+          about: this.$tc(`staking.${this.poolData.tokenSymbol}Count`, this.userInfo.claim),
         },
       ];
       if (this.userInfo.date && this.userInfo.staked !== '0') {
@@ -383,6 +387,7 @@ export default {
       if (this.slug === StakingTypes.WUSD) {
         const { netId } = await this.$store.dispatch('web3/getAccount');
         this.poolData.stakeTokenSymbol = NativeTokenSymbolByChainId[netId];
+        this.poolData.tokenSymbol = NativeTokenSymbolByChainId[netId];
         this.poolData.isNative = true;
       }
     },
@@ -443,7 +448,7 @@ export default {
         balance: this.userInfo._balance,
         decimals: this.poolData.decimals,
         stakingType: this.slug,
-        minStake: this.poolData.minStake,
+        minStake: this.poolData.minStake === '0' ? this.poolData._minStake : this.poolData.minStake,
         maxStake: this.poolData.maxStake,
         alreadyStaked: this.userInfo.staked !== '0', // for duration selecting
       });

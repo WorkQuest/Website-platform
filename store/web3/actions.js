@@ -187,9 +187,9 @@ export default {
     return {
       ...userInfo,
       date: duration.unstakeTime ? new Date(duration.unstakeTime * 1000) : false,
-      claim: new BigNumber(userInfo.claim_).shiftedBy(-decimals).decimalPlaces(2).toString(),
-      staked: new BigNumber(userInfo.staked_).shiftedBy(-decimals).decimalPlaces(2).toString(),
-      balance: new BigNumber(userInfo._balance).shiftedBy(-decimals).decimalPlaces(2).toString(),
+      claim: new BigNumber(userInfo.claim_).shiftedBy(-decimals).decimalPlaces(4).toString(),
+      staked: new BigNumber(userInfo.staked_).shiftedBy(-decimals).decimalPlaces(4).toString(),
+      balance: new BigNumber(userInfo._balance).shiftedBy(-decimals).decimalPlaces(4).toString(),
       _balance: new BigNumber(userInfo._balance).shiftedBy(-decimals).toString(),
     };
   },
@@ -209,7 +209,11 @@ export default {
       fetchContractData('decimals', abi.ERC20, rewardTokenAddress),
       fetchContractData('symbol', abi.ERC20, rewardTokenAddress),
     ]);
-    console.log(stakingInfo);
+
+    const min = new BigNumber(0.000001);
+    const _minStake = new BigNumber(minStake).shiftedBy(-decimals).isLessThan(min)
+      ? min.toString() : new BigNumber(minStake).shiftedBy(-decimals).toString();
+
     return {
       ...stakingInfo,
       decimals,
@@ -222,6 +226,7 @@ export default {
       totalDistributed: new BigNumber(totalDistributed).shiftedBy(-decimals).decimalPlaces(4).toString(),
       rewardTotal: new BigNumber(rewardTotal).shiftedBy(-decimals).decimalPlaces(4).toString(),
       maxStake: new BigNumber(maxStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
+      _minStake,
       minStake: new BigNumber(minStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
     };
   },

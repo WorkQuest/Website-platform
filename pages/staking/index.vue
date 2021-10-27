@@ -6,7 +6,7 @@
           {{ $t('staking.mainHeader') }}
         </div>
         <div class="title_sub">
-          {{ $t('staking.tempHeader') }}
+          {{ $t('staking.stakingSub') }}
         </div>
       </div>
       <div class="staking-page__content">
@@ -195,7 +195,9 @@ export default {
         const { netId } = await this.$store.dispatch('web3/getAccount');
         wusdPool.poolAddress = process.env.STAKING_NATIVE;
         wusdPool.stakeTokenSymbol = NativeTokenSymbolByChainId[netId];
+        wusdPool.tokenSymbol = NativeTokenSymbolByChainId[netId];
         wusdPool.link = StakingTypes.WUSD;
+
         this.poolsData = [wqtPool, wusdPool];
       }
     },
