@@ -69,6 +69,7 @@
             <li
               v-for="(item, key) in navigation"
               :key="key"
+              :class="{'wiki__item_active': item === currentTab}"
               class="wiki__item"
               @click="selectTab(item)"
             >
@@ -167,7 +168,7 @@ export default {
     border-radius: 6px;
   }
   &__input {
-    width: 900px;
+    width: 880px;
   }
   &__button-field {
     height: 100%;
@@ -336,7 +337,7 @@ export default {
       width: 480px;
     }
     &__input {
-      width: 362px;
+      width: 354px;
     }
   }
 }
@@ -346,7 +347,7 @@ export default {
       width: 380px;
     }
     &__input {
-      width: 262px;
+      width: 254px;
     }
   }
 }
@@ -354,23 +355,9 @@ export default {
   .wiki {
     &__content {
       width: 343px;
-       &_cut {
-        margin: 0;
-        width: 100%;
-      }
-    }
-    &__fields {
-      &_cut {
-        margin: 0;
-        display: block;
-        width: 100%;
-      }
     }
     &__input {
-      width: 235px;
-       &_cut {
-        width: 365px;
-      }
+      width: 229px;
     }
     &__search-field {
       padding: 0 4px 0 4px;
