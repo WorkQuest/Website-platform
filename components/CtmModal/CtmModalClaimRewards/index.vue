@@ -86,6 +86,7 @@ export default {
       statusBusy: 'web3/getStatusBusy',
       userBalance: 'web3/getUserBalance',
       userStake: 'web3/getUserStake',
+      isConnected: 'web3/isConnected',
     }),
   },
   mounted() {

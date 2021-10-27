@@ -268,6 +268,7 @@ export default {
   },
   data() {
     return {
+      firstLoading: true,
       updateInterval: null,
       disabled: false,
       miningPoolId: '',
@@ -389,6 +390,7 @@ export default {
   },
   watch: {
     async isConnected(newValue) {
+      if (this.firstLoading) return;
       await this.tokensDataUpdate();
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
       if (newValue && rightChain) {
@@ -438,6 +440,7 @@ export default {
     }
     await this.initTableData();
     this.SetLoader(false);
+    this.firstLoading = false;
   },
   methods: {
     async checkMetamaskStatus() {
@@ -570,14 +573,14 @@ export default {
     },
     async tokensDataUpdate() {
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
-      if (!rightChain || !this.accountData || !this.accountData.decimals) {
+      if (!rightChain) {
         this.fullRewardAmount = 0;
         this.rewardAmount = 0;
         this.stakedAmount = 0;
         this.profitWQT = 0;
         return;
       }
-      const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
+      const tokensData = await this.$store.dispatch('web3/getTokensData');
       this.fullRewardAmount = tokensData.rewardTokenAmount;
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);

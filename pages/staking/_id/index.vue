@@ -160,8 +160,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import moment from 'moment';
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import { Chains, NativeTokenSymbolByChainId, StakingTypes } from '~/utils/enums';
 
@@ -170,6 +170,7 @@ export default {
     return {
       poolData: null,
       userInfo: null,
+      firstLoading: true,
     };
   },
   computed: {
@@ -311,6 +312,7 @@ export default {
   },
   watch: {
     async isConnected(newValue) {
+      if (this.firstLoading) return;
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
       if (newValue && rightChain) {
         await this.initPage();
@@ -342,6 +344,7 @@ export default {
           this.getUserInfo();
         },
       });
+      this.firstLoading = false;
       this.SetLoader(false);
     },
     async checkMetamaskStatus() {

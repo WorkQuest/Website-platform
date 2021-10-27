@@ -305,7 +305,8 @@ export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress
     showToast('Staking', 'Staking done', 'success');
     return '';
   } catch (e) {
-    if (e.message.toString().includes('code": 3')) {
+    // code: -32603, message: 'execution reverted: WQStaking: Amount should be greater than minimum stake',
+    if (e.message.toString().includes('You cannot stake tokens yet')) {
       showToast('Stacking error', 'You cannot stake tokens yet', 'danger');
     } else {
       showToast('Stacking error', `${e.message}`, 'danger');

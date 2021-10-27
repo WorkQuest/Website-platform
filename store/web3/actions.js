@@ -150,7 +150,7 @@ export default {
     }
   },
 
-  async getTokensData({ commit }, { rewardDecimal, stakeDecimal }) {
+  async getTokensData({ commit }) {
     const { stakingAddress, stakingAbi } = getStakingDataByType('MINING');
     const userInfo = await fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccountAddress()]);
     const payload = {
@@ -208,6 +208,7 @@ export default {
       fetchContractData('decimals', abi.ERC20, rewardTokenAddress),
       fetchContractData('symbol', abi.ERC20, rewardTokenAddress),
     ]);
+    console.log(stakingInfo);
     return {
       ...stakingInfo,
       decimals,
@@ -216,11 +217,11 @@ export default {
       claimPeriod: new BigNumber(stakingInfo.claimPeriod / 60 / 60).decimalPlaces(3).toString(),
       stakePeriod: new BigNumber(stakingInfo.stakePeriod / 60 / 60).decimalPlaces(3).toString(),
       distributionTime: new BigNumber(stakingInfo.distributionTime / 60).decimalPlaces(3).toString(),
-      totalStaked: new BigNumber(totalStaked).shiftedBy(-decimals).decimalPlaces(2).toString(),
-      totalDistributed: new BigNumber(totalDistributed).shiftedBy(-decimals).decimalPlaces(2).toString(),
-      rewardTotal: new BigNumber(rewardTotal).shiftedBy(-decimals).decimalPlaces(2).toString(),
-      maxStake: new BigNumber(maxStake).shiftedBy(-decimals).decimalPlaces(2).toString(),
-      minStake: new BigNumber(minStake).shiftedBy(-decimals).decimalPlaces(2).toString(),
+      totalStaked: new BigNumber(totalStaked).shiftedBy(-decimals).decimalPlaces(4).toString(),
+      totalDistributed: new BigNumber(totalDistributed).shiftedBy(-decimals).decimalPlaces(4).toString(),
+      rewardTotal: new BigNumber(rewardTotal).shiftedBy(-decimals).decimalPlaces(4).toString(),
+      maxStake: new BigNumber(maxStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
+      minStake: new BigNumber(minStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
     };
   },
   async fetchStakingActions({ commit }, { stakingType, callback, events }) {
