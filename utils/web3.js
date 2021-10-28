@@ -287,7 +287,6 @@ export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress
     } else if (stakingType === StakingTypes.WQT) {
       payload.data = [amount, duration];
     } else if (stakingType === StakingTypes.WUSD) {
-      // payload.data = { value: amount };
       const contractInstance = await createInstance(_stakingAbi, _stakingAddress);
       await contractInstance.stake({ value: amount });
       showToast('Staking', 'Staking done', 'success');
