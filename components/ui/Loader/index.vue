@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     checkPage() {
-      return ['/mining/BNB', '/mining/ETH', '/crosschain'].includes(this.$route.path);
+      return ['/mining/BNB', '/mining/ETH', '/crosschain', '/staking', '/staking/WQT', '/staking/WUSD'].includes(this.$route.path);
     },
   },
 };

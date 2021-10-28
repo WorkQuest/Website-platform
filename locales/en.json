@@ -60,7 +60,8 @@
     "required_if": "The {_field_} field is required",
     "required": "The {_field_} field is required",
     "size": "The {_field_} field size must be less than {size}KB",
-    "decimal": "The {_field_} field must contain only decimal values"
+    "decimal": "The {_field_} field must contain only decimal values",
+    "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places"
   },
   "labels": {
     "firstName": "First name",
@@ -2263,8 +2264,12 @@
     "dateTemp": "05.08.2021, 12:00"
   },
   "staking": {
+    "notification": "Notification",
+    "stakeLimitReached": "Stake limit reached",
+    "notEnoughFunds": "There are not enough funds on the balance sheet",
+    "_inDev": "In development",
     "mainHeader": "Single staking",
-    "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "stakingSub": "Make your assets work. Stake your assets into DeFi staking or Locked staking to increase staking income.",
     "pools": "Pools",
     "tableHead": {
       "poolAddress": "Pool address",
@@ -2274,46 +2279,43 @@
       "rewardTokenAddress": "Reward Token Address"
     },
     "open": "Open",
-    "tempAddress": "0sjs3892...sd45",
-    "tempStaked": "10 000 WQT",
     "back": "Back",
     "claimRewards": "Claim rewards",
+    "cannotClaimYet": "You cannot claim rewards yet",
     "pool": "Pool",
     "stakeTokenAddress": "Stake Token Address",
     "rewardTokenAddress": "Reward Token Address",
     "totalStaked": "Total Staked",
-    "wqtCount": "{n} WQT",
+    "WQTCount": "{n} WQT",
+    "WUSDCount": "{n} WUSD",
+    "ETHCount": "{n} ETH",
+    "BNBCount": "{n} BNB",
+    "hours": "{n} hours",
+    "days": "{n} days",
+    "min": "{n} min",
     "totalDistributed": "Total Distributed",
     "staking": "Staking",
     "stakingCards": {
       "distributionTime": "Distribution Time",
-      "distributionTimeData": "10 min",
       "rewardTotal": "Reward Total",
-      "rewardTotalData": "3.00 WQT",
-      "takePeriod": "Take Period",
-      "takePeriodData": "24 hours",
+      "takePeriod": "Stake Period",
       "claimPeriod": "Claim Period",
-      "claimPeriodData": "24 hours",
-      "duration": "Duration",
-      "durationData": "30 days"
+      "duration": "Duration"
     },
     "userInformation": "User information",
     "userInformationCards": {
       "staked": "Staked",
-      "stakeBalance": "Stake balance",
+      "yourBalance": "Your balance",
       "claimed": "Claimed"
     },
-    "withdrawal": "Withdrawal",
-    "withdrawalCards": {
-      "displayedInTheCurrentPeriod": "Displayed in the current period",
-      "displayedInTheCurrentPeriodData": "10 000 WQT",
-      "withdrawalLimit": "Withdrawal limit",
-      "withdrawalLimitData": "10 000 WQT",
-      "periodUpdate": "Period update",
-      "periodUpdateData": "10 000 WQT"
+    "stakeCards": {
+      "stakeMin": "Stake minimum",
+      "stakeLimit": "Stake limit",
+      "periodUpdate": "Period update"
     },
-    "autoRenewal": "Auto Renewal",
-    "withdraw": "Withdraw"
+    "stakeDays": "Stake days",
+    "stake": "Stake",
+    "autoRenewal": "Auto Renewal"
   },
   "myQuests": {
     "statuses": {

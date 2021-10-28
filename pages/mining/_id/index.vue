@@ -255,6 +255,7 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
 import chart from './graphics_data';
+import { StakingTypes } from '~/utils/enums';
 
 export default {
   layout: 'guest',
@@ -263,6 +264,8 @@ export default {
   },
   data() {
     return {
+      firstLoading: true,
+      updateInterval: null,
       disabled: false,
       miningPoolId: '',
       metamaskStatus: localStorage.getItem('metamaskStatus'),
@@ -382,10 +385,18 @@ export default {
     },
   },
   watch: {
-    isConnected() {
-      const newInterval = setInterval(() => this.tokensDataUpdate(), 15000);
-      if (!this.isConnected) {
-        clearInterval(newInterval);
+    async isConnected(newValue) {
+      if (this.firstLoading) return;
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+      if (newValue && rightChain) {
+        await this.tokensDataUpdate();
+        this.updateInterval = setInterval(() => this.tokensDataUpdate(), 15000);
+      } else {
+        this.fullRewardAmount = 0;
+        this.rewardAmount = 0;
+        this.stakedAmount = 0;
+        this.profitWQT = 0;
+        clearInterval(this.updateInterval);
       }
     },
     async page() {
@@ -407,15 +418,21 @@ export default {
     this.SetLoader(true);
     await this.checkMetamaskStatus();
     if (this.$route.params.id === 'ETH') {
-      await this.getWqtWethTokenDay();
-      await this.getWqtWethTokenDayLast();
+      await Promise.all([
+        this.getWqtWethTokenDay(),
+        this.getWqtWethTokenDayLast(),
+      ]);
     } else {
-      await this.getWqtWbnbTokenDay();
-      await this.getWqtWbnbTokenDayLast();
+      await Promise.all([
+        this.getWqtWbnbTokenDay(),
+        this.getWqtWbnbTokenDayLast(),
+      ]);
     }
-    await this.tokensDataUpdate();
-    await this.initTokenDays();
-    await this.initGraphData();
+    await Promise.all([
+      this.tokensDataUpdate(),
+      this.initTokenDays(),
+      this.initGraphData(),
+    ]);
     this.SetLoader(false);
     if (this.$route.params.id === 'ETH') {
       await this.tableWqtWethTokenDay();
@@ -423,8 +440,11 @@ export default {
       await this.tableWqtWbnbTokenDay();
     }
     await this.initTableData();
+    this.firstLoading = false;
   },
-
+  beforeDestroy() {
+    clearInterval(this.updateInterval);
+  },
   methods: {
     async checkMetamaskStatus() {
       if (typeof window.ethereum === 'undefined') {
@@ -439,9 +459,16 @@ export default {
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');
-        await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+        const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+        if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
         await this.connectToMetamask();
       }
+    },
+    async connectToMetamask() {
+      if (!this.isConnected) {
+        await this.$store.dispatch('web3/connect');
+      }
+      await this.$store.dispatch('web3/initContract');
     },
     async initTokenDays() {
       const totalLiquidity = this.miningPoolId === 'BNB' ? this.wqtWbnbTokenDay[0]?.reserveUSD : this.wqtWethTokenDay[0]?.reserveUSD;
@@ -531,7 +558,11 @@ export default {
       return style;
     },
     async tokensDataUpdate() {
-      const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+      if (!rightChain) {
+        return;
+      }
+      const tokensData = await this.$store.dispatch('web3/getTokensData');
       this.fullRewardAmount = tokensData.rewardTokenAmount;
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
@@ -548,8 +579,8 @@ export default {
     async claimRewards() {
       this.SetLoader(true);
       if (this.fullRewardAmount > 0) {
-        await this.connectToMetamask();
-        await this.$store.dispatch('web3/claimRewards', this.accountData.userPurse.address, this.fullRewardAmount);
+        await this.tokensDataUpdate();
+        await this.$store.dispatch('web3/claimRewards', { stakingType: StakingTypes.MINING });
         await this.tokensDataUpdate();
       } else {
         this.ShowModal({
@@ -561,13 +592,6 @@ export default {
         });
       }
       this.SetLoader(false);
-    },
-    async connectToMetamask() {
-      if (!this.isConnected) {
-        await this.$store.dispatch('web3/connect');
-        await this.$store.dispatch('web3/initContract');
-        await this.tokensDataUpdate();
-      }
     },
     cropTxt(str) {
       if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
@@ -586,6 +610,9 @@ export default {
       this.ShowModal({
         key: modals.claimRewards,
         type: 2,
+        decimals: this.accountData.decimals.stakeDecimal,
+        stakingType: StakingTypes.MINING,
+        updateMethod: this.tokensDataUpdate,
       });
     },
     async openModalClaimRewards() {
@@ -593,6 +620,9 @@ export default {
       this.ShowModal({
         key: modals.claimRewards,
         type: 1,
+        stakingType: StakingTypes.MINING,
+        decimals: this.accountData.decimals.stakeDecimal,
+        updateMethod: this.tokensDataUpdate,
       });
     },
     handleBackToMainMining() {

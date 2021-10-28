@@ -5,6 +5,9 @@ export default {
   setIsConnected(state, payload) {
     state.isConnected = payload;
   },
+  setIsHandlingMetamaskStatus(state, payload) {
+    state.isHandlingMetamaskStatus = payload;
+  },
   setBalance(state, payload) {
     state.balance = payload;
   },
