@@ -1,8 +1,10 @@
 import Web3 from 'web3';
 import Web4 from '@cryptonteam/web4';
 import BigNumber from 'bignumber.js';
+import Web3Modal from 'web3modal';
+import WalletConnectProvider from '@walletconnect/web3-provider';
 import * as abi from '~/abi/abi';
-import { ChainsId, Chains, StakingTypes } from '~/utils/enums';
+import { Chains, ChainsId, StakingTypes } from '~/utils/enums';
 
 let web3 = null;
 let web4 = null;
@@ -189,36 +191,122 @@ export const handleMetamaskStatus = (callback) => {
   ethereum.on('accountsChanged', callback);
 };
 
-export const initWeb3 = async () => {
-  try {
-    const { ethereum } = window;
-    if (ethereum) {
-      web3 = new Web3(ethereum);
-      if ((await web3.eth.getCoinbase()) === null) {
-        await ethereum.enable();
-      }
-      const [userAddress, chainId] = await Promise.all([
-        web3.eth.getCoinbase(),
-        web3.eth.net.getId(),
-      ]);
-      if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
-        return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
-      }
-      if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
-        return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
-      }
-      account = {
-        address: userAddress,
-        netId: chainId,
-        netType: getChainTypeById(chainId),
+// export const initWeb3 = async () => {
+//   try {
+//     const { ethereum } = window;
+//     if (ethereum) {
+//       web3 = new Web3(ethereum);
+//       if ((await web3.eth.getCoinbase()) === null) {
+//         await ethereum.enable();
+//       }
+//       const [userAddress, chainId] = await Promise.all([
+//         web3.eth.getCoinbase(),
+//         web3.eth.net.getId(),
+//       ]);
+//       if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
+//         return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
+//       }
+//       if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
+//         return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
+//       }
+//       account = {
+//         address: userAddress,
+//         netId: chainId,
+//         netType: getChainTypeById(chainId),
+//       };
+//       web4 = new Web4();
+//       await web4.setProvider(ethereum, userAddress);
+//       return success(account);
+//     }
+//     return false;
+//   } catch (e) {
+//     return error(500, '', e.message);
+//   }
+// };
+let walletOptions = {};
+export const initWeb3Modal = async (chain) => {
+  if (process.env.PROD === 'false') {
+    if (chain === 'ETH') {
+      walletOptions = {
+        rpc: {
+          4: 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+        },
+        network: 'ethereum',
       };
-      web4 = new Web4();
-      await web4.setProvider(ethereum, userAddress);
-      return success(account);
+    } else {
+      walletOptions = {
+        rpc: {
+          97: 'https://data-seed-prebsc-2-s1.binance.org:8545/',
+        },
+        network: 'binance',
+      };
     }
-    return false;
+  }
+  if (process.env.PROD === 'true') {
+    if (chain === 'ETH') {
+      walletOptions = {
+        rpc: {
+          1: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+        },
+        network: 'ethereum',
+      };
+    } else {
+      walletOptions = {
+        rpc: {
+          56: 'https://bsc-dataseed1.ninicoin.io',
+        },
+        network: 'binance',
+      };
+    }
+  }
+};
+
+export const initWeb3 = async (chain) => {
+  await localStorage.clear();
+  try {
+    let provider = null;
+    let userAddress;
+    await initWeb3Modal(chain);
+    const web3Modal = new Web3Modal({
+      // theme: 'dark',
+      cacheProvider: true, // optional
+      providerOptions: {
+        walletconnect: {
+          package: WalletConnectProvider, // required
+          options: walletOptions,
+        },
+      }, // required
+    });
+    console.log(web3Modal);
+    provider = await web3Modal.connect();
+    web3 = new Web3(provider);
+    web4 = new Web4();
+    userAddress = await web3.eth.getCoinbase();
+    await web4.setProvider(provider, userAddress);
+    if (userAddress === null) {
+      await provider.enable();
+      userAddress = await web3.eth.getCoinbase();
+    }
+    const chainId = await web3.eth.net.getId();
+    if ((await web3.eth.getCoinbase()) === null) {
+      await window.ethereum.enable();
+    }
+    if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
+      return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
+    }
+    if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
+      return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
+    }
+    account = {
+      address: userAddress,
+      netId: chainId,
+      netType: getChainTypeById(chainId),
+    };
+    web4 = new Web4();
+    await web4.setProvider(window.ethereum, userAddress);
+    return success(account);
   } catch (e) {
-    return error(500, '', e.message);
+    return error(500, '', 'Connected error');
   }
 };
 
