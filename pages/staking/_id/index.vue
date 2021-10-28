@@ -204,7 +204,7 @@ export default {
           subtitle: this.$t('staking.totalStaked'),
         },
         {
-          title: this.$tc(`staking.${this.poolData.tokenSymbol}Count`, this.poolData.totalDistributed),
+          title: this.$tc(`staking.${this.poolData.tokenSymbol || this.slug}Count`, this.poolData.totalDistributed),
           subtitle: this.$t('staking.totalDistributed'),
         },
       ];
@@ -270,7 +270,7 @@ export default {
         },
         {
           name: this.$t('staking.userInformationCards.claimed'),
-          about: this.$tc(`staking.${this.poolData.tokenSymbol}Count`, this.userInfo.claim),
+          about: this.$tc(`staking.${this.poolData.tokenSymbol || this.slug}Count`, this.userInfo.claim),
         },
       ];
       if (this.userInfo.date && this.userInfo.staked !== '0') {
