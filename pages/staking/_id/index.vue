@@ -165,6 +165,7 @@
 <script>
 import moment from 'moment';
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { Chains, NativeTokenSymbolByChainId, StakingTypes } from '~/utils/enums';
 
@@ -442,6 +443,24 @@ export default {
     },
     async showStakeModal() {
       if (!this.userInfo || !this.poolData) return;
+      if (+this.userInfo.balance === 0) {
+        await this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('staking.notification'),
+          subtitle: this.$t('staking.notEnoughFunds'),
+        });
+        return;
+      }
+      if (new BigNumber(this.userInfo._staked).isGreaterThanOrEqualTo(this.poolData.maxStake)) {
+        await this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('staking.notification'),
+          subtitle: this.$t('staking.stakeLimitReached'),
+        });
+        return;
+      }
       await this.checkMetamaskStatus();
       this.ShowModal({
         key: modals.claimRewards,
