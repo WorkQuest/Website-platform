@@ -150,6 +150,13 @@
               {{ $t('staking.autoRenewal') }}
             </base-btn>
             <base-btn
+              v-if="canUnstake"
+              mode="outline"
+              @click="showUnstakeModal"
+            >
+              {{ $t('staking.unstake') }}
+            </base-btn>
+            <base-btn
               mode="outline"
               @click="showStakeModal"
             >
@@ -186,6 +193,12 @@ export default {
     }),
     slug() {
       return this.$route.params.id;
+    },
+    canUnstake() {
+      return this.slug !== StakingTypes.WUSD;
+    },
+    stakeDurationIsDone() {
+      return this.userInfo && moment.duration(moment(this.userInfo.date).diff(moment.now())).asMilliseconds() < 0;
     },
     cards() {
       if (!this.poolData) {
@@ -343,8 +356,8 @@ export default {
       await this.getPoolData();
       await this.getUserInfo();
       const events = this.slug === StakingTypes.WQT
-        ? ['tokensStaked', 'tokensClaimed']
-        : ['Staked', 'Claimed'];
+        ? ['tokensStaked', 'tokensClaimed', 'tokensUnstaked']
+        : ['Staked', 'Claimed', 'Unstaked'];
       await this.$store.dispatch('web3/fetchStakingActions', {
         stakingType: this.slug,
         events,
@@ -439,6 +452,36 @@ export default {
         stakingType: this.slug,
         rewardAmount: this.userInfo.claim,
         tokenSymbol: this.poolData.tokenSymbol,
+      });
+    },
+    async showUnstakeModal() {
+      if (!this.userInfo || !this.poolData) return;
+      if (!this.stakeDurationIsDone) {
+        await this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('staking.notification'),
+          subtitle: this.$t('staking.stakeDurationIsNotOver'),
+        });
+        return;
+      }
+      if (+this.userInfo.staked === 0) {
+        await this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('staking.notification'),
+          subtitle: this.$t('staking.stakeIsEmpty'),
+        });
+        return;
+      }
+      await this.checkMetamaskStatus();
+      const stakingType = this.slug === StakingTypes.WQT ? StakingTypes.WQT : StakingTypes.WUSD;
+      this.ShowModal({
+        key: modals.claimRewards,
+        type: 2,
+        stakingType,
+        decimals: this.poolData.decimals,
+        staked: this.userInfo._staked,
       });
     },
     async showStakeModal() {

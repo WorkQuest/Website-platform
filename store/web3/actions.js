@@ -269,8 +269,9 @@ export default {
     } = getStakingDataByType(stakingType);
     return await staking(decimals, amount, tokenAddress, stakingAddress, stakingAbi, duration, stakingType);
   },
-  async unstake({ commit }, { decimals, amount }) {
-    return await unStaking(decimals, amount);
+  async unstake({ commit }, { decimals, amount, stakingType }) {
+    const { stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
+    return await unStaking(decimals, amount, stakingAddress, stakingAbi);
   },
   async claimRewards({ commit }, { stakingType }) {
     const { stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
