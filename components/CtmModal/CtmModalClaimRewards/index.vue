@@ -98,7 +98,9 @@ export default {
     },
     getInputRules() {
       const min = this.options.minStake ? `|min_value:${this.options.minStake}` : '|min_value:0.00001';
-      const max = this.options.maxStake ? `|max_value:${(new BigNumber(this.options.maxStake).minus(this.options.staked)).toString()}` : '';
+      let max = '';
+      if (this.options.type === 1) max = this.options.maxStake ? `|max_value:${(new BigNumber(this.options.maxStake).minus(this.options.staked)).toString()}` : '';
+      else max = this.options.staked ? `|max_value:${this.options.staked}` : '';
       return min + max;
     },
     maxBalance() {

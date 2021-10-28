@@ -197,7 +197,7 @@ export default {
     return {
       ...userInfo,
       date: duration.unstakeTime ? new Date(duration.unstakeTime * 1000) : false,
-      claim: new BigNumber(userInfo.claim_).shiftedBy(-decimals).decimalPlaces(4).toString(),
+      claim: new BigNumber(userInfo.claim_).shiftedBy(-decimals).decimalPlaces(5).toString(),
       staked: new BigNumber(userInfo.staked_).shiftedBy(-decimals).decimalPlaces(4).toString(),
       _staked: new BigNumber(userInfo.staked_).shiftedBy(-decimals).toString(),
       balance: new BigNumber(userInfo._balance).shiftedBy(-decimals).decimalPlaces(4).toString(),
