@@ -197,7 +197,7 @@ export default {
     canUnstake() {
       return this.slug !== StakingTypes.WUSD;
     },
-    stakeDurationIsDone() {
+    stakeDurationIsOver() {
       return this.userInfo && moment.duration(moment(this.userInfo.date).diff(moment.now())).asMilliseconds() < 0;
     },
     cards() {
@@ -287,9 +287,10 @@ export default {
         },
       ];
       if (this.userInfo.date && this.userInfo.staked !== '0') {
+        const days = Math.ceil(moment.duration(moment(this.userInfo.date).diff(moment.now())).asDays());
         data.push({
           name: this.$t('staking.stakingCards.duration'),
-          about: this.$t('staking.days', { n: Math.ceil(moment.duration(moment(this.userInfo.date).diff(moment.now())).asDays()) }),
+          about: this.$t('staking.days', { n: days >= 0 ? days : 0 }),
         });
       }
       return data;
@@ -456,7 +457,7 @@ export default {
     },
     async showUnstakeModal() {
       if (!this.userInfo || !this.poolData) return;
-      if (!this.stakeDurationIsDone) {
+      if (!this.stakeDurationIsOver) {
         await this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
