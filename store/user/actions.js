@@ -49,6 +49,9 @@ export default {
     commit('setTokens', response.result);
     return response;
   },
+  async logOut({ commit }) {
+    commit('logOut');
+  },
   async confirm({ commit }, payload) {
     commit('setTokens', { access: this.$cookies.get('access'), refresh: this.$cookies.get('refresh') });
     this.$cookies.set('role', payload.role);

@@ -34,8 +34,8 @@
             <div class="description__text description__text_link">
               <a
                 target="_blank"
-                href="mailto:workquest@yahoo.com"
-              >workquest@yahoo.com</a>
+                href="mailto:feedback@workquest.co"
+              >feedback@workquest.co</a>
             </div>
           </div>
         </div>
@@ -85,6 +85,9 @@ export default {
     max-height: 140px;
     display: flex;
     align-items: center;
+    &_mobile {
+      display: none;
+    }
   }
 }
 .description {
@@ -126,13 +129,31 @@ export default {
     }
   }
 }
+
+@include _1300 {
+  .about {
+    &__body {
+      padding-bottom: 20px;
+    }
+  }
+}
+
 @include _575 {
   .about {
     display: flex;
     flex-direction: column;
-    margin: -100px 0 60px 0;
+    margin-top: -100px;
+    padding-bottom: 20px;
     &__row {
       flex-direction: column-reverse;
+    }
+    &__container {
+      display: grid;
+      grid-template-rows: 1fr minmax(80px, 110px);
+      min-height: initial;
+      //min-height: calc(100vh);
+      //height: 100%;
+      //height: initial;
     }
     &__image {
       position: initial;
@@ -146,15 +167,15 @@ export default {
     &__content {
       height: 100%;
     }
-    &__container {
-      grid-template-rows: 1fr 90px;
-    }
   }
   .description {
     align-items: center;
     max-width: 330px;
     padding-bottom: 40px;
+    display: grid;
+    grid-template-rows: auto 1fr;
     &__title {
+      text-align: center;
       font-size: 24px;
     }
     &__text {

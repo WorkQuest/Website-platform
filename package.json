@@ -1,6 +1,6 @@
 {
   "name": "workquest",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "private": true,
   "scripts": {
     "dev": "cross-env NUXT_HOST=0.0.0.0 NUXT_PORT=3000 nuxt",
@@ -16,7 +16,9 @@
     "@cryptonteam/web4": "^0.1.7",
     "@nuxtjs/axios": "^5.13.1",
     "@nuxtjs/moment": "^1.6.1",
+    "@pancakeswap/sdk": "^2.4.0",
     "@sumsub/websdk": "^1.2.1",
+    "@uniswap/sdk": "^3.0.3",
     "bignumber.js": "^9.0.1",
     "bootstrap-vue": "^2.21.2",
     "chart.js": "^2.9.3",
@@ -50,6 +52,7 @@
     "geo-coder": "^1.0.2",
     "node-sass": "^4.14.1",
     "sass-loader": "^10.0.1",
-    "vue-chartjs": "^3.5.1"
+    "vue-chartjs": "^3.5.1",
+    "webpack": "^4.46.0"
   }
 }

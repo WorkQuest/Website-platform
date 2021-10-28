@@ -80,8 +80,9 @@ export default {
     return await this.$axios.$delete(`/v1/quest/${id}/star`, id);
   },
 
-  async startQuest(id) {
-    return await this.$axios.$post(`/v1/quest/${id}/start`, id);
+  async startQuest(workerId) {
+    const response = await this.$axios.$post(`/v1/quest/${workerId}/start`, workerId);
+    return response.result;
   },
 
   async getStarredQuests({ commit }) {
@@ -94,28 +95,31 @@ export default {
     return await this.$axios.$post(`/v1/quest/${id}/invite`, payload);
   },
 
-  async respondOnQuest({ commit }, payload, id) {
-    return await this.$axios.$post(`/v1/quest/${id}/response`, payload);
+  async respondOnQuest({ commit }, { data, questId }) {
+    const response = await this.$axios.$post(`/v1/quest/${questId}/response`, data);
+    return response.result;
   },
 
-  async getResponsesToQuest({ commit }, id) {
-    const { data } = await this.$axios.$get(`/v1/quest/${id}/responses`);
-    commit('setResponses', data.result);
-    return data.result;
+  async responsesToQuest({ commit }, questId) {
+    const response = await this.$axios.$get(`/v1/quest/${questId}/responses`);
+    commit('setResponses', response.result);
+    return response.result;
   },
 
-  async acceptQuestInvitation(id) {
-    return await this.$axios.$post(`/v1/quest/response/${id}/accept`, id);
+  async getResponsesToQuestForAuthUser({ commit }) {
+    const response = await this.$axios.$get('/v1/quest/responses/my');
+    commit('setResponsesMy', response.result);
+    return response.result;
   },
 
-  async rejectQuestInvitation(id) {
-    return await this.$axios.$post(`/v1/quest/response/${id}/reject`, id);
+  async acceptQuestInvitation({ commit }, responseId) {
+    const response = await this.$axios.$post(`/v1/quest/employer/${responseId}/accept`);
+    return response.result;
   },
 
-  async getResponsesToQuestForAuthorizedUser({ commit }) {
-    const { data } = await this.$axios.$get('/v1/quest/responses/my');
-    commit('setResponsesMy', data.result);
-    return data.result;
+  async rejectQuestInvitation({ commit }, responseId) {
+    const response = await this.$axios.$post(`/v1/quest/employer/${responseId}/reject`);
+    return response.result;
   },
 
   setMapBounds({ commit }, payload) {

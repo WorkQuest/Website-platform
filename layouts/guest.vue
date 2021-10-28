@@ -151,6 +151,51 @@
                   </transition>
                 </button>
               </div>
+              <div
+                v-if="userLogin === false"
+                class="header__links"
+              >
+                <button
+                  class="header__link header__link_menu"
+                  :class="{'header__link_active': isShowAdditionalMenu}"
+                  @click="showAdditionalMenu()"
+                >
+                  {{ $t('ui.profile.DeFi') }}
+                  <span class="icon-caret_down" />
+                  <transition name="fade">
+                    <div
+                      v-if="isShowAdditionalMenu"
+                      class="menu__guest"
+                    >
+                      <div
+                        class="menu__items_double"
+                      >
+                        <n-link
+                          v-for="item in additionalMenuLinksGuest"
+                          :key="`item-${item.title}`"
+                          :to="item.path"
+                          tag="div"
+                          class="menu__item"
+                        >
+                          <div class="menu__top">
+                            <div class="menu__text menu__text_header">
+                              {{ item.title }}
+                            </div>
+                            <span class="icon-chevron_right" />
+                          </div>
+                          <div class="menu__bottom">
+                            <div class="menu__text menu__text_grey">
+                              <span>
+                                {{ kitcutDescription(item.desc) }}
+                              </span>
+                            </div>
+                          </div>
+                        </n-link>
+                      </div>
+                    </div>
+                  </transition>
+                </button>
+              </div>
             </div>
             <div
               class="header__right"
@@ -194,124 +239,7 @@
                   </div>
                 </transition>
               </button>
-              <button
-                class="header__button"
-                @click="goToMessages()"
-              >
-                <span class="icon-message" />
-              </button>
-              <button class="header__button header__button_notify">
-                <span
-                  v-if="notification"
-                  class="icon-notification_outline_dot"
-                  @click="showNotification()"
-                />
-                <span
-                  v-else
-                  class="icon-notification_outline"
-                />
-                <transition name="fade">
-                  <div
-                    v-if="isShowNotify"
-                    class="notify"
-                  >
-                    <div class="notify__header">
-                      <div class="notify__title">
-                        {{ $t('ui.notifications.title') }}
-                      </div>
-                      <span
-                        class="icon-close_small"
-                        @click="showNotification()"
-                      />
-                    </div>
-                    <div class="notify__body">
-                      <div class="notify__items">
-                        <div class="notify__item">
-                          <div class="notify__content">
-                            <div class="notify__top">
-                              <div class="notify__user">
-                                <div class="notify__avatar">
-                                  <img
-                                    src="~assets/img/app/fakeavatar.svg"
-                                    alt=""
-                                  >
-                                </div>
-                                <div class="notify__info">
-                                  <div class="notify__text notify__text_name">
-                                    Edward Cooper
-                                  </div>
-                                  <div class="notify__text notify__text_grey">
-                                    CEO from Amazon
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="notify__text notify__text_date">
-                                14 January 2021, 14:54
-                              </div>
-                            </div>
-                            <div class="notify__reason">
-                              <div class="notify__text notify__text_blue">
-                                {{ $t('ui.notifications.invite') }}:
-                              </div>
-                            </div>
-                            <div class="notify__action">
-                              <button
-                                class="notify__btn"
-                                @click="showNotifications"
-                              >
-                                <span class="notify__text notify__text_btn">
-                                  Paint the garage quickly
-                                </span>
-                                <span class="icon-chevron_right" />
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="notify__item">
-                          <div class="notify__content">
-                            <div class="notify__top">
-                              <div class="notify__user">
-                                <div class="notify__avatar">
-                                  <img
-                                    src="~assets/img/app/fakeavatar.svg"
-                                    alt=""
-                                  >
-                                </div>
-                                <div class="notify__info">
-                                  <div class="notify__text notify__text_name">
-                                    Samantha Sparks
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="notify__text notify__text_date">
-                                14 January 2021, 14:54
-                              </div>
-                            </div>
-                            <div class="notify__reason">
-                              <div class="notify__text notify__text_blue">
-                                {{ $t('ui.notifications.invite') }}:
-                              </div>
-                            </div>
-                            <div class="notify__action">
-                              <button
-                                class="notify__btn"
-                                @click="showNotifications"
-                              >
-                                <span class="notify__text notify__text_btn">
-                                  Paint the garage quickly
-                                </span>
-                                <span class="icon-chevron_right" />
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </transition>
-              </button>
               <div
-                v-if="Object.keys(userData).length !== 0"
                 class="ctm-menu__toggle"
                 @click="toggleMobileMenu()"
               >
@@ -329,7 +257,6 @@
                 </button>
               </div>
               <button
-                v-if="Object.keys(userData).length !== 0"
                 class="header__button header__button_profile"
                 @click="showProfile()"
               >
@@ -338,9 +265,13 @@
                   <div
                     v-if="isShowProfile"
                     class="profile"
+                    :class="{'profile__quest': userLogin === false}"
                   >
                     <div class="profile__header">
-                      <div class="profile__avatar">
+                      <div
+                        v-if="userLogin === false"
+                        class="profile__avatar"
+                      >
                         <img
                           v-if="imageData"
                           id="userAvatarThree"
@@ -357,8 +288,17 @@
                         >
                       </div>
                       <div class="profile__info">
-                        <div class="profile__text">
+                        <div
+                          v-if="userLogin === true"
+                          class="profile__text"
+                        >
                           {{ userData.firstName }} {{ userData.lastName }}
+                        </div>
+                        <div
+                          v-if="userLogin === false"
+                          class="profile__text"
+                        >
+                          {{ $t('ui.menu.unauthorized') }}
                         </div>
                         <div
                           v-if="userRole === 'employer'"
@@ -375,20 +315,43 @@
                       </div>
                     </div>
                     <div class="profile__items">
-                      <nuxt-link
-                        v-for="item in profileLinks"
-                        :key="`item-${item.title}`"
-                        tag="button"
-                        class="profile__item"
-                        :to="item.path"
-                      >
-                        {{ item.title }}
-                      </nuxt-link>
+                      <span v-if="userLogin === true">
+                        <nuxt-link
+                          v-for="item in profileLinks"
+                          :key="`item-${item.title}`"
+                          tag="button"
+                          class="profile__item"
+                          :class="{'hide': userLogin}"
+                          :to="item.path"
+                        >
+                          {{ item.title }}
+                        </nuxt-link>
+                      </span>
+                      <span v-if="userLogin === false">
+                        <nuxt-link
+                          v-for="item in profileLinksGuest"
+                          :key="`item-${item.title}`"
+                          tag="button"
+                          class="profile__item"
+                          :class="{'hide': userLogin}"
+                          :to="item.path"
+                        >
+                          {{ item.title }}
+                        </nuxt-link>
+                      </span>
                       <button
+                        v-if="userLogin === true"
                         class="profile__item profile__item_red"
                         @click="logout()"
                       >
                         {{ $t('ui.profile.logout') }}
+                      </button>
+                      <button
+                        v-if="userLogin === false"
+                        class="profile__item profile__item_red"
+                        @click="logout()"
+                      >
+                        {{ $t('ui.profile.login') }}
                       </button>
                     </div>
                   </div>
@@ -420,7 +383,9 @@
                   @click="toggleUserDD()"
                 >
                   <div class="user__container">
-                    <div class="user-container__avatar">
+                    <div
+                      class="user-container__avatar"
+                    >
                       <img
                         v-if="imageData"
                         id="userAvatarOne"
@@ -437,8 +402,17 @@
                       >
                     </div>
                     <div class="user-container__user">
-                      <div class="user__name">
+                      <div
+                        v-if="userLogin === true"
+                        class="user__name"
+                      >
                         {{ userData.firstName }} {{ userData.lastName }}
+                      </div>
+                      <div
+                        v-if="userLogin === false"
+                        class="user__name"
+                      >
+                        {{ $t('ui.menu.unauthorized') }}
                       </div>
                       <div
                         v-if="userRole === 'employer'"
@@ -472,7 +446,7 @@
                   </div>
                 </div>
                 <div
-                  v-if="isUserDDOpened === true"
+                  v-if="userLogin === true && isUserDDOpened === true"
                   class="user-dropdown__container"
                 >
                   <div
@@ -489,7 +463,24 @@
                   </div>
                 </div>
                 <div
-                  v-if="isMobileMenu"
+                  v-if="userLogin === false && isUserDDOpened === true"
+                  class="user-dropdown__container"
+                >
+                  <div
+                    v-for="(item, i) in userDDLinksGuest"
+                    :key="i"
+                  >
+                    <div
+                      class="user-dropdown__link"
+                      :class="item.title === 'Logout' ? 'user-dropdown__link_logout' : ''"
+                      @click="toRoute(item.link)"
+                    >
+                      {{ item.title }}
+                    </div>
+                  </div>
+                </div>
+                <div
+                  v-if="userLogin === true && isMobileMenu"
                   class="mobile__links"
                 >
                   <div
@@ -528,7 +519,7 @@
                   </div>
                 </div>
                 <div
-                  v-if="isInstrumentDropdownOpened"
+                  v-if="userLogin === true && isInstrumentDropdownOpened"
                   class="mobile-dropdown__container"
                 >
                   <div
@@ -544,9 +535,26 @@
                     </div>
                   </div>
                 </div>
+                <div
+                  v-if="userLogin === false && isInstrumentDropdownOpened"
+                  class="mobile-dropdown__container"
+                >
+                  <div
+                    v-for="(item, i) in instrumentDDLinksGuest"
+                    :key="i"
+                  >
+                    <div
+                      v-if="isMobileMenu"
+                      class="instrument-dropdown__link"
+                      @click="toRoute(item.link)"
+                    >
+                      {{ item.title }}
+                    </div>
+                  </div>
+                </div>
                 <div class="ctm__actions">
                   <base-btn
-                    v-if="userRole === 'employer'"
+                    v-if="userLogin === true && userRole === 'employer'"
                     class="ctm__btn"
                     @click="createNewQuest('mobile')"
                   >
@@ -801,6 +809,7 @@ export default {
   },
   data() {
     return {
+      userLogin: false,
       localUserData: {},
       isInstrumentDropdownOpened: false,
       isUserDDOpened: false,
@@ -901,6 +910,18 @@ export default {
         },
       ];
     },
+    instrumentDDLinksGuest() {
+      return [
+        {
+          link: '/mining',
+          title: this.$t('ui.menu.mining.title'),
+        },
+        {
+          link: '/crosschain',
+          title: this.$t('ui.menu.crosschain.title'),
+        },
+      ];
+    },
     mobileMenuLinks() {
       return [
         {
@@ -937,6 +958,14 @@ export default {
         },
       ];
     },
+    userDDLinksGuest() {
+      return [
+        {
+          link: '/',
+          title: this.$t('ui.profile.logout'),
+        },
+      ];
+    },
     profileLinks() {
       return [
         {
@@ -952,6 +981,9 @@ export default {
           path: '/disputes',
         },
       ];
+    },
+    profileLinksGuest() {
+      return [];
     },
     additionalMenuLinks() {
       return [
@@ -994,6 +1026,20 @@ export default {
           title: this.$t('ui.menu.staking.title'),
           desc: this.$t('ui.menu.staking.desc'),
           path: '/staking',
+        },
+      ];
+    },
+    additionalMenuLinksGuest() {
+      return [
+        {
+          title: this.$t('ui.menu.mining.title'),
+          desc: this.$t('ui.menu.mining.desc'),
+          path: '/mining',
+        },
+        {
+          title: this.$t('ui.menu.crosschain.title'),
+          desc: this.$t('ui.menu.crosschain.desc'),
+          path: '/crosschain',
         },
       ];
     },
@@ -1100,6 +1146,7 @@ export default {
   },
   async mounted() {
     this.GetLocation();
+    await this.loginCheck();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
   },
   created() {
@@ -1109,6 +1156,17 @@ export default {
     window.removeEventListener('resize', this.userWindowChange);
   },
   methods: {
+    async loginCheck() {
+      this.userLogin = localStorage.getItem('userLogin');
+      if (this.userData === undefined) {
+        localStorage.setItem('userLogin', false);
+        console.log(this.userData);
+      } if (this.userData === Object) {
+        localStorage.setItem('userLogin', true);
+        console.log(this.userData);
+      }
+      this.userLogin = localStorage.getItem('userLogin');
+    },
     setLocale(item) {
       this.currentLocale = item.localeText;
     },
@@ -1548,6 +1606,18 @@ export default {
   width: 100%;
   min-height: 235px;
   z-index: 10000000;
+  &__guest {
+    position: absolute;
+    top: calc(72px + 5px);
+    right: calc(100% - 43px);
+    background: #FFFFFF;
+    box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
+    border-radius: 6px;
+    min-width: 223px;
+    width: 100%;
+    min-height: 110px;
+    z-index: 10000000;
+  }
   &__header {
     border-bottom: 1px solid #F7F8FA;
     display: grid;
@@ -1561,8 +1631,8 @@ export default {
     border-radius: 100%;
   }
   &__items {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     justify-items: flex-start;
   }
   &__item {
@@ -1747,6 +1817,18 @@ export default {
   left: -100%;
   min-height: 230px;
   z-index: 10000000;
+  &__guest {
+    position: absolute;
+    top: 72px;
+    background: #FFFFFF;
+    box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
+    border-radius: 6px;
+    min-width: 600px;
+    width: 100%;
+    left: -100%;
+    min-height: 130px;
+    z-index: 10000000;
+  }
   &__top {
     display: flex;
     align-items: center;
@@ -1779,6 +1861,12 @@ export default {
     grid-template-columns: repeat(3, 1fr);
     padding: 20px;
     grid-gap: 10px;
+    &_double {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr) !important;
+      padding: 20px;
+      grid-gap: 10px;
+    }
   }
   &__item {
     transition: .3s;

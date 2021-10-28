@@ -1100,6 +1100,7 @@ export default {
   async mounted() {
     await this.GetLocation();
     await this.initWSListeners();
+    await this.loginCheck();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
   },
   created() {
@@ -1124,6 +1125,8 @@ export default {
           }
         });
       }
+    async loginCheck() {
+      localStorage.setItem('userLogin', true);
     },
     setLocale(item) {
       this.currentLocale = item.localeText;

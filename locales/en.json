@@ -841,6 +841,9 @@
       "anotherReason": "Another reason"
     },
     "chooseTheme": "Choose theme",
+    "incorrectAmount": "Incorrect amount, your wallet does not have enough funds",
+    "nothingToClaim": "Nothing to claim",
+    "pleaseWait": "Please, wait",
     "redeemSuccess": "Redeem success!",
     "redeemFail": "Redeem fail",
     "chatCreate": {
@@ -957,6 +960,7 @@
     "areYouSure": "Are You Sure?",
     "transactionSend": "Transaction send",
     "transactionFail": "Transaction fail",
+    "transactionCheck": "Check transaction",
     "cardHasBeenAdded": "Card has been added",
     "deposit": "Receive",
     "numberOfCard": "Card number",
@@ -1152,7 +1156,8 @@
       "disputes": "Disputes",
       "instruments": "Instruments",
       "DeFi": "DeFi functionality",
-      "logout": "Logout"
+      "logout": "Logout",
+      "login": "Login"
     },
     "locals": {
       "en": "EN",
@@ -1171,6 +1176,7 @@
       "invite": "Invites you to complete the quest"
     },
     "menu": {
+      "unauthorized": "Not logged",
       "instruments": "Instruments",
       "crosschain": {
         "title": "WorkQuest Bridge",
@@ -2033,11 +2039,13 @@
     },
     "mb": "{count} MB",
     "back": "Back",
-    "wusdEthPool": "WQT/ETH pool",
-    "wusdBnbPool": "WQT/BNB pool",
+    "wusdEthPool": "ETH/WQT pool",
+    "wusdBnbPool": "BNB/WQT pool",
     "dollarsCount": "$ {count}",
+    "procCount": "{count} %",
     "lpCount": "{count} LP",
     "wqtCount": "{count} WQT",
+    "APY": "APY",
     "addLiquidity": "Add liquidity",
     "removeLiquidity": "Remove liquidity",
     "liquidity": "Liquidity",

@@ -5,14 +5,16 @@
   >
     <div class="claim__content content">
       <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-slot="{handleSubmit}"
       >
         <base-field
+          id="amount"
           v-model="amount"
           class="content__field"
+          type="number"
           :placeholder="3500"
           :label="$t('modals.amount')"
-          rules="required|decimal"
+          rules="required|decimal|min_value:0.00001"
           :name="$t('modals.amount')"
         >
           <template
@@ -37,7 +39,7 @@
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            :disabled="!validated || !passed || invalid || statusBusy"
+            :disabled="statusBusy"
             @click="handleSubmit(options.type === 1 ? staking : unstaking)"
           >
             {{ $t('meta.submit') }}
@@ -50,6 +52,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'CtmModalClaimRewards',
@@ -78,32 +81,79 @@ export default {
       this.amount = this.options.type === 1 ? this.userBalance : this.userStake;
     },
     async tokensDataUpdate() {
-      const action = this.miningPoolId === 'ETH' ? 'web3/getTokensData' : 'web3/getTokensDataBSC';
-      const tokensData = await this.$store.dispatch(action, { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
+      const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
     },
+    checkAmount() {
+      const amount = this.options.type === 1 ? this.userBalance : this.userStake;
+      return +amount >= +this.amount;
+    },
     async staking() {
       this.SetLoader(true);
-      this.hide();
-      const action = this.miningPoolId === 'ETH' ? 'web3/stake' : 'web3/stakeBSC';
-      await this.$store.dispatch(action, {
-        decimals: this.accountData.decimals.stakeDecimal,
-        amount: this.amount,
-      });
-      await this.tokensDataUpdate();
+      await this.checkMetamaskStatus();
+      if (this.checkAmount()) {
+        this.hide();
+        await this.$store.dispatch('web3/stake', {
+          decimals: this.accountData.decimals.stakeDecimal,
+          amount: this.amount,
+        });
+        await this.tokensDataUpdate();
+      } else {
+        this.hide();
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.incorrectAmount'),
+        });
+      }
       this.SetLoader(false);
     },
     async unstaking() {
       this.SetLoader(true);
-      this.hide();
-      const action = this.miningPoolId === 'ETH' ? 'web3/unstake' : 'web3/unstakeBSC';
-      await this.$store.dispatch(action, {
-        decimals: this.accountData?.decimals?.stakeDecimal,
-        amount: this.amount,
-      });
-      await this.tokensDataUpdate();
+      await this.checkMetamaskStatus();
+      if (this.checkAmount()) {
+        this.hide();
+        await this.$store.dispatch('web3/unstake', {
+          decimals: this.accountData?.decimals?.stakeDecimal,
+          amount: this.amount,
+        });
+        await this.tokensDataUpdate();
+      } else {
+        this.hide();
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.incorrectAmount'),
+        });
+      }
       this.SetLoader(false);
+    },
+    async connectToMetamask() {
+      if (!this.isConnected) {
+        await this.$store.dispatch('web3/connect');
+      }
+    },
+    async checkMetamaskStatus() {
+      if (typeof window.ethereum === 'undefined') {
+        localStorage.setItem('metamaskStatus', 'notInstalled');
+        this.ShowModal({
+          key: modals.status,
+          img: '~assets/img/ui/cardHasBeenAdded.svg',
+          title: 'Please install Metamask!',
+          subtitle: 'Please click install...',
+          button: 'Install',
+          type: 'installMetamask',
+        });
+      } else {
+        localStorage.setItem('metamaskStatus', 'installed');
+        await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+        await this.connectToMetamask();
+      }
     },
   },
 };

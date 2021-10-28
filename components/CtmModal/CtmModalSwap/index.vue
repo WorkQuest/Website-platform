@@ -5,7 +5,7 @@
   >
     <div class="swap__content content">
       <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-slot="{handleSubmit}"
       >
         <div class="content__grid grid">
           <div class="grid__body">
@@ -28,9 +28,22 @@
                 type="number"
                 :placeholder="'0,05'"
                 class="grid__input"
-                rules="required|decimal"
+                rules="required|decimal|min_value:0.00001"
                 :name="$t('modals.amountField')"
-              />
+              >
+                <template
+                  v-slot:right-absolute
+                  class="content__max max"
+                >
+                  <base-btn
+                    mode="max"
+                    class="max__button"
+                    @click="setMaxValue()"
+                  >
+                    <span class="max__text">{{ $t('modals.maximum') }}</span>
+                  </base-btn>
+                </template>
+              </base-field>
             </div>
           </div>
         </div>
@@ -58,7 +71,6 @@
           </base-btn>
           <base-btn
             class="buttons__button"
-            :disabled="invalid"
             @click="handleSubmit(showSwapInfoModal)"
           >
             {{ $t('modals.createSwap') }}
@@ -89,6 +101,8 @@ export default {
     ...mapGetters({
       account: 'web3/getAccount',
       options: 'modals/getOptions',
+      tokensData: 'web3/getCrosschainTokensData',
+      tokens: 'web3/getPurseData',
       isConnected: 'web3/isConnected',
     }),
     tokens() {
@@ -116,6 +130,9 @@ export default {
     await this.crosschainFlow();
   },
   methods: {
+    setMaxValue() {
+      this.amount = this.tokensData.tokenAmount;
+    },
     hide() {
       this.CloseModal();
     },
@@ -135,22 +152,38 @@ export default {
         this.toToken = this.addresses[0].title;
       }
     },
+    checkAmount() {
+      const maxAmount = this.tokensData.tokenAmount;
+      return +maxAmount >= +this.amount;
+    },
     async showSwapInfoModal() {
       this.SetLoader(true);
       this.connectToMetamask();
-      this.ShowModal({
-        key: modals.swapInfo,
-        crosschain: `${this.fromToken} > ${this.toToken}`,
-        chain: this.fromToken,
-        amount: `${this.amount} WQT`,
-        amountInt: this.amount,
-        sender: this.cropTxt(this.userAddress),
-        senderFull: this.userAddress,
-        recepient: this.cropTxt(this.recipientAddress),
-        recepientFull: this.recipientAddress,
-        worknetFee: '0,5 WQT',
-        binanceFee: '0,0009 BNB',
-      });
+      if (this.checkAmount()) {
+        this.amount = this.amount.replace(/[,]/g, '.');
+        this.ShowModal({
+          key: modals.swapInfo,
+          crosschain: `${this.fromToken} > ${this.toToken}`,
+          chain: this.fromToken,
+          amount: `${this.amount} WQT`,
+          amountInt: this.amount,
+          sender: this.cropTxt(this.userAddress),
+          senderFull: this.userAddress,
+          recepient: this.cropTxt(this.recipientAddress),
+          recepientFull: this.recipientAddress,
+          worknetFee: '0,5 WQT',
+          binanceFee: '0,0009 BNB',
+        });
+      } else {
+        this.hide();
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.incorrectAmount'),
+        });
+      }
       this.SetLoader(false);
     },
     connectToMetamask() {
