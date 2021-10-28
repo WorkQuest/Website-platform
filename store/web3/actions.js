@@ -196,7 +196,6 @@ export default {
       }
     }
     const userInfo = await fetchContractData('getInfoByAddress', stakingAbi, stakingAddress, [getAccountAddress()]);
-    console.log(stakeDecimal);
     const payload = {
       balanceTokenAmount: new BigNumber(userInfo._balance).shiftedBy(-18).toString(),
       stakeTokenAmount: new BigNumber(userInfo.staked_).shiftedBy(-18).toString(),

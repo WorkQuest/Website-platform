@@ -404,8 +404,9 @@ export default {
     this.miningPoolId = localStorage.getItem('miningPoolId');
   },
   async mounted() {
-    this.SetLoader(true);
-    await this.checkMetamaskStatus();
+    this.SetLoader(false);
+    // this.SetLoader(true);
+    // await this.checkMetamaskStatus();
     if (this.$route.params.id === 'ETH') {
       await this.getWqtWethTokenDay();
       await this.getWqtWethTokenDayLast();
@@ -413,10 +414,10 @@ export default {
       await this.getWqtWbnbTokenDay();
       await this.getWqtWbnbTokenDayLast();
     }
-    await this.tokensDataUpdate();
+    // await this.tokensDataUpdate();
     await this.initTokenDays();
     await this.initGraphData();
-    this.SetLoader(false);
+    // this.SetLoader(false);
     if (this.$route.params.id === 'ETH') {
       await this.tableWqtWethTokenDay();
     } else {
@@ -439,8 +440,8 @@ export default {
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');
-        await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
         await this.connectToMetamask();
+        await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
       }
     },
     async initTokenDays() {
@@ -560,11 +561,16 @@ export default {
           subtitle: this.$t('modals.nothingToClaim'),
         });
       }
+      // await this.connectToMetamask();
+      await this.$store.dispatch('web3/claimRewards', this.accountData.userPurse.address, this.fullRewardAmount);
+      await this.tokensDataUpdate();
       this.SetLoader(false);
     },
     async connectToMetamask() {
       if (!this.isConnected) {
         await this.$store.dispatch('web3/connect');
+        localStorage.setItem('miningPoolId', this.$route.params.id);
+        this.miningPoolId = localStorage.getItem('miningPoolId');
         await this.$store.dispatch('web3/initContract');
         await this.tokensDataUpdate();
       }
