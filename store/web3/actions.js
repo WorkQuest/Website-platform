@@ -247,6 +247,7 @@ export default {
       totalDistributed: new BigNumber(totalDistributed).shiftedBy(-decimals).decimalPlaces(4).toString(),
       rewardTotal: new BigNumber(rewardTotal).shiftedBy(-decimals).decimalPlaces(4).toString(),
       maxStake: new BigNumber(maxStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
+      _maxStake: new BigNumber(maxStake).shiftedBy(-decimals).toString(),
       _minStake,
       minStake: new BigNumber(minStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
     };

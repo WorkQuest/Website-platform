@@ -98,12 +98,12 @@ export default {
     },
     getInputRules() {
       const min = this.options.minStake ? `|min_value:${this.options.minStake}` : '|min_value:0.00001';
-      const max = this.options.maxStake ? `|max_value:${(new BigNumber(this.options.maxStake) - new BigNumber(this.options.staked)).toString()}` : '';
+      const max = this.options.maxStake ? `|max_value:${(new BigNumber(this.options.maxStake).minus(this.options.staked)).toString()}` : '';
       return min + max;
     },
     maxBalance() {
       if (this.options.stakingType !== 'MINING') {
-        const max = new BigNumber(new BigNumber(this.options.maxStake) - new BigNumber(this.options.staked)).toString();
+        const max = new BigNumber(this.options.maxStake).minus(this.options.staked).toString();
         this.amount = new BigNumber(this.options.balance).isGreaterThanOrEqualTo(max)
           ? max : this.options.balance;
       } else {
