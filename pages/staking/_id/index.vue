@@ -150,7 +150,6 @@
               {{ $t('staking.autoRenewal') }}
             </base-btn>
             <base-btn
-              v-if="canUnstake"
               mode="outline"
               @click="showUnstakeModal"
             >
@@ -193,9 +192,6 @@ export default {
     }),
     slug() {
       return this.$route.params.id;
-    },
-    canUnstake() {
-      return this.slug !== StakingTypes.WUSD;
     },
     stakeDurationIsOver() {
       return this.userInfo && moment.duration(moment(this.userInfo.date).diff(moment.now())).asMilliseconds() < 0;
@@ -457,7 +453,7 @@ export default {
     },
     async showUnstakeModal() {
       if (!this.userInfo || !this.poolData) return;
-      if (!this.stakeDurationIsOver) {
+      if (this.slug !== StakingTypes.WUSD && !this.stakeDurationIsOver) {
         await this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),
