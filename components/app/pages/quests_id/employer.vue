@@ -85,7 +85,7 @@
             <div>
               <img
                 class="worker__avatar"
-                :src="assignWorker ? assignWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                :src="response.worker.avatar ? response.worker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
                 alt=""
               >
             </div>
@@ -97,7 +97,7 @@
             <div class="btns__wrapper">
               <div class="btn__wrapper">
                 <base-btn
-                  :disabled="selectedWorker[0]"
+                  :disabled="selectedWorker[i]"
                   mode="agree"
                   @click="selectWorker(i)"
                 >Select</base-btn>
@@ -110,26 +110,26 @@
               </div>
             </div>
             <div>
-            <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
-            <!--                    <div-->
-            <!--                      v-if="item.badge.code !== 0"-->
-            <!--                      class="card__level_higher"-->
-            <!--                      :class="[-->
-            <!--                        {'card__level_higher': item.badge.code === 1},-->
-            <!--                        {'card__level_reliable': item.badge.code === 2},-->
-            <!--                        {'card__level_checked': item.badge.code === 3}-->
-            <!--                      ]"-->
-            <!--                    >-->
-            <!--                      <span v-if="item.badge.code === 1">-->
-            <!--                        {{ $t('levels.higher') }}-->
-            <!--                      </span>-->
-            <!--                      <span v-if="item.badge.code === 2">-->
-            <!--                        {{ $t('levels.reliableEmp') }}-->
-            <!--                      </span>-->
-            <!--                      <span v-if="item.badge.code === 3">-->
-            <!--                        {{ $t('levels.checkedByTime') }}-->
-            <!--                      </span>-->
-            <!--                    </div>-->
+              <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
+              <!--                    <div-->
+              <!--                      v-if="item.badge.code !== 0"-->
+              <!--                      class="card__level_higher"-->
+              <!--                      :class="[-->
+              <!--                        {'card__level_higher': item.badge.code === 1},-->
+              <!--                        {'card__level_reliable': item.badge.code === 2},-->
+              <!--                        {'card__level_checked': item.badge.code === 3}-->
+              <!--                      ]"-->
+              <!--                    >-->
+              <!--                      <span v-if="item.badge.code === 1">-->
+              <!--                        {{ $t('levels.higher') }}-->
+              <!--                      </span>-->
+              <!--                      <span v-if="item.badge.code === 2">-->
+              <!--                        {{ $t('levels.reliableEmp') }}-->
+              <!--                      </span>-->
+              <!--                      <span v-if="item.badge.code === 3">-->
+              <!--                        {{ $t('levels.checkedByTime') }}-->
+              <!--                      </span>-->
+              <!--                    </div>-->
             </div>
           </div>
         </span>
@@ -192,16 +192,18 @@
       <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
-      <div class="worker__container">
+      <div
+        v-if="assignWorker"
+        class="worker__container"
+      >
         <div>
           <img
             class="worker__avatar"
-            :src="assignWorker ? assignWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+            :src="assignWorker.avatar ? assignWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
-          v-if="assignWorker"
           class="worker__name"
         >
           {{ assignWorker.firstName }} {{ assignWorker.lastName }}
@@ -372,6 +374,13 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      questData: 'quests/getQuest',
+      userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
+      responsesToQuest: 'quests/getResponsesToQuest',
+      infoDataMode: 'quests/getInfoDataMode',
+    }),
     cardBadgeLevel() {
       return [
         {
@@ -395,19 +404,14 @@ export default {
       }
       return '';
     },
-    ...mapGetters({
-      questData: 'quests/getQuest',
-      userRole: 'user/getUserRole',
-      userData: 'user/getUserData',
-      responsesToQuest: 'quests/getResponsesToQuest',
-      infoDataMode: 'quests/getInfoDataMode',
-    }),
   },
-  async mounted() {
-    this.SetLoader(true);
+  async created() {
     await this.initData();
     await this.getResponsesToQuest();
     await this.getFilteredResponses();
+  },
+  mounted() {
+    this.SetLoader(true);
     this.SetLoader(false);
   },
   methods: {
@@ -452,7 +456,7 @@ export default {
       this.SetLoader(false);
     },
     async initData() {
-      this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+      await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     },
     async getFilteredResponses() {
       if (this.userRole === 'employer') {
@@ -466,7 +470,7 @@ export default {
         await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
       }
     },
-    async selectWorker(i) {
+    async  selectWorker(i) {
       this.SetLoader(true);
       const { worker } = this.responsesToQuest[i];
       this.selectedWorker.push(worker);

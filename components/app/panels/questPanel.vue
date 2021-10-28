@@ -63,7 +63,10 @@
         </div>
       </div>
     </div>
-    <div class="badge__container">
+    <div
+      v-if="questData.skillFilters"
+      class="badge__container"
+    >
       <ul
         v-for="(skills, spec) in questData.skillFilters"
         :key="spec"
@@ -126,11 +129,6 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    // this.avatarUrl = this.userInfo.avatarId ? this.userInfo.avatar.url : '~/assets/img/app/avatar_empty.png';
-    // this.questLat = this.questData?.location?.latitude;
-    // this.questLng = this.questData?.location?.longitude;
-    // this.userLat = this.userData?.location?.longitude;
-    // this.userLng = this.userData?.location?.longitude;
     this.SetLoader(false);
   },
   methods: {
@@ -317,8 +315,11 @@ export default {
     border-radius: 50%;
     object-fit: cover;
   }
-  &__username{
-    @extend .user;
+  &__username {
+    @include text-simple;
+    font-weight: 500;
+    font-size: 16px;
+    color: $black800;
     padding-left: 10px;
     &:hover {
       color: $black600;
