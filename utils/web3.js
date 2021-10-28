@@ -1,8 +1,6 @@
 import Web3 from 'web3';
 import Web4 from '@cryptonteam/web4';
 import BigNumber from 'bignumber.js';
-import Web3Modal from 'web3modal';
-import WalletConnectProvider from '@walletconnect/web3-provider';
 import * as abi from '~/abi/abi';
 
 let web3 = null;
@@ -132,90 +130,35 @@ export const startPingingMetamask = async (callback) => {
   }
 };
 
-// export const initWeb3 = async () => {
-//   try {
-//     if (window.ethereum) {
-//       web3 = new Web3(window.ethereum);
-//       if ((await web3.eth.getCoinbase()) === null) {
-//         await window.ethereum.enable();
-//       }
-//       const [userAddress, chainId] = await Promise.all([
-//         web3.eth.getCoinbase(),
-//         web3.eth.net.getId(),
-//       ]);
-//       if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
-//         return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
-//       }
-//       if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
-//         return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
-//       }
-//       account = {
-//         address: userAddress,
-//         netId: chainId,
-//         netType: getChainTypeById(chainId),
-//       };
-//       web4 = new Web4();
-//       await web4.setProvider(window.ethereum, userAddress);
-//       return success(account);
-//     }
-//     return 'ok';
-//   } catch (e) {
-//     return error(500, '', e.message);
-//   }
-// };
-
 export const initWeb3 = async () => {
-  await localStorage.clear();
   try {
-    let provider = null;
-    let userAddress;
-    const web3Modal = new Web3Modal({
-      cacheProvider: true, // optional
-      providerOptions: {
-        walletconnect: {
-          package: WalletConnectProvider, // required
-          options: {
-            infuraId: '9aa3d95b3bc440fa88ea12eaa4456161', // required
-          },
-        },
-      }, // required
-    });
-    console.log('before connect');
-    provider = await web3Modal.connect();
-    console.log('after connect');
-    web3 = new Web3(provider);
-    web4 = new Web4();
-    userAddress = await web3.eth.getCoinbase();
-    await web4.setProvider(provider, userAddress);
-    if (userAddress === null) {
-      await provider.enable();
-      userAddress = await web3.eth.getCoinbase();
+    if (window.ethereum) {
+      web3 = new Web3(window.ethereum);
+      if ((await web3.eth.getCoinbase()) === null) {
+        await window.ethereum.enable();
+      }
+      const [userAddress, chainId] = await Promise.all([
+        web3.eth.getCoinbase(),
+        web3.eth.net.getId(),
+      ]);
+      if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
+        return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
+      }
+      if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
+        return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
+      }
+      account = {
+        address: userAddress,
+        netId: chainId,
+        netType: getChainTypeById(chainId),
+      };
+      web4 = new Web4();
+      await web4.setProvider(window.ethereum, userAddress);
+      return success(account);
     }
-    const chainId = await web3.eth.net.getId();
-    console.log(chainId);
-    if ((await web3.eth.getCoinbase()) === null) {
-      await window.ethereum.enable();
-    }
-    // const [userAddress, chainId] = await Promise.all([
-    //   web3.eth.getCoinbase(),
-    //   web3.eth.net.getId(),
-    // ]);
-    if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
-      return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
-    }
-    if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
-      return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
-    }
-    account = {
-      address: userAddress,
-      netId: chainId,
-      netType: getChainTypeById(chainId),
-    };
-    web4 = new Web4();
-    await web4.setProvider(window.ethereum, userAddress);
-    return success(account);
+    return false;
   } catch (e) {
-    return error(500, 'Connection error', 'Connection error');
+    return error(500, '', e.message);
   }
 };
 
