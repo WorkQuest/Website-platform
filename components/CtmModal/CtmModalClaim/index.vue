@@ -131,7 +131,7 @@ export default {
       },
       {
         title: this.$t('modals.totalFee'),
-        subtitle: `$  ${this.options.txFee}`,
+        subtitle: `${this.options.txFee}`,
       },
     ];
   },
