@@ -62,6 +62,10 @@
               :disabled="metamaskStatus === 'notInstalled'"
               @click="showSwapModal"
             >
+              <!--            <base-btn-->
+              <!--              :disabled="true"-->
+              <!--              @click="showSwapModal"-->
+              <!--            >-->
               {{ $t('crosschain.createSwap') }}
             </base-btn>
           </div>
@@ -143,8 +147,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import BigNumber from 'bignumber.js';
-import moment from 'moment';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -165,6 +167,7 @@ export default {
       tokens: 'web3/getTokens',
       account: 'web3/getAccount',
       purseData: 'web3/getPurseData',
+      userData: 'user/getUserData',
       isConnected: 'web3/isConnected',
       crosschainTableData: 'defi/getCrosschainTokensData',
     }),
@@ -239,7 +242,7 @@ export default {
           title: this.$t('crosschain.eth'),
         },
         {
-          icon: require('~/assets/img/ui/bnb-logo.svg'),
+          icon: require('~/assets/img/ui/bnb_yellow.svg'),
           title: this.$t('crosschain.bsc'),
         },
       ];
@@ -249,8 +252,8 @@ export default {
     async purseData() {
       let newInterval;
       if (this.purseData) {
-        await this.swapsTest(this.purseData);
-        newInterval = setInterval(() => this.swapsTest(this.purseData), 5000);
+        await this.swapsTableData(this.purseData);
+        newInterval = setInterval(() => this.swapsTableData(this.purseData), 5000);
         if (this.$route.name !== 'crosschain') {
           clearInterval(newInterval);
         }
@@ -259,8 +262,9 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    await this.swapsTest(this.purseData);
+    await this.swapsTableData(this.purseData);
     await this.checkMetamaskStatus();
+    await this.checkMiningPoolId();
     this.SetLoader(false);
   },
   methods: {
@@ -286,14 +290,19 @@ export default {
     },
     async redeemAction(data) {
       this.SetLoader(true);
-      await this.$store.dispatch('web3/goToChain', { chain: data.chain });
-      await this.checkMetamaskStatus();
-      const payload = {
-        signData: data.clearData,
-        chainId: data.chainId,
-      };
+      let redeemObj;
+      let payload;
+      const switchChainStatus = await this.$store.dispatch('web3/goToChain', { chain: data.chain });
       await this.connectToMetamask();
-      const redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
+      if (switchChainStatus.ok) {
+        payload = {
+          signData: data.clearData,
+          chainId: data.chainId,
+        };
+        redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
+      } else {
+        redeemObj = { code: 500 };
+      }
       this.ShowModal({
         key: modals.status,
         img: redeemObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
@@ -305,13 +314,22 @@ export default {
     showToast(title, text, variant) {
       this.$store.dispatch('defi/showToast', { title, text, variant });
     },
-    connectToMetamask() {
+    async connectToMetamask() {
       if (!this.isConnected) {
-        this.$store.dispatch('web3/connect');
+        await this.$store.dispatch('web3/connect');
       }
     },
-    async swapsTest(address) {
-      await this.$store.dispatch('defi/swapsForCrosschain', `${address}&offset=0&limit=10`);
+    async checkMiningPoolId() {
+      this.miningPoolId = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
+      localStorage.setItem('miningPoolId', this.miningPoolId);
+      return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+    },
+    async swapsTableData(recipientAddress) {
+      const payload = {
+        recipientAddress,
+        query: '&offset=0&limit=10',
+      };
+      await this.$store.dispatch('defi/swapsForCrosschain', payload);
     },
     togglePools(selInd) {
       if (this.sourceAddressInd === 0) {
@@ -336,19 +354,25 @@ export default {
     },
     async showSwapModal() {
       this.SetLoader(true);
-      let chain;
-      if (this.sourceAddressInd === 0) {
-        chain = 'ETH';
-      } else {
-        chain = 'BNB';
-      }
-      await this.$store.dispatch('web3/goToChain', { chain });
+      const switchChainStatus = await this.checkMiningPoolId();
       await this.checkMetamaskStatus();
-      await this.swapsTest();
-      this.ShowModal({
-        key: modals.swap,
-        crosschainId: this.targetAddressInd,
-      });
+      if (switchChainStatus.ok) {
+        await this.$store.dispatch('web3/getCrosschainTokensData');
+        await this.swapsTableData();
+        this.ShowModal({
+          key: modals.swap,
+          crosschainId: this.targetAddressInd,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          txHash: '',
+          subtitle: '',
+        });
+      }
       this.SetLoader(false);
     },
   },

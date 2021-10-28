@@ -642,6 +642,7 @@
                             <n-link
                               v-for="(item,key) in companyLinks"
                               :key="key"
+                              type="link"
                               :to="item.path"
                               class="footer__text footer__text_grey"
                             >
@@ -1000,7 +1001,7 @@ export default {
       return [
         {
           title: this.$t('footer.company.wqWiki'),
-          path: '#',
+          path: '/wiki',
         },
         {
           title: this.$t('footer.company.aboutUs'),
@@ -1100,6 +1101,7 @@ export default {
   async mounted() {
     await this.GetLocation();
     await this.initWSListeners();
+    await this.loginCheck();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
   },
   created() {
@@ -1109,6 +1111,9 @@ export default {
     window.removeEventListener('resize', this.userWindowChange);
   },
   methods: {
+    async loginCheck() {
+      localStorage.setItem('userLogin', true);
+    },
     async initWSListeners() {
       const { chatConnection, notifsConnection } = this.connections;
       if (!chatConnection) {

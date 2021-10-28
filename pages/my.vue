@@ -27,6 +27,12 @@
           :selected-tab="selectedTab"
           :object="questsData"
         />
+        <quests
+          v-if="questsList.count !== 0"
+          :limit="questLimits"
+          :selected-tab="selectedTab"
+          :object="questsList"
+        />
         <emptyData
           v-else
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
@@ -76,6 +82,7 @@ export default {
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
       questsData: 'quests/getUserInfoQuests',
+      questsList: 'quests/getAllQuests',
     }),
     questStatus() {
       return [
@@ -111,18 +118,24 @@ export default {
   },
   watch: {
     async page() {
-      const payload = {
-        userId: this.userData.id,
-        query: `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`,
-      };
       this.SetLoader(true);
-      await this.$store.dispatch('quests/getUserQuests', payload);
+      if (this.userRole === 'employer') {
+        const payload = {
+          userId: this.userData.id,
+          query: `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`,
+        };
+        await this.$store.dispatch('quests/getUserQuests', payload);
+      } if (this.userRole === 'worker') {
+        const payload = `performing=${true}`;
+        await this.$store.dispatch('quests/getAllQuests', payload);
+      }
       this.totalPagesValue = this.totalPages;
       this.SetLoader(false);
     },
   },
   async mounted() {
     this.SetLoader(true);
+    await this.$store.dispatch('quests/getAllQuests');
     await this.$store.dispatch('quests/getUserQuests', {
       userId: this.userData.id,
       query: `limit=${this.perPager}`,
@@ -136,11 +149,16 @@ export default {
       this.page = 1;
       this.selectedTab = id;
       this.sortData = query;
-      const payload = {
-        userId: this.userData.id,
-        query: `limit=${this.perPager}&offset=${(this.page - 1) * perPage}&${this.sortData}`,
-      };
-      await this.$store.dispatch('quests/getUserQuests', payload);
+      if (this.userRole === 'employer') {
+        const payload = {
+          userId: this.userData.id,
+          query: `limit=${this.perPager}&offset=${(this.page - 1) * perPage}&${this.sortData}`,
+        };
+        await this.$store.dispatch('quests/getUserQuests', payload);
+      } if (this.userRole === 'worker') {
+        const payload = `performing=${true}`;
+        await this.$store.dispatch('quests/getAllQuests', payload);
+      }
       this.totalPagesValue = this.totalPages;
       this.SetLoader(false);
     },

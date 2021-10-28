@@ -6,3 +6,5 @@ backup
 .idea
 .env
 package-lock.json
+.DS_Store
+yarn.lock

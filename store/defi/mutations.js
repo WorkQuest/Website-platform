@@ -1,5 +1,4 @@
 export default {
-
   setWqtWbnbBurns(state, data) {
     state.wqtWbnbBurns = data;
   },
@@ -12,10 +11,12 @@ export default {
   setWqtWbnbTokenDay(state, data) {
     state.wqtWbnbTokenDay = data;
   },
+  setTableWqtWbnbTokenDay(state, data) {
+    state.tableWqtWbnbTokenDay = data;
+  },
   setWqtWbnbTokenDayLast(state, data) {
     state.wqtWbnbTokenDayLast = data;
   },
-
   setWqtWethBurns(state, data) {
     state.wqtWethBurns = data;
   },
@@ -28,10 +29,15 @@ export default {
   setWqtWethTokenDay(state, data) {
     state.wqtWethTokenDay = data;
   },
+  setTableWqtWethTokenDay(state, data) {
+    state.tableWqtWethTokenDay = data;
+  },
   setWqtWethTokenDayLast(state, data) {
     state.wqtWethTokenDayLast = data;
   },
-
+  setLPToken(state, data) {
+    state.lpTokenToProcenet = data;
+  },
   swapsForCrosschain(state, data) {
     state.crosschainTokensData = data;
   },

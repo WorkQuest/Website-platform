@@ -5,7 +5,7 @@
   >
     <div class="claim__content content">
       <validation-observer
-        v-slot="{invalid}"
+        v-slot="{handleSubmit}"
       >
         <base-field
           v-model="oldTokens"
@@ -13,7 +13,7 @@
           :placeholder="3500"
           :type="'number'"
           :label="$t('mining.swapTokens.oldTokens')"
-          rules="required"
+          rules="required|decimal|min_value:0.00001"
           :name="$t('mining.swapTokens.oldTokens')"
         >
           <template
@@ -53,8 +53,8 @@
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            :disabled="invalid || statusBusy"
-            @click="initSwap()"
+            :disabled="statusBusy"
+            @click="handleSubmit(initSwap)"
           >
             {{ $t('mining.swapTokens.swap') }}
           </base-btn>
@@ -66,6 +66,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'CtmModalSwapTokens',
@@ -106,14 +107,29 @@ export default {
       this.balance = parseInt((this.tokensData.userPurse.oldTokenBalance) * 10000, 10) / 10000;
       this.currency = this.tokensData.userPurse.oldTokenSymbol;
     },
+    checkAmount() {
+      const maxAmount = this.tokensData.userPurse.oldTokenBalance;
+      return +maxAmount >= +this.amount;
+    },
     async initSwap() {
       this.SetLoader(true);
-      this.hide();
-      await this.$store.dispatch('web3/swap', {
-        decimals: this.tokensData.decimals.oldTokenDecimal,
-        amount: this.oldTokens,
-      });
-      await this.$store.dispatch('web3/initTokensData');
+      if (this.checkAmount()) {
+        this.hide();
+        await this.$store.dispatch('web3/swap', {
+          decimals: this.tokensData.decimals.oldTokenDecimal,
+          amount: this.oldTokens,
+        });
+        await this.$store.dispatch('web3/initTokensData');
+      } else {
+        this.hide();
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.incorrectAmount'),
+        });
+      }
       this.SetLoader(false);
     },
   },
@@ -124,7 +140,7 @@ export default {
 .max {
   &__button {
     margin-right: 10px !important;
-    background: #f3f7fa !important;
+    background: transparent !important;
   }
 }
 .claim {

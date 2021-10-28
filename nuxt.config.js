@@ -54,6 +54,10 @@ export default {
     },
   },
   build: {
+    analyze: true,
+    productionSourceMap: false,
+    productionGzip: true,
+    productionGzipExtensions: ['js', 'css', 'svg'],
     extend(config) {
       config.node = {
         fs: 'empty',
@@ -113,5 +117,12 @@ export default {
     MAINNET_BSC_BRIDGE: process.env.MAINNET_BSC_BRIDGE,
     MAINNET_ETH_WQT_TOKEN: process.env.MAINNET_ETH_WQT_TOKEN,
     MAINNET_ETH_BRIDGE: process.env.MAINNET_ETH_BRIDGE,
+    TOKEN_WQT_OLD_ADDRESS_BSCMAINNET: process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET,
+    TESTNET_BSC_STAKING: process.env.TESTNET_BSC_STAKING,
+    MAINNET_STAKING_WQT_TOKEN: process.env.MAINNET_STAKING_WQT_TOKEN,
+    MAINNET_STAKING_LP_TOKEN: process.env.MAINNET_STAKING_LP_TOKEN,
+    MAINNET_BSC_STAKING: process.env.MAINNET_BSC_STAKING,
+    MAINNET_STAKING_ETH_LP_TOKEN: process.env.MAINNET_STAKING_ETH_LP_TOKEN,
+    MAINNET_ETH_STAKING: process.env.MAINNET_ETH_STAKING,
   },
 };
