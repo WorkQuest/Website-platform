@@ -12,18 +12,27 @@
         type="gray"
         :items="items"
         class="content__drop"
-        :placeholder="$t('placeholders.default')"
+        :placeholder="$t('placeholders.chooseTheme')"
+      />
+      <div class="content__subtitle">
+        {{ $t('modals.description') }}
+      </div>
+      <base-textarea
+        v-model="description"
+        :placeholder="$t('modals.description')"
+        is-hide-error
+        rules="required|text-desc"
       />
       <div class="content__buttons buttons">
         <base-btn
           class="buttons__button"
-          :disabled="drop===''"
+          :disabled="drop === ''"
           @click="showRequestSendModal"
         >
           {{ $t('meta.send') }}
         </base-btn>
         <base-btn
-          :mode="'outline'"
+          mode="outline"
           class="buttons__button"
           @click="hide"
         >
@@ -43,6 +52,7 @@ export default {
   data() {
     return {
       drop: '',
+      description: '',
     };
   },
   computed: {
@@ -51,8 +61,12 @@ export default {
     }),
     items() {
       return [
-        this.$t('modals.badService'),
-        this.$t('modals.otherReason'),
+        this.$t('modals.disputes.thereIsNoResponseFromTheEmployerOrEmployee'),
+        this.$t('modals.disputes.badlyDoneWork'),
+        this.$t('modals.disputes.additionalRequirementsHaveBeenPutForward'),
+        this.$t('modals.disputes.inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest'),
+        this.$t('modals.disputes.theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion'),
+        this.$t('modals.disputes.anotherReason'),
       ];
     },
   },
@@ -71,6 +85,12 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.dd__title {
+  text-align: left;
+}
+</style>
 
 <style lang="scss" scoped>
 

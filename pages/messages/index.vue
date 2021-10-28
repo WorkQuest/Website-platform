@@ -126,7 +126,7 @@ export default {
     }),
   },
   async mounted() {
-    this.getChats();
+    await this.getChats();
     this.SetLoader(false);
   },
   methods: {

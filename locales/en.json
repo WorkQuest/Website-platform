@@ -832,6 +832,15 @@
     "error": "Error!"
   },
   "modals": {
+    "disputes": {
+      "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
+      "badlyDoneWork": "Badly done work",
+      "additionalRequirementsHaveBeenPutForward": "Additional requirements have been put forward",
+      "inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest": "Inconsistencies in the requirements for the description of the quest",
+      "theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion": "The quest is completed but the employee / employer has not confirmed its completion",
+      "anotherReason": "Another reason"
+    },
+    "chooseTheme": "Choose theme",
     "redeemSuccess": "Redeem success!",
     "redeemFail": "Redeem fail",
     "chatCreate": {
