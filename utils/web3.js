@@ -206,6 +206,7 @@ export const initWeb3 = async () => {
       userAddress = await web3.eth.getCoinbase();
     }
     const chainId = await web3.eth.net.getId();
+    console.log(chainId);
     if ((await web3.eth.getCoinbase()) === null) {
       await window.ethereum.enable();
     }
