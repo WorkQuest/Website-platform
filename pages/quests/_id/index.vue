@@ -224,44 +224,43 @@ export default {
       // WaitConfirm = 5
       // Done = 6
 
-      if (this.userRole === 'employer') {
-        if (this.responsesData.count === 0) {
+      if (['employer'].includes(this.userRole)) {
+        if ([0].includes(this.responsesData.count)) {
           await this.$store.dispatch('quests/setInfoDataMode', 1);
-        } if (this.questData.status === 1) {
+        } if ([1].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 2);
         } if (this.responsesData.count > 0) {
           await this.$store.dispatch('quests/setInfoDataMode', 3);
         } if (this.questData.assignedWorker !== null) {
-          if (this.questData.status !== 2) {
+          if (![2].includes(this.questData.status)) {
             await this.$store.dispatch('quests/setInfoDataMode', 4);
           }
-        } if (this.questData.status === 5) {
+        } if ([5].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 6);
-        } if (this.questData.status === 3) {
+        } if ([3].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 7);
-        } if (this.questData.status === 2) {
+        } if ([2].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 8);
-        } if (this.questData.status === 6) {
+        } if ([6].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 9);
         }
       }
-      if (this.userRole === 'worker') {
+      if (['worker'].includes(this.userRole)) {
         // TODO: Дописать логику вывода для воркера
-        if (this.questData.assignedWorker === null && this.questData.status !== 1) {
+        if (this.questData.assignedWorker === null && ![1].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 5);
-        } if (this.questData.status === 1) {
+        } if ([1].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 2);
-        } if (this.questData.status === 3) {
+        } if ([3].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 7);
         } if (this.questData.assignedWorkerId === this.userData.id
-          && this.questData.status !== 1
-          && this.questData.status !== 3) {
+          && ![1, 3].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 1);
-        } if (this.questData.status === 5) {
+        } if ([5].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 4);
-        } if (this.questData.status === 6) {
+        } if ([6].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 9);
-        } if (this.questData.status === 2) {
+        } if ([2].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 8);
         }
       }
@@ -329,7 +328,7 @@ export default {
     margin: 0 0 10px 0;
     &_big {
       width: 100%;
-      height: 440px;
+      height: 280px;
     }
   }
   &__small {
@@ -400,13 +399,13 @@ export default {
 }
 
 .quest_materials {
-  &__title{
+  &__title {
     @include text-simple;
     font-style: normal;
     font-weight: 500;
     font-size: 18px;
     color: $black800;
-    padding: 10px 0 20px 0;
+    padding: 20px 0 20px 0;
   }
 }
 
@@ -416,6 +415,7 @@ export default {
     display: flex;
     justify-content: center;
     .gmap__block {
+      height: 200px;
       max-width: 1180px;
       width: 100%;
     }

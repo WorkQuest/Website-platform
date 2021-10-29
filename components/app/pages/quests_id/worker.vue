@@ -1,10 +1,10 @@
 <template>
   <div
-    v-if="userRole === 'worker'"
+    v-if="['worker'].includes(userRole)"
     class="btns__container"
   >
     <div
-      v-if="infoDataMode === 1"
+      v-if="[1].includes(infoDataMode)"
       class="btns__wrapper"
     >
       <div class="btn__wrapper">
@@ -35,7 +35,7 @@
       </div>
     </div>
     <div
-      v-if="infoDataMode === 2"
+      v-if="[2].includes(infoDataMode)"
       class="btns__wrapper"
     >
       <div class="btn__wrapper">
@@ -66,7 +66,7 @@
       </div>
     </div>
     <div
-      v-if="infoDataMode === 3"
+      v-if="[3].includes(infoDataMode)"
       class="btns__wrapper"
     >
       <div class="btn__wrapper">
@@ -79,7 +79,7 @@
       </div>
     </div>
     <div
-      v-if="infoDataMode === 5"
+      v-if="[5].includes(infoDataMode)"
       class="btns__wrapper"
     >
       <div class="btn__wrapper">
@@ -91,7 +91,7 @@
       </div>
     </div>
     <div
-      v-if="infoDataMode === 7"
+      v-if="[7].includes(infoDataMode)"
       class="btns__wrapper"
     >
       <div class="btn__wrapper">
@@ -100,13 +100,26 @@
         </base-btn>
       </div>
     </div>
-    <div
-      v-if="infoDataMode !== 4"
-      class="price__container"
-    >
-      <span class="price__value">
-        {{ questData.price }} WUSD
-      </span>
+    <div class="priority">
+      <div
+        v-if="[!4,!8].includes(infoDataMode)"
+        class="price__container"
+      >
+        <span class="price__value">
+          {{ questData.price }} {{ $t('quests.wusd') }}
+        </span>
+      </div>
+      <div
+        class="priority__container"
+      >
+        <div
+          v-if="[!4,!8].includes(infoDataMode)"
+          class="priority__title"
+          :class="getPriorityClass(questData.priority)"
+        >
+          {{ getPriority(questData.priority) }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -146,6 +159,22 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    getPriority(index) {
+      const priority = {
+        0: this.$t('priority.low'),
+        1: this.$t('priority.normal'),
+        2: this.$t('priority.urgent'),
+      };
+      return priority[index] || '';
+    },
+    getPriorityClass(index) {
+      const priority = {
+        0: 'priority__title_low',
+        1: 'priority__title_normal',
+        2: 'priority__title_urgent',
+      };
+      return priority[index] || '';
+    },
     async initData() {
       this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     },
@@ -219,6 +248,44 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.priority {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+  &__container {
+    @include text-simple;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    display: flex;
+    grid-gap: 10px;
+  }
+  &__title {
+    @include text-simple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 130%;
+    height: 24px;
+    padding: 0 5px;
+    &_low {
+      background: rgba(34, 204, 20, 0.1);
+      color: #22CC14;
+    }
+    &_urgent {
+      background: rgba(223, 51, 51, 0.1);
+      color: #DF3333;
+    }
+    &_normal {
+      background: rgba(232, 210, 13, 0.1);
+      color: #E8D20D;
+    }
+  }
+}
 .price {
   display: flex;
   flex-direction: row;

@@ -106,10 +106,10 @@
               </span>
             </div>
             <div class="block__text block__text_blue">
-              {{ item.quest.title }}
+              {{ cropTxt(item.quest.title) }}
             </div>
             <div class="block__text block__text_desc">
-              {{ item.quest.description }}
+              {{ cropTxt(item.quest.description) }}
             </div>
             <div class="block__actions">
               <div
@@ -273,10 +273,10 @@
               </span>
             </div>
             <div class="block__text block__text_blue">
-              {{ item.title }}
+              {{ cropTxt(item.title) }}
             </div>
             <div class="block__text block__text_desc">
-              {{ item.description }}
+              {{ cropTxt(item.description) }}
             </div>
             <div class="block__actions">
               <div
@@ -405,6 +405,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    cropTxt(str) {
+      const maxLength = 120;
+      if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
+      return str;
+    },
     progressQuestText(status) {
       if (this.userRole) {
         if (status === 1) {

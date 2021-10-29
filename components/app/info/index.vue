@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span v-if="userRole === 'employer'">
+    <span v-if="['employer'].includes(userRole)">
       <span v-if="![1,3,5].includes(infoDataMode)">
         <div
           class="info"
@@ -21,10 +21,10 @@
         </div>
       </span>
     </span>
-    <span v-if="userRole === 'worker'">
+    <span v-if="['worker'].includes(userRole)">
       <div>
         <div
-          v-if="infoDataMode !== 5"
+          v-if="[!5].includes(infoDataMode)"
           class="info"
           :class="infoClass"
         >
@@ -46,7 +46,7 @@
             </div>
             <div class="info__right">
               <div
-                v-if="infoDataMode === 3"
+                v-if="[3].includes(infoDataMode)"
               >
                 <base-btn mode="showYourMessage">
                   <template v-slot:right>
@@ -77,31 +77,31 @@ export default {
   },
   computed: {
     infoStatusText() {
-      if (this.userRole === 'employer') {
-        if (this.infoDataMode === 2) {
+      if (['employer'].includes(this.userRole)) {
+        if ([2].includes(this.infoDataMode)) {
           return this.$t('quests.activeQuest');
-        } if (this.infoDataMode === 4) {
-          return 'Wait worker';
-        } if (this.infoDataMode === 6) {
-          return 'Pending consideration';
+        } if ([4].includes(this.infoDataMode)) {
+          return this.$t('quests.waitWorker');
+        } if ([6].includes(this.infoDataMode)) {
+          return this.$t('quests.pendingConsideration');
         }
-      } if (this.userRole === 'worker') {
-        if (this.infoDataMode === 1) {
+      } if (['worker'].includes(this.userRole)) {
+        if ([1].includes(this.infoDataMode)) {
           return this.$t('invite.title');
-        } if (this.infoDataMode === 2) {
+        } if ([2].includes(this.infoDataMode)) {
           return this.$t('quests.activeQuest');
-        } if (this.infoDataMode === 3) {
+        } if ([3].includes(this.infoDataMode)) {
           return this.$t('response.title');
-        } if (this.infoDataMode === 4) {
+        } if ([4].includes(this.infoDataMode)) {
           return this.$t('performed.title');
         }
       } if (this.userRole) {
-        if (this.infoDataMode === 7) {
-          return 'Dispute';
-        } if (this.infoDataMode === 8) {
-          return 'Quest Closed';
-        } if (this.infoDataMode === 9) {
-          return 'Quest Finished';
+        if ([7].includes(this.infoDataMode)) {
+          return this.$t('quests.dispute');
+        } if ([8].includes(this.infoDataMode)) {
+          return this.$t('quests.questClosed');
+        } if ([9].includes(this.infoDataMode)) {
+          return this.$t('quests.questFinished');
         }
       }
       return '';
@@ -109,16 +109,16 @@ export default {
     infoClass() {
       return [
         {
-          'info_bg-yellow': this.infoDataMode === 1,
+          'info_bg-yellow': [1].includes(this.infoDataMode),
         },
         {
-          'info_bg-green': this.infoDataMode === 2,
+          'info_bg-green': [2].includes(this.infoDataMode),
         },
         {
-          'info_bg-grey': this.infoDataMode === 3,
+          'info_bg-grey': [3].includes(this.infoDataMode),
         },
         {
-          'info_bg-blue': this.infoDataMode === 4,
+          'info_bg-blue': [4].includes(this.infoDataMode),
         },
       ];
     },
@@ -142,7 +142,7 @@ export default {
     infoTextStyle() {
       return [
         {
-          info_yellow: this.infoDataMode === 1,
+          info_yellow: [1].includes(this.infoDataMode),
         },
       ];
     },

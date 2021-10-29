@@ -255,6 +255,10 @@
     "title": "Skills"
   },
   "quests": {
+    "wusd": "WUSD",
+    "employer": {
+      "usersNotResponded": "Users have not yet responded to the quest"
+    },
     "rating": "Rating",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
@@ -335,6 +339,11 @@
     "reviewsBig": "Reviews",
     "MyQuests": "My quests",
     "activeQuest": "Active quest",
+    "waitWorker": "Wait worker",
+    "pendingConsideration": "Pending consideration",
+    "dispute": "Dispute",
+    "questClosed": "Quest Closed",
+    "questFinished": "Quest Finished",
     "proposal": "Proposal",
     "category": "Select a category",
     "address": "Add address",
@@ -365,7 +374,7 @@
     "performanceTimer": "Active until:",
     "questAmount": "quests",
     "otherQuestsSpec": "Other quests by specialization",
-    "questMaterials": "Additional quest materials",
+    "questMaterials": "Quest materials",
     "searchResults": "Search results",
     "type": "Type of job",
     "time": "Added time",

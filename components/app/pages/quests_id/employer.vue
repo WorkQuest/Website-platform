@@ -1,7 +1,7 @@
 <template>
-  <span v-if="userRole === 'employer'">
+  <span v-if="['employer'].includes(userRole)">
     <div
-      v-if="infoDataMode === 1"
+      v-if="[1].includes(infoDataMode)"
       class="btns__container"
     >
       <div
@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <div v-if="infoDataMode === 2">
+    <div v-if="[2].includes(infoDataMode)">
       <div class="worker__title">{{ $t('quests.worker') }}</div>
       <div class="worker__container">
         <div>
@@ -71,7 +71,7 @@
         </div>
       </div>
     </div>
-    <div v-if="infoDataMode === 3">
+    <div v-if="[3].includes(infoDataMode)">
       <div class="worker__title">{{ $t('response.title') }}</div>
       <span v-if="filteredResponses.length">
         <span
@@ -135,7 +135,7 @@
         </span>
       </span>
       <span v-if="!filteredResponses.length">
-        <div class="info__message">Users have not yet responded to the quest</div>
+        <div class="info__message">{{ $t('quests.employer.usersNotResponded') }}</div>
       </span>
       <div class="btns__container">
         <div
@@ -188,7 +188,7 @@
     <!--                </div>-->
     <!--              </div>-->
     <!--    </div>-->
-    <div v-if="infoDataMode === 4">
+    <div v-if="[4].includes(infoDataMode)">
       <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
@@ -211,7 +211,7 @@
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
           <div
-            v-if="badge.code !== 0"
+            v-if="[!0].includes(badge.code)"
             class="card__level_higher"
             :class="cardBadgeLevel"
           >
@@ -221,7 +221,7 @@
       </div>
     </div>
     <div
-      v-if="infoDataMode === 6"
+      v-if="[6].includes(infoDataMode)"
       class="btns__container"
     >
       <div>
@@ -245,7 +245,7 @@
           <div>
             <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
             <div
-              v-if="badge.code !== 0"
+              v-if="[!0].includes(badge.code)"
               class="card__level_higher"
               :class="cardBadgeLevel"
             >
@@ -280,7 +280,7 @@
         </div>
       </div>
     </div>
-    <div v-if="infoDataMode === 7">
+    <div v-if="[7].includes(infoDataMode)">
       <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
@@ -308,7 +308,7 @@
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
           <div
-            v-if="badge.code !== 0"
+            v-if="[!0].includes(badge.code)"
             class="card__level_higher"
             :class="cardBadgeLevel"
           >
@@ -318,7 +318,7 @@
       </div>
       <div class="btns__container">
         <div
-          v-if="infoDataMode === 7"
+          v-if="[7].includes(infoDataMode)"
           class="btns__wrapper"
         >
           <div class="btn__wrapper">
@@ -330,14 +330,25 @@
       </div>
     </div>
     <div class="btns__container">
-      <div>
+      <div class="priority">
         <div
-          v-if="infoDataMode !== 4"
+          v-if="[!4,!8].includes(infoDataMode)"
           class="price__container"
         >
           <span class="price__value">
-            {{ questData.price }} WUSD
+            {{ questData.price }} {{ $t('quests.wusd') }}
           </span>
+        </div>
+        <div
+          class="priority__container"
+        >
+          <div
+            v-if="[!4,!8].includes(infoDataMode)"
+            class="priority__title"
+            :class="getPriorityClass(questData.priority)"
+          >
+            {{ getPriority(questData.priority) }}
+          </div>
         </div>
       </div>
     </div>
@@ -415,6 +426,22 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    getPriority(index) {
+      const priority = {
+        0: this.$t('priority.low'),
+        1: this.$t('priority.normal'),
+        2: this.$t('priority.urgent'),
+      };
+      return priority[index] || '';
+    },
+    getPriorityClass(index) {
+      const priority = {
+        0: 'priority__title_low',
+        1: 'priority__title_normal',
+        2: 'priority__title_urgent',
+      };
+      return priority[index] || '';
+    },
     async closeQuest() {
       this.SetLoader(true);
       if (this.questData.status !== 2) {
@@ -500,6 +527,44 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.priority {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+  &__container {
+    @include text-simple;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    display: flex;
+    grid-gap: 10px;
+  }
+  &__title {
+    @include text-simple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 130%;
+    height: 24px;
+    padding: 0 5px;
+    &_low {
+      background: rgba(34, 204, 20, 0.1);
+      color: #22CC14;
+    }
+    &_urgent {
+      background: rgba(223, 51, 51, 0.1);
+      color: #DF3333;
+    }
+    &_normal {
+      background: rgba(232, 210, 13, 0.1);
+      color: #E8D20D;
+    }
+  }
+}
 .info__message {
   margin: 10px 0;
 }
