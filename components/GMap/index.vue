@@ -144,7 +144,6 @@ export default {
     },
     getMapBounds(eventName) {
       const bounds = this.map.getBounds();
-      const test = bounds.getNorthEast().lat();
       const mapCenterString = this.map.getCenter();
       const mapCenterArray = mapCenterString.toString().replace(/[()]/g, '').split(', ');
       this.newCenter = {
