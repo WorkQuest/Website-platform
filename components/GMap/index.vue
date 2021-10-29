@@ -156,12 +156,12 @@ export default {
           lng: parseFloat(mapCenterArray[1]),
         },
         southWest: {
-          lat: bounds?.tc?.g,
-          lng: bounds?.Hb?.g,
+          lat: bounds.getSouthWest().lat(),
+          lng: bounds.getSouthWest().lng(),
         },
         northEast: {
-          lat: bounds?.tc?.i,
-          lng: bounds?.Hb?.i,
+          lat: bounds.getNorthEast().lat(),
+          lng: bounds.getNorthEast().lng(),
         },
       };
       if (eventName === 'dragend' || eventName === 'tilesloaded' || eventName === 'zoom_changed') {
