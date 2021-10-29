@@ -231,14 +231,14 @@ export const initWeb3Modal = async (chain) => {
         rpc: {
           4: 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
         },
-        network: 'ethereum',
+        // network: 'ethereum',
       };
     } else {
       walletOptions = {
         rpc: {
           97: 'https://data-seed-prebsc-2-s1.binance.org:8545/',
         },
-        network: 'binance',
+        // network: 'binance',
       };
     }
   }
@@ -248,14 +248,14 @@ export const initWeb3Modal = async (chain) => {
         rpc: {
           1: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
         },
-        network: 'ethereum',
+        // network: 'ethereum',
       };
     } else {
       walletOptions = {
         rpc: {
           56: 'https://bsc-dataseed.binance.org/',
         },
-        network: 'binance',
+        // network: 'binance',
       };
     }
   }
