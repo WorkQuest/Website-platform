@@ -12,6 +12,7 @@
                 class="user__img"
                 :src="avatarUrl"
                 alt=""
+                loading="lazy"
               >
             </span>
             <span
@@ -48,21 +49,13 @@
               {{ showDistance() }} {{ $t('meta.fromYou') }}
             </span>
           </div>
-          <div
-            class="priority__container"
-          >
-            {{ `${$t('quests.priority.title')}: ` }}
-            <div
-              class="priority__title"
-              :class="getPriorityClass(questData.priority)"
-            >
-              {{ getPriority(questData.priority) }}
-            </div>
-          </div>
         </div>
       </div>
     </div>
-    <div class="badge__container">
+    <div
+      v-if="questData.skillFilters"
+      class="badge__container"
+    >
       <ul
         v-for="(skills, spec) in questData.skillFilters"
         :key="spec"
@@ -125,11 +118,6 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    // this.avatarUrl = this.userInfo.avatarId ? this.userInfo.avatar.url : '~/assets/img/app/avatar_empty.png';
-    // this.questLat = this.questData?.location?.latitude;
-    // this.questLng = this.questData?.location?.longitude;
-    // this.userLat = this.userData?.location?.longitude;
-    // this.userLng = this.userData?.location?.longitude;
     this.SetLoader(false);
   },
   methods: {
@@ -158,22 +146,6 @@ export default {
         return moment(this.questData.createdAt).format('MMMM Do YYYY, h:mm');
       }
       return '';
-    },
-    getPriority(index) {
-      const priority = {
-        0: this.$t('priority.low'),
-        1: this.$t('priority.normal'),
-        2: this.$t('priority.urgent'),
-      };
-      return priority[index] || '';
-    },
-    getPriorityClass(index) {
-      const priority = {
-        0: 'priority__title_low',
-        1: 'priority__title_normal',
-        2: 'priority__title_urgent',
-      };
-      return priority[index] || '';
     },
   },
 };
@@ -296,7 +268,7 @@ export default {
     flex-wrap: wrap;
   }
   &__container {
-    padding: 35px 0 25px 0;
+    padding: 34px 0 25px 0;
   }
   &__wrapper{
     display: flex;
@@ -316,8 +288,11 @@ export default {
     border-radius: 50%;
     object-fit: cover;
   }
-  &__username{
-    @extend .user;
+  &__username {
+    @include text-simple;
+    font-weight: 500;
+    font-size: 16px;
+    color: $black800;
     padding-left: 10px;
     &:hover {
       color: $black600;
@@ -344,39 +319,6 @@ export default {
     @extend .user;
     margin: 0 0 0 10px;
     color: $black500;
-  }
-}
-.priority {
-  &__container {
-    @include text-simple;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    display: flex;
-    grid-gap: 10px;
-  }
-  &__title {
-    @include text-simple;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 3px;
-    font-size: 12px;
-    line-height: 130%;
-    height: 24px;
-    padding: 0 5px;
-    &_low {
-      background: rgba(34, 204, 20, 0.1);
-      color: #22CC14;
-    }
-    &_urgent {
-      background: rgba(223, 51, 51, 0.1);
-      color: #DF3333;
-    }
-    &_normal {
-      background: rgba(232, 210, 13, 0.1);
-      color: #E8D20D;
-    }
   }
 }
 </style>

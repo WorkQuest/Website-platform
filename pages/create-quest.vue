@@ -691,7 +691,7 @@ export default {
         if (response) {
           this.showModalCreatedQuest();
           this.showToastCreated();
-          await this.$router.push(`/quests/${response.result.id}`);
+          await this.$router.push(`/quests/${response.id}`);
           await this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
         }
       } catch (e) {

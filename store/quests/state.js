@@ -1,6 +1,10 @@
 export default () => ({
+  questListForInvitation: {},
+  currentWorker: {},
+  workersList: {},
   allQuests: {},
   quest: {},
+  infoDataMode: '',
   userInfoQuests: {},
   questsLocation: {},
   starredQuests: {},
