@@ -89,14 +89,14 @@
                     {{ item.assignedWorker.firstName }} {{ item.assignedWorker.lastName }}
                   </div>
                 </div>
-                <div class="container__status status">
-                  <!--                  <span-->
-                  <!--                    class="status__level"-->
-                  <!--                    :class="getStatusCard(item.level)"-->
-                  <!--                  >-->
-                  <!--                    {{ $t(`levels.${item.level}`) }}-->
-                  <!--                  </span>-->
-                </div>
+                <!--                <div class="container__status status">-->
+                <!--                  <span-->
+                <!--                    class="status__level"-->
+                <!--                    :class="getStatusCard(item.level.code)"-->
+                <!--                  >-->
+                <!--                    {{ $t(`levels.${item.level.code}`) }}-->
+                <!--                  </span>-->
+                <!--                </div>-->
               </div>
             </div>
             <div class="block__locate">

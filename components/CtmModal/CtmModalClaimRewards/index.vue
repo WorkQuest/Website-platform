@@ -98,24 +98,34 @@ export default {
     },
     getInputRules() {
       const min = this.options.minStake ? `|min_value:${this.options.minStake}` : '|min_value:0.00001';
-      const max = this.options.maxStake ? `|max_value:${(new BigNumber(this.options.maxStake).minus(this.options.staked)).toString()}` : '';
+      let max = '';
+      if (this.options.type === 1) max = this.options.maxStake ? `|max_value:${(new BigNumber(this.options.maxStake).minus(this.options.staked)).toString()}` : '';
+      else max = this.options.staked ? `|max_value:${this.options.staked}` : '';
       return min + max;
     },
     maxBalance() {
       if (this.options.stakingType !== 'MINING') {
-        const max = new BigNumber(this.options.maxStake).minus(this.options.staked).toString();
-        this.amount = new BigNumber(this.options.balance).isGreaterThanOrEqualTo(max)
-          ? max : this.options.balance;
+        if (this.options.type === 1) {
+          const max = new BigNumber(this.options.maxStake).minus(this.options.staked).toString();
+          this.amount = new BigNumber(this.options.balance).isGreaterThanOrEqualTo(max)
+            ? max : this.options.balance;
+        } else {
+          this.amount = this.options.staked;
+        }
       } else {
         this.amount = this.options.type === 1 ? this.userBalance : this.userStake;
       }
     },
     checkAmount() {
       if (this.options.stakingType !== 'MINING') {
-        return +this.options.balance >= +this.amount;
+        return this.options.type === 1
+          ? new BigNumber(this.options.balance).isGreaterThanOrEqualTo(this.amount)
+          : new BigNumber(this.amount).isLessThanOrEqualTo(this.options.staked);
       }
-      const amount = this.options.type === 1 ? this.userBalance : this.userStake;
-      return +amount >= +this.amount;
+      const amount = this.options.type === 1
+        ? this.userBalance
+        : this.userStake;
+      return new BigNumber(amount).isGreaterThanOrEqualTo(this.amount);
     },
     async staking() {
       this.SetLoader(true);
@@ -146,11 +156,12 @@ export default {
       this.SetLoader(true);
       await this.checkMetamaskStatus();
       if (this.checkAmount()) {
-        const { updateMethod } = this.options;
+        const { updateMethod, stakingType, decimals } = this.options;
         this.hide();
         await this.$store.dispatch('web3/unstake', {
-          decimals: this.accountData?.decimals?.stakeDecimal,
+          decimals,
           amount: this.amount,
+          stakingType,
         });
         if (updateMethod) await updateMethod();
       } else {

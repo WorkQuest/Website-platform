@@ -396,15 +396,14 @@ export const staking = async (_decimals, _amount, _tokenAddress, _stakingAddress
   }
 };
 
-export const unStaking = async (_decimals, _amount) => {
-  const { stakingAddress, stakingAbi } = getStakingDataByType(StakingTypes.MINING);
+export const unStaking = async (_decimals, _amount, _stakingAddress, _stakingAbi) => {
   try {
     amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
     showToast('Unstaking', 'Unstaking...', 'success');
     store.dispatch('main/setStatusText', 'Staking');
     const payload = {
-      abi: stakingAbi,
-      address: stakingAddress,
+      abi: _stakingAbi,
+      address: _stakingAddress,
       data: [amount],
     };
     await sendTransaction('unstake', payload);
