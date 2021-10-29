@@ -98,10 +98,7 @@
                     {{ $t('mining.totalLiquidity') }}
                   </div>
                 </div>
-                <div
-                  v-if="miningPoolId === 'BNB'"
-                  class="third__container"
-                >
+                <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
                     {{ $tc('mining.wqtCount', profitWQT) }}
                   </div>
@@ -241,9 +238,7 @@
             </b-table>
           </div>
         </div>
-        <div
-          class="pager__block"
-        >
+        <div class="pager__block">
           <base-pager
             v-if="totalPagesValue > 1"
             v-model="page"
@@ -260,6 +255,7 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
 import chart from './graphics_data';
+import { StakingTypes } from '~/utils/enums';
 
 export default {
   layout: 'guest',
@@ -268,6 +264,8 @@ export default {
   },
   data() {
     return {
+      firstLoading: true,
+      updateInterval: null,
       disabled: false,
       miningPoolId: '',
       metamaskStatus: localStorage.getItem('metamaskStatus'),
@@ -355,8 +353,8 @@ export default {
       stakedAmount: 0,
       wqtWbnbData: [],
       wqtWethData: [],
-      profitWQT: 0,
       totalLP: 0,
+      profitWQT: 0,
     };
   },
   computed: {
@@ -387,10 +385,18 @@ export default {
     },
   },
   watch: {
-    isConnected() {
-      const newInterval = setInterval(() => this.tokensDataUpdate(), 15000);
-      if (!this.isConnected) {
-        clearInterval(newInterval);
+    async isConnected(newValue) {
+      if (this.firstLoading) return;
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+      if (newValue && rightChain) {
+        await this.tokensDataUpdate();
+        this.updateInterval = setInterval(() => this.tokensDataUpdate(), 15000);
+      } else {
+        this.fullRewardAmount = 0;
+        this.rewardAmount = 0;
+        this.stakedAmount = 0;
+        this.profitWQT = 0;
+        clearInterval(this.updateInterval);
       }
     },
     async page() {
@@ -412,14 +418,21 @@ export default {
     this.SetLoader(true);
     await this.checkMetamaskStatus();
     if (this.$route.params.id === 'ETH') {
-      await this.getWqtWethTokenDay();
-      await this.getWqtWethTokenDayLast();
+      await Promise.all([
+        this.getWqtWethTokenDay(),
+        this.getWqtWethTokenDayLast(),
+      ]);
     } else {
-      await this.getWqtWbnbTokenDay();
-      await this.getWqtWbnbTokenDayLast();
+      await Promise.all([
+        this.getWqtWbnbTokenDay(),
+        this.getWqtWbnbTokenDayLast(),
+      ]);
     }
-    await this.initTokenDays();
-    await this.initGraphData();
+    await Promise.all([
+      this.tokensDataUpdate(),
+      this.initTokenDays(),
+      this.initGraphData(),
+    ]);
     this.SetLoader(false);
     if (this.$route.params.id === 'ETH') {
       await this.tableWqtWethTokenDay();
@@ -427,8 +440,11 @@ export default {
       await this.tableWqtWbnbTokenDay();
     }
     await this.initTableData();
+    this.firstLoading = false;
   },
-
+  beforeDestroy() {
+    clearInterval(this.updateInterval);
+  },
   methods: {
     async checkMetamaskStatus() {
       if (typeof window.ethereum === 'undefined') {
@@ -443,9 +459,16 @@ export default {
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');
-        await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+        const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+        if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
         await this.connectToMetamask();
       }
+    },
+    async connectToMetamask() {
+      if (!this.isConnected) {
+        await this.$store.dispatch('web3/connect');
+      }
+      await this.$store.dispatch('web3/initContract');
     },
     async initTokenDays() {
       const totalLiquidity = this.miningPoolId === 'BNB' ? this.wqtWbnbTokenDay[0]?.reserveUSD : this.wqtWethTokenDay[0]?.reserveUSD;
@@ -462,50 +485,34 @@ export default {
       let tableArr = [];
       if (this.miningPoolId === 'BNB') {
         tableArr = this.wqtWbnbTableData;
-      } if (this.miningPoolId === 'ETH') {
+      }
+      if (this.miningPoolId === 'ETH') {
         tableArr = this.wqtWethTableData;
       }
       tableArr.forEach((data) => {
-        let poolAddress = '';
-        let tokenAmount0 = '';
-        let tokenAmount1 = '';
-        if (this.miningPoolId === 'BNB') {
-          if (data.amount0Out > 0) {
-            poolAddress = 'Swap WQT for WBNB';
-            tokenAmount0 = `${(parseInt((data.amount0Out) * 1000, 10)) / 1000} WQT`;
-            tokenAmount1 = `${(parseInt((data.amount1In) * 1000, 10)) / 1000} WBNB`;
-          } else {
-            poolAddress = 'Swap WBNB for WQT';
-            tokenAmount0 = `${(parseInt((data.amount1Out) * 1000, 10)) / 1000} WBNB`;
-            tokenAmount1 = `${(parseInt((data.amount0In) * 1000, 10)) / 1000} WQT`;
-          }
-        } if (this.miningPoolId === 'ETH') {
-          if (data.amount0Out > 0) {
-            poolAddress = 'Swap WQT for WETH';
-            tokenAmount0 = `${(parseInt((data.amount0Out) * 1000, 10)) / 1000} WQT`;
-            tokenAmount1 = `${(parseInt((data.amount1In) * 1000, 10)) / 1000} WETH`;
-          } else {
-            poolAddress = 'Swap WETH for WQT';
-            tokenAmount0 = `${(parseInt((data.amount1Out) * 1000, 10)) / 1000} WETH`;
-            tokenAmount1 = `${(parseInt((data.amount0In) * 1000, 10)) / 1000} WQT`;
-          }
-        }
-        const totalValue = `${Math.round(data.amountUSD)} $`;
-        const account = data.to;
-        const accountView = this.cropTxt(data.to);
-        const date = new Date(data.transaction.timestamp * 1000);
-        const time = moment(date).startOf('hour').fromNow();
         this.items.push({
-          poolAddress,
-          totalValue,
-          tokenAmount0,
-          tokenAmount1,
-          account,
-          accountView,
-          time,
+          totalValue: `${this.Floor(data.amountUSD, 2)} $`,
+          account: data.to,
+          accountView: this.cropTxt(data.to),
+          time: moment(new Date(data.transaction.timestamp * 1000)).startOf('hour').fromNow(),
+          ...this.getTokensAmount(data),
         });
       });
       this.totalPagesValue = this.totalPages;
+    },
+    getTokensAmount(data) {
+      if (data.amount0Out > 0) {
+        return {
+          poolAddress: this.miningPoolId === 'ETH' ? 'Swap WETH for WQT' : 'Swap WQT for WBNB',
+          tokenAmount0: `${this.Floor(data.amount1In, 3)} ${this.miningPoolId === 'ETH' ? 'WETH' : 'WQT'}`,
+          tokenAmount1: `${this.Floor(data.amount0Out, 3)} ${this.miningPoolId === 'ETH' ? 'WQT' : 'WBNB'}`,
+        };
+      }
+      return {
+        poolAddress: this.miningPoolId === 'ETH' ? 'Swap WQT for WETH' : 'Swap WBNB for WQT',
+        tokenAmount0: `${this.Floor(data.amount0In, 3)} ${this.miningPoolId === 'ETH' ? 'WQT' : 'WBNB'}`,
+        tokenAmount1: `${this.Floor(data.amount1Out, 3)} ${this.miningPoolId === 'ETH' ? 'WETH' : 'WQT'}`,
+      };
     },
 
     async getWqtWbnbSwaps() {
@@ -551,14 +558,19 @@ export default {
       return style;
     },
     async tokensDataUpdate() {
-      const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+      if (!rightChain) {
+        return;
+      }
+      const tokensData = await this.$store.dispatch('web3/getTokensData');
       this.fullRewardAmount = tokensData.rewardTokenAmount;
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
-      const paramsAPY = await this.$store.dispatch('defi/getLPToken');
-      const priceLP = paramsAPY.reserveUSD / paramsAPY.totalSupply;
-      const APY = ((paramsAPY.rewardTotal * 12) * paramsAPY.priceUSD) / (paramsAPY.totalStaked * priceLP);
-      const profit = ((this.stakedAmount * priceLP) * APY) / paramsAPY.priceUSD;
+      const payload = {
+        chain: this.miningPoolId,
+        stakedAmount: tokensData.stakeTokenAmount,
+      };
+      const profit = await this.$store.dispatch('web3/getAPY', payload);
       this.profitWQT = this.Floor(profit);
     },
     async disconnectFromMetamask() {
@@ -567,8 +579,8 @@ export default {
     async claimRewards() {
       this.SetLoader(true);
       if (this.fullRewardAmount > 0) {
-        await this.connectToMetamask();
-        await this.$store.dispatch('web3/claimRewards', this.accountData.userPurse.address, this.fullRewardAmount);
+        await this.tokensDataUpdate();
+        await this.$store.dispatch('web3/claimRewards', { stakingType: StakingTypes.MINING });
         await this.tokensDataUpdate();
       } else {
         this.ShowModal({
@@ -580,13 +592,6 @@ export default {
         });
       }
       this.SetLoader(false);
-    },
-    async connectToMetamask() {
-      if (!this.isConnected) {
-        await this.$store.dispatch('web3/connect');
-        await this.$store.dispatch('web3/initContract');
-        await this.tokensDataUpdate();
-      }
     },
     cropTxt(str) {
       if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
@@ -605,6 +610,9 @@ export default {
       this.ShowModal({
         key: modals.claimRewards,
         type: 2,
+        decimals: this.accountData.decimals.stakeDecimal,
+        stakingType: StakingTypes.MINING,
+        updateMethod: this.tokensDataUpdate,
       });
     },
     async openModalClaimRewards() {
@@ -612,6 +620,9 @@ export default {
       this.ShowModal({
         key: modals.claimRewards,
         type: 1,
+        stakingType: StakingTypes.MINING,
+        decimals: this.accountData.decimals.stakeDecimal,
+        updateMethod: this.tokensDataUpdate,
       });
     },
     handleBackToMainMining() {

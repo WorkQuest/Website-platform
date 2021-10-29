@@ -43,6 +43,8 @@ jobs:
           echo EXCHANGE_ADDRESS_RINKEBY=${{ secrets.EXCHANGE_ADDRESS_RINKEBY }} >> .env
           echo CAKE_LP_TOKEN=${{ secrets.CAKE_LP_TOKEN }} >> .env
           echo CAKE_WQT_TOKEN=${{ secrets.CAKE_WQT_TOKEN }} >> .env
+          echo STAKING=${{ secrets.STAKING }} >> .env
+          echo STAKING_NATIVE=${{ secrets.STAKING_NATIVE }} >> .env
           echo STAKING_ADDRESS_BSC=${{ secrets.STAKING_ADDRESS_BSC }} >> .env
           echo MAINNET_BSC_WQT_TOKEN=${{ secrets.MAINNET_BSC_WQT_TOKEN }} >> .env
           echo MAINNET_BSC_BRIDGE=${{ secrets.MAINNET_BSC_BRIDGE }} >> .env
@@ -53,6 +55,14 @@ jobs:
           echo TESTNET_BSC_STAKING=${{ secrets.TESTNET_BSC_STAKING }} >> .env
           echo MAINNET_ETH_STAKING=${{ secrets.MAINNET_ETH_STAKING }} >> .env
           echo MAINNET_STAKING_ETH_LP_TOKEN=${{ secrets.MAINNET_STAKING_ETH_LP_TOKEN }} >> .env
+          echo MAINNET_ETH_INFURA=${{ secrets.MAINNET_ETH_INFURA }} >> .env
+          echo MAINNET_BSC_MORALIS=${{ secrets.MAINNET_BSC_MORALIS }} >> .env
+          echo TOKEN_WBNB_ADDRESS=${{ secrets.TOKEN_WBNB_ADDRESS }} >> .env
+          echo TOKEN_WETH_ADDRESS=${{ secrets.TOKEN_WETH_ADDRESS }} >> .env
+          echo TOKEN_WBNB_AMOUNT_MAX=${{ secrets.TOKEN_WBNB_AMOUNT_MAX }} >> .env
+          echo TOKEN_WETH_AMOUNT_MAX=${{ secrets.TOKEN_WETH_AMOUNT_MAX }} >> .env
+          echo TOKEN_WQT_BSC_NETWORK_AMOUNT_MAX=${{ secrets.TOKEN_WQT_BSC_NETWORK_AMOUNT_MAX }} >> .env
+          echo TOKEN_WQT_ETHEREUM_NETWORK_AMOUNT_MAX=${{ secrets.TOKEN_WQT_ETHEREUM_NETWORK_AMOUNT_MAX }} >> .env
       - name: Run generate static task
         run: npm run generate
                  #    env:
@@ -124,6 +134,14 @@ jobs:
           echo MAINNET_BSC_STAKING=${{ secrets.MAINNET_BSC_STAKING }} >> .env
           echo MAINNET_ETH_STAKING=${{ secrets.MAINNET_ETH_STAKING }} >> .env
           echo MAINNET_STAKING_ETH_LP_TOKEN=${{ secrets.MAINNET_STAKING_ETH_LP_TOKEN }} >> .env
+          echo MAINNET_ETH_INFURA=${{ secrets.MAINNET_ETH_INFURA }} >> .env
+          echo MAINNET_BSC_MORALIS=${{ secrets.MAINNET_BSC_MORALIS }} >> .env
+          echo TOKEN_WBNB_ADDRESS=${{ secrets.TOKEN_WBNB_ADDRESS }} >> .env
+          echo TOKEN_WETH_ADDRESS=${{ secrets.TOKEN_WETH_ADDRESS }} >> .env
+          echo TOKEN_WBNB_AMOUNT_MAX=${{ secrets.TOKEN_WBNB_AMOUNT_MAX }} >> .env
+          echo TOKEN_WETH_AMOUNT_MAX=${{ secrets.TOKEN_WETH_AMOUNT_MAX }} >> .env
+          echo TOKEN_WQT_BSC_NETWORK_AMOUNT_MAX=${{ secrets.TOKEN_WQT_BSC_NETWORK_AMOUNT_MAX }} >> .env
+          echo TOKEN_WQT_ETHEREUM_NETWORK_AMOUNT_MAX=${{ secrets.TOKEN_WQT_ETHEREUM_NETWORK_AMOUNT_MAX }} >> .env
       - name: Run generate static task
         run: npm run generate
     #    env:
