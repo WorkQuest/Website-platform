@@ -119,13 +119,13 @@ export default {
     checkAmount() {
       if (this.options.stakingType !== 'MINING') {
         return this.options.type === 1
-          ? +this.options.balance >= +this.amount
-          : +this.amount <= +this.options.staked;
+          ? new BigNumber(this.options.balance).isGreaterThanOrEqualTo(this.amount)
+          : new BigNumber(this.amount).isLessThanOrEqualTo(this.options.staked);
       }
       const amount = this.options.type === 1
         ? this.userBalance
         : this.userStake;
-      return +amount >= +this.amount;
+      return new BigNumber(amount).isGreaterThanOrEqualTo(this.amount);
     },
     async staking() {
       this.SetLoader(true);
