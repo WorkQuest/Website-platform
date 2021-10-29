@@ -268,7 +268,7 @@ export default {
     flex-wrap: wrap;
   }
   &__container {
-    padding: 35px 0 25px 0;
+    padding: 34px 0 25px 0;
   }
   &__wrapper{
     display: flex;

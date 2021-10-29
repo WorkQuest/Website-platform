@@ -135,10 +135,10 @@
         </div>
         <div class="content">
           <div
-            v-for="(card, i) in workersList.users"
+            v-for="(user, i) in workersList.users"
             :key="i"
             class="card card_higher"
-            @click="showDetails(card)"
+            @click="showDetails(user)"
           >
             <!-- :class="cardsLevelsBorder(i)" -->
             <div
@@ -149,8 +149,8 @@
                   <div class="card__header_left">
                     <img
                       class="card__img"
-                      :src="card.avatar !== null ? card.avatar.url: require('~/assets/img/app/avatar_empty.png')"
-                      :alt="card.firstName"
+                      :src="user.avatar !== null ? user.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+                      :alt="user.firstName"
                     >
                   </div>
                   <div class="card__header_right">
@@ -158,7 +158,7 @@
                       class="card__name"
                     >
                       <!-- :class="{'card__name_center': card.level.code === '0'}" -->
-                      {{ card.firstName ? card.firstName : "Nameless worker" }} {{ card.lastName ? card.lastName : "" }}
+                      {{ user.firstName ? user.firstName : $t('quests.namelessWorker') }} {{ user.lastName ? user.lastName : "" }}
                     </span>
                     <!-- <div
                       class="card__level"
@@ -173,41 +173,48 @@
                   </div>
                 </div>
               </div>
-              <!-- <div class="card__spec_title">
+              <div class="card__spec_title">
                 {{ $t('workers.specializations') }}
               </div>
               <span
-                v-for="(spec, j) in card.userSpecializations"
-                :key="j"
+                v-if="user.userSpecializations.length === 0"
                 class="card__spec"
               >
-                TODO: Проверить добавление специализаций для воркеров.
-                {{ spec.title ? spec.title : "Doesn`t have specializations..." }}
-              </span> -->
+                {{ $t('quests.dontHaveSpec') }}
+              </span>
+              <span v-if="user.userSpecializations.length > 0">
+                <span
+                  v-for="(spec, j) in user.userSpecializations"
+                  :key="j"
+                  class="card__spec"
+                >
+                  {{ spec.title }}
+                </span>
+              </span>
               <div
-                v-if="card.additionalInfo"
+                v-if="user.additionalInfo"
                 class="card__title"
               >
                 {{ $t('workers.aboutMe') }}
               </div>
               <div
-                v-if="card.additionalInfo"
+                v-if="user.additionalInfo"
                 class="card__about"
               >
-                {{ card.additionalInfo.description ? card.additionalInfo.description: "Nothing about me..." }}
+                {{ user.additionalInfo.description ? user.additionalInfo.description: $t('quests.nothingAboutMe') }}
               </div>
               <div
-                v-if="card.additionalInfo"
+                v-if="user.additionalInfo"
                 class="card__address"
               >
-                {{ card.additionalInfo.address ? card.additionalInfo.address : "Unknown address..." }}
+                {{ user.additionalInfo.address ? user.additionalInfo.address : $t('quests.unknownAddress') }}
               </div>
               <!-- <div class="card__cost cost">
                 <div class="cost__title">
                   {{ $t('workers.costTitle') }}
                 </div>
                 <div class="cost__value">
-                  {{ card.cost }}
+                  {{ user.cost }}
                 </div>
               </div> -->
             </div>
@@ -266,312 +273,6 @@ export default {
         },
       ],
       search: '',
-      cards: [
-        {
-          name: 'Rosalia Vans',
-          img: require('~/assets/img/temp/fake-card.svg'),
-          level: {
-            title: 'TOP RANKED EMP.',
-            code: 1,
-          },
-          specialization: [
-            {
-              name: 'Programming',
-            },
-            {
-              name: 'design',
-            },
-          ],
-          about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
-          address: 'Moscos, Lenina street, 3',
-          cost: '1500 WUSD',
-        },
-        {
-          name: 'Rosalia Vans',
-          img: require('~/assets/img/temp/fake-card.svg'),
-          level: {
-            title: 'RELIABLE EMP.',
-            code: 2,
-          },
-          specialization: [
-            {
-              name: 'Programming',
-            },
-            {
-              name: 'design',
-            },
-          ],
-          about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
-          address: 'Moscos, Lenina street, 3',
-          cost: '1500 WUSD',
-        },
-        {
-          name: 'Rosalia Vans',
-          img: require('~/assets/img/temp/fake-card.svg'),
-          level: {
-            title: 'VERIFIED EMP.',
-            code: 3,
-          },
-          specialization: [
-            {
-              name: 'Programming',
-            },
-            {
-              name: 'design',
-            },
-          ],
-          about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
-          address: 'Moscos, Lenina street, 3',
-          cost: '1500 WUSD',
-        },
-        {
-          name: 'Rosalia Vans',
-          img: require('~/assets/img/temp/fake-card.svg'),
-          level: {
-            title: 'DISABLED',
-            code: 0,
-          },
-          specialization: [
-            {
-              name: 'Programming',
-            },
-            {
-              name: 'design',
-            },
-          ],
-          about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
-          address: 'Moscos, Lenina street, 3',
-          cost: '1500 WUSD',
-        },
-        {
-          name: 'Rosalia Vans',
-          img: require('~/assets/img/temp/fake-card.svg'),
-          level: {
-            title: 'DISABLED',
-            code: 0,
-          },
-          specialization: [
-            {
-              name: 'Programming',
-            },
-            {
-              name: 'design',
-            },
-          ],
-          about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
-          address: 'Moscos, Lenina street, 3',
-          cost: '1500 WUSD',
-        },
-        {
-          name: 'Rosalia Vans',
-          img: require('~/assets/img/temp/fake-card.svg'),
-          level: {
-            title: 'TOP RANKED EMP.',
-            code: 1,
-          },
-          specialization: [
-            {
-              name: 'Programming',
-            },
-            {
-              name: 'design',
-            },
-          ],
-          about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
-          address: 'Moscos, Lenina street, 3',
-          cost: '1500 WUSD',
-        },
-        {
-          name: 'Rosalia Vans',
-          img: require('~/assets/img/temp/fake-card.svg'),
-          level: {
-            title: 'TOP RANKED EMP.',
-            code: 1,
-          },
-          specialization: [
-            {
-              name: 'Programming',
-            },
-            {
-              name: 'design',
-            },
-          ],
-          about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
-          address: 'Moscos, Lenina street, 3',
-          cost: '1500 WUSD',
-        },
-        {
-          name: 'Rosalia Vans',
-          img: require('~/assets/img/temp/fake-card.svg'),
-          level: {
-            title: 'TOP RANKED EMP.',
-            code: 1,
-          },
-          specialization: [
-            {
-              name: 'Programming',
-            },
-            {
-              name: 'design',
-            },
-          ],
-          about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
-          address: 'Moscos, Lenina street, 3',
-          cost: '1500 WUSD',
-        },
-        {
-          name: 'Rosalia Vans',
-          img: require('~/assets/img/temp/fake-card.svg'),
-          level: {
-            title: 'TOP RANKED EMP.',
-            code: 1,
-          },
-          specialization: [
-            {
-              name: 'Programming',
-            },
-            {
-              name: 'design',
-            },
-          ],
-          about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
-          address: 'Moscos, Lenina street, 3',
-          cost: '1500 WUSD',
-        },
-        {
-          name: 'Rosalia Vans',
-          img: require('~/assets/img/temp/fake-card.svg'),
-          level: {
-            title: 'TOP RANKED EMP.',
-            code: 1,
-          },
-          specialization: [
-            {
-              name: 'Programming',
-            },
-            {
-              name: 'design',
-            },
-          ],
-          about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
-          address: 'Moscos, Lenina street, 3',
-          cost: '1500 WUSD',
-        },
-        {
-          name: 'Rosalia Vans',
-          img: require('~/assets/img/temp/fake-card.svg'),
-          level: {
-            title: 'TOP RANKED EMP.',
-            code: 1,
-          },
-          specialization: [
-            {
-              name: 'Programming',
-            },
-            {
-              name: 'design',
-            },
-          ],
-          about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
-          address: 'Moscos, Lenina street, 3',
-          cost: '1500 WUSD',
-        },
-        {
-          name: 'Rosalia Vans',
-          img: require('~/assets/img/temp/fake-card.svg'),
-          level: {
-            title: 'TOP RANKED EMP.',
-            code: 1,
-          },
-          specialization: [
-            {
-              name: 'Programming',
-            },
-            {
-              name: 'design',
-            },
-          ],
-          about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
-          address: 'Moscos, Lenina street, 3',
-          cost: '1500 WUSD',
-        },
-        {
-          name: 'Rosalia Vans',
-          img: require('~/assets/img/temp/fake-card.svg'),
-          level: {
-            title: 'TOP RANKED EMP.',
-            code: 1,
-          },
-          specialization: [
-            {
-              name: 'Programming',
-            },
-            {
-              name: 'design',
-            },
-          ],
-          about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
-          address: 'Moscos, Lenina street, 3',
-          cost: '1500 WUSD',
-        },
-        {
-          name: 'Rosalia Vans',
-          img: require('~/assets/img/temp/fake-card.svg'),
-          level: {
-            title: 'TOP RANKED EMP.',
-            code: 1,
-          },
-          specialization: [
-            {
-              name: 'Programming',
-            },
-            {
-              name: 'design',
-            },
-          ],
-          about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
-          address: 'Moscos, Lenina street, 3',
-          cost: '1500 WUSD',
-        },
-        {
-          name: 'Rosalia Vans',
-          img: require('~/assets/img/temp/fake-card.svg'),
-          level: {
-            title: 'TOP RANKED EMP.',
-            code: 1,
-          },
-          specialization: [
-            {
-              name: 'Programming',
-            },
-            {
-              name: 'design',
-            },
-          ],
-          about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
-          address: 'Moscos, Lenina street, 3',
-          cost: '1500 WUSD',
-        },
-        {
-          name: 'Rosalia Vans',
-          img: require('~/assets/img/temp/fake-card.svg'),
-          level: {
-            title: 'TOP RANKED EMP.',
-            code: 1,
-          },
-          specialization: [
-            {
-              name: 'Programming',
-            },
-            {
-              name: 'design',
-            },
-          ],
-          about: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam adipiscing elit ut elit ut elit utelit ut',
-          address: 'Moscos, Lenina street, 3',
-          cost: '1500 WUSD',
-        },
-      ],
       priorityIndex: 0,
       distanceIndex: 0,
       priceSort: 'desc',

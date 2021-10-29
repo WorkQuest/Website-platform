@@ -246,7 +246,6 @@ export default {
         }
       }
       if (['worker'].includes(this.userRole)) {
-        // TODO: Дописать логику вывода для воркера
         if (this.questData.assignedWorker === null && ![1].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 5);
         } if ([1].includes(this.questData.status)) {

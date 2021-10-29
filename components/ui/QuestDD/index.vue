@@ -8,10 +8,7 @@
       @click="showQuestMenu()"
     >
       <span
-        :class="[
-          {'icon-more_horizontal': userRole === 'employer'},
-          {'share_outline': userRole === 'worker'},
-        ]"
+        :class="buttonIcon"
       />
       <transition name="fade">
         <div
@@ -94,6 +91,12 @@ export default {
     }),
   },
   methods: {
+    buttonIcon() {
+      return [
+        { 'icon-more_horizontal': this.userRole === 'employer' },
+        { share_outline: this.userRole === 'worker' },
+      ];
+    },
     toEditQuest() {
       this.$router.push('/edit-quest');
       this.$store.dispatch('quests/getCurrentStepEditQuest', 1);

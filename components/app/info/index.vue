@@ -160,7 +160,7 @@ export default {
   }
 }
 .info {
-  min-height: 54px;
+  min-height: 41px;
   box-shadow: 0 1px 0 #e6e9ec;
   width: 100%;
   display: flex;

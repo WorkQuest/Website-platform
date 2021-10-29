@@ -336,7 +336,7 @@
           class="price__container"
         >
           <span class="price__value">
-            {{ questData.price }} {{ $t('quests.wusd') }}
+            {{ questData.price }}{{ $t('quests.wusd') }}
           </span>
         </div>
         <div
