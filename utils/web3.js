@@ -617,3 +617,47 @@ export const initStackingContract = async (chain) => {
   const liquidityMiningContract = new liquidityMiningProvider.eth.Contract(stakingAbi, stakingAddress);
   return await liquidityMiningContract.methods.getStakingInfo().call();
 };
+
+// Можно ли объединить нижние методы в один?
+export const addAffiliat = async () => {
+  const v = null;
+  const r = null;
+  const s = null;
+  const _affiliat = null;
+  const _abi = abi.WQReferral;
+  const _contractAddress = process.env.WQ_REFERRAL;
+  try {
+    const contractInstance = await createInstance(_abi, _contractAddress);
+    await contractInstance.addAffiliat(v, r, s, _affiliat);
+    return success();
+  } catch (e) {
+    console.log(e);
+    return error(500, 'Add affiliat error', e);
+  }
+};
+
+export const calcReferral = async (referralAddress) => {
+  const _abi = abi.WQReferral;
+  const _contractAddress = process.env.WQ_REFERRAL;
+  try {
+    const contractInstance = await createInstance(_abi, _contractAddress);
+    await contractInstance.calcReferral(referralAddress);
+    return success();
+  } catch (e) {
+    console.log(e);
+    return error(500, 'Calc referral error', e);
+  }
+};
+
+export const claimReferral = async () => {
+  const _abi = abi.WQReferral;
+  const _contractAddress = process.env.WQ_REFERRAL;
+  try {
+    const contractInstance = await createInstance(_abi, _contractAddress);
+    await contractInstance.claim();
+    return success();
+  } catch (e) {
+    console.log(e);
+    return error(500, 'Claim referral error', e);
+  }
+};
