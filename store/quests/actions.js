@@ -18,33 +18,23 @@ export default {
     }
   },
   async setCurrentWorker({ commit }, data) {
-    try {
-      commit('setCurrentWorker', data);
-      return data;
-    } catch (e) {
-      return console.log(e);
-    }
+    commit('setCurrentWorker', data);
+    return data;
   },
   async setInfoDataMode({ commit }, mode) {
-    try {
-      commit('setInfoDataMode', mode);
-    } catch (e) {
-      console.log(e);
-    }
+    commit('setInfoDataMode', mode);
   },
   async getCurrentStepCreateQuest({ commit }, data) {
-    try {
-      commit('setCurrentStepCreateQuest', data);
-    } catch (e) {
-      console.log(e);
-    }
+    commit('setCurrentStepCreateQuest', data);
   },
   async getCurrentStepEditQuest({ commit }, data) {
-    try {
-      commit('setCurrentStepEditQuest', data);
-    } catch (e) {
-      console.log(e);
-    }
+    commit('setCurrentStepEditQuest', data);
+  },
+  setMapBounds({ commit }, payload) {
+    commit('setMapBounds', payload);
+  },
+  setMapCenter({ commit }, payload) {
+    commit('setMapCenter', payload);
   },
   async questCreate({ commit }, payload) {
     try {
@@ -122,20 +112,6 @@ export default {
       return response.result;
     } catch (e) {
       return console.log(e);
-    }
-  },
-  setMapBounds({ commit }, payload) {
-    try {
-      commit('setMapBounds', payload);
-    } catch (e) {
-      console.log(e);
-    }
-  },
-  setMapCenter({ commit }, payload) {
-    try {
-      commit('setMapCenter', payload);
-    } catch (e) {
-      console.log(e);
     }
   },
   async completeWorkOnQuest({ commit }, questId) {
