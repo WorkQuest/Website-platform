@@ -31,7 +31,7 @@
                   </span>
                 </div>
                 <div class="description">
-                  {{ currentWorker.additionalInfo.description ? currentWorker.additionalInfo.description: "Nothing about me..." }}
+                  {{ currentWorker.additionalInfo.description ? currentWorker.additionalInfo.description: $t('quests.nothingAboutMe') }}
                 </div>
                 <social />
                 <div class="contacts__grid">
@@ -45,19 +45,19 @@
                             class="icon-location"
                           />
                           <span class="contact__link">
-                            {{ currentWorker.additionalInfo.address ? currentWorker.additionalInfo.address : "Unknown address..." }}
+                            {{ currentWorker.additionalInfo.address ? currentWorker.additionalInfo.address : $t('quests.unknownAddress') }}
                           </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-phone" />
                           <span class="contact__link">
-                            {{ currentWorker.additionalInfo.phone ? currentWorker.additionalInfo.phone : "Unknown phone number..." }}
+                            {{ currentWorker.additionalInfo.phone ? currentWorker.additionalInfo.phone : $t('quests.unknownPhoneNumber') }}
                           </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-mail" />
                           <span class="contact__link">
-                            {{ currentWorker.additionalInfo.email ? currentWorker.additionalInfo.email : "Unknown email address.." }}
+                            {{ currentWorker.additionalInfo.email ? currentWorker.additionalInfo.email : $t('quests.unknownEmailAddress') }}
                           </span>
                         </span>
                       </span>
@@ -86,7 +86,7 @@
           </div>
           <div>
             <!-- TODO: Проверить механизм добавления скилов -->
-            <span class="badge_blue">Skills not specified...</span>
+            <span class="badge_blue">{{ $t('quests.skillsNotSpecified') }}</span>
           </div>
         </div>
         <div class="block_16">
@@ -96,7 +96,7 @@
           <div class="numbers__big_blue">
             0
           </div>
-          <div>One time</div>
+          <div>{{ $t('quests.oneTime') }}</div>
         </div>
         <div class="block_16">
           <div class="block_title">
@@ -196,6 +196,50 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.icon {
+  font-size: 20px;
+  cursor: pointer;
+  &-facebook::before {
+    @extend .icon;
+    color: #0A7EEA;
+  }
+  &-twitter::before {
+    @extend .icon;
+    color: #24CAFF;
+  }
+  &-instagram::before {
+    @extend .icon;
+    color: #C540F3;
+  }
+  &-LinkedIn::before {
+    @extend .icon;
+    color: #57A6EF;
+  }
+  &-Earth::before {
+    @extend .icon;
+    color: #7C838D;
+    font-size: 16px;
+    padding-right: 5px;
+  }
+  &-location::before {
+    @extend .icon;
+    color: #7C838D;
+    font-size: 16px;
+    padding-right: 5px;
+  }
+  &-phone::before {
+    @extend .icon;
+    color: #7C838D;
+    font-size: 16px;
+    padding-right: 5px;
+  }
+  &-mail::before {
+    @extend .icon;
+    color: #7C838D;
+    font-size: 16px;
+    padding-right: 5px;
+  }
+}
 .icon {
   color: #7C838D;
   font-size: 16px;
@@ -628,7 +672,7 @@ export default {
   }
 }
 
-.quest{
+.quest {
   &__spec {
     @include text-simple;
     font-style: normal;
@@ -684,51 +728,6 @@ export default {
 .social {
   &__link {
     text-decoration: none;
-  }
-}
-
-.icon {
-  font-size: 20px;
-  cursor: pointer;
-  &-facebook::before {
-    @extend .icon;
-    color: #0A7EEA;
-  }
-  &-twitter::before {
-    @extend .icon;
-    color: #24CAFF;
-  }
-  &-instagram::before {
-    @extend .icon;
-    color: #C540F3;
-  }
-  &-LinkedIn::before {
-    @extend .icon;
-    color: #57A6EF;
-  }
-  &-Earth::before {
-    @extend .icon;
-    color: #7C838D;
-    font-size: 16px;
-    padding-right: 5px;
-  }
-  &-location::before {
-    @extend .icon;
-    color: #7C838D;
-    font-size: 16px;
-    padding-right: 5px;
-  }
-  &-phone::before {
-    @extend .icon;
-    color: #7C838D;
-    font-size: 16px;
-    padding-right: 5px;
-  }
-  &-mail::before {
-    @extend .icon;
-    color: #7C838D;
-    font-size: 16px;
-    padding-right: 5px;
   }
 }
 

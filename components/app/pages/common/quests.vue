@@ -412,17 +412,17 @@ export default {
     },
     progressQuestText(status) {
       if (this.userRole) {
-        if (status === 1) {
-          return 'Quest Active:';
-        } if (status === 2) {
-          return 'Quest Closed:';
-        } if (status === 3) {
-          return 'Quest Dispute:';
-        } if (status === 4) {
+        if ([1].includes(status)) {
+          return this.$t('quests.questActive:');
+        } if ([2].includes(status)) {
+          return this.$t('quests.questClosed:');
+        } if ([3].includes(status)) {
+          return this.$t('questDispute:');
+        } if ([4].includes(status)) {
           return this.$t('quests.inProgressBy');
-        } if (status === 5) {
-          return 'Quest wait confirm:';
-        } if (status === 6) {
+        } if ([5].includes(status)) {
+          return this.$t('questWaitConfirm:');
+        } if ([6].includes(status)) {
           return this.$t('quests.finishedBy');
         }
       }

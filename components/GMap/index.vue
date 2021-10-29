@@ -189,6 +189,6 @@ export default {
 <style>
 .GMap__Wrapper{
   width: 100%;
-  height: 400px;
+  height: 205px;
 }
 </style>

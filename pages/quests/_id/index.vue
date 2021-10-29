@@ -296,6 +296,9 @@ export default {
 
 <style lang="scss" scoped>
 .quest {
+  &__map {
+    height: 205px;
+  }
   &__container {
     display: flex;
     flex-direction: column;
@@ -410,11 +413,12 @@ export default {
 
 .map {
   &__container {
-    padding:30px 0 0 0;
+    padding: 0;
     display: flex;
     justify-content: center;
+    height: 205px;
     .gmap__block {
-      height: 200px;
+      height: 205px;
       max-width: 1180px;
       width: 100%;
     }
