@@ -496,7 +496,7 @@ export default {
 
 .quests::v-deep {
   .GMap__Wrapper {
-    height: 435px;
+    height: 205px;
   }
   .ctm-field__left {
     padding-top: 6px;

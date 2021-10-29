@@ -187,7 +187,7 @@ export default {
 </script>
 
 <style>
-.GMap__Wrapper{
+.GMap__Wrapper {
   width: 100%;
   height: 205px;
 }
