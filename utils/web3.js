@@ -253,7 +253,7 @@ export const initWeb3Modal = async (chain) => {
     } else {
       walletOptions = {
         rpc: {
-          56: 'https://bsc-dataseed1.ninicoin.io',
+          56: 'https://bsc-dataseed.binance.org/',
         },
         network: 'binance',
       };
