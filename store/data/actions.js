@@ -3,13 +3,13 @@ export default {
     const { result } = await this.$axios.$get('/v1/user/me/chats', { params });
 
     result.chats.forEach((chat) => {
-      const indexOfMe = chat.members.indexOf((member) => member.id === rootState.user.userData.id);
-      chat.members.splice(indexOfMe, 1);
+      chat.userMembers = chat.userMembers.filter((member) => member.id !== rootState.user.userData.id);
+      chat.isUnread = chat.meMember.unreadCountMessages > 0;
     });
     commit('setChatsList', result);
   },
-  async getMessagesList({ commit, rootState }, { params, chatId }) {
-    const { result } = await this.$axios.$get(`/v1/user/me/chat/${chatId}/messages`, { params });
+  async getMessagesList({ commit, rootState }, { config, chatId }) {
+    const { result } = await this.$axios.$get(`/v1/user/me/chat/${chatId}/messages`, config);
     const myId = rootState.user.userData.id;
 
     result.messages.reverse();
@@ -17,7 +17,7 @@ export default {
       message.itsMe = message.sender.id === myId;
     });
 
-    if (params.offset) {
+    if (config.params.offset) {
       result.messages = result.messages.concat(rootState.data.messages.list);
     }
 
@@ -27,11 +27,35 @@ export default {
     this.$axios.$post(`/v1/user/${userId}/send-message`, config);
   },
   async handleSendMessage({ commit }, { chatId, config }) {
-    const response = await this.$axios.$post(`/v1/chat/${chatId}/send-message`, config);
+    const response = await this.$wsChat.$post(`/api/v1/chat/${chatId}/send-message`, config);
     return response;
   },
   async uploadFile({ commit }, config) {
     const { result } = await this.$axios.$post('/v1/storage/get-upload-link', config);
+    return result;
+  },
+  async setMessageAsRead({ commit }, { config, chatId }) {
+    const { result } = await this.$axios.$post(`/v1/read/message/${chatId}`, config);
+    return result;
+  },
+  async setStarForChat({ commit }, chatId) {
+    const { result } = await this.$axios.$post(`/v1/user/me/chat/${chatId}/star`);
+    commit('setChatStarVal', { chatId, val: true });
+    return result;
+  },
+  async removeStarForChat({ commit }, chatId) {
+    const { result } = await this.$axios.$delete(`/v1/user/me/chat/${chatId}/star`);
+    commit('setChatStarVal', { chatId, val: false });
+    return result;
+  },
+  async setStarForMessage({ commit }, messageId) {
+    const { result } = await this.$axios.$post(`/v1/user/me/chat/message/${messageId}/star`);
+    commit('setMessageStarVal', { messageId, val: true });
+    return result;
+  },
+  async removeStarForMessage({ commit }, messageId) {
+    const { result } = await this.$axios.$delete(`/v1/user/me/chat/message/${messageId}/star`);
+    commit('setMessageStarVal', { messageId, val: false });
     return result;
   },
 };

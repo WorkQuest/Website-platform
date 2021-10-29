@@ -78,7 +78,12 @@
                 class="message__star-cont"
                 :class="{'message__star-cont_left' : message.itsMe}"
               >
-                {{}}
+                <img
+                  class="star"
+                  :class="{'star_checked' : message.star}"
+                  alt=""
+                  @click="handleChangeStarVal(message)"
+                >
               </div>
             </div>
           </div>
@@ -179,6 +184,7 @@ export default {
       messages: 'data/getMessages',
       userData: 'user/getUserData',
       lastMessageId: 'data/getLastMessageId',
+      chats: 'data/getChats',
     }),
   },
   async mounted() {
@@ -192,6 +198,7 @@ export default {
 
     this.SetLoader(true);
     await this.getMessages();
+    await this.readMessages();
     this.scrollToBottom();
     this.SetLoader(false);
     const isChatNotificationShown = !!localStorage.getItem('isChatNotificationShown');
@@ -201,6 +208,25 @@ export default {
     this.$store.commit('data/setMessagesList', { messages: [], count: 0, chatId: '' });
   },
   methods: {
+    handleChangeStarVal(message) {
+      const messageId = message.id;
+      this.$store.dispatch(`data/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, messageId);
+    },
+    async readMessages() {
+      const messages = this.messages.list;
+      const chats = this.chats.list;
+      const chatId = this.$route.params.id;
+
+      if (!messages.length || chats.some((chat) => chat.id === chatId && !chat.isUnread)) return;
+
+      const payload = {
+        config: {
+          messageId: messages[messages.length - 1].id,
+        },
+        chatId,
+      };
+      await this.$store.dispatch('data/setMessageAsRead', payload);
+    },
     async getFiles(ev, validate) {
       const { files } = ev.target;
       const validFiles = [];
@@ -245,9 +271,12 @@ export default {
     },
     async getMessages() {
       const payload = {
-        params: this.filter,
+        config: {
+          params: this.filter,
+        },
         chatId: this.$route.params.id,
       };
+
       try {
         await this.$store.dispatch('data/getMessagesList', payload);
       } catch (e) {
@@ -522,7 +551,7 @@ export default {
   width: 70%;
   display: grid;
   grid-template-columns: 43px minmax(auto, max-content) max-content;
-  gap: 10px;
+  gap: 20px;
   height: max-content;
 
   &_right {
@@ -532,7 +561,6 @@ export default {
   }
 
   &__star-cont {
-    visibility: hidden;
     &_left {
       grid-column: 1;
       grid-row: 1;
@@ -671,26 +699,18 @@ export default {
 }
 
 .star {
-  &__default {
+  cursor: pointer;
+  display: flex;
+  height: 24px;
+  width: 24px;
+  background: url("~assets/img/ui/star_simple.svg");  // переделать на сорцы (атрибут)
 
-    display: flex;
+  &_checked {
+    background: url("~assets/img/ui/star_checked.svg"); // переделать на сорцы (атрибут)
   }
-  &__hover {
-    width: 22px !important;
-    display: none;
-  }
-  &__checked {
-    width: 22px !important;
-  }
+
   &:hover {
-    .star {
-      &__hover {
-        display: block;
-      }
-      &__default {
-        display: none;
-      }
-    }
+    background: url("~assets/img/ui/star_hover.svg"); // переделать на сорцы (атрибут)
   }
 }
 

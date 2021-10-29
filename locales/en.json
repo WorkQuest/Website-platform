@@ -1249,8 +1249,8 @@
   "chat": {
     "openDispute": "Open dispute",
     "approveQuest": "Approve quest",
-    "favoriteMessages": "Favorite messages",
-    "favoriteChats": "Favorite chats",
+    "starredMessage": "Starred message",
+    "starredChats": "Starred chats",
     "createGroupChat": "Create group chat",
     "favorite": "Favorite",
     "messages": "Messages",

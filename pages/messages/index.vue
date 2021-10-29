@@ -24,8 +24,8 @@
                 <div class="chat__row">
                   <div class="chat__avas-cont">
                     <div
-                      v-for="user in chat.members"
-                      :key="user.id"
+                      v-for="user in chat.userMembers"
+                      :key="user.userId"
                       class="chat__ava-cont"
                     >
                       <img
@@ -36,13 +36,13 @@
                     </div>
                   </div>
                   <div class="chat__title chat__title_bold">
-                    {{ chat.members.length > 1 ? 'Group Chat' : chat.members[0].firstName + ' ' + chat.members[0].lastName }}
+                    {{ chat.userMembers.length > 1 ? 'Group Chat' : chat.userMembers[0].firstName + ' ' + chat.userMembers[0].lastName }}
                   </div>
                   <div
-                    v-if="chat.members.length > 1 || (chat.members[0].additionalInfo && chat.members[0].additionalInfo.company)"
+                    v-if="chat.userMembers.length > 1 || (chat.userMembers[0].additionalInfo && chat.userMembers[0].additionalInfo.company)"
                     class="chat__title chat__title_gray"
                   >
-                    {{ chat.members.length > 1 ? $t('chat.group') : chat.members[0].additionalInfo.company }}
+                    {{ chat.userMembers.length > 1 ? $t('chat.group') : chat.userMembers[0].additionalInfo.company }}
                   </div>
                 </div>
                 <!--                <div class="chat__row">-->
@@ -69,30 +69,32 @@
                 </div>
               </div>
               <div class="chat__status">
-                <div class="chat__unread-dot" />
-                <!--                <div-->
-                <!--                  v-if="isHideStar(chat.type)"-->
-                <!--                  class="block__icon block__icon_fav star"-->
-                <!--                  @click="item.isFavourite = !item.isFavourite"-->
-                <!--                >-->
-                <!--                  <img-->
-                <!--                    class="star__hover"-->
-                <!--                    src="~assets/img/ui/star_hover.svg"-->
-                <!--                    alt=""-->
-                <!--                  >-->
-                <!--                  <img-->
-                <!--                    v-if="item.isFavourite"-->
-                <!--                    class="star__checked"-->
-                <!--                    src="~assets/img/ui/star_checked.svg"-->
-                <!--                    alt=""-->
-                <!--                  >-->
-                <!--                  <img-->
-                <!--                    v-else-->
-                <!--                    class="star__default"-->
-                <!--                    src="~assets/img/ui/star_simple.svg"-->
-                <!--                    alt=""-->
-                <!--                  >-->
-                <!--                </div>-->
+                <div
+                  v-if="chat.isUnread"
+                  class="chat__unread-dot"
+                />
+                <div
+                  class="block__icon block__icon_fav star"
+                  @click="handleChangeStarVal($event, chat)"
+                >
+                  <img
+                    class="star__hover"
+                    src="~assets/img/ui/star_hover.svg"
+                    alt=""
+                  >
+                  <img
+                    v-if="chat.star"
+                    class="star__checked"
+                    src="~assets/img/ui/star_checked.svg"
+                    alt=""
+                  >
+                  <img
+                    v-else
+                    class="star__default"
+                    src="~assets/img/ui/star_simple.svg"
+                    alt=""
+                  >
+                </div>
               </div>
             </div>
           </div>
@@ -130,14 +132,19 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    handleChangeStarVal(ev, chat) {
+      ev.stopPropagation();
+      const chatId = chat.id;
+      this.$store.dispatch(`data/${chat.star ? 'removeStarForChat' : 'setStarForChat'}`, chatId);
+    },
     testCreateChat() {
       const payload = {
         config: {
-          text: 'Hello! It it test message',
+          text: 'Hello! It is test message',
           medias: [],
         },
-        userId: '128ddf57-94d3-4b66-867b-550652172ac0',
-        // userId: '8407b757-95b3-4862-95b6-e6d8d6d03341', // исполнитель
+        // userId: '128ddf57-94d3-4b66-867b-550652172ac0',
+        userId: '8407b757-95b3-4862-95b6-e6d8d6d03341', // исполнитель
       };
       try {
         this.$store.dispatch('data/handleCreateChat', payload);
@@ -150,9 +157,6 @@ export default {
     },
     handleSelChat(chatId) {
       this.$router.push(`/messages/${chatId}`);
-    },
-    isHideStar(type) {
-      return !(type === 4 || type === 3);
     },
   },
 };
@@ -200,13 +204,11 @@ export default {
     gap: 15px;
   }
   &__status {
-    position: relative;
     display: grid;
+    align-content: space-around;
     justify-items: center;
-    align-items: center;
   }
   &__unread-dot {
-    position: absolute;
     height: 8px;
     width: 8px;
     border-radius: 50%;

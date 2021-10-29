@@ -13,10 +13,10 @@
           <div class="chat-menu__items">
             <template v-if="$route.name === 'messages'">
               <div class="chat-menu__item">
-                {{ $t('chat.favoriteMessages') }}
+                {{ $t('chat.starredMessage') }}
               </div>
               <div class="chat-menu__item">
-                {{ $t('chat.favoriteChats') }}
+                {{ $t('chat.starredChats') }}
               </div>
               <div class="chat-menu__item">
                 {{ $t('chat.favorite') }}
