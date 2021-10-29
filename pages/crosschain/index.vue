@@ -344,8 +344,9 @@ export default {
     },
     async connectToMetamask() {
       if (!this.isConnected) {
-        console.log(this.miningPoolId);
-        await this.$store.dispatch('web3/connect');
+        this.miningPoolId = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
+        localStorage.setItem('miningPoolId', this.miningPoolId);
+        await this.$store.dispatch('web3/connect', this.miningPoolId);
       }
     },
     async checkMiningPoolId() {
