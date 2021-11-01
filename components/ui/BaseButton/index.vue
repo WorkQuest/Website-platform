@@ -197,14 +197,14 @@ export default {
       background: $blue;
     }
   }
-  &_max{
+  &_max {
     background-color: $black0;
     color: $blue;
     font-weight: 600;
     font-size: 16px;
     height:40px;
     line-height: 130%;
-    &:hover{
+    &:hover {
       background-color: $black0;
     }
   }
@@ -287,7 +287,8 @@ export default {
   }
   &_disabled {
     pointer-events: none !important;
-    background: #D1D1CF !important;
+    color: $black200 !important;
+    background: $black0 !important;
   }
   &_outline {
     width: 100%;
@@ -332,10 +333,10 @@ export default {
       background: $black100 !important;
     }
   }
-  &_add{
+  &_add {
     background-color: $white;
     color: $blue;
-    &:hover{
+    &:hover {
       background-color: $blue;
       color: $white;
     }
