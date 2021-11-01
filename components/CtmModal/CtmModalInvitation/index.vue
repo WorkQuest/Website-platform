@@ -42,6 +42,7 @@
             <base-dd
               v-model="questIndex"
               type="gray"
+              data-type="object"
               :items="questList.quests"
               :label="$t('modals.chooseQuest')"
             />
