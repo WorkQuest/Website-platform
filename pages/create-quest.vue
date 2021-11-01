@@ -107,7 +107,7 @@
                     :key="i"
                     class="skill__badge"
                   >
-                    {{ item }}
+                    {{ item.name }}
                     <button
                       class="skill__remove"
                       @click="removeSkillToBadge(item, key)"
@@ -185,6 +185,7 @@
             <textarea
               id="textarea"
               v-model="textarea"
+              rules="required"
               class="page__textarea"
               :placeholder="$t('quests.questDesc')"
             />
@@ -498,10 +499,12 @@ export default {
       const specs = {
         titles: [],
         skills: [],
+        index: [],
       };
       for (let i = 1; i < specializations; i += 1) {
         specs.skills.push(this.$t(`settings.specializations.${i}.sub`));
         specs.titles.push(this.$t(`settings.specializations.${i}.title`));
+        specs.index.push(i);
       }
       return specs;
     },
@@ -590,7 +593,10 @@ export default {
     },
     addSkillToBadge(event, object, index, key) {
       if (!this.selectedSkills[key].includes(object[index]) && this.selectedSkills[key].length <= 4) {
-        this.selectedSkills[key].push(object[index]);
+        this.selectedSkills[key].push({
+          name: object[index],
+          index,
+        });
       }
     },
     removeSkillToBadge(skillName, key) {
@@ -649,12 +655,15 @@ export default {
       }
     },
     async toCreateQuest() {
-      const specAndSkills = {};
+      const specAndSkills = [];
       // eslint-disable-next-line guard-for-in,no-restricted-syntax
       for (const spec in this.specIndex) {
         if (this.specIndex[spec] !== -1) {
-          const specName = this.specializations.titles[this.specIndex[spec]];
-          specAndSkills[specName] = this.selectedSkills[spec];
+          const specIndex = this.specializations.index[this.specIndex[spec]];
+          // eslint-disable-next-line guard-for-in,no-restricted-syntax
+          for (const skill of this.selectedSkills[spec]) {
+            specAndSkills.push(`${specIndex}.${specIndex}0${skill.index}`);
+          }
         }
       }
       await this.createQuest(specAndSkills);
@@ -671,7 +680,7 @@ export default {
         medias: [],
         adType: 0,
         locationPlaceName: this.address,
-        skillFilters: specAndSkills,
+        specializationKeys: specAndSkills,
         location: {
           longitude: this.coordinates.lng,
           latitude: this.coordinates.lat,
@@ -682,7 +691,7 @@ export default {
         if (response) {
           this.showModalCreatedQuest();
           this.showToastCreated();
-          await this.$router.push(`/quests/${response.result.id}`);
+          await this.$router.push(`/quests/${response.id}`);
           await this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
         }
       } catch (e) {

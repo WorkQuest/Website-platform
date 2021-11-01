@@ -44,7 +44,7 @@ export default {
       default: '',
     },
     disabled: {
-      type: Boolean,
+      type: [Boolean, String],
       default: false,
     },
     mode: {

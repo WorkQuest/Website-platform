@@ -1,5 +1,6 @@
 export default () => ({
   isConnected: false,
+  isHandlingMetamaskStatus: false,
   tokens: {
     exampleContract: {},
     exampleWeb3: {},

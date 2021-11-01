@@ -25,7 +25,7 @@
           </div>
           <div class="link-cont">
             <div class="link-cont__link link-cont__link_gray">
-              {{ templateLink }}
+              {{ getPoolAddress() }}
             </div>
             <button
               type="button"
@@ -35,11 +35,16 @@
             </button>
           </div>
         </div>
-        <div class="link-cont">
+        <div
+          v-if="poolData && !poolData.isNative"
+          class="link-cont"
+        >
           <div class="link-cont__link">
             {{ $t('staking.stakeTokenAddress') }}
           </div>
-          <button
+          <a
+            :href="etherscanRef"
+            target="_blank"
             type="button"
           >
             <img
@@ -47,13 +52,18 @@
               alt=""
               class="link-cont__icon"
             >
-          </button>
+          </a>
         </div>
-        <div class="link-cont">
+        <div
+          v-if="poolData && !poolData.isNative"
+          class="link-cont"
+        >
           <div class="link-cont__link">
             {{ $t('staking.rewardTokenAddress') }}
           </div>
-          <button
+          <a
+            :href="etherscanRef"
+            target="_blank"
             type="button"
           >
             <img
@@ -61,7 +71,7 @@
               alt=""
               class="link-cont__icon"
             >
-          </button>
+          </a>
         </div>
       </div>
       <div class="staking-page__content">
@@ -119,11 +129,11 @@
         </div>
         <div class="info-block">
           <div class="info-block__name_bold">
-            {{ $t('staking.withdrawal') }}
+            {{ $t('staking.stake') }}
           </div>
           <div class="info-block__info-cards">
             <div
-              v-for="(item, i) in withdrawalCards"
+              v-for="(item, i) in stakeCards"
               :key="i"
               class="info-card"
             >
@@ -136,14 +146,20 @@
             </div>
           </div>
           <div class="info-block__btns-cont">
-            <base-btn>
+            <base-btn @click="handleAutoRenewal">
               {{ $t('staking.autoRenewal') }}
             </base-btn>
             <base-btn
               mode="outline"
-              @click="showWithdrawalModal"
+              @click="showUnstakeModal"
             >
-              {{ $t('staking.withdraw') }}
+              {{ $t('staking.unstake') }}
+            </base-btn>
+            <base-btn
+              mode="outline"
+              @click="showStakeModal"
+            >
+              {{ $t('staking.stake') }}
             </base-btn>
           </div>
         </div>
@@ -153,119 +169,349 @@
 </template>
 
 <script>
+import moment from 'moment';
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { Chains, NativeTokenSymbolByChainId, StakingTypes } from '~/utils/enums';
 
 export default {
+  name: 'StakingPool',
   data() {
     return {
-      templateLink: '0xnf8o29837hrvbn42o37hsho3b74thb3',
-      btns: [
-        {
-          name: this.$t('staking.addLiquidity'),
-          clickFunc: () => {
-            this.ShowModal({
-              key: modals.addLiquidity,
-            });
-          },
-        },
-        {
-          name: this.$t('staking.removeLiquidity'),
-          clickFunc: () => {
-            this.ShowModal({
-              key: modals.removeLiquidity,
-            });
-          },
-        },
-      ],
-      cards: [
-        {
-          title: this.$tc('staking.wqtCount', '255.5'),
-          subtitle: this.$t('staking.totalStaked'),
-        },
-        {
-          title: this.$tc('staking.wqtCount', '2,150.26'),
-          subtitle: this.$t('staking.totalDistributed'),
-        },
-      ],
-      stakingCards: [
-        {
-          name: this.$t('staking.stakingCards.distributionTime'),
-          about: this.$t('staking.stakingCards.distributionTimeData'),
-        },
-        {
-          name: this.$t('staking.stakingCards.rewardTotal'),
-          about: this.$t('staking.stakingCards.rewardTotalData'),
-        },
-        {
-          name: this.$t('staking.stakingCards.takePeriod'),
-          about: this.$t('staking.stakingCards.takePeriodData'),
-        },
-        {
-          name: this.$t('staking.stakingCards.claimPeriod'),
-          about: this.$t('staking.stakingCards.claimPeriodData'),
-        },
-        {
-          name: this.$t('staking.stakingCards.duration'),
-          about: this.$t('staking.stakingCards.durationData'),
-        },
-      ],
-      userInfoCards: [
-        {
-          name: this.$t('staking.userInformationCards.staked'),
-          about: this.$tc('staking.wqtCount', '10 000'),
-        },
-        {
-          name: this.$t('staking.userInformationCards.stakeBalance'),
-          about: this.$tc('staking.wqtCount', '10 000'),
-        },
-        {
-          name: this.$t('staking.userInformationCards.claimed'),
-          about: this.$tc('staking.wqtCount', '10 000'),
-        },
-      ],
-      withdrawalCards: [
-        {
-          name: this.$t('staking.withdrawalCards.displayedInTheCurrentPeriod'),
-          about: this.$t('staking.withdrawalCards.displayedInTheCurrentPeriodData'),
-        },
-        {
-          name: this.$t('staking.withdrawalCards.withdrawalLimit'),
-          about: this.$t('staking.withdrawalCards.withdrawalLimitData'),
-        },
-        {
-          name: this.$t('staking.withdrawalCards.periodUpdate'),
-          about: this.$t('staking.withdrawalCards.periodUpdateData'),
-        },
-      ],
+      poolData: null,
+      userInfo: null,
+      firstLoading: true,
+      updateInterval: null,
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      isConnected: 'web3/isConnected',
     }),
+    slug() {
+      return this.$route.params.id;
+    },
+    stakeDurationIsOver() {
+      return this.userInfo && moment.duration(moment(this.userInfo.date).diff(moment.now())).asMilliseconds() < 0;
+    },
+    cards() {
+      if (!this.poolData) {
+        return [
+          {
+            subtitle: this.$t('staking.totalStaked'),
+          },
+          {
+            subtitle: this.$t('staking.totalDistributed'),
+          },
+        ];
+      }
+      return [
+        {
+          title: this.$tc(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, this.poolData.totalStaked),
+          subtitle: this.$t('staking.totalStaked'),
+        },
+        {
+          title: this.$tc(`staking.${this.poolData.tokenSymbol || this.slug}Count`, this.poolData.totalDistributed),
+          subtitle: this.$t('staking.totalDistributed'),
+        },
+      ];
+    },
+    stakingCards() {
+      if (!this.poolData) {
+        return [
+          {
+            name: this.$t('staking.stakingCards.distributionTime'),
+          },
+          {
+            name: this.$t('staking.stakingCards.rewardTotal'),
+          },
+          {
+            name: this.$t('staking.stakingCards.takePeriod'),
+          },
+          {
+            name: this.$t('staking.stakingCards.claimPeriod'),
+          },
+        ];
+      }
+      return [
+        {
+          name: this.$t('staking.stakingCards.distributionTime'),
+          about: this.$t('staking.min', { n: this.poolData.distributionTime }),
+        },
+        {
+          name: this.$t('staking.stakingCards.rewardTotal'),
+          about: `${this.poolData.rewardTotal} ${this.poolData.tokenSymbol}`,
+        },
+        {
+          name: this.$t('staking.stakingCards.takePeriod'),
+          about: this.$t('staking.hours', { n: this.poolData.stakePeriod }),
+        },
+        {
+          name: this.$t('staking.stakingCards.claimPeriod'),
+          about: this.$t('staking.hours', { n: this.poolData.claimPeriod }),
+        },
+      ];
+    },
+    userInfoCards() {
+      if (!this.userInfo) {
+        return [
+          {
+            name: this.$t('staking.userInformationCards.staked'),
+          },
+          {
+            name: this.$t('staking.userInformationCards.yourBalance'),
+          },
+          {
+            name: this.$t('staking.userInformationCards.claimed'),
+          },
+        ];
+      }
+      const data = [
+        {
+          name: this.$t('staking.userInformationCards.staked'),
+          about: this.$tc(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, this.userInfo.staked),
+        },
+        {
+          name: this.$t('staking.userInformationCards.yourBalance'),
+          about: this.$tc(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, this.userInfo.balance),
+        },
+        {
+          name: this.$t('staking.userInformationCards.claimed'),
+          about: this.$tc(`staking.${this.poolData.tokenSymbol || this.slug}Count`, this.userInfo.claim),
+        },
+      ];
+      if (this.userInfo.date && this.userInfo.staked !== '0') {
+        const days = Math.ceil(moment.duration(moment(this.userInfo.date).diff(moment.now())).asDays());
+        data.push({
+          name: this.$t('staking.stakingCards.duration'),
+          about: this.$t('staking.days', { n: days >= 0 ? days : 0 }),
+        });
+      }
+      return data;
+    },
+    stakeCards() {
+      if (!this.poolData) {
+        return [
+          {
+            name: this.$t('staking.stakeCards.stakeMin'),
+          },
+          {
+            name: this.$t('staking.stakeCards.stakeLimit'),
+          },
+          {
+            name: this.$t('staking.stakeCards.periodUpdate'),
+          },
+        ];
+      }
+      return [
+        {
+          name: this.$t('staking.stakeCards.stakeMin'),
+          about: this.$t(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, { n: this.poolData.minStake }),
+        },
+        {
+          name: this.$t('staking.stakeCards.stakeLimit'),
+          about: this.$t(`staking.${this.poolData.stakeTokenSymbol || this.slug}Count`, { n: this.poolData.maxStake }),
+        },
+        {
+          name: this.$t('staking.stakeCards.periodUpdate'),
+          about: this.$t('staking.hours', { n: this.poolData.stakePeriod }),
+        },
+      ];
+    },
+    etherscanRef() {
+      if (!this.poolData) return '/';
+      return (process.env.PROD === 'true') ? `https://etherscan.io/address/${this.poolData.rewardTokenAddress}`
+        : `https://rinkeby.etherscan.io/address/${this.poolData.rewardTokenAddress}`;
+    },
+  },
+  watch: {
+    async isConnected(newValue) {
+      if (this.firstLoading) return;
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
+      if (newValue && rightChain) {
+        await this.initPage();
+      } else {
+        this.userInfo = null;
+        this.poolData = null;
+        clearInterval(this.updateInterval);
+      }
+    },
   },
   async mounted() {
-    this.SetLoader(true);
-    this.SetLoader(false);
+    await this.initPage();
+  },
+  async beforeDestroy() {
+    await this.$store.dispatch('web3/unsubscribeStakingActions');
+    clearInterval(this.updateInterval);
   },
   methods: {
+    async initPage() {
+      this.SetLoader(true);
+      await this.checkMetamaskStatus();
+      await this.getPoolData();
+      await this.getUserInfo();
+      const events = this.slug === StakingTypes.WQT
+        ? ['tokensStaked', 'tokensClaimed', 'tokensUnstaked']
+        : ['Staked', 'Claimed', 'Unstaked'];
+      await this.$store.dispatch('web3/fetchStakingActions', {
+        stakingType: this.slug,
+        events,
+        callback: (method, tx) => {
+          this.getPoolData();
+          this.getUserInfo();
+        },
+      });
+      this.updateInterval = setInterval(() => this.getUserInfo(), 30000);
+      this.firstLoading = false;
+      this.SetLoader(false);
+    },
+    async checkMetamaskStatus() {
+      if (!this.isConnected) {
+        if (typeof window.ethereum === 'undefined') {
+          localStorage.setItem('metamaskStatus', 'notInstalled');
+          this.ShowModal({
+            key: modals.status,
+            img: '~assets/img/ui/cardHasBeenAdded.svg',
+            title: 'Please install Metamask!',
+            subtitle: 'Please click install...',
+            button: 'Install',
+            type: 'installMetamask',
+          });
+        } else {
+          localStorage.setItem('metamaskStatus', 'installed');
+          const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
+          if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: Chains.ETHEREUM });
+          await this.$store.dispatch('web3/connect');
+        }
+      }
+    },
+    handleAutoRenewal() {
+      this.ShowModal({
+        key: modals.status,
+        title: this.$t('staking.notification'),
+        subtitle: this.$t('staking._inDev'),
+      });
+    },
+    async getPoolData() {
+      this.poolData = await this.$store.dispatch('web3/fetchStakingInfo', { stakingType: this.slug });
+      if (this.slug === StakingTypes.WUSD) {
+        const { netId } = await this.$store.dispatch('web3/getAccount');
+        this.poolData.stakeTokenSymbol = NativeTokenSymbolByChainId[netId];
+        this.poolData.tokenSymbol = NativeTokenSymbolByChainId[netId];
+        this.poolData.isNative = true;
+      }
+    },
+    async getUserInfo() {
+      this.userInfo = await this.$store.dispatch('web3/fetchStakingUserInfo', { stakingType: this.slug, decimals: this.poolData.decimals });
+    },
+    getPoolAddress() {
+      if (this.slug === StakingTypes.WQT) return process.env.STAKING;
+      if (this.slug === StakingTypes.WUSD) return process.env.STAKING_NATIVE;
+      return '';
+    },
     handleBackToMainstaking() {
       this.$router.push('/staking');
     },
     doCopy(ev) {
       ev.stopPropagation();
-      this.$copyText(this.templateLink).then(() => {
+      this.$copyText(this.getPoolAddress()).then(() => {});
+      this.ShowModal({
+        key: modals.copiedSuccess,
       });
     },
-    showClaimModal() {
+    async showClaimModal() {
+      if (!this.userInfo || !this.poolData) return;
+      await this.checkMetamaskStatus();
+      if (this.userInfo.claim === '0') {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('staking.notification'),
+          recipient: '',
+          subtitle: this.$t('modals.nothingToClaim'),
+        });
+        return;
+      }
+      const txFeeData = await this.$store.dispatch('web3/getStakingRewardTxFee', this.slug);
+      if (txFeeData?.ok === false) {
+        await this.ShowModal({
+          key: modals.status,
+          title: this.$t('staking.notification'),
+          subtitle: this.$t('staking.cannotClaimYet'),
+        });
+        return;
+      }
       this.ShowModal({
         key: modals.claim,
+        txFee: txFeeData,
+        stakingType: this.slug,
+        rewardAmount: this.userInfo.claim,
+        tokenSymbol: this.poolData.tokenSymbol,
       });
     },
-    showWithdrawalModal() {
+    async showUnstakeModal() {
+      if (!this.userInfo || !this.poolData) return;
+      if (this.slug !== StakingTypes.WUSD && !this.stakeDurationIsOver) {
+        await this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('staking.notification'),
+          subtitle: this.$t('staking.stakeDurationIsNotOver'),
+        });
+        return;
+      }
+      if (+this.userInfo.staked === 0) {
+        await this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('staking.notification'),
+          subtitle: this.$t('staking.stakeIsEmpty'),
+        });
+        return;
+      }
+      await this.checkMetamaskStatus();
+      const stakingType = this.slug === StakingTypes.WQT ? StakingTypes.WQT : StakingTypes.WUSD;
       this.ShowModal({
-        key: modals.takeWithdraw,
+        key: modals.claimRewards,
+        type: 2,
+        stakingType,
+        decimals: this.poolData.decimals,
+        staked: this.userInfo._staked,
+      });
+    },
+    async showStakeModal() {
+      if (!this.userInfo || !this.poolData) return;
+      if (+this.userInfo.balance === 0) {
+        await this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('staking.notification'),
+          subtitle: this.$t('staking.notEnoughFunds'),
+        });
+        return;
+      }
+      if (new BigNumber(this.userInfo._staked).isGreaterThanOrEqualTo(this.poolData.maxStake)) {
+        await this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('staking.notification'),
+          subtitle: this.$t('staking.stakeLimitReached'),
+        });
+        return;
+      }
+      await this.checkMetamaskStatus();
+      this.ShowModal({
+        key: modals.claimRewards,
+        type: 1,
+        balance: this.userInfo._balance,
+        decimals: this.poolData.decimals,
+        stakingType: this.slug,
+        minStake: this.poolData.minStake === '0' ? this.poolData._minStake : this.poolData.minStake,
+        maxStake: this.poolData._maxStake,
+        staked: this.userInfo._staked,
+        alreadyStaked: +this.userInfo.staked !== 0, // for duration selecting
       });
     },
   },
@@ -295,6 +541,7 @@ export default {
 
     .head-btns {
       display: flex;
+      align-items: center;
       justify-content: space-between;
     }
 
@@ -453,6 +700,8 @@ export default {
         flex-direction: column;
         align-items: center;
         gap: 10px;
+
+        box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5px 5px rgba(0, 0, 0, 0.03), 0 2px 2px rgba(0, 0, 0, 0.025), 0 0.7px 0.7px rgba(0, 0, 0, 0.01);
       }
 
       &__name {

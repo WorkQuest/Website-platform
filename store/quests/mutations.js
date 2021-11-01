@@ -1,4 +1,16 @@
 export default {
+  setQuestListForInvitation(state, data) {
+    state.questListForInvitation = data;
+  },
+  setWorkersList(state, data) {
+    state.workersList = data;
+  },
+  setCurrentWorker(state, data) {
+    state.currentWorker = data;
+  },
+  setInfoDataMode(state, data) {
+    state.infoDataMode = data;
+  },
   setCurrentStepEditQuest(state, data) {
     state.currentStepEditQuest = data;
   },

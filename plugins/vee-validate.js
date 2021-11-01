@@ -75,6 +75,18 @@ extend('decimal', {
   message: 'Please enter correct {_field_}',
 });
 
+extend('decimalPlaces', {
+  validate(value, { places }) {
+    const regex = new RegExp(`^\\d+\\.\\d{0,${places}}$`);
+    return {
+      required: true,
+      valid: !value.toString().includes('.') || regex.test(value),
+    };
+  },
+  params: ['places'],
+  message: 'Max decimal places: {places}',
+});
+
 extend('text-title', {
   validate(value) {
     const regex = /\d{0,280}$/;

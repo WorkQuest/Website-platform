@@ -43,6 +43,8 @@ jobs:
           echo EXCHANGE_ADDRESS_RINKEBY=${{ secrets.EXCHANGE_ADDRESS_RINKEBY }} >> .env
           echo CAKE_LP_TOKEN=${{ secrets.CAKE_LP_TOKEN }} >> .env
           echo CAKE_WQT_TOKEN=${{ secrets.CAKE_WQT_TOKEN }} >> .env
+          echo STAKING=${{ secrets.STAKING }} >> .env
+          echo STAKING_NATIVE=${{ secrets.STAKING_NATIVE }} >> .env
           echo STAKING_ADDRESS_BSC=${{ secrets.STAKING_ADDRESS_BSC }} >> .env
           echo MAINNET_BSC_WQT_TOKEN=${{ secrets.MAINNET_BSC_WQT_TOKEN }} >> .env
           echo MAINNET_BSC_BRIDGE=${{ secrets.MAINNET_BSC_BRIDGE }} >> .env
@@ -119,6 +121,8 @@ jobs:
           echo EXCHANGE_ADDRESS_RINKEBY=${{ secrets.EXCHANGE_ADDRESS_RINKEBY }} >> .env
           echo CAKE_LP_TOKEN=${{ secrets.CAKE_LP_TOKEN }} >> .env
           echo CAKE_WQT_TOKEN=${{ secrets.CAKE_WQT_TOKEN }} >> .env
+          echo STAKING=${{ secrets.STAKING }} >> .env
+          echo STAKING_NATIVE=${{ secrets.STAKING_NATIVE }} >> .env
           echo STAKING_ADDRESS_BSC=${{ secrets.STAKING_ADDRESS_BSC }} >> .env
           echo MAINNET_BSC_WQT_TOKEN=${{ secrets.MAINNET_BSC_WQT_TOKEN }} >> .env
           echo MAINNET_BSC_BRIDGE=${{ secrets.MAINNET_BSC_BRIDGE }} >> .env
