@@ -121,6 +121,10 @@ body {
   margin: 0 !important;
 }
 
+#WEB3_CONNECT_MODAL_ID > div {
+  z-index: 2000;
+}
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
 }
