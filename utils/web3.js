@@ -3,6 +3,7 @@ import Web4 from '@cryptonteam/web4';
 import BigNumber from 'bignumber.js';
 import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
+import { ethers } from 'ethers';
 import * as abi from '~/abi/abi';
 import { Chains, ChainsId, StakingTypes } from '~/utils/enums';
 
@@ -620,10 +621,14 @@ export const initStackingContract = async (chain) => {
 
 // Можно ли объединить нижние методы в один?
 export const addAffiliat = async () => {
-  const v = null;
-  const r = null;
-  const s = null;
-  const _affiliat = null;
+  const templateRes = { // TODO: брать подпись с бэка
+    userId: '24b58470-49ca-4b0b-9658-2fd9d620f23b',
+    affiliateId: '8d97b56e-bf23-4d67-863d-72f975d33d25',
+    affiliateWallet: '0x50eBFe5a6Bb921c1EF7080BA5798AC75f1988c0D',
+    messageHash: '0x2a5403fd47923dd6c83a633c57715a979c0f655bb344ba9112943e43ceb5df95',
+  };
+  const { v, r, s } = ethers.utils.splitSignature(templateRes.messageHash);
+  const _affiliat = templateRes.affiliateWallet;
   const _abi = abi.WQReferral;
   const _contractAddress = process.env.WQ_REFERRAL;
   try {
@@ -631,7 +636,7 @@ export const addAffiliat = async () => {
     await contractInstance.addAffiliat(v, r, s, _affiliat);
     return success();
   } catch (e) {
-    console.log(e);
+    console.log('[Add affiliat error]', e);
     return error(500, 'Add affiliat error', e);
   }
 };

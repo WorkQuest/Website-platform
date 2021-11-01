@@ -30,6 +30,7 @@ import {
   swapWithBridge,
   getStakingDataByType,
   getStakingRewardTxFee, handleMetamaskStatus, fetchStakingActions, unsubscirbeStakingListeners, getChainIdByChain,
+  addAffiliat, calcReferral, claimReferral,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
@@ -380,10 +381,19 @@ export default {
       const rewardTotal = new BigNumber(stakingInfoEvent.rewardTotal).shiftedBy(-18).toNumber();
       const priceLP = reserveUSD / totalSupply;
       const APY = ((rewardTotal * 12) * priceWQT) / (totalStaked * priceLP);
-      const profit = ((payload.stakedAmount * priceLP) * APY) / priceWQT;
-      return profit;
+      return ((payload.stakedAmount * priceLP) * APY) / priceWQT; // profit
     } catch (err) {
       return err;
     }
+  },
+
+  async addAffiliat() {
+    await addAffiliat();
+  },
+  async calcReferral() {
+    await calcReferral();
+  },
+  async claimReferral() {
+    await claimReferral();
   },
 };

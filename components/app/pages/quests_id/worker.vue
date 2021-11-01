@@ -127,6 +127,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { ChainsId } from '~/utils/enums';
 
 export default {
   name: 'QuestIdWorker',
@@ -149,6 +150,7 @@ export default {
       userData: 'user/getUserData',
       userRole: 'user/getUserRole',
       infoDataMode: 'quests/getInfoDataMode',
+      isConnected: 'web3/isConnected',
     }),
   },
   async mounted() {
@@ -184,15 +186,24 @@ export default {
       this.SetLoader(false);
     },
     async acceptWorkOnQuest() {
-      this.SetLoader(true);
-      await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id);
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Quest info',
-        subtitle: 'Work on quest accepted!',
-      });
-      await this.$store.dispatch('quests/setInfoDataMode', 2);
+      await this.$store.dispatch('web3/connect');
+      if (this.isConnected) {
+        this.SetLoader(true);
+        const isRightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', ChainsId.ETH_TEST); // TODO: change to our net
+        if (!isRightChain) {
+          await this.$store.dispatch('web3/goToChain', ChainsId.ETH_TEST);
+        }
+        this.SetLoader(true);
+        await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id);
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/questAgreed.svg'),
+          title: 'Quest info',
+          subtitle: 'Work on quest accepted!',
+        });
+        await this.$store.dispatch('quests/setInfoDataMode', 2);
+        await this.$store.dispatch('web3/addAffiliat');
+      }
       this.SetLoader(false);
     },
     async rejectWorkOnQuest() {
@@ -208,15 +219,24 @@ export default {
       this.SetLoader(false);
     },
     async completeWorkOnQuest() {
-      this.SetLoader(true);
-      await this.$store.dispatch('quests/completeWorkOnQuest', this.questData.id);
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Quest info',
-        subtitle: 'Work on quest completed! Please, wait your employer!',
-      });
-      await this.$store.dispatch('quests/setInfoDataMode', 4);
+      await this.$store.dispatch('web3/connect');
+      if (this.isConnected) {
+        this.SetLoader(true);
+        const isRightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', ChainsId.ETH_TEST);
+        if (!isRightChain) {
+          await this.$store.dispatch('web3/goToChain', ChainsId.ETH_TEST);
+        }
+        await this.$store.dispatch('quests/completeWorkOnQuest', this.questData.id);
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/questAgreed.svg'),
+          title: 'Quest info',
+          subtitle: 'Work on quest completed! Please, wait your employer!',
+        });
+        await this.$store.dispatch('quests/setInfoDataMode', 4);
+      } else {
+        // TODO: modal "need to connect wallet"
+      }
       this.SetLoader(false);
     },
     // async getResponseId() {
