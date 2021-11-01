@@ -597,10 +597,10 @@ export const initStackingContract = async (chain) => {
   let stakingAddress;
   let websocketProvider;
   if (chain === 'ETH') {
-    stakingAddress = process.env.MAINNET_ETH_STAKING;
+    stakingAddress = process.env.PROD ? process.env.ETHEREUM_MINING : '0x85fCeFe4b3646E74218793e8721275D3448b76F4';
     websocketProvider = process.env.ETHEREUM_WS_INFURA;
   } else {
-    stakingAddress = process.env.MAINNET_BSC_STAKING;
+    stakingAddress = process.env.PROD ? process.env.BSC_MINING : '0x7F31d9c6Cf99DDB89E2a068fE7B96d230b9D19d1';
     websocketProvider = process.env.BSC_WS_MORALIS;
   }
   const liquidityMiningProvider = new Web3(new Web3.providers.WebsocketProvider(websocketProvider, {
