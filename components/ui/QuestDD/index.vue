@@ -10,7 +10,7 @@
       <span
         :class="[
           { 'icon-more_horizontal': userRole === 'employer' },
-          { 'share_outline': userRole === 'worker' },
+          { 'icon-share_outline': userRole === 'worker' },
         ]"
       />
       <transition name="fade">
@@ -128,6 +128,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.icon {
+  color: $black500;
+  font-size: 19px;
+  &-more_horizontal {
+    @extend .icon;
+  }
+  &-share_outline {
+    @extend .icon;
+  }
+}
 
 .quest {
   &__button {
@@ -141,15 +151,15 @@ export default {
     align-items: center;
     justify-content: center;
     border-radius: 6px;
-    width: 43px;
-    height: 43px;
+    width: 20px;
+    height: 20px;
     border: 1px solid transparent;
     &:hover {
       color: $black800;
     }
     &_menu {
-      width: 40px;
-      height: 40px;
+      width: 30px;
+      height: 30px;
     }
   }
 }

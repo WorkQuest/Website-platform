@@ -450,8 +450,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Quest info',
-        subtitle: 'Quest closed!',
+        title: this.$t('quests.questInfo'),
+        subtitle: this.$t('quests.questClosed!'),
       });
       await this.$router.push('/my');
       this.SetLoader(false);
@@ -462,8 +462,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Quest info',
-        subtitle: 'Completed work on quest accepted!',
+        title: this.$t('quests.questInfo'),
+        subtitle: this.$t('quests.completedWorkAccepted'),
       });
       await this.$store.dispatch('quests/getCurrentStepEditQuest', 9);
       // Проверить
@@ -475,8 +475,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Quest info',
-        subtitle: 'Completed work on quest rejected!',
+        title: this.$t('quests.questInfo'),
+        subtitle: this.$t('quests.completedWorkRejected'),
       });
       await this.$store.dispatch('quests/setInfoDataMode', 9);
       // Проверить

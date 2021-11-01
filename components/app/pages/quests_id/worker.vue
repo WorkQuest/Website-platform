@@ -106,7 +106,7 @@
         class="price__container"
       >
         <span class="price__value">
-          {{ questData.price }} {{ $t('quests.wusd') }}
+          {{ questData.price }}{{ $t('quests.wusd') }}
         </span>
       </div>
       <div
@@ -151,11 +151,12 @@ export default {
       infoDataMode: 'quests/getInfoDataMode',
     }),
   },
-  async mounted() {
-    this.SetLoader(true);
+  async created() {
     await this.getResponsesToQuestForAuthUser();
     await this.initData();
-    // await this.getResponseId();
+  },
+  async mounted() {
+    this.SetLoader(true);
     this.SetLoader(false);
   },
   methods: {
@@ -189,8 +190,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Quest info',
-        subtitle: 'Work on quest accepted!',
+        title: this.$t('quests.questInfo'),
+        subtitle: this.$t('quests.workOnQuestAccepted'),
       });
       await this.$store.dispatch('quests/setInfoDataMode', 2);
       this.SetLoader(false);
@@ -201,8 +202,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Quest info',
-        subtitle: 'Work on quest rejected!',
+        title: this.$t('quests.questInfo'),
+        subtitle: this.$t('quests.workOnQuestRejected'),
       });
       await this.$store.dispatch('quests/setInfoDataMode', 5);
       this.SetLoader(false);
@@ -213,8 +214,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Quest info',
-        subtitle: 'Work on quest completed! Please, wait your employer!',
+        title: this.$t('quests.questInfo'),
+        subtitle: this.$t('quests.pleaseWaitEmp'),
       });
       await this.$store.dispatch('quests/setInfoDataMode', 4);
       this.SetLoader(false);
