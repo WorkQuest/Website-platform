@@ -10,9 +10,15 @@
       <div class="chats-container">
         <div class="chats-container__header">
           <div>{{ $t('chat.chat') }}</div>
-          <chat-menu />
+          <chat-menu
+            :starred="filter.starred"
+            @change="handleSortedChats"
+          />
         </div>
-        <div class="chats-container__list">
+        <div
+          v-if="chats.list.length"
+          class="chats-container__list"
+        >
           <div
             v-for="chat in chats.list"
             :key="chat.id"
@@ -99,6 +105,12 @@
             </div>
           </div>
         </div>
+        <div
+          v-else
+          class="chats-container__no-chats"
+        >
+          {{ $t('chats.noChats') }}
+        </div>
       </div>
     </div>
   </div>
@@ -118,6 +130,7 @@ export default {
       filter: {
         limit: 10,
         offset: 0,
+        starred: false,
       },
     };
   },
@@ -132,6 +145,14 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    handleSortedChats() {
+      this.filter = {
+        limit: 10,
+        offset: 0,
+        starred: !this.filter.starred,
+      };
+      this.getChats();
+    },
     handleChangeStarVal(ev, chat) {
       ev.stopPropagation();
       const chatId = chat.id;
@@ -185,6 +206,13 @@ export default {
     display: grid;
     grid-template-columns: 1fr max-content;
     align-items: center;
+  }
+
+  &__no-chats {
+    display: flex;
+    padding: 50px 10px;
+    justify-content: center;
+    color: #8D96A2;
   }
 }
 

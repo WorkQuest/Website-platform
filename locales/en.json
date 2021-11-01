@@ -1249,8 +1249,9 @@
   "chat": {
     "openDispute": "Open dispute",
     "approveQuest": "Approve quest",
-    "starredMessage": "Starred message",
+    "starredMessages": "Starred messages",
     "starredChats": "Starred chats",
+    "allChats": "All chats",
     "createGroupChat": "Create group chat",
     "favorite": "Favorite",
     "messages": "Messages",
@@ -1259,7 +1260,8 @@
     "you": "You:",
     "invitedYou": "invited you to a quest",
     "writeYouMessage": "Write you message",
-    "group": "Group"
+    "group": "Group",
+    "noChats": "No Chats"
   },
   "settings": {
     "placeOfStudying": "Place of studying",

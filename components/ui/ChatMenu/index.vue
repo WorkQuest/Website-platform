@@ -12,14 +12,17 @@
         >
           <div class="chat-menu__items">
             <template v-if="$route.name === 'messages'">
-              <div class="chat-menu__item">
-                {{ $t('chat.starredMessage') }}
+              <div
+                class="chat-menu__item"
+                @click="getStarredMessages"
+              >
+                {{ $t('chat.starredMessages') }}
               </div>
-              <div class="chat-menu__item">
-                {{ $t('chat.starredChats') }}
-              </div>
-              <div class="chat-menu__item">
-                {{ $t('chat.favorite') }}
+              <div
+                class="chat-menu__item"
+                @click="changeStarredVal"
+              >
+                {{ $t(`chat.${starred ? 'allChats' : 'starredChats'}`) }}
               </div>
               <div
                 class="chat-menu__item"
@@ -51,12 +54,24 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ChatMenu',
+  props: {
+    starred: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       isShowChatMenu: false,
     };
   },
   methods: {
+    changeStarredVal() {
+      this.$emit('change');
+    },
+    getStarredMessages() {
+      this.$router.push('/messages/starred');
+    },
     showOpenADisputeModal() {
       this.ShowModal({
         key: modals.openADispute,

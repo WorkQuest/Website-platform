@@ -9,7 +9,8 @@ export default {
     commit('setChatsList', result);
   },
   async getMessagesList({ commit, rootState }, { config, chatId }) {
-    const { result } = await this.$axios.$get(`/v1/user/me/chat/${chatId}/messages`, config);
+    const method = chatId === 'starred' ? '/v1/user/me/chat/messages/star' : `/v1/user/me/chat/${chatId}/messages`;
+    const { result } = await this.$axios.$get(method, config);
     const myId = rootState.user.userData.id;
 
     result.messages.reverse();
@@ -48,12 +49,12 @@ export default {
     commit('setChatStarVal', { chatId, val: false });
     return result;
   },
-  async setStarForMessage({ commit }, messageId) {
-    const { result } = await this.$axios.$post(`/v1/user/me/chat/message/${messageId}/star`);
+  async setStarForMessage({ commit }, { messageId, chatId }) {
+    const { result } = await this.$axios.$post(`/v1/user/me/chat/${chatId}/message/${messageId}/star`);
     commit('setMessageStarVal', { messageId, val: true });
     return result;
   },
-  async removeStarForMessage({ commit }, messageId) {
+  async removeStarForMessage({ commit }, { messageId }) {
     const { result } = await this.$axios.$delete(`/v1/user/me/chat/message/${messageId}/star`);
     commit('setMessageStarVal', { messageId, val: false });
     return result;

@@ -2,7 +2,7 @@
   <div class="chat-page">
     <div class="chat-page__body">
       <h2 class="chat-page__header">
-        {{ $t('chat.messages') }}
+        {{ $t(`chat.${chatId === 'starred' ? 'starredMessages' : 'messages'}`) }}
       </h2>
       <div class="chat-container">
         <div class="chat-container__header">
@@ -16,7 +16,7 @@
           <div class="chat-container__chat-name">
             <!--            {{}}-->
           </div>
-          <ChatMenu />
+          <ChatMenu v-show="chatId !== 'starred'" />
         </div>
         <div
           ref="HandleScrollContainer"
@@ -55,7 +55,8 @@
                 </div>
                 <div
                   class="message__bubble"
-                  :class="{'message__bubble_bl' : message.itsMe}"
+                  :class="[{'message__bubble_bl' : message.itsMe}, {'message__bubble_link' : chatId === 'starred'}]"
+                  @click="goToCurrChat(message)"
                 >
                   <div class="message__title">
                     {{ message.text }}
@@ -75,15 +76,32 @@
                 </div>
               </div>
               <div
+                v-show="chatId !== 'starred'"
                 class="message__star-cont"
                 :class="{'message__star-cont_left' : message.itsMe}"
               >
-                <img
+                <div
                   class="star"
-                  :class="{'star_checked' : message.star}"
-                  alt=""
                   @click="handleChangeStarVal(message)"
                 >
+                  <img
+                    class="star__hover"
+                    src="~assets/img/ui/star_hover.svg"
+                    alt=""
+                  >
+                  <img
+                    v-if="message.star"
+                    class="star__checked"
+                    src="~assets/img/ui/star_checked.svg"
+                    alt=""
+                  >
+                  <img
+                    v-else
+                    class="star__default"
+                    src="~assets/img/ui/star_simple.svg"
+                    alt=""
+                  >
+                </div>
               </div>
             </div>
           </div>
@@ -100,7 +118,10 @@
               class="footer__scroll-svg"
             >
           </div>
-          <div class="footer__controls">
+          <div
+            v-show="chatId !== 'starred'"
+            class="footer__controls"
+          >
             <div class="chat-container__file-cont">
               <ValidationProvider
                 v-slot="{validate}"
@@ -172,11 +193,14 @@ export default {
       files: [],
       filter: {
         offset: 0,
+        // offsetTop: 0,
+        // offsetBottom: 0,
         limit: 20,
       },
       today: moment(new Date()),
       minScrollDifference: 0,
       isScrollBtnVis: false,
+      chatId: this.$route.params.id,
     };
   },
   computed: {
@@ -208,16 +232,21 @@ export default {
     this.$store.commit('data/setMessagesList', { messages: [], count: 0, chatId: '' });
   },
   methods: {
+    goToCurrChat(message) {
+      if (this.chatId !== 'starred') return;
+      this.$router.push(`/messages/${message.chatId}`);
+    },
     handleChangeStarVal(message) {
       const messageId = message.id;
-      this.$store.dispatch(`data/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, messageId);
+      const { chatId } = this;
+      this.$store.dispatch(`data/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, { messageId, chatId });
     },
     async readMessages() {
       const messages = this.messages.list;
       const chats = this.chats.list;
-      const chatId = this.$route.params.id;
+      const { chatId } = this;
 
-      if (!messages.length || chats.some((chat) => chat.id === chatId && !chat.isUnread)) return;
+      if (!messages.length || chatId === 'starred' || chats.some((chat) => chat.id === chatId && !chat.isUnread)) return;
 
       const payload = {
         config: {
@@ -270,11 +299,13 @@ export default {
       }
     },
     async getMessages() {
+      const { filter, chatId } = this;
+
       const payload = {
         config: {
-          params: this.filter,
+          params: filter,
         },
-        chatId: this.$route.params.id,
+        chatId,
       };
 
       try {
@@ -316,7 +347,9 @@ export default {
       this.$router.push('/messages');
     },
     async handleSendMessage() {
-      const { messageText, files, isScrollBtnVis } = this;
+      const {
+        messageText, files, isScrollBtnVis, chatId,
+      } = this;
       if (!messageText) return;
       const medias = files.map((file) => file.id);
       const text = messageText;
@@ -325,7 +358,7 @@ export default {
           text,
           medias,
         },
-        chatId: this.$route.params.id,
+        chatId,
       };
       this.messageText = '';
       try {
@@ -401,6 +434,7 @@ export default {
     display: grid;
     grid-template-columns: max-content 1fr max-content;
     align-items: center;
+    height: 71px;
   }
 
   &__arrow-back {
@@ -616,6 +650,10 @@ export default {
       background-color: #0083C7;
       color: #fff;
     }
+
+    &_link {
+      cursor: pointer;
+    }
   }
 }
 
@@ -700,17 +738,24 @@ export default {
 
 .star {
   cursor: pointer;
-  display: flex;
-  height: 24px;
-  width: 24px;
-  background: url("~assets/img/ui/star_simple.svg");  // переделать на сорцы (атрибут)
 
-  &_checked {
-    background: url("~assets/img/ui/star_checked.svg"); // переделать на сорцы (атрибут)
+  &__default {
+    display: flex;
   }
-
+  &__hover {
+    display: none;
+  }
   &:hover {
-    background: url("~assets/img/ui/star_hover.svg"); // переделать на сорцы (атрибут)
+
+    .star {
+      &__hover {
+        display: flex;
+      }
+      &__default,
+      &__checked {
+        display: none;
+      }
+    }
   }
 }
 
