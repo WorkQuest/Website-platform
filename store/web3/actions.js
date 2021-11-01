@@ -137,12 +137,12 @@ export default {
       commit('setBSCTokensData', payload);
     } if (process.env.PROD === 'false') {
       const [oldTokenDecimal, oldTokenSymbol, oldTokenBalance, newTokenDecimal, newTokenSymbol, newTokenBalance] = await Promise.all([
-        fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET),
-        fetchContractData('symbol', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET),
-        fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [getAccountAddress()]),
-        fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET),
-        fetchContractData('symbol', abi.ERC20, process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET),
-        fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET, [getAccountAddress()]),
+        fetchContractData('decimals', abi.ERC20, process.env.BSC_OLD_WQT_TOKEN),
+        fetchContractData('symbol', abi.ERC20, process.env.BSC_OLD_WQT_TOKEN),
+        fetchContractData('balanceOf', abi.ERC20, process.env.BSC_OLD_WQT_TOKEN, [getAccountAddress()]),
+        fetchContractData('decimals', abi.ERC20, process.env.BSC_WQT_TOKEN),
+        fetchContractData('symbol', abi.ERC20, process.env.BSC_WQT_TOKEN),
+        fetchContractData('balanceOf', abi.ERC20, process.env.BSC_WQT_TOKEN, [getAccountAddress()]),
       ]);
       const payload = {
         userPurse: {
@@ -312,8 +312,8 @@ export default {
     const stakingInfoEvent = await initStackingContract(payload.chain);
     if (payload.chain === 'ETH') {
       chainId = 1;
-      amountMax0 = process.env.TOKEN_WQT_ETHEREUM_NETWORK_AMOUNT_MAX;
-      amountMax1 = process.env.TOKEN_WETH_AMOUNT_MAX;
+      amountMax0 = 2000000000000000000;
+      amountMax1 = 1000000000000000000;
       token0 = new TokenUniswap(
         chainId,
         process.env.MAINNET_ETH_WQT_TOKEN,
@@ -323,7 +323,7 @@ export default {
       );
       token1 = new TokenUniswap(
         chainId,
-        process.env.TOKEN_WETH_ADDRESS,
+        process.env.WETH_TOKEN,
         18,
         'WETH',
         'Wrapped Ether',
@@ -337,8 +337,8 @@ export default {
       });
     } else {
       chainId = 56;
-      amountMax0 = process.env.TOKEN_WQT_BSC_NETWORK_AMOUNT_MAX;
-      amountMax1 = process.env.TOKEN_WBNB_AMOUNT_MAX;
+      amountMax0 = 2000000000000000000;
+      amountMax1 = 2000000000000000000;
       token0 = new TokenPancake(
         chainId,
         process.env.MAINNET_BSC_WQT_TOKEN,
@@ -348,7 +348,7 @@ export default {
       );
       token1 = new TokenPancake(
         chainId,
-        process.env.TOKEN_WBNB_ADDRESS,
+        process.env.WBNB_TOKEN,
         18,
         'WETH',
         'Wrapped BNB',

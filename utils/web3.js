@@ -98,12 +98,12 @@ export const getStakingDataByType = (stakingType) => {
       }
       if (process.env.PROD === 'false') {
         if (_miningPoolId === 'ETH') {
-          _tokenAddress = process.env.LP_TOKEN;
-          _stakingAddress = process.env.STAKING_ADDRESS;
+          _tokenAddress = process.env.ETHEREUM_LP_TOKEN;
+          _stakingAddress = process.env.ETHEREUM_MINING;
           _stakingAbi = abi.StakingWQ;
         } else {
-          _tokenAddress = process.env.CAKE_LP_TOKEN;
-          _stakingAddress = process.env.TESTNET_BSC_STAKING;
+          _tokenAddress = process.env.BSC_LP_TOKEN;
+          _stakingAddress = process.env.BSC_MINING;
           _stakingAbi = abi.WQLiquidityMining;
         }
       }
@@ -455,15 +455,15 @@ export const swap = async (_decimals, _amount) => {
       return error(500, 'stake error', e);
     }
   } if (process.env.PROD === 'false') {
-    tokenInstance = await createInstance(abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET);
-    exchangeInstance = await createInstance(abi.WQTExchange, process.env.EXCHANGE_ADDRESS_BSCTESTNET);
-    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET, [account.address, process.env.EXCHANGE_ADDRESS_BSCTESTNET])).toString();
+    tokenInstance = await createInstance(abi.ERC20, process.env.BSC_OLD_WQT_TOKEN);
+    exchangeInstance = await createInstance(abi.WQTExchange, process.env.BSC_WQT_EXCHANGE);
+    allowance = new BigNumber(await fetchContractData('allowance', abi.ERC20, process.env.BSC_OLD_WQT_TOKEN, [account.address, process.env.BSC_WQT_EXCHANGE])).toString();
     try {
       amount = new BigNumber(_amount.toString()).shiftedBy(+_decimals).toString();
       if (+allowance < +amount) {
         store.dispatch('main/setStatusText', 'Approving');
         showToast('Swapping', 'Approving...', 'success');
-        await tokenInstance.approve(process.env.EXCHANGE_ADDRESS_BSCTESTNET, amount);
+        await tokenInstance.approve(process.env.BSC_WQT_EXCHANGE, amount);
         showToast('Swapping', 'Approving done', 'success');
       }
       showToast('Swapping', 'Swapping...', 'success');
@@ -492,11 +492,11 @@ export const swapWithBridge = async (_decimals, _amount, chain, chainTo, userAdd
       bridgeAddress = process.env.MAINNET_BSC_BRIDGE;
     }
   } else if (chain === Chains.ETHEREUM) {
-    tokenAddress = process.env.NEW_WQT_TOKEN;
-    bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
+    tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
+    bridgeAddress = process.env.ETHEREUM_BRIDGE;
   } else {
-    tokenAddress = process.env.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET;
-    bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
+    tokenAddress = process.env.BSC_WQT_TOKEN;
+    bridgeAddress = process.env.BSC_BRIDGE;
   }
   tokenInstance = await createInstance(abi.ERC20, tokenAddress);
   bridgeInstance = await createInstance(abi.MainNetWQBridge, bridgeAddress);
@@ -545,9 +545,9 @@ export const redeemSwap = async (props) => {
     }
   } if (process.env.PROD === 'false') {
     if (chainId !== 2) {
-      bridgeAddress = process.env.BRIDGE_ADDRESS_RINKEBY;
+      bridgeAddress = process.env.ETHEREUM_BRIDGE;
     } else {
-      bridgeAddress = process.env.BRIDGE_ADDRESS_BSCTESTNET;
+      bridgeAddress = process.env.BSC_BRIDGE;
     }
     try {
       showToast('Redeeming', 'Redeem...', 'success');
@@ -598,10 +598,10 @@ export const initStackingContract = async (chain) => {
   let websocketProvider;
   if (chain === 'ETH') {
     stakingAddress = process.env.MAINNET_ETH_STAKING;
-    websocketProvider = process.env.MAINNET_ETH_INFURA;
+    websocketProvider = process.env.ETHEREUM_WS_INFURA;
   } else {
     stakingAddress = process.env.MAINNET_BSC_STAKING;
-    websocketProvider = process.env.MAINNET_BSC_MORALIS;
+    websocketProvider = process.env.BSC_WS_MORALIS;
   }
   const liquidityMiningProvider = new Web3(new Web3.providers.WebsocketProvider(websocketProvider, {
     clientConfig: {

@@ -27,42 +27,31 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo GMAPKEY=${{ secrets.GMAPKEY }} > .env
-          echo BASE_URL=${{ secrets.BASE_URL }} >> .env
-          echo STAKING_ADDRESS=${{ secrets.STAKING_ADDRESS }} >> .env
-          echo LP_TOKEN=${{ secrets.LP_TOKEN }} >> .env
           echo PROD=${{ secrets.PROD }} >> .env
-          echo WQT_TOKEN=${{ secrets.WQT_TOKEN }} >> .env
-          echo NEW_WQT_TOKEN=${{ secrets.NEW_WQT_TOKEN }} >> .env
-          echo BRIDGE_ADDRESS_RINKEBY=${{ secrets.BRIDGE_ADDRESS_RINKEBY }} >> .env
-          echo BRIDGE_ADDRESS_BSCTESTNET=${{ secrets.BRIDGE_ADDRESS_BSCTESTNET }} >> .env
-          echo TOKEN_WQT_NEW_ADDRESS_BSCTESTNET=${{ secrets.TOKEN_WQT_NEW_ADDRESS_BSCTESTNET }} >> .env
-          echo TOKEN_WQT_OLD_ADDRESS_BSCTESTNET=${{ secrets.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET }} >> .env
-          echo TOKEN_ETH_ADDRESS_BSCTESTNET=${{ secrets.TOKEN_ETH_ADDRESS_BSCTESTNET }} >> .env
-          echo EXCHANGE_ADDRESS_BSCTESTNET=${{ secrets.EXCHANGE_ADDRESS_BSCTESTNET }} >> .env
-          echo EXCHANGE_ADDRESS_RINKEBY=${{ secrets.EXCHANGE_ADDRESS_RINKEBY }} >> .env
-          echo CAKE_LP_TOKEN=${{ secrets.CAKE_LP_TOKEN }} >> .env
-          echo CAKE_WQT_TOKEN=${{ secrets.CAKE_WQT_TOKEN }} >> .env
-          echo STAKING=${{ secrets.STAKING }} >> .env
-          echo STAKING_NATIVE=${{ secrets.STAKING_NATIVE }} >> .env
-          echo STAKING_ADDRESS_BSC=${{ secrets.STAKING_ADDRESS_BSC }} >> .env
-          echo MAINNET_BSC_WQT_TOKEN=${{ secrets.MAINNET_BSC_WQT_TOKEN }} >> .env
-          echo MAINNET_BSC_BRIDGE=${{ secrets.MAINNET_BSC_BRIDGE }} >> .env
-          echo MAINNET_ETH_WQT_TOKEN=${{ secrets.MAINNET_ETH_WQT_TOKEN }} >> .env
-          echo MAINNET_ETH_BRIDGE=${{ secrets.MAINNET_ETH_BRIDGE }} >> .env
-          echo EXCHANGE_ADDRESS_BSCMAINNET=${{ secrets.EXCHANGE_ADDRESS_BSCMAINNET }} >> .env
-          echo TOKEN_WQT_OLD_ADDRESS_BSCMAINNET=${{ secrets.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET }} >> .env
-          echo TESTNET_BSC_STAKING=${{ secrets.TESTNET_BSC_STAKING }} >> .env
-          echo MAINNET_ETH_STAKING=${{ secrets.MAINNET_ETH_STAKING }} >> .env
-          echo MAINNET_STAKING_ETH_LP_TOKEN=${{ secrets.MAINNET_STAKING_ETH_LP_TOKEN }} >> .env
-          echo MAINNET_ETH_INFURA=${{ secrets.MAINNET_ETH_INFURA }} >> .env
-          echo MAINNET_BSC_MORALIS=${{ secrets.MAINNET_BSC_MORALIS }} >> .env
-          echo TOKEN_WBNB_ADDRESS=${{ secrets.TOKEN_WBNB_ADDRESS }} >> .env
-          echo TOKEN_WETH_ADDRESS=${{ secrets.TOKEN_WETH_ADDRESS }} >> .env
-          echo TOKEN_WBNB_AMOUNT_MAX=${{ secrets.TOKEN_WBNB_AMOUNT_MAX }} >> .env
-          echo TOKEN_WETH_AMOUNT_MAX=${{ secrets.TOKEN_WETH_AMOUNT_MAX }} >> .env
-          echo TOKEN_WQT_BSC_NETWORK_AMOUNT_MAX=${{ secrets.TOKEN_WQT_BSC_NETWORK_AMOUNT_MAX }} >> .env
-          echo TOKEN_WQT_ETHEREUM_NETWORK_AMOUNT_MAX=${{ secrets.TOKEN_WQT_ETHEREUM_NETWORK_AMOUNT_MAX }} >> .env
+          echo BASE_URL=${{ secrets.BASE_URL }} >> .env
+          echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
+          echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
+
+          echo ETHEREUM_BRIDGE=${{ secrets.ETHEREUM_BRIDGE }} >> .env
+          echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
+          echo ETHEREUM_MINING=${{ secrets.ETHEREUM_MINING }} >> .env
+          echo ETHEREUM_WQT_TOKEN=${{ secrets.ETHEREUM_WQT_TOKEN }} >> .env
+          echo ETHEREUM_WS_INFURA=${{ secrets.ETHEREUM_WS_INFURA }} >> .env
+
+          echo BSC_BRIDGE=${{ secrets.BSC_BRIDGE }} >> .env
+          echo BSC_LP_TOKEN=${{ secrets.BSC_LP_TOKEN }} >> .env
+          echo BSC_MINING=${{ secrets.BSC_MINING }} >> .env
+          echo BSC_OLD_WQT_TOKEN=${{ secrets.BSC_OLD_WQT_TOKEN }} >> .env
+          echo BSC_WQT_EXCHANGE=${{ secrets.BSC_WQT_EXCHANGE }} >> .env
+          echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
+          echo BSC_WS_MORALIS=${{ secrets.BSC_WS_MORALIS }} >> .env
+
+          echo WQT_STAKING=${{ secrets.WQT_STAKING }} >> .env
+          echo WQT_STAKING_NATIVE=${{ secrets.WQT_STAKING_NATIVE }} >> .env
+
+          echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
+          echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
+
       - name: Run generate static task
         run: npm run generate
                  #    env:
@@ -118,7 +107,6 @@ jobs:
           echo TOKEN_WQT_OLD_ADDRESS_BSCTESTNET=${{ secrets.TOKEN_WQT_OLD_ADDRESS_BSCTESTNET }} >> .env
           echo TOKEN_ETH_ADDRESS_BSCTESTNET=${{ secrets.TOKEN_ETH_ADDRESS_BSCTESTNET }} >> .env
           echo EXCHANGE_ADDRESS_BSCTESTNET=${{ secrets.EXCHANGE_ADDRESS_BSCTESTNET }} >> .env
-          echo EXCHANGE_ADDRESS_RINKEBY=${{ secrets.EXCHANGE_ADDRESS_RINKEBY }} >> .env
           echo CAKE_LP_TOKEN=${{ secrets.CAKE_LP_TOKEN }} >> .env
           echo CAKE_WQT_TOKEN=${{ secrets.CAKE_WQT_TOKEN }} >> .env
           echo STAKING=${{ secrets.STAKING }} >> .env
