@@ -431,6 +431,22 @@ export const claimRewards = async (_stakingAddress, _stakingAbi, _amount) => {
   }
 };
 
+export const authRenewal = async (_stakingAddress, _stakingAbi) => {
+  showToast('Auto renewal', 'Accepting...', 'success');
+  try {
+    const payload = {
+      abi: _stakingAbi,
+      address: _stakingAddress,
+    };
+    const res = await sendTransaction('autoRenewal', payload);
+    console.log('renewal res', res);
+    return success();
+  } catch (e) {
+    showToast('Auto renewal error', `${e.message}`, 'danger');
+    return error(500, 'auto renewal', e);
+  }
+};
+
 export const swap = async (_decimals, _amount) => {
   let exchangeInstance;
   if (process.env.PROD === 'true') {

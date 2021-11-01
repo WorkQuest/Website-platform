@@ -389,9 +389,15 @@ export default {
     },
     handleAutoRenewal() {
       this.ShowModal({
-        key: modals.status,
-        title: this.$t('staking.notification'),
-        subtitle: this.$t('staking._inDev'),
+        key: modals.areYouSureNotification,
+        title: 'Are your sure?',
+        text: 'This will enable auto renewal tokens',
+        callback: async () => {
+          console.log('callback');
+          this.SetLoader(true);
+          await this.$store.dispatch('web3/autoRenewal', { stakingType: this.slug });
+          this.SetLoader(false);
+        },
       });
     },
     async getPoolData() {
