@@ -270,11 +270,11 @@ export default {
   &_goToChat {
     background-color: $white !important;
     color: $green !important;
-    border: 1px solid $black400 !important;
+    border: 1px solid rgba(0, 170, 91, 0.1) !important;
     &:hover {
       background-color: $white !important;
       color: $green !important;
-      border: 1px solid $black600 !important;
+      border: 1px solid rgba(0, 170, 91, 0.2) !important;
       box-shadow: 0 0 2px rgba(0,0,0,0.5) !important;
     }
   }

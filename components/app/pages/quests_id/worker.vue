@@ -248,6 +248,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.icon {
+  color: $black500;
+  font-size: 20px;
+  &-chat::before {
+    @extend .icon;
+    color: $green !important;
+  }
+}
 .priority {
   display: flex;
   flex-direction: row;

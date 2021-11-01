@@ -512,11 +512,11 @@ export default {
   }
 }
 .icon {
-  color:$black500;
+  color: $black500;
   font-size: 20px;
   &-chat::before {
     @extend .icon;
-    color:$green;
+    color: $green !important;
   }
   &-location::before {
     @extend .icon;
