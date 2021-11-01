@@ -189,11 +189,11 @@ export default {
         this.$store.dispatch('web3/fetchStakingInfo', { stakingType: StakingTypes.WUSD }),
       ]);
       if (wqtPool && wusdPool) {
-        wqtPool.poolAddress = process.env.STAKING;
+        wqtPool.poolAddress = process.env.WQT_STAKING;
         wqtPool.link = StakingTypes.WQT;
 
         const { netId } = await this.$store.dispatch('web3/getAccount');
-        wusdPool.poolAddress = process.env.STAKING_NATIVE;
+        wusdPool.poolAddress = process.env.WQT_STAKING_NATIVE;
         wusdPool.rewardTokenAddress = '';
         wusdPool.stakeTokenSymbol = NativeTokenSymbolByChainId[netId];
         wusdPool.tokenSymbol = NativeTokenSymbolByChainId[netId];

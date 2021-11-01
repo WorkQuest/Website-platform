@@ -110,15 +110,15 @@ export const getStakingDataByType = (stakingType) => {
       break;
     case StakingTypes.WQT:
       if (process.env.PROD === 'false') {
-        _tokenAddress = process.env.WQT_TOKEN;
+        _tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
         _stakingAbi = abi.WQStaking;
-        _stakingAddress = process.env.STAKING;
+        _stakingAddress = process.env.WQT_STAKING;
       }
       break;
     case StakingTypes.WUSD:
       if (process.env.PROD === 'false') {
         _stakingAbi = abi.WQStakingNative;
-        _stakingAddress = process.env.STAKING_NATIVE;
+        _stakingAddress = process.env.WQT_STAKING_NATIVE;
       }
       break;
     default:
@@ -330,9 +330,9 @@ let nonce;
 export const getStakingRewardTxFee = async (stakingType) => {
   let inst;
   if (stakingType === StakingTypes.WQT) {
-    inst = new web3.eth.Contract(abi.WQStaking, process.env.STAKING);
+    inst = new web3.eth.Contract(abi.WQStaking, process.env.WQT_STAKING);
   } else if (stakingType === StakingTypes.WUSD) {
-    inst = new web3.eth.Contract(abi.WQStakingNative, process.env.STAKING_NATIVE);
+    inst = new web3.eth.Contract(abi.WQStakingNative, process.env.WQT_STAKING_NATIVE);
   } else {
     console.error('[rewardTxFee] wrong staking type:', stakingType);
     return 0;
