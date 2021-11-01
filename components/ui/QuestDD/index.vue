@@ -8,7 +8,10 @@
       @click="showQuestMenu()"
     >
       <span
-        :class="buttonIcon"
+        :class="[
+          { 'icon-more_horizontal': userRole === 'employer' },
+          { 'share_outline': userRole === 'worker' },
+        ]"
       />
       <transition name="fade">
         <div
@@ -91,19 +94,13 @@ export default {
     }),
   },
   methods: {
-    buttonIcon() {
-      return [
-        { 'icon-more_horizontal': this.userRole === 'employer' },
-        { share_outline: this.userRole === 'worker' },
-      ];
-    },
     toEditQuest() {
-      this.$router.push('/edit-quest');
-      this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
+      // this.$router.push('/edit-quest');
+      // this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
     },
     toRaisingViews() {
-      this.$router.push('/edit-quest');
-      this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
+      // this.$router.push('/edit-quest');
+      // this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
     },
     shareModal() {
       this.ShowModal({
