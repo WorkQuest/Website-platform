@@ -78,6 +78,7 @@ export default {
       };
       try {
         await this.$store.dispatch('quests/respondOnQuest', { data, questId });
+        await this.$store.dispatch('quests/setInfoDataMode', 3);
       } catch (e) {
         console.log(e);
       }

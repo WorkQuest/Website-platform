@@ -8,15 +8,19 @@
         <div class="grid__field grid__field_top">
           <div class="ctm-modal__content-field">
             <div class="avatar__container">
+              <!-- TODO: Вывести список созданных квестов без воркеров -->
               <div>
+                <!-- {{ options.currentWorker }} -->
                 <img
                   alt=""
                   class="ctm-modal__img"
-                  src="~/assets/img/temp/avatar.jpg"
+                  :src="options.currentWorker.avatar ?
+                    options.currentWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
                 >
               </div>
               <div>
-                {{ user.name }}
+                {{ options.currentWorker.firstName ? options.currentWorker.firstName : "Nameless worker" }}
+                {{ options.currentWorker.lastName ? options.currentWorker.lastName : "" }}
               </div>
               <div>
                 <div
@@ -34,10 +38,11 @@
         </div>
         <div class="grid__field">
           <div class="ctm-modal__content-field">
+            <!--TODO: Вывести тайтлы -->
             <base-dd
               v-model="questIndex"
               type="gray"
-              :items="quests"
+              :items="questList.quests"
               :label="$t('modals.chooseQuest')"
             />
           </div>
@@ -84,16 +89,8 @@ export default {
   data() {
     return {
       questIndex: 0,
-      quests: [
-        'Quest one',
-        'Quest two',
-        'Quest three',
-      ],
       message_input: '',
       chooseQuest_input: '',
-      user: {
-        name: 'Rosalia Vance',
-      },
       card: {
         level: {
           title: 'HIGHER LEVEL',
@@ -105,6 +102,8 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      questList: 'quests/getQuestListForInvitation',
+      userData: 'user/getUserData',
     }),
     cardLevelClass() {
       const { card } = this;
@@ -114,7 +113,13 @@ export default {
       ];
     },
   },
+  async beforeMount() {
+    await this.getQuestList();
+  },
   methods: {
+    async getQuestList() {
+      await this.$store.dispatch('quests/questListForInvitation', this.userData.id);
+    },
     cardsLevels() {
       const { card, disabled } = this;
       return [
