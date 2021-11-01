@@ -102,18 +102,18 @@
     </div>
     <div class="priority">
       <div
-        v-if="[!4,!8].includes(infoDataMode)"
+        v-if="![4,8].includes(infoDataMode)"
         class="price__container"
       >
         <span class="price__value">
-          {{ questData.price }}{{ $t('quests.wusd') }}
+          {{ questData.price }} {{ $t('quests.wusd') }}
         </span>
       </div>
       <div
         class="priority__container"
       >
         <div
-          v-if="[!4,!8].includes(infoDataMode)"
+          v-if="![4,8].includes(infoDataMode)"
           class="priority__title"
           :class="getPriorityClass(questData.priority)"
         >
@@ -138,7 +138,6 @@ export default {
   },
   data() {
     return {
-      questData: {},
       userAvatar: '',
       questResponses: {},
       response: {},
@@ -148,6 +147,7 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
       userRole: 'user/getUserRole',
+      questData: 'quests/getQuest',
       infoDataMode: 'quests/getInfoDataMode',
     }),
   },
