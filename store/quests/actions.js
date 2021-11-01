@@ -171,9 +171,6 @@ export default {
       return console.log(e);
     }
   },
-
-  // Testing
-  // employer
   async inviteOnQuest({ commit }, { questId, payload }) {
     try {
       const response = await this.$axios.$post(`/v1/quest/${questId}/invite`, payload);
@@ -182,6 +179,9 @@ export default {
       return console.log(e);
     }
   },
+
+  // Testing
+  // employer
 
   async respondOnQuest({ commit }, { data, questId }) {
     try {
