@@ -8,9 +8,7 @@
         <div class="grid__field grid__field_top">
           <div class="ctm-modal__content-field">
             <div class="avatar__container">
-              <!-- TODO: Вывести список созданных квестов без воркеров -->
               <div>
-                <!-- {{ options.currentWorker }} -->
                 <img
                   alt=""
                   class="ctm-modal__img"
@@ -38,15 +36,15 @@
         </div>
         <div class="grid__field">
           <div class="ctm-modal__content-field">
-            <!--TODO: Вывести тайтлы -->
             <base-dd
               v-model="questIndex"
               type="gray"
               data-type="object"
-              :items="questList.quests"
+              :items="questFiltered"
               :label="$t('modals.chooseQuest')"
             />
           </div>
+          {{ questIndex }}
         </div>
         <div class="ctm-modal__content-field grid__field">
           <label for="message_input">{{ $t('modals.message') }}</label>
@@ -61,7 +59,7 @@
           <div class="btn__wrapper">
             <base-btn
               class="message__action"
-              @click="showTransactionSendModal()"
+              @click="inviteOnQuest(questIndex)"
             >
               {{ $t('meta.send') }}
             </base-btn>
@@ -89,6 +87,7 @@ export default {
   name: 'ModalInvitation',
   data() {
     return {
+      questFiltered: [],
       questIndex: 0,
       message_input: '',
       chooseQuest_input: '',
@@ -116,10 +115,27 @@ export default {
   },
   async beforeMount() {
     await this.getQuestList();
+    await this.questFilter();
   },
   methods: {
     async getQuestList() {
       await this.$store.dispatch('quests/questListForInvitation', this.userData.id);
+    },
+    async questFilter() {
+      this.questFiltered = this.questList.quests.filter((quest) => quest.status === 0);
+    },
+    async inviteOnQuest(questIndex) {
+      const questId = this.questList.quests[questIndex].id || '';
+      const payload = {
+        invitedUserId: this.options.currentWorker.id || '',
+        message: this.message_input || '',
+      };
+      try {
+        await this.$store.dispatch('quests/inviteOnQuest', { questId, payload });
+        this.showTransactionSendModal();
+      } catch (e) {
+        console.log(e);
+      }
     },
     cardsLevels() {
       const { card, disabled } = this;

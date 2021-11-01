@@ -174,7 +174,7 @@ export default {
 
   // Testing
   // employer
-  async inviteOnQuest({ commit }, payload, questId) {
+  async inviteOnQuest({ commit }, { questId, payload }) {
     try {
       const response = await this.$axios.$post(`/v1/quest/${questId}/invite`, payload);
       return response.result;
