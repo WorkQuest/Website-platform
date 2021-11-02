@@ -202,9 +202,9 @@ export default {
       return console.log(e);
     }
   },
-  async takeAwayStarOnQuest(id) {
+  async takeAwayStarOnQuest({ commit }, id) {
     try {
-      const response = await this.$axios.$delete(`/v1/quest/${id}/star`, id);
+      const response = await this.$axios.$delete(`/v1/quest/${id}/star`);
       return response.result;
     } catch (e) {
       return console.log(e);

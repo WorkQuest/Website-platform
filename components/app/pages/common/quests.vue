@@ -45,7 +45,7 @@
               </div>
               <div
                 class="block__icon block__icon_fav star"
-                @click="actionFavorite(item.quest.id)"
+                @click="setStar(item.quest.id)"
               >
                 <img
                   class="star__hover"
@@ -212,7 +212,7 @@
               </div>
               <div
                 class="block__icon block__icon_fav star"
-                @click="actionFavorite(item.id)"
+                @click="setStar(item)"
               >
                 <img
                   class="star__hover"
@@ -220,15 +220,11 @@
                   alt=""
                 >
                 <img
-                  v-if="item.star === null"
-                  class="star__default"
-                  src="~assets/img/ui/star_simple.svg"
-                  alt=""
-                >
-                <img
-                  v-else
-                  class="star__checked"
-                  src="~assets/img/ui/star_checked.svg"
+                  :class="[
+                    {'star__default': !item.star},
+                    {'star__checked': item.star}
+                  ]"
+                  :src="!item.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
                   alt=""
                 >
               </div>
@@ -409,6 +405,13 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async setStar(item) {
+      if (!item.star) {
+        await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      } if (item.star) {
+        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+      }
+    },
     cropTxt(str) {
       const maxLength = 120;
       if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
@@ -444,9 +447,6 @@ export default {
         this.userLat,
         this.userLng,
       );
-    },
-    async actionFavorite(id) {
-      await this.$store.dispatch('quests/setStarOnQuest', id);
     },
     cardsLevels(idx) {
       const { cards } = this;
