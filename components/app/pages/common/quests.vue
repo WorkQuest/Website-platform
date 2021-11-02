@@ -533,6 +533,7 @@ export default {
 }
 .progress {
   &__title {
+    margin: 10px 0 7px 10px;
     font-weight: 400;
     font-size: 12px;
     color: $black500;
@@ -543,7 +544,7 @@ export default {
     align-items: center;
     grid-template-columns: auto 3fr;
     grid-gap: 10px;
-    margin: 10px 0 4px 0;
+    margin: 10px 0 0 0;
     .container {
       &__user {
         display: flex;
@@ -726,7 +727,7 @@ export default {
     flex-direction: column;
     height: auto;
     width: 100%;
-    padding:10px;
+    padding: 10px;
   }
   &__locate {
     display: grid;
