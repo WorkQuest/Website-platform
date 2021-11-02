@@ -15,4 +15,5 @@ export default () => ({
   purseData: {},
   tokensBSC: {},
   crosschainTokensData: {},
+  metamaskStatus: false,
 });

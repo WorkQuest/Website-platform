@@ -277,8 +277,9 @@ export const initWeb3 = async (chain) => {
         },
       }, // required
     });
-    console.log(web3Modal);
     provider = await web3Modal.connect();
+    console.log(provider);
+    store.dispatch('web3/setMetaMaskStatus', provider.isMetaMask);
     web3 = new Web3(provider);
     web4 = new Web4();
     userAddress = await web3.eth.getCoinbase();

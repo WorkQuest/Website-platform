@@ -56,6 +56,7 @@ export default {
   disconnect({ commit }) {
     disconnectWeb3();
     commit('setIsConnected', false);
+    commit('setMetaMaskStatus', false);
     commit('clearTokens');
     commit('clearAccount');
   },
@@ -385,5 +386,8 @@ export default {
     } catch (err) {
       return err;
     }
+  },
+  async setMetaMaskStatus({ commit }, payload) {
+    commit('setMetaMaskStatus', payload);
   },
 };
