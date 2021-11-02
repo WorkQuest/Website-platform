@@ -264,6 +264,7 @@
     "questDesc": "Quest description",
     "questInfo": "Quest info",
     "questClosed!": "Quest closed!",
+    "closed": "Closed",
     "completedWorkAccepted": "Completed work on quest accepted!",
     "completedWorkRejected": "Completed work on quest rejected!",
     "workOnQuestAccepted": "Work on quest accepted!",

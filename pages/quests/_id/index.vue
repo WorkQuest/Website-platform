@@ -214,6 +214,26 @@ export default {
     async initUserAvatar() {
       this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
     },
+    // getPageModeEmp(status) {
+    //   const mode = {
+    //     1: 2,
+    //     2: 8,
+    //     3: 7,
+    //     5: 6,
+    //     6: 9,
+    //   };
+    //   return mode[status] || '';
+    // },
+    // getPageModeWor(status) {
+    //   const mode = {
+    //     1: 2,
+    //     2: 8,
+    //     3: 7,
+    //     5: 4,
+    //     6: 9,
+    //   };
+    //   return mode[status] || '';
+    // },
     async checkPageMode() {
       // questStatus
       // Created = 0,
@@ -224,43 +244,51 @@ export default {
       // WaitConfirm = 5
       // Done = 6
 
-      if (['employer'].includes(this.userRole)) {
-        if ([0].includes(this.responsesData.count)) {
+      if (this.userRole === 'employer') {
+        if (this.responsesData.count === 0) {
           await this.$store.dispatch('quests/setInfoDataMode', 1);
-        } if ([1].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 2);
         } if (this.responsesData.count > 0) {
           await this.$store.dispatch('quests/setInfoDataMode', 3);
         } if (this.questData.assignedWorker !== null) {
-          if (![2].includes(this.questData.status)) {
+          if (this.questData.status !== 2) {
             await this.$store.dispatch('quests/setInfoDataMode', 4);
           }
-        } if ([5].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 6);
-        } if ([3].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 7);
-        } if ([2].includes(this.questData.status)) {
+        }
+        // else {
+        //   await this.$store.dispatch('quests/setInfoDataMode', this.getPageModeEmp(this.questData.status));
+        // }
+        if (this.questData.status === 1) {
+          await this.$store.dispatch('quests/setInfoDataMode', 2);
+        } if (this.questData.status === 2) {
           await this.$store.dispatch('quests/setInfoDataMode', 8);
-        } if ([6].includes(this.questData.status)) {
+        } if (this.questData.status === 3) {
+          await this.$store.dispatch('quests/setInfoDataMode', 7);
+        } if (this.questData.status === 5) {
+          await this.$store.dispatch('quests/setInfoDataMode', 6);
+        } if (this.questData.status === 6) {
           await this.$store.dispatch('quests/setInfoDataMode', 9);
         }
       }
-      if (['worker'].includes(this.userRole)) {
+      if (this.userRole === 'worker') {
         if (this.questData.assignedWorker === null && ![1].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 5);
-        } if ([1].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 2);
-        } if ([3].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 7);
         } if (this.questData.assignedWorkerId === this.userData.id
           && ![1, 3].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 1);
-        } if ([5].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 4);
-        } if ([6].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 9);
-        } if ([2].includes(this.questData.status)) {
+        }
+        // else {
+        //   await this.$store.dispatch('quests/setInfoDataMode', this.getPageModeWor(this.questData.status));
+        // }
+        if (this.questData.status === 1) {
+          await this.$store.dispatch('quests/setInfoDataMode', 2);
+        } if (this.questData.status === 2) {
           await this.$store.dispatch('quests/setInfoDataMode', 8);
+        } if (this.questData.status === 3) {
+          await this.$store.dispatch('quests/setInfoDataMode', 7);
+        } if (this.questData.status === 5) {
+          await this.$store.dispatch('quests/setInfoDataMode', 4);
+        } if (this.questData.status === 6) {
+          await this.$store.dispatch('quests/setInfoDataMode', 9);
         }
       }
     },

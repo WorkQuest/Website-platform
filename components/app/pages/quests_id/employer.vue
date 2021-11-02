@@ -497,7 +497,7 @@ export default {
         await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
       }
     },
-    async  selectWorker(i) {
+    async selectWorker(i) {
       this.SetLoader(true);
       const { worker } = this.responsesToQuest[i];
       this.selectedWorker.push(worker);

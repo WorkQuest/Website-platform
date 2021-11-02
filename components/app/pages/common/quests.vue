@@ -481,19 +481,21 @@ export default {
     },
     getStatusCard(index) {
       const status = {
-        2: this.$t('quests.requested'),
-        3: this.$t('quests.performed'),
-        4: this.$t('quests.active'),
-        5: this.$t('quests.invited'),
+        1: this.$t('quests.active'),
+        6: this.$t('quests.performed'),
+        5: this.$t('quests.requested'),
+        4: this.$t('quests.invited'),
+        2: this.$t('quests.closed'),
       };
       return status[index] || '';
     },
     getStatusClass(index) {
       const status = {
-        2: 'quests__cards__state_req',
-        3: 'quests__cards__state_per',
-        4: 'quests__cards__state_act',
-        5: 'quests__cards__state_inv',
+        1: 'quests__cards__state_act',
+        6: 'quests__cards__state_per',
+        5: 'quests__cards__state_req',
+        4: 'quests__cards__state_inv',
+        2: 'quests__cards__state_clo',
       };
       return status[index] || '';
     },
@@ -647,6 +649,21 @@ export default {
     margin-bottom: 20px;
     &_employer {
       margin-bottom: 0;
+    }
+  }
+  &__cards {
+    &__state {
+      &_clo {
+        background: $red;
+      }
+      &_req {}
+      &_per {
+        background: $blue;
+      }
+      &_act {
+        background: $green;
+      }
+      &_inv {}
     }
   }
   &__card {
