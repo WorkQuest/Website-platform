@@ -53,15 +53,11 @@
                   alt=""
                 >
                 <img
-                  v-if="item.star === null"
-                  class="star__default"
-                  src="~assets/img/ui/star_simple.svg"
-                  alt=""
-                >
-                <img
-                  v-else
-                  class="star__checked"
-                  src="~assets/img/ui/star_checked.svg"
+                  :class="[
+                    {'star__default': !item.star},
+                    {'star__checked': item.star}
+                  ]"
+                  :src="!item.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
                   alt=""
                 >
               </div>
