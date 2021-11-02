@@ -1,7 +1,10 @@
 <template>
   <div
     v-if="['worker'].includes(userRole)"
-    class="btns__container"
+    :class="[
+      {'btns__container': [1,2,3,5,7].includes(infoDataMode)},
+      {'btns__margin': ![1,2,3,5,7].includes(infoDataMode)}
+    ]"
   >
     <div
       v-if="[1].includes(infoDataMode)"
@@ -316,6 +319,9 @@ export default {
   }
 }
 .btns {
+  &__margin {
+    margin: 0 0 20px 0;
+  }
   &__container {
     display: grid;
     grid-template-columns: 8fr 4fr;
