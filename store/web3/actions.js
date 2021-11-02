@@ -56,15 +56,17 @@ export default {
   disconnect({ commit }) {
     disconnectWeb3();
     commit('setIsConnected', false);
+    commit('setMetaMaskStatus', false);
     commit('clearTokens');
     commit('clearAccount');
+    localStorage.clear();
   },
 
   async connect({ commit, dispatch, getters }, payload) {
     const isReconnection = payload?.isReconnection;
     const response = await initWeb3(payload);
     if (response.ok) {
-      if (!getters.isHandlingMetamaskStatus) {
+      if (!getters.isHandlingMetamaskStatus && isReconnection) {
         handleMetamaskStatus(() => dispatch('handleMetamaskStatusChanged'));
         commit('setIsHandlingMetamaskStatus', true);
       }
@@ -397,5 +399,8 @@ export default {
     } catch (err) {
       return err;
     }
+  },
+  async setMetaMaskStatus({ commit }, payload) {
+    commit('setMetaMaskStatus', payload);
   },
 };
