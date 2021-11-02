@@ -278,6 +278,10 @@
             <div class="block__text block__text_desc">
               {{ cropTxt(item.description) }}
             </div>
+            <div class="block__text block__publication">
+              <span class="block__publication_bold">{{ $t('quests.publicationDate') }}</span>
+              <span class="block__publication_thin">{{ $moment(item.createdAt).format('Do MMMM YYYY, hh:mm a') }}</span>
+            </div>
             <div class="block__actions">
               <div
                 v-if="isHideStatus(item.type)"
@@ -671,6 +675,20 @@ export default {
   display: grid;
   grid-template-columns: 240px 1fr;
   min-height: 100%;
+  &__publication {
+    &_bold {
+      @include text-simple;
+      font-size: 12px;
+      font-weight: 500;
+      color: $black600;
+    }
+    &_thin {
+      @include text-simple;
+      font-size: 12px;
+      font-weight: 400;
+      color: $black500;
+    }
+  }
   &__left {
     @extend .styles__full;
     position: relative;
