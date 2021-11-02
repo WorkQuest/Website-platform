@@ -59,13 +59,14 @@ export default {
     commit('setMetaMaskStatus', false);
     commit('clearTokens');
     commit('clearAccount');
+    localStorage.clear();
   },
 
   async connect({ commit, dispatch, getters }, payload) {
     const isReconnection = payload?.isReconnection;
     const response = await initWeb3(payload);
     if (response.ok) {
-      if (!getters.isHandlingMetamaskStatus) {
+      if (!getters.isHandlingMetamaskStatus && isReconnection) {
         handleMetamaskStatus(() => dispatch('handleMetamaskStatusChanged'));
         commit('setIsHandlingMetamaskStatus', true);
       }
@@ -313,8 +314,8 @@ export default {
     const stakingInfoEvent = await initStackingContract(payload.chain);
     if (payload.chain === 'ETH') {
       chainId = 1;
-      amountMax0 = process.env.TOKEN_WQT_ETHEREUM_NETWORK_AMOUNT_MAX;
-      amountMax1 = process.env.TOKEN_WETH_AMOUNT_MAX;
+      amountMax0 = 2000000000000000000;
+      amountMax1 = 1000000000000000000;
       token0 = new TokenUniswap(
         chainId,
         process.env.MAINNET_ETH_WQT_TOKEN,
@@ -324,7 +325,7 @@ export default {
       );
       token1 = new TokenUniswap(
         chainId,
-        process.env.TOKEN_WETH_ADDRESS,
+        process.env.WETH_TOKEN,
         18,
         'WETH',
         'Wrapped Ether',
@@ -338,8 +339,8 @@ export default {
       });
     } else {
       chainId = 56;
-      amountMax0 = process.env.TOKEN_WQT_BSC_NETWORK_AMOUNT_MAX;
-      amountMax1 = process.env.TOKEN_WBNB_AMOUNT_MAX;
+      amountMax0 = 2000000000000000000;
+      amountMax1 = 2000000000000000000;
       token0 = new TokenPancake(
         chainId,
         process.env.MAINNET_BSC_WQT_TOKEN,
@@ -349,7 +350,7 @@ export default {
       );
       token1 = new TokenPancake(
         chainId,
-        process.env.TOKEN_WBNB_ADDRESS,
+        process.env.WBNB_TOKEN,
         18,
         'WETH',
         'Wrapped BNB',

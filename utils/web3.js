@@ -233,7 +233,7 @@ export const initWeb3Modal = async (chain) => {
         },
         // network: 'ethereum',
       };
-    } else {
+    } else if (chain === 'BNB') {
       walletOptions = {
         rpc: {
           97: 'https://data-seed-prebsc-2-s1.binance.org:8545/',
@@ -262,7 +262,6 @@ export const initWeb3Modal = async (chain) => {
 };
 
 export const initWeb3 = async (chain) => {
-  await localStorage.clear();
   try {
     let provider = null;
     let userAddress;
@@ -278,7 +277,6 @@ export const initWeb3 = async (chain) => {
       }, // required
     });
     provider = await web3Modal.connect();
-    console.log(provider);
     store.dispatch('web3/setMetaMaskStatus', provider.isMetaMask);
     web3 = new Web3(provider);
     web4 = new Web4();

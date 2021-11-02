@@ -154,7 +154,6 @@ export default {
     },
     checkAmount() {
       const maxAmount = this.tokensData.tokenAmount;
-      console.log(this.tokensData.tokenAmount, this.amount);
       return +maxAmount >= +this.amount;
     },
     async showSwapInfoModal() {
