@@ -97,7 +97,6 @@ export const getStakingDataByType = (stakingType) => {
         }
       }
       if (process.env.PROD === 'false') {
-        console.log(_miningPoolId);
         if (_miningPoolId === 'ETH') {
           _tokenAddress = process.env.ETHEREUM_LP_TOKEN;
           _stakingAddress = process.env.ETHEREUM_MINING;
