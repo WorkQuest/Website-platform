@@ -174,7 +174,7 @@ export default {
   },
 
   async getCrosschainTokensData({ commit }) {
-    const { tokenAddress } = getStakingDataByType(StakingTypes.MINING);
+    const { tokenAddress } = getStakingDataByType(StakingTypes.CROSS_CHAIN);
     const [tokenDecimal, tokenSymbol, tokenValue] = await Promise.all([
       fetchContractData('decimals', abi.ERC20, tokenAddress),
       fetchContractData('symbol', abi.ERC20, tokenAddress),
@@ -314,9 +314,15 @@ export default {
       chainId = 1;
       amountMax0 = 2000000000000000000;
       amountMax1 = 1000000000000000000;
+
+      // TODO совпадают названия переменных, нужен этот костыль
+      const ethereum_wqt_token = process.env.PROD === 'false'
+        ? '0x06677Dc4fE12d3ba3C7CCfD0dF8Cd45e4D4095bF'
+        : process.env.ETHEREUM_WQT_TOKEN;
+
       token0 = new TokenUniswap(
         chainId,
-        process.env.MAINNET_ETH_WQT_TOKEN,
+        ethereum_wqt_token,
         18,
         'WQT',
         'Work Quest Token',
@@ -339,9 +345,15 @@ export default {
       chainId = 56;
       amountMax0 = 2000000000000000000;
       amountMax1 = 2000000000000000000;
+
+      // TODO совпадают названия переменных, нужен этот костыль
+      const bsc_wqt_token = process.env.PROD === 'false'
+        ? '0xe89508D74579A06A65B907c91F697CF4F8D9Fac7'
+        : process.env.BSC_WQT_TOKEN;
+
       token0 = new TokenPancake(
         chainId,
-        process.env.MAINNET_BSC_WQT_TOKEN,
+        bsc_wqt_token,
         18,
         'WQT',
         'Work Quest Token',

@@ -108,18 +108,19 @@ export const getStakingDataByType = (stakingType) => {
         }
       }
       break;
+    case StakingTypes.CROSS_CHAIN:
+      _tokenAddress = _miningPoolId === 'ETH'
+        ? process.env.ETHEREUM_WQT_TOKEN
+        : process.env.BSC_WQT_TOKEN;
+      break;
     case StakingTypes.WQT:
-      if (process.env.PROD === 'false') {
-        _tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
-        _stakingAbi = abi.WQStaking;
-        _stakingAddress = process.env.WQT_STAKING;
-      }
+      _tokenAddress = process.env.ETHEREUM_WQT_TOKEN;
+      _stakingAbi = abi.WQStaking;
+      _stakingAddress = process.env.WQT_STAKING;
       break;
     case StakingTypes.WUSD:
-      if (process.env.PROD === 'false') {
-        _stakingAbi = abi.WQStakingNative;
-        _stakingAddress = process.env.WQT_STAKING_NATIVE;
-      }
+      _stakingAbi = abi.WQStakingNative;
+      _stakingAddress = process.env.WQT_STAKING_NATIVE;
       break;
     default:
       console.error('[getStakingDataByType] wrong staking type: ', stakingType);
