@@ -36,8 +36,9 @@
             <div
               v-for="(message, i) in messages.list"
               :key="message.id"
+              :ref="message.number === selStarredMsgNumber + 1 ? 'AfterStarredMsg' : ''"
               class="chat-container__message message"
-              :class="{'message_right' : message.itsMe}"
+              :class="[{'message_right' : message.itsMe}, {'message_blink' : message.number === selStarredMsgNumber}]"
             >
               <img
                 v-if="!message.itsMe"
@@ -104,6 +105,12 @@
                 </div>
               </div>
             </div>
+            <div
+              v-if="isBottomChatsLoading"
+              class="chat-container__loader-cont"
+            >
+              <loader class="chat-container__loader" />
+            </div>
           </div>
         </div>
         <div class="chat-container__footer footer">
@@ -151,7 +158,7 @@
             <button
               class="chat-container__send-btn"
               :class="{'chat-container__send-btn_active' : messageText}"
-              @click="handleSendMessage()"
+              @click="handleSendMessage"
             >
               <span class="icon-send" />
             </button>
@@ -188,6 +195,7 @@ export default {
   data() {
     return {
       isChatsLoading: false,
+      isBottomChatsLoading: false,
       isShowFavorite: false,
       messageText: '',
       files: [],
@@ -201,6 +209,8 @@ export default {
       minScrollDifference: 0,
       isScrollBtnVis: false,
       chatId: this.$route.params.id,
+      selStarredMsgNumber: 0,
+      canLoadMsgsToBot: false,
     };
   },
   computed: {
@@ -215,16 +225,31 @@ export default {
     this.$watch(
       'lastMessageId',
       (newVal, oldVal) => {
-        if (!this.isScrollBtnVis) this.scrollToBottom();
+        if (!this.isScrollBtnVis && oldVal) this.scrollToBottom();
       },
       { immediate: true },
     );
 
     this.SetLoader(true);
+    const selStarredMsgNumber = +localStorage.getItem('selStarredMsgNumber');
+
+    if (selStarredMsgNumber) {
+      this.filter.limit = 0;
+      await this.getMessages();
+      this.filter = {
+        limit: 20,
+        offset: this.messages.count - selStarredMsgNumber - 1,
+      };
+      this.selStarredMsgNumber = selStarredMsgNumber;
+      localStorage.setItem('selStarredMsgNumber', '0');
+    }
+
     await this.getMessages();
     await this.readMessages();
-    this.scrollToBottom();
+
+    this.scrollToBottom(true);
     this.SetLoader(false);
+
     const isChatNotificationShown = !!localStorage.getItem('isChatNotificationShown');
     if (!isChatNotificationShown) this.showNoticeModal();
   },
@@ -234,6 +259,7 @@ export default {
   methods: {
     goToCurrChat(message) {
       if (this.chatId !== 'starred') return;
+      localStorage.setItem('selStarredMsgNumber', JSON.stringify(message.number));
       this.$router.push(`/messages/${message.chatId}`);
     },
     handleChangeStarVal(message) {
@@ -286,12 +312,18 @@ export default {
         };
       }
     },
-    async handleScroll({ target: { scrollTop, scrollHeight } }) {
-      const { minScrollDifference, filter, messages: { list, count } } = this;
+    async handleScroll({ target: { scrollTop, scrollHeight, clientHeight } }) {
+      const {
+        minScrollDifference, filter, messages: { list, count }, canLoadMsgsToBot,
+      } = this;
 
-      this.isScrollBtnVis = scrollHeight - scrollTop > minScrollDifference;
+      const currScrollOffset = scrollHeight - scrollTop;
 
-      if (scrollTop < 100 && count > 20 && list.length < count && !this.isChatsLoading) {
+      this.isScrollBtnVis = currScrollOffset > minScrollDifference;
+
+      if (canLoadMsgsToBot && clientHeight === currScrollOffset && !this.isBottomChatsLoading) {
+        this.isBottomChatsLoading = true;
+      } else if (scrollTop < 100 && count > 20 && list.length < count && !this.isChatsLoading) {
         this.isChatsLoading = true;
         this.filter.offset = filter.offset + list.length;
         await this.getMessages();
@@ -328,11 +360,17 @@ export default {
 
       return momentDate.format(`${format}HH:mm`);
     },
-    scrollToBottom() {
+    scrollToBottom(isInit) {
       setTimeout(() => {
-        const { HandleScrollContainer, ScrollContainer } = this.$refs;
-        ScrollContainer.scrollIntoView(false);
+        const { HandleScrollContainer, ScrollContainer, AfterStarredMsg } = this.$refs;
+
+        ScrollContainer.scrollIntoView(isInit === true ? false : { block: 'end', behavior: 'smooth' });
         this.minScrollDifference = (HandleScrollContainer.scrollHeight - HandleScrollContainer.scrollTop) * 2;
+
+        if (AfterStarredMsg && !this.canLoadMsgsToBot) {
+          HandleScrollContainer.scrollTo(0, HandleScrollContainer.scrollTop - AfterStarredMsg[0].clientHeight);
+          this.canLoadMsgsToBot = true;
+        }
       }, 100);
     },
     showNoticeModal() {
@@ -370,6 +408,8 @@ export default {
           createdAt: new Date(),
         };
         this.$store.commit('data/addMessageToList', newMessage);
+
+        if (!isScrollBtnVis) this.scrollToBottom();
       } catch (e) {
         console.log(e);
       }
@@ -514,7 +554,7 @@ export default {
   }
 
   &__loader-cont {
-    height: 60px;
+    height: 70px;
     position: relative;
   }
 
@@ -587,6 +627,15 @@ export default {
   grid-template-columns: 43px minmax(auto, max-content) max-content;
   gap: 20px;
   height: max-content;
+
+  &_blink {
+    animation: blink 1s;
+  }
+
+  @keyframes blink {
+    50%{opacity: .5;}
+    100%{opacity: 1;}
+  }
 
   &_right {
     grid-template-columns: max-content minmax(auto, max-content);

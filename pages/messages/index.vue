@@ -164,8 +164,8 @@ export default {
           text: 'Hello! It is test message',
           medias: [],
         },
-        // userId: '128ddf57-94d3-4b66-867b-550652172ac0',
-        userId: '8407b757-95b3-4862-95b6-e6d8d6d03341', // исполнитель
+        userId: '128ddf57-94d3-4b66-867b-550652172ac0',
+        // userId: '8407b757-95b3-4862-95b6-e6d8d6d03341', // исполнитель
       };
       try {
         this.$store.dispatch('data/handleCreateChat', payload);

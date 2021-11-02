@@ -13,7 +13,8 @@ export default {
     const { result } = await this.$axios.$get(method, config);
     const myId = rootState.user.userData.id;
 
-    result.messages.reverse();
+    if (chatId !== 'starred') result.messages.reverse();
+
     result.messages.forEach((message) => {
       message.itsMe = message.sender.id === myId;
     });
