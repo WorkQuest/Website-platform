@@ -1,65 +1,52 @@
 <template>
   <div>
-    <span v-if="userRole === 'employer'">
-      <span v-if="info.mode !== 1">
-        <span v-if="info.mode !== 5">
-          <span v-if="info.mode !== 3">
-            <div>
-              <div
-                class="info"
-                :class="infoClass"
-              >
-                <div class="info__body">
-                  <div class="info__left">
-                    <div
-                      class="info__text info__text_white"
-                    >
-                      <div v-if="info.mode === 2">
-                        {{ $t('quests.activeQuest') }}
-                      </div>
-                      <div v-if="info.mode === 4">
-                        {{ $t('performed.title') }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </span>
-        </span>
-      </span>
-    </span>
-    <span v-if="userRole === 'worker'">
-      <div>
+    <span v-if="['employer'].includes(userRole)">
+      <span v-if="![1,3,5].includes(infoDataMode)">
         <div
-          v-if="info.mode !== 5"
           class="info"
           :class="infoClass"
         >
           <div class="info__body">
             <div class="info__left">
               <div
-                class="info__text info__text_white"
-                :class="[{'info__text_black': info.mode === 3}]"
+                class="info__text"
+                :class="[
+                  {'info__text_white': ![3,6,7,8,9].includes(infoDataMode)}
+                ]"
               >
-                <div v-if="info.mode === 1">
-                  {{ $t('invite.title') }}
-                </div>
-                <div v-if="info.mode === 2">
-                  {{ $t('quests.activeQuest') }}
-                </div>
-                <div v-if="info.mode === 3">
-                  {{ $t('response.title') }}
-                </div>
-                <div v-if="info.mode === 4">
-                  {{ $t('performed.title') }}
-                </div>
-                <div v-if="info.mode === 5" />
+                {{ infoStatusText }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </span>
+    </span>
+    <span v-if="['worker'].includes(userRole)">
+      <div>
+        <div
+          v-if="[!5].includes(infoDataMode)"
+          class="info"
+          :class="infoClass"
+        >
+          <div class="info__body">
+            <div class="info__left">
+              <div
+                class="info__text"
+                :class="[
+                  {
+                    'info__text_white': ![3,7,8,9].includes(infoDataMode)
+                  },
+                  {
+                    'info__text_black': [3,7,8,9].includes(infoDataMode)
+                  }
+                ]"
+              >
+                {{ infoStatusText }}
               </div>
             </div>
             <div class="info__right">
               <div
-                v-if="info.mode === 3"
+                v-if="[3].includes(infoDataMode)"
               >
                 <base-btn mode="showYourMessage">
                   <template v-slot:right>
@@ -67,22 +54,6 @@
                   </template>
                   {{ $t('info.showYourMessage') }}
                 </base-btn>
-              </div>
-              <div
-                v-if="info.date"
-              >
-                <span v-if="info.mode !== 1">
-                  <span v-if="info.mode !== 4">
-                    <span v-if="info.mode !== 3">
-                      <span class="info__text info__text_white info__text_normal">
-                        {{ $t('quests.runtime') }}
-                      </span>
-                      <span class="info__text info__text_white info__text_bold">
-                        {{ info.date }}
-                      </span>
-                    </span>
-                  </span>
-                </span>
               </div>
             </div>
           </div>
@@ -100,25 +71,54 @@ export default {
   name: 'InfoVue',
   props: {
     info: {
-      type: Object,
-      default: () => {},
+      type: Number,
+      default: () => 0,
     },
   },
   computed: {
+    infoStatusText() {
+      if (['employer'].includes(this.userRole)) {
+        if ([2].includes(this.infoDataMode)) {
+          return this.$t('quests.activeQuest');
+        } if ([4].includes(this.infoDataMode)) {
+          return this.$t('quests.waitWorker');
+        } if ([6].includes(this.infoDataMode)) {
+          return this.$t('quests.pendingConsideration');
+        }
+      } if (['worker'].includes(this.userRole)) {
+        if ([1].includes(this.infoDataMode)) {
+          return this.$t('invite.title');
+        } if ([2].includes(this.infoDataMode)) {
+          return this.$t('quests.activeQuest');
+        } if ([3].includes(this.infoDataMode)) {
+          return this.$t('response.title');
+        } if ([4].includes(this.infoDataMode)) {
+          return this.$t('performed.title');
+        }
+      } if (this.userRole) {
+        if ([7].includes(this.infoDataMode)) {
+          return this.$t('quests.dispute');
+        } if ([8].includes(this.infoDataMode)) {
+          return this.$t('quests.questClosed');
+        } if ([9].includes(this.infoDataMode)) {
+          return this.$t('quests.questFinished');
+        }
+      }
+      return '';
+    },
     infoClass() {
-      const { mode } = this.info;
       return [
         {
-          'info_bg-yellow': mode === 1,
+          'info_bg-yellow': [1].includes(this.infoDataMode),
         },
         {
-          'info_bg-green': mode === 2,
+          'info_bg-green': [2].includes(this.infoDataMode),
         },
         {
-          'info_bg-grey': mode === 3,
+          'info_bg-grey': [3].includes(this.infoDataMode),
         },
         {
-          'info_bg-blue': mode === 4,
+          'info_bg-blue': [4].includes(this.infoDataMode),
         },
       ];
     },
@@ -126,6 +126,7 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
+      infoDataMode: 'quests/getInfoDataMode',
     }),
   },
   methods: {
@@ -139,10 +140,9 @@ export default {
       return texts[type] || '';
     },
     infoTextStyle() {
-      const { mode } = this.info;
       return [
         {
-          info_yellow: mode === 1,
+          info_yellow: [1].includes(this.infoDataMode),
         },
       ];
     },
@@ -160,7 +160,7 @@ export default {
   }
 }
 .info {
-  min-height: 54px;
+  min-height: 41px;
   box-shadow: 0 1px 0 #e6e9ec;
   width: 100%;
   display: flex;

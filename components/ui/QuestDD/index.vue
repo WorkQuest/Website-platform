@@ -7,7 +7,9 @@
       class="quest__button quest__button_menu"
       @click="showQuestMenu()"
     >
-      <span class="icon-more_horizontal" />
+      <span
+        :class="buttonIcon"
+      />
       <transition name="fade">
         <div
           v-if="isShowQuestMenu"
@@ -18,6 +20,7 @@
               class="menu__container"
             >
               <div
+                v-if="['employer'].includes(userRole)"
                 class="menu__item"
                 @click="toRaisingViews()"
               >
@@ -38,6 +41,7 @@
                 </div>
               </div>
               <div
+                v-if="['employer'].includes(userRole)"
                 class="menu__item"
               >
                 <div
@@ -48,6 +52,7 @@
                 </div>
               </div>
               <div
+                v-if="['employer'].includes(userRole)"
                 class="menu__item"
                 @click="showAreYouSureDeleteQuestModal()"
               >
@@ -66,6 +71,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import modals from '~/store/modals/modals';
 
@@ -79,7 +85,18 @@ export default {
       isShowQuestMenu: false,
     };
   },
+  computed: {
+    ...mapGetters({
+      userRole: 'user/getUserRole',
+    }),
+  },
   methods: {
+    buttonIcon() {
+      return [
+        { 'icon-more_horizontal': this.userRole === 'employer' },
+        { share_outline: this.userRole === 'worker' },
+      ];
+    },
     toEditQuest() {
       this.$router.push('/edit-quest');
       this.$store.dispatch('quests/getCurrentStepEditQuest', 1);

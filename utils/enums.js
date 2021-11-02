@@ -25,4 +25,5 @@ export const StakingTypes = {
   WQT: 'WQT',
   WUSD: 'WUSD',
   MINING: 'MINING',
+  CROSS_CHAIN: 'CROSS_CHAIN',
 };
