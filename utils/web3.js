@@ -3,6 +3,7 @@ import Web4 from '@cryptonteam/web4';
 import BigNumber from 'bignumber.js';
 import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
+import modals from '~/store/modals/modals';
 import * as abi from '~/abi/abi';
 import { Chains, ChainsId, StakingTypes } from '~/utils/enums';
 
@@ -140,6 +141,7 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
     const Contract = new _provider.eth.Contract(_abi, _address);
     return await Contract.methods[_method].apply(this, _params).call();
   } catch (e) {
+    store.dispatch('web3/disconnect');
     console.log(e.message);
     return false;
   }
@@ -224,8 +226,8 @@ export const handleMetamaskStatus = (callback) => {
 //     return error(500, '', e.message);
 //   }
 // };
-let walletOptions = {};
-export const initWeb3Modal = async (chain) => {
+export const initProvider = async (chain) => {
+  let walletOptions;
   if (process.env.PROD === 'false') {
     if (chain === 'ETH') {
       walletOptions = {
@@ -251,7 +253,7 @@ export const initWeb3Modal = async (chain) => {
         },
         // network: 'ethereum',
       };
-    } else {
+    } else if (chain === 'BNB') {
       walletOptions = {
         rpc: {
           56: 'https://bsc-dataseed.binance.org/',
@@ -260,25 +262,25 @@ export const initWeb3Modal = async (chain) => {
       };
     }
   }
+  let provider = null;
+  const web3Modal = new Web3Modal({
+    // theme: 'dark',
+    cacheProvider: true, // optional
+    providerOptions: {
+      walletconnect: {
+        package: WalletConnectProvider, // required
+        options: walletOptions,
+      },
+    }, // required
+  });
+  provider = await web3Modal.connect();
+  return provider;
 };
 
 export const initWeb3 = async (chain) => {
   try {
-    let provider = null;
     let userAddress;
-    await initWeb3Modal(chain);
-    const web3Modal = new Web3Modal({
-      // theme: 'dark',
-      cacheProvider: true, // optional
-      providerOptions: {
-        walletconnect: {
-          package: WalletConnectProvider, // required
-          options: walletOptions,
-        },
-      }, // required
-    });
-    provider = await web3Modal.connect();
-    store.dispatch('web3/setMetaMaskStatus', provider.isMetaMask);
+    const provider = await initProvider(chain);
     web3 = new Web3(provider);
     web4 = new Web4();
     userAddress = await web3.eth.getCoinbase();
@@ -302,8 +304,6 @@ export const initWeb3 = async (chain) => {
       netId: chainId,
       netType: getChainTypeById(chainId),
     };
-    web4 = new Web4();
-    await web4.setProvider(window.ethereum, userAddress);
     return success(account);
   } catch (e) {
     return error(500, '', 'Connected error');

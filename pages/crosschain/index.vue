@@ -302,6 +302,8 @@ export default {
       await this.$store.dispatch('web3/disconnect');
     },
     async checkMetamaskStatus() {
+      const chainName = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
+      const providerData = await this.$store.dispatch('web3/initProvider', chainName);
       if (typeof window.ethereum === 'undefined') {
         localStorage.setItem('metamaskStatus', 'notInstalled');
         this.ShowModal({
@@ -313,6 +315,10 @@ export default {
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');
+        if (providerData.isMetaMask) {
+          const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', chainName);
+          if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: chainName });
+        }
         await this.connectToMetamask();
       }
     },
@@ -370,17 +376,19 @@ export default {
         this.targetAddressInd = selInd ? 0 : 1;
       }
     },
-    handleChangeTarget(selInd) {
+    async handleChangeTarget(selInd) {
       if (selInd === this.sourceAddressInd) {
         this.sourceAddressInd = selInd ? 0 : 1;
       }
       this.targetAddressInd = selInd;
+      await this.disconnectFromMetamask();
     },
-    handleChangeSource(selInd) {
+    async handleChangeSource(selInd) {
       if (selInd === this.targetAddressInd) {
         this.targetAddressInd = selInd ? 0 : 1;
       }
       this.sourceAddressInd = selInd;
+      await this.disconnectFromMetamask();
     },
     async showSwapModal() {
       this.SetLoader(true);

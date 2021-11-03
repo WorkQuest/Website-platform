@@ -29,7 +29,12 @@ import {
   getAccount,
   swapWithBridge,
   getStakingDataByType,
-  getStakingRewardTxFee, handleMetamaskStatus, fetchStakingActions, unsubscirbeStakingListeners, getChainIdByChain,
+  getStakingRewardTxFee,
+  handleMetamaskStatus,
+  fetchStakingActions,
+  unsubscirbeStakingListeners,
+  getChainIdByChain,
+  initProvider,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
@@ -400,7 +405,10 @@ export default {
       return err;
     }
   },
-  async setMetaMaskStatus({ commit }, payload) {
-    commit('setMetaMaskStatus', payload);
+  async initProvider({ commit }, payload) {
+    const providerData = await initProvider(payload);
+    console.log(providerData);
+    commit('setMetaMaskStatus', providerData.isMetaMask);
+    return providerData;
   },
 };

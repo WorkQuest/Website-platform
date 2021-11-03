@@ -61,7 +61,7 @@
               v-if="miningPoolId === 'BNB'"
               class="btn_bl"
               mode="outline"
-              :disabled="statusBusy || metamaskStatus === 'notInstalled'"
+              :disabled="statusBusy || metamaskStatus === 'notInstalled' || !isConnected"
               @click="openSwapTokens()"
             >
               {{ $t('mining.swapTokens.title') }}
@@ -448,6 +448,7 @@ export default {
   },
   methods: {
     async checkMetamaskStatus() {
+      const providerData = await this.$store.dispatch('web3/initProvider', this.$route.params.id);
       if (typeof window.ethereum === 'undefined') {
         localStorage.setItem('metamaskStatus', 'notInstalled');
         this.ShowModal({
@@ -460,8 +461,10 @@ export default {
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');
-        const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
-        if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+        if (providerData.isMetaMask) {
+          const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+          if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+        }
         await this.connectToMetamask();
       }
     },
