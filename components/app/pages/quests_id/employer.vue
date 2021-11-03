@@ -82,32 +82,26 @@
             v-if="response.worker.firstName && response.worker.lastName"
             class="worker__container"
           >
-            <div>
-              <img
-                class="worker__avatar"
-                :src="response.worker.avatar ? response.worker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
-                alt=""
-              >
-            </div>
-            <div
-              class="worker__name"
-            >
-              {{ response.worker.firstName }} {{ response.worker.lastName }}
-            </div>
-            <div class="btns__wrapper">
-              <div class="btn__wrapper">
-                <base-btn
-                  :disabled="selectedWorker[i]"
-                  mode="agree"
-                  @click="selectWorker(i)"
-                >Select</base-btn>
+            <div class="worker worker__col_two">
+              <div class="worker row">
+                <img
+                  class="worker__avatar"
+                  :src="response.worker.avatar ? response.worker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+                  alt=""
+                >
+                <div
+                  class="worker__name"
+                >
+                  {{ response.worker.firstName }} {{ response.worker.lastName }}
+                </div>
               </div>
-              <div class="btn__wrapper">
-                <base-btn
-                  mode="delete"
-                  @click="rejectQuestInvitation(response.id)"
-                >Reject</base-btn>
-              </div>
+              <quest-id-dd
+                :i="i"
+                :response-id="response.id"
+              />
+            </div>
+            <div class="worker__message">
+              {{ response.message }}
             </div>
             <div>
               <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
@@ -497,17 +491,6 @@ export default {
         await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
       }
     },
-    async selectWorker(i) {
-      this.SetLoader(true);
-      const { worker } = this.responsesToQuest[i];
-      this.selectedWorker.push(worker);
-      this.SetLoader(false);
-    },
-    async rejectQuestInvitation(responseId) {
-      this.SetLoader(true);
-      await this.$store.dispatch('quests/rejectQuestInvitation', responseId);
-      this.SetLoader(false);
-    },
     toRaisingViews() {
       this.$router.push('/edit-quest');
       this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
@@ -611,21 +594,42 @@ export default {
     margin: 0 20px 0 0;
   }
 }
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 0 10px 0;
+}
 .worker {
   font-size: 16px;
   font-weight: 500;
   color: $black800;
+  &__message {
+    @include text-simple;
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    color: $black500;
+  }
+  &__col {
+    &_two {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, auto);
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
   &__container {
     display: flex;
-    flex-direction: row;
-    justify-items: center;
-    align-items: center;
+    flex-direction: column;
+    justify-items: flex-start;
+    align-items: flex-start;
     margin: 20px 0 20px 0;
   }
   &__avatar {
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
   }
   &__name {
     @extend .worker;

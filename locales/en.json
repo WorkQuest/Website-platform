@@ -259,6 +259,9 @@
     "employer": {
       "usersNotResponded": "Users have not yet responded to the quest"
     },
+    "startChat": "Start chat",
+    "invite": "Invite",
+    "decline": "Decline",
     "rating": "Rating",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
