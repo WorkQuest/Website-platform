@@ -28,7 +28,7 @@
             class="chat-container__messages"
           >
             <div
-              v-if="isChatsLoading"
+              v-if="isTopChatsLoading"
               class="chat-container__loader-cont"
             >
               <loader class="chat-container__loader" />
@@ -36,9 +36,9 @@
             <div
               v-for="(message, i) in messages.list"
               :key="message.id"
-              :ref="message.number === selStarredMsgNumber + 1 ? 'AfterStarredMsg' : ''"
+              :ref="message.number === selStarredMessageNumber ? 'starredMessage' : ''"
               class="chat-container__message message"
-              :class="[{'message_right' : message.itsMe}, {'message_blink' : message.number === selStarredMsgNumber}]"
+              :class="[{'message_right' : message.itsMe}, {'message_blink' : message.number === selStarredMessageNumber}]"
             >
               <img
                 v-if="!message.itsMe"
@@ -194,23 +194,16 @@ export default {
   },
   data() {
     return {
-      isChatsLoading: false,
+      isTopChatsLoading: false,
       isBottomChatsLoading: false,
       isShowFavorite: false,
       messageText: '',
       files: [],
-      filter: {
-        offset: 0,
-        // offsetTop: 0,
-        // offsetBottom: 0,
-        limit: 20,
-      },
       today: moment(new Date()),
       minScrollDifference: 0,
       isScrollBtnVis: false,
       chatId: this.$route.params.id,
-      selStarredMsgNumber: 0,
-      canLoadMsgsToBot: false,
+      selStarredMessageNumber: 0,
     };
   },
   computed: {
@@ -219,6 +212,7 @@ export default {
       userData: 'user/getUserData',
       lastMessageId: 'data/getLastMessageId',
       chats: 'data/getChats',
+      filter: 'data/getMessagesFilter',
     }),
   },
   async mounted() {
@@ -231,21 +225,22 @@ export default {
     );
 
     this.SetLoader(true);
-    const selStarredMsgNumber = +localStorage.getItem('selStarredMsgNumber');
+    const selStarredMessageNumber = +localStorage.getItem('selStarredMessageNumber');
 
-    if (selStarredMsgNumber) {
-      this.filter.limit = 0;
-      await this.getMessages();
-      this.filter = {
-        limit: 20,
-        offset: this.messages.count - selStarredMsgNumber - 1,
-      };
-      this.selStarredMsgNumber = selStarredMsgNumber;
-      localStorage.setItem('selStarredMsgNumber', '0');
+    let direction = 0;
+    let bottomOffset = 0;
+
+    if (selStarredMessageNumber) {
+      bottomOffset = selStarredMessageNumber >= 20 ? selStarredMessageNumber - 10 : 0;
+      direction = 1;
+
+      this.selStarredMessageNumber = selStarredMessageNumber;
+
+      localStorage.setItem('selStarredMessageNumber', '0');
     }
 
-    await this.getMessages();
-    await this.readMessages();
+    await this.getMessages(direction, bottomOffset);
+    if (!direction) await this.readMessages();
 
     this.scrollToBottom(true);
     this.SetLoader(false);
@@ -255,11 +250,12 @@ export default {
   },
   destroyed() {
     this.$store.commit('data/setMessagesList', { messages: [], count: 0, chatId: '' });
+    this.$store.commit('data/clearMessagesFilter');
   },
   methods: {
     goToCurrChat(message) {
       if (this.chatId !== 'starred') return;
-      localStorage.setItem('selStarredMsgNumber', JSON.stringify(message.number));
+      localStorage.setItem('selStarredMessageNumber', JSON.stringify(message.number));
       this.$router.push(`/messages/${message.chatId}`);
     },
     handleChangeStarVal(message) {
@@ -313,31 +309,44 @@ export default {
       }
     },
     async handleScroll({ target: { scrollTop, scrollHeight, clientHeight } }) {
-      const {
-        minScrollDifference, filter, messages: { list, count }, canLoadMsgsToBot,
-      } = this;
+      const { minScrollDifference, filter: { canLoadToBottom, canLoadToTop } } = this;
 
       const currScrollOffset = scrollHeight - scrollTop;
 
       this.isScrollBtnVis = currScrollOffset > minScrollDifference;
+      const scrollBottom = currScrollOffset - clientHeight;
 
-      if (canLoadMsgsToBot && clientHeight === currScrollOffset && !this.isBottomChatsLoading) {
+      if (canLoadToBottom && scrollBottom < 300 && !this.isBottomChatsLoading) {
         this.isBottomChatsLoading = true;
-      } else if (scrollTop < 100 && count > 20 && list.length < count && !this.isChatsLoading) {
-        this.isChatsLoading = true;
-        this.filter.offset = filter.offset + list.length;
-        await this.getMessages();
-        this.isChatsLoading = false;
+        await this.getMessages(1);
+        setTimeout(() => { this.isBottomChatsLoading = false; }, 300);
+      } else if (canLoadToTop && scrollTop < 300 && !this.isTopChatsLoading) {
+        this.isTopChatsLoading = true;
+        await this.getMessages(0);
+        setTimeout(() => { this.isTopChatsLoading = false; }, 300);
       }
     },
-    async getMessages() {
-      const { filter, chatId } = this;
+    async getMessages(direction, currBottomOffset) {
+      const {
+        filter: {
+          topOffset,
+          bottomOffset,
+        }, chatId,
+      } = this;
+
+      const offset = direction ? currBottomOffset || bottomOffset : topOffset || 0;
 
       const payload = {
         config: {
-          params: filter,
+          params: {
+            limit: 20,
+            offset,
+            'sort[createdAt]': direction ? 'asc' : undefined,
+          },
         },
         chatId,
+        direction,
+        offset,
       };
 
       try {
@@ -362,15 +371,12 @@ export default {
     },
     scrollToBottom(isInit) {
       setTimeout(() => {
-        const { HandleScrollContainer, ScrollContainer, AfterStarredMsg } = this.$refs;
+        const { HandleScrollContainer, ScrollContainer, starredMessage } = this.$refs;
 
         ScrollContainer.scrollIntoView(isInit === true ? false : { block: 'end', behavior: 'smooth' });
         this.minScrollDifference = (HandleScrollContainer.scrollHeight - HandleScrollContainer.scrollTop) * 2;
 
-        if (AfterStarredMsg && !this.canLoadMsgsToBot) {
-          HandleScrollContainer.scrollTo(0, HandleScrollContainer.scrollTop - AfterStarredMsg[0].clientHeight);
-          this.canLoadMsgsToBot = true;
-        }
+        if (starredMessage && isInit) HandleScrollContainer.scrollTo(0, starredMessage[0].offsetTop - HandleScrollContainer.offsetTop - 20);
       }, 100);
     },
     showNoticeModal() {

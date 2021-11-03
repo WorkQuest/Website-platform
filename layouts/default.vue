@@ -820,6 +820,7 @@ export default {
       token: 'user/accessToken',
       connections: 'data/notificationsConnectionStatus',
       chatId: 'data/getCurrChatId',
+      messagesFilter: 'data/getMessagesFilter',
     }),
     locales() {
       return [
@@ -1124,7 +1125,7 @@ export default {
               limit: 10,
               offset: 0,
             });
-          } else if (action === 'newMessage' && data.chatId === this.chatId) {
+          } else if (action === 'newMessage' && data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
             this.$store.commit('data/addMessageToList', data);
           }
         });

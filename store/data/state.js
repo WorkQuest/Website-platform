@@ -384,6 +384,12 @@ export default () => ({
     count: 0,
     chatId: '',
   },
+  messagesFilter: {
+    topOffset: 0,
+    bottomOffset: 0,
+    canLoadToBottom: false,
+    canLoadToTop: false,
+  },
   connections: {
     notifsConnection: false,
     chatConnection: false,

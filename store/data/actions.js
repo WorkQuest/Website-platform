@@ -8,22 +8,29 @@ export default {
     });
     commit('setChatsList', result);
   },
-  async getMessagesList({ commit, rootState }, { config, chatId }) {
+  async getMessagesList({ commit, rootState: { user, data } }, {
+    config, chatId, direction, offset,
+  }) {
     const method = chatId === 'starred' ? '/v1/user/me/chat/messages/star' : `/v1/user/me/chat/${chatId}/messages`;
     const { result } = await this.$axios.$get(method, config);
-    const myId = rootState.user.userData.id;
-
-    if (chatId !== 'starred') result.messages.reverse();
+    const myId = user.userData.id;
 
     result.messages.forEach((message) => {
       message.itsMe = message.sender.id === myId;
     });
 
-    if (config.params.offset) {
-      result.messages = result.messages.concat(rootState.data.messages.list);
+    if (direction) {
+      result.messages = data.messages.list.concat(result.messages);
+    } else {
+      if (chatId !== 'starred')result.messages.reverse();
+
+      result.messages = result.messages.concat(data.messages.list);
     }
 
-    commit('setMessagesList', { ...result, chatId });
+    commit('setMessagesList', {
+      ...result, chatId, direction, offset,
+    });
+    return result;
   },
   handleCreateChat({ commit }, { config, userId }) {
     this.$axios.$post(`/v1/user/${userId}/send-message`, config);
