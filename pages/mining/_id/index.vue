@@ -472,7 +472,7 @@ export default {
       if (!this.isConnected) {
         await this.$store.dispatch('web3/connect', this.$route.params.id);
       }
-      localStorage.setItem('miningPoolId', this.$route.params.id);
+      await localStorage.setItem('miningPoolId', this.$route.params.id);
       this.miningPoolId = localStorage.getItem('miningPoolId');
       await this.$store.dispatch('web3/initContract');
     },
