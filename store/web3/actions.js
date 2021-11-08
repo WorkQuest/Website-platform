@@ -119,53 +119,28 @@ export default {
   },
 
   async initTokensData({ commit }) {
-    if (process.env.PROD === 'true') {
-      const [oldTokenDecimal, oldTokenSymbol, oldTokenBalance, newTokenDecimal, newTokenSymbol, newTokenBalance] = await Promise.all([
-        fetchContractData('decimals', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET),
-        fetchContractData('symbol', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET),
-        fetchContractData('balanceOf', abi.ERC20, process.env.TOKEN_WQT_OLD_ADDRESS_BSCMAINNET, [getAccountAddress()]),
-        fetchContractData('decimals', abi.ERC20, process.env.MAINNET_BSC_WQT_TOKEN),
-        fetchContractData('symbol', abi.ERC20, process.env.MAINNET_BSC_WQT_TOKEN),
-        fetchContractData('balanceOf', abi.ERC20, process.env.MAINNET_BSC_WQT_TOKEN, [getAccountAddress()]),
-      ]);
-      const payload = {
-        userPurse: {
-          address: getAccountAddress(),
-          oldTokenBalance: new BigNumber(oldTokenBalance).shiftedBy(-oldTokenDecimal).toString(),
-          oldTokenSymbol,
-          newTokenBalance: new BigNumber(newTokenBalance).shiftedBy(-newTokenDecimal).toString(),
-          newTokenSymbol,
-        },
-        decimals: {
-          oldTokenDecimal,
-          newTokenDecimal,
-        },
-      };
-      commit('setBSCTokensData', payload);
-    } if (process.env.PROD === 'false') {
-      const [oldTokenDecimal, oldTokenSymbol, oldTokenBalance, newTokenDecimal, newTokenSymbol, newTokenBalance] = await Promise.all([
-        fetchContractData('decimals', abi.ERC20, process.env.BSC_OLD_WQT_TOKEN),
-        fetchContractData('symbol', abi.ERC20, process.env.BSC_OLD_WQT_TOKEN),
-        fetchContractData('balanceOf', abi.ERC20, process.env.BSC_OLD_WQT_TOKEN, [getAccountAddress()]),
-        fetchContractData('decimals', abi.ERC20, process.env.BSC_WQT_TOKEN),
-        fetchContractData('symbol', abi.ERC20, process.env.BSC_WQT_TOKEN),
-        fetchContractData('balanceOf', abi.ERC20, process.env.BSC_WQT_TOKEN, [getAccountAddress()]),
-      ]);
-      const payload = {
-        userPurse: {
-          address: getAccountAddress(),
-          oldTokenBalance: new BigNumber(oldTokenBalance).shiftedBy(-oldTokenDecimal).toString(),
-          oldTokenSymbol,
-          newTokenBalance: new BigNumber(newTokenBalance).shiftedBy(-newTokenDecimal).toString(),
-          newTokenSymbol,
-        },
-        decimals: {
-          oldTokenDecimal,
-          newTokenDecimal,
-        },
-      };
-      commit('setBSCTokensData', payload);
-    }
+    const [oldTokenDecimal, oldTokenSymbol, oldTokenBalance, newTokenDecimal, newTokenSymbol, newTokenBalance] = await Promise.all([
+      fetchContractData('decimals', abi.ERC20, process.env.BSC_OLD_WQT_TOKEN),
+      fetchContractData('symbol', abi.ERC20, process.env.BSC_OLD_WQT_TOKEN),
+      fetchContractData('balanceOf', abi.ERC20, process.env.BSC_OLD_WQT_TOKEN, [getAccountAddress()]),
+      fetchContractData('decimals', abi.ERC20, process.env.BSC_WQT_TOKEN),
+      fetchContractData('symbol', abi.ERC20, process.env.BSC_WQT_TOKEN),
+      fetchContractData('balanceOf', abi.ERC20, process.env.BSC_WQT_TOKEN, [getAccountAddress()]),
+    ]);
+    const payload = {
+      userPurse: {
+        address: getAccountAddress(),
+        oldTokenBalance: new BigNumber(oldTokenBalance).shiftedBy(-oldTokenDecimal).toString(),
+        oldTokenSymbol,
+        newTokenBalance: new BigNumber(newTokenBalance).shiftedBy(-newTokenDecimal).toString(),
+        newTokenSymbol,
+      },
+      decimals: {
+        oldTokenDecimal,
+        newTokenDecimal,
+      },
+    };
+    commit('setBSCTokensData', payload);
   },
 
   async getTokensData({ commit }) {
