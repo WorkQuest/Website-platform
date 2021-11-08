@@ -415,8 +415,8 @@ export default {
     this.miningPoolId = localStorage.getItem('miningPoolId');
   },
   async mounted() {
-    this.SetLoader(false);
-    // this.SetLoader(true);
+    // this.SetLoader(false);
+    this.SetLoader(true);
     // await this.checkMetamaskStatus();
     if (this.$route.params.id === 'ETH') {
       await Promise.all([
@@ -430,11 +430,11 @@ export default {
       ]);
     }
     await Promise.all([
-    //  this.tokensDataUpdate(),
+      // this.tokensDataUpdate(),
       this.initTokenDays(),
       this.initGraphData(),
     ]);
-    // this.SetLoader(false);
+    this.SetLoader(false);
     if (this.$route.params.id === 'ETH') {
       await this.tableWqtWethTokenDay();
     } else {
@@ -460,8 +460,8 @@ export default {
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');
-        // const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
-        // if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+        const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+        if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
         await this.connectToMetamask();
       }
     },
@@ -628,8 +628,9 @@ export default {
         updateMethod: this.tokensDataUpdate,
       });
     },
-    handleBackToMainMining() {
-      this.$router.push('/mining');
+    async handleBackToMainMining() {
+      await this.$router.push('/mining');
+      await this.disconnectFromMetamask();
     },
     iconUrls() {
       return [

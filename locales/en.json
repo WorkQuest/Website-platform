@@ -2403,7 +2403,7 @@
   },
   "wiki": {
     "title": "WorkQuest Wiki",
-    "searchPlaceholder": "Search by Address / Txn Hash / Block / Token",
+    "searchPlaceholder": "Type the word",
     "search": "Search",
     "navigation": {
       "header": {
