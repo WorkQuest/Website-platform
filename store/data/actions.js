@@ -67,4 +67,13 @@ export default {
     commit('setMessageStarVal', { messageId, val: false });
     return result;
   },
+  async setImage({ commit }, { url, formData, type }) {
+    const response = await this.$axios.$put(url, formData, {
+      headers: {
+        'Content-Type': type,
+        'x-amz-acl': 'public-read',
+      },
+    });
+    return response;
+  },
 };

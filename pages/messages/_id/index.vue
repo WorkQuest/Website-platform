@@ -21,6 +21,7 @@
         <div
           ref="HandleScrollContainer"
           class="chat-container__scroll-cont"
+          :class="{'chat-container__scroll-cont_small' : files.length}"
           @scroll="handleScroll"
         >
           <div
@@ -66,7 +67,17 @@
                     v-if="message.medias.length"
                     class="message__media"
                   >
-                    {{}}
+                    <div
+                      v-for="file in message.medias"
+                      :key="file.id"
+                      class="image-cont"
+                    >
+                      <img
+                        :src="file.url"
+                        class="image-cont__image image-cont__image_margin"
+                        alt=""
+                      >
+                    </div>
                   </div>
                   <div
                     class="message__time message__title message__title_gray"
@@ -77,11 +88,11 @@
                 </div>
               </div>
               <div
-                v-show="chatId !== 'starred'"
                 class="message__star-cont"
                 :class="{'message__star-cont_left' : message.itsMe}"
               >
                 <div
+                  v-show="chatId !== 'starred'"
                   class="star"
                   @click="handleChangeStarVal(message)"
                 >
@@ -167,13 +178,26 @@
             v-if="files.length"
             class="footer__medias"
           >
-            <img
+            <div
               v-for="(file, i) in files"
-              :key="i"
-              :src="file.url"
-              class="image"
-              alt=""
+              :key="file.data.mediaId"
+              class="image-cont"
             >
+              <img
+                :src="file.url"
+                class="image-cont__image"
+                alt=""
+              >
+              <div
+                class="image-cont__remove"
+                @click="handleRemoveFile(i)"
+              >
+                <img
+                  src="~assets/img/ui/remove.svg"
+                  alt="remove"
+                >
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -253,6 +277,9 @@ export default {
     this.$store.commit('data/clearMessagesFilter');
   },
   methods: {
+    handleRemoveFile(index) {
+      this.files.splice(index, 1);
+    },
     goToCurrChat(message) {
       if (this.chatId !== 'starred') return;
       localStorage.setItem('selStarredMessageNumber', JSON.stringify(message.number));
@@ -299,9 +326,13 @@ export default {
         reader.readAsDataURL(file);
 
         // eslint-disable-next-line no-await-in-loop
-        const { mediaId } = await this.$store.dispatch('data/uploadFile', { contentType: file.type });
+        const data = await this.$store.dispatch('data/uploadFile', { contentType: file.type });
+
         const url = URL.createObjectURL(file);
-        this.files.push({ url, id: mediaId });
+
+        this.files.push({ data, file, url });
+
+        // this.files.push({ url, id: mediaId });
 
         reader.onerror = (evt) => {
           console.error(evt);
@@ -315,6 +346,8 @@ export default {
 
       this.isScrollBtnVis = currScrollOffset > minScrollDifference;
       const scrollBottom = currScrollOffset - clientHeight;
+
+      console.log('canLoadToBottom', canLoadToBottom);
 
       if (canLoadToBottom && scrollBottom < 300 && !this.isBottomChatsLoading) {
         this.isBottomChatsLoading = true;
@@ -395,8 +428,26 @@ export default {
         messageText, files, isScrollBtnVis, chatId,
       } = this;
       if (!messageText) return;
-      const medias = files.map((file) => file.id);
+
       const text = messageText;
+
+      this.messageText = '';
+
+      const msgFiles = [];
+
+      await Promise.all(files.map(async ({ data: { url }, file }, i) => {
+        const data = {
+          url,
+          formData: file,
+          type: file.type,
+        };
+        msgFiles.push({ url, id: i + 1 });
+
+        await this.$store.dispatch('data/setImage', data);
+      }));
+
+      const medias = files.map(({ data }) => data.mediaId);
+
       const payload = {
         config: {
           text,
@@ -404,11 +455,13 @@ export default {
         },
         chatId,
       };
-      this.messageText = '';
+
+      this.files = [];
+
       try {
         await this.$store.dispatch('data/handleSendMessage', payload);
         const newMessage = {
-          medias,
+          medias: msgFiles,
           text,
           itsMe: true,
           createdAt: new Date(),
@@ -424,14 +477,6 @@ export default {
       if (!e.ctrlKey) {
         e.preventDefault();
         callback(this.handleSendMessage);
-      }
-    },
-    favoritesHandler(item) {
-      // TODO replace with mutation
-      if (item.isFavourite) {
-        console.log('remove from favorites', item);
-      } else {
-        console.log('add to favorites', item);
       }
     },
   },
@@ -503,6 +548,10 @@ export default {
     min-height: 400px;
     display: grid;
     align-items: end;
+
+    &_small {
+      height: calc(100vh - 535px);
+    }
   }
 
   &__footer {
@@ -514,7 +563,7 @@ export default {
   }
 
   &__file-button {
-    pointer-events: none;
+    //pointer-events: none;
     height: 40px;
     background: #F7F8FA;
     color: #fff;
@@ -620,11 +669,44 @@ export default {
   }
 }
 
-.image {
-  height: 105px;
-  width: 130px;
-  border-radius: 6px;
-  min-width: 130px;
+.image-cont {
+  position: relative;
+  cursor: pointer;
+
+  &__image {
+    height: 105px;
+    width: 130px;
+    border-radius: 6px;
+    min-width: 130px;
+
+    &_margin {
+      margin: 10px 10px 0 0;
+    }
+  }
+
+  &__remove {
+    display: none;
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    background-color: #F3F7FA;
+    border-radius: 6px;
+    top: 0;
+    right: 0;
+    box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
+
+    &:hover {
+      opacity: .6;
+    }
+  }
+
+  &:hover {
+    .image-cont__remove {
+      display: grid;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 }
 
 .message {
@@ -633,6 +715,11 @@ export default {
   grid-template-columns: 43px minmax(auto, max-content) max-content;
   gap: 20px;
   height: max-content;
+
+  &__media {
+    display: flex;
+    flex-wrap: wrap;
+  }
 
   &_blink {
     animation: blink 1s;
