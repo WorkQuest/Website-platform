@@ -31,7 +31,7 @@
           <img
             v-if="assignWorker"
             class="worker__avatar"
-            :src="assignWorker.avatar.url"
+            :src="userAvatar"
             alt=""
           >
           <img
@@ -284,14 +284,19 @@
         <div class="worker__title">
           {{ $t('quests.worker') }}
         </div>
-        <div class="worker__container">
-          <div>
-            <img
-              class="worker__avatar"
-              :src="assignWorker ? assignWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-              alt=""
-            >
-          </div>
+        <div class="worker__container_row">
+          <img
+            v-if="assignWorker"
+            class="worker__avatar"
+            :src="userAvatar"
+            alt=""
+          >
+          <img
+            v-if="!assignWorker"
+            class="worker__avatar"
+            :src="require('~/assets/img/app/avatar_empty.png')"
+            alt=""
+          >
           <div
             v-if="assignWorker"
             class="worker__name"
@@ -345,7 +350,7 @@
           <img
             v-if="assignWorker"
             class="worker__avatar"
-            :src="assignWorker.avatar.url"
+            :src="userAvatar"
             alt=""
           >
           <img
@@ -685,6 +690,13 @@ export default {
       justify-content: space-between;
       align-items: center;
     }
+  }
+  &__container_row {
+    display: flex;
+    flex-direction: row;
+    justify-items: flex-start;
+    align-items: center;
+    margin: 20px 15px;
   }
   &__container {
     display: flex;
