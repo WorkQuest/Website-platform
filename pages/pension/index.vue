@@ -84,6 +84,9 @@
             </div>
           </div>
         </div>
+        <div @click="startPensionProgram">
+          start pension (test)
+        </div>
         <div
           v-if="FAQs.length"
           class="info-block"
@@ -124,6 +127,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { startPensionProgram } from '~/utils/web3';
 
 export default {
   data() {
@@ -145,24 +149,8 @@ export default {
           url: '',
         },
       ],
-      cards: [
-        {
-          title: this.$tc('pension.percents', '5'),
-          subtitle: this.$t('pension.annualPercent'),
-        },
-        {
-          title: this.$t('pension.optionalFirstDeposit'),
-          subtitle: this.$t('pension.optional'),
-        },
-        {
-          title: this.$tc('pension.years', 3),
-          subtitle: this.$t('pension.term'),
-        },
-        {
-          title: this.$t('pension.configurablePercentage'),
-          subtitle: this.$t('pension.depositsFromQuest'),
-        },
-      ],
+      lockTime: null,
+      percent: null,
       FAQs: [
         {
           name: this.$t('pension.faq1.question'),
@@ -221,9 +209,39 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+    cards() {
+      const percent = this.percent || '';
+      const time = this.lockTime || '';
+      return [
+        {
+          title: this.$tc('pension.percents', percent),
+          subtitle: this.$t('pension.annualPercent'),
+        },
+        {
+          title: this.$t('pension.optionalFirstDeposit'),
+          subtitle: this.$t('pension.optional'),
+        },
+        {
+          title: this.$tc('pension.years', time),
+          subtitle: this.$t('pension.term'),
+        },
+        {
+          title: this.$t('pension.configurablePercentage'),
+          subtitle: this.$t('pension.depositsFromQuest'),
+        },
+      ];
+    },
   },
   async mounted() {
     this.SetLoader(true);
+    await this.$store.dispatch('web3/connect'); // TODO: нормально подключаться к кошельку
+    const { lockTime, defaultFee, contributed } = await this.$store.dispatch('web3/getPensionDefaultData');
+    if (contributed !== '0') {
+      await this.$router.push('/pension/my');
+      return;
+    }
+    this.lockTime = lockTime;
+    this.percent = defaultFee;
     this.SetLoader(false);
   },
   methods: {
@@ -234,6 +252,9 @@ export default {
     },
     handleClickFAQ(FAQ) {
       FAQ.isOpen = !FAQ.isOpen;
+    },
+    async startPensionProgram() {
+      await this.$store.dispatch('web3/startPensionProgram', { fee: 5, firstDeposit: 0.005 });
     },
   },
 };

@@ -552,3 +552,54 @@ export const initStackingContract = async (chain) => {
   const liquidityMiningContract = new liquidityMiningProvider.eth.Contract(stakingAbi, stakingAddress);
   return await liquidityMiningContract.methods.getStakingInfo().call();
 };
+
+export const getPensionDefaultData = async () => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND_BSC;
+    const [lockTime, defaultFee, contributed] = await Promise.all([
+      fetchContractData('lockTime', _abi, _pensionAddress),
+      fetchContractData('defaultFee', _abi, _pensionAddress),
+      fetchContractData('contributed', _abi, _pensionAddress),
+    ]);
+    console.log(lockTime, defaultFee, contributed);
+    return {
+      defaultFee: new BigNumber(defaultFee.toString()).shiftedBy(-18).toString(),
+      lockTime: Math.floor(lockTime / 365 / 24 / 60 / 60),
+      contributed,
+    };
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
+export const getPensionWallets = async () => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND_BSC;
+    const wallet = await fetchContractData('wallets', _abi, _pensionAddress, [account.address]);
+    console.log('wallet', wallet);
+    return wallet;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
+export const startPensionProgram = async (payload) => {
+  try {
+    // TODO: что-то не так в inst контракта
+    const { firstDeposit, fee } = payload;
+    console.log(payload);
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND_BSC;
+    const contractInst = await createInstance(_abi, _pensionAddress);
+    await contractInst.updateFee(new BigNumber(fee).shiftedBy(18).toString());
+    if (firstDeposit) {
+      await contractInst.contribute(account.address, { value: new BigNumber(firstDeposit).shiftedBy(18).toString() });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};

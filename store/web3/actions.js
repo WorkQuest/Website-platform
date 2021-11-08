@@ -29,7 +29,12 @@ import {
   getAccount,
   swapWithBridge,
   getStakingDataByType,
-  getStakingRewardTxFee, handleMetamaskStatus, fetchStakingActions, unsubscirbeStakingListeners, getChainIdByChain,
+  getStakingRewardTxFee,
+  handleMetamaskStatus,
+  fetchStakingActions,
+  unsubscirbeStakingListeners,
+  getChainIdByChain,
+  getPensionLockTime, getPensionDefaultValues, getPensionDefaultData, getPensionWallets, startPensionProgram,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
@@ -377,5 +382,15 @@ export default {
   },
   async setMetaMaskStatus({ commit }, payload) {
     commit('setMetaMaskStatus', payload);
+  },
+
+  async getPensionDefaultData() {
+    return await getPensionDefaultData();
+  },
+  async getPensionWallets() {
+    return await getPensionWallets();
+  },
+  async startPensionProgram({ commit }, payload) {
+    return await startPensionProgram(payload);
   },
 };

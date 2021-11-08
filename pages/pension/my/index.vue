@@ -66,7 +66,7 @@
                   {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
                 </div>
                 <div class="info-block__subtitle_black">
-                  3 years
+                  {{ lockTime }}} years
                 </div>
               </div>
             </div>
@@ -432,6 +432,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    const wallet = await this.$store.dispatch('web3/getPensionWallets');
     this.SetLoader(false);
   },
   methods: {
