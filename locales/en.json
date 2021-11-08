@@ -2346,7 +2346,8 @@
     },
     "stakeDays": "Stake days",
     "stake": "Stake",
-    "autoRenewal": "Auto Renewal"
+    "autoRenewal": "Auto Renewal",
+    "renewalTokens": "This will renewal {n} tokens"
   },
   "myQuests": {
     "statuses": {

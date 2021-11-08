@@ -428,8 +428,8 @@ export default {
       }
       this.ShowModal({
         key: modals.areYouSureNotification,
-        title: 'Are your sure?',
-        text: `This will renewal ${renewalValue} tokens`,
+        title: this.$t('modals.areYouSure'),
+        text: this.$t('staking.renewalTokens', { n: renewalValue }),
         callback: async () => {
           this.SetLoader(true);
           await this.$store.dispatch('web3/autoRenewal', { stakingType: this.slug });
