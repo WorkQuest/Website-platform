@@ -250,7 +250,6 @@ export const initWeb3Modal = async (chain) => {
 
 export const initWeb3 = async (chain) => {
   try {
-    let provider = null;
     let userAddress;
     await initWeb3Modal(chain);
     const web3Modal = new Web3Modal({
@@ -263,7 +262,7 @@ export const initWeb3 = async (chain) => {
         },
       }, // required
     });
-    provider = await web3Modal.connect();
+    const provider = await web3Modal.connect();
     store.dispatch('web3/setMetaMaskStatus', provider.isMetaMask);
     web3 = new Web3(provider);
     web4 = new Web4();
@@ -412,7 +411,11 @@ export const claimRewards = async (_stakingAddress, _stakingAbi, _amount) => {
     showToast('Claiming', 'Claiming done', 'success');
     return '';
   } catch (e) {
-    showToast('Claim error', `${e.message}`, 'danger');
+    if (e.message.toString().includes('You cannot claim tokens yet')) {
+      showToast('Stacking error', 'You cannot claim tokens yet', 'danger');
+    } else {
+      showToast('Claim error', `${e.message}`, 'danger');
+    }
     return error(500, 'claim error', e);
   }
 };
@@ -424,11 +427,16 @@ export const authRenewal = async (_stakingAddress, _stakingAbi) => {
       abi: _stakingAbi,
       address: _stakingAddress,
     };
-    const res = await sendTransaction('autoRenewal', payload);
-    console.log('renewal res', res);
+    await sendTransaction('autoRenewal', payload);
     return success();
   } catch (e) {
-    showToast('Auto renewal error', `${e.message}`, 'danger');
+    if (e.message.toString().includes('You cannot claim tokens yet')) {
+      showToast('Stacking error', 'You cannot stake tokens yet', 'danger');
+    } else if (e.message.toString().includes('You cannot stake tokens yet')) {
+      showToast('Stacking error', 'You cannot claim tokens yet', 'danger');
+    } else {
+      showToast('Auto renewal error', `${e.message}`, 'danger');
+    }
     return error(500, 'auto renewal', e);
   }
 };

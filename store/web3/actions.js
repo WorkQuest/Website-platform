@@ -67,7 +67,7 @@ export default {
     const isReconnection = payload?.isReconnection;
     const response = await initWeb3(payload);
     if (response.ok) {
-      if (!getters.isHandlingMetamaskStatus && isReconnection) {
+      if (!getters.isHandlingMetamaskStatus && !isReconnection) {
         handleMetamaskStatus(() => dispatch('handleMetamaskStatusChanged'));
         commit('setIsHandlingMetamaskStatus', true);
       }
