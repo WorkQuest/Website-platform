@@ -102,7 +102,7 @@ export default {
   },
   methods: {
     startChat() {
-      // TODO: Написать метод для интеграции с бэком
+      // TODO: Написать метод для интеграции с бэком, будет готово
     },
     async initData() {
       await this.$store.dispatch('quests/getQuest', this.$route.params.id);
