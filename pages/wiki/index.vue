@@ -232,7 +232,7 @@ export default {
   .wiki {
     position: relative;
     &__title {
-      font-weight: 28px;
+      font-size: 28px;
     }
     &__header {
       height: 230px;
@@ -256,7 +256,7 @@ export default {
       align-items: center;
       justify-content: space-between;
       display: flex;
-      grid-gap: 5px;
+      grid-gap: 10px;
       height: 50px;
       overflow: scroll;
       &::-webkit-scrollbar {

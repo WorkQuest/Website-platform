@@ -158,7 +158,7 @@ export default {
     },
     async showSwapInfoModal() {
       this.SetLoader(true);
-      this.connectToMetamask();
+      // this.connectToMetamask();
       if (this.checkAmount()) {
         this.amount = this.amount.replace(/[,]/g, '.');
         this.ShowModal({

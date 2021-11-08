@@ -109,7 +109,7 @@ export default {
     },
     checkAmount() {
       const maxAmount = this.tokensData.userPurse.oldTokenBalance;
-      return +maxAmount >= +this.amount;
+      return +maxAmount >= +this.oldTokens;
     },
     async initSwap() {
       this.SetLoader(true);
