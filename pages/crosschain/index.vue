@@ -396,7 +396,7 @@ export default {
       // await this.checkMetamaskStatus();
       if (switchChainStatus.ok) {
         await this.$store.dispatch('web3/getCrosschainTokensData');
-        await this.swapsTableData();
+        await this.swapsTableData(this.account.address);
         this.ShowModal({
           key: modals.swap,
           crosschainId: this.targetAddressInd,
