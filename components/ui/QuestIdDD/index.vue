@@ -36,7 +36,7 @@
               <div
                 v-if="['employer'].includes(userRole)"
                 class="menu__item"
-                @click="selectWorker(i)"
+                @click="selectedWorker.length === 0 ? selectWorker(i) : removeWorker()"
               >
                 <div
                   class="menu__text"
@@ -91,23 +91,58 @@ export default {
   },
   computed: {
     ...mapGetters({
+      questData: 'quests/getQuest',
       userRole: 'user/getUserRole',
+      responsesToQuest: 'quests/getResponsesToQuest',
     }),
+  },
+  async created() {
+    await this.initData();
+    await this.getResponsesToQuest();
   },
   methods: {
     startChat() {
       // TODO: Написать метод для интеграции с бэком
     },
+    async initData() {
+      await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+    },
+    async getResponsesToQuest() {
+      if (this.userRole === 'employer') {
+        await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
+      }
+    },
+    async removeWorker() {
+      this.selectedWorker.length = 0;
+    },
     async selectWorker(i) {
       this.SetLoader(true);
       const { worker } = this.responsesToQuest[i];
-      this.selectedWorker.push(worker);
+      if (this.selectedWorker.length === 0) {
+        this.showToastInvited();
+        this.selectedWorker.push(worker);
+      }
       this.SetLoader(false);
     },
     async rejectQuestInvitation(responseId) {
       this.SetLoader(true);
       await this.$store.dispatch('quests/rejectQuestInvitation', responseId);
+      this.showToastReject();
       this.SetLoader(false);
+    },
+    showToastInvited() {
+      return this.$store.dispatch('main/showToast', {
+        title: 'Info',
+        variant: 'success',
+        text: 'Worker invited!',
+      });
+    },
+    showToastReject() {
+      return this.$store.dispatch('main/showToast', {
+        title: 'Info',
+        variant: 'danger',
+        text: 'Worker rejected!',
+      });
     },
     hideDd() {
       this.isShowQuestMenu = false;
