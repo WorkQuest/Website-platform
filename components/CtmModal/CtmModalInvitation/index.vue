@@ -44,7 +44,6 @@
               :label="$t('modals.chooseQuest')"
             />
           </div>
-          {{ questIndex }}
         </div>
         <div class="ctm-modal__content-field grid__field">
           <label for="message_input">{{ $t('modals.message') }}</label>

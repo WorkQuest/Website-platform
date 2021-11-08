@@ -166,6 +166,7 @@ export default {
     try {
       const response = await this.$axios.$get(`/v1/quest/${questId}/responses`);
       commit('setResponses', response.result);
+      console.log(response.result);
       return response.result;
     } catch (e) {
       return console.log(e);

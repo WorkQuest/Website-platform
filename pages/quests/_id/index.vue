@@ -2,7 +2,7 @@
   <div>
     <info />
     <div
-      class="main-white"
+      class="main main-white"
     >
       <div class="main__body">
         <questPanel
@@ -35,76 +35,77 @@
             >
           </div>
           <div class="divider" />
-
-          <questIdEmployer
-            :user-avatar="userAvatar"
-            :assign-worker="questData.assignedWorker ? questData.assignedWorker : questData.assignedWorker = null"
-          />
-
-          <questIdWorker />
         </div>
-      </div>
-    </div>
-    <div
-      class="map__container gmap"
-    >
-      <div class="gmap__block">
-        <transition name="fade-fast">
-          <GmapMap
-            ref="gMap"
-            class="quests__map"
-            language="en"
-            :center="questLocation"
-            :zoom="zoom"
-            :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
-          >
-            <GMapMarker
-              v-for="(item, key) in locations"
-              :key="key"
-              :position="questLocation"
-              :options="{ icon: pins.quest.blue, show: true}"
-              @click="coordinatesChange(item)"
-            >
-              <GMapInfoWindow
-                :options="{maxWidth: 280}"
-              >
-                <div>
-                  <h3>{{ questData.title }}</h3>
-                  <span>{{ questData.description }}</span>
-                </div>
-              </GMapInfoWindow>
-            </GMapMarker>
-          </GmapMap>
-        </transition>
       </div>
     </div>
     <div class="main">
-      <div class="spec__container">
-        <div class="quest__group">
-          <h2 class="quest__spec">
-            {{ $t('quests.otherQuestsSpec') }}
-            <nuxt-link
-              to="#"
-              class="spec__link"
-            >
-              "{{ payload.spec }}"
-            </nuxt-link>
-          </h2>
+      <div class="main__body">
+        <questIdEmployer
+          :user-avatar="userAvatar"
+          :assign-worker="questData.assignedWorker ? questData.assignedWorker : questData.assignedWorker = null"
+        />
+
+        <questIdWorker />
+        <div
+          class="map__container gmap"
+        >
+          <div class="gmap__block">
+            <transition name="fade-fast">
+              <GmapMap
+                ref="gMap"
+                class="quests__map"
+                language="en"
+                :center="questLocation"
+                :zoom="zoom"
+                :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
+              >
+                <GMapMarker
+                  v-for="(item, key) in locations"
+                  :key="key"
+                  :position="questLocation"
+                  :options="{ icon: pins.quest.blue, show: true}"
+                  @click="coordinatesChange(item)"
+                >
+                  <GMapInfoWindow
+                    :options="{maxWidth: 280}"
+                  >
+                    <div>
+                      <h3>{{ questData.title }}</h3>
+                      <span>{{ questData.description }}</span>
+                    </div>
+                  </GMapInfoWindow>
+                </GMapMarker>
+              </GmapMap>
+            </transition>
+          </div>
         </div>
-        {{ responsesToQuest.responses }}
-        <div class="quest__card">
-          <quests
-            v-if="questsObjects.count !== 0"
-            :limit="questLimits"
-            :object="questsObjects"
-            :page="'quests'"
-          />
-          <emptyData
-            v-else
-            :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
-            :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-            :link="userRole === 'employer' ? '/create-quest' : '/quests'"
-          />
+        <div class="spec__container">
+          <div class="quest__group">
+            <h2 class="quest__spec">
+              {{ $t('quests.otherQuestsSpec') }}
+              <nuxt-link
+                to="#"
+                class="spec__link"
+              >
+                "{{ payload.spec }}"
+              </nuxt-link>
+            </h2>
+          </div>
+          {{ responsesToQuest.responses }}
+          <div class="quest__card">
+            <quests
+              v-if="questsObjects.count !== 0"
+              :limit="questLimits"
+              :object="questsObjects"
+              :page="'quests'"
+            />
+            <emptyData
+              v-else
+              :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
+              :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+              :link="userRole === 'employer' ? '/create-quest' : '/quests'"
+            />
+          </div>
         </div>
       </div>
     </div>
