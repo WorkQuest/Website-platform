@@ -554,9 +554,8 @@ export const initStackingContract = async (chain) => {
   return await liquidityMiningContract.methods.getStakingInfo().call();
 };
 
-// Можно ли объединить нижние методы в один?
 export const addAffiliat = async () => {
-  const templateRes = { // TODO: брать подпись с бэка
+  const templateRes = {
     userId: '24b58470-49ca-4b0b-9658-2fd9d620f23b',
     affiliateId: '8d97b56e-bf23-4d67-863d-72f975d33d25',
     affiliateWallet: '0x50eBFe5a6Bb921c1EF7080BA5798AC75f1988c0D',
@@ -571,12 +570,14 @@ export const addAffiliat = async () => {
     await contractInstance.addAffiliat(v, r, s, _affiliat);
     return success();
   } catch (e) {
-    console.log('[Add affiliat error]', e);
+    console.log('Add affiliat error', e);
     return error(500, 'Add affiliat error', e);
   }
 };
 
 export const calcReferral = async (referralAddress) => {
+  referralAddress = '0x50eBFe5a6Bb921c1EF7080BA5798AC75f1988c0D'; //  получать данные с бэка
+
   const _abi = abi.WQReferral;
   const _contractAddress = process.env.WQ_REFERRAL;
   try {
@@ -584,7 +585,7 @@ export const calcReferral = async (referralAddress) => {
     await contractInstance.calcReferral(referralAddress);
     return success();
   } catch (e) {
-    console.log(e);
+    console.log('Calc referral error', e);
     return error(500, 'Calc referral error', e);
   }
 };
@@ -597,7 +598,7 @@ export const claimReferral = async () => {
     await contractInstance.claim();
     return success();
   } catch (e) {
-    console.log(e);
+    console.log('Claim referral error', e);
     return error(500, 'Claim referral error', e);
   }
 };

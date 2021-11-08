@@ -185,8 +185,27 @@ export default {
       await this.$router.push('/messages/1');
       this.SetLoader(false);
     },
+    async checkMetamaskStatus() {
+      if (!this.isConnected) {
+        if (typeof window.ethereum === 'undefined') {
+          localStorage.setItem('metamaskStatus', 'notInstalled');
+          this.ShowModal({
+            key: modals.status,
+            img: '~assets/img/ui/cardHasBeenAdded.svg',
+            title: 'Please install Metamask!',
+            subtitle: 'Please click install...',
+            button: 'Install',
+            type: 'installMetamask',
+          });
+        } else {
+          localStorage.setItem('metamaskStatus', 'installed');
+          await this.$store.dispatch('web3/goToChain', { chain: Chains.ETHEREUM });
+          await this.$store.dispatch('web3/connect');
+        }
+      }
+    },
     async acceptWorkOnQuest() {
-      await this.$store.dispatch('web3/connect');
+      await this.checkMetamaskStatus();
       if (this.isConnected) {
         this.SetLoader(true);
         const isRightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', ChainsId.ETH_TEST); // TODO: change to our net
@@ -195,6 +214,7 @@ export default {
         }
         this.SetLoader(true);
         await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id);
+        await this.$store.dispatch('web3/addAffiliat'); // TODO: запрашивать данные с бэка для этой функции
         this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/questAgreed.svg'),
@@ -202,7 +222,6 @@ export default {
           subtitle: 'Work on quest accepted!',
         });
         await this.$store.dispatch('quests/setInfoDataMode', 2);
-        await this.$store.dispatch('web3/addAffiliat');
       }
       this.SetLoader(false);
     },
