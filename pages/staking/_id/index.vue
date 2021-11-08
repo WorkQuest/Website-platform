@@ -413,8 +413,8 @@ export default {
       this.userInfo = await this.$store.dispatch('web3/fetchStakingUserInfo', { stakingType: this.slug, decimals: this.poolData.decimals });
     },
     getPoolAddress() {
-      if (this.slug === StakingTypes.WQT) return process.env.STAKING;
-      if (this.slug === StakingTypes.WUSD) return process.env.STAKING_NATIVE;
+      if (this.slug === StakingTypes.WQT) return process.env.WQT_STAKING;
+      if (this.slug === StakingTypes.WUSD) return process.env.WQT_STAKING_NATIVE;
       return '';
     },
     handleBackToMainstaking() {

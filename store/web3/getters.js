@@ -13,4 +13,5 @@ export default {
   getPurseData: (state) => state.purseData,
   getBSCTokensData: (state) => state.tokensBSC,
   getCrosschainTokensData: (state) => state.crosschainTokensData,
+  getMetaMaskStatus: (state) => state.metamaskStatus,
 };

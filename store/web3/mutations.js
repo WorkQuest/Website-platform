@@ -47,4 +47,7 @@ export default {
   setCrosschainTokensData(state, payload) {
     state.crosschainTokensData = payload;
   },
+  setMetaMaskStatus(state, payload) {
+    state.metamaskStatus = payload;
+  },
 };
