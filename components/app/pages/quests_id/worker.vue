@@ -3,6 +3,9 @@
     v-if="['worker'].includes(userRole)"
     class="btns__container"
   >
+    <div @click="test">
+      CLICK
+    </div>
     <div
       v-if="[1].includes(infoDataMode)"
       class="btns__wrapper"
@@ -199,21 +202,25 @@ export default {
           });
         } else {
           localStorage.setItem('metamaskStatus', 'installed');
-          await this.$store.dispatch('web3/goToChain', { chain: Chains.ETHEREUM });
+          // await this.$store.dispatch('web3/goToChain', { chain: Chains.ETHEREUM });
           await this.$store.dispatch('web3/connect');
         }
       }
+    },
+    async test() {
+      await this.$store.dispatch('web3/connect');
+      await this.$store.dispatch('web3/addAffiliat'); // TODO: запрашивать данные с бэка для этой функции
     },
     async acceptWorkOnQuest() {
       await this.checkMetamaskStatus();
       if (this.isConnected) {
         this.SetLoader(true);
-        const isRightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', ChainsId.ETH_TEST); // TODO: change to our net
-        if (!isRightChain) {
-          await this.$store.dispatch('web3/goToChain', ChainsId.ETH_TEST);
-        }
+        // const isRightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', ChainsId.ETH_TEST); // TODO: change to our net
+        // if (!isRightChain) {
+        //   await this.$store.dispatch('web3/goToChain', ChainsId.ETH_TEST);
+        // }
         this.SetLoader(true);
-        await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id);
+        // await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id);
         await this.$store.dispatch('web3/addAffiliat'); // TODO: запрашивать данные с бэка для этой функции
         this.ShowModal({
           key: modals.status,
@@ -241,10 +248,10 @@ export default {
       await this.$store.dispatch('web3/connect');
       if (this.isConnected) {
         this.SetLoader(true);
-        const isRightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', ChainsId.ETH_TEST);
-        if (!isRightChain) {
-          await this.$store.dispatch('web3/goToChain', ChainsId.ETH_TEST);
-        }
+        // const isRightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', ChainsId.ETH_TEST);
+        // if (!isRightChain) {
+        //   await this.$store.dispatch('web3/goToChain', ChainsId.ETH_TEST);
+        // }
         await this.$store.dispatch('quests/completeWorkOnQuest', this.questData.id);
         this.ShowModal({
           key: modals.status,

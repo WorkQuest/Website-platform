@@ -556,18 +556,21 @@ export const initStackingContract = async (chain) => {
 
 export const addAffiliat = async () => {
   const templateRes = {
-    userId: '24b58470-49ca-4b0b-9658-2fd9d620f23b',
-    affiliateId: '8d97b56e-bf23-4d67-863d-72f975d33d25',
-    affiliateWallet: '0x50eBFe5a6Bb921c1EF7080BA5798AC75f1988c0D',
-    messageHash: '0x2a5403fd47923dd6c83a633c57715a979c0f655bb344ba9112943e43ceb5df95',
+    _affiliate: '0x50eBFe5a6Bb921c1EF7080BA5798AC75f1988c0D',
+    sign: [
+      '0x1c',
+      '0x12e8908c2db80e64af0b55dc47806af4eb304916d7c8efcab41fc47c03e79a21',
+      '0x2bc311a421892fcbdf6f78f6a88da7373e896e1c128743cdc4bf4cbdfde3e264',
+    ],
   };
-  const { v, r, s } = ethers.utils.splitSignature(templateRes.messageHash);
-  const _affiliat = templateRes.affiliateWallet;
+  const [v, r, s] = templateRes.sign;
+  const _affiliat = templateRes._affiliate;
   const _abi = abi.WQReferral;
   const _contractAddress = process.env.WQ_REFERRAL;
   try {
     const contractInstance = await createInstance(_abi, _contractAddress);
-    await contractInstance.addAffiliat(v, r, s, _affiliat);
+    const resp = await contractInstance.addAffiliat(v, r, s, _affiliat);
+    console.log('add referral res', resp);
     return success();
   } catch (e) {
     console.log('Add affiliat error', e);
