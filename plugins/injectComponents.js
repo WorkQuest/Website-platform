@@ -17,6 +17,7 @@ import BaseTable from '~/components/ui/BaseTable';
 import BasePager from '~/components/ui/BasePager';
 import QuestDD from '~/components/ui/QuestDD';
 import BaseTextarea from '~/components/ui/BaseTextarea';
+import QuestIdDD from '~/components/ui/QuestIdDD';
 
 Vue.component('ctm-modal', CtmModal);
 Vue.component('ctm-modal-box', CtmModalBox);
@@ -33,5 +34,6 @@ Vue.component('GMapInfoWindow', GMapInfoWindow);
 Vue.component('base-table', BaseTable);
 Vue.component('base-pager', BasePager);
 Vue.component('quest-dd', QuestDD);
+Vue.component('quest-id-dd', QuestIdDD);
 Vue.component('base-textarea', BaseTextarea);
 Vue.component('vue-phone-number-input', VuePhoneNumberInput);

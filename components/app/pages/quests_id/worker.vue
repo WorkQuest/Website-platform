@@ -1,7 +1,10 @@
 <template>
   <div
     v-if="['worker'].includes(userRole)"
-    class="btns__container"
+    :class="[
+      {'btns__container': [1,2,3,5,7].includes(infoDataMode)},
+      {'btns__margin': ![1,2,3,5,7].includes(infoDataMode)}
+    ]"
   >
     <div
       v-if="[1].includes(infoDataMode)"
@@ -102,7 +105,7 @@
     </div>
     <div class="priority">
       <div
-        v-if="[!4,!8].includes(infoDataMode)"
+        v-if="![4,8].includes(infoDataMode)"
         class="price__container"
       >
         <span class="price__value">
@@ -113,7 +116,7 @@
         class="priority__container"
       >
         <div
-          v-if="[!4,!8].includes(infoDataMode)"
+          v-if="![4,8].includes(infoDataMode)"
           class="priority__title"
           :class="getPriorityClass(questData.priority)"
         >
@@ -138,7 +141,6 @@ export default {
   },
   data() {
     return {
-      questData: {},
       userAvatar: '',
       questResponses: {},
       response: {},
@@ -148,14 +150,16 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
       userRole: 'user/getUserRole',
+      questData: 'quests/getQuest',
       infoDataMode: 'quests/getInfoDataMode',
     }),
   },
-  async mounted() {
-    this.SetLoader(true);
+  async created() {
     await this.getResponsesToQuestForAuthUser();
     await this.initData();
-    // await this.getResponseId();
+  },
+  async mounted() {
+    this.SetLoader(true);
     this.SetLoader(false);
   },
   methods: {
@@ -189,8 +193,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Quest info',
-        subtitle: 'Work on quest accepted!',
+        title: this.$t('quests.questInfo'),
+        subtitle: this.$t('quests.workOnQuestAccepted'),
       });
       await this.$store.dispatch('quests/setInfoDataMode', 2);
       this.SetLoader(false);
@@ -201,8 +205,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Quest info',
-        subtitle: 'Work on quest rejected!',
+        title: this.$t('quests.questInfo'),
+        subtitle: this.$t('quests.workOnQuestRejected'),
       });
       await this.$store.dispatch('quests/setInfoDataMode', 5);
       this.SetLoader(false);
@@ -213,8 +217,8 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: 'Quest info',
-        subtitle: 'Work on quest completed! Please, wait your employer!',
+        title: this.$t('quests.questInfo'),
+        subtitle: this.$t('quests.pleaseWaitEmp'),
       });
       await this.$store.dispatch('quests/setInfoDataMode', 4);
       this.SetLoader(false);
@@ -248,6 +252,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.icon {
+  color: $black500;
+  font-size: 20px;
+  &-chat::before {
+    @extend .icon;
+    color: $green !important;
+  }
+}
 .priority {
   display: flex;
   flex-direction: row;
@@ -307,6 +319,9 @@ export default {
   }
 }
 .btns {
+  &__margin {
+    margin: 0 0 20px 0;
+  }
   &__container {
     display: grid;
     grid-template-columns: 8fr 4fr;

@@ -193,7 +193,7 @@ export default {
 <style lang="scss" scoped>
 .map__container::v-deep {
   .GMap__Wrapper {
-    height: 205px;
+    height: 435px;
     display: block;
   }
   .ctm-field__left {
@@ -210,7 +210,7 @@ export default {
 }
 .gmap {
   &__top {
-    height: 205px;
+    height: 435px;
   }
   &__search {
     position: relative;
