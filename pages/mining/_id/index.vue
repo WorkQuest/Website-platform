@@ -16,7 +16,7 @@
           mode="light"
           class="mining-page__connect"
           :disabled="statusBusy"
-          @click="checkMetamaskStatus()"
+          @click="checkWalletStatus()"
         >
           {{ $t('mining.connectWallet') }}
         </base-btn>
@@ -25,7 +25,7 @@
           mode="light"
           class="mining-page__connect"
           :disabled="statusBusy"
-          @click="disconnectFromMetamask"
+          @click="disconnectFromWallet"
         >
           {{ $t('meta.disconnect') }}
         </base-btn>
@@ -145,7 +145,7 @@
               <base-btn
                 class="btn_bl"
                 mode="outline"
-                :disabled="!isConnected || statusBusy || disabled"
+                :disabled="!isConnected || statusBusy || disabled || stakedAmount === 0"
                 @click="openModalUnstaking()"
               >
                 {{ $t('mining.unstake') }}
@@ -153,7 +153,7 @@
               <base-btn
                 :mode="'outline'"
                 class="bnt__claim"
-                :disabled="!isConnected || statusBusy || disabled"
+                :disabled="!isConnected || statusBusy || disabled || rewardAmount === 0"
                 @click="claimRewards()"
               >
                 {{ $t('mining.claimReward') }}
@@ -386,7 +386,6 @@ export default {
   },
   watch: {
     async isConnected(newValue) {
-      if (this.firstLoading) return;
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
       if (newValue && rightChain) {
         await this.tokensDataUpdate();
@@ -417,7 +416,7 @@ export default {
   async mounted() {
     // this.SetLoader(false);
     this.SetLoader(true);
-    // await this.checkMetamaskStatus();
+    // await this.checkWalletStatus();
     if (this.$route.params.id === 'ETH') {
       await Promise.all([
         this.getWqtWethTokenDay(),
@@ -447,7 +446,7 @@ export default {
     clearInterval(this.updateInterval);
   },
   methods: {
-    async checkMetamaskStatus() {
+    async checkWalletStatus() {
       const providerData = await this.$store.dispatch('web3/initProvider', this.$route.params.id);
       if (typeof window.ethereum === 'undefined') {
         localStorage.setItem('metamaskStatus', 'notInstalled');
@@ -579,7 +578,7 @@ export default {
       const profit = await this.$store.dispatch('web3/getAPY', payload);
       this.profitWQT = this.Floor(profit);
     },
-    async disconnectFromMetamask() {
+    async disconnectFromWallet() {
       await this.$store.dispatch('web3/disconnect');
     },
     async claimRewards() {
@@ -612,7 +611,7 @@ export default {
       });
     },
     async openModalUnstaking() {
-      await this.checkMetamaskStatus();
+      await this.checkWalletStatus();
       this.ShowModal({
         key: modals.claimRewards,
         type: 2,
@@ -622,7 +621,7 @@ export default {
       });
     },
     async openModalClaimRewards() {
-      await this.checkMetamaskStatus();
+      await this.checkWalletStatus();
       this.ShowModal({
         key: modals.claimRewards,
         type: 1,
@@ -633,7 +632,7 @@ export default {
     },
     async handleBackToMainMining() {
       await this.$router.push('/mining');
-      await this.disconnectFromMetamask();
+      await this.disconnectFromWallet();
     },
     iconUrls() {
       return [

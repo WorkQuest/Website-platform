@@ -16,7 +16,7 @@
             mode="light"
             class="header__btn header__btn_connect"
             :disabled="statusBusy"
-            @click="checkMetamaskStatus()"
+            @click="checkWalletStatus()"
           >
             {{ $t('mining.connectWallet') }}
           </base-btn>
@@ -25,7 +25,7 @@
             mode="light"
             class="header__btn header__btn_disconnect"
             :disabled="statusBusy"
-            @click="disconnectFromMetamask"
+            @click="disconnectFromWallet"
           >
             {{ $t('meta.disconnect') }}
           </base-btn>
@@ -288,7 +288,7 @@ export default {
     this.SetLoader(false);
     // this.SetLoader(true);
     // await this.swapsTableData(this.purseData);
-    // await this.checkMetamaskStatus();
+    // await this.checkWalletStatus();
     // await this.checkMiningPoolId();
     // this.SetLoader(false);
   },
@@ -298,10 +298,10 @@ export default {
         key: modals.copiedSuccess,
       });
     },
-    async disconnectFromMetamask() {
+    async disconnectFromWallet() {
       await this.$store.dispatch('web3/disconnect');
     },
-    async checkMetamaskStatus() {
+    async checkWalletStatus() {
       const chainName = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
       const providerData = await this.$store.dispatch('web3/initProvider', chainName);
       if (typeof window.ethereum === 'undefined') {
@@ -381,19 +381,19 @@ export default {
         this.sourceAddressInd = selInd ? 0 : 1;
       }
       this.targetAddressInd = selInd;
-      await this.disconnectFromMetamask();
+      await this.disconnectFromWallet();
     },
     async handleChangeSource(selInd) {
       if (selInd === this.targetAddressInd) {
         this.targetAddressInd = selInd ? 0 : 1;
       }
       this.sourceAddressInd = selInd;
-      await this.disconnectFromMetamask();
+      await this.disconnectFromWallet();
     },
     async showSwapModal() {
       this.SetLoader(true);
       const switchChainStatus = await this.checkMiningPoolId();
-      // await this.checkMetamaskStatus();
+      // await this.checkWalletStatus();
       if (switchChainStatus.ok) {
         await this.$store.dispatch('web3/getCrosschainTokensData');
         await this.swapsTableData(this.account.address);

@@ -14,7 +14,7 @@ let account = {};
 
 let store;
 let axios;
-
+let web3Modal;
 if (process.browser) {
   window.onNuxtReady(({ $store, $axios }) => {
     store = $store;
@@ -179,7 +179,7 @@ export const handleMetamaskStatus = (callback) => {
   ethereum.on('chainChanged', callback);
   ethereum.on('accountsChanged', callback);
 };
-
+// TODO: Delete
 // export const initWeb3 = async () => {
 //   try {
 //     const { ethereum } = window;
@@ -249,7 +249,7 @@ export const initProvider = async (chain) => {
     }
   }
   let provider = null;
-  const web3Modal = new Web3Modal({
+  web3Modal = new Web3Modal({
     // theme: 'dark',
     cacheProvider: true, // optional
     providerOptions: {
@@ -297,6 +297,13 @@ export const initWeb3 = async (chain) => {
 };
 
 export const disconnectWeb3 = () => {
+  if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === 'walletconnect') {
+    localStorage.removeItem('walletconnect');
+    localStorage.removeItem('WEB3_CONNECT_CACHED_PROVIDER');
+    if (web3Modal) {
+      web3Modal.clearCachedProvider();
+    }
+  }
   web3 = null;
   web4 = null;
   account = {};

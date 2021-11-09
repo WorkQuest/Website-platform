@@ -382,7 +382,6 @@ export default {
   },
   async initProvider({ commit }, payload) {
     const providerData = await initProvider(payload);
-    console.log(providerData);
     commit('setMetaMaskStatus', providerData.isMetaMask);
     return providerData;
   },
