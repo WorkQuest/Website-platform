@@ -88,6 +88,7 @@
       <CtmModalDeleteCase v-if="modals.deleteCase === currentModalKey" />
       <CtmModalClaimRewards v-if="modals.claimRewards === currentModalKey" />
       <CtmModalSwapTokens v-if="modals.swapTokens === currentModalKey" />
+      <CtmModalGallery v-if="modals.gallery === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -170,6 +171,7 @@ import CtmModalEditCase from './CtmModalEditCase';
 import CtmModalDeleteCase from './CtmModalDeleteCase';
 import CtmModalClaimRewards from './CtmModalClaimRewards';
 import CtmModalSwapTokens from './CtmModalSwapTokens';
+import CtmModalGallery from './CtmModalGallery';
 
 export default {
   name: 'ModalBox',
@@ -250,6 +252,7 @@ export default {
     CtmModalDeleteCase,
     CtmModalClaimRewards,
     CtmModalSwapTokens,
+    CtmModalGallery,
   },
   data: () => ({
     modals,

@@ -817,6 +817,10 @@ export default {
       userData: 'user/getUserData',
       imageData: 'user/getImageData',
       userRole: 'user/getUserRole',
+      token: 'user/accessToken',
+      connections: 'data/notificationsConnectionStatus',
+      chatId: 'data/getCurrChatId',
+      messagesFilter: 'data/getMessagesFilter',
     }),
     locales() {
       return [
@@ -1096,7 +1100,8 @@ export default {
     },
   },
   async mounted() {
-    this.GetLocation();
+    await this.GetLocation();
+    await this.initWSListeners();
     await this.loginCheck();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
   },
@@ -1109,6 +1114,22 @@ export default {
   methods: {
     async loginCheck() {
       localStorage.setItem('userLogin', true);
+    },
+    async initWSListeners() {
+      const { chatConnection, notifsConnection } = this.connections;
+      if (!chatConnection) {
+        await this.$wsChat.connect(this.token);
+        this.$wsChat.subscribe('/notifications/chat', async ({ data, action }) => {
+          if (this.$route.name === 'messages') {
+            await this.$store.dispatch('data/getChatsList', {
+              limit: 10,
+              offset: 0,
+            });
+          } else if (action === 'newMessage' && data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
+            this.$store.commit('data/addMessageToList', data);
+          }
+        });
+      }
     },
     setLocale(item) {
       this.currentLocale = item.localeText;

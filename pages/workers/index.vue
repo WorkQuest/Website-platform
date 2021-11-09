@@ -137,7 +137,7 @@
           <div
             v-for="(user, i) in workersList.users"
             :key="i"
-            class="card card_higher"
+            class="card card_lower"
             @click="showDetails(user)"
           >
             <!-- :class="cardsLevelsBorder(i)" -->
@@ -592,7 +592,7 @@ export default {
   align-items: center;
   cursor: pointer;
   box-shadow: none;
-  transition: .2s;
+  transition: .5s;
   &:hover {
     cursor: pointer;
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);

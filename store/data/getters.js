@@ -24,4 +24,9 @@ export default {
   getEducations: (state) => state.userInfo?.educations,
   getWorkExp: (state) => state.userInfo?.workExp,
   getUserDesc: (state) => state.userInfo?.desc,
+  getChats: (state) => state.chats,
+  notificationsConnectionStatus: (state) => state.connections,
+  getCurrChatId: (state) => state.messages.chatId,
+  getLastMessageId: (state) => (!state.messagesFilter.canLoadToBottom && state.messages.list.length ? state.messages.list[state.messages.list.length - 1].id : null),
+  getMessagesFilter: (state) => state.messagesFilter,
 };

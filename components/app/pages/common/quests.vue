@@ -45,7 +45,7 @@
               </div>
               <div
                 class="block__icon block__icon_fav star"
-                @click="actionFavorite(item.quest.id)"
+                @click="setStar(item.quest.id)"
               >
                 <img
                   class="star__hover"
@@ -53,15 +53,11 @@
                   alt=""
                 >
                 <img
-                  v-if="item.star === null"
-                  class="star__default"
-                  src="~assets/img/ui/star_simple.svg"
-                  alt=""
-                >
-                <img
-                  v-else
-                  class="star__checked"
-                  src="~assets/img/ui/star_checked.svg"
+                  :class="[
+                    {'star__default': !item.star},
+                    {'star__checked': item.star}
+                  ]"
+                  :src="!item.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
                   alt=""
                 >
               </div>
@@ -210,9 +206,15 @@
                   >{{ `${$t('quests.fromSmall')} ${item.user.additionalInfo.company}` }}</span>
                 </div>
               </div>
+              <quest-dd
+                v-if="[0,4].includes(item.status)"
+                class="block__icon block__icon_fav"
+                mode="vertical"
+              />
               <div
+                v-if="[2,3,6].includes(item.status)"
                 class="block__icon block__icon_fav star"
-                @click="actionFavorite(item.id)"
+                @click="setStar(item)"
               >
                 <img
                   class="star__hover"
@@ -220,15 +222,11 @@
                   alt=""
                 >
                 <img
-                  v-if="item.star === null"
-                  class="star__default"
-                  src="~assets/img/ui/star_simple.svg"
-                  alt=""
-                >
-                <img
-                  v-else
-                  class="star__checked"
-                  src="~assets/img/ui/star_checked.svg"
+                  :class="[
+                    {'star__default': !item.star},
+                    {'star__checked': item.star}
+                  ]"
+                  :src="!item.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
                   alt=""
                 >
               </div>
@@ -277,6 +275,10 @@
             </div>
             <div class="block__text block__text_desc">
               {{ cropTxt(item.description) }}
+            </div>
+            <div class="block__text block__publication">
+              <span class="block__publication_bold">{{ $t('quests.publicationDate') }}</span>
+              <span class="block__publication_thin">{{ $moment(item.createdAt).format('Do MMMM YYYY, hh:mm a') }}</span>
             </div>
             <div class="block__actions">
               <div
@@ -405,6 +407,13 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async setStar(item) {
+      if (!item.star) {
+        await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      } if (item.star) {
+        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+      }
+    },
     cropTxt(str) {
       const maxLength = 120;
       if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
@@ -441,9 +450,6 @@ export default {
         this.userLng,
       );
     },
-    async actionFavorite(id) {
-      await this.$store.dispatch('quests/setStarOnQuest', id);
-    },
     cardsLevels(idx) {
       const { cards } = this;
       return [
@@ -477,19 +483,21 @@ export default {
     },
     getStatusCard(index) {
       const status = {
-        2: this.$t('quests.requested'),
-        3: this.$t('quests.performed'),
-        4: this.$t('quests.active'),
-        5: this.$t('quests.invited'),
+        1: this.$t('quests.active'),
+        6: this.$t('quests.performed'),
+        5: this.$t('quests.requested'),
+        4: this.$t('quests.invited'),
+        2: this.$t('quests.closed'),
       };
       return status[index] || '';
     },
     getStatusClass(index) {
       const status = {
-        2: 'quests__cards__state_req',
-        3: 'quests__cards__state_per',
-        4: 'quests__cards__state_act',
-        5: 'quests__cards__state_inv',
+        1: 'quests__cards__state_act',
+        6: 'quests__cards__state_per',
+        5: 'quests__cards__state_req',
+        4: 'quests__cards__state_inv',
+        2: 'quests__cards__state_clo',
       };
       return status[index] || '';
     },
@@ -529,6 +537,7 @@ export default {
 }
 .progress {
   &__title {
+    margin: 10px 0 7px 10px;
     font-weight: 400;
     font-size: 12px;
     color: $black500;
@@ -539,7 +548,7 @@ export default {
     align-items: center;
     grid-template-columns: auto 3fr;
     grid-gap: 10px;
-    margin: 10px 0 4px 0;
+    margin: 10px 0 0 0;
     .container {
       &__user {
         display: flex;
@@ -644,6 +653,21 @@ export default {
       margin-bottom: 0;
     }
   }
+  &__cards {
+    &__state {
+      &_clo {
+        background: $red;
+      }
+      &_req {}
+      &_per {
+        background: $blue;
+      }
+      &_act {
+        background: $green;
+      }
+      &_inv {}
+    }
+  }
   &__card {
     margin: 20px 0 0 0;
     border: 0 solid;
@@ -671,6 +695,20 @@ export default {
   display: grid;
   grid-template-columns: 240px 1fr;
   min-height: 100%;
+  &__publication {
+    &_bold {
+      @include text-simple;
+      font-size: 12px;
+      font-weight: 500;
+      color: $black600;
+    }
+    &_thin {
+      @include text-simple;
+      font-size: 12px;
+      font-weight: 400;
+      color: $black500;
+    }
+  }
   &__left {
     @extend .styles__full;
     position: relative;
@@ -708,7 +746,7 @@ export default {
     flex-direction: column;
     height: auto;
     width: 100%;
-    padding:10px;
+    padding: 10px;
   }
   &__locate {
     display: grid;

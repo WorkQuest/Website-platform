@@ -77,4 +77,5 @@ export default {
   deleteCase: 'deleteCase',
   claimRewards: 'claimRewards',
   swapTokens: 'swapTokens',
+  gallery: 'gallery',
 };
