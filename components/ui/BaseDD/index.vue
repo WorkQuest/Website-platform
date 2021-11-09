@@ -31,7 +31,7 @@
             class="dd__title"
             :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
           >
-            {{ items[value].title }}
+            {{ dataType === 'array' ? items[value].title : items.title }}
           </span>
         </div>
 
@@ -40,7 +40,7 @@
           class="dd__title"
           :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
         >
-          {{ items[value] }}
+          {{ dataType === 'array' ? items[value] : items[value].title }}
         </span>
         <span
           v-else-if="!items[value] && placeholder"
@@ -91,7 +91,7 @@
             class="dd__item"
             @click="selectItem(i)"
           >
-            {{ item }}
+            {{ dataType === 'array' ? item : item.title }}
           </button>
           <slot name="buttonCard" />
         </div>
@@ -109,6 +109,10 @@ export default {
     ClickOutside,
   },
   props: {
+    dataType: {
+      type: String,
+      default: () => 'array',
+    },
     items: {
       type: [Array, Object],
       default: () => [],

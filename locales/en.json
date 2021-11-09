@@ -259,10 +259,22 @@
     "employer": {
       "usersNotResponded": "Users have not yet responded to the quest"
     },
+    "startChat": "Start chat",
+    "invite": "Invite",
+    "decline": "Decline",
     "rating": "Rating",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
+    "questInfo": "Quest info",
+    "questClosed!": "Quest closed!",
+    "closed": "Closed",
+    "completedWorkAccepted": "Completed work on quest accepted!",
+    "completedWorkRejected": "Completed work on quest rejected!",
+    "workOnQuestAccepted": "Work on quest accepted!",
+    "workOnQuestRejected": "Work on quest rejected!",
+    "pleaseWaitEmp": "Work on quest completed! Please, wait your employer!",
     "quests": "Quests",
+    "publicationDate": "Publication date",
     "urgent": "Urgent",
     "specQuests": "Specialized quests",
     "permanentJob": "Permanent job",
@@ -2294,6 +2306,7 @@
     "notification": "Notification",
     "stakeLimitReached": "Stake limit reached",
     "notEnoughFunds": "There are not enough funds on the balance sheet",
+    "notEnoughClaim": "There are not enough funds to renewal tokens",
     "_inDev": "In development",
     "mainHeader": "Single staking",
     "stakingSub": "Make your assets work. Stake your assets into DeFi staking or Locked staking to increase staking income.",
@@ -2345,7 +2358,8 @@
     },
     "stakeDays": "Stake days",
     "stake": "Stake",
-    "autoRenewal": "Auto Renewal"
+    "autoRenewal": "Auto Renewal",
+    "renewalTokens": "This will renewal {n} tokens"
   },
   "myQuests": {
     "statuses": {

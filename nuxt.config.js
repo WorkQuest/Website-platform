@@ -33,6 +33,7 @@ export default {
     '@nuxtjs/eslint-module',
     '@nuxtjs/dotenv',
     '@nuxtjs/color-mode',
+    '@nuxtjs/moment',
   ],
   styleResources: {
     scss: ['./assets/scss/resources.scss'],

@@ -12,10 +12,10 @@
         />
       </div>
       <div class="content__subtitle">
-        {{ $t('modals.areYouSure') }}
+        {{ options.title || $t('modals.areYouSure') }}
       </div>
       <div class="content__desc">
-        {{ $t('modals.areYouSureNotificationText') }}
+        {{ options.text }}
       </div>
       <div class="content__buttons buttons">
         <base-btn
@@ -27,7 +27,7 @@
         </base-btn>
         <base-btn
           class="buttons__button"
-          @click="hide"
+          @click="submit"
         >
           {{ $t('meta.submit') }}
         </base-btn>
@@ -50,6 +50,10 @@ export default {
     }),
   },
   methods: {
+    submit() {
+      if (this.options.callback) this.options.callback();
+      this.hide();
+    },
     hide() {
       this.CloseModal();
     },

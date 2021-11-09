@@ -30,6 +30,7 @@ import {
   swapWithBridge,
   getStakingDataByType,
   getStakingRewardTxFee, handleMetamaskStatus, fetchStakingActions, unsubscirbeStakingListeners, getChainIdByChain,
+  authRenewal,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
@@ -66,7 +67,7 @@ export default {
     const isReconnection = payload?.isReconnection;
     const response = await initWeb3(payload);
     if (response.ok) {
-      if (!getters.isHandlingMetamaskStatus && isReconnection) {
+      if (!getters.isHandlingMetamaskStatus && !isReconnection) {
         handleMetamaskStatus(() => dispatch('handleMetamaskStatusChanged'));
         commit('setIsHandlingMetamaskStatus', true);
       }
@@ -253,6 +254,10 @@ export default {
   async claimRewards({ commit }, { stakingType }) {
     const { stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
     return await claimRewards(stakingAddress, stakingAbi);
+  },
+  async autoRenewal({ commit }, { stakingType }) {
+    const { stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
+    return await authRenewal(stakingAddress, stakingAbi);
   },
   async swap({ commit }, { decimals, amount }) {
     return await swap(decimals, amount);
