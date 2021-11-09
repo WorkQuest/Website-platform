@@ -68,7 +68,7 @@
                     class="message__media"
                   >
                     <div
-                      v-for="file in message.medias"
+                      v-for="(file, i) in message.medias"
                       :key="file.id"
                       class="image-cont"
                     >
@@ -76,7 +76,7 @@
                         :src="file.url"
                         class="image-cont__image image-cont__image_margin"
                         alt=""
-                        @click="selFile(message.medias, file)"
+                        @click="selFile(message.medias, i)"
                       >
                     </div>
                   </div>
@@ -278,11 +278,13 @@ export default {
     this.$store.commit('data/clearMessagesFilter');
   },
   methods: {
-    selFile(files, file) {
-      // this.ShowModal({
-      //   key: modals.gallery,
-      //   url: file.url,
-      // });
+    selFile(files, index) {
+      this.ShowModal({
+        key: modals.gallery,
+        files,
+        index,
+        count: files.length,
+      });
     },
     handleRemoveFile(index) {
       this.files.splice(index, 1);
@@ -710,8 +712,8 @@ export default {
     width: 30px;
     background-color: #ffffff59;
     border-radius: 6px;
-    top: 2px;
-    right: 2px;
+    top: 4px;
+    right: 4px;
     justify-content: center;
     align-items: center;
 
@@ -727,9 +729,11 @@ export default {
   }
 }
 
-.icon-close_big:before {
-  color: #DF3333;
-  font-size: 25px;
+.icon-close_big {
+  &:before {
+    color: #1D2127;
+    font-size: 25px;
+  }
 }
 
 .message {
