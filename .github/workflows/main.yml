@@ -29,6 +29,9 @@ jobs:
           echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
 
+          echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
+          echo WS_CHAT_URL=${{ secrets.WS_CHAT_URL }} >> .env
+
           echo ETHEREUM_BRIDGE=${{ secrets.ETHEREUM_BRIDGE }} >> .env
           echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env
           echo ETHEREUM_MINING=${{ secrets.ETHEREUM_MINING }} >> .env
@@ -85,6 +88,9 @@ jobs:
           echo BASE_URL=${{ secrets.BASE_URL }} >> .env
           echo GMAPKEY=${{ secrets.GMAPKEY }} >> .env
           echo SECRET_SUMSUB=${{ secrets.SECRET_SUMSUB }} >> .env
+
+          echo WS_NOTIFS_URL=${{ secrets.WS_NOTIFS_URL }} >> .env
+          echo WS_CHAT_URL=${{ secrets.WS_CHAT_URL }} >> .env
 
           echo ETHEREUM_BRIDGE=${{ secrets.ETHEREUM_BRIDGE }} >> .env
           echo ETHEREUM_LP_TOKEN=${{ secrets.ETHEREUM_LP_TOKEN }} >> .env

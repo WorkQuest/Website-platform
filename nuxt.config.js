@@ -99,6 +99,9 @@ export default {
     GMAPKEY: process.env.GMAPKEY,
     SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
+    WS_NOTIFS_URL: process.env.WS_NOTIFS_URL,
+    WS_CHAT_URL: process.env.WS_CHAT_URL,
+
     ETHEREUM_BRIDGE: process.env.ETHEREUM_BRIDGE,
     ETHEREUM_LP_TOKEN: process.env.ETHEREUM_LP_TOKEN,
     ETHEREUM_MINING: process.env.ETHEREUM_MINING,
