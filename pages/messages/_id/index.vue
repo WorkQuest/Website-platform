@@ -287,7 +287,12 @@ export default {
     handleChangeStarVal(message) {
       const messageId = message.id;
       const { chatId } = this;
-      this.$store.dispatch(`data/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, { messageId, chatId });
+      try {
+        this.$store.dispatch(`data/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, { messageId, chatId });
+      } catch (e) {
+        console.log(e);
+        this.showToastError(e);
+      }
     },
     async readMessages() {
       const messages = this.messages.list;
@@ -330,8 +335,6 @@ export default {
         const url = URL.createObjectURL(file);
 
         this.files.push({ data, file, url });
-
-        // this.files.push({ url, id: mediaId });
 
         reader.onerror = (evt) => {
           console.error(evt);
@@ -440,7 +443,12 @@ export default {
         };
         msgFiles.push({ url, id: i + 1 });
 
-        await this.$store.dispatch('data/setImage', cData);
+        try {
+          await this.$store.dispatch('data/setImage', cData);
+        } catch (e) {
+          console.log(e);
+          this.showToastError(e);
+        }
       }));
 
       const medias = files.map(({ data }) => data.mediaId);
@@ -560,7 +568,6 @@ export default {
   }
 
   &__file-button {
-    //pointer-events: none;
     height: 40px;
     background: #F7F8FA;
     color: #fff;
