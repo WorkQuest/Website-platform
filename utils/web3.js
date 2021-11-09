@@ -212,61 +212,65 @@ export const handleMetamaskStatus = (callback) => {
 //   }
 // };
 export const initProvider = async (chain) => {
-  let walletOptions;
-  if (process.env.PROD === 'false') {
-    if (chain === 'ETH') {
-      walletOptions = {
-        rpc: {
-          4: 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-        },
-        // network: 'ethereum',
-      };
-    } else if (chain === 'BNB') {
-      walletOptions = {
-        rpc: {
-          97: 'https://data-seed-prebsc-2-s1.binance.org:8545/',
-        },
-        // network: 'binance',
-      };
+  try {
+    let walletOptions;
+    if (process.env.PROD === 'false') {
+      if (chain === 'ETH') {
+        walletOptions = {
+          rpc: {
+            4: 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+          },
+          // network: 'ethereum',
+        };
+      } else if (chain === 'BNB') {
+        walletOptions = {
+          rpc: {
+            97: 'https://data-seed-prebsc-2-s1.binance.org:8545/',
+          },
+          // network: 'binance',
+        };
+      }
     }
-  }
-  if (process.env.PROD === 'true') {
-    if (chain === 'ETH') {
-      walletOptions = {
-        rpc: {
-          1: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-        },
-        // network: 'ethereum',
-      };
-    } else if (chain === 'BNB') {
-      walletOptions = {
-        rpc: {
-          56: 'https://bsc-dataseed.binance.org/',
-        },
-        // network: 'binance',
-      };
+    if (process.env.PROD === 'true') {
+      if (chain === 'ETH') {
+        walletOptions = {
+          rpc: {
+            1: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+          },
+          // network: 'ethereum',
+        };
+      } else if (chain === 'BNB') {
+        walletOptions = {
+          rpc: {
+            56: 'https://bsc-dataseed.binance.org/',
+          },
+          // network: 'binance',
+        };
+      }
     }
+    let provider = null;
+    web3Modal = new Web3Modal({
+      // theme: 'dark',
+      cacheProvider: true, // optional
+      providerOptions: {
+        walletconnect: {
+          package: WalletConnectProvider, // required
+          options: walletOptions,
+        },
+      }, // required
+    });
+    provider = await web3Modal.connect();
+    return provider;
+  } catch (e) {
+    console.log(e);
+    return error(500, 'User has not selected a wallet', e);
   }
-  let provider = null;
-  web3Modal = new Web3Modal({
-    // theme: 'dark',
-    cacheProvider: true, // optional
-    providerOptions: {
-      walletconnect: {
-        package: WalletConnectProvider, // required
-        options: walletOptions,
-      },
-    }, // required
-  });
-  provider = await web3Modal.connect();
-  return provider;
 };
 
 export const initWeb3 = async (chain) => {
   try {
     let userAddress;
     const provider = await initProvider(chain);
-    store.dispatch('web3/setMetaMaskStatus', provider.isMetaMask);
     web3 = new Web3(provider);
     web4 = new Web4();
     userAddress = await web3.eth.getCoinbase();

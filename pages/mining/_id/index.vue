@@ -386,6 +386,7 @@ export default {
   },
   watch: {
     async isConnected(newValue) {
+      console.log(this.isConnected, newValue, this.miningPoolId);
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
       if (newValue && rightChain) {
         await this.tokensDataUpdate();
@@ -563,10 +564,10 @@ export default {
       return style;
     },
     async tokensDataUpdate() {
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
-      if (!rightChain) {
-        return;
-      }
+      // const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+      // if (!rightChain) {
+      //   return;
+      // }
       const tokensData = await this.$store.dispatch('web3/getTokensData');
       this.fullRewardAmount = tokensData.rewardTokenAmount;
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
