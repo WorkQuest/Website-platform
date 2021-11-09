@@ -1,7 +1,7 @@
 <template>
   <div
     v-click-outside="hideDd"
-    class="quest"
+    class="quest quest__menu"
   >
     <button
       class="quest__button quest__button_menu"
@@ -13,53 +13,53 @@
           { 'icon-share_outline': userRole === 'worker' },
         ]"
       />
-      <transition name="fade">
-        <div
-          v-if="isShowQuestMenu"
-          class="quest menu"
-        >
-          <div class="menu menu__items">
-            <span
-              class="menu__container"
+    </button>
+    <transition name="fade">
+      <div
+        v-if="isShowQuestMenu"
+        class="quest menu"
+      >
+        <div class="menu menu__items">
+          <span
+            class="menu__container"
+          >
+            <div
+              v-if="['employer'].includes(userRole)"
+              class="menu__item"
+              @click="startChat()"
             >
               <div
-                v-if="['employer'].includes(userRole)"
-                class="menu__item"
-                @click="startChat()"
+                class="menu__text"
               >
-                <div
-                  class="menu__text"
-                >
-                  {{ $t('quests.startChat') }}
-                </div>
+                {{ $t('quests.startChat') }}
               </div>
+            </div>
+            <div
+              v-if="['employer'].includes(userRole)"
+              class="menu__item"
+              @click="selectedWorker.length === 0 ? selectWorker(i) : removeWorker()"
+            >
               <div
-                v-if="['employer'].includes(userRole)"
-                class="menu__item"
-                @click="selectedWorker.length === 0 ? selectWorker(i) : removeWorker()"
+                class="menu__text"
               >
-                <div
-                  class="menu__text"
-                >
-                  {{ $t('quests.invite') }}
-                </div>
+                {{ $t('quests.invite') }}
               </div>
+            </div>
+            <div
+              v-if="['employer'].includes(userRole)"
+              class="menu__item"
+              @click="rejectQuestInvitation(responseId)"
+            >
               <div
-                v-if="['employer'].includes(userRole)"
-                class="menu__item"
-                @click="rejectQuestInvitation(responseId)"
+                class="menu__text"
               >
-                <div
-                  class="menu__text"
-                >
-                  {{ $t('quests.decline') }}
-                </div>
+                {{ $t('quests.decline') }}
               </div>
-            </span>
-          </div>
+            </div>
+          </span>
         </div>
-      </transition>
-    </button>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -75,11 +75,11 @@ export default {
   },
   props: {
     i: {
-      type: [Number, null],
+      type: [Number],
       default: null,
     },
     responseId: {
-      type: [String, null],
+      type: [String],
       default: null,
     },
   },
@@ -168,6 +168,7 @@ export default {
 
 .quest {
   &__button {
+    position: relative;
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: normal;
@@ -185,22 +186,25 @@ export default {
       color: $black800;
     }
     &_menu {
+      display: flex;
+      justify-self: flex-end;
       width: 30px;
       height: 30px;
     }
   }
+  &__menu {
+    position: relative;
+  }
 }
 
-//TODO: Закрепить меню под кнопкой
 .menu {
   position: absolute;
-  top: calc(70px + 5px);
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
   min-width: 120px;
   z-index: 10000000;
-  margin: 0 73px 0 0;
+  right: 2px;
   &__container {
     display: grid;
     grid-template-columns: 1fr;
