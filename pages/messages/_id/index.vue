@@ -1,134 +1,205 @@
 <template>
-  <div class="main">
-    <div class="main__body">
-      <h2 class="page__title">
-        {{ $t('chat.messages') }}
+  <div class="chat-page">
+    <div class="chat-page__body">
+      <h2 class="chat-page__header">
+        {{ $t(`chat.${chatId === 'starred' ? 'starredMessages' : 'messages'}`) }}
       </h2>
-      <div class="chat__body">
-        <div class="chat__header">
-          <div class="chat__title">
-            <div
-              class="arrow-back"
-              @click="showDetails()"
-            >
-              <span
-                class="icon-short_left"
-              />
-              <span>{{ $t('chat.chat') }}</span>
-            </div>
-            <ChatMenu />
+      <div class="chat-container">
+        <div class="chat-container__header">
+          <div
+            class="chat-container__arrow-back"
+            @click="goBackToChatsList()"
+          >
+            <span class="icon-short_left" />
+            <span>{{ $t('chat.chat') }}</span>
           </div>
+          <div class="chat-container__chat-name">
+            <!--            {{}}-->
+          </div>
+          <ChatMenu v-show="chatId !== 'starred'" />
         </div>
         <div
-          id="chat__messages"
-          class="chat__messages"
+          ref="HandleScrollContainer"
+          class="chat-container__scroll-cont"
+          :class="{'chat-container__scroll-cont_small' : files.length}"
+          @scroll="handleScroll"
         >
-          <div class="chat__info-message">
-            <div class="name__underline">
-              Samantha Sparcs
-            </div>
-            <div class="event">
-              {{ $t('chat.invitedYou') }}
-            </div>
-          </div>
-          <div class="info">
-            <div class="quest__info">
-              <div class="quest__name">
-                Paint the garage quickly
-              </div>
-            </div>
-          </div>
           <div
-            v-for="(item, i) in messages"
-            :key="i"
+            ref="ScrollContainer"
+            class="chat-container__messages"
           >
             <div
-              class="chat__message"
+              v-if="isTopChatsLoading"
+              class="chat-container__loader-cont"
             >
-              <div>
-                <div class="row__container">
-                  <div class="chat__img-container">
-                    <img
-                      class="chat__img"
-                      src="~/assets/img/temp/profile.svg"
-                    >
-                  </div>
-                  <div class="chat__name-container">
-                    <div class="chat__name">
-                      {{ item.userName }}
-                    </div>
-                    <div class="chat__star">
-                      <div
-                        class="block__icon block__icon_fav star"
-                        @click="favoritesHandler(item)"
-                      >
-                        <img
-                          v-if="!item.isFavourite"
-                          class="star__hover"
-                          src="~assets/img/ui/star_hover.svg"
-                          alt=""
-                        >
-                        <img
-                          v-if="!item.isFavourite"
-                          class="star__default"
-                          src="~assets/img/ui/star_simple.svg"
-                          alt=""
-                        >
-                        <img
-                          v-if="item.isFavourite"
-                          class="star__checked"
-                          src="~assets/img/ui/star_checked.svg"
-                          alt=""
-                        >
-                      </div>
-                    </div>
-                  </div>
+              <loader class="chat-container__loader" />
+            </div>
+            <div
+              v-for="(message, i) in messages.list"
+              :key="message.id"
+              :ref="message.number === selStarredMessageNumber ? 'starredMessage' : ''"
+              class="chat-container__message message"
+              :class="[{'message_right' : message.itsMe}, {'message_blink' : message.number === selStarredMessageNumber}]"
+            >
+              <img
+                v-if="!message.itsMe"
+                :src="message.sender.avatar ? message.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                alt=""
+                class="message__avatar"
+                :class="{'message__avatar_hidden' : i && messages.list[i - 1].senderUserId == message.senderUserId}"
+              >
+              <div class="message__data">
+                <div
+                  v-if="!message.itsMe && (!i || (i && messages.list[i - 1].senderUserId != message.senderUserId))"
+                  class="message__title"
+                >
+                  {{ message.sender.firstName + ' ' + message.sender.lastName }}
                 </div>
                 <div
-                  class="message__interlocutor"
-                  :class="{ message__owner: +item.type === 2 }"
+                  class="message__bubble"
+                  :class="[{'message__bubble_bl' : message.itsMe}, {'message__bubble_link' : chatId === 'starred'}]"
+                  @click="goToCurrChat(message)"
                 >
-                  <span class="message__body">
-                    {{ item.body }}
-                  </span>
-                  <div class="message__time">
-                    {{ item.messageTime }}
+                  <div class="message__title">
+                    {{ message.text }}
+                  </div>
+                  <div
+                    v-if="message.medias.length"
+                    class="message__media"
+                  >
+                    <div
+                      v-for="file in message.medias"
+                      :key="file.id"
+                      class="image-cont"
+                    >
+                      <img
+                        :src="file.url"
+                        class="image-cont__image image-cont__image_margin"
+                        alt=""
+                        @click="selFile(message.medias, file)"
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="message__time message__title message__title_gray"
+                    :class="{'message__title_white' : message.itsMe}"
+                  >
+                    {{ setCurrDate(message.createdAt) }}
                   </div>
                 </div>
               </div>
+              <div
+                class="message__star-cont"
+                :class="{'message__star-cont_left' : message.itsMe}"
+              >
+                <div
+                  v-show="chatId !== 'starred'"
+                  class="star"
+                  @click="handleChangeStarVal(message)"
+                >
+                  <img
+                    class="star__hover"
+                    src="~assets/img/ui/star_hover.svg"
+                    alt=""
+                  >
+                  <img
+                    v-if="message.star"
+                    class="star__checked"
+                    src="~assets/img/ui/star_checked.svg"
+                    alt=""
+                  >
+                  <img
+                    v-else
+                    class="star__default"
+                    src="~assets/img/ui/star_simple.svg"
+                    alt=""
+                  >
+                </div>
+              </div>
+            </div>
+            <div
+              v-if="isBottomChatsLoading"
+              class="chat-container__loader-cont"
+            >
+              <loader class="chat-container__loader" />
             </div>
           </div>
         </div>
-        <div class="chat__panel">
-          <div class="input__wrapper">
-            <input
-              id="input__file"
-              name="file"
-              type="file"
-              class="input input__file chat__btn_add"
-              multiple
+        <div class="chat-container__footer footer">
+          <div
+            v-if="isScrollBtnVis"
+            class="footer__scroll-btn"
+            @click="scrollToBottom"
+          >
+            <img
+              src="~assets/img/ui/arrow-down.svg"
+              alt=""
+              class="footer__scroll-svg"
             >
-            <label
-              for="input__file"
-              class="input__file-button"
-            >
-              <span class="icon-link" />
-            </label>
           </div>
-          <div class="message__input">
-            <div class="input">
-              <base-field
-                v-model="message_input"
-                :placeholder="$t('chat.writeYouMessage')"
-              />
+          <div
+            v-show="chatId !== 'starred'"
+            class="footer__controls"
+          >
+            <div class="chat-container__file-cont">
+              <ValidationProvider
+                v-slot="{validate}"
+                rules="required|ext:png,jpeg,jpg"
+              >
+                <input
+                  id="input__file"
+                  name="file"
+                  type="file"
+                  class="chat-container__file-input"
+                  multiple
+                  :disabled="files.length >= 10"
+                  @change="getFiles($event, validate)"
+                >
+              </ValidationProvider>
+              <label
+                for="input__file"
+                class="chat-container__file-button"
+              >
+                <span class="icon-link" />
+              </label>
+            </div>
+            <base-field
+              v-model="messageText"
+              :placeholder="$t('chat.writeYouMessage')"
+              is-hide-error
+            />
+            <button
+              class="chat-container__send-btn"
+              :class="{'chat-container__send-btn_active' : messageText}"
+              @click="handleSendMessage"
+            >
+              <span class="icon-send" />
+            </button>
+          </div>
+          <div
+            v-if="files.length"
+            class="footer__medias"
+          >
+            <div
+              v-for="(file, i) in files"
+              :key="file.data.mediaId"
+              class="image-cont"
+            >
+              <img
+                :src="file.url"
+                class="image-cont__image"
+                alt=""
+              >
+              <div
+                class="image-cont__remove"
+                @click="handleRemoveFile(i)"
+              >
+                <span
+                  class="icon-close_big"
+                />
+              </div>
             </div>
           </div>
-          <button
-            class="chat__btn_spend"
-            @click="sendMessages()"
-          >
-            <span class="icon-send" />
-          </button>
         </div>
       </div>
     </div>
@@ -148,27 +219,212 @@ export default {
   },
   data() {
     return {
-      isShowFavourite: false,
-      message_input: '',
+      isTopChatsLoading: false,
+      isBottomChatsLoading: false,
+      isShowFavorite: false,
+      messageText: '',
+      files: [],
+      today: moment(new Date()),
+      minScrollDifference: 0,
+      isScrollBtnVis: false,
+      chatId: this.$route.params.id,
+      selStarredMessageNumber: 0,
     };
   },
   computed: {
     ...mapGetters({
       messages: 'data/getMessages',
-
+      userData: 'user/getUserData',
+      lastMessageId: 'data/getLastMessageId',
+      chats: 'data/getChats',
+      filter: 'data/getMessagesFilter',
     }),
   },
   async mounted() {
+    this.$watch(
+      'lastMessageId',
+      (newVal, oldVal) => {
+        if (!this.isScrollBtnVis && oldVal) this.scrollToBottom();
+      },
+      { immediate: true },
+    );
+
     this.SetLoader(true);
+    const selStarredMessageNumber = +localStorage.getItem('selStarredMessageNumber');
+
+    let direction = 0;
+    let bottomOffset = 0;
+
+    if (selStarredMessageNumber) {
+      bottomOffset = selStarredMessageNumber >= 20 ? selStarredMessageNumber - 10 : 0;
+      direction = 1;
+
+      this.selStarredMessageNumber = selStarredMessageNumber;
+
+      localStorage.setItem('selStarredMessageNumber', '0');
+    }
+
+    await this.getMessages(direction, bottomOffset);
+    if (!direction) await this.readMessages();
+
+    this.scrollToBottom(true);
     this.SetLoader(false);
+
     const isChatNotificationShown = !!localStorage.getItem('isChatNotificationShown');
     if (!isChatNotificationShown) this.showNoticeModal();
   },
+  destroyed() {
+    this.$store.commit('data/setMessagesList', { messages: [], count: 0, chatId: '' });
+    this.$store.commit('data/clearMessagesFilter');
+  },
   methods: {
-    scrollChat() {
-      const chat = this.$el.querySelector('#chat__messages');
+    selFile(files, file) {
+      // this.ShowModal({
+      //   key: modals.gallery,
+      //   url: file.url,
+      // });
+    },
+    handleRemoveFile(index) {
+      this.files.splice(index, 1);
+    },
+    goToCurrChat(message) {
+      if (this.chatId !== 'starred') return;
+      localStorage.setItem('selStarredMessageNumber', JSON.stringify(message.number));
+      this.$router.push(`/messages/${message.chatId}`);
+    },
+    handleChangeStarVal(message) {
+      const messageId = message.id;
+      const { chatId } = this;
+      try {
+        this.$store.dispatch(`data/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, { messageId, chatId });
+      } catch (e) {
+        console.log(e);
+        this.showToastError(e);
+      }
+    },
+    async readMessages() {
+      const messages = this.messages.list;
+      const chats = this.chats.list;
+      const { chatId } = this;
+
+      if (!messages.length || chatId === 'starred' || chats.some((chat) => chat.id === chatId && !chat.isUnread)) return;
+
+      const payload = {
+        config: {
+          messageId: messages[messages.length - 1].id,
+        },
+        chatId,
+      };
+      await this.$store.dispatch('data/setMessageAsRead', payload);
+    },
+    async getFiles(ev, validate) {
+      const { files } = ev.target;
+      const validFiles = [];
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        // eslint-disable-next-line no-await-in-loop
+        const isValid = await validate(file);
+        if (isValid.valid) validFiles.push(file);
+      }
+
+      ev.target.value = null;
+
+      if (this.files.length + validFiles.length > 10) {
+        // withdraw alert-modal
+
+        return;
+      }
+
+      if (!validFiles.length) return;
+
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < validFiles.length; i++) {
+        const file = validFiles[i];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        // eslint-disable-next-line no-await-in-loop
+        const data = await this.$store.dispatch('data/uploadFile', { contentType: file.type });
+
+        const url = URL.createObjectURL(file);
+
+        this.files.push({ data, file, url });
+
+        reader.onerror = (evt) => {
+          console.error(evt);
+        };
+      }
+    },
+    async handleScroll({ target: { scrollTop, scrollHeight, clientHeight } }) {
+      const { minScrollDifference, filter: { canLoadToBottom, canLoadToTop } } = this;
+
+      const currScrollOffset = scrollHeight - scrollTop;
+
+      this.isScrollBtnVis = currScrollOffset > minScrollDifference;
+      const scrollBottom = currScrollOffset - clientHeight;
+
+      if (canLoadToBottom && scrollBottom < 300 && !this.isBottomChatsLoading) {
+        this.isBottomChatsLoading = true;
+        await this.getMessages(1);
+        setTimeout(() => { this.isBottomChatsLoading = false; }, 300);
+      } else if (canLoadToTop && scrollTop < 300 && !this.isTopChatsLoading) {
+        this.isTopChatsLoading = true;
+        await this.getMessages(0);
+        setTimeout(() => { this.isTopChatsLoading = false; }, 300);
+      }
+    },
+    async getMessages(direction, currBottomOffset) {
+      const {
+        filter: {
+          topOffset,
+          bottomOffset,
+        }, chatId, messages: { list, count },
+      } = this;
+
+      const offset = direction ? currBottomOffset || bottomOffset : topOffset || count - list[0]?.number + 1 || 0;
+
+      const payload = {
+        config: {
+          params: {
+            limit: 20,
+            offset,
+            'sort[createdAt]': direction ? 'asc' : undefined,
+          },
+        },
+        chatId,
+        direction,
+        offset,
+      };
+
+      try {
+        await this.$store.dispatch('data/getMessagesList', payload);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    setCurrDate(msgDate) {
+      const { today } = this;
+      const momentDate = moment(msgDate);
+      let format = '';
+      if (momentDate.format('DD MM YY') !== today.format('DD MM YY')) {
+        format += 'DD MMM';
+        if (momentDate.format('YYYY') > today.format('YYYY')) {
+          format += ' YY';
+        }
+        format += ', ';
+      }
+
+      return momentDate.format(`${format}HH:mm`);
+    },
+    scrollToBottom(isInit) {
       setTimeout(() => {
-        chat.scrollTop = chat.scrollHeight;
+        const { HandleScrollContainer, ScrollContainer, starredMessage } = this.$refs;
+
+        ScrollContainer.scrollIntoView(isInit === true ? false : { block: 'end', behavior: 'smooth' });
+        this.minScrollDifference = (HandleScrollContainer.scrollHeight - HandleScrollContainer.scrollTop) * 2;
+
+        if (starredMessage && isInit) HandleScrollContainer.scrollTo(0, starredMessage[0].offsetTop - HandleScrollContainer.offsetTop - 20);
       }, 100);
     },
     showNoticeModal() {
@@ -179,44 +435,392 @@ export default {
     isRating(type) {
       return (type === 1 || type === 2);
     },
-    showDetails() {
+    goBackToChatsList() {
       this.$router.push('/messages');
     },
-    sendMessages() {
-      if (!this.message_input && !this.message_input.length) {
-        return;
-      }
-      const message = {
-        userName: 'Rosalia Vanse',
-        type: 2,
-        body: this.message_input,
-        isFavourite: false,
-        messageTime: moment().format('HH:mm'),
+    async handleSendMessage() {
+      const {
+        messageText, files, isScrollBtnVis, chatId,
+      } = this;
+      if (!messageText) return;
+
+      const text = messageText;
+
+      this.messageText = '';
+
+      const msgFiles = [];
+
+      await Promise.all(files.map(async ({ data, file, url }, i) => {
+        const cData = {
+          url: data.url,
+          formData: file,
+          type: file.type,
+        };
+        msgFiles.push({ url, id: i + 1 });
+
+        try {
+          await this.$store.dispatch('data/setImage', cData);
+        } catch (e) {
+          console.log(e);
+          this.showToastError(e);
+        }
+      }));
+
+      const medias = files.map(({ data }) => data.mediaId);
+
+      const payload = {
+        config: {
+          text,
+          medias,
+        },
+        chatId,
       };
-      // TODO replace with mutation
-      console.log('send: ', message);
-      this.message_input = '';
-      this.scrollChat();
+
+      this.files = [];
+
+      try {
+        await this.$store.dispatch('data/handleSendMessage', payload);
+        const newMessage = {
+          medias: msgFiles,
+          text,
+          itsMe: true,
+          createdAt: new Date(),
+        };
+        this.$store.commit('data/addMessageToList', newMessage);
+
+        if (!isScrollBtnVis) this.scrollToBottom();
+      } catch (e) {
+        console.log(e);
+      }
     },
     onEnter(e, callback) {
       if (!e.ctrlKey) {
         e.preventDefault();
-        callback(this.sendMessages);
-      }
-    },
-    favoritesHandler(item) {
-      // TODO replace with mutation
-      if (item.isFavourite) {
-        console.log('remove from favorites', item);
-      } else {
-        console.log('add to favorites', item);
+        callback(this.handleSendMessage);
       }
     },
   },
 };
 </script>
 
+<style lang="scss">
+  .template {
+    &__content {
+      grid-template-rows: 72px 1fr 72px !important;
+    }
+
+    &__main {
+      padding-bottom: 50px !important;
+    }
+  }
+  .footer {
+    &__body {
+      justify-content: flex-end !important;
+    }
+    &__top {
+      display: none !important;
+    }
+  }
+</style>
+
 <style lang="scss" scoped>
+.chat-page {
+  @include main;
+
+  &__header {
+    padding: 20px 0;
+  }
+}
+
+.chat-container {
+  background-color: $white;
+  border: 1px solid #E9EDF2;
+  border-radius: 6px;
+
+  &__header {
+    border-bottom: 1px solid #E9EDF2;
+    padding: 15px;
+    font-weight: 500;
+    font-size: 18px;
+    display: grid;
+    grid-template-columns: max-content 1fr max-content;
+    align-items: center;
+    height: 71px;
+  }
+
+  &__arrow-back {
+    display: flex;
+    cursor: pointer;
+    transition: .5s;
+    &:hover {
+      filter: drop-shadow(4px 4px 3px rgba(34, 60, 80, 0.4));
+    }
+  }
+
+  &__chat-name {
+    justify-self: center;
+  }
+
+  &__scroll-cont {
+    overflow: auto;
+    padding: 20px 20px 0;
+    height: calc(100vh - 420px);
+    min-height: 400px;
+    display: grid;
+    align-items: end;
+
+    &_small {
+      height: calc(100vh - 535px);
+    }
+  }
+
+  &__footer {
+
+  }
+
+  &__file-cont {
+    height: 40px;
+  }
+
+  &__file-button {
+    height: 40px;
+    background: #F7F8FA;
+    color: #fff;
+    font-size: 1.125rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: .2s;
+    &:hover {
+      box-shadow: 0 0 6px rgba(0,0,0,0.2);
+    }
+  }
+
+  &__file-input {
+    display: none;
+  }
+
+  &__send-btn {
+    height: 40px;
+    border-radius: 6px;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.5;
+    transition: .2s;
+    background-color: $black0;
+    &_active {
+      pointer-events: all;
+      opacity: 1;
+      &:hover {
+        box-shadow: 0 0 6px rgba(0,0,0,0.2);
+      }
+    }
+  }
+
+  &__messages {
+    display: grid;
+    gap: 20px;
+  }
+
+  &__loader-cont {
+    height: 70px;
+    position: relative;
+  }
+
+  &__loader {
+    position: absolute !important;
+    background: rgba(255, 255, 255, 1) !important;
+  }
+}
+
+.footer {
+  position: relative;
+
+  &__scroll-btn {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 1px solid #E9EDF2;
+    right: 20px;
+    top: -50px;
+    opacity: .5;
+    transition: .3s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #F7F8FA;
+      opacity: .8;
+      box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.3);
+    }
+  }
+  &__scroll-svg {
+    height: 20px;
+    width: 20px;
+  }
+  &__controls {
+    height: 70px;
+    padding: 0 15px;
+    border-top: 1px solid #E9EDF2;
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    gap: 10px;
+    align-items: center;
+  }
+
+  &__medias {
+    padding: 0 0 10px 10px;
+    width: calc(100% - 10px);
+    overflow: auto;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 10px;
+    justify-content: start;
+  }
+}
+
+.image-cont {
+  position: relative;
+  cursor: pointer;
+
+  &__image {
+    height: 105px;
+    width: 130px;
+    border-radius: 6px;
+    min-width: 130px;
+
+    &_margin {
+      margin: 10px 10px 0 0;
+    }
+  }
+
+  &__remove {
+    display: none;
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    background-color: #ffffff59;
+    border-radius: 6px;
+    top: 2px;
+    right: 2px;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background-color: #fff;
+    }
+  }
+
+  &:hover {
+    .image-cont__remove {
+      display: grid;
+    }
+  }
+}
+
+.icon-close_big:before {
+  color: #DF3333;
+  font-size: 25px;
+}
+
+.message {
+  width: 70%;
+  display: grid;
+  grid-template-columns: 43px minmax(auto, max-content) max-content;
+  gap: 20px;
+  height: max-content;
+
+  &__media {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &_blink {
+    animation: blink 1s;
+  }
+
+  @keyframes blink {
+    50%{opacity: .5;}
+    100%{opacity: 1;}
+  }
+
+  &_right {
+    grid-template-columns: max-content minmax(auto, max-content);
+    justify-content: flex-end;
+    margin-left: 30%;
+  }
+
+  &__star-cont {
+    &_left {
+      grid-column: 1;
+      grid-row: 1;
+    }
+  }
+
+  &:last-child {
+    padding-bottom: 20px;
+  }
+
+  &__time {
+    justify-self: end;
+  }
+
+  &__title {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.2;
+
+    &_gray {
+      color: #AAB0B9;
+      font-size: 14px;
+    }
+
+    &_white {
+      color: #fff;
+    }
+  }
+
+  &__avatar {
+    height: 43px;
+    width: 43px;
+    border-radius: 50%;
+
+    &_hidden {
+      visibility: hidden;
+    }
+  }
+
+  &__data {
+    display: grid;
+    gap: 10px;
+  }
+
+  &__bubble {
+    display: grid;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 6px;
+    background-color: #F7F8FA;
+
+    &_bl {
+      background-color: #0083C7;
+      color: #fff;
+    }
+
+    &_link {
+      cursor: pointer;
+    }
+  }
+}
 
 .styles {
   &__between {
@@ -241,11 +845,7 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: .5s;
-  &:hover {
-    filter: drop-shadow(4px 4px 3px rgba(34, 60, 80, 0.4));
-  }
+
 }
 
 .icon {
@@ -273,17 +873,11 @@ export default {
     content: "\e951";
     color: $black500;
   }
-  &-more {
-    margin: 0 15px 0 0;
-  }
 }
 
 .input {
   &__wrapper {
-    width: 100%;
-    position: relative;
-    margin: 15px 0;
-    text-align: center;
+    height: 40px;
   }
   &__file {
     opacity: 0;
@@ -305,46 +899,25 @@ export default {
     line-height: 1;
     margin-top: 1px;
   }
-  &__file-button {
-    width: 100%;
-    max-width: 40px;
-    height: 40px;
-    background: #F7F8FA;
-    color: #fff;
-    font-size: 1.125rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 3px;
-    cursor: pointer;
-    margin: 0 0 0 10px;
-    transition: .2s;
-    &:hover {
-      @extend .input__file-button;
-      box-shadow: 0 0 6px rgba(0,0,0,0.2);
-    }
-  }
 }
 
 .star {
-  &__default {
+  cursor: pointer;
 
+  &__default {
     display: flex;
   }
   &__hover {
-    width: 22px !important;
     display: none;
   }
-  &__checked {
-    width: 22px !important;
-  }
   &:hover {
+
     .star {
       &__hover {
-        display: block;
+        display: flex;
       }
-      &__default {
+      &__default,
+      &__checked {
         display: none;
       }
     }
@@ -366,11 +939,6 @@ export default {
       grid-template-columns: 25px 25px 25px 25px 25px;
     }
   }
-}
-
-.info {
-  display: flex;
-  justify-content: center;
 }
 
 .quest {
@@ -395,13 +963,7 @@ export default {
 }
 
 .name {
-  &__underline {
-    text-decoration: underline;
-    margin: 20px 10px 20px 0;
-    font-size: 16px;
-    color: $black800;
-    font-weight: 400;
-  }
+
 }
 
 .input {
@@ -413,38 +975,6 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-  }
-}
-
-.message {
-  &__time {
-    margin: 15px 15px 0 15px;
-    padding: 0;
-    text-align: right;
-  }
-  &__interlocutor {
-    background-color:#0083C7;
-    margin: 0 54px 0 60px;
-    border-radius: 6px;
-    color: $white;
-    padding: 15px;
-  }
-  &__owner {
-    background-color:$black0;
-    color: $black800;
-    padding: 15px;
-    margin: 0 54px 0 60px;
-    border-radius: 6px;
-  }
-  &__input {
-    width: 100%;
-    display: flex;
-    height: 70px;
-  }
-  &__body {
-    display: flex;
-    word-break: break-word;
-    width: 100%;
   }
 }
 
@@ -462,53 +992,11 @@ export default {
     margin: 0 10px 0 10px;
   }
 }
-.main {
-  @include main;
-  &-white {
-    @include main-white;
-    justify-content: flex-start;
-    border-radius: 6px;
-  }
-  &__body {
-    margin: 0 10px 0 10px;
-  }
-}
+
 .chat {
-  &__info-message {
-    display: flex;
-    justify-content: center;
-  }
   &__header {
     border: 1px solid #E9EDF2;
     border-radius: 6px 0 0 0;
-  }
-  &__btn {
-    width: 100%;
-    height: 100%;
-    max-width:40px;
-    max-height: 40px;
-    border-radius: 6px;
-    transition: .2s;
-    background-color: $black0;
-    &_spend {
-      @extend .chat__btn;
-      margin: 0 11px 0 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      &:hover {
-        @extend .chat__btn_spend;
-        box-shadow: 0 0 6px rgba(0,0,0,0.2);
-      }
-    }
-    &_add {
-      @extend .chat__btn;
-      margin: 0 -11px 0 0;
-      &:hover {
-        @extend .chat__btn_add;
-        box-shadow: 0 0 6px rgba(0,0,0,0.2);
-      }
-    }
   }
   &__panel {
     height: 100%;

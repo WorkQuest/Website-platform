@@ -872,6 +872,15 @@
     "error": "Error!"
   },
   "modals": {
+    "disputes": {
+      "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
+      "badlyDoneWork": "Badly done work",
+      "additionalRequirementsHaveBeenPutForward": "Additional requirements have been put forward",
+      "inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest": "Inconsistencies in the requirements for the description of the quest",
+      "theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion": "The quest is completed but the employee / employer has not confirmed its completion",
+      "anotherReason": "Another reason"
+    },
+    "chooseTheme": "Choose theme",
     "incorrectAmount": "Incorrect amount, your wallet does not have enough funds",
     "nothingToClaim": "Nothing to claim",
     "pleaseWait": "Please, wait",
@@ -1280,8 +1289,9 @@
   "chat": {
     "openDispute": "Open dispute",
     "approveQuest": "Approve quest",
-    "favoriteMessages": "Favorite messages",
-    "favoriteChats": "Favorite chats",
+    "starredMessages": "Starred messages",
+    "starredChats": "Starred chats",
+    "allChats": "All chats",
     "createGroupChat": "Create group chat",
     "favorite": "Favorite",
     "messages": "Messages",
@@ -1289,7 +1299,9 @@
     "quest": "Quest:",
     "you": "You:",
     "invitedYou": "invited you to a quest",
-    "writeYouMessage": "Write you message"
+    "writeYouMessage": "Write you message",
+    "group": "Group",
+    "noChats": "No Chats"
   },
   "settings": {
     "placeOfStudying": "Place of studying",
