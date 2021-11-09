@@ -79,6 +79,7 @@
             class="btns__wrapper"
           >
             <div class="btn__wrapper">
+              <!--              TODO: Починить кнопку старт quest передать массив selectedWorker-->
               <base-btn
                 :disabled="!selectedWorker[0]"
                 @click="startQuest()"

@@ -118,6 +118,7 @@ export default {
     async selectWorker(i) {
       this.SetLoader(true);
       const { worker } = this.responsesToQuest[i];
+      // TODO: Починить кнопку старт quest передать в quests/id employer
       if (this.selectedWorker.length === 0) {
         this.showToastInvited();
         this.selectedWorker.push(worker);
