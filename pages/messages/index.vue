@@ -109,7 +109,7 @@
           v-else
           class="chats-container__no-chats"
         >
-          {{ $t('chats.noChats') }}
+          {{ $t('chat.noChats') }}
         </div>
       </div>
     </div>
