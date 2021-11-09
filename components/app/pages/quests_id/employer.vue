@@ -404,7 +404,7 @@
           class="priority__container"
         >
           <div
-            v-if="[!4,!8].includes(infoDataMode)"
+            v-if="![4,8].includes(infoDataMode)"
             class="priority__title"
             :class="getPriorityClass(questData.priority)"
           >
