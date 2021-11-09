@@ -127,7 +127,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { startPensionProgram } from '~/utils/web3';
+import { Chains } from '~/utils/enums';
 
 export default {
   data() {
@@ -149,8 +149,8 @@ export default {
           url: '',
         },
       ],
-      lockTime: null,
-      percent: null,
+      lockTime: '',
+      percent: '',
       FAQs: [
         {
           name: this.$t('pension.faq1.question'),
@@ -208,6 +208,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      isConnected: 'web3/isConnected',
     }),
     cards() {
       const percent = this.percent || '';
@@ -232,19 +233,40 @@ export default {
       ];
     },
   },
+  watch: {
+    async isConnected(newValue) {
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
+      if (newValue && rightChain) {
+        this.SetLoader(true);
+        await this.checkWalletExists();
+        const { lockTime, defaultFee } = await this.$store.dispatch('web3/getPensionDefaultData');
+        this.lockTime = lockTime;
+        this.percent = defaultFee;
+        this.SetLoader(false);
+      } else {
+        this.lockTime = '';
+        this.percent = '';
+      }
+    },
+  },
   async mounted() {
     this.SetLoader(true);
-    await this.$store.dispatch('web3/connect'); // TODO: нормально подключаться к кошельку
-    const { lockTime, defaultFee, contributed } = await this.$store.dispatch('web3/getPensionDefaultData');
-    if (contributed !== '0') {
-      await this.$router.push('/pension/my');
-      return;
+    await this.$store.dispatch('web3/checkConnectionStatus', Chains.ETHEREUM);
+    if (this.isConnected) {
+      await this.checkWalletExists();
+      const { lockTime, defaultFee } = await this.$store.dispatch('web3/getPensionDefaultData');
+      this.lockTime = lockTime;
+      this.percent = defaultFee;
     }
-    this.lockTime = lockTime;
-    this.percent = defaultFee;
     this.SetLoader(false);
   },
   methods: {
+    async checkWalletExists() {
+      const wallet = await this.$store.dispatch('web3/getPensionWallet');
+      if (wallet.createdAt !== '0') {
+        await this.$router.push('/pension/my');
+      }
+    },
     openApplyForAPensionModal() {
       this.ShowModal({
         key: modals.applyForAPension,
@@ -254,7 +276,7 @@ export default {
       FAQ.isOpen = !FAQ.isOpen;
     },
     async startPensionProgram() {
-      await this.$store.dispatch('web3/startPensionProgram', { fee: 5, firstDeposit: 0.005 });
+      await this.$store.dispatch('web3/startPensionProgram', { fee: 5, firstDeposit: 0.001 });
     },
   },
 };

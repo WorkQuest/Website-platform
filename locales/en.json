@@ -1915,7 +1915,9 @@
     "mb": "{count} MB",
     "percents": "{count} %",
     "years": "{count} years",
-    "wusdCount": "{count} WUSD",
+    "days": "{count} days",
+    "WUSDCount": "{count} WUSD",
+    "ETHCount": "{count} WUSD",
     "plusPercents": "+ {count}%",
     "faq1": {
       "question": "How do you qualify for a pension?",

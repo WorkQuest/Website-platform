@@ -28,7 +28,7 @@
             :placeholder="$tc('pension.wusdCount', 130)"
             class="content__input"
             :name="$t('modals.firstDepositAmountField')"
-            rules="required|decimal"
+            rules="decimal"
           />
           <div class="content__text">
             {{ $t('modals.firstDepositText') }}
@@ -44,8 +44,8 @@
           </base-btn>
           <base-btn
             class="buttons__button"
-            :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(showPensionIsRegisteredModal)"
+            :disabled="invalid"
+            @click="handleSubmit(submitPensionRegistration)"
           >
             {{ $t('meta.submit') }}
           </base-btn>
@@ -58,6 +58,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { Chains } from '~/utils/enums';
 
 export default {
   name: 'ModalApplyForAPension',
@@ -70,11 +71,27 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      isConnected: 'web3/isConnected',
     }),
   },
   methods: {
     hide() {
       this.CloseModal();
+    },
+    async submitPensionRegistration() {
+      await this.$store.dispatch('web3/checkConnectionStatus', Chains.ETHEREUM);
+      if (this.isConnected) {
+        this.hide();
+        this.SetLoader(true);
+        const ok = await this.$store.dispatch('web3/startPensionProgram', {
+          fee: this.depositPercentFromAQuest,
+          firstDeposit: this.firstDepositAmount,
+        });
+        this.SetLoader(false);
+        if (ok) {
+          this.showPensionIsRegisteredModal();
+        }
+      }
     },
     showPensionIsRegisteredModal() {
       this.ShowModal({
@@ -82,7 +99,7 @@ export default {
         img: require('~/assets/img/ui/document.svg'),
         title: this.$t('modals.pensionIsRegistered'),
         subtitle: this.$t('modals.pensionIsRegisteredText'),
-        path: '/pension/1',
+        path: '/pension/my',
       });
     },
   },

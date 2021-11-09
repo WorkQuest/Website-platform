@@ -7,7 +7,6 @@ import {
 } from '@uniswap/sdk';
 
 import {
-  ChainId,
   Token as TokenPancake,
   TokenAmount as TokenAmountPancake,
   Pair as PairPancake,
@@ -34,10 +33,13 @@ import {
   fetchStakingActions,
   unsubscirbeStakingListeners,
   getChainIdByChain,
-  getPensionLockTime, getPensionDefaultValues, getPensionDefaultData, getPensionWallets, startPensionProgram,
+  getPensionDefaultData,
+  getPensionWallet,
+  startPensionProgram,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
-import { StakingTypes } from '~/utils/enums';
+import { Chains, StakingTypes } from '~/utils/enums';
+import modals from '~/store/modals/modals';
 
 BigNumber.set({ ROUNDING_MODE: BigNumber.ROUND_DOWN });
 BigNumber.config({ EXPONENTIAL_AT: 60 });
@@ -71,7 +73,7 @@ export default {
     const isReconnection = payload?.isReconnection;
     const response = await initWeb3(payload);
     if (response.ok) {
-      if (!getters.isHandlingMetamaskStatus && isReconnection) {
+      if (!getters.isHandlingMetamaskStatus && !isReconnection) {
         handleMetamaskStatus(() => dispatch('handleMetamaskStatusChanged'));
         commit('setIsHandlingMetamaskStatus', true);
       }
@@ -87,6 +89,26 @@ export default {
   async handleMetamaskStatusChanged({ dispatch }) {
     await dispatch('disconnect');
     await dispatch('connect', { isReconnection: true });
+  },
+
+  async checkConnectionStatus({ getters, dispatch }, chain) {
+    if (!getters.isConnected) {
+      if (typeof window.ethereum === 'undefined') {
+        localStorage.setItem('metamaskStatus', 'notInstalled');
+        this.ShowModal({
+          key: modals.status,
+          img: '~assets/img/ui/cardHasBeenAdded.svg',
+          title: 'Please install Metamask!',
+          subtitle: 'Please click install...',
+          button: 'Install',
+          type: 'installMetamask',
+        });
+      } else {
+        localStorage.setItem('metamaskStatus', 'installed');
+        await dispatch('connect');
+        await dispatch('goToChain', { chain });
+      }
+    }
   },
 
   async initContract({ commit }) {
@@ -387,8 +409,15 @@ export default {
   async getPensionDefaultData() {
     return await getPensionDefaultData();
   },
-  async getPensionWallets() {
-    return await getPensionWallets();
+  async getPensionContributed() {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND_BSC;
+    const res = await fetchContractData('contributed', _abi, _pensionAddress);
+    console.log('contributed', res);
+    return res;
+  },
+  async getPensionWallet() {
+    return await getPensionWallet();
   },
   async startPensionProgram({ commit }, payload) {
     return await startPensionProgram(payload);

@@ -29,7 +29,7 @@
                 {{ $t('pension.pensionBalance') }}
               </div>
               <div class="info-block__tokens">
-                {{ $tc("pension.wusdCount", "4 562") }}
+                {{ getPensionBalance() }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -43,7 +43,7 @@
                 {{ $t('pension.currentPercentFromAQuest') }}
               </div>
               <div class="info-block__tokens">
-                {{ $tc('pension.percents', 0) }}
+                {{ $t('pension.percents', { count: getFeePercent() }) }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -66,7 +66,7 @@
                   {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
                 </div>
                 <div class="info-block__subtitle_black">
-                  {{ lockTime }}} years
+                  {{ endOfPeriod }}
                 </div>
               </div>
             </div>
@@ -132,7 +132,7 @@
                 {{ $t('pension.pensionSavingsBalance') }}
               </div>
               <div class="info-block__tokens">
-                {{ $tc("pension.wusdCount", "4 562") }}
+                {{ $tc("pension.WUSDCount", "4 562") }}
               </div>
             </div>
             <div class="info-block__small_right">
@@ -270,11 +270,16 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 import modals from '~/store/modals/modals';
+import { Chains } from '~/utils/enums';
 
 export default {
   data() {
     return {
+      isFirstLoading: true,
+      wallet: null,
+      currentChain: null,
       isExpired: false,
       isDeadline: false,
       items: [
@@ -428,14 +433,65 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      isConnected: 'web3/isConnected',
     }),
+    endOfPeriod() {
+      if (!this.wallet) return '';
+      const { unlockDate } = this.wallet;
+      let yy = moment.duration(moment(unlockDate).diff(moment.now())).asYears();
+      let dd = moment.duration(moment(unlockDate).diff(moment.now())).asDays();
+      dd = Math.ceil(yy * 365 - dd);
+      yy = Math.ceil(yy);
+      const years = this.$t('pension.years', { count: yy });
+      return `${years} ${dd ? this.$t('pension.days', { count: dd }) : ''}`;
+    },
+  },
+  watch: {
+    async isConnected(newValue) {
+      if (this.isFirstLoading) return;
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
+      if (newValue && rightChain) {
+        await this.getWallet();
+      } else {
+        this.wallet = null;
+      }
+    },
   },
   async mounted() {
     this.SetLoader(true);
-    const wallet = await this.$store.dispatch('web3/getPensionWallets');
+    await this.getWallet();
+    this.currentChain = this.$store.dispatch('web3/getAccount').netId;
     this.SetLoader(false);
+    this.isFirstLoading = false;
   },
   methods: {
+    getFeePercent() {
+      return this.wallet?.fee || '';
+    },
+    getPensionBalance() {
+      const balance = this.wallet?.balance || 0;
+      let chain = '';
+      switch (this.currentChain) {
+
+        default:
+          chain = 'WUSD'
+        break;
+      }
+      const ethChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
+      if (ethChain) {
+        chain = 'ETH';
+      } else {
+        chain = 'WUSD';
+      }
+      return this.$t(`pension.${chain}Count`, { count: balance });
+    },
+    async getWallet() {
+      await this.$store.dispatch('web3/checkConnectionStatus', Chains.ETHEREUM);
+      this.wallet = await this.$store.dispatch('web3/getPensionWallet');
+      if (this.wallet.createdAt === '0') {
+        await this.$router.push('/pension');
+      }
+    },
     showWithdrawModal() {
       this.ShowModal({
         key: modals.takeWithdraw,
