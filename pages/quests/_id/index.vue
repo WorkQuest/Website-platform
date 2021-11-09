@@ -2,7 +2,7 @@
   <div>
     <info />
     <div
-      class="main-white"
+      class="main main-white"
     >
       <div class="main__body">
         <questPanel
@@ -35,76 +35,77 @@
             >
           </div>
           <div class="divider" />
-
-          <questIdEmployer
-            :user-avatar="userAvatar"
-            :assign-worker="questData.assignedWorker ? questData.assignedWorker : questData.assignedWorker = null"
-          />
-
-          <questIdWorker />
         </div>
-      </div>
-    </div>
-    <div
-      class="map__container gmap"
-    >
-      <div class="gmap__block">
-        <transition name="fade-fast">
-          <GmapMap
-            ref="gMap"
-            class="quests__map"
-            language="en"
-            :center="questLocation"
-            :zoom="zoom"
-            :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
-          >
-            <GMapMarker
-              v-for="(item, key) in locations"
-              :key="key"
-              :position="questLocation"
-              :options="{ icon: pins.quest.blue, show: true}"
-              @click="coordinatesChange(item)"
-            >
-              <GMapInfoWindow
-                :options="{maxWidth: 280}"
-              >
-                <div>
-                  <h3>{{ questData.title }}</h3>
-                  <span>{{ questData.description }}</span>
-                </div>
-              </GMapInfoWindow>
-            </GMapMarker>
-          </GmapMap>
-        </transition>
       </div>
     </div>
     <div class="main">
-      <div class="spec__container">
-        <div class="quest__group">
-          <h2 class="quest__spec">
-            {{ $t('quests.otherQuestsSpec') }}
-            <nuxt-link
-              to="#"
-              class="spec__link"
-            >
-              "{{ payload.spec }}"
-            </nuxt-link>
-          </h2>
+      <div class="main__body">
+        <questIdEmployer
+          :user-avatar="userAvatar"
+          :assign-worker="questData.assignedWorker ? questData.assignedWorker : questData.assignedWorker = null"
+        />
+
+        <questIdWorker />
+        <div
+          class="map__container gmap"
+        >
+          <div class="gmap__block">
+            <transition name="fade-fast">
+              <GmapMap
+                ref="gMap"
+                class="quests__map"
+                language="en"
+                :center="questLocation"
+                :zoom="zoom"
+                :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
+              >
+                <GMapMarker
+                  v-for="(item, key) in locations"
+                  :key="key"
+                  :position="questLocation"
+                  :options="{ icon: pins.quest.blue, show: true}"
+                  @click="coordinatesChange(item)"
+                >
+                  <GMapInfoWindow
+                    :options="{maxWidth: 280}"
+                  >
+                    <div>
+                      <h3>{{ questData.title }}</h3>
+                      <span>{{ questData.description }}</span>
+                    </div>
+                  </GMapInfoWindow>
+                </GMapMarker>
+              </GmapMap>
+            </transition>
+          </div>
         </div>
-        {{ responsesToQuest.responses }}
-        <div class="quest__card">
-          <quests
-            v-if="questsObjects.count !== 0"
-            :limit="questLimits"
-            :object="questsObjects"
-            :page="'quests'"
-          />
-          <emptyData
-            v-else
-            :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
-            :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-            :link="userRole === 'employer' ? '/create-quest' : '/quests'"
-          />
+        <div class="spec__container">
+          <div class="quest__group">
+            <h2 class="quest__spec">
+              {{ $t('quests.otherQuestsSpec') }}
+              <nuxt-link
+                to="#"
+                class="spec__link"
+              >
+                "{{ payload.spec }}"
+              </nuxt-link>
+            </h2>
+          </div>
+          {{ responsesToQuest.responses }}
+          <div class="quest__card">
+            <quests
+              v-if="questsObjects.count !== 0"
+              :limit="questLimits"
+              :object="questsObjects"
+              :page="'quests'"
+            />
+            <emptyData
+              v-else
+              :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
+              :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+              :link="userRole === 'employer' ? '/create-quest' : '/quests'"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -214,6 +215,26 @@ export default {
     async initUserAvatar() {
       this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
     },
+    // getPageModeEmp(status) {
+    //   const mode = {
+    //     1: 2,
+    //     2: 8,
+    //     3: 7,
+    //     5: 6,
+    //     6: 9,
+    //   };
+    //   return mode[status] || '';
+    // },
+    // getPageModeWor(status) {
+    //   const mode = {
+    //     1: 2,
+    //     2: 8,
+    //     3: 7,
+    //     5: 4,
+    //     6: 9,
+    //   };
+    //   return mode[status] || '';
+    // },
     async checkPageMode() {
       // questStatus
       // Created = 0,
@@ -224,43 +245,51 @@ export default {
       // WaitConfirm = 5
       // Done = 6
 
-      if (['employer'].includes(this.userRole)) {
-        if ([0].includes(this.responsesData.count)) {
+      if (this.userRole === 'employer') {
+        if (this.responsesData.count === 0) {
           await this.$store.dispatch('quests/setInfoDataMode', 1);
-        } if ([1].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 2);
         } if (this.responsesData.count > 0) {
           await this.$store.dispatch('quests/setInfoDataMode', 3);
         } if (this.questData.assignedWorker !== null) {
-          if (![2].includes(this.questData.status)) {
+          if (this.questData.status !== 2) {
             await this.$store.dispatch('quests/setInfoDataMode', 4);
           }
-        } if ([5].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 6);
-        } if ([3].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 7);
-        } if ([2].includes(this.questData.status)) {
+        }
+        // else {
+        //   await this.$store.dispatch('quests/setInfoDataMode', this.getPageModeEmp(this.questData.status));
+        // }
+        if (this.questData.status === 1) {
+          await this.$store.dispatch('quests/setInfoDataMode', 2);
+        } if (this.questData.status === 2) {
           await this.$store.dispatch('quests/setInfoDataMode', 8);
-        } if ([6].includes(this.questData.status)) {
+        } if (this.questData.status === 3) {
+          await this.$store.dispatch('quests/setInfoDataMode', 7);
+        } if (this.questData.status === 5) {
+          await this.$store.dispatch('quests/setInfoDataMode', 6);
+        } if (this.questData.status === 6) {
           await this.$store.dispatch('quests/setInfoDataMode', 9);
         }
       }
-      if (['worker'].includes(this.userRole)) {
+      if (this.userRole === 'worker') {
         if (this.questData.assignedWorker === null && ![1].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 5);
-        } if ([1].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 2);
-        } if ([3].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 7);
         } if (this.questData.assignedWorkerId === this.userData.id
           && ![1, 3].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 1);
-        } if ([5].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 4);
-        } if ([6].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 9);
-        } if ([2].includes(this.questData.status)) {
+        }
+        // else {
+        //   await this.$store.dispatch('quests/setInfoDataMode', this.getPageModeWor(this.questData.status));
+        // }
+        if (this.questData.status === 1) {
+          await this.$store.dispatch('quests/setInfoDataMode', 2);
+        } if (this.questData.status === 2) {
           await this.$store.dispatch('quests/setInfoDataMode', 8);
+        } if (this.questData.status === 3) {
+          await this.$store.dispatch('quests/setInfoDataMode', 7);
+        } if (this.questData.status === 5) {
+          await this.$store.dispatch('quests/setInfoDataMode', 4);
+        } if (this.questData.status === 6) {
+          await this.$store.dispatch('quests/setInfoDataMode', 9);
         }
       }
     },
@@ -437,6 +466,7 @@ export default {
   &__container {
     @extend .price;
     justify-content: flex-end;
+    text-align: center;
   }
   &__wrapper {
     @extend .price;
@@ -460,7 +490,7 @@ export default {
     grid-gap: 20px;
     margin: 0 0 20px 0;
   }
-  &__item{
+  &__item {
     @extend .img;
     border-radius: 6px;
     max-width: 280px;
@@ -512,11 +542,11 @@ export default {
   }
 }
 .icon {
-  color:$black500;
+  color: $black500;
   font-size: 20px;
   &-chat::before {
     @extend .icon;
-    color:$green;
+    color: $green !important;
   }
   &-location::before {
     @extend .icon;

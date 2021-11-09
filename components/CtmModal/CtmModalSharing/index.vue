@@ -52,7 +52,7 @@ export default {
   name: 'ModalOpenADeposit',
   data() {
     return {
-      code: 'www.sharelink.com',
+      code: process.env.BASE_URL.slice(0, -4) + this.$route.fullPath,
     };
   },
   computed: {
