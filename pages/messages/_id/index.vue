@@ -192,10 +192,9 @@
                 class="image-cont__remove"
                 @click="handleRemoveFile(i)"
               >
-                <img
-                  src="~assets/img/ui/remove.svg"
-                  alt="remove"
-                >
+                <span
+                  class="icon-minus_circle_outline"
+                />
               </div>
             </div>
           </div>
@@ -347,8 +346,6 @@ export default {
       this.isScrollBtnVis = currScrollOffset > minScrollDifference;
       const scrollBottom = currScrollOffset - clientHeight;
 
-      console.log('canLoadToBottom', canLoadToBottom);
-
       if (canLoadToBottom && scrollBottom < 300 && !this.isBottomChatsLoading) {
         this.isBottomChatsLoading = true;
         await this.getMessages(1);
@@ -435,15 +432,15 @@ export default {
 
       const msgFiles = [];
 
-      await Promise.all(files.map(async ({ data: { url }, file }, i) => {
-        const data = {
-          url,
+      await Promise.all(files.map(async ({ data, file, url }, i) => {
+        const cData = {
+          url: data.url,
           formData: file,
           type: file.type,
         };
         msgFiles.push({ url, id: i + 1 });
 
-        await this.$store.dispatch('data/setImage', data);
+        await this.$store.dispatch('data/setImage', cData);
       }));
 
       const medias = files.map(({ data }) => data.mediaId);
@@ -707,6 +704,11 @@ export default {
       align-items: center;
     }
   }
+}
+
+.icon-minus_circle_outline:before {
+  color: #DF3333;
+  font-size: 20px;
 }
 
 .message {
