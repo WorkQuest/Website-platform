@@ -33,14 +33,6 @@ import {
   getPensionDefaultData,
   getPensionWallet,
   pensionUpdateFee, pensionContribute,
-  getStakingRewardTxFee,
-  handleMetamaskStatus,
-  fetchStakingActions,
-  unsubscirbeStakingListeners,
-  getChainIdByChain,
-  getPensionDefaultData,
-  getPensionWallet,
-  pensionUpdateFee, pensionContribute,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
