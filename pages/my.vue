@@ -149,7 +149,6 @@ export default {
     async getResponsesToQuestForAuthUser() {
       if (this.userRole === 'worker') {
         this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
-        console.log(this.questResponses);
       }
     },
     async switchQuests(query, perPage, id) {

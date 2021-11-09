@@ -24,7 +24,6 @@
     <span v-if="['worker'].includes(userRole)">
       <div>
         <div
-          v-if="[!5].includes(infoDataMode)"
           class="info"
           :class="infoClass"
         >
@@ -84,6 +83,12 @@ export default {
           return this.$t('quests.waitWorker');
         } if ([6].includes(this.infoDataMode)) {
           return this.$t('quests.pendingConsideration');
+        } if ([9].includes(this.infoDataMode)) {
+          return this.$t('quests.questFinished');
+        } if ([8].includes(this.infoDataMode)) {
+          return this.$t('quests.questClosed');
+        } if ([7].includes(this.infoDataMode)) {
+          return this.$t('quests.dispute');
         }
       } if (['worker'].includes(this.userRole)) {
         if ([1].includes(this.infoDataMode)) {
@@ -94,14 +99,12 @@ export default {
           return this.$t('response.title');
         } if ([4].includes(this.infoDataMode)) {
           return this.$t('performed.title');
-        }
-      } if (this.userRole) {
-        if ([7].includes(this.infoDataMode)) {
-          return this.$t('quests.dispute');
-        } if ([8].includes(this.infoDataMode)) {
-          return this.$t('quests.questClosed');
         } if ([9].includes(this.infoDataMode)) {
           return this.$t('quests.questFinished');
+        } if ([8].includes(this.infoDataMode)) {
+          return this.$t('quests.questClosed');
+        } if ([7].includes(this.infoDataMode)) {
+          return this.$t('quests.dispute');
         }
       }
       return '';
