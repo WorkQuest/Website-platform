@@ -267,7 +267,7 @@
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
           <div
-            v-if="[!0].includes(badge.code)"
+            v-if="![0].includes(badge.code)"
             class="card__level_higher"
             :class="cardBadgeLevel"
           >
@@ -306,7 +306,7 @@
           <div>
             <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
             <div
-              v-if="[!0].includes(badge.code)"
+              v-if="![0].includes(badge.code)"
               class="card__level_higher"
               :class="cardBadgeLevel"
             >
@@ -369,7 +369,7 @@
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
           <div
-            v-if="[!0].includes(badge.code)"
+            v-if="![0].includes(badge.code)"
             class="card__level_higher"
             :class="cardBadgeLevel"
           >
@@ -390,6 +390,43 @@
         </div>
       </div>
     </div>
+    <div v-if="[9].includes(infoDataMode)">
+      <div class="worker__title">
+        {{ $t('quests.worker') }}
+      </div>
+      <div class="worker__container_row">
+        <div>
+          <img
+            v-if="assignWorker"
+            class="worker__avatar"
+            :src="userAvatar"
+            alt=""
+          >
+          <img
+            v-if="!assignWorker"
+            class="worker__avatar"
+            :src="require('~/assets/img/app/avatar_empty.png')"
+            alt=""
+          >
+        </div>
+        <div
+          v-if="assignWorker"
+          class="worker__name"
+        >
+          {{ assignWorker.firstName }} {{ assignWorker.lastName }}
+        </div>
+        <div>
+          <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
+          <div
+            v-if="![0].includes(badge.code)"
+            class="card__level_higher"
+            :class="cardBadgeLevel"
+          >
+            {{ cardBadgeLevelText }}
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="btns__container">
       <div class="priority">
         <div
@@ -397,7 +434,7 @@
           class="price__container"
         >
           <span class="price__value">
-            {{ questData.price }}{{ $t('quests.wusd') }}
+            {{ questData.price }} {{ $t('quests.wusd') }}
           </span>
         </div>
         <div
@@ -526,7 +563,7 @@ export default {
         title: this.$t('quests.questInfo'),
         subtitle: this.$t('quests.completedWorkAccepted'),
       });
-      await this.$store.dispatch('quests/getCurrentStepEditQuest', 9);
+      await this.$store.dispatch('quests/setInfoDataMode', 9);
       this.SetLoader(false);
     },
     async rejectCompletedWorkOnQuest() {
@@ -567,7 +604,7 @@ export default {
       };
       const questId = this.questData.id;
       await this.$store.dispatch('quests/startQuest', { questId, data });
-      await this.$store.dispatch('quests/getCurrentStepEditQuest', 4);
+      await this.$store.dispatch('quests/setInfoDataMode', 4);
       this.SetLoader(false);
     },
   },
