@@ -16,6 +16,11 @@
   },
   "btn": {
     "agree": "Agree",
+    "disagree": "Disagree",
+    "completeWorkOnQuest": "Complete work on Quest",
+    "rejectCompletedWorkOnQuest": "Reject completed work on quest",
+    "acceptCompletedWorkOnQuest": "Accept completed work on quest",
+    "closeQuest": "Close quest",
     "goToChat": "Go to chat",
     "dispute": "Open dispute",
     "responded": "Respond send",
@@ -60,7 +65,8 @@
     "required_if": "The {_field_} field is required",
     "required": "The {_field_} field is required",
     "size": "The {_field_} field size must be less than {size}KB",
-    "decimal": "The {_field_} field must contain only decimal values"
+    "decimal": "The {_field_} field must contain only decimal values",
+    "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places"
   },
   "labels": {
     "firstName": "First name",
@@ -141,7 +147,7 @@
     "send": "Send",
     "save": "Save",
     "reset": "Reset",
-    "fromYou": "near you",
+    "fromYou": "from you",
     "details": "View details",
     "cancel": "Cancel",
     "confirm": "Confirm",
@@ -249,10 +255,26 @@
     "title": "Skills"
   },
   "quests": {
+    "wusd": "WUSD",
+    "employer": {
+      "usersNotResponded": "Users have not yet responded to the quest"
+    },
+    "startChat": "Start chat",
+    "invite": "Invite",
+    "decline": "Decline",
     "rating": "Rating",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
+    "questInfo": "Quest info",
+    "questClosed!": "Quest closed!",
+    "closed": "Closed",
+    "completedWorkAccepted": "Completed work on quest accepted!",
+    "completedWorkRejected": "Completed work on quest rejected!",
+    "workOnQuestAccepted": "Work on quest accepted!",
+    "workOnQuestRejected": "Work on quest rejected!",
+    "pleaseWaitEmp": "Work on quest completed! Please, wait your employer!",
     "quests": "Quests",
+    "publicationDate": "Publication date",
     "urgent": "Urgent",
     "specQuests": "Specialized quests",
     "permanentJob": "Permanent job",
@@ -316,6 +338,7 @@
     "requested": "Requested",
     "youInvited": "You Invited",
     "inProgressBy": "In progress by:",
+    "finishedBy": "Finished by:",
     "showAllCases": "Show all cases",
     "portfolio": "Portfolio",
     "searchQuests": "Search quests",
@@ -328,6 +351,23 @@
     "reviewsBig": "Reviews",
     "MyQuests": "My quests",
     "activeQuest": "Active quest",
+    "waitWorker": "Wait worker",
+    "pendingConsideration": "Pending consideration",
+    "dispute": "Dispute",
+    "questClosed": "Quest Closed",
+    "questFinished": "Quest Completed",
+    "dontHaveSpec": "Doesn`t have specializations...",
+    "namelessWorker": "Nameless worker",
+    "nothingAboutMe": "Nothing about me...",
+    "unknownAddress": "Unknown address...",
+    "unknownPhoneNumber": "Unknown phone number...",
+    "unknownEmailAddress": "Unknown email address..",
+    "questActive:": "Quest Active:",
+    "questClosed:": "Quest Closed:",
+    "questDispute:": "Quest Dispute:",
+    "questWaitConfirm:": "Quest wait confirm:",
+    "skillsNotSpecified": "Skills not specified...",
+    "oneTime": "One time",
     "proposal": "Proposal",
     "category": "Select a category",
     "address": "Add address",
@@ -358,7 +398,7 @@
     "performanceTimer": "Active until:",
     "questAmount": "quests",
     "otherQuestsSpec": "Other quests by specialization",
-    "questMaterials": "Additional quest materials",
+    "questMaterials": "Quest materials",
     "searchResults": "Search results",
     "type": "Type of job",
     "time": "Added time",
@@ -2275,8 +2315,13 @@
     "dateTemp": "05.08.2021, 12:00"
   },
   "staking": {
+    "notification": "Notification",
+    "stakeLimitReached": "Stake limit reached",
+    "notEnoughFunds": "There are not enough funds on the balance sheet",
+    "notEnoughClaim": "There are not enough funds to renewal tokens",
+    "_inDev": "In development",
     "mainHeader": "Single staking",
-    "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "stakingSub": "Make your assets work. Stake your assets into DeFi staking or Locked staking to increase staking income.",
     "pools": "Pools",
     "tableHead": {
       "poolAddress": "Pool address",
@@ -2286,46 +2331,47 @@
       "rewardTokenAddress": "Reward Token Address"
     },
     "open": "Open",
-    "tempAddress": "0sjs3892...sd45",
-    "tempStaked": "10 000 WQT",
     "back": "Back",
+    "unstake": "Unstake",
+    "stakeIsEmpty": "Stake balance is empty",
+    "stakeDurationIsNotOver": "Stake duration is not over",
     "claimRewards": "Claim rewards",
+    "cannotClaimYet": "You cannot claim rewards yet",
     "pool": "Pool",
     "stakeTokenAddress": "Stake Token Address",
     "rewardTokenAddress": "Reward Token Address",
     "totalStaked": "Total Staked",
-    "wqtCount": "{n} WQT",
+    "WQTCount": "{n} WQT",
+    "WUSDCount": "{n} WUSD",
+    "ETHCount": "{n} ETH",
+    "BNBCount": "{n} BNB",
+    "hours": "{n} hours",
+    "days": "{n} days",
+    "min": "{n} min",
     "totalDistributed": "Total Distributed",
     "staking": "Staking",
     "stakingCards": {
       "distributionTime": "Distribution Time",
-      "distributionTimeData": "10 min",
       "rewardTotal": "Reward Total",
-      "rewardTotalData": "3.00 WQT",
-      "takePeriod": "Take Period",
-      "takePeriodData": "24 hours",
+      "takePeriod": "Stake Period",
       "claimPeriod": "Claim Period",
-      "claimPeriodData": "24 hours",
-      "duration": "Duration",
-      "durationData": "30 days"
+      "duration": "Duration"
     },
     "userInformation": "User information",
     "userInformationCards": {
       "staked": "Staked",
-      "stakeBalance": "Stake balance",
+      "yourBalance": "Your balance",
       "claimed": "Claimed"
     },
-    "withdrawal": "Withdrawal",
-    "withdrawalCards": {
-      "displayedInTheCurrentPeriod": "Displayed in the current period",
-      "displayedInTheCurrentPeriodData": "10 000 WQT",
-      "withdrawalLimit": "Withdrawal limit",
-      "withdrawalLimitData": "10 000 WQT",
-      "periodUpdate": "Period update",
-      "periodUpdateData": "10 000 WQT"
+    "stakeCards": {
+      "stakeMin": "Stake minimum",
+      "stakeLimit": "Stake limit",
+      "periodUpdate": "Period update"
     },
+    "stakeDays": "Stake days",
+    "stake": "Stake",
     "autoRenewal": "Auto Renewal",
-    "withdraw": "Withdraw"
+    "renewalTokens": "This will renewal {n} tokens"
   },
   "myQuests": {
     "statuses": {
@@ -2371,7 +2417,7 @@
   },
   "wiki": {
     "title": "WorkQuest Wiki",
-    "searchPlaceholder": "Search by Address / Txn Hash / Block / Token",
+    "searchPlaceholder": "Type the word",
     "search": "Search",
     "navigation": {
       "header": {

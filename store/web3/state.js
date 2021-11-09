@@ -1,5 +1,6 @@
 export default () => ({
   isConnected: false,
+  isHandlingMetamaskStatus: false,
   tokens: {
     exampleContract: {},
     exampleWeb3: {},
@@ -14,4 +15,5 @@ export default () => ({
   purseData: {},
   tokensBSC: {},
   crosschainTokensData: {},
+  metamaskStatus: false,
 });

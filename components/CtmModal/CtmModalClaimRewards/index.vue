@@ -14,7 +14,7 @@
           type="number"
           :placeholder="3500"
           :label="$t('modals.amount')"
-          rules="required|decimal|min_value:0.00001"
+          :rules="`required|decimal|decimalPlaces:18${getInputRules()}`"
           :name="$t('modals.amount')"
         >
           <template
@@ -30,6 +30,18 @@
             </base-btn>
           </template>
         </base-field>
+        <div
+          v-if="options.type === 1 && options.stakingType === 'WQT' && !options.alreadyStaked"
+          class="content__days"
+        >
+          {{ $t('staking.stakeDays') }}
+          <base-dd
+            v-model="daysValue"
+            class="content__dd"
+            :placeholder="30"
+            :items="stakeDays"
+          />
+        </div>
         <div class="content__container">
           <base-btn
             :mode="'outline'"
@@ -52,6 +64,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -62,6 +75,8 @@ export default {
       amount: '',
       balance: 10,
       currency: 'WUSD',
+      daysValue: 0,
+      stakeDays: [30, 60, 90],
     };
   },
   computed: {
@@ -71,34 +86,60 @@ export default {
       statusBusy: 'web3/getStatusBusy',
       userBalance: 'web3/getUserBalance',
       userStake: 'web3/getUserStake',
+      isConnected: 'web3/isConnected',
     }),
+  },
+  mounted() {
+    this.balance = this.options.balance;
   },
   methods: {
     hide() {
       this.CloseModal();
     },
-    maxBalance() {
-      this.amount = this.options.type === 1 ? this.userBalance : this.userStake;
+    getInputRules() {
+      const min = this.options.minStake ? `|min_value:${this.options.minStake}` : '|min_value:0.00001';
+      let max = '';
+      if (this.options.type === 1) max = this.options.maxStake ? `|max_value:${(new BigNumber(this.options.maxStake).minus(this.options.staked)).toString()}` : '';
+      else max = this.options.staked ? `|max_value:${this.options.staked}` : '';
+      return min + max;
     },
-    async tokensDataUpdate() {
-      const tokensData = await this.$store.dispatch('web3/getTokensData', { stakeDecimal: this.accountData.decimals.stakeDecimal, rewardDecimal: this.accountData.decimals.rewardDecimal });
-      this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
-      this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
+    maxBalance() {
+      if (this.options.stakingType !== 'MINING') {
+        if (this.options.type === 1) {
+          const max = new BigNumber(this.options.maxStake).minus(this.options.staked).toString();
+          this.amount = new BigNumber(this.options.balance).isGreaterThanOrEqualTo(max)
+            ? max : this.options.balance;
+        } else {
+          this.amount = this.options.staked;
+        }
+      } else {
+        this.amount = this.options.type === 1 ? this.userBalance : this.userStake;
+      }
     },
     checkAmount() {
-      const amount = this.options.type === 1 ? this.userBalance : this.userStake;
-      return +amount >= +this.amount;
+      if (this.options.stakingType !== 'MINING') {
+        return this.options.type === 1
+          ? new BigNumber(this.options.balance).isGreaterThanOrEqualTo(this.amount)
+          : new BigNumber(this.amount).isLessThanOrEqualTo(this.options.staked);
+      }
+      const amount = this.options.type === 1
+        ? this.userBalance
+        : this.userStake;
+      return new BigNumber(amount).isGreaterThanOrEqualTo(this.amount);
     },
     async staking() {
       this.SetLoader(true);
       await this.checkMetamaskStatus();
       if (this.checkAmount()) {
+        const { decimals, stakingType, updateMethod } = this.options;
         this.hide();
         await this.$store.dispatch('web3/stake', {
-          decimals: this.accountData.decimals.stakeDecimal,
+          decimals,
           amount: this.amount,
+          stakingType,
+          duration: this.stakeDays[this.daysValue],
         });
-        await this.tokensDataUpdate();
+        if (updateMethod) await updateMethod();
       } else {
         this.hide();
         this.ShowModal({
@@ -115,12 +156,14 @@ export default {
       this.SetLoader(true);
       await this.checkMetamaskStatus();
       if (this.checkAmount()) {
+        const { updateMethod, stakingType, decimals } = this.options;
         this.hide();
         await this.$store.dispatch('web3/unstake', {
-          decimals: this.accountData?.decimals?.stakeDecimal,
+          decimals,
           amount: this.amount,
+          stakingType,
         });
-        await this.tokensDataUpdate();
+        if (updateMethod) await updateMethod();
       } else {
         this.hide();
         this.ShowModal({
@@ -151,7 +194,11 @@ export default {
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');
-        await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+        if (this.options.stakingType === 'MINING') {
+          await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+        } else {
+          await this.$store.dispatch('web3/goToChain', { chain: 'ETH' });
+        }
         await this.connectToMetamask();
       }
     },
@@ -188,6 +235,10 @@ export default {
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 20px;
     margin-top: 25px;
+  }
+  &__dd {
+    border-radius: 6px;
+    border: 1px solid $black0;
   }
 }
 </style>

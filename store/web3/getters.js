@@ -1,5 +1,6 @@
 export default {
   isConnected: (state) => state.isConnected,
+  isHandlingMetamaskStatus: (state) => state.isHandlingMetamaskStatus,
   getTokens: (state) => state.tokens || '',
   getAccount: (state) => state.account,
   getUserBalance: (state) => state.tokensAmount?.balanceTokenAmount || '',
@@ -12,4 +13,5 @@ export default {
   getPurseData: (state) => state.purseData,
   getBSCTokensData: (state) => state.tokensBSC,
   getCrosschainTokensData: (state) => state.crosschainTokensData,
+  getMetaMaskStatus: (state) => state.metamaskStatus,
 };

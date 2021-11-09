@@ -208,9 +208,9 @@ export default {
     display: none;
   }
 }
-.gmap{
+.gmap {
   &__top {
-    height:435px;
+    height: 435px;
   }
   &__search {
     position: relative;

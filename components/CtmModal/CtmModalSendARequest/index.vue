@@ -22,6 +22,12 @@
                   :placeholder="$t('modals.hello')"
                 />
               </div>
+              <dropzone
+                id="uploader"
+                ref="el"
+                :options="optionsModal"
+                :include-styling="true"
+              />
             </div>
             <div class="btn__container">
               <div class="btn__wrapper">
@@ -52,14 +58,30 @@
 <script>
 /* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
+import Dropzone from 'nuxt-dropzone';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalSendARequest',
-  components: {},
+  components: {
+    Dropzone,
+  },
   data() {
     return {
       text: '',
+      optionsModal: {
+        url: process.env.BASE_URL,
+        addRemoveLinks: true,
+        dictRemoveFile: '<span class="icon-close_big"></span>',
+        dictCancelUpload: '<span class="icon-close_big"></span>',
+        dictCancelUploadConfirmation: '',
+        maxFiles: '3',
+        dictDefaultMessage:
+          '<div class="uploader__message_container">'
+          + '<div class="uploader__message">Upload a images or videos</div><'
+          + "span class='icon-add_to_queue'></span>"
+          + '</div>',
+      },
     };
   },
   computed: {
@@ -78,6 +100,7 @@ export default {
       };
       try {
         await this.$store.dispatch('quests/respondOnQuest', { data, questId });
+        await this.$store.dispatch('quests/setInfoDataMode', 3);
       } catch (e) {
         console.log(e);
       }

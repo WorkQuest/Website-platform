@@ -3,6 +3,164 @@
     class="quests"
   >
     <div
+      v-if="[1].includes(pageMode)"
+      class="quests__card card"
+    >
+      <div
+        v-for="(item, i) in object"
+        :key="i"
+        class="card__content"
+      >
+        <div
+          class="card__block block"
+        >
+          <div
+            class="block__left"
+          >
+            <img
+              src="~/assets/img/temp/fake-card.svg"
+              class="block__image"
+              alt=""
+            >
+          </div>
+          <div class="block__right">
+            <div class="block__head">
+              <div class="block__title">
+                <div
+                  class="block__avatar avatar"
+                >
+                  <img
+                    class="avatar__image"
+                    :src="item.quest.user.avatar ? item.quest.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                    :alt="item.quest.user.firstName"
+                  >
+                </div>
+                <div class="block__text block__text_title">
+                  {{ `${item.quest.user.firstName} ${item.quest.user.lastName}` }}
+                  <span
+                    v-if="userCompany"
+                    class="block__text block__text_grey"
+                  >{{ `${$t('quests.fromSmall')} ${item.quest.user.additionalInfo.company}` }}</span>
+                </div>
+              </div>
+              <div
+                class="block__icon block__icon_fav star"
+                @click="setStar(item.quest.id)"
+              >
+                <img
+                  class="star__hover"
+                  src="~assets/img/ui/star_hover.svg"
+                  alt=""
+                >
+                <img
+                  :class="[
+                    {'star__default': !item.star},
+                    {'star__checked': item.star}
+                  ]"
+                  :src="!item.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
+                  alt=""
+                >
+              </div>
+            </div>
+            <div
+              v-if="item.quest.assignedWorkerId"
+              class="block__progress progress"
+            >
+              <div
+                class="progress__title"
+              >
+                {{ progressQuestText(item.quest.status) }}
+              </div>
+              <div class="progress__container container">
+                <div class="container__user user">
+                  <img
+                    class="user__avatar"
+                    :src="item.quest.assignedWorker.avatar ? item.quest.assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                    :alt="`${item.quest.assignedWorker.firstName} ${item.quest.assignedWorker.lastName}`"
+                  >
+                  <div class="user__name">
+                    {{ item.quest.assignedWorker.firstName }} {{ item.quest.assignedWorker.lastName }}
+                  </div>
+                </div>
+                <div class="container__status status">
+                  <!--                  <span-->
+                  <!--                    class="status__level"-->
+                  <!--                    :class="getStatusCard(item.level)"-->
+                  <!--                  >-->
+                  <!--                    {{ $t(`levels.${item.level}`) }}-->
+                  <!--                  </span>-->
+                </div>
+              </div>
+            </div>
+            <div class="block__locate">
+              <span
+                class="icon-location"
+              />
+              <span class="block__text block__text_locate">
+                {{ showDistance(item.quest.location.latitude, item.quest.location.longitude) }}
+                {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
+              </span>
+            </div>
+            <div class="block__text block__text_blue">
+              {{ cropTxt(item.quest.title) }}
+            </div>
+            <div class="block__text block__text_desc">
+              {{ cropTxt(item.quest.description) }}
+            </div>
+            <div class="block__actions">
+              <div
+                v-if="isHideStatus(item.quest.type)"
+                class="block__status"
+              >
+                <div
+                  class="block__priority"
+                  :class="getPriorityClass(item.quest.priority)"
+                >
+                  {{ getPriority(item.quest.priority) }}
+                </div>
+                <div class="block__amount block__amount_green">
+                  {{ `${item.quest.price}  ${currency}` }}
+                </div>
+              </div>
+              <div
+                v-else
+                class="block__amount block__amount_gray"
+              >
+                {{ `${item.quest.price}  ${currency}` }}
+              </div>
+              <div class="block__details">
+                <base-btn
+                  v-if="item.quest.type !== 3"
+                  mode="borderless-right"
+                  @click="showDetails(item.quest.id)"
+                >
+                  {{ $t('meta.details') }}
+                  <template v-slot:right>
+                    <span class="icon-short_right" />
+                  </template>
+                </base-btn>
+                <div
+                  v-else
+                  class="block__rating"
+                >
+                  <div class="block__rating block__rating_star">
+                    <button
+                      @click="showReviewModal(item.quest.user.ratingStatistic)"
+                    >
+                      <b-form-rating
+                        v-model="item.quest.user.ratingStatistic"
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      v-if="[2,3,4].includes(pageMode)"
       class="quests__card card"
     >
       <div
@@ -48,9 +206,15 @@
                   >{{ `${$t('quests.fromSmall')} ${item.user.additionalInfo.company}` }}</span>
                 </div>
               </div>
+              <quest-dd
+                v-if="[0,4].includes(item.status)"
+                class="block__icon block__icon_fav"
+                mode="vertical"
+              />
               <div
+                v-if="[2,3,6].includes(item.status)"
                 class="block__icon block__icon_fav star"
-                @click="actionFavorite(item.id)"
+                @click="setStar(item)"
               >
                 <img
                   class="star__hover"
@@ -58,15 +222,11 @@
                   alt=""
                 >
                 <img
-                  v-if="item.star === null"
-                  class="star__default"
-                  src="~assets/img/ui/star_simple.svg"
-                  alt=""
-                >
-                <img
-                  v-else
-                  class="star__checked"
-                  src="~assets/img/ui/star_checked.svg"
+                  :class="[
+                    {'star__default': !item.star},
+                    {'star__checked': item.star}
+                  ]"
+                  :src="!item.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
                   alt=""
                 >
               </div>
@@ -75,8 +235,10 @@
               v-if="item.assignedWorkerId"
               class="block__progress progress"
             >
-              <div class="progress__title">
-                {{ $t('quests.inProgressBy') }}
+              <div
+                class="progress__title"
+              >
+                {{ progressQuestText(item.status) }}
               </div>
               <div class="progress__container container">
                 <div class="container__user user">
@@ -89,14 +251,14 @@
                     {{ item.assignedWorker.firstName }} {{ item.assignedWorker.lastName }}
                   </div>
                 </div>
-                <div class="container__status status">
-                  <!--                  <span-->
-                  <!--                    class="status__level"-->
-                  <!--                    :class="getStatusCard(item.level)"-->
-                  <!--                  >-->
-                  <!--                    {{ $t(`levels.${item.level}`) }}-->
-                  <!--                  </span>-->
-                </div>
+                <!--                <div class="container__status status">-->
+                <!--                  <span-->
+                <!--                    class="status__level"-->
+                <!--                    :class="getStatusCard(item.level.code)"-->
+                <!--                  >-->
+                <!--                    {{ $t(`levels.${item.level.code}`) }}-->
+                <!--                  </span>-->
+                <!--                </div>-->
               </div>
             </div>
             <div class="block__locate">
@@ -109,10 +271,14 @@
               </span>
             </div>
             <div class="block__text block__text_blue">
-              {{ item.title }}
+              {{ cropTxt(item.title) }}
             </div>
             <div class="block__text block__text_desc">
-              {{ item.description }}
+              {{ cropTxt(item.description) }}
+            </div>
+            <div class="block__text block__publication">
+              <span class="block__publication_bold">{{ $t('quests.publicationDate') }}</span>
+              <span class="block__publication_thin">{{ $moment(item.createdAt).format('Do MMMM YYYY, hh:mm a') }}</span>
             </div>
             <div class="block__actions">
               <div
@@ -191,12 +357,13 @@ export default {
       default: 0,
     },
     object: {
-      type: Object,
+      type: [Object, Array],
       default: null,
     },
   },
   data() {
     return {
+      questResponses: [],
       isFavorite: false,
       localUserData: {},
       currency: 'WUSD',
@@ -209,6 +376,25 @@ export default {
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
     }),
+    pageMode() {
+      if (this.userRole === 'worker') {
+        if (this.$route.path === '/my') {
+          return 1;
+        }
+        if (this.$route.path !== '/my') {
+          return 2;
+        }
+      }
+      if (this.userRole === 'employer') {
+        if (this.$route.path === '/my') {
+          return 3;
+        }
+        if (this.$route.path !== '/my') {
+          return 4;
+        }
+      }
+      return 0;
+    },
     userCompany() {
       return this.userData.additionalInfo?.company || null;
     },
@@ -221,6 +407,41 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async setStar(item) {
+      if (!item.star) {
+        await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      } if (item.star) {
+        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+      }
+    },
+    cropTxt(str) {
+      const maxLength = 120;
+      if (str.length > maxLength) str = `${str.slice(0, maxLength)}...`;
+      return str;
+    },
+    progressQuestText(status) {
+      if (this.userRole) {
+        if ([1].includes(status)) {
+          return this.$t('quests.questActive:');
+        } if ([2].includes(status)) {
+          return this.$t('quests.questClosed:');
+        } if ([3].includes(status)) {
+          return this.$t('questDispute:');
+        } if ([4].includes(status)) {
+          return this.$t('quests.inProgressBy');
+        } if ([5].includes(status)) {
+          return this.$t('questWaitConfirm:');
+        } if ([6].includes(status)) {
+          return this.$t('quests.finishedBy');
+        }
+      }
+      return '';
+    },
+    async getResponsesToQuestForAuthUser() {
+      if (this.userRole === 'worker') {
+        this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
+      }
+    },
     showDistance(questLat, questLng) {
       return this.getDistanceFromLatLonInKm(
         questLat,
@@ -228,9 +449,6 @@ export default {
         this.userLat,
         this.userLng,
       );
-    },
-    async actionFavorite(id) {
-      await this.$store.dispatch('quests/setStarOnQuest', id);
     },
     cardsLevels(idx) {
       const { cards } = this;
@@ -265,25 +483,27 @@ export default {
     },
     getStatusCard(index) {
       const status = {
-        2: this.$t('quests.requested'),
-        3: this.$t('quests.performed'),
-        4: this.$t('quests.active'),
-        5: this.$t('quests.invited'),
+        1: this.$t('quests.active'),
+        6: this.$t('quests.performed'),
+        5: this.$t('quests.requested'),
+        4: this.$t('quests.invited'),
+        2: this.$t('quests.closed'),
       };
       return status[index] || '';
     },
     getStatusClass(index) {
       const status = {
-        2: 'quests__cards__state_req',
-        3: 'quests__cards__state_per',
-        4: 'quests__cards__state_act',
-        5: 'quests__cards__state_inv',
+        1: 'quests__cards__state_act',
+        6: 'quests__cards__state_per',
+        5: 'quests__cards__state_req',
+        4: 'quests__cards__state_inv',
+        2: 'quests__cards__state_clo',
       };
       return status[index] || '';
     },
     getPriority(index) {
       const priority = {
-        0: this.$t('priority.all'),
+        0: '',
         1: this.$t('priority.low'),
         2: this.$t('priority.normal'),
         3: this.$t('priority.urgent'),
@@ -292,7 +512,7 @@ export default {
     },
     getPriorityClass(index) {
       const priority = {
-        0: 'block__priority_all',
+        0: '',
         1: 'block__priority_low',
         2: 'block__priority_normal',
         3: 'block__priority_urgent',
@@ -317,6 +537,7 @@ export default {
 }
 .progress {
   &__title {
+    margin: 10px 0 7px 10px;
     font-weight: 400;
     font-size: 12px;
     color: $black500;
@@ -327,7 +548,7 @@ export default {
     align-items: center;
     grid-template-columns: auto 3fr;
     grid-gap: 10px;
-    margin: 10px 0 4px 0;
+    margin: 10px 0 0 0;
     .container {
       &__user {
         display: flex;
@@ -432,6 +653,21 @@ export default {
       margin-bottom: 0;
     }
   }
+  &__cards {
+    &__state {
+      &_clo {
+        background: $red;
+      }
+      &_req {}
+      &_per {
+        background: $blue;
+      }
+      &_act {
+        background: $green;
+      }
+      &_inv {}
+    }
+  }
   &__card {
     margin: 20px 0 0 0;
     border: 0 solid;
@@ -459,6 +695,20 @@ export default {
   display: grid;
   grid-template-columns: 240px 1fr;
   min-height: 100%;
+  &__publication {
+    &_bold {
+      @include text-simple;
+      font-size: 12px;
+      font-weight: 500;
+      color: $black600;
+    }
+    &_thin {
+      @include text-simple;
+      font-size: 12px;
+      font-weight: 400;
+      color: $black500;
+    }
+  }
   &__left {
     @extend .styles__full;
     position: relative;
@@ -496,7 +746,7 @@ export default {
     flex-direction: column;
     height: auto;
     width: 100%;
-    padding:10px;
+    padding: 10px;
   }
   &__locate {
     display: grid;

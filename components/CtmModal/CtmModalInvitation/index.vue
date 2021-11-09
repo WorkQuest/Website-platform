@@ -12,11 +12,13 @@
                 <img
                   alt=""
                   class="ctm-modal__img"
-                  src="~/assets/img/temp/avatar.jpg"
+                  :src="options.currentWorker.avatar ?
+                    options.currentWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
                 >
               </div>
               <div>
-                {{ user.name }}
+                {{ options.currentWorker.firstName ? options.currentWorker.firstName : "Nameless worker" }}
+                {{ options.currentWorker.lastName ? options.currentWorker.lastName : "" }}
               </div>
               <div>
                 <div
@@ -37,7 +39,8 @@
             <base-dd
               v-model="questIndex"
               type="gray"
-              :items="quests"
+              data-type="object"
+              :items="questFiltered"
               :label="$t('modals.chooseQuest')"
             />
           </div>
@@ -55,7 +58,7 @@
           <div class="btn__wrapper">
             <base-btn
               class="message__action"
-              @click="showTransactionSendModal()"
+              @click="inviteOnQuest(questIndex)"
             >
               {{ $t('meta.send') }}
             </base-btn>
@@ -83,17 +86,10 @@ export default {
   name: 'ModalInvitation',
   data() {
     return {
+      questFiltered: [],
       questIndex: 0,
-      quests: [
-        'Quest one',
-        'Quest two',
-        'Quest three',
-      ],
       message_input: '',
       chooseQuest_input: '',
-      user: {
-        name: 'Rosalia Vance',
-      },
       card: {
         level: {
           title: 'HIGHER LEVEL',
@@ -105,6 +101,8 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      questList: 'quests/getQuestListForInvitation',
+      userData: 'user/getUserData',
     }),
     cardLevelClass() {
       const { card } = this;
@@ -114,7 +112,30 @@ export default {
       ];
     },
   },
+  async beforeMount() {
+    await this.getQuestList();
+    await this.questFilter();
+  },
   methods: {
+    async getQuestList() {
+      await this.$store.dispatch('quests/questListForInvitation', this.userData.id);
+    },
+    async questFilter() {
+      this.questFiltered = this.questList.quests.filter((quest) => quest.status === 0);
+    },
+    async inviteOnQuest(questIndex) {
+      const questId = this.questList.quests[questIndex].id || '';
+      const payload = {
+        invitedUserId: this.options.currentWorker.id || '',
+        message: this.message_input || '',
+      };
+      try {
+        await this.$store.dispatch('quests/inviteOnQuest', { questId, payload });
+        this.showTransactionSendModal();
+      } catch (e) {
+        console.log(e);
+      }
+    },
     cardsLevels() {
       const { card, disabled } = this;
       return [
