@@ -84,9 +84,6 @@
             </div>
           </div>
         </div>
-        <div @click="startPensionProgram">
-          start pension (test)
-        </div>
         <div
           v-if="FAQs.length"
           class="info-block"
@@ -274,9 +271,6 @@ export default {
     },
     handleClickFAQ(FAQ) {
       FAQ.isOpen = !FAQ.isOpen;
-    },
-    async startPensionProgram() {
-      await this.$store.dispatch('web3/startPensionProgram', { fee: 5, firstDeposit: 0.001 });
     },
   },
 };

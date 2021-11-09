@@ -83,7 +83,7 @@ export default {
       if (this.isConnected) {
         this.hide();
         this.SetLoader(true);
-        const ok = await this.$store.dispatch('web3/startPensionProgram', {
+        const ok = await this.$store.dispatch('web3/pensionStartProgram', {
           fee: this.depositPercentFromAQuest,
           firstDeposit: this.firstDepositAmount,
         });

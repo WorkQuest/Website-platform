@@ -34,7 +34,7 @@
           <base-btn
             class="buttons__button"
             :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(showPercentIsChanged)"
+            @click="handleSubmit(updateFee)"
           >
             {{ $t('meta.submit') }}
           </base-btn>
@@ -63,6 +63,15 @@ export default {
   methods: {
     hide() {
       this.CloseModal();
+    },
+    async updateFee() {
+      this.hide();
+      this.SetLoader(true);
+      const ok = await this.$store.dispatch('web3/pensionUpdateFee', this.amount);
+      if (ok) {
+        this.showPercentIsChanged();
+      }
+      this.SetLoader(false);
     },
     showPercentIsChanged() {
       this.ShowModal({

@@ -30,7 +30,7 @@
           <base-btn
             class="buttons__button"
             :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(showPensionIsRegisteredModal)"
+            @click="handleSubmit(deposit)"
           >
             {{ $t('meta.submit') }}
           </base-btn>
@@ -59,6 +59,15 @@ export default {
   methods: {
     hide() {
       this.CloseModal();
+    },
+    async deposit() {
+      this.hide();
+      this.SetLoader(true);
+      const ok = await this.$store.dispatch('web3/pensionContribute', amount);
+      if (ok) {
+        this.showPensionIsRegisteredModal();
+      }
+      this.SetLoader(false);
     },
     showPensionIsRegisteredModal() {
       this.ShowModal({

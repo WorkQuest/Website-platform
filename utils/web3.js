@@ -593,17 +593,25 @@ export const getPensionWallet = async () => {
   }
 };
 
-export const startPensionProgram = async (payload) => {
+export const pensionContribute = async (_amount) => {
   try {
-    const { firstDeposit, fee } = payload;
-    console.log('start pension:', payload);
     const _abi = abi.WQPensionFund;
     const _pensionAddress = process.env.PENSION_FUND_BSC;
     const contractInst = await createInstance(_abi, _pensionAddress);
-    await contractInst.updateFee(new BigNumber(fee).shiftedBy(18).toString());
-    if (firstDeposit) {
-      await contractInst.contribute(account.address, { value: new BigNumber(firstDeposit).shiftedBy(18).toString() });
-    }
+    await contractInst.contribute(account.address, { value: new BigNumber(_amount).shiftedBy(18).toString() });
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
+
+export const pensionUpdateFee = async (_fee) => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND_BSC;
+    const contractInst = await createInstance(_abi, _pensionAddress);
+    await contractInst.updateFee(new BigNumber(_fee).shiftedBy(18).toString());
     return true;
   } catch (e) {
     console.log(e);

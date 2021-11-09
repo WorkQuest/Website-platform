@@ -29,7 +29,7 @@
                 {{ $t('pension.pensionBalance') }}
               </div>
               <div class="info-block__tokens">
-                {{ getPensionBalance() }}
+                {{ pensionBalance }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -272,14 +272,14 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
-import { Chains } from '~/utils/enums';
+import { Chains, NativeTokenSymbolByChainId } from '~/utils/enums';
 
 export default {
   data() {
     return {
       isFirstLoading: true,
       wallet: null,
-      currentChain: null,
+      currentChainName: null,
       isExpired: false,
       isDeadline: false,
       items: [
@@ -445,6 +445,10 @@ export default {
       const years = this.$t('pension.years', { count: yy });
       return `${years} ${dd ? this.$t('pension.days', { count: dd }) : ''}`;
     },
+    pensionBalance() {
+      const balance = this.wallet?.amount || 0;
+      return this.$t(`pension.${this.currentChainName || 'ETH'}Count`, { count: balance });
+    },
   },
   watch: {
     async isConnected(newValue) {
@@ -460,7 +464,6 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.getWallet();
-    this.currentChain = this.$store.dispatch('web3/getAccount').netId;
     this.SetLoader(false);
     this.isFirstLoading = false;
   },
@@ -468,29 +471,14 @@ export default {
     getFeePercent() {
       return this.wallet?.fee || '';
     },
-    getPensionBalance() {
-      const balance = this.wallet?.balance || 0;
-      let chain = '';
-      switch (this.currentChain) {
-
-        default:
-          chain = 'WUSD'
-        break;
-      }
-      const ethChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
-      if (ethChain) {
-        chain = 'ETH';
-      } else {
-        chain = 'WUSD';
-      }
-      return this.$t(`pension.${chain}Count`, { count: balance });
-    },
     async getWallet() {
       await this.$store.dispatch('web3/checkConnectionStatus', Chains.ETHEREUM);
       this.wallet = await this.$store.dispatch('web3/getPensionWallet');
       if (this.wallet.createdAt === '0') {
         await this.$router.push('/pension');
       }
+      const ac = await this.$store.dispatch('web3/getAccount');
+      this.currentChainName = NativeTokenSymbolByChainId[ac.netId];
     },
     showWithdrawModal() {
       this.ShowModal({

@@ -35,10 +35,10 @@ import {
   getChainIdByChain,
   getPensionDefaultData,
   getPensionWallet,
-  startPensionProgram,
+  pensionUpdateFee, pensionContribute,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
-import { Chains, StakingTypes } from '~/utils/enums';
+import { StakingTypes } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 BigNumber.set({ ROUNDING_MODE: BigNumber.ROUND_DOWN });
@@ -396,8 +396,7 @@ export default {
       const rewardTotal = new BigNumber(stakingInfoEvent.rewardTotal).shiftedBy(-18).toNumber();
       const priceLP = reserveUSD / totalSupply;
       const APY = ((rewardTotal * 12) * priceWQT) / (totalStaked * priceLP);
-      const profit = ((payload.stakedAmount * priceLP) * APY) / priceWQT;
-      return profit;
+      return ((payload.stakedAmount * priceLP) * APY) / priceWQT; // profit
     } catch (err) {
       return err;
     }
@@ -419,7 +418,18 @@ export default {
   async getPensionWallet() {
     return await getPensionWallet();
   },
-  async startPensionProgram({ commit }, payload) {
-    return await startPensionProgram(payload);
+  async pensionUpdateFee({ commit }, fee) {
+    return await pensionUpdateFee(fee);
+  },
+  async pensionContribute({ commit }, amount) {
+    return await pensionContribute(amount);
+  },
+  async pensionStartProgram({ commit }, payload) {
+    const { firstDeposit, fee } = payload;
+    const feeOk = await pensionUpdateFee(fee);
+    let depositOk = false;
+    if (firstDeposit) depositOk = await pensionContribute(firstDeposit);
+    else return feeOk;
+    return depositOk && feeOk;
   },
 };

@@ -1929,7 +1929,7 @@
     "years": "{count} years",
     "days": "{count} days",
     "WUSDCount": "{count} WUSD",
-    "ETHCount": "{count} WUSD",
+    "ETHCount": "{count} ETH",
     "plusPercents": "+ {count}%",
     "faq1": {
       "question": "How do you qualify for a pension?",
