@@ -413,7 +413,7 @@ export default {
       }
       let renewalValue;
       if (this.userInfo.claim >= this.poolData._maxStake) {
-        renewalValue = new BigNumber(this.poolData._maxStake - this.userInfo._staked).toString();
+        renewalValue = new BigNumber(this.poolData._maxStake).minus(this.userInfo._staked).toString();
       } else {
         renewalValue = this.userInfo.claim;
       }
