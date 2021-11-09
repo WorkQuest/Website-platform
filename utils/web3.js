@@ -431,9 +431,9 @@ export const authRenewal = async (_stakingAddress, _stakingAbi) => {
     return success();
   } catch (e) {
     if (e.message.toString().includes('You cannot claim tokens yet')) {
-      showToast('Stacking error', 'You cannot stake tokens yet', 'danger');
-    } else if (e.message.toString().includes('You cannot stake tokens yet')) {
       showToast('Stacking error', 'You cannot claim tokens yet', 'danger');
+    } else if (e.message.toString().includes('You cannot stake tokens yet')) {
+      showToast('Stacking error', 'You cannot stake tokens yet', 'danger');
     } else {
       showToast('Auto renewal error', `${e.message}`, 'danger');
     }
