@@ -1,7 +1,7 @@
 <template>
   <div
     v-click-outside="hideDd"
-    class="quest"
+    class="quest quest__menu"
   >
     <button
       class="quest__button quest__button_menu"
@@ -9,67 +9,68 @@
     >
       <span
         :class="[
-          { 'icon-more_horizontal': userRole === 'employer' },
+          { 'icon-more_horizontal': userRole === 'employer' && mode === null },
+          { 'icon-more_vertical': userRole === 'employer' && mode === 'vertical' },
           { 'icon-share_outline': userRole === 'worker' },
         ]"
       />
-      <transition name="fade">
-        <div
-          v-if="isShowQuestMenu"
-          class="quest menu"
-        >
-          <div class="menu menu__items">
-            <span
-              class="menu__container"
+    </button>
+    <transition name="fade">
+      <div
+        v-if="isShowQuestMenu"
+        class="quest menu"
+      >
+        <div class="menu menu__items">
+          <span
+            class="menu__container"
+          >
+            <div
+              v-if="['employer'].includes(userRole)"
+              class="menu__item"
+              @click="toRaisingViews()"
             >
               <div
-                v-if="['employer'].includes(userRole)"
-                class="menu__item"
-                @click="toRaisingViews()"
+                class="menu__text"
               >
-                <div
-                  class="menu__text"
-                >
-                  {{ $t('modals.raiseViews') }}
-                </div>
+                {{ $t('modals.raiseViews') }}
               </div>
+            </div>
+            <div
+              class="menu__item"
+              @click="shareModal()"
+            >
               <div
-                class="menu__item"
-                @click="shareModal()"
+                class="menu__text"
               >
-                <div
-                  class="menu__text"
-                >
-                  {{ $t('modals.share') }}
-                </div>
+                {{ $t('modals.share') }}
               </div>
+            </div>
+            <div
+              v-if="['employer'].includes(userRole)"
+              class="menu__item"
+            >
               <div
-                v-if="['employer'].includes(userRole)"
-                class="menu__item"
+                class="menu__text"
+                @click="toEditQuest()"
               >
-                <div
-                  class="menu__text"
-                  @click="toEditQuest()"
-                >
-                  {{ $t('modals.edit') }}
-                </div>
+                {{ $t('modals.edit') }}
               </div>
+            </div>
+            <div
+              v-if="['employer'].includes(userRole)"
+              class="menu__item"
+              @click="showAreYouSureDeleteQuestModal()"
+            >
               <div
-                v-if="['employer'].includes(userRole)"
-                class="menu__item"
-                @click="showAreYouSureDeleteQuestModal()"
+                class="menu__text"
               >
-                <div
-                  class="menu__text"
-                >
-                  {{ $t('modals.delete') }}
-                </div>
+                {{ $t('modals.delete') }}
               </div>
-            </span>
-          </div>
+            </div>
+          </span>
         </div>
-      </transition>
-    </button>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -82,6 +83,12 @@ export default {
   name: 'ChatMenu',
   directives: {
     ClickOutside,
+  },
+  props: {
+    mode: {
+      type: [String],
+      default: null,
+    },
   },
   data() {
     return {
@@ -141,6 +148,7 @@ export default {
 
 .quest {
   &__button {
+    position: relative;
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: normal;
@@ -158,6 +166,8 @@ export default {
       color: $black800;
     }
     &_menu {
+      display: flex;
+      justify-self: flex-end;
       width: 30px;
       height: 30px;
     }
@@ -166,13 +176,12 @@ export default {
 
 .menu {
   position: absolute;
-  top: calc(70px + 5px);
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
   min-width: 120px;
   z-index: 10000000;
-  margin: 0 73px 0 0;
+  right: 2px;
   &__container {
     display: grid;
     grid-template-columns: 1fr;

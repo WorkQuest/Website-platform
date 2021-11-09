@@ -166,7 +166,6 @@ export default {
     try {
       const response = await this.$axios.$get(`/v1/quest/${questId}/responses`);
       commit('setResponses', response.result);
-      console.log(response.result);
       return response.result;
     } catch (e) {
       return console.log(e);
@@ -180,10 +179,6 @@ export default {
       return console.log(e);
     }
   },
-
-  // Testing
-  // employer
-
   async respondOnQuest({ commit }, { data, questId }) {
     try {
       const response = await this.$axios.$post(`/v1/quest/${questId}/response`, data);
@@ -193,8 +188,6 @@ export default {
       return console.log(e);
     }
   },
-
-  // worker
   async setStarOnQuest({ commit }, id) {
     try {
       const response = await this.$axios.$post(`/v1/quest/${id}/star`);
@@ -230,6 +223,7 @@ export default {
     }
   },
 
+  // TODO: Добавить запросы
   async acceptQuestInvitation({ commit }, responseId) {
     try {
       const response = await this.$axios.$post(`/v1/quest/response/${responseId}/accept`);

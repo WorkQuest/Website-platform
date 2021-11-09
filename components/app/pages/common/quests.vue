@@ -206,7 +206,13 @@
                   >{{ `${$t('quests.fromSmall')} ${item.user.additionalInfo.company}` }}</span>
                 </div>
               </div>
+              <quest-dd
+                v-if="[0,4].includes(item.status)"
+                class="block__icon block__icon_fav"
+                mode="vertical"
+              />
               <div
+                v-if="[2,3,6].includes(item.status)"
                 class="block__icon block__icon_fav star"
                 @click="setStar(item)"
               >

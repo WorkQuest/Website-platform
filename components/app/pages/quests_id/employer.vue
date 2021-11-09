@@ -393,7 +393,7 @@
     <div class="btns__container">
       <div class="priority">
         <div
-          v-if="[!4,!8].includes(infoDataMode)"
+          v-if="![4,8].includes(infoDataMode)"
           class="price__container"
         >
           <span class="price__value">
@@ -527,7 +527,6 @@ export default {
         subtitle: this.$t('quests.completedWorkAccepted'),
       });
       await this.$store.dispatch('quests/getCurrentStepEditQuest', 9);
-      // Проверить
       this.SetLoader(false);
     },
     async rejectCompletedWorkOnQuest() {
@@ -540,7 +539,6 @@ export default {
         subtitle: this.$t('quests.completedWorkRejected'),
       });
       await this.$store.dispatch('quests/setInfoDataMode', 9);
-      // Проверить
       this.SetLoader(false);
     },
     async initData() {

@@ -466,6 +466,7 @@ export default {
   &__container {
     @extend .price;
     justify-content: flex-end;
+    text-align: center;
   }
   &__wrapper {
     @extend .price;
@@ -489,7 +490,7 @@ export default {
     grid-gap: 20px;
     margin: 0 0 20px 0;
   }
-  &__item{
+  &__item {
     @extend .img;
     border-radius: 6px;
     max-width: 280px;

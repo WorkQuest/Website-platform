@@ -75,7 +75,7 @@ export default {
   },
   props: {
     i: {
-      type: [String, null],
+      type: [Number, null],
       default: null,
     },
     responseId: {
