@@ -65,11 +65,13 @@ export default {
       this.CloseModal();
     },
     async updateFee() {
+      const { updateMethod } = this.options;
       this.hide();
       this.SetLoader(true);
       const ok = await this.$store.dispatch('web3/pensionUpdateFee', this.amount);
       if (ok) {
         this.showPercentIsChanged();
+        if (updateMethod) await updateMethod();
       }
       this.SetLoader(false);
     },

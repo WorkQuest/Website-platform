@@ -357,7 +357,7 @@ export default {
     await this.initPage();
   },
   async beforeDestroy() {
-    await this.$store.dispatch('web3/unsubscribeStakingActions');
+    await this.$store.dispatch('web3/unsubscribeActions');
     clearInterval(this.updateInterval);
   },
   methods: {
@@ -369,7 +369,7 @@ export default {
       const events = this.slug === StakingTypes.WQT
         ? ['tokensStaked', 'tokensClaimed', 'tokensUnstaked']
         : ['Staked', 'Claimed', 'Unstaked'];
-      await this.$store.dispatch('web3/fetchStakingActions', {
+      await this.$store.dispatch('web3/fetchActions', {
         stakingType: this.slug,
         events,
         callback: () => {

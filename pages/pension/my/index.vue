@@ -77,7 +77,7 @@
             </div>
             <div class="pension-page__table">
               <b-table
-                :items="items"
+                :items="history"
                 :fields="testFields"
                 borderless
                 caption-top
@@ -103,7 +103,7 @@
                 </template>
                 <template #cell(txHash)="el">
                   <div class="user__value_gray">
-                    {{ el.item.txHash }}
+                    {{ getStyledHash(el.item.txHash) }}
                   </div>
                 </template>
                 <template #cell(time)="el">
@@ -118,7 +118,7 @@
                 </template>
                 <template #cell(amount)="el">
                   <div class="user__value">
-                    {{ el.item.amount }}
+                    {{ $t(`pension.${currentChainName}Count`, { count: el.item.amount}) }}
                   </div>
                 </template>
               </b-table>
@@ -132,7 +132,7 @@
                 {{ $t('pension.pensionSavingsBalance') }}
               </div>
               <div class="info-block__tokens">
-                {{ $tc("pension.WUSDCount", "4 562") }}
+                {{ pensionBalance }}
               </div>
             </div>
             <div class="info-block__small_right">
@@ -188,7 +188,7 @@
             </div>
             <div class="pension-page__table">
               <b-table
-                :items="items"
+                :items="history"
                 :fields="testFields"
                 borderless
                 caption-top
@@ -214,7 +214,7 @@
                 </template>
                 <template #cell(txHash)="el">
                   <div class="user__value_gray">
-                    {{ el.item.txHash }}
+                    {{ getStyledHash(el.item.txHash) }}
                   </div>
                 </template>
                 <template #cell(time)="el">
@@ -271,6 +271,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { Chains, NativeTokenSymbolByChainId } from '~/utils/enums';
 
@@ -282,30 +283,43 @@ export default {
       currentChainName: null,
       isExpired: false,
       isDeadline: false,
-      items: [
+      history: [],
+    };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+      isConnected: 'web3/isConnected',
+    }),
+    testFields() {
+      return [
+      // {
+      //   key: 'userName',
+      //   label: this.$t('referral.tableHead.name'),
+      //   thStyle: {
+      //     padding: '0 0 0 23px',
+      //     height: '27px',
+      //     lineHeight: '27px',
+      //   },
+      //   tdAttr: {
+      //     style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
+      //   },
+      // },
+      // {
+      //   key: 'userID',
+      //   label: this.$t('referral.tableHead.userID'),
+      //   thStyle: {
+      //     padding: '0',
+      //     height: '27px',
+      //     lineHeight: '27px',
+      //   },
+      //   tdAttr: {
+      //     style: 'padding: 0; height: 64px; line-height: 64px',
+      //   },
+      // },
         {
-          userName: this.$t('pension.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('pension.table.userId'),
-          txHash: this.$t('pension.table.txHash'),
-          time: this.$t('pension.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('pension.table.status'),
-        },
-        {
-          userName: this.$t('pension.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('pension.table.userId'),
-          txHash: this.$t('pension.table.txHash'),
-          time: this.$t('pension.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('pension.table.status'),
-        },
-      ],
-      testFields: [
-        {
-          key: 'userName',
-          label: this.$t('referral.tableHead.name'),
+          key: 'txHash',
+          label: this.$t('referral.tableHead.txHash'),
           thStyle: {
             padding: '0 0 0 23px',
             height: '27px',
@@ -315,42 +329,18 @@ export default {
             style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
           },
         },
-        {
-          key: 'userID',
-          label: this.$t('referral.tableHead.userID'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'txHash',
-          label: this.$t('referral.tableHead.txHash'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'time',
-          label: this.$t('referral.tableHead.time'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
+        // {
+        //   key: 'time',
+        //   label: this.$t('referral.tableHead.time'),
+        //   thStyle: {
+        //     padding: '0',
+        //     height: '27px',
+        //     lineHeight: '27px',
+        //   },
+        //   tdAttr: {
+        //     style: 'padding: 0; height: 64px; line-height: 64px',
+        //   },
+        // },
         {
           key: 'amount',
           label: this.$t('referral.tableHead.amount'),
@@ -375,8 +365,10 @@ export default {
             style: 'padding: 0; height: 64px; line-height: 64px',
           },
         },
-      ],
-      FAQs: [
+      ];
+    },
+    FAQs() {
+      return [
         {
           name: this.$t('pension.faq1.question'),
           about: this.$t('pension.faq1.answer'),
@@ -427,14 +419,8 @@ export default {
           about: this.$t('pension.faq10.answer'),
           isOpen: false,
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-      isConnected: 'web3/isConnected',
-    }),
+      ];
+    },
     endOfPeriod() {
       if (!this.wallet) return '';
       const { unlockDate } = this.wallet;
@@ -458,6 +444,8 @@ export default {
         await this.getWallet();
       } else {
         this.wallet = null;
+        this.history = [];
+        await this.$store.dispatch('web3/unsubscribeActions');
       }
     },
   },
@@ -467,9 +455,36 @@ export default {
     this.SetLoader(false);
     this.isFirstLoading = false;
   },
+  async beforeDestroy() {
+    await this.$store.dispatch('web3/unsubscribeActions');
+  },
   methods: {
+    handleAction(method, result) {
+      const { transactionHash, returnValues } = result;
+      const tx = {
+        txHash: transactionHash,
+        userName: this.$t('pension.table.userName'),
+        avaUrl: '~/assets/img/social/GOOGLE_+_.png',
+        userID: this.$t('pension.table.userId'),
+        time: this.$t('pension.table.time'),
+        status: this.$t('pension.table.status'),
+      };
+      switch (method) {
+        case 'Received':
+          // eslint-disable-next-line no-case-declarations
+          const amount = new BigNumber(returnValues.amount).shiftedBy(-18).decimalPlaces(6).toString();
+          console.log(method, ':', transactionHash, amount, result);
+          tx.amount = amount;
+          break;
+        default: break;
+      }
+      this.history.unshift(tx);
+    },
     getFeePercent() {
       return this.wallet?.fee || '';
+    },
+    getStyledHash(txHash) {
+      return `${txHash.slice(0, 8)}...${txHash.slice(-4)}`;
     },
     async getWallet() {
       await this.$store.dispatch('web3/checkConnectionStatus', Chains.ETHEREUM);
@@ -479,6 +494,17 @@ export default {
       }
       const ac = await this.$store.dispatch('web3/getAccount');
       this.currentChainName = NativeTokenSymbolByChainId[ac.netId];
+      const userAddress = this.$store.dispatch('web3/getAccountAddress');
+      await this.$store.dispatch('web3/fetchPensionActions', {
+        callback: (method, result) => this.handleAction(method, result),
+        events: ['Received'],
+        params: {
+          filter: {
+            to: userAddress,
+          },
+          fromBlock: 0,
+        },
+      });
     },
     showWithdrawModal() {
       this.ShowModal({
@@ -493,11 +519,13 @@ export default {
     openMakeDepositModal() {
       this.ShowModal({
         key: modals.makeDeposit,
+        updateMethod: async () => await this.getWallet(),
       });
     },
     openChangePercentModal() {
       this.ShowModal({
         key: modals.changePercent,
+        updateMethod: async () => await this.getWallet(),
       });
     },
     jumpInTime() {

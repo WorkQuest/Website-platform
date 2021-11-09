@@ -28,7 +28,7 @@ import {
   getAccount,
   swapWithBridge,
   getStakingDataByType,
-  getStakingRewardTxFee, handleMetamaskStatus, fetchStakingActions, unsubscirbeStakingListeners, getChainIdByChain,
+  getStakingRewardTxFee, handleMetamaskStatus, fetchActions, unsubscirbeListeners, getChainIdByChain,
   authRenewal,
   getPensionDefaultData,
   getPensionWallet,
@@ -254,10 +254,10 @@ export default {
   },
   async fetchStakingActions({ commit }, { stakingType, callback, events }) {
     const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
-    await fetchStakingActions(stakingAbi, stakingAddress, callback, events);
+    await fetchActions(stakingAbi, stakingAddress, callback, events);
   },
-  unsubscribeStakingActions() {
-    unsubscirbeStakingListeners();
+  unsubscribeActions() {
+    unsubscirbeListeners();
   },
   async stake({ commit }, {
     decimals, amount, stakingType, duration,
@@ -431,5 +431,10 @@ export default {
     if (firstDeposit) depositOk = await pensionContribute(firstDeposit);
     else return feeOk;
     return depositOk && feeOk;
+  },
+  async fetchPensionActions({ commit }, { callback, events, params }) {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND_BSC;
+    await fetchActions(_abi, _pensionAddress, callback, events, params);
   },
 };

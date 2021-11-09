@@ -529,7 +529,7 @@ export const redeemSwap = async (props) => {
 let actionsListeners = [];
 let lastActionHash = null;
 
-export const unsubscirbeStakingListeners = () => {
+export const unsubscirbeListeners = () => {
   for (let i = 0; i < actionsListeners.length; i += 1) {
     actionsListeners[i].unsubscribe();
   }
@@ -543,11 +543,11 @@ export const fetchContractAction = (inst, method, callback, params) => inst.even
     callback(method, result);
   }
 });
-export const fetchStakingActions = async (stakingAbi, stakingAddress, callback, events) => {
+export const fetchActions = async (stakingAbi, stakingAddress, callback, events, params) => {
   const inst = new web3.eth.Contract(stakingAbi, stakingAddress);
-  await unsubscirbeStakingListeners();
+  await unsubscirbeListeners();
   for (let i = 0; i < events.length; i += 1) {
-    actionsListeners.push(fetchContractAction(inst, events[i], callback));
+    actionsListeners.push(fetchContractAction(inst, events[i], callback, params));
   }
 };
 
@@ -595,7 +595,6 @@ export const getPensionDefaultData = async () => {
     return null;
   }
 };
-
 export const getPensionWallet = async () => {
   try {
     const _abi = abi.WQPensionFund;
@@ -616,7 +615,6 @@ export const getPensionWallet = async () => {
     return null;
   }
 };
-
 export const pensionContribute = async (_amount) => {
   try {
     const _abi = abi.WQPensionFund;
@@ -629,7 +627,6 @@ export const pensionContribute = async (_amount) => {
     return false;
   }
 };
-
 export const pensionUpdateFee = async (_fee) => {
   try {
     const _abi = abi.WQPensionFund;

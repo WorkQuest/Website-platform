@@ -12,7 +12,7 @@
             {{ $t('modals.depositAmount') }}
           </div>
           <base-field
-            v-model="amountInput"
+            v-model="amount"
             :placeholder="'3 500'"
             class="content__input"
             rules="required|decimal"
@@ -48,7 +48,7 @@ export default {
   name: 'ModalMakeDeposit',
   data() {
     return {
-      amountInput: '',
+      amount: '',
     };
   },
   computed: {
@@ -61,11 +61,13 @@ export default {
       this.CloseModal();
     },
     async deposit() {
+      const { updateMethod } = this.options;
       this.hide();
       this.SetLoader(true);
-      const ok = await this.$store.dispatch('web3/pensionContribute', amount);
+      const ok = await this.$store.dispatch('web3/pensionContribute', this.amount);
       if (ok) {
         this.showPensionIsRegisteredModal();
+        if (updateMethod) await updateMethod();
       }
       this.SetLoader(false);
     },

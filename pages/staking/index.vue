@@ -176,7 +176,7 @@ export default {
     this.firstLoading = false;
   },
   async beforeDestroy() {
-    await this.$store.dispatch('web3/unsubscribeStakingActions');
+    await this.$store.dispatch('web3/unsubscribeActions');
   },
   methods: {
     async getPoolsData() {
