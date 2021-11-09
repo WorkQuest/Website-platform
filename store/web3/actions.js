@@ -28,6 +28,11 @@ import {
   getAccount,
   swapWithBridge,
   getStakingDataByType,
+  getStakingRewardTxFee, handleMetamaskStatus, fetchStakingActions, unsubscirbeStakingListeners, getChainIdByChain,
+  authRenewal,
+  getPensionDefaultData,
+  getPensionWallet,
+  pensionUpdateFee, pensionContribute,
   getStakingRewardTxFee,
   handleMetamaskStatus,
   fetchStakingActions,
@@ -39,7 +44,6 @@ import {
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
-import modals from '~/store/modals/modals';
 
 BigNumber.set({ ROUNDING_MODE: BigNumber.ROUND_DOWN });
 BigNumber.config({ EXPONENTIAL_AT: 60 });
@@ -280,6 +284,10 @@ export default {
   async claimRewards({ commit }, { stakingType }) {
     const { stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
     return await claimRewards(stakingAddress, stakingAbi);
+  },
+  async autoRenewal({ commit }, { stakingType }) {
+    const { stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
+    return await authRenewal(stakingAddress, stakingAbi);
   },
   async swap({ commit }, { decimals, amount }) {
     return await swap(decimals, amount);

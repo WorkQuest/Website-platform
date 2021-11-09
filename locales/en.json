@@ -2308,6 +2308,7 @@
     "notification": "Notification",
     "stakeLimitReached": "Stake limit reached",
     "notEnoughFunds": "There are not enough funds on the balance sheet",
+    "notEnoughClaim": "There are not enough funds to renewal tokens",
     "_inDev": "In development",
     "mainHeader": "Single staking",
     "stakingSub": "Make your assets work. Stake your assets into DeFi staking or Locked staking to increase staking income.",
@@ -2359,7 +2360,8 @@
     },
     "stakeDays": "Stake days",
     "stake": "Stake",
-    "autoRenewal": "Auto Renewal"
+    "autoRenewal": "Auto Renewal",
+    "renewalTokens": "This will renewal {n} tokens"
   },
   "myQuests": {
     "statuses": {
