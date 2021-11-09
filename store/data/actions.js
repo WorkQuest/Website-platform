@@ -26,9 +26,13 @@ export default {
 
       result.messages = result.messages.concat(data.messages.list);
     }
+    const { messages } = result;
+
+    const canLoadToBottom = messages[messages.length - 1]?.number < result.count;
+    const canLoadToTop = messages[0]?.number > 1;
 
     commit('setMessagesList', {
-      ...result, chatId, direction, offset,
+      ...result, chatId, direction, offset: offset + 20, canLoadToBottom, canLoadToTop,
     });
     return result;
   },

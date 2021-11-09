@@ -36,7 +36,7 @@
                     >
                       <img
                         class="chat__avatar"
-                        :src="user.avatar ? user.avatar.url : require('~/assets/img/ui/template_avatar.svg')"
+                        :src="user.avatar ? user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                         alt=""
                       >
                     </div>

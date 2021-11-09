@@ -43,7 +43,7 @@
             >
               <img
                 v-if="!message.itsMe"
-                :src="message.sender.avatar ? message.sender.avatar.url : require('~/assets/img/ui/template_avatar.svg')"
+                :src="message.sender.avatar ? message.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                 alt=""
                 class="message__avatar"
                 :class="{'message__avatar_hidden' : i && messages.list[i - 1].senderUserId == message.senderUserId}"
@@ -76,6 +76,7 @@
                         :src="file.url"
                         class="image-cont__image image-cont__image_margin"
                         alt=""
+                        @click="selFile(message.medias, file)"
                       >
                     </div>
                   </div>
@@ -143,7 +144,7 @@
             <div class="chat-container__file-cont">
               <ValidationProvider
                 v-slot="{validate}"
-                rules="required|ext:png,jpeg,jpg,gif"
+                rules="required|ext:png,jpeg,jpg"
               >
                 <input
                   id="input__file"
@@ -151,6 +152,7 @@
                   type="file"
                   class="chat-container__file-input"
                   multiple
+                  :disabled="files.length >= 10"
                   @change="getFiles($event, validate)"
                 >
               </ValidationProvider>
@@ -193,7 +195,7 @@
                 @click="handleRemoveFile(i)"
               >
                 <span
-                  class="icon-minus_circle_outline"
+                  class="icon-close_big"
                 />
               </div>
             </div>
@@ -276,6 +278,12 @@ export default {
     this.$store.commit('data/clearMessagesFilter');
   },
   methods: {
+    selFile(files, file) {
+      // this.ShowModal({
+      //   key: modals.gallery,
+      //   url: file.url,
+      // });
+    },
     handleRemoveFile(index) {
       this.files.splice(index, 1);
     },
@@ -321,6 +329,13 @@ export default {
       }
 
       ev.target.value = null;
+
+      if (this.files.length + validFiles.length > 10) {
+        // withdraw alert-modal
+
+        return;
+      }
+
       if (!validFiles.length) return;
 
       // eslint-disable-next-line no-plusplus
@@ -364,10 +379,10 @@ export default {
         filter: {
           topOffset,
           bottomOffset,
-        }, chatId,
+        }, chatId, messages: { list, count },
       } = this;
 
-      const offset = direction ? currBottomOffset || bottomOffset : topOffset || 0;
+      const offset = direction ? currBottomOffset || bottomOffset : topOffset || count - list[0]?.number + 1 || 0;
 
       const payload = {
         config: {
@@ -693,29 +708,28 @@ export default {
     position: absolute;
     height: 30px;
     width: 30px;
-    background-color: #F3F7FA;
+    background-color: #ffffff59;
     border-radius: 6px;
-    top: 0;
-    right: 0;
-    box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
+    top: 2px;
+    right: 2px;
+    justify-content: center;
+    align-items: center;
 
     &:hover {
-      opacity: .6;
+      background-color: #fff;
     }
   }
 
   &:hover {
     .image-cont__remove {
       display: grid;
-      justify-content: center;
-      align-items: center;
     }
   }
 }
 
-.icon-minus_circle_outline:before {
+.icon-close_big:before {
   color: #DF3333;
-  font-size: 20px;
+  font-size: 25px;
 }
 
 .message {

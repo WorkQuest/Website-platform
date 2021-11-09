@@ -6,12 +6,12 @@ export default {
     state.chats.count = count;
   },
   setMessagesList(state, {
-    messages, count, chatId, direction, offset,
+    messages, count, chatId, direction, offset, canLoadToBottom, canLoadToTop,
   }) {
-    state.messagesFilter[direction ? 'bottomOffset' : 'topOffset'] = offset + 20;
+    state.messagesFilter[direction ? 'bottomOffset' : 'topOffset'] = offset;
 
-    state.messagesFilter.canLoadToBottom = messages[messages.length - 1]?.number < count;
-    state.messagesFilter.canLoadToTop = messages[0]?.number > 1;
+    state.messagesFilter.canLoadToBottom = canLoadToBottom;
+    state.messagesFilter.canLoadToTop = canLoadToTop;
 
     state.messages.list = messages;
     state.messages.count = count;
