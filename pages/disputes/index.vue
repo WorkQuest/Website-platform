@@ -5,41 +5,44 @@
         <h2 class="page__title">
           {{ $t('disputes.disputes') }}
         </h2>
-        <span
-          v-for="(item, i) in disputes"
-          :key="i"
+        {{ disputes }}
+        <!--        TODO: Убрать вывод -->
+        <div
+          v-if="disputes.count === 0"
+          class="page__none"
         >
-          <div
-            v-if="item.number.length === 0"
-            class="page__none"
+          <img
+            alt=""
+            src="~assets/img/ui/youAreHaven'tDisputs.svg"
           >
-            <img src="~assets/img/ui/youAreHaven'tDisputs.svg">
-          </div>
-        </span>
-        <div class="page__grid">
+        </div>
+        <div
+          v-if="disputes.count !== 0"
+          class="page__grid"
+        >
           <span
             v-for="(item, i) in disputes"
             :key="i"
           >
             <div
               class="page__card"
-              @click="toDisputes(item.number)"
+              @click="toDisputes(item.id)"
             >
               <div class="page__card-body">
                 <div class="page__text">
-                  {{ $t('disputes.dispute') }} <span class="page__text_blue">{{ item.number }}</span>
+                  {{ $t('disputes.dispute') }} <span class="page__text_blue">{{ item.id }}</span>
                 </div>
                 <div class="page__text">
-                  {{ $t('disputes.quest') }} <span class="page__text_blue">{{ item.quest }}</span>
+                  {{ $t('disputes.quest') }} <span class="page__text_blue">Quest</span>
                 </div>
                 <div class="page__text">
-                  {{ $t('disputes.employer') }} <span class="page__text_blue">{{ item.employer }}</span>
+                  {{ $t('disputes.employer') }} <span class="page__text_blue">{{ item.author.firstName }} {{ item.author.lastName }}</span>
                 </div>
                 <div class="page__text">
-                  {{ $t('disputes.questSalary') }} <span class="page__text_blue">{{ item.questSalary }}</span>
+                  {{ $t('disputes.questSalary') }} <span class="page__text_blue">QuestSalary</span>
                 </div>
                 <div class="page__text">
-                  {{ $t('disputes.disputeTime') }} <span class="page__text_blue">{{ item.time }}</span>
+                  {{ $t('disputes.disputeTime') }} <span class="page__text_blue">{{ $moment(item.createdAt).format('Do MMMM YYYY, hh:mm a') }}</span>
                 </div>
                 <div class="page__text">
                   {{ $t('disputes.status') }} <span
@@ -57,13 +60,13 @@
                 <div class="page__text">
                   {{ $t('disputes.decision') }}
                   <div
-                    v-if="item.decision.length === 0"
+                    v-if="item"
                     class="page__decision"
                   >
                     -
                   </div>
                   <div
-                    v-if="item.decision.length !== 0"
+                    v-if="!item"
                     class="page__decision"
                   >
                     {{ item.decision }}
@@ -88,8 +91,11 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      disputes: 'data/getDisputes',
+      disputes: 'disputes/getDiscussions',
     }),
+  },
+  async created() {
+    await this.getDiscussionsList();
   },
   async mounted() {
     this.SetLoader(true);
@@ -98,6 +104,9 @@ export default {
   methods: {
     toDisputes(item) {
       this.$router.push({ path: `/disputes/${item}` });
+    },
+    getDiscussionsList() {
+      this.$store.dispatch('disputes/getDiscussions');
     },
   },
 };
