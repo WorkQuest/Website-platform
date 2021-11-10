@@ -278,6 +278,7 @@ import { Chains, NativeTokenSymbolByChainId } from '~/utils/enums';
 export default {
   data() {
     return {
+      isFetchingActions: false,
       isFirstLoading: true,
       wallet: null,
       currentChainName: null,
@@ -446,40 +447,20 @@ export default {
         this.wallet = null;
         this.history = [];
         await this.$store.dispatch('web3/unsubscribeActions');
+        this.isFetchingActions = false;
       }
     },
   },
   async mounted() {
     this.SetLoader(true);
     await this.getWallet();
-    this.SetLoader(false);
     this.isFirstLoading = false;
+    this.SetLoader(false);
   },
   async beforeDestroy() {
     await this.$store.dispatch('web3/unsubscribeActions');
   },
   methods: {
-    handleAction(method, result) {
-      const { transactionHash, returnValues } = result;
-      const tx = {
-        txHash: transactionHash,
-        userName: this.$t('pension.table.userName'),
-        avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-        userID: this.$t('pension.table.userId'),
-        time: this.$t('pension.table.time'),
-        status: this.$t('pension.table.status'),
-      };
-      switch (method) {
-        case 'Received':
-          // eslint-disable-next-line no-case-declarations
-          const amount = new BigNumber(returnValues.amount).shiftedBy(-18).decimalPlaces(6).toString();
-          console.log(method, ':', transactionHash, amount, result);
-          tx.amount = amount;
-          break;
-        default: break;
-      }
-      this.history.unshift(tx);
-    },
     getFeePercent() {
       return this.wallet?.fee || '';
     },
@@ -494,17 +475,48 @@ export default {
       }
       const ac = await this.$store.dispatch('web3/getAccount');
       this.currentChainName = NativeTokenSymbolByChainId[ac.netId];
-      const userAddress = this.$store.dispatch('web3/getAccountAddress');
+      if (this.isFetchingActions) return;
+      const userAddress = await this.$store.dispatch('web3/getAccountAddress');
       await this.$store.dispatch('web3/fetchPensionActions', {
         callback: (method, result) => this.handleAction(method, result),
-        events: ['Received'],
-        params: {
-          filter: {
-            to: userAddress,
+        events: ['Received', 'Withdrew', 'Claimed', 'Borrowed', 'Refunded'],
+        params: [
+          {
+            filter: {
+              from: userAddress,
+            },
+            toBlock: 'latest',
+            fromBlock: 0,
           },
-          fromBlock: 0,
-        },
+        ],
       });
+      this.isFetchingActions = true;
+    },
+    handleAction(method, result) {
+      const { transactionHash, returnValues } = result;
+      const tx = {
+        txHash: transactionHash,
+        userName: this.$t('pension.table.userName'),
+        avaUrl: '~/assets/img/social/GOOGLE_+_.png',
+        userID: this.$t('pension.table.userId'),
+        time: this.$t('pension.table.time'),
+        status: this.$t('pension.table.status'),
+      };
+      switch (method) {
+        case 'Received':
+          // eslint-disable-next-line no-case-declarations
+          let amount = new BigNumber(returnValues.amount).shiftedBy(-18);
+          if (amount.isLessThan('0.0000001')) {
+            amount = '>0.0000001';
+          } else amount = amount.decimalPlaces(6).toString();
+          console.log(method, ':', transactionHash, amount, result);
+          tx.amount = amount;
+          break;
+        default:
+          console.log('[NEED HANDLE]', method, result);
+          break;
+      }
+      this.history.unshift(tx);
     },
     showWithdrawModal() {
       this.ShowModal({

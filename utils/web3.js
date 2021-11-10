@@ -534,20 +534,20 @@ export const unsubscirbeListeners = () => {
     actionsListeners[i].unsubscribe();
   }
   actionsListeners = [];
+  lastActionHash = null;
 };
-export const fetchContractAction = (inst, method, callback, params) => inst.events[method]({
-  ...params,
-}, (err, result) => {
-  if (!err && callback && lastActionHash !== result.transactionHash) {
+export const fetchContractAction = (inst, method, callback, params) => inst.events[method](params, (err, result) => {
+  if (err) console.log('ERROR:', err); // TODO: del
+  else if (!err && callback && lastActionHash !== result.transactionHash) {
     lastActionHash = result.transactionHash;
     callback(method, result);
   }
 });
-export const fetchActions = async (stakingAbi, stakingAddress, callback, events, params) => {
-  const inst = new web3.eth.Contract(stakingAbi, stakingAddress);
+export const fetchActions = async (stakingAbi, stakingAddress, callback, events, params = []) => {
+  const contractInst = new web3.eth.Contract(stakingAbi, stakingAddress);
   await unsubscirbeListeners();
   for (let i = 0; i < events.length; i += 1) {
-    actionsListeners.push(fetchContractAction(inst, events[i], callback, params));
+    actionsListeners.push(fetchContractAction(contractInst, events[i], callback, params[i]));
   }
 };
 
@@ -604,11 +604,13 @@ export const getPensionWallet = async () => {
     const {
       unlockDate, fee,
     } = wallet;
+    const _amount = new BigNumber(wallet.amount).shiftedBy(-18);
     return {
       ...wallet,
       unlockDate: new Date(unlockDate * 1000),
       fee: new BigNumber(fee).shiftedBy(-18).decimalPlaces(4).toString(),
-      amount: new BigNumber(wallet.amount).shiftedBy(-18).decimalPlaces(4).toString(),
+      amount: _amount.isLessThan('0.0001') ? '>0.0001' : _amount.decimalPlaces(4).toString(),
+      _amount: _amount.toString(),
     };
   } catch (e) {
     console.log(e);
