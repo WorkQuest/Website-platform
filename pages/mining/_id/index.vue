@@ -387,9 +387,10 @@ export default {
   },
   watch: {
     async isConnected(newValue) {
-      console.log('connected:', newValue, this.miningPoolId);
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+      console.log('connected:', newValue, this.miningPoolId, 'rightChain:', rightChain);
       if (newValue && rightChain) {
+        await this.$store.dispatch('web3/initContract');
         await this.tokensDataUpdate();
         this.updateInterval = setInterval(() => this.tokensDataUpdate(), 15000);
       } else {
@@ -450,7 +451,8 @@ export default {
   methods: {
     async checkWalletStatus() {
       if (this.isConnected) return;
-      const providerData = await this.$store.dispatch('web3/initProvider', this.$route.params.id);
+      console.log('check wallet status', this.$route.params.id);
+      // const providerData = await this.$store.dispatch('web3/initProvider', { chain: this.$route.params.id });
       if (typeof window.ethereum === 'undefined') {
         localStorage.setItem('metamaskStatus', 'notInstalled');
         this.ShowModal({
@@ -465,7 +467,7 @@ export default {
         localStorage.setItem('metamaskStatus', 'installed');
         await this.connectToMetamask();
       }
-      if (providerData.isMetaMask) {
+      if (localStorage.getItem('isMetaMask') === 'true') {
         const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
         if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
       }
@@ -473,11 +475,10 @@ export default {
     async connectToMetamask() {
       console.log('connectToMetamask');
       if (!this.isConnected) {
-        await this.$store.dispatch('web3/connect', this.$route.params.id);
+        await this.$store.dispatch('web3/connect', { chain: this.$route.params.id });
       }
       await localStorage.setItem('miningPoolId', this.$route.params.id);
       this.miningPoolId = localStorage.getItem('miningPoolId');
-      await this.$store.dispatch('web3/initContract');
     },
     async initTokenDays() {
       const totalLiquidity = this.miningPoolId === 'BNB' ? this.wqtWbnbTokenDay[0]?.reserveUSD : this.wqtWethTokenDay[0]?.reserveUSD;

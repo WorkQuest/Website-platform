@@ -14,6 +14,7 @@ let account = {};
 let store;
 let axios;
 let web3Modal;
+let web3ModalCache;
 if (process.browser) {
   window.onNuxtReady(({ $store, $axios }) => {
     store = $store;
@@ -211,7 +212,9 @@ export const handleMetamaskStatus = (callback) => {
 //     return error(500, '', e.message);
 //   }
 // };
-export const initProvider = async (chain) => {
+export const initProvider = async (payload) => {
+  const isReconnection = payload?.isReconnection;
+  const { chain } = payload;
   try {
     let walletOptions;
     if (process.env.PROD === 'false') {
@@ -249,7 +252,7 @@ export const initProvider = async (chain) => {
       }
     }
     console.log(chain, process.env.PROD, walletOptions);
-    let provider = null;
+
     web3Modal = new Web3Modal({
       // theme: 'dark',
       cacheProvider: true, // optional
@@ -260,7 +263,13 @@ export const initProvider = async (chain) => {
         },
       }, // required
     });
-    provider = await web3Modal.connect();
+
+    let provider = web3ModalCache;
+    if (!isReconnection) {
+      provider = await web3Modal.connect();
+    }
+    web3ModalCache = provider;
+    localStorage.setItem('isMetaMask', provider.isMetaMask);
     return provider;
   } catch (e) {
     console.log(e);
@@ -268,10 +277,10 @@ export const initProvider = async (chain) => {
   }
 };
 
-export const initWeb3 = async (chain) => {
+export const initWeb3 = async (payload) => {
   try {
     let userAddress;
-    const provider = await initProvider(chain);
+    const provider = await initProvider(payload);
     web3 = new Web3(provider);
     web4 = new Web4();
     userAddress = await web3.eth.getCoinbase();

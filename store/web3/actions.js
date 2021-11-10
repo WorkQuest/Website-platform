@@ -69,6 +69,7 @@ export default {
   },
 
   async connect({ commit, dispatch, getters }, payload) {
+    console.log(payload, 'connection');
     const isReconnection = payload?.isReconnection;
     const response = await initWeb3(payload);
     if (response.ok) {
@@ -87,7 +88,7 @@ export default {
   },
   async handleMetamaskStatusChanged({ dispatch }) {
     await dispatch('disconnect');
-    await dispatch('connect', { isReconnection: true });
+    await dispatch('connect', { isReconnection: true, chain: localStorage.getItem('miningPoolId') });
   },
 
   async initContract({ commit }) {

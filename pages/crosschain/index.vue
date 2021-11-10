@@ -303,7 +303,7 @@ export default {
     },
     async checkWalletStatus() {
       const chainName = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
-      const providerData = await this.$store.dispatch('web3/initProvider', chainName);
+      const providerData = await this.$store.dispatch('web3/initProvider', { chain: chainName });
       if (typeof window.ethereum === 'undefined') {
         localStorage.setItem('metamaskStatus', 'notInstalled');
         this.ShowModal({
