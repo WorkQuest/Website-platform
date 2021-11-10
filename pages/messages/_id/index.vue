@@ -68,7 +68,7 @@
                     class="message__media"
                   >
                     <div
-                      v-for="(file, ind) in message.medias"
+                      v-for="file in message.medias"
                       :key="file.id"
                       class="image-cont image-cont_margin"
                     >
@@ -77,7 +77,7 @@
                         :src="file.url"
                         class="image-cont__image"
                         alt=""
-                        @click="selFile($event, message.medias, ind)"
+                        @click="selFile($event, message.medias, file.url)"
                       >
                       <a
                         v-else
@@ -201,18 +201,21 @@
                 :src="file.url"
                 class="image-cont__image"
                 alt=""
-                @click="selFile(files, i)"
+                @click="selFile($event, files, file.url)"
               >
-              <div
+              <a
                 v-else
+                :href="file.url"
+                target="_blank"
                 class="image-cont image-cont__other-media"
                 :title="file.file.name"
+                @click="openFile"
               >
                 <span :class="[{'icon-play_circle_outline' : file.type === 'video'}, {'icon-file_blank_outline' : file.type !== 'video'}]" />
                 <div class="image-cont__title">
                   {{ file.file.name }}
                 </div>
-              </div>
+              </a>
               <div
                 class="image-cont__remove"
                 @click="handleRemoveFile(i)"
@@ -304,10 +307,11 @@ export default {
     openFile(ev) {
       ev.stopPropagation();
     },
-    selFile(ev, files, index) {
+    selFile(ev, files, fileUrl) {
       ev.stopPropagation();
 
       files = files.filter((file) => file.type === 'image');
+      const index = files.indexOf((file) => file.url === fileUrl);
 
       this.ShowModal({
         key: modals.gallery,
