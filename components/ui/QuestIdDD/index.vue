@@ -121,7 +121,7 @@ export default {
       // TODO: Починить кнопку старт quest передать в quests/id employer
       if (this.selectedWorker.length === 0) {
         this.showToastInvited();
-        this.selectedWorker.push(worker);
+        await this.$store.dispatch('quests/setCurrentWorker', worker);
       }
       this.SetLoader(false);
     },

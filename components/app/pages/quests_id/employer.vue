@@ -81,7 +81,7 @@
             <div class="btn__wrapper">
               <!--              TODO: Починить кнопку старт quest передать массив selectedWorker-->
               <base-btn
-                :disabled="!selectedWorker[0]"
+                :disabled="!currentWorker"
                 @click="startQuest()"
               >
                 {{ $t('quests.startQuest') }}
@@ -148,7 +148,10 @@
         <!--        </span>-->
       </div>
       <div class="worker worker__card">
-        <div class="worker__title">{{ $t('response.title') }}</div>
+        <div
+          v-if="currentWorker"
+          class="worker__title"
+        >{{ $t('response.title') }}</div>
         <span v-if="filteredResponses.length">
           <span
             v-for="(response, i) in filteredResponses"
@@ -485,6 +488,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      currentWorker: 'quests/getCurrentWorker',
       questData: 'quests/getQuest',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
@@ -601,11 +605,12 @@ export default {
     async startQuest() {
       this.SetLoader(true);
       const data = {
-        assignedWorkerId: this.selectedWorker[0].id,
+        assignedWorkerId: this.currentWorker.id,
       };
       const questId = this.questData.id;
       await this.$store.dispatch('quests/startQuest', { questId, data });
       await this.$store.dispatch('quests/setInfoDataMode', 4);
+      await this.$store.dispatch('quests/setCurrentWorker', {});
       this.SetLoader(false);
     },
   },

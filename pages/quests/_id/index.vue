@@ -215,26 +215,6 @@ export default {
     async initUserAvatar() {
       this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
     },
-    // getPageModeEmp(status) {
-    //   const mode = {
-    //     1: 2,
-    //     2: 8,
-    //     3: 7,
-    //     5: 6,
-    //     6: 9,
-    //   };
-    //   return mode[status] || '';
-    // },
-    // getPageModeWor(status) {
-    //   const mode = {
-    //     1: 2,
-    //     2: 8,
-    //     3: 7,
-    //     5: 4,
-    //     6: 9,
-    //   };
-    //   return mode[status] || '';
-    // },
     async checkPageMode() {
       // questStatus
       // Created = 0,
@@ -254,11 +234,7 @@ export default {
           if (this.questData.status !== 2) {
             await this.$store.dispatch('quests/setInfoDataMode', 4);
           }
-        }
-        // else {
-        //   await this.$store.dispatch('quests/setInfoDataMode', this.getPageModeEmp(this.questData.status));
-        // }
-        if (this.questData.status === 1) {
+        } if (this.questData.status === 1) {
           await this.$store.dispatch('quests/setInfoDataMode', 2);
         } if (this.questData.status === 2) {
           await this.$store.dispatch('quests/setInfoDataMode', 8);
@@ -276,11 +252,7 @@ export default {
         } if (this.questData.assignedWorkerId === this.userData.id
           && ![1, 3].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 1);
-        }
-        // else {
-        //   await this.$store.dispatch('quests/setInfoDataMode', this.getPageModeWor(this.questData.status));
-        // }
-        if (this.questData.status === 1) {
+        } if (this.questData.status === 1) {
           await this.$store.dispatch('quests/setInfoDataMode', 2);
         } if (this.questData.status === 2) {
           await this.$store.dispatch('quests/setInfoDataMode', 8);

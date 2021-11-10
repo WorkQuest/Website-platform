@@ -17,9 +17,9 @@ export default {
       return console.log(e);
     }
   },
-  async setCurrentWorker({ commit }, data) {
-    commit('setCurrentWorker', data);
-    return data;
+  async setCurrentWorker({ commit }, worker) {
+    commit('setCurrentWorker', worker);
+    return worker;
   },
   async setInfoDataMode({ commit }, mode) {
     commit('setInfoDataMode', mode);

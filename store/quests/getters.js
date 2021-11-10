@@ -1,7 +1,7 @@
 export default {
   getQuestListForInvitation: (state) => state.questListForInvitation || {},
   getWorkersList: (state) => state.workersList || {},
-  getCurrentWorker: (state) => state.currentWorker || {},
+  getCurrentWorker: (state) => state.currentWorker,
   getInfoDataMode: (state) => state.infoDataMode || '',
   getUserInfoQuests: (state) => state.userInfoQuests || '',
   getAllQuests: (state) => state.allQuests || '',
