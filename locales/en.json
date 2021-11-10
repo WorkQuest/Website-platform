@@ -1181,7 +1181,9 @@
     "recepientAddressField": "recepient address",
     "walletAddressField": "wallet address",
     "thanksText": "",
-    "emailVerificationCodeField": "email verification"
+    "emailVerificationCodeField": "email verification",
+    "youCanAttachUpToNFiles": "You can attach up to {n} files",
+    "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format"
   },
   "ui": {
     "jobQuestors": "Job Questors",

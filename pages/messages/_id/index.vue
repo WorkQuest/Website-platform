@@ -68,16 +68,26 @@
                     class="message__media"
                   >
                     <div
-                      v-for="(file, i) in message.medias"
+                      v-for="(file, ind) in message.medias"
                       :key="file.id"
-                      class="image-cont"
+                      class="image-cont image-cont_margin"
                     >
                       <img
+                        v-if="file.type === 'image'"
                         :src="file.url"
-                        class="image-cont__image image-cont__image_margin"
+                        class="image-cont__image"
                         alt=""
-                        @click="selFile(message.medias, i)"
+                        @click="selFile($event, message.medias, ind)"
                       >
+                      <a
+                        v-else
+                        :href="file.url"
+                        target="_blank"
+                        class="image-cont image-cont__other-media image-cont__other-media_block"
+                        @click="openFile"
+                      >
+                        <span :class="[{'icon-play_circle_outline' : file.type === 'video'}, {'icon-file_blank_outline' : file.type !== 'video'}]" />
+                      </a>
                     </div>
                   </div>
                   <div
@@ -144,7 +154,7 @@
             <div class="chat-container__file-cont">
               <ValidationProvider
                 v-slot="{validate}"
-                rules="required|ext:png,jpeg,jpg"
+                rules="required|ext:png,jpeg,jpg,mp4,pdf,doc"
               >
                 <input
                   id="input__file"
@@ -167,6 +177,7 @@
               v-model="messageText"
               :placeholder="$t('chat.writeYouMessage')"
               is-hide-error
+              mode="chat"
             />
             <button
               class="chat-container__send-btn"
@@ -186,10 +197,22 @@
               class="image-cont"
             >
               <img
+                v-if="file.type === 'image'"
                 :src="file.url"
                 class="image-cont__image"
                 alt=""
+                @click="selFile(files, i)"
               >
+              <div
+                v-else
+                class="image-cont image-cont__other-media"
+                :title="file.file.name"
+              >
+                <span :class="[{'icon-play_circle_outline' : file.type === 'video'}, {'icon-file_blank_outline' : file.type !== 'video'}]" />
+                <div class="image-cont__title">
+                  {{ file.file.name }}
+                </div>
+              </div>
               <div
                 class="image-cont__remove"
                 @click="handleRemoveFile(i)"
@@ -278,7 +301,14 @@ export default {
     this.$store.commit('data/clearMessagesFilter');
   },
   methods: {
-    selFile(files, index) {
+    openFile(ev) {
+      ev.stopPropagation();
+    },
+    selFile(ev, files, index) {
+      ev.stopPropagation();
+
+      files = files.filter((file) => file.type === 'image');
+
       this.ShowModal({
         key: modals.gallery,
         files,
@@ -330,10 +360,24 @@ export default {
         if (isValid.valid) validFiles.push(file);
       }
 
+      if (validFiles.length < files.length) {
+        this.ShowModal({
+          key: modals.areYouSureNotification,
+          title: this.$t('modals.noticeTitle'),
+          text: this.$t('modals.youTryToAttachUnsupportedFileFormat'),
+          isFiles: true,
+        });
+      }
+
       ev.target.value = null;
 
       if (this.files.length + validFiles.length > 10) {
-        // withdraw alert-modal
+        this.ShowModal({
+          key: modals.areYouSureNotification,
+          title: this.$t('modals.noticeTitle'),
+          text: this.$tc('modals.youCanAttachUpToNFiles', 10),
+          isFiles: true,
+        });
 
         return;
       }
@@ -346,12 +390,16 @@ export default {
         const reader = new FileReader();
         reader.readAsDataURL(file);
 
+        const { type } = file;
+
         // eslint-disable-next-line no-await-in-loop
-        const data = await this.$store.dispatch('data/uploadFile', { contentType: file.type });
+        const data = await this.$store.dispatch('data/uploadFile', { contentType: type });
 
         const url = URL.createObjectURL(file);
 
-        this.files.push({ data, file, url });
+        this.files.push({
+          data, file, url, type: type.split('/')[0],
+        });
 
         reader.onerror = (evt) => {
           console.error(evt);
@@ -452,13 +500,17 @@ export default {
 
       const msgFiles = [];
 
-      await Promise.all(files.map(async ({ data, file, url }, i) => {
+      await Promise.all(files.map(async ({
+        data, file, url, type,
+      }, i) => {
         const cData = {
           url: data.url,
           formData: file,
           type: file.type,
         };
-        msgFiles.push({ url, id: i + 1 });
+        msgFiles.push({
+          url, id: i + 1, type,
+        });
 
         try {
           await this.$store.dispatch('data/setImage', cData);
@@ -593,7 +645,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 3px;
+    border-radius: 6px;
     cursor: pointer;
     transition: .2s;
     &:hover {
@@ -693,16 +745,39 @@ export default {
 .image-cont {
   position: relative;
   cursor: pointer;
+  height: 105px;
+  width: 130px;
+  border-radius: 6px;
 
   &__image {
     height: 105px;
     width: 130px;
     border-radius: 6px;
     min-width: 130px;
+  }
 
-    &_margin {
-      margin: 10px 10px 0 0;
+  &_margin {
+    margin: 10px 10px 0 0;
+  }
+
+  &__other-media {
+    padding: 10px;
+    display: grid;
+    grid-template-rows: 1fr 20px;
+    border: 1px solid #E9EDF2;
+    text-decoration: unset;
+
+    &_block {
+      grid-template-rows: 1fr;
     }
+  }
+
+  &__title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 400;
+    color: #4C5767;
   }
 
   &__remove {
@@ -733,6 +808,18 @@ export default {
   &:before {
     color: #1D2127;
     font-size: 25px;
+  }
+}
+
+.icon-play_circle_outline,
+.icon-file_blank_outline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:before {
+    color: #AAB0B9;
+    font-size: 60px;
   }
 }
 

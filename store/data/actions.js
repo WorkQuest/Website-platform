@@ -17,6 +17,13 @@ export default {
 
     result.messages.forEach((message) => {
       message.itsMe = message.sender.id === myId;
+
+      if (message.medias.length) {
+        message.medias.forEach((file) => {
+          // eslint-disable-next-line prefer-destructuring
+          file.type = file.contentType.split('/')[0];
+        });
+      }
     });
 
     if (direction) {

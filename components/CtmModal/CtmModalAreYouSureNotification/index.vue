@@ -20,12 +20,14 @@
       <div class="content__buttons buttons">
         <base-btn
           class="buttons__button"
+          :class="{'buttons__button_solo' : options.isFiles}"
           mode="outline"
           @click="hide"
         >
           {{ $t('meta.cancel') }}
         </base-btn>
         <base-btn
+          v-if="!options.isFiles"
           class="buttons__button"
           @click="submit"
         >
@@ -115,6 +117,9 @@ export default {
 .buttons{
   &__button{
     max-width: 140px;
+    &_solo {
+      max-width: unset;
+    }
   }
 }
 </style>
