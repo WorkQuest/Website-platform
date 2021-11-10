@@ -19,7 +19,6 @@
             {{ questData.description }}
           </span>
         </div>
-        <div class="divider" />
         <div class="quest_materials__container">
           <h2 class="quest_materials__title">
             {{ $t('quests.questMaterials') }}
