@@ -180,7 +180,9 @@ export default {
       return priority[index] || '';
     },
     async initData() {
-      this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+      if (this.userRole === 'worker') {
+        await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+      }
     },
     async goToChat() {
       this.SetLoader(true);
