@@ -34,16 +34,16 @@
             >
           </div>
         </div>
+        <questIdEmployer
+          :user-avatar="userAvatar"
+          :assign-worker="questData.assignedWorker"
+        />
+
+        <questIdWorker />
       </div>
     </div>
     <div class="main">
       <div class="main__body">
-        <questIdEmployer
-          :user-avatar="userAvatar"
-          :assign-worker="questData.assignedWorker ? questData.assignedWorker : questData.assignedWorker = null"
-        />
-
-        <questIdWorker />
         <div
           class="map__container gmap"
         >
@@ -134,16 +134,10 @@ export default {
       badge: {
         code: 1,
       },
-      selectedWorker: [],
       payload: {
         spec: 'Painting works',
       },
       isShowMap: true,
-      priority: [
-        this.$t('quests.priority.low'),
-        this.$t('quests.priority.normal'),
-        this.$t('quests.priority.urgent'),
-      ],
       priorityIndex: 0,
       distanceIndex: 0,
       priceSort: 'desc',
@@ -180,6 +174,13 @@ export default {
       responsesData: 'quests/getResponsesData',
       infoDataMode: 'quests/getInfoDataMode',
     }),
+    priority() {
+      return [
+        this.$t('quests.priority.low'),
+        this.$t('quests.priority.normal'),
+        this.$t('quests.priority.urgent'),
+      ];
+    },
   },
   watch: {
     questData: {
@@ -228,7 +229,7 @@ export default {
           await this.$store.dispatch('quests/setInfoDataMode', 1);
         } if (this.responsesData.count > 0) {
           await this.$store.dispatch('quests/setInfoDataMode', 3);
-        } if (this.questData.assignedWorker !== null) {
+        } if (this.questData.assignedWorker !== {}) {
           if (this.questData.status !== 2) {
             await this.$store.dispatch('quests/setInfoDataMode', 4);
           }
@@ -245,7 +246,7 @@ export default {
         }
       }
       if (this.userRole === 'worker') {
-        if (this.questData.assignedWorker === null && ![1].includes(this.questData.status)) {
+        if (this.questData.assignedWorker === {} && ![1].includes(this.questData.status)) {
           await this.$store.dispatch('quests/setInfoDataMode', 5);
         } if (this.questData.assignedWorkerId === this.userData.id
           && ![1, 3].includes(this.questData.status)) {

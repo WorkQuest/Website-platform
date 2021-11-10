@@ -79,7 +79,6 @@
             class="btns__wrapper"
           >
             <div class="btn__wrapper">
-              <!--              TODO: Починить кнопку старт quest передать массив selectedWorker-->
               <base-btn
                 :disabled="!currentWorker"
                 @click="startQuest()"
@@ -249,7 +248,10 @@
     <!--              </div>-->
     <!--    </div>-->
     <div v-if="[4].includes(infoDataMode)">
-      <div class="worker__title">
+      <div
+        v-if="assignWorker"
+        class="worker__title"
+      >
         {{ $t('quests.worker') }}
       </div>
       <div
