@@ -34,7 +34,6 @@
               @click="openImage('https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg')"
             >
           </div>
-          <div class="divider" />
         </div>
       </div>
     </div>
@@ -374,12 +373,6 @@ export default {
     grid-template-columns: 8fr 4fr;
     margin-bottom: 20px;
   }
-}
-.divider {
-  margin: 20px 0 20px 0;
-  background-color: $black0;
-  width:100%;
-  height: 1px;
 }
 .main {
   @include main;
