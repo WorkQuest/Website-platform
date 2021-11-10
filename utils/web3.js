@@ -556,11 +556,11 @@ export const initStackingContract = async (chain) => {
 export const addAffiliat = async () => {
   const templateRes = {
     _affiliate: '0x50eBFe5a6Bb921c1EF7080BA5798AC75f1988c0D',
-    msgSender: '0xD9a7A052C1C1948356f6D3b20be67C3F2cee6900',
+    msgSender: '0x3E2bd0861F13F3c08A95E56e75263Bc58c8Dee73',
     sign: [
-      '0x1c',
-      '0x47876d6e9649e4652539215ab23efff0217cb83e1d222e5525e369056f8fcba3',
-      '0x55a4c2255c84851630bf8489d933ef549aa07c454e94471ff50bf5dc4a176099',
+      '0x1b',
+      '0x3fb2191fe2f759a680cb82870ae399a777d4702f490dabe5d7a8a7d536b3840f',
+      '0x25270a364edb3da95e38dd0a6c0254bded3e466e247fc7954c66227e00c666fd',
     ],
   };
   const [v, r, s] = templateRes.sign;
