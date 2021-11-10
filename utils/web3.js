@@ -127,7 +127,6 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
     const Contract = new _provider.eth.Contract(_abi, _address);
     return await Contract.methods[_method].apply(this, _params).call();
   } catch (e) {
-    // store.dispatch('web3/disconnect');
     console.log(e.message);
     return false;
   }

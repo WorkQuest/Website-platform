@@ -145,7 +145,7 @@
               <base-btn
                 class="btn_bl"
                 mode="outline"
-                :disabled="!isConnected || statusBusy || disabled || stakedAmount === 0"
+                :disabled="!isConnected || statusBusy || disabled"
                 @click="openModalUnstaking()"
               >
                 {{ $t('mining.unstake') }}
@@ -153,7 +153,7 @@
               <base-btn
                 :mode="'outline'"
                 class="bnt__claim"
-                :disabled="!isConnected || statusBusy || disabled || rewardAmount === 0"
+                :disabled="!isConnected || statusBusy || disabled"
                 @click="claimRewards()"
               >
                 {{ $t('mining.claimReward') }}
@@ -388,7 +388,6 @@ export default {
   watch: {
     async isConnected(newValue) {
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
-      console.log('connected:', newValue, this.miningPoolId, 'rightChain:', rightChain);
       if (newValue && rightChain) {
         await this.$store.dispatch('web3/initContract');
         await this.tokensDataUpdate();
@@ -445,14 +444,13 @@ export default {
     await this.initTableData();
     this.firstLoading = false;
   },
-  beforeDestroy() {
+  async beforeDestroy() {
     clearInterval(this.updateInterval);
+    await this.disconnectFromWallet();
   },
   methods: {
     async checkWalletStatus() {
       if (this.isConnected) return;
-      console.log('check wallet status', this.$route.params.id);
-      // const providerData = await this.$store.dispatch('web3/initProvider', { chain: this.$route.params.id });
       if (typeof window.ethereum === 'undefined') {
         localStorage.setItem('metamaskStatus', 'notInstalled');
         this.ShowModal({
@@ -467,13 +465,12 @@ export default {
         localStorage.setItem('metamaskStatus', 'installed');
         await this.connectToMetamask();
       }
-      if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === 'injected') {
+      if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === '"injected"' || localStorage.getItem('metamaskStatus') === 'installed') {
         const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
         if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
       }
     },
     async connectToMetamask() {
-      console.log('connectToMetamask');
       if (!this.isConnected) {
         await this.$store.dispatch('web3/connect', { chain: this.$route.params.id });
       }
@@ -568,10 +565,6 @@ export default {
       return style;
     },
     async tokensDataUpdate() {
-      // const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
-      // if (!rightChain) {
-      //   return;
-      // }
       const tokensData = await this.$store.dispatch('web3/getTokensData');
       this.fullRewardAmount = tokensData.rewardTokenAmount;
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
@@ -617,23 +610,43 @@ export default {
     },
     async openModalUnstaking() {
       await this.checkWalletStatus();
-      this.ShowModal({
-        key: modals.claimRewards,
-        type: 2,
-        decimals: this.accountData.decimals.stakeDecimal,
-        stakingType: StakingTypes.MINING,
-        updateMethod: this.tokensDataUpdate,
-      });
+      if (this.stakedAmount > 0) {
+        this.ShowModal({
+          key: modals.claimRewards,
+          type: 2,
+          decimals: this.accountData.decimals.stakeDecimal,
+          stakingType: StakingTypes.MINING,
+          updateMethod: this.tokensDataUpdate,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.incorrectAmount'),
+        });
+      }
     },
     async openModalClaimRewards() {
       await this.checkWalletStatus();
-      this.ShowModal({
-        key: modals.claimRewards,
-        type: 1,
-        stakingType: StakingTypes.MINING,
-        decimals: this.accountData.decimals.stakeDecimal,
-        updateMethod: this.tokensDataUpdate,
-      });
+      if (this.rewardAmount > 0) {
+        this.ShowModal({
+          key: modals.claimRewards,
+          type: 1,
+          stakingType: StakingTypes.MINING,
+          decimals: this.accountData.decimals.stakeDecimal,
+          updateMethod: this.tokensDataUpdate,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.incorrectAmount'),
+        });
+      }
     },
     async handleBackToMainMining() {
       await this.$router.push('/mining');

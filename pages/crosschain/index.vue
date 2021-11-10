@@ -183,6 +183,7 @@ export default {
       targetAddressInd: 1,
       tableItems: {},
       items: [],
+      updateInterval: null,
     };
   },
   computed: {
@@ -273,14 +274,10 @@ export default {
     },
   },
   watch: {
-    async purseData() {
-      let newInterval;
-      if (this.purseData) {
+    async isConnected() {
+      if (this.purseData && this.isConnected) {
         await this.swapsTableData(this.purseData);
-        newInterval = setInterval(() => this.swapsTableData(this.purseData), 5000);
-        if (this.$route.name !== 'crosschain') {
-          clearInterval(newInterval);
-        }
+        this.updateInterval = setInterval(() => this.swapsTableData(this.purseData), 5000);
       }
     },
   },
@@ -292,6 +289,9 @@ export default {
     // await this.checkMiningPoolId();
     // this.SetLoader(false);
   },
+  async beforeDestroy() {
+    await this.disconnectFromWallet();
+  },
   methods: {
     doCopy() {
       this.ShowModal({
@@ -299,15 +299,17 @@ export default {
       });
     },
     async disconnectFromWallet() {
+      await clearInterval(this.updateInterval);
       await this.$store.dispatch('web3/disconnect');
     },
     async checkWalletStatus() {
+      if (this.isConnected) return;
       const chainName = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
-      const providerData = await this.$store.dispatch('web3/initProvider', { chain: chainName });
       if (typeof window.ethereum === 'undefined') {
         localStorage.setItem('metamaskStatus', 'notInstalled');
         this.ShowModal({
           key: modals.status,
+          img: '~assets/img/ui/cardHasBeenAdded.svg',
           title: 'Please install Metamask!',
           subtitle: 'Please click install...',
           button: 'Install',
@@ -315,28 +317,19 @@ export default {
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');
-        if (providerData.isMetaMask) {
-          const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', chainName);
-          if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: chainName });
-        }
-        await this.connectToMetamask();
+        await this.connectToMetamask(chainName);
       }
     },
     async redeemAction(data) {
       this.SetLoader(true);
-      let redeemObj;
-      let payload;
-      const switchChainStatus = await this.$store.dispatch('web3/goToChain', { chain: data.chain });
-      // await this.connectToMetamask();
-      if (switchChainStatus.ok) {
-        payload = {
-          signData: data.clearData,
-          chainId: data.chainId,
-        };
-        redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
-      } else {
-        redeemObj = { code: 500 };
+      if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === '"injected"' || localStorage.getItem('metamaskStatus') === 'installed') {
+        await this.checkMiningPoolId(data.chain);
       }
+      const payload = {
+        signData: data.clearData,
+        chainId: data.chainId,
+      };
+      const redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
       this.ShowModal({
         key: modals.status,
         img: redeemObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
@@ -348,17 +341,20 @@ export default {
     showToast(title, text, variant) {
       this.$store.dispatch('defi/showToast', { title, text, variant });
     },
-    async connectToMetamask() {
+    async connectToMetamask(chainName) {
       if (!this.isConnected) {
-        this.miningPoolId = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
-        localStorage.setItem('miningPoolId', this.miningPoolId);
-        await this.$store.dispatch('web3/connect', this.miningPoolId);
+        await this.$store.dispatch('web3/connect', { chain: chainName });
       }
+      await localStorage.setItem('miningPoolId', chainName);
+      this.miningPoolId = localStorage.getItem('miningPoolId');
     },
-    async checkMiningPoolId() {
-      this.miningPoolId = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
-      localStorage.setItem('miningPoolId', this.miningPoolId);
-      return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+    async checkMiningPoolId(chainName) {
+      await localStorage.setItem('miningPoolId', chainName);
+      this.miningPoolId = localStorage.getItem('miningPoolId');
+      console.log('checkMiningPoolId', this.miningPoolId);
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+      if (!rightChain) return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+      return rightChain;
     },
     async swapsTableData(recipientAddress) {
       const payload = {
@@ -392,25 +388,15 @@ export default {
     },
     async showSwapModal() {
       this.SetLoader(true);
-      const switchChainStatus = await this.checkMiningPoolId();
-      // await this.checkWalletStatus();
-      if (switchChainStatus.ok) {
-        await this.$store.dispatch('web3/getCrosschainTokensData');
-        await this.swapsTableData(this.account.address);
-        this.ShowModal({
-          key: modals.swap,
-          crosschainId: this.targetAddressInd,
-        });
-      } else {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/warning.svg'),
-          title: this.$t('modals.transactionFail'),
-          recipient: '',
-          txHash: '',
-          subtitle: '',
-        });
+      if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === '"injected"' || localStorage.getItem('metamaskStatus') === 'installed') {
+        await this.checkMiningPoolId(this.sourceAddressInd === 0 ? 'ETH' : 'BNB');
       }
+      await this.$store.dispatch('web3/getCrosschainTokensData');
+      await this.swapsTableData(this.account.address);
+      this.ShowModal({
+        key: modals.swap,
+        crosschainId: this.targetAddressInd,
+      });
       this.SetLoader(false);
     },
   },

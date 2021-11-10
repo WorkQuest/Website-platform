@@ -69,7 +69,6 @@ export default {
   },
 
   async connect({ commit, dispatch, getters }, payload) {
-    console.log(payload, 'connection');
     const isReconnection = payload?.isReconnection;
     const response = await initWeb3(payload);
     if (response.ok) {
@@ -104,7 +103,6 @@ export default {
       fetchContractData('balanceOf', abi.ERC20, stakeTokenAddress, [getAccountAddress()]),
       fetchContractData('balanceOf', abi.ERC20, rewardTokenAddress, [getAccountAddress()]),
     ]);
-    console.log(stakeDecimal, stakeSymbol, rewardDecimal, rewardSymbol, stakeBalance, getAccountAddress());
     const payload = {
       userPurse: {
         address: getAccountAddress(),
