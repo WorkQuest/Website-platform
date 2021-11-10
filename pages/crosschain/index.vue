@@ -278,6 +278,8 @@ export default {
       if (this.purseData && this.isConnected) {
         await this.swapsTableData(this.purseData);
         this.updateInterval = setInterval(() => this.swapsTableData(this.purseData), 5000);
+      } else {
+        await clearInterval(this.updateInterval);
       }
     },
   },
