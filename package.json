@@ -24,7 +24,6 @@
     "chart.js": "^2.9.3",
     "cookie-universal-nuxt": "^2.1.4",
     "cross-env": "^7.0.3",
-    "ethers": "^5.5.1",
     "nuxt": "^2.14.12",
     "nuxt-dropzone": "^1.0.4",
     "nuxt-gmaps": "^1.2.10",

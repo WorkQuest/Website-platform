@@ -10074,7 +10074,7 @@ export const WQReferral = [
     "name": "factory",
     "outputs": [
       {
-        "internalType": "address payable",
+        "internalType": "contract WorkQuestFactory",
         "name": "",
         "type": "address"
       }
@@ -10131,7 +10131,7 @@ export const WQReferral = [
     "outputs": [
       {
         "internalType": "bool",
-        "name": "hasAffiliat_",
+        "name": "",
         "type": "bool"
       }
     ],
@@ -10195,9 +10195,22 @@ export const WQReferral = [
     "name": "oracle",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "contract WQPriceOracle",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "referralBonus",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -10276,6 +10289,19 @@ export const WQReferral = [
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_referralBonus",
+        "type": "uint256"
+      }
+    ],
+    "name": "setReferralBonus",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes4",
         "name": "interfaceId",
         "type": "bytes4"
@@ -10293,9 +10319,22 @@ export const WQReferral = [
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "token",
+    "outputs": [
+      {
+        "internalType": "contract IERC20Upgradeable",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
-        "internalType": "address payable",
+        "internalType": "address",
         "name": "_factory",
         "type": "address"
       }
