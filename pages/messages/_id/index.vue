@@ -39,93 +39,98 @@
               :key="message.id"
               :ref="message.number === selStarredMessageNumber ? 'starredMessage' : ''"
               class="chat-container__message message"
-              :class="[{'message_right' : message.itsMe}, {'message_blink' : message.number === selStarredMessageNumber}]"
+              :class="[{'message_right' : message.itsMe}, {'message_blink' : message.number === selStarredMessageNumber}, {'message_info' : message.type === 'info'}]"
             >
-              <img
-                v-if="!message.itsMe"
-                :src="message.sender.avatar ? message.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                alt=""
-                class="message__avatar"
-                :class="{'message__avatar_hidden' : i && messages.list[i - 1].senderUserId == message.senderUserId}"
-              >
-              <div class="message__data">
-                <div
-                  v-if="!message.itsMe && (!i || (i && messages.list[i - 1].senderUserId != message.senderUserId))"
-                  class="message__title"
+              <div v-if="message.type === 'info'">
+                {{}}
+              </div>
+              <template v-else>
+                <img
+                  v-if="!message.itsMe"
+                  :src="message.sender.avatar ? message.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                  alt=""
+                  class="message__avatar"
+                  :class="{'message__avatar_hidden' : i && messages.list[i - 1].senderUserId == message.senderUserId}"
                 >
-                  {{ message.sender.firstName + ' ' + message.sender.lastName }}
-                </div>
-                <div
-                  class="message__bubble"
-                  :class="[{'message__bubble_bl' : message.itsMe}, {'message__bubble_link' : chatId === 'starred'}]"
-                  @click="goToCurrChat(message)"
-                >
-                  <div class="message__title">
-                    {{ message.text }}
+                <div class="message__data">
+                  <div
+                    v-if="!message.itsMe && (!i || (i && messages.list[i - 1].senderUserId != message.senderUserId))"
+                    class="message__title"
+                  >
+                    {{ message.sender.firstName + ' ' + message.sender.lastName }}
                   </div>
                   <div
-                    v-if="message.medias.length"
-                    class="message__media"
+                    class="message__bubble"
+                    :class="[{'message__bubble_bl' : message.itsMe}, {'message__bubble_link' : chatId === 'starred'}]"
+                    @click="goToCurrChat(message)"
                   >
+                    <div class="message__title">
+                      {{ message.text }}
+                    </div>
                     <div
-                      v-for="file in message.medias"
-                      :key="file.id"
-                      class="image-cont image-cont_margin"
+                      v-if="message.medias.length"
+                      class="message__media"
                     >
-                      <img
-                        v-if="file.type === 'image'"
-                        :src="file.url"
-                        class="image-cont__image"
-                        alt=""
-                        @click="selFile($event, message.medias, file.url)"
+                      <div
+                        v-for="file in message.medias"
+                        :key="file.id"
+                        class="image-cont image-cont_margin"
                       >
-                      <a
-                        v-else
-                        :href="file.url"
-                        target="_blank"
-                        class="image-cont image-cont__other-media image-cont__other-media_block"
-                        @click="openFile"
-                      >
-                        <span :class="[{'icon-play_circle_outline' : file.type === 'video'}, {'icon-file_blank_outline' : file.type !== 'video'}]" />
-                      </a>
+                        <img
+                          v-if="file.type === 'image'"
+                          :src="file.url"
+                          class="image-cont__image"
+                          alt=""
+                          @click="selFile($event, message.medias, file.url)"
+                        >
+                        <a
+                          v-else
+                          :href="file.url"
+                          target="_blank"
+                          class="image-cont image-cont__other-media image-cont__other-media_block"
+                          @click="openFile"
+                        >
+                          <span :class="[{'icon-play_circle_outline' : file.type === 'video'}, {'icon-file_blank_outline' : file.type !== 'video'}]" />
+                        </a>
+                      </div>
+                    </div>
+                    <div
+                      class="message__time message__title message__title_gray"
+                      :class="{'message__title_white' : message.itsMe}"
+                    >
+                      {{ setCurrDate(message.createdAt) }}
                     </div>
                   </div>
+                </div>
+                <div
+                  class="message__star-cont"
+                  :class="{'message__star-cont_left' : message.itsMe}"
+                >
                   <div
-                    class="message__time message__title message__title_gray"
-                    :class="{'message__title_white' : message.itsMe}"
+                    v-show="chatId !== 'starred'"
+                    class="star"
+                    @click="handleChangeStarVal(message)"
                   >
-                    {{ setCurrDate(message.createdAt) }}
+                    <img
+                      class="star__hover"
+                      src="~assets/img/ui/star_hover.svg"
+                      alt=""
+                    >
+                    <img
+                      v-if="message.star"
+                      class="star__checked"
+                      src="~assets/img/ui/star_checked.svg"
+                      alt=""
+                    >
+                    <img
+                      v-else
+                      class="star__default"
+                      src="~assets/img/ui/star_simple.svg"
+                      alt=""
+                    >
                   </div>
                 </div>
-              </div>
-              <div
-                class="message__star-cont"
-                :class="{'message__star-cont_left' : message.itsMe}"
-              >
-                <div
-                  v-show="chatId !== 'starred'"
-                  class="star"
-                  @click="handleChangeStarVal(message)"
-                >
-                  <img
-                    class="star__hover"
-                    src="~assets/img/ui/star_hover.svg"
-                    alt=""
-                  >
-                  <img
-                    v-if="message.star"
-                    class="star__checked"
-                    src="~assets/img/ui/star_checked.svg"
-                    alt=""
-                  >
-                  <img
-                    v-else
-                    class="star__default"
-                    src="~assets/img/ui/star_simple.svg"
-                    alt=""
-                  >
-                </div>
-              </div>
+              </template>
             </div>
             <div
               v-if="isBottomChatsLoading"
@@ -834,227 +839,235 @@ export default {
   gap: 20px;
   height: max-content;
 
-  &__media {
+&__media {
+display: flex;
+flex-wrap: wrap;
+}
+
+&_blink {
+animation: blink 1s;
+}
+
+@keyframes blink {
+50%{opacity: .5;}
+100%{opacity: 1;}
+}
+
+&_right {
+grid-template-columns: max-content minmax(auto, max-content);
+justify-content: flex-end;
+margin-left: 30%;
+}
+
+&__star-cont {
+&_left {
+  grid-column: 1;
+  grid-row: 1;
+}
+}
+
+  &_info {
     display: flex;
-    flex-wrap: wrap;
+    grid-template-columns: unset;
+    justify-content: center;
+    margin: 0;
+    width: 100%;
   }
 
-  &_blink {
-    animation: blink 1s;
-  }
+&:last-child {
+padding-bottom: 20px;
+}
 
-  @keyframes blink {
-    50%{opacity: .5;}
-    100%{opacity: 1;}
-  }
+&__time {
+justify-self: end;
+}
 
-  &_right {
-    grid-template-columns: max-content minmax(auto, max-content);
-    justify-content: flex-end;
-    margin-left: 30%;
-  }
+&__title {
+font-weight: 400;
+font-size: 16px;
+line-height: 1.2;
 
-  &__star-cont {
-    &_left {
-      grid-column: 1;
-      grid-row: 1;
-    }
-  }
+&_gray {
+  color: #AAB0B9;
+  font-size: 14px;
+}
 
-  &:last-child {
-    padding-bottom: 20px;
-  }
+&_white {
+  color: #fff;
+}
+}
 
-  &__time {
-    justify-self: end;
-  }
+&__avatar {
+height: 43px;
+width: 43px;
+border-radius: 50%;
 
-  &__title {
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 1.2;
+&_hidden {
+  visibility: hidden;
+}
+}
 
-    &_gray {
-      color: #AAB0B9;
-      font-size: 14px;
-    }
+&__data {
+display: grid;
+gap: 10px;
+}
 
-    &_white {
-      color: #fff;
-    }
-  }
+&__bubble {
+display: grid;
+gap: 10px;
+padding: 15px;
+border-radius: 6px;
+background-color: #F7F8FA;
 
-  &__avatar {
-    height: 43px;
-    width: 43px;
-    border-radius: 50%;
+&_bl {
+  background-color: #0083C7;
+  color: #fff;
+}
 
-    &_hidden {
-      visibility: hidden;
-    }
-  }
-
-  &__data {
-    display: grid;
-    gap: 10px;
-  }
-
-  &__bubble {
-    display: grid;
-    gap: 10px;
-    padding: 15px;
-    border-radius: 6px;
-    background-color: #F7F8FA;
-
-    &_bl {
-      background-color: #0083C7;
-      color: #fff;
-    }
-
-    &_link {
-      cursor: pointer;
-    }
-  }
+&_link {
+  cursor: pointer;
+}
+}
 }
 
 .styles {
-  &__between {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  &__flex {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-  }
-  &__center {
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-  }
+&__between {
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+&__flex {
+display: -webkit-box;
+display: -ms-flexbox;
+display: flex;
+}
+&__center {
+-webkit-box-align: center;
+-ms-flex-align: center;
+align-items: center;
+}
 }
 
 .arrow-back {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: center;
 
 }
 
 .icon {
-  cursor: pointer;
-  font-size: 26px;
-  &-send::before {
-    @extend .icon;
-    content: "\ea6b";
-    font-size: 30px;
-    color: $blue;
-  }
-  &-link::before {
-    @extend .icon;
-    content: "\ea20";
-    color: $black700;
-    font-size: 30px;
-  }
-  &-short_left::before {
-    @extend .icon;
-    content: "\ea6d";
-    color: $black800;
-  }
-  &-more_horizontal::before {
-    @extend .icon;
-    content: "\e951";
-    color: $black500;
-  }
+cursor: pointer;
+font-size: 26px;
+&-send::before {
+@extend .icon;
+content: "\ea6b";
+font-size: 30px;
+color: $blue;
+}
+&-link::before {
+@extend .icon;
+content: "\ea20";
+color: $black700;
+font-size: 30px;
+}
+&-short_left::before {
+@extend .icon;
+content: "\ea6d";
+color: $black800;
+}
+&-more_horizontal::before {
+@extend .icon;
+content: "\e951";
+color: $black500;
+}
 }
 
 .input {
-  &__wrapper {
-    height: 40px;
-  }
-  &__file {
-    opacity: 0;
-    visibility: hidden;
-    position: absolute;
-  }
-  &__file-icon-wrapper {
-    @extend .styles__flex;
-    @extend .styles__center;
-    height: 60px;
-    width: 60px;
-    margin-right: 15px;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    border-right: 1px solid #fff;
-  }
-  &__file-button-text {
-    line-height: 1;
-    margin-top: 1px;
-  }
+&__wrapper {
+height: 40px;
+}
+&__file {
+opacity: 0;
+visibility: hidden;
+position: absolute;
+}
+&__file-icon-wrapper {
+@extend .styles__flex;
+@extend .styles__center;
+height: 60px;
+width: 60px;
+margin-right: 15px;
+-webkit-box-pack: center;
+-ms-flex-pack: center;
+justify-content: center;
+border-right: 1px solid #fff;
+}
+&__file-button-text {
+line-height: 1;
+margin-top: 1px;
+}
 }
 
 .star {
-  cursor: pointer;
+cursor: pointer;
 
-  &__default {
+&__default {
+display: flex;
+}
+&__hover {
+display: none;
+}
+&:hover {
+
+.star {
+  &__hover {
     display: flex;
   }
-  &__hover {
+  &__default,
+  &__checked {
     display: none;
   }
-  &:hover {
-
-    .star {
-      &__hover {
-        display: flex;
-      }
-      &__default,
-      &__checked {
-        display: none;
-      }
-    }
-  }
+}
+}
 }
 
 .block {
-  background: #FFFFFF;
-  border-radius: 6px;
+background: #FFFFFF;
+border-radius: 6px;
+display: grid;
+grid-template-columns: 240px 1fr;
+min-height: 100%;
+&__icon {
+&_fav {
+  cursor: pointer;
+}
+&_perf {
   display: grid;
-  grid-template-columns: 240px 1fr;
-  min-height: 100%;
-  &__icon {
-    &_fav {
-      cursor: pointer;
-    }
-    &_perf {
-      display: grid;
-      grid-template-columns: 25px 25px 25px 25px 25px;
-    }
-  }
+  grid-template-columns: 25px 25px 25px 25px 25px;
+}
+}
 }
 
 .quest {
-  &__info {
-    background: rgba(0, 131, 199, 0.1);
-    width: 100%;
-    max-width: 215px;
-    border-radius: 6px;
-    display: flex;
-  }
-  &__name {
-    padding: 15px;
-    color: $blue;
-  }
+&__info {
+background: rgba(0, 131, 199, 0.1);
+width: 100%;
+max-width: 215px;
+border-radius: 6px;
+display: flex;
+}
+&__name {
+padding: 15px;
+color: $blue;
+}
 }
 
 .event {
-  margin: 20px 0 0 0;
-  font-size: 16px;
-  color: $black600;
-  font-weight: 400;
+margin: 20px 0 0 0;
+font-size: 16px;
+color: $black600;
+font-weight: 400;
 }
 
 .name {
@@ -1062,141 +1075,141 @@ export default {
 }
 
 .input {
-  width: 100%;
-  margin: 11px;
+width: 100%;
+margin: 11px;
 }
 .row {
-  &__container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
+&__container {
+display: flex;
+flex-direction: row;
+align-items: center;
+}
 }
 
 .profile {
-  &__img {
-    height: 30px;
-    width: 30px;
-    border-radius: 84px;
-    object-fit: cover;
-  }
-  &__name {
-    color: $black800;
-    font-size:16px;
-    font-weight: 500;
-    margin: 0 10px 0 10px;
-  }
+&__img {
+height: 30px;
+width: 30px;
+border-radius: 84px;
+object-fit: cover;
+}
+&__name {
+color: $black800;
+font-size:16px;
+font-weight: 500;
+margin: 0 10px 0 10px;
+}
 }
 
 .chat {
-  &__header {
-    border: 1px solid #E9EDF2;
-    border-radius: 6px 0 0 0;
-  }
-  &__panel {
-    height: 100%;
-    max-height: 70px;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 20fr 1fr;
-    align-items: center;
-    justify-items: center;
-    border: 1px solid #E9EDF2;
-    border-radius: 0 0 6px 6px;
-  }
-  &__name-container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
-  }
-  &__title {
-    background-color: $white;
-    margin: 15px 0 15px 15px;
-    align-items: center;
-    font-weight: 500;
-    font-size: 18px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  &__body {
-    background-color: $white;
-    border: 1px solid #E9EDF2;
-    border-radius: 6px;
-    width: 100%;
-    max-width: 1180px;
-  }
-  &__message {
-    cursor: pointer;
-    margin: 0 0 20px 0;
-    display: inline-block;
-  }
-  &__messages {
-    overflow-y: scroll;
-    height: 100%;
-    width: 100%;
-    max-height: 722px;
-    overflow: -moz-scrollbars-none;
-    -ms-overflow-style: none;
-  }
-  &__messages::-webkit-scrollbar {
-    width: 0;
-  }
-  &__img {
-    width: 100%;
-    height: 100%;
-    max-height: 30px;
-    max-width: 30px;
-    border-radius: 84px;
-    margin: 10px 10px 10px 20px;
-  }
-  &__name {
-    padding: 0 0 0 12px;
-  }
-  &__star {
-    margin: 0 20px 0 0;
-  }
+&__header {
+border: 1px solid #E9EDF2;
+border-radius: 6px 0 0 0;
+}
+&__panel {
+height: 100%;
+max-height: 70px;
+width: 100%;
+display: grid;
+grid-template-columns: 1fr 20fr 1fr;
+align-items: center;
+justify-items: center;
+border: 1px solid #E9EDF2;
+border-radius: 0 0 6px 6px;
+}
+&__name-container {
+display: flex;
+flex-direction: row;
+width: 100%;
+justify-content: space-between;
+}
+&__title {
+background-color: $white;
+margin: 15px 0 15px 15px;
+align-items: center;
+font-weight: 500;
+font-size: 18px;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+}
+&__body {
+background-color: $white;
+border: 1px solid #E9EDF2;
+border-radius: 6px;
+width: 100%;
+max-width: 1180px;
+}
+&__message {
+cursor: pointer;
+margin: 0 0 20px 0;
+display: inline-block;
+}
+&__messages {
+overflow-y: scroll;
+height: 100%;
+width: 100%;
+max-height: 722px;
+overflow: -moz-scrollbars-none;
+-ms-overflow-style: none;
+}
+&__messages::-webkit-scrollbar {
+width: 0;
+}
+&__img {
+width: 100%;
+height: 100%;
+max-height: 30px;
+max-width: 30px;
+border-radius: 84px;
+margin: 10px 10px 10px 20px;
+}
+&__name {
+padding: 0 0 0 12px;
+}
+&__star {
+margin: 0 20px 0 0;
+}
 }
 .page {
-  &__title {
-    margin: 20px 0 20px 0;
-  }
+&__title {
+margin: 20px 0 20px 0;
+}
 }
 
 ::-webkit-scrollbar {
-  width: 12px;
+width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
-  border-radius: 2px;
+-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 2px;
-  -webkit-box-shadow: inset 0 0 24px rgba(0, 131, 199, 1);
+border-radius: 2px;
+-webkit-box-shadow: inset 0 0 24px rgba(0, 131, 199, 1);
 }
 
 @include _991 {
-  .chat {
-    &__panel {
-      grid-template-columns: 1fr 15fr 1fr;
-    }
-  }
+.chat {
+&__panel {
+  grid-template-columns: 1fr 15fr 1fr;
+}
+}
 }
 @include _575 {
-  .chat {
-    &__panel {
-      grid-template-columns: 1fr 10fr 1fr;
-    }
-  }
+.chat {
+&__panel {
+  grid-template-columns: 1fr 10fr 1fr;
+}
+}
 }
 @include _480 {
-  .chat {
-    &__panel {
-      grid-template-columns: 1fr 7fr 1fr;
-    }
-  }
+.chat {
+&__panel {
+  grid-template-columns: 1fr 7fr 1fr;
+}
+}
 }
 </style>
