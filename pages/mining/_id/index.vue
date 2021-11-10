@@ -258,6 +258,7 @@ import chart from './graphics_data';
 import { StakingTypes } from '~/utils/enums';
 
 export default {
+  name: 'MiningPool',
   layout: 'guest',
   components: {
     chart,
@@ -386,7 +387,7 @@ export default {
   },
   watch: {
     async isConnected(newValue) {
-      console.log(this.isConnected, newValue, this.miningPoolId);
+      console.log('connected:', newValue, this.miningPoolId);
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
       if (newValue && rightChain) {
         await this.tokensDataUpdate();
@@ -448,7 +449,7 @@ export default {
   },
   methods: {
     async checkWalletStatus() {
-      console.log('checkWalletStatus');
+      if (this.isConnected) return;
       const providerData = await this.$store.dispatch('web3/initProvider', this.$route.params.id);
       if (typeof window.ethereum === 'undefined') {
         localStorage.setItem('metamaskStatus', 'notInstalled');
@@ -462,11 +463,11 @@ export default {
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');
-        if (providerData.isMetaMask) {
-          const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
-          if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
-        }
         await this.connectToMetamask();
+      }
+      if (providerData.isMetaMask) {
+        const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+        if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
       }
     },
     async connectToMetamask() {

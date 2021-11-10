@@ -184,9 +184,10 @@ export default {
       return str;
     },
     handleOpenPool(el) {
-      if (localStorage.getItem('miningPoolId')) {
-        localStorage.removeItem('miningPoolId');
-      }
+      // if (localStorage.getItem('miningPoolId')) {
+      //   localStorage.removeItem('miningPoolId');
+      // }
+      console.log('go to pool:', el.item.id);
       localStorage.setItem('miningPoolId', el.item.id);
       this.$router.push(`/mining/${el.item.id}`);
     },

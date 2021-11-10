@@ -65,7 +65,7 @@ export default {
     commit('setMetaMaskStatus', false);
     commit('clearTokens');
     commit('clearAccount');
-    localStorage.clear();
+    // localStorage.clear();
   },
 
   async connect({ commit, dispatch, getters }, payload) {
@@ -86,8 +86,8 @@ export default {
     }
   },
   async handleMetamaskStatusChanged({ dispatch }) {
-    // await dispatch('disconnect');
-    // await dispatch('connect', { isReconnection: true });
+    await dispatch('disconnect');
+    await dispatch('connect', { isReconnection: true });
   },
 
   async initContract({ commit }) {

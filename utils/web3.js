@@ -305,9 +305,9 @@ export const disconnectWeb3 = () => {
   if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === 'walletconnect') {
     localStorage.removeItem('walletconnect');
     localStorage.removeItem('WEB3_CONNECT_CACHED_PROVIDER');
-    if (web3Modal) {
-      web3Modal.clearCachedProvider();
-    }
+  }
+  if (web3Modal) {
+    web3Modal.clearCachedProvider();
   }
   web3 = null;
   web4 = null;
