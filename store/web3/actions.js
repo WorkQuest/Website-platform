@@ -86,8 +86,8 @@ export default {
     }
   },
   async handleMetamaskStatusChanged({ dispatch }) {
-    await dispatch('disconnect');
-    await dispatch('connect', { isReconnection: true });
+    // await dispatch('disconnect');
+    // await dispatch('connect', { isReconnection: true });
   },
 
   async initContract({ commit }) {
@@ -103,6 +103,7 @@ export default {
       fetchContractData('balanceOf', abi.ERC20, stakeTokenAddress, [getAccountAddress()]),
       fetchContractData('balanceOf', abi.ERC20, rewardTokenAddress, [getAccountAddress()]),
     ]);
+    console.log(stakeDecimal, stakeSymbol, rewardDecimal, rewardSymbol, stakeBalance, getAccountAddress());
     const payload = {
       userPurse: {
         address: getAccountAddress(),

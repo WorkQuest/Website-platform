@@ -448,6 +448,7 @@ export default {
   },
   methods: {
     async checkWalletStatus() {
+      console.log('checkWalletStatus');
       const providerData = await this.$store.dispatch('web3/initProvider', this.$route.params.id);
       if (typeof window.ethereum === 'undefined') {
         localStorage.setItem('metamaskStatus', 'notInstalled');
@@ -469,6 +470,7 @@ export default {
       }
     },
     async connectToMetamask() {
+      console.log('connectToMetamask');
       if (!this.isConnected) {
         await this.$store.dispatch('web3/connect', this.$route.params.id);
       }

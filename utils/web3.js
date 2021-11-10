@@ -126,7 +126,7 @@ export const fetchContractData = async (_method, _abi, _address, _params, _provi
     const Contract = new _provider.eth.Contract(_abi, _address);
     return await Contract.methods[_method].apply(this, _params).call();
   } catch (e) {
-    store.dispatch('web3/disconnect');
+    // store.dispatch('web3/disconnect');
     console.log(e.message);
     return false;
   }
@@ -248,6 +248,7 @@ export const initProvider = async (chain) => {
         };
       }
     }
+    console.log(chain, process.env.PROD, walletOptions);
     let provider = null;
     web3Modal = new Web3Modal({
       // theme: 'dark',
