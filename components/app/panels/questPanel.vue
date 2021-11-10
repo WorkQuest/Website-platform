@@ -42,7 +42,10 @@
             <span
               class="icon icon-location icon_fs-20"
             />
-            <span class="quest__address">{{ questData.locationPlaceName ? questData.locationPlaceName : '' }}</span>
+            <span
+              v-if="questData.locationPlaceName"
+              class="quest__address"
+            >{{ questData.locationPlaceName }}</span>
             <span
               class="user__distance"
             >
