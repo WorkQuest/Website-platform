@@ -3,7 +3,6 @@ import Web4 from '@cryptonteam/web4';
 import BigNumber from 'bignumber.js';
 import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
-import { ethers } from 'ethers';
 import * as abi from '~/abi/abi';
 import { Chains, ChainsId, StakingTypes } from '~/utils/enums';
 
@@ -557,19 +556,20 @@ export const initStackingContract = async (chain) => {
 export const addAffiliat = async () => {
   const templateRes = {
     _affiliate: '0x50eBFe5a6Bb921c1EF7080BA5798AC75f1988c0D',
+    msgSender: '0xD9a7A052C1C1948356f6D3b20be67C3F2cee6900',
     sign: [
       '0x1c',
-      '0x12e8908c2db80e64af0b55dc47806af4eb304916d7c8efcab41fc47c03e79a21',
-      '0x2bc311a421892fcbdf6f78f6a88da7373e896e1c128743cdc4bf4cbdfde3e264',
+      '0x47876d6e9649e4652539215ab23efff0217cb83e1d222e5525e369056f8fcba3',
+      '0x55a4c2255c84851630bf8489d933ef549aa07c454e94471ff50bf5dc4a176099',
     ],
   };
   const [v, r, s] = templateRes.sign;
-  const _affiliat = templateRes._affiliate;
+  const { _affiliate } = templateRes;
   const _abi = abi.WQReferral;
   const _contractAddress = process.env.WQ_REFERRAL;
   try {
     const contractInstance = await createInstance(_abi, _contractAddress);
-    const resp = await contractInstance.addAffiliat(v, r, s, _affiliat);
+    const resp = await contractInstance.addAffiliat(v, r, s, _affiliate);
     console.log('add referral res', resp);
     return success();
   } catch (e) {
