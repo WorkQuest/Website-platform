@@ -66,7 +66,7 @@
                   {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
                 </div>
                 <div class="info-block__subtitle_black">
-                  {{ endOfPeriod }}
+                  {{ endOfPeriod() }}
                 </div>
               </div>
             </div>
@@ -78,7 +78,7 @@
             <div class="pension-page__table">
               <b-table
                 :items="history"
-                :fields="testFields"
+                :fields="historyFields"
                 borderless
                 caption-top
                 thead-class="table__header"
@@ -189,7 +189,7 @@
             <div class="pension-page__table">
               <b-table
                 :items="history"
-                :fields="testFields"
+                :fields="historyFields"
                 borderless
                 caption-top
                 thead-class="table__header"
@@ -281,95 +281,12 @@ export default {
       isFetchingActions: false,
       isFirstLoading: true,
       wallet: null,
+      walletAddress: null,
       currentChainName: null,
       isExpired: false,
       isDeadline: false,
       history: [],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-      isConnected: 'web3/isConnected',
-    }),
-    testFields() {
-      return [
-      // {
-      //   key: 'userName',
-      //   label: this.$t('referral.tableHead.name'),
-      //   thStyle: {
-      //     padding: '0 0 0 23px',
-      //     height: '27px',
-      //     lineHeight: '27px',
-      //   },
-      //   tdAttr: {
-      //     style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
-      //   },
-      // },
-      // {
-      //   key: 'userID',
-      //   label: this.$t('referral.tableHead.userID'),
-      //   thStyle: {
-      //     padding: '0',
-      //     height: '27px',
-      //     lineHeight: '27px',
-      //   },
-      //   tdAttr: {
-      //     style: 'padding: 0; height: 64px; line-height: 64px',
-      //   },
-      // },
-        {
-          key: 'txHash',
-          label: this.$t('referral.tableHead.txHash'),
-          thStyle: {
-            padding: '0 0 0 23px',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
-          },
-        },
-        // {
-        //   key: 'time',
-        //   label: this.$t('referral.tableHead.time'),
-        //   thStyle: {
-        //     padding: '0',
-        //     height: '27px',
-        //     lineHeight: '27px',
-        //   },
-        //   tdAttr: {
-        //     style: 'padding: 0; height: 64px; line-height: 64px',
-        //   },
-        // },
-        {
-          key: 'amount',
-          label: this.$t('referral.tableHead.amount'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'status',
-          label: this.$t('referral.tableHead.status'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-      ];
-    },
-    FAQs() {
-      return [
+      FAQs: [
         {
           name: this.$t('pension.faq1.question'),
           about: this.$t('pension.faq1.answer'),
@@ -420,17 +337,89 @@ export default {
           about: this.$t('pension.faq10.answer'),
           isOpen: false,
         },
+      ],
+    };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+      isConnected: 'web3/isConnected',
+    }),
+    historyFields() {
+      return [
+      // {
+      //   key: 'userName',
+      //   label: this.$t('referral.tableHead.name'),
+      //   thStyle: {
+      //     padding: '0 0 0 23px',
+      //     height: '27px',
+      //     lineHeight: '27px',
+      //   },
+      //   tdAttr: {
+      //     style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
+      //   },
+      // },
+      // {
+      //   key: 'userID',
+      //   label: this.$t('referral.tableHead.userID'),
+      //   thStyle: {
+      //     padding: '0',
+      //     height: '27px',
+      //     lineHeight: '27px',
+      //   },
+      //   tdAttr: {
+      //     style: 'padding: 0; height: 64px; line-height: 64px',
+      //   },
+      // },
+        {
+          key: 'txHash',
+          label: this.$t('referral.tableHead.txHash'),
+          thStyle: {
+            padding: '0 0 0 23px',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
+          },
+        },
+        {
+          key: 'time',
+          label: this.$t('referral.tableHead.time'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
+        },
+        {
+          key: 'amount',
+          label: this.$t('referral.tableHead.amount'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
+        },
+        {
+          key: 'status',
+          label: this.$t('referral.tableHead.status'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
+        },
       ];
-    },
-    endOfPeriod() {
-      if (!this.wallet) return '';
-      const { unlockDate } = this.wallet;
-      let yy = moment.duration(moment(unlockDate).diff(moment.now())).asYears();
-      let dd = moment.duration(moment(unlockDate).diff(moment.now())).asDays();
-      dd = Math.ceil(yy * 365 - dd);
-      yy = Math.ceil(yy);
-      const years = this.$t('pension.years', { count: yy });
-      return `${years} ${dd ? this.$t('pension.days', { count: dd }) : ''}`;
     },
     pensionBalance() {
       const balance = this.wallet?.amount || 0;
@@ -461,6 +450,21 @@ export default {
     await this.$store.dispatch('web3/unsubscribeActions');
   },
   methods: {
+    endOfPeriod() {
+      if (!this.wallet) return '';
+      const { unlockDate } = this.wallet;
+      let yy = moment.duration(moment(unlockDate).diff(moment.now())).asYears();
+      let dd = moment.duration(moment(unlockDate).diff(moment.now())).asDays();
+      dd = Math.ceil(yy * 365 - dd);
+      yy = Math.ceil(yy);
+      const years = yy > 0 ? `${this.$t('pension.years', { count: yy })} ` : '';
+      if (yy <= 0 && dd <= 0) {
+        dd = 0;
+        this.isExpired = true;
+        return this.$t('pension.days', { count: dd });
+      }
+      return `${years}${dd ? this.$t('pension.days', { count: dd }) : ''}`;
+    },
     getFeePercent() {
       return this.wallet?.fee || '';
     },
@@ -473,17 +477,17 @@ export default {
       if (this.wallet.createdAt === '0') {
         await this.$router.push('/pension');
       }
-      const ac = await this.$store.dispatch('web3/getAccount');
-      this.currentChainName = NativeTokenSymbolByChainId[ac.netId];
+      const account = await this.$store.dispatch('web3/getAccount');
+      this.walletAddress = account.address;
+      this.currentChainName = NativeTokenSymbolByChainId[account.netId];
       if (this.isFetchingActions) return;
-      const userAddress = await this.$store.dispatch('web3/getAccountAddress');
       await this.$store.dispatch('web3/fetchPensionActions', {
         callback: (method, result) => this.handleAction(method, result),
         events: ['Received', 'Withdrew', 'Claimed', 'Borrowed', 'Refunded'],
         params: [
           {
             filter: {
-              from: userAddress,
+              user: this.walletAddress,
             },
             toBlock: 'latest',
             fromBlock: 0,
@@ -506,11 +510,11 @@ export default {
         case 'Received':
           // eslint-disable-next-line no-case-declarations
           let amount = new BigNumber(returnValues.amount).shiftedBy(-18);
-          if (amount.isLessThan('0.0000001')) {
-            amount = '>0.0000001';
-          } else amount = amount.decimalPlaces(6).toString();
+          if (amount.isLessThan('0.0000001') && amount.isGreaterThan('0')) amount = '>0.0000001';
+          else amount = amount.decimalPlaces(6).toString();
           console.log(method, ':', transactionHash, amount, result);
           tx.amount = amount;
+          tx.time = moment(new Date(returnValues.timestamp * 1000)).format('DD.MM.YY HH:mm');
           break;
         default:
           console.log('[NEED HANDLE]', method, result);
@@ -521,6 +525,10 @@ export default {
     showWithdrawModal() {
       this.ShowModal({
         key: modals.takeWithdraw,
+        walletAddress: this.walletAddress,
+        maxValue: this.wallet._amount,
+        symbol: this.currentChainName,
+        updateMethod: async () => await this.getWallet(),
       });
     },
     openApplyForAPensionModal() {

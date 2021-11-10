@@ -609,7 +609,7 @@ export const getPensionWallet = async () => {
       ...wallet,
       unlockDate: new Date(unlockDate * 1000),
       fee: new BigNumber(fee).shiftedBy(-18).decimalPlaces(4).toString(),
-      amount: _amount.isLessThan('0.0001') ? '>0.0001' : _amount.decimalPlaces(4).toString(),
+      amount: _amount.isGreaterThan('0') && _amount.isLessThan('0.0001') ? '>0.0001' : _amount.decimalPlaces(4).toString(),
       _amount: _amount.toString(),
     };
   } catch (e) {
@@ -622,7 +622,8 @@ export const pensionContribute = async (_amount) => {
     const _abi = abi.WQPensionFund;
     const _pensionAddress = process.env.PENSION_FUND_BSC;
     const contractInst = await createInstance(_abi, _pensionAddress);
-    await contractInst.contribute(account.address, { value: new BigNumber(_amount).shiftedBy(18).toString() });
+    _amount = new BigNumber(_amount).shiftedBy(18).toString();
+    await contractInst.contribute(account.address, { value: _amount });
     return true;
   } catch (e) {
     console.log(e);
@@ -634,10 +635,40 @@ export const pensionUpdateFee = async (_fee) => {
     const _abi = abi.WQPensionFund;
     const _pensionAddress = process.env.PENSION_FUND_BSC;
     const contractInst = await createInstance(_abi, _pensionAddress);
-    await contractInst.updateFee(new BigNumber(_fee).shiftedBy(18).toString());
+    _fee = new BigNumber(_fee).shiftedBy(18).toString();
+    await contractInst.updateFee(_fee);
     return true;
   } catch (e) {
     console.log(e);
     return false;
   }
 };
+export const pensionsWithdraw = async (_amount) => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND_BSC;
+    const contractInst = await createInstance(_abi, _pensionAddress);
+    _amount = new BigNumber(_amount).shiftedBy(18).toString();
+    await contractInst.withdraw(_amount);
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
+
+// const contracts = {
+//   StakingWQT: 'StakingWQT',
+//   PensionBSC: 'PensionBSC',
+// };
+//
+// const contractInstances = {
+//   [contracts.PensionBSC]: '*conract*',
+// };
+//
+// const getContract = (contract) => {
+//   if (contractInstances[contract]) return contractInstances[contract];
+//   const { abi, address } = getStakingDataByType(contract)
+//   contractInstances[contract] = createInstance(abi, address);
+//   return contractInstances[contract];
+// };

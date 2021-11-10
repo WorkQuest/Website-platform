@@ -25,7 +25,7 @@
           </div>
           <base-field
             v-model="firstDepositAmount"
-            :placeholder="$tc('pension.wusdCount', 130)"
+            :placeholder="$tc('pension.WUSDCount', 130)"
             class="content__input"
             :name="$t('modals.firstDepositAmountField')"
             rules="decimal"

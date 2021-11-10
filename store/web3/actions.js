@@ -32,7 +32,7 @@ import {
   authRenewal,
   getPensionDefaultData,
   getPensionWallet,
-  pensionUpdateFee, pensionContribute,
+  pensionUpdateFee, pensionContribute, pensionsWithdraw,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
@@ -423,6 +423,9 @@ export default {
   },
   async pensionContribute({ commit }, amount) {
     return await pensionContribute(amount);
+  },
+  async pensionWithdraw({ commit }, amount) {
+    return await pensionsWithdraw(amount);
   },
   async pensionStartProgram({ commit }, payload) {
     const { firstDeposit, fee } = payload;
