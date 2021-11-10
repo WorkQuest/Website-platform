@@ -269,7 +269,6 @@ export const initProvider = async (payload) => {
       provider = await web3Modal.connect();
     }
     web3ModalCache = provider;
-    localStorage.setItem('isMetaMask', provider.isMetaMask);
     return provider;
   } catch (e) {
     console.log(e);
