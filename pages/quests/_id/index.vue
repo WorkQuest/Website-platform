@@ -243,7 +243,6 @@ export default {
       const questStatus = this.questData.status;
 
       if (userRole === 'employer') {
-        console.log(responsesCount);
         switch (true) {
           case responsesCount > 0 && questStatus === 0:
             payload = 3;
