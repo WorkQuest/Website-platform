@@ -44,6 +44,15 @@
     </div>
     <div class="main">
       <div class="main__body">
+        <div v-if="userRole === 'employer'">
+          <div v-if="[3].includes(infoDataMode)">
+            <invited-worker-list :current-worker="currentWorker" />
+            <responded-worker-list
+              :current-worker="currentWorker"
+              :filtered-responses="filteredResponses"
+            />
+          </div>
+        </div>
         <div
           class="map__container gmap"
         >
@@ -137,6 +146,7 @@ export default {
       payload: {
         spec: 'Painting works',
       },
+      filteredResponses: [],
       isShowMap: true,
       priorityIndex: 0,
       distanceIndex: 0,
@@ -165,6 +175,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      currentWorker: 'quests/getCurrentWorker',
       questData: 'quests/getQuest',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
@@ -199,6 +210,7 @@ export default {
     await this.initData();
     await this.initUserAvatar();
     await this.getResponsesToQuest();
+    await this.getFilteredResponses();
     await this.checkPageMode();
     this.SetLoader(false);
   },
@@ -207,6 +219,13 @@ export default {
       if (this.userRole === 'employer') {
         await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
       }
+    },
+    async getFilteredResponses() {
+      if (this.userRole === 'employer') {
+        this.filteredResponses = this.responsesToQuest.filter((response) => response.status === 0);
+        return this.filteredResponses;
+      }
+      return '';
     },
     async initData() {
       await this.$store.dispatch('quests/getQuest', this.$route.params.id);
@@ -224,44 +243,76 @@ export default {
       // WaitConfirm = 5
       // Done = 6
 
-      if (this.userRole === 'employer') {
-        if (this.responsesData.count === 0) {
-          await this.$store.dispatch('quests/setInfoDataMode', 1);
-        } if (this.responsesData.count > 0) {
-          await this.$store.dispatch('quests/setInfoDataMode', 3);
-        } if (this.questData.assignedWorker !== {}) {
-          if (this.questData.status !== 2) {
-            await this.$store.dispatch('quests/setInfoDataMode', 4);
+      let payload = 1;
+      const responsesCount = this.responsesData.count;
+      const { assignedWorker } = this.questData;
+      const { assignedWorkerId } = this.questData;
+      const { userRole } = this;
+      const userId = this.userData.id;
+      const questStatus = this.questData.status;
+
+      if (userRole === 'employer') {
+        console.log(responsesCount);
+        switch (true) {
+          case responsesCount > 0 && questStatus === 0:
+            payload = 3;
+            break;
+          // // TODO: Переписать условия для статуса ожидания ответа работника
+          case assignedWorker !== {} && questStatus !== 2:
+            payload = 4;
+            break;
+          case questStatus === 1:
+            payload = 2;
+            break;
+          case questStatus === 2:
+            payload = 8;
+            break;
+          case questStatus === 3:
+            payload = 7;
+            break;
+          case questStatus === 6 && responsesCount > 0:
+            payload = 9;
+            break;
+          case questStatus === 5:
+            payload = 6;
+            break;
+          default: {
+            payload = 1;
+            break;
           }
-        } if (this.questData.status === 1) {
-          await this.$store.dispatch('quests/setInfoDataMode', 2);
-        } if (this.questData.status === 2) {
-          await this.$store.dispatch('quests/setInfoDataMode', 8);
-        } if (this.questData.status === 3) {
-          await this.$store.dispatch('quests/setInfoDataMode', 7);
-        } if (this.questData.status === 5) {
-          await this.$store.dispatch('quests/setInfoDataMode', 6);
-        } if (this.questData.status === 6) {
-          await this.$store.dispatch('quests/setInfoDataMode', 9);
         }
+        await this.$store.dispatch('quests/setInfoDataMode', payload);
       }
-      if (this.userRole === 'worker') {
-        if (this.questData.assignedWorker === {} && ![1].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 5);
-        } if (this.questData.assignedWorkerId === this.userData.id
-          && ![1, 3].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 1);
-        } if (this.questData.status === 1) {
-          await this.$store.dispatch('quests/setInfoDataMode', 2);
-        } if (this.questData.status === 2) {
-          await this.$store.dispatch('quests/setInfoDataMode', 8);
-        } if (this.questData.status === 3) {
-          await this.$store.dispatch('quests/setInfoDataMode', 7);
-        } if (this.questData.status === 5) {
-          await this.$store.dispatch('quests/setInfoDataMode', 4);
-        } if (this.questData.status === 6) {
-          await this.$store.dispatch('quests/setInfoDataMode', 9);
+
+      if (userRole === 'worker') {
+        switch (true) {
+          case questStatus === 1:
+            payload = 2;
+            break;
+          case questStatus === 2:
+            payload = 8;
+            break;
+          case questStatus === 3:
+            payload = 7;
+            break;
+          case questStatus === 6 && responsesCount > 0:
+            payload = 9;
+            break;
+          case questStatus === 5:
+            payload = 4;
+            break;
+          case assignedWorker === null && ![1].includes(questStatus):
+            payload = 5;
+            break;
+          case assignedWorkerId === userId && ![1, 3].includes(questStatus):
+            payload = 1;
+            break;
+          default: {
+            payload = 1;
+            break;
+          }
         }
+        await this.$store.dispatch('quests/setInfoDataMode', payload);
       }
     },
     coordinatesChange(item) {

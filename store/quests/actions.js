@@ -106,9 +106,9 @@ export default {
       return console.log(e);
     }
   },
-  async startQuest({ commit }, { questId, data }) {
+  async startQuest({ commit }, { questId, payload }) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/start`, data);
+      const response = await this.$axios.$post(`/v1/quest/${questId}/start`, payload);
       return response.result;
     } catch (e) {
       return console.log(e);

@@ -37,7 +37,7 @@
             <div
               v-if="['employer'].includes(userRole)"
               class="menu__item"
-              @click="selectedWorker.length === 0 ? selectWorker(i) : removeWorker()"
+              @click="Object.keys(currentWorker).length === 0 ? selectWorker(i) : removeWorker()"
             >
               <div
                 class="menu__text"
@@ -86,7 +86,6 @@ export default {
   data() {
     return {
       isShowQuestMenu: false,
-      selectedWorker: [],
     };
   },
   computed: {
@@ -94,6 +93,7 @@ export default {
       questData: 'quests/getQuest',
       userRole: 'user/getUserRole',
       responsesToQuest: 'quests/getResponsesToQuest',
+      currentWorker: 'quests/getCurrentWorker',
     }),
   },
   async created() {
@@ -113,13 +113,14 @@ export default {
       }
     },
     async removeWorker() {
-      this.selectedWorker.length = 0;
+      if (Object.keys(this.currentWorker).length !== 0) {
+        await this.$store.dispatch('quests/setCurrentWorker', {});
+      }
     },
     async selectWorker(i) {
       this.SetLoader(true);
       const { worker } = this.responsesToQuest[i];
-      // TODO: Починить кнопку старт quest передать в quests/id employer
-      if (this.selectedWorker.length === 0) {
+      if (Object.keys(this.currentWorker).length === 0) {
         this.showToastInvited();
         await this.$store.dispatch('quests/setCurrentWorker', worker);
       }
