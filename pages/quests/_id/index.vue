@@ -242,12 +242,21 @@ export default {
       const userId = this.userData.id;
       const questStatus = this.questData.status;
 
+      // questStatus
+      // Created = 0,
+      // Active = 1
+      // Closed = 2
+      // Dispute = 3
+      // WaitWorker = 4
+      // WaitConfirm = 5
+      // Done = 6
+
       if (userRole === 'employer') {
         switch (true) {
           case responsesCount > 0 && questStatus === 0:
             payload = 3;
             break;
-          case assignedWorker !== {} && questStatus !== 2:
+          case assignedWorker !== {} && ![2, 6].includes(questStatus):
             payload = 4;
             break;
           case questStatus === 1:
@@ -278,7 +287,7 @@ export default {
           case questStatus === 1:
             payload = 2;
             break;
-          case questStatus === 2:
+          case questStatus === 2 && responsesCount > 0:
             payload = 8;
             break;
           case questStatus === 3:

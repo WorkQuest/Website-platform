@@ -22,6 +22,12 @@
               class="block__image"
               alt=""
             >
+            <div
+              class="block__state"
+              :class="getStatusClass(item.status)"
+            >
+              {{ getStatusCard(item.status) }}
+            </div>
           </div>
           <div class="block__right">
             <div class="block__head">
