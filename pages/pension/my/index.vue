@@ -453,17 +453,31 @@ export default {
     endOfPeriod() {
       if (!this.wallet) return '';
       const { unlockDate } = this.wallet;
-      let yy = moment.duration(moment(unlockDate).diff(moment.now())).asYears();
-      let dd = moment.duration(moment(unlockDate).diff(moment.now())).asDays();
-      dd = Math.ceil(yy * 365 - dd);
-      yy = Math.ceil(yy);
-      const years = yy > 0 ? `${this.$t('pension.years', { count: yy })} ` : '';
-      if (yy <= 0 && dd <= 0) {
-        dd = 0;
-        this.isExpired = true;
-        return this.$t('pension.days', { count: dd });
+
+      const yy = Math.floor(moment.duration(moment(moment(unlockDate)).diff(moment.now())).asYears());
+      let dd = moment.duration(moment(moment(unlockDate)).diff(moment.now())).asDays();
+      dd = Math.ceil(dd - yy * 365);
+      const years = yy > 0 ? this.$t('pension.years', { count: yy }) : '';
+      const days = dd > 0 ? this.$t('pension.days', { count: dd }) : '';
+
+      if (dd <= 0 && yy <= 0) {
+        this.isDeadline = true;
       }
-      return `${years}${dd ? this.$t('pension.days', { count: dd }) : ''}`;
+
+      return `${years} ${days}`;
+
+      // let yy = moment.duration(moment(unlockDate).diff(moment.now())).asYears();
+      // let dd = moment.duration(moment(unlockDate).diff(moment.now())).asDays();
+      // console.log(dd);
+      // dd = Math.ceil(yy * 365 - dd);
+      // yy = Math.ceil(yy);
+      // const years = yy > 0 ? `${this.$t('pension.years', { count: yy })} ` : '';
+      // if (yy <= 0 && dd <= 0) {
+      //   dd = 0;
+      //   this.isExpired = true;
+      //   return this.$t('pension.days', { count: dd });
+      // }
+      // return `${years}${dd ? this.$t('pension.days', { count: dd }) : ''}`;
     },
     getFeePercent() {
       return this.wallet?.fee || '';
