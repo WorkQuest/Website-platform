@@ -311,7 +311,7 @@ export default {
       ev.stopPropagation();
 
       files = files.filter((file) => file.type === 'image');
-      const index = files.indexOf((file) => file.url === fileUrl);
+      const index = files.findIndex((file) => file.url === fileUrl);
 
       this.ShowModal({
         key: modals.gallery,
