@@ -74,6 +74,9 @@ export default {
       isConnected: 'web3/isConnected',
     }),
   },
+  mounted() {
+    this.depositPercentFromAQuest = this.options.defaultFee;
+  },
   methods: {
     hide() {
       this.CloseModal();
@@ -81,11 +84,13 @@ export default {
     async submitPensionRegistration() {
       await this.$store.dispatch('web3/checkConnectionStatus', Chains.ETHEREUM);
       if (this.isConnected) {
+        const { defaultFee } = this.options;
         this.hide();
         this.SetLoader(true);
         const ok = await this.$store.dispatch('web3/pensionStartProgram', {
           fee: this.depositPercentFromAQuest,
           firstDeposit: this.firstDepositAmount,
+          defaultFee,
         });
         this.SetLoader(false);
         if (ok) {

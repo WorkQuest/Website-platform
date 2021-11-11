@@ -428,9 +428,13 @@ export default {
     return await pensionsWithdraw(amount);
   },
   async pensionStartProgram({ commit }, payload) {
-    const { firstDeposit, fee } = payload;
-    const feeOk = await pensionUpdateFee(fee);
+    const { firstDeposit, fee, defaultFee } = payload;
+    let feeOk = false;
     let depositOk = false;
+    const equalsFee = new BigNumber(defaultFee).shiftedBy(-18).isEqualTo(new BigNumber(fee).shiftedBy(-18));
+    if (!firstDeposit || !equalsFee) {
+      feeOk = await pensionUpdateFee(fee);
+    } else feeOk = true;
     if (firstDeposit) depositOk = await pensionContribute(firstDeposit);
     else return feeOk;
     return depositOk && feeOk;

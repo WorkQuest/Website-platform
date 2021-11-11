@@ -656,19 +656,3 @@ export const pensionsWithdraw = async (_amount) => {
     return false;
   }
 };
-
-// const contracts = {
-//   StakingWQT: 'StakingWQT',
-//   PensionBSC: 'PensionBSC',
-// };
-//
-// const contractInstances = {
-//   [contracts.PensionBSC]: '*conract*',
-// };
-//
-// const getContract = (contract) => {
-//   if (contractInstances[contract]) return contractInstances[contract];
-//   const { abi, address } = getStakingDataByType(contract)
-//   contractInstances[contract] = createInstance(abi, address);
-//   return contractInstances[contract];
-// };

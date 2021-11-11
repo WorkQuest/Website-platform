@@ -267,6 +267,7 @@ export default {
     openApplyForAPensionModal() {
       this.ShowModal({
         key: modals.applyForAPension,
+        defaultFee: this.percent,
       });
     },
     handleClickFAQ(FAQ) {
