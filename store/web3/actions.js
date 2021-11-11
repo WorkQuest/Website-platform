@@ -20,7 +20,7 @@ import {
   getAccountAddress,
   goToChain,
   initStackingContract,
-  initWeb3,
+  initWeb3, initMetaMaskWeb3,
   redeemSwap,
   showToast,
   staking,
@@ -85,9 +85,28 @@ export default {
       showToast('Error connect to Metamask', `${response.data}`, 'danger');
     }
   },
-  async handleMetamaskStatusChanged({ dispatch }) {
+  async handleConnectionStatusChanged({ dispatch }) {
     await dispatch('disconnect');
     await dispatch('connect', { isReconnection: true, chain: localStorage.getItem('miningPoolId') });
+  },
+
+  // Only MetaMask
+  async connectToMetaMask({ commit, dispatch, getters }, payload) {
+    const isReconnection = payload?.isReconnection;
+    const response = await initMetaMaskWeb3(payload);
+    if (response.ok) {
+      if (!getters.isHandlingMetamaskStatus && !isReconnection) {
+        handleMetamaskStatus(() => dispatch('handleMetamaskStatusChanged'));
+        commit('setIsHandlingMetamaskStatus', true);
+      }
+      await commit('setAccount', response.result);
+      await commit('setIsConnected', true);
+      await commit('setPurseData', getAccountAddress());
+    }
+  },
+  async handleMetamaskStatusChanged({ dispatch }) {
+    await dispatch('disconnect');
+    await dispatch('connectToMetaMask', { isReconnection: true });
   },
 
   async initContract({ commit }) {
