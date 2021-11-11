@@ -231,22 +231,38 @@ export default {
       await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     },
     async initUserAvatar() {
-      this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
+      this.userAvatar = await this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
     },
     async checkPageMode() {
+      // questStatus
+      // Created = 0,
+      // Active = 1
+      // Closed = 2
+      // Dispute = 3
+      // WaitWorker = 4
+      // WaitConfirm = 5
+      // Done = 6
+
       let payload = 1;
-      const responsesCount = this.responsesData.count;
+      const responsesCount = this.userRole === 'employer'
+        ? this.responsesData.count : Object.keys(this.respondedList).length;
+      console.log('responsesCount', responsesCount);
       const { assignedWorker } = this.questData;
+      console.log('assignedWorker', assignedWorker);
       const { assignedWorkerId } = this.questData;
+      console.log('assignedWorkerId', assignedWorkerId);
       const { userRole } = this;
+      console.log('userRole', userRole);
       const userId = this.userData.id;
+      console.log('userId', userId);
       const questStatus = this.questData.status;
+      console.log('questStatus', questStatus);
       if (userRole === 'employer') {
         switch (true) {
           case responsesCount > 0 && questStatus === 0:
             payload = 3;
             break;
-          case assignedWorker !== {} && ![2, 6].includes(questStatus):
+          case assignedWorker !== {} && ![2, 3, 5, 6].includes(questStatus):
             payload = 4;
             break;
           case questStatus === 1:
@@ -274,23 +290,26 @@ export default {
 
       if (userRole === 'worker') {
         switch (true) {
+          case questStatus === -1:
+            payload = 3;
+            break;
+          case questStatus === 0:
+            payload = 5;
+            break;
           case questStatus === 1:
             payload = 2;
             break;
-          case questStatus === 2 && responsesCount > 0:
+          case questStatus === 2:
             payload = 8;
             break;
           case questStatus === 3:
             payload = 7;
             break;
-          case questStatus === 6 && responsesCount > 0:
+          case questStatus === 6:
             payload = 9;
             break;
           case questStatus === 5:
             payload = 4;
-            break;
-          case assignedWorker === null && ![1].includes(questStatus):
-            payload = 5;
             break;
           case assignedWorkerId === userId && ![1, 3].includes(questStatus):
             payload = 1;

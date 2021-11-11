@@ -74,7 +74,7 @@
     >
       <div class="btn__wrapper">
         <base-btn
-          :disabled="questData.status === -1"
+          :disabled="true"
           @click="sendARequestOnQuest"
         >
           {{ $t('btn.responded') }}
@@ -134,12 +134,6 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'QuestIdWorker',
-  props: {
-    infoData: {
-      type: Object,
-      default: () => {},
-    },
-  },
   data() {
     return {
       userAvatar: '',
