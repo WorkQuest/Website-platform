@@ -39,7 +39,7 @@ export default {
     const canLoadToTop = messages[0]?.number > 1;
 
     commit('setMessagesList', {
-      ...result, chatId, direction, offset: offset + 20, canLoadToBottom, canLoadToTop,
+      ...result, direction, offset: offset + 20, canLoadToBottom, canLoadToTop,
     });
     return result;
   },

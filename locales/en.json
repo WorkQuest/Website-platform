@@ -1303,7 +1303,11 @@
     "invitedYou": "invited you to a quest",
     "writeYouMessage": "Write you message",
     "group": "Group",
-    "noChats": "No Chats"
+    "noChats": "No Chats",
+    "systemMessages": {
+      "invitedYouToAQuest": "invited you to a quest",
+      "youInvitedToTheQuest": "You invited to the quest"
+    }
   },
   "settings": {
     "placeOfStudying": "Place of studying",

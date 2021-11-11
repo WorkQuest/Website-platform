@@ -60,7 +60,6 @@ export default {
     }),
     getUrl() {
       const { options: { files, index }, currIndex } = this;
-      console.log(index, currIndex);
       return files[currIndex >= 0 ? currIndex : index].url;
     },
   },

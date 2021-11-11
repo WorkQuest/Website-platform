@@ -14,7 +14,13 @@
             <span>{{ $t('chat.chat') }}</span>
           </div>
           <div class="chat-container__chat-name">
-            <!--            {{}}-->
+            <div
+              v-if="messages.chat && messages.chat.type === 'quest'"
+              class="chat-container__quest-link"
+              @click="goToQuest"
+            >
+              {{ messages.chat.questChat.quest.title }}
+            </div>
           </div>
           <ChatMenu v-show="chatId !== 'starred'" />
         </div>
@@ -41,8 +47,20 @@
               class="chat-container__message message"
               :class="[{'message_right' : message.itsMe}, {'message_blink' : message.number === selStarredMessageNumber}, {'message_info' : message.type === 'info'}]"
             >
-              <div v-if="message.type === 'info'">
-                {{}}
+              <div
+                v-if="message.type === 'info'"
+                class="info-message"
+              >
+                <div v-if="message.infoMessage.messageAction === 'employerInviteOnQuest'">
+                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest'}`) }}
+                </div>
+                <div
+                  class="info-message__link"
+                  :class="{'info-message__link_left' : !message.itsMe}"
+                  @click="openProfile(message.infoMessage.userId, message.itsMe)"
+                >
+                  {{ message.infoMessage.user.firstName + ' ' + message.infoMessage.user.lastName }}
+                </div>
               </div>
               <template v-else>
                 <img
@@ -305,10 +323,17 @@ export default {
     if (!isChatNotificationShown) this.showNoticeModal();
   },
   destroyed() {
-    this.$store.commit('data/setMessagesList', { messages: [], count: 0, chatId: '' });
+    this.$store.commit('data/setMessagesList', { messages: [], count: 0, chat: null });
     this.$store.commit('data/clearMessagesFilter');
   },
   methods: {
+    openProfile(userId, itsMe) {
+      this.$router.push(`/${itsMe ? 'workers' : 'profile'}/${userId}`);
+    },
+    goToQuest() {
+      const { questId } = this.messages.chat.questChat;
+      this.$router.push(`/quests/${questId}`);
+    },
     openFile(ev) {
       ev.stopPropagation();
     },
@@ -316,7 +341,7 @@ export default {
       ev.stopPropagation();
 
       files = files.filter((file) => file.type === 'image');
-      const index = files.indexOf((file) => file.url === fileUrl);
+      const index = files.findIndex((file) => file.url === fileUrl);
 
       this.ShowModal({
         key: modals.gallery,
@@ -624,6 +649,11 @@ export default {
     justify-self: center;
   }
 
+  &__quest-link {
+    color: #0083C7;
+    cursor: pointer;
+  }
+
   &__scroll-cont {
     overflow: auto;
     padding: 20px 20px 0;
@@ -928,6 +958,23 @@ background-color: #F7F8FA;
   cursor: pointer;
 }
 }
+}
+
+.info-message {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: 5px;
+
+  &__link {
+    text-decoration: underline #1D2127;
+    color: #1D2127;
+    cursor: pointer;
+
+    &_left {
+      grid-column: 1;
+      grid-row: 1;
+    }
+  }
 }
 
 .styles {
