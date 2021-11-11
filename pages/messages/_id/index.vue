@@ -71,7 +71,7 @@
                   :class="{'info-message__link_left' : !message.itsMe}"
                   @click="openProfile(message.infoMessage.userId, message.itsMe)"
                 >
-                  {{ message.infoMessage.user.firstName + ' ' + message.infoMessage.user.lastName }}
+                  {{ message.itsMe ? (message.infoMessage.user.firstName || '') + ' ' + (message.infoMessage.user.lastName || '') : (message.sender.firstName || '') + ' ' + (message.sender.lastName || '') }}
                 </div>
               </div>
               <template v-else>
@@ -80,11 +80,11 @@
                   :src="message.sender.avatar ? message.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                   alt=""
                   class="message__avatar"
-                  :class="{'message__avatar_hidden' : i && messages.list[i - 1].senderUserId == message.senderUserId}"
+                  :class="{'message__avatar_hidden' : i && messages.list[i - 1].senderUserId == message.senderUserId && messages.list[i - 1].type !== 'info'}"
                 >
                 <div class="message__data">
                   <div
-                    v-if="!message.itsMe && (!i || (i && messages.list[i - 1].senderUserId != message.senderUserId))"
+                    v-if="!message.itsMe && (!i || (i && messages.list[i - 1].senderUserId != message.senderUserId || messages.list[i - 1].type === 'info'))"
                     class="message__title"
                   >
                     {{ message.sender.firstName + ' ' + message.sender.lastName }}
