@@ -54,6 +54,18 @@
                 <div v-if="message.infoMessage.messageAction === 'employerInviteOnQuest'">
                   {{ $t(`chat.systemMessages.${message.itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest'}`) }}
                 </div>
+                <div v-if="message.infoMessage.messageAction === 'workerResponseOnQuest'">
+                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest'}`) }}
+                </div>
+                <div v-if="message.infoMessage.messageAction === 'employerRejectResponseOnQuest'">
+                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest'}`) }}
+                </div>
+                <div v-if="message.infoMessage.messageAction === 'workerRejectInviteOnQuest'">
+                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest'}`) }}
+                </div>
+                <div v-if="message.infoMessage.messageAction === 'workerAcceptInviteOnQuest'">
+                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest'}`) }}
+                </div>
                 <div
                   class="info-message__link"
                   :class="{'info-message__link_left' : !message.itsMe}"
