@@ -234,15 +234,6 @@ export default {
       this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
     },
     async checkPageMode() {
-      // questStatus
-      // Created = 0,
-      // Active = 1
-      // Closed = 2
-      // Dispute = 3
-      // WaitWorker = 4
-      // WaitConfirm = 5
-      // Done = 6
-
       let payload = 1;
       const responsesCount = this.responsesData.count;
       const { assignedWorker } = this.questData;
@@ -257,7 +248,6 @@ export default {
           case responsesCount > 0 && questStatus === 0:
             payload = 3;
             break;
-          // // TODO: Переписать условия для статуса ожидания ответа работника
           case assignedWorker !== {} && questStatus !== 2:
             payload = 4;
             break;
