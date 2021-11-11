@@ -397,7 +397,7 @@ export default {
           localStorage.setItem('metamaskStatus', 'installed');
           const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
           if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: Chains.ETHEREUM });
-          await this.$store.dispatch('web3/connect');
+          await this.$store.dispatch('web3/connectToMetaMask');
         }
       }
     },

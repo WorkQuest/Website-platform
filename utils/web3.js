@@ -123,7 +123,10 @@ export const getStakingDataByType = (stakingType) => {
 
 export const fetchContractData = async (_method, _abi, _address, _params, _provider = web3) => {
   try {
-    if (_provider === undefined) return {};
+    if (!_provider) {
+      console.error('_provider is undefined');
+      return {};
+    }
     const Contract = new _provider.eth.Contract(_abi, _address);
     return await Contract.methods[_method].apply(this, _params).call();
   } catch (e) {
@@ -178,39 +181,39 @@ export const handleMetamaskStatus = (callback) => {
   ethereum.on('chainChanged', callback);
   ethereum.on('accountsChanged', callback);
 };
-// TODO: Delete
-// export const initWeb3 = async () => {
-//   try {
-//     const { ethereum } = window;
-//     if (ethereum) {
-//       web3 = new Web3(ethereum);
-//       if ((await web3.eth.getCoinbase()) === null) {
-//         await ethereum.enable();
-//       }
-//       const [userAddress, chainId] = await Promise.all([
-//         web3.eth.getCoinbase(),
-//         web3.eth.net.getId(),
-//       ]);
-//       if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
-//         return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
-//       }
-//       if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
-//         return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
-//       }
-//       account = {
-//         address: userAddress,
-//         netId: chainId,
-//         netType: getChainTypeById(chainId),
-//       };
-//       web4 = new Web4();
-//       await web4.setProvider(ethereum, userAddress);
-//       return success(account);
-//     }
-//     return false;
-//   } catch (e) {
-//     return error(500, '', e.message);
-//   }
-// };
+// Подключение к MetaMask only. TODO: Delete
+export const initMetaMaskWeb3 = async () => {
+  try {
+    const { ethereum } = window;
+    if (ethereum) {
+      web3 = new Web3(ethereum);
+      if ((await web3.eth.getCoinbase()) === null) {
+        await ethereum.enable();
+      }
+      const [userAddress, chainId] = await Promise.all([
+        web3.eth.getCoinbase(),
+        web3.eth.net.getId(),
+      ]);
+      if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
+        return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
+      }
+      if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
+        return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
+      }
+      account = {
+        address: userAddress,
+        netId: chainId,
+        netType: getChainTypeById(chainId),
+      };
+      web4 = new Web4();
+      await web4.setProvider(ethereum, userAddress);
+      return success(account);
+    }
+    return false;
+  } catch (e) {
+    return error(500, '', e.message);
+  }
+};
 export const initProvider = async (payload) => {
   const isReconnection = payload?.isReconnection;
   const { chain } = payload;
