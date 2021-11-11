@@ -465,7 +465,7 @@ export default {
       //   localStorage.setItem('metamaskStatus', 'installed');
       await this.connectToMetamask();
       // }
-      if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === '"injected"') {
+      if (localStorage.getItem('isMetaMask') === 'true') {
         const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
         if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
       }

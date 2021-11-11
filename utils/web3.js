@@ -268,6 +268,11 @@ export const initProvider = async (payload) => {
       provider = await web3Modal.connect();
     }
     web3ModalCache = provider;
+    if (provider.isMetaMask) {
+      localStorage.setItem('isMetaMask', 'true');
+    } else {
+      localStorage.setItem('isMetaMask', 'false');
+    }
     return provider;
   } catch (e) {
     console.log(e);

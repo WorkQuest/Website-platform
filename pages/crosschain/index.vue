@@ -324,7 +324,7 @@ export default {
     },
     async redeemAction(data) {
       this.SetLoader(true);
-      if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === '"injected"') {
+      if (localStorage.getItem('isMetaMask') === 'true') {
         await this.checkMiningPoolId(data.chain);
       }
       const payload = {
@@ -389,7 +389,7 @@ export default {
     },
     async showSwapModal() {
       this.SetLoader(true);
-      if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === '"injected"') {
+      if (localStorage.getItem('isMetaMask') === 'true') {
         await this.checkMiningPoolId(this.sourceAddressInd === 0 ? 'ETH' : 'BNB');
       }
       await this.$store.dispatch('web3/getCrosschainTokensData');

@@ -65,7 +65,7 @@ export default {
     commit('setMetaMaskStatus', false);
     commit('clearTokens');
     commit('clearAccount');
-    // localStorage.clear();
+    localStorage.removeItem('isMetaMask');
   },
 
   async connect({ commit, dispatch, getters }, payload) {
