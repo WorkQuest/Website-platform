@@ -53,7 +53,7 @@
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            :disabled="statusBusy"
+            :disabled="statusBusy || !isConnected"
             @click="handleSubmit(initSwap)"
           >
             {{ $t('mining.swapTokens.swap') }}
@@ -83,6 +83,7 @@ export default {
       tokensData: 'web3/getBSCTokensData',
       options: 'modals/getOptions',
       statusBusy: 'web3/getStatusBusy',
+      isConnected: 'web3/isConnected',
     }),
   },
   watch: {

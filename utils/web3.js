@@ -13,7 +13,8 @@ let account = {};
 
 let store;
 let axios;
-
+let web3Modal;
+let web3ModalCache;
 if (process.browser) {
   window.onNuxtReady(({ $store, $axios }) => {
     store = $store;
@@ -177,7 +178,7 @@ export const handleMetamaskStatus = (callback) => {
   ethereum.on('chainChanged', callback);
   ethereum.on('accountsChanged', callback);
 };
-
+// TODO: Delete
 // export const initWeb3 = async () => {
 //   try {
 //     const { ethereum } = window;
@@ -210,49 +211,48 @@ export const handleMetamaskStatus = (callback) => {
 //     return error(500, '', e.message);
 //   }
 // };
-let walletOptions = {};
-export const initWeb3Modal = async (chain) => {
-  if (process.env.PROD === 'false') {
-    if (chain === 'ETH') {
-      walletOptions = {
-        rpc: {
-          4: 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-        },
-        // network: 'ethereum',
-      };
-    } else if (chain === 'BNB') {
-      walletOptions = {
-        rpc: {
-          97: 'https://data-seed-prebsc-2-s1.binance.org:8545/',
-        },
-        // network: 'binance',
-      };
-    }
-  }
-  if (process.env.PROD === 'true') {
-    if (chain === 'ETH') {
-      walletOptions = {
-        rpc: {
-          1: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-        },
-        // network: 'ethereum',
-      };
-    } else {
-      walletOptions = {
-        rpc: {
-          56: 'https://bsc-dataseed.binance.org/',
-        },
-        // network: 'binance',
-      };
-    }
-  }
-};
-
-export const initWeb3 = async (chain) => {
+export const initProvider = async (payload) => {
+  const isReconnection = payload?.isReconnection;
+  const { chain } = payload;
   try {
-    let userAddress;
-    await initWeb3Modal(chain);
-    const web3Modal = new Web3Modal({
+    let walletOptions;
+    if (process.env.PROD === 'false') {
+      if (chain === 'ETH') {
+        walletOptions = {
+          rpc: {
+            4: 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+          },
+          // network: 'ethereum',
+        };
+      } else if (chain === 'BNB') {
+        walletOptions = {
+          rpc: {
+            97: 'https://data-seed-prebsc-2-s1.binance.org:8545/',
+          },
+          // network: 'binance',
+        };
+      }
+    }
+    if (process.env.PROD === 'true') {
+      if (chain === 'ETH') {
+        walletOptions = {
+          rpc: {
+            1: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+          },
+          // network: 'ethereum',
+        };
+      } else if (chain === 'BNB') {
+        walletOptions = {
+          rpc: {
+            56: 'https://bsc-dataseed.binance.org/',
+          },
+          // network: 'binance',
+        };
+      }
+    }
+    console.log(chain, process.env.PROD, walletOptions);
+
+    web3Modal = new Web3Modal({
       // theme: 'dark',
       cacheProvider: true, // optional
       providerOptions: {
@@ -262,8 +262,28 @@ export const initWeb3 = async (chain) => {
         },
       }, // required
     });
-    const provider = await web3Modal.connect();
-    store.dispatch('web3/setMetaMaskStatus', provider.isMetaMask);
+
+    let provider = web3ModalCache;
+    if (!isReconnection) {
+      provider = await web3Modal.connect();
+    }
+    web3ModalCache = provider;
+    if (provider.isMetaMask) {
+      localStorage.setItem('isMetaMask', 'true');
+    } else {
+      localStorage.setItem('isMetaMask', 'false');
+    }
+    return provider;
+  } catch (e) {
+    console.log(e);
+    return error(500, 'User has not selected a wallet', e);
+  }
+};
+
+export const initWeb3 = async (payload) => {
+  try {
+    let userAddress;
+    const provider = await initProvider(payload);
     web3 = new Web3(provider);
     web4 = new Web4();
     userAddress = await web3.eth.getCoinbase();
@@ -287,8 +307,6 @@ export const initWeb3 = async (chain) => {
       netId: chainId,
       netType: getChainTypeById(chainId),
     };
-    web4 = new Web4();
-    await web4.setProvider(window.ethereum, userAddress);
     return success(account);
   } catch (e) {
     return error(500, '', 'Connected error');
@@ -296,6 +314,13 @@ export const initWeb3 = async (chain) => {
 };
 
 export const disconnectWeb3 = () => {
+  if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === 'walletconnect') {
+    localStorage.removeItem('walletconnect');
+    localStorage.removeItem('WEB3_CONNECT_CACHED_PROVIDER');
+  }
+  if (web3Modal) {
+    web3Modal.clearCachedProvider();
+  }
   web3 = null;
   web4 = null;
   account = {};

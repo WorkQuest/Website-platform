@@ -29,7 +29,12 @@ import {
   getAccount,
   swapWithBridge,
   getStakingDataByType,
-  getStakingRewardTxFee, handleMetamaskStatus, fetchStakingActions, unsubscirbeStakingListeners, getChainIdByChain,
+  getStakingRewardTxFee,
+  handleMetamaskStatus,
+  fetchStakingActions,
+  unsubscirbeStakingListeners,
+  getChainIdByChain,
+  initProvider,
   authRenewal,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
@@ -60,7 +65,7 @@ export default {
     commit('setMetaMaskStatus', false);
     commit('clearTokens');
     commit('clearAccount');
-    localStorage.clear();
+    localStorage.removeItem('isMetaMask');
   },
 
   async connect({ commit, dispatch, getters }, payload) {
@@ -82,7 +87,7 @@ export default {
   },
   async handleMetamaskStatusChanged({ dispatch }) {
     await dispatch('disconnect');
-    await dispatch('connect', { isReconnection: true });
+    await dispatch('connect', { isReconnection: true, chain: localStorage.getItem('miningPoolId') });
   },
 
   async initContract({ commit }) {
@@ -380,7 +385,9 @@ export default {
       return err;
     }
   },
-  async setMetaMaskStatus({ commit }, payload) {
-    commit('setMetaMaskStatus', payload);
+  async initProvider({ commit }, payload) {
+    const providerData = await initProvider(payload);
+    commit('setMetaMaskStatus', providerData.isMetaMask);
+    return providerData;
   },
 };
