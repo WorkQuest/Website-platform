@@ -184,13 +184,13 @@ export default {
       tableItems: {},
       items: [],
       updateInterval: null,
+      accountAddress: null,
     };
   },
   computed: {
     ...mapGetters({
       tokens: 'web3/getTokens',
       account: 'web3/getAccount',
-      purseData: 'web3/getPurseData',
       userData: 'user/getUserData',
       isConnected: 'web3/isConnected',
       crosschainTableData: 'defi/getCrosschainTokensData',
@@ -275,12 +275,12 @@ export default {
   },
   watch: {
     async isConnected() {
-      if (typeof this.purseData === 'string') {
-        if (this.isConnected) {
-          await this.swapsTableData(this.purseData, this.isConnected);
-          this.updateInterval = setInterval(() => this.swapsTableData(this.purseData, this.isConnected), 5000);
+      this.accountAddress = await this.$store.dispatch('web3/getAccountAddress');
+      if (typeof this.accountAddress === 'string') {
+        await this.swapsTableData(this.accountAddress, this.isConnected);
+        if (this.isConnected && this.updateInterval) {
+          this.updateInterval = setInterval(() => this.swapsTableData(this.accountAddress, this.isConnected), 5000);
         } else {
-          await this.swapsTableData(this.purseData, this.isConnected);
           await clearInterval(this.updateInterval);
         }
       }
@@ -305,6 +305,7 @@ export default {
     },
     async disconnectFromWallet() {
       await clearInterval(this.updateInterval);
+      await this.swapsTableData(this.accountAddress, this.isConnected);
       await this.$store.dispatch('web3/disconnect');
     },
     async checkWalletStatus() {
@@ -350,7 +351,7 @@ export default {
       if (!this.isConnected) {
         await this.$store.dispatch('web3/connect', { chain: chainName });
       }
-      await this.swapsTableData(this.purseData, this.isConnected);
+      await this.swapsTableData(this.accountAddress, this.isConnected);
       await localStorage.setItem('miningPoolId', chainName);
       this.miningPoolId = localStorage.getItem('miningPoolId');
     },
@@ -362,12 +363,15 @@ export default {
       return rightChain;
     },
     async swapsTableData(recipientAddress, connectedStatus) {
-      const payload = {
-        recipientAddress,
-        query: connectedStatus ? '&offset=0&limit=10' : '&offset=0&limit=0',
-      };
-      console.log(payload);
-      await this.$store.dispatch('defi/swapsForCrosschain', payload);
+      if (connectedStatus) {
+        const payload = {
+          recipientAddress,
+          query: '&offset=0&limit=10',
+        };
+        await this.$store.dispatch('defi/swapsForCrosschain', payload);
+      } else {
+        this.crosschainTableData = [];
+      }
     },
     togglePools(selInd) {
       if (this.sourceAddressInd === 0) {
@@ -394,14 +398,26 @@ export default {
     },
     async showSwapModal() {
       this.SetLoader(true);
+      let switchPoolStatus = true;
       if (localStorage.getItem('isMetaMask') === 'true') {
-        await this.checkMiningPoolId(this.sourceAddressInd === 0 ? 'ETH' : 'BNB');
+        switchPoolStatus = await this.checkMiningPoolId(this.sourceAddressInd === 0 ? 'ETH' : 'BNB');
       }
-      // await this.$store.dispatch('web3/getCrosschainTokensData');
-      this.ShowModal({
-        key: modals.swap,
-        crosschainId: this.targetAddressInd,
-      });
+      if (switchPoolStatus === true || switchPoolStatus.ok) {
+        await this.$store.dispatch('web3/getCrosschainTokensData');
+        this.ShowModal({
+          key: modals.swap,
+          crosschainId: this.targetAddressInd,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          txHash: '',
+          subtitle: '',
+        });
+      }
       this.SetLoader(false);
     },
   },
