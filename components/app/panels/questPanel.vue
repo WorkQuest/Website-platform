@@ -49,7 +49,7 @@
             <span
               class="user__distance"
             >
-              {{ showDistance() }} {{ $t('meta.fromYou') }}
+              {{ showDistance() }} {{ $t('distance.m') }} {{ $t('meta.fromYou') }}
             </span>
           </div>
         </div>

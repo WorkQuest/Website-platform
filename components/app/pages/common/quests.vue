@@ -209,7 +209,7 @@
                   <span
                     v-if="userCompany"
                     class="block__text block__text_grey"
-                  >{{ `${$t('quests.fromSmall')} ${item.user.additionalInfo.company}` }}</span>
+                  >{{ `${$t('quests.fromSmall')} ${item.user.additionalInfo.company ? item.user.additionalInfo.company : 'Without company'}` }}</span>
                 </div>
               </div>
               <quest-dd
