@@ -486,7 +486,7 @@ export default {
       return `${txHash.slice(0, 8)}...${txHash.slice(-4)}`;
     },
     async getWallet() {
-      await this.$store.dispatch('web3/checkConnectionStatus', Chains.ETHEREUM);
+      await this.$store.dispatch('web3/checkMetaMaskStatus', Chains.ETHEREUM);
       this.wallet = await this.$store.dispatch('web3/getPensionWallet');
       if (this.wallet.createdAt === '0') {
         await this.$router.push('/pension');

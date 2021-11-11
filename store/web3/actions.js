@@ -107,7 +107,7 @@ export default {
     await dispatch('connectToMetaMask', { isReconnection: true });
   },
 
-  async checkConnectionStatus({ getters, dispatch }, chain) {
+  async checkMetaMaskStatus({ getters, dispatch }, chain) {
     if (!getters.isConnected) {
       if (typeof window.ethereum === 'undefined') {
         localStorage.setItem('metamaskStatus', 'notInstalled');
@@ -121,7 +121,7 @@ export default {
         });
       } else {
         localStorage.setItem('metamaskStatus', 'installed');
-        await dispatch('connect');
+        await dispatch('connectToMetaMask');
         await dispatch('goToChain', { chain });
       }
     }
