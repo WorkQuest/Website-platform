@@ -125,9 +125,9 @@ export default {
       ];
     },
   },
-  async mounted() {
-    await this.fillAddress();
-    await this.crosschainFlow();
+  mounted() {
+    this.fillAddress();
+    this.crosschainFlow();
   },
   methods: {
     setMaxValue() {

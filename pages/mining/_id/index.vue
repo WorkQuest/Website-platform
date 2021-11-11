@@ -450,6 +450,7 @@ export default {
   },
   methods: {
     async checkWalletStatus() {
+      this.SetLoader(true);
       if (this.isConnected) return;
       // if (typeof window.ethereum === 'undefined') {
       //   localStorage.setItem('metamaskStatus', 'notInstalled');
@@ -469,6 +470,7 @@ export default {
         const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
         if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
       }
+      this.SetLoader(false);
     },
     async connectToMetamask() {
       if (!this.isConnected) {

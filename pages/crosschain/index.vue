@@ -275,11 +275,14 @@ export default {
   },
   watch: {
     async isConnected() {
-      if (this.purseData && this.isConnected) {
-        await this.swapsTableData(this.purseData);
-        this.updateInterval = setInterval(() => this.swapsTableData(this.purseData), 5000);
-      } else {
-        await clearInterval(this.updateInterval);
+      if (typeof this.purseData === 'string') {
+        if (this.isConnected) {
+          await this.swapsTableData(this.purseData, this.isConnected);
+          this.updateInterval = setInterval(() => this.swapsTableData(this.purseData, this.isConnected), 5000);
+        } else {
+          await this.swapsTableData(this.purseData, this.isConnected);
+          await clearInterval(this.updateInterval);
+        }
       }
     },
   },
@@ -347,6 +350,7 @@ export default {
       if (!this.isConnected) {
         await this.$store.dispatch('web3/connect', { chain: chainName });
       }
+      await this.swapsTableData(this.purseData, this.isConnected);
       await localStorage.setItem('miningPoolId', chainName);
       this.miningPoolId = localStorage.getItem('miningPoolId');
     },
@@ -357,11 +361,12 @@ export default {
       if (!rightChain) return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
       return rightChain;
     },
-    async swapsTableData(recipientAddress) {
+    async swapsTableData(recipientAddress, connectedStatus) {
       const payload = {
         recipientAddress,
-        query: '&offset=0&limit=10',
+        query: connectedStatus ? '&offset=0&limit=10' : '&offset=0&limit=0',
       };
+      console.log(payload);
       await this.$store.dispatch('defi/swapsForCrosschain', payload);
     },
     togglePools(selInd) {
@@ -392,8 +397,7 @@ export default {
       if (localStorage.getItem('isMetaMask') === 'true') {
         await this.checkMiningPoolId(this.sourceAddressInd === 0 ? 'ETH' : 'BNB');
       }
-      await this.$store.dispatch('web3/getCrosschainTokensData');
-      await this.swapsTableData(this.account.address);
+      // await this.$store.dispatch('web3/getCrosschainTokensData');
       this.ShowModal({
         key: modals.swap,
         crosschainId: this.targetAddressInd,
