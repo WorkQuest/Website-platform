@@ -370,11 +370,12 @@ export default {
       localStorage.setItem('selStarredMessageNumber', JSON.stringify(message.number));
       this.$router.push(`/messages/${message.chatId}`);
     },
-    handleChangeStarVal(message) {
+    async handleChangeStarVal(message) {
       const messageId = message.id;
       const { chatId } = this;
       try {
-        this.$store.dispatch(`data/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, { messageId, chatId });
+        await this.$store.dispatch(`data/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, { messageId, chatId });
+        this.$forceUpdate();
       } catch (e) {
         console.log(e);
         this.showToastError(e);
@@ -544,19 +545,12 @@ export default {
 
       this.messageText = '';
 
-      const msgFiles = [];
-
-      await Promise.all(files.map(async ({
-        data, file, url, type,
-      }, i) => {
+      await Promise.all(files.map(async ({ data, file }) => {
         const cData = {
           url: data.url,
           formData: file,
           type: file.type,
         };
-        msgFiles.push({
-          url, id: i + 1, type,
-        });
 
         try {
           await this.$store.dispatch('data/setImage', cData);
@@ -567,6 +561,7 @@ export default {
       }));
 
       const medias = files.map(({ data }) => data.mediaId);
+      this.files = [];
 
       const payload = {
         config: {
@@ -576,21 +571,13 @@ export default {
         chatId,
       };
 
-      this.files = [];
-
       try {
         await this.$store.dispatch('data/handleSendMessage', payload);
-        const newMessage = {
-          medias: msgFiles,
-          text,
-          itsMe: true,
-          createdAt: new Date(),
-        };
-        this.$store.commit('data/addMessageToList', newMessage);
 
         if (!isScrollBtnVis) this.scrollToBottom();
       } catch (e) {
         console.log(e);
+        this.showToastError(e);
       }
     },
     onEnter(e, callback) {
