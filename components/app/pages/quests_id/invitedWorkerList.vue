@@ -9,6 +9,7 @@
         <div class="btn__wrapper">
           <base-btn
             :disabled="Object.keys(currentWorker).length === 0"
+            class="btn__start"
             @click="startQuest(currentWorker)"
           >
             {{ $t('quests.startQuest') }}
@@ -123,6 +124,9 @@ export default {
     width: 220px;
     margin: 0 20px 0 0;
   }
+  &__start {
+    height: 43px;
+  }
 }
 .btns {
   &__container {
@@ -139,54 +143,54 @@ export default {
   font-size: 16px;
   font-weight: 500;
   color: $black800;
-&__card {
-   margin: 30px 0;
-   background: $white;
-   border-radius: 6px;
- }
-&__message {
+   &__card {
+    margin: 30px 0;
+    background: $white;
+    border-radius: 6px;
+  }
+ &__message {
    @include text-simple;
    margin: 0 0 10px 0;
    font-size: 16px;
    color: $black500;
  }
-&__col {
-&_two {
-   width: 100%;
-   display: grid;
-   grid-template-columns: repeat(2, auto);
-   justify-content: space-between;
-   align-items: center;
+  &__col {
+    &_two {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, auto);
+      justify-content: space-between;
+      align-items: center;
+    }
  }
-}
-&__container_row {
-   display: flex;
-   flex-direction: row;
-   justify-items: flex-start;
-   align-items: center;
-   margin: 20px 15px;
+  &__container_row {
+    display: flex;
+    flex-direction: row;
+    justify-items: flex-start;
+    align-items: center;
+    margin: 20px 15px;
+  }
+  &__container {
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-start;
+    align-items: flex-start;
+    margin: 20px 15px;
+  }
+  &__avatar {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
  }
-&__container {
-   display: flex;
-   flex-direction: column;
-   justify-items: flex-start;
-   align-items: flex-start;
-   margin: 20px 15px;
- }
-&__avatar {
-   border-radius: 50%;
-   width: 40px;
-   height: 40px;
- }
-&__name {
-   @extend .worker;
-   margin: 0 10px 0 10px;
- }
-&__title {
-   @extend .worker;
-   font-size: 18px;
-   margin: 0 0 0 15px;
-   padding: 15px 15px 0 0;
- }
+  &__name {
+    @extend .worker;
+    margin: 0 10px 0 10px;
+  }
+ &__title {
+    @extend .worker;
+    font-size: 18px;
+    margin: 0 0 0 15px;
+    padding: 15px 15px 0 0;
+  }
 }
 </style>

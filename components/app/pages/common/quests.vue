@@ -77,7 +77,7 @@
               >
                 {{ progressQuestText(item.quest.status) }}
               </div>
-              <div class="progress__container container">
+              <div class="progress__container">
                 <div class="container__user user">
                   <img
                     class="user__avatar"
@@ -290,6 +290,7 @@
               <div
                 v-if="isHideStatus(item.type)"
                 class="block__status"
+                :class="{'block__status_col': item.priority === 0}"
               >
                 <div
                   class="block__priority"
@@ -531,6 +532,14 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.user {
+  &__name {
+    @include text-simple;
+    font-weight: 500;
+    font-size: 16px;
+    color: $black800;
+  }
+}
 .right {
   justify-self: flex-end;
 }
@@ -545,6 +554,7 @@ export default {
 }
 .progress {
   &__title {
+    @include text-simple;
     margin: 10px 0 7px 10px;
     font-weight: 400;
     font-size: 12px;
@@ -556,7 +566,7 @@ export default {
     align-items: center;
     grid-template-columns: auto 3fr;
     grid-gap: 10px;
-    margin: 10px 0 0 0;
+    margin: 7px 0 0 6px;
     .container {
       &__user {
         display: flex;
@@ -752,7 +762,7 @@ export default {
     border-radius: 6px;
     display: flex;
     flex-direction: column;
-    height: auto;
+    height: 73px;
     width: 100%;
     padding: 10px;
   }
@@ -770,6 +780,9 @@ export default {
     display: grid;
     grid-template-columns: auto 1fr;
     grid-gap: 15px;
+    &_col {
+      grid-template-columns: 1fr;
+    }
   }
   &__amount {
     font-style: normal;

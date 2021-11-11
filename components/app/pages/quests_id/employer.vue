@@ -293,10 +293,12 @@
         </div>
       </div>
     </div>
-    <div class="btns__container">
+    <div
+      v-if="![4,8,9].includes(infoDataMode)"
+      class="btns__container"
+    >
       <div class="priority">
         <div
-          v-if="![4,8].includes(infoDataMode)"
           class="price__container"
         >
           <span class="price__value">
@@ -307,7 +309,6 @@
           class="priority__container"
         >
           <div
-            v-if="![4,8].includes(infoDataMode)"
             class="priority__title"
             :class="getPriorityClass(questData.priority)"
           >
@@ -587,14 +588,14 @@ export default {
     flex-direction: row;
     justify-items: flex-start;
     align-items: center;
-    margin: 20px 15px;
+    margin: 20px 0;
   }
   &__container {
     display: flex;
     flex-direction: column;
     justify-items: flex-start;
     align-items: flex-start;
-    margin: 20px 15px;
+    margin: 20px 0;
   }
   &__avatar {
     border-radius: 50%;
@@ -608,8 +609,7 @@ export default {
   &__title {
     @extend .worker;
     font-size: 18px;
-    margin: 0 0 0 15px;
-    padding: 15px 15px 0 0;
+    margin: 20px 0 20px 0;
   }
 }
 .card {

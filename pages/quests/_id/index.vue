@@ -19,6 +19,7 @@
             {{ questData.description }}
           </span>
         </div>
+        <div class="divider" />
         <div class="quest_materials__container">
           <h2 class="quest_materials__title">
             {{ $t('quests.questMaterials') }}
@@ -34,6 +35,11 @@
             >
           </div>
         </div>
+        <div
+          v-if="userRole === 'employer'
+            ? [2, 8, 9].includes(infoDataMode) : [1, 2, 3, 4, 9].includes(infoDataMode)"
+          class="divider"
+        />
         <questIdEmployer
           :user-avatar="userAvatar"
           :assign-worker="questData.assignedWorker"
@@ -246,17 +252,11 @@ export default {
       let payload = 1;
       const responsesCount = this.userRole === 'employer'
         ? this.responsesData.count : Object.keys(this.respondedList).length;
-      console.log('responsesCount', responsesCount);
       const { assignedWorker } = this.questData;
-      console.log('assignedWorker', assignedWorker);
       const { assignedWorkerId } = this.questData;
-      console.log('assignedWorkerId', assignedWorkerId);
       const { userRole } = this;
-      console.log('userRole', userRole);
       const userId = this.userData.id;
-      console.log('userId', userId);
       const questStatus = this.questData.status;
-      console.log('questStatus', questStatus);
       if (userRole === 'employer') {
         switch (true) {
           case responsesCount > 0 && questStatus === 0:
@@ -353,6 +353,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.divider {
+  margin: 20px 0 20px 0;
+  background-color: $black0;
+  width:100%;
+  height: 1px;
+}
 .quest {
   &__map {
     height: 205px;
@@ -459,7 +465,7 @@ export default {
     font-weight: 500;
     font-size: 18px;
     color: $black800;
-    padding: 20px 0 20px 0;
+    padding: 0 0 20px 0;
   }
 }
 
