@@ -74,7 +74,7 @@
     >
       <div class="btn__wrapper">
         <base-btn
-          :disabled="true"
+          :disabled="questData.status === -1"
           @click="sendARequestOnQuest"
         >
           {{ $t('btn.responded') }}
@@ -87,6 +87,7 @@
     >
       <div class="btn__wrapper">
         <base-btn
+          :disabled="questData.status === -1"
           @click="sendARequestOnQuest"
         >
           {{ $t('btn.sendARequest') }}

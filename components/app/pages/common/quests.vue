@@ -489,6 +489,7 @@ export default {
     },
     getStatusCard(index) {
       const status = {
+        '-1': 'Rejected',
         1: this.$t('quests.active'),
         6: this.$t('quests.performed'),
         5: this.$t('quests.requested'),
@@ -499,6 +500,7 @@ export default {
     },
     getStatusClass(index) {
       const status = {
+        '-1': 'quests__cards__state_clo',
         1: 'quests__cards__state_act',
         6: 'quests__cards__state_per',
         5: 'quests__cards__state_req',

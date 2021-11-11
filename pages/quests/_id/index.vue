@@ -241,16 +241,6 @@ export default {
       const { userRole } = this;
       const userId = this.userData.id;
       const questStatus = this.questData.status;
-
-      // questStatus
-      // Created = 0,
-      // Active = 1
-      // Closed = 2
-      // Dispute = 3
-      // WaitWorker = 4
-      // WaitConfirm = 5
-      // Done = 6
-
       if (userRole === 'employer') {
         switch (true) {
           case responsesCount > 0 && questStatus === 0:
