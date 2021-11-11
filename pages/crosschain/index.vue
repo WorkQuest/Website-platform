@@ -307,24 +307,24 @@ export default {
     async checkWalletStatus() {
       if (this.isConnected) return;
       const chainName = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
-      if (typeof window.ethereum === 'undefined') {
-        localStorage.setItem('metamaskStatus', 'notInstalled');
-        this.ShowModal({
-          key: modals.status,
-          img: '~assets/img/ui/cardHasBeenAdded.svg',
-          title: 'Please install Metamask!',
-          subtitle: 'Please click install...',
-          button: 'Install',
-          type: 'installMetamask',
-        });
-      } else {
-        localStorage.setItem('metamaskStatus', 'installed');
-        await this.connectToMetamask(chainName);
-      }
+      // if (typeof window.ethereum === 'undefined') {
+      //   localStorage.setItem('metamaskStatus', 'notInstalled');
+      //   this.ShowModal({
+      //     key: modals.status,
+      //     img: '~assets/img/ui/cardHasBeenAdded.svg',
+      //     title: 'Please install Metamask!',
+      //     subtitle: 'Please click install...',
+      //     button: 'Install',
+      //     type: 'installMetamask',
+      //   });
+      // } else {
+      //   localStorage.setItem('metamaskStatus', 'installed');
+      await this.connectToMetamask(chainName);
+      // }
     },
     async redeemAction(data) {
       this.SetLoader(true);
-      if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === '"injected"' || localStorage.getItem('metamaskStatus') === 'installed') {
+      if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === '"injected"') {
         await this.checkMiningPoolId(data.chain);
       }
       const payload = {
@@ -353,7 +353,6 @@ export default {
     async checkMiningPoolId(chainName) {
       await localStorage.setItem('miningPoolId', chainName);
       this.miningPoolId = localStorage.getItem('miningPoolId');
-      console.log('checkMiningPoolId', this.miningPoolId);
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
       if (!rightChain) return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
       return rightChain;
@@ -390,7 +389,7 @@ export default {
     },
     async showSwapModal() {
       this.SetLoader(true);
-      if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === '"injected"' || localStorage.getItem('metamaskStatus') === 'installed') {
+      if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === '"injected"') {
         await this.checkMiningPoolId(this.sourceAddressInd === 0 ? 'ETH' : 'BNB');
       }
       await this.$store.dispatch('web3/getCrosschainTokensData');

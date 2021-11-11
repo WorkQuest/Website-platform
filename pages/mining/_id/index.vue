@@ -451,21 +451,21 @@ export default {
   methods: {
     async checkWalletStatus() {
       if (this.isConnected) return;
-      if (typeof window.ethereum === 'undefined') {
-        localStorage.setItem('metamaskStatus', 'notInstalled');
-        this.ShowModal({
-          key: modals.status,
-          img: '~assets/img/ui/cardHasBeenAdded.svg',
-          title: 'Please install Metamask!',
-          subtitle: 'Please click install...',
-          button: 'Install',
-          type: 'installMetamask',
-        });
-      } else {
-        localStorage.setItem('metamaskStatus', 'installed');
-        await this.connectToMetamask();
-      }
-      if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === '"injected"' || localStorage.getItem('metamaskStatus') === 'installed') {
+      // if (typeof window.ethereum === 'undefined') {
+      //   localStorage.setItem('metamaskStatus', 'notInstalled');
+      //   this.ShowModal({
+      //     key: modals.status,
+      //     img: '~assets/img/ui/cardHasBeenAdded.svg',
+      //     title: 'Please install Metamask!',
+      //     subtitle: 'Please click install...',
+      //     button: 'Install',
+      //     type: 'installMetamask',
+      //   });
+      // } else {
+      //   localStorage.setItem('metamaskStatus', 'installed');
+      await this.connectToMetamask();
+      // }
+      if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === '"injected"') {
         const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
         if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
       }
