@@ -16,7 +16,7 @@
           mode="light"
           class="mining-page__connect"
           :disabled="statusBusy"
-          @click="checkMetamaskStatus()"
+          @click="checkWalletStatus()"
         >
           {{ $t('mining.connectWallet') }}
         </base-btn>
@@ -25,7 +25,7 @@
           mode="light"
           class="mining-page__connect"
           :disabled="statusBusy"
-          @click="disconnectFromMetamask"
+          @click="disconnectFromWallet"
         >
           {{ $t('meta.disconnect') }}
         </base-btn>
@@ -61,7 +61,7 @@
               v-if="miningPoolId === 'BNB'"
               class="btn_bl"
               mode="outline"
-              :disabled="statusBusy || metamaskStatus === 'notInstalled'"
+              :disabled="statusBusy || metamaskStatus === 'notInstalled' || !isConnected"
               @click="openSwapTokens()"
             >
               {{ $t('mining.swapTokens.title') }}
@@ -258,6 +258,7 @@ import chart from './graphics_data';
 import { StakingTypes } from '~/utils/enums';
 
 export default {
+  name: 'MiningPool',
   layout: 'guest',
   components: {
     chart,
@@ -386,9 +387,9 @@ export default {
   },
   watch: {
     async isConnected(newValue) {
-      if (this.firstLoading) return;
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
       if (newValue && rightChain) {
+        await this.$store.dispatch('web3/initContract');
         await this.tokensDataUpdate();
         this.updateInterval = setInterval(() => this.tokensDataUpdate(), 15000);
       } else {
@@ -417,7 +418,7 @@ export default {
   async mounted() {
     // this.SetLoader(false);
     this.SetLoader(true);
-    // await this.checkMetamaskStatus();
+    // await this.checkWalletStatus();
     if (this.$route.params.id === 'ETH') {
       await Promise.all([
         this.getWqtWethTokenDay(),
@@ -443,35 +444,38 @@ export default {
     await this.initTableData();
     this.firstLoading = false;
   },
-  beforeDestroy() {
+  async beforeDestroy() {
     clearInterval(this.updateInterval);
+    await this.disconnectFromWallet();
   },
   methods: {
-    async checkMetamaskStatus() {
-      if (typeof window.ethereum === 'undefined') {
-        localStorage.setItem('metamaskStatus', 'notInstalled');
-        this.ShowModal({
-          key: modals.status,
-          img: '~assets/img/ui/cardHasBeenAdded.svg',
-          title: 'Please install Metamask!',
-          subtitle: 'Please click install...',
-          button: 'Install',
-          type: 'installMetamask',
-        });
-      } else {
-        localStorage.setItem('metamaskStatus', 'installed');
+    async checkWalletStatus() {
+      if (this.isConnected) return;
+      // if (typeof window.ethereum === 'undefined') {
+      //   localStorage.setItem('metamaskStatus', 'notInstalled');
+      //   this.ShowModal({
+      //     key: modals.status,
+      //     img: '~assets/img/ui/cardHasBeenAdded.svg',
+      //     title: 'Please install Metamask!',
+      //     subtitle: 'Please click install...',
+      //     button: 'Install',
+      //     type: 'installMetamask',
+      //   });
+      // } else {
+      //   localStorage.setItem('metamaskStatus', 'installed');
+      await this.connectToMetamask();
+      // }
+      if (localStorage.getItem('isMetaMask') === 'true') {
         const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
         if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
-        await this.connectToMetamask();
       }
     },
     async connectToMetamask() {
       if (!this.isConnected) {
-        await this.$store.dispatch('web3/connect', this.$route.params.id);
+        await this.$store.dispatch('web3/connect', { chain: this.$route.params.id });
       }
-      localStorage.setItem('miningPoolId', this.$route.params.id);
+      await localStorage.setItem('miningPoolId', this.$route.params.id);
       this.miningPoolId = localStorage.getItem('miningPoolId');
-      await this.$store.dispatch('web3/initContract');
     },
     async initTokenDays() {
       const totalLiquidity = this.miningPoolId === 'BNB' ? this.wqtWbnbTokenDay[0]?.reserveUSD : this.wqtWethTokenDay[0]?.reserveUSD;
@@ -561,10 +565,6 @@ export default {
       return style;
     },
     async tokensDataUpdate() {
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
-      if (!rightChain) {
-        return;
-      }
       const tokensData = await this.$store.dispatch('web3/getTokensData');
       this.fullRewardAmount = tokensData.rewardTokenAmount;
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
@@ -576,7 +576,7 @@ export default {
       const profit = await this.$store.dispatch('web3/getAPY', payload);
       this.profitWQT = this.Floor(profit);
     },
-    async disconnectFromMetamask() {
+    async disconnectFromWallet() {
       await this.$store.dispatch('web3/disconnect');
     },
     async claimRewards() {
@@ -609,28 +609,48 @@ export default {
       });
     },
     async openModalUnstaking() {
-      await this.checkMetamaskStatus();
-      this.ShowModal({
-        key: modals.claimRewards,
-        type: 2,
-        decimals: this.accountData.decimals.stakeDecimal,
-        stakingType: StakingTypes.MINING,
-        updateMethod: this.tokensDataUpdate,
-      });
+      await this.checkWalletStatus();
+      if (this.stakedAmount > 0) {
+        this.ShowModal({
+          key: modals.claimRewards,
+          type: 2,
+          decimals: this.accountData.decimals.stakeDecimal,
+          stakingType: StakingTypes.MINING,
+          updateMethod: this.tokensDataUpdate,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.incorrectAmount'),
+        });
+      }
     },
     async openModalClaimRewards() {
-      await this.checkMetamaskStatus();
-      this.ShowModal({
-        key: modals.claimRewards,
-        type: 1,
-        stakingType: StakingTypes.MINING,
-        decimals: this.accountData.decimals.stakeDecimal,
-        updateMethod: this.tokensDataUpdate,
-      });
+      await this.checkWalletStatus();
+      if (this.rewardAmount > 0) {
+        this.ShowModal({
+          key: modals.claimRewards,
+          type: 1,
+          stakingType: StakingTypes.MINING,
+          decimals: this.accountData.decimals.stakeDecimal,
+          updateMethod: this.tokensDataUpdate,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.incorrectAmount'),
+        });
+      }
     },
     async handleBackToMainMining() {
       await this.$router.push('/mining');
-      await this.disconnectFromMetamask();
+      await this.disconnectFromWallet();
     },
     iconUrls() {
       return [

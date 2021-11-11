@@ -216,8 +216,8 @@ export default {
           });
         } else {
           localStorage.setItem('metamaskStatus', 'installed');
+          await this.$store.dispatch('web3/connectToMetaMask');
           await this.$store.dispatch('web3/goToChain', { chain: Chains.ETHEREUM });
-          await this.$store.dispatch('web3/connect');
         }
       }
     },

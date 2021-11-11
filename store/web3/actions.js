@@ -19,7 +19,7 @@ import {
   getAccountAddress,
   goToChain,
   initStackingContract,
-  initWeb3,
+  initWeb3, initMetaMaskWeb3,
   redeemSwap,
   showToast,
   staking,
@@ -29,6 +29,7 @@ import {
   swapWithBridge,
   getStakingDataByType,
   getStakingRewardTxFee, handleMetamaskStatus, fetchActions, unsubscirbeListeners, getChainIdByChain,
+  initProvider,
   authRenewal,
   getPensionDefaultData,
   getPensionWallet,
@@ -62,7 +63,7 @@ export default {
     commit('setMetaMaskStatus', false);
     commit('clearTokens');
     commit('clearAccount');
-    localStorage.clear();
+    localStorage.removeItem('isMetaMask');
   },
 
   async connect({ commit, dispatch, getters }, payload) {
@@ -82,9 +83,28 @@ export default {
       showToast('Error connect to Metamask', `${response.data}`, 'danger');
     }
   },
+  async handleConnectionStatusChanged({ dispatch }) {
+    await dispatch('disconnect');
+    await dispatch('connect', { isReconnection: true, chain: localStorage.getItem('miningPoolId') });
+  },
+
+  // Only MetaMask
+  async connectToMetaMask({ commit, dispatch, getters }, payload) {
+    const isReconnection = payload?.isReconnection;
+    const response = await initMetaMaskWeb3(payload);
+    if (response.ok) {
+      if (!getters.isHandlingMetamaskStatus && !isReconnection) {
+        handleMetamaskStatus(() => dispatch('handleMetamaskStatusChanged'));
+        commit('setIsHandlingMetamaskStatus', true);
+      }
+      await commit('setAccount', response.result);
+      await commit('setIsConnected', true);
+      await commit('setPurseData', getAccountAddress());
+    }
+  },
   async handleMetamaskStatusChanged({ dispatch }) {
     await dispatch('disconnect');
-    await dispatch('connect', { isReconnection: true });
+    await dispatch('connectToMetaMask', { isReconnection: true });
   },
 
   async checkConnectionStatus({ getters, dispatch }, chain) {
@@ -401,8 +421,10 @@ export default {
       return err;
     }
   },
-  async setMetaMaskStatus({ commit }, payload) {
-    commit('setMetaMaskStatus', payload);
+  async initProvider({ commit }, payload) {
+    const providerData = await initProvider(payload);
+    commit('setMetaMaskStatus', providerData.isMetaMask);
+    return providerData;
   },
 
   async getPensionDefaultData() {
