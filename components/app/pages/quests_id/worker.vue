@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="['worker'].includes(userRole)"
+    v-if="userRole === 'worker'"
     :class="[
       {'btns__container': [1,2,3,5,7].includes(infoDataMode)},
       {'btns__margin': ![1,2,3,5,7].includes(infoDataMode)}

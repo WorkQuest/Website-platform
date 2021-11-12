@@ -1,5 +1,5 @@
 <template>
-  <span v-if="['employer'].includes(userRole)">
+  <div v-if="userRole === 'employer'">
     <div
       v-if="[1].includes(infoDataMode)"
       class="btns__container"
@@ -25,27 +25,21 @@
       </div>
     </div>
     <div v-if="[2].includes(infoDataMode)">
-      <div class="worker__title">{{ $t('quests.worker') }}</div>
+      <div class="worker__title">
+        {{ $t('quests.worker') }}
+      </div>
       <div class="worker__container">
         <div>
           <img
-            v-if="assignWorker"
             class="worker__avatar"
-            :src="userAvatar"
-            alt=""
-          >
-          <img
-            v-if="!assignWorker"
-            class="worker__avatar"
-            :src="require('~/assets/img/app/avatar_empty.png')"
+            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
-          v-if="assignWorker"
           class="worker__name"
         >
-          {{ assignWorker.firstName ? assignWorker.firstName : 'Nameless' }} {{ assignWorker.lastName ? assignWorker.lastName : '' }}
+          {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА Нет Бэка-->
@@ -109,26 +103,24 @@
     <!--    </div>-->
     <div v-if="[4].includes(infoDataMode)">
       <div
-        v-if="assignWorker"
         class="worker__title"
       >
         {{ $t('quests.worker') }}
       </div>
       <div
-        v-if="assignWorker"
-        class="worker__container"
+        class="worker__container_row"
       >
         <div>
           <img
             class="worker__avatar"
-            :src="assignWorker.avatar ? assignWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
           class="worker__name"
         >
-          {{ assignWorker.firstName ? assignWorker.firstName : 'Nameless' }} {{ assignWorker.lastName ? assignWorker.lastName : '' }}
+          {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
@@ -152,22 +144,14 @@
         </div>
         <div class="worker__container_row">
           <img
-            v-if="assignWorker"
             class="worker__avatar"
-            :src="userAvatar"
-            alt=""
-          >
-          <img
-            v-if="!assignWorker"
-            class="worker__avatar"
-            :src="require('~/assets/img/app/avatar_empty.png')"
+            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
           <div
-            v-if="assignWorker"
             class="worker__name"
           >
-            {{ assignWorker.firstName ? assignWorker.firstName : 'Nameless' }} {{ assignWorker.lastName ? assignWorker.lastName : '' }}
+            {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
           </div>
           <div>
             <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
@@ -207,30 +191,22 @@
         </div>
       </div>
     </div>
-    <div v-if="[7].includes(infoDataMode)">
+    <div v-if="[7, 8].includes(infoDataMode)">
       <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
-      <div class="worker__container">
+      <div class="worker__container_row">
         <div>
           <img
-            v-if="assignWorker"
             class="worker__avatar"
-            :src="userAvatar"
-            alt=""
-          >
-          <img
-            v-if="!assignWorker"
-            class="worker__avatar"
-            :src="require('~/assets/img/app/avatar_empty.png')"
+            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
-          v-if="assignWorker"
           class="worker__name"
         >
-          {{ assignWorker.firstName ? assignWorker.firstName : 'Nameless' }} {{ assignWorker.lastName ? assignWorker.lastName : '' }}
+          {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
@@ -263,23 +239,15 @@
       <div class="worker__container_row">
         <div>
           <img
-            v-if="assignWorker"
             class="worker__avatar"
-            :src="userAvatar"
-            alt=""
-          >
-          <img
-            v-if="!assignWorker"
-            class="worker__avatar"
-            :src="require('~/assets/img/app/avatar_empty.png')"
+            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
-          v-if="assignWorker"
           class="worker__name"
         >
-          {{ assignWorker.firstName ? assignWorker.firstName : 'Nameless' }} {{ assignWorker.lastName ? assignWorker.lastName : '' }}
+          {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
@@ -317,7 +285,7 @@
         </div>
       </div>
     </div>
-  </span>
+  </div>
 </template>
 
 <script>
