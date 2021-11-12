@@ -11,7 +11,7 @@
               <div
                 class="info__text"
                 :class="[
-                  {'info__text_white': ![3,6,7,8,9].includes(infoDataMode)}
+                  {'info__text_white': ![3,6,7].includes(infoDataMode)}
                 ]"
               >
                 {{ infoStatusText }}
@@ -33,10 +33,10 @@
                 class="info__text"
                 :class="[
                   {
-                    'info__text_white': ![3,7,8,9].includes(infoDataMode)
+                    'info__text_white': ![3,7,8].includes(infoDataMode)
                   },
                   {
-                    'info__text_black': [3,7,8,9].includes(infoDataMode)
+                    'info__text_black': [3,7,8].includes(infoDataMode)
                   }
                 ]"
               >
@@ -83,24 +83,21 @@ export default {
           return this.$t('quests.waitWorker');
         } if ([6].includes(this.infoDataMode)) {
           return this.$t('quests.pendingConsideration');
-        } if ([9].includes(this.infoDataMode)) {
-          return this.$t('quests.questFinished');
-        } if ([8].includes(this.infoDataMode)) {
-          return this.$t('quests.questClosed');
+        } if ([8, 9].includes(this.infoDataMode)) {
+          return this.$t('performed.title');
         } if ([7].includes(this.infoDataMode)) {
           return this.$t('quests.dispute');
         }
-      } if (['worker'].includes(this.userRole)) {
+      }
+      if (['worker'].includes(this.userRole)) {
         if ([1].includes(this.infoDataMode)) {
           return this.$t('invite.title');
         } if ([2].includes(this.infoDataMode)) {
           return this.$t('quests.activeQuest');
         } if ([3].includes(this.infoDataMode)) {
           return this.$t('response.title');
-        } if ([4].includes(this.infoDataMode)) {
-          return this.$t('performed.title');
-        } if ([9].includes(this.infoDataMode)) {
-          return this.$t('quests.questFinished');
+        } if ([4, 9].includes(this.infoDataMode)) {
+          return this.$t('quests.completed');
         } if ([8].includes(this.infoDataMode)) {
           return this.$t('quests.questClosed');
         } if ([7].includes(this.infoDataMode)) {
@@ -121,7 +118,7 @@ export default {
           'info_bg-grey': [3].includes(this.infoDataMode),
         },
         {
-          'info_bg-blue': [4].includes(this.infoDataMode),
+          'info_bg-blue': [4, 9].includes(this.infoDataMode),
         },
       ];
     },

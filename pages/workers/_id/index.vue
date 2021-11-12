@@ -10,6 +10,7 @@
               <div class="col info-grid__col_left">
                 <div class="info-grid__avatar">
                   <img
+                    v-if="Object.keys(currentWorker).length !== 0"
                     class="info-grid__avatar"
                     :src="currentWorker.avatar !== null ? currentWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
                     :alt="currentWorker.firstName"
@@ -30,8 +31,10 @@
                     TOP RANKED EMP.
                   </span>
                 </div>
-                <div class="description">
-                  {{ currentWorker.additionalInfo.description ? currentWorker.additionalInfo.description: $t('quests.nothingAboutMe') }}
+                <div
+                  class="description"
+                >
+                  {{ currentWorker ? currentWorker.additionalInfo.description: $t('quests.nothingAboutMe') }}
                 </div>
                 <social />
                 <div class="contacts__grid">
@@ -45,19 +48,19 @@
                             class="icon-location"
                           />
                           <span class="contact__link">
-                            {{ currentWorker.additionalInfo.address ? currentWorker.additionalInfo.address : $t('quests.unknownAddress') }}
+                            {{ currentWorker ? currentWorker.additionalInfo.address : $t('quests.unknownAddress') }}
                           </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-phone" />
                           <span class="contact__link">
-                            {{ currentWorker.additionalInfo.phone ? currentWorker.additionalInfo.phone : $t('quests.unknownPhoneNumber') }}
+                            {{ currentWorker ? currentWorker.additionalInfo.phone : $t('quests.unknownPhoneNumber') }}
                           </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-mail" />
                           <span class="contact__link">
-                            {{ currentWorker.additionalInfo.email ? currentWorker.additionalInfo.email : $t('quests.unknownEmailAddress') }}
+                            {{ currentWorker ? currentWorker.additionalInfo.email : $t('quests.unknownEmailAddress') }}
                           </span>
                         </span>
                       </span>
@@ -177,8 +180,13 @@ export default {
       userData: 'user/getUserData',
       userInfo: 'data/getUserInfo',
       user: 'data/getUserInfo',
+      workersList: 'quests/getWorkersList',
       currentWorker: 'quests/getCurrentWorker',
     }),
+  },
+  async created() {
+    await this.initWorkers();
+    await this.initWorker();
   },
   async mounted() {
     this.SetLoader(true);
@@ -190,6 +198,16 @@ export default {
         key: modals.invitation,
         currentWorker: this.currentWorker,
       });
+    },
+    async initWorkers() {
+      await this.$store.dispatch('quests/workersList');
+    },
+    async initWorker() {
+      // TODO: Исправить скрипт!
+      const currentWorkerId = this.$route.path.slice(-36);
+      const workersList = this.workersList.users;
+      const filteredWorker = workersList.filter((worker) => worker.id === currentWorkerId);
+      return await this.$store.dispatch('quests/setCurrentWorker', filteredWorker[0]);
     },
   },
 };
