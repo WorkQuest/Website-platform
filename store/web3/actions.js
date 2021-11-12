@@ -37,6 +37,7 @@ import {
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
+import modals from '~/store/modals/modals';
 
 BigNumber.set({ ROUNDING_MODE: BigNumber.ROUND_DOWN });
 BigNumber.config({ EXPONENTIAL_AT: 60 });

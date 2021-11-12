@@ -261,7 +261,7 @@ export default {
     async checkWalletExists() {
       const wallet = await this.$store.dispatch('web3/getPensionWallet');
       if (wallet.createdAt !== '0') {
-        // await this.$router.push('/pension/my');
+        await this.$router.push('/pension/my');
       }
     },
     openApplyForAPensionModal() {

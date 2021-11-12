@@ -17,12 +17,6 @@
         :class="{'pension-page__content_expired' : isDeadline}"
       >
         <template v-if="!isDeadline">
-          <base-btn
-            class="btn__time-machine"
-            @click="jumpInTime()"
-          >
-            +3 years
-          </base-btn>
           <div class="info-block__triple">
             <div class="info-block__third">
               <div class="info-block__name">
@@ -155,26 +149,14 @@
                 {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
               </div>
               <div
-                :class="[
-                  {'info-block__subtitle_black' : !isExpired},
-                  {'info-block__subtitle_red' : isExpired}
-                ]"
+                class="info-block__subtitle_red"
               >
-                {{ isExpired ? '0 days' : '3 years' }}
+                {{ $t('pension.days', {count: 0}) }}
               </div>
             </div>
             <div
-              :class="[
-                {'btn-group' : !isExpired},
-                {'btn-group_exp' : isExpired}
-              ]"
+              class="btn-group"
             >
-              <base-btn
-                v-if="isExpired"
-                class="btn_red"
-              >
-                {{ $t('pension.cancel') }}
-              </base-btn>
               <base-btn
                 class="btn_bl"
                 @click="showWithdrawModal"
@@ -183,9 +165,9 @@
               </base-btn>
               <base-btn
                 class="btn_bl"
-                @click="extendLockTime"
+                @click="handleProlong"
               >
-                {{ $t('pension.' + (isExpired ? 'renewFor1Year' : 'prolong')) }}
+                {{ $t('pension.prolong') }}
               </base-btn>
             </div>
           </div>
@@ -299,7 +281,6 @@ export default {
       wallet: null,
       walletAddress: null,
       currentChainName: null,
-      isExpired: false,
       isDeadline: false,
       history: [],
       FAQs: [
@@ -423,18 +404,18 @@ export default {
             style: 'padding: 0; height: 64px; line-height: 64px',
           },
         },
-        {
-          key: 'status',
-          label: this.$t('referral.tableHead.status'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
+        // {
+        //   key: 'status',
+        //   label: this.$t('referral.tableHead.status'),
+        //   thStyle: {
+        //     padding: '0',
+        //     height: '27px',
+        //     lineHeight: '27px',
+        //   },
+        //   tdAttr: {
+        //     style: 'padding: 0; height: 64px; line-height: 64px',
+        //   },
+        // },
       ];
     },
     pensionBalance() {
@@ -531,19 +512,12 @@ export default {
         time: this.$t('pension.table.time'),
         status: this.$t('pension.table.status'),
       };
-      switch (method) {
-        case 'Received':
-          // eslint-disable-next-line no-case-declarations
-          let amount = new BigNumber(returnValues.amount).shiftedBy(-18);
-          if (amount.isLessThan('0.0000001') && amount.isGreaterThan('0')) amount = '>0.0000001';
-          else amount = amount.decimalPlaces(6).toString();
-          tx.amount = amount;
-          tx.time = moment(new Date(returnValues.timestamp * 1000)).format('DD.MM.YY HH:mm');
-          break;
-        default:
-          console.log('[NEED HANDLE]', method, result);
-          break;
-      }
+      // eslint-disable-next-line no-case-declarations
+      let amount = new BigNumber(returnValues.amount).shiftedBy(-18);
+      if (amount.isLessThan('0.0000001') && amount.isGreaterThan('0')) amount = '>0.0000001';
+      else amount = amount.decimalPlaces(6).toString();
+      tx.amount = amount;
+      tx.time = moment(new Date(returnValues.timestamp * 1000)).format('DD.MM.YY HH:mm');
       this.history.unshift(tx);
     },
     showWithdrawModal() {
@@ -555,7 +529,14 @@ export default {
         updateMethod: async () => await this.getWallet(),
       });
     },
-    async extendLockTime() { // Prolong
+    handleProlong() {
+      this.ShowModal({
+        key: modals.areYouSureNotification,
+        text: this.$t('pension.prolongText'),
+        callback: async () => await this.extendLockTime(),
+      });
+    },
+    async extendLockTime() {
       this.SetLoader(true);
       const ok = await this.$store.dispatch('web3/pensionExtendLockTime');
       if (ok) {
@@ -575,9 +556,6 @@ export default {
         key: modals.changePercent,
         updateMethod: async () => await this.getWallet(),
       });
-    },
-    jumpInTime() {
-      this.isDeadline = true;
     },
     handleClickFAQ(FAQ) {
       FAQ.isOpen = !FAQ.isOpen;

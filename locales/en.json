@@ -367,7 +367,6 @@
     "questDispute:": "Quest Dispute:",
     "questWaitConfirm:": "Quest wait confirm:",
     "skillsNotSpecified": "Skills not specified...",
-    "oneTime": "One time",
     "proposal": "Proposal",
     "category": "Select a category",
     "address": "Add address",
@@ -1927,6 +1926,7 @@
     "transactionHistory": "Transaction history",
     "withdraw": "Withdraw",
     "prolong": "Prolong",
+    "prolongText": "This will prolong pension program for 1 year",
     "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac neque cum posuere in. Semper arcu purus eget faucibus.",
     "table": {
       "userName": "John Doe",
@@ -1982,9 +1982,7 @@
     "faq10": {
       "question": "What happens if I Overfund my pension?",
       "answer": "We have no restrictions on the amount of savings. The entire accumulated amount will be at your disposal at the end of the program period."
-    },
-    "cancel": "Cancel",
-    "renewFor1Year": "Renew for 1 year"
+    }
   },
   "saving": {
     "withdrawModalBody": "The amount of locked funds and the accumulated interest will be credited to your wallet",
