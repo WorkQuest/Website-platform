@@ -278,10 +278,11 @@ export default {
       this.accountAddress = await this.$store.dispatch('web3/getAccountAddress');
       if (typeof this.accountAddress === 'string') {
         await this.swapsTableData(this.accountAddress, this.isConnected);
-        if (this.isConnected && this.updateInterval) {
+        if (this.isConnected && !this.updateInterval) {
           this.updateInterval = setInterval(() => this.swapsTableData(this.accountAddress, this.isConnected), 5000);
         } else {
           await clearInterval(this.updateInterval);
+          this.updateInterval = null;
         }
       }
     },
@@ -305,8 +306,9 @@ export default {
     },
     async disconnectFromWallet() {
       await clearInterval(this.updateInterval);
-      await this.swapsTableData(this.accountAddress, this.isConnected);
+      this.updateInterval = null;
       await this.$store.dispatch('web3/disconnect');
+      await this.swapsTableData(this.accountAddress, this.isConnected);
     },
     async checkWalletStatus() {
       if (this.isConnected) return;
@@ -363,15 +365,11 @@ export default {
       return rightChain;
     },
     async swapsTableData(recipientAddress, connectedStatus) {
-      if (connectedStatus) {
-        const payload = {
-          recipientAddress,
-          query: '&offset=0&limit=10',
-        };
-        await this.$store.dispatch('defi/swapsForCrosschain', payload);
-      } else {
-        this.crosschainTableData = [];
-      }
+      const payload = {
+        recipientAddress,
+        query: connectedStatus ? '&offset=0&limit=10' : false,
+      };
+      await this.$store.dispatch('defi/swapsForCrosschain', payload);
     },
     togglePools(selInd) {
       if (this.sourceAddressInd === 0) {
