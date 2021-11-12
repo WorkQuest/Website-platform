@@ -49,7 +49,7 @@
                     type="border"
                     :items="addresses"
                     :is-icon="true"
-                    @input="handleChangeSource"
+                    @input="handleChangePool"
                   />
                 </div>
               </div>
@@ -58,7 +58,7 @@
               src="~assets/img/ui/swap.png"
               alt=""
               class="swap-icon"
-              @click="togglePools()"
+              @click="handleChangePool(targetAddressInd ? 1 : 0)"
             >
             <div>
               <div class="info-block__name_bold">
@@ -74,7 +74,7 @@
                     type="border"
                     :items="addresses"
                     :is-icon="true"
-                    @input="handleChangeTarget"
+                    @input="handleChangePool"
                   />
                 </div>
               </div>
@@ -378,19 +378,9 @@ export default {
         this.targetAddressInd = selInd ? 0 : 1;
       }
     },
-    async handleChangeTarget(selInd) {
-      if (selInd === this.sourceAddressInd) {
-        this.sourceAddressInd = selInd ? 0 : 1;
-      }
-      this.targetAddressInd = selInd;
-      await this.disconnectFromWallet();
-    },
-    async handleChangeSource(selInd) {
-      if (selInd === this.targetAddressInd) {
-        this.targetAddressInd = selInd ? 0 : 1;
-      }
-      this.sourceAddressInd = selInd;
-      await this.disconnectFromWallet();
+    handleChangePool(selInd) {
+      this.sourceAddressInd = selInd ? 1 : 0;
+      this.targetAddressInd = selInd ? 0 : 1;
     },
     async showSwapModal() {
       this.SetLoader(true);
