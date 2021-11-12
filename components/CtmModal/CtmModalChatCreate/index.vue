@@ -97,7 +97,14 @@ export default {
           name: 'Pieter Spider',
         },
       },
+      filter: {
+        offset: 0,
+        limit: 10,
+      },
     };
+  },
+  async mounted() {
+    await this.getUsers();
   },
   computed: {
     ...mapGetters({
@@ -105,6 +112,13 @@ export default {
     }),
   },
   methods: {
+    async getUsers() {
+      const config = {
+        params: this.filter,
+      };
+
+      await this.$store.dispatch('data/getUsersForGroupChat', config);
+    },
     hide() {
       this.CloseModal();
     },
