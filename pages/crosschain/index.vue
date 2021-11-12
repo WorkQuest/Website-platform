@@ -184,7 +184,6 @@ export default {
       tableItems: {},
       items: [],
       updateInterval: null,
-      accountAddress: null,
     };
   },
   computed: {
@@ -275,11 +274,10 @@ export default {
   },
   watch: {
     async isConnected() {
-      this.accountAddress = await this.$store.dispatch('web3/getAccountAddress');
-      if (typeof this.accountAddress === 'string') {
-        await this.swapsTableData(this.accountAddress, this.isConnected);
+      if (typeof this.account.address === 'string') {
+        await this.swapsTableData(this.account.address, this.isConnected);
         if (this.isConnected && !this.updateInterval) {
-          this.updateInterval = setInterval(() => this.swapsTableData(this.accountAddress, this.isConnected), 5000);
+          this.updateInterval = setInterval(() => this.swapsTableData(this.account.address, this.isConnected), 5000);
         } else {
           await clearInterval(this.updateInterval);
           this.updateInterval = null;
@@ -308,7 +306,7 @@ export default {
       await clearInterval(this.updateInterval);
       this.updateInterval = null;
       await this.$store.dispatch('web3/disconnect');
-      await this.swapsTableData(this.accountAddress, this.isConnected);
+      await this.swapsTableData(this.account.address, this.isConnected);
     },
     async checkWalletStatus() {
       if (this.isConnected) return;
@@ -353,7 +351,7 @@ export default {
       if (!this.isConnected) {
         await this.$store.dispatch('web3/connect', { chain: chainName });
       }
-      await this.swapsTableData(this.accountAddress, this.isConnected);
+      await this.swapsTableData(this.account.address, this.isConnected);
       await localStorage.setItem('miningPoolId', chainName);
       this.miningPoolId = localStorage.getItem('miningPoolId');
     },
