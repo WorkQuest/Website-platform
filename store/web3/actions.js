@@ -432,7 +432,7 @@ export default {
   },
   async getPensionContributed() {
     const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND_BSC;
+    const _pensionAddress = process.env.PENSION_FUND_TEST;
     const res = await fetchContractData('contributed', _abi, _pensionAddress);
     console.log('contributed', res);
     return res;
@@ -463,7 +463,7 @@ export default {
   },
   async fetchPensionActions({ commit }, { callback, events, params }) {
     const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND_BSC;
+    const _pensionAddress = process.env.PENSION_FUND_TEST;
     await fetchActions(_abi, _pensionAddress, callback, events, params);
   },
   async pensionExtendLockTime() {
