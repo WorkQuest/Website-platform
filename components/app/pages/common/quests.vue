@@ -213,12 +213,12 @@
                 </div>
               </div>
               <quest-dd
-                v-if="[0,4].includes(item.status)"
+                v-if="[0].includes(item.status)"
                 class="block__icon block__icon_fav"
                 mode="vertical"
               />
               <div
-                v-if="[2,3,6].includes(item.status)"
+                v-if="[2,3].includes(item.status)"
                 class="block__icon block__icon_fav star"
                 @click="setStar(item)"
               >
@@ -320,15 +320,16 @@
                   </template>
                 </base-btn>
                 <div
-                  v-else
+                  v-if="[6].includes(item.status)"
                   class="block__rating"
                 >
                   <div class="block__rating block__rating_star">
+                    <!--                    TODO: Исправить код оценки квеста-->
                     <button
                       @click="showReviewModal(item.user.ratingStatistic)"
                     >
                       <b-form-rating
-                        v-model="item.user.ratingStatistic"
+                        v-model="ratingStatistic"
                       />
                     </button>
                   </div>
@@ -370,6 +371,7 @@ export default {
   },
   data() {
     return {
+      ratingStatistic: '',
       questResponses: [],
       isFavorite: false,
       localUserData: {},
