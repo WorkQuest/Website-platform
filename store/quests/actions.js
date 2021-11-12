@@ -17,9 +17,9 @@ export default {
       return console.log(e);
     }
   },
-  async setCurrentWorker({ commit }, data) {
-    commit('setCurrentWorker', data);
-    return data;
+  async setCurrentWorker({ commit }, worker) {
+    commit('setCurrentWorker', worker);
+    return worker;
   },
   async setInfoDataMode({ commit }, mode) {
     commit('setInfoDataMode', mode);
@@ -106,9 +106,9 @@ export default {
       return console.log(e);
     }
   },
-  async startQuest({ commit }, { questId, data }) {
+  async startQuest({ commit }, { questId, payload }) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/start`, data);
+      const response = await this.$axios.$post(`/v1/quest/${questId}/start`, payload);
       return response.result;
     } catch (e) {
       return console.log(e);
