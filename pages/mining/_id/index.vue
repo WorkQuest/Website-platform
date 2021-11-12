@@ -585,6 +585,7 @@ export default {
       await this.$store.dispatch('web3/disconnect');
     },
     async claimRewards() {
+      this.SetLoader(true);
       if (this.fullRewardAmount > 0) {
         await this.tokensDataUpdate();
         await this.$store.dispatch('web3/claimRewards', { stakingType: StakingTypes.MINING });
@@ -598,6 +599,7 @@ export default {
           subtitle: this.$t('modals.nothingToClaim'),
         });
       }
+      this.SetLoader(false);
     },
     cropTxt(str) {
       if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
