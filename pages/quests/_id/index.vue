@@ -37,7 +37,7 @@
         </div>
         <div
           v-if="userRole === 'employer'
-            ? [2, 8, 9].includes(infoDataMode) : [1, 2, 3, 4, 9].includes(infoDataMode)"
+            ? [2, 8, 9].includes(infoDataMode) : [1, 2, 3, 5, 4, 9].includes(infoDataMode)"
           class="divider"
         />
         <questIdEmployer
