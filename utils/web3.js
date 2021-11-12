@@ -608,7 +608,7 @@ export const initStackingContract = async (chain) => {
 export const getPensionDefaultData = async () => {
   try {
     const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND_BSC;
+    const _pensionAddress = process.env.PENSION_FUND_TEST;
     const [lockTime, defaultFee] = await Promise.all([
       fetchContractData('lockTime', _abi, _pensionAddress),
       fetchContractData('defaultFee', _abi, _pensionAddress),
@@ -626,7 +626,7 @@ export const getPensionDefaultData = async () => {
 export const getPensionWallet = async () => {
   try {
     const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND_BSC;
+    const _pensionAddress = process.env.PENSION_FUND_TEST;
     const wallet = await fetchContractData('wallets', _abi, _pensionAddress, [account.address]);
     const {
       unlockDate, fee,
@@ -647,7 +647,7 @@ export const getPensionWallet = async () => {
 export const pensionContribute = async (_amount) => {
   try {
     const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND_BSC;
+    const _pensionAddress = process.env.PENSION_FUND_TEST;
     const contractInst = await createInstance(_abi, _pensionAddress);
     _amount = new BigNumber(_amount).shiftedBy(18).toString();
     await contractInst.contribute(account.address, { value: _amount });
@@ -660,7 +660,7 @@ export const pensionContribute = async (_amount) => {
 export const pensionUpdateFee = async (_fee) => {
   try {
     const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND_BSC;
+    const _pensionAddress = process.env.PENSION_FUND_TEST;
     const contractInst = await createInstance(_abi, _pensionAddress);
     _fee = new BigNumber(_fee).shiftedBy(18).toString();
     await contractInst.updateFee(_fee);
@@ -673,7 +673,7 @@ export const pensionUpdateFee = async (_fee) => {
 export const pensionsWithdraw = async (_amount) => {
   try {
     const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND_BSC;
+    const _pensionAddress = process.env.PENSION_FUND_TEST;
     const contractInst = await createInstance(_abi, _pensionAddress);
     _amount = new BigNumber(_amount).shiftedBy(18).toString();
     await contractInst.withdraw(_amount);
@@ -686,7 +686,7 @@ export const pensionsWithdraw = async (_amount) => {
 export const pensionExtendLockTime = async () => {
   try {
     const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND_BSC;
+    const _pensionAddress = process.env.PENSION_FUND_TEST;
     const contractInst = await createInstance(_abi, _pensionAddress);
     await contractInst.extendLockTime();
     return true;
