@@ -27,10 +27,10 @@
           class="info__text"
           :class="[
             {
-              'info__text_white': ![3,7,8].includes(infoDataMode)
+              'info__text_white': ![3,8].includes(infoDataMode)
             },
             {
-              'info__text_black': [3,7,8].includes(infoDataMode)
+              'info__text_black': [3,8].includes(infoDataMode)
             }
           ]"
         >
