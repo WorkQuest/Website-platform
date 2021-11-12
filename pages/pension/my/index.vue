@@ -55,7 +55,7 @@
             <div class="info-block__third_rate">
               <div class="info-block__small">
                 <div class="info-block__perc">
-                  {{ $tc('pension.plusPercents', '6') }}
+                  {{ $tc('pension.plusPercents', { count: 6 }) }}
                 </div>
                 <div class="info-block__period">
                   {{ $t('pension.year') }}
@@ -144,7 +144,7 @@
             </div>
             <div class="info-block__small_right">
               <div class="info-block__perc">
-                {{ $tc("pension.plusPercents", "6") }}
+                {{ $tc("pension.plusPercents", { count: 6 }) }}
               </div>
               <div class="info-block__period">
                 {{ $t('pension.year') }}
@@ -259,21 +259,21 @@
               class="info-block__faq"
               @click="handleClickFAQ(item)"
             >
-              <div class="text__faq">
+              <span class="text__faq">
                 {{ item.name }}
-              </div>
+              </span>
               <img
                 class="select-img"
                 :class="{'select-img_rotate' : item.isOpen}"
                 src="~/assets/img/ui/arrow-down.svg"
                 alt=""
               >
-              <div
+              <span
                 class="text__faq_gray"
                 :class="{'text__faq_opened' : item.isOpen}"
               >
                 {{ item.about }}
-              </div>
+              </span>
             </button>
           </div>
         </div>
@@ -669,7 +669,7 @@ export default {
 
       &:hover {
         background-color: #0083C71A;
-        border: 0px;
+        border: 0;
       }
 
       &_bl {
