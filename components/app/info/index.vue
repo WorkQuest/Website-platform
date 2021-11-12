@@ -93,20 +93,45 @@ export default {
       return '';
     },
     infoClass() {
-      return [
-        {
-          'info_bg-yellow': [1].includes(this.infoDataMode),
-        },
-        {
-          'info_bg-green': [2].includes(this.infoDataMode),
-        },
-        {
-          'info_bg-grey': [3].includes(this.infoDataMode),
-        },
-        {
-          'info_bg-blue': [4, 9].includes(this.infoDataMode),
-        },
-      ];
+      if (this.userRole === 'worker') {
+        return [
+          {
+            'info_bg-yellow': [1].includes(this.infoDataMode),
+          },
+          {
+            'info_bg-green': [2].includes(this.infoDataMode),
+          },
+          {
+            'info_bg-grey': [3].includes(this.infoDataMode),
+          },
+          {
+            'info_bg-blue': [4, 9].includes(this.infoDataMode),
+          },
+          {
+            'info_bg-red': [7, 8].includes(this.infoDataMode),
+          },
+        ];
+      }
+      if (this.userRole === 'employer') {
+        return [
+          {
+            'info_bg-yellow': [4].includes(this.infoDataMode),
+          },
+          {
+            'info_bg-green': [2].includes(this.infoDataMode),
+          },
+          {
+            'info_bg-grey': [6].includes(this.infoDataMode),
+          },
+          {
+            'info_bg-red': [7].includes(this.infoDataMode),
+          },
+          {
+            'info_bg-blue': [8, 9].includes(this.infoDataMode),
+          },
+        ];
+      }
+      return '';
     },
     ...mapGetters({
       tags: 'ui/getTags',
@@ -145,6 +170,9 @@ export default {
   }
   &_bg-blue {
     background-color: $blue;
+  }
+  &_bg-red {
+    background-color: $red;
   }
   &__body {
     max-width: 1180px;
