@@ -410,7 +410,7 @@ export default {
         title: this.$t('quests.questInfo'),
         subtitle: this.$t('quests.completedWorkRejected'),
       });
-      await this.$store.dispatch('quests/setInfoDataMode', 9);
+      await this.$store.dispatch('quests/setInfoDataMode', 7);
       this.SetLoader(false);
     },
     async initData() {

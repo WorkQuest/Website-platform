@@ -11,7 +11,7 @@
         <div
           class="info__text"
           :class="[
-            {'info__text_white': ![3,6,7].includes(infoDataMode)}
+            {'info__text_white': ![3,6].includes(infoDataMode)}
           ]"
         >
           {{ infoStatusText }}
