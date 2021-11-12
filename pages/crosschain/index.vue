@@ -49,7 +49,7 @@
                     type="border"
                     :items="addresses"
                     :is-icon="true"
-                    @input="handleChangeSource"
+                    @input="handleChangePool"
                   />
                 </div>
               </div>
@@ -58,7 +58,7 @@
               src="~assets/img/ui/swap.png"
               alt=""
               class="swap-icon"
-              @click="togglePools()"
+              @click="handleChangePool(targetAddressInd ? 1 : 0)"
             >
             <div>
               <div class="info-block__name_bold">
@@ -74,7 +74,7 @@
                     type="border"
                     :items="addresses"
                     :is-icon="true"
-                    @input="handleChangeTarget"
+                    @input="handleChangePool"
                   />
                 </div>
               </div>
@@ -190,7 +190,6 @@ export default {
     ...mapGetters({
       tokens: 'web3/getTokens',
       account: 'web3/getAccount',
-      purseData: 'web3/getPurseData',
       userData: 'user/getUserData',
       isConnected: 'web3/isConnected',
       crosschainTableData: 'defi/getCrosschainTokensData',
@@ -275,11 +274,14 @@ export default {
   },
   watch: {
     async isConnected() {
-      if (this.purseData && this.isConnected) {
-        await this.swapsTableData(this.purseData);
-        this.updateInterval = setInterval(() => this.swapsTableData(this.purseData), 5000);
-      } else {
-        await clearInterval(this.updateInterval);
+      if (typeof this.account.address === 'string') {
+        await this.swapsTableData(this.account.address, this.isConnected);
+        if (this.isConnected && !this.updateInterval) {
+          this.updateInterval = setInterval(() => this.swapsTableData(this.account.address, this.isConnected), 5000);
+        } else {
+          await clearInterval(this.updateInterval);
+          this.updateInterval = null;
+        }
       }
     },
   },
@@ -302,7 +304,9 @@ export default {
     },
     async disconnectFromWallet() {
       await clearInterval(this.updateInterval);
+      this.updateInterval = null;
       await this.$store.dispatch('web3/disconnect');
+      await this.swapsTableData(this.account.address, this.isConnected);
     },
     async checkWalletStatus() {
       if (this.isConnected) return;
@@ -347,6 +351,7 @@ export default {
       if (!this.isConnected) {
         await this.$store.dispatch('web3/connect', { chain: chainName });
       }
+      await this.swapsTableData(this.account.address, this.isConnected);
       await localStorage.setItem('miningPoolId', chainName);
       this.miningPoolId = localStorage.getItem('miningPoolId');
     },
@@ -357,10 +362,10 @@ export default {
       if (!rightChain) return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
       return rightChain;
     },
-    async swapsTableData(recipientAddress) {
+    async swapsTableData(recipientAddress, connectedStatus) {
       const payload = {
         recipientAddress,
-        query: '&offset=0&limit=10',
+        query: connectedStatus ? '&offset=0&limit=10' : false,
       };
       await this.$store.dispatch('defi/swapsForCrosschain', payload);
     },
@@ -373,31 +378,32 @@ export default {
         this.targetAddressInd = selInd ? 0 : 1;
       }
     },
-    async handleChangeTarget(selInd) {
-      if (selInd === this.sourceAddressInd) {
-        this.sourceAddressInd = selInd ? 0 : 1;
-      }
-      this.targetAddressInd = selInd;
-      await this.disconnectFromWallet();
-    },
-    async handleChangeSource(selInd) {
-      if (selInd === this.targetAddressInd) {
-        this.targetAddressInd = selInd ? 0 : 1;
-      }
-      this.sourceAddressInd = selInd;
-      await this.disconnectFromWallet();
+    handleChangePool(selInd) {
+      this.sourceAddressInd = selInd ? 1 : 0;
+      this.targetAddressInd = selInd ? 0 : 1;
     },
     async showSwapModal() {
       this.SetLoader(true);
+      let switchPoolStatus = true;
       if (localStorage.getItem('isMetaMask') === 'true') {
-        await this.checkMiningPoolId(this.sourceAddressInd === 0 ? 'ETH' : 'BNB');
+        switchPoolStatus = await this.checkMiningPoolId(this.sourceAddressInd === 0 ? 'ETH' : 'BNB');
       }
-      await this.$store.dispatch('web3/getCrosschainTokensData');
-      await this.swapsTableData(this.account.address);
-      this.ShowModal({
-        key: modals.swap,
-        crosschainId: this.targetAddressInd,
-      });
+      if (switchPoolStatus === true || switchPoolStatus.ok) {
+        await this.$store.dispatch('web3/getCrosschainTokensData');
+        this.ShowModal({
+          key: modals.swap,
+          crosschainId: this.targetAddressInd,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          txHash: '',
+          subtitle: '',
+        });
+      }
       this.SetLoader(false);
     },
   },

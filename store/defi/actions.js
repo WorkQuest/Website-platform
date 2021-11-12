@@ -103,8 +103,13 @@ export default {
     return response;
   },
   async swapsForCrosschain({ commit }, { recipientAddress, query }) {
-    const response = await this.$axios.$get(`/v1/bridge/recipient/${recipientAddress}/swaps?${query || ''}`);
     const items = [];
+    let response = {};
+    if (query === false) {
+      commit('swapsForCrosschain', items);
+      return response;
+    }
+    response = await this.$axios.$get(`/v1/bridge/recipient/${recipientAddress}/swaps?${query || ''}`);
     response.result.swaps.forEach((data) => {
       let direction = [];
       if (data.chainFrom === 2) {
