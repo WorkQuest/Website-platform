@@ -1,64 +1,55 @@
 <template>
-  <div>
-    <span v-if="['employer'].includes(userRole)">
-      <span v-if="![1,3,5].includes(infoDataMode)">
+  <div
+    class="info"
+    :class="infoClass"
+  >
+    <div
+      v-if="userRole === 'employer' && ![1,3,5].includes(infoDataMode)"
+      class="info__body"
+    >
+      <div class="info__left">
         <div
-          class="info"
-          :class="infoClass"
+          class="info__text"
+          :class="[
+            {'info__text_white': ![3,6,7].includes(infoDataMode)}
+          ]"
         >
-          <div class="info__body">
-            <div class="info__left">
-              <div
-                class="info__text"
-                :class="[
-                  {'info__text_white': ![3,6,7].includes(infoDataMode)}
-                ]"
-              >
-                {{ infoStatusText }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </span>
-    </span>
-    <span v-if="['worker'].includes(userRole)">
-      <div>
-        <div
-          class="info"
-          :class="infoClass"
-        >
-          <div class="info__body">
-            <div class="info__left">
-              <div
-                class="info__text"
-                :class="[
-                  {
-                    'info__text_white': ![3,7,8].includes(infoDataMode)
-                  },
-                  {
-                    'info__text_black': [3,7,8].includes(infoDataMode)
-                  }
-                ]"
-              >
-                {{ infoStatusText }}
-              </div>
-            </div>
-            <div class="info__right">
-              <div
-                v-if="[3].includes(infoDataMode)"
-              >
-                <base-btn mode="showYourMessage">
-                  <template v-slot:right>
-                    <span class="icon-caret_down" />
-                  </template>
-                  {{ $t('info.showYourMessage') }}
-                </base-btn>
-              </div>
-            </div>
-          </div>
+          {{ infoStatusText }}
         </div>
       </div>
-    </span>
+    </div>
+    <div
+      v-if="userRole === 'worker'"
+      class="info__body"
+    >
+      <div class="info__left">
+        <div
+          class="info__text"
+          :class="[
+            {
+              'info__text_white': ![3,7,8].includes(infoDataMode)
+            },
+            {
+              'info__text_black': [3,7,8].includes(infoDataMode)
+            }
+          ]"
+        >
+          {{ infoStatusText }}
+        </div>
+      </div>
+      <div class="info__right">
+        <div
+          v-if="[3].includes(infoDataMode)"
+        >
+          <base-btn mode="showYourMessage">
+            <template v-slot:right>
+              <span class="icon-caret_down" />
+            </template>
+            {{ $t('info.showYourMessage') }}
+          </base-btn>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -76,33 +67,28 @@ export default {
   },
   computed: {
     infoStatusText() {
-      if (['employer'].includes(this.userRole)) {
-        if ([2].includes(this.infoDataMode)) {
-          return this.$t('quests.activeQuest');
-        } if ([4].includes(this.infoDataMode)) {
-          return this.$t('quests.waitWorker');
-        } if ([6].includes(this.infoDataMode)) {
-          return this.$t('quests.pendingConsideration');
-        } if ([8, 9].includes(this.infoDataMode)) {
-          return this.$t('performed.title');
-        } if ([7].includes(this.infoDataMode)) {
-          return this.$t('quests.dispute');
-        }
+      if (this.userRole === 'employer') {
+        const obj = {
+          2: 'quests.activeQuest',
+          4: 'quests.waitWorker',
+          6: 'quests.pendingConsideration',
+          7: 'quests.dispute',
+          8: 'performed.title',
+          9: 'performed.title',
+        };
+        return this.$t(`${obj[this.infoDataMode]}`);
       }
-      if (['worker'].includes(this.userRole)) {
-        if ([1].includes(this.infoDataMode)) {
-          return this.$t('invite.title');
-        } if ([2].includes(this.infoDataMode)) {
-          return this.$t('quests.activeQuest');
-        } if ([3].includes(this.infoDataMode)) {
-          return this.$t('response.title');
-        } if ([4, 9].includes(this.infoDataMode)) {
-          return this.$t('quests.completed');
-        } if ([8].includes(this.infoDataMode)) {
-          return this.$t('quests.questClosed');
-        } if ([7].includes(this.infoDataMode)) {
-          return this.$t('quests.dispute');
-        }
+      if (this.userRole === 'worker') {
+        const obj = {
+          1: 'invite.title',
+          2: 'quests.activeQuest',
+          3: 'response.title',
+          4: 'quests.completed',
+          7: 'quests.dispute',
+          8: 'quests.questClosed',
+          9: 'quests.completed',
+        };
+        return this.$t(`${obj[this.infoDataMode]}`);
       }
       return '';
     },
@@ -128,24 +114,6 @@ export default {
       userData: 'user/getUserData',
       infoDataMode: 'quests/getInfoDataMode',
     }),
-  },
-  methods: {
-    infoText(type) {
-      const texts = {
-        invited: this.$t('invite.title'),
-        response: this.$t('response.title'),
-        active: this.$t('quests.activeQuest'),
-        performed: this.$t('performed.title'),
-      };
-      return texts[type] || '';
-    },
-    infoTextStyle() {
-      return [
-        {
-          info_yellow: [1].includes(this.infoDataMode),
-        },
-      ];
-    },
   },
 };
 
