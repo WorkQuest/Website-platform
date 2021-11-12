@@ -33,7 +33,7 @@ import {
   authRenewal,
   getPensionDefaultData,
   getPensionWallet,
-  pensionUpdateFee, pensionContribute, pensionsWithdraw,
+  pensionUpdateFee, pensionContribute, pensionsWithdraw, pensionExtendLockTime,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
@@ -465,5 +465,8 @@ export default {
     const _abi = abi.WQPensionFund;
     const _pensionAddress = process.env.PENSION_FUND_BSC;
     await fetchActions(_abi, _pensionAddress, callback, events, params);
+  },
+  async pensionExtendLockTime() {
+    return await pensionExtendLockTime();
   },
 };

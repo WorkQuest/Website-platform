@@ -55,7 +55,7 @@
             <div class="info-block__third_rate">
               <div class="info-block__small">
                 <div class="info-block__perc">
-                  {{ $tc('pension.plusPercents', { count: 6 }) }}
+                  {{ $t('pension.plusPercents', { count: 6 }) }}
                 </div>
                 <div class="info-block__period">
                   {{ $t('pension.year') }}
@@ -144,7 +144,7 @@
             </div>
             <div class="info-block__small_right">
               <div class="info-block__perc">
-                {{ $tc("pension.plusPercents", { count: 6 }) }}
+                {{ $t("pension.plusPercents", { count: 6 }) }}
               </div>
               <div class="info-block__period">
                 {{ $t('pension.year') }}
@@ -183,7 +183,7 @@
               </base-btn>
               <base-btn
                 class="btn_bl"
-                @click="openApplyForAPensionModal()"
+                @click="extendLockTime"
               >
                 {{ $t('pension.' + (isExpired ? 'renewFor1Year' : 'prolong')) }}
               </base-btn>
@@ -259,21 +259,21 @@
               class="info-block__faq"
               @click="handleClickFAQ(item)"
             >
-              <span class="text__faq">
+              <div class="text__faq">
                 {{ item.name }}
-              </span>
+              </div>
               <img
                 class="select-img"
                 :class="{'select-img_rotate' : item.isOpen}"
                 src="~/assets/img/ui/arrow-down.svg"
                 alt=""
               >
-              <span
+              <div
                 class="text__faq_gray"
                 :class="{'text__faq_opened' : item.isOpen}"
               >
                 {{ item.about }}
-              </span>
+              </div>
             </button>
           </div>
         </div>
@@ -537,7 +537,6 @@ export default {
           let amount = new BigNumber(returnValues.amount).shiftedBy(-18);
           if (amount.isLessThan('0.0000001') && amount.isGreaterThan('0')) amount = '>0.0000001';
           else amount = amount.decimalPlaces(6).toString();
-          console.log(method, ':', transactionHash, amount, result);
           tx.amount = amount;
           tx.time = moment(new Date(returnValues.timestamp * 1000)).format('DD.MM.YY HH:mm');
           break;
@@ -556,10 +555,14 @@ export default {
         updateMethod: async () => await this.getWallet(),
       });
     },
-    openApplyForAPensionModal() {
-      this.ShowModal({
-        key: modals.applyForAPension,
-      });
+    async extendLockTime() { // Prolong
+      this.SetLoader(true);
+      const ok = await this.$store.dispatch('web3/pensionExtendLockTime');
+      if (ok) {
+        this.isDeadline = false;
+        await this.getWallet();
+      }
+      this.SetLoader(false);
     },
     openMakeDepositModal() {
       this.ShowModal({

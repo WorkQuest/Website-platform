@@ -628,7 +628,6 @@ export const getPensionWallet = async () => {
     const _abi = abi.WQPensionFund;
     const _pensionAddress = process.env.PENSION_FUND_BSC;
     const wallet = await fetchContractData('wallets', _abi, _pensionAddress, [account.address]);
-    console.log('wallet', wallet);
     const {
       unlockDate, fee,
     } = wallet;
@@ -678,6 +677,18 @@ export const pensionsWithdraw = async (_amount) => {
     const contractInst = await createInstance(_abi, _pensionAddress);
     _amount = new BigNumber(_amount).shiftedBy(18).toString();
     await contractInst.withdraw(_amount);
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
+export const pensionExtendLockTime = async () => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND_BSC;
+    const contractInst = await createInstance(_abi, _pensionAddress);
+    await contractInst.extendLockTime();
     return true;
   } catch (e) {
     console.log(e);

@@ -248,7 +248,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    await this.$store.dispatch('web3/checkConnectionStatus', Chains.ETHEREUM);
+    await this.$store.dispatch('web3/checkMetaMaskStatus', Chains.ETHEREUM);
     if (this.isConnected) {
       await this.checkWalletExists();
       const { lockTime, defaultFee } = await this.$store.dispatch('web3/getPensionDefaultData');
@@ -261,7 +261,7 @@ export default {
     async checkWalletExists() {
       const wallet = await this.$store.dispatch('web3/getPensionWallet');
       if (wallet.createdAt !== '0') {
-        await this.$router.push('/pension/my');
+        // await this.$router.push('/pension/my');
       }
     },
     openApplyForAPensionModal() {
