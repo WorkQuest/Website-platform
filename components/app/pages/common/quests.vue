@@ -324,13 +324,10 @@
                   class="block__rating"
                 >
                   <div class="block__rating block__rating_star">
-                    <!--                    TODO: Исправить код оценки квеста-->
                     <button
                       @click="showReviewModal(item.user.ratingStatistic)"
                     >
-                      <b-form-rating
-                        v-model="ratingStatistic"
-                      />
+                      <star-rating />
                     </button>
                   </div>
                 </div>
