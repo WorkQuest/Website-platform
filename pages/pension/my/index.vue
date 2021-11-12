@@ -77,7 +77,7 @@
             </div>
             <div class="pension-page__table">
               <b-table
-                :items="history"
+                :items="historyByPage"
                 :fields="historyFields"
                 borderless
                 caption-top
@@ -123,6 +123,13 @@
                 </template>
               </b-table>
             </div>
+          </div>
+          <div class="info-block__pager">
+            <base-pager
+              v-if="totalPages > 1"
+              v-model="page"
+              :total-pages="totalPages"
+            />
           </div>
         </template>
         <template v-if="isDeadline">
@@ -188,7 +195,7 @@
             </div>
             <div class="pension-page__table">
               <b-table
-                :items="history"
+                :items="historyByPage"
                 :fields="historyFields"
                 borderless
                 caption-top
@@ -229,6 +236,13 @@
                 </template>
               </b-table>
             </div>
+          </div>
+          <div class="info-block__pager">
+            <base-pager
+              v-if="totalPages > 1"
+              v-model="page"
+              :total-pages="totalPages"
+            />
           </div>
         </template>
         <div
@@ -278,6 +292,8 @@ import { Chains, NativeTokenSymbolByChainId } from '~/utils/enums';
 export default {
   data() {
     return {
+      page: 1,
+      itemsPerPage: 10,
       isFetchingActions: false,
       isFirstLoading: true,
       wallet: null,
@@ -425,6 +441,16 @@ export default {
       const balance = this.wallet?.amount || 0;
       return this.$t(`pension.${this.currentChainName || 'ETH'}Count`, { count: balance });
     },
+    totalPages() {
+      const len = this.history.length;
+      if (!len) return len;
+      return Math.ceil(len / this.itemsPerPage);
+    },
+    historyByPage() {
+      if (!this.history.length) return [];
+      const temp = [...this.history];
+      return temp.splice((this.page - 1) * this.itemsPerPage, this.itemsPerPage);
+    },
   },
   watch: {
     async isConnected(newValue) {
@@ -453,13 +479,10 @@ export default {
     endOfPeriod() {
       if (!this.wallet) return '';
       const { unlockDate } = this.wallet;
-
       const now = moment.now();
       const ends = moment(unlockDate);
       const years = ends.diff(now, 'years');
       const days = ends.diff(now, 'days') - years * 365;
-      console.log(years, days);
-
       const y = years > 0 ? `${this.$t('pension.years', { count: years })} ` : '';
       const d = days >= 0 ? this.$t('pension.days', { count: days }) : this.$t('pension.days', { count: 0 });
       if (years <= 0 && days <= 0) {
@@ -770,6 +793,10 @@ export default {
           justify-self: flex-end;
           margin: 20px 20px 0 0;
         }
+      }
+
+      &__pager {
+        width: auto;
       }
 
       &__perc {

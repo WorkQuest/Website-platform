@@ -636,7 +636,7 @@ export const getPensionWallet = async () => {
     return {
       ...wallet,
       unlockDate: new Date(unlockDate * 1000),
-      fee: new BigNumber(fee).shiftedBy(-18).decimalPlaces(4).toString(),
+      fee: new BigNumber(fee).shiftedBy(-18).toString(),
       amount: _amount.isGreaterThan('0') && _amount.isLessThan('0.0001') ? '>0.0001' : _amount.decimalPlaces(4).toString(),
       _amount: _amount.toString(),
     };

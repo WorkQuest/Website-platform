@@ -20,7 +20,7 @@
             :placeholder="$tc('modals.percentsCount', 15)"
             class="content__input"
             :name="$t('modals.currentPercentErr')"
-            rules="required|percent"
+            rules="required|percent|decimalPlaces:18"
           />
         </div>
         <div class="content__buttons buttons">
