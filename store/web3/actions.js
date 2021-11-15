@@ -433,7 +433,7 @@ export default {
   },
   async getPensionContributed() {
     const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND_TEST;
+    const _pensionAddress = process.env.PENSION_FUND;
     return await fetchContractData('contributed', _abi, _pensionAddress);
   },
   async getPensionWallet() {
@@ -447,7 +447,7 @@ export default {
   },
   async getPensionWithdrawTxFee({ commit }, _amount) {
     const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND_TEST;
+    const _pensionAddress = process.env.PENSION_FUND;
     _amount = new BigNumber(_amount).shiftedBy(18).toString();
     return await getTxFee(_abi, _pensionAddress, 'withdraw', [_amount]);
   },
@@ -468,7 +468,7 @@ export default {
   },
   async fetchPensionActions({ commit }, { callback, events, params }) {
     const _abi = abi.WQPensionFund;
-    const _pensionAddress = process.env.PENSION_FUND_TEST;
+    const _pensionAddress = process.env.PENSION_FUND;
     await fetchActions(_abi, _pensionAddress, callback, events, params);
   },
   async pensionExtendLockTime() {
