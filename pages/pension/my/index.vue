@@ -17,19 +17,13 @@
         :class="{'pension-page__content_expired' : isDeadline}"
       >
         <template v-if="!isDeadline">
-          <base-btn
-            class="btn__time-machine"
-            @click="jumpInTime()"
-          >
-            +3 years
-          </base-btn>
           <div class="info-block__triple">
             <div class="info-block__third">
               <div class="info-block__name">
                 {{ $t('pension.pensionBalance') }}
               </div>
               <div class="info-block__tokens">
-                {{ $tc("pension.wusdCount", "4 562") }}
+                {{ pensionBalance }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -43,7 +37,7 @@
                 {{ $t('pension.currentPercentFromAQuest') }}
               </div>
               <div class="info-block__tokens">
-                {{ $tc('pension.percents', 0) }}
+                {{ $t('pension.percents', { count: getFeePercent() }) }}
               </div>
               <base-btn
                 class="btn_bl"
@@ -55,7 +49,7 @@
             <div class="info-block__third_rate">
               <div class="info-block__small">
                 <div class="info-block__perc">
-                  {{ $tc('pension.plusPercents', '6') }}
+                  {{ $t('pension.plusPercents', { count: 6 }) }}
                 </div>
                 <div class="info-block__period">
                   {{ $t('pension.year') }}
@@ -66,7 +60,7 @@
                   {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
                 </div>
                 <div class="info-block__subtitle_black">
-                  3 years
+                  {{ endOfPeriod() }}
                 </div>
               </div>
             </div>
@@ -77,8 +71,8 @@
             </div>
             <div class="pension-page__table">
               <b-table
-                :items="items"
-                :fields="testFields"
+                :items="historyByPage"
+                :fields="historyFields"
                 borderless
                 caption-top
                 thead-class="table__header"
@@ -103,7 +97,7 @@
                 </template>
                 <template #cell(txHash)="el">
                   <div class="user__value_gray">
-                    {{ el.item.txHash }}
+                    {{ getStyledHash(el.item.txHash) }}
                   </div>
                 </template>
                 <template #cell(time)="el">
@@ -118,11 +112,18 @@
                 </template>
                 <template #cell(amount)="el">
                   <div class="user__value">
-                    {{ el.item.amount }}
+                    {{ $t(`pension.${currentChainName}Count`, { count: el.item.amount}) }}
                   </div>
                 </template>
               </b-table>
             </div>
+          </div>
+          <div class="info-block__pager">
+            <base-pager
+              v-if="totalPages > 1"
+              v-model="page"
+              :total-pages="totalPages"
+            />
           </div>
         </template>
         <template v-if="isDeadline">
@@ -132,12 +133,12 @@
                 {{ $t('pension.pensionSavingsBalance') }}
               </div>
               <div class="info-block__tokens">
-                {{ $tc("pension.wusdCount", "4 562") }}
+                {{ pensionBalance }}
               </div>
             </div>
             <div class="info-block__small_right">
               <div class="info-block__perc">
-                {{ $tc("pension.plusPercents", "6") }}
+                {{ $t("pension.plusPercents", { count: 6 }) }}
               </div>
               <div class="info-block__period">
                 {{ $t('pension.year') }}
@@ -148,26 +149,14 @@
                 {{ $t('pension.timeRemainsUntilTheEndOfThePeriod') }}
               </div>
               <div
-                :class="[
-                  {'info-block__subtitle_black' : !isExpired},
-                  {'info-block__subtitle_red' : isExpired}
-                ]"
+                class="info-block__subtitle_red"
               >
-                {{ isExpired ? '0 days' : '3 years' }}
+                {{ $t('pension.days', {count: 0}) }}
               </div>
             </div>
             <div
-              :class="[
-                {'btn-group' : !isExpired},
-                {'btn-group_exp' : isExpired}
-              ]"
+              class="btn-group"
             >
-              <base-btn
-                v-if="isExpired"
-                class="btn_red"
-              >
-                {{ $t('pension.cancel') }}
-              </base-btn>
               <base-btn
                 class="btn_bl"
                 @click="showWithdrawModal"
@@ -176,9 +165,9 @@
               </base-btn>
               <base-btn
                 class="btn_bl"
-                @click="openApplyForAPensionModal()"
+                @click="handleProlong"
               >
-                {{ $t('pension.' + (isExpired ? 'renewFor1Year' : 'prolong')) }}
+                {{ $t('pension.prolong') }}
               </base-btn>
             </div>
           </div>
@@ -188,8 +177,8 @@
             </div>
             <div class="pension-page__table">
               <b-table
-                :items="items"
-                :fields="testFields"
+                :items="historyByPage"
+                :fields="historyFields"
                 borderless
                 caption-top
                 thead-class="table__header"
@@ -214,7 +203,7 @@
                 </template>
                 <template #cell(txHash)="el">
                   <div class="user__value_gray">
-                    {{ el.item.txHash }}
+                    {{ getStyledHash(el.item.txHash) }}
                   </div>
                 </template>
                 <template #cell(time)="el">
@@ -229,6 +218,13 @@
                 </template>
               </b-table>
             </div>
+          </div>
+          <div class="info-block__pager">
+            <base-pager
+              v-if="totalPages > 1"
+              v-model="page"
+              :total-pages="totalPages"
+            />
           </div>
         </template>
         <div
@@ -270,107 +266,24 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { Chains, NativeTokenSymbolByChainId } from '~/utils/enums';
 
 export default {
   data() {
     return {
-      isExpired: false,
+      page: 1,
+      itemsPerPage: 10,
+      isFetchingActions: false,
+      isFirstLoading: true,
+      wallet: null,
+      walletAddress: null,
+      currentChainName: null,
       isDeadline: false,
-      items: [
-        {
-          userName: this.$t('pension.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('pension.table.userId'),
-          txHash: this.$t('pension.table.txHash'),
-          time: this.$t('pension.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('pension.table.status'),
-        },
-        {
-          userName: this.$t('pension.table.userName'),
-          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-          userID: this.$t('pension.table.userId'),
-          txHash: this.$t('pension.table.txHash'),
-          time: this.$t('pension.table.time'),
-          amount: this.$tc('referral.wqtCount', 12),
-          status: this.$t('pension.table.status'),
-        },
-      ],
-      testFields: [
-        {
-          key: 'userName',
-          label: this.$t('referral.tableHead.name'),
-          thStyle: {
-            padding: '0 0 0 23px',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'userID',
-          label: this.$t('referral.tableHead.userID'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'txHash',
-          label: this.$t('referral.tableHead.txHash'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'time',
-          label: this.$t('referral.tableHead.time'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'amount',
-          label: this.$t('referral.tableHead.amount'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'status',
-          label: this.$t('referral.tableHead.status'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-      ],
+      history: [],
+      updateInterval: null,
       FAQs: [
         {
           name: this.$t('pension.faq1.question'),
@@ -428,35 +341,246 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      isConnected: 'web3/isConnected',
     }),
+    historyFields() {
+      return [
+        {
+          key: 'operation',
+          label: 'Operation',
+          thStyle: {
+            padding: '0 0 0 23px',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
+          },
+        },
+        {
+          key: 'txHash',
+          label: this.$t('referral.tableHead.txHash'),
+          thStyle: {
+            padding: '0 0 0 23px',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0 0 0 0; height: 64px; line-height: 64px',
+          },
+        },
+        {
+          key: 'time',
+          label: this.$t('referral.tableHead.time'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
+        },
+        {
+          key: 'amount',
+          label: this.$t('referral.tableHead.amount'),
+          thStyle: {
+            padding: '0',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0; height: 64px; line-height: 64px',
+          },
+        },
+      ];
+    },
+    pensionBalance() {
+      const balance = this.wallet?.amount || 0;
+      return this.$t(`pension.${this.currentChainName || 'ETH'}Count`, { count: balance });
+    },
+    totalPages() {
+      const len = this.history.length;
+      if (!len) return len;
+      return Math.ceil(len / this.itemsPerPage);
+    },
+    historyByPage() {
+      if (!this.history.length) return [];
+      const temp = [...this.history];
+      return temp.splice((this.page - 1) * this.itemsPerPage, this.itemsPerPage);
+    },
+  },
+  watch: {
+    async isConnected(newValue) {
+      if (this.isFirstLoading) return;
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
+      if (newValue && rightChain) {
+        await this.getWallet();
+        this.updateInterval = setInterval(() => this.getWallet(), 30000);
+      } else {
+        clearInterval(this.updateInterval);
+        this.wallet = null;
+        this.history = [];
+        await this.$store.dispatch('web3/unsubscribeActions');
+        this.isFetchingActions = false;
+      }
+    },
   },
   async mounted() {
     this.SetLoader(true);
+    await this.getWallet();
+    clearInterval(this.updateInterval);
+    this.updateInterval = setInterval(() => this.getWallet(), 30000);
+    this.isFirstLoading = false;
     this.SetLoader(false);
   },
+  async beforeDestroy() {
+    await this.$store.dispatch('web3/unsubscribeActions');
+    clearInterval(this.updateInterval);
+  },
   methods: {
+    checkIsDeadLine() {
+      if (!this.wallet) {
+        this.isDeadline = false;
+        return;
+      }
+      const { unlockDate } = this.wallet;
+      const now = moment.now();
+      const ends = moment(unlockDate);
+      this.isDeadline = ends.diff(now, 'milliseconds') <= 0;
+    },
+    endOfPeriod() {
+      if (!this.wallet) return '';
+      const { unlockDate } = this.wallet;
+      const now = moment.now();
+      const ends = moment(unlockDate);
+
+      const minutes = ends.diff(now, 'minutes');
+      if (minutes <= 60) {
+        return this.$t('pension.minutes', { count: minutes });
+      }
+
+      const hours = ends.diff(now, 'hours');
+      if (hours <= 24) {
+        return this.$t('pension.hours', { count: hours });
+      }
+
+      const years = ends.diff(now, 'years');
+      const days = ends.diff(now, 'days') - years * 365;
+      const y = years > 0 ? `${this.$t('pension.years', { count: years })} ` : '';
+      const d = days >= 0 ? this.$t('pension.days', { count: days }) : this.$t('pension.days', { count: 0 });
+      return `${y}${d}`;
+    },
+    getFeePercent() {
+      return this.wallet?.fee || '';
+    },
+    getStyledHash(txHash) {
+      return `${txHash.slice(0, 8)}...${txHash.slice(-4)}`;
+    },
+    async getWallet() {
+      await this.$store.dispatch('web3/checkMetaMaskStatus', Chains.ETHEREUM);
+      this.wallet = await this.$store.dispatch('web3/getPensionWallet');
+      if (this.wallet.createdAt === '0') {
+        await this.$router.push('/pension');
+      }
+      const account = await this.$store.dispatch('web3/getAccount');
+      this.walletAddress = account.address;
+      this.currentChainName = NativeTokenSymbolByChainId[account.netId];
+      if (this.isFetchingActions) return;
+      await this.$store.dispatch('web3/fetchPensionActions', {
+        callback: (method, result) => this.handleAction(method, result),
+        events: ['Received', 'Withdrew', 'Claimed', 'Borrowed', 'Refunded'],
+        params: [
+          {
+            filter: {
+              user: this.walletAddress,
+            },
+            fromBlock: 0,
+          },
+          {
+            filter: {
+              user: this.walletAddress,
+            },
+            fromBlock: 0,
+          },
+          {
+            filter: {
+              user: this.walletAddress,
+            },
+            fromBlock: 0,
+          },
+          {
+            filter: {
+              user: this.walletAddress,
+            },
+            fromBlock: 0,
+          },
+          {
+            filter: {
+              user: this.walletAddress,
+            },
+            fromBlock: 0,
+          },
+        ],
+      });
+      this.isFetchingActions = true;
+      this.checkIsDeadLine();
+    },
+    handleAction(method, result) {
+      const { transactionHash, returnValues } = result;
+      const tx = {
+        operation: result.event,
+        txHash: transactionHash,
+        userName: this.$t('pension.table.userName'),
+        avaUrl: '~/assets/img/social/GOOGLE_+_.png',
+        userID: this.$t('pension.table.userId'),
+        time: this.$t('pension.table.time'),
+        status: this.$t('pension.table.status'),
+      };
+      // eslint-disable-next-line no-case-declarations
+      let amount = new BigNumber(returnValues.amount).shiftedBy(-18);
+      if (amount.isLessThan('0.0000001') && amount.isGreaterThan('0')) amount = '>0.0000001';
+      else amount = amount.decimalPlaces(6).toString();
+      tx.amount = amount;
+      tx.time = moment(new Date(returnValues.timestamp * 1000)).format('DD.MM.YY HH:mm');
+      this.history.unshift(tx);
+    },
     showWithdrawModal() {
       this.ShowModal({
         key: modals.takeWithdraw,
+        walletAddress: this.walletAddress,
+        maxValue: this.wallet._amount,
+        symbol: this.currentChainName,
+        withdrawType: 'pension',
+        updateMethod: async () => await this.getWallet(),
       });
     },
-    openApplyForAPensionModal() {
+    handleProlong() {
       this.ShowModal({
-        key: modals.applyForAPension,
+        key: modals.areYouSureNotification,
+        text: this.$t('pension.prolongText'),
+        callback: async () => await this.extendLockTime(),
       });
+    },
+    async extendLockTime() {
+      this.SetLoader(true);
+      const ok = await this.$store.dispatch('web3/pensionExtendLockTime');
+      if (ok) {
+        await this.getWallet();
+      }
+      this.SetLoader(false);
     },
     openMakeDepositModal() {
       this.ShowModal({
         key: modals.makeDeposit,
+        updateMethod: async () => await this.getWallet(),
       });
     },
     openChangePercentModal() {
       this.ShowModal({
         key: modals.changePercent,
+        updateMethod: async () => await this.getWallet(),
       });
-    },
-    jumpInTime() {
-      this.isDeadline = true;
     },
     handleClickFAQ(FAQ) {
       FAQ.isOpen = !FAQ.isOpen;
@@ -551,7 +675,7 @@ export default {
 
       &:hover {
         background-color: #0083C71A;
-        border: 0px;
+        border: 0;
       }
 
       &_bl {
@@ -675,6 +799,10 @@ export default {
           justify-self: flex-end;
           margin: 20px 20px 0 0;
         }
+      }
+
+      &__pager {
+        width: auto;
       }
 
       &__perc {

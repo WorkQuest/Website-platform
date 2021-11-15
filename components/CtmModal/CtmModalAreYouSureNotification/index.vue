@@ -50,9 +50,10 @@ export default {
     }),
   },
   methods: {
-    submit() {
-      if (this.options.callback) this.options.callback();
+    async submit() {
+      const { callback } = this.options;
       this.hide();
+      if (callback) await callback();
     },
     hide() {
       this.CloseModal();

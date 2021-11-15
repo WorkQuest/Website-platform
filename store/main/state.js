@@ -1,7 +1,7 @@
 import loaderModes from '~/store/main/loaderModes';
 
 export default () => ({
-  isLoading: true,
+  isLoading: false,
   loaderStatusText: 'Loading',
   loaderMode: loaderModes.default,
   isLoaderBackgroundHider: true,

@@ -74,7 +74,7 @@
           </base-btn>
           <base-btn
             class="buttons__button"
-            @click="showTransactionSend"
+            @click="handleSubmit"
           >
             {{ $t('meta.confirm') }}
           </base-btn>
@@ -97,7 +97,7 @@ export default {
       items: [
         {
           title: this.$t('modals.amount'),
-          subtitle: '15 WUSD',
+          subtitle: 'WUSD',
         },
         {
           title: this.$t('modals.totalFee'),
@@ -126,9 +126,31 @@ export default {
       return `${star.slice(0, 4)} ${star.slice(4, 8)} ${star.slice(8, 12)} ${star.slice(12)}`;
     },
   },
+  mounted() {
+    this.walletAddress = this.options.walletAddress;
+    this.items[0].subtitle = this.options.amount;
+    this.items[1].subtitle = this.options.txFee;
+  },
   methods: {
     hide() {
       this.CloseModal();
+    },
+    async handleSubmit() {
+      const { method, updateMethod, _amount } = this.options;
+      this.hide();
+      this.SetLoader(true);
+      let ok = false;
+      switch (method) {
+        case 'pensionWithdraw':
+          ok = await this.$store.dispatch('web3/pensionWithdraw', _amount);
+          break;
+        default: break;
+      }
+      this.SetLoader(false);
+      if (ok) {
+        this.showTransactionSend();
+        if (updateMethod) await updateMethod();
+      }
     },
     showTransactionSend() {
       this.ShowModal({
