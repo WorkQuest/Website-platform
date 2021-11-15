@@ -283,9 +283,11 @@ export default {
         },
       ];
       if (this.userInfo.date && this.userInfo.staked !== '0') {
-        const days = Math.ceil(moment.duration(moment(this.userInfo.date).diff(moment.now())).asDays());
-        const hours = Math.ceil(moment.duration(moment(this.userInfo.date).diff(moment.now())).asHours());
-        const minutes = Math.ceil(moment.duration(moment(this.userInfo.date).diff(moment.now())).asMinutes());
+        const now = moment.now();
+        const ends = moment(this.userInfo.date);
+        const minutes = ends.diff(now, 'minutes');
+        const hours = ends.diff(now, 'hours');
+        const days = ends.diff(now, 'days');
         if (minutes <= 60) {
           data.push({
             name: this.$t('staking.stakingCards.duration'),
