@@ -123,6 +123,7 @@ export default {
       amount: '',
       maxValue: null,
       step: 1,
+      withdrawType: '',
     };
   },
   computed: {
@@ -134,6 +135,7 @@ export default {
   mounted() {
     this.walletAddress = this.options.walletAddress;
     this.maxValue = this.options.maxValue;
+    this.withdrawType = this.options.withdrawType;
   },
   methods: {
     hide() {
@@ -142,21 +144,24 @@ export default {
     handleMaxValue() {
       this.amount = this.maxValue;
     },
-    showWithdrawInfo() {
-      const txFeeData = this.$store.dispatch('web3/getPensionWithdrawTxFee', this.amount);
-      if (!txFeeData?.ok) {
-        return;
+    async showWithdrawInfo() {
+      if (this.withdrawType === 'pension') {
+        const txFeeData = await this.$store.dispatch('web3/getPensionWithdrawTxFee', this.amount);
+        if (!txFeeData?.ok) {
+          console.log('err', txFeeData);
+          return;
+        }
+        this.ShowModal({
+          key: modals.withdrawInfo,
+          title: this.$t('modals.withdrawInfo'),
+          amount: this.$t(`pension.${this.options.symbol || 'WUSD'}Count`, { count: this.amount }),
+          _amount: this.amount,
+          txFee: txFeeData.result,
+          walletAddress: this.walletAddress,
+          method: 'pensionWithdraw',
+          updateMethod: this.options.updateMethod,
+        });
       }
-      this.ShowModal({
-        key: modals.withdrawInfo,
-        title: this.$t('modals.withdrawInfo'),
-        amount: this.$t(`pension.${this.options.symbol || 'WUSD'}Count`, { count: this.amount }),
-        _amount: this.amount,
-        txFee: txFeeData.result,
-        walletAddress: this.walletAddress,
-        method: 'pensionWithdraw',
-        updateMethod: this.options.updateMethod,
-      });
     },
     showAddingCard() {
       this.ShowModal({

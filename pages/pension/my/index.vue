@@ -283,6 +283,7 @@ export default {
       currentChainName: null,
       isDeadline: false,
       history: [],
+      updateInterval: null,
       FAQs: [
         {
           name: this.$t('pension.faq1.question'),
@@ -415,7 +416,9 @@ export default {
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
       if (newValue && rightChain) {
         await this.getWallet();
+        this.updateInterval = setInterval(() => this.getWallet(), 30000);
       } else {
+        clearInterval(this.updateInterval);
         this.wallet = null;
         this.history = [];
         await this.$store.dispatch('web3/unsubscribeActions');
@@ -426,25 +429,46 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.getWallet();
+    clearInterval(this.updateInterval);
+    this.updateInterval = setInterval(() => this.getWallet(), 30000);
     this.isFirstLoading = false;
     this.SetLoader(false);
   },
   async beforeDestroy() {
     await this.$store.dispatch('web3/unsubscribeActions');
+    clearInterval(this.updateInterval);
   },
   methods: {
+    checkIsDeadLine() {
+      if (!this.wallet) {
+        this.isDeadline = false;
+        return;
+      }
+      const { unlockDate } = this.wallet;
+      const now = moment.now();
+      const ends = moment(unlockDate);
+      this.isDeadline = ends.diff(now, 'milliseconds') <= 0;
+    },
     endOfPeriod() {
       if (!this.wallet) return '';
       const { unlockDate } = this.wallet;
       const now = moment.now();
       const ends = moment(unlockDate);
+
+      const minutes = ends.diff(now, 'minutes');
+      if (minutes <= 60) {
+        return this.$t('pension.minutes', { count: minutes });
+      }
+
+      const hours = ends.diff(now, 'hours');
+      if (hours <= 24) {
+        return this.$t('pension.hours', { count: hours });
+      }
+
       const years = ends.diff(now, 'years');
       const days = ends.diff(now, 'days') - years * 365;
       const y = years > 0 ? `${this.$t('pension.years', { count: years })} ` : '';
       const d = days >= 0 ? this.$t('pension.days', { count: days }) : this.$t('pension.days', { count: 0 });
-      if (years <= 0 && days <= 0) {
-        this.isDeadline = true;
-      }
       return `${y}${d}`;
     },
     getFeePercent() {
@@ -500,6 +524,7 @@ export default {
         ],
       });
       this.isFetchingActions = true;
+      this.checkIsDeadLine();
     },
     handleAction(method, result) {
       const { transactionHash, returnValues } = result;
@@ -526,6 +551,7 @@ export default {
         walletAddress: this.walletAddress,
         maxValue: this.wallet._amount,
         symbol: this.currentChainName,
+        withdrawType: 'pension',
         updateMethod: async () => await this.getWallet(),
       });
     },
@@ -540,7 +566,6 @@ export default {
       this.SetLoader(true);
       const ok = await this.$store.dispatch('web3/pensionExtendLockTime');
       if (ok) {
-        this.isDeadline = false;
         await this.getWallet();
       }
       this.SetLoader(false);

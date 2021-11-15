@@ -1939,6 +1939,8 @@
     "docName": "Some_document.pdf",
     "mb": "{count} MB",
     "percents": "{count} %",
+    "minutes": "{count} minutes",
+    "hours": "{count} hours",
     "years": "{count} years",
     "days": "{count} days",
     "WUSDCount": "{count} WUSD",
