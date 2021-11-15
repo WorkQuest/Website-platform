@@ -609,7 +609,7 @@ export const getPensionDefaultData = async () => {
       lockTime: Math.floor(lockTime / 365 / 24 / 60 / 60),
     };
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return null;
   }
 };
@@ -634,7 +634,7 @@ export const getPensionWallet = async () => {
       _amount: _amount.toString(),
     };
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return null;
   }
 };
@@ -647,7 +647,7 @@ export const pensionContribute = async (_amount) => {
     await contractInst.contribute(account.address, { value: _amount });
     return true;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return false;
   }
 };
@@ -660,7 +660,7 @@ export const pensionUpdateFee = async (_fee) => {
     await contractInst.updateFee(_fee);
     return true;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return false;
   }
 };
@@ -673,7 +673,7 @@ export const pensionsWithdraw = async (_amount) => {
     await contractInst.withdraw(_amount);
     return true;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return false;
   }
 };
@@ -685,7 +685,7 @@ export const pensionExtendLockTime = async () => {
     await contractInst.extendLockTime();
     return true;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return false;
   }
 };
