@@ -2,14 +2,12 @@
   <!--                    TODO: Исправить код оценки квеста-->
   <div
     class="rating-area"
-    @click="setRating()"
   >
     <input
       id="star-5"
-      v-model="starRating"
       type="radio"
       name="rating"
-      value="5"
+      @click="setRating(5)"
     >
     <label
       for="star-5"
@@ -17,10 +15,9 @@
     />
     <input
       id="star-4"
-      v-model="starRating"
       type="radio"
       name="rating"
-      value="4"
+      @click="setRating(4)"
     >
     <label
       for="star-4"
@@ -28,10 +25,9 @@
     />
     <input
       id="star-3"
-      v-model="starRating"
       type="radio"
       name="rating"
-      value="3"
+      @click="setRating(3)"
     >
     <label
       for="star-3"
@@ -39,10 +35,9 @@
     />
     <input
       id="star-2"
-      v-model="starRating"
       type="radio"
       name="rating"
-      value="2"
+      @click="setRating(2)"
     >
     <label
       for="star-2"
@@ -50,10 +45,9 @@
     />
     <input
       id="star-1"
-      v-model="starRating"
       type="radio"
       name="rating"
-      value="1"
+      @click="setRating(1)"
     >
     <label
       for="star-1"
@@ -76,8 +70,8 @@ export default {
     };
   },
   methods: {
-    setRating() {
-      console.log(this.starRating);
+    setRating(n) {
+      console.log(n);
     },
   },
 };
