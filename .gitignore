@@ -5,6 +5,6 @@ dist
 backup
 .idea
 .env
-.DS_Store
 package-lock.json
+.DS_Store
 yarn.lock

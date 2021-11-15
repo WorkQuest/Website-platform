@@ -20,6 +20,7 @@ export default {
     '@/assets/scss/main.scss',
   ],
   plugins: [
+    { src: '@plugins/ws', mode: 'client' },
     { src: '@plugins/axios.js' },
     { src: '@plugins/main.js' },
     { src: '@plugins/vee-validate.js' },
@@ -97,6 +98,9 @@ export default {
     BASE_URL: process.env.BASE_URL,
     GMAPKEY: process.env.GMAPKEY,
     SECRET_SUMSUB: process.env.SECRET_SUMSUB,
+
+    WS_NOTIFS_URL: process.env.WS_NOTIFS_URL,
+    WS_CHAT_URL: process.env.WS_CHAT_URL,
 
     ETHEREUM_BRIDGE: process.env.ETHEREUM_BRIDGE,
     ETHEREUM_LP_TOKEN: process.env.ETHEREUM_LP_TOKEN,

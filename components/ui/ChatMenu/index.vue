@@ -11,72 +11,37 @@
           class="chat-menu"
         >
           <div class="chat-menu__items">
-            <span
-              v-if="$route.path === '/messages/1'"
-              class="chat-menu__container"
-            >
+            <template v-if="$route.name === 'messages'">
               <div
                 class="chat-menu__item"
+                @click="getStarredMessages"
               >
-                <div
-                  class="chat-menu__text"
-                  @click="showOpenADisputeModal()"
-                >
-                  {{ $t('chat.openDispute') }}
-                </div>
+                {{ $t('chat.starredMessages') }}
               </div>
               <div
                 class="chat-menu__item"
+                @click="changeStarredVal"
               >
-                <div
-                  class="chat-menu__text"
-                >
-                  {{ $t('chat.approveQuest') }}
-                </div>
-              </div>
-            </span>
-            <span
-              v-if="$route.path === '/messages'"
-              class="chat-menu__container"
-            >
-              <div
-                class="chat-menu__item"
-              >
-                <div
-                  class="chat-menu__text"
-                >
-                  {{ $t('chat.favoriteMessages') }}
-                </div>
-              </div>
-              <div
-                class="chat-menu__item"
-              >
-                <div
-                  class="chat-menu__text"
-                >
-                  {{ $t('chat.favoriteChats') }}
-                </div>
-              </div>
-              <div
-                class="chat-menu__item"
-              >
-                <div
-                  class="chat-menu__text"
-                >
-                  {{ $t('chat.favorite') }}
-                </div>
+                {{ $t(`chat.${starred ? 'allChats' : 'starredChats'}`) }}
               </div>
               <div
                 class="chat-menu__item"
                 @click="showCreateChatModal()"
               >
-                <div
-                  class="chat-menu__text"
-                >
-                  {{ $t('chat.createGroupChat') }}
-                </div>
+                {{ $t('chat.createGroupChat') }}
               </div>
-            </span>
+            </template>
+            <template v-else>
+              <div
+                class="chat-menu__item"
+                @click="showOpenADisputeModal()"
+              >
+                {{ $t('chat.openDispute') }}
+              </div>
+              <div class="chat-menu__item">
+                {{ $t('chat.approveQuest') }}
+              </div>
+            </template>
           </div>
         </div>
       </transition>
@@ -89,12 +54,24 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ChatMenu',
+  props: {
+    starred: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       isShowChatMenu: false,
     };
   },
   methods: {
+    changeStarredVal() {
+      this.$emit('change');
+    },
+    getStarredMessages() {
+      this.$router.push('/messages/starred');
+    },
     showOpenADisputeModal() {
       this.ShowModal({
         key: modals.openADispute,
@@ -148,22 +125,13 @@ export default {
   min-width: 86px;
   z-index: 10000000;
   margin: 0 90px 0 0;
-  &__container {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 10px;
-
-  }
+  width: max-content;
   &__items {
-    padding: 10px 15px;
+    padding: 10px;
+    display: grid;
+    gap: 10px;
   }
   &__item {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    min-height: 20px;
-  }
-  &__text {
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 500;
@@ -171,6 +139,7 @@ export default {
     line-height: 130%;
     color: $black500;
     transition: .5s;
+    text-align: left;
     &:hover {
       color: $black800;
     }
