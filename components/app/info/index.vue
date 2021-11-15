@@ -4,14 +4,15 @@
     :class="infoClass"
   >
     <div
-      v-if="userRole === 'employer' && ![1,3,5].includes(infoDataMode)"
+      v-if="userRole === 'employer'
+        && ![InfoModeEmployer.RaiseViews, InfoModeEmployer.Created].includes(infoDataMode)"
       class="info__body"
     >
       <div class="info__left">
         <div
           class="info__text"
           :class="[
-            {'info__text_white': ![3,6].includes(infoDataMode)}
+            {'info__text_white': ![InfoModeEmployer.Created, InfoModeEmployer.WaitConfirm].includes(infoDataMode)}
           ]"
         >
           {{ infoStatusText }}
@@ -27,10 +28,10 @@
           class="info__text"
           :class="[
             {
-              'info__text_white': ![3,8].includes(infoDataMode)
+              'info__text_white': ![InfoModeWorker.Rejected, InfoModeWorker.Closed].includes(infoDataMode)
             },
             {
-              'info__text_black': [3,8].includes(infoDataMode)
+              'info__text_black': [InfoModeWorker.Rejected, InfoModeWorker.Closed].includes(infoDataMode)
             }
           ]"
         >
@@ -39,7 +40,7 @@
       </div>
       <div class="info__right">
         <div
-          v-if="[3].includes(infoDataMode)"
+          v-if="infoDataMode === InfoModeWorker.Rejected"
         >
           <base-btn mode="showYourMessage">
             <template v-slot:right>
@@ -56,6 +57,7 @@
 <script>
 
 import { mapGetters } from 'vuex';
+import { InfoModeE, InfoModeW } from '~/utils/enums';
 
 export default {
   name: 'InfoVue',
@@ -66,27 +68,33 @@ export default {
     },
   },
   computed: {
+    InfoModeEmployer() {
+      return InfoModeE;
+    },
+    InfoModeWorker() {
+      return InfoModeW;
+    },
     infoStatusText() {
       if (this.userRole === 'employer') {
         const obj = {
-          2: 'quests.activeQuest',
-          4: 'quests.waitWorker',
-          6: 'quests.pendingConsideration',
-          7: 'quests.dispute',
-          8: 'performed.title',
-          9: 'performed.title',
+          [InfoModeE.Active]: 'quests.activeQuest',
+          [InfoModeE.WaitWorker]: 'quests.waitWorker',
+          [InfoModeE.WaitConfirm]: 'quests.pendingConsideration',
+          [InfoModeE.Dispute]: 'quests.dispute',
+          [InfoModeE.Closed]: 'quests.closed',
+          [InfoModeE.Done]: 'performed.title',
         };
         return this.$t(`${obj[this.infoDataMode]}`);
       }
       if (this.userRole === 'worker') {
         const obj = {
-          1: 'invite.title',
-          2: 'quests.activeQuest',
-          3: 'response.title',
-          4: 'quests.completed',
-          7: 'quests.dispute',
-          8: 'quests.questClosed',
-          9: 'quests.completed',
+          [InfoModeW.ADChat]: 'invite.title',
+          [InfoModeW.Active]: 'quests.activeQuest',
+          [InfoModeW.Rejected]: 'quests.requested',
+          [InfoModeW.WaitConfirm]: 'quests.pendingConsideration',
+          [InfoModeW.Dispute]: 'quests.dispute',
+          [InfoModeW.Closed]: 'quests.questClosed',
+          [InfoModeW.Done]: 'quests.completed',
         };
         return this.$t(`${obj[this.infoDataMode]}`);
       }
@@ -96,38 +104,44 @@ export default {
       if (this.userRole === 'worker') {
         return [
           {
-            'info_bg-yellow': [1].includes(this.infoDataMode),
+            'info-hide': this.infoDataMode === InfoModeW.Created,
           },
           {
-            'info_bg-green': [2].includes(this.infoDataMode),
+            'info_bg-yellow': this.infoDataMode === InfoModeW.ADChat,
           },
           {
-            'info_bg-grey': [3].includes(this.infoDataMode),
+            'info_bg-green': this.infoDataMode === InfoModeW.Active,
           },
           {
-            'info_bg-blue': [4, 9].includes(this.infoDataMode),
+            'info_bg-grey': this.infoDataMode === InfoModeW.Rejected,
           },
           {
-            'info_bg-red': [7, 8].includes(this.infoDataMode),
+            'info_bg-blue': [InfoModeW.WaitConfirm, InfoModeW.Done].includes(this.infoDataMode),
+          },
+          {
+            'info_bg-red': [InfoModeW.Dispute, InfoModeW.Closed].includes(this.infoDataMode),
           },
         ];
       }
       if (this.userRole === 'employer') {
         return [
           {
-            'info_bg-yellow': [4].includes(this.infoDataMode),
+            'info-hide': this.infoDataMode === InfoModeE.Created,
           },
           {
-            'info_bg-green': [2].includes(this.infoDataMode),
+            'info_bg-yellow': this.infoDataMode === InfoModeE.WaitWorker,
           },
           {
-            'info_bg-grey': [6].includes(this.infoDataMode),
+            'info_bg-green': this.infoDataMode === InfoModeE.Active,
           },
           {
-            'info_bg-red': [7].includes(this.infoDataMode),
+            'info_bg-grey': this.infoDataMode === InfoModeE.WaitConfirm,
           },
           {
-            'info_bg-blue': [8, 9].includes(this.infoDataMode),
+            'info_bg-red': this.infoDataMode === InfoModeE.Dispute,
+          },
+          {
+            'info_bg-blue': [InfoModeE.Closed, InfoModeE.Done].includes(this.infoDataMode),
           },
         ];
       }
@@ -159,6 +173,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  &-hide {
+    display: none;
+  }
   &_bg-green {
     background-color: $green;
   }

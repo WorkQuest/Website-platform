@@ -1,7 +1,7 @@
 <template>
   <div v-if="userRole === 'employer'">
     <div
-      v-if="[1].includes(infoDataMode)"
+      v-if="infoDataMode === InfoModeEmployer.RaiseViews"
       class="btns__container"
     >
       <div
@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <div v-if="[2].includes(infoDataMode)">
+    <div v-if="infoDataMode === InfoModeEmployer.Active">
       <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
@@ -101,7 +101,7 @@
     <!--                </div>-->
     <!--              </div>-->
     <!--    </div>-->
-    <div v-if="[4].includes(infoDataMode)">
+    <div v-if="infoDataMode === InfoModeEmployer.WaitWorker">
       <div
         class="worker__title"
       >
@@ -135,7 +135,7 @@
       </div>
     </div>
     <div
-      v-if="[6].includes(infoDataMode)"
+      v-if="infoDataMode === InfoModeEmployer.WaitConfirm"
       class="btns__container"
     >
       <div>
@@ -191,7 +191,7 @@
         </div>
       </div>
     </div>
-    <div v-if="[7, 8].includes(infoDataMode)">
+    <div v-if="[InfoModeEmployer.Dispute, InfoModeEmployer.Closed].includes(infoDataMode)">
       <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
@@ -221,7 +221,7 @@
       </div>
       <div class="btns__container">
         <div
-          v-if="[7].includes(infoDataMode)"
+          v-if="infoDataMode === InfoModeEmployer.Dispute"
           class="btns__wrapper"
         >
           <div class="btn__wrapper">
@@ -232,7 +232,7 @@
         </div>
       </div>
     </div>
-    <div v-if="[9].includes(infoDataMode)">
+    <div v-if="infoDataMode === InfoModeEmployer.Done">
       <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
@@ -262,7 +262,7 @@
       </div>
     </div>
     <div
-      v-if="![4,8,9].includes(infoDataMode)"
+      v-if="![InfoModeEmployer.WaitWorker, InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode)"
       class="btns__container"
     >
       <div class="priority">
@@ -291,6 +291,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { InfoModeE } from '~/utils/enums';
 
 export default {
   name: 'QuestIdEmployer',
@@ -325,6 +326,9 @@ export default {
       responsesToQuest: 'quests/getResponsesToQuest',
       infoDataMode: 'quests/getInfoDataMode',
     }),
+    InfoModeEmployer() {
+      return InfoModeE;
+    },
     cardBadgeLevel() {
       return [
         {
@@ -377,7 +381,7 @@ export default {
     },
     async closeQuest() {
       this.SetLoader(true);
-      if (this.questData.status !== 2) {
+      if (this.questData.status !== InfoModeE.Active) {
         await this.$store.dispatch('quests/closeQuest', this.questData.id);
       }
       this.ShowModal({
@@ -398,7 +402,7 @@ export default {
         title: this.$t('quests.questInfo'),
         subtitle: this.$t('quests.completedWorkAccepted'),
       });
-      await this.$store.dispatch('quests/setInfoDataMode', 9);
+      await this.$store.dispatch('quests/setInfoDataMode', InfoModeE.Done);
       this.SetLoader(false);
     },
     async rejectCompletedWorkOnQuest() {
@@ -410,7 +414,7 @@ export default {
         title: this.$t('quests.questInfo'),
         subtitle: this.$t('quests.completedWorkRejected'),
       });
-      await this.$store.dispatch('quests/setInfoDataMode', 7);
+      await this.$store.dispatch('quests/setInfoDataMode', InfoModeE.Dispute);
       this.SetLoader(false);
     },
     async initData() {

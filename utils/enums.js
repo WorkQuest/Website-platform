@@ -27,3 +27,46 @@ export const StakingTypes = {
   MINING: 'MINING',
   CROSS_CHAIN: 'CROSS_CHAIN',
 };
+
+export const QStatuses = {
+  Rejected: -1,
+  Created: 0,
+  Active: 1,
+  Closed: 2,
+  Dispute: 3,
+  WaitWorker: 4,
+  WaitConfirm: 5,
+  Done: 6,
+};
+
+export const InfoModeE = {
+  RaiseViews: 1,
+  Active: 2,
+  Created: 3,
+  WaitWorker: 4,
+  WaitConfirm: 6,
+  Dispute: 7,
+  Closed: 8,
+  Done: 9,
+};
+export const InfoModeW = {
+  ADChat: 1,
+  Active: 2,
+  Rejected: 3,
+  WaitConfirm: 4,
+  Created: 5,
+  Dispute: 7,
+  Closed: 8,
+  Done: 9,
+};
+export const questPriority = {
+  Low: 1,
+  Normal: 2,
+  Urgent: 3,
+};
+export const questsCompPageMode = {
+  WorkerMy: 1,
+  WorkerOther: 2,
+  EmpMy: 3,
+  EmpOther: 4,
+};
