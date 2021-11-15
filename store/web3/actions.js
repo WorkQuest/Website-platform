@@ -28,12 +28,10 @@ import {
   getAccount,
   swapWithBridge,
   getStakingDataByType,
-  getStakingRewardTxFee, handleMetamaskStatus, fetchActions, unsubscirbeListeners, getChainIdByChain,
+  handleMetamaskStatus, fetchActions, unsubscirbeListeners, getChainIdByChain,
   initProvider,
   authRenewal,
-  getPensionDefaultData,
-  getPensionWallet,
-  pensionUpdateFee, pensionContribute, pensionsWithdraw, pensionExtendLockTime,
+  getPensionDefaultData, getPensionWallet, pensionUpdateFee, pensionContribute, pensionsWithdraw, pensionExtendLockTime, getTxFee,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
@@ -226,7 +224,8 @@ export default {
     };
   },
   getStakingRewardTxFee({ commit }, stakingType) {
-    return getStakingRewardTxFee(stakingType);
+    const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
+    return getTxFee(stakingAbi, stakingAddress, 'claim');
   },
   async fetchStakingInfo({ commit }, { stakingType }) {
     const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
@@ -428,6 +427,7 @@ export default {
     return providerData;
   },
 
+  /* Pension Program */
   async getPensionDefaultData() {
     return await getPensionDefaultData();
   },
@@ -444,6 +444,12 @@ export default {
   },
   async pensionContribute({ commit }, amount) {
     return await pensionContribute(amount);
+  },
+  async getPensionWithdrawTxFee({ commit }, _amount) {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND_TEST;
+    _amount = new BigNumber(_amount).shiftedBy(18).toString();
+    return await getTxFee(_abi, _pensionAddress, 'withdraw', [_amount]);
   },
   async pensionWithdraw({ commit }, amount) {
     return await pensionsWithdraw(amount);

@@ -369,7 +369,7 @@ export default {
       const events = this.slug === StakingTypes.WQT
         ? ['tokensStaked', 'tokensClaimed', 'tokensUnstaked']
         : ['Staked', 'Claimed', 'Unstaked'];
-      await this.$store.dispatch('web3/fetchActions', {
+      await this.$store.dispatch('web3/fetchStakingActions', {
         stakingType: this.slug,
         events,
         callback: () => {
@@ -488,7 +488,7 @@ export default {
       }
       this.ShowModal({
         key: modals.claim,
-        txFee: txFeeData,
+        txFee: txFeeData.result,
         stakingType: this.slug,
         rewardAmount: this.userInfo.claim,
         tokenSymbol: this.poolData.tokenSymbol,

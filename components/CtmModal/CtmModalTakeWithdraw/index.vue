@@ -15,6 +15,7 @@
           >
             {{ $t('modals.walletAddress') }}
           </div>
+          <!--          Вывод на банковскую карту. Вернуть по надобности -->
           <!--          <div-->
           <!--            class="content__panel"-->
           <!--            :class="{'content__panel_active': step === 2}"-->
@@ -142,11 +143,16 @@ export default {
       this.amount = this.maxValue;
     },
     showWithdrawInfo() {
+      const txFeeData = this.$store.dispatch('web3/getPensionWithdrawTxFee', this.amount);
+      if (!txFeeData?.ok) {
+        return;
+      }
       this.ShowModal({
         key: modals.withdrawInfo,
         title: this.$t('modals.withdrawInfo'),
         amount: this.$t(`pension.${this.options.symbol || 'WUSD'}Count`, { count: this.amount }),
         _amount: this.amount,
+        txFee: txFeeData.result,
         walletAddress: this.walletAddress,
         method: 'pensionWithdraw',
         updateMethod: this.options.updateMethod,

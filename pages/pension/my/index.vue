@@ -344,30 +344,18 @@ export default {
     }),
     historyFields() {
       return [
-      // {
-      //   key: 'userName',
-      //   label: this.$t('referral.tableHead.name'),
-      //   thStyle: {
-      //     padding: '0 0 0 23px',
-      //     height: '27px',
-      //     lineHeight: '27px',
-      //   },
-      //   tdAttr: {
-      //     style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
-      //   },
-      // },
-      // {
-      //   key: 'userID',
-      //   label: this.$t('referral.tableHead.userID'),
-      //   thStyle: {
-      //     padding: '0',
-      //     height: '27px',
-      //     lineHeight: '27px',
-      //   },
-      //   tdAttr: {
-      //     style: 'padding: 0; height: 64px; line-height: 64px',
-      //   },
-      // },
+        {
+          key: 'operation',
+          label: 'Operation',
+          thStyle: {
+            padding: '0 0 0 23px',
+            height: '27px',
+            lineHeight: '27px',
+          },
+          tdAttr: {
+            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
+          },
+        },
         {
           key: 'txHash',
           label: this.$t('referral.tableHead.txHash'),
@@ -377,7 +365,7 @@ export default {
             lineHeight: '27px',
           },
           tdAttr: {
-            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
+            style: 'padding: 0 0 0 0; height: 64px; line-height: 64px',
           },
         },
         {
@@ -404,18 +392,6 @@ export default {
             style: 'padding: 0; height: 64px; line-height: 64px',
           },
         },
-        // {
-        //   key: 'status',
-        //   label: this.$t('referral.tableHead.status'),
-        //   thStyle: {
-        //     padding: '0',
-        //     height: '27px',
-        //     lineHeight: '27px',
-        //   },
-        //   tdAttr: {
-        //     style: 'padding: 0; height: 64px; line-height: 64px',
-        //   },
-        // },
       ];
     },
     pensionBalance() {
@@ -498,6 +474,34 @@ export default {
             toBlock: 'latest',
             fromBlock: 0,
           },
+          {
+            filter: {
+              user: this.walletAddress,
+            },
+            toBlock: 'latest',
+            fromBlock: 0,
+          },
+          {
+            filter: {
+              user: this.walletAddress,
+            },
+            toBlock: 'latest',
+            fromBlock: 0,
+          },
+          {
+            filter: {
+              user: this.walletAddress,
+            },
+            toBlock: 'latest',
+            fromBlock: 0,
+          },
+          {
+            filter: {
+              user: this.walletAddress,
+            },
+            toBlock: 'latest',
+            fromBlock: 0,
+          },
         ],
       });
       this.isFetchingActions = true;
@@ -505,6 +509,7 @@ export default {
     handleAction(method, result) {
       const { transactionHash, returnValues } = result;
       const tx = {
+        operation: result.event,
         txHash: transactionHash,
         userName: this.$t('pension.table.userName'),
         avaUrl: '~/assets/img/social/GOOGLE_+_.png',

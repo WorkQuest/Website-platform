@@ -341,23 +341,14 @@ let allowance;
 let amount;
 let nonce;
 
-export const getStakingRewardTxFee = async (stakingType) => {
-  let inst;
-  if (stakingType === StakingTypes.WQT) {
-    inst = new web3.eth.Contract(abi.WQStaking, process.env.WQT_STAKING);
-  } else if (stakingType === StakingTypes.WUSD) {
-    inst = new web3.eth.Contract(abi.WQStakingNative, process.env.WQT_STAKING_NATIVE);
-  } else {
-    console.error('[rewardTxFee] wrong staking type:', stakingType);
-    return 0;
-  }
+export const getTxFee = async (_abi, _contractAddress, method, data = null) => {
   try {
+    if (!method) console.error('getTxFee undefined method');
+    const inst = new web3.eth.Contract(_abi, _contractAddress);
     const gasPrice = await web3.eth.getGasPrice();
-    const gasEstimate = await inst.methods.claim.apply(null)
-      .estimateGas({ from: account.address });
-    return new BigNumber(gasPrice * gasEstimate).shiftedBy(-18)
-      .decimalPlaces(8)
-      .toString();
+    const gasEstimate = await inst.methods[method].apply(null, data).estimateGas({ from: account.address });
+    const fee = new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString();
+    return success(fee);
   } catch (e) {
     return error(500, 'TxFee error', e);
   }
@@ -429,7 +420,7 @@ export const unStaking = async (_decimals, _amount, _stakingAddress, _stakingAbi
   }
 };
 
-export const claimRewards = async (_stakingAddress, _stakingAbi, _amount) => {
+export const claimRewards = async (_stakingAddress, _stakingAbi) => {
   try {
     showToast('Claiming', 'Claiming...', 'success');
     const payload = {
@@ -566,8 +557,7 @@ export const unsubscirbeListeners = () => {
   lastActionHash = null;
 };
 export const fetchContractAction = (inst, method, callback, params) => inst.events[method](params, (err, result) => {
-  if (err) console.log('ERROR:', err); // TODO: del
-  else if (!err && callback && lastActionHash !== result.transactionHash) {
+  if (!err && callback && lastActionHash !== result.transactionHash) {
     lastActionHash = result.transactionHash;
     callback(method, result);
   }
@@ -632,10 +622,14 @@ export const getPensionWallet = async () => {
       unlockDate, fee,
     } = wallet;
     const _amount = new BigNumber(wallet.amount).shiftedBy(-18);
+    let _fee = new BigNumber(fee).shiftedBy(-18);
+    if (_fee.isGreaterThan('0') && _fee.isLessThan('0.0000001')) {
+      _fee = '>0.0000001';
+    } else _fee = _fee.decimalPlaces(8);
     return {
       ...wallet,
       unlockDate: new Date(unlockDate * 1000),
-      fee: new BigNumber(fee).shiftedBy(-18).toString(),
+      fee: _fee.toString(),
       amount: _amount.isGreaterThan('0') && _amount.isLessThan('0.0001') ? '>0.0001' : _amount.decimalPlaces(4).toString(),
       _amount: _amount.toString(),
     };

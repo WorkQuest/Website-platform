@@ -99,10 +99,10 @@ export default {
           title: this.$t('modals.amount'),
           subtitle: 'WUSD',
         },
-        // {
-        //   title: this.$t('modals.totalFee'),
-        //   subtitle: '$ 0,15',
-        // },
+        {
+          title: this.$t('modals.totalFee'),
+          subtitle: '$ 0,15',
+        },
       ],
     };
   },
@@ -129,6 +129,7 @@ export default {
   mounted() {
     this.walletAddress = this.options.walletAddress;
     this.items[0].subtitle = this.options.amount;
+    this.items[1].subtitle = this.options.txFee;
   },
   methods: {
     hide() {
