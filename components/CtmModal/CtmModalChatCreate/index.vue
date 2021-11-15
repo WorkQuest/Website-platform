@@ -103,13 +103,13 @@ export default {
       },
     };
   },
-  async mounted() {
-    await this.getUsers();
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+  },
+  async mounted() {
+    await this.getUsers();
   },
   methods: {
     async getUsers() {
