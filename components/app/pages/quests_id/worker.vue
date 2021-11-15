@@ -43,8 +43,8 @@
     >
       <div class="btn__wrapper">
         <base-btn
-          disabled="true"
           class="base-btn_dispute"
+          @click="showOpenADisputeModal()"
         >
           {{ $t('btn.dispute') }}
         </base-btn>
@@ -99,7 +99,9 @@
       class="btns__wrapper"
     >
       <div class="btn__wrapper">
-        <base-btn :disabled="true">
+        <base-btn
+          @click="showOpenADisputeModal()"
+        >
           {{ $t('btn.dispute') }}
         </base-btn>
       </div>
@@ -178,6 +180,12 @@ export default {
       if (this.userRole === 'worker') {
         await this.$store.dispatch('quests/getQuest', this.$route.params.id);
       }
+    },
+    showOpenADisputeModal() {
+      this.ShowModal({
+        key: modals.openADispute,
+        questId: this.questData.id,
+      });
     },
     async goToChat() {
       this.SetLoader(true);

@@ -1,4 +1,5 @@
 <template>
+  <!--  TODO: Добавить загрузчик картинок-->
   <ctm-modal-box
     class="dispute"
     :title="$t('modals.openADispute')"
@@ -12,7 +13,7 @@
         type="gray"
         :items="items"
         class="content__drop"
-        :placeholder="$t('placeholders.chooseTheme')"
+        :placeholder="$t('modals.chooseTheme')"
       />
       <div class="content__subtitle">
         {{ $t('modals.description') }}
@@ -27,7 +28,7 @@
         <base-btn
           class="buttons__button"
           :disabled="drop === ''"
-          @click="showRequestSendModal"
+          @click="createDipute()"
         >
           {{ $t('meta.send') }}
         </base-btn>
@@ -81,6 +82,22 @@ export default {
         title: this.$t('modals.requestSend'),
         subtitle: this.$t('modals.openDisputeText'),
       });
+    },
+    createDipute() {
+      const title = this.items[this.drop].toString();
+      const payload = {
+        title,
+        description: this.description,
+        medias: [],
+      };
+      try {
+        this.$store.dispatch('disputes/createDiscussion', payload);
+        this.hide();
+        this.showRequestSendModal();
+      } catch (e) {
+        console.log(e);
+        this.hide();
+      }
     },
   },
 };

@@ -5,8 +5,6 @@
         <h2 class="page__title">
           {{ $t('disputes.disputes') }}
         </h2>
-        {{ disputes }}
-        <!--        TODO: Убрать вывод -->
         <div
           v-if="disputes.count === 0"
           class="page__none"
@@ -21,7 +19,7 @@
           class="page__grid"
         >
           <span
-            v-for="(item, i) in disputes"
+            v-for="(item, i) in disputes.discussions"
             :key="i"
           >
             <div
@@ -33,13 +31,13 @@
                   {{ $t('disputes.dispute') }} <span class="page__text_blue">{{ item.id }}</span>
                 </div>
                 <div class="page__text">
-                  {{ $t('disputes.quest') }} <span class="page__text_blue">Quest</span>
+                  {{ $t('disputes.quest') }} <span class="page__text_blue" />
                 </div>
                 <div class="page__text">
                   {{ $t('disputes.employer') }} <span class="page__text_blue">{{ item.author.firstName }} {{ item.author.lastName }}</span>
                 </div>
                 <div class="page__text">
-                  {{ $t('disputes.questSalary') }} <span class="page__text_blue">QuestSalary</span>
+                  {{ $t('disputes.questSalary') }} <span class="page__text_blue" />
                 </div>
                 <div class="page__text">
                   {{ $t('disputes.disputeTime') }} <span class="page__text_blue">{{ $moment(item.createdAt).format('Do MMMM YYYY, hh:mm a') }}</span>
@@ -63,13 +61,13 @@
                     v-if="item"
                     class="page__decision"
                   >
-                    -
+                    {{ item.title }}
                   </div>
                   <div
                     v-if="!item"
                     class="page__decision"
                   >
-                    {{ item.decision }}
+                    -
                   </div>
                 </div>
               </div>

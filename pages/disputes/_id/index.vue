@@ -1,4 +1,5 @@
 <template>
+  <!--  TODO: Не хватает query id на стороне бэка, для получение конкретного диспута-->
   <div class="main">
     <div class="main__body">
       <div class="dispute__top">
@@ -10,7 +11,7 @@
           <span class="dispute__back_text">{{ $t('disputes.Dispute') }}</span>
         </div>
         <div class="dispute__number">
-          № 87974121
+          № 1111
         </div>
         <div class="dispute__status">
           {{ $t('disputes.pending') }}
