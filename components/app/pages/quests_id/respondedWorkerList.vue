@@ -1,13 +1,15 @@
 <template>
   <div>
-    <div class="worker worker__card">
+    <div
+      v-if="currentWorker"
+      class="worker worker__card"
+    >
       <div
-        v-if="currentWorker"
         class="worker__title"
       >
         {{ $t('response.title') }}
       </div>
-      <span v-if="filteredResponses.length">
+      <span v-if="filteredResponses.length > 0">
         <span
           v-for="(response, i) in filteredResponses"
           :key="i"
