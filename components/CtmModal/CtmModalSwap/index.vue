@@ -53,7 +53,7 @@
               {{ $t('modals.recepientBinance') }}
             </div>
             <base-field
-              v-model="recipientAddress"
+              v-model="account.address"
               class="body__input"
               :disabled="true"
               placeholder="Enter binance address"
@@ -136,9 +136,9 @@ export default {
     hide() {
       this.CloseModal();
     },
-    async fillAddress() {
-      this.recipientAddress = await this.account.address;
-      this.userAddress = await this.account.address;
+    fillAddress() {
+      this.recipientAddress = this.account.address;
+      this.userAddress = this.account.address;
     },
     async setSwapAddress() {
       await this.$store.dispatch('defi/setSwapAddress');

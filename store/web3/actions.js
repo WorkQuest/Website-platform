@@ -65,7 +65,7 @@ export default {
     commit('setMetaMaskStatus', false);
     commit('clearTokens');
     commit('clearAccount');
-    localStorage.removeItem('isMetaMask');
+    // localStorage.removeItem('isMetaMask');
   },
 
   async connect({ commit, dispatch, getters }, payload) {
@@ -79,10 +79,10 @@ export default {
       await commit('setAccount', response.result);
       await commit('setIsConnected', true);
       await commit('setPurseData', getAccountAddress());
-      if (!isReconnection) showToast('Connect to Metamask', 'Connected', 'success');
+      if (!isReconnection) showToast('Connect to wallet', 'Connected', 'success');
     } else {
       commit('setIsConnected', false);
-      showToast('Error connect to Metamask', `${response.data}`, 'danger');
+      showToast('Error connect to wallet', `${response.data}`, 'danger');
     }
   },
   async handleConnectionStatusChanged({ dispatch }) {
