@@ -194,7 +194,7 @@ export default {
       return this.$route.params.id;
     },
     stakeDurationIsOver() {
-      return this.userInfo && moment.duration(moment(this.userInfo.date).diff(moment.now())).asMilliseconds() < 0;
+      return this.userInfo && moment.duration(moment(this.userInfo.date).diff(moment.now())).asMilliseconds() <= 0;
     },
     cards() {
       if (!this.poolData) {

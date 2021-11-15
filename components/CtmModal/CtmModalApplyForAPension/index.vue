@@ -82,7 +82,7 @@ export default {
       this.CloseModal();
     },
     async submitPensionRegistration() {
-      await this.$store.dispatch('web3/checkConnectionStatus', Chains.ETHEREUM);
+      await this.$store.dispatch('web3/checkMetaMaskStatus', Chains.ETHEREUM);
       if (this.isConnected) {
         const { defaultFee } = this.options;
         this.hide();
