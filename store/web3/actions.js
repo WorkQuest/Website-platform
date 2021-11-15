@@ -434,9 +434,7 @@ export default {
   async getPensionContributed() {
     const _abi = abi.WQPensionFund;
     const _pensionAddress = process.env.PENSION_FUND_TEST;
-    const res = await fetchContractData('contributed', _abi, _pensionAddress);
-    console.log('contributed', res);
-    return res;
+    return await fetchContractData('contributed', _abi, _pensionAddress);
   },
   async getPensionWallet() {
     return await getPensionWallet();
@@ -452,12 +450,12 @@ export default {
   },
   async pensionStartProgram({ commit }, payload) {
     const { firstDeposit, fee, defaultFee } = payload;
-    let feeOk = false;
+    let feeOk = true;
     let depositOk = false;
     const equalsFee = new BigNumber(defaultFee).shiftedBy(-18).isEqualTo(new BigNumber(fee).shiftedBy(-18));
     if (!firstDeposit || !equalsFee) {
       feeOk = await pensionUpdateFee(fee);
-    } else feeOk = true;
+    }
     if (firstDeposit) depositOk = await pensionContribute(firstDeposit);
     else return feeOk;
     return depositOk && feeOk;

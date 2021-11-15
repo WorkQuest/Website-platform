@@ -613,7 +613,6 @@ export const getPensionDefaultData = async () => {
       fetchContractData('lockTime', _abi, _pensionAddress),
       fetchContractData('defaultFee', _abi, _pensionAddress),
     ]);
-    console.log(lockTime, defaultFee);
     return {
       defaultFee: new BigNumber(defaultFee.toString()).shiftedBy(-18).toString(),
       lockTime: Math.floor(lockTime / 365 / 24 / 60 / 60),
