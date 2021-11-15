@@ -46,4 +46,8 @@ export default {
       return true;
     });
   },
+  setGroupChatUsers(state, { users, count }) {
+    state.groupChatUsers.list = users;
+    state.groupChatUsers.count = count;
+  },
 };

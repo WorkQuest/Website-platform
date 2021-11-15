@@ -9,10 +9,10 @@
       </div>
       <div class="ctm-modal__content-field">
         <base-field
-          v-model="chatName"
+          v-model="name"
           :is-hide-error="true"
           :label="$t('modals.chatCreate.chatName')"
-          :placeholder="$t('placeholders.default')"
+          :placeholder="$t('modals.chatCreate.chatName')"
         />
       </div>
       <div class="ctm-modal__content-participants participants">
@@ -21,27 +21,27 @@
         </div>
         <div class="participants__content">
           <div
-            v-for="(item,i) in userFriends"
-            :key="i"
-            class="participants__contact friends"
-            :class="Number(i) === Object.keys(userFriends).length ? '' : 'participants__contact_border'"
+            v-for="user in users.list"
+            :key="user.id"
+            class="participants__contact"
           >
             <div class="friends__data">
               <img
                 class="friends__img"
-                src="~/assets/img/temp/profile.svg"
+                :src="user.avatar ? user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
               >
-              <span
-                class="friends__name"
-              >{{ item.name }}</span>
+              <span class="friends__name">
+                {{ (user.firstName || '') + ' ' + (user.lastName || '') }}
+              </span>
             </div>
             <input
-              :id="`friendsCheckbox${i}`"
+              :id="user.id"
               type="checkbox"
               class="friends__checkbox_custom"
+              @change="changeSelStatus($event, user.id)"
             >
             <label
-              :for="`friendsCheckbox${i}`"
+              :for="user.id"
             />
           </div>
         </div>
@@ -56,7 +56,8 @@
           </base-btn>
           <base-btn
             class="btn_bl"
-            @click="showChat()"
+            :disabled="!memberUserIds.length || !name"
+            @click="applyChanges"
           >
             {{ $t('meta.next') }}
           </base-btn>
@@ -74,7 +75,7 @@ export default {
   name: 'ModalApplyForAPension',
   data() {
     return {
-      chatName: '',
+      name: '',
       userFriends: {
         1: {
           img: '~assets/img/temp/profile.svg',
@@ -97,21 +98,30 @@ export default {
           name: 'Pieter Spider',
         },
       },
+      memberUserIds: [],
       filter: {
         offset: 0,
-        limit: 10,
+        limit: 100,
       },
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      users: 'data/getGroupChatUsers',
     }),
   },
   async mounted() {
     await this.getUsers();
   },
   methods: {
+    changeSelStatus({ target }, userId) {
+      if (target.checked) {
+        this.memberUserIds.push(userId);
+      } else {
+        this.memberUserIds = this.memberUserIds.filter((id) => id !== userId);
+      }
+    },
     async getUsers() {
       const config = {
         params: this.filter,
@@ -122,8 +132,14 @@ export default {
     hide() {
       this.CloseModal();
     },
-    showChat() {
-      this.$router.push('/messages/1');
+    applyChanges() {
+      const { name, memberUserIds } = this;
+
+      const config = {
+        name,
+        memberUserIds,
+      };
+      this.$store.dispatch('data/handleCreateGroupChat', config);
     },
   },
 };
@@ -139,17 +155,25 @@ export default {
   &__content-participants {
     margin: 25px 0 0 0;
     .participants {
+      &__content {
+        max-height: 500px;
+        overflow: auto;
+        &::-webkit-scrollbar {
+          width: 0;
+          height: 0;
+        }
+      }
       &__contact {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
         padding: 15px 0;
-        &_border {
-          border-bottom-width: 1px;
-          border-bottom-style: solid;
-          border-bottom-color: #F7F8FA;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid #F7F8FA;
         }
+
         .friends {
           &__data {
             display: flex;

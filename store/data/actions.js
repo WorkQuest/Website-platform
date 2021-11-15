@@ -46,6 +46,9 @@ export default {
   handleCreateChat({ commit }, { config, userId }) {
     this.$axios.$post(`/v1/user/${userId}/send-message`, config);
   },
+  handleCreateGroupChat({ commit }, config) {
+    this.$wsChat.$post('/api/v1/user/me/chat/group/create', config);
+  },
   async handleSendMessage({ commit, rootState: { data: { messages, messagesFilter } } }, { chatId, config }) {
     const { payload } = await this.$wsChat.$post(`/api/v1/chat/${chatId}/send-message`, config);
 
@@ -103,5 +106,6 @@ export default {
   },
   async getUsersForGroupChat({ commit }, config) {
     const { result } = await this.$axios.$get('/v1/user/me/chat/members/users-by-chats', config);
+    commit('setGroupChatUsers', result);
   },
 };

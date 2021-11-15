@@ -42,7 +42,7 @@
                     </div>
                   </div>
                   <div class="chat__title chat__title_bold">
-                    {{ chat.userMembers.length > 1 ? 'Group Chat' : chat.userMembers[0].firstName + ' ' + chat.userMembers[0].lastName }}
+                    {{ chat.type === 'group' ? chat.name : (chat.userMembers[0].firstName || '') + ' ' + (chat.userMembers[0].lastName || '') }}
                   </div>
                   <div
                     v-if="chat.type === 'group' || chat.type === 'quest'"
@@ -50,7 +50,7 @@
                     :class="[{'chat__title_gray' : chat.type === 'group'}, {'chat__title_link' : chat.type === 'quest'}]"
                     @click="goToQuest($event,chat.type === 'quest' ? chat.questChat.questId : '')"
                   >
-                    {{ chat.type === 'group' > 1 ? $t('chat.group') : chat.questChat.quest.title }}
+                    {{ chat.type === 'group' ? $t('chat.group') : chat.questChat.quest.title }}
                   </div>
                 </div>
                 <!--                <div class="chat__row">-->

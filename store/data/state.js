@@ -384,6 +384,10 @@ export default () => ({
     count: 0,
     chat: null,
   },
+  groupChatUsers: {
+    count: 0,
+    list: [],
+  },
   messagesFilter: {
     topOffset: 0,
     bottomOffset: 0,

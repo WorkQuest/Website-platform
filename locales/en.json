@@ -889,7 +889,7 @@
     "redeemFail": "Redeem fail",
     "chatCreate": {
       "title": "Create group chat",
-      "desc": "Create name of group chat and choose people from you chat list",
+      "desc": "Create name of group chat and choose people from your chat list",
       "participants": "Participants",
       "chatName": "Chat name"
     },
