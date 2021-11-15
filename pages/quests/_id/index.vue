@@ -53,7 +53,7 @@
     <div class="main">
       <div class="main__body">
         <div v-if="userRole === 'employer'">
-          <div v-if="infoDataMode === InfoModeEmployer.Active">
+          <div v-if="infoDataMode === InfoModeEmployer.Created">
             <invited-worker-list :current-worker="currentWorker" />
             <responded-worker-list
               :current-worker="currentWorker"
