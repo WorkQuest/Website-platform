@@ -471,35 +471,30 @@ export default {
             filter: {
               user: this.walletAddress,
             },
-            toBlock: 'latest',
             fromBlock: 0,
           },
           {
             filter: {
               user: this.walletAddress,
             },
-            toBlock: 'latest',
             fromBlock: 0,
           },
           {
             filter: {
               user: this.walletAddress,
             },
-            toBlock: 'latest',
             fromBlock: 0,
           },
           {
             filter: {
               user: this.walletAddress,
             },
-            toBlock: 'latest',
             fromBlock: 0,
           },
           {
             filter: {
               user: this.walletAddress,
             },
-            toBlock: 'latest',
             fromBlock: 0,
           },
         ],
