@@ -22,6 +22,12 @@
               class="block__image"
               alt=""
             >
+            <div
+              class="block__state"
+              :class="getStatusClass(item.status)"
+            >
+              {{ getStatusCard(item.status) }}
+            </div>
           </div>
           <div class="block__right">
             <div class="block__head">
@@ -71,7 +77,7 @@
               >
                 {{ progressQuestText(item.quest.status) }}
               </div>
-              <div class="progress__container container">
+              <div class="progress__container">
                 <div class="container__user user">
                   <img
                     class="user__avatar"
@@ -203,16 +209,16 @@
                   <span
                     v-if="userCompany && item.user.additionalInfo"
                     class="block__text block__text_grey"
-                  >{{ `${$t('quests.fromSmall')} ${item.user.additionalInfo.company}` }}</span>
+                  >{{ `${$t('quests.fromSmall')} ${item.user.additionalInfo.company ? item.user.additionalInfo.company : 'Without company'}` }}</span>
                 </div>
               </div>
               <quest-dd
-                v-if="[0,4].includes(item.status)"
+                v-if="[0].includes(item.status)"
                 class="block__icon block__icon_fav"
                 mode="vertical"
               />
               <div
-                v-if="[2,3,6].includes(item.status)"
+                v-if="[2,3].includes(item.status)"
                 class="block__icon block__icon_fav star"
                 @click="setStar(item)"
               >
@@ -284,6 +290,7 @@
               <div
                 v-if="isHideStatus(item.type)"
                 class="block__status"
+                :class="{'block__status_col': item.priority === 0}"
               >
                 <div
                   class="block__priority"
@@ -313,15 +320,16 @@
                   </template>
                 </base-btn>
                 <div
-                  v-else
+                  v-if="[6].includes(item.status)"
                   class="block__rating"
                 >
                   <div class="block__rating block__rating_star">
+                    <!--                    TODO: Исправить код оценки квеста-->
                     <button
                       @click="showReviewModal(item.user.ratingStatistic)"
                     >
                       <b-form-rating
-                        v-model="item.user.ratingStatistic"
+                        v-model="ratingStatistic"
                       />
                     </button>
                   </div>
@@ -363,6 +371,7 @@ export default {
   },
   data() {
     return {
+      ratingStatistic: '',
       questResponses: [],
       isFavorite: false,
       localUserData: {},
@@ -483,6 +492,7 @@ export default {
     },
     getStatusCard(index) {
       const status = {
+        '-1': 'Rejected',
         1: this.$t('quests.active'),
         6: this.$t('quests.performed'),
         5: this.$t('quests.requested'),
@@ -493,6 +503,7 @@ export default {
     },
     getStatusClass(index) {
       const status = {
+        '-1': 'quests__cards__state_clo',
         1: 'quests__cards__state_act',
         6: 'quests__cards__state_per',
         5: 'quests__cards__state_req',
@@ -523,6 +534,14 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.user {
+  &__name {
+    @include text-simple;
+    font-weight: 500;
+    font-size: 16px;
+    color: $black800;
+  }
+}
 .right {
   justify-self: flex-end;
 }
@@ -537,6 +556,7 @@ export default {
 }
 .progress {
   &__title {
+    @include text-simple;
     margin: 10px 0 7px 10px;
     font-weight: 400;
     font-size: 12px;
@@ -548,7 +568,7 @@ export default {
     align-items: center;
     grid-template-columns: auto 3fr;
     grid-gap: 10px;
-    margin: 10px 0 0 0;
+    margin: 7px 0 0 6px;
     .container {
       &__user {
         display: flex;
@@ -744,7 +764,7 @@ export default {
     border-radius: 6px;
     display: flex;
     flex-direction: column;
-    height: auto;
+    height: 73px;
     width: 100%;
     padding: 10px;
   }
@@ -762,6 +782,9 @@ export default {
     display: grid;
     grid-template-columns: auto 1fr;
     grid-gap: 15px;
+    &_col {
+      grid-template-columns: 1fr;
+    }
   }
   &__amount {
     font-style: normal;

@@ -148,7 +148,6 @@ export default {
 
 .quest {
   &__button {
-    position: relative;
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: normal;
@@ -171,6 +170,9 @@ export default {
       width: 30px;
       height: 30px;
     }
+  }
+  &__menu {
+    position: relative;
   }
 }
 

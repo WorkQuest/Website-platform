@@ -87,6 +87,7 @@
     >
       <div class="btn__wrapper">
         <base-btn
+          :disabled="questData.status === -1"
           @click="sendARequestOnQuest"
         >
           {{ $t('btn.sendARequest') }}
@@ -133,12 +134,6 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'QuestIdWorker',
-  props: {
-    infoData: {
-      type: Object,
-      default: () => {},
-    },
-  },
   data() {
     return {
       userAvatar: '',
@@ -180,7 +175,9 @@ export default {
       return priority[index] || '';
     },
     async initData() {
-      this.questData = await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+      if (this.userRole === 'worker') {
+        await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+      }
     },
     async goToChat() {
       this.SetLoader(true);
