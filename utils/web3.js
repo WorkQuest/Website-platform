@@ -139,22 +139,23 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
   let transactionData;
   const inst = new web3.eth.Contract(payload.abi, payload.address);
   const gasPrice = await web3.eth.getGasPrice();
+  const accountAddress = await getAccountAddress();
   if (_method === 'claim') {
     const data = inst.methods[_method].apply(null).encodeABI();
-    const gasEstimate = await inst.methods[_method].apply(null).estimateGas({ from: account.address });
+    const gasEstimate = await inst.methods[_method].apply(null).estimateGas({ from: accountAddress });
     transactionData = {
       to: payload.address,
-      from: account.address,
+      from: accountAddress,
       data,
       gasPrice,
       gas: gasEstimate,
     };
   } else {
     const data = inst.methods[_method].apply(null, payload.data).encodeABI();
-    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: account.address });
+    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
     transactionData = {
       to: payload.address,
-      from: account.address,
+      from: accountAddress,
       data,
       gasPrice,
       gas: gasEstimate,
