@@ -383,37 +383,22 @@ export default {
       this.SetLoader(true);
       if (this.questData.status !== InfoModeE.Active) {
         await this.$store.dispatch('quests/closeQuest', this.questData.id);
+        this.showModalQuestClosed();
       }
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('quests.questInfo'),
-        subtitle: this.$t('quests.questClosed!'),
-      });
       await this.$router.push('/my');
       this.SetLoader(false);
     },
     async acceptCompletedWorkOnQuest() {
       this.SetLoader(true);
       await this.$store.dispatch('quests/acceptCompletedWorkOnQuest', this.questData.id);
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('quests.questInfo'),
-        subtitle: this.$t('quests.completedWorkAccepted'),
-      });
+      this.showModalQuestCompletedWorkAccepted();
       await this.$store.dispatch('quests/setInfoDataMode', InfoModeE.Done);
       this.SetLoader(false);
     },
     async rejectCompletedWorkOnQuest() {
       this.SetLoader(true);
       await this.$store.dispatch('quests/rejectCompletedWorkOnQuest', this.questData.id);
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('quests.questInfo'),
-        subtitle: this.$t('quests.completedWorkRejected'),
-      });
+      this.showModalRejectCompletedWorkOnQuest();
       await this.$store.dispatch('quests/setInfoDataMode', InfoModeE.Dispute);
       this.SetLoader(false);
     },
@@ -435,6 +420,30 @@ export default {
     toRaisingViews() {
       this.$router.push('/edit-quest');
       this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
+    },
+    showModalRejectCompletedWorkOnQuest() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: this.$t('quests.questInfo'),
+        subtitle: this.$t('quests.completedWorkRejected'),
+      });
+    },
+    showModalQuestCompletedWorkAccepted() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: this.$t('quests.questInfo'),
+        subtitle: this.$t('quests.completedWorkAccepted'),
+      });
+    },
+    showModalQuestClosed() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: this.$t('quests.questInfo'),
+        subtitle: this.$t('quests.questClosed!'),
+      });
     },
   },
 };

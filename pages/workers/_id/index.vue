@@ -893,6 +893,7 @@ export default {
   @extend .styles__flex;
   padding: 25px 0;
   position: relative;
+  display: grid;
   .share-btn {
     height: 24px;
     width: 24px;
@@ -1251,7 +1252,6 @@ a:hover {
 @include _1199 {
   .contact {
     display: flex;
-    flex-direction: column;
   }
   .template {
     &__main {
