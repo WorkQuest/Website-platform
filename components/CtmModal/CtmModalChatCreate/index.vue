@@ -1,20 +1,22 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t('modals.chatCreate.title')"
+    :title="$t(`modals.chatCreate.${options.chatId ? 'members' : 'title'}`)"
   >
     <div class="ctm-modal__content">
-      <div class="ctm-modal__content-desc">
-        {{ $t('modals.chatCreate.desc') }}
-      </div>
-      <div class="ctm-modal__content-field">
-        <base-field
-          v-model="name"
-          :is-hide-error="true"
-          :label="$t('modals.chatCreate.chatName')"
-          :placeholder="$t('modals.chatCreate.chatName')"
-        />
-      </div>
+      <template v-if="!options.chatId">
+        <div class="ctm-modal__content-desc">
+          {{ $t('modals.chatCreate.desc') }}
+        </div>
+        <div class="ctm-modal__content-field">
+          <base-field
+            v-model="name"
+            :is-hide-error="true"
+            :label="$t('modals.chatCreate.chatName')"
+            :placeholder="$t('modals.chatCreate.chatName')"
+          />
+        </div>
+      </template>
       <div class="ctm-modal__content-participants participants">
         <div class="participants__title">
           {{ $t('modals.chatCreate.participants') }}
@@ -35,19 +37,22 @@
               </span>
             </div>
             <input
+              v-if="!options.chatId || options.itsOwner"
               :id="user.id"
               type="checkbox"
               class="friends__checkbox_custom"
+              :checked="memberUserIds.findIndex((id) => id === user.id) >= 0"
               @change="changeSelStatus($event, user.id)"
             >
-            <label
-              :for="user.id"
-            />
+            <label :for="user.id" />
           </div>
         </div>
       </div>
       <div class="ctm-modal__content-btns">
-        <div class="btn-group">
+        <div
+          class="btn-group"
+          :class="{'btn-group_solo' : options.chatId && !options.itsOwner}"
+        >
           <base-btn
             class="btn"
             @click="hide()"
@@ -55,8 +60,9 @@
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
+            v-if="!options.chatId || options.itsOwner"
             class="btn_bl"
-            :disabled="!memberUserIds.length || !name"
+            :disabled="!options.chatId && (!memberUserIds.length || !name)"
             @click="applyChanges"
           >
             {{ $t('meta.next') }}
@@ -76,28 +82,6 @@ export default {
   data() {
     return {
       name: '',
-      userFriends: {
-        1: {
-          img: '~assets/img/temp/profile.svg',
-          name: 'Test Testovich',
-        },
-        2: {
-          img: '~assets/img/temp/profile.svg',
-          name: 'Alex Danila',
-        },
-        3: {
-          img: '~assets/img/temp/profile.svg',
-          name: 'Lice Batman',
-        },
-        4: {
-          img: '~assets/img/temp/profile.svg',
-          name: 'Barry Alen',
-        },
-        5: {
-          img: '~assets/img/temp/profile.svg',
-          name: 'Pieter Spider',
-        },
-      },
       memberUserIds: [],
       filter: {
         offset: 0,
@@ -112,7 +96,7 @@ export default {
     }),
   },
   async mounted() {
-    await this.getUsers();
+    await this.getUsers(true);
   },
   methods: {
     changeSelStatus({ target }, userId) {
@@ -122,24 +106,47 @@ export default {
         this.memberUserIds = this.memberUserIds.filter((id) => id !== userId);
       }
     },
-    async getUsers() {
-      const config = {
-        params: this.filter,
+    async getUsers(isInit) {
+      const { options: { chatId, chatMembers = [], itsOwner }, filter } = this;
+
+      let users = [];
+      let needResponse = true;
+
+      if (isInit && chatId) {
+        users = chatMembers;
+        this.memberUserIds = chatMembers.map((member) => member.id);
+        if (!itsOwner) needResponse = false;
+      }
+
+      console.log(users);
+
+      const payload = {
+        config: {
+          params: filter,
+        },
+        users,
+        needResponse,
       };
 
-      await this.$store.dispatch('data/getUsersForGroupChat', config);
+      await this.$store.dispatch('data/getUsersForGroupChat', payload);
     },
     hide() {
       this.CloseModal();
     },
-    applyChanges() {
-      const { name, memberUserIds } = this;
+    async applyChanges() {
+      const { name, memberUserIds, options: { chatId, callback } } = this;
 
-      const config = {
-        name,
-        memberUserIds,
-      };
-      this.$store.dispatch('data/handleCreateGroupChat', config);
+      if (chatId) {
+        callback(memberUserIds);
+      } else {
+        const config = {
+          name,
+          memberUserIds,
+        };
+        await this.$store.dispatch('data/handleCreateGroupChat', config);
+      }
+
+      this.hide();
     },
   },
 };
@@ -201,6 +208,10 @@ export default {
       grid-gap: 20px;
       gap: 20px;
       margin-top: 25px;
+
+      &_solo {
+        grid-template-columns: 1fr;
+      }
 
       .btn {
         box-sizing: border-box;

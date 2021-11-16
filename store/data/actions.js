@@ -104,8 +104,19 @@ export default {
     });
     return response;
   },
-  async getUsersForGroupChat({ commit }, config) {
-    const { result } = await this.$axios.$get('/v1/user/me/chat/members/users-by-chats', config);
+  async getUsersForGroupChat({ commit }, { config, users, needResponse }) {
+    let result = {
+      users: [],
+      count: 0,
+    };
+
+    if (needResponse) {
+      const response = await this.$axios.$get('/v1/user/me/chat/members/users-by-chats', config);
+      result = response.result;
+    }
+
+    if (users.length) result.users = users.concat(result.users);
+
     commit('setGroupChatUsers', result);
   },
 };

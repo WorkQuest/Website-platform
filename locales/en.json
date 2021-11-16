@@ -891,7 +891,8 @@
       "title": "Create group chat",
       "desc": "Create name of group chat and choose people from your chat list",
       "participants": "Participants",
-      "chatName": "Chat name"
+      "chatName": "Chat name",
+      "members": "Members"
     },
     "yourRewardBalance": "Your reward balance:",
     "deletePortfolio": "Are you sure delete portfolio?",
@@ -1305,6 +1306,7 @@
     "writeYouMessage": "Write you message",
     "group": "Group",
     "noChats": "No Chats",
+    "membersNum": "{n} members",
     "systemMessages": {
       "invitedYouToAQuest": "invited you to a quest",
       "youInvitedToTheQuest": "You invited to the quest",
@@ -1315,7 +1317,9 @@
       "rejectedTheInviteToTheQuest": "rejected the invite to the quest",
       "youRejectedTheInviteToTheQuest": "You rejected the invite to the quest",
       "acceptedTheInviteToTheQuest": "accepted the invite to the quest",
-      "youAcceptedTheInviteToTheQuest": "You accepted the invite to the quest"
+      "youAcceptedTheInviteToTheQuest": "You accepted the invite to the quest",
+      "createdAGroupChat": "created a group chat",
+      "youCreatedAGroupChat": "You created a group chat"
     }
   },
   "settings": {

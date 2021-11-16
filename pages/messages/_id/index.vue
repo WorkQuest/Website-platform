@@ -14,13 +14,29 @@
             <span>{{ $t('chat.chat') }}</span>
           </div>
           <div class="chat-container__chat-name">
-            <div
-              v-if="messages.chat && messages.chat.type === 'quest'"
-              class="chat-container__quest-link"
-              @click="goToQuest"
-            >
-              {{ messages.chat.questChat.quest.title }}
-            </div>
+            <template v-if="messages.chat">
+              <div
+                v-if="messages.chat.type === 'quest'"
+                class="chat-container__quest-link"
+                @click="goToQuest"
+              >
+                {{ messages.chat.questChat.quest.title }}
+              </div>
+              <div
+                v-if="messages.chat.type === 'group'"
+                class="chat-container__group-chat-cont"
+              >
+                <div class="chat-container__group-name">
+                  {{ messages.chat.name }}
+                </div>
+                <div
+                  class="chat-container__quest-link chat-container__quest-link_small"
+                  @click="goToMembersList"
+                >
+                  {{ $tc('chat.membersNum', messages.chat.userMembers.length) }}
+                </div>
+              </div>
+            </template>
           </div>
           <ChatMenu v-show="chatId !== 'starred'" />
         </div>
@@ -51,22 +67,11 @@
                 v-if="message.type === 'info'"
                 class="info-message"
               >
-                <div v-if="message.infoMessage.messageAction === 'employerInviteOnQuest'">
-                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest'}`) }}
-                </div>
-                <div v-if="message.infoMessage.messageAction === 'workerResponseOnQuest'">
-                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest'}`) }}
-                </div>
-                <div v-if="message.infoMessage.messageAction === 'employerRejectResponseOnQuest'">
-                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest'}`) }}
-                </div>
-                <div v-if="message.infoMessage.messageAction === 'workerRejectInviteOnQuest'">
-                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest'}`) }}
-                </div>
-                <div v-if="message.infoMessage.messageAction === 'workerAcceptInviteOnQuest'">
-                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest'}`) }}
+                <div>
+                  {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
                 </div>
                 <div
+                  v-if="message.infoMessage.messageAction !== 'groupChatCreate' || (message.infoMessage.messageAction === 'groupChatCreate' && !message.itsMe)"
                   class="info-message__link"
                   :class="{'info-message__link_left' : !message.itsMe}"
                   @click="openProfile(message.infoMessage.userId, message.itsMe)"
@@ -339,8 +344,58 @@ export default {
     this.$store.commit('data/clearMessagesFilter');
   },
   methods: {
+    setInfoMessageText(action, itsMe) {
+      let text = 'chat.systemMessages.';
+      switch (action) {
+        case 'employerInviteOnQuest': {
+          text += itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest';
+          break;
+        }
+        case 'workerResponseOnQuest': {
+          text += itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest';
+          break;
+        }
+        case 'employerRejectResponseOnQuest': {
+          text += itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest';
+          break;
+        }
+        case 'workerRejectInviteOnQuest': {
+          text += itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest';
+          break;
+        }
+        case 'workerAcceptInviteOnQuest': {
+          text += itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest';
+          break;
+        }
+        case 'groupChatCreate': {
+          text += itsMe ? 'youCreatedAGroupChat' : 'createdAGroupChat';
+          break;
+        }
+        default: {
+          text = '';
+          break;
+        }
+      }
+
+      return this.$t(text);
+    },
     openProfile(userId, itsMe) {
       this.$router.push(`/${itsMe ? 'workers' : 'profile'}/${userId}`);
+    },
+    goToMembersList() {
+      const { messages: { chat }, userData } = this;
+
+      const callback = (memberIds) => {
+        console.log(memberIds);
+      };
+
+      this.ShowModal({
+        key: modals.chatCreate,
+        chatId: chat.id,
+        chatMembers: chat.userMembers.filter((member) => member.id !== userData.id),
+        itsOwner: chat.owner.id === userData.id,
+        callback,
+      });
     },
     goToQuest() {
       const { questId } = this.messages.chat.questChat;
@@ -378,7 +433,6 @@ export default {
         this.$forceUpdate();
       } catch (e) {
         console.log(e);
-        this.showToastError(e);
       }
     },
     async readMessages() {
@@ -556,7 +610,6 @@ export default {
           await this.$store.dispatch('data/setImage', cData);
         } catch (e) {
           console.log(e);
-          this.showToastError(e);
         }
       }));
 
@@ -577,7 +630,6 @@ export default {
         if (!isScrollBtnVis) this.scrollToBottom();
       } catch (e) {
         console.log(e);
-        this.showToastError(e);
       }
     },
     onEnter(e, callback) {
@@ -626,7 +678,7 @@ export default {
 
   &__header {
     border-bottom: 1px solid #E9EDF2;
-    padding: 15px;
+    padding: 0 15px;
     font-weight: 500;
     font-size: 18px;
     display: grid;
@@ -651,6 +703,17 @@ export default {
   &__quest-link {
     color: #0083C7;
     cursor: pointer;
+
+    &_small {
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+
+  &__group-chat-cont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   &__scroll-cont {
