@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     setRating(n) {
-      console.log(n);
+      localStorage.setItem('questRating', n);
     },
   },
 };

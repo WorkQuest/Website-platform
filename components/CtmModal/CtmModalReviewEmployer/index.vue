@@ -70,7 +70,13 @@ export default {
       options: 'modals/getOptions',
     }),
   },
+  mounted() {
+    this.getQuestRating();
+  },
   methods: {
+    getQuestRating() {
+      this.localRating = localStorage.getItem('questRating');
+    },
     hide() {
       this.CloseModal();
     },

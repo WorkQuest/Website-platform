@@ -151,11 +151,9 @@
                 >
                   <div class="block__rating block__rating_star">
                     <button
-                      @click="showReviewModal(item.quest.user.ratingStatistic)"
+                      @click="showReviewModal()"
                     >
-                      <b-form-rating
-                        v-model="item.quest.user.ratingStatistic"
-                      />
+                      <star-rating :rating="item.user.ratingStatistic" />
                     </button>
                   </div>
                 </div>
@@ -326,9 +324,9 @@
                 >
                   <div class="block__rating block__rating_star">
                     <button
-                      @click="showReviewModal(item.user.ratingStatistic)"
+                      @click="showReviewModal()"
                     >
-                      <star-rating />
+                      <star-rating :rating="item.user.ratingStatistic" />
                     </button>
                   </div>
                 </div>
