@@ -1,5 +1,5 @@
 <template>
-  <!--                    TODO: Исправить код оценки квеста-->
+  <!--  TODO: Вывести данные из компонента в модалку-->
   <div
     class="rating-area"
   >
@@ -63,11 +63,6 @@ export default {
       type: Object,
       default: () => {},
     },
-  },
-  data() {
-    return {
-      starRating: '',
-    };
   },
   methods: {
     setRating(n) {
