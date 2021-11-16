@@ -49,24 +49,34 @@
           {{ $t('meta.ok') }}
         </span>
       </base-btn>
-      <base-btn
+      <div
         v-if="options.type === 'goToChat'"
-        class="status__action"
-        @click="goToChat()"
+        class="btn__cols-two"
       >
-        <span
-          v-if="options.button"
-          class="status__text"
+        <base-btn
+          class="status__action"
+          mode="agree"
+          @click="goToChat()"
         >
-          {{ options.button }}
-        </span>
-        <span
-          v-else
-          class="status__text"
+          <span
+            v-if="options.button"
+            class="status__text"
+          >
+            {{ options.button }}
+          </span>
+        </base-btn>
+        <base-btn
+          class="status__action"
+          @click="goToChat()"
         >
-          {{ $t('meta.ok') }}
-        </span>
-      </base-btn>
+          <span
+            class="status__text"
+            @click="hide()"
+          >
+            {{ $t('meta.ok') }}
+          </span>
+        </base-btn>
+      </div>
       <base-btn
         v-else
         class="status__action"
@@ -149,6 +159,14 @@ export default {
 
 <style lang="scss" scoped>
 
+.btn {
+  &__cols-two {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+  }
+}
+
 .status {
   max-width: 337px !important;
   height: auto !important;
@@ -170,7 +188,7 @@ export default {
   &__action {
     margin-top: 10px;
   }
-  &__desc{
+  &__desc {
     font-size: 16px;
     line-height: 130%;
     text-align: center;
