@@ -29,7 +29,7 @@
             <div class="buttons__wrapper">
               <base-btn
                 class="buttons__action"
-                @click="showThanksModal"
+                @click="sendReviewForUser()"
               >
                 {{ $t('meta.send') }}
               </base-btn>
@@ -77,8 +77,25 @@ export default {
     getQuestRating() {
       this.localRating = localStorage.getItem('questRating');
     },
+    removeLocalStorageRating() {
+      localStorage.removeItem('questRating');
+    },
     hide() {
       this.CloseModal();
+    },
+    sendReviewForUser() {
+      const payload = {
+        questId: this.options.item.id,
+        message: this.textArea,
+        mark: this.localRating,
+      };
+      try {
+        this.$store.dispatch('user/sendReviewForUser', payload);
+        this.showThanksModal();
+        this.removeLocalStorageRating();
+      } catch (e) {
+        console.log(e);
+      }
     },
     showThanksModal() {
       this.ShowModal({

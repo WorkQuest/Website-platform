@@ -30,12 +30,19 @@ export default {
     return response;
   },
 
-  async getAllUserReviews({ commit }, id) {
-    const response = await this.$axios.$get(`/v1/user/${id}/reviews`);
+  async getAllUserReviews({ commit }, userId) {
+    const response = await this.$axios.$get(`/v1/user/${userId}/reviews`);
     commit('setUserReviews', response.result);
     return response;
   },
-
+  async sendReviewForUser({ commit }, payload) {
+    try {
+      const response = await this.$axios.$post('/v1/review/send', payload);
+      return response.result;
+    } catch (e) {
+      return console.log(e);
+    }
+  },
   async signIn({ commit, dispatch }, payload) {
     const response = await this.$axios.$post('/v1/auth/login', payload);
     commit('setTokens', response.result);
