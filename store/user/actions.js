@@ -1,8 +1,12 @@
 export default {
   async getUserPortfolios({ commit }, id) {
-    const response = await this.$axios.$get(`/v1/user/${id}/portfolio/cases`);
-    commit('setUserPortfolioCases', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$get(`/v1/user/${id}/portfolio/cases`);
+      commit('setUserPortfolioCases', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
   async setCaseImage({ commit }, { url, formData, type }) {
     const response = await this.$axios.$put(url, formData, {
@@ -15,25 +19,41 @@ export default {
     return response;
   },
   async setCaseData({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/portfolio/add-case', payload);
-    commit('setCaseData', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$post('/v1/portfolio/add-case', payload);
+      commit('setCaseData', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
   async editCaseData({ commit }, { payload, id }) {
-    const response = await this.$axios.$put(`/v1/portfolio/${id}`, payload);
-    commit('setCaseData', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$put(`/v1/portfolio/${id}`, payload);
+      commit('setCaseData', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
   async deletePortfolio({ commit }, id) {
-    const response = await this.$axios.$delete(`/v1/portfolio/${id}`);
-    commit('setUserPortfolioCases', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$delete(`/v1/portfolio/${id}`);
+      commit('setUserPortfolioCases', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
 
   async getAllUserReviews({ commit }, userId) {
-    const response = await this.$axios.$get(`/v1/user/${userId}/reviews`);
-    commit('setUserReviews', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$get(`/v1/user/${userId}/reviews`);
+      commit('setUserReviews', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
   async sendReviewForUser({ commit }, payload) {
     try {
@@ -66,9 +86,13 @@ export default {
     return response;
   },
   async getUserData({ commit }) {
-    const response = await this.$axios.$get('/v1/profile/me');
-    commit('setUserData', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$get('/v1/profile/me');
+      commit('setUserData', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
   async setUserRole({ commit }, payload) {
     const response = await this.$axios.$post('/v1/profile/set-role', payload);
@@ -123,12 +147,21 @@ export default {
     return response;
   },
   async disable2FA({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/totp/disable', payload);
-    commit('setDisable2FA', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$post('/v1/totp/disable', payload);
+      commit('setDisable2FA', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
   async enable2FA(payload) {
-    return await this.$axios.$post('/v1/totp/enable', payload);
+    try {
+      const response = await this.$axios.$post('/v1/totp/enable', payload);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
   async confirmEnable2FA({ commit }, payload) {
     const response = await this.$axios.$post('/v1/totp/confirm', payload);

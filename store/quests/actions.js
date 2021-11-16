@@ -1,4 +1,13 @@
 export default {
+  async getWorkerData({ commit }, userId) {
+    try {
+      const response = await this.$axios.$get(`/v1/profile/${userId}`);
+      commit('setCurrentWorker', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
+  },
   async questListForInvitation({ commit }, userId) {
     try {
       const response = await this.$axios.$get(`/v1/employer/${userId}/quests`);

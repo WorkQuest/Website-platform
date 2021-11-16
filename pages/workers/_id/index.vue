@@ -12,8 +12,8 @@
                   <img
                     v-if="Object.keys(currentWorker).length !== 0"
                     class="info-grid__avatar"
-                    :src="currentWorker.avatar !== null ? currentWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
-                    :alt="currentWorker.firstName"
+                    :src="currentWorker ? currentWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+                    alt=""
                   >
                 </div>
                 <div class="rating" />
@@ -26,7 +26,7 @@
               </div>
               <div class="col info-grid__col">
                 <div class="title title_inline">
-                  {{ currentWorker.firstName ? currentWorker.firstName : 'Nameless' }} {{ currentWorker.lastName ? currentWorker.lastName : "" }}
+                  {{ currentWorker ? currentWorker.firstName : 'Nameless' }} {{ currentWorker ? currentWorker.lastName : "" }}
                   <span class="level">
                     TOP RANKED EMP.
                   </span>
@@ -34,7 +34,7 @@
                 <div
                   class="description"
                 >
-                  {{ currentWorker ? currentWorker.additionalInfo.description: $t('quests.nothingAboutMe') }}
+                  <!--                  {{ currentWorker ? currentWorker.additionalInfo.description: $t('quests.nothingAboutMe') }}-->
                 </div>
                 <social />
                 <div class="contacts__grid">
@@ -48,13 +48,13 @@
                             class="icon-location"
                           />
                           <span class="contact__link">
-                            {{ currentWorker ? currentWorker.additionalInfo.address : $t('quests.unknownAddress') }}
+                            <!--                            {{ currentWorker ? currentWorker.additionalInfo.address : $t('quests.unknownAddress') }}-->
                           </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-phone" />
                           <span class="contact__link">
-                            {{ currentWorker ? currentWorker.additionalInfo.phone : $t('quests.unknownPhoneNumber') }}
+                            <!--                            {{ currentWorker ? currentWorker.additionalInfo.phone : $t('quests.unknownPhoneNumber') }}-->
                           </span>
                         </span>
                         <span class="contact__container">
@@ -88,7 +88,6 @@
             {{ $t('workers.skills') }}
           </div>
           <div>
-            <!-- TODO: Проверить механизм добавления скилов -->
             <span class="badge_blue">{{ $t('quests.skillsNotSpecified') }}</span>
           </div>
         </div>
@@ -184,12 +183,9 @@ export default {
       currentWorker: 'quests/getCurrentWorker',
     }),
   },
-  async created() {
-    await this.initWorkers();
-    await this.initWorker();
-  },
   async mounted() {
     this.SetLoader(true);
+    await this.initWorker();
     this.SetLoader(false);
   },
   methods: {
@@ -199,15 +195,15 @@ export default {
         currentWorker: this.currentWorker,
       });
     },
-    async initWorkers() {
-      await this.$store.dispatch('quests/workersList');
-    },
     async initWorker() {
-      // TODO: Исправить скрипт!
-      const currentWorkerId = this.$route.path.slice(-36);
-      const workersList = this.workersList.users;
-      const filteredWorker = workersList.filter((worker) => worker.id === currentWorkerId);
-      return await this.$store.dispatch('quests/setCurrentWorker', filteredWorker[0]);
+      console.log(1);
+      const userId = this.$route.params.id;
+      try {
+        await this.$store.dispatch('quests/getWorkerData', userId);
+        console.log(this.currentWorker);
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };
