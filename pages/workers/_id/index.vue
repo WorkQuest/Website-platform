@@ -26,7 +26,7 @@
               </div>
               <div class="col info-grid__col">
                 <div class="title title_inline">
-                  {{ currentWorker.firstName }} {{ currentWorker.lastName }}
+                  {{ currentWorker.firstName ? currentWorker.firstName : 'Nameless' }} {{ currentWorker.lastName ? currentWorker.lastName : "" }}
                   <span class="level">
                     TOP RANKED EMP.
                   </span>
