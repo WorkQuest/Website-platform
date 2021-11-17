@@ -70,3 +70,7 @@ export const questsCompPageMode = {
   EmpMy: 3,
   EmpOther: 4,
 };
+export const responsesType = {
+  Responded: 0,
+  Invited: 1,
+};

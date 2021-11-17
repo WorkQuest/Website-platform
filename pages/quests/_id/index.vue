@@ -54,7 +54,10 @@
       <div class="main__body">
         <div v-if="userRole === 'employer'">
           <div v-if="infoDataMode === InfoModeEmployer.Created">
-            <invited-worker-list :current-worker="currentWorker" />
+            <invited-worker-list
+              :current-worker="currentWorker"
+              :filtered-invited="filteredInvited"
+            />
             <responded-worker-list
               :current-worker="currentWorker"
               :filtered-responses="filteredResponses"
@@ -128,7 +131,9 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import { QStatuses, InfoModeW, InfoModeE } from '~/utils/enums';
+import {
+  QStatuses, InfoModeW, InfoModeE, responsesType,
+} from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
@@ -156,6 +161,7 @@ export default {
         spec: 'Painting works',
       },
       filteredResponses: [],
+      filteredInvited: [],
       isShowMap: true,
       priorityIndex: 0,
       distanceIndex: 0,
@@ -237,8 +243,11 @@ export default {
     },
     async getFilteredResponses() {
       if (this.userRole === 'employer') {
-        this.filteredResponses = this.responsesToQuest.filter((response) => response.status === 0);
-        return this.filteredResponses;
+        this.filteredResponses = this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Responded);
+        this.filteredInvited = this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Invited);
+        console.log('filteredResponses', this.filteredResponses);
+        console.log('filteredInvited', this.filteredInvited);
+        return this.filteredResponses && this.filteredInvited;
       }
       return '';
     },

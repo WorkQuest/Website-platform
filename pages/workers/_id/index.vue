@@ -12,8 +12,8 @@
                   <img
                     v-if="Object.keys(currentWorker).length !== 0"
                     class="info-grid__avatar"
-                    :src="currentWorker ? currentWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
-                    alt=""
+                    :src="currentWorker.avatar !== null ? currentWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+                    :alt="currentWorker.firstName"
                   >
                 </div>
                 <div class="rating" />
@@ -183,9 +183,13 @@ export default {
       currentWorker: 'quests/getCurrentWorker',
     }),
   },
+  async created() {
+    await this.initWorkers();
+    await this.initWorker();
+  },
   async mounted() {
     this.SetLoader(true);
-    await this.initWorker();
+    // await this.initWorker();
     this.SetLoader(false);
   },
   methods: {
@@ -195,15 +199,23 @@ export default {
         currentWorker: this.currentWorker,
       });
     },
+    async initWorkers() {
+      await this.$store.dispatch('quests/workersList');
+    },
     async initWorker() {
-      console.log(1);
-      const userId = this.$route.params.id;
-      try {
-        await this.$store.dispatch('quests/getWorkerData', userId);
-        console.log(this.currentWorker);
-      } catch (e) {
-        console.log(e);
-      }
+      // const userId = this.$route.params.id;
+      // try {
+      //   await this.$store.dispatch('quests/getWorkerData', userId);
+      //   console.log(this.currentWorker);
+      // } catch (e) {
+      //   console.log(e);
+      // }
+      const currentWorkerId = this.$route.path.slice(-36);
+      const workersList = this.workersList.users;
+      const filteredWorker = workersList.filter((worker) => worker.id === currentWorkerId);
+      const worker = filteredWorker[0];
+      console.log(worker);
+      await this.$store.dispatch('quests/setCurrentWorker', worker);
     },
   },
 };

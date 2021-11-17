@@ -1,10 +1,12 @@
 <template>
   <!--      TODO: Вывести список Invited!-->
   <div class="worker worker__card">
-    <div class="worker__title worker__col_two">
-      <div>{{ $t('quests.invited') }}</div>
+    <div class="worker__cols-two">
+      <div class="worker__title">
+        {{ $t('quests.invited') }}
+      </div>
       <div
-        class="btns__wrapper"
+        class="btns__wrapper btns__start"
       >
         <div class="btn__wrapper">
           <base-btn
@@ -16,64 +18,72 @@
           </base-btn>
         </div>
       </div>
-      <div style="margin: 15px 0 0 15px; padding: 0 0 15px 0; color: #7C838DFF; font-size: 16px;">
-        Workers not invited!
+    </div>
+    <div
+      v-if="filteredInvited.length === 0"
+      style="margin: 15px 0 0 15px; padding: 0 0 15px 0; color: #7C838DFF; font-size: 16px;"
+    >
+      Workers not invited!
+    </div>
+    <div
+      v-if="filteredInvited.length"
+      class="invited__list"
+    >
+      <div
+        v-for="(response, i) in filteredInvited"
+        :key="i"
+        class="invited__response"
+      >
+        <div
+          v-if="response.worker.firstName && response.worker.lastName"
+          class="worker__container"
+        >
+          <div class="worker worker__col_two">
+            <div class="worker row">
+              <img
+                class="worker__avatar"
+                :src="response.worker.avatar ? response.worker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+                alt=""
+              >
+              <div
+                class="worker__name"
+              >
+                {{ response.worker.firstName }} {{ response.worker.lastName }}
+              </div>
+            </div>
+            <quest-id-dd
+              class="worker__menu"
+              :i="i"
+              :response-id="response.id"
+            />
+          </div>
+          <div class="worker__message">
+            {{ response.message }}
+          </div>
+          <div>
+            <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
+            <!--                    <div-->
+            <!--                      v-if="item.badge.code !== 0"-->
+            <!--                      class="card__level_higher"-->
+            <!--                      :class="[-->
+            <!--                        {'card__level_higher': item.badge.code === 1},-->
+            <!--                        {'card__level_reliable': item.badge.code === 2},-->
+            <!--                        {'card__level_checked': item.badge.code === 3}-->
+            <!--                      ]"-->
+            <!--                    >-->
+            <!--                      <span v-if="item.badge.code === 1">-->
+            <!--                        {{ $t('levels.higher') }}-->
+            <!--                      </span>-->
+            <!--                      <span v-if="item.badge.code === 2">-->
+            <!--                        {{ $t('levels.reliableEmp') }}-->
+            <!--                      </span>-->
+            <!--                      <span v-if="item.badge.code === 3">-->
+            <!--                        {{ $t('levels.checkedByTime') }}-->
+            <!--                      </span>-->
+            <!--                    </div>-->
+          </div>
+        </div>
       </div>
-      <!--        <span v-if="filteredResponses.length">-->
-      <!--          <span-->
-      <!--            v-for="(response, i) in filteredResponses"-->
-      <!--            :key="i"-->
-      <!--          >-->
-      <!--            <div-->
-      <!--              v-if="response.worker.firstName && response.worker.lastName"-->
-      <!--              class="worker__container"-->
-      <!--            >-->
-      <!--              <div class="worker worker__col_two">-->
-      <!--                <div class="worker row">-->
-      <!--                  <img-->
-      <!--                    class="worker__avatar"-->
-      <!--                    :src="response.worker.avatar ? response.worker.avatar.url: require('~/assets/img/app/avatar_empty.png')"-->
-      <!--                    alt=""-->
-      <!--                  >-->
-      <!--                  <div-->
-      <!--                    class="worker__name"-->
-      <!--                  >-->
-      <!--                    {{ response.worker.firstName }} {{ response.worker.lastName }}-->
-      <!--                  </div>-->
-      <!--                </div>-->
-      <!--                <quest-id-dd-->
-      <!--                  :i="i"-->
-      <!--                  :response-id="response.id"-->
-      <!--                />-->
-      <!--              </div>-->
-      <!--              <div class="worker__message">-->
-      <!--                {{ response.message }}-->
-      <!--              </div>-->
-      <!--              <div>-->
-      <!--              &lt;!&ndash;                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка&ndash;&gt;-->
-      <!--              &lt;!&ndash;                    <div&ndash;&gt;-->
-      <!--              &lt;!&ndash;                      v-if="item.badge.code !== 0"&ndash;&gt;-->
-      <!--              &lt;!&ndash;                      class="card__level_higher"&ndash;&gt;-->
-      <!--              &lt;!&ndash;                      :class="[&ndash;&gt;-->
-      <!--              &lt;!&ndash;                        {'card__level_higher': item.badge.code === 1},&ndash;&gt;-->
-      <!--              &lt;!&ndash;                        {'card__level_reliable': item.badge.code === 2},&ndash;&gt;-->
-      <!--              &lt;!&ndash;                        {'card__level_checked': item.badge.code === 3}&ndash;&gt;-->
-      <!--              &lt;!&ndash;                      ]"&ndash;&gt;-->
-      <!--              &lt;!&ndash;                    >&ndash;&gt;-->
-      <!--              &lt;!&ndash;                      <span v-if="item.badge.code === 1">&ndash;&gt;-->
-      <!--              &lt;!&ndash;                        {{ $t('levels.higher') }}&ndash;&gt;-->
-      <!--              &lt;!&ndash;                      </span>&ndash;&gt;-->
-      <!--              &lt;!&ndash;                      <span v-if="item.badge.code === 2">&ndash;&gt;-->
-      <!--              &lt;!&ndash;                        {{ $t('levels.reliableEmp') }}&ndash;&gt;-->
-      <!--              &lt;!&ndash;                      </span>&ndash;&gt;-->
-      <!--              &lt;!&ndash;                      <span v-if="item.badge.code === 3">&ndash;&gt;-->
-      <!--              &lt;!&ndash;                        {{ $t('levels.checkedByTime') }}&ndash;&gt;-->
-      <!--              &lt;!&ndash;                      </span>&ndash;&gt;-->
-      <!--              &lt;!&ndash;                    </div>&ndash;&gt;-->
-      <!--              </div>-->
-      <!--            </div>-->
-      <!--          </span>-->
-      <!--        </span>-->
     </div>
   </div>
 </template>
@@ -83,6 +93,12 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'InvitedWorkerList',
+  props: {
+    filteredInvited: {
+      type: Array,
+      default: () => [],
+    },
+  },
   computed: {
     ...mapGetters({
       currentWorker: 'quests/getCurrentWorker',
@@ -113,6 +129,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.invited {
+  &__list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+}
 .row {
   display: flex;
   flex-direction: row;
@@ -126,6 +149,7 @@ export default {
   }
   &__start {
     height: 43px;
+    margin: 15px 0 0 0;
   }
 }
 .btns {
@@ -133,16 +157,27 @@ export default {
     display: grid;
     margin-bottom: 20px;
   }
+  &__start {
+    justify-content: flex-end;
+  }
   &__wrapper {
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 100%;
   }
 }
 .worker {
   font-size: 16px;
   font-weight: 500;
   color: $black800;
+  &__menu {
+    justify-self: self-end;
+  }
+  &__cols-two {
+    display: grid;
+    grid-template-columns: 9fr 3fr;
+  }
    &__card {
     margin: 30px 0;
     background: $white;
@@ -156,11 +191,11 @@ export default {
  }
   &__col {
     &_two {
-      width: 100%;
       display: grid;
-      grid-template-columns: repeat(2, auto);
+      grid-template-columns: 11fr 1fr;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
+      width: 100%;
     }
  }
   &__container_row {
