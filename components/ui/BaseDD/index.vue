@@ -16,7 +16,7 @@
       <button
         class="dd__btn"
         :class="ddClass"
-        :disabled="disabled"
+        :disabled="disabled || elementsIsEmpty"
         @click="isShown = !isShown"
       >
         <div
@@ -159,11 +159,14 @@ export default {
     isShown: false,
   }),
   computed: {
+    elementsIsEmpty() {
+      return this.items.length - this.hideSelected.length <= 0;
+    },
     ddClass() {
       const { type } = this;
       return [
         { dd__btn_dark: type === 'dark' },
-        { dd__btn_disabled: type === 'disabled' },
+        { dd__btn_disabled: type === 'disabled' || this.elementsIsEmpty },
         { dd__btn_gray: type === 'gray' },
         { dd__btn_blue: type === 'blue' },
         { dd__btn_border: type === 'border' },
@@ -232,9 +235,9 @@ export default {
     padding: 15px 20px;
     z-index: 1;
     &_small {
-      height: 200px;
+      max-height: 200px;
       grid-gap: 10px;
-      overflow-y: scroll;
+      overflow-y: auto;
       overscroll-behavior-y: contain;
     }
   }
