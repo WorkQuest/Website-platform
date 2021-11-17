@@ -1,74 +1,69 @@
 <template>
-  <div>
+  <div
+    v-if="currentWorker"
+    class="worker worker__card"
+  >
     <div
-      v-if="currentWorker"
-      class="worker worker__card"
+      class="worker__title"
     >
+      {{ $t('response.title') }}
+    </div>
+    <div class="worker__container">
       <div
-        class="worker__title"
+        v-if="filteredResponses.length === 0"
+        class="info__message"
       >
-        {{ $t('response.title') }}
+        {{ $t('quests.employer.usersNotResponded') }}
       </div>
-      <div class="worker__container">
+      <div
+        v-for="(response, i) in filteredResponses"
+        :key="i"
+        class="worker worker__col_two"
+      >
         <div
-          v-if="filteredResponses.length === 0"
-          class="info__message"
+          v-if="response.worker.firstName && response.worker.lastName"
+          class="worker row"
         >
-          {{ $t('quests.employer.usersNotResponded') }}
-        </div>
-        <div
-          v-for="(response, i) in filteredResponses"
-          :key="i"
-        >
-          <div
-            class="worker worker__col_two"
+          <img
+            class="worker__avatar"
+            :src="response.worker.avatar ? response.worker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+            alt=""
           >
-            <div
-              v-if="response.worker.firstName && response.worker.lastName"
-              class="worker row"
-            >
-              <img
-                class="worker__avatar"
-                :src="response.worker.avatar ? response.worker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
-                alt=""
-              >
-              <div
-                class="worker__name"
-              >
-                {{ response.worker.firstName }} {{ response.worker.lastName }}
-              </div>
-            </div>
-            <quest-id-dd
-              :i="i"
-              :response-id="response.id"
-            />
-            <div class="worker__message">
-              {{ response.message }}
-            </div>
-          </div>
-          <div>
-            <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
-            <!--                    <div-->
-            <!--                      v-if="item.badge.code !== 0"-->
-            <!--                      class="card__level_higher"-->
-            <!--                      :class="[-->
-            <!--                        {'card__level_higher': item.badge.code === 1},-->
-            <!--                        {'card__level_reliable': item.badge.code === 2},-->
-            <!--                        {'card__level_checked': item.badge.code === 3}-->
-            <!--                      ]"-->
-            <!--                    >-->
-            <!--                      <span v-if="item.badge.code === 1">-->
-            <!--                        {{ $t('levels.higher') }}-->
-            <!--                      </span>-->
-            <!--                      <span v-if="item.badge.code === 2">-->
-            <!--                        {{ $t('levels.reliableEmp') }}-->
-            <!--                      </span>-->
-            <!--                      <span v-if="item.badge.code === 3">-->
-            <!--                        {{ $t('levels.checkedByTime') }}-->
-            <!--                      </span>-->
-            <!--                    </div>-->
+          <div
+            class="worker__name"
+          >
+            {{ response.worker.firstName }} {{ response.worker.lastName }}
           </div>
         </div>
+        <quest-id-dd
+          :i="i"
+          :response-id="response.id"
+        />
+        <div class="worker__message">
+          {{ response.message }}
+        </div>
+      </div>
+      <div>
+        <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
+        <!--                    <div-->
+        <!--                      v-if="item.badge.code !== 0"-->
+        <!--                      class="card__level_higher"-->
+        <!--                      :class="[-->
+        <!--                        {'card__level_higher': item.badge.code === 1},-->
+        <!--                        {'card__level_reliable': item.badge.code === 2},-->
+        <!--                        {'card__level_checked': item.badge.code === 3}-->
+        <!--                      ]"-->
+        <!--                    >-->
+        <!--                      <span v-if="item.badge.code === 1">-->
+        <!--                        {{ $t('levels.higher') }}-->
+        <!--                      </span>-->
+        <!--                      <span v-if="item.badge.code === 2">-->
+        <!--                        {{ $t('levels.reliableEmp') }}-->
+        <!--                      </span>-->
+        <!--                      <span v-if="item.badge.code === 3">-->
+        <!--                        {{ $t('levels.checkedByTime') }}-->
+        <!--                      </span>-->
+        <!--                    </div>-->
       </div>
     </div>
   </div>

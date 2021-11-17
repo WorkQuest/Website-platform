@@ -259,6 +259,7 @@
     "employer": {
       "usersNotResponded": "Users have not yet responded to the quest"
     },
+    "workersNotInvited": "Workers not invited!",
     "startChat": "Start chat",
     "invite": "Invite",
     "decline": "Decline",

@@ -21,9 +21,9 @@
     </div>
     <div
       v-if="filteredInvited.length === 0"
-      style="margin: 15px 0 0 15px; padding: 0 0 15px 0; color: #7C838DFF; font-size: 16px;"
+      class="invited__title"
     >
-      Workers not invited!
+      {{ $t('quests.workersNotInvited') }}
     </div>
     <div
       v-if="filteredInvited.length"
@@ -130,6 +130,12 @@ export default {
 
 <style lang="scss" scoped>
 .invited {
+  &__title {
+    margin: 15px 0 0 15px;
+    padding: 0 0 15px 0;
+    color: #7C838DFF;
+    font-size: 16px;
+  }
   &__list {
     width: 100%;
     display: flex;

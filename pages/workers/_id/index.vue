@@ -212,8 +212,6 @@ export default {
       const userId = this.$route.params.id;
       try {
         await this.$store.dispatch('quests/getWorkerData', userId);
-        console.log('currentWorkerAddInfo', this.currentWorkerAddInfo);
-        console.log('currentWorker', this.currentWorker);
       } catch (e) {
         console.log(e);
       }

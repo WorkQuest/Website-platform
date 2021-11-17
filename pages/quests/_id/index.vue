@@ -270,13 +270,13 @@ export default {
           && questStatus === QuestStatuses.Created: payload = InfoModeEmployer.RaiseViews; break;
           case responsesCount > 0
           && questStatus === QuestStatuses.Created: payload = InfoModeEmployer.Created; break;
-          case assignedWorker !== {}
+          case Object.keys(assignedWorker).length > 0
           && ![QuestStatuses.Closed, QuestStatuses.Dispute, QuestStatuses.WaitConfirm, QuestStatuses.Done].includes(questStatus):
             payload = InfoModeEmployer.WaitWorker; break;
           case questStatus === QuestStatuses.Active: payload = InfoModeEmployer.Active; break;
           case questStatus === QuestStatuses.Closed: payload = InfoModeEmployer.Closed; break;
           case questStatus === QuestStatuses.Dispute: payload = InfoModeEmployer.Dispute; break;
-          case questStatus === QuestStatuses.WaitConfirm && assignedWorker !== {}: payload = InfoModeEmployer.WaitConfirm; break;
+          case questStatus === QuestStatuses.WaitConfirm && Object.keys(assignedWorker).length > 0: payload = InfoModeEmployer.WaitConfirm; break;
           case questStatus === QuestStatuses.Done && responsesCount > 0: payload = InfoModeEmployer.Done; break;
           default: { payload = InfoModeEmployer.RaiseViews; break; }
         }

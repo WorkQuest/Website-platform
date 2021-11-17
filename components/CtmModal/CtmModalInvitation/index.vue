@@ -154,7 +154,7 @@ export default {
         title: this.$t('modals.inviteSend'),
         subtitle: this.$t('modals.invitationSendText'),
         type: 'goToChat',
-        button: 'Go to chat',
+        button: this.$t('btn.goToChat'),
       });
     },
   },

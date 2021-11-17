@@ -1,5 +1,4 @@
 <template>
-  <!--  TODO: Вывести данные из компонента в модалку-->
   <div
     class="rating-area"
   >
