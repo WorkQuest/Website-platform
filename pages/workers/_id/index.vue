@@ -12,7 +12,8 @@
                   <img
                     v-if="Object.keys(currentWorker).length !== 0"
                     class="info-grid__avatar"
-                    :src="currentWorker.avatar !== null ? currentWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+                    :src="currentWorker.avatar !== null
+                      ? currentWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
                     :alt="currentWorker.firstName"
                   >
                 </div>
@@ -26,7 +27,8 @@
               </div>
               <div class="col info-grid__col">
                 <div class="title title_inline">
-                  {{ currentWorker ? currentWorker.firstName : 'Nameless' }} {{ currentWorker ? currentWorker.lastName : "" }}
+                  {{ currentWorker.firstName !== null ? currentWorker.firstName : 'Nameless' }}
+                  {{ currentWorker.lastName !== null ? currentWorker.lastName : "" }}
                   <span class="level">
                     TOP RANKED EMP.
                   </span>
@@ -35,7 +37,8 @@
                   v-if="currentWorker"
                   class="description"
                 >
-                  {{ currentWorker ? currentWorkerAddInfo.description: $t('quests.nothingAboutMe') }}
+                  {{ currentWorkerAddInfo.description !== null
+                    ? currentWorkerAddInfo.description: $t('quests.nothingAboutMe') }}
                 </div>
                 <social />
                 <div class="contacts__grid">
@@ -49,19 +52,22 @@
                             class="icon-location"
                           />
                           <span class="contact__link">
-                            {{ currentWorker ? currentWorkerAddInfo.address : $t('quests.unknownAddress') }}
+                            {{ currentWorkerAddInfo.address !== null
+                              ? currentWorkerAddInfo.address : $t('quests.unknownAddress') }}
                           </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-phone" />
                           <span class="contact__link">
-                            {{ currentWorker ? currentWorkerAddInfo.phone : $t('quests.unknownPhoneNumber') }}
+                            {{ currentWorker.phone !== null
+                              ? currentWorker.phone : $t('quests.unknownPhoneNumber') }}
                           </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-mail" />
                           <span class="contact__link">
-                            {{ currentWorker ? currentWorkerAddInfo.email : $t('quests.unknownEmailAddress') }}
+                            {{ currentWorker.email !== null
+                              ? currentWorker.email : $t('quests.unknownEmailAddress') }}
                           </span>
                         </span>
                       </span>
@@ -206,7 +212,8 @@ export default {
       const userId = this.$route.params.id;
       try {
         await this.$store.dispatch('quests/getWorkerData', userId);
-        console.log(this.currentWorker);
+        console.log('currentWorkerAddInfo', this.currentWorkerAddInfo);
+        console.log('currentWorker', this.currentWorker);
       } catch (e) {
         console.log(e);
       }
