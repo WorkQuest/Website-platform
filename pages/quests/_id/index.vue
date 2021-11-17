@@ -245,8 +245,6 @@ export default {
       if (this.userRole === 'employer') {
         this.filteredResponses = this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Responded);
         this.filteredInvited = this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Invited);
-        console.log('filteredResponses', this.filteredResponses);
-        console.log('filteredInvited', this.filteredInvited);
         return this.filteredResponses && this.filteredInvited;
       }
       return '';
