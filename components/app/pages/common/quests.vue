@@ -194,7 +194,10 @@
           </div>
           <div class="block__right">
             <div class="block__head">
-              <div class="block__title">
+              <div
+                class="block__title"
+                @click="showProfile(item.userId)"
+              >
                 <div
                   class="block__avatar avatar"
                 >
@@ -466,6 +469,13 @@ export default {
         { card__level_reliable: cards[idx].level.code === 2 },
         { card__level_higher: cards[idx].level.code === 1 },
       ];
+    },
+    showProfile(profileId) {
+      if (this.userData.id !== profileId) {
+        this.$router.push(`/show-profile/${profileId}`);
+      } else {
+        this.$router.push(`/profile/${profileId}`);
+      }
     },
     showDetails(questId) {
       this.$router.push(`/quests/${questId}`);
@@ -910,6 +920,7 @@ export default {
     }
   }
   &__title {
+    cursor: pointer;
     display: grid;
     grid-template-columns: 30px 1fr;
     grid-gap: 10px;

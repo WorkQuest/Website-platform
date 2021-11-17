@@ -147,7 +147,7 @@ export default {
       if (this.questData.user.id === this.userData.id) {
         this.$router.push(`/profile/${this.userData.id}`);
       } else {
-        this.$router.push('/show-profile');
+        this.$router.push(`/show-profile/${this.questData.user.id}`);
       }
     },
     convertDate() {

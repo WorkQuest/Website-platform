@@ -3,6 +3,7 @@ export default {
   accessToken: (state) => state.tokens.access,
   refreshToken: (state) => state.tokens.refresh,
   getUserData: (state) => state.userData,
+  getAnotherUserData: (state) => state.anotherUserData,
   editUserData: (state) => state.userData || '',
   getAdditionalInfo: (state) => state.userData?.additionalInfo?.socialNetwork || '',
   getAdditionalInfoInstagram: (state) => state.userData?.additionalInfo?.socialNetwork?.instagram || '',

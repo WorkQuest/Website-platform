@@ -63,6 +63,11 @@ export default {
     commit('setUserData', response.result);
     return response;
   },
+  async getAnotherUserData({ commit }, payload) {
+    const response = await this.$axios.$get(`/v1/profile/${payload}`);
+    commit('setAnotherUserData', response.result);
+    return response;
+  },
   async setUserRole({ commit }, payload) {
     const response = await this.$axios.$post('/v1/profile/set-role', payload);
     commit('setUserRole', response.result);
