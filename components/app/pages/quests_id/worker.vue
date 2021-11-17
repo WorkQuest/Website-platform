@@ -119,7 +119,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { InfoModeW, QStatuses } from '~/utils/enums';
+import { InfoModeWorker, QuestStatuses } from '~/utils/enums';
 
 export default {
   name: 'QuestIdWorker',
@@ -138,13 +138,13 @@ export default {
       infoDataMode: 'quests/getInfoDataMode',
     }),
     QuestStatuses() {
-      return QStatuses;
+      return QuestStatuses;
     },
     InfoModeWorker() {
-      return InfoModeW;
+      return InfoModeWorker;
     },
     disabledBtn() {
-      return this.infoDataMode === InfoModeW.Rejected;
+      return this.infoDataMode === InfoModeWorker.Rejected;
     },
   },
   async created() {
@@ -191,7 +191,7 @@ export default {
         title: this.$t('quests.questInfo'),
         subtitle: this.$t('quests.workOnQuestAccepted'),
       });
-      await this.$store.dispatch('quests/setInfoDataMode', InfoModeW.Active);
+      await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.Active);
       this.SetLoader(false);
     },
     async rejectWorkOnQuest() {
@@ -203,7 +203,7 @@ export default {
         title: this.$t('quests.questInfo'),
         subtitle: this.$t('quests.workOnQuestRejected'),
       });
-      await this.$store.dispatch('quests/setInfoDataMode', InfoModeW.Created);
+      await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.Created);
       this.SetLoader(false);
     },
     async completeWorkOnQuest() {
@@ -215,7 +215,7 @@ export default {
         title: this.$t('quests.questInfo'),
         subtitle: this.$t('quests.pleaseWaitEmp'),
       });
-      await this.$store.dispatch('quests/setInfoDataMode', InfoModeW.WaitConfirm);
+      await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.WaitConfirm);
       this.SetLoader(false);
     },
     // async getResponseId() {

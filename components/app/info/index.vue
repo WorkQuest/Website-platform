@@ -57,7 +57,7 @@
 <script>
 
 import { mapGetters } from 'vuex';
-import { InfoModeE, InfoModeW } from '~/utils/enums';
+import { InfoModeEmployer, InfoModeWorker } from '~/utils/enums';
 
 export default {
   name: 'InfoVue',
@@ -69,32 +69,32 @@ export default {
   },
   computed: {
     InfoModeEmployer() {
-      return InfoModeE;
+      return InfoModeEmployer;
     },
     InfoModeWorker() {
-      return InfoModeW;
+      return InfoModeWorker;
     },
     infoStatusText() {
       if (this.userRole === 'employer') {
         const obj = {
-          [InfoModeE.Active]: 'quests.activeQuest',
-          [InfoModeE.WaitWorker]: 'quests.waitWorker',
-          [InfoModeE.WaitConfirm]: 'quests.pendingConsideration',
-          [InfoModeE.Dispute]: 'quests.dispute',
-          [InfoModeE.Closed]: 'quests.closed',
-          [InfoModeE.Done]: 'performed.title',
+          [InfoModeEmployer.Active]: 'quests.activeQuest',
+          [InfoModeEmployer.WaitWorker]: 'quests.waitWorker',
+          [InfoModeEmployer.WaitConfirm]: 'quests.pendingConsideration',
+          [InfoModeEmployer.Dispute]: 'quests.dispute',
+          [InfoModeEmployer.Closed]: 'quests.closed',
+          [InfoModeEmployer.Done]: 'performed.title',
         };
         return this.$t(`${obj[this.infoDataMode]}`);
       }
       if (this.userRole === 'worker') {
         const obj = {
-          [InfoModeW.ADChat]: 'invite.title',
-          [InfoModeW.Active]: 'quests.activeQuest',
-          [InfoModeW.Rejected]: 'quests.requested',
-          [InfoModeW.WaitConfirm]: 'quests.pendingConsideration',
-          [InfoModeW.Dispute]: 'quests.dispute',
-          [InfoModeW.Closed]: 'quests.questClosed',
-          [InfoModeW.Done]: 'quests.completed',
+          [InfoModeWorker.ADChat]: 'invite.title',
+          [InfoModeWorker.Active]: 'quests.activeQuest',
+          [InfoModeWorker.Rejected]: 'quests.requested',
+          [InfoModeWorker.WaitConfirm]: 'quests.pendingConsideration',
+          [InfoModeWorker.Dispute]: 'quests.dispute',
+          [InfoModeWorker.Closed]: 'quests.questClosed',
+          [InfoModeWorker.Done]: 'quests.completed',
         };
         return this.$t(`${obj[this.infoDataMode]}`);
       }
@@ -104,44 +104,44 @@ export default {
       if (this.userRole === 'worker') {
         return [
           {
-            'info-hide': this.infoDataMode === InfoModeW.Created,
+            'info-hide': this.infoDataMode === InfoModeWorker.Created,
           },
           {
-            'info_bg-yellow': this.infoDataMode === InfoModeW.ADChat,
+            'info_bg-yellow': this.infoDataMode === InfoModeWorker.ADChat,
           },
           {
-            'info_bg-green': this.infoDataMode === InfoModeW.Active,
+            'info_bg-green': this.infoDataMode === InfoModeWorker.Active,
           },
           {
-            'info_bg-grey': this.infoDataMode === InfoModeW.Rejected,
+            'info_bg-grey': this.infoDataMode === InfoModeWorker.Rejected,
           },
           {
-            'info_bg-blue': [InfoModeW.WaitConfirm, InfoModeW.Done].includes(this.infoDataMode),
+            'info_bg-blue': [InfoModeWorker.WaitConfirm, InfoModeWorker.Done].includes(this.infoDataMode),
           },
           {
-            'info_bg-red': [InfoModeW.Dispute, InfoModeW.Closed].includes(this.infoDataMode),
+            'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(this.infoDataMode),
           },
         ];
       }
       if (this.userRole === 'employer') {
         return [
           {
-            'info-hide': this.infoDataMode === InfoModeE.Created,
+            'info-hide': this.infoDataMode === InfoModeEmployer.Created,
           },
           {
-            'info_bg-yellow': this.infoDataMode === InfoModeE.WaitWorker,
+            'info_bg-yellow': this.infoDataMode === InfoModeEmployer.WaitWorker,
           },
           {
-            'info_bg-green': this.infoDataMode === InfoModeE.Active,
+            'info_bg-green': this.infoDataMode === InfoModeEmployer.Active,
           },
           {
-            'info_bg-grey': this.infoDataMode === InfoModeE.WaitConfirm,
+            'info_bg-grey': this.infoDataMode === InfoModeEmployer.WaitConfirm,
           },
           {
-            'info_bg-red': this.infoDataMode === InfoModeE.Dispute,
+            'info_bg-red': this.infoDataMode === InfoModeEmployer.Dispute,
           },
           {
-            'info_bg-blue': [InfoModeE.Closed, InfoModeE.Done].includes(this.infoDataMode),
+            'info_bg-blue': [InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(this.infoDataMode),
           },
         ];
       }

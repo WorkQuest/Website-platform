@@ -28,7 +28,7 @@ export const StakingTypes = {
   CROSS_CHAIN: 'CROSS_CHAIN',
 };
 
-export const QStatuses = {
+export const QuestStatuses = {
   Rejected: -1,
   Created: 0,
   Active: 1,
@@ -39,7 +39,7 @@ export const QStatuses = {
   Done: 6,
 };
 
-export const InfoModeE = {
+export const InfoModeEmployer = {
   RaiseViews: 1,
   Active: 2,
   Created: 3,
@@ -49,7 +49,7 @@ export const InfoModeE = {
   Closed: 8,
   Done: 9,
 };
-export const InfoModeW = {
+export const InfoModeWorker = {
   ADChat: 1,
   Active: 2,
   Rejected: 3,

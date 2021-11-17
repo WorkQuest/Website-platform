@@ -291,7 +291,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { InfoModeE } from '~/utils/enums';
+import { InfoModeEmployer } from '~/utils/enums';
 
 export default {
   name: 'QuestIdEmployer',
@@ -327,7 +327,7 @@ export default {
       infoDataMode: 'quests/getInfoDataMode',
     }),
     InfoModeEmployer() {
-      return InfoModeE;
+      return InfoModeEmployer;
     },
     cardBadgeLevel() {
       return [
@@ -381,7 +381,7 @@ export default {
     },
     async closeQuest() {
       this.SetLoader(true);
-      if (this.questData.status !== InfoModeE.Active) {
+      if (this.questData.status !== InfoModeEmployer.Active) {
         await this.$store.dispatch('quests/closeQuest', this.questData.id);
         this.showModalQuestClosed();
       }
@@ -392,14 +392,14 @@ export default {
       this.SetLoader(true);
       await this.$store.dispatch('quests/acceptCompletedWorkOnQuest', this.questData.id);
       this.showModalQuestCompletedWorkAccepted();
-      await this.$store.dispatch('quests/setInfoDataMode', InfoModeE.Done);
+      await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Done);
       this.SetLoader(false);
     },
     async rejectCompletedWorkOnQuest() {
       this.SetLoader(true);
       await this.$store.dispatch('quests/rejectCompletedWorkOnQuest', this.questData.id);
       this.showModalRejectCompletedWorkOnQuest();
-      await this.$store.dispatch('quests/setInfoDataMode', InfoModeE.Dispute);
+      await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Dispute);
       this.SetLoader(false);
     },
     async initData() {

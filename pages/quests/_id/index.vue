@@ -132,7 +132,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
-  QStatuses, InfoModeW, InfoModeE, responsesType,
+  QuestStatuses, InfoModeWorker, InfoModeEmployer, responsesType,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
@@ -201,10 +201,10 @@ export default {
       infoDataMode: 'quests/getInfoDataMode',
     }),
     InfoModeEmployer() {
-      return InfoModeE;
+      return InfoModeEmployer;
     },
     InfoModeWorker() {
-      return InfoModeW;
+      return InfoModeWorker;
     },
     priority() {
       return [
@@ -267,33 +267,33 @@ export default {
       if (userRole === 'employer') {
         switch (true) {
           case responsesCount === 0
-          && questStatus === QStatuses.Created: payload = InfoModeE.RaiseViews; break;
+          && questStatus === QuestStatuses.Created: payload = InfoModeEmployer.RaiseViews; break;
           case responsesCount > 0
-          && questStatus === QStatuses.Created: payload = InfoModeE.Created; break;
+          && questStatus === QuestStatuses.Created: payload = InfoModeEmployer.Created; break;
           case assignedWorker !== {}
-          && ![QStatuses.Closed, QStatuses.Dispute, QStatuses.WaitConfirm, QStatuses.Done].includes(questStatus):
-            payload = InfoModeE.WaitWorker; break;
-          case questStatus === QStatuses.Active: payload = InfoModeE.Active; break;
-          case questStatus === QStatuses.Closed: payload = InfoModeE.Closed; break;
-          case questStatus === QStatuses.Dispute: payload = InfoModeE.Dispute; break;
-          case questStatus === QStatuses.WaitConfirm && assignedWorker !== {}: payload = InfoModeE.WaitConfirm; break;
-          case questStatus === QStatuses.Done && responsesCount > 0: payload = InfoModeE.Done; break;
-          default: { payload = InfoModeE.RaiseViews; break; }
+          && ![QuestStatuses.Closed, QuestStatuses.Dispute, QuestStatuses.WaitConfirm, QuestStatuses.Done].includes(questStatus):
+            payload = InfoModeEmployer.WaitWorker; break;
+          case questStatus === QuestStatuses.Active: payload = InfoModeEmployer.Active; break;
+          case questStatus === QuestStatuses.Closed: payload = InfoModeEmployer.Closed; break;
+          case questStatus === QuestStatuses.Dispute: payload = InfoModeEmployer.Dispute; break;
+          case questStatus === QuestStatuses.WaitConfirm && assignedWorker !== {}: payload = InfoModeEmployer.WaitConfirm; break;
+          case questStatus === QuestStatuses.Done && responsesCount > 0: payload = InfoModeEmployer.Done; break;
+          default: { payload = InfoModeEmployer.RaiseViews; break; }
         }
         await this.$store.dispatch('quests/setInfoDataMode', payload);
       }
       if (userRole === 'worker') {
         switch (true) {
-          case questStatus === QStatuses.Rejected: payload = InfoModeW.Rejected; break;
-          case questStatus === QStatuses.Created: payload = InfoModeW.Created; break;
-          case questStatus === QStatuses.Active: payload = InfoModeW.Active; break;
-          case questStatus === QStatuses.Closed: payload = InfoModeW.Closed; break;
-          case questStatus === QStatuses.Dispute: payload = InfoModeW.Dispute; break;
-          case questStatus === QStatuses.WaitConfirm: payload = InfoModeW.WaitConfirm; break;
-          case questStatus === QStatuses.Done: payload = InfoModeW.Done; break;
+          case questStatus === QuestStatuses.Rejected: payload = InfoModeWorker.Rejected; break;
+          case questStatus === QuestStatuses.Created: payload = InfoModeWorker.Created; break;
+          case questStatus === QuestStatuses.Active: payload = InfoModeWorker.Active; break;
+          case questStatus === QuestStatuses.Closed: payload = InfoModeWorker.Closed; break;
+          case questStatus === QuestStatuses.Dispute: payload = InfoModeWorker.Dispute; break;
+          case questStatus === QuestStatuses.WaitConfirm: payload = InfoModeWorker.WaitConfirm; break;
+          case questStatus === QuestStatuses.Done: payload = InfoModeWorker.Done; break;
           case assignedWorkerId === userId
-          && ![InfoModeW.Active, InfoModeW.Dispute].includes(questStatus): payload = InfoModeW.ADChat; break;
-          default: { payload = InfoModeW.ADChat; break; }
+          && ![InfoModeWorker.Active, InfoModeWorker.Dispute].includes(questStatus): payload = InfoModeWorker.ADChat; break;
+          default: { payload = InfoModeWorker.ADChat; break; }
         }
         await this.$store.dispatch('quests/setInfoDataMode', payload);
       }

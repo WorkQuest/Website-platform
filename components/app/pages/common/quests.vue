@@ -342,7 +342,7 @@
 <script>
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
-import { QStatuses, questPriority, questsCompPageMode } from '~/utils/enums';
+import { QuestStatuses, questPriority, questsCompPageMode } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 const value = new Vue();
@@ -383,7 +383,7 @@ export default {
       userData: 'user/getUserData',
     }),
     questStatuses() {
-      return QStatuses;
+      return QuestStatuses;
     },
     questsComponentPageMode() {
       return questsCompPageMode;
@@ -433,17 +433,17 @@ export default {
     },
     progressQuestText(status) {
       if (this.userRole) {
-        if (status === QStatuses.Active) {
+        if (status === QuestStatuses.Active) {
           return this.$t('quests.questActive:');
-        } if (status === QStatuses.Closed) {
+        } if (status === QuestStatuses.Closed) {
           return this.$t('quests.questClosed:');
-        } if (status === QStatuses.Dispute) {
+        } if (status === QuestStatuses.Dispute) {
           return this.$t('questDispute:');
-        } if (status === QStatuses.WaitWorker) {
+        } if (status === QuestStatuses.WaitWorker) {
           return this.$t('quests.inProgressBy');
-        } if (status === QStatuses.WaitConfirm) {
+        } if (status === QuestStatuses.WaitConfirm) {
           return this.$t('questWaitConfirm:');
-        } if (status === QStatuses.Done) {
+        } if (status === QuestStatuses.Done) {
           return this.$t('quests.finishedBy');
         }
       }
@@ -495,23 +495,23 @@ export default {
     },
     getStatusCard(index) {
       const questStatus = {
-        [QStatuses.Rejected]: 'Rejected',
-        [QStatuses.Active]: this.$t('quests.active'),
-        [QStatuses.Done]: this.$t('quests.performed'),
-        [QStatuses.WaitConfirm]: this.$t('quests.requested'),
-        [QStatuses.WaitWorker]: this.$t('quests.invited'),
-        [QStatuses.Closed]: this.$t('quests.closed'),
+        [QuestStatuses.Rejected]: this.$t('quests.rejected'),
+        [QuestStatuses.Active]: this.$t('quests.active'),
+        [QuestStatuses.Done]: this.$t('quests.performed'),
+        [QuestStatuses.WaitConfirm]: this.$t('quests.requested'),
+        [QuestStatuses.WaitWorker]: this.$t('quests.invited'),
+        [QuestStatuses.Closed]: this.$t('quests.closed'),
       };
       return questStatus[index] || '';
     },
     getStatusClass(index) {
       const questStatus = {
-        [QStatuses.Rejected]: 'quests__cards__state_clo',
-        [QStatuses.Active]: 'quests__cards__state_act',
-        [QStatuses.Done]: 'quests__cards__state_per',
-        [QStatuses.WaitConfirm]: 'quests__cards__state_req',
-        [QStatuses.WaitWorker]: 'quests__cards__state_inv',
-        [QStatuses.Closed]: 'quests__cards__state_clo',
+        [QuestStatuses.Rejected]: 'quests__cards__state_clo',
+        [QuestStatuses.Active]: 'quests__cards__state_act',
+        [QuestStatuses.Done]: 'quests__cards__state_per',
+        [QuestStatuses.WaitConfirm]: 'quests__cards__state_req',
+        [QuestStatuses.WaitWorker]: 'quests__cards__state_inv',
+        [QuestStatuses.Closed]: 'quests__cards__state_clo',
       };
       return questStatus[index] || '';
     },

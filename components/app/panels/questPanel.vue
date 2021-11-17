@@ -85,7 +85,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
-import { InfoModeE, InfoModeW } from '~/utils/enums';
+import { InfoModeEmployer, InfoModeWorker } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -127,10 +127,10 @@ export default {
       infoDataMode: 'quests/getInfoDataMode',
     }),
     InfoModeEmployer() {
-      return InfoModeE;
+      return InfoModeEmployer;
     },
     InfoModeWorker() {
-      return InfoModeW;
+      return InfoModeWorker;
     },
   },
   async mounted() {

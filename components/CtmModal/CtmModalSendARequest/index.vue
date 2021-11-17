@@ -60,7 +60,7 @@
 import { mapGetters } from 'vuex';
 import Dropzone from 'nuxt-dropzone';
 import modals from '~/store/modals/modals';
-import { InfoModeW, QStatuses } from '~/utils/enums';
+import { InfoModeWorker, QuestStatuses } from '~/utils/enums';
 
 export default {
   name: 'ModalSendARequest',
@@ -100,9 +100,9 @@ export default {
         message: this.text,
       };
       try {
-        if (QStatuses.Rejected) {
+        if (QuestStatuses.Rejected) {
           await this.$store.dispatch('quests/respondOnQuest', { data, questId });
-          await this.$store.dispatch('quests/setInfoDataMode', InfoModeW.Rejected);
+          await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.Rejected);
         }
       } catch (e) {
         console.log(e);

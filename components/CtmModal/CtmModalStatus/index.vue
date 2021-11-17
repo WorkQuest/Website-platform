@@ -65,17 +65,6 @@
             {{ options.button }}
           </span>
         </base-btn>
-        <base-btn
-          class="status__action"
-          @click="goToChat()"
-        >
-          <span
-            class="status__text"
-            @click="hide()"
-          >
-            {{ $t('meta.ok') }}
-          </span>
-        </base-btn>
       </div>
       <base-btn
         v-else
