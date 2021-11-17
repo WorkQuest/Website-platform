@@ -37,7 +37,9 @@
         </div>
         <div
           v-if="userRole === 'employer'
-            ? [2, 8, 9].includes(infoDataMode) : [1, 2, 3, 4, 9].includes(infoDataMode)"
+            ? [InfoModeEmployer.Active, InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode)
+            : [InfoModeWorker.ADChat, InfoModeWorker.Active, InfoModeWorker.Rejected,
+               InfoModeWorker.WaitConfirm, InfoModeWorker.Created, InfoModeWorker.Done].includes(infoDataMode)"
           class="divider"
         />
         <questIdEmployer
@@ -51,8 +53,11 @@
     <div class="main">
       <div class="main__body">
         <div v-if="userRole === 'employer'">
-          <div v-if="[3].includes(infoDataMode)">
-            <invited-worker-list :current-worker="currentWorker" />
+          <div v-if="infoDataMode === InfoModeEmployer.Created">
+            <invited-worker-list
+              :current-worker="currentWorker"
+              :filtered-invited="filteredInvited"
+            />
             <responded-worker-list
               :current-worker="currentWorker"
               :filtered-responses="filteredResponses"
@@ -126,6 +131,9 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import {
+  QuestStatuses, InfoModeWorker, InfoModeEmployer, responsesType,
+} from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
@@ -153,6 +161,7 @@ export default {
         spec: 'Painting works',
       },
       filteredResponses: [],
+      filteredInvited: [],
       isShowMap: true,
       priorityIndex: 0,
       distanceIndex: 0,
@@ -191,6 +200,12 @@ export default {
       responsesData: 'quests/getResponsesData',
       infoDataMode: 'quests/getInfoDataMode',
     }),
+    InfoModeEmployer() {
+      return InfoModeEmployer;
+    },
+    InfoModeWorker() {
+      return InfoModeWorker;
+    },
     priority() {
       return [
         this.$t('quests.priority.low'),
@@ -228,8 +243,9 @@ export default {
     },
     async getFilteredResponses() {
       if (this.userRole === 'employer') {
-        this.filteredResponses = this.responsesToQuest.filter((response) => response.status === 0);
-        return this.filteredResponses;
+        this.filteredResponses = this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Responded);
+        this.filteredInvited = this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Invited);
+        return this.filteredResponses && this.filteredInvited;
       }
       return '';
     },
@@ -240,15 +256,6 @@ export default {
       this.userAvatar = await this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
     },
     async checkPageMode() {
-      // questStatus
-      // Created = 0,
-      // Active = 1
-      // Closed = 2
-      // Dispute = 3
-      // WaitWorker = 4
-      // WaitConfirm = 5
-      // Done = 6
-
       let payload = 1;
       const responsesCount = this.userRole === 'employer'
         ? this.responsesData.count : Object.keys(this.respondedList).length;
@@ -259,65 +266,34 @@ export default {
       const questStatus = this.questData.status;
       if (userRole === 'employer') {
         switch (true) {
-          case responsesCount > 0 && questStatus === 0:
-            payload = 3;
-            break;
-          case assignedWorker !== {} && ![2, 3, 5, 6].includes(questStatus):
-            payload = 4;
-            break;
-          case questStatus === 1:
-            payload = 2;
-            break;
-          case questStatus === 2:
-            payload = 8;
-            break;
-          case questStatus === 3:
-            payload = 7;
-            break;
-          case questStatus === 6 && responsesCount > 0:
-            payload = 9;
-            break;
-          case questStatus === 5:
-            payload = 6;
-            break;
-          default: {
-            payload = 1;
-            break;
-          }
+          case responsesCount === 0
+          && questStatus === QuestStatuses.Created: payload = InfoModeEmployer.RaiseViews; break;
+          case responsesCount > 0
+          && questStatus === QuestStatuses.Created: payload = InfoModeEmployer.Created; break;
+          case Object.keys(assignedWorker).length > 0
+          && ![QuestStatuses.Closed, QuestStatuses.Dispute, QuestStatuses.WaitConfirm, QuestStatuses.Done].includes(questStatus):
+            payload = InfoModeEmployer.WaitWorker; break;
+          case questStatus === QuestStatuses.Active: payload = InfoModeEmployer.Active; break;
+          case questStatus === QuestStatuses.Closed: payload = InfoModeEmployer.Closed; break;
+          case questStatus === QuestStatuses.Dispute: payload = InfoModeEmployer.Dispute; break;
+          case questStatus === QuestStatuses.WaitConfirm && Object.keys(assignedWorker).length > 0: payload = InfoModeEmployer.WaitConfirm; break;
+          case questStatus === QuestStatuses.Done && responsesCount > 0: payload = InfoModeEmployer.Done; break;
+          default: { payload = InfoModeEmployer.RaiseViews; break; }
         }
         await this.$store.dispatch('quests/setInfoDataMode', payload);
       }
-
       if (userRole === 'worker') {
         switch (true) {
-          case questStatus === -1:
-            payload = 3;
-            break;
-          case questStatus === 0:
-            payload = 5;
-            break;
-          case questStatus === 1:
-            payload = 2;
-            break;
-          case questStatus === 2:
-            payload = 8;
-            break;
-          case questStatus === 3:
-            payload = 7;
-            break;
-          case questStatus === 6:
-            payload = 9;
-            break;
-          case questStatus === 5:
-            payload = 4;
-            break;
-          case assignedWorkerId === userId && ![1, 3].includes(questStatus):
-            payload = 1;
-            break;
-          default: {
-            payload = 1;
-            break;
-          }
+          case questStatus === QuestStatuses.Rejected: payload = InfoModeWorker.Rejected; break;
+          case questStatus === QuestStatuses.Created: payload = InfoModeWorker.Created; break;
+          case questStatus === QuestStatuses.Active: payload = InfoModeWorker.Active; break;
+          case questStatus === QuestStatuses.Closed: payload = InfoModeWorker.Closed; break;
+          case questStatus === QuestStatuses.Dispute: payload = InfoModeWorker.Dispute; break;
+          case questStatus === QuestStatuses.WaitConfirm: payload = InfoModeWorker.WaitConfirm; break;
+          case questStatus === QuestStatuses.Done: payload = InfoModeWorker.Done; break;
+          case assignedWorkerId === userId
+          && ![InfoModeWorker.Active, InfoModeWorker.Dispute].includes(questStatus): payload = InfoModeWorker.ADChat; break;
+          default: { payload = InfoModeWorker.ADChat; break; }
         }
         await this.$store.dispatch('quests/setInfoDataMode', payload);
       }

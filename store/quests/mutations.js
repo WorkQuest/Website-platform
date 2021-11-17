@@ -1,4 +1,7 @@
 export default {
+  setChatInviteOnQuest(state, data) {
+    state.chatInfoInviteOnQuest = data;
+  },
   setQuestListForInvitation(state, data) {
     state.questListForInvitation = data;
   },

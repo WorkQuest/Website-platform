@@ -137,7 +137,7 @@ export default {
       }
     },
     cardsLevels() {
-      const { card, disabled } = this;
+      const { card } = this;
       return [
         { card__level_reliable: card.level.code === '2' },
         { card__level_checked: card.level.code === '3' },
@@ -153,6 +153,8 @@ export default {
         img: require('~/assets/img/ui/inviteSend.svg'),
         title: this.$t('modals.inviteSend'),
         subtitle: this.$t('modals.invitationSendText'),
+        type: 'goToChat',
+        button: this.$t('btn.goToChat'),
       });
     },
   },

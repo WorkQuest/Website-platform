@@ -259,6 +259,7 @@
     "employer": {
       "usersNotResponded": "Users have not yet responded to the quest"
     },
+    "workersNotInvited": "Workers not invited!",
     "startChat": "Start chat",
     "invite": "Invite",
     "decline": "Decline",
@@ -269,6 +270,7 @@
     "questClosed!": "Quest closed!",
     "closed": "Closed",
     "completed": "Completed",
+    "rejected": "Rejected",
     "completedWorkAccepted": "Completed work on quest accepted!",
     "completedWorkRejected": "Completed work on quest rejected!",
     "workOnQuestAccepted": "Work on quest accepted!",

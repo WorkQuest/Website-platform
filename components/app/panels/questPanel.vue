@@ -35,7 +35,8 @@
             </span>
             <quest-dd
               v-if="userRole === 'employer'
-                ? ![8, 9].includes(infoDataMode) : ![4, 9].includes(infoDataMode)"
+                ? ![InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode)
+                : ![InfoModeWorker.WaitConfirm, InfoModeWorker.Done].includes(infoDataMode)"
             />
           </div>
         </div>
@@ -84,6 +85,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
+import { InfoModeEmployer, InfoModeWorker } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -124,6 +126,12 @@ export default {
       userCompany: 'quests/getQuestUserCompany',
       infoDataMode: 'quests/getInfoDataMode',
     }),
+    InfoModeEmployer() {
+      return InfoModeEmployer;
+    },
+    InfoModeWorker() {
+      return InfoModeWorker;
+    },
   },
   async mounted() {
     this.SetLoader(true);
