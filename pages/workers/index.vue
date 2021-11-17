@@ -442,6 +442,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.selector {
+  @include box;
+  width: 100%;
+  z-index: 140;
+  &__items {
+    background: #FFFFFF;
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  &__item {
+    @include text-simple;
+    padding: 15px 20px;
+    background: #FFFFFF;
+    font-weight: 500;
+    font-size: 16px;
+    color: $black800;
+    cursor: pointer;
+    transition: .3s;
+    &:hover {
+      background: #F3F7FA;
+    }
+  }
+}
 .panel {
   display: flex;
   flex-direction: row;
