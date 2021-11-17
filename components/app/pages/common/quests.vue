@@ -3,7 +3,7 @@
     class="quests"
   >
     <div
-      v-if="[1].includes(pageMode)"
+      v-if="pageMode === questsComponentPageMode.WorkerMy"
       class="quests__card card"
     >
       <div
@@ -151,11 +151,9 @@
                 >
                   <div class="block__rating block__rating_star">
                     <button
-                      @click="showReviewModal(item.quest.user.ratingStatistic)"
+                      @click="showReviewModal(item)"
                     >
-                      <b-form-rating
-                        v-model="item.quest.user.ratingStatistic"
-                      />
+                      <star-rating :rating="item.user.ratingStatistic" />
                     </button>
                   </div>
                 </div>
@@ -166,7 +164,8 @@
       </div>
     </div>
     <div
-      v-if="[2,3,4].includes(pageMode)"
+      v-if="[questsComponentPageMode.WorkerOther,
+             questsComponentPageMode.EmpMy, questsComponentPageMode.EmpOther].includes(pageMode)"
       class="quests__card card"
     >
       <div
@@ -213,12 +212,12 @@
                 </div>
               </div>
               <quest-dd
-                v-if="[0].includes(item.status)"
+                v-if="item.status === questStatuses.Created"
                 class="block__icon block__icon_fav"
                 mode="vertical"
               />
               <div
-                v-if="[2,3].includes(item.status)"
+                v-if="[questStatuses.Closed, questStatuses.Dispute].includes(item.status)"
                 class="block__icon block__icon_fav star"
                 @click="setStar(item)"
               >
@@ -320,17 +319,14 @@
                   </template>
                 </base-btn>
                 <div
-                  v-if="[6].includes(item.status)"
+                  v-if="item.status === questStatuses.Done"
                   class="block__rating"
                 >
                   <div class="block__rating block__rating_star">
-                    <!--                    TODO: Исправить код оценки квеста-->
                     <button
-                      @click="showReviewModal(item.user.ratingStatistic)"
+                      @click="showReviewModal(item)"
                     >
-                      <b-form-rating
-                        v-model="ratingStatistic"
-                      />
+                      <star-rating :rating="item.user.ratingStatistic" />
                     </button>
                   </div>
                 </div>
@@ -346,6 +342,7 @@
 <script>
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
+import { QuestStatuses, questPriority, questsCompPageMode } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 const value = new Vue();
@@ -385,24 +382,30 @@ export default {
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
     }),
+    questStatuses() {
+      return QuestStatuses;
+    },
+    questsComponentPageMode() {
+      return questsCompPageMode;
+    },
     pageMode() {
       if (this.userRole === 'worker') {
         if (this.$route.path === '/my') {
-          return 1;
+          return questsCompPageMode.WorkerMy;
         }
         if (this.$route.path !== '/my') {
-          return 2;
+          return questsCompPageMode.WorkerOther;
         }
       }
       if (this.userRole === 'employer') {
         if (this.$route.path === '/my') {
-          return 3;
+          return questsCompPageMode.EmpMy;
         }
         if (this.$route.path !== '/my') {
-          return 4;
+          return questsCompPageMode.EmpOther;
         }
       }
-      return 0;
+      return '';
     },
     userCompany() {
       return this.userData.additionalInfo?.company || null;
@@ -430,17 +433,17 @@ export default {
     },
     progressQuestText(status) {
       if (this.userRole) {
-        if ([1].includes(status)) {
+        if (status === QuestStatuses.Active) {
           return this.$t('quests.questActive:');
-        } if ([2].includes(status)) {
+        } if (status === QuestStatuses.Closed) {
           return this.$t('quests.questClosed:');
-        } if ([3].includes(status)) {
+        } if (status === QuestStatuses.Dispute) {
           return this.$t('questDispute:');
-        } if ([4].includes(status)) {
+        } if (status === QuestStatuses.WaitWorker) {
           return this.$t('quests.inProgressBy');
-        } if ([5].includes(status)) {
+        } if (status === QuestStatuses.WaitConfirm) {
           return this.$t('questWaitConfirm:');
-        } if ([6].includes(status)) {
+        } if (status === QuestStatuses.Done) {
           return this.$t('quests.finishedBy');
         }
       }
@@ -470,10 +473,10 @@ export default {
     showDetails(questId) {
       this.$router.push(`/quests/${questId}`);
     },
-    showReviewModal(rating) {
+    showReviewModal(item) {
       this.ShowModal({
         key: modals.review,
-        rating,
+        item,
       });
     },
     isHideStar(type) {
@@ -491,42 +494,40 @@ export default {
       });
     },
     getStatusCard(index) {
-      const status = {
-        '-1': 'Rejected',
-        1: this.$t('quests.active'),
-        6: this.$t('quests.performed'),
-        5: this.$t('quests.requested'),
-        4: this.$t('quests.invited'),
-        2: this.$t('quests.closed'),
+      const questStatus = {
+        [QuestStatuses.Rejected]: this.$t('quests.rejected'),
+        [QuestStatuses.Active]: this.$t('quests.active'),
+        [QuestStatuses.Done]: this.$t('quests.performed'),
+        [QuestStatuses.WaitConfirm]: this.$t('quests.requested'),
+        [QuestStatuses.WaitWorker]: this.$t('quests.invited'),
+        [QuestStatuses.Closed]: this.$t('quests.closed'),
       };
-      return status[index] || '';
+      return questStatus[index] || '';
     },
     getStatusClass(index) {
-      const status = {
-        '-1': 'quests__cards__state_clo',
-        1: 'quests__cards__state_act',
-        6: 'quests__cards__state_per',
-        5: 'quests__cards__state_req',
-        4: 'quests__cards__state_inv',
-        2: 'quests__cards__state_clo',
+      const questStatus = {
+        [QuestStatuses.Rejected]: 'quests__cards__state_clo',
+        [QuestStatuses.Active]: 'quests__cards__state_act',
+        [QuestStatuses.Done]: 'quests__cards__state_per',
+        [QuestStatuses.WaitConfirm]: 'quests__cards__state_req',
+        [QuestStatuses.WaitWorker]: 'quests__cards__state_inv',
+        [QuestStatuses.Closed]: 'quests__cards__state_clo',
       };
-      return status[index] || '';
+      return questStatus[index] || '';
     },
     getPriority(index) {
       const priority = {
-        0: '',
-        1: this.$t('priority.low'),
-        2: this.$t('priority.normal'),
-        3: this.$t('priority.urgent'),
+        [questPriority.Low]: this.$t('priority.low'),
+        [questPriority.Normal]: this.$t('priority.normal'),
+        [questPriority.Urgent]: this.$t('priority.urgent'),
       };
       return priority[index] || '';
     },
     getPriorityClass(index) {
       const priority = {
-        0: '',
-        1: 'block__priority_low',
-        2: 'block__priority_normal',
-        3: 'block__priority_urgent',
+        [questPriority.Low]: 'block__priority_low',
+        [questPriority.Normal]: 'block__priority_normal',
+        [questPriority.Urgent]: 'block__priority_urgent',
       };
       return priority[index] || '';
     },
