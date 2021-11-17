@@ -13,4 +13,5 @@ export default () => ({
   currentStepEditQuest: 1,
   mapBounds: {},
   mapCenter: {},
+  filters: {},
 });

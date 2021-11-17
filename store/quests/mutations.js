@@ -47,4 +47,7 @@ export default {
   setMapCenter(state, data) {
     state.mapCenter = data;
   },
+  setFilters(state, data) {
+    state.filters = data;
+  },
 };

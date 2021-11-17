@@ -241,4 +241,16 @@ export default {
       return console.log(e);
     }
   }, // отказ на приглашение на квест
+
+  async getFilters({ commit }) {
+    try {
+      // [keys]
+      // [skills]
+      const { result } = await this.$axios.$get('/v1/skill-filters');
+      console.log('FILTERS', result);
+      commit('setFilters', result);
+    } catch (e) {
+      console.log(e);
+    }
+  },
 };

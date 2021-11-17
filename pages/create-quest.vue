@@ -70,29 +70,52 @@
               <div class="block__skill-spec">
                 <div class="block__specialization specialization">
                   <base-dd
-                    v-model="specIndex[key]"
+                    v-model="displaySpecIndex[key]"
                     class="specialization__dd"
                     type="gray"
+                    :items="specializationsNames"
                     :placeholder="$t('settings.selectSpec')"
-                    :items="specializations.titles"
                     :mode="'small'"
                     rules="required"
                     :label="$t('settings.specialization')"
                     @input="switchSkill($event, key)"
                   />
+                  <!-- заменяю на новый сверху-->
+                  <!--                  <base-dd-->
+                  <!--                    v-model="specIndex[key]"-->
+                  <!--                    class="specialization__dd"-->
+                  <!--                    type="gray"-->
+                  <!--                    :placeholder="$t('settings.selectSpec')"-->
+                  <!--                    :items="specializations.titles"-->
+                  <!--                    :mode="'small'"-->
+                  <!--                    rules="required"-->
+                  <!--                    :label="$t('settings.specialization')"-->
+                  <!--                    @input="switchSkill($event, key)"-->
+                  <!--                  />-->
                   <div class="specialization__skills skills">
                     <base-dd
-                      v-model="skillIndex[key]"
                       class="specialization__dd"
                       :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
                       :disabled="specIndex[key] < 0"
                       :placeholder="$t('settings.selectSkills')"
-                      :items="specializations.skills[specIndex[key]]"
+                      :items="skillsNames[displaySpecIndex[key]]"
                       :mode="'small'"
                       rules="required"
                       :label="$t('settings.skillsInput')"
-                      @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
+                      @input="addSkillToBadge($event, key)"
                     />
+                    <!--                    <base-dd-->
+                    <!--                      v-model="skillIndex[key]"-->
+                    <!--                      class="specialization__dd"-->
+                    <!--                      :type="specIndex[key] < 0 ? 'disabled' : 'gray'"-->
+                    <!--                      :disabled="specIndex[key] < 0"-->
+                    <!--                      :placeholder="$t('settings.selectSkills')"-->
+                    <!--                      :items="specializations.skills[specIndex[key]]"-->
+                    <!--                      :mode="'small'"-->
+                    <!--                      rules="required"-->
+                    <!--                      :label="$t('settings.skillsInput')"-->
+                    <!--                      @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"-->
+                    <!--                    />-->
                     <div
                       v-if="selectedSkills[key].length === 5"
                       class="skills__error"
@@ -343,7 +366,12 @@ export default {
       },
       period: 1,
       specCount: 0,
-      specIndex: {
+      specIndex: { // Выбранные специализации по id в filters
+        1: -1,
+        2: -1,
+        3: -1,
+      },
+      displaySpecIndex: { // Выбранные для отображения названия специализации
         1: -1,
         2: -1,
         3: -1,
@@ -393,6 +421,7 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
       step: 'quests/getCurrentStepCreateQuest',
+      filters: 'quests/getFilters',
     }),
     days() {
       return [
@@ -494,20 +523,6 @@ export default {
         },
       ];
     },
-    specializations() {
-      const specializations = Object.keys(this.$t('settings.specializations')).length;
-      const specs = {
-        titles: [],
-        skills: [],
-        index: [],
-      };
-      for (let i = 1; i < specializations; i += 1) {
-        specs.skills.push(this.$t(`settings.specializations.${i}.sub`));
-        specs.titles.push(this.$t(`settings.specializations.${i}.title`));
-        specs.index.push(i);
-      }
-      return specs;
-    },
     runtime() {
       return [
         this.$t('quests.runtime.urgent'),
@@ -528,6 +543,61 @@ export default {
         this.$t('quests.distantWork.workInOffice'),
         this.$t('quests.distantWork.bothVariant'),
       ];
+    },
+    specializationsNames() {
+      // const specializations = Object.keys(this.$t('settings.specializations')).length;
+      // const specs = {
+      //   titles: [],
+      //   skills: [],
+      //   index: [],
+      // };
+      // for (let i = 1; i < specializations; i += 1) {
+      //   specs.skills.push(this.$t(`settings.specializations.${i}.sub`));
+      //   specs.titles.push(this.$t(`settings.specializations.${i}.title`));
+      //   specs.index.push(i);
+      // }
+      const specs = [];
+      const keys = Object.keys(this.filters);
+      for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i];
+        specs.push(this.$t(`filters.items.${this.filters[key].id}.title`));
+      }
+      return specs;
+    },
+    specsIndexes() { // id спеки из filters
+      const specsIndexes = [];
+      const keys = Object.keys(this.filters);
+      for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i];
+        specsIndexes.push(this.filters[key].id);
+      }
+      return specsIndexes;
+    },
+    skillsNames() {
+      const skillsData = {};
+      const keys = Object.keys(this.filters);
+      for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i];
+        const skillsBySpec = this.filters[key].skills;
+        const skillsIndexes = Object.values(skillsBySpec);
+        const skillsNames = [];
+        for (let j = 0; j < skillsIndexes.length; j += 1) {
+          const name = this.$t(`filters.items.${this.filters[key].id}.sub.${skillsIndexes[j]}`);
+          skillsNames.push(name);
+        }
+        skillsData[i] = skillsNames;
+      }
+      return skillsData;
+    },
+    skillsIndexes() {
+      const skillsIndexesData = {};
+      const keys = Object.keys(this.filters);
+      for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i];
+        const skillsBySpec = this.filters[key].skills;
+        skillsIndexesData[i] = Object.values((skillsBySpec)); // skills indexes from filters
+      }
+      return skillsIndexesData;
     },
   },
   async mounted() {
@@ -591,13 +661,14 @@ export default {
     goBack() {
       this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
     },
-    addSkillToBadge(event, object, index, key) {
-      if (!this.selectedSkills[key].includes(object[index]) && this.selectedSkills[key].length <= 4) {
-        this.selectedSkills[key].push({
-          name: object[index],
-          index,
-        });
-      }
+    addSkillToBadge(event, key) {
+      const index = this.skillsIndexes[this.displaySpecIndex[key]][event];
+      if (this.selectedSkills[key].length > 4
+        || this.selectedSkills[key].filter((obj) => obj.index === index).length) return;
+      this.selectedSkills[key].push({
+        index,
+        name: this.skillsNames[this.displaySpecIndex[key]][event],
+      });
     },
     removeSkillToBadge(skillName, key) {
       const numberInArray = this.selectedSkills[key].indexOf(skillName);
@@ -607,6 +678,7 @@ export default {
       }
     },
     switchSkill(event, key) {
+      this.specIndex[key] = this.specsIndexes[event];
       this.skillIndex[key] = -1;
       this.selectedSkills[key] = [];
     },
@@ -618,6 +690,7 @@ export default {
     removeSpecialization(key) {
       this.selectedSkills[key] = [];
       this.specIndex[key] = -1;
+      this.displaySpecIndex[key] = -1;
       this.skillIndex[key] = -1;
       this.specCount -= 1;
     },
@@ -657,15 +730,15 @@ export default {
     async toCreateQuest() {
       const specAndSkills = [];
       // eslint-disable-next-line guard-for-in,no-restricted-syntax
-      for (const spec in this.specIndex) {
-        if (this.specIndex[spec] !== -1) {
-          const specIndex = this.specializations.index[this.specIndex[spec]];
-          // eslint-disable-next-line guard-for-in,no-restricted-syntax
-          for (const skill of this.selectedSkills[spec]) {
-            specAndSkills.push(`${specIndex}.${specIndex}0${skill.index}`);
-          }
-        }
-      }
+      // for (const spec in this.specIndex) {
+      //   if (this.specIndex[spec] !== -1) {
+      //     const specIndex = this.specializations.index[this.specIndex[spec]];
+      //     // eslint-disable-next-line guard-for-in,no-restricted-syntax
+      //     for (const skill of this.selectedSkills[spec]) {
+      //       specAndSkills.push(`${specIndex}.${specIndex}0${skill.index}`);
+      //     }
+      //   }
+      // }
       await this.createQuest(specAndSkills);
     },
     async createQuest(specAndSkills) {

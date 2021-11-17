@@ -1100,9 +1100,12 @@ export default {
     },
   },
   async mounted() {
-    await this.GetLocation();
-    await this.initWSListeners();
-    await this.loginCheck();
+    await Promise.all([
+      this.$store.dispatch('quests/getFilters'),
+      this.initWSListeners(),
+      this.loginCheck(),
+    ]);
+    this.GetLocation();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
   },
   created() {
