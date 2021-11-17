@@ -225,7 +225,8 @@ export default {
     &_small {
       height: 200px;
       grid-gap: 10px;
-      overflow: scroll;
+      overflow-y: scroll;
+      overscroll-behavior-y: contain;
     }
   }
   &__item {
