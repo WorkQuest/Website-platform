@@ -26,6 +26,8 @@ export default {
       }
     });
 
+    result.chat.members = result.chat.userMembers.filter((member) => member.id !== myId);
+
     if (direction) {
       result.messages = data.messages.list.concat(result.messages);
     } else {
@@ -104,19 +106,12 @@ export default {
     });
     return response;
   },
-  async getUsersForGroupChat({ commit }, { config, users, needResponse }) {
-    let result = {
-      users: [],
-      count: 0,
-    };
-
-    if (needResponse) {
-      const response = await this.$axios.$get('/v1/user/me/chat/members/users-by-chats', config);
-      result = response.result;
-    }
-
-    if (users.length) result.users = users.concat(result.users);
+  async getUsersForGroupChat({ commit }, config) {
+    const { result } = await this.$axios.$get('/v1/user/me/chat/members/users-by-chats', config);
 
     commit('setGroupChatUsers', result);
+  },
+  async removeMember({ commit }, { chatId, userId }) {
+    const { result } = await this.$axios.$delete(`/v1/user/me/chat/group/${chatId}/remove/${userId}`);
   },
 };

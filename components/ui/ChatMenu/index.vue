@@ -83,6 +83,9 @@ export default {
     showCreateChatModal() {
       this.ShowModal({
         key: modals.chatCreate,
+        isCreating: true,
+        itsOwner: true,
+        isMembersList: false,
       });
     },
   },

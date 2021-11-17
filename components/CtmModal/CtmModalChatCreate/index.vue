@@ -1,10 +1,10 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t(`modals.chatCreate.${options.chatId ? 'members' : 'title'}`)"
+    :title="$t(`modals.chatCreate.${options.isMembersList ? 'members' : 'title'}`)"
   >
     <div class="ctm-modal__content">
-      <template v-if="!options.chatId">
+      <template v-if="options.isCreating">
         <div class="ctm-modal__content-desc">
           {{ $t('modals.chatCreate.desc') }}
         </div>
@@ -18,12 +18,19 @@
         </div>
       </template>
       <div class="ctm-modal__content-participants participants">
-        <div class="participants__title">
-          {{ $t('modals.chatCreate.participants') }}
-        </div>
+        <!--        <div class="participants__title">-->
+        <!--          {{ $t('modals.chatCreate.participants') }}-->
+        <!--        </div>-->
+        <base-btn
+          v-if="options.isMembersList && options.itsOwner"
+          class="button"
+        >
+          {{ $t('modals.chatCreate.addNewMembers') }}
+          <span class="icon-plus_circle_outline" />
+        </base-btn>
         <div class="participants__content">
           <div
-            v-for="user in users.list"
+            v-for="user in members"
             :key="user.id"
             class="participants__contact"
           >
@@ -36,23 +43,31 @@
                 {{ (user.firstName || '') + ' ' + (user.lastName || '') }}
               </span>
             </div>
-            <input
-              v-if="!options.chatId || options.itsOwner"
-              :id="user.id"
-              type="checkbox"
-              class="friends__checkbox_custom"
-              :checked="memberUserIds.findIndex((id) => id === user.id) >= 0"
-              @change="changeSelStatus($event, user.id)"
+            <template v-if="options.isCreating">
+              <input
+                :id="user.id"
+                type="checkbox"
+                class="friends__checkbox_custom"
+                :checked="memberUserIds.findIndex((id) => id === user.id) >= 0"
+                @change="changeSelStatus($event, user.id)"
+              >
+              <label :for="user.id" />
+            </template>
+            <div
+              v-if="!options.isCreating && options.itsOwner"
+              class="friends__del-cont"
+              @click="tryRemoveUser(user.id)"
             >
-            <label :for="user.id" />
+              <span class="icon-minus_circle_outline" />
+            </div>
           </div>
         </div>
       </div>
-      <div class="ctm-modal__content-btns">
-        <div
-          class="btn-group"
-          :class="{'btn-group_solo' : options.chatId && !options.itsOwner}"
-        >
+      <div
+        v-if="!options.isMembersList"
+        class="ctm-modal__content-btns"
+      >
+        <div class="btn-group">
           <base-btn
             class="btn"
             @click="hide()"
@@ -60,12 +75,11 @@
             {{ $t('meta.cancel') }}
           </base-btn>
           <base-btn
-            v-if="!options.chatId || options.itsOwner"
             class="btn_bl"
-            :disabled="!options.chatId && (!memberUserIds.length || !name)"
+            :disabled="options.isCreating && (!memberUserIds.length || !name)"
             @click="applyChanges"
           >
-            {{ $t('meta.next') }}
+            {{ $t('meta.save') }}
           </base-btn>
         </div>
       </div>
@@ -83,6 +97,7 @@ export default {
     return {
       name: '',
       memberUserIds: [],
+      members: [],
       filter: {
         offset: 0,
         limit: 100,
@@ -93,12 +108,26 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
       users: 'data/getGroupChatUsers',
+      chatMembers: 'data/getChatMembers',
+      chatId: 'data/getCurrChatId',
     }),
   },
   async mounted() {
-    await this.getUsers(true);
+    const { options: { isMembersList }, chatMembers, users } = this;
+
+    this.members = isMembersList ? chatMembers : users.list;
+
+    if (isMembersList) return;
+
+    await this.getUsers();
   },
   methods: {
+    tryRemoveUser(userId) {
+      this.ShowModal({
+        key: modals.areYouSureDeleteMember,
+        userId,
+      });
+    },
     changeSelStatus({ target }, userId) {
       if (target.checked) {
         this.memberUserIds.push(userId);
@@ -106,44 +135,48 @@ export default {
         this.memberUserIds = this.memberUserIds.filter((id) => id !== userId);
       }
     },
-    async getUsers(isInit) {
-      const { options: { chatId, chatMembers = [], itsOwner }, filter } = this;
+    async getUsers() {
+      const { filter } = this;
 
-      let users = [];
-      let needResponse = true;
-
-      if (isInit && chatId) {
-        users = chatMembers;
-        this.memberUserIds = chatMembers.map((member) => member.id);
-        if (!itsOwner) needResponse = false;
-      }
-
-      console.log(users);
-
-      const payload = {
-        config: {
-          params: filter,
-        },
-        users,
-        needResponse,
+      const config = {
+        params: filter,
       };
 
-      await this.$store.dispatch('data/getUsersForGroupChat', payload);
+      try {
+        await this.$store.dispatch('data/getUsersForGroupChat', config);
+      } catch (e) {
+        console.log(e);
+        this.showToastError(e);
+      }
+    },
+    showToastError(e) {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.error'),
+        variant: 'warning',
+        text: e.response?.data?.msg,
+      });
     },
     hide() {
       this.CloseModal();
     },
     async applyChanges() {
-      const { name, memberUserIds, options: { chatId, callback } } = this;
+      const {
+        name, memberUserIds, options: { isCreating },
+      } = this;
 
-      if (chatId) {
-        callback(memberUserIds);
-      } else {
+      if (isCreating) {
         const config = {
           name,
           memberUserIds,
         };
-        await this.$store.dispatch('data/handleCreateGroupChat', config);
+        try {
+          await this.$store.dispatch('data/handleCreateGroupChat', config);
+        } catch (e) {
+          console.log(e);
+          this.showToastError(e);
+        }
+      } else {
+        console.log();
       }
 
       this.hide();
@@ -248,7 +281,37 @@ export default {
 
   &__content {
     padding-top: 0 !important;
+
+    .button {
+      box-sizing: border-box;
+      font-weight: 400;
+      font-size: 16px;
+      color: #0083C7;
+      border: 1px solid #0083C71A;
+      border-radius: 6px;
+      transition: .3s;
+      background-color: #fff;
+
+      &:hover {
+        background-color: #0083C71A;
+        border: 0px;
+      }
+    }
   }
+}
+
+.icon-plus_circle_outline {
+  margin-left: 10px;
+
+  &:before {
+    color: #0083C7;
+    font-size: 20px;
+  }
+}
+
+.icon-minus_circle_outline:before {
+  color: #DF3333;
+  font-size: 22px;
 }
 
 .friends {
@@ -280,6 +343,10 @@ export default {
     background-color: #0b76ef;
     border-radius: 3px;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+  }
+
+  &__del-cont {
+    cursor: pointer;
   }
 }
 .messageSend {

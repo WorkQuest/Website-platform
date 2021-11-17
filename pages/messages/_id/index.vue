@@ -385,16 +385,11 @@ export default {
     goToMembersList() {
       const { messages: { chat }, userData } = this;
 
-      const callback = (memberIds) => {
-        console.log(memberIds);
-      };
-
       this.ShowModal({
         key: modals.chatCreate,
-        chatId: chat.id,
-        chatMembers: chat.userMembers.filter((member) => member.id !== userData.id),
         itsOwner: chat.owner.id === userData.id,
-        callback,
+        isCreating: false,
+        isMembersList: true,
       });
     },
     goToQuest() {
@@ -433,6 +428,7 @@ export default {
         this.$forceUpdate();
       } catch (e) {
         console.log(e);
+        this.showToastError(e);
       }
     },
     async readMessages() {
@@ -448,7 +444,13 @@ export default {
         },
         chatId,
       };
-      await this.$store.dispatch('data/setMessageAsRead', payload);
+
+      try {
+        await this.$store.dispatch('data/setMessageAsRead', payload);
+      } catch (e) {
+        console.log(e);
+        this.showToastError(e);
+      }
     },
     async getFiles(ev, validate) {
       const { files } = ev.target;
@@ -492,19 +494,24 @@ export default {
         reader.readAsDataURL(file);
 
         const { type } = file;
+        try {
+          // eslint-disable-next-line no-await-in-loop
+          const data = await this.$store.dispatch('data/uploadFile', { contentType: type });
 
-        // eslint-disable-next-line no-await-in-loop
-        const data = await this.$store.dispatch('data/uploadFile', { contentType: type });
+          const url = URL.createObjectURL(file);
 
-        const url = URL.createObjectURL(file);
+          this.files.push({
+            data, file, url, type: type.split('/')[0],
+          });
 
-        this.files.push({
-          data, file, url, type: type.split('/')[0],
-        });
-
-        reader.onerror = (evt) => {
-          console.error(evt);
-        };
+          reader.onerror = (e) => {
+            console.log(e);
+            this.showToastError(e);
+          };
+        } catch (e) {
+          console.log(e);
+          this.showToastError(e);
+        }
       }
     },
     async handleScroll({ target: { scrollTop, scrollHeight, clientHeight } }) {
@@ -552,6 +559,7 @@ export default {
         await this.$store.dispatch('data/getMessagesList', payload);
       } catch (e) {
         console.log(e);
+        this.showToastError(e);
       }
     },
     setCurrDate(msgDate) {
@@ -583,9 +591,6 @@ export default {
         key: modals.notice,
       });
     },
-    isRating(type) {
-      return (type === 1 || type === 2);
-    },
     goBackToChatsList() {
       this.$router.push('/messages');
     },
@@ -610,6 +615,7 @@ export default {
           await this.$store.dispatch('data/setImage', cData);
         } catch (e) {
           console.log(e);
+          this.showToastError(e);
         }
       }));
 
@@ -630,6 +636,7 @@ export default {
         if (!isScrollBtnVis) this.scrollToBottom();
       } catch (e) {
         console.log(e);
+        this.showToastError(e);
       }
     },
     onEnter(e, callback) {
@@ -637,6 +644,13 @@ export default {
         e.preventDefault();
         callback(this.handleSendMessage);
       }
+    },
+    showToastError(e) {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.error'),
+        variant: 'warning',
+        text: e.response?.data?.msg,
+      });
     },
   },
 };

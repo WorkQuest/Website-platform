@@ -893,7 +893,8 @@
       "desc": "Create name of group chat and choose people from your chat list",
       "participants": "Participants",
       "chatName": "Chat name",
-      "members": "Members"
+      "members": "Members list",
+      "addNewMembers": "Add new members"
     },
     "yourRewardBalance": "Your reward balance:",
     "deletePortfolio": "Are you sure delete portfolio?",
@@ -906,6 +907,7 @@
     "delete": "Delete",
     "youCan’tDeleteActiveQuest": "You can’t delete active quest",
     "sureDeleteText": "Do you really want to delete this quest?",
+    "sureDeleteMemberText": "Do you really want to delete this member?",
     "priceTitle": "Price",
     "enterPriceRange": "Enter price range",
     "priceForm": "From",

@@ -119,7 +119,7 @@ export default {
   data() {
     return {
       filter: {
-        limit: 10,
+        limit: 30,
         offset: 0,
         starred: false,
       },
@@ -193,13 +193,30 @@ export default {
     handleChangeStarVal(ev, chat) {
       ev.stopPropagation();
       const chatId = chat.id;
-      this.$store.dispatch(`data/${chat.star ? 'removeStarForChat' : 'setStarForChat'}`, chatId);
+      try {
+        this.$store.dispatch(`data/${chat.star ? 'removeStarForChat' : 'setStarForChat'}`, chatId);
+      } catch (e) {
+        console.log(e);
+        this.showToastError(e);
+      }
     },
     async getChats() {
-      await this.$store.dispatch('data/getChatsList', this.filter);
+      try {
+        await this.$store.dispatch('data/getChatsList', this.filter);
+      } catch (e) {
+        console.log(e);
+        this.showToastError(e);
+      }
     },
     handleSelChat(chatId) {
       this.$router.push(`/messages/${chatId}`);
+    },
+    showToastError(e) {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.error'),
+        variant: 'warning',
+        text: e.response?.data?.msg,
+      });
     },
   },
 };
