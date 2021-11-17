@@ -32,9 +32,10 @@
                   </span>
                 </div>
                 <div
+                  v-if="currentWorker"
                   class="description"
                 >
-                  <!--                  {{ currentWorker ? currentWorker.additionalInfo.description: $t('quests.nothingAboutMe') }}-->
+                  {{ currentWorker ? currentWorkerAddInfo.description: $t('quests.nothingAboutMe') }}
                 </div>
                 <social />
                 <div class="contacts__grid">
@@ -48,19 +49,19 @@
                             class="icon-location"
                           />
                           <span class="contact__link">
-                            <!--                            {{ currentWorker ? currentWorker.additionalInfo.address : $t('quests.unknownAddress') }}-->
+                            {{ currentWorker ? currentWorkerAddInfo.address : $t('quests.unknownAddress') }}
                           </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-phone" />
                           <span class="contact__link">
-                            <!--                            {{ currentWorker ? currentWorker.additionalInfo.phone : $t('quests.unknownPhoneNumber') }}-->
+                            {{ currentWorker ? currentWorkerAddInfo.phone : $t('quests.unknownPhoneNumber') }}
                           </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-mail" />
                           <span class="contact__link">
-                            {{ currentWorker ? currentWorker.additionalInfo.email : $t('quests.unknownEmailAddress') }}
+                            {{ currentWorker ? currentWorkerAddInfo.email : $t('quests.unknownEmailAddress') }}
                           </span>
                         </span>
                       </span>
@@ -181,15 +182,14 @@ export default {
       user: 'data/getUserInfo',
       workersList: 'quests/getWorkersList',
       currentWorker: 'quests/getCurrentWorker',
+      currentWorkerAddInfo: 'quests/getCurrentWorkerAddInfo',
     }),
   },
   async created() {
-    await this.initWorkers();
     await this.initWorker();
   },
   async mounted() {
     this.SetLoader(true);
-    // await this.initWorker();
     this.SetLoader(false);
   },
   methods: {
@@ -203,19 +203,13 @@ export default {
       await this.$store.dispatch('quests/workersList');
     },
     async initWorker() {
-      // const userId = this.$route.params.id;
-      // try {
-      //   await this.$store.dispatch('quests/getWorkerData', userId);
-      //   console.log(this.currentWorker);
-      // } catch (e) {
-      //   console.log(e);
-      // }
-      const currentWorkerId = this.$route.path.slice(-36);
-      const workersList = this.workersList.users;
-      const filteredWorker = workersList.filter((worker) => worker.id === currentWorkerId);
-      const worker = filteredWorker[0];
-      console.log(worker);
-      await this.$store.dispatch('quests/setCurrentWorker', worker);
+      const userId = this.$route.params.id;
+      try {
+        await this.$store.dispatch('quests/getWorkerData', userId);
+        console.log(this.currentWorker);
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };
