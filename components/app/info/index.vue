@@ -1,70 +1,63 @@
 <template>
-  <div>
-    <span v-if="['employer'].includes(userRole)">
-      <span v-if="![1,3,5].includes(infoDataMode)">
+  <div
+    class="info"
+    :class="infoClass"
+  >
+    <div
+      v-if="userRole === 'employer'
+        && ![InfoModeEmployer.RaiseViews, InfoModeEmployer.Created].includes(infoDataMode)"
+      class="info__body"
+    >
+      <div class="info__left">
         <div
-          class="info"
-          :class="infoClass"
+          class="info__text"
+          :class="[
+            {'info__text_white': ![InfoModeEmployer.Created, InfoModeEmployer.WaitConfirm].includes(infoDataMode)}
+          ]"
         >
-          <div class="info__body">
-            <div class="info__left">
-              <div
-                class="info__text"
-                :class="[
-                  {'info__text_white': ![3,6,7].includes(infoDataMode)}
-                ]"
-              >
-                {{ infoStatusText }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </span>
-    </span>
-    <span v-if="['worker'].includes(userRole)">
-      <div>
-        <div
-          class="info"
-          :class="infoClass"
-        >
-          <div class="info__body">
-            <div class="info__left">
-              <div
-                class="info__text"
-                :class="[
-                  {
-                    'info__text_white': ![3,7,8].includes(infoDataMode)
-                  },
-                  {
-                    'info__text_black': [3,7,8].includes(infoDataMode)
-                  }
-                ]"
-              >
-                {{ infoStatusText }}
-              </div>
-            </div>
-            <div class="info__right">
-              <div
-                v-if="[3].includes(infoDataMode)"
-              >
-                <base-btn mode="showYourMessage">
-                  <template v-slot:right>
-                    <span class="icon-caret_down" />
-                  </template>
-                  {{ $t('info.showYourMessage') }}
-                </base-btn>
-              </div>
-            </div>
-          </div>
+          {{ infoStatusText }}
         </div>
       </div>
-    </span>
+    </div>
+    <div
+      v-if="userRole === 'worker'"
+      class="info__body"
+    >
+      <div class="info__left">
+        <div
+          class="info__text"
+          :class="[
+            {
+              'info__text_white': ![InfoModeWorker.Rejected, InfoModeWorker.Closed].includes(infoDataMode)
+            },
+            {
+              'info__text_black': [InfoModeWorker.Rejected, InfoModeWorker.Closed].includes(infoDataMode)
+            }
+          ]"
+        >
+          {{ infoStatusText }}
+        </div>
+      </div>
+      <div class="info__right">
+        <div
+          v-if="infoDataMode === InfoModeWorker.Rejected"
+        >
+          <base-btn mode="showYourMessage">
+            <template v-slot:right>
+              <span class="icon-caret_down" />
+            </template>
+            {{ $t('info.showYourMessage') }}
+          </base-btn>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 
 import { mapGetters } from 'vuex';
+import { InfoModeEmployer, InfoModeWorker } from '~/utils/enums';
 
 export default {
   name: 'InfoVue',
@@ -75,52 +68,84 @@ export default {
     },
   },
   computed: {
+    InfoModeEmployer() {
+      return InfoModeEmployer;
+    },
+    InfoModeWorker() {
+      return InfoModeWorker;
+    },
     infoStatusText() {
-      if (['employer'].includes(this.userRole)) {
-        if ([2].includes(this.infoDataMode)) {
-          return this.$t('quests.activeQuest');
-        } if ([4].includes(this.infoDataMode)) {
-          return this.$t('quests.waitWorker');
-        } if ([6].includes(this.infoDataMode)) {
-          return this.$t('quests.pendingConsideration');
-        } if ([8, 9].includes(this.infoDataMode)) {
-          return this.$t('performed.title');
-        } if ([7].includes(this.infoDataMode)) {
-          return this.$t('quests.dispute');
-        }
+      if (this.userRole === 'employer') {
+        const obj = {
+          [InfoModeEmployer.Active]: 'quests.activeQuest',
+          [InfoModeEmployer.WaitWorker]: 'quests.waitWorker',
+          [InfoModeEmployer.WaitConfirm]: 'quests.pendingConsideration',
+          [InfoModeEmployer.Dispute]: 'quests.dispute',
+          [InfoModeEmployer.Closed]: 'quests.closed',
+          [InfoModeEmployer.Done]: 'performed.title',
+        };
+        return this.$t(`${obj[this.infoDataMode]}`);
       }
-      if (['worker'].includes(this.userRole)) {
-        if ([1].includes(this.infoDataMode)) {
-          return this.$t('invite.title');
-        } if ([2].includes(this.infoDataMode)) {
-          return this.$t('quests.activeQuest');
-        } if ([3].includes(this.infoDataMode)) {
-          return this.$t('response.title');
-        } if ([4, 9].includes(this.infoDataMode)) {
-          return this.$t('quests.completed');
-        } if ([8].includes(this.infoDataMode)) {
-          return this.$t('quests.questClosed');
-        } if ([7].includes(this.infoDataMode)) {
-          return this.$t('quests.dispute');
-        }
+      if (this.userRole === 'worker') {
+        const obj = {
+          [InfoModeWorker.ADChat]: 'invite.title',
+          [InfoModeWorker.Active]: 'quests.activeQuest',
+          [InfoModeWorker.Rejected]: 'quests.requested',
+          [InfoModeWorker.WaitConfirm]: 'quests.pendingConsideration',
+          [InfoModeWorker.Dispute]: 'quests.dispute',
+          [InfoModeWorker.Closed]: 'quests.questClosed',
+          [InfoModeWorker.Done]: 'quests.completed',
+        };
+        return this.$t(`${obj[this.infoDataMode]}`);
       }
       return '';
     },
     infoClass() {
-      return [
-        {
-          'info_bg-yellow': [1].includes(this.infoDataMode),
-        },
-        {
-          'info_bg-green': [2].includes(this.infoDataMode),
-        },
-        {
-          'info_bg-grey': [3].includes(this.infoDataMode),
-        },
-        {
-          'info_bg-blue': [4, 9].includes(this.infoDataMode),
-        },
-      ];
+      if (this.userRole === 'worker') {
+        return [
+          {
+            'info-hide': this.infoDataMode === InfoModeWorker.Created,
+          },
+          {
+            'info_bg-yellow': this.infoDataMode === InfoModeWorker.ADChat,
+          },
+          {
+            'info_bg-green': this.infoDataMode === InfoModeWorker.Active,
+          },
+          {
+            'info_bg-grey': this.infoDataMode === InfoModeWorker.Rejected,
+          },
+          {
+            'info_bg-blue': [InfoModeWorker.WaitConfirm, InfoModeWorker.Done].includes(this.infoDataMode),
+          },
+          {
+            'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(this.infoDataMode),
+          },
+        ];
+      }
+      if (this.userRole === 'employer') {
+        return [
+          {
+            'info-hide': this.infoDataMode === InfoModeEmployer.Created,
+          },
+          {
+            'info_bg-yellow': this.infoDataMode === InfoModeEmployer.WaitWorker,
+          },
+          {
+            'info_bg-green': this.infoDataMode === InfoModeEmployer.Active,
+          },
+          {
+            'info_bg-grey': this.infoDataMode === InfoModeEmployer.WaitConfirm,
+          },
+          {
+            'info_bg-red': this.infoDataMode === InfoModeEmployer.Dispute,
+          },
+          {
+            'info_bg-blue': [InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(this.infoDataMode),
+          },
+        ];
+      }
+      return '';
     },
     ...mapGetters({
       tags: 'ui/getTags',
@@ -128,24 +153,6 @@ export default {
       userData: 'user/getUserData',
       infoDataMode: 'quests/getInfoDataMode',
     }),
-  },
-  methods: {
-    infoText(type) {
-      const texts = {
-        invited: this.$t('invite.title'),
-        response: this.$t('response.title'),
-        active: this.$t('quests.activeQuest'),
-        performed: this.$t('performed.title'),
-      };
-      return texts[type] || '';
-    },
-    infoTextStyle() {
-      return [
-        {
-          info_yellow: [1].includes(this.infoDataMode),
-        },
-      ];
-    },
   },
 };
 
@@ -166,6 +173,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  &-hide {
+    display: none;
+  }
   &_bg-green {
     background-color: $green;
   }
@@ -177,6 +187,9 @@ export default {
   }
   &_bg-blue {
     background-color: $blue;
+  }
+  &_bg-red {
+    background-color: $red;
   }
   &__body {
     max-width: 1180px;

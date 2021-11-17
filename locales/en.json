@@ -259,6 +259,7 @@
     "employer": {
       "usersNotResponded": "Users have not yet responded to the quest"
     },
+    "workersNotInvited": "Workers not invited!",
     "startChat": "Start chat",
     "invite": "Invite",
     "decline": "Decline",
@@ -269,6 +270,7 @@
     "questClosed!": "Quest closed!",
     "closed": "Closed",
     "completed": "Completed",
+    "rejected": "Rejected",
     "completedWorkAccepted": "Completed work on quest accepted!",
     "completedWorkRejected": "Completed work on quest rejected!",
     "workOnQuestAccepted": "Work on quest accepted!",
@@ -368,7 +370,6 @@
     "questDispute:": "Quest Dispute:",
     "questWaitConfirm:": "Quest wait confirm:",
     "skillsNotSpecified": "Skills not specified...",
-    "oneTime": "One time",
     "proposal": "Proposal",
     "category": "Select a category",
     "address": "Add address",
@@ -1946,6 +1947,7 @@
     "transactionHistory": "Transaction history",
     "withdraw": "Withdraw",
     "prolong": "Prolong",
+    "prolongText": "This will prolong pension program for 1 year",
     "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac neque cum posuere in. Semper arcu purus eget faucibus.",
     "table": {
       "userName": "John Doe",
@@ -1957,8 +1959,12 @@
     "docName": "Some_document.pdf",
     "mb": "{count} MB",
     "percents": "{count} %",
+    "minutes": "{count} minutes",
+    "hours": "{count} hours",
     "years": "{count} years",
-    "wusdCount": "{count} WUSD",
+    "days": "{count} days",
+    "WUSDCount": "{count} WUSD",
+    "ETHCount": "{count} ETH",
     "plusPercents": "+ {count}%",
     "faq1": {
       "question": "How do you qualify for a pension?",
@@ -1999,9 +2005,7 @@
     "faq10": {
       "question": "What happens if I Overfund my pension?",
       "answer": "We have no restrictions on the amount of savings. The entire accumulated amount will be at your disposal at the end of the program period."
-    },
-    "cancel": "Cancel",
-    "renewFor1Year": "Renew for 1 year"
+    }
   },
   "saving": {
     "withdrawModalBody": "The amount of locked funds and the accumulated interest will be credited to your wallet",

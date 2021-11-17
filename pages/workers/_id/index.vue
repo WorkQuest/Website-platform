@@ -12,7 +12,8 @@
                   <img
                     v-if="Object.keys(currentWorker).length !== 0"
                     class="info-grid__avatar"
-                    :src="currentWorker.avatar !== null ? currentWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+                    :src="currentWorker.avatar !== null
+                      ? currentWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
                     :alt="currentWorker.firstName"
                   >
                 </div>
@@ -26,15 +27,18 @@
               </div>
               <div class="col info-grid__col">
                 <div class="title title_inline">
-                  {{ currentWorker.firstName }} {{ currentWorker.lastName }}
+                  {{ currentWorker.firstName !== null ? currentWorker.firstName : 'Nameless' }}
+                  {{ currentWorker.lastName !== null ? currentWorker.lastName : "" }}
                   <span class="level">
                     TOP RANKED EMP.
                   </span>
                 </div>
                 <div
+                  v-if="currentWorker"
                   class="description"
                 >
-                  {{ currentWorker ? currentWorker.additionalInfo.description: $t('quests.nothingAboutMe') }}
+                  {{ currentWorkerAddInfo.description !== null
+                    ? currentWorkerAddInfo.description: $t('quests.nothingAboutMe') }}
                 </div>
                 <social />
                 <div class="contacts__grid">
@@ -48,19 +52,22 @@
                             class="icon-location"
                           />
                           <span class="contact__link">
-                            {{ currentWorker ? currentWorker.additionalInfo.address : $t('quests.unknownAddress') }}
+                            {{ currentWorkerAddInfo.address !== null
+                              ? currentWorkerAddInfo.address : $t('quests.unknownAddress') }}
                           </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-phone" />
                           <span class="contact__link">
-                            {{ currentWorker ? currentWorker.additionalInfo.phone : $t('quests.unknownPhoneNumber') }}
+                            {{ currentWorker.phone !== null
+                              ? currentWorker.phone : $t('quests.unknownPhoneNumber') }}
                           </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-mail" />
                           <span class="contact__link">
-                            {{ currentWorker ? currentWorker.additionalInfo.email : $t('quests.unknownEmailAddress') }}
+                            {{ currentWorker.email !== null
+                              ? currentWorker.email : $t('quests.unknownEmailAddress') }}
                           </span>
                         </span>
                       </span>
@@ -88,7 +95,6 @@
             {{ $t('workers.skills') }}
           </div>
           <div>
-            <!-- TODO: Проверить механизм добавления скилов -->
             <span class="badge_blue">{{ $t('quests.skillsNotSpecified') }}</span>
           </div>
         </div>
@@ -182,10 +188,10 @@ export default {
       user: 'data/getUserInfo',
       workersList: 'quests/getWorkersList',
       currentWorker: 'quests/getCurrentWorker',
+      currentWorkerAddInfo: 'quests/getCurrentWorkerAddInfo',
     }),
   },
   async created() {
-    await this.initWorkers();
     await this.initWorker();
   },
   async mounted() {
@@ -203,11 +209,12 @@ export default {
       await this.$store.dispatch('quests/workersList');
     },
     async initWorker() {
-      // TODO: Исправить скрипт!
-      const currentWorkerId = this.$route.path.slice(-36);
-      const workersList = this.workersList.users;
-      const filteredWorker = workersList.filter((worker) => worker.id === currentWorkerId);
-      return await this.$store.dispatch('quests/setCurrentWorker', filteredWorker[0]);
+      const userId = this.$route.params.id;
+      try {
+        await this.$store.dispatch('quests/getWorkerData', userId);
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };
@@ -893,6 +900,7 @@ export default {
   @extend .styles__flex;
   padding: 25px 0;
   position: relative;
+  display: grid;
   .share-btn {
     height: 24px;
     width: 24px;
@@ -1251,7 +1259,6 @@ a:hover {
 @include _1199 {
   .contact {
     display: flex;
-    flex-direction: column;
   }
   .template {
     &__main {
