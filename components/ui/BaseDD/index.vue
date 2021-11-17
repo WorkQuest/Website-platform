@@ -89,6 +89,7 @@
             v-for="(item, i) in items"
             :key="`dd__item-${i}`"
             class="dd__item"
+            :class="{'dd__item_hide': isSelected(i)}"
             @click="selectItem(i)"
           >
             {{ dataType === 'array' ? item : item.title }}
@@ -149,6 +150,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    hideSelected: {
+      type: Array,
+      default: () => [],
+    },
   },
   data: () => ({
     isShown: false,
@@ -170,8 +175,12 @@ export default {
       this.isShown = false;
     },
     selectItem(i) {
+      if (this.hideSelected.includes(i)) return;
       this.isShown = false;
       this.$emit('input', i);
+    },
+    isSelected(i) {
+      return this.hideSelected.includes(i);
     },
   },
 };
@@ -246,6 +255,9 @@ export default {
         height: 25px;
         width: 25px;
       }
+    }
+    &_hide {
+      display: none;
     }
   }
   &__icon {
