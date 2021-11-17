@@ -15,13 +15,14 @@
           >
             {{ $t('modals.walletAddress') }}
           </div>
-          <div
-            class="content__panel"
-            :class="{'content__panel_active': step === 2}"
-            @click="nextStep"
-          >
-            {{ $t('wallet.bankCard') }}
-          </div>
+          <!--          Вывод на банковскую карту. Вернуть по надобности -->
+          <!--          <div-->
+          <!--            class="content__panel"-->
+          <!--            :class="{'content__panel_active': step === 2}"-->
+          <!--            @click="nextStep"-->
+          <!--          >-->
+          <!--            {{ $t('wallet.bankCard') }}-->
+          <!--          </div>-->
         </div>
         <div
           v-if="step === 1"
@@ -34,8 +35,8 @@
             <base-field
               v-model="walletAddress"
               class="input__field"
+              :disabled="true"
               :placeholder="'Enter address'"
-              rules="required|alpha_num"
               :name="$t('modals.walletAddressField')"
             />
           </div>
@@ -47,7 +48,7 @@
               v-model="amount"
               class="input__field"
               :placeholder="'Enter amount'"
-              rules="required|decimal"
+              :rules="`required|decimal${maxValue ? '|max_value:' + maxValue : ''}`"
               :name="$t('modals.amountField')"
             >
               >
@@ -58,6 +59,7 @@
                 <base-btn
                   mode="max"
                   class="max__button"
+                  @click="handleMaxValue"
                 >
                   <span class="max__text">{{ $t('modals.maximum') }}</span>
                 </base-btn>
@@ -66,7 +68,7 @@
           </div>
         </div>
         <div
-          v-if="step === 2"
+          v-else-if="step === 2"
           class="content__container"
         >
           <div>
@@ -91,13 +93,13 @@
           <base-btn
             v-if="step=== 1"
             class="buttons__action"
-            :disabled="!validated || !passed || invalid"
+            :disabled="invalid"
             @click="handleSubmit(showWithdrawInfo)"
           >
             {{ $t('meta.confirm') }}
           </base-btn>
           <base-btn
-            v-if="step=== 2"
+            v-else-if="step=== 2"
             class="buttons__action"
             @click="showAddingCard"
           >
@@ -110,6 +112,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -118,18 +121,47 @@ export default {
     return {
       walletAddress: '',
       amount: '',
+      maxValue: null,
       step: 1,
+      withdrawType: '',
     };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+      isConnected: 'web3/isConnected',
+    }),
+  },
+  mounted() {
+    this.walletAddress = this.options.walletAddress;
+    this.maxValue = this.options.maxValue;
+    this.withdrawType = this.options.withdrawType;
   },
   methods: {
     hide() {
       this.CloseModal();
     },
-    showWithdrawInfo() {
-      this.ShowModal({
-        key: modals.withdrawInfo,
-        title: this.$t('modals.withdrawInfo'),
-      });
+    handleMaxValue() {
+      this.amount = this.maxValue;
+    },
+    async showWithdrawInfo() {
+      if (this.withdrawType === 'pension') {
+        const txFeeData = await this.$store.dispatch('web3/getPensionWithdrawTxFee', this.amount);
+        if (!txFeeData?.ok) {
+          console.log('err', txFeeData);
+          return;
+        }
+        this.ShowModal({
+          key: modals.withdrawInfo,
+          title: this.$t('modals.withdrawInfo'),
+          amount: this.$t(`pension.${this.options.symbol || 'WUSD'}Count`, { count: this.amount }),
+          _amount: this.amount,
+          txFee: txFeeData.result,
+          walletAddress: this.walletAddress,
+          method: 'pensionWithdraw',
+          updateMethod: this.options.updateMethod,
+        });
+      }
     },
     showAddingCard() {
       this.ShowModal({
