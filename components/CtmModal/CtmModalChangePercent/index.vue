@@ -20,7 +20,7 @@
             :placeholder="$tc('modals.percentsCount', 15)"
             class="content__input"
             :name="$t('modals.currentPercentErr')"
-            rules="required|percent"
+            rules="required|percent|decimalPlaces:18"
           />
         </div>
         <div class="content__buttons buttons">
@@ -34,7 +34,7 @@
           <base-btn
             class="buttons__button"
             :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(showPercentIsChanged)"
+            @click="handleSubmit(updateFee)"
           >
             {{ $t('meta.submit') }}
           </base-btn>
@@ -63,6 +63,17 @@ export default {
   methods: {
     hide() {
       this.CloseModal();
+    },
+    async updateFee() {
+      const { updateMethod } = this.options;
+      this.hide();
+      this.SetLoader(true);
+      const ok = await this.$store.dispatch('web3/pensionUpdateFee', this.amount);
+      if (ok) {
+        this.showPercentIsChanged();
+        if (updateMethod) await updateMethod();
+      }
+      this.SetLoader(false);
     },
     showPercentIsChanged() {
       this.ShowModal({

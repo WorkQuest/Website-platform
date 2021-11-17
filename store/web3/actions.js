@@ -7,7 +7,6 @@ import {
 } from '@uniswap/sdk';
 
 import {
-  ChainId,
   Token as TokenPancake,
   TokenAmount as TokenAmountPancake,
   Pair as PairPancake,
@@ -29,16 +28,14 @@ import {
   getAccount,
   swapWithBridge,
   getStakingDataByType,
-  getStakingRewardTxFee,
-  handleMetamaskStatus,
-  fetchStakingActions,
-  unsubscirbeStakingListeners,
-  getChainIdByChain,
+  handleMetamaskStatus, fetchActions, unsubscirbeListeners, getChainIdByChain,
   initProvider,
   authRenewal,
+  getPensionDefaultData, getPensionWallet, pensionUpdateFee, pensionContribute, pensionsWithdraw, pensionExtendLockTime, getTxFee,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
+import modals from '~/store/modals/modals';
 
 BigNumber.set({ ROUNDING_MODE: BigNumber.ROUND_DOWN });
 BigNumber.config({ EXPONENTIAL_AT: 60 });
@@ -107,6 +104,26 @@ export default {
   async handleMetamaskStatusChanged({ dispatch }) {
     await dispatch('disconnect');
     await dispatch('connectToMetaMask', { isReconnection: true });
+  },
+
+  async checkMetaMaskStatus({ getters, dispatch }, chain) {
+    if (!getters.isConnected) {
+      if (typeof window.ethereum === 'undefined') {
+        localStorage.setItem('metamaskStatus', 'notInstalled');
+        this.ShowModal({
+          key: modals.status,
+          img: '~assets/img/ui/cardHasBeenAdded.svg',
+          title: 'Please install Metamask!',
+          subtitle: 'Please click install...',
+          button: 'Install',
+          type: 'installMetamask',
+        });
+      } else {
+        localStorage.setItem('metamaskStatus', 'installed');
+        await dispatch('connectToMetaMask');
+        await dispatch('goToChain', { chain });
+      }
+    }
   },
 
   async initContract({ commit }) {
@@ -207,7 +224,8 @@ export default {
     };
   },
   getStakingRewardTxFee({ commit }, stakingType) {
-    return getStakingRewardTxFee(stakingType);
+    const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
+    return getTxFee(stakingAbi, stakingAddress, 'claim');
   },
   async fetchStakingInfo({ commit }, { stakingType }) {
     const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
@@ -256,10 +274,10 @@ export default {
   },
   async fetchStakingActions({ commit }, { stakingType, callback, events }) {
     const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
-    await fetchStakingActions(stakingAbi, stakingAddress, callback, events);
+    await fetchActions(stakingAbi, stakingAddress, callback, events);
   },
-  unsubscribeStakingActions() {
-    unsubscirbeStakingListeners();
+  unsubscribeActions() {
+    unsubscirbeListeners();
   },
   async stake({ commit }, {
     decimals, amount, stakingType, duration,
@@ -398,8 +416,7 @@ export default {
       const rewardTotal = new BigNumber(stakingInfoEvent.rewardTotal).shiftedBy(-18).toNumber();
       const priceLP = reserveUSD / totalSupply;
       const APY = ((rewardTotal * 12) * priceWQT) / (totalStaked * priceLP);
-      const profit = ((payload.stakedAmount * priceLP) * APY) / priceWQT;
-      return profit;
+      return ((payload.stakedAmount * priceLP) * APY) / priceWQT; // profit
     } catch (err) {
       return err;
     }
@@ -408,5 +425,53 @@ export default {
     const providerData = await initProvider(payload);
     commit('setMetaMaskStatus', providerData.isMetaMask);
     return providerData;
+  },
+
+  /* Pension Program */
+  async getPensionDefaultData() {
+    return await getPensionDefaultData();
+  },
+  async getPensionContributed() {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND;
+    return await fetchContractData('contributed', _abi, _pensionAddress);
+  },
+  async getPensionWallet() {
+    return await getPensionWallet();
+  },
+  async pensionUpdateFee({ commit }, fee) {
+    return await pensionUpdateFee(fee);
+  },
+  async pensionContribute({ commit }, amount) {
+    return await pensionContribute(amount);
+  },
+  async getPensionWithdrawTxFee({ commit }, _amount) {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND;
+    _amount = new BigNumber(_amount).shiftedBy(18).toString();
+    return await getTxFee(_abi, _pensionAddress, 'withdraw', [_amount]);
+  },
+  async pensionWithdraw({ commit }, amount) {
+    return await pensionsWithdraw(amount);
+  },
+  async pensionStartProgram({ commit }, payload) {
+    const { firstDeposit, fee, defaultFee } = payload;
+    let feeOk = true;
+    let depositOk = false;
+    const equalsFee = new BigNumber(defaultFee).shiftedBy(-18).isEqualTo(new BigNumber(fee).shiftedBy(-18));
+    if (!firstDeposit || !equalsFee) {
+      feeOk = await pensionUpdateFee(fee);
+    }
+    if (firstDeposit) depositOk = await pensionContribute(firstDeposit);
+    else return feeOk;
+    return depositOk && feeOk;
+  },
+  async fetchPensionActions({ commit }, { callback, events, params }) {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND;
+    await fetchActions(_abi, _pensionAddress, callback, events, params);
+  },
+  async pensionExtendLockTime() {
+    return await pensionExtendLockTime();
   },
 };

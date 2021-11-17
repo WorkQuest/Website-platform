@@ -1,5 +1,6 @@
 export default () => ({
   questListForInvitation: {},
+  chatInfoInviteOnQuest: {},
   currentWorker: {},
   workersList: {},
   allQuests: {},

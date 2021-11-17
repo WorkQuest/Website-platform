@@ -341,23 +341,14 @@ let allowance;
 let amount;
 let nonce;
 
-export const getStakingRewardTxFee = async (stakingType) => {
-  let inst;
-  if (stakingType === StakingTypes.WQT) {
-    inst = new web3.eth.Contract(abi.WQStaking, process.env.WQT_STAKING);
-  } else if (stakingType === StakingTypes.WUSD) {
-    inst = new web3.eth.Contract(abi.WQStakingNative, process.env.WQT_STAKING_NATIVE);
-  } else {
-    console.error('[rewardTxFee] wrong staking type:', stakingType);
-    return 0;
-  }
+export const getTxFee = async (_abi, _contractAddress, method, data = null) => {
   try {
+    if (!method) console.error('getTxFee undefined method');
+    const inst = new web3.eth.Contract(_abi, _contractAddress);
     const gasPrice = await web3.eth.getGasPrice();
-    const gasEstimate = await inst.methods.claim.apply(null)
-      .estimateGas({ from: account.address });
-    return new BigNumber(gasPrice * gasEstimate).shiftedBy(-18)
-      .decimalPlaces(8)
-      .toString();
+    const gasEstimate = await inst.methods[method].apply(null, data).estimateGas({ from: account.address });
+    const fee = new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString();
+    return success(fee);
   } catch (e) {
     return error(500, 'TxFee error', e);
   }
@@ -429,7 +420,7 @@ export const unStaking = async (_decimals, _amount, _stakingAddress, _stakingAbi
   }
 };
 
-export const claimRewards = async (_stakingAddress, _stakingAbi, _amount) => {
+export const claimRewards = async (_stakingAddress, _stakingAbi) => {
   try {
     showToast('Claiming', 'Claiming...', 'success');
     const payload = {
@@ -558,25 +549,24 @@ export const redeemSwap = async (props) => {
 let actionsListeners = [];
 let lastActionHash = null;
 
-export const unsubscirbeStakingListeners = () => {
+export const unsubscirbeListeners = () => {
   for (let i = 0; i < actionsListeners.length; i += 1) {
     actionsListeners[i].unsubscribe();
   }
   actionsListeners = [];
+  lastActionHash = null;
 };
-export const fetchContractAction = (inst, method, callback, params) => inst.events[method]({
-  ...params,
-}, (err, result) => {
+export const fetchContractAction = (inst, method, callback, params) => inst.events[method](params, (err, result) => {
   if (!err && callback && lastActionHash !== result.transactionHash) {
     lastActionHash = result.transactionHash;
     callback(method, result);
   }
 });
-export const fetchStakingActions = async (stakingAbi, stakingAddress, callback, events) => {
-  const inst = new web3.eth.Contract(stakingAbi, stakingAddress);
-  await unsubscirbeStakingListeners();
+export const fetchActions = async (stakingAbi, stakingAddress, callback, events, params = []) => {
+  const contractInst = new web3.eth.Contract(stakingAbi, stakingAddress);
+  await unsubscirbeListeners();
   for (let i = 0; i < events.length; i += 1) {
-    actionsListeners.push(fetchContractAction(inst, events[i], callback));
+    actionsListeners.push(fetchContractAction(contractInst, events[i], callback, params[i]));
   }
 };
 
@@ -604,4 +594,98 @@ export const initStackingContract = async (chain) => {
   }));
   const liquidityMiningContract = new liquidityMiningProvider.eth.Contract(stakingAbi, stakingAddress);
   return await liquidityMiningContract.methods.getStakingInfo().call();
+};
+
+export const getPensionDefaultData = async () => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND;
+    const [lockTime, defaultFee] = await Promise.all([
+      fetchContractData('lockTime', _abi, _pensionAddress),
+      fetchContractData('defaultFee', _abi, _pensionAddress),
+    ]);
+    return {
+      defaultFee: new BigNumber(defaultFee.toString()).shiftedBy(-18).toString(),
+      lockTime: Math.floor(lockTime / 365 / 24 / 60 / 60),
+    };
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+export const getPensionWallet = async () => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND;
+    const wallet = await fetchContractData('wallets', _abi, _pensionAddress, [account.address]);
+    const {
+      unlockDate, fee,
+    } = wallet;
+    const _amount = new BigNumber(wallet.amount).shiftedBy(-18);
+    let _fee = new BigNumber(fee).shiftedBy(-18);
+    if (_fee.isGreaterThan('0') && _fee.isLessThan('0.0000001')) {
+      _fee = '>0.0000001';
+    } else _fee = _fee.decimalPlaces(8);
+    return {
+      ...wallet,
+      unlockDate: new Date(unlockDate * 1000),
+      fee: _fee.toString(),
+      amount: _amount.isGreaterThan('0') && _amount.isLessThan('0.0001') ? '>0.0001' : _amount.decimalPlaces(4).toString(),
+      _amount: _amount.toString(),
+    };
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+export const pensionContribute = async (_amount) => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND;
+    const contractInst = await createInstance(_abi, _pensionAddress);
+    _amount = new BigNumber(_amount).shiftedBy(18).toString();
+    await contractInst.contribute(account.address, { value: _amount });
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+};
+export const pensionUpdateFee = async (_fee) => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND;
+    const contractInst = await createInstance(_abi, _pensionAddress);
+    _fee = new BigNumber(_fee).shiftedBy(18).toString();
+    await contractInst.updateFee(_fee);
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+};
+export const pensionsWithdraw = async (_amount) => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND;
+    const contractInst = await createInstance(_abi, _pensionAddress);
+    _amount = new BigNumber(_amount).shiftedBy(18).toString();
+    await contractInst.withdraw(_amount);
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+};
+export const pensionExtendLockTime = async () => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND;
+    const contractInst = await createInstance(_abi, _pensionAddress);
+    await contractInst.extendLockTime();
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
 };

@@ -1,13 +1,14 @@
 <template>
   <div
-    v-if="['worker'].includes(userRole)"
+    v-if="userRole === 'worker'"
     :class="[
-      {'btns__container': [1,2,3,5,7].includes(infoDataMode)},
-      {'btns__margin': ![1,2,3,5,7].includes(infoDataMode)}
+      {'btns__container':
+        ![InfoModeWorker.WaitConfirm, InfoModeWorker.Closed, InfoModeWorker.Done].includes(infoDataMode)},
+      {'btns__margin': [InfoModeWorker.WaitConfirm, InfoModeWorker.Closed, InfoModeWorker.Done].includes(infoDataMode)}
     ]"
   >
     <div
-      v-if="[1].includes(infoDataMode)"
+      v-if="infoDataMode === InfoModeWorker.ADChat"
       class="btns__wrapper"
     >
       <div class="btn__wrapper">
@@ -38,7 +39,7 @@
       </div>
     </div>
     <div
-      v-if="[2].includes(infoDataMode)"
+      v-if="infoDataMode === InfoModeWorker.Active"
       class="btns__wrapper"
     >
       <div class="btn__wrapper">
@@ -69,44 +70,31 @@
       </div>
     </div>
     <div
-      v-if="[3].includes(infoDataMode)"
+      v-if="[InfoModeWorker.Rejected, InfoModeWorker.Created].includes(infoDataMode)"
       class="btns__wrapper"
     >
       <div class="btn__wrapper">
         <base-btn
-          :disabled="true"
+          :disabled="disabledBtn"
           @click="sendARequestOnQuest"
         >
-          {{ $t('btn.responded') }}
+          {{ InfoModeWorker.Created ? $t('btn.sendARequest') : $t('btn.responded') }}
         </base-btn>
       </div>
     </div>
     <div
-      v-if="[5].includes(infoDataMode)"
+      v-if="infoDataMode === InfoModeWorker.Dispute"
       class="btns__wrapper"
     >
       <div class="btn__wrapper">
-        <base-btn
-          :disabled="questData.status === -1"
-          @click="sendARequestOnQuest"
-        >
-          {{ $t('btn.sendARequest') }}
-        </base-btn>
-      </div>
-    </div>
-    <div
-      v-if="[7].includes(infoDataMode)"
-      class="btns__wrapper"
-    >
-      <div class="btn__wrapper">
-        <base-btn :disabled="true">
+        <base-btn>
           {{ $t('btn.dispute') }}
         </base-btn>
       </div>
     </div>
     <div class="priority">
       <div
-        v-if="![4,8].includes(infoDataMode)"
+        v-if="![InfoModeWorker.WaitConfirm, InfoModeWorker.Closed].includes(infoDataMode)"
         class="price__container"
       >
         <span class="price__value">
@@ -117,7 +105,7 @@
         class="priority__container"
       >
         <div
-          v-if="![4,8].includes(infoDataMode)"
+          v-if="![InfoModeWorker.WaitConfirm, InfoModeWorker.Closed].includes(infoDataMode)"
           class="priority__title"
           :class="getPriorityClass(questData.priority)"
         >
@@ -131,6 +119,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { InfoModeWorker, QuestStatuses } from '~/utils/enums';
 
 export default {
   name: 'QuestIdWorker',
@@ -148,6 +137,15 @@ export default {
       questData: 'quests/getQuest',
       infoDataMode: 'quests/getInfoDataMode',
     }),
+    QuestStatuses() {
+      return QuestStatuses;
+    },
+    InfoModeWorker() {
+      return InfoModeWorker;
+    },
+    disabledBtn() {
+      return this.infoDataMode === InfoModeWorker.Rejected;
+    },
   },
   async created() {
     await this.getResponsesToQuestForAuthUser();
@@ -193,7 +191,7 @@ export default {
         title: this.$t('quests.questInfo'),
         subtitle: this.$t('quests.workOnQuestAccepted'),
       });
-      await this.$store.dispatch('quests/setInfoDataMode', 2);
+      await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.Active);
       this.SetLoader(false);
     },
     async rejectWorkOnQuest() {
@@ -205,7 +203,7 @@ export default {
         title: this.$t('quests.questInfo'),
         subtitle: this.$t('quests.workOnQuestRejected'),
       });
-      await this.$store.dispatch('quests/setInfoDataMode', 5);
+      await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.Created);
       this.SetLoader(false);
     },
     async completeWorkOnQuest() {
@@ -217,7 +215,7 @@ export default {
         title: this.$t('quests.questInfo'),
         subtitle: this.$t('quests.pleaseWaitEmp'),
       });
-      await this.$store.dispatch('quests/setInfoDataMode', 4);
+      await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.WaitConfirm);
       this.SetLoader(false);
     },
     // async getResponseId() {
