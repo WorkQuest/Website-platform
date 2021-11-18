@@ -891,10 +891,10 @@
     "chatCreate": {
       "title": "Create group chat",
       "desc": "Create name of group chat and choose people from your chat list",
-      "participants": "Participants",
       "chatName": "Chat name",
       "members": "Members list",
-      "addNewMembers": "Add new members"
+      "addNewMembers": "Add new members",
+      "addMember": "Add member"
     },
     "yourRewardBalance": "Your reward balance:",
     "deletePortfolio": "Are you sure delete portfolio?",

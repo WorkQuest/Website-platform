@@ -123,7 +123,7 @@
                           :href="file.url"
                           target="_blank"
                           class="image-cont image-cont__other-media image-cont__other-media_block"
-                          @click="openFile"
+                          @click="file.type === 'video' ? selFile($event, message.medias, file.url) : openFile"
                         >
                           <span :class="[{'icon-play_circle_outline' : file.type === 'video'}, {'icon-file_blank_outline' : file.type !== 'video'}]" />
                         </a>
@@ -299,11 +299,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      messages: 'data/getMessages',
+      messages: 'chat/getMessages',
       userData: 'user/getUserData',
-      lastMessageId: 'data/getLastMessageId',
-      chats: 'data/getChats',
-      filter: 'data/getMessagesFilter',
+      lastMessageId: 'chat/getLastMessageId',
+      chats: 'chat/getChats',
+      filter: 'chat/getMessagesFilter',
     }),
   },
   async mounted() {
@@ -340,8 +340,8 @@ export default {
     if (!isChatNotificationShown) this.showNoticeModal();
   },
   destroyed() {
-    this.$store.commit('data/setMessagesList', { messages: [], count: 0, chat: null });
-    this.$store.commit('data/clearMessagesFilter');
+    this.$store.commit('chat/setMessagesList', { messages: [], count: 0, chat: null });
+    this.$store.commit('chat/clearMessagesFilter');
   },
   methods: {
     setInfoMessageText(action, itsMe) {
@@ -390,6 +390,7 @@ export default {
         itsOwner: chat.owner.id === userData.id,
         isCreating: false,
         isMembersList: true,
+        isAdding: false,
       });
     },
     goToQuest() {
@@ -400,9 +401,10 @@ export default {
       ev.stopPropagation();
     },
     selFile(ev, files, fileUrl) {
+      ev.preventDefault();
       ev.stopPropagation();
 
-      files = files.filter((file) => file.type === 'image');
+      files = files.filter((file) => file.type === 'image' || file.type === 'video');
       const index = files.findIndex((file) => file.url === fileUrl);
 
       this.ShowModal({
@@ -424,7 +426,7 @@ export default {
       const messageId = message.id;
       const { chatId } = this;
       try {
-        await this.$store.dispatch(`data/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, { messageId, chatId });
+        await this.$store.dispatch(`chat/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, { messageId, chatId });
         this.$forceUpdate();
       } catch (e) {
         console.log(e);
@@ -446,7 +448,7 @@ export default {
       };
 
       try {
-        await this.$store.dispatch('data/setMessageAsRead', payload);
+        await this.$store.dispatch('chat/setMessageAsRead', payload);
       } catch (e) {
         console.log(e);
         this.showToastError(e);
@@ -496,7 +498,7 @@ export default {
         const { type } = file;
         try {
           // eslint-disable-next-line no-await-in-loop
-          const data = await this.$store.dispatch('data/uploadFile', { contentType: type });
+          const data = await this.$store.dispatch('chat/uploadFile', { contentType: type });
 
           const url = URL.createObjectURL(file);
 
@@ -556,7 +558,7 @@ export default {
       };
 
       try {
-        await this.$store.dispatch('data/getMessagesList', payload);
+        await this.$store.dispatch('chat/getMessagesList', payload);
       } catch (e) {
         console.log(e);
         this.showToastError(e);
@@ -612,7 +614,7 @@ export default {
         };
 
         try {
-          await this.$store.dispatch('data/setImage', cData);
+          await this.$store.dispatch('chat/setImage', cData);
         } catch (e) {
           console.log(e);
           this.showToastError(e);
@@ -631,7 +633,7 @@ export default {
       };
 
       try {
-        await this.$store.dispatch('data/handleSendMessage', payload);
+        await this.$store.dispatch('chat/handleSendMessage', payload);
 
         if (!isScrollBtnVis) this.scrollToBottom();
       } catch (e) {

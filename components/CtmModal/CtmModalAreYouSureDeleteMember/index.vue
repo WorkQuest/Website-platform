@@ -47,7 +47,7 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
       questData: 'quests/getQuest',
-      chatId: 'data/getCurrChatId',
+      chatId: 'chat/getCurrChatId',
     }),
   },
   methods: {
@@ -59,13 +59,14 @@ export default {
         itsOwner: true,
         isCreating: false,
         isMembersList: true,
+        isAdding: false,
       });
     },
     async removeUser() {
       const { options: { userId }, chatId } = this;
 
       try {
-        await this.$store.dispatch('data/removeMember', { userId, chatId });
+        await this.$store.dispatch('chat/removeMember', { userId, chatId });
       } catch (e) {
         console.log(e);
         this.showToastError(e);

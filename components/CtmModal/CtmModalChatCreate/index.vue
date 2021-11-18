@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t(`modals.chatCreate.${options.isMembersList ? 'members' : 'title'}`)"
+    :title="$t(`modals.chatCreate.${options.isMembersList ? 'members' : options.isAdding ? 'addMember' : 'title'}`)"
   >
     <div class="ctm-modal__content">
       <template v-if="options.isCreating">
@@ -18,12 +18,10 @@
         </div>
       </template>
       <div class="ctm-modal__content-participants participants">
-        <!--        <div class="participants__title">-->
-        <!--          {{ $t('modals.chatCreate.participants') }}-->
-        <!--        </div>-->
         <base-btn
           v-if="options.isMembersList && options.itsOwner"
           class="button"
+          @click="addNewMembers"
         >
           {{ $t('modals.chatCreate.addNewMembers') }}
           <span class="icon-plus_circle_outline" />
@@ -37,13 +35,13 @@
             <div class="friends__data">
               <img
                 class="friends__img"
-                :src="user.avatar ? user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                :src="user.avatar && user.avatar.url ? user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
               >
               <span class="friends__name">
                 {{ (user.firstName || '') + ' ' + (user.lastName || '') }}
               </span>
             </div>
-            <template v-if="options.isCreating">
+            <template v-if="options.isCreating || options.isAdding">
               <input
                 :id="user.id"
                 type="checkbox"
@@ -54,7 +52,7 @@
               <label :for="user.id" />
             </template>
             <div
-              v-if="!options.isCreating && options.itsOwner"
+              v-if="options.isMembersList && options.itsOwner"
               class="friends__del-cont"
               @click="tryRemoveUser(user.id)"
             >
@@ -92,7 +90,7 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalApplyForAPension',
+  name: 'ModalChatUsers',
   data() {
     return {
       name: '',
@@ -107,21 +105,33 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      users: 'data/getGroupChatUsers',
-      chatMembers: 'data/getChatMembers',
-      chatId: 'data/getCurrChatId',
+      users: 'chat/getGroupChatUsers',
+      chatMembers: 'chat/getChatMembers',
+      chatId: 'chat/getCurrChatId',
     }),
   },
   async mounted() {
-    const { options: { isMembersList }, chatMembers, users } = this;
+    const { options: { isMembersList }, chatMembers } = this;
 
-    this.members = isMembersList ? chatMembers : users.list;
-
-    if (isMembersList) return;
-
-    await this.getUsers();
+    if (isMembersList) {
+      this.members = chatMembers;
+    } else {
+      await this.getUsers();
+    }
   },
   methods: {
+    async addNewMembers() {
+      this.members = [];
+      const optionsArr = [
+        { key: 'isAdding', val: true },
+        { key: 'isMembersList', val: false },
+      ];
+      this.changeOptions(optionsArr);
+      await this.getUsers();
+    },
+    changeOptions(optionsArr) {
+      this.$store.commit('modals/setCurrOptionByKey', optionsArr);
+    },
     tryRemoveUser(userId) {
       this.ShowModal({
         key: modals.areYouSureDeleteMember,
@@ -136,14 +146,18 @@ export default {
       }
     },
     async getUsers() {
-      const { filter } = this;
+      const { filter, chatId, users } = this;
 
       const config = {
-        params: filter,
+        params: {
+          ...filter,
+          excludeMembersChatId: chatId || undefined,
+        },
       };
 
       try {
-        await this.$store.dispatch('data/getUsersForGroupChat', config);
+        await this.$store.dispatch('chat/getUsersForGroupChat', config);
+        this.members = users.list;
       } catch (e) {
         console.log(e);
         this.showToastError(e);
@@ -157,11 +171,23 @@ export default {
       });
     },
     hide() {
+      const { options: { isAdding }, chatMembers } = this;
+
+      if (isAdding) {
+        const optionsArr = [
+          { key: 'isAdding', val: false },
+          { key: 'isMembersList', val: true },
+        ];
+        this.changeOptions(optionsArr);
+        this.members = chatMembers;
+
+        return;
+      }
       this.CloseModal();
     },
     async applyChanges() {
       const {
-        name, memberUserIds, options: { isCreating },
+        name, memberUserIds, options: { isCreating, isAdding },
       } = this;
 
       if (isCreating) {
@@ -170,12 +196,12 @@ export default {
           memberUserIds,
         };
         try {
-          await this.$store.dispatch('data/handleCreateGroupChat', config);
+          await this.$store.dispatch('chat/handleCreateGroupChat', config);
         } catch (e) {
           console.log(e);
           this.showToastError(e);
         }
-      } else {
+      } else if (isAdding) {
         console.log();
       }
 

@@ -127,7 +127,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      chats: 'data/getChats',
+      chats: 'chat/getChats',
       userData: 'user/getUserData',
     }),
   },
@@ -194,7 +194,7 @@ export default {
       ev.stopPropagation();
       const chatId = chat.id;
       try {
-        this.$store.dispatch(`data/${chat.star ? 'removeStarForChat' : 'setStarForChat'}`, chatId);
+        this.$store.dispatch(`chat/${chat.star ? 'removeStarForChat' : 'setStarForChat'}`, chatId);
       } catch (e) {
         console.log(e);
         this.showToastError(e);
@@ -202,7 +202,7 @@ export default {
     },
     async getChats() {
       try {
-        await this.$store.dispatch('data/getChatsList', this.filter);
+        await this.$store.dispatch('chat/getChatsList', this.filter);
       } catch (e) {
         console.log(e);
         this.showToastError(e);

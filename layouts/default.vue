@@ -819,8 +819,8 @@ export default {
       userRole: 'user/getUserRole',
       token: 'user/accessToken',
       connections: 'data/notificationsConnectionStatus',
-      chatId: 'data/getCurrChatId',
-      messagesFilter: 'data/getMessagesFilter',
+      chatId: 'chat/getCurrChatId',
+      messagesFilter: 'chat/getMessagesFilter',
     }),
     locales() {
       return [
@@ -1121,12 +1121,12 @@ export default {
         await this.$wsChat.connect(this.token);
         this.$wsChat.subscribe('/notifications/chat', async ({ data, action }) => {
           if (this.$route.name === 'messages') {
-            await this.$store.dispatch('data/getChatsList', {
+            await this.$store.dispatch('chat/getChatsList', {
               limit: 10,
               offset: 0,
             });
           } else if (action === 'newMessage' && data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
-            this.$store.commit('data/addMessageToList', data);
+            this.$store.commit('chat/addMessageToList', data);
           }
         });
       }

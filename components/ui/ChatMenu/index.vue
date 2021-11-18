@@ -86,6 +86,7 @@ export default {
         isCreating: true,
         itsOwner: true,
         isMembersList: false,
+        isAdding: false,
       });
     },
   },
