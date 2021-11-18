@@ -13,19 +13,19 @@
           <div
             class="__step"
             :class="[
-              {'step-panel__step_active': step === 1 || step === 2 || step === 3 || step === 4},
+              {'step-panel__step_active': [1,2,3,4].includes(step)},
             ]"
           >
             <span class="step-panel__block">
               <span
                 :class="[
-                  {'hide': step === 2 || step === 3 || step === 4},
+                  {'hide': [2,3,4].includes(step)},
                 ]"
               >{{ $t('modals.step') }}
               </span>
               <span
                 :class="[
-                  {'step__number': step === 2 || step === 3 || step === 4},
+                  {'step__number': [2,3,4].includes(step)},
                 ]"
               >1</span>
             </span>
@@ -33,24 +33,24 @@
           <div
             class="line"
             :class="[
-              {'line__active': step === 2 || step === 3 || step === 4},
+              {'line__active': [2,3,4].includes(step)},
             ]"
           />
           <div
             class="step-panel__step"
             :class="[
-              {'step-panel__step_active': step === 2 || step === 3 || step === 4},
+              {'step-panel__step_active': [2,3,4].includes(step)},
             ]"
           >
             <span class="step-panel__block">
               <span
                 :class="[
-                  {'hide': step === 3 || step === 4},
+                  {'hide': [3,4].includes(step)},
                 ]"
               >{{ $t('modals.step') }}</span>
               <span
                 :class="[
-                  {'step__number': step === 3 || step === 4},
+                  {'step__number': [3,4].includes(step)},
                 ]"
               >2</span>
             </span>
@@ -58,13 +58,13 @@
           <div
             class="line"
             :class="[
-              {'line__active': step === 3 || step === 4},
+              {'line__active': [3,4].includes(step)},
             ]"
           />
           <div
             class="step-panel__step"
             :class="[
-              {'step-panel__step_active': step === 3 || step === 4},
+              {'step-panel__step_active': [3,4].includes(step)},
             ]"
           >
             <span class="step-panel__block">
@@ -75,7 +75,7 @@
               >{{ $t('modals.step') }}</span>
               <span
                 :class="[
-                  {'step__number': step === 2 || step === 3 || step === 4},
+                  {'step__number': [2,3,4].includes(step)},
                 ]"
               >3</span>
             </span>
@@ -236,7 +236,7 @@
         <!-- Steps btns -->
         <div class="btn__container">
           <div
-            v-if="step !== 2 && step !== 3 && step !== 4"
+            v-if="![2,3,4].includes(step)"
             class="btn__onebtn"
           >
             <span
@@ -310,6 +310,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalDeposit',
@@ -354,12 +355,20 @@ export default {
         };
         const response = await this.$store.dispatch('user/confirmEnable2FA', payload);
         if (response?.ok) {
-          console.log(response);
           this.hide();
+          this.showModalSuccess();
         }
       } catch (e) {
         console.log(e);
       }
+    },
+    showModalSuccess() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: this.$t('modals.2FAStatus'),
+        subtitle: this.$t('modals.2FAEnabled'),
+      });
     },
     hide() {
       this.CloseModal();
