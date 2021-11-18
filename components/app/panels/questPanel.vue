@@ -62,20 +62,16 @@
       </div>
     </div>
     <div
-      v-if="questData.skillFilters"
+      v-if="questData.questSpecializations"
       class="badge__container"
     >
-      <ul
-        v-for="(skills, spec) in questData.skillFilters"
-        :key="spec"
-        class="badge-list"
-      >
+      <ul class="badge-list">
         <li
-          v-for="(skill, key) in skills"
-          :key="key"
+          v-for="(skill, spec) in questData.questSpecializations"
+          :key="spec"
           class="badge__item badge__item_blue"
         >
-          {{ skill }}
+          {{ getSkillTitle(skill.path) }}
         </li>
       </ul>
     </div>
@@ -138,6 +134,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    getSkillTitle(path) {
+      const [spec, skill] = path.split('.');
+      console.log(spec, skill);
+      return this.$t(`filters.items.${spec}.sub.${skill}`);
+    },
     showDistance() {
       return this.getDistanceFromLatLonInKm(
         this.location.lat,

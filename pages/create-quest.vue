@@ -699,19 +699,20 @@ export default {
     },
     async toCreateQuest() {
       const specAndSkills = [];
+      let key = 1;
       // eslint-disable-next-line guard-for-in,no-restricted-syntax
-      // for (const spec in this.specIndex) {
-      //   if (this.specIndex[spec] !== -1) {
-      //     const specIndex = this.specializations.index[this.specIndex[spec]];
-      //     // eslint-disable-next-line guard-for-in,no-restricted-syntax
-      //     for (const skill of this.selectedSkills[spec]) {
-      //       specAndSkills.push(`${specIndex}.${specIndex}0${skill.index}`);
-      //     }
-      //   }
-      // }
+      for (const spec in this.specIndex) {
+        if (this.specIndex[spec] !== -1) {
+          for (let i = 0; i < this.selectedSkills[key].length; i += 1) {
+            specAndSkills.push(`${this.specIndex[spec]}.${this.selectedSkills[key][i].index}`);
+          }
+        }
+        key += 1;
+      }
       await this.createQuest(specAndSkills);
     },
     async createQuest(specAndSkills) {
+      console.log('specAndSkills', specAndSkills);
       const payload = {
         workplace: this.convertWorkplace(this.workplaceIndex),
         priority: this.runtimeIndex,
