@@ -2,7 +2,7 @@
   <div>
     <span>
       <a
-        v-if="userFacebook"
+        v-if="facebook"
         class="social__link"
         :href="socialURL('facebook')"
         target="_blank"
@@ -12,7 +12,7 @@
         />
       </a>
       <a
-        v-if="userTwitter"
+        v-if="twitter"
         class="social__link"
         :href="socialURL('twitter')"
         target="_blank"
@@ -22,7 +22,7 @@
         />
       </a>
       <a
-        v-if="userInstagram"
+        v-if="instagram"
         class="social__link"
         :href="socialURL('instagram')"
         target="_blank"
@@ -32,7 +32,7 @@
         />
       </a>
       <a
-        v-if="userLinkedin"
+        v-if="linkedin"
         class="social__link"
         :href="socialURL('linkedin')"
         target="_blank"
@@ -46,18 +46,30 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 
 export default {
   name: 'SocialPanel',
-  computed: {
-    ...mapGetters({
-      socials: 'data/getSocials',
-      userInstagram: 'user/getUserInstagram',
-      userTwitter: 'user/getUserTwitter',
-      userLinkedin: 'user/getUserLinkedin',
-      userFacebook: 'user/getUserFacebook',
-    }),
+  props: {
+    social: {
+      type: Object,
+      default: null,
+    },
+  },
+  data() {
+    return {
+      twitter: '',
+      facebook: '',
+      instagram: '',
+      linkedin: '',
+    };
+  },
+  watch: {
+    social() {
+      this.twitter = this.social.twitter;
+      this.facebook = this.social.facebook;
+      this.instagram = this.social.instagram;
+      this.linkedin = this.social.linkedin;
+    },
   },
   methods: {
     socialURL(socialNetwork) {
@@ -67,16 +79,16 @@ export default {
       } else {
         switch (socialNetwork) {
           case 'facebook':
-            socialPath = `https://${socialNetwork}.com/${this.userFacebook}` || '';
+            socialPath = `https://${socialNetwork}.com/${this.facebook}` || '';
             break;
           case 'twitter':
-            socialPath = `https://${socialNetwork}.com/${this.userTwitter}` || '';
+            socialPath = `https://${socialNetwork}.com/${this.twitter}` || '';
             break;
           case 'instagram':
-            socialPath = `https://${socialNetwork}.com/${this.userInstagram}` || '';
+            socialPath = `https://${socialNetwork}.com/${this.instagram}` || '';
             break;
           case 'linkedin':
-            socialPath = `https://${socialNetwork}.com/${this.userLinkedin}` || '';
+            socialPath = `https://${socialNetwork}.com/${this.linkedin}` || '';
             break;
           default:
             socialPath = '#';

@@ -16,12 +16,19 @@
                 loading="lazy"
               >
             </div>
-            <div class="rating" />
+            <div class="rating">
+              <div
+                v-for="(item, i) in userStars"
+                :key="i"
+                class="star"
+                :class="item ? `star${item}` : item"
+              />
+            </div>
             <nuxt-link
               class="reviews-amount"
               to="/profile"
             >
-              24 {{ $t('quests.reviews') }}
+              {{ `${userStatistics.reviewCount || ''} ${$t('quests.reviews')}` }}
             </nuxt-link>
           </div>
           <div class="col info-grid__col">
@@ -31,10 +38,12 @@
             <div
               class="description"
             >
-              {{ userAdditionalInfo.desc }}
+              {{ userAdditionalInfo.description }}
             </div>
             <div class="socials">
-              <socialPanel />
+              <socialPanel
+                :social="userSocialNetwork"
+              />
             </div>
             <div class="contacts__grid">
               <div class="contacts">
@@ -42,7 +51,10 @@
                   <span
                     class="contact"
                   >
-                    <span class="contact__container">
+                    <span
+                      v-if="userData.address"
+                      class="contact__container"
+                    >
                       <span
                         class="icon-location"
                       />
@@ -51,14 +63,20 @@
                         target="_blank"
                       ><span class="contact__link">{{ userData.address }}</span></a>
                     </span>
-                    <span class="contact__container">
+                    <span
+                      v-if="userData.phone"
+                      class="contact__container"
+                    >
                       <span class="icon-phone" />
                       <a
                         :href="'tel:' + userData.phone"
                         target="_blank"
                       ><span class="contact__link">{{ userData.phone }}</span></a>
                     </span>
-                    <span class="contact__container">
+                    <span
+                      v-if="userData.email"
+                      class="contact__container"
+                    >
                       <span class="icon-mail" />
                       <a
                         :href="'mailto:' + userData.email"
@@ -78,7 +96,6 @@
     <div class="information-section">
       <div class="main-container">
         <userStatistic />
-
         <div
           class="title"
         >
@@ -134,8 +151,13 @@ export default {
         email: 'employer@gmail.com',
       },
       userAvatar: '',
-      userDesc: '',
       userAdditionalInfo: {},
+      userSocialNetwork: {},
+      userWorkExperiences: {},
+      userSkills: {},
+      userEducations: {},
+      userStatistics: {},
+      userStars: [],
     };
   },
   computed: {
@@ -165,20 +187,25 @@ export default {
   methods: {
     async initUserData() {
       this.userAvatar = await this.userData?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
-      this.userAdditionalInfo = {
-        desc: await this.userData.additionalInfo.description || '',
-        CEO: await this.userData.additionalInfo.CEO || '',
-        address: await this.userData.additionalInfo.address || '',
-        company: await this.userData.additionalInfo.company || '',
-        educations: this.userData.additionalInfo.educations || '',
-        secondMobileNumber: this.userData.additionalInfo.secondMobileNumber || '',
-        skills: this.userData.additionalInfo.skills || '',
-        socialNetwork: this.userData.additionalInfo.socialNetwork || '',
-        website: this.userData.additionalInfo.website || '',
-        workExperiences: this.userData.additionalInfo.workExperiences || '',
-      };
-      this.userDesc = await this.userData.additionalInfo.description || '';
-      console.log(this.userAdditionalInfo);
+      this.userAdditionalInfo = this.userData.additionalInfo;
+      this.userSocialNetwork = this.userAdditionalInfo.socialNetwork;
+      this.userWorkExperiences = this.userAdditionalInfo.workExperiences;
+      this.userSkills = this.userAdditionalInfo.skills;
+      this.userEducations = this.userAdditionalInfo.educations;
+      this.userStatistics = this.userData.ratingStatistic;
+      let specialNumber = 0;
+      for (let i = 0; i < 5; i += 1) {
+        if (Math.round(this.userStatistics.averageMark) > i) {
+          this.userStars.push('__full');
+        } else {
+          specialNumber = this.userStatistics.averageMark - (i);
+          if ((specialNumber >= 0.3 && specialNumber <= 0.7) && !this.userStars.includes('__half')) {
+            this.userStars.push('__half');
+          } else {
+            this.userStars.push('');
+          }
+        }
+      }
     },
     isRating(type) {
       return (type === 3);
@@ -364,11 +391,24 @@ export default {
 
   .rating {
     height: 20px;
-    background-image: url("data:image/svg+xml,%3Csvg width='120' height='20' viewBox='0 0 120 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M10 0L12.9389 5.95492L19.5106 6.90983L14.7553 11.5451L15.8779 18.0902L10 15L4.12215 18.0902L5.24472 11.5451L0.489435 6.90983L7.06107 5.95492L10 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M35 0L37.9389 5.95492L44.5106 6.90983L39.7553 11.5451L40.8779 18.0902L35 15L29.1221 18.0902L30.2447 11.5451L25.4894 6.90983L32.0611 5.95492L35 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M60 0L62.9389 5.95492L69.5106 6.90983L64.7553 11.5451L65.8779 18.0902L60 15L54.1221 18.0902L55.2447 11.5451L50.4894 6.90983L57.0611 5.95492L60 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M85 0L87.9389 5.95492L94.5106 6.90983L89.7553 11.5451L90.8779 18.0902L85 15L79.1221 18.0902L80.2447 11.5451L75.4894 6.90983L82.0611 5.95492L85 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M110 0L112.939 5.95492L119.511 6.90983L114.755 11.5451L115.878 18.0902L110 15L104.122 18.0902L105.245 11.5451L100.489 6.90983L107.061 5.95492L110 0Z' fill='%23E9EDF2'/%3E\a           %3C/svg%3E                                                              \a           ");
-    background-repeat: no-repeat;
-    background-position: center;
+    display: flex;
+    //background-image: url("data:image/svg+xml,%3Csvg width='120' height='20' viewBox='0 0 120 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M10 0L12.9389 5.95492L19.5106 6.90983L14.7553 11.5451L15.8779 18.0902L10 15L4.12215 18.0902L5.24472 11.5451L0.489435 6.90983L7.06107 5.95492L10 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M35 0L37.9389 5.95492L44.5106 6.90983L39.7553 11.5451L40.8779 18.0902L35 15L29.1221 18.0902L30.2447 11.5451L25.4894 6.90983L32.0611 5.95492L35 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M60 0L62.9389 5.95492L69.5106 6.90983L64.7553 11.5451L65.8779 18.0902L60 15L54.1221 18.0902L55.2447 11.5451L50.4894 6.90983L57.0611 5.95492L60 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M85 0L87.9389 5.95492L94.5106 6.90983L89.7553 11.5451L90.8779 18.0902L85 15L79.1221 18.0902L80.2447 11.5451L75.4894 6.90983L82.0611 5.95492L85 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M110 0L112.939 5.95492L119.511 6.90983L114.755 11.5451L115.878 18.0902L110 15L104.122 18.0902L105.245 11.5451L100.489 6.90983L107.061 5.95492L110 0Z' fill='%23E9EDF2'/%3E\a           %3C/svg%3E                                                              \a           ");
+    //background-repeat: no-repeat;
+    //background-position: center;
     margin-top: 20px;
     width: 142px;
+    .star {
+      width: inherit;
+      background-image: url('~assets/img/ui/star-empty.svg');
+      background-repeat: no-repeat;
+      background-position: center;
+      &__half {
+        background-image: url('~assets/img/ui/star-half.svg');
+      }
+      &__full {
+        background-image: url('~assets/img/ui/star-small.svg');
+      }
+    }
   }
 
   .reviews-amount {

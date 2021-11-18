@@ -87,7 +87,9 @@
         </div>
       </div>
       <div class="socials">
-        <socialPanel />
+        <socialPanel
+          :social="{twitter: userTwitter, facebook: userFacebook, instagram: userInstagram, linkedin: userLinkedin}"
+        />
       </div>
       <div class="contacts__grid">
         <div class="contacts">
@@ -163,11 +165,16 @@ export default {
       userDesc: 'user/getUserDesc',
       userEducations: 'user/getUserEducations',
       userWorkExp: 'user/getUserWorkExp',
+      userTwitter: 'user/getUserTwitter',
+      userFacebook: 'user/getUserFacebook',
+      userInstagram: 'user/getUserInstagram',
+      userLinkedin: 'user/getUserLinkedin',
       quest: 'data/getQuest',
     }),
   },
   async mounted() {
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
+    console.log(this.localUserData.additionalInfo.socialNetwork);
   },
   methods: {
     shareModal() {
