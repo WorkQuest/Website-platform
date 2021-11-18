@@ -1,5 +1,7 @@
 <template>
-  <div class="user">
+  <div
+    class="user"
+  >
     <div class="user__top">
       <div class="user__container">
         <div class="user__head">
@@ -31,7 +33,11 @@
             <span class="user__date">
               {{ convertDate() }}
             </span>
-            <quest-dd />
+            <quest-dd
+              v-if="userRole === 'employer'
+                ? ![InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode)
+                : ![InfoModeWorker.WaitConfirm, InfoModeWorker.Done].includes(infoDataMode)"
+            />
           </div>
         </div>
         <div class="location__container">
@@ -42,11 +48,14 @@
             <span
               class="icon icon-location icon_fs-20"
             />
-            <span class="quest__address">{{ questData.locationPlaceName ? questData.locationPlaceName : '' }}</span>
+            <span
+              v-if="questData.locationPlaceName"
+              class="quest__address"
+            >{{ questData.locationPlaceName }}</span>
             <span
               class="user__distance"
             >
-              {{ showDistance() }} {{ $t('meta.fromYou') }}
+              {{ showDistance() }} {{ $t('distance.m') }} {{ $t('meta.fromYou') }}
             </span>
           </div>
         </div>
@@ -76,6 +85,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
+import { InfoModeEmployer, InfoModeWorker } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -114,7 +124,14 @@ export default {
       userInfo: 'quests/getQuestUser',
       userAvatar: 'quests/getQuestUserAvatar',
       userCompany: 'quests/getQuestUserCompany',
+      infoDataMode: 'quests/getInfoDataMode',
     }),
+    InfoModeEmployer() {
+      return InfoModeEmployer;
+    },
+    InfoModeWorker() {
+      return InfoModeWorker;
+    },
   },
   async mounted() {
     this.SetLoader(true);

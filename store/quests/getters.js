@@ -1,7 +1,9 @@
 export default {
+  getChatInfoInviteOnQuest: (state) => state.chatInfoInviteOnQuest,
   getQuestListForInvitation: (state) => state.questListForInvitation || {},
-  getWorkersList: (state) => state.workersList || {},
-  getCurrentWorker: (state) => state.currentWorker || {},
+  getWorkersList: (state) => state.workersList,
+  getCurrentWorker: (state) => state.currentWorker,
+  getCurrentWorkerAddInfo: (state) => state.currentWorker.additionalInfo || {},
   getInfoDataMode: (state) => state.infoDataMode || '',
   getUserInfoQuests: (state) => state.userInfoQuests || '',
   getAllQuests: (state) => state.allQuests || '',

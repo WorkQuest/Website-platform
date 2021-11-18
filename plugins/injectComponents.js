@@ -18,6 +18,9 @@ import BasePager from '~/components/ui/BasePager';
 import QuestDD from '~/components/ui/QuestDD';
 import BaseTextarea from '~/components/ui/BaseTextarea';
 import QuestIdDD from '~/components/ui/QuestIdDD';
+import InvitedWorkerList from '~/components/app/pages/quests_id/invitedWorkerList';
+import RespondedWorkerList from '~/components/app/pages/quests_id/respondedWorkerList';
+import StarRating from '~/components/app/pages/quests_id/starRating';
 
 Vue.component('ctm-modal', CtmModal);
 Vue.component('ctm-modal-box', CtmModalBox);
@@ -37,3 +40,6 @@ Vue.component('quest-dd', QuestDD);
 Vue.component('quest-id-dd', QuestIdDD);
 Vue.component('base-textarea', BaseTextarea);
 Vue.component('vue-phone-number-input', VuePhoneNumberInput);
+Vue.component('invited-worker-list', InvitedWorkerList);
+Vue.component('responded-worker-list', RespondedWorkerList);
+Vue.component('star-rating', StarRating);

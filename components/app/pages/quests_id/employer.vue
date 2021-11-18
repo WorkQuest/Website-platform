@@ -1,7 +1,7 @@
 <template>
-  <span v-if="['employer'].includes(userRole)">
+  <div v-if="userRole === 'employer'">
     <div
-      v-if="[1].includes(infoDataMode)"
+      v-if="infoDataMode === InfoModeEmployer.RaiseViews"
       class="btns__container"
     >
       <div
@@ -24,28 +24,22 @@
         </div>
       </div>
     </div>
-    <div v-if="[2].includes(infoDataMode)">
-      <div class="worker__title">{{ $t('quests.worker') }}</div>
+    <div v-if="infoDataMode === InfoModeEmployer.Active">
+      <div class="worker__title">
+        {{ $t('quests.worker') }}
+      </div>
       <div class="worker__container">
         <div>
           <img
-            v-if="assignWorker"
             class="worker__avatar"
-            :src="userAvatar"
-            alt=""
-          >
-          <img
-            v-if="!assignWorker"
-            class="worker__avatar"
-            :src="require('~/assets/img/app/avatar_empty.png')"
+            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
-          v-if="assignWorker"
           class="worker__name"
         >
-          {{ assignWorker.firstName }} {{ assignWorker.lastName }}
+          {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА Нет Бэка-->
@@ -70,143 +64,6 @@
           <!--          </div>-->
         </div>
       </div>
-    </div>
-    <div v-if="[3].includes(infoDataMode)">
-      <div class="worker worker__card">
-        <div class="worker__title worker__col_two">
-          <div>{{ $t('quests.invited') }}</div>
-          <div
-            class="btns__wrapper"
-          >
-            <div class="btn__wrapper">
-              <base-btn
-                :disabled="!selectedWorker[0]"
-                @click="startQuest()"
-              >
-                {{ $t('quests.startQuest') }}
-              </base-btn>
-            </div>
-          </div>
-        </div>
-        <!--      TODO: Вывести список Invited!-->
-        <div style="margin: 15px 0 0 15px; padding: 0 0 15px 0; color: #7C838DFF; font-size: 16px;">Workers not invited!</div>
-        <!--        <span v-if="filteredResponses.length">-->
-        <!--          <span-->
-        <!--            v-for="(response, i) in filteredResponses"-->
-        <!--            :key="i"-->
-        <!--          >-->
-        <!--            <div-->
-        <!--              v-if="response.worker.firstName && response.worker.lastName"-->
-        <!--              class="worker__container"-->
-        <!--            >-->
-        <!--              <div class="worker worker__col_two">-->
-        <!--                <div class="worker row">-->
-        <!--                  <img-->
-        <!--                    class="worker__avatar"-->
-        <!--                    :src="response.worker.avatar ? response.worker.avatar.url: require('~/assets/img/app/avatar_empty.png')"-->
-        <!--                    alt=""-->
-        <!--                  >-->
-        <!--                  <div-->
-        <!--                    class="worker__name"-->
-        <!--                  >-->
-        <!--                    {{ response.worker.firstName }} {{ response.worker.lastName }}-->
-        <!--                  </div>-->
-        <!--                </div>-->
-        <!--                <quest-id-dd-->
-        <!--                  :i="i"-->
-        <!--                  :response-id="response.id"-->
-        <!--                />-->
-        <!--              </div>-->
-        <!--              <div class="worker__message">-->
-        <!--                {{ response.message }}-->
-        <!--              </div>-->
-        <!--              <div>-->
-        <!--              &lt;!&ndash;                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка&ndash;&gt;-->
-        <!--              &lt;!&ndash;                    <div&ndash;&gt;-->
-        <!--              &lt;!&ndash;                      v-if="item.badge.code !== 0"&ndash;&gt;-->
-        <!--              &lt;!&ndash;                      class="card__level_higher"&ndash;&gt;-->
-        <!--              &lt;!&ndash;                      :class="[&ndash;&gt;-->
-        <!--              &lt;!&ndash;                        {'card__level_higher': item.badge.code === 1},&ndash;&gt;-->
-        <!--              &lt;!&ndash;                        {'card__level_reliable': item.badge.code === 2},&ndash;&gt;-->
-        <!--              &lt;!&ndash;                        {'card__level_checked': item.badge.code === 3}&ndash;&gt;-->
-        <!--              &lt;!&ndash;                      ]"&ndash;&gt;-->
-        <!--              &lt;!&ndash;                    >&ndash;&gt;-->
-        <!--              &lt;!&ndash;                      <span v-if="item.badge.code === 1">&ndash;&gt;-->
-        <!--              &lt;!&ndash;                        {{ $t('levels.higher') }}&ndash;&gt;-->
-        <!--              &lt;!&ndash;                      </span>&ndash;&gt;-->
-        <!--              &lt;!&ndash;                      <span v-if="item.badge.code === 2">&ndash;&gt;-->
-        <!--              &lt;!&ndash;                        {{ $t('levels.reliableEmp') }}&ndash;&gt;-->
-        <!--              &lt;!&ndash;                      </span>&ndash;&gt;-->
-        <!--              &lt;!&ndash;                      <span v-if="item.badge.code === 3">&ndash;&gt;-->
-        <!--              &lt;!&ndash;                        {{ $t('levels.checkedByTime') }}&ndash;&gt;-->
-        <!--              &lt;!&ndash;                      </span>&ndash;&gt;-->
-        <!--              &lt;!&ndash;                    </div>&ndash;&gt;-->
-        <!--              </div>-->
-        <!--            </div>-->
-        <!--          </span>-->
-        <!--        </span>-->
-      </div>
-      <div class="worker worker__card">
-        <div class="worker__title">{{ $t('response.title') }}</div>
-        <span v-if="filteredResponses.length">
-          <span
-            v-for="(response, i) in filteredResponses"
-            :key="i"
-          >
-            <div
-              v-if="response.worker.firstName && response.worker.lastName"
-              class="worker__container"
-            >
-              <div class="worker worker__col_two">
-                <div class="worker row">
-                  <img
-                    class="worker__avatar"
-                    :src="response.worker.avatar ? response.worker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
-                    alt=""
-                  >
-                  <div
-                    class="worker__name"
-                  >
-                    {{ response.worker.firstName }} {{ response.worker.lastName }}
-                  </div>
-                </div>
-                <quest-id-dd
-                  :i="i"
-                  :response-id="response.id"
-                />
-              </div>
-              <div class="worker__message">
-                {{ response.message }}
-              </div>
-              <div>
-              <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
-                <!--                    <div-->
-                <!--                      v-if="item.badge.code !== 0"-->
-                <!--                      class="card__level_higher"-->
-                <!--                      :class="[-->
-                <!--                        {'card__level_higher': item.badge.code === 1},-->
-                <!--                        {'card__level_reliable': item.badge.code === 2},-->
-                <!--                        {'card__level_checked': item.badge.code === 3}-->
-                <!--                      ]"-->
-                <!--                    >-->
-                <!--                      <span v-if="item.badge.code === 1">-->
-                <!--                        {{ $t('levels.higher') }}-->
-                <!--                      </span>-->
-                <!--                      <span v-if="item.badge.code === 2">-->
-                <!--                        {{ $t('levels.reliableEmp') }}-->
-                <!--                      </span>-->
-                <!--                      <span v-if="item.badge.code === 3">-->
-                <!--                        {{ $t('levels.checkedByTime') }}-->
-                <!--                      </span>-->
-                <!--                    </div>-->
-              </div>
-            </div>
-          </span>
-        </span>
-      </div>
-      <span v-if="!filteredResponses.length">
-        <div class="info__message">{{ $t('quests.employer.usersNotResponded') }}</div>
-      </span>
     </div>
     <!--                      TODO: НАСТРОИТЬ ВЫВОД ЕСЛИ ПОЛЬЗОВАТЕЛЬ ПРИГЛАШЕН КЕМ-ТО INVITED-->
     <!--              <div class="worker__title">{{ $t('quests.youInvited') }}</div>-->
@@ -244,25 +101,26 @@
     <!--                </div>-->
     <!--              </div>-->
     <!--    </div>-->
-    <div v-if="[4].includes(infoDataMode)">
-      <div class="worker__title">
+    <div v-if="infoDataMode === InfoModeEmployer.WaitWorker">
+      <div
+        class="worker__title"
+      >
         {{ $t('quests.worker') }}
       </div>
       <div
-        v-if="assignWorker"
-        class="worker__container"
+        class="worker__container_row"
       >
         <div>
           <img
             class="worker__avatar"
-            :src="assignWorker.avatar ? assignWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
           class="worker__name"
         >
-          {{ assignWorker.firstName }} {{ assignWorker.lastName }}
+          {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
@@ -277,7 +135,7 @@
       </div>
     </div>
     <div
-      v-if="[6].includes(infoDataMode)"
+      v-if="infoDataMode === InfoModeEmployer.WaitConfirm"
       class="btns__container"
     >
       <div>
@@ -286,22 +144,14 @@
         </div>
         <div class="worker__container_row">
           <img
-            v-if="assignWorker"
             class="worker__avatar"
-            :src="userAvatar"
-            alt=""
-          >
-          <img
-            v-if="!assignWorker"
-            class="worker__avatar"
-            :src="require('~/assets/img/app/avatar_empty.png')"
+            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
           <div
-            v-if="assignWorker"
             class="worker__name"
           >
-            {{ assignWorker.firstName }} {{ assignWorker.lastName }}
+            {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
           </div>
           <div>
             <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
@@ -341,30 +191,22 @@
         </div>
       </div>
     </div>
-    <div v-if="[7].includes(infoDataMode)">
+    <div v-if="[InfoModeEmployer.Dispute, InfoModeEmployer.Closed].includes(infoDataMode)">
       <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
-      <div class="worker__container">
+      <div class="worker__container_row">
         <div>
           <img
-            v-if="assignWorker"
             class="worker__avatar"
-            :src="userAvatar"
-            alt=""
-          >
-          <img
-            v-if="!assignWorker"
-            class="worker__avatar"
-            :src="require('~/assets/img/app/avatar_empty.png')"
+            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
-          v-if="assignWorker"
           class="worker__name"
         >
-          {{ assignWorker.firstName }} {{ assignWorker.lastName }}
+          {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
@@ -379,7 +221,7 @@
       </div>
       <div class="btns__container">
         <div
-          v-if="[7].includes(infoDataMode)"
+          v-if="infoDataMode === InfoModeEmployer.Dispute"
           class="btns__wrapper"
         >
           <div class="btn__wrapper">
@@ -390,30 +232,22 @@
         </div>
       </div>
     </div>
-    <div v-if="[9].includes(infoDataMode)">
+    <div v-if="infoDataMode === InfoModeEmployer.Done">
       <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
       <div class="worker__container_row">
         <div>
           <img
-            v-if="assignWorker"
             class="worker__avatar"
-            :src="userAvatar"
-            alt=""
-          >
-          <img
-            v-if="!assignWorker"
-            class="worker__avatar"
-            :src="require('~/assets/img/app/avatar_empty.png')"
+            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
-          v-if="assignWorker"
           class="worker__name"
         >
-          {{ assignWorker.firstName }} {{ assignWorker.lastName }}
+          {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
@@ -427,10 +261,12 @@
         </div>
       </div>
     </div>
-    <div class="btns__container">
+    <div
+      v-if="![InfoModeEmployer.WaitWorker, InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode)"
+      class="btns__container"
+    >
       <div class="priority">
         <div
-          v-if="![4,8].includes(infoDataMode)"
           class="price__container"
         >
           <span class="price__value">
@@ -441,7 +277,6 @@
           class="priority__container"
         >
           <div
-            v-if="![4,8].includes(infoDataMode)"
             class="priority__title"
             :class="getPriorityClass(questData.priority)"
           >
@@ -450,12 +285,13 @@
         </div>
       </div>
     </div>
-  </span>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { InfoModeEmployer } from '~/utils/enums';
 
 export default {
   name: 'QuestIdEmployer',
@@ -475,7 +311,6 @@ export default {
   },
   data() {
     return {
-      selectedWorker: [],
       filteredResponses: [],
       badge: {
         code: 1,
@@ -484,12 +319,16 @@ export default {
   },
   computed: {
     ...mapGetters({
+      currentWorker: 'quests/getCurrentWorker',
       questData: 'quests/getQuest',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
       responsesToQuest: 'quests/getResponsesToQuest',
       infoDataMode: 'quests/getInfoDataMode',
     }),
+    InfoModeEmployer() {
+      return InfoModeEmployer;
+    },
     cardBadgeLevel() {
       return [
         {
@@ -541,41 +380,29 @@ export default {
       return priority[index] || '';
     },
     async closeQuest() {
+      const modalMode = 1;
       this.SetLoader(true);
-      if (this.questData.status !== 2) {
+      if (this.questData.status !== InfoModeEmployer.Active) {
         await this.$store.dispatch('quests/closeQuest', this.questData.id);
+        this.showQuestModal(modalMode);
       }
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('quests.questInfo'),
-        subtitle: this.$t('quests.questClosed!'),
-      });
       await this.$router.push('/my');
       this.SetLoader(false);
     },
     async acceptCompletedWorkOnQuest() {
+      const modalMode = 2;
       this.SetLoader(true);
       await this.$store.dispatch('quests/acceptCompletedWorkOnQuest', this.questData.id);
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('quests.questInfo'),
-        subtitle: this.$t('quests.completedWorkAccepted'),
-      });
-      await this.$store.dispatch('quests/setInfoDataMode', 9);
+      this.showQuestModal(modalMode);
+      await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Done);
       this.SetLoader(false);
     },
     async rejectCompletedWorkOnQuest() {
+      const modalMode = 3;
       this.SetLoader(true);
       await this.$store.dispatch('quests/rejectCompletedWorkOnQuest', this.questData.id);
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('quests.questInfo'),
-        subtitle: this.$t('quests.completedWorkRejected'),
-      });
-      await this.$store.dispatch('quests/setInfoDataMode', 9);
+      this.showQuestModal(modalMode);
+      await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Dispute);
       this.SetLoader(false);
     },
     async initData() {
@@ -597,15 +424,21 @@ export default {
       this.$router.push('/edit-quest');
       this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
     },
-    async startQuest() {
-      this.SetLoader(true);
-      const data = {
-        assignedWorkerId: this.selectedWorker[0].id,
+    showQuestModal(modalMode) {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: this.$t('quests.questInfo'),
+        subtitle: this.modalMode(modalMode),
+      });
+    },
+    modalMode(modalMode) {
+      const subtitles = {
+        1: this.$t('quests.questClosed!'),
+        2: this.$t('quests.completedWorkAccepted'),
+        3: this.$t('quests.completedWorkRejected'),
       };
-      const questId = this.questData.id;
-      await this.$store.dispatch('quests/startQuest', { questId, data });
-      await this.$store.dispatch('quests/setInfoDataMode', 4);
-      this.SetLoader(false);
+      return subtitles[modalMode];
     },
   },
 };
@@ -731,14 +564,14 @@ export default {
     flex-direction: row;
     justify-items: flex-start;
     align-items: center;
-    margin: 20px 15px;
+    margin: 20px 0;
   }
   &__container {
     display: flex;
     flex-direction: column;
     justify-items: flex-start;
     align-items: flex-start;
-    margin: 20px 15px;
+    margin: 20px 0;
   }
   &__avatar {
     border-radius: 50%;
@@ -752,8 +585,7 @@ export default {
   &__title {
     @extend .worker;
     font-size: 18px;
-    margin: 0 0 0 15px;
-    padding: 15px 15px 0 0;
+    margin: 20px 0 20px 0;
   }
 }
 .card {

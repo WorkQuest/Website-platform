@@ -52,11 +52,13 @@ jobs:
           echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
           echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
 
+          echo PENSION_FUND=${{ secrets.PENSION_FUND }} >> .env
+
       - name: Run generate static task
         run: npm run generate
 
       - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@v2.1.4
+        uses: easingthemes/ssh-deploy@v2.2.11
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
           ARGS: "-rltgoDzvO --delete"
@@ -112,11 +114,13 @@ jobs:
           echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
           echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
 
+          echo PENSION_FUND=${{ secrets.PENSION_FUND }} >> .env
+
       - name: Run generate static task
         run: npm run generate
 
       - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@v2.1.4
+        uses: easingthemes/ssh-deploy@v2.2.11
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
           ARGS: "-rltgoDzvO --delete"
@@ -196,7 +200,7 @@ jobs:
     #      WQT_TOKEN: ${{ secrets.WQT_TOKEN }}
 
       - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@v2.1.4
+        uses: easingthemes/ssh-deploy@v2.2.11
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
           ARGS: "-rltgoDzvO --delete"

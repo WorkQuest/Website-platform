@@ -1,4 +1,13 @@
 export default {
+  async getWorkerData({ commit }, userId) {
+    try {
+      const response = await this.$axios.$get(`/v1/profile/${userId}`);
+      commit('setCurrentWorker', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
+  },
   async questListForInvitation({ commit }, userId) {
     try {
       const response = await this.$axios.$get(`/v1/employer/${userId}/quests`);
@@ -17,9 +26,9 @@ export default {
       return console.log(e);
     }
   },
-  async setCurrentWorker({ commit }, data) {
-    commit('setCurrentWorker', data);
-    return data;
+  async setCurrentWorker({ commit }, worker) {
+    commit('setCurrentWorker', worker);
+    return worker;
   },
   async setInfoDataMode({ commit }, mode) {
     commit('setInfoDataMode', mode);
@@ -106,9 +115,9 @@ export default {
       return console.log(e);
     }
   },
-  async startQuest({ commit }, { questId, data }) {
+  async startQuest({ commit }, { questId, payload }) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/start`, data);
+      const response = await this.$axios.$post(`/v1/quest/${questId}/start`, payload);
       return response.result;
     } catch (e) {
       return console.log(e);
@@ -174,6 +183,8 @@ export default {
   async inviteOnQuest({ commit }, { questId, payload }) {
     try {
       const response = await this.$axios.$post(`/v1/quest/${questId}/invite`, payload);
+      const { chat } = response.result;
+      commit('setChatInviteOnQuest', chat);
       return response.result;
     } catch (e) {
       return console.log(e);

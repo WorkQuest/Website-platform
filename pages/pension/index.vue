@@ -124,6 +124,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { Chains } from '~/utils/enums';
 
 export default {
   data() {
@@ -145,24 +146,8 @@ export default {
           url: '',
         },
       ],
-      cards: [
-        {
-          title: this.$tc('pension.percents', '5'),
-          subtitle: this.$t('pension.annualPercent'),
-        },
-        {
-          title: this.$t('pension.optionalFirstDeposit'),
-          subtitle: this.$t('pension.optional'),
-        },
-        {
-          title: this.$tc('pension.years', 3),
-          subtitle: this.$t('pension.term'),
-        },
-        {
-          title: this.$t('pension.configurablePercentage'),
-          subtitle: this.$t('pension.depositsFromQuest'),
-        },
-      ],
+      lockTime: '',
+      percent: '',
       FAQs: [
         {
           name: this.$t('pension.faq1.question'),
@@ -220,16 +205,69 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      isConnected: 'web3/isConnected',
     }),
+    cards() {
+      const percent = this.percent || '';
+      const time = this.lockTime || '';
+      return [
+        {
+          title: this.$tc('pension.percents', percent),
+          subtitle: this.$t('pension.annualPercent'),
+        },
+        {
+          title: this.$t('pension.optionalFirstDeposit'),
+          subtitle: this.$t('pension.optional'),
+        },
+        {
+          title: this.$tc('pension.years', time),
+          subtitle: this.$t('pension.term'),
+        },
+        {
+          title: this.$t('pension.configurablePercentage'),
+          subtitle: this.$t('pension.depositsFromQuest'),
+        },
+      ];
+    },
+  },
+  watch: {
+    async isConnected(newValue) {
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
+      if (newValue && rightChain) {
+        this.SetLoader(true);
+        await this.checkWalletExists();
+        const { lockTime, defaultFee } = await this.$store.dispatch('web3/getPensionDefaultData');
+        this.lockTime = lockTime;
+        this.percent = defaultFee;
+        this.SetLoader(false);
+      } else {
+        this.lockTime = '';
+        this.percent = '';
+      }
+    },
   },
   async mounted() {
     this.SetLoader(true);
+    await this.$store.dispatch('web3/checkMetaMaskStatus', Chains.ETHEREUM);
+    if (this.isConnected) {
+      await this.checkWalletExists();
+      const { lockTime, defaultFee } = await this.$store.dispatch('web3/getPensionDefaultData');
+      this.lockTime = lockTime;
+      this.percent = defaultFee;
+    }
     this.SetLoader(false);
   },
   methods: {
+    async checkWalletExists() {
+      const wallet = await this.$store.dispatch('web3/getPensionWallet');
+      if (wallet.createdAt !== '0') {
+        await this.$router.push('/pension/my');
+      }
+    },
     openApplyForAPensionModal() {
       this.ShowModal({
         key: modals.applyForAPension,
+        defaultFee: this.percent,
       });
     },
     handleClickFAQ(FAQ) {
