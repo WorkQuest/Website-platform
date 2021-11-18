@@ -166,6 +166,14 @@ export default {
     },
   },
   methods: {
+    hideDd() {
+      this.isOpenDD = true;
+    },
+    showFilterFull() {
+      this.ShowModal({
+        key: modals.questFilterFull,
+      });
+    },
     getPath(specIdx, skillIdx) {
       return `${this.searchFilters[specIdx].index}.${this.searchFilters[specIdx].items[skillIdx].index}`;
     },
@@ -187,9 +195,6 @@ export default {
         [path]: !this.selected[path],
       };
     },
-    hideDd() {
-      this.isOpenDD = true;
-    },
     toggleDd() {
       this.isOpenDD = !this.isOpenDD;
     },
@@ -198,11 +203,6 @@ export default {
         ...this.visible,
         [index]: !this.visible[index],
       };
-    },
-    showFilterFull() {
-      this.ShowModal({
-        key: modals.questFilterFull,
-      });
     },
   },
 };
