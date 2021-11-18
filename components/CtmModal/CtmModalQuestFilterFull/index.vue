@@ -85,7 +85,7 @@
         >
           {{ $t('meta.cleanUp') }}
         </base-btn>
-        <base-btn @click="hide">
+        <base-btn @click="handleSubmit">
           {{ $t('meta.apply') }}
         </base-btn>
       </div>
@@ -109,6 +109,8 @@ export default {
   computed: {
     ...mapGetters({
       filtersList: 'quests/getFilters',
+      options: 'modals/getOptions',
+      specializationsFilters: 'quests/getSpecializationsFilters',
     }),
     searchFilters() {
       const f = {};
@@ -132,9 +134,24 @@ export default {
       return f;
     },
   },
+  mounted() {
+    this.selected = this.options?.selected || {};
+    this.selectedAll = this.options?.selectedAll || [];
+    this.visible = this.options?.visible || {};
+  },
   methods: {
     hide() {
       this.CloseModal();
+    },
+    handleSubmit() {
+      const data = {
+        query: Object.keys(this.selected),
+        selected: this.selected,
+        selectedAll: this.selectedAll,
+        visible: this.visible,
+      };
+      this.$store.dispatch('quests/setSpecializationsFilters', data);
+      this.hide();
     },
     getPath(specIdx, skillIdx) {
       return `${this.searchFilters[specIdx].index}.${this.searchFilters[specIdx].items[skillIdx].index}`;

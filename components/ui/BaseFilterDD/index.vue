@@ -111,7 +111,7 @@
             </div>
           </div>
           <div class="dd__btn">
-            <base-btn @click="hideDd()">
+            <base-btn @click="handleSubmit">
               {{ $t('meta.apply') }}
             </base-btn>
           </div>
@@ -142,6 +142,7 @@ export default {
   computed: {
     ...mapGetters({
       filtersList: 'quests/getFilters',
+      specializationsFilters: 'quests/getSpecializationsFilters',
     }),
     searchFilters() {
       const f = {};
@@ -165,13 +166,34 @@ export default {
       return f;
     },
   },
+  watch: {
+    isOpenDD() {
+      const { selected, selectedAll, visible } = this.specializationsFilters;
+      this.selected = selected || {};
+      this.selectedAll = selectedAll || [];
+      this.visible = visible || {};
+    },
+  },
   methods: {
     hideDd() {
       this.isOpenDD = true;
     },
+    handleSubmit() {
+      const data = {
+        query: Object.keys(this.selected),
+        selected: this.selected,
+        selectedAll: this.selectedAll,
+        visible: this.visible,
+      };
+      this.$store.dispatch('quests/setSpecializationsFilters', data);
+      this.hideDd();
+    },
     showFilterFull() {
       this.ShowModal({
         key: modals.questFilterFull,
+        selected: this.selected,
+        selectedAll: this.selectedAll,
+        visible: this.visible,
       });
     },
     getPath(specIdx, skillIdx) {

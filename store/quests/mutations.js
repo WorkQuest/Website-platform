@@ -53,4 +53,7 @@ export default {
   setFilters(state, data) {
     state.filters = data;
   },
+  setSpecializationsFilters(state, data) {
+    state.specializationsFilters = data;
+  },
 };

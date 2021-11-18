@@ -221,6 +221,7 @@ export default {
       checkWelcomeModal: 'modals/getIsShowWelcome',
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
+      specializationsFilters: 'quests/getSpecializationsFilters', // TODO: переработать способ хранения всех фильторв, брать от сюда .query
     }),
     panelDD() {
       return [

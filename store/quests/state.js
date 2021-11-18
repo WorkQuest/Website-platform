@@ -15,4 +15,5 @@ export default () => ({
   mapBounds: {},
   mapCenter: {},
   filters: {},
+  specializationsFilters: [],
 });

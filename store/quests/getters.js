@@ -20,4 +20,5 @@ export default {
   getResponsesData: (state) => state.responses || '',
   getResponsesMy: (state) => state.responsesMy || '',
   getFilters: (state) => state.filters || {},
+  getSpecializationsFilters: (state) => state.specializationsFilters || [],
 };
