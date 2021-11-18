@@ -17,14 +17,18 @@
               :label="$t('quests.ui.showMap')"
             />
           </div>
-          <div class="search__inputs">
+          <div
+            class="search__inputs"
+            @click="toggleSearchDD"
+          >
             <base-field
               v-model="search"
+              v-click-outside="hideSearchDD"
               class="search__input"
               is-search
               :placeholder="$t('quests.ui.search')"
               mode="icon"
-              :selector="true"
+              :selector="searchDDStatus"
               @selector="getAddressInfo(search)"
             >
               <template v-slot:left />
@@ -32,8 +36,11 @@
                 <div
                   v-if="addresses.length"
                   class="selector"
+                  :class="{'hide': searchDDStatus === false}"
                 >
-                  <div class="selector__items">
+                  <div
+                    class="selector__items"
+                  >
                     <div
                       v-for="(item, i) in addresses"
                       :key="i"
@@ -179,6 +186,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import ClickOutside from 'vue-click-outside';
 import { GeoCode } from 'geo-coder';
 import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
@@ -187,6 +195,9 @@ import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Quests',
+  directives: {
+    ClickOutside,
+  },
   components: {
     GmapSearchBlock,
     quests,
@@ -196,6 +207,7 @@ export default {
     return {
       isShowMap: true,
       search: '',
+      searchDDStatus: true,
       selectedQuest: '',
       selectedUrgent: '',
       selectedTypeOfJob: '',
@@ -339,6 +351,14 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    toggleSearchDD() {
+      this.searchDDStatus = !this.searchDDStatus;
+      return this.searchDDStatus;
+    },
+    hideSearchDD() {
+      this.searchDDStatus = false;
+      return this.searchDDStatus;
+    },
     showPriceSearch() {
       this.ShowModal({
         key: modals.priceSearch,
@@ -451,6 +471,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+
+.hide {
+  display: none;
+}
 
 .block {
   &__container {

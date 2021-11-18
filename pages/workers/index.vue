@@ -16,14 +16,18 @@
               :label="$t('quests.ui.showMap')"
             />
           </div>
-          <div class="search__inputs">
+          <div
+            class="search__inputs"
+            @click="toggleSearchDD"
+          >
             <base-field
               v-model="search"
+              v-click-outside="hideSearchDD"
               class="search__input"
               is-search
               :placeholder="$t('quests.ui.search')"
               mode="icon"
-              :selector="true"
+              :selector="searchDDStatus"
               @selector="getAddressInfo(search)"
             >
               <template v-slot:left />
@@ -31,6 +35,7 @@
                 <div
                   v-if="addresses.length"
                   class="selector"
+                  :class="{'hide': searchDDStatus === false}"
                 >
                   <div class="selector__items">
                     <div
@@ -228,16 +233,21 @@
 <script>
 import { mapGetters } from 'vuex';
 import { GeoCode } from 'geo-coder';
+import ClickOutside from 'vue-click-outside';
 import GmapSearchBlock from '~/components/app/GmapSearch';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'Workers',
+  directives: {
+    ClickOutside,
+  },
   components: {
     GmapSearchBlock,
   },
   data() {
     return {
+      searchDDStatus: true,
       isShowMap: true,
       currentLocation: {},
       circleOptions: {},
@@ -368,6 +378,14 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    toggleSearchDD() {
+      this.searchDDStatus = !this.searchDDStatus;
+      return this.searchDDStatus;
+    },
+    hideSearchDD() {
+      this.searchDDStatus = false;
+      return this.searchDDStatus;
+    },
     showPriceSearch() {
       this.ShowModal({
         key: modals.priceSearch,
@@ -442,6 +460,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hide {
+  display: none;
+}
 .selector {
   @include box;
   width: 100%;
