@@ -135,7 +135,7 @@ export default {
       setTimeout(this.getMapBounds, 100);
       this.events.forEach((event) => {
         this.map.addListener(event, (e) => {
-          if (event === 'dragend' || event === 'tilesloaded' || event === 'zoom_changed') {
+          if (['dragend', 'tilesloaded', 'zoom_changed'].includes(event)) {
             this.getMapBounds();
           }
           this.$emit(event, {
