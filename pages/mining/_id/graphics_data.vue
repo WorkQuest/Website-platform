@@ -16,14 +16,13 @@ export default {
   },
   props: {
     specialChartData: {
-      type: [Array, Object],
+      type: Array,
       default: () => [],
     },
   },
 
   data() {
     return {
-      miningPoolId: localStorage.getItem('miningPoolId'),
       chartOptions: {
         responsive: true,
         maintainAspectRatio: false,

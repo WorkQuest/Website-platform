@@ -140,9 +140,6 @@ export default {
       this.recipientAddress = this.account.address;
       this.userAddress = this.account.address;
     },
-    async setSwapAddress() {
-      await this.$store.dispatch('defi/setSwapAddress');
-    },
     async crosschainFlow() {
       if (this.options.crosschainId === 0) {
         this.fromToken = this.addresses[0].title;
