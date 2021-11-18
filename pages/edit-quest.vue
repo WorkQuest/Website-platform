@@ -4,9 +4,7 @@
     :class="{'main-white': step === 1}"
   >
     <div class="main__body page">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-      >
+      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
         <div
           v-if="step === 1"
           class="page"
@@ -70,13 +68,15 @@
               <div class="block__skill-spec">
                 <div class="block__specialization specialization">
                   <base-dd
-                    v-model="specIndex[key]"
+                    v-model="displaySpecIndex[key]"
                     class="specialization__dd"
                     type="gray"
+                    :items="specializationsNames"
                     :placeholder="$t('settings.selectSpec')"
-                    :items="specializations.titles"
                     :mode="'small'"
+                    rules="required"
                     :label="$t('settings.specialization')"
+                    :hide-selected="hideSelectedSpecs"
                     @input="switchSkill($event, key)"
                   />
                   <div class="specialization__skills skills">
@@ -86,10 +86,12 @@
                       :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
                       :disabled="specIndex[key] < 0"
                       :placeholder="$t('settings.selectSkills')"
-                      :items="specializations.skills[specIndex[key]]"
+                      :items="skillsNames[displaySpecIndex[key]]"
                       :mode="'small'"
+                      rules="required"
                       :label="$t('settings.skillsInput')"
-                      @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
+                      :hide-selected="hideSelectedSkills[key]"
+                      @input="addSkillToBadge($event, key)"
                     />
                     <div
                       v-if="selectedSkills[key].length === 5"
@@ -329,7 +331,7 @@ import modals from '~/store/modals/modals';
 const { GeoCode } = require('geo-coder');
 
 export default {
-  name: 'CreateQuest',
+  name: 'EditQuest',
   components: {
     Dropzone,
   },
@@ -340,22 +342,13 @@ export default {
       },
       period: 1,
       specCount: 0,
-      specIndex: {
-        1: -1,
-        2: -1,
-        3: -1,
-      },
-      skillIndex: {
-        1: -1,
-        2: -1,
-        3: -1,
-      },
-      selectedSkills: {
-        1: [],
-        2: [],
-        3: [],
-      },
+      specIndex: { 1: -1, 2: -1, 3: -1 }, // Выбранные специализации по id в filters
+      displaySpecIndex: { 1: -1, 2: -1, 3: -1 }, // Выбранные для отображения названия специализации
+      hideSelectedSkills: { 1: [], 2: [], 3: [] },
+      skillIndex: { 1: -1, 2: -1, 3: -1 },
+      selectedSkills: { 1: [], 2: [], 3: [] },
       priorityIndex: 1,
+      employmentIndex: 0,
       categoryIndex: 0,
       runtimeIndex: 0,
       periodIndex: 0,
@@ -391,6 +384,7 @@ export default {
       questData: 'quests/getQuest',
       userData: 'user/getUserData',
       step: 'quests/getCurrentStepEditQuest',
+      filters: 'quests/getFilters',
     }),
     days() {
       return [
@@ -492,20 +486,6 @@ export default {
         },
       ];
     },
-    specializations() {
-      const specializations = Object.keys(this.$t('settings.specializations')).length;
-      const specs = {
-        titles: [],
-        skills: [],
-        index: [],
-      };
-      for (let i = 1; i < specializations; i += 1) {
-        specs.skills.push(this.$t(`settings.specializations.${i}.sub`));
-        specs.titles.push(this.$t(`settings.specializations.${i}.title`));
-        specs.index.push(i);
-      }
-      return specs;
-    },
     runtime() {
       return [
         this.$t('quests.runtime.urgent'),
@@ -527,23 +507,94 @@ export default {
         this.$t('quests.distantWork.bothVariant'),
       ];
     },
+    specializationsNames() {
+      const specs = [];
+      const keys = Object.keys(this.filters);
+      for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i];
+        specs.push(this.$t(`filters.items.${this.filters[key].id}.title`));
+      }
+      return specs;
+    },
+    specsIndexes() { // id спеки из filters
+      const specsIndexes = [];
+      const keys = Object.keys(this.filters);
+      for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i];
+        specsIndexes.push(this.filters[key].id);
+      }
+      return specsIndexes;
+    },
+    skillsNames() {
+      const skillsData = {};
+      const keys = Object.keys(this.filters);
+      for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i];
+        const skillsBySpec = this.filters[key].skills;
+        const skillsIndexes = Object.values(skillsBySpec);
+        const skillsNames = [];
+        for (let j = 0; j < skillsIndexes.length; j += 1) {
+          const name = this.$t(`filters.items.${this.filters[key].id}.sub.${skillsIndexes[j]}`);
+          skillsNames.push(name);
+        }
+        skillsData[i] = skillsNames;
+      }
+      return skillsData;
+    },
+    skillsIndexes() {
+      const skillsIndexesData = {};
+      const keys = Object.keys(this.filters);
+      for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i];
+        const skillsBySpec = this.filters[key].skills;
+        skillsIndexesData[i] = Object.values((skillsBySpec)); // skills indexes from filters
+      }
+      return skillsIndexesData;
+    },
+    hideSelectedSpecs() {
+      return Object.values(this.displaySpecIndex);
+    },
   },
   async mounted() {
     this.SetLoader(true);
     await this.editQuestFill();
-    console.log(this.$refs.el);
     this.SetLoader(false);
   },
   methods: {
     async editQuestFill() {
-      console.log(this.questData);
       this.runtimeValue = 1;
-      this.questTitle = await this.questData.title;
-      this.address = await this.questData.locationPlaceName;
-      this.price = await this.questData.price;
-      this.textarea = await this.questData.description;
-      this.coordinates.lng = await this.questData.location.longitude;
-      this.coordinates.lat = await this.questData.location.latitude;
+      this.employmentIndex = this.parseEmployment(this.questData.employment);
+      this.questTitle = this.questData.title;
+      this.address = this.questData.locationPlaceName;
+      this.price = this.questData.price;
+      this.textarea = this.questData.description;
+      this.coordinates.lng = this.questData.location.longitude;
+      this.coordinates.lat = this.questData.location.latitude;
+
+      // filters
+      const specKeys = {};
+      let key = 1;
+      // eslint-disable-next-line no-restricted-syntax
+      for (const item of this.questData.questSpecializations) {
+        const [_spec, _skill] = item.path.split('.');
+        const spec = parseInt(_spec, 10);
+        const skill = parseInt(_skill, 10);
+        if (!Object.keys(specKeys).includes(_spec)) {
+          specKeys[spec] = key;
+          this.displaySpecIndex[key] = this.specsIndexes.indexOf(spec);
+          this.selectedSkills[key] = [];
+          this.specIndex[specKeys[spec]] = spec;
+          key += 1;
+        }
+        const displaySkillIndex = this.skillsIndexes[this.displaySpecIndex[specKeys[spec]]].indexOf(skill);
+        if (!this.hideSelectedSkills[specKeys[spec]]) this.hideSelectedSkills[specKeys[spec]] = [displaySkillIndex];
+        else this.hideSelectedSkills[specKeys[spec]].push(displaySkillIndex);
+        this.selectedSkills[specKeys[spec]].push({
+          index: skill,
+          name: this.skillsNames[this.displaySpecIndex[specKeys[spec]]][displaySkillIndex],
+        });
+      }
+      this.specCount = key - 1;
     },
     cardStatus(item) {
       let style;
@@ -601,24 +652,40 @@ export default {
     goBack() {
       this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
     },
-    addSkillToBadge(event, object, index, key) {
-      if (!this.selectedSkills[key].includes(object[index]) && this.selectedSkills[key].length <= 4) {
-        this.selectedSkills[key].push({
-          name: object[index],
-          index,
-        });
-      }
+    addSkillToBadge(event, key) {
+      const index = this.skillsIndexes[this.displaySpecIndex[key]][event];
+      if (this.selectedSkills[key].length > 4
+        || this.selectedSkills[key].filter((obj) => obj.index === index).length) return;
+      this.selectedSkills[key].push({
+        index,
+        name: this.skillsNames[this.displaySpecIndex[key]][event],
+      });
+      this.hideSelectedSkills[key].push(event);
     },
-    removeSkillToBadge(skillName, key) {
-      const numberInArray = this.selectedSkills[key].indexOf(skillName);
+    removeSkillToBadge(skill, key) {
+      let hideIndex = null;
+      for (let i = 0; i < this.skillsIndexes[key].length; i += 1) {
+        if (this.skillsIndexes[this.displaySpecIndex[key]][i] === skill.index) {
+          hideIndex = i;
+          break;
+        }
+      }
+      const numberInHide = this.hideSelectedSkills[key].indexOf(hideIndex);
+      if (numberInHide > -1) {
+        this.hideSelectedSkills[key].splice(numberInHide, 1);
+      }
+
+      const numberInArray = this.selectedSkills[key].indexOf(skill);
       this.selectedSkills[key].splice(numberInArray, 1);
       if (!this.selectedSkills[key].length) {
         this.skillIndex[key] = -1;
       }
     },
     switchSkill(event, key) {
+      this.specIndex[key] = this.specsIndexes[event];
       this.skillIndex[key] = -1;
       this.selectedSkills[key] = [];
+      this.hideSelectedSkills[key] = [];
     },
     addSpecialization() {
       if (this.specCount <= 2) {
@@ -628,12 +695,29 @@ export default {
     removeSpecialization(key) {
       this.selectedSkills[key] = [];
       this.specIndex[key] = -1;
+      this.displaySpecIndex[key] = -1;
       this.skillIndex[key] = -1;
       this.specCount -= 1;
     },
     selectAddress(address) {
       this.addresses = [];
       this.address = address.formatted;
+    },
+    convertEmployment(employmentId) {
+      const employments = [
+        'fullTime',
+        'partTime',
+        'fixedTerm',
+      ];
+      return employments[employmentId];
+    },
+    parseEmployment(employment) {
+      const employments = {
+        fullTime: 0,
+        partTime: 1,
+        fixedTerm: 2,
+      };
+      return employments[employment];
     },
     async getAddressInfo(address) {
       let response = [];
@@ -652,6 +736,7 @@ export default {
       const payload = {
         workplace: 'distant',
         priority: this.priorityIndex,
+        employment: this.convertEmployment(this.employmentIndex),
         category: 'Default',
         title: this.questTitle,
         description: this.textarea,
@@ -703,15 +788,15 @@ export default {
     },
     async toEditQuest() {
       const specAndSkills = this.questData?.skillFilters || [];
+      let key = 1;
       // eslint-disable-next-line guard-for-in,no-restricted-syntax
       for (const spec in this.specIndex) {
         if (this.specIndex[spec] !== -1) {
-          const specIndex = this.specializations.index[this.specIndex[spec]];
-          // eslint-disable-next-line no-restricted-syntax
-          for (const skill of this.selectedSkills[spec]) {
-            specAndSkills.push(`${specIndex}.${specIndex}0${skill.index}`);
+          for (let i = 0; i < this.selectedSkills[key].length; i += 1) {
+            specAndSkills.push(`${this.specIndex[spec]}.${this.selectedSkills[key][i].index}`);
           }
         }
+        key += 1;
       }
       await this.editQuest(specAndSkills);
     },

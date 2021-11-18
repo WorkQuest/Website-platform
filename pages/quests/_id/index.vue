@@ -1,9 +1,7 @@
 <template>
   <div>
     <info />
-    <div
-      class="main main-white"
-    >
+    <div class="main main-white">
       <div class="main__body">
         <questPanel
           :avatar-url="userAvatar"

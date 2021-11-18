@@ -712,7 +712,6 @@ export default {
       await this.createQuest(specAndSkills);
     },
     async createQuest(specAndSkills) {
-      console.log('specAndSkills', specAndSkills);
       const payload = {
         workplace: this.convertWorkplace(this.workplaceIndex),
         priority: this.runtimeIndex,

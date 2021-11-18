@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="user"
-  >
+  <div class="user">
     <div class="user__top">
       <div class="user__container">
         <div class="user__head">
@@ -17,9 +15,7 @@
                 loading="lazy"
               >
             </span>
-            <span
-              class="user__username"
-            >
+            <span class="user__username">
               {{ `${userInfo.firstName} ${userInfo.lastName}` }}
             </span>
             <span
@@ -45,16 +41,12 @@
             v-if="questData"
             class="quest__location"
           >
-            <span
-              class="icon icon-location icon_fs-20"
-            />
+            <span class="icon icon-location icon_fs-20" />
             <span
               v-if="questData.locationPlaceName"
               class="quest__address"
             >{{ questData.locationPlaceName }}</span>
-            <span
-              class="user__distance"
-            >
+            <span class="user__distance">
               {{ showDistance() }} {{ $t('distance.m') }} {{ $t('meta.fromYou') }}
             </span>
           </div>
@@ -136,7 +128,6 @@ export default {
   methods: {
     getSkillTitle(path) {
       const [spec, skill] = path.split('.');
-      console.log(spec, skill);
       return this.$t(`filters.items.${spec}.sub.${skill}`);
     },
     showDistance() {
