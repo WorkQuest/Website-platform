@@ -259,6 +259,7 @@
     "employer": {
       "usersNotResponded": "Users have not yet responded to the quest"
     },
+    "workersNotInvited": "Workers not invited!",
     "startChat": "Start chat",
     "invite": "Invite",
     "decline": "Decline",
@@ -269,6 +270,7 @@
     "questClosed!": "Quest closed!",
     "closed": "Closed",
     "completed": "Completed",
+    "rejected": "Rejected",
     "completedWorkAccepted": "Completed work on quest accepted!",
     "completedWorkRejected": "Completed work on quest rejected!",
     "workOnQuestAccepted": "Work on quest accepted!",
@@ -368,7 +370,6 @@
     "questDispute:": "Quest Dispute:",
     "questWaitConfirm:": "Quest wait confirm:",
     "skillsNotSpecified": "Skills not specified...",
-    "oneTime": "One time",
     "proposal": "Proposal",
     "category": "Select a category",
     "address": "Add address",
@@ -917,6 +918,9 @@
     "yourAccountVerified": "Your account has been successfully verified",
     "youCanUpdateThisInYourProfile": "You can easily update this in your profile.",
     "disable2Fa": "Disable 2FA",
+    "2FAEnabled": "2FA enabled successfully!",
+    "2FADisabled": "2FA disabled successfully!",
+    "2FAStatus": "2FA Status",
     "yourLevelHasBeenRaised": "Your level has been raised",
     "payment": "Payment",
     "cardHolder": "Cardholder name",
@@ -1182,7 +1186,9 @@
     "recepientAddressField": "recepient address",
     "walletAddressField": "wallet address",
     "thanksText": "",
-    "emailVerificationCodeField": "email verification"
+    "emailVerificationCodeField": "email verification",
+    "youCanAttachUpToNFiles": "You can attach up to {n} files",
+    "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format"
   },
   "ui": {
     "jobQuestors": "Job Questors",
@@ -1302,7 +1308,19 @@
     "invitedYou": "invited you to a quest",
     "writeYouMessage": "Write you message",
     "group": "Group",
-    "noChats": "No Chats"
+    "noChats": "No Chats",
+    "systemMessages": {
+      "invitedYouToAQuest": "invited you to a quest",
+      "youInvitedToTheQuest": "You invited to the quest",
+      "respondedToTheQuest": "responded to the quest",
+      "youHaveRespondedToTheQuest": "You have responded to the quest",
+      "rejectedTheResponseToTheQuest": "rejected the response to the quest",
+      "youRejectTheResponseOnQuest": "You rejected the response to the quest",
+      "rejectedTheInviteToTheQuest": "rejected the invite to the quest",
+      "youRejectedTheInviteToTheQuest": "You rejected the invite to the quest",
+      "acceptedTheInviteToTheQuest": "accepted the invite to the quest",
+      "youAcceptedTheInviteToTheQuest": "You accepted the invite to the quest"
+    }
   },
   "settings": {
     "placeOfStudying": "Place of studying",
@@ -1928,6 +1946,7 @@
     "transactionHistory": "Transaction history",
     "withdraw": "Withdraw",
     "prolong": "Prolong",
+    "prolongText": "This will prolong pension program for 1 year",
     "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac neque cum posuere in. Semper arcu purus eget faucibus.",
     "table": {
       "userName": "John Doe",
@@ -1939,8 +1958,12 @@
     "docName": "Some_document.pdf",
     "mb": "{count} MB",
     "percents": "{count} %",
+    "minutes": "{count} minutes",
+    "hours": "{count} hours",
     "years": "{count} years",
-    "wusdCount": "{count} WUSD",
+    "days": "{count} days",
+    "WUSDCount": "{count} WUSD",
+    "ETHCount": "{count} ETH",
     "plusPercents": "+ {count}%",
     "faq1": {
       "question": "How do you qualify for a pension?",
@@ -1981,9 +2004,7 @@
     "faq10": {
       "question": "What happens if I Overfund my pension?",
       "answer": "We have no restrictions on the amount of savings. The entire accumulated amount will be at your disposal at the end of the program period."
-    },
-    "cancel": "Cancel",
-    "renewFor1Year": "Renew for 1 year"
+    }
   },
   "saving": {
     "withdrawModalBody": "The amount of locked funds and the accumulated interest will be credited to your wallet",
@@ -2698,5 +2719,8 @@
         }
       }
     }
+  },
+  "gallery": {
+    "counter": "{n} of "
   }
 }
