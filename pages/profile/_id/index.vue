@@ -62,7 +62,7 @@
           <portfolioTab />
         </div>
         <div
-          v-if="userData.role === 'worker'"
+          v-if="userRole === 'worker'"
           class="button"
         >
           <nuxt-link
@@ -110,20 +110,34 @@ export default {
       userData: 'user/getUserData',
     }),
     pageTabs() {
-      return [
-        {
-          number: 1,
-          title: this.$t('profile.quests'),
-        },
-        {
-          number: 2,
-          title: this.$t('profile.reviews'),
-        },
-        {
-          number: 3,
-          title: this.$t('profile.portfolio'),
-        },
-      ];
+      if (this.userRole === 'employer') {
+        return [
+          {
+            number: 1,
+            title: this.$t('profile.quests'),
+          },
+          {
+            number: 2,
+            title: this.$t('profile.reviews'),
+          },
+        ];
+      } if (this.userRole === 'worker') {
+        return [
+          {
+            number: 1,
+            title: this.$t('profile.quests'),
+          },
+          {
+            number: 2,
+            title: this.$t('profile.reviews'),
+          },
+          {
+            number: 3,
+            title: this.$t('profile.portfolio'),
+          },
+        ];
+      }
+      return [];
     },
     cardLevelClass(idx) {
       const { cards } = this;
