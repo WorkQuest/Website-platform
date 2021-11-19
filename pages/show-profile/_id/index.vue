@@ -4,124 +4,62 @@
       class="main-section main-section_white"
     >
       <div class="main-container">
-        <div
-          class="information-grid"
-        >
-          <div class="col info-grid__col_left">
-            <div class="info-grid__avatar">
-              <img
-                class="info-grid__avatar"
-                :src="userAvatar"
-                alt=""
-                loading="lazy"
-              >
-            </div>
-            <div class="rating">
-              <div
-                v-for="(item, i) in userStars"
-                :key="i"
-                class="star"
-                :class="item ? `star${item}` : item"
-              />
-            </div>
-            <nuxt-link
-              class="reviews-amount"
-              to="/profile"
-            >
-              {{ `${userStatistics.reviewCount || ''} ${$t('quests.reviews')}` }}
-            </nuxt-link>
-          </div>
-          <div class="col info-grid__col">
-            <div class="title">
-              {{ `${userData.firstName} ${userData.lastName}` }}
-            </div>
-            <div
-              class="description"
-            >
-              {{ userAdditionalInfo.description }}
-            </div>
-            <div class="socials">
-              <socialPanel
-                :social="userSocialNetwork"
-              />
-            </div>
-            <div class="contacts__grid">
-              <div class="contacts">
-                <div class="contacts">
-                  <span
-                    class="contact"
-                  >
-                    <span
-                      v-if="userData.address"
-                      class="contact__container"
-                    >
-                      <span
-                        class="icon-location"
-                      />
-                      <a
-                        :href="'https://maps.google.com/?q=' + userData.address"
-                        target="_blank"
-                      ><span class="contact__link">{{ userData.address }}</span></a>
-                    </span>
-                    <span
-                      v-if="userData.phone"
-                      class="contact__container"
-                    >
-                      <span class="icon-phone" />
-                      <a
-                        :href="'tel:' + userData.phone"
-                        target="_blank"
-                      ><span class="contact__link">{{ userData.phone }}</span></a>
-                    </span>
-                    <span
-                      v-if="userData.email"
-                      class="contact__container"
-                    >
-                      <span class="icon-mail" />
-                      <a
-                        :href="'mailto:' + userData.email"
-                        target="_blank"
-                      ><span class="contact__link">{{ userData.email }}</span></a>
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <userInfo
+          :selected="selected"
+          :user-info="userData"
+        />
 
-          <div class="share-btn" />
-        </div>
+        <button
+          v-for="(item, i) in pageTabs"
+          :key="i"
+          class="tab__btn"
+          :class="{tab__btn_active: selected === item.number}"
+          @click="selected = item.number"
+        >
+          {{ item.title }}
+        </button>
       </div>
     </div>
     <div class="information-section">
       <div class="main-container">
-        <userStatistic />
+        <userStatistic
+          :review-data="userStatistics"
+        />
         <div
+          v-if="selected === 2"
+        >
+          <div class="title">
+            {{ $t('quests.activeQuests') }}
+          </div>
+        </div>
+        <div
+          v-if="selected === 3"
           class="title"
         >
           {{ $t('quests.reviewsBig') }}
         </div>
 
         <div
+          v-if="selected === 3"
           class="tab__container"
         >
           <reviewsTab />
         </div>
-        <div>
-          <div class="title">
-            {{ $t('quests.activeQuests') }}
-          </div>
-        </div>
         <div
+          v-if="selected === 3"
           class="button"
         >
           <nuxt-link
-            v-if="selected === 1"
             class="button__more"
             to="/profile"
           >
             {{ $t('meta.showAllReviews') }}
           </nuxt-link>
+        </div>
+        <div v-if="selected === 4">
+          <portfolioTab
+            :user-id="userData.id"
+          />
         </div>
       </div>
     </div>
@@ -131,7 +69,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
-import socialPanel from '~/components/app/panels/social';
+import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
+import userInfo from '~/components/app/pages/common/userInfo';
 import userStatistic from '~/components/app/panels/userStatistic';
 import modals from '~/store/modals/modals';
 
@@ -140,7 +79,8 @@ export default {
   components: {
     reviewsTab,
     userStatistic,
-    socialPanel,
+    userInfo,
+    portfolioTab,
   },
   data() {
     return {
@@ -173,40 +113,55 @@ export default {
         { card__level_checked: cards[idx].level.code === 3 },
       ];
     },
+    pageTabs() {
+      let tabs = [];
+      if (this.userData.role === 'worker') {
+        tabs = [
+          {
+            number: 1,
+            title: this.$t('profile.common'),
+          },
+          {
+            number: 2,
+            title: this.$t('profile.quests'),
+          },
+          {
+            number: 3,
+            title: this.$t('profile.reviews'),
+          },
+          {
+            number: 4,
+            title: this.$t('profile.portfolio'),
+          },
+        ];
+      } else {
+        tabs = [
+          {
+            number: 1,
+            title: this.$t('profile.common'),
+          },
+          {
+            number: 2,
+            title: this.$t('profile.quests'),
+          },
+          {
+            number: 3,
+            title: this.$t('profile.reviews'),
+          },
+        ];
+      }
+      return tabs;
+    },
   },
-  async created() {
-    this.SetLoader(true);
+  async beforeCreate() {
     await this.$store.dispatch('user/getAnotherUserData', this.$route.params.id);
-    await this.initUserData();
-    this.SetLoader(false);
-  },
-  async mounted() {
-    this.SetLoader(true);
-    this.SetLoader(false);
+    if (this.userData.ratingStatistic) {
+      this.userStatistics = { reviewCount: this.userData.ratingStatistic.reviewCount, averageMark: this.userData.ratingStatistic.averageMark };
+    } else {
+      this.userStatistics = { reviewCount: 0, averageMark: 0 };
+    }
   },
   methods: {
-    async initUserData() {
-      this.userAvatar = await this.userData?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
-      this.userAdditionalInfo = this.userData.additionalInfo;
-      this.userSocialNetwork = this.userAdditionalInfo.socialNetwork;
-      this.userWorkExperiences = this.userAdditionalInfo.workExperiences;
-      this.userSkills = this.userAdditionalInfo.skills;
-      this.userEducations = this.userAdditionalInfo.educations;
-      this.userStatistics = this.userData.ratingStatistic;
-      let specialNumber = 0;
-      for (let i = 0; i < 5; i += 1) {
-        if (Math.round(this.userStatistics.averageMark) > i) {
-          this.userStars.push('__full');
-        } else {
-          specialNumber = this.userStatistics.averageMark - (i);
-          if ((specialNumber >= 0.3 && specialNumber <= 0.7) && !this.userStars.includes('__half')) {
-            this.userStars.push('__half');
-          } else {
-            this.userStars.push('');
-          }
-        }
-      }
-    },
     isRating(type) {
       return (type === 3);
     },
@@ -242,7 +197,22 @@ export default {
     background-repeat: no-repeat;
   }
 }
-
+.tab {
+  &__container {
+    margin: 20px 0 20px 0;
+  }
+  &__btn {
+    color: $black500;
+    font-size: 16px;
+    padding: 10px;
+    &_active {
+      color: $black800;
+      font-size: 16px;
+      border-bottom: 1px solid $blue;
+      padding: 10px;
+    }
+  }
+}
 .main-section {
   &_white {
     background-color: $white;

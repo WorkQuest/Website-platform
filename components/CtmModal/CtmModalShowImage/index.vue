@@ -5,7 +5,7 @@
   >
     <div class="ctm-modal__content content">
       <div
-        v-if="options.portfolio"
+        v-if="options.portfolio && options.changeRule"
         class="content__btns"
       >
         <base-btn

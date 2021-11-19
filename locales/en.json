@@ -124,6 +124,7 @@
     "quests": "Quests",
     "reviews": "Reviews",
     "portfolio": "Portfolio",
+    "common": "Common info",
     "sidebar": {
       "filter": "All Quests filter",
       "choose": "(Choose simple or \nspecialized category)",
@@ -255,6 +256,7 @@
     "title": "Skills"
   },
   "quests": {
+    "showAll": "Show all",
     "wusd": "WUSD",
     "employer": {
       "usersNotResponded": "Users have not yet responded to the quest"
@@ -389,6 +391,7 @@
     "createAQuest": "Create a quest",
     "editAQuest": "Edit a quest",
     "activeQuests": "Active quests",
+    "openedQuests": "Opened quests",
     "completedQuests": "Completed quests",
     "oneTime": "One time",
     "fullTime": "Full time",

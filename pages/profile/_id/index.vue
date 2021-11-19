@@ -4,7 +4,10 @@
       class="main-section main-section_white"
     >
       <div class="main-container">
-        <userInfo :selected="selected" />
+        <userInfo
+          :selected="selected"
+          :user-info="userData"
+        />
 
         <button
           v-for="(item, i) in pageTabs"
@@ -59,7 +62,9 @@
               </template>
             </base-btn>
           </div>
-          <portfolioTab />
+          <portfolioTab
+            :user-id="userData.id"
+          />
         </div>
         <div
           v-if="userData.role === 'worker'"

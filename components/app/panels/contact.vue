@@ -4,72 +4,64 @@
       class="contact"
     >
       <span
-        v-if="address"
+        v-if="contacts.address"
         class="contact__container"
       >
         <span
           class="icon-location"
         />
         <a
-          :href="'https://maps.google.com/?q=' + address"
+          :href="'https://maps.google.com/?q=' + contacts.address"
           target="_blank"
-        ><span class="contact__link">{{ address }}</span></a>
+        ><span class="contact__link">{{ contacts.address }}</span></a>
       </span>
       <span
-        v-if="firstMobileNumber"
+        v-if="contacts.phone"
         class="contact__container"
       >
         <span
           class="icon-phone"
         />
         <a
-          :href="'tel:' + firstMobileNumber"
+          :href="'tel:' + contacts.phone"
           target="_blank"
-        ><span class="contact__link">{{ firstMobileNumber }}</span></a>
+        ><span class="contact__link">{{ contacts.phone }}</span></a>
       </span>
       <span
-        v-if="email"
+        v-if="contacts.email"
         class="contact__container"
       >
         <span
           class="icon-mail"
         />
         <a
-          :href="'mailto:' + email"
+          :href="'mailto:' + contacts.email"
           target="_blank"
-        ><span class="contact__link">{{ email }}</span></a>
+        ><span class="contact__link">{{ contacts.email }}</span></a>
       </span>
       <span
-        v-if="userRole === 'employer' && company"
+        v-if="contacts.role === 'employer' && contacts.company"
         class="contact__container"
       >
         <span class="icon-Earth" />
         <a
-          :href="'https://' + company"
+          :href="'https://' + contacts.company"
           target="_blank"
-        ><span class="contact__link">{{ company }}</span></a>
+        ><span class="contact__link">{{ contacts.company }}</span></a>
       </span>
     </span>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 
 export default {
   name: 'ContactPanel',
-  computed: {
-    ...mapGetters({
-      tags: 'ui/getTags',
-      userRole: 'user/getUserRole',
-      userData: 'user/getUserData',
-      userInfo: 'data/getUserInfo',
-      quest: 'data/getQuest',
-      address: 'user/getUserAddress',
-      firstMobileNumber: 'user/getUserFirstMobileNumber',
-      company: 'user/getUserCompany',
-      email: 'user/getUserEmail',
-    }),
+  props: {
+    contacts: {
+      type: Object,
+      default: () => {},
+    },
   },
 };
 </script>

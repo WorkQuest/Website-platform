@@ -2,7 +2,7 @@
   <div>
     <div class="portfolio portfolio__items">
       <div
-        v-for="(item, i) in portfolios"
+        v-for="(item, i) in portfolios.cases"
         :key="i"
         class="portfolio__item"
       >
@@ -10,7 +10,10 @@
           class="portfolio__card"
         >
           <div class="portfolio__body">
-            <div class="portfolio__btns">
+            <div
+              v-if="userId === userData.id"
+              class="portfolio__btns"
+            >
               <base-btn
                 class="portfolio__close"
                 mode="portfolioClose"
@@ -60,6 +63,12 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'PortfolioTab',
+  props: {
+    userId: {
+      type: String,
+      default: '',
+    },
+  },
   computed: {
     ...mapGetters({
       portfolios: 'user/getUserPortfolios',
@@ -78,13 +87,14 @@ export default {
           imageSrc: src,
           title: name,
           desc,
+          changeRule: this.userId === this.userData.id,
         });
       }
     },
     async getAllPortfolios() {
       try {
         this.SetLoader(true);
-        await this.$store.dispatch('user/getUserPortfolios', this.userData.id);
+        await this.$store.dispatch('user/getUserPortfolios', this.userId);
         this.SetLoader(false);
       } catch (e) {
         this.showToastError(e);

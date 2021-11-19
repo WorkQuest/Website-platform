@@ -5,47 +5,48 @@
     <div class="col info-grid__col_left">
       <div class="info-grid__avatar">
         <img
-          v-if="imageData"
           class="info-grid__avatar"
-          :src="imageData"
-          :alt="localUserData.firstName"
-        >
-        <img
-          v-else-if="!imageData"
-          class="info-grid__avatar"
-          src="~/assets/img/app/avatar_empty.png"
-          :alt="localUserData.firstName"
+          :src="userAvatar"
+          alt=""
+          loading="lazy"
         >
       </div>
-      <div class="rating" />
+      <div class="rating">
+        <div
+          v-for="(item, i) in userStars"
+          :key="i"
+          class="star"
+          :class="item ? `star${item}` : item"
+        />
+      </div>
       <div
         class="reviews-amount"
       >
-        {{ `${quest.reviewCount} ${$t('quests.reviews')}` }}
+        {{ `${userStatistics.reviewCount} ${$t('quests.reviews')}` }}
       </div>
     </div>
     <div class="col info-grid__col">
       <div
-        v-if="firstName && lastName"
+        v-if="userInfo.firstName && userInfo.lastName"
         class="title"
       >
-        {{ `${firstName} ${lastName}` }}
+        {{ `${userInfo.firstName} ${userInfo.lastName}` }}
       </div>
       <div
         v-if="userRole === 'employer'"
         class="subtitle"
       >
-        {{ company || userInfo.company }}
+        {{ userInfo.company || userInfo.company }}
       </div>
       <div
-        v-if="userDesc"
+        v-if="userAdditionalInfo.description"
         class="description"
       >
-        {{ userDesc }}
+        {{ userAdditionalInfo.description }}
       </div>
-      <div v-if="selected === 1 && userRole === 'worker' ">
+      <div v-if="userRole === 'worker' ">
         <div
-          v-if="userEducations.length > 0"
+          v-if="userEducations && userEducations.length > 0"
         >
           <div
             class="knowledge__text"
@@ -67,7 +68,7 @@
           </div>
         </div>
         <div
-          v-if="userWorkExp.length > 0"
+          v-if="userWorkExperiences && userWorkExperiences.length > 0"
         >
           <div
             class="work-exp__text"
@@ -76,7 +77,7 @@
           </div>
           <div class="work-exp__container">
             <div
-              v-for="(item, i) in userWorkExp"
+              v-for="(item, i) in userWorkExperiences"
               :key="i"
               class="work-exp__item"
             >
@@ -87,13 +88,19 @@
         </div>
       </div>
       <div class="socials">
-        <socialPanel
-          :social="{twitter: userTwitter, facebook: userFacebook, instagram: userInstagram, linkedin: userLinkedin}"
-        />
+        <socialPanel :social="userSocialNetwork" />
       </div>
       <div class="contacts__grid">
         <div class="contacts">
-          <contactPanel />
+          <contactPanel
+            :contacts="{
+              email: userInfo.email,
+              phone: userInfo.phone,
+              address: userAdditionalInfo.address,
+              company: userAdditionalInfo.company,
+              role: userInfo.role,
+            }"
+          />
           <div class="btn__container">
             <base-btn
               v-if="userRole === 'worker'"
@@ -146,37 +153,73 @@ export default {
       type: Number,
       required: true,
     },
+    userInfo: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {
-      localUserData: {},
+      userAvatar: '',
+      userAdditionalInfo: {
+        company: '',
+        address: '',
+        description: '',
+      },
+      userSocialNetwork: {},
+      userWorkExperiences: {
+        length: 0,
+      },
+      userSkills: {},
+      userEducations: {
+        length: 0,
+      },
+      userStatistics: {},
+      userStars: [],
     };
   },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
-      userData: 'user/getUserData',
-      userInfo: 'data/getUserInfo',
-      imageData: 'user/getImageData',
-      firstName: 'user/getFirstName',
-      lastName: 'user/getLastName',
-      company: 'user/getUserCompany',
-      userDesc: 'user/getUserDesc',
-      userEducations: 'user/getUserEducations',
-      userWorkExp: 'user/getUserWorkExp',
-      userTwitter: 'user/getUserTwitter',
-      userFacebook: 'user/getUserFacebook',
-      userInstagram: 'user/getUserInstagram',
-      userLinkedin: 'user/getUserLinkedin',
-      quest: 'data/getQuest',
     }),
   },
-  async mounted() {
-    this.localUserData = JSON.parse(JSON.stringify(this.userData));
-    console.log(this.localUserData.additionalInfo.socialNetwork);
+  watch: {
+    userInfo() {
+      if (this.userWorkExperiences.length === 0) {
+        this.userStars = [];
+        this.initData();
+      }
+    },
+  },
+  created() {
+    this.initData();
   },
   methods: {
+    async initData() {
+      this.userAvatar = await this.userInfo?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
+      if (this.userInfo.additionalInfo) {
+        this.userAdditionalInfo = this.userInfo.additionalInfo;
+        this.userSocialNetwork = this.userAdditionalInfo.socialNetwork;
+        this.userWorkExperiences = this.userAdditionalInfo.workExperiences;
+        this.userSkills = this.userAdditionalInfo.skills;
+        this.userEducations = this.userAdditionalInfo.educations;
+      }
+      this.userStatistics = this.userInfo.ratingStatistic ? this.userInfo.ratingStatistic : { reviewCount: 0, averageMark: 0 };
+      let specialNumber = 0;
+      for (let i = 0; i < 5; i += 1) {
+        if (Math.round(this.userStatistics.averageMark) > i) {
+          this.userStars.push('__full');
+        } else {
+          specialNumber = this.userStatistics.averageMark - (i);
+          if ((specialNumber >= 0.3 && specialNumber <= 0.7) && !this.userStars.includes('__half')) {
+            this.userStars.push('__half');
+          } else {
+            this.userStars.push('');
+          }
+        }
+      }
+    },
     shareModal() {
       this.ShowModal({
         key: modals.sharingQuest,
@@ -199,7 +242,6 @@ export default {
   width: 100%;
   justify-content: flex-end;
 }
-
 .btn {
   &__container {
     width: 100%;
@@ -300,11 +342,21 @@ export default {
 
   .rating {
     height: 20px;
-    background-image: url("data:image/svg+xml,%3Csvg width='120' height='20' viewBox='0 0 120 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M10 0L12.9389 5.95492L19.5106 6.90983L14.7553 11.5451L15.8779 18.0902L10 15L4.12215 18.0902L5.24472 11.5451L0.489435 6.90983L7.06107 5.95492L10 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M35 0L37.9389 5.95492L44.5106 6.90983L39.7553 11.5451L40.8779 18.0902L35 15L29.1221 18.0902L30.2447 11.5451L25.4894 6.90983L32.0611 5.95492L35 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M60 0L62.9389 5.95492L69.5106 6.90983L64.7553 11.5451L65.8779 18.0902L60 15L54.1221 18.0902L55.2447 11.5451L50.4894 6.90983L57.0611 5.95492L60 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M85 0L87.9389 5.95492L94.5106 6.90983L89.7553 11.5451L90.8779 18.0902L85 15L79.1221 18.0902L80.2447 11.5451L75.4894 6.90983L82.0611 5.95492L85 0Z' fill='%23E8D20D'/%3E\a           %3Cpath d='M110 0L112.939 5.95492L119.511 6.90983L114.755 11.5451L115.878 18.0902L110 15L104.122 18.0902L105.245 11.5451L100.489 6.90983L107.061 5.95492L110 0Z' fill='%23E9EDF2'/%3E\a           %3C/svg%3E                                                              \a           ");
-    background-repeat: no-repeat;
-    background-position: center;
+    display: flex;
     margin-top: 20px;
     width: 142px;
+    .star {
+      width: inherit;
+      background-image: url('~assets/img/ui/star-empty.svg');
+      background-repeat: no-repeat;
+      background-position: center;
+      &__half {
+        background-image: url('~assets/img/ui/star-half.svg');
+      }
+      &__full {
+        background-image: url('~assets/img/ui/star-small.svg');
+      }
+    }
   }
 
   .reviews-amount {

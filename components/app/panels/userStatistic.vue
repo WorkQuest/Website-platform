@@ -5,24 +5,10 @@
     >
       <div class="data-item">
         <div class="card-title">
-          {{ $t('quests.activeQuests') }}
-        </div>
-        <div class="number number_green">
-          {{ questData.activeQuests }}
-        </div>
-        <nuxt-link
-          class="card-subtitle number_green"
-          to="/profile"
-        >
-          {{ $t('quests.showAllActiveQuests') }}
-        </nuxt-link>
-      </div>
-      <div class="data-item">
-        <div class="card-title">
           {{ $t('quests.completedQuests') }}
         </div>
         <div class="number">
-          {{ questData.completedQuestsOneTime }}
+          0
         </div>
         <div class="card-subtitle">
           {{ $t('quests.oneTime') }}
@@ -30,24 +16,37 @@
       </div>
       <div class="data-item">
         <div class="card-title">
-          {{ $t('quests.completedQuests') }}
+          {{ $t('quests.openedQuests') }}
         </div>
         <div class="number">
-          {{ questData.completedQuestsFullTime }}
+          0
         </div>
-        <div class="card-subtitle">
-          {{ $t('quests.fullTime') }}
-        </div>
+        <!--        <div-->
+        <!--          class="card-subtitle"-->
+        <!--        >-->
+        <!--          {{ $t('quests.showAll') }}-->
+        <!--        </div>-->
       </div>
+      <!--      <div class="data-item">-->
+      <!--        <div class="card-title">-->
+      <!--          {{ $t('quests.completedQuests') }}-->
+      <!--        </div>-->
+      <!--        <div class="number">-->
+      <!--          {{ questData.completedQuestsFullTime }}-->
+      <!--        </div>-->
+      <!--        <div class="card-subtitle">-->
+      <!--          {{ $t('quests.fullTime') }}-->
+      <!--        </div>-->
+      <!--      </div>-->
       <div class="data-item">
         <div class="card-title">
           {{ $t('quests.averageRating') }}
         </div>
         <div class="number number__rating">
-          {{ questData.averageRating }}
+          {{ reviewData.averageMark }}
         </div>
         <div class="card-subtitle">
-          {{ $t('quests.fromBig') }} {{ questData.reviewCount }} {{ $t('quests.reviews') }}
+          {{ $t('quests.fromBig') }} {{ reviewData.reviewCount }} {{ $t('quests.reviews') }}
         </div>
       </div>
     </div>
@@ -59,6 +58,12 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'UserStatistic',
+  props: {
+    reviewData: {
+      type: Object,
+      default: () => {},
+    },
+  },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
@@ -106,7 +111,7 @@ export default {
 .data-grid {
   padding: 20px 0;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
   .data-item {
     display: grid;
