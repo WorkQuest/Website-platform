@@ -101,6 +101,20 @@ export default {
       selected: 1,
       questLimits: 100,
       questsObjects: {},
+      pageTabsArray: [
+        {
+          number: 1,
+          title: this.$t('profile.quests'),
+        },
+        {
+          number: 2,
+          title: this.$t('profile.reviews'),
+        },
+        {
+          number: 3,
+          title: this.$t('profile.portfolio'),
+        },
+      ],
     };
   },
   computed: {
@@ -110,32 +124,12 @@ export default {
       userData: 'user/getUserData',
     }),
     pageTabs() {
-      if (this.userRole === 'employer') {
-        return [
-          {
-            number: 1,
-            title: this.$t('profile.quests'),
-          },
-          {
-            number: 2,
-            title: this.$t('profile.reviews'),
-          },
-        ];
-      } if (this.userRole === 'worker') {
-        return [
-          {
-            number: 1,
-            title: this.$t('profile.quests'),
-          },
-          {
-            number: 2,
-            title: this.$t('profile.reviews'),
-          },
-          {
-            number: 3,
-            title: this.$t('profile.portfolio'),
-          },
-        ];
+      const workerArray = this.pageTabsArray;
+      const employerArray = workerArray.slice(0, -1);
+      if (this.userRole === 'worker') {
+        return workerArray;
+      } if (this.userRole === 'employer') {
+        return employerArray;
       }
       return [];
     },
