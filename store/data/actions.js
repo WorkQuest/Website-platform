@@ -39,16 +39,30 @@ export default {
     const canLoadToTop = messages[0]?.number > 1;
 
     commit('setMessagesList', {
-      ...result, chatId, direction, offset: offset + 20, canLoadToBottom, canLoadToTop,
+      ...result, direction, offset: offset + 20, canLoadToBottom, canLoadToTop,
     });
     return result;
   },
   handleCreateChat({ commit }, { config, userId }) {
     this.$axios.$post(`/v1/user/${userId}/send-message`, config);
   },
-  async handleSendMessage({ commit }, { chatId, config }) {
-    const response = await this.$wsChat.$post(`/api/v1/chat/${chatId}/send-message`, config);
-    return response;
+  async handleSendMessage({ commit, rootState: { data: { messages, messagesFilter } } }, { chatId, config }) {
+    const { payload } = await this.$wsChat.$post(`/api/v1/chat/${chatId}/send-message`, config);
+
+    if (payload.ok && !messagesFilter.canLoadToBottom) {
+      const message = payload.result;
+      message.itsMe = true;
+
+      if (message.medias.length) {
+        message.medias.forEach((file) => {
+          // eslint-disable-next-line prefer-destructuring
+          file.type = file.contentType.split('/')[0];
+        });
+      }
+
+      await commit('addMessageToList', message);
+    }
+    return payload;
   },
   async uploadFile({ commit }, config) {
     const { result } = await this.$axios.$post('/v1/storage/get-upload-link', config);
@@ -86,5 +100,8 @@ export default {
       },
     });
     return response;
+  },
+  async getUsersForGroupChat({ commit }, config) {
+    const { result } = await this.$axios.$get('/v1/user/me/chat/members/users-by-chats', config);
   },
 };

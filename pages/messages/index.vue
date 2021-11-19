@@ -45,10 +45,12 @@
                     {{ chat.userMembers.length > 1 ? 'Group Chat' : chat.userMembers[0].firstName + ' ' + chat.userMembers[0].lastName }}
                   </div>
                   <div
-                    v-if="chat.userMembers.length > 1 || (chat.userMembers[0].additionalInfo && chat.userMembers[0].additionalInfo.company)"
-                    class="chat__title chat__title_gray"
+                    v-if="chat.type === 'group' || chat.type === 'quest'"
+                    class="chat__title"
+                    :class="[{'chat__title_gray' : chat.type === 'group'}, {'chat__title_link' : chat.type === 'quest'}]"
+                    @click="goToQuest($event,chat.type === 'quest' ? chat.questChat.questId : '')"
                   >
-                    {{ chat.userMembers.length > 1 ? $t('chat.group') : chat.userMembers[0].additionalInfo.company }}
+                    {{ chat.type === 'group' > 1 ? $t('chat.group') : chat.questChat.quest.title }}
                   </div>
                 </div>
                 <!--                <div class="chat__row">-->
@@ -145,6 +147,11 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    goToQuest(ev, questId) {
+      ev.stopPropagation();
+
+      this.$router.push(`/quests/${questId}`);
+    },
     handleSortedChats() {
       this.filter = {
         limit: 10,
@@ -277,6 +284,15 @@ export default {
 
     &_gray {
       color: #7C838D;
+    }
+
+    &_link {
+      color: #0083C7;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     &_ellipsis {
