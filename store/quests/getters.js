@@ -21,4 +21,5 @@ export default {
   getResponsesMy: (state) => state.responsesMy || '',
   getFilters: (state) => state.filters || {},
   getSpecializationsFilters: (state) => state.specializationsFilters || [],
+  getPriceFilter: (state) => state.priceFilter,
 };

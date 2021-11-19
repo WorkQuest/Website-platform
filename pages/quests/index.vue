@@ -91,23 +91,17 @@
             {{ $t('quests.searchResults') }}
           </div>
         </div>
-        <!--        TODO: DELETE DOWN-->
+        <!--        TODO: DELETE-->
         <div>
           [urgent: {{ selectedUrgent }}]
-          [quest: {{ selectedQuest }}]
           [type of job: {{ selectedTypeOfJob }}]
-          [distantWork: {{ selectedDistantWork }}]
+          [distant: {{ selectedDistantWork }}]
+          [sort: {{ sortData }}]
         </div>
+        <!--        TODO: DELETE-->
         <div class="quests__tools tools">
           <div class="tools__panel">
             <base-filter-dd class="tools__item" />
-            <base-dd
-              v-model="selectedQuest"
-              class="tools__item"
-              mode:="blackFont"
-              :placeholder="$t('quests.quests')"
-              :items="quests"
-            />
             <base-dd
               v-model="selectedUrgent"
               class="tools__item"
@@ -143,7 +137,6 @@
                 />
               </template>
             </base-btn>
-            [sort: {{ sortData }}]
             <base-btn
               class="tools__item"
               :mode="'light'"
@@ -223,10 +216,9 @@ export default {
     return {
       isShowMap: true,
       search: '',
-      selectedQuest: 0,
-      selectedUrgent: 0,
-      selectedTypeOfJob: 0,
-      selectedDistantWork: 0,
+      selectedDistantWork: null,
+      selectedUrgent: null,
+      selectedTypeOfJob: null,
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
@@ -248,40 +240,8 @@ export default {
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
       specializationsFilters: 'quests/getSpecializationsFilters',
+      priceFilter: 'quests/getPriceFilter',
     }),
-    // todo: del
-    // panelDD() {
-    //   return [
-    //     {
-    //       vmodel: this.selectedQuest,
-    //       class: 'tools__item',
-    //       items: this.quests,
-    //       mode: 'blackFont',
-    //       placeholder: this.$t('quests.quests'),
-    //     },
-    //     {
-    //       vmodel: this.selectedUrgent,
-    //       class: 'tools__item',
-    //       items: this.urgent,
-    //       mode: 'blackFont',
-    //       placeholder: this.$t('quests.urgent'),
-    //     },
-    //     {
-    //       vmodel: this.selectedTypeOfJob,
-    //       class: 'tools__item',
-    //       items: this.typeOfJob,
-    //       mode: 'blackFont',
-    //       placeholder: this.$t('quests.typeOfJob'),
-    //     },
-    //     {
-    //       vmodel: this.selectedDistantWork,
-    //       class: 'tools__item',
-    //       items: this.distantWork,
-    //       mode: 'blackFont',
-    //       placeholder: this.$t('quests.distantWork.title'),
-    //     },
-    //   ];
-    // },
     distance() {
       return [
         '+ 100 m',
@@ -291,39 +251,32 @@ export default {
     },
     priority() {
       return [
+        this.$t('quests.resetToDefault'),
         this.$t('quests.priority.all'),
         this.$t('quests.priority.low'),
         this.$t('quests.priority.normal'),
         this.$t('quests.priority.urgent'),
       ];
     },
+    typeOfJob() {
+      return [
+        this.$t('quests.resetToDefault'),
+        this.$t('quests.fullTime'),
+        this.$t('quests.partTime'),
+        this.$t('quests.fixedTerm'),
+      ];
+    },
     distantWork() {
       return [
-        '-',
+        this.$t('quests.resetToDefault'),
         this.$t('quests.distantWork.distantWork'),
         this.$t('quests.distantWork.workInOffice'),
         this.$t('quests.distantWork.bothVariant'),
       ];
     },
-    typeOfJob() {
-      return [
-        '-',
-        this.$t('quests.fullTime'),
-        this.$t('quests.partTime'),
-        this.$t('quests.fixedTerm'),
-        // this.$t('quests.contract'), // TODO: на бэке нет таких полей?
-        // this.$t('quests.remoteWork'),
-      ];
-    },
-    quests() {
-      return [
-        this.$t('quests.quests'),
-        this.$t('quests.specQuests'),
-        this.$t('quests.permanentJob'),
-      ];
-    },
     urgent() {
       return [
+        this.$t('quests.resetToDefault'),
         this.$t('priority.urgent'),
         this.$t('priority.normal'),
         this.$t('priority.low'),
@@ -334,6 +287,15 @@ export default {
         return Math.ceil(this.questsObjects.count / this.perPager);
       }
       return 0;
+    },
+    formattedSpecFilters() {
+      const filtersData = this.specializationsFilters?.query || [];
+      if (filtersData.length) {
+        let filters = '';
+        for (let i = 0; i < filtersData.length; i += 1) { filters += `&specializations[]=${filtersData[i]}`; }
+        return filters;
+      }
+      return '';
     },
   },
   watch: {
@@ -358,13 +320,26 @@ export default {
       this.SetLoader(false);
     },
     async selectedDistantWork() {
+      if (this.selectedDistantWork === 0) {
+        this.selectedDistantWork = null;
+        return;
+      }
       this.page = 1;
       this.SetLoader(true);
       const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
       await this.getQuests(additionalValue);
       this.SetLoader(false);
     },
+    async selectedUrgent() {
+      if (this.selectedUrgent === 0) {
+        this.selectedUrgent = null;
+      }
+      // todo: sort urgent filter
+    },
     async selectedTypeOfJob() {
+      if (this.selectedTypeOfJob === 0) {
+        this.selectedTypeOfJob = null; return;
+      }
       this.page = 1;
       this.SetLoader(true);
       const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
@@ -401,12 +376,7 @@ export default {
       });
     },
     async getQuests(payload = '') {
-      const filtersData = this.specializationsFilters?.query || '';
-      if (filtersData) {
-        let filters = '';
-        for (let i = 0; i < filtersData.length; i += 1) { filters += `&specializations[]=${filtersData[i]}`; }
-        payload += filters;
-      }
+      payload += this.formattedSpecFilters;
 
       if (!this.isShowMap) {
         switch (this.selectedDistantWork) {
@@ -433,6 +403,18 @@ export default {
             break;
           default: break;
         }
+        switch (this.selectedUrgent) {
+          case 1:
+            payload += '';
+            break;
+          case 2:
+            payload += '';
+            break;
+          case 3:
+            payload += '';
+            break;
+          default: break;
+        }
 
         this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
         this.questsArray = this.questsObjects.quests;
@@ -455,7 +437,7 @@ export default {
     toggleMap() {
       this.isShowMap = !this.isShowMap;
     },
-    // showDetails() { // вроде не юзается и можно удалить
+    // showDetails() { // todo: вроде не юзается и можно удалить?
     //   this.$router.push('/quests/1');
     // },
     async changeSorting(type) {
@@ -837,8 +819,9 @@ export default {
   }
   &__panel {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     grid-gap: 10px;
+    width: 100%;
     span::before {
       padding-left: 10px;
       margin-right: 10px;

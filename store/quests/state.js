@@ -16,4 +16,5 @@ export default () => ({
   mapCenter: {},
   filters: {},
   specializationsFilters: [],
+  priceFilter: { from: null, to: null },
 });

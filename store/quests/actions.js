@@ -17,9 +17,9 @@ export default {
       return console.log(e);
     }
   },
-  async workersList({ commit }) {
+  async workersList({ commit }, payload) {
     try {
-      const response = await this.$axios.$get('/v1/profile/workers');
+      const response = await this.$axios.$get(`/v1/profile/workers${payload}`);
       commit('setWorkersList', response.result);
       return response.result;
     } catch (e) {
@@ -263,5 +263,8 @@ export default {
   },
   setSpecializationsFilters({ commit }, data) {
     commit('setSpecializationsFilters', data);
+  },
+  setPriceFilter({ commit }, data) {
+    commit('setPriceFilter', data);
   },
 };

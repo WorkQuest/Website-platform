@@ -90,13 +90,25 @@
             <div class="panel__left">
               <base-filter-dd class="panel__item" />
               <base-dd
-                v-for="(item, i) in panelDDLeft"
-                :key="i"
-                v-model="item.vmodel"
-                :class="item.class"
-                :items="item.items"
-                :mode="item.mode"
-                :placeholder="item.placeholder"
+                v-model="selectedTypeOfJob"
+                class="panel__item"
+                :items="typeOfJob"
+                mode="blackFont"
+                :placeholder="$t('quests.typeOfJob')"
+              />
+              <base-dd
+                v-model="selectedUrgent"
+                class="panel__item"
+                :items="urgent"
+                mode="blackFont"
+                :placeholder="$t('quests.urgent')"
+              />
+              <base-dd
+                v-model="selectedDistantWork"
+                class="panel__item"
+                :items="distantWork"
+                mode="blackFont"
+                :placeholder="$t('quests.distantWork.title')"
               />
               <base-btn
                 class="panel__item"
@@ -287,9 +299,12 @@ export default {
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
       workersList: 'quests/getWorkersList',
+      specializationsFilters: 'quests/getSpecializationsFilters',
+      priceFilter: 'quests/getPriceFilter',
     }),
     distantWork() {
       return [
+        this.$t('quests.resetToDefault'),
         this.$t('quests.distantWork.distantWork'),
         this.$t('quests.distantWork.workInOffice'),
         this.$t('quests.distantWork.bothVariant'),
@@ -297,6 +312,7 @@ export default {
     },
     typeOfJob() {
       return [
+        this.$t('quests.resetToDefault'),
         this.$t('quests.fullTime'),
         this.$t('quests.partTime'),
         this.$t('quests.fixedTerm'),
@@ -306,6 +322,7 @@ export default {
     },
     urgent() {
       return [
+        this.$t('quests.resetToDefault'),
         this.$t('priority.urgent'),
         this.$t('priority.normal'),
         this.$t('priority.low'),
@@ -320,35 +337,11 @@ export default {
     },
     priority() {
       return [
+        this.$t('quests.resetToDefault'),
         this.$t('quests.priority.all'),
         this.$t('quests.priority.low'),
         this.$t('quests.priority.normal'),
         this.$t('quests.priority.urgent'),
-      ];
-    },
-    panelDDLeft() {
-      return [
-        {
-          vmodel: this.selectedTypeOfJob,
-          class: 'panel__item',
-          items: this.typeOfJob,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.typeOfJob'),
-        },
-        {
-          vmodel: this.selectedUrgent,
-          class: 'panel__item',
-          items: this.urgent,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.urgent'),
-        },
-        {
-          vmodel: this.selectedDistantWork,
-          class: 'panel__item',
-          items: this.distantWork,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.distantWork.title'),
-        },
       ];
     },
     cardLevelClass(idx) {
@@ -358,16 +351,40 @@ export default {
         { card__level_checked: cards[idx].level.code === 3 },
       ];
     },
+    formattedSpecFilters() {
+      const filtersData = this.specializationsFilters?.query || [];
+      if (filtersData.length) {
+        let filters = `?specialization[]=${filtersData[0]}`;
+        for (let i = 1; i < filtersData.length; i += 1) { filters += `&specialization[]=${filtersData[i]}`; }
+        return filters;
+      }
+      return '';
+    },
+  },
+  watch: {
+    async formattedSpecFilters() {
+      this.SetLoader(true);
+      await this.fetchWorkersList();
+      this.SetLoader(false);
+    },
   },
   async mounted() {
     this.SetLoader(true);
     if (this.userRole === 'employer') {
-      await this.$store.dispatch('quests/workersList');
+      await this.fetchWorkersList();
       this.showWelcomeModal();
     }
     this.SetLoader(false);
   },
   methods: {
+    async fetchWorkersList() {
+      let payload = '';
+      const filters = this.formattedSpecFilters;
+      payload += filters;
+      // `?sort[createdAt]=${this.timeSort}` - этой колонки нету в бд?
+
+      await this.$store.dispatch('quests/workersList', payload);
+    },
     showPriceSearch() {
       this.ShowModal({
         key: modals.priceSearch,
@@ -456,6 +473,9 @@ export default {
     display: grid;
     grid-gap: 10px;
     grid-template-columns: 1fr;
+  }
+  &__item {
+    min-width: 180px !important;
   }
 }
 .quests {

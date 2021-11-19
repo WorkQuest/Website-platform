@@ -33,7 +33,7 @@
               v-model="priceTo"
               class="grid__field"
               :placeholder="$t('modals.priceToAmount')"
-              rules="required|decimal"
+              :rules="`required|decimal${priceFrom ? '|min_value:'+priceFrom : ''}`"
               :name="$t('modals.priceFieldTo')"
             />
           </div>
@@ -48,8 +48,8 @@
           </base-btn>
           <base-btn
             class="buttons__action"
-            :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(hide)"
+            :disabled="invalid"
+            @click="handleSubmit(submit)"
           >
             {{ $t('meta.submit') }}
           </base-btn>
@@ -74,11 +74,20 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      priceFilter: 'quests/getPriceFilter',
     }),
+  },
+  mounted() {
+    if (this.priceFilter.from) this.priceFrom = this.priceFilter.from;
+    if (this.priceFilter.to) this.priceTo = this.priceFilter.to;
   },
   methods: {
     hide() {
       this.CloseModal();
+    },
+    submit() {
+      this.$store.dispatch('quests/setPriceFilter', { from: this.priceFrom, to: this.priceTo });
+      this.hide();
     },
   },
 };

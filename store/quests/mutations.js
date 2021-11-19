@@ -56,4 +56,7 @@ export default {
   setSpecializationsFilters(state, data) {
     state.specializationsFilters = data;
   },
+  setPriceFilter(state, data) {
+    state.priceFilter = data;
+  },
 };
