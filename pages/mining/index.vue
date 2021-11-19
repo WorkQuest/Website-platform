@@ -95,6 +95,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
+  name: 'Pools',
   layout: 'guest',
   data() {
     return {

@@ -256,8 +256,9 @@ import chart from './graphics_data';
 import { StakingTypes } from '~/utils/enums';
 
 export default {
-  name: 'MiningPool',
+  name: 'Pool',
   layout: 'guest',
+  middleware: 'mining',
   components: {
     chart,
   },
@@ -374,14 +375,19 @@ export default {
     },
   },
   async mounted() {
-    const { currentPool } = this;
+    const currentPool = this.currentPool.toLowerCase();
     localStorage.setItem('miningPoolId', currentPool);
-    await this.$store.dispatch(`mining/getChartDataForWqtW${currentPool.toLowerCase()}Pool`);
-    await this.$store.dispatch(`mining/getTableDataForWqtW${currentPool.toLowerCase()}Pool`, {});
+    await this.$store.dispatch(`mining/getChartDataForWqtW${currentPool}Pool`);
+    await this.$store.dispatch(`mining/getTableDataForWqtW${currentPool}Pool`, {});
   },
   async beforeDestroy() {
     clearInterval(this.updateInterval);
     await this.disconnectFromWallet();
+    await Promise.all([
+      this.$store.commit('mining/setChartData', []),
+      this.$store.commit('mining/setTableData', []),
+      this.$store.commit('mining/setTotalLiquidityUSD', null),
+    ]);
   },
   methods: {
     getTokensAmount(data) {
@@ -428,9 +434,6 @@ export default {
       };
       const profit = await this.$store.dispatch('web3/getAPY', payload);
       this.profitWQT = this.Floor(profit);
-    },
-    async disconnectFromWallet() {
-      await this.$store.dispatch('web3/disconnect');
     },
     async claimRewards() {
       this.SetLoader(true);
@@ -497,9 +500,12 @@ export default {
         });
       }
     },
+
     async handleBackToMainMining() {
       await this.$router.push('/mining');
-      await this.disconnectFromWallet();
+    },
+    async disconnectFromWallet() {
+      await this.$store.dispatch('web3/disconnect');
     },
     iconUrls() {
       return [
