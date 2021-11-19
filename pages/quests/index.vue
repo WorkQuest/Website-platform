@@ -17,14 +17,18 @@
               :label="$t('quests.ui.showMap')"
             />
           </div>
-          <div class="search__inputs">
+          <div
+            class="search__inputs"
+            @click="toggleSearchDD"
+          >
             <base-field
               v-model="search"
+              v-click-outside="hideSearchDD"
               class="search__input"
               is-search
               :placeholder="$t('quests.ui.search')"
               mode="icon"
-              :selector="true"
+              :selector="searchDDStatus"
               @selector="getAddressInfo(search)"
             >
               <template v-slot:left />
@@ -32,8 +36,11 @@
                 <div
                   v-if="addresses.length"
                   class="selector"
+                  :class="{'selector_hide': searchDDStatus === false}"
                 >
-                  <div class="selector__items">
+                  <div
+                    class="selector__items"
+                  >
                     <div
                       v-for="(item, i) in addresses"
                       :key="i"
@@ -199,6 +206,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import ClickOutside from 'vue-click-outside';
 import { GeoCode } from 'geo-coder';
 import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
@@ -207,6 +215,9 @@ import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Quests',
+  directives: {
+    ClickOutside,
+  },
   components: {
     GmapSearchBlock,
     quests,
@@ -216,6 +227,7 @@ export default {
     return {
       isShowMap: true,
       search: '',
+      searchDDStatus: true,
       selectedDistantWork: null,
       selectedUrgent: null,
       selectedTypeOfJob: null,
@@ -365,6 +377,12 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    toggleSearchDD() {
+      this.searchDDStatus = !this.searchDDStatus;
+    },
+    hideSearchDD() {
+      this.searchDDStatus = false;
+    },
     showPriceSearch() {
       this.ShowModal({
         key: modals.priceSearch,
@@ -819,9 +837,8 @@ export default {
   }
   &__panel {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-gap: 10px;
-    width: 100%;
     span::before {
       padding-left: 10px;
       margin-right: 10px;
@@ -927,6 +944,9 @@ export default {
   @include box;
   width: 100%;
   z-index: 140;
+  &_hide {
+    display: none;
+  }
   &__items {
     background: #FFFFFF;
     display: grid;
