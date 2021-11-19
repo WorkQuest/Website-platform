@@ -1122,11 +1122,18 @@ export default {
         this.$wsChat.subscribe('/notifications/chat', async ({ data, action }) => {
           if (this.$route.name === 'messages') {
             await this.$store.dispatch('chat/getChatsList', {
-              limit: 10,
+              limit: 30,
               offset: 0,
             });
           } else if (action === 'newMessage' && data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
             this.$store.commit('chat/addMessageToList', data);
+            if (data.type === 'info') {
+              // if (data.infoMessage.messageAction === 'groupChatAddUsers') {
+              //   this.$store.commit('chat/addUsersToChat', data.infoMessage.users);
+              // } else if (data.infoMessage.messageAction === 'groupChatDeleteUser') {
+            //   this.$store.commit('chat/removeUserFromChat', data.infoMessage.user.id);
+            // }
+            }
           }
         });
       }

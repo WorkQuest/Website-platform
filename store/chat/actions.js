@@ -110,5 +110,10 @@ export default {
   },
   async removeMember({ commit }, { chatId, userId }) {
     const { result } = await this.$axios.$delete(`/v1/user/me/chat/group/${chatId}/remove/${userId}`);
+    return result;
+  },
+  async addNewMembers({ commit }, { chatId, userIds }) {
+    const { result } = await this.$axios.$post(`/v1/user/me/chat/group/${chatId}/add/${userIds}`);
+    return result;
   },
 };

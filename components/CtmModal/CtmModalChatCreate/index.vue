@@ -187,7 +187,7 @@ export default {
     },
     async applyChanges() {
       const {
-        name, memberUserIds, options: { isCreating, isAdding },
+        name, memberUserIds, chatId, options: { isCreating, isAdding },
       } = this;
 
       if (isCreating) {
@@ -201,8 +201,13 @@ export default {
           console.log(e);
           this.showToastError(e);
         }
-      } else if (isAdding) {
-        console.log();
+      } else if (isAdding && memberUserIds.length) {
+        const config = {
+          chatId,
+          userIds: memberUserIds,
+        };
+
+        await this.$store.dispatch('chat/addNewMembers', config);
       }
 
       this.hide();

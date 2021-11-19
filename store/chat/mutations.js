@@ -47,4 +47,16 @@ export default {
     state.groupChatUsers.list = users;
     state.groupChatUsers.count = count;
   },
+  removeUserFromChat(state, userId) {
+    const { members, userMembers } = state.messages.chat;
+
+    state.messages.chat.members = members.filter((member) => member.id !== userId);
+    state.messages.chat.userMembers = userMembers.filter((member) => member.id !== userId);
+  },
+  addUsersToChat(state, users) {
+    const { members, userMembers } = state.messages.chat;
+
+    state.messages.chat.members = members.concat(users);
+    state.messages.chat.userMembers = userMembers.concat(users);
+  },
 };
