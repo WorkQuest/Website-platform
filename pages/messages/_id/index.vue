@@ -14,7 +14,13 @@
             <span>{{ $t('chat.chat') }}</span>
           </div>
           <div class="chat-container__chat-name">
-            <!--            {{}}-->
+            <div
+              v-if="messages.chat && messages.chat.type === 'quest'"
+              class="chat-container__quest-link"
+              @click="goToQuest"
+            >
+              {{ messages.chat.questChat.quest.title }}
+            </div>
           </div>
           <ChatMenu v-show="chatId !== 'starred'" />
         </div>
@@ -39,83 +45,122 @@
               :key="message.id"
               :ref="message.number === selStarredMessageNumber ? 'starredMessage' : ''"
               class="chat-container__message message"
-              :class="[{'message_right' : message.itsMe}, {'message_blink' : message.number === selStarredMessageNumber}]"
+              :class="[{'message_right' : message.itsMe}, {'message_blink' : message.number === selStarredMessageNumber}, {'message_info' : message.type === 'info'}]"
             >
-              <img
-                v-if="!message.itsMe"
-                :src="message.sender.avatar ? message.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                alt=""
-                class="message__avatar"
-                :class="{'message__avatar_hidden' : i && messages.list[i - 1].senderUserId == message.senderUserId}"
+              <div
+                v-if="message.type === 'info'"
+                class="info-message"
               >
-              <div class="message__data">
-                <div
-                  v-if="!message.itsMe && (!i || (i && messages.list[i - 1].senderUserId != message.senderUserId))"
-                  class="message__title"
-                >
-                  {{ message.sender.firstName + ' ' + message.sender.lastName }}
+                <div v-if="message.infoMessage.messageAction === 'employerInviteOnQuest'">
+                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest'}`) }}
+                </div>
+                <div v-if="message.infoMessage.messageAction === 'workerResponseOnQuest'">
+                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest'}`) }}
+                </div>
+                <div v-if="message.infoMessage.messageAction === 'employerRejectResponseOnQuest'">
+                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest'}`) }}
+                </div>
+                <div v-if="message.infoMessage.messageAction === 'workerRejectInviteOnQuest'">
+                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest'}`) }}
+                </div>
+                <div v-if="message.infoMessage.messageAction === 'workerAcceptInviteOnQuest'">
+                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest'}`) }}
                 </div>
                 <div
-                  class="message__bubble"
-                  :class="[{'message__bubble_bl' : message.itsMe}, {'message__bubble_link' : chatId === 'starred'}]"
-                  @click="goToCurrChat(message)"
+                  class="info-message__link"
+                  :class="{'info-message__link_left' : !message.itsMe}"
+                  @click="openProfile(message.infoMessage.userId, message.itsMe)"
                 >
-                  <div class="message__title">
-                    {{ message.text }}
+                  {{ message.itsMe ? (message.infoMessage.user.firstName || '') + ' ' + (message.infoMessage.user.lastName || '') : (message.sender.firstName || '') + ' ' + (message.sender.lastName || '') }}
+                </div>
+              </div>
+              <template v-else>
+                <img
+                  v-if="!message.itsMe"
+                  :src="message.sender.avatar ? message.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                  alt=""
+                  class="message__avatar"
+                  :class="{'message__avatar_hidden' : i && messages.list[i - 1].senderUserId == message.senderUserId && messages.list[i - 1].type !== 'info'}"
+                >
+                <div class="message__data">
+                  <div
+                    v-if="!message.itsMe && (!i || (i && messages.list[i - 1].senderUserId != message.senderUserId || messages.list[i - 1].type === 'info'))"
+                    class="message__title"
+                  >
+                    {{ message.sender.firstName + ' ' + message.sender.lastName }}
                   </div>
                   <div
-                    v-if="message.medias.length"
-                    class="message__media"
+                    class="message__bubble"
+                    :class="[{'message__bubble_bl' : message.itsMe}, {'message__bubble_link' : chatId === 'starred'}]"
+                    @click="goToCurrChat(message)"
                   >
+                    <div class="message__title">
+                      {{ message.text }}
+                    </div>
                     <div
-                      v-for="file in message.medias"
-                      :key="file.id"
-                      class="image-cont"
+                      v-if="message.medias.length"
+                      class="message__media"
                     >
-                      <img
-                        :src="file.url"
-                        class="image-cont__image image-cont__image_margin"
-                        alt=""
-                        @click="selFile(message.medias, file)"
+                      <div
+                        v-for="file in message.medias"
+                        :key="file.id"
+                        class="image-cont image-cont_margin"
                       >
+                        <img
+                          v-if="file.type === 'image'"
+                          :src="file.url"
+                          class="image-cont__image"
+                          alt=""
+                          @click="selFile($event, message.medias, file.url)"
+                        >
+                        <a
+                          v-else
+                          :href="file.url"
+                          target="_blank"
+                          class="image-cont image-cont__other-media image-cont__other-media_block"
+                          @click="openFile"
+                        >
+                          <span :class="[{'icon-play_circle_outline' : file.type === 'video'}, {'icon-file_blank_outline' : file.type !== 'video'}]" />
+                        </a>
+                      </div>
+                    </div>
+                    <div
+                      class="message__time message__title message__title_gray"
+                      :class="{'message__title_white' : message.itsMe}"
+                    >
+                      {{ setCurrDate(message.createdAt) }}
                     </div>
                   </div>
+                </div>
+                <div
+                  class="message__star-cont"
+                  :class="{'message__star-cont_left' : message.itsMe}"
+                >
                   <div
-                    class="message__time message__title message__title_gray"
-                    :class="{'message__title_white' : message.itsMe}"
+                    v-show="chatId !== 'starred'"
+                    class="star"
+                    @click="handleChangeStarVal(message)"
                   >
-                    {{ setCurrDate(message.createdAt) }}
+                    <img
+                      class="star__hover"
+                      src="~assets/img/ui/star_hover.svg"
+                      alt=""
+                    >
+                    <img
+                      v-if="message.star"
+                      class="star__checked"
+                      src="~assets/img/ui/star_checked.svg"
+                      alt=""
+                    >
+                    <img
+                      v-else
+                      class="star__default"
+                      src="~assets/img/ui/star_simple.svg"
+                      alt=""
+                    >
                   </div>
                 </div>
-              </div>
-              <div
-                class="message__star-cont"
-                :class="{'message__star-cont_left' : message.itsMe}"
-              >
-                <div
-                  v-show="chatId !== 'starred'"
-                  class="star"
-                  @click="handleChangeStarVal(message)"
-                >
-                  <img
-                    class="star__hover"
-                    src="~assets/img/ui/star_hover.svg"
-                    alt=""
-                  >
-                  <img
-                    v-if="message.star"
-                    class="star__checked"
-                    src="~assets/img/ui/star_checked.svg"
-                    alt=""
-                  >
-                  <img
-                    v-else
-                    class="star__default"
-                    src="~assets/img/ui/star_simple.svg"
-                    alt=""
-                  >
-                </div>
-              </div>
+              </template>
             </div>
             <div
               v-if="isBottomChatsLoading"
@@ -144,7 +189,7 @@
             <div class="chat-container__file-cont">
               <ValidationProvider
                 v-slot="{validate}"
-                rules="required|ext:png,jpeg,jpg"
+                rules="required|ext:png,jpeg,jpg,mp4,pdf,doc"
               >
                 <input
                   id="input__file"
@@ -167,6 +212,7 @@
               v-model="messageText"
               :placeholder="$t('chat.writeYouMessage')"
               is-hide-error
+              mode="chat"
             />
             <button
               class="chat-container__send-btn"
@@ -186,10 +232,25 @@
               class="image-cont"
             >
               <img
+                v-if="file.type === 'image'"
                 :src="file.url"
                 class="image-cont__image"
                 alt=""
+                @click="selFile($event, files, file.url)"
               >
+              <a
+                v-else
+                :href="file.url"
+                target="_blank"
+                class="image-cont image-cont__other-media"
+                :title="file.file.name"
+                @click="openFile"
+              >
+                <span :class="[{'icon-play_circle_outline' : file.type === 'video'}, {'icon-file_blank_outline' : file.type !== 'video'}]" />
+                <div class="image-cont__title">
+                  {{ file.file.name }}
+                </div>
+              </a>
               <div
                 class="image-cont__remove"
                 @click="handleRemoveFile(i)"
@@ -274,15 +335,32 @@ export default {
     if (!isChatNotificationShown) this.showNoticeModal();
   },
   destroyed() {
-    this.$store.commit('data/setMessagesList', { messages: [], count: 0, chatId: '' });
+    this.$store.commit('data/setMessagesList', { messages: [], count: 0, chat: null });
     this.$store.commit('data/clearMessagesFilter');
   },
   methods: {
-    selFile(files, file) {
-      // this.ShowModal({
-      //   key: modals.gallery,
-      //   url: file.url,
-      // });
+    openProfile(userId, itsMe) {
+      this.$router.push(`/${itsMe ? 'workers' : 'profile'}/${userId}`);
+    },
+    goToQuest() {
+      const { questId } = this.messages.chat.questChat;
+      this.$router.push(`/quests/${questId}`);
+    },
+    openFile(ev) {
+      ev.stopPropagation();
+    },
+    selFile(ev, files, fileUrl) {
+      ev.stopPropagation();
+
+      files = files.filter((file) => file.type === 'image');
+      const index = files.findIndex((file) => file.url === fileUrl);
+
+      this.ShowModal({
+        key: modals.gallery,
+        files,
+        index,
+        count: files.length,
+      });
     },
     handleRemoveFile(index) {
       this.files.splice(index, 1);
@@ -292,11 +370,12 @@ export default {
       localStorage.setItem('selStarredMessageNumber', JSON.stringify(message.number));
       this.$router.push(`/messages/${message.chatId}`);
     },
-    handleChangeStarVal(message) {
+    async handleChangeStarVal(message) {
       const messageId = message.id;
       const { chatId } = this;
       try {
-        this.$store.dispatch(`data/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, { messageId, chatId });
+        await this.$store.dispatch(`data/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, { messageId, chatId });
+        this.$forceUpdate();
       } catch (e) {
         console.log(e);
         this.showToastError(e);
@@ -328,10 +407,24 @@ export default {
         if (isValid.valid) validFiles.push(file);
       }
 
+      if (validFiles.length < files.length) {
+        this.ShowModal({
+          key: modals.areYouSureNotification,
+          title: this.$t('modals.noticeTitle'),
+          text: this.$t('modals.youTryToAttachUnsupportedFileFormat'),
+          isFiles: true,
+        });
+      }
+
       ev.target.value = null;
 
       if (this.files.length + validFiles.length > 10) {
-        // withdraw alert-modal
+        this.ShowModal({
+          key: modals.areYouSureNotification,
+          title: this.$t('modals.noticeTitle'),
+          text: this.$tc('modals.youCanAttachUpToNFiles', 10),
+          isFiles: true,
+        });
 
         return;
       }
@@ -344,12 +437,16 @@ export default {
         const reader = new FileReader();
         reader.readAsDataURL(file);
 
+        const { type } = file;
+
         // eslint-disable-next-line no-await-in-loop
-        const data = await this.$store.dispatch('data/uploadFile', { contentType: file.type });
+        const data = await this.$store.dispatch('data/uploadFile', { contentType: type });
 
         const url = URL.createObjectURL(file);
 
-        this.files.push({ data, file, url });
+        this.files.push({
+          data, file, url, type: type.split('/')[0],
+        });
 
         reader.onerror = (evt) => {
           console.error(evt);
@@ -448,15 +545,12 @@ export default {
 
       this.messageText = '';
 
-      const msgFiles = [];
-
-      await Promise.all(files.map(async ({ data, file, url }, i) => {
+      await Promise.all(files.map(async ({ data, file }) => {
         const cData = {
           url: data.url,
           formData: file,
           type: file.type,
         };
-        msgFiles.push({ url, id: i + 1 });
 
         try {
           await this.$store.dispatch('data/setImage', cData);
@@ -467,6 +561,7 @@ export default {
       }));
 
       const medias = files.map(({ data }) => data.mediaId);
+      this.files = [];
 
       const payload = {
         config: {
@@ -476,21 +571,13 @@ export default {
         chatId,
       };
 
-      this.files = [];
-
       try {
         await this.$store.dispatch('data/handleSendMessage', payload);
-        const newMessage = {
-          medias: msgFiles,
-          text,
-          itsMe: true,
-          createdAt: new Date(),
-        };
-        this.$store.commit('data/addMessageToList', newMessage);
 
         if (!isScrollBtnVis) this.scrollToBottom();
       } catch (e) {
         console.log(e);
+        this.showToastError(e);
       }
     },
     onEnter(e, callback) {
@@ -561,6 +648,11 @@ export default {
     justify-self: center;
   }
 
+  &__quest-link {
+    color: #0083C7;
+    cursor: pointer;
+  }
+
   &__scroll-cont {
     overflow: auto;
     padding: 20px 20px 0;
@@ -591,7 +683,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 3px;
+    border-radius: 6px;
     cursor: pointer;
     transition: .2s;
     &:hover {
@@ -691,16 +783,39 @@ export default {
 .image-cont {
   position: relative;
   cursor: pointer;
+  height: 105px;
+  width: 130px;
+  border-radius: 6px;
 
   &__image {
     height: 105px;
     width: 130px;
     border-radius: 6px;
     min-width: 130px;
+  }
 
-    &_margin {
-      margin: 10px 10px 0 0;
+  &_margin {
+    margin: 10px 10px 0 0;
+  }
+
+  &__other-media {
+    padding: 10px;
+    display: grid;
+    grid-template-rows: 1fr 20px;
+    border: 1px solid #E9EDF2;
+    text-decoration: unset;
+
+    &_block {
+      grid-template-rows: 1fr;
     }
+  }
+
+  &__title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 400;
+    color: #4C5767;
   }
 
   &__remove {
@@ -710,8 +825,8 @@ export default {
     width: 30px;
     background-color: #ffffff59;
     border-radius: 6px;
-    top: 2px;
-    right: 2px;
+    top: 4px;
+    right: 4px;
     justify-content: center;
     align-items: center;
 
@@ -727,9 +842,23 @@ export default {
   }
 }
 
-.icon-close_big:before {
-  color: #DF3333;
-  font-size: 25px;
+.icon-close_big {
+  &:before {
+    color: #1D2127;
+    font-size: 25px;
+  }
+}
+
+.icon-play_circle_outline,
+.icon-file_blank_outline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:before {
+    color: #AAB0B9;
+    font-size: 60px;
+  }
 }
 
 .message {
@@ -739,227 +868,252 @@ export default {
   gap: 20px;
   height: max-content;
 
-  &__media {
+&__media {
+display: flex;
+flex-wrap: wrap;
+}
+
+&_blink {
+animation: blink 1s;
+}
+
+@keyframes blink {
+50%{opacity: .5;}
+100%{opacity: 1;}
+}
+
+&_right {
+grid-template-columns: max-content minmax(auto, max-content);
+justify-content: flex-end;
+margin-left: 30%;
+}
+
+&__star-cont {
+&_left {
+  grid-column: 1;
+  grid-row: 1;
+}
+}
+
+  &_info {
     display: flex;
-    flex-wrap: wrap;
+    grid-template-columns: unset;
+    justify-content: center;
+    margin: 0;
+    width: 100%;
   }
 
-  &_blink {
-    animation: blink 1s;
-  }
+&:last-child {
+padding-bottom: 20px;
+}
 
-  @keyframes blink {
-    50%{opacity: .5;}
-    100%{opacity: 1;}
-  }
+&__time {
+justify-self: end;
+}
 
-  &_right {
-    grid-template-columns: max-content minmax(auto, max-content);
-    justify-content: flex-end;
-    margin-left: 30%;
-  }
+&__title {
+font-weight: 400;
+font-size: 16px;
+line-height: 1.2;
 
-  &__star-cont {
+&_gray {
+  color: #AAB0B9;
+  font-size: 14px;
+}
+
+&_white {
+  color: #fff;
+}
+}
+
+&__avatar {
+height: 43px;
+width: 43px;
+border-radius: 50%;
+
+&_hidden {
+  visibility: hidden;
+}
+}
+
+&__data {
+display: grid;
+gap: 10px;
+}
+
+&__bubble {
+display: grid;
+gap: 10px;
+padding: 15px;
+border-radius: 6px;
+background-color: #F7F8FA;
+
+&_bl {
+  background-color: #0083C7;
+  color: #fff;
+}
+
+&_link {
+  cursor: pointer;
+}
+}
+}
+
+.info-message {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: 5px;
+
+  &__link {
+    text-decoration: underline #1D2127;
+    color: #1D2127;
+    cursor: pointer;
+
     &_left {
       grid-column: 1;
       grid-row: 1;
     }
   }
-
-  &:last-child {
-    padding-bottom: 20px;
-  }
-
-  &__time {
-    justify-self: end;
-  }
-
-  &__title {
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 1.2;
-
-    &_gray {
-      color: #AAB0B9;
-      font-size: 14px;
-    }
-
-    &_white {
-      color: #fff;
-    }
-  }
-
-  &__avatar {
-    height: 43px;
-    width: 43px;
-    border-radius: 50%;
-
-    &_hidden {
-      visibility: hidden;
-    }
-  }
-
-  &__data {
-    display: grid;
-    gap: 10px;
-  }
-
-  &__bubble {
-    display: grid;
-    gap: 10px;
-    padding: 15px;
-    border-radius: 6px;
-    background-color: #F7F8FA;
-
-    &_bl {
-      background-color: #0083C7;
-      color: #fff;
-    }
-
-    &_link {
-      cursor: pointer;
-    }
-  }
 }
 
 .styles {
-  &__between {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  &__flex {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-  }
-  &__center {
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-  }
+&__between {
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+&__flex {
+display: -webkit-box;
+display: -ms-flexbox;
+display: flex;
+}
+&__center {
+-webkit-box-align: center;
+-ms-flex-align: center;
+align-items: center;
+}
 }
 
 .arrow-back {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: center;
 
 }
 
 .icon {
-  cursor: pointer;
-  font-size: 26px;
-  &-send::before {
-    @extend .icon;
-    content: "\ea6b";
-    font-size: 30px;
-    color: $blue;
-  }
-  &-link::before {
-    @extend .icon;
-    content: "\ea20";
-    color: $black700;
-    font-size: 30px;
-  }
-  &-short_left::before {
-    @extend .icon;
-    content: "\ea6d";
-    color: $black800;
-  }
-  &-more_horizontal::before {
-    @extend .icon;
-    content: "\e951";
-    color: $black500;
-  }
+cursor: pointer;
+font-size: 26px;
+&-send::before {
+@extend .icon;
+content: "\ea6b";
+font-size: 30px;
+color: $blue;
+}
+&-link::before {
+@extend .icon;
+content: "\ea20";
+color: $black700;
+font-size: 30px;
+}
+&-short_left::before {
+@extend .icon;
+content: "\ea6d";
+color: $black800;
+}
+&-more_horizontal::before {
+@extend .icon;
+content: "\e951";
+color: $black500;
+}
 }
 
 .input {
-  &__wrapper {
-    height: 40px;
-  }
-  &__file {
-    opacity: 0;
-    visibility: hidden;
-    position: absolute;
-  }
-  &__file-icon-wrapper {
-    @extend .styles__flex;
-    @extend .styles__center;
-    height: 60px;
-    width: 60px;
-    margin-right: 15px;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    border-right: 1px solid #fff;
-  }
-  &__file-button-text {
-    line-height: 1;
-    margin-top: 1px;
-  }
+&__wrapper {
+height: 40px;
+}
+&__file {
+opacity: 0;
+visibility: hidden;
+position: absolute;
+}
+&__file-icon-wrapper {
+@extend .styles__flex;
+@extend .styles__center;
+height: 60px;
+width: 60px;
+margin-right: 15px;
+-webkit-box-pack: center;
+-ms-flex-pack: center;
+justify-content: center;
+border-right: 1px solid #fff;
+}
+&__file-button-text {
+line-height: 1;
+margin-top: 1px;
+}
 }
 
 .star {
-  cursor: pointer;
+cursor: pointer;
 
-  &__default {
+&__default {
+display: flex;
+}
+&__hover {
+display: none;
+}
+&:hover {
+
+.star {
+  &__hover {
     display: flex;
   }
-  &__hover {
+  &__default,
+  &__checked {
     display: none;
   }
-  &:hover {
-
-    .star {
-      &__hover {
-        display: flex;
-      }
-      &__default,
-      &__checked {
-        display: none;
-      }
-    }
-  }
+}
+}
 }
 
 .block {
-  background: #FFFFFF;
-  border-radius: 6px;
+background: #FFFFFF;
+border-radius: 6px;
+display: grid;
+grid-template-columns: 240px 1fr;
+min-height: 100%;
+&__icon {
+&_fav {
+  cursor: pointer;
+}
+&_perf {
   display: grid;
-  grid-template-columns: 240px 1fr;
-  min-height: 100%;
-  &__icon {
-    &_fav {
-      cursor: pointer;
-    }
-    &_perf {
-      display: grid;
-      grid-template-columns: 25px 25px 25px 25px 25px;
-    }
-  }
+  grid-template-columns: 25px 25px 25px 25px 25px;
+}
+}
 }
 
 .quest {
-  &__info {
-    background: rgba(0, 131, 199, 0.1);
-    width: 100%;
-    max-width: 215px;
-    border-radius: 6px;
-    display: flex;
-  }
-  &__name {
-    padding: 15px;
-    color: $blue;
-  }
+&__info {
+background: rgba(0, 131, 199, 0.1);
+width: 100%;
+max-width: 215px;
+border-radius: 6px;
+display: flex;
+}
+&__name {
+padding: 15px;
+color: $blue;
+}
 }
 
 .event {
-  margin: 20px 0 0 0;
-  font-size: 16px;
-  color: $black600;
-  font-weight: 400;
+margin: 20px 0 0 0;
+font-size: 16px;
+color: $black600;
+font-weight: 400;
 }
 
 .name {
@@ -967,141 +1121,141 @@ export default {
 }
 
 .input {
-  width: 100%;
-  margin: 11px;
+width: 100%;
+margin: 11px;
 }
 .row {
-  &__container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
+&__container {
+display: flex;
+flex-direction: row;
+align-items: center;
+}
 }
 
 .profile {
-  &__img {
-    height: 30px;
-    width: 30px;
-    border-radius: 84px;
-    object-fit: cover;
-  }
-  &__name {
-    color: $black800;
-    font-size:16px;
-    font-weight: 500;
-    margin: 0 10px 0 10px;
-  }
+&__img {
+height: 30px;
+width: 30px;
+border-radius: 84px;
+object-fit: cover;
+}
+&__name {
+color: $black800;
+font-size:16px;
+font-weight: 500;
+margin: 0 10px 0 10px;
+}
 }
 
 .chat {
-  &__header {
-    border: 1px solid #E9EDF2;
-    border-radius: 6px 0 0 0;
-  }
-  &__panel {
-    height: 100%;
-    max-height: 70px;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 20fr 1fr;
-    align-items: center;
-    justify-items: center;
-    border: 1px solid #E9EDF2;
-    border-radius: 0 0 6px 6px;
-  }
-  &__name-container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
-  }
-  &__title {
-    background-color: $white;
-    margin: 15px 0 15px 15px;
-    align-items: center;
-    font-weight: 500;
-    font-size: 18px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  &__body {
-    background-color: $white;
-    border: 1px solid #E9EDF2;
-    border-radius: 6px;
-    width: 100%;
-    max-width: 1180px;
-  }
-  &__message {
-    cursor: pointer;
-    margin: 0 0 20px 0;
-    display: inline-block;
-  }
-  &__messages {
-    overflow-y: scroll;
-    height: 100%;
-    width: 100%;
-    max-height: 722px;
-    overflow: -moz-scrollbars-none;
-    -ms-overflow-style: none;
-  }
-  &__messages::-webkit-scrollbar {
-    width: 0;
-  }
-  &__img {
-    width: 100%;
-    height: 100%;
-    max-height: 30px;
-    max-width: 30px;
-    border-radius: 84px;
-    margin: 10px 10px 10px 20px;
-  }
-  &__name {
-    padding: 0 0 0 12px;
-  }
-  &__star {
-    margin: 0 20px 0 0;
-  }
+&__header {
+border: 1px solid #E9EDF2;
+border-radius: 6px 0 0 0;
+}
+&__panel {
+height: 100%;
+max-height: 70px;
+width: 100%;
+display: grid;
+grid-template-columns: 1fr 20fr 1fr;
+align-items: center;
+justify-items: center;
+border: 1px solid #E9EDF2;
+border-radius: 0 0 6px 6px;
+}
+&__name-container {
+display: flex;
+flex-direction: row;
+width: 100%;
+justify-content: space-between;
+}
+&__title {
+background-color: $white;
+margin: 15px 0 15px 15px;
+align-items: center;
+font-weight: 500;
+font-size: 18px;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+}
+&__body {
+background-color: $white;
+border: 1px solid #E9EDF2;
+border-radius: 6px;
+width: 100%;
+max-width: 1180px;
+}
+&__message {
+cursor: pointer;
+margin: 0 0 20px 0;
+display: inline-block;
+}
+&__messages {
+overflow-y: scroll;
+height: 100%;
+width: 100%;
+max-height: 722px;
+overflow: -moz-scrollbars-none;
+-ms-overflow-style: none;
+}
+&__messages::-webkit-scrollbar {
+width: 0;
+}
+&__img {
+width: 100%;
+height: 100%;
+max-height: 30px;
+max-width: 30px;
+border-radius: 84px;
+margin: 10px 10px 10px 20px;
+}
+&__name {
+padding: 0 0 0 12px;
+}
+&__star {
+margin: 0 20px 0 0;
+}
 }
 .page {
-  &__title {
-    margin: 20px 0 20px 0;
-  }
+&__title {
+margin: 20px 0 20px 0;
+}
 }
 
 ::-webkit-scrollbar {
-  width: 12px;
+width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
-  border-radius: 2px;
+-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 2px;
-  -webkit-box-shadow: inset 0 0 24px rgba(0, 131, 199, 1);
+border-radius: 2px;
+-webkit-box-shadow: inset 0 0 24px rgba(0, 131, 199, 1);
 }
 
 @include _991 {
-  .chat {
-    &__panel {
-      grid-template-columns: 1fr 15fr 1fr;
-    }
-  }
+.chat {
+&__panel {
+  grid-template-columns: 1fr 15fr 1fr;
+}
+}
 }
 @include _575 {
-  .chat {
-    &__panel {
-      grid-template-columns: 1fr 10fr 1fr;
-    }
-  }
+.chat {
+&__panel {
+  grid-template-columns: 1fr 10fr 1fr;
+}
+}
 }
 @include _480 {
-  .chat {
-    &__panel {
-      grid-template-columns: 1fr 7fr 1fr;
-    }
-  }
+.chat {
+&__panel {
+  grid-template-columns: 1fr 7fr 1fr;
+}
+}
 }
 </style>
