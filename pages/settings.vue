@@ -752,7 +752,7 @@ export default {
           latitude: 0,
         },
       },
-      avatar_change: {
+      avatarChange: {
         data: {},
         file: {},
       },
@@ -940,8 +940,8 @@ export default {
         const reader = new FileReader();
         reader.readAsDataURL(file);
 
-        this.avatar_change.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
-        this.avatar_change.file = file;
+        this.avatarChange.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
+        this.avatarChange.file = file;
         let output = document.getElementById('userAvatar');
         if (!output) {
           output = document.getElementById('userAvatarTwo');
@@ -962,6 +962,7 @@ export default {
         key: modals.smsVerification,
       });
     },
+    // TODO: Удалить повторяющийся код
     showModalImageOk() {
       this.ShowModal({
         key: modals.status,
@@ -1018,6 +1019,7 @@ export default {
       this.sms = !this.sms;
       this.$router.push('/sms-verification');
     },
+    // TODO: Включить код, проверить!
     async changeRole() {
       this.ShowModal({
         key: modals.changeRoleWarning,
@@ -1041,70 +1043,92 @@ export default {
       }
     },
     async editUserData() {
+      // TODO: Добавить проверку на значения updatedPhoneInternational
+      console.log(this.localUserData);
+      const updatedPhoneInternational = this.updatedPhone.formatInternational.replace(/\s/g, '');
+      let userLocation = this.localUserData.location;
+      const userCoordinates = this.coordinates;
+      let { secondMobileNumber } = this.localUserData.additionalInfo;
+      const { firstMobileNumber } = this.localUserData.additionalInfo;
+      console.log(firstMobileNumber);
+      const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
+      const additionalInfo = {
+        ...this.filterEmpty(this.localUserData.additionalInfo),
+        socialNetwork: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork),
+      };
+      secondMobileNumber = updatedPhoneInternational;
+      await this.setAvatar();
+      if (userCoordinates !== undefined) {
+        userLocation = { longitude: userCoordinates.lng, latitude: userCoordinates.lat };
+      }
+      if (this.userRole === 'employer') {
+        await this.editEmployerProfile(checkAvatarID, additionalInfo);
+      } else {
+        await this.editWorkerProfile(checkAvatarID, additionalInfo);
+      }
+    },
+    async setAvatar() {
       const formData = new FormData();
-      formData.append('image', this.avatar_change.file);
+      formData.append('image', this.avatarChange.file);
       try {
-        if (this.avatar_change.data.ok) {
+        if (this.avatarChange.data.ok) {
           const data = {
-            url: this.avatar_change.data.result.url,
-            formData: this.avatar_change.file,
-            type: this.avatar_change.file.type,
+            url: this.avatarChange.data.result.url,
+            formData: this.avatarChange.file,
+            type: this.avatarChange.file.type,
           };
           await this.$store.dispatch('user/setImage', data);
         }
       } catch (error) {
         console.log(error);
       }
-      this.localUserData.additionalInfo.secondMobileNumber = this.updatedPhone.formatInternational.replace(/\s/g, '');
-      delete this.localUserData.additionalInfo.firstMobileNumber;
-      if (this.coordinates !== undefined) {
-        this.localUserData.location = { longitude: this.coordinates.lng, latitude: this.coordinates.lat };
-      }
-      let payload = {};
-      const checkAvatarID = this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : this.userData.avatarId;
-      const additionalInfo = {
-        ...this.filterEmpty(this.localUserData.additionalInfo),
-        socialNetwork: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork),
-      };
-      if (this.userRole === 'employer') {
-        payload = {
-          ...this.localUserData,
-          avatarId: checkAvatarID,
-          skillFilters: { test: ['test'] },
-          additionalInfo: {
-            ...additionalInfo,
-            ...{
-              educations: undefined,
-              workExperiences: undefined,
-              skills: undefined,
-            },
-          },
-        };
-      } else {
-        const specAndSkills = {};
-        // eslint-disable-next-line no-restricted-syntax
-        for (const spec in this.specIndex) {
-          if (this.specIndex[spec] !== -1) {
-            const specName = this.specializations.titles[this.specIndex[spec]];
-            specAndSkills[specName] = this.selectedSkills[spec];
-          }
+    },
+    async editWorkerProfile(checkAvatarID, additionalInfo) {
+      const specAndSkills = {};
+      // eslint-disable-next-line no-restricted-syntax
+      for (const spec in this.specIndex) {
+        if (this.specIndex[spec] !== -1) {
+          const specName = this.specializations.titles[this.specIndex[spec]];
+          specAndSkills[specName] = this.selectedSkills[spec];
         }
-        payload = {
-          ...this.localUserData,
-          avatarId: checkAvatarID,
-          skillFilters: specAndSkills,
-          additionalInfo: {
-            ...additionalInfo,
-            ...{
-              company: undefined,
-              CEO: undefined,
-              website: undefined,
-            },
-          },
-        };
       }
+      const payload = {
+        ...this.localUserData,
+        avatarId: checkAvatarID,
+        specializationKeys: '',
+        skillFilters: specAndSkills,
+        additionalInfo: {
+          ...additionalInfo,
+          ...{
+            company: undefined,
+            CEO: undefined,
+            website: undefined,
+          },
+        },
+      };
       try {
-        await this.$store.dispatch('user/editUserData', payload);
+        await this.$store.dispatch('user/editWorkerData', payload);
+        this.showModalSave();
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async editEmployerProfile(checkAvatarID, additionalInfo) {
+      // TODO: Добавить skillFilters
+      const payload = {
+        ...this.localUserData,
+        avatarId: checkAvatarID,
+        additionalInfo: {
+          ...additionalInfo,
+          ...{
+            educations: undefined,
+            workExperiences: undefined,
+            skills: undefined,
+          },
+        },
+      };
+      try {
+        await this.$store.dispatch('user/editEmployerData', payload);
         this.showModalSave();
       } catch (e) {
         console.log(e);
