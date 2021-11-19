@@ -41,16 +41,23 @@
                 {{ (user.firstName || '') + ' ' + (user.lastName || '') }}
               </span>
             </div>
-            <template v-if="options.isCreating || options.isAdding">
-              <input
-                :id="user.id"
-                type="checkbox"
-                class="friends__checkbox_custom"
-                :checked="memberUserIds.findIndex((id) => id === user.id) >= 0"
-                @change="changeSelStatus($event, user.id)"
+            <div
+              v-if="options.isCreating || options.isAdding"
+              class="checkbox-field"
+            >
+              <label
+                :for="user.id"
+                class="checkbox solid-blue"
               >
-              <label :for="user.id" />
-            </template>
+                <input
+                  :id="user.id"
+                  type="checkbox"
+                  class="checkbox-input"
+                  @change="changeSelStatus($event, user.id)"
+                >
+                <span class="checkmark" />
+              </label>
+            </div>
             <div
               v-if="options.isMembersList && options.itsOwner"
               class="friends__del-cont"
@@ -139,6 +146,7 @@ export default {
       });
     },
     changeSelStatus({ target }, userId) {
+      console.log(userId);
       if (target.checked) {
         this.memberUserIds.push(userId);
       } else {
@@ -202,12 +210,14 @@ export default {
           this.showToastError(e);
         }
       } else if (isAdding && memberUserIds.length) {
-        const config = {
+        const payload = {
+          config: {
+            userIds: memberUserIds,
+          },
           chatId,
-          userIds: memberUserIds,
         };
 
-        await this.$store.dispatch('chat/addNewMembers', config);
+        await this.$store.dispatch('chat/addNewMembers', payload);
       }
 
       this.hide();
@@ -345,37 +355,71 @@ export default {
   font-size: 22px;
 }
 
-.friends {
-  &__checkbox_custom {
-    position: absolute;
-    z-index: -1;
-    opacity: 0;
+.checkbox {
+  flex-shrink: 0;
+  &__label {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 130%;
+    color: $black600;
+    cursor: pointer;
   }
-  &__checkbox_custom+label {
-    display: inline-flex;
-    align-items: center;
-    user-select: none;
-    background: #F7F8FA;
-    border-radius: 3px;
-  }
-  &__checkbox_custom+label::before {
-    content: '';
-    display: inline-block;
+}
+.checkbox-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  .checkbox {
     width: 24px;
     height: 24px;
-    flex-shrink: 0;
-    flex-grow: 0;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 50% 50%;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
   }
-  &__checkbox_custom:checked+label::before {
-    border-color: #0b76ef;
-    background-color: #0b76ef;
+  input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  .checkmark {
+    transition: .3s;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: #F7F8FA;
     border-radius: 3px;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+    cursor: pointer;
+    border: 1px solid transparent;
+    &:hover {
+      border: 1px solid $black100;
+    }
   }
+  .checkmark::after {
+    content: "";
+    transition: all 300ms;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+    background: $blue url('~assets/img/ui/checked.svg') no-repeat 50% 50%;
+    opacity: 0;
+  }
+  input:checked ~ .checkmark::after {
+    opacity: 1;
+  }
+  .checkbox_label {
+    font-size: inherit;
+  }
+}
 
+.friends {
   &__del-cont {
     cursor: pointer;
   }

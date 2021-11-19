@@ -68,7 +68,7 @@
                 class="info-message"
               >
                 <div>
-                  {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
+                  {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe, message.infoMessage.messageAction.user ? message.infoMessage.messageAction.user.id === userData.id : false) }}
                 </div>
                 <div
                   v-if="message.infoMessage.messageAction !== 'groupChatCreate' || (message.infoMessage.messageAction === 'groupChatCreate' && !message.itsMe)"
@@ -344,7 +344,7 @@ export default {
     this.$store.commit('chat/clearMessagesFilter');
   },
   methods: {
-    setInfoMessageText(action, itsMe) {
+    setInfoMessageText(action, itsMe, isAboutMe) {
       let text = 'chat.systemMessages.';
       switch (action) {
         case 'employerInviteOnQuest': {
@@ -369,6 +369,10 @@ export default {
         }
         case 'groupChatCreate': {
           text += itsMe ? 'youCreatedAGroupChat' : 'createdAGroupChat';
+          break;
+        }
+        case 'groupChatDeleteUser': {
+          text += itsMe ? 'youHaveRemovedFromChat' : 'removedFromChat';
           break;
         }
         default: {

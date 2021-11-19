@@ -1322,7 +1322,11 @@
       "acceptedTheInviteToTheQuest": "accepted the invite to the quest",
       "youAcceptedTheInviteToTheQuest": "You accepted the invite to the quest",
       "createdAGroupChat": "created a group chat",
-      "youCreatedAGroupChat": "You created a group chat"
+      "youCreatedAGroupChat": "You created a group chat",
+      "removedFromChat": "removed from chat",
+      "youHaveRemovedFromChat": "You have removed from the chat",
+      "addedToChat": "added to chat",
+      "youAddedToChat": "You added to chat"
     }
   },
   "settings": {
