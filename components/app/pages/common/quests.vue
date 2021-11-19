@@ -206,7 +206,7 @@
                 <div class="block__text block__text_title">
                   {{ `${item.user.firstName} ${item.user.lastName}` }}
                   <span
-                    v-if="userCompany"
+                    v-if="userCompany && item.user.additionalInfo"
                     class="block__text block__text_grey"
                   >{{ `${$t('quests.fromSmall')} ${item.user.additionalInfo.company ? item.user.additionalInfo.company : 'Without company'}` }}</span>
                 </div>
