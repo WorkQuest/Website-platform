@@ -70,14 +70,26 @@
                 <div>
                   {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe, message.infoMessage.messageAction.user ? message.infoMessage.messageAction.user.id === userData.id : false) }}
                 </div>
-                <div
-                  v-if="message.infoMessage.messageAction !== 'groupChatCreate' || (message.infoMessage.messageAction === 'groupChatCreate' && !message.itsMe)"
-                  class="info-message__link"
-                  :class="{'info-message__link_left' : !message.itsMe}"
-                  @click="openProfile(message.infoMessage.userId, message.itsMe)"
-                >
-                  {{ message.itsMe ? (message.infoMessage.user.firstName || '') + ' ' + (message.infoMessage.user.lastName || '') : (message.sender.firstName || '') + ' ' + (message.sender.lastName || '') }}
-                </div>
+                <template v-if="message.infoMessage.messageAction !== 'groupChatCreate' || (message.infoMessage.messageAction === 'groupChatCreate' && !message.itsMe)">
+                  <div
+                    class="info-message__link"
+                    :class="{'info-message__link_left' : !message.itsMe}"
+                    @click="openProfile(message.infoMessage.user.id, message.itsMe)"
+                  >
+                    {{
+                      message.itsMe ?
+                        (message.infoMessage.user ? (message.infoMessage.user.firstName || '') : '') + ' ' + (message.infoMessage.user ? (message.infoMessage.user.lastName || '') : '') :
+                        (message.sender.firstName || '') + ' ' + (message.sender.lastName || '')
+                    }}
+                  </div>
+                  <div
+                    v-if="!message.itsMe && ['groupChatAddUser', 'groupChatDeleteUser'].includes(message.infoMessage.messageAction) && message.infoMessage.user"
+                    class="info-message__link"
+                    @click="openProfile(message.infoMessage.user.id, message.itsMe)"
+                  >
+                    {{ (message.infoMessage.user.firstName || '') + ' ' + (message.infoMessage.user.lastName || '') }}
+                  </div>
+                </template>
               </div>
               <template v-else>
                 <img
@@ -218,6 +230,7 @@
               :placeholder="$t('chat.writeYouMessage')"
               is-hide-error
               mode="chat"
+              :on-enter-press="handleSendMessage"
             />
             <button
               class="chat-container__send-btn"
@@ -373,6 +386,10 @@ export default {
         }
         case 'groupChatDeleteUser': {
           text += itsMe ? 'youHaveRemovedFromChat' : 'removedFromChat';
+          break;
+        }
+        case 'groupChatAddUser': {
+          text += itsMe ? 'youAddedToChat' : 'addedToChat';
           break;
         }
         default: {
@@ -551,7 +568,7 @@ export default {
       const payload = {
         config: {
           params: {
-            limit: 20,
+            limit: 25,
             offset,
             'sort[createdAt]': direction ? 'asc' : undefined,
           },
@@ -1044,7 +1061,7 @@ background-color: #F7F8FA;
 
 .info-message {
   display: grid;
-  grid-template-columns: repeat(2, max-content);
+  grid-template-columns: repeat(3, max-content);
   gap: 5px;
 
   &__link {

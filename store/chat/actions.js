@@ -41,7 +41,7 @@ export default {
     const canLoadToTop = messages[0]?.number > 1;
 
     commit('setMessagesList', {
-      ...result, direction, offset: offset + 20, canLoadToBottom, canLoadToTop,
+      ...result, direction, offset: offset + 25, canLoadToBottom, canLoadToTop,
     });
     return result;
   },
@@ -108,15 +108,14 @@ export default {
 
     commit('setGroupChatUsers', result);
   },
-  async removeMember({ commit, rootState: { user, chat: { messagesFilter } } }, { chatId, userId }) {
+  async removeMember({ commit, rootState: { chat: { messagesFilter } } }, { chatId, userId }) {
     const response = await this.$axios.$delete(`/v1/user/me/chat/group/${chatId}/remove/${userId}`);
 
     if (response.ok) {
-      const myId = user.userData.id;
       const message = response.result;
 
       if (!messagesFilter.canLoadToBottom) {
-        message.itsMe = message.sender.id === myId;
+        message.itsMe = true;
 
         await commit('addMessageToList', message);
       }
@@ -126,20 +125,19 @@ export default {
 
     return response;
   },
-  async addNewMembers({ commit, rootState: { user, chat: { messagesFilter } } }, { chatId, config }) {
+  async addNewMembers({ commit, rootState: { chat: { messagesFilter } } }, { chatId, config }) {
     const response = await this.$axios.$post(`/v1/user/me/chat/group/${chatId}/add`, config);
 
     if (response.ok) {
-      const myId = user.userData.id;
-      const message = response.result;
+      response.result.forEach((message) => {
+        if (!messagesFilter.canLoadToBottom) {
+          message.itsMe = true;
 
-      if (!messagesFilter.canLoadToBottom) {
-        message.itsMe = message.sender.id === myId;
+          commit('addMessageToList', message);
+        }
 
-        await commit('addMessageToList', message);
-      }
-
-      // await commit('addUsersToChat', message.infoMessage);
+        commit('addUserToChat', message.infoMessage.user);
+      });
     }
 
     return response;

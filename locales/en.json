@@ -1326,7 +1326,9 @@
       "removedFromChat": "removed from chat",
       "youHaveRemovedFromChat": "You have removed from the chat",
       "addedToChat": "added to chat",
-      "youAddedToChat": "You added to chat"
+      "youAddedToChat": "You added to chat",
+      "userAddedToChat": "User added to chat",
+      "userRemovedFromChat": "User removed from chat"
     }
   },
   "settings": {

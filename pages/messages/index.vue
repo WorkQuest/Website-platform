@@ -166,6 +166,14 @@ export default {
             text += 'createdAGroupChat';
             break;
           }
+          case 'groupChatDeleteUser': {
+            text += 'userRemovedFromChat';
+            break;
+          }
+          case 'groupChatAddUser': {
+            text += 'userAddedToChat';
+            break;
+          }
           default: {
             text = '';
             break;

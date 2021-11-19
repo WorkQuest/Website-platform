@@ -1125,14 +1125,17 @@ export default {
               limit: 30,
               offset: 0,
             });
-          } else if (action === 'newMessage' && data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
+          } else if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
             this.$store.commit('chat/addMessageToList', data);
+
             if (data.type === 'info') {
-              // if (data.infoMessage.messageAction === 'groupChatAddUsers') {
-              //   this.$store.commit('chat/addUsersToChat', data.infoMessage.users);
-              // } else if (data.infoMessage.messageAction === 'groupChatDeleteUser') {
-            //   this.$store.commit('chat/removeUserFromChat', data.infoMessage.user.id);
-            // }
+              const { user } = data.infoMessage;
+
+              if (action === 'groupChatAddUsers') {
+                this.$store.commit('chat/addUserToChat', user);
+              } else if (action === 'groupChatDeleteUser') {
+                this.$store.commit('chat/removeUserFromChat', user.id);
+              }
             }
           }
         });
