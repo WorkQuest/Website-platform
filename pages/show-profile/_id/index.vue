@@ -43,10 +43,12 @@
           v-if="selected === 3"
           class="tab__container"
         >
-          <reviewsTab />
+          <reviewsTab
+            :user-id="userData.id"
+          />
         </div>
         <div
-          v-if="selected === 3"
+          v-if="selected === 3 && userStatistics.reviewCount > 0"
           class="button"
         >
           <nuxt-link

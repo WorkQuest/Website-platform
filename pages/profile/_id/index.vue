@@ -45,7 +45,9 @@
           v-if="selected === 2"
           class="tab__container"
         >
-          <reviewsTab />
+          <reviewsTab
+            :user-id="userData.id"
+          />
         </div>
 
         <div

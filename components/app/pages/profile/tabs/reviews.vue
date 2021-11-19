@@ -1,7 +1,7 @@
 <template>
   <div class="reviews-grid">
     <span
-      v-for="(item, i) in reviews"
+      v-for="(item, i) in reviews.reviews"
       :key="i"
     >
       <div class="reviews-item">
@@ -14,7 +14,7 @@
           </div>
           <div class="name__container">
             <div class="card-subtitle__name">
-              {{ item.reviewerName }}
+              {{ `${item.fromUser.firstName} ${item.fromUser.lastName}` }}
             </div>
             <div class="card-subtitle_green">
               {{ $t('role.worker') }}
@@ -57,6 +57,12 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ReviewsTab',
+  props: {
+    userId: {
+      type: String,
+      default: '',
+    },
+  },
   computed: {
     ...mapGetters({
       reviews: 'user/getAllUserReviews',
@@ -64,7 +70,7 @@ export default {
     }),
   },
   async mounted() {
-    await this.getAllReviews();
+    await this.$store.dispatch('user/getAllUserReviews', this.userId);
   },
   methods: {
     showProfile() {
@@ -74,10 +80,6 @@ export default {
       this.ShowModal({
         key: modals.reviewDetails,
       });
-    },
-    async getAllReviews() {
-      const { id } = this.userData;
-      await this.$store.dispatch('user/getAllUserReviews', id);
     },
   },
 };
