@@ -50,17 +50,9 @@
         <div class="avatar__row">
           <div class="avatar__container">
             <img
-              v-if="imageData"
               id="userAvatar"
               class="profile__img"
-              :src="imageData"
-              alt=""
-            >
-            <img
-              v-if="!imageData"
-              id="userAvatarTwo"
-              class="profile__img"
-              src="~/assets/img/app/avatar_empty.png"
+              :src="imageData ? imageData : require('~/assets/img/app/avatar_empty.png')"
               alt=""
             >
             <label class="user_edit_avatar">
@@ -85,6 +77,7 @@
               v-if="userRole === 'worker'"
               class="profile__status"
             >
+              <!--              TODO: Добавить вывод статуса SumSub-->
               {{ $t('settings.notVerified') }}
               <span class="icon-check_all_big" />
             </span>
@@ -111,7 +104,10 @@
                   </template>
                 </base-field>
               </div>
-              <div class="profile__row-data profile__row-data_big">
+              <div
+                class="profile__row-data profile__row-data_big"
+                @click="toggleSearchDD"
+              >
                 <vue-phone-number-input
                   v-model="localUserData.additionalInfo.firstMobileNumber"
                   class="Phone"
@@ -122,9 +118,10 @@
                 />
                 <base-field
                   v-model="localUserData.additionalInfo.address"
+                  v-click-outside="hideSearchDD"
                   :placeholder="address || $t('settings.addressInput')"
                   mode="icon"
-                  :selector="true"
+                  :selector="searchDDStatus"
                   @selector="getAddressInfo(localUserData.additionalInfo.address)"
                 >
                   <template v-slot:left>
@@ -134,6 +131,7 @@
                     <div
                       v-if="addresses.length"
                       class="selector"
+                      :class="{'selector_hide': searchDDStatus === false}"
                     >
                       <div class="selector__items">
                         <div
@@ -690,14 +688,19 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import ClickOutside from 'vue-click-outside';
 import { GeoCode } from 'geo-coder';
 import modals from '~/store/modals/modals';
 import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 
 export default {
   name: 'Settings',
+  directives: {
+    ClickOutside,
+  },
   data() {
     return {
+      searchDDStatus: true,
       specCount: 0,
       perHour: '0',
       specIndex: {
@@ -830,6 +833,12 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    toggleSearchDD() {
+      this.searchDDStatus = !this.searchDDStatus;
+    },
+    hideSearchDD() {
+      this.searchDDStatus = false;
+    },
     getApplicantStatus() {
       const id = this.accessToken.userId;
       try {
@@ -1126,6 +1135,9 @@ export default {
   @include box;
   width: 100%;
   z-index: 140;
+  &_hide {
+    display: none;
+  }
   &__items {
     background: #FFFFFF;
     display: grid;
