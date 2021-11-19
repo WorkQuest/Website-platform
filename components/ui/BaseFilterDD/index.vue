@@ -179,8 +179,16 @@ export default {
       this.isOpenDD = true;
     },
     handleSubmit() {
+      const queryKeys = Object.keys(this.selected);
+      const query = [];
+      for (let i = 0; i < queryKeys.length; i += 1) {
+        const path = queryKeys[i];
+        if (this.selected[path] === true) {
+          query.push(path);
+        }
+      }
       const data = {
-        query: Object.keys(this.selected),
+        query,
         selected: this.selected,
         selectedAll: this.selectedAll,
         visible: this.visible,

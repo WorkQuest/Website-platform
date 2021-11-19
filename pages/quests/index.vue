@@ -91,17 +91,43 @@
             {{ $t('quests.searchResults') }}
           </div>
         </div>
+        <!--        TODO: DELETE DOWN-->
+        <div>
+          [urgent: {{ selectedUrgent }}]
+          [quest: {{ selectedQuest }}]
+          [type of job: {{ selectedTypeOfJob }}]
+          [distantWork: {{ selectedDistantWork }}]
+        </div>
         <div class="quests__tools tools">
           <div class="tools__panel">
             <base-filter-dd class="tools__item" />
             <base-dd
-              v-for="(item, i) in panelDD"
-              :key="i"
-              v-model="item.vmodel"
-              :class="item.class"
-              :items="item.items"
-              :mode="item.mode"
-              :placeholder="item.placeholder"
+              v-model="selectedQuest"
+              class="tools__item"
+              mode:="blackFont"
+              :placeholder="$t('quests.quests')"
+              :items="quests"
+            />
+            <base-dd
+              v-model="selectedUrgent"
+              class="tools__item"
+              mode:="blackFont"
+              :placeholder="$t('quests.urgent')"
+              :items="urgent"
+            />
+            <base-dd
+              v-model="selectedTypeOfJob"
+              class="tools__item"
+              mode:="blackFont"
+              :placeholder="$t('quests.typeOfJob')"
+              :items="typeOfJob"
+            />
+            <base-dd
+              v-model="selectedDistantWork"
+              class="tools__item"
+              mode:="blackFont"
+              :placeholder="$t('quests.distantWork.title')"
+              :items="distantWork"
             />
             <base-btn
               class="tools__item"
@@ -117,6 +143,7 @@
                 />
               </template>
             </base-btn>
+            [sort: {{ sortData }}]
             <base-btn
               class="tools__item"
               :mode="'light'"
@@ -163,9 +190,9 @@
           :page="'quests'"
         />
         <base-pager
-          v-if="totalPagesValue > 1"
+          v-if="totalPages > 1"
           v-model="page"
-          :total-pages="totalPagesValue"
+          :total-pages="totalPages"
         />
         <emptyData
           v-else-if="questsArray.length === 0"
@@ -196,10 +223,10 @@ export default {
     return {
       isShowMap: true,
       search: '',
-      selectedQuest: '',
-      selectedUrgent: '',
-      selectedTypeOfJob: '',
-      selectedDistantWork: '',
+      selectedQuest: 0,
+      selectedUrgent: 0,
+      selectedTypeOfJob: 0,
+      selectedDistantWork: 0,
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
@@ -208,7 +235,6 @@ export default {
       sortData: '',
       page: 1,
       perPager: 10,
-      totalPagesValue: 1,
       additionalValue: '',
       zoomNumber: 15,
       addresses: [],
@@ -221,40 +247,41 @@ export default {
       checkWelcomeModal: 'modals/getIsShowWelcome',
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
-      specializationsFilters: 'quests/getSpecializationsFilters', // TODO: переработать способ хранения всех фильторв, брать от сюда .query
+      specializationsFilters: 'quests/getSpecializationsFilters',
     }),
-    panelDD() {
-      return [
-        {
-          vmodel: this.selectedQuest,
-          class: 'tools__item',
-          items: this.quests,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.quests'),
-        },
-        {
-          vmodel: this.selectedUrgent,
-          class: 'tools__item',
-          items: this.urgent,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.urgent'),
-        },
-        {
-          vmodel: this.selectedTypeOfJob,
-          class: 'tools__item',
-          items: this.typeOfJob,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.typeOfJob'),
-        },
-        {
-          vmodel: this.selectedDistantWork,
-          class: 'tools__item',
-          items: this.distantWork,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.distantWork.title'),
-        },
-      ];
-    },
+    // todo: del
+    // panelDD() {
+    //   return [
+    //     {
+    //       vmodel: this.selectedQuest,
+    //       class: 'tools__item',
+    //       items: this.quests,
+    //       mode: 'blackFont',
+    //       placeholder: this.$t('quests.quests'),
+    //     },
+    //     {
+    //       vmodel: this.selectedUrgent,
+    //       class: 'tools__item',
+    //       items: this.urgent,
+    //       mode: 'blackFont',
+    //       placeholder: this.$t('quests.urgent'),
+    //     },
+    //     {
+    //       vmodel: this.selectedTypeOfJob,
+    //       class: 'tools__item',
+    //       items: this.typeOfJob,
+    //       mode: 'blackFont',
+    //       placeholder: this.$t('quests.typeOfJob'),
+    //     },
+    //     {
+    //       vmodel: this.selectedDistantWork,
+    //       class: 'tools__item',
+    //       items: this.distantWork,
+    //       mode: 'blackFont',
+    //       placeholder: this.$t('quests.distantWork.title'),
+    //     },
+    //   ];
+    // },
     distance() {
       return [
         '+ 100 m',
@@ -272,6 +299,7 @@ export default {
     },
     distantWork() {
       return [
+        '-',
         this.$t('quests.distantWork.distantWork'),
         this.$t('quests.distantWork.workInOffice'),
         this.$t('quests.distantWork.bothVariant'),
@@ -279,11 +307,12 @@ export default {
     },
     typeOfJob() {
       return [
+        '-',
         this.$t('quests.fullTime'),
         this.$t('quests.partTime'),
         this.$t('quests.fixedTerm'),
-        this.$t('quests.contract'),
-        this.$t('quests.remoteWork'),
+        // this.$t('quests.contract'), // TODO: на бэке нет таких полей?
+        // this.$t('quests.remoteWork'),
       ];
     },
     quests() {
@@ -309,10 +338,10 @@ export default {
   },
   watch: {
     async isShowMap() {
+      this.page = 1;
       this.SetLoader(true);
       const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
       await this.getQuests(additionalValue);
-      this.totalPagesValue = this.totalPages;
       this.SetLoader(false);
     },
     async page() {
@@ -321,10 +350,31 @@ export default {
       await this.getQuests(additionalValue);
       this.SetLoader(false);
     },
+    async specializationsFilters() {
+      this.page = 1;
+      this.SetLoader(true);
+      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      await this.getQuests(additionalValue);
+      this.SetLoader(false);
+    },
+    async selectedDistantWork() {
+      this.page = 1;
+      this.SetLoader(true);
+      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      await this.getQuests(additionalValue);
+      this.SetLoader(false);
+    },
+    async selectedTypeOfJob() {
+      this.page = 1;
+      this.SetLoader(true);
+      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      await this.getQuests(additionalValue);
+      this.SetLoader(false);
+    },
     async mapBounds() {
+      this.page = 1;
       const additionalValue = `${this.sortData}`;
       await this.getQuests(additionalValue);
-      this.totalPagesValue = this.totalPages;
     },
     distanceIndex() {
       const zoom = {
@@ -351,7 +401,39 @@ export default {
       });
     },
     async getQuests(payload = '') {
+      const filtersData = this.specializationsFilters?.query || '';
+      if (filtersData) {
+        let filters = '';
+        for (let i = 0; i < filtersData.length; i += 1) { filters += `&specializations[]=${filtersData[i]}`; }
+        payload += filters;
+      }
+
       if (!this.isShowMap) {
+        switch (this.selectedDistantWork) {
+          case 1:
+            payload += '&workplaces[]=distant';
+            break;
+          case 2:
+            payload += '&workplaces[]=office';
+            break;
+          case 3:
+            payload += '&workplaces[]=both';
+            break;
+          default: break;
+        }
+        switch (this.selectedTypeOfJob) {
+          case 1:
+            payload += '&employments[]=fullTime';
+            break;
+          case 2:
+            payload += '&employments[]=partTime';
+            break;
+          case 3:
+            payload += '&employments[]=fixedTerm';
+            break;
+          default: break;
+        }
+
         this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
         this.questsArray = this.questsObjects.quests;
       } else {
@@ -373,28 +455,24 @@ export default {
     toggleMap() {
       this.isShowMap = !this.isShowMap;
     },
-    showDetails() {
-      this.$router.push('/quests/1');
-    },
+    // showDetails() { // вроде не юзается и можно удалить
+    //   this.$router.push('/quests/1');
+    // },
     async changeSorting(type) {
       let sortValue = '';
       if (type === 'price') {
         if (this.priceSort === 'desc') {
           this.priceSort = 'asc';
-          this.timeSort = 'desc';
         } else {
           this.priceSort = 'desc';
-          this.timeSort = 'asc';
         }
         sortValue = `&sort[price]=${this.priceSort}`;
       }
       if (type === 'time') {
         if (this.timeSort === 'desc') {
           this.timeSort = 'asc';
-          this.priceSort = 'desc';
         } else {
           this.timeSort = 'desc';
-          this.priceSort = 'asc';
         }
         sortValue = `&sort[createdAt]=${this.timeSort}`;
       }

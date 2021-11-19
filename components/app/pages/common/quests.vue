@@ -438,7 +438,7 @@ export default {
         } if (status === QuestStatuses.Closed) {
           return this.$t('quests.questClosed:');
         } if (status === QuestStatuses.Dispute) {
-          return this.$t('questDispute:');
+          return this.$t('quests.questDispute:');
         } if (status === QuestStatuses.WaitWorker) {
           return this.$t('quests.inProgressBy');
         } if (status === QuestStatuses.WaitConfirm) {
