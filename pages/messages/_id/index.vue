@@ -550,7 +550,6 @@ export default {
       await Promise.all(files.map(async ({
         data, file, url, type,
       }, i) => {
-      await Promise.all(files.map(async ({ data, file }) => {
         const cData = {
           url: data.url,
           formData: file,
