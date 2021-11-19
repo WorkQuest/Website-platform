@@ -36,7 +36,7 @@
                 <div
                   v-if="addresses.length"
                   class="selector"
-                  :class="{'hide': searchDDStatus === false}"
+                  :class="{'selector_hide': searchDDStatus === false}"
                 >
                   <div
                     class="selector__items"
@@ -353,11 +353,9 @@ export default {
   methods: {
     toggleSearchDD() {
       this.searchDDStatus = !this.searchDDStatus;
-      return this.searchDDStatus;
     },
     hideSearchDD() {
       this.searchDDStatus = false;
-      return this.searchDDStatus;
     },
     showPriceSearch() {
       this.ShowModal({
@@ -471,10 +469,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-
-.hide {
-  display: none;
-}
 
 .block {
   &__container {
@@ -812,7 +806,7 @@ export default {
     }
   }
 }
-.search-gmap{
+.search-gmap {
   &__top {
     height:435px;
   }
@@ -889,6 +883,9 @@ export default {
   @include box;
   width: 100%;
   z-index: 140;
+  &_hide {
+    display: none;
+  }
   &__items {
     background: #FFFFFF;
     display: grid;
