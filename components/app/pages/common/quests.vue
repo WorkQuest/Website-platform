@@ -43,10 +43,6 @@
                 </div>
                 <div class="block__text block__text_title">
                   {{ `${item.quest.user.firstName} ${item.quest.user.lastName}` }}
-                  <span
-                    v-if="userCompany"
-                    class="block__text block__text_grey"
-                  >{{ `${$t('quests.fromSmall')} ${item.quest.user.additionalInfo.company}` }}</span>
                 </div>
               </div>
               <div
@@ -205,10 +201,6 @@
                 </div>
                 <div class="block__text block__text_title">
                   {{ `${item.user.firstName} ${item.user.lastName}` }}
-                  <span
-                    v-if="userCompany && item.user.additionalInfo"
-                    class="block__text block__text_grey"
-                  >{{ `${$t('quests.fromSmall')} ${item.user.additionalInfo.company ? item.user.additionalInfo.company : 'Without company'}` }}</span>
                 </div>
               </div>
               <quest-dd
@@ -406,9 +398,6 @@ export default {
         }
       }
       return '';
-    },
-    userCompany() {
-      return this.userData.additionalInfo?.company || null;
     },
   },
   async mounted() {
