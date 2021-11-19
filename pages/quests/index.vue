@@ -840,7 +840,7 @@ export default {
     justify-items: center;
     align-items: center;
     height: 100%;
-    width: 144px;
+    width: 146px;
   }
   &__icon {
     margin-bottom: -10px;

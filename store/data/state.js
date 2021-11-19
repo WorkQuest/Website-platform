@@ -382,7 +382,7 @@ export default () => ({
   messages: {
     list: [],
     count: 0,
-    chatId: '',
+    chat: null,
   },
   messagesFilter: {
     topOffset: 0,
