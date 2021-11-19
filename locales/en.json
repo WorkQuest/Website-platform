@@ -259,6 +259,7 @@
     "employer": {
       "usersNotResponded": "Users have not yet responded to the quest"
     },
+    "companyNotListed": "Company not listed",
     "workersNotInvited": "Workers not invited!",
     "startChat": "Start chat",
     "invite": "Invite",
@@ -921,6 +922,9 @@
     "yourAccountVerified": "Your account has been successfully verified",
     "youCanUpdateThisInYourProfile": "You can easily update this in your profile.",
     "disable2Fa": "Disable 2FA",
+    "2FAEnabled": "2FA enabled successfully!",
+    "2FADisabled": "2FA disabled successfully!",
+    "2FAStatus": "2FA Status",
     "yourLevelHasBeenRaised": "Your level has been raised",
     "payment": "Payment",
     "cardHolder": "Cardholder name",

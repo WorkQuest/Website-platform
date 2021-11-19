@@ -627,12 +627,19 @@ export default {
 
       this.messageText = '';
 
-      await Promise.all(files.map(async ({ data, file }) => {
+      const msgFiles = [];
+
+      await Promise.all(files.map(async ({
+        data, file, url, type,
+      }, i) => {
         const cData = {
           url: data.url,
           formData: file,
           type: file.type,
         };
+        msgFiles.push({
+          url, id: i + 1, type,
+        });
 
         try {
           await this.$store.dispatch('chat/setImage', cData);
