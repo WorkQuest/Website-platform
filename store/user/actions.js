@@ -99,10 +99,23 @@ export default {
     commit('setUserRole', response.result);
     return response;
   },
-  async editUserData({ commit }, payload) {
-    const response = await this.$axios.$put('/v1/profile/edit', payload);
-    commit('setUserData', response.result);
-    return response;
+  async editEmployerData({ commit }, payload) {
+    try {
+      const response = await this.$axios.$put('/v1/employer/profile/edit', payload);
+      commit('setUserData', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
+  },
+  async editWorkerData({ commit }, payload) {
+    try {
+      const response = await this.$axios.$put('/v1/worker/profile/edit', payload);
+      commit('setUserData', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
   async logout({ commit }) {
     commit('logOut');
