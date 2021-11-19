@@ -120,7 +120,10 @@ export default {
           ],
         };
       }
-      return {};
+      return {
+        labels: [],
+        datasets: [],
+      };
     },
   },
 };

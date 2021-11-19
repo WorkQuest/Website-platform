@@ -418,9 +418,7 @@ export default {
       this.SetLoader(false);
     },
     async connectToMetamask() {
-      const { currentPool } = this;
-      if (!this.isConnected) await this.$store.dispatch('web3/connect', { chain: currentPool });
-      await localStorage.setItem('miningPoolId', currentPool);
+      await this.$store.dispatch('web3/connect', { chain: this.currentPool });
     },
 
     async tokensDataUpdate() {
