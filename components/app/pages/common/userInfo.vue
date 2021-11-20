@@ -345,17 +345,17 @@ export default {
     display: flex;
     margin-top: 20px;
     width: 142px;
-    .star {
-      width: inherit;
-      background-image: url('~assets/img/ui/star-empty.svg');
-      background-repeat: no-repeat;
-      background-position: center;
-      &__half {
-        background-image: url('~assets/img/ui/star-half.svg');
-      }
-      &__full {
-        background-image: url('~assets/img/ui/star-small.svg');
-      }
+  }
+  .star {
+    width: inherit;
+    background-image: url('~assets/img/ui/star-empty.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    &__half {
+      background-image: url('~assets/img/ui/star-half.svg');
+    }
+    &__full {
+      background-image: url('~assets/img/ui/star-small.svg');
     }
   }
 

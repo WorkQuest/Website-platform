@@ -8,18 +8,34 @@
         <div class="messageSend__content">
           <div class="reviews-item">
             <div class="reviews-item__header">
-              <div class="reviews-item__avatar">
-                <img
-                  src="~/assets/img/temp/avatar-medium.jpg"
-                  alt=""
-                >
-              </div>
-              <div class="name__container">
-                <div class="card-subtitle__name">
-                  {{ review.reviewerName }}
+              <div class="reviews-item__user-data">
+                <div class="reviews-item__avatar">
+                  <img
+                    class="reviews-item__img"
+                    :src="options.userAvatar"
+                    alt=""
+                  >
                 </div>
-                <div class="card-subtitle_green">
-                  {{ $t('role.worker') }}
+                <div class="name__container">
+                  <div class="card-subtitle__name">
+                    {{ options.userFullName }}
+                  </div>
+                  <div class="card-subtitle_green">
+                    {{ $t('role.worker') }}
+                  </div>
+                </div>
+              </div>
+              <div class="reviews-item__rating-block">
+                <div class="rating">
+                  <div
+                    v-for="(star, key) in initStars(options.reviewMark)"
+                    :key="key"
+                    class="star"
+                    :class="star ? `star${star}` : star"
+                  />
+                </div>
+                <div class="rating-mark">
+                  {{ options.reviewMark }}
                 </div>
               </div>
             </div>
@@ -28,15 +44,11 @@
                 {{ $t('quests.questBig') }}
               </div>
               <div class="card-subtitle__title">
-                {{ review.questName }}
+                {{ options.questTitle }}
               </div>
             </div>
             <div class="description">
-              {{ review.reviewDesc }}
-            </div>
-
-            <div class="reviews-item__rating">
-              {{ review.reviewerRating }}
+              {{ options.reviewMessage }}
             </div>
           </div>
         </div>
@@ -46,6 +58,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -61,7 +74,29 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+  },
   methods: {
+    initStars(mark) {
+      let specialNumber = 0;
+      const starArray = [];
+      for (let i = 0; i < 5; i += 1) {
+        if (mark > i) {
+          starArray.push('__full');
+        } else {
+          specialNumber = mark - (i);
+          if ((specialNumber >= 0.3 && specialNumber <= 0.7) && !this.userStars.includes('__half')) {
+            starArray.push('__half');
+          } else {
+            starArray.push('');
+          }
+        }
+      }
+      return starArray;
+    },
     hide() {
       this.CloseModal();
     },
@@ -121,14 +156,44 @@ export default {
     color: $black500;
   }
 }
-
+.rating {
+  height: 20px;
+  display: flex;
+  margin-top: 2px;
+  width: 142px;
+  .star {
+    width: inherit;
+    background-image: url('~assets/img/ui/star-empty.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    &__half {
+      background-image: url('~assets/img/ui/star-half.svg');
+    }
+    &__full {
+      background-image: url('~assets/img/ui/star-small.svg');
+    }
+  }
+}
 .reviews-item {
   width: 100%;
   background-color: #fff;
   border-radius: 6px;
   position: relative;
+  &__rating-block, &__user-data {
+    grid-gap: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  &__img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
   &__header {
     @extend .styles__flex;
+    justify-content: space-between;
   }
   &__avatar {
     margin-right: 15px;

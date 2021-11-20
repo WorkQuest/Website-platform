@@ -1,24 +1,39 @@
 <template>
   <div class="reviews-grid">
     <span
-      v-for="(item, i) in reviews.reviews"
+      v-for="(reviewData, i) in reviews.reviews"
       :key="i"
     >
       <div class="reviews-item">
         <div class="reviews-item__header">
-          <div class="reviews-item__avatar">
-            <img
-              src="~/assets/img/temp/avatar-medium.jpg"
-              alt=""
-            >
+          <div class="reviews-item__user-data">
+            <div class="reviews-item__avatar">
+              <img
+                class="reviews-item__img"
+                :src="initAvatar(reviewData.fromUser)"
+                alt=""
+                loading="lazy"
+              >
+            </div>
+            <div class="name__container">
+              <div class="card-subtitle__name">
+                {{ `${reviewData.fromUser.firstName} ${reviewData.fromUser.lastName}` }}
+              </div>
+              <div class="card-subtitle_green">
+                {{ $t('role.worker') }}
+              </div>
+            </div>
           </div>
-          <div class="name__container">
-            <div class="card-subtitle__name">
-              {{ `${item.fromUser.firstName} ${item.fromUser.lastName}` }}
+          <div class="reviews-item__rating-block">
+            <div class="rating">
+              <div
+                v-for="(star, key) in initStars(reviewData.mark)"
+                :key="key"
+                class="star"
+                :class="star ? `star${star}` : star"
+              />
             </div>
-            <div class="card-subtitle_green">
-              {{ $t('role.worker') }}
-            </div>
+            <div class="rating-mark">{{ reviewData.mark }}</div>
           </div>
         </div>
         <div class="reviews-item__subheader">
@@ -26,19 +41,19 @@
             {{ $t('quests.questBig') }}
           </div>
           <div class="card-subtitle__title">
-            {{ item.questName }}
+            {{ reviewData.quest.title }}
           </div>
         </div>
         <div class="description">
-          {{ item.reviewDesc }}
+          {{ reviewData.message }}
         </div>
 
         <div class="reviews-item__rating">
-          {{ item.reviewerRating }}
+          {{ reviewData.reviewerRating }}
         </div>
         <base-btn
           mode="borderless-right"
-          @click="showReviewDetails"
+          @click="showReviewDetails(reviewData)"
         >
           {{ $t('quests.readCompletely') }}
           <template v-slot:right>
@@ -63,6 +78,13 @@ export default {
       default: '',
     },
   },
+  data() {
+    return {
+      reviewMark: 0,
+      userStars: [],
+      allStars: [],
+    };
+  },
   computed: {
     ...mapGetters({
       reviews: 'user/getAllUserReviews',
@@ -73,12 +95,38 @@ export default {
     await this.$store.dispatch('user/getAllUserReviews', this.userId);
   },
   methods: {
+    initStars(mark) {
+      let specialNumber = 0;
+      const starArray = [];
+      for (let i = 0; i < 5; i += 1) {
+        if (mark > i) {
+          starArray.push('__full');
+        } else {
+          specialNumber = mark - (i);
+          if ((specialNumber >= 0.3 && specialNumber <= 0.7) && !this.userStars.includes('__half')) {
+            starArray.push('__half');
+          } else {
+            starArray.push('');
+          }
+        }
+      }
+      return starArray;
+    },
+    initAvatar(userData) {
+      return userData?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
+    },
     showProfile() {
       this.$router.push('/show-profile');
     },
-    showReviewDetails() {
+    showReviewDetails(data) {
       this.ShowModal({
         key: modals.reviewDetails,
+        title: data.quest.title,
+        userAvatar: this.initAvatar(data.fromUser),
+        userFullName: `${data.fromUser.firstName} ${data.fromUser.lastName}`,
+        reviewMark: data.mark,
+        reviewMessage: data.message,
+        questTitle: data.quest.title,
       });
     },
   },
@@ -121,7 +169,24 @@ export default {
     color: #0083C7;
   }
 }
-
+.rating {
+  height: 20px;
+  display: flex;
+  margin-top: 2px;
+  width: 142px;
+  .star {
+    width: inherit;
+    background-image: url('~assets/img/ui/star-empty.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    &__half {
+      background-image: url('~assets/img/ui/star-half.svg');
+    }
+    &__full {
+      background-image: url('~assets/img/ui/star-small.svg');
+    }
+  }
+}
 .styles {
   &__flex {
     display: -webkit-box;
@@ -145,6 +210,19 @@ export default {
   box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.1);
   &__header {
     @extend .styles__flex;
+    justify-content: space-between;
+  }
+  &__img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  &__rating-block, &__user-data {
+    grid-gap: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
   }
   &__avatar {
     margin-right: 15px;
