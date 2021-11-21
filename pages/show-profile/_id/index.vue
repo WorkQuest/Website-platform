@@ -52,12 +52,11 @@
           v-if="selected === 3 && userStatistics.reviewCount > 0"
           class="button"
         >
-          <nuxt-link
+          <div
             class="button__more"
-            to="/profile"
           >
             {{ $t('meta.showAllReviews') }}
-          </nuxt-link>
+          </div>
         </div>
         <div v-if="selected === 4 || (selected === 1 && userData.role === 'worker')">
           <portfolioTab
