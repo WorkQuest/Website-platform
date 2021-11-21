@@ -23,6 +23,7 @@
     <div class="information-section">
       <div class="main-container">
         <userStatistic
+          v-if="selected === 1"
           :review-data="userStatistics"
         />
         <div
@@ -33,14 +34,14 @@
           </div>
         </div>
         <div
-          v-if="selected === 3"
+          v-if="selected === 3 || (selected === 1 && userData.role === 'employer' && userStatistics.reviewCount > 0)"
           class="title"
         >
           {{ $t('quests.reviewsBig') }}
         </div>
 
         <div
-          v-if="selected === 3"
+          v-if="selected === 3 || (selected === 1 && userData.role === 'employer')"
           class="tab__container"
         >
           <reviewsTab
@@ -58,7 +59,7 @@
             {{ $t('meta.showAllReviews') }}
           </nuxt-link>
         </div>
-        <div v-if="selected === 4">
+        <div v-if="selected === 4 || (selected === 1 && userData.role === 'worker')">
           <portfolioTab
             :user-id="userData.id"
           />
@@ -163,6 +164,9 @@ export default {
       this.userStatistics = { reviewCount: 0, averageMark: 0 };
     }
   },
+  async beforeDestroy() {
+    await this.$store.dispatch('user/clearAnotherUserData');
+  },
   methods: {
     isRating(type) {
       return (type === 3);
@@ -223,6 +227,7 @@ export default {
 .main-container {
   width: 1180px;
   margin: 0 auto;
+  padding-top: 10px;
 }
 
 .styles {
