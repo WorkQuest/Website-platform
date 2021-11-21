@@ -16,14 +16,18 @@
               :label="$t('quests.ui.showMap')"
             />
           </div>
-          <div class="search__inputs">
+          <div
+            class="search__inputs"
+            @click="toggleSearchDD"
+          >
             <base-field
               v-model="search"
+              v-click-outside="hideSearchDD"
               class="search__input"
               is-search
               :placeholder="$t('quests.ui.search')"
               mode="icon"
-              :selector="true"
+              :selector="searchDDStatus"
               @selector="getAddressInfo(search)"
             >
               <template v-slot:left />
@@ -31,6 +35,7 @@
                 <div
                   v-if="addresses.length"
                   class="selector"
+                  :class="{'selector_hide': searchDDStatus === false}"
                 >
                   <div class="selector__items">
                     <div
@@ -228,16 +233,21 @@
 <script>
 import { mapGetters } from 'vuex';
 import { GeoCode } from 'geo-coder';
+import ClickOutside from 'vue-click-outside';
 import GmapSearchBlock from '~/components/app/GmapSearch';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'Workers',
+  directives: {
+    ClickOutside,
+  },
   components: {
     GmapSearchBlock,
   },
   data() {
     return {
+      searchDDStatus: true,
       isShowMap: true,
       currentLocation: {},
       circleOptions: {},
@@ -368,6 +378,12 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    toggleSearchDD() {
+      this.searchDDStatus = !this.searchDDStatus;
+    },
+    hideSearchDD() {
+      this.searchDDStatus = false;
+    },
     showPriceSearch() {
       this.ShowModal({
         key: modals.priceSearch,
@@ -442,6 +458,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.selector {
+  @include box;
+  width: 100%;
+  z-index: 140;
+  &_hide {
+    display: none;
+  }
+  &__items {
+    background: #FFFFFF;
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  &__item {
+    @include text-simple;
+    padding: 15px 20px;
+    background: #FFFFFF;
+    font-weight: 500;
+    font-size: 16px;
+    color: $black800;
+    cursor: pointer;
+    transition: .3s;
+    &:hover {
+      background: #F3F7FA;
+    }
+  }
+}
 .panel {
   display: flex;
   flex-direction: row;
@@ -760,7 +803,7 @@ export default {
       justify-items: center;
       align-items: center;
       height: 100%;
-      width: 144px;
+      width: 146px;
     }
     &__icon {
       margin-bottom: -10px;

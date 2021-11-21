@@ -69,7 +69,7 @@
           />
         </div>
         <div
-          v-if="userData.role === 'worker'"
+          v-if="userRole === 'worker'"
           class="button"
         >
           <nuxt-link
@@ -108,16 +108,7 @@ export default {
       selected: 1,
       questLimits: 100,
       questsObjects: {},
-    };
-  },
-  computed: {
-    ...mapGetters({
-      tags: 'ui/getTags',
-      userRole: 'user/getUserRole',
-      userData: 'user/getUserData',
-    }),
-    pageTabs() {
-      return [
+      pageTabsArray: [
         {
           number: 1,
           title: this.$t('profile.quests'),
@@ -130,7 +121,24 @@ export default {
           number: 3,
           title: this.$t('profile.portfolio'),
         },
-      ];
+      ],
+    };
+  },
+  computed: {
+    ...mapGetters({
+      tags: 'ui/getTags',
+      userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
+    }),
+    pageTabs() {
+      const workerArray = this.pageTabsArray;
+      const employerArray = workerArray.slice(0, -1);
+      if (this.userRole === 'worker') {
+        return workerArray;
+      } if (this.userRole === 'employer') {
+        return employerArray;
+      }
+      return [];
     },
     cardLevelClass(idx) {
       const { cards } = this;

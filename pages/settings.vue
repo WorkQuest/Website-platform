@@ -649,12 +649,14 @@
               </div>
               <div>
                 <base-btn
+                  :disabled="status2FA === 0"
                   class="margin__bottom"
                   @click="disable2FA"
                 >
                   {{ $t('meta.disable') }}
                 </base-btn>
                 <base-btn
+                  :disabled="status2FA === 1"
                   @click="modalTwoFAAuth()"
                 >
                   {{ $t('settings.enable') }}
@@ -787,6 +789,7 @@ export default {
       getUserAddress: 'user/getUserAddress',
       applicantStatus: 'sumsub/getApplicantStatus',
       accessToken: 'sumsub/getSumSubBackendToken',
+      status2FA: 'user/getStatus2FA',
     }),
     specializations() {
       const specializations = Object.keys(this.$t('settings.specializations')).length;
