@@ -39,7 +39,7 @@
               <span class="icon-short_left" />
             </div>
             <div class="gallery-modal__title">
-              {{ $tc('gallery.counter', currIndex >= 0 ? currIndex + 1 : options.index + 1) + options.files.length }}
+              {{ $t('gallery.counter', {n: options.index + 1, c: options.count} ) }}
             </div>
             <div
               class="control-btn"
@@ -56,14 +56,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { keyCodes } from '~/utils/enums';
 
 export default {
   name: 'CtmGallery',
-  data() {
-    return {
-      currIndex: -1,
-    };
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
@@ -78,37 +74,38 @@ export default {
     },
   },
   mounted() {
-    document.addEventListener('keydown', (ev) => this.handleClickBtn(ev));
+    document.addEventListener('keydown', this.handleClickBtn);
   },
-  destroyed() {
-    document.removeEventListener('keydown', (ev) => this.handleClickBtn(ev));
+  beforeDestroy() {
+    document.removeEventListener('keydown', this.handleClickBtn);
   },
   methods: {
     handleClickBtn(ev) {
-      if (this.options.files.length > 1) {
-        if (ev.keyCode === 39) {
+      if (this.options.count > 1) {
+        if (ev.keyCode === keyCodes.ArrowRight) {
           this.turnOver(true);
           return;
         }
-        if (ev.keyCode === 37) {
+        if (ev.keyCode === keyCodes.ArrowLeft) {
           this.turnOver(false);
           return;
         }
       }
 
-      if (ev.keyCode === 27) this.hide();
+      if (ev.keyCode === keyCodes.Escape) this.hide();
     },
     getCurrFile() {
-      const { options: { files, index }, currIndex } = this;
-      return files[currIndex >= 0 ? currIndex : index];
+      const { files, index } = this.options;
+      return files[index];
     },
     turnOver(isForward) {
-      const { options: { files, index }, currIndex } = this;
-      const trackedIndex = currIndex >= 0 ? currIndex : index;
-      const advanceIndex = isForward ? trackedIndex + 1 : trackedIndex - 1;
+      const { count, index } = this.options;
+      const advanceIndex = isForward ? index + 1 : index - 1;
 
       // eslint-disable-next-line no-nested-ternary
-      this.currIndex = advanceIndex + 1 > files.length ? 0 : advanceIndex < 0 ? files.length - 1 : advanceIndex;
+      const currIndex = advanceIndex + 1 > count ? 0 : advanceIndex < 0 ? count - 1 : advanceIndex;
+
+      this.$store.commit('modals/setCurrOptionByKey', [{ key: 'index', val: currIndex }]);
     },
     hide() {
       this.CloseModal();

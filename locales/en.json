@@ -1331,8 +1331,8 @@
       "youHaveRemovedFromChat": "You have removed from the chat",
       "addedToChat": "added to chat",
       "youAddedToChat": "You added to chat",
-      "userAddedToChat": "User added to chat",
-      "userRemovedFromChat": "User removed from chat"
+      "userAddedToChat": "Added user to chat",
+      "userRemovedFromChat": "Removed user from chat"
     }
   },
   "settings": {
@@ -2734,6 +2734,6 @@
     }
   },
   "gallery": {
-    "counter": "{n} of "
+    "counter": "{n} of {c}"
   }
 }

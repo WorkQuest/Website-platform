@@ -1,7 +1,7 @@
 <template>
   <ctm-modal-box
     class="messageSend"
-    :title="$t(`modals.chatCreate.${options.isMembersList ? 'members' : options.isAdding ? 'addMember' : 'title'}`)"
+    :title="$t(`modals.chatCreate.${setLocale}`)"
   >
     <div class="ctm-modal__content">
       <template v-if="options.isCreating">
@@ -116,6 +116,12 @@ export default {
       chatMembers: 'chat/getChatMembers',
       chatId: 'chat/getCurrChatId',
     }),
+    setLocale() {
+      const { isMembersList, isAdding } = this.options;
+
+      // eslint-disable-next-line no-nested-ternary
+      return isMembersList ? 'members' : isAdding ? 'addMember' : 'title';
+    },
   },
   async mounted() {
     const { options: { isMembersList }, chatMembers } = this;
@@ -146,7 +152,6 @@ export default {
       });
     },
     changeSelStatus({ target }, userId) {
-      console.log(userId);
       if (target.checked) {
         this.memberUserIds.push(userId);
       } else {
@@ -217,7 +222,12 @@ export default {
           chatId,
         };
 
-        await this.$store.dispatch('chat/addNewMembers', payload);
+        try {
+          await this.$store.dispatch('chat/addNewMembers', payload);
+        } catch (e) {
+          console.log(e);
+          this.showToastError(e);
+        }
       }
 
       this.hide();

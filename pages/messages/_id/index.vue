@@ -76,11 +76,7 @@
                     :class="{'info-message__link_left' : !message.itsMe}"
                     @click="openProfile(message.infoMessage.user.id, message.itsMe)"
                   >
-                    {{
-                      message.itsMe ?
-                        (message.infoMessage.user ? (message.infoMessage.user.firstName || '') : '') + ' ' + (message.infoMessage.user ? (message.infoMessage.user.lastName || '') : '') :
-                        (message.sender.firstName || '') + ' ' + (message.sender.lastName || '')
-                    }}
+                    {{ setFullName(message) }}
                   </div>
                   <div
                     v-if="!message.itsMe && ['groupChatAddUser', 'groupChatDeleteUser'].includes(message.infoMessage.messageAction) && message.infoMessage.user"
@@ -358,6 +354,12 @@ export default {
     this.$store.commit('chat/clearMessagesFilter');
   },
   methods: {
+    setFullName({ itsMe, infoMessage: { user }, sender }) {
+      // eslint-disable-next-line no-nested-ternary
+      return itsMe
+        ? (user ? (`${user.firstName || ''} ${user.lastName || ''}`) : '')
+        : `${sender.firstName || ''} ${sender.lastName || ''}`;
+    },
     setInfoMessageText(action, itsMe, isAboutMe) {
       let text = 'chat.systemMessages.';
       switch (action) {
