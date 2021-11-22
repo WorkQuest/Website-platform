@@ -98,14 +98,6 @@
             {{ $t('quests.searchResults') }}
           </div>
         </div>
-        <!--        TODO: DELETE-->
-        <div>
-          [priority: {{ selectedPriority }}]
-          [type of job: {{ selectedTypeOfJob }}]
-          [distant: {{ selectedDistantWork }}]
-          [sort: {{ sortData }}]
-        </div>
-        <!--        TODO: DELETE-->
         <div class="quests__tools tools">
           <div class="tools__panel">
             <base-filter-dd class="tools__item" />
@@ -421,15 +413,18 @@ export default {
             payload += '&priorities[]=0';
             break;
           case 1:
-            payload += '&priorities[]=1';
+            payload += '&priorities[]=3';
             break;
           case 2:
             payload += '&priorities[]=2';
             break;
           case 3:
-            payload += '&priorities[]=3';
+            payload += '&priorities[]=1';
             break;
           default: break;
+        }
+        if (this.priceFilter.from || this.priceFilter.to) {
+          payload += `&priceBetween={from:${this.priceFilter.from || 0}, to:${this.priceFilter.to || 0}}`;
         }
 
         this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
@@ -458,13 +453,13 @@ export default {
     },
     async changeSorting(type) {
       let sortValue = '';
-      if (type === 'price') {
-        if (this.priceSort === 'desc') {
-          this.priceSort = 'asc';
+      if (type === 'time') {
+        if (this.timeSort === 'desc') {
+          this.timeSort = 'asc';
         } else {
-          this.priceSort = 'desc';
+          this.timeSort = 'desc';
         }
-        sortValue = `&sort[price]=${this.priceSort}`;
+        sortValue = `&sort[createdAt]=${this.timeSort}`;
       }
       this.sortData = sortValue;
       const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;

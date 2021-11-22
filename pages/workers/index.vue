@@ -94,13 +94,13 @@
           <div class="panel">
             <div class="panel__left">
               <base-filter-dd class="panel__item" />
-              <base-dd
-                v-model="selectedTypeOfJob"
-                class="panel__item"
-                :items="typeOfJobItem"
-                mode="blackFont"
-                :placeholder="$t('quests.typeOfJob')"
-              />
+              <!--              <base-dd-->
+              <!--                v-model="selectedTypeOfJob"-->
+              <!--                class="panel__item"-->
+              <!--                :items="typeOfJobItems"-->
+              <!--                mode="blackFont"-->
+              <!--                :placeholder="$t('quests.typeOfJob')"-->
+              <!--              />-->
               <base-dd
                 v-model="selectedPriority"
                 class="panel__item"
@@ -127,7 +127,28 @@
                 :mode="'light'"
                 @click="showPriceSearch"
               >
-                <span class="tools__text">
+                <span
+                  v-if="priceFilter.from && priceFilter.to"
+                  class="tools__text tools__text_price"
+                >
+                  {{ priceFilter.from }} - {{ priceFilter.to }}
+                </span>
+                <span
+                  v-else-if="!priceFilter.from && priceFilter.to"
+                  class="tools__text tools__text_price"
+                >
+                  0 - {{ priceFilter.to }}
+                </span>
+                <span
+                  v-else-if="priceFilter.from && !priceFilter.to"
+                  class="tools__text tools__text_price"
+                >
+                  > {{ priceFilter.from }}
+                </span>
+                <span
+                  v-else
+                  class="tools__text"
+                >
                   {{ $t('quests.price') }}
                 </span>
                 <template v-slot:right>
@@ -141,6 +162,7 @@
               <base-btn
                 class="tools__item"
                 :mode="'light'"
+                @click="changeSorting('time')"
               >
                 <span class="tools__text">
                   {{ $t('quests.time') }}
@@ -285,10 +307,11 @@ export default {
         },
       ],
       rating: [],
+      sortData: '',
       selectedPriority: null,
       selectedDistantWork: null,
-      selectedTypeOfJob: null,
       selectedRating: null,
+      // selectedTypeOfJob: null,
       pins: {
         selected: '/img/app/marker_blue.svg',
         notSelected: '/img/app/marker_red.svg',
@@ -327,15 +350,14 @@ export default {
         this.$t('quests.distantWork.bothVariant'),
       ];
     },
-    typeOfJobItem() {
-      return [
-        this.$t('quests.fullTime'),
-        this.$t('quests.partTime'),
-        this.$t('quests.fixedTerm'),
-        this.$t('quests.contract'),
-        this.$t('quests.remoteWork'),
-      ];
-    },
+    // typeOfJobItems() {
+    //   return [
+    //     this.$t('quests.allVariants'),
+    //     this.$t('quests.fullTime'),
+    //     this.$t('quests.partTime'),
+    //     this.$t('quests.fixedTerm'),
+    //   ];
+    // },
     priorityItems() {
       return [
         this.$t('quests.priority.all'),
@@ -349,7 +371,7 @@ export default {
         this.$t('quests.allVariants'),
         this.$t('quests.rating.verified'),
         this.$t('quests.rating.reliable'),
-        this.$t('quests.rating.trusted'),
+        this.$t('quests.rating.topRanked'),
       ];
     },
     distanceItems() {
@@ -378,9 +400,7 @@ export default {
   },
   watch: {
     async formattedSpecFilters() {
-      this.SetLoader(true);
       await this.fetchWorkersList();
-      this.SetLoader(false);
     },
     async selectedPriority() {
       await this.fetchWorkersList();
@@ -392,6 +412,9 @@ export default {
       await this.fetchWorkersList();
     },
     async selectedRating() {
+      await this.fetchWorkersList();
+    },
+    async priceFilter() {
       await this.fetchWorkersList();
     },
   },
@@ -410,13 +433,69 @@ export default {
     hideSearchDD() {
       this.searchDDStatus = false;
     },
+    async changeSorting(type) {
+      let sortValue = '';
+      if (type === 'time') {
+        if (this.timeSort === 'desc') {
+          this.timeSort = 'asc';
+        } else {
+          this.timeSort = 'desc';
+        }
+        sortValue = `&sort[createdAt]=${this.timeSort}`;
+      }
+      this.sortData = sortValue;
+      await this.fetchWorkersList();
+    },
     async fetchWorkersList() {
       this.SetLoader(true);
-      let payload = '';
-      const filters = this.formattedSpecFilters;
-      payload += filters;
 
-      // TODO: price, date filters
+      let payload = this.formattedSpecFilters;
+
+      payload += this.sortData;
+
+      switch (this.selectedPriority) {
+        case 0:
+          payload += '&priority[]=0';
+          break;
+        case 1:
+          payload += '&priority[]=1';
+          break;
+        case 2:
+          payload += '&workplaces[]=2';
+          break;
+        case 3:
+          payload += '&workplaces[]=3';
+          break;
+        default: break;
+      }
+      switch (this.selectedDistantWork) {
+        case 0:
+          payload += '&workplaces[]=distant';
+          break;
+        case 1:
+          payload += '&workplaces[]=office';
+          break;
+        case 2:
+          payload += '&workplaces[]=both';
+          break;
+        default: break;
+      }
+      switch (this.selectedRating) {
+        case 1:
+          payload += '&rating[]=0';
+          break;
+        case 2:
+          payload += '&rating[]=1';
+          break;
+        case 3:
+          payload += '&rating[]=2';
+          break;
+        default: break;
+      }
+
+      if (this.priceFilter.from || this.priceFilter.to) {
+        payload += `&betweenWagePerHour={from:${this.priceFilter.from || 0}, to:${this.priceFilter.to || 0}}`;
+      }
 
       await this.$store.dispatch('quests/workersList', payload);
       this.SetLoader(false);
@@ -585,6 +664,12 @@ export default {
       line-height: 130%;
       color: $black800;
     }
+    &_price {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100px;
+    }
   }
   &__tags {
     padding-top: 30px;
@@ -593,6 +678,23 @@ export default {
   &__tools {
     padding-top:  20px;
     margin-bottom: 20px;
+  }
+}
+.tools {
+  &__text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 130%;
+    color: $black800;
+    display: block;
+    &_price {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100px;
+    }
   }
 }
 .main {

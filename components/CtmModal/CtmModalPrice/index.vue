@@ -17,25 +17,37 @@
             <div class="grid__title">
               {{ $t('modals.priceForm') }}
             </div>
-            <base-field
-              v-model="priceFrom"
-              class="grid__input"
-              :placeholder="$t('modals.priceFromAmount')"
-              rules="decimal"
-              :name="$t('modals.priceFieldFrom')"
-            />
+            <div class="input__container">
+              <base-field
+                v-model="priceFrom"
+                class="grid__input"
+                :placeholder="$t('modals.priceFromAmount')"
+                rules="decimal"
+                :name="$t('modals.priceFieldFrom')"
+              />
+              <span
+                class="icon-off_outline_close input__clear"
+                @click="priceFrom=null"
+              />
+            </div>
           </div>
           <div class="grid__field">
             <div class="grid__title">
               {{ $t('modals.priceTo') }}
             </div>
-            <base-field
-              v-model="priceTo"
-              class="grid__field"
-              :placeholder="$t('modals.priceToAmount')"
-              :rules="`decimal${priceFrom ? '|min_value:'+priceFrom : ''}`"
-              :name="$t('modals.priceFieldTo')"
-            />
+            <div class="input__container">
+              <base-field
+                v-model="priceTo"
+                class="grid__field"
+                :placeholder="$t('modals.priceToAmount')"
+                :rules="`decimal${priceFrom ? '|min_value:'+priceFrom : ''}`"
+                :name="$t('modals.priceFieldTo')"
+              />
+              <span
+                class="icon-off_outline_close input__clear"
+                @click="priceTo=null"
+              />
+            </div>
           </div>
         </div>
         <div class="content__buttons buttons">
@@ -111,10 +123,24 @@ export default {
     padding: 10px 28px 30px 28px!important;
   }
 }
-
 .input{
   &__title{
     margin-bottom: 4px;
+  }
+  &__container{
+    position: relative;
+    height: 46px;
+  }
+  &__clear {
+    position: absolute;
+    right: 12px;
+    top: 0;
+    height: 100%;
+    padding: 6% 0;
+    cursor: pointer;
+
+    font-size: 26px;
+    color: $blue !important;
   }
 }
 .content{
