@@ -962,13 +962,28 @@ export default {
       });
     },
     // TODO: Удалить повторяющийся код
+    showModalPleaseEnterPhoneNumber() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: this.$t('settings.enterPhoneNumber'),
+        subtitle: this.$t('modals.pressSaveBtn'),
+      });
+    },
+    showModalPleaseSelectCurrentLocation() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: this.$t('settings.enterCurrentLocation'),
+        subtitle: this.$t('modals.pressSaveBtn'),
+      });
+    },
     showModalImageOk() {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
         title: this.$t('modals.imageLoadedSuccessful'),
         subtitle: this.$t('modals.pressSaveBtn'),
-        path: '/settings',
       });
     },
     showModalAddEducationOk() {
@@ -977,7 +992,6 @@ export default {
         img: require('~/assets/img/ui/questAgreed.svg'),
         title: this.$t('modals.educationAddSuccessful'),
         subtitle: this.$t('modals.pressSaveBtn'),
-        path: '/settings',
       });
     },
     showModalAddWorkExpOk() {
@@ -986,7 +1000,6 @@ export default {
         img: require('~/assets/img/ui/questAgreed.svg'),
         title: this.$t('modals.workExpAddSuccessful'),
         subtitle: this.$t('modals.pressSaveBtn'),
-        path: '/settings',
       });
     },
     showModalSave() {
@@ -995,7 +1008,6 @@ export default {
         img: require('~/assets/img/ui/questAgreed.svg'),
         title: this.$t('modals.saved'),
         subtitle: this.$t('modals.userDataHasBeenSaved'),
-        path: '/settings',
       });
     },
     modalChangePassword() {
@@ -1023,14 +1035,14 @@ export default {
       this.ShowModal({
         key: modals.changeRoleWarning,
       });
-      // try {
-      //   const response = await this.$store.dispatch('user/setUserRole');
-      //   if (response?.ok) {
-      //     console.log('good response');
-      //   }
-      // } catch (e) {
-      //   console.log(e);
-      // }
+      try {
+        const response = await this.$store.dispatch('user/setUserRole');
+        if (response?.ok) {
+          console.log('good response');
+        }
+      } catch (e) {
+        console.log(e);
+      }
     },
     async changePassword() {
       try {
@@ -1041,6 +1053,13 @@ export default {
         console.log(e);
       }
     },
+    async checkPhoneNumber() {
+      if (this.updatedPhone.formatInternational) {
+        this.localUserData.additionalInfo.secondMobileNumber = this.updatedPhone.formatInternational.replace(/\s/g, '');
+      } if (!this.updatedPhone.formatInternational) {
+        this.localUserData.additionalInfo.secondMobileNumber = '';
+      }
+    },
     async editUserData() {
       // TODO: Добавить проверку на значения updatedPhoneInternational
       const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
@@ -1048,12 +1067,21 @@ export default {
         ...this.filterEmpty(this.localUserData.additionalInfo),
         socialNetwork: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork),
       };
-      this.localUserData.additionalInfo.secondMobileNumber = this.updatedPhone.formatInternational.replace(/\s/g, '');
       await this.setAvatar();
-      if (this.userRole === 'employer') {
+      await this.checkPhoneNumber();
+      console.log(this.coordinates);
+      if (this.userRole === 'employer'
+        && this.localUserData.additionalInfo.secondMobileNumber
+        && this.coordinates !== undefined) {
         await this.editEmployerProfile(checkAvatarID, additionalInfo);
-      } else {
+      } if (this.userRole === 'worker'
+        && this.localUserData.additionalInfo.secondMobileNumber
+        && this.coordinates !== undefined) {
         await this.editWorkerProfile(checkAvatarID, additionalInfo);
+      } if (!this.localUserData.additionalInfo.secondMobileNumber) {
+        this.showModalPleaseEnterPhoneNumber();
+      } if (this.coordinates === undefined) {
+        this.showModalPleaseSelectCurrentLocation();
       }
     },
     async setAvatar() {
