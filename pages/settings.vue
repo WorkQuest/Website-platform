@@ -109,7 +109,7 @@
                 @click="toggleSearchDD"
               >
                 <vue-phone-number-input
-                  v-model="localUserData.additionalInfo.firstMobileNumber"
+                  v-model="localUserData.additionalInfo.secondMobileNumber"
                   class="Phone"
                   error-color="#EB5757"
                   clearable
@@ -730,7 +730,6 @@ export default {
         lastName: null,
         skillFilters: null,
         additionalInfo: {
-          // firstMobileNumber: null,
           secondMobileNumber: null,
           address: null,
           socialNetwork: {
@@ -1093,7 +1092,7 @@ export default {
         },
         additionalInfo: {
           secondMobileNumber: this.localUserData.additionalInfo.secondMobileNumber,
-          address: this.localUserData.address,
+          address: this.localUserData.additionalInfo.address,
           socialNetwork: {
             instagram: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.instagram),
             twitter: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.twitter),
@@ -1102,7 +1101,7 @@ export default {
           },
           educations: this.localUserData.additionalInfo.educations,
           workExperiences: this.localUserData.additionalInfo.workExperiences,
-          description: this.localUserData.description,
+          description: this.localUserData.additionalInfo.description,
         },
         specializationKeys: ['1.101'],
       };
@@ -1125,17 +1124,17 @@ export default {
         },
         additionalInfo: {
           secondMobileNumber: this.localUserData.additionalInfo.secondMobileNumber,
-          address: this.localUserData.address,
+          address: this.localUserData.additionalInfo.address,
           socialNetwork: {
             instagram: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.instagram),
             twitter: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.twitter),
             linkedin: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.linkedin),
             facebook: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.facebook),
           },
-          description: this.localUserData.description,
-          company: this.localUserData.company,
-          CEO: this.localUserData.CEO,
-          website: this.localUserData.website,
+          description: this.localUserData.additionalInfo.description,
+          company: this.localUserData.additionalInfo.company,
+          CEO: this.localUserData.additionalInfo.CEO,
+          website: this.localUserData.additionalInfo.website,
         },
       };
       try {
