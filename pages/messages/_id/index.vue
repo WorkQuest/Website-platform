@@ -308,6 +308,7 @@ export default {
       isScrollBtnVis: false,
       chatId: this.$route.params.id,
       selStarredMessageNumber: 0,
+      isReadingInProgress: false,
     };
   },
   computed: {
@@ -344,7 +345,7 @@ export default {
     }
 
     await this.getMessages(direction, bottomOffset);
-    if (!direction) await this.readMessages();
+    await this.readMessages();
 
     this.scrollToBottom(true);
     this.SetLoader(false);
@@ -455,21 +456,29 @@ export default {
       }
     },
     async readMessages() {
-      const messages = this.messages.list;
-      const chats = this.chats.list;
-      const { chatId } = this;
+      const {
+        messages: { list }, chatId, isReadingInProgress, userData,
+      } = this;
 
-      if (!messages.length || chatId === 'starred' || chats.some((chat) => chat.id === chatId && !chat.isUnread)) return;
+      if (isReadingInProgress || !list.length) return;
+
+      const { senderStatus, sender, id } = list[list.length - 1];
+
+      if (senderStatus === 'read' || sender.id === userData.id) return;
+
+      this.isReadingInProgress = true;
 
       const payload = {
         config: {
-          messageId: messages[messages.length - 1].id,
+          messageId: id,
         },
         chatId,
       };
 
       try {
         await this.$store.dispatch('chat/setMessageAsRead', payload);
+
+        this.isReadingInProgress = false;
       } catch (e) {
         console.log(e);
         this.showToastError(e);
@@ -545,10 +554,14 @@ export default {
       this.isScrollBtnVis = currScrollOffset > minScrollDifference;
       const scrollBottom = currScrollOffset - clientHeight;
 
-      if (canLoadToBottom && scrollBottom < 300 && !this.isBottomChatsLoading) {
-        this.isBottomChatsLoading = true;
-        await this.getMessages(1);
-        setTimeout(() => { this.isBottomChatsLoading = false; }, 300);
+      if (scrollBottom < 300) {
+        if (canLoadToBottom && !this.isBottomChatsLoading) {
+          this.isBottomChatsLoading = true;
+          await this.getMessages(1);
+          setTimeout(() => { this.isBottomChatsLoading = false; }, 300);
+        }
+
+        await this.readMessages();
       } else if (canLoadToTop && scrollTop < 300 && !this.isTopChatsLoading) {
         this.isTopChatsLoading = true;
         await this.getMessages(0);
