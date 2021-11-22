@@ -119,8 +119,10 @@ export default {
     setLocale() {
       const { isMembersList, isAdding } = this.options;
 
-      // eslint-disable-next-line no-nested-ternary
-      return isMembersList ? 'members' : isAdding ? 'addMember' : 'title';
+      if (isMembersList) return 'members';
+      if (isAdding) return 'addMember';
+
+      return 'title';
     },
   },
   async mounted() {
