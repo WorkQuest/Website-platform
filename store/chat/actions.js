@@ -26,7 +26,7 @@ export default {
       }
     });
 
-    result.chat.members = result.chat.userMembers.filter((member) => member.id !== myId);
+    if (result.chat) result.chat.members = result.chat.userMembers.filter((member) => member.id !== myId);
 
     if (direction) {
       result.messages = chat.messages.list.concat(result.messages);
