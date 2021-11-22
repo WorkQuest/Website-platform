@@ -962,7 +962,7 @@
     "useYourGoogleAuth": "Use your Google Authenticator App to scan QR code.",
     "installGoogleAuth": "Install the Google Authenticator app on your device",
     "ifYouCantScanBarcode": "If you are unable to scan QR code enter the Secret Key manually.",
-    "pleaseSaveThisKey": "Enter Google two-factor authentication password below. Please save your Google key, it will be used to recover your Google Authenticator.",
+    "pleaseSaveThisKey": "Enter Google two-factor authentication key below. Please save your Google key, it will be used to recover your Google Authenticator.",
     "step": "Step",
     "twoFAAuth": "2FA Authentication",
     "currentPassword": "Current password",
