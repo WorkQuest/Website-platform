@@ -287,7 +287,7 @@
     "fixedTerm": "Fixed term",
     "contract": "Contract",
     "remoteWork": "Remote work",
-    "resetToDefault": "Reset to default",
+    "allVariants": "All variants",
     "levels": {
       "1": {
         "title": "Gold Plus Package",
@@ -310,7 +310,7 @@
       "choosePeriod": "Choose period"
     },
     "distantWork": {
-      "title": "Work",
+      "title": "Workplace",
       "distantWork": "Distant work",
       "workInOffice": "Work in office",
       "bothVariant": "Both variant"

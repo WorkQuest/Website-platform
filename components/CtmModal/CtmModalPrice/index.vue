@@ -21,7 +21,7 @@
               v-model="priceFrom"
               class="grid__input"
               :placeholder="$t('modals.priceFromAmount')"
-              rules="required|decimal"
+              rules="decimal"
               :name="$t('modals.priceFieldFrom')"
             />
           </div>
@@ -33,7 +33,7 @@
               v-model="priceTo"
               class="grid__field"
               :placeholder="$t('modals.priceToAmount')"
-              :rules="`required|decimal${priceFrom ? '|min_value:'+priceFrom : ''}`"
+              :rules="`decimal${priceFrom ? '|min_value:'+priceFrom : ''}`"
               :name="$t('modals.priceFieldTo')"
             />
           </div>
@@ -86,6 +86,8 @@ export default {
       this.CloseModal();
     },
     submit() {
+      if (this.priceFrom <= 0) this.priceFrom = '';
+      if (this.priceTo <= 0) this.priceTo = '';
       this.$store.dispatch('quests/setPriceFilter', { from: this.priceFrom, to: this.priceTo });
       this.hide();
     },

@@ -100,7 +100,7 @@
         </div>
         <!--        TODO: DELETE-->
         <div>
-          [urgent: {{ selectedUrgent }}]
+          [priority: {{ selectedPriority }}]
           [type of job: {{ selectedTypeOfJob }}]
           [distant: {{ selectedDistantWork }}]
           [sort: {{ sortData }}]
@@ -110,11 +110,11 @@
           <div class="tools__panel">
             <base-filter-dd class="tools__item" />
             <base-dd
-              v-model="selectedUrgent"
+              v-model="selectedPriority"
               class="tools__item"
               mode:="blackFont"
-              :placeholder="$t('quests.urgent')"
-              :items="urgent"
+              :placeholder="$t('quests.priority.title')"
+              :items="priority"
             />
             <base-dd
               v-model="selectedTypeOfJob"
@@ -135,7 +135,28 @@
               :mode="'light'"
               @click="showPriceSearch"
             >
-              <span class="tools__text">
+              <span
+                v-if="priceFilter.from && priceFilter.to"
+                class="tools__text tools__text_price"
+              >
+                {{ priceFilter.from }} - {{ priceFilter.to }}
+              </span>
+              <span
+                v-else-if="!priceFilter.from && priceFilter.to"
+                class="tools__text tools__text_price"
+              >
+                0 - {{ priceFilter.to }}
+              </span>
+              <span
+                v-else-if="priceFilter.from && !priceFilter.to"
+                class="tools__text tools__text_price"
+              >
+                > {{ priceFilter.from }}
+              </span>
+              <span
+                v-else
+                class="tools__text"
+              >
                 {{ $t('quests.price') }}
               </span>
               <template v-slot:right>
@@ -229,7 +250,7 @@ export default {
       search: '',
       searchDDStatus: true,
       selectedDistantWork: null,
-      selectedUrgent: null,
+      selectedPriority: null,
       selectedTypeOfJob: null,
       distanceIndex: 0,
       priceSort: 'desc',
@@ -263,16 +284,15 @@ export default {
     },
     priority() {
       return [
-        this.$t('quests.resetToDefault'),
         this.$t('quests.priority.all'),
-        this.$t('quests.priority.low'),
-        this.$t('quests.priority.normal'),
-        this.$t('quests.priority.urgent'),
+        this.$t('quests.runtime.fixedDelivery'),
+        this.$t('quests.runtime.shortTerm'),
+        this.$t('quests.runtime.urgent'),
       ];
     },
     typeOfJob() {
       return [
-        this.$t('quests.resetToDefault'),
+        this.$t('quests.allVariants'),
         this.$t('quests.fullTime'),
         this.$t('quests.partTime'),
         this.$t('quests.fixedTerm'),
@@ -280,18 +300,9 @@ export default {
     },
     distantWork() {
       return [
-        this.$t('quests.resetToDefault'),
         this.$t('quests.distantWork.distantWork'),
         this.$t('quests.distantWork.workInOffice'),
         this.$t('quests.distantWork.bothVariant'),
-      ];
-    },
-    urgent() {
-      return [
-        this.$t('quests.resetToDefault'),
-        this.$t('priority.urgent'),
-        this.$t('priority.normal'),
-        this.$t('priority.low'),
       ];
     },
     totalPages() {
@@ -313,55 +324,33 @@ export default {
   watch: {
     async isShowMap() {
       this.page = 1;
-      this.SetLoader(true);
-      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      await this.getQuests(additionalValue);
-      this.SetLoader(false);
+      await this.updateQuests();
     },
     async page() {
-      this.SetLoader(true);
-      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      await this.getQuests(additionalValue);
-      this.SetLoader(false);
+      await this.updateQuests();
+    },
+    async priceFilter() {
+      this.page = 1;
+      await this.updateQuests();
     },
     async specializationsFilters() {
       this.page = 1;
-      this.SetLoader(true);
-      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      await this.getQuests(additionalValue);
-      this.SetLoader(false);
+      await this.updateQuests();
     },
     async selectedDistantWork() {
-      if (this.selectedDistantWork === 0) {
-        this.selectedDistantWork = null;
-        return;
-      }
       this.page = 1;
-      this.SetLoader(true);
-      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      await this.getQuests(additionalValue);
-      this.SetLoader(false);
+      await this.updateQuests();
     },
-    async selectedUrgent() {
-      if (this.selectedUrgent === 0) {
-        this.selectedUrgent = null;
-      }
-      // todo: sort urgent filter
+    async selectedPriority() {
+      await this.updateQuests();
     },
     async selectedTypeOfJob() {
-      if (this.selectedTypeOfJob === 0) {
-        this.selectedTypeOfJob = null; return;
-      }
-      this.page = 1;
-      this.SetLoader(true);
-      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      await this.getQuests(additionalValue);
-      this.SetLoader(false);
+      await this.updateQuests();
     },
     async mapBounds() {
       this.page = 1;
       const additionalValue = `${this.sortData}`;
-      await this.getQuests(additionalValue);
+      await this.fetchQuests(additionalValue);
     },
     distanceIndex() {
       const zoom = {
@@ -393,18 +382,24 @@ export default {
         key: modals.questFilter,
       });
     },
-    async getQuests(payload = '') {
+    async updateQuests(payload = '') {
+      this.SetLoader(true);
+      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      await this.fetchQuests(additionalValue);
+      this.SetLoader(false);
+    },
+    async fetchQuests(payload = '') {
       payload += this.formattedSpecFilters;
 
       if (!this.isShowMap) {
         switch (this.selectedDistantWork) {
-          case 1:
+          case 0:
             payload += '&workplaces[]=distant';
             break;
-          case 2:
+          case 1:
             payload += '&workplaces[]=office';
             break;
-          case 3:
+          case 2:
             payload += '&workplaces[]=both';
             break;
           default: break;
@@ -421,15 +416,18 @@ export default {
             break;
           default: break;
         }
-        switch (this.selectedUrgent) {
+        switch (this.selectedPriority) {
+          case 0:
+            payload += '&priorities[]=0';
+            break;
           case 1:
-            payload += '';
+            payload += '&priorities[]=1';
             break;
           case 2:
-            payload += '';
+            payload += '&priorities[]=2';
             break;
           case 3:
-            payload += '';
+            payload += '&priorities[]=3';
             break;
           default: break;
         }
@@ -455,9 +453,9 @@ export default {
     toggleMap() {
       this.isShowMap = !this.isShowMap;
     },
-    // showDetails() { // todo: вроде не юзается и можно удалить?
-    //   this.$router.push('/quests/1');
-    // },
+    showDetails() {
+      this.$router.push('/quests/1');
+    },
     async changeSorting(type) {
       let sortValue = '';
       if (type === 'price') {
@@ -468,17 +466,9 @@ export default {
         }
         sortValue = `&sort[price]=${this.priceSort}`;
       }
-      if (type === 'time') {
-        if (this.timeSort === 'desc') {
-          this.timeSort = 'asc';
-        } else {
-          this.timeSort = 'desc';
-        }
-        sortValue = `&sort[createdAt]=${this.timeSort}`;
-      }
       this.sortData = sortValue;
       const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      await this.getQuests(additionalValue);
+      await this.updateQuests(additionalValue);
     },
     deleteTag(tag) {
       this.$store.dispatch('ui/deleteTags', tag);
@@ -855,6 +845,12 @@ export default {
     line-height: 130%;
     color: $black800;
     display: block;
+    &_price {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100px;
+    }
   }
   &__right {
     display: grid;
