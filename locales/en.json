@@ -264,7 +264,6 @@
     "startChat": "Start chat",
     "invite": "Invite",
     "decline": "Decline",
-    "rating": "Rating",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
     "questInfo": "Quest info",
@@ -308,6 +307,12 @@
     },
     "createQuest": {
       "choosePeriod": "Choose period"
+    },
+    "rating": {
+      "title": "Rating",
+      "verified": "Verified",
+      "reliable": "Reliable",
+      "trusted": "Trusted"
     },
     "distantWork": {
       "title": "Workplace",

@@ -285,9 +285,9 @@ export default {
     priority() {
       return [
         this.$t('quests.priority.all'),
-        this.$t('quests.runtime.fixedDelivery'),
-        this.$t('quests.runtime.shortTerm'),
         this.$t('quests.runtime.urgent'),
+        this.$t('quests.runtime.shortTerm'),
+        this.$t('quests.runtime.fixedDelivery'),
       ];
     },
     typeOfJob() {

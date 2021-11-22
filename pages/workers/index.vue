@@ -54,7 +54,7 @@
           <div class="search__dd">
             <base-dd
               v-model="distanceIndex"
-              :items="distance"
+              :items="distanceItems"
             />
           </div>
           <div class="search__actions">
@@ -73,7 +73,7 @@
         >
           <base-dd
             v-model="distanceIndex"
-            :items="distance"
+            :items="distanceItems"
           />
         </div>
         <div class="filter__toggle">
@@ -97,23 +97,30 @@
               <base-dd
                 v-model="selectedTypeOfJob"
                 class="panel__item"
-                :items="typeOfJob"
+                :items="typeOfJobItem"
                 mode="blackFont"
                 :placeholder="$t('quests.typeOfJob')"
               />
               <base-dd
-                v-model="selectedUrgent"
+                v-model="selectedPriority"
                 class="panel__item"
-                :items="urgent"
+                :items="priorityItems"
                 mode="blackFont"
-                :placeholder="$t('quests.urgent')"
+                :placeholder="$t('quests.priority.title')"
               />
               <base-dd
                 v-model="selectedDistantWork"
                 class="panel__item"
-                :items="distantWork"
+                :items="distantWorkItem"
                 mode="blackFont"
                 :placeholder="$t('quests.distantWork.title')"
+              />
+              <base-dd
+                v-model="selectedRating"
+                class="panel__item"
+                :items="ratingItems"
+                mode="blackFont"
+                :placeholder="$t('quests.rating.title')"
               />
               <base-btn
                 class="panel__item"
@@ -278,9 +285,10 @@ export default {
         },
       ],
       rating: [],
-      selectedUrgent: '',
-      selectedDistantWork: '',
-      selectedTypeOfJob: '',
+      selectedPriority: null,
+      selectedDistantWork: null,
+      selectedTypeOfJob: null,
+      selectedRating: null,
       pins: {
         selected: '/img/app/marker_blue.svg',
         notSelected: '/img/app/marker_red.svg',
@@ -312,17 +320,15 @@ export default {
       specializationsFilters: 'quests/getSpecializationsFilters',
       priceFilter: 'quests/getPriceFilter',
     }),
-    distantWork() {
+    distantWorkItem() {
       return [
-        this.$t('quests.resetToDefault'),
         this.$t('quests.distantWork.distantWork'),
         this.$t('quests.distantWork.workInOffice'),
         this.$t('quests.distantWork.bothVariant'),
       ];
     },
-    typeOfJob() {
+    typeOfJobItem() {
       return [
-        this.$t('quests.resetToDefault'),
         this.$t('quests.fullTime'),
         this.$t('quests.partTime'),
         this.$t('quests.fixedTerm'),
@@ -330,28 +336,27 @@ export default {
         this.$t('quests.remoteWork'),
       ];
     },
-    urgent() {
+    priorityItems() {
       return [
-        this.$t('quests.resetToDefault'),
-        this.$t('priority.urgent'),
-        this.$t('priority.normal'),
-        this.$t('priority.low'),
+        this.$t('quests.priority.all'),
+        this.$t('quests.runtime.urgent'),
+        this.$t('quests.runtime.shortTerm'),
+        this.$t('quests.runtime.fixedDelivery'),
       ];
     },
-    distance() {
+    ratingItems() {
+      return [
+        this.$t('quests.allVariants'),
+        this.$t('quests.rating.verified'),
+        this.$t('quests.rating.reliable'),
+        this.$t('quests.rating.trusted'),
+      ];
+    },
+    distanceItems() {
       return [
         '+ 100 m',
         '+ 500 m',
         '+ 1000 m',
-      ];
-    },
-    priority() {
-      return [
-        this.$t('quests.resetToDefault'),
-        this.$t('quests.priority.all'),
-        this.$t('quests.priority.low'),
-        this.$t('quests.priority.normal'),
-        this.$t('quests.priority.urgent'),
       ];
     },
     cardLevelClass(idx) {
@@ -377,6 +382,18 @@ export default {
       await this.fetchWorkersList();
       this.SetLoader(false);
     },
+    async selectedPriority() {
+      await this.fetchWorkersList();
+    },
+    async selectedDistantWork() {
+      await this.fetchWorkersList();
+    },
+    async selectedTypeOfJob() {
+      await this.fetchWorkersList();
+    },
+    async selectedRating() {
+      await this.fetchWorkersList();
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -394,12 +411,15 @@ export default {
       this.searchDDStatus = false;
     },
     async fetchWorkersList() {
+      this.SetLoader(true);
       let payload = '';
       const filters = this.formattedSpecFilters;
       payload += filters;
-      // `?sort[createdAt]=${this.timeSort}` - этой колонки нету в бд?
+
+      // TODO: price, date filters
 
       await this.$store.dispatch('quests/workersList', payload);
+      this.SetLoader(false);
     },
     showPriceSearch() {
       this.ShowModal({
