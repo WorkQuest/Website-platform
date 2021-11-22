@@ -914,6 +914,7 @@ export default {
     width: 130px;
     border-radius: 6px;
     min-width: 130px;
+    object-fit: cover;
   }
 
   &_margin {
