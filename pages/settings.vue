@@ -636,7 +636,7 @@
             <div class="settings_blue">
               <div>{{ $t('settings.changePass') }}</div>
               <div>
-                <base-btn @click="modalChangePassword()">
+                <base-btn @click="showModalKey('changePassword')">
                   {{ $t('settings.change') }}
                 </base-btn>
               </div>
@@ -649,13 +649,13 @@
                 <base-btn
                   :disabled="status2FA === 0"
                   class="margin__bottom"
-                  @click="disable2FA"
+                  @click="showModalKey('disable2FA')"
                 >
                   {{ $t('meta.disable') }}
                 </base-btn>
                 <base-btn
                   :disabled="status2FA === 1"
-                  @click="modalTwoFAAuth()"
+                  @click="showModalKey('twoFAAuth')"
                 >
                   {{ $t('settings.enable') }}
                 </base-btn>
@@ -665,7 +665,7 @@
               <div>{{ $t('settings.smsVerification') }}</div>
               <div>
                 <base-btn
-                  @click="showModalEnableSmsVerification"
+                  @click="showModalKey('smsVerification')"
                 >
                   {{ $t('settings.enable') }}
                 </base-btn>
@@ -832,6 +832,16 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    isCloseInfo() {
+      this.isShowInfo = !this.isShowInfo;
+    },
+    switch2Fa() {
+      this.twoFa = !this.twoFa;
+    },
+    switchSms() {
+      this.sms = !this.sms;
+      this.$router.push('/sms-verification');
+    },
     toggleSearchDD() {
       this.searchDDStatus = !this.searchDDStatus;
     },
@@ -839,9 +849,8 @@ export default {
       this.searchDDStatus = false;
     },
     getApplicantStatus() {
-      const id = this.accessToken.userId;
       try {
-        this.$store.dispatch('sumsub/applicantStatus', id);
+        this.$store.dispatch('sumsub/applicantStatus', this.accessToken.userId);
       } catch (e) {
         console.log(e);
       }
@@ -876,16 +885,6 @@ export default {
       this.skillIndex[key] = -1;
       this.specCount -= 1;
     },
-    disable2FA() {
-      this.ShowModal({
-        key: modals.disable2FA,
-      });
-    },
-    chooseNecessarySkills() {
-      this.ShowModal({
-        key: modals.chooseNecessarySkills,
-      });
-    },
     selectAddress(address) {
       this.localUserData.additionalInfo.address = address.formatted;
       this.addresses = [];
@@ -910,7 +909,7 @@ export default {
         to: null,
         place: null,
       };
-      this.showModalAddEducationOk();
+      this.showModalStatus('educationAddSuccessful');
     },
     deleteKnowledge(i) {
       this.localUserData.additionalInfo.educations.splice(i, 1);
@@ -922,7 +921,7 @@ export default {
         to: null,
         place: null,
       };
-      this.showModalAddWorkExpOk();
+      this.showModalStatus('workExpAddSuccessful');
     },
     deleteWorkExp(i) {
       this.localUserData.additionalInfo.workExperiences.splice(i, 1);
@@ -930,18 +929,17 @@ export default {
     // eslint-disable-next-line consistent-return
     async processFile(e, validate) {
       const isValid = await validate(e);
+      const reader = new FileReader();
       const file = e.target.files[0];
       if (isValid.valid) {
         if (!file) {
           return false;
         }
-
-        const reader = new FileReader();
         reader.readAsDataURL(file);
-
         this.avatarChange.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
         this.avatarChange.file = file;
         let output = document.getElementById('userAvatar');
+        const modalMode = 'imageLoadedSuccessful';
         if (!output) {
           output = document.getElementById('userAvatarTwo');
         }
@@ -950,108 +948,62 @@ export default {
         output.onload = function () {
           URL.revokeObjectURL(output.src);
         };
-        this.showModalImageOk();
+        this.showModalStatus(modalMode);
         reader.onerror = (evt) => {
           console.error(evt);
         };
       }
     },
-    showModalEnableSmsVerification() {
+
+    modalsStatusTitle(modalMode) {
+      const titles = {
+        enterPhoneNumber: this.$t('settings.enterPhoneNumber'),
+        enterCurrentLocation: this.$t('settings.enterCurrentLocation'),
+        imageLoadedSuccessful: this.$t('modals.imageLoadedSuccessful'),
+        educationAddSuccessful: this.$t('modals.educationAddSuccessful'),
+        workExpAddSuccessful: this.$t('modals.workExpAddSuccessful'),
+        saved: this.$t('modals.saved'),
+      };
+      return titles[modalMode];
+    },
+    modalsStatusSubtitles(modalMode) {
+      const subtitles = {
+        enterPhoneNumber: this.$t('modals.pressSaveBtn'),
+        enterCurrentLocation: this.$t('modals.pressSaveBtn'),
+        imageLoadedSuccessful: this.$t('modals.pressSaveBtn'),
+        educationAddSuccessful: this.$t('modals.pressSaveBtn'),
+        workExpAddSuccessful: this.$t('modals.pressSaveBtn'),
+        saved: this.$t('modals.userDataHasBeenSaved'),
+      };
+      return subtitles[modalMode];
+    },
+    modalsKey(modalKey) {
+      const keys = {
+        disable2FA,
+        chooseNecessarySkills,
+        changePassInSettings,
+        twoFAAuth,
+        changePassword,
+        smsVerification,
+        changeRoleWarning,
+      };
+      return keys[modalKey];
+    },
+    showModalKey(modalKey) {
       this.ShowModal({
-        key: modals.smsVerification,
+        key: modals.$[this.modalsKey(modalKey)],
       });
     },
-    // TODO: Удалить повторяющийся код
-    showModalPleaseEnterPhoneNumber() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('settings.enterPhoneNumber'),
-        subtitle: this.$t('modals.pressSaveBtn'),
-      });
-    },
-    showModalPleaseSelectCurrentLocation() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('settings.enterCurrentLocation'),
-        subtitle: this.$t('modals.pressSaveBtn'),
-      });
-    },
-    showModalImageOk() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.imageLoadedSuccessful'),
-        subtitle: this.$t('modals.pressSaveBtn'),
-      });
-    },
-    showModalAddEducationOk() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.educationAddSuccessful'),
-        subtitle: this.$t('modals.pressSaveBtn'),
-      });
-    },
-    showModalAddWorkExpOk() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.workExpAddSuccessful'),
-        subtitle: this.$t('modals.pressSaveBtn'),
-      });
-    },
-    showModalSave() {
+    showModalStatus(modalMode) {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.saved'),
-        subtitle: this.$t('modals.userDataHasBeenSaved'),
+        title: this.modalsStatusTitle(modalMode),
+        subtitle: this.modalsStatusSubtitles(modalMode),
       });
     },
-    modalChangePassword() {
-      this.ShowModal({
-        key: modals.changePassInSettings,
-      });
-    },
-    modalTwoFAAuth() {
-      this.ShowModal({
-        key: modals.twoFAAuth,
-      });
-    },
-    isCloseInfo() {
-      this.isShowInfo = !this.isShowInfo;
-    },
-    switch2Fa() {
-      this.twoFa = !this.twoFa;
-    },
-    switchSms() {
-      this.sms = !this.sms;
-      this.$router.push('/sms-verification');
-    },
-    // TODO: Включить код, проверить!
     async changeRole() {
-      this.ShowModal({
-        key: modals.changeRoleWarning,
-      });
-      try {
-        const response = await this.$store.dispatch('user/setUserRole');
-        if (response?.ok) {
-          console.log('good response');
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    async changePassword() {
-      try {
-        this.ShowModal({
-          key: modals.changePassword,
-        });
-      } catch (e) {
-        console.log(e);
-      }
+      this.showModalKey('changeRoleWarning');
     },
     async checkPhoneNumber() {
       if (this.updatedPhone.formatInternational) {
@@ -1061,26 +1013,18 @@ export default {
       }
     },
     async editUserData() {
-      // TODO: Добавить проверку на значения updatedPhoneInternational
       const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
-      const additionalInfo = {
-        ...this.filterEmpty(this.localUserData.additionalInfo),
-        socialNetwork: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork),
-      };
+      const { secondMobileNumber } = this.localUserData.additionalInfo;
+      const { coordinates } = this;
       await this.setAvatar();
       await this.checkPhoneNumber();
-      if (this.userRole === 'employer'
-        && this.localUserData.additionalInfo.secondMobileNumber
-        && this.coordinates !== undefined) {
-        await this.editEmployerProfile(checkAvatarID, additionalInfo);
-      } if (this.userRole === 'worker'
-        && this.localUserData.additionalInfo.secondMobileNumber
-        && this.coordinates !== undefined) {
-        await this.editWorkerProfile(checkAvatarID, additionalInfo);
-      } if (!this.localUserData.additionalInfo.secondMobileNumber) {
-        this.showModalPleaseEnterPhoneNumber();
-      } if (this.coordinates === undefined) {
-        this.showModalPleaseSelectCurrentLocation();
+      if (secondMobileNumber && coordinates !== undefined) {
+        await this.editProfile(checkAvatarID);
+      }
+      if (!secondMobileNumber) {
+        this.showModalStatus('enterPhoneNumber');
+      } if (coordinates === undefined) {
+        this.showModalStatus('enterCurrentLocation');
       }
     },
     async setAvatar() {
@@ -1099,76 +1043,70 @@ export default {
         console.log(error);
       }
     },
-    async editWorkerProfile(checkAvatarID) {
-      const specAndSkills = {};
-      // eslint-disable-next-line no-restricted-syntax
-      for (const spec in this.specIndex) {
-        if (this.specIndex[spec] !== -1) {
-          const specName = this.specializations.titles[this.specIndex[spec]];
-          specAndSkills[specName] = this.selectedSkills[spec];
+    async editProfile(checkAvatarID) {
+      if (this.userRole === 'worker') {
+        const payload = {
+          ...this.localUserData,
+          avatarId: checkAvatarID,
+          firstName: this.localUserData.firstName,
+          lastName: this.localUserData.lastName,
+          location: {
+            longitude: this.coordinates ? this.coordinates.lng : null,
+            latitude: this.coordinates ? this.coordinates.lat : null,
+          },
+          additionalInfo: {
+            secondMobileNumber: this.localUserData.additionalInfo.secondMobileNumber,
+            address: this.localUserData.additionalInfo.address,
+            socialNetwork: {
+              instagram: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.instagram),
+              twitter: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.twitter),
+              linkedin: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.linkedin),
+              facebook: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.facebook),
+            },
+            educations: this.localUserData.additionalInfo.educations,
+            workExperiences: this.localUserData.additionalInfo.workExperiences,
+            description: this.localUserData.additionalInfo.description,
+          },
+          wagePerHour: this.perHour,
+          specializationKeys: ['1.101'],
+        };
+        try {
+          await this.$store.dispatch('user/editWorkerData', payload);
+          this.showModalStatus('saved');
+        } catch (e) {
+          console.log(e);
         }
-      }
-      const payload = {
-        ...this.localUserData,
-        avatarId: checkAvatarID,
-        firstName: this.localUserData.firstName,
-        lastName: this.localUserData.lastName,
-        location: {
-          longitude: this.coordinates ? this.coordinates.lng : null,
-          latitude: this.coordinates ? this.coordinates.lat : null,
-        },
-        additionalInfo: {
-          secondMobileNumber: this.localUserData.additionalInfo.secondMobileNumber,
-          address: this.localUserData.additionalInfo.address,
-          socialNetwork: {
-            instagram: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.instagram),
-            twitter: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.twitter),
-            linkedin: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.linkedin),
-            facebook: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.facebook),
+      } if (this.userRole === 'employer') {
+        const payload = {
+          ...this.localUserData,
+          avatarId: checkAvatarID,
+          firstName: this.localUserData.firstName,
+          lastName: this.localUserData.lastName,
+          location: {
+            longitude: this.coordinates ? this.coordinates.lng : null,
+            latitude: this.coordinates ? this.coordinates.lat : null,
           },
-          educations: this.localUserData.additionalInfo.educations,
-          workExperiences: this.localUserData.additionalInfo.workExperiences,
-          description: this.localUserData.additionalInfo.description,
-        },
-        specializationKeys: ['1.101'],
-      };
-      try {
-        await this.$store.dispatch('user/editWorkerData', payload);
-        this.showModalSave();
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    async editEmployerProfile(checkAvatarID) {
-      const payload = {
-        ...this.localUserData,
-        avatarId: checkAvatarID,
-        firstName: this.localUserData.firstName,
-        lastName: this.localUserData.lastName,
-        location: {
-          longitude: this.coordinates ? this.coordinates.lng : null,
-          latitude: this.coordinates ? this.coordinates.lat : null,
-        },
-        additionalInfo: {
-          secondMobileNumber: this.localUserData.additionalInfo.secondMobileNumber,
-          address: this.localUserData.additionalInfo.address,
-          socialNetwork: {
-            instagram: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.instagram),
-            twitter: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.twitter),
-            linkedin: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.linkedin),
-            facebook: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.facebook),
+          additionalInfo: {
+            secondMobileNumber: this.localUserData.additionalInfo.secondMobileNumber,
+            address: this.localUserData.additionalInfo.address,
+            socialNetwork: {
+              instagram: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.instagram),
+              twitter: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.twitter),
+              linkedin: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.linkedin),
+              facebook: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.facebook),
+            },
+            description: this.localUserData.additionalInfo.description,
+            company: this.localUserData.additionalInfo.company,
+            CEO: this.localUserData.additionalInfo.CEO,
+            website: this.localUserData.additionalInfo.website,
           },
-          description: this.localUserData.additionalInfo.description,
-          company: this.localUserData.additionalInfo.company,
-          CEO: this.localUserData.additionalInfo.CEO,
-          website: this.localUserData.additionalInfo.website,
-        },
-      };
-      try {
-        await this.$store.dispatch('user/editEmployerData', payload);
-        this.showModalSave();
-      } catch (e) {
-        console.log(e);
+        };
+        try {
+          await this.$store.dispatch('user/editEmployerData', payload);
+          this.showModalStatus('saved');
+        } catch (e) {
+          console.log(e);
+        }
       }
     },
     filterEmpty(obj) {
