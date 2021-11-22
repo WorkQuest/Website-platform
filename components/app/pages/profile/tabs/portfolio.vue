@@ -2,11 +2,17 @@
   <div>
     <div class="portfolio portfolio__items">
       <div
+        v-if="portfolios.count === 0"
+      >
+        {{ $t('workers.noPortfoliosAdded') }}
+      </div>
+      <div
         v-for="(item, i) in portfolios"
         :key="i"
         class="portfolio__item"
       >
         <div
+          v-if="portfolios.count > 0"
           class="portfolio__card"
         >
           <div class="portfolio__body">
@@ -49,6 +55,16 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div
+      v-if="portfolios.count > 0"
+      class="button__container"
+    >
+      <div
+        class="button__more"
+      >
+        {{ $t('quests.showAllCases') }}
       </div>
     </div>
   </div>
@@ -117,6 +133,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.styles {
+  &__flex {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
+.button {
+  &__container {
+    @extend .styles__flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+  &__more {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 130%;
+    color: #0083C7;
+    border: 1px solid rgba(0, 131, 199, 0.1);
+    border-radius: 6px;
+    padding: 13px 67px 13px 28px;
+    background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
+    background-position: 82% 21px;
+    background-repeat: no-repeat;
+  }
+}
 
 .portfolio {
   &__btns {

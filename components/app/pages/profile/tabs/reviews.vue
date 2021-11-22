@@ -1,52 +1,73 @@
 <template>
-  <div class="reviews-grid">
-    <span
-      v-for="(item, i) in reviews"
-      :key="i"
-    >
-      <div class="reviews-item">
-        <div class="reviews-item__header">
-          <div class="reviews-item__avatar">
-            <img
-              src="~/assets/img/temp/avatar-medium.jpg"
-              alt=""
-            >
-          </div>
-          <div class="name__container">
-            <div class="card-subtitle__name">
-              {{ item.reviewerName }}
-            </div>
-            <div class="card-subtitle_green">
-              {{ $t('role.worker') }}
-            </div>
-          </div>
-        </div>
-        <div class="reviews-item__subheader">
-          <div class="card-subtitle">
-            {{ $t('quests.questBig') }}
-          </div>
-          <div class="card-subtitle__title">
-            {{ item.questName }}
-          </div>
-        </div>
-        <div class="description">
-          {{ item.reviewDesc }}
-        </div>
-
-        <div class="reviews-item__rating">
-          {{ item.reviewerRating }}
-        </div>
-        <base-btn
-          mode="borderless-right"
-          @click="showReviewDetails"
-        >
-          {{ $t('quests.readCompletely') }}
-          <template v-slot:right>
-            <span class="icon-short_right" />
-          </template>
-        </base-btn>
+  <div>
+    <div class="reviews-grid">
+      <div
+        v-if="reviews.count === 0"
+      >
+        {{ $t('workers.noReviewsAdded') }}
       </div>
-    </span>
+      <span
+        v-for="(item, i) in reviews"
+        :key="i"
+      >
+        <div
+          v-if="reviews.count > 0"
+          class="reviews-item"
+        >
+          <div class="reviews-item__header">
+            <div class="reviews-item__avatar">
+              <img
+                src="~/assets/img/temp/avatar-medium.jpg"
+                alt=""
+              >
+            </div>
+            <div class="name__container">
+              <div class="card-subtitle__name">
+                {{ item.reviewerName }}
+              </div>
+              <div class="card-subtitle_green">
+                {{ $t('role.worker') }}
+              </div>
+            </div>
+          </div>
+          <div class="reviews-item__subheader">
+            <div class="card-subtitle">
+              {{ $t('quests.questBig') }}
+            </div>
+            <div class="card-subtitle__title">
+              {{ item.questName }}
+            </div>
+          </div>
+          <div class="description">
+            {{ item.reviewDesc }}
+          </div>
+
+          <div class="reviews-item__rating">
+            {{ item.reviewerRating }}
+          </div>
+          <base-btn
+            v-if="reviews.count > 0"
+            mode="borderless-right"
+            @click="showReviewDetails"
+          >
+            {{ $t('quests.readCompletely') }}
+            <template v-slot:right>
+              <span class="icon-short_right" />
+            </template>
+          </base-btn>
+        </div>
+      </span>
+    </div>
+    <div
+      v-if="reviews.count > 0"
+      class="button__container"
+    >
+      <div
+        class="button__more"
+      >
+        {{ $t('meta.showAllReviews') }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -84,6 +105,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.button {
+  &__container {
+    @extend .styles__flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+  &__more {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 130%;
+    color: #0083C7;
+    border: 1px solid rgba(0, 131, 199, 0.1);
+    border-radius: 6px;
+    padding: 13px 67px 13px 28px;
+    background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
+    background-position: 82% 21px;
+    background-repeat: no-repeat;
+  }
+}
 
 .card-subtitle {
   font-weight: 500;

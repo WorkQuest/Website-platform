@@ -1875,7 +1875,9 @@
     "from": "From",
     "based": "Based",
     "reviews": "reviews",
+    "noReviewsAdded": "No reviews added!",
     "portfolio": "Portfolio",
+    "noPortfoliosAdded": "No portfolios added!",
     "showAllCases": "Show all cases",
     "costTitle": "Cost per hour"
   },
