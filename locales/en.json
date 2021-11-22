@@ -308,6 +308,11 @@
     "createQuest": {
       "choosePeriod": "Choose period"
     },
+    "distance": {
+        "100": "+ 100 m",
+        "500": "+ 500 m",
+        "1000": "+ 1000 m"
+    },
     "rating": {
       "title": "Rating",
       "verified": "Verified",

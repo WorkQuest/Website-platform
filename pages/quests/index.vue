@@ -106,21 +106,21 @@
               class="tools__item"
               mode:="blackFont"
               :placeholder="$t('quests.priority.title')"
-              :items="priority"
+              :items="priorityItems"
             />
             <base-dd
               v-model="selectedTypeOfJob"
               class="tools__item"
               mode:="blackFont"
               :placeholder="$t('quests.typeOfJob')"
-              :items="typeOfJob"
+              :items="typeOfJobItems"
             />
             <base-dd
               v-model="selectedDistantWork"
               class="tools__item"
               mode:="blackFont"
               :placeholder="$t('quests.distantWork.title')"
-              :items="distantWork"
+              :items="distantWorkItems"
             />
             <base-btn
               class="tools__item"
@@ -267,14 +267,14 @@ export default {
       specializationsFilters: 'quests/getSpecializationsFilters',
       priceFilter: 'quests/getPriceFilter',
     }),
-    distance() {
+    distanceItems() {
       return [
-        '+ 100 m',
-        '+ 500 m',
-        '+ 1000 m',
+        this.$t('quests.distance.100'),
+        this.$t('quests.distance.500'),
+        this.$t('quests.distance.1000'),
       ];
     },
-    priority() {
+    priorityItems() {
       return [
         this.$t('quests.priority.all'),
         this.$t('quests.runtime.urgent'),
@@ -282,7 +282,7 @@ export default {
         this.$t('quests.runtime.fixedDelivery'),
       ];
     },
-    typeOfJob() {
+    typeOfJobItems() {
       return [
         this.$t('quests.allVariants'),
         this.$t('quests.fullTime'),
@@ -290,7 +290,7 @@ export default {
         this.$t('quests.fixedTerm'),
       ];
     },
-    distantWork() {
+    distantWorkItems() {
       return [
         this.$t('quests.distantWork.distantWork'),
         this.$t('quests.distantWork.workInOffice'),

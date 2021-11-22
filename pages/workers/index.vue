@@ -376,9 +376,9 @@ export default {
     },
     distanceItems() {
       return [
-        '+ 100 m',
-        '+ 500 m',
-        '+ 1000 m',
+        this.$t('quests.distance.100'),
+        this.$t('quests.distance.500'),
+        this.$t('quests.distance.1000'),
       ];
     },
     cardLevelClass(idx) {
