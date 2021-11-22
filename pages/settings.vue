@@ -1069,7 +1069,6 @@ export default {
       };
       await this.setAvatar();
       await this.checkPhoneNumber();
-      console.log(this.coordinates);
       if (this.userRole === 'employer'
         && this.localUserData.additionalInfo.secondMobileNumber
         && this.coordinates !== undefined) {
