@@ -1044,23 +1044,13 @@ export default {
     },
     async editUserData() {
       // TODO: Добавить проверку на значения updatedPhoneInternational
-      console.log(this.localUserData);
-      const updatedPhoneInternational = this.updatedPhone.formatInternational.replace(/\s/g, '');
-      let userLocation = this.localUserData.location;
-      const userCoordinates = this.coordinates;
-      let { secondMobileNumber } = this.localUserData.additionalInfo;
-      const { firstMobileNumber } = this.localUserData.additionalInfo;
-      console.log(firstMobileNumber);
       const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
       const additionalInfo = {
         ...this.filterEmpty(this.localUserData.additionalInfo),
         socialNetwork: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork),
       };
-      secondMobileNumber = updatedPhoneInternational;
+      this.localUserData.additionalInfo.secondMobileNumber = this.updatedPhone.formatInternational.replace(/\s/g, '');
       await this.setAvatar();
-      if (userCoordinates !== undefined) {
-        userLocation = { longitude: userCoordinates.lng, latitude: userCoordinates.lat };
-      }
       if (this.userRole === 'employer') {
         await this.editEmployerProfile(checkAvatarID, additionalInfo);
       } else {
@@ -1083,7 +1073,7 @@ export default {
         console.log(error);
       }
     },
-    async editWorkerProfile(checkAvatarID, additionalInfo) {
+    async editWorkerProfile(checkAvatarID) {
       const specAndSkills = {};
       // eslint-disable-next-line no-restricted-syntax
       for (const spec in this.specIndex) {
@@ -1095,16 +1085,26 @@ export default {
       const payload = {
         ...this.localUserData,
         avatarId: checkAvatarID,
-        specializationKeys: '',
-        skillFilters: specAndSkills,
-        additionalInfo: {
-          ...additionalInfo,
-          ...{
-            company: undefined,
-            CEO: undefined,
-            website: undefined,
-          },
+        firstName: this.localUserData.firstName,
+        lastName: this.localUserData.lastName,
+        location: {
+          longitude: this.coordinates ? this.coordinates.lng : null,
+          latitude: this.coordinates ? this.coordinates.lat : null,
         },
+        additionalInfo: {
+          secondMobileNumber: this.localUserData.additionalInfo.secondMobileNumber,
+          address: this.localUserData.address,
+          socialNetwork: {
+            instagram: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.instagram),
+            twitter: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.twitter),
+            linkedin: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.linkedin),
+            facebook: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.facebook),
+          },
+          educations: this.localUserData.additionalInfo.educations,
+          workExperiences: this.localUserData.additionalInfo.workExperiences,
+          description: this.localUserData.description,
+        },
+        specializationKeys: ['1.101'],
       };
       try {
         await this.$store.dispatch('user/editWorkerData', payload);
@@ -1113,18 +1113,29 @@ export default {
         console.log(e);
       }
     },
-    async editEmployerProfile(checkAvatarID, additionalInfo) {
-      // TODO: Добавить skillFilters
+    async editEmployerProfile(checkAvatarID) {
       const payload = {
         ...this.localUserData,
         avatarId: checkAvatarID,
+        firstName: this.localUserData.firstName,
+        lastName: this.localUserData.lastName,
+        location: {
+          longitude: this.coordinates ? this.coordinates.lng : null,
+          latitude: this.coordinates ? this.coordinates.lat : null,
+        },
         additionalInfo: {
-          ...additionalInfo,
-          ...{
-            educations: undefined,
-            workExperiences: undefined,
-            skills: undefined,
+          secondMobileNumber: this.localUserData.additionalInfo.secondMobileNumber,
+          address: this.localUserData.address,
+          socialNetwork: {
+            instagram: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.instagram),
+            twitter: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.twitter),
+            linkedin: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.linkedin),
+            facebook: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork.facebook),
           },
+          description: this.localUserData.description,
+          company: this.localUserData.company,
+          CEO: this.localUserData.CEO,
+          website: this.localUserData.website,
         },
       };
       try {
