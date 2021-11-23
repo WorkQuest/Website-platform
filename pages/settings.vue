@@ -78,8 +78,7 @@
                 v-if="userRole === 'worker'"
                 class="profile__status"
               >
-                <!--              TODO: Добавить вывод статуса SumSub-->
-                {{ $t('settings.notVerified') }}
+                {{ status2FA === 0 ? $t('settings.notVerified') : $t('settings.verified') }}
                 <span class="icon-check_all_big" />
               </span>
               <div>
@@ -431,128 +430,134 @@
           </div>
         </div>
       </validation-observer>
-      <h2
-        v-if="userRole === 'worker'"
-        class="page__title"
-      >
-        {{ $t('settings.employmentInfo') }}
-      </h2>
-      <div
-        v-if="userRole === 'worker'"
-        class="main-white"
-      >
-        <div class="page__skills skills">
-          <div
-            v-for="key in specCount"
-            :key="key"
-            class="skills__block block"
-          >
-            <div class="block__skill-spec">
-              <div class="block__specialization specialization">
-                <base-dd
-                  v-model="specIndex[key]"
-                  class="specialization__dd"
-                  type="gray"
-                  :placeholder="$t('settings.selectSpec')"
-                  :items="specializations.titles"
-                  :mode="'small'"
-                  :label="$t('settings.specialization')"
-                  @input="switchSkill($event, key)"
-                />
-                <div class="specialization__skills skills">
+      <validation-observer v-slot="{handleSubmit}">
+        <h2
+          v-if="userRole === 'worker'"
+          class="page__title"
+        >
+          {{ $t('settings.employmentInfo') }}
+        </h2>
+        <div
+          v-if="userRole === 'worker'"
+          class="main-white"
+        >
+          <div class="page__skills skills">
+            <div
+              v-for="key in specCount"
+              :key="key"
+              class="skills__block block"
+            >
+              <div class="block__skill-spec">
+                <div class="block__specialization specialization">
                   <base-dd
-                    v-model="skillIndex[key]"
+                    v-model="specIndex[key]"
                     class="specialization__dd"
-                    :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
-                    :disabled="specIndex[key] < 0"
-                    :placeholder="$t('settings.selectSkills')"
-                    :items="specializations.skills[specIndex[key]]"
+                    type="gray"
+                    :placeholder="$t('settings.selectSpec')"
+                    :items="specializations.titles"
                     :mode="'small'"
-                    :label="$t('settings.skillsInput')"
-                    @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
+                    :label="$t('settings.specialization')"
+                    @input="switchSkill($event, key)"
                   />
+                  <div class="specialization__skills skills">
+                    <base-dd
+                      v-model="skillIndex[key]"
+                      class="specialization__dd"
+                      :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
+                      :disabled="specIndex[key] < 0"
+                      :placeholder="$t('settings.selectSkills')"
+                      :items="specializations.skills[specIndex[key]]"
+                      :mode="'small'"
+                      :label="$t('settings.skillsInput')"
+                      @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
+                    />
+                    <div
+                      v-if="selectedSkills[key].length === 5"
+                      class="skills__error"
+                    >
+                      {{ $t('ui.buttons.errors.manySkills') }}
+                    </div>
+                  </div>
+                </div>
+                <div class="block__skill skill">
                   <div
-                    v-if="selectedSkills[key].length === 5"
-                    class="skills__error"
+                    v-for="(item, i) in selectedSkills[key]"
+                    :key="i"
+                    class="skill__badge"
                   >
-                    {{ $t('ui.buttons.errors.manySkills') }}
+                    {{ item }}
+                    <button
+                      class="skill__remove"
+                      @click="removeSkillToBadge(item, key)"
+                    >
+                      <img
+                        src="~assets/img/ui/close_blue.svg"
+                        alt="x"
+                      >
+                    </button>
                   </div>
                 </div>
               </div>
-              <div class="block__skill skill">
-                <div
-                  v-for="(item, i) in selectedSkills[key]"
-                  :key="i"
-                  class="skill__badge"
-                >
-                  {{ item }}
-                  <button
-                    class="skill__remove"
-                    @click="removeSkillToBadge(item, key)"
-                  >
-                    <img
-                      src="~assets/img/ui/close_blue.svg"
-                      alt="x"
-                    >
-                  </button>
-                </div>
-              </div>
+              <base-btn
+                :text="$t('settings.removeSpec')"
+                class="specialization__btn specialization__btn_remove"
+                @click="removeSpecialization(key)"
+              />
             </div>
             <base-btn
-              :text="$t('settings.removeSpec')"
-              class="specialization__btn specialization__btn_remove"
-              @click="removeSpecialization(key)"
+              :text="$t('settings.addSpec')"
+              :disabled="specCount === 3"
+              class="skills__btn-add"
+              :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
+              @click="addSpecialization"
             />
-          </div>
-          <base-btn
-            :text="$t('settings.addSpec')"
-            :disabled="specCount === 3"
-            class="skills__btn-add"
-            :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
-            @click="addSpecialization"
-          />
-          <div
-            v-if="specCount === 3"
-            class="skills__error"
-          >
-            {{ $t('ui.buttons.errors.manySpec') }}
-          </div>
-          <div class="skills__add-info">
-            <base-dd
-              v-model="priorityIndex"
-              class="specialization__dd"
-              type="gray"
-              :placeholder="$t('priority.title')"
-              :items="priority"
-              :mode="'small'"
-              :label="$t('settings.priority')"
-            />
-            <base-dd
-              v-model="distantIndex"
-              class="specialization__dd"
-              type="gray"
-              :placeholder="$t('settings.distantWork.select')"
-              :items="distantWork"
-              :mode="'small'"
-              :label="$t('settings.distantWork.title')"
-            />
-            <base-field
-              v-model="perHour"
-              class="specialization__skills"
-              :label="$t('settings.costPerHour')"
-              type="gray"
-            />
-          </div>
-          <div class="page__btn btn">
-            <base-btn
-              class="btn__save"
-              @click="editUserData()"
+            <div
+              v-if="specCount === 3"
+              class="skills__error"
             >
-              {{ $t('settings.save') }}
-            </base-btn>
+              {{ $t('ui.buttons.errors.manySpec') }}
+            </div>
+            <div class="skills__add-info">
+              <base-dd
+                v-model="priorityIndex"
+                class="specialization__dd"
+                type="gray"
+                :placeholder="$t('priority.title')"
+                :items="priority"
+                rules="required"
+                :mode="'small'"
+                :label="$t('settings.priority')"
+              />
+              <base-dd
+                v-model="distantIndex"
+                class="specialization__dd"
+                type="gray"
+                :placeholder="$t('settings.distantWork.select')"
+                :items="distantWork"
+                rules="required"
+                :mode="'small'"
+                :label="$t('settings.distantWork.title')"
+              />
+              <base-field
+                v-model="perHour"
+                class="specialization__skills"
+                :label="$t('settings.costPerHour')"
+                :name="$t('settings.costPerHour')"
+                rules="required"
+                type="gray"
+              />
+            </div>
+            <div class="page__btn btn">
+              <base-btn
+                class="btn__save"
+                @click="handleSubmit(editUserData)"
+              >
+                {{ $t('settings.save') }}
+              </base-btn>
+            </div>
           </div>
         </div>
-      </div>
+      </validation-observer>
       <div class="settings">
         <div class="settings__left">
           <div>{{ $t('settings.settings') }}</div>

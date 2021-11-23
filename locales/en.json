@@ -1362,6 +1362,7 @@
     "term": "Term",
     "getVerification": "Complete the verification",
     "notVerified": "Not verified",
+    "verified": "Verified",
     "more": "More",
     "employmentInfo": "Employment information",
     "addSpec": "Add specialization",
