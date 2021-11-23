@@ -995,19 +995,19 @@ export default {
     },
     modalsKey(modalKey) {
       const keys = {
-        disable2FA,
-        chooseNecessarySkills,
-        changePassInSettings,
-        twoFAAuth,
-        changePassword,
-        smsVerification,
-        changeRoleWarning,
+        disable2FA: modals.disable2FA,
+        chooseNecessarySkills: modals.chooseNecessarySkills,
+        changePassInSettings: modals.changePassInSettings,
+        twoFAAuth: modals.twoFAAuth,
+        changePassword: modals.changePassword,
+        smsVerification: modals.smsVerification,
+        changeRoleWarning: modals.changeRoleWarning,
       };
       return keys[modalKey];
     },
     showModalKey(modalKey) {
       this.ShowModal({
-        key: modals.$[this.modalsKey(modalKey)],
+        key: this.modalsKey(modalKey),
       });
     },
     showModalStatus(modalMode) {
