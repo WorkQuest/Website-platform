@@ -709,7 +709,7 @@ export default {
     return {
       isSearchDDStatus: true,
       specCount: 0,
-      perHour: '0',
+      perHour: 0,
       specIndex: {
         1: -1,
         2: -1,
@@ -836,9 +836,13 @@ export default {
       additionalInfo: JSON.parse(JSON.stringify(this.userData.additionalInfo)),
       location: this.userData.location,
     };
+    await this.perHourData();
     this.SetLoader(false);
   },
   methods: {
+    async perHourData() {
+      this.perHour = await this.userData.wagePerHour;
+    },
     isCloseInfo() {
       this.isShowInfo = !this.isShowInfo;
     },
@@ -1046,17 +1050,16 @@ export default {
       }
     },
     async editProfile(checkAvatarID) {
-      const { instagram } = this.localUserData.additionalInfo.socialNetwork;
-      const { twitter } = this.localUserData.additionalInfo.socialNetwork;
-      const { linkedin } = this.localUserData.additionalInfo.socialNetwork;
-      const { facebook } = this.localUserData.additionalInfo.socialNetwork;
+      const {
+        instagram, twitter, linkedin, facebook,
+      } = this.localUserData.additionalInfo.socialNetwork;
       let payload = {
         avatarId: checkAvatarID,
         firstName: this.localUserData.firstName,
         lastName: this.localUserData.lastName,
         location: {
           longitude: this.coordinates ? this.coordinates.lng : this.localUserData.location.longitude,
-          latitude: this.coordinates ? this.coordinates.lat : this.localUserData.location.longitude,
+          latitude: this.coordinates ? this.coordinates.lat : this.localUserData.location.latitude,
         },
         additionalInfo: {
           secondMobileNumber: this.localUserData.additionalInfo.secondMobileNumber,
@@ -1070,6 +1073,8 @@ export default {
         },
       };
       if (this.userRole === 'worker') {
+        console.log(this.userData);
+        console.log(this.localUserData);
         payload.additionalInfo = {
           ...payload.additionalInfo,
           educations: this.localUserData.additionalInfo.educations,
@@ -1078,7 +1083,7 @@ export default {
         };
         payload = {
           ...payload,
-          wagePerHour: this.perHour,
+          wagePerHour: this.perHour ? this.perHour : this.userData.wagePerHour,
           specializationKeys: ['1.101'],
         };
         await this.editProfileResponse('user/editWorkerData', payload);
