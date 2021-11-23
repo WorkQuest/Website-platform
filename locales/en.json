@@ -891,9 +891,11 @@
     "redeemFail": "Redeem fail",
     "chatCreate": {
       "title": "Create group chat",
-      "desc": "Create name of group chat and choose people from you chat list",
-      "participants": "Participants",
-      "chatName": "Chat name"
+      "desc": "Create name of group chat and choose people from your chat list",
+      "chatName": "Chat name",
+      "members": "Members list",
+      "addNewMembers": "Add new members",
+      "addMember": "Add member"
     },
     "yourRewardBalance": "Your reward balance:",
     "deletePortfolio": "Are you sure delete portfolio?",
@@ -906,6 +908,7 @@
     "delete": "Delete",
     "youCan’tDeleteActiveQuest": "You can’t delete active quest",
     "sureDeleteText": "Do you really want to delete this quest?",
+    "sureDeleteMemberText": "Do you really want to delete this member?",
     "priceTitle": "Price",
     "enterPriceRange": "Enter price range",
     "priceForm": "From",
@@ -962,7 +965,7 @@
     "useYourGoogleAuth": "Use your Google Authenticator App to scan QR code.",
     "installGoogleAuth": "Install the Google Authenticator app on your device",
     "ifYouCantScanBarcode": "If you are unable to scan QR code enter the Secret Key manually.",
-    "pleaseSaveThisKey": "Enter Google two-factor authentication password below. Please save your Google key, it will be used to recover your Google Authenticator.",
+    "pleaseSaveThisKey": "Enter Google two-factor authentication key below. Please save your Google key, it will be used to recover your Google Authenticator.",
     "step": "Step",
     "twoFAAuth": "2FA Authentication",
     "currentPassword": "Current password",
@@ -1310,6 +1313,7 @@
     "writeYouMessage": "Write you message",
     "group": "Group",
     "noChats": "No Chats",
+    "membersNum": "{n} members",
     "systemMessages": {
       "invitedYouToAQuest": "invited you to a quest",
       "youInvitedToTheQuest": "You invited to the quest",
@@ -1320,7 +1324,15 @@
       "rejectedTheInviteToTheQuest": "rejected the invite to the quest",
       "youRejectedTheInviteToTheQuest": "You rejected the invite to the quest",
       "acceptedTheInviteToTheQuest": "accepted the invite to the quest",
-      "youAcceptedTheInviteToTheQuest": "You accepted the invite to the quest"
+      "youAcceptedTheInviteToTheQuest": "You accepted the invite to the quest",
+      "createdAGroupChat": "created a group chat",
+      "youCreatedAGroupChat": "You created a group chat",
+      "removedFromChat": "removed from chat",
+      "youHaveRemovedFromChat": "You have removed from the chat",
+      "addedToChat": "added to chat",
+      "youAddedToChat": "You added to chat",
+      "userAddedToChat": "Added user to chat",
+      "userRemovedFromChat": "Removed user from chat"
     }
   },
   "settings": {
@@ -2724,6 +2736,6 @@
     }
   },
   "gallery": {
-    "counter": "{n} of "
+    "counter": "{n} of {c}"
   }
 }

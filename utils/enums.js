@@ -74,3 +74,8 @@ export const responsesType = {
   Responded: 0,
   Invited: 1,
 };
+export const keyCodes = {
+  Escape: 27,
+  ArrowLeft: 37,
+  ArrowRight: 39,
+};
