@@ -1022,14 +1022,12 @@ export default {
     async editUserData() {
       const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
       const { secondMobileNumber } = this.localUserData.additionalInfo;
-      const { coordinates } = this;
       await this.setAvatar();
       await this.checkPhoneNumber();
-      if (secondMobileNumber && coordinates !== undefined) {
+      if (secondMobileNumber) {
         await this.editProfile(checkAvatarID);
       }
       if (!secondMobileNumber) this.showModalStatus('enterPhoneNumber');
-      if (coordinates === undefined) this.showModalStatus('enterCurrentLocation');
     },
     async setAvatar() {
       const formData = new FormData();
@@ -1048,27 +1046,30 @@ export default {
       }
     },
     async editProfile(checkAvatarID) {
+      const { instagram } = this.localUserData.additionalInfo.socialNetwork;
+      const { twitter } = this.localUserData.additionalInfo.socialNetwork;
+      const { linkedin } = this.localUserData.additionalInfo.socialNetwork;
+      const { facebook } = this.localUserData.additionalInfo.socialNetwork;
       let payload = {
         avatarId: checkAvatarID,
         firstName: this.localUserData.firstName,
         lastName: this.localUserData.lastName,
         location: {
-          longitude: this.coordinates ? this.coordinates.lng : null,
-          latitude: this.coordinates ? this.coordinates.lat : null,
+          longitude: this.coordinates ? this.coordinates.lng : this.localUserData.location.longitude,
+          latitude: this.coordinates ? this.coordinates.lat : this.localUserData.location.longitude,
         },
         additionalInfo: {
           secondMobileNumber: this.localUserData.additionalInfo.secondMobileNumber,
           address: this.localUserData.additionalInfo.address,
           socialNetwork: {
-            instagram: this.localUserData.additionalInfo.socialNetwork.instagram,
-            twitter: this.localUserData.additionalInfo.socialNetwork.twitter,
-            linkedin: this.localUserData.additionalInfo.socialNetwork.linkedin,
-            facebook: this.localUserData.additionalInfo.socialNetwork.facebook,
+            instagram: instagram !== '' ? instagram : null,
+            twitter: twitter !== '' ? twitter : null,
+            linkedin: linkedin !== '' ? linkedin : null,
+            facebook: facebook !== '' ? facebook : null,
           },
         },
       };
       if (this.userRole === 'worker') {
-        const action = 'user/editWorkerData';
         payload.additionalInfo = {
           ...payload.additionalInfo,
           educations: this.localUserData.additionalInfo.educations,
@@ -1080,9 +1081,8 @@ export default {
           wagePerHour: this.perHour,
           specializationKeys: ['1.101'],
         };
-        await this.editProfileResponse(action, payload);
+        await this.editProfileResponse('user/editWorkerData', payload);
       } if (this.userRole === 'employer') {
-        const action = 'user/editWorkerData';
         payload.additionalInfo = {
           ...payload.additionalInfo,
           description: this.localUserData.additionalInfo.description,
@@ -1090,7 +1090,7 @@ export default {
           CEO: this.localUserData.additionalInfo.CEO,
           website: this.localUserData.additionalInfo.website,
         };
-        await this.editProfileResponse(action, payload);
+        await this.editProfileResponse('user/editEmployerData', payload);
       }
     },
     async editProfileResponse(action, payload) {
