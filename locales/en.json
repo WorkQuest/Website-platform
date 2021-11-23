@@ -1336,6 +1336,9 @@
     }
   },
   "settings": {
+    "address": "address",
+    "lastName": "last name",
+    "firstName": "first name",
     "enterPhoneNumber": "Please enter your phone number",
     "enterCurrentLocation": "Please select current location",
     "placeOfStudying": "Place of studying",
