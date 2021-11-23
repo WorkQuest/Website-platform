@@ -126,7 +126,7 @@
                     v-click-outside="hideSearchDD"
                     :placeholder="address || $t('settings.addressInput')"
                     mode="icon"
-                    :selector="searchDDStatus"
+                    :selector="isSearchDDStatus"
                     :name="$t('settings.address')"
                     rules="required"
                     @selector="getAddressInfo(localUserData.additionalInfo.address)"
@@ -138,7 +138,7 @@
                       <div
                         v-if="addresses.length"
                         class="selector"
-                        :class="{'selector_hide': searchDDStatus === false}"
+                        :class="{'selector_hide': isSearchDDStatus === false}"
                       >
                         <div class="selector__items">
                           <div
@@ -716,7 +716,7 @@ export default {
   },
   data() {
     return {
-      searchDDStatus: true,
+      isSearchDDStatus: true,
       specCount: 0,
       perHour: '0',
       specIndex: {
@@ -738,7 +738,7 @@ export default {
       distantIndex: -1,
       updatedPhone: null,
       addresses: [],
-      sms: false,
+      isSms: false,
       isShowInfo: true,
       localUserData: {
         avatarId: null,
@@ -852,17 +852,17 @@ export default {
       this.isShowInfo = !this.isShowInfo;
     },
     switch2Fa() {
-      this.twoFa = !this.twoFa;
+      this.isTwoFa = !this.isTwoFa;
     },
     switchSms() {
-      this.sms = !this.sms;
+      this.isSms = !this.isSms;
       this.$router.push('/sms-verification');
     },
     toggleSearchDD() {
-      this.searchDDStatus = !this.searchDDStatus;
+      this.isSearchDDStatus = !this.isSearchDDStatus;
     },
     hideSearchDD() {
-      this.searchDDStatus = false;
+      this.isSearchDDStatus = false;
     },
     getApplicantStatus() {
       try {
