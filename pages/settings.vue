@@ -4,7 +4,7 @@
       <h2 class="page__title">
         {{ $t('settings.settings') }}
       </h2>
-      <validation-observer>
+      <validation-observer v-slot="{handleSubmit}">
         <div
           v-if="userRole === 'worker'"
           class="quests__top"
@@ -89,6 +89,7 @@
                     v-model="localUserData.firstName"
                     :placeholder="firstName || $t('settings.nameInput')"
                     mode="icon"
+                    rules="required"
                     :name="$t('settings.firstName')"
                   >
                     <template v-slot:left>
@@ -100,6 +101,7 @@
                     v-model="localUserData.lastName"
                     :placeholder="$t('settings.lastNameInput')"
                     mode="icon"
+                    rules="required"
                     :name="$t('settings.lastName')"
                   >
                     <template v-slot:left>
@@ -126,6 +128,7 @@
                     mode="icon"
                     :selector="searchDDStatus"
                     :name="$t('settings.address')"
+                    rules="required"
                     @selector="getAddressInfo(localUserData.additionalInfo.address)"
                   >
                     <template v-slot:left>
@@ -374,6 +377,8 @@
               v-model="localUserData.additionalInfo.socialNetwork.instagram"
               :placeholder="userInstagram || $t('settings.instagramUsername')"
               mode="icon"
+              :name="$t('settings.instagram')"
+              rules="required"
             >
               <template v-slot:left>
                 <span class="icon-instagram" />
@@ -383,6 +388,8 @@
               v-model="localUserData.additionalInfo.socialNetwork.twitter"
               :placeholder="userTwitter || $t('settings.twitterUsername')"
               mode="icon"
+              :name="$t('settings.twitter')"
+              rules="required"
             >
               <template v-slot:left>
                 <span class="icon-twitter" />
@@ -392,6 +399,8 @@
               v-model="localUserData.additionalInfo.socialNetwork.linkedin"
               :placeholder="userLinkedin || $t('settings.linkedInUsername')"
               mode="icon"
+              :name="$t('settings.linkedin')"
+              rules="required"
             >
               <template v-slot:left>
                 <span class="icon-LinkedIn" />
@@ -401,6 +410,8 @@
               v-model="localUserData.additionalInfo.socialNetwork.facebook"
               :placeholder="userFacebook || $t('settings.facebookUsername')"
               mode="icon"
+              :name="$t('settings.facebook')"
+              rules="required"
             >
               <template v-slot:left>
                 <span class="icon-facebook" />
@@ -413,7 +424,7 @@
           >
             <base-btn
               class="btn__save"
-              @click="editUserData"
+              @click="handleSubmit(editUserData)"
             >
               {{ $t('settings.save') }}
             </base-btn>

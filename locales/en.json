@@ -1336,6 +1336,10 @@
     }
   },
   "settings": {
+    "facebook": "facebook",
+    "linkedin": "linkedin",
+    "twitter": "twitter",
+    "instagram": "instagram",
     "address": "address",
     "lastName": "last name",
     "firstName": "first name",
