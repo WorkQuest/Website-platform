@@ -111,10 +111,12 @@
               >
                 <vue-phone-number-input
                   v-model="localUserData.additionalInfo.secondMobileNumber"
-                  class="Phone"
+                  class="phone__input"
                   error-color="#EB5757"
                   clearable
                   show-code-on-list
+                  required
+                  size="lg"
                   @update="updatedPhone = $event"
                 />
                 <base-field
@@ -1116,7 +1118,6 @@ export default {
     margin-bottom: 10px;
   }
 }
-
 .selector {
   @include box;
   width: 100%;
