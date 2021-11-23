@@ -1077,6 +1077,7 @@ export default {
         },
       };
       if (this.userRole === 'worker') {
+        const action = 'user/editWorkerData';
         payload.additionalInfo = {
           ...payload.additionalInfo,
           educations: this.localUserData.additionalInfo.educations,
@@ -1088,13 +1089,9 @@ export default {
           wagePerHour: this.perHour,
           specializationKeys: ['1.101'],
         };
-        try {
-          await this.$store.dispatch('user/editWorkerData', payload);
-          this.showModalStatus('saved');
-        } catch (e) {
-          console.log(e);
-        }
+        await this.editProfileResponse(action, payload);
       } if (this.userRole === 'employer') {
+        const action = 'user/editWorkerData';
         payload.additionalInfo = {
           ...payload.additionalInfo,
           description: this.localUserData.additionalInfo.description,
@@ -1102,12 +1099,15 @@ export default {
           CEO: this.localUserData.additionalInfo.CEO,
           website: this.localUserData.additionalInfo.website,
         };
-        try {
-          await this.$store.dispatch('user/editEmployerData', payload);
-          this.showModalStatus('saved');
-        } catch (e) {
-          console.log(e);
-        }
+        await this.editProfileResponse(action, payload);
+      }
+    },
+    async editProfileResponse(action, payload) {
+      try {
+        await this.$store.dispatch(action, payload);
+        this.showModalStatus('saved');
+      } catch (e) {
+        console.log(e);
       }
     },
   },
