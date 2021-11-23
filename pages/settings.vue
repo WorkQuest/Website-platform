@@ -4,560 +4,546 @@
       <h2 class="page__title">
         {{ $t('settings.settings') }}
       </h2>
-      <validation-observer v-slot="{handleSubmit}">
-        <div
-          v-if="userRole === 'worker'"
-          class="quests__top"
-          :class="[{'top-disabled': isShowInfo === false}]"
-        >
-          <transition name="fade-fast">
-            <div class="page__info">
-              <div class="page__grid">
-                <div
-                  class="page__info"
-                >
-                  <div class="page__info">
-                    <h2 class="page__info page__info-title">
-                      {{ $t('settings.addInfo') }}
-                    </h2>
-                    <div class="page__info page__info-subtitle">
-                      {{ $t('settings.alsoRating') }}
-                    </div>
-                    <div class="ver-btn__container">
-                      <base-btn
-                        mode="ver"
-                        @click="goToSumSub"
-                      >
-                        {{ $t('settings.getVerification') }}
-                      </base-btn>
-                    </div>
+      <div
+        v-if="userRole === 'worker'"
+        class="quests__top"
+        :class="[{'top-disabled': isShowInfo === false}]"
+      >
+        <transition name="fade-fast">
+          <div class="page__info">
+            <div class="page__grid">
+              <div
+                class="page__info"
+              >
+                <div class="page__info">
+                  <h2 class="page__info page__info-title">
+                    {{ $t('settings.addInfo') }}
+                  </h2>
+                  <div class="page__info page__info-subtitle">
+                    {{ $t('settings.alsoRating') }}
+                  </div>
+                  <div class="ver-btn__container">
+                    <base-btn
+                      mode="ver"
+                      @click="goToSumSub"
+                    >
+                      {{ $t('settings.getVerification') }}
+                    </base-btn>
                   </div>
                 </div>
-                <div>
-                  <img
-                    class="higher-level__img"
-                    src="~/assets/img/ui/settingsHigherLevel.svg"
-                    alt=""
-                  >
-                </div>
+              </div>
+              <div>
+                <img
+                  class="higher-level__img"
+                  src="~/assets/img/ui/settingsHigherLevel.svg"
+                  alt=""
+                >
               </div>
             </div>
-          </transition>
-        </div>
-        <div class="page__profile">
-          <div class="profile__title">
-            {{ $t('settings.profileInfo') }}
           </div>
-          <div class="avatar__row">
-            <div class="avatar__container">
-              <img
-                id="userAvatar"
-                class="profile__img"
-                :src="imageData ? imageData : require('~/assets/img/app/avatar_empty.png')"
-                alt=""
+        </transition>
+      </div>
+      <div class="page__profile">
+        <div class="profile__title">
+          {{ $t('settings.profileInfo') }}
+        </div>
+        <div class="avatar__row">
+          <div class="avatar__container">
+            <img
+              id="userAvatar"
+              class="profile__img"
+              :src="imageData ? imageData : require('~/assets/img/app/avatar_empty.png')"
+              alt=""
+            >
+            <label class="user_edit_avatar">
+              <div class="icon-edit" />
+              <ValidationProvider
+                v-slot="{ validate }"
+                rules="required|ext:png,jpeg,jpg"
+                tag="div"
               >
-              <label class="user_edit_avatar">
-                <div class="icon-edit" />
-                <ValidationProvider
-                  v-slot="{ validate }"
-                  rules="required|ext:png,jpeg,jpg"
-                  tag="div"
+                <input
+                  id="coverUpload"
+                  class="edit_avatar"
+                  type="file"
+                  accept="image/*"
+                  @change="processFile($event, validate)"
                 >
-                  <input
-                    id="coverUpload"
-                    class="edit_avatar"
-                    type="file"
-                    accept="image/*"
-                    @change="processFile($event, validate)"
-                  >
-                </ValidationProvider>
-              </label>
-            </div>
+              </ValidationProvider>
+            </label>
+          </div>
+          <div>
+            <span
+              v-if="userRole === 'worker'"
+              class="profile__status"
+            >
+              {{ status2FA === 0 ? $t('settings.notVerified') : $t('settings.verified') }}
+              <span class="icon-check_all_big" />
+            </span>
             <div>
-              <span
-                v-if="userRole === 'worker'"
-                class="profile__status"
-              >
-                {{ status2FA === 0 ? $t('settings.notVerified') : $t('settings.verified') }}
-                <span class="icon-check_all_big" />
-              </span>
-              <div>
-                <div class="profile__row-data">
-                  <base-field
-                    v-if="firstName"
-                    v-model="localUserData.firstName"
-                    :placeholder="firstName || $t('settings.nameInput')"
-                    mode="icon"
-                    rules="required"
-                    :name="$t('settings.firstName')"
-                  >
-                    <template v-slot:left>
-                      <span class="icon-user" />
-                    </template>
-                  </base-field>
-                  <base-field
-                    v-if="lastName"
-                    v-model="localUserData.lastName"
-                    :placeholder="$t('settings.lastNameInput')"
-                    mode="icon"
-                    rules="required"
-                    :name="$t('settings.lastName')"
-                  >
-                    <template v-slot:left>
-                      <span class="icon-user" />
-                    </template>
-                  </base-field>
-                </div>
-                <div
-                  class="profile__row-data profile__row-data_big"
-                  @click="toggleSearchDD"
+              <div class="profile__row-data">
+                <base-field
+                  v-if="firstName"
+                  v-model="localUserData.firstName"
+                  :placeholder="firstName || $t('settings.nameInput')"
+                  mode="icon"
+                  :name="$t('settings.firstName')"
                 >
-                  <vue-phone-number-input
-                    v-model="localUserData.additionalInfo.secondMobileNumber"
-                    class="Phone"
-                    error-color="#EB5757"
-                    clearable
-                    show-code-on-list
-                    @update="updatedPhone = $event"
-                  />
-                  <base-field
-                    v-model="localUserData.additionalInfo.address"
-                    v-click-outside="hideSearchDD"
-                    :placeholder="address || $t('settings.addressInput')"
-                    mode="icon"
-                    :selector="isSearchDDStatus"
-                    :name="$t('settings.address')"
-                    rules="required"
-                    @selector="getAddressInfo(localUserData.additionalInfo.address)"
-                  >
-                    <template v-slot:left>
-                      <span class="icon-location" />
-                    </template>
-                    <template v-slot:selector>
-                      <div
-                        v-if="addresses.length"
-                        class="selector"
-                        :class="{'selector_hide': isSearchDDStatus === false}"
-                      >
-                        <div class="selector__items">
-                          <div
-                            v-for="(item, i) in addresses"
-                            :key="i"
-                            class="selector__item"
-                            @click="selectAddress(item)"
-                          >
-                            {{ item.formatted }}
-                          </div>
+                  <template v-slot:left>
+                    <span class="icon-user" />
+                  </template>
+                </base-field>
+                <base-field
+                  v-if="lastName"
+                  v-model="localUserData.lastName"
+                  :placeholder="$t('settings.lastNameInput')"
+                  mode="icon"
+                  :name="$t('settings.lastName')"
+                >
+                  <template v-slot:left>
+                    <span class="icon-user" />
+                  </template>
+                </base-field>
+              </div>
+              <div
+                class="profile__row-data profile__row-data_big"
+                @click="toggleSearchDD"
+              >
+                <vue-phone-number-input
+                  v-model="localUserData.additionalInfo.secondMobileNumber"
+                  class="Phone"
+                  error-color="#EB5757"
+                  clearable
+                  show-code-on-list
+                  @update="updatedPhone = $event"
+                />
+                <base-field
+                  v-model="localUserData.additionalInfo.address"
+                  v-click-outside="hideSearchDD"
+                  :placeholder="address || $t('settings.addressInput')"
+                  mode="icon"
+                  :selector="isSearchDDStatus"
+                  :name="$t('settings.address')"
+                  @selector="getAddressInfo(localUserData.additionalInfo.address)"
+                >
+                  <template v-slot:left>
+                    <span class="icon-location" />
+                  </template>
+                  <template v-slot:selector>
+                    <div
+                      v-if="addresses.length"
+                      class="selector"
+                      :class="{'selector_hide': isSearchDDStatus === false}"
+                    >
+                      <div class="selector__items">
+                        <div
+                          v-for="(item, i) in addresses"
+                          :key="i"
+                          class="selector__item"
+                          @click="selectAddress(item)"
+                        >
+                          {{ item.formatted }}
                         </div>
                       </div>
-                    </template>
-                  </base-field>
-                </div>
+                    </div>
+                  </template>
+                </base-field>
               </div>
             </div>
           </div>
-          <div
-            v-if="userRole === 'employer'"
-            class="company__inputs"
+        </div>
+        <div
+          v-if="userRole === 'employer'"
+          class="company__inputs"
+        >
+          <base-field
+            v-model="localUserData.additionalInfo.company"
+            :placeholder="company || $t('settings.company')"
+            mode="icon"
           >
-            <base-field
-              v-model="localUserData.additionalInfo.company"
-              :placeholder="company || $t('settings.company')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-Case" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="localUserData.additionalInfo.CEO"
-              :placeholder="userCEO || $t('settings.ceo')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-id_card" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="localUserData.additionalInfo.website"
-              :placeholder="userWebsite || $t('settings.website')"
-              mode="icon"
-            >
-              <template v-slot:left>
-                <span class="icon-Earth" />
-              </template>
-            </base-field>
-          </div>
-          <div
-            class="profile__row-1col"
+            <template v-slot:left>
+              <span class="icon-Case" />
+            </template>
+          </base-field>
+          <base-field
+            v-model="localUserData.additionalInfo.CEO"
+            :placeholder="userCEO || $t('settings.ceo')"
+            mode="icon"
           >
-            <textarea
-              id="textarea"
-              v-model="localUserData.additionalInfo.description"
-              class="profile__textarea"
-              :placeholder="userDesc || $t('settings.userDesc')"
-            />
-          </div>
-          <div
-            v-if="userRole === 'worker'"
-            class="page__knowledge knowledge"
+            <template v-slot:left>
+              <span class="icon-id_card" />
+            </template>
+          </base-field>
+          <base-field
+            v-model="localUserData.additionalInfo.website"
+            :placeholder="userWebsite || $t('settings.website')"
+            mode="icon"
           >
-            <label
-              class="knowledge__label"
-            >{{ $t('settings.educations') }}</label>
+            <template v-slot:left>
+              <span class="icon-Earth" />
+            </template>
+          </base-field>
+        </div>
+        <div
+          class="profile__row-1col"
+        >
+          <textarea
+            id="textarea"
+            v-model="localUserData.additionalInfo.description"
+            class="profile__textarea"
+            :placeholder="userDesc || $t('settings.userDesc')"
+          />
+        </div>
+        <div
+          v-if="userRole === 'worker'"
+          class="page__knowledge knowledge"
+        >
+          <label
+            class="knowledge__label"
+          >{{ $t('settings.educations') }}</label>
+          <div
+            v-if="localUserData.additionalInfo.educations.length !==0"
+          >
             <div
-              v-if="localUserData.additionalInfo.educations.length !==0"
-            >
-              <div
-                v-for="(k, i) in localUserData.additionalInfo.educations"
-                :key="k.id"
-                class="knowledge__container"
-              >
-                <div class="knowledge__content">
-                  <base-field
-                    v-model="localUserData.additionalInfo.educations[i].from"
-                    type="grey"
-                    mode="convertDate"
-                    class="knowledge__data"
-                    :disabled="true"
-                    :placeholder="$t('settings.education.from')"
-                  />
-                  <div class="knowledge__dash">
-                    -
-                  </div>
-                  <base-field
-                    v-model="localUserData.additionalInfo.educations[i].to"
-                    type="grey"
-                    mode="convertDate"
-                    class="knowledge__data"
-                    :disabled="true"
-                    :placeholder="$t('settings.education.to')"
-                  />
-                </div>
-                <div class="knowledge__content">
-                  <base-field
-                    v-model="localUserData.additionalInfo.educations[i].place"
-                    type="grey"
-                    class="knowledge__data knowledge__data_big"
-                    :disabled="true"
-                    :placeholder="$t('settings.education.educationalInstitution')"
-                  />
-                  <base-btn
-                    class="knowledge__btn"
-                    @click="deleteKnowledge(i)"
-                  >
-                    {{ $t('settings.delete') }}
-                  </base-btn>
-                </div>
-              </div>
-            </div>
-            <div
+              v-for="(k, i) in localUserData.additionalInfo.educations"
+              :key="k.id"
               class="knowledge__container"
             >
               <div class="knowledge__content">
                 <base-field
-                  v-model="newKnowledge.from"
-                  type="date"
+                  v-model="localUserData.additionalInfo.educations[i].from"
+                  type="grey"
+                  mode="convertDate"
                   class="knowledge__data"
-                  :placeholder="$t('settings.workExps.from')"
+                  :disabled="true"
+                  :placeholder="$t('settings.education.from')"
                 />
                 <div class="knowledge__dash">
                   -
                 </div>
                 <base-field
-                  v-model="newKnowledge.to"
-                  type="date"
+                  v-model="localUserData.additionalInfo.educations[i].to"
+                  type="grey"
+                  mode="convertDate"
                   class="knowledge__data"
-                  :placeholder="$t('settings.workExps.to')"
+                  :disabled="true"
+                  :placeholder="$t('settings.education.to')"
                 />
               </div>
               <div class="knowledge__content">
                 <base-field
-                  v-model="newKnowledge.place"
+                  v-model="localUserData.additionalInfo.educations[i].place"
                   type="grey"
                   class="knowledge__data knowledge__data_big"
+                  :disabled="true"
                   :placeholder="$t('settings.education.educationalInstitution')"
                 />
                 <base-btn
                   class="knowledge__btn"
-                  @click="addNewKnowledge()"
+                  @click="deleteKnowledge(i)"
                 >
-                  {{ $t('settings.add') }}
+                  {{ $t('settings.delete') }}
                 </base-btn>
               </div>
             </div>
-
-            <label
-              v-if="userRole === 'worker'"
-              class="knowledge__label"
-            >{{ $t('settings.workExp') }}</label>
-            <div
-              v-if="localUserData.additionalInfo.workExperiences.length !==0"
-            >
-              <div
-                v-for="(k, i) in localUserData.additionalInfo.workExperiences"
-                :key="k.id"
-                class="knowledge__container"
-              >
-                <div class="knowledge__content">
-                  <base-field
-                    v-model="localUserData.additionalInfo.workExperiences[i].from"
-                    type="gray"
-                    mode="convertDate"
-                    class="knowledge__data"
-                    :disabled="true"
-                    :placeholder="$t('settings.term')"
-                  />
-                  <div class="knowledge__dash">
-                    -
-                  </div>
-                  <base-field
-                    v-model="localUserData.additionalInfo.workExperiences[i].to"
-                    type="gray"
-                    mode="convertDate"
-                    class="knowledge__data"
-                    :disabled="true"
-                    :placeholder="$t('settings.term')"
-                  />
-                </div>
-                <div class="knowledge__content">
-                  <base-field
-                    v-model="localUserData.additionalInfo.workExperiences[i].place"
-                    type="grey"
-                    class="knowledge__data knowledge__data_big"
-                    :disabled="true"
-                    :placeholder="$t('settings.workExps.companyName')"
-                  />
-                  <base-btn
-                    class="knowledge__btn"
-                    @click="deleteWorkExp(i)"
-                  >
-                    {{ $t('settings.delete') }}
-                  </base-btn>
-                </div>
+          </div>
+          <div
+            class="knowledge__container"
+          >
+            <div class="knowledge__content">
+              <base-field
+                v-model="newKnowledge.from"
+                type="date"
+                class="knowledge__data"
+                :placeholder="$t('settings.workExps.from')"
+              />
+              <div class="knowledge__dash">
+                -
               </div>
+              <base-field
+                v-model="newKnowledge.to"
+                type="date"
+                class="knowledge__data"
+                :placeholder="$t('settings.workExps.to')"
+              />
             </div>
-            <div class="knowledge__container">
+            <div class="knowledge__content">
+              <base-field
+                v-model="newKnowledge.place"
+                type="grey"
+                class="knowledge__data knowledge__data_big"
+                :placeholder="$t('settings.education.educationalInstitution')"
+              />
+              <base-btn
+                class="knowledge__btn"
+                @click="addNewKnowledge()"
+              >
+                {{ $t('settings.add') }}
+              </base-btn>
+            </div>
+          </div>
+
+          <label
+            v-if="userRole === 'worker'"
+            class="knowledge__label"
+          >{{ $t('settings.workExp') }}</label>
+          <div
+            v-if="localUserData.additionalInfo.workExperiences.length !==0"
+          >
+            <div
+              v-for="(k, i) in localUserData.additionalInfo.workExperiences"
+              :key="k.id"
+              class="knowledge__container"
+            >
               <div class="knowledge__content">
                 <base-field
-                  v-model="newWorkExp.from"
-                  type="date"
+                  v-model="localUserData.additionalInfo.workExperiences[i].from"
+                  type="gray"
+                  mode="convertDate"
                   class="knowledge__data"
+                  :disabled="true"
                   :placeholder="$t('settings.term')"
                 />
                 <div class="knowledge__dash">
                   -
                 </div>
                 <base-field
-                  v-model="newWorkExp.to"
-                  type="date"
+                  v-model="localUserData.additionalInfo.workExperiences[i].to"
+                  type="gray"
+                  mode="convertDate"
                   class="knowledge__data"
+                  :disabled="true"
                   :placeholder="$t('settings.term')"
                 />
               </div>
               <div class="knowledge__content">
                 <base-field
-                  v-model="newWorkExp.place"
+                  v-model="localUserData.additionalInfo.workExperiences[i].place"
                   type="grey"
                   class="knowledge__data knowledge__data_big"
+                  :disabled="true"
                   :placeholder="$t('settings.workExps.companyName')"
                 />
                 <base-btn
                   class="knowledge__btn"
-                  @click="addNewWorkExp()"
+                  @click="deleteWorkExp(i)"
                 >
-                  {{ $t('settings.add') }}
+                  {{ $t('settings.delete') }}
                 </base-btn>
               </div>
             </div>
           </div>
-          <div class="profile__row-4col">
-            <base-field
-              v-model="localUserData.additionalInfo.socialNetwork.instagram"
-              :placeholder="userInstagram || $t('settings.instagramUsername')"
-              mode="icon"
-              :name="$t('settings.instagram')"
-              rules="required"
-            >
-              <template v-slot:left>
-                <span class="icon-instagram" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="localUserData.additionalInfo.socialNetwork.twitter"
-              :placeholder="userTwitter || $t('settings.twitterUsername')"
-              mode="icon"
-              :name="$t('settings.twitter')"
-              rules="required"
-            >
-              <template v-slot:left>
-                <span class="icon-twitter" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="localUserData.additionalInfo.socialNetwork.linkedin"
-              :placeholder="userLinkedin || $t('settings.linkedInUsername')"
-              mode="icon"
-              :name="$t('settings.linkedin')"
-              rules="required"
-            >
-              <template v-slot:left>
-                <span class="icon-LinkedIn" />
-              </template>
-            </base-field>
-            <base-field
-              v-model="localUserData.additionalInfo.socialNetwork.facebook"
-              :placeholder="userFacebook || $t('settings.facebookUsername')"
-              mode="icon"
-              :name="$t('settings.facebook')"
-              rules="required"
-            >
-              <template v-slot:left>
-                <span class="icon-facebook" />
-              </template>
-            </base-field>
+          <div class="knowledge__container">
+            <div class="knowledge__content">
+              <base-field
+                v-model="newWorkExp.from"
+                type="date"
+                class="knowledge__data"
+                :placeholder="$t('settings.term')"
+              />
+              <div class="knowledge__dash">
+                -
+              </div>
+              <base-field
+                v-model="newWorkExp.to"
+                type="date"
+                class="knowledge__data"
+                :placeholder="$t('settings.term')"
+              />
+            </div>
+            <div class="knowledge__content">
+              <base-field
+                v-model="newWorkExp.place"
+                type="grey"
+                class="knowledge__data knowledge__data_big"
+                :placeholder="$t('settings.workExps.companyName')"
+              />
+              <base-btn
+                class="knowledge__btn"
+                @click="addNewWorkExp()"
+              >
+                {{ $t('settings.add') }}
+              </base-btn>
+            </div>
           </div>
-          <div
-            v-if="userRole === 'employer'"
-            class="page__btn btn"
+        </div>
+        <div class="profile__row-4col">
+          <base-field
+            v-model="localUserData.additionalInfo.socialNetwork.instagram"
+            :placeholder="userInstagram || $t('settings.instagramUsername')"
+            mode="icon"
+            :name="$t('settings.instagram')"
           >
+            <template v-slot:left>
+              <span class="icon-instagram" />
+            </template>
+          </base-field>
+          <base-field
+            v-model="localUserData.additionalInfo.socialNetwork.twitter"
+            :placeholder="userTwitter || $t('settings.twitterUsername')"
+            mode="icon"
+            :name="$t('settings.twitter')"
+          >
+            <template v-slot:left>
+              <span class="icon-twitter" />
+            </template>
+          </base-field>
+          <base-field
+            v-model="localUserData.additionalInfo.socialNetwork.linkedin"
+            :placeholder="userLinkedin || $t('settings.linkedInUsername')"
+            mode="icon"
+            :name="$t('settings.linkedin')"
+          >
+            <template v-slot:left>
+              <span class="icon-LinkedIn" />
+            </template>
+          </base-field>
+          <base-field
+            v-model="localUserData.additionalInfo.socialNetwork.facebook"
+            :placeholder="userFacebook || $t('settings.facebookUsername')"
+            mode="icon"
+            :name="$t('settings.facebook')"
+          >
+            <template v-slot:left>
+              <span class="icon-facebook" />
+            </template>
+          </base-field>
+        </div>
+        <div
+          v-if="userRole === 'employer'"
+          class="page__btn page__btn_margin"
+        >
+          <base-btn
+            class="btn__save"
+            @click="editUserData"
+          >
+            {{ $t('settings.save') }}
+          </base-btn>
+        </div>
+      </div>
+      <h2
+        v-if="userRole === 'worker'"
+        class="page__title"
+      >
+        {{ $t('settings.employmentInfo') }}
+      </h2>
+      <div
+        v-if="userRole === 'worker'"
+        class="main-white"
+      >
+        <div class="page__skills skills">
+          <div
+            v-for="key in specCount"
+            :key="key"
+            class="skills__block block"
+          >
+            <div class="block__skill-spec">
+              <div class="block__specialization specialization">
+                <base-dd
+                  v-model="specIndex[key]"
+                  class="specialization__dd"
+                  type="gray"
+                  :placeholder="$t('settings.selectSpec')"
+                  :items="specializations.titles"
+                  :mode="'small'"
+                  :label="$t('settings.specialization')"
+                  @input="switchSkill($event, key)"
+                />
+                <div class="specialization__skills skills">
+                  <base-dd
+                    v-model="skillIndex[key]"
+                    class="specialization__dd"
+                    :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
+                    :disabled="specIndex[key] < 0"
+                    :placeholder="$t('settings.selectSkills')"
+                    :items="specializations.skills[specIndex[key]]"
+                    :mode="'small'"
+                    :label="$t('settings.skillsInput')"
+                    @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
+                  />
+                  <div
+                    v-if="selectedSkills[key].length === 5"
+                    class="skills__error"
+                  >
+                    {{ $t('ui.buttons.errors.manySkills') }}
+                  </div>
+                </div>
+              </div>
+              <div class="block__skill skill">
+                <div
+                  v-for="(item, i) in selectedSkills[key]"
+                  :key="i"
+                  class="skill__badge"
+                >
+                  {{ item }}
+                  <button
+                    class="skill__remove"
+                    @click="removeSkillToBadge(item, key)"
+                  >
+                    <img
+                      src="~assets/img/ui/close_blue.svg"
+                      alt="x"
+                    >
+                  </button>
+                </div>
+              </div>
+            </div>
+            <base-btn
+              :text="$t('settings.removeSpec')"
+              class="specialization__btn specialization__btn_remove"
+              @click="removeSpecialization(key)"
+            />
+          </div>
+          <base-btn
+            :text="$t('settings.addSpec')"
+            :disabled="specCount === 3"
+            class="skills__btn-add"
+            :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
+            @click="addSpecialization"
+          />
+          <div
+            v-if="specCount === 3"
+            class="skills__error"
+          >
+            {{ $t('ui.buttons.errors.manySpec') }}
+          </div>
+          <div class="skills__add-info">
+            <base-dd
+              v-model="priorityIndex"
+              class="specialization__dd"
+              type="gray"
+              :placeholder="$t('priority.title')"
+              :items="priority"
+              :mode="'small'"
+              :label="$t('settings.priority')"
+            />
+            <base-dd
+              v-model="distantIndex"
+              class="specialization__dd"
+              type="gray"
+              :placeholder="$t('settings.distantWork.select')"
+              :items="distantWork"
+              :mode="'small'"
+              :label="$t('settings.distantWork.title')"
+            />
+            <base-field
+              v-model="perHour"
+              class="specialization__skills"
+              :label="$t('settings.costPerHour')"
+              :name="$t('settings.costPerHour')"
+              type="gray"
+            />
+          </div>
+          <div class="page__btn">
             <base-btn
               class="btn__save"
-              @click="handleSubmit(editUserData)"
+              @click="editUserData"
             >
               {{ $t('settings.save') }}
             </base-btn>
           </div>
         </div>
-      </validation-observer>
-      <validation-observer v-slot="{handleSubmit}">
-        <h2
-          v-if="userRole === 'worker'"
-          class="page__title"
-        >
-          {{ $t('settings.employmentInfo') }}
-        </h2>
-        <div
-          v-if="userRole === 'worker'"
-          class="main-white"
-        >
-          <div class="page__skills skills">
-            <div
-              v-for="key in specCount"
-              :key="key"
-              class="skills__block block"
-            >
-              <div class="block__skill-spec">
-                <div class="block__specialization specialization">
-                  <base-dd
-                    v-model="specIndex[key]"
-                    class="specialization__dd"
-                    type="gray"
-                    :placeholder="$t('settings.selectSpec')"
-                    :items="specializations.titles"
-                    :mode="'small'"
-                    :label="$t('settings.specialization')"
-                    @input="switchSkill($event, key)"
-                  />
-                  <div class="specialization__skills skills">
-                    <base-dd
-                      v-model="skillIndex[key]"
-                      class="specialization__dd"
-                      :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
-                      :disabled="specIndex[key] < 0"
-                      :placeholder="$t('settings.selectSkills')"
-                      :items="specializations.skills[specIndex[key]]"
-                      :mode="'small'"
-                      :label="$t('settings.skillsInput')"
-                      @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
-                    />
-                    <div
-                      v-if="selectedSkills[key].length === 5"
-                      class="skills__error"
-                    >
-                      {{ $t('ui.buttons.errors.manySkills') }}
-                    </div>
-                  </div>
-                </div>
-                <div class="block__skill skill">
-                  <div
-                    v-for="(item, i) in selectedSkills[key]"
-                    :key="i"
-                    class="skill__badge"
-                  >
-                    {{ item }}
-                    <button
-                      class="skill__remove"
-                      @click="removeSkillToBadge(item, key)"
-                    >
-                      <img
-                        src="~assets/img/ui/close_blue.svg"
-                        alt="x"
-                      >
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <base-btn
-                :text="$t('settings.removeSpec')"
-                class="specialization__btn specialization__btn_remove"
-                @click="removeSpecialization(key)"
-              />
-            </div>
-            <base-btn
-              :text="$t('settings.addSpec')"
-              :disabled="specCount === 3"
-              class="skills__btn-add"
-              :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
-              @click="addSpecialization"
-            />
-            <div
-              v-if="specCount === 3"
-              class="skills__error"
-            >
-              {{ $t('ui.buttons.errors.manySpec') }}
-            </div>
-            <div class="skills__add-info">
-              <base-dd
-                v-model="priorityIndex"
-                class="specialization__dd"
-                type="gray"
-                :placeholder="$t('priority.title')"
-                :items="priority"
-                rules="required"
-                :mode="'small'"
-                :label="$t('settings.priority')"
-              />
-              <base-dd
-                v-model="distantIndex"
-                class="specialization__dd"
-                type="gray"
-                :placeholder="$t('settings.distantWork.select')"
-                :items="distantWork"
-                rules="required"
-                :mode="'small'"
-                :label="$t('settings.distantWork.title')"
-              />
-              <base-field
-                v-model="perHour"
-                class="specialization__skills"
-                :label="$t('settings.costPerHour')"
-                :name="$t('settings.costPerHour')"
-                rules="required"
-                type="gray"
-              />
-            </div>
-            <div class="page__btn btn">
-              <base-btn
-                class="btn__save"
-                @click="handleSubmit(editUserData)"
-              >
-                {{ $t('settings.save') }}
-              </base-btn>
-            </div>
-          </div>
-        </div>
-      </validation-observer>
+      </div>
       <div class="settings">
         <div class="settings__left">
           <div>{{ $t('settings.settings') }}</div>
@@ -1120,7 +1106,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .margin {
   &__bottom {
     margin-bottom: 10px;
@@ -1739,10 +1724,12 @@ export default {
     max-width: 1180px;
     width: 100%;
     justify-content: flex-start;
-    //padding: 0 20px 0 0;
   }
   &__btn {
-    margin-bottom: 10px;
+    height: 60px;
+    &_margin {
+      margin: 0 20px 0 0;
+    }
   }
 }
 .skills {
