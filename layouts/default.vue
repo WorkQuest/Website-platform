@@ -8,7 +8,7 @@
     >
       <div
         class="template__content"
-        :class="{'template__content_rows' : chatId}"
+        :class="{'template__content_rows' : isChatOpened}"
       >
         <div
           v-click-outside="closeAll"
@@ -556,7 +556,7 @@
           </transition>
           <div
             class="template__main"
-            :class="{'template__main_padding' : chatId}"
+            :class="{'template__main_padding' : isChatOpened}"
           >
             <nuxt />
           </div>
@@ -566,7 +566,7 @@
             <div class="footer__body">
               <div
                 class="footer__top"
-                :class="{'footer__top_hidden' : chatId}"
+                :class="{'footer__top_hidden' : isChatOpened}"
               >
                 <div class="footer__left">
                   <div
@@ -831,6 +831,9 @@ export default {
       chatId: 'chat/getCurrChatId',
       messagesFilter: 'chat/getMessagesFilter',
     }),
+    isChatOpened() {
+      return !!this.chatId;
+    },
     locales() {
       return [
         {
