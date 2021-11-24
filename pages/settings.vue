@@ -646,7 +646,7 @@
             <div class="settings_blue">
               <div>{{ $t('settings.changePass') }}</div>
               <div>
-                <base-btn @click="showModalKey('changePassword')">
+                <base-btn @click="showModalKey('changePassInSettings')">
                   {{ $t('settings.change') }}
                 </base-btn>
               </div>
@@ -987,7 +987,6 @@ export default {
         chooseNecessarySkills: modals.chooseNecessarySkills,
         changePassInSettings: modals.changePassInSettings,
         twoFAAuth: modals.twoFAAuth,
-        changePassword: modals.changePassword,
         smsVerification: modals.smsVerification,
         changeRoleWarning: modals.changeRoleWarning,
       };
