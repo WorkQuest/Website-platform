@@ -28,25 +28,13 @@
                 class="header__links"
               >
                 <nuxt-link
-                  to="/workers"
+                  v-for="(item, i) in headerLinksEmployer"
+                  :key="i"
+                  :to="item.url"
                   class="header__link"
                   :exact-active-class="'header__link_active'"
                 >
-                  {{ $t('ui.jobQuestors') }}
-                </nuxt-link>
-                <nuxt-link
-                  to="/my"
-                  class="header__link"
-                  :exact-active-class="'header__link_active'"
-                >
-                  {{ $t('ui.myQuests') }}
-                </nuxt-link>
-                <nuxt-link
-                  to="/wallet"
-                  class="header__link"
-                  :exact-active-class="'header__link_active'"
-                >
-                  {{ $t('ui.wallet') }}
+                  {{ item.title }}
                 </nuxt-link>
                 <button
                   class="header__link header__link_menu"
@@ -577,12 +565,11 @@
                       </div>
                       <div class="links__big">
                         <n-link
-                          class="links__store links__store_app-store"
-                          to="#"
-                        />
-                        <n-link
-                          class="links__store links__store_play-market"
-                          to="#"
+                          v-for="(item, i) in storeLinks"
+                          :key="i"
+                          class="links__store"
+                          :class="item.class"
+                          :to="item.url"
                         />
                       </div>
                     </div>
@@ -592,38 +579,11 @@
                       </div>
                       <div class="links__small">
                         <a
-                          class="links__social links__social_twitter"
-                          href="https://twitter.com/workquest_co"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_youtube"
-                          href="https://www.youtube.com/channel/UCpQTdOMynXejrRTVf4ksKPA"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_reddit"
-                          href="https://www.reddit.com/user/WorkQuest_co"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_facebook"
-                          href="https://m.facebook.com/WorkQuestOfficial/"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_linkedin"
-                          href="https://www.linkedin.com/company/workquestofficial"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_instagram"
-                          href="https://www.instagram.com/workquestofficial/"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_telegram"
-                          href="https://t.me/WorkQuest"
+                          v-for="(item, i) in socialLinks"
+                          :key="i"
+                          class="links__social"
+                          :class="item.class"
+                          :href="item.url"
                           target="_blank"
                         />
                       </div>
@@ -707,12 +667,11 @@
                       </div>
                       <div class="links__big">
                         <n-link
-                          class="links__store links__store_app-store"
-                          to="#"
-                        />
-                        <n-link
-                          class="links__store links__store_play-market"
-                          to="#"
+                          v-for="(item, i) in storeLinks"
+                          :key="i"
+                          class="links__store"
+                          :class="item.class"
+                          :to="item.url"
                         />
                       </div>
                     </div>
@@ -722,38 +681,11 @@
                       </div>
                       <div class="links__small">
                         <a
-                          class="links__social links__social_twitter"
-                          href="https://twitter.com/workquest_co"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_youtube"
-                          href="https://www.youtube.com/channel/UCpQTdOMynXejrRTVf4ksKPA"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_reddit"
-                          href="https://www.reddit.com/user/WorkQuest_co"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_facebook"
-                          href="https://m.facebook.com/WorkQuestOfficial/"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_linkedin"
-                          href="https://www.linkedin.com/company/workquestofficial"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_instagram"
-                          href="https://www.instagram.com/workquestofficial/"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_telegram"
-                          href="https://t.me/WorkQuest"
+                          v-for="(item, i) in socialLinks"
+                          :key="i"
+                          class="links__social"
+                          :class="item.class"
+                          :href="item.url"
                           target="_blank"
                         />
                       </div>
@@ -822,6 +754,66 @@ export default {
       chatId: 'chat/getCurrChatId',
       messagesFilter: 'chat/getMessagesFilter',
     }),
+    headerLinksEmployer() {
+      return [
+        {
+          url: '/workers',
+          title: this.$t('ui.jobQuestors'),
+        },
+        {
+          url: '/my',
+          title: this.$t('ui.myQuests'),
+        },
+        {
+          url: '/wallet',
+          title: this.$t('ui.wallet'),
+        },
+      ];
+    },
+    storeLinks() {
+      return [
+        {
+          url: '#',
+          class: 'links__store_app-store',
+        },
+        {
+          url: '#',
+          class: 'links__store_play-market',
+        },
+      ];
+    },
+    socialLinks() {
+      return [
+        {
+          url: 'https://twitter.com/workquest_co',
+          class: 'links__social_twitter',
+        },
+        {
+          url: 'https://www.youtube.com/channel/UCpQTdOMynXejrRTVf4ksKPA',
+          class: 'links__social_youtube',
+        },
+        {
+          url: 'https://www.reddit.com/user/WorkQuest_co',
+          class: 'links__social_reddit',
+        },
+        {
+          url: 'https://m.facebook.com/WorkQuestOfficial/',
+          class: 'links__social_facebook',
+        },
+        {
+          url: 'https://www.linkedin.com/company/workquestofficial',
+          class: 'links__social_linkedin',
+        },
+        {
+          url: 'https://www.instagram.com/workquestofficial/',
+          class: 'links__social_instagram',
+        },
+        {
+          url: 'https://t.me/WorkQuest',
+          class: 'links__social_telegram',
+        },
+      ];
+    },
     locales() {
       return [
         {
