@@ -461,10 +461,10 @@ export default {
           payload += '&priority[]=1';
           break;
         case 2:
-          payload += '&workplaces[]=2';
+          payload += '&priority[]=2';
           break;
         case 3:
-          payload += '&workplaces[]=3';
+          payload += '&priority[]=3';
           break;
         default: break;
       }
@@ -496,6 +496,8 @@ export default {
       if (this.priceFilter.from || this.priceFilter.to) {
         payload += `&betweenWagePerHour=[from:${this.priceFilter.from || 0}&betweenWagePerHour[to]=${this.priceFilter.to || 999999999999999}`;
       }
+
+      if (payload[0] === '&') payload = payload.replace('&', '?');
 
       await this.$store.dispatch('quests/workersList', payload);
       this.SetLoader(false);
