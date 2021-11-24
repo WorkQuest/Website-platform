@@ -6,7 +6,10 @@
     <div
       class="primary__template template"
     >
-      <div class="template__content">
+      <div
+        class="template__content"
+        :class="{'template__content_rows' : isChatOpened}"
+      >
         <div
           v-click-outside="closeAll"
           class="template__header header"
@@ -527,14 +530,20 @@
               </div>
             </div>
           </transition>
-          <div class="template__main">
+          <div
+            class="template__main"
+            :class="{'template__main_padding' : isChatOpened}"
+          >
             <nuxt />
           </div>
         </div>
         <div class="template__footer">
           <div class="footer">
             <div class="footer__body">
-              <div class="footer__top">
+              <div
+                class="footer__top"
+                :class="{'footer__top_hidden' : isChatOpened}"
+              >
                 <div class="footer__left">
                   <div
                     class="footer__logo"
@@ -742,6 +751,9 @@ export default {
       chatId: 'chat/getCurrChatId',
       messagesFilter: 'chat/getMessagesFilter',
     }),
+    isChatOpened() {
+      return !!this.chatId;
+    },
     headerLinksWorker() {
       return [
         {
@@ -1429,6 +1441,7 @@ export default {
 .primary {
   height: 100vh;
   overflow-y: auto;
+  background: #F7F8FA;
 }
 .template {
   min-height: 100vh;
@@ -1437,12 +1450,20 @@ export default {
     display: grid;
     grid-template-rows: 72px 1fr auto;
     min-height: 100vh;
+
+    &_rows {
+      grid-template-rows: 72px 1fr 72px;
+    }
   }
   &__main {
     display: grid;
     padding-bottom: 80px;
     transition: 1s;
     width: 100%;
+
+    &_padding {
+      padding-bottom: 50px;
+    }
   }
 }
 .notify {
@@ -1892,6 +1913,10 @@ export default {
     width: 100%;
     display: flex;
     justify-content: space-between;
+
+    &_hidden {
+      display: none;
+    }
   }
   &__bottom {
     width: 100%;
