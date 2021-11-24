@@ -174,6 +174,10 @@ export default {
             text += 'userAddedToChat';
             break;
           }
+          case 'groupChatLeaveUser': {
+            text += 'leftTheChat';
+            break;
+          }
           default: {
             text = '';
             break;
