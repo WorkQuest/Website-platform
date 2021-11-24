@@ -44,6 +44,9 @@
   "resolutions": {
     "ua-parser-js": "1.0.1"
   },
+  "resolutions": {
+    "ua-parser-js": "1.0.1"
+  },
   "devDependencies": {
     "@nuxt/types": "^2.14.12",
     "@nuxtjs/color-mode": "^1.1.1",
