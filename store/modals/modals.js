@@ -79,4 +79,5 @@ export default {
   swapTokens: 'swapTokens',
   gallery: 'gallery',
   areYouSureDeleteMember: 'areYouSureDeleteMember',
+  areYouSureLeaveChat: 'areYouSureLeaveChat',
 };

@@ -38,7 +38,10 @@
               </div>
             </template>
           </div>
-          <ChatMenu v-show="chatId !== 'starred'" />
+          <ChatMenu
+            v-show="chatId !== 'starred'"
+            :can-i-leave="messages.chat && messages.chat.type === 'group' && messages.chat.owner.id !== userData.id"
+          />
         </div>
         <div
           ref="HandleScrollContainer"
@@ -68,20 +71,20 @@
                 class="info-message"
               >
                 <div>
-                  {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe, message.infoMessage.messageAction.user ? message.infoMessage.messageAction.user.id === userData.id : false) }}
+                  {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
                 </div>
                 <template v-if="message.infoMessage.messageAction !== 'groupChatCreate' || (message.infoMessage.messageAction === 'groupChatCreate' && !message.itsMe)">
                   <div
                     class="info-message__link"
                     :class="{'info-message__link_left' : !message.itsMe}"
-                    @click="openProfile(message.infoMessage.user.id, message.itsMe)"
+                    @click="openProfile(message.infoMessage.userId || message.senderUserId, message.itsMe)"
                   >
                     {{ setFullName(message) }}
                   </div>
                   <div
                     v-if="!message.itsMe && ['groupChatAddUser', 'groupChatDeleteUser'].includes(message.infoMessage.messageAction) && message.infoMessage.user"
                     class="info-message__link"
-                    @click="openProfile(message.infoMessage.user.id, message.itsMe)"
+                    @click="openProfile(message.infoMessage.userId, message.itsMe)"
                   >
                     {{ (message.infoMessage.user.firstName || '') + ' ' + (message.infoMessage.user.lastName || '') }}
                   </div>
@@ -395,6 +398,10 @@ export default {
           text += itsMe ? 'youAddedToChat' : 'addedToChat';
           break;
         }
+        case 'groupChatLeaveUser': {
+          text += itsMe ? 'youLeftTheChat' : 'leftTheChat';
+          break;
+        }
         default: {
           text = '';
           break;
@@ -464,9 +471,9 @@ export default {
 
       if (isReadingInProgress || !list.length) return;
 
-      const { senderStatus, sender, id } = list[list.length - 1];
+      const { senderStatus, senderUserId, id } = list[list.length - 1];
 
-      if (senderStatus === 'read' || sender.id === userData.id) return;
+      if (senderStatus === 'read' || senderUserId === userData.id) return;
 
       this.isReadingInProgress = true;
 

@@ -163,7 +163,8 @@
     "connectSMSVer": "Connect SMS Verification",
     "resendSMS": "Resend SMS",
     "disable": "Disable",
-    "remindLater": "Remind later"
+    "remindLater": "Remind later",
+    "leave": "Leave"
   },
   "priority": {
     "title": "Select priority",
@@ -909,6 +910,7 @@
     "youCan’tDeleteActiveQuest": "You can’t delete active quest",
     "sureDeleteText": "Do you really want to delete this quest?",
     "sureDeleteMemberText": "Do you really want to delete this member?",
+    "sureLeaveChatText": "Do you really want to leave this chat?",
     "priceTitle": "Price",
     "enterPriceRange": "Enter price range",
     "priceForm": "From",
@@ -1332,8 +1334,11 @@
       "addedToChat": "added to chat",
       "youAddedToChat": "You added to chat",
       "userAddedToChat": "Added user to chat",
-      "userRemovedFromChat": "Removed user from chat"
-    }
+      "userRemovedFromChat": "Removed user from chat",
+      "leftTheChat": "left the chat",
+      "youLeftTheChat": "You left the chat"
+    },
+    "leaveChat": "Leave chat"
   },
   "settings": {
     "facebook": "facebook",
