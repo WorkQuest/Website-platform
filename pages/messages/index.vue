@@ -119,7 +119,7 @@ export default {
   data() {
     return {
       filter: {
-        limit: 30,
+        limit: 15,
         offset: 0,
         starred: false,
       },
@@ -196,7 +196,7 @@ export default {
     },
     handleSortedChats() {
       this.filter = {
-        limit: 10,
+        limit: 15,
         offset: 0,
         starred: !this.filter.starred,
       };
