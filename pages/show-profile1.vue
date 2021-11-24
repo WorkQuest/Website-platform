@@ -1,12 +1,8 @@
 <template>
   <div>
-    <div
-      class="main-section main-section_white"
-    >
+    <div class="main-section main-section_white">
       <div class="main-container">
-        <div
-          class="information-grid"
-        >
+        <div class="information-grid">
           <div class="col info-grid__col_left">
             <div class="info-grid__avatar">
               <img
@@ -27,9 +23,7 @@
             <div class="title">
               Lousy Cayn
             </div>
-            <div
-              class="description"
-            >
+            <div class="description">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel
             </div>
             <div class="socials">
@@ -38,17 +32,15 @@
             <div class="contacts__grid">
               <div class="contacts">
                 <div class="contacts">
-                  <span
-                    class="contact"
-                  >
+                  <span class="contact">
                     <span class="contact__container">
-                      <span
-                        class="icon-location"
-                      />
+                      <span class="icon-location" />
                       <a
                         :href="'https://maps.google.com/?q=' + userData.address"
                         target="_blank"
-                      ><span class="contact__link">{{ userData.address }}</span></a>
+                      >
+                        <span class="contact__link">{{ userData.address }}</span>
+                      </a>
                     </span>
                     <span class="contact__container">
                       <span class="icon-phone" />
@@ -78,15 +70,11 @@
       <div class="main-container">
         <userStatistic />
 
-        <div
-          class="title"
-        >
+        <div class="title">
           {{ $t('quests.reviewsBig') }}
         </div>
 
-        <div
-          class="tab__container"
-        >
+        <div class="tab__container">
           <reviewsTab />
         </div>
         <div>
@@ -94,9 +82,7 @@
             {{ $t('quests.activeQuests') }}
           </div>
         </div>
-        <div
-          class="button"
-        >
+        <div class="button">
           <nuxt-link
             v-if="selected === 1"
             class="button__more"

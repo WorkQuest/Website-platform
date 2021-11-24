@@ -72,26 +72,26 @@
             >
               {{ $t('profile.raiseViews') }}
             </base-btn>
-            <span
-              v-if="userRole === 'employer'"
-              class="right"
-            >
-              <span
-                v-if="selected === 1"
-                class="message__container-btn"
-              >
-                <base-btn
-                  mode="goToMessages"
-                  class="message__btn"
-                  @click="showMessages()"
-                >
-                  <template v-slot:right>
-                    <span class="icon-chat" />
-                  </template>
-                  {{ $t('profile.writeAMessage') }}
-                </base-btn>
-              </span>
-            </span>
+            <!--            <span-->
+            <!--              v-if="userRole === 'employer'"-->
+            <!--              class="right"-->
+            <!--            >-->
+            <!--              <span-->
+            <!--                v-if="selected === 1"-->
+            <!--                class="message__container-btn"-->
+            <!--              >-->
+            <!--                <base-btn-->
+            <!--                  mode="goToMessages"-->
+            <!--                  class="message__btn"-->
+            <!--                  @click="showMessages()"-->
+            <!--                >-->
+            <!--                  <template v-slot:right>-->
+            <!--                    <span class="icon-chat" />-->
+            <!--                  </template>-->
+            <!--                  {{ $t('profile.writeAMessage') }}-->
+            <!--                </base-btn>-->
+            <!--              </span>-->
+            <!--            </span>-->
           </div>
         </div>
       </div>

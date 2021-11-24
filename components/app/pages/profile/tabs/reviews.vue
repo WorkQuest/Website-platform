@@ -89,10 +89,11 @@ export default {
     ...mapGetters({
       reviews: 'user/getAllUserReviews',
       userData: 'user/getUserData',
+      anotherUserData: 'user/getAnotherUserData',
     }),
   },
   async mounted() {
-    await this.$store.dispatch('user/getAllUserReviews', this.userId);
+    await this.$store.dispatch('user/getAllUserReviews', this.anotherUserData.id);
   },
   methods: {
     initStars(mark) {

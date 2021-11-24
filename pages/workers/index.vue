@@ -399,7 +399,7 @@ export default {
     },
     showDetails(worker) {
       this.$store.dispatch('quests/setCurrentWorker', worker);
-      this.$router.push(`/workers/${worker.id}`);
+      this.$router.push(`/show-profile/${worker.id}`);
     },
     cardsLevels(idx) {
       const { cards } = this;

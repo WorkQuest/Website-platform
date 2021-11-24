@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="information-grid"
-  >
+  <div class="information-grid">
     <div class="col info-grid__col_left">
       <div class="info-grid__avatar">
         <img
@@ -19,9 +17,7 @@
           :class="item ? `star${item}` : item"
         />
       </div>
-      <div
-        class="reviews-amount"
-      >
+      <div class="reviews-amount">
         {{ `${userStatistics.reviewCount} ${$t('quests.reviews')}` }}
       </div>
     </div>
@@ -33,10 +29,10 @@
         {{ `${userInfo.firstName} ${userInfo.lastName}` }}
       </div>
       <div
-        v-if="userRole === 'employer'"
+        v-if="userRole === 'employer' && userInfo.company"
         class="subtitle"
       >
-        {{ userInfo.company || userInfo.company }}
+        {{ userInfo.company }}
       </div>
       <div
         v-if="userAdditionalInfo.description"
@@ -45,12 +41,8 @@
         {{ userAdditionalInfo.description }}
       </div>
       <div v-if="userRole === 'worker' ">
-        <div
-          v-if="userEducations && userEducations.length > 0"
-        >
-          <div
-            class="knowledge__text"
-          >
+        <div v-if="userEducations && userEducations.length > 0">
+          <div class="knowledge__text">
             {{ $t('profile.educations') }}
           </div>
           <div
@@ -67,12 +59,8 @@
             </div>
           </div>
         </div>
-        <div
-          v-if="userWorkExperiences && userWorkExperiences.length > 0"
-        >
-          <div
-            class="work-exp__text"
-          >
+        <div v-if="userWorkExperiences && userWorkExperiences.length > 0">
+          <div class="work-exp__text">
             {{ $t('profile.prevWorkExp') }}
           </div>
           <div class="work-exp__container">
@@ -87,7 +75,10 @@
           </div>
         </div>
       </div>
-      <div class="socials">
+      <div
+        v-if="hasSocialNetworks"
+        class="socials"
+      >
         <socialPanel :social="userSocialNetwork" />
       </div>
       <div class="contacts__grid">
@@ -108,26 +99,26 @@
             >
               {{ $t('profile.raiseViews') }}
             </base-btn>
-            <span
-              v-if="userRole === 'employer'"
-              class="right"
-            >
-              <span
-                v-if="selected === 1"
-                class="message__container-btn"
-              >
-                <base-btn
-                  mode="goToMessages"
-                  class="message__btn"
-                  @click="showMessages()"
-                >
-                  <template v-slot:right>
-                    <span class="icon-chat" />
-                  </template>
-                  {{ $t('profile.writeAMessage') }}
-                </base-btn>
-              </span>
-            </span>
+            <!--            <span-->
+            <!--              v-if="userRole === 'employer'"-->
+            <!--              class="right"-->
+            <!--            >-->
+            <!--              <span-->
+            <!--                v-if="selected === 1"-->
+            <!--                class="message__container-btn"-->
+            <!--              >-->
+            <!--                <base-btn-->
+            <!--                  mode="goToMessages"-->
+            <!--                  class="message__btn"-->
+            <!--                  @click="showMessages()"-->
+            <!--                >-->
+            <!--                  <template v-slot:right>-->
+            <!--                    <span class="icon-chat" />-->
+            <!--                  </template>-->
+            <!--                  {{ $t('profile.writeAMessage') }}-->
+            <!--                </base-btn>-->
+            <!--              </span>-->
+            <!--            </span>-->
           </div>
         </div>
       </div>
@@ -183,6 +174,11 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
     }),
+    hasSocialNetworks() {
+      const { userSocialNetwork } = this;
+
+      return userSocialNetwork.length && Object.values(userSocialNetwork).some((val) => val !== null);
+    },
   },
   watch: {
     userInfo() {

@@ -1,23 +1,23 @@
 <template>
   <div>
-    <div
-      class="main-section main-section_white"
-    >
+    <div class="main-section main-section_white">
       <div class="main-container">
         <userInfo
           :selected="selected"
           :user-info="userData"
         />
 
-        <button
-          v-for="(item, i) in pageTabs"
-          :key="i"
-          class="tab__btn"
-          :class="{tab__btn_active: selected === item.number}"
-          @click="selected = item.number"
-        >
-          {{ item.title }}
-        </button>
+        <div class="main-container__routes">
+          <button
+            v-for="(item, i) in pageTabs"
+            :key="i"
+            class="tab__btn"
+            :class="{tab__btn_active: selected === item.number}"
+            @click="selected = item.number"
+          >
+            {{ item.title }}
+          </button>
+        </div>
       </div>
     </div>
     <div class="information-section">
@@ -26,9 +26,7 @@
           v-if="selected === 1"
           :review-data="userStatistics"
         />
-        <div
-          v-if="selected === 2"
-        >
+        <div v-if="selected === 2">
           <div class="title">
             {{ $t('quests.activeQuests') }}
           </div>
@@ -44,24 +42,18 @@
           v-if="selected === 3 || (selected === 1 && userData.role === 'employer')"
           class="tab__container"
         >
-          <reviewsTab
-            :user-id="userData.id"
-          />
+          <reviewsTab :user-id="userData.id" />
         </div>
         <div
           v-if="selected === 3 && userStatistics.reviewCount > 0"
           class="button"
         >
-          <div
-            class="button__more"
-          >
+          <div class="button__more">
             {{ $t('meta.showAllReviews') }}
           </div>
         </div>
         <div v-if="selected === 4 || (selected === 1 && userData.role === 'worker')">
-          <portfolioTab
-            :user-id="userData.id"
-          />
+          <portfolioTab :user-id="userData.id" />
         </div>
       </div>
     </div>
@@ -87,25 +79,14 @@ export default {
   data() {
     return {
       selected: 1,
-      userData1: {
-        address: 'Moscow',
-        phone: '8-800-5553535',
-        email: 'employer@gmail.com',
+      userStatistics: {
+        reviewCount: 0,
+        averageMark: 0,
       },
-      userAvatar: '',
-      userAdditionalInfo: {},
-      userSocialNetwork: {},
-      userWorkExperiences: {},
-      userSkills: {},
-      userEducations: {},
-      userStatistics: {},
-      userStars: [],
     };
   },
   computed: {
     ...mapGetters({
-      tags: 'ui/getTags',
-      userRole: 'user/getUserRole',
       userData: 'user/getAnotherUserData',
     }),
     cardLevelClass(idx) {
@@ -116,51 +97,38 @@ export default {
       ];
     },
     pageTabs() {
-      let tabs = [];
+      const tabs = [
+        {
+          number: 1,
+          title: this.$t('profile.common'),
+        },
+        {
+          number: 2,
+          title: this.$t('profile.quests'),
+        },
+        {
+          number: 3,
+          title: this.$t('profile.reviews'),
+        },
+      ];
+
       if (this.userData.role === 'worker') {
-        tabs = [
-          {
-            number: 1,
-            title: this.$t('profile.common'),
-          },
-          {
-            number: 2,
-            title: this.$t('profile.quests'),
-          },
-          {
-            number: 3,
-            title: this.$t('profile.reviews'),
-          },
-          {
-            number: 4,
-            title: this.$t('profile.portfolio'),
-          },
-        ];
-      } else {
-        tabs = [
-          {
-            number: 1,
-            title: this.$t('profile.common'),
-          },
-          {
-            number: 2,
-            title: this.$t('profile.quests'),
-          },
-          {
-            number: 3,
-            title: this.$t('profile.reviews'),
-          },
-        ];
+        tabs.push({
+          number: 4,
+          title: this.$t('profile.portfolio'),
+        });
       }
+
       return tabs;
     },
   },
   async beforeCreate() {
     await this.$store.dispatch('user/getAnotherUserData', this.$route.params.id);
-    if (this.userData.ratingStatistic) {
-      this.userStatistics = { reviewCount: this.userData.ratingStatistic.reviewCount, averageMark: this.userData.ratingStatistic.averageMark };
-    } else {
-      this.userStatistics = { reviewCount: 0, averageMark: 0 };
+    const { ratingStatistic } = this.userData;
+
+    if (ratingStatistic) {
+      const { reviewCount = 0, averageMark = 0 } = ratingStatistic;
+      this.userStatistics = { reviewCount, averageMark };
     }
   },
   async beforeDestroy() {
@@ -227,6 +195,8 @@ export default {
   width: 1180px;
   margin: 0 auto;
   padding-top: 10px;
+  display: grid;
+  gap: 20px;
 }
 
 .styles {
