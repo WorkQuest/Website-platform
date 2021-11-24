@@ -375,21 +375,6 @@ export default () => ({
       decision: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor',
     },
   ],
-  chats: {
-    list: [],
-    count: 0,
-  },
-  messages: {
-    list: [],
-    count: 0,
-    chatId: '',
-  },
-  messagesFilter: {
-    topOffset: 0,
-    bottomOffset: 0,
-    canLoadToBottom: false,
-    canLoadToTop: false,
-  },
   connections: {
     notifsConnection: false,
     chatConnection: false,

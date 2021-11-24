@@ -50,17 +50,9 @@
         <div class="avatar__row">
           <div class="avatar__container">
             <img
-              v-if="imageData"
               id="userAvatar"
               class="profile__img"
-              :src="imageData"
-              alt=""
-            >
-            <img
-              v-if="!imageData"
-              id="userAvatarTwo"
-              class="profile__img"
-              src="~/assets/img/app/avatar_empty.png"
+              :src="imageData ? imageData : require('~/assets/img/app/avatar_empty.png')"
               alt=""
             >
             <label class="user_edit_avatar">
@@ -85,7 +77,7 @@
               v-if="userRole === 'worker'"
               class="profile__status"
             >
-              {{ $t('settings.notVerified') }}
+              {{ status2FA === 0 ? $t('settings.notVerified') : $t('settings.verified') }}
               <span class="icon-check_all_big" />
             </span>
             <div>
@@ -95,6 +87,7 @@
                   v-model="localUserData.firstName"
                   :placeholder="firstName || $t('settings.nameInput')"
                   mode="icon"
+                  :name="$t('settings.firstName')"
                 >
                   <template v-slot:left>
                     <span class="icon-user" />
@@ -105,26 +98,34 @@
                   v-model="localUserData.lastName"
                   :placeholder="$t('settings.lastNameInput')"
                   mode="icon"
+                  :name="$t('settings.lastName')"
                 >
                   <template v-slot:left>
                     <span class="icon-user" />
                   </template>
                 </base-field>
               </div>
-              <div class="profile__row-data profile__row-data_big">
+              <div
+                class="profile__row-data profile__row-data_big"
+                @click="toggleSearchDD"
+              >
                 <vue-phone-number-input
-                  v-model="localUserData.additionalInfo.firstMobileNumber"
-                  class="Phone"
+                  v-model="localUserData.additionalInfo.secondMobileNumber"
+                  class="phone__input"
                   error-color="#EB5757"
                   clearable
                   show-code-on-list
+                  required
+                  size="lg"
                   @update="updatedPhone = $event"
                 />
                 <base-field
                   v-model="localUserData.additionalInfo.address"
+                  v-click-outside="hideSearchDD"
                   :placeholder="address || $t('settings.addressInput')"
                   mode="icon"
-                  :selector="true"
+                  :selector="isSearchDDStatus"
+                  :name="$t('settings.address')"
                   @selector="getAddressInfo(localUserData.additionalInfo.address)"
                 >
                   <template v-slot:left>
@@ -134,6 +135,7 @@
                     <div
                       v-if="addresses.length"
                       class="selector"
+                      :class="{'selector_hide': isSearchDDStatus === false}"
                     >
                       <div class="selector__items">
                         <div
@@ -372,6 +374,7 @@
             v-model="localUserData.additionalInfo.socialNetwork.instagram"
             :placeholder="userInstagram || $t('settings.instagramUsername')"
             mode="icon"
+            :name="$t('settings.instagram')"
           >
             <template v-slot:left>
               <span class="icon-instagram" />
@@ -381,6 +384,7 @@
             v-model="localUserData.additionalInfo.socialNetwork.twitter"
             :placeholder="userTwitter || $t('settings.twitterUsername')"
             mode="icon"
+            :name="$t('settings.twitter')"
           >
             <template v-slot:left>
               <span class="icon-twitter" />
@@ -390,6 +394,7 @@
             v-model="localUserData.additionalInfo.socialNetwork.linkedin"
             :placeholder="userLinkedin || $t('settings.linkedInUsername')"
             mode="icon"
+            :name="$t('settings.linkedin')"
           >
             <template v-slot:left>
               <span class="icon-LinkedIn" />
@@ -399,6 +404,7 @@
             v-model="localUserData.additionalInfo.socialNetwork.facebook"
             :placeholder="userFacebook || $t('settings.facebookUsername')"
             mode="icon"
+            :name="$t('settings.facebook')"
           >
             <template v-slot:left>
               <span class="icon-facebook" />
@@ -407,11 +413,11 @@
         </div>
         <div
           v-if="userRole === 'employer'"
-          class="page__btn btn"
+          class="page__btn page__btn_margin"
         >
           <base-btn
             class="btn__save"
-            @click="editUserData()"
+            @click="editUserData"
           >
             {{ $t('settings.save') }}
           </base-btn>
@@ -525,14 +531,16 @@
             <base-field
               v-model="perHour"
               class="specialization__skills"
+              :placeholder="perHour ||$t('priority.title')"
               :label="$t('settings.costPerHour')"
+              :name="$t('settings.costPerHour')"
               type="gray"
             />
           </div>
-          <div class="page__btn btn">
+          <div class="page__btn">
             <base-btn
               class="btn__save"
-              @click="editUserData()"
+              @click="editUserData"
             >
               {{ $t('settings.save') }}
             </base-btn>
@@ -638,7 +646,7 @@
             <div class="settings_blue">
               <div>{{ $t('settings.changePass') }}</div>
               <div>
-                <base-btn @click="modalChangePassword()">
+                <base-btn @click="showModalKey('changePassword')">
                   {{ $t('settings.change') }}
                 </base-btn>
               </div>
@@ -649,13 +657,15 @@
               </div>
               <div>
                 <base-btn
+                  :disabled="status2FA === 0"
                   class="margin__bottom"
-                  @click="disable2FA"
+                  @click="showModalKey('disable2FA')"
                 >
                   {{ $t('meta.disable') }}
                 </base-btn>
                 <base-btn
-                  @click="modalTwoFAAuth()"
+                  :disabled="status2FA === 1"
+                  @click="showModalKey('twoFAAuth')"
                 >
                   {{ $t('settings.enable') }}
                 </base-btn>
@@ -665,7 +675,7 @@
               <div>{{ $t('settings.smsVerification') }}</div>
               <div>
                 <base-btn
-                  @click="showModalEnableSmsVerification"
+                  @click="showModalKey('smsVerification')"
                 >
                   {{ $t('settings.enable') }}
                 </base-btn>
@@ -688,16 +698,21 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import ClickOutside from 'vue-click-outside';
 import { GeoCode } from 'geo-coder';
 import modals from '~/store/modals/modals';
 import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 
 export default {
   name: 'Settings',
+  directives: {
+    ClickOutside,
+  },
   data() {
     return {
+      isSearchDDStatus: true,
       specCount: 0,
-      perHour: '0',
+      perHour: 0,
       specIndex: {
         1: -1,
         2: -1,
@@ -717,7 +732,7 @@ export default {
       distantIndex: -1,
       updatedPhone: null,
       addresses: [],
-      sms: false,
+      isSms: false,
       isShowInfo: true,
       localUserData: {
         avatarId: null,
@@ -725,7 +740,6 @@ export default {
         lastName: null,
         skillFilters: null,
         additionalInfo: {
-          // firstMobileNumber: null,
           secondMobileNumber: null,
           address: null,
           socialNetwork: {
@@ -747,7 +761,7 @@ export default {
           latitude: 0,
         },
       },
-      avatar_change: {
+      avatarChange: {
         data: {},
         file: {},
       },
@@ -787,6 +801,7 @@ export default {
       getUserAddress: 'user/getUserAddress',
       applicantStatus: 'sumsub/getApplicantStatus',
       accessToken: 'sumsub/getSumSubBackendToken',
+      status2FA: 'user/getStatus2FA',
     }),
     specializations() {
       const specializations = Object.keys(this.$t('settings.specializations')).length;
@@ -824,13 +839,22 @@ export default {
       additionalInfo: JSON.parse(JSON.stringify(this.userData.additionalInfo)),
       location: this.userData.location,
     };
+    await this.perHourData();
     this.SetLoader(false);
   },
   methods: {
+    async perHourData() {
+      this.perHour = await this.userData.wagePerHour;
+    },
+    toggleSearchDD() {
+      this.isSearchDDStatus = !this.isSearchDDStatus;
+    },
+    hideSearchDD() {
+      this.isSearchDDStatus = false;
+    },
     getApplicantStatus() {
-      const id = this.accessToken.userId;
       try {
-        this.$store.dispatch('sumsub/applicantStatus', id);
+        this.$store.dispatch('sumsub/applicantStatus', this.accessToken.userId);
       } catch (e) {
         console.log(e);
       }
@@ -865,16 +889,6 @@ export default {
       this.skillIndex[key] = -1;
       this.specCount -= 1;
     },
-    disable2FA() {
-      this.ShowModal({
-        key: modals.disable2FA,
-      });
-    },
-    chooseNecessarySkills() {
-      this.ShowModal({
-        key: modals.chooseNecessarySkills,
-      });
-    },
     selectAddress(address) {
       this.localUserData.additionalInfo.address = address.formatted;
       this.addresses = [];
@@ -899,7 +913,7 @@ export default {
         to: null,
         place: null,
       };
-      this.showModalAddEducationOk();
+      this.showModalStatus('educationAddSuccessful');
     },
     deleteKnowledge(i) {
       this.localUserData.additionalInfo.educations.splice(i, 1);
@@ -911,7 +925,7 @@ export default {
         to: null,
         place: null,
       };
-      this.showModalAddWorkExpOk();
+      this.showModalStatus('workExpAddSuccessful');
     },
     deleteWorkExp(i) {
       this.localUserData.additionalInfo.workExperiences.splice(i, 1);
@@ -919,18 +933,17 @@ export default {
     // eslint-disable-next-line consistent-return
     async processFile(e, validate) {
       const isValid = await validate(e);
+      const reader = new FileReader();
       const file = e.target.files[0];
       if (isValid.valid) {
         if (!file) {
           return false;
         }
-
-        const reader = new FileReader();
         reader.readAsDataURL(file);
-
-        this.avatar_change.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
-        this.avatar_change.file = file;
+        this.avatarChange.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
+        this.avatarChange.file = file;
         let output = document.getElementById('userAvatar');
+        const modalMode = 'imageLoadedSuccessful';
         if (!output) {
           output = document.getElementById('userAvatarTwo');
         }
@@ -939,190 +952,168 @@ export default {
         output.onload = function () {
           URL.revokeObjectURL(output.src);
         };
-        this.showModalImageOk();
+        this.showModalStatus(modalMode);
         reader.onerror = (evt) => {
           console.error(evt);
         };
       }
     },
-    showModalEnableSmsVerification() {
+
+    modalsStatusTitle(modalMode) {
+      const titles = {
+        enterPhoneNumber: this.$t('settings.enterPhoneNumber'),
+        enterCurrentLocation: this.$t('settings.enterCurrentLocation'),
+        imageLoadedSuccessful: this.$t('modals.imageLoadedSuccessful'),
+        educationAddSuccessful: this.$t('modals.educationAddSuccessful'),
+        workExpAddSuccessful: this.$t('modals.workExpAddSuccessful'),
+        saved: this.$t('modals.saved'),
+      };
+      return titles[modalMode];
+    },
+    modalsStatusSubtitles(modalMode) {
+      const subtitles = {
+        enterPhoneNumber: this.$t('modals.pressSaveBtn'),
+        enterCurrentLocation: this.$t('modals.pressSaveBtn'),
+        imageLoadedSuccessful: this.$t('modals.pressSaveBtn'),
+        educationAddSuccessful: this.$t('modals.pressSaveBtn'),
+        workExpAddSuccessful: this.$t('modals.pressSaveBtn'),
+        saved: this.$t('modals.userDataHasBeenSaved'),
+      };
+      return subtitles[modalMode];
+    },
+    modalsKey(modalKey) {
+      const keys = {
+        disable2FA: modals.disable2FA,
+        chooseNecessarySkills: modals.chooseNecessarySkills,
+        changePassInSettings: modals.changePassInSettings,
+        twoFAAuth: modals.twoFAAuth,
+        changePassword: modals.changePassword,
+        smsVerification: modals.smsVerification,
+        changeRoleWarning: modals.changeRoleWarning,
+      };
+      return keys[modalKey];
+    },
+    showModalKey(modalKey) {
       this.ShowModal({
-        key: modals.smsVerification,
+        key: this.modalsKey(modalKey),
       });
     },
-    showModalImageOk() {
+    showModalStatus(modalMode) {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.imageLoadedSuccessful'),
-        subtitle: this.$t('modals.pressSaveBtn'),
-        path: '/settings',
+        title: this.modalsStatusTitle(modalMode),
+        subtitle: this.modalsStatusSubtitles(modalMode),
       });
-    },
-    showModalAddEducationOk() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.educationAddSuccessful'),
-        subtitle: this.$t('modals.pressSaveBtn'),
-        path: '/settings',
-      });
-    },
-    showModalAddWorkExpOk() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.workExpAddSuccessful'),
-        subtitle: this.$t('modals.pressSaveBtn'),
-        path: '/settings',
-      });
-    },
-    showModalSave() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.saved'),
-        subtitle: this.$t('modals.userDataHasBeenSaved'),
-        path: '/settings',
-      });
-    },
-    modalChangePassword() {
-      this.ShowModal({
-        key: modals.changePassInSettings,
-      });
-    },
-    modalTwoFAAuth() {
-      this.ShowModal({
-        key: modals.twoFAAuth,
-      });
-    },
-    isCloseInfo() {
-      this.isShowInfo = !this.isShowInfo;
-    },
-    switch2Fa() {
-      this.twoFa = !this.twoFa;
-    },
-    switchSms() {
-      this.sms = !this.sms;
-      this.$router.push('/sms-verification');
     },
     async changeRole() {
-      this.ShowModal({
-        key: modals.changeRoleWarning,
-      });
-      // try {
-      //   const response = await this.$store.dispatch('user/setUserRole');
-      //   if (response?.ok) {
-      //     console.log('good response');
-      //   }
-      // } catch (e) {
-      //   console.log(e);
-      // }
+      this.showModalKey('changeRoleWarning');
     },
-    async changePassword() {
-      try {
-        this.ShowModal({
-          key: modals.changePassword,
-        });
-      } catch (e) {
-        console.log(e);
+    async checkPhoneNumber() {
+      if (this.updatedPhone.formatInternational) {
+        this.localUserData.additionalInfo.secondMobileNumber = this.updatedPhone.formatInternational.replace(/\s/g, '');
+      } if (!this.updatedPhone.formatInternational) {
+        this.localUserData.additionalInfo.secondMobileNumber = '';
       }
     },
     async editUserData() {
+      const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
+      const { secondMobileNumber } = this.localUserData.additionalInfo;
+      await this.setAvatar();
+      await this.checkPhoneNumber();
+      if (secondMobileNumber) {
+        await this.editProfile(checkAvatarID);
+      }
+      if (!secondMobileNumber) this.showModalStatus('enterPhoneNumber');
+    },
+    async setAvatar() {
       const formData = new FormData();
-      formData.append('image', this.avatar_change.file);
+      formData.append('image', this.avatarChange.file);
       try {
-        if (this.avatar_change.data.ok) {
+        if (this.avatarChange.data.ok) {
           const data = {
-            url: this.avatar_change.data.result.url,
-            formData: this.avatar_change.file,
-            type: this.avatar_change.file.type,
+            url: this.avatarChange.data.result.url,
+            formData: this.avatarChange.file,
+            type: this.avatarChange.file.type,
           };
           await this.$store.dispatch('user/setImage', data);
         }
       } catch (error) {
         console.log(error);
       }
-      this.localUserData.additionalInfo.secondMobileNumber = this.updatedPhone.formatInternational.replace(/\s/g, '');
-      delete this.localUserData.additionalInfo.firstMobileNumber;
-      if (this.coordinates !== undefined) {
-        this.localUserData.location = { longitude: this.coordinates.lng, latitude: this.coordinates.lat };
-      }
-      let payload = {};
-      const checkAvatarID = this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : this.userData.avatarId;
-      const additionalInfo = {
-        ...this.filterEmpty(this.localUserData.additionalInfo),
-        socialNetwork: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork),
+    },
+    async editProfile(checkAvatarID) {
+      const {
+        instagram, twitter, linkedin, facebook,
+      } = this.localUserData.additionalInfo.socialNetwork;
+      let payload = {
+        avatarId: checkAvatarID,
+        firstName: this.localUserData.firstName,
+        lastName: this.localUserData.lastName,
+        location: {
+          longitude: this.coordinates ? this.coordinates.lng : this.localUserData.location.longitude,
+          latitude: this.coordinates ? this.coordinates.lat : this.localUserData.location.latitude,
+        },
+        additionalInfo: {
+          secondMobileNumber: this.localUserData.additionalInfo.secondMobileNumber,
+          address: this.localUserData.additionalInfo.address,
+          socialNetwork: {
+            instagram: instagram !== '' ? instagram : null,
+            twitter: twitter !== '' ? twitter : null,
+            linkedin: linkedin !== '' ? linkedin : null,
+            facebook: facebook !== '' ? facebook : null,
+          },
+        },
       };
-      if (this.userRole === 'employer') {
-        payload = {
-          ...this.localUserData,
-          avatarId: checkAvatarID,
-          skillFilters: { test: ['test'] },
-          additionalInfo: {
-            ...additionalInfo,
-            ...{
-              educations: undefined,
-              workExperiences: undefined,
-              skills: undefined,
-            },
-          },
+      if (this.userRole === 'worker') {
+        payload.additionalInfo = {
+          ...payload.additionalInfo,
+          educations: this.localUserData.additionalInfo.educations,
+          workExperiences: this.localUserData.additionalInfo.workExperiences,
+          description: this.localUserData.additionalInfo.description,
         };
-      } else {
-        const specAndSkills = {};
-        // eslint-disable-next-line no-restricted-syntax
-        for (const spec in this.specIndex) {
-          if (this.specIndex[spec] !== -1) {
-            const specName = this.specializations.titles[this.specIndex[spec]];
-            specAndSkills[specName] = this.selectedSkills[spec];
-          }
-        }
         payload = {
-          ...this.localUserData,
-          avatarId: checkAvatarID,
-          skillFilters: specAndSkills,
-          additionalInfo: {
-            ...additionalInfo,
-            ...{
-              company: undefined,
-              CEO: undefined,
-              website: undefined,
-            },
-          },
+          ...payload,
+          wagePerHour: this.perHour ? this.perHour : this.userData.wagePerHour,
+          specializationKeys: ['1.101'],
         };
+        await this.editProfileResponse('user/editWorkerData', payload);
+      } if (this.userRole === 'employer') {
+        payload.additionalInfo = {
+          ...payload.additionalInfo,
+          description: this.localUserData.additionalInfo.description,
+          company: this.localUserData.additionalInfo.company,
+          CEO: this.localUserData.additionalInfo.CEO,
+          website: this.localUserData.additionalInfo.website,
+        };
+        await this.editProfileResponse('user/editEmployerData', payload);
       }
+    },
+    async editProfileResponse(action, payload) {
       try {
-        await this.$store.dispatch('user/editUserData', payload);
-        this.showModalSave();
+        await this.$store.dispatch(action, payload);
+        this.showModalStatus('saved');
       } catch (e) {
         console.log(e);
       }
-    },
-    filterEmpty(obj) {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const key of Object.keys(obj)) {
-        if (obj[key] === '') {
-          obj[key] = null;
-        }
-      }
-      return obj;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
 .margin {
   &__bottom {
     margin-bottom: 10px;
   }
 }
-
 .selector {
   @include box;
   width: 100%;
   z-index: 140;
+  &_hide {
+    display: none;
+  }
   &__items {
     background: #FFFFFF;
     display: grid;
@@ -1728,10 +1719,12 @@ export default {
     max-width: 1180px;
     width: 100%;
     justify-content: flex-start;
-    //padding: 0 20px 0 0;
   }
   &__btn {
-    margin-bottom: 10px;
+    height: 60px;
+    &_margin {
+      margin: 0 20px 0 0;
+    }
   }
 }
 .skills {

@@ -17,14 +17,18 @@
               :label="$t('quests.ui.showMap')"
             />
           </div>
-          <div class="search__inputs">
+          <div
+            class="search__inputs"
+            @click="toggleSearchDD"
+          >
             <base-field
               v-model="search"
+              v-click-outside="hideSearchDD"
               class="search__input"
               is-search
               :placeholder="$t('quests.ui.search')"
               mode="icon"
-              :selector="true"
+              :selector="isSearchDDStatus"
               @selector="getAddressInfo(search)"
             >
               <template v-slot:left />
@@ -32,8 +36,11 @@
                 <div
                   v-if="addresses.length"
                   class="selector"
+                  :class="{'selector_hide': isSearchDDStatus === false}"
                 >
-                  <div class="selector__items">
+                  <div
+                    class="selector__items"
+                  >
                     <div
                       v-for="(item, i) in addresses"
                       :key="i"
@@ -179,6 +186,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import ClickOutside from 'vue-click-outside';
 import { GeoCode } from 'geo-coder';
 import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
@@ -187,6 +195,9 @@ import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Quests',
+  directives: {
+    ClickOutside,
+  },
   components: {
     GmapSearchBlock,
     quests,
@@ -196,6 +207,7 @@ export default {
     return {
       isShowMap: true,
       search: '',
+      isSearchDDStatus: true,
       selectedQuest: '',
       selectedUrgent: '',
       selectedTypeOfJob: '',
@@ -339,6 +351,12 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    toggleSearchDD() {
+      this.isSearchDDStatus = !this.isSearchDDStatus;
+    },
+    hideSearchDD() {
+      this.isSearchDDStatus = false;
+    },
     showPriceSearch() {
       this.ShowModal({
         key: modals.priceSearch,
@@ -788,7 +806,7 @@ export default {
     }
   }
 }
-.search-gmap{
+.search-gmap {
   &__top {
     height:435px;
   }
@@ -822,7 +840,7 @@ export default {
     justify-items: center;
     align-items: center;
     height: 100%;
-    width: 144px;
+    width: 146px;
   }
   &__icon {
     margin-bottom: -10px;
@@ -865,6 +883,9 @@ export default {
   @include box;
   width: 100%;
   z-index: 140;
+  &_hide {
+    display: none;
+  }
   &__items {
     background: #FFFFFF;
     display: grid;
