@@ -44,6 +44,16 @@ export default {
     hide() {
       this.CloseModal();
     },
+    async sendARequest() {
+      try {
+        const response = await this.$store.dispatch('user/setUserRole');
+        if (response?.ok) {
+          this.success();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
     success() {
       this.ShowModal({
         key: modals.status,

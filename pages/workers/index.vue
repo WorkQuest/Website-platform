@@ -27,7 +27,7 @@
               is-search
               :placeholder="$t('quests.ui.search')"
               mode="icon"
-              :selector="searchDDStatus"
+              :selector="isSearchDDStatus"
               @selector="getAddressInfo(search)"
             >
               <template v-slot:left />
@@ -35,7 +35,7 @@
                 <div
                   v-if="addresses.length"
                   class="selector"
-                  :class="{'selector_hide': searchDDStatus === false}"
+                  :class="{'selector_hide': isSearchDDStatus === false}"
                 >
                   <div class="selector__items">
                     <div
@@ -247,7 +247,7 @@ export default {
   },
   data() {
     return {
-      searchDDStatus: true,
+      isSearchDDStatus: true,
       isShowMap: true,
       currentLocation: {},
       circleOptions: {},
@@ -379,10 +379,10 @@ export default {
   },
   methods: {
     toggleSearchDD() {
-      this.searchDDStatus = !this.searchDDStatus;
+      this.isSearchDDStatus = !this.isSearchDDStatus;
     },
     hideSearchDD() {
-      this.searchDDStatus = false;
+      this.isSearchDDStatus = false;
     },
     showPriceSearch() {
       this.ShowModal({
