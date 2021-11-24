@@ -103,6 +103,14 @@
           {{ $t('chat.noChats') }}
         </div>
       </div>
+      <div
+        v-if="canLoadMoreChats"
+        class="chats-page__footer"
+      >
+        <base-btn @click="loadMoreChats">
+          load more
+        </base-btn>
+      </div>
     </div>
   </div>
 </template>
@@ -130,12 +138,24 @@ export default {
       chats: 'chat/getChats',
       userData: 'user/getUserData',
     }),
+    canLoadMoreChats() {
+      const { count, list } = this.chats;
+
+      return count > list.length;
+    },
   },
   async mounted() {
     await this.getChats();
     this.SetLoader(false);
   },
   methods: {
+    async loadMoreChats() {
+      this.filter.offset += this.filter.limit;
+
+      this.SetLoader(true);
+      await this.getChats();
+      this.SetLoader(false);
+    },
     setCurrMessageText({
       text, type, infoMessage, sender,
     }, itsMe) {
@@ -241,6 +261,16 @@ export default {
 
   &__header {
     padding: 20px 0;
+  }
+
+  &__footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+
+    .base-btn {
+      width: 200px;
+    }
   }
 }
 
