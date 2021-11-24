@@ -57,7 +57,7 @@
           <div class="search__dd">
             <base-dd
               v-model="distanceIndex"
-              :items="distance"
+              :items="distanceItems"
             />
           </div>
           <div class="search__actions">
@@ -76,7 +76,7 @@
         >
           <base-dd
             v-model="distanceIndex"
-            :items="distance"
+            :items="distanceItems"
           />
         </div>
         <div class="filter__toggle">
@@ -238,7 +238,7 @@ export default {
   },
   data() {
     return {
-      isShowMap: true,
+      isShowMap: false,
       search: '',
       isSearchDDStatus: true,
       selectedQuest: '',
@@ -345,7 +345,7 @@ export default {
     async mapBounds() {
       this.page = 1;
       const additionalValue = `${this.sortData}`;
-      await this.fetchQuests(additionalValue);
+      await this.updateQuests(additionalValue);
     },
     distanceIndex() {
       const zoom = {
@@ -379,7 +379,8 @@ export default {
     },
     async updateQuests(payload = '') {
       this.SetLoader(true);
-      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      let additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`;
+      additionalValue += this.sortData ? `&${this.sortData}` : '';
       await this.fetchQuests(additionalValue);
       this.SetLoader(false);
     },
@@ -426,9 +427,7 @@ export default {
             break;
           default: break;
         }
-        if (this.priceFilter.from || this.priceFilter.to) {
-          payload += `&priceBetween={from:${this.priceFilter.from || 0}, to:${this.priceFilter.to || 0}}`;
-        }
+        if (this.priceFilter.from || this.priceFilter.to) payload += `&priceBetween[from]=${this.priceFilter.from || 0}&priceBetween[to]=${this.priceFilter.to || 99999999999999}`;
 
         this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
         this.questsArray = this.questsObjects.quests;

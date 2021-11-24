@@ -22,7 +22,7 @@
                 v-model="priceFrom"
                 class="grid__input"
                 :placeholder="$t('modals.priceFromAmount')"
-                rules="decimal"
+                rules="decimal|max_value:99999999999999"
                 :name="$t('modals.priceFieldFrom')"
               />
               <span
@@ -40,7 +40,7 @@
                 v-model="priceTo"
                 class="grid__field"
                 :placeholder="$t('modals.priceToAmount')"
-                :rules="`decimal${priceFrom ? '|min_value:'+priceFrom : ''}`"
+                :rules="`decimal${priceFrom ? '|min_value:'+priceFrom : ''}|max_value:99999999999999`"
                 :name="$t('modals.priceFieldTo')"
               />
               <span
