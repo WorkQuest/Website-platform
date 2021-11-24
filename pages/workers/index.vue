@@ -219,7 +219,7 @@
                   {{ $t('workers.costTitle') }}
                 </div>
                 <div class="cost__value">
-                  {{ user.wagePerHour !== null ? user.wagePerHour : $t('worker.cost.notIndicated') }}
+                  {{ user.wagePerHour !== null ? user.wagePerHour : $t('worker.cost.notIndicated') }} {{ user.wagePerHour !== null ? $t('quests.wusd') : '' }}
                 </div>
               </div>
             </div>
