@@ -494,7 +494,7 @@ export default {
       }
 
       if (this.priceFilter.from || this.priceFilter.to) {
-        payload += `&betweenWagePerHour={from:${this.priceFilter.from || 0}, to:${this.priceFilter.to || 0}}`;
+        payload += `&betweenWagePerHour=[from:${this.priceFilter.from || 0}&betweenWagePerHour[to]=${this.priceFilter.to || 999999999999999}`;
       }
 
       await this.$store.dispatch('quests/workersList', payload);
