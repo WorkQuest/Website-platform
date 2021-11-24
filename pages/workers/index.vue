@@ -154,7 +154,7 @@
                   <div class="card__header_left">
                     <img
                       class="card__img"
-                      :src="user.avatar !== null ? user.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+                      :src="user.avatar !== null ? user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                       :alt="user.firstName"
                     >
                   </div>
