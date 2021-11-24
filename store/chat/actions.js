@@ -142,4 +142,8 @@ export default {
 
     return response;
   },
+  async leaveFromChat({ commit }, chatId) {
+    const response = await this.$axios.$post(`/v1/user/me/chat/group/${chatId}/leave`);
+    return response;
+  },
 };
