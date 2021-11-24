@@ -708,26 +708,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
-  .template {
-    &__content {
-      grid-template-rows: 72px 1fr 72px !important;
-    }
-
-    &__main {
-      padding-bottom: 50px !important;
-    }
-  }
-  .footer {
-    &__body {
-      justify-content: flex-end !important;
-    }
-    &__top {
-      display: none !important;
-    }
-  }
-</style>
-
 <style lang="scss" scoped>
 .chat-page {
   @include main;
