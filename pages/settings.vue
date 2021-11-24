@@ -531,6 +531,7 @@
             <base-field
               v-model="perHour"
               class="specialization__skills"
+              :placeholder="perHour ||$t('priority.title')"
               :label="$t('settings.costPerHour')"
               :name="$t('settings.costPerHour')"
               type="gray"
@@ -845,16 +846,6 @@ export default {
     async perHourData() {
       this.perHour = await this.userData.wagePerHour;
     },
-    isCloseInfo() {
-      this.isShowInfo = !this.isShowInfo;
-    },
-    switch2Fa() {
-      this.isTwoFa = !this.isTwoFa;
-    },
-    switchSms() {
-      this.isSms = !this.isSms;
-      this.$router.push('/sms-verification');
-    },
     toggleSearchDD() {
       this.isSearchDDStatus = !this.isSearchDDStatus;
     },
@@ -1075,8 +1066,6 @@ export default {
         },
       };
       if (this.userRole === 'worker') {
-        console.log(this.userData);
-        console.log(this.localUserData);
         payload.additionalInfo = {
           ...payload.additionalInfo,
           educations: this.localUserData.additionalInfo.educations,
