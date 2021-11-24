@@ -80,25 +80,13 @@
                 class="header__links"
               >
                 <nuxt-link
-                  to="/quests"
+                  v-for="(item, i) in headerLinksWorker"
+                  :key="i"
+                  :to="item.url"
                   class="header__link"
                   :exact-active-class="'header__link_active'"
                 >
-                  {{ $t('ui.quests') }}
-                </nuxt-link>
-                <nuxt-link
-                  to="/my"
-                  class="header__link"
-                  :exact-active-class="'header__link_active'"
-                >
-                  {{ $t('ui.myQuests') }}
-                </nuxt-link>
-                <nuxt-link
-                  to="/wallet"
-                  class="header__link"
-                  :exact-active-class="'header__link_active'"
-                >
-                  {{ $t('ui.wallet') }}
+                  {{ item.title }}
                 </nuxt-link>
                 <button
                   class="header__link header__link_menu"
@@ -754,6 +742,22 @@ export default {
       chatId: 'chat/getCurrChatId',
       messagesFilter: 'chat/getMessagesFilter',
     }),
+    headerLinksWorker() {
+      return [
+        {
+          url: '/quests',
+          title: this.$t('ui.quests'),
+        },
+        {
+          url: '/my',
+          title: this.$t('ui.myQuests'),
+        },
+        {
+          url: '/wallet',
+          title: this.$t('ui.wallet'),
+        },
+      ];
+    },
     headerLinksEmployer() {
       return [
         {
