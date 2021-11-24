@@ -238,7 +238,7 @@ export default {
   },
   data() {
     return {
-      isShowMap: false,
+      isShowMap: true,
       search: '',
       isSearchDDStatus: true,
       selectedQuest: '',
