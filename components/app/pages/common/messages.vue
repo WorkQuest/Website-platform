@@ -76,7 +76,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      messages: 'data/getMessages',
+      messages: 'chat/getMessages',
     }),
   },
 };

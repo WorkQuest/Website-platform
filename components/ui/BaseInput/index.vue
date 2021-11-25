@@ -44,6 +44,7 @@
         :type="type"
         :autocomplete="autocomplete"
         @input="input"
+        @keypress.enter="onEnterPress"
       >
       <div
         v-if="value && isSearch"
@@ -75,8 +76,12 @@ import moment from 'moment';
 
 export default {
   props: {
+    onEnterPress: {
+      type: Function,
+      default: () => {},
+    },
     value: {
-      type: String,
+      type: [String, Number],
       default: '',
     },
     mode: {

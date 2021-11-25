@@ -163,7 +163,8 @@
     "connectSMSVer": "Connect SMS Verification",
     "resendSMS": "Resend SMS",
     "disable": "Disable",
-    "remindLater": "Remind later"
+    "remindLater": "Remind later",
+    "leave": "Leave"
   },
   "priority": {
     "title": "Select priority",
@@ -891,9 +892,11 @@
     "redeemFail": "Redeem fail",
     "chatCreate": {
       "title": "Create group chat",
-      "desc": "Create name of group chat and choose people from you chat list",
-      "participants": "Participants",
-      "chatName": "Chat name"
+      "desc": "Create name of group chat and choose people from your chat list",
+      "chatName": "Chat name",
+      "members": "Members list",
+      "addNewMembers": "Add new members",
+      "addMember": "Add member"
     },
     "yourRewardBalance": "Your reward balance:",
     "deletePortfolio": "Are you sure delete portfolio?",
@@ -906,6 +909,8 @@
     "delete": "Delete",
     "youCan’tDeleteActiveQuest": "You can’t delete active quest",
     "sureDeleteText": "Do you really want to delete this quest?",
+    "sureDeleteMemberText": "Do you really want to delete this member?",
+    "sureLeaveChatText": "Do you really want to leave this chat?",
     "priceTitle": "Price",
     "enterPriceRange": "Enter price range",
     "priceForm": "From",
@@ -933,7 +938,7 @@
     "enterPhone": "Enter your phone number to confirm SMS verification",
     "enterSMSCode": "We have sent verification code to your phone number. Enter this code",
     "codeFromSMS": "Code from SMS",
-    "codeFromSMSField": "code from SMS",
+    "codeFromSMSField": "Code from SMS",
     "smsVerification": "SMS verification",
     "saved": "Saved",
     "userDataHasBeenSaved": "User data has been saved",
@@ -962,7 +967,7 @@
     "useYourGoogleAuth": "Use your Google Authenticator App to scan QR code.",
     "installGoogleAuth": "Install the Google Authenticator app on your device",
     "ifYouCantScanBarcode": "If you are unable to scan QR code enter the Secret Key manually.",
-    "pleaseSaveThisKey": "Enter Google two-factor authentication password below. Please save your Google key, it will be used to recover your Google Authenticator.",
+    "pleaseSaveThisKey": "Enter Google two-factor authentication key below. Please save your Google key, it will be used to recover your Google Authenticator.",
     "step": "Step",
     "twoFAAuth": "2FA Authentication",
     "currentPassword": "Current password",
@@ -1310,6 +1315,7 @@
     "writeYouMessage": "Write you message",
     "group": "Group",
     "noChats": "No Chats",
+    "membersNum": "{n} members",
     "systemMessages": {
       "invitedYouToAQuest": "invited you to a quest",
       "youInvitedToTheQuest": "You invited to the quest",
@@ -1320,10 +1326,30 @@
       "rejectedTheInviteToTheQuest": "rejected the invite to the quest",
       "youRejectedTheInviteToTheQuest": "You rejected the invite to the quest",
       "acceptedTheInviteToTheQuest": "accepted the invite to the quest",
-      "youAcceptedTheInviteToTheQuest": "You accepted the invite to the quest"
-    }
+      "youAcceptedTheInviteToTheQuest": "You accepted the invite to the quest",
+      "createdAGroupChat": "created a group chat",
+      "youCreatedAGroupChat": "You created a group chat",
+      "removedFromChat": "removed from chat",
+      "youHaveRemovedFromChat": "You have removed from the chat",
+      "addedToChat": "added to chat",
+      "youAddedToChat": "You added to chat",
+      "userAddedToChat": "Added user to chat",
+      "userRemovedFromChat": "Removed user from chat",
+      "leftTheChat": "left the chat",
+      "youLeftTheChat": "You left the chat"
+    },
+    "leaveChat": "Leave chat"
   },
   "settings": {
+    "facebook": "facebook",
+    "linkedin": "linkedin",
+    "twitter": "twitter",
+    "instagram": "instagram",
+    "address": "address",
+    "lastName": "last name",
+    "firstName": "first name",
+    "enterPhoneNumber": "Please enter your phone number",
+    "enterCurrentLocation": "Please select current location",
     "placeOfStudying": "Place of studying",
     "specialization": "Specialization",
     "selectSpec": "Select specialization",
@@ -1341,6 +1367,7 @@
     "term": "Term",
     "getVerification": "Complete the verification",
     "notVerified": "Not verified",
+    "verified": "Verified",
     "more": "More",
     "employmentInfo": "Employment information",
     "addSpec": "Add specialization",
@@ -2724,6 +2751,6 @@
     }
   },
   "gallery": {
-    "counter": "{n} of "
+    "counter": "{n} of {c}"
   }
 }
