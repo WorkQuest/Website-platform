@@ -1,4 +1,5 @@
 export default () => ({
+  isChatOpened: false,
   chats: {
     list: [],
     count: 0,

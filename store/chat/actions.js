@@ -46,6 +46,7 @@ export default {
       commit('setMessagesList', {
         ...result, direction, offset: offset + 25, canLoadToBottom, canLoadToTop,
       });
+      commit('setIsChatOpened', true);
       return result;
     } catch (e) {
       return console.log(e);

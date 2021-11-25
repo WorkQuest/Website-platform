@@ -363,6 +363,7 @@ export default {
   destroyed() {
     this.$store.commit('chat/setMessagesList', { messages: [], count: 0, chat: null });
     this.$store.commit('chat/clearMessagesFilter');
+    this.$store.commit('chat/setIsChatOpened', false);
   },
   methods: {
     setFullName({ itsMe, infoMessage: { user }, sender }) {

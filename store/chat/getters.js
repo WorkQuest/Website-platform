@@ -7,4 +7,5 @@ export default {
   getMessagesFilter: (state) => state.messagesFilter,
   getGroupChatUsers: (state) => state.groupChatUsers,
   getChatMembers: (state) => (state.messages.chat?.members || []),
+  isChatOpened: (state) => state.isChatOpened,
 };
