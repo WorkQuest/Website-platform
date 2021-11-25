@@ -147,6 +147,10 @@
           </div>
         </div>
         <div class="content">
+          <!--          TODO: Добавить стили для блока нет worker-->
+          <div v-if="workersArray.length === 0">
+            There is no workers...
+          </div>
           <div
             v-for="(user, i) in workersList.users"
             :key="i"
@@ -233,6 +237,11 @@
             </div>
           </div>
         </div>
+        <base-pager
+          v-if="totalPagesValue > 1"
+          v-model="page"
+          :total-pages="totalPagesValue"
+        />
       </div>
     </div>
   </div>
@@ -255,6 +264,13 @@ export default {
   },
   data() {
     return {
+      workerObjects: {},
+      workersArray: [],
+      page: 1,
+      perPager: 10,
+      sortData: '',
+      additionalValue: '',
+      totalPagesValue: 1,
       isSearchDDStatus: true,
       isShowMap: true,
       currentLocation: {},
@@ -306,6 +322,12 @@ export default {
       mapBounds: 'quests/getMapBounds',
       workersList: 'quests/getWorkersList',
     }),
+    totalPages() {
+      if (this.workerObjects) {
+        return Math.ceil(this.workerObjects.count / this.perPager);
+      }
+      return 0;
+    },
     distantWork() {
       return [
         this.$t('quests.distantWork.distantWork'),
@@ -377,6 +399,27 @@ export default {
       ];
     },
   },
+  watch: {
+    async isShowMap() {
+      this.SetLoader(true);
+      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      await this.getWorkers(additionalValue);
+      this.totalPagesValue = this.totalPages;
+      this.SetLoader(false);
+    },
+    async page() {
+      console.log('page');
+      this.SetLoader(true);
+      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      await this.getWorkers(additionalValue);
+      this.SetLoader(false);
+    },
+    async mapBounds() {
+      const additionalValue = `${this.sortData}`;
+      await this.getWorkers(additionalValue);
+      this.totalPagesValue = this.totalPages;
+    },
+  },
   async mounted() {
     this.SetLoader(true);
     if (this.userRole === 'employer') {
@@ -386,6 +429,23 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async getWorkers(payload) {
+      if (!this.isShowMap) {
+        this.workerObjects = await this.$store.dispatch('quests/workersList', payload);
+        this.workersArray = this.workerObjects.users;
+      } else {
+        this.additionalValue = payload;
+        if (!Object.keys(this.mapBounds).length) {
+          this.workerObjects = await this.$store.dispatch('quests/workersList', payload);
+        } else {
+          // TODO: Добавить местоположение пользователей вместо местоположения квестов
+          const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
+          this.workerObjects = await this.$store.dispatch('quests/workersList', `${bounds}&${payload}`);
+          await this.$store.dispatch('quests/getQuestsLocation', `${bounds}`);
+          this.workersArray = this.workerObjects.users;
+        }
+      }
+    },
     toggleSearchDD() {
       this.isSearchDDStatus = !this.isSearchDDStatus;
     },

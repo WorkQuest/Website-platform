@@ -17,9 +17,9 @@ export default {
       return console.log(e);
     }
   },
-  async workersList({ commit }) {
+  async workersList({ commit }, payload) {
     try {
-      const response = await this.$axios.$get('/v1/profile/workers');
+      const response = await this.$axios.$get(`/v1/profile/workers?${payload || ''}`);
       commit('setWorkersList', response.result);
       return response.result;
     } catch (e) {
@@ -234,7 +234,6 @@ export default {
     }
   },
 
-  // TODO: Добавить запросы
   async acceptQuestInvitation({ commit }, responseId) {
     try {
       const response = await this.$axios.$post(`/v1/quest/response/${responseId}/accept`);
@@ -242,7 +241,7 @@ export default {
     } catch (e) {
       return console.log(e);
     }
-  }, // согласие на приглашение на квест
+  },
 
   async rejectQuestInvitation({ commit }, responseId) {
     try {
@@ -251,5 +250,5 @@ export default {
     } catch (e) {
       return console.log(e);
     }
-  }, // отказ на приглашение на квест
+  },
 };
