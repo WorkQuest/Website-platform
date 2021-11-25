@@ -193,20 +193,25 @@
               <div class="card__spec_title">
                 {{ $t('workers.specializations') }}
               </div>
+              <div
+                v-if="user.userSpecializations.length !== 0"
+                class="badge__container"
+              >
+                <ul class="badge-list">
+                  <li
+                    v-for="(skill, spec) in user.userSpecializations"
+                    :key="spec"
+                    class="badge__item"
+                  >
+                    {{ getSkillTitle(skill.path) }}
+                  </li>
+                </ul>
+              </div>
               <span
                 v-if="user.userSpecializations.length === 0"
                 class="card__spec"
               >
                 {{ $t('quests.dontHaveSpec') }}
-              </span>
-              <span v-if="user.userSpecializations.length > 0">
-                <span
-                  v-for="(spec, j) in user.userSpecializations"
-                  :key="j"
-                  class="card__spec"
-                >
-                  {{ spec.title }}
-                </span>
               </span>
               <div
                 v-if="user.additionalInfo"
@@ -408,7 +413,6 @@ export default {
       this.SetLoader(false);
     },
     async page() {
-      console.log('page');
       this.SetLoader(true);
       const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
       await this.getWorkers(additionalValue);
@@ -429,6 +433,10 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    getSkillTitle(path) {
+      const [spec, skill] = path.split('.');
+      return this.$t(`filters.items.${spec}.sub.${skill}`);
+    },
     async getWorkers(payload) {
       if (!this.isShowMap) {
         this.workerObjects = await this.$store.dispatch('quests/workersList', payload);
@@ -526,6 +534,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.badge {
+  &-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  &__container {
+    padding: 0;
+    height: 21px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  &__item {
+    @include text-simple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    color: $blue;
+  }
+}
 .selector {
   @include box;
   width: 100%;
