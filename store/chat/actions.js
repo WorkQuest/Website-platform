@@ -35,10 +35,10 @@ export default {
 
       result.messages = result.messages.concat(chat.messages.list);
     }
-    const { messages } = result;
+    const { messages, count } = result;
 
     const canLoadToBottom = chatId !== 'starred' && messages[messages.length - 1]?.number < result.count;
-    const canLoadToTop = chatId === 'starred' ? messages.length < result.count : messages[0]?.number > 1;
+    const canLoadToTop = chatId === 'starred' ? messages.length < count : messages[0]?.number > 1;
 
     commit('setMessagesList', {
       ...result, direction, offset: offset + 25, canLoadToBottom, canLoadToTop,
