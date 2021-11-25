@@ -1339,7 +1339,8 @@
       "leftTheChat": "left the chat",
       "youLeftTheChat": "You left the chat"
     },
-    "leaveChat": "Leave chat"
+    "leaveChat": "Leave chat",
+    "loadMore": "Load more"
   },
   "settings": {
     "facebook": "facebook",

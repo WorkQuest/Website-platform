@@ -39,8 +39,8 @@
             </template>
           </div>
           <ChatMenu
-            v-show="chatId !== 'starred'"
-            :can-i-leave="messages.chat && messages.chat.type === 'group' && messages.chat.owner.id !== userData.id"
+            v-show="currChat ? currChat.type !== 'group' || (currChat.type === 'group' && currChat.owner.id !== userData.id) : false"
+            :can-i-leave="currChat ? currChat.type === 'group' && currChat.owner.id !== userData.id : false"
           />
         </div>
         <div
@@ -324,6 +324,7 @@ export default {
       lastMessageId: 'chat/getLastMessageId',
       chats: 'chat/getChats',
       filter: 'chat/getMessagesFilter',
+      currChat: 'chat/getCurrChatInfo',
     }),
   },
   async mounted() {
@@ -648,7 +649,11 @@ export default {
       });
     },
     goBackToChatsList() {
-      this.$router.push('/messages');
+      if (window.history.length > 2) {
+        this.$router.go(-1);
+      } else {
+        this.$router.push('/messages');
+      }
     },
     async handleSendMessage() {
       const {
