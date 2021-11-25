@@ -50,6 +50,7 @@
           @scroll="handleScroll"
         >
           <div
+            v-if="messages.list.length"
             ref="ScrollContainer"
             class="chat-container__messages"
           >
@@ -67,7 +68,7 @@
               :class="[{'message_right' : message.itsMe}, {'message_blink' : message.number === selStarredMessageNumber}, {'message_info' : message.type === 'info'}]"
             >
               <div
-                v-if="message.type === 'info'"
+                v-if="message.type === 'info' && message.infoMessage"
                 class="info-message"
               >
                 <div>
@@ -93,7 +94,7 @@
               <template v-else>
                 <img
                   v-if="!message.itsMe"
-                  :src="message.sender.avatar ? message.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                  :src="message.sender && message.sender.avatar ? message.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                   alt=""
                   class="message__avatar"
                   :class="{'message__avatar_hidden' : i && messages.list[i - 1].senderUserId == message.senderUserId && messages.list[i - 1].type !== 'info'}"
@@ -184,6 +185,12 @@
             >
               <loader class="chat-container__loader" />
             </div>
+          </div>
+          <div
+            v-else
+            class="chat-container__no-msgs"
+          >
+            {{ $t('chat.noMessages') }}
           </div>
         </div>
         <div class="chat-container__footer footer">
@@ -356,6 +363,7 @@ export default {
   destroyed() {
     this.$store.commit('chat/setMessagesList', { messages: [], count: 0, chat: null });
     this.$store.commit('chat/clearMessagesFilter');
+    this.$store.commit('chat/setIsChatOpened', false);
   },
   methods: {
     setFullName({ itsMe, infoMessage: { user }, sender }) {
@@ -572,7 +580,11 @@ export default {
         }
 
         await this.readMessages();
-      } else if (canLoadToTop && scrollTop < 300 && !this.isTopChatsLoading) {
+
+        return;
+      }
+
+      if (canLoadToTop && scrollTop < 300 && !this.isTopChatsLoading) {
         this.isTopChatsLoading = true;
         await this.getMessages(0);
         setTimeout(() => { this.isTopChatsLoading = false; }, 300);
@@ -601,12 +613,7 @@ export default {
         offset,
       };
 
-      try {
-        await this.$store.dispatch('chat/getMessagesList', payload);
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-      }
+      await this.$store.dispatch('chat/getMessagesList', payload);
     },
     setCurrDate(msgDate) {
       const { today } = this;
@@ -626,11 +633,11 @@ export default {
       setTimeout(() => {
         const { HandleScrollContainer, ScrollContainer, starredMessage } = this.$refs;
 
-        ScrollContainer.scrollIntoView(isInit === true ? false : { block: 'end', behavior: 'smooth' });
+        if (ScrollContainer) ScrollContainer.scrollIntoView(isInit === true ? false : { block: 'end', behavior: 'smooth' });
         this.minScrollDifference = (HandleScrollContainer.scrollHeight - HandleScrollContainer.scrollTop) * 2;
 
         if (starredMessage && isInit) HandleScrollContainer.scrollTo(0, starredMessage[0].offsetTop - HandleScrollContainer.offsetTop - 20);
-      }, 100);
+      }, 200);
     },
     showNoticeModal() {
       this.ShowModal({
@@ -726,6 +733,15 @@ export default {
   background-color: $white;
   border: 1px solid #E9EDF2;
   border-radius: 6px;
+
+  &__no-msgs {
+    display: flex;
+    padding: 50px 10px;
+    justify-content: center;
+    color: #8D96A2;
+    height: 100%;
+    align-items: center;
+  }
 
   &__header {
     border-bottom: 1px solid #E9EDF2;

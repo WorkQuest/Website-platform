@@ -750,10 +750,8 @@ export default {
       connections: 'data/notificationsConnectionStatus',
       chatId: 'chat/getCurrChatId',
       messagesFilter: 'chat/getMessagesFilter',
+      isChatOpened: 'chat/isChatOpened',
     }),
-    isChatOpened() {
-      return !!this.chatId;
-    },
     headerLinksWorker() {
       return [
         {

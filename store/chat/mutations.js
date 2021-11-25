@@ -57,4 +57,7 @@ export default {
     state.messages.chat.members.push(user);
     state.messages.chat.userMembers.push(user);
   },
+  setIsChatOpened(state, val) {
+    state.isChatOpened = val;
+  },
 };
