@@ -1,8 +1,9 @@
 <template>
   <div class="icon-more">
     <button
+      v-click-outside="closeChatMenu"
       class="chat__button chat__button_menu"
-      @click="showChatMenu()"
+      @click="showChatMenu"
     >
       <span class="icon-more_horizontal" />
       <transition name="fade">
@@ -41,6 +42,13 @@
               <div class="chat-menu__item">
                 {{ $t('chat.approveQuest') }}
               </div>
+              <div
+                v-if="canILeave"
+                class="chat-menu__item"
+                @click="tryLeaveChat"
+              >
+                {{ $t('chat.leaveChat') }}
+              </div>
             </template>
           </div>
         </div>
@@ -50,12 +58,20 @@
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'ChatMenu',
+  directives: {
+    ClickOutside,
+  },
   props: {
     starred: {
+      type: Boolean,
+      default: false,
+    },
+    canILeave: {
       type: Boolean,
       default: false,
     },
@@ -73,16 +89,30 @@ export default {
       this.$router.push('/messages/starred');
     },
     showOpenADisputeModal() {
+      this.closeChatMenu();
       this.ShowModal({
         key: modals.openADispute,
       });
     },
     showChatMenu() {
-      this.isShowChatMenu = !this.isShowChatMenu;
+      this.isShowChatMenu = true;
+    },
+    closeChatMenu() {
+      this.isShowChatMenu = false;
+    },
+    tryLeaveChat() {
+      this.closeChatMenu();
+      this.ShowModal({
+        key: modals.areYouSureLeaveChat,
+      });
     },
     showCreateChatModal() {
       this.ShowModal({
         key: modals.chatCreate,
+        isCreating: true,
+        itsOwner: true,
+        isMembersList: false,
+        isAdding: false,
       });
     },
   },

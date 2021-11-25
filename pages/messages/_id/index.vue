@@ -14,15 +14,34 @@
             <span>{{ $t('chat.chat') }}</span>
           </div>
           <div class="chat-container__chat-name">
-            <div
-              v-if="messages.chat && messages.chat.type === 'quest'"
-              class="chat-container__quest-link"
-              @click="goToQuest"
-            >
-              {{ messages.chat.questChat.quest.title }}
-            </div>
+            <template v-if="messages.chat">
+              <div
+                v-if="messages.chat.type === 'quest'"
+                class="chat-container__quest-link"
+                @click="goToQuest"
+              >
+                {{ messages.chat.questChat.quest.title }}
+              </div>
+              <div
+                v-if="messages.chat.type === 'group'"
+                class="chat-container__group-chat-cont"
+              >
+                <div class="chat-container__group-name">
+                  {{ messages.chat.name }}
+                </div>
+                <div
+                  class="chat-container__quest-link chat-container__quest-link_small"
+                  @click="goToMembersList"
+                >
+                  {{ $tc('chat.membersNum', messages.chat.userMembers.length) }}
+                </div>
+              </div>
+            </template>
           </div>
-          <ChatMenu v-show="chatId !== 'starred'" />
+          <ChatMenu
+            v-show="chatId !== 'starred'"
+            :can-i-leave="messages.chat && messages.chat.type === 'group' && messages.chat.owner.id !== userData.id"
+          />
         </div>
         <div
           ref="HandleScrollContainer"
@@ -51,28 +70,25 @@
                 v-if="message.type === 'info'"
                 class="info-message"
               >
-                <div v-if="message.infoMessage.messageAction === 'employerInviteOnQuest'">
-                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest'}`) }}
+                <div>
+                  {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
                 </div>
-                <div v-if="message.infoMessage.messageAction === 'workerResponseOnQuest'">
-                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest'}`) }}
-                </div>
-                <div v-if="message.infoMessage.messageAction === 'employerRejectResponseOnQuest'">
-                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest'}`) }}
-                </div>
-                <div v-if="message.infoMessage.messageAction === 'workerRejectInviteOnQuest'">
-                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest'}`) }}
-                </div>
-                <div v-if="message.infoMessage.messageAction === 'workerAcceptInviteOnQuest'">
-                  {{ $t(`chat.systemMessages.${message.itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest'}`) }}
-                </div>
-                <div
-                  class="info-message__link"
-                  :class="{'info-message__link_left' : !message.itsMe}"
-                  @click="openProfile(message.infoMessage.userId, message.itsMe)"
-                >
-                  {{ message.itsMe ? (message.infoMessage.user.firstName || '') + ' ' + (message.infoMessage.user.lastName || '') : (message.sender.firstName || '') + ' ' + (message.sender.lastName || '') }}
-                </div>
+                <template v-if="message.infoMessage.messageAction !== 'groupChatCreate' || (message.infoMessage.messageAction === 'groupChatCreate' && !message.itsMe)">
+                  <div
+                    class="info-message__link"
+                    :class="{'info-message__link_left' : !message.itsMe}"
+                    @click="openProfile(message.infoMessage.userId || message.senderUserId, message.itsMe)"
+                  >
+                    {{ setFullName(message) }}
+                  </div>
+                  <div
+                    v-if="!message.itsMe && ['groupChatAddUser', 'groupChatDeleteUser'].includes(message.infoMessage.messageAction) && message.infoMessage.user"
+                    class="info-message__link"
+                    @click="openProfile(message.infoMessage.userId, message.itsMe)"
+                  >
+                    {{ (message.infoMessage.user.firstName || '') + ' ' + (message.infoMessage.user.lastName || '') }}
+                  </div>
+                </template>
               </div>
               <template v-else>
                 <img
@@ -118,7 +134,7 @@
                           :href="file.url"
                           target="_blank"
                           class="image-cont image-cont__other-media image-cont__other-media_block"
-                          @click="openFile"
+                          @click="file.type === 'video' ? selFile($event, message.medias, file.url) : openFile"
                         >
                           <span :class="[{'icon-play_circle_outline' : file.type === 'video'}, {'icon-file_blank_outline' : file.type !== 'video'}]" />
                         </a>
@@ -213,6 +229,7 @@
               :placeholder="$t('chat.writeYouMessage')"
               is-hide-error
               mode="chat"
+              :on-enter-press="handleSendMessage"
             />
             <button
               class="chat-container__send-btn"
@@ -290,15 +307,16 @@ export default {
       isScrollBtnVis: false,
       chatId: this.$route.params.id,
       selStarredMessageNumber: 0,
+      isReadingInProgress: false,
     };
   },
   computed: {
     ...mapGetters({
-      messages: 'data/getMessages',
+      messages: 'chat/getMessages',
       userData: 'user/getUserData',
-      lastMessageId: 'data/getLastMessageId',
-      chats: 'data/getChats',
-      filter: 'data/getMessagesFilter',
+      lastMessageId: 'chat/getLastMessageId',
+      chats: 'chat/getChats',
+      filter: 'chat/getMessagesFilter',
     }),
   },
   async mounted() {
@@ -326,7 +344,7 @@ export default {
     }
 
     await this.getMessages(direction, bottomOffset);
-    if (!direction) await this.readMessages();
+    await this.readMessages();
 
     this.scrollToBottom(true);
     this.SetLoader(false);
@@ -335,12 +353,76 @@ export default {
     if (!isChatNotificationShown) this.showNoticeModal();
   },
   destroyed() {
-    this.$store.commit('data/setMessagesList', { messages: [], count: 0, chat: null });
-    this.$store.commit('data/clearMessagesFilter');
+    this.$store.commit('chat/setMessagesList', { messages: [], count: 0, chat: null });
+    this.$store.commit('chat/clearMessagesFilter');
   },
   methods: {
+    setFullName({ itsMe, infoMessage: { user }, sender }) {
+      // eslint-disable-next-line no-nested-ternary
+      return itsMe
+        ? (user ? (`${user.firstName || ''} ${user.lastName || ''}`) : '')
+        : `${sender.firstName || ''} ${sender.lastName || ''}`;
+    },
+    setInfoMessageText(action, itsMe, isAboutMe) {
+      let text = 'chat.systemMessages.';
+      switch (action) {
+        case 'employerInviteOnQuest': {
+          text += itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest';
+          break;
+        }
+        case 'workerResponseOnQuest': {
+          text += itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest';
+          break;
+        }
+        case 'employerRejectResponseOnQuest': {
+          text += itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest';
+          break;
+        }
+        case 'workerRejectInviteOnQuest': {
+          text += itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest';
+          break;
+        }
+        case 'workerAcceptInviteOnQuest': {
+          text += itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest';
+          break;
+        }
+        case 'groupChatCreate': {
+          text += itsMe ? 'youCreatedAGroupChat' : 'createdAGroupChat';
+          break;
+        }
+        case 'groupChatDeleteUser': {
+          text += itsMe ? 'youHaveRemovedFromChat' : 'removedFromChat';
+          break;
+        }
+        case 'groupChatAddUser': {
+          text += itsMe ? 'youAddedToChat' : 'addedToChat';
+          break;
+        }
+        case 'groupChatLeaveUser': {
+          text += itsMe ? 'youLeftTheChat' : 'leftTheChat';
+          break;
+        }
+        default: {
+          text = '';
+          break;
+        }
+      }
+
+      return this.$t(text);
+    },
     openProfile(userId, itsMe) {
       this.$router.push(`/${itsMe ? 'workers' : 'profile'}/${userId}`);
+    },
+    goToMembersList() {
+      const { messages: { chat }, userData } = this;
+
+      this.ShowModal({
+        key: modals.chatCreate,
+        itsOwner: chat.owner.id === userData.id,
+        isCreating: false,
+        isMembersList: true,
+        isAdding: false,
+      });
     },
     goToQuest() {
       const { questId } = this.messages.chat.questChat;
@@ -350,9 +432,10 @@ export default {
       ev.stopPropagation();
     },
     selFile(ev, files, fileUrl) {
+      ev.preventDefault();
       ev.stopPropagation();
 
-      files = files.filter((file) => file.type === 'image');
+      files = files.filter((file) => file.type === 'image' || file.type === 'video');
       const index = files.findIndex((file) => file.url === fileUrl);
 
       this.ShowModal({
@@ -374,7 +457,7 @@ export default {
       const messageId = message.id;
       const { chatId } = this;
       try {
-        await this.$store.dispatch(`data/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, { messageId, chatId });
+        await this.$store.dispatch(`chat/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, { messageId, chatId });
         this.$forceUpdate();
       } catch (e) {
         console.log(e);
@@ -382,19 +465,33 @@ export default {
       }
     },
     async readMessages() {
-      const messages = this.messages.list;
-      const chats = this.chats.list;
-      const { chatId } = this;
+      const {
+        messages: { list }, chatId, isReadingInProgress, userData,
+      } = this;
 
-      if (!messages.length || chatId === 'starred' || chats.some((chat) => chat.id === chatId && !chat.isUnread)) return;
+      if (isReadingInProgress || !list.length) return;
+
+      const { senderStatus, senderUserId, id } = list[list.length - 1];
+
+      if (senderStatus === 'read' || senderUserId === userData.id) return;
+
+      this.isReadingInProgress = true;
 
       const payload = {
         config: {
-          messageId: messages[messages.length - 1].id,
+          messageId: id,
         },
         chatId,
       };
-      await this.$store.dispatch('data/setMessageAsRead', payload);
+
+      try {
+        await this.$store.dispatch('chat/setMessageAsRead', payload);
+
+        this.isReadingInProgress = false;
+      } catch (e) {
+        console.log(e);
+        this.showToastError(e);
+      }
     },
     async getFiles(ev, validate) {
       const { files } = ev.target;
@@ -438,19 +535,24 @@ export default {
         reader.readAsDataURL(file);
 
         const { type } = file;
+        try {
+          // eslint-disable-next-line no-await-in-loop
+          const data = await this.$store.dispatch('chat/uploadFile', { contentType: type });
 
-        // eslint-disable-next-line no-await-in-loop
-        const data = await this.$store.dispatch('data/uploadFile', { contentType: type });
+          const url = URL.createObjectURL(file);
 
-        const url = URL.createObjectURL(file);
+          this.files.push({
+            data, file, url, type: type.split('/')[0],
+          });
 
-        this.files.push({
-          data, file, url, type: type.split('/')[0],
-        });
-
-        reader.onerror = (evt) => {
-          console.error(evt);
-        };
+          reader.onerror = (e) => {
+            console.log(e);
+            this.showToastError(e);
+          };
+        } catch (e) {
+          console.log(e);
+          this.showToastError(e);
+        }
       }
     },
     async handleScroll({ target: { scrollTop, scrollHeight, clientHeight } }) {
@@ -461,10 +563,14 @@ export default {
       this.isScrollBtnVis = currScrollOffset > minScrollDifference;
       const scrollBottom = currScrollOffset - clientHeight;
 
-      if (canLoadToBottom && scrollBottom < 300 && !this.isBottomChatsLoading) {
-        this.isBottomChatsLoading = true;
-        await this.getMessages(1);
-        setTimeout(() => { this.isBottomChatsLoading = false; }, 300);
+      if (scrollBottom < 300) {
+        if (canLoadToBottom && !this.isBottomChatsLoading) {
+          this.isBottomChatsLoading = true;
+          await this.getMessages(1);
+          setTimeout(() => { this.isBottomChatsLoading = false; }, 300);
+        }
+
+        await this.readMessages();
       } else if (canLoadToTop && scrollTop < 300 && !this.isTopChatsLoading) {
         this.isTopChatsLoading = true;
         await this.getMessages(0);
@@ -484,7 +590,7 @@ export default {
       const payload = {
         config: {
           params: {
-            limit: 20,
+            limit: 25,
             offset,
             'sort[createdAt]': direction ? 'asc' : undefined,
           },
@@ -495,9 +601,10 @@ export default {
       };
 
       try {
-        await this.$store.dispatch('data/getMessagesList', payload);
+        await this.$store.dispatch('chat/getMessagesList', payload);
       } catch (e) {
         console.log(e);
+        this.showToastError(e);
       }
     },
     setCurrDate(msgDate) {
@@ -529,9 +636,6 @@ export default {
         key: modals.notice,
       });
     },
-    isRating(type) {
-      return (type === 1 || type === 2);
-    },
     goBackToChatsList() {
       this.$router.push('/messages');
     },
@@ -545,15 +649,22 @@ export default {
 
       this.messageText = '';
 
-      await Promise.all(files.map(async ({ data, file }) => {
+      const msgFiles = [];
+
+      await Promise.all(files.map(async ({
+        data, file, url, type,
+      }, i) => {
         const cData = {
           url: data.url,
           formData: file,
           type: file.type,
         };
+        msgFiles.push({
+          url, id: i + 1, type,
+        });
 
         try {
-          await this.$store.dispatch('data/setImage', cData);
+          await this.$store.dispatch('chat/setImage', cData);
         } catch (e) {
           console.log(e);
           this.showToastError(e);
@@ -572,7 +683,7 @@ export default {
       };
 
       try {
-        await this.$store.dispatch('data/handleSendMessage', payload);
+        await this.$store.dispatch('chat/handleSendMessage', payload);
 
         if (!isScrollBtnVis) this.scrollToBottom();
       } catch (e) {
@@ -586,29 +697,16 @@ export default {
         callback(this.handleSendMessage);
       }
     },
+    showToastError(e) {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.error'),
+        variant: 'warning',
+        text: e.response?.data?.msg,
+      });
+    },
   },
 };
 </script>
-
-<style lang="scss">
-  .template {
-    &__content {
-      grid-template-rows: 72px 1fr 72px !important;
-    }
-
-    &__main {
-      padding-bottom: 50px !important;
-    }
-  }
-  .footer {
-    &__body {
-      justify-content: flex-end !important;
-    }
-    &__top {
-      display: none !important;
-    }
-  }
-</style>
 
 <style lang="scss" scoped>
 .chat-page {
@@ -626,7 +724,7 @@ export default {
 
   &__header {
     border-bottom: 1px solid #E9EDF2;
-    padding: 15px;
+    padding: 0 15px;
     font-weight: 500;
     font-size: 18px;
     display: grid;
@@ -651,6 +749,17 @@ export default {
   &__quest-link {
     color: #0083C7;
     cursor: pointer;
+
+    &_small {
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+
+  &__group-chat-cont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   &__scroll-cont {
@@ -792,6 +901,7 @@ export default {
     width: 130px;
     border-radius: 6px;
     min-width: 130px;
+    object-fit: cover;
   }
 
   &_margin {
@@ -961,7 +1071,7 @@ background-color: #F7F8FA;
 
 .info-message {
   display: grid;
-  grid-template-columns: repeat(2, max-content);
+  grid-template-columns: repeat(3, max-content);
   gap: 5px;
 
   &__link {

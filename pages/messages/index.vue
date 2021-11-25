@@ -4,9 +4,6 @@
       <h2 class="chats-page__header">
         {{ $t('chat.messages') }}
       </h2>
-      <!--      <base-btn @click="testCreateChat">-->
-      <!--        Test create chat-->
-      <!--      </base-btn>-->
       <div class="chats-container">
         <div class="chats-container__header">
           <div>{{ $t('chat.chat') }}</div>
@@ -28,9 +25,12 @@
             <div class="chat__body">
               <div class="chat__data">
                 <div class="chat__row">
-                  <div class="chat__avas-cont">
+                  <div
+                    class="chat__avas-cont"
+                    :class="[{'chat__avas-cont_couple' : chat.userMembers.length === 2 }, {'chat__avas-cont_triplet' : chat.userMembers.length > 2 }]"
+                  >
                     <div
-                      v-for="user in chat.userMembers"
+                      v-for="user in chat.userMembers.slice(0, 3)"
                       :key="user.userId"
                       class="chat__ava-cont"
                     >
@@ -42,7 +42,7 @@
                     </div>
                   </div>
                   <div class="chat__title chat__title_bold">
-                    {{ chat.userMembers.length > 1 ? 'Group Chat' : chat.userMembers[0].firstName + ' ' + chat.userMembers[0].lastName }}
+                    {{ chat.type === 'group' ? chat.name : (chat.userMembers[0].firstName || '') + ' ' + (chat.userMembers[0].lastName || '') }}
                   </div>
                   <div
                     v-if="chat.type === 'group' || chat.type === 'quest'"
@@ -50,29 +50,18 @@
                     :class="[{'chat__title_gray' : chat.type === 'group'}, {'chat__title_link' : chat.type === 'quest'}]"
                     @click="goToQuest($event,chat.type === 'quest' ? chat.questChat.questId : '')"
                   >
-                    {{ chat.type === 'group' > 1 ? $t('chat.group') : chat.questChat.quest.title }}
+                    {{ chat.type === 'group' ? $t('chat.group') : chat.questChat.quest.title }}
                   </div>
                 </div>
-                <!--                <div class="chat__row">-->
-                <!--                  <div class="chat__title">-->
-                <!--                    {{ $t('chat.quest') }}-->
-                <!--                  </div>-->
-                <!--                  <a-->
-                <!--                    href="#"-->
-                <!--                    class="chat__title"-->
-                <!--                  >-->
-                <!--                    questName-->
-                <!--                  </a>-->
-                <!--                </div>-->
                 <div class="chat__row">
                   <div
-                    v-if="userData.id === chat.lastMessage.sender.id"
+                    v-if="userData.id === chat.lastMessage.sender.id || chat.type === 'group'"
                     class="chat__title"
                   >
-                    {{ $t('chat.you') }}
+                    {{ userData.id === chat.lastMessage.sender.id ? $t('chat.you') : `${chat.lastMessage.sender.firstName || ''} ${chat.lastMessage.sender.lastName || ''}:` }}
                   </div>
                   <div class="chat__title chat__title_gray chat__title_ellipsis">
-                    {{ chat.lastMessage.text }}
+                    {{ setCurrMessageText(chat.lastMessage, userData.id === chat.lastMessage.sender.id) }}
                   </div>
                 </div>
               </div>
@@ -130,7 +119,7 @@ export default {
   data() {
     return {
       filter: {
-        limit: 10,
+        limit: 30,
         offset: 0,
         starred: false,
       },
@@ -138,7 +127,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      chats: 'data/getChats',
+      chats: 'chat/getChats',
       userData: 'user/getUserData',
     }),
   },
@@ -147,6 +136,59 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    setCurrMessageText({
+      text, type, infoMessage, sender,
+    }, itsMe) {
+      if (type === 'info') {
+        text = 'chat.systemMessages.';
+        switch (infoMessage.messageAction) {
+          case 'employerInviteOnQuest': {
+            text += itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest';
+            break;
+          }
+          case 'workerResponseOnQuest': {
+            text += itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest';
+            break;
+          }
+          case 'employerRejectResponseOnQuest': {
+            text += itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest';
+            break;
+          }
+          case 'workerRejectInviteOnQuest': {
+            text += itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest';
+            break;
+          }
+          case 'workerAcceptInviteOnQuest': {
+            text += itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest';
+            break;
+          }
+          case 'groupChatCreate': {
+            text += 'createdAGroupChat';
+            break;
+          }
+          case 'groupChatDeleteUser': {
+            text += 'userRemovedFromChat';
+            break;
+          }
+          case 'groupChatAddUser': {
+            text += 'userAddedToChat';
+            break;
+          }
+          case 'groupChatLeaveUser': {
+            text += 'leftTheChat';
+            break;
+          }
+          default: {
+            text = '';
+            break;
+          }
+        }
+
+        return this.$t(text);
+      }
+
+      return text;
+    },
     goToQuest(ev, questId) {
       ev.stopPropagation();
 
@@ -163,28 +205,30 @@ export default {
     handleChangeStarVal(ev, chat) {
       ev.stopPropagation();
       const chatId = chat.id;
-      this.$store.dispatch(`data/${chat.star ? 'removeStarForChat' : 'setStarForChat'}`, chatId);
-    },
-    testCreateChat() {
-      const payload = {
-        config: {
-          text: 'Hello! It is test message',
-          medias: [],
-        },
-        userId: '128ddf57-94d3-4b66-867b-550652172ac0',
-        // userId: '8407b757-95b3-4862-95b6-e6d8d6d03341', // исполнитель
-      };
       try {
-        this.$store.dispatch('data/handleCreateChat', payload);
+        this.$store.dispatch(`chat/${chat.star ? 'removeStarForChat' : 'setStarForChat'}`, chatId);
       } catch (e) {
         console.log(e);
+        this.showToastError(e);
       }
     },
     async getChats() {
-      await this.$store.dispatch('data/getChatsList', this.filter);
+      try {
+        await this.$store.dispatch('chat/getChatsList', this.filter);
+      } catch (e) {
+        console.log(e);
+        this.showToastError(e);
+      }
     },
     handleSelChat(chatId) {
       this.$router.push(`/messages/${chatId}`);
+    },
+    showToastError(e) {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.error'),
+        variant: 'warning',
+        text: e.response?.data?.msg,
+      });
     },
   },
 };
@@ -263,6 +307,14 @@ export default {
     position: relative;
     height: 43px;
     min-width: 43px;
+
+    &_couple {
+      width: 68px;
+    }
+
+    &_triplet {
+      width: 93px;
+    }
   }
   &__ava-cont {
     width: 25px;
