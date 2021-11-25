@@ -210,13 +210,8 @@ export default {
           name,
           memberUserIds,
         };
-        try {
-          const { payload } = await this.$store.dispatch('chat/handleCreateGroupChat', config);
-          if (payload.ok) this.$router.push(`/messages/${payload.result.id}`);
-        } catch (e) {
-          console.log(e);
-          this.showToastError(e);
-        }
+        const { payload } = await this.$store.dispatch('chat/handleCreateGroupChat', config);
+        if (payload.ok) this.$router.push(`/messages/${payload.result.id}`);
       } else if (isAdding && memberUserIds.length) {
         const payload = {
           config: {
@@ -225,12 +220,7 @@ export default {
           chatId,
         };
 
-        try {
-          await this.$store.dispatch('chat/addNewMembers', payload);
-        } catch (e) {
-          console.log(e);
-          this.showToastError(e);
-        }
+        await this.$store.dispatch('chat/addNewMembers', payload);
       }
 
       this.hide();

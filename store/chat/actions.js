@@ -46,8 +46,12 @@ export default {
     return result;
   },
   async handleCreateGroupChat({ commit }, config) {
-    const response = await this.$wsChat.$post('/api/v1/user/me/chat/group/create', config);
-    return response;
+    try {
+      const response = await this.$wsChat.$post('/api/v1/user/me/chat/group/create', config);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
   async handleSendMessage({ commit, rootState: { chat: { messages, messagesFilter } } }, { chatId, config }) {
     const { payload } = await this.$wsChat.$post(`/api/v1/chat/${chatId}/send-message`, config);
@@ -127,21 +131,25 @@ export default {
     return response;
   },
   async addNewMembers({ commit, rootState: { chat: { messagesFilter } } }, { chatId, config }) {
-    const response = await this.$axios.$post(`/v1/user/me/chat/group/${chatId}/add`, config);
+    try {
+      const response = await this.$axios.$post(`/v1/user/me/chat/group/${chatId}/add`, config);
 
-    if (response.ok) {
-      response.result.forEach((message) => {
-        if (!messagesFilter.canLoadToBottom) {
-          message.itsMe = true;
+      if (response.ok) {
+        response.result.forEach((message) => {
+          if (!messagesFilter.canLoadToBottom) {
+            message.itsMe = true;
 
-          commit('addMessageToList', message);
-        }
+            commit('addMessageToList', message);
+          }
 
-        commit('addUserToChat', message.infoMessage.user);
-      });
+          commit('addUserToChat', message.infoMessage.user);
+        });
+      }
+
+      return response;
+    } catch (e) {
+      return console.log(e);
     }
-
-    return response;
   },
   async leaveFromChat({ commit }, chatId) {
     const response = await this.$axios.$post(`/v1/user/me/chat/group/${chatId}/leave`);
