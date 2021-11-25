@@ -31,14 +31,14 @@ export default {
     if (direction) {
       result.messages = chat.messages.list.concat(result.messages);
     } else {
-      if (chatId !== 'starred')result.messages.reverse();
+      if (chatId !== 'starred') result.messages.reverse();
 
       result.messages = result.messages.concat(chat.messages.list);
     }
     const { messages } = result;
 
-    const canLoadToBottom = messages[messages.length - 1]?.number < result.count;
-    const canLoadToTop = messages[0]?.number > 1;
+    const canLoadToBottom = chatId !== 'starred' && messages[messages.length - 1]?.number < result.count;
+    const canLoadToTop = chatId === 'starred' ? messages.length < result.count : messages[0]?.number > 1;
 
     commit('setMessagesList', {
       ...result, direction, offset: offset + 25, canLoadToBottom, canLoadToTop,
