@@ -6,6 +6,8 @@ export default {
       chat.userMembers = chat.userMembers.filter((member) => member.id !== rootState.user.userData.id);
       chat.isUnread = chat.meMember.unreadCountMessages > 0;
     });
+    if (params.offset) result.chats = rootState.chat.chats.list.concat(result.chats);
+
     commit('setChatsList', result);
   },
   async getMessagesList({ commit, rootState: { user, chat } }, {
