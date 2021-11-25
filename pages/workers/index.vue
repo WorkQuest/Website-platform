@@ -214,14 +214,14 @@
               >
                 {{ user.additionalInfo.address ? user.additionalInfo.address : $t('quests.unknownAddress') }}
               </div>
-              <!-- <div class="card__cost cost">
+              <div class="card__cost cost">
                 <div class="cost__title">
                   {{ $t('workers.costTitle') }}
                 </div>
                 <div class="cost__value">
-                  {{ user.cost }}
+                  {{ user.wagePerHour !== null ? user.wagePerHour : $t('worker.cost.notIndicated') }} {{ user.wagePerHour !== null ? $t('quests.wusd') : '' }}
                 </div>
-              </div> -->
+              </div>
             </div>
           </div>
         </div>

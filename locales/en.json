@@ -255,6 +255,11 @@
   "skills": {
     "title": "Skills"
   },
+  "worker": {
+    "cost": {
+      "notIndicated": "Not indicated..."
+    }
+  },
   "quests": {
     "wusd": "WUSD",
     "employer": {
