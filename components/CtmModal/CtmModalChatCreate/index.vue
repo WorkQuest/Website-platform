@@ -211,7 +211,8 @@ export default {
           memberUserIds,
         };
         try {
-          await this.$store.dispatch('chat/handleCreateGroupChat', config);
+          const { payload } = await this.$store.dispatch('chat/handleCreateGroupChat', config);
+          if (payload.ok) this.$router.push(`/messages/${payload.result.id}`);
         } catch (e) {
           console.log(e);
           this.showToastError(e);

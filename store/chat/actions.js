@@ -45,8 +45,9 @@ export default {
     });
     return result;
   },
-  handleCreateGroupChat({ commit }, config) {
-    this.$wsChat.$post('/api/v1/user/me/chat/group/create', config);
+  async handleCreateGroupChat({ commit }, config) {
+    const response = await this.$wsChat.$post('/api/v1/user/me/chat/group/create', config);
+    return response;
   },
   async handleSendMessage({ commit, rootState: { chat: { messages, messagesFilter } } }, { chatId, config }) {
     const { payload } = await this.$wsChat.$post(`/api/v1/chat/${chatId}/send-message`, config);
