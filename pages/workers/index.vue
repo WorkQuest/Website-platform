@@ -151,7 +151,6 @@
             v-for="(user, i) in workersList.users"
             :key="i"
             class="card card_lower"
-            :data-selector="`ACTION-SHOW-USER-DETAIL-${user.key.toUpperCase()}`"
             @click="showDetails(user)"
           >
             <!-- :class="cardsLevelsBorder(i)" -->
