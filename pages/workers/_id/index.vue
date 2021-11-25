@@ -94,8 +94,23 @@
           <div class="block_title">
             {{ $t('workers.skills') }}
           </div>
-          <div>
-            <span class="badge_blue">{{ $t('quests.skillsNotSpecified') }}</span>
+          <span
+            v-if="currentWorker.userSpecializations.length === 0"
+            class="badge_blue"
+          >{{ $t('quests.skillsNotSpecified') }}</span>
+          <div
+            v-if="currentWorker.userSpecializations.length !== 0"
+            class="badge__container"
+          >
+            <ul class="badge-list">
+              <li
+                v-for="(skill, spec) in currentWorker.userSpecializations"
+                :key="spec"
+                class="badge__item"
+              >
+                {{ getSkillTitle(skill.path) }}
+              </li>
+            </ul>
           </div>
         </div>
         <div class="block_16">
@@ -185,6 +200,10 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    getSkillTitle(path) {
+      const [spec, skill] = path.split('.');
+      return this.$t(`filters.items.${spec}.sub.${skill}`);
+    },
     showModalGiveQuest() {
       this.ShowModal({
         key: modals.invitation,
@@ -388,14 +407,33 @@ export default {
     }
   }
 }
-
 .badge {
-  &_blue {
+  &-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  &__container {
+    display: flex;
+    padding: 0;
+    height: 110px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  &__item {
+    @include text-simple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
     background: rgba(0, 131, 199, 0.1);
     padding: 5px 7px;
     border-radius: 44px;
     color: $blue;
-    margin: 0 9px 0 0;
+    margin: 0 5px 5px 0;
   }
 }
 
