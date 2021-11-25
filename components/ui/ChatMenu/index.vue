@@ -34,12 +34,16 @@
             </template>
             <template v-else>
               <div
+                v-if="!canILeave"
                 class="chat-menu__item"
                 @click="showOpenADisputeModal()"
               >
                 {{ $t('chat.openDispute') }}
               </div>
-              <div class="chat-menu__item">
+              <div
+                v-if="!canILeave"
+                class="chat-menu__item"
+              >
                 {{ $t('chat.approveQuest') }}
               </div>
               <div
