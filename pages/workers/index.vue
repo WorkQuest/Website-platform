@@ -12,17 +12,20 @@
           <div class="search__toggle">
             <base-checkbox
               v-model="isShowMap"
+              data-selector="ACTION-IS-SHOW-MAP-USER"
               name="map"
               :label="$t('quests.ui.showMap')"
             />
           </div>
           <div
             class="search__inputs"
+            data-selector="ACTION-TOGGLE-SEARCH-DD-USER"
             @click="toggleSearchDD"
           >
             <base-field
               v-model="search"
               v-click-outside="hideSearchDD"
+              data-selector="INPUT-SEARCH-ADDRESS-USER"
               class="search__input"
               is-search
               :placeholder="$t('quests.ui.search')"
@@ -41,6 +44,7 @@
                     <div
                       v-for="(item, i) in addresses"
                       :key="i"
+                      :data-selector="`ACTION-SELECT-ADDRESS-${item.key.toUpperCase()}`"
                       class="selector__item"
                       @click="selectAddress(item)"
                     >
@@ -60,6 +64,7 @@
           <div class="search__actions">
             <base-btn
               class="search__btn"
+              data-selector="ACTION-MAP-CENTER-CHANGE-USER"
               @click="centerChange"
             >
               {{ userRole === 'worker' ? $t('quests.searchResults') : $t('workers.searchWorkers') }}
@@ -80,6 +85,7 @@
           <base-checkbox
             v-model="isShowMap"
             name="map"
+            data-selector="ACTION-IS-SHOW-MAP-USER"
             :label="$t('quests.ui.showMap')"
           />
         </div>
@@ -106,6 +112,7 @@
               <base-btn
                 class="panel__item"
                 :mode="'light'"
+                data-selector="ACTION-SHOW-PRICE-SEARCH-USER"
                 @click="showPriceSearch"
               >
                 <span class="tools__text">
@@ -122,6 +129,7 @@
               <base-btn
                 class="tools__item"
                 :mode="'light'"
+                data-selector="ACTION-TIME-SORT-USER"
               >
                 <span class="tools__text">
                   {{ $t('quests.time') }}
@@ -143,6 +151,7 @@
             v-for="(user, i) in workersList.users"
             :key="i"
             class="card card_lower"
+            :data-selector="`ACTION-SHOW-USER-DETAIL-${user.key.toUpperCase()}`"
             @click="showDetails(user)"
           >
             <!-- :class="cardsLevelsBorder(i)" -->
