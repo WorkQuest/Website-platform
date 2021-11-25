@@ -1134,7 +1134,7 @@ export default {
               offset: 0,
             });
           } else if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
-            this.$store.commit('chat/addMessageToList', data);
+            if (action !== 'messageReadByRecipient') this.$store.commit('chat/addMessageToList', data);
 
             if (data.type === 'info') {
               const { user } = data.infoMessage;
