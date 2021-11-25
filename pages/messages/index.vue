@@ -108,7 +108,7 @@
         class="chats-page__footer"
       >
         <base-btn @click="loadMoreChats">
-          load more
+          {{ $t('chat.loadMore') }}
         </base-btn>
       </div>
     </div>
