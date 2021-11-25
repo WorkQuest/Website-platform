@@ -13,39 +13,43 @@ export default {
   async getMessagesList({ commit, rootState: { user, chat } }, {
     config, chatId, direction, offset,
   }) {
-    const method = chatId === 'starred' ? '/v1/user/me/chat/messages/star' : `/v1/user/me/chat/${chatId}/messages`;
-    const { result } = await this.$axios.$get(method, config);
-    const myId = user.userData.id;
+    try {
+      const method = chatId === 'starred' ? '/v1/user/me/chat/messages/star' : `/v1/user/me/chat/${chatId}/messages`;
+      const { result } = await this.$axios.$get(method, config);
+      const myId = user.userData.id;
 
-    result.messages.forEach((message) => {
-      message.itsMe = message.sender.id === myId;
+      result.messages.forEach((message) => {
+        message.itsMe = message.sender.id === myId;
 
-      if (message.medias.length) {
-        message.medias.forEach((file) => {
-          // eslint-disable-next-line prefer-destructuring
-          file.type = file.contentType.split('/')[0];
-        });
+        if (message.medias.length) {
+          message.medias.forEach((file) => {
+            // eslint-disable-next-line prefer-destructuring
+            file.type = file.contentType.split('/')[0];
+          });
+        }
+      });
+
+      if (result.chat) result.chat.members = result.chat.userMembers.filter((member) => member.id !== myId);
+
+      if (direction) {
+        result.messages = chat.messages.list.concat(result.messages);
+      } else {
+        if (chatId !== 'starred') result.messages.reverse();
+
+        result.messages = result.messages.concat(chat.messages.list);
       }
-    });
+      const { messages, count } = result;
 
-    if (result.chat) result.chat.members = result.chat.userMembers.filter((member) => member.id !== myId);
+      const canLoadToBottom = chatId !== 'starred' && messages[messages.length - 1]?.number < result.count;
+      const canLoadToTop = chatId === 'starred' ? messages.length < count : messages[0]?.number > 1;
 
-    if (direction) {
-      result.messages = chat.messages.list.concat(result.messages);
-    } else {
-      if (chatId !== 'starred') result.messages.reverse();
-
-      result.messages = result.messages.concat(chat.messages.list);
+      commit('setMessagesList', {
+        ...result, direction, offset: offset + 25, canLoadToBottom, canLoadToTop,
+      });
+      return result;
+    } catch (e) {
+      return console.log(e);
     }
-    const { messages, count } = result;
-
-    const canLoadToBottom = chatId !== 'starred' && messages[messages.length - 1]?.number < result.count;
-    const canLoadToTop = chatId === 'starred' ? messages.length < count : messages[0]?.number > 1;
-
-    commit('setMessagesList', {
-      ...result, direction, offset: offset + 25, canLoadToBottom, canLoadToTop,
-    });
-    return result;
   },
   async handleCreateGroupChat({ commit }, config) {
     try {

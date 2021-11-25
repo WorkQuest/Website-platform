@@ -612,12 +612,7 @@ export default {
         offset,
       };
 
-      try {
-        await this.$store.dispatch('chat/getMessagesList', payload);
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-      }
+      await this.$store.dispatch('chat/getMessagesList', payload);
     },
     setCurrDate(msgDate) {
       const { today } = this;
