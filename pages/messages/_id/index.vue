@@ -637,7 +637,11 @@ export default {
       });
     },
     goBackToChatsList() {
-      this.$router.push('/messages');
+      if (window.history.length > 2) {
+        this.$router.go(-1);
+      } else {
+        this.$router.push('/messages');
+      }
     },
     async handleSendMessage() {
       const {
