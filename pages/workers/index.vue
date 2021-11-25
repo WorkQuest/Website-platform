@@ -267,7 +267,7 @@ export default {
       workerObjects: {},
       workersArray: [],
       page: 1,
-      perPager: 10,
+      perPager: 12,
       sortData: '',
       additionalValue: '',
       totalPagesValue: 1,
