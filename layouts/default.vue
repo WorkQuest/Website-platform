@@ -1107,13 +1107,8 @@ export default {
       this.closeAll();
     },
   },
-  async fetch() {
-    await this.$store.dispatch('quests/getFilters');
-    console.log('getFilters');
-  },
   async mounted() {
     await Promise.all([
-      // this.$store.dispatch('quests/getFilters'),
       this.initWSListeners(),
       this.loginCheck(),
     ]);

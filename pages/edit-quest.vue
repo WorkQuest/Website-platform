@@ -59,87 +59,91 @@
               />
             </div>
           </div>
-          <div class="page__skills skills">
-            <div
-              v-for="key in specCount"
-              :key="key"
-              class="skills__block block"
-            >
-              <div class="block__skill-spec">
-                <div class="block__specialization specialization">
-                  <base-dd
-                    v-model="displaySpecIndex[key]"
-                    class="specialization__dd"
-                    type="gray"
-                    :items="specializationsNames"
-                    :placeholder="$t('settings.selectSpec')"
-                    :mode="'small'"
-                    rules="required"
-                    :label="$t('settings.specialization')"
-                    :hide-selected="hideSelectedSpecs"
-                    @input="switchSkill($event, key)"
-                  />
-                  <div class="specialization__skills skills">
-                    <base-dd
-                      v-model="skillIndex[key]"
-                      class="specialization__dd"
-                      :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
-                      :disabled="specIndex[key] < 0"
-                      :placeholder="$t('settings.selectSkills')"
-                      :items="skillsNames[displaySpecIndex[key]]"
-                      :mode="'small'"
-                      rules="required"
-                      :label="$t('settings.skillsInput')"
-                      :hide-selected="hideSelectedSkills[key]"
-                      @input="addSkillToBadge($event, key)"
-                    />
-                    <div
-                      v-if="selectedSkills[key].length === 5"
-                      class="skills__error"
-                    >
-                      {{ $t('ui.buttons.errors.manySkills') }}
-                    </div>
-                  </div>
-                </div>
-                <div class="block__skill skill">
-                  <div
-                    v-for="(item, i) in selectedSkills[key]"
-                    :key="i"
-                    class="skill__badge"
-                  >
-                    {{ item.name }}
-                    <button
-                      class="skill__remove"
-                      @click="removeSkillToBadge(item, key)"
-                    >
-                      <img
-                        src="~assets/img/ui/close_blue.svg"
-                        alt="x"
-                      >
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <base-btn
-                :text="$t('settings.removeSpec')"
-                class="specialization__btn specialization__btn_remove"
-                @click="removeSpecialization(key)"
-              />
-            </div>
-            <base-btn
-              :text="$t('settings.addSpec')"
-              :disabled="specCount === 3"
-              class="skills__btn-add"
-              :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
-              @click="addSpecialization"
-            />
-            <div
-              v-if="specCount === 3"
-              class="skills__error"
-            >
-              {{ $t('ui.buttons.errors.manySpec') }}
-            </div>
-          </div>
+          <specializations-selector
+            :skills="questData.questSpecializations"
+            @changeSkills="updateSelectedSkills"
+          />
+          <!--          <div class="page__skills skills">-->
+          <!--            <div-->
+          <!--              v-for="key in specCount"-->
+          <!--              :key="key"-->
+          <!--              class="skills__block block"-->
+          <!--            >-->
+          <!--              <div class="block__skill-spec">-->
+          <!--                <div class="block__specialization specialization">-->
+          <!--                  <base-dd-->
+          <!--                    v-model="displaySpecIndex[key]"-->
+          <!--                    class="specialization__dd"-->
+          <!--                    type="gray"-->
+          <!--                    :items="specializationsNames"-->
+          <!--                    :placeholder="$t('settings.selectSpec')"-->
+          <!--                    :mode="'small'"-->
+          <!--                    rules="required"-->
+          <!--                    :label="$t('settings.specialization')"-->
+          <!--                    :hide-selected="hideSelectedSpecs"-->
+          <!--                    @input="switchSkill($event, key)"-->
+          <!--                  />-->
+          <!--                  <div class="specialization__skills skills">-->
+          <!--                    <base-dd-->
+          <!--                      v-model="skillIndex[key]"-->
+          <!--                      class="specialization__dd"-->
+          <!--                      :type="specIndex[key] < 0 ? 'disabled' : 'gray'"-->
+          <!--                      :disabled="specIndex[key] < 0"-->
+          <!--                      :placeholder="$t('settings.selectSkills')"-->
+          <!--                      :items="skillsNames[displaySpecIndex[key]]"-->
+          <!--                      :mode="'small'"-->
+          <!--                      rules="required"-->
+          <!--                      :label="$t('settings.skillsInput')"-->
+          <!--                      :hide-selected="hideSelectedSkills[key]"-->
+          <!--                      @input="addSkillToBadge($event, key)"-->
+          <!--                    />-->
+          <!--                    <div-->
+          <!--                      v-if="selectedSkills[key].length === 5"-->
+          <!--                      class="skills__error"-->
+          <!--                    >-->
+          <!--                      {{ $t('ui.buttons.errors.manySkills') }}-->
+          <!--                    </div>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+          <!--                <div class="block__skill skill">-->
+          <!--                  <div-->
+          <!--                    v-for="(item, i) in selectedSkills[key]"-->
+          <!--                    :key="i"-->
+          <!--                    class="skill__badge"-->
+          <!--                  >-->
+          <!--                    {{ item.name }}-->
+          <!--                    <button-->
+          <!--                      class="skill__remove"-->
+          <!--                      @click="removeSkillToBadge(item, key)"-->
+          <!--                    >-->
+          <!--                      <img-->
+          <!--                        src="~assets/img/ui/close_blue.svg"-->
+          <!--                        alt="x"-->
+          <!--                      >-->
+          <!--                    </button>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+          <!--              </div>-->
+          <!--              <base-btn-->
+          <!--                :text="$t('settings.removeSpec')"-->
+          <!--                class="specialization__btn specialization__btn_remove"-->
+          <!--                @click="removeSpecialization(key)"-->
+          <!--              />-->
+          <!--            </div>-->
+          <!--            <base-btn-->
+          <!--              :text="$t('settings.addSpec')"-->
+          <!--              :disabled="specCount === 3"-->
+          <!--              class="skills__btn-add"-->
+          <!--              :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"-->
+          <!--              @click="addSpecialization"-->
+          <!--            />-->
+          <!--            <div-->
+          <!--              v-if="specCount === 3"-->
+          <!--              class="skills__error"-->
+          <!--            >-->
+          <!--              {{ $t('ui.buttons.errors.manySpec') }}-->
+          <!--            </div>-->
+          <!--          </div>-->
           <div class="page__address">
             <base-field
               v-model="address"
@@ -203,7 +207,7 @@
           <div class="upload btn btn__container btn__container_right">
             <div class="btn__create">
               <base-btn
-                :disabled="!(invalid === false && !(selectedSkills[1].length === 0))"
+                :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(toRiseViews)"
               >
                 {{ $t('quests.editAQuest') }}
@@ -299,7 +303,7 @@
               <div class="btn-container__btn">
                 <base-btn
                   :mode="'outline'"
-                  @click="toEditQuest()"
+                  @click="editQuest"
                 >
                   {{ $t('meta.skipAndEnd') }}
                 </base-btn>
@@ -341,12 +345,7 @@ export default {
         currentAdPrice: '',
       },
       period: 1,
-      specCount: 0,
-      specIndex: { 1: -1, 2: -1, 3: -1 }, // Выбранные специализации по id в filters
-      displaySpecIndex: { 1: -1, 2: -1, 3: -1 }, // Выбранные для отображения названия специализации
-      hideSelectedSkills: { 1: [], 2: [], 3: [] },
-      skillIndex: { 1: -1, 2: -1, 3: -1 },
-      selectedSkills: { 1: [], 2: [], 3: [] },
+      selectedSpecAndSkills: [],
       priorityIndex: 1,
       employmentIndex: 0,
       categoryIndex: 0,
@@ -507,53 +506,6 @@ export default {
         this.$t('quests.distantWork.bothVariant'),
       ];
     },
-    specializationsNames() {
-      const specs = [];
-      const keys = Object.keys(this.filters);
-      for (let i = 0; i < keys.length; i += 1) {
-        const key = keys[i];
-        specs.push(this.$t(`filters.items.${this.filters[key].id}.title`));
-      }
-      return specs;
-    },
-    specsIndexes() { // id спеки из filters
-      const specsIndexes = [];
-      const keys = Object.keys(this.filters);
-      for (let i = 0; i < keys.length; i += 1) {
-        const key = keys[i];
-        specsIndexes.push(this.filters[key].id);
-      }
-      return specsIndexes;
-    },
-    skillsNames() {
-      const skillsData = {};
-      const keys = Object.keys(this.filters);
-      for (let i = 0; i < keys.length; i += 1) {
-        const key = keys[i];
-        const skillsBySpec = this.filters[key].skills;
-        const skillsIndexes = Object.values(skillsBySpec);
-        const skillsNames = [];
-        for (let j = 0; j < skillsIndexes.length; j += 1) {
-          const name = this.$t(`filters.items.${this.filters[key].id}.sub.${skillsIndexes[j]}`);
-          skillsNames.push(name);
-        }
-        skillsData[i] = skillsNames;
-      }
-      return skillsData;
-    },
-    skillsIndexes() {
-      const skillsIndexesData = {};
-      const keys = Object.keys(this.filters);
-      for (let i = 0; i < keys.length; i += 1) {
-        const key = keys[i];
-        const skillsBySpec = this.filters[key].skills;
-        skillsIndexesData[i] = Object.values((skillsBySpec)); // skills indexes from filters
-      }
-      return skillsIndexesData;
-    },
-    hideSelectedSpecs() {
-      return Object.values(this.displaySpecIndex);
-    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -561,6 +513,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    updateSelectedSkills(specAndSkills) {
+      this.selectedSpecAndSkills = specAndSkills;
+    },
     async editQuestFill() {
       this.runtimeValue = 1;
       this.employmentIndex = this.parseEmployment(this.questData.employment);
@@ -570,31 +525,6 @@ export default {
       this.textarea = this.questData.description;
       this.coordinates.lng = this.questData.location.longitude;
       this.coordinates.lat = this.questData.location.latitude;
-
-      // filters
-      const specKeys = {};
-      let key = 1;
-      // eslint-disable-next-line no-restricted-syntax
-      for (const item of this.questData.questSpecializations) {
-        const [_spec, _skill] = item.path.split('.');
-        const spec = parseInt(_spec, 10);
-        const skill = parseInt(_skill, 10);
-        if (!Object.keys(specKeys).includes(_spec)) {
-          specKeys[spec] = key;
-          this.displaySpecIndex[key] = this.specsIndexes.indexOf(spec);
-          this.selectedSkills[key] = [];
-          this.specIndex[specKeys[spec]] = spec;
-          key += 1;
-        }
-        const displaySkillIndex = this.skillsIndexes[this.displaySpecIndex[specKeys[spec]]].indexOf(skill);
-        if (!this.hideSelectedSkills[specKeys[spec]]) this.hideSelectedSkills[specKeys[spec]] = [displaySkillIndex];
-        else this.hideSelectedSkills[specKeys[spec]].push(displaySkillIndex);
-        this.selectedSkills[specKeys[spec]].push({
-          index: skill,
-          name: this.skillsNames[this.displaySpecIndex[specKeys[spec]]][displaySkillIndex],
-        });
-      }
-      this.specCount = key - 1;
     },
     cardStatus(item) {
       let style;
@@ -732,7 +662,7 @@ export default {
         console.log(e);
       }
     },
-    async editQuest(specAndSkills) {
+    async editQuest() {
       const payload = {
         workplace: 'distant',
         priority: this.priorityIndex,
@@ -744,7 +674,7 @@ export default {
         medias: [],
         adType: 0,
         locationPlaceName: this.address,
-        specializationKeys: specAndSkills,
+        specializationKeys: this.selectedSpecAndSkills,
         location: {
           longitude: this.coordinates.lng,
           latitude: this.coordinates.lat,
@@ -785,20 +715,6 @@ export default {
         variant: 'warning',
         text: e.response?.data?.msg,
       });
-    },
-    async toEditQuest() {
-      const specAndSkills = this.questData?.skillFilters || [];
-      let key = 1;
-      // eslint-disable-next-line guard-for-in,no-restricted-syntax
-      for (const spec in this.specIndex) {
-        if (this.specIndex[spec] !== -1) {
-          for (let i = 0; i < this.selectedSkills[key].length; i += 1) {
-            specAndSkills.push(`${this.specIndex[spec]}.${this.selectedSkills[key][i].index}`);
-          }
-        }
-        key += 1;
-      }
-      await this.editQuest(specAndSkills);
     },
   },
 };

@@ -420,6 +420,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    if (!Object.keys(this.filters).length) await this.$store.dispatch('quests/getFilters');
     if (this.userRole === 'employer') {
       await this.fetchWorkersList();
       this.showWelcomeModal();
