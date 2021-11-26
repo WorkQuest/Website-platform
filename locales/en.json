@@ -1330,7 +1330,8 @@
     "invitedYou": "invited you to a quest",
     "writeYouMessage": "Write you message",
     "group": "Group",
-    "noChats": "No Chats",
+    "noChats": "No chats",
+    "noMessages": "No messages",
     "membersNum": "{n} members",
     "systemMessages": {
       "invitedYouToAQuest": "invited you to a quest",
@@ -1354,7 +1355,8 @@
       "leftTheChat": "left the chat",
       "youLeftTheChat": "You left the chat"
     },
-    "leaveChat": "Leave chat"
+    "leaveChat": "Leave chat",
+    "loadMore": "Load more"
   },
   "settings": {
     "facebook": "facebook",
