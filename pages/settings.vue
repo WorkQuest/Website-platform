@@ -872,6 +872,8 @@ export default {
     await this.perHourData();
     await this.prepareSpecializations();
 
+    if (!Object.keys(this.filters).length) await this.$store.dispatch('quests/getFilters');
+
     this.SetLoader(false);
   },
   methods: {

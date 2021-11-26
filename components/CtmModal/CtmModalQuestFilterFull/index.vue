@@ -134,10 +134,12 @@ export default {
       return f;
     },
   },
-  mounted() {
+  async mounted() {
     this.selected = this.options?.selected || {};
     this.selectedAll = this.options?.selectedAll || [];
     this.visible = this.options?.visible || {};
+
+    if (!Object.keys(this.filtersList).length) await this.$store.dispatch('quests/getFilters');
   },
   methods: {
     hide() {

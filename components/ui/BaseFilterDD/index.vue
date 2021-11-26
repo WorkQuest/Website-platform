@@ -174,6 +174,9 @@ export default {
       this.visible = visible || {};
     },
   },
+  async mounted() {
+    if (!Object.keys(this.filtersList).length) await this.$store.dispatch('quests/getFilters');
+  },
   methods: {
     hideDd() {
       this.isOpenDD = true;
