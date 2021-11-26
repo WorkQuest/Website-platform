@@ -46,7 +46,7 @@
         <div
           ref="HandleScrollContainer"
           class="chat-container__scroll-cont"
-          :class="{'chat-container__scroll-cont_small' : files.length}"
+          :class="[{'chat-container__scroll-cont_small' : files.length}, {'chat-container__scroll-cont_big' : chatId === 'starred'}]"
           @scroll="handleScroll"
         >
           <div
@@ -786,13 +786,17 @@ export default {
   &__scroll-cont {
     overflow: auto;
     padding: 20px 20px 0;
-    height: calc(100vh - 420px);
+    height: calc(100vh - 370px);
     min-height: 400px;
     display: grid;
     align-items: end;
 
     &_small {
-      height: calc(100vh - 535px);
+      height: calc(100vh - 485px);
+    }
+
+    &_big {
+      height: calc(100vh - 295px);
     }
   }
 
@@ -1130,7 +1134,6 @@ display: flex;
 flex-direction: row;
 align-items: center;
 justify-content: center;
-
 }
 
 .icon {
@@ -1376,6 +1379,26 @@ border-radius: 2px;
 }
 }
 @include _575 {
+  .chat-page {
+    &__header {
+      display: none;
+    }
+  }
+
+  .chat-container {
+    &__scroll-cont {
+      height: calc(100vh - 295px);
+
+      &_small {
+        height: calc(100vh - 410px);
+      }
+
+      &_big {
+        height: calc(100vh - 220px);
+      }
+    }
+  }
+
 .chat {
 &__panel {
   grid-template-columns: 1fr 10fr 1fr;
