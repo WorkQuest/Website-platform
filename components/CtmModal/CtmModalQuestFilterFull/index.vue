@@ -139,7 +139,7 @@ export default {
     this.selectedAll = this.options?.selectedAll || [];
     this.visible = this.options?.visible || {};
 
-    if (!Object.keys(this.filtersList).length) await this.$store.dispatch('quests/getFilters');
+    if (!this.filtersList || !Object.keys(this.filtersList)) await this.$store.dispatch('quests/getFilters');
   },
   methods: {
     hide() {

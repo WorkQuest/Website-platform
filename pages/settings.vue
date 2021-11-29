@@ -434,85 +434,10 @@
         class="main-white"
       >
         <div class="page__skills skills">
-          <div
-            v-for="key in specCount"
-            :key="key"
-            class="skills__block block"
-          >
-            <div class="block__skill-spec">
-              <div class="block__specialization specialization">
-                <base-dd
-                  v-model="displaySpecIndex[key]"
-                  class="specialization__dd"
-                  type="gray"
-                  :items="specializationsNames"
-                  :placeholder="$t('settings.selectSpec')"
-                  :mode="'small'"
-                  rules="required"
-                  :label="$t('settings.specialization')"
-                  :hide-selected="hideSelectedSpecs"
-                  @input="switchSkill($event, key)"
-                />
-                <div class="specialization__skills skills">
-                  <base-dd
-                    v-model="skillIndex[key]"
-                    class="specialization__dd"
-                    :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
-                    :disabled="specIndex[key] < 0"
-                    :placeholder="$t('settings.selectSkills')"
-                    :items="skillsNames[displaySpecIndex[key]]"
-                    :mode="'small'"
-                    rules="required"
-                    :label="$t('settings.skillsInput')"
-                    :hide-selected="hideSelectedSkills[key]"
-                    @input="addSkillToBadge($event, key)"
-                  />
-                  <div
-                    v-if="selectedSkills[key].length === 5"
-                    class="skills__error"
-                  >
-                    {{ $t('ui.buttons.errors.manySkills') }}
-                  </div>
-                </div>
-              </div>
-              <div class="block__skill skill">
-                <div
-                  v-for="(item, i) in selectedSkills[key]"
-                  :key="i"
-                  class="skill__badge"
-                >
-                  {{ item.name }}
-                  <button
-                    class="skill__remove"
-                    @click="removeSkillToBadge(item, key)"
-                  >
-                    <img
-                      src="~assets/img/ui/close_blue.svg"
-                      alt="x"
-                    >
-                  </button>
-                </div>
-              </div>
-            </div>
-            <base-btn
-              :text="$t('settings.removeSpec')"
-              class="specialization__btn specialization__btn_remove"
-              @click="removeSpecialization(key)"
-            />
-          </div>
-          <base-btn
-            :text="$t('settings.addSpec')"
-            :disabled="specCount === 3"
-            class="skills__btn-add"
-            :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
-            @click="addSpecialization"
+          <specializations-selector
+            :skills="userSpecializations"
+            @changeSkills="updateSelectedSkills"
           />
-          <div
-            v-if="specCount === 3"
-            class="skills__error"
-          >
-            {{ $t('ui.buttons.errors.manySpec') }}
-          </div>
           <div class="skills__add-info">
             <base-dd
               v-model="priorityIndex"
@@ -717,11 +642,7 @@ export default {
       isSearchDDStatus: true,
       specCount: 0,
       perHour: 0,
-      specIndex: { 1: -1, 2: -1, 3: -1 }, // Выбранные специализации по id в filters
-      displaySpecIndex: { 1: -1, 2: -1, 3: -1 }, // Выбранные для отображения названия специализации
-      hideSelectedSkills: { 1: [], 2: [], 3: [] },
-      skillIndex: { 1: -1, 2: -1, 3: -1 },
-      selectedSkills: { 1: [], 2: [], 3: [] },
+      selectedSpecAndSkills: [],
       priorityIndex: -1,
       distantIndex: -1,
       updatedPhone: null,
@@ -798,52 +719,8 @@ export default {
       status2FA: 'user/getStatus2FA',
       filters: 'quests/getFilters',
     }),
-    specializationsNames() {
-      const specs = [];
-      const keys = Object.keys(this.filters);
-      for (let i = 0; i < keys.length; i += 1) {
-        const key = keys[i];
-        specs.push(this.$t(`filters.items.${this.filters[key].id}.title`));
-      }
-      return specs;
-    },
-    specsIndexes() { // id спеки из filters
-      const specsIndexes = [];
-      const keys = Object.keys(this.filters);
-      for (let i = 0; i < keys.length; i += 1) {
-        const key = keys[i];
-        specsIndexes.push(this.filters[key].id);
-      }
-      return specsIndexes;
-    },
-    skillsNames() {
-      const skillsData = {};
-      const keys = Object.keys(this.filters);
-      for (let i = 0; i < keys.length; i += 1) {
-        const key = keys[i];
-        const skillsBySpec = this.filters[key].skills;
-        const skillsIndexes = Object.values(skillsBySpec);
-        const skillsNames = [];
-        for (let j = 0; j < skillsIndexes.length; j += 1) {
-          const name = this.$t(`filters.items.${this.filters[key].id}.sub.${skillsIndexes[j]}`);
-          skillsNames.push(name);
-        }
-        skillsData[i] = skillsNames;
-      }
-      return skillsData;
-    },
-    skillsIndexes() {
-      const skillsIndexesData = {};
-      const keys = Object.keys(this.filters);
-      for (let i = 0; i < keys.length; i += 1) {
-        const key = keys[i];
-        const skillsBySpec = this.filters[key].skills;
-        skillsIndexesData[i] = Object.values((skillsBySpec)); // skills indexes from filters
-      }
-      return skillsIndexesData;
-    },
-    hideSelectedSpecs() {
-      return Object.values(this.displaySpecIndex);
+    userSpecializations() {
+      return this.userData.userSpecializations || [];
     },
     distantWork() {
       return [
@@ -854,6 +731,7 @@ export default {
     },
     priority() {
       return [
+        this.$t('priority.all'),
         this.$t('priority.employee.low'),
         this.$t('priority.employee.normal'),
         this.$t('priority.employee.urgent'),
@@ -862,6 +740,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    if (!this.filters || !Object.keys(this.filters).length) await this.$store.dispatch('quests/getFilters');
     this.localUserData = {
       avatarId: this.userData.avatarId,
       firstName: this.userData.firstName,
@@ -869,43 +748,26 @@ export default {
       additionalInfo: JSON.parse(JSON.stringify(this.userData.additionalInfo)),
       location: this.userData.location,
     };
+    this.priorityIndex = this.userData.priority;
+    this.distantIndex = this.distantIndexByWorkplace(this.userData.workplace);
     await this.perHourData();
-    await this.prepareSpecializations();
-
-    if (!Object.keys(this.filters).length) await this.$store.dispatch('quests/getFilters');
-
     this.SetLoader(false);
   },
   methods: {
-    async prepareSpecializations() {
-      if (!Object.keys(this.filters).length) {
-        await this.$store.dispatch('quests/getFilters');
-      }
-      if (!this.userData.userSpecializations.length) return;
-      const specKeys = {};
-      let key = 1;
-      // eslint-disable-next-line no-restricted-syntax
-      for (const item of this.userData.userSpecializations) {
-        const [_spec, _skill] = item.path.split('.');
-        const spec = parseInt(_spec, 10);
-        const skill = parseInt(_skill, 10);
-        if (!Object.keys(specKeys)
-          .includes(_spec)) {
-          specKeys[spec] = key;
-          this.displaySpecIndex[key] = this.specsIndexes.indexOf(spec);
-          this.selectedSkills[key] = [];
-          this.specIndex[specKeys[spec]] = spec;
-          key += 1;
-        }
-        const displaySkillIndex = this.skillsIndexes[this.displaySpecIndex[specKeys[spec]]].indexOf(skill);
-        if (!this.hideSelectedSkills[specKeys[spec]]) this.hideSelectedSkills[specKeys[spec]] = [displaySkillIndex];
-        else this.hideSelectedSkills[specKeys[spec]].push(displaySkillIndex);
-        this.selectedSkills[specKeys[spec]].push({
-          index: skill,
-          name: this.skillsNames[this.displaySpecIndex[specKeys[spec]]][displaySkillIndex],
-        });
-      }
-      this.specCount = key - 1;
+    distantIndexByWorkplace(workplace) {
+      if (workplace === 'distance') return 0;
+      if (workplace === 'office') return 1;
+      if (workplace === 'both') return 2;
+      return null;
+    },
+    parseDistantWork(index) {
+      if (index === 0) return 'distant';
+      if (index === 1) return 'office';
+      if (index === 2) return 'both';
+      return null;
+    },
+    updateSelectedSkills(specAndSkills) {
+      this.selectedSpecAndSkills = specAndSkills;
     },
     async perHourData() {
       this.perHour = await this.userData.wagePerHour;
@@ -925,53 +787,6 @@ export default {
     },
     goToSumSub() {
       this.$router.push('/sumsub');
-    },
-    addSkillToBadge(event, key) {
-      const index = this.skillsIndexes[this.displaySpecIndex[key]][event];
-      if (this.selectedSkills[key].length > 4
-        || this.selectedSkills[key].filter((obj) => obj.index === index).length) return;
-      this.selectedSkills[key].push({
-        index,
-        name: this.skillsNames[this.displaySpecIndex[key]][event],
-      });
-      this.hideSelectedSkills[key].push(event);
-    },
-    removeSkillToBadge(skill, key) {
-      let hideIndex = null;
-      for (let i = 0; i < this.skillsIndexes[key].length; i += 1) {
-        if (this.skillsIndexes[this.displaySpecIndex[key]][i] === skill.index) {
-          hideIndex = i;
-          break;
-        }
-      }
-      const numberInHide = this.hideSelectedSkills[key].indexOf(hideIndex);
-      if (numberInHide > -1) {
-        this.hideSelectedSkills[key].splice(numberInHide, 1);
-      }
-
-      const numberInArray = this.selectedSkills[key].indexOf(skill);
-      this.selectedSkills[key].splice(numberInArray, 1);
-      if (!this.selectedSkills[key].length) {
-        this.skillIndex[key] = -1;
-      }
-    },
-    switchSkill(event, key) {
-      this.specIndex[key] = this.specsIndexes[event];
-      this.skillIndex[key] = -1;
-      this.selectedSkills[key] = [];
-      this.hideSelectedSkills[key] = [];
-    },
-    addSpecialization() {
-      if (this.specCount <= 2) {
-        this.specCount += 1;
-      }
-    },
-    removeSpecialization(key) {
-      this.selectedSkills[key] = [];
-      this.specIndex[key] = -1;
-      this.displaySpecIndex[key] = -1;
-      this.skillIndex[key] = -1;
-      this.specCount -= 1;
     },
     selectAddress(address) {
       this.localUserData.additionalInfo.address = address.formatted;
@@ -1155,21 +970,12 @@ export default {
           workExperiences: this.localUserData.additionalInfo.workExperiences,
           description: this.localUserData.additionalInfo.description,
         };
-        const specAndSkills = [];
-        let key = 1;
-        // eslint-disable-next-line guard-for-in,no-restricted-syntax
-        for (const spec in this.specIndex) {
-          if (this.specIndex[spec] !== -1) {
-            for (let i = 0; i < this.selectedSkills[key].length; i += 1) {
-              specAndSkills.push(`${this.specIndex[spec]}.${this.selectedSkills[key][i].index}`);
-            }
-          }
-          key += 1;
-        }
         payload = {
           ...payload,
+          workplace: this.parseDistantWork(this.distantIndex),
+          priority: this.priorityIndex,
           wagePerHour: this.perHour ? this.perHour : this.userData.wagePerHour,
-          specializationKeys: specAndSkills,
+          specializationKeys: this.selectedSpecAndSkills || null,
         };
         await this.editProfileResponse('user/editWorkerData', payload);
       } if (this.userRole === 'employer') {
@@ -1720,43 +1526,6 @@ export default {
   &__skills {
     width: 100%;
     padding: 0 20px 20px 20px;
-    .block {
-      display: flex;
-      grid-gap: 20px;
-      justify-content: space-between;
-      margin-top: 20px;
-      &__skill-spec {
-        width: 100%;
-      }
-      &__specialization {
-        display: flex;
-        align-items: flex-start;
-        flex-direction: row;
-        grid-gap: 20px;
-      }
-      &__skill {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        flex-wrap: wrap;
-        grid-gap: 10px;
-        .skill {
-          &__badge {
-            background: rgba(0, 131, 199, 0.1);
-            border-radius: 44px;
-            color: $blue;
-            white-space: nowrap;
-            grid-gap: 8px;
-            padding: 5px 10px 5px 10px;
-            display: flex;
-            text-align: center;
-            &-skills {
-              padding: 15px;
-            }
-          }
-        }
-      }
-    }
   }
   &__grid {
     display: grid;

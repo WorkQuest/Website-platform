@@ -1106,10 +1106,8 @@ export default {
     },
   },
   async mounted() {
-    await Promise.all([
-      this.initWSListeners(),
-      this.loginCheck(),
-    ]);
+    await this.initWSListeners();
+    this.loginCheck();
     this.GetLocation();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
   },
@@ -1120,7 +1118,7 @@ export default {
     window.removeEventListener('resize', this.userWindowChange);
   },
   methods: {
-    async loginCheck() {
+    loginCheck() {
       localStorage.setItem('userLogin', true);
     },
     async initWSListeners() {

@@ -94,13 +94,6 @@
           <div class="panel">
             <div class="panel__left">
               <base-filter-dd class="panel__item" />
-              <!--              <base-dd-->
-              <!--                v-model="selectedTypeOfJob"-->
-              <!--                class="panel__item"-->
-              <!--                :items="typeOfJobItems"-->
-              <!--                mode="blackFont"-->
-              <!--                :placeholder="$t('quests.typeOfJob')"-->
-              <!--              />-->
               <base-dd
                 v-model="selectedPriority"
                 class="panel__item"
@@ -311,7 +304,6 @@ export default {
       selectedPriority: null,
       selectedDistantWork: null,
       selectedRating: null,
-      // selectedTypeOfJob: null,
       pins: {
         selected: '/img/app/marker_blue.svg',
         notSelected: '/img/app/marker_red.svg',
@@ -350,14 +342,6 @@ export default {
         this.$t('quests.distantWork.bothVariant'),
       ];
     },
-    // typeOfJobItems() {
-    //   return [
-    //     this.$t('quests.allVariants'),
-    //     this.$t('quests.fullTime'),
-    //     this.$t('quests.partTime'),
-    //     this.$t('quests.fixedTerm'),
-    //   ];
-    // },
     priorityItems() {
       return [
         this.$t('quests.priority.all'),
@@ -420,7 +404,6 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    if (!Object.keys(this.filters).length) await this.$store.dispatch('quests/getFilters');
     if (this.userRole === 'employer') {
       await this.fetchWorkersList();
       this.showWelcomeModal();
@@ -451,21 +434,19 @@ export default {
       this.SetLoader(true);
 
       let payload = this.formattedSpecFilters;
-
       payload += this.sortData;
-
       switch (this.selectedPriority) {
         case 0:
-          payload += '&priority[]=0';
+          payload += '&priority=0';
           break;
         case 1:
-          payload += '&priority[]=1';
+          payload += '&priority=3';
           break;
         case 2:
-          payload += '&priority[]=2';
+          payload += '&priority=2';
           break;
         case 3:
-          payload += '&priority[]=3';
+          payload += '&priority=1';
           break;
         default: break;
       }
@@ -483,19 +464,19 @@ export default {
       }
       switch (this.selectedRating) {
         case 1:
-          payload += '&rating[]=0';
+          payload += '&ratingStatus=verified';
           break;
         case 2:
-          payload += '&rating[]=1';
+          payload += '&ratingStatus=reliable';
           break;
         case 3:
-          payload += '&rating[]=2';
+          payload += '&ratingStatus=topRanked';
           break;
         default: break;
       }
 
       if (this.priceFilter.from || this.priceFilter.to) {
-        payload += `&betweenWagePerHour=[from:${this.priceFilter.from || 0}&betweenWagePerHour[to]=${this.priceFilter.to || 999999999999999}`;
+        payload += `&betweenWagePerHour[from]=${this.priceFilter.from || 0}&betweenWagePerHour[to]=${this.priceFilter.to || 99999999999999}`;
       }
 
       if (payload[0] === '&') payload = payload.replace('&', '?');

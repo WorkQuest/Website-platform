@@ -357,9 +357,7 @@ export default {
     },
   },
   async mounted() {
-    this.SetLoader(true);
-    if (!Object.keys(this.filters)) await this.$store.dispatch('quests/getFilters');
-    this.SetLoader(false);
+    if (!this.filters || !Object.keys(this.filters).length) await this.$store.dispatch('quests/getFilters');
   },
   methods: {
     toggleSearchDD() {
@@ -379,7 +377,7 @@ export default {
       });
     },
     async updateQuests(payload = '') {
-      this.SetLoader(true);
+      if (!this.isShowMap) this.SetLoader(true);
       let additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`;
       additionalValue += this.sortData ? `&${this.sortData}` : '';
       await this.fetchQuests(additionalValue);
@@ -387,49 +385,47 @@ export default {
     },
     async fetchQuests(payload = '') {
       payload += this.formattedSpecFilters;
-
+      switch (this.selectedDistantWork) {
+        case 0:
+          payload += '&workplaces[]=distant';
+          break;
+        case 1:
+          payload += '&workplaces[]=office';
+          break;
+        case 2:
+          payload += '&workplaces[]=both';
+          break;
+        default: break;
+      }
+      switch (this.selectedTypeOfJob) {
+        case 1:
+          payload += '&employments[]=fullTime';
+          break;
+        case 2:
+          payload += '&employments[]=partTime';
+          break;
+        case 3:
+          payload += '&employments[]=fixedTerm';
+          break;
+        default: break;
+      }
+      switch (this.selectedPriority) {
+        case 0:
+          payload += '&priorities[]=0';
+          break;
+        case 1:
+          payload += '&priorities[]=3';
+          break;
+        case 2:
+          payload += '&priorities[]=2';
+          break;
+        case 3:
+          payload += '&priorities[]=1';
+          break;
+        default: break;
+      }
+      if (this.priceFilter.from || this.priceFilter.to) payload += `&priceBetween[from]=${this.priceFilter.from || 0}&priceBetween[to]=${this.priceFilter.to || 99999999999999}`;
       if (!this.isShowMap) {
-        switch (this.selectedDistantWork) {
-          case 0:
-            payload += '&workplaces[]=distant';
-            break;
-          case 1:
-            payload += '&workplaces[]=office';
-            break;
-          case 2:
-            payload += '&workplaces[]=both';
-            break;
-          default: break;
-        }
-        switch (this.selectedTypeOfJob) {
-          case 1:
-            payload += '&employments[]=fullTime';
-            break;
-          case 2:
-            payload += '&employments[]=partTime';
-            break;
-          case 3:
-            payload += '&employments[]=fixedTerm';
-            break;
-          default: break;
-        }
-        switch (this.selectedPriority) {
-          case 0:
-            payload += '&priorities[]=0';
-            break;
-          case 1:
-            payload += '&priorities[]=3';
-            break;
-          case 2:
-            payload += '&priorities[]=2';
-            break;
-          case 3:
-            payload += '&priorities[]=1';
-            break;
-          default: break;
-        }
-        if (this.priceFilter.from || this.priceFilter.to) payload += `&priceBetween[from]=${this.priceFilter.from || 0}&priceBetween[to]=${this.priceFilter.to || 99999999999999}`;
-
         this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
         this.questsArray = this.questsObjects.quests;
       } else {

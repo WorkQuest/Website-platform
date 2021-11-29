@@ -175,7 +175,7 @@ export default {
     },
   },
   async mounted() {
-    if (!Object.keys(this.filtersList).length) await this.$store.dispatch('quests/getFilters');
+    if (!this.filtersList || !Object.keys(this.filtersList)) await this.$store.dispatch('quests/getFilters');
   },
   methods: {
     hideDd() {

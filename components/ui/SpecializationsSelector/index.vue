@@ -1,5 +1,5 @@
 <template>
-  <div class="page__skills skills">
+  <div class="selector__skills skills">
     <div
       v-for="key in specCount"
       :key="key"
@@ -156,8 +156,8 @@ export default {
     },
   },
   async mounted() {
-    if (!Object.keys(this.filters).length) await this.$store.dispatch('quests/getFilters');
-    if (this.skills) await this.fillData();
+    if (!this.filters || !Object.keys(this.filters).length) await this.$store.dispatch('quests/getFilters');
+    if (this.skills && this.skills.length) await this.fillData();
   },
   methods: {
     async fillData() {
@@ -257,7 +257,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page {
+.selector {
   &__skills {
     width: 100%;
     .block {
@@ -305,51 +305,6 @@ export default {
     max-width: 1180px;
     width: 100%;
     justify-content: flex-start;
-    //padding: 0 20px 0 0;
-  }
-  &__title {
-    @include text-simple;
-    margin: 30px 0 0 0;
-  }
-  &__raising {
-    @include text-simple;
-    font-weight: 500;
-    font-size: 20px;
-    color: $black800;
-    margin: 0 0 20px 0;
-  }
-  &__page {
-    font-weight: 500;
-    font-size: 25px;
-    color: $black800;
-  }
-  &__dd {
-    min-width: 160px;
-  }
-  &__category {
-    align-items: flex-start;
-    margin: 20px 0 0 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 20px;
-  }
-  &__address {
-    margin: 20px 0 0 0;
-    display: grid;
-    grid-gap: 20px;
-  }
-  &__textarea {
-    @include text-simple;
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 214px;
-    width: 100%;
-    border: 0;
-    background-color: #F3F7FA;
-    resize: none;
-    &::placeholder {
-      color: $black300;
-    }
   }
 }
 .specialization {

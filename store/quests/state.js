@@ -14,7 +14,7 @@ export default () => ({
   currentStepEditQuest: 1,
   mapBounds: {},
   mapCenter: {},
-  filters: {},
+  filters: null,
   specializationsFilters: [],
   priceFilter: { from: null, to: null },
 });
