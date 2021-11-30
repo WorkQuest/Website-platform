@@ -95,6 +95,13 @@
             <div class="panel__left">
               <base-filter-dd class="panel__item" />
               <base-dd
+                v-model="selectedRating"
+                class="panel__item"
+                :items="ratingItems"
+                mode="blackFont"
+                :placeholder="$t('quests.rating.title')"
+              />
+              <base-dd
                 v-model="selectedPriority"
                 class="panel__item"
                 :items="priorityItems"
@@ -107,13 +114,6 @@
                 :items="distantWorkItem"
                 mode="blackFont"
                 :placeholder="$t('quests.distantWork.title')"
-              />
-              <base-dd
-                v-model="selectedRating"
-                class="panel__item"
-                :items="ratingItems"
-                mode="blackFont"
-                :placeholder="$t('quests.rating.title')"
               />
               <base-btn
                 class="panel__item"
