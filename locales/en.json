@@ -322,6 +322,7 @@
     },
     "distantWork": {
       "title": "Workplace",
+      "allWorkplaces": "All workplaces",
       "distantWork": "Distant work",
       "workInOffice": "Work in office",
       "bothVariant": "Both variants"
