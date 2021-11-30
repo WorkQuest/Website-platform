@@ -48,7 +48,7 @@
                     v-if="chat.type === 'group' || chat.type === 'quest'"
                     class="chat__title"
                     :class="[{'chat__title_gray' : chat.type === 'group'}, {'chat__title_link' : chat.type === 'quest'}]"
-                    @click="goToQuest($event,chat.type === 'quest' ? chat.questChat.questId : '')"
+                    @click="chat.type === 'quest' ? goToQuest($event, chat.questChat.questId) : handleSelChat(chat.id)"
                   >
                     {{ chat.type === 'group' ? $t('chat.group') : chat.questChat.quest.title }}
                   </div>
