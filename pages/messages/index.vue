@@ -433,6 +433,11 @@ export default {
 }
 
 @include _1199 {
+  .chats-page {
+    &__header {
+      padding-left: 15px;
+    }
+  }
 }
 @include _991 {
 }

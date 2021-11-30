@@ -46,7 +46,7 @@
         <div
           ref="HandleScrollContainer"
           class="chat-container__scroll-cont"
-          :class="{'chat-container__scroll-cont_small' : files.length}"
+          :class="[{'chat-container__scroll-cont_small' : files.length}, {'chat-container__scroll-cont_big' : chatId === 'starred'}]"
           @scroll="handleScroll"
         >
           <div
@@ -137,7 +137,12 @@
                           class="image-cont image-cont__other-media image-cont__other-media_block"
                           @click="file.type === 'video' ? selFile($event, message.medias, file.url) : openFile"
                         >
-                          <span :class="[{'icon-play_circle_outline' : file.type === 'video'}, {'icon-file_blank_outline' : file.type !== 'video'}]" />
+                          <span
+                            :class="[
+                              {'icon-play_circle_outline' : file.type === 'video'},
+                              {'icon-file_blank_outline' : file.type !== 'video'}
+                            ]"
+                          />
                         </a>
                       </div>
                     </div>
@@ -270,7 +275,12 @@
                 :title="file.file.name"
                 @click="openFile"
               >
-                <span :class="[{'icon-play_circle_outline' : file.type === 'video'}, {'icon-file_blank_outline' : file.type !== 'video'}]" />
+                <span
+                  :class="[
+                    {'icon-play_circle_outline' : file.type === 'video'},
+                    {'icon-file_blank_outline' : file.type !== 'video'}
+                  ]"
+                />
                 <div class="image-cont__title">
                   {{ file.file.name }}
                 </div>
@@ -758,6 +768,7 @@ export default {
     display: flex;
     cursor: pointer;
     transition: .5s;
+
     &:hover {
       filter: drop-shadow(4px 4px 3px rgba(34, 60, 80, 0.4));
     }
@@ -786,13 +797,17 @@ export default {
   &__scroll-cont {
     overflow: auto;
     padding: 20px 20px 0;
-    height: calc(100vh - 420px);
+    height: calc(100vh - 370px);
     min-height: 400px;
     display: grid;
     align-items: end;
 
     &_small {
-      height: calc(100vh - 535px);
+      height: calc(100vh - 485px);
+    }
+
+    &_big {
+      height: calc(100vh - 295px);
     }
   }
 
@@ -816,8 +831,9 @@ export default {
     border-radius: 6px;
     cursor: pointer;
     transition: .2s;
+
     &:hover {
-      box-shadow: 0 0 6px rgba(0,0,0,0.2);
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
     }
   }
 
@@ -835,11 +851,13 @@ export default {
     opacity: 0.5;
     transition: .2s;
     background-color: $black0;
+
     &_active {
       pointer-events: all;
       opacity: 1;
+
       &:hover {
-        box-shadow: 0 0 6px rgba(0,0,0,0.2);
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
       }
     }
   }
@@ -885,10 +903,12 @@ export default {
       box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.3);
     }
   }
+
   &__scroll-svg {
     height: 20px;
     width: 20px;
   }
+
   &__controls {
     height: 70px;
     padding: 0 15px;
@@ -999,32 +1019,36 @@ export default {
   gap: 20px;
   height: max-content;
 
-&__media {
-display: flex;
-flex-wrap: wrap;
-}
+  &__media {
+    display: flex;
+    flex-wrap: wrap;
+  }
 
-&_blink {
-animation: blink 1s;
-}
+  &_blink {
+    animation: blink 1s;
+  }
 
-@keyframes blink {
-50%{opacity: .5;}
-100%{opacity: 1;}
-}
+  @keyframes blink {
+    50% {
+      opacity: .5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 
-&_right {
-grid-template-columns: max-content minmax(auto, max-content);
-justify-content: flex-end;
-margin-left: 30%;
-}
+  &_right {
+    grid-template-columns: max-content minmax(auto, max-content);
+    justify-content: flex-end;
+    margin-left: 30%;
+  }
 
-&__star-cont {
-&_left {
-  grid-column: 1;
-  grid-row: 1;
-}
-}
+  &__star-cont {
+    &_left {
+      grid-column: 1;
+      grid-row: 1;
+    }
+  }
 
   &_info {
     display: flex;
@@ -1034,60 +1058,60 @@ margin-left: 30%;
     width: 100%;
   }
 
-&:last-child {
-padding-bottom: 20px;
-}
+  &:last-child {
+    padding-bottom: 20px;
+  }
 
-&__time {
-justify-self: end;
-}
+  &__time {
+    justify-self: end;
+  }
 
-&__title {
-font-weight: 400;
-font-size: 16px;
-line-height: 1.2;
+  &__title {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.2;
 
-&_gray {
-  color: #AAB0B9;
-  font-size: 14px;
-}
+    &_gray {
+      color: #AAB0B9;
+      font-size: 14px;
+    }
 
-&_white {
-  color: #fff;
-}
-}
+    &_white {
+      color: #fff;
+    }
+  }
 
-&__avatar {
-height: 43px;
-width: 43px;
-border-radius: 50%;
+  &__avatar {
+    height: 43px;
+    width: 43px;
+    border-radius: 50%;
 
-&_hidden {
-  visibility: hidden;
-}
-}
+    &_hidden {
+      visibility: hidden;
+    }
+  }
 
-&__data {
-display: grid;
-gap: 10px;
-}
+  &__data {
+    display: grid;
+    gap: 10px;
+  }
 
-&__bubble {
-display: grid;
-gap: 10px;
-padding: 15px;
-border-radius: 6px;
-background-color: #F7F8FA;
+  &__bubble {
+    display: grid;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 6px;
+    background-color: #F7F8FA;
 
-&_bl {
-  background-color: #0083C7;
-  color: #fff;
-}
+    &_bl {
+      background-color: #0083C7;
+      color: #fff;
+    }
 
-&_link {
-  cursor: pointer;
-}
-}
+    &_link {
+      cursor: pointer;
+    }
+  }
 }
 
 .info-message {
@@ -1108,143 +1132,157 @@ background-color: #F7F8FA;
 }
 
 .styles {
-&__between {
-display: flex;
-align-items: center;
-justify-content: space-between;
-}
-&__flex {
-display: -webkit-box;
-display: -ms-flexbox;
-display: flex;
-}
-&__center {
--webkit-box-align: center;
--ms-flex-align: center;
-align-items: center;
-}
+  &__between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__flex {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  &__center {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
 }
 
 .arrow-back {
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: center;
-
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 .icon {
-cursor: pointer;
-font-size: 26px;
-&-send::before {
-@extend .icon;
-content: "\ea6b";
-font-size: 30px;
-color: $blue;
-}
-&-link::before {
-@extend .icon;
-content: "\ea20";
-color: $black700;
-font-size: 30px;
-}
-&-short_left::before {
-@extend .icon;
-content: "\ea6d";
-color: $black800;
-}
-&-more_horizontal::before {
-@extend .icon;
-content: "\e951";
-color: $black500;
-}
+  cursor: pointer;
+  font-size: 26px;
+
+  &-send::before {
+    @extend .icon;
+    content: "\ea6b";
+    font-size: 30px;
+    color: $blue;
+  }
+
+  &-link::before {
+    @extend .icon;
+    content: "\ea20";
+    color: $black700;
+    font-size: 30px;
+  }
+
+  &-short_left::before {
+    @extend .icon;
+    content: "\ea6d";
+    color: $black800;
+  }
+
+  &-more_horizontal::before {
+    @extend .icon;
+    content: "\e951";
+    color: $black500;
+  }
 }
 
 .input {
-&__wrapper {
-height: 40px;
-}
-&__file {
-opacity: 0;
-visibility: hidden;
-position: absolute;
-}
-&__file-icon-wrapper {
-@extend .styles__flex;
-@extend .styles__center;
-height: 60px;
-width: 60px;
-margin-right: 15px;
--webkit-box-pack: center;
--ms-flex-pack: center;
-justify-content: center;
-border-right: 1px solid #fff;
-}
-&__file-button-text {
-line-height: 1;
-margin-top: 1px;
-}
+  &__wrapper {
+    height: 40px;
+  }
+
+  &__file {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+  }
+
+  &__file-icon-wrapper {
+    @extend .styles__flex;
+    @extend .styles__center;
+    height: 60px;
+    width: 60px;
+    margin-right: 15px;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border-right: 1px solid #fff;
+  }
+
+  &__file-button-text {
+    line-height: 1;
+    margin-top: 1px;
+  }
 }
 
 .star {
-cursor: pointer;
+  cursor: pointer;
 
-&__default {
-display: flex;
-}
-&__hover {
-display: none;
-}
-&:hover {
-
-.star {
-  &__hover {
+  &__default {
     display: flex;
   }
-  &__default,
-  &__checked {
+
+  &__hover {
     display: none;
   }
-}
-}
+
+  &:hover {
+
+    .star {
+      &__hover {
+        display: flex;
+      }
+
+      &__default,
+      &__checked {
+        display: none;
+      }
+    }
+  }
 }
 
 .block {
-background: #FFFFFF;
-border-radius: 6px;
-display: grid;
-grid-template-columns: 240px 1fr;
-min-height: 100%;
-&__icon {
-&_fav {
-  cursor: pointer;
-}
-&_perf {
+  background: #FFFFFF;
+  border-radius: 6px;
   display: grid;
-  grid-template-columns: 25px 25px 25px 25px 25px;
-}
-}
+  grid-template-columns: 240px 1fr;
+  min-height: 100%;
+
+  &__icon {
+    &_fav {
+      cursor: pointer;
+    }
+
+    &_perf {
+      display: grid;
+      grid-template-columns: 25px 25px 25px 25px 25px;
+    }
+  }
 }
 
 .quest {
-&__info {
-background: rgba(0, 131, 199, 0.1);
-width: 100%;
-max-width: 215px;
-border-radius: 6px;
-display: flex;
-}
-&__name {
-padding: 15px;
-color: $blue;
-}
+  &__info {
+    background: rgba(0, 131, 199, 0.1);
+    width: 100%;
+    max-width: 215px;
+    border-radius: 6px;
+    display: flex;
+  }
+
+  &__name {
+    padding: 15px;
+    color: $blue;
+  }
 }
 
 .event {
-margin: 20px 0 0 0;
-font-size: 16px;
-color: $black600;
-font-weight: 400;
+  margin: 20px 0 0 0;
+  font-size: 16px;
+  color: $black600;
+  font-weight: 400;
 }
 
 .name {
@@ -1252,141 +1290,184 @@ font-weight: 400;
 }
 
 .input {
-width: 100%;
-margin: 11px;
+  width: 100%;
+  margin: 11px;
 }
+
 .row {
-&__container {
-display: flex;
-flex-direction: row;
-align-items: center;
-}
+  &__container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
 }
 
 .profile {
-&__img {
-height: 30px;
-width: 30px;
-border-radius: 84px;
-object-fit: cover;
-}
-&__name {
-color: $black800;
-font-size:16px;
-font-weight: 500;
-margin: 0 10px 0 10px;
-}
+  &__img {
+    height: 30px;
+    width: 30px;
+    border-radius: 84px;
+    object-fit: cover;
+  }
+
+  &__name {
+    color: $black800;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 10px 0 10px;
+  }
 }
 
 .chat {
-&__header {
-border: 1px solid #E9EDF2;
-border-radius: 6px 0 0 0;
+  &__header {
+    border: 1px solid #E9EDF2;
+    border-radius: 6px 0 0 0;
+  }
+
+  &__panel {
+    height: 100%;
+    max-height: 70px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 20fr 1fr;
+    align-items: center;
+    justify-items: center;
+    border: 1px solid #E9EDF2;
+    border-radius: 0 0 6px 6px;
+  }
+
+  &__name-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  &__title {
+    background-color: $white;
+    margin: 15px 0 15px 15px;
+    align-items: center;
+    font-weight: 500;
+    font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__body {
+    background-color: $white;
+    border: 1px solid #E9EDF2;
+    border-radius: 6px;
+    width: 100%;
+    max-width: 1180px;
+  }
+
+  &__message {
+    cursor: pointer;
+    margin: 0 0 20px 0;
+    display: inline-block;
+  }
+
+  &__messages {
+    overflow-y: scroll;
+    height: 100%;
+    width: 100%;
+    max-height: 722px;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+  }
+
+  &__messages::-webkit-scrollbar {
+    width: 0;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    max-height: 30px;
+    max-width: 30px;
+    border-radius: 84px;
+    margin: 10px 10px 10px 20px;
+  }
+
+  &__name {
+    padding: 0 0 0 12px;
+  }
+
+  &__star {
+    margin: 0 20px 0 0;
+  }
 }
-&__panel {
-height: 100%;
-max-height: 70px;
-width: 100%;
-display: grid;
-grid-template-columns: 1fr 20fr 1fr;
-align-items: center;
-justify-items: center;
-border: 1px solid #E9EDF2;
-border-radius: 0 0 6px 6px;
-}
-&__name-container {
-display: flex;
-flex-direction: row;
-width: 100%;
-justify-content: space-between;
-}
-&__title {
-background-color: $white;
-margin: 15px 0 15px 15px;
-align-items: center;
-font-weight: 500;
-font-size: 18px;
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-}
-&__body {
-background-color: $white;
-border: 1px solid #E9EDF2;
-border-radius: 6px;
-width: 100%;
-max-width: 1180px;
-}
-&__message {
-cursor: pointer;
-margin: 0 0 20px 0;
-display: inline-block;
-}
-&__messages {
-overflow-y: scroll;
-height: 100%;
-width: 100%;
-max-height: 722px;
-overflow: -moz-scrollbars-none;
--ms-overflow-style: none;
-}
-&__messages::-webkit-scrollbar {
-width: 0;
-}
-&__img {
-width: 100%;
-height: 100%;
-max-height: 30px;
-max-width: 30px;
-border-radius: 84px;
-margin: 10px 10px 10px 20px;
-}
-&__name {
-padding: 0 0 0 12px;
-}
-&__star {
-margin: 0 20px 0 0;
-}
-}
+
 .page {
-&__title {
-margin: 20px 0 20px 0;
-}
+  &__title {
+    margin: 20px 0 20px 0;
+  }
 }
 
 ::-webkit-scrollbar {
-width: 12px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
--webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
-border-radius: 2px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb {
-border-radius: 2px;
--webkit-box-shadow: inset 0 0 24px rgba(0, 131, 199, 1);
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 0 24px rgba(0, 131, 199, 1);
+}
+
+@include _1199 {
+  .chat-page {
+    &__header {
+      padding-left: 15px;
+    }
+  }
 }
 
 @include _991 {
-.chat {
-&__panel {
-  grid-template-columns: 1fr 15fr 1fr;
+  .chat {
+    &__panel {
+      grid-template-columns: 1fr 15fr 1fr;
+    }
+  }
 }
-}
-}
+
 @include _575 {
-.chat {
-&__panel {
-  grid-template-columns: 1fr 10fr 1fr;
+  .chat-page {
+    &__header {
+      display: none;
+    }
+  }
+
+  .chat-container {
+    &__scroll-cont {
+      height: calc(100vh - 295px);
+
+      &_small {
+        height: calc(100vh - 410px);
+      }
+
+      &_big {
+        height: calc(100vh - 220px);
+      }
+    }
+  }
+
+  .chat {
+    &__panel {
+      grid-template-columns: 1fr 10fr 1fr;
+    }
+  }
 }
-}
-}
+
 @include _480 {
-.chat {
-&__panel {
-  grid-template-columns: 1fr 7fr 1fr;
-}
-}
+  .chat {
+    &__panel {
+      grid-template-columns: 1fr 7fr 1fr;
+    }
+  }
 }
 </style>
