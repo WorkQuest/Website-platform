@@ -1460,7 +1460,7 @@ export default {
     width: 100%;
 
     &_padding {
-      padding-bottom: 50px;
+      padding-bottom: 0;
     }
   }
 }
@@ -2216,6 +2216,10 @@ export default {
       display: grid;
       grid-template-columns: 1fr;
       grid-gap: 30px;
+
+      &_hidden {
+        display: none;
+      }
     }
     &__items {
       flex-direction: column;
