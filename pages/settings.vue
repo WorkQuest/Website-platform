@@ -740,7 +740,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    if (!this.filters || !Object.keys(this.filters).length) await this.$store.dispatch('quests/getFilters');
+    if (!this.filters) await this.$store.dispatch('quests/getFilters');
     this.localUserData = {
       avatarId: this.userData.avatarId,
       firstName: this.userData.firstName,

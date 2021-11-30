@@ -141,14 +141,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      filtersList: 'quests/getFilters',
-      specializationsFilters: 'quests/getSpecializationsFilters',
+      filters: 'quests/getFilters',
+      selectedSpecializationsFilters: 'quests/getSelectedSpecializationsFilters',
     }),
     searchFilters() {
       const f = {};
-      const specsKeys = Object.keys(this.filtersList);
+      const specsKeys = Object.keys(this.filters);
       for (let i = 0; i < specsKeys.length; i += 1) {
-        const spec = this.filtersList[specsKeys[i]];
+        const spec = this.filters[specsKeys[i]];
         f[i] = {
           title: this.$t(`filters.items.${spec.id}.title`),
           index: spec.id,
@@ -168,14 +168,13 @@ export default {
   },
   watch: {
     isOpenDD() {
-      const { selected, selectedAll, visible } = this.specializationsFilters;
-      this.selected = selected || {};
-      this.selectedAll = selectedAll || [];
-      this.visible = visible || {};
+      this.selected = this.selectedSpecializationsFilters?.selected || {};
+      this.selectedAll = this.selectedSpecializationsFilters?.selectedAll || [];
+      this.visible = this.selectedSpecializationsFilters?.visible || {};
     },
   },
   async mounted() {
-    if (!this.filtersList || !Object.keys(this.filtersList)) await this.$store.dispatch('quests/getFilters');
+    if (!this.filters) await this.$store.dispatch('quests/getFilters');
   },
   methods: {
     hideDd() {
@@ -196,7 +195,7 @@ export default {
         selectedAll: this.selectedAll,
         visible: this.visible,
       };
-      this.$store.dispatch('quests/setSpecializationsFilters', data);
+      this.$store.dispatch('quests/setSelectedSpecializationsFilters', data);
       this.hideDd();
     },
     showFilterFull() {

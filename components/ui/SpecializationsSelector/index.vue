@@ -156,7 +156,7 @@ export default {
     },
   },
   async mounted() {
-    if (!this.filters || !Object.keys(this.filters).length) await this.$store.dispatch('quests/getFilters');
+    if (!this.filters) await this.$store.dispatch('quests/getFilters');
     if (this.skills && this.skills.length) await this.fillData();
   },
   methods: {

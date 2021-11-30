@@ -86,12 +86,12 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      priceFilter: 'quests/getPriceFilter',
+      selectedPriceFilter: 'quests/getSelectedPriceFilter',
     }),
   },
   mounted() {
-    if (this.priceFilter.from) this.priceFrom = this.priceFilter.from;
-    if (this.priceFilter.to) this.priceTo = this.priceFilter.to;
+    if (this.selectedPriceFilter.from) this.priceFrom = this.selectedPriceFilter.from;
+    if (this.selectedPriceFilter.to) this.priceTo = this.selectedPriceFilter.to;
   },
   methods: {
     hide() {
@@ -100,7 +100,7 @@ export default {
     submit() {
       if (this.priceFrom <= 0) this.priceFrom = '';
       if (this.priceTo <= 0) this.priceTo = '';
-      this.$store.dispatch('quests/setPriceFilter', { from: this.priceFrom, to: this.priceTo });
+      this.$store.dispatch('quests/setSelectedPriceFilter', { from: this.priceFrom, to: this.priceTo });
       this.hide();
     },
   },

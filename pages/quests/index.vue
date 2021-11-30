@@ -128,22 +128,22 @@
               @click="showPriceSearch"
             >
               <span
-                v-if="priceFilter.from && priceFilter.to"
+                v-if="selectedPriceFilter.from && selectedPriceFilter.to"
                 class="tools__text tools__text_price"
               >
-                {{ priceFilter.from }} - {{ priceFilter.to }}
+                {{ selectedPriceFilter.from }} - {{ selectedPriceFilter.to }}
               </span>
               <span
-                v-else-if="!priceFilter.from && priceFilter.to"
+                v-else-if="!selectedPriceFilter.from && selectedPriceFilter.to"
                 class="tools__text tools__text_price"
               >
-                0 - {{ priceFilter.to }}
+                0 - {{ selectedPriceFilter.to }}
               </span>
               <span
-                v-else-if="priceFilter.from && !priceFilter.to"
+                v-else-if="selectedPriceFilter.from && !selectedPriceFilter.to"
                 class="tools__text tools__text_price"
               >
-                > {{ priceFilter.from }}
+                > {{ selectedPriceFilter.from }}
               </span>
               <span
                 v-else
@@ -267,8 +267,8 @@ export default {
       checkWelcomeModal: 'modals/getIsShowWelcome',
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
-      specializationsFilters: 'quests/getSpecializationsFilters',
-      priceFilter: 'quests/getPriceFilter',
+      selectedSpecializationsFilters: 'quests/getSelectedSpecializationsFilters',
+      selectedPriceFilter: 'quests/getSelectedPriceFilter',
     }),
     distanceItems() {
       return [
@@ -307,7 +307,7 @@ export default {
       return 0;
     },
     formattedSpecFilters() {
-      const filtersData = this.specializationsFilters?.query || [];
+      const filtersData = this.selectedSpecializationsFilters.query || [];
       if (filtersData.length) {
         let filters = '';
         for (let i = 0; i < filtersData.length; i += 1) { filters += `&specializations[]=${filtersData[i]}`; }
@@ -324,11 +324,11 @@ export default {
     async page() {
       await this.updateQuests();
     },
-    async priceFilter() {
+    async selectedPriceFilter() {
       this.page = 1;
       await this.updateQuests();
     },
-    async specializationsFilters() {
+    async selectedSpecializationsFilters() {
       this.page = 1;
       await this.updateQuests();
     },
@@ -357,7 +357,7 @@ export default {
     },
   },
   async mounted() {
-    if (!this.filters || !Object.keys(this.filters).length) await this.$store.dispatch('quests/getFilters');
+    if (!this.filters) await this.$store.dispatch('quests/getFilters');
   },
   methods: {
     toggleSearchDD() {
@@ -424,7 +424,7 @@ export default {
           break;
         default: break;
       }
-      if (this.priceFilter.from || this.priceFilter.to) payload += `&priceBetween[from]=${this.priceFilter.from || 0}&priceBetween[to]=${this.priceFilter.to || 99999999999999}`;
+      if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) payload += `&priceBetween[from]=${this.selectedPriceFilter.from || 0}&priceBetween[to]=${this.selectedPriceFilter.to || 99999999999999}`;
       if (!this.isShowMap) {
         this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
         this.questsArray = this.questsObjects.quests;

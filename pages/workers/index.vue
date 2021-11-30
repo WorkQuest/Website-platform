@@ -121,22 +121,22 @@
                 @click="showPriceSearch"
               >
                 <span
-                  v-if="priceFilter.from && priceFilter.to"
+                  v-if="selectedPriceFilter.from && selectedPriceFilter.to"
                   class="tools__text tools__text_price"
                 >
-                  {{ priceFilter.from }} - {{ priceFilter.to }}
+                  {{ selectedPriceFilter.from }} - {{ selectedPriceFilter.to }}
                 </span>
                 <span
-                  v-else-if="!priceFilter.from && priceFilter.to"
+                  v-else-if="!selectedPriceFilter.from && selectedPriceFilter.to"
                   class="tools__text tools__text_price"
                 >
-                  0 - {{ priceFilter.to }}
+                  0 - {{ selectedPriceFilter.to }}
                 </span>
                 <span
-                  v-else-if="priceFilter.from && !priceFilter.to"
+                  v-else-if="selectedPriceFilter.from && !selectedPriceFilter.to"
                   class="tools__text tools__text_price"
                 >
-                  > {{ priceFilter.from }}
+                  > {{ selectedPriceFilter.from }}
                 </span>
                 <span
                   v-else
@@ -332,8 +332,8 @@ export default {
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
       workersList: 'quests/getWorkersList',
-      specializationsFilters: 'quests/getSpecializationsFilters',
-      priceFilter: 'quests/getPriceFilter',
+      selectedSpecializationsFilters: 'quests/getSelectedSpecializationsFilters',
+      selectedPriceFilter: 'quests/getSelectedPriceFilter',
     }),
     distantWorkItem() {
       return [
@@ -373,17 +373,18 @@ export default {
       ];
     },
     formattedSpecFilters() {
-      const filtersData = this.specializationsFilters?.query || [];
-      if (filtersData.length) {
-        let filters = `?specialization[]=${filtersData[0]}`;
-        for (let i = 1; i < filtersData.length; i += 1) { filters += `&specialization[]=${filtersData[i]}`; }
-        return filters;
-      }
-      return '';
+      const filtersData = this.selectedSpecializationsFilters?.query || [];
+      if (!filtersData.length) return '';
+      let filters = `?specialization[]=${filtersData[0]}`;
+      for (let i = 1; i < filtersData.length; i += 1) { filters += `&specialization[]=${filtersData[i]}`; }
+      return filters;
     },
   },
   watch: {
     async formattedSpecFilters() {
+      await this.fetchWorkersList();
+    },
+    async selectedPriceFilter() {
       await this.fetchWorkersList();
     },
     async selectedPriority() {
@@ -398,14 +399,11 @@ export default {
     async selectedRating() {
       await this.fetchWorkersList();
     },
-    async priceFilter() {
-      await this.fetchWorkersList();
-    },
   },
   async mounted() {
     this.SetLoader(true);
     if (this.userRole === 'employer') {
-      if (!this.filters || !Object.keys(this.filters).length) await this.$store.dispatch('quests/getFilters');
+      if (!this.filters) await this.$store.dispatch('quests/getFilters');
       await this.fetchWorkersList();
       this.showWelcomeModal();
     }
@@ -453,13 +451,13 @@ export default {
       }
       switch (this.selectedDistantWork) {
         case 0:
-          payload += '&workplaces[]=distant';
+          payload += '&workplace[]=distant';
           break;
         case 1:
-          payload += '&workplaces[]=office';
+          payload += '&workplace[]=office';
           break;
         case 2:
-          payload += '&workplaces[]=both';
+          payload += '&workplace[]=both';
           break;
         default: break;
       }
@@ -476,8 +474,8 @@ export default {
         default: break;
       }
 
-      if (this.priceFilter.from || this.priceFilter.to) {
-        payload += `&betweenWagePerHour[from]=${this.priceFilter.from || 0}&betweenWagePerHour[to]=${this.priceFilter.to || 99999999999999}`;
+      if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) {
+        payload += `&betweenWagePerHour[from]=${this.selectedPriceFilter.from || 0}&betweenWagePerHour[to]=${this.selectedPriceFilter.to || 99999999999999}`;
       }
 
       if (payload[0] === '&') payload = payload.replace('&', '?');

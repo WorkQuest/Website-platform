@@ -15,6 +15,8 @@ export default () => ({
   mapBounds: {},
   mapCenter: {},
   filters: null,
-  specializationsFilters: [],
-  priceFilter: { from: null, to: null },
+  selectedSpecializationsFilters: {
+    query: '', selected: {}, visible: {}, selectedAll: {},
+  },
+  selectedPriceFilter: { from: null, to: null },
 });

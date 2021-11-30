@@ -324,7 +324,7 @@
       "title": "Workplace",
       "distantWork": "Distant work",
       "workInOffice": "Work in office",
-      "bothVariant": "Both variant"
+      "bothVariant": "Both variants"
     },
     "employment": {
       "employment": "Employment",
@@ -1448,7 +1448,7 @@
       "select": "Select distant work",
       "distantWork": "Distant work",
       "workInOffice": "Work in office",
-      "bothVariant": "Both variant"
+      "bothVariant": "Both variants"
     },
     "specializations": {
       "1": {

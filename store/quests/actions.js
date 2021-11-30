@@ -261,10 +261,10 @@ export default {
       console.log(e);
     }
   },
-  setSpecializationsFilters({ commit }, data) {
-    commit('setSpecializationsFilters', data);
+  setSelectedSpecializationsFilters({ commit }, data) {
+    commit('setSelectedSpecializationsFilters', data);
   },
-  setPriceFilter({ commit }, data) {
-    commit('setPriceFilter', data);
+  setSelectedPriceFilter({ commit }, data) {
+    commit('setSelectedPriceFilter', data);
   },
 };

@@ -108,15 +108,15 @@ export default {
   },
   computed: {
     ...mapGetters({
-      filtersList: 'quests/getFilters',
+      filters: 'quests/getFilters',
       options: 'modals/getOptions',
-      specializationsFilters: 'quests/getSpecializationsFilters',
+      selectedSpecializationsFilters: 'quests/getSelectedSpecializationsFilters',
     }),
     searchFilters() {
       const f = {};
-      const specsKeys = Object.keys(this.filtersList);
+      const specsKeys = Object.keys(this.filters);
       for (let i = 0; i < specsKeys.length; i += 1) {
-        const spec = this.filtersList[specsKeys[i]];
+        const spec = this.filters[specsKeys[i]];
         f[i] = {
           title: this.$t(`filters.items.${spec.id}.title`),
           index: spec.id,
@@ -139,7 +139,7 @@ export default {
     this.selectedAll = this.options?.selectedAll || [];
     this.visible = this.options?.visible || {};
 
-    if (!this.filtersList || !Object.keys(this.filtersList)) await this.$store.dispatch('quests/getFilters');
+    if (!this.filters) await this.$store.dispatch('quests/getFilters');
   },
   methods: {
     hide() {
@@ -160,7 +160,7 @@ export default {
         selectedAll: this.selectedAll,
         visible: this.visible,
       };
-      this.$store.dispatch('quests/setSpecializationsFilters', data);
+      this.$store.dispatch('quests/setSelectedSpecializationsFilters', data);
       this.hide();
     },
     getPath(specIdx, skillIdx) {

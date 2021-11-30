@@ -19,7 +19,7 @@ export default {
   getResponsesToQuest: (state) => state.responses.responses || '',
   getResponsesData: (state) => state.responses || '',
   getResponsesMy: (state) => state.responsesMy || '',
-  getFilters: (state) => state.filters || {},
-  getSpecializationsFilters: (state) => state.specializationsFilters || [],
-  getPriceFilter: (state) => state.priceFilter,
+  getFilters: (state) => state.filters,
+  getSelectedSpecializationsFilters: (state) => state.selectedSpecializationsFilters,
+  getSelectedPriceFilter: (state) => state.selectedPriceFilter,
 };
