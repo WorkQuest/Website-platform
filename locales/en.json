@@ -1446,6 +1446,7 @@
     "distantWork": {
       "title": "Distant work",
       "select": "Select distant work",
+      "allWorkplaces": "All workplaces",
       "distantWork": "Distant work",
       "workInOffice": "Work in office",
       "bothVariant": "Both variants"

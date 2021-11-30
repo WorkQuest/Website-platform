@@ -295,6 +295,7 @@ export default {
     },
     distantWorkItems() {
       return [
+        this.$t('quests.distantWork.allWorkplaces'),
         this.$t('quests.distantWork.distantWork'),
         this.$t('quests.distantWork.workInOffice'),
         this.$t('quests.distantWork.bothVariant'),
@@ -376,7 +377,7 @@ export default {
         key: modals.questFilter,
       });
     },
-    async updateQuests(payload = '') {
+    async updateQuests() {
       if (!this.isShowMap) this.SetLoader(true);
       let additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`;
       additionalValue += this.sortData ? `&${this.sortData}` : '';
@@ -386,13 +387,13 @@ export default {
     async fetchQuests(payload = '') {
       payload += this.formattedSpecFilters;
       switch (this.selectedDistantWork) {
-        case 0:
+        case 1:
           payload += '&workplaces[]=distant';
           break;
-        case 1:
+        case 2:
           payload += '&workplaces[]=office';
           break;
-        case 2:
+        case 3:
           payload += '&workplaces[]=both';
           break;
         default: break;

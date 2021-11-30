@@ -337,6 +337,7 @@ export default {
     }),
     distantWorkItem() {
       return [
+        this.$t('quests.distantWork.allWorkplaces'),
         this.$t('quests.distantWork.distantWork'),
         this.$t('quests.distantWork.workInOffice'),
         this.$t('quests.distantWork.bothVariant'),
@@ -450,13 +451,13 @@ export default {
         default: break;
       }
       switch (this.selectedDistantWork) {
-        case 0:
+        case 1:
           payload += '&workplace[]=distant';
           break;
-        case 1:
+        case 2:
           payload += '&workplace[]=office';
           break;
-        case 2:
+        case 3:
           payload += '&workplace[]=both';
           break;
         default: break;
