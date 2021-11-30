@@ -145,6 +145,7 @@ export default {
     },
   },
   async mounted() {
+    this.filter.starred = this.$route.query.starred === 'true';
     await this.getChats();
     this.SetLoader(false);
   },
@@ -220,6 +221,7 @@ export default {
         offset: 0,
         starred: !this.filter.starred,
       };
+      this.$router.push(`?starred=${this.filter.starred}`);
       this.getChats();
     },
     handleChangeStarVal(ev, chat) {
