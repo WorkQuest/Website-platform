@@ -15,7 +15,6 @@
           :key="i"
           class="reviews-item"
         >
-          <!--          {{ item }}-->
           <div class="reviews-item__header">
             <div class="reviews-item__avatar">
               <img
