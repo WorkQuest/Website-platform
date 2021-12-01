@@ -147,7 +147,6 @@
           </div>
         </div>
         <div class="content">
-          <!--          TODO: Добавить стили для блока нет worker-->
           <div v-if="workersArray.length === 0">
             There is no workers...
           </div>
@@ -446,7 +445,6 @@ export default {
         if (!Object.keys(this.mapBounds).length) {
           this.workerObjects = await this.$store.dispatch('quests/workersList', payload);
         } else {
-          // TODO: Добавить местоположение пользователей вместо местоположения квестов
           const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
           this.workerObjects = await this.$store.dispatch('quests/workersList', `${bounds}&${payload}`);
           await this.$store.dispatch('quests/getQuestsLocation', `${bounds}`);

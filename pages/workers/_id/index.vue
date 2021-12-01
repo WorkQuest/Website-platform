@@ -29,7 +29,9 @@
                 <div class="title title_inline">
                   {{ currentWorker.firstName !== null ? currentWorker.firstName : 'Nameless' }}
                   {{ currentWorker.lastName !== null ? currentWorker.lastName : "" }}
-                  <span class="level">
+                  <span
+                    class="level"
+                  >
                     TOP RANKED EMP.
                   </span>
                 </div>
@@ -118,7 +120,7 @@
             {{ $t('workers.completedQuests') }}
           </div>
           <div class="numbers__big_blue">
-            0
+            {{ currentWorker.questsStatistic.completed === null ? 0 : currentWorker.questsStatistic.completed }}
           </div>
           <div>{{ $t('quests.oneTime') }}</div>
         </div>
@@ -127,7 +129,7 @@
             {{ $t('workers.openedQuests') }}
           </div>
           <div class="numbers__big_blue">
-            0
+            {{ currentWorker.questsStatistic.opened === null ? 0 : currentWorker.questsStatistic.opened }}
           </div>
           <n-link
             class="block__link"
@@ -142,14 +144,14 @@
           </div>
           <div class="block__rating">
             <div class="numbers__big_black">
-              4.5
+              {{ currentWorker.ratingStatistic.averageMark === null ? 0 : currentWorker.ratingStatistic.averageMark }}
             </div>
             <img
               src="~assets/img/ui/star.svg"
               alt="star"
             >
           </div>
-          <div>{{ $t('workers.based') }} 0 {{ $t('workers.reviews') }}</div>
+          <div>{{ $t('workers.based') }} {{ currentWorker.ratingStatistic.reviewCount }} {{ $t('workers.reviews') }}</div>
         </div>
       </div>
       <div class="information-section">
@@ -197,6 +199,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    console.log(this.currentWorker);
     this.SetLoader(false);
   },
   methods: {
