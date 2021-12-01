@@ -358,9 +358,6 @@ export default {
       this.zoomNumber = zoom[this.distanceIndex];
     },
   },
-  async mounted() {
-    if (!this.filters) await this.$store.dispatch('quests/getFilters');
-  },
   methods: {
     toggleSearchDD() {
       this.isSearchDDStatus = !this.isSearchDDStatus;

@@ -405,7 +405,7 @@ export default {
   async mounted() {
     this.SetLoader(true);
     if (this.userRole === 'employer') {
-      if (!this.filters) await this.$store.dispatch('quests/getFilters');
+      // if (!this.filters) await this.$store.dispatch('quests/getFilters');
       await this.fetchWorkersList();
       this.showWelcomeModal();
     }
