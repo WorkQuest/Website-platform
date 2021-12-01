@@ -111,6 +111,7 @@ export default {
       });
     },
     showCreateChatModal() {
+      this.closeChatMenu();
       this.ShowModal({
         key: modals.chatCreate,
         isCreating: true,

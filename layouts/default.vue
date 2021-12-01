@@ -750,10 +750,8 @@ export default {
       connections: 'data/notificationsConnectionStatus',
       chatId: 'chat/getCurrChatId',
       messagesFilter: 'chat/getMessagesFilter',
+      isChatOpened: 'chat/isChatOpened',
     }),
-    isChatOpened() {
-      return !!this.chatId;
-    },
     headerLinksWorker() {
       return [
         {
@@ -1134,7 +1132,7 @@ export default {
               offset: 0,
             });
           } else if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
-            this.$store.commit('chat/addMessageToList', data);
+            if (action !== 'messageReadByRecipient') this.$store.commit('chat/addMessageToList', data);
 
             if (data.type === 'info') {
               const { user } = data.infoMessage;
@@ -1462,7 +1460,7 @@ export default {
     width: 100%;
 
     &_padding {
-      padding-bottom: 50px;
+      padding-bottom: 0;
     }
   }
 }
@@ -2218,6 +2216,10 @@ export default {
       display: grid;
       grid-template-columns: 1fr;
       grid-gap: 30px;
+
+      &_hidden {
+        display: none;
+      }
     }
     &__items {
       flex-direction: column;

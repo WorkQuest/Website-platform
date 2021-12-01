@@ -48,7 +48,7 @@
                     v-if="chat.type === 'group' || chat.type === 'quest'"
                     class="chat__title"
                     :class="[{'chat__title_gray' : chat.type === 'group'}, {'chat__title_link' : chat.type === 'quest'}]"
-                    @click="goToQuest($event,chat.type === 'quest' ? chat.questChat.questId : '')"
+                    @click="chat.type === 'quest' ? goToQuest($event, chat.questChat.questId) : handleSelChat(chat.id)"
                   >
                     {{ chat.type === 'group' ? $t('chat.group') : chat.questChat.quest.title }}
                   </div>
@@ -145,6 +145,7 @@ export default {
     },
   },
   async mounted() {
+    this.filter.starred = this.$route.query.starred === 'true';
     await this.getChats();
     this.SetLoader(false);
   },
@@ -220,6 +221,7 @@ export default {
         offset: 0,
         starred: !this.filter.starred,
       };
+      this.$router.push(`?starred=${this.filter.starred}`);
       this.getChats();
     },
     handleChangeStarVal(ev, chat) {
@@ -433,6 +435,11 @@ export default {
 }
 
 @include _1199 {
+  .chats-page {
+    &__header {
+      padding-left: 15px;
+    }
+  }
 }
 @include _991 {
 }
