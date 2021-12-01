@@ -7,12 +7,12 @@
         {{ $t('workers.noPortfoliosAdded') }}
       </div>
       <div
-        v-for="(item, i) in portfolios"
-        :key="i"
+        v-else
         class="portfolio__item"
       >
         <div
-          v-if="portfolios.count > 0"
+          v-for="(item, i) in portfolios"
+          :key="i"
           class="portfolio__card"
         >
           <div class="portfolio__body">

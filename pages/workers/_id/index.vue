@@ -102,7 +102,7 @@
             class="badge_blue"
           >{{ $t('quests.skillsNotSpecified') }}</span>
           <div
-            v-if="specLengthCode !== 0"
+            v-else
             class="badge__container"
           >
             <ul class="badge-list">

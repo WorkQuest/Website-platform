@@ -147,7 +147,7 @@
           </div>
         </div>
         <div class="content">
-          <div v-if="workersArray.length === 0">
+          <div v-if="workersList.count === 0">
             There is no workers...
           </div>
           <div
@@ -277,43 +277,11 @@ export default {
       totalPagesValue: 1,
       isSearchDDStatus: true,
       isShowMap: true,
-      currentLocation: {},
-      circleOptions: {},
-      locations: [
-        {
-          lat: 44.933076,
-          lng: 15.629058,
-        },
-        {
-          lat: 45.815,
-          lng: '15.9819',
-        },
-        {
-          lat: '45.12',
-          lng: '16.21',
-        },
-      ],
-      rating: [],
       selectedUrgent: '',
       selectedDistantWork: '',
       selectedTypeOfJob: '',
-      pins: {
-        selected: '/img/app/marker_blue.svg',
-        notSelected: '/img/app/marker_red.svg',
-      },
-      clusterStyle: [
-        {
-          url:
-            'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m1.png',
-          width: 56,
-          height: 56,
-          textColor: '#fff',
-        },
-      ],
       search: '',
-      priorityIndex: 0,
       distanceIndex: 0,
-      priceSort: 'desc',
       timeSort: 'desc',
       addresses: [],
       coordinates: null,
@@ -327,7 +295,7 @@ export default {
       workersList: 'quests/getWorkersList',
     }),
     totalPages() {
-      if (this.workerObjects) {
+      if (this.workerObjects.count > 0) {
         return Math.ceil(this.workerObjects.count / this.perPager);
       }
       return 0;
