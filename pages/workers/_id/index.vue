@@ -232,7 +232,6 @@ export default {
     async showReviewCount() {
       if (this.ratingStatistic) {
         if (this.ratingStatistic.reviewCount !== null) {
-          console.log('reviewCount', this.ratingStatistic.reviewCount);
           this.reviewCount = this.ratingStatistic.reviewCount;
         }
         return this.reviewCount;
@@ -242,7 +241,6 @@ export default {
     async showAverageMark() {
       if (this.ratingStatistic) {
         if (this.ratingStatistic.averageMark !== null) {
-          console.log('averageMark', this.ratingStatistic.averageMark);
           this.averageMark = this.ratingStatistic.averageMark;
         }
         return this.averageMark;
@@ -252,7 +250,6 @@ export default {
     async showOpenedQuests() {
       if (this.questsStatistic) {
         if (this.questsStatistic.opened !== null) {
-          console.log('opened', this.questsStatistic.opened);
           this.questsOpened = this.questsStatistic.opened;
         }
         return this.questsOpened;
@@ -262,7 +259,6 @@ export default {
     async showCompletedQuests() {
       if (this.questsStatistic) {
         if (this.questsStatistic.completed !== null) {
-          console.log('completed', this.questsStatistic.completed);
           this.questsCompleted = this.questsStatistic.completed;
         }
         return this.questsCompleted;

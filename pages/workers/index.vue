@@ -148,7 +148,7 @@
         </div>
         <div class="content">
           <div v-if="workersList.count === 0">
-            There is no workers...
+            {{ $t('workers.noWorkers') }}
           </div>
           <div
             v-for="(user, i) in workersList.users"

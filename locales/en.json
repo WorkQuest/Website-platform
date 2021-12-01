@@ -1893,6 +1893,7 @@
     "disputeTime": "Dispute opening time:"
   },
   "workers": {
+    "noWorkers": "There is no workers...",
     "searchQuests": "Search quests",
     "searchWorkers": "Search workers",
     "topWorkers": "Top employees",

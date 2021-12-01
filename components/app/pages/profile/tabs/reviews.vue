@@ -7,52 +7,57 @@
         {{ $t('workers.noReviewsAdded') }}
       </div>
       <div
-        v-for="(item, i) in reviews"
-        :key="i"
-        class="reviews-item"
+        v-else
+        class="reviews-items"
       >
-        <!--          {{ item }}-->
-        <div class="reviews-item__header">
-          <div class="reviews-item__avatar">
-            <img
-              src="~/assets/img/temp/avatar-medium.jpg"
-              alt=""
-            >
-          </div>
-          <div class="name__container">
-            <div class="card-subtitle__name">
-              {{ item.reviewerName }}
-            </div>
-            <div class="card-subtitle_green">
-              {{ $t('role.worker') }}
-            </div>
-          </div>
-        </div>
-        <div class="reviews-item__subheader">
-          <div class="card-subtitle">
-            {{ $t('quests.questBig') }}
-          </div>
-          <div class="card-subtitle__title">
-            {{ item.questName }}
-          </div>
-        </div>
-        <div class="description">
-          {{ item.reviewDesc }}
-        </div>
-
-        <div class="reviews-item__rating">
-          {{ item.reviewerRating }}
-        </div>
-        <base-btn
-          v-if="reviews.count > 0"
-          mode="borderless-right"
-          @click="showReviewDetails"
+        <div
+          v-for="(item, i) in reviews"
+          :key="i"
+          class="reviews-item"
         >
-          {{ $t('quests.readCompletely') }}
-          <template v-slot:right>
-            <span class="icon-short_right" />
-          </template>
-        </base-btn>
+          <!--          {{ item }}-->
+          <div class="reviews-item__header">
+            <div class="reviews-item__avatar">
+              <img
+                src="~/assets/img/temp/avatar-medium.jpg"
+                alt=""
+              >
+            </div>
+            <div class="name__container">
+              <div class="card-subtitle__name">
+                {{ item.reviewerName }}
+              </div>
+              <div class="card-subtitle_green">
+                {{ $t('role.worker') }}
+              </div>
+            </div>
+          </div>
+          <div class="reviews-item__subheader">
+            <div class="card-subtitle">
+              {{ $t('quests.questBig') }}
+            </div>
+            <div class="card-subtitle__title">
+              {{ item.questName }}
+            </div>
+          </div>
+          <div class="description">
+            {{ item.reviewDesc }}
+          </div>
+
+          <div class="reviews-item__rating">
+            {{ item.reviewerRating }}
+          </div>
+          <base-btn
+            v-if="reviews.count > 0"
+            mode="borderless-right"
+            @click="showReviewDetails"
+          >
+            {{ $t('quests.readCompletely') }}
+            <template v-slot:right>
+              <span class="icon-short_right" />
+            </template>
+          </base-btn>
+        </div>
       </div>
     </div>
     <div
