@@ -3,6 +3,7 @@
     <div class="portfolio portfolio__items">
       <div
         v-if="portfolios.count === 0"
+        class="portfolio__item"
       >
         {{ $t('workers.noPortfoliosAdded') }}
       </div>

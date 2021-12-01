@@ -3,6 +3,7 @@
     <div class="reviews__grid">
       <div
         v-if="reviews.count === 0"
+        class="reviews-items"
       >
         {{ $t('workers.noReviewsAdded') }}
       </div>
