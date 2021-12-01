@@ -18,11 +18,12 @@
                   >
                 </div>
                 <div class="rating" />
+                <!--                TODO: Добавить ссылку-->
                 <nuxt-link
+                  to=""
                   class="reviews-amount"
-                  to="/profile"
                 >
-                  0 {{ $t('quests.reviews') }}
+                  {{ reviewCount }} {{ $t('quests.reviews') }}
                 </nuxt-link>
               </div>
               <div class="col info-grid__col">
@@ -97,16 +98,16 @@
             {{ $t('workers.skills') }}
           </div>
           <span
-            v-if="currentWorker.userSpecializations.length === 0"
+            v-if="specLengthCode === 0"
             class="badge_blue"
           >{{ $t('quests.skillsNotSpecified') }}</span>
           <div
-            v-if="currentWorker.userSpecializations.length !== 0"
+            v-if="specLengthCode !== 0"
             class="badge__container"
           >
             <ul class="badge-list">
               <li
-                v-for="(skill, spec) in currentWorker.userSpecializations"
+                v-for="(skill, spec) in userSpecializations"
                 :key="spec"
                 class="badge__item"
               >
@@ -120,7 +121,7 @@
             {{ $t('workers.completedQuests') }}
           </div>
           <div class="numbers__big_blue">
-            {{ currentWorker.questsStatistic.completed === null ? 0 : currentWorker.questsStatistic.completed }}
+            {{ questsCompleted }}
           </div>
           <div>{{ $t('quests.oneTime') }}</div>
         </div>
@@ -129,7 +130,7 @@
             {{ $t('workers.openedQuests') }}
           </div>
           <div class="numbers__big_blue">
-            {{ currentWorker.questsStatistic.opened === null ? 0 : currentWorker.questsStatistic.opened }}
+            {{ questsOpened }}
           </div>
           <n-link
             class="block__link"
@@ -144,14 +145,18 @@
           </div>
           <div class="block__rating">
             <div class="numbers__big_black">
-              {{ currentWorker.ratingStatistic.averageMark === null ? 0 : currentWorker.ratingStatistic.averageMark }}
+              {{ averageMark }}
             </div>
             <img
               src="~assets/img/ui/star.svg"
               alt="star"
             >
           </div>
-          <div>{{ $t('workers.based') }} {{ currentWorker.ratingStatistic.reviewCount }} {{ $t('workers.reviews') }}</div>
+          <div>
+            {{ $t('workers.based') }}
+            {{ reviewCount }}
+            {{ $t('workers.reviews') }}
+          </div>
         </div>
       </div>
       <div class="information-section">
@@ -182,27 +187,87 @@ export default {
     Portfolio,
     social,
   },
+  data() {
+    return {
+      reviewCount: 0,
+      averageMark: 0,
+      questsOpened: 0,
+      questsCompleted: 0,
+      userId: this.$route.params.id,
+    };
+  },
   computed: {
     ...mapGetters({
-      tags: 'ui/getTags',
-      userRole: 'user/getUserRole',
-      userData: 'user/getUserData',
-      userInfo: 'data/getUserInfo',
-      user: 'data/getUserInfo',
-      workersList: 'quests/getWorkersList',
       currentWorker: 'quests/getCurrentWorker',
+      questsStatistic: 'quests/getQuestsStatistic',
+      ratingStatistic: 'quests/getRatingStatistic',
+      userSpecializations: 'quests/getUserSpecializations',
       currentWorkerAddInfo: 'quests/getCurrentWorkerAddInfo',
     }),
   },
-  async created() {
-    await this.initWorker();
-  },
   async mounted() {
     this.SetLoader(true);
-    console.log(this.currentWorker);
+    await this.getWorkerData();
+    await this.initWorker();
     this.SetLoader(false);
   },
   methods: {
+    async initWorker() {
+      await this.specLengthCode();
+      await this.showReviewCount();
+      await this.showAverageMark();
+      await this.showOpenedQuests();
+      await this.showCompletedQuests();
+    },
+    async getWorkerData() {
+      await this.$store.dispatch('quests/getWorkerData', this.userId);
+    },
+    async specLengthCode() {
+      if (this.userSpecializations.length === 0) {
+        return 0;
+      }
+      return 1;
+    },
+    async showReviewCount() {
+      if (this.ratingStatistic) {
+        if (this.ratingStatistic.reviewCount !== null) {
+          console.log('reviewCount', this.ratingStatistic.reviewCount);
+          this.reviewCount = this.ratingStatistic.reviewCount;
+        }
+        return this.reviewCount;
+      }
+      return this.reviewCount;
+    },
+    async showAverageMark() {
+      if (this.ratingStatistic) {
+        if (this.ratingStatistic.averageMark !== null) {
+          console.log('averageMark', this.ratingStatistic.averageMark);
+          this.averageMark = this.ratingStatistic.averageMark;
+        }
+        return this.averageMark;
+      }
+      return this.averageMark;
+    },
+    async showOpenedQuests() {
+      if (this.questsStatistic) {
+        if (this.questsStatistic.opened !== null) {
+          console.log('opened', this.questsStatistic.opened);
+          this.questsOpened = this.questsStatistic.opened;
+        }
+        return this.questsOpened;
+      }
+      return this.questsOpened;
+    },
+    async showCompletedQuests() {
+      if (this.questsStatistic) {
+        if (this.questsStatistic.completed !== null) {
+          console.log('completed', this.questsStatistic.completed);
+          this.questsCompleted = this.questsStatistic.completed;
+        }
+        return this.questsCompleted;
+      }
+      return this.questsCompleted;
+    },
     getSkillTitle(path) {
       const [spec, skill] = path.split('.');
       return this.$t(`filters.items.${spec}.sub.${skill}`);
@@ -212,17 +277,6 @@ export default {
         key: modals.invitation,
         currentWorker: this.currentWorker,
       });
-    },
-    async initWorkers() {
-      await this.$store.dispatch('quests/workersList');
-    },
-    async initWorker() {
-      const userId = this.$route.params.id;
-      try {
-        await this.$store.dispatch('quests/getWorkerData', userId);
-      } catch (e) {
-        console.log(e);
-      }
     },
   },
 };
