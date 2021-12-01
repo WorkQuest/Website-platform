@@ -225,6 +225,7 @@ import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
 import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
+import { priorityFilter, typeOfJobFilter, workplaceFilter } from '~/utils/enums';
 
 export default {
   name: 'Quests',
@@ -386,46 +387,11 @@ export default {
     },
     async fetchQuests(payload = '') {
       payload += this.formattedSpecFilters;
-      switch (this.selectedDistantWork) {
-        case 1:
-          payload += '&workplaces[]=distant';
-          break;
-        case 2:
-          payload += '&workplaces[]=office';
-          break;
-        case 3:
-          payload += '&workplaces[]=both';
-          break;
-        default: break;
-      }
-      switch (this.selectedTypeOfJob) {
-        case 1:
-          payload += '&employments[]=fullTime';
-          break;
-        case 2:
-          payload += '&employments[]=partTime';
-          break;
-        case 3:
-          payload += '&employments[]=fixedTerm';
-          break;
-        default: break;
-      }
-      switch (this.selectedPriority) {
-        case 0:
-          payload += '&priorities[]=0';
-          break;
-        case 1:
-          payload += '&priorities[]=3';
-          break;
-        case 2:
-          payload += '&priorities[]=2';
-          break;
-        case 3:
-          payload += '&priorities[]=1';
-          break;
-        default: break;
-      }
+      if (this.selectedDistantWork > 0) payload += `&workplaces[]=${workplaceFilter[this.selectedDistantWork]}`;
+      if (this.selectedTypeOfJob > 0) payload += `&employments[]=${typeOfJobFilter[this.selectedTypeOfJob]}`;
+      if (this.selectedPriority) payload += `&priorities[]=${priorityFilter[this.selectedPriority]}`;
       if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) payload += `&priceBetween[from]=${this.selectedPriceFilter.from || 0}&priceBetween[to]=${this.selectedPriceFilter.to || 99999999999999}`;
+
       if (!this.isShowMap) {
         this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
         this.questsArray = this.questsObjects.quests;
@@ -454,11 +420,7 @@ export default {
     async changeSorting(type) {
       let sortValue = '';
       if (type === 'time') {
-        if (this.timeSort === 'desc') {
-          this.timeSort = 'asc';
-        } else {
-          this.timeSort = 'desc';
-        }
+        this.timeSort = this.timeSort === 'desc' ? 'asc' : 'desc';
         sortValue = `&sort[createdAt]=${this.timeSort}`;
       }
       this.sortData = sortValue;

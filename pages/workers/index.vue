@@ -270,6 +270,7 @@ import { GeoCode } from 'geo-coder';
 import ClickOutside from 'vue-click-outside';
 import GmapSearchBlock from '~/components/app/GmapSearch';
 import modals from '~/store/modals/modals';
+import { priorityFilter, ratingFilter, workplaceFilter } from '~/utils/enums';
 
 export default {
   name: 'Workers',
@@ -420,11 +421,7 @@ export default {
     async changeSorting(type) {
       let sortValue = '';
       if (type === 'time') {
-        if (this.timeSort === 'desc') {
-          this.timeSort = 'asc';
-        } else {
-          this.timeSort = 'desc';
-        }
+        this.timeSort = this.timeSort === 'desc' ? 'asc' : 'desc';
         sortValue = `&sort[createdAt]=${this.timeSort}`;
       }
       this.sortData = sortValue;
@@ -435,45 +432,9 @@ export default {
 
       let payload = this.formattedSpecFilters;
       payload += this.sortData;
-      switch (this.selectedPriority) {
-        case 0:
-          payload += '&priority=0';
-          break;
-        case 1:
-          payload += '&priority=3';
-          break;
-        case 2:
-          payload += '&priority=2';
-          break;
-        case 3:
-          payload += '&priority=1';
-          break;
-        default: break;
-      }
-      switch (this.selectedDistantWork) {
-        case 1:
-          payload += '&workplace[]=distant';
-          break;
-        case 2:
-          payload += '&workplace[]=office';
-          break;
-        case 3:
-          payload += '&workplace[]=both';
-          break;
-        default: break;
-      }
-      switch (this.selectedRating) {
-        case 1:
-          payload += '&ratingStatus=verified';
-          break;
-        case 2:
-          payload += '&ratingStatus=reliable';
-          break;
-        case 3:
-          payload += '&ratingStatus=topRanked';
-          break;
-        default: break;
-      }
+      if (this.selectedPriority) payload += `&priority=${priorityFilter[this.selectedPriority]}`;
+      if (this.selectedDistantWork > 0) payload += `&workplace[]=${workplaceFilter[this.selectedDistantWork]}`;
+      if (this.selectedRating > 0) payload += `&ratingStatus=${ratingFilter[this.selectedRating]}`;
 
       if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) {
         payload += `&betweenWagePerHour[from]=${this.selectedPriceFilter.from || 0}&betweenWagePerHour[to]=${this.selectedPriceFilter.to || 99999999999999}`;
