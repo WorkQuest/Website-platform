@@ -384,12 +384,6 @@ export default {
     },
   },
   watch: {
-    isConnected() {
-      const newInterval = setInterval(() => this.tokensDataUpdate(), 15000);
-      if (!this.isConnected) {
-        clearInterval(newInterval);
-      }
-    },
     async page() {
       // TODO: FIX
       if (this.miningPoolId === 'BNB') {
@@ -415,10 +409,10 @@ export default {
       await this.getWqtWbnbTokenDay();
       await this.getWqtWbnbTokenDayLast();
     }
+    this.SetLoader(false);
     await this.tokensDataUpdate();
     await this.initTokenDays();
     await this.initGraphData();
-    this.SetLoader(false);
     if (this.$route.params.id === 'ETH') {
       await this.tableWqtWethTokenDay();
     } else {
@@ -568,7 +562,7 @@ export default {
       if (!this.isConnected) {
         await this.$store.dispatch('web3/connect');
         await this.$store.dispatch('web3/initContract');
-        await this.tokensDataUpdate();
+        // await this.tokensDataUpdate();
       }
     },
     cropTxt(str) {
