@@ -132,9 +132,10 @@
           <div class="numbers__big_blue">
             {{ questsOpened }}
           </div>
+          <!--          TODO: Добавить ссылку-->
           <n-link
             class="block__link"
-            to="/workers"
+            to=""
           >
             {{ $t('workers.showAll') }}
           </n-link>
