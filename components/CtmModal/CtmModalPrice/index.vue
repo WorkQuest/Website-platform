@@ -17,25 +17,37 @@
             <div class="grid__title">
               {{ $t('modals.priceForm') }}
             </div>
-            <base-field
-              v-model="priceFrom"
-              class="grid__input"
-              :placeholder="$t('modals.priceFromAmount')"
-              rules="required|decimal"
-              :name="$t('modals.priceFieldFrom')"
-            />
+            <div class="input__container">
+              <base-field
+                v-model="priceFrom"
+                class="grid__input"
+                :placeholder="$t('modals.priceFromAmount')"
+                rules="decimal|max_value:99999999999999"
+                :name="$t('modals.priceFieldFrom')"
+              />
+              <span
+                class="icon-off_outline_close input__clear"
+                @click="priceFrom=null"
+              />
+            </div>
           </div>
           <div class="grid__field">
             <div class="grid__title">
               {{ $t('modals.priceTo') }}
             </div>
-            <base-field
-              v-model="priceTo"
-              class="grid__field"
-              :placeholder="$t('modals.priceToAmount')"
-              rules="required|decimal"
-              :name="$t('modals.priceFieldTo')"
-            />
+            <div class="input__container">
+              <base-field
+                v-model="priceTo"
+                class="grid__field"
+                :placeholder="$t('modals.priceToAmount')"
+                :rules="`decimal${priceFrom ? '|min_value:'+priceFrom : ''}|max_value:99999999999999`"
+                :name="$t('modals.priceFieldTo')"
+              />
+              <span
+                class="icon-off_outline_close input__clear"
+                @click="priceTo=null"
+              />
+            </div>
           </div>
         </div>
         <div class="content__buttons buttons">
@@ -48,8 +60,8 @@
           </base-btn>
           <base-btn
             class="buttons__action"
-            :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(hide)"
+            :disabled="invalid"
+            @click="handleSubmit(submit)"
           >
             {{ $t('meta.submit') }}
           </base-btn>
@@ -74,11 +86,22 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      selectedPriceFilter: 'quests/getSelectedPriceFilter',
     }),
+  },
+  mounted() {
+    if (this.selectedPriceFilter.from) this.priceFrom = this.selectedPriceFilter.from;
+    if (this.selectedPriceFilter.to) this.priceTo = this.selectedPriceFilter.to;
   },
   methods: {
     hide() {
       this.CloseModal();
+    },
+    submit() {
+      if (this.priceFrom <= 0) this.priceFrom = '';
+      if (this.priceTo <= 0) this.priceTo = '';
+      this.$store.dispatch('quests/setSelectedPriceFilter', { from: this.priceFrom, to: this.priceTo });
+      this.hide();
     },
   },
 };
@@ -100,10 +123,24 @@ export default {
     padding: 10px 28px 30px 28px!important;
   }
 }
-
 .input{
   &__title{
     margin-bottom: 4px;
+  }
+  &__container{
+    position: relative;
+    height: 46px;
+  }
+  &__clear {
+    position: absolute;
+    right: 12px;
+    top: 0;
+    height: 100%;
+    padding: 6% 0;
+    cursor: pointer;
+
+    font-size: 26px;
+    color: $blue !important;
   }
 }
 .content{
