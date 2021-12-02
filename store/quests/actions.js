@@ -19,7 +19,7 @@ export default {
   },
   async workersList({ commit }, payload) {
     try {
-      const response = await this.$axios.$get(`/v1/profile/workers?${payload || ''}`);
+      const response = await this.$axios.$get(`/v1/profile/workers${payload}`);
       commit('setWorkersList', response.result);
       return response.result;
     } catch (e) {
@@ -234,6 +234,7 @@ export default {
     }
   },
 
+  // TODO: Добавить запросы
   async acceptQuestInvitation({ commit }, responseId) {
     try {
       const response = await this.$axios.$post(`/v1/quest/response/${responseId}/accept`);
@@ -250,5 +251,20 @@ export default {
     } catch (e) {
       return console.log(e);
     }
+  }, // отказ на приглашение на квест
+
+  async getFilters({ commit }) {
+    try {
+      const { result } = await this.$axios.$get('/v1/skill-filters');
+      commit('setFilters', result);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+  setSelectedSpecializationsFilters({ commit }, data) {
+    commit('setSelectedSpecializationsFilters', data);
+  },
+  setSelectedPriceFilter({ commit }, data) {
+    commit('setSelectedPriceFilter', data);
   },
 };
