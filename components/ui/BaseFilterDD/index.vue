@@ -174,10 +174,7 @@ export default {
     },
   },
   async mounted() {
-    if (!this.filters) {
-      console.log('loading filters');
-      await this.$store.dispatch('quests/getFilters');
-    }
+    if (!this.filters) await this.$store.dispatch('quests/getFilters');
   },
   methods: {
     hideDd() {
