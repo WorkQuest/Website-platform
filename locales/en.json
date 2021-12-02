@@ -31,7 +31,9 @@
     "m": "m"
   },
   "info": {
-    "showYourMessage": "Show your message"
+    "yourMessage": " Your message:",
+    "showYourMessage": "Show your message",
+    "hideYourMessage": "Hide your message"
   },
 
   "uploader" : {

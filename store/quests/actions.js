@@ -193,8 +193,9 @@ export default {
   async respondOnQuest({ commit }, { data, questId }) {
     try {
       const response = await this.$axios.$post(`/v1/quest/${questId}/response`, data);
+      console.log(data);
+      commit('setRespondOnQuest', data);
       return response.result;
-      // TODO: Изменить запрос для бэка
     } catch (e) {
       return console.log(e);
     }

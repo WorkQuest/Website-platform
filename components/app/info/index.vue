@@ -42,11 +42,28 @@
         <div
           v-if="infoDataMode === InfoModeWorker.Rejected"
         >
-          <base-btn mode="showYourMessage">
+          <base-btn
+            v-if="Object.keys(respondOnQuest).length > 0"
+            v-click-outside="closeMessage"
+            class="message message__btn"
+            mode="showYourMessage"
+            @click="toggleShowMessage"
+          >
             <template v-slot:right>
               <span class="icon-caret_down" />
             </template>
-            {{ $t('info.showYourMessage') }}
+            {{ isShowMessage ? $t('info.hideYourMessage') : $t('info.showYourMessage') }}
+            <div
+              v-if="isShowMessage"
+              class="message message__container"
+            >
+              <div class="message__title">
+                {{ $t('info.yourMessage') }}
+              </div>
+              <div class="message__body">
+                {{ respondOnQuest.message }}
+              </div>
+            </div>
           </base-btn>
         </div>
       </div>
@@ -57,17 +74,29 @@
 <script>
 
 import { mapGetters } from 'vuex';
+import ClickOutside from 'vue-click-outside';
 import { InfoModeEmployer, InfoModeWorker } from '~/utils/enums';
 
 export default {
   name: 'InfoVue',
+  directives: {
+    ClickOutside,
+  },
   props: {
     info: {
       type: Number,
       default: () => 0,
     },
   },
+  data() {
+    return {
+      isShowMessage: false,
+    };
+  },
   computed: {
+    ...mapGetters({
+      respondOnQuest: 'quests/getRespondOnQuest',
+    }),
     InfoModeEmployer() {
       return InfoModeEmployer;
     },
@@ -103,46 +132,22 @@ export default {
     infoClass() {
       if (this.userRole === 'worker') {
         return [
-          {
-            'info-hide': this.infoDataMode === InfoModeWorker.Created,
-          },
-          {
-            'info_bg-yellow': this.infoDataMode === InfoModeWorker.ADChat,
-          },
-          {
-            'info_bg-green': this.infoDataMode === InfoModeWorker.Active,
-          },
-          {
-            'info_bg-grey': this.infoDataMode === InfoModeWorker.Rejected,
-          },
-          {
-            'info_bg-blue': [InfoModeWorker.WaitConfirm, InfoModeWorker.Done].includes(this.infoDataMode),
-          },
-          {
-            'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(this.infoDataMode),
-          },
+          { 'info-hide': this.infoDataMode === InfoModeWorker.Created },
+          { 'info_bg-yellow': this.infoDataMode === InfoModeWorker.ADChat },
+          { 'info_bg-green': this.infoDataMode === InfoModeWorker.Active },
+          { 'info_bg-grey': this.infoDataMode === InfoModeWorker.Rejected },
+          { 'info_bg-blue': [InfoModeWorker.WaitConfirm, InfoModeWorker.Done].includes(this.infoDataMode) },
+          { 'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(this.infoDataMode) },
         ];
       }
       if (this.userRole === 'employer') {
         return [
-          {
-            'info-hide': this.infoDataMode === InfoModeEmployer.Created,
-          },
-          {
-            'info_bg-yellow': this.infoDataMode === InfoModeEmployer.WaitWorker,
-          },
-          {
-            'info_bg-green': this.infoDataMode === InfoModeEmployer.Active,
-          },
-          {
-            'info_bg-grey': this.infoDataMode === InfoModeEmployer.WaitConfirm,
-          },
-          {
-            'info_bg-red': this.infoDataMode === InfoModeEmployer.Dispute,
-          },
-          {
-            'info_bg-blue': [InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(this.infoDataMode),
-          },
+          { 'info-hide': this.infoDataMode === InfoModeEmployer.Created },
+          { 'info_bg-yellow': this.infoDataMode === InfoModeEmployer.WaitWorker },
+          { 'info_bg-green': this.infoDataMode === InfoModeEmployer.Active },
+          { 'info_bg-grey': this.infoDataMode === InfoModeEmployer.WaitConfirm },
+          { 'info_bg-red': this.infoDataMode === InfoModeEmployer.Dispute },
+          { 'info_bg-blue': [InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(this.infoDataMode) },
         ];
       }
       return '';
@@ -154,11 +159,45 @@ export default {
       infoDataMode: 'quests/getInfoDataMode',
     }),
   },
+  methods: {
+    closeMessage() {
+      this.isShowMessage = false;
+    },
+    toggleShowMessage() {
+      this.isShowMessage = !this.isShowMessage;
+    },
+  },
 };
 
 </script>
 
 <style lang="scss" scoped>
+.message {
+  &__container {
+    position: absolute;
+    top: calc(40px + 5px);
+    right: calc(100% - 140%);
+    background: #FFFFFF;
+    box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
+    border-radius: 6px;
+    min-width: 341px;
+    z-index: 2;
+  }
+  &__btn {
+    position: relative;
+  }
+  &__title {
+    padding: 5px 0 0 10px;
+    font-size: 16px;
+    color: #0083C7;
+    text-align: left;
+  }
+  &__body {
+    padding: 10px 0 5px 10px;
+    color: $black600;
+    text-align: left;
+  }
+}
 .icon {
   &-caret_down:before {
     content: "\ea48";

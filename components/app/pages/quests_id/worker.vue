@@ -218,24 +218,11 @@ export default {
       await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.WaitConfirm);
       this.SetLoader(false);
     },
-    // async getResponseId() {
-    //   if (this.userRole === 'worker') {
-    //     const questId = this.$route.path.slice(8);
-    //     const { responses } = this.questResponses;
-    //     this.response = responses.filter((r) => r.quest.id === questId);
-    //   }
-    // },
     async getResponsesToQuestForAuthUser() {
       if (this.userRole === 'worker') {
         this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
       }
     },
-    // async acceptQuestInvitationWorker(responseId) {
-    //   if (this.userRole === 'worker') {
-    //     await this.$store.dispatch('quests/acceptQuestInvitation', responseId);
-    //     await this.$store.dispatch('quests/setInfoDataMode', 2);
-    //   }
-    // },
     async sendARequestOnQuest() {
       this.ShowModal({
         key: modals.sendARequest,
