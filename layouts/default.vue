@@ -1106,9 +1106,9 @@ export default {
     },
   },
   async mounted() {
-    await this.GetLocation();
     await this.initWSListeners();
-    await this.loginCheck();
+    this.loginCheck();
+    this.GetLocation();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
   },
   created() {
@@ -1118,7 +1118,7 @@ export default {
     window.removeEventListener('resize', this.userWindowChange);
   },
   methods: {
-    async loginCheck() {
+    loginCheck() {
       localStorage.setItem('userLogin', true);
     },
     async initWSListeners() {

@@ -53,4 +53,13 @@ export default {
   setMapCenter(state, data) {
     state.mapCenter = data;
   },
+  setFilters(state, data) {
+    state.filters = data;
+  },
+  setSelectedSpecializationsFilters(state, data) {
+    state.selectedSpecializationsFilters = data;
+  },
+  setSelectedPriceFilter(state, data) {
+    state.selectedPriceFilter = data;
+  },
 };
