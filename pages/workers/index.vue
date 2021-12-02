@@ -185,7 +185,7 @@
             {{ $t('workers.noWorkers') }}
           </div>
           <div
-            v-for="(user, i) in workersList.users"
+            v-for="(user, i) in workerObjects.users"
             :key="i"
             class="card card_lower"
             @click="showDetails(user)"
@@ -311,45 +311,14 @@ export default {
       isSearchDDStatus: true,
       isShowMap: true,
       currentLocation: {},
-      circleOptions: {},
-      locations: [
-        {
-          lat: 44.933076,
-          lng: 15.629058,
-        },
-        {
-          lat: 45.815,
-          lng: '15.9819',
-        },
-        {
-          lat: '45.12',
-          lng: '16.21',
-        },
-      ],
       rating: [],
       sortData: '',
       selectedPriority: null,
       selectedDistantWork: null,
       selectedRating: null,
-      pins: {
-        selected: '/img/app/marker_blue.svg',
-        notSelected: '/img/app/marker_red.svg',
-      },
-      clusterStyle: [
-        {
-          url:
-            'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m1.png',
-          width: 56,
-          height: 56,
-          textColor: '#fff',
-        },
-      ],
-      selectedUrgent: '',
       selectedTypeOfJob: '',
       search: '',
-      priorityIndex: 0,
       distanceIndex: 0,
-      priceSort: 'desc',
       timeSort: 'desc',
       addresses: [],
       coordinates: null,
@@ -476,15 +445,11 @@ export default {
     async getWorkers(payload) {
       if (!this.isShowMap) {
         this.workerObjects = await this.$store.dispatch('quests/workersList', payload);
+      } else if (!Object.keys(this.mapBounds).length) {
+        this.workerObjects = await this.$store.dispatch('quests/workersList', payload);
       } else {
-        this.additionalValue = payload;
-        if (!Object.keys(this.mapBounds).length) {
-          this.workerObjects = await this.$store.dispatch('quests/workersList', payload);
-        } else {
-          const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
-          this.workerObjects = await this.$store.dispatch('quests/workersList', `${bounds}&${payload}`);
-          await this.$store.dispatch('quests/getQuestsLocation', `${bounds}`);
-        }
+        const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
+        this.workerObjects = await this.$store.dispatch('quests/workersList', `${bounds}&${payload}`);
       }
     },
     async changeSorting(type) {
