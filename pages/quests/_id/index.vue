@@ -37,7 +37,7 @@
           v-if="userRole === 'employer'
             ? [InfoModeEmployer.Active, InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode)
             : [InfoModeWorker.ADChat, InfoModeWorker.Active, InfoModeWorker.Rejected,
-               InfoModeWorker.WaitConfirm, InfoModeWorker.Created, InfoModeWorker.Done].includes(infoDataMode)"
+               InfoModeWorker.Created, InfoModeWorker.Done].includes(infoDataMode)"
           class="divider"
         />
         <questIdEmployer
