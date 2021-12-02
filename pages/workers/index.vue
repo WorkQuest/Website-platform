@@ -304,7 +304,6 @@ export default {
   data() {
     return {
       workerObjects: {},
-      workersArray: [],
       page: 1,
       perPager: 12,
       additionalValue: '',
@@ -412,7 +411,7 @@ export default {
     formattedSpecFilters() {
       const filtersData = this.selectedSpecializationsFilters?.query || [];
       if (!filtersData.length) return '';
-      let filters = `?specialization[]=${filtersData[0]}`;
+      let filters = `specialization[]=${filtersData[0]}`;
       for (let i = 1; i < filtersData.length; i += 1) { filters += `&specialization[]=${filtersData[i]}`; }
       return filters;
     },
@@ -477,7 +476,6 @@ export default {
     async getWorkers(payload) {
       if (!this.isShowMap) {
         this.workerObjects = await this.$store.dispatch('quests/workersList', payload);
-        this.workersArray = this.workerObjects.users;
       } else {
         this.additionalValue = payload;
         if (!Object.keys(this.mapBounds).length) {
@@ -486,7 +484,6 @@ export default {
           const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
           this.workerObjects = await this.$store.dispatch('quests/workersList', `${bounds}&${payload}`);
           await this.$store.dispatch('quests/getQuestsLocation', `${bounds}`);
-          this.workersArray = this.workerObjects.users;
         }
       }
     },
@@ -511,8 +508,6 @@ export default {
       if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) {
         payload += `&betweenWagePerHour[from]=${this.selectedPriceFilter.from || 0}&betweenWagePerHour[to]=${this.selectedPriceFilter.to || 99999999999999}`;
       }
-
-      if (payload[0] === '&') payload = payload.replace('&', '?');
 
       await this.$store.dispatch('quests/workersList', payload);
       this.SetLoader(false);

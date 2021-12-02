@@ -19,7 +19,7 @@ export default {
   },
   async workersList({ commit }, payload) {
     try {
-      const response = await this.$axios.$get(`/v1/profile/workers${payload}`);
+      const response = await this.$axios.$get(`/v1/profile/workers?${payload || ''}`);
       commit('setWorkersList', response.result);
       return response.result;
     } catch (e) {
@@ -193,8 +193,9 @@ export default {
   async respondOnQuest({ commit }, { data, questId }) {
     try {
       const response = await this.$axios.$post(`/v1/quest/${questId}/response`, data);
+
+      commit('setRespondOnQuest', data);
       return response.result;
-      // TODO: Изменить запрос для бэка
     } catch (e) {
       return console.log(e);
     }

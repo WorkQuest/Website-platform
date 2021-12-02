@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="reviews">
     <div class="reviews__grid">
       <div
         v-if="reviews.count === 0"
@@ -43,7 +43,6 @@
           <div class="description">
             {{ item.reviewDesc }}
           </div>
-
           <div class="reviews-item__rating">
             {{ item.reviewerRating }}
           </div>
