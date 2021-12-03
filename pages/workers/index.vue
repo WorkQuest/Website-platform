@@ -291,7 +291,6 @@ export default {
   },
   data() {
     return {
-      workerObjects: {},
       page: 1,
       perPager: 12,
       additionalValue: '',
