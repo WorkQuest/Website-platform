@@ -185,7 +185,7 @@
             {{ $t('workers.noWorkers') }}
           </div>
           <div
-            v-for="(user, i) in workerObjects.users"
+            v-for="(user, i) in workersList.users"
             :key="i"
             class="card card_lower"
             @click="showDetails(user)"
@@ -306,6 +306,7 @@ export default {
       workerObjects: {},
       page: 1,
       perPager: 12,
+      additionalValue: '',
       totalPagesValue: 1,
       isSearchDDStatus: true,
       isShowMap: true,
@@ -333,8 +334,8 @@ export default {
       selectedPriceFilter: 'quests/getSelectedPriceFilter',
     }),
     totalPages() {
-      if (this.workerObjects.count > 0) {
-        return Math.ceil(this.workerObjects.count / this.perPager);
+      if (this.workersList.count > 0) {
+        return Math.ceil(this.workersList.count / this.perPager);
       }
       return 0;
     },
@@ -387,21 +388,18 @@ export default {
   watch: {
     async isShowMap() {
       this.SetLoader(true);
-      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      await this.getWorkers(additionalValue);
-      this.totalPagesValue = this.totalPages;
+      this.additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      await this.fetchWorkersList();
       this.SetLoader(false);
     },
     async page() {
       this.SetLoader(true);
-      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      await this.getWorkers(additionalValue);
+      this.additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      await this.fetchWorkersList();
       this.SetLoader(false);
     },
     async mapBounds() {
-      const additionalValue = `${this.sortData}`;
-      await this.getWorkers(additionalValue);
-      this.totalPagesValue = this.totalPages;
+      await this.fetchWorkersList();
     },
     async formattedSpecFilters() {
       await this.fetchWorkersList();
@@ -441,14 +439,6 @@ export default {
       const [spec, skill] = path.split('.');
       return this.$t(`filters.items.${spec}.sub.${skill}`);
     },
-    async getWorkers(payload) {
-      if (!this.isShowMap || !Object.keys(this.mapBounds).length) {
-        this.workerObjects = await this.$store.dispatch('quests/workersList', payload);
-      } else {
-        const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
-        this.workerObjects = await this.$store.dispatch('quests/workersList', `${bounds}&${payload}`);
-      }
-    },
     async changeSorting(type) {
       let sortValue = '';
       if (type === 'time') {
@@ -459,20 +449,22 @@ export default {
       await this.fetchWorkersList();
     },
     async fetchWorkersList() {
-      this.SetLoader(true);
-
       let payload = this.formattedSpecFilters;
       payload += this.sortData;
-      if (this.selectedPriority) payload += `&priority=${priorityFilter[this.selectedPriority]}`;
-      if (this.selectedDistantWork > 0) payload += `&workplace[]=${workplaceFilter[this.selectedDistantWork]}`;
-      if (this.selectedRating > 0) payload += `&ratingStatus=${ratingFilter[this.selectedRating]}`;
-
-      if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) {
-        payload += `&betweenWagePerHour[from]=${this.selectedPriceFilter.from || 0}&betweenWagePerHour[to]=${this.selectedPriceFilter.to || 99999999999999}`;
+      if (!this.isShowMap || !Object.keys(this.mapBounds).length) {
+        this.workerObjects = await this.$store.dispatch('quests/workersList', `${this.additionalValue}&${payload}`);
       }
-
-      await this.$store.dispatch('quests/workersList', payload);
-      this.SetLoader(false);
+      if (this.isShowMap && Object.keys(this.mapBounds).length > 0) {
+        const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
+        if (this.selectedPriority) payload += `&priority=${priorityFilter[this.selectedPriority]}`;
+        if (this.selectedDistantWork > 0) payload += `&workplace[]=${workplaceFilter[this.selectedDistantWork]}`;
+        if (this.selectedRating > 0) payload += `&ratingStatus=${ratingFilter[this.selectedRating]}`;
+        if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) {
+          payload += `&betweenWagePerHour[from]=${this.selectedPriceFilter.from || 0}&betweenWagePerHour[to]=${this.selectedPriceFilter.to || 99999999999999}`;
+        }
+        await this.$store.dispatch('quests/workersList', `${this.additionalValue}&${bounds}&${payload}`);
+      }
+      this.totalPagesValue = this.totalPages;
     },
     showPriceSearch() {
       this.ShowModal({
