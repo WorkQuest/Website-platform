@@ -357,14 +357,6 @@ export default {
         this.$t('quests.distance.1000'),
       ];
     },
-    // TODO: 'Оставить методы. Интегрировать после добавления оплаты статуса пользователя',
-    // cardLevelClass(idx) {
-    //   const { cards } = this;
-    //   return [
-    //     { card__level_reliable: cards[idx].level.code === 2 },
-    //     { card__level_checked: cards[idx].level.code === 3 },
-    //   ];
-    // },
     formattedSpecFilters() {
       const filtersData = this.selectedSpecializationsFilters?.query || [];
       if (!filtersData.length) return '';
