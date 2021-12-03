@@ -453,13 +453,12 @@ export default {
       payload += this.sortData;
       if (!this.isShowMap || !Object.keys(this.mapBounds).length) {
         this.workerObjects = await this.$store.dispatch('quests/workersList', `${this.additionalValue}&${payload}`);
-      }
-      if (this.isShowMap && Object.keys(this.mapBounds).length > 0) {
+      } else if (Object.keys(this.mapBounds).length > 0) {
         const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
         if (this.selectedPriority) payload += `&priority=${priorityFilter[this.selectedPriority]}`;
-        if (this.selectedDistantWork > 0) payload += `&workplace[]=${workplaceFilter[this.selectedDistantWork]}`;
-        if (this.selectedRating > 0) payload += `&ratingStatus=${ratingFilter[this.selectedRating]}`;
-        if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) {
+        else if (this.selectedDistantWork > 0) payload += `&workplace[]=${workplaceFilter[this.selectedDistantWork]}`;
+        else if (this.selectedRating > 0) payload += `&ratingStatus=${ratingFilter[this.selectedRating]}`;
+        else if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) {
           payload += `&betweenWagePerHour[from]=${this.selectedPriceFilter.from || 0}&betweenWagePerHour[to]=${this.selectedPriceFilter.to || 99999999999999}`;
         }
         await this.$store.dispatch('quests/workersList', `${this.additionalValue}&${bounds}&${payload}`);
