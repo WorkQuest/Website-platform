@@ -306,7 +306,6 @@ export default {
       workerObjects: {},
       page: 1,
       perPager: 12,
-      additionalValue: '',
       totalPagesValue: 1,
       isSearchDDStatus: true,
       isShowMap: true,
@@ -388,8 +387,8 @@ export default {
   watch: {
     async isShowMap() {
       this.SetLoader(true);
-      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      await this.getWorkers(additionalValue);
+      const payload = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      this.workerObjects = await this.$store.dispatch('quests/workersList', payload);
       this.totalPagesValue = this.totalPages;
       this.SetLoader(false);
     },
