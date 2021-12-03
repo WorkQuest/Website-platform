@@ -410,9 +410,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    if (this.userRole === 'employer') {
-      await this.fetchWorkersList();
-    }
+    await this.fetchWorkersList();
     this.SetLoader(false);
   },
   methods: {
