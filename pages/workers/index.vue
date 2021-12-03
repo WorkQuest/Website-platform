@@ -357,6 +357,39 @@ export default {
         this.$t('quests.distance.1000'),
       ];
     },
+    // TODO: 'Оставить методы. Интегрировать после добавления оплаты статуса пользователя',
+    // cardsСlassLevels(idx) {
+    //   const { cards } = this;
+    //   return [
+    //     { card__level_reliable: cards[idx].level.code === 2 },
+    //     { card__level_checked: cards[idx].level.code === 3 },
+    //     { card__level_disabled: cards[idx].level.code === 0 },
+    //   ];
+    // },
+    // cardsСlassLevelsBorder(idx) {
+    //   const { cards } = this;
+    //   return [
+    //     { card_lower: cards[idx].level.code === 2 },
+    //     { card_lower: cards[idx].level.code === 3 },
+    //     { card_lower: cards[idx].level.code === 0 },
+    //   ];
+    // },
+    // getСlassPriority(index) {
+    //   const priority = {
+    //     0: this.$t('priority.low'),
+    //     1: this.$t('priority.normal'),
+    //     2: this.$t('priority.urgent'),
+    //   };
+    //   return priority[index] || 'None';
+    // },
+    // getСlassPriorityClass(index) {
+    //   const priority = {
+    //     0: 'block__priority_low',
+    //     1: 'block__priority_normal',
+    //     2: 'block__priority_urgent',
+    //   };
+    //   return priority[index] || '';
+    // },
     formattedSpecFilters() {
       const filtersData = this.selectedSpecializationsFilters?.query || [];
       if (!filtersData.length) return '';
@@ -451,39 +484,6 @@ export default {
       this.$store.dispatch('quests/setCurrentWorker', worker);
       this.$router.push(`/workers/${worker.id}`);
     },
-    // TODO: 'Оставить методы. Интегрировать после добавления оплаты статуса пользователя',
-    // cardsLevels(idx) {
-    //   const { cards } = this;
-    //   return [
-    //     { card__level_reliable: cards[idx].level.code === 2 },
-    //     { card__level_checked: cards[idx].level.code === 3 },
-    //     { card__level_disabled: cards[idx].level.code === 0 },
-    //   ];
-    // },
-    // cardsLevelsBorder(idx) {
-    //   const { cards } = this;
-    //   return [
-    //     { card_lower: cards[idx].level.code === 2 },
-    //     { card_lower: cards[idx].level.code === 3 },
-    //     { card_lower: cards[idx].level.code === 0 },
-    //   ];
-    // },
-    // getPriority(index) {
-    //   const priority = {
-    //     0: this.$t('priority.low'),
-    //     1: this.$t('priority.normal'),
-    //     2: this.$t('priority.urgent'),
-    //   };
-    //   return priority[index] || 'None';
-    // },
-    // getPriorityClass(index) {
-    //   const priority = {
-    //     0: 'block__priority_low',
-    //     1: 'block__priority_normal',
-    //     2: 'block__priority_urgent',
-    //   };
-    //   return priority[index] || '';
-    // },
     centerChange() {
       this.$store.dispatch('quests/setMapCenter', this.coordinates);
     },
