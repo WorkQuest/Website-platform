@@ -44,7 +44,7 @@
                     <div
                       v-for="(item, i) in addresses"
                       :key="i"
-                      :data-selector="`ACTION-SELECT-ADDRESS-${item.key.toUpperCase()}`"
+                      :data-selector="`ACTION-SELECT-ADDRESS-${item.key}`"
                       class="selector__item"
                       @click="selectAddress(item)"
                     >
@@ -190,7 +190,6 @@
             class="card card_lower"
             @click="showDetails(user)"
           >
-            <!-- :class="cardsLevelsBorder(i)" -->
             <div
               class="card__content"
             >
@@ -207,19 +206,8 @@
                     <span
                       class="card__name"
                     >
-                      <!-- :class="{'card__name_center': card.level.code === '0'}" -->
                       {{ user.firstName ? user.firstName : $t('quests.namelessWorker') }} {{ user.lastName ? user.lastName : "" }}
                     </span>
-                    <!-- <div
-                      class="card__level"
-                      :class="{'card__level_disabled': card.level.code === '0'}"
-                    >
-                      <span class="icon-circle_up icon_blue" />
-                      <span
-                        class="card__level_higher"
-                        :class="cardsLevels(i)"
-                      >{{ card.level.title }}</span>
-                    </div> -->
                   </div>
                 </div>
               </div>
@@ -481,38 +469,39 @@ export default {
       this.$store.dispatch('quests/setCurrentWorker', worker);
       this.$router.push(`/workers/${worker.id}`);
     },
-    cardsLevels(idx) {
-      const { cards } = this;
-      return [
-        { card__level_reliable: cards[idx].level.code === 2 },
-        { card__level_checked: cards[idx].level.code === 3 },
-        { card__level_disabled: cards[idx].level.code === 0 },
-      ];
-    },
-    cardsLevelsBorder(idx) {
-      const { cards } = this;
-      return [
-        { card_lower: cards[idx].level.code === 2 },
-        { card_lower: cards[idx].level.code === 3 },
-        { card_lower: cards[idx].level.code === 0 },
-      ];
-    },
-    getPriority(index) {
-      const priority = {
-        0: this.$t('priority.low'),
-        1: this.$t('priority.normal'),
-        2: this.$t('priority.urgent'),
-      };
-      return priority[index] || 'None';
-    },
-    getPriorityClass(index) {
-      const priority = {
-        0: 'block__priority_low',
-        1: 'block__priority_normal',
-        2: 'block__priority_urgent',
-      };
-      return priority[index] || '';
-    },
+    // TODO: 'Оставить методы. Интегрировать после добавления оплаты статуса пользователя',
+    // cardsLevels(idx) {
+    //   const { cards } = this;
+    //   return [
+    //     { card__level_reliable: cards[idx].level.code === 2 },
+    //     { card__level_checked: cards[idx].level.code === 3 },
+    //     { card__level_disabled: cards[idx].level.code === 0 },
+    //   ];
+    // },
+    // cardsLevelsBorder(idx) {
+    //   const { cards } = this;
+    //   return [
+    //     { card_lower: cards[idx].level.code === 2 },
+    //     { card_lower: cards[idx].level.code === 3 },
+    //     { card_lower: cards[idx].level.code === 0 },
+    //   ];
+    // },
+    // getPriority(index) {
+    //   const priority = {
+    //     0: this.$t('priority.low'),
+    //     1: this.$t('priority.normal'),
+    //     2: this.$t('priority.urgent'),
+    //   };
+    //   return priority[index] || 'None';
+    // },
+    // getPriorityClass(index) {
+    //   const priority = {
+    //     0: 'block__priority_low',
+    //     1: 'block__priority_normal',
+    //     2: 'block__priority_urgent',
+    //   };
+    //   return priority[index] || '';
+    // },
     centerChange() {
       this.$store.dispatch('quests/setMapCenter', this.coordinates);
     },

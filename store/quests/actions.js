@@ -18,11 +18,9 @@ export default {
     }
   },
   async workersList({ commit }, payload) {
-    console.log(payload);
     try {
       const response = await this.$axios.$get(`/v1/profile/workers?${payload}`);
       commit('setWorkersList', response.result);
-      console.log(response.result);
       return response.result;
     } catch (e) {
       return console.log(e);
