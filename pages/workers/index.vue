@@ -412,7 +412,6 @@ export default {
     this.SetLoader(true);
     if (this.userRole === 'employer') {
       await this.fetchWorkersList();
-      this.showWelcomeModal();
     }
     this.SetLoader(false);
   },
