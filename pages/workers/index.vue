@@ -357,39 +357,6 @@ export default {
         this.$t('quests.distance.1000'),
       ];
     },
-    // TODO: 'Оставить методы. Интегрировать после добавления оплаты статуса пользователя',
-    // cardsСlassLevels(idx) {
-    //   const { cards } = this;
-    //   return [
-    //     { card__level_reliable: cards[idx].level.code === 2 },
-    //     { card__level_checked: cards[idx].level.code === 3 },
-    //     { card__level_disabled: cards[idx].level.code === 0 },
-    //   ];
-    // },
-    // cardsСlassLevelsBorder(idx) {
-    //   const { cards } = this;
-    //   return [
-    //     { card_lower: cards[idx].level.code === 2 },
-    //     { card_lower: cards[idx].level.code === 3 },
-    //     { card_lower: cards[idx].level.code === 0 },
-    //   ];
-    // },
-    // getСlassPriority(index) {
-    //   const priority = {
-    //     0: this.$t('priority.low'),
-    //     1: this.$t('priority.normal'),
-    //     2: this.$t('priority.urgent'),
-    //   };
-    //   return priority[index] || 'None';
-    // },
-    // getСlassPriorityClass(index) {
-    //   const priority = {
-    //     0: 'block__priority_low',
-    //     1: 'block__priority_normal',
-    //     2: 'block__priority_urgent',
-    //   };
-    //   return priority[index] || '';
-    // },
     formattedSpecFilters() {
       const filtersData = this.selectedSpecializationsFilters?.query || [];
       if (!filtersData.length) return '';
@@ -742,12 +709,6 @@ export default {
     cursor: pointer;
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
   }
-  &_higher {
-    border: 1px solid #F6CF00;
-  }
-  &_lower {
-    border: none;
-  }
   &__content {
     width: 100%;
     max-width: 240px;
@@ -788,42 +749,6 @@ export default {
     @include text-simple;
     font-size: 18px;
     font-weight: 500;
-  }
-  &__level {
-    display: grid;
-    grid-template-columns: 20px auto;
-    grid-gap: 7px;
-    font-size: 12px;
-    justify-content: flex-start;
-    align-items: center;
-    height: 20px;
-    &_higher {
-      display: flex;
-      padding: 0 4px;
-      align-items: center;
-      background-color: #F6CF00;
-      border-radius: 3px;
-      color: $white;
-    }
-    &_reliable {
-      display: flex;
-      padding: 0 4px;
-      align-items: center;
-      background-color: #BBC0C7;
-      border-radius: 3px;
-      color: $white;
-    }
-    &_checked {
-      display: flex;
-      padding: 0 4px;
-      align-items: center;
-      background-color: #B79768;
-      border-radius: 3px;
-      color: $white;
-    }
-    &_disabled {
-      display: none;
-    }
   }
   &__title {
     margin: 15px 0 0 0;
