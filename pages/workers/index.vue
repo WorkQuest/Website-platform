@@ -442,7 +442,7 @@ export default {
       return this.$t(`filters.items.${spec}.sub.${skill}`);
     },
     async getWorkers(payload) {
-      if (!this.isShowMap || !Object.keys(this.mapBounds).length) {
+      if (!Object.keys(this.mapBounds).length) {
         this.workerObjects = await this.$store.dispatch('quests/workersList', payload);
       } else {
         const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
