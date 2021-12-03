@@ -310,7 +310,6 @@ export default {
       totalPagesValue: 1,
       isSearchDDStatus: true,
       isShowMap: true,
-      currentLocation: {},
       rating: [],
       sortData: '',
       selectedPriority: null,
