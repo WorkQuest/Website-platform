@@ -457,14 +457,6 @@ export default {
         key: modals.priceSearch,
       });
     },
-    showWelcomeModal() {
-      if (this.checkWelcomeModal === true) {
-        this.ShowModal({
-          key: modals.welcome,
-        });
-      }
-      this.$store.dispatch('modals/checkWelcomeModal', false);
-    },
     showDetails(worker) {
       this.$store.dispatch('quests/setCurrentWorker', worker);
       this.$router.push(`/workers/${worker.id}`);
