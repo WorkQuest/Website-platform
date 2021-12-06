@@ -35,7 +35,6 @@ export default {
   withdrawAbout: 'withdrawAbout',
   depositIsOpened: 'depositIsOpened',
   addCase: 'addCase',
-  welcome: 'welcome',
   openADispute: 'openADispute',
   notice: 'notice',
   noticeChat: 'noticeChat',

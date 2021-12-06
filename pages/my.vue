@@ -34,7 +34,7 @@
           :object="questResponses.responses"
         />
         <emptyData
-          v-if="questsData.count === 0 && questsList.count === 0 && totalPagesValue === 0"
+          v-if="questsList.count === 0 && questsData.count === 0"
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
           link="/create-quest"
