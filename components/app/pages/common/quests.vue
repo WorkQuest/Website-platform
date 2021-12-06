@@ -59,10 +59,7 @@
                   alt=""
                 >
                 <img
-                  :class="[
-                    {'star__default': !item.star},
-                    {'star__checked': item.star}
-                  ]"
+                  :class="[{'star__default': !item.star}, {'star__checked': item.star}]"
                   :src="!item.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
                   alt=""
                 >
@@ -231,10 +228,7 @@
                   alt=""
                 >
                 <img
-                  :class="[
-                    {'star__default': !item.star},
-                    {'star__checked': item.star}
-                  ]"
+                  :class="[{'star__default': !item.star},{'star__checked': item.star}]"
                   :src="!item.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
                   alt=""
                 >
