@@ -75,7 +75,7 @@
     >
       <div class="btn__wrapper">
         <base-btn
-          :disabled="disabledBtn"
+          :disabled="checkResponseStatus()"
           @click="sendARequestOnQuest"
         >
           {{ InfoModeWorker.Created ? $t('btn.sendARequest') : $t('btn.responded') }}
@@ -156,6 +156,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    checkResponseStatus() {
+      return !(this.questData && !this.questData.response);
+    },
     getPriority(index) {
       const priority = {
         0: this.$t('priority.low'),
