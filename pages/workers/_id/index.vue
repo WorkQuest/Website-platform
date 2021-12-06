@@ -23,7 +23,7 @@
                   to=""
                   class="reviews-amount"
                 >
-                  {{ reviewCount }} {{ $t('quests.reviews') }}
+                  {{ ratingStatistic && ratingStatistic.reviewCount ? ratingStatistic.reviewCount : 0 }} {{ $t('quests.reviews') }}
                 </nuxt-link>
               </div>
               <div class="col info-grid__col">
@@ -98,7 +98,7 @@
             {{ $t('workers.skills') }}
           </div>
           <span
-            v-if="specLengthCode === 0"
+            v-if="userSpecializations.length === 0"
             class="badge_blue"
           >{{ $t('quests.skillsNotSpecified') }}</span>
           <div
@@ -121,7 +121,7 @@
             {{ $t('workers.completedQuests') }}
           </div>
           <div class="numbers__big_blue">
-            {{ questsCompleted }}
+            {{ questsStatistic && questsStatistic.completed ? questsStatistic.completed : 0 }}
           </div>
           <div>{{ $t('quests.oneTime') }}</div>
         </div>
@@ -130,7 +130,7 @@
             {{ $t('workers.openedQuests') }}
           </div>
           <div class="numbers__big_blue">
-            {{ questsOpened }}
+            {{ questsStatistic && questsStatistic.opened ? questsStatistic.opened : 0 }}
           </div>
           <!--          TODO: Добавить ссылку-->
           <n-link
@@ -146,7 +146,7 @@
           </div>
           <div class="block__rating">
             <div class="numbers__big_black">
-              {{ averageMark }}
+              {{ ratingStatistic && ratingStatistic.averageMark ? ratingStatistic.averageMark : 0 }}
             </div>
             <img
               src="~assets/img/ui/star.svg"
@@ -155,7 +155,7 @@
           </div>
           <div>
             {{ $t('workers.based') }}
-            {{ reviewCount }}
+            {{ ratingStatistic && ratingStatistic.reviewCount ? ratingStatistic.reviewCount : 0 }}
             {{ $t('workers.reviews') }}
           </div>
         </div>
@@ -188,15 +188,6 @@ export default {
     Portfolio,
     social,
   },
-  data() {
-    return {
-      reviewCount: 0,
-      averageMark: 0,
-      questsOpened: 0,
-      questsCompleted: 0,
-      userId: this.$route.params.id,
-    };
-  },
   computed: {
     ...mapGetters({
       currentWorker: 'quests/getCurrentWorker',
@@ -208,63 +199,10 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    await this.getWorkerData();
-    await this.initWorker();
+    await this.$store.dispatch('quests/getWorkerData', this.$route.params.id);
     this.SetLoader(false);
   },
   methods: {
-    async initWorker() {
-      await this.specLengthCode();
-      await this.showReviewCount();
-      await this.showAverageMark();
-      await this.showOpenedQuests();
-      await this.showCompletedQuests();
-    },
-    async getWorkerData() {
-      await this.$store.dispatch('quests/getWorkerData', this.userId);
-    },
-    async specLengthCode() {
-      if (this.userSpecializations.length === 0) {
-        return 0;
-      }
-      return 1;
-    },
-    async showReviewCount() {
-      if (this.ratingStatistic) {
-        if (this.ratingStatistic.reviewCount !== null) {
-          this.reviewCount = this.ratingStatistic.reviewCount;
-        }
-        return this.reviewCount;
-      }
-      return this.reviewCount;
-    },
-    async showAverageMark() {
-      if (this.ratingStatistic) {
-        if (this.ratingStatistic.averageMark !== null) {
-          this.averageMark = this.ratingStatistic.averageMark;
-        }
-        return this.averageMark;
-      }
-      return this.averageMark;
-    },
-    async showOpenedQuests() {
-      if (this.questsStatistic) {
-        if (this.questsStatistic.opened !== null) {
-          this.questsOpened = this.questsStatistic.opened;
-        }
-        return this.questsOpened;
-      }
-      return this.questsOpened;
-    },
-    async showCompletedQuests() {
-      if (this.questsStatistic) {
-        if (this.questsStatistic.completed !== null) {
-          this.questsCompleted = this.questsStatistic.completed;
-        }
-        return this.questsCompleted;
-      }
-      return this.questsCompleted;
-    },
     getSkillTitle(path) {
       const [spec, skill] = path.split('.');
       return this.$t(`filters.items.${spec}.sub.${skill}`);
