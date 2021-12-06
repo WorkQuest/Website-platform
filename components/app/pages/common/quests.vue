@@ -431,7 +431,7 @@ export default {
         } if (status === QuestStatuses.WaitWorker) {
           return this.$t('quests.inProgressBy');
         } if (status === QuestStatuses.WaitConfirm) {
-          return this.$t('questWaitConfirm:');
+          return this.$t('quests.questWaitConfirm:');
         } if (status === QuestStatuses.Done) {
           return this.$t('quests.finishedBy');
         }
