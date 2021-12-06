@@ -39,9 +39,13 @@
                     class="avatar__image"
                     :src="item.quest.user.avatar ? item.quest.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                     :alt="item.quest.user.firstName"
+                    @click="goToProfile(item.quest.user.id)"
                   >
                 </div>
-                <div class="block__text block__text_title">
+                <div
+                  class="block__text block__text_title"
+                  @click="goToProfile(item.quest.user.id)"
+                >
                   {{ `${item.quest.user.firstName} ${item.quest.user.lastName}` }}
                 </div>
               </div>
@@ -79,8 +83,12 @@
                     class="user__avatar"
                     :src="item.quest.assignedWorker.avatar ? item.quest.assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                     :alt="`${item.quest.assignedWorker.firstName} ${item.quest.assignedWorker.lastName}`"
+                    @click="goToProfile(item.quest.assignedWorker.id)"
                   >
-                  <div class="user__name">
+                  <div
+                    class="user__name"
+                    @click="goToProfile(item.quest.assignedWorker.id)"
+                  >
                     {{ item.quest.assignedWorker.firstName }} {{ item.quest.assignedWorker.lastName }}
                   </div>
                 </div>
@@ -197,9 +205,13 @@
                     class="avatar__image"
                     :src="item.user.avatar ? item.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                     :alt="item.user.firstName"
+                    @click="goToProfile(item.user.id)"
                   >
                 </div>
-                <div class="block__text block__text_title">
+                <div
+                  class="block__text block__text_title"
+                  @click="goToProfile(item.user.id)"
+                >
                   {{ `${item.user.firstName} ${item.user.lastName}` }}
                 </div>
               </div>
@@ -243,8 +255,12 @@
                     class="user__avatar"
                     :src="item.assignedWorker.avatar ? item.assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                     :alt="`${item.assignedWorker.firstName} ${item.assignedWorker.lastName}`"
+                    @click="goToProfile(item.assignedWorker.id)"
                   >
-                  <div class="user__name">
+                  <div
+                    class="user__name"
+                    @click="goToProfile(item.assignedWorker.id)"
+                  >
                     {{ item.assignedWorker.firstName }} {{ item.assignedWorker.lastName }}
                   </div>
                 </div>
@@ -408,6 +424,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    goToProfile(id) {
+      this.$router.push(`/profile/${id}`);
+    },
     async setStar(item) {
       if (!item.star) {
         await this.$store.dispatch('quests/setStarOnQuest', item.id);
@@ -530,6 +549,7 @@ export default {
     font-weight: 500;
     font-size: 16px;
     color: $black800;
+    cursor: pointer;
   }
 }
 .right {
@@ -572,6 +592,7 @@ export default {
             height: 30px;
             width: 30px;
             object-fit: cover;
+            cursor: pointer;
           }
         }
       }
@@ -594,6 +615,7 @@ export default {
     height: 30px;
     width: 30px;
     object-fit: cover;
+    cursor: pointer;
   }
   &__col {
     &_left {
@@ -878,6 +900,7 @@ export default {
       font-size: 16px;
       line-height: 130%;
       color: $black800;
+      cursor: pointer;
     }
     &_locate {
       font-size: 14px;
