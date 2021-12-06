@@ -8,7 +8,7 @@
           {{ $t('quests.completedQuests') }}
         </div>
         <div class="number">
-          0
+          {{ reviewData.completedQuests }}
         </div>
         <div class="card-subtitle">
           {{ $t('quests.oneTime') }}
@@ -19,7 +19,7 @@
           {{ $t('quests.openedQuests') }}
         </div>
         <div class="number">
-          0
+          {{ reviewData.openedQuests }}
         </div>
         <!--        <div-->
         <!--          class="card-subtitle"-->

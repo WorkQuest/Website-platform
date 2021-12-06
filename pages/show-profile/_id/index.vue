@@ -26,6 +26,34 @@
           v-if="selected === 1"
           :review-data="userStatistics"
         />
+        <div
+          v-if="userData.userSpecializations && selected === 1"
+          class="skills-block"
+        >
+          <div class="skills-block__title">
+            {{ $t('skills.title') }}
+          </div>
+          <div class="skills-block__container skills-block__container_white">
+            <div
+              v-for="(skills, specialization) in getSkillTitle()"
+              :key="specialization"
+              class="skills-block__spec skills-block__spec_white"
+            >
+              <div class="spec__title">
+                {{ $t(`filters.items.${specialization}.title`) }}
+              </div>
+              <ul class="spec__skills">
+                <li
+                  v-for="(skill, key) in skills"
+                  :key="key"
+                  class="skills__item skills__item_blue"
+                >
+                  {{ $t(`filters.items.${specialization}.sub.${skill}`) }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
         <div v-if="selected === 2">
           <div class="title">
             {{ $t('quests.activeQuests') }}
@@ -62,6 +90,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
 import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
 import userInfo from '~/components/app/pages/common/userInfo';
@@ -82,7 +111,10 @@ export default {
       userStatistics: {
         reviewCount: 0,
         averageMark: 0,
+        completedQuests: 0,
+        openedQuests: 0,
       },
+      userSpecializations: [],
     };
   },
   computed: {
@@ -125,16 +157,30 @@ export default {
   async beforeCreate() {
     await this.$store.dispatch('user/getAnotherUserData', this.$route.params.id);
     const { ratingStatistic } = this.userData;
+    const { questStatistic } = this.userData;
 
-    if (ratingStatistic) {
-      const { reviewCount = 0, averageMark = 0 } = ratingStatistic;
-      this.userStatistics = { reviewCount, averageMark };
+    if (questStatistic) {
+      this.userStatistics = {
+        reviewCount: ratingStatistic.reviewCount,
+        averageMark: ratingStatistic.averageMark,
+        completedQuests: questStatistic.completed,
+        openedQuests: questStatistic.opened,
+      };
     }
   },
   async beforeDestroy() {
     await this.$store.dispatch('user/clearAnotherUserData');
   },
   methods: {
+    getSkillTitle() {
+      const specData = {};
+      this.userData.userSpecializations.forEach((data) => {
+        const [spec, skill] = data.path.split('.');
+        if (!specData[spec]) specData[spec] = [];
+        specData[spec].push(skill);
+      });
+      return specData;
+    },
     isRating(type) {
       return (type === 3);
     },
@@ -452,7 +498,57 @@ export default {
   }
 }
 
-@include _1199 {
+.skills-block {
+  &__container {
+    padding: 20px;
+    display: flex;
+    grid-gap: 20px;
+    flex-direction: column;
+    &_white {
+      background: #FFFFFF;
+      border-radius: 6px;
+    }
+  }
+  &__title {
+    font-size: 16px;
+    line-height: 130%;
+    margin-bottom: 10px;
+  }
+  &__spec {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 10px;
+  }
+}
+.spec {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 10px;
+  }
+  &__title {
+    font-size: 14px;
+    line-height: 130%;
+  }
+  &__skills {
+    display: flex;
+    grid-gap: 8px;
+    flex-wrap: wrap;
+  }
+}
+.skills {
+  &__item {
+    font-size: 16px;
+    line-height: 130%;
+    &_blue {
+      background-color: rgba(0, 131, 199, 0.1);
+      border-radius: 44px;
+      padding: 5px;
+      color: #0083C7;
+    }
+  }
+}
+  @include _1199 {
   .contact {
     display: flex;
     flex-direction: column;
@@ -473,16 +569,17 @@ export default {
     margin: 0 0 20px 0;
   }
 }
-@include _575 {
-  .contacts {
-    grid-template-columns: 1fr;
-  }
-  .information-grid {
-    flex-direction: column;
-    align-items: center;
-    .col {
-      margin-bottom: 10px;
+  @include _575 {
+    .contacts {
+      grid-template-columns: 1fr;
+    }
+    .information-grid {
+      flex-direction: column;
+      align-items: center;
+      .col {
+        margin-bottom: 10px;
+      }
     }
   }
-}
+
 </style>

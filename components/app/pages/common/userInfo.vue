@@ -29,7 +29,7 @@
         {{ `${userInfo.firstName} ${userInfo.lastName}` }}
       </div>
       <div
-        v-if="userRole === 'employer' && userInfo.company"
+        v-if="userInfo.role === 'employer' && userInfo.company"
         class="subtitle"
       >
         {{ userInfo.company }}
@@ -40,7 +40,7 @@
       >
         {{ userAdditionalInfo.description }}
       </div>
-      <div v-if="userRole === 'worker' ">
+      <div v-if="userInfo.role === 'worker' ">
         <div v-if="userEducations && userEducations.length > 0">
           <div class="knowledge__text">
             {{ $t('profile.educations') }}
