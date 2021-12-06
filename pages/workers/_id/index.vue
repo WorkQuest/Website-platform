@@ -28,8 +28,8 @@
               </div>
               <div class="col info-grid__col">
                 <div class="title title_inline">
-                  {{ currentWorker.firstName !== null ? currentWorker.firstName : 'Nameless' }}
-                  {{ currentWorker.lastName !== null ? currentWorker.lastName : "" }}
+                  {{ currentWorker && currentWorker.firstName ? currentWorker.firstName : 'Nameless' }}
+                  {{ currentWorker && currentWorker.lastName ? currentWorker.lastName : "" }}
                   <span
                     class="level"
                   >
@@ -40,8 +40,7 @@
                   v-if="currentWorker"
                   class="description"
                 >
-                  {{ currentWorkerAddInfo.description !== null
-                    ? currentWorkerAddInfo.description: $t('quests.nothingAboutMe') }}
+                  {{ currentWorkerAddInfo && currentWorkerAddInfo.description ? currentWorkerAddInfo.description: $t('quests.nothingAboutMe') }}
                 </div>
                 <social />
                 <div class="contacts__grid">
@@ -55,22 +54,19 @@
                             class="icon-location"
                           />
                           <span class="contact__link">
-                            {{ currentWorkerAddInfo.address !== null
-                              ? currentWorkerAddInfo.address : $t('quests.unknownAddress') }}
+                            {{ currentWorkerAddInfo && currentWorkerAddInfo.address ? currentWorkerAddInfo.address : $t('quests.unknownAddress') }}
                           </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-phone" />
                           <span class="contact__link">
-                            {{ currentWorker.phone !== null
-                              ? currentWorker.phone : $t('quests.unknownPhoneNumber') }}
+                            {{ currentWorker && currentWorker.phone ? currentWorker.phone : $t('quests.unknownPhoneNumber') }}
                           </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-mail" />
                           <span class="contact__link">
-                            {{ currentWorker.email !== null
-                              ? currentWorker.email : $t('quests.unknownEmailAddress') }}
+                            {{ currentWorker && currentWorker.email ? currentWorker.email : $t('quests.unknownEmailAddress') }}
                           </span>
                         </span>
                       </span>
@@ -98,7 +94,7 @@
             {{ $t('workers.skills') }}
           </div>
           <span
-            v-if="userSpecializations.length === 0"
+            v-if="userSpecializations && userSpecializations.length === 0"
             class="badge_blue"
           >{{ $t('quests.skillsNotSpecified') }}</span>
           <div
