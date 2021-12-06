@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main-section">
     <div class="main-section main-section_white">
       <div class="main-container">
         <div
@@ -18,18 +18,21 @@
                   >
                 </div>
                 <div class="rating" />
+                <!--                TODO: Добавить ссылку-->
                 <nuxt-link
+                  to=""
                   class="reviews-amount"
-                  to="/profile"
                 >
-                  0 {{ $t('quests.reviews') }}
+                  {{ ratingStatistic && ratingStatistic.reviewCount ? ratingStatistic.reviewCount : 0 }} {{ $t('quests.reviews') }}
                 </nuxt-link>
               </div>
               <div class="col info-grid__col">
                 <div class="title title_inline">
-                  {{ currentWorker.firstName !== null ? currentWorker.firstName : 'Nameless' }}
-                  {{ currentWorker.lastName !== null ? currentWorker.lastName : "" }}
-                  <span class="level">
+                  {{ currentWorker && currentWorker.firstName ? currentWorker.firstName : 'Nameless' }}
+                  {{ currentWorker && currentWorker.lastName ? currentWorker.lastName : "" }}
+                  <span
+                    class="level"
+                  >
                     TOP RANKED EMP.
                   </span>
                 </div>
@@ -37,8 +40,7 @@
                   v-if="currentWorker"
                   class="description"
                 >
-                  {{ currentWorkerAddInfo.description !== null
-                    ? currentWorkerAddInfo.description: $t('quests.nothingAboutMe') }}
+                  {{ currentWorkerAddInfo && currentWorkerAddInfo.description ? currentWorkerAddInfo.description: $t('quests.nothingAboutMe') }}
                 </div>
                 <social />
                 <div class="contacts__grid">
@@ -52,22 +54,19 @@
                             class="icon-location"
                           />
                           <span class="contact__link">
-                            {{ currentWorkerAddInfo.address !== null
-                              ? currentWorkerAddInfo.address : $t('quests.unknownAddress') }}
+                            {{ currentWorkerAddInfo && currentWorkerAddInfo.address ? currentWorkerAddInfo.address : $t('quests.unknownAddress') }}
                           </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-phone" />
                           <span class="contact__link">
-                            {{ currentWorker.phone !== null
-                              ? currentWorker.phone : $t('quests.unknownPhoneNumber') }}
+                            {{ currentWorker && currentWorker.phone ? currentWorker.phone : $t('quests.unknownPhoneNumber') }}
                           </span>
                         </span>
                         <span class="contact__container">
                           <span class="icon-mail" />
                           <span class="contact__link">
-                            {{ currentWorker.email !== null
-                              ? currentWorker.email : $t('quests.unknownEmailAddress') }}
+                            {{ currentWorker && currentWorker.email ? currentWorker.email : $t('quests.unknownEmailAddress') }}
                           </span>
                         </span>
                       </span>
@@ -94,8 +93,23 @@
           <div class="block_title">
             {{ $t('workers.skills') }}
           </div>
-          <div>
-            <span class="badge_blue">{{ $t('quests.skillsNotSpecified') }}</span>
+          <span
+            v-if="userSpecializations && userSpecializations.length === 0"
+            class="badge_blue"
+          >{{ $t('quests.skillsNotSpecified') }}</span>
+          <div
+            v-else
+            class="badge__container"
+          >
+            <ul class="badge-list">
+              <li
+                v-for="(skill, spec) in userSpecializations"
+                :key="spec"
+                class="badge__item"
+              >
+                {{ getSkillTitle(skill.path) }}
+              </li>
+            </ul>
           </div>
         </div>
         <div class="block_16">
@@ -103,7 +117,7 @@
             {{ $t('workers.completedQuests') }}
           </div>
           <div class="numbers__big_blue">
-            0
+            {{ questsStatistic && questsStatistic.completed ? questsStatistic.completed : 0 }}
           </div>
           <div>{{ $t('quests.oneTime') }}</div>
         </div>
@@ -112,11 +126,12 @@
             {{ $t('workers.openedQuests') }}
           </div>
           <div class="numbers__big_blue">
-            0
+            {{ questsStatistic && questsStatistic.opened ? questsStatistic.opened : 0 }}
           </div>
+          <!--          TODO: Добавить ссылку-->
           <n-link
             class="block__link"
-            to="/workers"
+            to=""
           >
             {{ $t('workers.showAll') }}
           </n-link>
@@ -127,14 +142,18 @@
           </div>
           <div class="block__rating">
             <div class="numbers__big_black">
-              4.5
+              {{ ratingStatistic && ratingStatistic.averageMark ? ratingStatistic.averageMark : 0 }}
             </div>
             <img
               src="~assets/img/ui/star.svg"
               alt="star"
             >
           </div>
-          <div>{{ $t('workers.based') }} 0 {{ $t('workers.reviews') }}</div>
+          <div>
+            {{ $t('workers.based') }}
+            {{ ratingStatistic && ratingStatistic.reviewCount ? ratingStatistic.reviewCount : 0 }}
+            {{ $t('workers.reviews') }}
+          </div>
         </div>
       </div>
       <div class="information-section">
@@ -142,24 +161,10 @@
           {{ $t('quests.reviewsBig') }}
         </div>
         <reviews />
-        <div class="button__container">
-          <div
-            class="button__more"
-          >
-            {{ $t('meta.showAllReviews') }}
-          </div>
-        </div>
         <div class="section__title">
           {{ $t('quests.portfolio') }}
         </div>
         <Portfolio />
-        <div class="button__container">
-          <div
-            class="button__more"
-          >
-            {{ $t('quests.showAllCases') }}
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -181,40 +186,28 @@ export default {
   },
   computed: {
     ...mapGetters({
-      tags: 'ui/getTags',
-      userRole: 'user/getUserRole',
-      userData: 'user/getUserData',
-      userInfo: 'data/getUserInfo',
-      user: 'data/getUserInfo',
-      workersList: 'quests/getWorkersList',
       currentWorker: 'quests/getCurrentWorker',
+      questsStatistic: 'quests/getQuestsStatistic',
+      ratingStatistic: 'quests/getRatingStatistic',
+      userSpecializations: 'quests/getUserSpecializations',
       currentWorkerAddInfo: 'quests/getCurrentWorkerAddInfo',
     }),
   },
-  async created() {
-    await this.initWorker();
-  },
   async mounted() {
     this.SetLoader(true);
+    await this.$store.dispatch('quests/getWorkerData', this.$route.params.id);
     this.SetLoader(false);
   },
   methods: {
+    getSkillTitle(path) {
+      const [spec, skill] = path.split('.');
+      return this.$t(`filters.items.${spec}.sub.${skill}`);
+    },
     showModalGiveQuest() {
       this.ShowModal({
         key: modals.invitation,
         currentWorker: this.currentWorker,
       });
-    },
-    async initWorkers() {
-      await this.$store.dispatch('quests/workersList');
-    },
-    async initWorker() {
-      const userId = this.$route.params.id;
-      try {
-        await this.$store.dispatch('quests/getWorkerData', userId);
-      } catch (e) {
-        console.log(e);
-      }
     },
   },
 };
@@ -311,28 +304,6 @@ export default {
   }
 }
 
-.button {
-  &__container {
-    @extend .styles__flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-  }
-  &__more {
-    display: inline-block;
-    text-decoration: none;
-    font-size: 16px;
-    line-height: 130%;
-    color: #0083C7;
-    border: 1px solid rgba(0, 131, 199, 0.1);
-    border-radius: 6px;
-    padding: 13px 67px 13px 28px;
-    background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
-    background-position: 82% 21px;
-    background-repeat: no-repeat;
-  }
-}
-
 .level {
   @include text-simple;
   font-style: normal;
@@ -424,14 +395,33 @@ export default {
     }
   }
 }
-
 .badge {
-  &_blue {
+  &-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  &__container {
+    display: flex;
+    padding: 0;
+    height: 110px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  &__item {
+    @include text-simple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
     background: rgba(0, 131, 199, 0.1);
     padding: 5px 7px;
     border-radius: 44px;
     color: $blue;
-    margin: 0 9px 0 0;
+    margin: 0 5px 5px 0;
   }
 }
 

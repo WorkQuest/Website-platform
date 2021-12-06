@@ -61,18 +61,6 @@
           </div>
           <portfolioTab />
         </div>
-        <div
-          v-if="userRole === 'worker'"
-          class="button"
-        >
-          <nuxt-link
-            v-if="selected === 2"
-            class="button__more"
-            to="/profile"
-          >
-            {{ $t('meta.showAllReviews') }}
-          </nuxt-link>
-        </div>
       </div>
     </div>
   </div>

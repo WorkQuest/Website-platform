@@ -218,21 +218,16 @@ export default {
   }
 }
 
-.badge-list{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-}
 .badge {
-  &__container {
-    padding-top: 20px;
+  &-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
   }
-}
-.badge {
   &__container {
-    padding: 0 0 20px 0;
+    padding: 20px 0 20px 0;
   }
   &__item {
     @include text-simple;

@@ -255,6 +255,11 @@
   "skills": {
     "title": "Skills"
   },
+  "worker": {
+    "cost": {
+      "notIndicated": "Not indicated..."
+    }
+  },
   "quests": {
     "wusd": "WUSD",
     "employer": {
@@ -751,7 +756,7 @@
           "2301": "Livestock (both production and animal health)",
           "2302": "Fisheries and Aquaculture (including capture fisheries)",
           "2303": "Forestry",
-          "2304": "Othet Agriculture & Agribussiness"
+          "2304": "Other Agriculture & Agribusiness"
         }
       },
       "24": {
@@ -1475,6 +1480,7 @@
     "disputeTime": "Dispute opening time:"
   },
   "workers": {
+    "noWorkers": "There is no workers...",
     "searchQuests": "Search quests",
     "searchWorkers": "Search workers",
     "topWorkers": "Top employees",
@@ -1496,7 +1502,9 @@
     "from": "From",
     "based": "Based",
     "reviews": "reviews",
+    "noReviewsAdded": "No reviews added!",
     "portfolio": "Portfolio",
+    "noPortfoliosAdded": "No portfolios added!",
     "showAllCases": "Show all cases",
     "costTitle": "Cost per hour"
   },
