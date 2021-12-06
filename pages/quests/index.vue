@@ -265,7 +265,6 @@ export default {
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
-      checkWelcomeModal: 'modals/getIsShowWelcome',
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
       selectedSpecializationsFilters: 'quests/getSelectedSpecializationsFilters',
