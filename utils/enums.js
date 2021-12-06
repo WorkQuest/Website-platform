@@ -74,3 +74,19 @@ export const responsesType = {
   Responded: 0,
   Invited: 1,
 };
+export const keyCodes = {
+  Escape: 27,
+  ArrowLeft: 37,
+  ArrowRight: 39,
+};
+
+// Filters
+export const workplaceFilter = ['', 'distant', 'office', 'both'];
+export const ratingFilter = ['', 'verified', 'reliable', 'topRanked'];
+export const typeOfJobFilter = ['', 'fullTime', 'partTime', 'fixedTerm'];
+export const priorityFilter = [
+  0, // all
+  3, // urgent
+  2, // shortTerm
+  1, // fixedDelivery
+];

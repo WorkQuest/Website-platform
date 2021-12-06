@@ -1,9 +1,7 @@
 <template>
   <div>
     <info />
-    <div
-      class="main main-white"
-    >
+    <div class="main main-white">
       <div class="main__body">
         <questPanel
           :avatar-url="userAvatar"
@@ -231,26 +229,26 @@ export default {
     await this.initData();
     await this.initUserAvatar();
     await this.getResponsesToQuest();
-    await this.getFilteredResponses();
+    this.getFilteredResponses();
     await this.checkPageMode();
     this.SetLoader(false);
   },
   methods: {
+    async initData() {
+      await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+    },
     async getResponsesToQuest() {
       if (this.userRole === 'employer') {
         await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
       }
     },
-    async getFilteredResponses() {
+    getFilteredResponses() {
       if (this.userRole === 'employer') {
         this.filteredResponses = this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Responded);
         this.filteredInvited = this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Invited);
         return this.filteredResponses && this.filteredInvited;
       }
       return '';
-    },
-    async initData() {
-      await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     },
     async initUserAvatar() {
       this.userAvatar = await this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');

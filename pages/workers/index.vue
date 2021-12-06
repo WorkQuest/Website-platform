@@ -27,7 +27,7 @@
               is-search
               :placeholder="$t('quests.ui.search')"
               mode="icon"
-              :selector="searchDDStatus"
+              :selector="isSearchDDStatus"
               @selector="getAddressInfo(search)"
             >
               <template v-slot:left />
@@ -35,7 +35,7 @@
                 <div
                   v-if="addresses.length"
                   class="selector"
-                  :class="{'selector_hide': searchDDStatus === false}"
+                  :class="{'selector_hide': isSearchDDStatus === false}"
                 >
                   <div class="selector__items">
                     <div
@@ -54,7 +54,7 @@
           <div class="search__dd">
             <base-dd
               v-model="distanceIndex"
-              :items="distance"
+              :items="distanceItems"
             />
           </div>
           <div class="search__actions">
@@ -73,7 +73,7 @@
         >
           <base-dd
             v-model="distanceIndex"
-            :items="distance"
+            :items="distanceItems"
           />
         </div>
         <div class="filter__toggle">
@@ -95,20 +95,53 @@
             <div class="panel__left">
               <base-filter-dd class="panel__item" />
               <base-dd
-                v-for="(item, i) in panelDDLeft"
-                :key="i"
-                v-model="item.vmodel"
-                :class="item.class"
-                :items="item.items"
-                :mode="item.mode"
-                :placeholder="item.placeholder"
+                v-model="selectedRating"
+                class="panel__item"
+                :items="ratingItems"
+                mode="blackFont"
+                :placeholder="$t('quests.rating.title')"
+              />
+              <base-dd
+                v-model="selectedPriority"
+                class="panel__item"
+                :items="priorityItems"
+                mode="blackFont"
+                :placeholder="$t('quests.priority.title')"
+              />
+              <base-dd
+                v-model="selectedDistantWork"
+                class="panel__item"
+                :items="distantWorkItem"
+                mode="blackFont"
+                :placeholder="$t('quests.distantWork.title')"
               />
               <base-btn
                 class="panel__item"
                 :mode="'light'"
                 @click="showPriceSearch"
               >
-                <span class="tools__text">
+                <span
+                  v-if="selectedPriceFilter.from && selectedPriceFilter.to"
+                  class="tools__text tools__text_price"
+                >
+                  {{ selectedPriceFilter.from }} - {{ selectedPriceFilter.to }}
+                </span>
+                <span
+                  v-else-if="!selectedPriceFilter.from && selectedPriceFilter.to"
+                  class="tools__text tools__text_price"
+                >
+                  0 - {{ selectedPriceFilter.to }}
+                </span>
+                <span
+                  v-else-if="selectedPriceFilter.from && !selectedPriceFilter.to"
+                  class="tools__text tools__text_price"
+                >
+                  > {{ selectedPriceFilter.from }}
+                </span>
+                <span
+                  v-else
+                  class="tools__text"
+                >
                   {{ $t('quests.price') }}
                 </span>
                 <template v-slot:right>
@@ -122,6 +155,7 @@
               <base-btn
                 class="tools__item"
                 :mode="'light'"
+                @click="changeSorting('time')"
               >
                 <span class="tools__text">
                   {{ $t('quests.time') }}
@@ -236,6 +270,7 @@ import { GeoCode } from 'geo-coder';
 import ClickOutside from 'vue-click-outside';
 import GmapSearchBlock from '~/components/app/GmapSearch';
 import modals from '~/store/modals/modals';
+import { priorityFilter, ratingFilter, workplaceFilter } from '~/utils/enums';
 
 export default {
   name: 'Workers',
@@ -247,7 +282,7 @@ export default {
   },
   data() {
     return {
-      searchDDStatus: true,
+      isSearchDDStatus: true,
       isShowMap: true,
       currentLocation: {},
       circleOptions: {},
@@ -266,9 +301,10 @@ export default {
         },
       ],
       rating: [],
-      selectedUrgent: '',
-      selectedDistantWork: '',
-      selectedTypeOfJob: '',
+      sortData: '',
+      selectedPriority: null,
+      selectedDistantWork: null,
+      selectedRating: null,
       pins: {
         selected: '/img/app/marker_blue.svg',
         notSelected: '/img/app/marker_red.svg',
@@ -297,68 +333,38 @@ export default {
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
       workersList: 'quests/getWorkersList',
+      selectedSpecializationsFilters: 'quests/getSelectedSpecializationsFilters',
+      selectedPriceFilter: 'quests/getSelectedPriceFilter',
     }),
-    distantWork() {
+    distantWorkItem() {
       return [
+        this.$t('quests.distantWork.allWorkplaces'),
         this.$t('quests.distantWork.distantWork'),
         this.$t('quests.distantWork.workInOffice'),
         this.$t('quests.distantWork.bothVariant'),
       ];
     },
-    typeOfJob() {
-      return [
-        this.$t('quests.fullTime'),
-        this.$t('quests.partTime'),
-        this.$t('quests.fixedTerm'),
-        this.$t('quests.contract'),
-        this.$t('quests.remoteWork'),
-      ];
-    },
-    urgent() {
-      return [
-        this.$t('priority.urgent'),
-        this.$t('priority.normal'),
-        this.$t('priority.low'),
-      ];
-    },
-    distance() {
-      return [
-        '+ 100 m',
-        '+ 500 m',
-        '+ 1000 m',
-      ];
-    },
-    priority() {
+    priorityItems() {
       return [
         this.$t('quests.priority.all'),
-        this.$t('quests.priority.low'),
-        this.$t('quests.priority.normal'),
-        this.$t('quests.priority.urgent'),
+        this.$t('quests.runtime.urgent'),
+        this.$t('quests.runtime.shortTerm'),
+        this.$t('quests.runtime.fixedDelivery'),
       ];
     },
-    panelDDLeft() {
+    ratingItems() {
       return [
-        {
-          vmodel: this.selectedTypeOfJob,
-          class: 'panel__item',
-          items: this.typeOfJob,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.typeOfJob'),
-        },
-        {
-          vmodel: this.selectedUrgent,
-          class: 'panel__item',
-          items: this.urgent,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.urgent'),
-        },
-        {
-          vmodel: this.selectedDistantWork,
-          class: 'panel__item',
-          items: this.distantWork,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.distantWork.title'),
-        },
+        this.$t('quests.allVariants'),
+        this.$t('quests.rating.verified'),
+        this.$t('quests.rating.reliable'),
+        this.$t('quests.rating.topRanked'),
+      ];
+    },
+    distanceItems() {
+      return [
+        this.$t('quests.distance.100'),
+        this.$t('quests.distance.500'),
+        this.$t('quests.distance.1000'),
       ];
     },
     cardLevelClass(idx) {
@@ -368,21 +374,75 @@ export default {
         { card__level_checked: cards[idx].level.code === 3 },
       ];
     },
+    formattedSpecFilters() {
+      const filtersData = this.selectedSpecializationsFilters?.query || [];
+      if (!filtersData.length) return '';
+      let filters = `?specialization[]=${filtersData[0]}`;
+      for (let i = 1; i < filtersData.length; i += 1) { filters += `&specialization[]=${filtersData[i]}`; }
+      return filters;
+    },
+  },
+  watch: {
+    async formattedSpecFilters() {
+      await this.fetchWorkersList();
+    },
+    async selectedPriceFilter() {
+      await this.fetchWorkersList();
+    },
+    async selectedPriority() {
+      await this.fetchWorkersList();
+    },
+    async selectedDistantWork() {
+      await this.fetchWorkersList();
+    },
+    async selectedTypeOfJob() {
+      await this.fetchWorkersList();
+    },
+    async selectedRating() {
+      await this.fetchWorkersList();
+    },
   },
   async mounted() {
     this.SetLoader(true);
     if (this.userRole === 'employer') {
-      await this.$store.dispatch('quests/workersList');
+      await this.fetchWorkersList();
       this.showWelcomeModal();
     }
     this.SetLoader(false);
   },
   methods: {
     toggleSearchDD() {
-      this.searchDDStatus = !this.searchDDStatus;
+      this.isSearchDDStatus = !this.isSearchDDStatus;
     },
     hideSearchDD() {
-      this.searchDDStatus = false;
+      this.isSearchDDStatus = false;
+    },
+    async changeSorting(type) {
+      let sortValue = '';
+      if (type === 'time') {
+        this.timeSort = this.timeSort === 'desc' ? 'asc' : 'desc';
+        sortValue = `&sort[createdAt]=${this.timeSort}`;
+      }
+      this.sortData = sortValue;
+      await this.fetchWorkersList();
+    },
+    async fetchWorkersList() {
+      this.SetLoader(true);
+
+      let payload = this.formattedSpecFilters;
+      payload += this.sortData;
+      if (this.selectedPriority) payload += `&priority=${priorityFilter[this.selectedPriority]}`;
+      if (this.selectedDistantWork > 0) payload += `&workplace[]=${workplaceFilter[this.selectedDistantWork]}`;
+      if (this.selectedRating > 0) payload += `&ratingStatus=${ratingFilter[this.selectedRating]}`;
+
+      if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) {
+        payload += `&betweenWagePerHour[from]=${this.selectedPriceFilter.from || 0}&betweenWagePerHour[to]=${this.selectedPriceFilter.to || 99999999999999}`;
+      }
+
+      if (payload[0] === '&') payload = payload.replace('&', '?');
+
+      await this.$store.dispatch('quests/workersList', payload);
+      this.SetLoader(false);
     },
     showPriceSearch() {
       this.ShowModal({
@@ -500,6 +560,9 @@ export default {
     grid-gap: 10px;
     grid-template-columns: 1fr;
   }
+  &__item {
+    min-width: 180px !important;
+  }
 }
 .quests {
   &__cards {
@@ -545,6 +608,12 @@ export default {
       line-height: 130%;
       color: $black800;
     }
+    &_price {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100px;
+    }
   }
   &__tags {
     padding-top: 30px;
@@ -553,6 +622,23 @@ export default {
   &__tools {
     padding-top:  20px;
     margin-bottom: 20px;
+  }
+}
+.tools {
+  &__text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 130%;
+    color: $black800;
+    display: block;
+    &_price {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100px;
+    }
   }
 }
 .main {

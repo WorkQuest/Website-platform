@@ -102,8 +102,8 @@ export default {
   },
   methods: {
     toEditQuest() {
-      // this.$router.push('/edit-quest');
-      // this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
+      this.$router.push('/edit-quest');
+      this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
     },
     toRaisingViews() {
       // this.$router.push('/edit-quest');
