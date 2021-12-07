@@ -155,6 +155,8 @@
     "buyWUSD": "Buy WUSD",
     "submit": "Submit",
     "showAllReviews": "Show all reviews",
+    "showAllQuests": "Show all quests",
+    "showAllPortfolios": "Show all portfolios",
     "later": "Later",
     "iAgree": "I agree",
     "next": "Next",
@@ -1919,6 +1921,9 @@
   "errors": {
     "incorrectPass": "Oops, something went wrong. Check the data and try again.",
     "emptyData": {
+      "emptyQuests": "Oops, there's no quests here yet",
+      "emptyPortfolios": "Oops, there's no portfolio here yet",
+      "emptyReviews": "Oops, there are no reviews here yet",
       "employer": {
         "myQuests": {
           "desc": "You haven't done quests yet",

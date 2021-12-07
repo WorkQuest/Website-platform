@@ -72,12 +72,6 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ReviewsTab',
-  props: {
-    userId: {
-      type: String,
-      default: '',
-    },
-  },
   data() {
     return {
       reviewMark: 0,
@@ -93,7 +87,7 @@ export default {
     }),
   },
   async mounted() {
-    await this.$store.dispatch('user/getAllUserReviews', this.anotherUserData.id);
+    await this.$store.dispatch('user/getAllUserReviews', this.anotherUserData.id || this.userData.id);
   },
   methods: {
     initStars(mark) {

@@ -463,11 +463,7 @@ export default {
       ];
     },
     showProfile(profileId) {
-      if (this.userData.id !== profileId) {
-        this.$router.push(`/show-profile/${profileId}`);
-      } else {
-        this.$router.push(`/profile/${profileId}`);
-      }
+      this.$router.push(`/profile/${profileId}`);
     },
     showDetails(questId) {
       this.$router.push(`/quests/${questId}`);

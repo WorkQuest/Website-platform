@@ -183,7 +183,6 @@ export default {
   watch: {
     userInfo() {
       if (this.userWorkExperiences.length === 0) {
-        this.userStars = [];
         this.initData();
       }
     },
@@ -202,6 +201,9 @@ export default {
         this.userEducations = this.userAdditionalInfo.educations;
       }
       this.userStatistics = this.userInfo.ratingStatistic ? this.userInfo.ratingStatistic : { reviewCount: 0, averageMark: 0 };
+      if (this.userStars && this.userStars.length > 0) {
+        this.userStars = [];
+      }
       let specialNumber = 0;
       for (let i = 0; i < 5; i += 1) {
         if (Math.round(this.userStatistics.averageMark) > i) {

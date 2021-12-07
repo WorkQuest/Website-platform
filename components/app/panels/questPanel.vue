@@ -144,11 +144,7 @@ export default {
       });
     },
     showProfile() {
-      if (this.questData.user.id === this.userData.id) {
-        this.$router.push(`/profile/${this.userData.id}`);
-      } else {
-        this.$router.push(`/show-profile/${this.questData.user.id}`);
-      }
+      this.$router.push(`/profile/${this.userData.id}`);
     },
     convertDate() {
       if (this.questData.createdAt) {

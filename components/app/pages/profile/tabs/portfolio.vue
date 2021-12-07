@@ -1,14 +1,15 @@
 <template>
   <div>
-    <div class="portfolio portfolio__items">
+    <div v-if="portfolios.count === 0">
+      <emptyData
+        :description="$t('errors.emptyData.emptyPortfolios')"
+      />
+    </div>
+    <div
+      v-else
+      class="portfolio portfolio__items"
+    >
       <div
-        v-if="portfolios.count === 0"
-        class="portfolio__item"
-      >
-        {{ $t('workers.noPortfoliosAdded') }}
-      </div>
-      <div
-        v-else
         class="portfolio__item"
       >
         <div
@@ -18,7 +19,7 @@
         >
           <div class="portfolio__body">
             <div
-              v-if="userId === userData.id"
+              v-if="userId === mainUserData.id"
               class="portfolio__btns"
             >
               <base-btn
@@ -61,38 +62,43 @@
         </div>
       </div>
     </div>
-    <div
-      v-if="portfolios.count > 0"
-      class="button__container"
-    >
-      <div
-        class="button__more"
-      >
-        {{ $t('quests.showAllCases') }}
-      </div>
-    </div>
+    <!--    <div-->
+    <!--      v-if="portfolios.count > 0"-->
+    <!--      class="button__container"-->
+    <!--    >-->
+    <!--      <div-->
+    <!--        class="button__more"-->
+    <!--      >-->
+    <!--        {{ $t('quests.showAllCases') }}-->
+    <!--      </div>-->
+    <!--    </div>-->
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'PortfolioTab',
-  props: {
-    userId: {
-      type: String,
-      default: '',
-    },
+  components: {
+    emptyData,
+  },
+  data() {
+    return {
+      userId: null,
+    };
   },
   computed: {
     ...mapGetters({
       portfolios: 'user/getUserPortfolios',
-      userData: 'user/getUserData',
+      mainUserData: 'user/getUserData',
+      userData: 'user/getAnotherUserData',
     }),
   },
   async mounted() {
+    this.userId = this.$route.params.id;
     await this.getAllPortfolios();
   },
   methods: {
@@ -104,7 +110,7 @@ export default {
           imageSrc: src,
           title: name,
           desc,
-          changeRule: this.userId === this.userData.id,
+          changeRule: this.userId === this.mainUserData.id,
         });
       }
     },
@@ -162,6 +168,7 @@ export default {
   }
   &__more {
     display: inline-block;
+    cursor: pointer;
     text-decoration: none;
     font-size: 16px;
     line-height: 130%;

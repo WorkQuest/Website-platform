@@ -27,7 +27,7 @@
           :review-data="userStatistics"
         />
         <div
-          v-if="userData.userSpecializations && selected === 1"
+          v-if="userData.userSpecializations && userData.userSpecializations.length && selected === 1"
           class="skills-block"
         >
           <div class="skills-block__title">
@@ -54,23 +54,38 @@
             </div>
           </div>
         </div>
+        <div
+          v-if="questsObjects.count !== 0 && selected === 1"
+          class="title"
+        >
+          {{ $t('quests.activeQuests') }}
+        </div>
         <div v-if="selected === 2">
-          <div class="title">
-            {{ $t('quests.activeQuests') }}
-          </div>
+          <quests
+            v-if="questsObjects.count !== 0"
+            :limit="questLimits"
+            :object="questsObjects"
+            :page="'quests'"
+          />
+          <emptyData
+            v-else
+            :description="$t(`errors.emptyData.${userData.role}.allQuests.desc`)"
+            :btn-text="$t(`errors.emptyData.${userData.role}.allQuests.btnText`)"
+            :link="userData.role === 'employer' ? '/create-quest' : '/quests'"
+          />
         </div>
         <div
-          v-if="selected === 3 || (selected === 1 && userData.role === 'employer' && userStatistics.reviewCount > 0)"
+          v-if="selected === 1 && userData.role === 'employer' && userStatistics.reviewCount > 0"
           class="title"
         >
           {{ $t('quests.reviewsBig') }}
         </div>
 
         <div
-          v-if="selected === 3 || (selected === 1 && userData.role === 'employer')"
+          v-if="selected === 1 && userData.role === 'employer' || selected === 3"
           class="tab__container"
         >
-          <reviewsTab :user-id="userData.id" />
+          <reviewsTab />
         </div>
         <div
           v-if="selected === 3 && userStatistics.reviewCount > 0"
@@ -80,8 +95,16 @@
             {{ $t('meta.showAllReviews') }}
           </div>
         </div>
-        <div v-if="selected === 4 || (selected === 1 && userData.role === 'worker')">
-          <portfolioTab :user-id="userData.id" />
+        <div class="portfolio-block">
+          <div
+            v-if="selected === 1 && userData.role === 'worker'"
+            class="title"
+          >
+            {{ $t('profile.portfolio') }}
+          </div>
+          <template v-if="(selected === 1 || selected === 4) && userData.role === 'worker'">
+            <portfolioTab />
+          </template>
         </div>
       </div>
     </div>
@@ -95,6 +118,8 @@ import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
 import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
 import userInfo from '~/components/app/pages/common/userInfo';
 import userStatistic from '~/components/app/panels/userStatistic';
+import quests from '~/components/app/pages/common/quests';
+import emptyData from '~/components/app/info/emptyData';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -102,12 +127,16 @@ export default {
   components: {
     reviewsTab,
     userStatistic,
+    quests,
     userInfo,
+    emptyData,
     portfolioTab,
   },
   data() {
     return {
       selected: 1,
+      questLimits: 100,
+      questsObjects: {},
       userStatistics: {
         reviewCount: 0,
         averageMark: 0,
@@ -115,11 +144,13 @@ export default {
         openedQuests: 0,
       },
       userSpecializations: [],
+      userData: {},
     };
   },
   computed: {
     ...mapGetters({
-      userData: 'user/getAnotherUserData',
+      mainUser: 'user/getUserData',
+      // userData: 'user/getAnotherUserData',
     }),
     cardLevelClass(idx) {
       const { cards } = this;
@@ -154,8 +185,14 @@ export default {
       return tabs;
     },
   },
-  async beforeCreate() {
-    await this.$store.dispatch('user/getAnotherUserData', this.$route.params.id);
+  async mounted() {
+    if (this.$route.params.id !== this.mainUser.id) {
+      this.userData = await this.$store.dispatch('user/getAnotherUserData', this.$route.params.id);
+      this.userData = this.userData.result;
+    } else {
+      this.userData = this.mainUser;
+    }
+    this.questsObjects = await this.$store.dispatch('quests/getUserQuests', { userId: this.userData.id });
     const { ratingStatistic } = this.userData;
     const { questStatistic } = this.userData;
 
@@ -548,7 +585,7 @@ export default {
     }
   }
 }
-  @include _1199 {
+@include _1199 {
   .contact {
     display: flex;
     flex-direction: column;
@@ -569,17 +606,16 @@ export default {
     margin: 0 0 20px 0;
   }
 }
-  @include _575 {
-    .contacts {
-      grid-template-columns: 1fr;
-    }
-    .information-grid {
-      flex-direction: column;
-      align-items: center;
-      .col {
-        margin-bottom: 10px;
-      }
+@include _575 {
+  .contacts {
+    grid-template-columns: 1fr;
+  }
+  .information-grid {
+    flex-direction: column;
+    align-items: center;
+    .col {
+      margin-bottom: 10px;
     }
   }
-
+}
 </style>
