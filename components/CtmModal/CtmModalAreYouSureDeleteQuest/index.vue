@@ -54,19 +54,26 @@ export default {
     hide() {
       this.CloseModal();
     },
-    async deleteQuest() {
+    async getAllQuests() {
+      await this.$store.dispatch('quests/getAllQuests');
+    },
+    async deleteQuestResponse() {
       const questId = this.questData.id;
+      try {
+        await this.$store.dispatch('quests/deleteQuest', { questId });
+      } catch (e) {
+        console.log(e);
+        this.showToastError(e);
+      }
+    },
+    async deleteQuest() {
       const questStatus = this.questData.status;
       if ([QuestStatuses.Closed, QuestStatuses.Created].includes(questStatus)) {
-        try {
-          await this.$store.dispatch('quests/deleteQuest', { questId });
-        } catch (e) {
-          console.log(e);
-          this.showToastError(e);
-        }
+        await this.deleteQuestResponse();
         this.hide();
         this.toMyQuests();
         this.showToastDeleted();
+        await this.getAllQuests();
       } else {
         this.hide();
         this.showToastWrongStatus();

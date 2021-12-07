@@ -74,7 +74,7 @@ export default {
       page: 1,
       perPager: 11,
       totalPagesValue: 1,
-      sortData: '',
+      sortData: [],
     };
   },
   computed: {
@@ -97,19 +97,19 @@ export default {
         },
         {
           name: this.$t('myQuests.statuses.requested'),
-          click: () => this.switchQuests('status=5', 0, 2),
+          click: () => this.switchQuests('statuses=5', 0, 2),
         },
         {
           name: this.$t('myQuests.statuses.completed'),
-          click: () => this.switchQuests('status=6', 0, 3),
+          click: () => this.switchQuests('statuses=6', 0, 3),
         },
         {
           name: this.$t('myQuests.statuses.active'),
-          click: () => this.switchQuests('status=2', 0, 4),
+          click: () => this.switchQuests('statuses=2', 0, 4),
         },
         {
           name: this.$t('myQuests.statuses.invited'),
-          click: () => this.switchQuests('status=4', 0, 5),
+          click: () => this.switchQuests('statuses=4', 0, 5),
         },
       ];
     },
@@ -159,7 +159,7 @@ export default {
       if (this.userRole === 'employer') {
         const payload = {
           userId: this.userData.id,
-          query: `limit=${this.perPager}&offset=${(this.page - 1) * perPage}&${this.sortData}`,
+          query: `limit=${this.perPager}&offset=${(this.page - 1) * perPage}&statuses=${this.sortData}`,
         };
         await this.$store.dispatch('quests/getUserQuests', payload);
       } if (this.userRole === 'worker') {
