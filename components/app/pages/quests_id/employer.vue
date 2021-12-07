@@ -180,14 +180,6 @@
               {{ $t('btn.rejectCompletedWorkOnQuest') }}
             </base-btn>
           </div>
-          <div class="btn__wrapper">
-            <base-btn
-              mode="delete"
-              @click="closeQuest"
-            >
-              {{ $t('btn.closeQuest') }}
-            </base-btn>
-          </div>
         </div>
       </div>
     </div>
