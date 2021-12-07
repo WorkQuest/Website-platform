@@ -52,7 +52,7 @@ export default {
   name: 'ModalOpenADeposit',
   data() {
     return {
-      code: process.env.BASE_URL.slice(0, -4) + this.$route.fullPath,
+      code: '',
     };
   },
   computed: {
@@ -60,9 +60,17 @@ export default {
       options: 'modals/getOptions',
     }),
   },
+  mounted() {
+    this.getSharingLink();
+  },
   methods: {
     hide() {
       this.CloseModal();
+    },
+    getSharingLink() {
+      const baseUrl = process.env.BASE_URL.slice(0, -5);
+      const { itemId } = this.options;
+      this.code = baseUrl + /quests/ + itemId;
     },
     showDepositIsOpenedModal() {
       this.ShowModal({

@@ -143,9 +143,6 @@ export default {
     InfoModeWorker() {
       return InfoModeWorker;
     },
-    disabledBtn() {
-      return this.infoDataMode === InfoModeWorker.Rejected;
-    },
   },
   async created() {
     await this.getResponsesToQuestForAuthUser();

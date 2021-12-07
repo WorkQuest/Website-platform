@@ -89,6 +89,10 @@ export default {
       type: [String],
       default: null,
     },
+    itemId: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -112,6 +116,7 @@ export default {
     shareModal() {
       this.ShowModal({
         key: modals.sharingQuest,
+        itemId: this.itemId,
       });
     },
     hideDd() {

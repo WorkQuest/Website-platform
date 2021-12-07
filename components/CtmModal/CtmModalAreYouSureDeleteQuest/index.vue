@@ -36,6 +36,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { QuestStatuses } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -54,19 +55,32 @@ export default {
       this.CloseModal();
     },
     async deleteQuest() {
-      try {
-        const questId = this.questData.id;
-        await this.$store.dispatch('quests/deleteQuest', { questId });
+      const questId = this.questData.id;
+      const questStatus = this.questData.status;
+      if ([QuestStatuses.Closed, QuestStatuses.Created].includes(questStatus)) {
+        try {
+          await this.$store.dispatch('quests/deleteQuest', { questId });
+        } catch (e) {
+          console.log(e);
+          this.showToastError(e);
+        }
         this.hide();
         this.toMyQuests();
         this.showToastDeleted();
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
+      } else {
+        this.hide();
+        this.showToastWrongStatus();
       }
     },
     toMyQuests() {
       this.$router.push('/my');
+    },
+    showToastWrongStatus() {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.questInfo'),
+        variant: 'success',
+        text: this.$t('toasts.questCantDelete'),
+      });
     },
     showToastDeleted() {
       return this.$store.dispatch('main/showToast', {

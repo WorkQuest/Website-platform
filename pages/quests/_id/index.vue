@@ -282,7 +282,7 @@ export default {
       }
       if (userRole === 'worker') {
         switch (true) {
-          case questStatus === QuestStatuses.Rejected: payload = InfoModeWorker.Rejected; break;
+          case questStatus === QuestStatuses.Rejected || this.questData.response !== null: payload = InfoModeWorker.Rejected; break;
           case questStatus === QuestStatuses.Created: payload = InfoModeWorker.Created; break;
           case questStatus === QuestStatuses.Active: payload = InfoModeWorker.Active; break;
           case questStatus === QuestStatuses.Closed: payload = InfoModeWorker.Closed; break;

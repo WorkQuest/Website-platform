@@ -216,6 +216,7 @@
                 v-if="item.status === questStatuses.Created"
                 class="block__icon block__icon_fav"
                 mode="vertical"
+                :item-id="item.id"
               />
               <div
                 v-if="[questStatuses.Closed, questStatuses.Dispute].includes(item.status)"

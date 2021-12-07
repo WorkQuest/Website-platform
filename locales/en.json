@@ -891,6 +891,8 @@
     }
   },
   "toasts": {
+    "questInfo": "Quest info",
+    "questCantDelete": "You can't delete this quest on this stage!",
     "questEdited": "Quest edited!",
     "questCreated": "Quest created!",
     "questDeleted": "Quest deleted!",
