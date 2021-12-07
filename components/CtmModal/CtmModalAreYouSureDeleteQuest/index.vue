@@ -78,7 +78,7 @@ export default {
     showToastWrongStatus() {
       return this.$store.dispatch('main/showToast', {
         title: this.$t('toasts.questInfo'),
-        variant: 'success',
+        variant: 'warning',
         text: this.$t('toasts.questCantDelete'),
       });
     },

@@ -217,7 +217,7 @@
           class="btns__wrapper"
         >
           <div class="btn__wrapper">
-            <base-btn>
+            <base-btn @click="openDispute()">
               {{ $t('btn.dispute') }}
             </base-btn>
           </div>
@@ -283,7 +283,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { InfoModeEmployer } from '~/utils/enums';
+import { InfoModeEmployer, QuestStatuses } from '~/utils/enums';
 
 export default {
   name: 'QuestIdEmployer',
@@ -381,6 +381,10 @@ export default {
       await this.$router.push('/my');
       this.SetLoader(false);
     },
+    openDispute() {
+      const modalMode = 4;
+      this.showQuestModal(modalMode);
+    },
     async acceptCompletedWorkOnQuest() {
       const modalMode = 2;
       this.SetLoader(true);
@@ -413,8 +417,19 @@ export default {
       }
     },
     toRaisingViews() {
-      this.$router.push('/edit-quest');
-      this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
+        this.$router.push('/edit-quest');
+        this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
+      } else {
+        this.showToastWrongStatusRaisingViews();
+      }
+    },
+    showToastWrongStatusRaisingViews() {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.questInfo'),
+        variant: 'warning',
+        text: this.$t('toasts.questCantRaisingViews'),
+      });
     },
     showQuestModal(modalMode) {
       this.ShowModal({
@@ -429,6 +444,7 @@ export default {
         1: this.$t('quests.questClosed!'),
         2: this.$t('quests.completedWorkAccepted'),
         3: this.$t('quests.completedWorkRejected'),
+        4: 'Discussion flow in progress..',
       };
       return subtitles[modalMode];
     },

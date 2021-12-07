@@ -893,6 +893,8 @@
   "toasts": {
     "questInfo": "Quest info",
     "questCantDelete": "You can't delete this quest on this stage!",
+    "questCantEdit": "You can't edit this quest on this stage!",
+    "questCantRaisingViews": "You can't go to raising views on this stage!",
     "questEdited": "Quest edited!",
     "questCreated": "Quest created!",
     "questDeleted": "Quest deleted!",
