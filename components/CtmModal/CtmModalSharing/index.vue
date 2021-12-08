@@ -26,11 +26,11 @@
       <span class="content__text">{{ $t('sharing.share') }}</span>
       <div class="flex__two-cols">
         <div class="code__container">
-          <span class="code__text">{{ code }}</span>
+          <span class="code__text">{{ sharingLink }}</span>
         </div>
         <div>
           <button
-            v-clipboard:copy="code"
+            v-clipboard:copy="sharingLink"
             v-clipboard:success="ClipboardSuccessHandler"
             v-clipboard:error="ClipboardErrorHandler"
             class="btn__copy"
@@ -50,27 +50,19 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalOpenADeposit',
-  data() {
-    return {
-      code: '',
-    };
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
-  },
-  mounted() {
-    this.getSharingLink();
+    sharingLink() {
+      const baseUrl = process.env.BASE_URL.slice(0, -5);
+      const { itemId } = this.options;
+      return baseUrl + /quests/ + itemId;
+    },
   },
   methods: {
     hide() {
       this.CloseModal();
-    },
-    getSharingLink() {
-      const baseUrl = process.env.BASE_URL.slice(0, -5);
-      const { itemId } = this.options;
-      this.code = baseUrl + /quests/ + itemId;
     },
     showDepositIsOpenedModal() {
       this.ShowModal({
