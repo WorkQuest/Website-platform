@@ -28,10 +28,10 @@
               <div class="reviews-item__rating-block">
                 <div class="rating">
                   <div
-                    v-for="(star, key) in initStars(options.reviewMark)"
-                    :key="key"
+                    v-for="(star,idx) in 5"
+                    :key="idx"
                     class="star"
-                    :class="star ? `star${star}` : star"
+                    :class="initStarClass(star)"
                   />
                 </div>
                 <div class="rating-mark">
@@ -63,39 +63,19 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalReviewDetails',
-  data() {
-    return {
-      review: {
-        reviewerName: 'Edward Cooper',
-        reviewerRating: '4.00',
-        questName: 'SPA saloon design',
-        reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisis nunc tincidunt nec, vel malesuada risus tempor massa. Turpis amet, amet vitae integer molestie pretium purus nec. Habitasse ipsum sed dictumst elementum purus amet placerat orci, nulla. Arcu, vel enim ultricies pellentesque ac libero fermentum pulvinar. Pretium at tellus porta nulla tortor pellentesque. Facilisi ut posuere mi eget euismod condimentum massa varius. Eu at egestas justo nunc mauris integer velit sit.\n'
-          + 'Tristique mattis faucibus nunc enim malesuada suspendisse. Feugiat etiam ornare fermentum at. Enim ultricies etiam et aliquam, ac enim nisi cras mattis. Neque, id faucibus purus in in erat a. Nunc urna, aliquet facilisis turpis morbi. Nibh vel sit nisi consequat mattis egestas ac est at. Sit tortor fermentum vestibulum auctor diam nullam fringilla mi ac. Pretium, sed euismod vestibulum non enim arcu. Massa aenean libero, vestibulum in ut risus, tincidunt est.',
-      },
-    };
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
   },
   methods: {
-    initStars(mark) {
-      let specialNumber = 0;
-      const starArray = [];
-      for (let i = 0; i < 5; i += 1) {
-        if (mark > i) {
-          starArray.push('__full');
-        } else {
-          specialNumber = mark - (i);
-          if ((specialNumber >= 0.3 && specialNumber <= 0.7) && !this.userStars.includes('__half')) {
-            starArray.push('__half');
-          } else {
-            starArray.push('');
-          }
-        }
-      }
-      return starArray;
+    initStarClass(star) {
+      const { reviewMark } = this.options;
+      const a = this.Floor(star - reviewMark, 2);
+      return [
+        { star__full: star <= reviewMark },
+        { star__half: (a >= 0.3 && a <= 0.7) },
+      ];
     },
     hide() {
       this.CloseModal();

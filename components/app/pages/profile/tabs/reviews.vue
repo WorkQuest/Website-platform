@@ -27,10 +27,10 @@
           <div class="reviews-item__rating-block">
             <div class="rating">
               <div
-                v-for="(star, key) in initStars(reviewData.mark)"
-                :key="key"
+                v-for="(star,idx) in 5"
+                :key="idx"
                 class="star"
-                :class="star ? `star${star}` : star"
+                :class="initStarClass(star, reviewData.mark)"
               />
             </div>
             <div class="rating-mark">{{ reviewData.mark }}</div>
@@ -90,22 +90,12 @@ export default {
     await this.$store.dispatch('user/getAllUserReviews', this.anotherUserData.id || this.userData.id);
   },
   methods: {
-    initStars(mark) {
-      let specialNumber = 0;
-      const starArray = [];
-      for (let i = 0; i < 5; i += 1) {
-        if (mark > i) {
-          starArray.push('__full');
-        } else {
-          specialNumber = mark - (i);
-          if ((specialNumber >= 0.3 && specialNumber <= 0.7) && !this.userStars.includes('__half')) {
-            starArray.push('__half');
-          } else {
-            starArray.push('');
-          }
-        }
-      }
-      return starArray;
+    initStarClass(star, reviewMark) {
+      const a = this.Floor(star - reviewMark, 2);
+      return [
+        { star__full: star <= reviewMark },
+        { star__half: (a >= 0.3 && a <= 0.7) },
+      ];
     },
     initAvatar(userData) {
       return userData?.avatar?.url || require('~/assets/img/app/avatar_empty.png');

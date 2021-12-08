@@ -11,10 +11,10 @@
       </div>
       <div class="rating">
         <div
-          v-for="(item, i) in userStars"
-          :key="i"
+          v-for="(star,idx) in 5"
+          :key="idx"
           class="star"
-          :class="item ? `star${item}` : item"
+          :class="initStarClass(star)"
         />
       </div>
       <div class="reviews-amount">
@@ -201,22 +201,14 @@ export default {
         this.userEducations = this.userAdditionalInfo.educations;
       }
       this.userStatistics = this.userInfo.ratingStatistic ? this.userInfo.ratingStatistic : { reviewCount: 0, averageMark: 0 };
-      if (this.userStars && this.userStars.length > 0) {
-        this.userStars = [];
-      }
-      let specialNumber = 0;
-      for (let i = 0; i < 5; i += 1) {
-        if (Math.round(this.userStatistics.averageMark) > i) {
-          this.userStars.push('__full');
-        } else {
-          specialNumber = this.userStatistics.averageMark - (i);
-          if ((specialNumber >= 0.3 && specialNumber <= 0.7) && !this.userStars.includes('__half')) {
-            this.userStars.push('__half');
-          } else {
-            this.userStars.push('');
-          }
-        }
-      }
+    },
+    initStarClass(star) {
+      const reviewMark = this.userStatistics.averageMark;
+      const a = this.Floor(star - reviewMark, 2);
+      return [
+        { star__full: star <= reviewMark },
+        { star__half: (a >= 0.3 && a <= 0.7) },
+      ];
     },
     shareModal() {
       this.ShowModal({
