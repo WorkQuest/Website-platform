@@ -100,9 +100,6 @@ export default {
     hide() {
       this.CloseModal();
     },
-    showProfile() {
-      this.$router.push('/show-profile');
-    },
     success() {
       this.ShowModal({
         key: modals.status,

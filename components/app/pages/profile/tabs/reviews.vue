@@ -110,9 +110,6 @@ export default {
     initAvatar(userData) {
       return userData?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
     },
-    showProfile() {
-      this.$router.push('/show-profile');
-    },
     showReviewDetails(data) {
       this.ShowModal({
         key: modals.reviewDetails,
