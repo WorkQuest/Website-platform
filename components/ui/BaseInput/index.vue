@@ -45,6 +45,7 @@
         :autocomplete="autocomplete"
         @input="input"
         @keypress.enter="onEnterPress"
+        @focus="$emit('focus')"
       >
       <div
         v-if="value && isSearch"

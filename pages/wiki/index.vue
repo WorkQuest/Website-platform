@@ -13,13 +13,31 @@
         </h3>
         <div class="wiki__fields">
           <div class="wiki__search-field">
-            <base-field
-              v-model="search"
-              class="wiki__input"
-              :is-search="true"
-              :is-hide-error="true"
-              :placeholder="$t('wiki.searchPlaceholder')"
-            />
+            <div class="wiki__search-holder">
+              <base-field
+                v-model="searchValue"
+                class="wiki__input"
+                :is-search="true"
+                :is-hide-error="true"
+                :placeholder="$t('wiki.searchPlaceholder')"
+                @input="handleSearch"
+                @focus="handleSearch"
+              />
+              <div
+                v-if="searched.length"
+                v-click-outside="() => { searched = [] }"
+                class="wiki__searched searched"
+              >
+                <div
+                  v-for="(item, index) of searched"
+                  :key="index"
+                  class="searched__item"
+                  @click="gotoTab(item.tab)"
+                >
+                  <b>{{ item.tabName }}</b> - {{ item.text }}
+                </div>
+              </div>
+            </div>
             <div class="wiki__button-field">
               <base-btn
                 class="wiki__search-button"
@@ -73,6 +91,7 @@
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside';
 import Content from '~/components/wiki/content.vue';
 
 export default {
@@ -80,10 +99,15 @@ export default {
   components: {
     Content,
   },
+  directives: {
+    ClickOutside,
+  },
   data() {
     return {
       currentTab: 'header',
-      search: '',
+      searchValue: '',
+      interval: null,
+      searched: [],
       pageX: 0,
       isMoving: false,
     };
@@ -112,6 +136,65 @@ export default {
     },
     onTouchMove() {
       this.isMoving = this.$refs.header.getBoundingClientRect().y < -157;
+    },
+    handleSearch() {
+      clearTimeout(this.interval);
+      if (!this.searchValue.length) {
+        this.searched = [];
+        return;
+      }
+      this.interval = setTimeout(() => this.searchData(), 500);
+    },
+    gotoTab(tab) {
+      this.currentTab = tab;
+      this.searched = [];
+    },
+    async searchData() {
+      const word = this.searchValue.toLowerCase();
+      const results = [];
+      // eslint-disable-next-line no-restricted-syntax
+      for (const nav of this.navigation) {
+        const tabName = this.$t(`wiki.navigation.${nav}.title`);
+        const title = this.$t(`wiki.navigation.${nav}.title`).toLowerCase();
+        const cards = Object.keys(this.$t(`wiki.navigation.${nav}.cards`));
+        // eslint-disable-next-line no-restricted-syntax
+        for (const card of cards) {
+          const cardTitle = this.$t(`wiki.navigation.${nav}.cards.${card}.title`).toLowerCase();
+          let cardSubtitle = [];
+          if (this.$te(`wiki.navigation.${nav}.cards.${card}.subtitle`)) {
+            cardSubtitle = this.$t(`wiki.navigation.${nav}.cards.${card}.subtitle`).toLowerCase();
+          }
+          if (cardSubtitle.indexOf(word) !== -1) {
+            const text = this.$t(`wiki.navigation.${nav}.cards.${card}.subtitle`);
+            if (results.filter((item) => item.tab !== nav).length === 0) {
+              results.push({
+                tab: nav,
+                tabName,
+                text,
+              });
+            }
+          } else if (cardTitle.indexOf(word) !== -1) {
+            const text = this.$t(`wiki.navigation.${nav}.cards.${card}.title`);
+            if (results.filter((item) => item.tab !== nav).length === 0) {
+              results.push({
+                tab: nav,
+                tabName,
+                text,
+              });
+            }
+          } else if (title.indexOf(word) !== -1) {
+            const text = this.$t(`wiki.navigation.${nav}.title`);
+            if (results.filter((item) => item.tab !== nav).length === 0) {
+              results.push({
+                tab: nav,
+                tabName,
+                text,
+              });
+            }
+          }
+        }
+      }
+      this.searched = results;
     },
   },
 };
@@ -152,6 +235,9 @@ export default {
     align-items: center;
     padding: 0 20px;
     border-radius: 6px;
+  }
+  &__search-holder {
+    position: relative;
   }
   &__input {
     width: 880px;
@@ -347,6 +433,32 @@ export default {
     }
     &__search-field {
       padding: 0 4px 0 4px;
+    }
+  }
+}
+
+.searched {
+  z-index: 1;
+  background: white;
+  border-radius: 6px;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 0;
+  width: 100%;
+  border-top: 1px solid $black100;
+  box-shadow: 0 4px 3px rgba(0, 7, 5, 0.3);
+
+  max-height: 50vh;
+  overflow-y: auto;
+
+  &__item {
+    cursor: pointer;
+    padding: 10px;
+    &:hover {
+      background: $black100;
     }
   }
 }
