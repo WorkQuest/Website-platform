@@ -4,16 +4,13 @@
     :class="infoClass"
   >
     <div
-      v-if="userRole === 'employer'
-        && ![InfoModeEmployer.RaiseViews, InfoModeEmployer.Created].includes(infoDataMode)"
+      v-if="userRole === 'employer' && ![InfoModeEmployer.RaiseViews, InfoModeEmployer.Created].includes(infoDataMode)"
       class="info__body"
     >
       <div class="info__left">
         <div
           class="info__text"
-          :class="[
-            {'info__text_white': ![InfoModeEmployer.Created, InfoModeEmployer.WaitConfirm].includes(infoDataMode)}
-          ]"
+          :class="[{'info__text_white': ![InfoModeEmployer.Created, InfoModeEmployer.WaitConfirm].includes(infoDataMode)}]"
         >
           {{ infoStatusText }}
         </div>
@@ -26,14 +23,7 @@
       <div class="info__left">
         <div
           class="info__text"
-          :class="[
-            {
-              'info__text_white': ![InfoModeWorker.Rejected, InfoModeWorker.Closed].includes(infoDataMode)
-            },
-            {
-              'info__text_black': [InfoModeWorker.Rejected, InfoModeWorker.Closed].includes(infoDataMode)
-            }
-          ]"
+          :class="[{'info__text_white': ![InfoModeWorker.Rejected, InfoModeWorker.Closed].includes(infoDataMode)}, {'info__text_black': [InfoModeWorker.Rejected, InfoModeWorker.Closed].includes(infoDataMode)}]"
         >
           {{ infoStatusText }}
         </div>
