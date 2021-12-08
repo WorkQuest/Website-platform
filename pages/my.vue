@@ -124,6 +124,7 @@ export default {
         const payload = {
           userId: this.userData.id,
           query: `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`,
+          role: this.userData.role,
         };
         await this.$store.dispatch('quests/getUserQuests', payload);
       } if (this.userRole === 'worker') {
@@ -141,6 +142,7 @@ export default {
     await this.$store.dispatch('quests/getUserQuests', {
       userId: this.userData.id,
       query: `limit=${this.perPager}`,
+      role: this.userData.role,
     });
     this.totalPagesValue = this.totalPages;
     this.SetLoader(false);
@@ -160,6 +162,7 @@ export default {
         const payload = {
           userId: this.userData.id,
           query: `limit=${this.perPager}&offset=${(this.page - 1) * perPage}&${this.sortData}`,
+          role: this.userData.role,
         };
         await this.$store.dispatch('quests/getUserQuests', payload);
       } if (this.userRole === 'worker') {

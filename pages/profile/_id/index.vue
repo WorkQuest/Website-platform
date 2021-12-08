@@ -75,7 +75,7 @@
           />
           <div class="pager__block">
             <base-pager
-              v-if="selected === 2 && questsObjects.count >= 10"
+              v-if="selected === 2 && totalPages > 1"
               v-model="page"
               :total-pages="totalPages"
             />
@@ -129,7 +129,20 @@
             {{ $t('profile.portfolio') }}
           </div>
           <template v-if="(selected === 1 || selected === 4) && userData.role === 'worker'">
-            <portfolioTab :mode="selected === 1" />
+            <div
+              v-if="selected === 4"
+              class="add-btn__container"
+            >
+              <base-btn
+                @click="showAddCaseModal()"
+              >
+                {{ $t('ui.profile.addCase') }}
+                <template v-slot:right>
+                  <span class="icon-plus" />
+                </template>
+              </base-btn>
+            </div>
+            <portfolioTab />
           </template>
           <div
             v-if="selected === 1 && portfoliosCount > 0"
@@ -259,10 +272,9 @@ export default {
     await this.changeQuestsData(2);
     const { ratingStatistic } = this.userData;
     const { questStatistic } = this.userData;
-
     this.userStatistics = {
-      reviewCount: ratingStatistic.reviewCount,
-      averageMark: ratingStatistic.averageMark,
+      reviewCount: ratingStatistic ? ratingStatistic.reviewCount : 0,
+      averageMark: ratingStatistic && ratingStatistic.averageMark ? ratingStatistic.averageMark : 0,
       completedQuests: questStatistic ? questStatistic.completed : 0,
       openedQuests: questStatistic ? questStatistic.opened : 0,
     };
@@ -303,7 +315,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.add-btn {
+  &__container {
+    width: 154px;
+    margin: 20px 0 20px 0;
+  }
+}
 .button {
   @extend .styles__flex;
   -webkit-box-pack: center;
