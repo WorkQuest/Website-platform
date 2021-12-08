@@ -1,4 +1,7 @@
 import localeEn from './locales/en.json';
+import localeRu from './locales/ru.json';
+import localeAr from './locales/ar.json';
+import localeFr from './locales/fr.json';
 
 require('dotenv').config();
 
@@ -78,12 +81,15 @@ export default {
   //   icons: true,
   // },
   i18n: {
-    locales: ['en'],
+    locales: ['en', 'ru', 'ar', 'fr'],
     defaultLocale: 'en',
     strategy: 'no_prefix',
     vueI18n: {
       messages: {
         en: localeEn,
+        ru: localeRu,
+        ar: localeAr,
+        fr: localeFr,
       },
     },
     detectBrowserLanguage: {

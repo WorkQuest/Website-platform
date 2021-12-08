@@ -786,6 +786,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
+import moment from 'moment';
 
 export default {
   scrollToTop: true,
@@ -1111,6 +1112,9 @@ export default {
     },
     setLocale(item) {
       this.currentLocale = item.localeText;
+      this.$i18n.setLocale(item.localeText);
+      moment.locale(item.localeText);
+      console.log(this.currentLocale, moment.locale());
     },
     kitcutDescription(text) {
       text = text.trim();

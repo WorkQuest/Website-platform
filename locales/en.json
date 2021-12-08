@@ -1151,16 +1151,16 @@
       "login": "Login"
     },
     "locals": {
-      "en": "EN",
-      "ru": "RU",
-      "ba": "BA",
-      "zh": "ZH",
-      "fr": "FR",
-      "hi": "HI",
-      "in": "IN",
-      "po": "PO",
-      "sp": "SP",
-      "ae": "AE"
+      "en": "en",
+      "ru": "ru",
+      "ba": "ba",
+      "zh": "zh",
+      "fr": "fr",
+      "hi": "hi",
+      "in": "in",
+      "po": "po",
+      "sp": "sp",
+      "ae": "ae"
     },
     "notifications": {
       "title": "Notifications",

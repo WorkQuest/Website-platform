@@ -26,5 +26,84 @@
     "required": "The {_field_} field is required",
     "size": "The {_field_} field size must be less than {size}KB",
     "decimal": "The {_field_} field must contain only decimal values"
+  },
+  "ui": {
+    "jobQuestors": "Job Questors",
+    "workers": "Workers",
+    "wallet": "Кошелек",
+    "myQuests": "Мои задания",
+    "quests": "Задания",
+    "profile": {
+      "addCase": "Add Case",
+      "myProfile": "My profile",
+      "settings": "Settings",
+      "disputes": "Disputes",
+      "instruments": "Instruments",
+      "DeFi": "DeFi functionality",
+      "logout": "Logout",
+      "login": "Login"
+    },
+    "locals": {
+      "en": "en",
+      "ru": "ru",
+      "ba": "ba",
+      "zh": "zh",
+      "fr": "fr",
+      "hi": "hi",
+      "in": "in",
+      "po": "po",
+      "sp": "sp",
+      "ae": "ae"
+    },
+    "notifications": {
+      "title": "Увкдомления",
+      "invite": "Приглашаем вас завершить задание"
+    },
+    "menu": {
+      "unauthorized": "Не авторизирован",
+      "instruments": "Инструменты",
+      "crosschain": {
+        "title": "WorkQuest Мост",
+        "desc": "очень длинный текст"
+      },
+      "staking": {
+        "title": "WorkQuest Staking",
+        "desc": "Make your assets work. Stake your assets into DeFi staking or Locked staking to increase staking income."
+      },
+      "pension": {
+        "title": "Retirement program",
+        "desc": "You can select a percentage of each completed quest which will then be automatically credited to your retirement account, or simply deposit an amount of your choice. The pool of funds is invested on the employee's behalf, and the earnings on the investments generate income to the worker upon their retirement."
+      },
+      "referral": {
+        "title": "Referral program",
+        "desc": "Refer & Earn is our scheme that lets you earn rewards  for every friend you refer who becomes a customer and subsequently completes a quest. Your referred friends save, too, by getting a free registration."
+      },
+      "p2p": {
+        "title": "P2P insurance",
+        "desc": "Peer-to-peer (P2P) insurance is a product that allows a group of insureds to pool their capital, self-organize, and self-administer their own insurance. The core idea of P2P is that a set of like-minded people with mutual interests group their insurance policies together introducing a sense of control, trust, and transparency while at the same time reducing costs. This model of insurance combines traditional pooling and sharing of losses with current technology and innovations, providing a product for increasingly savvy consumers who require transparency in an on-demand economy."
+      },
+      "savings": {
+        "title": "Savings product",
+        "desc": "A cryptocurrency savings account gives you access to the cryptocurrency market while allowing you to earn interest like a traditional bank savings account does. If you're interested in long-term cryptocurrency investing, a crypto savings account can help you accrue interest while keeping your coins safe."
+      },
+      "crediting": {
+        "title": "Lending",
+        "desc": "Similar to a traditional loan, the crypto loan amount is deposited in the borrower's bank account and then the borrower pays EMIs to the lender. Once the amount is paid back in full, the lender releases the collateral that acted as security."
+      },
+      "mining": {
+        "title": "Liquidity mining",
+        "desc": "is a DeFi (decentralized finance) mechanism in which participants supply cryptocurrencies into liquidity pools, and being rewarded with fees and tokens based on their share of the total pool liquidity."
+      },
+      "menu": "Menu"
+    },
+    "footer": {
+      "rights": "All rights reserved"
+    },
+    "buttons": {
+      "errors": {
+        "manySpec": "You can only add 3 specializations",
+        "manySkills": "You can only add 5 skills"
+      }
+    }
   }
 }
