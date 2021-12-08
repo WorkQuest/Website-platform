@@ -81,7 +81,7 @@
             />
           </div>
           <div
-            v-if="selected === 1 && questsObjects.count !== 0"
+            v-if="selected === 1 && questsObjects.count > 2"
             class="button"
           >
             <div
@@ -92,58 +92,63 @@
             </div>
           </div>
         </div>
-        <div class="reviews-block">
+        <div
+          v-if="selected === 1 || selected === 3"
+          class="reviews-block"
+        >
           <div
             v-if="selected === 1"
             class="title"
           >
             {{ $t('quests.reviewsBig') }}
           </div>
-          <div
-            v-if="(selected === 1 || selected === 3) && userStatistics.reviewCount > 0"
-            class="tab__container"
-          >
-            <reviewsTab />
-          </div>
-          <div
-            v-if="selected === 1 && userStatistics.reviewCount > 0"
-            class="button"
-          >
+          <template v-if="userStatistics.reviewCount > 0">
             <div
-              class="button__more"
-              @click="selected = 3"
+              class="tab__container"
             >
-              {{ $t('meta.showAllReviews') }}
+              <reviewsTab />
             </div>
-          </div>
+            <div
+              v-if="selected === 1"
+              class="button"
+            >
+              <div
+                class="button__more"
+                @click="selected = 3"
+              >
+                {{ $t('meta.showAllReviews') }}
+              </div>
+            </div>
+          </template>
           <emptyData
-            v-if="(selected === 1 || selected === 3) && userStatistics.reviewCount === 0"
+            v-else
             :description="$t('errors.emptyData.emptyReviews')"
           />
         </div>
-        <div class="portfolio-block">
+        <div
+          v-if="(selected === 1 || selected === 4) && userData.role === 'worker'"
+          class="portfolio-block"
+        >
           <div
-            v-if="selected === 1 && userData.role === 'worker'"
+            v-if="selected === 1"
             class="title"
           >
             {{ $t('profile.portfolio') }}
           </div>
-          <template v-if="(selected === 1 || selected === 4) && userData.role === 'worker'">
-            <div
-              v-if="selected === 4"
-              class="add-btn__container"
+          <div
+            v-if="selected === 4"
+            class="add-btn__container"
+          >
+            <base-btn
+              @click="showAddCaseModal()"
             >
-              <base-btn
-                @click="showAddCaseModal()"
-              >
-                {{ $t('ui.profile.addCase') }}
-                <template v-slot:right>
-                  <span class="icon-plus" />
-                </template>
-              </base-btn>
-            </div>
-            <portfolioTab />
-          </template>
+              {{ $t('ui.profile.addCase') }}
+              <template v-slot:right>
+                <span class="icon-plus" />
+              </template>
+            </base-btn>
+          </div>
+          <portfolioTab />
           <div
             v-if="selected === 1 && portfoliosCount > 0"
             class="button"
@@ -328,6 +333,7 @@ export default {
   justify-content: center;
   margin: 20px 0 0 0;
   &__more {
+    margin: 0 0 0 0;
     @extend .button;
     cursor: pointer;
     display: inline-block;
@@ -367,7 +373,6 @@ export default {
 .main-container {
   width: 1180px;
   margin: 0 auto;
-  padding-top: 10px;
   display: grid;
   gap: 20px;
 }
