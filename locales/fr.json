@@ -1,0 +1,1566 @@
+{
+  "invite": {
+    "title": "Invité(e)"
+  },
+  "response": {
+    "title": "Réponse envoyée"
+  },
+  "active": {
+    "title": "Réponse envoyée"
+  },
+  "company": {
+    "from": "de"
+  },
+  "performed": {
+    "title": "Exécutée"
+  },
+  "btn": {
+    "agree": "D'accord",
+    "goToChat": "Accéder à la messagerie instantanée",
+    "dispute": "Ouvrir le litige",
+    "responded": "Réponse envoyée",
+    "sendARequest": "Envoyer une demande",
+    "view": "Afficher"
+  },
+  "distance": {
+    "m": "m"
+  },
+  "info": {
+    "showYourMessage": "Afficher votre message"
+  },
+  "uploader": {
+    "uploadText": "Téléverser des images ou des vidéos",
+    "upload": "Téléverser",
+    "files": "fichiers"
+  },
+  "messages": {
+    "alpha": "Le champ {_field_} ne peut contenir que des caractères alphabétiques",
+    "alpha_num": "Le champ {_field_} ne peut contenir que des caractères alphanumériques",
+    "alpha_dash": "Le champ {_field_} peut contenir des caractères alphanumériques ainsi que des traits d’union et des traits de soulignement",
+    "alpha_spaces": "Le champ {_field_} ne peut contenir que des caractères alphabétiques ainsi que des espaces",
+    "between": "La valeur du champ {_field_} doit être comprise entre {min} et {max}",
+    "confirmed": "La confirmation du champ {_field_} ne correspond pas",
+    "digits": "Le champ {_field_} doit contenir une valeur numérique composée exactement de {length} chiffres",
+    "dimensions": "Le champ {_field_} doit mesurer {width} pixels sur {height} pixels",
+    "email": "Le champ {_field_} doit contenir une adresse e-mail valide",
+    "excluded": "La valeur du champ {_field_} n’est pas valide",
+    "ext": "La valeur du champ {_field_} n’est pas un fichier valide",
+    "image": "Le champ {_field_} doit contenir une image",
+    "integer": "La valeur du champ {_field_} doit être un entier",
+    "length": "La valeur du champ {_field_} doit avoir une longueur de {length}",
+    "max_value": "La valeur du champ {_field_} doit avoir une longueur maximale de {max}",
+    "max": "La valeur du champ {_field_} ne doit pas dépasser {length} caractères",
+    "mimes": "Le champ {_field_} doit contenir un type de fichier valide",
+    "min_value": "Le champ {_field_} doit avoir une valeur minimale de {min}",
+    "min": "Le champ {_field_} doit contenir au moins {length} caractères",
+    "numeric": "Le champ {_field_} ne peut contenir que des caractères numériques",
+    "oneOf": "La valeur du champ {_field_} n’est pas valide",
+    "regex": "Le format du champ {_field_} n'est pas valide",
+    "required_if": "Le champ {_field_} est obligatoire",
+    "required": "Le champ {_field_} est obligatoire",
+    "size": "La taille du champ {_field_} doit être inférieure à {size} Ko",
+    "decimal": "Le champ {_field_} ne doit contenir que des valeurs décimales"
+  },
+  "labels": {
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "mail": "E-mail",
+    "password": "Saisir le mot de passe"
+  },
+  "placeholders": {
+    "default": "Espace réservé",
+    "firstName": "John",
+    "lastName": "Doe",
+    "mail": "votre@courriel.com",
+    "email": "Adresse e-mail",
+    "password": "•••••••"
+  },
+  "about": {
+    "contact": "Nous contacter",
+    "content": {
+      "title": "À propos de nous",
+      "text": "WorkQuest est un projet social basé sur la technologie blockchain visant à faciliter la recherche d’emploi et résoudre toutes les tâches des employeurs en mode quête. Cherchez-vous un emploi ? WorkQuest vous aidera à trouver une quête à côté de chez vous ou dans votre ville. Avez-vous besoin de travailleurs pour réaliser certains objectifs ? Il suffit de créer une quête sur le site de WorkQuest. Le service assume les obligations de garantie pour l'exécution des quêtes. Les fonds des employeurs sont conservés auprès de nous. Si l'employé(e) fournit une confirmation de l'exécution du travail, les fonds sont reversés sur son compte. Le système d'évaluations, de notes et la liste des quêtes accomplies aideront à trouver facilement des personnes honnêtes et des spécialistes fiables.\n\n          Notre objectif est de simplifier la communication entre les employeurs et les employés, d'aider des millions de personnes à trouver des emplois, d'améliorer leur situation financière, de résoudre le problème permanent de recherche de professionnels fiables dans tous les secteurs pour créer une économie numérique progressive fondée sur les principes de confiance, de respect mutuel et de bien-être de tous ses participants."
+    }
+  },
+  "registration": {
+    "edit": "Éditer",
+    "registration": "Inscription",
+    "emailConfirm": "Un message a été envoyé à votre adresse e-mail",
+    "emailConfirmTitle": "Consultez votre boîte de messagerie"
+  },
+  "login": {
+    "signIn": "S'identifier",
+    "account": "Vous n'avez pas de compte ?",
+    "remember": "Se souvenir de moi",
+    "forgot": "Mot de passe oublié ?",
+    "loginWith": "Connectez-vous avec votre \ncompte de réseau social",
+    "create": "Créer un compte"
+  },
+  "profile": {
+    "raiseViews": "Augmenter les vues",
+    "educations": "Éducation",
+    "prevWorkExp": "Précédente expérience professionnelle",
+    "active": "propositions actives",
+    "radius": "dans votre zone",
+    "lead": "Délai de mise en œuvre",
+    "proposalLocation": "Emplacement de la proposition \nen fonction de votre \nemplacement actuel",
+    "proposalStatus": "Statut de la proposition",
+    "urgently": "URGENT",
+    "details": "Voir les détails",
+    "available": "Disponible",
+    "viewProfile": "Voir le \nprofil",
+    "invite": "INVITER LE DEMANDEUR",
+    "slogan": "Créer une proposition de travail",
+    "add": "Ajoutez toutes les informations et l’heure de publication pour trouver le bon",
+    "create": "Créer",
+    "writeAMessage": "Écrire un message",
+    "quests": "Quêtes",
+    "reviews": "Évaluations",
+    "portfolio": "Portefeuille",
+    "sidebar": {
+      "filter": "Filtre Toutes les quêtes",
+      "choose": "(Choisissez une catégorie simple\nou spécialisée)",
+      "quests": "Quêtes",
+      "specialized": "QUÊTES SPÉCIALISÉES",
+      "find": "TROUVER UN TRAVAIL"
+    }
+  },
+  "meta": {
+    "back": "Retour",
+    "ok": "D'accord",
+    "send": "Envoyer",
+    "save": "Enregistrer",
+    "reset": "Réinitialiser",
+    "fromYou": "proche de vous",
+    "details": "Voir les détails",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "buyWUSD": "Acheter des WUSD",
+    "submit": "Soumettre",
+    "showAllReviews": "Afficher toutes les évaluations",
+    "later": "Plus tard",
+    "iAgree": "J'accepte",
+    "next": "Suivant",
+    "continue": "Continuer",
+    "change": "Modifier",
+    "apply": "Appliquer",
+    "connectSMSVer": "Connecter la vérification par SMS",
+    "resendSMS": "Renvoyer le SMS",
+    "disable": "Désactiver",
+    "remindLater": "Rappeler plus tard"
+  },
+  "priority": {
+    "title": "Sélectionner la priorité",
+    "all": "Toutes les priorités",
+    "low": "Livraison fixe",
+    "normal": "Court terme",
+    "urgent": "Urgent"
+  },
+  "signIn": {
+    "title": "S'identifier",
+    "account": "pas de compte ?",
+    "regs": "Inscription",
+    "login": "Connexion",
+    "remember": "Se souvenir de moi",
+    "forgot": "Mot de passe oublié",
+    "or": "Ou",
+    "loginWith": "Se connecter avec",
+    "welcomeToWorkQuest": "Bienvenue sur WorkQuest",
+    "pleaseSignIn": "Veuillez vous identifier",
+    "workQuest": "WorkQuest",
+    "makingMoneyIsFast": "WorkQuest :\n Le marché du travail\n décentralisé mondial",
+    "dontHaveAnAccount": "Vous n'avez pas de compte ?",
+    "signUp": "S'inscrire",
+    "forgotYourPass": "Mot de passe oublié ?"
+  },
+  "signWorkQuest": {
+    "title": "Réseau social WorkQuest",
+    "description": "Vous pouvez utiliser votre identifiant et votre mot de passe de DAO WorkQuest pour vous connecter",
+    "daoUsername": "Nom d'utilisateur de la DAO",
+    "daoPass": "Mot de passe de la DAO"
+  },
+  "securityCheck": {
+    "title": "Vérification de sécurité",
+    "confCode": "Code de confirmation Google",
+    "placeholder": "Espace réservé",
+    "confCodeDesc": "Saisissez le code à 6 chiffres de l'application d'authentification Google"
+  },
+  "signUp": {
+    "title": "S'inscrire",
+    "haveAccount": "Vous avez déjà un compte ?",
+    "auth": "Autorisation",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "confirmPassword": "Répéter le mot de passe",
+    "create": "Créer un compte",
+    "back": "retour"
+  },
+  "forgot": {
+    "title": "Mot de passe oublié ?",
+    "desc": "Nous vous enverrons des instructions pour réinitialiser votre mot de passe."
+  },
+  "restore": {
+    "title": "Restaurer le mot de passe",
+    "modal": "Mot de passe modifié"
+  },
+  "role": {
+    "employer": "Employeur",
+    "worker": "Employé(e)",
+    "enter": "Saisir",
+    "choose": "Choisissez votre rôle",
+    "employerWant": "Je veux créer des tâches et recherche des travailleurs",
+    "workerWant": "Je veux rechercher une tâche et travailler en freelance",
+    "chooseThis": "Choisir ce rôle"
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "desc": "",
+    "agree": "J’accepte",
+    "privacyLink": "La politique de confidentialité",
+    "termsLink": "Les conditions générales",
+    "amlLink": "La politique relative au blanchiment d’argent et au financement du terrorisme"
+  },
+  "layout": {
+    "create": "Créer une quête",
+    "links": {
+      "terms": "\t· Conditions générales",
+      "privacy": "\t· Politique de confidentialité"
+    }
+  },
+  "skills": {
+    "title": "Compétences"
+  },
+  "quests": {
+    "quests": "Quêtes",
+    "urgent": "Urgent",
+    "typeOfJob": "Type de travail",
+    "distantWork": {
+      "title": "Travail à distance",
+      "distantWork": "Travail à distance",
+      "workInOffice": "Travail de bureau",
+      "bothVariant": "Les deux variantes"
+    },
+    "hours": "heures",
+    "invited": "Invité(e)",
+    "active": "Active",
+    "performed": "Exécutée",
+    "requested": "Demandée",
+    "youInvited": "Vous avez invité",
+    "inProgressBy": "En cours par :",
+    "showAllCases": "Afficher tous les cas",
+    "portfolio": "Portefeuille",
+    "searchQuests": "Rechercher des quêtes",
+    "readCompletely": "Lire complètement",
+    "questBig": "Quête",
+    "fromBig": "De",
+    "fromYou": "de votre part",
+    "reviews": "évaluations",
+    "reviewsBig": "Évaluations",
+    "MyQuests": "Mes quêtes",
+    "activeQuest": "Quête active",
+    "proposal": "Proposition",
+    "category": "Sélectionner une catégorie",
+    "address": "Ajouter une adresse",
+    "runtime": "Durée (heures)",
+    "uploadMaterials": "Téléverser des documents pour mieux décrire la quête",
+    "uploadQuestMaterials": "Ajouter une description détaillée",
+    "price": "Prix",
+    "filter": {
+      "btn": "Filtres"
+    },
+    "ads": {
+      "promoteYourQuest": "Faites la promotion de votre quête",
+      "publishForFree": "Publier gratuitement",
+      "boostYourPublications": "Dynamisez votre publication",
+      "costPerClick": "Coût par clic"
+    },
+    "selectLocation": "Sélectionner l'emplacement",
+    "city": "Ville",
+    "period": "Période de temps",
+    "EstimatedPayment": "Paiement estimé :",
+    "createAQuest": "Créer une quête",
+    "activeQuests": "Quêtes actives",
+    "completedQuests": "Quêtes terminées",
+    "oneTime": "Une fois",
+    "fullTime": "À plein temps",
+    "uploadAImagesOrVideos": "Téléverser des images ou des vidéos",
+    "averageRating": "Note moyenne",
+    "showAllActiveQuests": "Afficher toutes les quêtes actives",
+    "performanceTimer": "Active jusqu'au :",
+    "questAmount": "quêtes",
+    "otherQuestsSpec": "Autres quêtes par spécialisation",
+    "questMaterials": "Documents de quête supplémentaires",
+    "searchResults": "Résultats de recherche",
+    "type": "Type de travail",
+    "time": "Temps ajouté",
+    "priority": {
+      "all": "Toutes les priorités",
+      "low": "Faible",
+      "normal": "Normale",
+      "urgent": "Urgent"
+    },
+    "ui": {
+      "showMap": "Afficher la carte",
+      "search": "Ville / Rue / Emplacement"
+    },
+    "worker": "Travailleur(se)",
+    "raiseViews": "Augmenter les vues",
+    "deleteQuest": "Supprimer la quête",
+    "approve": "Approuver",
+    "startQuest": "Commencer la quête"
+  },
+  "filters": {
+    "dd": {
+      "1": "Spécialisation",
+      "2": "Quêtes",
+      "3": "Urgent",
+      "4": "Type de travail",
+      "5": "Toutes les priorités",
+      "6": "Prix",
+      "7": "Temps ajouté"
+    },
+    "title": "Filtres",
+    "titleAll": "Tous les filtres",
+    "filterBtn": "Afficher tous les filtres",
+    "commonSub": {
+      "selectAll": "Tout sélectionner"
+    },
+    "items": {
+      "1": {
+        "title": "Commerce de détail, ventes et achats",
+        "sub": {
+          "1": "Magasins de proximité",
+          "2": "Détaillants spécialisés",
+          "3": "Magasins de vêtements",
+          "4": "Détaillants automobiles",
+          "5": "Pharmacies",
+          "6": "Grands magasins",
+          "7": "Supermarchés et hypermarchés",
+          "8": "Magasins multicanaux",
+          "9": "Solderies",
+          "10": "Catalogue de vente directe et sociétés de vente par correspondance",
+          "11": "Boutiques de commerce électronique",
+          "12": "Commerce de détail, ventes et achats - Autre"
+        }
+      },
+      "2": {
+        "title": "Personnel des bars et restaurants",
+        "sub": {
+          "1": "Ethnique",
+          "2": "Restauration rapide",
+          "3": "Restauration rapide haut de gamme",
+          "4": "Restauration décontractée",
+          "5": "Restauration décontractée haut de gamme",
+          "6": "Style familial",
+          "7": "Gastronomie",
+          "8": "Brasserie et bistrot",
+          "9": "Personnel des bars et restaurants - Autre"
+        }
+      },
+      "3": {
+        "title": "Personnel à domicile",
+        "sub": {
+          "1": "Garde d’enfants",
+          "2": "Gouvernante",
+          "3": "Tuteurs",
+          "4": "Domestiques",
+          "5": "Aides-soignants",
+          "6": "Cuisiniers",
+          "7": "Jardiniers",
+          "8": "Conducteurs",
+          "9": "Autre personnel à domicile"
+        }
+      },
+      "4": {
+        "title": "Informatique/réseaux",
+        "sub": {
+          "1": "Administration des bases de données",
+          "2": "Logiciel ERP/CRM",
+          "3": "Sécurité des informations",
+          "4": "Administration réseau et système",
+          "5": "Informatique/réseaux - Autre"
+        }
+      },
+      "5": {
+        "title": "Ingénierie et architecture",
+        "sub": {
+          "1": "Modélisation 3D et CAO",
+          "2": "Architecture",
+          "3": "Ingénierie chimiste",
+          "4": "Fabrication sous contrat",
+          "5": "Ingénierie électrique",
+          "6": "Génie mécanique",
+          "7": "Sciences physiques",
+          "8": "Ingénierie - Autre"
+        }
+      },
+      "6": {
+        "title": "Secrétariat, gestion de la correspondance et des dossiers",
+        "sub": {
+          "1": "Registres de propriété - titres de propriété et règlements",
+          "2": "Documents comptables - locations, pièces justificatives, enquêtes et évaluations",
+          "3": "Documents juridiques",
+          "4": "Inventaires",
+          "5": "Correspondance",
+          "6": "Documents de clôture",
+          "7": "Documents seigneuriaux - registres judiciaires, coutumes, terriers, sondages, etc.",
+          "8": "Documents personnels et politiques",
+          "9": "Cartes et plans",
+          "10": "Secrétariat, gestion de la correspondance et des dossiers - Autre"
+        }
+      },
+      "7": {
+        "title": "Tourisme, loisirs et divertissement",
+        "sub": {
+          "1": "Préposé aux divertissements",
+          "2": "Conciergerie",
+          "3": "Directeur de navires de croisière",
+          "4": "Conservateurs",
+          "5": "Concessionnaires de jeux",
+          "6": "Sauveteur(se)",
+          "7": "Commis à l'information",
+          "8": "Travailleur(se) des loisirs",
+          "9": "Guide de visite et de voyage",
+          "10": "Tourisme, loisirs et divertissement - Autre"
+        }
+      },
+      "8": {
+        "title": "Comptabilité et conseil",
+        "sub": {
+          "1": "Comptabilité",
+          "2": "Planification financière",
+          "3": "Ressources humaines",
+          "4": "Conseil en gestion",
+          "5": "Comptabilité et conseil - Autre"
+        }
+      },
+      "9": {
+        "title": "Assistance administrative",
+        "sub": {
+          "1": "Saisie des données",
+          "2": "Assistance administrative - Autre",
+          "3": "Assistance personnelle/virtuelle",
+          "4": "Gestion de projet",
+          "5": "Transcription",
+          "6": "Recherche Web",
+          "7": "Assistance administrative - Autre"
+        }
+      },
+      "10": {
+        "title": "Service à la clientèle",
+        "sub": {
+          "1": "Service à la clientèle",
+          "2": "Support technique"
+        }
+      },
+      "11": {
+        "title": "Science des données et analyse",
+        "sub": {
+          "1": "Tests A/B",
+          "2": "Exploration et gestion des données",
+          "3": "Visualisation des données",
+          "4": "Apprentissage automatique",
+          "5": "Analyse quantitative",
+          "6": "Science des données et analyse - Autre"
+        }
+      },
+      "12": {
+        "title": "Éducation",
+        "sub": {
+          "1": "Enseignement",
+          "2": "Administration de l'éducation",
+          "3": "Conseil scolaire",
+          "4": "Travail social scolaire",
+          "5": "Enseignement des langues",
+          "6": "Éducation - Autre"
+        }
+      },
+      "13": {
+        "title": "Conception",
+        "sub": {
+          "1": "Conception de mise en page",
+          "2": "Image de marque",
+          "3": "Jeux et RA/VR",
+          "4": "Conception graphique, éditoriale et de présentation",
+          "5": "Conception de produits",
+          "6": "Design d'intérieur et d'extérieur",
+          "7": "Conception - Autre"
+        }
+      },
+      "14": {
+        "title": "Droit et assistance juridique",
+        "sub": {
+          "1": "Droit des contrats",
+          "2": "Droit des sociétés",
+          "3": "Droit de propriété intellectuelle",
+          "4": "Services parajuridiques",
+          "5": "Droit et assistance juridique - Autre"
+        }
+      },
+      "15": {
+        "title": "Rédaction",
+        "sub": {
+          "1": "Contenu et rédaction",
+          "2": "Rédaction créative",
+          "3": "Édition et relecture",
+          "4": "Rédaction de subventions",
+          "5": "CV et lettres de motivation",
+          "6": "Rédaction technique",
+          "7": "Rédaction - Autre"
+        }
+      },
+      "16": {
+        "title": "Médecine et pharmacie",
+        "sub": {
+          "1": "Pharmacie de détail",
+          "2": "Pharmacie hospitalière",
+          "3": "Centre de distribution de médicaments",
+          "4": "Soins à domicile et pharmacie de soins palliatifs",
+          "5": "Informatique de pharmacie",
+          "6": "Pharmacie de soins ambulatoires",
+          "7": "Pharmaciens",
+          "8": "Médecine et pharmacie - Autre"
+        }
+      },
+      "17": {
+        "title": "Télécommunications",
+        "sub": {
+          "1": "Gestionnaires de systèmes de télécommunications",
+          "2": "Installateurs de ligne",
+          "3": "Représentation du service à la clientèle",
+          "4": "Ingénieurs en logiciels informatiques",
+          "5": "Programmeurs informatiques",
+          "6": "Associations professionnelles",
+          "7": "Organismes de certification associés",
+          "8": "Télécommunications - Autre"
+        }
+      },
+      "18": {
+        "title": "Gestion du personnel et RH",
+        "sub": {
+          "1": "Planification des ressources humaines",
+          "2": "Recrutement et sélection",
+          "3": "Gestion des performances",
+          "4": "Apprentissage et développement",
+          "5": "Plan de carrière",
+          "6": "Évaluation fonctionnelle",
+          "7": "Récompenses",
+          "8": "Relations industrielles",
+          "9": "Participation et communication des employés",
+          "10": "Santé et sécurité",
+          "11": "Bien-être personnel",
+          "12": "Responsabilités administratives",
+          "13": "Gestion du personnel et RH - Autre"
+        }
+      },
+      "19": {
+        "title": "Sécurité",
+        "sub": {
+          "1": "Gestionnaire des risques",
+          "2": "Test de pénétration de systèmes, réseaux et Web",
+          "3": "Ingénierie de sécurité réseau",
+          "4": "Administration de sécurité réseau",
+          "5": "Enquêteur(se) en cybercriminalité",
+          "6": "Analyste en sécurité de l'information",
+          "7": "Analyste de sécurité",
+          "8": "Responsable de la sécurité",
+          "9": "Garde de sécurité",
+          "10": "Sécurité - Autre"
+        }
+      },
+      "20": {
+        "title": "Culture et arts",
+        "sub": {
+          "1": "Acteur(trice)",
+          "2": "Travailleur des arts communautaires",
+          "3": "Chorégraphe",
+          "4": "Danseur(se)",
+          "5": "Dramathérapeute",
+          "6": "Production de musique",
+          "7": "Musicothérapeute",
+          "8": "Direction de théâtre",
+          "9": "Spécialiste des multimédias",
+          "10": "Conception de systèmes",
+          "11": "Conception de produits",
+          "12": "Conservateurs",
+          "13": "Direction artistique",
+          "14": "Direction de musée",
+          "15": "Professeur(e) d'art",
+          "16": "Art-thérapeute",
+          "17": "Illustration médicale",
+          "18": "Réalisateur(trice)",
+          "19": "Culture et arts - Autre"
+        }
+      },
+      "21": {
+        "title": "Développement Web, mobile et logiciel",
+        "sub": {
+          "1": "Développement de logiciels de bureau",
+          "2": "Développement du commerce électronique",
+          "3": "Développement de jeu",
+          "4": "Développement mobile",
+          "5": "Développement d'autres logiciels",
+          "6": "Gestion des produits",
+          "7": "AQ et tests",
+          "8": "Scripts et utilitaires",
+          "9": "Conception Web et mobile",
+          "10": "Développement web",
+          "11": "Développement Web, mobile et logiciel - Autre"
+        }
+      },
+      "22": {
+        "title": "Transport et logistique",
+        "sub": {
+          "1": "Gestion",
+          "2": "Planification des stocks",
+          "3": "Entreposage",
+          "4": "Achat de biens et services",
+          "5": "Emballage et stockage",
+          "6": "Transport",
+          "7": "Service à la clientèle",
+          "8": "Transport et logistique - Autre"
+        }
+      },
+      "23": {
+        "title": "Banque, finance et assurance",
+        "sub": {
+          "1": "Industrie des services financiers",
+          "2": "Planification financière",
+          "3": "Finance d'entreprise",
+          "4": "Banque commerciale",
+          "5": "Banque d'investissement",
+          "6": "Fonds spéculatifs",
+          "7": "Capital-investissement, capital-risque",
+          "8": "Assurance",
+          "9": "Banque, finance et assurance - Autre"
+        }
+      },
+      "24": {
+        "title": "Beauté, remise en forme et sports",
+        "sub": {
+          "1": "Entraîneur(se) d'athlétisme",
+          "2": "Physiologiste de l'exercice",
+          "3": "Entraîneur(se)",
+          "4": "Massothérapeute",
+          "5": "Ergothérapeute",
+          "6": "Physiothérapeute",
+          "7": "Récréologue",
+          "8": "Salon de beauté",
+          "9": "Beauté, remise en forme et sports - Autre"
+        }
+      },
+      "25": {
+        "title": "Production créative",
+        "sub": {
+          "1": "Arts et illustration",
+          "2": "Production audio et musicale",
+          "3": "Arts de la scène",
+          "4": "Photographie",
+          "5": "Vidéo et animation",
+          "6": "Talent vocal",
+          "7": "Talent vocal",
+          "8": "Visualisation 3D",
+          "9": "Production créative - Autre"
+        }
+      },
+      "26": {
+        "title": "Marketing et ventes",
+        "sub": {
+          "1": "Affichage publicitaire",
+          "2": "Automatisation du marketing et des e-mails",
+          "3": "Génération de prospect",
+          "4": "Études de marché et clients",
+          "5": "Stratégie de marketing",
+          "6": "Relations publiques",
+          "7": "SEM - Marketing des moteurs de recherche",
+          "8": "SEO - Optimisation des moteurs de recherche",
+          "9": "SMM - Marketing des médias sociaux",
+          "10": "Ventes et marketing - Autre"
+        }
+      },
+      "27": {
+        "title": "Traduction",
+        "sub": {
+          "1": "Traduction générale",
+          "2": "Traduction juridique",
+          "3": "Traduction médicale",
+          "4": "Traduction technique",
+          "5": "Traduction - Autre"
+        }
+      },
+      "28": {
+        "title": "Immobilier",
+        "sub": {
+          "1": "Immobilier résidentiel",
+          "2": "Maisons neuves et de revente",
+          "3": "Immobilier commercial",
+          "4": "Immobilier industriel",
+          "5": "Terrain vacant",
+          "6": "Immobilier - Autre"
+        }
+      },
+      "29": {
+        "title": "Agriculture et agroalimentaire",
+        "sub": {
+          "1": "Cultures",
+          "2": "Élevage (production et santé animale)",
+          "3": "Pêche et aquaculture (y compris les pêches de capture)",
+          "4": "Foresterie",
+          "5": "Agriculture et agroalimentaire - Autre"
+        }
+      },
+      "30": {
+        "title": "Construction",
+        "sub": {
+          "1": "Bâtiment résidentiel",
+          "2": "Bâtiment institutionnel et commercial",
+          "3": "Infrastructures et construction lourde",
+          "4": "Construction industrielle spécialisée",
+          "5": "Construction - Autre"
+        }
+      },
+      "31": {
+        "title": "Début de carrière et étudiants",
+        "sub": {
+          "1": "Livreur(se)",
+          "2": "Serveur(se)",
+          "3": "Début de carrière et étudiants - Autre"
+        }
+      },
+      "32": {
+        "title": "Professions des services",
+        "sub": {
+          "1": "Industrie de la restauration et des services alimentaires",
+          "2": "Professions des services - Autre"
+        }
+      },
+      "33": {
+        "title": "Travail saisonnier",
+        "sub": {
+          "1": "Variable",
+          "2": "À temps partiel",
+          "3": "À plein temps"
+        }
+      },
+      "34": {
+        "title": "Travail permanent",
+        "sub": {
+          "1": "À temps partiel",
+          "2": "À plein temps",
+          "3": "Travail à l'étranger"
+        }
+      }
+    }
+  },
+  "modals": {
+    "chatCreate": {
+      "title": "Créer une discussion de groupe",
+      "desc": "Créez le nom de la discussion de groupe et choisissez des personnes dans votre liste de discussion",
+      "participants": "Participants",
+      "chatName": "Nom de la discussion"
+    },
+    "changePercentDesc": "Un pourcentage du montant de la quête qui sera automatiquement crédité sur votre compte de retraite",
+    "yourSkillsHaveBeenAdded": "Vos compétences ont été ajoutées avec succès.",
+    "yourAccountVerified": "Votre compte a été vérifié avec succès",
+    "youCanUpdateThisInYourProfile": "Vous pouvez facilement le mettre à jour dans votre profil.",
+    "disable2Fa": "Désactiver l’authentification à deux facteurs",
+    "yourLevelHasBeenRaised": "Votre niveau a été élevé",
+    "payment": "Paiement",
+    "cardHolder": "Nom du titulaire",
+    "review": "Évaluation",
+    "haventSMS": "Vous n'avez pas de SMS ?",
+    "SMSVerConnected": "Vérification SMS connectée",
+    "phoneNumber": "Numéro de téléphone",
+    "enterPhone": "Saisissez votre numéro de téléphone pour confirmer la vérification par SMS",
+    "enterSMSCode": "Nous avons envoyé un code de vérification à votre numéro de téléphone. Veuillez saisir ce code",
+    "codeFromSMS": "Code du SMS",
+    "smsVerification": "Vérification par SMS",
+    "saved": "Enregistré",
+    "userDataHasBeenSaved": "Les données de l’utilisateur ont été enregistrées",
+    "workExpAddSuccessful": "Expérience de travail ajoutée avec succès",
+    "educationAddSuccessful": "Éducation ajoutée avec succès",
+    "pressSaveBtn": "Veuillez appuyer sur le bouton « Enregistrer »",
+    "imageLoadedSuccessful": "Image chargée avec succès",
+    "success": "Succès",
+    "yourRoleHasBeenChanged": "Votre rôle a été modifié",
+    "chooseSkills": "Choisir les compétences nécessaires",
+    "securityCheck": "Vérification de sécurité",
+    "googleConfCode": "Code de confirmation Google",
+    "enterCode": "Saisissez le code à 6 chiffres de l'application d'authentification Google",
+    "warning": "Avertissement",
+    "pleaseDescribe": "Veuillez décrire la raison du changement de rôle",
+    "ifYouChangeRole": "Si vous changez de rôle maintenant, vous ne pourrez le changer qu’après un délai d’un mois. Voulez-vous continuer ?",
+    "toYourEmail": "À votre adresse e-mail",
+    "codeHasBeenSent": "le code a été envoyé",
+    "switchOnGoogleAuth": "Activer Google Authenticator",
+    "emailVerificationCode": "Code de vérification de l'e-mail",
+    "emailPlaceholder": "Veuillez saisir le code de vérification de l'e-mail",
+    "googleVerificationCode": "Code de vérification Google",
+    "codePlaceholder": "Veuillez saisir le code de vérification Google",
+    "appleStore": "Apple Store",
+    "googlePlay": "Google Play",
+    "useYourGoogleAuth": "Utilisez votre application Google Authenticator pour scanner le code QR.",
+    "installGoogleAuth": "Installez l'application Google Authenticator sur votre appareil",
+    "ifYouCantScanBarcode": "Si vous ne parvenez pas à scanner le code QR, saisissez manuellement la clé secrète.",
+    "pleaseSaveThisKey": "Saisissez le mot de passe d'authentification à deux facteurs Google ci-dessous. Veuillez enregistrer votre clé Google, elle sera utilisée pour récupérer votre Google Authenticator.",
+    "step": "Étape",
+    "twoFAAuth": "Authentification à deux facteurs",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "confirmNewPassword": "Confirmer le nouveau mot de passe",
+    "change": "Modifier",
+    "title": "Titre",
+    "badService": "Mauvais service",
+    "otherReason": "Autre raison",
+    "reviewOnEmployer": "Évaluation de l'employeur",
+    "paintingWork": "Travail de peinture",
+    "art": "Art",
+    "cooking": "Cuisine",
+    "coding": "Codage",
+    "uploadAImages": "Téléverser des images ou des vidéos",
+    "description": "Description",
+    "addCase": "Ajouter un cas",
+    "openADispute": "Ouvrir un litige",
+    "reason": "Raison",
+    "lorem": "",
+    "withdraw": "Retrait",
+    "sendTo": "Envoyer à",
+    "estimatedPayment": "Paiement estimé :",
+    "hello": "Bonjour...",
+    "value": "Valeur",
+    "withdrawCard": "Retrait par carte bancaire",
+    "address": "Adresse",
+    "notice": "Avis important",
+    "noticeDesc": "Pour votre sécurité, l'équipe de WorkQuest vous demande de ne pas effectuer de correspondance ou de contacts en dehors de la plateforme WorkQuest. Tout contact ou conversation en dehors de la plateforme peut entraîner l’échec de la résolution des éventuelles situations controversées.",
+    "toAddress": "À",
+    "fromAddress": "De",
+    "welcomeToWorkQuest": "Bienvenue sur WorkQuest",
+    "pleaseTellUsAboutSkills": "Veuillez nous parler de vos compétences ci-dessous. Cela augmentera votre classement sur la plateforme et permettra aux autres utilisateurs de trouver plus facilement votre compte.",
+    "amount": "Montant",
+    "messageSend": "Message envoyé",
+    "questAgreed": "Quête acceptée",
+    "requestSend": "Demande envoyée",
+    "sendARequest": "Envoyer une demande",
+    "message": "Message",
+    "bodyMessage": "Bonjour",
+    "areYouSure": "Confirmer ?",
+    "transactionSend": "Transaction envoyée",
+    "cardHasBeenAdded": "La carte a été ajoutée",
+    "deposit": "Recevoir",
+    "numberOfCard": "Numéro de carte",
+    "date": "Date",
+    "cardDate": "Date d'expiration de la carte",
+    "expirationDate": "Date d'expiration (M/A)",
+    "cvv": "CVV",
+    "cardholderName": "Nom du titulaire",
+    "addAnotherCard": "Ajouter une autre carte",
+    "addCard": "Ajouter une carte",
+    "inviteSend": "Invitation envoyée",
+    "questCreated": "Quête créée",
+    "invitation": "Invitation",
+    "chooseQuest": "Choisir une quête",
+    "raiseViews": "Augmenter les vues",
+    "priceOfAClick": "Prix d'un clic",
+    "city": "Ville",
+    "period": "Période",
+    "thanks": "Merci",
+    "couple": "Quelques mots",
+    "depositPercentFromAQuest": "Pourcentage de dépôt d'une quête",
+    "depositRetirementModalTitle": "Sélectionnez un pourcentage du montant de la quête pour le dépôt automatique",
+    "depositRetirementModalPrecentPlaceholder": "0 % veuillez sélectionner un pourcentage",
+    "depositRetirementModalAmountPlaceholder": "0 WUSD veuillez insérer le montant",
+    "firstDepositAmount": "Montant du premier dépôt*",
+    "aboutFirstDeposit": "* Le montant du premier dépôt est facultatif. Si vous ne souhaitez pas effectuer de dépôt, vous pouvez laisser ce champ vide",
+    "pensionIsRegisteredTitle": "Félicitations !",
+    "pensionIsRegisteredDesc": "Le programme de retraite a été lancé avec succès.",
+    "currentPercent": "Pourcentage actuel",
+    "depositAmount": "Montant du dépôt",
+    "lockedSavings": "Épargne immobilisée",
+    "durationDays": "Durée (jours)",
+    "depositIsOpened": "Le dépôt est ouvert",
+    "addLiquidity": "Ajouter de la liquidité",
+    "amountOfWusd": "Montant en WUSD",
+    "amountOfEth": "Montant en ETH",
+    "tip": "Astuce :",
+    "tipAbout": "Lorsque vous ajoutez de la liquidité, vous recevez des jetons de pool représentant votre position. Ces jetons rapportent automatiquement des frais proportionnels à votre part dans le pool et peuvent être échangés à tout moment.",
+    "byAddingLiquidityYouWillEarn": "En ajoutant de la liquidité, vous gagnerez 0,3 % de toutes les transactions sur cette paire proportionnellement à votre part dans le pool. Les frais sont ajoutés au pool, s'accumulent en temps réel et peuvent être récupérés en retirant vos liquidités.",
+    "amountEthPerWusd": "Montant ETH par WUSD",
+    "shareOfPool": "Part dans le pool",
+    "removeLiquidity": "Retirer la liquidité",
+    "withdrawalAmount": "Montant du retrait",
+    "exchangeRate": "Taux de change",
+    "tempForRemove": "1 ETH = ... WUSD",
+    "currentPoolSize": "Taille actuelle du pool",
+    "yourPoolShare": "Votre part dans le pool",
+    "eth": "ETH",
+    "wusd": "WUSD",
+    "howMuchEthWouldYouLikeToLock": "Combien d'ETH souhaitez-vous bloquer sur votre compte ?",
+    "smallTemp": "",
+    "template": "",
+    "collateralization": "Garantie",
+    "percentsCount": "{count} %",
+    "liquidationPrice": "Prix de liquidation",
+    "currentPrice": "Prix actuel",
+    "stabilityFee": "Frais de stabilité",
+    "liquidationRatio": "Taux de liquidation",
+    "liquidationPenalty": "Pénalité de liquidation",
+    "confirmDetails": "Confirmer les détails",
+    "depositing": "Dépôt",
+    "generating": "Montant",
+    "liquidationFee": "Frais de liquidation",
+    "withdrawal": "Retrait",
+    "saveCardForNextPayment": "Enregistrez la carte pour une prochaine utilisation",
+    "insureCase": "Cas assuré",
+    "connectWallet": "Connecter le portefeuille",
+    "howMuchWusdWouldYouLikeToGenerate": "Combien de WUSD voudriez-vous générer ?",
+    "chooseTheCurrency": "Choisir la devise",
+    "bnb": "BNB",
+    "wqt": "WQT",
+    "howMuchETHWouldYouLikeToOpen": "Combien d'ETH souhaitez-vous ouvrir sur votre compte ?",
+    "howMuchPercentWouldYouLikeToSet": "Quel pourcentage souhaitez-vous fixer ?",
+    "enterTermToReturnDebtBack ": "Saisissez le délai pour rembourser la dette",
+    "currency": "Devise de garantie",
+    "loan": "Prêt",
+    "percentage": "Pourcentage",
+    "loanTerm": "Durée du prêt",
+    "loanIsOpened": "Le prêt est ouvert",
+    "successCopied": "Adresse publique copiée dans le presse-papiers"
+  },
+  "ui": {
+    "jobQuestors": "Demandeurs d'emploi",
+    "workers": "Travailleurs",
+    "wallet": "Portefeuille",
+    "myQuests": "Mes quêtes",
+    "quests": "Quêtes",
+    "profile": {
+      "addCase": "Ajouter un cas",
+      "myProfile": "Mon profil",
+      "settings": "Paramètres",
+      "disputes": "Litiges",
+      "instruments": "Documents",
+      "DeFi": "Fonctionnalité DeFi",
+      "logout": "Se déconnecter"
+    },
+    "locals": {
+      "en": "EN",
+      "ru": "RU",
+      "ba": "BA",
+      "zh": "ZH",
+      "fr": "FR",
+      "hi": "HI",
+      "in": "IN",
+      "po": "PO",
+      "sp": "SP",
+      "ae": "AE"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "invite": "Vous invite à terminer la quête"
+    },
+    "menu": {
+      "pension": {
+        "title": "Programme de retraite",
+        "desc": "Vous pouvez sélectionner un pourcentage de chaque quête accomplie qui sera ensuite automatiquement crédité sur votre compte de retraite, ou simplement déposer un montant de votre choix. Le pool de fonds est investi au nom de l'employé(e), et les gains des investissements génèrent un revenu pour le travailleur ou la travailleuse à sa retraite."
+      },
+      "referral": {
+        "title": "Programme de parrainage",
+        "desc": "Notre programme « Parrainer et gagner » vous permet de gagner des récompenses pour chaque ami(e) parrainé(e) qui devient client(e) et accomplit ensuite une quête. Vos amis parrainés économisent également en bénéficiant d’une inscription gratuite."
+      },
+      "p2p": {
+        "title": "Assurance P2P",
+        "desc": "L'assurance peer-to-peer (P2P) est un produit qui permet à un groupe d'assurés de mettre en commun leur capital, de s'auto-organiser et d'autogérer leur propre assurance. L'idée centrale du P2P est qu'un ensemble de personnes partageant les mêmes idées et ayant des intérêts communs regroupent leurs polices d'assurance en procurant un sentiment de contrôle, de confiance et de transparence tout en réduisant les coûts. Ce modèle d'assurance combine la mise en commun traditionnelle et le partage des pertes avec la technologie et les innovations actuelles, en offrant un produit destiné aux consommateurs de plus en plus avertis qui ont besoin de transparence dans notre économie à la demande."
+      },
+      "savings": {
+        "title": "Produit d'épargne",
+        "desc": "Un compte d'épargne en cryptomonnaie vous donne accès au marché des cryptomonnaies tout en vous permettant de gagner des intérêts comme le fait un compte d'épargne bancaire traditionnel. Si vous êtes intéressé(e) par les investissements à long terme dans les cryptomonnaies, un compte d'épargne en cryptomonnaie peut vous aider à accumuler des intérêts tout en protégeant vos fonds."
+      },
+      "crediting": {
+        "title": "Prêt",
+        "desc": "Semblable aux prêts traditionnels, les prêts en cryptomonnaie sont déposés sur le compte bancaire de l'emprunteur, puis l'emprunteur paie les IME au prêteur. Une fois le montant remboursé en totalité, le prêteur libère la garantie."
+      },
+      "mining": {
+        "title": "Minage de liquidités",
+        "desc": "Il s’agit d’un mécanisme DeFi (finance décentralisée) dans lequel les participants fournissent des cryptomonnaies dans des pools de liquidités et sont récompensés par des frais et des jetons en fonction de leur part de liquidité totale dans le pool."
+      },
+      "menu": "Menu"
+    },
+    "footer": {
+      "rights": "Tous droits réservés"
+    },
+    "buttons": {
+      "errors": {
+        "manySpec": "Vous ne pouvez ajouter que 3 spécialisations"
+      }
+    }
+  },
+  "wallet": {
+    "WUSD": "Portefeuille en WUSD",
+    "cryptoWallet": "Portefeuille crypto",
+    "bankCard": "Carte bancaire",
+    "send": "Envoyer",
+    "toThisAddress": "à cette adresse",
+    "wallet": "Portefeuille",
+    "balance": "Solde",
+    "deposit": "Recevoir",
+    "withdraw": "Retirer",
+    "transfer": "Acheter/Envoyer",
+    "addCardProposal": "Ajoutez votre propre carte pour assurer un retrait facile",
+    "addCard": "Ajouter une carte",
+    "table": {
+      "trx": "Transactions",
+      "txHash": "Hachage Txn",
+      "status": "Statut",
+      "block": "Bloquer",
+      "timestamp": "Horodatage",
+      "transferred": "Jetons transférés",
+      "value": "Quantité",
+      "trxFee": "Frais de transaction"
+    }
+  },
+  "chat": {
+    "openDispute": "Ouvrir le litige",
+    "approveQuest": "Approuver la quête",
+    "favoriteMessages": "Messages favoris",
+    "favoriteChats": "Discussions favorites",
+    "createGroupChat": "Créer une discussion de groupe",
+    "favorite": "Favori",
+    "messages": "Messages",
+    "chat": "Messagerie",
+    "quest": "Quête :",
+    "you": "Vous :",
+    "invitedYou": "vous a invité(e) à participer à une quête",
+    "writeYouMessage": "Écrivez votre message"
+  },
+  "settings": {
+    "placeOfStudying": "Lieu d'étude",
+    "specialization": "Spécialisation",
+    "skillsInput": "Compétences",
+    "priority": "Priorité",
+    "distantWork": "Travail à distance",
+    "costPerHour": "Coût horaire",
+    "description": "And you are beautiful",
+    "imgLoaded": "Image chargée avec succès",
+    "workExp": "Expérience professionnelle",
+    "add": "Ajouter",
+    "delete": "Supprimer",
+    "educations": "Éducation",
+    "vacancy": "Poste vacant",
+    "term": "Délai",
+    "getVerification": "Terminer la vérification",
+    "notVerified": "Non vérifié",
+    "more": "Plus",
+    "employmentInfo": "Informations d'emploi",
+    "addSpec": "Ajouter une spécialisation",
+    "removeSpec": "Supprimer la spécialisation",
+    "education": {
+      "from": "De",
+      "to": "À",
+      "educationalInstitution": "Établissement d'enseignement"
+    },
+    "workExps": {
+      "from": "De",
+      "to": "À",
+      "companyName": "Nom de l'entreprise"
+    },
+    "settings": "Paramètres",
+    "urgentJobOffers": "Offres d'emploi urgentes",
+    "shortTermJobOffers": "Offres d'emploi à court terme",
+    "fixedDeliveryJobOffers": "Offres d'emploi à livraison fixe",
+    "addInfo": "Vous pouvez ajouter des informations vous concernant, téléverser une photo de profil et suivre la procédure KYC pour augmenter votre note. La note dépend des données de votre profil et des évaluations fournies.",
+    "alsoRating": "Plus votre note est élevée, plus il est facile de vous trouver dans les recherches.",
+    "dontShow": "Ne plus afficher",
+    "profileInfo": "Informations sur le profil",
+    "nameInput": "Saisissez votre nom",
+    "lastNameInput": "Saisissez votre nom de famille",
+    "addressInput": "Saisissez votre adresse",
+    "telInput": "Saisissez votre numéro de téléphone",
+    "userDesc": "Ajoutez une brève description de vous-même",
+    "instagramUsername": "Nom d'utilisateur Instagram",
+    "twitterUsername": "nom d'utilisateur Twitter",
+    "linkedInUsername": "Nom d'utilisateur LinkedIn",
+    "facebookUsername": "Nom d'utilisateur Facebook",
+    "save": "Enregistrer",
+    "skills": "Compétences :",
+    "whoCanSee": "Qui peut voir mon profil ?",
+    "allUsers": "Tous les utilisateurs enregistrés",
+    "allInternet": "Internautes dans le monde entier",
+    "onlyWhenSubmittedWork": "Uniquement lors de la soumission d'offres d'emploi",
+    "allRegistered": "Tous les utilisateurs enregistrés",
+    "changePass": "Modifier le mot de passe",
+    "change": "Modifier",
+    "enableTwoStepAuth": "Activer l'authentification en deux étapes",
+    "enable": "Activer",
+    "smsVerification": "Vérification du profil par SMS",
+    "company": "Saisissez le nom de votre entreprise",
+    "ceo": "Ajouter un poste",
+    "filterAllEmployeeProfiles": "Filtrer tous les profils d'employés",
+    "website": "Saisissez le site Web de votre entreprise",
+    "changeRole": "Changer de rôle",
+    "2FA": "2FA",
+    "smsVerification2": "Vérification par SMS",
+    "instruments": "Documents",
+    "pensionProgram": "Programme de retraite",
+    "referralProgram": "Programme de parrainage",
+    "p2pInsurance": "Assurance P2P",
+    "savingProduct": "Produit d'épargne",
+    "crediting": "Prêter",
+    "liquidityMining": "Minage de liquidités"
+  },
+  "raising-views": {
+    "raisingViews": "Augmenter les vues",
+    "choosePeriod": "Choisir la période",
+    "forOneDay": "Pour 1 jour",
+    "forOneWeek": "Pour 1 semaine",
+    "forOneMonth": "Pour 1 mois",
+    "chooseLevel": "Choisir le niveau"
+  },
+  "disputes": {
+    "disputes": "Litiges",
+    "dispute": "Nombre de litiges :",
+    "quest": "Quête :",
+    "employer": "Employeur :",
+    "questSalary": "Salaire de la quête :",
+    "status": "Statut :",
+    "decision": "Décision :",
+    "Dispute": "Litige",
+    "pending": "En attente",
+    "chatHistory": "Historique des discussions",
+    "disputeTime": "Heure d'ouverture du litige :"
+  },
+  "workers": {
+    "searchQuests": "Rechercher des quêtes",
+    "searchWorkers": "Rechercher des travailleurs",
+    "topWorkers": "Meilleurs employés",
+    "price": "Prix",
+    "addedTime": "Temps ajouté",
+    "quests": "Quêtes",
+    "urgent": "Sélectionnez le niveau d'urgence",
+    "specialized": "Spécialisés",
+    "typeOfJob": "Type de travail",
+    "specializations": "Spécialisations",
+    "aboutMe": "À propos de moi",
+    "giveAQuest": "Donner une quête",
+    "inviteQuestor": "Inviter le demandeur",
+    "skills": "Compétences",
+    "completedQuests": "Quêtes terminées",
+    "openedQuests": "Quêtes ouvertes",
+    "showAll": "Afficher tout",
+    "averageRating": "Note moyenne",
+    "from": "De",
+    "based": "Sur la base de",
+    "reviews": "évaluations",
+    "portfolio": "Portefeuille",
+    "showAllCases": "Afficher tous les cas"
+  },
+  "levels": {
+    "reliableEmp": "EMPLOYÉ(E) FIABLE.",
+    "checkedByTime": "EMPLOYÉ(E) VÉRIFIÉ(E)",
+    "disabled": "DÉSACTIVÉE",
+    "higher": "EMPLOYÉ(E) DE NIVEAU SUPÉRIEUR"
+  },
+  "referral": {
+    "inviteFriendsHead": "Inviter des amis.",
+    "earnCryptoTogether": "Gagnez des cryptomonnaies ensemble",
+    "headerSubtitle": "Gagnez jusqu'à 35 USD en WQT chaque fois que vos amis s'inscrivent et réalisent leur première quête sur la plateforme WorkQuest.",
+    "referralReward": "Récompense de parrainage",
+    "wqtCount": "{count} WQT",
+    "lastRefReward": "Dernière récompense de parrainage",
+    "plusCount": "+ {count}",
+    "yourRefers": "Vos parrainages",
+    "yourReferralLink": "Votre lien de parrainage",
+    "howToInviteYourFriends": "Comment inviter vos amis ?",
+    "getLink": "Obtenir le lien",
+    "registerAndGenerate": "Enregistrez-vous et générez des liens de parrainage avec un taux de commission.",
+    "inviteFriends": "Inviter des amis",
+    "inviteYourFriends": "Invitez vos amis à s'inscrire via le lien de parrainage et obtenez des récompenses lorsqu'ils accomplissent leur première quête.",
+    "earnCrypto": "Gagnez des cryptomonnaies",
+    "everyTimeYourFriends": "Chaque fois que vos amis réalisent une première quête, vous recevez jusqu'à 35 USD de commission en WQT en temps réel !",
+    "historyOfRewards": "Historique des récompenses",
+    "tableHead": {
+      "name": "Nom",
+      "userID": "Identifiant d'utilisateur",
+      "txHash": "Hachage Txn",
+      "time": "Heure",
+      "amount": "Montant",
+      "status": "Statut"
+    },
+    "table": {
+      "userName": "John Doe",
+      "userId": "455dad66544ss",
+      "txHash": "sf998s...ss877d",
+      "time": "1 er février 2021",
+      "status": "Succès"
+    }
+  },
+  "pension": {
+    "pensionSavingsBalance": "Solde d'épargne-pension",
+    "retirementProgram": "Programme de retraite",
+    "faq": "FAQ",
+    "pensionProgram": "Programme de retraite",
+    "applyForAPension": "Demander une pension",
+    "applyForRetirement": "Faire une demande de retraite",
+    "annualPercent": "Pourcentage annuel",
+    "optional": "Optionnel",
+    "optionalFirstDeposit": "Premier dépôt",
+    "term": "Délai",
+    "castomizable": "Personnalisable",
+    "configurablePercentage": "Pourcentage configurable",
+    "depositsFromQuest": "Dépôt des quêtes",
+    "howToTakePart": "Comment participer au programme de retraite ?",
+    "pensionPlanText": "Les régimes de retraite permettent aux travailleurs de cotiser une partie de leurs revenus actuels dans un plan d'investissement en vue de financer leurs retraites.",
+    "information": "Informations détaillées",
+    "download": "Télécharger",
+    "pensionBalance": "Solde d'épargne-pension",
+    "makeADeposit": "Faire un dépôt",
+    "currentPercentFromAQuest": "Pourcentage actuel d'une quête",
+    "changePercent": "Modifier le pourcentage",
+    "everyYear": "Annualisé",
+    "year": "annuel",
+    "timeRemainsUntilTheEndOfThePeriod": "Temps restant jusqu'à la fin de la période :",
+    "transactionHistory": "Historique des transactions",
+    "withdraw": "Retirer",
+    "prolong": "Prolonger",
+    "templateText": "",
+    "table": {
+      "userName": "John Doe",
+      "userId": "455dad66544ss",
+      "txHash": "sf998s...ss877d",
+      "time": "1 er février 2021",
+      "status": "Succès"
+    },
+    "docName": "Un_document.pdf",
+    "mb": "{count} Mo",
+    "percents": "{count} %",
+    "years": "{count} ans",
+    "wusdCount": "{count} WUSD",
+    "plusPercents": "+ {count} %",
+    "faq1": {
+      "question": "Comment pouvez-vous être éligible à une pension ?",
+      "answer": "Il n'est pas nécessaire d'avoir travaillé pour un employeur pendant un certain nombre d'années pour avoir droit aux prestations de retraite. Sélectionnez simplement le pourcentage de chaque quête que vous souhaitez accumuler sur votre compte. Votre prestation de retraite augmente généralement au fur et à mesure que vous accumulez des fonds. Le pourcentage supplémentaire sera gagné automatiquement en utilisant les fonds du programme de prêt."
+    },
+    "faq2": {
+      "question": "Comment le « pourcentage supplémentaire » est-il calculé ?",
+      "answer": "Les fonds du fonds de pension seront bloqués dans le contrat de prêt. L'APY varie en fonction des modifications apportées au protocole de crédit. Le profit peut atteindre 3 à 6 %"
+    },
+    "faq3": {
+      "question": "Comment fonctionnent les régimes de retraite ?",
+      "answer": "Il n'est pas nécessaire d'avoir travaillé pour un employeur pendant un certain nombre d'années pour avoir droit aux prestations de retraite. Sélectionnez simplement le pourcentage de chaque quête que vous souhaitez accumuler sur votre compte. Votre prestation de retraite augmente généralement au fur et à mesure que vous accumulez des fonds. Le pourcentage supplémentaire sera gagné automatiquement en utilisant les fonds du programme de prêt."
+    },
+    "faq4": {
+      "question": "Combien d'années faut-il travailler pour bénéficier du régime de retraite ?",
+      "answer": "Selon les règles de WorkQuest, n'importe qui peut ouvrir un plan d'épargne dans le secteur privé. Après les trois premières années, vous aurez la possibilité de recevoir 100 % des fonds accumulés.\nVous pouvez continuer à accumuler les fonds pendant une année supplémentaire ou retirer l'intégralité des fonds dans votre portefeuille."
+    },
+    "faq5": {
+      "question": "Qu'est-ce qu'une bonne pension ?",
+      "answer": "Quel est le montant adéquat d’une retraite ? Certains conseillers vous recommandent d'économiser jusqu'à 10 fois votre salaire moyen de la vie professionnelle au moment de votre retraite. Donc, si votre salaire moyen est de 30 000 USD, vous devriez viser un capital de pension d'environ 300 000 USD. Un autre conseil important est que vous devriez économiser 12,5 % de votre salaire mensuel."
+    },
+    "faq6": {
+      "question": "La pension mensuelle est-elle imposable ?",
+      "answer": "Votre paiement de pension mensuel compte presque toujours comme un revenu imposable, et vous devrez vous assurer que vous avez suffisamment d'impôts retenus sur vos paiements de pension pour satisfaire les règles de l'Internal Revenue Service"
+    },
+    "faq7": {
+      "question": "Puis-je récupérer toute ma pension en une seule fois ?",
+      "answer": "Après une période minimale de 3 ans du programme de retraite, vous pouvez retirer tout ou partie de votre épargne-pension en une seule fois."
+    },
+    "faq8": {
+      "question": "Puis-je annuler ma pension et récupérer l'argent ?",
+      "answer": "Si vous retirez votre capital argent après le délai minimal de 3 ans ou le jour du renouvellement annuel, vous récupérerez tout l’argent que vous avez déjà versé. Si vous vous désinscrivez plus tard, vous ne pourrez pas recevoir de remboursement de vos paiements avant la fin de la période de prolongation (généralement 1 an)."
+    },
+    "faq9": {
+      "question": "Puis-je toucher ma pension et continuer à travailler ?",
+      "answer": "Puis-je prendre ma retraite par anticipation et continuer à travailler ? La réponse brève est « oui ». De nos jours, il n'y a pas d'âge de départ à la retraite. Vous pouvez continuer à travailler aussi longtemps que vous le souhaitez et pouvez également accéder au programme de retraite."
+    },
+    "faq10": {
+      "question": "Que se passe-t-il si je surfinance ma pension ?",
+      "answer": "Nous n'avons aucune restriction concernant le montant de l'épargne. La totalité du montant accumulé sera à votre disposition à la fin de la période du programme."
+    },
+    "cancel": "Annuler",
+    "renewFor1Year": "Renouveler pour 1 an"
+  },
+  "saving": {
+    "withdrawModalBody": "Le montant des fonds immobilisés et les intérêts accumulés seront crédités sur votre portefeuille",
+    "workQuestSavings": "WorkQuest Savings",
+    "lendAndEarn": "Prêter et gagner",
+    "conditions": "Conditions",
+    "maxMinSum": "Somme max/min",
+    "depositsAndWithdrawal": "Dépôts et retraits",
+    "term": "Délai",
+    "annualizedInterestRate": "Taux d'intérêt annualisé",
+    "openADeposit": "Faire un dépôt",
+    "faq": "FAQ",
+    "information": "Informations",
+    "historyOfDeposits": "Historique des dépôts",
+    "depositAmount": "Montant immobilisé",
+    "card1": "Taux d'intérêt annualisé \n 4,51 % \n Durée (jours) : 7 jours",
+    "card2": "Taux d'intérêt annualisé \n 4,67 % \n Durée (jours) : 14 jours",
+    "card3": "Taux d'intérêt annualisé \n 4,82 % \n Durée (jours) : 30 jours",
+    "card4": "Taux d'intérêt annualisé \n 5,11 % \n Durée (jours) : 90 jours",
+    "card5": "Taux d'intérêt annualisé \n 5,23 % \n Durée (jours) : 180 jours",
+    "templateText": "Un engagement à conserver vos cryptomonnaies ?\nUn moyen facile de prêter et de gagner avec une épargne immobilisée.",
+    "faq1": "Qu'est-ce que l'épargne immobilisée ? Est-ce un engagement à conserver les cryptomonnaies ?",
+    "faq2": "Qu'arrive-t-il à mes fonds le jour où je souscris à un produit d'épargne immobilisée ?",
+    "faq3": "Qu'arrive-t-il à mes fonds à la date de valeur d'un produit d'épargne immobilisée ?",
+    "faq4": "Qu'advient-il de mes fonds à la date de remboursement d'un produit d'épargne immobilisée ?",
+    "faq5": "Comment le rendement annuel moyen (TAEG) est-il calculé ?",
+    "faq6": "Ai-je une garantie de gagner des intérêts sur les produits de WorkQuest Savings, même si les marchés des cryptomonnaies baissent ?",
+    "ans1": "Maintenant, vous pouvez gagner des intérêts en même temps ! Souscrivez vos cryptomonnaies à des périodes d'épargne immobilisée pour obtenir des revenus d'intérêt plus élevés.",
+    "ans2": "Le jour de la souscription, WorkQuest Savings déduira les fonds nécessaire de votre portefeuille en WUSD.\n",
+    "ans3": "À la date de valeur, WorkQuest Savings distribuera le produit d'épargne immobilisée sur votre portefeuille d'épargne et votre produit d'épargne commencera à générer des intérêts.",
+    "ans4": "À la date de remboursement, vous verrez à la fois les jetons initiaux engagés dans la souscription et les intérêts courus sur les « soldes » de votre compte WorkQuest. Ce processus sera automatique.",
+    "ans5": "Le rendement annuel moyen (TAEG) utilise le taux d'intérêt quotidien moyen des 7 derniers jours, multiplié par 365.",
+    "ans6": "Oui. Le taux d'intérêt sur chaque produit est garanti.",
+    "docName": "Un_document.pdf",
+    "mb": "{count} Mo",
+    "percents": "{count} %",
+    "days": "{count} jours",
+    "smallPlug": "??",
+    "possiblePlug": "Possible",
+    "yearPlug": "1 an",
+    "wusdCount": "{count} WUSD",
+    "plusPercents": "+ {count} %",
+    "table": {
+      "userName": "John Doe",
+      "userId": "455dad66544ss",
+      "txHash": "sf998s...ss877d",
+      "time": "1 er février 2021",
+      "status": "Succès"
+    },
+    "depositModalBody": "Vos cryptomonnaies seront immobilisées pendant une période spécifique et vous commencerez à gagner des intérêts.",
+    "depositIsOpened": "Transfert confirmé",
+    "deposit": "Dépôt",
+    "withdraw": "Retirer"
+  },
+  "mining": {
+    "liquidityManning": "Minage de liquidités",
+    "liquidityMining": "Minage de liquidités",
+    "templateText": "",
+    "pools": "Pools",
+    "choose": "Choisir",
+    "information": "Informations",
+    "docName": "Un_document.pdf",
+    "download": "Télécharger",
+    "tableHead": {
+      "poolAddress": "Adresse du pool",
+      "assets": "Actifs",
+      "sdsdsdsd": "sdsdsdsd",
+      "volume": "Volume"
+    },
+    "table": {
+      "poolAddress": "0sjs3892...sd45",
+      "assets": "50 % WUSD/50 % ETH",
+      "sdsdsdsd": "sdsdsdsd",
+      "volume": "4,5 M USD"
+    },
+    "mb": "{count} Mo",
+    "back": "Retour",
+    "wusdEthPool": "Pool WUSD/ETH",
+    "dollarsCount": "{count} USD",
+    "addLiquidity": "Ajouter de la liquidité",
+    "removeLiquidity": "Retirer la liquidité",
+    "liquidity": "Liquidité",
+    "volume24h": "Volume (24 h)",
+    "myPoolShare": "Ma part dans le pool",
+    "liquidityPoolProviders": "Fournisseurs de liquidités du pool",
+    "liquidityProvidersEarn": "Les fournisseurs de liquidité perçoivent une commission de 0,3 % sur toutes les transactions proportionnellement à leur part dans le pool. Les frais sont ajoutés au pool, s'accumulent en temps réel et peuvent être récupérés en retirant vos liquidités.",
+    "transactions": "Transactions"
+  },
+  "crediting": {
+    "lending": "Protocole de prêt WorkQuest",
+    "crediting": "Prêter",
+    "templateText": "Plateforme de prêt WorkQuest DeFi sur le réseau Work Net avec quatre marchés monétaires exclusifs pour les actifs volatils",
+    "marketSize": "Taille du marché",
+    "deposit": "Dépôt",
+    "percent": "Pourcent",
+    "dollarsCount": "{count} USD",
+    "percentsCount": "{count} %",
+    "wantToTakeALoan": "Vous souhaitez contracter un prêt ?",
+    "borrow": "Emprunter",
+    "information": "Informations",
+    "openPositions": "Ouvrir les positions",
+    "usdCount": "{count} USD",
+    "totalCollateralLocked": "Total des garanties immobilisées",
+    "wusdCount": "{count} WUSD",
+    "totalWusdDebt": "Dette totale en WUSD",
+    "tableHead": {
+      "id": "ID",
+      "currentRatio": "Ratio actuel",
+      "deposited": "Déposé(s)",
+      "availableToWithdraw": "Disponible pour le retrait",
+      "wusd": "WUSD"
+    },
+    "table": {
+      "id": "565464",
+      "currentRatio": "500 %",
+      "deposited": "531 ETH",
+      "availableToWithdraw": "531 ETH",
+      "wusd": "532 WUSD",
+      "manage": "Gérer"
+    },
+    "back": "Retour",
+    "tempName": "Prêt #56546",
+    "liquidationPrice": "Prix de liquidation",
+    "collateralizationRatio": "Ratio de garantie",
+    "ethLocked": "ETH immobilisés",
+    "ethCount": "{count} ETH",
+    "ableToWithdraw": "Disponible pour le retrait",
+    "withdraw": "Retirer",
+    "outstandingWusdDebt": "Dette en cours en WUSD",
+    "availableToGenerate": "Disponible pour générer",
+    "payback": "Remboursement",
+    "generate": "Générer",
+    "history": "Historique",
+    "credTableHeader": {
+      "activity": "Activité",
+      "amount": "Montant",
+      "time": "Heure",
+      "sender": "Expéditeur",
+      "txHash": "Hachage Txn"
+    },
+    "credTable": {
+      "activity": "Remboursé",
+      "amount": "100 WUSD",
+      "time": "12 juin 2021",
+      "sender": "dfgd6...fs65ds",
+      "txHash": "dfgd6...fs65ds"
+    },
+    "faq1": "Qu'est-ce que l'épargne immobilisée ? Est-ce un engagement à conserver les cryptomonnaies ?",
+    "faq2": "Qu'arrive-t-il à mes fonds le jour où je souscris à un produit d'épargne immobilisée ?",
+    "ans2": "Le jour de la souscription, WorkQuest Savings déduira les fonds nécessaire de votre portefeuille en WUSD.\n",
+    "faq3": "Qu'arrive-t-il à mes fonds à la date de valeur d'un produit d'épargne immobilisée ?",
+    "faq4": "Qu'advient-il de mes fonds à la date de remboursement d'un produit d'épargne immobilisée ?",
+    "faq5": "Comment le rendement annuel moyen (TAEG) est-il calculé ?",
+    "faq": "FAQ",
+    "lend": "Prêter"
+  },
+  "insuring": {
+    "peerToPeerInsuring": "Assurance P2P",
+    "templateText": "",
+    "card1": {
+      "title": "Protection minimale",
+      "pointsText": {
+        "point1": "Une cotisation annuelle de 1000 WUSD, paiement en cas d'événement assuré 833,333333 WUSD."
+      }
+    },
+    "card2": {
+      "title": "Protection standard",
+      "pointsText": {
+        "point1": "Prime annuelle de 2000 WUSD, paiement en cas d'événement assuré 1666,6667 WUSD."
+      }
+    },
+    "card3": {
+      "title": "Protection maximale",
+      "pointsText": {
+        "point1": "Une cotisation annuelle de 3000 WUSD, versement en cas d'événement assuré de 2500 WUSD."
+      }
+    },
+    "pointTemplate": "",
+    "buy": "Acheter",
+    "information": "Informations",
+    "docName": "Un_document.pdf",
+    "mb": "{count} Mo",
+    "minimalProtectionPlan": "Plan de protection minimale",
+    "standardProtectionPlan": "Plan de protection standard",
+    "maximumProtectionPlan": "Plan de protection maximale",
+    "yourFundBalance": "Solde du fonds d'assurance",
+    "wusdCount": "{count} WUSD",
+    "dollarsCount": "{count} USD",
+    "withdraw": "Retrait",
+    "leaveFund": "Quitter le fonds",
+    "changePlan": "Changer de plan",
+    "fundParticipants": "Participants au fonds",
+    "userName": "Cody Fisher",
+    "voting": "Votes",
+    "noVoteAtTheMoment": "Aucun vote pour le moment",
+    "countPeoplesInChat": "{count} personnes dans la discussion",
+    "writeSomething": "Écrivez quelque chose",
+    "activeVoting": "Vote actif",
+    "paymentOfInsurance": "{value} : Paiement de l'assurance",
+    "youWillCertifyTheInsuredEvent": "Certifierez-vous l'événement assuré ?",
+    "studyTheInsuredEventThoroughly": "Bien étudier l'événement assuré",
+    "notAgree": "Pas d’accord",
+    "insuredEvent": "Événement assuré",
+    "agree": "D'accord",
+    "percentsCount": "{count} %",
+    "votesCount": "{count} votes",
+    "planPoints": {
+      "point1": "Cotisation annuelle : {count} WUSD",
+      "point2": "Paiement en cas de survenance d'un événement assuré : {count} WUSD",
+      "point3": "Durée du contrat : {count} an",
+      "point4": "Nombre de participants au fonds : {count} personnes"
+    },
+    "faq1": {
+      "question": "Que signifie le terme « P2P » en assurance ?",
+      "answer": "L'assurance peer-to-peer (P2P) est un produit qui permet à un groupe d'assurés de mettre en commun leur capital, de s'auto-organiser et d'autogérer leur propre assurance"
+    },
+    "faq2": {
+      "question": "Comment fonctionne l'assurance P2P ?",
+      "answer": "L'assurance peer-to-peer, ou assurance P2P, permet à des groupes d'individus de s'assurer mutuellement. Les membres du groupe mettent leur argent en commun pour s'assurer contre un risque les affectant. Si un membre du groupe subit une perte assurable, sa réclamation est payée directement à partir de la masse d'argent versée par l’ensemble des membres"
+    },
+    "faq3": {
+      "question": "Comment s’engager dans une assurance peer-to-peer ?",
+      "answer": "Demandez une évaluation « pair à pair ». Lors d'une évaluation entre pairs, votre fonds d'assurance discutera avec un autre membre du fonds des raisons pour lesquelles le service ou les thérapies sont médicalement nécessaires. Vous pouvez téléverser dans la discussion tous les documents nécessaires et les avis des médecins qui prouveront la légalité de votre cas et donneront lieu à un vote de prise de décision par les membres du fonds. Si la majorité de ces membres vote en faveur, vous recevrez le paiement sur votre portefeuille."
+    },
+    "faq4": {
+      "question": "Qu'adviendra-t-il du fonds si l'événement assuré ne se produit pas dans l'année ?",
+      "answer": "À la fin de l'année, tous les utilisateurs seront invités par le biais d’une notification à voter pour la prolongation du fonds pour une année supplémentaire, ce qui doublera automatiquement votre fonds et vos versements en cas d'événement assuré ou divisera le fonds entre les participants au fonds."
+    },
+    "faq5": {
+      "question": "Qui peut être un administrateur de fonds ?",
+      "answer": "Pour s'assurer que chaque participant au fonds ne perde pas de temps à considérer tous les événements assurés, il pourra déléguer ses droits de vote au gestionnaire du fonds pour une somme modique"
+    },
+    "faq6": {
+      "question": "Quelle est la taille standard du fonds d'assurance ?",
+      "answer": "Les fonds regroupent 10 utilisateurs selon le niveau de protection choisi"
+    },
+    "faq7": {
+      "question": "Comment est calculé le montant du versement du fonds d'assurance ?",
+      "answer": "Un exemple de calcul du fonds pour la première année : Protection minimale - une prime annuelle de 1000 WUSD, paiement en cas d'événement assuré 833,333333 WUSD.\n10 membres du fonds * 1000 WUSD/12 mois = 833,333333 WUSD.\nEn cas de maintien du fonds pour l'année suivante, le montant du fonds et le versement de l'assurance sont doublés."
+    },
+    "faq8": {
+      "question": "Quelle est la garantie de sécurité des retraits de fonds par un membre du fonds ?",
+      "answer": "Tous les membres du fonds conserveront les fonds dans un portefeuille à signatures multiples, où chaque décision n'est prise qu'à la majorité des voix."
+    }
+  },
+  "errors": {
+    "incorrectPass": "Oups, un problème est survenu. Vérifiez les données et réessayez.",
+    "emptyData": {
+      "employer": {
+        "myQuests": {
+          "desc": "Vous n'avez pas encore fait de quêtes",
+          "btnText": "Créez une quête !"
+        },
+        "allQuests": {
+          "desc": "Vous n'avez pas encore fait de quêtes",
+          "btnText": "Créez une quête !"
+        }
+      },
+      "worker": {
+        "myQuests": {
+          "desc": "Vous n'avez pas encore fait les quêtes",
+          "btnText": "Créez une quête !"
+        },
+        "allQuests": {
+          "desc": "Vous n'avez pas encore répondu aux quêtes",
+          "btnText": "Répondez à la quête !"
+        }
+      }
+    }
+  },
+  "sharing": {
+    "title": "Partage",
+    "socialText": "Partager sur les réseaux sociaux",
+    "share": "Partager les lien"
+  },
+  "myQuests": {
+    "statuses": {
+      "all": "Toutes les quêtes",
+      "fav": "Favori",
+      "requested": "Demandée",
+      "completed": "Quêtes terminées",
+      "active": "Quêtes actives",
+      "invited": "Quêtes invitées"
+    }
+  }
+}
