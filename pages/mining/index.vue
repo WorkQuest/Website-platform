@@ -185,7 +185,6 @@ export default {
       return str;
     },
     handleOpenPool(el) {
-      localStorage.setItem('miningPoolId', el.item.id);
       this.$router.push(`/mining/${el.item.id}`);
     },
   },

@@ -82,7 +82,6 @@ export const getStakingDataByType = (stakingType) => {
   let _stakingAddress;
   let _stakingAbi;
   let _tokenAddress;
-
   const _miningPoolId = localStorage.getItem('miningPoolId');
   switch (stakingType) {
     case StakingTypes.MINING:

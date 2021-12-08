@@ -375,8 +375,8 @@ export default {
     },
   },
   async mounted() {
+    localStorage.setItem('miningPoolId', this.currentPool);
     const currentPool = this.currentPool.toLowerCase();
-    localStorage.setItem('miningPoolId', currentPool);
     await this.$store.dispatch(`mining/getChartDataForWqtW${currentPool}Pool`);
     await this.$store.dispatch(`mining/getTableDataForWqtW${currentPool}Pool`, {});
   },
