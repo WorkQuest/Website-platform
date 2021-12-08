@@ -23,7 +23,10 @@
       <div class="info__left">
         <div
           class="info__text"
-          :class="[{'info__text_white': ![InfoModeWorker.Rejected, InfoModeWorker.Closed].includes(infoDataMode)}, {'info__text_black': [InfoModeWorker.Rejected, InfoModeWorker.Closed].includes(infoDataMode)}]"
+          :class="[
+            {'info__text_white': ![InfoModeWorker.Rejected, InfoModeWorker.Closed].includes(infoDataMode)},
+            {'info__text_black': [InfoModeWorker.Rejected, InfoModeWorker.Closed].includes(infoDataMode)}
+          ]"
         >
           {{ infoStatusText }}
         </div>
