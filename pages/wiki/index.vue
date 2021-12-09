@@ -116,6 +116,32 @@ export default {
     navigation() {
       return Object.keys(this.$t('wiki.navigation'));
     },
+    wikiData() {
+      const result = {};
+      // eslint-disable-next-line no-restricted-syntax
+      for (const nav of this.navigation) {
+        const cards = Object.keys(this.$t(`wiki.navigation.${nav}.cards`));
+        result[nav] = {
+          tabName: this.$t(`wiki.navigation.${nav}.title`),
+          title: this.$t(`wiki.navigation.${nav}.title`).toLowerCase(),
+          cardKeys: cards,
+          cards: {},
+        };
+        // eslint-disable-next-line no-restricted-syntax
+        for (const card of cards) {
+          const cardTitle = this.$t(`wiki.navigation.${nav}.cards.${card}.title`).toLowerCase();
+          let cardSubtitle = [];
+          if (this.$te(`wiki.navigation.${nav}.cards.${card}.subtitle`)) {
+            cardSubtitle = this.$t(`wiki.navigation.${nav}.cards.${card}.subtitle`).toLowerCase();
+          }
+          result[nav].cards[card] = {
+            cardTitle,
+            cardSubtitle,
+          };
+        }
+      }
+      return result;
+    },
   },
   mounted() {
     this.SetLoader(true);
@@ -143,52 +169,43 @@ export default {
         this.searched = [];
         return;
       }
-      this.interval = setTimeout(() => this.searchData(), 500);
+      this.interval = setTimeout(() => this.searchData(), 250);
     },
     gotoTab(tab) {
       this.currentTab = tab;
       this.searched = [];
     },
     async searchData() {
-      const word = this.searchValue.toLowerCase();
       const results = [];
+      const word = this.searchValue.toLowerCase();
+      const data = this.wikiData;
       // eslint-disable-next-line no-restricted-syntax
-      for (const nav of this.navigation) {
-        const tabName = this.$t(`wiki.navigation.${nav}.title`);
-        const title = this.$t(`wiki.navigation.${nav}.title`).toLowerCase();
-        const cards = Object.keys(this.$t(`wiki.navigation.${nav}.cards`));
+      for (const nav of Object.keys(data)) {
         // eslint-disable-next-line no-restricted-syntax
-        for (const card of cards) {
-          const cardTitle = this.$t(`wiki.navigation.${nav}.cards.${card}.title`).toLowerCase();
-          let cardSubtitle = [];
-          if (this.$te(`wiki.navigation.${nav}.cards.${card}.subtitle`)) {
-            cardSubtitle = this.$t(`wiki.navigation.${nav}.cards.${card}.subtitle`).toLowerCase();
-          }
+        for (const card of data[nav].cardKeys) {
+          const { cardTitle, cardSubtitle } = data[nav].cards[card];
           if (cardSubtitle.indexOf(word) !== -1) {
-            const text = this.$t(`wiki.navigation.${nav}.cards.${card}.subtitle`);
-            if (results.filter((item) => item.tab !== nav).length === 0) {
+            if (results.filter((item) => item.text === cardSubtitle).length === 0) {
               results.push({
                 tab: nav,
-                tabName,
-                text,
+                tabName: data[nav].tabName,
+                text: cardSubtitle,
               });
             }
           } else if (cardTitle.indexOf(word) !== -1) {
-            const text = this.$t(`wiki.navigation.${nav}.cards.${card}.title`);
-            if (results.filter((item) => item.tab !== nav).length === 0) {
+            if (results.filter((item) => item.text === cardTitle).length === 0) {
               results.push({
                 tab: nav,
-                tabName,
-                text,
+                tabName: data[nav].tabName,
+                text: cardTitle,
               });
             }
-          } else if (title.indexOf(word) !== -1) {
-            const text = this.$t(`wiki.navigation.${nav}.title`);
-            if (results.filter((item) => item.tab !== nav).length === 0) {
+          } else if (data[nav].title.indexOf(word) !== -1) {
+            if (results.filter((item) => item.text === data[nav].title).length === 0) {
               results.push({
                 tab: nav,
-                tabName,
-                text,
+                tabName: data[nav].tabName,
+                text: data[nav].title,
               });
             }
           }
@@ -453,10 +470,12 @@ export default {
 
   max-height: 50vh;
   overflow-y: auto;
+  overscroll-behavior: contain;
 
   &__item {
     cursor: pointer;
     padding: 10px;
+
     &:hover {
       background: $black100;
     }
