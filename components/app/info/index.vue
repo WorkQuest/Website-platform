@@ -31,34 +31,33 @@
           {{ infoStatusText }}
         </div>
       </div>
-      <div class="info__right">
-        <div
-          v-if="infoDataMode === InfoModeWorker.Rejected"
+      <div
+        v-if="infoDataMode === InfoModeWorker.Rejected"
+        class="info__right"
+      >
+        <base-btn
+          v-if="Object.keys(respondOnQuest).length > 0 || questData.response.message"
+          v-click-outside="closeMessage"
+          class="message message__btn"
+          mode="showYourMessage"
+          @click="toggleShowMessage"
         >
-          <base-btn
-            v-if="Object.keys(respondOnQuest).length > 0"
-            v-click-outside="closeMessage"
-            class="message message__btn"
-            mode="showYourMessage"
-            @click="toggleShowMessage"
+          <template v-slot:right>
+            <span class="icon-caret_down" />
+          </template>
+          {{ isShowMessage ? $t('info.hideYourMessage') : $t('info.showYourMessage') }}
+          <div
+            v-if="isShowMessage"
+            class="message message__container"
           >
-            <template v-slot:right>
-              <span class="icon-caret_down" />
-            </template>
-            {{ isShowMessage ? $t('info.hideYourMessage') : $t('info.showYourMessage') }}
-            <div
-              v-if="isShowMessage"
-              class="message message__container"
-            >
-              <div class="message__title">
-                {{ $t('info.yourMessage') }}
-              </div>
-              <div class="message__body">
-                {{ respondOnQuest.message }}
-              </div>
+            <div class="message__title">
+              {{ $t('info.yourMessage') }}
             </div>
-          </base-btn>
-        </div>
+            <div class="message__body">
+              {{ respondOnQuest.message ? respondOnQuest.message : questData.response.message }}
+            </div>
+          </div>
+        </base-btn>
       </div>
     </div>
   </div>
@@ -89,6 +88,7 @@ export default {
   computed: {
     ...mapGetters({
       respondOnQuest: 'quests/getRespondOnQuest',
+      questData: 'quests/getQuest',
     }),
     InfoModeEmployer() {
       return InfoModeEmployer;
@@ -169,11 +169,12 @@ export default {
   &__container {
     position: absolute;
     top: calc(40px + 5px);
-    right: calc(100% - 140%);
+    right: calc(100% - 111%);
     background: #FFFFFF;
     box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
     border-radius: 6px;
-    min-width: 341px;
+    max-width: 220px;
+    min-width: 200px;
     z-index: 2;
   }
   &__btn {
@@ -189,6 +190,7 @@ export default {
     padding: 10px 0 5px 10px;
     color: $black600;
     text-align: left;
+    word-wrap: break-word;
   }
 }
 .icon {
@@ -259,6 +261,16 @@ export default {
     }
     &_normal {
       font-weight: 300;
+    }
+  }
+}
+@include _1199 {
+  .info {
+    &__right {
+      margin-right: 40px;
+    }
+    &__text {
+      margin-left: 18px;
     }
   }
 }
