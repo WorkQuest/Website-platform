@@ -709,7 +709,7 @@ export default {
   background: #FFFFFF;
   border-radius: 6px;
   display: grid;
-  grid-template-columns: 240px 1fr;
+  grid-template-columns: 210px 1fr;
   min-height: 100%;
   &__publication {
     &_bold {

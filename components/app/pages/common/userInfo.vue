@@ -1,125 +1,134 @@
 <template>
-  <div class="information-grid">
-    <div class="col info-grid__col_left">
-      <div class="info-grid__avatar">
+  <div class="info-grid">
+    <div class="info-grid__block block block_left">
+      <div class="block__avatar avatar">
         <img
-          class="info-grid__avatar"
-          :src="userAvatar"
-          alt=""
+          class="avatar__img"
+          :src="userData.avatar.url || require('~/assets/img/app/avatar_empty.png')"
+          :alt="userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
           loading="lazy"
         >
       </div>
-      <div class="rating">
+      <div class="block__rating rating">
         <div
           v-for="(star,idx) in 5"
           :key="idx"
-          class="star"
+          class="rating__star"
           :class="initStarClass(star)"
         />
       </div>
-      <div class="reviews-amount">
-        {{ `${userStatistics.reviewCount} ${$t('quests.reviews')}` }}
+      <div class="block__reviews">
+        {{ `${userData.ratingStatistic.reviewCount} ${$t('quests.reviews')}` }}
       </div>
     </div>
-    <div class="col info-grid__col">
+    <div class="info-grid__block block block_right">
       <div
-        v-if="userInfo.firstName && userInfo.lastName"
-        class="title"
+        v-if="userData.firstName && userData.lastName"
+        class="block__title"
       >
-        {{ `${userInfo.firstName} ${userInfo.lastName}` }}
+        {{ `${userData.firstName} ${userData.lastName}` }}
       </div>
       <div
-        v-if="userInfo.role === 'employer' && userInfo.company"
-        class="subtitle"
+        v-if="userData.role === 'employer' && userData.company"
+        class="block__subtitle"
       >
-        {{ userInfo.company }}
+        {{ userData.company }}
       </div>
       <div
-        v-if="userAdditionalInfo.description"
-        class="description"
+        v-if="userData.additionalInfo.description"
+        class="block__description"
       >
-        {{ userAdditionalInfo.description }}
+        {{ userData.additionalInfo.description }}
       </div>
-      <div v-if="userInfo.role === 'worker' ">
-        <div v-if="userEducations && userEducations.length > 0">
-          <div class="knowledge__text">
-            {{ $t('profile.educations') }}
-          </div>
+      <div
+        v-if="showEducations"
+        class="block__knowledge knowledge"
+      >
+        <div class="knowledge__text">
+          {{ $t('profile.educations') }}
+        </div>
+        <div
+          v-if="userData.additionalInfo.educations"
+          class="knowledge__container"
+        >
           <div
-            v-if="userEducations"
-            class="work-exp__container"
+            v-for="(item, i) in userData.additionalInfo.educations"
+            :key="i"
+            class="knowledge__item"
+          >
+            <span class="knowledge__place">{{ item.place }}</span>
+            <span class="knowledge__term">{{ `${item.from} - ${item.to}` }}</span>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="showWorkExp"
+        class="block__work-exp work-exp"
+      >
+        <div class="work-exp__text">
+          {{ $t('profile.prevWorkExp') }}
+        </div>
+        <div class="work-exp__container">
+          <div
+            v-for="(item, i) in userData.additionalInfo.workExperiences"
+            :key="i"
+            class="work-exp__item"
+          >
+            <span class="work-exp__place">{{ item.place }}</span>
+            <span class="work-exp__term">{{ `${item.from} - ${item.to}` }}</span>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="Object.keys(socialNetworks).length > 0"
+        class="block__socials social"
+      >
+        <span
+          v-for="(i, key) in socialNetworks"
+          :key="key"
+          class="social__container"
+        >
+          <a
+            class="social__link"
+            :href="`https://${key}.com/${i}`"
+            target="_blank"
+          >
+            <span
+              :class="`icon-${key}`"
+            />
+          </a>
+        </span>
+      </div>
+      <div class="block__contacts contacts">
+        <div class="contacts__contact contact">
+          <template
+            v-for="(data, key) in contactData"
           >
             <div
-              v-for="(item, i) in userEducations"
-              :key="i"
-              class="work-exp__item"
+              v-if="data.name"
+              :key="key"
+              class="contact__container"
             >
-              <span class="work-exp__company">{{ item.place }}</span>
-              <span class="work-exp__term">{{ `${item.from} - ${item.to}` }}</span>
+              <span
+                :class="data.icon"
+              />
+              <a
+                :href="data.href"
+                target="_blank"
+                class="contact__link"
+              >{{ data.name }}</a>
             </div>
-          </div>
+          </template>
         </div>
-        <div v-if="userWorkExperiences && userWorkExperiences.length > 0">
-          <div class="work-exp__text">
-            {{ $t('profile.prevWorkExp') }}
-          </div>
-          <div class="work-exp__container">
-            <div
-              v-for="(item, i) in userWorkExperiences"
-              :key="i"
-              class="work-exp__item"
-            >
-              <span class="work-exp__company">{{ item.place }}</span>
-              <span class="work-exp__term">{{ `${item.from} - ${item.to}` }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        v-if="hasSocialNetworks"
-        class="socials"
-      >
-        <socialPanel :social="userSocialNetwork" />
-      </div>
-      <div class="contacts__grid">
-        <div class="contacts">
-          <contactPanel
-            :contacts="{
-              email: userInfo.email,
-              phone: userInfo.phone,
-              address: userAdditionalInfo.address,
-              company: userAdditionalInfo.company,
-              role: userInfo.role,
-            }"
-          />
-          <div class="btn__container">
-            <base-btn
-              v-if="userRole === 'worker'"
-              @click="toRaisedViews()"
-            >
-              {{ $t('profile.raiseViews') }}
-            </base-btn>
-            <!--            <span-->
-            <!--              v-if="userRole === 'employer'"-->
-            <!--              class="right"-->
-            <!--            >-->
-            <!--              <span-->
-            <!--                v-if="selected === 1"-->
-            <!--                class="message__container-btn"-->
-            <!--              >-->
-            <!--                <base-btn-->
-            <!--                  mode="goToMessages"-->
-            <!--                  class="message__btn"-->
-            <!--                  @click="showMessages()"-->
-            <!--                >-->
-            <!--                  <template v-slot:right>-->
-            <!--                    <span class="icon-chat" />-->
-            <!--                  </template>-->
-            <!--                  {{ $t('profile.writeAMessage') }}-->
-            <!--                </base-btn>-->
-            <!--              </span>-->
-            <!--            </span>-->
-          </div>
+        <div
+          v-if="userRole === 'worker'"
+          class="contact__btn"
+        >
+          <base-btn
+            @click="toRaisedViews()"
+          >
+            {{ $t('profile.raiseViews') }}
+          </base-btn>
         </div>
       </div>
     </div>
@@ -132,13 +141,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import contactPanel from '~/components/app/panels/contact';
-import socialPanel from '~/components/app/panels/social';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'UserInfo',
-  components: { contactPanel, socialPanel },
   props: {
     selected: {
       type: Number,
@@ -149,65 +155,88 @@ export default {
       default: () => {},
     },
   },
-  data() {
-    return {
-      userAvatar: '',
-      userAdditionalInfo: {
-        company: '',
-        address: '',
-        description: '',
-      },
-      userSocialNetwork: {},
-      userWorkExperiences: {
-        length: 0,
-      },
-      userSkills: {},
-      userEducations: {
-        length: 0,
-      },
-      userStatistics: {},
-      userStars: [],
-    };
-  },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
     }),
-    hasSocialNetworks() {
-      const { userSocialNetwork } = this;
-
-      return userSocialNetwork.length && Object.values(userSocialNetwork).some((val) => val !== null);
-    },
-  },
-  watch: {
-    userInfo() {
-      if (this.userWorkExperiences.length === 0) {
-        this.initData();
+    socialNetworks() {
+      if (!Object.keys(this.userData).length) return [];
+      const socialNetworksData = this.userData.additionalInfo.socialNetwork;
+      const filledNetworks = {};
+      if (socialNetworksData) {
+        Object.keys(socialNetworksData).forEach((key) => {
+          if (socialNetworksData[key]) {
+            filledNetworks[key] = socialNetworksData[key];
+          }
+        });
       }
+      return filledNetworks;
     },
-  },
-  created() {
-    this.initData();
+    contactData() {
+      if (!Object.keys(this.userData).length) return [];
+      return {
+        email: {
+          name: this.userData.email,
+          icon: 'icon-mail',
+          href: `mailto:${this.userData.email}`,
+        },
+        phone: {
+          name: this.userData.phone,
+          icon: 'icon-phone',
+          href: `tel:${this.userData.phone}`,
+        },
+        address: {
+          name: this.userData.additionalInfo.address,
+          icon: 'icon-location',
+          href: `https://maps.google.com/?q=${this.userData.additionalInfo.address}`,
+        },
+        company: {
+          name: this.userData.additionalInfo.company,
+          icon: 'icon-Earth',
+          href: `https://${this.userData.additionalInfo.company}`,
+        },
+      };
+    },
+    userData() {
+      if (!Object.keys(this.userInfo).length) {
+        return {
+          avatar: {
+            url: '',
+          },
+          additionalInfo: {
+            company: '',
+            address: '',
+            description: '',
+            educations: {
+              length: 0,
+            },
+            workExperiences: {
+              length: 0,
+            },
+          },
+          ratingStatistic: {
+            averageMark: 0,
+            reviewCount: 0,
+          },
+        };
+      }
+      return this.userInfo;
+    },
+    showEducations() {
+      return this.userData.additionalInfo.educations.length > 0 && this.userData.role === 'worker';
+    },
+    showWorkExp() {
+      return this.userData.additionalInfo.workExperiences.length > 0 && this.userData.role === 'worker';
+    },
   },
   methods: {
-    async initData() {
-      this.userAvatar = await this.userInfo?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
-      if (this.userInfo.additionalInfo) {
-        this.userAdditionalInfo = this.userInfo.additionalInfo;
-        this.userSocialNetwork = this.userAdditionalInfo.socialNetwork;
-        this.userWorkExperiences = this.userAdditionalInfo.workExperiences;
-        this.userSkills = this.userAdditionalInfo.skills;
-        this.userEducations = this.userAdditionalInfo.educations;
-      }
-      this.userStatistics = this.userInfo.ratingStatistic ? this.userInfo.ratingStatistic : { reviewCount: 0, averageMark: 0 };
-    },
     initStarClass(star) {
-      const reviewMark = this.userStatistics.averageMark;
+      const reviewMark = this.userData.ratingStatistic.averageMark;
       const a = this.Floor(star - reviewMark, 2);
       return [
-        { star__full: star <= reviewMark },
-        { star__half: (a >= 0.3 && a <= 0.7) },
+        { rating__star_full: star <= reviewMark },
+        { rating__star_half: (a >= 0.3 && a <= 0.7) },
       ];
     },
     shareModal() {
@@ -227,80 +256,6 @@ export default {
 
 <style lang="scss" scoped>
 
-.right {
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
-}
-.btn {
-  &__container {
-    width: 100%;
-    display: flex;
-    align-items: flex-end;
-    height: 43px;
-  }
-}
-
-.icon {
-  &-chat:before {
-    content: "\e9ba";
-    font-size: 14px;
-    color: $green;
-  }
-  &-btn {
-    &_right {
-      margin: 0 5px 0 0;
-    }
-  }
-}
-
-.contacts {
-  display: grid;
-  grid-template-columns: 7fr 1fr;
-}
-
-.knowledge {
-  &__text {
-    @extend .work-exp__text;
-  }
-  &__term {
-    @include text-simple;
-    font-weight: 400;
-    font-size: 14px;
-    color: $black500;
-  }
-}
-
-.work-exp {
-  &__text {
-    @include text-simple;
-    font-weight: 500;
-    font-size: 16px;
-    color: $black700;
-    margin: 15px 0 0 0;
-  }
-  &__container {
-    display: flex;
-    flex-direction: column;
-    margin: 0 0 20px 0;
-  }
-  &__company {
-    @extend .knowledge__term;
-  }
-  &__term {
-    @extend .knowledge__term;
-    color: $black300;
-  }
-}
-
-.title {
-  @include text-simple;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  color: $black800;
-}
-
 .styles {
   &__flex {
     display: -webkit-box;
@@ -309,14 +264,13 @@ export default {
   }
 }
 
-.information-grid {
+.info-grid {
   @extend .styles__flex;
   padding: 25px 0 0 0;
+  grid-gap: 20px;
   position: relative;
-
-  .col {
+  &__block {
     @extend .styles__flex;
-    align-self: flex-start;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
@@ -324,32 +278,26 @@ export default {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
+    grid-gap:15px;
+    &_left {
+      max-width: 142px;
+    }
   }
-
-  .avatar {
-    border-radius: 89px;
+}
+.block {
+  &_left {
+    align-self: flex-start;
+    max-width: 142px;
   }
-
-  .rating {
+  &_right {
+    align-self: flex-start;
+  }
+  &__rating {
     height: 20px;
     display: flex;
-    margin-top: 20px;
     width: 142px;
   }
-  .star {
-    width: inherit;
-    background-image: url('~assets/img/ui/star-empty.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    &__half {
-      background-image: url('~assets/img/ui/star-half.svg');
-    }
-    &__full {
-      background-image: url('~assets/img/ui/star-small.svg');
-    }
-  }
-
-  .reviews-amount {
+  &__reviews {
     font-style: normal;
     font-weight: normal;
     font-size: 12px;
@@ -357,66 +305,135 @@ export default {
     text-decoration: none;
     color: #7C838D;
     text-align: center;
-    margin-top: 5px;
   }
-
-  .description {
-    margin: 15px 0 0 0;
+  &__title {
+    @include text-simple;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    color: $black800;
+  }
+  &__description {
     font-weight: 400;
     font-size: 16px;
     color: $black600;
   }
-
-  .socials {
-    margin: 15px 0;
-  }
-
-  .socials a {
-    display: inline-block;
-  }
-
-  .col .socials .icon {
-    height: 24px;
-    width: 24px;
-    background-position: center;
-    background-repeat: no-repeat;
-    margin-right: 5px;
+  &__socials {
+    .icon {
+      font-size: 20px;
+      cursor: pointer;
+      &-facebook::before {
+        @extend .icon;
+        color: #0A7EEA;
+      }
+      &-twitter::before {
+        @extend .icon;
+        color: #24CAFF;
+      }
+      &-instagram::before {
+        @extend .icon;
+        color: #C540F3;
+      }
+      &-linkedin:before {
+        @extend .icon;
+        content: "\e9ed";
+        color: #57A6EF;
+      }
+    }
+    .social {
+      &__link {
+        text-decoration: none;
+      }
+    }
   }
 }
-
-.info-grid {
-  &__avatar {
+.contact {
+  display: flex;
+  &__container {
+    display: flex;
+    align-items: baseline;
+    grid-gap: 5px;
+  }
+  &__link {
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 130%;
+    color: #7C838D;
+    margin-right: 30px;
+    justify-content: center;
+    align-items: center;
+  }
+  &__btn {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    height: 43px;
+  }
+}
+.rating {
+  &__star {
+    width: inherit;
+    background-image: url('~assets/img/ui/star-empty.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    &_half {
+      background-image: url('~assets/img/ui/star-half.svg');
+    }
+    &_full {
+      background-image: url('~assets/img/ui/star-small.svg');
+    }
+  }
+}
+.avatar {
+  &__img {
     width: 142px;
     height: 142px;
-    border-radius: 50%;
     object-fit: cover;
+    border-radius: 50%;
   }
-  &__col {
-    padding-right: 0;
-    &_left {
-      max-width: 142px;
-      padding: 0 15px 0 0;
-    }
+}
+.work-exp, .knowledge {
+  &__text {
+    @include text-simple;
+    font-weight: 500;
+    font-size: 16px;
+    color: $black700;
+  }
+  &__container {
+    display: flex;
+    flex-direction: column;
+  }
+  &__place {
+    @include text-simple;
+    font-weight: 400;
+    font-size: 14px;
+    color: $black500;
+  }
+  &__term {
+    @include text-simple;
+    font-weight: 400;
+    font-size: 14px;
+    color: $black300;
   }
 }
 
 @include _1199 {
   .contacts {
-    grid-template-columns: 4fr 1fr;
     margin: 0 0 20px 0;
+    .contact {
+      display: flex;
+      flex-direction: column;
+    }
   }
 }
 @include _575 {
-  .contacts {
-    grid-template-columns: 1fr;
-  }
-  .information-grid {
+  .info-grid {
     flex-direction: column;
     align-items: center;
-    .col {
-      margin-bottom: 10px;
-      margin-left: auto;
-      margin-right: auto;
+  }
+  .block {
+    &_left {
+      align-self: center;
     }
   }
 }
