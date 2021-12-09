@@ -21,23 +21,7 @@
         <div class="number">
           {{ reviewData.openedQuests }}
         </div>
-        <!--        <div-->
-        <!--          class="card-subtitle"-->
-        <!--        >-->
-        <!--          {{ $t('quests.showAll') }}-->
-        <!--        </div>-->
       </div>
-      <!--      <div class="data-item">-->
-      <!--        <div class="card-title">-->
-      <!--          {{ $t('quests.completedQuests') }}-->
-      <!--        </div>-->
-      <!--        <div class="number">-->
-      <!--          {{ questData.completedQuestsFullTime }}-->
-      <!--        </div>-->
-      <!--        <div class="card-subtitle">-->
-      <!--          {{ $t('quests.fullTime') }}-->
-      <!--        </div>-->
-      <!--      </div>-->
       <div class="data-item">
         <div class="card-title">
           {{ $t('quests.averageRating') }}
