@@ -28,14 +28,15 @@
                 v-click-outside="() => { searched = [] }"
                 class="wiki__searched searched"
               >
-                <div
+                <a
                   v-for="(item, index) of searched"
                   :key="index"
                   class="searched__item"
+                  :href="item.id ? '#' + item.id : ''"
                   @click="gotoTab(item.tab)"
                 >
                   <b>{{ item.tabName }}</b> - {{ item.text }}
-                </div>
+                </a>
               </div>
             </div>
             <div class="wiki__button-field">
@@ -188,8 +189,9 @@ export default {
             if (results.filter((item) => item.text === cardSubtitle).length === 0) {
               results.push({
                 tab: nav,
-                tabName: data[nav].tabName,
+                tabName: cardTitle,
                 text: cardSubtitle,
+                id: cardTitle,
               });
             }
           } else if (cardTitle.indexOf(word) !== -1) {
@@ -198,6 +200,7 @@ export default {
                 tab: nav,
                 tabName: data[nav].tabName,
                 text: cardTitle,
+                id: cardTitle,
               });
             }
           } else if (data[nav].title.indexOf(word) !== -1) {
@@ -473,6 +476,7 @@ export default {
   overscroll-behavior: contain;
 
   &__item {
+    text-decoration: none;
     cursor: pointer;
     padding: 10px;
 
