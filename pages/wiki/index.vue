@@ -35,7 +35,7 @@
                   :href="item.id ? '#' + item.id : ''"
                   @click="gotoTab(item.tab)"
                 >
-                  <b>{{ item.tabName }}</b> - {{ item.text }}
+                  <span class="searched__item_nav">{{ item.tabName }}</span> - {{ item.text }}
                 </a>
               </div>
             </div>
@@ -130,14 +130,16 @@ export default {
         };
         // eslint-disable-next-line no-restricted-syntax
         for (const card of cards) {
-          const cardTitle = this.$t(`wiki.navigation.${nav}.cards.${card}.title`).toLowerCase();
-          let cardSubtitle = [];
+          const cardTitle = this.$t(`wiki.navigation.${nav}.cards.${card}.title`);
+          let cardSubtitle = '';
           if (this.$te(`wiki.navigation.${nav}.cards.${card}.subtitle`)) {
-            cardSubtitle = this.$t(`wiki.navigation.${nav}.cards.${card}.subtitle`).toLowerCase();
+            cardSubtitle = this.$t(`wiki.navigation.${nav}.cards.${card}.subtitle`);
           }
           result[nav].cards[card] = {
-            cardTitle,
-            cardSubtitle,
+            cardTitle: cardTitle.toLowerCase(),
+            cardSubtitle: cardSubtitle.toLowerCase(),
+            title: cardTitle,
+            subtitle: cardSubtitle,
           };
         }
       }
@@ -189,8 +191,8 @@ export default {
             if (results.filter((item) => item.text === cardSubtitle).length === 0) {
               results.push({
                 tab: nav,
-                tabName: cardTitle,
-                text: cardSubtitle,
+                tabName: data[nav].tabName,
+                text: `${data[nav].cards[card].title} - ${data[nav].cards[card].subtitle}`,
                 id: cardTitle,
               });
             }
@@ -199,7 +201,7 @@ export default {
               results.push({
                 tab: nav,
                 tabName: data[nav].tabName,
-                text: cardTitle,
+                text: data[nav].cards[card].title,
                 id: cardTitle,
               });
             }
@@ -420,6 +422,7 @@ export default {
   &__mobile {
     display: block;
     margin-bottom: 15px;
+    z-index: 1;
   }
 }
 }
@@ -458,7 +461,7 @@ export default {
 }
 
 .searched {
-  z-index: 1;
+  z-index: 2;
   background: white;
   border-radius: 6px;
   position: absolute;
@@ -476,10 +479,18 @@ export default {
   overscroll-behavior: contain;
 
   &__item {
+    font-size: 16px;
+    line-height: 130%;
+    font-weight: normal;
     color: $black800;
     text-decoration: none;
     cursor: pointer;
     padding: 10px;
+
+    &_nav{
+      line-height: 130%;
+      font-weight: 500;
+    }
 
     &:hover {
       background: $black100;

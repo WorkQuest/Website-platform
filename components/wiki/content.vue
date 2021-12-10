@@ -118,6 +118,6 @@ export default {
 }
 .scroller {
   position: absolute;
-  top: -80px;
+  top: -90px;
 }
 </style>
