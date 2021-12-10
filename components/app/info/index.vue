@@ -168,9 +168,9 @@ export default {
 .message {
   &__container {
     position: absolute;
-    top: calc(40px + 5px);
-    right: calc(100% - 111%);
-    background: #FFFFFF;
+    top: 45px;
+    right: 0;
+    background: $white;
     box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
     border-radius: 6px;
     max-width: 220px;
@@ -183,7 +183,7 @@ export default {
   &__title {
     padding: 5px 0 0 10px;
     font-size: 16px;
-    color: #0083C7;
+    color: $blue;
     text-align: left;
   }
   &__body {
