@@ -1,141 +1,145 @@
 <template>
   <div class="info-grid">
-    <div class="info-grid__block block block_left">
-      <div class="block__avatar avatar">
-        <img
-          class="avatar__img"
-          :src="userData.avatar ? userData.avatar.url || require('~/assets/img/app/avatar_empty.png') : require('~/assets/img/app/avatar_empty.png')"
-          :alt="userData.avatar ? userData.avatar.url : 'avatar_empty'"
-          loading="lazy"
-        >
+    <div class="info-grid__left">
+      <div class="info-grid__block block block_left">
+        <div class="block__avatar avatar">
+          <img
+            class="avatar__img"
+            :src="userData.avatar ? userData.avatar.url || require('~/assets/img/app/avatar_empty.png') : require('~/assets/img/app/avatar_empty.png')"
+            :alt="userData.avatar ? userData.avatar.url : 'avatar_empty'"
+            loading="lazy"
+          >
+        </div>
+        <div class="block__rating rating">
+          <div
+            v-for="(star,idx) in 5"
+            :key="idx"
+            class="rating__star"
+            :class="initStarClass(star)"
+          />
+        </div>
+        <div class="block__reviews">
+          {{ `${userData.ratingStatistic ? userData.ratingStatistic.reviewCount : 0} ${$t('quests.reviews')}` }}
+        </div>
       </div>
-      <div class="block__rating rating">
+      <div class="info-grid__block block block_right">
         <div
-          v-for="(star,idx) in 5"
-          :key="idx"
-          class="rating__star"
-          :class="initStarClass(star)"
-        />
-      </div>
-      <div class="block__reviews">
-        {{ `${userData.ratingStatistic ? userData.ratingStatistic.reviewCount : 0} ${$t('quests.reviews')}` }}
-      </div>
-    </div>
-    <div class="info-grid__block block block_right">
-      <div
-        v-if="userData.firstName && userData.lastName"
-        class="block__title"
-      >
-        {{ `${userData.firstName} ${userData.lastName}` }}
-      </div>
-      <div
-        v-if="userData.role === 'employer' && userData.company"
-        class="block__subtitle"
-      >
-        {{ userData.company }}
-      </div>
-      <div
-        v-if="userData.additionalInfo.description"
-        class="block__description"
-      >
-        {{ userData.additionalInfo.description }}
-      </div>
-      <div
-        v-if="showEducations"
-        class="block__knowledge knowledge"
-      >
-        <div class="knowledge__text">
-          {{ $t('profile.educations') }}
+          v-if="userData.firstName && userData.lastName"
+          class="block__title"
+        >
+          {{ `${userData.firstName} ${userData.lastName}` }}
         </div>
         <div
-          v-if="userData.additionalInfo.educations"
-          class="knowledge__container"
+          v-if="userData.role === 'employer' && userData.company"
+          class="block__subtitle"
         >
-          <div
-            v-for="(item, i) in userData.additionalInfo.educations"
-            :key="i"
-            class="knowledge__item"
-          >
-            <span class="knowledge__place">{{ item.place }}</span>
-            <span class="knowledge__term">{{ `${item.from} - ${item.to}` }}</span>
-          </div>
+          {{ userData.company }}
         </div>
-      </div>
-      <div
-        v-if="showWorkExp"
-        class="block__work-exp work-exp"
-      >
-        <div class="work-exp__text">
-          {{ $t('profile.prevWorkExp') }}
-        </div>
-        <div class="work-exp__container">
-          <div
-            v-for="(item, i) in userData.additionalInfo.workExperiences"
-            :key="i"
-            class="work-exp__item"
-          >
-            <span class="work-exp__place">{{ item.place }}</span>
-            <span class="work-exp__term">{{ `${item.from} - ${item.to}` }}</span>
-          </div>
-        </div>
-      </div>
-      <div
-        v-if="Object.keys(socialNetworks).length > 0"
-        class="block__socials social"
-      >
-        <span
-          v-for="(i, key) in socialNetworks"
-          :key="key"
-          class="social__container"
+        <div
+          v-if="userData.additionalInfo.description"
+          class="block__description"
         >
-          <a
-            class="social__link"
-            :href="`https://${key}.com/${i}`"
-            target="_blank"
-          >
-            <span
-              :class="`icon-${key}`"
-            />
-          </a>
-        </span>
-      </div>
-      <div class="block__contacts contacts">
-        <div class="contacts__contact contact">
-          <template
-            v-for="(data, key) in contactData"
+          {{ userData.additionalInfo.description }}
+        </div>
+        <div
+          v-if="showEducations"
+          class="block__knowledge knowledge"
+        >
+          <div class="knowledge__text">
+            {{ $t('profile.educations') }}
+          </div>
+          <div
+            v-if="userData.additionalInfo.educations"
+            class="knowledge__container"
           >
             <div
-              v-if="data.name"
-              :key="key"
-              class="contact__container"
+              v-for="(item, i) in userData.additionalInfo.educations"
+              :key="i"
+              class="knowledge__item"
             >
-              <span
-                :class="data.icon"
-              />
-              <a
-                :href="data.href"
-                target="_blank"
-                class="contact__link"
-              >{{ data.name }}</a>
+              <span class="knowledge__place">{{ item.place }}</span>
+              <span class="knowledge__term">{{ `${item.from} - ${item.to}` }}</span>
             </div>
-          </template>
+          </div>
         </div>
         <div
-          v-if="userRole === 'worker'"
-          class="contact__btn"
+          v-if="showWorkExp"
+          class="block__work-exp work-exp"
         >
-          <base-btn
-            @click="toRaisedViews()"
+          <div class="work-exp__text">
+            {{ $t('profile.prevWorkExp') }}
+          </div>
+          <div class="work-exp__container">
+            <div
+              v-for="(item, i) in userData.additionalInfo.workExperiences"
+              :key="i"
+              class="work-exp__item"
+            >
+              <span class="work-exp__place">{{ item.place }}</span>
+              <span class="work-exp__term">{{ `${item.from} - ${item.to}` }}</span>
+            </div>
+          </div>
+        </div>
+        <div
+          v-if="Object.keys(socialNetworks).length > 0"
+          class="block__socials social"
+        >
+          <span
+            v-for="(i, key) in socialNetworks"
+            :key="key"
+            class="social__container"
           >
-            {{ $t('profile.raiseViews') }}
-          </base-btn>
+            <a
+              class="social__link"
+              :href="`https://${key}.com/${i}`"
+              target="_blank"
+            >
+              <span
+                :class="`icon-${key}`"
+              />
+            </a>
+          </span>
+        </div>
+        <div class="block__contacts contacts">
+          <div class="contacts__contact contact">
+            <template
+              v-for="(data, key) in contactData"
+            >
+              <div
+                v-if="data.name"
+                :key="key"
+                class="contact__container"
+              >
+                <span
+                  :class="data.icon"
+                />
+                <a
+                  :href="data.href"
+                  target="_blank"
+                  class="contact__link"
+                >{{ data.name }}</a>
+              </div>
+            </template>
+          </div>
         </div>
       </div>
     </div>
-    <base-btn
-      mode="share-btn"
-      @click="shareModal()"
-    />
+    <div class="info-grid__right">
+      <base-btn
+        mode="share-btn"
+        @click="shareModal()"
+      />
+      <div
+        v-if="userRole === 'worker'"
+        class="contact__btn"
+      >
+        <base-btn
+          @click="toRaisedViews()"
+        >
+          {{ $t('profile.raiseViews') }}
+        </base-btn>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -270,7 +274,7 @@ export default {
   @extend .styles__flex;
   padding: 25px 0 0 0;
   grid-gap: 20px;
-  position: relative;
+  justify-content: space-between;
   &__block {
     @extend .styles__flex;
     -webkit-box-orient: vertical;
@@ -284,6 +288,19 @@ export default {
     &_left {
       max-width: 142px;
     }
+  }
+  &__left {
+    flex-direction: row;
+    justify-content: center;
+    display: flex;
+    grid-gap: 15px;
+  }
+  &__right {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
   }
 }
 .block {
@@ -432,6 +449,13 @@ export default {
   .info-grid {
     flex-direction: column;
     align-items: center;
+    &__left {
+      flex-direction: column;
+    }
+    &__right {
+      grid-gap:20px;
+      width: 100%;
+    }
   }
   .block {
     &_left {

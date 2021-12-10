@@ -5,7 +5,7 @@
   >
     <div class="ctm-modal__content content">
       <div
-        v-if="options.portfolio && options.changeRule"
+        v-if="options.portfolio && isMyProfile"
         class="content__btns"
       >
         <base-btn
@@ -59,7 +59,11 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      userData: 'user/getUserData',
     }),
+    isMyProfile() {
+      return this.$route.params.id === this.userData.id;
+    },
   },
   methods: {
     hide() {

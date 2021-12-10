@@ -74,17 +74,14 @@ export default {
   components: {
     emptyData,
   },
-  data() {
-    return {
-      userId: null,
-    };
-  },
   computed: {
     ...mapGetters({
       portfolios: 'user/getUserPortfolios',
       mainUserData: 'user/getUserData',
-      userData: 'user/getAnotherUserData',
     }),
+    userId() {
+      return this.$route.params.id;
+    },
   },
   async mounted() {
     this.userId = this.$route.params.id;
@@ -99,7 +96,6 @@ export default {
           imageSrc: src,
           title: name,
           desc,
-          changeRule: this.userId === this.mainUserData.id,
         });
       }
     },
