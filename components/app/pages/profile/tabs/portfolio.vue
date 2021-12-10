@@ -1,10 +1,9 @@
 <template>
   <div>
-    <div v-if="portfolios.count === 0">
-      <emptyData
-        :description="$t('errors.emptyData.emptyPortfolios')"
-      />
-    </div>
+    <emptyData
+      v-if="portfolios.count === 0"
+      :description="$t('errors.emptyData.emptyPortfolios')"
+    />
     <div
       v-else
       class="portfolio portfolio__items"
@@ -62,16 +61,6 @@
         </div>
       </div>
     </div>
-    <!--    <div-->
-    <!--      v-if="portfolios.count > 0"-->
-    <!--      class="button__container"-->
-    <!--    >-->
-    <!--      <div-->
-    <!--        class="button__more"-->
-    <!--      >-->
-    <!--        {{ $t('quests.showAllCases') }}-->
-    <!--      </div>-->
-    <!--    </div>-->
   </div>
 </template>
 
@@ -115,14 +104,9 @@ export default {
       }
     },
     async getAllPortfolios() {
-      try {
-        this.SetLoader(true);
-        await this.$store.dispatch('user/getUserPortfolios', this.userId);
-        this.SetLoader(false);
-      } catch (e) {
-        this.showToastError(e);
-        this.SetLoader(false);
-      }
+      this.SetLoader(true);
+      await this.$store.dispatch('user/getUserPortfolios', this.userId);
+      this.SetLoader(false);
     },
     showToastError(e) {
       return this.$store.dispatch('main/showToast', {
