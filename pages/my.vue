@@ -147,18 +147,18 @@ export default {
       if (id === 3) this.statuses = 'statuses[0]=6';
       if (id === 4) this.statuses = 'statuses[0]=1';
       if (id === 5) this.statuses = 'statuses[0]=4';
-      console.log(this.statuses);
     },
     async switchQuests(perPage, id) {
       this.SetLoader(true);
-      const userId = this.userData.id;
-      const role = this.userRole;
-      console.log(role, userId);
       this.questFilterButton(id);
+      const payload = {
+        userId: this.userData.id,
+        role: this.userRole,
+        query: `limit=${this.perPager}&offset=${(this.page - 1) * perPage}&${this.statuses}&starred=${id === 1 ? !this.isStarred : this.isStarred}`,
+      };
       this.page = 1;
       this.selectedTab = id;
-      const query = `limit=${this.perPager}&offset=${(this.page - 1) * perPage}&${this.statuses}&starred=${id === 1 ? !this.isStarred : this.isStarred}`;
-      await this.$store.dispatch('quests/getUserQuests', { userId, role, query });
+      await this.$store.dispatch('quests/getUserQuests', payload);
       this.totalPagesValue = this.totalPages;
       this.SetLoader(false);
     },
