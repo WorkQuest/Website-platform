@@ -224,10 +224,12 @@ export default {
       return this.userInfo;
     },
     showEducations() {
-      return this.userData.additionalInfo.educations.length > 0 && this.userData.role === 'worker';
+      if (!Object.keys(this.userInfo).length) return false;
+      return this.userInfo.role === 'worker' && this.userInfo.additionalInfo.educations.length > 0;
     },
     showWorkExp() {
-      return this.userData.additionalInfo.workExperiences.length > 0 && this.userData.role === 'worker';
+      if (!Object.keys(this.userInfo).length) return false;
+      return this.userInfo.role === 'worker' && this.userInfo.additionalInfo.workExperiences.length > 0;
     },
   },
   methods: {
