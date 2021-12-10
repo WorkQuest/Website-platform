@@ -71,9 +71,18 @@ export default {
       return console.log(e);
     }
   },
-  async getUserQuests({ commit }, { userId, query = undefined }) {
+  // async getUserQuests({ commit }, { userId, query = undefined }) {
+  //   try {
+  //     const response = await this.$axios.$get(`/v1/employer/${userId}/quests?${query || ''}`);
+  //     commit('setUserQuests', response.result);
+  //     return response.result;
+  //   } catch (e) {
+  //     return console.log(e);
+  //   }
+  // },
+  async getUserQuests({ commit }, { userId, role, query }) {
     try {
-      const response = await this.$axios.$get(`/v1/employer/${userId}/quests?${query || ''}`);
+      const response = await this.$axios.$get(`/v1/${role}/${userId}/quests?${query || ''}`);
       commit('setUserQuests', response.result);
       return response.result;
     } catch (e) {

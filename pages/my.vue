@@ -156,27 +156,20 @@ export default {
       if (id === 0) this.statuses = 'statuses[0]=5&statuses[1]=6&statuses[2]=2&statuses[3]=4';
       if (id === 2) this.statuses = 'statuses[0]=5';
       if (id === 3) this.statuses = 'statuses[0]=6';
-      if (id === 4) this.statuses = 'statuses[0]=2';
+      if (id === 4) this.statuses = 'statuses[0]=1';
       if (id === 5) this.statuses = 'statuses[0]=4';
       console.log(this.statuses);
     },
     async switchQuests(perPage, id) {
-      console.log(id);
-      this.questFilterButton(id);
       this.SetLoader(true);
+      const userId = this.userData.id;
+      const role = this.userRole;
+      console.log(role, userId);
+      this.questFilterButton(id);
       this.page = 1;
       this.selectedTab = id;
-      if (this.userRole === 'employer') {
-        const payload = {
-          userId: this.userData.id,
-          query: `limit=${this.perPager}&offset=${(this.page - 1) * perPage}&${this.statuses}&starred=${id === 1 ? !this.isStarred : this.isStarred}`,
-        };
-        await this.$store.dispatch('quests/getUserQuests', payload);
-      }
-      if (this.userRole === 'worker') {
-        const payload = `limit=${this.perPager}&offset=${(this.page - 1) * perPage}&${this.statuses}&starred=${id === 1 ? !this.isStarred : this.isStarred}`;
-        await this.$store.dispatch('quests/getAllQuests', payload);
-      }
+      const query = `limit=${this.perPager}&offset=${(this.page - 1) * perPage}&${this.statuses}&starred=${id === 1 ? !this.isStarred : this.isStarred}`;
+      await this.$store.dispatch('quests/getUserQuests', { userId, role, query });
       this.totalPagesValue = this.totalPages;
       this.SetLoader(false);
     },
