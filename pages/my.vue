@@ -22,16 +22,10 @@
           </base-btn>
         </div>
         <quests
-          v-if="questsData.count !== 0 && userRole === 'employer'"
+          v-if="questsData.count !== 0"
           :limit="questLimits"
           :selected-tab="selectedTab"
           :object="questsData"
-        />
-        <quests
-          v-if="questsList.count !== 0 && userRole === 'worker'"
-          :limit="questLimits"
-          :selected-tab="selectedTab"
-          :object="questResponses.responses"
         />
         <emptyData
           v-if="questsList.count === 0 && questsData.count === 0"
@@ -124,6 +118,7 @@ export default {
       if (this.userRole === 'employer') {
         const payload = {
           userId: this.userData.id,
+          role: this.userRole,
           query: `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`,
         };
         await this.$store.dispatch('quests/getUserQuests', payload);
@@ -137,21 +132,15 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    await this.getResponsesToQuestForAuthUser();
-    await this.$store.dispatch('quests/getAllQuests');
     await this.$store.dispatch('quests/getUserQuests', {
       userId: this.userData.id,
+      role: this.userRole,
       query: `limit=${this.perPager}`,
     });
     this.totalPagesValue = this.totalPages;
     this.SetLoader(false);
   },
   methods: {
-    async getResponsesToQuestForAuthUser() {
-      if (this.userRole === 'worker') {
-        this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
-      }
-    },
     questFilterButton(id) {
       if (id === 0) this.statuses = 'statuses[0]=5&statuses[1]=6&statuses[2]=2&statuses[3]=4';
       if (id === 2) this.statuses = 'statuses[0]=5';
