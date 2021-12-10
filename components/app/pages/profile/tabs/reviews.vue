@@ -1,5 +1,5 @@
 <template>
-  <div class="reviews-grid">
+  <div class="reviews-grid reviews-grid__reviews-item">
     <span
       v-for="(reviewData, i) in reviews.reviews"
       :key="i"

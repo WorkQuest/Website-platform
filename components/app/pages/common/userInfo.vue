@@ -4,8 +4,8 @@
       <div class="block__avatar avatar">
         <img
           class="avatar__img"
-          :src="userData.avatar.url || require('~/assets/img/app/avatar_empty.png')"
-          :alt="userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
+          :src="userData.avatar ? userData.avatar.url || require('~/assets/img/app/avatar_empty.png') : require('~/assets/img/app/avatar_empty.png')"
+          :alt="userData.avatar ? userData.avatar.url : 'avatar_empty'"
           loading="lazy"
         >
       </div>
@@ -18,7 +18,7 @@
         />
       </div>
       <div class="block__reviews">
-        {{ `${userData.ratingStatistic.reviewCount} ${$t('quests.reviews')}` }}
+        {{ `${userData.ratingStatistic ? userData.ratingStatistic.reviewCount : 0} ${$t('quests.reviews')}` }}
       </div>
     </div>
     <div class="info-grid__block block block_right">
@@ -232,7 +232,7 @@ export default {
   },
   methods: {
     initStarClass(star) {
-      const reviewMark = this.userData.ratingStatistic.averageMark;
+      const reviewMark = this.userInfo?.ratingStatistic?.averageMark;
       const a = this.Floor(star - reviewMark, 2);
       return [
         { rating__star_full: star <= reviewMark },

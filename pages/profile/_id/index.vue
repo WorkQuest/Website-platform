@@ -1,18 +1,18 @@
 <template>
   <div>
-    <div class="main-section main-section_white">
-      <div class="main-container">
+    <div class="section section__container section__container_white">
+      <div class="container container__block">
         <userInfo
           :selected="selected"
           :user-info="userData"
         />
 
-        <div class="main-container__routes">
+        <div class="block__routes routes">
           <button
             v-for="(item, i) in pageTabs"
             :key="i"
-            class="tab__btn"
-            :class="{tab__btn_active: selected === item.number}"
+            class="routes__btn"
+            :class="{routes__btn_active: selected === item.number}"
             @click="selected = item.number"
           >
             {{ item.title }}
@@ -20,24 +20,46 @@
         </div>
       </div>
     </div>
-    <div class="information-section">
-      <div class="main-container">
-        <userStatistic
+    <div class="section section__container">
+      <div class="container container__block">
+        <div
           v-if="selected === 1"
-          :review-data="userStatistics"
-        />
+          class="block__statistic statistic"
+        >
+          <div
+            v-for="(item, key) in statisticsData"
+            :key="key"
+            class="statistic__card card"
+          >
+            <div class="card__title">
+              {{ item.title }}
+            </div>
+            <div
+              class="card__number"
+              :class="item.ratingMode ? 'card__number_rating' : ''"
+            >
+              {{ item.number }}
+            </div>
+            <div
+              v-if="item.subtitle"
+              class="card__subtitle"
+            >
+              {{ item.subtitle }}
+            </div>
+          </div>
+        </div>
         <div
           v-if="userData.userSpecializations && userData.userSpecializations.length && selected === 1"
-          class="skills-block"
+          class="block__skills-spec skills-spec"
         >
-          <div class="skills-block__title">
+          <div class="skills-spec__title">
             {{ $t('skills.title') }}
           </div>
-          <div class="skills-block__container skills-block__container_white">
+          <div class="skills-spec__container skills-spec__container_white">
             <div
               v-for="(skills, specialization) in getSkillTitle()"
               :key="specialization"
-              class="skills-block__spec skills-block__spec_white"
+              class="skills-spec__spec skills-spec__spec_white spec"
             >
               <div class="spec__title">
                 {{ $t(`filters.items.${specialization}.title`) }}
@@ -56,11 +78,11 @@
         </div>
         <div
           v-if="selected === 2 || selected === 1"
-          class="quests-block"
+          class="block__quests quests"
         >
           <div
             v-if="selected === 1"
-            class="title"
+            class="quests__title"
           >
             {{ $t('quests.activeQuests') }}
           </div>
@@ -73,16 +95,18 @@
             v-else
             :description="$t('errors.emptyData.emptyQuests')"
           />
-          <div class="pager__block">
-            <base-pager
-              v-if="selected === 2 && totalPages > 1"
-              v-model="page"
-              :total-pages="totalPages"
-            />
+          <div class="quests__pager pager">
+            <div class="pager__block">
+              <base-pager
+                v-if="selected === 2 && totalPages > 1"
+                v-model="page"
+                :total-pages="totalPages"
+              />
+            </div>
           </div>
           <div
             v-if="selected === 1 && questsObjects.count > 2"
-            class="button"
+            class="quests__button button"
           >
             <div
               class="button__more"
@@ -94,23 +118,23 @@
         </div>
         <div
           v-if="selected === 1 || selected === 3"
-          class="reviews-block"
+          class="block__reviews reviews"
         >
           <div
             v-if="selected === 1"
-            class="title"
+            class="reviews__title"
           >
             {{ $t('quests.reviewsBig') }}
           </div>
           <template v-if="userStatistics.reviewCount > 0">
             <div
-              class="tab__container"
+              class="reviews__container"
             >
               <reviewsTab />
             </div>
             <div
               v-if="selected === 1"
-              class="button"
+              class="reviews__button button"
             >
               <div
                 class="button__more"
@@ -127,17 +151,17 @@
         </div>
         <div
           v-if="(selected === 1 || selected === 4) && userData.role === 'worker'"
-          class="portfolio-block"
+          class="block__portfolio portfolio"
         >
           <div
             v-if="selected === 1"
-            class="title"
+            class="portfolio__title"
           >
             {{ $t('profile.portfolio') }}
           </div>
           <div
             v-if="selected === 4"
-            class="add-btn__container"
+            class="portfolio__add-btn"
           >
             <base-btn
               @click="showAddCaseModal()"
@@ -151,7 +175,7 @@
           <portfolioTab />
           <div
             v-if="selected === 1 && portfoliosCount > 0"
-            class="button"
+            class="portfolio__button button"
           >
             <div
               class="button__more"
@@ -172,7 +196,6 @@ import moment from 'moment';
 import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
 import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
 import userInfo from '~/components/app/pages/common/userInfo';
-import userStatistic from '~/components/app/panels/userStatistic';
 import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
 import modals from '~/store/modals/modals';
@@ -181,7 +204,6 @@ export default {
   name: 'Index',
   components: {
     reviewsTab,
-    userStatistic,
     quests,
     userInfo,
     emptyData,
@@ -245,6 +267,30 @@ export default {
     },
     totalPages() {
       return Math.ceil(this.questsObjects.count / this.perPager);
+    },
+    statisticsData() {
+      const { ratingStatistic } = this.userData;
+      const { questStatistic } = this.userData;
+      return [
+        {
+          title: this.$t('quests.completedQuests'),
+          number: questStatistic ? questStatistic.completed : 0,
+          ratingMode: false,
+          subtitle: this.$t('quests.oneTime'),
+        },
+        {
+          title: this.$t('quests.openedQuests'),
+          number: questStatistic ? questStatistic.opened : 0,
+          ratingMode: false,
+          subtitle: '',
+        },
+        {
+          title: this.$t('quests.averageRating'),
+          number: ratingStatistic && ratingStatistic.averageMark ? ratingStatistic.averageMark : 0,
+          ratingMode: true,
+          subtitle: `${this.$t('quests.fromBig')} ${ratingStatistic ? ratingStatistic.reviewCount : 0} ${this.$t('quests.reviews')}`,
+        },
+      ];
     },
   },
   watch: {
@@ -319,39 +365,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.add-btn {
-  &__container {
-    width: 154px;
-    margin: 20px 0 20px 0;
-  }
-}
-.button {
-  @extend .styles__flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  margin: 20px 0 0 0;
-  &__more {
-    margin: 0 0 0 0;
-    @extend .button;
-    cursor: pointer;
-    display: inline-block;
-    text-decoration: none;
-    font-size: 16px;
-    line-height: 130%;
-    color: #0083C7;
-    border: 1px solid rgba(0, 131, 199, 0.1);
-    border-radius: 6px;
-    padding: 13px 67px 13px 28px;
-    background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
-    background-position: 82% 21px;
-    background-repeat: no-repeat;
-  }
-}
-.tab {
-  &__container {
-    margin: 20px 0 20px 0;
-  }
+.routes {
   &__btn {
     color: $black500;
     font-size: 16px;
@@ -364,60 +378,18 @@ export default {
     }
   }
 }
-.main-section {
-  &_white {
-    background-color: $white;
+.section {
+  &__container {
+    &_white {
+      background-color: $white;
+    }
   }
 }
-.main-container {
+.container {
   width: 1180px;
   margin: 0 auto;
   display: grid;
   gap: 20px;
-}
-
-.title {
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 130%;
-  color: #1D2127;
-  margin: 0 0 20px 0;
-}
-
-.right {
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
-}
-
-.btn {
-  &__container {
-    width: 100%;
-    display: flex;
-    align-items: flex-end;
-  }
-}
-
-.icon {
-  &-chat:before {
-    content: "\e9ba";
-    font-size: 14px;
-    color: $green;
-  }
-  &-btn {
-    &_right {
-      margin: 0 5px 0 0;
-    }
-  }
-}
-
-.title {
-  @include text-simple;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  color: $black800;
 }
 
 .styles {
@@ -428,30 +400,21 @@ export default {
   }
 }
 
-.icon {
-  color: #7C838D;
-  font-size: 16px;
-  cursor: pointer;
-  padding-right: 5px;
-  &-phone:before {
-    @extend .icon;
-    content: "\ea2d";
-  }
-  &-location:before {
-    @extend .icon;
-    content: "\ea23";
-  }
-  &-mail:before {
-    @extend .icon;
-    content: "\ea27";
-  }
-  &-Earth:before {
-    @extend .icon;
-    content: "\ea11";
+.pager {
+  &__block {
+    width: auto;
   }
 }
 
-.skills-block {
+.block {
+  &__statistic {
+    padding: 20px 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+  }
+}
+.skills-spec {
   &__container {
     padding: 20px;
     display: flex;
@@ -472,51 +435,143 @@ export default {
     flex-direction: column;
     grid-gap: 10px;
   }
-}
-.spec {
-  &__container {
-    display: flex;
-    flex-direction: column;
-    grid-gap: 10px;
+  .spec {
+    &__container {
+      display: flex;
+      flex-direction: column;
+      grid-gap: 10px;
+    }
+    &__title {
+      font-size: 14px;
+      line-height: 130%;
+    }
+    &__skills {
+      display: flex;
+      grid-gap: 8px;
+      flex-wrap: wrap;
+    }
   }
-  &__title {
-    font-size: 14px;
-    line-height: 130%;
-  }
-  &__skills {
-    display: flex;
-    grid-gap: 8px;
-    flex-wrap: wrap;
-  }
-}
-.skills {
-  &__item {
-    font-size: 16px;
-    line-height: 130%;
-    &_blue {
-      background-color: rgba(0, 131, 199, 0.1);
-      border-radius: 44px;
-      padding: 5px;
-      color: #0083C7;
+  .skills {
+    &__item {
+      font-size: 16px;
+      line-height: 130%;
+      &_blue {
+        background-color: rgba(0, 131, 199, 0.1);
+        border-radius: 44px;
+        padding: 5px;
+        color: #0083C7;
+      }
     }
   }
 }
-.pager {
-  &__block {
-    width: auto;
+.statistic {
+  &__card {
+    display: grid;
+    border-radius: 6px;
+    background-color: #fff;
+    padding: 20px;
+    border: 0;
+    .card {
+      &__title {
+        font-size: 16px;
+        line-height: 130%;
+        color: #1D2127;
+      }
+      &__number {
+        @include text-simple;
+        font-weight: bold;
+        font-size: 30px;
+        line-height: 130%;
+        color: #0083C7;
+        margin: 9px 0;
+        &_rating {
+          background-image: url("data:image/svg+xml,%3Csvg width='28' height='26' viewBox='0 0 28 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a             %3Cpath d='M14 0.5L18.1145 8.83688L27.3148 10.1738L20.6574 16.6631L22.229 25.8262L14 21.5L5.77101 25.8262L7.3426 16.6631L0.685208 10.1738L9.8855 8.83688L14 0.5Z' fill='%23E8D20D'/%3E\a             %3C/svg%3E                           \a             ");
+          background-position: 55px 4px;
+          background-repeat: no-repeat;
+        }
+      }
+      &__subtitle {
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 130%;
+        color: #4C5767;
+      }
+    }
+  }
+}
+.quests, .portfolio, .reviews {
+  &__button {
+    @extend .styles__flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    margin: 20px 0 0 0;
+    .button {
+      &__more {
+        @extend .styles__flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        cursor: pointer;
+        display: inline-block;
+        text-decoration: none;
+        font-size: 16px;
+        line-height: 130%;
+        color: #0083C7;
+        border: 1px solid rgba(0, 131, 199, 0.1);
+        border-radius: 6px;
+        padding: 13px 67px 13px 28px;
+        background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
+        background-position: 82% 21px;
+        background-repeat: no-repeat;
+      }
+    }
+  }
+  &__title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 130%;
+    color: #1D2127;
+    margin: 0 0 20px 0;
+  }
+}
+.reviews {
+  &__container {
+    margin: 20px 0 20px 0;
+  }
+  &__btn {
+    color: $black500;
+    font-size: 16px;
+    padding: 10px;
+    &_active {
+      color: $black800;
+      font-size: 16px;
+      border-bottom: 1px solid $blue;
+      padding: 10px;
+    }
+  }
+}
+.portfolio {
+  &__add-btn {
+    width: 154px;
+    margin: 20px 0 20px 0;
   }
 }
 @include _1199 {
-  .template {
-    &__main {
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-  }
-  .main-container {
+  .container {
     width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+@include _575 {
+  .container {
     padding-left: 20px;
     padding-right: 20px;
+  }
+  .block__statistic {
+    grid-template-columns: repeat(2, auto);
   }
 }
 </style>
