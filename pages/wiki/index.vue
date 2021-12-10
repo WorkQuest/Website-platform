@@ -476,6 +476,7 @@ export default {
   overscroll-behavior: contain;
 
   &__item {
+    color: $black800;
     text-decoration: none;
     cursor: pointer;
     padding: 10px;
