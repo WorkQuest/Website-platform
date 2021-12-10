@@ -142,7 +142,7 @@ export default {
   },
   methods: {
     questFilterButton(id) {
-      if (id === 0) this.statuses = 'statuses[0]=5&statuses[1]=6&statuses[2]=2&statuses[3]=4';
+      if (id === 0) this.statuses = '';
       if (id === 2) this.statuses = 'statuses[0]=5';
       if (id === 3) this.statuses = 'statuses[0]=6';
       if (id === 4) this.statuses = 'statuses[0]=1';
