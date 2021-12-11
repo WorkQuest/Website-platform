@@ -13,13 +13,32 @@
         </h3>
         <div class="wiki__fields">
           <div class="wiki__search-field">
-            <base-field
-              v-model="search"
-              class="wiki__input"
-              :is-search="true"
-              :is-hide-error="true"
-              :placeholder="$t('wiki.searchPlaceholder')"
-            />
+            <div class="wiki__search-holder">
+              <base-field
+                v-model="searchValue"
+                class="wiki__input"
+                :is-search="true"
+                :is-hide-error="true"
+                :placeholder="$t('wiki.searchPlaceholder')"
+                @input="handleSearch"
+                @focus="handleSearch"
+              />
+              <div
+                v-if="searched.length"
+                v-click-outside="() => { searched = [] }"
+                class="wiki__searched searched"
+              >
+                <a
+                  v-for="(item, index) of searched"
+                  :key="index"
+                  class="searched__item"
+                  :href="item.id ? '#' + item.id : ''"
+                  @click="gotoTab(item.tab)"
+                >
+                  <span class="searched__item_nav">{{ item.tabName }}</span> - {{ item.text }}
+                </a>
+              </div>
+            </div>
             <div class="wiki__button-field">
               <base-btn
                 class="wiki__search-button"
@@ -73,6 +92,7 @@
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside';
 import Content from '~/components/wiki/content.vue';
 
 export default {
@@ -80,10 +100,15 @@ export default {
   components: {
     Content,
   },
+  directives: {
+    ClickOutside,
+  },
   data() {
     return {
       currentTab: 'header',
-      search: '',
+      searchValue: '',
+      interval: null,
+      searched: [],
       pageX: 0,
       isMoving: false,
     };
@@ -91,6 +116,34 @@ export default {
   computed: {
     navigation() {
       return Object.keys(this.$t('wiki.navigation'));
+    },
+    wikiData() {
+      const result = {};
+      // eslint-disable-next-line no-restricted-syntax
+      for (const nav of this.navigation) {
+        const cards = Object.keys(this.$t(`wiki.navigation.${nav}.cards`));
+        result[nav] = {
+          tabName: this.$t(`wiki.navigation.${nav}.title`),
+          title: this.$t(`wiki.navigation.${nav}.title`).toLowerCase(),
+          cardKeys: cards,
+          cards: {},
+        };
+        // eslint-disable-next-line no-restricted-syntax
+        for (const card of cards) {
+          const cardTitle = this.$t(`wiki.navigation.${nav}.cards.${card}.title`);
+          let cardSubtitle = '';
+          if (this.$te(`wiki.navigation.${nav}.cards.${card}.subtitle`)) {
+            cardSubtitle = this.$t(`wiki.navigation.${nav}.cards.${card}.subtitle`);
+          }
+          result[nav].cards[card] = {
+            cardTitle: cardTitle.toLowerCase(),
+            cardSubtitle: cardSubtitle.toLowerCase(),
+            title: cardTitle,
+            subtitle: cardSubtitle,
+          };
+        }
+      }
+      return result;
     },
   },
   mounted() {
@@ -112,6 +165,59 @@ export default {
     },
     onTouchMove() {
       this.isMoving = this.$refs.header.getBoundingClientRect().y < -157;
+    },
+    handleSearch() {
+      clearTimeout(this.interval);
+      if (!this.searchValue.length) {
+        this.searched = [];
+        return;
+      }
+      this.interval = setTimeout(() => this.searchData(), 250);
+    },
+    gotoTab(tab) {
+      this.currentTab = tab;
+      this.searched = [];
+      this.isMoving = true;
+    },
+    async searchData() {
+      const results = [];
+      const word = this.searchValue.toLowerCase();
+      const data = this.wikiData;
+      // eslint-disable-next-line no-restricted-syntax
+      for (const nav of Object.keys(data)) {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const card of data[nav].cardKeys) {
+          const { cardTitle, cardSubtitle } = data[nav].cards[card];
+          if (cardSubtitle.indexOf(word) !== -1) {
+            if (results.filter((item) => item.text === cardSubtitle).length === 0) {
+              results.push({
+                tab: nav,
+                tabName: data[nav].tabName,
+                text: `${data[nav].cards[card].title} - ${data[nav].cards[card].subtitle}`,
+                id: cardTitle,
+              });
+            }
+          } else if (cardTitle.indexOf(word) !== -1) {
+            if (results.filter((item) => item.text === cardTitle).length === 0) {
+              results.push({
+                tab: nav,
+                tabName: data[nav].tabName,
+                text: data[nav].cards[card].title,
+                id: cardTitle,
+              });
+            }
+          } else if (data[nav].title.indexOf(word) !== -1) {
+            if (results.filter((item) => item.text === data[nav].title).length === 0) {
+              results.push({
+                tab: nav,
+                tabName: data[nav].tabName,
+                text: data[nav].title,
+              });
+            }
+          }
+        }
+      }
+      this.searched = results;
     },
   },
 };
@@ -152,6 +258,9 @@ export default {
     align-items: center;
     padding: 0 20px;
     border-radius: 6px;
+  }
+  &__search-holder {
+    position: relative;
   }
   &__input {
     width: 880px;
@@ -314,6 +423,7 @@ export default {
   &__mobile {
     display: block;
     margin-bottom: 15px;
+    z-index: 1;
   }
 }
 }
@@ -347,6 +457,44 @@ export default {
     }
     &__search-field {
       padding: 0 4px 0 4px;
+    }
+  }
+}
+
+.searched {
+  z-index: 2;
+  background: white;
+  border-radius: 6px;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 0;
+  width: 100%;
+  border-top: 1px solid $black100;
+  box-shadow: 0 4px 3px rgba(0, 7, 5, 0.3);
+
+  max-height: 50vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  &__item {
+    font-size: 16px;
+    line-height: 130%;
+    font-weight: normal;
+    color: $black800;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 10px;
+
+    &_nav{
+      line-height: 130%;
+      font-weight: 500;
+    }
+
+    &:hover {
+      background: $black100;
     }
   }
 }
