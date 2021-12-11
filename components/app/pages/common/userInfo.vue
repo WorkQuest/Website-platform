@@ -150,10 +150,6 @@ import modals from '~/store/modals/modals';
 export default {
   name: 'UserInfo',
   props: {
-    selected: {
-      type: Number,
-      required: true,
-    },
     userInfo: {
       type: Object,
       default: () => {},

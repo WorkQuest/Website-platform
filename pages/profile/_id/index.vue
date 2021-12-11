@@ -3,17 +3,15 @@
     <div class="section section__container section__container_white">
       <div class="container container__block">
         <userInfo
-          :selected="selected"
           :user-info="userData"
         />
-
         <div class="block__routes routes">
           <button
             v-for="(item, i) in pageTabs"
             :key="i"
             class="routes__btn"
-            :class="{routes__btn_active: selected === item.number}"
-            @click="selected = item.number"
+            :class="{routes__btn_active: selectedTab === item.tabName}"
+            @click="selectedTab = item.tabName"
           >
             {{ item.title }}
           </button>
@@ -23,7 +21,7 @@
     <div class="section section__container">
       <div class="container container__block">
         <div
-          v-if="selected === 1"
+          v-if="selectedTab === 'commonInfo'"
           class="block__statistic statistic"
         >
           <div
@@ -49,7 +47,7 @@
           </div>
         </div>
         <div
-          v-if="userData.userSpecializations && userData.userSpecializations.length && selected === 1"
+          v-if="userData.userSpecializations && userData.userSpecializations.length && selectedTab === 'commonInfo'"
           class="block__skills-spec skills-spec"
         >
           <div class="skills-spec__title">
@@ -77,11 +75,11 @@
           </div>
         </div>
         <div
-          v-if="selected === 2 || selected === 1"
+          v-if="selectedTab === 'quests' || selectedTab === 'commonInfo'"
           class="block__quests quests"
         >
           <div
-            v-if="selected === 1"
+            v-if="selectedTab === 'commonInfo'"
             class="quests__title"
           >
             {{ $t('quests.activeQuests') }}
@@ -98,30 +96,30 @@
           <div class="quests__pager pager">
             <div class="pager__block">
               <base-pager
-                v-if="selected === 2 && totalPages > 1"
+                v-if="selectedTab === 'quests' && totalPages > 1"
                 v-model="page"
                 :total-pages="totalPages"
               />
             </div>
           </div>
           <div
-            v-if="selected === 1 && questsObjects.count > 2"
+            v-if="selectedTab === 'commonInfo' && questsObjects.count > 2"
             class="quests__button button"
           >
             <div
               class="button__more"
-              @click="selected = 2"
+              @click="selectedTab = 'quests'"
             >
               {{ $t('meta.showAllQuests') }}
             </div>
           </div>
         </div>
         <div
-          v-if="selected === 1 || selected === 3"
+          v-if="selectedTab === 'commonInfo' || selectedTab === 'reviews'"
           class="block__reviews reviews"
         >
           <div
-            v-if="selected === 1"
+            v-if="selectedTab === 'commonInfo'"
             class="reviews__title"
           >
             {{ $t('quests.reviewsBig') }}
@@ -133,12 +131,12 @@
               <reviewsTab />
             </div>
             <div
-              v-if="selected === 1"
+              v-if="selectedTab === 'commonInfo'"
               class="reviews__button button"
             >
               <div
                 class="button__more"
-                @click="selected = 3"
+                @click="selectedTab = 'reviews'"
               >
                 {{ $t('meta.showAllReviews') }}
               </div>
@@ -150,17 +148,17 @@
           />
         </div>
         <div
-          v-if="(selected === 1 || selected === 4) && userData.role === 'worker'"
+          v-if="(selectedTab === 'commonInfo' || selectedTab === 'portfolio') && userData.role === 'worker'"
           class="block__portfolio portfolio"
         >
           <div
-            v-if="selected === 1"
+            v-if="selectedTab === 'commonInfo'"
             class="portfolio__title"
           >
             {{ $t('profile.portfolio') }}
           </div>
           <div
-            v-if="selected === 4"
+            v-if="selectedTab === 'portfolio'"
             class="portfolio__add-btn"
           >
             <base-btn
@@ -174,12 +172,12 @@
           </div>
           <portfolioTab />
           <div
-            v-if="selected === 1 && portfoliosCount > 0"
+            v-if="selectedTab === 'commonInfo' && portfoliosCount > 0"
             class="portfolio__button button"
           >
             <div
               class="button__more"
-              @click="selected = 4"
+              @click="selectedTab = 'portfolio'"
             >
               {{ $t('meta.showAllPortfolios') }}
             </div>
@@ -211,8 +209,7 @@ export default {
   },
   data() {
     return {
-      selected: 1,
-      questLimits: 100,
+      selectedTab: 'commonInfo',
       questsObjects: {},
       userStatistics: {
         reviewCount: 0,
@@ -224,7 +221,6 @@ export default {
       userData: {},
       page: 1,
       perPager: 11,
-      totalPagesValue: 1,
       portfoliosCount: 0,
     };
   },
@@ -245,14 +241,17 @@ export default {
       const tabs = [
         {
           number: 1,
+          tabName: 'commonInfo',
           title: this.$t('profile.common'),
         },
         {
           number: 2,
+          tabName: 'quests',
           title: this.$t('profile.quests'),
         },
         {
           number: 3,
+          tabName: 'reviews',
           title: this.$t('profile.reviews'),
         },
       ];
@@ -260,6 +259,7 @@ export default {
       if (this.userData.role === 'worker') {
         tabs.push({
           number: 4,
+          tabName: 'portfolio',
           title: this.$t('profile.portfolio'),
         });
       }
@@ -340,7 +340,6 @@ export default {
         query: limit ? `limit=${limit}` : `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`,
       };
       await this.$store.dispatch('quests/getUserQuests', payload);
-      this.totalPagesValue = this.totalPages;
       this.questsObjects = this.questUserData;
     },
     getSkillTitle() {
