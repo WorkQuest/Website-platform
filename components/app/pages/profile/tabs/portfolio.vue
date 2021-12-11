@@ -84,7 +84,6 @@ export default {
     },
   },
   async mounted() {
-    this.userId = this.$route.params.id;
     await this.getAllPortfolios();
   },
   methods: {

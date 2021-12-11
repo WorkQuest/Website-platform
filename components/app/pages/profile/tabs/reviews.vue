@@ -1,7 +1,7 @@
 <template>
   <div class="reviews-grid reviews-grid__reviews-item">
     <span
-      v-for="(reviewData, i) in reviews.reviews"
+      v-for="(reviewData, i) in object"
       :key="i"
     >
       <div class="reviews-item">
@@ -76,6 +76,12 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ReviewsTab',
+  props: {
+    object: {
+      type: [Object, Array],
+      default: null,
+    },
+  },
   data() {
     return {
       reviewMark: 0,
@@ -85,12 +91,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      reviews: 'user/getAllUserReviews',
       userData: 'user/getUserData',
     }),
-  },
-  async mounted() {
-    await this.$store.dispatch('user/getAllUserReviews', this.$route.params.id);
   },
   methods: {
     goToProfile(id) {

@@ -128,7 +128,7 @@
             <div
               class="reviews__container"
             >
-              <reviewsTab />
+              <reviewsTab :object="reviews.reviews" />
             </div>
             <div
               v-if="selectedTab === 'commonInfo'"
@@ -231,6 +231,7 @@ export default {
       mainUser: 'user/getUserData',
       questUserData: 'quests/getUserInfoQuests',
       portfolios: 'user/getUserPortfolios',
+      reviews: 'user/getAllUserReviews',
     }),
     cardLevelClass(idx) {
       const { cards } = this;
@@ -317,6 +318,8 @@ export default {
   },
   async mounted() {
     if (this.$route.params.id !== this.mainUser.id) {
+      await this.$store.dispatch('user/getAllUserReviews', this.$route.params.id);
+      console.log(this.reviews);
       this.userData = await this.$store.dispatch('user/getAnotherUserData', this.$route.params.id);
       this.userData = this.userData.result;
     } else {

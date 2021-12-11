@@ -191,18 +191,6 @@ const value = new Vue();
 export default {
   name: 'QuestsTab',
   props: {
-    limit: {
-      type: Number,
-      default: 10,
-    },
-    page: {
-      type: [String, null],
-      default: '',
-    },
-    selectedTab: {
-      type: Number,
-      default: 0,
-    },
     object: {
       type: [Object, Array],
       default: null,
