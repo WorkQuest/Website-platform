@@ -163,6 +163,7 @@
             class="portfolio__add-btn"
           >
             <base-btn
+              v-if="$route.params.id === mainUser.id"
               @click="showAddCaseModal()"
             >
               {{ $t('ui.profile.addCase') }}
@@ -173,7 +174,7 @@
           </div>
           <portfolioTab />
           <div
-            v-if="selectedTab === 'commonInfo' && portfoliosCount > 0"
+            v-if="selectedTab === 'commonInfo' && portfoliosCount > 3"
             class="portfolio__button button"
           >
             <div
