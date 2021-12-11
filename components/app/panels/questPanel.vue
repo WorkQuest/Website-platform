@@ -7,14 +7,12 @@
             class="user__left"
             @click="showProfile()"
           >
-            <span>
-              <img
-                class="user__img"
-                :src="avatarUrl"
-                alt=""
-                loading="lazy"
-              >
-            </span>
+            <img
+              class="user__img"
+              :src="avatarUrl"
+              alt=""
+              loading="lazy"
+            >
             <span class="user__username">
               {{ `${userInfo.firstName} ${userInfo.lastName}` }}
             </span>

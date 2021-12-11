@@ -64,12 +64,6 @@ export const questPriority = {
   Normal: 2,
   Urgent: 3,
 };
-export const questsCompPageMode = {
-  WorkerMy: 1,
-  WorkerOther: 2,
-  EmpMy: 3,
-  EmpOther: 4,
-};
 export const responsesType = {
   Responded: 0,
   Invited: 1,

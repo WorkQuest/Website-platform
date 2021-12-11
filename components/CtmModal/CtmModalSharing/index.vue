@@ -25,16 +25,19 @@
       </div>
       <span class="content__text">{{ $t('sharing.share') }}</span>
       <div class="flex__two-cols">
-        <div class="code__text">
-          {{ code }}
+        <div class="code__container">
+          <span class="code__text">{{ sharingLink }}</span>
         </div>
-        <div
-          v-clipboard:copy="code"
-          v-clipboard:success="ClipboardSuccessHandler"
-          v-clipboard:error="ClipboardErrorHandler"
-          class="code__copy"
-        >
-          <span class="icon-copy" />
+        <div>
+          <button
+            v-clipboard:copy="sharingLink"
+            v-clipboard:success="ClipboardSuccessHandler"
+            v-clipboard:error="ClipboardErrorHandler"
+            class="btn__copy"
+            type="button"
+          >
+            <span class="icon-copy" />
+          </button>
         </div>
       </div>
     </div>
@@ -47,15 +50,13 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalOpenADeposit',
-  data() {
-    return {
-      code: process.env.BASE_URL.slice(0, -4) + this.$route.fullPath,
-    };
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+    sharingLink() {
+      return process.env.BASE_URL.slice(0, -5) + this.$route.fullPath;
+    },
   },
   methods: {
     hide() {
@@ -213,21 +214,9 @@ export default {
 
 .flex {
   &__two-cols {
-    display: grid;
-    grid-template-columns: 1fr 47px;
-    align-items: center;
-    border: 1px solid $black0;
-    border-radius: 6px;
-    height: 46px;
-    padding: 0 15px;
-  }
-}
-
-.icon-copy {
-  height: 24px;
-
-  &:before {
-    font-size: 24px !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
   }
 }
 
@@ -264,17 +253,19 @@ export default {
 }
 
 .code {
+  &__container {
+    display: flex;
+    border: 1px solid $black0;
+    border-radius: 6px;
+    justify-content: space-between;
+    padding: 12px;
+    margin: 5px 10px 0 0;
+    width: 100%;
+  }
   &__text {
     font-weight: 400;
     font-size: 16px;
     color: $black800;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  &__copy {
-    cursor: pointer;
-    justify-self: center;
   }
 }
 
@@ -383,7 +374,9 @@ export default {
   }
   &__copy {
     background: $white;
+    border: 1px solid $black0;
     padding: 11px;
+    border-radius: 6px;
   }
 }
 

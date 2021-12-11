@@ -31,7 +31,9 @@
     "m": "m"
   },
   "info": {
-    "showYourMessage": "Show your message"
+    "yourMessage": " Your message:",
+    "showYourMessage": "Show your message",
+    "hideYourMessage": "Hide your message"
   },
 
   "uploader" : {
@@ -894,6 +896,10 @@
     }
   },
   "toasts": {
+    "questInfo": "Quest info",
+    "questCantDelete": "You can't delete this quest on this stage!",
+    "questCantEdit": "You can't edit this quest on this stage!",
+    "questCantRaisingViews": "You can't go to raising views on this stage!",
     "questEdited": "Quest edited!",
     "questCreated": "Quest created!",
     "questDeleted": "Quest deleted!",
