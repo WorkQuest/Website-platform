@@ -141,7 +141,7 @@ export default {
   },
   methods: {
     checkUserCoordinates() {
-      if (this.userData.location.latitude && this.userData.location.longitude) {
+      if (this.userData.location && this.userData.location.latitude && this.userData.location.longitude) {
         this.userLocation.lat = this.userData.location.latitude;
         this.userLocation.lng = this.userData.location.longitude;
       }

@@ -75,7 +75,7 @@
     >
       <div class="btn__wrapper">
         <base-btn
-          :disabled="disabledBtn"
+          :disabled="checkResponseStatus()"
           @click="sendARequestOnQuest"
         >
           {{ InfoModeWorker.Created ? $t('btn.sendARequest') : $t('btn.responded') }}
@@ -143,9 +143,6 @@ export default {
     InfoModeWorker() {
       return InfoModeWorker;
     },
-    disabledBtn() {
-      return this.infoDataMode === InfoModeWorker.Rejected;
-    },
   },
   async created() {
     await this.getResponsesToQuestForAuthUser();
@@ -156,6 +153,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    checkResponseStatus() {
+      return !(this.questData && !this.questData.response);
+    },
     getPriority(index) {
       const priority = {
         0: this.$t('priority.low'),
@@ -218,24 +218,11 @@ export default {
       await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.WaitConfirm);
       this.SetLoader(false);
     },
-    // async getResponseId() {
-    //   if (this.userRole === 'worker') {
-    //     const questId = this.$route.path.slice(8);
-    //     const { responses } = this.questResponses;
-    //     this.response = responses.filter((r) => r.quest.id === questId);
-    //   }
-    // },
     async getResponsesToQuestForAuthUser() {
       if (this.userRole === 'worker') {
         this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
       }
     },
-    // async acceptQuestInvitationWorker(responseId) {
-    //   if (this.userRole === 'worker') {
-    //     await this.$store.dispatch('quests/acceptQuestInvitation', responseId);
-    //     await this.$store.dispatch('quests/setInfoDataMode', 2);
-    //   }
-    // },
     async sendARequestOnQuest() {
       this.ShowModal({
         key: modals.sendARequest,

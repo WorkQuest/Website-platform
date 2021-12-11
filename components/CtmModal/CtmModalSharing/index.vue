@@ -26,11 +26,11 @@
       <span class="content__text">{{ $t('sharing.share') }}</span>
       <div class="flex__two-cols">
         <div class="code__container">
-          <span class="code__text">{{ code }}</span>
+          <span class="code__text">{{ sharingLink }}</span>
         </div>
         <div>
           <button
-            v-clipboard:copy="code"
+            v-clipboard:copy="sharingLink"
             v-clipboard:success="ClipboardSuccessHandler"
             v-clipboard:error="ClipboardErrorHandler"
             class="btn__copy"
@@ -50,15 +50,13 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalOpenADeposit',
-  data() {
-    return {
-      code: process.env.BASE_URL.slice(0, -4) + this.$route.fullPath,
-    };
-  },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
     }),
+    sharingLink() {
+      return process.env.BASE_URL.slice(0, -5) + this.$route.fullPath;
+    },
   },
   methods: {
     hide() {
