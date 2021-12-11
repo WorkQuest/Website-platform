@@ -177,6 +177,7 @@ export default {
     gotoTab(tab) {
       this.currentTab = tab;
       this.searched = [];
+      this.isMoving = true;
     },
     async searchData() {
       const results = [];
