@@ -334,6 +334,8 @@ export default {
     color: $black600;
   }
   &__socials {
+    display: flex;
+    grid-gap: 5px;
     .icon {
       font-size: 20px;
       cursor: pointer;

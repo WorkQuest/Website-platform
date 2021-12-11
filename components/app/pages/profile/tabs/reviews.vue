@@ -13,10 +13,14 @@
                 :src="initAvatar(reviewData.fromUser)"
                 alt=""
                 loading="lazy"
+                @click="goToProfile(reviewData.fromUser.id)"
               >
             </div>
             <div class="name__container">
-              <div class="card-subtitle__name">
+              <div
+                class="card-subtitle__name"
+                @click="goToProfile(reviewData.fromUser.id)"
+              >
                 {{ `${reviewData.fromUser.firstName} ${reviewData.fromUser.lastName}` }}
               </div>
               <div class="card-subtitle_green">
@@ -89,6 +93,9 @@ export default {
     await this.$store.dispatch('user/getAllUserReviews', this.$route.params.id);
   },
   methods: {
+    goToProfile(id) {
+      this.$router.push(`/profile/${id}`);
+    },
     initStarClass(star, reviewMark) {
       const a = this.Floor(star - reviewMark, 2);
       return [
@@ -140,7 +147,11 @@ export default {
     color: $black500;
   }
 }
-
+.name {
+  &__container {
+    cursor: pointer;
+  }
+}
 .icon {
   font-size: 20px;
   cursor: pointer;
@@ -206,6 +217,7 @@ export default {
     align-items: flex-start;
   }
   &__avatar {
+    cursor: pointer;
     margin-right: 15px;
   }
   &__subheader {

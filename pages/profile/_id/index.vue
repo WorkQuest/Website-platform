@@ -36,7 +36,7 @@
               class="card__number"
               :class="item.ratingMode ? 'card__number_rating' : ''"
             >
-              {{ item.number }}
+              {{ numberValidate(item.number) }}
             </div>
             <div
               v-if="item.subtitle"
@@ -135,6 +135,7 @@
               class="reviews__button button"
             >
               <div
+                v-if="userStatistics.reviewCount > 4"
                 class="button__more"
                 @click="selectedTab = 'reviews'"
               >
@@ -166,7 +167,7 @@
             >
               {{ $t('ui.profile.addCase') }}
               <template v-slot:right>
-                <span class="icon-plus" />
+                <span class="icon-plus_white" />
               </template>
             </base-btn>
           </div>
@@ -294,11 +295,12 @@ export default {
     },
   },
   watch: {
-    async selected() {
+    async selectedTab() {
       this.SetLoader(true);
-      if (this.selected === 2) {
+      console.log();
+      if (this.selectedTab === 'quests') {
         await this.changeQuestsData();
-      } else if (this.selected === 1) {
+      } else if (this.selectedTab === 'commonInfo') {
         await this.changeQuestsData(2);
       }
       this.SetLoader(false);
@@ -333,6 +335,13 @@ export default {
     await this.$store.dispatch('user/clearAnotherUserData');
   },
   methods: {
+    numberValidate(number) {
+      const fullNumber = number.toFixed(1);
+      if (fullNumber - number > 0) {
+        return fullNumber;
+      }
+      return number;
+    },
     async changeQuestsData(limit) {
       const payload = {
         userId: this.userData.id,
