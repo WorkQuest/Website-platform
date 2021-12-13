@@ -298,7 +298,7 @@ export const initWeb3 = async (payload) => {
     }
     const chainId = await web3.eth.net.getId();
     if ((await web3.eth.getCoinbase()) === null) {
-      await window.ethereum.enable();
+      await ethereum.request({ method: 'eth_requestAccounts' });
     }
     if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
       return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
