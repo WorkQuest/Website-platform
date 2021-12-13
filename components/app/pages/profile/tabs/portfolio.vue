@@ -1,23 +1,26 @@
 <template>
   <div>
-    <div class="portfolio portfolio__items">
+    <emptyData
+      v-if="object.count === 0"
+      :description="$t('errors.emptyData.emptyPortfolios')"
+    />
+    <div
+      v-else
+      class="portfolio portfolio__items"
+    >
       <div
-        v-if="portfolios.count === 0"
-        class="portfolio__item"
-      >
-        {{ $t('workers.noPortfoliosAdded') }}
-      </div>
-      <div
-        v-else
         class="portfolio__item"
       >
         <div
-          v-for="(item, i) in portfolios"
+          v-for="(item, i) in object.cases"
           :key="i"
           class="portfolio__card"
         >
           <div class="portfolio__body">
-            <div class="portfolio__btns">
+            <div
+              v-if="userId === mainUserData.id"
+              class="portfolio__btns"
+            >
               <base-btn
                 class="portfolio__close"
                 mode="portfolioClose"
@@ -58,33 +61,32 @@
         </div>
       </div>
     </div>
-    <div
-      v-if="portfolios.count > 0"
-      class="button__container"
-    >
-      <div
-        class="button__more"
-      >
-        {{ $t('quests.showAllCases') }}
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'PortfolioTab',
+  components: {
+    emptyData,
+  },
+  props: {
+    object: {
+      type: Object,
+      default: () => {},
+    },
+  },
   computed: {
     ...mapGetters({
-      portfolios: 'user/getUserPortfolios',
-      userData: 'user/getUserData',
+      mainUserData: 'user/getUserData',
     }),
-  },
-  async mounted() {
-    await this.getAllPortfolios();
+    userId() {
+      return this.$route.params.id;
+    },
   },
   methods: {
     openImage(src, name, desc) {
@@ -96,16 +98,6 @@ export default {
           title: name,
           desc,
         });
-      }
-    },
-    async getAllPortfolios() {
-      try {
-        this.SetLoader(true);
-        await this.$store.dispatch('user/getUserPortfolios', this.userData.id);
-        this.SetLoader(false);
-      } catch (e) {
-        this.showToastError(e);
-        this.SetLoader(false);
       }
     },
     showToastError(e) {
@@ -152,6 +144,7 @@ export default {
   }
   &__more {
     display: inline-block;
+    cursor: pointer;
     text-decoration: none;
     font-size: 16px;
     line-height: 130%;

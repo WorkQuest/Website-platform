@@ -30,7 +30,10 @@
           </div>
           <div class="block__right">
             <div class="block__head">
-              <div class="block__title">
+              <div
+                class="block__title"
+                @click="showProfile(item.userId)"
+              >
                 <div
                   class="block__avatar avatar"
                 >
@@ -188,21 +191,9 @@ const value = new Vue();
 export default {
   name: 'QuestsTab',
   props: {
-    limit: {
-      type: Number,
-      default: 10,
-    },
-    page: {
-      type: [String, null],
-      default: '',
-    },
-    selectedTab: {
-      type: Number,
-      default: 0,
-    },
     object: {
-      type: [Object, Array],
-      default: null,
+      type: Object,
+      default: () => {},
     },
   },
   data() {
@@ -286,6 +277,9 @@ export default {
         { card__level_reliable: cards[idx].level.code === 2 },
         { card__level_higher: cards[idx].level.code === 1 },
       ];
+    },
+    showProfile(profileId) {
+      this.$router.push(`/profile/${profileId}`);
     },
     showDetails(questId) {
       this.$router.push(`/quests/${questId}`);
@@ -534,7 +528,7 @@ export default {
   background: #FFFFFF;
   border-radius: 6px;
   display: grid;
-  grid-template-columns: 240px 1fr;
+  grid-template-columns: 210px 1fr;
   min-height: 100%;
   &__publication {
     &_bold {
@@ -732,6 +726,7 @@ export default {
     }
   }
   &__title {
+    cursor: pointer;
     display: grid;
     grid-template-columns: 30px 1fr;
     grid-gap: 10px;

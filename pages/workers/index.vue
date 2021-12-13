@@ -448,7 +448,7 @@ export default {
     },
     showDetails(worker) {
       this.$store.dispatch('quests/setCurrentWorker', worker);
-      this.$router.push(`/workers/${worker.id}`);
+      this.$router.push(`/profile/${worker.id}`);
     },
     centerChange() {
       this.$store.dispatch('quests/setMapCenter', this.coordinates);

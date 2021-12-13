@@ -126,6 +126,7 @@
     "quests": "Quests",
     "reviews": "Reviews",
     "portfolio": "Portfolio",
+    "common": "Common info",
     "sidebar": {
       "filter": "All Quests filter",
       "choose": "(Choose simple or \nspecialized category)",
@@ -156,6 +157,8 @@
     "buyWUSD": "Buy WUSD",
     "submit": "Submit",
     "showAllReviews": "Show all reviews",
+    "showAllQuests": "Show all quests",
+    "showAllPortfolios": "Show all portfolios",
     "later": "Later",
     "iAgree": "I agree",
     "next": "Next",
@@ -263,6 +266,7 @@
     }
   },
   "quests": {
+    "showAll": "Show all",
     "wusd": "WUSD",
     "employer": {
       "usersNotResponded": "Users have not yet responded to the quest"
@@ -412,6 +416,7 @@
     "createAQuest": "Create a quest",
     "editAQuest": "Edit a quest",
     "activeQuests": "Active quests",
+    "openedQuests": "Opened quests",
     "completedQuests": "Completed quests",
     "oneTime": "One time",
     "fullTime": "Full time",
@@ -1922,6 +1927,9 @@
   "errors": {
     "incorrectPass": "Oops, something went wrong. Check the data and try again.",
     "emptyData": {
+      "emptyQuests": "Oops, there's no quests here yet",
+      "emptyPortfolios": "Oops, there's no portfolio here yet",
+      "emptyReviews": "Oops, there are no reviews here yet",
       "employer": {
         "myQuests": {
           "desc": "You haven't done quests yet",
