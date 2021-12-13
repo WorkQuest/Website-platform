@@ -42,7 +42,7 @@
           {{ userData.additionalInfo.description }}
         </div>
         <div
-          v-if="showEducations"
+          v-if="isShowEducations"
           class="block__knowledge knowledge"
         >
           <div class="knowledge__text">
@@ -63,7 +63,7 @@
           </div>
         </div>
         <div
-          v-if="showWorkExp"
+          v-if="isShowWorkExp"
           class="block__work-exp work-exp"
         >
           <div class="work-exp__text">
@@ -94,9 +94,7 @@
               :href="`https://${key}.com/${i}`"
               target="_blank"
             >
-              <span
-                :class="`icon-${key}`"
-              />
+              <span :class="`icon-${key}`" />
             </a>
           </span>
         </div>
@@ -124,7 +122,7 @@
         @click="shareModal()"
       />
       <div
-        v-if="userRole === 'worker'"
+        v-if="userRole === 'worker' && userId === mainUserData.id"
         class="contact__btn"
       >
         <base-btn
@@ -152,6 +150,7 @@ export default {
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
+      mainUserData: 'user/getUserData',
       userRole: 'user/getUserRole',
     }),
     socialNetworks() {
@@ -169,28 +168,36 @@ export default {
     },
     contactData() {
       if (!Object.keys(this.userData).length) return [];
-      return {
-        email: {
+      const userData = [];
+      if (this.userData.email) {
+        userData.push({
           name: this.userData.email,
           icon: 'icon-mail',
           href: `mailto:${this.userData.email}`,
-        },
-        phone: {
+        });
+      }
+      if (this.userData.phone) {
+        userData.push({
           name: this.userData.phone,
           icon: 'icon-phone',
           href: `tel:${this.userData.phone}`,
-        },
-        address: {
+        });
+      }
+      if (this.userData.additionalInfo.address) {
+        userData.push({
           name: this.userData.additionalInfo.address,
           icon: 'icon-location',
           href: `https://maps.google.com/?q=${this.userData.additionalInfo.address}`,
-        },
-        company: {
+        });
+      }
+      if (this.userData.additionalInfo.company) {
+        userData.push({
           name: this.userData.additionalInfo.company,
           icon: 'icon-Earth',
           href: `https://${this.userData.additionalInfo.company}`,
-        },
-      };
+        });
+      }
+      return userData;
     },
     userData() {
       if (!Object.keys(this.userInfo).length) {
@@ -217,13 +224,16 @@ export default {
       }
       return this.userInfo;
     },
-    showEducations() {
+    isShowEducations() {
       if (!Object.keys(this.userInfo).length) return false;
       return this.userInfo.role === 'worker' && this.userInfo.additionalInfo.educations.length > 0;
     },
-    showWorkExp() {
+    isShowWorkExp() {
       if (!Object.keys(this.userInfo).length) return false;
       return this.userInfo.role === 'worker' && this.userInfo.additionalInfo.workExperiences.length > 0;
+    },
+    userId() {
+      return this.$route.params.id;
     },
   },
   methods: {

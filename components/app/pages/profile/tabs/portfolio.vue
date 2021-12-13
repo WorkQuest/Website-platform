@@ -76,8 +76,8 @@ export default {
   },
   props: {
     object: {
-      type: [Object, Array],
-      default: null,
+      type: Object,
+      default: () => {},
     },
   },
   computed: {

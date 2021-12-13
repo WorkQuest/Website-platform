@@ -192,8 +192,8 @@ export default {
   name: 'QuestsTab',
   props: {
     object: {
-      type: [Object, Array],
-      default: null,
+      type: Object,
+      default: () => {},
     },
   },
   data() {

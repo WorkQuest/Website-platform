@@ -78,8 +78,8 @@ export default {
   name: 'ReviewsTab',
   props: {
     object: {
-      type: [Object, Array],
-      default: null,
+      type: Object,
+      default: () => {},
     },
   },
   data() {
