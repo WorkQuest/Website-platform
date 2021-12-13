@@ -595,6 +595,22 @@ export const initStackingContract = async (chain) => {
   return await liquidityMiningContract.methods.getStakingInfo().call();
 };
 
+export const getPoolTokensAmountBSC = async () => {
+  try {
+    const provider = new Web3.providers.HttpProvider(process.env.BSC_RPC);
+    const web3Bsc = new Web3(provider);
+    const poolContract = await new web3Bsc.eth.Contract(abi.BSCPool, process.env.BSC_POOL);
+    const res = await poolContract.methods.getReserves().call();
+    return {
+      wqtAmount: new BigNumber(res._reserve0).shiftedBy(-18).toString(),
+      wbnbAmount: new BigNumber(res._reserve1).shiftedBy(-18).toString(),
+    };
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
+
 export const getPensionDefaultData = async () => {
   try {
     const _abi = abi.WQPensionFund;

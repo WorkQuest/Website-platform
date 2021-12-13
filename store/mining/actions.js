@@ -1,3 +1,5 @@
+import { getPoolTokensAmountBSC } from '~/utils/web3';
+
 export default {
 
   async getTableDataForWqtWbnbPool({ commit }, { limit = 10, offset = 0 }) {
@@ -41,35 +43,21 @@ export default {
         : process.env.BSC_WQT_TOKEN;
       const wbnb_token = process.env.WBNB_TOKEN;
 
-      const apiWbnb = this.$axios.create({
-        baseURL: `https://api.pancakeswap.info/api/v2/tokens/${wbnb_token}`,
-      });
-      const apiWqt = this.$axios.create({
-        baseURL: `https://api.pancakeswap.info/api/v2/tokens/${wqt_token}`,
-      });
-      const wbnbRes = await apiWbnb.$get('');
-      const wqtRes = await apiWqt.$get('');
+      const apiWbnb = this.$axios.create({ baseURL: `https://api.pancakeswap.info/api/v2/tokens/${wbnb_token}` });
+      const apiWqt = this.$axios.create({ baseURL: `https://api.pancakeswap.info/api/v2/tokens/${wqt_token}` });
+      const [wbnbRes, wqtRes, tokensAmount, chartDataRes] = await Promise.all([
+        apiWbnb.$get(''),
+        apiWqt.$get(''),
+        getPoolTokensAmountBSC(),
+        this.$axios.$get('/v1/pool-liquidity/wqt-wbnb/tokenDay?limit=10'),
+      ]);
+      const totalLiquidity = tokensAmount.wqtAmount * wbnbRes.data.price + tokensAmount.wbnbAmount * wqtRes.data.price;
+      commit('setTotalLiquidityUSD', totalLiquidity);
 
-      const wqtPrice = wqtRes.data.price;
-      const wbnbPrice = wbnbRes.data.price;
-      const wbnbTokens = 80.04;
-      const wqtTokens = 818670;
-      // 0.04779122  ///  572.73 - цена верная приходит
-      console.log(wqtPrice, wbnbPrice);
-
-      commit('setTotalLiquidityUSD', wqtTokens * wqtPrice + wbnbTokens * wbnbPrice);
-
-      // https://api.coingecko.com/api/v3/coins/wbnb - "market_data":{"current_price": - price - usd
-      // https://api.coingecko.com/api/v3/coins/work-quest
-
-      // 0xe89508d74579a06a65b907c91f697cf4f8d9fac7 - bsc wqt
-      // 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c - WBNB
-
-      // const response = await this.$axios.$get('/v1/pool-liquidity/wqt-wbnb/tokenDay?limit=10');
-      // commit('setChartData', response.result);
-      // commit('setTotalLiquidityUSD', response.result[0].reserveUSD);
-
-      return response;
+      const { result } = chartDataRes;
+      result[0].reserveUSD = totalLiquidity;
+      commit('setChartData', chartDataRes.result);
+      return chartDataRes;
     } catch (e) {
       console.error('error in getChartDataForWqtWbnbPool', e);
       return false;
