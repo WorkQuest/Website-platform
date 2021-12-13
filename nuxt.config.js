@@ -115,7 +115,7 @@ export default {
     BSC_WQT_EXCHANGE: process.env.BSC_WQT_EXCHANGE,
     BSC_WQT_TOKEN: process.env.BSC_WQT_TOKEN,
     BSC_POOL: process.env.BSC_POOL,
-    BSC_RPC: process.env.BSC_RPC,
+    BSC_RPC_URL: process.env.BSC_RPC_URL,
     BSC_WS_MORALIS: process.env.BSC_WS_MORALIS,
 
     WQT_STAKING: process.env.WQT_STAKING,
