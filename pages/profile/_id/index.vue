@@ -170,7 +170,7 @@
             {{ $t('profile.portfolio') }}
           </div>
           <div
-            v-if="selectedTab === 'portfolio' && $route.params.id === mainUser.id"
+            v-if="selectedTab === 'portfolio' && userId === mainUser.id"
             class="portfolio__add-btn"
           >
             <base-btn
@@ -327,6 +327,9 @@ export default {
         },
       ];
     },
+    userId() {
+      return this.$route.params.id;
+    },
   },
   watch: {
     async selectedTab() {
@@ -363,8 +366,8 @@ export default {
     },
   },
   async mounted() {
-    if (this.$route.params.id !== this.mainUser.id) {
-      this.userData = await this.$store.dispatch('user/getAnotherUserData', this.$route.params.id);
+    if (this.userId !== this.mainUser.id) {
+      this.userData = await this.$store.dispatch('user/getAnotherUserData', this.userId);
       this.userData = this.userData.result;
     } else {
       this.userData = this.mainUser;
@@ -396,7 +399,7 @@ export default {
     },
     async changeQuestsData(limit) {
       const payload = {
-        userId: this.$route.params.id,
+        userId: this.userId,
         role: this.userData.role,
         query: limit ? `limit=${limit}` : `limit=${this.perPagerQuests}&offset=${(this.pageQuests - 1) * this.perPagerQuests}`,
       };
@@ -405,7 +408,7 @@ export default {
     },
     async changeReviewsData(limit) {
       const payload = {
-        userId: this.$route.params.id,
+        userId: this.userId,
         query: limit ? `limit=${limit}` : `limit=${this.perPagerReviews}&offset=${(this.pageReviews - 1) * this.perPagerReviews}`,
       };
       await this.$store.dispatch('user/getAllUserReviews', payload);
@@ -413,7 +416,7 @@ export default {
     },
     async changePortfoliosData(limit) {
       const payload = {
-        userId: this.$route.params.id,
+        userId: this.userId,
         query: limit ? `limit=${limit}` : `limit=${this.perPagerPortfolios}&offset=${(this.pagePortfolios - 1) * this.perPagerPortfolios}`,
       };
       await this.$store.dispatch('user/getUserPortfolios', payload);
