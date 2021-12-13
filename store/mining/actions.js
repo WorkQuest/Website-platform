@@ -55,9 +55,9 @@ export default {
       const totalLiquidity = tokensAmount.wqtAmount * wbnbRes.data.price + tokensAmount.wbnbAmount * wqtRes.data.price;
       commit('setTotalLiquidityUSD', totalLiquidity);
 
-      const { result } = chartDataRes;
-      result[0].reserveUSD = totalLiquidity;
-      commit('setChartData', chartDataRes.result);
+      const { infoPer10Days } = chartDataRes.result;
+      if (chartDataRes.result.count) infoPer10Days[0].reserveUSD = totalLiquidity;
+      commit('setChartData', infoPer10Days);
       return chartDataRes;
     } catch (e) {
       console.error('error in getChartDataForWqtWbnbPool', e);
