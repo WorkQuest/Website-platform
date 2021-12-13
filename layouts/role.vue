@@ -20,18 +20,13 @@
         <div class="template__footer">
           <div class="template__links">
             <a
+              v-for="(item, i) in templateLinks"
+              :key="i"
               class="template__link"
-              href="/docs/terms.pdf"
+              :href="item.url"
               target="_blank"
             >
-              {{ $t('layout.links.terms') }}
-            </a>
-            <a
-              class="template__link"
-              href="/docs/privacy.pdf"
-              target="_blank"
-            >
-              {{ $t('layout.links.privacy') }}
+              {{ item.title }}
             </a>
           </div>
         </div>
@@ -54,6 +49,18 @@ export default {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
     }),
+    templateLinks() {
+      return [
+        {
+          url: '/docs/terms.pdf',
+          title: this.$t('layout.links.terms'),
+        },
+        {
+          url: '/docs/privacy.pdf',
+          title: this.$t('layout.links.privacy'),
+        },
+      ];
+    },
   },
   methods: {
     toMain() {

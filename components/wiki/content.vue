@@ -11,6 +11,10 @@
       :key="key"
       class="example"
     >
+      <div
+        :id="card.title.toString().toLowerCase()"
+        class="scroller"
+      />
       <p class="example__header">
         {{ card.title }}
       </p>
@@ -72,6 +76,7 @@ export default {
   }
 }
 .example {
+  position: relative;
   &__header {
     @include text-simple;
     @include normal-font-size;
@@ -86,7 +91,7 @@ export default {
     margin-bottom: 10px;
   }
   &__image {
-     box-shadow: 0px 2px 10px rgba(56, 71, 79, 0.1);
+     box-shadow: 0 2px 10px rgba(56, 71, 79, 0.1);
     &-wrapper {
       margin-bottom: 20px;
       display: flex;
@@ -107,8 +112,12 @@ export default {
     }
     &__mobile {
       display: block;
-      box-shadow: 0px 2px 10px rgba(56, 71, 79, 0.1);
+      box-shadow: 0 2px 10px rgba(56, 71, 79, 0.1);
     }
   }
+}
+.scroller {
+  position: absolute;
+  top: -90px;
 }
 </style>

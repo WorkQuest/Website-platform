@@ -35,7 +35,6 @@ export default {
   withdrawAbout: 'withdrawAbout',
   depositIsOpened: 'depositIsOpened',
   addCase: 'addCase',
-  welcome: 'welcome',
   openADispute: 'openADispute',
   notice: 'notice',
   noticeChat: 'noticeChat',
@@ -78,4 +77,6 @@ export default {
   claimRewards: 'claimRewards',
   swapTokens: 'swapTokens',
   gallery: 'gallery',
+  areYouSureDeleteMember: 'areYouSureDeleteMember',
+  areYouSureLeaveChat: 'areYouSureLeaveChat',
 };

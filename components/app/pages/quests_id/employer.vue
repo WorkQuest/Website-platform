@@ -1,7 +1,7 @@
 <template>
-  <span v-if="['employer'].includes(userRole)">
+  <div v-if="userRole === 'employer'">
     <div
-      v-if="[1].includes(infoDataMode)"
+      v-if="infoDataMode === InfoModeEmployer.RaiseViews"
       class="btns__container"
     >
       <div
@@ -24,28 +24,22 @@
         </div>
       </div>
     </div>
-    <div v-if="[2].includes(infoDataMode)">
-      <div class="worker__title">{{ $t('quests.worker') }}</div>
+    <div v-if="infoDataMode === InfoModeEmployer.Active">
+      <div class="worker__title">
+        {{ $t('quests.worker') }}
+      </div>
       <div class="worker__container">
         <div>
           <img
-            v-if="assignWorker"
             class="worker__avatar"
-            :src="userAvatar"
-            alt=""
-          >
-          <img
-            v-if="!assignWorker"
-            class="worker__avatar"
-            :src="require('~/assets/img/app/avatar_empty.png')"
+            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
-          v-if="assignWorker"
           class="worker__name"
         >
-          {{ assignWorker.firstName ? assignWorker.firstName : 'Nameless' }} {{ assignWorker.lastName ? assignWorker.lastName : '' }}
+          {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА Нет Бэка-->
@@ -107,28 +101,26 @@
     <!--                </div>-->
     <!--              </div>-->
     <!--    </div>-->
-    <div v-if="[4].includes(infoDataMode)">
+    <div v-if="infoDataMode === InfoModeEmployer.WaitWorker">
       <div
-        v-if="assignWorker"
         class="worker__title"
       >
         {{ $t('quests.worker') }}
       </div>
       <div
-        v-if="assignWorker"
-        class="worker__container"
+        class="worker__container_row"
       >
         <div>
           <img
             class="worker__avatar"
-            :src="assignWorker.avatar ? assignWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
           class="worker__name"
         >
-          {{ assignWorker.firstName ? assignWorker.firstName : 'Nameless' }} {{ assignWorker.lastName ? assignWorker.lastName : '' }}
+          {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
@@ -143,7 +135,7 @@
       </div>
     </div>
     <div
-      v-if="[6].includes(infoDataMode)"
+      v-if="infoDataMode === InfoModeEmployer.WaitConfirm"
       class="btns__container"
     >
       <div>
@@ -152,22 +144,14 @@
         </div>
         <div class="worker__container_row">
           <img
-            v-if="assignWorker"
             class="worker__avatar"
-            :src="userAvatar"
-            alt=""
-          >
-          <img
-            v-if="!assignWorker"
-            class="worker__avatar"
-            :src="require('~/assets/img/app/avatar_empty.png')"
+            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
           <div
-            v-if="assignWorker"
             class="worker__name"
           >
-            {{ assignWorker.firstName ? assignWorker.firstName : 'Nameless' }} {{ assignWorker.lastName ? assignWorker.lastName : '' }}
+            {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
           </div>
           <div>
             <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
@@ -196,41 +180,25 @@
               {{ $t('btn.rejectCompletedWorkOnQuest') }}
             </base-btn>
           </div>
-          <div class="btn__wrapper">
-            <base-btn
-              mode="delete"
-              @click="closeQuest"
-            >
-              {{ $t('btn.closeQuest') }}
-            </base-btn>
-          </div>
         </div>
       </div>
     </div>
-    <div v-if="[7].includes(infoDataMode)">
+    <div v-if="[InfoModeEmployer.Dispute, InfoModeEmployer.Closed].includes(infoDataMode)">
       <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
-      <div class="worker__container">
+      <div class="worker__container_row">
         <div>
           <img
-            v-if="assignWorker"
             class="worker__avatar"
-            :src="userAvatar"
-            alt=""
-          >
-          <img
-            v-if="!assignWorker"
-            class="worker__avatar"
-            :src="require('~/assets/img/app/avatar_empty.png')"
+            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
-          v-if="assignWorker"
           class="worker__name"
         >
-          {{ assignWorker.firstName ? assignWorker.firstName : 'Nameless' }} {{ assignWorker.lastName ? assignWorker.lastName : '' }}
+          {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
@@ -245,41 +213,33 @@
       </div>
       <div class="btns__container">
         <div
-          v-if="[7].includes(infoDataMode)"
+          v-if="infoDataMode === InfoModeEmployer.Dispute"
           class="btns__wrapper"
         >
           <div class="btn__wrapper">
-            <base-btn>
+            <base-btn @click="openDispute()">
               {{ $t('btn.dispute') }}
             </base-btn>
           </div>
         </div>
       </div>
     </div>
-    <div v-if="[9].includes(infoDataMode)">
+    <div v-if="infoDataMode === InfoModeEmployer.Done">
       <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
       <div class="worker__container_row">
         <div>
           <img
-            v-if="assignWorker"
             class="worker__avatar"
-            :src="userAvatar"
-            alt=""
-          >
-          <img
-            v-if="!assignWorker"
-            class="worker__avatar"
-            :src="require('~/assets/img/app/avatar_empty.png')"
+            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
-          v-if="assignWorker"
           class="worker__name"
         >
-          {{ assignWorker.firstName ? assignWorker.firstName : 'Nameless' }} {{ assignWorker.lastName ? assignWorker.lastName : '' }}
+          {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
@@ -294,7 +254,7 @@
       </div>
     </div>
     <div
-      v-if="![4,8,9].includes(infoDataMode)"
+      v-if="![InfoModeEmployer.WaitWorker, InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode)"
       class="btns__container"
     >
       <div class="priority">
@@ -317,12 +277,13 @@
         </div>
       </div>
     </div>
-  </span>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { InfoModeEmployer, QuestStatuses } from '~/utils/enums';
 
 export default {
   name: 'QuestIdEmployer',
@@ -357,6 +318,9 @@ export default {
       responsesToQuest: 'quests/getResponsesToQuest',
       infoDataMode: 'quests/getInfoDataMode',
     }),
+    InfoModeEmployer() {
+      return InfoModeEmployer;
+    },
     cardBadgeLevel() {
       return [
         {
@@ -408,41 +372,33 @@ export default {
       return priority[index] || '';
     },
     async closeQuest() {
+      const modalMode = 1;
       this.SetLoader(true);
-      if (this.questData.status !== 2) {
+      if (this.questData.status !== InfoModeEmployer.Active) {
         await this.$store.dispatch('quests/closeQuest', this.questData.id);
+        this.showQuestModal(modalMode);
       }
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('quests.questInfo'),
-        subtitle: this.$t('quests.questClosed!'),
-      });
       await this.$router.push('/my');
       this.SetLoader(false);
     },
+    openDispute() {
+      const modalMode = 4;
+      this.showQuestModal(modalMode);
+    },
     async acceptCompletedWorkOnQuest() {
+      const modalMode = 2;
       this.SetLoader(true);
       await this.$store.dispatch('quests/acceptCompletedWorkOnQuest', this.questData.id);
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('quests.questInfo'),
-        subtitle: this.$t('quests.completedWorkAccepted'),
-      });
-      await this.$store.dispatch('quests/setInfoDataMode', 9);
+      this.showQuestModal(modalMode);
+      await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Done);
       this.SetLoader(false);
     },
     async rejectCompletedWorkOnQuest() {
+      const modalMode = 3;
       this.SetLoader(true);
       await this.$store.dispatch('quests/rejectCompletedWorkOnQuest', this.questData.id);
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('quests.questInfo'),
-        subtitle: this.$t('quests.completedWorkRejected'),
-      });
-      await this.$store.dispatch('quests/setInfoDataMode', 9);
+      this.showQuestModal(modalMode);
+      await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Dispute);
       this.SetLoader(false);
     },
     async initData() {
@@ -461,8 +417,36 @@ export default {
       }
     },
     toRaisingViews() {
-      this.$router.push('/edit-quest');
-      this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
+        this.$router.push('/edit-quest');
+        this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
+      } else {
+        this.showToastWrongStatusRaisingViews();
+      }
+    },
+    showToastWrongStatusRaisingViews() {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.questInfo'),
+        variant: 'warning',
+        text: this.$t('toasts.questCantRaisingViews'),
+      });
+    },
+    showQuestModal(modalMode) {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: this.$t('quests.questInfo'),
+        subtitle: this.modalMode(modalMode),
+      });
+    },
+    modalMode(modalMode) {
+      const subtitles = {
+        1: this.$t('quests.questClosed!'),
+        2: this.$t('quests.completedWorkAccepted'),
+        3: this.$t('quests.completedWorkRejected'),
+        4: 'Discussion flow in progress..',
+      };
+      return subtitles[modalMode];
     },
   },
 };

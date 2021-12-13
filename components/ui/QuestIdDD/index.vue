@@ -220,6 +220,7 @@ export default {
     min-height: 20px;
     width: 100%;
     border-bottom: 1px solid $black100;
+    cursor: pointer;
   }
   &__text {
     font-family: 'Inter', sans-serif;

@@ -17,14 +17,18 @@
               :label="$t('quests.ui.showMap')"
             />
           </div>
-          <div class="search__inputs">
+          <div
+            class="search__inputs"
+            @click="toggleSearchDD"
+          >
             <base-field
               v-model="search"
+              v-click-outside="hideSearchDD"
               class="search__input"
               is-search
               :placeholder="$t('quests.ui.search')"
               mode="icon"
-              :selector="true"
+              :selector="isSearchDDStatus"
               @selector="getAddressInfo(search)"
             >
               <template v-slot:left />
@@ -32,8 +36,11 @@
                 <div
                   v-if="addresses.length"
                   class="selector"
+                  :class="{'selector_hide': isSearchDDStatus === false}"
                 >
-                  <div class="selector__items">
+                  <div
+                    class="selector__items"
+                  >
                     <div
                       v-for="(item, i) in addresses"
                       :key="i"
@@ -50,7 +57,7 @@
           <div class="search__dd">
             <base-dd
               v-model="distanceIndex"
-              :items="distance"
+              :items="distanceItems"
             />
           </div>
           <div class="search__actions">
@@ -69,7 +76,7 @@
         >
           <base-dd
             v-model="distanceIndex"
-            :items="distance"
+            :items="distanceItems"
           />
         </div>
         <div class="filter__toggle">
@@ -95,20 +102,53 @@
           <div class="tools__panel">
             <base-filter-dd class="tools__item" />
             <base-dd
-              v-for="(item, i) in panelDD"
-              :key="i"
-              v-model="item.vmodel"
-              :class="item.class"
-              :items="item.items"
-              :mode="item.mode"
-              :placeholder="item.placeholder"
+              v-model="selectedPriority"
+              class="tools__item"
+              mode:="blackFont"
+              :placeholder="$t('quests.priority.title')"
+              :items="priorityItems"
+            />
+            <base-dd
+              v-model="selectedTypeOfJob"
+              class="tools__item"
+              mode:="blackFont"
+              :placeholder="$t('quests.typeOfJob')"
+              :items="typeOfJobItems"
+            />
+            <base-dd
+              v-model="selectedDistantWork"
+              class="tools__item"
+              mode:="blackFont"
+              :placeholder="$t('quests.distantWork.title')"
+              :items="distantWorkItems"
             />
             <base-btn
               class="tools__item"
               :mode="'light'"
               @click="showPriceSearch"
             >
-              <span class="tools__text">
+              <span
+                v-if="selectedPriceFilter.from && selectedPriceFilter.to"
+                class="tools__text tools__text_price"
+              >
+                {{ selectedPriceFilter.from }} - {{ selectedPriceFilter.to }}
+              </span>
+              <span
+                v-else-if="!selectedPriceFilter.from && selectedPriceFilter.to"
+                class="tools__text tools__text_price"
+              >
+                0 - {{ selectedPriceFilter.to }}
+              </span>
+              <span
+                v-else-if="selectedPriceFilter.from && !selectedPriceFilter.to"
+                class="tools__text tools__text_price"
+              >
+                > {{ selectedPriceFilter.from }}
+              </span>
+              <span
+                v-else
+                class="tools__text"
+              >
                 {{ $t('quests.price') }}
               </span>
               <template v-slot:right>
@@ -163,9 +203,9 @@
           :page="'quests'"
         />
         <base-pager
-          v-if="totalPagesValue > 1"
+          v-if="totalPages > 1"
           v-model="page"
-          :total-pages="totalPagesValue"
+          :total-pages="totalPages"
         />
         <emptyData
           v-else-if="questsArray.length === 0"
@@ -179,14 +219,19 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import ClickOutside from 'vue-click-outside';
 import { GeoCode } from 'geo-coder';
 import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
 import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
+import { priorityFilter, typeOfJobFilter, workplaceFilter } from '~/utils/enums';
 
 export default {
   name: 'Quests',
+  directives: {
+    ClickOutside,
+  },
   components: {
     GmapSearchBlock,
     quests,
@@ -196,10 +241,13 @@ export default {
     return {
       isShowMap: true,
       search: '',
+      isSearchDDStatus: true,
       selectedQuest: '',
       selectedUrgent: '',
-      selectedTypeOfJob: '',
-      selectedDistantWork: '',
+      searchDDStatus: true,
+      selectedDistantWork: null,
+      selectedPriority: null,
+      selectedTypeOfJob: null,
       distanceIndex: 0,
       priceSort: 'desc',
       timeSort: 'desc',
@@ -208,7 +256,6 @@ export default {
       sortData: '',
       page: 1,
       perPager: 10,
-      totalPagesValue: 1,
       additionalValue: '',
       zoomNumber: 15,
       addresses: [],
@@ -218,85 +265,40 @@ export default {
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
-      checkWelcomeModal: 'modals/getIsShowWelcome',
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
+      selectedSpecializationsFilters: 'quests/getSelectedSpecializationsFilters',
+      selectedPriceFilter: 'quests/getSelectedPriceFilter',
     }),
-    panelDD() {
+    distanceItems() {
       return [
-        {
-          vmodel: this.selectedQuest,
-          class: 'tools__item',
-          items: this.quests,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.quests'),
-        },
-        {
-          vmodel: this.selectedUrgent,
-          class: 'tools__item',
-          items: this.urgent,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.urgent'),
-        },
-        {
-          vmodel: this.selectedTypeOfJob,
-          class: 'tools__item',
-          items: this.typeOfJob,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.typeOfJob'),
-        },
-        {
-          vmodel: this.selectedDistantWork,
-          class: 'tools__item',
-          items: this.distantWork,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.distantWork.title'),
-        },
+        this.$t('quests.distance.100'),
+        this.$t('quests.distance.500'),
+        this.$t('quests.distance.1000'),
       ];
     },
-    distance() {
-      return [
-        '+ 100 m',
-        '+ 500 m',
-        '+ 1000 m',
-      ];
-    },
-    priority() {
+    priorityItems() {
       return [
         this.$t('quests.priority.all'),
-        this.$t('quests.priority.low'),
-        this.$t('quests.priority.normal'),
-        this.$t('quests.priority.urgent'),
+        this.$t('quests.runtime.urgent'),
+        this.$t('quests.runtime.shortTerm'),
+        this.$t('quests.runtime.fixedDelivery'),
       ];
     },
-    distantWork() {
+    typeOfJobItems() {
       return [
-        this.$t('quests.distantWork.distantWork'),
-        this.$t('quests.distantWork.workInOffice'),
-        this.$t('quests.distantWork.bothVariant'),
-      ];
-    },
-    typeOfJob() {
-      return [
+        this.$t('quests.allVariants'),
         this.$t('quests.fullTime'),
         this.$t('quests.partTime'),
         this.$t('quests.fixedTerm'),
-        this.$t('quests.contract'),
-        this.$t('quests.remoteWork'),
       ];
     },
-    quests() {
+    distantWorkItems() {
       return [
-        this.$t('quests.quests'),
-        this.$t('quests.specQuests'),
-        this.$t('quests.permanentJob'),
-      ];
-    },
-    urgent() {
-      return [
-        this.$t('priority.urgent'),
-        this.$t('priority.normal'),
-        this.$t('priority.low'),
+        this.$t('quests.distantWork.allWorkplaces'),
+        this.$t('quests.distantWork.distantWork'),
+        this.$t('quests.distantWork.workInOffice'),
+        this.$t('quests.distantWork.bothVariant'),
       ];
     },
     totalPages() {
@@ -305,25 +307,46 @@ export default {
       }
       return 0;
     },
+    formattedSpecFilters() {
+      const filtersData = this.selectedSpecializationsFilters.query || [];
+      if (filtersData.length) {
+        let filters = '';
+        for (let i = 0; i < filtersData.length; i += 1) { filters += `&specializations[]=${filtersData[i]}`; }
+        return filters;
+      }
+      return '';
+    },
   },
   watch: {
     async isShowMap() {
-      this.SetLoader(true);
-      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      await this.getQuests(additionalValue);
-      this.totalPagesValue = this.totalPages;
-      this.SetLoader(false);
+      this.page = 1;
+      await this.updateQuests();
     },
     async page() {
-      this.SetLoader(true);
-      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      await this.getQuests(additionalValue);
-      this.SetLoader(false);
+      await this.updateQuests();
+    },
+    async selectedPriceFilter() {
+      this.page = 1;
+      await this.updateQuests();
+    },
+    async selectedSpecializationsFilters() {
+      this.page = 1;
+      await this.updateQuests();
+    },
+    async selectedDistantWork() {
+      this.page = 1;
+      await this.updateQuests();
+    },
+    async selectedPriority() {
+      await this.updateQuests();
+    },
+    async selectedTypeOfJob() {
+      await this.updateQuests();
     },
     async mapBounds() {
+      this.page = 1;
       const additionalValue = `${this.sortData}`;
-      await this.getQuests(additionalValue);
-      this.totalPagesValue = this.totalPages;
+      await this.updateQuests(additionalValue);
     },
     distanceIndex() {
       const zoom = {
@@ -334,11 +357,13 @@ export default {
       this.zoomNumber = zoom[this.distanceIndex];
     },
   },
-  mounted() {
-    this.SetLoader(true);
-    this.SetLoader(false);
-  },
   methods: {
+    toggleSearchDD() {
+      this.isSearchDDStatus = !this.isSearchDDStatus;
+    },
+    hideSearchDD() {
+      this.isSearchDDStatus = false;
+    },
     showPriceSearch() {
       this.ShowModal({
         key: modals.priceSearch,
@@ -349,7 +374,20 @@ export default {
         key: modals.questFilter,
       });
     },
-    async getQuests(payload = '') {
+    async updateQuests() {
+      if (!this.isShowMap) this.SetLoader(true);
+      let additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`;
+      additionalValue += this.sortData ? `&${this.sortData}` : '';
+      await this.fetchQuests(additionalValue);
+      this.SetLoader(false);
+    },
+    async fetchQuests(payload = '') {
+      payload += this.formattedSpecFilters;
+      if (this.selectedDistantWork > 0) payload += `&workplaces[]=${workplaceFilter[this.selectedDistantWork]}`;
+      if (this.selectedTypeOfJob > 0) payload += `&employments[]=${typeOfJobFilter[this.selectedTypeOfJob]}`;
+      if (this.selectedPriority) payload += `&priorities[]=${priorityFilter[this.selectedPriority]}`;
+      if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) payload += `&priceBetween[from]=${this.selectedPriceFilter.from || 0}&priceBetween[to]=${this.selectedPriceFilter.to || 99999999999999}`;
+
       if (!this.isShowMap) {
         this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
         this.questsArray = this.questsObjects.quests;
@@ -377,29 +415,13 @@ export default {
     },
     async changeSorting(type) {
       let sortValue = '';
-      if (type === 'price') {
-        if (this.priceSort === 'desc') {
-          this.priceSort = 'asc';
-          this.timeSort = 'desc';
-        } else {
-          this.priceSort = 'desc';
-          this.timeSort = 'asc';
-        }
-        sortValue = `&sort[price]=${this.priceSort}`;
-      }
       if (type === 'time') {
-        if (this.timeSort === 'desc') {
-          this.timeSort = 'asc';
-          this.priceSort = 'desc';
-        } else {
-          this.timeSort = 'desc';
-          this.priceSort = 'asc';
-        }
+        this.timeSort = this.timeSort === 'desc' ? 'asc' : 'desc';
         sortValue = `&sort[createdAt]=${this.timeSort}`;
       }
       this.sortData = sortValue;
       const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      await this.getQuests(additionalValue);
+      await this.updateQuests(additionalValue);
     },
     deleteTag(tag) {
       this.$store.dispatch('ui/deleteTags', tag);
@@ -758,8 +780,9 @@ export default {
   }
   &__panel {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     grid-gap: 10px;
+    width: 100%;
     span::before {
       padding-left: 10px;
       margin-right: 10px;
@@ -775,6 +798,12 @@ export default {
     line-height: 130%;
     color: $black800;
     display: block;
+    &_price {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100px;
+    }
   }
   &__right {
     display: grid;
@@ -788,7 +817,7 @@ export default {
     }
   }
 }
-.search-gmap{
+.search-gmap {
   &__top {
     height:435px;
   }
@@ -822,7 +851,7 @@ export default {
     justify-items: center;
     align-items: center;
     height: 100%;
-    width: 144px;
+    width: 146px;
   }
   &__icon {
     margin-bottom: -10px;
@@ -865,6 +894,9 @@ export default {
   @include box;
   width: 100%;
   z-index: 140;
+  &_hide {
+    display: none;
+  }
   &__items {
     background: #FFFFFF;
     display: grid;

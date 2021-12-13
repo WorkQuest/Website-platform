@@ -194,7 +194,7 @@ export default {
       return this.$route.params.id;
     },
     stakeDurationIsOver() {
-      return this.userInfo && moment.duration(moment(this.userInfo.date).diff(moment.now())).asMilliseconds() < 0;
+      return this.userInfo && moment.duration(moment(this.userInfo.date).diff(moment.now())).asMilliseconds() <= 0;
     },
     cards() {
       if (!this.poolData) {
@@ -283,9 +283,11 @@ export default {
         },
       ];
       if (this.userInfo.date && this.userInfo.staked !== '0') {
-        const days = Math.ceil(moment.duration(moment(this.userInfo.date).diff(moment.now())).asDays());
-        const hours = Math.ceil(moment.duration(moment(this.userInfo.date).diff(moment.now())).asHours());
-        const minutes = Math.ceil(moment.duration(moment(this.userInfo.date).diff(moment.now())).asMinutes());
+        const now = moment.now();
+        const ends = moment(this.userInfo.date);
+        const minutes = ends.diff(now, 'minutes');
+        const hours = ends.diff(now, 'hours');
+        const days = ends.diff(now, 'days');
         if (minutes <= 60) {
           data.push({
             name: this.$t('staking.stakingCards.duration'),
@@ -357,7 +359,7 @@ export default {
     await this.initPage();
   },
   async beforeDestroy() {
-    await this.$store.dispatch('web3/unsubscribeStakingActions');
+    await this.$store.dispatch('web3/unsubscribeActions');
     clearInterval(this.updateInterval);
   },
   methods: {
@@ -488,7 +490,7 @@ export default {
       }
       this.ShowModal({
         key: modals.claim,
-        txFee: txFeeData,
+        txFee: txFeeData.result,
         stakingType: this.slug,
         rewardAmount: this.userInfo.claim,
         tokenSymbol: this.poolData.tokenSymbol,

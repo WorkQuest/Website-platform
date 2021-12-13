@@ -27,3 +27,60 @@ export const StakingTypes = {
   MINING: 'MINING',
   CROSS_CHAIN: 'CROSS_CHAIN',
 };
+
+export const QuestStatuses = {
+  Rejected: -1,
+  Created: 0,
+  Active: 1,
+  Closed: 2,
+  Dispute: 3,
+  WaitWorker: 4,
+  WaitConfirm: 5,
+  Done: 6,
+};
+
+export const InfoModeEmployer = {
+  RaiseViews: 1,
+  Active: 2,
+  Created: 3,
+  WaitWorker: 4,
+  WaitConfirm: 6,
+  Dispute: 7,
+  Closed: 8,
+  Done: 9,
+};
+export const InfoModeWorker = {
+  ADChat: 1,
+  Active: 2,
+  Rejected: 3,
+  WaitConfirm: 4,
+  Created: 5,
+  Dispute: 7,
+  Closed: 8,
+  Done: 9,
+};
+export const questPriority = {
+  Low: 1,
+  Normal: 2,
+  Urgent: 3,
+};
+export const responsesType = {
+  Responded: 0,
+  Invited: 1,
+};
+export const keyCodes = {
+  Escape: 27,
+  ArrowLeft: 37,
+  ArrowRight: 39,
+};
+
+// Filters
+export const workplaceFilter = ['', 'distant', 'office', 'both'];
+export const ratingFilter = ['', 'verified', 'reliable', 'topRanked'];
+export const typeOfJobFilter = ['', 'fullTime', 'partTime', 'fixedTerm'];
+export const priorityFilter = [
+  0, // all
+  3, // urgent
+  2, // shortTerm
+  1, // fixedDelivery
+];

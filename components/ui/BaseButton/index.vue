@@ -124,9 +124,6 @@ export default {
     transition: .5s;
     height: 24px;
     width: 24px;
-    position: absolute;
-    right: 0;
-    top: 28px;
     &:hover {
       @include share-user;
       filter: brightness(70%);
@@ -342,5 +339,13 @@ export default {
     }
   }
 }
-
+@include _575 {
+  .base-btn  {
+    &_share-user-info {
+      position: absolute;
+      right: 20px;
+      top: 100px;
+    }
+  }
+}
 </style>

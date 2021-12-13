@@ -16,7 +16,7 @@
       <button
         class="dd__btn"
         :class="ddClass"
-        :disabled="disabled"
+        :disabled="disabled || elementsIsEmpty"
         @click="isShown = !isShown"
       >
         <div
@@ -89,6 +89,7 @@
             v-for="(item, i) in items"
             :key="`dd__item-${i}`"
             class="dd__item"
+            :class="{'dd__item_hide': isSelected(i)}"
             @click="selectItem(i)"
           >
             {{ dataType === 'array' ? item : item.title }}
@@ -149,16 +150,23 @@ export default {
       type: Boolean,
       default: false,
     },
+    hideSelected: {
+      type: Array,
+      default: () => [],
+    },
   },
   data: () => ({
     isShown: false,
   }),
   computed: {
+    elementsIsEmpty() {
+      return this.items.length - this.hideSelected.length <= 0;
+    },
     ddClass() {
       const { type } = this;
       return [
         { dd__btn_dark: type === 'dark' },
-        { dd__btn_disabled: type === 'disabled' },
+        { dd__btn_disabled: type === 'disabled' || this.elementsIsEmpty },
         { dd__btn_gray: type === 'gray' },
         { dd__btn_blue: type === 'blue' },
         { dd__btn_border: type === 'border' },
@@ -170,8 +178,12 @@ export default {
       this.isShown = false;
     },
     selectItem(i) {
+      if (this.hideSelected.includes(i)) return;
       this.isShown = false;
       this.$emit('input', i);
+    },
+    isSelected(i) {
+      return this.hideSelected.includes(i);
     },
   },
 };
@@ -223,9 +235,10 @@ export default {
     padding: 15px 20px;
     z-index: 1;
     &_small {
-      height: 200px;
+      max-height: 200px;
       grid-gap: 10px;
-      overflow: scroll;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
     }
   }
   &__item {
@@ -245,6 +258,9 @@ export default {
         height: 25px;
         width: 25px;
       }
+    }
+    &_hide {
+      display: none;
     }
   }
   &__icon {
