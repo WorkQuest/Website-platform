@@ -1,7 +1,7 @@
 <template>
   <div class="reviews-grid reviews-grid__reviews-item">
     <span
-      v-for="(reviewData, i) in object"
+      v-for="(reviewData, i) in object.reviews"
       :key="i"
     >
       <div class="reviews-item">

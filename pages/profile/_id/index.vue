@@ -412,7 +412,7 @@ export default {
         query: limit ? `limit=${limit}` : `limit=${this.perPagerReviews}&offset=${(this.pageReviews - 1) * this.perPagerReviews}`,
       };
       await this.$store.dispatch('user/getAllUserReviews', payload);
-      this.reviewsObject = this.reviews.reviews;
+      this.reviewsObject = this.reviews;
     },
     async changePortfoliosData(limit) {
       const payload = {
