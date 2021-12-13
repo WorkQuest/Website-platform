@@ -5,8 +5,8 @@
         <div class="block__avatar avatar">
           <img
             class="avatar__img"
-            :src="userData.avatar ? userData.avatar.url || require('~/assets/img/app/avatar_empty.png') : require('~/assets/img/app/avatar_empty.png')"
-            :alt="userData.avatar ? userData.avatar.url : 'avatar_empty'"
+            :src="userData.avatar && userData.avatar.url ? userData.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+            :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
             loading="lazy"
           >
         </div>
@@ -102,24 +102,18 @@
         </div>
         <div class="block__contacts contacts">
           <div class="contacts__contact contact">
-            <template
+            <div
               v-for="(data, key) in contactData"
+              :key="key"
+              class="contact__container"
             >
-              <div
-                v-if="data.name"
-                :key="key"
-                class="contact__container"
-              >
-                <span
-                  :class="data.icon"
-                />
-                <a
-                  :href="data.href"
-                  target="_blank"
-                  class="contact__link"
-                >{{ data.name }}</a>
-              </div>
-            </template>
+              <span :class="data.icon" />
+              <a
+                :href="data.href"
+                target="_blank"
+                class="contact__link"
+              >{{ data.name }}</a>
+            </div>
           </div>
         </div>
       </div>
