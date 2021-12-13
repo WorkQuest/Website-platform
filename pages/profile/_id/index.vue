@@ -85,8 +85,8 @@
             {{ $t('quests.activeQuests') }}
           </div>
           <quests
-            v-if="questsObjects.count !== 0"
-            :object="questsObjects"
+            v-if="questsObject.count !== 0"
+            :object="questsObject"
             :page="'quests'"
           />
           <emptyData
@@ -96,14 +96,14 @@
           <div class="quests__pager pager">
             <div class="pager__block">
               <base-pager
-                v-if="selectedTab === 'quests' && totalPages > 1"
-                v-model="page"
-                :total-pages="totalPages"
+                v-if="selectedTab === 'quests' && totalQuestsPages > 1"
+                v-model="pageQuests"
+                :total-pages="totalQuestsPages"
               />
             </div>
           </div>
           <div
-            v-if="selectedTab === 'commonInfo' && questsObjects.count > 2"
+            v-if="selectedTab === 'commonInfo' && questsObject.count > 2"
             class="quests__button button"
           >
             <div
@@ -128,7 +128,18 @@
             <div
               class="reviews__container"
             >
-              <reviewsTab :object="reviews.reviews" />
+              <reviewsTab :object="reviewsObject" />
+            </div>
+            <div
+              v-if="selectedTab === 'reviews' && totalReviewsPages > 1"
+              class="reviews__pager pager"
+            >
+              <div class="pager__block">
+                <base-pager
+                  v-model="pageReviews"
+                  :total-pages="totalReviewsPages"
+                />
+              </div>
             </div>
             <div
               v-if="selectedTab === 'commonInfo'"
@@ -159,11 +170,10 @@
             {{ $t('profile.portfolio') }}
           </div>
           <div
-            v-if="selectedTab === 'portfolio'"
+            v-if="selectedTab === 'portfolio' && $route.params.id === mainUser.id"
             class="portfolio__add-btn"
           >
             <base-btn
-              v-if="$route.params.id === mainUser.id"
               @click="showAddCaseModal()"
             >
               {{ $t('ui.profile.addCase') }}
@@ -172,9 +182,20 @@
               </template>
             </base-btn>
           </div>
-          <portfolioTab />
+          <portfolioTab :object="portfolioObject" />
           <div
-            v-if="selectedTab === 'commonInfo' && portfoliosCount > 3"
+            v-if="selectedTab === 'portfolio' && totalPortfoliosPages > 1"
+            class="portfolio__pager pager"
+          >
+            <div class="pager__block">
+              <base-pager
+                v-model="pagePortfolios"
+                :total-pages="totalPortfoliosPages"
+              />
+            </div>
+          </div>
+          <div
+            v-if="selectedTab === 'commonInfo' && portfolioObject.count > 3"
             class="portfolio__button button"
           >
             <div
@@ -212,7 +233,9 @@ export default {
   data() {
     return {
       selectedTab: 'commonInfo',
-      questsObjects: {},
+      questsObject: {},
+      reviewsObject: {},
+      portfolioObject: {},
       userStatistics: {
         reviewCount: 0,
         averageMark: 0,
@@ -221,9 +244,12 @@ export default {
       },
       userSpecializations: [],
       userData: {},
-      page: 1,
-      perPager: 11,
-      portfoliosCount: 0,
+      pageQuests: 1,
+      pageReviews: 1,
+      pagePortfolios: 1,
+      perPagerQuests: 11,
+      perPagerReviews: 8,
+      perPagerPortfolios: 6,
     };
   },
   computed: {
@@ -268,8 +294,14 @@ export default {
       }
       return tabs;
     },
-    totalPages() {
-      return Math.ceil(this.questsObjects.count / this.perPager);
+    totalQuestsPages() {
+      return Math.ceil(this.questsObject.count / this.perPagerQuests);
+    },
+    totalReviewsPages() {
+      return Math.ceil(this.reviews.count / this.perPagerReviews);
+    },
+    totalPortfoliosPages() {
+      return Math.ceil(this.portfolios.count / this.perPagerPortfolios);
     },
     statisticsData() {
       const { ratingStatistic } = this.userData;
@@ -299,33 +331,49 @@ export default {
   watch: {
     async selectedTab() {
       this.SetLoader(true);
-      console.log();
       if (this.selectedTab === 'quests') {
         await this.changeQuestsData();
+      } else if (this.selectedTab === 'reviews') {
+        await this.changeReviewsData();
+      } else if (this.selectedTab === 'portfolio') {
+        await this.changePortfoliosData();
       } else if (this.selectedTab === 'commonInfo') {
         await this.changeQuestsData(2);
+        await this.changeReviewsData(2);
+        if (this.userData.role === 'worker') {
+          await this.changePortfoliosData(3);
+        }
       }
       this.SetLoader(false);
     },
-    async page() {
+    async pageQuests() {
       this.SetLoader(true);
       await this.changeQuestsData();
       this.SetLoader(false);
     },
-    portfolios() {
-      this.portfoliosCount = this.portfolios.count;
+    async pageReviews() {
+      this.SetLoader(true);
+      await this.changeReviewsData();
+      this.SetLoader(false);
+    },
+    async pagePortfolios() {
+      this.SetLoader(true);
+      await this.changePortfoliosData();
+      this.SetLoader(false);
     },
   },
   async mounted() {
     if (this.$route.params.id !== this.mainUser.id) {
-      await this.$store.dispatch('user/getAllUserReviews', this.$route.params.id);
-      console.log(this.reviews);
       this.userData = await this.$store.dispatch('user/getAnotherUserData', this.$route.params.id);
       this.userData = this.userData.result;
     } else {
       this.userData = this.mainUser;
     }
     await this.changeQuestsData(2);
+    await this.changeReviewsData(2);
+    if (this.userData.role === 'worker') {
+      await this.changePortfoliosData(3);
+    }
     const { ratingStatistic } = this.userData;
     const { questStatistic } = this.userData;
     this.userStatistics = {
@@ -340,20 +388,36 @@ export default {
   },
   methods: {
     numberValidate(number) {
-      const fullNumber = number.toFixed(1);
-      if (fullNumber - number > 0) {
-        return fullNumber;
+      const fixedNumber = number.toFixed(1);
+      if (number - fixedNumber > 0) {
+        return fixedNumber;
       }
       return number;
     },
     async changeQuestsData(limit) {
       const payload = {
-        userId: this.userData.id,
+        userId: this.$route.params.id,
         role: this.userData.role,
-        query: limit ? `limit=${limit}` : `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`,
+        query: limit ? `limit=${limit}` : `limit=${this.perPagerQuests}&offset=${(this.pageQuests - 1) * this.perPagerQuests}`,
       };
       await this.$store.dispatch('quests/getUserQuests', payload);
-      this.questsObjects = this.questUserData;
+      this.questsObject = this.questUserData;
+    },
+    async changeReviewsData(limit) {
+      const payload = {
+        userId: this.$route.params.id,
+        query: limit ? `limit=${limit}` : `limit=${this.perPagerReviews}&offset=${(this.pageReviews - 1) * this.perPagerReviews}`,
+      };
+      await this.$store.dispatch('user/getAllUserReviews', payload);
+      this.reviewsObject = this.reviews.reviews;
+    },
+    async changePortfoliosData(limit) {
+      const payload = {
+        userId: this.$route.params.id,
+        query: limit ? `limit=${limit}` : `limit=${this.perPagerPortfolios}&offset=${(this.pagePortfolios - 1) * this.perPagerPortfolios}`,
+      };
+      await this.$store.dispatch('user/getUserPortfolios', payload);
+      this.portfolioObject = this.portfolios;
     },
     getSkillTitle() {
       const specData = {};

@@ -1,7 +1,7 @@
 <template>
   <div>
     <emptyData
-      v-if="portfolios.count === 0"
+      v-if="object.count === 0"
       :description="$t('errors.emptyData.emptyPortfolios')"
     />
     <div
@@ -12,7 +12,7 @@
         class="portfolio__item"
       >
         <div
-          v-for="(item, i) in portfolios.cases"
+          v-for="(item, i) in object.cases"
           :key="i"
           class="portfolio__card"
         >
@@ -74,17 +74,19 @@ export default {
   components: {
     emptyData,
   },
+  props: {
+    object: {
+      type: [Object, Array],
+      default: null,
+    },
+  },
   computed: {
     ...mapGetters({
-      portfolios: 'user/getUserPortfolios',
       mainUserData: 'user/getUserData',
     }),
     userId() {
       return this.$route.params.id;
     },
-  },
-  async mounted() {
-    await this.getAllPortfolios();
   },
   methods: {
     openImage(src, name, desc) {
@@ -97,11 +99,6 @@ export default {
           desc,
         });
       }
-    },
-    async getAllPortfolios() {
-      this.SetLoader(true);
-      await this.$store.dispatch('user/getUserPortfolios', this.userId);
-      this.SetLoader(false);
     },
     showToastError(e) {
       return this.$store.dispatch('main/showToast', {
