@@ -45,6 +45,7 @@ export default {
 
       const apiWbnb = this.$axios.create({ baseURL: `https://api.pancakeswap.info/api/v2/tokens/${wbnb_token}` });
       const apiWqt = this.$axios.create({ baseURL: `https://api.pancakeswap.info/api/v2/tokens/${wqt_token}` });
+
       const [wbnbRes, wqtRes, tokensAmount, chartDataRes] = await Promise.all([
         apiWbnb.$get(''),
         apiWqt.$get(''),

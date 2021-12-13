@@ -353,9 +353,8 @@ export default {
     async isConnected(newValue) {
       const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.currentPool);
       if (newValue && rightChain) {
-        await this.$store.dispatch('web3/initContract');
         await this.tokensDataUpdate();
-        // this.updateInterval = setInterval(() => this.tokensDataUpdate(), 15000);
+        this.updateInterval = setInterval(() => this.tokensDataUpdate(), 30000);
       } else {
         this.fullRewardAmount = 0;
         this.rewardAmount = 0;

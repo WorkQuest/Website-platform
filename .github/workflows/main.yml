@@ -44,6 +44,8 @@ jobs:
           echo BSC_OLD_WQT_TOKEN=${{ secrets.BSC_OLD_WQT_TOKEN }} >> .env
           echo BSC_WQT_EXCHANGE=${{ secrets.BSC_WQT_EXCHANGE }} >> .env
           echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
+          echo BSC_POOL=${{ secrets.BSC_POOL }} >> .env
+          echo BSC_RPC=${{ secrets.BSC_RPC }} >> .env
           echo BSC_WS_MORALIS=${{ secrets.BSC_WS_MORALIS }} >> .env
 
           echo WQT_STAKING=${{ secrets.WQT_STAKING }} >> .env
@@ -106,6 +108,8 @@ jobs:
           echo BSC_OLD_WQT_TOKEN=${{ secrets.BSC_OLD_WQT_TOKEN }} >> .env
           echo BSC_WQT_EXCHANGE=${{ secrets.BSC_WQT_EXCHANGE }} >> .env
           echo BSC_WQT_TOKEN=${{ secrets.BSC_WQT_TOKEN }} >> .env
+          echo BSC_POOL=${{ secrets.BSC_POOL }} >> .env
+          echo BSC_RPC=${{ secrets.BSC_RPC }} >> .env
           echo BSC_WS_MORALIS=${{ secrets.BSC_WS_MORALIS }} >> .env
 
           echo WQT_STAKING=${{ secrets.WQT_STAKING }} >> .env
