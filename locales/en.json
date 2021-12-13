@@ -2090,6 +2090,7 @@
     "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
+    "loading": "loading...",
     "claimRewards": "Claim rewards",
     "liquidityMining": "Liquidity mining",
     "swapTokens": {

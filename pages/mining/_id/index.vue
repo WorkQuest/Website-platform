@@ -92,7 +92,7 @@
               <div class="third__wrapper">
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.dollarsCount', !totalLiquidityUSD ? 'loading...' : Floor(totalLiquidityUSD)) }}
+                    {{ $tc('mining.dollarsCount', !totalLiquidityUSD ? $t('mining.loading') : Floor(totalLiquidityUSD)) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.totalLiquidity') }}
@@ -100,7 +100,7 @@
                 </div>
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.wqtCount', profitWQT) }}
+                    {{ isLoadingAPY ? $t('mining.loading') : $tc('mining.wqtCount', profitWQT) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.APY') }}
@@ -273,6 +273,7 @@ export default {
       fullRewardAmount: 0,
       stakedAmount: 0,
       profitWQT: 0,
+      isLoadingAPY: false,
     };
   },
   computed: {
@@ -421,6 +422,7 @@ export default {
     },
 
     async tokensDataUpdate() {
+      this.isLoadingAPY = true;
       const tokensData = await this.$store.dispatch('web3/getTokensData');
       this.fullRewardAmount = tokensData.rewardTokenAmount;
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
@@ -431,6 +433,7 @@ export default {
       };
       const profit = await this.$store.dispatch('web3/getAPY', payload);
       this.profitWQT = this.Floor(profit);
+      this.isLoadingAPY = false;
     },
     async claimRewards() {
       this.SetLoader(true);
