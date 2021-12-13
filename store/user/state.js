@@ -4,6 +4,7 @@ export default () => ({
     refresh: '',
   },
   userData: {},
+  anotherUserData: {},
   currentUserPosition: null,
   userRole: {},
   userDataPassword: {},

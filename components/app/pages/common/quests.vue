@@ -3,165 +3,6 @@
     class="quests"
   >
     <div
-      v-if="pageMode === questsComponentPageMode.WorkerMy"
-      class="quests__card card"
-    >
-      <div
-        v-for="(item, i) in object"
-        :key="i"
-        class="card__content"
-      >
-        <div
-          class="card__block block"
-        >
-          <div
-            class="block__left"
-          >
-            <img
-              src="~/assets/img/temp/fake-card.svg"
-              class="block__image"
-              alt=""
-            >
-            <div
-              class="block__state"
-              :class="getStatusClass(item.status)"
-            >
-              {{ getStatusCard(item.status) }}
-            </div>
-          </div>
-          <div class="block__right">
-            <div class="block__head">
-              <div class="block__title">
-                <div
-                  class="block__avatar avatar"
-                >
-                  <img
-                    class="avatar__image"
-                    :src="item.quest.user.avatar ? item.quest.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                    :alt="item.quest.user.firstName"
-                  >
-                </div>
-                <div class="block__text block__text_title">
-                  {{ `${item.quest.user.firstName} ${item.quest.user.lastName}` }}
-                </div>
-              </div>
-              <div
-                class="block__icon block__icon_fav star"
-                @click="setStar(item.quest.id)"
-              >
-                <img
-                  class="star__hover"
-                  src="~assets/img/ui/star_hover.svg"
-                  alt=""
-                >
-                <img
-                  :class="[
-                    {'star__default': !item.star},
-                    {'star__checked': item.star}
-                  ]"
-                  :src="!item.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
-                  alt=""
-                >
-              </div>
-            </div>
-            <div
-              v-if="item.quest.assignedWorkerId"
-              class="block__progress progress"
-            >
-              <div
-                class="progress__title"
-              >
-                {{ progressQuestText(item.quest.status) }}
-              </div>
-              <div class="progress__container">
-                <div class="container__user user">
-                  <img
-                    class="user__avatar"
-                    :src="item.quest.assignedWorker.avatar ? item.quest.assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                    :alt="`${item.quest.assignedWorker.firstName} ${item.quest.assignedWorker.lastName}`"
-                  >
-                  <div class="user__name">
-                    {{ item.quest.assignedWorker.firstName }} {{ item.quest.assignedWorker.lastName }}
-                  </div>
-                </div>
-                <div class="container__status status">
-                  <!--                  <span-->
-                  <!--                    class="status__level"-->
-                  <!--                    :class="getStatusCard(item.level)"-->
-                  <!--                  >-->
-                  <!--                    {{ $t(`levels.${item.level}`) }}-->
-                  <!--                  </span>-->
-                </div>
-              </div>
-            </div>
-            <div class="block__locate">
-              <span
-                class="icon-location"
-              />
-              <span class="block__text block__text_locate">
-                {{ showDistance(item.quest.location.latitude, item.quest.location.longitude) }}
-                {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
-              </span>
-            </div>
-            <div class="block__text block__text_blue">
-              {{ cropTxt(item.quest.title) }}
-            </div>
-            <div class="block__text block__text_desc">
-              {{ cropTxt(item.quest.description) }}
-            </div>
-            <div class="block__actions">
-              <div
-                v-if="isHideStatus(item.quest.type)"
-                class="block__status"
-              >
-                <div
-                  class="block__priority"
-                  :class="getPriorityClass(item.quest.priority)"
-                >
-                  {{ getPriority(item.quest.priority) }}
-                </div>
-                <div class="block__amount block__amount_green">
-                  {{ `${item.quest.price}  ${currency}` }}
-                </div>
-              </div>
-              <div
-                v-else
-                class="block__amount block__amount_gray"
-              >
-                {{ `${item.quest.price}  ${currency}` }}
-              </div>
-              <div class="block__details">
-                <base-btn
-                  v-if="item.quest.type !== 3"
-                  mode="borderless-right"
-                  @click="showDetails(item.quest.id)"
-                >
-                  {{ $t('meta.details') }}
-                  <template v-slot:right>
-                    <span class="icon-short_right" />
-                  </template>
-                </base-btn>
-                <div
-                  v-else
-                  class="block__rating"
-                >
-                  <div class="block__rating block__rating_star">
-                    <button
-                      @click="showReviewModal(item)"
-                    >
-                      <star-rating :rating="item.user.ratingStatistic" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      v-if="[questsComponentPageMode.WorkerOther,
-             questsComponentPageMode.EmpMy, questsComponentPageMode.EmpOther].includes(pageMode)"
       class="quests__card card"
     >
       <div
@@ -189,7 +30,10 @@
           </div>
           <div class="block__right">
             <div class="block__head">
-              <div class="block__title">
+              <div
+                class="block__title"
+                @click="showProfile(item.userId)"
+              >
                 <div
                   class="block__avatar avatar"
                 >
@@ -197,9 +41,13 @@
                     class="avatar__image"
                     :src="item.user.avatar ? item.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                     :alt="item.user.firstName"
+                    @click="goToProfile(item.user.id)"
                   >
                 </div>
-                <div class="block__text block__text_title">
+                <div
+                  class="block__text block__text_title"
+                  @click="goToProfile(item.user.id)"
+                >
                   {{ `${item.user.firstName} ${item.user.lastName}` }}
                 </div>
               </div>
@@ -207,6 +55,7 @@
                 v-if="item.status === questStatuses.Created"
                 class="block__icon block__icon_fav"
                 mode="vertical"
+                :item-id="item.id"
               />
               <div
                 v-if="[questStatuses.Closed, questStatuses.Dispute].includes(item.status)"
@@ -219,10 +68,7 @@
                   alt=""
                 >
                 <img
-                  :class="[
-                    {'star__default': !item.star},
-                    {'star__checked': item.star}
-                  ]"
+                  :class="[{'star__default': !item.star},{'star__checked': item.star}]"
                   :src="!item.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
                   alt=""
                 >
@@ -243,8 +89,12 @@
                     class="user__avatar"
                     :src="item.assignedWorker.avatar ? item.assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                     :alt="`${item.assignedWorker.firstName} ${item.assignedWorker.lastName}`"
+                    @click="goToProfile(item.assignedWorker.id)"
                   >
-                  <div class="user__name">
+                  <div
+                    class="user__name"
+                    @click="goToProfile(item.assignedWorker.id)"
+                  >
                     {{ item.assignedWorker.firstName }} {{ item.assignedWorker.lastName }}
                   </div>
                 </div>
@@ -334,28 +184,16 @@
 <script>
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
-import { QuestStatuses, questPriority, questsCompPageMode } from '~/utils/enums';
+import { QuestStatuses, questPriority } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 const value = new Vue();
 export default {
   name: 'QuestsTab',
   props: {
-    limit: {
-      type: Number,
-      default: 10,
-    },
-    page: {
-      type: [String, null],
-      default: '',
-    },
-    selectedTab: {
-      type: Number,
-      default: 0,
-    },
     object: {
-      type: [Object, Array],
-      default: null,
+      type: Object,
+      default: () => {},
     },
   },
   data() {
@@ -377,28 +215,6 @@ export default {
     questStatuses() {
       return QuestStatuses;
     },
-    questsComponentPageMode() {
-      return questsCompPageMode;
-    },
-    pageMode() {
-      if (this.userRole === 'worker') {
-        if (this.$route.path === '/my') {
-          return questsCompPageMode.WorkerMy;
-        }
-        if (this.$route.path !== '/my') {
-          return questsCompPageMode.WorkerOther;
-        }
-      }
-      if (this.userRole === 'employer') {
-        if (this.$route.path === '/my') {
-          return questsCompPageMode.EmpMy;
-        }
-        if (this.$route.path !== '/my') {
-          return questsCompPageMode.EmpOther;
-        }
-      }
-      return '';
-    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -408,6 +224,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    goToProfile(id) {
+      this.$router.push(`/profile/${id}`);
+    },
     async setStar(item) {
       if (!item.star) {
         await this.$store.dispatch('quests/setStarOnQuest', item.id);
@@ -427,11 +246,11 @@ export default {
         } if (status === QuestStatuses.Closed) {
           return this.$t('quests.questClosed:');
         } if (status === QuestStatuses.Dispute) {
-          return this.$t('questDispute:');
+          return this.$t('quests.questDispute:');
         } if (status === QuestStatuses.WaitWorker) {
           return this.$t('quests.inProgressBy');
         } if (status === QuestStatuses.WaitConfirm) {
-          return this.$t('questWaitConfirm:');
+          return this.$t('quests.questWaitConfirm:');
         } if (status === QuestStatuses.Done) {
           return this.$t('quests.finishedBy');
         }
@@ -458,6 +277,9 @@ export default {
         { card__level_reliable: cards[idx].level.code === 2 },
         { card__level_higher: cards[idx].level.code === 1 },
       ];
+    },
+    showProfile(profileId) {
+      this.$router.push(`/profile/${profileId}`);
     },
     showDetails(questId) {
       this.$router.push(`/quests/${questId}`);
@@ -530,6 +352,7 @@ export default {
     font-weight: 500;
     font-size: 16px;
     color: $black800;
+    cursor: pointer;
   }
 }
 .right {
@@ -572,6 +395,7 @@ export default {
             height: 30px;
             width: 30px;
             object-fit: cover;
+            cursor: pointer;
           }
         }
       }
@@ -594,6 +418,7 @@ export default {
     height: 30px;
     width: 30px;
     object-fit: cover;
+    cursor: pointer;
   }
   &__col {
     &_left {
@@ -703,7 +528,7 @@ export default {
   background: #FFFFFF;
   border-radius: 6px;
   display: grid;
-  grid-template-columns: 240px 1fr;
+  grid-template-columns: 210px 1fr;
   min-height: 100%;
   &__publication {
     &_bold {
@@ -878,6 +703,7 @@ export default {
       font-size: 16px;
       line-height: 130%;
       color: $black800;
+      cursor: pointer;
     }
     &_locate {
       font-size: 14px;
@@ -900,6 +726,7 @@ export default {
     }
   }
   &__title {
+    cursor: pointer;
     display: grid;
     grid-template-columns: 30px 1fr;
     grid-gap: 10px;

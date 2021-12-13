@@ -4,6 +4,7 @@ export default {
   refreshToken: (state) => state.tokens.refresh,
   getUserData: (state) => state.userData,
   getStatus2FA: (state) => state.userData?.statusKYC,
+  getAnotherUserData: (state) => state.anotherUserData,
   editUserData: (state) => state.userData || '',
   getAdditionalInfo: (state) => state.userData?.additionalInfo?.socialNetwork || '',
   getAdditionalInfoInstagram: (state) => state.userData?.additionalInfo?.socialNetwork?.instagram || '',

@@ -77,6 +77,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
+import { QuestStatuses } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -89,6 +90,10 @@ export default {
       type: [String],
       default: null,
     },
+    itemId: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -98,20 +103,45 @@ export default {
   computed: {
     ...mapGetters({
       userRole: 'user/getUserRole',
+      questData: 'quests/getQuest',
     }),
   },
   methods: {
     toEditQuest() {
-      // this.$router.push('/edit-quest');
-      // this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
+        this.$router.push('/edit-quest');
+        this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
+      } else {
+        this.showToastWrongStatusEdit();
+      }
     },
     toRaisingViews() {
-      // this.$router.push('/edit-quest');
-      // this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
+      // TODO: Добавить тост или модалку
+      if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
+        this.$router.push('/edit-quest');
+        this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
+      } else {
+        this.showToastWrongStatusRaisingViews();
+      }
+    },
+    showToastWrongStatusEdit() {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.questInfo'),
+        variant: 'warning',
+        text: this.$t('toasts.questCantEdit'),
+      });
+    },
+    showToastWrongStatusRaisingViews() {
+      return this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.questInfo'),
+        variant: 'warning',
+        text: this.$t('toasts.questCantRaisingViews'),
+      });
     },
     shareModal() {
       this.ShowModal({
         key: modals.sharingQuest,
+        itemId: this.itemId,
       });
     },
     hideDd() {

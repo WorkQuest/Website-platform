@@ -1,4 +1,5 @@
 export default () => ({
+  respondOnQuest: {},
   questListForInvitation: {},
   chatInfoInviteOnQuest: {},
   currentWorker: {},
@@ -14,4 +15,9 @@ export default () => ({
   currentStepEditQuest: 1,
   mapBounds: {},
   mapCenter: {},
+  filters: null,
+  selectedSpecializationsFilters: {
+    query: '', selected: {}, visible: {}, selectedAll: {},
+  },
+  selectedPriceFilter: { from: null, to: null },
 });

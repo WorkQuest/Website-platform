@@ -1,7 +1,7 @@
 export default {
-  async getUserPortfolios({ commit }, id) {
+  async getUserPortfolios({ commit }, { userId, query }) {
     try {
-      const response = await this.$axios.$get(`/v1/user/${id}/portfolio/cases`);
+      const response = await this.$axios.$get(`/v1/user/${userId}/portfolio/cases?${query}`);
       commit('setUserPortfolioCases', response.result);
       return response;
     } catch (e) {
@@ -46,9 +46,9 @@ export default {
     }
   },
 
-  async getAllUserReviews({ commit }, userId) {
+  async getAllUserReviews({ commit }, { userId, query }) {
     try {
-      const response = await this.$axios.$get(`/v1/user/${userId}/reviews`);
+      const response = await this.$axios.$get(`/v1/user/${userId}/reviews?${query}`);
       commit('setUserReviews', response.result);
       return response;
     } catch (e) {
@@ -93,6 +93,14 @@ export default {
     } catch (e) {
       return console.log(e);
     }
+  },
+  async getAnotherUserData({ commit }, payload) {
+    const response = await this.$axios.$get(`/v1/profile/${payload}`);
+    commit('setAnotherUserData', response.result);
+    return response;
+  },
+  clearAnotherUserData({ commit }) {
+    commit('setAnotherUserData', {});
   },
   async setUserRole({ commit }, payload) {
     const response = await this.$axios.$post('/v1/profile/set-role', payload);
