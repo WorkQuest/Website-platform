@@ -28,7 +28,6 @@
   "info": {
     "showYourMessage": "Show your message"
   },
-
   "uploader" : {
     "uploadText": "Upload a images or videos",
     "upload": "Upload",
@@ -1153,14 +1152,14 @@
     "locals": {
       "en": "en",
       "ru": "ru",
-      "ba": "ba",
+      "bn": "bn",
       "zh": "zh",
       "fr": "fr",
       "hi": "hi",
-      "in": "in",
-      "po": "po",
-      "sp": "sp",
-      "ae": "ae"
+      "id": "id",
+      "pt": "pt",
+      "es": "es",
+      "ar": "ar"
     },
     "notifications": {
       "title": "Notifications",

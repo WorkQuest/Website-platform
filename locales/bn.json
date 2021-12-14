@@ -126,6 +126,15 @@
     }
   },
   "meta": {
+    "redeem": "???",
+    "redeemed": "???",
+    "pay": "???",
+    "skipAndEnd": "???",
+    "cleanUp": "???",
+    "close": "???",
+    "connected": "???",
+    "disconnect": "???",
+    "delete": "???",
     "back": "পিছনে",
     "ok": "ঠিক আছে",
     "send": "পাঠান",
@@ -154,7 +163,12 @@
     "all": "সমস্ত অগ্রাধিকার",
     "low": "নির্দিষ্ট ডেলিভারি",
     "normal": "স্বল্পমেয়াদ",
-    "urgent": "জরুরি"
+    "urgent": "জরুরি",
+    "employee": {
+      "low": "???",
+      "normal": "???",
+      "urgent": "???"
+    }
   },
   "signIn": {
     "title": "সাইন ইন করুন",
@@ -183,7 +197,8 @@
     "title": "নিরাপত্তা পরীক্ষা",
     "confCode": "গুগল নিশ্চিতকরণ কোড",
     "placeholder": "স্থানধারী",
-    "confCodeDesc": "Google প্রমাণীকরণ অ্যাপ থেকে 6-ডিজিটের কোড লিখুন"
+    "confCodeDesc": "Google প্রমাণীকরণ অ্যাপ থেকে 6-ডিজিটের কোড লিখুন",
+    "confCodeField": "???"
   },
   "signUp": {
     "title": "নিবন্ধন করুন",
@@ -233,14 +248,65 @@
     "title": "দক্ষতা"
   },
   "quests": {
+    "rating": "???",
+    "questTitle": "???",
+    "questDesc": "???",
     "quests": "Quest",
     "urgent": "জরুরি",
+    "specQuests": "???",
+    "permanentJob": "???",
     "typeOfJob": "কাজের ধরন",
+    "partTime": "???",
+    "fixedTerm": "???",
+    "contract": "???",
+    "remoteWork": "???",
+    "levels": {
+      "1": {
+        "title": "???",
+        "desc": "???"
+      },
+      "2": {
+        "title": "???",
+        "desc": "???"
+      },
+      "3": {
+        "title": "???",
+        "desc": "???"
+      },
+      "4": {
+        "title": "???",
+        "desc": "???"
+      }
+    },
+    "createQuest": {
+      "choosePeriod": "???"
+    },
     "distantWork": {
       "title": "দূরের কাজ",
       "distantWork": "দূরের কাজ",
       "workInOffice": "অফিসের কাজ",
       "bothVariant": "উভয় প্রকার"
+    },
+    "employment": {
+      "employment": "???",
+      "fullTime": "???",
+      "partTime": "???",
+      "fixedTerm": "???"
+    },
+    "runtime": {
+      "runtime": "???",
+      "urgent": "???",
+      "shortTerm": "???",
+      "fixedDelivery": "???"
+    },
+    "spec": {
+      "spec": "???",
+      "addSpec": "???"
+    },
+    "skills": {
+      "skills": "???",
+      "chooseSkills": "???",
+      "limit": "???"
     },
     "hours": "ঘণ্টা",
     "invited": "আমন্ত্রিত",
@@ -263,7 +329,6 @@
     "proposal": "প্রস্তাব",
     "category": "একটি ধরন নির্বাচন করুন",
     "address": "ঠিকানা যোগ করুন",
-    "runtime": "পরিচালনার সময় (ঘণ্টা)",
     "uploadMaterials": "quest আরও ভালভাবে বর্ণনা করার জন্য উপকরণ আপলোড করুন",
     "uploadQuestMaterials": "বিস্তারিত বিবরণ যোগ করুন",
     "price": "দাম",
@@ -281,6 +346,7 @@
     "period": "সময় মেয়াদ",
     "EstimatedPayment": "আনুমানিক পেমেন্ট:",
     "createAQuest": "একটি quest তৈরি করুন",
+    "editAQuest": "???",
     "activeQuests": "সক্রিয় quest",
     "completedQuests": "সম্পন্ন quest",
     "oneTime": "একবার",
@@ -296,6 +362,7 @@
     "type": "কাজের ধরন",
     "time": "যোগ করা সময়",
     "priority": {
+      "title": "???",
       "all": "সমস্ত অগ্রাধিকার",
       "low": "কম",
       "normal": "স্বাভাবিক",
@@ -754,13 +821,46 @@
       }
     }
   },
+  "toasts": {
+    "questEdited": "???",
+    "questCreated": "???",
+    "questDeleted": "???",
+    "caseDeleted": "???",
+    "caseAdded": "???",
+    "caseEdited": "???",
+    "error": "???"
+  },
   "modals": {
+    "incorrectAmount": "???",
+    "nothingToClaim": "???",
+    "pleaseWait": "???",
+    "redeemSuccess": "???",
+    "redeemFail": "???",
     "chatCreate": {
       "title": "গ্রুপ চ্যাট তৈরি করুন",
       "desc": "গ্রুপ চ্যাটের নাম তৈরি করুন এবং আপনার চ্যাট তালিকা থেকে লোক চয়ন করুন",
       "participants": "অংশগ্রহণকারী",
       "chatName": "চ্যাটের নাম"
     },
+    "yourRewardBalance": "???",
+    "deletePortfolio": "???",
+    "addTitle": "???",
+    "addDesc": "???",
+    "editCase": "???",
+    "error": "???",
+    "share": "???",
+    "edit": "???",
+    "delete": "???",
+    "youCan’tDeleteActiveQuest": "???",
+    "sureDeleteText": "???",
+    "priceTitle": "???",
+    "enterPriceRange": "???",
+    "priceForm": "???",
+    "priceFromAmount": "???",
+    "priceFieldFrom": "???",
+    "priceTo": "???",
+    "priceToAmount": "???",
+    "priceFieldTo": "???",
     "changePercentDesc": "Quest এর অর্থের একটি শতাংশ যা স্বয়ংক্রিয়ভাবে আপনার অবসর অ্যাকাউন্টে জমা হবে",
     "yourSkillsHaveBeenAdded": "আপনার দক্ষতা সফলভাবে যোগ করা হয়েছে।",
     "yourAccountVerified": "আপনার অ্যাকাউন্ট সফলভাবে যাচাই করা হয়েছে",
@@ -773,9 +873,11 @@
     "haventSMS": "ক্ষুদে বার্তা পাননি?",
     "SMSVerConnected": "SMS যাচাইকরণ যুক্ত হয়েছে",
     "phoneNumber": "ফোন নম্বর",
+    "phoneNumberField": "???",
     "enterPhone": "ক্ষুদে বার্তা যাচাই নিশ্চিত করতে আপনার ফোন নম্বর লিখুন",
     "enterSMSCode": "আমরা আপনার ফোন নম্বরে যাচাইকরণ কোড পাঠিয়েছি। এই কোড উল্লেখ করুন",
     "codeFromSMS": "ক্ষুদে বার্তা থেকে কোড",
+    "codeFromSMSField": "???",
     "smsVerification": "ক্ষুদে বার্তা যাচাইকরণ",
     "saved": "সংরক্ষণ করা হয়েছে",
     "userDataHasBeenSaved": "ব্যবহারকারীর তথ্য সংরক্ষণ করা হয়েছে",
@@ -847,6 +949,8 @@
     "bodyMessage": "হ্যালো",
     "areYouSure": "আপনি কি নিশ্চিত?",
     "transactionSend": "লেনদেন পাঠান",
+    "transactionFail": "???",
+    "transactionCheck": "???",
     "cardHasBeenAdded": "কার্ড যোগ করা হয়েছে",
     "deposit": "গ্রহণ করুন",
     "numberOfCard": "কার্ড নম্বর",
@@ -872,6 +976,7 @@
     "depositRetirementModalPrecentPlaceholder": "0 % অনুগ্রহ করে একটি শতাংশ নির্বাচন করুন",
     "depositRetirementModalAmountPlaceholder": "0 WUSD অনুগ্রহ করে পরিমাণ উল্লেখ করুন",
     "firstDepositAmount": "প্রথম জমার পরিমাণ*",
+    "firstDepositAmountField": "???",
     "aboutFirstDeposit": "* প্রথম আমানতের পরিমাণ ঐচ্ছিক। জমা করতে না চাইলে আপনি এই ঘর ফাঁকা রাখতে পারেন",
     "pensionIsRegisteredTitle": "অভিনন্দন!",
     "pensionIsRegisteredDesc": "পেনশন কর্মসূচি সফলভাবে চালু হয়েছে।",
@@ -881,17 +986,20 @@
     "durationDays": "সময়কাল (দিন)",
     "depositIsOpened": "জমা উন্মুক্ত",
     "addLiquidity": "তারল্য যোগ করুন",
-    "amountOfWusd": "WUSD এর পরিমাণ",
+    "amountOfWqt": "WQT এর পরিমাণ",
     "amountOfEth": "ETH এর পরিমাণ",
+    "amountOfBnb": "BNB এর পরিমাণ",
     "tip": "পরামর্শ:",
     "tipAbout": "তারল্য যোগ করার সময় আপনি আপনার অবস্থানের প্রতিনিধিত্বকারী পুল টোকেন পাবেন। এই টোকেনগুলো স্বয়ংক্রিয়ভাবে পুলে আপনার শেয়ারের আনুপাতিক হারে ফি অর্জন করে এবং যেকোনো সময় তা সংগ্রহ করা করা যায়।",
     "byAddingLiquidityYouWillEarn": "তারল্য যোগ করার মাধ্যমে আপনি এই পেয়ারের সমস্ত ট্রেডের 0.3% উপার্জন করবেন যা আপনার পুলের শেয়ারের সমানুপাতিক। পুলে ফি যোগ করা হয়, তাৎক্ষিণিকভাবে জমা হয় এবং আপনার তারল্য প্রত্যাহার করে তা দাবি করা যেতে পারে।",
-    "amountEthPerWusd": "WUSD প্রতি ETH এর পরিমাণ ",
+    "amountEthPerWqt": "WQT প্রতি ETH এর পরিমাণ ",
+    "amountBnbPerWqt": "Montant BNB par WQT",
     "shareOfPool": "পুলের শেয়ার",
     "removeLiquidity": "তারল্য অপসারণ করুন",
     "withdrawalAmount": "উত্তোলনের পরিমাণ",
     "exchangeRate": "বিনিময় হার",
-    "tempForRemove": "1 ETH = ... WUSD",
+    "tempForRemove": "1 ETH = ... WQT",
+    "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "বর্তমান পুলের আকার",
     "yourPoolShare": "পুলে আপনার শেয়ার",
     "eth": "ETH",
@@ -926,7 +1034,104 @@
     "percentage": "শতাংশ",
     "loanTerm": "ঋণের মেয়াদ",
     "loanIsOpened": "ঋণ খোলা হয়েছে",
-    "successCopied": "সর্বজনীন ঠিকানা ক্লিপবোর্ডে অনুলিপি করা হয়েছে"
+    "successCopied": "সর্বজনীন ঠিকানা ক্লিপবোর্ডে অনুলিপি করা হয়েছে",
+    "walletAddress": "???",
+    "scanQr": "???",
+    "close": "???",
+    "depositTitle": "???",
+    "addYourCard": "???",
+    "walletCopy": "???",
+    "textCopy": "???",
+    "addingCard": "???",
+    "add": "???",
+    "totalFee": "???",
+    "processing": "???",
+    "addNewCard": "???",
+    "numberCard": "???",
+    "chooseCard": "???",
+    "depositInfo": "???",
+    "cardAdd": "???",
+    "cardAddedText": "",
+    "transactionSentText": "",
+    "maximum": "???",
+    "withdrawInfo": "???",
+    "bankCard": "???",
+    "transfer": "???",
+    "recepient": "???",
+    "transferInfo": "???",
+    "currencyDetails": "???",
+    "generatingDetails": "???",
+    "collateralizationRatio": "???",
+    "depositIsOpenedText": "",
+    "loanText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
+    "loanIsOpenedText": "",
+    "firstDepositText": "???",
+    "pensionIsRegistered": "???",
+    "pensionIsRegisteredText": "",
+    "changePercent": "???",
+    "changePercentText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor",
+    "currentPercentTitle": "???",
+    "depositIsDone": "???",
+    "makeDepositText": "",
+    "percentIsChangedText": "",
+    "percentIsChanged": "???",
+    "invitationSendText": "",
+    "choose": "???",
+    "openDisputeText": "",
+    "chooseCurrency": "???",
+    "wallet": "???",
+    "coinpaymebts": "???",
+    "errorDeleteText": "???",
+    "swapTitle": "???",
+    "coin": "???",
+    "recepientBinance": "???",
+    "createSwap": "???",
+    "swapInfo": "???",
+    "crosschain": "???",
+    "crosschainText": "Eth > Binance",
+    "senderAddress": "???",
+    "recepientAddress": "???",
+    "worknetFee": "Eth ???",
+    "binanceFee": "Binance ???",
+    "welcomeText": "???",
+    "areYouSureText": "",
+    "noticeTitle": "???",
+    "noticeText": "???",
+    "areYouSureNotificationText": "",
+    "creditCardNumber": "???",
+    "dateName": "???",
+    "depositPercent": "???",
+    "currentPercentErr": "???",
+    "amountField": "???",
+    "percentField": "???",
+    "quantityField": "???",
+    "creditingDepositText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
+    "generateField": "???",
+    "amountOfWqtField": "??? WQT",
+    "amountOfEthField": "??? ETH",
+    "amountOfBnbField": "??? BNB",
+    "withdrawalAmountField": "???",
+    "removeLiquidityCurrentPoolSize": "1 ETH + 456 WQT",
+    "removeLiquidityCurrentPoolSize2": "1 BNB + 456 WQT",
+    "removeLiquidityYourPoolShare": "10% = 1% ETH + 4% WQT",
+    "removeLiquidityYourPoolShare2": "10% = 1% BNB + 4% WQT",
+    "lockedSavingsField": "???",
+    "durationDaysField": "???",
+    "depositAmountField": "???",
+    "claim": "???",
+    "estimatedPaymentField": "120 WUSD",
+    "priceOfAClickField": "???",
+    "cityField": "???",
+    "addLiquidityAmountWqt": "1000 WQT",
+    "addLiquidityAmountEth": "10 ETH",
+    "addLiquidityAmountBnb": "10 BNB",
+    "cardHolderField": "???",
+    "addressField": "???",
+    "securityCheckField": "???",
+    "recepientAddressField": "???",
+    "walletAddressField": "???",
+    "thanksText": "",
+    "emailVerificationCodeField": "???"
   },
   "ui": {
     "jobQuestors": "জব কোয়েস্টার",
@@ -941,25 +1146,36 @@
       "disputes": "বিরোধ",
       "instruments": "দলিল",
       "DeFi": "DeFi কার্যক্রম",
-      "logout": "লগআউট"
+      "logout": "লগআউট",
+      "login": "???"
     },
     "locals": {
-      "en": "EN",
-      "ru": "RU",
-      "ba": "BA",
-      "zh": "ZH",
-      "fr": "FR",
-      "hi": "HI",
-      "in": "IN",
-      "po": "PO",
-      "sp": "SP",
-      "ae": "AE"
+      "en": "en",
+      "ru": "ru",
+      "bn": "bn",
+      "zh": "zh",
+      "fr": "fr",
+      "hi": "hi",
+      "id": "id",
+      "pt": "pt",
+      "es": "es",
+      "ar": "ar"
     },
     "notifications": {
       "title": "বিজ্ঞপ্তি",
       "invite": "আপনাকে quest সম্পন্ন করার আমন্ত্রণ জানাচ্ছে"
     },
     "menu": {
+      "unauthorized": "???",
+      "instruments": "???",
+      "crosschain": {
+        "title": "???",
+        "desc": "???"
+      },
+      "staking": {
+        "title": "???",
+        "desc": "???"
+      },
       "pension": {
         "title": "অবসর কর্মসূচি",
         "desc": "আপনি প্রতিটি সমাপ্ত quest এর একটি শতাংশ নির্বাচন করতে পারেন যা স্বয়ংক্রিয়ভাবে আপনার অবসর অ্যাকাউন্টে জমা হবে, অথবা কেবল আপনার পছন্দের পরিমাণ জমা করতে পারেন। তহবিলের পুল কর্মচারীর পক্ষ থেকে বিনিয়োগ করা হয়, এবং বিনিয়োগের উপার্জন কর্মীর অবসর গ্রহণ পরবর্তী আয় তৈরি করে।"
@@ -991,7 +1207,8 @@
     },
     "buttons": {
       "errors": {
-        "manySpec": "আপনি শুধুমাত্র 3 টি বিশেষায়ন যোগ করতে পারেন"
+        "manySpec": "আপনি শুধুমাত্র 3 টি বিশেষায়ন যোগ করতে পারেন",
+        "manySkills": "???"
       }
     }
   },
@@ -1036,9 +1253,10 @@
   "settings": {
     "placeOfStudying": "অধ্যয়নের স্থান",
     "specialization": "বিশেষায়ন",
+    "selectSpec": "???",
     "skillsInput": "দক্ষতা",
+    "selectSkills": "???",
     "priority": "অগ্রাধিকার",
-    "distantWork": "দূরের কাজ",
     "costPerHour": "প্রতি ঘণ্টায় খরচ",
     "description": "And you are beautiful",
     "imgLoaded": "ছবি লোড করা সফল হয়েছে",
@@ -1106,7 +1324,440 @@
     "p2pInsurance": "P2P বিমা",
     "savingProduct": "সঞ্চয় পণ্য",
     "crediting": "জমা করা হচ্ছে",
-    "liquidityMining": "লিকুইডিটি মাইনিং"
+    "liquidityMining": "লিকুইডিটি মাইনিং",
+    "distantWork": {
+      "title": "???",
+      "select": "???",
+      "distantWork": "???",
+      "workInOffice": "???",
+      "bothVariant": "???"
+    },
+    "specializations": {
+      "1": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???",
+          "11": "???",
+          "12": "???"
+        }
+      },
+      "2": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "3": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "4": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "5": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???"
+        }
+      },
+      "6": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???"
+        }
+      },
+      "7": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???"
+        }
+      },
+      "8": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "9": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???"
+        }
+      },
+      "10": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???"
+        }
+      },
+      "11": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???"
+        }
+      },
+      "12": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???"
+        }
+      },
+      "13": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???"
+        }
+      },
+      "14": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "15": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???"
+        }
+      },
+      "16": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???"
+        }
+      },
+      "17": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???"
+        }
+      },
+      "18": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???",
+          "11": "???",
+          "12": "???",
+          "13": "???"
+        }
+      },
+      "19": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???"
+        }
+      },
+      "20": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???",
+          "11": "???",
+          "12": "???",
+          "13": "???",
+          "14": "???",
+          "15": "???",
+          "16": "???",
+          "17": "???",
+          "18": "???",
+          "19": "???"
+        }
+      },
+      "21": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???",
+          "11": "???"
+        }
+      },
+      "22": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???"
+        }
+      },
+      "23": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "24": {
+        "title": "???",
+        "sub": {
+          "1": "???r",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "25": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "26": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???"
+        }
+      },
+      "27": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "28": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???"
+        }
+      },
+      "29": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "30": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "31": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???"
+        }
+      },
+      "32": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???"
+        }
+      },
+      "33": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???"
+        }
+      },
+      "34": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???"
+        }
+      }
+    }
   },
   "raising-views": {
     "raisingViews": "মতামত উত্থাপন",
@@ -1152,7 +1803,8 @@
     "based": "ভিত্তিক",
     "reviews": "পর্যালোচনা",
     "portfolio": "পোর্টফোলিও",
-    "showAllCases": "সব কেস দেখান"
+    "showAllCases": "সব কেস দেখান",
+    "costTitle": "???"
   },
   "levels": {
     "reliableEmp": "নির্ভরযোগ্য EMP।",
@@ -1330,41 +1982,72 @@
     "depositModalBody": "আপনার ক্রিপ্টো একটি নির্দিষ্ট সময়ের জন্য লক হবে, এবং আপনি সুদ উপার্জন করতে শুরু করবেন।",
     "depositIsOpened": "স্থানান্তর নিশ্চিত করা হয়েছে",
     "deposit": "জমা",
-    "withdraw": "উত্তোলন করুন"
+    "withdraw": "উত্তোলন করুন",
+    "depositIsOpenedText": "",
+    "withdrawText": "???"
   },
   "mining": {
-    "liquidityManning": "লিকুইডিটি মাইনিং",
+    "claimRewards": "???",
     "liquidityMining": "লিকুইডিটি মাইনিং",
+    "swapTokens": {
+      "title": "???",
+      "swap": "???",
+      "oldTokens": "???",
+      "newTokens": "???",
+      "balance": "???"
+    },
+    "approve": "???",
+    "stake": "???",
+    "unstake": "???",
+    "liquidityMiningSub": "???",
     "templateText": "",
     "pools": "পুল",
     "choose": "নির্বাচন করুন",
     "information": "তথ্য",
-    "docName": "Some_document.pdf",
+    "docName": "???.pdf",
+    "agreement": "???.pdf",
+    "kb": "{count} KB",
     "download": "ডাউনলোড করুন",
     "tableHead": {
       "poolAddress": "পুলের ঠিকানা",
+      "swaps": "???",
+      "totalValue": "???",
+      "tokenAmount": "???",
+      "account": "???",
+      "time": "???",
       "assets": "সম্পদ",
       "sdsdsdsd": "sdsdsdsd",
       "volume": "ভলিউম"
     },
     "table": {
       "poolAddress": "0sjs3892...sd45",
-      "assets": "50% WUSD / 50%ETH",
+      "assets": "50% WUSD / 50% ETH",
+      "assets2": "50% WQT / 50% BNB",
       "sdsdsdsd": "sdsdsdsd",
       "volume": "$4.5 মিলিয়ন"
     },
     "mb": "{count} MB",
     "back": "পিছনে",
     "wusdEthPool": "WUSD/ETH পুল",
+    "wusdBnbPool": "BNB/WQT পুল",
     "dollarsCount": "$ {count}",
+    "procCount": "{count} %",
+    "lpCount": "{count} LP",
+    "wqtCount": "{count} WQT",
+    "APY": "???",
     "addLiquidity": "তারল্য যোগ করুন",
     "removeLiquidity": "তারল্য অপসারণ করুন",
     "liquidity": "তারল্য",
+    "totalLiquidity": "???",
+    "reward": "???",
+    "claimReward": "???",
+    "totalReward": "???",
     "volume24h": "ভলিউম (24 ঘণ্টা)",
     "myPoolShare": "আমার পুল শেয়ার",
     "liquidityPoolProviders": "তারল্য পুল সরবরাহকারী",
     "liquidityProvidersEarn": "তারল্য সরবরাহকারীরা সমস্ত ট্রেডের উপর তাদের পুলের শেয়ারের সমানুপাতিক 0.3% উপার্জন করবেন। পুলে ফি যোগ করা হয়, তাৎক্ষণিকভাবে জমা হয় এবং আপনার তারল্য প্রত্যাহার করে তা দাবি করা যেতে পারে।",
-    "transactions": "লেনদেন"
+    "transactions": "লেনদেন",
+    "connectWallet": "???"
   },
   "crediting": {
     "lending": "WorkQuest ঋণ প্রোটোকল",
@@ -1471,6 +2154,7 @@
     "changePlan": "পরিকল্পনা পরিবর্তন করুন",
     "fundParticipants": "তহবিলে অংশগ্রহণকারীগণ",
     "userName": "কডি ফিশার",
+    "userNameCase": "??? :",
     "voting": "ভোট",
     "noVoteAtTheMoment": "এই মুহূর্তে কোনো ভোট নেই",
     "countPeoplesInChat": "চ্যাটে {count} জন লোক আছেন",
@@ -1479,6 +2163,7 @@
     "paymentOfInsurance": "{value}: বিমার পেমেন্ট",
     "youWillCertifyTheInsuredEvent": "আপনি কি বিমাকৃত ঘটনা প্রত্যয়িত করবেন?",
     "studyTheInsuredEventThoroughly": "বিমাকৃত ঘটনা পুঙ্খানুপুঙ্খভাবে পর্যালোচনা করুন",
+    "insureCaseText": "",
     "notAgree": "দ্বিমত",
     "insuredEvent": "বিমাকৃত ইভেন্ট",
     "agree": "একমত",
@@ -1553,6 +2238,82 @@
     "socialText": "সামাজিক মাধ্যমে শেয়ার করুন",
     "share": "লিংক শেয়ার করুন"
   },
+  "crosschain": {
+    "pageName": "???",
+    "pageAbout": "???",
+    "sourceBlockchain": "???",
+    "targetBlockchain": "???",
+    "blockchain": "???",
+    "yourWQTAddress": "???",
+    "YourBSCAddress": "???",
+    "balance": "???",
+    "createSwap": "???",
+    "mySwaps": "???",
+    "eth": "ETH",
+    "worknet": "Wor???knet",
+    "bsc": "BSC",
+    "tableHead": {
+      "direction": "???",
+      "recipient": "???",
+      "tx": "???",
+      "created": "???"
+    },
+    "recipTemp": "0xnf8o2…9b74thb3",
+    "dateTemp": "05.08.2021, 12:00"
+  },
+  "staking": {
+    "mainHeader": "???",
+    "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "pools": "???",
+    "tableHead": {
+      "poolAddress": "???",
+      "totalStaked": "???",
+      "totalDistributed": "???",
+      "stakeTokenAddress": "???",
+      "rewardTokenAddress": "???"
+    },
+    "open": "???",
+    "tempAddress": "0sjs3892...sd45",
+    "tempStaked": "10 000 WQT",
+    "back": "???",
+    "claimRewards": "???",
+    "pool": "Pool",
+    "stakeTokenAddress": "???",
+    "rewardTokenAddress": "???",
+    "totalStaked": "???",
+    "wqtCount": "{n} WQT",
+    "totalDistributed": "???",
+    "staking": "???",
+    "stakingCards": {
+      "distributionTime": "???",
+      "distributionTimeData": "10 min",
+      "rewardTotal": "???",
+      "rewardTotalData": "3.00 WQT",
+      "takePeriod": "???",
+      "takePeriodData": "24 ???",
+      "claimPeriod": "???",
+      "claimPeriodData": "24 ???",
+      "duration": "???",
+      "durationData": "30 ???"
+    },
+    "userInformation": "???",
+    "userInformationCards": {
+      "staked": "???",
+      "stakeBalance": "???",
+      "claimed": "???"
+    },
+    "withdrawal": "???",
+    "withdrawalCards": {
+      "displayedInTheCurrentPeriod": "???",
+      "displayedInTheCurrentPeriodData": "10 000 WQT",
+      "withdrawalLimit": "???",
+      "withdrawalLimitData": "10 000 WQT",
+      "periodUpdate": "???",
+      "periodUpdateData": "10 000 WQT"
+    },
+    "autoRenewal": "???",
+    "withdraw": "???"
+  },
   "myQuests": {
     "statuses": {
       "all": "সমস্ত quest",
@@ -1561,6 +2322,38 @@
       "completed": "সম্পন্ন quest",
       "active": "সক্রিয় quest",
       "invited": "আমন্ত্রিত quest"
+    }
+  },
+  "footer": {
+    "download": "???",
+    "follow": "???",
+    "company": {
+      "title": "???",
+      "wqWiki": "???",
+      "aboutUs": "A???",
+      "leadership": "???",
+      "contactUs": "???",
+      "support": "???"
+    },
+    "legalInfo": {
+      "title": "???",
+      "risks": "???",
+      "privacyPolicy": "???",
+      "terms": "???",
+      "aml": "???",
+      "cookiePolicy": "???"
+    },
+    "DeFi": {
+      "title": "???",
+      "retirement": "???",
+      "referral": "???",
+      "P2P": "???",
+      "savingsProduct": "???",
+      "lending": "???",
+      "liquidityMining": "???",
+      "wqBridge": "???",
+      "staking": "???",
+      "wqDAO": "???"
     }
   }
 }

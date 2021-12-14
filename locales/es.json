@@ -126,6 +126,15 @@
     }
   },
   "meta": {
+    "redeem": "???",
+    "redeemed": "???",
+    "pay": "???",
+    "skipAndEnd": "???",
+    "cleanUp": "???",
+    "close": "???",
+    "connected": "???",
+    "disconnect": "???",
+    "delete": "???",
     "back": "Volver",
     "ok": "Aceptar",
     "send": "Enviar",
@@ -154,7 +163,12 @@
     "all": "Todas las prioridades",
     "low": "Entrega fija",
     "normal": "Corto plazo",
-    "urgent": "Urgente"
+    "urgent": "Urgente",
+    "employee": {
+      "low": "???",
+      "normal": "???",
+      "urgent": "???"
+    }
   },
   "signIn": {
     "title": "Iniciar sesión",
@@ -183,7 +197,8 @@
     "title": "Comprobación de seguridad",
     "confCode": "Código de confirmación de Google",
     "placeholder": "Marcador de posición",
-    "confCodeDesc": "Escriba el código de 6 dígitos de la aplicación Autenticador de Google"
+    "confCodeDesc": "Escriba el código de 6 dígitos de la aplicación Autenticador de Google",
+    "confCodeField": "???"
   },
   "signUp": {
     "title": "Registrarse",
@@ -233,14 +248,65 @@
     "title": "Habilidades"
   },
   "quests": {
+    "rating": "???",
+    "questTitle": "???",
+    "questDesc": "???",
     "quests": "Ofertas",
     "urgent": "Urgente",
+    "specQuests": "???",
+    "permanentJob": "???",
     "typeOfJob": "Tipo de trabajo",
+    "partTime": "???",
+    "fixedTerm": "???",
+    "contract": "???",
+    "remoteWork": "???",
+    "levels": {
+      "1": {
+        "title": "???",
+        "desc": "???"
+      },
+      "2": {
+        "title": "???",
+        "desc": "???"
+      },
+      "3": {
+        "title": "???",
+        "desc": "???"
+      },
+      "4": {
+        "title": "???",
+        "desc": "???"
+      }
+    },
+    "createQuest": {
+      "choosePeriod": "???"
+    },
     "distantWork": {
       "title": "Trabajo remoto",
       "distantWork": "Trabajo remoto",
       "workInOffice": "Trabajo en la oficina",
       "bothVariant": "Ambas opciones"
+    },
+    "employment": {
+      "employment": "???",
+      "fullTime": "???",
+      "partTime": "???",
+      "fixedTerm": "???"
+    },
+    "runtime": {
+      "runtime": "???",
+      "urgent": "???",
+      "shortTerm": "???",
+      "fixedDelivery": "???"
+    },
+    "spec": {
+      "spec": "???",
+      "addSpec": "???"
+    },
+    "skills": {
+      "skills": "???",
+      "chooseSkills": "???",
+      "limit": "???"
     },
     "hours": "horas",
     "invited": "Invitado",
@@ -263,7 +329,6 @@
     "proposal": "Propuesta",
     "category": "Seleccione una categoría",
     "address": "Añadir dirección",
-    "runtime": "Tiempo de ejecución (horas)",
     "uploadMaterials": "Cargue documentos para describir mejor la oferta",
     "uploadQuestMaterials": "Añada una descripción detallada",
     "price": "Precio",
@@ -281,6 +346,7 @@
     "period": "Período de tiempo",
     "EstimatedPayment": "Pago estimado:",
     "createAQuest": "Crear una oferta",
+    "editAQuest": "???",
     "activeQuests": "Ofertas activas",
     "completedQuests": "Ofertas completadas",
     "oneTime": "Una vez",
@@ -296,6 +362,7 @@
     "type": "Tipo de trabajo",
     "time": "Hora de creación",
     "priority": {
+      "title": "???",
       "all": "Todas las prioridades",
       "low": "Baja",
       "normal": "Normal",
@@ -754,13 +821,46 @@
       }
     }
   },
+  "toasts": {
+    "questEdited": "???",
+    "questCreated": "???",
+    "questDeleted": "???",
+    "caseDeleted": "???",
+    "caseAdded": "???",
+    "caseEdited": "???",
+    "error": "???"
+  },
   "modals": {
+    "incorrectAmount": "???",
+    "nothingToClaim": "???",
+    "pleaseWait": "???",
+    "redeemSuccess": "???",
+    "redeemFail": "???",
     "chatCreate": {
       "title": "Crear chat de grupo",
       "desc": "Asigne un nombre al chat de grupo y elija usuarios de la lista de chats",
       "participants": "Participantes",
       "chatName": "Nombre de chat"
     },
+    "yourRewardBalance": "???",
+    "deletePortfolio": "???",
+    "addTitle": "???",
+    "addDesc": "???",
+    "editCase": "???",
+    "error": "???",
+    "share": "???",
+    "edit": "???",
+    "delete": "???",
+    "youCan’tDeleteActiveQuest": "???",
+    "sureDeleteText": "???",
+    "priceTitle": "???",
+    "enterPriceRange": "???",
+    "priceForm": "???",
+    "priceFromAmount": "???",
+    "priceFieldFrom": "???",
+    "priceTo": "???",
+    "priceToAmount": "???",
+    "priceFieldTo": "???",
     "changePercentDesc": "Un porcentaje del importe de la oferta que se ingresará automáticamente en su cuenta de pensiones",
     "yourSkillsHaveBeenAdded": "Se añadieron correctamente sus habilidades.",
     "yourAccountVerified": "Su cuenta se ha verificado correctamente",
@@ -773,9 +873,11 @@
     "haventSMS": "¿No ha recibido el mensaje SMS?",
     "SMSVerConnected": "Verificación por SMS conectada",
     "phoneNumber": "Número de teléfono",
+    "phoneNumberField": "numéro de teléfono",
     "enterPhone": "Escriba el número de teléfono para confirmar la verificación por SMS",
     "enterSMSCode": "Hemos enviado un código de verificación a su número de teléfono. Escriba el código",
     "codeFromSMS": "Código del SMS",
+    "codeFromSMSField": "Código del SMS",
     "smsVerification": "Verificación por SMS",
     "saved": "Guardado",
     "userDataHasBeenSaved": "Se guardaron los datos de usuario",
@@ -847,6 +949,8 @@
     "bodyMessage": "Hola",
     "areYouSure": "¿Seguro?",
     "transactionSend": "Transacción enviada",
+    "transactionFail": "???",
+    "transactionCheck": "???",
     "cardHasBeenAdded": "Se añadió la tarjeta",
     "deposit": "Recibir",
     "numberOfCard": "Número de tarjeta",
@@ -872,6 +976,7 @@
     "depositRetirementModalPrecentPlaceholder": "0 %, seleccione un porcentaje",
     "depositRetirementModalAmountPlaceholder": "0 WUSD, escriba el importe",
     "firstDepositAmount": "Importe del primer ingreso*",
+    "firstDepositAmountField": "???",
     "aboutFirstDeposit": "* El importe del primer ingreso es opcional. Si no quiere hacer un ingreso, deje este campo en blanco",
     "pensionIsRegisteredTitle": "¡Enhorabuena!",
     "pensionIsRegisteredDesc": "Se inició correctamente el programa de pensiones.",
@@ -881,17 +986,20 @@
     "durationDays": "Duración (días)",
     "depositIsOpened": "El ingreso está abierto",
     "addLiquidity": "Añadir liquidez",
-    "amountOfWusd": "Importe de WUSD",
+    "amountOfWqt": "Importe de WQT",
     "amountOfEth": "Cantidad de ETH",
+    "amountOfBnb": "Montant en BNB",
     "tip": "Sugerencia:",
     "tipAbout": "Al añadir liquidez, recibirá tokens del fondo que representan su posición. Estos tokens generan automáticamente retribuciones proporcionales a su participación en el fondo, y se pueden canjear en cualquier momento.",
     "byAddingLiquidityYouWillEarn": "Al añadir liquidez, ganará un 0,3 % de todas las operaciones en esta pareja, de manera proporcional a su participación en el fondo. Las retribuciones se añaden al fondo, se acumulan en tiempo real y se pueden reclamar al retirar su liquidez.",
-    "amountEthPerWusd": "Cantidad de ETH por WUSD",
+    "amountEthPerWqt": "Cantidad de ETH por WQT",
+    "amountBnbPerWqt": "Montant BNB par WQT",
     "shareOfPool": "Participación en el fondo",
     "removeLiquidity": "Retirar liquidez",
     "withdrawalAmount": "Importe de retirada",
     "exchangeRate": "Tipo de cambio",
-    "tempForRemove": "1 ETH = … WUSD",
+    "tempForRemove": "1 ETH = ... WQT",
+    "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "Tamaño actual del fondo",
     "yourPoolShare": "Su participación en el fondo",
     "eth": "ETH",
@@ -926,7 +1034,104 @@
     "percentage": "Porcentaje",
     "loanTerm": "Plazo del préstamo",
     "loanIsOpened": "El préstamo está abierto",
-    "successCopied": "Dirección pública copiada al Portapapeles"
+    "successCopied": "Dirección pública copiada al Portapapeles",
+    "walletAddress": "???",
+    "scanQr": "???",
+    "close": "???",
+    "depositTitle": "???",
+    "addYourCard": "???",
+    "walletCopy": "???",
+    "textCopy": "???",
+    "addingCard": "???",
+    "add": "???",
+    "totalFee": "???",
+    "processing": "???",
+    "addNewCard": "???",
+    "numberCard": "???",
+    "chooseCard": "???",
+    "depositInfo": "???",
+    "cardAdd": "???",
+    "cardAddedText": "",
+    "transactionSentText": "",
+    "maximum": "???",
+    "withdrawInfo": "???",
+    "bankCard": "???",
+    "transfer": "???",
+    "recepient": "???",
+    "transferInfo": "???",
+    "currencyDetails": "???",
+    "generatingDetails": "???",
+    "collateralizationRatio": "???",
+    "depositIsOpenedText": "",
+    "loanText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
+    "loanIsOpenedText": "",
+    "firstDepositText": "???",
+    "pensionIsRegistered": "???",
+    "pensionIsRegisteredText": "",
+    "changePercent": "???",
+    "changePercentText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor",
+    "currentPercentTitle": "???",
+    "depositIsDone": "???",
+    "makeDepositText": "",
+    "percentIsChangedText": "",
+    "percentIsChanged": "???",
+    "invitationSendText": "",
+    "choose": "???",
+    "openDisputeText": "",
+    "chooseCurrency": "???",
+    "wallet": "???",
+    "coinpaymebts": "???",
+    "errorDeleteText": "???",
+    "swapTitle": "???",
+    "coin": "???",
+    "recepientBinance": "???",
+    "createSwap": "???",
+    "swapInfo": "???",
+    "crosschain": "???",
+    "crosschainText": "Eth > Binance",
+    "senderAddress": "???",
+    "recepientAddress": "???",
+    "worknetFee": "Eth ???",
+    "binanceFee": "Binance ???",
+    "welcomeText": "???",
+    "areYouSureText": "",
+    "noticeTitle": "???",
+    "noticeText": "???",
+    "areYouSureNotificationText": "",
+    "creditCardNumber": "???",
+    "dateName": "???",
+    "depositPercent": "???",
+    "currentPercentErr": "???",
+    "amountField": "???",
+    "percentField": "???",
+    "quantityField": "???",
+    "creditingDepositText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
+    "generateField": "???",
+    "amountOfWqtField": "??? WQT",
+    "amountOfEthField": "??? ETH",
+    "amountOfBnbField": "??? BNB",
+    "withdrawalAmountField": "???",
+    "removeLiquidityCurrentPoolSize": "1 ETH + 456 WQT",
+    "removeLiquidityCurrentPoolSize2": "1 BNB + 456 WQT",
+    "removeLiquidityYourPoolShare": "10% = 1% ETH + 4% WQT",
+    "removeLiquidityYourPoolShare2": "10% = 1% BNB + 4% WQT",
+    "lockedSavingsField": "???",
+    "durationDaysField": "???",
+    "depositAmountField": "???",
+    "claim": "???",
+    "estimatedPaymentField": "120 WUSD",
+    "priceOfAClickField": "???",
+    "cityField": "???",
+    "addLiquidityAmountWqt": "1000 WQT",
+    "addLiquidityAmountEth": "10 ETH",
+    "addLiquidityAmountBnb": "10 BNB",
+    "cardHolderField": "???",
+    "addressField": "???",
+    "securityCheckField": "???",
+    "recepientAddressField": "???",
+    "walletAddressField": "???",
+    "thanksText": "",
+    "emailVerificationCodeField": "???"
   },
   "ui": {
     "jobQuestors": "Demandantes de empleo",
@@ -941,25 +1146,36 @@
       "disputes": "Disputas",
       "instruments": "Instrumentos",
       "DeFi": "Función de DeFi",
-      "logout": "Cerrar sesión"
+      "logout": "Cerrar sesión",
+      "login": "???"
     },
     "locals": {
-      "en": "EN",
-      "ru": "RU",
-      "ba": "BA",
-      "zh": "ZH",
-      "fr": "FR",
-      "hi": "HI",
-      "in": "IN",
-      "po": "PO",
-      "sp": "SP",
-      "ae": "AE"
+      "en": "en",
+      "ru": "ru",
+      "bn": "bn",
+      "zh": "zh",
+      "fr": "fr",
+      "hi": "hi",
+      "id": "id",
+      "pt": "pt",
+      "es": "es",
+      "ar": "ar"
     },
     "notifications": {
       "title": "Notificaciones",
       "invite": "Le invita a completar la oferta"
     },
     "menu": {
+      "unauthorized": "???",
+      "instruments": "???",
+      "crosschain": {
+        "title": "???",
+        "desc": "???"
+      },
+      "staking": {
+        "title": "???",
+        "desc": "???"
+      },
       "pension": {
         "title": "Programa de jubilación",
         "desc": "Puede seleccionar un porcentaje de cada oferta completada que posteriormente se ingresará automáticamente en su cuenta de pensiones, o bien puede ingresar simplemente el importe que prefiera. Los fondos del grupo se invierten en nombre del empleado, y las ganancias sobre las inversiones generan ingresos para el trabajador al jubilarse."
@@ -991,7 +1207,8 @@
     },
     "buttons": {
       "errors": {
-        "manySpec": "Solo puede añadir 3 especializaciones"
+        "manySpec": "Solo puede añadir 3 especializaciones",
+        "manySkills": "???"
       }
     }
   },
@@ -1036,9 +1253,10 @@
   "settings": {
     "placeOfStudying": "Lugar de estudio",
     "specialization": "Especialización",
+    "selectSpec": "???",
     "skillsInput": "Habilidades",
+    "selectSkills": "???",
     "priority": "Prioridad",
-    "distantWork": "Trabajo remoto",
     "costPerHour": "Coste por hora",
     "description": "And you are beautiful",
     "imgLoaded": "Imagen cargada correctamente",
@@ -1106,7 +1324,440 @@
     "p2pInsurance": "Seguro P2P",
     "savingProduct": "Producto de ahorros",
     "crediting": "Créditos",
-    "liquidityMining": "Minería de liquidez"
+    "liquidityMining": "Minería de liquidez",
+    "distantWork": {
+      "title": "???",
+      "select": "???",
+      "distantWork": "???",
+      "workInOffice": "???",
+      "bothVariant": "???"
+    },
+    "specializations": {
+      "1": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???",
+          "11": "???",
+          "12": "???"
+        }
+      },
+      "2": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "3": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "4": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "5": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???"
+        }
+      },
+      "6": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???"
+        }
+      },
+      "7": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???"
+        }
+      },
+      "8": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "9": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???"
+        }
+      },
+      "10": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???"
+        }
+      },
+      "11": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???"
+        }
+      },
+      "12": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???"
+        }
+      },
+      "13": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???"
+        }
+      },
+      "14": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "15": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???"
+        }
+      },
+      "16": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???"
+        }
+      },
+      "17": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???"
+        }
+      },
+      "18": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???",
+          "11": "???",
+          "12": "???",
+          "13": "???"
+        }
+      },
+      "19": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???"
+        }
+      },
+      "20": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???",
+          "11": "???",
+          "12": "???",
+          "13": "???",
+          "14": "???",
+          "15": "???",
+          "16": "???",
+          "17": "???",
+          "18": "???",
+          "19": "???"
+        }
+      },
+      "21": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???",
+          "11": "???"
+        }
+      },
+      "22": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???"
+        }
+      },
+      "23": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "24": {
+        "title": "???",
+        "sub": {
+          "1": "???r",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "25": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "26": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???"
+        }
+      },
+      "27": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "28": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???"
+        }
+      },
+      "29": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "30": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "31": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???"
+        }
+      },
+      "32": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???"
+        }
+      },
+      "33": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???"
+        }
+      },
+      "34": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???"
+        }
+      }
+    }
   },
   "raising-views": {
     "raisingViews": "Aumentar visualizaciones",
@@ -1152,7 +1803,8 @@
     "based": "Basado",
     "reviews": "opiniones",
     "portfolio": "Trabajos",
-    "showAllCases": "Mostrar todos los casos"
+    "showAllCases": "Mostrar todos los casos",
+    "costTitle": "???"
   },
   "levels": {
     "reliableEmp": "EMP. FIABLE",
@@ -1330,19 +1982,39 @@
     "depositModalBody": "Sus criptomonedas se bloquearán durante un período específico, y empezará a ganar intereses.",
     "depositIsOpened": "Transferencia confirmada",
     "deposit": "Ingreso",
-    "withdraw": "Retirar"
+    "withdraw": "Retirar",
+    "depositIsOpenedText": "",
+    "withdrawText": "???"
   },
   "mining": {
-    "liquidityManning": "Minería de liquidez",
+    "claimRewards": "???",
     "liquidityMining": "Minería de liquidez",
+    "swapTokens": {
+      "title": "???",
+      "swap": "???",
+      "oldTokens": "???",
+      "newTokens": "???",
+      "balance": "???"
+    },
+    "approve": "???",
+    "stake": "???",
+    "unstake": "???",
+    "liquidityMiningSub": "???",
     "templateText": "",
     "pools": "Fondos",
     "choose": "Elegir",
     "information": "Información",
     "docName": "Some_document.pdf",
+    "agreement": "???.pdf",
+    "kb": "{count} KB",
     "download": "Descargar",
     "tableHead": {
       "poolAddress": "Dirección del fondo",
+      "swaps": "???",
+      "totalValue": "???",
+      "tokenAmount": "???",
+      "account": "???",
+      "time": "???",
       "assets": "Activos",
       "sdsdsdsd": "sdsdsdsd",
       "volume": "Volumen"
@@ -1350,21 +2022,32 @@
     "table": {
       "poolAddress": "0sjs3892...sd45",
       "assets": "50 % WUSD / 50 % ETH",
+      "assets2": "50% WQT / 50% BNB",
       "sdsdsdsd": "sdsdsdsd",
       "volume": "4,5 mill. $"
     },
     "mb": "{count} MB",
     "back": "Volver",
     "wusdEthPool": "Fondo de WUSD/ETH",
+    "wusdBnbPool": "Pool BNB/WQT",
     "dollarsCount": "{count} $",
+    "procCount": "{count} %",
+    "lpCount": "{count} LP",
+    "wqtCount": "{count} WQT",
+    "APY": "???",
     "addLiquidity": "Añadir liquidez",
     "removeLiquidity": "Retirar liquidez",
     "liquidity": "Liquidez",
+    "totalLiquidity": "???",
+    "reward": "???",
+    "claimReward": "???",
+    "totalReward": "???",
     "volume24h": "Volumen (24 h)",
     "myPoolShare": "Mi participación en el fondo",
     "liquidityPoolProviders": "Proveedores del fondo de liquidez",
     "liquidityProvidersEarn": "Los proveedores del fondo de liquidez obtendrán una retribución de 0,3 % en todas las operaciones de forma proporcional a su participación en el fondo común. Las retribuciones se añaden al fondo, se acumulan en tiempo real y se pueden reclamar al retirar su liquidez.",
-    "transactions": "Transacciones"
+    "transactions": "Transacciones",
+    "connectWallet": "???"
   },
   "crediting": {
     "lending": "Protocolo de préstamos de WorkQuest",
@@ -1471,6 +2154,7 @@
     "changePlan": "Cambiar plan",
     "fundParticipants": "Participantes del fondo",
     "userName": "Cody Fisher",
+    "userNameCase": "??? :",
     "voting": "Votación",
     "noVoteAtTheMoment": "No hay ningún voto actualmente",
     "countPeoplesInChat": "{count} personas en el chat",
@@ -1479,6 +2163,7 @@
     "paymentOfInsurance": "{value}: pago de seguro",
     "youWillCertifyTheInsuredEvent": "¿Se certificará el evento cubierto?",
     "studyTheInsuredEventThoroughly": "Estudie detenidamente el evento cubierto",
+    "insureCaseText": "",
     "notAgree": "No estoy de acuerdo",
     "insuredEvent": "Evento cubierto",
     "agree": "Aceptar",
@@ -1553,6 +2238,82 @@
     "socialText": "Compartir en redes sociales",
     "share": "Compartir enlace"
   },
+  "crosschain": {
+    "pageName": "???",
+    "pageAbout": "???",
+    "sourceBlockchain": "???",
+    "targetBlockchain": "???",
+    "blockchain": "???",
+    "yourWQTAddress": "???",
+    "YourBSCAddress": "???",
+    "balance": "???",
+    "createSwap": "???",
+    "mySwaps": "???",
+    "eth": "ETH",
+    "worknet": "Wor???knet",
+    "bsc": "BSC",
+    "tableHead": {
+      "direction": "???",
+      "recipient": "???",
+      "tx": "???",
+      "created": "???"
+    },
+    "recipTemp": "0xnf8o2…9b74thb3",
+    "dateTemp": "05.08.2021, 12:00"
+  },
+  "staking": {
+    "mainHeader": "???",
+    "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "pools": "???",
+    "tableHead": {
+      "poolAddress": "???",
+      "totalStaked": "???",
+      "totalDistributed": "???",
+      "stakeTokenAddress": "???",
+      "rewardTokenAddress": "???"
+    },
+    "open": "???",
+    "tempAddress": "0sjs3892...sd45",
+    "tempStaked": "10 000 WQT",
+    "back": "???",
+    "claimRewards": "???",
+    "pool": "Pool",
+    "stakeTokenAddress": "???",
+    "rewardTokenAddress": "???",
+    "totalStaked": "???",
+    "wqtCount": "{n} WQT",
+    "totalDistributed": "???",
+    "staking": "???",
+    "stakingCards": {
+      "distributionTime": "???",
+      "distributionTimeData": "10 min",
+      "rewardTotal": "???",
+      "rewardTotalData": "3.00 WQT",
+      "takePeriod": "???",
+      "takePeriodData": "24 ???",
+      "claimPeriod": "???",
+      "claimPeriodData": "24 ???",
+      "duration": "???",
+      "durationData": "30 ???"
+    },
+    "userInformation": "???",
+    "userInformationCards": {
+      "staked": "???",
+      "stakeBalance": "???",
+      "claimed": "???"
+    },
+    "withdrawal": "???",
+    "withdrawalCards": {
+      "displayedInTheCurrentPeriod": "???",
+      "displayedInTheCurrentPeriodData": "10 000 WQT",
+      "withdrawalLimit": "???",
+      "withdrawalLimitData": "10 000 WQT",
+      "periodUpdate": "???",
+      "periodUpdateData": "10 000 WQT"
+    },
+    "autoRenewal": "???",
+    "withdraw": "???"
+  },
   "myQuests": {
     "statuses": {
       "all": "Todas las ofertas",
@@ -1561,6 +2322,38 @@
       "completed": "Ofertas completadas",
       "active": "Ofertas activas",
       "invited": "Invitaciones a ofertas"
+    }
+  },
+  "footer": {
+    "download": "???",
+    "follow": "???",
+    "company": {
+      "title": "???",
+      "wqWiki": "???",
+      "aboutUs": "A???",
+      "leadership": "???",
+      "contactUs": "???",
+      "support": "???"
+    },
+    "legalInfo": {
+      "title": "???",
+      "risks": "???",
+      "privacyPolicy": "???",
+      "terms": "???",
+      "aml": "???",
+      "cookiePolicy": "???"
+    },
+    "DeFi": {
+      "title": "???",
+      "retirement": "???",
+      "referral": "???",
+      "P2P": "???",
+      "savingsProduct": "???",
+      "lending": "???",
+      "liquidityMining": "???",
+      "wqBridge": "???",
+      "staking": "???",
+      "wqDAO": "???"
     }
   }
 }

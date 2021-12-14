@@ -126,6 +126,15 @@
     }
   },
   "meta": {
+    "redeem": "???",
+    "redeemed": "???",
+    "pay": "???",
+    "skipAndEnd": "???",
+    "cleanUp": "???",
+    "close": "???",
+    "connected": "???",
+    "disconnect": "???",
+    "delete": "???",
     "back": "العودة",
     "ok": "موافق",
     "send": "إرسال",
@@ -154,7 +163,12 @@
     "all": "جميع درجات الأولوية",
     "low": "موعد تسليم ثابت",
     "normal": "فترة قصيرة",
-    "urgent": "عاجلة"
+    "urgent": "عاجلة",
+    "employee": {
+      "low": "???",
+      "normal": "???",
+      "urgent": "???"
+    }
   },
   "signIn": {
     "title": "تسجيل الدخول",
@@ -183,7 +197,8 @@
     "title": "الفحص الأمني",
     "confCode": "رمز تأكيد Google",
     "placeholder": "عنصر نائب",
-    "confCodeDesc": "أدخل الرمز المكوَّن من 6 أرقام من تطبيق مصادقة Google"
+    "confCodeDesc": "أدخل الرمز المكوَّن من 6 أرقام من تطبيق مصادقة Google",
+    "confCodeField": "???"
   },
   "signUp": {
     "title": "الاشتراك",
@@ -233,14 +248,65 @@
     "title": "المهارات"
   },
   "quests": {
+    "rating": "???",
+    "questTitle": "???",
+    "questDesc": "???",
     "quests": "طلبات العمل",
     "urgent": "عاجلة",
+    "specQuests": "???",
+    "permanentJob": "???",
     "typeOfJob": "نوع العمل",
+    "partTime": "???",
+    "fixedTerm": "???",
+    "contract": "???",
+    "remoteWork": "???",
+    "levels": {
+      "1": {
+        "title": "???",
+        "desc": "???"
+      },
+      "2": {
+        "title": "???",
+        "desc": "???"
+      },
+      "3": {
+        "title": "???",
+        "desc": "???"
+      },
+      "4": {
+        "title": "???",
+        "desc": "???"
+      }
+    },
+    "createQuest": {
+      "choosePeriod": "???"
+    },
     "distantWork": {
       "title": "عمل بالخارج",
       "distantWork": "عمل بالخارج",
       "workInOffice": "عمل بالداخل",
       "bothVariant": "كلا الخيارين"
+    },
+    "employment": {
+      "employment": "???",
+      "fullTime": "???",
+      "partTime": "???",
+      "fixedTerm": "???"
+    },
+    "runtime": {
+      "runtime": "???",
+      "urgent": "???",
+      "shortTerm": "???",
+      "fixedDelivery": "???"
+    },
+    "spec": {
+      "spec": "???",
+      "addSpec": "???"
+    },
+    "skills": {
+      "skills": "???",
+      "chooseSkills": "???",
+      "limit": "???"
     },
     "hours": "الساعات",
     "invited": "تمت الدعوة إليها",
@@ -263,7 +329,6 @@
     "proposal": "العرض",
     "category": "تحديد فئة",
     "address": "إضافة عنوان",
-    "runtime": "مدة التنفيذ (بالساعات)",
     "uploadMaterials": "حمِّل الصور أو مقاطع الفيديو لوصف طلب العمل على أفضل نحو",
     "uploadQuestMaterials": "أضِف وصفًا تفصيليًا",
     "price": "السعر",
@@ -281,6 +346,7 @@
     "period": "الفترة الزمنية",
     "EstimatedPayment": "الدفعة المقدَّرة:",
     "createAQuest": "إنشاء طلب عمل",
+    "editAQuest": "???",
     "activeQuests": "طلبات العمل النشطة",
     "completedQuests": "طلبات العمل المكتملة",
     "oneTime": "مرة واحدة",
@@ -296,6 +362,7 @@
     "type": "نوع العمل",
     "time": "الوقت المضاف",
     "priority": {
+      "title": "???",
       "all": "جميع درجات الأولوية",
       "low": "منخفضة",
       "normal": "عادية",
@@ -754,13 +821,46 @@
       }
     }
   },
+  "toasts": {
+    "questEdited": "???",
+    "questCreated": "???",
+    "questDeleted": "???",
+    "caseDeleted": "???",
+    "caseAdded": "???",
+    "caseEdited": "???",
+    "error": "???"
+  },
   "modals": {
+    "incorrectAmount": "???",
+    "nothingToClaim": "???",
+    "pleaseWait": "???",
+    "redeemSuccess": "???",
+    "redeemFail": "???",
     "chatCreate": {
       "title": "إنشاء دردشة جماعية",
       "desc": "أنشئ اسمًا للدردشة الجماعية واختر الأشخاص من قائمة الدردشة لديك",
       "participants": "المشاركون",
       "chatName": "اسم الدردشة"
     },
+    "yourRewardBalance": "???",
+    "deletePortfolio": "???",
+    "addTitle": "???",
+    "addDesc": "???",
+    "editCase": "???",
+    "error": "???",
+    "share": "???",
+    "edit": "???",
+    "delete": "???",
+    "youCan’tDeleteActiveQuest": "???",
+    "sureDeleteText": "???",
+    "priceTitle": "???",
+    "enterPriceRange": "???",
+    "priceForm": "???",
+    "priceFromAmount": "???",
+    "priceFieldFrom": "???",
+    "priceTo": "???",
+    "priceToAmount": "???",
+    "priceFieldTo": "???",
     "changePercentDesc": "ستتم إضافة نسبة مئوية من مبلغ الطلب تلقائيًا إلى حساب التقاعد الخاص بك",
     "yourSkillsHaveBeenAdded": "تمت إضافة مهاراتك بنجاح.",
     "yourAccountVerified": "تم التحقُّق من حسابك بنجاح.",
@@ -773,9 +873,11 @@
     "haventSMS": "ألم تصلك رسالة نصية قصيرة؟",
     "SMSVerConnected": "تم ربط التحقُّق بالرسائل النصية القصيرة",
     "phoneNumber": "رقم التليفون",
+    "phoneNumberField": "???",
     "enterPhone": "أدخل رقم هاتفك لتأكيد التحقُّق برسالة نصية قصيرة",
     "enterSMSCode": "لقد أرسلنا رمز التحقُّق إلى رقم هاتفك. أدخل هذا الرمز",
     "codeFromSMS": "الرمز من الرسالة النصية القصيرة",
+    "codeFromSMSField": "???",
     "smsVerification": "التحقُّق برسالة نصية قصيرة",
     "saved": "تم الحفظ",
     "userDataHasBeenSaved": "تم حفظ بيانات المستخدم",
@@ -847,6 +949,8 @@
     "bodyMessage": "مرحبًا",
     "areYouSure": "هل أنت متأكد؟",
     "transactionSend": "إرسال معاملة",
+    "transactionFail": "???",
+    "transactionCheck": "???",
     "cardHasBeenAdded": "تمت إضافة البطاقة",
     "deposit": "الاستلام",
     "numberOfCard": "رقم البطاقة",
@@ -872,6 +976,7 @@
     "depositRetirementModalPrecentPlaceholder": "0% يُرجى تحديد النسبة المئوية",
     "depositRetirementModalAmountPlaceholder": "0 WUSD يُرجى إدخال المبلغ",
     "firstDepositAmount": "مبلغ الإيداع الأول*",
+    "firstDepositAmountField": "???",
     "aboutFirstDeposit": "* مبلغ الإيداع الأول اختياري. إذا كنت لا ترغب في الإيداع، يمكنك ترك هذا الحقل فارغًا",
     "pensionIsRegisteredTitle": "تهانينا!",
     "pensionIsRegisteredDesc": "تم إطلاق برنامج رواتب التقاعد بنجاح.",
@@ -881,17 +986,20 @@
     "durationDays": "المدة (بالأيام)",
     "depositIsOpened": "تم فتح الإيداع",
     "addLiquidity": "إضافة سيولة",
-    "amountOfWusd": "مبلغ WUSD",
+    "amountOfWqt": "مبلغ WQT",
     "amountOfEth": "مبلغ ETH",
+    "amountOfBnb": "مبلغ BNB",
     "tip": "نصيحة:",
     "tipAbout": "عند إضافة السيولة، ستتلقى رموز تجمُّع تمثِّل مركزك. تربح هذه الرموز المميزة رسومًا تتناسب مع حصتك في التجمُّع تلقائيًا، ويمكن استردادها في أي وقت.",
     "byAddingLiquidityYouWillEarn": "بإضافة السيولة، ستربح 0.3% من جميع التداولات على هذا الزوج بما يتناسب مع حصتك في التجمُّع. تتم إضافة الرسوم إلى التجمُّع وتحصيلها في الوقت الفعلي، ويمكن المطالبة بها عن طريق سحب السيولة الخاصة بك.",
-    "amountEthPerWusd": "مبلغ ETH لكل WUSD",
+    "amountEthPerWqt": "مبلغ ETH لكل WQT",
+    "amountBnbPerWqt": "مبلغ BNB لكل WQT",
     "shareOfPool": "الحصة في التجمُّع",
     "removeLiquidity": "إزالة السيولة",
     "withdrawalAmount": "مبلغ السحب",
     "exchangeRate": "سعر الصرف",
     "tempForRemove": "1 ETH = ... WUSD",
+    "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "حجم التجمُّع الحالي",
     "yourPoolShare": "حصتك في التجمُّع",
     "eth": "ETH",
@@ -926,7 +1034,104 @@
     "percentage": "النسبة المئوية",
     "loanTerm": "مهلة القرض",
     "loanIsOpened": "تم فتح القرض",
-    "successCopied": "تم نسخ العنوان العام إلى الحافظة"
+    "successCopied": "تم نسخ العنوان العام إلى الحافظة",
+    "walletAddress": "???",
+    "scanQr": "???",
+    "close": "???",
+    "depositTitle": "???",
+    "addYourCard": "???",
+    "walletCopy": "???",
+    "textCopy": "???",
+    "addingCard": "???",
+    "add": "???",
+    "totalFee": "???",
+    "processing": "???",
+    "addNewCard": "???",
+    "numberCard": "???",
+    "chooseCard": "???",
+    "depositInfo": "???",
+    "cardAdd": "???",
+    "cardAddedText": "",
+    "transactionSentText": "",
+    "maximum": "???",
+    "withdrawInfo": "???",
+    "bankCard": "???",
+    "transfer": "???",
+    "recepient": "???",
+    "transferInfo": "???",
+    "currencyDetails": "???",
+    "generatingDetails": "???",
+    "collateralizationRatio": "???",
+    "depositIsOpenedText": "",
+    "loanText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
+    "loanIsOpenedText": "",
+    "firstDepositText": "???",
+    "pensionIsRegistered": "???",
+    "pensionIsRegisteredText": "",
+    "changePercent": "???",
+    "changePercentText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor",
+    "currentPercentTitle": "???",
+    "depositIsDone": "???",
+    "makeDepositText": "",
+    "percentIsChangedText": "",
+    "percentIsChanged": "???",
+    "invitationSendText": "",
+    "choose": "???",
+    "openDisputeText": "",
+    "chooseCurrency": "???",
+    "wallet": "???",
+    "coinpaymebts": "???",
+    "errorDeleteText": "???",
+    "swapTitle": "???",
+    "coin": "???",
+    "recepientBinance": "???",
+    "createSwap": "???",
+    "swapInfo": "???",
+    "crosschain": "???",
+    "crosschainText": "Eth > Binance",
+    "senderAddress": "???",
+    "recepientAddress": "???",
+    "worknetFee": "Eth ???",
+    "binanceFee": "Binance ???",
+    "welcomeText": "???",
+    "areYouSureText": "",
+    "noticeTitle": "???",
+    "noticeText": "???",
+    "areYouSureNotificationText": "",
+    "creditCardNumber": "???",
+    "dateName": "???",
+    "depositPercent": "???",
+    "currentPercentErr": "???",
+    "amountField": "???",
+    "percentField": "???",
+    "quantityField": "???",
+    "creditingDepositText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
+    "generateField": "???",
+    "amountOfWqtField": "??? WQT",
+    "amountOfEthField": "??? ETH",
+    "amountOfBnbField": "??? BNB",
+    "withdrawalAmountField": "???",
+    "removeLiquidityCurrentPoolSize": "1 ETH + 456 WQT",
+    "removeLiquidityCurrentPoolSize2": "1 BNB + 456 WQT",
+    "removeLiquidityYourPoolShare": "10% = 1% ETH + 4% WQT",
+    "removeLiquidityYourPoolShare2": "10% = 1% BNB + 4% WQT",
+    "lockedSavingsField": "???",
+    "durationDaysField": "???",
+    "depositAmountField": "???",
+    "claim": "???",
+    "estimatedPaymentField": "120 WUSD",
+    "priceOfAClickField": "???",
+    "cityField": "???",
+    "addLiquidityAmountWqt": "1000 WQT",
+    "addLiquidityAmountEth": "10 ETH",
+    "addLiquidityAmountBnb": "10 BNB",
+    "cardHolderField": "???",
+    "addressField": "???",
+    "securityCheckField": "???",
+    "recepientAddressField": "???",
+    "walletAddressField": "???",
+    "thanksText": "",
+    "emailVerificationCodeField": "???"
   },
   "ui": {
     "jobQuestors": "أصحاب الوظائف",
@@ -941,25 +1146,36 @@
       "disputes": "النزاعات",
       "instruments": "الأدوات",
       "DeFi": "وظيفة التمويل اللامركزي",
-      "logout": "تسجيل الخروج"
+      "logout": "تسجيل الخروج",
+      "login": "???"
     },
     "locals": {
-      "en": "EN",
-      "ru": "RU",
-      "ba": "BA",
-      "zh": "ZH",
-      "fr": "FR",
-      "hi": "HI",
-      "in": "IN",
-      "po": "PO",
-      "sp": "SP",
-      "ae": "AE"
+      "en": "en",
+      "ru": "ru",
+      "bn": "bn",
+      "zh": "zh",
+      "fr": "fr",
+      "hi": "hi",
+      "id": "id",
+      "pt": "pt",
+      "es": "es",
+      "ar": "ar"
     },
     "notifications": {
       "title": "الإشعارات",
       "invite": "يدعوك لإكمال طلب العمل"
     },
     "menu": {
+      "unauthorized": "???",
+      "instruments": "???",
+      "crosschain": {
+        "title": "???",
+        "desc": "???"
+      },
+      "staking": {
+        "title": "???",
+        "desc": "???"
+      },
       "pension": {
         "title": "برنامج التقاعد",
         "desc": "يمكنك تحديد نسبة مئوية من كل طلب عمل مكتمل لتتم إضافتها تلقائيًا إلى حساب التقاعد الخاص بك، أو إيداع مبلغ من اختيارك. يتم استثمار الأموال نيابةً عن الموظف، وتدر أرباح الاستثمارات دخلًا للموظف عند تقاعده."
@@ -991,7 +1207,8 @@
     },
     "buttons": {
       "errors": {
-        "manySpec": "يمكنك إضافة 3 تخصُّصات فقط"
+        "manySpec": "يمكنك إضافة 3 تخصُّصات فقط",
+        "manySkills": "???"
       }
     }
   },
@@ -1036,9 +1253,10 @@
   "settings": {
     "placeOfStudying": "مكان الدراسة",
     "specialization": "التخصُّص",
+    "selectSpec": "???",
     "skillsInput": "المهارات",
+    "selectSkills": "???",
     "priority": "الأولوية",
-    "distantWork": "عمل بالخارج",
     "costPerHour": "التكلفة في الساعة",
     "description": "And you are beautiful",
     "imgLoaded": "تم تحميل الصورة بنجاح",
@@ -1106,7 +1324,440 @@
     "p2pInsurance": "التأمين من نظير إلى نظير",
     "savingProduct": "برنامج المدخرات",
     "crediting": "الائتمان",
-    "liquidityMining": "تعدين السيولة"
+    "liquidityMining": "تعدين السيولة",
+    "distantWork": {
+      "title": "???",
+      "select": "???",
+      "distantWork": "???",
+      "workInOffice": "???",
+      "bothVariant": "???"
+    },
+    "specializations": {
+      "1": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???",
+          "11": "???",
+          "12": "???"
+        }
+      },
+      "2": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "3": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "4": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "5": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???"
+        }
+      },
+      "6": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???"
+        }
+      },
+      "7": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???"
+        }
+      },
+      "8": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "9": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???"
+        }
+      },
+      "10": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???"
+        }
+      },
+      "11": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???"
+        }
+      },
+      "12": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???"
+        }
+      },
+      "13": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???"
+        }
+      },
+      "14": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "15": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???"
+        }
+      },
+      "16": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???"
+        }
+      },
+      "17": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???"
+        }
+      },
+      "18": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???",
+          "11": "???",
+          "12": "???",
+          "13": "???"
+        }
+      },
+      "19": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???"
+        }
+      },
+      "20": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???",
+          "11": "???",
+          "12": "???",
+          "13": "???",
+          "14": "???",
+          "15": "???",
+          "16": "???",
+          "17": "???",
+          "18": "???",
+          "19": "???"
+        }
+      },
+      "21": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???",
+          "11": "???"
+        }
+      },
+      "22": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???"
+        }
+      },
+      "23": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "24": {
+        "title": "???",
+        "sub": {
+          "1": "???r",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "25": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "26": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???"
+        }
+      },
+      "27": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "28": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???"
+        }
+      },
+      "29": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "30": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "31": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???"
+        }
+      },
+      "32": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???"
+        }
+      },
+      "33": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???"
+        }
+      },
+      "34": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???"
+        }
+      }
+    }
   },
   "raising-views": {
     "raisingViews": "زيادة المشاهدات",
@@ -1152,7 +1803,8 @@
     "based": "في",
     "reviews": "المراجعات",
     "portfolio": "نماذج الأعمال",
-    "showAllCases": "عرض جميع الحالات"
+    "showAllCases": "عرض جميع الحالات",
+    "costTitle": "???"
   },
   "levels": {
     "reliableEmp": "موظف موثوق",
@@ -1330,41 +1982,72 @@
     "depositModalBody": "سيتم تأمين عملتك المشفرة لفترة محددة، وستبدأ في الحصول على الفائدة.",
     "depositIsOpened": "تم تأكيد التحويل",
     "deposit": "إيداع",
-    "withdraw": "سحب"
+    "withdraw": "سحب",
+    "depositIsOpenedText": "",
+    "withdrawText": "???"
   },
   "mining": {
-    "liquidityManning": "تعدين السيولة",
+    "claimRewards": "???",
     "liquidityMining": "تعدين السيولة",
+    "swapTokens": {
+      "title": "???",
+      "swap": "???",
+      "oldTokens": "???",
+      "newTokens": "???",
+      "balance": "???"
+    },
+    "approve": "???",
+    "stake": "???",
+    "unstake": "???",
+    "liquidityMiningSub": "???",
     "templateText": "",
     "pools": "التجمُّعات",
     "choose": "اختيار",
     "information": "المعلومات",
     "docName": "Some_document.pdf",
+    "agreement": "???.pdf",
+    "kb": "{count} KB",
     "download": "تنزيل",
     "tableHead": {
       "poolAddress": "عنوان التجمُّع",
+      "swaps": "???",
+      "totalValue": "???",
+      "tokenAmount": "???",
+      "account": "???",
+      "time": "???",
       "assets": "الأصول",
       "sdsdsdsd": "sdsdsdsd",
       "volume": "الحجم"
     },
     "table": {
       "poolAddress": "0sjs3892...sd45",
-      "assets": "50% WUSD/50%ETH",
+      "assets": "50% WUSD/50% ETH",
+      "assets2": "50% WQT / 50% BNB",
       "sdsdsdsd": "sdsdsdsd",
       "volume": "4.5 مليون دولار"
     },
     "mb": "{count} م.ب",
     "back": "العودة",
     "wusdEthPool": "تجمُّع WUSD/ETH",
+    "wusdBnbPool": "Pool BNB/WQT",
     "dollarsCount": "$ {count}",
+    "procCount": "{count} %",
+    "lpCount": "{count} LP",
+    "wqtCount": "{count} WQT",
+    "APY": "???",
     "addLiquidity": "إضافة سيولة",
     "removeLiquidity": "إزالة السيولة",
     "liquidity": "السيولة",
+    "totalLiquidity": "???",
+    "reward": "???",
+    "claimReward": "???",
+    "totalReward": "???",
     "volume24h": "الحجم (24 ساعة)",
     "myPoolShare": "حصتي في التجمُّع",
     "liquidityPoolProviders": "موفِّرو تجمُّع السيولة",
     "liquidityProvidersEarn": "يربح مقدِّمو السيولة رسومًا بنسبة 0.3% على جميع عمليات التداول بما يتناسب مع حصتهم في التجمُّع. وتتم إضافة الرسوم إلى التجمُّع وتحصيلها في الوقت الفعلي، ويمكن المطالبة بها عن طريق سحب السيولة الخاصة بك.",
-    "transactions": "المعاملات"
+    "transactions": "المعاملات",
+    "connectWallet": "???"
   },
   "crediting": {
     "lending": "بروتوكول إقراض WorkQuest",
@@ -1471,6 +2154,7 @@
     "changePlan": "تغيير الخطة",
     "fundParticipants": "المشاركون في الصندوق",
     "userName": "هاني جمال",
+    "userNameCase": "??? :",
     "voting": "التصويت",
     "noVoteAtTheMoment": "لا يوجد تصويت في الوقت الراهن",
     "countPeoplesInChat": "{count} شخص في الدردشة",
@@ -1479,6 +2163,7 @@
     "paymentOfInsurance": "{value}: دفعة التأمين",
     "youWillCertifyTheInsuredEvent": "ستعتمد الحدث المؤمَّن عليه؟",
     "studyTheInsuredEventThoroughly": "دراسة الحدث المؤمَّن عليه بتعمُّق",
+    "insureCaseText": "",
     "notAgree": "عدم الموافقة",
     "insuredEvent": "الحدث المؤمَّن عليه",
     "agree": "أوافق",
@@ -1553,6 +2238,82 @@
     "socialText": "المشاركة على وسائل التواصل الاجتماعي",
     "share": "رابط المشاركة"
   },
+  "crosschain": {
+    "pageName": "???",
+    "pageAbout": "???",
+    "sourceBlockchain": "???",
+    "targetBlockchain": "???",
+    "blockchain": "???",
+    "yourWQTAddress": "???",
+    "YourBSCAddress": "???",
+    "balance": "???",
+    "createSwap": "???",
+    "mySwaps": "???",
+    "eth": "ETH",
+    "worknet": "Wor???knet",
+    "bsc": "BSC",
+    "tableHead": {
+      "direction": "???",
+      "recipient": "???",
+      "tx": "???",
+      "created": "???"
+    },
+    "recipTemp": "0xnf8o2…9b74thb3",
+    "dateTemp": "05.08.2021, 12:00"
+  },
+  "staking": {
+    "mainHeader": "???",
+    "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "pools": "???",
+    "tableHead": {
+      "poolAddress": "???",
+      "totalStaked": "???",
+      "totalDistributed": "???",
+      "stakeTokenAddress": "???",
+      "rewardTokenAddress": "???"
+    },
+    "open": "???",
+    "tempAddress": "0sjs3892...sd45",
+    "tempStaked": "10 000 WQT",
+    "back": "???",
+    "claimRewards": "???",
+    "pool": "Pool",
+    "stakeTokenAddress": "???",
+    "rewardTokenAddress": "???",
+    "totalStaked": "???",
+    "wqtCount": "{n} WQT",
+    "totalDistributed": "???",
+    "staking": "???",
+    "stakingCards": {
+      "distributionTime": "???",
+      "distributionTimeData": "10 min",
+      "rewardTotal": "???",
+      "rewardTotalData": "3.00 WQT",
+      "takePeriod": "???",
+      "takePeriodData": "24 ???",
+      "claimPeriod": "???",
+      "claimPeriodData": "24 ???",
+      "duration": "???",
+      "durationData": "30 ???"
+    },
+    "userInformation": "???",
+    "userInformationCards": {
+      "staked": "???",
+      "stakeBalance": "???",
+      "claimed": "???"
+    },
+    "withdrawal": "???",
+    "withdrawalCards": {
+      "displayedInTheCurrentPeriod": "???",
+      "displayedInTheCurrentPeriodData": "10 000 WQT",
+      "withdrawalLimit": "???",
+      "withdrawalLimitData": "10 000 WQT",
+      "periodUpdate": "???",
+      "periodUpdateData": "10 000 WQT"
+    },
+    "autoRenewal": "???",
+    "withdraw": "???"
+  },
   "myQuests": {
     "statuses": {
       "all": "جميع طلبات العمل",
@@ -1561,6 +2322,38 @@
       "completed": "طلبات العمل المكتملة",
       "active": "طلبات العمل النشطة",
       "invited": "طلبات العمل المدعو إليها"
+    }
+  },
+  "footer": {
+    "download": "???",
+    "follow": "???",
+    "company": {
+      "title": "???",
+      "wqWiki": "???",
+      "aboutUs": "A???",
+      "leadership": "???",
+      "contactUs": "???",
+      "support": "???"
+    },
+    "legalInfo": {
+      "title": "???",
+      "risks": "???",
+      "privacyPolicy": "???",
+      "terms": "???",
+      "aml": "???",
+      "cookiePolicy": "???"
+    },
+    "DeFi": {
+      "title": "???",
+      "retirement": "???",
+      "referral": "???",
+      "P2P": "???",
+      "savingsProduct": "???",
+      "lending": "???",
+      "liquidityMining": "???",
+      "wqBridge": "???",
+      "staking": "???",
+      "wqDAO": "???"
     }
   }
 }

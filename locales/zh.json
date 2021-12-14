@@ -126,6 +126,15 @@
     }
   },
   "meta": {
+    "redeem": "???",
+    "redeemed": "???",
+    "pay": "???",
+    "skipAndEnd": "???",
+    "cleanUp": "???",
+    "close": "???",
+    "connected": "???",
+    "disconnect": "???",
+    "delete": "???",
     "back": "后退",
     "ok": "确定",
     "send": "发送",
@@ -154,7 +163,12 @@
     "all": "所有优先级",
     "low": "固定交付",
     "normal": "短期",
-    "urgent": "紧急"
+    "urgent": "紧急",
+    "employee": {
+      "low": "???",
+      "normal": "???",
+      "urgent": "???"
+    }
   },
   "signIn": {
     "title": "登录",
@@ -183,7 +197,8 @@
     "title": "安全检查",
     "confCode": "Google 确认码",
     "placeholder": "占位符",
-    "confCodeDesc": "输入来自 Google 身份验证器应用的 6 位代码"
+    "confCodeDesc": "输入来自 Google 身份验证器应用的 6 位代码",
+    "confCodeField": "???"
   },
   "signUp": {
     "title": "注册",
@@ -233,14 +248,65 @@
     "title": "技能"
   },
   "quests": {
-    "quests": "Quest",
+    "rating": "???",
+    "questTitle": "???",
+    "questDesc": "???",
+    "quests": "???",
     "urgent": "紧急",
+    "specQuests": "???",
+    "permanentJob": "???",
     "typeOfJob": "工作类型",
+    "partTime": "???",
+    "fixedTerm": "???",
+    "contract": "???",
+    "remoteWork": "???",
+    "levels": {
+      "1": {
+        "title": "???",
+        "desc": "???"
+      },
+      "2": {
+        "title": "???",
+        "desc": "???"
+      },
+      "3": {
+        "title": "???",
+        "desc": "???"
+      },
+      "4": {
+        "title": "???",
+        "desc": "???"
+      }
+    },
+    "createQuest": {
+      "choosePeriod": "???"
+    },
     "distantWork": {
       "title": "远程工作",
       "distantWork": "远程工作",
       "workInOffice": "在办公室工作",
       "bothVariant": "两种选择"
+    },
+    "employment": {
+      "employment": "???",
+      "fullTime": "???",
+      "partTime": "???",
+      "fixedTerm": "???"
+    },
+    "runtime": {
+      "runtime": "???",
+      "urgent": "???",
+      "shortTerm": "???",
+      "fixedDelivery": "???"
+    },
+    "spec": {
+      "spec": "???",
+      "addSpec": "???"
+    },
+    "skills": {
+      "skills": "???",
+      "chooseSkills": "???",
+      "limit": "???"
     },
     "hours": "小时",
     "invited": "已邀请",
@@ -263,7 +329,6 @@
     "proposal": "提议",
     "category": "选择类别",
     "address": "添加地址",
-    "runtime": "运行时间（小时）",
     "uploadMaterials": "上传材料以更好地描述 Quest",
     "uploadQuestMaterials": "添加详细说明",
     "price": "价格",
@@ -281,6 +346,7 @@
     "period": "时长",
     "EstimatedPayment": "预计付款：",
     "createAQuest": "创建 Quest",
+    "editAQuest": "???",
     "activeQuests": "有效 Quest",
     "completedQuests": "已完成的 Quest",
     "oneTime": "一次性",
@@ -296,6 +362,7 @@
     "type": "工作类型",
     "time": "添加时间",
     "priority": {
+      "title": "???",
       "all": "所有优先级",
       "low": "低",
       "normal": "普通",
@@ -754,13 +821,46 @@
       }
     }
   },
+  "toasts": {
+    "questEdited": "???",
+    "questCreated": "???",
+    "questDeleted": "???",
+    "caseDeleted": "???",
+    "caseAdded": "???",
+    "caseEdited": "???",
+    "error": "???"
+  },
   "modals": {
+    "incorrectAmount": "???",
+    "nothingToClaim": "???",
+    "pleaseWait": "???",
+    "redeemSuccess": "???",
+    "redeemFail": "???",
     "chatCreate": {
       "title": "创建群聊",
       "desc": "创建群聊名称并从您的聊天列表选择人员",
       "participants": "参与者",
       "chatName": "聊天名称"
     },
+    "yourRewardBalance": "???",
+    "deletePortfolio": "???",
+    "addTitle": "???",
+    "addDesc": "???",
+    "editCase": "???",
+    "error": "???",
+    "share": "???",
+    "edit": "???",
+    "delete": "???",
+    "youCan’tDeleteActiveQuest": "???",
+    "sureDeleteText": "???",
+    "priceTitle": "???",
+    "enterPriceRange": "???",
+    "priceForm": "???",
+    "priceFromAmount": "???",
+    "priceFieldFrom": "???",
+    "priceTo": "???",
+    "priceToAmount": "???",
+    "priceFieldTo": "???",
     "changePercentDesc": "将自动记入您的退休帐户的 Quest 金额的百分比",
     "yourSkillsHaveBeenAdded": "您的技能已成功添加。",
     "yourAccountVerified": "您的帐户已成功验证",
@@ -773,10 +873,12 @@
     "haventSMS": "没有收到短信？",
     "SMSVerConnected": "已连接短信验证",
     "phoneNumber": "电话号码",
+    "phoneNumberField": "???",
     "enterPhone": "输入您的电话号码以确认短信验证",
     "enterSMSCode": "我们已将验证码发送到您的电话号码。输入此代码",
     "codeFromSMS": "短信代码",
     "smsVerification": "短信验证",
+    "codeFromSMSField": "???",
     "saved": "已保存",
     "userDataHasBeenSaved": "用户数据已保存",
     "workExpAddSuccessful": "工作经验添加成功",
@@ -847,6 +949,8 @@
     "bodyMessage": "您好",
     "areYouSure": "确定吗？",
     "transactionSend": "已发送交易",
+    "transactionFail": "???",
+    "transactionCheck": "???",
     "cardHasBeenAdded": "银行卡已添加",
     "deposit": "接收",
     "numberOfCard": "卡号",
@@ -872,6 +976,7 @@
     "depositRetirementModalPrecentPlaceholder": "0 % 请选择百分比",
     "depositRetirementModalAmountPlaceholder": "0 WUSD 请输入金额",
     "firstDepositAmount": "首存金额*",
+    "firstDepositAmountField": "???",
     "aboutFirstDeposit": "* 首存金额为可选项。如果您不想存款，您可以将此字段留空",
     "pensionIsRegisteredTitle": "恭喜！",
     "pensionIsRegisteredDesc": "养老金计划已成功启动。",
@@ -881,17 +986,20 @@
     "durationDays": "持续时间（天）",
     "depositIsOpened": "存款已开立",
     "addLiquidity": "增加流动性",
-    "amountOfWusd": "WUSD 金额",
+    "amountOfWqt": "WQT 金额",
     "amountOfEth": "ETH 金额",
+    "amountOfBnb": "BNB 金额",
     "tip": "提示：",
     "tipAbout": "增加流动性时，您将收到代表您头寸的池代币。这些代币会自动赚取与您在池中份额成比例的费用，并且可以随时赎回。",
     "byAddingLiquidityYouWillEarn": "增加流动性后，您将获得该货币对所有交易的 0.3%，与您在池中的份额成比例。费用被添加到池中，实时累积，并且可以通过提取您的流动性索取。",
-    "amountEthPerWusd": "每个 WUSD 的 ETH 金额",
+    "amountEthPerWqt": "每个 WQT 的 ETH 金额",
+    "amountBnbPerWqt": "???",
     "shareOfPool": "池份额",
     "removeLiquidity": "移除流动性",
     "withdrawalAmount": "提款金额",
     "exchangeRate": "汇率",
     "tempForRemove": "1 ETH = ... WUSD",
+    "tempForRemove2": "1 BNB = ... WQT",
     "currentPoolSize": "当前池大小",
     "yourPoolShare": "您的池份额",
     "eth": "ETH",
@@ -926,7 +1034,104 @@
     "percentage": "百分比",
     "loanTerm": "贷款期限",
     "loanIsOpened": "贷款已开立",
-    "successCopied": "公共地址已复制到剪贴板"
+    "successCopied": "公共地址已复制到剪贴板",
+    "walletAddress": "???",
+    "scanQr": "???",
+    "close": "???",
+    "depositTitle": "???",
+    "addYourCard": "???",
+    "walletCopy": "???",
+    "textCopy": "???",
+    "addingCard": "???",
+    "add": "???",
+    "totalFee": "???",
+    "processing": "???",
+    "addNewCard": "???",
+    "numberCard": "???",
+    "chooseCard": "???",
+    "depositInfo": "???",
+    "cardAdd": "???",
+    "cardAddedText": "",
+    "transactionSentText": "",
+    "maximum": "???",
+    "withdrawInfo": "???",
+    "bankCard": "???",
+    "transfer": "???",
+    "recepient": "???",
+    "transferInfo": "???",
+    "currencyDetails": "???",
+    "generatingDetails": "???",
+    "collateralizationRatio": "???",
+    "depositIsOpenedText": "",
+    "loanText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
+    "loanIsOpenedText": "",
+    "firstDepositText": "???",
+    "pensionIsRegistered": "???",
+    "pensionIsRegisteredText": "",
+    "changePercent": "???",
+    "changePercentText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor",
+    "currentPercentTitle": "???",
+    "depositIsDone": "???",
+    "makeDepositText": "",
+    "percentIsChangedText": "",
+    "percentIsChanged": "???",
+    "invitationSendText": "",
+    "choose": "???",
+    "openDisputeText": "",
+    "chooseCurrency": "???",
+    "wallet": "???",
+    "coinpaymebts": "???",
+    "errorDeleteText": "???",
+    "swapTitle": "???",
+    "coin": "???",
+    "recepientBinance": "???",
+    "createSwap": "???",
+    "swapInfo": "???",
+    "crosschain": "???",
+    "crosschainText": "Eth > Binance",
+    "senderAddress": "???",
+    "recepientAddress": "???",
+    "worknetFee": "Eth ???",
+    "binanceFee": "Binance ???",
+    "welcomeText": "???",
+    "areYouSureText": "",
+    "noticeTitle": "???",
+    "noticeText": "???",
+    "areYouSureNotificationText": "",
+    "creditCardNumber": "???",
+    "dateName": "???",
+    "depositPercent": "???",
+    "currentPercentErr": "???",
+    "amountField": "???",
+    "percentField": "???",
+    "quantityField": "???",
+    "creditingDepositText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
+    "generateField": "???",
+    "amountOfWqtField": "??? WQT",
+    "amountOfEthField": "??? ETH",
+    "amountOfBnbField": "??? BNB",
+    "withdrawalAmountField": "???",
+    "removeLiquidityCurrentPoolSize": "1 ETH + 456 WQT",
+    "removeLiquidityCurrentPoolSize2": "1 BNB + 456 WQT",
+    "removeLiquidityYourPoolShare": "10% = 1% ETH + 4% WQT",
+    "removeLiquidityYourPoolShare2": "10% = 1% BNB + 4% WQT",
+    "lockedSavingsField": "???",
+    "durationDaysField": "???",
+    "depositAmountField": "???",
+    "claim": "???",
+    "estimatedPaymentField": "120 WUSD",
+    "priceOfAClickField": "???",
+    "cityField": "???",
+    "addLiquidityAmountWqt": "1000 WQT",
+    "addLiquidityAmountEth": "10 ETH",
+    "addLiquidityAmountBnb": "10 BNB",
+    "cardHolderField": "???",
+    "addressField": "???",
+    "securityCheckField": "???",
+    "recepientAddressField": "???",
+    "walletAddressField": "???",
+    "thanksText": "",
+    "emailVerificationCodeField": "???"
   },
   "ui": {
     "jobQuestors": "求职者",
@@ -941,25 +1146,36 @@
       "disputes": "争议",
       "instruments": "工具",
       "DeFi": "DeFi 功能",
-      "logout": "退出"
+      "logout": "退出",
+      "login": "???"
     },
     "locals": {
-      "en": "EN",
-      "ru": "RU",
-      "ba": "BA",
-      "zh": "ZH",
-      "fr": "FR",
-      "hi": "HI",
-      "in": "IN",
-      "po": "PO",
-      "sp": "SP",
-      "ae": "AE"
+      "en": "en",
+      "ru": "ru",
+      "bn": "bn",
+      "zh": "zh",
+      "fr": "fr",
+      "hi": "hi",
+      "id": "id",
+      "pt": "pt",
+      "es": "es",
+      "ar": "ar"
     },
     "notifications": {
       "title": "通知",
       "invite": "邀请您完成 Quest"
     },
     "menu": {
+      "unauthorized": "???",
+      "instruments": "???",
+      "crosschain": {
+        "title": "???",
+        "desc": "???"
+      },
+      "staking": {
+        "title": "???",
+        "desc": "???"
+      },
       "pension": {
         "title": "退休计划",
         "desc": "您可以针对每个已完成 Quest 选择自动记入退休帐户的百分比，或者直接存入您选择的金额。基金池代表雇员进行投资，投资收益在工作者退休时产生收入。"
@@ -991,7 +1207,8 @@
     },
     "buttons": {
       "errors": {
-        "manySpec": "您只能添加 3 个专业"
+        "manySpec": "您只能添加 3 个专业",
+        "manySkills": "???"
       }
     }
   },
@@ -1036,9 +1253,10 @@
   "settings": {
     "placeOfStudying": "学习地点",
     "specialization": "专业",
+    "selectSpec": "???",
     "skillsInput": "技能",
+    "selectSkills": "???",
     "priority": "优先级",
-    "distantWork": "远程工作",
     "costPerHour": "每小时费用",
     "description": "And you are beautiful",
     "imgLoaded": "图片加载成功",
@@ -1106,7 +1324,440 @@
     "p2pInsurance": "P2P 保险",
     "savingProduct": "储蓄产品",
     "crediting": "贷记",
-    "liquidityMining": "流动性挖掘"
+    "liquidityMining": "流动性挖掘",
+    "distantWork": {
+      "title": "???",
+      "select": "???",
+      "distantWork": "???",
+      "workInOffice": "???",
+      "bothVariant": "???"
+    },
+    "specializations": {
+      "1": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???",
+          "11": "???",
+          "12": "???"
+        }
+      },
+      "2": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "3": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "4": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "5": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???"
+        }
+      },
+      "6": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???"
+        }
+      },
+      "7": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???"
+        }
+      },
+      "8": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "9": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???"
+        }
+      },
+      "10": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???"
+        }
+      },
+      "11": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???"
+        }
+      },
+      "12": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???"
+        }
+      },
+      "13": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???"
+        }
+      },
+      "14": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "15": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???"
+        }
+      },
+      "16": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???"
+        }
+      },
+      "17": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???"
+        }
+      },
+      "18": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???",
+          "11": "???",
+          "12": "???",
+          "13": "???"
+        }
+      },
+      "19": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???"
+        }
+      },
+      "20": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???",
+          "11": "???",
+          "12": "???",
+          "13": "???",
+          "14": "???",
+          "15": "???",
+          "16": "???",
+          "17": "???",
+          "18": "???",
+          "19": "???"
+        }
+      },
+      "21": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???",
+          "11": "???"
+        }
+      },
+      "22": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???"
+        }
+      },
+      "23": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "24": {
+        "title": "???",
+        "sub": {
+          "1": "???r",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "25": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???"
+        }
+      },
+      "26": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???",
+          "7": "???",
+          "8": "???",
+          "9": "???",
+          "10": "???"
+        }
+      },
+      "27": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "28": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???",
+          "6": "???"
+        }
+      },
+      "29": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "30": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???",
+          "4": "???",
+          "5": "???"
+        }
+      },
+      "31": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???"
+        }
+      },
+      "32": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???"
+        }
+      },
+      "33": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???"
+        }
+      },
+      "34": {
+        "title": "???",
+        "sub": {
+          "1": "???",
+          "2": "???",
+          "3": "???"
+        }
+      }
+    }
   },
   "raising-views": {
     "raisingViews": "提高浏览量",
@@ -1152,7 +1803,8 @@
     "based": "位置",
     "reviews": "评价",
     "portfolio": "作品集",
-    "showAllCases": "显示所有案例"
+    "showAllCases": "显示所有案例",
+    "costTitle": "???"
   },
   "levels": {
     "reliableEmp": "可靠的雇员或雇主。",
@@ -1330,41 +1982,72 @@
     "depositModalBody": "您的加密货币将锁定特定期限，您将开始赚取利息。",
     "depositIsOpened": "已确认转账",
     "deposit": "存款",
-    "withdraw": "提款"
+    "withdraw": "提款",
+    "depositIsOpenedText": "",
+    "withdrawText": "???"
   },
   "mining": {
-    "liquidityManning": "流动性挖掘",
+    "claimRewards": "???",
     "liquidityMining": "流动性挖掘",
+    "swapTokens": {
+      "title": "???",
+      "swap": "???",
+      "oldTokens": "???",
+      "newTokens": "???",
+      "balance": "???"
+    },
+    "approve": "???",
+    "stake": "???",
+    "unstake": "???",
+    "liquidityMiningSub": "???",
     "templateText": "",
     "pools": "池",
     "choose": "选择",
     "information": "信息",
     "docName": "Some_document.pdf",
+    "agreement": "???.pdf",
+    "kb": "{count} KB",
     "download": "下载",
     "tableHead": {
       "poolAddress": "池地址",
+      "swaps": "???",
+      "totalValue": "???",
+      "tokenAmount": "???",
+      "account": "???",
+      "time": "???",
       "assets": "资产",
       "sdsdsdsd": "sdsdsdsd",
       "volume": "交易量"
     },
     "table": {
       "poolAddress": "0sjs3892...sd45",
-      "assets": "50% WUSD/50%ETH",
+      "assets": "50% WUSD/50% ETH",
+      "assets2": "50% WQT / 50% BNB",
       "sdsdsdsd": "sdsdsdsd",
       "volume": "450 万美元"
     },
     "mb": "{count} MB",
     "back": "后退",
     "wusdEthPool": "WUSD/ETH 池",
+    "wusdBnbPool": "Pool BNB/WQT",
     "dollarsCount": "{count} 美元",
+    "procCount": "{count} %",
+    "lpCount": "{count} LP",
+    "wqtCount": "{count} WQT",
+    "APY": "???",
     "addLiquidity": "增加流动性",
     "removeLiquidity": "移除流动性",
     "liquidity": "流动性",
+    "totalLiquidity": "???",
+    "reward": "???",
+    "claimReward": "???",
+    "totalReward": "???",
     "volume24h": "交易量（24 小时）",
     "myPoolShare": "我的池份额",
     "liquidityPoolProviders": "流动性池提供者",
     "liquidityProvidersEarn": "流动性提供者在所有交易中收取 0.3% 的费用，与其在池中的份额成比例。费用被添加到池中，实时累积，并且可以通过提取您的流动性索取。",
-    "transactions": "交易"
+    "transactions": "交易",
+    "connectWallet": "???"
   },
   "crediting": {
     "lending": "WorkQuest 借贷协议",
@@ -1471,6 +2154,7 @@
     "changePlan": "更改计划",
     "fundParticipants": "基金参与者",
     "userName": "李华",
+    "userNameCase": "??? :",
     "voting": "投票",
     "noVoteAtTheMoment": "暂时没有投票",
     "countPeoplesInChat": "{count} 人在聊天中",
@@ -1479,6 +2163,7 @@
     "paymentOfInsurance": "{value}：保险支付",
     "youWillCertifyTheInsuredEvent": "您会为受保事件提供证明吗？",
     "studyTheInsuredEventThoroughly": "彻底研究受保事件",
+    "insureCaseText": "",
     "notAgree": "不同意",
     "insuredEvent": "受保事件",
     "agree": "同意",
@@ -1553,6 +2238,82 @@
     "socialText": "在社交媒体中分享",
     "share": "分享链接"
   },
+  "crosschain": {
+    "pageName": "???",
+    "pageAbout": "???",
+    "sourceBlockchain": "???",
+    "targetBlockchain": "???",
+    "blockchain": "???",
+    "yourWQTAddress": "???",
+    "YourBSCAddress": "???",
+    "balance": "???",
+    "createSwap": "???",
+    "mySwaps": "???",
+    "eth": "ETH",
+    "worknet": "Wor???knet",
+    "bsc": "BSC",
+    "tableHead": {
+      "direction": "???",
+      "recipient": "???",
+      "tx": "???",
+      "created": "???"
+    },
+    "recipTemp": "0xnf8o2…9b74thb3",
+    "dateTemp": "05.08.2021, 12:00"
+  },
+  "staking": {
+    "mainHeader": "???",
+    "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "pools": "???",
+    "tableHead": {
+      "poolAddress": "???",
+      "totalStaked": "???",
+      "totalDistributed": "???",
+      "stakeTokenAddress": "???",
+      "rewardTokenAddress": "???"
+    },
+    "open": "???",
+    "tempAddress": "0sjs3892...sd45",
+    "tempStaked": "10 000 WQT",
+    "back": "???",
+    "claimRewards": "???",
+    "pool": "Pool",
+    "stakeTokenAddress": "???",
+    "rewardTokenAddress": "???",
+    "totalStaked": "???",
+    "wqtCount": "{n} WQT",
+    "totalDistributed": "???",
+    "staking": "???",
+    "stakingCards": {
+      "distributionTime": "???",
+      "distributionTimeData": "10 min",
+      "rewardTotal": "???",
+      "rewardTotalData": "3.00 WQT",
+      "takePeriod": "???",
+      "takePeriodData": "24 ???",
+      "claimPeriod": "???",
+      "claimPeriodData": "24 ???",
+      "duration": "???",
+      "durationData": "30 ???"
+    },
+    "userInformation": "???",
+    "userInformationCards": {
+      "staked": "???",
+      "stakeBalance": "???",
+      "claimed": "???"
+    },
+    "withdrawal": "???",
+    "withdrawalCards": {
+      "displayedInTheCurrentPeriod": "???",
+      "displayedInTheCurrentPeriodData": "10 000 WQT",
+      "withdrawalLimit": "???",
+      "withdrawalLimitData": "10 000 WQT",
+      "periodUpdate": "???",
+      "periodUpdateData": "10 000 WQT"
+    },
+    "autoRenewal": "???",
+    "withdraw": "???"
+  },
   "myQuests": {
     "statuses": {
       "all": "所有 Quest",
@@ -1561,6 +2322,38 @@
       "completed": "已完成的 Quest",
       "active": "有效 Quest",
       "invited": "受邀 Quest"
+    }
+  },
+  "footer": {
+    "download": "???",
+    "follow": "???",
+    "company": {
+      "title": "???",
+      "wqWiki": "???",
+      "aboutUs": "A???",
+      "leadership": "???",
+      "contactUs": "???",
+      "support": "???"
+    },
+    "legalInfo": {
+      "title": "???",
+      "risks": "???",
+      "privacyPolicy": "???",
+      "terms": "???",
+      "aml": "???",
+      "cookiePolicy": "???"
+    },
+    "DeFi": {
+      "title": "???",
+      "retirement": "???",
+      "referral": "???",
+      "P2P": "???",
+      "savingsProduct": "???",
+      "lending": "???",
+      "liquidityMining": "???",
+      "wqBridge": "???",
+      "staking": "???",
+      "wqDAO": "???"
     }
   }
 }
