@@ -44,6 +44,7 @@
         :type="type"
         :autocomplete="autocomplete"
         @input="input"
+        @keyup.enter="enter"
         @keypress.enter="onEnterPress"
         @focus="$emit('focus')"
       >
@@ -149,6 +150,9 @@ export default {
     },
   },
   methods: {
+    enter($event) {
+      this.$emit('enter', $event.target.value);
+    },
     input($event) {
       this.$emit('input', $event.target.value);
       if (this.selector) {
