@@ -425,6 +425,7 @@ export default {
     async tokensDataUpdate() {
       this.isLoadingAPY = true;
       const tokensData = await this.$store.dispatch('web3/getTokensData');
+      console.log('tokensData', tokensData);
       this.fullRewardAmount = tokensData.rewardTokenAmount;
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
@@ -487,6 +488,7 @@ export default {
     },
     async openModalStaking() {
       await this.checkWalletStatus();
+      console.log('openModalStaking', this.stakedAmount, this.stakedAmount > 0);
       if (this.stakedAmount > 0) {
         this.ShowModal({
           key: modals.claimRewards,
