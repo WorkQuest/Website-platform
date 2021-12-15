@@ -292,14 +292,24 @@ export default {
       stakingAddress,
       stakingAbi,
     } = getStakingDataByType(stakingType);
+    console.group('stake');
+    console.log('tokenAddress', tokenAddress);
+    console.log('stakingAddress', stakingAddress);
+    console.groupEnd();
     return await staking(decimals, amount, tokenAddress, stakingAddress, stakingAbi, duration, stakingType);
   },
   async unstake({ commit }, { decimals, amount, stakingType }) {
     const { stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
+    console.group('unstake');
+    console.log('stakingAddress', stakingAddress);
+    console.groupEnd();
     return await unStaking(decimals, amount, stakingAddress, stakingAbi);
   },
   async claimRewards({ commit }, { stakingType }) {
     const { stakingAddress, stakingAbi } = getStakingDataByType(stakingType);
+    console.group('claimRewards');
+    console.log('stakingAddress', stakingAddress);
+    console.groupEnd();
     return await claimRewards(stakingAddress, stakingAbi);
   },
   async autoRenewal({ commit }, { stakingType }) {
