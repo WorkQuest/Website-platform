@@ -1,7 +1,0 @@
-{
-    "i18n-ally.localesPaths": [
-        "locales",
-        "pages/messages"
-    ],
-    "i18n-ally.keystyle": "nested"
-}
