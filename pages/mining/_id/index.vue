@@ -85,9 +85,7 @@
           </div>
         </div>
         <div class="info-block__double">
-          <div
-            class="info-block__third"
-          >
+          <div class="info-block__third">
             <div class="info-block third">
               <div class="third__wrapper">
                 <div class="third__container">
@@ -138,7 +136,7 @@
               <base-btn
                 class="btn_bl"
                 :disabled="!isConnected || statusBusy || disabled"
-                @click="openModalClaimRewards()"
+                @click="openModalStaking()"
               >
                 {{ $t('mining.stake') }}
               </base-btn>
@@ -487,9 +485,9 @@ export default {
         });
       }
     },
-    async openModalClaimRewards() {
+    async openModalStaking() {
       await this.checkWalletStatus();
-      if (this.rewardAmount > 0) {
+      if (this.stakedAmount > 0) {
         this.ShowModal({
           key: modals.claimRewards,
           type: 1,
