@@ -392,7 +392,7 @@ export default {
   methods: {
     numberValidate(number) {
       const fixedNumber = number.toFixed(1);
-      if (number - fixedNumber > 0) {
+      if (number - fixedNumber !== 0) {
         return fixedNumber;
       }
       return number;
