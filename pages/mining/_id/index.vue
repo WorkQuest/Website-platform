@@ -270,6 +270,7 @@ export default {
       rewardAmount: 0,
       fullRewardAmount: 0,
       stakedAmount: 0,
+      availableBalanceForStake: 0,
       profitWQT: 0,
       isLoadingAPY: false,
     };
@@ -424,16 +425,16 @@ export default {
 
     async tokensDataUpdate() {
       this.isLoadingAPY = true;
-      const tokensData = await this.$store.dispatch('web3/getTokensData');
-      console.log('tokensData', tokensData);
-      this.fullRewardAmount = tokensData.rewardTokenAmount;
-      this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
-      this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
+      const { balanceTokenAmount, rewardTokenAmount, stakeTokenAmount } = await this.$store.dispatch('web3/getTokensData');
+      this.fullRewardAmount = rewardTokenAmount;
+      this.rewardAmount = this.Floor(rewardTokenAmount);
+      this.stakedAmount = this.Floor(stakeTokenAmount);
+      this.availableBalanceForStake = balanceTokenAmount;
 
-      if (+tokensData.stakeTokenAmount > 0) {
+      if (+stakeTokenAmount > 0) {
         const payload = {
           chain: this.currentPool,
-          stakedAmount: tokensData.stakeTokenAmount,
+          stakedAmount: stakeTokenAmount,
         };
         const profit = await this.$store.dispatch('web3/getAPY', payload);
         this.profitWQT = this.Floor(profit);
@@ -488,8 +489,7 @@ export default {
     },
     async openModalStaking() {
       await this.checkWalletStatus();
-      console.log('openModalStaking', this.stakedAmount, this.stakedAmount > 0);
-      if (this.stakedAmount > 0) {
+      if (this.availableBalanceForStake > 0) {
         this.ShowModal({
           key: modals.claimRewards,
           type: 1,
