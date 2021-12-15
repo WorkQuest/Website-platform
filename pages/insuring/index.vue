@@ -85,20 +85,20 @@
               v-for="(item, i) in FAQs"
               :key="i"
               class="info-block__faq"
-              @click="handleClickFAQ(item)"
+              @click="handleClickFAQ(i)"
             >
               <div class="text__faq">
                 {{ item.name }}
               </div>
               <img
                 class="select-img"
-                :class="{'select-img_rotate' : item.isOpen}"
+                :class="{'select-img_rotate' : indexFAQ.includes(i)}"
                 src="~/assets/img/ui/arrow-down.svg"
                 alt=""
               >
               <div
                 class="text__faq_gray"
-                :class="{'text__faq_opened' : item.isOpen}"
+                :class="{'text__faq_opened' : indexFAQ.includes(i)}"
               >
                 {{ item.about }}
               </div>
@@ -116,7 +116,15 @@ import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
-      documents: [
+      indexFAQ: [],
+    };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+    documents() {
+      return [
         {
           name: this.$t('insuring.docName'),
           size: this.$tc('insuring.mb', '1.2'),
@@ -132,8 +140,10 @@ export default {
           size: this.$tc('insuring.mb', '1.2'),
           url: '',
         },
-      ],
-      cards: [
+      ];
+    },
+    cards() {
+      return [
         {
           name: this.$t('insuring.card1.title'),
           points: [
@@ -152,55 +162,44 @@ export default {
             this.$t('insuring.card3.pointsText.point1'),
           ],
         },
-      ],
-      FAQs: [
+      ];
+    },
+    FAQs() {
+      return [
         {
           name: this.$t('insuring.faq1.question'),
           about: this.$t('insuring.faq1.answer'),
-          isOpen: false,
         },
         {
           name: this.$t('insuring.faq2.question'),
           about: this.$t('insuring.faq2.answer'),
-          isOpen: false,
         },
         {
           name: this.$t('insuring.faq3.question'),
           about: this.$t('insuring.faq3.answer'),
-          isOpen: false,
         },
         {
           name: this.$t('insuring.faq4.question'),
           about: this.$t('insuring.faq4.answer'),
-          isOpen: false,
         },
         {
           name: this.$t('insuring.faq5.question'),
           about: this.$t('insuring.faq5.answer'),
-          isOpen: false,
         },
         {
           name: this.$t('insuring.faq6.question'),
           about: this.$t('insuring.faq6.answer'),
-          isOpen: false,
         },
         {
           name: this.$t('insuring.faq7.question'),
           about: this.$t('insuring.faq7.answer'),
-          isOpen: false,
         },
         {
           name: this.$t('insuring.faq8.question'),
           about: this.$t('insuring.faq8.answer'),
-          isOpen: false,
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
+      ];
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -210,8 +209,12 @@ export default {
     handleClickBuyProtection() {
       this.$router.push('/insuring/1');
     },
-    handleClickFAQ(FAQ) {
-      FAQ.isOpen = !FAQ.isOpen;
+    handleClickFAQ(index) {
+      if (this.indexFAQ.includes(index)) {
+        this.indexFAQ.splice(this.indexFAQ.indexOf(index), 1);
+      } else {
+        this.indexFAQ.push(index);
+      }
     },
   },
 };

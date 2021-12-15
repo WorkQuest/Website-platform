@@ -102,20 +102,20 @@
               v-for="(item, i) in FAQs"
               :key="i"
               class="info-block__faq"
-              @click="handleClickFAQ(item)"
+              @click="handleClickFAQ(i)"
             >
               <div class="text__faq">
                 {{ item.name }}
               </div>
               <img
                 class="select-img"
-                :class="{'select-img_rotate' : item.isOpen}"
+                :class="{'select-img_rotate' : indexFAQ.includes(i)}"
                 src="~/assets/img/ui/arrow-down.svg"
                 alt=""
               >
               <div
                 class="text__faq_gray"
-                :class="{'text__faq_opened' : item.isOpen}"
+                :class="{'text__faq_opened' : indexFAQ.includes(i)}"
               >
                 {{ item.about }}
               </div>
@@ -134,7 +134,15 @@ import modals from '~/store/modals/modals';
 export default {
   data() {
     return {
-      documents: [
+      indexFAQ: [],
+    };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+    documents() {
+      return [
         {
           name: this.$t('pension.docName'),
           size: this.$tc('pension.mb', '1.2'),
@@ -150,8 +158,10 @@ export default {
           size: this.$tc('pension.mb', '1.2'),
           url: '',
         },
-      ],
-      cards: [
+      ];
+    },
+    cards() {
+      return [
         {
           title: this.$tc('crediting.dollarsCount', '417.1M'),
           subtitle: this.$t('crediting.marketSize'),
@@ -164,40 +174,32 @@ export default {
           title: this.$tc('crediting.percentsCount', 5),
           subtitle: this.$t('crediting.percent'),
         },
-      ],
-      FAQs: [
+      ];
+    },
+    FAQs() {
+      return [
         {
           name: this.$t('crediting.faq1'),
           about: this.$t('crediting.faq1'),
-          isOpen: false,
         },
         {
           name: this.$t('crediting.faq2'),
           about: this.$t('crediting.ans2'),
-          isOpen: false,
         },
         {
           name: this.$t('crediting.faq3'),
           about: this.$t('crediting.faq3'),
-          isOpen: false,
         },
         {
           name: this.$t('crediting.faq4'),
           about: this.$t('crediting.faq4'),
-          isOpen: false,
         },
         {
           name: this.$t('crediting.faq5'),
           about: this.$t('crediting.faq5'),
-          isOpen: false,
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
+      ];
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -216,8 +218,12 @@ export default {
         needChangeModal: 1,
       });
     },
-    handleClickFAQ(FAQ) {
-      FAQ.isOpen = !FAQ.isOpen;
+    handleClickFAQ(index) {
+      if (this.indexFAQ.includes(index)) {
+        this.indexFAQ.splice(this.indexFAQ.indexOf(index), 1);
+      } else {
+        this.indexFAQ.push(index);
+      }
     },
   },
 };

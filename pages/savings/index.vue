@@ -95,20 +95,20 @@
               v-for="(item, i) in FAQs"
               :key="i"
               class="info-block__faq"
-              @click="handleClickFAQ(item)"
+              @click="handleClickFAQ(i)"
             >
               <div class="text__faq">
                 {{ item.name }}
               </div>
               <img
                 class="select-img"
-                :class="{'select-img_rotate' : item.isOpen}"
+                :class="{'select-img_rotate' : indexFAQ.includes(i)}"
                 src="~/assets/img/ui/arrow-down.svg"
                 alt=""
               >
               <div
                 class="text__faq_gray"
-                :class="{'text__faq_opened' : item.isOpen}"
+                :class="{'text__faq_opened' : indexFAQ.includes(i)}"
               >
                 {{ item.about }}
               </div>
@@ -166,56 +166,43 @@ export default {
   data() {
     return {
       selCardID: -1,
-      FAQs: [
+      indexFAQ: [],
+    };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+    FAQs() {
+      return [
         {
           name: this.$t('saving.faq1'),
           about: this.$t('saving.ans1'),
-          isOpen: false,
         },
         {
           name: this.$t('saving.faq2'),
           about: this.$t('saving.ans2'),
-          isOpen: false,
         },
         {
           name: this.$t('saving.faq3'),
           about: this.$t('saving.ans3'),
-          isOpen: false,
         },
         {
           name: this.$t('saving.faq4'),
           about: this.$t('saving.ans4'),
-          isOpen: false,
         },
         {
           name: this.$t('saving.faq5'),
           about: this.$t('saving.ans5'),
-          isOpen: false,
         },
         {
           name: this.$t('saving.faq6'),
           about: this.$t('saving.ans6'),
-          isOpen: false,
         },
-      ],
-      documents: [
-        {
-          name: this.$t('saving.docName'),
-          size: this.$tc('saving.mb', '1.2'),
-          url: '',
-        },
-        {
-          name: this.$t('saving.docName'),
-          size: this.$tc('saving.mb', '1.2'),
-          url: '',
-        },
-        {
-          name: this.$t('saving.docName'),
-          size: this.$tc('saving.mb', '1.2'),
-          url: '',
-        },
-      ],
-      cards: [
+      ];
+    },
+    cards() {
+      return [
         {
           text: this.$t('saving.card1'),
           sel: false,
@@ -236,8 +223,29 @@ export default {
           text: this.$t('saving.card5'),
           sel: false,
         },
-      ],
-      interestRate: [
+      ];
+    },
+    documents() {
+      return [
+        {
+          name: this.$t('saving.docName'),
+          size: this.$tc('saving.mb', '1.2'),
+          url: '',
+        },
+        {
+          name: this.$t('saving.docName'),
+          size: this.$tc('saving.mb', '1.2'),
+          url: '',
+        },
+        {
+          name: this.$t('saving.docName'),
+          size: this.$tc('saving.mb', '1.2'),
+          url: '',
+        },
+      ];
+    },
+    interestRate() {
+      return [
         {
           perc: this.$tc('saving.percents', '5.31'),
           date: this.$tc('saving.days', 7),
@@ -258,21 +266,20 @@ export default {
           perc: this.$tc('saving.percents', '6,5'),
           date: this.$tc('saving.days', 180),
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
+      ];
+    },
   },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
   },
   methods: {
-    handleClickFAQ(FAQ) {
-      FAQ.isOpen = !FAQ.isOpen;
+    handleClickFAQ(index) {
+      if (this.indexFAQ.includes(index)) {
+        this.indexFAQ.splice(this.indexFAQ.indexOf(index), 1);
+      } else {
+        this.indexFAQ.push(index);
+      }
     },
     openOpenADepositModal() {
       this.ShowModal({

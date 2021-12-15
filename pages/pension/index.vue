@@ -96,20 +96,20 @@
               v-for="(item, i) in FAQs"
               :key="i"
               class="info-block__faq"
-              @click="handleClickFAQ(item)"
+              @click="handleClickFAQ(i)"
             >
               <div class="text__faq">
                 {{ item.name }}
               </div>
               <img
                 class="select-img"
-                :class="{'select-img_rotate' : item.isOpen}"
+                :class="{'select-img_rotate' : indexFAQ.includes(i)}"
                 src="~/assets/img/ui/arrow-down.svg"
                 alt=""
               >
               <div
                 class="text__faq_gray"
-                :class="{'text__faq_opened' : item.isOpen}"
+                :class="{'text__faq_opened' : indexFAQ.includes(i)}"
               >
                 {{ item.about }}
               </div>
@@ -128,7 +128,15 @@ import modals from '~/store/modals/modals';
 export default {
   data() {
     return {
-      documents: [
+      indexFAQ: [],
+    };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+    documents() {
+      return [
         {
           name: this.$t('pension.docName'),
           size: this.$tc('pension.mb', '1.2'),
@@ -144,8 +152,10 @@ export default {
           size: this.$tc('pension.mb', '1.2'),
           url: '',
         },
-      ],
-      cards: [
+      ];
+    },
+    cards() {
+      return [
         {
           title: this.$tc('pension.percents', '5'),
           subtitle: this.$t('pension.annualPercent'),
@@ -162,65 +172,52 @@ export default {
           title: this.$t('pension.configurablePercentage'),
           subtitle: this.$t('pension.depositsFromQuest'),
         },
-      ],
-      FAQs: [
+      ];
+    },
+    FAQs() {
+      return [
         {
           name: this.$t('pension.faq1.question'),
           about: this.$t('pension.faq1.answer'),
-          isOpen: false,
         },
         {
           name: this.$t('pension.faq2.question'),
           about: this.$t('pension.faq2.answer'),
-          isOpen: false,
         },
         {
           name: this.$t('pension.faq3.question'),
           about: this.$t('pension.faq3.answer'),
-          isOpen: false,
         },
         {
           name: this.$t('pension.faq4.question'),
           about: this.$t('pension.faq4.answer'),
-          isOpen: false,
         },
         {
           name: this.$t('pension.faq5.question'),
           about: this.$t('pension.faq5.answer'),
-          isOpen: false,
         },
         {
           name: this.$t('pension.faq6.question'),
           about: this.$t('pension.faq6.answer'),
-          isOpen: false,
         },
         {
           name: this.$t('pension.faq7.question'),
           about: this.$t('pension.faq7.answer'),
-          isOpen: false,
         },
         {
           name: this.$t('pension.faq8.question'),
           about: this.$t('pension.faq8.answer'),
-          isOpen: false,
         },
         {
           name: this.$t('pension.faq9.question'),
           about: this.$t('pension.faq9.answer'),
-          isOpen: false,
         },
         {
           name: this.$t('pension.faq10.question'),
           about: this.$t('pension.faq10.answer'),
-          isOpen: false,
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
+      ];
+    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -232,8 +229,12 @@ export default {
         key: modals.applyForAPension,
       });
     },
-    handleClickFAQ(FAQ) {
-      FAQ.isOpen = !FAQ.isOpen;
+    handleClickFAQ(index) {
+      if (this.indexFAQ.includes(index)) {
+        this.indexFAQ.splice(this.indexFAQ.indexOf(index), 1);
+      } else {
+        this.indexFAQ.push(index);
+      }
     },
   },
 };

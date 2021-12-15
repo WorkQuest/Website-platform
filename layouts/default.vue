@@ -1115,7 +1115,6 @@ export default {
       this.currentLocale = item.localeText;
       this.$i18n.setLocale(item.localeText);
       moment.locale(item.localeText);
-      console.log(this.currentLocale, moment.locales());
     },
     kitcutDescription(text) {
       text = text.trim();

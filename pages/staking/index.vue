@@ -71,7 +71,14 @@ import modals from '~/store/modals/modals';
 export default {
   data() {
     return {
-      items: [
+    };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+    items() {
+      return [
         {
           poolAddress: this.$t('staking.tempAddress'),
           totalStaked: this.$t('staking.tempStaked'),
@@ -88,8 +95,10 @@ export default {
           rewardTokenAddress: this.$t('staking.tempAddress'),
           open: this.$t('staking.open'),
         },
-      ],
-      testFields: [
+      ];
+    },
+    testFields() {
+      return [
         {
           key: 'poolAddress',
           label: this.$t('staking.tableHead.poolAddress'),
@@ -162,13 +171,8 @@ export default {
             style: 'padding-left: 0; padding-right: 20px',
           },
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
+      ];
+    },
   },
   async mounted() {
     this.SetLoader(true);

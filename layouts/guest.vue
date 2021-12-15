@@ -206,10 +206,10 @@
                 @click="showLocale()"
               >
                 <span v-if="currentLocale">
-                  {{ currentLocale }}
+                  {{ currentLocale.toUpperCase() }}
                 </span>
                 <span v-else>
-                  {{ $t('ui.locals.en') }}
+                  {{ $t('ui.locals.en').toUpperCase() }}
                 </span>
                 <span class="icon-caret_down" />
                 <transition name="fade">
@@ -227,12 +227,12 @@
                         @click="setLocale(item)"
                       >
                         <img
-                          :src="item.localeSrc"
+                          :src="require(`assets/img/lang/${item.localeSrc}`)"
                           :alt="item.localeText"
                           class="locale__icon"
                         >
                         <div class="locale__text">
-                          {{ item.localeText }}
+                          {{ item.localeText.toUpperCase() }}
                         </div>
                       </div>
                     </div>
@@ -799,6 +799,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
+import moment from 'moment';
 
 export default {
   scrollToTop: true,
@@ -833,44 +834,44 @@ export default {
     locales() {
       return [
         {
-          localeSrc: '/img/app/en.svg',
+          localeSrc: 'en.svg',
           localeText: this.$t('ui.locals.en'),
         },
         {
-          localeSrc: '/img/app/ru.svg',
+          localeSrc: 'ru.svg',
           localeText: this.$t('ui.locals.ru'),
         },
         {
-          localeSrc: '/img/app/ba.svg',
-          localeText: this.$t('ui.locals.ba'),
+          localeSrc: 'bn.svg',
+          localeText: this.$t('ui.locals.bn'),
         },
         {
-          localeSrc: '/img/app/zh.svg',
+          localeSrc: 'zh.svg',
           localeText: this.$t('ui.locals.zh'),
         },
         {
-          localeSrc: '/img/app/fr.svg',
+          localeSrc: 'fr.svg',
           localeText: this.$t('ui.locals.fr'),
         },
         {
-          localeSrc: '/img/app/hi.svg',
+          localeSrc: 'hi.svg',
           localeText: this.$t('ui.locals.hi'),
         },
         {
-          localeSrc: '/img/app/in.svg',
-          localeText: this.$t('ui.locals.in'),
+          localeSrc: 'id.svg',
+          localeText: this.$t('ui.locals.id'),
         },
         {
-          localeSrc: '/img/app/po.svg',
-          localeText: this.$t('ui.locals.po'),
+          localeSrc: 'pt.svg',
+          localeText: this.$t('ui.locals.pt'),
         },
         {
-          localeSrc: '/img/app/sp.svg',
-          localeText: this.$t('ui.locals.sp'),
+          localeSrc: 'es.svg',
+          localeText: this.$t('ui.locals.es'),
         },
         {
-          localeSrc: '/img/app/ae.svg',
-          localeText: this.$t('ui.locals.ae'),
+          localeSrc: 'ar.svg',
+          localeText: this.$t('ui.locals.ar'),
         },
       ];
     },
@@ -1148,6 +1149,7 @@ export default {
     this.GetLocation();
     await this.loginCheck();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
+    this.currentLocale = this.$i18n.localeProperties.code;
   },
   created() {
     window.addEventListener('resize', this.userWindowChange);
@@ -1169,6 +1171,8 @@ export default {
     },
     setLocale(item) {
       this.currentLocale = item.localeText;
+      this.$i18n.setLocale(item.localeText);
+      moment.locale(item.localeText);
     },
     kitcutDescription(text) {
       text = text.trim();
