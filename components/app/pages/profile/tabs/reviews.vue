@@ -1,24 +1,43 @@
 <template>
-  <div class="reviews-grid">
+  <div class="reviews-grid reviews-grid__reviews-item">
     <span
-      v-for="(item, i) in reviews"
+      v-for="(reviewData, i) in object.reviews"
       :key="i"
     >
       <div class="reviews-item">
         <div class="reviews-item__header">
-          <div class="reviews-item__avatar">
-            <img
-              src="~/assets/img/temp/avatar-medium.jpg"
-              alt=""
-            >
+          <div class="reviews-item__user-data">
+            <div class="reviews-item__avatar">
+              <img
+                class="reviews-item__img"
+                :src="initAvatar(reviewData.fromUser)"
+                alt=""
+                loading="lazy"
+                @click="goToProfile(reviewData.fromUser.id)"
+              >
+            </div>
+            <div class="name__container">
+              <div
+                class="card-subtitle__name"
+                @click="goToProfile(reviewData.fromUser.id)"
+              >
+                {{ `${reviewData.fromUser.firstName} ${reviewData.fromUser.lastName}` }}
+              </div>
+              <div class="card-subtitle_green">
+                {{ $t('role.worker') }}
+              </div>
+            </div>
           </div>
-          <div class="name__container">
-            <div class="card-subtitle__name">
-              {{ item.reviewerName }}
+          <div class="reviews-item__rating-block">
+            <div class="rating">
+              <div
+                v-for="(star,idx) in 5"
+                :key="idx"
+                class="star"
+                :class="initStarClass(star, reviewData.mark)"
+              />
             </div>
-            <div class="card-subtitle_green">
-              {{ $t('role.worker') }}
-            </div>
+            <div class="rating-mark">{{ reviewData.mark }}</div>
           </div>
         </div>
         <div class="reviews-item__subheader">
@@ -26,19 +45,19 @@
             {{ $t('quests.questBig') }}
           </div>
           <div class="card-subtitle__title">
-            {{ item.questName }}
+            {{ reviewData.quest.title }}
           </div>
         </div>
         <div class="description">
-          {{ item.reviewDesc }}
+          {{ reviewData.message }}
         </div>
 
         <div class="reviews-item__rating">
-          {{ item.reviewerRating }}
+          {{ reviewData.reviewerRating }}
         </div>
         <base-btn
           mode="borderless-right"
-          @click="showReviewDetails"
+          @click="showReviewDetails(reviewData)"
         >
           {{ $t('quests.readCompletely') }}
           <template v-slot:right>
@@ -57,27 +76,48 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'ReviewsTab',
+  props: {
+    object: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  data() {
+    return {
+      reviewMark: 0,
+      userStars: [],
+      allStars: [],
+    };
+  },
   computed: {
     ...mapGetters({
-      reviews: 'user/getAllUserReviews',
       userData: 'user/getUserData',
     }),
   },
-  async mounted() {
-    await this.getAllReviews();
-  },
   methods: {
-    showProfile() {
-      this.$router.push('/show-profile');
+    goToProfile(id) {
+      this.$router.push(`/profile/${id}`);
     },
-    showReviewDetails() {
+    initStarClass(star, reviewMark) {
+      const a = this.Floor(star - reviewMark, 2);
+      return [
+        { star__full: star <= reviewMark },
+        { star__half: (a >= 0.3 && a <= 0.7) },
+      ];
+    },
+    initAvatar(userData) {
+      return userData?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
+    },
+    showReviewDetails(data) {
       this.ShowModal({
         key: modals.reviewDetails,
+        title: data.quest.title,
+        userAvatar: this.initAvatar(data.fromUser),
+        userFullName: `${data.fromUser.firstName} ${data.fromUser.lastName}`,
+        reviewMark: data.mark,
+        reviewMessage: data.message,
+        questTitle: data.quest.title,
       });
-    },
-    async getAllReviews() {
-      const { id } = this.userData;
-      await this.$store.dispatch('user/getAllUserReviews', id);
     },
   },
 };
@@ -109,7 +149,11 @@ export default {
     color: $black500;
   }
 }
-
+.name {
+  &__container {
+    cursor: pointer;
+  }
+}
 .icon {
   font-size: 20px;
   cursor: pointer;
@@ -119,7 +163,24 @@ export default {
     color: #0083C7;
   }
 }
-
+.rating {
+  height: 20px;
+  display: flex;
+  margin-top: 2px;
+  width: 142px;
+  .star {
+    width: inherit;
+    background-image: url('~assets/img/ui/star-empty.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    &__half {
+      background-image: url('~assets/img/ui/star-half.svg');
+    }
+    &__full {
+      background-image: url('~assets/img/ui/star-small.svg');
+    }
+  }
+}
 .styles {
   &__flex {
     display: -webkit-box;
@@ -143,8 +204,22 @@ export default {
   box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.1);
   &__header {
     @extend .styles__flex;
+    justify-content: space-between;
+  }
+  &__img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  &__rating-block, &__user-data {
+    grid-gap: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
   }
   &__avatar {
+    cursor: pointer;
     margin-right: 15px;
   }
   &__subheader {

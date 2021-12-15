@@ -1,77 +1,210 @@
 <template>
   <div>
-    <div
-      class="main-section main-section_white"
-    >
-      <div class="main-container">
-        <userInfo :selected="selected" />
-
-        <button
-          v-for="(item, i) in pageTabs"
-          :key="i"
-          class="tab__btn"
-          :class="{tab__btn_active: selected === item.number}"
-          @click="selected = item.number"
-        >
-          {{ item.title }}
-        </button>
+    <div class="section section__container section__container_white">
+      <div class="container container__block">
+        <userInfo
+          :user-info="userData"
+        />
+        <div class="block__routes routes">
+          <button
+            v-for="(item, i) in pageTabs"
+            :key="i"
+            class="routes__btn"
+            :class="{routes__btn_active: selectedTab === item.tabName}"
+            @click="selectedTab = item.tabName"
+          >
+            {{ item.title }}
+          </button>
+        </div>
       </div>
     </div>
-
-    <div class="information-section">
-      <div class="main-container">
+    <div class="section section__container">
+      <div class="container container__block">
         <div
-          v-if="selected === 1"
-          class="tab__container"
+          v-if="selectedTab === 'commonInfo'"
+          class="block__statistic statistic"
         >
+          <div
+            v-for="(item, key) in statisticsData"
+            :key="key"
+            class="statistic__card card"
+          >
+            <div class="card__title">
+              {{ item.title }}
+            </div>
+            <div
+              class="card__number"
+              :class="item.ratingMode ? 'card__number_rating' : ''"
+            >
+              {{ numberValidate(item.number) }}
+            </div>
+            <div
+              v-if="item.subtitle"
+              class="card__subtitle"
+            >
+              {{ item.subtitle }}
+            </div>
+          </div>
+        </div>
+        <div
+          v-if="userData.userSpecializations && userData.userSpecializations.length && selectedTab === 'commonInfo'"
+          class="block__skills-spec skills-spec"
+        >
+          <div class="skills-spec__title">
+            {{ $t('skills.title') }}
+          </div>
+          <div class="skills-spec__container skills-spec__container_white">
+            <div
+              v-for="(skills, specialization) in getSkillTitle()"
+              :key="specialization"
+              class="skills-spec__spec skills-spec__spec_white spec"
+            >
+              <div class="spec__title">
+                {{ $t(`filters.items.${specialization}.title`) }}
+              </div>
+              <ul class="spec__skills">
+                <li
+                  v-for="(skill, key) in skills"
+                  :key="key"
+                  class="skills__item skills__item_blue"
+                >
+                  {{ $t(`filters.items.${specialization}.sub.${skill}`) }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          v-if="selectedTab === 'quests' || selectedTab === 'commonInfo'"
+          class="block__quests quests"
+        >
+          <div
+            v-if="selectedTab === 'commonInfo'"
+            class="quests__title"
+          >
+            {{ $t('quests.activeQuests') }}
+          </div>
           <quests
-            v-if="questsObjects.count !== 0"
-            :limit="questLimits"
-            :object="questsObjects"
+            v-if="questsObject.count !== 0"
+            :object="questsObject"
             :page="'quests'"
           />
           <emptyData
             v-else
-            :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
-            :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-            :link="userRole === 'employer' ? '/create-quest' : '/quests'"
+            :description="$t('errors.emptyData.emptyQuests')"
+          />
+          <div class="quests__pager pager">
+            <div class="pager__block">
+              <base-pager
+                v-if="selectedTab === 'quests' && totalQuestsPages > 1"
+                v-model="pageQuests"
+                :total-pages="totalQuestsPages"
+              />
+            </div>
+          </div>
+          <div
+            v-if="selectedTab === 'commonInfo' && questsObject.count > 2"
+            class="quests__button button"
+          >
+            <div
+              class="button__more"
+              @click="selectedTab = 'quests'"
+            >
+              {{ $t('meta.showAllQuests') }}
+            </div>
+          </div>
+        </div>
+        <div
+          v-if="selectedTab === 'commonInfo' || selectedTab === 'reviews'"
+          class="block__reviews reviews"
+        >
+          <div
+            v-if="selectedTab === 'commonInfo'"
+            class="reviews__title"
+          >
+            {{ $t('quests.reviewsBig') }}
+          </div>
+          <template v-if="userStatistics.reviewCount > 0">
+            <div
+              class="reviews__container"
+            >
+              <reviewsTab :object="reviewsObject" />
+            </div>
+            <div
+              v-if="selectedTab === 'reviews' && totalReviewsPages > 1"
+              class="reviews__pager pager"
+            >
+              <div class="pager__block">
+                <base-pager
+                  v-model="pageReviews"
+                  :total-pages="totalReviewsPages"
+                />
+              </div>
+            </div>
+            <div
+              v-if="selectedTab === 'commonInfo'"
+              class="reviews__button button"
+            >
+              <div
+                v-if="userStatistics.reviewCount > 4"
+                class="button__more"
+                @click="selectedTab = 'reviews'"
+              >
+                {{ $t('meta.showAllReviews') }}
+              </div>
+            </div>
+          </template>
+          <emptyData
+            v-else
+            :description="$t('errors.emptyData.emptyReviews')"
           />
         </div>
-
         <div
-          v-if="selected === 2"
-          class="tab__container"
+          v-if="(selectedTab === 'commonInfo' || selectedTab === 'portfolio') && userData.role === 'worker'"
+          class="block__portfolio portfolio"
         >
-          <reviewsTab />
-        </div>
-
-        <div
-          v-if="selected === 3"
-          class="tab__container"
-        >
-          <div class="add-btn__container">
+          <div
+            v-if="selectedTab === 'commonInfo'"
+            class="portfolio__title"
+          >
+            {{ $t('profile.portfolio') }}
+          </div>
+          <div
+            v-if="selectedTab === 'portfolio' && userId === mainUser.id"
+            class="portfolio__add-btn"
+          >
             <base-btn
               @click="showAddCaseModal()"
             >
               {{ $t('ui.profile.addCase') }}
               <template v-slot:right>
-                <span class="icon-plus" />
+                <span class="icon-plus_white" />
               </template>
             </base-btn>
           </div>
-          <portfolioTab />
-        </div>
-        <div
-          v-if="userData.role === 'worker'"
-          class="button"
-        >
-          <nuxt-link
-            v-if="selected === 2"
-            class="button__more"
-            to="/profile"
+          <portfolioTab :object="portfolioObject" />
+          <div
+            v-if="selectedTab === 'portfolio' && totalPortfoliosPages > 1"
+            class="portfolio__pager pager"
           >
-            {{ $t('meta.showAllReviews') }}
-          </nuxt-link>
+            <div class="pager__block">
+              <base-pager
+                v-model="pagePortfolios"
+                :total-pages="totalPortfoliosPages"
+              />
+            </div>
+          </div>
+          <div
+            v-if="selectedTab === 'commonInfo' && portfolioObject.count > 3"
+            class="portfolio__button button"
+          >
+            <div
+              class="button__more"
+              @click="selectedTab = 'portfolio'"
+            >
+              {{ $t('meta.showAllPortfolios') }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -80,51 +213,52 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
+import moment from 'moment';
 import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
-import quests from '~/components/app/pages/common/quests';
+import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
 import userInfo from '~/components/app/pages/common/userInfo';
-import modals from '~/store/modals/modals';
+import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'Index',
   components: {
     reviewsTab,
-    portfolioTab,
     quests,
     userInfo,
     emptyData,
+    portfolioTab,
   },
   data() {
     return {
-      selected: 1,
-      questLimits: 100,
-      questsObjects: {},
+      selectedTab: 'commonInfo',
+      questsObject: {},
+      reviewsObject: {},
+      portfolioObject: {},
+      userStatistics: {
+        reviewCount: 0,
+        averageMark: 0,
+        completedQuests: 0,
+        openedQuests: 0,
+      },
+      userSpecializations: [],
+      userData: {},
+      pageQuests: 1,
+      pageReviews: 1,
+      pagePortfolios: 1,
+      perPagerQuests: 11,
+      perPagerReviews: 8,
+      perPagerPortfolios: 6,
     };
   },
   computed: {
     ...mapGetters({
-      tags: 'ui/getTags',
-      userRole: 'user/getUserRole',
-      userData: 'user/getUserData',
+      mainUser: 'user/getUserData',
+      questUserData: 'quests/getUserInfoQuests',
+      portfolios: 'user/getUserPortfolios',
+      reviews: 'user/getAllUserReviews',
     }),
-    pageTabs() {
-      return [
-        {
-          number: 1,
-          title: this.$t('profile.quests'),
-        },
-        {
-          number: 2,
-          title: this.$t('profile.reviews'),
-        },
-        {
-          number: 3,
-          title: this.$t('profile.portfolio'),
-        },
-      ];
-    },
     cardLevelClass(idx) {
       const { cards } = this;
       return [
@@ -132,13 +266,171 @@ export default {
         { card__level_checked: cards[idx].level.code === 3 },
       ];
     },
+    pageTabs() {
+      const tabs = [
+        {
+          number: 1,
+          tabName: 'commonInfo',
+          title: this.$t('profile.common'),
+        },
+        {
+          number: 2,
+          tabName: 'quests',
+          title: this.$t('profile.quests'),
+        },
+        {
+          number: 3,
+          tabName: 'reviews',
+          title: this.$t('profile.reviews'),
+        },
+      ];
+
+      if (this.userData.role === 'worker') {
+        tabs.push({
+          number: 4,
+          tabName: 'portfolio',
+          title: this.$t('profile.portfolio'),
+        });
+      }
+      return tabs;
+    },
+    totalQuestsPages() {
+      return Math.ceil(this.questsObject.count / this.perPagerQuests);
+    },
+    totalReviewsPages() {
+      return Math.ceil(this.reviews.count / this.perPagerReviews);
+    },
+    totalPortfoliosPages() {
+      return Math.ceil(this.portfolios.count / this.perPagerPortfolios);
+    },
+    statisticsData() {
+      const { ratingStatistic } = this.userData;
+      const { questStatistic } = this.userData;
+      return [
+        {
+          title: this.$t('quests.completedQuests'),
+          number: questStatistic ? questStatistic.completed : 0,
+          ratingMode: false,
+          subtitle: this.$t('quests.oneTime'),
+        },
+        {
+          title: this.$t('quests.openedQuests'),
+          number: questStatistic ? questStatistic.opened : 0,
+          ratingMode: false,
+          subtitle: '',
+        },
+        {
+          title: this.$t('quests.averageRating'),
+          number: ratingStatistic && ratingStatistic.averageMark ? ratingStatistic.averageMark : 0,
+          ratingMode: true,
+          subtitle: `${this.$t('quests.fromBig')} ${ratingStatistic ? ratingStatistic.reviewCount : 0} ${this.$t('quests.reviews')}`,
+        },
+      ];
+    },
+    userId() {
+      return this.$route.params.id;
+    },
+  },
+  watch: {
+    async selectedTab() {
+      this.SetLoader(true);
+      if (this.selectedTab === 'quests') {
+        await this.changeQuestsData();
+      } else if (this.selectedTab === 'reviews') {
+        await this.changeReviewsData();
+      } else if (this.selectedTab === 'portfolio') {
+        await this.changePortfoliosData();
+      } else if (this.selectedTab === 'commonInfo') {
+        await this.changeQuestsData(2);
+        await this.changeReviewsData(2);
+        if (this.userData.role === 'worker') {
+          await this.changePortfoliosData(3);
+        }
+      }
+      this.SetLoader(false);
+    },
+    async pageQuests() {
+      this.SetLoader(true);
+      await this.changeQuestsData();
+      this.SetLoader(false);
+    },
+    async pageReviews() {
+      this.SetLoader(true);
+      await this.changeReviewsData();
+      this.SetLoader(false);
+    },
+    async pagePortfolios() {
+      this.SetLoader(true);
+      await this.changePortfoliosData();
+      this.SetLoader(false);
+    },
   },
   async mounted() {
-    this.SetLoader(true);
-    this.questsObjects = await this.$store.dispatch('quests/getUserQuests', { userId: this.userData.id });
-    this.SetLoader(false);
+    if (this.userId !== this.mainUser.id) {
+      this.userData = await this.$store.dispatch('user/getAnotherUserData', this.userId);
+      this.userData = this.userData.result;
+    } else {
+      this.userData = this.mainUser;
+    }
+    await this.changeQuestsData(2);
+    await this.changeReviewsData(2);
+    if (this.userData.role === 'worker') {
+      await this.changePortfoliosData(3);
+    }
+    const { ratingStatistic } = this.userData;
+    const { questStatistic } = this.userData;
+    this.userStatistics = {
+      reviewCount: ratingStatistic ? ratingStatistic.reviewCount : 0,
+      averageMark: ratingStatistic && ratingStatistic.averageMark ? ratingStatistic.averageMark : 0,
+      completedQuests: questStatistic ? questStatistic.completed : 0,
+      openedQuests: questStatistic ? questStatistic.opened : 0,
+    };
+  },
+  async beforeDestroy() {
+    await this.$store.dispatch('user/clearAnotherUserData');
   },
   methods: {
+    numberValidate(number) {
+      const fixedNumber = number.toFixed(1);
+      if (number - fixedNumber !== 0) {
+        return fixedNumber;
+      }
+      return number;
+    },
+    async changeQuestsData(limit) {
+      const payload = {
+        userId: this.userId,
+        role: this.userData.role,
+        query: limit ? `limit=${limit}` : `limit=${this.perPagerQuests}&offset=${(this.pageQuests - 1) * this.perPagerQuests}`,
+      };
+      await this.$store.dispatch('quests/getUserQuests', payload);
+      this.questsObject = this.questUserData;
+    },
+    async changeReviewsData(limit) {
+      const payload = {
+        userId: this.userId,
+        query: limit ? `limit=${limit}` : `limit=${this.perPagerReviews}&offset=${(this.pageReviews - 1) * this.perPagerReviews}`,
+      };
+      await this.$store.dispatch('user/getAllUserReviews', payload);
+      this.reviewsObject = this.reviews;
+    },
+    async changePortfoliosData(limit) {
+      const payload = {
+        userId: this.userId,
+        query: limit ? `limit=${limit}` : `limit=${this.perPagerPortfolios}&offset=${(this.pagePortfolios - 1) * this.perPagerPortfolios}`,
+      };
+      await this.$store.dispatch('user/getUserPortfolios', payload);
+      this.portfolioObject = this.portfolios;
+    },
+    getSkillTitle() {
+      const specData = {};
+      this.userData.userSpecializations.forEach((data) => {
+        const [spec, skill] = data.path.split('.');
+        if (!specData[spec]) specData[spec] = [];
+        specData[spec].push(skill);
+      });
+      return specData;
+    },
     isRating(type) {
       return (type === 3);
     },
@@ -152,15 +444,178 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.add-btn {
+.routes {
+  &__btn {
+    color: $black500;
+    font-size: 16px;
+    padding: 10px;
+    &_active {
+      color: $black800;
+      font-size: 16px;
+      border-bottom: 1px solid $blue;
+      padding: 10px;
+    }
+  }
+}
+.section {
   &__container {
-    width: 154px;
-    margin: 20px 0 20px 0;
+    &_white {
+      background-color: $white;
+    }
+  }
+}
+.container {
+  width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+}
+
+.styles {
+  &__flex {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
   }
 }
 
-.tab {
+.pager {
+  &__block {
+    width: auto;
+  }
+}
+
+.block {
+  &__statistic {
+    padding: 20px 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+  }
+}
+.skills-spec {
+  &__container {
+    padding: 20px;
+    display: flex;
+    grid-gap: 20px;
+    flex-direction: column;
+    &_white {
+      background: #FFFFFF;
+      border-radius: 6px;
+    }
+  }
+  &__title {
+    font-size: 16px;
+    line-height: 130%;
+    margin-bottom: 10px;
+  }
+  &__spec {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 10px;
+  }
+  .spec {
+    &__container {
+      display: flex;
+      flex-direction: column;
+      grid-gap: 10px;
+    }
+    &__title {
+      font-size: 14px;
+      line-height: 130%;
+    }
+    &__skills {
+      display: flex;
+      grid-gap: 8px;
+      flex-wrap: wrap;
+    }
+  }
+  .skills {
+    &__item {
+      font-size: 16px;
+      line-height: 130%;
+      &_blue {
+        background-color: rgba(0, 131, 199, 0.1);
+        border-radius: 44px;
+        padding: 5px;
+        color: #0083C7;
+      }
+    }
+  }
+}
+.statistic {
+  &__card {
+    display: grid;
+    border-radius: 6px;
+    background-color: #fff;
+    padding: 20px;
+    border: 0;
+    .card {
+      &__title {
+        font-size: 16px;
+        line-height: 130%;
+        color: #1D2127;
+      }
+      &__number {
+        @include text-simple;
+        font-weight: bold;
+        font-size: 30px;
+        line-height: 130%;
+        color: #0083C7;
+        margin: 9px 0;
+        &_rating {
+          background-image: url("data:image/svg+xml,%3Csvg width='28' height='26' viewBox='0 0 28 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a             %3Cpath d='M14 0.5L18.1145 8.83688L27.3148 10.1738L20.6574 16.6631L22.229 25.8262L14 21.5L5.77101 25.8262L7.3426 16.6631L0.685208 10.1738L9.8855 8.83688L14 0.5Z' fill='%23E8D20D'/%3E\a             %3C/svg%3E                           \a             ");
+          background-position: 55px 4px;
+          background-repeat: no-repeat;
+        }
+      }
+      &__subtitle {
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 130%;
+        color: #4C5767;
+      }
+    }
+  }
+}
+.quests, .portfolio, .reviews {
+  &__button {
+    @extend .styles__flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    margin: 20px 0 0 0;
+    .button {
+      &__more {
+        @extend .styles__flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        cursor: pointer;
+        display: inline-block;
+        text-decoration: none;
+        font-size: 16px;
+        line-height: 130%;
+        color: #0083C7;
+        border: 1px solid rgba(0, 131, 199, 0.1);
+        border-radius: 6px;
+        padding: 13px 67px 13px 28px;
+        background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
+        background-position: 82% 21px;
+        background-repeat: no-repeat;
+      }
+    }
+  }
+  &__title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 130%;
+    color: #1D2127;
+    margin: 0 0 20px 0;
+  }
+}
+.reviews {
   &__container {
     margin: 20px 0 20px 0;
   }
@@ -176,273 +631,26 @@ export default {
     }
   }
 }
-.contacts {
-  &__grid {
-    height: 100%;
-    max-height: 43px;
-    display: grid;
-    grid-template-columns: 5fr 2fr;
-    margin: 0 0 15px 0;
-    padding: 10px 0;
+.portfolio {
+  &__add-btn {
+    width: 154px;
+    margin: 20px 0 20px 0;
   }
 }
-.message {
-  &__container-btn {
-    @extend .styles__full;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    width: 100%;
-  }
-  &__btn {
-    max-width: 250px;
-    cursor: pointer;
-  }
-}
-.container {
-  &__title {
-    font-weight: 400;
-    font-size: 12px;
-    color: $black500;
-  }
-}
-
-.subtitle {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 130%;
-  color: $black500;
-  margin: -20px 0 -5px 0;
-}
-
-.button {
-  @extend .styles__flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  &__more {
-    @extend .button;
-    display: inline-block;
-    text-decoration: none;
-    font-size: 16px;
-    line-height: 130%;
-    color: #0083C7;
-    border: 1px solid rgba(0, 131, 199, 0.1);
-    border-radius: 6px;
-    padding: 13px 67px 13px 28px;
-    background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
-    background-position: 82% 21px;
-    background-repeat: no-repeat;
-  }
-}
-
-.quest {
-  &__spec {
-    @include text-simple;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 25px;
-    color: $black800;
-    margin: 0 0 0 0;
-  }
-  &__title {
-    @include text-simple;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 30px;
-    color: $black800;
-    margin: 0 0 10px 0;
-  }
-  &__description {
-    @include text-simple;
-    font-style: normal;
-    color: $black700;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 130%;
-    /* or 21px */
-  }
-  &__location {
-    @include text-simple;
-    color: $black700;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-  }
-  &__count {
-    @include text-simple;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    color: $black400;
-  }
-  &__group {
-    color:$black800;
-    display: flex;
-    flex-direction: row;
-  }
-  &__card {
-    color:$black800;
-  }
-}
-
-.contact {
-  &__link {
-    text-decoration: none;
-    font-size: 14px;
-    line-height: 130%;
-    color: #7C838D;
-    margin-right: 30px;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-.icon {
-  font-size: 20px;
-  cursor: pointer;
-  &-plus:before {
-    @extend .icon;
-    content: "\e9a8";
-    color: $white;
-    font-size: 16px;
-  }
-  &-chat:before {
-    @extend .icon;
-    content: "\e9ba";
-    color: $green;
-    font-size: 25px;
-  }
-  &-Earth::before {
-    @extend .icon;
-    color: #7C838D;
-    font-size: 16px;
-    padding-right: 5px;
-  }
-  &-location::before {
-    @extend .icon;
-    color: #7C838D;
-    font-size: 16px;
-    padding-right: 5px;
-  }
-  &-phone::before {
-    @extend .icon;
-    color: #7C838D;
-    font-size: 16px;
-    padding-right: 5px;
-  }
-  &-mail::before {
-    @extend .icon;
-    color: #7C838D;
-    font-size: 16px;
-    padding-right: 5px;
-  }
-}
-
-.main-section {
-  &_white {
-    background-color: $white;
-  }
-}
-.main-container {
-  width: 1180px;
-  margin: 0 auto;
-}
-
-.rating {
-  padding: 0 15px 0 0;
-}
-
-.col {
-  &__header {
-    @extend .styles__flex;
-    @extend .styles__center;
-  }
-  &__main-header {
-    @extend .styles__flex;
-    @extend .styles__center;
-  }
-}
-
-.styles {
-  &__full {
-    width: 100%;
-    height: 100%;
-  }
-  &__between {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  &__flex {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-  }
-  &__center {
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-  }
-}
-.background {
-  &__common {
-    background-repeat: no-repeat;
-    background-position: 0 -1px;
-    padding-left: 25px;
-  }
-}
-
-.title {
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 130%;
-  color: #1D2127;
-  margin: 0 0 20px 0;
-}
-
 @include _1199 {
-  .template {
-    &__main {
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-  }
-  .main-container {
+  .container {
     width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+@include _575 {
+  .container {
     padding-left: 20px;
     padding-right: 20px;
   }
-  .box__skills {
-    grid-template-columns: repeat(4, auto);
-    grid-gap: 20px;
-  }
-}
-@include _991 {
-  .box {
-    grid-template-columns: 1fr;
-  }
-}
-
-@include _575 {
-  .footer {
-    &__quest {
-      display: grid !important;
-      grid-template-columns: 1fr;
-      grid-gap: 10px;
-    }
-  }
-  .simple-button {
-    padding: 0;
-  }
-  .box__profile {
-    flex-direction: column;
-    align-items: center;
+  .block__statistic {
+    grid-template-columns: repeat(2, auto);
   }
 }
 </style>

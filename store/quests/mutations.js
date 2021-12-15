@@ -1,4 +1,22 @@
 export default {
+  setRespondOnQuest(state, data) {
+    state.respondOnQuest = data;
+  },
+  setChatInviteOnQuest(state, data) {
+    state.chatInfoInviteOnQuest = data;
+  },
+  setQuestListForInvitation(state, data) {
+    state.questListForInvitation = data;
+  },
+  setWorkersList(state, data) {
+    state.workersList = data;
+  },
+  setCurrentWorker(state, data) {
+    state.currentWorker = data;
+  },
+  setInfoDataMode(state, data) {
+    state.infoDataMode = data;
+  },
   setCurrentStepEditQuest(state, data) {
     state.currentStepEditQuest = data;
   },
@@ -34,5 +52,14 @@ export default {
   },
   setMapCenter(state, data) {
     state.mapCenter = data;
+  },
+  setFilters(state, data) {
+    state.filters = data;
+  },
+  setSelectedSpecializationsFilters(state, data) {
+    state.selectedSpecializationsFilters = data;
+  },
+  setSelectedPriceFilter(state, data) {
+    state.selectedPriceFilter = data;
   },
 };

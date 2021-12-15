@@ -5,6 +5,9 @@ export default {
   setIsConnected(state, payload) {
     state.isConnected = payload;
   },
+  setIsHandlingMetamaskStatus(state, payload) {
+    state.isHandlingMetamaskStatus = payload;
+  },
   setBalance(state, payload) {
     state.balance = payload;
   },
@@ -35,13 +38,13 @@ export default {
   setStakeAndRewardData(state, payload) {
     state.tokensAmount = payload;
   },
-  setLpTokenPrice(state) {
-    state.tokenLPAmount = {};
-  },
   setPurseData(state, payload) {
     state.purseData = payload;
   },
   setCrosschainTokensData(state, payload) {
     state.crosschainTokensData = payload;
+  },
+  setMetaMaskStatus(state, payload) {
+    state.metamaskStatus = payload;
   },
 };

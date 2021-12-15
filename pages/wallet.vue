@@ -373,7 +373,7 @@ export default {
   .card {
     margin: 0;
     grid-template-columns: 2fr 1fr;
-    height: 240px;;
+    height: 240px;
   }
 }
 @include _991 {

@@ -11,7 +11,6 @@ export default {
   getBadgeList: (state) => state.badgeList,
   getSocials: (state) => state.socials,
   getDisputes: (state) => state.disputes,
-  getMessages: (state) => state.messages,
   getTransactions: (state) => state.transactions,
   getTransactionsData: (state) => state.transactionsData,
   getRespondedList: (state) => state.respondedList,
@@ -24,4 +23,5 @@ export default {
   getEducations: (state) => state.userInfo?.educations,
   getWorkExp: (state) => state.userInfo?.workExp,
   getUserDesc: (state) => state.userInfo?.desc,
+  notificationsConnectionStatus: (state) => state.connections,
 };

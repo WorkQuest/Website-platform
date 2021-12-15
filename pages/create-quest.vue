@@ -61,85 +61,7 @@
               />
             </div>
           </div>
-          <div class="page__skills skills">
-            <div
-              v-for="key in specCount"
-              :key="key"
-              class="skills__block block"
-            >
-              <div class="block__skill-spec">
-                <div class="block__specialization specialization">
-                  <base-dd
-                    v-model="specIndex[key]"
-                    class="specialization__dd"
-                    type="gray"
-                    :placeholder="$t('settings.selectSpec')"
-                    :items="specializations.titles"
-                    :mode="'small'"
-                    rules="required"
-                    :label="$t('settings.specialization')"
-                    @input="switchSkill($event, key)"
-                  />
-                  <div class="specialization__skills skills">
-                    <base-dd
-                      v-model="skillIndex[key]"
-                      class="specialization__dd"
-                      :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
-                      :disabled="specIndex[key] < 0"
-                      :placeholder="$t('settings.selectSkills')"
-                      :items="specializations.skills[specIndex[key]]"
-                      :mode="'small'"
-                      rules="required"
-                      :label="$t('settings.skillsInput')"
-                      @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
-                    />
-                    <div
-                      v-if="selectedSkills[key].length === 5"
-                      class="skills__error"
-                    >
-                      {{ $t('ui.buttons.errors.manySkills') }}
-                    </div>
-                  </div>
-                </div>
-                <div class="block__skill skill">
-                  <div
-                    v-for="(item, i) in selectedSkills[key]"
-                    :key="i"
-                    class="skill__badge"
-                  >
-                    {{ item }}
-                    <button
-                      class="skill__remove"
-                      @click="removeSkillToBadge(item, key)"
-                    >
-                      <img
-                        src="~assets/img/ui/close_blue.svg"
-                        alt="x"
-                      >
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <base-btn
-                :text="$t('settings.removeSpec')"
-                class="specialization__btn specialization__btn_remove"
-                @click="removeSpecialization(key)"
-              />
-            </div>
-            <base-btn
-              :text="$t('settings.addSpec')"
-              :disabled="specCount === 3"
-              class="skills__btn-add"
-              :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
-              @click="addSpecialization"
-            />
-            <div
-              v-if="specCount === 3"
-              class="skills__error"
-            >
-              {{ $t('ui.buttons.errors.manySpec') }}
-            </div>
-          </div>
+          <specializations-selector @changeSkills="updateSelectedSkills" />
           <div class="page__address">
             <base-field
               v-model="address"
@@ -185,6 +107,7 @@
             <textarea
               id="textarea"
               v-model="textarea"
+              rules="required"
               class="page__textarea"
               :placeholder="$t('quests.questDesc')"
             />
@@ -203,7 +126,7 @@
           <div class="upload btn btn__container btn__container_right">
             <div class="btn__create">
               <base-btn
-                :disabled="!(invalid === false && !(selectedSkills[1].length === 0))"
+                :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(toRiseViews)"
               >
                 {{ $t('quests.createAQuest') }}
@@ -299,7 +222,7 @@
               <div class="btn-container__btn">
                 <base-btn
                   :mode="'outline'"
-                  @click="toCreateQuest()"
+                  @click="createQuest"
                 >
                   {{ $t('meta.skipAndEnd') }}
                 </base-btn>
@@ -341,22 +264,7 @@ export default {
         currentAdPrice: '',
       },
       period: 1,
-      specCount: 0,
-      specIndex: {
-        1: -1,
-        2: -1,
-        3: -1,
-      },
-      skillIndex: {
-        1: -1,
-        2: -1,
-        3: -1,
-      },
-      selectedSkills: {
-        1: [],
-        2: [],
-        3: [],
-      },
+      selectedSpecAndSkills: [],
       employmentIndex: 0,
       workplaceIndex: 0,
       runtimeIndex: 0,
@@ -392,6 +300,7 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
       step: 'quests/getCurrentStepCreateQuest',
+      filters: 'quests/getFilters',
     }),
     days() {
       return [
@@ -493,18 +402,6 @@ export default {
         },
       ];
     },
-    specializations() {
-      const specializations = Object.keys(this.$t('settings.specializations')).length;
-      const specs = {
-        titles: [],
-        skills: [],
-      };
-      for (let i = 1; i < specializations; i += 1) {
-        specs.skills.push(this.$t(`settings.specializations.${i}.sub`));
-        specs.titles.push(this.$t(`settings.specializations.${i}.title`));
-      }
-      return specs;
-    },
     runtime() {
       return [
         this.$t('quests.runtime.urgent'),
@@ -532,6 +429,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    updateSelectedSkills(specAndSkills) {
+      this.selectedSpecAndSkills = specAndSkills;
+    },
     cardStatus(item) {
       let style;
       if (item.code === 1) {
@@ -588,33 +488,6 @@ export default {
     goBack() {
       this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
     },
-    addSkillToBadge(event, object, index, key) {
-      if (!this.selectedSkills[key].includes(object[index]) && this.selectedSkills[key].length <= 4) {
-        this.selectedSkills[key].push(object[index]);
-      }
-    },
-    removeSkillToBadge(skillName, key) {
-      const numberInArray = this.selectedSkills[key].indexOf(skillName);
-      this.selectedSkills[key].splice(numberInArray, 1);
-      if (!this.selectedSkills[key].length) {
-        this.skillIndex[key] = -1;
-      }
-    },
-    switchSkill(event, key) {
-      this.skillIndex[key] = -1;
-      this.selectedSkills[key] = [];
-    },
-    addSpecialization() {
-      if (this.specCount <= 2) {
-        this.specCount += 1;
-      }
-    },
-    removeSpecialization(key) {
-      this.selectedSkills[key] = [];
-      this.specIndex[key] = -1;
-      this.skillIndex[key] = -1;
-      this.specCount -= 1;
-    },
     selectAddress(address) {
       this.addresses = [];
       this.address = address.formatted;
@@ -648,18 +521,7 @@ export default {
         console.log(e);
       }
     },
-    async toCreateQuest() {
-      const specAndSkills = {};
-      // eslint-disable-next-line guard-for-in,no-restricted-syntax
-      for (const spec in this.specIndex) {
-        if (this.specIndex[spec] !== -1) {
-          const specName = this.specializations.titles[this.specIndex[spec]];
-          specAndSkills[specName] = this.selectedSkills[spec];
-        }
-      }
-      await this.createQuest(specAndSkills);
-    },
-    async createQuest(specAndSkills) {
+    async createQuest() {
       const payload = {
         workplace: this.convertWorkplace(this.workplaceIndex),
         priority: this.runtimeIndex,
@@ -671,7 +533,7 @@ export default {
         medias: [],
         adType: 0,
         locationPlaceName: this.address,
-        skillFilters: specAndSkills,
+        specializationKeys: this.selectedSpecAndSkills,
         location: {
           longitude: this.coordinates.lng,
           latitude: this.coordinates.lat,
@@ -682,7 +544,7 @@ export default {
         if (response) {
           this.showModalCreatedQuest();
           this.showToastCreated();
-          await this.$router.push(`/quests/${response.result.id}`);
+          await this.$router.push(`/quests/${response.id}`);
           await this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
         }
       } catch (e) {
@@ -1115,55 +977,6 @@ export default {
 }
 
 .page {
-  &__skills {
-    width: 100%;
-    .block {
-      display: flex;
-      grid-gap: 20px;
-      justify-content: space-between;
-      margin-top: 20px;
-      &__skill-spec {
-        width: 100%;
-      }
-      &__specialization {
-        display: flex;
-        align-items: flex-start;
-        flex-direction: row;
-        grid-gap: 20px;
-      }
-      &__skill {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        flex-wrap: wrap;
-        grid-gap: 10px;
-        .skill {
-          &__badge {
-            background: rgba(0, 131, 199, 0.1);
-            border-radius: 44px;
-            color: $blue;
-            white-space: nowrap;
-            grid-gap: 8px;
-            padding: 5px 10px 5px 10px;
-            display: flex;
-            text-align: center;
-            &-skills {
-              padding: 15px;
-            }
-          }
-        }
-      }
-    }
-  }
-  &__spec {
-    flex-direction: row;
-    flex-wrap: wrap;
-    display: flex;
-    max-width: 1180px;
-    width: 100%;
-    justify-content: flex-start;
-    //padding: 0 20px 0 0;
-  }
   &__title {
     @include text-simple;
     margin: 30px 0 0 0;
@@ -1209,57 +1022,7 @@ export default {
     }
   }
 }
-.specialization {
-  &__dd {
-    margin-bottom: 15px;
-    width: 100%;
-  }
-  &__skills {
-    width: 100%;
-  }
-  &__btn {
-    text-align: center;
-    &_remove {
-      margin-top: 37px;
-      width: 50%;
-      background: #ffffff;
-      color: #d73838;
-      border: 1px solid #e79a9a;
-    }
-    &_remove:hover {
-      background: #e79a9a;
-    }
-  }
-}
-.skills {
-  &__add-info {
-    display: flex;
-    flex-wrap: nowrap;
-    grid-gap: 20px;
-    margin-top: 20px;
-  }
-  &__btn {
-    &-add {
-      text-align: center;
-      margin-top: 20px;
-      width: 250px;
-      background: #FFFFFF;
-      color: #0083C7;
-      border: 1px solid #bce8ff;
-      &_disabled {
-        color: #aaaaaa !important;
-        border: 0.5px solid #aaaaaa;
-      }
-    }
-    &-add:hover {
-      background: #bce8ff;
-    }
-  }
-  &__error {
-    color: #f36262;
-    margin-bottom: 10px;
-  }
-}
+
 .main {
   @include main;
   &-white {

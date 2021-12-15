@@ -54,6 +54,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalDeposit',
@@ -81,11 +82,20 @@ export default {
         this.twoFACode = '';
         const response = await this.$store.dispatch('user/disable2FA', payload);
         if (response.ok) {
-          this.CloseModal();
+          this.hide();
+          this.showModalSuccess();
         }
       } catch (e) {
         this.errorMessage = e.response.data.msg;
       }
+    },
+    showModalSuccess() {
+      this.ShowModal({
+        key: modals.status,
+        img: require('~/assets/img/ui/questAgreed.svg'),
+        title: this.$t('modals.2FAStatus'),
+        subtitle: this.$t('modals.2FADisabled'),
+      });
     },
   },
 };

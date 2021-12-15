@@ -28,13 +28,13 @@
           :object="questsData"
         />
         <emptyData
-          v-else
+          v-if="questsList.count === 0 && questsData.count === 0"
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
           link="/create-quest"
         />
         <base-pager
-          v-if="questsData.count !== 0 && totalPagesValue !== 1"
+          v-if="questsData.count !== 0 && questsList.count !== 0 && totalPagesValue !== 1"
           v-model="page"
           :total-pages="totalPagesValue"
         />
@@ -60,6 +60,7 @@ export default {
   },
   data() {
     return {
+      questResponses: {},
       selectedTab: 0,
       isShowFavourite: false,
       questLimits: 100,
@@ -67,7 +68,8 @@ export default {
       page: 1,
       perPager: 11,
       totalPagesValue: 1,
-      sortData: '',
+      isStarred: false,
+      statuses: '',
     };
   },
   computed: {
@@ -76,32 +78,33 @@ export default {
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
       questsData: 'quests/getUserInfoQuests',
+      questsList: 'quests/getAllQuests',
     }),
     questStatus() {
       return [
         {
           name: this.$t('myQuests.statuses.all'),
-          click: () => this.switchQuests('', 0, 0),
+          click: () => this.switchQuests(0, 0),
         },
         {
           name: this.$t('myQuests.statuses.fav'),
-          click: () => this.switchQuests('starred=true', 0, 1),
+          click: () => this.switchQuests(0, 1),
         },
         {
           name: this.$t('myQuests.statuses.requested'),
-          click: () => this.switchQuests('status=5', 0, 2),
+          click: () => this.switchQuests(0, 2),
         },
         {
           name: this.$t('myQuests.statuses.completed'),
-          click: () => this.switchQuests('status=6', 0, 3),
+          click: () => this.switchQuests(0, 3),
         },
         {
           name: this.$t('myQuests.statuses.active'),
-          click: () => this.switchQuests('status=2', 0, 4),
+          click: () => this.switchQuests(0, 4),
         },
         {
           name: this.$t('myQuests.statuses.invited'),
-          click: () => this.switchQuests('status=4', 0, 5),
+          click: () => this.switchQuests(0, 5),
         },
       ];
     },
@@ -111,12 +114,18 @@ export default {
   },
   watch: {
     async page() {
-      const payload = {
-        userId: this.userData.id,
-        query: `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`,
-      };
       this.SetLoader(true);
-      await this.$store.dispatch('quests/getUserQuests', payload);
+      if (this.userRole === 'employer') {
+        const payload = {
+          userId: this.userData.id,
+          role: this.userRole,
+          query: `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`,
+        };
+        await this.$store.dispatch('quests/getUserQuests', payload);
+      } if (this.userRole === 'worker') {
+        const payload = `performing=${true}`;
+        await this.$store.dispatch('quests/getAllQuests', payload);
+      }
       this.totalPagesValue = this.totalPages;
       this.SetLoader(false);
     },
@@ -125,21 +134,30 @@ export default {
     this.SetLoader(true);
     await this.$store.dispatch('quests/getUserQuests', {
       userId: this.userData.id,
+      role: this.userRole,
       query: `limit=${this.perPager}`,
     });
     this.totalPagesValue = this.totalPages;
     this.SetLoader(false);
   },
   methods: {
-    async switchQuests(query, perPage, id) {
+    questFilterButton(id) {
+      if (id === 0) this.statuses = '';
+      if (id === 2) this.statuses = 'statuses[0]=5';
+      if (id === 3) this.statuses = 'statuses[0]=6';
+      if (id === 4) this.statuses = 'statuses[0]=1';
+      if (id === 5) this.statuses = 'statuses[0]=4';
+    },
+    async switchQuests(perPage, id) {
       this.SetLoader(true);
-      this.page = 1;
-      this.selectedTab = id;
-      this.sortData = query;
+      this.questFilterButton(id);
       const payload = {
         userId: this.userData.id,
-        query: `limit=${this.perPager}&offset=${(this.page - 1) * perPage}&${this.sortData}`,
+        role: this.userRole,
+        query: `limit=${this.perPager}&offset=${(this.page - 1) * perPage}&${this.statuses}&starred=${id === 1 ? !this.isStarred : this.isStarred}`,
       };
+      this.page = 1;
+      this.selectedTab = id;
       await this.$store.dispatch('quests/getUserQuests', payload);
       this.totalPagesValue = this.totalPages;
       this.SetLoader(false);

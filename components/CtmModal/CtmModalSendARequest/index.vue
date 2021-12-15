@@ -4,47 +4,59 @@
     :title="$t('modals.sendARequest')"
   >
     <div class="ctm-modal__content">
-      <div class="message">
-        <div class="message__content">
-          <div class="modal__desc">
-            <div class="message__wrapper">
-              <label
-                for="textarea"
-                class="modal__labelMessage"
-              >
-                {{ $t('modals.message') }}
-              </label>
-              <div>
-                <textarea
-                  id="textarea"
-                  v-model="text"
-                  class="message__textarea"
-                  :placeholder="$t('modals.hello')"
+      <validation-observer
+        v-slot="{handleSubmit}"
+      >
+        <div class="message">
+          <div class="message__content">
+            <div class="modal__desc">
+              <div class="message__wrapper">
+                <label
+                  for="textarea"
+                  class="modal__labelMessage"
+                >
+                  {{ $t('modals.message') }}
+                </label>
+                <div>
+                  <textarea
+                    id="textarea"
+                    v-model="text"
+                    class="message__textarea"
+                    rules="required"
+                    :placeholder="$t('modals.hello')"
+                  />
+                </div>
+                <dropzone
+                  id="uploader"
+                  ref="el"
+                  :options="optionsModal"
+                  :include-styling="true"
                 />
               </div>
-            </div>
-            <div class="btn__container">
-              <div class="btn__wrapper">
-                <base-btn
-                  class="message__action"
-                  @click="showRequestSendModal() "
-                >
-                  {{ $t('meta.send') }}
-                </base-btn>
-              </div>
-              <div class="btn__wrapper">
-                <base-btn
-                  :mode="'outline'"
-                  class="message__action"
-                  @click="hide()"
-                >
-                  {{ $t('meta.cancel') }}
-                </base-btn>
+              <div class="btn__container">
+                <div class="btn__wrapper">
+                  <base-btn
+                    class="message__action"
+                    :disabled="!text"
+                    @click="handleSubmit(showRequestSendModal)"
+                  >
+                    {{ $t('meta.send') }}
+                  </base-btn>
+                </div>
+                <div class="btn__wrapper">
+                  <base-btn
+                    :mode="'outline'"
+                    class="message__action"
+                    @click="hide()"
+                  >
+                    {{ $t('meta.cancel') }}
+                  </base-btn>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -52,14 +64,31 @@
 <script>
 /* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
+import Dropzone from 'nuxt-dropzone';
 import modals from '~/store/modals/modals';
+import { InfoModeWorker, QuestStatuses } from '~/utils/enums';
 
 export default {
   name: 'ModalSendARequest',
-  components: {},
+  components: {
+    Dropzone,
+  },
   data() {
     return {
       text: '',
+      optionsModal: {
+        url: process.env.BASE_URL,
+        addRemoveLinks: true,
+        dictRemoveFile: '<span class="icon-close_big"></span>',
+        dictCancelUpload: '<span class="icon-close_big"></span>',
+        dictCancelUploadConfirmation: '',
+        maxFiles: '3',
+        dictDefaultMessage:
+          '<div class="uploader__message_container">'
+          + '<div class="uploader__message">Upload a images or videos</div><'
+          + "span class='icon-add_to_queue'></span>"
+          + '</div>',
+      },
     };
   },
   computed: {
@@ -77,7 +106,10 @@ export default {
         message: this.text,
       };
       try {
-        await this.$store.dispatch('quests/respondOnQuest', { data, questId });
+        if (QuestStatuses.Rejected) {
+          await this.$store.dispatch('quests/respondOnQuest', { data, questId });
+          await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.Rejected);
+        }
       } catch (e) {
         console.log(e);
       }

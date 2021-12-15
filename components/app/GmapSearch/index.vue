@@ -136,7 +136,16 @@ export default {
       this.locations = Object.keys(this.questsLocations).length > 0 ? this.questsLocations : {};
     },
   },
+  mounted() {
+    this.checkUserCoordinates();
+  },
   methods: {
+    checkUserCoordinates() {
+      if (this.userData.location && this.userData.location.latitude && this.userData.location.longitude) {
+        this.userLocation.lat = this.userData.location.latitude;
+        this.userLocation.lng = this.userData.location.longitude;
+      }
+    },
     coordinatesChange(item) {
       if (Object.keys(this.currentLocation).length > 0) {
         this.currentLocation = {};
@@ -208,9 +217,9 @@ export default {
     display: none;
   }
 }
-.gmap{
+.gmap {
   &__top {
-    height:435px;
+    height: 435px;
   }
   &__search {
     position: relative;

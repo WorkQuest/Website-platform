@@ -44,7 +44,7 @@ export default {
       default: '',
     },
     disabled: {
-      type: Boolean,
+      type: [Boolean, String],
       default: false,
     },
     mode: {
@@ -124,9 +124,6 @@ export default {
     transition: .5s;
     height: 24px;
     width: 24px;
-    position: absolute;
-    right: 0;
-    top: 28px;
     &:hover {
       @include share-user;
       filter: brightness(70%);
@@ -197,14 +194,14 @@ export default {
       background: $blue;
     }
   }
-  &_max{
+  &_max {
     background-color: $black0;
     color: $blue;
     font-weight: 600;
     font-size: 16px;
     height:40px;
     line-height: 130%;
-    &:hover{
+    &:hover {
       background-color: $black0;
     }
   }
@@ -270,11 +267,11 @@ export default {
   &_goToChat {
     background-color: $white !important;
     color: $green !important;
-    border: 1px solid $black400 !important;
+    border: 1px solid rgba(0, 170, 91, 0.1) !important;
     &:hover {
       background-color: $white !important;
       color: $green !important;
-      border: 1px solid $black600 !important;
+      border: 1px solid rgba(0, 170, 91, 0.2) !important;
       box-shadow: 0 0 2px rgba(0,0,0,0.5) !important;
     }
   }
@@ -287,7 +284,8 @@ export default {
   }
   &_disabled {
     pointer-events: none !important;
-    background: #D1D1CF !important;
+    color: $black200 !important;
+    background: $black0 !important;
   }
   &_outline {
     width: 100%;
@@ -332,14 +330,22 @@ export default {
       background: $black100 !important;
     }
   }
-  &_add{
+  &_add {
     background-color: $white;
     color: $blue;
-    &:hover{
+    &:hover {
       background-color: $blue;
       color: $white;
     }
   }
 }
-
+@include _575 {
+  .base-btn  {
+    &_share-user-info {
+      position: absolute;
+      right: 20px;
+      top: 100px;
+    }
+  }
+}
 </style>

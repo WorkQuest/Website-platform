@@ -44,7 +44,6 @@
       <CtmModalInsureCase v-if="modals.insureCase === currentModalKey" />
       <CtmModalWithdrawAbout v-if="modals.withdrawAbout === currentModalKey" />
       <CtmModalAddCase v-if="modals.addCase === currentModalKey" />
-      <CtmModalWelcome v-if="modals.welcome === currentModalKey" />
       <CtmModalOpenADispute v-if="modals.openADispute === currentModalKey" />
       <CtmModalNotice v-if="modals.notice === currentModalKey" />
       <CtmModalNoticeChat v-if="modals.noticeChat === currentModalKey" />
@@ -88,6 +87,9 @@
       <CtmModalDeleteCase v-if="modals.deleteCase === currentModalKey" />
       <CtmModalClaimRewards v-if="modals.claimRewards === currentModalKey" />
       <CtmModalSwapTokens v-if="modals.swapTokens === currentModalKey" />
+      <CtmModalGallery v-if="modals.gallery === currentModalKey" />
+      <CtmModalAreYouSureDeleteMember v-if="modals.areYouSureDeleteMember === currentModalKey" />
+      <CtmModalAreYouSureLeaveChat v-if="modals.areYouSureLeaveChat === currentModalKey" />
     </div>
   </transition>
 </template>
@@ -126,7 +128,6 @@ import CtmModalConfirmDetails from './CtmModalConfirmDetails';
 import CtmModalInsureCase from './CtmModalInsureCase';
 import CtmModalWithdrawAbout from './CtmModalWithdrawAbout';
 import CtmModalAddCase from './CtmModalAddCase';
-import CtmModalWelcome from './CtmModalWelcome';
 import CtmModalOpenADispute from './CtmModalOpenADispute';
 import CtmModalNotice from './CtmModalNotice';
 import CtmModalNoticeChat from './CtmModalNoticeChat';
@@ -170,6 +171,9 @@ import CtmModalEditCase from './CtmModalEditCase';
 import CtmModalDeleteCase from './CtmModalDeleteCase';
 import CtmModalClaimRewards from './CtmModalClaimRewards';
 import CtmModalSwapTokens from './CtmModalSwapTokens';
+import CtmModalGallery from './CtmModalGallery';
+import CtmModalAreYouSureDeleteMember from './CtmModalAreYouSureDeleteMember';
+import CtmModalAreYouSureLeaveChat from './CtmModalAreYouSureLeaveChat';
 
 export default {
   name: 'ModalBox',
@@ -207,7 +211,6 @@ export default {
     CtmModalInsureCase,
     CtmModalWithdrawAbout,
     CtmModalAddCase,
-    CtmModalWelcome,
     CtmModalOpenADispute,
     CtmModalNotice,
     CtmModalNoticeChat,
@@ -250,6 +253,9 @@ export default {
     CtmModalDeleteCase,
     CtmModalClaimRewards,
     CtmModalSwapTokens,
+    CtmModalGallery,
+    CtmModalAreYouSureDeleteMember,
+    CtmModalAreYouSureLeaveChat,
   },
   data: () => ({
     modals,

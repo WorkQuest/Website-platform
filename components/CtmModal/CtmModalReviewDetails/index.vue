@@ -1,43 +1,52 @@
 <template>
   <ctm-modal-box
     :title="$t('modals.review')"
-    class="messageSend"
   >
-    <div class="ctm-modal__content">
-      <div class="messageSend">
-        <div class="messageSend__content">
-          <div class="reviews-item">
-            <div class="reviews-item__header">
-              <div class="reviews-item__avatar">
+    <div class="ctm-modal__content content">
+      <div class="content__review review">
+        <div class="review__block">
+          <div class="review__header">
+            <div class="review__user-data user-data">
+              <div class="user-data__avatar">
                 <img
-                  src="~/assets/img/temp/avatar-medium.jpg"
+                  class="user-data__img"
+                  :src="options.userAvatar"
                   alt=""
                 >
               </div>
-              <div class="name__container">
-                <div class="card-subtitle__name">
-                  {{ review.reviewerName }}
+              <div class="user-data__text">
+                <div class="user-data__name">
+                  {{ options.userFullName }}
                 </div>
-                <div class="card-subtitle_green">
+                <div class="user-data__subtitle">
                   {{ $t('role.worker') }}
                 </div>
               </div>
             </div>
-            <div class="reviews-item__subheader">
-              <div class="card-subtitle">
-                {{ $t('quests.questBig') }}
+            <div class="review__rating-block">
+              <div class="rating">
+                <div
+                  v-for="(star,idx) in 5"
+                  :key="idx"
+                  class="rating__star"
+                  :class="initStarClass(star)"
+                />
               </div>
-              <div class="card-subtitle__title">
-                {{ review.questName }}
+              <div class="rating__mark">
+                {{ options.reviewMark }}
               </div>
             </div>
-            <div class="description">
-              {{ review.reviewDesc }}
+          </div>
+          <div class="review__subheader subheader">
+            <div class="subheader__title subheader__title_dark">
+              {{ $t('quests.questBig') }}
             </div>
-
-            <div class="reviews-item__rating">
-              {{ review.reviewerRating }}
+            <div class="subheader__title subheader__title_grey">
+              {{ options.questTitle }}
             </div>
+          </div>
+          <div class="review__description">
+            {{ options.reviewMessage }}
           </div>
         </div>
       </div>
@@ -46,27 +55,27 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalReviewDetails',
-  data() {
-    return {
-      review: {
-        reviewerName: 'Edward Cooper',
-        reviewerRating: '4.00',
-        questName: 'SPA saloon design',
-        reviewDesc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisis nunc tincidunt nec, vel malesuada risus tempor massa. Turpis amet, amet vitae integer molestie pretium purus nec. Habitasse ipsum sed dictumst elementum purus amet placerat orci, nulla. Arcu, vel enim ultricies pellentesque ac libero fermentum pulvinar. Pretium at tellus porta nulla tortor pellentesque. Facilisi ut posuere mi eget euismod condimentum massa varius. Eu at egestas justo nunc mauris integer velit sit.\n'
-          + 'Tristique mattis faucibus nunc enim malesuada suspendisse. Feugiat etiam ornare fermentum at. Enim ultricies etiam et aliquam, ac enim nisi cras mattis. Neque, id faucibus purus in in erat a. Nunc urna, aliquet facilisis turpis morbi. Nibh vel sit nisi consequat mattis egestas ac est at. Sit tortor fermentum vestibulum auctor diam nullam fringilla mi ac. Pretium, sed euismod vestibulum non enim arcu. Massa aenean libero, vestibulum in ut risus, tincidunt est.',
-      },
-    };
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
   },
   methods: {
+    initStarClass(star) {
+      const { reviewMark } = this.options;
+      const a = this.Floor(star - reviewMark, 2);
+      return [
+        { rating__star_full: star <= reviewMark },
+        { rating__star_half: (a >= 0.3 && a <= 0.7) },
+      ];
+    },
     hide() {
       this.CloseModal();
-    },
-    showProfile() {
-      this.$router.push('/show-profile');
     },
     success() {
       this.ShowModal({
@@ -97,11 +106,17 @@ export default {
   }
 }
 
-.card-subtitle {
+.user-data {
   font-weight: 500;
   font-size: 12px;
   color: $black600;
-  &_green {
+  &__img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  &__subtitle {
     @include text-simple;
     font-weight: 400;
     font-size: 12px;
@@ -120,15 +135,41 @@ export default {
     font-size: 12px;
     color: $black500;
   }
+  &__avatar {
+    margin-right: 15px;
+  }
 }
 
-.reviews-item {
+.content {
+  max-width: 600px !important;
+  &__review {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+  }
+  &__action {
+    margin-top: 10px;
+    width: 100%;
+  }
+}
+
+.review {
   width: 100%;
-  background-color: #fff;
-  border-radius: 6px;
-  position: relative;
+  &__rating-block, &__user-data {
+    grid-gap: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  &__img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
   &__header {
     @extend .styles__flex;
+    justify-content: space-between;
   }
   &__avatar {
     margin-right: 15px;
@@ -154,24 +195,36 @@ export default {
     background-repeat: no-repeat;
   }
 }
-
-.message {
-  &__action {
-    width: 100%;
+.rating {
+  height: 20px;
+  display: flex;
+  margin-top: 2px;
+  width: 142px;
+  &__star {
+    width: inherit;
+    background-image: url('~assets/img/ui/star-empty.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    &_half {
+      background-image: url('~assets/img/ui/star-half.svg');
+    }
+    &_full {
+      background-image: url('~assets/img/ui/star-small.svg');
+    }
   }
 }
-
-.messageSend {
-  max-width: 600px !important;
-  &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    grid-gap: 10px;
-  }
-  &__action {
-    margin-top: 10px;
-    width: 100%;
+.subheader {
+  &__title {
+    font-size: 12px;
+    &_dark {
+      font-weight: 500;
+      color: #4C5767;
+    }
+    &_grey {
+      margin: 0 0 0 10px;
+      font-weight: 400;
+      color: #7C838D;
+    }
   }
 }
 </style>

@@ -6,7 +6,7 @@
           {{ $t('staking.mainHeader') }}
         </div>
         <div class="title_sub">
-          {{ $t('staking.tempHeader') }}
+          {{ $t('staking.stakingSub') }}
         </div>
       </div>
       <div class="staking-page__content">
@@ -16,8 +16,8 @@
           </div>
           <div class="staking-page__table">
             <b-table
-              :items="items"
-              :fields="testFields"
+              :items="poolsData"
+              :fields="fields"
               borderless
               caption-top
               thead-class="table__header"
@@ -25,27 +25,27 @@
             >
               <template #cell(poolAddress)="el">
                 <div class="table__value table__value_gray">
-                  {{ el.item.poolAddress }}
+                  {{ getFormattedAddress(el.item.poolAddress) }}
                 </div>
               </template>
               <template #cell(totalStaked)="el">
                 <div class="table__value">
-                  {{ el.item.totalStaked }}
+                  {{ el.item.totalStaked }} {{ el.item.stakeTokenSymbol }}
                 </div>
               </template>
               <template #cell(totalDistributed)="el">
                 <div class="table__value">
-                  {{ el.item.totalDistributed }}
+                  {{ el.item.totalDistributed }} {{ el.item.tokenSymbol }}
                 </div>
               </template>
               <template #cell(stakeTokenAddress)="el">
                 <div class="table__value table__value_blue">
-                  {{ el.item.stakeTokenAddress }}
+                  {{ getFormattedAddress(el.item.rewardTokenAddress) }}
                 </div>
               </template>
               <template #cell(rewardTokenAddress)="el">
                 <div class="table__value table__value_blue">
-                  {{ el.item.rewardTokenAddress }}
+                  {{ getFormattedAddress(el.item.rewardTokenAddress) }}
                 </div>
               </template>
               <template #cell(open)="el">
@@ -53,7 +53,7 @@
                   class="btn_bl"
                   @click="handleOpenPool(el)"
                 >
-                  {{ el.item.open }}
+                  {{ $t('staking.open') }}
                 </base-btn>
               </template>
             </b-table>
@@ -67,37 +67,22 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { Chains, NativeTokenSymbolByChainId, StakingTypes } from '~/utils/enums';
 
 export default {
+  name: 'Staking',
   data() {
     return {
+      firstLoading: true,
+      poolsData: null,
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      isConnected: 'web3/isConnected',
     }),
-    items() {
-      return [
-        {
-          poolAddress: this.$t('staking.tempAddress'),
-          totalStaked: this.$t('staking.tempStaked'),
-          totalDistributed: this.$t('staking.tempStaked'),
-          stakeTokenAddress: this.$t('staking.tempAddress'),
-          rewardTokenAddress: this.$t('staking.tempAddress'),
-          open: this.$t('staking.open'),
-        },
-        {
-          poolAddress: this.$t('staking.tempAddress'),
-          totalStaked: this.$t('staking.tempStaked'),
-          totalDistributed: this.$t('staking.tempStaked'),
-          stakeTokenAddress: this.$t('staking.tempAddress'),
-          rewardTokenAddress: this.$t('staking.tempAddress'),
-          open: this.$t('staking.open'),
-        },
-      ];
-    },
-    testFields() {
+    fields() {
       return [
         {
           key: 'poolAddress',
@@ -174,13 +159,75 @@ export default {
       ];
     },
   },
+  watch: {
+    async isConnected(newValue) {
+      if (this.firstLoading) return;
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
+      if (newValue && rightChain) {
+        await this.getPoolsData();
+      } else {
+        this.poolsData = [];
+      }
+    },
+  },
   async mounted() {
     this.SetLoader(true);
+    await this.checkMetamaskStatus();
+    await this.getPoolsData();
     this.SetLoader(false);
+    this.firstLoading = false;
+  },
+  async beforeDestroy() {
+    await this.$store.dispatch('web3/unsubscribeActions');
   },
   methods: {
+    async getPoolsData() {
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
+      if (!rightChain) {
+        this.poolsData = [];
+      }
+      const [wqtPool, wusdPool] = await Promise.all([
+        this.$store.dispatch('web3/fetchStakingInfo', { stakingType: StakingTypes.WQT }),
+        this.$store.dispatch('web3/fetchStakingInfo', { stakingType: StakingTypes.WUSD }),
+      ]);
+      if (wqtPool && wusdPool) {
+        wqtPool.poolAddress = process.env.WQT_STAKING;
+        wqtPool.link = StakingTypes.WQT;
+
+        const { netId } = await this.$store.dispatch('web3/getAccount');
+        wusdPool.poolAddress = process.env.WQT_STAKING_NATIVE;
+        wusdPool.rewardTokenAddress = '';
+        wusdPool.stakeTokenSymbol = NativeTokenSymbolByChainId[netId];
+        wusdPool.tokenSymbol = NativeTokenSymbolByChainId[netId];
+        wusdPool.link = StakingTypes.WUSD;
+
+        this.poolsData = [wqtPool, wusdPool];
+      }
+    },
+    async checkMetamaskStatus() {
+      if (!this.isConnected) {
+        if (typeof window.ethereum === 'undefined') {
+          localStorage.setItem('metamaskStatus', 'notInstalled');
+          this.ShowModal({
+            key: modals.status,
+            img: '~assets/img/ui/cardHasBeenAdded.svg',
+            title: 'Please install Metamask!',
+            subtitle: 'Please click install...',
+            button: 'Install',
+            type: 'installMetamask',
+          });
+        } else {
+          localStorage.setItem('metamaskStatus', 'installed');
+          await this.$store.dispatch('web3/connectToMetaMask');
+          await this.$store.dispatch('web3/goToChain', { chain: Chains.ETHEREUM });
+        }
+      }
+    },
     handleOpenPool(el) {
-      this.$router.push('/staking/1');
+      this.$router.push(`/staking/${el.item.link}`);
+    },
+    getFormattedAddress(address) {
+      return !address ? '' : `${address.slice(0, 8)}...${address.slice(-4)}`;
     },
   },
 };
@@ -272,10 +319,10 @@ export default {
   }
 
   &__table {
-
     .table {
       margin: 0;
-      border-radius: 0 !important;
+      box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5px 5px rgba(0, 0, 0, 0.03), 0 2px 2px rgba(0, 0, 0, 0.025), 0 0.7px 0.7px rgba(0, 0, 0, 0.01);
+      border-radius: 6px;
 
       &__value {
         font-weight: 400;

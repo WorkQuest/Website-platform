@@ -48,6 +48,7 @@ export default {
       markerCluster: null,
       markers: [],
       bounds: null,
+      timeoutIdRequest: null,
       events: [
         'bounds_changed',
         'center_changed',
@@ -134,7 +135,9 @@ export default {
       setTimeout(this.getMapBounds, 100);
       this.events.forEach((event) => {
         this.map.addListener(event, (e) => {
-          this.getMapBounds(event);
+          if (['dragend', 'tilesloaded', 'zoom_changed'].includes(event)) {
+            this.getMapBounds();
+          }
           this.$emit(event, {
             map: this.map,
             event: e,
@@ -142,7 +145,7 @@ export default {
         });
       });
     },
-    getMapBounds(eventName) {
+    getMapBounds() {
       const bounds = this.map.getBounds();
       const mapCenterString = this.map.getCenter();
       const mapCenterArray = mapCenterString.toString().replace(/[()]/g, '').split(', ');
@@ -164,10 +167,14 @@ export default {
           lng: bounds.getNorthEast().lng(),
         },
       };
-      if (eventName === 'dragend' || eventName === 'tilesloaded' || eventName === 'zoom_changed') {
-        this.initChildren();
-        this.$store.dispatch('quests/setMapBounds', coordinates);
+      if (this.timeoutIdRequest !== null) {
+        clearTimeout(this.timeoutIdRequest);
+        this.timeoutIdRequest = null;
       }
+      this.timeoutIdRequest = setTimeout(async () => {
+        await this.initChildren();
+        await this.$store.dispatch('quests/setMapBounds', coordinates);
+      }, 300);
     },
     initChildren() {
       if (this.markerCluster !== null) this.markerCluster.clearMarkers();
@@ -187,8 +194,8 @@ export default {
 </script>
 
 <style>
-.GMap__Wrapper{
+.GMap__Wrapper {
   width: 100%;
-  height: 400px;
+  height: 205px;
 }
 </style>
