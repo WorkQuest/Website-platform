@@ -384,9 +384,17 @@ export default {
       const priceWQT = coingeckoResult.data.market_data.current_price.usd;
       const totalStaked = new BigNumber(stakingInfoEvent.totalStaked).shiftedBy(-18).toNumber();
       const rewardTotal = new BigNumber(stakingInfoEvent.rewardTotal).shiftedBy(-18).toNumber();
-      const priceLP = reserveUSD / totalSupply;
-      const APY = ((rewardTotal * 12) * priceWQT) / (totalStaked * priceLP);
-      return ((payload.stakedAmount * priceLP) * APY) / priceWQT; // profit
+
+      const priceLP = new BigNumber(reserveUSD).dividedBy(totalSupply).toNumber();
+      const a = new BigNumber(rewardTotal).multipliedBy(12).multipliedBy(priceWQT).toNumber();
+      const b = new BigNumber(totalStaked).multipliedBy(priceLP).toNumber();
+
+      const APY = new BigNumber(a).dividedBy(b).toNumber();
+      return new BigNumber(payload.stakedAmount)
+        .multipliedBy(priceLP)
+        .multipliedBy(APY)
+        .dividedBy(priceWQT)
+        .toNumber(); // profit
     } catch (err) {
       return err;
     }

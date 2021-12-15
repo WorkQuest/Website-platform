@@ -27,8 +27,8 @@ export default {
   async getChartDataForWqtWethPool({ commit }) {
     try {
       const response = await this.$axios.$get('/v1/pool-liquidity/wqt-weth/tokenDay?limit=10');
-      commit('setChartData', response.result);
       commit('setTotalLiquidityUSD', response.result[0].reserveUSD);
+      commit('setChartData', response.result.reverse());
       return response;
     } catch (e) {
       console.error('error in getChartDataForWqtWethPool', e);
@@ -46,7 +46,7 @@ export default {
       const apiWbnb = this.$axios.create({ baseURL: `https://api.pancakeswap.info/api/v2/tokens/${wbnb_token}` });
       const apiWqt = this.$axios.create({ baseURL: `https://api.pancakeswap.info/api/v2/tokens/${wqt_token}` });
 
-      const [wbnbRes, wqtRes, tokensAmount, chartDataRes] = await Promise.all([
+      const [wbnbRes, wqtRes, tokensAmount, responseChartData] = await Promise.all([
         apiWbnb.$get(''),
         apiWqt.$get(''),
         getPoolTokensAmountBSC(),
@@ -54,11 +54,10 @@ export default {
       ]);
       const totalLiquidity = tokensAmount.wqtAmount * wbnbRes.data.price + tokensAmount.wbnbAmount * wqtRes.data.price;
       commit('setTotalLiquidityUSD', totalLiquidity);
-
-      const { infoPer10Days } = chartDataRes.result;
-      if (chartDataRes.result.count) infoPer10Days[0].reserveUSD = totalLiquidity;
-      commit('setChartData', infoPer10Days);
-      return chartDataRes;
+      const { count, infoPer10Days } = responseChartData.result;
+      if (count) infoPer10Days[0].reserveUSD = totalLiquidity;
+      commit('setChartData', infoPer10Days.reverse());
+      return responseChartData;
     } catch (e) {
       console.error('error in getChartDataForWqtWbnbPool', e);
       return false;

@@ -375,10 +375,12 @@ export default {
     },
   },
   async mounted() {
+    this.SetLoader(true);
     localStorage.setItem('miningPoolId', this.currentPool);
     const currentPool = this.currentPool.toLowerCase();
     await this.$store.dispatch(`mining/getChartDataForWqtW${currentPool}Pool`);
     await this.$store.dispatch(`mining/getTableDataForWqtW${currentPool}Pool`, {});
+    this.SetLoader(false);
   },
   async beforeDestroy() {
     clearInterval(this.updateInterval);
@@ -427,12 +429,16 @@ export default {
       this.fullRewardAmount = tokensData.rewardTokenAmount;
       this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
       this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
-      const payload = {
-        chain: this.currentPool,
-        stakedAmount: tokensData.stakeTokenAmount,
-      };
-      const profit = await this.$store.dispatch('web3/getAPY', payload);
-      this.profitWQT = this.Floor(profit);
+
+      if (+tokensData.stakeTokenAmount > 0) {
+        const payload = {
+          chain: this.currentPool,
+          stakedAmount: tokensData.stakeTokenAmount,
+        };
+        const profit = await this.$store.dispatch('web3/getAPY', payload);
+        this.profitWQT = this.Floor(profit);
+      }
+
       this.isLoadingAPY = false;
     },
     async claimRewards() {
