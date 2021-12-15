@@ -29,8 +29,6 @@
     "nuxt-dropzone": "^1.0.4",
     "nuxt-gmaps": "^1.2.10",
     "nuxt-i18n": "^6.13.12",
-    "truffle": "^5.1.14",
-    "truffle-contract": "^4.0.31",
     "vee-validate": "^3.4.5",
     "vue": "^2.6.12",
     "vue-click-outside": "^1.1.0",
