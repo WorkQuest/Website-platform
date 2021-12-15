@@ -6,6 +6,7 @@ import WalletConnectProvider from '@walletconnect/web3-provider';
 import * as abi from '~/abi/abi';
 import { Chains, ChainsId, StakingTypes } from '~/utils/enums';
 
+let bscRpcContract = null;
 let web3 = null;
 let web4 = null;
 
@@ -82,7 +83,6 @@ export const getStakingDataByType = (stakingType) => {
   let _stakingAddress;
   let _stakingAbi;
   let _tokenAddress;
-
   const _miningPoolId = localStorage.getItem('miningPoolId');
   switch (stakingType) {
     case StakingTypes.MINING:
@@ -254,7 +254,6 @@ export const initProvider = async (payload) => {
         };
       }
     }
-    console.log(chain, process.env.PROD, walletOptions);
 
     web3Modal = new Web3Modal({
       // theme: 'dark',
@@ -594,6 +593,45 @@ export const initStackingContract = async (chain) => {
   }));
   const liquidityMiningContract = new liquidityMiningProvider.eth.Contract(stakingAbi, stakingAddress);
   return await liquidityMiningContract.methods.getStakingInfo().call();
+};
+
+export const getBinanceContractRPC = async () => {
+  if (bscRpcContract) return bscRpcContract;
+  try {
+    const address = process.env.PROD === 'true' ? process.env.BSC_LP_TOKEN : '0x3ea2de549ae9dcb7992f91227e8d6629a22c3b40';
+    const provider = await new Web3.providers.HttpProvider(process.env.BSC_RPC_URL);
+    const web3Bsc = await new Web3(provider);
+    bscRpcContract = await new web3Bsc.eth.Contract(abi.BSCPool, address);
+    return bscRpcContract;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
+export const getPoolTokensAmountBSC = async () => {
+  try {
+    const poolContract = await getBinanceContractRPC();
+    const res = await poolContract.methods.getReserves().call();
+    return {
+      wqtAmount: new BigNumber(res._reserve0).shiftedBy(-18).toString(),
+      wbnbAmount: new BigNumber(res._reserve1).shiftedBy(-18).toString(),
+    };
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
+
+export const getPoolTotalSupplyBSC = async () => {
+  try {
+    const poolContract = await getBinanceContractRPC();
+    const res = await poolContract.methods.totalSupply().call();
+    return new BigNumber(res).shiftedBy(-18).toString();
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
 };
 
 export const getPensionDefaultData = async () => {
