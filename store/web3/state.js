@@ -10,7 +10,6 @@ export default () => ({
   tokenWETH: {},
   accountData: {},
   tokensAmount: {},
-  tokenLPAmount: {},
   busy: false,
   purseData: {},
   tokensBSC: {},
