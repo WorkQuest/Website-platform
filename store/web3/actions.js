@@ -7,19 +7,14 @@ import {
 } from '@uniswap/sdk';
 
 import {
-  Token as TokenPancake,
-  TokenAmount as TokenAmountPancake,
-  Pair as PairPancake,
-} from '@pancakeswap/sdk';
-
-import {
   claimRewards,
   disconnectWeb3,
   fetchContractData,
   getAccountAddress,
   goToChain,
   initStackingContract,
-  initWeb3, initMetaMaskWeb3,
+  initWeb3,
+  initMetaMaskWeb3,
   redeemSwap,
   showToast,
   staking,
@@ -28,10 +23,20 @@ import {
   getAccount,
   swapWithBridge,
   getStakingDataByType,
-  handleMetamaskStatus, fetchActions, unsubscirbeListeners, getChainIdByChain,
+  handleMetamaskStatus,
+  fetchActions,
+  unsubscirbeListeners,
+  getChainIdByChain,
   initProvider,
   authRenewal,
-  getPensionDefaultData, getPensionWallet, pensionUpdateFee, pensionContribute, pensionsWithdraw, pensionExtendLockTime, getTxFee,
+  getPensionDefaultData,
+  getPensionWallet,
+  pensionUpdateFee,
+  pensionContribute,
+  pensionsWithdraw,
+  pensionExtendLockTime,
+  getTxFee,
+  getPoolTotalSupplyBSC, getPoolTokensAmountBSC,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
@@ -325,98 +330,71 @@ export default {
     return +getChainIdByChain(chain) === +getAccount().netId;
   },
   async getAPY({ commit }, payload) {
-    // TODO: add actual Data
-    let token0;
-    let token1;
-    let chainId;
-    let amountMax0;
-    let amountMax1;
-    let api;
-    let pair;
-    const stakingInfoEvent = await initStackingContract(payload.chain);
+    let totalSupply;
+    let reserveUSD;
     if (payload.chain === 'ETH') {
-      chainId = 1;
-      amountMax0 = 2000000000000000000;
-      amountMax1 = 1000000000000000000;
-
-      // TODO совпадают названия переменных, нужен этот костыль
       const ethereum_wqt_token = process.env.PROD === 'false'
         ? '0x06677Dc4fE12d3ba3C7CCfD0dF8Cd45e4D4095bF'
         : process.env.ETHEREUM_WQT_TOKEN;
 
-      token0 = new TokenUniswap(
-        chainId,
+      const token0 = new TokenUniswap(
+        1,
         ethereum_wqt_token,
         18,
         'WQT',
         'Work Quest Token',
       );
-      token1 = new TokenUniswap(
-        chainId,
+      const token1 = new TokenUniswap(
+        1,
         process.env.WETH_TOKEN,
         18,
         'WETH',
         'Wrapped Ether',
       );
-      pair = new PairUniswap(
-        new TokenAmountUniswap(token0, amountMax0),
-        new TokenAmountUniswap(token1, amountMax1),
+      const pair = new PairUniswap(
+        new TokenAmountUniswap(token0, 2000000000000000000),
+        new TokenAmountUniswap(token1, 1000000000000000000),
       );
-      api = this.$axios.create({
+      const uniswapApi = this.$axios.create({
         baseURL: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2',
       });
-    } else {
-      chainId = 56;
-      amountMax0 = 2000000000000000000;
-      amountMax1 = 2000000000000000000;
-
-      // TODO совпадают названия переменных, нужен этот костыль
-      const bsc_wqt_token = process.env.PROD === 'false'
-        ? '0xe89508D74579A06A65B907c91F697CF4F8D9Fac7'
-        : process.env.BSC_WQT_TOKEN;
-
-      token0 = new TokenPancake(
-        chainId,
-        bsc_wqt_token,
-        18,
-        'WQT',
-        'Work Quest Token',
-      );
-      token1 = new TokenPancake(
-        chainId,
-        process.env.WBNB_TOKEN,
-        18,
-        'WETH',
-        'Wrapped BNB',
-      );
-      pair = new PairPancake(
-        new TokenAmountPancake(token0, amountMax0),
-        new TokenAmountPancake(token1, amountMax1),
-      );
-      api = this.$axios.create({
-        baseURL: 'https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2',
-      });
-    }
-    const apiCoingecko = this.$axios.create({
-      baseURL: 'https://api.coingecko.com/api/v3/coins/work-quest',
-    });
-    try {
-      const coingeckoResult = await apiCoingecko.get('');
-      const priceWQT = coingeckoResult.data.market_data.current_price.usd;
-      const result = await api.post('', {
+      const result = await uniswapApi.post('', {
         query: `{
         pairDayDatas (first: 1, skip: 0,
         orderBy:date, orderDirection: desc,
         where: {pairAddress: "${pair.liquidityToken.address.toLowerCase()}"})
         { totalSupply reserveUSD }}`,
       });
-      const { totalSupply } = result.data.data.pairDayDatas[0];
-      const { reserveUSD } = result.data.data.pairDayDatas[0];
+      totalSupply = result.data.data.pairDayDatas[0].totalSupply;
+      reserveUSD = result.data.data.pairDayDatas[0].reserveUSD;
+    } else {
+      const [supply, tokensAmount] = await Promise.all([
+        getPoolTotalSupplyBSC(),
+        getPoolTokensAmountBSC(),
+      ]);
+      totalSupply = supply;
+      reserveUSD = new BigNumber(tokensAmount.wqtAmount).multipliedBy(tokensAmount.wbnbAmount).sqrt().toNumber();
+    }
+    try {
+      const apiCoingecko = this.$axios.create({ baseURL: 'https://api.coingecko.com/api/v3/coins/work-quest' });
+      const [coingeckoResult, stakingInfoEvent] = await Promise.all([
+        apiCoingecko.get(''),
+        initStackingContract(payload.chain),
+      ]);
+      const priceWQT = coingeckoResult.data.market_data.current_price.usd;
       const totalStaked = new BigNumber(stakingInfoEvent.totalStaked).shiftedBy(-18).toNumber();
       const rewardTotal = new BigNumber(stakingInfoEvent.rewardTotal).shiftedBy(-18).toNumber();
-      const priceLP = reserveUSD / totalSupply;
-      const APY = ((rewardTotal * 12) * priceWQT) / (totalStaked * priceLP);
-      return ((payload.stakedAmount * priceLP) * APY) / priceWQT; // profit
+
+      const priceLP = new BigNumber(reserveUSD).dividedBy(totalSupply).toNumber();
+      const a = new BigNumber(rewardTotal).multipliedBy(12).multipliedBy(priceWQT).toNumber();
+      const b = new BigNumber(totalStaked).multipliedBy(priceLP).toNumber();
+
+      const APY = new BigNumber(a).dividedBy(b).toNumber();
+      return new BigNumber(payload.stakedAmount)
+        .multipliedBy(priceLP)
+        .multipliedBy(APY)
+        .dividedBy(priceWQT)
+        .toNumber(); // profit
     } catch (err) {
       return err;
     }

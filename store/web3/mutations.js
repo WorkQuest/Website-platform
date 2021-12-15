@@ -38,9 +38,6 @@ export default {
   setStakeAndRewardData(state, payload) {
     state.tokensAmount = payload;
   },
-  setLpTokenPrice(state) {
-    state.tokenLPAmount = {};
-  },
   setPurseData(state, payload) {
     state.purseData = payload;
   },

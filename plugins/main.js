@@ -101,6 +101,9 @@ Vue.mixin({
         navigator.geolocation.getCurrentPosition(this.FormatPosition);
       }
     },
+    CutTxn(txn) {
+      return `${txn.slice(0, 10)}...${txn.slice(-10)}`;
+    },
     FormatPosition(position) {
       const payload = {
         latitude: position.coords.latitude,
