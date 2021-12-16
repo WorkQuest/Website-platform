@@ -168,16 +168,27 @@ export default {
     return response;
   },
   async getUploadFileLink({ commit }, config) {
-    const { result } = await this.$axios.$post('/v1/storage/get-upload-link', config);
-    return result;
+    try {
+      const { result } = await this.$axios.$post('/v1/storage/get-upload-link', config);
+      return result;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
   },
   async uploadFile({ commit }, payload) {
-    await this.$axios.$put(payload.url, payload.data, {
-      headers: {
-        'Content-Type': payload.data.contentType,
-        'x-amz-acl': 'public-read',
-      },
-    });
+    try {
+      await this.$axios.$put(payload.url, payload.data, {
+        headers: {
+          'Content-Type': payload.contentType,
+          'x-amz-acl': 'public-read',
+        },
+      });
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
   },
 
   async disable2FA({ commit }, payload) {

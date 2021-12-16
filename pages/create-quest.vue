@@ -523,10 +523,8 @@ export default {
         medias.push(urls[i].mediaId);
         fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
           url: urls[i].url,
-          data: {
-            file,
-            contentType: file.type,
-          },
+          data: file,
+          contentType: file.type,
         }));
       }
       await Promise.all(fetchUrlsData);

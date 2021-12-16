@@ -224,6 +224,8 @@ export default {
   position: relative;
   width: 150px;
   height: 150px;
+  border: 1px solid $black100;
+  border-radius: 6px;
   cursor: default;
   margin-left: 20px;
   display: flex;

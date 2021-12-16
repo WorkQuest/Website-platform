@@ -24,12 +24,12 @@
           </h2>
           <div class="img__container">
             <img
-              v-for="n in 4"
-              :key="n"
+              v-for="(item, i) of questData.medias"
+              :key="i"
               class="img__item"
-              src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
+              :src="item.url"
               alt=""
-              @click="openImage('https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg')"
+              @click="openImage(item.url)"
             >
           </div>
         </div>
