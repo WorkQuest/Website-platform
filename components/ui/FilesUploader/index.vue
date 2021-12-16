@@ -260,4 +260,24 @@ export default {
   padding: 5px;
   border-radius: 6px;
 }
+
+@include _575 {
+  .file {
+    width: 70vw;
+    height: 70vw;
+    margin-left: 0;
+    margin-bottom: 15px;
+    &__remover {
+      &::before {
+        opacity: 75%;
+        color: $red;
+        background: $grey;
+        border-radius: 50%;
+      }
+    }
+  }
+  .files-container {
+    justify-content: center;
+  }
+}
 </style>
