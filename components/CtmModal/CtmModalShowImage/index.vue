@@ -131,9 +131,9 @@ export default {
   margin-top: 28px;
   overflow-y: auto;
   max-height: 800px;
-  height: 100%;
+  height: 100vh;
   max-width: 1200px;
-  width: 100%;
+  width: 100vw;
   &__btns {
     position: absolute;
     left: 25px;
@@ -149,8 +149,9 @@ export default {
   &__img {
     max-width: 1200px;
     width: 100%;
+    height: 100%;
     border-radius: 6px;
-    object-fit: cover;
+    object-fit: contain;
   }
 }
 .desc {

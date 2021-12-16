@@ -92,7 +92,16 @@ export default {
     };
   },
   mounted() {
-    this.files = this.preloadedFiles;
+    // eslint-disable-next-line no-restricted-syntax
+    for (const file of this.preloadedFiles) {
+      this.files.push({
+        id: this.id,
+        mediaId: file.id,
+        src: file.url,
+        type: 'image',
+      });
+      this.id += 1;
+    }
   },
   methods: {
     uploaderStyles() {
@@ -106,6 +115,7 @@ export default {
     removeItem(id) {
       this.errorInfo.isShow = false;
       this.files = this.files.filter((item) => item.id !== id);
+      this.$emit('change', this.files);
     },
     dragover(event) {
       event.preventDefault();
@@ -136,7 +146,6 @@ export default {
           const kb = Math.ceil(this.limitBytes / 1024);
           const mb = Math.ceil(this.limitBytes / 1024 / 1024);
           if (mb >= 1) {
-            // this.showError(`File size limit: ${mb}mb`);
             this.showError(this.$t('uploader.errors.fileSizeLimit', { n: mb }) + this.$t('uploader.mb'));
           } else {
             this.showError(this.$t('uploader.errors.fileSizeLimit', { n: kb }) + this.$t('uploader.kb'));
@@ -144,7 +153,7 @@ export default {
           // eslint-disable-next-line no-continue
           continue;
         }
-        if (!this.acceptDuplicates && this.files.filter((item) => item.file.size === file.size
+        if (!this.acceptDuplicates && this.files.filter((item) => !item.mediaId && item.file.size === file.size
           && item.file.lastModified === file.lastModified
           && item.file.name === file.name).length) {
           return;

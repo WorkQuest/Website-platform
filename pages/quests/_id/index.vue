@@ -496,8 +496,9 @@ export default {
   &__item {
     @extend .img;
     border-radius: 6px;
-    max-width: 280px;
-    max-height: 210px;
+    width: 280px;
+    height: 210px;
+    object-fit: cover;
     &:hover {
       @extend .img;
       cursor: pointer;
