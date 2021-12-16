@@ -35,12 +35,6 @@
     "showYourMessage": "Show your message",
     "hideYourMessage": "Hide your message"
   },
-
-  "uploader" : {
-    "uploadText": "Upload a images or videos",
-    "upload": "Upload",
-    "files": "files"
-  },
   "messages": {
     "alpha": "The {_field_} field may only contain alphabetic characters",
     "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
@@ -2367,5 +2361,14 @@
   },
   "gallery": {
     "counter": "{n} of {c}"
+  },
+  "uploader": {
+    "uploadFile": "Upload files",
+    "kb": "KB",
+    "mb": "MB",
+    "errors": {
+      "fileSizeLimit": "File size limit: {n}",
+      "filesLimit": "Files limit: {n}"
+    }
   }
 }

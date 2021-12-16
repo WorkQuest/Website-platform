@@ -116,11 +116,11 @@
             <div class="upload__title">
               {{ $t('quests.uploadMaterials') }}
             </div>
-            <dropzone
-              id="uploader"
-              ref="el"
-              :options="optionsModal"
-              :include-styling="true"
+            <files-uploader
+              :multiple="true"
+              :limit="10"
+              :limit-bytes="10485760"
+              @change="updateFiles"
             />
           </div>
           <div class="upload btn btn__container btn__container_right">
@@ -255,9 +255,6 @@ const { GeoCode } = require('geo-coder');
 
 export default {
   name: 'CreateQuest',
-  components: {
-    Dropzone,
-  },
   data() {
     return {
       ads: {
@@ -279,21 +276,7 @@ export default {
       coordinates: {},
       currency: ' WUSD',
       addresses: [],
-      optionsModal: {
-        url: process.env.BASE_URL,
-        addRemoveLinks: true,
-        dictRemoveFile: '<span class="icon-close_big"></span>',
-        dictCancelUpload: '<span class="icon-close_big"></span>',
-        dictCancelUploadConfirmation: '',
-        maxFiles: '3',
-        dictDefaultMessage:
-          '<div class="uploader__message_container">'
-          + '<div class="uploader__message">Upload a images or videos</div><'
-          + "span class='icon-add_to_queue'></span>"
-          + '</div>',
-      },
-      file1: null,
-      file2: null,
+      files: [],
     };
   },
   computed: {
@@ -429,6 +412,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    updateFiles(files) {
+      this.files = files;
+    },
     updateSelectedSkills(specAndSkills) {
       this.selectedSpecAndSkills = specAndSkills;
     },
@@ -521,7 +507,14 @@ export default {
         console.log(e);
       }
     },
+    async loadMedias() {
+      if (!this.files) return [];
+      const medias = [];
+      // TODO: load medias
+      return medias;
+    },
     async createQuest() {
+      const medias = await this.loadMedias();
       const payload = {
         workplace: this.convertWorkplace(this.workplaceIndex),
         priority: this.runtimeIndex,
@@ -530,7 +523,7 @@ export default {
         title: this.questTitle,
         description: this.textarea,
         price: this.price,
-        medias: [],
+        medias,
         adType: 0,
         locationPlaceName: this.address,
         specializationKeys: this.selectedSpecAndSkills,
