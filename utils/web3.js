@@ -149,7 +149,7 @@ export const initWeb3 = async () => {
     if (window.ethereum) {
       web3 = new Web3(window.ethereum);
       if ((await web3.eth.getCoinbase()) === null) {
-        await window.ethereum.enable();
+        await ethereum.request({ method: 'eth_requestAccounts' });
       }
       const [userAddress, chainId] = await Promise.all([
         web3.eth.getCoinbase(),
