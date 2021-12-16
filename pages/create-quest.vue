@@ -120,6 +120,7 @@
               :multiple="true"
               :limit="10"
               :limit-bytes="10485760"
+              :accept="'images/*'"
               @change="updateFiles"
             />
           </div>
