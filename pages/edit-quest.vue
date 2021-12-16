@@ -120,7 +120,7 @@
               :multiple="true"
               :limit="10"
               :limit-bytes="10485760"
-              :accept="'images/*'"
+              :accept="'image/png, image/jpg, image/jpeg'"
               :preloaded-files="questData.medias"
               @change="updateFiles"
             />
