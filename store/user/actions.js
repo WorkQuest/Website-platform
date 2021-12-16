@@ -167,6 +167,19 @@ export default {
     commit('setImage', response.result);
     return response;
   },
+  async getUploadFileLink({ commit }, config) {
+    const { result } = await this.$axios.$post('/v1/storage/get-upload-link', config);
+    return result;
+  },
+  async uploadFile({ commit }, payload) {
+    await this.$axios.$put(payload.url, payload.data, {
+      headers: {
+        'Content-Type': payload.data.contentType,
+        'x-amz-acl': 'public-read',
+      },
+    });
+  },
+
   async disable2FA({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/totp/disable', payload);

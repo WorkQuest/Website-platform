@@ -508,9 +508,27 @@ export default {
       }
     },
     async loadMedias() {
-      if (!this.files) return [];
+      if (!this.files.length) return [];
+      const fetchData = [];
+      const fetchUrlsData = [];
       const medias = [];
-      // TODO: load medias
+      // eslint-disable-next-line no-restricted-syntax
+      for (const item of this.files) {
+        fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file.type }));
+      }
+      const urls = await Promise.all(fetchData);
+      for (let i = 0; i < this.files.length; i += 1) {
+        const { file } = this.files[i];
+        medias.push(urls[i].mediaId);
+        fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
+          url: urls[i].url,
+          data: {
+            file,
+            contentType: file.type,
+          },
+        }));
+      }
+      await Promise.all(fetchUrlsData);
       return medias;
     },
     async createQuest() {

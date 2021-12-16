@@ -76,6 +76,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    preloadedFiles: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
@@ -86,6 +90,9 @@ export default {
         text: '',
       },
     };
+  },
+  mounted() {
+    this.files = this.preloadedFiles;
   },
   methods: {
     uploaderStyles() {
