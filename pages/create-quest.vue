@@ -247,7 +247,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Dropzone from 'nuxt-dropzone';
 import 'nuxt-dropzone/dropzone.css';
 import '~/assets/scss/vue2Dropzone.min.css';
 import '~/assets/scss/dropzone.scss';

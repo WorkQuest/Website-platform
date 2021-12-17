@@ -103,9 +103,11 @@ export default {
         isShow: false,
         text: '',
       },
+      acceptedTypes: [],
     };
   },
   mounted() {
+    this.acceptedTypes = this.accept.replace(/\s/g, '').split(',');
     // eslint-disable-next-line no-restricted-syntax
     for (const file of this.preloadedFiles) {
       this.files.push({
@@ -152,6 +154,10 @@ export default {
       if (!inputs.length) return;
       // eslint-disable-next-line no-restricted-syntax
       for (const file of inputs) {
+        if (!this.checkContentType(file)) {
+          // eslint-disable-next-line no-continue
+          continue;
+        }
         if (this.limit && this.files.length >= this.limit) {
           this.showError(this.$t('uploader.errors.filesLimit', { n: this.limit }));
           return;
@@ -192,6 +198,9 @@ export default {
       }
       this.$emit('change', this.files);
       this.$refs.input.value = null;
+    },
+    checkContentType(file) {
+      return this.acceptedTypes.indexOf(file.type) !== -1;
     },
     showError(errorText) {
       this.errorInfo.isShow = true;
