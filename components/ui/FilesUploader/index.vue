@@ -163,9 +163,9 @@ export default {
           return;
         }
         const type = file.type.split('/')[0];
-        const kb = Math.ceil(this.limitBytes / 1024);
-        const mb = Math.ceil(this.limitBytes / 1024 / 1024);
         if (type === 'image' && this.limitBytes && file.size >= this.limitBytes) {
+          const kb = Math.ceil(this.limitBytes / 1024);
+          const mb = Math.ceil(this.limitBytes / 1024 / 1024);
           if (mb >= 1) {
             this.showError(this.$t('uploader.errors.fileSizeLimit', { n: mb }) + this.$t('uploader.mb'));
           } else {
@@ -175,6 +175,8 @@ export default {
           continue;
         }
         if (type === 'video' && this.limitBytesVideo && file.size >= this.limitBytesVideo) {
+          const kb = Math.ceil(this.limitBytesVideo / 1024);
+          const mb = Math.ceil(this.limitBytesVideo / 1024 / 1024);
           if (mb >= 1) {
             this.showError(this.$t('uploader.errors.fileSizeLimit', { n: mb }) + this.$t('uploader.mb'));
           } else {
