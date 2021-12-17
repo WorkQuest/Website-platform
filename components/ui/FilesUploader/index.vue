@@ -31,9 +31,18 @@
         class="file"
       >
         <img
+          v-if="item.type === 'image'"
           :src="item.src"
-          :class="{ file__img: item.type === 'image' }"
+          class="file__img"
         >
+        <video
+          v-else-if="item.type === 'video'"
+          :src="item.src"
+          class="file__video"
+        />
+        <div class="file__info">
+          {{ item.type }}
+        </div>
         <span
           class="icon-close_big file__remover"
           @click="removeItem(item.id)"
@@ -69,6 +78,10 @@ export default {
     },
     multiple: Boolean,
     limitBytes: {
+      type: Number,
+      default: 0,
+    },
+    limitBytesVideo: {
       type: Number,
       default: 0,
     },
@@ -142,9 +155,19 @@ export default {
           this.showError(this.$t('uploader.errors.filesLimit', { n: this.limit }));
           return;
         }
-        if (this.limitBytes && file.size >= this.limitBytes) {
-          const kb = Math.ceil(this.limitBytes / 1024);
-          const mb = Math.ceil(this.limitBytes / 1024 / 1024);
+        const type = file.type.split('/')[0];
+        const kb = Math.ceil(this.limitBytes / 1024);
+        const mb = Math.ceil(this.limitBytes / 1024 / 1024);
+        if (type === 'image' && this.limitBytes && file.size >= this.limitBytes) {
+          if (mb >= 1) {
+            this.showError(this.$t('uploader.errors.fileSizeLimit', { n: mb }) + this.$t('uploader.mb'));
+          } else {
+            this.showError(this.$t('uploader.errors.fileSizeLimit', { n: kb }) + this.$t('uploader.kb'));
+          }
+          // eslint-disable-next-line no-continue
+          continue;
+        }
+        if (type === 'video' && this.limitBytesVideo && file.size >= this.limitBytesVideo) {
           if (mb >= 1) {
             this.showError(this.$t('uploader.errors.fileSizeLimit', { n: mb }) + this.$t('uploader.mb'));
           } else {
@@ -240,10 +263,27 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  &__info {
+    padding: 1px 3px;
+    border-radius: 6px;
+    background: $black700;
+    color: $black0;
+    z-index: 1;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    font-size: 12px;
+  }
   &__img {
     object-fit: cover;
     width: 100%;
     height: 100%;
+    border-radius: 6px;
+  }
+  &__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-radius: 6px;
   }
   &__remover {

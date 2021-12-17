@@ -23,14 +23,23 @@
             {{ $t('quests.questMaterials') }}
           </h2>
           <div class="img__container">
-            <img
+            <div
               v-for="(item, i) of questData.medias"
               :key="i"
-              class="img__item"
-              :src="item.url"
-              alt=""
-              @click="openImage(item.url)"
+              @click="openFile(item)"
             >
+              <img
+                v-if="item.contentType.split('/')[0] === 'image'"
+                class="img__item"
+                :src="item.url"
+                alt=""
+              >
+              <video
+                v-else
+                class="img__item"
+                :src="item.url"
+              />
+            </div>
           </div>
         </div>
         <div
@@ -314,11 +323,12 @@ export default {
         key: modals.raiseViews,
       });
     },
-    openImage(src) {
+    openFile(file) {
       if (window.innerWidth >= 761) {
         this.ShowModal({
           key: modals.showImage,
-          imageSrc: src,
+          contentType: file.contentType.split('/')[0],
+          url: file.url,
         });
       }
     },

@@ -27,13 +27,23 @@
           />
         </base-btn>
       </div>
+      <video
+        v-if="options.contentType === 'video'"
+        :src="options.url"
+        controls
+        class="content__file"
+      />
       <img
-        class="content__img"
-        :src="options.imageSrc"
+        v-else
+        :src="options.url"
         alt=""
+        class="content__file"
       >
     </div>
-    <div class="ctm-modal__desc desc">
+    <div
+      v-if="options.title || options.desc"
+      class="ctm-modal__desc desc"
+    >
       <div
         v-if="options.title"
         class="desc__title"
@@ -129,7 +139,6 @@ export default {
 }
 .content {
   margin-top: 28px;
-  overflow-y: auto;
   max-height: 800px;
   height: 100vh;
   max-width: 1200px;
@@ -146,7 +155,7 @@ export default {
     border-radius: 6px;
     padding: 2px;
   }
-  &__img {
+  &__file {
     max-width: 1200px;
     width: 100%;
     height: 100%;
