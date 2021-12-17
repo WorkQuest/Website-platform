@@ -2037,9 +2037,9 @@
   "myQuests": {
     "statuses": {
       "all": "All quests",
-      "fav": "Favorite",
-      "requested": "Requested",
-      "completed": "Completed quests",
+      "favorites": "Favorites",
+      "responded": "Responded quests",
+      "performed": "Performed quests",
       "active": "Active quests",
       "invited": "Invited quests"
     }

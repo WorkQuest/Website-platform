@@ -401,7 +401,10 @@ export default {
       const payload = {
         userId: this.userId,
         role: this.userData.role,
-        query: limit ? `limit=${limit}` : `limit=${this.perPagerQuests}&offset=${(this.pageQuests - 1) * this.perPagerQuests}`,
+        query: {
+          limit: limit || this.perPagerQuests,
+          offset: (this.pageQuests - 1) * this.perPagerQuests,
+        },
       };
       await this.$store.dispatch('quests/getUserQuests', payload);
       this.questsObject = this.questUserData;
