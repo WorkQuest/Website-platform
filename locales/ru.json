@@ -16,6 +16,11 @@
   },
   "btn": {
     "agree": "Agree",
+    "disagree": "???",
+    "completeWorkOnQuest": "???",
+    "rejectCompletedWorkOnQuest": "???",
+    "acceptCompletedWorkOnQuest": "???",
+    "closeQuest": "???",
     "goToChat": "Go to chat",
     "dispute": "Open dispute",
     "responded": "Respond send",
@@ -26,7 +31,9 @@
     "m": "m"
   },
   "info": {
-    "showYourMessage": "Show your message"
+    "yourMessage": "???",
+    "showYourMessage": "Show your message",
+    "hideYourMessage": "???"
   },
   "uploader" : {
     "uploadText": "Upload a images or videos",
@@ -59,7 +66,8 @@
     "required_if": "The {_field_} field is required",
     "required": "The {_field_} field is required",
     "size": "The {_field_} field size must be less than {size}KB",
-    "decimal": "The {_field_} field must contain only decimal values"
+    "decimal": "The {_field_} field must contain only decimal values",
+    "decimalPlaces": "{_field_} ??? {places}"
   },
   "labels": {
     "firstName": "First name",
@@ -117,6 +125,7 @@
     "quests": "Quests",
     "reviews": "Reviews",
     "portfolio": "Portfolio",
+    "common": "???",
     "sidebar": {
       "filter": "All Quests filter",
       "choose": "(Choose simple or \nspecialized category)",
@@ -147,6 +156,8 @@
     "buyWUSD": "Buy WUSD",
     "submit": "Submit",
     "showAllReviews": "Show all reviews",
+    "showAllQuests": "???",
+    "showAllPortfolios": "???",
     "later": "Later",
     "iAgree": "I agree",
     "next": "Next",
@@ -156,7 +167,8 @@
     "connectSMSVer": "Connect SMS Verification",
     "resendSMS": "Resend SMS",
     "disable": "Disable",
-    "remindLater": "Remind later"
+    "remindLater": "Remind later",
+    "leave": "???"
   },
   "priority": {
     "title": "Select priority",
@@ -247,11 +259,36 @@
   "skills": {
     "title": "Skills"
   },
+  "worker": {
+    "cost": {
+      "notIndicated": "???..."
+    }
+  },
   "quests": {
-    "rating": "Rating",
+    "showAll": "???",
+    "wusd": "WUSD",
+    "employer": {
+      "usersNotResponded": "???"
+    },
+    "companyNotListed": "???",
+    "workersNotInvited": "???",
+    "startChat": "???",
+    "invite": "???",
+    "decline": "???",
     "questTitle": "Quest title",
     "questDesc": "Quest description",
+    "questInfo": "???",
+    "questClosed!": "???",
+    "closed": "???",
+    "completed": "???",
+    "rejected": "???",
+    "completedWorkAccepted": "???",
+    "completedWorkRejected": "???",
+    "workOnQuestAccepted": "???",
+    "workOnQuestRejected": "???",
+    "pleaseWaitEmp": "???",
     "quests": "Quests",
+    "publicationDate": "???",
     "urgent": "Urgent",
     "specQuests": "Specialized quests",
     "permanentJob": "Permanent job",
@@ -260,6 +297,7 @@
     "fixedTerm": "Fixed term",
     "contract": "Contract",
     "remoteWork": "Remote work",
+    "allVariants": "???",
     "levels": {
       "1": {
         "title": "Gold Plus Package",
@@ -281,8 +319,20 @@
     "createQuest": {
       "choosePeriod": "Choose period"
     },
+    "distance": {
+      "100": "+ 100 m",
+      "500": "+ 500 m",
+      "1000": "+ 1000 m"
+    },
+    "rating": {
+      "title": "???",
+      "verified": "???",
+      "reliable": "???",
+      "topRanked": "???"
+    },
     "distantWork": {
       "title": "Distant work",
+      "allWorkplaces": "???",
       "distantWork": "Distant work",
       "workInOffice": "Work in office",
       "bothVariant": "Both variant"
@@ -315,6 +365,7 @@
     "requested": "Requested",
     "youInvited": "You Invited",
     "inProgressBy": "In progress by:",
+    "finishedBy": "???:",
     "showAllCases": "Show all cases",
     "portfolio": "Portfolio",
     "searchQuests": "Search quests",
@@ -327,6 +378,22 @@
     "reviewsBig": "Reviews",
     "MyQuests": "My quests",
     "activeQuest": "Active quest",
+    "waitWorker": "???",
+    "pendingConsideration": "???",
+    "dispute": "???",
+    "questClosed": "???",
+    "questFinished": "???",
+    "dontHaveSpec": "???...",
+    "namelessWorker": "???",
+    "nothingAboutMe": "???...",
+    "unknownAddress": "???...",
+    "unknownPhoneNumber": "???...",
+    "unknownEmailAddress": "???..",
+    "questActive:": "???:",
+    "questClosed:": "???:",
+    "questDispute:": "???:",
+    "questWaitConfirm:": "???:",
+    "skillsNotSpecified": "???...",
     "proposal": "Proposal",
     "category": "Select a category",
     "address": "Add address",
@@ -348,6 +415,7 @@
     "createAQuest": "Create a quest",
     "editAQuest": "Edit a quest",
     "activeQuests": "Active quests",
+    "openedQuests": "???",
     "completedQuests": "Completed quests",
     "oneTime": "One time",
     "fullTime": "Full time",
@@ -396,355 +464,346 @@
     },
     "items": {
       "1": {
-        "title": "Retail, Sales & Purchasing",
+        "title": "???",
         "sub": {
-          "1": "Convenience Stores",
-          "2": "Specialty retailers",
-          "3": "Clothing Stores",
-          "4": "Auto Retailers",
-          "5": "Drug Stores",
-          "6": "Department Stores",
-          "7": "Super Markets and Hyper Markets",
-          "8": "Multichannel Stores",
-          "9": "Discount Stores",
-          "10": "Direct Sales Catalog and mail order companies",
-          "11": "E-commerce Stores",
-          "12": "Other Retail, Sales & Purchasing"
+          "100": "???",
+          "101": "???",
+          "102": "???",
+          "103": "???",
+          "104": "???",
+          "105": "???",
+          "106": "???",
+          "107": "???",
+          "108": "???",
+          "109": "???",
+          "110": "???",
+          "111": "???",
+          "112": "???",
+          "113": "???"
         }
       },
       "2": {
         "title": "Bars & Restaurants Staff",
         "sub": {
-          "1": "Ethnic",
-          "2": "Fast food",
-          "3": "Fast casual",
-          "4": "Casual dining",
-          "5": "Premium casual",
-          "6": "Family style",
-          "7": "Fine dining",
-          "8": "Brasserie and bistro",
-          "9": "Other Bars & Restaurants Staff"
+          "200": "Ethnic",
+          "201": "Fast food",
+          "202": "Fast casual",
+          "203": "Casual dining",
+          "204": "Premium casual",
+          "205": "Family style",
+          "206": "Fine dining",
+          "207": "Brasserie and bistro",
+          "208": "Other Bars & Restaurants Staff"
         }
       },
       "3": {
-        "title": "Home Staff",
+        "title": "???",
         "sub": {
-          "1": "Babysitting",
-          "2": "Governess",
-          "3": "Tutors",
-          "4": "Housekeepers",
-          "5": "Caregivers",
-          "6": "Cooks",
-          "7": "Gardeners",
-          "8": "Drivers",
-          "9": "Other Home Staff"
+          "300": "???",
+          "301": "???",
+          "302": "???",
+          "303": "???",
+          "304": "???"
         }
       },
       "4": {
-        "title": "IT / Networking",
+        "title": "???",
         "sub": {
-          "1": "Database Administration",
-          "2": "ERP / CRM Software",
-          "3": "Information Security",
-          "4": "Network & System Administration",
-          "5": "Other IT & Networking"
+          "400": "???",
+          "406": "???",
+          "402": "???",
+          "403": "???",
+          "404": "???",
+          "405": "???"
         }
       },
       "5": {
-        "title": "Engineering & Architecture",
+        "title": "???",
         "sub": {
-          "1": "3D Modeling & CAD",
-          "2": "Architecture",
-          "3": "Chemical Engineering",
-          "4": "Contract Manufacturing",
-          "5": "Electrical Engineering",
-          "6": "Mechanical Engineering",
-          "7": "Physical Sciences",
-          "8": "Other Engineering"
+          "500": "???",
+          "501": "???"
         }
       },
       "6": {
-        "title": "Secretariat, Correspondence & Records Management",
+        "title": "???",
         "sub": {
-          "1": "Property records - title deeds and settlements",
-          "2": "Accounting papers - rentals, vouchers, surveys and valuations",
-          "3": "Legal papers",
-          "4": "Inventories",
-          "5": "Correspondence",
-          "6": "Enclosure papers",
-          "7": "Manorial papers - court rolls, custumals, terriers, surveys etc.",
-          "8": "Personal and political papers",
-          "9": "Maps and plans",
-          "10": "Other Secretariat, Correspondence & Records Management"
+          "601": "???",
+          "600": "???",
+          "602": "???",
+          "603": "???",
+          "604": "???",
+          "605": "???",
+          "606": "???"
         }
       },
       "7": {
-        "title": "Tourism, Leisure & Entertainment",
+        "title": "???",
         "sub": {
-          "1": "Amusement Attendant",
-          "2": "Concierge",
-          "3": "Cruise Ship Director",
-          "4": "Curator",
-          "5": "Gaming Dealers",
-          "6": "Lifeguard",
-          "7": "Information Clerk",
-          "8": "Recreation Worker",
-          "9": "Tour and Travel Guide",
-          "10": "Other Tourism, Leisure & Entertainment"
+          "700": "???",
+          "701": "???",
+          "702": "???",
+          "703": "???",
+          "704": "???",
+          "705": "???",
+          "706": "???",
+          "707": "???",
+          "708": "???",
+          "709": "???",
+          "710": "???",
+          "711": "???",
+          "712": "???"
         }
       },
       "8": {
-        "title": "Accounting & Consulting",
+        "title": "???",
         "sub": {
-          "1": "Accounting",
-          "2": "Financial Planning",
-          "3": "Human Resources",
-          "4": "Management Consulting",
-          "5": "Other Accounting & Consulting"
+          "800": "???",
+          "801": "???",
+          "802": "???",
+          "803": "???",
+          "804": "???",
+          "805": "???",
+          "806": "???",
+          "807": "???",
+          "808": "???",
+          "809": "???"
         }
       },
       "9": {
-        "title": "Admin Support",
+        "title": "???",
         "sub": {
-          "1": "Data Entry",
-          "2": "Other Admin Support",
-          "3": "Personal / Virtual Assistance",
-          "4": "Project Management",
-          "5": "Transcription",
-          "6": "Web Research",
-          "7": "Other Admin Support"
+          "900": "???",
+          "901": "???",
+          "902": "???",
+          "903": "???",
+          "904": "???",
+          "905": "???",
+          "906": "???",
+          "907": "???",
+          "908": "???"
         }
       },
       "10": {
-        "title": "Customer Service",
+        "title": "???",
         "sub": {
-          "1": "Customer Service",
-          "2": "Technical Support"
+          "1007": "???",
+          "1008": "???",
+          "1005": "???",
+          "1004": "???",
+          "1002": "???",
+          "1003": "???",
+          "1006": "???",
+          "1001": "???",
+          "1000": "???"
         }
       },
       "11": {
-        "title": "Data Science & Analytics",
+        "title": "???",
         "sub": {
-          "1": "A / B Testing",
-          "2": "Data Mining & Management",
-          "3": "Data Visualization",
-          "4": "Machine Learning",
-          "5": "Quantitative Analysis",
-          "6": "Other Data Science & Analytics"
+          "1105": "???",
+          "1104": "???",
+          "1102": "???",
+          "1103": "???",
+          "1101": "???",
+          "1100": "???"
         }
       },
       "12": {
-        "title": "Education",
+        "title": "???",
         "sub": {
-          "1": "Teaching",
-          "2": "Education Administration",
-          "3": "School Counseling",
-          "4": "School Social Work",
-          "5": "Teaching Languages",
-          "6": "Other Education"
+          "1212": "???",
+          "1203": "???",
+          "1217": "???",
+          "1202": "???",
+          "1213": "???",
+          "1206": "???",
+          "1200": "???",
+          "1211": "???",
+          "1210": "???",
+          "1207": "???",
+          "1218": "???",
+          "1201": "???",
+          "1208": "???",
+          "1204": "???",
+          "1215": "???",
+          "1214": "???",
+          "1209": "???",
+          "1205": "???",
+          "1216": "???"
         }
       },
       "13": {
-        "title": "Design",
+        "title": "???",
         "sub": {
-          "1": "Layout Design",
-          "2": "Branding",
-          "3": "Gaming & AR / VR",
-          "4": "Graphic, Editorial & Presentation Design",
-          "5": "Product Design",
-          "6": "Interior & Exterior Design",
-          "7": "Other Design"
+          "1300": "???",
+          "1302": "???",
+          "1303": "???",
+          "1301": "???",
+          "1304": "???"
         }
       },
       "14": {
-        "title": "Law & Legal Support",
+        "title": "???",
         "sub": {
-          "1": "Contract Law",
-          "2": "Corporate Law",
-          "3": "Intellectual Property Law",
-          "4": "Paralegal Services",
-          "5": "Other Law & Legal Support"
+          "1406": "???",
+          "1405": "???",
+          "1403": "???",
+          "1404": "???",
+          "1401": "???",
+          "1402": "???",
+          "1400": "???"
         }
       },
       "15": {
-        "title": "Writing",
+        "title": "???",
         "sub": {
-          "1": "Content & Copywriting",
-          "2": "Creative Writing",
-          "3": "Editing & Proofreading",
-          "4": "Grant Writing",
-          "5": "Resumes & Cover Letters",
-          "6": "Technical Writing",
-          "7": "Other Writing"
+          "1503": "???",
+          "1500": "???",
+          "1501": "???",
+          "1505": "???",
+          "1502": "???",
+          "1506": "???",
+          "1507": "???",
+          "1504": "???"
         }
       },
       "16": {
-        "title": "Medicine & Pharmacy",
+        "title": "???",
         "sub": {
-          "1": "Retail Pharmacy",
-          "2": "Hospital Pharmacy",
-          "3": "Medication Distribution Center",
-          "4": "Homecare & Hospice Pharmacy",
-          "5": "Pharmacy Informatics",
-          "6": "Ambulatory Care Pharmacy",
-          "7": "Pharmacists",
-          "8": "Other Medicine & Pharmacy"
+          "1600": "???",
+          "1601": "???",
+          "1602": "???",
+          "1603": "???",
+          "1604": "???",
+          "1605": "???",
+          "1606": "???",
+          "1607": "???",
+          "1608": "???"
         }
       },
       "17": {
-        "title": "Telecommunications",
+        "title": "???",
         "sub": {
-          "1": "Telecommunications Systems Managers",
-          "2": "Line Installers",
-          "3": "Customer Service Representative",
-          "4": "Computer Software Engineers",
-          "5": "Computer Programmers",
-          "6": "Professional Associations",
-          "7": "Related Certification Bodies",
-          "8": "Other Telecommunications"
+          "1700": "???",
+          "1701": "???",
+          "1702": "???",
+          "1703": "???",
+          "1704": "???"
         }
       },
       "18": {
-        "title": "Personnel Management & HR",
+        "title": "???",
         "sub": {
-          "1": "Human Resource Planning",
-          "2": "Recruitment and Selection",
-          "3": "Performance Management",
-          "4": "Learning and Development",
-          "5": "Career Planning",
-          "6": "Function Evaluation",
-          "7": "Rewards",
-          "8": "Industrial Relations",
-          "9": "Employee Participation and Communication",
-          "10": "Health and Safety",
-          "11": "Personal Wellbeing",
-          "12": "Administrative Responsibilities",
-          "13": "Other Personnel Management & HR"
+          "1800": "???",
+          "1801": "???",
+          "1802": "???",
+          "1803": "???",
+          "1804": "???",
+          "1805": "???",
+          "1806": "???",
+          "1807": "???",
+          "1808": "???",
+          "1809": "???"
         }
       },
       "19": {
-        "title": "Security",
+        "title": "???",
         "sub": {
-          "1": "Risk Manager",
-          "2": "Systems, Network & Web Penetration Tester",
-          "3": "Network Security Engineer",
-          "4": "Network Security Administrator",
-          "5": "Cyber Crime Investigator",
-          "6": "Information Security Analyst",
-          "7": "Security Analyst",
-          "8": "Security Manager",
-          "9": "Security Guard",
-          "10": "Other Security"
+          "1900": "???",
+          "1901": "???",
+          "1902": "???",
+          "1903": "???",
+          "1904": "???"
         }
       },
       "20": {
-        "title": "Culture & Arts",
+        "title": "???",
         "sub": {
-          "1": "Actor",
-          "2": "Community Arts Worker",
-          "3": "Choreographer",
-          "4": "Dancer",
-          "5": "Dramatherapist",
-          "6": "Music producer",
-          "7": "Music therapist",
-          "8": "Theatre director",
-          "9": "Multimedia Specialist",
-          "10": "Systems Designer",
-          "11": "Product Designer",
-          "12": "Curator",
-          "13": "Art Director",
-          "14": "Museum Director",
-          "15": "Art Teacher",
-          "16": "Art Therapist",
-          "17": "Medical Illustrator",
-          "18": "Film Director",
-          "19": "Other Culture & Arts"
+          "2000": "???",
+          "2001": "???",
+          "2002": "???",
+          "2003": "???",
+          "2004": "???",
+          "2005": "???"
         }
       },
       "21": {
         "title": "Web, Mobile & Software Development",
         "sub": {
-          "1": "Desktop Software Development",
-          "2": "Ecommerce Development",
-          "3": "Game Development",
-          "4": "Mobile Development",
-          "5": "Other Software Development",
-          "6": "Product Management",
-          "7": "QA & Testing",
-          "8": "Scripts & Utilities",
-          "9": "Web & Mobile Design",
-          "10": "Web Development",
-          "11": "Other Web, Mobile & Software Dev"
+          "2100": "Desktop Software Development",
+          "2101": "Ecommerce Development",
+          "2102": "Game Development",
+          "2103": "Mobile Development",
+          "2104": "Other Software Development",
+          "2105": "Product Management",
+          "2106": "QA & Testing",
+          "2107": "Scripts & Utilities",
+          "2108": "Web & Mobile Design",
+          "2109": "Web Development",
+          "2110": "Other Web, Mobile & Software Dev"
         }
       },
       "22": {
-        "title": "Transport & Logistics",
+        "title": "???",
         "sub": {
-          "1": "Management",
-          "2": "Inventory Planning",
-          "3": "Warehousing",
-          "4": "Procurement of Goods and Services",
-          "5": "Packaging and Storage",
-          "6": "Transportation",
-          "7": "Customer service",
-          "8": "Other Transpot & Logistics"
+          "2200": "???",
+          "2201": "???",
+          "2202": "???",
+          "2203": "???",
+          "2204": "???",
+          "2205": "???",
+          "2206": "???"
         }
       },
       "23": {
-        "title": "Banking, Finance & Insurance",
+        "title": "???",
         "sub": {
-          "1": "The Financial Services Industry",
-          "2": "Financial Planning",
-          "3": "Corporate Finance",
-          "4": "Commercial Banking",
-          "5": "Investment Banking",
-          "6": "Hedge Funds",
-          "7": "Private Equity, Venture Capital",
-          "8": "Insurance",
-          "9": "Other Banking, Finance & Insurance"
+          "2300": "???",
+          "2301": "???",
+          "2302": "???",
+          "2303": "???",
+          "2304": "???"
         }
       },
       "24": {
-        "title": "Beauty, Fitness & Sport",
+        "title": "???",
         "sub": {
-          "1": "Athletic Trainer",
-          "2": "Exercise Physiologist",
-          "3": "Fitness Trainer",
-          "4": "Massage Therapist",
-          "5": "Occupational Therapist",
-          "6": "Physical Therapist",
-          "7": "Recreational Therapist",
-          "8": "Beauty salon",
-          "9": "Other Beauty, Fitness & Sport"
+          "2400": "???",
+          "2401": "???",
+          "2402": "???",
+          "2403": "???",
+          "2404": "???",
+          "2405": "???",
+          "2406": "???",
+          "2407": "???",
+          "2408": "???",
+          "2409": "???"
         }
       },
       "25": {
-        "title": "Creative Production",
+        "title": "???",
         "sub": {
-          "1": "Art & Illustration",
-          "2": "Audio & Music Production",
-          "3": "Performing Arts",
-          "4": "Photography",
-          "5": "Video & Animation",
-          "6": "Voice Talent",
-          "7": "Voice Talent",
-          "8": "3D Visualization",
-          "9": "Other Creative Production"
+          "2800": "???",
+          "2801": "???",
+          "2802": "???",
+          "2803": "???",
+          "2804": "???",
+          "2805": "???",
+          "2806": "???",
+          "2807": "???"
         }
       },
       "26": {
-        "title": "Marketing & Sales",
+        "title": "???",
         "sub": {
-          "1": "Display Advertising",
-          "2": "Email & Marketing Automation",
-          "3": "Lead Generation",
-          "4": "Market & Customer Research",
-          "5": "Marketing Strategy",
-          "6": "Public Relations",
-          "7": "SEM - Search Engine Marketing",
-          "8": "SEO - Search Engine Optimization",
-          "9": "SMM - Social Media Marketing",
-          "10": "Other Sales & Marketing"
+          "2600": "???",
+          "2601": "???",
+          "2602": "???",
+          "2603": "???",
+          "2604": "???",
+          "2605": "???",
+          "2606": "???",
+          "2607": "???"
         }
       },
       "27": {
@@ -769,46 +828,60 @@
         }
       },
       "29": {
-        "title": "Agriculture & Agribusiness",
+        "title": "???",
         "sub": {
-          "1": "Crops",
-          "2": "Livestock (both production and animal health)",
-          "3": "Fisheries and Aquaculture (including capture fisheries)",
-          "4": "Forestry",
-          "5": "Other Agriculture & Agribusiness"
+          "2900": "???",
+          "2901": "???",
+          "2902": "???",
+          "2903": "???",
+          "2904": "???",
+          "2905": "???",
+          "2906": "???",
+          "2907": "???",
+          "2908": "???"
         }
       },
       "30": {
-        "title": "Construction",
+        "title": "???",
         "sub": {
-          "1": "Residential Building",
-          "2": "Institutional and Commercial Building",
-          "3": "Infrastructure and Heavy Construction",
-          "4": "Specialized Industrial Construction",
-          "5": "Other Construction"
+          "3000": "???",
+          "3001": "???",
+          "3002": "???",
+          "3003": "???",
+          "3004": "???",
+          "3005": "???",
+          "3006": "???",
+          "3007": "???",
+          "3008": "???",
+          "3009": "???"
         }
       },
       "31": {
-        "title": "Early Career & Students",
+        "title": "???",
         "sub": {
-          "1": "Courier",
-          "2": "Waiter",
-          "3": "Other Early Career & Students"
+          "3100": "???",
+          "3101": "???",
+          "3102": "???",
+          "3103": "???",
+          "3104": "???",
+          "3105": "???",
+          "3106": "???",
+          "3107": "???"
         }
       },
       "32": {
-        "title": "Service Occupations",
+        "title": "???",
         "sub": {
-          "1": "Restaurants & Food Services industry",
-          "2": "Other Service Occupations"
+          "3200": "???",
+          "3201": "???",
+          "3202": "???"
         }
       },
       "33": {
-        "title": "Seasonal Work",
+        "title": "???",
         "sub": {
-          "1": "Variable",
-          "2": "Part-time",
-          "3": "Full-time"
+          "3300": "???",
+          "3301": "???"
         }
       },
       "34": {
@@ -822,6 +895,10 @@
     }
   },
   "toasts": {
+    "questInfo": "???",
+    "questCantDelete": "???",
+    "questCantEdit": "???",
+    "questCantRaisingViews": "???",
     "questEdited": "Quest edited!",
     "questCreated": "Quest created!",
     "questDeleted": "Quest deleted!",
@@ -831,6 +908,15 @@
     "error": "Error!"
   },
   "modals": {
+    "disputes": {
+      "thereIsNoResponseFromTheEmployerOrEmployee": "???",
+      "badlyDoneWork": "???",
+      "additionalRequirementsHaveBeenPutForward": "???",
+      "inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest": "???",
+      "theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion": "???",
+      "anotherReason": "???"
+    },
+    "chooseTheme": "???",
     "incorrectAmount": "Incorrect amount, your wallet does not have enough funds",
     "nothingToClaim": "Nothing to claim",
     "pleaseWait": "Please, wait",
@@ -839,8 +925,10 @@
     "chatCreate": {
       "title": "Create group chat",
       "desc": "Create name of group chat and choose people from you chat list",
-      "participants": "Participants",
-      "chatName": "Chat name"
+      "chatName": "Chat name",
+      "members": "???",
+      "addNewMembers": "???",
+      "addMember": "???"
     },
     "yourRewardBalance": "Your reward balance:",
     "deletePortfolio": "Are you sure delete portfolio?",
@@ -853,6 +941,8 @@
     "delete": "Delete",
     "youCan’tDeleteActiveQuest": "You can’t delete active quest",
     "sureDeleteText": "Do you really want to delete this quest?",
+    "sureDeleteMemberText": "???",
+    "sureLeaveChatText": "???",
     "priceTitle": "Price",
     "enterPriceRange": "Enter price range",
     "priceForm": "From",
@@ -866,6 +956,9 @@
     "yourAccountVerified": "Your account has been successfully verified",
     "youCanUpdateThisInYourProfile": "You can easily update this in your profile.",
     "disable2Fa": "Disable 2FA",
+    "2FAEnabled": "???",
+    "2FADisabled": "???",
+    "2FAStatus": "???",
     "yourLevelHasBeenRaised": "Your level has been raised",
     "payment": "Payment",
     "cardHolder": "Cardholder name",
@@ -1131,7 +1224,9 @@
     "recepientAddressField": "recepient address",
     "walletAddressField": "wallet address",
     "thanksText": "",
-    "emailVerificationCodeField": "email verification"
+    "emailVerificationCodeField": "email verification",
+    "youCanAttachUpToNFiles": "???",
+    "youTryToAttachUnsupportedFileFormat": "???"
   },
   "ui": {
     "jobQuestors": "Job Questors",
@@ -1239,8 +1334,9 @@
   "chat": {
     "openDispute": "Open dispute",
     "approveQuest": "Approve quest",
-    "favoriteMessages": "Favorite messages",
-    "favoriteChats": "Favorite chats",
+    "starredMessages": "???",
+    "starredChats": "???",
+    "allChats": "???",
     "createGroupChat": "Create group chat",
     "favorite": "Favorite",
     "messages": "Messages",
@@ -1248,9 +1344,46 @@
     "quest": "Quest:",
     "you": "You:",
     "invitedYou": "invited you to a quest",
-    "writeYouMessage": "Write you message"
+    "writeYouMessage": "Write you message",
+    "group": "???",
+    "noChats": "???",
+    "noMessages": "???",
+    "membersNum": "{n} ???",
+    "systemMessages": {
+      "invitedYouToAQuest": "???",
+      "youInvitedToTheQuest": "???",
+      "respondedToTheQuest": "???",
+      "youHaveRespondedToTheQuest": "???",
+      "rejectedTheResponseToTheQuest": "r???",
+      "youRejectTheResponseOnQuest": "???",
+      "rejectedTheInviteToTheQuest": "???",
+      "youRejectedTheInviteToTheQuest": "???",
+      "acceptedTheInviteToTheQuest": "???",
+      "youAcceptedTheInviteToTheQuest": "???",
+      "createdAGroupChat": "???",
+      "youCreatedAGroupChat": "???",
+      "removedFromChat": "???",
+      "youHaveRemovedFromChat": "???",
+      "addedToChat": "???",
+      "youAddedToChat": "???",
+      "userAddedToChat": "???",
+      "userRemovedFromChat": "???",
+      "leftTheChat": "???",
+      "youLeftTheChat": "???"
+    },
+    "leaveChat": "???",
+    "loadMore": "???"
   },
   "settings": {
+    "facebook": "facebook",
+    "linkedin": "linkedin",
+    "twitter": "twitter",
+    "instagram": "instagram",
+    "address": "???",
+    "lastName": "???",
+    "firstName": "???",
+    "enterPhoneNumber": "???",
+    "enterCurrentLocation": "???",
     "placeOfStudying": "Place of studying",
     "specialization": "Specialization",
     "selectSpec": "Select specialization",
@@ -1268,6 +1401,7 @@
     "term": "Term",
     "getVerification": "Complete the verification",
     "notVerified": "Not verified",
+    "verified": "???",
     "more": "More",
     "employmentInfo": "Employment information",
     "addSpec": "Add specialization",
@@ -1328,435 +1462,10 @@
     "distantWork": {
       "title": "Distant work",
       "select": "Select distant work",
+      "allWorkplaces": "???",
       "distantWork": "Distant work",
       "workInOffice": "Work in office",
       "bothVariant": "Both variant"
-    },
-    "specializations": {
-      "1": {
-        "title": "Retail, Sales & Purchasing",
-        "sub": {
-          "1": "Convenience Stores",
-          "2": "Specialty retailers",
-          "3": "Clothing Stores",
-          "4": "Auto Retailers",
-          "5": "Drug Stores",
-          "6": "Department Stores",
-          "7": "Super Markets and Hyper Markets",
-          "8": "Multichannel Stores",
-          "9": "Discount Stores",
-          "10": "Direct Sales Catalog and mail order companies",
-          "11": "E-commerce Stores",
-          "12": "Other Retail, Sales & Purchasing"
-        }
-      },
-      "2": {
-        "title": "Bars & Restaurants Staff",
-        "sub": {
-          "1": "Ethnic",
-          "2": "Fast food",
-          "3": "Fast casual",
-          "4": "Casual dining",
-          "5": "Premium casual",
-          "6": "Family style",
-          "7": "Fine dining",
-          "8": "Brasserie and bistro",
-          "9": "Other Bars & Restaurants Staff"
-        }
-      },
-      "3": {
-        "title": "Home Staff",
-        "sub": {
-          "1": "Babysitting",
-          "2": "Governess",
-          "3": "Tutors",
-          "4": "Housekeepers",
-          "5": "Caregivers",
-          "6": "Cooks",
-          "7": "Gardeners",
-          "8": "Drivers",
-          "9": "Other Home Staff"
-        }
-      },
-      "4": {
-        "title": "IT / Networking",
-        "sub": {
-          "1": "Database Administration",
-          "2": "ERP / CRM Software",
-          "3": "Information Security",
-          "4": "Network & System Administration",
-          "5": "Other IT & Networking"
-        }
-      },
-      "5": {
-        "title": "Engineering & Architecture",
-        "sub": {
-          "1": "3D Modeling & CAD",
-          "2": "Architecture",
-          "3": "Chemical Engineering",
-          "4": "Contract Manufacturing",
-          "5": "Electrical Engineering",
-          "6": "Mechanical Engineering",
-          "7": "Physical Sciences",
-          "8": "Other Engineering"
-        }
-      },
-      "6": {
-        "title": "Secretariat, Correspondence & Records Management",
-        "sub": {
-          "1": "Property records - title deeds and settlements",
-          "2": "Accounting papers - rentals, vouchers, surveys and valuations",
-          "3": "Legal papers",
-          "4": "Inventories",
-          "5": "Correspondence",
-          "6": "Enclosure papers",
-          "7": "Manorial papers - court rolls, custumals, terriers, surveys etc.",
-          "8": "Personal and political papers",
-          "9": "Maps and plans",
-          "10": "Other Secretariat, Correspondence & Records Management"
-        }
-      },
-      "7": {
-        "title": "Tourism, Leisure & Entertainment",
-        "sub": {
-          "1": "Amusement Attendant",
-          "2": "Concierge",
-          "3": "Cruise Ship Director",
-          "4": "Curator",
-          "5": "Gaming Dealers",
-          "6": "Lifeguard",
-          "7": "Information Clerk",
-          "8": "Recreation Worker",
-          "9": "Tour and Travel Guide",
-          "10": "Other Tourism, Leisure & Entertainment"
-        }
-      },
-      "8": {
-        "title": "Accounting & Consulting",
-        "sub": {
-          "1": "Accounting",
-          "2": "Financial Planning",
-          "3": "Human Resources",
-          "4": "Management Consulting",
-          "5": "Other Accounting & Consulting"
-        }
-      },
-      "9": {
-        "title": "Admin Support",
-        "sub": {
-          "1": "Data Entry",
-          "2": "Other Admin Support",
-          "3": "Personal / Virtual Assistance",
-          "4": "Project Management",
-          "5": "Transcription",
-          "6": "Web Research",
-          "7": "Other Admin Support"
-        }
-      },
-      "10": {
-        "title": "Customer Service",
-        "sub": {
-          "1": "Customer Service",
-          "2": "Technical Support"
-        }
-      },
-      "11": {
-        "title": "Data Science & Analytics",
-        "sub": {
-          "1": "A / B Testing",
-          "2": "Data Mining & Management",
-          "3": "Data Visualization",
-          "4": "Machine Learning",
-          "5": "Quantitative Analysis",
-          "6": "Other Data Science & Analytics"
-        }
-      },
-      "12": {
-        "title": "Education",
-        "sub": {
-          "1": "Teaching",
-          "2": "Education Administration",
-          "3": "School Counseling",
-          "4": "School Social Work",
-          "5": "Teaching Languages",
-          "6": "Other Education"
-        }
-      },
-      "13": {
-        "title": "Design",
-        "sub": {
-          "1": "Layout Design",
-          "2": "Branding",
-          "3": "Gaming & AR / VR",
-          "4": "Graphic, Editorial & Presentation Design",
-          "5": "Product Design",
-          "6": "Interior & Exterior Design",
-          "7": "Other Design"
-        }
-      },
-      "14": {
-        "title": "Law & Legal Support",
-        "sub": {
-          "1": "Contract Law",
-          "2": "Corporate Law",
-          "3": "Intellectual Property Law",
-          "4": "Paralegal Services",
-          "5": "Other Law & Legal Support"
-        }
-      },
-      "15": {
-        "title": "Writing",
-        "sub": {
-          "1": "Content & Copywriting",
-          "2": "Creative Writing",
-          "3": "Editing & Proofreading",
-          "4": "Grant Writing",
-          "5": "Resumes & Cover Letters",
-          "6": "Technical Writing",
-          "7": "Other Writing"
-        }
-      },
-      "16": {
-        "title": "Medicine & Pharmacy",
-        "sub": {
-          "1": "Retail Pharmacy",
-          "2": "Hospital Pharmacy",
-          "3": "Medication Distribution Center",
-          "4": "Homecare & Hospice Pharmacy",
-          "5": "Pharmacy Informatics",
-          "6": "Ambulatory Care Pharmacy",
-          "7": "Pharmacists",
-          "8": "Other Medicine & Pharmacy"
-        }
-      },
-      "17": {
-        "title": "Telecommunications",
-        "sub": {
-          "1": "Telecommunications Systems Managers",
-          "2": "Line Installers",
-          "3": "Customer Service Representative",
-          "4": "Computer Software Engineers",
-          "5": "Computer Programmers",
-          "6": "Professional Associations",
-          "7": "Related Certification Bodies",
-          "8": "Other Telecommunications"
-        }
-      },
-      "18": {
-        "title": "Personnel Management & HR",
-        "sub": {
-          "1": "Human Resource Planning",
-          "2": "Recruitment and Selection",
-          "3": "Performance Management",
-          "4": "Learning and Development",
-          "5": "Career Planning",
-          "6": "Function Evaluation",
-          "7": "Rewards",
-          "8": "Industrial Relations",
-          "9": "Employee Participation and Communication",
-          "10": "Health and Safety",
-          "11": "Personal Wellbeing",
-          "12": "Administrative Responsibilities",
-          "13": "Other Personnel Management & HR"
-        }
-      },
-      "19": {
-        "title": "Security",
-        "sub": {
-          "1": "Risk Manager",
-          "2": "Systems, Network & Web Penetration Tester",
-          "3": "Network Security Engineer",
-          "4": "Network Security Administrator",
-          "5": "Cyber Crime Investigator",
-          "6": "Information Security Analyst",
-          "7": "Security Analyst",
-          "8": "Security Manager",
-          "9": "Security Guard",
-          "10": "Other Security"
-        }
-      },
-      "20": {
-        "title": "Culture & Arts",
-        "sub": {
-          "1": "Actor",
-          "2": "Community Arts Worker",
-          "3": "Choreographer",
-          "4": "Dancer",
-          "5": "Dramatherapist",
-          "6": "Music producer",
-          "7": "Music therapist",
-          "8": "Theatre director",
-          "9": "Multimedia Specialist",
-          "10": "Systems Designer",
-          "11": "Product Designer",
-          "12": "Curator",
-          "13": "Art Director",
-          "14": "Museum Director",
-          "15": "Art Teacher",
-          "16": "Art Therapist",
-          "17": "Medical Illustrator",
-          "18": "Film Director",
-          "19": "Other Culture & Arts"
-        }
-      },
-      "21": {
-        "title": "Web, Mobile & Software Development",
-        "sub": {
-          "1": "Desktop Software Development",
-          "2": "Ecommerce Development",
-          "3": "Game Development",
-          "4": "Mobile Development",
-          "5": "Other Software Development",
-          "6": "Product Management",
-          "7": "QA & Testing",
-          "8": "Scripts & Utilities",
-          "9": "Web & Mobile Design",
-          "10": "Web Development",
-          "11": "Other Web, Mobile & Software Dev"
-        }
-      },
-      "22": {
-        "title": "Transport & Logistics",
-        "sub": {
-          "1": "Management",
-          "2": "Inventory Planning",
-          "3": "Warehousing",
-          "4": "Procurement of Goods and Services",
-          "5": "Packaging and Storage",
-          "6": "Transportation",
-          "7": "Customer service",
-          "8": "Other Transpot & Logistics"
-        }
-      },
-      "23": {
-        "title": "Banking, Finance & Insurance",
-        "sub": {
-          "1": "The Financial Services Industry",
-          "2": "Financial Planning",
-          "3": "Corporate Finance",
-          "4": "Commercial Banking",
-          "5": "Investment Banking",
-          "6": "Hedge Funds",
-          "7": "Private Equity, Venture Capital",
-          "8": "Insurance",
-          "9": "Other Banking, Finance & Insurance"
-        }
-      },
-      "24": {
-        "title": "Beauty, Fitness & Sport",
-        "sub": {
-          "1": "Athletic Trainer",
-          "2": "Exercise Physiologist",
-          "3": "Fitness Trainer",
-          "4": "Massage Therapist",
-          "5": "Occupational Therapist",
-          "6": "Physical Therapist",
-          "7": "Recreational Therapist",
-          "8": "Beauty salon",
-          "9": "Other Beauty, Fitness & Sport"
-        }
-      },
-      "25": {
-        "title": "Creative Production",
-        "sub": {
-          "1": "Art & Illustration",
-          "2": "Audio & Music Production",
-          "3": "Performing Arts",
-          "4": "Photography",
-          "5": "Video & Animation",
-          "6": "Voice Talent",
-          "7": "Voice Talent",
-          "8": "3D Visualization",
-          "9": "Other Creative Production"
-        }
-      },
-      "26": {
-        "title": "Marketing & Sales",
-        "sub": {
-          "1": "Display Advertising",
-          "2": "Email & Marketing Automation",
-          "3": "Lead Generation",
-          "4": "Market & Customer Research",
-          "5": "Marketing Strategy",
-          "6": "Public Relations",
-          "7": "SEM - Search Engine Marketing",
-          "8": "SEO - Search Engine Optimization",
-          "9": "SMM - Social Media Marketing",
-          "10": "Other Sales & Marketing"
-        }
-      },
-      "27": {
-        "title": "Translation",
-        "sub": {
-          "1": "General Translation",
-          "2": "Legal Translation",
-          "3": "Medical Translation",
-          "4": "Technical Translation",
-          "5": "Other Translation"
-        }
-      },
-      "28": {
-        "title": "Real Estate",
-        "sub": {
-          "1": "Residential Real Estate",
-          "2": "New Construction & Resale Homes",
-          "3": "Commercial Real Estate",
-          "4": "Industrial Real Estate",
-          "5": "Vacant Land",
-          "6": "Other Real Estate"
-        }
-      },
-      "29": {
-        "title": "Agriculture & Agribusiness",
-        "sub": {
-          "1": "Crops",
-          "2": "Livestock (both production and animal health)",
-          "3": "Fisheries and Aquaculture (including capture fisheries)",
-          "4": "Forestry",
-          "5": "Other Agriculture & Agribusiness"
-        }
-      },
-      "30": {
-        "title": "Construction",
-        "sub": {
-          "1": "Residential Building",
-          "2": "Institutional and Commercial Building",
-          "3": "Infrastructure and Heavy Construction",
-          "4": "Specialized Industrial Construction",
-          "5": "Other Construction"
-        }
-      },
-      "31": {
-        "title": "Early Career & Students",
-        "sub": {
-          "1": "Courier",
-          "2": "Waiter",
-          "3": "Other Early Career & Students"
-        }
-      },
-      "32": {
-        "title": "Service Occupations",
-        "sub": {
-          "1": "Restaurants & Food Services industry",
-          "2": "Other Service Occupations"
-        }
-      },
-      "33": {
-        "title": "Seasonal Work",
-        "sub": {
-          "1": "Variable",
-          "2": "Part-time",
-          "3": "Full-time"
-        }
-      },
-      "34": {
-        "title": "Permanent work",
-        "sub": {
-          "1": "Part-time",
-          "2": "Full-time",
-          "3": "Work abroad"
-        }
-      }
     }
   },
   "raising-views": {
@@ -1781,6 +1490,7 @@
     "disputeTime": "Dispute opening time:"
   },
   "workers": {
+    "noWorkers": "???...",
     "searchQuests": "Search quests",
     "searchWorkers": "Search workers",
     "topWorkers": "Top employees",
@@ -1802,7 +1512,9 @@
     "from": "From",
     "based": "Based",
     "reviews": "reviews",
+    "noReviewsAdded": "???",
     "portfolio": "Portfolio",
+    "noPortfoliosAdded": "???",
     "showAllCases": "Show all cases",
     "costTitle": "Cost per hour"
   },
@@ -1874,6 +1586,7 @@
     "transactionHistory": "Transaction history",
     "withdraw": "Withdraw",
     "prolong": "Prolong",
+    "prolongText": "???",
     "templateText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac neque cum posuere in. Semper arcu purus eget faucibus.",
     "table": {
       "userName": "John Doe",
@@ -1885,8 +1598,12 @@
     "docName": "Some_document.pdf",
     "mb": "{count} MB",
     "percents": "{count} %",
-    "years": "{count} years",
-    "wusdCount": "{count} WUSD",
+    "minutes": "{count} ???",
+    "hours": "{count} ???",
+    "years": "{count} ???",
+    "days": "{count} ???",
+    "WUSDCount": "{count} WUSD",
+    "ETHCount": "{count} ETH",
     "plusPercents": "+ {count}%",
     "faq1": {
       "question": "How do you qualify for a pension?",
@@ -1927,9 +1644,7 @@
     "faq10": {
       "question": "What happens if I Overfund my pension?",
       "answer": "We have no restrictions on the amount of savings. The entire accumulated amount will be at your disposal at the end of the program period."
-    },
-    "cancel": "Cancel",
-    "renewFor1Year": "Renew for 1 year"
+    }
   },
   "saving": {
     "withdrawModalBody": "The amount of locked funds and the accumulated interest will be credited to your wallet",
@@ -1987,6 +1702,7 @@
     "withdrawText": "The amount of locked funds and the accumulated interest will be credited to your wallet"
   },
   "mining": {
+    "loading": "???...",
     "claimRewards": "Claim rewards",
     "liquidityMining": "Liquidity mining",
     "swapTokens": {
@@ -2211,6 +1927,9 @@
   "errors": {
     "incorrectPass": "Oops, something went wrong. Check the data and try again.",
     "emptyData": {
+      "emptyQuests": "???",
+      "emptyPortfolios": "???",
+      "emptyReviews": "???",
       "employer": {
         "myQuests": {
           "desc": "You haven't done quests yet",
@@ -2262,6 +1981,11 @@
     "dateTemp": "05.08.2021, 12:00"
   },
   "staking": {
+    "notification": "???",
+    "stakeLimitReached": "???",
+    "notEnoughFunds": "???",
+    "notEnoughClaim": "???",
+    "_inDev": "???",
     "mainHeader": "Single staking",
     "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "pools": "Pools",
@@ -2273,28 +1997,31 @@
       "rewardTokenAddress": "Reward Token Address"
     },
     "open": "Open",
-    "tempAddress": "0sjs3892...sd45",
-    "tempStaked": "10 000 WQT",
     "back": "Back",
-    "claimRewards": "Claim rewards",
+    "unstake": "???",
+    "stakeIsEmpty": "???",
+    "stakeDurationIsNotOver": "???",
+    "claimRewards": "???",
+    "cannotClaimYet": "???",
     "pool": "Pool",
     "stakeTokenAddress": "Stake Token Address",
     "rewardTokenAddress": "Reward Token Address",
     "totalStaked": "Total Staked",
-    "wqtCount": "{n} WQT",
+    "WQTCount": "{n} WQT",
+    "WUSDCount": "{n} WUSD",
+    "ETHCount": "{n} ETH",
+    "BNBCount": "{n} BNB",
+    "hours": "{n} ???",
+    "days": "{n} ???",
+    "min": "{n} ???",
     "totalDistributed": "Total Distributed",
     "staking": "Staking",
     "stakingCards": {
       "distributionTime": "Distribution Time",
-      "distributionTimeData": "10 min",
       "rewardTotal": "Reward Total",
-      "rewardTotalData": "3.00 WQT",
       "takePeriod": "Take Period",
-      "takePeriodData": "24 hours",
       "claimPeriod": "Claim Period",
-      "claimPeriodData": "24 hours",
-      "duration": "Duration",
-      "durationData": "30 days"
+      "duration": "Duration"
     },
     "userInformation": "User information",
     "userInformationCards": {
@@ -2302,17 +2029,15 @@
       "stakeBalance": "Stake balance",
       "claimed": "Claimed"
     },
-    "withdrawal": "Withdrawal",
-    "withdrawalCards": {
-      "displayedInTheCurrentPeriod": "Displayed in the current period",
-      "displayedInTheCurrentPeriodData": "10 000 WQT",
-      "withdrawalLimit": "Withdrawal limit",
-      "withdrawalLimitData": "10 000 WQT",
-      "periodUpdate": "Period update",
-      "periodUpdateData": "10 000 WQT"
+    "stakeCards": {
+      "stakeMin": "???",
+      "stakeLimit": "???",
+      "periodUpdate": "???"
     },
-    "autoRenewal": "Auto Renewal",
-    "withdraw": "Withdraw"
+    "stakeDays": "???",
+    "stake": "???",
+    "autoRenewal": "???",
+    "renewalTokens": "??? {n} ???"
   },
   "myQuests": {
     "statuses": {
@@ -2355,5 +2080,291 @@
       "staking": "WorkQuest Staking",
       "wqDAO": "WorkQuest DAO"
     }
+  },
+  "wiki": {
+    "title": "WorkQuest Wiki",
+    "searchPlaceholder": "???",
+    "search": "???",
+    "navigation": {
+      "header": {
+        "title": "???",
+        "subtitle": "???",
+        "cards": {
+          "employer": {
+            "title": "???"
+          },
+          "employee": {
+            "title": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "employees": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "myQuests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "wallet": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "instruments": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "language": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "chats": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "notifications": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "menu": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "profile": {
+        "title": "???",
+        "cards": {
+          "profile": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "settings": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "disputes": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "logout": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "instruments": {
+        "title": "???",
+        "cards": {
+          "retirement": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "referral": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "P2P": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "savings": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "lending": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "liquidity": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "crosschain": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "staking": {
+            "title": "???",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+          }
+        }
+      },
+      "statuses": {
+        "title": "???",
+        "cards": {
+          "delivery": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "short": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "urgent": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "top": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "reliable": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "verified": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "buttons": {
+        "title": "???",
+        "cards": {
+          "create": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "results": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "workers": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "details": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "map": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "button": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "raise": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "employer": {
+        "title": "???",
+        "cards": {
+          "specialization": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "rating": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "priority": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "distant": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "price": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "time": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "employee": {
+        "title": "???",
+        "cards": {
+          "specialization": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "delivery": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "job": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "distant": {
+            "title": "???",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+          },
+          "price": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "time": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "user": {
+        "title": "???",
+        "cards": {
+          "reviews": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "active": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "invited": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "favorite": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "quest": {
+        "title": "???",
+        "cards": {
+          "goldPlus": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "gold": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "silver": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "bronze": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      }
+    }
+  },
+  "gallery": {
+    "counter": "{n} ??? {c}"
   }
 }

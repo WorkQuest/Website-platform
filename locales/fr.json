@@ -16,6 +16,11 @@
   },
   "btn": {
     "agree": "D'accord",
+    "disagree": "???",
+    "completeWorkOnQuest": "???",
+    "rejectCompletedWorkOnQuest": "???",
+    "acceptCompletedWorkOnQuest": "???",
+    "closeQuest": "???",
     "goToChat": "Accéder à la messagerie instantanée",
     "dispute": "Ouvrir le litige",
     "responded": "Réponse envoyée",
@@ -26,7 +31,9 @@
     "m": "m"
   },
   "info": {
-    "showYourMessage": "Afficher votre message"
+    "yourMessage": "???",
+    "showYourMessage": "Afficher votre message",
+    "hideYourMessage": "???"
   },
   "uploader": {
     "uploadText": "Téléverser des images ou des vidéos",
@@ -59,7 +66,8 @@
     "required_if": "Le champ {_field_} est obligatoire",
     "required": "Le champ {_field_} est obligatoire",
     "size": "La taille du champ {_field_} doit être inférieure à {size} Ko",
-    "decimal": "Le champ {_field_} ne doit contenir que des valeurs décimales"
+    "decimal": "Le champ {_field_} ne doit contenir que des valeurs décimales",
+    "decimalPlaces": "{_field_} ??? {places}"
   },
   "labels": {
     "firstName": "Prénom",
@@ -117,6 +125,7 @@
     "quests": "Quêtes",
     "reviews": "Évaluations",
     "portfolio": "Portefeuille",
+    "common": "???",
     "sidebar": {
       "filter": "Filtre Toutes les quêtes",
       "choose": "(Choisissez une catégorie simple\nou spécialisée)",
@@ -147,6 +156,8 @@
     "buyWUSD": "Acheter des WUSD",
     "submit": "Soumettre",
     "showAllReviews": "Afficher toutes les évaluations",
+    "showAllQuests": "???",
+    "showAllPortfolios": "???",
     "later": "Plus tard",
     "iAgree": "J'accepte",
     "next": "Suivant",
@@ -156,7 +167,8 @@
     "connectSMSVer": "Connecter la vérification par SMS",
     "resendSMS": "Renvoyer le SMS",
     "disable": "Désactiver",
-    "remindLater": "Rappeler plus tard"
+    "remindLater": "Rappeler plus tard",
+    "leave": "???"
   },
   "priority": {
     "title": "Sélectionner la priorité",
@@ -247,11 +259,36 @@
   "skills": {
     "title": "Compétences"
   },
+  "worker": {
+    "cost": {
+      "notIndicated": "???..."
+    }
+  },
   "quests": {
-    "rating": "???",
+    "showAll": "???",
+    "wusd": "WUSD",
+    "employer": {
+      "usersNotResponded": "???"
+    },
+    "companyNotListed": "???",
+    "workersNotInvited": "???",
+    "startChat": "???",
+    "invite": "???",
+    "decline": "???",
     "questTitle": "???",
     "questDesc": "???",
+    "questInfo": "???",
+    "questClosed!": "???",
+    "closed": "???",
+    "completed": "???",
+    "rejected": "???",
+    "completedWorkAccepted": "???",
+    "completedWorkRejected": "???",
+    "workOnQuestAccepted": "???",
+    "workOnQuestRejected": "???",
+    "pleaseWaitEmp": "???",
     "quests": "Quêtes",
+    "publicationDate": "???",
     "urgent": "Urgent",
     "specQuests": "???",
     "permanentJob": "???",
@@ -260,6 +297,7 @@
     "fixedTerm": "???",
     "contract": "???",
     "remoteWork": "???",
+    "allVariants": "???",
     "levels": {
       "1": {
         "title": "???",
@@ -281,8 +319,20 @@
     "createQuest": {
       "choosePeriod": "???"
     },
+    "distance": {
+      "100": "+ 100 m",
+      "500": "+ 500 m",
+      "1000": "+ 1000 m"
+    },
+    "rating": {
+      "title": "???",
+      "verified": "???",
+      "reliable": "???",
+      "topRanked": "???"
+    },
     "distantWork": {
       "title": "Travail à distance",
+      "allWorkplaces": "???",
       "distantWork": "Travail à distance",
       "workInOffice": "Travail de bureau",
       "bothVariant": "Les deux variantes"
@@ -315,22 +365,39 @@
     "requested": "Demandée",
     "youInvited": "Vous avez invité",
     "inProgressBy": "En cours par :",
+    "finishedBy": "???:",
     "showAllCases": "Afficher tous les cas",
     "portfolio": "Portefeuille",
     "searchQuests": "Rechercher des quêtes",
     "readCompletely": "Lire complètement",
     "questBig": "Quête",
     "fromBig": "De",
+    "fromSmall": "de",
     "fromYou": "de votre part",
     "reviews": "évaluations",
     "reviewsBig": "Évaluations",
     "MyQuests": "Mes quêtes",
     "activeQuest": "Quête active",
+    "waitWorker": "???",
+    "pendingConsideration": "???",
+    "dispute": "???",
+    "questClosed": "???",
+    "questFinished": "???",
+    "dontHaveSpec": "???...",
+    "namelessWorker": "???",
+    "nothingAboutMe": "???...",
+    "unknownAddress": "???...",
+    "unknownPhoneNumber": "???...",
+    "unknownEmailAddress": "???..",
+    "questActive:": "???:",
+    "questClosed:": "???:",
+    "questDispute:": "???:",
+    "questWaitConfirm:": "???:",
+    "skillsNotSpecified": "???...",
     "proposal": "Proposition",
     "category": "Sélectionner une catégorie",
     "address": "Ajouter une adresse",
     "uploadMaterials": "Téléverser des documents pour mieux décrire la quête",
-    "uploadQuestMaterials": "Ajouter une description détaillée",
     "price": "Prix",
     "filter": {
       "btn": "Filtres"
@@ -348,6 +415,7 @@
     "createAQuest": "Créer une quête",
     "editAQuest": "???",
     "activeQuests": "Quêtes actives",
+    "openedQuests": "???",
     "completedQuests": "Quêtes terminées",
     "oneTime": "Une fois",
     "fullTime": "À plein temps",
@@ -396,365 +464,356 @@
     },
     "items": {
       "1": {
-        "title": "Commerce de détail, ventes et achats",
+        "title": "???",
         "sub": {
-          "1": "Magasins de proximité",
-          "2": "Détaillants spécialisés",
-          "3": "Magasins de vêtements",
-          "4": "Détaillants automobiles",
-          "5": "Pharmacies",
-          "6": "Grands magasins",
-          "7": "Supermarchés et hypermarchés",
-          "8": "Magasins multicanaux",
-          "9": "Solderies",
-          "10": "Catalogue de vente directe et sociétés de vente par correspondance",
-          "11": "Boutiques de commerce électronique",
-          "12": "Commerce de détail, ventes et achats - Autre"
+          "100": "???",
+          "101": "???",
+          "102": "???",
+          "103": "???",
+          "104": "???",
+          "105": "???",
+          "106": "???",
+          "107": "???",
+          "108": "???",
+          "109": "???",
+          "110": "???",
+          "111": "???",
+          "112": "???",
+          "113": "???"
         }
       },
       "2": {
         "title": "Personnel des bars et restaurants",
         "sub": {
-          "1": "Ethnique",
-          "2": "Restauration rapide",
-          "3": "Restauration rapide haut de gamme",
-          "4": "Restauration décontractée",
-          "5": "Restauration décontractée haut de gamme",
-          "6": "Style familial",
-          "7": "Gastronomie",
-          "8": "Brasserie et bistrot",
-          "9": "Personnel des bars et restaurants - Autre"
+          "200": "Ethnique",
+          "201": "Restauration rapide",
+          "202": "Restauration rapide haut de gamme",
+          "203": "Restauration décontractée",
+          "204": "Restauration décontractée haut de gamme",
+          "205": "Style familial",
+          "206": "Gastronomie",
+          "207": "Brasserie et bistrot",
+          "208": "Personnel des bars et restaurants - Autre"
         }
       },
       "3": {
-        "title": "Personnel à domicile",
+        "title": "???",
         "sub": {
-          "1": "Garde d’enfants",
-          "2": "Gouvernante",
-          "3": "Tuteurs",
-          "4": "Domestiques",
-          "5": "Aides-soignants",
-          "6": "Cuisiniers",
-          "7": "Jardiniers",
-          "8": "Conducteurs",
-          "9": "Autre personnel à domicile"
+          "300": "???",
+          "301": "???",
+          "302": "???",
+          "303": "???",
+          "304": "???"
         }
       },
       "4": {
-        "title": "Informatique/réseaux",
+        "title": "???",
         "sub": {
-          "1": "Administration des bases de données",
-          "2": "Logiciel ERP/CRM",
-          "3": "Sécurité des informations",
-          "4": "Administration réseau et système",
-          "5": "Informatique/réseaux - Autre"
+          "400": "???",
+          "406": "???",
+          "402": "???",
+          "403": "???",
+          "404": "???",
+          "405": "???"
         }
       },
       "5": {
-        "title": "Ingénierie et architecture",
+        "title": "???",
         "sub": {
-          "1": "Modélisation 3D et CAO",
-          "2": "Architecture",
-          "3": "Ingénierie chimiste",
-          "4": "Fabrication sous contrat",
-          "5": "Ingénierie électrique",
-          "6": "Génie mécanique",
-          "7": "Sciences physiques",
-          "8": "Ingénierie - Autre"
+          "500": "???",
+          "501": "???"
         }
       },
       "6": {
-        "title": "Secrétariat, gestion de la correspondance et des dossiers",
+        "title": "???",
         "sub": {
-          "1": "Registres de propriété - titres de propriété et règlements",
-          "2": "Documents comptables - locations, pièces justificatives, enquêtes et évaluations",
-          "3": "Documents juridiques",
-          "4": "Inventaires",
-          "5": "Correspondance",
-          "6": "Documents de clôture",
-          "7": "Documents seigneuriaux - registres judiciaires, coutumes, terriers, sondages, etc.",
-          "8": "Documents personnels et politiques",
-          "9": "Cartes et plans",
-          "10": "Secrétariat, gestion de la correspondance et des dossiers - Autre"
+          "601": "???",
+          "600": "???",
+          "602": "???",
+          "603": "???",
+          "604": "???",
+          "605": "???",
+          "606": "???"
         }
       },
       "7": {
-        "title": "Tourisme, loisirs et divertissement",
+        "title": "???",
         "sub": {
-          "1": "Préposé aux divertissements",
-          "2": "Conciergerie",
-          "3": "Directeur de navires de croisière",
-          "4": "Conservateurs",
-          "5": "Concessionnaires de jeux",
-          "6": "Sauveteur(se)",
-          "7": "Commis à l'information",
-          "8": "Travailleur(se) des loisirs",
-          "9": "Guide de visite et de voyage",
-          "10": "Tourisme, loisirs et divertissement - Autre"
+          "700": "???",
+          "701": "???",
+          "702": "???",
+          "703": "???",
+          "704": "???",
+          "705": "???",
+          "706": "???",
+          "707": "???",
+          "708": "???",
+          "709": "???",
+          "710": "???",
+          "711": "???",
+          "712": "???"
         }
       },
       "8": {
-        "title": "Comptabilité et conseil",
+        "title": "???",
         "sub": {
-          "1": "Comptabilité",
-          "2": "Planification financière",
-          "3": "Ressources humaines",
-          "4": "Conseil en gestion",
-          "5": "Comptabilité et conseil - Autre"
+          "800": "???",
+          "801": "???",
+          "802": "???",
+          "803": "???",
+          "804": "???",
+          "805": "???",
+          "806": "???",
+          "807": "???",
+          "808": "???",
+          "809": "???"
         }
       },
       "9": {
-        "title": "Assistance administrative",
+        "title": "???",
         "sub": {
-          "1": "Saisie des données",
-          "2": "Assistance administrative - Autre",
-          "3": "Assistance personnelle/virtuelle",
-          "4": "Gestion de projet",
-          "5": "Transcription",
-          "6": "Recherche Web",
-          "7": "Assistance administrative - Autre"
+          "900": "???",
+          "901": "???",
+          "902": "???",
+          "903": "???",
+          "904": "???",
+          "905": "???",
+          "906": "???",
+          "907": "???",
+          "908": "???"
         }
       },
       "10": {
-        "title": "Service à la clientèle",
+        "title": "???",
         "sub": {
-          "1": "Service à la clientèle",
-          "2": "Support technique"
+          "1007": "???",
+          "1008": "???",
+          "1005": "???",
+          "1004": "???",
+          "1002": "???",
+          "1003": "???",
+          "1006": "???",
+          "1001": "???",
+          "1000": "???"
         }
       },
       "11": {
-        "title": "Science des données et analyse",
+        "title": "???",
         "sub": {
-          "1": "Tests A/B",
-          "2": "Exploration et gestion des données",
-          "3": "Visualisation des données",
-          "4": "Apprentissage automatique",
-          "5": "Analyse quantitative",
-          "6": "Science des données et analyse - Autre"
+          "1105": "???",
+          "1104": "???",
+          "1102": "???",
+          "1103": "???",
+          "1101": "???",
+          "1100": "???"
         }
       },
       "12": {
-        "title": "Éducation",
+        "title": "???",
         "sub": {
-          "1": "Enseignement",
-          "2": "Administration de l'éducation",
-          "3": "Conseil scolaire",
-          "4": "Travail social scolaire",
-          "5": "Enseignement des langues",
-          "6": "Éducation - Autre"
+          "1212": "???",
+          "1203": "???",
+          "1217": "???",
+          "1202": "???",
+          "1213": "???",
+          "1206": "???",
+          "1200": "???",
+          "1211": "???",
+          "1210": "???",
+          "1207": "???",
+          "1218": "???",
+          "1201": "???",
+          "1208": "???",
+          "1204": "???",
+          "1215": "???",
+          "1214": "???",
+          "1209": "???",
+          "1205": "???",
+          "1216": "???"
         }
       },
       "13": {
-        "title": "Conception",
+        "title": "???",
         "sub": {
-          "1": "Conception de mise en page",
-          "2": "Image de marque",
-          "3": "Jeux et RA/VR",
-          "4": "Conception graphique, éditoriale et de présentation",
-          "5": "Conception de produits",
-          "6": "Design d'intérieur et d'extérieur",
-          "7": "Conception - Autre"
+          "1300": "???",
+          "1302": "???",
+          "1303": "???",
+          "1301": "???",
+          "1304": "???"
         }
       },
       "14": {
-        "title": "Droit et assistance juridique",
+        "title": "???",
         "sub": {
-          "1": "Droit des contrats",
-          "2": "Droit des sociétés",
-          "3": "Droit de propriété intellectuelle",
-          "4": "Services parajuridiques",
-          "5": "Droit et assistance juridique - Autre"
+          "1406": "???",
+          "1405": "???",
+          "1403": "???",
+          "1404": "???",
+          "1401": "???",
+          "1402": "???",
+          "1400": "???"
         }
       },
       "15": {
-        "title": "Rédaction",
+        "title": "???",
         "sub": {
-          "1": "Contenu et rédaction",
-          "2": "Rédaction créative",
-          "3": "Édition et relecture",
-          "4": "Rédaction de subventions",
-          "5": "CV et lettres de motivation",
-          "6": "Rédaction technique",
-          "7": "Rédaction - Autre"
+          "1503": "???",
+          "1500": "???",
+          "1501": "???",
+          "1505": "???",
+          "1502": "???",
+          "1506": "???",
+          "1507": "???",
+          "1504": "???"
         }
       },
       "16": {
-        "title": "Médecine et pharmacie",
+        "title": "???",
         "sub": {
-          "1": "Pharmacie de détail",
-          "2": "Pharmacie hospitalière",
-          "3": "Centre de distribution de médicaments",
-          "4": "Soins à domicile et pharmacie de soins palliatifs",
-          "5": "Informatique de pharmacie",
-          "6": "Pharmacie de soins ambulatoires",
-          "7": "Pharmaciens",
-          "8": "Médecine et pharmacie - Autre"
+          "1600": "???",
+          "1601": "???",
+          "1602": "???",
+          "1603": "???",
+          "1604": "???",
+          "1605": "???",
+          "1606": "???",
+          "1607": "???",
+          "1608": "???"
         }
       },
       "17": {
-        "title": "Télécommunications",
+        "title": "???",
         "sub": {
-          "1": "Gestionnaires de systèmes de télécommunications",
-          "2": "Installateurs de ligne",
-          "3": "Représentation du service à la clientèle",
-          "4": "Ingénieurs en logiciels informatiques",
-          "5": "Programmeurs informatiques",
-          "6": "Associations professionnelles",
-          "7": "Organismes de certification associés",
-          "8": "Télécommunications - Autre"
+          "1700": "???",
+          "1701": "???",
+          "1702": "???",
+          "1703": "???",
+          "1704": "???"
         }
       },
       "18": {
-        "title": "Gestion du personnel et RH",
+        "title": "???",
         "sub": {
-          "1": "Planification des ressources humaines",
-          "2": "Recrutement et sélection",
-          "3": "Gestion des performances",
-          "4": "Apprentissage et développement",
-          "5": "Plan de carrière",
-          "6": "Évaluation fonctionnelle",
-          "7": "Récompenses",
-          "8": "Relations industrielles",
-          "9": "Participation et communication des employés",
-          "10": "Santé et sécurité",
-          "11": "Bien-être personnel",
-          "12": "Responsabilités administratives",
-          "13": "Gestion du personnel et RH - Autre"
+          "1800": "???",
+          "1801": "???",
+          "1802": "???",
+          "1803": "???",
+          "1804": "???",
+          "1805": "???",
+          "1806": "???",
+          "1807": "???",
+          "1808": "???",
+          "1809": "???"
         }
       },
       "19": {
-        "title": "Sécurité",
+        "title": "???",
         "sub": {
-          "1": "Gestionnaire des risques",
-          "2": "Test de pénétration de systèmes, réseaux et Web",
-          "3": "Ingénierie de sécurité réseau",
-          "4": "Administration de sécurité réseau",
-          "5": "Enquêteur(se) en cybercriminalité",
-          "6": "Analyste en sécurité de l'information",
-          "7": "Analyste de sécurité",
-          "8": "Responsable de la sécurité",
-          "9": "Garde de sécurité",
-          "10": "Sécurité - Autre"
+          "1900": "???",
+          "1901": "???",
+          "1902": "???",
+          "1903": "???",
+          "1904": "???"
         }
       },
       "20": {
-        "title": "Culture et arts",
+        "title": "???",
         "sub": {
-          "1": "Acteur(trice)",
-          "2": "Travailleur des arts communautaires",
-          "3": "Chorégraphe",
-          "4": "Danseur(se)",
-          "5": "Dramathérapeute",
-          "6": "Production de musique",
-          "7": "Musicothérapeute",
-          "8": "Direction de théâtre",
-          "9": "Spécialiste des multimédias",
-          "10": "Conception de systèmes",
-          "11": "Conception de produits",
-          "12": "Conservateurs",
-          "13": "Direction artistique",
-          "14": "Direction de musée",
-          "15": "Professeur(e) d'art",
-          "16": "Art-thérapeute",
-          "17": "Illustration médicale",
-          "18": "Réalisateur(trice)",
-          "19": "Culture et arts - Autre"
+          "2000": "???",
+          "2001": "???",
+          "2002": "???",
+          "2003": "???",
+          "2004": "???",
+          "2005": "???"
         }
       },
       "21": {
         "title": "Développement Web, mobile et logiciel",
         "sub": {
-          "1": "Développement de logiciels de bureau",
-          "2": "Développement du commerce électronique",
-          "3": "Développement de jeu",
-          "4": "Développement mobile",
-          "5": "Développement d'autres logiciels",
-          "6": "Gestion des produits",
-          "7": "AQ et tests",
-          "8": "Scripts et utilitaires",
-          "9": "Conception Web et mobile",
-          "10": "Développement web",
-          "11": "Développement Web, mobile et logiciel - Autre"
+          "2100": "Développement de logiciels de bureau",
+          "2101": "Développement du commerce électronique",
+          "2102": "Développement de jeu",
+          "2103": "Développement mobile",
+          "2104": "Développement d'autres logiciels",
+          "2105": "Gestion des produits",
+          "2106": "AQ et tests",
+          "2107": "Scripts et utilitaires",
+          "2108": "Conception Web et mobile",
+          "2109": "Développement web",
+          "2110": "Développement Web, mobile et logiciel - Autre"
         }
       },
       "22": {
-        "title": "Transport et logistique",
+        "title": "???",
         "sub": {
-          "1": "Gestion",
-          "2": "Planification des stocks",
-          "3": "Entreposage",
-          "4": "Achat de biens et services",
-          "5": "Emballage et stockage",
-          "6": "Transport",
-          "7": "Service à la clientèle",
-          "8": "Transport et logistique - Autre"
+          "2200": "???",
+          "2201": "???",
+          "2202": "???",
+          "2203": "???",
+          "2204": "???",
+          "2205": "???",
+          "2206": "???"
         }
       },
       "23": {
-        "title": "Banque, finance et assurance",
+        "title": "???",
         "sub": {
-          "1": "Industrie des services financiers",
-          "2": "Planification financière",
-          "3": "Finance d'entreprise",
-          "4": "Banque commerciale",
-          "5": "Banque d'investissement",
-          "6": "Fonds spéculatifs",
-          "7": "Capital-investissement, capital-risque",
-          "8": "Assurance",
-          "9": "Banque, finance et assurance - Autre"
+          "2300": "???",
+          "2301": "???",
+          "2302": "???",
+          "2303": "???",
+          "2304": "???"
         }
       },
       "24": {
-        "title": "Beauté, remise en forme et sports",
+        "title": "???",
         "sub": {
-          "1": "Entraîneur(se) d'athlétisme",
-          "2": "Physiologiste de l'exercice",
-          "3": "Entraîneur(se)",
-          "4": "Massothérapeute",
-          "5": "Ergothérapeute",
-          "6": "Physiothérapeute",
-          "7": "Récréologue",
-          "8": "Salon de beauté",
-          "9": "Beauté, remise en forme et sports - Autre"
+          "2400": "???",
+          "2401": "???",
+          "2402": "???",
+          "2403": "???",
+          "2404": "???",
+          "2405": "???",
+          "2406": "???",
+          "2407": "???",
+          "2408": "???",
+          "2409": "???"
         }
       },
       "25": {
-        "title": "Production créative",
+        "title": "???",
         "sub": {
-          "1": "Arts et illustration",
-          "2": "Production audio et musicale",
-          "3": "Arts de la scène",
-          "4": "Photographie",
-          "5": "Vidéo et animation",
-          "6": "Talent vocal",
-          "7": "Talent vocal",
-          "8": "Visualisation 3D",
-          "9": "Production créative - Autre"
+          "2800": "???",
+          "2801": "???",
+          "2802": "???",
+          "2803": "???",
+          "2804": "???",
+          "2805": "???",
+          "2806": "???",
+          "2807": "???"
         }
       },
       "26": {
-        "title": "Marketing et ventes",
+        "title": "???",
         "sub": {
-          "1": "Affichage publicitaire",
-          "2": "Automatisation du marketing et des e-mails",
-          "3": "Génération de prospect",
-          "4": "Études de marché et clients",
-          "5": "Stratégie de marketing",
-          "6": "Relations publiques",
-          "7": "SEM - Marketing des moteurs de recherche",
-          "8": "SEO - Optimisation des moteurs de recherche",
-          "9": "SMM - Marketing des médias sociaux",
-          "10": "Ventes et marketing - Autre"
+          "2600": "???",
+          "2601": "???",
+          "2602": "???",
+          "2603": "???",
+          "2604": "???",
+          "2605": "???",
+          "2606": "???",
+          "2607": "???"
         }
       },
       "27": {
-        "title": "Traduction",
+        "title": "???",
         "sub": {
-          "1": "Traduction générale",
-          "2": "Traduction juridique",
-          "3": "Traduction médicale",
-          "4": "Traduction technique",
-          "5": "Traduction - Autre"
+          "2700": "???",
+          "2701": "???",
+          "2702": "???",
+          "2703": "???",
+          "2704": "???"
         }
       },
       "28": {
@@ -769,46 +828,60 @@
         }
       },
       "29": {
-        "title": "Agriculture et agroalimentaire",
+        "title": "???",
         "sub": {
-          "1": "Cultures",
-          "2": "Élevage (production et santé animale)",
-          "3": "Pêche et aquaculture (y compris les pêches de capture)",
-          "4": "Foresterie",
-          "5": "Agriculture et agroalimentaire - Autre"
+          "2900": "???",
+          "2901": "???",
+          "2902": "???",
+          "2903": "???",
+          "2904": "???",
+          "2905": "???",
+          "2906": "???",
+          "2907": "???",
+          "2908": "???"
         }
       },
       "30": {
-        "title": "Construction",
+        "title": "???",
         "sub": {
-          "1": "Bâtiment résidentiel",
-          "2": "Bâtiment institutionnel et commercial",
-          "3": "Infrastructures et construction lourde",
-          "4": "Construction industrielle spécialisée",
-          "5": "Construction - Autre"
+          "3000": "???",
+          "3001": "???",
+          "3002": "???",
+          "3003": "???",
+          "3004": "???",
+          "3005": "???",
+          "3006": "???",
+          "3007": "???",
+          "3008": "???",
+          "3009": "???"
         }
       },
       "31": {
-        "title": "Début de carrière et étudiants",
+        "title": "???",
         "sub": {
-          "1": "Livreur(se)",
-          "2": "Serveur(se)",
-          "3": "Début de carrière et étudiants - Autre"
+          "3100": "???",
+          "3101": "???",
+          "3102": "???",
+          "3103": "???",
+          "3104": "???",
+          "3105": "???",
+          "3106": "???",
+          "3107": "???"
         }
       },
       "32": {
-        "title": "Professions des services",
+        "title": "???",
         "sub": {
-          "1": "Industrie de la restauration et des services alimentaires",
-          "2": "Professions des services - Autre"
+          "3200": "???",
+          "3201": "???",
+          "3202": "???"
         }
       },
       "33": {
-        "title": "Travail saisonnier",
+        "title": "???",
         "sub": {
-          "1": "Variable",
-          "2": "À temps partiel",
-          "3": "À plein temps"
+          "3300": "???",
+          "3301": "???"
         }
       },
       "34": {
@@ -822,6 +895,10 @@
     }
   },
   "toasts": {
+    "questInfo": "???",
+    "questCantDelete": "???",
+    "questCantEdit": "???",
+    "questCantRaisingViews": "???",
     "questEdited": "???",
     "questCreated": "???",
     "questDeleted": "???",
@@ -831,6 +908,15 @@
     "error": "???"
   },
   "modals": {
+    "disputes": {
+      "thereIsNoResponseFromTheEmployerOrEmployee": "???",
+      "badlyDoneWork": "???",
+      "additionalRequirementsHaveBeenPutForward": "???",
+      "inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest": "???",
+      "theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion": "???",
+      "anotherReason": "???"
+    },
+    "chooseTheme": "???",
     "incorrectAmount": "???",
     "nothingToClaim": "???",
     "pleaseWait": "???",
@@ -839,8 +925,10 @@
     "chatCreate": {
       "title": "Créer une discussion de groupe",
       "desc": "Créez le nom de la discussion de groupe et choisissez des personnes dans votre liste de discussion",
-      "participants": "Participants",
-      "chatName": "Nom de la discussion"
+      "chatName": "Nom de la discussion",
+      "members": "???",
+      "addNewMembers": "???",
+      "addMember": "???"
     },
     "yourRewardBalance": "???",
     "deletePortfolio": "???",
@@ -853,6 +941,8 @@
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
     "sureDeleteText": "???",
+    "sureDeleteMemberText": "???",
+    "sureLeaveChatText": "???",
     "priceTitle": "???",
     "enterPriceRange": "???",
     "priceForm": "???",
@@ -866,6 +956,9 @@
     "yourAccountVerified": "Votre compte a été vérifié avec succès",
     "youCanUpdateThisInYourProfile": "Vous pouvez facilement le mettre à jour dans votre profil.",
     "disable2Fa": "Désactiver l’authentification à deux facteurs",
+    "2FAEnabled": "???",
+    "2FADisabled": "???",
+    "2FAStatus": "???",
     "yourLevelHasBeenRaised": "Votre niveau a été élevé",
     "payment": "Paiement",
     "cardHolder": "Nom du titulaire",
@@ -1131,7 +1224,9 @@
     "recepientAddressField": "???",
     "walletAddressField": "???",
     "thanksText": "",
-    "emailVerificationCodeField": "???"
+    "emailVerificationCodeField": "???",
+    "youCanAttachUpToNFiles": "???",
+    "youTryToAttachUnsupportedFileFormat": "???"
   },
   "ui": {
     "jobQuestors": "Demandeurs d'emploi",
@@ -1239,8 +1334,9 @@
   "chat": {
     "openDispute": "Ouvrir le litige",
     "approveQuest": "Approuver la quête",
-    "favoriteMessages": "Messages favoris",
-    "favoriteChats": "Discussions favorites",
+    "starredMessages": "???",
+    "starredChats": "???",
+    "allChats": "???",
     "createGroupChat": "Créer une discussion de groupe",
     "favorite": "Favori",
     "messages": "Messages",
@@ -1248,9 +1344,46 @@
     "quest": "Quête :",
     "you": "Vous :",
     "invitedYou": "vous a invité(e) à participer à une quête",
-    "writeYouMessage": "Écrivez votre message"
+    "writeYouMessage": "Écrivez votre message",
+    "group": "???",
+    "noChats": "???",
+    "noMessages": "???",
+    "membersNum": "{n} ???",
+    "systemMessages": {
+      "invitedYouToAQuest": "???",
+      "youInvitedToTheQuest": "???",
+      "respondedToTheQuest": "???",
+      "youHaveRespondedToTheQuest": "???",
+      "rejectedTheResponseToTheQuest": "r???",
+      "youRejectTheResponseOnQuest": "???",
+      "rejectedTheInviteToTheQuest": "???",
+      "youRejectedTheInviteToTheQuest": "???",
+      "acceptedTheInviteToTheQuest": "???",
+      "youAcceptedTheInviteToTheQuest": "???",
+      "createdAGroupChat": "???",
+      "youCreatedAGroupChat": "???",
+      "removedFromChat": "???",
+      "youHaveRemovedFromChat": "???",
+      "addedToChat": "???",
+      "youAddedToChat": "???",
+      "userAddedToChat": "???",
+      "userRemovedFromChat": "???",
+      "leftTheChat": "???",
+      "youLeftTheChat": "???"
+    },
+    "leaveChat": "???",
+    "loadMore": "???"
   },
   "settings": {
+    "facebook": "facebook",
+    "linkedin": "linkedin",
+    "twitter": "twitter",
+    "instagram": "instagram",
+    "address": "???",
+    "lastName": "???",
+    "firstName": "???",
+    "enterPhoneNumber": "???",
+    "enterCurrentLocation": "???",
     "placeOfStudying": "Lieu d'étude",
     "specialization": "Spécialisation",
     "selectSpec": "???",
@@ -1268,6 +1401,7 @@
     "term": "Délai",
     "getVerification": "Terminer la vérification",
     "notVerified": "Non vérifié",
+    "verified": "???",
     "more": "Plus",
     "employmentInfo": "Informations d'emploi",
     "addSpec": "Ajouter une spécialisation",
@@ -1328,435 +1462,10 @@
     "distantWork": {
       "title": "???",
       "select": "???",
+      "allWorkplaces": "???",
       "distantWork": "???",
       "workInOffice": "???",
       "bothVariant": "???"
-    },
-    "specializations": {
-      "1": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???",
-          "11": "???",
-          "12": "???"
-        }
-      },
-      "2": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???"
-        }
-      },
-      "3": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???"
-        }
-      },
-      "4": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "5": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???"
-        }
-      },
-      "6": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???"
-        }
-      },
-      "7": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???"
-        }
-      },
-      "8": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "9": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???"
-        }
-      },
-      "10": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???"
-        }
-      },
-      "11": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???"
-        }
-      },
-      "12": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???"
-        }
-      },
-      "13": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???"
-        }
-      },
-      "14": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "15": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???"
-        }
-      },
-      "16": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???"
-        }
-      },
-      "17": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???"
-        }
-      },
-      "18": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???",
-          "11": "???",
-          "12": "???",
-          "13": "???"
-        }
-      },
-      "19": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???"
-        }
-      },
-      "20": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???",
-          "11": "???",
-          "12": "???",
-          "13": "???",
-          "14": "???",
-          "15": "???",
-          "16": "???",
-          "17": "???",
-          "18": "???",
-          "19": "???"
-        }
-      },
-      "21": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???",
-          "11": "???"
-        }
-      },
-      "22": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???"
-        }
-      },
-      "23": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???"
-        }
-      },
-      "24": {
-        "title": "???",
-        "sub": {
-          "1": "???r",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???"
-        }
-      },
-      "25": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???"
-        }
-      },
-      "26": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???"
-        }
-      },
-      "27": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "28": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???"
-        }
-      },
-      "29": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "30": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "31": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???"
-        }
-      },
-      "32": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???"
-        }
-      },
-      "33": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???"
-        }
-      },
-      "34": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???"
-        }
-      }
     }
   },
   "raising-views": {
@@ -1781,6 +1490,7 @@
     "disputeTime": "Heure d'ouverture du litige :"
   },
   "workers": {
+    "noWorkers": "???...",
     "searchQuests": "Rechercher des quêtes",
     "searchWorkers": "Rechercher des travailleurs",
     "topWorkers": "Meilleurs employés",
@@ -1802,7 +1512,9 @@
     "from": "De",
     "based": "Sur la base de",
     "reviews": "évaluations",
+    "noReviewsAdded": "???",
     "portfolio": "Portefeuille",
+    "noPortfoliosAdded": "???",
     "showAllCases": "Afficher tous les cas",
     "costTitle": "???"
   },
@@ -1874,6 +1586,7 @@
     "transactionHistory": "Historique des transactions",
     "withdraw": "Retirer",
     "prolong": "Prolonger",
+    "prolongText": "???",
     "templateText": "",
     "table": {
       "userName": "John Doe",
@@ -1885,8 +1598,12 @@
     "docName": "Un_document.pdf",
     "mb": "{count} Mo",
     "percents": "{count} %",
-    "years": "{count} ans",
-    "wusdCount": "{count} WUSD",
+    "minutes": "{count} ???",
+    "hours": "{count} ???",
+    "years": "{count} ???",
+    "days": "{count} ???",
+    "WUSDCount": "{count} WUSD",
+    "ETHCount": "{count} ETH",
     "plusPercents": "+ {count} %",
     "faq1": {
       "question": "Comment pouvez-vous être éligible à une pension ?",
@@ -1927,9 +1644,7 @@
     "faq10": {
       "question": "Que se passe-t-il si je surfinance ma pension ?",
       "answer": "Nous n'avons aucune restriction concernant le montant de l'épargne. La totalité du montant accumulé sera à votre disposition à la fin de la période du programme."
-    },
-    "cancel": "Annuler",
-    "renewFor1Year": "Renouveler pour 1 an"
+    }
   },
   "saving": {
     "withdrawModalBody": "Le montant des fonds immobilisés et les intérêts accumulés seront crédités sur votre portefeuille",
@@ -1987,6 +1702,7 @@
     "withdrawText": "???"
   },
   "mining": {
+    "loading": "???...",
     "claimRewards": "???",
     "liquidityMining": "Minage de liquidités",
     "swapTokens": {
@@ -2211,6 +1927,9 @@
   "errors": {
     "incorrectPass": "Oups, un problème est survenu. Vérifiez les données et réessayez.",
     "emptyData": {
+      "emptyQuests": "???",
+      "emptyPortfolios": "???",
+      "emptyReviews": "???",
       "employer": {
         "myQuests": {
           "desc": "Vous n'avez pas encore fait de quêtes",
@@ -2262,6 +1981,11 @@
     "dateTemp": "05.08.2021, 12:00"
   },
   "staking": {
+    "notification": "???",
+    "stakeLimitReached": "???",
+    "notEnoughFunds": "???",
+    "notEnoughClaim": "???",
+    "_inDev": "???",
     "mainHeader": "???",
     "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "pools": "???",
@@ -2273,28 +1997,31 @@
       "rewardTokenAddress": "???"
     },
     "open": "???",
-    "tempAddress": "0sjs3892...sd45",
-    "tempStaked": "10 000 WQT",
     "back": "???",
+    "unstake": "???",
+    "stakeIsEmpty": "???",
+    "stakeDurationIsNotOver": "???",
     "claimRewards": "???",
+    "cannotClaimYet": "???",
     "pool": "Pool",
     "stakeTokenAddress": "???",
     "rewardTokenAddress": "???",
     "totalStaked": "???",
-    "wqtCount": "{n} WQT",
+    "WQTCount": "{n} WQT",
+    "WUSDCount": "{n} WUSD",
+    "ETHCount": "{n} ETH",
+    "BNBCount": "{n} BNB",
+    "hours": "{n} ???",
+    "days": "{n} ???",
+    "min": "{n} ???",
     "totalDistributed": "???",
     "staking": "???",
     "stakingCards": {
       "distributionTime": "???",
-      "distributionTimeData": "10 min",
       "rewardTotal": "???",
-      "rewardTotalData": "3.00 WQT",
       "takePeriod": "???",
-      "takePeriodData": "24 ???",
       "claimPeriod": "???",
-      "claimPeriodData": "24 ???",
-      "duration": "???",
-      "durationData": "30 ???"
+      "duration": "???"
     },
     "userInformation": "???",
     "userInformationCards": {
@@ -2302,17 +2029,15 @@
       "stakeBalance": "???",
       "claimed": "???"
     },
-    "withdrawal": "???",
-    "withdrawalCards": {
-      "displayedInTheCurrentPeriod": "???",
-      "displayedInTheCurrentPeriodData": "10 000 WQT",
-      "withdrawalLimit": "???",
-      "withdrawalLimitData": "10 000 WQT",
-      "periodUpdate": "???",
-      "periodUpdateData": "10 000 WQT"
+    "stakeCards": {
+      "stakeMin": "???",
+      "stakeLimit": "???",
+      "periodUpdate": "???"
     },
+    "stakeDays": "???",
+    "stake": "???",
     "autoRenewal": "???",
-    "withdraw": "???"
+    "renewalTokens": "??? {n} ???"
   },
   "myQuests": {
     "statuses": {
@@ -2355,5 +2080,291 @@
       "staking": "???",
       "wqDAO": "???"
     }
+  },
+  "wiki": {
+    "title": "WorkQuest Wiki",
+    "searchPlaceholder": "???",
+    "search": "???",
+    "navigation": {
+      "header": {
+        "title": "???",
+        "subtitle": "???",
+        "cards": {
+          "employer": {
+            "title": "???"
+          },
+          "employee": {
+            "title": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "employees": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "myQuests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "wallet": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "instruments": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "language": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "chats": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "notifications": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "menu": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "profile": {
+        "title": "???",
+        "cards": {
+          "profile": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "settings": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "disputes": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "logout": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "instruments": {
+        "title": "???",
+        "cards": {
+          "retirement": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "referral": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "P2P": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "savings": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "lending": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "liquidity": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "crosschain": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "staking": {
+            "title": "???",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+          }
+        }
+      },
+      "statuses": {
+        "title": "???",
+        "cards": {
+          "delivery": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "short": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "urgent": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "top": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "reliable": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "verified": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "buttons": {
+        "title": "???",
+        "cards": {
+          "create": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "results": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "workers": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "details": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "map": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "button": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "raise": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "employer": {
+        "title": "???",
+        "cards": {
+          "specialization": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "rating": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "priority": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "distant": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "price": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "time": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "employee": {
+        "title": "???",
+        "cards": {
+          "specialization": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "delivery": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "job": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "distant": {
+            "title": "???",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+          },
+          "price": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "time": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "user": {
+        "title": "???",
+        "cards": {
+          "reviews": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "active": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "invited": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "favorite": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "quest": {
+        "title": "???",
+        "cards": {
+          "goldPlus": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "gold": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "silver": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "bronze": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      }
+    }
+  },
+  "gallery": {
+    "counter": "{n} ??? {c}"
   }
 }

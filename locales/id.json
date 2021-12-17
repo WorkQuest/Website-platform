@@ -16,6 +16,11 @@
   },
   "btn": {
     "agree": "Setuju",
+    "disagree": "???",
+    "completeWorkOnQuest": "???",
+    "rejectCompletedWorkOnQuest": "???",
+    "acceptCompletedWorkOnQuest": "???",
+    "closeQuest": "???",
     "goToChat": "Kunjungi obrolan",
     "dispute": "Ajukan sengketa",
     "responded": "Tanggapan dikirim",
@@ -26,7 +31,9 @@
     "m": "m"
   },
   "info": {
-    "showYourMessage": "Tampilkan pesan Anda"
+    "yourMessage": "???",
+    "showYourMessage": "Tampilkan pesan Anda",
+    "hideYourMessage": "???"
   },
   "uploader": {
     "uploadText": "Unggah gambar atau video",
@@ -59,7 +66,8 @@
     "required_if": "Kolom {_field_} wajib diisi",
     "required": "Kolom {_field_} wajib diisi",
     "size": "Ukuran kolom {_field_} harus kurang dari {size} KB",
-    "decimal": "Kolom {_field_} hanya boleh berisi nilai desimal saja"
+    "decimal": "Kolom {_field_} hanya boleh berisi nilai desimal saja",
+    "decimalPlaces": "{_field_} ??? {places}"
   },
   "labels": {
     "firstName": "Nama depan",
@@ -117,6 +125,7 @@
     "quests": "Quest",
     "reviews": "Ulasan",
     "portfolio": "Portofolio",
+    "common": "???",
     "sidebar": {
       "filter": "Semua filter Quest",
       "choose": "(Pilih kategori\nsederhana atau khusus)",
@@ -147,6 +156,8 @@
     "buyWUSD": "Beli WUSD",
     "submit": "Kirim",
     "showAllReviews": "Tampilkan semua ulasan",
+    "showAllQuests": "???",
+    "showAllPortfolios": "???",
     "later": "Nanti",
     "iAgree": "Saya setuju",
     "next": "Berikutnya",
@@ -156,7 +167,8 @@
     "connectSMSVer": "Hubungkan Verifikasi SMS",
     "resendSMS": "Kirim ulang SMS",
     "disable": "Nonaktifkan",
-    "remindLater": "Ingatkan nanti"
+    "remindLater": "Ingatkan nanti",
+    "leave": "???"
   },
   "priority": {
     "title": "Pilih Prioritas",
@@ -247,11 +259,36 @@
   "skills": {
     "title": "Keterampilan"
   },
+  "worker": {
+    "cost": {
+      "notIndicated": "???..."
+    }
+  },
   "quests": {
-    "rating": "???",
+    "showAll": "???",
+    "wusd": "WUSD",
+    "employer": {
+      "usersNotResponded": "???"
+    },
+    "companyNotListed": "???",
+    "workersNotInvited": "???",
+    "startChat": "???",
+    "invite": "???",
+    "decline": "???",
     "questTitle": "???",
     "questDesc": "???",
-    "quests": "Quest",
+    "questInfo": "???",
+    "questClosed!": "???",
+    "closed": "???",
+    "completed": "???",
+    "rejected": "???",
+    "completedWorkAccepted": "???",
+    "completedWorkRejected": "???",
+    "workOnQuestAccepted": "???",
+    "workOnQuestRejected": "???",
+    "pleaseWaitEmp": "???",
+    "quests": "???",
+    "publicationDate": "???",
     "urgent": "Urgen",
     "specQuests": "???",
     "permanentJob": "???",
@@ -260,6 +297,7 @@
     "fixedTerm": "???",
     "contract": "???",
     "remoteWork": "???",
+    "allVariants": "???",
     "levels": {
       "1": {
         "title": "???",
@@ -281,8 +319,20 @@
     "createQuest": {
       "choosePeriod": "???"
     },
+    "distance": {
+      "100": "+ 100 m",
+      "500": "+ 500 m",
+      "1000": "+ 1000 m"
+    },
+    "rating": {
+      "title": "???",
+      "verified": "???",
+      "reliable": "???",
+      "topRanked": "???"
+    },
     "distantWork": {
       "title": "Kerja jarak jauh",
+      "allWorkplaces": "???",
       "distantWork": "Kerja jarak jauh",
       "workInOffice": "Bekerja di kantor",
       "bothVariant": "Keduanya"
@@ -315,22 +365,39 @@
     "requested": "Diminta",
     "youInvited": "Anda Diundang",
     "inProgressBy": "Sedang dikerjakan oleh:",
+    "finishedBy": "???:",
     "showAllCases": "Tampilkan semua kasus",
     "portfolio": "Portofolio",
     "searchQuests": "Cari quest",
     "readCompletely": "Baca seluruhnya",
     "questBig": "Quest",
     "fromBig": "Dari",
+    "fromSmall": "???",
     "fromYou": "dari Anda",
     "reviews": "ulasan",
     "reviewsBig": "Ulasan",
     "MyQuests": "Quest saya",
     "activeQuest": "Quest aktif",
+    "waitWorker": "???",
+    "pendingConsideration": "???",
+    "dispute": "???",
+    "questClosed": "???",
+    "questFinished": "???",
+    "dontHaveSpec": "???...",
+    "namelessWorker": "???",
+    "nothingAboutMe": "???...",
+    "unknownAddress": "???...",
+    "unknownPhoneNumber": "???...",
+    "unknownEmailAddress": "???..",
+    "questActive:": "???:",
+    "questClosed:": "???:",
+    "questDispute:": "???:",
+    "questWaitConfirm:": "???:",
+    "skillsNotSpecified": "???...",
     "proposal": "Proposal",
     "category": "Pilih kategori",
     "address": "Tambahkan alamat",
     "uploadMaterials": "Unggah materi untuk menjelaskan quest",
-    "uploadQuestMaterials": "Tambahkan deskripsi terperinci",
     "price": "Harga",
     "filter": {
       "btn": "Filter"
@@ -348,6 +415,7 @@
     "createAQuest": "Buat quest",
     "editAQuest": "???",
     "activeQuests": "Quest aktif",
+    "openedQuests": "???",
     "completedQuests": "Quest selesai",
     "oneTime": "Satu kali",
     "fullTime": "Purna waktu",
@@ -396,365 +464,356 @@
     },
     "items": {
       "1": {
-        "title": "Ritel, Penjualan & Pembelian",
+        "title": "???",
         "sub": {
-          "1": "Toko Serba Ada",
-          "2": "Peritel khusus",
-          "3": "Toko Pakaian",
-          "4": "Peritel Mobil",
-          "5": "Toko Obat",
-          "6": "Toserba",
-          "7": "Supermarket dan Hypermarket",
-          "8": "Toko Multisaluran",
-          "9": "Toko Diskon",
-          "10": "Katalog Penjualan Langsung dan perusahaan pesanan pos",
-          "11": "Toko E-commerce",
-          "12": "Ritel, Penjualan & Pembelian Lainnya"
+          "100": "???",
+          "101": "???",
+          "102": "???",
+          "103": "???",
+          "104": "???",
+          "105": "???",
+          "106": "???",
+          "107": "???",
+          "108": "???",
+          "109": "???",
+          "110": "???",
+          "111": "???",
+          "112": "???",
+          "113": "???"
         }
       },
       "2": {
         "title": "Staf Bar & Restoran",
         "sub": {
-          "1": "Etnis",
-          "2": "Makanan cepat saji",
-          "3": "Cepat biasa",
-          "4": "Makan biasa",
-          "5": "Biasa premium",
-          "6": "Gaya keluarga",
-          "7": "Makan mewah",
-          "8": "Brasserie dan bistro",
-          "9": "Staf Bar & Restoran Lainnya"
+          "200": "Etnis",
+          "201": "Makanan cepat saji",
+          "202": "Cepat biasa",
+          "203": "Makan biasa",
+          "204": "Biasa premium",
+          "205": "Gaya keluarga",
+          "206": "Makan mewah",
+          "207": "Brasserie dan bistro",
+          "208": "Staf Bar & Restoran Lainnya"
         }
       },
       "3": {
-        "title": "Staf Rumah",
+        "title": "???",
         "sub": {
-          "1": "Pengasuhan bayi",
-          "2": "Perawat anak",
-          "3": "Tutor",
-          "4": "Pembantu rumah tangga",
-          "5": "Pengasuh",
-          "6": "Juru masak",
-          "7": "Tukang kebun",
-          "8": "Pengemudi",
-          "9": "Staf Rumah Lainnya"
+          "300": "???",
+          "301": "???",
+          "302": "???",
+          "303": "???",
+          "304": "???"
         }
       },
       "4": {
-        "title": "TI / Jaringan",
+        "title": "???",
         "sub": {
-          "1": "Administrasi Basis Data",
-          "2": "Perangkat Lunak ERP / CRM",
-          "3": "Keamanan Informasi",
-          "4": "Administrasi Jaringan & Sistem",
-          "5": "TI & Jaringan Lainnya"
+          "400": "???",
+          "406": "???",
+          "402": "???",
+          "403": "???",
+          "404": "???",
+          "405": "???"
         }
       },
       "5": {
-        "title": "Teknik & Arsitektur",
+        "title": "???",
         "sub": {
-          "1": "Pemodelan 3D & CAD",
-          "2": "Arsitektur",
-          "3": "Teknik Kimia",
-          "4": "Manufaktur Kontrak",
-          "5": "Teknik Elektro",
-          "6": "Teknik Mesin",
-          "7": "Ilmu Fisika",
-          "8": "Teknik Lainnya"
+          "500": "???",
+          "501": "???"
         }
       },
       "6": {
-        "title": "Manajemen Sekretariat, Korespondensi & Arsip",
+        "title": "???",
         "sub": {
-          "1": "Dokumen properti - akta kepemilikan dan penyelesaian",
-          "2": "Dokumen akuntansi - persewaan, voucher, survei, dan valuasi",
-          "3": "Dokumen hukum",
-          "4": "Inventaris",
-          "5": "Korespondensi",
-          "6": "Dokumen pendukung",
-          "7": "Dokumen manor - catatan pengadilan, adat, pertanahan, survei, dll.",
-          "8": "Dokumen pribadi dan politik",
-          "9": "Peta dan rencana",
-          "10": "Manajemen Sekretariat, Korespondensi & Arsip Lainnya"
+          "601": "???",
+          "600": "???",
+          "602": "???",
+          "603": "???",
+          "604": "???",
+          "605": "???",
+          "606": "???"
         }
       },
       "7": {
-        "title": "Pariwisata, Leisure & Hiburan",
+        "title": "???",
         "sub": {
-          "1": "Petugas Tempat Hiburan",
-          "2": "Penjaga Pintu",
-          "3": "Direktur Kapal Pesiar",
-          "4": "Kurator",
-          "5": "Dealer Game",
-          "6": "Penjaga Pantai",
-          "7": "Petugas Informasi",
-          "8": "Pekerja Rekreasi",
-          "9": "Pemandu Tur dan Perjalanan",
-          "10": "Pariwisata, Leisure & Hiburan Lainnya"
+          "700": "???",
+          "701": "???",
+          "702": "???",
+          "703": "???",
+          "704": "???",
+          "705": "???",
+          "706": "???",
+          "707": "???",
+          "708": "???",
+          "709": "???",
+          "710": "???",
+          "711": "???",
+          "712": "???"
         }
       },
       "8": {
-        "title": "Akuntansi & Konsultasi",
+        "title": "???",
         "sub": {
-          "1": "Akuntansi",
-          "2": "Perencanaan Keuangan",
-          "3": "Sumber Daya Manusia",
-          "4": "Konsultasi Manajemen",
-          "5": "Akuntansi & Konsultasi Lainnya"
+          "800": "???",
+          "801": "???",
+          "802": "???",
+          "803": "???",
+          "804": "???",
+          "805": "???",
+          "806": "???",
+          "807": "???",
+          "808": "???",
+          "809": "???"
         }
       },
       "9": {
-        "title": "Dukungan Admin",
+        "title": "???",
         "sub": {
-          "1": "Entri Data",
-          "2": "Dukungan Admin Lainnya",
-          "3": "Bantuan Pribadi / Virtual",
-          "4": "Manajemen Proyek",
-          "5": "Transkripsi",
-          "6": "Riset Web",
-          "7": "Dukungan Admin Lainnya"
+          "900": "???",
+          "901": "???",
+          "902": "???",
+          "903": "???",
+          "904": "???",
+          "905": "???",
+          "906": "???",
+          "907": "???",
+          "908": "???"
         }
       },
       "10": {
-        "title": "Layanan Pelanggan",
+        "title": "???",
         "sub": {
-          "1": "Layanan Pelanggan",
-          "2": "Dukungan Teknis"
+          "1007": "???",
+          "1008": "???",
+          "1005": "???",
+          "1004": "???",
+          "1002": "???",
+          "1003": "???",
+          "1006": "???",
+          "1001": "???",
+          "1000": "???"
         }
       },
       "11": {
-        "title": "Ilmu & Analitik Data",
+        "title": "???",
         "sub": {
-          "1": "Pengujian A / B",
-          "2": "Penambangan & Manajemen Data",
-          "3": "Visualisasi data",
-          "4": "Pembelajaran Mesin",
-          "5": "Analisis Kuantitatif",
-          "6": "Ilmu & Analitik Data Lainnya"
+          "1105": "???",
+          "1104": "???",
+          "1102": "???",
+          "1103": "???",
+          "1101": "???",
+          "1100": "???"
         }
       },
       "12": {
-        "title": "Pendidikan",
+        "title": "???",
         "sub": {
-          "1": "Pengajaran",
-          "2": "Administrasi Pendidikan",
-          "3": "Konseling Sekolah",
-          "4": "Pekerjaan Sosial Sekolah",
-          "5": "Mengajar Bahasa",
-          "6": "Pendidikan Lainnya"
+          "1212": "???",
+          "1203": "???",
+          "1217": "???",
+          "1202": "???",
+          "1213": "???",
+          "1206": "???",
+          "1200": "???",
+          "1211": "???",
+          "1210": "???",
+          "1207": "???",
+          "1218": "???",
+          "1201": "???",
+          "1208": "???",
+          "1204": "???",
+          "1215": "???",
+          "1214": "???",
+          "1209": "???",
+          "1205": "???",
+          "1216": "???"
         }
       },
       "13": {
-        "title": "Desain",
+        "title": "???",
         "sub": {
-          "1": "Desain Tata Letak",
-          "2": "Branding",
-          "3": "Game & AR / VR",
-          "4": "Desain Grafis, Editorial & Presentasi",
-          "5": "Desain produk",
-          "6": "Desain Interior & Eksterior",
-          "7": "Desain Lainnya"
+          "1300": "???",
+          "1302": "???",
+          "1303": "???",
+          "1301": "???",
+          "1304": "???"
         }
       },
       "14": {
-        "title": "Hukum & Bantuan Hukum",
+        "title": "???",
         "sub": {
-          "1": "Hukum Kontrak",
-          "2": "Hukum Perusahaan",
-          "3": "Hukum Kekayaan Intelektual",
-          "4": "Layanan Paralegal",
-          "5": "Hukum & Bantuan Hukum Lainnya"
+          "1406": "???",
+          "1405": "???",
+          "1403": "???",
+          "1404": "???",
+          "1401": "???",
+          "1402": "???",
+          "1400": "???"
         }
       },
       "15": {
-        "title": "Menulis",
+        "title": "???",
         "sub": {
-          "1": "Konten & Copywriting",
-          "2": "Penulisan Kreatif",
-          "3": "Editing & Proofreading",
-          "4": "Penulisan Hibah",
-          "5": "CV & Surat Lamaran",
-          "6": "Penulisan Teknis",
-          "7": "Penulisan Lainnya"
+          "1503": "???",
+          "1500": "???",
+          "1501": "???",
+          "1505": "???",
+          "1502": "???",
+          "1506": "???",
+          "1507": "???",
+          "1504": "???"
         }
       },
       "16": {
-        "title": "Obat & Farmasi",
+        "title": "???",
         "sub": {
-          "1": "Farmasi Ritel",
-          "2": "Farmasi Rumah Sakit",
-          "3": "Pusat Distribusi Obat",
-          "4": "Farmasi Perawatan Rumah & Hospice",
-          "5": "Informatika Farmasi",
-          "6": "Farmasi Rawat Jalan",
-          "7": "Apoteker",
-          "8": "Obat & Farmasi Lainnya"
+          "1600": "???",
+          "1601": "???",
+          "1602": "???",
+          "1603": "???",
+          "1604": "???",
+          "1605": "???",
+          "1606": "???",
+          "1607": "???",
+          "1608": "???"
         }
       },
       "17": {
-        "title": "Telekomunikasi",
+        "title": "???",
         "sub": {
-          "1": "Manajer Sistem Telekomunikasi",
-          "2": "Pemasang Jalur",
-          "3": "Perwakilan Layanan Pelanggan",
-          "4": "Teknisi Perangkat Lunak Komputer",
-          "5": "Pemrogram Komputer",
-          "6": "Asosiasi Profesional",
-          "7": "Lembaga Sertifikasi Terkait",
-          "8": "Telekomunikasi Lainnya"
+          "1700": "???",
+          "1701": "???",
+          "1702": "???",
+          "1703": "???",
+          "1704": "???"
         }
       },
       "18": {
-        "title": "Manajemen Personalia & SDM",
+        "title": "???",
         "sub": {
-          "1": "Perencanaan Sumber Daya Manusia",
-          "2": "Perekrutan dan Seleksi",
-          "3": "Manajemen Kinerja",
-          "4": "Pembelajaran dan Pengembangan",
-          "5": "Perencanaan Karier",
-          "6": "Evaluasi Fungsi",
-          "7": "Hadiah",
-          "8": "Hubungan Industrial",
-          "9": "Partisipasi dan Komunikasi Karyawan",
-          "10": "Kesehatan dan Keselamatan",
-          "11": "Kesejahteraan Diri",
-          "12": "Tanggung Jawab Administratif",
-          "13": "Manajemen Personalia & SDM Lainnya"
+          "1800": "???",
+          "1801": "???",
+          "1802": "???",
+          "1803": "???",
+          "1804": "???",
+          "1805": "???",
+          "1806": "???",
+          "1807": "???",
+          "1808": "???",
+          "1809": "???"
         }
       },
       "19": {
-        "title": "Keamanan",
+        "title": "???",
         "sub": {
-          "1": "Manajer Risiko",
-          "2": "Penguji Penetrasi Web, Sistem & Jaringan",
-          "3": "Teknisi Keamanan Jaringan",
-          "4": "Administrator Keamanan Jaringan",
-          "5": "Penyelidik Kejahatan Siber",
-          "6": "Analis Keamanan Informasi",
-          "7": "Analis Keamanan",
-          "8": "Manajer Keamanan",
-          "9": "Penjaga Keamanan",
-          "10": "Keamanan Lainnya"
+          "1900": "???",
+          "1901": "???",
+          "1902": "???",
+          "1903": "???",
+          "1904": "???"
         }
       },
       "20": {
-        "title": "Budaya & Seni",
+        "title": "???",
         "sub": {
-          "1": "Aktor",
-          "2": "Pekerja Seni Masyarakat",
-          "3": "Koreografer",
-          "4": "Penari",
-          "5": "Terapis Drama",
-          "6": "Produser musik",
-          "7": "Terapis musik",
-          "8": "Sutradara teater",
-          "9": "Spesialis Multimedia",
-          "10": "Desainer Sistem",
-          "11": "Desainer Produk",
-          "12": "Kurator",
-          "13": "Direktur Seni",
-          "14": "Direktur Museum",
-          "15": "Guru Seni",
-          "16": "Terapis Seni",
-          "17": "Ilustrator Medis",
-          "18": "Sutradara Film",
-          "19": "Budaya & Seni Lainnya"
+          "2000": "???",
+          "2001": "???",
+          "2002": "???",
+          "2003": "???",
+          "2004": "???",
+          "2005": "???"
         }
       },
       "21": {
         "title": "Pengembangan Web, Seluler & Perangkat Lunak",
         "sub": {
-          "1": "Pengembangan Perangkat Lunak Desktop",
-          "2": "Pengembangan E-commerce",
-          "3": "Pengembangan Game",
-          "4": "Pengembangan Seluler",
-          "5": "Pengembangan Perangkat Lunak Lainnya",
-          "6": "Manajemen Produk",
-          "7": "QA & Pengujian",
-          "8": "Skrip & Utilitas",
-          "9": "Desain Web & Seluler",
-          "10": "Pengembangan Web",
-          "11": "Pengembangan Web, Seluler & Perangkat Lunak Lainnya"
+          "2100": "Pengembangan Perangkat Lunak Desktop",
+          "2101": "Pengembangan E-commerce",
+          "2102": "Pengembangan Game",
+          "2103": "Pengembangan Seluler",
+          "2104": "Pengembangan Perangkat Lunak Lainnya",
+          "2105": "Manajemen Produk",
+          "2106": "QA & Pengujian",
+          "2107": "Skrip & Utilitas",
+          "2108": "Desain Web & Seluler",
+          "2109": "Pengembangan Web",
+          "2110": "Pengembangan Web, Seluler & Perangkat Lunak Lainnya"
         }
       },
       "22": {
-        "title": "Transportasi & Logistik",
+        "title": "???",
         "sub": {
-          "1": "Manajemen",
-          "2": "Perencanaan Inventaris",
-          "3": "Pergudangan",
-          "4": "Pengadaan Barang dan Jasa",
-          "5": "Pengemasan dan Penyimpanan",
-          "6": "Transportasi",
-          "7": "Layanan pelanggan",
-          "8": "Transportasi & Logistik Lainnya"
+          "2200": "???",
+          "2201": "???",
+          "2202": "???",
+          "2203": "???",
+          "2204": "???",
+          "2205": "???",
+          "2206": "???"
         }
       },
       "23": {
-        "title": "Perbankan, Keuangan & Asuransi",
+        "title": "???",
         "sub": {
-          "1": "Industri Jasa Keuangan",
-          "2": "Perencanaan Keuangan",
-          "3": "Keuangan Perusahaan",
-          "4": "Perbankan Komersial",
-          "5": "Perbankan Investasi",
-          "6": "Pengelola Investasi Global",
-          "7": "Ekuitas Swasta, Modal Ventura",
-          "8": "Asuransi",
-          "9": "Perbankan, Keuangan & Asuransi Lainnya"
+          "2300": "???",
+          "2301": "???",
+          "2302": "???",
+          "2303": "???",
+          "2304": "???"
         }
       },
       "24": {
-        "title": "Kecantikan, Kebugaran & Olahraga",
+        "title": "???",
         "sub": {
-          "1": "Pelatih Atletik",
-          "2": "Ahli Fisiologi Olahraga",
-          "3": "Pelatih Kebugaran",
-          "4": "Terapis Pijat",
-          "5": "Terapis Okupasi",
-          "6": "Terapis Fisik",
-          "7": "Terapis Rekreasi",
-          "8": "Salon kecantikan",
-          "9": "Kecantikan, Kebugaran & Olahraga Lainnya"
+          "2400": "???",
+          "2401": "???",
+          "2402": "???",
+          "2403": "???",
+          "2404": "???",
+          "2405": "???",
+          "2406": "???",
+          "2407": "???",
+          "2408": "???",
+          "2409": "???"
         }
       },
       "25": {
-        "title": "Produksi Kreatif",
+        "title": "???",
         "sub": {
-          "1": "Seni & Ilustrasi",
-          "2": "Produksi Audio & Musik",
-          "3": "Seni Pertunjukan",
-          "4": "Fotografi",
-          "5": "Video & Animasi",
-          "6": "Pengisi Suara",
-          "7": "Pengisi Suara",
-          "8": "Visualisasi 3D",
-          "9": "Produksi Kreatif Lainnya"
+          "2800": "???",
+          "2801": "???",
+          "2802": "???",
+          "2803": "???",
+          "2804": "???",
+          "2805": "???",
+          "2806": "???",
+          "2807": "???"
         }
       },
       "26": {
-        "title": "Pemasaran & Penjualan",
+        "title": "???",
         "sub": {
-          "1": "Periklanan Display",
-          "2": "Otomatisasi Pemasaran & Email",
-          "3": "Mendatangkan Calon Pelanggan",
-          "4": "Riset Pasar & Pelanggan",
-          "5": "Strategi Pemasaran",
-          "6": "Hubungan Masyarakat",
-          "7": "SEM - Pemasaran Mesin Pencari",
-          "8": "SEO - Optimasi Mesin Pencari",
-          "9": "SMM - Pemasaran Media Sosial",
-          "10": "Penjualan & Pemasaran Lainnya"
+          "2600": "???",
+          "2601": "???",
+          "2602": "???",
+          "2603": "???",
+          "2604": "???",
+          "2605": "???",
+          "2606": "???",
+          "2607": "???"
         }
       },
       "27": {
-        "title": "Penerjemahan",
+        "title": "???",
         "sub": {
-          "1": "Penerjemahan Umum",
-          "2": "Penerjemahan Hukum",
-          "3": "Penerjemahan Medis",
-          "4": "Penerjemahan Teknis",
-          "5": "Penerjemahan Lainnya"
+          "2700": "???",
+          "2701": "???",
+          "2702": "???",
+          "2703": "???",
+          "2704": "???"
         }
       },
       "28": {
@@ -769,46 +828,60 @@
         }
       },
       "29": {
-        "title": "Pertanian & Agribisnis",
+        "title": "???",
         "sub": {
-          "1": "Tanaman Pangan",
-          "2": "Perternakan (baik produksi maupun kesehatan hewan)",
-          "3": "Perikanan dan Budidaya Air (termasuk perikanan tangkap)",
-          "4": "Kehutanan",
-          "5": "Pertanian & Agribisnis Lainnya"
+          "2900": "???",
+          "2901": "???",
+          "2902": "???",
+          "2903": "???",
+          "2904": "???",
+          "2905": "???",
+          "2906": "???",
+          "2907": "???",
+          "2908": "???"
         }
       },
       "30": {
-        "title": "Konstruksi",
+        "title": "???",
         "sub": {
-          "1": "Bangunan Tempat Tinggal",
-          "2": "Bangunan Kelembagaan dan Komersial",
-          "3": "Infrastruktur dan Konstruksi Berat",
-          "4": "Konstruksi Industri Khusus",
-          "5": "Konstruksi Lainnya"
+          "3000": "???",
+          "3001": "???",
+          "3002": "???",
+          "3003": "???",
+          "3004": "???",
+          "3005": "???",
+          "3006": "???",
+          "3007": "???",
+          "3008": "???",
+          "3009": "???"
         }
       },
       "31": {
-        "title": "Awal Karier & Pelajar",
+        "title": "???",
         "sub": {
-          "1": "Kurir",
-          "2": "Pelayan",
-          "3": "Awal Karier & Pelajar Lainnya"
+          "3100": "???",
+          "3101": "???",
+          "3102": "???",
+          "3103": "???",
+          "3104": "???",
+          "3105": "???",
+          "3106": "???",
+          "3107": "???"
         }
       },
       "32": {
-        "title": "Pekerjaan Layanan",
+        "title": "???",
         "sub": {
-          "1": "Industri Layanan Makanan & Restoran",
-          "2": "Pekerjaan Layanan Lainnya"
+          "3200": "???",
+          "3201": "???",
+          "3202": "???"
         }
       },
       "33": {
-        "title": "Pekerjaan Musiman",
+        "title": "???",
         "sub": {
-          "1": "Variabel",
-          "2": "Paruh waktu",
-          "3": "Purna waktu"
+          "3300": "???",
+          "3301": "???"
         }
       },
       "34": {
@@ -822,6 +895,10 @@
     }
   },
   "toasts": {
+    "questInfo": "???",
+    "questCantDelete": "???",
+    "questCantEdit": "???",
+    "questCantRaisingViews": "???",
     "questEdited": "???",
     "questCreated": "???",
     "questDeleted": "???",
@@ -831,6 +908,15 @@
     "error": "???"
   },
   "modals": {
+    "disputes": {
+      "thereIsNoResponseFromTheEmployerOrEmployee": "???",
+      "badlyDoneWork": "???",
+      "additionalRequirementsHaveBeenPutForward": "???",
+      "inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest": "???",
+      "theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion": "???",
+      "anotherReason": "???"
+    },
+    "chooseTheme": "???",
     "incorrectAmount": "???",
     "nothingToClaim": "???",
     "pleaseWait": "???",
@@ -839,8 +925,10 @@
     "chatCreate": {
       "title": "Buat obrolan grup",
       "desc": "Buat nama obrolan grup dan pilih orang dari daftar obrolan Anda",
-      "participants": "Peserta",
-      "chatName": "Nama obrolan"
+      "chatName": "Nama obrolan",
+      "members": "???",
+      "addNewMembers": "???",
+      "addMember": "???"
     },
     "yourRewardBalance": "???",
     "deletePortfolio": "???",
@@ -853,6 +941,8 @@
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
     "sureDeleteText": "???",
+    "sureDeleteMemberText": "???",
+    "sureLeaveChatText": "???",
     "priceTitle": "???",
     "enterPriceRange": "???",
     "priceForm": "???",
@@ -866,6 +956,9 @@
     "yourAccountVerified": "Akun Anda telah berhasil diverifikasi",
     "youCanUpdateThisInYourProfile": "Anda dapat dengan mudah memperbarui ini di profil Anda.",
     "disable2Fa": "Nonaktifkan 2FA",
+    "2FAEnabled": "???",
+    "2FADisabled": "???",
+    "2FAStatus": "???",
     "yourLevelHasBeenRaised": "Level Anda telah dinaikkan",
     "payment": "Pembayaran",
     "cardHolder": "Nama pemegang kartu",
@@ -1131,7 +1224,9 @@
     "recepientAddressField": "???",
     "walletAddressField": "???",
     "thanksText": "",
-    "emailVerificationCodeField": "???"
+    "emailVerificationCodeField": "???",
+    "youCanAttachUpToNFiles": "???",
+    "youTryToAttachUnsupportedFileFormat": "???"
   },
   "ui": {
     "jobQuestors": "Questor Pekerjaan",
@@ -1239,8 +1334,9 @@
   "chat": {
     "openDispute": "Ajukan sengketa",
     "approveQuest": "Setujui quest",
-    "favoriteMessages": "Pesan favorit",
-    "favoriteChats": "Obrolan favorit",
+    "starredMessages": "???",
+    "starredChats": "???",
+    "allChats": "???",
     "createGroupChat": "Buat obrolan grup",
     "favorite": "Favorit",
     "messages": "Pesan",
@@ -1248,9 +1344,46 @@
     "quest": "Quest:",
     "you": "Anda:",
     "invitedYou": "mengundang Anda ke quest",
-    "writeYouMessage": "Tulis pesan Anda"
+    "writeYouMessage": "Tulis pesan Anda",
+    "group": "???",
+    "noChats": "???",
+    "noMessages": "???",
+    "membersNum": "{n} ???",
+    "systemMessages": {
+      "invitedYouToAQuest": "???",
+      "youInvitedToTheQuest": "???",
+      "respondedToTheQuest": "???",
+      "youHaveRespondedToTheQuest": "???",
+      "rejectedTheResponseToTheQuest": "r???",
+      "youRejectTheResponseOnQuest": "???",
+      "rejectedTheInviteToTheQuest": "???",
+      "youRejectedTheInviteToTheQuest": "???",
+      "acceptedTheInviteToTheQuest": "???",
+      "youAcceptedTheInviteToTheQuest": "???",
+      "createdAGroupChat": "???",
+      "youCreatedAGroupChat": "???",
+      "removedFromChat": "???",
+      "youHaveRemovedFromChat": "???",
+      "addedToChat": "???",
+      "youAddedToChat": "???",
+      "userAddedToChat": "???",
+      "userRemovedFromChat": "???",
+      "leftTheChat": "???",
+      "youLeftTheChat": "???"
+    },
+    "leaveChat": "???",
+    "loadMore": "???"
   },
   "settings": {
+    "facebook": "facebook",
+    "linkedin": "linkedin",
+    "twitter": "twitter",
+    "instagram": "instagram",
+    "address": "???",
+    "lastName": "???",
+    "firstName": "???",
+    "enterPhoneNumber": "???",
+    "enterCurrentLocation": "???",
     "placeOfStudying": "Tempat belajar",
     "specialization": "Spesialisasi",
     "selectSpec": "???",
@@ -1268,6 +1401,7 @@
     "term": "Jangka Waktu",
     "getVerification": "Selesaikan verifikasi",
     "notVerified": "Belum terverifikasi",
+    "verified": "???",
     "more": "Lebih lanjut",
     "employmentInfo": "Informasi pekerjaan",
     "addSpec": "Tambahkan spesialisasi",
@@ -1328,435 +1462,10 @@
     "distantWork": {
       "title": "???",
       "select": "???",
+      "allWorkplaces": "???",
       "distantWork": "???",
       "workInOffice": "???",
       "bothVariant": "???"
-    },
-    "specializations": {
-      "1": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???",
-          "11": "???",
-          "12": "???"
-        }
-      },
-      "2": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???"
-        }
-      },
-      "3": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???"
-        }
-      },
-      "4": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "5": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???"
-        }
-      },
-      "6": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???"
-        }
-      },
-      "7": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???"
-        }
-      },
-      "8": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "9": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???"
-        }
-      },
-      "10": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???"
-        }
-      },
-      "11": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???"
-        }
-      },
-      "12": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???"
-        }
-      },
-      "13": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???"
-        }
-      },
-      "14": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "15": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???"
-        }
-      },
-      "16": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???"
-        }
-      },
-      "17": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???"
-        }
-      },
-      "18": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???",
-          "11": "???",
-          "12": "???",
-          "13": "???"
-        }
-      },
-      "19": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???"
-        }
-      },
-      "20": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???",
-          "11": "???",
-          "12": "???",
-          "13": "???",
-          "14": "???",
-          "15": "???",
-          "16": "???",
-          "17": "???",
-          "18": "???",
-          "19": "???"
-        }
-      },
-      "21": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???",
-          "11": "???"
-        }
-      },
-      "22": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???"
-        }
-      },
-      "23": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???"
-        }
-      },
-      "24": {
-        "title": "???",
-        "sub": {
-          "1": "???r",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???"
-        }
-      },
-      "25": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???"
-        }
-      },
-      "26": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???"
-        }
-      },
-      "27": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "28": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???"
-        }
-      },
-      "29": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "30": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "31": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???"
-        }
-      },
-      "32": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???"
-        }
-      },
-      "33": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???"
-        }
-      },
-      "34": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???"
-        }
-      }
     }
   },
   "raising-views": {
@@ -1781,6 +1490,7 @@
     "disputeTime": "Waktu pembukaan sengketa:"
   },
   "workers": {
+    "noWorkers": "???...",
     "searchQuests": "Cari quest",
     "searchWorkers": "Cari pekerja",
     "topWorkers": "Karyawan unggulan",
@@ -1802,7 +1512,9 @@
     "from": "Dari",
     "based": "Berdasarkan",
     "reviews": "ulasan",
+    "noReviewsAdded": "???",
     "portfolio": "Portofolio",
+    "noPortfoliosAdded": "???",
     "showAllCases": "Tampilkan semua kasus",
     "costTitle": "???"
   },
@@ -1874,6 +1586,7 @@
     "transactionHistory": "Riwayat transaksi",
     "withdraw": "Tarik",
     "prolong": "Memperpanjang",
+    "prolongText": "???",
     "templateText": "",
     "table": {
       "userName": "John Doe",
@@ -1885,8 +1598,12 @@
     "docName": "Some_document.pdf",
     "mb": "{count} MB",
     "percents": "{count}%",
-    "years": "{count} tahun",
-    "wusdCount": "{count} WUSD",
+    "minutes": "{count} ???",
+    "hours": "{count} ???",
+    "years": "{count} ???",
+    "days": "{count} ???",
+    "WUSDCount": "{count} WUSD",
+    "ETHCount": "{count} ETH",
     "plusPercents": "+ {count}%",
     "faq1": {
       "question": "Bagaimana cara memenuhi syarat untuk mengikuti dana pensiun?",
@@ -1927,9 +1644,7 @@
     "faq10": {
       "question": "Apa yang terjadi jika saya kelebihan dana pensiun saya?",
       "answer": "Kami tidak memiliki batasan jumlah tabungan. Seluruh jumlah akumulasi akan tersedia untuk Anda di akhir periode program."
-    },
-    "cancel": "Batalkan",
-    "renewFor1Year": "Perpanjang selama 1 tahun"
+    }
   },
   "saving": {
     "withdrawModalBody": "Jumlah dana terkunci dan akumulasi bunga akan dikreditkan ke dompet Anda",
@@ -1987,6 +1702,7 @@
     "withdrawText": "???"
   },
   "mining": {
+    "loading": "???...",
     "claimRewards": "???",
     "liquidityMining": "Penambangan likuiditas",
     "swapTokens": {
@@ -2211,6 +1927,9 @@
   "errors": {
     "incorrectPass": "Ups! Ada yang tidak beres. Periksa data dan coba lagi.",
     "emptyData": {
+      "emptyQuests": "???",
+      "emptyPortfolios": "???",
+      "emptyReviews": "???",
       "employer": {
         "myQuests": {
           "desc": "Anda belum menyelesaikan quest",
@@ -2262,6 +1981,11 @@
     "dateTemp": "05.08.2021, 12:00"
   },
   "staking": {
+    "notification": "???",
+    "stakeLimitReached": "???",
+    "notEnoughFunds": "???",
+    "notEnoughClaim": "???",
+    "_inDev": "???",
     "mainHeader": "???",
     "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "pools": "???",
@@ -2273,28 +1997,31 @@
       "rewardTokenAddress": "???"
     },
     "open": "???",
-    "tempAddress": "0sjs3892...sd45",
-    "tempStaked": "10 000 WQT",
     "back": "???",
+    "unstake": "???",
+    "stakeIsEmpty": "???",
+    "stakeDurationIsNotOver": "???",
     "claimRewards": "???",
+    "cannotClaimYet": "???",
     "pool": "Pool",
     "stakeTokenAddress": "???",
     "rewardTokenAddress": "???",
     "totalStaked": "???",
-    "wqtCount": "{n} WQT",
+    "WQTCount": "{n} WQT",
+    "WUSDCount": "{n} WUSD",
+    "ETHCount": "{n} ETH",
+    "BNBCount": "{n} BNB",
+    "hours": "{n} ???",
+    "days": "{n} ???",
+    "min": "{n} ???",
     "totalDistributed": "???",
     "staking": "???",
     "stakingCards": {
       "distributionTime": "???",
-      "distributionTimeData": "10 min",
       "rewardTotal": "???",
-      "rewardTotalData": "3.00 WQT",
       "takePeriod": "???",
-      "takePeriodData": "24 ???",
       "claimPeriod": "???",
-      "claimPeriodData": "24 ???",
-      "duration": "???",
-      "durationData": "30 ???"
+      "duration": "???"
     },
     "userInformation": "???",
     "userInformationCards": {
@@ -2302,17 +2029,15 @@
       "stakeBalance": "???",
       "claimed": "???"
     },
-    "withdrawal": "???",
-    "withdrawalCards": {
-      "displayedInTheCurrentPeriod": "???",
-      "displayedInTheCurrentPeriodData": "10 000 WQT",
-      "withdrawalLimit": "???",
-      "withdrawalLimitData": "10 000 WQT",
-      "periodUpdate": "???",
-      "periodUpdateData": "10 000 WQT"
+    "stakeCards": {
+      "stakeMin": "???",
+      "stakeLimit": "???",
+      "periodUpdate": "???"
     },
+    "stakeDays": "???",
+    "stake": "???",
     "autoRenewal": "???",
-    "withdraw": "???"
+    "renewalTokens": "??? {n} ???"
   },
   "myQuests": {
     "statuses": {
@@ -2355,5 +2080,291 @@
       "staking": "???",
       "wqDAO": "???"
     }
+  },
+  "wiki": {
+    "title": "WorkQuest Wiki",
+    "searchPlaceholder": "???",
+    "search": "???",
+    "navigation": {
+      "header": {
+        "title": "???",
+        "subtitle": "???",
+        "cards": {
+          "employer": {
+            "title": "???"
+          },
+          "employee": {
+            "title": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "employees": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "myQuests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "wallet": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "instruments": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "language": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "chats": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "notifications": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "menu": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "profile": {
+        "title": "???",
+        "cards": {
+          "profile": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "settings": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "disputes": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "logout": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "instruments": {
+        "title": "???",
+        "cards": {
+          "retirement": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "referral": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "P2P": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "savings": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "lending": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "liquidity": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "crosschain": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "staking": {
+            "title": "???",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+          }
+        }
+      },
+      "statuses": {
+        "title": "???",
+        "cards": {
+          "delivery": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "short": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "urgent": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "top": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "reliable": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "verified": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "buttons": {
+        "title": "???",
+        "cards": {
+          "create": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "results": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "workers": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "details": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "map": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "button": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "raise": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "employer": {
+        "title": "???",
+        "cards": {
+          "specialization": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "rating": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "priority": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "distant": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "price": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "time": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "employee": {
+        "title": "???",
+        "cards": {
+          "specialization": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "delivery": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "job": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "distant": {
+            "title": "???",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+          },
+          "price": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "time": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "user": {
+        "title": "???",
+        "cards": {
+          "reviews": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "active": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "invited": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "favorite": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "quest": {
+        "title": "???",
+        "cards": {
+          "goldPlus": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "gold": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "silver": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "bronze": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      }
+    }
+  },
+  "gallery": {
+    "counter": "{n} ??? {c}"
   }
 }

@@ -16,6 +16,11 @@
   },
   "btn": {
     "agree": "Aceptar",
+    "disagree": "Disagree",
+    "completeWorkOnQuest": "???",
+    "rejectCompletedWorkOnQuest": "???",
+    "acceptCompletedWorkOnQuest": "???",
+    "closeQuest": "???",
     "goToChat": "Ir al chat",
     "dispute": "Abrir disputa",
     "responded": "Respuesta enviada",
@@ -26,7 +31,9 @@
     "m": "m"
   },
   "info": {
-    "showYourMessage": "Mostrar su mensaje"
+    "yourMessage": "???",
+    "showYourMessage": "Mostrar su mensaje",
+    "hideYourMessage": "???"
   },
   "uploader": {
     "uploadText": "Cargue imágenes o vídeos",
@@ -59,7 +66,8 @@
     "required_if": "El campo {_field_} es obligatorio",
     "required": "El campo {_field_} es obligatorio",
     "size": "El tamaño del campo {_field_} debe ser inferior a {size} KB",
-    "decimal": "El campo {_field_} solo puede contener valores decimales"
+    "decimal": "El campo {_field_} solo puede contener valores decimales",
+    "decimalPlaces": "{_field_} ??? {places}"
   },
   "labels": {
     "firstName": "Nombre",
@@ -117,6 +125,7 @@
     "quests": "Ofertas",
     "reviews": "Opiniones",
     "portfolio": "Trabajos",
+    "common": "???",
     "sidebar": {
       "filter": "Filtrar todas las ofertas",
       "choose": "(Elija una categoría simple \no especializada)",
@@ -147,6 +156,8 @@
     "buyWUSD": "Comprar WUSD",
     "submit": "Enviar",
     "showAllReviews": "Mostrar todas las opiniones",
+    "showAllQuests": "???",
+    "showAllPortfolios": "???",
     "later": "Más tarde",
     "iAgree": "Acepto",
     "next": "Siguiente",
@@ -156,7 +167,8 @@
     "connectSMSVer": "Conectar verificación por SMS",
     "resendSMS": "Volver a enviar SMS",
     "disable": "Desactivar",
-    "remindLater": "Recordármelo más tarde"
+    "remindLater": "Recordármelo más tarde",
+    "leave": "???"
   },
   "priority": {
     "title": "Seleccionar prioridad",
@@ -247,11 +259,36 @@
   "skills": {
     "title": "Habilidades"
   },
+  "worker": {
+    "cost": {
+      "notIndicated": "???..."
+    }
+  },
   "quests": {
-    "rating": "???",
+    "showAll": "???",
+    "wusd": "WUSD",
+    "employer": {
+      "usersNotResponded": "???"
+    },
+    "companyNotListed": "???",
+    "workersNotInvited": "???",
+    "startChat": "???",
+    "invite": "???",
+    "decline": "???",
     "questTitle": "???",
     "questDesc": "???",
+    "questInfo": "???",
+    "questClosed!": "???",
+    "closed": "???",
+    "completed": "???",
+    "rejected": "???",
+    "completedWorkAccepted": "???",
+    "completedWorkRejected": "???",
+    "workOnQuestAccepted": "???",
+    "workOnQuestRejected": "???",
+    "pleaseWaitEmp": "???",
     "quests": "Ofertas",
+    "publicationDate": "???",
     "urgent": "Urgente",
     "specQuests": "???",
     "permanentJob": "???",
@@ -260,6 +297,7 @@
     "fixedTerm": "???",
     "contract": "???",
     "remoteWork": "???",
+    "allVariants": "???",
     "levels": {
       "1": {
         "title": "???",
@@ -281,8 +319,20 @@
     "createQuest": {
       "choosePeriod": "???"
     },
+    "distance": {
+      "100": "+ 100 m",
+      "500": "+ 500 m",
+      "1000": "+ 1000 m"
+    },
+    "rating": {
+      "title": "???",
+      "verified": "???",
+      "reliable": "???",
+      "topRanked": "???"
+    },
     "distantWork": {
       "title": "Trabajo remoto",
+      "allWorkplaces": "???",
       "distantWork": "Trabajo remoto",
       "workInOffice": "Trabajo en la oficina",
       "bothVariant": "Ambas opciones"
@@ -315,22 +365,39 @@
     "requested": "Solicitadas",
     "youInvited": "Ha invitado a",
     "inProgressBy": "En curso por:",
+    "finishedBy": "???:",
     "showAllCases": "Mostrar todos los casos",
     "portfolio": "Trabajos",
     "searchQuests": "Buscar ofertas",
     "readCompletely": "Leer todo",
     "questBig": "Oferta",
     "fromBig": "De",
+    "fromSmall": "de",
     "fromYou": "de su usuario",
     "reviews": "opiniones",
     "reviewsBig": "Opiniones",
     "MyQuests": "Mis ofertas",
     "activeQuest": "Oferta activa",
+    "waitWorker": "???",
+    "pendingConsideration": "???",
+    "dispute": "???",
+    "questClosed": "???",
+    "questFinished": "???",
+    "dontHaveSpec": "???...",
+    "namelessWorker": "???",
+    "nothingAboutMe": "???...",
+    "unknownAddress": "???...",
+    "unknownPhoneNumber": "???...",
+    "unknownEmailAddress": "???..",
+    "questActive:": "???:",
+    "questClosed:": "???:",
+    "questDispute:": "???:",
+    "questWaitConfirm:": "???:",
+    "skillsNotSpecified": "???...",
     "proposal": "Propuesta",
     "category": "Seleccione una categoría",
     "address": "Añadir dirección",
     "uploadMaterials": "Cargue documentos para describir mejor la oferta",
-    "uploadQuestMaterials": "Añada una descripción detallada",
     "price": "Precio",
     "filter": {
       "btn": "Filtros"
@@ -348,6 +415,7 @@
     "createAQuest": "Crear una oferta",
     "editAQuest": "???",
     "activeQuests": "Ofertas activas",
+    "openedQuests": "???",
     "completedQuests": "Ofertas completadas",
     "oneTime": "Una vez",
     "fullTime": "A tiempo completo",
@@ -396,365 +464,356 @@
     },
     "items": {
       "1": {
-        "title": "Distribución, ventas y compras",
+        "title": "???",
         "sub": {
-          "1": "Tiendas de autoservicio",
-          "2": "Distribuidores especializados",
-          "3": "Tiendas de ropa",
-          "4": "Concesionarios de automóviles",
-          "5": "Farmacias",
-          "6": "Grandes almacenes",
-          "7": "Supermercados e hipermercados",
-          "8": "Tiendas multicanal",
-          "9": "Tiendas de descuento",
-          "10": "Catálogo de venta directa y empresas de compra por correo",
-          "11": "Tiendas de comercio electrónico",
-          "12": "Otros negocios de distribución, ventas y compras"
+          "100": "???",
+          "101": "???",
+          "102": "???",
+          "103": "???",
+          "104": "???",
+          "105": "???",
+          "106": "???",
+          "107": "???",
+          "108": "???",
+          "109": "???",
+          "110": "???",
+          "111": "???",
+          "112": "???",
+          "113": "???"
         }
       },
       "2": {
         "title": "Personal de bares y restaurantes",
         "sub": {
-          "1": "Comida étnica",
-          "2": "Comida rápida",
-          "3": "Rápida informal",
-          "4": "Comidas informales",
-          "5": "Informal de gama superior",
-          "6": "Estilo familiar",
-          "7": "Alta cocina",
-          "8": "Restaurantes pequeños y bares",
-          "9": "Otro personal de bares y restaurantes"
+          "200": "Comida étnica",
+          "201": "Comida rápida",
+          "202": "Rápida informal",
+          "203": "Comidas informales",
+          "204": "Informal de gama superior",
+          "205": "Estilo familiar",
+          "206": "Alta cocina",
+          "207": "Restaurantes pequeños y bares",
+          "208": "Otro personal de bares y restaurantes"
         }
       },
       "3": {
-        "title": "Empleados del hogar",
+        "title": "???",
         "sub": {
-          "1": "Cuidado de niños",
-          "2": "Institutriz",
-          "3": "Tutores",
-          "4": "Limpiadores",
-          "5": "Cuidadores",
-          "6": "Cocineros",
-          "7": "Jardineros",
-          "8": "Conductores",
-          "9": "Otros empleados del hogar"
+          "300": "???",
+          "301": "???",
+          "302": "???",
+          "303": "???",
+          "304": "???"
         }
       },
       "4": {
-        "title": "TI/redes",
+        "title": "???",
         "sub": {
-          "1": "Administración de bases de datos",
-          "2": "Software de ERP/CRM",
-          "3": "Seguridad de la información",
-          "4": "Administración de redes y sistemas",
-          "5": "Otro personal de TI y redes"
+          "400": "???",
+          "406": "???",
+          "402": "???",
+          "403": "???",
+          "404": "???",
+          "405": "???"
         }
       },
       "5": {
-        "title": "Ingeniería y arquitectura",
+        "title": "???",
         "sub": {
-          "1": "Modelado 3D y CAD",
-          "2": "Arquitectura",
-          "3": "Ingeniería química",
-          "4": "Fabricación bajo contrato",
-          "5": "Ingeniería eléctrica",
-          "6": "Ingeniería mecánica",
-          "7": "Ciencias físicas",
-          "8": "Otro personal de ingeniería"
+          "500": "???",
+          "501": "???"
         }
       },
       "6": {
-        "title": "Secretaría, correspondencia y administración de registros",
+        "title": "???",
         "sub": {
-          "1": "Registros de la propiedad: escrituras y liquidaciones",
-          "2": "Documentos de contabilidad: alquileres, vales, tasaciones y valoraciones",
-          "3": "Documentos jurídicos",
-          "4": "Inventarios",
-          "5": "Correspondencia",
-          "6": "Documentación adjunta",
-          "7": "Documentos feudales: registros judiciales, fueros, censos, etc.",
-          "8": "Documentos personales y políticos",
-          "9": "Mapas y planos",
-          "10": "Otros puestos de secretaría, correspondencia y administración de registros"
+          "601": "???",
+          "600": "???",
+          "602": "???",
+          "603": "???",
+          "604": "???",
+          "605": "???",
+          "606": "???"
         }
       },
       "7": {
-        "title": "Turismo, ocio y entretenimiento",
+        "title": "???",
         "sub": {
-          "1": "Auxiliar de parque de atracciones",
-          "2": "Conserje",
-          "3": "Director de crucero",
-          "4": "Responsable de contenidos",
-          "5": "Repartidores de casino",
-          "6": "Socorrista",
-          "7": "Empleado de información",
-          "8": "Auxiliar de ocio y tiempo libre",
-          "9": "Guía turístico",
-          "10": "Otros puestos de turismo, ocio y entretenimiento"
+          "700": "???",
+          "701": "???",
+          "702": "???",
+          "703": "???",
+          "704": "???",
+          "705": "???",
+          "706": "???",
+          "707": "???",
+          "708": "???",
+          "709": "???",
+          "710": "???",
+          "711": "???",
+          "712": "???"
         }
       },
       "8": {
-        "title": "Contabilidad y asesoría",
+        "title": "???",
         "sub": {
-          "1": "Contabilidad",
-          "2": "Planificación financiera",
-          "3": "Recursos humanos",
-          "4": "Consultoría de gestión",
-          "5": "Otros puestos de contabilidad y consultoría"
+          "800": "???",
+          "801": "???",
+          "802": "???",
+          "803": "???",
+          "804": "???",
+          "805": "???",
+          "806": "???",
+          "807": "???",
+          "808": "???",
+          "809": "???"
         }
       },
       "9": {
-        "title": "Auxiliar administrativo",
+        "title": "???",
         "sub": {
-          "1": "Entrada de datos",
-          "2": "Otro rol de auxiliar administrativo",
-          "3": "Asistencia personal/virtual",
-          "4": "Gestión de proyectos",
-          "5": "Transcripción",
-          "6": "Investigación web",
-          "7": "Otro rol de auxiliar administrativo"
+          "900": "???",
+          "901": "???",
+          "902": "???",
+          "903": "???",
+          "904": "???",
+          "905": "???",
+          "906": "???",
+          "907": "???",
+          "908": "???"
         }
       },
       "10": {
-        "title": "Atención al cliente",
+        "title": "???",
         "sub": {
-          "1": "Atención al cliente",
-          "2": "Asistencia técnica"
+          "1007": "???",
+          "1008": "???",
+          "1005": "???",
+          "1004": "???",
+          "1002": "???",
+          "1003": "???",
+          "1006": "???",
+          "1001": "???",
+          "1000": "???"
         }
       },
       "11": {
-        "title": "Análisis y ciencia de los datos",
+        "title": "???",
         "sub": {
-          "1": "Pruebas A/B",
-          "2": "Administración y minería de datos",
-          "3": "Visualización de datos",
-          "4": "Aprendizaje automático",
-          "5": "Análisis cuantitativo",
-          "6": "Otros puestos de análisis y ciencia de los datos"
+          "1105": "???",
+          "1104": "???",
+          "1102": "???",
+          "1103": "???",
+          "1101": "???",
+          "1100": "???"
         }
       },
       "12": {
-        "title": "Educación",
+        "title": "???",
         "sub": {
-          "1": "Enseñanza",
-          "2": "Administración educativa",
-          "3": "Asesoramiento escolar",
-          "4": "Asistencia social escolar",
-          "5": "Enseñanza de idiomas",
-          "6": "Otros puestos de educación"
+          "1212": "???",
+          "1203": "???",
+          "1217": "???",
+          "1202": "???",
+          "1213": "???",
+          "1206": "???",
+          "1200": "???",
+          "1211": "???",
+          "1210": "???",
+          "1207": "???",
+          "1218": "???",
+          "1201": "???",
+          "1208": "???",
+          "1204": "???",
+          "1215": "???",
+          "1214": "???",
+          "1209": "???",
+          "1205": "???",
+          "1216": "???"
         }
       },
       "13": {
-        "title": "Diseño",
+        "title": "???",
         "sub": {
-          "1": "Maquetación",
-          "2": "Personalización de marca",
-          "3": "Juegos y realidad virtual/aumentada",
-          "4": "Diseño gráfico, editorial y de presentaciones",
-          "5": "Diseño de productos",
-          "6": "Diseño de interiores y exteriores",
-          "7": "Otro rol de diseño"
+          "1300": "???",
+          "1302": "???",
+          "1303": "???",
+          "1301": "???",
+          "1304": "???"
         }
       },
       "14": {
-        "title": "Asistencia jurídica y legal",
+        "title": "???",
         "sub": {
-          "1": "Leyes sobre contratos",
-          "2": "Leyes corporativas",
-          "3": "Leyes de propiedad intelectual",
-          "4": "Servicios de asistencia jurídica",
-          "5": "Otros puestos de asistencia jurídica y legal"
+          "1406": "???",
+          "1405": "???",
+          "1403": "???",
+          "1404": "???",
+          "1401": "???",
+          "1402": "???",
+          "1400": "???"
         }
       },
       "15": {
-        "title": "Escritura",
+        "title": "???",
         "sub": {
-          "1": "Redacción de contenidos y textos publicitarios",
-          "2": "Escritura creativa",
-          "3": "Revisión de ortografía, gramática y estilo",
-          "4": "Redacción de solicitudes de donaciones/subvenciones",
-          "5": "Currículums y cartas de presentación",
-          "6": "Redacción de textos técnicos",
-          "7": "Otros roles de redacción"
+          "1503": "???",
+          "1500": "???",
+          "1501": "???",
+          "1505": "???",
+          "1502": "???",
+          "1506": "???",
+          "1507": "???",
+          "1504": "???"
         }
       },
       "16": {
-        "title": "Medicina y farmacia",
+        "title": "???",
         "sub": {
-          "1": "Farmacia minorista",
-          "2": "Farmacia hospitalaria",
-          "3": "Centro de distribución de medicamentos",
-          "4": "Farmacia de servicios de cuidado doméstico y centros de cuidados paliativos",
-          "5": "Informática farmacológica",
-          "6": "Farmacia para cuidados ambulatorios",
-          "7": "Farmacéuticos",
-          "8": "Otros puestos de medicina y farmacia"
+          "1600": "???",
+          "1601": "???",
+          "1602": "???",
+          "1603": "???",
+          "1604": "???",
+          "1605": "???",
+          "1606": "???",
+          "1607": "???",
+          "1608": "???"
         }
       },
       "17": {
-        "title": "Telecomunicaciones",
+        "title": "???",
         "sub": {
-          "1": "Administradores de sistemas de telecomunicaciones",
-          "2": "Instaladores de líneas",
-          "3": "Representante de atención al cliente",
-          "4": "Ingenieros de software informático",
-          "5": "Programadores informáticos",
-          "6": "Asociaciones profesionales",
-          "7": "Organismos de certificación relacionados",
-          "8": "Otros puestos de telecomunicaciones"
+          "1700": "???",
+          "1701": "???",
+          "1702": "???",
+          "1703": "???",
+          "1704": "???"
         }
       },
       "18": {
-        "title": "Administración de personal y recursos humanos",
+        "title": "???",
         "sub": {
-          "1": "Planificación de recursos humanos",
-          "2": "Selección de personal",
-          "3": "Administración del rendimiento",
-          "4": "Aprendizaje y desarrollo",
-          "5": "Orientación profesional",
-          "6": "Evaluación de funciones",
-          "7": "Incentivos",
-          "8": "Relaciones industriales",
-          "9": "Participación y comunicación de empleados",
-          "10": "Salud y seguridad",
-          "11": "Bienestar personal",
-          "12": "Responsabilidades administrativas",
-          "13": "Otros puestos de recursos humanos y administración de personal"
+          "1800": "???",
+          "1801": "???",
+          "1802": "???",
+          "1803": "???",
+          "1804": "???",
+          "1805": "???",
+          "1806": "???",
+          "1807": "???",
+          "1808": "???",
+          "1809": "???"
         }
       },
       "19": {
-        "title": "Seguridad",
+        "title": "???",
         "sub": {
-          "1": "Gestor de riesgos",
-          "2": "Evaluador de penetración de sistemas, redes y web",
-          "3": "Ingeniero de seguridad de redes",
-          "4": "Administrador de seguridad de redes",
-          "5": "Investigador de delitos informáticos",
-          "6": "Analista de seguridad de la información",
-          "7": "Analista de seguridad",
-          "8": "Administrador de seguridad",
-          "9": "Vigilante de seguridad",
-          "10": "Otros puestos de seguridad"
+          "1900": "???",
+          "1901": "???",
+          "1902": "???",
+          "1903": "???",
+          "1904": "???"
         }
       },
       "20": {
-        "title": "Arte y cultura",
+        "title": "???",
         "sub": {
-          "1": "Actor",
-          "2": "Trabajador de artes comunitarias",
-          "3": "Coreógrafo",
-          "4": "Bailarín",
-          "5": "Dramaterapeuta",
-          "6": "Productor musical",
-          "7": "Terapeuta musical",
-          "8": "Director de teatro",
-          "9": "Especialista en multimedia",
-          "10": "Diseñador de sistemas",
-          "11": "Diseñador de productos",
-          "12": "Responsable de contenidos",
-          "13": "Director artístico",
-          "14": "Director de museo",
-          "15": "Profesor de arte",
-          "16": "Terapeuta de arte",
-          "17": "Ilustrador médico",
-          "18": "Director de cine",
-          "19": "Otros puestos de arte y cultura"
+          "2000": "???",
+          "2001": "???",
+          "2002": "???",
+          "2003": "???",
+          "2004": "???",
+          "2005": "???"
         }
       },
       "21": {
         "title": "Desarrollo de software, móvil y web",
         "sub": {
-          "1": "Desarrollo de software de escritorio",
-          "2": "Desarrollo de comercio electrónico",
-          "3": "Desarrollo de juegos",
-          "4": "Desarrollo móvil",
-          "5": "Otros puestos de desarrollo de software",
-          "6": "Administración de productos",
-          "7": "Pruebas y control de calidad",
-          "8": "Utilidades y scripts",
-          "9": "Diseño web y móvil",
-          "10": "Desarrollo web",
-          "11": "Otros puestos de desarrollo de software, móvil y web"
+          "2100": "Desarrollo de software de escritorio",
+          "2101": "Desarrollo de comercio electrónico",
+          "2102": "Desarrollo de juegos",
+          "2103": "Desarrollo móvil",
+          "2104": "Otros puestos de desarrollo de software",
+          "2105": "Administración de productos",
+          "2106": "Pruebas y control de calidad",
+          "2107": "Utilidades y scripts",
+          "2108": "Diseño web y móvil",
+          "2109": "Desarrollo web",
+          "2110": "Otros puestos de desarrollo de software, móvil y web"
         }
       },
       "22": {
-        "title": "Transporte y logística",
+        "title": "???",
         "sub": {
-          "1": "Administración",
-          "2": "Planificación de inventario",
-          "3": "Almacenes",
-          "4": "Contratación de bienes y servicios",
-          "5": "Embalaje y almacenamiento",
-          "6": "Transporte",
-          "7": "Atención al cliente",
-          "8": "Otros puestos de transporte y logística"
+          "2200": "???",
+          "2201": "???",
+          "2202": "???",
+          "2203": "???",
+          "2204": "???",
+          "2205": "???",
+          "2206": "???"
         }
       },
       "23": {
-        "title": "Banca, finanzas y seguros",
+        "title": "???",
         "sub": {
-          "1": "Sector de servicios financieros",
-          "2": "Planificación financiera",
-          "3": "Finanzas corporativas",
-          "4": "Banca comercial",
-          "5": "Banca de inversión",
-          "6": "Fondos de alto riesgo",
-          "7": "Capital de riesgo, capital privado",
-          "8": "Seguros",
-          "9": "Otros puestos de banca, finanzas y seguros"
+          "2300": "???",
+          "2301": "???",
+          "2302": "???",
+          "2303": "???",
+          "2304": "???"
         }
       },
       "24": {
-        "title": "Belleza, forma física y deporte",
+        "title": "???",
         "sub": {
-          "1": "Entrenador atlético",
-          "2": "Fisiólogo del ejercicio",
-          "3": "Entrenador físico",
-          "4": "Masajista",
-          "5": "Terapeuta ocupacional",
-          "6": "Fisioterapeuta",
-          "7": "Terapeuta recreativo",
-          "8": "Salón de belleza",
-          "9": "Otros puestos de belleza, forma física y deporte"
+          "2400": "???",
+          "2401": "???",
+          "2402": "???",
+          "2403": "???",
+          "2404": "???",
+          "2405": "???",
+          "2406": "???",
+          "2407": "???",
+          "2408": "???",
+          "2409": "???"
         }
       },
       "25": {
-        "title": "Producción creativa",
+        "title": "???",
         "sub": {
-          "1": "Arte e ilustración",
-          "2": "Producción de música y audio",
-          "3": "Artes escénicas",
-          "4": "Fotografía",
-          "5": "Vídeo y animación",
-          "6": "Talento de voz",
-          "7": "Talento de voz",
-          "8": "Visualización 3D",
-          "9": "Otros puestos de producción creativa"
+          "2800": "???",
+          "2801": "???",
+          "2802": "???",
+          "2803": "???",
+          "2804": "???",
+          "2805": "???",
+          "2806": "???",
+          "2807": "???"
         }
       },
       "26": {
-        "title": "Marketing y ventas",
+        "title": "???",
         "sub": {
-          "1": "Publicidad gráfica",
-          "2": "Automatización de marketing y correo electrónico",
-          "3": "Captación de clientes potenciales",
-          "4": "Estudios de mercado",
-          "5": "Estrategia de marketing",
-          "6": "Relaciones públicas",
-          "7": "SEM (marketing de motores de búsqueda)",
-          "8": "SEO (optimización para motores de búsqueda)",
-          "9": "SMM (marketing de redes sociales)",
-          "10": "Otros puestos de ventas y marketing"
+          "2600": "???",
+          "2601": "???",
+          "2602": "???",
+          "2603": "???",
+          "2604": "???",
+          "2605": "???",
+          "2606": "???",
+          "2607": "???"
         }
       },
       "27": {
-        "title": "Traducción",
+        "title": "???",
         "sub": {
-          "1": "Traducción general",
-          "2": "Traducción jurídica",
-          "3": "Traducción médica",
-          "4": "Traducción técnica",
-          "5": "Otros puestos de traducción"
+          "2700": "???",
+          "2701": "???",
+          "2702": "???",
+          "2703": "???",
+          "2704": "???"
         }
       },
       "28": {
@@ -769,46 +828,60 @@
         }
       },
       "29": {
-        "title": "Agricultura y comercio agrícola",
+        "title": "???",
         "sub": {
-          "1": "Cultivos",
-          "2": "Ganado (tanto producción como salud animal)",
-          "3": "Pesca y acuicultura (incluyendo pesca de captura)",
-          "4": "Forestal",
-          "5": "Otros puestos de agricultura y comercio agrícola"
+          "2900": "???",
+          "2901": "???",
+          "2902": "???",
+          "2903": "???",
+          "2904": "???",
+          "2905": "???",
+          "2906": "???",
+          "2907": "???",
+          "2908": "???"
         }
       },
       "30": {
-        "title": "Construcción",
+        "title": "???",
         "sub": {
-          "1": "Edificios residenciales",
-          "2": "Edificios institucionales y comerciales",
-          "3": "Construcción pesada y de infraestructuras",
-          "4": "Construcción industrial especializada",
-          "5": "Otros puestos de construcción"
+          "3000": "???",
+          "3001": "???",
+          "3002": "???",
+          "3003": "???",
+          "3004": "???",
+          "3005": "???",
+          "3006": "???",
+          "3007": "???",
+          "3008": "???",
+          "3009": "???"
         }
       },
       "31": {
-        "title": "Estudiantes y prácticas",
+        "title": "???",
         "sub": {
-          "1": "Mensajero",
-          "2": "Camarero",
-          "3": "Otros puestos de estudiantes y prácticas"
+          "3100": "???",
+          "3101": "???",
+          "3102": "???",
+          "3103": "???",
+          "3104": "???",
+          "3105": "???",
+          "3106": "???",
+          "3107": "???"
         }
       },
       "32": {
-        "title": "Personal de servicios",
+        "title": "???",
         "sub": {
-          "1": "Sector de restauración y servicios de alimentación",
-          "2": "Otros puestos de personal de servicios"
+          "3200": "???",
+          "3201": "???",
+          "3202": "???"
         }
       },
       "33": {
-        "title": "Trabajo de temporada",
+        "title": "???",
         "sub": {
-          "1": "Variable",
-          "2": "Tiempo parcial",
-          "3": "Tiempo completo"
+          "3300": "???",
+          "3301": "???"
         }
       },
       "34": {
@@ -822,6 +895,10 @@
     }
   },
   "toasts": {
+    "questInfo": "???",
+    "questCantDelete": "???",
+    "questCantEdit": "???",
+    "questCantRaisingViews": "???",
     "questEdited": "???",
     "questCreated": "???",
     "questDeleted": "???",
@@ -831,6 +908,15 @@
     "error": "???"
   },
   "modals": {
+    "disputes": {
+      "thereIsNoResponseFromTheEmployerOrEmployee": "???",
+      "badlyDoneWork": "???",
+      "additionalRequirementsHaveBeenPutForward": "???",
+      "inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest": "???",
+      "theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion": "???",
+      "anotherReason": "???"
+    },
+    "chooseTheme": "???",
     "incorrectAmount": "???",
     "nothingToClaim": "???",
     "pleaseWait": "???",
@@ -839,8 +925,10 @@
     "chatCreate": {
       "title": "Crear chat de grupo",
       "desc": "Asigne un nombre al chat de grupo y elija usuarios de la lista de chats",
-      "participants": "Participantes",
-      "chatName": "Nombre de chat"
+      "chatName": "Nombre de chat",
+      "members": "???",
+      "addNewMembers": "???",
+      "addMember": "???"
     },
     "yourRewardBalance": "???",
     "deletePortfolio": "???",
@@ -853,6 +941,8 @@
     "delete": "???",
     "youCan’tDeleteActiveQuest": "???",
     "sureDeleteText": "???",
+    "sureDeleteMemberText": "???",
+    "sureLeaveChatText": "???",
     "priceTitle": "???",
     "enterPriceRange": "???",
     "priceForm": "???",
@@ -866,6 +956,9 @@
     "yourAccountVerified": "Su cuenta se ha verificado correctamente",
     "youCanUpdateThisInYourProfile": "Puede actualizar esta información fácilmente en su perfil.",
     "disable2Fa": "Deshabilitar 2FA",
+    "2FAEnabled": "???",
+    "2FADisabled": "???",
+    "2FAStatus": "???",
     "yourLevelHasBeenRaised": "Se incrementó su nivel",
     "payment": "Pago",
     "cardHolder": "Nombre del titular de la tarjeta",
@@ -1131,7 +1224,9 @@
     "recepientAddressField": "???",
     "walletAddressField": "???",
     "thanksText": "",
-    "emailVerificationCodeField": "???"
+    "emailVerificationCodeField": "???",
+    "youCanAttachUpToNFiles": "???",
+    "youTryToAttachUnsupportedFileFormat": "???"
   },
   "ui": {
     "jobQuestors": "Demandantes de empleo",
@@ -1239,8 +1334,9 @@
   "chat": {
     "openDispute": "Abrir disputa",
     "approveQuest": "Aprobar oferta",
-    "favoriteMessages": "Mensajes favoritos",
-    "favoriteChats": "Chats favoritos",
+    "starredMessages": "???",
+    "starredChats": "???",
+    "allChats": "???",
     "createGroupChat": "Crear chat de grupo",
     "favorite": "Añadir a favoritos",
     "messages": "Mensajes",
@@ -1248,9 +1344,46 @@
     "quest": "Oferta:",
     "you": "Su usuario:",
     "invitedYou": "le ha invitado a una oferta",
-    "writeYouMessage": "Escriba su mensaje"
+    "writeYouMessage": "Escriba su mensaje",
+    "group": "???",
+    "noChats": "???",
+    "noMessages": "???",
+    "membersNum": "{n} ???",
+    "systemMessages": {
+      "invitedYouToAQuest": "???",
+      "youInvitedToTheQuest": "???",
+      "respondedToTheQuest": "???",
+      "youHaveRespondedToTheQuest": "???",
+      "rejectedTheResponseToTheQuest": "r???",
+      "youRejectTheResponseOnQuest": "???",
+      "rejectedTheInviteToTheQuest": "???",
+      "youRejectedTheInviteToTheQuest": "???",
+      "acceptedTheInviteToTheQuest": "???",
+      "youAcceptedTheInviteToTheQuest": "???",
+      "createdAGroupChat": "???",
+      "youCreatedAGroupChat": "???",
+      "removedFromChat": "???",
+      "youHaveRemovedFromChat": "???",
+      "addedToChat": "???",
+      "youAddedToChat": "???",
+      "userAddedToChat": "???",
+      "userRemovedFromChat": "???",
+      "leftTheChat": "???",
+      "youLeftTheChat": "???"
+    },
+    "leaveChat": "???",
+    "loadMore": "???"
   },
   "settings": {
+    "facebook": "facebook",
+    "linkedin": "linkedin",
+    "twitter": "twitter",
+    "instagram": "instagram",
+    "address": "???",
+    "lastName": "???",
+    "firstName": "???",
+    "enterPhoneNumber": "???",
+    "enterCurrentLocation": "???",
     "placeOfStudying": "Lugar de estudio",
     "specialization": "Especialización",
     "selectSpec": "???",
@@ -1268,6 +1401,7 @@
     "term": "Plazo",
     "getVerification": "Complete la verificación",
     "notVerified": "No verificado",
+    "verified": "???",
     "more": "Más",
     "employmentInfo": "Información de empleo",
     "addSpec": "Añadir especialización",
@@ -1328,435 +1462,10 @@
     "distantWork": {
       "title": "???",
       "select": "???",
+      "allWorkplaces": "???",
       "distantWork": "???",
       "workInOffice": "???",
       "bothVariant": "???"
-    },
-    "specializations": {
-      "1": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???",
-          "11": "???",
-          "12": "???"
-        }
-      },
-      "2": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???"
-        }
-      },
-      "3": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???"
-        }
-      },
-      "4": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "5": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???"
-        }
-      },
-      "6": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???"
-        }
-      },
-      "7": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???"
-        }
-      },
-      "8": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "9": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???"
-        }
-      },
-      "10": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???"
-        }
-      },
-      "11": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???"
-        }
-      },
-      "12": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???"
-        }
-      },
-      "13": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???"
-        }
-      },
-      "14": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "15": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???"
-        }
-      },
-      "16": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???"
-        }
-      },
-      "17": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???"
-        }
-      },
-      "18": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???",
-          "11": "???",
-          "12": "???",
-          "13": "???"
-        }
-      },
-      "19": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???"
-        }
-      },
-      "20": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???",
-          "11": "???",
-          "12": "???",
-          "13": "???",
-          "14": "???",
-          "15": "???",
-          "16": "???",
-          "17": "???",
-          "18": "???",
-          "19": "???"
-        }
-      },
-      "21": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???",
-          "11": "???"
-        }
-      },
-      "22": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???"
-        }
-      },
-      "23": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???"
-        }
-      },
-      "24": {
-        "title": "???",
-        "sub": {
-          "1": "???r",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???"
-        }
-      },
-      "25": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???"
-        }
-      },
-      "26": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???",
-          "7": "???",
-          "8": "???",
-          "9": "???",
-          "10": "???"
-        }
-      },
-      "27": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "28": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???",
-          "6": "???"
-        }
-      },
-      "29": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "30": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???",
-          "4": "???",
-          "5": "???"
-        }
-      },
-      "31": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???"
-        }
-      },
-      "32": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???"
-        }
-      },
-      "33": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???"
-        }
-      },
-      "34": {
-        "title": "???",
-        "sub": {
-          "1": "???",
-          "2": "???",
-          "3": "???"
-        }
-      }
     }
   },
   "raising-views": {
@@ -1781,6 +1490,7 @@
     "disputeTime": "Hora de apertura de la disputa:"
   },
   "workers": {
+    "noWorkers": "???...",
     "searchQuests": "Buscar ofertas",
     "searchWorkers": "Buscar trabajadores",
     "topWorkers": "Principales empleados",
@@ -1802,7 +1512,9 @@
     "from": "De",
     "based": "Basado",
     "reviews": "opiniones",
+    "noReviewsAdded": "???",
     "portfolio": "Trabajos",
+    "noPortfoliosAdded": "???",
     "showAllCases": "Mostrar todos los casos",
     "costTitle": "???"
   },
@@ -1874,6 +1586,7 @@
     "transactionHistory": "Historial de transacciones",
     "withdraw": "Retirar",
     "prolong": "Prolongar",
+    "prolongText": "???",
     "templateText": "",
     "table": {
       "userName": "John Doe",
@@ -1885,8 +1598,12 @@
     "docName": "Some_document.pdf",
     "mb": "{count} MB",
     "percents": "{count} %",
-    "years": "{count} años",
-    "wusdCount": "{count} WUSD",
+    "minutes": "{count} ???",
+    "hours": "{count} ???",
+    "years": "{count} ???",
+    "days": "{count} ???",
+    "WUSDCount": "{count} WUSD",
+    "ETHCount": "{count} ETH",
     "plusPercents": "+ {count}%",
     "faq1": {
       "question": "¿Cuáles son los requisitos para solicitar una pensión?",
@@ -1927,9 +1644,7 @@
     "faq10": {
       "question": "¿Qué ocurre si añado demasiados fondos a mi pensión?",
       "answer": "No tenemos restricciones sobre el importe de los ahorros. Podrá disponer de todo el importe acumulado cuando finalice el período del programa."
-    },
-    "cancel": "Cancelar",
-    "renewFor1Year": "Renovar durante 1 año"
+    }
   },
   "saving": {
     "withdrawModalBody": "El importe de los fondos bloqueados y los intereses acumulados se ingresarán en su cartera",
@@ -1987,6 +1702,7 @@
     "withdrawText": "???"
   },
   "mining": {
+    "loading": "???...",
     "claimRewards": "???",
     "liquidityMining": "Minería de liquidez",
     "swapTokens": {
@@ -2211,6 +1927,9 @@
   "errors": {
     "incorrectPass": "Vaya, se produjo un problema. Compruebe los datos y vuelva a intentarlo.",
     "emptyData": {
+      "emptyQuests": "???",
+      "emptyPortfolios": "???",
+      "emptyReviews": "???",
       "employer": {
         "myQuests": {
           "desc": "Aún no ha creado ninguna oferta",
@@ -2262,6 +1981,11 @@
     "dateTemp": "05.08.2021, 12:00"
   },
   "staking": {
+    "notification": "???",
+    "stakeLimitReached": "???",
+    "notEnoughFunds": "???",
+    "notEnoughClaim": "???",
+    "_inDev": "???",
     "mainHeader": "???",
     "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
     "pools": "???",
@@ -2273,28 +1997,31 @@
       "rewardTokenAddress": "???"
     },
     "open": "???",
-    "tempAddress": "0sjs3892...sd45",
-    "tempStaked": "10 000 WQT",
     "back": "???",
+    "unstake": "???",
+    "stakeIsEmpty": "???",
+    "stakeDurationIsNotOver": "???",
     "claimRewards": "???",
+    "cannotClaimYet": "???",
     "pool": "Pool",
     "stakeTokenAddress": "???",
     "rewardTokenAddress": "???",
     "totalStaked": "???",
-    "wqtCount": "{n} WQT",
+    "WQTCount": "{n} WQT",
+    "WUSDCount": "{n} WUSD",
+    "ETHCount": "{n} ETH",
+    "BNBCount": "{n} BNB",
+    "hours": "{n} ???",
+    "days": "{n} ???",
+    "min": "{n} ???",
     "totalDistributed": "???",
     "staking": "???",
     "stakingCards": {
       "distributionTime": "???",
-      "distributionTimeData": "10 min",
       "rewardTotal": "???",
-      "rewardTotalData": "3.00 WQT",
       "takePeriod": "???",
-      "takePeriodData": "24 ???",
       "claimPeriod": "???",
-      "claimPeriodData": "24 ???",
-      "duration": "???",
-      "durationData": "30 ???"
+      "duration": "???"
     },
     "userInformation": "???",
     "userInformationCards": {
@@ -2302,17 +2029,15 @@
       "stakeBalance": "???",
       "claimed": "???"
     },
-    "withdrawal": "???",
-    "withdrawalCards": {
-      "displayedInTheCurrentPeriod": "???",
-      "displayedInTheCurrentPeriodData": "10 000 WQT",
-      "withdrawalLimit": "???",
-      "withdrawalLimitData": "10 000 WQT",
-      "periodUpdate": "???",
-      "periodUpdateData": "10 000 WQT"
+    "stakeCards": {
+      "stakeMin": "???",
+      "stakeLimit": "???",
+      "periodUpdate": "???"
     },
+    "stakeDays": "???",
+    "stake": "???",
     "autoRenewal": "???",
-    "withdraw": "???"
+    "renewalTokens": "??? {n} ???"
   },
   "myQuests": {
     "statuses": {
@@ -2355,5 +2080,291 @@
       "staking": "???",
       "wqDAO": "???"
     }
+  },
+  "wiki": {
+    "title": "WorkQuest Wiki",
+    "searchPlaceholder": "???",
+    "search": "???",
+    "navigation": {
+      "header": {
+        "title": "???",
+        "subtitle": "???",
+        "cards": {
+          "employer": {
+            "title": "???"
+          },
+          "employee": {
+            "title": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "employees": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "myQuests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "wallet": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "instruments": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "language": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "chats": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "notifications": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "menu": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "profile": {
+        "title": "???",
+        "cards": {
+          "profile": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "settings": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "disputes": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "logout": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "instruments": {
+        "title": "???",
+        "cards": {
+          "retirement": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "referral": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "P2P": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "savings": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "lending": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "liquidity": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "crosschain": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "staking": {
+            "title": "???",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+          }
+        }
+      },
+      "statuses": {
+        "title": "???",
+        "cards": {
+          "delivery": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "short": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "urgent": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "top": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "reliable": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "verified": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "buttons": {
+        "title": "???",
+        "cards": {
+          "create": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "results": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "workers": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "details": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "map": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "button": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "raise": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "employer": {
+        "title": "???",
+        "cards": {
+          "specialization": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "rating": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "priority": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "distant": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "price": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "time": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "employee": {
+        "title": "???",
+        "cards": {
+          "specialization": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "delivery": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "job": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "distant": {
+            "title": "???",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+          },
+          "price": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "time": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "user": {
+        "title": "???",
+        "cards": {
+          "reviews": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "active": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "invited": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "favorite": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "quest": {
+        "title": "???",
+        "cards": {
+          "goldPlus": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "gold": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "silver": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "bronze": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      }
+    }
+  },
+  "gallery": {
+    "counter": "{n} ??? {c}"
   }
 }
