@@ -234,7 +234,7 @@
             </b-table>
           </div>
         </div>
-        <div class="pager__block">
+        <div class="mining-page__pager">
           <base-pager
             v-if="totalPages > 1"
             v-model="page"
@@ -535,7 +535,7 @@ export default {
   display: flex;
   justify-content: center;
 
-  &__paginator {
+  &__pager {
     margin-top: 25px;
   }
 
