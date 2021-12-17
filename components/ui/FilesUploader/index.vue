@@ -33,6 +33,7 @@
         <img
           v-if="item.type === 'image'"
           :src="item.src"
+          alt=""
           class="file__img"
         >
         <video
@@ -111,7 +112,7 @@ export default {
         id: this.id,
         mediaId: file.id,
         src: file.url,
-        type: 'image',
+        type: file.contentType.split('/')[0],
       });
       this.id += 1;
     }
