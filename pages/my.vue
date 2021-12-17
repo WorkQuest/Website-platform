@@ -2,9 +2,7 @@
   <div class="quests">
     <div class="quests__container">
       <div class="quests__body">
-        <div
-          class="quests__title"
-        >
+        <div class="quests__title">
           {{ $t('quests.MyQuests') }}
         </div>
         <div
@@ -12,31 +10,29 @@
           :class="{'quests__content_employer': userRole === 'employer'}"
         >
           <base-btn
-            v-for="(item, i) in questStatus"
+            v-for="(item, i) in filterTabs"
             :key="i"
-            :mode="btnMode(i)"
+            :mode="selectedTab === item.id ? '' : 'light'"
             class="quests__btn"
-            @click="item.click"
+            @click="filterByStatus(item.id)"
           >
             {{ item.name }}
           </base-btn>
         </div>
         <quests
-          v-if="questsData.count !== 0"
-          :limit="questLimits"
-          :selected-tab="selectedTab"
+          v-if="questsData.count"
           :object="questsData"
         />
         <emptyData
-          v-if="questsList.count === 0 && questsData.count === 0"
+          v-else
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
           link="/create-quest"
         />
         <base-pager
-          v-if="questsData.count !== 0 && questsList.count !== 0 && totalPagesValue !== 1"
+          v-if="totalPages > 1"
           v-model="page"
-          :total-pages="totalPagesValue"
+          :total-pages="totalPages"
         />
       </div>
     </div>
@@ -45,12 +41,10 @@
 
 <script>
 
-import Vue from 'vue';
 import { mapGetters } from 'vuex';
+import { QuestStatuses } from '~/utils/enums';
 import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
-
-const value = new Vue();
 
 export default {
   name: 'My',
@@ -60,113 +54,77 @@ export default {
   },
   data() {
     return {
-      questResponses: {},
       selectedTab: 0,
-      isShowFavourite: false,
-      questLimits: 100,
-      questsObjects: {},
       page: 1,
-      perPager: 11,
-      totalPagesValue: 1,
+      offset: 10,
       isStarred: false,
       statuses: '',
+      requestParams: {},
     };
   },
   computed: {
     ...mapGetters({
-      tabs: 'data/getTabs',
-      userRole: 'user/getUserRole',
       userData: 'user/getUserData',
       questsData: 'quests/getUserInfoQuests',
-      questsList: 'quests/getAllQuests',
     }),
-    questStatus() {
-      return [
-        {
-          name: this.$t('myQuests.statuses.all'),
-          click: () => this.switchQuests(0, 0),
-        },
-        {
-          name: this.$t('myQuests.statuses.fav'),
-          click: () => this.switchQuests(0, 1),
-        },
-        {
-          name: this.$t('myQuests.statuses.requested'),
-          click: () => this.switchQuests(0, 2),
-        },
-        {
-          name: this.$t('myQuests.statuses.completed'),
-          click: () => this.switchQuests(0, 3),
-        },
-        {
-          name: this.$t('myQuests.statuses.active'),
-          click: () => this.switchQuests(0, 4),
-        },
-        {
-          name: this.$t('myQuests.statuses.invited'),
-          click: () => this.switchQuests(0, 5),
-        },
+    userRole() {
+      return this.userData.role;
+    },
+    filterTabs() {
+      const tabs = [
+        { name: this.$t('myQuests.statuses.all'), id: 0 },
+        { name: this.$t('myQuests.statuses.favorites'), id: 1 },
+        { name: this.$t('myQuests.statuses.responded'), id: 2 },
+        { name: this.$t('myQuests.statuses.active'), id: 3 },
+        { name: this.$t('myQuests.statuses.invited'), id: 4 },
+        { name: this.$t('myQuests.statuses.performed'), id: 5 },
       ];
+      return this.userRole === 'employer'
+        ? tabs.filter((tab) => (tab.id < 1 || tab.id > 2))
+        : tabs;
     },
     totalPages() {
-      return Math.ceil(this.questsData.count / this.perPager);
+      return Math.ceil(this.questsData.count / this.offset);
     },
   },
   watch: {
     async page() {
       this.SetLoader(true);
-      if (this.userRole === 'employer') {
-        const payload = {
-          userId: this.userData.id,
-          role: this.userRole,
-          query: `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`,
-        };
-        await this.$store.dispatch('quests/getUserQuests', payload);
-      } if (this.userRole === 'worker') {
-        const payload = `performing=${true}`;
-        await this.$store.dispatch('quests/getAllQuests', payload);
-      }
-      this.totalPagesValue = this.totalPages;
+      this.requestParams.query.offset = (this.page - 1) * this.offset;
+      await this.$store.dispatch('quests/getUserQuests', this.requestParams);
       this.SetLoader(false);
     },
   },
   async mounted() {
     this.SetLoader(true);
-    await this.$store.dispatch('quests/getUserQuests', {
+    this.requestParams = {
       userId: this.userData.id,
       role: this.userRole,
-      query: `limit=${this.perPager}`,
-    });
-    this.totalPagesValue = this.totalPages;
+      query: {
+        limit: 10,
+        offset: 0,
+        starred: false,
+      },
+    };
+    await this.$store.dispatch('quests/getUserQuests', this.requestParams);
     this.SetLoader(false);
   },
   methods: {
-    questFilterButton(id) {
-      if (id === 0) this.statuses = '';
-      if (id === 2) this.statuses = 'statuses[0]=5';
-      if (id === 3) this.statuses = 'statuses[0]=6';
-      if (id === 4) this.statuses = 'statuses[0]=1';
-      if (id === 5) this.statuses = 'statuses[0]=4';
-    },
-    async switchQuests(perPage, id) {
+    async filterByStatus(id) {
       this.SetLoader(true);
-      this.questFilterButton(id);
-      const payload = {
-        userId: this.userData.id,
-        role: this.userRole,
-        query: `limit=${this.perPager}&offset=${(this.page - 1) * perPage}&${this.statuses}&starred=${id === 1 ? !this.isStarred : this.isStarred}`,
-      };
       this.page = 1;
       this.selectedTab = id;
-      await this.$store.dispatch('quests/getUserQuests', payload);
-      this.totalPagesValue = this.totalPages;
+      this.requestParams.query.offset = 0;
+      this.requestParams.query.starred = id === 1;
+
+      if (id <= 1) delete this.requestParams.query['statuses[0]'];
+      else if (id === 2) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitConfirm;
+      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.Active;
+      else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
+      else if (id === 5) this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
+
+      await this.$store.dispatch('quests/getUserQuests', this.requestParams);
       this.SetLoader(false);
-    },
-    btnMode(id) {
-      if (this.selectedTab === id) {
-        return '';
-      }
-      return 'light';
     },
   },
 };
