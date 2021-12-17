@@ -26,11 +26,14 @@
                     :placeholder="$t('modals.hello')"
                   />
                 </div>
-                <dropzone
-                  id="uploader"
-                  ref="el"
-                  :options="optionsModal"
-                  :include-styling="true"
+                <files-uploader
+                  :multiple="true"
+                  :limit="10"
+                  :limit-bytes="10485760"
+                  :limit-bytes-video="10485760"
+                  :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
+                  :preloaded-files="questData.medias"
+                  @change="updateFiles"
                 />
               </div>
               <div class="btn__container">
@@ -64,31 +67,15 @@
 <script>
 /* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
-import Dropzone from 'nuxt-dropzone';
 import modals from '~/store/modals/modals';
 import { InfoModeWorker, QuestStatuses } from '~/utils/enums';
 
 export default {
   name: 'ModalSendARequest',
-  components: {
-    Dropzone,
-  },
   data() {
     return {
       text: '',
-      optionsModal: {
-        url: process.env.BASE_URL,
-        addRemoveLinks: true,
-        dictRemoveFile: '<span class="icon-close_big"></span>',
-        dictCancelUpload: '<span class="icon-close_big"></span>',
-        dictCancelUploadConfirmation: '',
-        maxFiles: '3',
-        dictDefaultMessage:
-          '<div class="uploader__message_container">'
-          + '<div class="uploader__message">Upload a images or videos</div><'
-          + "span class='icon-add_to_queue'></span>"
-          + '</div>',
-      },
+      files: [],
     };
   },
   computed: {
@@ -97,13 +84,40 @@ export default {
     }),
   },
   methods: {
+    updateFiles(files) {
+      this.files = files;
+    },
+    async loadMedias() {
+      if (!this.files.length) return [];
+      const fetchData = [];
+      const fetchUrlsData = [];
+      const medias = [];
+      // eslint-disable-next-line no-restricted-syntax
+      for (const item of this.files) {
+        fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file.type }));
+      }
+      const urls = await Promise.all(fetchData);
+      for (let i = 0; i < this.files.length; i += 1) {
+        const { file } = this.files[i];
+        medias.push(urls[i].mediaId);
+        fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
+          url: urls[i].url,
+          data: file,
+          contentType: file.type,
+        }));
+      }
+      await Promise.all(fetchUrlsData);
+      return medias;
+    },
     hide() {
       this.CloseModal();
     },
     async respondOnQuest() {
+      const medias = await this.loadMedias();
       const { questId } = this.options;
       const data = {
         message: this.text,
+        medias,
       };
       try {
         if (QuestStatuses.Rejected) {

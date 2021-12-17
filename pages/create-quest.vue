@@ -247,9 +247,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import 'nuxt-dropzone/dropzone.css';
-import '~/assets/scss/vue2Dropzone.min.css';
-import '~/assets/scss/dropzone.scss';
 import modals from '~/store/modals/modals';
 
 const { GeoCode } = require('geo-coder');
