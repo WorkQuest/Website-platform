@@ -73,7 +73,9 @@ export default {
   },
   async getUserQuests({ commit }, { userId, role, query }) {
     try {
-      const response = await this.$axios.$get(`/v1/${role}/${userId}/quests?${query || ''}`);
+      const response = await this.$axios.$get(`/v1/${role}/${userId}/quests`, {
+        params: { ...query },
+      });
       commit('setUserQuests', response.result);
       return response.result;
     } catch (e) {
