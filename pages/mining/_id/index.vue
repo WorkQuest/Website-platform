@@ -234,7 +234,7 @@
             </b-table>
           </div>
         </div>
-        <div class="mining-page__pager">
+        <div class="pager__block">
           <base-pager
             v-if="totalPages > 1"
             v-model="page"
