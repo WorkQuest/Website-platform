@@ -249,41 +249,54 @@
               </div>
             </div>
           </div>
-          <div
-            class="knowledge__container"
+          <ValidationObserver
+            ref="observerAddNewKnowledge"
+            v-slot="{ handleSubmit }"
           >
-            <div class="knowledge__content">
-              <base-field
-                v-model="newKnowledge.from"
-                type="date"
-                class="knowledge__data"
-                :placeholder="$t('settings.workExps.from')"
-              />
-              <div class="knowledge__dash">
-                -
+            <form
+              class="knowledge__container"
+              action=""
+              @submit.prevent="handleSubmit(addNewKnowledge)"
+            >
+              <div class="knowledge__content">
+                <base-field
+                  v-model="newKnowledge.from"
+                  :rules="'required'"
+                  :name="$t('settings.workExps.from')"
+                  type="date"
+                  class="knowledge__data"
+                  :placeholder="$t('settings.workExps.from')"
+                />
+                <div class="knowledge__dash">
+                  -
+                </div>
+                <base-field
+                  v-model="newKnowledge.to"
+                  :rules="'required'"
+                  :name="$t('settings.workExps.to')"
+                  type="date"
+                  class="knowledge__data"
+                  :placeholder="$t('settings.workExps.to')"
+                />
               </div>
-              <base-field
-                v-model="newKnowledge.to"
-                type="date"
-                class="knowledge__data"
-                :placeholder="$t('settings.workExps.to')"
-              />
-            </div>
-            <div class="knowledge__content">
-              <base-field
-                v-model="newKnowledge.place"
-                type="grey"
-                class="knowledge__data knowledge__data_big"
-                :placeholder="$t('settings.education.educationalInstitution')"
-              />
-              <base-btn
-                class="knowledge__btn"
-                @click="addNewKnowledge()"
-              >
-                {{ $t('settings.add') }}
-              </base-btn>
-            </div>
-          </div>
+              <div class="knowledge__content">
+                <base-field
+                  v-model="newKnowledge.place"
+                  :name="$t('settings.education.educationalInstitution')"
+                  :rules="'required'"
+                  type="grey"
+                  class="knowledge__data knowledge__data_big"
+                  :placeholder="$t('settings.education.educationalInstitution')"
+                />
+                <base-btn
+                  class="knowledge__btn"
+                  type="submit"
+                >
+                  {{ $t('settings.add') }}
+                </base-btn>
+              </div>
+            </form>
+          </ValidationObserver>
 
           <label
             v-if="userRole === 'worker'"
@@ -335,39 +348,54 @@
               </div>
             </div>
           </div>
-          <div class="knowledge__container">
-            <div class="knowledge__content">
-              <base-field
-                v-model="newWorkExp.from"
-                type="date"
-                class="knowledge__data"
-                :placeholder="$t('settings.term')"
-              />
-              <div class="knowledge__dash">
-                -
+          <ValidationObserver
+            ref="observerAddNewWorkExp"
+            v-slot="{ handleSubmit }"
+          >
+            <form
+              class="knowledge__container"
+              action=""
+              @submit.prevent="handleSubmit(addNewWorkExp)"
+            >
+              <div class="knowledge__content">
+                <base-field
+                  v-model="newWorkExp.from"
+                  type="date"
+                  class="knowledge__data"
+                  :placeholder="$t('settings.term')"
+                  :rules="'required'"
+                  :name="$t('settings.workExps.from')"
+                />
+                <div class="knowledge__dash">
+                  -
+                </div>
+                <base-field
+                  v-model="newWorkExp.to"
+                  type="date"
+                  class="knowledge__data"
+                  :placeholder="$t('settings.term')"
+                  :rules="'required'"
+                  :name="$t('settings.workExps.to')"
+                />
               </div>
-              <base-field
-                v-model="newWorkExp.to"
-                type="date"
-                class="knowledge__data"
-                :placeholder="$t('settings.term')"
-              />
-            </div>
-            <div class="knowledge__content">
-              <base-field
-                v-model="newWorkExp.place"
-                type="grey"
-                class="knowledge__data knowledge__data_big"
-                :placeholder="$t('settings.workExps.companyName')"
-              />
-              <base-btn
-                class="knowledge__btn"
-                @click="addNewWorkExp()"
-              >
-                {{ $t('settings.add') }}
-              </base-btn>
-            </div>
-          </div>
+              <div class="knowledge__content">
+                <base-field
+                  v-model="newWorkExp.place"
+                  type="grey"
+                  class="knowledge__data knowledge__data_big"
+                  :placeholder="$t('settings.workExps.companyName')"
+                  :rules="'required'"
+                  :name="$t('settings.workExps.companyName')"
+                />
+                <base-btn
+                  class="knowledge__btn"
+                  type="submit"
+                >
+                  {{ $t('settings.add') }}
+                </base-btn>
+              </div>
+            </form>
+          </ValidationObserver>
         </div>
         <div class="profile__row-4col">
           <base-field

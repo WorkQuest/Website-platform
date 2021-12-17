@@ -39,6 +39,7 @@
       </div>
       <input
         class="ctm-field__input"
+        :class="{'ctm-field__input_error': errors[0]}"
         :placeholder="placeholder"
         :value="mode === 'convertDate' ? convertDate(value) : value"
         :type="type"
@@ -248,6 +249,9 @@ export default {
     padding: 0 20px;
     transition: .3s;
     width: 100%;
+    &_error {
+      border: 1px solid red !important
+    }
   }
   &_disabled {
     .ctm-field__input {
