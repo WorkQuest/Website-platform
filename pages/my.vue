@@ -33,11 +33,13 @@
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
           link="/create-quest"
         />
-        <base-pager
-          v-if="questsData.count !== 0 && questsList.count !== 0 && totalPagesValue !== 1"
-          v-model="page"
-          :total-pages="totalPagesValue"
-        />
+        <div class="quests__pager">
+          <base-pager
+            v-if="questsData.count !== 0 && questsList.count !== 0 && totalPagesValue !== 1"
+            v-model="page"
+            :total-pages="totalPagesValue"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -215,6 +217,9 @@ export default {
     &_employer {
       margin-bottom: 0;
     }
+  }
+  &__pager {
+    margin-top: 25px;
   }
 }
 </style>

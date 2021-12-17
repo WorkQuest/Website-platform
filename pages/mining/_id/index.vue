@@ -535,6 +535,10 @@ export default {
   display: flex;
   justify-content: center;
 
+  &__paginator {
+    margin-top: 25px;
+  }
+
   &__connect {
     width: 150px;
   }
@@ -848,6 +852,7 @@ export default {
 }
 .pager {
   &__block {
+    margin-top: 25px;
     width: auto;
   }
 }

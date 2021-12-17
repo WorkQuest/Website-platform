@@ -263,11 +263,15 @@
             </div>
           </div>
         </div>
-        <base-pager
+        <div
           v-if="totalPagesValue > 1"
-          v-model="page"
-          :total-pages="totalPagesValue"
-        />
+          class="pager"
+        >
+          <base-pager
+            v-model="page"
+            :total-pages="totalPagesValue"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -475,6 +479,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.pager {
+  margin-top: 25px;
+}
 
 .badge {
   &-list {

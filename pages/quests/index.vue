@@ -202,11 +202,15 @@
           :object="questsObjects"
           :page="'quests'"
         />
-        <base-pager
+        <div
           v-if="totalPages > 1"
-          v-model="page"
-          :total-pages="totalPages"
-        />
+          class="quests__pager"
+        >
+          <base-pager
+            v-model="page"
+            :total-pages="totalPages"
+          />
+        </div>
         <emptyData
           v-else-if="questsArray.length === 0"
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
@@ -702,6 +706,9 @@ export default {
   }
 }
 .quests {
+  &__pager {
+    margin-top: 25px;
+  }
   &__cards {
     display: grid;
     grid-template-columns: 1fr;
