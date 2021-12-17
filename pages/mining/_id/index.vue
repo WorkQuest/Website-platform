@@ -270,7 +270,7 @@ export default {
       rewardAmount: 0,
       fullRewardAmount: 0,
       stakedAmount: 0,
-      availableBalanceForStake: 0,
+      availableBalanceForStake: null,
       profitWQT: 0,
       isLoadingAPY: false,
     };
@@ -410,16 +410,42 @@ export default {
 
     async checkWalletStatus() {
       if (this.isConnected) return;
+      let incorrectChain = false;
       const { currentPool } = this;
       this.SetLoader(true);
-      await this.connectToMetamask();
-      if (localStorage.getItem('isMetaMask') === 'true') {
-        const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', currentPool);
-        if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: currentPool });
+      await this.connectToWallet();
+      if (this.isConnected) {
+        if (localStorage.getItem('isMetaMask') === 'true') {
+          const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', currentPool);
+          if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: currentPool });
+        } else {
+          const walletConnectData = JSON.parse(localStorage.getItem('walletconnect'));
+          switch (walletConnectData.chainId) {
+            case 1:
+              incorrectChain = this.currentPool !== 'ETH';
+              break;
+            case 56:
+              incorrectChain = this.currentPool !== 'BNB';
+              break;
+            default:
+              incorrectChain = false;
+              break;
+          }
+          if (incorrectChain) {
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/warning.svg'),
+              title: this.$t('modals.connectError'),
+              recipient: '',
+              subtitle: this.$t('modals.incorrectChain'),
+            });
+            await this.disconnectFromWallet();
+          }
+        }
       }
       this.SetLoader(false);
     },
-    async connectToMetamask() {
+    async connectToWallet() {
       await this.$store.dispatch('web3/connect', { chain: this.currentPool });
     },
 
@@ -429,6 +455,7 @@ export default {
       this.fullRewardAmount = rewardTokenAmount;
       this.rewardAmount = this.Floor(rewardTokenAmount);
       this.stakedAmount = this.Floor(stakeTokenAmount);
+      console.log(balanceTokenAmount, rewardTokenAmount, stakeTokenAmount);
       this.availableBalanceForStake = balanceTokenAmount;
 
       if (+stakeTokenAmount > 0) {
@@ -461,7 +488,7 @@ export default {
     },
     openSwapTokens() {
       if (!this.isConnected) {
-        this.connectToMetamask();
+        this.connectToWallet();
       }
       this.ShowModal({
         key: modals.swapTokens,

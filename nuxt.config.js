@@ -1,3 +1,5 @@
+import path from 'path';
+import fs from 'fs';
 import localeEn from './locales/en.json';
 
 require('dotenv').config();
@@ -19,6 +21,12 @@ export default {
   css: [
     '@/assets/scss/main.scss',
   ],
+  server: {
+    https: {
+      key: fs.readFileSync(path.resolve('./static/https', 'server.key')),
+      cert: fs.readFileSync(path.resolve('./static/https', 'server.crt')),
+    },
+  },
   plugins: [
     { src: '@plugins/ws', mode: 'client' },
     { src: '@plugins/axios.js' },
