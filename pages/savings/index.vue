@@ -170,9 +170,6 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
     FAQs() {
       return [
         {

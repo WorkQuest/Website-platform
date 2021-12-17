@@ -138,9 +138,6 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
     documents() {
       return [
         {

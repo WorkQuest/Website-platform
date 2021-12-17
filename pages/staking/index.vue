@@ -79,7 +79,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      options: 'modals/getOptions',
       isConnected: 'web3/isConnected',
     }),
     fields() {
