@@ -5,10 +5,7 @@
         <div class="quests__title">
           {{ $t('quests.MyQuests') }}
         </div>
-        <div
-          class="quests__content"
-          :class="{'quests__content_employer': userRole === 'employer'}"
-        >
+        <div class="quests__content">
           <base-btn
             v-for="(item, i) in filterTabs"
             :key="i"
@@ -57,7 +54,6 @@ export default {
       selectedTab: 0,
       page: 1,
       offset: 10,
-      isStarred: false,
       statuses: '',
       requestParams: {},
     };
@@ -131,19 +127,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.main {
-  &__body {
-    justify-self: center;
-    width: 100%;
-    max-width: 1180px;
-  }
-}
-.styles {
-  &__full {
-    width: 100%;
-    height: 100%;
-  }
-}
 .quests {
   width: 100%;
   background-color: #f6f8fa;
@@ -161,7 +144,7 @@ export default {
     margin: 20px 0 20px 0;
   }
   &__body {
-    @extend .styles__full;
+    width: 100%;
     max-width: 1180px;
   }
   &__content {
@@ -170,9 +153,6 @@ export default {
     grid-template-columns: repeat(6, auto);
     grid-gap: 10px;
     margin-bottom: 20px;
-    &_employer {
-      margin-bottom: 0;
-    }
   }
 }
 </style>
