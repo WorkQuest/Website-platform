@@ -26,11 +26,13 @@
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
           link="/create-quest"
         />
-        <base-pager
-          v-if="totalPages > 1"
-          v-model="page"
-          :total-pages="totalPages"
-        />
+        <div class="quests__pager">
+          <base-pager
+            v-if="totalPages > 1"
+            v-model="page"
+            :total-pages="totalPages"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -153,6 +155,9 @@ export default {
     grid-template-columns: repeat(6, auto);
     grid-gap: 10px;
     margin-bottom: 20px;
+  }
+  &__pager {
+    margin-top: 25px;
   }
 }
 </style>
