@@ -266,45 +266,54 @@
                   </div>
                 </div>
               </div>
-              <div
-                class="knowledge__container"
+              <ValidationObserver
+                ref="observerAddNewKnowledge"
+                v-slot="{ handleSubmit }"
+                disabled
               >
-                <div class="knowledge__content">
-                  <base-field
-                    v-model="newKnowledge.from"
-                    :name="$t('settings.workExps.from')"
-                    type="date"
-                    class="knowledge__data"
-                    :placeholder="$t('settings.workExps.from')"
-                  />
-                  <div class="knowledge__dash">
-                    -
+                <form
+                  class="knowledge__container"
+                  @submit.prevent="handleSubmit(addNewKnowledge)"
+                >
+                  <div class="knowledge__content">
+                    <base-field
+                      v-model="newKnowledge.from"
+                      :name="$t('settings.workExps.from')"
+                      type="date"
+                      class="knowledge__data"
+                      :placeholder="$t('settings.workExps.from')"
+                      :rules="`required||between-date:${newKnowledge.from},${newKnowledge.to}`"
+                    />
+                    <div class="knowledge__dash">
+                      -
+                    </div>
+                    <base-field
+                      v-model="newKnowledge.to"
+                      :name="$t('settings.workExps.to')"
+                      type="date"
+                      class="knowledge__data"
+                      :placeholder="$t('settings.workExps.to')"
+                      :rules="`required||between-date:${newKnowledge.from},${newKnowledge.to}`"
+                    />
                   </div>
-                  <base-field
-                    v-model="newKnowledge.to"
-                    :name="$t('settings.workExps.to')"
-                    type="date"
-                    class="knowledge__data"
-                    :placeholder="$t('settings.workExps.to')"
-                  />
-                </div>
-                <div class="knowledge__content">
-                  <base-field
-                    v-model="newKnowledge.place"
-                    rules="max:80"
-                    :name="$t('settings.education.educationalInstitution')"
-                    type="grey"
-                    class="knowledge__data knowledge__data_big"
-                    :placeholder="$t('settings.education.educationalInstitution')"
-                  />
-                  <base-btn
-                    class="knowledge__btn"
-                    @click="addNewKnowledge"
-                  >
-                    {{ $t('settings.add') }}
-                  </base-btn>
-                </div>
-              </div>
+                  <div class="knowledge__content">
+                    <base-field
+                      v-model="newKnowledge.place"
+                      rules="max:80||required"
+                      :name="$t('settings.education.educationalInstitution')"
+                      type="grey"
+                      class="knowledge__data knowledge__data_big"
+                      :placeholder="$t('settings.education.educationalInstitution')"
+                    />
+                    <base-btn
+                      class="knowledge__btn"
+                      type="submit"
+                    >
+                      {{ $t('settings.add') }}
+                    </base-btn>
+                  </div>
+                </form>
+              </ValidationObserver>
 
               <label
                 v-if="userRole === 'worker'"
@@ -357,45 +366,54 @@
                   </div>
                 </div>
               </div>
-              <div
-                class="knowledge__container"
+              <ValidationObserver
+                ref="observerAddNewWorkExp"
+                v-slot="{ handleSubmit }"
+                disabled
               >
-                <div class="knowledge__content">
-                  <base-field
-                    v-model="newWorkExp.from"
-                    type="date"
-                    class="knowledge__data"
-                    :placeholder="$t('settings.term')"
-                    :name="$t('settings.workExps.from')"
-                  />
-                  <div class="knowledge__dash">
-                    -
+                <form
+                  class="knowledge__container"
+                  @submit.prevent="handleSubmit(addNewWorkExp)"
+                >
+                  <div class="knowledge__content">
+                    <base-field
+                      v-model="newWorkExp.from"
+                      type="date"
+                      class="knowledge__data"
+                      :placeholder="$t('settings.term')"
+                      :name="$t('settings.workExps.from')"
+                      :rules="`required||between-date:${newWorkExp.from},${newWorkExp.to}`"
+                    />
+                    <div class="knowledge__dash">
+                      -
+                    </div>
+                    <base-field
+                      v-model="newWorkExp.to"
+                      type="date"
+                      class="knowledge__data"
+                      :placeholder="$t('settings.term')"
+                      :name="$t('settings.workExps.to')"
+                      :rules="`required||between-date:${newWorkExp.from},${newWorkExp.to}`"
+                    />
                   </div>
-                  <base-field
-                    v-model="newWorkExp.to"
-                    type="date"
-                    class="knowledge__data"
-                    :placeholder="$t('settings.term')"
-                    :name="$t('settings.workExps.to')"
-                  />
-                </div>
-                <div class="knowledge__content">
-                  <base-field
-                    v-model="newWorkExp.place"
-                    rules="max:80"
-                    type="grey"
-                    class="knowledge__data knowledge__data_big"
-                    :placeholder="$t('settings.workExps.companyName')"
-                    :name="$t('settings.workExps.companyName')"
-                  />
-                  <base-btn
-                    class="knowledge__btn"
-                    @click="addNewWorkExp"
-                  >
-                    {{ $t('settings.add') }}
-                  </base-btn>
-                </div>
-              </div>
+                  <div class="knowledge__content">
+                    <base-field
+                      v-model="newWorkExp.place"
+                      rules="max:80||required"
+                      type="grey"
+                      class="knowledge__data knowledge__data_big"
+                      :placeholder="$t('settings.workExps.companyName')"
+                      :name="$t('settings.workExps.companyName')"
+                    />
+                    <base-btn
+                      class="knowledge__btn"
+                      type="submit"
+                    >
+                      {{ $t('settings.add') }}
+                    </base-btn>
+                  </div>
+                </form>
+              </ValidationObserver>
             </div>
             <div class="profile__row-4col">
               <base-field
@@ -847,11 +865,12 @@ export default {
         place: null,
       };
       this.showModalStatus('educationAddSuccessful');
+      this.$refs.observerAddNewKnowledge.reset();
     },
     deleteKnowledge(i) {
       this.localUserData.additionalInfo.educations.splice(i, 1);
     },
-    addNewWorkExp() {
+    async addNewWorkExp() {
       this.localUserData.additionalInfo.workExperiences.push({ ...this.newWorkExp });
       this.newWorkExp = {
         from: null,
@@ -859,6 +878,7 @@ export default {
         place: null,
       };
       this.showModalStatus('workExpAddSuccessful');
+      this.$refs.observerAddNewWorkExp.reset();
     },
     deleteWorkExp(i) {
       this.localUserData.additionalInfo.workExperiences.splice(i, 1);
@@ -948,7 +968,21 @@ export default {
         this.localUserData.additionalInfo.secondMobileNumber = '';
       }
     },
+    async validateExperienceForm(observerName, value) {
+      const isDirty = Object.keys(value).some((field) => value[field] !== '' && value[field] !== null);
+      if (isDirty) {
+        return await this.$refs[observerName].validate();
+      }
+      return true;
+    },
     async editUserData() {
+      const validateKnowledge = await this.validateExperienceForm('observerAddNewKnowledge', this.newKnowledge);
+      const validateWorkExp = await this.validateExperienceForm('observerAddNewWorkExp', this.newWorkExp);
+
+      if (validateKnowledge === false || validateWorkExp === false) {
+        return;
+      }
+
       const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
       const { secondMobileNumber } = this.localUserData.additionalInfo;
       await this.setAvatar();

@@ -64,6 +64,25 @@ extend('date', {
   message: 'Please enter correct {_field_}',
 });
 
+extend('between-date', {
+  params: ['from', 'to'],
+  validate(value, { from, to }) {
+    if (from === 'null' || to === 'null') {
+      return {
+        required: true,
+        valid: true,
+      };
+    }
+    const f = new Date(from);
+    const t = new Date(to);
+    return {
+      required: true,
+      valid: f <= t,
+    };
+  },
+  message: '{_field_} date is incorrect',
+});
+
 extend('decimal', {
   validate(value) {
     const regex = /^[0-9]*[.,]?[0-9]+$/;
