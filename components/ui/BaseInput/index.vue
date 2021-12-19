@@ -14,7 +14,7 @@
     :rules="rules"
     :name="name"
     :vid="vid"
-    mode="eager"
+    :mode="validationMode || 'eager'"
     slim
   >
     <div
@@ -148,6 +148,10 @@ export default {
     selector: {
       type: Boolean,
       default: false,
+    },
+    validationMode: {
+      type: String,
+      default: 'eager',
     },
   },
   methods: {

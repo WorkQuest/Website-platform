@@ -128,7 +128,7 @@
                       v-model="localUserData.additionalInfo.address"
                       v-click-outside="hideSearchDD"
                       :placeholder="address || $t('settings.addressInput')"
-                      rules="max:80"
+                      rules="max:100"
                       mode="icon"
                       :selector="isSearchDDStatus"
                       :name="$t('settings.address')"
@@ -168,7 +168,7 @@
                 v-model="localUserData.additionalInfo.company"
                 :placeholder="company || $t('settings.company')"
                 mode="icon"
-                rules="max:80"
+                rules="max:100"
               >
                 <template v-slot:left>
                   <span class="icon-Case" />
@@ -187,7 +187,7 @@
                 v-model="localUserData.additionalInfo.website"
                 :placeholder="userWebsite || $t('settings.website')"
                 mode="icon"
-                rules="max:50"
+                rules="max:100"
               >
                 <template v-slot:left>
                   <span class="icon-Earth" />
@@ -196,7 +196,7 @@
             </div>
             <ValidationProvider
               v-slot="{ errors }"
-              rules="max:530"
+              rules="max:1000"
               tag="div"
               :name="'description'"
             >
@@ -251,7 +251,7 @@
                   <div class="knowledge__content">
                     <base-field
                       v-model="localUserData.additionalInfo.educations[i].place"
-                      rules="max:80"
+                      rules="max:100"
                       type="grey"
                       class="knowledge__data knowledge__data_big"
                       :disabled="true"
@@ -283,6 +283,7 @@
                       class="knowledge__data"
                       :placeholder="$t('settings.workExps.from')"
                       :rules="`required||between-date:${newKnowledge.from},${newKnowledge.to}`"
+                      validation-mode="passive"
                     />
                     <div class="knowledge__dash">
                       -
@@ -294,12 +295,13 @@
                       class="knowledge__data"
                       :placeholder="$t('settings.workExps.to')"
                       :rules="`required||between-date:${newKnowledge.from},${newKnowledge.to}`"
+                      validation-mode="passive"
                     />
                   </div>
                   <div class="knowledge__content">
                     <base-field
                       v-model="newKnowledge.place"
-                      rules="max:80||required"
+                      rules="max:100||required"
                       :name="$t('settings.education.educationalInstitution')"
                       type="grey"
                       class="knowledge__data knowledge__data_big"
@@ -351,7 +353,7 @@
                   <div class="knowledge__content">
                     <base-field
                       v-model="localUserData.additionalInfo.workExperiences[i].place"
-                      rules="max:80"
+                      rules="max:100"
                       type="grey"
                       class="knowledge__data knowledge__data_big"
                       :disabled="true"
@@ -383,6 +385,7 @@
                       :placeholder="$t('settings.term')"
                       :name="$t('settings.workExps.from')"
                       :rules="`required||between-date:${newWorkExp.from},${newWorkExp.to}`"
+                      validation-mode="passive"
                     />
                     <div class="knowledge__dash">
                       -
@@ -394,12 +397,13 @@
                       :placeholder="$t('settings.term')"
                       :name="$t('settings.workExps.to')"
                       :rules="`required||between-date:${newWorkExp.from},${newWorkExp.to}`"
+                      validation-mode="passive"
                     />
                   </div>
                   <div class="knowledge__content">
                     <base-field
                       v-model="newWorkExp.place"
-                      rules="max:80||required"
+                      rules="max:100||required"
                       type="grey"
                       class="knowledge__data knowledge__data_big"
                       :placeholder="$t('settings.workExps.companyName')"
@@ -418,7 +422,7 @@
             <div class="profile__row-4col">
               <base-field
                 v-model="localUserData.additionalInfo.socialNetwork.instagram"
-                rules="max:80"
+                rules="max:50"
                 :placeholder="userInstagram || $t('settings.instagramUsername')"
                 mode="icon"
                 :name="$t('settings.instagram')"
@@ -430,7 +434,7 @@
               <base-field
                 v-model="localUserData.additionalInfo.socialNetwork.twitter"
                 :placeholder="userTwitter || $t('settings.twitterUsername')"
-                rules="max:80"
+                rules="max:50"
                 mode="icon"
                 :name="$t('settings.twitter')"
               >
@@ -441,7 +445,7 @@
               <base-field
                 v-model="localUserData.additionalInfo.socialNetwork.linkedin"
                 :placeholder="userLinkedin || $t('settings.linkedInUsername')"
-                rules="max:80"
+                rules="max:50"
                 mode="icon"
                 :name="$t('settings.linkedin')"
               >
@@ -452,7 +456,7 @@
               <base-field
                 v-model="localUserData.additionalInfo.socialNetwork.facebook"
                 :placeholder="userFacebook || $t('settings.facebookUsername')"
-                rules="max:80"
+                rules="max:50"
                 mode="icon"
                 :name="$t('settings.facebook')"
               >
@@ -870,7 +874,7 @@ export default {
     deleteKnowledge(i) {
       this.localUserData.additionalInfo.educations.splice(i, 1);
     },
-    async addNewWorkExp() {
+    addNewWorkExp() {
       this.localUserData.additionalInfo.workExperiences.push({ ...this.newWorkExp });
       this.newWorkExp = {
         from: null,
@@ -1076,7 +1080,8 @@ export default {
   }
 }
 .error {
-  color: #f36262;
+  color: #bb5151;
+  font-size: 12px;
 }
 .selector {
   @include box;
@@ -1510,7 +1515,7 @@ export default {
   &__row-1col {
     @extend .profile;
     grid-template-columns: 1fr;
-    margin: 0 20px 0 20px;
+    margin: 0 20px 20px;
     width: 100%;
   }
   &__row-data {
@@ -1535,7 +1540,7 @@ export default {
   &__textarea {
     padding: 10px 10px 0 10px;
     border-radius: 6px;
-    margin: 11px 40px 20px 0;
+    margin: 11px 40px 0 0;
     height: 114px;
     border: 0;
     background-color: #F7F8FA;

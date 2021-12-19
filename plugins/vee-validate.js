@@ -67,7 +67,11 @@ extend('date', {
 extend('between-date', {
   params: ['from', 'to'],
   validate(value, { from, to }) {
-    if (from === 'null' || to === 'null') {
+    if (
+      from === 'null'
+      || to === 'null'
+      || from === ''
+      || to === '') {
       return {
         required: true,
         valid: true,
@@ -80,7 +84,7 @@ extend('between-date', {
       valid: f <= t,
     };
   },
-  message: '{_field_} date is incorrect',
+  message: 'Invalid date range',
 });
 
 extend('decimal', {
