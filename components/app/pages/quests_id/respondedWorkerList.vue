@@ -3,9 +3,7 @@
     v-if="currentWorker"
     class="worker worker__card"
   >
-    <div
-      class="worker__title"
-    >
+    <div class="worker__title">
       {{ $t('response.title') }}
     </div>
     <div class="worker__container">
@@ -24,14 +22,14 @@
           v-if="response.worker.firstName && response.worker.lastName"
           class="worker row"
         >
-          <img
-            class="worker__avatar"
-            :src="response.worker.avatar ? response.worker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
-            alt=""
-          >
-          <div
-            class="worker__name"
-          >
+          <nuxt-link :to="`/profile/${response.workerId}`">
+            <img
+              class="worker__avatar"
+              :src="response.worker.avatar ? response.worker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+              alt=""
+            >
+          </nuxt-link>
+          <div class="worker__name">
             {{ response.worker.firstName }} {{ response.worker.lastName }}
           </div>
         </div>
@@ -145,6 +143,7 @@ export default {
     border-radius: 50%;
     width: 40px;
     height: 40px;
+    cursor: pointer;
   }
   &__name {
     @extend .worker;
