@@ -20,17 +20,13 @@
         class="quest menu"
       >
         <div class="menu menu__items">
-          <span
-            class="menu__container"
-          >
+          <span class="menu__container">
             <div
               v-if="['employer'].includes(userRole)"
               class="menu__item"
               @click="startChat()"
             >
-              <div
-                class="menu__text"
-              >
+              <div class="menu__text">
                 {{ $t('quests.startChat') }}
               </div>
             </div>
@@ -39,9 +35,7 @@
               class="menu__item"
               @click="Object.keys(currentWorker).length === 0 ? selectWorker(i) : removeWorker()"
             >
-              <div
-                class="menu__text"
-              >
+              <div class="menu__text">
                 {{ $t('quests.invite') }}
               </div>
             </div>
@@ -50,9 +44,7 @@
               class="menu__item"
               @click="rejectQuestInvitation(responseId)"
             >
-              <div
-                class="menu__text"
-              >
+              <div class="menu__text">
                 {{ $t('quests.decline') }}
               </div>
             </div>
@@ -82,6 +74,10 @@ export default {
       type: [String],
       default: null,
     },
+    chatId: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -102,7 +98,7 @@ export default {
   },
   methods: {
     startChat() {
-      // TODO: Написать метод для интеграции с бэком, будет готово
+      this.$router.push(`/messages/${this.chatId}`);
     },
     async initData() {
       await this.$store.dispatch('quests/getQuest', this.$route.params.id);
