@@ -94,7 +94,7 @@ export default {
         this.ShowModal({
           key: modals.showImage,
           portfolio: true,
-          imageSrc: src,
+          url: src,
           title: name,
           desc,
         });

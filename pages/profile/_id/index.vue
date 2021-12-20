@@ -182,7 +182,10 @@
               </template>
             </base-btn>
           </div>
-          <portfolioTab :object="portfolioObject" />
+          <portfolioTab
+            class="profile__portfolio"
+            :object="portfolioObject"
+          />
           <div
             v-if="selectedTab === 'portfolio' && totalPortfoliosPages > 1"
             class="portfolio__pager pager"
@@ -639,6 +642,11 @@ export default {
   &__add-btn {
     width: 154px;
     margin: 20px 0 20px 0;
+  }
+}
+.profile {
+  &__portfolio {
+    margin-top: 28px;
   }
 }
 @include _1199 {
