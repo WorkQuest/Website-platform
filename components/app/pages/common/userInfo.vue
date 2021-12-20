@@ -119,10 +119,10 @@
     <div class="info-grid__right right">
       <div
         class="right__header"
-        :class="userRole === 'worker' ? 'right__header_big' : ''"
+        :class="userData.role === 'worker' ? 'right__header_big' : ''"
       >
         <div
-          v-if="userRole === 'worker'"
+          v-if="userData.role === 'worker'"
           class="right__price"
         >
           <div class="price__text">
@@ -253,6 +253,7 @@ export default {
             averageMark: 0,
             reviewCount: 0,
           },
+          role: 'employer',
         };
       }
       return this.userInfo;
