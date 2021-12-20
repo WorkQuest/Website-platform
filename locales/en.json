@@ -35,11 +35,6 @@
     "showYourMessage": "Show your message",
     "hideYourMessage": "Hide your message"
   },
-  "uploader" : {
-    "uploadText": "Upload a images or videos",
-    "upload": "Upload",
-    "files": "files"
-  },
   "messages": {
     "alpha": "The {_field_} field may only contain alphabetic characters",
     "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
@@ -1226,7 +1221,9 @@
     "thanksText": "",
     "emailVerificationCodeField": "email verification",
     "youCanAttachUpToNFiles": "You can attach up to {n} files",
-    "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format"
+    "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
+    "connectError": "Error connection",
+    "incorrectChain": "You choose incorrect chain !"
   },
   "ui": {
     "jobQuestors": "Job Questors",
@@ -2042,9 +2039,9 @@
   "myQuests": {
     "statuses": {
       "all": "All quests",
-      "fav": "Favorite",
-      "requested": "Requested",
-      "completed": "Completed quests",
+      "favorites": "Favorites",
+      "responded": "Responded quests",
+      "performed": "Performed quests",
       "active": "Active quests",
       "invited": "Invited quests"
     }
@@ -2366,5 +2363,14 @@
   },
   "gallery": {
     "counter": "{n} of {c}"
+  },
+  "uploader": {
+    "uploadFile": "Upload files",
+    "kb": "KB",
+    "mb": "MB",
+    "errors": {
+      "fileSizeLimit": "File size limit: {n}",
+      "filesLimit": "Files limit: {n}"
+    }
   }
 }

@@ -803,6 +803,7 @@ export default {
 
       &__pager {
         width: auto;
+        margin-top: 25px;
       }
 
       &__perc {

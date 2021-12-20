@@ -135,32 +135,6 @@ export default () => ({
       distance: '100',
     },
   ],
-  tabs: [
-    {
-      title: 'All quests',
-      id: 0,
-    },
-    {
-      title: 'Favorite',
-      id: 1,
-    },
-    {
-      title: 'Requested',
-      id: 2,
-    },
-    {
-      title: 'Completed quests',
-      id: 3,
-    },
-    {
-      title: 'Active quests',
-      id: 4,
-    },
-    {
-      title: 'Invited quests',
-      id: 5,
-    },
-  ],
   reviews: [
     {
       reviewerName: 'Edward Cooper',
