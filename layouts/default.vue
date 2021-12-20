@@ -835,10 +835,10 @@ export default {
           localeSrc: 'en.svg',
           localeText: this.$t('ui.locals.en'),
         },
-        {
-          localeSrc: 'ru.svg',
-          localeText: this.$t('ui.locals.ru'),
-        },
+        // {
+        //   localeSrc: 'ru.svg',
+        //   localeText: this.$t('ui.locals.ru'),
+        // },
         // {
         //   localeSrc: 'bn.svg',
         //   localeText: this.$t('ui.locals.bn'),
