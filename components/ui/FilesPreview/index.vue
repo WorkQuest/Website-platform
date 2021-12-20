@@ -79,7 +79,6 @@ export default {
   .preview {
       grid-template-columns: repeat(2, auto);
       &__item {
-        height: 100%;
         width: 100%;
       }
   }
