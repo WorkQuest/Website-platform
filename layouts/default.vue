@@ -839,38 +839,38 @@ export default {
           localeSrc: 'ru.svg',
           localeText: this.$t('ui.locals.ru'),
         },
-        {
-          localeSrc: 'bn.svg',
-          localeText: this.$t('ui.locals.bn'),
-        },
-        {
-          localeSrc: 'zh.svg',
-          localeText: this.$t('ui.locals.zh'),
-        },
-        {
-          localeSrc: 'fr.svg',
-          localeText: this.$t('ui.locals.fr'),
-        },
-        {
-          localeSrc: 'hi.svg',
-          localeText: this.$t('ui.locals.hi'),
-        },
-        {
-          localeSrc: 'id.svg',
-          localeText: this.$t('ui.locals.id'),
-        },
-        {
-          localeSrc: 'pt.svg',
-          localeText: this.$t('ui.locals.pt'),
-        },
-        {
-          localeSrc: 'es.svg',
-          localeText: this.$t('ui.locals.es'),
-        },
-        {
-          localeSrc: 'ar.svg',
-          localeText: this.$t('ui.locals.ar'),
-        },
+        // {
+        //   localeSrc: 'bn.svg',
+        //   localeText: this.$t('ui.locals.bn'),
+        // },
+        // {
+        //   localeSrc: 'zh.svg',
+        //   localeText: this.$t('ui.locals.zh'),
+        // },
+        // {
+        //   localeSrc: 'fr.svg',
+        //   localeText: this.$t('ui.locals.fr'),
+        // },
+        // {
+        //   localeSrc: 'hi.svg',
+        //   localeText: this.$t('ui.locals.hi'),
+        // },
+        // {
+        //   localeSrc: 'id.svg',
+        //   localeText: this.$t('ui.locals.id'),
+        // },
+        // {
+        //   localeSrc: 'pt.svg',
+        //   localeText: this.$t('ui.locals.pt'),
+        // },
+        // {
+        //   localeSrc: 'es.svg',
+        //   localeText: this.$t('ui.locals.es'),
+        // },
+        // {
+        //   localeSrc: 'ar.svg',
+        //   localeText: this.$t('ui.locals.ar'),
+        // },
       ];
     },
     instrumentDDLinks() {
