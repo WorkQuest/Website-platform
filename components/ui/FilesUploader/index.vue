@@ -12,7 +12,7 @@
       class="uploader__message_container"
     >
       <div class="uploader__message">
-        Upload files
+        {{ $t('uploader.uploadFile') }}
       </div>
       <div class="icon-add_to_queue" />
     </div>
