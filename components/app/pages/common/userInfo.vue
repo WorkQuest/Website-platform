@@ -119,10 +119,9 @@
     <div class="info-grid__right right">
       <div
         class="right__header"
-        :class="userData.role === 'worker' ? 'right__header_big' : ''"
       >
         <div
-          v-if="userData.role === 'worker'"
+          v-if="userData.role === 'worker' && userInfo.wagePerHour"
           class="right__price"
         >
           <div class="price__text">
@@ -154,7 +153,7 @@
         >
           <base-btn
             :mode="'approve'"
-            :disabled="userData.questsStatistic.opened <= 0"
+            :disabled="userData.questsStatistic ? userData.questsStatistic.opened <= 0 : true"
             @click="sendInvait()"
           >
             {{ $t('workers.giveAQuest') }}
@@ -335,7 +334,6 @@ export default {
     grid-gap: 15px;
   }
   &__right {
-    width: 35%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -345,15 +343,13 @@ export default {
 .right {
   &__header {
     display: flex;
+    grid-gap: 30px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    &_big {
-      width: 100%;
-    }
   }
   &__footer {
-    width: 100%;
+    width: 280px;
   }
   &__price {
     display: flex;
@@ -516,8 +512,11 @@ export default {
       flex-direction: column;
     }
   }
-  .info-grid {
-    &__right {
+  .right {
+    &__header {
+      grid-gap: 15px;
+    }
+    &__footer {
       width: 100%;
     }
   }
