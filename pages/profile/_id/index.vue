@@ -485,6 +485,7 @@ export default {
 .pager {
   &__block {
     width: auto;
+    margin-top: 25px;
   }
 }
 

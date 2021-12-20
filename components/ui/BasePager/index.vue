@@ -86,18 +86,16 @@ export default {
         }
         let medium = [];
         if (value >= totalPages - 2) {
-          medium = array.splice(totalPages - 4, 3) || [];
+          medium = array.splice(totalPages - 5, 4) || [];
           medium = [-1, ...medium];
-        } else if (value > 3) {
+        } else if (value > 4) {
           medium = array.splice(value - 2, 3) || [];
           medium = [-1, ...medium, -1];
         } else {
-          medium = array.splice(1, 3) || [];
+          medium = array.splice(1, 4) || [];
           medium = [...medium, -1];
         }
-        return [
-          1, ...medium, totalPages,
-        ];
+        return [1, ...medium, totalPages];
       }
       return totalPages;
     },
@@ -138,7 +136,6 @@ export default {
   float: right;
   background-color: #FFFFFF;
   border-radius: 6px;
-  margin-top: 25px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
