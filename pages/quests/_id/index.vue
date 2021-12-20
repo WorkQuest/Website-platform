@@ -50,7 +50,7 @@
           class="divider"
         />
         <questIdEmployer
-          :user-avatar="userAvatar"
+          :user-avatar="questData.assignedWorker && questData.assignedWorker.avatar ? questData.assignedWorker.avatar.url : null"
           :assign-worker="questData.assignedWorker"
         />
 
@@ -253,8 +253,8 @@ export default {
     },
     getFilteredResponses() {
       if (this.userRole === 'employer') {
-        this.filteredResponses = this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Responded);
-        this.filteredInvited = this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Invited);
+        this.filteredResponses = this.responsesToQuest ? this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Responded) : [];
+        this.filteredInvited = this.responsesToQuest ? this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Invited) : [];
         return this.filteredResponses && this.filteredInvited;
       }
       return '';
