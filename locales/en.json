@@ -1147,7 +1147,7 @@
     "transfer": "Transfer",
     "recepient": "Recepient address",
     "transferInfo": "Transfer info",
-    "currencyDetails": "Currency",
+    "currencyDeta ils": "Currency",
     "generatingDetails": "Generating",
     "collateralizationRatio": "Collateralization ratio",
     "depositIsOpenedText": "",
@@ -1242,16 +1242,16 @@
       "login": "Login"
     },
     "locals": {
-      "en": "EN",
-      "ru": "RU",
-      "ba": "BA",
-      "zh": "ZH",
-      "fr": "FR",
-      "hi": "HI",
-      "in": "IN",
-      "po": "PO",
-      "sp": "SP",
-      "ae": "AE"
+      "en": "en",
+      "ru": "ru",
+      "bn": "bn",
+      "zh": "zh",
+      "fr": "fr",
+      "hi": "hi",
+      "id": "id",
+      "pt": "pt",
+      "es": "es",
+      "ar": "ar"
     },
     "notifications": {
       "title": "Notifications",
