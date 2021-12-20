@@ -36,9 +36,18 @@
         <quest-id-dd
           :i="i"
           :response-id="response.id"
+          :chat-id="response.questChat.chatId"
         />
-        <div class="worker__message">
-          {{ response.message }}
+        <div>
+          <div class="worker__message">
+            {{ response.message }}
+          </div>
+          <div v-if="response.medias">
+            <files-preview
+              :medias="response.medias"
+              :small="true"
+            />
+          </div>
         </div>
       </div>
       <div>
