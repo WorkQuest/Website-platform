@@ -95,7 +95,7 @@ export default {
       const { questId } = this.options;
       const data = {
         message: this.text,
-        // medias,
+        medias,
       };
       if (QuestStatuses.Rejected) {
         const res = await this.$store.dispatch('quests/respondOnQuest', { data, questId });

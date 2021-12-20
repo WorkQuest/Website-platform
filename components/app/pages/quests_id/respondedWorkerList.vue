@@ -3,9 +3,7 @@
     v-if="currentWorker"
     class="worker worker__card"
   >
-    <div
-      class="worker__title"
-    >
+    <div class="worker__title">
       {{ $t('response.title') }}
     </div>
     <div class="worker__container">
@@ -29,19 +27,25 @@
             :src="response.worker.avatar ? response.worker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
-          <div
-            class="worker__name"
-          >
+          <div class="worker__name">
             {{ response.worker.firstName }} {{ response.worker.lastName }}
           </div>
         </div>
         <quest-id-dd
           :i="i"
           :response-id="response.id"
-          :chat-id="response.questChat.id"
+          :chat-id="response.questChat.chatId"
         />
-        <div class="worker__message">
-          {{ response.message }}
+        <div>
+          <div class="worker__message">
+            {{ response.message }}
+          </div>
+          <div v-if="response.medias">
+            <files-preview
+              :medias="response.medias"
+              :small="true"
+            />
+          </div>
         </div>
       </div>
       <div>

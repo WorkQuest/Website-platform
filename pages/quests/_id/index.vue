@@ -18,30 +18,10 @@
           </span>
         </div>
         <div class="divider" />
-        <div class="quest_materials__container">
-          <h2 class="quest_materials__title">
-            {{ $t('quests.questMaterials') }}
-          </h2>
-          <div class="img__container">
-            <div
-              v-for="(item, i) of questData.medias"
-              :key="i"
-              @click="openFile(item)"
-            >
-              <img
-                v-if="item.contentType.split('/')[0] === 'image'"
-                class="img__item"
-                :src="item.url"
-                alt=""
-              >
-              <video
-                v-else
-                class="img__item"
-                :src="item.url"
-              />
-            </div>
-          </div>
+        <div class="quest_materials__title">
+          {{ $t('quests.questMaterials') }}
         </div>
+        <files-preview :medias="questData.medias" />
         <div
           v-if="userRole === 'employer'
             ? [InfoModeEmployer.Active, InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode)
@@ -322,15 +302,6 @@ export default {
       this.ShowModal({
         key: modals.raiseViews,
       });
-    },
-    openFile(file) {
-      if (window.innerWidth >= 761) {
-        this.ShowModal({
-          key: modals.showImage,
-          contentType: file.contentType.split('/')[0],
-          url: file.url,
-        });
-      }
     },
   },
 };
@@ -614,15 +585,6 @@ export default {
   .main-white {
     display: block;
   }
-  .img {
-    &__container {
-      grid-template-columns: repeat(2, auto);
-      img {
-        max-width: 100%;
-        max-height: 100%;
-      }
-    }
-  }
 }
 @include _767 {
   .user {
@@ -680,11 +642,6 @@ export default {
   .icon {
     &-clock, &-location {
       width: 30px;
-    }
-  }
-  .img {
-    &__container {
-      grid-template-columns: 1fr;
     }
   }
   .quest {
