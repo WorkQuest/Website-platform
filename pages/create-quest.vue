@@ -505,30 +505,9 @@ export default {
         console.log(e);
       }
     },
-    async loadMedias() {
-      if (!this.files.length) return [];
-      const fetchData = [];
-      const fetchUrlsData = [];
-      const medias = [];
-      // eslint-disable-next-line no-restricted-syntax
-      for (const item of this.files) {
-        fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file.type }));
-      }
-      const urls = await Promise.all(fetchData);
-      for (let i = 0; i < this.files.length; i += 1) {
-        const { file } = this.files[i];
-        medias.push(urls[i].mediaId);
-        fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
-          url: urls[i].url,
-          data: file,
-          contentType: file.type,
-        }));
-      }
-      await Promise.all(fetchUrlsData);
-      return medias;
-    },
     async createQuest() {
-      const medias = await this.loadMedias();
+      this.SetLoader(true);
+      const medias = await this.uploadFiles(this.files);
       const payload = {
         workplace: this.convertWorkplace(this.workplaceIndex),
         priority: this.runtimeIndex,
@@ -546,17 +525,13 @@ export default {
           latitude: this.coordinates.lat,
         },
       };
-      try {
-        const response = await this.$store.dispatch('quests/questCreate', payload);
-        if (response) {
-          this.showModalCreatedQuest();
-          this.showToastCreated();
-          await this.$router.push(`/quests/${response.id}`);
-          await this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
-        }
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
+      const response = await this.$store.dispatch('quests/questCreate', payload);
+      this.SetLoader(false);
+      if (response.ok) {
+        this.showModalCreatedQuest();
+        this.showToastCreated();
+        await this.$router.push(`/quests/${response.result.id}`);
+        await this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
       }
     },
     showModalCreatedQuest() {

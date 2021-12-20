@@ -519,36 +519,9 @@ export default {
         console.log(e);
       }
     },
-    async loadMedias() {
-      if (!this.files.length) return [];
-      const fetchData = [];
-      const fetchUrlsData = [];
-      const medias = [];
-      // eslint-disable-next-line no-restricted-syntax
-      for (const item of this.files) {
-        if (item.mediaId) medias.push(item.mediaId);
-        else fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file.type }));
-      }
-      if (!fetchData.length) return medias;
-      const urls = await Promise.all(fetchData);
-      let urlId = 0;
-      for (let i = 0; i < this.files.length; i += 1) {
-        // eslint-disable-next-line no-continue
-        if (this.files[i].mediaId) continue;
-        const { file } = this.files[i];
-        medias.push(urls[urlId].mediaId);
-        fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
-          url: urls[urlId].url,
-          data: file,
-          contentType: file.type,
-        }));
-        urlId += 1;
-      }
-      await Promise.all(fetchUrlsData);
-      return medias;
-    },
     async editQuest() {
-      const medias = await this.loadMedias();
+      this.SetLoader(true);
+      const medias = await this.uploadFiles(this.files);
       const payload = {
         workplace: 'distant',
         priority: this.priorityIndex,
@@ -566,18 +539,14 @@ export default {
           latitude: this.coordinates.lat,
         },
       };
-      try {
-        const questId = await this.questData.id;
-        const response = await this.$store.dispatch('quests/editQuest', { payload, questId });
-        if (response) {
-          this.showModalEditQuest();
-          this.showToastEdited();
-          await this.$router.push(`/quests/${questId}`);
-          await this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
-        }
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
+      const questId = await this.questData.id;
+      const response = await this.$store.dispatch('quests/editQuest', { payload, questId });
+      this.SetLoader(false);
+      if (response.ok) {
+        this.showModalEditQuest();
+        this.showToastEdited();
+        await this.$router.push(`/quests/${questId}`);
+        await this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
       }
     },
     showModalEditQuest() {
