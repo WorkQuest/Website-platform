@@ -10,6 +10,34 @@ Vue.component('tippy', TippyComponent);
 Vue.mixin({
 
   methods: {
+    async uploadFiles(files) {
+      if (!files.length) return [];
+      const fetchData = [];
+      const fetchUrlsData = [];
+      const medias = [];
+      // eslint-disable-next-line no-restricted-syntax
+      for (const item of files) {
+        if (item.mediaId) medias.push(item.mediaId);
+        else fetchData.push(this.$store.dispatch('user/getUploadFileLink', { contentType: item.file.type }));
+      }
+      if (!fetchData.length) return medias;
+      const urls = await Promise.all(fetchData);
+      let urlId = 0;
+      for (let i = 0; i < files.length; i += 1) {
+        // eslint-disable-next-line no-continue
+        if (files[i].mediaId) continue;
+        const { file } = this.files[i];
+        medias.push(urls[urlId].mediaId);
+        fetchUrlsData.push(this.$store.dispatch('user/uploadFile', {
+          url: urls[urlId].url,
+          data: file,
+          contentType: file.type,
+        }));
+        urlId += 1;
+      }
+      await Promise.all(fetchUrlsData);
+      return medias;
+    },
     async signerUser(callback) {
       if (this.$store.getters['user/hasUserAddress']) {
         callback();

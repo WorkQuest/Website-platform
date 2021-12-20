@@ -23,14 +23,23 @@
             {{ $t('quests.questMaterials') }}
           </h2>
           <div class="img__container">
-            <img
-              v-for="n in 4"
-              :key="n"
-              class="img__item"
-              src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
-              alt=""
-              @click="openImage('https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg')"
+            <div
+              v-for="(item, i) of questData.medias"
+              :key="i"
+              @click="openFile(item)"
             >
+              <img
+                v-if="item.contentType.split('/')[0] === 'image'"
+                class="img__item"
+                :src="item.url"
+                alt=""
+              >
+              <video
+                v-else
+                class="img__item"
+                :src="item.url"
+              />
+            </div>
           </div>
         </div>
         <div
@@ -314,11 +323,12 @@ export default {
         key: modals.raiseViews,
       });
     },
-    openImage(src) {
+    openFile(file) {
       if (window.innerWidth >= 761) {
         this.ShowModal({
           key: modals.showImage,
-          imageSrc: src,
+          contentType: file.contentType.split('/')[0],
+          url: file.url,
         });
       }
     },
@@ -496,8 +506,9 @@ export default {
   &__item {
     @extend .img;
     border-radius: 6px;
-    max-width: 280px;
-    max-height: 210px;
+    width: 280px;
+    height: 210px;
+    object-fit: cover;
     &:hover {
       @extend .img;
       cursor: pointer;

@@ -116,11 +116,14 @@
             <div class="upload__title">
               {{ $t('quests.uploadMaterials') }}
             </div>
-            <dropzone
-              id="uploader"
-              ref="el"
-              :options="optionsModal"
-              :include-styling="true"
+            <files-uploader
+              :multiple="true"
+              :limit="10"
+              :limit-bytes="10485760"
+              :limit-bytes-video="10485760"
+              :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
+              :preloaded-files="questData.medias"
+              @change="updateFiles"
             />
           </div>
           <div class="upload btn btn__container btn__container_right">
@@ -245,19 +248,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Dropzone from 'nuxt-dropzone';
-import 'nuxt-dropzone/dropzone.css';
-import '~/assets/scss/vue2Dropzone.min.css';
-import '~/assets/scss/dropzone.scss';
 import modals from '~/store/modals/modals';
 
 const { GeoCode } = require('geo-coder');
 
 export default {
   name: 'EditQuest',
-  components: {
-    Dropzone,
-  },
   data() {
     return {
       ads: {
@@ -280,21 +276,7 @@ export default {
       coordinates: {},
       currency: ' WUSD',
       addresses: [],
-      optionsModal: {
-        url: process.env.BASE_URL,
-        addRemoveLinks: true,
-        dictRemoveFile: '<span class="icon-close_big"></span>',
-        dictCancelUpload: '<span class="icon-close_big"></span>',
-        dictCancelUploadConfirmation: '',
-        maxFiles: '3',
-        dictDefaultMessage:
-          '<div class="uploader__message_container">'
-          + '<div class="uploader__message">Upload a images or videos</div><'
-          + "span class='icon-add_to_queue'></span>"
-          + '</div>',
-      },
-      file1: null,
-      file2: null,
+      files: [],
     };
   },
   computed: {
@@ -432,6 +414,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    updateFiles(files) {
+      this.files = files;
+    },
     updateSelectedSkills(specAndSkills) {
       this.selectedSpecAndSkills = specAndSkills;
     },
@@ -501,53 +486,6 @@ export default {
     goBack() {
       this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
     },
-    addSkillToBadge(event, key) {
-      const index = this.skillsIndexes[this.displaySpecIndex[key]][event];
-      if (this.selectedSkills[key].length > 4
-        || this.selectedSkills[key].filter((obj) => obj.index === index).length) return;
-      this.selectedSkills[key].push({
-        index,
-        name: this.skillsNames[this.displaySpecIndex[key]][event],
-      });
-      this.hideSelectedSkills[key].push(event);
-    },
-    removeSkillToBadge(skill, key) {
-      let hideIndex = null;
-      for (let i = 0; i < this.skillsIndexes[key].length; i += 1) {
-        if (this.skillsIndexes[this.displaySpecIndex[key]][i] === skill.index) {
-          hideIndex = i;
-          break;
-        }
-      }
-      const numberInHide = this.hideSelectedSkills[key].indexOf(hideIndex);
-      if (numberInHide > -1) {
-        this.hideSelectedSkills[key].splice(numberInHide, 1);
-      }
-
-      const numberInArray = this.selectedSkills[key].indexOf(skill);
-      this.selectedSkills[key].splice(numberInArray, 1);
-      if (!this.selectedSkills[key].length) {
-        this.skillIndex[key] = -1;
-      }
-    },
-    switchSkill(event, key) {
-      this.specIndex[key] = this.specsIndexes[event];
-      this.skillIndex[key] = -1;
-      this.selectedSkills[key] = [];
-      this.hideSelectedSkills[key] = [];
-    },
-    addSpecialization() {
-      if (this.specCount <= 2) {
-        this.specCount += 1;
-      }
-    },
-    removeSpecialization(key) {
-      this.selectedSkills[key] = [];
-      this.specIndex[key] = -1;
-      this.displaySpecIndex[key] = -1;
-      this.skillIndex[key] = -1;
-      this.specCount -= 1;
-    },
     selectAddress(address) {
       this.addresses = [];
       this.address = address.formatted;
@@ -582,6 +520,8 @@ export default {
       }
     },
     async editQuest() {
+      this.SetLoader(true);
+      const medias = await this.uploadFiles(this.files);
       const payload = {
         workplace: 'distant',
         priority: this.priorityIndex,
@@ -590,7 +530,7 @@ export default {
         title: this.questTitle,
         description: this.textarea,
         price: this.price,
-        medias: [],
+        medias,
         adType: 0,
         locationPlaceName: this.address,
         specializationKeys: this.selectedSpecAndSkills,
@@ -599,18 +539,14 @@ export default {
           latitude: this.coordinates.lat,
         },
       };
-      try {
-        const questId = await this.questData.id;
-        const response = await this.$store.dispatch('quests/editQuest', { payload, questId });
-        if (response) {
-          this.showModalEditQuest();
-          this.showToastEdited();
-          await this.$router.push(`/quests/${questId}`);
-          await this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
-        }
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
+      const questId = await this.questData.id;
+      const response = await this.$store.dispatch('quests/editQuest', { payload, questId });
+      this.SetLoader(false);
+      if (response.ok) {
+        this.showModalEditQuest();
+        this.showToastEdited();
+        await this.$router.push(`/quests/${questId}`);
+        await this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
       }
     },
     showModalEditQuest() {
