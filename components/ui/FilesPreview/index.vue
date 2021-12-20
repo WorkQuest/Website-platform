@@ -90,7 +90,7 @@ export default {
     grid-template-columns: 1fr;
     &__item {
       width: 100vw !important;
-      height: 100vw !important;
+      height: 70vw !important;
     }
   }
 }

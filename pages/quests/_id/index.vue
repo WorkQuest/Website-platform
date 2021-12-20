@@ -466,27 +466,6 @@ export default {
     margin: 25.5px 0 0 0;
   }
 }
-.img {
-  transition: 0.5s;
-  &__container{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 20px;
-    margin: 0 0 20px 0;
-  }
-  &__item {
-    @extend .img;
-    border-radius: 6px;
-    width: 280px;
-    height: 210px;
-    object-fit: cover;
-    &:hover {
-      @extend .img;
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }
-  }
-}
 .star {
   &__default {
     display: flex;
