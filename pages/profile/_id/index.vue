@@ -340,6 +340,7 @@ export default {
       } else if (this.selectedTab === 'portfolio') {
         await this.changePortfoliosData(this.perPagerPortfolios);
       } else if (this.selectedTab === 'commonInfo') {
+        this.pageQuests = 1;
         await this.changeQuestsData(2);
         await this.changeReviewsData(2);
         if (this.userData.role === 'worker') {
