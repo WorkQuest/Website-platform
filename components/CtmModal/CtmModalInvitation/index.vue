@@ -125,7 +125,7 @@ export default {
     async inviteOnQuest(questIndex) {
       const questId = this.questList.quests[questIndex].id || '';
       const payload = {
-        invitedUserId: this.options.currentWorker.id || '',
+        invitedUserId: this.options.userId || '',
         message: this.message_input || '',
       };
       try {

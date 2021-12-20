@@ -153,7 +153,7 @@
         >
           <base-btn
             :mode="'approve'"
-            :disabled="userData.questsStatistic ? userData.questsStatistic.opened <= 0 : true"
+            :disabled="mainUserData.questsStatistic ? mainUserData.questsStatistic.opened <= 0 : true"
             @click="sendInvait()"
           >
             {{ $t('workers.giveAQuest') }}
@@ -292,6 +292,7 @@ export default {
     sendInvait() {
       this.ShowModal({
         key: modals.invitation,
+        userId: this.userData.id,
       });
     },
   },
