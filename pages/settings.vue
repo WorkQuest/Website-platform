@@ -268,12 +268,11 @@
               </div>
               <ValidationObserver
                 ref="observerAddNewKnowledge"
-                v-slot="{ handleSubmit }"
                 disabled
               >
                 <form
                   class="knowledge__container"
-                  @submit.prevent="handleSubmit(addNewKnowledge)"
+                  @submit.prevent="addNewKnowledge"
                 >
                   <div class="knowledge__content">
                     <base-field
@@ -284,6 +283,7 @@
                       :placeholder="$t('settings.workExps.from')"
                       :rules="`required||between-date:${newKnowledge.from},${newKnowledge.to}`"
                       validation-mode="passive"
+                      @blur="clearError('observerAddNewKnowledge', newKnowledge)"
                     />
                     <div class="knowledge__dash">
                       -
@@ -296,6 +296,7 @@
                       :placeholder="$t('settings.workExps.to')"
                       :rules="`required||between-date:${newKnowledge.from},${newKnowledge.to}`"
                       validation-mode="passive"
+                      @blur="clearError('observerAddNewKnowledge', newKnowledge)"
                     />
                   </div>
                   <div class="knowledge__content">
@@ -306,6 +307,8 @@
                       type="grey"
                       class="knowledge__data knowledge__data_big"
                       :placeholder="$t('settings.education.educationalInstitution')"
+                      validation-mode="passive"
+                      @blur="clearError('observerAddNewKnowledge', newKnowledge)"
                     />
                     <base-btn
                       class="knowledge__btn"
@@ -370,12 +373,11 @@
               </div>
               <ValidationObserver
                 ref="observerAddNewWorkExp"
-                v-slot="{ handleSubmit }"
                 disabled
               >
                 <form
                   class="knowledge__container"
-                  @submit.prevent="handleSubmit(addNewWorkExp)"
+                  @submit.prevent="addNewWorkExp"
                 >
                   <div class="knowledge__content">
                     <base-field
@@ -386,6 +388,7 @@
                       :name="$t('settings.workExps.from')"
                       :rules="`required||between-date:${newWorkExp.from},${newWorkExp.to}`"
                       validation-mode="passive"
+                      @blur="clearError('observerAddNewWorkExp', newWorkExp)"
                     />
                     <div class="knowledge__dash">
                       -
@@ -398,6 +401,7 @@
                       :name="$t('settings.workExps.to')"
                       :rules="`required||between-date:${newWorkExp.from},${newWorkExp.to}`"
                       validation-mode="passive"
+                      @blur="clearError('observerAddNewWorkExp', newWorkExp)"
                     />
                   </div>
                   <div class="knowledge__content">
@@ -408,6 +412,7 @@
                       class="knowledge__data knowledge__data_big"
                       :placeholder="$t('settings.workExps.companyName')"
                       :name="$t('settings.workExps.companyName')"
+                      @blur="clearError('observerAddNewWorkExp', newWorkExp)"
                     />
                     <base-btn
                       class="knowledge__btn"
@@ -861,28 +866,34 @@ export default {
         console.log(e);
       }
     },
-    addNewKnowledge() {
-      this.localUserData.additionalInfo.educations.push({ ...this.newKnowledge });
-      this.newKnowledge = {
-        from: null,
-        to: null,
-        place: null,
-      };
-      this.showModalStatus('educationAddSuccessful');
-      this.$refs.observerAddNewKnowledge.reset();
+    async addNewKnowledge() {
+      const validate = await this.$refs.observerAddNewKnowledge.validate();
+      if (validate) {
+        this.localUserData.additionalInfo.educations.push({ ...this.newKnowledge });
+        this.newKnowledge = {
+          from: null,
+          to: null,
+          place: null,
+        };
+        this.showModalStatus('educationAddSuccessful');
+        this.$refs.observerAddNewKnowledge.reset();
+      }
     },
     deleteKnowledge(i) {
       this.localUserData.additionalInfo.educations.splice(i, 1);
     },
-    addNewWorkExp() {
-      this.localUserData.additionalInfo.workExperiences.push({ ...this.newWorkExp });
-      this.newWorkExp = {
-        from: null,
-        to: null,
-        place: null,
-      };
-      this.showModalStatus('workExpAddSuccessful');
-      this.$refs.observerAddNewWorkExp.reset();
+    async addNewWorkExp() {
+      const validate = await this.$refs.observerAddNewWorkExp.validate();
+      if (validate) {
+        this.localUserData.additionalInfo.workExperiences.push({ ...this.newWorkExp });
+        this.newWorkExp = {
+          from: null,
+          to: null,
+          place: null,
+        };
+        this.showModalStatus('workExpAddSuccessful');
+        this.$refs.observerAddNewWorkExp.reset();
+      }
     },
     deleteWorkExp(i) {
       this.localUserData.additionalInfo.workExperiences.splice(i, 1);
@@ -978,6 +989,12 @@ export default {
         return await this.$refs[observerName].validate();
       }
       return true;
+    },
+    clearError(observerName, value) {
+      const isClear = Object.keys(value).every((field) => value[field] === '' || value[field] === null);
+      if (isClear) {
+        this.$refs[observerName].reset();
+      }
     },
     async editUserData() {
       const validateKnowledge = await this.validateExperienceForm('observerAddNewKnowledge', this.newKnowledge);

@@ -48,6 +48,7 @@
         @keyup.enter="enter"
         @keypress.enter="onEnterPress"
         @focus="$emit('focus')"
+        @blur="$emit('blur')"
       >
       <div
         v-if="value && isSearch"
