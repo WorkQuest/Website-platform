@@ -1517,9 +1517,9 @@
     "costTitle": "Cost per hour"
   },
   "levels": {
-    "disabled": "DISABLED",
     "checkedByTime": "VERIFIED EMP.",
     "reliableEmp": "RELIABLE EMP.",
+    "disabled": "DISABLED",
     "higher": "HIGHER LEVEL EMP."
   },
   "referral": {
