@@ -455,7 +455,6 @@ export default {
       this.fullRewardAmount = rewardTokenAmount;
       this.rewardAmount = this.Floor(rewardTokenAmount);
       this.stakedAmount = this.Floor(stakeTokenAmount);
-      console.log(balanceTokenAmount, rewardTokenAmount, stakeTokenAmount);
       this.availableBalanceForStake = balanceTokenAmount;
 
       if (+stakeTokenAmount > 0) {
