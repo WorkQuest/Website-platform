@@ -35,11 +35,6 @@
     "showYourMessage": "Show your message",
     "hideYourMessage": "???"
   },
-  "uploader" : {
-    "uploadText": "Upload a images or videos",
-    "upload": "Upload",
-    "files": "files"
-  },
   "messages": {
     "alpha": "Поле {_field_} может содержать только буквенные символы",
     "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
@@ -2366,5 +2361,14 @@
   },
   "gallery": {
     "counter": "{n} ??? {c}"
+  },
+  "uploader": {
+    "uploadFile": "???",
+    "kb": "KB",
+    "mb": "MB",
+    "errors": {
+      "fileSizeLimit": "???: {n}",
+      "filesLimit": "???: {n}"
+    }
   }
 }

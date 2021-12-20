@@ -35,11 +35,6 @@
     "showYourMessage": "عرض رسالتك",
     "hideYourMessage": "???"
   },
-  "uploader": {
-    "uploadText": "تحميل الصور أو مقاطع الفيديو",
-    "upload": "تحميل",
-    "files": "الملفات"
-  },
   "messages": {
     "alpha": "لا يمكن أن يحتوي الحقل {_field_} إلا على أحرف أبجدية",
     "alpha_num": "لا يمكن أن يحتوي الحقل {_field_} إلا على أحرف أبجدية رقمية",
@@ -2366,5 +2361,14 @@
   },
   "gallery": {
     "counter": "{n} ??? {c}"
+  },
+  "uploader": {
+    "uploadFile": "???",
+    "kb": "KB",
+    "mb": "MB",
+    "errors": {
+      "fileSizeLimit": "???: {n}",
+      "filesLimit": "???: {n}"
+    }
   }
 }

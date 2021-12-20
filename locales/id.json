@@ -35,11 +35,6 @@
     "showYourMessage": "Tampilkan pesan Anda",
     "hideYourMessage": "???"
   },
-  "uploader": {
-    "uploadText": "Unggah gambar atau video",
-    "upload": "Unggah",
-    "files": "file"
-  },
   "messages": {
     "alpha": "Kolom {_field_} hanya boleh berisi karakter alfabet saja",
     "alpha_num": "Kolom {_field_} hanya boleh berisi karakter huruf dan angka saja",
@@ -2366,5 +2361,14 @@
   },
   "gallery": {
     "counter": "{n} ??? {c}"
+  },
+  "uploader": {
+    "uploadFile": "???",
+    "kb": "KB",
+    "mb": "MB",
+    "errors": {
+      "fileSizeLimit": "???: {n}",
+      "filesLimit": "???: {n}"
+    }
   }
 }

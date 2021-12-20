@@ -35,11 +35,6 @@
     "showYourMessage": "अपना मैसेज दिखाएं",
     "hideYourMessage": "???"
   },
-  "uploader": {
-    "uploadText": "इमेज या वीडियो अपलोड करें",
-    "upload": "अपलोड करें",
-    "files": "फाइलें"
-  },
   "messages": {
     "alpha": "{_field_} फील्ड में केवल अल्फाबैटिक कैरेक्टर यानी वर्णानुक्रमिक वर्ण हो सकते हैं",
     "alpha_num": "{_field_} फील्ड में केवल अल्फा-न्यूमेरिक कैरेक्टर हो सकते हैं",
@@ -2366,5 +2361,14 @@
   },
   "gallery": {
     "counter": "{n} ??? {c}"
+  },
+  "uploader": {
+    "uploadFile": "???",
+    "kb": "KB",
+    "mb": "MB",
+    "errors": {
+      "fileSizeLimit": "???: {n}",
+      "filesLimit": "???: {n}"
+    }
   }
 }

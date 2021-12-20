@@ -35,11 +35,6 @@
     "showYourMessage": "আপনার বার্তা দেখান",
     "hideYourMessage": "???"
   },
-  "uploader": {
-    "uploadText": "কোনো ছবি বা ভিডিও আপলোড করুন",
-    "upload": "আপলোড করুন",
-    "files": "ফাইল"
-  },
   "messages": {
     "alpha": "{_field_} ঘরে কেবল বর্ণসূচক অক্ষর বসতে পারে",
     "alpha_num": "{_field_} ঘরে শুধুমাত্র বর্ণ-সংখ্যাসূচক অক্ষর বসতে পারে",
@@ -2366,5 +2361,14 @@
   },
   "gallery": {
     "counter": "{n} ??? {c}"
+  },
+  "uploader": {
+    "uploadFile": "???",
+    "kb": "KB",
+    "mb": "MB",
+    "errors": {
+      "fileSizeLimit": "???: {n}",
+      "filesLimit": "???: {n}"
+    }
   }
 }

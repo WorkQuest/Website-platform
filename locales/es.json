@@ -35,11 +35,6 @@
     "showYourMessage": "Mostrar su mensaje",
     "hideYourMessage": "???"
   },
-  "uploader": {
-    "uploadText": "Cargue imágenes o vídeos",
-    "upload": "Cargar",
-    "files": "archivos"
-  },
   "messages": {
     "alpha": "El campo {_field_} solo puede contener caracteres alfabéticos",
     "alpha_num": "El campo {_field_} solo puede contener caracteres alfanuméricos",
@@ -2366,5 +2361,14 @@
   },
   "gallery": {
     "counter": "{n} ??? {c}"
+  },
+  "uploader": {
+    "uploadFile": "???",
+    "kb": "KB",
+    "mb": "MB",
+    "errors": {
+      "fileSizeLimit": "???: {n}",
+      "filesLimit": "???: {n}"
+    }
   }
 }

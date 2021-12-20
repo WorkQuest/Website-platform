@@ -35,11 +35,6 @@
     "showYourMessage": "显示您的消息",
     "hideYourMessage": "???"
   },
-  "uploader": {
-    "uploadText": "上传图片或视频",
-    "upload": "上传",
-    "files": "文件"
-  },
   "messages": {
     "alpha": "“{_field_}”字段只能包含字母字符",
     "alpha_num": "“{_field_}”字段只能包含字母数字字符",
@@ -2366,5 +2361,14 @@
   },
   "gallery": {
     "counter": "{n} ??? {c}"
+  },
+  "uploader": {
+    "uploadFile": "???",
+    "kb": "KB",
+    "mb": "MB",
+    "errors": {
+      "fileSizeLimit": "???: {n}",
+      "filesLimit": "???: {n}"
+    }
   }
 }
