@@ -124,7 +124,7 @@
           >
             {{ $t('quests.reviewsBig') }}
           </div>
-          <template v-if="userStatistics.reviewCount > 0">
+          <template v-if="reviewsObject.count > 0">
             <div
               class="reviews__container"
             >
@@ -146,7 +146,7 @@
               class="reviews__button button"
             >
               <div
-                v-if="userStatistics.reviewCount > 4"
+                v-if="reviewsObject.count > 4"
                 class="button__more"
                 @click="selectedTab = 'reviews'"
               >
@@ -306,26 +306,24 @@ export default {
       return Math.ceil(this.portfolios.count / this.perPagerPortfolios);
     },
     statisticsData() {
-      const { ratingStatistic } = this.userData;
-      const { questStatistic } = this.userData;
       return [
         {
           title: this.$t('quests.completedQuests'),
-          number: questStatistic ? questStatistic.completed : 0,
+          number: this.userData?.questsStatistic?.completed || 0,
           ratingMode: false,
           subtitle: this.$t('quests.oneTime'),
         },
         {
           title: this.$t('quests.openedQuests'),
-          number: questStatistic ? questStatistic.opened : 0,
+          number: this.userData?.questsStatistic?.opened || 0,
           ratingMode: false,
           subtitle: '',
         },
         {
           title: this.$t('quests.averageRating'),
-          number: ratingStatistic && ratingStatistic.averageMark ? ratingStatistic.averageMark : 0,
+          number: this.userData?.ratingStatistic?.averageMark || 0,
           ratingMode: true,
-          subtitle: `${this.$t('quests.fromBig')} ${ratingStatistic ? ratingStatistic.reviewCount : 0} ${this.$t('quests.reviews')}`,
+          subtitle: `${this.$t('quests.fromBig')} ${this.userData?.ratingStatistic?.reviewCount || 0} ${this.$t('quests.reviews')}`,
         },
       ];
     },

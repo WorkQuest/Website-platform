@@ -50,7 +50,7 @@
                     :class="[{'chat__title_gray' : chat.type === 'group'}, {'chat__title_link' : chat.type === 'quest'}]"
                     @click="chat.type === 'quest' ? goToQuest($event, chat.questChat.questId) : handleSelChat(chat.id)"
                   >
-                    {{ chat.type === 'group' ? $t('chat.group') : chat.questChat.quest.title }}
+                    {{ chat.type === 'group' ? $t('chat.group') : (chat && chat.questChat && chat.questChat.quest.title) }}
                   </div>
                 </div>
                 <div class="chat__row">
