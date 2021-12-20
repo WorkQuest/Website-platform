@@ -182,7 +182,10 @@
               </template>
             </base-btn>
           </div>
-          <portfolioTab :object="portfolioObject" />
+          <portfolioTab
+            class="profile__portfolio"
+            :object="portfolioObject"
+          />
           <div
             v-if="selectedTab === 'portfolio' && totalPortfoliosPages > 1"
             class="portfolio__pager pager"
@@ -213,7 +216,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import moment from 'moment';
 import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
 import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
 import userInfo from '~/components/app/pages/common/userInfo';
@@ -337,8 +339,9 @@ export default {
       } else if (this.selectedTab === 'reviews') {
         await this.changeReviewsData();
       } else if (this.selectedTab === 'portfolio') {
-        await this.changePortfoliosData();
+        await this.changePortfoliosData(this.perPagerPortfolios);
       } else if (this.selectedTab === 'commonInfo') {
+        this.pagePortfolios = 1;
         await this.changeQuestsData(2);
         await this.changeReviewsData(2);
         if (this.userData.role === 'worker') {
@@ -359,7 +362,7 @@ export default {
     },
     async pagePortfolios() {
       this.SetLoader(true);
-      await this.changePortfoliosData();
+      await this.changePortfoliosData(this.perPagerPortfolios);
       this.SetLoader(false);
     },
   },
@@ -418,7 +421,7 @@ export default {
     async changePortfoliosData(limit) {
       const payload = {
         userId: this.userId,
-        query: limit ? `limit=${limit}` : `limit=${this.perPagerPortfolios}&offset=${(this.pagePortfolios - 1) * this.perPagerPortfolios}`,
+        query: `limit=${limit || 0}&offset=${(this.pagePortfolios - 1) * limit}`,
       };
       await this.$store.dispatch('user/getUserPortfolios', payload);
       this.portfolioObject = this.portfolios;
@@ -637,6 +640,11 @@ export default {
   &__add-btn {
     width: 154px;
     margin: 20px 0 20px 0;
+  }
+}
+.profile {
+  &__portfolio {
+    margin-top: 28px;
   }
 }
 @include _1199 {
