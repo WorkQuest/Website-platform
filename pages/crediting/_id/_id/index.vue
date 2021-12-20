@@ -110,8 +110,14 @@ import modals from '~/store/modals/modals';
 
 export default {
   data() {
-    return {
-      items: [
+    return {};
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+    }),
+    items() {
+      return [
         {
           activity: this.$t('crediting.credTable.activity'),
           amount: this.$t('crediting.credTable.amount'),
@@ -126,8 +132,10 @@ export default {
           sender: this.$t('crediting.credTable.sender'),
           txHash: this.$t('crediting.credTable.txHash'),
         },
-      ],
-      testFields: [
+      ];
+    },
+    testFields() {
+      return [
         {
           key: 'activity',
           label: this.$t('crediting.credTableHeader.activity'),
@@ -188,8 +196,10 @@ export default {
             style: 'padding: 0; height: 64px; line-height: 64px',
           },
         },
-      ],
-      cards: [
+      ];
+    },
+    cards() {
+      return [
         {
           title: this.$tc('crediting.usdCount', '114.92'),
           subtitle: this.$t('crediting.liquidationPrice'),
@@ -198,8 +208,10 @@ export default {
           title: this.$tc('crediting.percentsCount', '171.65'),
           subtitle: this.$t('crediting.collateralizationRatio'),
         },
-      ],
-      containers: [
+      ];
+    },
+    containers() {
+      return [
         {
           name: this.$t('crediting.ethLocked'),
           blocks: [
@@ -238,13 +250,8 @@ export default {
             },
           ],
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-    }),
+      ];
+    },
   },
   async mounted() {
     this.SetLoader(true);
