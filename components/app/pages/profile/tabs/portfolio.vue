@@ -9,11 +9,11 @@
       class="portfolio portfolio__items"
     >
       <div
+        v-for="(item) in object.cases"
+        :key="item.id"
         class="portfolio__item"
       >
         <div
-          v-for="(item, i) in object.cases"
-          :key="i"
           class="portfolio__card"
         >
           <div class="portfolio__body">
@@ -212,6 +212,9 @@ export default {
     height: 82px;
     display: flex;
     width: 100%;
+  }
+  &__pager {
+    margin-top: 25px;
   }
 }
 .portfolio__item:hover .portfolio__edit,
