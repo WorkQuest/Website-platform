@@ -116,20 +116,49 @@
         </div>
       </div>
     </div>
-    <div class="info-grid__right">
-      <base-btn
-        mode="share-btn"
-        @click="shareModal()"
-      />
+    <div class="info-grid__right right">
       <div
-        v-if="userRole === 'worker' && userId === mainUserData.id"
-        class="contact__btn"
+        class="right__header"
       >
-        <base-btn
-          @click="toRaisedViews()"
+        <div
+          v-if="userData.role === 'worker' && userInfo.wagePerHour"
+          class="right__price"
         >
-          {{ $t('profile.raiseViews') }}
-        </base-btn>
+          <div class="price__text">
+            {{ $t('settings.costPerHour') }}
+          </div>
+          <div class="price__value">
+            {{ $tc('saving.wusdCount', userInfo.wagePerHour) }}
+          </div>
+        </div>
+        <base-btn
+          mode="share-btn"
+          @click="shareModal()"
+        />
+      </div>
+      <div class="right__footer">
+        <div
+          v-if="userRole === 'worker' && userId === mainUserData.id"
+          class="contact__btn"
+        >
+          <base-btn
+            @click="toRaisedViews()"
+          >
+            {{ $t('profile.raiseViews') }}
+          </base-btn>
+        </div>
+        <div
+          v-else-if="userRole === 'employer' && userData.role === 'worker'"
+          class="contact__btn"
+        >
+          <base-btn
+            :mode="'approve'"
+            :disabled="mainUserData.questsStatistic ? mainUserData.questsStatistic.opened <= 0 : true"
+            @click="sendInvait()"
+          >
+            {{ $t('workers.giveAQuest') }}
+          </base-btn>
+        </div>
       </div>
     </div>
   </div>
@@ -216,10 +245,14 @@ export default {
               length: 0,
             },
           },
+          questsStatistic: {
+            opened: 0,
+          },
           ratingStatistic: {
             averageMark: 0,
             reviewCount: 0,
           },
+          role: 'employer',
         };
       }
       return this.userInfo;
@@ -255,6 +288,12 @@ export default {
     },
     toRaisedViews() {
       this.$router.push('/rised-views');
+    },
+    sendInvait() {
+      this.ShowModal({
+        key: modals.invitation,
+        userId: this.userData.id,
+      });
     },
   },
 };
@@ -296,11 +335,39 @@ export default {
     grid-gap: 15px;
   }
   &__right {
-    width: 20%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-end;
+  }
+}
+.right {
+  &__header {
+    display: flex;
+    grid-gap: 30px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__footer {
+    width: 280px;
+  }
+  &__price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}
+.price {
+  &__text {
+    font-size: 14px;
+    color: #353C47;
+  }
+  &__value {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 130%;
+    color: #00AA5B;
   }
 }
 .block {
@@ -444,6 +511,14 @@ export default {
     .contact {
       display: flex;
       flex-direction: column;
+    }
+  }
+  .right {
+    &__header {
+      grid-gap: 15px;
+    }
+    &__footer {
+      width: 100%;
     }
   }
 }

@@ -51,7 +51,7 @@
       </base-btn>
       <div
         v-if="options.type === 'goToChat'"
-        class="btn__cols-two"
+        class="button_to-chat"
       >
         <base-btn
           class="status__action"
@@ -148,11 +148,9 @@ export default {
 
 <style lang="scss" scoped>
 
-.btn {
-  &__cols-two {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 10px;
+.button {
+  &_to-chat {
+    width:100%;
   }
 }
 
