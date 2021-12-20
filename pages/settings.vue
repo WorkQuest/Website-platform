@@ -45,9 +45,8 @@
       </div>
       <ValidationObserver
         ref="observerCheckForm"
-        v-slot="{ handleSubmit }"
       >
-        <form @submit.prevent="handleSubmit(editUserData)">
+        <div>
           <div class="page__profile">
             <div class="profile__title">
               {{ $t('settings.profileInfo') }}
@@ -528,14 +527,14 @@
               <div class="page__btn">
                 <base-btn
                   class="btn__save"
-                  type="submit"
+                  @click="editUserData"
                 >
                   {{ $t('settings.save') }}
                 </base-btn>
               </div>
             </div>
           </div>
-        </form>
+        </div>
       </ValidationObserver>
       <div class="settings">
         <div class="settings__left">
@@ -999,8 +998,8 @@ export default {
     async editUserData() {
       const validateKnowledge = await this.validateExperienceForm('observerAddNewKnowledge', this.newKnowledge);
       const validateWorkExp = await this.validateExperienceForm('observerAddNewWorkExp', this.newWorkExp);
-
-      if (validateKnowledge === false || validateWorkExp === false) {
+      const validateSettingsForm = await this.$refs.observerCheckForm.validate();
+      if (validateKnowledge === false || validateWorkExp === false || validateSettingsForm === false) {
         return;
       }
 
