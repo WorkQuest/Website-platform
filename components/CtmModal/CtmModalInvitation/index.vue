@@ -10,13 +10,14 @@
             <div class="avatar__container">
               <div>
                 <img
-                  alt=""
                   class="ctm-modal__img"
-                  src="~/assets/img/temp/avatar.jpg"
+                  :src="userData.avatar && userData.avatar.url ? userData.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                  :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
                 >
               </div>
               <div>
-                {{ user.name }}
+                {{ userData.firstName ? userData.firstName : "Nameless worker" }}
+                {{ userData.lastName ? userData.lastName : "" }}
               </div>
               <div>
                 <div
@@ -37,7 +38,8 @@
             <base-dd
               v-model="questIndex"
               type="gray"
-              :items="quests"
+              data-type="object"
+              :items="questFiltered"
               :label="$t('modals.chooseQuest')"
             />
           </div>
@@ -55,7 +57,7 @@
           <div class="btn__wrapper">
             <base-btn
               class="message__action"
-              @click="showTransactionSendModal()"
+              @click="inviteOnQuest(questIndex)"
             >
               {{ $t('meta.send') }}
             </base-btn>
@@ -83,17 +85,10 @@ export default {
   name: 'ModalInvitation',
   data() {
     return {
+      questFiltered: [],
       questIndex: 0,
-      quests: [
-        'Quest one',
-        'Quest two',
-        'Quest three',
-      ],
       message_input: '',
       chooseQuest_input: '',
-      user: {
-        name: 'Rosalia Vance',
-      },
       card: {
         level: {
           title: 'HIGHER LEVEL',
@@ -105,6 +100,8 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      questList: 'quests/getQuestListForInvitation',
+      userData: 'user/getUserData',
     }),
     cardLevelClass() {
       const { card } = this;
@@ -114,9 +111,32 @@ export default {
       ];
     },
   },
+  async beforeMount() {
+    await this.getQuestList();
+    await this.questFilter();
+  },
   methods: {
+    async getQuestList() {
+      await this.$store.dispatch('quests/questListForInvitation', this.userData.id);
+    },
+    async questFilter() {
+      this.questFiltered = this.questList.quests.filter((quest) => quest.status === 0);
+    },
+    async inviteOnQuest(questIndex) {
+      const questId = this.questList.quests[questIndex].id || '';
+      const payload = {
+        invitedUserId: this.options.userId || '',
+        message: this.message_input || '',
+      };
+      try {
+        await this.$store.dispatch('quests/inviteOnQuest', { questId, payload });
+        this.showTransactionSendModal();
+      } catch (e) {
+        console.log(e);
+      }
+    },
     cardsLevels() {
-      const { card, disabled } = this;
+      const { card } = this;
       return [
         { card__level_reliable: card.level.code === '2' },
         { card__level_checked: card.level.code === '3' },
@@ -132,6 +152,8 @@ export default {
         img: require('~/assets/img/ui/inviteSend.svg'),
         title: this.$t('modals.inviteSend'),
         subtitle: this.$t('modals.invitationSendText'),
+        type: 'goToChat',
+        button: this.$t('btn.goToChat'),
       });
     },
   },

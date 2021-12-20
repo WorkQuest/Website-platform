@@ -1,14 +1,37 @@
 <template>
   <div class="crosschain-page">
     <div class="crosschain-page__container">
-      <div class="crosschain-page__header">
-        <div class="title">
-          {{ $t('crosschain.pageName') }}
+      <div class="crosschain-page__header header">
+        <div class="header__left">
+          <div class="title">
+            {{ $t('crosschain.pageName') }}
+          </div>
+          <div class="title_sub">
+            {{ $t('crosschain.pageAbout') }}
+          </div>
         </div>
-        <div class="title_sub">
-          {{ $t('crosschain.pageAbout') }}
+        <div class="header__right">
+          <base-btn
+            v-if="!isConnected"
+            mode="light"
+            class="header__btn header__btn_connect"
+            :disabled="statusBusy"
+            @click="checkWalletStatus()"
+          >
+            {{ $t('mining.connectWallet') }}
+          </base-btn>
+          <base-btn
+            v-else
+            mode="light"
+            class="header__btn header__btn_disconnect"
+            :disabled="statusBusy"
+            @click="disconnectFromWallet"
+          >
+            {{ $t('meta.disconnect') }}
+          </base-btn>
         </div>
       </div>
+
       <div class="crosschain-page__content">
         <div class="info-block">
           <div class="info-block__swap-cont">
@@ -26,7 +49,7 @@
                     type="border"
                     :items="addresses"
                     :is-icon="true"
-                    @input="handleChangeSource"
+                    @input="handleChangePool"
                   />
                 </div>
               </div>
@@ -35,7 +58,7 @@
               src="~assets/img/ui/swap.png"
               alt=""
               class="swap-icon"
-              @click="togglePools()"
+              @click="handleChangePool(targetAddressInd ? 1 : 0)"
             >
             <div>
               <div class="info-block__name_bold">
@@ -51,7 +74,7 @@
                     type="border"
                     :items="addresses"
                     :is-icon="true"
-                    @input="handleChangeTarget"
+                    @input="handleChangePool"
                   />
                 </div>
               </div>
@@ -59,7 +82,7 @@
           </div>
           <div class="info-block__btns-cont">
             <base-btn
-              :disabled="metamaskStatus === 'notInstalled'"
+              :disabled="metamaskStatus === 'notInstalled' || !isConnected"
               @click="showSwapModal"
             >
               <!--            <base-btn-->
@@ -130,7 +153,7 @@
                     class="btn__redeem"
                     :class="!el.item.status ? 'btn__redeem_disabled' : ''"
                     mode="outline"
-                    :disabled="!el.item.status"
+                    :disabled="!el.item.status || !isConnected"
                     @click="redeemAction(el.item)"
                   >
                     {{ el.item.status ? $t('meta.redeem') : $t('meta.redeemed') }}
@@ -160,16 +183,17 @@ export default {
       targetAddressInd: 1,
       tableItems: {},
       items: [],
+      updateInterval: null,
     };
   },
   computed: {
     ...mapGetters({
       tokens: 'web3/getTokens',
       account: 'web3/getAccount',
-      purseData: 'web3/getPurseData',
       userData: 'user/getUserData',
       isConnected: 'web3/isConnected',
       crosschainTableData: 'defi/getCrosschainTokensData',
+      statusBusy: 'web3/getStatusBusy',
     }),
     testFields() {
       return [
@@ -249,23 +273,28 @@ export default {
     },
   },
   watch: {
-    async purseData() {
-      let newInterval;
-      if (this.purseData) {
-        await this.swapsTableData(this.purseData);
-        newInterval = setInterval(() => this.swapsTableData(this.purseData), 5000);
-        if (this.$route.name !== 'crosschain') {
-          clearInterval(newInterval);
+    async isConnected() {
+      if (typeof this.account.address === 'string') {
+        await this.swapsTableData(this.account.address, this.isConnected);
+        if (this.isConnected && !this.updateInterval) {
+          this.updateInterval = setInterval(() => this.swapsTableData(this.account.address, this.isConnected), 5000);
+        } else {
+          await clearInterval(this.updateInterval);
+          this.updateInterval = null;
         }
       }
     },
   },
   async mounted() {
-    this.SetLoader(true);
-    await this.swapsTableData(this.purseData);
-    await this.checkMetamaskStatus();
-    await this.checkMiningPoolId();
     this.SetLoader(false);
+    // this.SetLoader(true);
+    // await this.swapsTableData(this.purseData);
+    // await this.checkWalletStatus();
+    // await this.checkMiningPoolId();
+    // this.SetLoader(false);
+  },
+  async beforeDestroy() {
+    await this.disconnectFromWallet();
   },
   methods: {
     doCopy() {
@@ -273,36 +302,40 @@ export default {
         key: modals.copiedSuccess,
       });
     },
-    async checkMetamaskStatus() {
-      if (typeof window.ethereum === 'undefined') {
-        localStorage.setItem('metamaskStatus', 'notInstalled');
-        this.ShowModal({
-          key: modals.status,
-          title: 'Please install Metamask!',
-          subtitle: 'Please click install...',
-          button: 'Install',
-          type: 'installMetamask',
-        });
-      } else {
-        localStorage.setItem('metamaskStatus', 'installed');
-        await this.connectToMetamask();
-      }
+    async disconnectFromWallet() {
+      await clearInterval(this.updateInterval);
+      this.updateInterval = null;
+      await this.$store.dispatch('web3/disconnect');
+      await this.swapsTableData(this.account.address, this.isConnected);
+    },
+    async checkWalletStatus() {
+      if (this.isConnected) return;
+      const chainName = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
+      // if (typeof window.ethereum === 'undefined') {
+      //   localStorage.setItem('metamaskStatus', 'notInstalled');
+      //   this.ShowModal({
+      //     key: modals.status,
+      //     img: '~assets/img/ui/cardHasBeenAdded.svg',
+      //     title: 'Please install Metamask!',
+      //     subtitle: 'Please click install...',
+      //     button: 'Install',
+      //     type: 'installMetamask',
+      //   });
+      // } else {
+      //   localStorage.setItem('metamaskStatus', 'installed');
+      await this.connectToMetamask(chainName);
+      // }
     },
     async redeemAction(data) {
       this.SetLoader(true);
-      let redeemObj;
-      let payload;
-      const switchChainStatus = await this.$store.dispatch('web3/goToChain', { chain: data.chain });
-      await this.connectToMetamask();
-      if (switchChainStatus.ok) {
-        payload = {
-          signData: data.clearData,
-          chainId: data.chainId,
-        };
-        redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
-      } else {
-        redeemObj = { code: 500 };
+      if (localStorage.getItem('isMetaMask') === 'true') {
+        await this.checkMiningPoolId(data.chain);
       }
+      const payload = {
+        signData: data.clearData,
+        chainId: data.chainId,
+      };
+      const redeemObj = await this.$store.dispatch('web3/redeemSwap', payload);
       this.ShowModal({
         key: modals.status,
         img: redeemObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
@@ -314,20 +347,25 @@ export default {
     showToast(title, text, variant) {
       this.$store.dispatch('defi/showToast', { title, text, variant });
     },
-    async connectToMetamask() {
+    async connectToMetamask(chainName) {
       if (!this.isConnected) {
-        await this.$store.dispatch('web3/connect');
+        await this.$store.dispatch('web3/connect', { chain: chainName });
       }
+      await this.swapsTableData(this.account.address, this.isConnected);
+      await localStorage.setItem('miningPoolId', chainName);
+      this.miningPoolId = localStorage.getItem('miningPoolId');
     },
-    async checkMiningPoolId() {
-      this.miningPoolId = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
-      localStorage.setItem('miningPoolId', this.miningPoolId);
-      return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+    async checkMiningPoolId(chainName) {
+      await localStorage.setItem('miningPoolId', chainName);
+      this.miningPoolId = localStorage.getItem('miningPoolId');
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+      if (!rightChain) return await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
+      return rightChain;
     },
-    async swapsTableData(recipientAddress) {
+    async swapsTableData(recipientAddress, connectedStatus) {
       const payload = {
         recipientAddress,
-        query: '&offset=0&limit=10',
+        query: connectedStatus ? '&offset=0&limit=10' : false,
       };
       await this.$store.dispatch('defi/swapsForCrosschain', payload);
     },
@@ -340,25 +378,18 @@ export default {
         this.targetAddressInd = selInd ? 0 : 1;
       }
     },
-    handleChangeTarget(selInd) {
-      if (selInd === this.sourceAddressInd) {
-        this.sourceAddressInd = selInd ? 0 : 1;
-      }
-      this.targetAddressInd = selInd;
-    },
-    handleChangeSource(selInd) {
-      if (selInd === this.targetAddressInd) {
-        this.targetAddressInd = selInd ? 0 : 1;
-      }
-      this.sourceAddressInd = selInd;
+    handleChangePool(selInd) {
+      this.sourceAddressInd = selInd ? 1 : 0;
+      this.targetAddressInd = selInd ? 0 : 1;
     },
     async showSwapModal() {
       this.SetLoader(true);
-      const switchChainStatus = await this.checkMiningPoolId();
-      await this.checkMetamaskStatus();
-      if (switchChainStatus.ok) {
+      let switchPoolStatus = true;
+      if (localStorage.getItem('isMetaMask') === 'true') {
+        switchPoolStatus = await this.checkMiningPoolId(this.sourceAddressInd === 0 ? 'ETH' : 'BNB');
+      }
+      if (switchPoolStatus === true || switchPoolStatus.ok) {
         await this.$store.dispatch('web3/getCrosschainTokensData');
-        await this.swapsTableData();
         this.ShowModal({
           key: modals.swap,
           crosschainId: this.targetAddressInd,
@@ -403,7 +434,15 @@ export default {
   }
 
   &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     align-self: flex-end;
+    .header {
+      &__btn {
+        width: 200px;
+      }
+    }
 
     .title {
       font-weight: 500;
@@ -636,6 +675,15 @@ export default {
   }
 
   @include _575 {
+    .header {
+      flex-direction: column;
+      &__right {
+        width: 100%;
+      }
+      &__btn {
+        width: 100%;
+      }
+    }
     &__content {
       .info-block {
         &__swap-cont {

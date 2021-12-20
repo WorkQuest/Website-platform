@@ -15,6 +15,7 @@
       <span class="checkmark" />
     </label>
     <div
+      v-if="label"
       class="checkbox__label"
       @click="model = !model"
     >
@@ -36,7 +37,7 @@ export default {
     },
     label: {
       type: String,
-      default: 'Label',
+      default: '',
     },
     value: {
       type: Boolean,

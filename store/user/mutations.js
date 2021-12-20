@@ -26,6 +26,9 @@ export default {
   setUserData(state, data) {
     state.userData = data;
   },
+  setAnotherUserData(state, data) {
+    state.anotherUserData = data;
+  },
   setUserRole(state, data) {
     state.userRole = data;
   },

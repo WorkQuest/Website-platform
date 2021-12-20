@@ -12,22 +12,24 @@
         />
       </div>
       <div class="content__subtitle">
-        {{ $t('modals.areYouSure') }}
+        {{ options.title || $t('modals.areYouSure') }}
       </div>
       <div class="content__desc">
-        {{ $t('modals.areYouSureNotificationText') }}
+        {{ options.text }}
       </div>
       <div class="content__buttons buttons">
         <base-btn
           class="buttons__button"
+          :class="{'buttons__button_solo' : options.isFiles}"
           mode="outline"
           @click="hide"
         >
           {{ $t('meta.cancel') }}
         </base-btn>
         <base-btn
+          v-if="!options.isFiles"
           class="buttons__button"
-          @click="hide"
+          @click="submit"
         >
           {{ $t('meta.submit') }}
         </base-btn>
@@ -50,6 +52,11 @@ export default {
     }),
   },
   methods: {
+    async submit() {
+      const { callback } = this.options;
+      this.hide();
+      if (callback) await callback();
+    },
     hide() {
       this.CloseModal();
     },
@@ -111,6 +118,9 @@ export default {
 .buttons{
   &__button{
     max-width: 140px;
+    &_solo {
+      max-width: unset;
+    }
   }
 }
 </style>

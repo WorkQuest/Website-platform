@@ -12,7 +12,4 @@ export default {
   setUnclicable({ commit }) {
     commit('setUnclicable');
   },
-  checkWelcomeModal({ commit }, value) {
-    commit('setIsShowWelcome', value);
-  },
 };

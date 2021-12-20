@@ -4,9 +4,7 @@
     :class="{'main-white': step === 1}"
   >
     <div class="main__body page">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-      >
+      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
         <div
           v-if="step === 1"
           class="page"
@@ -61,83 +59,10 @@
               />
             </div>
           </div>
-          <div class="page__skills skills">
-            <div
-              v-for="key in specCount"
-              :key="key"
-              class="skills__block block"
-            >
-              <div class="block__skill-spec">
-                <div class="block__specialization specialization">
-                  <base-dd
-                    v-model="specIndex[key]"
-                    class="specialization__dd"
-                    type="gray"
-                    :placeholder="$t('settings.selectSpec')"
-                    :items="specializations.titles"
-                    :mode="'small'"
-                    :label="$t('settings.specialization')"
-                    @input="switchSkill($event, key)"
-                  />
-                  <div class="specialization__skills skills">
-                    <base-dd
-                      v-model="skillIndex[key]"
-                      class="specialization__dd"
-                      :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
-                      :disabled="specIndex[key] < 0"
-                      :placeholder="$t('settings.selectSkills')"
-                      :items="specializations.skills[specIndex[key]]"
-                      :mode="'small'"
-                      :label="$t('settings.skillsInput')"
-                      @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
-                    />
-                    <div
-                      v-if="selectedSkills[key].length === 5"
-                      class="skills__error"
-                    >
-                      {{ $t('ui.buttons.errors.manySkills') }}
-                    </div>
-                  </div>
-                </div>
-                <div class="block__skill skill">
-                  <div
-                    v-for="(item, i) in selectedSkills[key]"
-                    :key="i"
-                    class="skill__badge"
-                  >
-                    {{ item }}
-                    <button
-                      class="skill__remove"
-                      @click="removeSkillToBadge(item, key)"
-                    >
-                      <img
-                        src="~assets/img/ui/close_blue.svg"
-                        alt="x"
-                      >
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <base-btn
-                :text="$t('settings.removeSpec')"
-                class="specialization__btn specialization__btn_remove"
-                @click="removeSpecialization(key)"
-              />
-            </div>
-            <base-btn
-              :text="$t('settings.addSpec')"
-              :disabled="specCount === 3"
-              class="skills__btn-add"
-              :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
-              @click="addSpecialization"
-            />
-            <div
-              v-if="specCount === 3"
-              class="skills__error"
-            >
-              {{ $t('ui.buttons.errors.manySpec') }}
-            </div>
-          </div>
+          <specializations-selector
+            :skills="questData.questSpecializations"
+            @changeSkills="updateSelectedSkills"
+          />
           <div class="page__address">
             <base-field
               v-model="address"
@@ -191,17 +116,20 @@
             <div class="upload__title">
               {{ $t('quests.uploadMaterials') }}
             </div>
-            <dropzone
-              id="uploader"
-              ref="el"
-              :options="optionsModal"
-              :include-styling="true"
+            <files-uploader
+              :multiple="true"
+              :limit="10"
+              :limit-bytes="10485760"
+              :limit-bytes-video="10485760"
+              :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
+              :preloaded-files="questData.medias"
+              @change="updateFiles"
             />
           </div>
           <div class="upload btn btn__container btn__container_right">
             <div class="btn__create">
               <base-btn
-                :disabled="!(invalid === false && !(selectedSkills[1].length === 0))"
+                :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
                 @click="handleSubmit(toRiseViews)"
               >
                 {{ $t('quests.editAQuest') }}
@@ -297,7 +225,7 @@
               <div class="btn-container__btn">
                 <base-btn
                   :mode="'outline'"
-                  @click="toEditQuest()"
+                  @click="editQuest"
                 >
                   {{ $t('meta.skipAndEnd') }}
                 </base-btn>
@@ -320,42 +248,21 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Dropzone from 'nuxt-dropzone';
-import 'nuxt-dropzone/dropzone.css';
-import '~/assets/scss/vue2Dropzone.min.css';
-import '~/assets/scss/dropzone.scss';
 import modals from '~/store/modals/modals';
 
 const { GeoCode } = require('geo-coder');
 
 export default {
-  name: 'CreateQuest',
-  components: {
-    Dropzone,
-  },
+  name: 'EditQuest',
   data() {
     return {
       ads: {
         currentAdPrice: '',
       },
       period: 1,
-      specCount: 0,
-      specIndex: {
-        1: -1,
-        2: -1,
-        3: -1,
-      },
-      skillIndex: {
-        1: -1,
-        2: -1,
-        3: -1,
-      },
-      selectedSkills: {
-        1: [],
-        2: [],
-        3: [],
-      },
+      selectedSpecAndSkills: [],
       priorityIndex: 1,
+      employmentIndex: 0,
       categoryIndex: 0,
       runtimeIndex: 0,
       periodIndex: 0,
@@ -369,21 +276,7 @@ export default {
       coordinates: {},
       currency: ' WUSD',
       addresses: [],
-      optionsModal: {
-        url: process.env.BASE_URL,
-        addRemoveLinks: true,
-        dictRemoveFile: '<span class="icon-close_big"></span>',
-        dictCancelUpload: '<span class="icon-close_big"></span>',
-        dictCancelUploadConfirmation: '',
-        maxFiles: '3',
-        dictDefaultMessage:
-          '<div class="uploader__message_container">'
-          + '<div class="uploader__message">Upload a images or videos</div><'
-          + "span class='icon-add_to_queue'></span>"
-          + '</div>',
-      },
-      file1: null,
-      file2: null,
+      files: [],
     };
   },
   computed: {
@@ -391,6 +284,7 @@ export default {
       questData: 'quests/getQuest',
       userData: 'user/getUserData',
       step: 'quests/getCurrentStepEditQuest',
+      filters: 'quests/getFilters',
     }),
     days() {
       return [
@@ -492,18 +386,6 @@ export default {
         },
       ];
     },
-    specializations() {
-      const specializations = Object.keys(this.$t('settings.specializations')).length;
-      const specs = {
-        titles: [],
-        skills: [],
-      };
-      for (let i = 1; i < specializations; i += 1) {
-        specs.skills.push(this.$t(`settings.specializations.${i}.sub`));
-        specs.titles.push(this.$t(`settings.specializations.${i}.title`));
-      }
-      return specs;
-    },
     runtime() {
       return [
         this.$t('quests.runtime.urgent'),
@@ -529,19 +411,24 @@ export default {
   async mounted() {
     this.SetLoader(true);
     await this.editQuestFill();
-    console.log(this.$refs.el);
     this.SetLoader(false);
   },
   methods: {
+    updateFiles(files) {
+      this.files = files;
+    },
+    updateSelectedSkills(specAndSkills) {
+      this.selectedSpecAndSkills = specAndSkills;
+    },
     async editQuestFill() {
-      console.log(this.questData);
       this.runtimeValue = 1;
-      this.questTitle = await this.questData.title;
-      this.address = await this.questData.locationPlaceName;
-      this.price = await this.questData.price;
-      this.textarea = await this.questData.description;
-      this.coordinates.lng = await this.questData.location.longitude;
-      this.coordinates.lat = await this.questData.location.latitude;
+      this.employmentIndex = this.parseEmployment(this.questData.employment);
+      this.questTitle = this.questData.title;
+      this.address = this.questData.locationPlaceName;
+      this.price = this.questData.price;
+      this.textarea = this.questData.description;
+      this.coordinates.lng = this.questData.location.longitude;
+      this.coordinates.lat = this.questData.location.latitude;
     },
     cardStatus(item) {
       let style;
@@ -599,36 +486,25 @@ export default {
     goBack() {
       this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
     },
-    addSkillToBadge(event, object, index, key) {
-      if (!this.selectedSkills[key].includes(object[index]) && this.selectedSkills[key].length <= 4) {
-        this.selectedSkills[key].push(object[index]);
-      }
-    },
-    removeSkillToBadge(skillName, key) {
-      const numberInArray = this.selectedSkills[key].indexOf(skillName);
-      this.selectedSkills[key].splice(numberInArray, 1);
-      if (!this.selectedSkills[key].length) {
-        this.skillIndex[key] = -1;
-      }
-    },
-    switchSkill(event, key) {
-      this.skillIndex[key] = -1;
-      this.selectedSkills[key] = [];
-    },
-    addSpecialization() {
-      if (this.specCount <= 2) {
-        this.specCount += 1;
-      }
-    },
-    removeSpecialization(key) {
-      this.selectedSkills[key] = [];
-      this.specIndex[key] = -1;
-      this.skillIndex[key] = -1;
-      this.specCount -= 1;
-    },
     selectAddress(address) {
       this.addresses = [];
       this.address = address.formatted;
+    },
+    convertEmployment(employmentId) {
+      const employments = [
+        'fullTime',
+        'partTime',
+        'fixedTerm',
+      ];
+      return employments[employmentId];
+    },
+    parseEmployment(employment) {
+      const employments = {
+        fullTime: 0,
+        partTime: 1,
+        fixedTerm: 2,
+      };
+      return employments[employment];
     },
     async getAddressInfo(address) {
       let response = [];
@@ -643,35 +519,34 @@ export default {
         console.log(e);
       }
     },
-    async editQuest(specAndSkills) {
+    async editQuest() {
+      this.SetLoader(true);
+      const medias = await this.uploadFiles(this.files);
       const payload = {
         workplace: 'distant',
         priority: this.priorityIndex,
+        employment: this.convertEmployment(this.employmentIndex),
         category: 'Default',
         title: this.questTitle,
         description: this.textarea,
         price: this.price,
-        medias: [],
+        medias,
         adType: 0,
         locationPlaceName: this.address,
-        skillFilters: specAndSkills,
+        specializationKeys: this.selectedSpecAndSkills,
         location: {
           longitude: this.coordinates.lng,
           latitude: this.coordinates.lat,
         },
       };
-      try {
-        const questId = await this.questData.id;
-        const response = await this.$store.dispatch('quests/editQuest', { payload, questId });
-        if (response) {
-          this.showModalEditQuest();
-          this.showToastEdited();
-          await this.$router.push(`/quests/${questId}`);
-          await this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
-        }
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
+      const questId = await this.questData.id;
+      const response = await this.$store.dispatch('quests/editQuest', { payload, questId });
+      this.SetLoader(false);
+      if (response.ok) {
+        this.showModalEditQuest();
+        this.showToastEdited();
+        await this.$router.push(`/quests/${questId}`);
+        await this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
       }
     },
     showModalEditQuest() {
@@ -695,17 +570,6 @@ export default {
         variant: 'warning',
         text: e.response?.data?.msg,
       });
-    },
-    async toEditQuest() {
-      const specAndSkills = this.questData?.skillFilters || {};
-      // eslint-disable-next-line guard-for-in,no-restricted-syntax
-      for (const spec in this.specIndex) {
-        if (this.specIndex[spec] !== -1) {
-          const specName = this.specializations.titles[this.specIndex[spec]];
-          specAndSkills[specName] = this.selectedSkills[spec];
-        }
-      }
-      await this.editQuest(specAndSkills);
     },
   },
 };
