@@ -35,12 +35,6 @@
     "showYourMessage": "Show your message",
     "hideYourMessage": "Hide your message"
   },
-
-  "uploader" : {
-    "uploadText": "Upload a images or videos",
-    "upload": "Upload",
-    "files": "files"
-  },
   "messages": {
     "alpha": "The {_field_} field may only contain alphabetic characters",
     "alpha_num": "The {_field_} field may only contain alpha-numeric characters",
@@ -1153,7 +1147,7 @@
     "transfer": "Transfer",
     "recepient": "Recepient address",
     "transferInfo": "Transfer info",
-    "currencyDetails": "Currency",
+    "currencyDeta ils": "Currency",
     "generatingDetails": "Generating",
     "collateralizationRatio": "Collateralization ratio",
     "depositIsOpenedText": "",
@@ -1227,7 +1221,9 @@
     "thanksText": "",
     "emailVerificationCodeField": "email verification",
     "youCanAttachUpToNFiles": "You can attach up to {n} files",
-    "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format"
+    "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
+    "connectError": "Error connection",
+    "incorrectChain": "You choose incorrect chain !"
   },
   "ui": {
     "jobQuestors": "Job Questors",
@@ -1246,16 +1242,16 @@
       "login": "Login"
     },
     "locals": {
-      "en": "EN",
-      "ru": "RU",
-      "ba": "BA",
-      "zh": "ZH",
-      "fr": "FR",
-      "hi": "HI",
-      "in": "IN",
-      "po": "PO",
-      "sp": "SP",
-      "ae": "AE"
+      "en": "en",
+      "ru": "ru",
+      "bn": "bn",
+      "zh": "zh",
+      "fr": "fr",
+      "hi": "hi",
+      "id": "id",
+      "pt": "pt",
+      "es": "es",
+      "ar": "ar"
     },
     "notifications": {
       "title": "Notifications",
@@ -2367,5 +2363,14 @@
   },
   "gallery": {
     "counter": "{n} of {c}"
+  },
+  "uploader": {
+    "uploadFile": "Upload files",
+    "kb": "KB",
+    "mb": "MB",
+    "errors": {
+      "fileSizeLimit": "File size limit: {n}",
+      "filesLimit": "Files limit: {n}"
+    }
   }
 }

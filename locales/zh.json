@@ -1,0 +1,2374 @@
+{
+  "invite": {
+    "title": "已邀请"
+  },
+  "response": {
+    "title": "已回复"
+  },
+  "active": {
+    "title": "已回复"
+  },
+  "company": {
+    "from": "来自"
+  },
+  "performed": {
+    "title": "已执行"
+  },
+  "btn": {
+    "agree": "同意",
+    "disagree": "Disagree",
+    "completeWorkOnQuest": "???",
+    "rejectCompletedWorkOnQuest": "???",
+    "acceptCompletedWorkOnQuest": "???",
+    "closeQuest": "???",
+    "goToChat": "转到聊天",
+    "dispute": "发起争议",
+    "responded": "已发送回复",
+    "sendARequest": "发送请求",
+    "view": "查看"
+  },
+  "distance": {
+    "m": "米"
+  },
+  "info": {
+    "yourMessage": "???",
+    "showYourMessage": "显示您的消息",
+    "hideYourMessage": "???"
+  },
+  "messages": {
+    "alpha": "“{_field_}”字段只能包含字母字符",
+    "alpha_num": "“{_field_}”字段只能包含字母数字字符",
+    "alpha_dash": "“{_field_}”字段可包含字母数字字符以及短划线和下划线",
+    "alpha_spaces": "“{_field_}”字段只能包含字母字符和空格",
+    "between": "“{_field_}”字段必须介于 {min} 和 {max}",
+    "confirmed": "“{_field_}”字段确认不匹配",
+    "digits": "“{_field_}”字段必须是数字且恰好包含 {length} 位数字",
+    "dimensions": "“{_field_}”字段必须是 {width} 像素 × {height} 像素",
+    "email": "“{_field_}”字段必须是有效的电子邮件",
+    "excluded": "“{_field_}”字段不是有效值",
+    "ext": "“{_field_}”字段不是有效文件",
+    "image": "“{_field_}”字段必须是图片",
+    "integer": "“{_field_}”字段必须是整数",
+    "length": "“{_field_}”字段的长度必须为 {length}",
+    "max_value": "“{_field_}”字段必须小于或等于 {max}",
+    "max": "“{_field_}”字段不能大于 {length} 个字符",
+    "mimes": "“{_field_}”字段必须具有有效的文件类型",
+    "min_value": "“{_field_}”字段必须为 {min} 或更多",
+    "min": "“{_field_}”字段必须至少为 {length} 个字符",
+    "numeric": "“{_field_}”字段只能包含数字字符",
+    "oneOf": "“{_field_}”字段不是有效值",
+    "regex": "“{_field_}”字段格式无效",
+    "required_if": "“{_field_}”字段为必填字段",
+    "required": "“{_field_}”字段为必填字段",
+    "size": "“{_field_}”字段必须小于 {size}KB",
+    "decimal": "“{_field_}”字段必须仅包含十进制值",
+    "decimalPlaces": "{_field_} ??? {places}"
+    },
+  "labels": {
+    "firstName": "名字",
+    "lastName": "姓氏",
+    "mail": "邮件",
+    "password": "输入密码"
+  },
+  "placeholders": {
+    "default": "占位符",
+    "firstName": "三",
+    "lastName": "张",
+    "mail": "your@mail.com",
+    "email": "电子邮件地址",
+    "password": "•••••••"
+  },
+  "about": {
+    "contact": "联系我们",
+    "content": {
+      "title": "关于我们",
+      "text": "WorkQuest 是一个基于区块链技术的社交项目，可以在 Quest 模式下提供工作机会和解决雇主方面的任务。您在找工作吗？WorkQuest 将帮助您找到附近的 Quest。您需要工作者实现目标吗？只需在 WorkQuest 站点创建 Quest 即可。服务承担执行 Quest 的保证义务。雇主资金由我方保管，雇员在确认工作执行情况后将在帐户中收到资金。由评分、评价和已完成 Quest 列表组成的系统将有助于轻松寻找合适的人员和最优秀的专家。\n\n          我们的目标是简化雇主与雇员之间的沟通，帮助数百万人就业，改善人们的财务状况，解决在各行各业寻找可靠专业人士的终身问题，以信任、相互尊重和所有参与者的福祉为基础创造进步的数字经济。"
+    }
+  },
+  "registration": {
+    "edit": "编辑",
+    "registration": "注册",
+    "emailConfirm": "邮件已发送到您的电子邮件地址",
+    "emailConfirmTitle": "查看您的邮件"
+  },
+  "login": {
+    "signIn": "登录",
+    "account": "没有帐户？",
+    "remember": "记住我",
+    "forgot": "忘记了密码？",
+    "loginWith": "使用您的 \n社交媒体帐户登录",
+    "create": "创建帐户"
+  },
+  "profile": {
+    "raiseViews": "提高浏览量",
+    "educations": "教育背景",
+    "prevWorkExp": "过去的工作经验",
+    "active": "有效提议",
+    "radius": "距离您的半径",
+    "lead": "交期",
+    "proposalLocation": "基于您 \n当前位置的 \n提议位置",
+    "proposalStatus": "提议状态",
+    "urgently": "紧急",
+    "details": "查看详情",
+    "available": "可用",
+    "viewProfile": "查看 \n个人资料",
+    "invite": "邀请 Questor",
+    "slogan": "创建工作提议",
+    "add": "添加完整信息和发布时间以找到合适的",
+    "create": "创建",
+    "writeAMessage": "编写消息",
+    "quests": "Quest",
+    "reviews": "评价",
+    "portfolio": "作品集",
+    "common": "???",
+    "sidebar": {
+      "filter": "所有 Quest 筛选器",
+      "choose": "（选择简单或 \n专业类别）",
+      "quests": "Quest",
+      "specialized": "专业 Quest",
+      "find": "找工作"
+    }
+  },
+  "meta": {
+    "redeem": "???",
+    "redeemed": "???",
+    "pay": "???",
+    "skipAndEnd": "???",
+    "cleanUp": "???",
+    "close": "???",
+    "connected": "???",
+    "disconnect": "???",
+    "delete": "???",
+    "back": "后退",
+    "ok": "确定",
+    "send": "发送",
+    "save": "保存",
+    "reset": "重置",
+    "fromYou": "在您附近",
+    "details": "查看详情",
+    "cancel": "取消",
+    "confirm": "确认",
+    "buyWUSD": "购买 WUSD",
+    "submit": "提交",
+    "showAllReviews": "显示所有评价",
+    "showAllQuests": "???",
+    "showAllPortfolios": "???",
+    "later": "以后再说",
+    "iAgree": "我同意",
+    "next": "下一个",
+    "continue": "继续",
+    "change": "更改",
+    "apply": "应用",
+    "connectSMSVer": "连接短信验证",
+    "resendSMS": "重新发送短信",
+    "disable": "禁用",
+    "remindLater": "稍后提醒",
+    "leave": "???"
+  },
+  "priority": {
+    "title": "选择优先级",
+    "all": "所有优先级",
+    "low": "固定交付",
+    "normal": "短期",
+    "urgent": "紧急",
+    "employee": {
+      "low": "???",
+      "normal": "???",
+      "urgent": "???"
+    }
+  },
+  "signIn": {
+    "title": "登录",
+    "account": "没有帐户？",
+    "regs": "注册",
+    "login": "登录",
+    "remember": "记住我",
+    "forgot": "忘记了密码",
+    "or": "或者",
+    "loginWith": "使用以下方式登录",
+    "welcomeToWorkQuest": "欢迎来到 WorkQuest",
+    "pleaseSignIn": "请登录",
+    "workQuest": "WorkQuest",
+    "makingMoneyIsFast": "WorkQuest：\n 全球去中心化\n 就业市场",
+    "dontHaveAnAccount": "没有帐户？",
+    "signUp": "注册",
+    "forgotYourPass": "忘记了密码？"
+  },
+  "signWorkQuest": {
+    "title": "WorkQuest 社交网络",
+    "description": "您可以使用您的 WorkQuest DAO 登录名和密码登录",
+    "daoUsername": "DAO 用户名",
+    "daoPass": "DAO 密码"
+  },
+  "securityCheck": {
+    "title": "安全检查",
+    "confCode": "Google 确认码",
+    "placeholder": "占位符",
+    "confCodeDesc": "输入来自 Google 身份验证器应用的 6 位代码",
+    "confCodeField": "???"
+  },
+  "signUp": {
+    "title": "注册",
+    "haveAccount": "已经拥有帐户？",
+    "auth": "授权",
+    "firstName": "名字",
+    "lastName": "姓氏",
+    "email": "电子邮件",
+    "password": "密码",
+    "confirmPassword": "再次输入密码",
+    "create": "创建帐户",
+    "back": "后退"
+  },
+  "forgot": {
+    "title": "忘记了密码？",
+    "desc": "我们将向您发送重置密码的说明。"
+  },
+  "restore": {
+    "title": "恢复密码",
+    "modal": "密码已更改"
+  },
+  "role": {
+    "employer": "雇主",
+    "worker": "雇员",
+    "enter": "输入",
+    "choose": "选择您的角色",
+    "employerWant": "我想创建任务，我正在寻找工作者",
+    "workerWant": "我想搜索任务，我正在从事自由职业",
+    "chooseThis": "选择此角色"
+  },
+  "privacy": {
+    "title": "隐私政策",
+    "desc": "",
+    "agree": "我同意",
+    "privacyLink": "隐私政策",
+    "termsLink": "条款与条件",
+    "amlLink": "反洗钱和反恐融资政策"
+  },
+  "layout": {
+    "create": "创建 Quest",
+    "links": {
+      "terms": "\t· 条款与条件",
+      "privacy": "\t· 隐私政策"
+    }
+  },
+  "skills": {
+    "title": "技能"
+  },
+  "worker": {
+    "cost": {
+      "notIndicated": "???..."
+    }
+  },
+  "quests": {
+    "showAll": "???",
+    "wusd": "WUSD",
+    "employer": {
+      "usersNotResponded": "???"
+    },
+    "companyNotListed": "???",
+    "workersNotInvited": "???",
+    "startChat": "???",
+    "invite": "???",
+    "decline": "???",
+    "questTitle": "???",
+    "questDesc": "???",
+    "questInfo": "???",
+    "questClosed!": "???",
+    "closed": "???",
+    "completed": "???",
+    "rejected": "???",
+    "completedWorkAccepted": "???",
+    "completedWorkRejected": "???",
+    "workOnQuestAccepted": "???",
+    "workOnQuestRejected": "???",
+    "pleaseWaitEmp": "???",
+    "quests": "???",
+    "publicationDate": "???",
+    "urgent": "紧急",
+    "specQuests": "???",
+    "permanentJob": "???",
+    "typeOfJob": "工作类型",
+    "partTime": "???",
+    "fixedTerm": "???",
+    "contract": "???",
+    "remoteWork": "???",
+    "allVariants": "???",
+    "levels": {
+      "1": {
+        "title": "???",
+        "desc": "???"
+      },
+      "2": {
+        "title": "???",
+        "desc": "???"
+      },
+      "3": {
+        "title": "???",
+        "desc": "???"
+      },
+      "4": {
+        "title": "???",
+        "desc": "???"
+      }
+    },
+    "createQuest": {
+      "choosePeriod": "???"
+    },
+    "distance": {
+      "100": "+ 100 m",
+      "500": "+ 500 m",
+      "1000": "+ 1000 m"
+    },
+    "rating": {
+      "title": "???",
+      "verified": "???",
+      "reliable": "???",
+      "topRanked": "???"
+    },
+    "distantWork": {
+      "title": "远程工作",
+      "allWorkplaces": "???",
+      "distantWork": "远程工作",
+      "workInOffice": "在办公室工作",
+      "bothVariant": "两种选择"
+    },
+    "employment": {
+      "employment": "???",
+      "fullTime": "???",
+      "partTime": "???",
+      "fixedTerm": "???"
+    },
+    "runtime": {
+      "runtime": "???",
+      "urgent": "???",
+      "shortTerm": "???",
+      "fixedDelivery": "???"
+    },
+    "spec": {
+      "spec": "???",
+      "addSpec": "???"
+    },
+    "skills": {
+      "skills": "???",
+      "chooseSkills": "???",
+      "limit": "???"
+    },
+    "hours": "小时",
+    "invited": "已邀请",
+    "active": "有效",
+    "performed": "已执行",
+    "requested": "已请求",
+    "youInvited": "您已邀请",
+    "inProgressBy": "进行中：",
+    "finishedBy": "???:",
+    "showAllCases": "显示所有案例",
+    "portfolio": "作品集",
+    "searchQuests": "搜索 Quest",
+    "readCompletely": "完整阅读",
+    "questBig": "Quest",
+    "fromBig": "来自",
+    "fromSmall": "???",
+    "fromYou": "来自您",
+    "reviews": "评价",
+    "reviewsBig": "评价",
+    "MyQuests": "我的 Quest",
+    "activeQuest": "有效 Quest",
+    "waitWorker": "???",
+    "pendingConsideration": "???",
+    "dispute": "???",
+    "questClosed": "???",
+    "questFinished": "???",
+    "dontHaveSpec": "???...",
+    "namelessWorker": "???",
+    "nothingAboutMe": "???...",
+    "unknownAddress": "???...",
+    "unknownPhoneNumber": "???...",
+    "unknownEmailAddress": "???..",
+    "questActive:": "???:",
+    "questClosed:": "???:",
+    "questDispute:": "???:",
+    "questWaitConfirm:": "???:",
+    "skillsNotSpecified": "???...",
+    "proposal": "提议",
+    "category": "选择类别",
+    "address": "添加地址",
+    "uploadMaterials": "上传材料以更好地描述 Quest",
+    "price": "价格",
+    "filter": {
+      "btn": "筛选器"
+    },
+    "ads": {
+      "promoteYourQuest": "推广您的 Quest",
+      "publishForFree": "免费发布",
+      "boostYourPublications": "推广您的发布",
+      "costPerClick": "每次点击费用"
+    },
+    "selectLocation": "选择地点",
+    "city": "城市",
+    "period": "时长",
+    "EstimatedPayment": "预计付款：",
+    "createAQuest": "创建 Quest",
+    "editAQuest": "???",
+    "activeQuests": "有效 Quest",
+    "openedQuests": "???",
+    "completedQuests": "已完成的 Quest",
+    "oneTime": "一次性",
+    "fullTime": "全职",
+    "uploadAImagesOrVideos": "上传图片或视频",
+    "averageRating": "平均评分",
+    "showAllActiveQuests": "显示所有有效 Quest",
+    "performanceTimer": "有效期至：",
+    "questAmount": "Quest",
+    "otherQuestsSpec": "其他 Quest（按专业）",
+    "questMaterials": "额外 Quest 材料",
+    "searchResults": "搜索结果",
+    "type": "工作类型",
+    "time": "添加时间",
+    "priority": {
+      "title": "???",
+      "all": "所有优先级",
+      "low": "低",
+      "normal": "普通",
+      "urgent": "紧急"
+    },
+    "ui": {
+      "showMap": "显示地图",
+      "search": "城市/街道/地点"
+    },
+    "worker": "工作者",
+    "raiseViews": "提高浏览量",
+    "deleteQuest": "删除 Quest",
+    "approve": "批准",
+    "startQuest": "开始 Quest"
+  },
+  "filters": {
+    "dd": {
+      "1": "专业",
+      "2": "Quest",
+      "3": "紧急",
+      "4": "工作类型",
+      "5": "所有优先级",
+      "6": "价格",
+      "7": "添加时间"
+    },
+    "title": "筛选器",
+    "titleAll": "所有筛选器",
+    "filterBtn": "显示所有筛选器",
+    "commonSub": {
+      "selectAll": "全选"
+    },
+    "items": {
+      "1": {
+        "title": "???",
+        "sub": {
+          "100": "???",
+          "101": "???",
+          "102": "???",
+          "103": "???",
+          "104": "???",
+          "105": "???",
+          "106": "???",
+          "107": "???",
+          "108": "???",
+          "109": "???",
+          "110": "???",
+          "111": "???",
+          "112": "???",
+          "113": "???"
+        }
+      },
+      "2": {
+        "title": "酒吧和餐厅员工",
+        "sub": {
+          "200": "民族特色",
+          "201": "快餐",
+          "202": "快速休闲",
+          "203": "休闲餐饮",
+          "204": "高级休闲",
+          "205": "家庭风格",
+          "206": "精致餐饮",
+          "207": "酒楼和小酒馆",
+          "208": "其他酒吧和餐厅员工"
+        }
+      },
+      "3": {
+        "title": "???",
+        "sub": {
+          "300": "???",
+          "301": "???",
+          "302": "???",
+          "303": "???",
+          "304": "???"
+        }
+      },
+      "4": {
+        "title": "???",
+        "sub": {
+          "400": "???",
+          "406": "???",
+          "402": "???",
+          "403": "???",
+          "404": "???",
+          "405": "???"
+        }
+      },
+      "5": {
+        "title": "???",
+        "sub": {
+          "500": "???",
+          "501": "???"
+        }
+      },
+      "6": {
+        "title": "???",
+        "sub": {
+          "601": "???",
+          "600": "???",
+          "602": "???",
+          "603": "???",
+          "604": "???",
+          "605": "???",
+          "606": "???"
+        }
+      },
+      "7": {
+        "title": "???",
+        "sub": {
+          "700": "???",
+          "701": "???",
+          "702": "???",
+          "703": "???",
+          "704": "???",
+          "705": "???",
+          "706": "???",
+          "707": "???",
+          "708": "???",
+          "709": "???",
+          "710": "???",
+          "711": "???",
+          "712": "???"
+        }
+      },
+      "8": {
+        "title": "???",
+        "sub": {
+          "800": "???",
+          "801": "???",
+          "802": "???",
+          "803": "???",
+          "804": "???",
+          "805": "???",
+          "806": "???",
+          "807": "???",
+          "808": "???",
+          "809": "???"
+        }
+      },
+      "9": {
+        "title": "???",
+        "sub": {
+          "900": "???",
+          "901": "???",
+          "902": "???",
+          "903": "???",
+          "904": "???",
+          "905": "???",
+          "906": "???",
+          "907": "???",
+          "908": "???"
+        }
+      },
+      "10": {
+        "title": "???",
+        "sub": {
+          "1007": "???",
+          "1008": "???",
+          "1005": "???",
+          "1004": "???",
+          "1002": "???",
+          "1003": "???",
+          "1006": "???",
+          "1001": "???",
+          "1000": "???"
+        }
+      },
+      "11": {
+        "title": "???",
+        "sub": {
+          "1105": "???",
+          "1104": "???",
+          "1102": "???",
+          "1103": "???",
+          "1101": "???",
+          "1100": "???"
+        }
+      },
+      "12": {
+        "title": "???",
+        "sub": {
+          "1212": "???",
+          "1203": "???",
+          "1217": "???",
+          "1202": "???",
+          "1213": "???",
+          "1206": "???",
+          "1200": "???",
+          "1211": "???",
+          "1210": "???",
+          "1207": "???",
+          "1218": "???",
+          "1201": "???",
+          "1208": "???",
+          "1204": "???",
+          "1215": "???",
+          "1214": "???",
+          "1209": "???",
+          "1205": "???",
+          "1216": "???"
+        }
+      },
+      "13": {
+        "title": "???",
+        "sub": {
+          "1300": "???",
+          "1302": "???",
+          "1303": "???",
+          "1301": "???",
+          "1304": "???"
+        }
+      },
+      "14": {
+        "title": "???",
+        "sub": {
+          "1406": "???",
+          "1405": "???",
+          "1403": "???",
+          "1404": "???",
+          "1401": "???",
+          "1402": "???",
+          "1400": "???"
+        }
+      },
+      "15": {
+        "title": "???",
+        "sub": {
+          "1503": "???",
+          "1500": "???",
+          "1501": "???",
+          "1505": "???",
+          "1502": "???",
+          "1506": "???",
+          "1507": "???",
+          "1504": "???"
+        }
+      },
+      "16": {
+        "title": "???",
+        "sub": {
+          "1600": "???",
+          "1601": "???",
+          "1602": "???",
+          "1603": "???",
+          "1604": "???",
+          "1605": "???",
+          "1606": "???",
+          "1607": "???",
+          "1608": "???"
+        }
+      },
+      "17": {
+        "title": "???",
+        "sub": {
+          "1700": "???",
+          "1701": "???",
+          "1702": "???",
+          "1703": "???",
+          "1704": "???"
+        }
+      },
+      "18": {
+        "title": "???",
+        "sub": {
+          "1800": "???",
+          "1801": "???",
+          "1802": "???",
+          "1803": "???",
+          "1804": "???",
+          "1805": "???",
+          "1806": "???",
+          "1807": "???",
+          "1808": "???",
+          "1809": "???"
+        }
+      },
+      "19": {
+        "title": "???",
+        "sub": {
+          "1900": "???",
+          "1901": "???",
+          "1902": "???",
+          "1903": "???",
+          "1904": "???"
+        }
+      },
+      "20": {
+        "title": "???",
+        "sub": {
+          "2000": "???",
+          "2001": "???",
+          "2002": "???",
+          "2003": "???",
+          "2004": "???",
+          "2005": "???"
+        }
+      },
+      "21": {
+        "title": "网页、移动和软件开发",
+        "sub": {
+          "2100": "桌面软件开发",
+          "2101": "电子商务开发",
+          "2102": "游戏开发",
+          "2103": "移动开发",
+          "2104": "其他软件开发",
+          "2105": "产品管理",
+          "2106": "质量保证和测试",
+          "2107": "脚本和实用程序",
+          "2108": "网页和移动设计",
+          "2109": "网页开发",
+          "2110": "其他网页、移动和软件开发"
+        }
+      },
+      "22": {
+        "title": "???",
+        "sub": {
+          "2200": "???",
+          "2201": "???",
+          "2202": "???",
+          "2203": "???",
+          "2204": "???",
+          "2205": "???",
+          "2206": "???"
+        }
+      },
+      "23": {
+        "title": "???",
+        "sub": {
+          "2300": "???",
+          "2301": "???",
+          "2302": "???",
+          "2303": "???",
+          "2304": "???"
+        }
+      },
+      "24": {
+        "title": "???",
+        "sub": {
+          "2400": "???",
+          "2401": "???",
+          "2402": "???",
+          "2403": "???",
+          "2404": "???",
+          "2405": "???",
+          "2406": "???",
+          "2407": "???",
+          "2408": "???",
+          "2409": "???"
+        }
+      },
+      "25": {
+        "title": "???",
+        "sub": {
+          "2800": "???",
+          "2801": "???",
+          "2802": "???",
+          "2803": "???",
+          "2804": "???",
+          "2805": "???",
+          "2806": "???",
+          "2807": "???"
+        }
+      },
+      "26": {
+        "title": "???",
+        "sub": {
+          "2600": "???",
+          "2601": "???",
+          "2602": "???",
+          "2603": "???",
+          "2604": "???",
+          "2605": "???",
+          "2606": "???",
+          "2607": "???"
+        }
+      },
+      "27": {
+        "title": "???",
+        "sub": {
+          "2700": "???",
+          "2701": "???",
+          "2702": "???",
+          "2703": "???",
+          "2704": "???"
+        }
+      },
+      "28": {
+        "title": "房地产",
+        "sub": {
+          "1": "住宅房地产",
+          "2": "新建和转售房屋",
+          "3": "商业地产",
+          "4": "工业地产",
+          "5": "空置土地",
+          "6": "其他房地产"
+        }
+      },
+      "29": {
+        "title": "???",
+        "sub": {
+          "2900": "???",
+          "2901": "???",
+          "2902": "???",
+          "2903": "???",
+          "2904": "???",
+          "2905": "???",
+          "2906": "???",
+          "2907": "???",
+          "2908": "???"
+        }
+      },
+      "30": {
+        "title": "???",
+        "sub": {
+          "3000": "???",
+          "3001": "???",
+          "3002": "???",
+          "3003": "???",
+          "3004": "???",
+          "3005": "???",
+          "3006": "???",
+          "3007": "???",
+          "3008": "???",
+          "3009": "???"
+        }
+      },
+      "31": {
+        "title": "???",
+        "sub": {
+          "3100": "???",
+          "3101": "???",
+          "3102": "???",
+          "3103": "???",
+          "3104": "???",
+          "3105": "???",
+          "3106": "???",
+          "3107": "???"
+        }
+      },
+      "32": {
+        "title": "???",
+        "sub": {
+          "3200": "???",
+          "3201": "???",
+          "3202": "???"
+        }
+      },
+      "33": {
+        "title": "???",
+        "sub": {
+          "3300": "???",
+          "3301": "???"
+        }
+      },
+      "34": {
+        "title": "长期工作",
+        "sub": {
+          "1": "兼职",
+          "2": "全职",
+          "3": "海外工作"
+        }
+      }
+    }
+  },
+  "toasts": {
+    "questInfo": "???",
+    "questCantDelete": "???",
+    "questCantEdit": "???",
+    "questCantRaisingViews": "???",
+    "questEdited": "???",
+    "questCreated": "???",
+    "questDeleted": "???",
+    "caseDeleted": "???",
+    "caseAdded": "???",
+    "caseEdited": "???",
+    "error": "???"
+  },
+  "modals": {
+    "disputes": {
+      "thereIsNoResponseFromTheEmployerOrEmployee": "???",
+      "badlyDoneWork": "???",
+      "additionalRequirementsHaveBeenPutForward": "???",
+      "inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest": "???",
+      "theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion": "???",
+      "anotherReason": "???"
+    },
+    "chooseTheme": "???",
+    "incorrectAmount": "???",
+    "nothingToClaim": "???",
+    "pleaseWait": "???",
+    "redeemSuccess": "???",
+    "redeemFail": "???",
+    "chatCreate": {
+      "title": "创建群聊",
+      "desc": "创建群聊名称并从您的聊天列表选择人员",
+      "chatName": "聊天名称",
+      "members": "???",
+      "addNewMembers": "???",
+      "addMember": "???"
+    },
+    "yourRewardBalance": "???",
+    "deletePortfolio": "???",
+    "addTitle": "???",
+    "addDesc": "???",
+    "editCase": "???",
+    "error": "???",
+    "share": "???",
+    "edit": "???",
+    "delete": "???",
+    "youCan’tDeleteActiveQuest": "???",
+    "sureDeleteText": "???",
+    "sureDeleteMemberText": "???",
+    "sureLeaveChatText": "???",
+    "priceTitle": "???",
+    "enterPriceRange": "???",
+    "priceForm": "???",
+    "priceFromAmount": "???",
+    "priceFieldFrom": "???",
+    "priceTo": "???",
+    "priceToAmount": "???",
+    "priceFieldTo": "???",
+    "changePercentDesc": "将自动记入您的退休帐户的 Quest 金额的百分比",
+    "yourSkillsHaveBeenAdded": "您的技能已成功添加。",
+    "yourAccountVerified": "您的帐户已成功验证",
+    "youCanUpdateThisInYourProfile": "您可以在您的个人资料中轻松更新此信息。",
+    "disable2Fa": "禁用双重身份验证",
+    "2FAEnabled": "???",
+    "2FADisabled": "???",
+    "2FAStatus": "???",
+    "yourLevelHasBeenRaised": "您的等级已提高",
+    "payment": "付款",
+    "cardHolder": "持卡人姓名",
+    "review": "评价",
+    "haventSMS": "没有收到短信？",
+    "SMSVerConnected": "已连接短信验证",
+    "phoneNumber": "电话号码",
+    "phoneNumberField": "???",
+    "enterPhone": "输入您的电话号码以确认短信验证",
+    "enterSMSCode": "我们已将验证码发送到您的电话号码。输入此代码",
+    "codeFromSMS": "短信代码",
+    "smsVerification": "短信验证",
+    "codeFromSMSField": "???",
+    "saved": "已保存",
+    "userDataHasBeenSaved": "用户数据已保存",
+    "workExpAddSuccessful": "工作经验添加成功",
+    "educationAddSuccessful": "教育背景添加成功",
+    "pressSaveBtn": "请按“保存”按钮",
+    "imageLoadedSuccessful": "图片加载成功",
+    "success": "成功",
+    "yourRoleHasBeenChanged": "您的角色已更改",
+    "chooseSkills": "选择必要的技能",
+    "securityCheck": "安全检查",
+    "googleConfCode": "Google 确认码",
+    "enterCode": "输入来自 Google 身份验证器应用的 6 位代码",
+    "warning": "警告",
+    "pleaseDescribe": "请描述更改角色的原因",
+    "ifYouChangeRole": "如果现在更改角色，您只有在一个月后才能再次更改。要继续吗？",
+    "toYourEmail": "到您的电子邮件地址",
+    "codeHasBeenSent": "代码已发送",
+    "switchOnGoogleAuth": "开启 Google 身份验证器",
+    "emailVerificationCode": "电子邮件验证码",
+    "emailPlaceholder": "请输入电子邮件验证码",
+    "googleVerificationCode": "Google 验证码",
+    "codePlaceholder": "请输入 Google 验证码",
+    "appleStore": "App Store",
+    "googlePlay": "Google Play",
+    "useYourGoogleAuth": "使用您的 Google 身份验证器应用扫描 QR 码。",
+    "installGoogleAuth": "在您的设备上安装 Google 身份验证器应用",
+    "ifYouCantScanBarcode": "如果您无法扫描 QR 码，请手动输入密钥。",
+    "pleaseSaveThisKey": "在下方输入 Google 双重身份验证密码。请保存您的 Google 密钥，它将用于恢复您的 Google 身份验证器。",
+    "step": "步骤",
+    "twoFAAuth": "双重身份验证",
+    "currentPassword": "当前密码",
+    "newPassword": "新密码",
+    "confirmNewPassword": "确认新密码",
+    "change": "更改",
+    "title": "职称",
+    "badService": "服务糟糕",
+    "otherReason": "其他原因",
+    "reviewOnEmployer": "对雇主的评价",
+    "paintingWork": "绘画作品",
+    "art": "艺术",
+    "cooking": "烹饪",
+    "coding": "编码",
+    "uploadAImages": "上传图片或视频",
+    "description": "描述",
+    "addCase": "添加案例",
+    "openADispute": "发起争议",
+    "reason": "原因",
+    "lorem": "",
+    "withdraw": "提款",
+    "sendTo": "发送到",
+    "estimatedPayment": "预计付款：",
+    "hello": "您好…",
+    "value": "价值",
+    "withdrawCard": "提款到银行卡",
+    "address": "地址",
+    "notice": "重要通知",
+    "noticeDesc": "为了您的安全，WorkQuest 团队希望您不在 WorkQuest 平台之外进行任何通信或联系。平台外的任何联系或对话都可能导致争议情况无法解决。",
+    "toAddress": "到",
+    "fromAddress": "从",
+    "welcomeToWorkQuest": "欢迎来到 WorkQuest",
+    "pleaseTellUsAboutSkills": "请在下方告诉我们您的技能。这将提高您在平台上的排名，并使其他用户更容易找到您的帐户。",
+    "amount": "金额",
+    "messageSend": "已发送消息",
+    "questAgreed": "已同意 Quest",
+    "requestSend": "请求已发送",
+    "sendARequest": "发送请求",
+    "message": "消息",
+    "bodyMessage": "您好",
+    "areYouSure": "确定吗？",
+    "transactionSend": "已发送交易",
+    "transactionFail": "???",
+    "transactionCheck": "???",
+    "cardHasBeenAdded": "银行卡已添加",
+    "deposit": "接收",
+    "numberOfCard": "卡号",
+    "date": "日期",
+    "cardDate": "银行卡到期日期",
+    "expirationDate": "到期日期（月/年）",
+    "cvv": "CVV",
+    "cardholderName": "持卡人姓名",
+    "addAnotherCard": "添加另一张银行卡",
+    "addCard": "添加银行卡",
+    "inviteSend": "邀请已发送",
+    "questCreated": "已创建 Quest",
+    "invitation": "邀请",
+    "chooseQuest": "选择 Quest",
+    "raiseViews": "提高浏览量",
+    "priceOfAClick": "点击价格",
+    "city": "城市",
+    "period": "时长",
+    "thanks": "谢谢",
+    "couple": "一些字词",
+    "depositPercentFromAQuest": "Quest 的存款百分比",
+    "depositRetirementModalTitle": "选择自动存款的 Quest 金额百分比",
+    "depositRetirementModalPrecentPlaceholder": "0 % 请选择百分比",
+    "depositRetirementModalAmountPlaceholder": "0 WUSD 请输入金额",
+    "firstDepositAmount": "首存金额*",
+    "firstDepositAmountField": "???",
+    "aboutFirstDeposit": "* 首存金额为可选项。如果您不想存款，您可以将此字段留空",
+    "pensionIsRegisteredTitle": "恭喜！",
+    "pensionIsRegisteredDesc": "养老金计划已成功启动。",
+    "currentPercent": "当前百分比",
+    "depositAmount": "存款金额",
+    "lockedSavings": "锁定储蓄",
+    "durationDays": "持续时间（天）",
+    "depositIsOpened": "存款已开立",
+    "addLiquidity": "增加流动性",
+    "amountOfWqt": "WQT 金额",
+    "amountOfEth": "ETH 金额",
+    "amountOfBnb": "BNB 金额",
+    "tip": "提示：",
+    "tipAbout": "增加流动性时，您将收到代表您头寸的池代币。这些代币会自动赚取与您在池中份额成比例的费用，并且可以随时赎回。",
+    "byAddingLiquidityYouWillEarn": "增加流动性后，您将获得该货币对所有交易的 0.3%，与您在池中的份额成比例。费用被添加到池中，实时累积，并且可以通过提取您的流动性索取。",
+    "amountEthPerWqt": "每个 WQT 的 ETH 金额",
+    "amountBnbPerWqt": "???",
+    "shareOfPool": "池份额",
+    "removeLiquidity": "移除流动性",
+    "withdrawalAmount": "提款金额",
+    "exchangeRate": "汇率",
+    "tempForRemove": "1 ETH = ... WUSD",
+    "tempForRemove2": "1 BNB = ... WQT",
+    "currentPoolSize": "当前池大小",
+    "yourPoolShare": "您的池份额",
+    "eth": "ETH",
+    "wusd": "WUSD",
+    "howMuchEthWouldYouLikeToLock": "您希望将多少 ETH 锁定到您的帐户？",
+    "smallTemp": "",
+    "template": "",
+    "collateralization": "抵押",
+    "percentsCount": "{count}%",
+    "liquidationPrice": "清算价格",
+    "currentPrice": "时价",
+    "stabilityFee": "稳定费用",
+    "liquidationRatio": "清算比例",
+    "liquidationPenalty": "清算罚款",
+    "confirmDetails": "确认详情",
+    "depositing": "存款",
+    "generating": "金额",
+    "liquidationFee": "清算费用",
+    "withdrawal": "提款",
+    "saveCardForNextPayment": "保存银行卡以备下次使用",
+    "insureCase": "保险案例",
+    "connectWallet": "连接钱包",
+    "howMuchWusdWouldYouLikeToGenerate": "您想生成多少 WUSD？",
+    "chooseTheCurrency": "选择货币",
+    "bnb": "BNB",
+    "wqt": "WQT",
+    "howMuchETHWouldYouLikeToOpen": "您想在帐户中开立多少 ETH？",
+    "howMuchPercentWouldYouLikeToSet": "您想设置多少百分比？",
+    "enterTermToReturnDebtBack ": "输入偿还债务的期限",
+    "currency": "抵押货币",
+    "loan": "贷款",
+    "percentage": "百分比",
+    "loanTerm": "贷款期限",
+    "loanIsOpened": "贷款已开立",
+    "successCopied": "公共地址已复制到剪贴板",
+    "walletAddress": "???",
+    "scanQr": "???",
+    "close": "???",
+    "depositTitle": "???",
+    "addYourCard": "???",
+    "walletCopy": "???",
+    "textCopy": "???",
+    "addingCard": "???",
+    "add": "???",
+    "totalFee": "???",
+    "processing": "???",
+    "addNewCard": "???",
+    "numberCard": "???",
+    "chooseCard": "???",
+    "depositInfo": "???",
+    "cardAdd": "???",
+    "cardAddedText": "",
+    "transactionSentText": "",
+    "maximum": "???",
+    "withdrawInfo": "???",
+    "bankCard": "???",
+    "transfer": "???",
+    "recepient": "???",
+    "transferInfo": "???",
+    "currencyDetails": "???",
+    "generatingDetails": "???",
+    "collateralizationRatio": "???",
+    "depositIsOpenedText": "",
+    "loanText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
+    "loanIsOpenedText": "",
+    "firstDepositText": "???",
+    "pensionIsRegistered": "???",
+    "pensionIsRegisteredText": "",
+    "changePercent": "???",
+    "changePercentText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor",
+    "currentPercentTitle": "???",
+    "depositIsDone": "???",
+    "makeDepositText": "",
+    "percentIsChangedText": "",
+    "percentIsChanged": "???",
+    "invitationSendText": "",
+    "choose": "???",
+    "openDisputeText": "",
+    "chooseCurrency": "???",
+    "wallet": "???",
+    "coinpaymebts": "???",
+    "errorDeleteText": "???",
+    "swapTitle": "???",
+    "coin": "???",
+    "recepientBinance": "???",
+    "createSwap": "???",
+    "swapInfo": "???",
+    "crosschain": "???",
+    "crosschainText": "Eth > Binance",
+    "senderAddress": "???",
+    "recepientAddress": "???",
+    "worknetFee": "Eth ???",
+    "binanceFee": "Binance ???",
+    "welcomeText": "???",
+    "areYouSureText": "",
+    "noticeTitle": "???",
+    "noticeText": "???",
+    "areYouSureNotificationText": "",
+    "creditCardNumber": "???",
+    "dateName": "???",
+    "depositPercent": "???",
+    "currentPercentErr": "???",
+    "amountField": "???",
+    "percentField": "???",
+    "quantityField": "???",
+    "creditingDepositText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
+    "generateField": "???",
+    "amountOfWqtField": "??? WQT",
+    "amountOfEthField": "??? ETH",
+    "amountOfBnbField": "??? BNB",
+    "withdrawalAmountField": "???",
+    "removeLiquidityCurrentPoolSize": "1 ETH + 456 WQT",
+    "removeLiquidityCurrentPoolSize2": "1 BNB + 456 WQT",
+    "removeLiquidityYourPoolShare": "10% = 1% ETH + 4% WQT",
+    "removeLiquidityYourPoolShare2": "10% = 1% BNB + 4% WQT",
+    "lockedSavingsField": "???",
+    "durationDaysField": "???",
+    "depositAmountField": "???",
+    "claim": "???",
+    "estimatedPaymentField": "120 WUSD",
+    "priceOfAClickField": "???",
+    "cityField": "???",
+    "addLiquidityAmountWqt": "1000 WQT",
+    "addLiquidityAmountEth": "10 ETH",
+    "addLiquidityAmountBnb": "10 BNB",
+    "cardHolderField": "???",
+    "addressField": "???",
+    "securityCheckField": "???",
+    "recepientAddressField": "???",
+    "walletAddressField": "???",
+    "thanksText": "",
+    "emailVerificationCodeField": "???",
+    "youCanAttachUpToNFiles": "???",
+    "youTryToAttachUnsupportedFileFormat": "???"
+  },
+  "ui": {
+    "jobQuestors": "求职者",
+    "workers": "工作者",
+    "wallet": "钱包",
+    "myQuests": "我的 Quest",
+    "quests": "Quest",
+    "profile": {
+      "addCase": "添加案例",
+      "myProfile": "我的个人资料",
+      "settings": "设置",
+      "disputes": "争议",
+      "instruments": "工具",
+      "DeFi": "DeFi 功能",
+      "logout": "退出",
+      "login": "???"
+    },
+    "locals": {
+      "en": "en",
+      "ru": "ru",
+      "bn": "bn",
+      "zh": "zh",
+      "fr": "fr",
+      "hi": "hi",
+      "id": "id",
+      "pt": "pt",
+      "es": "es",
+      "ar": "ar"
+    },
+    "notifications": {
+      "title": "通知",
+      "invite": "邀请您完成 Quest"
+    },
+    "menu": {
+      "unauthorized": "???",
+      "instruments": "???",
+      "crosschain": {
+        "title": "???",
+        "desc": "???"
+      },
+      "staking": {
+        "title": "???",
+        "desc": "???"
+      },
+      "pension": {
+        "title": "退休计划",
+        "desc": "您可以针对每个已完成 Quest 选择自动记入退休帐户的百分比，或者直接存入您选择的金额。基金池代表雇员进行投资，投资收益在工作者退休时产生收入。"
+      },
+      "referral": {
+        "title": "推荐计划",
+        "desc": "我们的“推荐和赚取”计划让您可以在您推荐的朋友成为客户并完成 Quest 后赚取奖励。您推荐的朋友也可以通过获得免费注册来节省费用。"
+      },
+      "p2p": {
+        "title": "P2P 保险",
+        "desc": "点对点 (P2P) 保险是一种允许一群被保险人集中资金、自我组织和自我管理的保险产品。P2P 的核心理念是，一群志同道合的人基于共同的利益将保险单组合在，在降低成本的同时引入控制感、信任感和透明度。这种保险模式将传统的损失集合和分摊与当前技术和创新相结合，满足日益精明的消费者在按需经济中对透明度的需求。"
+      },
+      "savings": {
+        "title": "储蓄产品",
+        "desc": "加密货币储蓄帐户可让您进入加密货币市场，同时允许您像传统银行储蓄帐户一样赚取利息。如果您对长期加密货币投资感兴趣，加密储蓄帐户可以帮助您累积利息，同时保证货币安全。"
+      },
+      "crediting": {
+        "title": "借贷",
+        "desc": "与传统贷款类似，加密贷款金额存入借款人的银行账户，然后借款人向贷方支付 EMI。在金额全部还清后，贷方即释放作为担保的抵押品。"
+      },
+      "mining": {
+        "title": "流动性挖掘",
+        "desc": "是一种 DeFi（去中心化金融）机制，参与者将加密货币供应到流动性池，并根据其在总池流动性中的份额获得费用和代币奖励。"
+      },
+      "menu": "菜单"
+    },
+    "footer": {
+      "rights": "保留所有权利"
+    },
+    "buttons": {
+      "errors": {
+        "manySpec": "您只能添加 3 个专业",
+        "manySkills": "???"
+      }
+    }
+  },
+  "wallet": {
+    "WUSD": "WUSD 钱包",
+    "cryptoWallet": "加密钱包",
+    "bankCard": "银行卡",
+    "send": "发送",
+    "toThisAddress": "到此地址",
+    "wallet": "钱包",
+    "balance": "余额",
+    "deposit": "接收",
+    "withdraw": "提款",
+    "transfer": "购买/发送",
+    "addCardProposal": "添加您自己的银行卡，轻松提款",
+    "addCard": "添加银行卡",
+    "table": {
+      "trx": "交易",
+      "txHash": "交易哈希",
+      "status": "状态",
+      "block": "区块",
+      "timestamp": "时间戳",
+      "transferred": "已转移代币",
+      "value": "数量",
+      "trxFee": "交易费用"
+    }
+  },
+  "chat": {
+    "openDispute": "发起争议",
+    "approveQuest": "批准 Quest",
+    "starredMessages": "???",
+    "starredChats": "???",
+    "allChats": "???",
+    "createGroupChat": "创建群聊",
+    "favorite": "收藏",
+    "messages": "消息",
+    "chat": "聊天",
+    "quest": "Quest：",
+    "you": "您：",
+    "invitedYou": "邀请您参加 Quest",
+    "writeYouMessage": "编写您的消息",
+    "group": "???",
+    "noChats": "???",
+    "noMessages": "???",
+    "membersNum": "{n} ???",
+    "systemMessages": {
+      "invitedYouToAQuest": "???",
+      "youInvitedToTheQuest": "???",
+      "respondedToTheQuest": "???",
+      "youHaveRespondedToTheQuest": "???",
+      "rejectedTheResponseToTheQuest": "r???",
+      "youRejectTheResponseOnQuest": "???",
+      "rejectedTheInviteToTheQuest": "???",
+      "youRejectedTheInviteToTheQuest": "???",
+      "acceptedTheInviteToTheQuest": "???",
+      "youAcceptedTheInviteToTheQuest": "???",
+      "createdAGroupChat": "???",
+      "youCreatedAGroupChat": "???",
+      "removedFromChat": "???",
+      "youHaveRemovedFromChat": "???",
+      "addedToChat": "???",
+      "youAddedToChat": "???",
+      "userAddedToChat": "???",
+      "userRemovedFromChat": "???",
+      "leftTheChat": "???",
+      "youLeftTheChat": "???"
+    },
+    "leaveChat": "???",
+    "loadMore": "???"
+  },
+  "settings": {
+    "facebook": "facebook",
+    "linkedin": "linkedin",
+    "twitter": "twitter",
+    "instagram": "instagram",
+    "address": "???",
+    "lastName": "???",
+    "firstName": "???",
+    "enterPhoneNumber": "???",
+    "enterCurrentLocation": "???",
+    "placeOfStudying": "学习地点",
+    "specialization": "专业",
+    "selectSpec": "???",
+    "skillsInput": "技能",
+    "selectSkills": "???",
+    "priority": "优先级",
+    "costPerHour": "每小时费用",
+    "description": "And you are beautiful",
+    "imgLoaded": "图片加载成功",
+    "workExp": "工作经验",
+    "add": "添加",
+    "delete": "删除",
+    "educations": "教育背景",
+    "vacancy": "空缺",
+    "term": "期限",
+    "getVerification": "完成验证",
+    "notVerified": "未验证",
+    "verified": "???",
+    "more": "更多",
+    "employmentInfo": "就业信息",
+    "addSpec": "添加专业",
+    "removeSpec": "移除专业",
+    "education": {
+      "from": "从",
+      "to": "到",
+      "educationalInstitution": "教育机构"
+    },
+    "workExps": {
+      "from": "从",
+      "to": "到",
+      "companyName": "公司名称"
+    },
+    "settings": "设置",
+    "urgentJobOffers": "紧急工作机会",
+    "shortTermJobOffers": "短期工作机会",
+    "fixedDeliveryJobOffers": "固定交付工作机会",
+    "addInfo": "您可以添加有关您自己的信息、上传个人资料照片并通过 KYC 程序提高您的评分。评分取决于您的个人资料数据和评价。",
+    "alsoRating": "您的排名越高，越容易在搜索中出现。",
+    "dontShow": "不再显示",
+    "profileInfo": "个人资料信息",
+    "nameInput": "输入您的名字",
+    "lastNameInput": "输入您的姓氏",
+    "addressInput": "输入您的地址",
+    "telInput": "输入电话号码",
+    "userDesc": "添加关于您的简短描述",
+    "instagramUsername": "Instagram 用户名",
+    "twitterUsername": "Twitter 用户名",
+    "linkedInUsername": "LinkedIn 用户名",
+    "facebookUsername": "Facebook 用户名",
+    "save": "保存",
+    "skills": "技能：",
+    "whoCanSee": "谁可以看到我的个人资料？",
+    "allUsers": "所有注册用户",
+    "allInternet": "全球互联网用户",
+    "onlyWhenSubmittedWork": "仅在提交工作机会时",
+    "allRegistered": "所有注册用户",
+    "changePass": "更改密码",
+    "change": "更改",
+    "enableTwoStepAuth": "启用双重身份验证",
+    "enable": "启用",
+    "smsVerification": "短信个人资料验证",
+    "company": "输入您的公司名称",
+    "ceo": "添加职位",
+    "filterAllEmployeeProfiles": "筛选所有雇员个人资料",
+    "website": "输入您的公司网站",
+    "changeRole": "更改角色",
+    "2FA": "双重身份验证",
+    "smsVerification2": "短信验证",
+    "instruments": "工具",
+    "pensionProgram": "养老金计划",
+    "referralProgram": "推荐计划",
+    "p2pInsurance": "P2P 保险",
+    "savingProduct": "储蓄产品",
+    "crediting": "贷记",
+    "liquidityMining": "流动性挖掘",
+    "distantWork": {
+      "title": "???",
+      "select": "???",
+      "allWorkplaces": "???",
+      "distantWork": "???",
+      "workInOffice": "???",
+      "bothVariant": "???"
+    }
+  },
+  "raising-views": {
+    "raisingViews": "提高浏览量",
+    "choosePeriod": "选择期限",
+    "forOneDay": "1 天",
+    "forOneWeek": "1 周",
+    "forOneMonth": "1 个月",
+    "chooseLevel": "选择级别"
+  },
+  "disputes": {
+    "disputes": "争议",
+    "dispute": "争议编号：",
+    "quest": "Quest：",
+    "employer": "雇主：",
+    "questSalary": "Quest 工资：",
+    "status": "状态：",
+    "decision": "决定：",
+    "Dispute": "争议",
+    "pending": "待办",
+    "chatHistory": "聊天记录",
+    "disputeTime": "争议提交时间："
+  },
+  "workers": {
+    "noWorkers": "???...",
+    "searchQuests": "搜索 Quest",
+    "searchWorkers": "搜索工作者",
+    "topWorkers": "排名最高的工作者",
+    "price": "价格",
+    "addedTime": "添加时间",
+    "quests": "Quest",
+    "urgent": "选择紧急级别",
+    "specialized": "专业",
+    "typeOfJob": "工作类型",
+    "specializations": "专业",
+    "aboutMe": "关于我",
+    "giveAQuest": "提供 Quest",
+    "inviteQuestor": "邀请 Questor",
+    "skills": "技能",
+    "completedQuests": "已完成的 Quest",
+    "openedQuests": "已开启的 Quest",
+    "showAll": "显示所有",
+    "averageRating": "平均评分",
+    "from": "从",
+    "based": "位置",
+    "reviews": "评价",
+    "noReviewsAdded": "???",
+    "portfolio": "作品集",
+    "noPortfoliosAdded": "???",
+    "showAllCases": "显示所有案例",
+    "costTitle": "???"
+  },
+  "levels": {
+    "reliableEmp": "可靠的雇员或雇主。",
+    "checkedByTime": "经验证的雇员或雇主。",
+    "disabled": "已禁用",
+    "higher": "更高级别的雇员或雇主。"
+  },
+  "referral": {
+    "inviteFriendsHead": "邀请朋友。",
+    "earnCryptoTogether": "共同赚取加密货币",
+    "headerSubtitle": "您的朋友在 WorkQuest 平台注册并完成第一个 Quest 后，您最多可以赚取 35 美元的 WQT。",
+    "referralReward": "推荐奖励",
+    "wqtCount": "{count} WQT",
+    "lastRefReward": "上一次推荐奖励",
+    "plusCount": "+ {count}",
+    "yourRefers": "您的推荐",
+    "yourReferralLink": "您的推荐链接",
+    "howToInviteYourFriends": "如何邀请好友？",
+    "getLink": "获取链接",
+    "registerAndGenerate": "注册并生成具有佣金回扣率的推荐链接。",
+    "inviteFriends": "邀请朋友",
+    "inviteYourFriends": "邀请您的朋友通过推荐链接注册，在其完成第一个 Quest 后获得奖励。",
+    "earnCrypto": "赚取加密货币",
+    "everyTimeYourFriends": "每当您有朋友完成第一个 Quest，您都会实时获得最高可达 35 美元的 WQT 佣金！",
+    "historyOfRewards": "奖励历史",
+    "tableHead": {
+      "name": "名称",
+      "userID": "用户 ID",
+      "txHash": "交易哈希",
+      "time": "时间",
+      "amount": "金额",
+      "status": "状态"
+    },
+    "table": {
+      "userName": "张三",
+      "userId": "455dad66544ss",
+      "txHash": "sf998s...ss877d",
+      "time": "2021 年 2 月 1 日",
+      "status": "成功"
+    }
+  },
+  "pension": {
+    "pensionSavingsBalance": "养老金储蓄余额",
+    "retirementProgram": "退休计划",
+    "faq": "常见问题解答",
+    "pensionProgram": "养老金计划",
+    "applyForAPension": "申请养老金",
+    "applyForRetirement": "申请退休",
+    "annualPercent": "年度百分比",
+    "optional": "可选",
+    "optionalFirstDeposit": "首次存款",
+    "term": "期限",
+    "castomizable": "可自定义",
+    "configurablePercentage": "可配置百分比",
+    "depositsFromQuest": "Quest 存款",
+    "howToTakePart": "如何参加养老金计划？",
+    "pensionPlanText": "养老金计划允许工作者将当前工资收入的一部分投入投资计划，为退休提供资金。",
+    "information": "详细信息",
+    "download": "下载",
+    "pensionBalance": "养老金储蓄余额",
+    "makeADeposit": "存款",
+    "currentPercentFromAQuest": "Quest 的当前百分比",
+    "changePercent": "更改百分比",
+    "everyYear": "年化",
+    "year": "每年",
+    "timeRemainsUntilTheEndOfThePeriod": "本期剩余时间：",
+    "transactionHistory": "交易记录",
+    "withdraw": "提款",
+    "prolong": "延长",
+    "prolongText": "???",
+    "templateText": "",
+    "table": {
+      "userName": "张三",
+      "userId": "455dad66544ss",
+      "txHash": "sf998s...ss877d",
+      "time": "2021 年 2 月 1 日",
+      "status": "成功"
+    },
+    "docName": "Some_document.pdf",
+    "mb": "{count} MB",
+    "percents": "{count} %",
+    "minutes": "{count} ???",
+    "hours": "{count} ???",
+    "years": "{count} ???",
+    "days": "{count} ???",
+    "WUSDCount": "{count} WUSD",
+    "ETHCount": "{count} ETH",
+    "plusPercents": "+ {count}%",
+    "faq1": {
+      "question": "如何获得养老金资格？",
+      "answer": "您无需为雇主工作一定年限即可获得退休福利。只需选择您要在帐户中累积的各 Quest 的百分比。您的退休福利通常会随着您的资金积累而增加。额外百分比将使用借贷计划中的资金自动获得。"
+    },
+    "faq2": {
+      "question": "“额外百分比”是如何计算的？",
+      "answer": "养老基金的资金将在贷款协议中冻结。APY 因信贷协议的变动而异。利润为 3-6%"
+    },
+    "faq3": {
+      "question": "养老金计划如何运作？",
+      "answer": "您无需为雇主工作一定年限即可获得退休福利。只需选择您要在帐户中累积的各 Quest 的百分比。您的退休福利通常会随着您的资金积累而增加。额外百分比将使用借贷计划中的资金自动获得。"
+    },
+    "faq4": {
+      "question": "需要工作多少年才能加入养老金计划？",
+      "answer": "根据 WorkQuest 规定，任何人都可以开设私营部门储蓄计划。三年后，您将有机会获得 100% 的累积资金。\n您可以继续积累一年或将资金全额提取到您的钱包。"
+    },
+    "faq5": {
+      "question": "合适的养老金金额是多少？",
+      "answer": "合适的养老金金额是多少？一些顾问建议在退休时储蓄 10 倍平均工资的资金。因此，如果您的平均工资是 30,000 美元，您的养老金目标应该是约 300,000 美元。另一个重要建议是，您应该将 12.5% 的月薪存起来。"
+    },
+    "faq6": {
+      "question": "每月养老金需要交税吗？",
+      "answer": "您每月的养老金支付几乎始终都会算作应税收入，您需要确保从养老金支付中预扣足够的税款以满足国税局的要求"
+    },
+    "faq7": {
+      "question": "我可以一次取走我的所有养老金吗？",
+      "answer": "在最短期限的 3 年退休计划之后，您可以提取部分或一次性提取全部养老金储蓄。"
+    },
+    "faq8": {
+      "question": "我可以取消养老金并拿到钱吗？",
+      "answer": "如果您在至少 3 年后或在年度续费日退出，您将收回已支付的所有款项。如果您后来选择退出，则在延长期（通常是 1 年）结束之前，您将无法收到退还的款项。"
+    },
+    "faq9": {
+      "question": "我可以在领取养老金的同时继续工作吗？",
+      "answer": "您可以提前领取养老金并继续工作吗？简短的回答是肯定的。如今，已经不存在固定的退休年龄。您可以按照自己的意愿继续工作，并同时享受养老金计划。"
+    },
+    "faq10": {
+      "question": "如果我为养老金提供过量资金，会怎样？",
+      "answer": "我们对储蓄金额没有限制。整个累积金额将在计划期限结束时由您支配。"
+    }
+  },
+  "saving": {
+    "withdrawModalBody": "锁定资金金额和累计利息将记入您的钱包",
+    "workQuestSavings": "WorkQuest Savings",
+    "lendAndEarn": "借贷和赚取",
+    "conditions": "条件",
+    "maxMinSum": "最大/最小总和",
+    "depositsAndWithdrawal": "存款和提款",
+    "term": "期限",
+    "annualizedInterestRate": "年化利率",
+    "openADeposit": "开立存款",
+    "faq": "常见问题解答",
+    "information": "信息",
+    "historyOfDeposits": "存款历史",
+    "depositAmount": "锁定金额",
+    "card1": "年化利率 \n 4.51 % \n 持续时间（天）：7天",
+    "card2": "年化利率 \n 4.67 % \n 持续时间（天）：14天",
+    "card3": "年化利率 \n 4.82 % \n 持续时间（天）：30天",
+    "card4": "年化利率 \n 5.11 % \n 持续时间（天）：90天",
+    "card5": "年化利率 \n 5.23 % \n 持续时间（天）：180天",
+    "templateText": "决定持有您的加密货币？\n通过锁定储蓄借贷和赚取的轻松方式。",
+    "faq1": "什么是锁定储蓄？决定持有您的加密货币？",
+    "faq2": "在订阅锁定储蓄产品当天，我的资金会发生什么变化？",
+    "faq3": "在锁定储蓄产品的起息日，我的资金会发生什么变化？",
+    "faq4": "在锁定储蓄产品的赎回日，我的资金会发生什么变化？",
+    "faq5": "平均年回报率 （APR) 是如何计算的？",
+    "faq6": "如果加密货币市场下跌，我是否仍能保证从 WorkQuest Savings 产品中获得利息？",
+    "ans1": "现在，您还可以同时赚取利息！将您的加密货币订阅到锁定储蓄期以获得更高的利息收入。",
+    "ans2": "在订阅当天，WorkQuest Savings 将从您的 WUSD 钱包中扣除订阅资金。",
+    "ans3": "在起息日，WorkQuest Savings 会将锁定储蓄产品分发到您的储蓄钱包，您的储蓄产品将开始产生利息。",
+    "ans4": "在赎回日期，您将看到提交给订阅的初始代币和您的 WorkQuest 帐户“余额”中的应计利息。此过程自动进行。",
+    "ans5": "平均年回报率 (APR) 是以过去 7 天的平均每日利率乘以 365。",
+    "ans6": "是。产品利率均提供保证。",
+    "docName": "Some_document.pdf",
+    "mb": "{count} MB",
+    "percents": "{count} %",
+    "days": "{count} 天",
+    "smallPlug": "??",
+    "possiblePlug": "可能",
+    "yearPlug": "1 年",
+    "wusdCount": "{count} WUSD",
+    "plusPercents": "+ {count}%",
+    "table": {
+      "userName": "张三",
+      "userId": "455dad66544ss",
+      "txHash": "sf998s...ss877d",
+      "time": "2021 年 2 月 1 日",
+      "status": "成功"
+    },
+    "depositModalBody": "您的加密货币将锁定特定期限，您将开始赚取利息。",
+    "depositIsOpened": "已确认转账",
+    "deposit": "存款",
+    "withdraw": "提款",
+    "depositIsOpenedText": "",
+    "withdrawText": "???"
+  },
+  "mining": {
+    "loading": "???...",
+    "claimRewards": "???",
+    "liquidityMining": "流动性挖掘",
+    "swapTokens": {
+      "title": "???",
+      "swap": "???",
+      "oldTokens": "???",
+      "newTokens": "???",
+      "balance": "???"
+    },
+    "approve": "???",
+    "stake": "???",
+    "unstake": "???",
+    "liquidityMiningSub": "???",
+    "templateText": "",
+    "pools": "池",
+    "choose": "选择",
+    "information": "信息",
+    "docName": "Some_document.pdf",
+    "agreement": "???.pdf",
+    "kb": "{count} KB",
+    "download": "下载",
+    "tableHead": {
+      "poolAddress": "池地址",
+      "swaps": "???",
+      "totalValue": "???",
+      "tokenAmount": "???",
+      "account": "???",
+      "time": "???",
+      "assets": "资产",
+      "sdsdsdsd": "sdsdsdsd",
+      "volume": "交易量"
+    },
+    "table": {
+      "poolAddress": "0sjs3892...sd45",
+      "assets": "50% WUSD/50% ETH",
+      "assets2": "50% WQT / 50% BNB",
+      "sdsdsdsd": "sdsdsdsd",
+      "volume": "450 万美元"
+    },
+    "mb": "{count} MB",
+    "back": "后退",
+    "wusdEthPool": "WUSD/ETH 池",
+    "wusdBnbPool": "Pool BNB/WQT",
+    "dollarsCount": "{count} 美元",
+    "procCount": "{count} %",
+    "lpCount": "{count} LP",
+    "wqtCount": "{count} WQT",
+    "APY": "???",
+    "addLiquidity": "增加流动性",
+    "removeLiquidity": "移除流动性",
+    "liquidity": "流动性",
+    "totalLiquidity": "???",
+    "reward": "???",
+    "claimReward": "???",
+    "totalReward": "???",
+    "volume24h": "交易量（24 小时）",
+    "myPoolShare": "我的池份额",
+    "liquidityPoolProviders": "流动性池提供者",
+    "liquidityProvidersEarn": "流动性提供者在所有交易中收取 0.3% 的费用，与其在池中的份额成比例。费用被添加到池中，实时累积，并且可以通过提取您的流动性索取。",
+    "transactions": "交易",
+    "connectWallet": "???"
+  },
+  "crediting": {
+    "lending": "WorkQuest 借贷协议",
+    "crediting": "贷记",
+    "templateText": "WorkNet 网络上的 WorkQuest DeFi 借贷平台，具有四个针对波动性资产的专属货币市场",
+    "marketSize": "市场规模",
+    "deposit": "存款",
+    "percent": "百分比",
+    "dollarsCount": "{count} 美元",
+    "percentsCount": "{count}%",
+    "wantToTakeALoan": "想贷款吗？",
+    "borrow": "借款",
+    "information": "信息",
+    "openPositions": "未平头寸",
+    "usdCount": "{count} 美元",
+    "totalCollateralLocked": "锁定的抵押总额",
+    "wusdCount": "{count} WUSD",
+    "totalWusdDebt": "WUSD 债务总额",
+    "tableHead": {
+      "id": "ID",
+      "currentRatio": "当前比例",
+      "deposited": "已存入",
+      "availableToWithdraw": "可供提款",
+      "wusd": "WUSD"
+    },
+    "table": {
+      "id": "565464",
+      "currentRatio": "500%",
+      "deposited": "531 ETH",
+      "availableToWithdraw": "531 ETH",
+      "wusd": "532 WUSD",
+      "manage": "管理"
+    },
+    "back": "后退",
+    "tempName": "借 #56546",
+    "liquidationPrice": "清算价格",
+    "collateralizationRatio": "抵押率",
+    "ethLocked": "已锁定 ETH",
+    "ethCount": "{count} ETH",
+    "ableToWithdraw": "能够提款",
+    "withdraw": "提款",
+    "outstandingWusdDebt": "未偿 WUSD 债务",
+    "availableToGenerate": "可供生成",
+    "payback": "偿还",
+    "generate": "生成",
+    "history": "历史",
+    "credTableHeader": {
+      "activity": "活动",
+      "amount": "金额",
+      "time": "时间",
+      "sender": "发送者",
+      "txHash": "交易哈希"
+    },
+    "credTable": {
+      "activity": "已偿还",
+      "amount": "100 WUSD",
+      "time": "2021 年 6 月 12 日",
+      "sender": "dfgd6...fs65ds",
+      "txHash": "dfgd6...fs65ds"
+    },
+    "faq1": "什么是锁定储蓄？决定持有您的加密货币？",
+    "faq2": "在订阅锁定储蓄产品当天，我的资金会发生什么变化？",
+    "ans2": "在订阅当天，WorkQuest Savings 将从您的 WUSD 钱包中扣除订阅资金。",
+    "faq3": "在锁定储蓄产品的起息日，我的资金会发生什么变化？",
+    "faq4": "在锁定储蓄产品的赎回日，我的资金会发生什么变化？",
+    "faq5": "平均年回报率 (APR) 是如何计算的？",
+    "faq": "常见问题解答",
+    "lend": "借贷"
+  },
+  "insuring": {
+    "peerToPeerInsuring": "P2P 保险",
+    "templateText": "",
+    "card1": {
+      "title": "最低保护",
+      "pointsText": {
+        "point1": "每年缴费 1000 WUSD，发生受保事件时赔付 833.333333 WUSD。"
+      }
+    },
+    "card2": {
+      "title": "标准保护",
+      "pointsText": {
+        "point1": "每年缴费 2000 WUSD，发生受保事件时赔付 1666.6667 WUSD。"
+      }
+    },
+    "card3": {
+      "title": "最高保护",
+      "pointsText": {
+        "point1": "每年缴费 3000 WUSD，发生受保事件时赔付 2500 WUSD。"
+      }
+    },
+    "pointTemplate": "",
+    "buy": "购买",
+    "information": "信息",
+    "docName": "Some_document.pdf",
+    "mb": "{count} MB",
+    "minimalProtectionPlan": "最低保护计划",
+    "standardProtectionPlan": "标准保护计划",
+    "maximumProtectionPlan": "最高保护计划",
+    "yourFundBalance": "保险基金余额",
+    "wusdCount": "{count} WUSD",
+    "dollarsCount": "{count} 美元",
+    "withdraw": "提款",
+    "leaveFund": "离开基金",
+    "changePlan": "更改计划",
+    "fundParticipants": "基金参与者",
+    "userName": "李华",
+    "userNameCase": "??? :",
+    "voting": "投票",
+    "noVoteAtTheMoment": "暂时没有投票",
+    "countPeoplesInChat": "{count} 人在聊天中",
+    "writeSomething": "开始编写",
+    "activeVoting": "有效投票",
+    "paymentOfInsurance": "{value}：保险支付",
+    "youWillCertifyTheInsuredEvent": "您会为受保事件提供证明吗？",
+    "studyTheInsuredEventThoroughly": "彻底研究受保事件",
+    "insureCaseText": "",
+    "notAgree": "不同意",
+    "insuredEvent": "受保事件",
+    "agree": "同意",
+    "percentsCount": "{count} %",
+    "votesCount": "{count} 票",
+    "planPoints": {
+      "point1": "年费：{count} WUSD",
+      "point2": "发生受保事故时赔付：{count} WUSD",
+      "point3": "合同期限：{count} 年",
+      "point4": "基金参与人数：{count} 人"
+    },
+    "faq1": {
+      "question": "P2P 在保险中有什么含义？",
+      "answer": "点对点 (P2P) 保险是一种允许一群被保险人集中资金、自我组织和自我管理的保险产品"
+    },
+    "faq2": {
+      "question": "P2P 保险如何运作？",
+      "answer": "点对点保险或 P2P 保险使一群人能够相互投保。人群成员将资金集中，以防止风险。如果成员遭受可保损失，其索赔将直接从各个成员贡献的资金池支付"
+    },
+    "faq3": {
+      "question": "如何进行点对点保险？",
+      "answer": "要求进行“点对点”评估。在点对点评估中，您的保险基金将与其他基金成员讨论为什么服务或治疗在医学上是必要的。您可以将所有必要文件和医生意见上传到聊天，证明您的案例的合法性，并创建投票供基金成员决策。如果大多数基金成员投票赞成，您将在钱包收到赔付。"
+    },
+    "faq4": {
+      "question": "如果一年内没有发生受保事件，基金会发生什么？",
+      "answer": "在年底，所有用户都会收到投票通知，决定是否支持将基金延长一年。延长后如果发生受保事件，您的基金和付款将自动翻倍或者在基金参与者之间分摊基金。"
+    },
+    "faq5": {
+      "question": "谁是基金管理人？",
+      "answer": "为确保各基金参与者不会浪费时间考虑所有受保事件，参与者能够以少量费用将投票权委托给基金经理"
+    },
+    "faq6": {
+      "question": "保险基金的标准规模是多少？",
+      "answer": "资金由 10 个用户组成，具体取决于所选的保护级别"
+    },
+    "faq7": {
+      "question": "保险基金的给付金额是如何计算的？",
+      "answer": "以第一年基金的计算为例：最低保护 - 每年 1000 WUSD 保费，发生受保事件时赔付 833.333333 WUSD。\n10 名基金成员 * 1000 WUSD/12 个月 = 833.333333 WUSD。\n如果下一年继续使用基金，则基金规模和保险金增加一倍。"
+    },
+    "faq8": {
+      "question": "基金某个成员提取资金的安全保证是什么？",
+      "answer": "基金的所有成员将把资金存放在一个多重签名钱包中，任何决定都只能由多数票做出。"
+    }
+  },
+  "errors": {
+    "incorrectPass": "哎呀，出错了。检查数据并重试。",
+    "emptyData": {
+      "emptyQuests": "???",
+      "emptyPortfolios": "???",
+      "emptyReviews": "???",
+      "employer": {
+        "myQuests": {
+          "desc": "您还没有完成 Quest",
+          "btnText": "创建 Quest！"
+        },
+        "allQuests": {
+          "desc": "您还没有完成 Quest",
+          "btnText": "创建 Quest！"
+        }
+      },
+      "worker": {
+        "myQuests": {
+          "desc": "您还没有完成 Quest",
+          "btnText": "创建 Quest！"
+        },
+        "allQuests": {
+          "desc": "您还没有响应 Quest",
+          "btnText": "响应 Quest！"
+        }
+      }
+    }
+  },
+  "sharing": {
+    "title": "分享",
+    "socialText": "在社交媒体中分享",
+    "share": "分享链接"
+  },
+  "crosschain": {
+    "pageName": "???",
+    "pageAbout": "???",
+    "sourceBlockchain": "???",
+    "targetBlockchain": "???",
+    "blockchain": "???",
+    "yourWQTAddress": "???",
+    "YourBSCAddress": "???",
+    "balance": "???",
+    "createSwap": "???",
+    "mySwaps": "???",
+    "eth": "ETH",
+    "worknet": "Wor???knet",
+    "bsc": "BSC",
+    "tableHead": {
+      "direction": "???",
+      "recipient": "???",
+      "tx": "???",
+      "created": "???"
+    },
+    "recipTemp": "0xnf8o2…9b74thb3",
+    "dateTemp": "05.08.2021, 12:00"
+  },
+  "staking": {
+    "notification": "???",
+    "stakeLimitReached": "???",
+    "notEnoughFunds": "???",
+    "notEnoughClaim": "???",
+    "_inDev": "???",
+    "mainHeader": "???",
+    "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "pools": "???",
+    "tableHead": {
+      "poolAddress": "???",
+      "totalStaked": "???",
+      "totalDistributed": "???",
+      "stakeTokenAddress": "???",
+      "rewardTokenAddress": "???"
+    },
+    "open": "???",
+    "back": "???",
+    "unstake": "???",
+    "stakeIsEmpty": "???",
+    "stakeDurationIsNotOver": "???",
+    "claimRewards": "???",
+    "cannotClaimYet": "???",
+    "pool": "Pool",
+    "stakeTokenAddress": "???",
+    "rewardTokenAddress": "???",
+    "totalStaked": "???",
+    "WQTCount": "{n} WQT",
+    "WUSDCount": "{n} WUSD",
+    "ETHCount": "{n} ETH",
+    "BNBCount": "{n} BNB",
+    "hours": "{n} ???",
+    "days": "{n} ???",
+    "min": "{n} ???",
+    "totalDistributed": "???",
+    "staking": "???",
+    "stakingCards": {
+      "distributionTime": "???",
+      "rewardTotal": "???",
+      "takePeriod": "???",
+      "claimPeriod": "???",
+      "duration": "???"
+    },
+    "userInformation": "???",
+    "userInformationCards": {
+      "staked": "???",
+      "stakeBalance": "???",
+      "claimed": "???"
+    },
+    "stakeCards": {
+      "stakeMin": "???",
+      "stakeLimit": "???",
+      "periodUpdate": "???"
+    },
+    "stakeDays": "???",
+    "stake": "???",
+    "autoRenewal": "???",
+    "renewalTokens": "??? {n} ???"
+  },
+  "myQuests": {
+    "statuses": {
+      "all": "所有 Quest",
+      "fav": "收藏",
+      "requested": "已请求",
+      "completed": "已完成的 Quest",
+      "active": "有效 Quest",
+      "invited": "受邀 Quest"
+    }
+  },
+  "footer": {
+    "download": "???",
+    "follow": "???",
+    "company": {
+      "title": "???",
+      "wqWiki": "???",
+      "aboutUs": "A???",
+      "leadership": "???",
+      "contactUs": "???",
+      "support": "???"
+    },
+    "legalInfo": {
+      "title": "???",
+      "risks": "???",
+      "privacyPolicy": "???",
+      "terms": "???",
+      "aml": "???",
+      "cookiePolicy": "???"
+    },
+    "DeFi": {
+      "title": "???",
+      "retirement": "???",
+      "referral": "???",
+      "P2P": "???",
+      "savingsProduct": "???",
+      "lending": "???",
+      "liquidityMining": "???",
+      "wqBridge": "???",
+      "staking": "???",
+      "wqDAO": "???"
+    }
+  },
+  "wiki": {
+    "title": "WorkQuest Wiki",
+    "searchPlaceholder": "???",
+    "search": "???",
+    "navigation": {
+      "header": {
+        "title": "???",
+        "subtitle": "???",
+        "cards": {
+          "employer": {
+            "title": "???"
+          },
+          "employee": {
+            "title": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "employees": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "myQuests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "wallet": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "instruments": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "language": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "chats": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "notifications": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "menu": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "profile": {
+        "title": "???",
+        "cards": {
+          "profile": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "settings": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "disputes": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "logout": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "instruments": {
+        "title": "???",
+        "cards": {
+          "retirement": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "referral": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "P2P": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "savings": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "lending": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "liquidity": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "crosschain": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "staking": {
+            "title": "???",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+          }
+        }
+      },
+      "statuses": {
+        "title": "???",
+        "cards": {
+          "delivery": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "short": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "urgent": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "top": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "reliable": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "verified": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "buttons": {
+        "title": "???",
+        "cards": {
+          "create": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "results": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "workers": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "details": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "map": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "button": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "raise": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "employer": {
+        "title": "???",
+        "cards": {
+          "specialization": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "rating": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "priority": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "distant": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "price": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "time": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "employee": {
+        "title": "???",
+        "cards": {
+          "specialization": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "delivery": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "job": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "distant": {
+            "title": "???",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+          },
+          "price": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "time": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "user": {
+        "title": "???",
+        "cards": {
+          "reviews": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "active": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "invited": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "favorite": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "quest": {
+        "title": "???",
+        "cards": {
+          "goldPlus": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "gold": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "silver": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "bronze": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      }
+    }
+  },
+  "gallery": {
+    "counter": "{n} ??? {c}"
+  },
+  "uploader": {
+    "uploadFile": "???",
+    "kb": "KB",
+    "mb": "MB",
+    "errors": {
+      "fileSizeLimit": "???: {n}",
+      "filesLimit": "???: {n}"
+    }
+  }
+}
