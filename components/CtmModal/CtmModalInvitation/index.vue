@@ -10,15 +10,14 @@
             <div class="avatar__container">
               <div>
                 <img
-                  alt=""
                   class="ctm-modal__img"
-                  :src="options.currentWorker.avatar ?
-                    options.currentWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+                  :src="userData.avatar && userData.avatar.url ? userData.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                  :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
                 >
               </div>
               <div>
-                {{ options.currentWorker.firstName ? options.currentWorker.firstName : "Nameless worker" }}
-                {{ options.currentWorker.lastName ? options.currentWorker.lastName : "" }}
+                {{ userData.firstName ? userData.firstName : "Nameless worker" }}
+                {{ userData.lastName ? userData.lastName : "" }}
               </div>
               <div>
                 <div
