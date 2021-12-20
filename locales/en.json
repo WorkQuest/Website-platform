@@ -1032,6 +1032,7 @@
     "messageSend": "Message Send",
     "questAgreed": "Quest Agreed",
     "requestSend": "Request sent",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "Send a request",
     "message": "Message",
     "bodyMessage": "Hello",

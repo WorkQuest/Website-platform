@@ -14,7 +14,7 @@
             {{ $t('modals.requestSend') }}
           </div>
           <div class="ctm-modal__desc">
-            {{ $t('modals.smallTemp') }}
+            {{ $t('modals.waitResponseFromEmployer') }}
           </div>
           <base-btn
             class="email__action"
