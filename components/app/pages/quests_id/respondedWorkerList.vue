@@ -38,6 +38,7 @@
         <quest-id-dd
           :i="i"
           :response-id="response.id"
+          :chat-id="response.questChat.id"
         />
         <div class="worker__message">
           {{ response.message }}

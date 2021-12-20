@@ -32,7 +32,7 @@
                   :limit-bytes="10485760"
                   :limit-bytes-video="10485760"
                   :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
-                  :preloaded-files="questData.medias"
+                  class="message__uploader"
                   @change="updateFiles"
                 />
               </div>
@@ -95,22 +95,24 @@ export default {
       const { questId } = this.options;
       const data = {
         message: this.text,
-        medias,
+        // medias,
       };
-      try {
-        if (QuestStatuses.Rejected) {
-          await this.$store.dispatch('quests/respondOnQuest', { data, questId });
+      if (QuestStatuses.Rejected) {
+        const res = await this.$store.dispatch('quests/respondOnQuest', { data, questId });
+        if (res.ok) {
           await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.Rejected);
+          return true;
         }
-      } catch (e) {
-        console.log(e);
       }
+      return false;
     },
     async showRequestSendModal() {
-      await this.respondOnQuest();
-      this.ShowModal({
-        key: modals.requestSend,
-      });
+      const ok = await this.respondOnQuest();
+      if (ok) {
+        this.ShowModal({
+          key: modals.requestSend,
+        });
+      }
     },
   },
 };
@@ -171,6 +173,10 @@ export default {
     &::placeholder {
       color: $black200;
     }
+  }
+
+  &__uploader {
+    margin-top: 20px;
   }
 }
 .btn {
