@@ -189,7 +189,7 @@ export const initMetaMaskWeb3 = async () => {
     if (ethereum) {
       web3 = new Web3(ethereum);
       if ((await web3.eth.getCoinbase()) === null) {
-        await ethereum.enable();
+        await ethereum.request({ method: 'eth_requestAccounts' });
       }
       const [userAddress, chainId] = await Promise.all([
         web3.eth.getCoinbase(),
