@@ -1,7 +1,10 @@
 <template>
   <div class="footer">
     <div class="footer__body">
-      <div class="footer__top">
+      <div
+        class="footer__top"
+        :class="{'footer__top_hidden' : isTopHidden}"
+      >
         <div class="footer__left">
           <div
             class="footer__logo"
@@ -164,6 +167,12 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'Footer',
+  props: {
+    isTopHidden: {
+      type: Boolean,
+      default: false,
+    },
+  },
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
@@ -345,6 +354,9 @@ export default {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    &_hidden {
+      display: none;
+    }
   }
   &__bottom {
     width: 100%;
