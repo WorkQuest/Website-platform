@@ -539,8 +539,8 @@
         </div>
         <Footer
           class="template__footer"
+          :is-top-hidden="isChatOpened"
           @clickOnLogo="toMain"
-          :isTopHidden="isChatOpened"
         />
       </div>
     </div>
