@@ -28,9 +28,8 @@
               {{ convertDate() }}
             </span>
             <quest-dd
-              v-if="userRole === 'employer'
-                ? ![InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode)
-                : ![InfoModeWorker.WaitConfirm, InfoModeWorker.Done].includes(infoDataMode)"
+              v-if="questData.status === questStatuses.Created"
+              :item-id="questData.id"
             />
           </div>
         </div>
@@ -71,7 +70,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
-import { InfoModeEmployer, InfoModeWorker } from '~/utils/enums';
+import { InfoModeEmployer, InfoModeWorker, QuestStatuses } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -117,6 +116,9 @@ export default {
     },
     InfoModeWorker() {
       return InfoModeWorker;
+    },
+    questStatuses() {
+      return QuestStatuses;
     },
   },
   async mounted() {

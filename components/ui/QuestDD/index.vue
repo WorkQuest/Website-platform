@@ -21,17 +21,13 @@
         class="quest menu"
       >
         <div class="menu menu__items">
-          <span
-            class="menu__container"
-          >
+          <span class="menu__container">
             <div
               v-if="['employer'].includes(userRole)"
               class="menu__item"
               @click="toRaisingViews()"
             >
-              <div
-                class="menu__text"
-              >
+              <div class="menu__text">
                 {{ $t('modals.raiseViews') }}
               </div>
             </div>
@@ -39,20 +35,16 @@
               class="menu__item"
               @click="shareModal()"
             >
-              <div
-                class="menu__text"
-              >
+              <div class="menu__text">
                 {{ $t('modals.share') }}
               </div>
             </div>
             <div
               v-if="['employer'].includes(userRole)"
               class="menu__item"
+              @click="toEditQuest()"
             >
-              <div
-                class="menu__text"
-                @click="toEditQuest()"
-              >
+              <div class="menu__text">
                 {{ $t('modals.edit') }}
               </div>
             </div>
@@ -61,9 +53,7 @@
               class="menu__item"
               @click="showAreYouSureDeleteQuestModal()"
             >
-              <div
-                class="menu__text"
-              >
+              <div class="menu__text">
                 {{ $t('modals.delete') }}
               </div>
             </div>
@@ -109,7 +99,7 @@ export default {
   methods: {
     toEditQuest() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
-        this.$router.push('/edit-quest');
+        this.$router.push(`/edit-quest/${this.itemId}`);
         this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
       } else {
         this.showToastWrongStatusEdit();
@@ -118,7 +108,7 @@ export default {
     toRaisingViews() {
       // TODO: Добавить тост или модалку
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
-        this.$router.push('/edit-quest');
+        this.$router.push(`/edit-quest/${this.itemId}`);
         this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
       } else {
         this.showToastWrongStatusRaisingViews();
@@ -225,8 +215,14 @@ export default {
     flex-direction: column;
     align-items: flex-start;
     min-height: 20px;
+    cursor: pointer;
     width: 100%;
     border-bottom: 1px solid $black100;
+    &:hover {
+      .menu__text {
+        color: $black800;
+      }
+    }
   }
   &__text {
     font-family: 'Inter', sans-serif;
@@ -237,9 +233,6 @@ export default {
     color: $black500;
     transition: .5s;
     padding: 12px 15px;
-    &:hover {
-      color: $black800;
-    }
     &:last-child {
       border: none;
     }

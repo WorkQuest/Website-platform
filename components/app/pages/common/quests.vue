@@ -41,13 +41,12 @@
                   {{ `${item.user.firstName} ${item.user.lastName}` }}
                 </div>
               </div>
-              <!--                      TODO: ОТОБРАЗИТЬ ТОЛЬКО ПОСЛЕ ТОГО КАК БУДЕТ СДЕЛАНА СТРАНИЦА edit-quest/_id-->
-              <!--              <quest-dd-->
-              <!--                v-if="item.status === questStatuses.Created"-->
-              <!--                class="block__icon block__icon_fav"-->
-              <!--                mode="vertical"-->
-              <!--                :item-id="item.id"-->
-              <!--              />-->
+              <quest-dd
+                v-if="item.status === questStatuses.Created"
+                class="block__icon block__icon_fav"
+                mode="vertical"
+                :item-id="item.id"
+              />
               <div
                 v-if="[questStatuses.Closed, questStatuses.Dispute].includes(item.status)"
                 class="block__icon block__icon_fav star"
