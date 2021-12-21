@@ -147,7 +147,7 @@
                   </template>
                 </base-btn>
                 <div
-                  v-if="item.status === questStatuses.Done"
+                  v-if="item.status === questStatuses.Done && item.assignedWorkerId === userData.id"
                   class="block__rating"
                 >
                   <div class="block__rating block__rating_star">
@@ -489,14 +489,19 @@ export default {
       &_clo {
         background: $red;
       }
-      &_req {}
+      &_req {
+        background: $grey;
+        color: $black600 !important;
+      }
       &_per {
         background: $blue;
       }
       &_act {
         background: $green;
       }
-      &_inv {}
+      &_inv {
+        background: $yellow;
+      }
     }
   }
   &__card {
