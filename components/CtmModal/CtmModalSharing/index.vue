@@ -55,7 +55,7 @@ export default {
       options: 'modals/getOptions',
     }),
     sharingLink() {
-      return process.env.BASE_URL.slice(0, -5) + this.$route.fullPath;
+      return this.options.itemId ? `${process.env.BASE_URL.slice(0, -5) + this.$route.fullPath}/${this.options.itemId}` : process.env.BASE_URL.slice(0, -5) + this.$route.fullPath;
     },
   },
   methods: {
