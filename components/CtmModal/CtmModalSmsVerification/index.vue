@@ -25,11 +25,11 @@
         </span>
         <base-field
           v-if="step === 1"
-          v-model="phoneNumber"
+          v-model="secondMobileNumber"
           class="content__action"
           :placeholder="$t('modals.phoneNumber')"
           mode="icon"
-          rules="required|alpha_num"
+          :disabled="true"
           :name="$t('modals.phoneNumberField')"
         >
           <template
@@ -68,7 +68,6 @@
           <base-btn
             v-if="step === 1"
             class="buttons__button"
-            :disabled="!validated || !passed || invalid"
             @click="handleSubmit(nextStep)"
           >
             {{ $t('meta.next') }}
@@ -88,6 +87,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -95,9 +95,13 @@ export default {
   data() {
     return {
       confirmCode: '',
-      phoneNumber: '',
       step: 1,
     };
+  },
+  computed: {
+    ...mapGetters({
+      secondMobileNumber: 'user/getUserSecondMobileNumber',
+    }),
   },
   methods: {
     hide() {
@@ -106,7 +110,7 @@ export default {
     async sendPhoneNumber() {
       try {
         const payload = {
-          phoneNumber: this.phoneNumber,
+          phoneNumber: await this.secondMobileNumber,
         };
         const response = await this.$store.dispatch('user/sendPhone', payload);
         if (response?.ok) {

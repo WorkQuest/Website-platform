@@ -6,7 +6,10 @@
     <div
       class="primary__template template"
     >
-      <div class="template__content">
+      <div
+        class="template__content"
+        :class="{'template__content_rows' : isChatOpened}"
+      >
         <div
           v-click-outside="closeAll"
           class="template__header header"
@@ -28,25 +31,13 @@
                 class="header__links"
               >
                 <nuxt-link
-                  to="/workers"
+                  v-for="(item, i) in headerLinksEmployer"
+                  :key="i"
+                  :to="item.url"
                   class="header__link"
                   :exact-active-class="'header__link_active'"
                 >
-                  {{ $t('ui.jobQuestors') }}
-                </nuxt-link>
-                <nuxt-link
-                  to="/my"
-                  class="header__link"
-                  :exact-active-class="'header__link_active'"
-                >
-                  {{ $t('ui.myQuests') }}
-                </nuxt-link>
-                <nuxt-link
-                  to="/wallet"
-                  class="header__link"
-                  :exact-active-class="'header__link_active'"
-                >
-                  {{ $t('ui.wallet') }}
+                  {{ item.title }}
                 </nuxt-link>
                 <button
                   class="header__link header__link_menu"
@@ -92,25 +83,13 @@
                 class="header__links"
               >
                 <nuxt-link
-                  to="/quests"
+                  v-for="(item, i) in headerLinksWorker"
+                  :key="i"
+                  :to="item.url"
                   class="header__link"
                   :exact-active-class="'header__link_active'"
                 >
-                  {{ $t('ui.quests') }}
-                </nuxt-link>
-                <nuxt-link
-                  to="/my"
-                  class="header__link"
-                  :exact-active-class="'header__link_active'"
-                >
-                  {{ $t('ui.myQuests') }}
-                </nuxt-link>
-                <nuxt-link
-                  to="/wallet"
-                  class="header__link"
-                  :exact-active-class="'header__link_active'"
-                >
-                  {{ $t('ui.wallet') }}
+                  {{ item.title }}
                 </nuxt-link>
                 <button
                   class="header__link header__link_menu"
@@ -158,10 +137,10 @@
                 @click="showLocale()"
               >
                 <span v-if="currentLocale">
-                  {{ currentLocale }}
+                  {{ currentLocale.toUpperCase() }}
                 </span>
                 <span v-else>
-                  {{ $t('ui.locals.en') }}
+                  {{ $t('ui.locals.en').toUpperCase() }}
                 </span>
                 <span class="icon-caret_down" />
                 <transition name="fade">
@@ -179,12 +158,12 @@
                         @click="setLocale(item)"
                       >
                         <img
-                          :src="item.localeSrc"
+                          :src="require(`assets/img/lang/${item.localeSrc}`)"
                           :alt="item.localeText"
                           class="locale__icon"
                         >
                         <div class="locale__text">
-                          {{ item.localeText }}
+                          {{ item.localeText.toUpperCase() }}
                         </div>
                       </div>
                     </div>
@@ -551,13 +530,17 @@
               </div>
             </div>
           </transition>
-          <div class="template__main">
+          <div
+            class="template__main"
+            :class="{'template__main_padding' : isChatOpened}"
+          >
             <nuxt />
           </div>
         </div>
         <Footer
           class="template__footer"
           @clickOnLogo="toMain"
+          :isTopHidden="isChatOpened"
         />
       </div>
     </div>
@@ -570,6 +553,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
+import moment from 'moment';
 import Footer from '~/components/app/Footer';
 
 export default {
@@ -601,49 +585,130 @@ export default {
       userData: 'user/getUserData',
       imageData: 'user/getImageData',
       userRole: 'user/getUserRole',
+      token: 'user/accessToken',
+      connections: 'data/notificationsConnectionStatus',
+      chatId: 'chat/getCurrChatId',
+      messagesFilter: 'chat/getMessagesFilter',
+      isChatOpened: 'chat/isChatOpened',
     }),
+    headerLinksWorker() {
+      return [
+        {
+          url: '/quests',
+          title: this.$t('ui.quests'),
+        },
+        {
+          url: '/my',
+          title: this.$t('ui.myQuests'),
+        },
+        {
+          url: '/wallet',
+          title: this.$t('ui.wallet'),
+        },
+      ];
+    },
+    headerLinksEmployer() {
+      return [
+        {
+          url: '/workers',
+          title: this.$t('ui.jobQuestors'),
+        },
+        {
+          url: '/my',
+          title: this.$t('ui.myQuests'),
+        },
+        {
+          url: '/wallet',
+          title: this.$t('ui.wallet'),
+        },
+      ];
+    },
+    storeLinks() {
+      return [
+        {
+          url: '#',
+          class: 'links__store_app-store',
+        },
+        {
+          url: '#',
+          class: 'links__store_play-market',
+        },
+      ];
+    },
+    socialLinks() {
+      return [
+        {
+          url: 'https://twitter.com/workquest_co',
+          class: 'links__social_twitter',
+        },
+        {
+          url: 'https://www.youtube.com/channel/UCpQTdOMynXejrRTVf4ksKPA',
+          class: 'links__social_youtube',
+        },
+        {
+          url: 'https://www.reddit.com/user/WorkQuest_co',
+          class: 'links__social_reddit',
+        },
+        {
+          url: 'https://m.facebook.com/WorkQuestOfficial/',
+          class: 'links__social_facebook',
+        },
+        {
+          url: 'https://www.linkedin.com/company/workquestofficial',
+          class: 'links__social_linkedin',
+        },
+        {
+          url: 'https://www.instagram.com/workquestofficial/',
+          class: 'links__social_instagram',
+        },
+        {
+          url: 'https://t.me/WorkQuest',
+          class: 'links__social_telegram',
+        },
+      ];
+    },
     locales() {
       return [
         {
-          localeSrc: '/img/app/en.svg',
+          localeSrc: 'en.svg',
           localeText: this.$t('ui.locals.en'),
         },
-        {
-          localeSrc: '/img/app/ru.svg',
-          localeText: this.$t('ui.locals.ru'),
-        },
-        {
-          localeSrc: '/img/app/ba.svg',
-          localeText: this.$t('ui.locals.ba'),
-        },
-        {
-          localeSrc: '/img/app/zh.svg',
-          localeText: this.$t('ui.locals.zh'),
-        },
-        {
-          localeSrc: '/img/app/fr.svg',
-          localeText: this.$t('ui.locals.fr'),
-        },
-        {
-          localeSrc: '/img/app/hi.svg',
-          localeText: this.$t('ui.locals.hi'),
-        },
-        {
-          localeSrc: '/img/app/in.svg',
-          localeText: this.$t('ui.locals.in'),
-        },
-        {
-          localeSrc: '/img/app/po.svg',
-          localeText: this.$t('ui.locals.po'),
-        },
-        {
-          localeSrc: '/img/app/sp.svg',
-          localeText: this.$t('ui.locals.sp'),
-        },
-        {
-          localeSrc: '/img/app/ae.svg',
-          localeText: this.$t('ui.locals.ae'),
-        },
+        // {
+        //   localeSrc: 'ru.svg',
+        //   localeText: this.$t('ui.locals.ru'),
+        // },
+        // {
+        //   localeSrc: 'bn.svg',
+        //   localeText: this.$t('ui.locals.bn'),
+        // },
+        // {
+        //   localeSrc: 'zh.svg',
+        //   localeText: this.$t('ui.locals.zh'),
+        // },
+        // {
+        //   localeSrc: 'fr.svg',
+        //   localeText: this.$t('ui.locals.fr'),
+        // },
+        // {
+        //   localeSrc: 'hi.svg',
+        //   localeText: this.$t('ui.locals.hi'),
+        // },
+        // {
+        //   localeSrc: 'id.svg',
+        //   localeText: this.$t('ui.locals.id'),
+        // },
+        // {
+        //   localeSrc: 'pt.svg',
+        //   localeText: this.$t('ui.locals.pt'),
+        // },
+        // {
+        //   localeSrc: 'es.svg',
+        //   localeText: this.$t('ui.locals.es'),
+        // },
+        // {
+        //   localeSrc: 'ar.svg',
+        //   localeText: this.$t('ui.locals.ar'),
+        // },
       ];
     },
     instrumentDDLinks() {
@@ -786,9 +851,11 @@ export default {
     },
   },
   async mounted() {
+    await this.initWSListeners();
+    this.loginCheck();
     this.GetLocation();
-    await this.loginCheck();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
+    this.currentLocale = this.$i18n.localeProperties.code;
   },
   created() {
     window.addEventListener('resize', this.userWindowChange);
@@ -797,11 +864,39 @@ export default {
     window.removeEventListener('resize', this.userWindowChange);
   },
   methods: {
-    async loginCheck() {
+    loginCheck() {
       localStorage.setItem('userLogin', true);
+    },
+    async initWSListeners() {
+      const { chatConnection, notifsConnection } = this.connections;
+      if (!chatConnection) {
+        await this.$wsChat.connect(this.token);
+        this.$wsChat.subscribe('/notifications/chat', async ({ data, action }) => {
+          if (this.$route.name === 'messages') {
+            await this.$store.dispatch('chat/getChatsList', {
+              limit: 30,
+              offset: 0,
+            });
+          } else if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
+            if (action !== 'messageReadByRecipient') this.$store.commit('chat/addMessageToList', data);
+
+            if (data.type === 'info') {
+              const { user } = data.infoMessage;
+
+              if (action === 'groupChatAddUsers') {
+                this.$store.commit('chat/addUserToChat', user);
+              } else if (action === 'groupChatDeleteUser') {
+                this.$store.commit('chat/removeUserFromChat', user.id);
+              }
+            }
+          }
+        });
+      }
     },
     setLocale(item) {
       this.currentLocale = item.localeText;
+      this.$i18n.setLocale(item.localeText);
+      moment.locale(item.localeText);
     },
     kitcutDescription(text) {
       text = text.trim();
@@ -916,9 +1011,6 @@ export default {
       this.isShowLocale = false;
     },
   },
-};
-const Role = {
-  WORKER: 'worker1',
 };
 </script>
 <style lang="scss" scoped>
@@ -1095,6 +1187,7 @@ const Role = {
 .primary {
   height: 100vh;
   overflow-y: auto;
+  background: #F7F8FA;
 }
 .template {
   min-height: 100vh;
@@ -1103,12 +1196,20 @@ const Role = {
     display: grid;
     grid-template-rows: 72px 1fr auto;
     min-height: 100vh;
+
+    &_rows {
+      grid-template-rows: 72px 1fr 72px;
+    }
   }
   &__main {
     display: grid;
     padding-bottom: 80px;
     transition: 1s;
     width: 100%;
+
+    &_padding {
+      padding-bottom: 0;
+    }
   }
 }
 .notify {
@@ -1207,7 +1308,6 @@ const Role = {
     grid-gap: 10px;
   }
   &__info {
-    //grid-template-rows: repeat(2, auto);
     grid-gap: 5px;
     display: grid;
     text-align: left;
@@ -1495,7 +1595,7 @@ const Role = {
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
-  overflow: scroll;
+  overflow-y: scroll;
   max-height: 172px;
   min-width: 86px;
   z-index: 10000000;

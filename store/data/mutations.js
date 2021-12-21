@@ -1,3 +1,7 @@
 /* eslint-disable no-param-reassign */
 
-export default {};
+export default {
+  updateConnectionsStatus(state, { name, value }) {
+    state.connections[name] = value;
+  },
+};

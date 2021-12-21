@@ -49,6 +49,23 @@
           {{ $t('meta.ok') }}
         </span>
       </base-btn>
+      <div
+        v-if="options.type === 'goToChat'"
+        class="button_to-chat"
+      >
+        <base-btn
+          class="status__action"
+          mode="agree"
+          @click="goToChat()"
+        >
+          <span
+            v-if="options.button"
+            class="status__text"
+          >
+            {{ options.button }}
+          </span>
+        </base-btn>
+      </div>
       <base-btn
         v-else
         class="status__action"
@@ -84,6 +101,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      chatInfoInviteOnQuest: 'quests/getChatInfoInviteOnQuest',
     }),
   },
   async mounted() {
@@ -97,6 +115,11 @@ export default {
     }
   },
   methods: {
+    goToChat() {
+      const chatId = this.chatInfoInviteOnQuest.id;
+      this.$router.push(`/messages/${chatId}`);
+      this.hide();
+    },
     installMetamask() {
       window.open('https://metamask.io/download.html');
     },
@@ -125,6 +148,12 @@ export default {
 
 <style lang="scss" scoped>
 
+.button {
+  &_to-chat {
+    width:100%;
+  }
+}
+
 .status {
   max-width: 337px !important;
   height: auto !important;
@@ -146,7 +175,7 @@ export default {
   &__action {
     margin-top: 10px;
   }
-  &__desc{
+  &__desc {
     font-size: 16px;
     line-height: 130%;
     text-align: center;

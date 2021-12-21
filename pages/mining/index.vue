@@ -95,6 +95,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
+  name: 'Pools',
   layout: 'guest',
   data() {
     return {
@@ -184,10 +185,6 @@ export default {
       return str;
     },
     handleOpenPool(el) {
-      if (localStorage.getItem('miningPoolId')) {
-        localStorage.removeItem('miningPoolId');
-      }
-      localStorage.setItem('miningPoolId', el.item.id);
       this.$router.push(`/mining/${el.item.id}`);
     },
   },

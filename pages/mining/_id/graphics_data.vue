@@ -16,14 +16,13 @@ export default {
   },
   props: {
     specialChartData: {
-      type: [Array, Object],
+      type: Array,
       default: () => [],
     },
   },
 
   data() {
     return {
-      miningPoolId: localStorage.getItem('miningPoolId'),
       chartOptions: {
         responsive: true,
         maintainAspectRatio: false,
@@ -41,7 +40,6 @@ export default {
           titleFontSize: 16,
           bodyFontFamily: "'Roboto', sans-serif",
           bodyFontSize: 16,
-
           backgroundColor: 'rgba(12, 12, 20, 0.8)',
           cornerRadius: 6,
           xPadding: 14,
@@ -54,13 +52,13 @@ export default {
         scales: {
           xAxes: [
             {
-              type: 'time',
-              time: {
-                unit: 'day',
-                displayFormats: {
-                  quarter: 'DD.MM',
-                },
-              },
+              // type: 'time',
+              // time: {
+              //   unit: 'day',
+              //   displayFormats: {
+              //     quarter: 'DD.MM',
+              //   },
+              // },
               gridLines: {
                 // color: 'rgba(128, 128, 128, 0.5)',
                 zeroLineColor: 'rgba(0, 0, 0, 0)',
@@ -90,38 +88,30 @@ export default {
   },
   computed: {
     datacollection() {
-      if (this.specialChartData.length) {
-        const chartDataCount = this.specialChartData.length;
-        const chartData = [];
-        for (let i = 0; i < chartDataCount; i += 1) {
-          chartData.push(Math.round(this.specialChartData[i].reserveUSD));
-        }
-        const data = chartData;
-        const labels = [];
-        for (let i = 0; i < chartDataCount; i += 1) {
-          labels.push(this.specialChartData[i].date * 1000);
-        }
-        return {
-          labels,
-          datasets: [
-            {
-              label: 'all',
-              borderColor: '#00BBFF',
-              borderWidth: 2,
-              data,
-              fill: true,
-              backgroundColor: 'rgba(0, 187, 255, 0.05)',
-              pointBackgroundColor: '#F9F8FB',
-              pointBorderColor: '#00BBFF',
-              pointBorderWidth: 1,
-              pointRadius: 2,
-              pointHoverRadius: 3,
-              pointHoverBackgroundColor: '#F9F8FB',
-            },
-          ],
-        };
-      }
-      return {};
+      const labels = [];
+      const data = [];
+      this.specialChartData.forEach((item) => {
+        data.push(Math.round(item.reserveUSD));
+        labels.push(this.$moment(item.date * 1000).utc(false).format('MMM DD').toString());
+      });
+      return {
+        labels,
+        datasets: [
+          {
+            label: 'all',
+            borderColor: '#00BBFF',
+            borderWidth: 2,
+            data,
+            fill: true,
+            backgroundColor: 'rgba(0, 187, 255, 0.05)',
+            pointBackgroundColor: '#F9F8FB',
+            pointBorderWidth: 1,
+            pointRadius: 2,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: '#F9F8FB',
+          },
+        ],
+      };
     },
   },
 };

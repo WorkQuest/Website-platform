@@ -1,7 +1,5 @@
 @import './icons.scss';
 @import './_reset.css';
-@import './vue2Dropzone.min.css';
-@import './dropzone.scss';
 
 @font-face {
   font-family: "GothamProMedium";
@@ -137,4 +135,8 @@ body {
 
 .b-toaster {
   z-index: 3000;
+}
+
+#WEB3_CONNECT_MODAL_ID > div {
+  z-index: 1000000;
 }

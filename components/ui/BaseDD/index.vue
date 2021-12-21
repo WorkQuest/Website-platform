@@ -16,7 +16,7 @@
       <button
         class="dd__btn"
         :class="ddClass"
-        :disabled="disabled"
+        :disabled="disabled || elementsIsEmpty"
         @click="isShown = !isShown"
       >
         <div
@@ -31,7 +31,7 @@
             class="dd__title"
             :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
           >
-            {{ items[value].title }}
+            {{ dataType === 'array' ? items[value].title : items.title }}
           </span>
         </div>
 
@@ -40,7 +40,7 @@
           class="dd__title"
           :class="[{'dd__title_white': type === 'blue' }, { 'dd__title_black': mode === 'blackFont' }]"
         >
-          {{ items[value] }}
+          {{ dataType === 'array' ? items[value] : items[value].title }}
         </span>
         <span
           v-else-if="!items[value] && placeholder"
@@ -89,9 +89,10 @@
             v-for="(item, i) in items"
             :key="`dd__item-${i}`"
             class="dd__item"
+            :class="{'dd__item_hide': isSelected(i)}"
             @click="selectItem(i)"
           >
-            {{ item }}
+            {{ dataType === 'array' ? item : item.title }}
           </button>
           <slot name="buttonCard" />
         </div>
@@ -109,6 +110,10 @@ export default {
     ClickOutside,
   },
   props: {
+    dataType: {
+      type: String,
+      default: () => 'array',
+    },
     items: {
       type: [Array, Object],
       default: () => [],
@@ -145,16 +150,23 @@ export default {
       type: Boolean,
       default: false,
     },
+    hideSelected: {
+      type: Array,
+      default: () => [],
+    },
   },
   data: () => ({
     isShown: false,
   }),
   computed: {
+    elementsIsEmpty() {
+      return this.items.length - this.hideSelected.length <= 0;
+    },
     ddClass() {
       const { type } = this;
       return [
         { dd__btn_dark: type === 'dark' },
-        { dd__btn_disabled: type === 'disabled' },
+        { dd__btn_disabled: type === 'disabled' || this.elementsIsEmpty },
         { dd__btn_gray: type === 'gray' },
         { dd__btn_blue: type === 'blue' },
         { dd__btn_border: type === 'border' },
@@ -166,8 +178,12 @@ export default {
       this.isShown = false;
     },
     selectItem(i) {
+      if (this.hideSelected.includes(i)) return;
       this.isShown = false;
       this.$emit('input', i);
+    },
+    isSelected(i) {
+      return this.hideSelected.includes(i);
     },
   },
 };
@@ -219,9 +235,10 @@ export default {
     padding: 15px 20px;
     z-index: 1;
     &_small {
-      height: 200px;
+      max-height: 200px;
       grid-gap: 10px;
-      overflow: scroll;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
     }
   }
   &__item {
@@ -241,6 +258,9 @@ export default {
         height: 25px;
         width: 25px;
       }
+    }
+    &_hide {
+      display: none;
     }
   }
   &__icon {
