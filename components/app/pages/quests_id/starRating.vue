@@ -6,7 +6,8 @@
       id="star-5"
       type="radio"
       name="rating"
-      @click="setRating(5)"
+      :checked="5 === value"
+      @click="$emit('input', 5)"
     >
     <label
       for="star-5"
@@ -16,7 +17,8 @@
       id="star-4"
       type="radio"
       name="rating"
-      @click="setRating(4)"
+      :checked="4 === value"
+      @click="$emit('input', 4)"
     >
     <label
       for="star-4"
@@ -26,7 +28,8 @@
       id="star-3"
       type="radio"
       name="rating"
-      @click="setRating(3)"
+      :checked="3 === value"
+      @click="$emit('input', 3)"
     >
     <label
       for="star-3"
@@ -36,7 +39,8 @@
       id="star-2"
       type="radio"
       name="rating"
-      @click="setRating(2)"
+      :checked="2 === value"
+      @click="$emit('input', 2)"
     >
     <label
       for="star-2"
@@ -46,7 +50,8 @@
       id="star-1"
       type="radio"
       name="rating"
-      @click="setRating(1)"
+      :checked="1 === value"
+      @click="$emit('input', 1)"
     >
     <label
       for="star-1"
@@ -62,6 +67,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    value: {
+      type: Number,
+      default: 0,
+    },
   },
   methods: {
     setRating(n) {
@@ -74,8 +83,9 @@ export default {
 <style lang="scss" scoped>
 .rating-area {
   overflow: hidden;
-  width: 265px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
 }
 .rating-area:not(:checked) > input {
   display: none;

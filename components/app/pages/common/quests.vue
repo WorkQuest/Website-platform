@@ -151,9 +151,9 @@
                   class="block__rating"
                 >
                   <div class="block__rating block__rating_star">
-                    <button @click="showReviewModal(item)">
-                      <star-rating :rating="item.user.ratingStatistic" />
-                    </button>
+                    <star-rating
+                      @input="showReviewModal($event, item)"
+                    />
                   </div>
                 </div>
               </div>
@@ -280,10 +280,11 @@ export default {
     showDetails(questId) {
       this.$router.push(`/quests/${questId}`);
     },
-    showReviewModal(item) {
+    showReviewModal(review, item) {
       this.ShowModal({
         key: modals.review,
         item,
+        review,
       });
     },
     isHideStar(type) {

@@ -5,11 +5,11 @@
   >
     <div class="review__body body">
       <div class="body__rating">
-        <button class="body__button">
-          <b-form-rating
-            v-model="localRating"
-          />
-        </button>
+        <b-form-rating
+          :value="rating"
+          :inline="true"
+          @change="changeReview"
+        />
       </div>
       <div class="body__content content">
         <div class="content__desc">
@@ -61,8 +61,7 @@ export default {
   data() {
     return {
       textArea: '',
-      rating: '',
-      localRating: 0,
+      rating: 0,
     };
   },
   computed: {
@@ -74,8 +73,11 @@ export default {
     this.getQuestRating();
   },
   methods: {
+    changeReview(value) {
+      this.rating = value;
+    },
     getQuestRating() {
-      this.localRating = localStorage.getItem('questRating');
+      this.rating = this.options.review;
     },
     removeLocalStorageRating() {
       localStorage.removeItem('questRating');
@@ -83,11 +85,11 @@ export default {
     hide() {
       this.CloseModal();
     },
-    sendReviewForUser() {
+    async sendReviewForUser() {
       const payload = {
         questId: this.options.item.id,
         message: this.textArea,
-        mark: this.localRating,
+        mark: this.rating,
       };
       try {
         this.$store.dispatch('user/sendReviewForUser', payload);
@@ -156,5 +158,9 @@ export default {
   &__rating{
     padding-bottom: 15px;
   }
+}
+.form-control:focus {
+  border-color: transparent;
+  box-shadow: none;
 }
 </style>
