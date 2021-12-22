@@ -1858,6 +1858,7 @@ export default {
   z-index: 10000000;
   padding: 15px 20px;
   &__container {
+
     width: 46px;
   }
   &__container:not(:last-child) {
