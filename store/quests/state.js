@@ -2,7 +2,7 @@ export default () => ({
   respondOnQuest: {},
   questListForInvitation: {},
   chatInfoInviteOnQuest: {},
-  currentWorker: {},
+  currentWorker: null,
   workersList: {},
   allQuests: {},
   quest: {},

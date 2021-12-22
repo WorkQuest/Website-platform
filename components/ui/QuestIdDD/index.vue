@@ -109,9 +109,7 @@ export default {
       }
     },
     async removeWorker() {
-      if (Object.keys(this.currentWorker).length !== 0) {
-        await this.$store.dispatch('quests/setCurrentWorker', {});
-      }
+      await this.$store.dispatch('quests/setCurrentWorker', {});
     },
     async selectWorker(i) {
       this.SetLoader(true);
@@ -125,6 +123,7 @@ export default {
     async rejectQuestInvitation(responseId) {
       this.SetLoader(true);
       await this.$store.dispatch('quests/rejectQuestInvitation', responseId);
+      await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
       this.showToastReject();
       this.SetLoader(false);
     },

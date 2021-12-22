@@ -5,32 +5,13 @@
       <div class="worker__title">
         {{ $t('quests.invited') }}
       </div>
-      <div
-        class="btns__wrapper btns__start"
-      >
-        <div class="btn__wrapper">
-          <base-btn
-            :disabled="Object.keys(currentWorker).length === 0"
-            class="btn__start"
-            @click="startQuest(currentWorker)"
-          >
-            {{ $t('quests.startQuest') }}
-          </base-btn>
-        </div>
-      </div>
     </div>
     <div
-      v-if="filteredInvited.length === 0"
-      class="invited__title"
-    >
-      {{ $t('quests.workersNotInvited') }}
-    </div>
-    <div
-      v-if="filteredInvited.length"
+      v-if="getCurrUsersArr.length"
       class="invited__list"
     >
       <div
-        v-for="(response, i) in filteredInvited"
+        v-for="(response, i) in getCurrUsersArr"
         :key="i"
         class="invited__response"
       >
@@ -45,16 +26,15 @@
                 :src="response.worker.avatar ? response.worker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
                 alt=""
               >
-              <div
-                class="worker__name"
-              >
-                {{ response.worker.firstName }} {{ response.worker.lastName }}
+              <div class="worker__name">
+                {{ `${response.worker.firstName} ${response.worker.lastName}` }}
               </div>
             </div>
             <quest-id-dd
               class="worker__menu"
               :i="i"
               :response-id="response.id"
+              :chat-id="response.questChat.chatId"
             />
           </div>
           <div class="worker__message">
@@ -85,6 +65,12 @@
         </div>
       </div>
     </div>
+    <div
+      v-else
+      class="invited__title"
+    >
+      {{ $t('quests.workersNotInvited') }}
+    </div>
   </div>
 </template>
 
@@ -94,16 +80,28 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'InvitedWorkerList',
   props: {
-    filteredInvited: {
-      type: Array,
-      default: () => [],
+    isInvited: {
+      type: Boolean,
+      default: false,
     },
+  },
+  data() {
+    return {
+      currUsers: [],
+    };
   },
   computed: {
     ...mapGetters({
       currentWorker: 'quests/getCurrentWorker',
       questData: 'quests/getQuest',
+      invited: 'quests/getInvited',
+      responded: 'quests/getResponded',
     }),
+    getCurrUsersArr() {
+      const { isInvited, invited, responded } = this;
+
+      return isInvited ? invited : responded;
+    },
   },
   async created() {
     this.SetLoader(true);
@@ -148,31 +146,6 @@ export default {
   align-items: center;
   margin: 0 0 10px 0;
 }
-.btn {
-  &__wrapper {
-    width: 220px;
-    margin: 0 20px 0 0;
-  }
-  &__start {
-    height: 43px;
-    margin: 15px 0 0 0;
-  }
-}
-.btns {
-  &__container {
-    display: grid;
-    margin-bottom: 20px;
-  }
-  &__start {
-    justify-content: flex-end;
-  }
-  &__wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-  }
-}
 .worker {
   font-size: 16px;
   font-weight: 500;
@@ -204,13 +177,6 @@ export default {
       width: 100%;
     }
  }
-  &__container_row {
-    display: flex;
-    flex-direction: row;
-    justify-items: flex-start;
-    align-items: center;
-    margin: 20px 15px;
-  }
   &__container {
     display: flex;
     flex-direction: column;

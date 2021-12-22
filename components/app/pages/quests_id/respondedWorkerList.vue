@@ -1,52 +1,51 @@
 <template>
-  <div
-    v-if="currentWorker"
-    class="worker worker__card"
-  >
+  <div class="worker worker__card">
     <div class="worker__title">
       {{ $t('response.title') }}
     </div>
     <div class="worker__container">
+      <template v-if="responded.length">
+        <div
+          v-for="(response, i) in responded"
+          :key="i"
+          class="worker worker__col_two"
+        >
+          <div
+            v-if="response.worker.firstName && response.worker.lastName"
+            class="worker row"
+          >
+            <img
+              class="worker__avatar"
+              :src="response.worker.avatar ? response.worker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+              alt=""
+            >
+            <div class="worker__name">
+              {{ response.worker.firstName }} {{ response.worker.lastName }}
+            </div>
+          </div>
+          <quest-id-dd
+            :i="i"
+            :response-id="response.id"
+            :chat-id="response.questChat.chatId"
+          />
+          <div>
+            <div class="worker__message">
+              {{ response.message }}
+            </div>
+            <div v-if="response.medias">
+              <files-preview
+                :medias="response.medias"
+                :small="true"
+              />
+            </div>
+          </div>
+        </div>
+      </template>
       <div
-        v-if="filteredResponses.length === 0"
+        v-else
         class="info__message"
       >
         {{ $t('quests.employer.usersNotResponded') }}
-      </div>
-      <div
-        v-for="(response, i) in filteredResponses"
-        :key="i"
-        class="worker worker__col_two"
-      >
-        <div
-          v-if="response.worker.firstName && response.worker.lastName"
-          class="worker row"
-        >
-          <img
-            class="worker__avatar"
-            :src="response.worker.avatar ? response.worker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
-            alt=""
-          >
-          <div class="worker__name">
-            {{ response.worker.firstName }} {{ response.worker.lastName }}
-          </div>
-        </div>
-        <quest-id-dd
-          :i="i"
-          :response-id="response.id"
-          :chat-id="response.questChat.chatId"
-        />
-        <div>
-          <div class="worker__message">
-            {{ response.message }}
-          </div>
-          <div v-if="response.medias">
-            <files-preview
-              :medias="response.medias"
-              :small="true"
-            />
-          </div>
-        </div>
       </div>
       <div>
         <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
@@ -79,15 +78,9 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'RespondedWorkerList',
-  props: {
-    filteredResponses: {
-      type: Array,
-      default: () => [],
-    },
-  },
   computed: {
     ...mapGetters({
-      currentWorker: 'quests/getCurrentWorker',
+      responded: 'quests/getResponded',
     }),
   },
 };

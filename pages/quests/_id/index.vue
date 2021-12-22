@@ -39,17 +39,9 @@
     </div>
     <div class="main">
       <div class="main__body">
-        <div v-if="userRole === 'employer'">
-          <div v-if="infoDataMode === InfoModeEmployer.Created">
-            <invited-worker-list
-              :current-worker="currentWorker"
-              :filtered-invited="filteredInvited"
-            />
-            <responded-worker-list
-              :current-worker="currentWorker"
-              :filtered-responses="filteredResponses"
-            />
-          </div>
+        <div v-if="userRole === 'employer' && infoDataMode === InfoModeEmployer.Created">
+          <invited-worker-list is-invited />
+          <invited-worker-list />
         </div>
         <div
           class="map__container gmap"
@@ -147,8 +139,6 @@ export default {
       payload: {
         spec: 'Painting works',
       },
-      filteredResponses: [],
-      filteredInvited: [],
       isShowMap: true,
       priorityIndex: 0,
       distanceIndex: 0,
@@ -186,6 +176,8 @@ export default {
       responsesToQuest: 'quests/getResponsesToQuest',
       responsesData: 'quests/getResponsesData',
       infoDataMode: 'quests/getInfoDataMode',
+      responded: 'quests/getResponded',
+      invited: 'quests/getInvited',
     }),
     InfoModeEmployer() {
       return InfoModeEmployer;
@@ -218,7 +210,6 @@ export default {
     await this.initData();
     await this.initUserAvatar();
     await this.getResponsesToQuest();
-    this.getFilteredResponses();
     await this.checkPageMode();
     this.SetLoader(false);
   },
@@ -227,17 +218,7 @@ export default {
       await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     },
     async getResponsesToQuest() {
-      if (this.userRole === 'employer') {
-        await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
-      }
-    },
-    getFilteredResponses() {
-      if (this.userRole === 'employer') {
-        this.filteredResponses = this.responsesToQuest ? this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Responded) : [];
-        this.filteredInvited = this.responsesToQuest ? this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Invited) : [];
-        return this.filteredResponses && this.filteredInvited;
-      }
-      return '';
+      if (this.userRole === 'employer') await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
     },
     async initUserAvatar() {
       this.userAvatar = await this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
