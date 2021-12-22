@@ -160,8 +160,4 @@ export default {
     padding-bottom: 15px;
   }
 }
-.form-control:focus {
-  border-color: transparent;
-  box-shadow: none;
-}
 </style>
