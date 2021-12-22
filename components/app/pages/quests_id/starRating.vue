@@ -16,7 +16,7 @@
       >
       <label
         :for="`${ratingType}-star-${starsNumber-index}`"
-        :title="`Оценка «${starsNumber-index}»`"
+        :title="`«${starsNumber-index}»`"
         :class="(starsNumber-index)<=rating ? 'golden' : ''"
       />
     </li>
@@ -60,48 +60,18 @@ export default {
     color: lightgrey;
     text-shadow: 1px 1px #bbb;
   }
-  &__star:not(:checked) > label:before {
+  &__star > label:before {
     content: '★';
   }
-  &__star:not(:checked) > label:hover,
-  &__star:not(:checked) > label:hover ~ label {
+  &__star:hover > label {
     color: gold;
+  }
+  &__star:hover ~ &__star > label {
+    color: gold;
+    text-shadow: 1px 1px goldenrod;
   }
 }
 .golden {
   color: gold !important;
 }
-/* .rating-area:not(:checked) > input {
-  display: none;
-}
-.rating-area:not(:checked) > label {
-  float: right;
-  padding: 0;
-  cursor: pointer;
-  font-size: 25px;
-  line-height: 25px;
-  color: lightgrey;
-  text-shadow: 1px 1px #bbb;
-}
-.rating-area:not(:checked) > label:before {
-  content: '★';
-}
-.rating-area > input:checked ~ label {
-  color: gold;
-}
-.rating-area:not(:checked) > label:hover,
-.rating-area:not(:checked) > label:hover ~ label {
-  color: gold;
-}
-.rating-area > input:checked + label:hover,
-.rating-area > input:checked + label:hover ~ label,
-.rating-area > input:checked ~ label:hover,
-.rating-area > input:checked ~ label:hover ~ label,
-.rating-area > label:hover ~ input:checked ~ label {
-  color: gold;
-  text-shadow: 1px 1px goldenrod;
-}
-.rate-area > label:active {
-  position: relative;
-} */
 </style>
