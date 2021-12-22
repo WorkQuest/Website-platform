@@ -284,7 +284,6 @@ export default {
       this.$router.push(`/quests/${questId}`);
     },
     showReviewModal(rating, item) {
-      console.log(rating);
       this.ShowModal({
         key: modals.review,
         item,
