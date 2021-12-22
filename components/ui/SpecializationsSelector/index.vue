@@ -176,6 +176,10 @@ export default {
           key += 1;
         }
         const displaySkillIndex = this.skillsIndexes[this.displaySpecIndex[specKeys[spec]]].indexOf(skill);
+
+        // eslint-disable-next-line no-continue
+        if (this.hideSelectedSkills[specKeys[spec]].indexOf(displaySkillIndex) !== -1) continue;
+
         if (!this.hideSelectedSkills[specKeys[spec]]) this.hideSelectedSkills[specKeys[spec]] = [displaySkillIndex];
         else this.hideSelectedSkills[specKeys[spec]].push(displaySkillIndex);
         this.selectedSkills[specKeys[spec]].push({
