@@ -835,42 +835,42 @@ export default {
           localeSrc: 'en.svg',
           localeText: this.$t('ui.locals.en'),
         },
-        // {
-        //   localeSrc: 'ru.svg',
-        //   localeText: this.$t('ui.locals.ru'),
-        // },
-        // {
-        //   localeSrc: 'bn.svg',
-        //   localeText: this.$t('ui.locals.bn'),
-        // },
-        // {
-        //   localeSrc: 'zh.svg',
-        //   localeText: this.$t('ui.locals.zh'),
-        // },
-        // {
-        //   localeSrc: 'fr.svg',
-        //   localeText: this.$t('ui.locals.fr'),
-        // },
-        // {
-        //   localeSrc: 'hi.svg',
-        //   localeText: this.$t('ui.locals.hi'),
-        // },
-        // {
-        //   localeSrc: 'id.svg',
-        //   localeText: this.$t('ui.locals.id'),
-        // },
-        // {
-        //   localeSrc: 'pt.svg',
-        //   localeText: this.$t('ui.locals.pt'),
-        // },
-        // {
-        //   localeSrc: 'es.svg',
-        //   localeText: this.$t('ui.locals.es'),
-        // },
-        // {
-        //   localeSrc: 'ar.svg',
-        //   localeText: this.$t('ui.locals.ar'),
-        // },
+        {
+          localeSrc: 'ru.svg',
+          localeText: this.$t('ui.locals.ru'),
+        },
+        {
+          localeSrc: 'bn.svg',
+          localeText: this.$t('ui.locals.bn'),
+        },
+        {
+          localeSrc: 'zh.svg',
+          localeText: this.$t('ui.locals.zh'),
+        },
+        {
+          localeSrc: 'fr.svg',
+          localeText: this.$t('ui.locals.fr'),
+        },
+        {
+          localeSrc: 'hi.svg',
+          localeText: this.$t('ui.locals.hi'),
+        },
+        {
+          localeSrc: 'id.svg',
+          localeText: this.$t('ui.locals.id'),
+        },
+        {
+          localeSrc: 'pt.svg',
+          localeText: this.$t('ui.locals.pt'),
+        },
+        {
+          localeSrc: 'es.svg',
+          localeText: this.$t('ui.locals.es'),
+        },
+        {
+          localeSrc: 'ar.svg',
+          localeText: this.$t('ui.locals.ar'),
+        },
       ];
     },
     instrumentDDLinks() {
@@ -1856,13 +1856,16 @@ export default {
   max-height: 172px;
   min-width: 86px;
   z-index: 10000000;
+  padding: 15px 20px;
   &__container {
-    width: 100%;
+    width: 46px;
+  }
+  &__container:not(:last-child) {
+    margin-bottom: 15px;
   }
   &__items {
-    padding: 10px 15px;
     display: flex;
-    gap: 15px;
+    align-items: center;
   }
   &__item {
     width: 100%;
@@ -1873,9 +1876,12 @@ export default {
     min-height: 20px;
   }
   &__icon {
-    border-radius: 100%;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
   }
   &__text {
+    margin-left: 10px;
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 500;
