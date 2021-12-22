@@ -623,50 +623,6 @@ export default {
         },
       ];
     },
-    storeLinks() {
-      return [
-        {
-          url: '#',
-          class: 'links__store_app-store',
-        },
-        {
-          url: '#',
-          class: 'links__store_play-market',
-        },
-      ];
-    },
-    socialLinks() {
-      return [
-        {
-          url: 'https://twitter.com/workquest_co',
-          class: 'links__social_twitter',
-        },
-        {
-          url: 'https://www.youtube.com/channel/UCpQTdOMynXejrRTVf4ksKPA',
-          class: 'links__social_youtube',
-        },
-        {
-          url: 'https://www.reddit.com/user/WorkQuest_co',
-          class: 'links__social_reddit',
-        },
-        {
-          url: 'https://m.facebook.com/WorkQuestOfficial/',
-          class: 'links__social_facebook',
-        },
-        {
-          url: 'https://www.linkedin.com/company/workquestofficial',
-          class: 'links__social_linkedin',
-        },
-        {
-          url: 'https://www.instagram.com/workquestofficial/',
-          class: 'links__social_instagram',
-        },
-        {
-          url: 'https://t.me/WorkQuest',
-          class: 'links__social_telegram',
-        },
-      ];
-    },
     locales() {
       return [
         {
