@@ -1037,8 +1037,8 @@ export default {
         firstName: this.localUserData.firstName,
         lastName: this.localUserData.lastName,
         location: {
-          longitude: this.coordinates ? this.coordinates.lng : this.localUserData.location.longitude,
-          latitude: this.coordinates ? this.coordinates.lat : this.localUserData.location.latitude,
+          longitude: this.coordinates ? this.coordinates.lng : this.localUserData.location?.longitude || 0,
+          latitude: this.coordinates ? this.coordinates.lat : this.localUserData.location?.latitude || 0,
         },
         additionalInfo: {
           secondMobileNumber: this.localUserData.additionalInfo.secondMobileNumber,

@@ -20,7 +20,7 @@
                 class="chat-container__quest-link"
                 @click="goToQuest"
               >
-                {{ messages.chat.questChat.quest.title }}
+                {{ messages && messages.chat && messages.chat.questChat && messages.chat.questChat.quest.title }}
               </div>
               <div
                 v-if="messages.chat.type === 'group'"

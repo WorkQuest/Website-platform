@@ -89,7 +89,19 @@ export default {
   data() {
     return {
       cardClosed: false,
-      walletTableFields: [
+    };
+  },
+  computed: {
+    ...mapGetters({
+      tags: 'ui/getTags',
+      userRole: 'user/getUserRole',
+      userData: 'user/getUserData',
+      userInfo: 'data/getUserInfo',
+      transactions: 'data/getTransactions',
+      transactionsData: 'data/getTransactionsData',
+    }),
+    walletTableFields() {
+      return [
         {
           key: 'tx_hash', label: this.$t('wallet.table.txHash'), sortable: false,
         },
@@ -111,19 +123,8 @@ export default {
         {
           key: 'transaction_fee', label: this.$t('wallet.table.trxFee'), sortable: false,
         },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters({
-      tags: 'ui/getTags',
-      userRole: 'user/getUserRole',
-      userData: 'user/getUserData',
-      userInfo: 'data/getUserInfo',
-      transactions: 'data/getTransactions',
-      transactionsData: 'data/getTransactionsData',
-    }),
-
+      ];
+    },
   },
   async mounted() {
     this.SetLoader(true);

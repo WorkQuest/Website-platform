@@ -1,0 +1,2374 @@
+{
+  "invite": {
+    "title": "Convidado"
+  },
+  "response": {
+    "title": "Respondeu"
+  },
+  "active": {
+    "title": "Respondeu"
+  },
+  "company": {
+    "from": "de"
+  },
+  "performed": {
+    "title": "Realizado"
+  },
+  "btn": {
+    "agree": "Concordo",
+    "disagree": "Disagree",
+    "completeWorkOnQuest": "???",
+    "rejectCompletedWorkOnQuest": "???",
+    "acceptCompletedWorkOnQuest": "???",
+    "closeQuest": "???",
+    "goToChat": "Ir para o chat",
+    "dispute": "Abrir disputa",
+    "responded": "Enviar resposta",
+    "sendARequest": "Enviar um pedido",
+    "view": "Visualizar"
+  },
+  "distance": {
+    "m": "m"
+  },
+  "info": {
+    "yourMessage": "???",
+    "showYourMessage": "Mostrar a sua mensagem",
+    "hideYourMessage": "???"
+  },
+  "messages": {
+    "alpha": "O campo {_field_} só pode conter caracteres alfabéticos",
+    "alpha_num": "O campo {_field_} só pode conter caracteres alfanuméricos",
+    "alpha_dash": "O campo {_field_} pode conter caracteres alfanuméricos bem como hífenes e sublinhados",
+    "alpha_spaces": "O campo {_field_} apenas pode conter caracteres alfabéticos bem como espaços",
+    "between": "O campo {_field_} deve conter um valor entre {min} e {max}",
+    "confirmed": "A confirmação do campo {_field_}} não tem correspondência",
+    "digits": "O campo {_field_} deve ser numérico e contar exatamente {length} dígitos",
+    "dimensions": "O campo {_field_} deve ter {width} pixels de largura por {height} pixels de altura",
+    "email": "O campo {_field_} deve ser um e-mail válido",
+    "excluded": "O campo {_field_} não contém um valor válido",
+    "ext": "O campo {_field_} não contém um nome de ficheiro válido",
+    "image": "O campo {_field_} deve ser uma imagem",
+    "integer": "O campo {_field_} deve conter um valor inteiro",
+    "length": "O campo {_field_} deve ter o comprimento {length}",
+    "max_value": "O campo {_field_} deve ter o comprimento {max} ou inferior",
+    "max": "O campo {_field_} não deve conter mais de {length} caracteres",
+    "mimes": "O campo {_field_} deve conter um tipo de ficheiro válido",
+    "min_value": "O campo {_field_} deve ter o comprimento {min} ou superior",
+    "min": "O campo {_field_} deve conter pelo menos {length} caracteres",
+    "numeric": "O campo {_field_} só pode conter caracteres numéricos",
+    "oneOf": "O campo {_field_} não contém um valor válido",
+    "regex": "O formato do campo {_field_} é inválido",
+    "required_if": "O campo {_field_} é obrigatório",
+    "required": "O campo {_field_} é obrigatório",
+    "size": "O tamanho do campo {_field_} deve ser inferior a {size}KB",
+    "decimal": "O campo {_field_} deve conter apenas valores decimais",
+    "decimalPlaces": "{_field_} ??? {places}"
+  },
+  "labels": {
+    "firstName": "Primeiro nome",
+    "lastName": "Último nome",
+    "mail": "E-mail",
+    "password": "Introduza a palavra-passe"
+  },
+  "placeholders": {
+    "default": "Marcador de posição de texto",
+    "firstName": "John",
+    "lastName": "Doe",
+    "mail": "oseu@mail.com",
+    "email": "Endereço de e-mail",
+    "password": "•••••••"
+  },
+  "about": {
+    "contact": "Contate-nos",
+    "content": {
+      "title": "Sobre nós",
+      "text": "O WorkQuest é um projecto social baseado na tecnologia blockchain para encontrar trabalho e resolver quaisquer tarefas do lado do empregador em modo de busca. Está à procura de um emprego? Uma Busca de trabalho ajudá-lo-á a encontrar algo próximo da sua cidade. Precisa de trabalhadores para realizar os seus objetivos? Basta criar uma busca no site da busca de trabalho. O serviço assume as obrigações de garantia para a realização de missões. Os fundos do empregador são mantidos connosco, se o empregado der uma confirmação do desempenho do trabalho, recebe um depósito de fundos na sua conta. O sistema de avaliações, revisões e uma lista de missões completadas ajudará a encontrar facilmente pessoas honestas e os melhores especialistas.\n\n          O nosso objetivo é simplificar a comunicação entre o empregador e o empregado, ajudar a empregar milhões de pessoas, melhorar a sua situação financeira, resolver o problema de encontrar profissionais fiáveis em todos os setores para criar uma economia digital progressiva construída sobre os princípios da confiança, do respeito mútuo e do bem-estar de todos os seus participantes."
+    }
+  },
+  "registration": {
+    "edit": "Editar",
+    "registration": "Registo",
+    "emailConfirm": "Foi enviada uma carta para o seu endereço de e-mail",
+    "emailConfirmTitle": "Verifique o seu e-mail"
+  },
+  "login": {
+    "signIn": "Iniciar sessão",
+    "account": "Não tem conta?",
+    "remember": "Lembrar-me",
+    "forgot": "Esqueceu-se da palavra-passe?",
+    "loginWith": "Inicie a sessão com a sua \nconta das redes sociais",
+    "create": "Criar Conta"
+  },
+  "profile": {
+    "raiseViews": "Aumentar visualizações",
+    "educations": "Educação",
+    "prevWorkExp": "Experiência de trabalho anterior",
+    "active": "propostas ativas",
+    "radius": "no seu raio",
+    "lead": "Tempo de espera",
+    "proposalLocation": "Localização proposta \nde acordo com a sua \nlocalização atual",
+    "proposalStatus": "Status da proposta",
+    "urgently": "URGENTEMENTE",
+    "details": "Ver detalhes",
+    "available": "Disponível",
+    "viewProfile": "Ver \nperfil",
+    "invite": "CONVIDAR QUESTOR",
+    "slogan": "Criar proposta de trabalho",
+    "add": "Adicione todas as informações e o prazo de publicação para encontrar o correto",
+    "create": "Criar",
+    "writeAMessage": "Escreva uma mensagem",
+    "quests": "Buscas",
+    "reviews": "Avaliações",
+    "portfolio": "Portfólio",
+    "common": "???",
+    "sidebar": {
+      "filter": "Filtro de todas as Buscas",
+      "choose": "(Escolha a categoria simples ou \nespecializada)",
+      "quests": "Buscas",
+      "specialized": "BUSCAS ESPECIALIZADAS",
+      "find": "ENCONTRAR UM EMPREGO"
+    }
+  },
+  "meta": {
+    "redeem": "???",
+    "redeemed": "???",
+    "pay": "???",
+    "skipAndEnd": "???",
+    "cleanUp": "???",
+    "close": "???",
+    "connected": "???",
+    "disconnect": "???",
+    "delete": "???",
+    "back": "Voltar",
+    "ok": "OK",
+    "send": "Enviar",
+    "save": "Guardar",
+    "reset": "Restaurar",
+    "fromYou": "próximo de si",
+    "details": "Ver detalhes",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "buyWUSD": "Comprar WUSD",
+    "submit": "Enviar",
+    "showAllReviews": "Mostrar todos os comentários",
+    "showAllQuests": "???",
+    "showAllPortfolios": "???",
+    "later": "Mais tarde",
+    "iAgree": "Concordo",
+    "next": "Próximo",
+    "continue": "Continuar",
+    "change": "Alterar",
+    "apply": "Aplicar",
+    "connectSMSVer": "Verificação de ligação por SMS",
+    "resendSMS": "Reenviar SMS",
+    "disable": "Desativar",
+    "remindLater": "Lembrar mais tarde",
+    "leave": "???"
+  },
+  "priority": {
+    "title": "Selecionar prioridade",
+    "all": "Todas as prioridades",
+    "low": "Entrega fixa",
+    "normal": "Curto prazo",
+    "urgent": "Urgente",
+    "employee": {
+      "low": "???",
+      "normal": "???",
+      "urgent": "???"
+    }
+  },
+  "signIn": {
+    "title": "Iniciar sessão",
+    "account": "não tem conta?",
+    "regs": "Registo",
+    "login": "Iniciar sessão",
+    "remember": "Lembrar-me",
+    "forgot": "Esqueceu-se da palavra-passe",
+    "or": "Ou",
+    "loginWith": "Iniciar sessão com",
+    "welcomeToWorkQuest": "Bem-vindo ao WorkQuest",
+    "pleaseSignIn": "Inicie sessão",
+    "workQuest": "WorkQuest",
+    "makingMoneyIsFast": "WorkQuest:\n Mercado de Trabalho\n Mundial\n Descentralizado",
+    "dontHaveAnAccount": "Não tem conta?",
+    "signUp": "Inscreva-se",
+    "forgotYourPass": "Esqueceu-se da palavra-passe?"
+  },
+  "signWorkQuest": {
+    "title": "Rede social WorkQuest",
+    "description": "Pode utilizar os seus dados do WorkQuest DAO para iniciar sessão",
+    "daoUsername": "Nome de utilizador DAO",
+    "daoPass": "Palavra-passe DAO"
+  },
+  "securityCheck": {
+    "title": "Verificação de segurança",
+    "confCode": "Código de confirmação do Google",
+    "placeholder": "Marcador de posição de texto",
+    "confCodeDesc": "Introduza o código de 6 dígitos da aplicação Google Authentication",
+    "confCodeField": "???"
+  },
+  "signUp": {
+    "title": "Inscreva-se",
+    "haveAccount": "Já tem conta?",
+    "auth": "Autorização",
+    "firstName": "Primeiro nome",
+    "lastName": "Último nome",
+    "email": "E-mail",
+    "password": "Palavra-passe",
+    "confirmPassword": "Repetir palavra-passe",
+    "create": "Criar conta",
+    "back": "voltar"
+  },
+  "forgot": {
+    "title": "Esqueceu-se da palavra-passe?",
+    "desc": "Iremos enviar-lhe instruções sobre como redefinir a sua palavra-passe."
+  },
+  "restore": {
+    "title": "Restaurar palavra-passe",
+    "modal": "Palavra-passe alterada"
+  },
+  "role": {
+    "employer": "Empregador",
+    "worker": "Empregado",
+    "enter": "Entrar",
+    "choose": "Escolha a sua função",
+    "employerWant": "Pretendo desempenhar uma tarefa e estou à procura de trabalhadores",
+    "workerWant": "Pretendo procurar tarefas e trabalhar como freelancer",
+    "chooseThis": "Escolha esta função"
+  },
+  "privacy": {
+    "title": "Política de privacidade",
+    "desc": "",
+    "agree": "Concordo com",
+    "privacyLink": "Política de privacidade",
+    "termsLink": "Termos e Condições",
+    "amlLink": "Política AML e CTF"
+  },
+  "layout": {
+    "create": "Criar uma busca",
+    "links": {
+      "terms": "Termos e condições",
+      "privacy": "\t· Política de privacidade"
+    }
+  },
+  "skills": {
+    "title": "Competências"
+  },
+  "worker": {
+    "cost": {
+      "notIndicated": "???..."
+    }
+  },
+  "quests": {
+    "showAll": "???",
+    "wusd": "WUSD",
+    "employer": {
+      "usersNotResponded": "???"
+    },
+    "companyNotListed": "???",
+    "workersNotInvited": "???",
+    "startChat": "???",
+    "invite": "???",
+    "decline": "???",
+    "questTitle": "???",
+    "questDesc": "???",
+    "questInfo": "???",
+    "questClosed!": "???",
+    "closed": "???",
+    "completed": "???",
+    "rejected": "???",
+    "completedWorkAccepted": "???",
+    "completedWorkRejected": "???",
+    "workOnQuestAccepted": "???",
+    "workOnQuestRejected": "???",
+    "pleaseWaitEmp": "???",
+    "quests": "Buscas",
+    "publicationDate": "???",
+    "urgent": "Urgente",
+    "specQuests": "???",
+    "permanentJob": "???",
+    "typeOfJob": "Tipo de trabalho",
+    "partTime": "???",
+    "fixedTerm": "???",
+    "contract": "???",
+    "remoteWork": "???",
+    "allVariants": "???",
+    "levels": {
+      "1": {
+        "title": "???",
+        "desc": "???"
+      },
+      "2": {
+        "title": "???",
+        "desc": "???"
+      },
+      "3": {
+        "title": "???",
+        "desc": "???"
+      },
+      "4": {
+        "title": "???",
+        "desc": "???"
+      }
+    },
+    "createQuest": {
+      "choosePeriod": "???"
+    },
+    "distance": {
+      "100": "+ 100 m",
+      "500": "+ 500 m",
+      "1000": "+ 1000 m"
+    },
+    "rating": {
+      "title": "???",
+      "verified": "???",
+      "reliable": "???",
+      "topRanked": "???"
+    },
+    "distantWork": {
+      "title": "Trabalho remoto",
+      "distantWork": "Trabalho remoto",
+      "allWorkplaces": "???",
+      "workInOffice": "Trabalho no escritório",
+      "bothVariant": "Ambas as variantes"
+    },
+    "employment": {
+      "employment": "???",
+      "fullTime": "???",
+      "partTime": "???",
+      "fixedTerm": "???"
+    },
+    "runtime": {
+      "runtime": "???",
+      "urgent": "???",
+      "shortTerm": "???",
+      "fixedDelivery": "???"
+    },
+    "spec": {
+      "spec": "???",
+      "addSpec": "???"
+    },
+    "skills": {
+      "skills": "???",
+      "chooseSkills": "???",
+      "limit": "???"
+    },
+    "hours": "horas",
+    "invited": "Convidado",
+    "active": "Ativo",
+    "performed": "Realizado",
+    "requested": "Solicitado",
+    "youInvited": "Você Convidou",
+    "inProgressBy": "Em andamento por:",
+    "finishedBy": "???:",
+    "showAllCases": "Mostrar todos os casos",
+    "portfolio": "Portfólio",
+    "searchQuests": "Pesquisa de buscas",
+    "readCompletely": "Leia completamente",
+    "questBig": "Busca",
+    "fromBig": "De",
+    "fromSmall": "de",
+    "fromYou": "de mim",
+    "reviews": "avaliações",
+    "reviewsBig": "Avaliações",
+    "MyQuests": "As minhas buscas",
+    "activeQuest": "Busca ativa",
+    "waitWorker": "???",
+    "pendingConsideration": "???",
+    "dispute": "???",
+    "questClosed": "???",
+    "questFinished": "???",
+    "dontHaveSpec": "???...",
+    "namelessWorker": "???",
+    "nothingAboutMe": "???...",
+    "unknownAddress": "???...",
+    "unknownPhoneNumber": "???...",
+    "unknownEmailAddress": "???..",
+    "questActive:": "???:",
+    "questClosed:": "???:",
+    "questDispute:": "???:",
+    "questWaitConfirm:": "???:",
+    "skillsNotSpecified": "???...",
+    "proposal": "Proposta",
+    "category": "Selecione uma categoria",
+    "address": "Adicionar endereço",
+    "uploadMaterials": "Faça upload de materiais para descrever melhor a busca",
+    "price": "Preço",
+    "filter": {
+      "btn": "Filtros"
+    },
+    "ads": {
+      "promoteYourQuest": "Promova a sua Busca",
+      "publishForFree": "Publique grátis",
+      "boostYourPublications": "Impulsione a sua publicação",
+      "costPerClick": "Custo por clique"
+    },
+    "selectLocation": "Selecione a localização",
+    "city": "Cidade",
+    "period": "Período de tempo",
+    "EstimatedPayment": "Pagamento estimado:",
+    "createAQuest": "Criar uma busca",
+    "editAQuest": "???",
+    "activeQuests": "Buscas ativas",
+    "openedQuests": "???",
+    "completedQuests": "Buscas concluídas",
+    "oneTime": "Uma vez",
+    "fullTime": "Tempo total",
+    "uploadAImagesOrVideos": "Carregar imagens ou vídeos",
+    "averageRating": "Classificação média",
+    "showAllActiveQuests": "Mostrar todas as buscas ativas",
+    "performanceTimer": "Ativo até:",
+    "questAmount": "buscas",
+    "otherQuestsSpec": "Outras buscas por especialização",
+    "questMaterials": "Materiais busca adicionais",
+    "searchResults": "Resultados da pesquisa",
+    "type": "Tipo de trabalho",
+    "time": "Tempo adicionado",
+    "priority": {
+      "title": "???",
+      "all": "Todas as prioridades",
+      "low": "Baixa",
+      "normal": "Normal",
+      "urgent": "Urgente"
+    },
+    "ui": {
+      "showMap": "Mostrar mapa",
+      "search": "Cidade / Rua / Lugar"
+    },
+    "worker": "Trabalhador",
+    "raiseViews": "Aumentar visualizações",
+    "deleteQuest": "Eliminar busca",
+    "approve": "Aprovar",
+    "startQuest": "Começar busca"
+  },
+  "filters": {
+    "dd": {
+      "1": "Especialização",
+      "2": "Buscas",
+      "3": "Urgente",
+      "4": "Tipo de trabalho",
+      "5": "Todas as prioridades",
+      "6": "Preço",
+      "7": "Tempo adicionado"
+    },
+    "title": "Filtros",
+    "titleAll": "Todos os Filtros",
+    "filterBtn": "Mostrar todos os filtros",
+    "commonSub": {
+      "selectAll": "Selecionar tudo"
+    },
+    "items": {
+      "1": {
+        "title": "???",
+        "sub": {
+          "100": "???",
+          "101": "???",
+          "102": "???",
+          "103": "???",
+          "104": "???",
+          "105": "???",
+          "106": "???",
+          "107": "???",
+          "108": "???",
+          "109": "???",
+          "110": "???",
+          "111": "???",
+          "112": "???",
+          "113": "???"
+        }
+      },
+      "2": {
+        "title": "Pessoal de Bares e Restaurantes",
+        "sub": {
+          "200": "Étnico",
+          "201": "Fast food",
+          "202": "Fast casual",
+          "203": "Jantar casual",
+          "204": "Casual premium",
+          "205": "Estilo familiar",
+          "206": "Jantares finos",
+          "207": "Brasserie e bistrô",
+          "208": "Pessoal de outros bares e restaurantes"
+        }
+      },
+      "3": {
+        "title": "???",
+        "sub": {
+          "300": "???",
+          "301": "???",
+          "302": "???",
+          "303": "???",
+          "304": "???"
+        }
+      },
+      "4": {
+        "title": "???",
+        "sub": {
+          "400": "???",
+          "406": "???",
+          "402": "???",
+          "403": "???",
+          "404": "???",
+          "405": "???"
+        }
+      },
+      "5": {
+        "title": "???",
+        "sub": {
+          "500": "???",
+          "501": "???"
+        }
+      },
+      "6": {
+        "title": "???",
+        "sub": {
+          "601": "???",
+          "600": "???",
+          "602": "???",
+          "603": "???",
+          "604": "???",
+          "605": "???",
+          "606": "???"
+        }
+      },
+      "7": {
+        "title": "???",
+        "sub": {
+          "700": "???",
+          "701": "???",
+          "702": "???",
+          "703": "???",
+          "704": "???",
+          "705": "???",
+          "706": "???",
+          "707": "???",
+          "708": "???",
+          "709": "???",
+          "710": "???",
+          "711": "???",
+          "712": "???"
+        }
+      },
+      "8": {
+        "title": "???",
+        "sub": {
+          "800": "???",
+          "801": "???",
+          "802": "???",
+          "803": "???",
+          "804": "???",
+          "805": "???",
+          "806": "???",
+          "807": "???",
+          "808": "???",
+          "809": "???"
+        }
+      },
+      "9": {
+        "title": "???",
+        "sub": {
+          "900": "???",
+          "901": "???",
+          "902": "???",
+          "903": "???",
+          "904": "???",
+          "905": "???",
+          "906": "???",
+          "907": "???",
+          "908": "???"
+        }
+      },
+      "10": {
+        "title": "???",
+        "sub": {
+          "1007": "???",
+          "1008": "???",
+          "1005": "???",
+          "1004": "???",
+          "1002": "???",
+          "1003": "???",
+          "1006": "???",
+          "1001": "???",
+          "1000": "???"
+        }
+      },
+      "11": {
+        "title": "???",
+        "sub": {
+          "1105": "???",
+          "1104": "???",
+          "1102": "???",
+          "1103": "???",
+          "1101": "???",
+          "1100": "???"
+        }
+      },
+      "12": {
+        "title": "???",
+        "sub": {
+          "1212": "???",
+          "1203": "???",
+          "1217": "???",
+          "1202": "???",
+          "1213": "???",
+          "1206": "???",
+          "1200": "???",
+          "1211": "???",
+          "1210": "???",
+          "1207": "???",
+          "1218": "???",
+          "1201": "???",
+          "1208": "???",
+          "1204": "???",
+          "1215": "???",
+          "1214": "???",
+          "1209": "???",
+          "1205": "???",
+          "1216": "???"
+        }
+      },
+      "13": {
+        "title": "???",
+        "sub": {
+          "1300": "???",
+          "1302": "???",
+          "1303": "???",
+          "1301": "???",
+          "1304": "???"
+        }
+      },
+      "14": {
+        "title": "???",
+        "sub": {
+          "1406": "???",
+          "1405": "???",
+          "1403": "???",
+          "1404": "???",
+          "1401": "???",
+          "1402": "???",
+          "1400": "???"
+        }
+      },
+      "15": {
+        "title": "???",
+        "sub": {
+          "1503": "???",
+          "1500": "???",
+          "1501": "???",
+          "1505": "???",
+          "1502": "???",
+          "1506": "???",
+          "1507": "???",
+          "1504": "???"
+        }
+      },
+      "16": {
+        "title": "???",
+        "sub": {
+          "1600": "???",
+          "1601": "???",
+          "1602": "???",
+          "1603": "???",
+          "1604": "???",
+          "1605": "???",
+          "1606": "???",
+          "1607": "???",
+          "1608": "???"
+        }
+      },
+      "17": {
+        "title": "???",
+        "sub": {
+          "1700": "???",
+          "1701": "???",
+          "1702": "???",
+          "1703": "???",
+          "1704": "???"
+        }
+      },
+      "18": {
+        "title": "???",
+        "sub": {
+          "1800": "???",
+          "1801": "???",
+          "1802": "???",
+          "1803": "???",
+          "1804": "???",
+          "1805": "???",
+          "1806": "???",
+          "1807": "???",
+          "1808": "???",
+          "1809": "???"
+        }
+      },
+      "19": {
+        "title": "???",
+        "sub": {
+          "1900": "???",
+          "1901": "???",
+          "1902": "???",
+          "1903": "???",
+          "1904": "???"
+        }
+      },
+      "20": {
+        "title": "???",
+        "sub": {
+          "2000": "???",
+          "2001": "???",
+          "2002": "???",
+          "2003": "???",
+          "2004": "???",
+          "2005": "???"
+        }
+      },
+      "21": {
+        "title": "Desenvolvimento Web, móvel e de software",
+        "sub": {
+          "2100": "Desenvolvimento de software de escritório",
+          "2101": "Desenvolvimento do Comércio Electrónico",
+          "2102": "Desenvolvimento de jogos",
+          "2103": "Desenvolvimento Móvel",
+          "2104": "Desenvolvimento de outro software",
+          "2105": "Gestão de produtos",
+          "2106": "QA e testes",
+          "2107": "Scripts e utilitários",
+          "2108": "Design Web e móvel",
+          "2109": "Desenvolvimento Web",
+          "2110": "Outros Desenv. Web, Móvel e Software"
+        }
+      },
+      "22": {
+        "title": "???",
+        "sub": {
+          "2200": "???",
+          "2201": "???",
+          "2202": "???",
+          "2203": "???",
+          "2204": "???",
+          "2205": "???",
+          "2206": "???"
+        }
+      },
+      "23": {
+        "title": "???",
+        "sub": {
+          "2300": "???",
+          "2301": "???",
+          "2302": "???",
+          "2303": "???",
+          "2304": "???"
+        }
+      },
+      "24": {
+        "title": "???",
+        "sub": {
+          "2400": "???",
+          "2401": "???",
+          "2402": "???",
+          "2403": "???",
+          "2404": "???",
+          "2405": "???",
+          "2406": "???",
+          "2407": "???",
+          "2408": "???",
+          "2409": "???"
+        }
+      },
+      "25": {
+        "title": "???",
+        "sub": {
+          "2800": "???",
+          "2801": "???",
+          "2802": "???",
+          "2803": "???",
+          "2804": "???",
+          "2805": "???",
+          "2806": "???",
+          "2807": "???"
+        }
+      },
+      "26": {
+        "title": "???",
+        "sub": {
+          "2600": "???",
+          "2601": "???",
+          "2602": "???",
+          "2603": "???",
+          "2604": "???",
+          "2605": "???",
+          "2606": "???",
+          "2607": "???"
+        }
+      },
+      "27": {
+        "title": "???",
+        "sub": {
+          "2700": "???",
+          "2701": "???",
+          "2702": "???",
+          "2703": "???",
+          "2704": "???"
+        }
+      },
+      "28": {
+        "title": "Imobiliário",
+        "sub": {
+          "1": "Imóveis Residenciais",
+          "2": "Casas Novas para Construção e Revenda",
+          "3": "Imobiliário comercial",
+          "4": "Imobiliário Industrial",
+          "5": "Terreno baldio",
+          "6": "Outros bens imobiliários"
+        }
+      },
+      "29": {
+        "title": "???",
+        "sub": {
+          "2900": "???",
+          "2901": "???",
+          "2902": "???",
+          "2903": "???",
+          "2904": "???",
+          "2905": "???",
+          "2906": "???",
+          "2907": "???",
+          "2908": "???"
+        }
+      },
+      "30": {
+        "title": "???",
+        "sub": {
+          "3000": "???",
+          "3001": "???",
+          "3002": "???",
+          "3003": "???",
+          "3004": "???",
+          "3005": "???",
+          "3006": "???",
+          "3007": "???",
+          "3008": "???",
+          "3009": "???"
+        }
+      },
+      "31": {
+        "title": "???",
+        "sub": {
+          "3100": "???",
+          "3101": "???",
+          "3102": "???",
+          "3103": "???",
+          "3104": "???",
+          "3105": "???",
+          "3106": "???",
+          "3107": "???"
+        }
+      },
+      "32": {
+        "title": "???",
+        "sub": {
+          "3200": "???",
+          "3201": "???",
+          "3202": "???"
+        }
+      },
+      "33": {
+        "title": "???",
+        "sub": {
+          "3300": "???",
+          "3301": "???"
+        }
+      },
+      "34": {
+        "title": "Trabalho permanente",
+        "sub": {
+          "1": "Part-time",
+          "2": "A tempo inteiro",
+          "3": "Trabalho no exterior"
+        }
+      }
+    }
+  },
+  "toasts": {
+    "questInfo": "???",
+    "questCantDelete": "???",
+    "questCantEdit": "???",
+    "questCantRaisingViews": "???",
+    "questEdited": "???",
+    "questCreated": "???",
+    "questDeleted": "???",
+    "caseDeleted": "???",
+    "caseAdded": "???",
+    "caseEdited": "???",
+    "error": "???"
+  },
+  "modals": {
+    "disputes": {
+      "thereIsNoResponseFromTheEmployerOrEmployee": "???",
+      "badlyDoneWork": "???",
+      "additionalRequirementsHaveBeenPutForward": "???",
+      "inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest": "???",
+      "theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion": "???",
+      "anotherReason": "???"
+    },
+    "chooseTheme": "???",
+    "incorrectAmount": "???",
+    "nothingToClaim": "???",
+    "pleaseWait": "???",
+    "redeemSuccess": "???",
+    "redeemFail": "???",
+    "chatCreate": {
+      "title": "Criar chat de grupo",
+      "desc": "Crie o nome de chat de grupo e escolha pessoas da sua lista de chat",
+      "chatName": "Nome do chat",
+      "members": "???",
+      "addNewMembers": "???",
+      "addMember": "???"
+    },
+    "yourRewardBalance": "???",
+    "deletePortfolio": "???",
+    "addTitle": "???",
+    "addDesc": "???",
+    "editCase": "???",
+    "error": "???",
+    "share": "???",
+    "edit": "???",
+    "delete": "???",
+    "youCan’tDeleteActiveQuest": "???",
+    "sureDeleteText": "???",
+    "sureDeleteMemberText": "???",
+    "sureLeaveChatText": "???",
+    "priceTitle": "???",
+    "enterPriceRange": "???",
+    "priceForm": "???",
+    "priceFromAmount": "???",
+    "priceFieldFrom": "???",
+    "priceTo": "???",
+    "priceToAmount": "???",
+    "priceFieldTo": "???",
+    "changePercentDesc": "Uma percentagem do montante da busca que será automaticamente creditada na sua conta de reforma",
+    "yourSkillsHaveBeenAdded": "As suas competências foram acrescentadas com sucesso.",
+    "yourAccountVerified": "A sua conta foi verificada com sucesso",
+    "youCanUpdateThisInYourProfile": "Pode facilmente actualizar esta informação no seu perfil.",
+    "disable2Fa": "Desativar 2FA",
+    "2FAEnabled": "???",
+    "2FADisabled": "???",
+    "2FAStatus": "???",
+    "yourLevelHasBeenRaised": "O seu nível foi elevado",
+    "payment": "Pagamento",
+    "cardHolder": "Nome do titular do cartão",
+    "review": "Comentário",
+    "haventSMS": "Não tem SMS?",
+    "SMSVerConnected": "Verificação de SMS ligada",
+    "phoneNumber": "Número de telefone",
+    "phoneNumberField": "número de telefone",
+    "enterPhone": "Introduza o seu número de telefone para confirmar a verificação por SMS",
+    "enterSMSCode": "Enviámos o código de verificação para o seu número de telefone. Introduza este código",
+    "codeFromSMS": "Código de SMS",
+    "codeFromSMSField": "código de SMS",
+    "smsVerification": "Verificação de SMS",
+    "saved": "Guardado",
+    "userDataHasBeenSaved": "Os dados do utilizador foram guardados",
+    "workExpAddSuccessful": "Experiência de trabalho adicionada com sucesso",
+    "educationAddSuccessful": "Educação adicionada com sucesso",
+    "pressSaveBtn": "Prima o botão guardar",
+    "imageLoadedSuccessful": "Imagem carregada com sucesso",
+    "success": "Sucesso",
+    "yourRoleHasBeenChanged": "A sua função foi alterada",
+    "chooseSkills": "Escolha as competências necessárias",
+    "securityCheck": "Verificação de segurança",
+    "googleConfCode": "Código de confirmação do Google",
+    "enterCode": "Introduza o código de 6 dígitos da aplicação Google Authentication",
+    "warning": "Aviso",
+    "pleaseDescribe": "Descreva o motivo para mudar a função",
+    "ifYouChangeRole": "Se mudar de função agora, só a pode voltar a mudar dentro de um mês. Quer continuar?",
+    "toYourEmail": "Para o seu endereço de e-mail",
+    "codeHasBeenSent": "código foi enviado",
+    "switchOnGoogleAuth": "Ative o Google Authenticator",
+    "emailVerificationCode": "Código de verificação de e-mail",
+    "emailPlaceholder": "Introduza o código de verificação de e-mail",
+    "googleVerificationCode": "Código de verificação do Google",
+    "codePlaceholder": "Introduza o código de verificação do Google",
+    "appleStore": "Apple store",
+    "googlePlay": "Google play",
+    "useYourGoogleAuth": "Utilize a sua App Google Authenticator para digitalizar o código QR.",
+    "installGoogleAuth": "Instale app Google Authenticator no seu dispositivo",
+    "ifYouCantScanBarcode": "Se não conseguir digitalizar o código QR, introduza manualmente a Chave Secreta.",
+    "pleaseSaveThisKey": "Introduza abaixo a palavra-passe de autenticação de dois factores do Google. Guarde a sua chave do Google, ela será utilizada para recuperar o seu Autenticador Google.",
+    "step": "Passo",
+    "twoFAAuth": "Autenticação 2FA",
+    "currentPassword": "Palavra-passe atual",
+    "newPassword": "Nova palavra-passe",
+    "confirmNewPassword": "Confirmar nova palavra-passe ",
+    "change": "Alterar",
+    "title": "Título",
+    "badService": "Mau serviço",
+    "otherReason": "Outro motivo",
+    "reviewOnEmployer": "Avaliação do empregador",
+    "paintingWork": "Trabalho de pintura",
+    "art": "Arte",
+    "cooking": "Culinária",
+    "coding": "Codificação",
+    "uploadAImages": "Carregar imagens ou vídeos",
+    "description": "Descrição",
+    "addCase": "Adicionar caso",
+    "openADispute": "Abrir disputa",
+    "reason": "Motivo",
+    "lorem": "",
+    "withdraw": "Retirar",
+    "sendTo": "Enviar para",
+    "estimatedPayment": "Pagamento estimado:",
+    "hello": "Olá...",
+    "value": "Valor",
+    "withdrawCard": "Levantar para cartão bancário",
+    "address": "Endereço",
+    "notice": "Aviso importante",
+    "noticeDesc": "Para sua segurança, a equipa WorkQuest pede-lhe que não faça qualquer correspondência ou contactos fora da plataforma WorkQuest. Qualquer contacto ou conversa fora da plataforma pode levar ao fracasso na resolução de situações controversas.",
+    "toAddress": "Para",
+    "fromAddress": "De",
+    "welcomeToWorkQuest": "Bem-vindo ao WorkQuest",
+    "pleaseTellUsAboutSkills": "Fale-nos, por favor, das suas competências abaixo. Isso aumentará a sua classificação na plataforma e tornará mais fácil para os outros utilizadores encontrar a sua conta.",
+    "amount": "Montante",
+    "messageSend": "Mensagem enviada",
+    "questAgreed": "Busca Acordada",
+    "requestSend": "Pedido enviado",
+    "sendARequest": "Enviar um pedido",
+    "message": "Mensagem",
+    "bodyMessage": "Olá",
+    "areYouSure": "Tem a certeza?",
+    "transactionSend": "Enviar transação",
+    "transactionFail": "???",
+    "transactionCheck": "???",
+    "cardHasBeenAdded": "Cartão foi adicionado",
+    "deposit": "Receber",
+    "numberOfCard": "Número do cartão",
+    "date": "Data",
+    "cardDate": "Data de validade do cartão",
+    "expirationDate": "Data de expiração (M / A)",
+    "cvv": "CVV",
+    "cardholderName": "Nome do titular do cartão",
+    "addAnotherCard": "Adicionar outro cartão",
+    "addCard": "Adicionar Cartão",
+    "inviteSend": "Convite enviado",
+    "questCreated": "Busca criada",
+    "invitation": "Convite",
+    "chooseQuest": "Escolher Busca",
+    "raiseViews": "Aumentar visualizações",
+    "priceOfAClick": "Preço por clique",
+    "city": "Cidade",
+    "period": "Período",
+    "thanks": "Obrigado",
+    "couple": "Algumas palavras",
+    "depositPercentFromAQuest": "Percentagem de depósito de uma busca",
+    "depositRetirementModalTitle": "Seleccione uma percentagem do montante da busca para depósito automático",
+    "depositRetirementModalPrecentPlaceholder": "0 % selecione a percentagem",
+    "depositRetirementModalAmountPlaceholder": "0 WUSD, introduza o montante",
+    "firstDepositAmount": "Montante do primeiro depósito*",
+    "firstDepositAmountField": "???",
+    "aboutFirstDeposit": "* O montante do primeiro depósito é opcional. Se não quiser fazer um depósito, pode deixar este campo em branco",
+    "pensionIsRegisteredTitle": "Parabéns!",
+    "pensionIsRegisteredDesc": "O programa de pensões foi lançado com sucesso.",
+    "currentPercent": "Percentagem atual",
+    "depositAmount": "Montante do depósito",
+    "lockedSavings": "Poupanças bloqueadas",
+    "durationDays": "Duração (dias)",
+    "depositIsOpened": "Depósito está aberto",
+    "addLiquidity": "Adicionar liquidez",
+    "amountOfWqt": "Montante em WQT",
+    "amountOfEth": "Montante de ETH",
+    "amountOfBnb": "Montante em BNB",
+    "tip": "Dica:",
+    "tipAbout": "Ao adicionar liquidez, receberá tokens de pool representando a sua posição. Estes tokens ganham automaticamente taxas proporcionais à sua quota do pool, e podem ser resgatados em qualquer altura.",
+    "byAddingLiquidityYouWillEarn": "Ao adicionar liquidez, ganhará 0,3% de todas as transações deste par proporcionalmente à sua quota do pool. As taxas são adicionadas ao pool, acumulam-se em tempo real e podem ser reclamadas retirando a sua liquidez.",
+    "amountEthPerWqt": "Montante ETH por WQT",
+    "amountBnbPerWqt": "Montante BNB por WQT",
+    "shareOfPool": "Quota do pool",
+    "removeLiquidity": "Remover liquidez",
+    "withdrawalAmount": "Montante levantado",
+    "exchangeRate": "Taxa de câmbio",
+    "tempForRemove": "1 ETH = ... WQT",
+    "tempForRemove2": "1 BNB = ... WQT",
+    "currentPoolSize": "Tamanho atual do pool",
+    "yourPoolShare": "A sua quota do pool",
+    "eth": "ETH",
+    "wusd": "WUSD",
+    "howMuchEthWouldYouLikeToLock": "Qual o montante de ETH que gostaria de bloquear na sua conta?",
+    "smallTemp": "",
+    "template": "",
+    "collateralization": "Colateralização",
+    "percentsCount": "{count}%",
+    "liquidationPrice": "Preço de liquidação",
+    "currentPrice": "Preço atual",
+    "stabilityFee": "Taxa de estabilidade",
+    "liquidationRatio": "Índice de liquidação",
+    "liquidationPenalty": "Penalização de liquidação",
+    "confirmDetails": "Confirmar os detalhes",
+    "depositing": "Depósito",
+    "generating": "Montante",
+    "liquidationFee": "Taxa de liquidação",
+    "withdrawal": "Retirar",
+    "saveCardForNextPayment": "Guardar o cartão para a próxima utilização",
+    "insureCase": "Segurar caso",
+    "connectWallet": "Ligar wallet",
+    "howMuchWusdWouldYouLikeToGenerate": "Quanto WUSD pretende gerar?",
+    "chooseTheCurrency": "Escolha a moeda",
+    "bnb": "BNB",
+    "wqt": "WQT",
+    "howMuchETHWouldYouLikeToOpen": "Com que montante de ETH gostaria de abrir a sua conta?",
+    "howMuchPercentWouldYouLikeToSet": "Qual a percentagem que gostaria de fixar?",
+    "enterTermToReturnDebtBack ": "Introduza o prazo para devolução da dívida",
+    "currency": "Moeda colateral",
+    "loan": "Empréstimo",
+    "percentage": "Percentagem",
+    "loanTerm": "Prazo do empréstimo",
+    "loanIsOpened": "Empréstimo está aberto",
+    "successCopied": "Endereço público copiado para a área de transferência",
+    "walletAddress": "???",
+    "scanQr": "???",
+    "close": "???",
+    "depositTitle": "???",
+    "addYourCard": "???",
+    "walletCopy": "???",
+    "textCopy": "???",
+    "addingCard": "???",
+    "add": "???",
+    "totalFee": "???",
+    "processing": "???",
+    "addNewCard": "???",
+    "numberCard": "???",
+    "chooseCard": "???",
+    "depositInfo": "???",
+    "cardAdd": "???",
+    "cardAddedText": "",
+    "transactionSentText": "",
+    "maximum": "???",
+    "withdrawInfo": "???",
+    "bankCard": "???",
+    "transfer": "???",
+    "recepient": "???",
+    "transferInfo": "???",
+    "currencyDetails": "???",
+    "generatingDetails": "???",
+    "collateralizationRatio": "???",
+    "depositIsOpenedText": "",
+    "loanText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
+    "loanIsOpenedText": "",
+    "firstDepositText": "???",
+    "pensionIsRegistered": "???",
+    "pensionIsRegisteredText": "",
+    "changePercent": "???",
+    "changePercentText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor",
+    "currentPercentTitle": "???",
+    "depositIsDone": "???",
+    "makeDepositText": "",
+    "percentIsChangedText": "",
+    "percentIsChanged": "???",
+    "invitationSendText": "",
+    "choose": "???",
+    "openDisputeText": "",
+    "chooseCurrency": "???",
+    "wallet": "???",
+    "coinpaymebts": "???",
+    "errorDeleteText": "???",
+    "swapTitle": "???",
+    "coin": "???",
+    "recepientBinance": "???",
+    "createSwap": "???",
+    "swapInfo": "???",
+    "crosschain": "???",
+    "crosschainText": "Eth > Binance",
+    "senderAddress": "???",
+    "recepientAddress": "???",
+    "worknetFee": "Eth ???",
+    "binanceFee": "Binance ???",
+    "welcomeText": "???",
+    "areYouSureText": "",
+    "noticeTitle": "???",
+    "noticeText": "???",
+    "areYouSureNotificationText": "",
+    "creditCardNumber": "???",
+    "dateName": "???",
+    "depositPercent": "???",
+    "currentPercentErr": "???",
+    "amountField": "???",
+    "percentField": "???",
+    "quantityField": "???",
+    "creditingDepositText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
+    "generateField": "???",
+    "amountOfWqtField": "??? WQT",
+    "amountOfEthField": "??? ETH",
+    "amountOfBnbField": "??? BNB",
+    "withdrawalAmountField": "???",
+    "removeLiquidityCurrentPoolSize": "1 ETH + 456 WQT",
+    "removeLiquidityCurrentPoolSize2": "1 BNB + 456 WQT",
+    "removeLiquidityYourPoolShare": "10% = 1% ETH + 4% WQT",
+    "removeLiquidityYourPoolShare2": "10% = 1% BNB + 4% WQT",
+    "lockedSavingsField": "???",
+    "durationDaysField": "???",
+    "depositAmountField": "???",
+    "claim": "???",
+    "estimatedPaymentField": "120 WUSD",
+    "priceOfAClickField": "???",
+    "cityField": "???",
+    "addLiquidityAmountWqt": "1000 WQT",
+    "addLiquidityAmountEth": "10 ETH",
+    "addLiquidityAmountBnb": "10 BNB",
+    "cardHolderField": "???",
+    "addressField": "???",
+    "securityCheckField": "???",
+    "recepientAddressField": "???",
+    "walletAddressField": "???",
+    "thanksText": "",
+    "emailVerificationCodeField": "???",
+    "youCanAttachUpToNFiles": "???",
+    "youTryToAttachUnsupportedFileFormat": "???"
+  },
+  "ui": {
+    "jobQuestors": "Questores de emprego",
+    "workers": "Trabalhadores",
+    "wallet": "Wallet",
+    "myQuests": "As minhas buscas",
+    "quests": "Buscas",
+    "profile": {
+      "addCase": "Adicionar caso",
+      "myProfile": "O meu perfil",
+      "settings": "Definições",
+      "disputes": "Disputas",
+      "instruments": "Instrumentos",
+      "DeFi": "Funcionalidade DeFi",
+      "logout": "Terminar sessão",
+      "login": "???"
+    },
+    "locals": {
+      "en": "en",
+      "ru": "ru",
+      "bn": "bn",
+      "zh": "zh",
+      "fr": "fr",
+      "hi": "hi",
+      "id": "id",
+      "pt": "pt",
+      "es": "es",
+      "ar": "ar"
+    },
+    "notifications": {
+      "title": "Notificações",
+      "invite": "Convida-o para completar a busca"
+    },
+    "menu": {
+      "unauthorized": "???",
+      "instruments": "???",
+      "crosschain": {
+        "title": "???",
+        "desc": "???"
+      },
+      "staking": {
+        "title": "???",
+        "desc": "???"
+      },
+      "pension": {
+        "title": "Programa de aposentação",
+        "desc": "Pode seleccionar uma percentagem de cada busca concluída que será então automaticamente creditada na sua conta de reforma, ou simplesmente depositar um montante à sua escolha. O conjunto de fundos é investido em nome do trabalhador, e os rendimentos dos investimentos geram rendimentos para o trabalhador aquando da sua reforma."
+      },
+      "referral": {
+        "title": "Programa de referência",
+        "desc": "Referir e Ganhar é o nosso esquema que lhe permite ganhar recompensas por cada amigo que indicar que se torne cliente e que subsequentemente conclua uma busca. Os seus amigos referidos poupam, também, ao obterem um registo grátis."
+      },
+      "p2p": {
+        "title": "Seguro P2P",
+        "desc": "O seguro Peer-to-peer (P2P) é um produto que permite a um grupo de segurados reunir o seu capital, auto-organizar, e auto-administrar o seu próprio seguro. A ideia central do P2P é que um conjunto de pessoas com interesses mútuos que partilham os mesmos interesses agrupa as suas apólices de seguro, introduzindo um sentido de controlo, confiança e transparência, ao mesmo tempo que reduz os custos. Este modelo de seguro combina o tradicional agrupamento e partilha de perdas com a tecnologia e inovações atuais, proporcionando um produto para consumidores cada vez mais experientes que requerem transparência numa economia on-demand."
+      },
+      "savings": {
+        "title": "Produto de poupança",
+        "desc": "Uma conta poupança em criptomoeda dá-lhe acesso ao mercado de moeda criptográfica ao mesmo tempo que lhe permite ganhar juros como uma conta poupança bancária tradicional. Se estiver interessado em investir em criptomoedas a longo prazo, uma conta poupança cripto pode ajudá-lo a acumular juros enquanto mantém as suas moedas seguras."
+      },
+      "crediting": {
+        "title": "Crédito",
+        "desc": "Semelhante a um empréstimo tradicional, o montante do empréstimo criptográfico é depositado na conta bancária do mutuário e depois o mutuário paga IME ao mutuante. Assim que o montante é pago na totalidade, o mutuante liberta a garantia que atuou como segurança."
+      },
+      "mining": {
+        "title": "Mineração de liquidez",
+        "desc": "é um mecanismo DeFi (finanças descentralizadas) em que os participantes fornecem criptomoedas para pools de liquidez e são recompensados com taxas e tokens com base na sua participação na liquidez total do pool."
+      },
+      "menu": "Menu"
+    },
+    "footer": {
+      "rights": "Todos os direitos reservados"
+    },
+    "buttons": {
+      "errors": {
+        "manySpec": "Só pode adicionar 3 especializações",
+        "manySkills": "???"
+      }
+    }
+  },
+  "wallet": {
+    "WUSD": "Carteira WUSD",
+    "cryptoWallet": "Carteira cripto",
+    "bankCard": "Cartão bancário",
+    "send": "Enviar",
+    "toThisAddress": "para este endereço",
+    "wallet": "Wallet",
+    "balance": "Saldo",
+    "deposit": "Receber",
+    "withdraw": "Retirar",
+    "transfer": "Comprar / enviar",
+    "addCardProposal": "Adicione o seu próprio cartão para levantamento fácil",
+    "addCard": "Adicionar cartão",
+    "table": {
+      "trx": "Transações",
+      "txHash": "Hash Trn",
+      "status": "Status",
+      "block": "Bloquear",
+      "timestamp": "Carimbo da hora",
+      "transferred": "Tokens transferidos",
+      "value": "Quantidade",
+      "trxFee": "Montante da transação"
+    }
+  },
+  "chat": {
+    "openDispute": "Abrir disputa",
+    "approveQuest": "Aprovar busca",
+    "starredMessages": "???",
+    "starredChats": "???",
+    "allChats": "???",
+    "createGroupChat": "Criar chat de grupo",
+    "favorite": "Favorito",
+    "messages": "Mensagens",
+    "chat": "Chat",
+    "quest": "Busca:",
+    "you": "Você:",
+    "invitedYou": "convidou-o para uma busca",
+    "writeYouMessage": "Escreva a sua mensagem",
+    "group": "???",
+    "noChats": "???",
+    "noMessages": "???",
+    "membersNum": "{n} ???",
+    "systemMessages": {
+      "invitedYouToAQuest": "???",
+      "youInvitedToTheQuest": "???",
+      "respondedToTheQuest": "???",
+      "youHaveRespondedToTheQuest": "???",
+      "rejectedTheResponseToTheQuest": "r???",
+      "youRejectTheResponseOnQuest": "???",
+      "rejectedTheInviteToTheQuest": "???",
+      "youRejectedTheInviteToTheQuest": "???",
+      "acceptedTheInviteToTheQuest": "???",
+      "youAcceptedTheInviteToTheQuest": "???",
+      "createdAGroupChat": "???",
+      "youCreatedAGroupChat": "???",
+      "removedFromChat": "???",
+      "youHaveRemovedFromChat": "???",
+      "addedToChat": "???",
+      "youAddedToChat": "???",
+      "userAddedToChat": "???",
+      "userRemovedFromChat": "???",
+      "leftTheChat": "???",
+      "youLeftTheChat": "???"
+    },
+    "leaveChat": "???",
+    "loadMore": "???"
+  },
+  "settings": {
+    "facebook": "facebook",
+    "linkedin": "linkedin",
+    "twitter": "twitter",
+    "instagram": "instagram",
+    "address": "???",
+    "lastName": "???",
+    "firstName": "???",
+    "enterPhoneNumber": "???",
+    "enterCurrentLocation": "???",
+    "placeOfStudying": "Local de estudo",
+    "specialization": "Especialização",
+    "selectSpec": "???",
+    "skillsInput": "Competências",
+    "selectSkills": "???",
+    "priority": "???",
+    "costPerHour": "Custo por hora",
+    "description": "And you are beautiful",
+    "imgLoaded": "Imagem carregada com sucesso",
+    "workExp": "Experiência de trabalho",
+    "add": "Adicionar",
+    "delete": "Eliminar",
+    "educations": "Educação",
+    "vacancy": "Vaga",
+    "term": "Prazo",
+    "getVerification": "Concluir a verificação",
+    "notVerified": "Não verificado",
+    "verified": "???",
+    "more": "Mais",
+    "employmentInfo": "Informação de emprego",
+    "addSpec": "Adicionar especialização",
+    "removeSpec": "Remover especialização",
+    "education": {
+      "from": "De",
+      "to": "Para",
+      "educationalInstitution": "Instituição educacional"
+    },
+    "workExps": {
+      "from": "De",
+      "to": "Para",
+      "companyName": "Nome da empresa"
+    },
+    "settings": "Definições",
+    "urgentJobOffers": "Ofertas de emprego urgentes",
+    "shortTermJobOffers": "Ofertas de trabalho de curto prazo",
+    "fixedDeliveryJobOffers": "Ofertas de trabalho de entrega fixas",
+    "addInfo": "Pode adicionar informação sobre si mesmo, carregar uma foto de perfil e passar pelo procedimento KYC para melhorar a sua classificação. A classificação depende dos dados do seu perfil e das revisões.",
+    "alsoRating": "Quanto mais elevada for a sua classificação, mais fácil é encontrá-lo nas buscas.",
+    "dontShow": "Não voltar a mostrar",
+    "profileInfo": "Informação do Perfil",
+    "nameInput": "Introduza o seu nome",
+    "lastNameInput": "Introduza o seu último nome",
+    "addressInput": "Introduza o seu endereço",
+    "telInput": "Introduza o número do telefone",
+    "userDesc": "Adicione uma breve descrição sobre si",
+    "instagramUsername": "Nome de utilizador do Instagram",
+    "twitterUsername": "Nome de utilizador do Twitter",
+    "linkedInUsername": "Nome de utilizador do LinkedIn",
+    "facebookUsername": "Nome de utilizador do Facebook",
+    "save": "Guardar",
+    "skills": "Competências:",
+    "whoCanSee": "Quem pode ver o meu perfil?",
+    "allUsers": "Todos os utilizadores registados",
+    "allInternet": "Utilizadores da Internet em todo o mundo",
+    "onlyWhenSubmittedWork": "Somente ao enviar ofertas de emprego",
+    "allRegistered": "Todos os utilizadores registados",
+    "changePass": "Mudar palavra-passe",
+    "change": "Alterar",
+    "enableTwoStepAuth": "Ativar a autenticação em dois passos",
+    "enable": "Ativar",
+    "smsVerification": "Verificação do perfil de SMS",
+    "company": "Introduza o nome da sua empresa",
+    "ceo": "Adicionar uma posição",
+    "filterAllEmployeeProfiles": "Filtrar todos os perfis de funcionários",
+    "website": "Introduza o site da sua empresa",
+    "changeRole": "Mudar função",
+    "2FA": "2FA",
+    "smsVerification2": "Verificação de SMS",
+    "instruments": "Instrumentos",
+    "pensionProgram": "Programa de pensões",
+    "referralProgram": "Programa de referência",
+    "p2pInsurance": "Seguro P2P",
+    "savingProduct": "Produto de poupança",
+    "crediting": "Crédito",
+    "liquidityMining": "Mineração de liquidez",
+    "distantWork": {
+      "title": "???",
+      "select": "???",
+      "allWorkplaces": "???",
+      "distantWork": "???",
+      "workInOffice": "???",
+      "bothVariant": "???"
+    }
+  },
+  "raising-views": {
+    "raisingViews": "Aumentar visualizações",
+    "choosePeriod": "Escolha o prazo",
+    "forOneDay": "Por 1 dia",
+    "forOneWeek": "Para 1 semana",
+    "forOneMonth": "Por 1 mês",
+    "chooseLevel": "Escolha o nível"
+  },
+  "disputes": {
+    "disputes": "Disputas",
+    "dispute": "Disputas №:",
+    "quest": "Busca:",
+    "employer": "Empregador:",
+    "questSalary": "Salário pretendido:",
+    "status": "Status:",
+    "decision": "Decisão:",
+    "Dispute": "Disputa",
+    "pending": "Pendente",
+    "chatHistory": "Histórico de chat",
+    "disputeTime": "Hora de abertura da disputa:"
+  },
+  "workers": {
+    "noWorkers": "???...",
+    "searchQuests": "Pesquisa de buscas",
+    "searchWorkers": "Pesquisar trabalhadores",
+    "topWorkers": "Melhores empregados",
+    "price": "Preço",
+    "addedTime": "Tempo adicionado",
+    "quests": "Buscas",
+    "urgent": "Selecione o nível de urgência",
+    "specialized": "Especializado",
+    "typeOfJob": "Tipo de trabalho",
+    "specializations": "Especializações",
+    "aboutMe": "Sobre mim",
+    "giveAQuest": "Conceder uma busca",
+    "inviteQuestor": "Convidar Questor",
+    "skills": "Competências",
+    "completedQuests": "Buscas concluídas",
+    "openedQuests": "Buscas em aberto",
+    "showAll": "Mostrar todos",
+    "averageRating": "Classificação média",
+    "from": "De",
+    "based": "Baseado",
+    "reviews": "avaliações",
+    "noReviewsAdded": "???",
+    "portfolio": "Portfólio",
+    "noPortfoliosAdded": "???",
+    "showAllCases": "Mostrar todos os casos",
+    "costTitle": "???"
+  },
+  "levels": {
+    "reliableEmp": "EMP. FIÁVEL",
+    "checkedByTime": "EMP. VERIFICADO",
+    "disabled": "DESATIVADO",
+    "higher": "EMP. NÍVEL MAIS ELEVADO"
+  },
+  "referral": {
+    "inviteFriendsHead": "Convide amigos.",
+    "earnCryptoTogether": "Ganhar cripto em conjunto",
+    "headerSubtitle": "Ganhe até 35 dólares em WQT sempre que os seus amigos se registarem e fizerem a primeira Busca na plataforma Work Quest.",
+    "referralReward": "Recompensa referência",
+    "wqtCount": "{count} WQT",
+    "lastRefReward": "Recompensa última ref",
+    "plusCount": "+ {count}",
+    "yourRefers": "As suas referências",
+    "yourReferralLink": "O seu link de referência",
+    "howToInviteYourFriends": "Como convidar os seus amigos?",
+    "getLink": "Obter link",
+    "registerAndGenerate": "Registe-se e crie ligações de referência com taxa de comissões.",
+    "inviteFriends": "Convidar amigos",
+    "inviteYourFriends": "Convide os seus amigos a registarem-se através do link de referência e a receberem recompensas quando completarem a primeira Busca.",
+    "earnCrypto": "Ganhe cripto",
+    "everyTimeYourFriends": "Sempre que os seus amigos fazem uma primeira Busca, receberá até 35 dólares em comissão WQT em tempo real!",
+    "historyOfRewards": "Histórico de recompensas",
+    "tableHead": {
+      "name": "Nome",
+      "userID": "ID do utilizador",
+      "txHash": "Hash Trn",
+      "time": "Prazo",
+      "amount": "Montante",
+      "status": "Status"
+    },
+    "table": {
+      "userName": "John Doe",
+      "userId": "455dad66544ss",
+      "txHash": "sf998s...ss877d",
+      "time": "Fev 1, 2021",
+      "status": "Sucesso"
+    }
+  },
+  "pension": {
+    "pensionSavingsBalance": "Saldo da poupança de pensão",
+    "retirementProgram": "Programa de aposentação",
+    "faq": "FAQ (Perguntas Frequentes)",
+    "pensionProgram": "Programa de pensões",
+    "applyForAPension": "Candidatar-se a uma pensão",
+    "applyForRetirement": "Candidatar-se à reforma",
+    "annualPercent": "Percentagem anual",
+    "optional": "Opcional",
+    "optionalFirstDeposit": "Primeiro depósito",
+    "term": "Prazo",
+    "castomizable": "Configurável",
+    "configurablePercentage": "Percentagem configurável",
+    "depositsFromQuest": "Depósito de buscas",
+    "howToTakePart": "Como participar do programa de pensões?",
+    "pensionPlanText": "Um plano de pensões pode permitir que um trabalhador contribua com parte do seu rendimento atual dos salários para um plano de investimento destinado a ajudar a financiar a reforma.",
+    "information": "Informação detalhada",
+    "download": "Descarregar",
+    "pensionBalance": "Saldo da poupança de pensão",
+    "makeADeposit": "Fazer um depósito",
+    "currentPercentFromAQuest": "Percentagem atual de uma busca",
+    "changePercent": "Alterar percentagem",
+    "everyYear": "Anualizado",
+    "year": "anualmente",
+    "timeRemainsUntilTheEndOfThePeriod": "Prazo até ao fim do período:",
+    "transactionHistory": "Histórico de transações",
+    "withdraw": "Retirar",
+    "prolong": "Prolongar",
+    "prolongText": "???",
+    "templateText": "",
+    "table": {
+      "userName": "John Doe",
+      "userId": "455dad66544ss",
+      "txHash": "sf998s...ss877d",
+      "time": "Fev 1, 2021",
+      "status": "Sucesso"
+    },
+    "docName": "Some_document.pdf",
+    "mb": "{count} MB",
+    "percents": "{count} %",
+    "minutes": "{count} ???",
+    "hours": "{count} ???",
+    "years": "{count} ???",
+    "days": "{count} ???",
+    "WUSDCount": "{count} WUSD",
+    "ETHCount": "{count} ETH",
+    "plusPercents": "+ {count}%",
+    "faq1": {
+      "question": "Como é que se pode ter direito a uma pensão?",
+      "answer": "Não é necessário ter trabalhado para um empregador durante um certo número de anos para ser elegível para prestações de reforma. Basta seleccionar a percentagem de cada busca que deseja acumular na sua conta. O seu subsídio de reforma normalmente aumenta à medida que acumula fundos. A percentagem adicional será ganha automaticamente através da utilização de fundos no programa de empréstimo."
+    },
+    "faq2": {
+      "question": "Como é calculada a \"percentagem adicional\"?",
+      "answer": "Os fundos do fundo de pensões serão bloqueados no contrato de empréstimo. O APY varia em função das alterações no protocolo de crédito. O lucro pode variar entre 3-6%"
+    },
+    "faq3": {
+      "question": "Como é que funcionam os planos de pensões?",
+      "answer": "Não é necessário ter trabalhado para um empregador durante um certo número de anos para ser elegível para prestações de reforma. Basta seleccionar a percentagem de cada busca que deseja acumular na sua conta. O seu subsídio de reforma normalmente aumenta à medida que acumula fundos. A percentagem adicional será ganha automaticamente através da utilização de fundos no programa de empréstimo."
+    },
+    "faq4": {
+      "question": "Quantos anos é necessário trabalhar para ser titular de um plano de pensões?",
+      "answer": "De acordo com as regras da WorkQuest, qualquer pessoa pode abrir um plano de poupança do setor privado. Após os primeiros três anos, terá a oportunidade de receber 100% dos fundos acumulados.\nPode continuar a acumular por mais um ano ou levantar fundos da sua carteira na totalidade."
+    },
+    "faq5": {
+      "question": "O que é uma boa pensão?",
+      "answer": "O que é um bom montante de pensão? Alguns conselheiros recomendam que poupe 10 vezes o seu salário médio de vida ativa até ao momento da reforma. Assim, se o seu salário médio é de 30.000 dólares, deve visar um pote de pensões de cerca de 300.000 dólares. Outra dica importante é que deve poupar 12,5 por cento do seu salário mensal."
+    },
+    "faq6": {
+      "question": "A pensão mensal é tributável?",
+      "answer": "A sua pensão mensal quase sempre conta como rendimento tributável, e terá de garantir que tem impostos suficientes retidos dos seus pagamentos de pensão para satisfazer a Autoridade Tributária"
+    },
+    "faq7": {
+      "question": "Posso receber toda a minha pensão de uma só vez?",
+      "answer": "Após um período mínimo de 3 anos de programa de reforma, pode levantar de uma só vez algumas ou todas as suas poupanças de pensão."
+    },
+    "faq8": {
+      "question": "Posso cancelar a minha pensão e receber o dinheiro?",
+      "answer": "Se levantar após o mínimo de 3 anos ou no dia da renovação anual, receberá de volta todo o dinheiro que já pagou. Se optar por não receber mais tarde, não poderá receber um reembolso dos seus pagamentos até ao final do período prolongado (geralmente 1 ano)."
+    },
+    "faq9": {
+      "question": "Posso receber a minha pensão e continuar a trabalhar?",
+      "answer": "Posso receber a minha pensão mais cedo e continuar a trabalhar? A resposta curta é sim. Hoje em dia, não há uma idade de reforma definida. Pode continuar a trabalhar durante o tempo que quiser, e pode também ter acesso ao programa de pensões."
+    },
+    "faq10": {
+      "question": "O que é que acontece se eu financiar a minha pensão em excesso?",
+      "answer": "Não temos restrições quanto ao montante da poupança. O montante total acumulado estará à sua disposição no final do período do programa."
+    }
+  },
+  "saving": {
+    "withdrawModalBody": "O montante dos fundos bloqueados e os juros acumulados serão creditados na sua carteira",
+    "workQuestSavings": "WorkQuest Savings",
+    "lendAndEarn": "Emprestar e Ganhar",
+    "conditions": "Condições",
+    "maxMinSum": "Soma máx/mín",
+    "depositsAndWithdrawal": "Depósitos e Levantamentos",
+    "term": "Prazo",
+    "annualizedInterestRate": "Taxa de juro anualizada",
+    "openADeposit": "Constituir um depósito",
+    "faq": "FAQ (Perguntas Frequentes)",
+    "information": "Informação",
+    "historyOfDeposits": "Histórico de depósitos",
+    "depositAmount": "Montante bloqueado",
+    "card1": "Taxa de juro anualizada \n 4,51 % \n Prazo (dias): 7 dias",
+    "card2": "Taxa de juro anualizada \n 4,67 % \n Prazo (dias): 14 dias",
+    "card3": "Taxa de juro anualizada \n 4,82 % \n Prazo (dias): 30 dias",
+    "card4": "Taxa de juro anualizada \n 5,11 % \n Prazo (dias): 90 dias",
+    "card5": "Taxa de juro anualizada \n 5,23 % \n Prazo (dias): 180 dias",
+    "templateText": "Empenhado em manter a sua criptomoeda?\nUma forma fácil de emprestar e ganhar com poupanças bloqueadas.",
+    "faq1": "O que são as poupanças bloqueadas? Está empenhado em manter a sua posição cripto?",
+    "faq2": "O que acontece aos meus fundos no dia em que subscrevo um produto de Poupança Bloqueado?",
+    "faq3": "O que acontece aos meus fundos na data de valor de um produto de poupança bloqueado?",
+    "faq4": "O que acontece aos meus fundos na data de resgate de um produto de poupança bloqueado?",
+    "faq5": "Como é calculado o rendimento médio anual (TPA)?",
+    "faq6": "Tenho a garantia de ganhar juros sobre os produtos WorkQuest Savings, mesmo que os mercados de criptomoedas caiam?",
+    "ans1": "Agora pode ganhar juros ao mesmo tempo! Subscreva a sua cripto por períodos de poupança bloqueados para obter rendimentos de juros mais elevados.",
+    "ans2": "No dia da subscrição, o WorkQuest Savings irá deduzir os fundos para subscrição da sua carteira WUSD.\n",
+    "ans3": "Na data valor, WorkQuest Savings distribuirá o produto Locked Savings para a sua carteira de poupança, e o seu produto de poupança começará a acumular juros.",
+    "ans4": "Na data do resgate, verá tanto os tokens iniciais atribuídos à subscrição como os juros acumulados na sua conta WorkQuest 'saldos'. Este processo será automático.",
+    "ans5": "O retorno médio anual (TAEG) utiliza a taxa de juro média diária dos últimos 7 dias, multiplicada por 365.",
+    "ans6": "Sim. A taxa de juro sobre cada produto é garantida.",
+    "docName": "Some_document.pdf",
+    "mb": "{count} MB",
+    "percents": "{count} %",
+    "days": "{count} dias",
+    "smallPlug": "??",
+    "possiblePlug": "Possível",
+    "yearPlug": "1 ano",
+    "wusdCount": "{count} WUSD",
+    "plusPercents": "+ {count}%",
+    "table": {
+      "userName": "John Doe",
+      "userId": "455dad66544ss",
+      "txHash": "sf998s...ss877d",
+      "time": "Fev 1, 2021",
+      "status": "Sucesso"
+    },
+    "depositModalBody": "A sua cripto fechará por um período específico, e começará a ganhar juros.",
+    "depositIsOpened": "Transferência confirmada",
+    "deposit": "Depósito",
+    "withdraw": "Retirar",
+    "depositIsOpenedText": "",
+    "withdrawText": "???"
+  },
+  "mining": {
+    "loading": "???...",
+    "claimRewards": "???",
+    "liquidityMining": "Mineração de liquidez",
+    "swapTokens": {
+      "title": "???",
+      "swap": "???",
+      "oldTokens": "???",
+      "newTokens": "???",
+      "balance": "???"
+    },
+    "approve": "???",
+    "stake": "???",
+    "unstake": "???",
+    "liquidityMiningSub": "???",
+    "templateText": "",
+    "pools": "Pools",
+    "choose": "Escolher",
+    "information": "Informação",
+    "docName": "Some_document.pdf",
+    "agreement": "???.pdf",
+    "kb": "{count} KB",
+    "download": "Descarregar",
+    "tableHead": {
+      "poolAddress": "Endereço do pool",
+      "swaps": "???",
+      "totalValue": "???",
+      "tokenAmount": "???",
+      "account": "???",
+      "time": "???",
+      "assets": "Ativos",
+      "sdsdsdsd": "sdsdsdsd",
+      "volume": "Volume"
+    },
+    "table": {
+      "poolAddress": "0sjs3892...sd45",
+      "assets": "50% WUSD / 50%ETH",
+      "assets2": "50% WQT / 50% BNB",
+      "sdsdsdsd": "sdsdsdsd",
+      "volume": "USD 4,5M"
+    },
+    "mb": "{count} MB",
+    "back": "Voltar",
+    "wusdEthPool": "Pool WUSD/ETH",
+    "wusdBnbPool": "Pool BNB/WQT",
+    "dollarsCount": "$ {count} USD",
+    "procCount": "{count} %",
+    "lpCount": "{count} LP",
+    "wqtCount": "{count} WQT",
+    "APY": "???",
+    "addLiquidity": "Adicionar liquidez",
+    "removeLiquidity": "Remover liquidez",
+    "liquidity": "Liquidez",
+    "totalLiquidity": "???",
+    "reward": "???",
+    "claimReward": "???",
+    "totalReward": "???",
+    "volume24h": "Volume (24h)",
+    "myPoolShare": "A minha quota do pool",
+    "liquidityPoolProviders": "Fornecedores do pool de liquidez",
+    "liquidityProvidersEarn": "Os fornecedores de liquidez recebem uma taxa de 0,3% em todas as transações, proporcional à sua quota do pool. As taxas são adicionadas ao pool, acumuladas em tempo real e podem ser reclamadas retirando a sua liquidez.",
+    "transactions": "Transações",
+    "connectWallet": "???"
+  },
+  "crediting": {
+    "lending": "Protocolo de Empréstimo WorkQuest",
+    "crediting": "Crédito",
+    "templateText": "Plataforma de empréstimo WorkQuest DeFi na rede Work Net com quatro mercados financeiros exclusivos para ativos voláteis",
+    "marketSize": "Tamanho do mercado",
+    "deposit": "Depósito",
+    "percent": "Percentagem",
+    "dollarsCount": "$ {count}",
+    "percentsCount": "{count}%",
+    "wantToTakeALoan": "Quer contrair um empréstimo?",
+    "borrow": "Pedido de empréstimo",
+    "information": "Informação",
+    "openPositions": "Posições abertas",
+    "usdCount": "{count} USD",
+    "totalCollateralLocked": "Garantia total bloqueada",
+    "wusdCount": "{count} WUSD",
+    "totalWusdDebt": "Dívida total de WUSD",
+    "tableHead": {
+      "id": "ID",
+      "currentRatio": "Rácio atual",
+      "deposited": "Depositado",
+      "availableToWithdraw": "Disponível para levantamento",
+      "wusd": "WUSD"
+    },
+    "table": {
+      "id": "565464",
+      "currentRatio": "500%",
+      "deposited": "531 ETH",
+      "availableToWithdraw": "531 ETH",
+      "wusd": "532 WUSD",
+      "manage": "Gerir"
+    },
+    "back": "Voltar",
+    "tempName": "Emprestar #56546",
+    "liquidationPrice": "Preço de liquidação",
+    "collateralizationRatio": "Taxa de colateralização",
+    "ethLocked": "ETH bloqueado",
+    "ethCount": "{count} ETH",
+    "ableToWithdraw": "Disponível para levantamento",
+    "withdraw": "Retirar",
+    "outstandingWusdDebt": "Dívida pendente WUSD",
+    "availableToGenerate": "Disponível para gerar",
+    "payback": "Retorno",
+    "generate": "Gerar",
+    "history": "Histórico",
+    "credTableHeader": {
+      "activity": "Atividade",
+      "amount": "Montante",
+      "time": "Prazo",
+      "sender": "Remetente",
+      "txHash": "Hash Trn"
+    },
+    "credTable": {
+      "activity": "Pago de volta",
+      "amount": "100 WUSD",
+      "time": "12 de junho de 2021",
+      "sender": "dfgd6...fs65ds",
+      "txHash": "dfgd6...fs65ds"
+    },
+    "faq1": "O que são as poupanças bloqueadas? Está empenhado em manter a sua posição cripto?",
+    "faq2": "O que acontece aos meus fundos no dia em que subscrevo um produto de Poupança Bloqueado?",
+    "ans2": "No dia da subscrição, o WorkQuest Savings irá deduzir os fundos para subscrição da sua carteira WUSD.\n",
+    "faq3": "O que acontece aos meus fundos na data de valor de um produto de poupança bloqueado?",
+    "faq4": "O que acontece aos meus fundos na data de resgate de um produto de poupança bloqueado?",
+    "faq5": "Como é calculado o rendimento médio anual (TPA)?",
+    "faq": "FAQ (Perguntas Frequentes)",
+    "lend": "Emprestar"
+  },
+  "insuring": {
+    "peerToPeerInsuring": "Seguro P2P",
+    "templateText": "",
+    "card1": {
+      "title": "Proteção mínima",
+      "pointsText": {
+        "point1": "Uma contribuição anual de 1000 USD, pagamento em caso de sinistro segurado 833,333333 WUSD."
+      }
+    },
+    "card2": {
+      "title": "Proteção padrão",
+      "pointsText": {
+        "point1": "Prémio anual 2000 WUSD, pagamento em caso de sinistro segurado 1666,6667 WUSD."
+      }
+    },
+    "card3": {
+      "title": "Proteção máxima",
+      "pointsText": {
+        "point1": "Uma contribuição anual de 3000 WUSD, pagamento no caso de um evento segurado de 2500 WUSD."
+      }
+    },
+    "pointTemplate": "",
+    "buy": "Comprar",
+    "information": "Informação",
+    "docName": "Some_document.pdf",
+    "mb": "{count} MB",
+    "minimalProtectionPlan": "Plano de proteção mínima",
+    "standardProtectionPlan": "Plano de proteção standard",
+    "maximumProtectionPlan": "Plano de proteção máxima",
+    "yourFundBalance": "Saldo do fundo de seguros",
+    "wusdCount": "{count} WUSD",
+    "dollarsCount": "$ {count}",
+    "withdraw": "Retirar",
+    "leaveFund": "Sair do fundo",
+    "changePlan": "Mudar de Plano",
+    "fundParticipants": "Participantes do Fundo",
+    "userName": "Cody Fisher",
+    "userNameCase": "??? :",
+    "voting": "Votação",
+    "noVoteAtTheMoment": "Não existem votos até ao momento",
+    "countPeoplesInChat": "{count} pessoas no chat",
+    "writeSomething": "Escreva alguma coisa",
+    "activeVoting": "Votação ativa",
+    "paymentOfInsurance": "{value}: Pagamento de seguro",
+    "youWillCertifyTheInsuredEvent": "Vai certificar o evento segurado?",
+    "studyTheInsuredEventThoroughly": "Estude exaustivamente o evento segurado",
+    "insureCaseText": "",
+    "notAgree": "Não concordo",
+    "insuredEvent": "Evento segurado",
+    "agree": "Concordo",
+    "percentsCount": "{count} %",
+    "votesCount": "{count} votos",
+    "planPoints": {
+      "point1": "Taxa anual: {count} WUSD",
+      "point2": "Pagamento aquando da ocorrência de um evento segurado: {count} WUSD",
+      "point3": "Duração do contrato: {count} ano",
+      "point4": "Número de participantes do fundo: {count} pessoas"
+    },
+    "faq1": {
+      "question": "O que significa P2P nos seguros?",
+      "answer": "O seguro Peer-to-peer (P2P) é um produto que permite a um grupo de segurados reunir o seu capital, auto-organizar e auto-administrar o seu próprio seguro"
+    },
+    "faq2": {
+      "question": "Como funciona o seguro p2p?",
+      "answer": "O seguro Peer-to-peer, ou seguro P2P, permite a grupos de indivíduos segurarem-se uns aos outros. Os membros do grupo reúnem o seu dinheiro para se segurarem contra um risco que os afeta. Se um membro do grupo sofrer uma perda segurável, o seu pedido de indemnização é pago diretamente a partir do pool de dinheiro contribuído por cada membro"
+    },
+    "faq3": {
+      "question": "Como fazer um seguro entre pares?",
+      "answer": "Solicite uma avaliação \"peer-to-peer\". Numa avaliação \"peer-to-peer\", o seu fundo de seguro falará com outros membros do fundo sobre a razão pela qual o serviço ou terapias são medicamente necessários. Pode carregar no chat todos os documentos e opiniões dos médicos necessários, o que provará a legalidade do seu caso e criará um voto para a tomada de decisões por parte dos membros da fundação. Se a maioria dos membros da fundação votar a favor, receberá o pagamento na sua wallet."
+    },
+    "faq4": {
+      "question": "O que acontecerá com o fundo se o evento segurado não ocorrer dentro de um ano?",
+      "answer": "No final do ano, todos os utilizadores receberão notificações com um voto onde lhes será pedido que votem pela prorrogação do fundo por mais um ano, o que duplicará automaticamente o seu fundo e os pagamentos no caso de um evento segurado ou dividirá o fundo entre os participantes do mesmo."
+    },
+    "faq5": {
+      "question": "Quem é um administrador de fundos?",
+      "answer": "Para garantir que cada participante do fundo não perca tempo considerando todos os eventos segurados, poderá delegar os seus direitos de voto ao gestor do fundo por uma pequena taxa"
+    },
+    "faq6": {
+      "question": "Qual é o tamanho padrão do fundo de seguro?",
+      "answer": "Os fundos são formados por 10 utilizadores, dependendo do nível de proteção selecionado"
+    },
+    "faq7": {
+      "question": "Como é calculado o montante de pagamento do fundo de seguro?",
+      "answer": "Um exemplo de cálculo do fundo para o primeiro ano: Proteção mínima - um prémio anual de 1000 WUSD, pagamento no caso de um evento seguro 833,333333 WUSD.\n10 membros do fundo * 1000 WUSD / 12 meses = 833,333333 WUSD.\nEm caso de continuação do fundo para o ano seguinte, a dimensão do fundo e o pagamento do seguro são duplicados."
+    },
+    "faq8": {
+      "question": "Qual é a garantia de segurança dos levantamentos de fundos por parte de um membro do fundo ?",
+      "answer": "Todos os membros do fundo manterão os fundos numa wallet com várias assinaturas, onde quaisquer decisões são tomadas apenas por uma maioria de votos."
+    }
+  },
+  "errors": {
+    "incorrectPass": "Ocorreu um erro. Verifique os dados e tente novamente.",
+    "emptyData": {
+      "emptyQuests": "???",
+      "emptyPortfolios": "???",
+      "emptyReviews": "???",
+      "employer": {
+        "myQuests": {
+          "desc": "Ainda não fez buscas",
+          "btnText": "Criar uma busca !"
+        },
+        "allQuests": {
+          "desc": "Ainda não fez buscas",
+          "btnText": "Criar uma busca !"
+        }
+      },
+      "worker": {
+        "myQuests": {
+          "desc": "Ainda não fez buscas",
+          "btnText": "Criar uma busca !"
+        },
+        "allQuests": {
+          "desc": "Ainda não respondeu a buscas",
+          "btnText": "Responda à busca!"
+        }
+      }
+    }
+  },
+  "sharing": {
+    "title": "Partilha",
+    "socialText": "Partilha nas redes sociais",
+    "share": "Partilhar o link"
+  },
+  "crosschain": {
+    "pageName": "???",
+    "pageAbout": "???",
+    "sourceBlockchain": "???",
+    "targetBlockchain": "???",
+    "blockchain": "???",
+    "yourWQTAddress": "???",
+    "YourBSCAddress": "???",
+    "balance": "???",
+    "createSwap": "???",
+    "mySwaps": "???",
+    "eth": "ETH",
+    "worknet": "Wor???knet",
+    "bsc": "BSC",
+    "tableHead": {
+      "direction": "???",
+      "recipient": "???",
+      "tx": "???",
+      "created": "???"
+    },
+    "recipTemp": "0xnf8o2…9b74thb3",
+    "dateTemp": "05.08.2021, 12:00"
+  },
+  "staking": {
+    "notification": "???",
+    "stakeLimitReached": "???",
+    "notEnoughFunds": "???",
+    "notEnoughClaim": "???",
+    "_inDev": "???",
+    "mainHeader": "???",
+    "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "pools": "???",
+    "tableHead": {
+      "poolAddress": "???",
+      "totalStaked": "???",
+      "totalDistributed": "???",
+      "stakeTokenAddress": "???",
+      "rewardTokenAddress": "???"
+    },
+    "open": "???",
+    "back": "???",
+    "unstake": "???",
+    "stakeIsEmpty": "???",
+    "stakeDurationIsNotOver": "???",
+    "claimRewards": "???",
+    "cannotClaimYet": "???",
+    "pool": "Pool",
+    "stakeTokenAddress": "???",
+    "rewardTokenAddress": "???",
+    "totalStaked": "???",
+    "WQTCount": "{n} WQT",
+    "WUSDCount": "{n} WUSD",
+    "ETHCount": "{n} ETH",
+    "BNBCount": "{n} BNB",
+    "hours": "{n} ???",
+    "days": "{n} ???",
+    "min": "{n} ???",
+    "totalDistributed": "???",
+    "staking": "???",
+    "stakingCards": {
+      "distributionTime": "???",
+      "rewardTotal": "???",
+      "takePeriod": "???",
+      "claimPeriod": "???",
+      "duration": "???"
+    },
+    "userInformation": "???",
+    "userInformationCards": {
+      "staked": "???",
+      "stakeBalance": "???",
+      "claimed": "???"
+    },
+    "stakeCards": {
+      "stakeMin": "???",
+      "stakeLimit": "???",
+      "periodUpdate": "???"
+    },
+    "stakeDays": "???",
+    "stake": "???",
+    "autoRenewal": "???",
+    "renewalTokens": "??? {n} ???"
+  },
+  "myQuests": {
+    "statuses": {
+      "all": "Todas as buscas",
+      "fav": "Favorito",
+      "requested": "Solicitado",
+      "completed": "Buscas concluídas",
+      "active": "Buscas ativas",
+      "invited": "Buscas convidadas"
+    }
+  },
+  "footer": {
+    "download": "???",
+    "follow": "???",
+    "company": {
+      "title": "???",
+      "wqWiki": "???",
+      "aboutUs": "A???",
+      "leadership": "???",
+      "contactUs": "???",
+      "support": "???"
+    },
+    "legalInfo": {
+      "title": "???",
+      "risks": "???",
+      "privacyPolicy": "???",
+      "terms": "???",
+      "aml": "???",
+      "cookiePolicy": "???"
+    },
+    "DeFi": {
+      "title": "???",
+      "retirement": "???",
+      "referral": "???",
+      "P2P": "???",
+      "savingsProduct": "???",
+      "lending": "???",
+      "liquidityMining": "???",
+      "wqBridge": "???",
+      "staking": "???",
+      "wqDAO": "???"
+    }
+  },
+  "wiki": {
+    "title": "WorkQuest Wiki",
+    "searchPlaceholder": "???",
+    "search": "???",
+    "navigation": {
+      "header": {
+        "title": "???",
+        "subtitle": "???",
+        "cards": {
+          "employer": {
+            "title": "???"
+          },
+          "employee": {
+            "title": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "employees": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "myQuests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "wallet": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "instruments": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "language": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "chats": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "notifications": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "menu": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "profile": {
+        "title": "???",
+        "cards": {
+          "profile": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "settings": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "disputes": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "logout": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "instruments": {
+        "title": "???",
+        "cards": {
+          "retirement": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "referral": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "P2P": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "savings": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "lending": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "liquidity": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "crosschain": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "staking": {
+            "title": "???",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+          }
+        }
+      },
+      "statuses": {
+        "title": "???",
+        "cards": {
+          "delivery": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "short": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "urgent": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "top": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "reliable": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "verified": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "buttons": {
+        "title": "???",
+        "cards": {
+          "create": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "results": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "workers": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "details": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "map": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "button": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "raise": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "employer": {
+        "title": "???",
+        "cards": {
+          "specialization": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "rating": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "priority": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "distant": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "price": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "time": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "employee": {
+        "title": "???",
+        "cards": {
+          "specialization": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "delivery": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "job": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "distant": {
+            "title": "???",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+          },
+          "price": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "time": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "user": {
+        "title": "???",
+        "cards": {
+          "reviews": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "active": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "invited": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "favorite": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "quest": {
+        "title": "???",
+        "cards": {
+          "goldPlus": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "gold": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "silver": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "bronze": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      }
+    }
+  },
+  "gallery": {
+    "counter": "{n} ??? {c}"
+  },
+  "uploader": {
+    "uploadFile": "???",
+    "kb": "KB",
+    "mb": "MB",
+    "errors": {
+      "fileSizeLimit": "???: {n}",
+      "filesLimit": "???: {n}"
+    }
+  }
+}

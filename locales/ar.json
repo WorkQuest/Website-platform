@@ -1,0 +1,2374 @@
+{
+  "invite": {
+    "title": "تم إرسال الدعوة"
+  },
+  "response": {
+    "title": "تمت الاستجابة لها"
+  },
+  "active": {
+    "title": "تمت الاستجابة لها"
+  },
+  "company": {
+    "from": "من"
+  },
+  "performed": {
+    "title": "تم تنفيذها"
+  },
+  "btn": {
+    "agree": "أوافق",
+    "disagree": "???",
+    "completeWorkOnQuest": "???",
+    "rejectCompletedWorkOnQuest": "???",
+    "acceptCompletedWorkOnQuest": "???",
+    "closeQuest": "???",
+    "goToChat": "الانتقال إلى الدردشة",
+    "dispute": "فتح النزاع",
+    "responded": "إرسال الرد",
+    "sendARequest": "إرسال طلب",
+    "view": "عرض"
+  },
+  "distance": {
+    "m": "م"
+  },
+  "info": {
+    "yourMessage": "???",
+    "showYourMessage": "عرض رسالتك",
+    "hideYourMessage": "???"
+  },
+  "messages": {
+    "alpha": "لا يمكن أن يحتوي الحقل {_field_} إلا على أحرف أبجدية",
+    "alpha_num": "لا يمكن أن يحتوي الحقل {_field_} إلا على أحرف أبجدية رقمية",
+    "alpha_dash": "لا يمكن أن يحتوي الحقل {_field_} إلا على أحرف أبجدية رقمية وشرط وشرط سفلية",
+    "alpha_spaces": "لا يمكن أن يحتوي الحقل {_field_} إلا على أحرف أبجدية ومسافات",
+    "between": "يجب أن تقع قيمة الحقل {_field_} بين {min} و{max}",
+    "confirmed": "قيمة تأكيد الحقل {_field_} غير متطابقة",
+    "digits": "يجب أن تكون قيمة الحقل {_field_} رقمية وأن تحتوي على {length} رقم بالضبط",
+    "dimensions": "يجب أن تكون قيمة الحقل {_field_} {width} بكسل x {height} بكسل",
+    "email": "يجب أن يتضمَّن الحقل {_field_} عنوان بريد إلكتروني صالحًا",
+    "excluded": "لا يتضمَّن الحقل {_field_} قيمة صالحة",
+    "ext": "لا يتضمَّن الحقل {_field_} ملفًا صالحًا",
+    "image": "يجب أن يتضمَّن الحقل {_field_} صورة",
+    "integer": "يجب أن يتضمَّن الحقل {_field_} عددًا صحيحًا",
+    "length": "يجب ألا يقل طول الحقل {_field_} عن {length}",
+    "max_value": "يجب ألا تزيد قيمة الحقل {_field_} عن {max} أو أقل",
+    "max": "لا يمكن أن تزيد قيمة الحقل {_field_} عن {length} حرف",
+    "mimes": "يجب أن يتضمَّن الحقل {_field_} نوع ملف صالحًا",
+    "min_value": "يجب ألا تقل قيمة الحقل {_field_} عن {min} أو أكثر",
+    "min": "يجب ألا تقل قيمة الحقل {_field_} عن {length}",
+    "numeric": "لا يمكن أن يحتوي الحقل {_field_} إلا على أحرف رقمية",
+    "oneOf": "لا يتضمَّن الحقل {_field_} قيمة صالحة",
+    "regex": "تنسيق الحقل {_field_} غير صالح",
+    "required_if": "الحقل {_field_} مطلوب",
+    "required": "الحقل {_field_} مطلوب",
+    "size": "يجب ألا تزيد قيمة الحقل {_field_} عن {size} كيلوبايت",
+    "decimal": "يجب ألا يحتوي الحقل {_field_} إلا على قيم عشرية",
+    "decimalPlaces": "{_field_} ??? {places}"
+  },
+  "labels": {
+    "firstName": "الاسم الأول",
+    "lastName": "الاسم الأخير",
+    "mail": "البريد",
+    "password": "إدخال كلمة المرور"
+  },
+  "placeholders": {
+    "default": "عنصر نائب",
+    "firstName": "كريم",
+    "lastName": "خالد",
+    "mail": "your@mail.com",
+    "email": "عنوان البريد الإلكتروني",
+    "password": "•••••••"
+  },
+  "about": {
+    "contact": "تواصل معنا",
+    "content": {
+      "title": "نبذة عنا",
+      "text": "WorkQuest هو مشروع اجتماعي قائم على تكنولوجيا سلسلة الكتل ويهدف إلى إيجاد عمل وتنفيذ أي مهام من جانب صاحب العمل في وضع طلبات العمل. هل تبحث عن وظيفة؟ سيساعدك WorkQuest في العثور على طلب عمل بالقرب منك ومن مدينتك. هل تحتاج إلى موظفين لتحقيق الأهداف؟ ما عليك سوى إنشاء طلب عمل على موقع WorkQuest. تلتزم الخدمة بضمان تنفيذ طلبات العمل. يتم الاحتفاظ بأموال صاحب العمل لدينا، وعندما يؤكد الموظف أنه أدى عمله، فإنه يتلقى إيداعًا بالأموال في حسابه. سيساعد نظام التقييمات والمراجعات وقائمة طلبات العمل المكتملة في العثور على أشخاص صادقين وأفضل المتخصصين بكل سهولة.\n\n          هدفنا هو تبسيط التواصل بين صاحب العمل والموظف للمساعدة في توظيف ملايين الأشخاص، وتحسين موقفهم المالي، وحل المشكلة الدائمة المتمثلة في العثور على متخصصين موثوقين في جميع القطاعات، وبناء اقتصاد رقمي تقدمي قائم على أسس الثقة والاحترام المتبادل ورفاهية جميع المشاركين فيه."
+    }
+  },
+  "registration": {
+    "edit": "تعديل",
+    "registration": "التسجيل",
+    "emailConfirm": "تم إرسال رسالة إلى عنوان بريدك الإلكتروني",
+    "emailConfirmTitle": "التحقُّق من البريد الإلكتروني"
+  },
+  "login": {
+    "signIn": "تسجيل الدخول",
+    "account": "ليس لديك حساب؟",
+    "remember": "تذكرني",
+    "forgot": "نسيت كلمة المرور؟",
+    "loginWith": "تسجيل الدخول باستخدام \nحسابك على وسائل التواصل الاجتماعي",
+    "create": "إنشاء حساب"
+  },
+  "profile": {
+    "raiseViews": "زيادة المشاهدات",
+    "educations": "التعليم",
+    "prevWorkExp": "خبرة العمل السابقة",
+    "active": "العروض النشطة",
+    "radius": "في نطاقك",
+    "lead": "المهلة",
+    "proposalLocation": "موقع العرض \nوفقًا لموقعك الحالي",
+    "proposalStatus": "حالة العرض",
+    "urgently": "بشكلٍ عاجل",
+    "details": "عرض التفاصيل",
+    "available": "متاح",
+    "viewProfile": "عرض \nالملف التعريفي",
+    "invite": "دعوة صاحب الوظيفة",
+    "slogan": "إنشاء عرض عمل",
+    "add": "أضِف جميع المعلومات ووقت النشر للعثور على الموظفين المناسبين",
+    "create": "إنشاء",
+    "writeAMessage": "كتابة رسالة",
+    "quests": "طلبات العمل",
+    "reviews": "المراجعات",
+    "portfolio": "نماذج الأعمال",
+    "common": "???",
+    "sidebar": {
+      "filter": "عامل تصفية جميع طلبات العمل",
+      "choose": "(اختر فئة بسيطة أو \nمتخصصة)",
+      "quests": "طلبات العمل",
+      "specialized": "طلبات العمل المتخصصة",
+      "find": "البحث عن وظيفة"
+    }
+  },
+  "meta": {
+    "redeem": "???",
+    "redeemed": "???",
+    "pay": "???",
+    "skipAndEnd": "???",
+    "cleanUp": "???",
+    "close": "???",
+    "connected": "???",
+    "disconnect": "???",
+    "delete": "???",
+    "back": "العودة",
+    "ok": "موافق",
+    "send": "إرسال",
+    "save": "حفظ",
+    "reset": "إعادة الضبط",
+    "fromYou": "بالقرب منك",
+    "details": "عرض التفاصيل",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "buyWUSD": "شراء WUSD",
+    "submit": "تقديم",
+    "showAllReviews": "عرض جميع المراجعات",
+    "showAllQuests": "???",
+    "showAllPortfolios": "???",
+    "later": "لاحقًا",
+    "iAgree": "أوافق",
+    "next": "التالي",
+    "continue": "استمرار",
+    "change": "تغيير",
+    "apply": "تطبيق",
+    "connectSMSVer": "التحقُّق برسالة SMS للربط",
+    "resendSMS": "إعادة إرسال SMS",
+    "disable": "إيقاف",
+    "remindLater": "تذكيري لاحقًا",
+    "leave": "???"
+  },
+  "priority": {
+    "title": "تحديد الأولوية",
+    "all": "جميع درجات الأولوية",
+    "low": "موعد تسليم ثابت",
+    "normal": "فترة قصيرة",
+    "urgent": "عاجلة",
+    "employee": {
+      "low": "???",
+      "normal": "???",
+      "urgent": "???"
+    }
+  },
+  "signIn": {
+    "title": "تسجيل الدخول",
+    "account": "ليس لديك حساب؟",
+    "regs": "التسجيل",
+    "login": "تسجيل الدخول",
+    "remember": "تذكرني",
+    "forgot": "نسيت كلمة المرور",
+    "or": "أو",
+    "loginWith": "تسجيل الدخول باستخدام",
+    "welcomeToWorkQuest": "مرحبًا بك في WorkQuest",
+    "pleaseSignIn": "يُرجى تسجيل الدخول",
+    "workQuest": "WorkQuest",
+    "makingMoneyIsFast": "WorkQuest:\n سوق العمل\n اللامركزي\n العالمي",
+    "dontHaveAnAccount": "ليس لديك حساب؟",
+    "signUp": "الاشتراك",
+    "forgotYourPass": "نسيت كلمة المرور؟"
+  },
+  "signWorkQuest": {
+    "title": "شبكة WorkQuest الاجتماعية",
+    "description": "يمكنك استخدام بيانات تسجيل الدخول وكلمة المرور في WorkQuest DAO لتسجيل الدخول",
+    "daoUsername": "اسم مستخدم DAO",
+    "daoPass": "كلمة مرور DAO"
+  },
+  "securityCheck": {
+    "title": "الفحص الأمني",
+    "confCode": "رمز تأكيد Google",
+    "placeholder": "عنصر نائب",
+    "confCodeDesc": "أدخل الرمز المكوَّن من 6 أرقام من تطبيق مصادقة Google",
+    "confCodeField": "???"
+  },
+  "signUp": {
+    "title": "الاشتراك",
+    "haveAccount": "لديك حساب بالفعل؟",
+    "auth": "التفويض",
+    "firstName": "الاسم الأول",
+    "lastName": "الاسم الأخير",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "confirmPassword": "تكرار كلمة المرور",
+    "create": "إنشاء حساب",
+    "back": "العودة"
+  },
+  "forgot": {
+    "title": "نسيت كلمة المرور؟",
+    "desc": "سنرسل إليك تعليمات إعادة ضبط كلمة المرور."
+  },
+  "restore": {
+    "title": "استعادة كلمة المرور",
+    "modal": "تم تغيير كلمة المرور"
+  },
+  "role": {
+    "employer": "صاحب العمل",
+    "worker": "الموظف",
+    "enter": "إدخال",
+    "choose": "اختيار الدور",
+    "employerWant": "أريد إنجاز مهمة وأبحث عن موظفين",
+    "workerWant": "أريد البحث عن المهام والعمل بشكلٍ مستقل",
+    "chooseThis": "اختيار هذا الدور"
+  },
+  "privacy": {
+    "title": "سياسة الخصوصية",
+    "desc": "",
+    "agree": "أوافق على",
+    "privacyLink": "سياسة الخصوصية",
+    "termsLink": "الشروط والأحكام",
+    "amlLink": "سياسة مكافحة غسل الأموال وتمويل الإرهاب"
+  },
+  "layout": {
+    "create": "إنشاء طلب عمل",
+    "links": {
+      "terms": "\t· الشروط والأحكام",
+      "privacy": "\t· سياسة الخصوصية"
+    }
+  },
+  "skills": {
+    "title": "المهارات"
+  },
+  "worker": {
+    "cost": {
+      "notIndicated": "???..."
+    }
+  },
+  "quests": {
+    "showAll": "???",
+    "wusd": "WUSD",
+    "employer": {
+      "usersNotResponded": "???"
+    },
+    "companyNotListed": "???",
+    "workersNotInvited": "???",
+    "startChat": "???",
+    "invite": "???",
+    "decline": "???",
+    "questTitle": "???",
+    "questDesc": "???",
+    "questInfo": "???",
+    "questClosed!": "???",
+    "closed": "???",
+    "completed": "???",
+    "rejected": "???",
+    "completedWorkAccepted": "???",
+    "completedWorkRejected": "???",
+    "workOnQuestAccepted": "???",
+    "workOnQuestRejected": "???",
+    "pleaseWaitEmp": "???",
+    "quests": "طلبات العمل",
+    "publicationDate": "???",
+    "urgent": "عاجلة",
+    "specQuests": "???",
+    "permanentJob": "???",
+    "typeOfJob": "نوع العمل",
+    "partTime": "???",
+    "fixedTerm": "???",
+    "contract": "???",
+    "remoteWork": "???",
+    "allVariants": "???",
+    "levels": {
+      "1": {
+        "title": "???",
+        "desc": "???"
+      },
+      "2": {
+        "title": "???",
+        "desc": "???"
+      },
+      "3": {
+        "title": "???",
+        "desc": "???"
+      },
+      "4": {
+        "title": "???",
+        "desc": "???"
+      }
+    },
+    "createQuest": {
+      "choosePeriod": "???"
+    },
+    "distance": {
+      "100": "+ 100 m",
+      "500": "+ 500 m",
+      "1000": "+ 1000 m"
+    },
+    "rating": {
+      "title": "???",
+      "verified": "???",
+      "reliable": "???",
+      "topRanked": "???"
+    },
+    "distantWork": {
+      "title": "عمل بالخارج",
+      "allWorkplaces": "???",
+      "distantWork": "عمل بالخارج",
+      "workInOffice": "عمل بالداخل",
+      "bothVariant": "كلا الخيارين"
+    },
+    "employment": {
+      "employment": "???",
+      "fullTime": "???",
+      "partTime": "???",
+      "fixedTerm": "???"
+    },
+    "runtime": {
+      "runtime": "???",
+      "urgent": "???",
+      "shortTerm": "???",
+      "fixedDelivery": "???"
+    },
+    "spec": {
+      "spec": "???",
+      "addSpec": "???"
+    },
+    "skills": {
+      "skills": "???",
+      "chooseSkills": "???",
+      "limit": "???"
+    },
+    "hours": "الساعات",
+    "invited": "تمت الدعوة إليها",
+    "active": "نشطة",
+    "performed": "تم تنفيذها",
+    "requested": "تم طلبها",
+    "youInvited": "أرسلت دعوة إليها",
+    "inProgressBy": "قيد التنفيذ بواسطة:",
+    "finishedBy": "???:",
+    "showAllCases": "عرض جميع الحالات",
+    "portfolio": "نماذج الأعمال",
+    "searchQuests": "البحث في طلبات العمل",
+    "readCompletely": "قراءة الكل",
+    "questBig": "طلب العمل",
+    "fromBig": "من",
+    "fromSmall": "???",
+    "fromYou": "منك",
+    "reviews": "المراجعات",
+    "reviewsBig": "المراجعات",
+    "MyQuests": "طلبات العمل الخاصة بي",
+    "activeQuest": "طلب عمل نشط",
+    "waitWorker": "???",
+    "pendingConsideration": "???",
+    "dispute": "???",
+    "questClosed": "???",
+    "questFinished": "???",
+    "dontHaveSpec": "???...",
+    "namelessWorker": "???",
+    "nothingAboutMe": "???...",
+    "unknownAddress": "???...",
+    "unknownPhoneNumber": "???...",
+    "unknownEmailAddress": "???..",
+    "questActive:": "???:",
+    "questClosed:": "???:",
+    "questDispute:": "???:",
+    "questWaitConfirm:": "???:",
+    "skillsNotSpecified": "???...",
+    "proposal": "العرض",
+    "category": "تحديد فئة",
+    "address": "إضافة عنوان",
+    "uploadMaterials": "حمِّل الصور أو مقاطع الفيديو لوصف طلب العمل على أفضل نحو",
+    "price": "السعر",
+    "filter": {
+      "btn": "عوامل التصفية"
+    },
+    "ads": {
+      "promoteYourQuest": "تعزيز طلب العمل",
+      "publishForFree": "النشر مجانًا",
+      "boostYourPublications": "تعزيز منشورك",
+      "costPerClick": "التكلفة لكل نقرة"
+    },
+    "selectLocation": "تحديد الموقع",
+    "city": "المدينة",
+    "period": "الفترة الزمنية",
+    "EstimatedPayment": "الدفعة المقدَّرة:",
+    "createAQuest": "إنشاء طلب عمل",
+    "editAQuest": "???",
+    "activeQuests": "طلبات العمل النشطة",
+    "openedQuests": "???",
+    "completedQuests": "طلبات العمل المكتملة",
+    "oneTime": "مرة واحدة",
+    "fullTime": "دوام كامل",
+    "uploadAImagesOrVideos": "تحميل الصور أو مقاطع الفيديو",
+    "averageRating": "متوسط التقييم",
+    "showAllActiveQuests": "عرض كل طلبات العمل النشطة",
+    "performanceTimer": "نشطة حتى:",
+    "questAmount": "طلبات العمل",
+    "otherQuestsSpec": "طلبات العمل الأخرى حسب التخصص",
+    "questMaterials": "مواد إضافية لطلب العمل",
+    "searchResults": "نتائج البحث",
+    "type": "نوع العمل",
+    "time": "الوقت المضاف",
+    "priority": {
+      "title": "???",
+      "all": "جميع درجات الأولوية",
+      "low": "منخفضة",
+      "normal": "عادية",
+      "urgent": "عاجلة"
+    },
+    "ui": {
+      "showMap": "عرض الخريطة",
+      "search": "المدينة/الشارع/المكان"
+    },
+    "worker": "الموظف",
+    "raiseViews": "زيادة المشاهدات",
+    "deleteQuest": "حذف طلب العمل",
+    "approve": "الموافقة",
+    "startQuest": "بدء طلب العمل"
+  },
+  "filters": {
+    "dd": {
+      "1": "التخصُّص",
+      "2": "طلبات العمل",
+      "3": "عاجلة",
+      "4": "نوع العمل",
+      "5": "جميع درجات الأولوية",
+      "6": "السعر",
+      "7": "الوقت المضاف"
+    },
+    "title": "عوامل التصفية",
+    "titleAll": "جميع عوامل التصفية",
+    "filterBtn": "عرض كل عوامل التصفية",
+    "commonSub": {
+      "selectAll": "تحديد الكل"
+    },
+    "items": {
+      "1": {
+        "title": "???",
+        "sub": {
+          "100": "???",
+          "101": "???",
+          "102": "???",
+          "103": "???",
+          "104": "???",
+          "105": "???",
+          "106": "???",
+          "107": "???",
+          "108": "???",
+          "109": "???",
+          "110": "???",
+          "111": "???",
+          "112": "???",
+          "113": "???"
+        }
+      },
+      "2": {
+        "title": "موظفو البارات والمطاعم",
+        "sub": {
+          "200": "مطاعم المأكولات العرقية",
+          "201": "مطاعم الوجبات السريعة",
+          "202": "المطاعم ذات الأجواء غير الرسمية للوجبات السريعة",
+          "203": "المطاعم ذات الأجواء غير الرسمية",
+          "204": "المطاعم ذات الأجواء غير الرسمية للوجبات المميزة",
+          "205": "المطاعم ذات الطابع العائلي",
+          "206": "المطاعم الفاخرة",
+          "207": "المطاعم الفرنسية رفيعة المستوى والنوادي الليلية",
+          "208": "موظفو البارات والمطاعم الآخرون"
+        }
+      },
+      "3": {
+        "title": "???",
+        "sub": {
+          "300": "???",
+          "301": "???",
+          "302": "???",
+          "303": "???",
+          "304": "???"
+        }
+      },
+      "4": {
+        "title": "???",
+        "sub": {
+          "400": "???",
+          "406": "???",
+          "402": "???",
+          "403": "???",
+          "404": "???",
+          "405": "???"
+        }
+      },
+      "5": {
+        "title": "???",
+        "sub": {
+          "500": "???",
+          "501": "???"
+        }
+      },
+      "6": {
+        "title": "???",
+        "sub": {
+          "601": "???",
+          "600": "???",
+          "602": "???",
+          "603": "???",
+          "604": "???",
+          "605": "???",
+          "606": "???"
+        }
+      },
+      "7": {
+        "title": "???",
+        "sub": {
+          "700": "???",
+          "701": "???",
+          "702": "???",
+          "703": "???",
+          "704": "???",
+          "705": "???",
+          "706": "???",
+          "707": "???",
+          "708": "???",
+          "709": "???",
+          "710": "???",
+          "711": "???",
+          "712": "???"
+        }
+      },
+      "8": {
+        "title": "???",
+        "sub": {
+          "800": "???",
+          "801": "???",
+          "802": "???",
+          "803": "???",
+          "804": "???",
+          "805": "???",
+          "806": "???",
+          "807": "???",
+          "808": "???",
+          "809": "???"
+        }
+      },
+      "9": {
+        "title": "???",
+        "sub": {
+          "900": "???",
+          "901": "???",
+          "902": "???",
+          "903": "???",
+          "904": "???",
+          "905": "???",
+          "906": "???",
+          "907": "???",
+          "908": "???"
+        }
+      },
+      "10": {
+        "title": "???",
+        "sub": {
+          "1007": "???",
+          "1008": "???",
+          "1005": "???",
+          "1004": "???",
+          "1002": "???",
+          "1003": "???",
+          "1006": "???",
+          "1001": "???",
+          "1000": "???"
+        }
+      },
+      "11": {
+        "title": "???",
+        "sub": {
+          "1105": "???",
+          "1104": "???",
+          "1102": "???",
+          "1103": "???",
+          "1101": "???",
+          "1100": "???"
+        }
+      },
+      "12": {
+        "title": "???",
+        "sub": {
+          "1212": "???",
+          "1203": "???",
+          "1217": "???",
+          "1202": "???",
+          "1213": "???",
+          "1206": "???",
+          "1200": "???",
+          "1211": "???",
+          "1210": "???",
+          "1207": "???",
+          "1218": "???",
+          "1201": "???",
+          "1208": "???",
+          "1204": "???",
+          "1215": "???",
+          "1214": "???",
+          "1209": "???",
+          "1205": "???",
+          "1216": "???"
+        }
+      },
+      "13": {
+        "title": "???",
+        "sub": {
+          "1300": "???",
+          "1302": "???",
+          "1303": "???",
+          "1301": "???",
+          "1304": "???"
+        }
+      },
+      "14": {
+        "title": "???",
+        "sub": {
+          "1406": "???",
+          "1405": "???",
+          "1403": "???",
+          "1404": "???",
+          "1401": "???",
+          "1402": "???",
+          "1400": "???"
+        }
+      },
+      "15": {
+        "title": "???",
+        "sub": {
+          "1503": "???",
+          "1500": "???",
+          "1501": "???",
+          "1505": "???",
+          "1502": "???",
+          "1506": "???",
+          "1507": "???",
+          "1504": "???"
+        }
+      },
+      "16": {
+        "title": "???",
+        "sub": {
+          "1600": "???",
+          "1601": "???",
+          "1602": "???",
+          "1603": "???",
+          "1604": "???",
+          "1605": "???",
+          "1606": "???",
+          "1607": "???",
+          "1608": "???"
+        }
+      },
+      "17": {
+        "title": "???",
+        "sub": {
+          "1700": "???",
+          "1701": "???",
+          "1702": "???",
+          "1703": "???",
+          "1704": "???"
+        }
+      },
+      "18": {
+        "title": "???",
+        "sub": {
+          "1800": "???",
+          "1801": "???",
+          "1802": "???",
+          "1803": "???",
+          "1804": "???",
+          "1805": "???",
+          "1806": "???",
+          "1807": "???",
+          "1808": "???",
+          "1809": "???"
+        }
+      },
+      "19": {
+        "title": "???",
+        "sub": {
+          "1900": "???",
+          "1901": "???",
+          "1902": "???",
+          "1903": "???",
+          "1904": "???"
+        }
+      },
+      "20": {
+        "title": "???",
+        "sub": {
+          "2000": "???",
+          "2001": "???",
+          "2002": "???",
+          "2003": "???",
+          "2004": "???",
+          "2005": "???"
+        }
+      },
+      "21": {
+        "title": "تطوير مواقع الويب و تطبيقات الجوَّال والبرامج",
+        "sub": {
+          "2100": "تطوير برامج سطح المكتب",
+          "2101": "تطوير مواقع التجارة الإلكترونية",
+          "2102": "تطوير الألعاب",
+          "2103": "تطوير تطبيقات الجوَّال",
+          "2104": "خدمات تطوير البرامج الأخرى",
+          "2105": "إدارة المنتجات",
+          "2106": "ضمان الجودة والاختبار",
+          "2107": "البرامج النصية والأدوات المساعدة",
+          "2108": "تصميم مواقع الويب وتطبيقات الجوَّال",
+          "2109": "تطوير المواقع",
+          "2110": "خدمات تطوير مواقع الويب و تطبيقات الجوَّال والبرامج الأخرى"
+        }
+      },
+      "22": {
+        "title": "???",
+        "sub": {
+          "2200": "???",
+          "2201": "???",
+          "2202": "???",
+          "2203": "???",
+          "2204": "???",
+          "2205": "???",
+          "2206": "???"
+        }
+      },
+      "23": {
+        "title": "???",
+        "sub": {
+          "2300": "???",
+          "2301": "???",
+          "2302": "???",
+          "2303": "???",
+          "2304": "???"
+        }
+      },
+      "24": {
+        "title": "???",
+        "sub": {
+          "2400": "???",
+          "2401": "???",
+          "2402": "???",
+          "2403": "???",
+          "2404": "???",
+          "2405": "???",
+          "2406": "???",
+          "2407": "???",
+          "2408": "???",
+          "2409": "???"
+        }
+      },
+      "25": {
+        "title": "???",
+        "sub": {
+          "2800": "???",
+          "2801": "???",
+          "2802": "???",
+          "2803": "???",
+          "2804": "???",
+          "2805": "???",
+          "2806": "???",
+          "2807": "???"
+        }
+      },
+      "26": {
+        "title": "???",
+        "sub": {
+          "2600": "???",
+          "2601": "???",
+          "2602": "???",
+          "2603": "???",
+          "2604": "???",
+          "2605": "???",
+          "2606": "???",
+          "2607": "???"
+        }
+      },
+      "27": {
+        "title": "الترجمة",
+        "sub": {
+          "1": "الترجمة العامة",
+          "2": "الترجمة القانونية",
+          "3": "الترجمة الطبية",
+          "4": "الترجمة التقنية",
+          "5": "خدمات الترجمة الأخرى"
+        }
+      },
+      "28": {
+        "title": "العقارات",
+        "sub": {
+          "1": "العقارات السكنية",
+          "2": "بناء المنازل الجديدة وإعادة بيعها",
+          "3": "العقارات التجارية",
+          "4": "العقارات الصناعية",
+          "5": "الأراضي الخالية",
+          "6": "أنواع العقارات الأخرى"
+        }
+      },
+      "29": {
+        "title": "???",
+        "sub": {
+          "2900": "???",
+          "2901": "???",
+          "2902": "???",
+          "2903": "???",
+          "2904": "???",
+          "2905": "???",
+          "2906": "???",
+          "2907": "???",
+          "2908": "???"
+        }
+      },
+      "30": {
+        "title": "???",
+        "sub": {
+          "3000": "???",
+          "3001": "???",
+          "3002": "???",
+          "3003": "???",
+          "3004": "???",
+          "3005": "???",
+          "3006": "???",
+          "3007": "???",
+          "3008": "???",
+          "3009": "???"
+        }
+      },
+      "31": {
+        "title": "???",
+        "sub": {
+          "3100": "???",
+          "3101": "???",
+          "3102": "???",
+          "3103": "???",
+          "3104": "???",
+          "3105": "???",
+          "3106": "???",
+          "3107": "???"
+        }
+      },
+      "32": {
+        "title": "???",
+        "sub": {
+          "3200": "???",
+          "3201": "???",
+          "3202": "???"
+        }
+      },
+      "33": {
+        "title": "???",
+        "sub": {
+          "3300": "???",
+          "3301": "???"
+        }
+      },
+      "34": {
+        "title": "عمل دائم",
+        "sub": {
+          "1": "دوام جزئي",
+          "2": "دوام كلي",
+          "3": "عمل بالخارج"
+        }
+      }
+    }
+  },
+  "toasts": {
+    "questInfo": "???",
+    "questCantDelete": "???",
+    "questCantEdit": "???",
+    "questCantRaisingViews": "???",
+    "questEdited": "???",
+    "questCreated": "???",
+    "questDeleted": "???",
+    "caseDeleted": "???",
+    "caseAdded": "???",
+    "caseEdited": "???",
+    "error": "???"
+  },
+  "modals": {
+    "disputes": {
+      "thereIsNoResponseFromTheEmployerOrEmployee": "???",
+      "badlyDoneWork": "???",
+      "additionalRequirementsHaveBeenPutForward": "???",
+      "inconsistenciesInTheRequirementsForTheDescriptionOfTheQuest": "???",
+      "theQuestIsCompletedButTheEmployeeOrEmployerHasNotConfirmedItsCompletion": "???",
+      "anotherReason": "???"
+    },
+    "chooseTheme": "???",
+    "incorrectAmount": "???",
+    "nothingToClaim": "???",
+    "pleaseWait": "???",
+    "redeemSuccess": "???",
+    "redeemFail": "???",
+    "chatCreate": {
+      "title": "إنشاء دردشة جماعية",
+      "desc": "أنشئ اسمًا للدردشة الجماعية واختر الأشخاص من قائمة الدردشة لديك",
+      "chatName": "اسم الدردشة",
+      "members": "???",
+      "addNewMembers": "???",
+      "addMember": "???"
+    },
+    "yourRewardBalance": "???",
+    "deletePortfolio": "???",
+    "addTitle": "???",
+    "addDesc": "???",
+    "editCase": "???",
+    "error": "???",
+    "share": "???",
+    "edit": "???",
+    "delete": "???",
+    "youCan’tDeleteActiveQuest": "???",
+    "sureDeleteText": "???",
+    "sureDeleteMemberText": "???",
+    "sureLeaveChatText": "???",
+    "priceTitle": "???",
+    "enterPriceRange": "???",
+    "priceForm": "???",
+    "priceFromAmount": "???",
+    "priceFieldFrom": "???",
+    "priceTo": "???",
+    "priceToAmount": "???",
+    "priceFieldTo": "???",
+    "changePercentDesc": "ستتم إضافة نسبة مئوية من مبلغ الطلب تلقائيًا إلى حساب التقاعد الخاص بك",
+    "yourSkillsHaveBeenAdded": "تمت إضافة مهاراتك بنجاح.",
+    "yourAccountVerified": "تم التحقُّق من حسابك بنجاح.",
+    "youCanUpdateThisInYourProfile": "يمكنك تحديث هذا بسهولة في ملفك التعريفي.",
+    "disable2Fa": "إيقاف المصادقة الثنائية",
+    "2FAEnabled": "???",
+    "2FADisabled": "???",
+    "2FAStatus": "???",
+    "yourLevelHasBeenRaised": "لقد تم رفع مستواك",
+    "payment": "الدفع",
+    "cardHolder": "اسم حامل البطاقة",
+    "review": "المراجعة",
+    "haventSMS": "ألم تصلك رسالة نصية قصيرة؟",
+    "SMSVerConnected": "تم ربط التحقُّق بالرسائل النصية القصيرة",
+    "phoneNumber": "رقم التليفون",
+    "phoneNumberField": "???",
+    "enterPhone": "أدخل رقم هاتفك لتأكيد التحقُّق برسالة نصية قصيرة",
+    "enterSMSCode": "لقد أرسلنا رمز التحقُّق إلى رقم هاتفك. أدخل هذا الرمز",
+    "codeFromSMS": "الرمز من الرسالة النصية القصيرة",
+    "codeFromSMSField": "???",
+    "smsVerification": "التحقُّق برسالة نصية قصيرة",
+    "saved": "تم الحفظ",
+    "userDataHasBeenSaved": "تم حفظ بيانات المستخدم",
+    "workExpAddSuccessful": "تمت إضافة الخبرة العملية بنجاح",
+    "educationAddSuccessful": "تمت إضافة التعليم بنجاح",
+    "pressSaveBtn": "يُرجى الضغط على زر الحفظ",
+    "imageLoadedSuccessful": "تم تحميل الصورة بنجاح",
+    "success": "تم بنجاح",
+    "yourRoleHasBeenChanged": "تم تغيير دورك",
+    "chooseSkills": "اختر المهارات الضرورية",
+    "securityCheck": "الفحص الأمني",
+    "googleConfCode": "رمز تأكيد Google",
+    "enterCode": "أدخل الرمز المكوَّن من 6 أرقام من تطبيق مصادقة Google",
+    "warning": "تحذير",
+    "pleaseDescribe": "يُرجى وصف سبب تغيير الدور",
+    "ifYouChangeRole": "إذا غيَّرت الدور الآن، فلن تتمكَّن من تغييره مرة أخرى قبل مرور شهر. هل تريد المتابعة؟",
+    "toYourEmail": "إلى عنوان بريدك الإلكتروني",
+    "codeHasBeenSent": "تم إرسال الرمز",
+    "switchOnGoogleAuth": "تشغيل تطبيق مصادقة Google",
+    "emailVerificationCode": "رمز التحقُّق عبر البريد الإلكتروني",
+    "emailPlaceholder": "يُرجى إدخال رمز التحقُّق من البريد الإلكتروني",
+    "googleVerificationCode": "رمز التحقُّق من Google",
+    "codePlaceholder": "يُرجى إدخال رمز التحقُّق من Google",
+    "appleStore": "متجر App Store",
+    "googlePlay": "متجر Google Play",
+    "useYourGoogleAuth": "استخدم تطبيق مصادقة Google لمسح رمز الاستجابة السريعة ضوئيًا.",
+    "installGoogleAuth": "ثبِّت تطبيق مصادقة Google على جهازك",
+    "ifYouCantScanBarcode": "إذا لم تتمكن من مسح رمز الاستجابة السريعة ضوئيًا، فأدخل المفتاح السري يدويًا.",
+    "pleaseSaveThisKey": "أدخل كلمة مرور المصادقة الثنائية من Google أدناه. يُرجى حفظ مفتاح Google الخاص بك، وسيتم استخدامه لاستعادة تطبيق مصادقة Google.",
+    "step": "الخطوة",
+    "twoFAAuth": "المصادقة الثنائية",
+    "currentPassword": "كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmNewPassword": "تأكيد كلمة المرور الجديدة ",
+    "change": "تغيير",
+    "title": "العنوان",
+    "badService": "خدمة سيئة",
+    "otherReason": "سبب آخر",
+    "reviewOnEmployer": "مراجعة على صاحب العمل",
+    "paintingWork": "عمل طلاء",
+    "art": "الفن",
+    "cooking": "الطهي",
+    "coding": "الترميز",
+    "uploadAImages": "تحميل الصور أو مقاطع الفيديو",
+    "description": "الوصف",
+    "addCase": "إضافة حالة",
+    "openADispute": "فتح نزاع",
+    "reason": "السبب",
+    "lorem": "",
+    "withdraw": "السحب",
+    "sendTo": "إرسال إلى",
+    "estimatedPayment": "الدفعة المقدَّرة:",
+    "hello": "مرحبًا...",
+    "value": "القيمة",
+    "withdrawCard": "السحب على بطاقة مصرفية",
+    "address": "العنوان",
+    "notice": "ملاحظة هامة",
+    "noticeDesc": "من أجل سلامتك، يطلب منك فريق WorkQuest عدم إجراء أي مراسلات أو اتصالات خارج منصة WorkQuest. يمكن أن تؤدي أي اتصالات أو محادثات خارج المنصة إلى الفشل في حل المواقف المثيرة للجدل.",
+    "toAddress": "إلى",
+    "fromAddress": "من",
+    "welcomeToWorkQuest": "مرحبًا بك في WorkQuest",
+    "pleaseTellUsAboutSkills": "يُرجى إخبارنا عن مهاراتك أدناه. سيؤدي ذلك إلى زيادة ترتيبك على المنصة وتسهيل عثور المستخدمين الآخرين على حسابك.",
+    "amount": "المبلغ",
+    "messageSend": "إرسال رسالة",
+    "questAgreed": "تمت الموافقة على الطلب",
+    "requestSend": "تم إرسال الطلب",
+    "sendARequest": "إرسال طلب",
+    "message": "رسالة",
+    "bodyMessage": "مرحبًا",
+    "areYouSure": "هل أنت متأكد؟",
+    "transactionSend": "إرسال معاملة",
+    "transactionFail": "???",
+    "transactionCheck": "???",
+    "cardHasBeenAdded": "تمت إضافة البطاقة",
+    "deposit": "الاستلام",
+    "numberOfCard": "رقم البطاقة",
+    "date": "التاريخ",
+    "cardDate": "تاريخ انتهاء صلاحية البطاقة",
+    "expirationDate": "تاريخ انتهاء الصلاحية (M/Y)",
+    "cvv": "CVV",
+    "cardholderName": "اسم صاحب البطاقة",
+    "addAnotherCard": "إضافة بطاقة أخرى",
+    "addCard": "إضافة بطاقة",
+    "inviteSend": "تم إرسال الدعوة",
+    "questCreated": "تم إنشاء الطلب",
+    "invitation": "الدعوة",
+    "chooseQuest": "اختيار الطلب",
+    "raiseViews": "زيادة المشاهدات",
+    "priceOfAClick": "سعر النقرة",
+    "city": "المدينة",
+    "period": "الفترة",
+    "thanks": "شكرًا",
+    "couple": "بعض الكلمات",
+    "depositPercentFromAQuest": "نسبة الإيداع من الطلب",
+    "depositRetirementModalTitle": "حدِّد نسبة مئوية من مبلغ الطلب للإيداع التلقائي",
+    "depositRetirementModalPrecentPlaceholder": "0% يُرجى تحديد النسبة المئوية",
+    "depositRetirementModalAmountPlaceholder": "0 WUSD يُرجى إدخال المبلغ",
+    "firstDepositAmount": "مبلغ الإيداع الأول*",
+    "firstDepositAmountField": "???",
+    "aboutFirstDeposit": "* مبلغ الإيداع الأول اختياري. إذا كنت لا ترغب في الإيداع، يمكنك ترك هذا الحقل فارغًا",
+    "pensionIsRegisteredTitle": "تهانينا!",
+    "pensionIsRegisteredDesc": "تم إطلاق برنامج رواتب التقاعد بنجاح.",
+    "currentPercent": "النسبة المئوية الحالية",
+    "depositAmount": "مبلغ الإيداع",
+    "lockedSavings": "المدخرات المؤمَّنة",
+    "durationDays": "المدة (بالأيام)",
+    "depositIsOpened": "تم فتح الإيداع",
+    "addLiquidity": "إضافة سيولة",
+    "amountOfWqt": "مبلغ WQT",
+    "amountOfEth": "مبلغ ETH",
+    "amountOfBnb": "مبلغ BNB",
+    "tip": "نصيحة:",
+    "tipAbout": "عند إضافة السيولة، ستتلقى رموز تجمُّع تمثِّل مركزك. تربح هذه الرموز المميزة رسومًا تتناسب مع حصتك في التجمُّع تلقائيًا، ويمكن استردادها في أي وقت.",
+    "byAddingLiquidityYouWillEarn": "بإضافة السيولة، ستربح 0.3% من جميع التداولات على هذا الزوج بما يتناسب مع حصتك في التجمُّع. تتم إضافة الرسوم إلى التجمُّع وتحصيلها في الوقت الفعلي، ويمكن المطالبة بها عن طريق سحب السيولة الخاصة بك.",
+    "amountEthPerWqt": "مبلغ ETH لكل WQT",
+    "amountBnbPerWqt": "مبلغ BNB لكل WQT",
+    "shareOfPool": "الحصة في التجمُّع",
+    "removeLiquidity": "إزالة السيولة",
+    "withdrawalAmount": "مبلغ السحب",
+    "exchangeRate": "سعر الصرف",
+    "tempForRemove": "1 ETH = ... WUSD",
+    "tempForRemove2": "1 BNB = ... WQT",
+    "currentPoolSize": "حجم التجمُّع الحالي",
+    "yourPoolShare": "حصتك في التجمُّع",
+    "eth": "ETH",
+    "wusd": "WUSD",
+    "howMuchEthWouldYouLikeToLock": "ما مقدار ETH الذي تريد تأمينه في حسابك؟",
+    "smallTemp": "",
+    "template": "",
+    "collateralization": "الضمانات",
+    "percentsCount": "{count}%",
+    "liquidationPrice": "سعر التصفية",
+    "currentPrice": "السعر الحالي",
+    "stabilityFee": "رسوم الاستقرار",
+    "liquidationRatio": "نسبة التصفية",
+    "liquidationPenalty": "عقوبة التصفية",
+    "confirmDetails": "تأكيد التفاصيل",
+    "depositing": "الإيداع",
+    "generating": "المبلغ",
+    "liquidationFee": "رسوم التصفية",
+    "withdrawal": "السحب",
+    "saveCardForNextPayment": "الاحتفاظ بالبطاقة للاستخدام التالي",
+    "insureCase": "تأمين الحالة",
+    "connectWallet": "ربط المحفظة",
+    "howMuchWusdWouldYouLikeToGenerate": "ما مقدار WUSD الذي ترغب في توليده؟",
+    "chooseTheCurrency": "اختر العملة",
+    "bnb": "BNB",
+    "wqt": "WQT",
+    "howMuchETHWouldYouLikeToOpen": "ما مقدار ETH الذي ترغب في فتحه في حسابك؟",
+    "howMuchPercentWouldYouLikeToSet": "ما النسبة المئوية التي تريد تحديدها؟",
+    "enterTermToReturnDebtBack ": "أدخل المهلة لإعادة المديونية مرة أخرى",
+    "currency": "عملة الضمان",
+    "loan": "القرض",
+    "percentage": "النسبة المئوية",
+    "loanTerm": "مهلة القرض",
+    "loanIsOpened": "تم فتح القرض",
+    "successCopied": "تم نسخ العنوان العام إلى الحافظة",
+    "walletAddress": "???",
+    "scanQr": "???",
+    "close": "???",
+    "depositTitle": "???",
+    "addYourCard": "???",
+    "walletCopy": "???",
+    "textCopy": "???",
+    "addingCard": "???",
+    "add": "???",
+    "totalFee": "???",
+    "processing": "???",
+    "addNewCard": "???",
+    "numberCard": "???",
+    "chooseCard": "???",
+    "depositInfo": "???",
+    "cardAdd": "???",
+    "cardAddedText": "",
+    "transactionSentText": "",
+    "maximum": "???",
+    "withdrawInfo": "???",
+    "bankCard": "???",
+    "transfer": "???",
+    "recepient": "???",
+    "transferInfo": "???",
+    "currencyDetails": "???",
+    "generatingDetails": "???",
+    "collateralizationRatio": "???",
+    "depositIsOpenedText": "",
+    "loanText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
+    "loanIsOpenedText": "",
+    "firstDepositText": "???",
+    "pensionIsRegistered": "???",
+    "pensionIsRegisteredText": "",
+    "changePercent": "???",
+    "changePercentText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor",
+    "currentPercentTitle": "???",
+    "depositIsDone": "???",
+    "makeDepositText": "",
+    "percentIsChangedText": "",
+    "percentIsChanged": "???",
+    "invitationSendText": "",
+    "choose": "???",
+    "openDisputeText": "",
+    "chooseCurrency": "???",
+    "wallet": "???",
+    "coinpaymebts": "???",
+    "errorDeleteText": "???",
+    "swapTitle": "???",
+    "coin": "???",
+    "recepientBinance": "???",
+    "createSwap": "???",
+    "swapInfo": "???",
+    "crosschain": "???",
+    "crosschainText": "Eth > Binance",
+    "senderAddress": "???",
+    "recepientAddress": "???",
+    "worknetFee": "Eth ???",
+    "binanceFee": "Binance ???",
+    "welcomeText": "???",
+    "areYouSureText": "",
+    "noticeTitle": "???",
+    "noticeText": "???",
+    "areYouSureNotificationText": "",
+    "creditCardNumber": "???",
+    "dateName": "???",
+    "depositPercent": "???",
+    "currentPercentErr": "???",
+    "amountField": "???",
+    "percentField": "???",
+    "quantityField": "???",
+    "creditingDepositText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt sed sed integer volutpat. Faucibus sit ultricies quam egestas nisl, aliquam vitae. Non ultrices tincidunt tristique semper. Proin tincidunt nullam nisi sed massa.",
+    "generateField": "???",
+    "amountOfWqtField": "??? WQT",
+    "amountOfEthField": "??? ETH",
+    "amountOfBnbField": "??? BNB",
+    "withdrawalAmountField": "???",
+    "removeLiquidityCurrentPoolSize": "1 ETH + 456 WQT",
+    "removeLiquidityCurrentPoolSize2": "1 BNB + 456 WQT",
+    "removeLiquidityYourPoolShare": "10% = 1% ETH + 4% WQT",
+    "removeLiquidityYourPoolShare2": "10% = 1% BNB + 4% WQT",
+    "lockedSavingsField": "???",
+    "durationDaysField": "???",
+    "depositAmountField": "???",
+    "claim": "???",
+    "estimatedPaymentField": "120 WUSD",
+    "priceOfAClickField": "???",
+    "cityField": "???",
+    "addLiquidityAmountWqt": "1000 WQT",
+    "addLiquidityAmountEth": "10 ETH",
+    "addLiquidityAmountBnb": "10 BNB",
+    "cardHolderField": "???",
+    "addressField": "???",
+    "securityCheckField": "???",
+    "recepientAddressField": "???",
+    "walletAddressField": "???",
+    "thanksText": "",
+    "emailVerificationCodeField": "???",
+    "youCanAttachUpToNFiles": "???",
+    "youTryToAttachUnsupportedFileFormat": "???"
+  },
+  "ui": {
+    "jobQuestors": "أصحاب الوظائف",
+    "workers": "الموظفون",
+    "wallet": "المحفظة",
+    "myQuests": "طلبات العمل الخاصة بي",
+    "quests": "طلبات العمل",
+    "profile": {
+      "addCase": "إضافة حالة",
+      "myProfile": "ملفي التعريفي",
+      "settings": "الإعدادات",
+      "disputes": "النزاعات",
+      "instruments": "الأدوات",
+      "DeFi": "وظيفة التمويل اللامركزي",
+      "logout": "تسجيل الخروج",
+      "login": "???"
+    },
+    "locals": {
+      "en": "en",
+      "ru": "ru",
+      "bn": "bn",
+      "zh": "zh",
+      "fr": "fr",
+      "hi": "hi",
+      "id": "id",
+      "pt": "pt",
+      "es": "es",
+      "ar": "ar"
+    },
+    "notifications": {
+      "title": "الإشعارات",
+      "invite": "يدعوك لإكمال طلب العمل"
+    },
+    "menu": {
+      "unauthorized": "???",
+      "instruments": "???",
+      "crosschain": {
+        "title": "???",
+        "desc": "???"
+      },
+      "staking": {
+        "title": "???",
+        "desc": "???"
+      },
+      "pension": {
+        "title": "برنامج التقاعد",
+        "desc": "يمكنك تحديد نسبة مئوية من كل طلب عمل مكتمل لتتم إضافتها تلقائيًا إلى حساب التقاعد الخاص بك، أو إيداع مبلغ من اختيارك. يتم استثمار الأموال نيابةً عن الموظف، وتدر أرباح الاستثمارات دخلًا للموظف عند تقاعده."
+      },
+      "referral": {
+        "title": "برنامج الإحالة",
+        "desc": "الإحالة والربح هو مخططنا الذي يتيح لك الحصول على مكافآت عن كل صديق تحيله ويصبح عميلًا ويكمل بعد ذلك طلب عمل. يوفِّر أصدقاؤك المحالون المال أيضًا من خلال الحصول على تسجيل مجاني."
+      },
+      "p2p": {
+        "title": "تأمين P2P",
+        "desc": "التأمين من نظير إلى نظير (P2P) هو منتج يسمح لمجموعة من المؤمَّن عليهم بتجميع رؤوس أموالهم وتنظيم أنفسهم وإدارة تأمينهم بأنفسهم. وتكمن الفكرة الأساسية للتأمين من نظير إلى نظير في أن يجمع مجموعة من الأشخاص المتشابهين في التفكير ولديهم مصالح مشتركة وثائق التأمين الخاصة بهم معًا لإضفاء إحساس بالسيطرة والثقة والشفافية مع تقليل التكاليف في الوقت نفسه. يجمع نموذج التأمين هذا التجميع التقليدي ومشاركة الخسائر مع التكنولوجيا والابتكارات الحالية، مما يوفِّر منتجًا للمستهلكين الذين تتزايد خبرتهم ويحتاجون إلى الشفافية في اقتصاد حسب الطلب."
+      },
+      "savings": {
+        "title": "برنامج المدخرات",
+        "desc": "يتيح لك حساب التوفير بالعملة المشفرة الوصول إلى سوق العملات المشفرة مع السماح لك بربح الفائدة على غرار حساب التوفير المصرفي التقليدي. إذا كنت مهتمًا بالاستثمار في العملة المشفرة على المدى الطويل، يمكن أن يساعدك حساب توفير العملة المشفرة في تحصيل الفائدة مع الحفاظ على أمان عملاتك المعدنية."
+      },
+      "crediting": {
+        "title": "الإقراض",
+        "desc": "على غرار القرض التقليدي، يتم إيداع مبلغ القرض بالعملة المشفرة في الحساب المصرفي للمُقترِض، ثم يدفع المُقترِض دفعات شهرية متساوية إلى المُقرِض. وبمجرد سداد المبلغ بالكامل، يفرج المُقرِض عن الضمان الذي كان بمثابة حماية له."
+      },
+      "mining": {
+        "title": "تعدين السيولة",
+        "desc": "هو إحدى آليات التمويل اللامركزي، حيث يورِّد المشاركون العملات المشفرة إلى تجمُّعات السيولة وتتم مكافأتهم بالرسوم والرموز بناءً على حصتهم من إجمالي السيولة في التجمُّع."
+      },
+      "menu": "القائمة"
+    },
+    "footer": {
+      "rights": "جميع الحقوق محفوظة"
+    },
+    "buttons": {
+      "errors": {
+        "manySpec": "يمكنك إضافة 3 تخصُّصات فقط",
+        "manySkills": "???"
+      }
+    }
+  },
+  "wallet": {
+    "WUSD": "محفظة WUSD",
+    "cryptoWallet": "محفظة العملات المشفرة",
+    "bankCard": "بطاقة مصرفية",
+    "send": "إرسال",
+    "toThisAddress": "إلى هذا العنوان",
+    "wallet": "المحفظة",
+    "balance": "الرصيد",
+    "deposit": "الاستلام",
+    "withdraw": "السحب",
+    "transfer": "الشراء/الإرسال",
+    "addCardProposal": "أضِف بطاقتك الخاصة للسحب بسهولة",
+    "addCard": "إضافة بطاقة",
+    "table": {
+      "trx": "المعاملات",
+      "txHash": "تجزئة المعاملة",
+      "status": "الحالة",
+      "block": "الكتلة",
+      "timestamp": "الطابع الزمني",
+      "transferred": "الرموز المحوَّلة",
+      "value": "الكمية",
+      "trxFee": "رسوم المعاملة"
+    }
+  },
+  "chat": {
+    "openDispute": "نزاع مفتوح",
+    "approveQuest": "الموافقة على طلب العمل",
+    "starredMessages": "???",
+    "starredChats": "???",
+    "allChats": "???",
+    "createGroupChat": "إنشاء دردشة جماعية",
+    "favorite": "مفضَّلة",
+    "messages": "الرسائل",
+    "chat": "الدردشة",
+    "quest": "طلب العمل:",
+    "you": "أنت:",
+    "invitedYou": "دعاك إلى طلب عمل",
+    "writeYouMessage": "كتب لك رسالة",
+    "group": "???",
+    "noChats": "???",
+    "noMessages": "???",
+    "membersNum": "{n} ???",
+    "systemMessages": {
+      "invitedYouToAQuest": "???",
+      "youInvitedToTheQuest": "???",
+      "respondedToTheQuest": "???",
+      "youHaveRespondedToTheQuest": "???",
+      "rejectedTheResponseToTheQuest": "r???",
+      "youRejectTheResponseOnQuest": "???",
+      "rejectedTheInviteToTheQuest": "???",
+      "youRejectedTheInviteToTheQuest": "???",
+      "acceptedTheInviteToTheQuest": "???",
+      "youAcceptedTheInviteToTheQuest": "???",
+      "createdAGroupChat": "???",
+      "youCreatedAGroupChat": "???",
+      "removedFromChat": "???",
+      "youHaveRemovedFromChat": "???",
+      "addedToChat": "???",
+      "youAddedToChat": "???",
+      "userAddedToChat": "???",
+      "userRemovedFromChat": "???",
+      "leftTheChat": "???",
+      "youLeftTheChat": "???"
+    },
+    "leaveChat": "???",
+    "loadMore": "???"
+  },
+  "settings": {
+    "facebook": "facebook",
+    "linkedin": "linkedin",
+    "twitter": "twitter",
+    "instagram": "instagram",
+    "address": "???",
+    "lastName": "???",
+    "firstName": "???",
+    "enterPhoneNumber": "???",
+    "enterCurrentLocation": "???",
+    "placeOfStudying": "مكان الدراسة",
+    "specialization": "التخصُّص",
+    "selectSpec": "???",
+    "skillsInput": "المهارات",
+    "selectSkills": "???",
+    "priority": "الأولوية",
+    "costPerHour": "التكلفة في الساعة",
+    "description": "And you are beautiful",
+    "imgLoaded": "تم تحميل الصورة بنجاح",
+    "workExp": "خبرة العمل",
+    "add": "إضافة",
+    "delete": "حذف",
+    "educations": "التعليم",
+    "vacancy": "الوظيفة الشاغرة",
+    "term": "المهلة",
+    "getVerification": "إكمال عملية التحقُّق",
+    "notVerified": "لم يتم التحقُّق",
+    "verified": "???",
+    "more": "المزيد",
+    "employmentInfo": "معلومات التوظيف",
+    "addSpec": "إضافة تخصُّص",
+    "removeSpec": "إزالة التخصُّص",
+    "education": {
+      "from": "من",
+      "to": "إلى",
+      "educationalInstitution": "مؤسسة تعليمية"
+    },
+    "workExps": {
+      "from": "من",
+      "to": "إلى",
+      "companyName": "اسم الشركة"
+    },
+    "settings": "الإعدادات",
+    "urgentJobOffers": "عروض عمل عاجلة",
+    "shortTermJobOffers": "عروض عمل قصيرة المدى",
+    "fixedDeliveryJobOffers": "عروض ذات موعد تسليم ثابت",
+    "addInfo": "يمكنك إضافة معلومات عنك، وتحميل صورة الملف التعريفي والخضوع لإجراء \"اعرف عميلك\" (KYC) لزيادة تقييمك. يعتمد التقييم على بيانات ملفك التعريفي والمراجعات.",
+    "alsoRating": "كلما ارتفع ترتيبك، كان من الأسهل العثور عليك في عمليات البحث.",
+    "dontShow": "عدم الإظهار مرة أخرى",
+    "profileInfo": "معلومات الملف التعريفي",
+    "nameInput": "أدخل اسمك",
+    "lastNameInput": "أدخل اسمك الأخير",
+    "addressInput": "أدخل عنوانك",
+    "telInput": "أدخل رقم الهاتف",
+    "userDesc": "أضف وصفًا موجزًا عن نفسك",
+    "instagramUsername": "اسم مستخدم Instagram",
+    "twitterUsername": "اسم مستخدم Twitter",
+    "linkedInUsername": "اسم مستخدم LinkedIn",
+    "facebookUsername": "اسم مستخدم Facebook",
+    "save": "حفظ",
+    "skills": "المهارات:",
+    "whoCanSee": "من يمكنه رؤية ملفي التعريفي؟",
+    "allUsers": "جميع المستخدمين المسجَّلين",
+    "allInternet": "مستخدمو الإنترنت في جميع أنحاء العالم",
+    "onlyWhenSubmittedWork": "عند تقديم عروض العمل فقط",
+    "allRegistered": "جميع المستخدمين المسجَّلين",
+    "changePass": "تغيير كلمة المرور",
+    "change": "تغيير",
+    "enableTwoStepAuth": "تمكين المصادقة الثنائية",
+    "enable": "تمكين",
+    "smsVerification": "التحقُّق من الملف التعريفي برسالة نصية قصيرة",
+    "company": "إدخال اسم شركتك",
+    "ceo": "إضافة مركز",
+    "filterAllEmployeeProfiles": "تصفية جميع ملفات تعريف الموظفين",
+    "website": "إدخال الموقع الإلكتروني لشركتك",
+    "changeRole": "تغيير الدور",
+    "2FA": "المصادقة الثنائية",
+    "smsVerification2": "التحقُّق برسالة نصية قصيرة",
+    "instruments": "الأدوات",
+    "pensionProgram": "برنامج رواتب التقاعد",
+    "referralProgram": "برنامج الإحالة",
+    "p2pInsurance": "التأمين من نظير إلى نظير",
+    "savingProduct": "برنامج المدخرات",
+    "crediting": "الائتمان",
+    "liquidityMining": "تعدين السيولة",
+    "distantWork": {
+      "title": "???",
+      "select": "???",
+      "allWorkplaces": "???",
+      "distantWork": "???",
+      "workInOffice": "???",
+      "bothVariant": "???"
+    }
+  },
+  "raising-views": {
+    "raisingViews": "زيادة المشاهدات",
+    "choosePeriod": "اختيار الفترة",
+    "forOneDay": "لمدة يوم واحد",
+    "forOneWeek": "لمدة أسبوع واحد",
+    "forOneMonth": "لمدة شهر واحد",
+    "chooseLevel": "اختيار المستوى"
+  },
+  "disputes": {
+    "disputes": "النزاعات",
+    "dispute": "النزاعات №:",
+    "quest": "طلب العمل:",
+    "employer": "صاحب العمل:",
+    "questSalary": "راتب طلب العمل:",
+    "status": "الحالة:",
+    "decision": "القرار:",
+    "Dispute": "النزاع",
+    "pending": "قيد الانتظار",
+    "chatHistory": "سجل الدردشة",
+    "disputeTime": "وقت فتح النزاع:"
+  },
+  "workers": {
+    "noWorkers": "???...",
+    "searchQuests": "البحث في طلبات العمل",
+    "searchWorkers": "البحث في الموظفين",
+    "topWorkers": "أفضل الموظفين",
+    "price": "السعر",
+    "addedTime": "الوقت المضاف",
+    "quests": "طلبات العمل",
+    "urgent": "تحديد مستوى الاستعجال",
+    "specialized": "متخصص",
+    "typeOfJob": "نوع العمل",
+    "specializations": "التخصصات",
+    "aboutMe": "نبذة عني",
+    "giveAQuest": "منح طلب عمل",
+    "inviteQuestor": "دعوة صاحب الوظيفة",
+    "skills": "المهارات",
+    "completedQuests": "طلبات العمل المكتملة",
+    "openedQuests": "طلبات العمل المفتوحة",
+    "showAll": "عرض الكل",
+    "averageRating": "متوسط التقييم",
+    "from": "من",
+    "based": "في",
+    "reviews": "المراجعات",
+    "noReviewsAdded": "???",
+    "portfolio": "نماذج الأعمال",
+    "noPortfoliosAdded": "???",
+    "showAllCases": "عرض جميع الحالات",
+    "costTitle": "???"
+  },
+  "levels": {
+    "reliableEmp": "موظف موثوق",
+    "checkedByTime": "موظف تم التحقُّق منه",
+    "disabled": "غير نشط",
+    "higher": "موظف رفيع المستوى"
+  },
+  "referral": {
+    "inviteFriendsHead": "دعوة الأصدقاء",
+    "earnCryptoTogether": "ربح العملات المشفرة معًا",
+    "headerSubtitle": "اربح ما يصل إلى 35 دولارًا في WQT في كل مرة يسجِّل فيها أصدقاؤك ويؤدون أول طلب عمل على منصة WorkQuest.",
+    "referralReward": "مكافأة الإحالة",
+    "wqtCount": "{count} WQT",
+    "lastRefReward": "مكافأة آخر إحالة",
+    "plusCount": "+ {count}",
+    "yourRefers": "إحالاتك",
+    "yourReferralLink": "رابط الإحالة الخاص بك",
+    "howToInviteYourFriends": "كيف تدعو أصدقاءك؟",
+    "getLink": "إنشاء رابط",
+    "registerAndGenerate": "سجِّل وأنشئ روابط إحالة بعمولة رجعية.",
+    "inviteFriends": "دعوة الأصدقاء",
+    "inviteYourFriends": "أرسل دعوة إلى أصدقائك للتسجيل من خلال رابط الإحالة واحصل على مكافآت عندما يكملون أول طلب عمل.",
+    "earnCrypto": "ربح العملات المشفرة",
+    "everyTimeYourFriends": "ستحصل على ما يصل إلى 35 دولارًا من عمولة WQT في الوقت الفعلي في كل مرة يكمل فيها أصدقاؤك أول طلب عمل!",
+    "historyOfRewards": "سجل المكافآت",
+    "tableHead": {
+      "name": "الاسم",
+      "userID": "معرِّف المستخدم",
+      "txHash": "تجزئة المعاملة",
+      "time": "الوقت",
+      "amount": "المبلغ",
+      "status": "الحالة"
+    },
+    "table": {
+      "userName": "كريم خالد",
+      "userId": "455dad66544ss",
+      "txHash": "sf998s...ss877d",
+      "time": "1 فبراير 2021",
+      "status": "تم بنجاح"
+    }
+  },
+  "pension": {
+    "pensionSavingsBalance": "رصيد مدخرات راتب التقاعد",
+    "retirementProgram": "برنامج التقاعد",
+    "faq": "الأسئلة الشائعة",
+    "pensionProgram": "برنامج رواتب التقاعد",
+    "applyForAPension": "التقدم بطلب للحصول على راتب تقاعد",
+    "applyForRetirement": "التقدم بطلب للتقاعد",
+    "annualPercent": "النسبة السنوية",
+    "optional": "اختياري",
+    "optionalFirstDeposit": "أول إيداع",
+    "term": "المهلة",
+    "castomizable": "قابل للتخصيص",
+    "configurablePercentage": "نسبة قابلة للضبط",
+    "depositsFromQuest": "الإيداع من طلبات العمل",
+    "howToTakePart": "كيف يتم الاشتراك في برنامج رواتب التقاعد؟",
+    "pensionPlanText": "قد تسمح خطة رواتب التقاعد للموظف بالمساهمة بجزء من دخله الحالي من الأجور في خطة استثمارية للمساعدة في تمويل التقاعد.",
+    "information": "معلومات مفصَّلة",
+    "download": "تنزيل",
+    "pensionBalance": "رصيد مدخرات راتب التقاعد",
+    "makeADeposit": "إجراء إيداع",
+    "currentPercentFromAQuest": "النسبة المئوية الحالية من طلب العمل",
+    "changePercent": "تغيير النسبة المئوية",
+    "everyYear": "سنوي",
+    "year": "سنوي",
+    "timeRemainsUntilTheEndOfThePeriod": "يبقى الوقت حتى نهاية الفترة:",
+    "transactionHistory": "سجل المعاملات",
+    "withdraw": "سحب",
+    "prolong": "تمديد",
+    "prolongText": "???",
+    "templateText": "",
+    "table": {
+      "userName": "كريم خالد",
+      "userId": "455dad66544ss",
+      "txHash": "sf998s...ss877d",
+      "time": "1 فبراير 2021",
+      "status": "تم بنجاح"
+    },
+    "docName": "Some_document.pdf",
+    "mb": "{count} م.ب",
+    "percents": "{count} %",
+    "minutes": "{count} ???",
+    "hours": "{count} ???",
+    "years": "{count} ???",
+    "days": "{count} ???",
+    "WUSDCount": "{count} WUSD",
+    "ETHCount": "{count} ETH",
+    "plusPercents": "+ {count}%",
+    "faq1": {
+      "question": "كيف تتأهل للحصول على راتب تقاعد؟",
+      "answer": "لا تحتاج إلى أن تكون قد عملت لدى صاحب عمل لعدد معيَّن من السنوات لتكون مؤهلًا للحصول على استحقاقات التقاعد. ما عليك سوى تحديد النسبة المئوية لكل طلب عمل تريد جمعه في حسابك. عادةً ما تزداد استحقاقات التقاعد الخاصة بك كلما جمعت الأموال. سيتم ربح النسبة الإضافية تلقائيًا باستخدام الأموال في برنامج الإقراض."
+    },
+    "faq2": {
+      "question": "كيف يتم حساب \"النسبة الإضافية\"؟",
+      "answer": "سيتم تأمين أموال صندوق التقاعد في اتفاقية القرض. تختلف النسبة المئوية للعائد السنوي اعتمادًا على التغييرات في بروتوكول الائتمان. ويمكن تحقيق الربح من 3-6%"
+    },
+    "faq3": {
+      "question": "كيف تعمل خطط رواتب التقاعد؟",
+      "answer": "لا تحتاج إلى أن تكون قد عملت لدى صاحب عمل لعدد معيَّن من السنوات لتكون مؤهلًا للحصول على استحقاقات التقاعد. ما عليك سوى تحديد النسبة المئوية لكل طلب عمل تريد جمعه في حسابك. عادةً ما تزداد استحقاقات التقاعد الخاصة بك كلما جمعت الأموال. سيتم ربح النسبة الإضافية تلقائيًا باستخدام الأموال في برنامج الإقراض."
+    },
+    "faq4": {
+      "question": "كم عدد السنوات التي تحتاجها للعمل حتى يتم ضمك إلى خطة رواتب التقاعد؟",
+      "answer": "وفقًا لقواعد WorkQuest، يمكن لأي شخص فتح خطة مدخرات للقطاع الخاص. وبعد السنوات الثلاثة الأولى، ستتاح لك فرصة الحصول على 100% من الأموال المجموعة.\nيمكنك متابعة جمع الأموال لمدة عام آخر أو سحب الأموال بالكامل إلى محفظتك."
+    },
+    "faq5": {
+      "question": "ما راتب التقاعد الجيد؟",
+      "answer": "ما راتب التقاعد الجيد؟ يوصي بعض المستشارين بأن تدخر 10 أضعاف متوسط ​​راتبك في الحياة العملية عند التقاعد. لذلك، إذا كان متوسط راتبك هو 30 ألف دولار، يجب أن تهدف إلى الوصول إلى وعاء تقاعد يبلغ حوالي 300 ألف دولار. نصيحة مهمة أخرى هي أنه يجب عليك توفير 12.5 في المائة من راتبك الشهري."
+    },
+    "faq6": {
+      "question": "هل يخضع راتب التقاعد الشهري للضريبة؟",
+      "answer": "يتم احتساب دفعة راتب التقاعد الشهرية دائمًا على أنها دخل خاضع للضريبة، وستحتاج إلى التأكد من أن لديك ضرائب كافية مقتطعة من مدفوعات راتب التقاعد لإرضاء دائرة الإيرادات الداخلية"
+    },
+    "faq7": {
+      "question": "هل يمكنني أخذ راتب تقاعدي دفعة واحدة؟",
+      "answer": "بعد 3 سنوات على الأقل في برنامج التقاعد، يمكنك سحب بعض مدخرات التقاعد أو كلها دفعة واحدة."
+    },
+    "faq8": {
+      "question": "هل يمكنني إلغاء راتب تقاعدي والحصول على المال؟",
+      "answer": "إذا سحبت بعد مرور 3 سنوات على الأقل أو في يوم التجديد السنوي، فستسترد جميع الأموال التي دفعتها بالفعل. وإذا ألغيت الاشتراك لاحقًا، فلن تتمكن من استرداد مدفوعاتك حتى نهاية الفترة الممتدة (عام واحد عادةً)."
+    },
+    "faq9": {
+      "question": "هل يمكنني سحب راتب تقاعدي وأنا ما زلت أعمل؟",
+      "answer": "هل يمكنني أخذ راتب تقاعدي مبكرًا والاستمرار في العمل؟ الإجابة القصيرة هي نعم. لا يوجد سن محددة للتقاعد في الوقت الحالي. يمكنك الاستمرار في العمل للمدة التي تريدها، ويمكنك أيضًا الدخول في برنامج رواتب التقاعد."
+    },
+    "faq10": {
+      "question": "ماذا يحدث إذا أفرطت في تمويل راتب تقاعدي؟",
+      "answer": "ليس لدينا قيود على مبلغ المدخرات. سيكون المبلغ المجمَّع بأكمله تحت تصرفك في نهاية فترة البرنامج."
+    }
+  },
+  "saving": {
+    "withdrawModalBody": "ستتم إضافة مبلغ الأموال المؤمَّنة والفائدة المجمَّعة إلى محفظتك",
+    "workQuestSavings": "مدخرات WorkQuest",
+    "lendAndEarn": "الإقراض والربح",
+    "conditions": "الشروط",
+    "maxMinSum": "أدنى/أقصى مبلغ",
+    "depositsAndWithdrawal": "الإيداعات والسحب",
+    "term": "المهلة",
+    "annualizedInterestRate": "معدل الفائدة السنوي",
+    "openADeposit": "فتح إيداع",
+    "faq": "الأسئلة الشائعة",
+    "information": "المعلومات",
+    "historyOfDeposits": "سجل الإيداعات",
+    "depositAmount": "المبلغ المؤمَّن",
+    "card1": "معدل الفائدة السنوي \n 4,51% \n المدة (بالأيام): 7 أيام",
+    "card2": "معدل الفائدة السنوي \n 4,67% \n المدة (بالأيام): 14 يومًا",
+    "card3": "معدل الفائدة السنوي \n 4,82% \n المدة (بالأيام): 30 يومًا",
+    "card4": "معدل الفائدة السنوي \n 5,11% \n المدة (بالأيام): 90 يومًا",
+    "card5": "معدل الفائدة السنوي \n 5,23% \n المدة (بالأيام): 180 يومًا",
+    "templateText": "هل أنت ملتزم بالاحتفاظ بعملتك المشفرة؟\nطريقة سهلة للإقراض والربح من خلال المدخرات المؤمَّنة.",
+    "faq1": "ما المدخرات المؤمَّنة؟ هل أنت ملتزم بالاحتفاظ بعملاتك المشفرة؟",
+    "faq2": "ماذا يحدث لأموالي في اليوم الذي أشترك فيه في أحد برامج المدخرات المؤمَّنة؟",
+    "faq3": "ماذا يحدث لأموالي في تاريخ استحقاق أحد برامج المدخرات المؤمَّنة؟",
+    "faq4": "ماذا يحدث لأموالي في تاريخ استرداد أحد برامج المدخرات المؤمَّنة؟",
+    "faq5": "كيف يتم حساب متوسط العائد السنوي (APR)؟",
+    "faq6": "هل أضمن ربح الفائدة على برامج مدخرات WorkQuest حتى لو انخفضت أسواق العملات الرقمية؟",
+    "ans1": "يمكنك الآن ربح الفائدة في الوقت نفسه! أشرِك عملتك المشفرة في فترات المدخرات المؤمَّنة لتحقيق أرباح أعلى من الفوائد.",
+    "ans2": "في يوم الاشتراك، سيخصم برنامج مدخرات WorkQuest أموال الاشتراك من محفظة WUSD الخاصة بك.\n",
+    "ans3": "في تاريخ استحقاق القيمة، سيوزِّع برنامج مدخرات WorkQuest المدخرات المؤمَّنة على محفظة المدخرات الخاصة بك، وسيبدأ برنامج المدخرات في تحصيل الفائدة.",
+    "ans4": "في تاريخ الاسترداد، سترى كل من الرموز الأولية المخصصة للاشتراك والفائدة المحصَّلة في \"أرصدة\" حساب WorkQuest الخاص بك. ستكون هذه العملية تلقائية.",
+    "ans5": "يستخدم متوسط العائد السنوي (APR) متوسط معدل الفائدة اليومية من آخر 7 أيام، مضروبًا في 365.",
+    "ans6": "أجل. سعر الفائدة على كل منتج مضمون.",
+    "docName": "Some_document.pdf",
+    "mb": "{count} م.ب",
+    "percents": "{count} %",
+    "days": "{count} يوم",
+    "smallPlug": "؟؟",
+    "possiblePlug": "ممكن",
+    "yearPlug": "سنة واحدة",
+    "wusdCount": "{count} WUSD",
+    "plusPercents": "+ {count}%",
+    "table": {
+      "userName": "كريم خالد",
+      "userId": "455dad66544ss",
+      "txHash": "sf998s...ss877d",
+      "time": "1 فبراير 2021",
+      "status": "تم بنجاح"
+    },
+    "depositModalBody": "سيتم تأمين عملتك المشفرة لفترة محددة، وستبدأ في الحصول على الفائدة.",
+    "depositIsOpened": "تم تأكيد التحويل",
+    "deposit": "إيداع",
+    "withdraw": "سحب",
+    "depositIsOpenedText": "",
+    "withdrawText": "???"
+  },
+  "mining": {
+    "loading": "???...",
+    "claimRewards": "???",
+    "liquidityMining": "تعدين السيولة",
+    "swapTokens": {
+      "title": "???",
+      "swap": "???",
+      "oldTokens": "???",
+      "newTokens": "???",
+      "balance": "???"
+    },
+    "approve": "???",
+    "stake": "???",
+    "unstake": "???",
+    "liquidityMiningSub": "???",
+    "templateText": "",
+    "pools": "التجمُّعات",
+    "choose": "اختيار",
+    "information": "المعلومات",
+    "docName": "Some_document.pdf",
+    "agreement": "???.pdf",
+    "kb": "{count} KB",
+    "download": "تنزيل",
+    "tableHead": {
+      "poolAddress": "عنوان التجمُّع",
+      "swaps": "???",
+      "totalValue": "???",
+      "tokenAmount": "???",
+      "account": "???",
+      "time": "???",
+      "assets": "الأصول",
+      "sdsdsdsd": "sdsdsdsd",
+      "volume": "الحجم"
+    },
+    "table": {
+      "poolAddress": "0sjs3892...sd45",
+      "assets": "50% WUSD/50% ETH",
+      "assets2": "50% WQT / 50% BNB",
+      "sdsdsdsd": "sdsdsdsd",
+      "volume": "4.5 مليون دولار"
+    },
+    "mb": "{count} م.ب",
+    "back": "العودة",
+    "wusdEthPool": "تجمُّع WUSD/ETH",
+    "wusdBnbPool": "Pool BNB/WQT",
+    "dollarsCount": "$ {count}",
+    "procCount": "{count} %",
+    "lpCount": "{count} LP",
+    "wqtCount": "{count} WQT",
+    "APY": "???",
+    "addLiquidity": "إضافة سيولة",
+    "removeLiquidity": "إزالة السيولة",
+    "liquidity": "السيولة",
+    "totalLiquidity": "???",
+    "reward": "???",
+    "claimReward": "???",
+    "totalReward": "???",
+    "volume24h": "الحجم (24 ساعة)",
+    "myPoolShare": "حصتي في التجمُّع",
+    "liquidityPoolProviders": "موفِّرو تجمُّع السيولة",
+    "liquidityProvidersEarn": "يربح مقدِّمو السيولة رسومًا بنسبة 0.3% على جميع عمليات التداول بما يتناسب مع حصتهم في التجمُّع. وتتم إضافة الرسوم إلى التجمُّع وتحصيلها في الوقت الفعلي، ويمكن المطالبة بها عن طريق سحب السيولة الخاصة بك.",
+    "transactions": "المعاملات",
+    "connectWallet": "???"
+  },
+  "crediting": {
+    "lending": "بروتوكول إقراض WorkQuest",
+    "crediting": "الائتمان",
+    "templateText": "منصة الإقراض بالتمويل اللامركزي WorkQuest على شبكة Work Net مع أربع أسواق مالية حصرية للأصول المتقلبة",
+    "marketSize": "حجم السوق",
+    "deposit": "إيداع",
+    "percent": "النسبة المئوية",
+    "dollarsCount": "$ {count}",
+    "percentsCount": "{count}%",
+    "wantToTakeALoan": "هل تريد الحصول على قرض؟",
+    "borrow": "استعارة",
+    "information": "المعلومات",
+    "openPositions": "المراكز المفتوحة",
+    "usdCount": "{count} USD",
+    "totalCollateralLocked": "مجموع الضمانات المؤمَّنة",
+    "wusdCount": "{count} WUSD",
+    "totalWusdDebt": "إجمالي مديونية WUSD",
+    "tableHead": {
+      "id": "المعرِّف",
+      "currentRatio": "النسبة الحالية",
+      "deposited": "تم الإيداع",
+      "availableToWithdraw": "المتاح للسحب",
+      "wusd": "WUSD"
+    },
+    "table": {
+      "id": "565464",
+      "currentRatio": "500%",
+      "deposited": "531 ETH",
+      "availableToWithdraw": "531 ETH",
+      "wusd": "532 WUSD",
+      "manage": "إدارة"
+    },
+    "back": "العودة",
+    "tempName": "إقراض #56546",
+    "liquidationPrice": "سعر التصفية",
+    "collateralizationRatio": "نسبة الضمان",
+    "ethLocked": "تم تأمين ETH",
+    "ethCount": "{count} ETH",
+    "ableToWithdraw": "قادر على السحب",
+    "withdraw": "سحب",
+    "outstandingWusdDebt": "مديونية WUSD المعلَّقة",
+    "availableToGenerate": "متاح للتوليد",
+    "payback": "تسديد",
+    "generate": "توليد",
+    "history": "السجل",
+    "credTableHeader": {
+      "activity": "النشاط",
+      "amount": "المبلغ",
+      "time": "الوقت",
+      "sender": "المرسل",
+      "txHash": "تجزئة المعاملة"
+    },
+    "credTable": {
+      "activity": "تم التسديد",
+      "amount": "100 WUSD",
+      "time": "12 يونيو 2021",
+      "sender": "dfgd6...fs65ds",
+      "txHash": "dfgd6...fs65ds"
+    },
+    "faq1": "ما المدخرات المؤمَّنة؟ هل أنت ملتزم بالاحتفاظ بعملاتك المشفرة؟",
+    "faq2": "ماذا يحدث لأموالي في اليوم الذي أشترك فيه في أحد برامج المدخرات المؤمَّنة؟",
+    "ans2": "في يوم الاشتراك، سيخصم برنامج مدخرات WorkQuest أموال الاشتراك من محفظة WUSD الخاصة بك.\n",
+    "faq3": "ماذا يحدث لأموالي في تاريخ استحقاق أحد برامج المدخرات المؤمَّنة؟",
+    "faq4": "ماذا يحدث لأموالي في تاريخ استرداد أحد برامج المدخرات المؤمَّنة؟",
+    "faq5": "كيف يتم حساب متوسط العائد السنوي (APR)؟",
+    "faq": "الأسئلة الشائعة",
+    "lend": "إقراض"
+  },
+  "insuring": {
+    "peerToPeerInsuring": "تأمين P2P",
+    "templateText": "",
+    "card1": {
+      "title": "الحد الأدنى من الحماية",
+      "pointsText": {
+        "point1": "مساهمة سنوية قدرها 1000 WUSD، ويكون مبلغ الدفع في حال وقوع حدث مؤمَّن عليه هي 833.333333 WUSD."
+      }
+    },
+    "card2": {
+      "title": "الحماية القياسية",
+      "pointsText": {
+        "point1": "قسط سنوي قدره 2000 WUSD، ويكون مبلغ الدفع في حال وقوع حدث مؤمَّن عليه هي 1666.6667 WUSD."
+      }
+    },
+    "card3": {
+      "title": "الحد الأقصى من الحماية",
+      "pointsText": {
+        "point1": "مساهمة سنوية قدرها 3000 WUSD، ويكون مبلغ الدفع في حال وقوع حدث مؤمَّن عليه هي 2500 WUSD."
+      }
+    },
+    "pointTemplate": "",
+    "buy": "شراء",
+    "information": "المعلومات",
+    "docName": "Some_document.pdf",
+    "mb": "{count} م.ب",
+    "minimalProtectionPlan": "الحد الأدنى من الحماية",
+    "standardProtectionPlan": "الحماية القياسية",
+    "maximumProtectionPlan": "الحد الأقصى من الحماية",
+    "yourFundBalance": "رصيد صندوق التأمين",
+    "wusdCount": "{count} WUSD",
+    "dollarsCount": "$ {count}",
+    "withdraw": "سحب",
+    "leaveFund": "مغادرة الصندوق",
+    "changePlan": "تغيير الخطة",
+    "fundParticipants": "المشاركون في الصندوق",
+    "userName": "هاني جمال",
+    "userNameCase": "??? :",
+    "voting": "التصويت",
+    "noVoteAtTheMoment": "لا يوجد تصويت في الوقت الراهن",
+    "countPeoplesInChat": "{count} شخص في الدردشة",
+    "writeSomething": "اكتب شيئًا",
+    "activeVoting": "التصويت النشط",
+    "paymentOfInsurance": "{value}: دفعة التأمين",
+    "youWillCertifyTheInsuredEvent": "ستعتمد الحدث المؤمَّن عليه؟",
+    "studyTheInsuredEventThoroughly": "دراسة الحدث المؤمَّن عليه بتعمُّق",
+    "insureCaseText": "",
+    "notAgree": "عدم الموافقة",
+    "insuredEvent": "الحدث المؤمَّن عليه",
+    "agree": "أوافق",
+    "percentsCount": "{count} %",
+    "votesCount": "{count} صوت",
+    "planPoints": {
+      "point1": "الرسوم السنوية: {count} WUSD",
+      "point2": "مبلغ الدفع عند وقوع حدث مؤمَّن عليه: {count} WUSD",
+      "point3": "مدة العقد: {count} سنة",
+      "point4": "عدد المشاركين في الصندوق: {count} شخص"
+    },
+    "faq1": {
+      "question": "ماذا يعني P2P في التأمين؟",
+      "answer": "التأمين من نظير إلى نظير (P2P) هو منتج يسمح لمجموعة من المؤمَّن عليهم بتجميع رؤوس أموالهم وتنظيم أنفسهم وإدارة تأمينهم بأنفسهم."
+    },
+    "faq2": {
+      "question": "كيف يعمل تأمين p2p؟",
+      "answer": "يمكِّن التأمين من نظير إلى نظير، أو تأمين P2P، مجموعات الأفراد من تأمين بعضهم البعض. يقوم أعضاء المجموعة بتجميع أموالهم للتأمين ضد المخاطر التي تؤثر عليهم. إذا تعرض أحد أعضاء المجموعة لخسارة قابلة للتأمين، يتم دفع مطالبتهم مباشرة من تجمُّع الأموال التي يساهم بها كل عضو."
+    },
+    "faq3": {
+      "question": "كيف يمكن تفعيل التأمين من نظير إلى نظير؟",
+      "answer": "اطلب تقييم \"نظير إلى نظير\". في تقييم نظير إلى نظير، سيتحدث صندوق التأمين الخاص بك مع أعضاء الصندوق الآخرين حول سبب الاحتياج إلى الخدمة أو العلاجات الطبية. يمكنك تحميل جميع المستندات الضرورية وآراء الأطباء في الدردشة، والتي ستثبت أحقية حالتك وتنشئ تصويتًا لاتخاذ القرار من قِبل أعضاء المؤسسة. إذا صوَّت غالبية الصندوق لصالحك، فستتلقى العائد على محفظتك."
+    },
+    "faq4": {
+      "question": "ماذا سيحدث للصندوق إذا لم يقع الحدث المؤمَّن عليه خلال عام؟",
+      "answer": "في نهاية العام، سيتلقى جميع المستخدمين إشعارات بالتصويت، حيث سيُطلب منهم التصويت لتمديد الصندوق لعام آخر، والذي سيضاعف تلقائيًا أموالك ومدفوعاتك في حال وقوع حدث مؤمَّن عليه أو يقسِّم التمويل بين المشاركين في الصندوق."
+    },
+    "faq5": {
+      "question": "من هو مدير الصندوق؟",
+      "answer": "للتأكد من ألا يضيع كل مشارك في الصندوق الوقت في التفكير في جميع الأحداث المؤمَّن عليها، سيكون المشارك قادرًا على تفويض حقوق التصويت الخاصة به إلى مدير الصندوق مقابل رسوم رمزية"
+    },
+    "faq6": {
+      "question": "ما الحجم القياسي لصندوق التأمين؟",
+      "answer": "يتم إنشاء الصناديق بواسطة 10 مستخدمين حسب مستوى الحماية المحدَّد"
+    },
+    "faq7": {
+      "question": "كيف يتم احتساب مبلغ السداد من صندوق التأمين؟",
+      "answer": "مثال على حساب الصندوق للسنة الأولى: الحد الأدنى من الحماية - قسط سنوي قدره 1000 دولار أمريكي، ويكون مبلغ الدفع في حال وقوع حدث مؤمَّن عليه هو 833.333333 دولار أمريكي.\n10 أعضاء في الصندوق * 1000 WUSD/12 شهرًا = 833.333333 دولار أمريكي.\nفي حال استمرار الصندوق للعام المقبل، تتم مضاعفة حجم الصندوق ودفع التأمين."
+    },
+    "faq8": {
+      "question": "ما الضمان عند سحب الأموال من قِبل عضو واحد في الصندوق؟",
+      "answer": "سيحتفظ جميع أعضاء الصندوق بالأموال في محفظة متعددة التوقيعات، حيث يتم اتخاذ أي قرارات بأغلبية الأصوات فقط."
+    }
+  },
+  "errors": {
+    "incorrectPass": "عذرًا، حدث خطأ ما. تحقَّق من البيانات وحاول مرة أخرى.",
+    "emptyData": {
+      "emptyQuests": "???",
+      "emptyPortfolios": "???",
+      "emptyReviews": "???",
+      "employer": {
+        "myQuests": {
+          "desc": "لم تنجز أي طلبات العمل بعد",
+          "btnText": "إنشاء طلب عمل!"
+        },
+        "allQuests": {
+          "desc": "لم تنجز أي طلبات العمل بعد",
+          "btnText": "إنشاء طلب عمل!"
+        }
+      },
+      "worker": {
+        "myQuests": {
+          "desc": "لم تنجز أي طلبات العمل بعد",
+          "btnText": "إنشاء طلب عمل!"
+        },
+        "allQuests": {
+          "desc": "لم ترد على أي طلبات العمل بعد",
+          "btnText": "الرد على طلب العمل!"
+        }
+      }
+    }
+  },
+  "sharing": {
+    "title": "المشاركة",
+    "socialText": "المشاركة على وسائل التواصل الاجتماعي",
+    "share": "رابط المشاركة"
+  },
+  "crosschain": {
+    "pageName": "???",
+    "pageAbout": "???",
+    "sourceBlockchain": "???",
+    "targetBlockchain": "???",
+    "blockchain": "???",
+    "yourWQTAddress": "???",
+    "YourBSCAddress": "???",
+    "balance": "???",
+    "createSwap": "???",
+    "mySwaps": "???",
+    "eth": "ETH",
+    "worknet": "Wor???knet",
+    "bsc": "BSC",
+    "tableHead": {
+      "direction": "???",
+      "recipient": "???",
+      "tx": "???",
+      "created": "???"
+    },
+    "recipTemp": "0xnf8o2…9b74thb3",
+    "dateTemp": "05.08.2021, 12:00"
+  },
+  "staking": {
+    "notification": "???",
+    "stakeLimitReached": "???",
+    "notEnoughFunds": "???",
+    "notEnoughClaim": "???",
+    "_inDev": "???",
+    "mainHeader": "???",
+    "tempHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim",
+    "pools": "???",
+    "tableHead": {
+      "poolAddress": "???",
+      "totalStaked": "???",
+      "totalDistributed": "???",
+      "stakeTokenAddress": "???",
+      "rewardTokenAddress": "???"
+    },
+    "open": "???",
+    "back": "???",
+    "unstake": "???",
+    "stakeIsEmpty": "???",
+    "stakeDurationIsNotOver": "???",
+    "claimRewards": "???",
+    "cannotClaimYet": "???",
+    "pool": "Pool",
+    "stakeTokenAddress": "???",
+    "rewardTokenAddress": "???",
+    "totalStaked": "???",
+    "WQTCount": "{n} WQT",
+    "WUSDCount": "{n} WUSD",
+    "ETHCount": "{n} ETH",
+    "BNBCount": "{n} BNB",
+    "hours": "{n} ???",
+    "days": "{n} ???",
+    "min": "{n} ???",
+    "totalDistributed": "???",
+    "staking": "???",
+    "stakingCards": {
+      "distributionTime": "???",
+      "rewardTotal": "???",
+      "takePeriod": "???",
+      "claimPeriod": "???",
+      "duration": "???"
+    },
+    "userInformation": "???",
+    "userInformationCards": {
+      "staked": "???",
+      "stakeBalance": "???",
+      "claimed": "???"
+    },
+    "stakeCards": {
+      "stakeMin": "???",
+      "stakeLimit": "???",
+      "periodUpdate": "???"
+    },
+    "stakeDays": "???",
+    "stake": "???",
+    "autoRenewal": "???",
+    "renewalTokens": "??? {n} ???"
+  },
+  "myQuests": {
+    "statuses": {
+      "all": "جميع طلبات العمل",
+      "fav": "مفضَّلة",
+      "requested": "تم طلبها",
+      "completed": "طلبات العمل المكتملة",
+      "active": "طلبات العمل النشطة",
+      "invited": "طلبات العمل المدعو إليها"
+    }
+  },
+  "footer": {
+    "download": "???",
+    "follow": "???",
+    "company": {
+      "title": "???",
+      "wqWiki": "???",
+      "aboutUs": "A???",
+      "leadership": "???",
+      "contactUs": "???",
+      "support": "???"
+    },
+    "legalInfo": {
+      "title": "???",
+      "risks": "???",
+      "privacyPolicy": "???",
+      "terms": "???",
+      "aml": "???",
+      "cookiePolicy": "???"
+    },
+    "DeFi": {
+      "title": "???",
+      "retirement": "???",
+      "referral": "???",
+      "P2P": "???",
+      "savingsProduct": "???",
+      "lending": "???",
+      "liquidityMining": "???",
+      "wqBridge": "???",
+      "staking": "???",
+      "wqDAO": "???"
+    }
+  },
+  "wiki": {
+    "title": "WorkQuest Wiki",
+    "searchPlaceholder": "???",
+    "search": "???",
+    "navigation": {
+      "header": {
+        "title": "???",
+        "subtitle": "???",
+        "cards": {
+          "employer": {
+            "title": "???"
+          },
+          "employee": {
+            "title": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "employees": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "myQuests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "wallet": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "instruments": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "language": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "chats": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "notifications": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "menu": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "profile": {
+        "title": "???",
+        "cards": {
+          "profile": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "settings": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "disputes": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "logout": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "instruments": {
+        "title": "???",
+        "cards": {
+          "retirement": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "referral": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "P2P": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "savings": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "lending": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "liquidity": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "crosschain": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "staking": {
+            "title": "???",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+          }
+        }
+      },
+      "statuses": {
+        "title": "???",
+        "cards": {
+          "delivery": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "short": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "urgent": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "top": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "reliable": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "verified": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "buttons": {
+        "title": "???",
+        "cards": {
+          "create": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "results": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "workers": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "details": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "map": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "button": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "raise": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "employer": {
+        "title": "???",
+        "cards": {
+          "specialization": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "rating": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "priority": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "distant": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "price": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "time": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "employee": {
+        "title": "???",
+        "cards": {
+          "specialization": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "delivery": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "job": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "distant": {
+            "title": "???",
+            "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+          },
+          "price": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "time": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "user": {
+        "title": "???",
+        "cards": {
+          "reviews": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "quests": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "active": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "invited": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "favorite": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      },
+      "quest": {
+        "title": "???",
+        "cards": {
+          "goldPlus": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "gold": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "silver": {
+            "title": "???",
+            "subtitle": "???"
+          },
+          "bronze": {
+            "title": "???",
+            "subtitle": "???"
+          }
+        }
+      }
+    }
+  },
+  "gallery": {
+    "counter": "{n} ??? {c}"
+  },
+  "uploader": {
+    "uploadFile": "???",
+    "kb": "KB",
+    "mb": "MB",
+    "errors": {
+      "fileSizeLimit": "???: {n}",
+      "filesLimit": "???: {n}"
+    }
+  }
+}

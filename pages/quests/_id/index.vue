@@ -18,21 +18,10 @@
           </span>
         </div>
         <div class="divider" />
-        <div class="quest_materials__container">
-          <h2 class="quest_materials__title">
-            {{ $t('quests.questMaterials') }}
-          </h2>
-          <div class="img__container">
-            <img
-              v-for="n in 4"
-              :key="n"
-              class="img__item"
-              src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
-              alt=""
-              @click="openImage('https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg')"
-            >
-          </div>
+        <div class="quest_materials__title">
+          {{ $t('quests.questMaterials') }}
         </div>
+        <files-preview :medias="questData.medias" />
         <div
           v-if="userRole === 'employer'
             ? [InfoModeEmployer.Active, InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode)
@@ -41,7 +30,7 @@
           class="divider"
         />
         <questIdEmployer
-          :user-avatar="userAvatar"
+          :user-avatar="questData.assignedWorker && questData.assignedWorker.avatar ? questData.assignedWorker.avatar.url : null"
           :assign-worker="questData.assignedWorker"
         />
 
@@ -244,8 +233,8 @@ export default {
     },
     getFilteredResponses() {
       if (this.userRole === 'employer') {
-        this.filteredResponses = this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Responded);
-        this.filteredInvited = this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Invited);
+        this.filteredResponses = this.responsesToQuest ? this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Responded) : [];
+        this.filteredInvited = this.responsesToQuest ? this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Invited) : [];
         return this.filteredResponses && this.filteredInvited;
       }
       return '';
@@ -313,14 +302,6 @@ export default {
       this.ShowModal({
         key: modals.raiseViews,
       });
-    },
-    openImage(src) {
-      if (window.innerWidth >= 761) {
-        this.ShowModal({
-          key: modals.showImage,
-          imageSrc: src,
-        });
-      }
     },
   },
 };
@@ -485,26 +466,6 @@ export default {
     margin: 25.5px 0 0 0;
   }
 }
-.img {
-  transition: 0.5s;
-  &__container{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 20px;
-    margin: 0 0 20px 0;
-  }
-  &__item {
-    @extend .img;
-    border-radius: 6px;
-    max-width: 280px;
-    max-height: 210px;
-    &:hover {
-      @extend .img;
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }
-  }
-}
 .star {
   &__default {
     display: flex;
@@ -603,15 +564,6 @@ export default {
   .main-white {
     display: block;
   }
-  .img {
-    &__container {
-      grid-template-columns: repeat(2, auto);
-      img {
-        max-width: 100%;
-        max-height: 100%;
-      }
-    }
-  }
 }
 @include _767 {
   .user {
@@ -669,11 +621,6 @@ export default {
   .icon {
     &-clock, &-location {
       width: 30px;
-    }
-  }
-  .img {
-    &__container {
-      grid-template-columns: 1fr;
     }
   }
   .quest {

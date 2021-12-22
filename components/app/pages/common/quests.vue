@@ -1,25 +1,17 @@
 <template>
-  <div
-    class="quests"
-  >
-    <div
-      class="quests__card card"
-    >
+  <div class="quests">
+    <div class="quests__card card">
       <div
         v-for="(item, i) in object.quests"
         :key="i"
         class="card__content"
       >
-        <div
-          class="card__block block"
-        >
-          <div
-            class="block__left"
-          >
+        <div class="card__block block">
+          <div class="block__left">
             <img
-              src="~/assets/img/temp/fake-card.svg"
+              :src="getQuestPreview(item).url"
               class="block__image"
-              alt=""
+              :alt="getQuestPreview(item).alt"
             >
             <div
               class="block__state"
@@ -34,9 +26,7 @@
                 class="block__title"
                 @click="showProfile(item.userId)"
               >
-                <div
-                  class="block__avatar avatar"
-                >
+                <div class="block__avatar avatar">
                   <img
                     class="avatar__image"
                     :src="item.user.avatar ? item.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
@@ -78,9 +68,7 @@
               v-if="item.assignedWorkerId"
               class="block__progress progress"
             >
-              <div
-                class="progress__title"
-              >
+              <div class="progress__title">
                 {{ progressQuestText(item.status) }}
               </div>
               <div class="progress__container container">
@@ -109,9 +97,7 @@
               </div>
             </div>
             <div class="block__locate">
-              <span
-                class="icon-location"
-              />
+              <span class="icon-location" />
               <span class="block__text block__text_locate">
                 {{ showDistance(item.location.latitude, item.location.longitude) }}
                 {{ `${$t('distance.m')} ${$t('meta.fromYou')}` }}
@@ -165,9 +151,7 @@
                   class="block__rating"
                 >
                   <div class="block__rating block__rating_star">
-                    <button
-                      @click="showReviewModal(item)"
-                    >
+                    <button @click="showReviewModal(item)">
                       <star-rating :rating="item.user.ratingStatistic" />
                     </button>
                   </div>
@@ -226,6 +210,18 @@ export default {
   methods: {
     goToProfile(id) {
       this.$router.push(`/profile/${id}`);
+    },
+    getQuestPreview(quest) {
+      if (quest.medias.length) {
+        return {
+          url: quest.medias[quest.medias.length - 1].url,
+          alt: 'Quest preview',
+        };
+      }
+      return {
+        url: require('~/assets/img/temp/fake-card.svg'),
+        alt: 'Fake quest preview',
+      };
     },
     async setStar(item) {
       if (!item.star) {

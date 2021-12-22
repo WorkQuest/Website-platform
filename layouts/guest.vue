@@ -206,10 +206,10 @@
                 @click="showLocale()"
               >
                 <span v-if="currentLocale">
-                  {{ currentLocale }}
+                  {{ currentLocale.toUpperCase() }}
                 </span>
                 <span v-else>
-                  {{ $t('ui.locals.en') }}
+                  {{ $t('ui.locals.en').toUpperCase() }}
                 </span>
                 <span class="icon-caret_down" />
                 <transition name="fade">
@@ -227,12 +227,12 @@
                         @click="setLocale(item)"
                       >
                         <img
-                          :src="item.localeSrc"
+                          :src="require(`assets/img/lang/${item.localeSrc}`)"
                           :alt="item.localeText"
                           class="locale__icon"
                         >
                         <div class="locale__text">
-                          {{ item.localeText }}
+                          {{ item.localeText.toUpperCase() }}
                         </div>
                       </div>
                     </div>
@@ -568,226 +568,10 @@
             <nuxt />
           </div>
         </div>
-        <div class="template__footer">
-          <div class="footer">
-            <div class="footer__body">
-              <div class="footer__top">
-                <div class="footer__left">
-                  <div
-                    class="footer__logo"
-                    @click="toMain()"
-                  >
-                    <img
-                      src="/img/app/logo_gray.svg"
-                      alt="Logo"
-                    >
-                    <span>WorkQuest</span>
-                  </div>
-                  <div class="footer__links links footer__links_pc">
-                    <div class="links__block">
-                      <div class="links__title">
-                        {{ $t('footer.download') }}
-                      </div>
-                      <div class="links__big">
-                        <n-link
-                          class="links__store links__store_app-store"
-                          to="#"
-                        />
-                        <n-link
-                          class="links__store links__store_play-market"
-                          to="#"
-                        />
-                      </div>
-                    </div>
-                    <div class="links__block">
-                      <div class="links__title">
-                        {{ $t('footer.follow') }}
-                      </div>
-                      <div class="links__small">
-                        <a
-                          class="links__social links__social_twitter"
-                          href="https://twitter.com/workquest_co"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_youtube"
-                          href="https://www.youtube.com/channel/UCpQTdOMynXejrRTVf4ksKPA"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_reddit"
-                          href="https://www.reddit.com/user/WorkQuest_co"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_facebook"
-                          href="https://m.facebook.com/WorkQuestOfficial/"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_linkedin"
-                          href="https://www.linkedin.com/company/workquestofficial"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_instagram"
-                          href="https://www.instagram.com/workquestofficial/"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_telegram"
-                          href="https://t.me/WorkQuest"
-                          target="_blank"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="footer__right">
-                  <div class="footer__menus">
-                    <div class="footer__items footer__items_main">
-                      <div class="footer__block">
-                        <div class="footer__item">
-                          <div class="footer__text footer__text_black">
-                            {{ $t('footer.company.title') }}
-                          </div>
-                          <div class="footer__items footer__items_links">
-                            <n-link
-                              v-for="(item,key) in companyLinks"
-                              :key="key"
-                              :to="item.path"
-                              class="footer__text footer__text_grey"
-                            >
-                              {{ item.title }}
-                            </n-link>
-                          </div>
-                        </div>
-                        <div class="footer__item">
-                          <div class="footer__text footer__text_black">
-                            {{ $t('footer.legalInfo.title') }}
-                          </div>
-                          <div class="footer__items footer__items_links">
-                            <a
-                              v-for="(item,key) in legalInfoLinks"
-                              :key="key"
-                              target="_blank"
-                              type="link"
-                              :href="item.path"
-                              class="footer__text footer__text_grey"
-                            >
-                              {{ item.title }}
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="footer__block">
-                        <div class="footer__item">
-                          <div class="footer__text footer__text_black">
-                            {{ $t('footer.DeFi.title') }}
-                          </div>
-                          <div class="footer__items footer__items_links">
-                            <n-link
-                              v-for="(item,key) in DeFiLinks[0].firstColumn"
-                              :key="key"
-                              :to="item.path"
-                              class="footer__text footer__text_grey"
-                            >
-                              {{ item.title }}
-                            </n-link>
-                          </div>
-                        </div>
-                        <div class="footer__item">
-                          <div class="footer__text footer__text_black" />
-                          <div class="footer__items footer__items_links">
-                            <n-link
-                              v-for="(item,key) in DeFiLinks[0].secondColumn"
-                              :key="key"
-                              :to="item.path"
-                              class="footer__text footer__text_grey"
-                            >
-                              {{ item.title }}
-                            </n-link>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="footer__links links footer__links_mobile">
-                    <div class="links__block">
-                      <div class="links__title">
-                        {{ $t('footer.download') }}
-                      </div>
-                      <div class="links__big">
-                        <n-link
-                          class="links__store links__store_app-store"
-                          to="#"
-                        />
-                        <n-link
-                          class="links__store links__store_play-market"
-                          to="#"
-                        />
-                      </div>
-                    </div>
-                    <div class="links__block">
-                      <div class="links__title">
-                        {{ $t('footer.follow') }}
-                      </div>
-                      <div class="links__small">
-                        <a
-                          class="links__social links__social_twitter"
-                          href="https://twitter.com/workquest_co"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_youtube"
-                          href="https://www.youtube.com/channel/UCpQTdOMynXejrRTVf4ksKPA"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_reddit"
-                          href="https://www.reddit.com/user/WorkQuest_co"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_facebook"
-                          href="https://m.facebook.com/WorkQuestOfficial/"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_linkedin"
-                          href="https://www.linkedin.com/company/workquestofficial"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_instagram"
-                          href="https://www.instagram.com/workquestofficial/"
-                          target="_blank"
-                        />
-                        <a
-                          class="links__social links__social_telegram"
-                          href="https://t.me/WorkQuest"
-                          target="_blank"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="footer__bottom">
-                <div class="footer__left">
-                  <div class="footer__rights">
-                    <div class="footer__text footer__text_rights">
-                      © WorkQuest {{ new Date().getFullYear() }}
-                    </div>
-                    <div class="footer__text footer__text_rights">
-                      {{ $t('ui.footer.rights') }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Footer
+          class="template__footer"
+          @clickOnLogo="toMain"
+        />
       </div>
     </div>
     <transition name="fade">
@@ -799,11 +583,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
+import moment from 'moment';
+import Footer from '~/components/app/Footer';
 
 export default {
   scrollToTop: true,
   name: 'GuestLayout',
-  components: {},
+  components: { Footer },
   directives: {
     ClickOutside,
   },
@@ -833,44 +619,44 @@ export default {
     locales() {
       return [
         {
-          localeSrc: '/img/app/en.svg',
+          localeSrc: 'en.svg',
           localeText: this.$t('ui.locals.en'),
         },
         {
-          localeSrc: '/img/app/ru.svg',
+          localeSrc: 'ru.svg',
           localeText: this.$t('ui.locals.ru'),
         },
         {
-          localeSrc: '/img/app/ba.svg',
-          localeText: this.$t('ui.locals.ba'),
+          localeSrc: 'bn.svg',
+          localeText: this.$t('ui.locals.bn'),
         },
         {
-          localeSrc: '/img/app/zh.svg',
+          localeSrc: 'zh.svg',
           localeText: this.$t('ui.locals.zh'),
         },
         {
-          localeSrc: '/img/app/fr.svg',
+          localeSrc: 'fr.svg',
           localeText: this.$t('ui.locals.fr'),
         },
         {
-          localeSrc: '/img/app/hi.svg',
+          localeSrc: 'hi.svg',
           localeText: this.$t('ui.locals.hi'),
         },
         {
-          localeSrc: '/img/app/in.svg',
-          localeText: this.$t('ui.locals.in'),
+          localeSrc: 'id.svg',
+          localeText: this.$t('ui.locals.id'),
         },
         {
-          localeSrc: '/img/app/po.svg',
-          localeText: this.$t('ui.locals.po'),
+          localeSrc: 'pt.svg',
+          localeText: this.$t('ui.locals.pt'),
         },
         {
-          localeSrc: '/img/app/sp.svg',
-          localeText: this.$t('ui.locals.sp'),
+          localeSrc: 'es.svg',
+          localeText: this.$t('ui.locals.es'),
         },
         {
-          localeSrc: '/img/app/ae.svg',
-          localeText: this.$t('ui.locals.ae'),
+          localeSrc: 'ar.svg',
+          localeText: this.$t('ui.locals.ar'),
         },
       ];
     },
@@ -1043,100 +829,6 @@ export default {
         },
       ];
     },
-    companyLinks() {
-      return [
-        {
-          title: this.$t('footer.company.wqWiki'),
-          path: '#',
-        },
-        {
-          title: this.$t('footer.company.aboutUs'),
-          path: '#',
-        },
-        {
-          title: this.$t('footer.company.leadership'),
-          path: '#',
-        },
-        {
-          title: this.$t('footer.company.contactUs'),
-          path: '#',
-        },
-        {
-          title: this.$t('footer.company.support'),
-          path: '#',
-        },
-      ];
-    },
-    legalInfoLinks() {
-      return [
-        {
-          title: this.$t('footer.legalInfo.risks'),
-          path: 'https://workquest.co/risk_disclaimer',
-        },
-        {
-          title: this.$t('footer.legalInfo.privacyPolicy'),
-          path: 'https://workquest.co/privacy_policy',
-        },
-        {
-          title: this.$t('footer.legalInfo.terms'),
-          path: 'https://workquest.co/terms_conditions',
-        },
-        {
-          title: this.$t('footer.legalInfo.aml'),
-          path: 'https://workquest.co/aml_ctf_policy',
-        },
-        {
-          title: this.$t('footer.legalInfo.cookiePolicy'),
-          path: '#',
-        },
-      ];
-    },
-    DeFiLinks() {
-      return [
-        {
-          firstColumn: {
-            0: {
-              title: this.$t('footer.DeFi.retirement'),
-              path: '/pension',
-            },
-            1: {
-              title: this.$t('footer.DeFi.referral'),
-              path: '/referral',
-            },
-            2: {
-              title: this.$t('footer.DeFi.P2P'),
-              path: '/insuring',
-            },
-            3: {
-              title: this.$t('footer.DeFi.savingsProduct'),
-              path: '/savings',
-            },
-            4: {
-              title: this.$t('footer.DeFi.lending'),
-              path: '/crediting',
-            },
-          },
-          secondColumn: {
-            0: {
-              title: this.$t('footer.DeFi.liquidityMining'),
-              path: '/mining',
-            },
-            1: {
-              title: this.$t('footer.DeFi.wqBridge'),
-              path: '/crosschain',
-            },
-            2: {
-              title: this.$t('footer.DeFi.staking'),
-              path: '/staking',
-            },
-            3: {
-              title: this.$t('footer.DeFi.wqDAO'),
-              path: '#',
-            },
-          },
-        },
-      ];
-    },
   },
   watch: {
     $route() {
@@ -1148,6 +840,7 @@ export default {
     this.GetLocation();
     await this.loginCheck();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
+    this.currentLocale = this.$i18n.localeProperties.code;
   },
   created() {
     window.addEventListener('resize', this.userWindowChange);
@@ -1169,6 +862,8 @@ export default {
     },
     setLocale(item) {
       this.currentLocale = item.localeText;
+      this.$i18n.setLocale(item.localeText);
+      moment.locale(item.localeText);
     },
     kitcutDescription(text) {
       text = text.trim();
@@ -1898,7 +1593,7 @@ export default {
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
-  overflow: scroll;
+  overflow-y: scroll;
   max-height: 172px;
   min-width: 86px;
   z-index: 10000000;
@@ -1928,202 +1623,6 @@ export default {
     font-size: 16px;
     line-height: 130%;
     color: $black500;
-  }
-}
-.footer {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  &__items {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(170px, auto));
-    grid-gap: 50px;
-    &_links {
-      grid-template-columns: 1fr;
-      grid-gap: 10px;
-    }
-  }
-  &__item {
-    display: grid;
-    grid-template-rows: auto 1fr;
-    grid-gap: 15px;
-  }
-  &__body {
-    max-width: 1180px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  &__top {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  }
-  &__bottom {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    height: 72px;
-    align-items: center;
-  }
-  &__links {
-    display: flex;
-    grid-gap: 35px;
-    flex-direction: column;
-    &_mobile {
-      display: none;
-    }
-  }
-  &__link {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 130%;
-    color: $blue;
-    cursor: pointer;
-    text-decoration: none;
-  }
-  &__logo {
-    display: grid;
-    align-items: center;
-    grid-template-columns: 40px 1fr;
-    grid-gap: 5px;
-    cursor: pointer;
-    span {
-      font-family: 'Inter', sans-serif;
-      font-style: normal;
-      font-weight: bold;
-      font-size: 23px;
-      line-height: 130%;
-      color: $black400;
-    }
-  }
-  &__text {
-    font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    &_grey {
-      font-weight: normal;
-      font-size: 16px;
-      color: $black500;
-    }
-    &_black {
-      height: 24px;
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 130%;
-      color: $black700;
-    }
-    &_rights {
-      font-size: 14px;
-      line-height: 130%;
-      color: $black500;
-    }
-  }
-  &__rights {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    grid-gap: 20px;
-  }
-  &__right {
-    display: flex;
-    align-items: flex-end;
-  }
-  &__left {
-    display: flex;
-    grid-gap: 20px;
-    flex-direction: column;
-  }
-  &__block {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 30px;
-    &_links {
-      display: flex;
-      grid-gap: 25px;
-    }
-  }
-  .links {
-    &__block {
-      display: flex;
-      flex-direction: column;
-      grid-gap: 10px;
-    }
-    &__title {
-      font-style: normal;
-      font-weight: 500;
-      font-size: 16px;
-    }
-    &__big {
-      display: flex;
-      grid-gap: 10px;
-    }
-    &__small {
-      display: flex;
-      justify-content: space-between;
-    }
-    &__store {
-      width: 170px;
-      height: 56px;
-      &_app-store {
-        background-image: url('/img/app/app_store_button.svg');
-      }
-      &_play-market {
-        background-image: url('/img/app/play_market_button.svg');
-      }
-    }
-    &__social {
-      width: 40px;
-      height: 40px;
-      transition: all 0.5s;
-      &_twitter {
-        background-image: url('~assets/img/social/footer_twitter.svg')
-      }
-      &_twitter:hover {
-        background-image: url('~assets/img/social/footer_twitter_active.svg')
-      }
-      &_youtube {
-        background-image: url('~assets/img/social/footer_youtube.svg')
-      }
-      &_youtube:hover {
-        background-image: url('~assets/img/social/footer_youtube_active.svg')
-      }
-      &_reddit {
-        background-image: url('~assets/img/social/footer_reddit.svg')
-      }
-      &_reddit:hover {
-        background-image: url('~assets/img/social/footer_reddit_active.svg')
-      }
-      &_facebook {
-        background-image: url('~assets/img/social/footer_facebook.svg')
-      }
-      &_facebook:hover {
-        background-image: url('~assets/img/social/footer_facebook_active.svg')
-      }
-      &_linkedin {
-        background-image: url('~assets/img/social/footer_linkedin.svg')
-      }
-      &_linkedin:hover {
-        background-image: url('~assets/img/social/footer_linkedin_active.svg')
-      }
-      &_instagram {
-        background-image: url('~assets/img/social/footer_instagram.svg')
-      }
-      &_instagram:hover {
-        background-image: url('~assets/img/social/footer_instagram_active.svg')
-      }
-      &_telegram {
-        background-image: url('~assets/img/social/footer_telegram.svg');
-        border-radius: 4px;
-      }
-      &_telegram:hover {
-        background-image: url('~assets/img/social/footer_telegram_active.svg')
-      }
-    }
   }
 }
 .ctm-menu {
@@ -2161,44 +1660,6 @@ export default {
       display: none !important;
     }
   }
-  .footer {
-    padding: 0 20px;
-    &__menus {
-      width: 100%;
-      margin: 20px 0;
-    }
-    &__top {
-      flex-direction: column;
-    }
-    &__right {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    &__links {
-      &_pc {
-        display: none;
-      }
-      &_mobile {
-        display: flex;
-        width: 80%;
-        flex-direction: row;
-        justify-content: space-between;
-      }
-    }
-    &__items {
-      &_main {
-        grid-template-columns: auto auto;
-        width: 82%;
-        display: flex;
-        justify-content: space-between;
-      }
-    }
-    .links {
-      &__small {
-        grid-gap: 10px;
-      }
-    }
-  }
 }
 @include _991 {
   .template {
@@ -2206,25 +1667,8 @@ export default {
       grid-template-rows: 72px 1fr auto;
     }
   }
-  .footer {
-    &__links {
-      &_mobile {
-        width: auto;
-        flex-direction: column;
-      }
-      width: auto;
-    }
-  }
 }
-@include _767 {
-  .footer {
-    &__items {
-      &_main {
-        width: 100%;
-      }
-    }
-  }
-}
+@include _767 {}
 @include _575 {
   .header {
     &__logo {
@@ -2245,57 +1689,9 @@ export default {
   .notify {
     min-width: 350px;
   }
-  .footer {
-    &__bottom {
-      display: grid;
-    }
-    &__left {
-      grid-column: 1/2;
-    }
-    &__rights {
-      grid-column: 1/2;
-    }
-    &__rights {
-      display: flex;
-    }
-    &__top {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-gap: 30px;
-    }
-    &__items {
-      flex-direction: column;
-      &_links {
-        grid-template-columns: 1fr;
-      }
-    }
-  }
 }
 
-@include _480 {
-  .footer {
-    &__links {
-      &_mobile {
-        width: 100%;
-        flex-direction: column;
-      }
-    }
-    .links {
-      &__block {
-        width: 100%;
-      }
-      &__big {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      &__small {
-        display: flex;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-      }
-    }
-  }
-}
+@include _480 {}
 
 @include _380 {
   .notify {

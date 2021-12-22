@@ -22,6 +22,8 @@ import InvitedWorkerList from '~/components/app/pages/quests_id/invitedWorkerLis
 import RespondedWorkerList from '~/components/app/pages/quests_id/respondedWorkerList';
 import StarRating from '~/components/app/pages/quests_id/starRating';
 import SpecializationsSelector from '~/components/ui/SpecializationsSelector';
+import FilesUploader from '~/components/ui/FilesUploader';
+import FilesPreview from '~/components/ui/FilesPreview';
 
 Vue.component('ctm-modal', CtmModal);
 Vue.component('ctm-modal-box', CtmModalBox);
@@ -45,3 +47,5 @@ Vue.component('invited-worker-list', InvitedWorkerList);
 Vue.component('responded-worker-list', RespondedWorkerList);
 Vue.component('star-rating', StarRating);
 Vue.component('specializations-selector', SpecializationsSelector);
+Vue.component('files-uploader', FilesUploader);
+Vue.component('files-preview', FilesPreview);

@@ -26,11 +26,14 @@
                     :placeholder="$t('modals.hello')"
                   />
                 </div>
-                <dropzone
-                  id="uploader"
-                  ref="el"
-                  :options="optionsModal"
-                  :include-styling="true"
+                <files-uploader
+                  :multiple="true"
+                  :limit="10"
+                  :limit-bytes="10485760"
+                  :limit-bytes-video="10485760"
+                  :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
+                  class="message__uploader"
+                  @change="updateFiles"
                 />
               </div>
               <div class="btn__container">
@@ -64,31 +67,15 @@
 <script>
 /* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
-import Dropzone from 'nuxt-dropzone';
 import modals from '~/store/modals/modals';
 import { InfoModeWorker, QuestStatuses } from '~/utils/enums';
 
 export default {
   name: 'ModalSendARequest',
-  components: {
-    Dropzone,
-  },
   data() {
     return {
       text: '',
-      optionsModal: {
-        url: process.env.BASE_URL,
-        addRemoveLinks: true,
-        dictRemoveFile: '<span class="icon-close_big"></span>',
-        dictCancelUpload: '<span class="icon-close_big"></span>',
-        dictCancelUploadConfirmation: '',
-        maxFiles: '3',
-        dictDefaultMessage:
-          '<div class="uploader__message_container">'
-          + '<div class="uploader__message">Upload a images or videos</div><'
-          + "span class='icon-add_to_queue'></span>"
-          + '</div>',
-      },
+      files: [],
     };
   },
   computed: {
@@ -97,28 +84,35 @@ export default {
     }),
   },
   methods: {
+    updateFiles(files) {
+      this.files = files;
+    },
     hide() {
       this.CloseModal();
     },
     async respondOnQuest() {
+      const medias = await this.uploadFiles(this.files);
       const { questId } = this.options;
       const data = {
         message: this.text,
+        medias,
       };
-      try {
-        if (QuestStatuses.Rejected) {
-          await this.$store.dispatch('quests/respondOnQuest', { data, questId });
+      if (QuestStatuses.Rejected) {
+        const res = await this.$store.dispatch('quests/respondOnQuest', { data, questId });
+        if (res.ok) {
           await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.Rejected);
+          return true;
         }
-      } catch (e) {
-        console.log(e);
       }
+      return false;
     },
     async showRequestSendModal() {
-      await this.respondOnQuest();
-      this.ShowModal({
-        key: modals.requestSend,
-      });
+      const ok = await this.respondOnQuest();
+      if (ok) {
+        this.ShowModal({
+          key: modals.requestSend,
+        });
+      }
     },
   },
 };
@@ -179,6 +173,10 @@ export default {
     &::placeholder {
       color: $black200;
     }
+  }
+
+  &__uploader {
+    margin-top: 20px;
   }
 }
 .btn {

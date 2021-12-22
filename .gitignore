@@ -8,3 +8,5 @@ backup
 package-lock.json
 .DS_Store
 yarn.lock
+.DS_Store
+.vscode

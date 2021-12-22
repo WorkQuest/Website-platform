@@ -48,7 +48,7 @@ export default {
   async questCreate({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/quest/create', payload);
-      return response.result;
+      return response;
     } catch (e) {
       return console.log(e);
     }
@@ -104,7 +104,7 @@ export default {
     try {
       const response = await this.$axios.$put(`/v1/quest/${questId}`, payload);
       commit('setQuestData', response.result);
-      return response.result;
+      return response;
     } catch (e) {
       return console.log(e);
     }
@@ -195,9 +195,8 @@ export default {
   async respondOnQuest({ commit }, { data, questId }) {
     try {
       const response = await this.$axios.$post(`/v1/quest/${questId}/response`, data);
-
       commit('setRespondOnQuest', data);
-      return response.result;
+      return response;
     } catch (e) {
       return console.log(e);
     }
