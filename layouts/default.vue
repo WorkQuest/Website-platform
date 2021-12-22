@@ -144,30 +144,28 @@
                 </span>
                 <span class="icon-caret_down" />
                 <transition name="fade">
-                  <div
+                  <ul
                     v-if="isShowLocale"
                     class="locale"
                   >
-                    <div
+                    <li
                       v-for="(item, i) in locales"
                       :key="i"
-                      class="locale__container"
+                      class="locale__item"
+                      @click="setLocale(item)"
                     >
-                      <div
-                        class="locale__items"
-                        @click="setLocale(item)"
-                      >
+                      <div class="locale__inner">
                         <img
                           :src="require(`assets/img/lang/${item.localeSrc}`)"
                           :alt="item.localeText"
                           class="locale__icon"
                         >
-                        <div class="locale__text">
+                        <span class="locale__text">
                           {{ item.localeText.toUpperCase() }}
-                        </div>
+                        </span>
                       </div>
-                    </div>
-                  </div>
+                    </li>
+                  </ul>
                 </transition>
               </button>
               <button
@@ -1547,17 +1545,13 @@ export default {
 }
 .locale {
   position: absolute;
-  top: calc(72px + 5px);
+  top: 77px;
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
-  overflow-y: scroll;
-  max-height: 172px;
-  min-width: 86px;
   z-index: 10000000;
   padding: 15px 20px;
   &__container {
-
     width: 46px;
   }
   &__container:not(:last-child) {
