@@ -39,14 +39,14 @@
             </template>
           </div>
           <ChatMenu
-            v-show="currChat ? currChat.type !== 'group' || (currChat.type === 'group' && currChat.owner.id !== userData.id) : false"
+            v-show="!isClosedQuestChat && currChat ? currChat.type !== 'group' || (currChat.type === 'group' && currChat.owner.id !== userData.id) : false"
             :can-i-leave="currChat ? currChat.type === 'group' && currChat.owner.id !== userData.id : false"
           />
         </div>
         <div
           ref="HandleScrollContainer"
           class="chat-container__scroll-cont"
-          :class="[{'chat-container__scroll-cont_small' : files.length}, {'chat-container__scroll-cont_big' : chatId === 'starred'}]"
+          :class="[{'chat-container__scroll-cont_small' : files.length}, {'chat-container__scroll-cont_big' : chatId === 'starred' || isClosedQuestChat}]"
           @scroll="handleScroll"
         >
           <div
@@ -211,7 +211,7 @@
             >
           </div>
           <div
-            v-show="chatId !== 'starred'"
+            v-show="chatId !== 'starred' && !isClosedQuestChat"
             class="footer__controls"
           >
             <div class="chat-container__file-cont">
@@ -306,6 +306,7 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
+import { questChatStatus } from '~/utils/enums';
 
 export default {
   name: 'Messages',
@@ -325,6 +326,7 @@ export default {
       chatId: this.$route.params.id,
       selStarredMessageNumber: 0,
       isReadingInProgress: false,
+      isClosedQuestChat: false,
     };
   },
   computed: {
@@ -362,6 +364,9 @@ export default {
     }
 
     await this.getMessages(direction, bottomOffset);
+
+    if (this.currChat?.questChat?.status === questChatStatus.Closed) this.isClosedQuestChat = true;
+
     await this.readMessages();
 
     this.scrollToBottom(true);
@@ -485,12 +490,12 @@ export default {
     },
     async readMessages() {
       const {
-        messages: { list }, chatId, isReadingInProgress, userData,
+        messages: { list }, chatId, isReadingInProgress, userData, currChat,
       } = this;
 
-      if (isReadingInProgress || !list.length) return;
+      if (isReadingInProgress || !list.length || !currChat) return;
 
-      const { senderStatus, senderUserId, id } = list[list.length - 1];
+      const { senderStatus, senderUserId, id } = currChat.lastMessage;
 
       if (senderStatus === 'read' || senderUserId === userData.id) return;
 

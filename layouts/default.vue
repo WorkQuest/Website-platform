@@ -174,7 +174,14 @@
                 class="header__button"
                 @click="goToMessages()"
               >
-                <span class="icon-message" />
+                <img
+                  v-if="hasUnreadMessage"
+                  src="~assets/img/ui/message_unread.svg"
+                >
+                <span
+                  v-else
+                  class="icon-message"
+                />
               </button>
               <button class="header__button header__button_notify">
                 <span
@@ -728,6 +735,11 @@ export default {
   },
   data() {
     return {
+      chatFilter: {
+        limit: 15,
+        offset: 0,
+        starred: false,
+      },
       localUserData: {},
       isInstrumentDropdownOpened: false,
       isUserDDOpened: false,
@@ -752,6 +764,7 @@ export default {
       chatId: 'chat/getCurrChatId',
       messagesFilter: 'chat/getMessagesFilter',
       isChatOpened: 'chat/isChatOpened',
+      hasUnreadMessage: 'chat/hasUnreadMessage',
     }),
     headerLinksWorker() {
       return [
@@ -1108,6 +1121,7 @@ export default {
   },
   async mounted() {
     await this.initWSListeners();
+    await this.getChats();
     this.loginCheck();
     this.GetLocation();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
@@ -1120,6 +1134,13 @@ export default {
     window.removeEventListener('resize', this.userWindowChange);
   },
   methods: {
+    async getChats() {
+      try {
+        await this.$store.dispatch('chat/getChatsList', this.chatFilter);
+      } catch (e) {
+        console.log(e);
+      }
+    },
     loginCheck() {
       localStorage.setItem('userLogin', true);
     },
@@ -1128,12 +1149,9 @@ export default {
       if (!chatConnection) {
         await this.$wsChat.connect(this.token);
         this.$wsChat.subscribe('/notifications/chat', async ({ data, action }) => {
-          if (this.$route.name === 'messages') {
-            await this.$store.dispatch('chat/getChatsList', {
-              limit: 30,
-              offset: 0,
-            });
-          } else if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
+          await this.getChats();
+
+          if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
             if (action !== 'messageReadByRecipient') this.$store.commit('chat/addMessageToList', data);
 
             if (data.type === 'info') {
