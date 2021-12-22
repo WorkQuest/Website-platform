@@ -152,6 +152,7 @@
                 >
                   <div class="block__rating block__rating_star">
                     <star-rating
+                      :rating-type="'questPage'"
                       @input="showReviewModal($event, item)"
                     />
                   </div>
@@ -280,11 +281,11 @@ export default {
     showDetails(questId) {
       this.$router.push(`/quests/${questId}`);
     },
-    showReviewModal(review, item) {
+    showReviewModal(rating, item) {
       this.ShowModal({
         key: modals.review,
         item,
-        review,
+        rating,
       });
     },
     isHideStar(type) {

@@ -3,58 +3,63 @@
     class="rating-area"
   >
     <input
-      id="star-5"
+      :id="`${ratingType}-star-5`"
       type="radio"
       name="rating"
-      :checked="5 === value"
-      @click="$emit('input', 5)"
+      :value="5"
+      :checked="rating==='5'"
+      @click="$emit('input', $event.target.value)"
     >
     <label
-      for="star-5"
+      :for="`${ratingType}-star-5`"
       title="Оценка «5»"
     />
     <input
-      id="star-4"
+      :id="`${ratingType}-star-4`"
       type="radio"
       name="rating"
-      :checked="4 === value"
-      @click="$emit('input', 4)"
+      :value="4"
+      :checked="rating==='4'"
+      @click="$emit('input', $event.target.value)"
     >
     <label
-      for="star-4"
+      :for="`${ratingType}-star-4`"
       title="Оценка «4»"
     />
     <input
-      id="star-3"
+      :id="`${ratingType}-star-3`"
       type="radio"
       name="rating"
-      :checked="3 === value"
-      @click="$emit('input', 3)"
+      :value="3"
+      :checked="rating==='3'"
+      @click="$emit('input', $event.target.value)"
     >
     <label
-      for="star-3"
+      :for="`${ratingType}-star-3`"
       title="Оценка «3»"
     />
     <input
-      id="star-2"
+      :id="`${ratingType}-star-2`"
       type="radio"
       name="rating"
-      :checked="2 === value"
-      @click="$emit('input', 2)"
+      :value="2"
+      :checked="rating==='2'"
+      @click="$emit('input', $event.target.value)"
     >
     <label
-      for="star-2"
+      :for="`${ratingType}-star-2`"
       title="Оценка «2»"
     />
     <input
-      id="star-1"
+      :id="`${ratingType}-star-1`"
       type="radio"
       name="rating"
-      :checked="1 === value"
-      @click="$emit('input', 1)"
+      :value="1"
+      :checked="rating==='1'"
+      @click="$emit('input', $event.target.value)"
     >
     <label
-      for="star-1"
+      :for="`${ratingType}-star-1`"
       title="Оценка «1»"
     />
   </div>
@@ -64,17 +69,12 @@ export default {
   name: 'StarRating',
   props: {
     rating: {
-      type: Object,
-      default: () => {},
+      type: String,
+      default: '',
     },
-    value: {
-      type: Number,
-      default: 0,
-    },
-  },
-  methods: {
-    setRating(n) {
-      localStorage.setItem('questRating', n);
+    ratingType: {
+      type: String,
+      default: '',
     },
   },
 };

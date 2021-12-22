@@ -5,10 +5,10 @@
   >
     <div class="review__body body">
       <div class="body__rating">
-        <b-form-rating
-          :value="rating"
-          :inline="true"
-          @change="changeReview"
+        <star-rating
+          :rating-type="'modal'"
+          :rating="rating"
+          @input="changeReview($event)"
         />
       </div>
       <div class="body__content content">
@@ -61,7 +61,7 @@ export default {
   data() {
     return {
       textArea: '',
-      rating: 0,
+      rating: '',
     };
   },
   computed: {
@@ -77,7 +77,7 @@ export default {
       this.rating = value;
     },
     getQuestRating() {
-      this.rating = this.options.review;
+      this.rating = this.options.rating;
     },
     removeLocalStorageRating() {
       localStorage.removeItem('questRating');
