@@ -8,6 +8,7 @@
         <star-rating
           :rating-type="'modal'"
           :rating="rating"
+          :stars-number="5"
           @input="changeReview($event)"
         />
       </div>
@@ -61,7 +62,7 @@ export default {
   data() {
     return {
       textArea: '',
-      rating: '',
+      rating: 0,
     };
   },
   computed: {

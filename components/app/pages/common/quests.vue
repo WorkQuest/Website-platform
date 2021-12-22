@@ -27,19 +27,19 @@
                 @click="showProfile(item.userId)"
               >
                 <div class="block__avatar avatar">
-                  <img
+                  <!--                   <img
                     class="avatar__image"
                     :src="item.user.avatar ? item.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                     :alt="item.user.firstName"
                     @click="goToProfile(item.user.id)"
-                  >
+                  > -->
                 </div>
-                <div
+                <!--                 <div
                   class="block__text block__text_title"
                   @click="goToProfile(item.user.id)"
                 >
                   {{ `${item.user.firstName} ${item.user.lastName}` }}
-                </div>
+                </div> -->
               </div>
               <quest-dd
                 v-if="item.status === questStatuses.Created"
@@ -153,6 +153,8 @@
                   <div class="block__rating block__rating_star">
                     <star-rating
                       :rating-type="'questPage'"
+                      :stars-number="5"
+                      :rating="0"
                       @input="showReviewModal($event, item)"
                     />
                   </div>
@@ -282,6 +284,7 @@ export default {
       this.$router.push(`/quests/${questId}`);
     },
     showReviewModal(rating, item) {
+      console.log(rating);
       this.ShowModal({
         key: modals.review,
         item,

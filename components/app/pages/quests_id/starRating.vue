@@ -1,80 +1,42 @@
 <template>
-  <div
+  <ul
     class="rating-area"
   >
-    <input
-      :id="`${ratingType}-star-5`"
-      type="radio"
-      name="rating"
-      :value="5"
-      :checked="rating==='5'"
-      @click="$emit('input', $event.target.value)"
+    <li
+      v-for="(star,index) in starsNumber"
+      :key="index"
+      class="rating-area__star"
     >
-    <label
-      :for="`${ratingType}-star-5`"
-      title="Оценка «5»"
-    />
-    <input
-      :id="`${ratingType}-star-4`"
-      type="radio"
-      name="rating"
-      :value="4"
-      :checked="rating==='4'"
-      @click="$emit('input', $event.target.value)"
-    >
-    <label
-      :for="`${ratingType}-star-4`"
-      title="Оценка «4»"
-    />
-    <input
-      :id="`${ratingType}-star-3`"
-      type="radio"
-      name="rating"
-      :value="3"
-      :checked="rating==='3'"
-      @click="$emit('input', $event.target.value)"
-    >
-    <label
-      :for="`${ratingType}-star-3`"
-      title="Оценка «3»"
-    />
-    <input
-      :id="`${ratingType}-star-2`"
-      type="radio"
-      name="rating"
-      :value="2"
-      :checked="rating==='2'"
-      @click="$emit('input', $event.target.value)"
-    >
-    <label
-      :for="`${ratingType}-star-2`"
-      title="Оценка «2»"
-    />
-    <input
-      :id="`${ratingType}-star-1`"
-      type="radio"
-      name="rating"
-      :value="1"
-      :checked="rating==='1'"
-      @click="$emit('input', $event.target.value)"
-    >
-    <label
-      :for="`${ratingType}-star-1`"
-      title="Оценка «1»"
-    />
-  </div>
+      <input
+        :id="`${ratingType}-star-${starsNumber-index}`"
+        type="radio"
+        name="rating"
+        :checked="(starsNumber-index)===rating"
+        @click="$emit('input', starsNumber-index)"
+      >
+      <label
+        :for="`${ratingType}-star-${starsNumber-index}`"
+        :title="`Оценка «${starsNumber-index}»`"
+        :class="(starsNumber-index)<=rating ? 'golden' : ''"
+      />
+    </li>
+  </ul>
 </template>
 <script>
 export default {
   name: 'StarRating',
   props: {
     rating: {
-      type: String,
-      default: '',
+      type: Number,
+      default: 0,
     },
     ratingType: {
       type: String,
       default: '',
+    },
+    starsNumber: {
+      type: Number,
+      default: 0,
     },
   },
 };
@@ -86,8 +48,30 @@ export default {
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-end;
+  &__star > input{
+    display: none;
+  }
+  &__star > label {
+    float: right;
+    padding: 0;
+    cursor: pointer;
+    font-size: 25px;
+    line-height: 25px;
+    color: lightgrey;
+    text-shadow: 1px 1px #bbb;
+  }
+  &__star:not(:checked) > label:before {
+    content: '★';
+  }
+  &__star:not(:checked) > label:hover,
+  &__star:not(:checked) > label:hover ~ label {
+    color: gold;
+  }
 }
-.rating-area:not(:checked) > input {
+.golden {
+  color: gold !important;
+}
+/* .rating-area:not(:checked) > input {
   display: none;
 }
 .rating-area:not(:checked) > label {
@@ -119,5 +103,5 @@ export default {
 }
 .rate-area > label:active {
   position: relative;
-}
+} */
 </style>
