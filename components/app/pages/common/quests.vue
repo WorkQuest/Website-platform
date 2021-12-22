@@ -117,9 +117,9 @@
               <div
                 v-if="isHideStatus(item.type)"
                 class="block__status"
-                :class="{'block__status_col': item.priority === 0}"
               >
                 <div
+                  v-if="item.priority !== 0"
                   class="block__priority"
                   :class="getPriorityClass(item.priority)"
                 >
@@ -213,10 +213,15 @@ export default {
     },
     getQuestPreview(quest) {
       if (quest.medias.length) {
-        return {
-          url: quest.medias[quest.medias.length - 1].url,
-          alt: 'Quest preview',
-        };
+        for (let i = 0; i < quest.medias.length; i += 1) {
+          const media = quest.medias[i];
+          if (media.contentType.split('/')[0] === 'image') {
+            return {
+              url: media.url,
+              alt: 'Quest preview',
+            };
+          }
+        }
       }
       return {
         url: require('~/assets/img/temp/fake-card.svg'),
@@ -543,6 +548,7 @@ export default {
   &__left {
     @extend .styles__full;
     position: relative;
+    display: flex;
   }
   &__state {
     position: absolute;
@@ -593,9 +599,6 @@ export default {
     display: grid;
     grid-template-columns: auto 1fr;
     grid-gap: 15px;
-    &_col {
-      grid-template-columns: 1fr;
-    }
   }
   &__amount {
     font-style: normal;
@@ -731,8 +734,8 @@ export default {
   &__image {
     border-radius: 6px 0 0 6px;
     object-fit: cover;
-    max-height: 500px;
-    height: 100%;
+    width: 100%;
+    max-height: 336px;
   }
 }
 .star {
