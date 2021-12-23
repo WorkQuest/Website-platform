@@ -21,7 +21,10 @@
         <div class="quest_materials__title">
           {{ $t('quests.questMaterials') }}
         </div>
-        <files-preview :medias="questData.medias" />
+        <files-preview
+          v-if="questData.medias && questData.medias.length"
+          :medias="questData.medias"
+        />
         <div
           v-if="userRole === 'employer'
             ? [InfoModeEmployer.Active, InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode)
@@ -33,49 +36,44 @@
           :user-avatar="questData.assignedWorker && questData.assignedWorker.avatar ? questData.assignedWorker.avatar.url : null"
           :assign-worker="questData.assignedWorker"
         />
-
         <questIdWorker />
       </div>
     </div>
     <div class="main">
-      <div class="main__body">
-        <div v-if="userRole === 'employer' && infoDataMode === InfoModeEmployer.Created">
+      <div class="main__body main__body_grid">
+        <div class="main__map">
+          <transition name="fade-fast">
+            <GmapMap
+              ref="gMap"
+              class="quests__map"
+              language="en"
+              :center="questLocation"
+              :zoom="zoom"
+              :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
+            >
+              <GMapMarker
+                v-for="(item, key) in locations"
+                :key="key"
+                :position="questLocation"
+                :options="{ icon: pins.quest.blue, show: true}"
+                @click="coordinatesChange(item)"
+              >
+                <GMapInfoWindow
+                  :options="{maxWidth: 280}"
+                >
+                  <div>
+                    <h3>{{ questData.title }}</h3>
+                    <span>{{ questData.description }}</span>
+                  </div>
+                </GMapInfoWindow>
+              </GMapMarker>
+            </GmapMap>
+          </transition>
+        </div>
+        <template v-if="userRole === 'employer' && infoDataMode === InfoModeEmployer.Created">
           <workers-list is-invited />
           <workers-list />
-        </div>
-        <div
-          class="map__container gmap"
-        >
-          <div class="gmap__block">
-            <transition name="fade-fast">
-              <GmapMap
-                ref="gMap"
-                class="quests__map"
-                language="en"
-                :center="questLocation"
-                :zoom="zoom"
-                :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
-              >
-                <GMapMarker
-                  v-for="(item, key) in locations"
-                  :key="key"
-                  :position="questLocation"
-                  :options="{ icon: pins.quest.blue, show: true}"
-                  @click="coordinatesChange(item)"
-                >
-                  <GMapInfoWindow
-                    :options="{maxWidth: 280}"
-                  >
-                    <div>
-                      <h3>{{ questData.title }}</h3>
-                      <span>{{ questData.description }}</span>
-                    </div>
-                  </GMapInfoWindow>
-                </GMapMarker>
-              </GmapMap>
-            </transition>
-          </div>
-        </div>
+        </template>
         <div class="spec__container">
           <div class="quest__group">
             <h2 class="quest__spec">
@@ -288,6 +286,15 @@ export default {
 };
 </script>
 
+<style lang="scss">
+.GMap__Wrapper {
+  height: 205px;
+}
+.gm-svpc {
+  top: 27px !important;
+}
+</style>
+
 <style lang="scss" scoped>
 .divider {
   margin: 20px 0 20px 0;
@@ -296,9 +303,6 @@ export default {
   height: 1px;
 }
 .quest {
-  &__map {
-    height: 205px;
-  }
   &__container {
     display: flex;
     flex-direction: column;
@@ -379,6 +383,14 @@ export default {
   &-white {
     @include main-white;
   }
+
+  &__body {
+
+    &_grid {
+      display: grid;
+      gap: 30px;
+    }
+  }
 }
 
 .spec {
@@ -388,9 +400,6 @@ export default {
   &__link{
     @extend .spec;
     color: $blue;
-  }
-  &__container{
-    margin: 40px 0;
   }
 }
 
@@ -410,9 +419,7 @@ export default {
     padding: 0;
     display: flex;
     justify-content: center;
-    height: 205px;
     .gmap__block {
-      height: 205px;
       max-width: 1180px;
       width: 100%;
     }
@@ -470,9 +477,7 @@ export default {
 }
 
 .quests::v-deep {
-  .GMap__Wrapper {
-    height: 205px;
-  }
+
   .ctm-field__left {
     padding-top: 6px;
   }

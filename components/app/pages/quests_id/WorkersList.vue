@@ -1,9 +1,7 @@
 <template>
-  <div class="worker worker__card">
-    <div class="worker__cols-two">
-      <div class="worker__title">
-        {{ $t(`${isInvited ? 'quests.invited' : 'response.title'}`) }}
-      </div>
+  <div class="worker__card">
+    <div class="worker__title">
+      {{ $t(`${isInvited ? 'quests.invited' : 'response.title'}`) }}
     </div>
     <div
       v-if="getCurrUsersArr.length"
@@ -12,64 +10,58 @@
       <div
         v-for="response in getCurrUsersArr"
         :key="response.worker.id"
-        class="invited__response"
+        class="worker__container"
       >
-        <div
-          v-if="response.worker.firstName && response.worker.lastName"
-          class="worker__container"
-        >
-          <div class="worker worker__col_two">
-            <div class="worker row">
-              <img
-                class="worker__avatar"
-                :src="response.worker.avatar ? response.worker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                alt=""
-              >
-              <div class="worker__name">
-                {{ `${response.worker.firstName} ${response.worker.lastName}` }}
-              </div>
-            </div>
-            <base-dd
-              class="worker__menu"
-              :placeholder="30"
-              :items="ddUserActions"
-              :input="handleUserAction($event, response)"
-            />
-          </div>
-          <div>
-            <div class="worker__message">
-              {{ response.message }}
-            </div>
-            <div v-if="response.medias">
-              <files-preview
-                :medias="response.medias"
-                small
-              />
-            </div>
-          </div>
-          <div>
-            <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
-            <!--                    <div-->
-            <!--                      v-if="item.badge.code !== 0"-->
-            <!--                      class="card__level_higher"-->
-            <!--                      :class="[-->
-            <!--                        {'card__level_higher': item.badge.code === 1},-->
-            <!--                        {'card__level_reliable': item.badge.code === 2},-->
-            <!--                        {'card__level_checked': item.badge.code === 3}-->
-            <!--                      ]"-->
-            <!--                    >-->
-            <!--                      <span v-if="item.badge.code === 1">-->
-            <!--                        {{ $t('levels.higher') }}-->
-            <!--                      </span>-->
-            <!--                      <span v-if="item.badge.code === 2">-->
-            <!--                        {{ $t('levels.reliableEmp') }}-->
-            <!--                      </span>-->
-            <!--                      <span v-if="item.badge.code === 3">-->
-            <!--                        {{ $t('levels.checkedByTime') }}-->
-            <!--                      </span>-->
-            <!--                    </div>-->
+        <div class="worker user-data">
+          <img
+            class="worker__avatar"
+            :src="response.worker.avatar ? response.worker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+            alt=""
+          >
+          <div class="worker__name">
+            {{ `${response.worker.firstName} ${response.worker.lastName}` }}
           </div>
         </div>
+        <base-dd
+          class="worker__menu"
+          :placeholder="30"
+          :items="ddUserActions"
+          is-dots-vue
+          @input="handleUserAction($event, response)"
+        />
+        <div>
+          <div class="worker__message">
+            {{ response.message }}
+          </div>
+          <div v-if="response.medias.length">
+            <files-preview
+              :medias="response.medias"
+              small
+            />
+          </div>
+        </div>
+        <!--        <div>-->
+        <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
+        <!--                    <div-->
+        <!--                      v-if="item.badge.code !== 0"-->
+        <!--                      class="card__level_higher"-->
+        <!--                      :class="[-->
+        <!--                        {'card__level_higher': item.badge.code === 1},-->
+        <!--                        {'card__level_reliable': item.badge.code === 2},-->
+        <!--                        {'card__level_checked': item.badge.code === 3}-->
+        <!--                      ]"-->
+        <!--                    >-->
+        <!--                      <span v-if="item.badge.code === 1">-->
+        <!--                        {{ $t('levels.higher') }}-->
+        <!--                      </span>-->
+        <!--                      <span v-if="item.badge.code === 2">-->
+        <!--                        {{ $t('levels.reliableEmp') }}-->
+        <!--                      </span>-->
+        <!--                      <span v-if="item.badge.code === 3">-->
+        <!--                        {{ $t('levels.checkedByTime') }}-->
+        <!--                      </span>-->
+        <!--                    </div>-->
+        <!--        </div>-->
       </div>
     </div>
     <div
@@ -98,7 +90,7 @@ export default {
       ddUserActions: [
         this.$t('btn.goToChat'),
         this.$t('quests.startQuest'),
-        this.$t('modals.decline'),
+        this.$t('quests.decline'),
       ],
     };
   },
@@ -122,7 +114,6 @@ export default {
   },
   methods: {
     handleUserAction(index, response) {
-      console.log(response);
       const funcKey = ['goToChat', 'startQuest', 'reject'][index];
       this[funcKey](response);
     },
@@ -155,38 +146,31 @@ export default {
 <style lang="scss" scoped>
 .invited {
   &__title {
-    margin: 15px 0 0 15px;
-    padding: 0 0 15px 0;
     color: #7C838DFF;
     font-size: 16px;
   }
   &__list {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    gap: 20px;
   }
 }
-.row {
-  display: flex;
-  flex-direction: row;
+.user-data {
+  display: grid;
+  grid-template-columns: 40px 1fr;
   align-items: center;
-  margin: 0 0 10px 0;
+  gap: 10px;
 }
 .worker {
   font-size: 16px;
   font-weight: 500;
   color: $black800;
   &__menu {
-    justify-self: self-end;
-  }
-  &__cols-two {
-    display: grid;
-    grid-template-columns: 9fr 3fr;
+    align-self: center;
   }
    &__card {
-    margin: 30px 0;
     background: $white;
     border-radius: 6px;
+     padding: 15px;
   }
  &__message {
    @include text-simple;
@@ -194,21 +178,11 @@ export default {
    font-size: 16px;
    color: $black500;
  }
-  &__col {
-    &_two {
-      display: grid;
-      grid-template-columns: 11fr 1fr;
-      justify-content: space-between;
-      align-items: flex-start;
-      width: 100%;
-    }
- }
+
   &__container {
-    display: flex;
-    flex-direction: column;
-    justify-items: flex-start;
-    align-items: flex-start;
-    margin: 20px 15px;
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    gap: 10px;
   }
   &__avatar {
     border-radius: 50%;
@@ -217,13 +191,10 @@ export default {
  }
   &__name {
     @extend .worker;
-    margin: 0 10px 0 10px;
   }
  &__title {
-    @extend .worker;
     font-size: 18px;
-    margin: 0 0 0 15px;
-    padding: 15px 15px 0 0;
+    margin-bottom: 20px;
   }
 }
 </style>

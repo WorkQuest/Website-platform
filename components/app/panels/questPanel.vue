@@ -220,9 +220,6 @@ export default {
     margin-bottom: 10px;
     flex-wrap: wrap;
   }
-  &__container {
-    padding: 20px 0 20px 0;
-  }
   &__item {
     @include text-simple;
     display: flex;
@@ -230,7 +227,7 @@ export default {
     justify-content: center;
     font-style: normal;
     font-weight: normal;
-    padding: 0 5px;
+    padding: 0 7px;
     &_green {
       @extend .badge__item;
       background-color: rgba(34, 204, 20, 0.1);

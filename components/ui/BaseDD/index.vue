@@ -9,7 +9,7 @@
     <div
       v-click-outside="hideDd"
       class="dd"
-      :class="[{'dd__top': mode === 'top' }]"
+      :class="[{'dd__top': mode === 'top' }, {'dd_small' : isDotsVue}]"
     >
       <slot name="card" />
 
@@ -19,6 +19,8 @@
         :disabled="disabled || elementsIsEmpty"
         @click="isShown = !isShown"
       >
+        <span class="icon-more_horizontal" />
+
         <div
           v-if="isIcon"
           class="dd__icon"
@@ -64,7 +66,7 @@
         <div
           v-if="isShown && isIcon"
           class="dd__items"
-          :class="mode === 'small' ? 'dd__items_small' : ''"
+          :class="{'dd__items_small' : mode === 'small'}"
         >
           <button
             v-for="(item, i) in items"
@@ -83,7 +85,7 @@
         <div
           v-if="isShown && !isIcon"
           class="dd__items"
-          :class="mode === 'small' ? 'dd__items_small' : ''"
+          :class="[{'dd__items_small' : mode === 'small'}, {'dd__items_wide' : isDotsVue}]"
         >
           <button
             v-for="(item, i) in items"
@@ -154,6 +156,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    isDotsVue: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => ({
     isShown: false,
@@ -163,13 +169,14 @@ export default {
       return this.items.length - this.hideSelected.length <= 0;
     },
     ddClass() {
-      const { type } = this;
+      const { type, isDotsVue } = this;
       return [
         { dd__btn_dark: type === 'dark' },
         { dd__btn_disabled: type === 'disabled' || this.elementsIsEmpty },
         { dd__btn_gray: type === 'gray' },
         { dd__btn_blue: type === 'blue' },
         { dd__btn_border: type === 'border' },
+        { 'dd__dots-btn': isDotsVue },
       ];
     },
   },
@@ -208,6 +215,11 @@ export default {
   min-width: 131px;
   position: relative;
   text-align: left;
+
+  &_small {
+  min-width: unset;
+  }
+
   &__title {
     color: $black500;
     &_white {
@@ -239,6 +251,11 @@ export default {
       grid-gap: 10px;
       overflow-y: auto;
       overscroll-behavior-y: contain;
+    }
+
+    &_wide {
+      min-width: 131px;
+      right: calc(100% - 30px);
     }
   }
   &__item {
@@ -311,6 +328,30 @@ export default {
     }
     &_border {
       border: 1px solid #F7F8FA;
+    }
+  }
+
+  .icon-more_horizontal {
+    display: none;
+  }
+
+  &__dots-btn {
+    display: flex;
+    justify-self: flex-end;
+    justify-content: center;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+
+    .dd__title,
+    .dd__caret {
+      display: none;
+    }
+
+    .icon-more_horizontal {
+      display: block;
+      color: #7c838d;
+      font-size: 19px;
     }
   }
 }
