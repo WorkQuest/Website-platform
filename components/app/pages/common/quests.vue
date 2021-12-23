@@ -154,7 +154,7 @@
                     <star-rating
                       :rating-type="'questPage'"
                       :stars-number="5"
-                      :rating="0"
+                      :rating="getRating(item)"
                       @input="showReviewModal($event, item)"
                     />
                   </div>
@@ -341,6 +341,9 @@ export default {
         [questPriority.Urgent]: 'block__priority_urgent',
       };
       return priority[index] || '';
+    },
+    getRating(item) {
+      return item?.review?.mark || 0;
     },
   },
 };

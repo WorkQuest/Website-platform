@@ -17,7 +17,8 @@
       <label
         :for="`${ratingType}-star-${starsNumber-index}`"
         :title="`«${starsNumber-index}»`"
-        :class="(starsNumber-index)<=rating ? 'golden' : ''"
+        class="rating-area__star-label"
+        :class="(starsNumber-index)<=rating ? 'rating-area__star-label_golden' : ''"
       />
     </li>
   </ul>
@@ -51,7 +52,7 @@ export default {
   &__star > input{
     display: none;
   }
-  &__star > label {
+  &__star-label {
     float: right;
     padding: 0;
     cursor: pointer;
@@ -59,6 +60,9 @@ export default {
     line-height: 25px;
     color: lightgrey;
     text-shadow: 1px 1px #bbb;
+    &_golden {
+      color: gold;
+    }
   }
   &__star > label:before {
     content: '★';
@@ -70,8 +74,5 @@ export default {
     color: gold;
     text-shadow: 1px 1px goldenrod;
   }
-}
-.golden {
-  color: gold !important;
 }
 </style>
