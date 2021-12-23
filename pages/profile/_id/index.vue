@@ -184,7 +184,7 @@
           </div>
           <portfolioTab
             class="profile__portfolio"
-            :object="portfolioObject"
+            :object="portfolios || {}"
           />
           <div
             v-if="selectedTab === 'portfolio' && totalPortfoliosPages > 1"
@@ -198,7 +198,7 @@
             </div>
           </div>
           <div
-            v-if="selectedTab === 'commonInfo' && portfolioObject.count > 3"
+            v-if="selectedTab === 'commonInfo' && portfolios.count > 3"
             class="portfolio__button button"
           >
             <div
@@ -237,7 +237,6 @@ export default {
       selectedTab: 'commonInfo',
       questsObject: {},
       reviewsObject: {},
-      portfolioObject: {},
       userStatistics: {
         reviewCount: 0,
         averageMark: 0,
@@ -424,7 +423,6 @@ export default {
         query: `limit=${limit || 0}&offset=${(this.pagePortfolios - 1) * limit}`,
       };
       await this.$store.dispatch('user/getUserPortfolios', payload);
-      this.portfolioObject = this.portfolios;
     },
     getSkillTitle() {
       const specData = {};
