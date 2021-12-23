@@ -1,7 +1,9 @@
 export default {
   async getUserPortfolios({ commit }, { userId, query }) {
     try {
-      const response = await this.$axios.$get(`/v1/user/${userId}/portfolio/cases?${query || ''}`);
+      const response = await this.$axios.$get(`/v1/user/${userId}/portfolio/cases`, {
+        params: { ...query },
+      });
       commit('setUserPortfolioCases', response.result);
       return response;
     } catch (e) {
