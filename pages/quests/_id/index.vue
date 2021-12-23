@@ -40,8 +40,8 @@
     <div class="main">
       <div class="main__body">
         <div v-if="userRole === 'employer' && infoDataMode === InfoModeEmployer.Created">
-          <invited-worker-list is-invited />
-          <invited-worker-list />
+          <workers-list is-invited />
+          <workers-list />
         </div>
         <div
           class="map__container gmap"

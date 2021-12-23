@@ -117,9 +117,10 @@ export default {
       return console.log(e);
     }
   },
-  async startQuest({ commit }, { questId, payload }) {
+  async startQuest({ commit }, { questId, config }) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/start`, payload);
+      const response = await this.$axios.$post(`/v1/quest/${questId}/start`, config);
+      commit('setInfoDataMode', 4);
       return response.result;
     } catch (e) {
       return console.log(e);
@@ -247,10 +248,18 @@ export default {
 
   async rejectQuestInvitation({ commit }, responseId) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/employer/${responseId}/reject`);
+      const response = await this.$axios.$post(`/v1/quest/response/${responseId}/reject`);
       return response.result;
     } catch (e) {
       return console.log(e);
+    }
+  },
+
+  async rejectTheAnswerToTheQuest({ commit }, responseId) {
+    try {
+      const { result } = await this.$axios.$post(`/v1/quest/employer/${responseId}/reject`);
+    } catch (e) {
+      console.log(e);
     }
   },
 

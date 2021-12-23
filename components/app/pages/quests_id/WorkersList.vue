@@ -1,9 +1,8 @@
 <template>
-  <!--      TODO: Вывести список Invited!-->
   <div class="worker worker__card">
     <div class="worker__cols-two">
       <div class="worker__title">
-        {{ $t('quests.invited') }}
+        {{ $t(`${isInvited ? 'quests.invited' : 'response.title'}`) }}
       </div>
     </div>
     <div
@@ -11,8 +10,8 @@
       class="invited__list"
     >
       <div
-        v-for="(response, i) in getCurrUsersArr"
-        :key="i"
+        v-for="response in getCurrUsersArr"
+        :key="response.worker.id"
         class="invited__response"
       >
         <div
@@ -23,22 +22,30 @@
             <div class="worker row">
               <img
                 class="worker__avatar"
-                :src="response.worker.avatar ? response.worker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+                :src="response.worker.avatar ? response.worker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                 alt=""
               >
               <div class="worker__name">
                 {{ `${response.worker.firstName} ${response.worker.lastName}` }}
               </div>
             </div>
-            <quest-id-dd
+            <base-dd
               class="worker__menu"
-              :i="i"
-              :response-id="response.id"
-              :chat-id="response.questChat.chatId"
+              :placeholder="30"
+              :items="ddUserActions"
+              :input="handleUserAction($event, response)"
             />
           </div>
-          <div class="worker__message">
-            {{ response.message }}
+          <div>
+            <div class="worker__message">
+              {{ response.message }}
+            </div>
+            <div v-if="response.medias">
+              <files-preview
+                :medias="response.medias"
+                small
+              />
+            </div>
           </div>
           <div>
             <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
@@ -69,7 +76,7 @@
       v-else
       class="invited__title"
     >
-      {{ $t('quests.workersNotInvited') }}
+      {{ $t(`quests.${isInvited ? 'workersNotInvited' : 'employer.usersNotResponded'}`) }}
     </div>
   </div>
 </template>
@@ -78,7 +85,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'InvitedWorkerList',
+  name: 'WorkersList',
   props: {
     isInvited: {
       type: Boolean,
@@ -88,6 +95,11 @@ export default {
   data() {
     return {
       currUsers: [],
+      ddUserActions: [
+        this.$t('btn.goToChat'),
+        this.$t('quests.startQuest'),
+        this.$t('modals.decline'),
+      ],
     };
   },
   computed: {
@@ -109,17 +121,31 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    handleUserAction(index, response) {
+      console.log(response);
+      const funcKey = ['goToChat', 'startQuest', 'reject'][index];
+      this[funcKey](response);
+    },
+    goToChat(response) {
+      this.$router.push(`/messages/${response.questChat.chatId}`);
+    },
     async initData() {
       await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     },
-    async startQuest() {
+    async startQuest(response) {
       this.SetLoader(true);
       const payload = {
-        assignedWorkerId: this.currentWorker.id,
+        config: {
+          assignedWorkerId: response.worker.id,
+        },
+        questId: this.questData.id,
       };
-      const questId = this.questData.id;
-      await this.$store.dispatch('quests/startQuest', { questId, payload });
-      await this.$store.dispatch('quests/setInfoDataMode', 4);
+      await this.$store.dispatch('quests/startQuest', payload);
+      this.SetLoader(false);
+    },
+    async reject(response) {
+      this.SetLoader(true);
+      await this.$store.dispatch(`quests/${this.isInvited ? 'rejectQuestInvitation' : 'rejectTheAnswerToTheQuest'}`, response.worker.id);
       this.SetLoader(false);
     },
   },
