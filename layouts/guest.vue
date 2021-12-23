@@ -205,7 +205,10 @@
                 class="header__button header__button_locale"
                 @click="showLocale()"
               >
-                <span v-if="currentLocale">
+                <span
+                  v-if="currentLocale"
+                  class="header__button_locale-name"
+                >
                   {{ currentLocale.toUpperCase() }}
                 </span>
                 <span v-else>
@@ -213,30 +216,26 @@
                 </span>
                 <span class="icon-caret_down" />
                 <transition name="fade">
-                  <div
+                  <ul
                     v-if="isShowLocale"
                     class="locale"
                   >
-                    <div
+                    <li
                       v-for="(item, i) in locales"
                       :key="i"
-                      class="locale__container"
+                      class="locale__item"
+                      @click="setLocale(item)"
                     >
-                      <div
-                        class="locale__items"
-                        @click="setLocale(item)"
+                      <img
+                        :src="require(`assets/img/lang/${item.localeSrc}`)"
+                        :alt="item.localeText"
+                        class="locale__icon"
                       >
-                        <img
-                          :src="require(`assets/img/lang/${item.localeSrc}`)"
-                          :alt="item.localeText"
-                          class="locale__icon"
-                        >
-                        <div class="locale__text">
-                          {{ item.localeText.toUpperCase() }}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                      <span class="locale__text">
+                        {{ item.localeText.toUpperCase() }}
+                      </span>
+                    </li>
+                  </ul>
                 </transition>
               </button>
               <div
@@ -1456,9 +1455,9 @@ export default {
     &_locale {
       width: 86px;
       height: 46px;
-      span {
-        padding-left: 10px;
-      }
+    }
+    &_locale-name {
+      padding-left: 10px;
     }
   }
   &__links {
@@ -1589,32 +1588,30 @@ export default {
 }
 .locale {
   position: absolute;
-  top: calc(72px + 5px);
+  top: 90px;
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
-  overflow-y: scroll;
-  max-height: 172px;
-  min-width: 86px;
   z-index: 10000000;
-  &__container {
-    width: 100%;
-  }
-  &__items {
-    padding: 10px 15px;
-    display: flex;
-    gap: 15px;
-  }
+  padding: 15px 20px;
   &__item {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 10px;
+    width: 46px;
+    display: flex;
     align-items: center;
-    min-height: 20px;
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+  &__item:not(:last-child) {
+    margin-bottom: 15px;
   }
   &__icon {
-    border-radius: 100%;
+    display: block;
+    margin-right: 10px;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
   }
   &__text {
     font-family: 'Inter', sans-serif;
