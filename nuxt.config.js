@@ -89,13 +89,13 @@ export default {
   // },
   i18n: {
     // locales: ['en', 'ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh'],
-    locales: ['en', 'ru'],
+    locales: ['en'],
     defaultLocale: 'en',
     strategy: 'no_prefix',
     vueI18n: {
       messages: {
         en: localeEn,
-        ru: localeRu,
+        // ru: localeRu,
         // ar: localeAr,
         // fr: localeFr,
         // bn: localeBn,
