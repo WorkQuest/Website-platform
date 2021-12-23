@@ -86,7 +86,7 @@ export default {
     hide() {
       this.CloseModal();
     },
-    async sendReviewForUser() {
+    sendReviewForUser() {
       const payload = {
         questId: this.options.item.id,
         message: this.textArea,
