@@ -136,7 +136,10 @@
                 class="header__button header__button_locale"
                 @click="showLocale()"
               >
-                <span v-if="currentLocale">
+                <span
+                  v-if="currentLocale"
+                  class="header__button_locale-name"
+                >
                   {{ currentLocale.toUpperCase() }}
                 </span>
                 <span v-else>
@@ -154,16 +157,14 @@
                       class="locale__item"
                       @click="setLocale(item)"
                     >
-                      <div class="locale__inner">
-                        <img
-                          :src="require(`assets/img/lang/${item.localeSrc}`)"
-                          :alt="item.localeText"
-                          class="locale__icon"
-                        >
-                        <span class="locale__text">
-                          {{ item.localeText.toUpperCase() }}
-                        </span>
-                      </div>
+                      <img
+                        :src="require(`assets/img/lang/${item.localeSrc}`)"
+                        :alt="item.localeText"
+                        class="locale__icon"
+                      >
+                      <span class="locale__text">
+                        {{ item.localeText.toUpperCase() }}
+                      </span>
                     </li>
                   </ul>
                 </transition>
@@ -1439,9 +1440,9 @@ export default {
     &_locale {
       width: 86px;
       height: 46px;
-      span {
-        padding-left: 10px;
-      }
+    }
+    &_locale-name {
+      padding-left: 10px;
     }
   }
   &__links {
@@ -1545,37 +1546,32 @@ export default {
 }
 .locale {
   position: absolute;
-  top: 77px;
+  top: 72px;
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
   z-index: 10000000;
   padding: 15px 20px;
-  &__container {
+  &__item {
     width: 46px;
-  }
-  &__container:not(:last-child) {
-    margin-bottom: 15px;
-  }
-  &__items {
     display: flex;
     align-items: center;
+
+    &:hover {
+      opacity: 0.5;
+    }
   }
-  &__item {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 10px;
-    align-items: center;
-    min-height: 20px;
+  &__item:not(:last-child) {
+    margin-bottom: 15px;
   }
   &__icon {
+    display: block;
+    margin-right: 10px;
     border-radius: 50%;
     width: 15px;
     height: 15px;
   }
   &__text {
-    margin-left: 10px;
     font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 500;
