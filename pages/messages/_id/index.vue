@@ -40,7 +40,7 @@
           </div>
           <ChatMenu
             v-show="canShowMenu"
-            :can-i-leave="canILeave"
+            :can-i-leave="canLeave"
           />
         </div>
         <div
@@ -341,12 +341,15 @@ export default {
       currChat: 'chat/getCurrChatInfo',
     }),
     canShowMenu() {
-      const { isClosedQuestChat, currChat, userData } = this;
-      return !isClosedQuestChat && currChat ? currChat.type !== 'group' || (currChat.type === 'group' && currChat.owner.id !== userData.id) : false;
+      const { isClosedQuestChat, currChat } = this;
+      return !isClosedQuestChat ? currChat?.type !== 'group'
+        || (currChat?.type === 'group' && !this.iAmOwner) : false;
     },
-    canILeave() {
-      const { currChat, userData } = this;
-      return currChat?.currChat.type === 'group' && currChat?.owner.id !== userData.id;
+    canLeave() {
+      return this.currChat?.type === 'group' && !this.iAmOwner;
+    },
+    iAmOwner() {
+      return this.currChat?.owner.id === this.userData.id;
     },
   },
   async mounted() {
@@ -391,6 +394,7 @@ export default {
     this.$store.commit('chat/setIsChatOpened', false);
   },
   methods: {
+
     setFullName({ itsMe, infoMessage: { user }, sender }) {
       // eslint-disable-next-line no-nested-ternary
       return itsMe
