@@ -7,12 +7,10 @@
         class="card__content"
       >
         <div class="card__block block">
-          <div class="block__left">
-            <img
-              :src="getQuestPreview(item).url"
-              class="block__image"
-              :alt="getQuestPreview(item).alt"
-            >
+          <div
+            class="block__left"
+            :style="`background: url(${getQuestPreview(item).url}) no-repeat`"
+          >
             <div
               class="block__state"
               :class="getStatusClass(item.status)"
@@ -114,26 +112,20 @@
               <span class="block__publication_thin">{{ $moment(item.createdAt).format('Do MMMM YYYY, hh:mm a') }}</span>
             </div>
             <div class="block__actions">
-              <div
-                v-if="isHideStatus(item.type)"
-                class="block__status"
-                :class="{'block__status_col': item.priority === 0}"
-              >
+              <div class="block__status">
                 <div
+                  v-if="item.priority !== 0 && item.status !== questStatuses.Done"
                   class="block__priority"
                   :class="getPriorityClass(item.priority)"
                 >
                   {{ getPriority(item.priority) }}
                 </div>
-                <div class="block__amount block__amount_green">
+                <div
+                  class="block__amount"
+                  :class="getAmountStyles(item)"
+                >
                   {{ `${item.price}  ${currency}` }}
                 </div>
-              </div>
-              <div
-                v-else
-                class="block__amount block__amount_gray"
-              >
-                {{ `${item.price}  ${currency}` }}
               </div>
               <div class="block__details">
                 <base-btn
@@ -208,15 +200,26 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    getAmountStyles(item) {
+      return [
+        { block__amount_green: item.status !== this.questStatuses.Done },
+        { block__amount_gray: item.status === this.questStatuses.Done },
+      ];
+    },
     goToProfile(id) {
       this.$router.push(`/profile/${id}`);
     },
     getQuestPreview(quest) {
       if (quest.medias.length) {
-        return {
-          url: quest.medias[quest.medias.length - 1].url,
-          alt: 'Quest preview',
-        };
+        for (let i = 0; i < quest.medias.length; i += 1) {
+          const media = quest.medias[i];
+          if (media.contentType.split('/')[0] === 'image') {
+            return {
+              url: media.url,
+              alt: 'Quest preview',
+            };
+          }
+        }
       }
       return {
         url: require('~/assets/img/temp/fake-card.svg'),
@@ -237,19 +240,12 @@ export default {
     },
     progressQuestText(status) {
       if (this.userRole) {
-        if (status === QuestStatuses.Active) {
-          return this.$t('quests.questActive:');
-        } if (status === QuestStatuses.Closed) {
-          return this.$t('quests.questClosed:');
-        } if (status === QuestStatuses.Dispute) {
-          return this.$t('quests.questDispute:');
-        } if (status === QuestStatuses.WaitWorker) {
-          return this.$t('quests.inProgressBy');
-        } if (status === QuestStatuses.WaitConfirm) {
-          return this.$t('quests.questWaitConfirm:');
-        } if (status === QuestStatuses.Done) {
-          return this.$t('quests.finishedBy');
-        }
+        if (status === QuestStatuses.Active) return this.$t('quests.questActive:');
+        if (status === QuestStatuses.Closed) return this.$t('quests.questClosed:');
+        if (status === QuestStatuses.Dispute) return this.$t('quests.questDispute:');
+        if (status === QuestStatuses.WaitWorker) return this.$t('quests.inProgressBy');
+        if (status === QuestStatuses.WaitConfirm) return this.$t('quests.questWaitConfirm:');
+        if (status === QuestStatuses.Done) return this.$t('quests.finishedBy');
       }
       return '';
     },
@@ -377,11 +373,11 @@ export default {
     align-items: center;
     grid-template-columns: auto 3fr;
     grid-gap: 10px;
+    padding-left: 0;
     margin: 7px 0 0 6px;
     .container {
       &__user {
         display: flex;
-        grid-gap: 20px;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
@@ -392,6 +388,7 @@ export default {
             width: 30px;
             object-fit: cover;
             cursor: pointer;
+            margin-right: 10px;
           }
         }
       }
@@ -496,7 +493,9 @@ export default {
       &_act {
         background: $green;
       }
-      &_inv {}
+      &_inv {
+        background: $yellow;
+      }
     }
   }
   &__card {
@@ -543,6 +542,10 @@ export default {
   &__left {
     @extend .styles__full;
     position: relative;
+    display: flex;
+    background-size: cover !important;
+    background-position: center !important;
+    border-radius: 6px 0 0 6px;
   }
   &__state {
     position: absolute;
@@ -593,9 +596,6 @@ export default {
     display: grid;
     grid-template-columns: auto 1fr;
     grid-gap: 15px;
-    &_col {
-      grid-template-columns: 1fr;
-    }
   }
   &__amount {
     font-style: normal;
@@ -604,15 +604,12 @@ export default {
     line-height: 130%;
     text-transform: uppercase;
     &_green {
-      @extend .block__amount;
       color: #00AA5B;
     }
     &_gray {
-      @extend .block__amount;
       color: #B0B3B9;
     }
     &__performed {
-      @extend .block__amount;
       color: #B0B3B9;
     }
   }
@@ -727,12 +724,6 @@ export default {
     grid-template-columns: 30px 1fr;
     grid-gap: 10px;
     align-items: center;
-  }
-  &__image {
-    border-radius: 6px 0 0 6px;
-    object-fit: cover;
-    max-height: 500px;
-    height: 100%;
   }
 }
 .star {
