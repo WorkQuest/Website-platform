@@ -84,3 +84,8 @@ export const priorityFilter = [
   2, // shortTerm
   1, // fixedDelivery
 ];
+
+export const questChatStatus = {
+  Active: 0,
+  Closed: 1,
+};
