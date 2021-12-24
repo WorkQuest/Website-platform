@@ -7,12 +7,10 @@
         class="card__content"
       >
         <div class="card__block block">
-          <div class="block__left">
-            <img
-              :src="getQuestPreview(item).url"
-              class="block__image"
-              :alt="getQuestPreview(item).alt"
-            >
+          <div
+            class="block__left"
+            :style="`background: url(${getQuestPreview(item).url}) no-repeat`"
+          >
             <div
               class="block__state"
               :class="getStatusClass(item.status)"
@@ -208,6 +206,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    getStyles(item) {
+      return ({ '--image-url': this.getQuestPreview(item).url });
+    },
     goToProfile(id) {
       this.$router.push(`/profile/${id}`);
     },
@@ -549,6 +550,8 @@ export default {
     @extend .styles__full;
     position: relative;
     display: flex;
+    background-size: cover !important;
+    border-radius: 6px 0 0 6px;
   }
   &__state {
     position: absolute;
@@ -730,12 +733,6 @@ export default {
     grid-template-columns: 30px 1fr;
     grid-gap: 10px;
     align-items: center;
-  }
-  &__image {
-    border-radius: 6px 0 0 6px;
-    object-fit: cover;
-    width: 100%;
-    max-height: 336px;
   }
 }
 .star {
