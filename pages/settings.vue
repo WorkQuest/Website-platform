@@ -485,12 +485,7 @@ export default {
       }
       return true;
     },
-    clearError(observerName, value) {
-      const isClear = Object.keys(value).every((field) => value[field] === '' || value[field] === null);
-      if (isClear) {
-        this.$refs[observerName].reset();
-      }
-    },
+
     async editUserData() {
       const validateKnowledge = await this.validateExperienceForm('observerAddNewKnowledge', this.newKnowledge);
       const validateWorkExp = await this.validateExperienceForm('observerAddNewWorkExp', this.newWorkExp);

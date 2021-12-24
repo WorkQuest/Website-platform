@@ -17,7 +17,7 @@
             type="file"
             class="profile__avatar-input"
           >
-          <div class="profile__avatar-hover icon-edit" />
+          <div class="icon icon-edit profile__avatar-hover" />
         </div>
         <div class="profile__personal-info">
           <verified
@@ -31,7 +31,7 @@
             :name="$t('settings.firstName')"
           >
             <template v-slot:left>
-              <span class="icon-user" />
+              <span class="icon icon-user" />
             </template>
           </base-field>
           <base-field
@@ -41,7 +41,7 @@
             :name="$t('settings.lastName')"
           >
             <template v-slot:left>
-              <span class="icon-user" />
+              <span class="icon icon-user" />
             </template>
           </base-field>
           <vue-phone-number-input
@@ -54,40 +54,38 @@
             size="lg"
             @update="updatedPhone = $event"
           />
-          <div @click="toggleSearchDD">
-            <base-field
-              v-model="userAddress"
-              v-click-outside="hideSearchDD"
-              :placeholder="'userAddress' || $t('settings.addressInput')"
-              rules="max:100"
-              mode="icon"
-              :selector="isSearchDDStatus"
-              :name="$t('settings.address')"
-              @selector="getAddressInfo(userAddress)"
-            >
-              <template v-slot:left>
-                <span class="icon-location" />
-              </template>
-              <template v-slot:selector>
-                <div
-                  v-if="addresses.length"
-                  class="selector"
-                  :class="{'selector_hide': isSearchDDStatus === false}"
-                >
-                  <div class="selector__items">
-                    <div
-                      v-for="(item, i) in addresses"
-                      :key="i"
-                      class="selector__item"
-                      @click="selectAddress(item)"
-                    >
-                      {{ item.formatted }}
-                    </div>
+          <base-field
+            v-model="userAddress"
+            v-click-outside="hideSearchDD"
+            :placeholder="userAddress || $t('settings.addressInput')"
+            rules="max:100"
+            mode="icon"
+            :selector="isSearchDDStatus"
+            :name="$t('settings.address')"
+            @focus="isSearchDDStatus = true"
+            @selector="getAddressInfo(userAddress)"
+          >
+            <template v-slot:left>
+              <span class="icon icon-location" />
+            </template>
+            <template v-slot:selector>
+              <div
+                v-if="addresses.length && isSearchDDStatus"
+                class="selector"
+              >
+                <div class="selector__items">
+                  <div
+                    v-for="(item, i) in addresses"
+                    :key="i"
+                    class="selector__item"
+                    @click="selectAddress(item)"
+                  >
+                    {{ item.formatted }}
                   </div>
                 </div>
-              </template>
-            </base-field>
-          </div>
+              </div>
+            </template>
+          </base-field>
         </div>
         <div
           v-if="true"
@@ -99,7 +97,7 @@
             mode="icon"
           >
             <template v-slot:left>
-              <span class="icon-Case" />
+              <span class="icon icon-Case" />
             </template>
           </base-field>
           <base-field
@@ -108,7 +106,7 @@
             mode="icon"
           >
             <template v-slot:left>
-              <span class="icon-id_card" />
+              <span class="icon icon-id_card" />
             </template>
           </base-field>
           <base-field
@@ -118,7 +116,7 @@
             rules="max:100"
           >
             <template v-slot:left>
-              <span class="icon-Earth" />
+              <span class="icon icon-Earth" />
             </template>
           </base-field>
         </div>
@@ -151,11 +149,19 @@
               @click="deleteKnowledge(userEducation, index)"
             />
           </div>
-          <add-form
-            :item="newEducation"
-            :is-adding="true"
-            @click="addNewKnowledge(userEducation, newEducation, 'education')"
-          />
+          <ValidationObserver
+            ref="education"
+            tag="div"
+            class="profile__validation"
+          >
+            <add-form
+              :item="newEducation"
+              :is-adding="true"
+              :validation-mode="'passive'"
+              @click="addNewKnowledge(userEducation, 'newEducation', 'education', 'education')"
+              @blur="clearError(newEducation, 'education')"
+            />
+          </ValidationObserver>
         </div>
         <div
           v-if="true"
@@ -179,11 +185,18 @@
               @click="deleteKnowledge(userWorkExp, index)"
             />
           </div>
-          <add-form
-            :item="newWorkExp"
-            :is-adding="true"
-            @click="addNewKnowledge(userWorkExp, newWorkExp, 'work')"
-          />
+          <ValidationObserver
+            ref="work"
+            tag="div"
+            class="profile__validation"
+          >
+            <add-form
+              :item="newWorkExp"
+              :is-adding="true"
+              @click="addNewKnowledge(userWorkExp, 'newWorkExp', 'work', 'work')"
+              @blur="clearError(newWorkExp, 'work')"
+            />
+          </ValidationObserver>
         </div>
       </div>
       <div class="profile__socials">
@@ -194,7 +207,7 @@
           :name="$t('settings.instagram')"
         >
           <template v-slot:left>
-            <span class="icon-instagram" />
+            <span class="icon icon-instagram" />
           </template>
         </base-field>
         <base-field
@@ -204,7 +217,7 @@
           :name="$t('settings.twitter')"
         >
           <template v-slot:left>
-            <span class="icon-twitter" />
+            <span class="icon icon-twitter" />
           </template>
         </base-field>
         <base-field
@@ -214,7 +227,7 @@
           :name="$t('settings.linkedin')"
         >
           <template v-slot:left>
-            <span class="icon-LinkedIn" />
+            <span class="icon icon-LinkedIn" />
           </template>
         </base-field>
         <base-field
@@ -224,7 +237,7 @@
           :name="$t('settings.facebook')"
         >
           <template v-slot:left>
-            <span class="icon-facebook" />
+            <span class="icon icon-facebook" />
           </template>
         </base-field>
       </div>
@@ -256,12 +269,6 @@ export default {
   directives: {
     ClickOutside,
   },
-  /*   props: {
-    addresses: {
-      type: Array,
-      default: null,
-    },
-  }, */
   data() {
     return {
       userFirstName: '',
@@ -291,7 +298,7 @@ export default {
       },
 
       addresses: [],
-      isSearchDDStatus: true,
+      isSearchDDStatus: false,
 
     };
   },
@@ -333,13 +340,6 @@ export default {
     this.userWorkExp = [...this.workExp] || [];
   },
   methods: {
-    toggleSearchDD() {
-      console.log('asdas');
-      this.isSearchDDStatus = !this.isSearchDDStatus;
-    },
-    hideSearchDD() {
-      this.isSearchDDStatus = false;
-    },
     selectAddress(address) {
       this.userAddress = address.formatted;
       this.addresses = [];
@@ -357,6 +357,10 @@ export default {
         console.log(e);
       }
     },
+    hideSearchDD() {
+      this.isSearchDDStatus = false;
+    },
+
     modalsStatusTitle(modalMode) {
       const titles = {
         enterPhoneNumber: this.$t('settings.enterPhoneNumber'),
@@ -387,21 +391,27 @@ export default {
         subtitle: this.modalsStatusSubtitles(modalMode),
       });
     },
-    async addNewKnowledge(knowledgeArray, newKnowledge, modalMsg) {
-      const validate = true;
-      /* const validate = await this.$refs.observerAddNewKnowledge.validate(); */
+    async addNewKnowledge(knowledgeArray, newKnowledge, observerName, modalMsg) {
+      const validate = await this.$refs[observerName].validate();
       if (validate) {
-        knowledgeArray.push({ ...newKnowledge });
-        newKnowledge = {
+        knowledgeArray.push({ ...this[newKnowledge] });
+        this[newKnowledge] = {
           from: '',
           to: '',
           place: '',
         };
         this.showModalStatus(modalMsg === 'education' ? 'educationAddSuccessful' : 'workExpAddSuccessful');
+        this.$refs[observerName].reset();
       }
     },
     deleteKnowledge(knowledgeArray, index) {
       knowledgeArray.splice(index, 1);
+    },
+    clearError(value, observerName) {
+      const isClear = Object.keys(value).every((field) => value[field] === '' || value[field] === null);
+      if (isClear) {
+        this.$refs[observerName].reset();
+      }
     },
   },
 };
@@ -450,6 +460,9 @@ export default {
         opacity: 1;
         top: 0;
         left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
         width: 40px;
         height: 40px;
       border-radius: 6px;
@@ -524,133 +537,9 @@ export default {
 
 .icon {
   font-size: 25px;
-  color: $blue;
-  align-items: center;
-  &__gradient {
-    color: transparent;
-    -webkit-background-clip: text;
-    background-image: linear-gradient(135deg, #0083C7 0%, #00AA5B 100%);
-  }
-  &-check_all_big:before {
-    @extend .icon;
-    content: "\ea00";
-    color: $white;
-    padding: 0 0 0 10px;
-  }
-  &-Lock:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\ea24";
-  }
-  &-user_pin:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\e908";
-  }
-  &-caret_right:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\ea4a";
-    color: $black200;
-  }
-  &-data:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\e914";
-  }
-  &-group_alt:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\e900";
-  }
-  &-home_alt_check:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\e961";
-  }
-  &-credit_card:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\ea0e";
-  }
-  &-Case:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\e9ff";
-  }
-  &-line_chart_up:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\e9cb";
-  }
-  &-settings:before {
-    @extend .icon;
-    content: "\ea34";
-  }
-  &-chevron_big_right:before {
-    @extend .icon;
-    content: "\ea4e";
-    color: $black200;
-  }
-  &-plus_circle:before {
-    @extend .icon;
-    content: "\e9a6";
-  }
-  &-Case:before {
-    @extend .icon;
-    content: "\e9ff";
-  }
-  &-id_card:before {
-    @extend .icon;
-    content: "\e902";
-  }
-  &-Earth:before {
-    @extend .icon;
-    content: "\ea11";
-  }
-  &-facebook:before {
-    @extend .icon;
-    content: "\e9e5";
-  }
-  &-LinkedIn::before {
-    @extend .icon;
-    content: "\e9ed";
-  }
-  &-twitter::before {
-    @extend .icon;
-    content: "\e9fa";
-  }
-  &-instagram::before {
-    @extend .icon;
-    content: "\e9ea";
-  }
-  &-phone::before {
-    @extend .icon;
-    content: "\ea2d";
-  }
-  &-mail::before {
-    @extend .icon;
-    content: "\ea27";
-  }
-  &-location::before {
-    @extend .icon;
-    content: "\ea23";
-  }
-  &-user::before {
-    @extend .icon;
-    content: "\e90c";
-  }
-  &-edit {
-    position: absolute;
-    top: 50%;
-    margin-right: -50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  &-edit::before {
-    @extend .icon;
-    content: "\e997"
+  &::before {
+    color: $blue;
+    align-items: center;
   }
 }
-
 </style>

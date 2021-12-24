@@ -12,6 +12,7 @@
       :placeholder="$t('settings.workExps.from')"
       :rules="`required||between-date:${item.from},${item.to}`"
       :validation-mode="validationMode"
+      @blur="$emit('blur')"
     />
     <span class="knowledge__dash">
       -
@@ -26,6 +27,7 @@
       :placeholder="$t('settings.workExps.to')"
       :rules="`required||between-date:${item.from},${item.to}`"
       :validation-mode="validationMode"
+      @blur="$emit('blur')"
     />
     <base-field
       v-model="item.place"
@@ -35,6 +37,8 @@
       class="knowledge__data knowledge__data_big"
       :placeholder="$t('settings.education.educationalInstitution')"
       :validation-mode="validationMode"
+      :rules="`required`"
+      @blur="$emit('blur')"
     />
     <base-btn
       class="knowledge__btn"
