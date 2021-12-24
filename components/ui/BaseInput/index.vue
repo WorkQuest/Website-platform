@@ -14,7 +14,7 @@
     :rules="rules"
     :name="name"
     :vid="vid"
-    mode="eager"
+    :mode="validationMode || 'eager'"
     slim
   >
     <div
@@ -39,6 +39,7 @@
       </div>
       <input
         class="ctm-field__input"
+        :class="{'ctm-field__input_error': errors[0]}"
         :placeholder="placeholder"
         :value="mode === 'convertDate' ? convertDate(value) : value"
         :type="type"
@@ -47,6 +48,7 @@
         @keyup.enter="enter"
         @keypress.enter="onEnterPress"
         @focus="$emit('focus')"
+        @blur="$emit('blur')"
       >
       <div
         v-if="value && isSearch"
@@ -148,6 +150,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    validationMode: {
+      type: String,
+      default: 'eager',
+    },
   },
   methods: {
     enter($event) {
@@ -248,6 +254,9 @@ export default {
     padding: 0 20px;
     transition: .3s;
     width: 100%;
+    &_error {
+      border: 1px solid red !important
+    }
   }
   &_disabled {
     .ctm-field__input {
