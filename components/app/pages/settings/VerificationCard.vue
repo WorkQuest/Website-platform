@@ -10,7 +10,6 @@
       <div class="verification__button">
         <base-btn
           mode="ver"
-          @click="goToSumSub"
         >
           {{ $t('settings.getVerification') }}
         </base-btn>

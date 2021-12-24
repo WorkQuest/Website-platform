@@ -4,17 +4,13 @@
       {{ $t('settings.settings') }}
     </div>
     <div class="settings__body">
-      <verification
+      <verification-card
         v-if="userRole === 'worker' && isShowInfo === true"
       />
-      <ValidationObserver
-        ref="observerCheckForm"
-        tag="div"
-      >
-        <profile
-          :addresses="addresses"
-          :local-user-data="localUserData"
-        />
+      <profile
+        :addresses="addresses"
+        :local-user-data="localUserData"
+      />
 
       <!--         <h2
           v-if="userRole === 'worker'"
@@ -69,7 +65,6 @@
             </div>
           </div>
         </div> -->
-      </ValidationObserver>
     </div>
 
     <!--       <div class="settings">
@@ -226,12 +221,12 @@ import ClickOutside from 'vue-click-outside';
 import { GeoCode } from 'geo-coder';
 import modals from '~/store/modals/modals';
 import 'vue-phone-number-input/dist/vue-phone-number-input.css';
-import Verification from '~/components/app/pages/settings/Verification.vue';
+import VerificationCard from '~/components/app/pages/settings/VerificationCard.vue';
 import Profile from '~/components/app/pages/settings/Profile.vue';
 
 export default {
   name: 'Settings',
-  components: { Verification, Profile },
+  components: { VerificationCard, Profile },
   directives: {
     ClickOutside,
   },
@@ -370,12 +365,6 @@ export default {
     async perHourData() {
       this.perHour = await this.userData.wagePerHour;
     },
-    toggleSearchDD() {
-      this.isSearchDDStatus = !this.isSearchDDStatus;
-    },
-    hideSearchDD() {
-      this.isSearchDDStatus = false;
-    },
     getApplicantStatus() {
       try {
         this.$store.dispatch('sumsub/applicantStatus', this.accessToken.userId);
@@ -403,38 +392,7 @@ export default {
         console.log(e);
       }
     },
-    async addNewKnowledge() {
-      const validate = await this.$refs.observerAddNewKnowledge.validate();
-      if (validate) {
-        this.localUserData.additionalInfo.educations.push({ ...this.newKnowledge });
-        this.newKnowledge = {
-          from: null,
-          to: null,
-          place: null,
-        };
-        this.showModalStatus('educationAddSuccessful');
-        this.$refs.observerAddNewKnowledge.reset();
-      }
-    },
-    deleteKnowledge(i) {
-      this.localUserData.additionalInfo.educations.splice(i, 1);
-    },
-    async addNewWorkExp() {
-      const validate = await this.$refs.observerAddNewWorkExp.validate();
-      if (validate) {
-        this.localUserData.additionalInfo.workExperiences.push({ ...this.newWorkExp });
-        this.newWorkExp = {
-          from: null,
-          to: null,
-          place: null,
-        };
-        this.showModalStatus('workExpAddSuccessful');
-        this.$refs.observerAddNewWorkExp.reset();
-      }
-    },
-    deleteWorkExp(i) {
-      this.localUserData.additionalInfo.workExperiences.splice(i, 1);
-    },
+
     // eslint-disable-next-line consistent-return
     async processFile(e, validate) {
       const isValid = await validate(e);
@@ -650,7 +608,7 @@ export default {
   }
 }
 
-.margin {
+/* .margin {
   &__bottom {
     margin-bottom: 10px;
   }
@@ -1549,5 +1507,5 @@ export default {
       width: 90px;
     }
   }
-}
+} */
 </style>
