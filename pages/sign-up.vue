@@ -9,7 +9,7 @@
     </div>
     <ValidationObserver
       v-if="step === 1"
-      v-slot="{ handleSubmit }"
+      v-slot="{ handleSubmit, valid }"
       tag="div"
       class="auth__container"
     >
@@ -109,7 +109,7 @@
           </template>
         </base-field>
         <div class="auth__action">
-          <base-btn>
+          <base-btn :disabled="!valid">
             {{ $t('signUp.next') }}
           </base-btn>
         </div>
@@ -234,18 +234,18 @@ export default {
   async mounted() {
     this.SetLoader(true);
     this.mnemonic = generateMnemonic();
-    const toEncrypt = this.mnemonic;
-    const encrypt = encryptStringWithKey(toEncrypt, 'secret');
-    console.log(toEncrypt, ' >>>>> ', encrypt.toString());
-    const decrypt = decryptStringWitheKey(encrypt, 'secret');
-    console.log('>>>', decrypt);
     const s = this.mnemonic.split(' ');
     this.confirmMnemonicData = {
       first: s[2],
       second: s[6],
     };
-    //  await createWallet(mnemonic);
     this.SetLoader(false);
+
+    // const toEncrypt = this.mnemonic;
+    // const encrypt = encryptStringWithKey(toEncrypt, 'secret');
+    // console.log(toEncrypt, ' >>>>> ', encrypt.toString());
+    // const decrypt = decryptStringWitheKey(encrypt, 'secret');
+    // console.log('>>>', decrypt);
   },
   methods: {
     goStep(step) {
@@ -269,6 +269,8 @@ export default {
       //   };
       //   const response = await this.$store.dispatch('user/signUp', payload);
       //   if (response?.ok) {
+    // localStorage.setItem('mnemonic', encryptStringWithKey(this.mnemonic, this.model.password));
+    // this.$cookies.set('mnemonic', this.mnemonic);
       //     this.showConfirmEmailModal();
       //   }
       // } catch (e) {

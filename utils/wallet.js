@@ -7,5 +7,5 @@ const bip39 = require('bip39');
 export const generateMnemonic = () => bip39.generateMnemonic();
 export const createWallet = (mnemonic) => ethers.utils.HDNode.fromMnemonic(mnemonic);
 
-export const encryptStringWithKey = (toEncrypt, key) => AES.encrypt(toEncrypt, key);
+export const encryptStringWithKey = (toEncrypt, key) => AES.encrypt(toEncrypt, key).toString();
 export const decryptStringWitheKey = (toDecrypt, key) => AES.decrypt(toDecrypt, key).toString(enc.Utf8);
