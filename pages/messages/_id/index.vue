@@ -343,12 +343,12 @@ export default {
     canShowMenu() {
       const { isClosedQuestChat, currChat } = this;
       return !isClosedQuestChat ? currChat?.type !== 'group'
-        || (currChat?.type === 'group' && !this.iAmOwner) : false;
+        || (currChat?.type === 'group' && !this.amIOwner) : false;
     },
     canLeave() {
-      return this.currChat?.type === 'group' && !this.iAmOwner;
+      return this.currChat?.type === 'group' && !this.amIOwner;
     },
-    iAmOwner() {
+    amIOwner() {
       return this.currChat?.owner.id === this.userData.id;
     },
   },
@@ -456,7 +456,7 @@ export default {
 
       this.ShowModal({
         key: modals.chatCreate,
-        itsOwner: chat.owner.id === userData.id,
+        itsOwner: this.amIOwner,
         isCreating: false,
         isMembersList: true,
         isAdding: false,
