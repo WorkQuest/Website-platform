@@ -18,7 +18,8 @@
       </div>
       <div class="banner__right">
         <div class="banner__card card">
-          <ValidationObserver
+          <validation-observer
+            v-slot="{handleSubmit}"
             class="card__observer"
             tag="div"
           >
@@ -26,6 +27,7 @@
               <base-field
                 id="amount"
                 v-model="amount"
+                :disabled="!isConnected"
                 class="content__field"
                 type="number"
                 placeholder="3500"
@@ -50,21 +52,30 @@
             <div class="card__input input">
               <base-field
                 v-model="address"
+                :disabled="!isConnected"
                 class="input__field"
                 :placeholder="'Address'"
-                :disabled="true"
                 rules="required"
                 :name="$t('modals.cardHolderField')"
               />
             </div>
             <base-btn
+              v-if="!isConnected"
               mode="'outline'"
               class="card__button"
               @click="connectToMetamask"
             >
-              {{ !isConnected ? $t('mining.connectWallet') : $t('meta.send') }}
+              {{ $t('mining.connectWallet') }}
             </base-btn>
-          </ValidationObserver>
+            <base-btn
+              v-else
+              mode="'outline'"
+              class="card__button"
+              @click="handleSubmit(send)"
+            >
+              {{ $t('meta.send') }}
+            </base-btn>
+          </validation-observer>
         </div>
       </div>
     </div>
@@ -91,8 +102,9 @@ export default {
   layout: 'guest',
   data() {
     return {
-      amount: 0,
+      amount: null,
       address: '',
+      maxAmount: 0,
     };
   },
   computed: {
@@ -104,13 +116,16 @@ export default {
   methods: {
     async connectToMetamask() {
       if (!this.isConnected) {
-        await this.$store.dispatch('web3/goToChain', { chain: 'ETH' });
+        await this.$store.dispatch('web3/goToChain', { chain: 'WUSD' });
         await this.$store.dispatch('web3/connectToMetaMask');
-        this.address = this.account.address;
+        this.maxAmount = await this.$store.dispatch('web3/showBalanceOnDemo');
       }
     },
+    async send() {
+      await this.$store.dispatch('web3/sendTransaction', { address: this.address, amount: this.amount });
+    },
     maxBalance() {
-      this.amount = 100;
+      this.amount = this.maxAmount;
     },
   },
 };
