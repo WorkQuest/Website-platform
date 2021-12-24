@@ -32,8 +32,8 @@
         <questIdEmployer
           :user-avatar="questData.assignedWorker && questData.assignedWorker.avatar ? questData.assignedWorker.avatar.url : null"
           :assign-worker="questData.assignedWorker"
+          :worker-id="questData.assignedWorkerId"
         />
-
         <questIdWorker />
       </div>
     </div>
