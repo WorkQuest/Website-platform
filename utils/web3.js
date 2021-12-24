@@ -58,6 +58,8 @@ export const getChainIdByChain = (chain) => {
     case Chains.BNB:
       if (!isProd) return ChainsId.BSC_TEST;
       return ChainsId.BSC_MAIN;
+    case Chains.WUSD:
+      return ChainsId.WUSD_TEST;
     default:
       throw error(-1, `wrong chain name: ${chain} ${Chains.BINANCE} ${Chains.ETHEREUM}`);
   }
@@ -195,10 +197,11 @@ export const initMetaMaskWeb3 = async () => {
         web3.eth.getCoinbase(),
         web3.eth.net.getId(),
       ]);
-      if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
+
+      if (process.env.PROD === 'true' && ![1, 56, 20211224].includes(+chainId)) {
         return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
       }
-      if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
+      if (process.env.PROD === 'false' && ![4, 97, 20211224].includes(+chainId)) {
         return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
       }
       account = {

@@ -6,6 +6,7 @@ import {
   TokenAmount as TokenAmountUniswap,
 } from '@uniswap/sdk';
 
+import Web3 from 'web3';
 import {
   claimRewards,
   disconnectWeb3,
@@ -37,6 +38,7 @@ import {
   pensionExtendLockTime,
   getTxFee,
   getPoolTotalSupplyBSC, getPoolTokensAmountBSC,
+  sendTransaction, createInstance,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
@@ -451,5 +453,27 @@ export default {
   },
   async pensionExtendLockTime() {
     return await pensionExtendLockTime();
+  },
+
+  // добавленно только для страницы demo-blockchain
+  async sendTransaction({ commit }, { address, amount }) {
+    const { ethereum } = window;
+    const web3 = new Web3(ethereum);
+    const accountAddress = await getAccountAddress();
+    return web3.eth.sendTransaction({ from: accountAddress, to: address, value: new BigNumber(amount).shiftedBy(18).toString() });
+  },
+  async showBalanceOnDemo() {
+    let balance = 0;
+    const { ethereum } = window;
+    const web3 = new Web3(ethereum);
+    const accountAddress = await getAccountAddress();
+    await web3.eth.getBalance(accountAddress, (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        balance = result;
+      }
+    });
+    return new BigNumber(balance).shiftedBy(-18).toString();
   },
 };
