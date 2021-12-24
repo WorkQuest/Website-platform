@@ -1135,11 +1135,7 @@ export default {
   },
   methods: {
     async getChats() {
-      try {
-        await this.$store.dispatch('chat/getChatsList', this.chatFilter);
-      } catch (e) {
-        console.log(e);
-      }
+      await this.$store.dispatch('chat/getChatsList', this.chatFilter);
     },
     loginCheck() {
       localStorage.setItem('userLogin', true);

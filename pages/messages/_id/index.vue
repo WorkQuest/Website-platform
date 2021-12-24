@@ -39,14 +39,16 @@
             </template>
           </div>
           <ChatMenu
-            v-show="!isClosedQuestChat && currChat ? currChat.type !== 'group' || (currChat.type === 'group' && currChat.owner.id !== userData.id) : false"
-            :can-i-leave="currChat ? currChat.type === 'group' && currChat.owner.id !== userData.id : false"
+            v-show="canShowMenu"
+            :can-i-leave="canILeave"
           />
         </div>
         <div
           ref="HandleScrollContainer"
           class="chat-container__scroll-cont"
-          :class="[{'chat-container__scroll-cont_small' : files.length}, {'chat-container__scroll-cont_big' : chatId === 'starred' || isClosedQuestChat}]"
+          :class="[
+            {'chat-container__scroll-cont_small' : files.length},
+            {'chat-container__scroll-cont_big' : chatId === 'starred' || isClosedQuestChat}]"
           @scroll="handleScroll"
         >
           <div
@@ -338,6 +340,14 @@ export default {
       filter: 'chat/getMessagesFilter',
       currChat: 'chat/getCurrChatInfo',
     }),
+    canShowMenu() {
+      const { isClosedQuestChat, currChat, userData } = this;
+      return !isClosedQuestChat && currChat ? currChat.type !== 'group' || (currChat.type === 'group' && currChat.owner.id !== userData.id) : false;
+    },
+    canILeave() {
+      const { currChat, userData } = this;
+      return currChat?.currChat.type === 'group' && currChat?.owner.id !== userData.id;
+    },
   },
   async mounted() {
     this.$watch(
