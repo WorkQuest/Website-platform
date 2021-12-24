@@ -198,8 +198,6 @@ export const initMetaMaskWeb3 = async () => {
         web3.eth.net.getId(),
       ]);
 
-      // смотри пожалуйста сюда! <----------------------------------------------------------------------
-
       if (process.env.PROD === 'true' && ![1, 56, 20211224].includes(+chainId)) {
         return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
       }

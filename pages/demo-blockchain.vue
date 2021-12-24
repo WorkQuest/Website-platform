@@ -96,6 +96,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'DemoBlockchain',
@@ -115,14 +116,23 @@ export default {
   },
   methods: {
     async connectToMetamask() {
+      this.SetLoader(true);
       if (!this.isConnected) {
         await this.$store.dispatch('web3/goToChain', { chain: 'WUSD' });
         await this.$store.dispatch('web3/connectToMetaMask');
         this.maxAmount = await this.$store.dispatch('web3/showBalanceOnDemo');
       }
+      this.SetLoader(false);
     },
     async send() {
-      await this.$store.dispatch('web3/sendTransaction', { address: this.address, amount: this.amount });
+      this.SetLoader(true);
+      const result = await this.$store.dispatch('web3/sendTransaction', { address: this.address, amount: this.amount });
+      if (result.status) {
+        this.ShowModal({
+          key: modals.transactionSend,
+        });
+      }
+      this.SetLoader(false);
     },
     maxBalance() {
       this.amount = this.maxAmount;

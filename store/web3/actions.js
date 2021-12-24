@@ -96,10 +96,8 @@ export default {
 
   // Only MetaMask
   async connectToMetaMask({ commit, dispatch, getters }, payload) {
-    console.log('connectToMetaMask');
     const isReconnection = payload?.isReconnection;
     const response = await initMetaMaskWeb3(payload);
-    console.log(response);
     if (response.ok) {
       if (!getters.isHandlingMetamaskStatus && !isReconnection) {
         handleMetamaskStatus(() => dispatch('handleMetamaskStatusChanged'));
