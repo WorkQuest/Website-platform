@@ -383,11 +383,11 @@ export default {
     align-items: center;
     grid-template-columns: auto 3fr;
     grid-gap: 10px;
+    padding-left: 0;
     margin: 7px 0 0 6px;
     .container {
       &__user {
         display: flex;
-        grid-gap: 20px;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
@@ -398,6 +398,7 @@ export default {
             width: 30px;
             object-fit: cover;
             cursor: pointer;
+            margin-right: 10px;
           }
         }
       }
