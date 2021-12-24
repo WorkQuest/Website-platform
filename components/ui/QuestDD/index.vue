@@ -99,7 +99,7 @@ export default {
   methods: {
     toEditQuest() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
-        this.$router.push('/edit-quest');
+        this.$router.push(`/edit-quest/${this.itemId}`);
         this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
       } else {
         this.showToastWrongStatusEdit();
@@ -108,7 +108,7 @@ export default {
     toRaisingViews() {
       // TODO: Добавить тост или модалку
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
-        this.$router.push('/edit-quest');
+        this.$router.push(`/edit-quest/${this.itemId}`);
         this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
       } else {
         this.showToastWrongStatusRaisingViews();
@@ -214,12 +214,12 @@ export default {
     flex-direction: column;
     align-items: flex-start;
     min-height: 20px;
+    cursor: pointer;
     width: 100%;
     border-bottom: 1px solid $black100;
-    cursor: pointer;
     &:hover {
       .menu__text {
-        color: $black800 !important;
+        color: $black800;
       }
     }
   }
