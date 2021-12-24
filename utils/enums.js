@@ -58,6 +58,8 @@ export const InfoModeWorker = {
   Dispute: 7,
   Closed: 8,
   Done: 9,
+  Responded: 10,
+  Invited: 11,
 };
 export const questPriority = {
   Low: 1,

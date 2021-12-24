@@ -392,6 +392,8 @@ export default {
       if (this.selectedPriority) payload += `&priorities[]=${priorityFilter[this.selectedPriority]}`;
       if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) payload += `&priceBetween[from]=${this.selectedPriceFilter.from || 0}&priceBetween[to]=${this.selectedPriceFilter.to || 99999999999999}`;
 
+      // workerId - my quests
+
       if (!this.isShowMap) {
         this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
         this.questsArray = this.questsObjects.quests;

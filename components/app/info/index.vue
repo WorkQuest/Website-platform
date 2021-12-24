@@ -36,7 +36,7 @@
         class="info__right"
       >
         <base-btn
-          v-if="Object.keys(respondOnQuest).length > 0 || questData.response.message"
+          v-if="Object.keys(respondOnQuest).length > 0 || (questData.response && questData.response.message)"
           v-click-outside="closeMessage"
           class="message message__btn"
           mode="showYourMessage"
@@ -117,38 +117,39 @@ export default {
           [InfoModeWorker.Dispute]: 'quests.dispute',
           [InfoModeWorker.Closed]: 'quests.questClosed',
           [InfoModeWorker.Done]: 'quests.completed',
+          [InfoModeWorker.Responded]: 'quests.responded',
+          [InfoModeWorker.Invited]: 'quests.invited',
         };
         return this.$t(`${obj[this.infoDataMode]}`);
       }
       return '';
     },
     infoClass() {
+      const { infoDataMode } = this;
       if (this.userRole === 'worker') {
         return [
-          { 'info-hide': this.infoDataMode === InfoModeWorker.Created },
-          { 'info_bg-yellow': this.infoDataMode === InfoModeWorker.ADChat },
-          { 'info_bg-green': this.infoDataMode === InfoModeWorker.Active },
-          { 'info_bg-grey': this.infoDataMode === InfoModeWorker.Rejected },
-          { 'info_bg-blue': [InfoModeWorker.WaitConfirm, InfoModeWorker.Done].includes(this.infoDataMode) },
-          { 'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(this.infoDataMode) },
+          { 'info-hide': infoDataMode === InfoModeWorker.Created },
+          { 'info_bg-yellow': [InfoModeWorker.ADChat, InfoModeWorker.Invited].includes(infoDataMode) },
+          { 'info_bg-green': infoDataMode === InfoModeWorker.Active },
+          { 'info_bg-grey': infoDataMode === InfoModeWorker.Rejected },
+          { 'info_bg-blue': [InfoModeWorker.WaitConfirm, InfoModeWorker.Done, InfoModeWorker.Responded].includes(infoDataMode) },
+          { 'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(infoDataMode) },
         ];
       }
       if (this.userRole === 'employer') {
         return [
-          { 'info-hide': this.infoDataMode === InfoModeEmployer.Created },
-          { 'info_bg-yellow': this.infoDataMode === InfoModeEmployer.WaitWorker },
-          { 'info_bg-green': this.infoDataMode === InfoModeEmployer.Active },
-          { 'info_bg-grey': this.infoDataMode === InfoModeEmployer.WaitConfirm },
-          { 'info_bg-red': this.infoDataMode === InfoModeEmployer.Dispute },
-          { 'info_bg-blue': [InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(this.infoDataMode) },
+          { 'info-hide': infoDataMode === InfoModeEmployer.Created },
+          { 'info_bg-yellow': infoDataMode === InfoModeEmployer.WaitWorker },
+          { 'info_bg-green': infoDataMode === InfoModeEmployer.Active },
+          { 'info_bg-grey': infoDataMode === InfoModeEmployer.WaitConfirm },
+          { 'info_bg-red': infoDataMode === InfoModeEmployer.Dispute },
+          { 'info_bg-blue': [InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode) },
         ];
       }
       return '';
     },
     ...mapGetters({
-      tags: 'ui/getTags',
       userRole: 'user/getUserRole',
-      userData: 'user/getUserData',
       infoDataMode: 'quests/getInfoDataMode',
     }),
   },

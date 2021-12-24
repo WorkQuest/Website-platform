@@ -3,11 +3,7 @@
     <info />
     <div class="main main-white">
       <div class="main__body">
-        <questPanel
-          :avatar-url="userAvatar"
-          :location="questLocation"
-          :quest-data="questData"
-        />
+        <questPanel :location="questLocation" />
 
         <div class="quest__container">
           <h2 class="quest__title">
@@ -17,27 +13,16 @@
             {{ questData.description }}
           </span>
         </div>
+        <template v-if="questData.medias && questData.medias.length">
+          <div class="divider" />
+          <div class="quest_materials__title">
+            {{ $t('quests.questMaterials') }}
+          </div>
+          <files-preview :medias="questData.medias" />
+        </template>
         <div class="divider" />
-        <div class="quest_materials__title">
-          {{ $t('quests.questMaterials') }}
-        </div>
-        <files-preview
-          v-if="questData.medias && questData.medias.length"
-          :medias="questData.medias"
-        />
-        <div
-          v-if="userRole === 'employer'
-            ? [InfoModeEmployer.Active, InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode)
-            : [InfoModeWorker.ADChat, InfoModeWorker.Active, InfoModeWorker.Rejected,
-               InfoModeWorker.Created, InfoModeWorker.Done].includes(infoDataMode)"
-          class="divider"
-        />
-        <questIdEmployer
-          :user-avatar="questData.assignedWorker && questData.assignedWorker.avatar ? questData.assignedWorker.avatar.url : null"
-          :assign-worker="questData.assignedWorker"
-          :worker-id="questData.assignedWorkerId"
-        />
-        <questIdWorker />
+        <questIdEmployer v-if="userRole === 'employer'" />
+        <questIdWorker v-if="userRole === 'worker'" />
       </div>
     </div>
     <div class="main">
@@ -49,7 +34,7 @@
               class="quests__map"
               language="en"
               :center="questLocation"
-              :zoom="zoom"
+              :zoom="15"
               :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
             >
               <GMapMarker
@@ -75,7 +60,10 @@
           <workers-list is-invited />
           <workers-list />
         </template>
-        <div class="spec__container">
+        <div
+          v-if="userRole === 'worker'"
+          class="spec__container"
+        >
           <div class="quest__group">
             <h2 class="quest__spec">
               {{ $t('quests.otherQuestsSpec') }}
@@ -90,8 +78,8 @@
           {{ responsesToQuest.responses }}
           <div class="quest__card">
             <quests
-              v-if="questsObjects.count !== 0"
-              :limit="questLimits"
+              v-if="questsObjects.count"
+              :limit="1"
               :object="questsObjects"
               :page="'quests'"
             />
@@ -110,9 +98,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
-  QuestStatuses, InfoModeWorker, InfoModeEmployer, responsesType,
+  QuestStatuses, InfoModeWorker, InfoModeEmployer,
 } from '~/utils/enums';
-import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
 import quests from '~/components/app/pages/common/quests';
@@ -132,26 +119,15 @@ export default {
   },
   data() {
     return {
-      badge: {
-        code: 1,
-      },
-      payload: {
+      payload: { // ???
         spec: 'Painting works',
       },
-      isShowMap: true,
-      priorityIndex: 0,
-      distanceIndex: 0,
-      priceSort: 'desc',
-      timeSort: 'desc',
-      questLimits: 1,
-      questsObjects: {
+      questsObjects: { // ???
         count: 0,
       },
-      userAvatar: '',
       questLocation: { lat: 0, lng: 0 },
       locations: {},
       currentLocation: {},
-      zoom: 15,
       pins: {
         quest: {
           red: '/img/app/marker_red.svg',
@@ -166,30 +142,19 @@ export default {
   },
   computed: {
     ...mapGetters({
-      currentWorker: 'quests/getCurrentWorker',
       questData: 'quests/getQuest',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
       respondedList: 'data/getRespondedList',
-      distance: 'data/getDistance',
       responsesToQuest: 'quests/getResponsesToQuest',
       responsesData: 'quests/getResponsesData',
       infoDataMode: 'quests/getInfoDataMode',
-      responded: 'quests/getResponded',
-      invited: 'quests/getInvited',
     }),
     InfoModeEmployer() {
       return InfoModeEmployer;
     },
     InfoModeWorker() {
       return InfoModeWorker;
-    },
-    priority() {
-      return [
-        this.$t('quests.priority.low'),
-        this.$t('quests.priority.normal'),
-        this.$t('quests.priority.urgent'),
-      ];
     },
   },
   watch: {
@@ -204,12 +169,12 @@ export default {
       },
     },
   },
-  async created() {
-    this.SetLoader(true);
+  async beforeMount() {
     await this.initData();
-    await this.initUserAvatar();
     await this.getResponsesToQuest();
     await this.checkPageMode();
+  },
+  mounted() {
     this.SetLoader(false);
   },
   methods: {
@@ -219,51 +184,58 @@ export default {
     async getResponsesToQuest() {
       if (this.userRole === 'employer') await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
     },
-    async initUserAvatar() {
-      this.userAvatar = await this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
-    },
     async checkPageMode() {
       let payload = 1;
-      const responsesCount = this.userRole === 'employer'
-        ? this.responsesData.count : Object.keys(this.respondedList).length;
-      const { assignedWorker } = this.questData;
-      const { assignedWorkerId } = this.questData;
-      const { userRole } = this;
-      const userId = this.userData.id;
-      const questStatus = this.questData.status;
+      const { questData: { assignedWorkerId, status }, userRole } = this;
+
+      const questStatuses = Object.entries(QuestStatuses);
+
       if (userRole === 'employer') {
-        switch (true) {
-          case responsesCount === 0
-          && questStatus === QuestStatuses.Created: payload = InfoModeEmployer.RaiseViews; break;
-          case responsesCount > 0
-          && questStatus === QuestStatuses.Created: payload = InfoModeEmployer.Created; break;
-          case Object.keys(assignedWorker).length > 0
-          && ![QuestStatuses.Closed, QuestStatuses.Dispute, QuestStatuses.WaitConfirm, QuestStatuses.Done].includes(questStatus):
-            payload = InfoModeEmployer.WaitWorker; break;
-          case questStatus === QuestStatuses.Active: payload = InfoModeEmployer.Active; break;
-          case questStatus === QuestStatuses.Closed: payload = InfoModeEmployer.Closed; break;
-          case questStatus === QuestStatuses.Dispute: payload = InfoModeEmployer.Dispute; break;
-          case questStatus === QuestStatuses.WaitConfirm && Object.keys(assignedWorker).length > 0: payload = InfoModeEmployer.WaitConfirm; break;
-          case questStatus === QuestStatuses.Done && responsesCount > 0: payload = InfoModeEmployer.Done; break;
-          default: { payload = InfoModeEmployer.RaiseViews; break; }
+        const { RaiseViews, WaitWorker } = InfoModeEmployer;
+        const {
+          Closed, Dispute, WaitConfirm, Done, Created,
+        } = QuestStatuses;
+
+        if (assignedWorkerId && ![Closed, Dispute, WaitConfirm, Done].includes(status)) {
+          payload = WaitWorker;
+        } else {
+          questStatuses.some(([key, val]) => {
+            if (val === status) {
+              payload = val === Created && !this.responsesData.count ? RaiseViews : InfoModeEmployer[key];
+              return true;
+            }
+            return false;
+          });
         }
-        await this.$store.dispatch('quests/setInfoDataMode', payload);
-      }
-      if (userRole === 'worker') {
-        switch (true) {
-          case questStatus === QuestStatuses.Rejected && this.questData.response !== null: payload = InfoModeWorker.Rejected; break;
-          case questStatus === QuestStatuses.Created: payload = InfoModeWorker.Created; break;
-          case questStatus === QuestStatuses.Active: payload = InfoModeWorker.Active; break;
-          case questStatus === QuestStatuses.Closed: payload = InfoModeWorker.Closed; break;
-          case questStatus === QuestStatuses.Dispute: payload = InfoModeWorker.Dispute; break;
-          case questStatus === QuestStatuses.WaitConfirm: payload = InfoModeWorker.WaitConfirm; break;
-          case questStatus === QuestStatuses.Done: payload = InfoModeWorker.Done; break;
-          case assignedWorkerId === userId
-          && ![InfoModeWorker.Active, InfoModeWorker.Dispute].includes(questStatus): payload = InfoModeWorker.ADChat; break;
-          default: { payload = InfoModeWorker.ADChat; break; }
+
+        // case status === QuestStatuses.WaitConfirm && Object.keys(assignedWorker).length > 0: payload = InfoModeEmployer.WaitConfirm; break;
+        // case status === QuestStatuses.Done && responsesCount > 0: payload = InfoModeEmployer.Done; break;
+      } else if (userRole === 'worker') {
+        const { Active, Dispute, Created } = QuestStatuses;
+        const { ADChat } = InfoModeWorker;
+
+        const { response } = this.questData;
+
+        if (assignedWorkerId === this.userData.id && ![Active, Dispute].includes(status)) {
+          payload = ADChat;
+        } else {
+          questStatuses.some(([key, val]) => {
+            if (val === status) {
+              if (val === Created && response) key = response.type ? 'Invited' : 'Responded';
+
+              console.log(key);
+
+              payload = InfoModeWorker[key];
+              return true;
+            }
+            return false;
+          });
         }
-        await this.$store.dispatch('quests/setInfoDataMode', payload);
+
+        // case status === QuestStatuses.Rejected && this.questData.response !== null: payload = InfoModeWorker.Rejected; break;
       }
+
+      await this.$store.commit('quests/setInfoDataMode', payload);
     },
     coordinatesChange(item) {
       if (Object.keys(this.currentLocation).length > 0) {
@@ -274,14 +246,6 @@ export default {
     },
     back() {
       this.$router.go(-1);
-    },
-    toggleMap() {
-      this.isInvite = !this.isShowMap;
-    },
-    showRaiseViewsModal() {
-      this.ShowModal({
-        key: modals.raiseViews,
-      });
     },
   },
 };

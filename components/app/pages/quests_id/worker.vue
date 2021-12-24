@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="userRole === 'worker'"
     :class="[
       {'btns__container':
         ![InfoModeWorker.WaitConfirm, InfoModeWorker.Closed, InfoModeWorker.Done].includes(infoDataMode)},
@@ -12,9 +11,7 @@
       class="btns__wrapper"
     >
       <div class="btn__wrapper">
-        <base-btn
-          @click="acceptWorkOnQuest"
-        >
+        <base-btn @click="acceptWorkOnQuest">
           {{ $t('btn.agree') }}
         </base-btn>
       </div>
@@ -75,7 +72,7 @@
     >
       <div class="btn__wrapper">
         <base-btn
-          :disabled="checkResponseStatus()"
+          :disabled="!questData.response"
           @click="sendARequestOnQuest"
         >
           {{ InfoModeWorker.Created ? $t('btn.sendARequest') : $t('btn.responded') }}
@@ -119,43 +116,20 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { InfoModeWorker, QuestStatuses } from '~/utils/enums';
+import { InfoModeWorker } from '~/utils/enums';
 
 export default {
   name: 'QuestIdWorker',
-  data() {
-    return {
-      userAvatar: '',
-      questResponses: {},
-      response: {},
-    };
-  },
   computed: {
     ...mapGetters({
-      userData: 'user/getUserData',
-      userRole: 'user/getUserRole',
       questData: 'quests/getQuest',
       infoDataMode: 'quests/getInfoDataMode',
     }),
-    QuestStatuses() {
-      return QuestStatuses;
-    },
     InfoModeWorker() {
       return InfoModeWorker;
     },
   },
-  async created() {
-    await this.getResponsesToQuestForAuthUser();
-    await this.initData();
-  },
-  async mounted() {
-    this.SetLoader(true);
-    this.SetLoader(false);
-  },
   methods: {
-    checkResponseStatus() {
-      return !(this.questData && !this.questData.response);
-    },
     getPriority(index) {
       const priority = {
         0: this.$t('priority.low'),
@@ -172,11 +146,6 @@ export default {
       };
       return priority[index] || '';
     },
-    async initData() {
-      if (this.userRole === 'worker') {
-        await this.$store.dispatch('quests/getQuest', this.$route.params.id);
-      }
-    },
     async goToChat() {
       this.SetLoader(true);
       await this.$router.push('/messages/1');
@@ -191,7 +160,7 @@ export default {
         title: this.$t('quests.questInfo'),
         subtitle: this.$t('quests.workOnQuestAccepted'),
       });
-      await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.Active);
+      await this.$store.commit('quests/setInfoDataMode', InfoModeWorker.Active);
       this.SetLoader(false);
     },
     async rejectWorkOnQuest() {
@@ -203,7 +172,7 @@ export default {
         title: this.$t('quests.questInfo'),
         subtitle: this.$t('quests.workOnQuestRejected'),
       });
-      await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.Created);
+      await this.$store.commit('quests/setInfoDataMode', InfoModeWorker.Created);
       this.SetLoader(false);
     },
     async completeWorkOnQuest() {
@@ -217,11 +186,6 @@ export default {
       });
       await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.WaitConfirm);
       this.SetLoader(false);
-    },
-    async getResponsesToQuestForAuthUser() {
-      if (this.userRole === 'worker') {
-        this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
-      }
     },
     async sendARequestOnQuest() {
       this.ShowModal({

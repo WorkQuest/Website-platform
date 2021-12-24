@@ -1,5 +1,5 @@
 <template>
-  <div v-if="userRole === 'employer'">
+  <div>
     <div
       v-if="infoDataMode === InfoModeEmployer.RaiseViews"
       class="btns__container"
@@ -8,9 +8,7 @@
         class="btns__wrapper"
       >
         <div class="btn__wrapper">
-          <base-btn
-            @click="toRaisingViews()"
-          >
+          <base-btn @click="toRaisingViews">
             {{ $t('quests.raiseViews') }}
           </base-btn>
         </div>
@@ -24,7 +22,7 @@
         </div>
       </div>
     </div>
-    <div v-if="infoDataMode === InfoModeEmployer.Active">
+    <div v-if="infoDataMode === InfoModeEmployer.Active && assignedWorker">
       <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
@@ -32,14 +30,14 @@
         <div>
           <img
             class="worker__avatar"
-            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
+            :src="assignedWorker.avatar ? assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
           class="worker__name"
         >
-          {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
+          {{ assignedWorker.firstName }} {{ assignedWorker.lastName }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА Нет Бэка-->
@@ -66,57 +64,59 @@
       </div>
     </div>
     <!--                      TODO: НАСТРОИТЬ ВЫВОД ЕСЛИ ПОЛЬЗОВАТЕЛЬ ПРИГЛАШЕН КЕМ-ТО INVITED-->
-    <!--                  <div class="worker__title">{{ $t('quests.youInvited') }}</div>
-                  <div class="worker__container">
-                    <div>
-                      <img
-                        class="worker__avatar"
-                        src="~/assets/img/temp/avatar.jpg"
-                        alt=""
-                      >
-                    </div>
-                    <div class="worker__name">
-                      Rosalia Vans
-                    </div>
-                    <div>
-                      <div
-                        v-if="badge.code !== 0"
-                        class="card__level_higher"
-                        :class="[
-                          {'card__level_higher': badge.code === 1},
-                          {'card__level_reliable': badge.code === 2},
-                          {'card__level_checked': badge.code === 3}
-                        ]"
-                      >
-                        <span v-if="badge.code === 1">
-                          {{ $t('levels.higher') }}
-                        </span>
-                        <span v-if="badge.code === 2">
-                          {{ $t('levels.reliableEmp') }}
-                        </span>
-                        <span v-if="badge.code === 3">
-                          {{ $t('levels.checkedByTime') }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-        </div>-->
-    <div v-if="infoDataMode === InfoModeEmployer.WaitWorker">
-      <div class="worker__title">
+    <!--              <div class="worker__title">{{ $t('quests.youInvited') }}</div>-->
+    <!--              <div class="worker__container">-->
+    <!--                <div>-->
+    <!--                  <img-->
+    <!--                    class="worker__avatar"-->
+    <!--                    src="~/assets/img/temp/avatar.jpg"-->
+    <!--                    alt=""-->
+    <!--                  >-->
+    <!--                </div>-->
+    <!--                <div class="worker__name">-->
+    <!--                  Rosalia Vans-->
+    <!--                </div>-->
+    <!--                <div>-->
+    <!--                  <div-->
+    <!--                    v-if="badge.code !== 0"-->
+    <!--                    class="card__level_higher"-->
+    <!--                    :class="[-->
+    <!--                      {'card__level_higher': badge.code === 1},-->
+    <!--                      {'card__level_reliable': badge.code === 2},-->
+    <!--                      {'card__level_checked': badge.code === 3}-->
+    <!--                    ]"-->
+    <!--                  >-->
+    <!--                    <span v-if="badge.code === 1">-->
+    <!--                      {{ $t('levels.higher') }}-->
+    <!--                    </span>-->
+    <!--                    <span v-if="badge.code === 2">-->
+    <!--                      {{ $t('levels.reliableEmp') }}-->
+    <!--                    </span>-->
+    <!--                    <span v-if="badge.code === 3">-->
+    <!--                      {{ $t('levels.checkedByTime') }}-->
+    <!--                    </span>-->
+    <!--                  </div>-->
+    <!--                </div>-->
+    <!--              </div>-->
+    <!--    </div>-->
+    <div v-if="infoDataMode === InfoModeEmployer.WaitWorker && assignedWorker">
+      <div
+        class="worker__title"
+      >
         {{ $t('quests.worker') }}
       </div>
       <div class="worker__container_row">
         <nuxt-link :to="`/profile/${workerId}`">
           <img
             class="worker__avatar"
-            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
+            :src="assignedWorker.avatar ? assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </nuxt-link>
         <div
           class="worker__name"
         >
-          {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
+          {{ assignedWorker.firstName }} {{ assignedWorker.lastName }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
@@ -131,7 +131,7 @@
       </div>
     </div>
     <div
-      v-if="infoDataMode === InfoModeEmployer.WaitConfirm"
+      v-if="infoDataMode === InfoModeEmployer.WaitConfirm && assignedWorker"
       class="btns__container"
     >
       <div>
@@ -141,13 +141,13 @@
         <div class="worker__container_row">
           <img
             class="worker__avatar"
-            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
+            :src="assignedWorker.avatar ? assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
           <div
             class="worker__name"
           >
-            {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
+            {{ assignedWorker.firstName }} {{ assignedWorker.lastName }}
           </div>
           <div>
             <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
@@ -179,7 +179,7 @@
         </div>
       </div>
     </div>
-    <div v-if="[InfoModeEmployer.Dispute, InfoModeEmployer.Closed].includes(infoDataMode)">
+    <div v-if="[InfoModeEmployer.Dispute, InfoModeEmployer.Closed].includes(infoDataMode) && assignedWorker">
       <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
@@ -187,14 +187,14 @@
         <div>
           <img
             class="worker__avatar"
-            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
+            :src="assignedWorker.avatar ? assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
           class="worker__name"
         >
-          {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
+          {{ assignedWorker.firstName }} {{ assignedWorker.lastName }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
@@ -220,7 +220,7 @@
         </div>
       </div>
     </div>
-    <div v-if="infoDataMode === InfoModeEmployer.Done">
+    <div v-if="infoDataMode === InfoModeEmployer.Done && assignedWorker">
       <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
@@ -228,14 +228,14 @@
         <div>
           <img
             class="worker__avatar"
-            :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
+            :src="assignedWorker.avatar ? assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
         </div>
         <div
           class="worker__name"
         >
-          {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
+          {{ assignedWorker.firstName }} {{ assignedWorker.lastName }}
         </div>
         <div>
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
@@ -284,18 +284,6 @@ import { InfoModeEmployer, QuestStatuses } from '~/utils/enums';
 export default {
   name: 'QuestIdEmployer',
   props: {
-    infoData: {
-      type: Object,
-      default: () => {},
-    },
-    userAvatar: {
-      type: String,
-      default: () => '',
-    },
-    assignWorker: {
-      type: Object,
-      default: () => {},
-    },
     workerId: {
       type: String,
       default: '',
@@ -303,7 +291,6 @@ export default {
   },
   data() {
     return {
-      filteredResponses: [],
       badge: {
         code: 1,
       },
@@ -311,11 +298,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      currentWorker: 'quests/getCurrentWorker',
+      assignedWorker: 'quests/getAssignedWorker',
       questData: 'quests/getQuest',
-      userRole: 'user/getUserRole',
-      userData: 'user/getUserData',
-      responsesToQuest: 'quests/getResponsesToQuest',
       infoDataMode: 'quests/getInfoDataMode',
     }),
     InfoModeEmployer() {
@@ -344,15 +328,6 @@ export default {
       }
       return '';
     },
-  },
-  async created() {
-    await this.initData();
-    await this.getResponsesToQuest();
-    await this.getFilteredResponses();
-  },
-  mounted() {
-    this.SetLoader(true);
-    this.SetLoader(false);
   },
   methods: {
     getPriority(index) {
@@ -400,21 +375,6 @@ export default {
       this.showQuestModal(modalMode);
       await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Dispute);
       this.SetLoader(false);
-    },
-    async initData() {
-      await this.$store.dispatch('quests/getQuest', this.$route.params.id);
-    },
-    async getFilteredResponses() {
-      if (this.userRole === 'employer') {
-        this.filteredResponses = this.responsesToQuest.filter((response) => response.status === 0);
-        return this.filteredResponses;
-      }
-      return '';
-    },
-    async getResponsesToQuest() {
-      if (this.userRole === 'employer') {
-        await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
-      }
     },
     toRaisingViews() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {

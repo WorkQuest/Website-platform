@@ -8,7 +8,6 @@ export default {
   getUserSpecializations: (state) => state.currentWorker?.userSpecializations,
   getQuestsStatistic: (state) => state.currentWorker?.questsStatistic,
   getRatingStatistic: (state) => state.currentWorker?.ratingStatistic,
-  getCurrentWorkerAddInfo: (state) => state.currentWorker.additionalInfo || {},
   getInfoDataMode: (state) => state.infoDataMode || '',
   getUserInfoQuests: (state) => state.userInfoQuests || '',
   getAllQuests: (state) => state.allQuests || '',
@@ -30,4 +29,5 @@ export default {
   getFilters: (state) => state.filters,
   getSelectedSpecializationsFilters: (state) => state.selectedSpecializationsFilters,
   getSelectedPriceFilter: (state) => state.selectedPriceFilter,
+  getAssignedWorker: (state) => state.quest.assignedWorker,
 };
