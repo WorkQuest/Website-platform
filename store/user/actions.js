@@ -45,9 +45,13 @@ export default {
     return response;
   },
   async signUp({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/auth/register', payload);
-    commit('setTokens', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$post('/v1/auth/register', payload);
+      commit('setTokens', response.result);
+      return response;
+    } catch (e) {
+      return error();
+    }
   },
   async logOut({ commit }) {
     commit('logOut');

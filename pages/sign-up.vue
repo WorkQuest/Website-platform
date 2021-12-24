@@ -260,15 +260,14 @@ export default {
       data.privateKey = wallet.privateKey;
       data.address = wallet.address;
 
-      // try {
-      //   const payload = {
-      //     firstName: this.model.firstName,
-      //     lastName: this.model.lastName,
-      //     email: this.model.email,
-      //     password: this.model.password,
-      //   };
-      //   const response = await this.$store.dispatch('user/signUp', payload);
-      //   if (response?.ok) {
+      const payload = {
+        firstName: this.model.firstName,
+        lastName: this.model.lastName,
+        email: this.model.email,
+        password: this.model.password,
+      };
+      // const response = await this.$store.dispatch('user/signUp', payload);
+      // if (response.ok) {
       const storageData = {
         ...JSON.parse(localStorage.getItem('mnemonic')),
         [wallet.address]: encryptStringWithKey(this.mnemonic, this.model.password),
@@ -279,10 +278,7 @@ export default {
         [wallet.address]: this.mnemonic,
       };
       sessionStorage.setItem('mnemonic', JSON.stringify(sessionData));
-      //     this.showConfirmEmailModal();
-      //   }
-      // } catch (e) {
-      //   console.log(e);
+      this.showConfirmEmailModal();
       // }
     },
     showConfirmEmailModal() {
