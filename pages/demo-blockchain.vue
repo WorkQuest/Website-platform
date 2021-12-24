@@ -24,11 +24,28 @@
           >
             <div class="card__input input">
               <base-field
-                class="input__field"
-                :placeholder="'Sum'"
-                rules="required"
-                :name="$t('modals.creditCardNumber')"
-              />
+                id="amount"
+                v-model="amount"
+                class="content__field"
+                type="number"
+                placeholder="3500"
+                rules="required|decimal|decimalPlaces:18"
+                :name="$t('modals.amount')"
+              >
+                <template
+                  v-slot:right-absolute
+                  class="content__max max"
+                >
+                  <base-btn
+                    mode="max"
+                    class="max__button"
+                    :class="{'max__button_hide' : !isConnected}"
+                    @click="maxBalance()"
+                  >
+                    <span class="max__text">{{ $t('modals.maximum') }}</span>
+                  </base-btn>
+                </template>
+              </base-field>
             </div>
             <div class="card__input input">
               <base-field
@@ -45,7 +62,7 @@
               class="card__button"
               @click="connectToMetamask"
             >
-              {{ $t('mining.connectWallet') }}
+              {{ !isConnected ? $t('mining.connectWallet') : $t('meta.send') }}
             </base-btn>
           </ValidationObserver>
         </div>
@@ -74,6 +91,7 @@ export default {
   layout: 'guest',
   data() {
     return {
+      amount: 0,
       address: '',
     };
   },
@@ -86,9 +104,13 @@ export default {
   methods: {
     async connectToMetamask() {
       if (!this.isConnected) {
+        await this.$store.dispatch('web3/goToChain', { chain: 'ETH' });
         await this.$store.dispatch('web3/connectToMetaMask');
         this.address = this.account.address;
       }
+    },
+    maxBalance() {
+      this.amount = 100;
     },
   },
 };
@@ -181,6 +203,11 @@ export default {
       list-style: disc;
       color: #4C5767;
       padding-left: 15px;
+    }
+  }
+  .max__button {
+    &_hide {
+      display: none;
     }
   }
   @include _1199 {
