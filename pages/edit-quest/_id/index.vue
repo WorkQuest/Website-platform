@@ -410,6 +410,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     await this.editQuestFill();
     this.SetLoader(false);
   },
