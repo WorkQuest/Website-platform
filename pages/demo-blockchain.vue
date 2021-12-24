@@ -32,8 +32,10 @@
             </div>
             <div class="card__input input">
               <base-field
+                v-model="address"
                 class="input__field"
                 :placeholder="'Address'"
+                :disabled="true"
                 rules="required"
                 :name="$t('modals.cardHolderField')"
               />
@@ -41,6 +43,7 @@
             <base-btn
               mode="'outline'"
               class="card__button"
+              @click="connectToMetamask"
             >
               {{ $t('mining.connectWallet') }}
             </base-btn>
@@ -52,7 +55,7 @@
       <div class="description__title">
         How i can test it?
       </div>
-      <ul>
+      <ul class="description__content">
         <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget fermentum elit lectus orci diam id nulla. Sed sit gravida ornare praesent diam mauris, egestas fringilla felis. Dolor ipsum ipsum est mauris proin a, lectus. Pulvinar et sit integer fames tellus. Semper ut nibh at sit diam neque. Augue aliquam, nec erat a diam vel, sed non gravida. Bibendum neque, urna vel scelerisque diam.</li>
         <li>Suspendisse morbi nisl est augue eget cras amet. Donec orci eget maecenas risus tempor elit ultricies. Pretium consectetur gravida rhoncus nulla et et. Eget egestas ut netus suspendisse porttitor. Lacus tellus sed enim quis. Porttitor dolor elementum eget ornare id convallis mattis. Tincidunt sit praesent imperdiet velit dui in dictum. Vitae lectus sed nec tincidunt nec vitae. Massa semper rutrum consectetur eu ultrices ac id auctor sit. Lobortis mi pharetra, sit rutrum diam tristique interdum sed eu. Proin sagittis risus, enim commodo ut. Pellentesque libero eget eu, sed. Ultricies sed enim, eget malesuada massa.</li>
         <li>Viverra adipiscing molestie euismod enim, eget. Sem felis, non venenatis, turpis et adipiscing. Senectus aliquam neque gravida at magnis lacus, vestibulum. Velit ut sem nibh vitae. Tincidunt venenatis bibendum rhoncus quis bibendum purus. Arcu ante donec quisque enim, sit nunc tincidunt quis. Scelerisque gravida ut tellus etiam mauris. Iaculis eu risus mattis risus felis, non nibh leo. Arcu accumsan posuere dolor in. Ullamcorper eleifend aliquet arcu, neque. Sit commodo amet tempus sed orci, accumsan, molestie. Non felis dolor nunc tellus. Pretium at risus faucibus aliquet. Pellentesque ut nunc, amet amet, ac sit ut. Urna nisl aliquet felis, ipsum morbi porttitor.</li>
@@ -64,8 +67,30 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'DemoBlockchain',
+  layout: 'guest',
+  data() {
+    return {
+      address: '',
+    };
+  },
+  computed: {
+    ...mapGetters({
+      isConnected: 'web3/isConnected',
+      account: 'web3/getAccount',
+    }),
+  },
+  methods: {
+    async connectToMetamask() {
+      if (!this.isConnected) {
+        await this.$store.dispatch('web3/connectToMetaMask');
+        this.address = this.account.address;
+      }
+    },
+  },
 };
 </script>
 
@@ -150,6 +175,67 @@ export default {
       font-size: 28px;
       line-height: 130%;
       color: #1D2127;
+    }
+    &__content {
+      margin-top: 20px;
+      list-style: disc;
+      color: #4C5767;
+      padding-left: 15px;
+    }
+  }
+  @include _1199 {
+    .blockchain {
+      padding: 0 20px;
+      &__banner {
+        width: 100%;
+      }
+      &__description {
+        width: 100%;
+      }
+    }
+  }
+  @include _991 {
+    .banner {
+      &__left {
+        padding-left: 30px;
+      }
+      &__card {
+        width: 323px;
+      }
+      &__background {
+        height: 300px;
+      }
+    }
+  }
+  @include _575 {
+    .blockchain {
+      &__banner {
+        justify-content: center;
+      }
+    }
+    .banner {
+      &__left {
+        display: none;
+      }
+      &__background {
+        height: 300px;
+      }
+    }
+  }
+  @include _380 {
+    .banner {
+      &__right {
+        padding: 0;
+      }
+    }
+  }
+  @include _350 {
+    .banner {
+      &__card {
+        width: 250px;
+        height: 230px;
+        padding: 20px;
+      }
     }
   }
 </style>
