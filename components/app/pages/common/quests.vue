@@ -139,13 +139,16 @@
                   </template>
                 </base-btn>
                 <div
-                  v-if="item.status === questStatuses.Done"
+                  v-if="item.status === questStatuses.Done && item.assignedWorkerId === userData.id"
                   class="block__rating"
                 >
                   <div class="block__rating block__rating_star">
-                    <button @click="showReviewModal(item)">
-                      <star-rating :rating="item.user.ratingStatistic" />
-                    </button>
+                    <star-rating
+                      :rating-type="'questPage'"
+                      :stars-number="5"
+                      :rating="getRating(item)"
+                      @input="showReviewModal($event, item)"
+                    />
                   </div>
                 </div>
               </div>
@@ -276,10 +279,11 @@ export default {
     showDetails(questId) {
       this.$router.push(`/quests/${questId}`);
     },
-    showReviewModal(item) {
+    showReviewModal(rating, item) {
       this.ShowModal({
         key: modals.review,
         item,
+        rating,
       });
     },
     isHideStar(type) {
@@ -333,6 +337,9 @@ export default {
         [questPriority.Urgent]: 'block__priority_urgent',
       };
       return priority[index] || '';
+    },
+    getRating(item) {
+      return item?.review?.mark || 0;
     },
   },
 };
@@ -486,7 +493,10 @@ export default {
       &_clo {
         background: $red;
       }
-      &_req {}
+      &_req {
+        background: $grey;
+        color: $black600 !important;
+      }
       &_per {
         background: $blue;
       }
