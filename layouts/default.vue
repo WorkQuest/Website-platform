@@ -152,9 +152,10 @@
                     class="locale"
                   >
                     <li
-                      v-for="(item, i) in locales"
-                      :key="i"
+                      v-for="item in locales"
+                      :key="item.localeText"
                       class="locale__item"
+                      :class="[{'locale__item_active' : currentLocale === item.localeText}]"
                       @click="setLocale(item)"
                     >
                       <img
@@ -623,48 +624,10 @@ export default {
       ];
     },
     locales() {
-      return [
-        {
-          localeSrc: 'en.svg',
-          localeText: this.$t('ui.locals.en'),
-        },
-        {
-          localeSrc: 'ru.svg',
-          localeText: this.$t('ui.locals.ru'),
-        },
-        {
-          localeSrc: 'bn.svg',
-          localeText: this.$t('ui.locals.bn'),
-        },
-        {
-          localeSrc: 'zh.svg',
-          localeText: this.$t('ui.locals.zh'),
-        },
-        {
-          localeSrc: 'fr.svg',
-          localeText: this.$t('ui.locals.fr'),
-        },
-        {
-          localeSrc: 'hi.svg',
-          localeText: this.$t('ui.locals.hi'),
-        },
-        {
-          localeSrc: 'id.svg',
-          localeText: this.$t('ui.locals.id'),
-        },
-        {
-          localeSrc: 'pt.svg',
-          localeText: this.$t('ui.locals.pt'),
-        },
-        {
-          localeSrc: 'es.svg',
-          localeText: this.$t('ui.locals.es'),
-        },
-        {
-          localeSrc: 'ar.svg',
-          localeText: this.$t('ui.locals.ar'),
-        },
-      ];
+      return this.$i18n.locales.map((item) => ({
+        localeSrc: `${item}.svg`,
+        localeText: this.$t(`ui.locals.${item}`),
+      }));
     },
     instrumentDDLinks() {
       return [
@@ -1556,9 +1519,14 @@ export default {
     width: 46px;
     display: flex;
     align-items: center;
+    opacity: 0.7;
+
+    &_active {
+      opacity: 1;
+    }
 
     &:hover {
-      opacity: 0.5;
+      opacity: 1;
     }
   }
   &__item:not(:last-child) {
