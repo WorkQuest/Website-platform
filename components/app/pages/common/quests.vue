@@ -502,7 +502,9 @@ export default {
       &_act {
         background: $green;
       }
-      &_inv {}
+      &_inv {
+        background: $yellow;
+      }
     }
   }
   &__card {
