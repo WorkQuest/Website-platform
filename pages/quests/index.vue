@@ -232,7 +232,7 @@ import emptyData from '~/components/app/info/emptyData';
 import { priorityFilter, typeOfJobFilter, workplaceFilter } from '~/utils/enums';
 
 export default {
-  name: 'Quests',
+  name: 'QuestsList',
   directives: {
     ClickOutside,
   },

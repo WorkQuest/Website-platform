@@ -131,7 +131,7 @@ export default {
       });
     },
     async getPortfolios() {
-      return await this.$store.dispatch('user/getUserPortfolios', this.userData.id);
+      return await this.$store.dispatch('user/getUserPortfolios', { userId: this.userData.id });
     },
     async setCaseImage() {
       const { file, data } = this.portfolio;
