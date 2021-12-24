@@ -269,8 +269,16 @@ export default {
       //   };
       //   const response = await this.$store.dispatch('user/signUp', payload);
       //   if (response?.ok) {
-    // localStorage.setItem('mnemonic', encryptStringWithKey(this.mnemonic, this.model.password));
-    // this.$cookies.set('mnemonic', this.mnemonic);
+      const storageData = {
+        ...JSON.parse(localStorage.getItem('mnemonic')),
+        [wallet.address]: encryptStringWithKey(this.mnemonic, this.model.password),
+      };
+      localStorage.setItem('mnemonic', JSON.stringify(storageData));
+      const sessionData = {
+        ...JSON.parse(sessionStorage.getItem('menmonic')),
+        [wallet.address]: this.mnemonic,
+      };
+      sessionStorage.setItem('mnemonic', JSON.stringify(sessionData));
       //     this.showConfirmEmailModal();
       //   }
       // } catch (e) {
