@@ -112,26 +112,20 @@
               <span class="block__publication_thin">{{ $moment(item.createdAt).format('Do MMMM YYYY, hh:mm a') }}</span>
             </div>
             <div class="block__actions">
-              <div
-                v-if="isHideStatus(item.type)"
-                class="block__status"
-              >
+              <div class="block__status">
                 <div
-                  v-if="item.priority !== 0"
+                  v-if="item.priority !== 0 && item.status !== questStatuses.Done"
                   class="block__priority"
                   :class="getPriorityClass(item.priority)"
                 >
                   {{ getPriority(item.priority) }}
                 </div>
-                <div class="block__amount block__amount_green">
+                <div
+                  class="block__amount"
+                  :class="getAmountStyles(item)"
+                >
                   {{ `${item.price}  ${currency}` }}
                 </div>
-              </div>
-              <div
-                v-else
-                class="block__amount block__amount_gray"
-              >
-                {{ `${item.price}  ${currency}` }}
               </div>
               <div class="block__details">
                 <base-btn
@@ -206,8 +200,13 @@ export default {
     this.SetLoader(false);
   },
   methods: {
-    getStyles(item) {
-      return ({ '--image-url': this.getQuestPreview(item).url });
+    getAmountStyles(item) {
+      return [
+        {
+          block__amount_green: item.status !== this.questStatuses.Done,
+          block__amount_gray: item.status === this.questStatuses.Done,
+        },
+      ];
     },
     goToProfile(id) {
       this.$router.push(`/profile/${id}`);
@@ -243,19 +242,12 @@ export default {
     },
     progressQuestText(status) {
       if (this.userRole) {
-        if (status === QuestStatuses.Active) {
-          return this.$t('quests.questActive:');
-        } if (status === QuestStatuses.Closed) {
-          return this.$t('quests.questClosed:');
-        } if (status === QuestStatuses.Dispute) {
-          return this.$t('quests.questDispute:');
-        } if (status === QuestStatuses.WaitWorker) {
-          return this.$t('quests.inProgressBy');
-        } if (status === QuestStatuses.WaitConfirm) {
-          return this.$t('quests.questWaitConfirm:');
-        } if (status === QuestStatuses.Done) {
-          return this.$t('quests.finishedBy');
-        }
+        if (status === QuestStatuses.Active) return this.$t('quests.questActive:');
+        if (status === QuestStatuses.Closed) return this.$t('quests.questClosed:');
+        if (status === QuestStatuses.Dispute) return this.$t('quests.questDispute:');
+        if (status === QuestStatuses.WaitWorker) return this.$t('quests.inProgressBy');
+        if (status === QuestStatuses.WaitConfirm) return this.$t('quests.questWaitConfirm:');
+        if (status === QuestStatuses.Done) return this.$t('quests.finishedBy');
       }
       return '';
     },
@@ -554,6 +546,7 @@ export default {
     position: relative;
     display: flex;
     background-size: cover !important;
+    background-position: center !important;
     border-radius: 6px 0 0 6px;
   }
   &__state {
@@ -613,15 +606,12 @@ export default {
     line-height: 130%;
     text-transform: uppercase;
     &_green {
-      @extend .block__amount;
       color: #00AA5B;
     }
     &_gray {
-      @extend .block__amount;
       color: #B0B3B9;
     }
     &__performed {
-      @extend .block__amount;
       color: #B0B3B9;
     }
   }
