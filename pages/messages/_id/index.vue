@@ -396,12 +396,11 @@ export default {
   methods: {
 
     setFullName({ itsMe, infoMessage: { user }, sender }) {
-      // eslint-disable-next-line no-nested-ternary
       return itsMe
-        ? (user ? (`${user.firstName || ''} ${user.lastName || ''}`) : '')
-        : `${sender.firstName || ''} ${sender.lastName || ''}`;
+        ? `${user?.firstName || ''} ${user?.lastName || ''}`
+        : `${sender?.firstName || ''} ${sender?.lastName || ''}`;
     },
-    setInfoMessageText(action, itsMe, isAboutMe) {
+    setInfoMessageText(action, itsMe) {
       let text = 'chat.systemMessages.';
       switch (action) {
         case 'employerInviteOnQuest': {
