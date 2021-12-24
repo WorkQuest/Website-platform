@@ -202,10 +202,8 @@ export default {
   methods: {
     getAmountStyles(item) {
       return [
-        {
-          block__amount_green: item.status !== this.questStatuses.Done,
-          block__amount_gray: item.status === this.questStatuses.Done,
-        },
+        { block__amount_green: item.status !== this.questStatuses.Done },
+        { block__amount_gray: item.status === this.questStatuses.Done },
       ];
     },
     goToProfile(id) {
