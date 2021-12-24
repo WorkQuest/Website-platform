@@ -34,7 +34,7 @@
             </div>
             <div
               class="card__number"
-              :class="item.ratingMode ? 'card__number_rating' : ''"
+              :class="{'card__number_rating' : item.ratingMode}"
             >
               {{ numberValidate(item.number) }}
             </div>
@@ -66,7 +66,7 @@
                 <li
                   v-for="(skill, key) in skills"
                   :key="key"
-                  class="skills__item skills__item_blue"
+                  class="skills__item"
                 >
                   {{ $t(`filters.items.${specialization}.sub.${skill}`) }}
                 </li>
@@ -87,7 +87,7 @@
           <quests
             v-if="questsObject.count !== 0"
             :object="questsObject"
-            :page="'quests'"
+            page="quests"
           />
           <emptyData
             v-else
@@ -124,7 +124,7 @@
           >
             {{ $t('quests.reviewsBig') }}
           </div>
-          <template v-if="userStatistics.reviewCount > 0">
+          <template v-if="reviewsObject.count > 0">
             <div
               class="reviews__container"
             >
@@ -146,7 +146,7 @@
               class="reviews__button button"
             >
               <div
-                v-if="userStatistics.reviewCount > 4"
+                v-if="reviewsObject.count > 4"
                 class="button__more"
                 @click="selectedTab = 'reviews'"
               >
@@ -182,7 +182,10 @@
               </template>
             </base-btn>
           </div>
-          <portfolioTab :object="portfolioObject" />
+          <portfolioTab
+            class="profile__portfolio"
+            :object="portfolios"
+          />
           <div
             v-if="selectedTab === 'portfolio' && totalPortfoliosPages > 1"
             class="portfolio__pager pager"
@@ -195,7 +198,7 @@
             </div>
           </div>
           <div
-            v-if="selectedTab === 'commonInfo' && portfolioObject.count > 3"
+            v-if="selectedTab === 'commonInfo' && portfolios.count > 3"
             class="portfolio__button button"
           >
             <div
@@ -213,7 +216,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import moment from 'moment';
 import reviewsTab from '~/components/app/pages/profile/tabs/reviews';
 import portfolioTab from '~/components/app/pages/profile/tabs/portfolio';
 import userInfo from '~/components/app/pages/common/userInfo';
@@ -235,7 +237,6 @@ export default {
       selectedTab: 'commonInfo',
       questsObject: {},
       reviewsObject: {},
-      portfolioObject: {},
       userStatistics: {
         reviewCount: 0,
         averageMark: 0,
@@ -304,26 +305,24 @@ export default {
       return Math.ceil(this.portfolios.count / this.perPagerPortfolios);
     },
     statisticsData() {
-      const { ratingStatistic } = this.userData;
-      const { questStatistic } = this.userData;
       return [
         {
           title: this.$t('quests.completedQuests'),
-          number: questStatistic ? questStatistic.completed : 0,
+          number: this.userData?.questsStatistic?.completed || 0,
           ratingMode: false,
           subtitle: this.$t('quests.oneTime'),
         },
         {
           title: this.$t('quests.openedQuests'),
-          number: questStatistic ? questStatistic.opened : 0,
+          number: this.userData?.questsStatistic?.opened || 0,
           ratingMode: false,
           subtitle: '',
         },
         {
           title: this.$t('quests.averageRating'),
-          number: ratingStatistic && ratingStatistic.averageMark ? ratingStatistic.averageMark : 0,
+          number: this.userData?.ratingStatistic?.averageMark || 0,
           ratingMode: true,
-          subtitle: `${this.$t('quests.fromBig')} ${ratingStatistic ? ratingStatistic.reviewCount : 0} ${this.$t('quests.reviews')}`,
+          subtitle: `${this.$t('quests.fromBig')} ${this.userData?.ratingStatistic?.reviewCount || 0} ${this.$t('quests.reviews')}`,
         },
       ];
     },
@@ -339,8 +338,9 @@ export default {
       } else if (this.selectedTab === 'reviews') {
         await this.changeReviewsData();
       } else if (this.selectedTab === 'portfolio') {
-        await this.changePortfoliosData();
+        await this.changePortfoliosData(this.perPagerPortfolios);
       } else if (this.selectedTab === 'commonInfo') {
+        this.pagePortfolios = 1;
         await this.changeQuestsData(2);
         await this.changeReviewsData(2);
         if (this.userData.role === 'worker') {
@@ -361,7 +361,7 @@ export default {
     },
     async pagePortfolios() {
       this.SetLoader(true);
-      await this.changePortfoliosData();
+      await this.changePortfoliosData(this.perPagerPortfolios);
       this.SetLoader(false);
     },
   },
@@ -420,10 +420,12 @@ export default {
     async changePortfoliosData(limit) {
       const payload = {
         userId: this.userId,
-        query: limit ? `limit=${limit}` : `limit=${this.perPagerPortfolios}&offset=${(this.pagePortfolios - 1) * this.perPagerPortfolios}`,
+        query: {
+          limit: limit || this.perPagerPortfolios,
+          offset: (this.pagePortfolios - 1) * this.perPagerPortfolios,
+        },
       };
       await this.$store.dispatch('user/getUserPortfolios', payload);
-      this.portfolioObject = this.portfolios;
     },
     getSkillTitle() {
       const specData = {};
@@ -538,12 +540,10 @@ export default {
     &__item {
       font-size: 16px;
       line-height: 130%;
-      &_blue {
-        background-color: rgba(0, 131, 199, 0.1);
-        border-radius: 44px;
-        padding: 5px;
-        color: #0083C7;
-      }
+      background-color: rgba(0, 131, 199, 0.1);
+      border-radius: 44px;
+      padding: 5px;
+      color: #0083C7;
     }
   }
 }
@@ -639,6 +639,11 @@ export default {
   &__add-btn {
     width: 154px;
     margin: 20px 0 20px 0;
+  }
+}
+.profile {
+  &__portfolio {
+    margin-top: 28px;
   }
 }
 @include _1199 {

@@ -66,57 +66,53 @@
       </div>
     </div>
     <!--                      TODO: НАСТРОИТЬ ВЫВОД ЕСЛИ ПОЛЬЗОВАТЕЛЬ ПРИГЛАШЕН КЕМ-ТО INVITED-->
-    <!--              <div class="worker__title">{{ $t('quests.youInvited') }}</div>-->
-    <!--              <div class="worker__container">-->
-    <!--                <div>-->
-    <!--                  <img-->
-    <!--                    class="worker__avatar"-->
-    <!--                    src="~/assets/img/temp/avatar.jpg"-->
-    <!--                    alt=""-->
-    <!--                  >-->
-    <!--                </div>-->
-    <!--                <div class="worker__name">-->
-    <!--                  Rosalia Vans-->
-    <!--                </div>-->
-    <!--                <div>-->
-    <!--                  <div-->
-    <!--                    v-if="badge.code !== 0"-->
-    <!--                    class="card__level_higher"-->
-    <!--                    :class="[-->
-    <!--                      {'card__level_higher': badge.code === 1},-->
-    <!--                      {'card__level_reliable': badge.code === 2},-->
-    <!--                      {'card__level_checked': badge.code === 3}-->
-    <!--                    ]"-->
-    <!--                  >-->
-    <!--                    <span v-if="badge.code === 1">-->
-    <!--                      {{ $t('levels.higher') }}-->
-    <!--                    </span>-->
-    <!--                    <span v-if="badge.code === 2">-->
-    <!--                      {{ $t('levels.reliableEmp') }}-->
-    <!--                    </span>-->
-    <!--                    <span v-if="badge.code === 3">-->
-    <!--                      {{ $t('levels.checkedByTime') }}-->
-    <!--                    </span>-->
-    <!--                  </div>-->
-    <!--                </div>-->
-    <!--              </div>-->
-    <!--    </div>-->
+    <!--                  <div class="worker__title">{{ $t('quests.youInvited') }}</div>
+                  <div class="worker__container">
+                    <div>
+                      <img
+                        class="worker__avatar"
+                        src="~/assets/img/temp/avatar.jpg"
+                        alt=""
+                      >
+                    </div>
+                    <div class="worker__name">
+                      Rosalia Vans
+                    </div>
+                    <div>
+                      <div
+                        v-if="badge.code !== 0"
+                        class="card__level_higher"
+                        :class="[
+                          {'card__level_higher': badge.code === 1},
+                          {'card__level_reliable': badge.code === 2},
+                          {'card__level_checked': badge.code === 3}
+                        ]"
+                      >
+                        <span v-if="badge.code === 1">
+                          {{ $t('levels.higher') }}
+                        </span>
+                        <span v-if="badge.code === 2">
+                          {{ $t('levels.reliableEmp') }}
+                        </span>
+                        <span v-if="badge.code === 3">
+                          {{ $t('levels.checkedByTime') }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+        </div>-->
     <div v-if="infoDataMode === InfoModeEmployer.WaitWorker">
-      <div
-        class="worker__title"
-      >
+      <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
-      <div
-        class="worker__container_row"
-      >
-        <div>
+      <div class="worker__container_row">
+        <nuxt-link :to="`/profile/${workerId}`">
           <img
             class="worker__avatar"
             :src="userAvatar ? userAvatar : require('~/assets/img/app/avatar_empty.png')"
             alt=""
           >
-        </div>
+        </nuxt-link>
         <div
           class="worker__name"
         >
@@ -299,6 +295,10 @@ export default {
     assignWorker: {
       type: Object,
       default: () => {},
+    },
+    workerId: {
+      type: String,
+      default: '',
     },
   },
   data() {
@@ -585,6 +585,7 @@ export default {
     border-radius: 50%;
     width: 40px;
     height: 40px;
+    cursor: pointer;
   }
   &__name {
     @extend .worker;
