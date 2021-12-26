@@ -11,60 +11,7 @@
         :addresses="addresses"
         :local-user-data="localUserData"
       />
-
-      <!--         <h2
-          v-if="userRole === 'worker'"
-          class="page__title"
-        >
-          {{ $t('settings.employmentInfo') }}
-        </h2>
-        <div
-          v-if="userRole === 'worker'"
-          class="main-white"
-        >
-          <div class="page__skills skills">
-            <specializations-selector
-              :skills="userSpecializations"
-              @changeSkills="updateSelectedSkills"
-            />
-            <div class="skills__add-info">
-              <base-dd
-                v-model="priorityIndex"
-                class="specialization__dd"
-                type="gray"
-                :placeholder="$t('priority.title')"
-                :items="priority"
-                :mode="'small'"
-                :label="$t('settings.priority')"
-              />
-              <base-dd
-                v-model="distantIndex"
-                class="specialization__dd"
-                type="gray"
-                :placeholder="$t('settings.distantWork.select')"
-                :items="distantWork"
-                :mode="'small'"
-                :label="$t('settings.distantWork.title')"
-              />
-              <base-field
-                v-model="perHour"
-                class="specialization__skills"
-                :placeholder="perHour ||$t('priority.title')"
-                :label="$t('settings.costPerHour')"
-                :name="$t('settings.costPerHour')"
-                type="gray"
-              />
-            </div>
-            <div class="page__btn">
-              <base-btn
-                class="btn__save"
-                @click="editUserData"
-              >
-                {{ $t('settings.save') }}
-              </base-btn>
-            </div>
-          </div>
-        </div> -->
+      <skills />
     </div>
 
     <!--       <div class="settings">
@@ -223,10 +170,11 @@ import modals from '~/store/modals/modals';
 import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 import VerificationCard from '~/components/app/pages/settings/VerificationCard.vue';
 import Profile from '~/components/app/pages/settings/Profile.vue';
+import Skills from '~/components/app/pages/settings/Skills.vue';
 
 export default {
   name: 'Settings',
-  components: { VerificationCard, Profile },
+  components: { VerificationCard, Profile, Skills },
   directives: {
     ClickOutside,
   },
@@ -781,136 +729,6 @@ export default {
     }
   }
 }
-.icon {
-  font-size: 25px;
-  color: $blue;
-  align-items: center;
-  &__gradient {
-    color: transparent;
-    -webkit-background-clip: text;
-    background-image: linear-gradient(135deg, #0083C7 0%, #00AA5B 100%);
-  }
-  &-check_all_big:before {
-    @extend .icon;
-    content: "\ea00";
-    color: $white;
-    padding: 0 0 0 10px;
-  }
-  &-Lock:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\ea24";
-  }
-  &-user_pin:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\e908";
-  }
-  &-caret_right:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\ea4a";
-    color: $black200;
-  }
-  &-data:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\e914";
-  }
-  &-group_alt:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\e900";
-  }
-  &-home_alt_check:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\e961";
-  }
-  &-credit_card:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\ea0e";
-  }
-  &-Case:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\e9ff";
-  }
-  &-line_chart_up:before {
-    @extend .icon;
-    @extend .icon__gradient;
-    content: "\e9cb";
-  }
-  &-settings:before {
-    @extend .icon;
-    content: "\ea34";
-  }
-  &-chevron_big_right:before {
-    @extend .icon;
-    content: "\ea4e";
-    color: $black200;
-  }
-  &-plus_circle:before {
-    @extend .icon;
-    content: "\e9a6";
-  }
-  &-Case:before {
-    @extend .icon;
-    content: "\e9ff";
-  }
-  &-id_card:before {
-    @extend .icon;
-    content: "\e902";
-  }
-  &-Earth:before {
-    @extend .icon;
-    content: "\ea11";
-  }
-  &-facebook:before {
-    @extend .icon;
-    content: "\e9e5";
-  }
-  &-LinkedIn::before {
-    @extend .icon;
-    content: "\e9ed";
-  }
-  &-twitter::before {
-    @extend .icon;
-    content: "\e9fa";
-  }
-  &-instagram::before {
-    @extend .icon;
-    content: "\e9ea";
-  }
-  &-phone::before {
-    @extend .icon;
-    content: "\ea2d";
-  }
-  &-mail::before {
-    @extend .icon;
-    content: "\ea27";
-  }
-  &-location::before {
-    @extend .icon;
-    content: "\ea23";
-  }
-  &-user::before {
-    @extend .icon;
-    content: "\e90c";
-  }
-  &-edit {
-    position: absolute;
-    top: 50%;
-    margin-right: -50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  &-edit::before {
-    @extend .icon;
-    content: "\e997"
-  }
-}
 .user_edit_avatar {
   opacity: 0;
   width: 40px;
@@ -1106,35 +924,6 @@ export default {
   }
 }
 
-.skills {
-  &__add-info {
-    display: flex;
-    flex-wrap: nowrap;
-    grid-gap: 20px;
-    margin-top: 20px;
-  }
-  &__btn {
-    &-add {
-      text-align: center;
-      margin-top: 20px;
-      width: 250px;
-      background: #FFFFFF;
-      color: #0083C7;
-      border: 1px solid #bce8ff;
-      &_disabled {
-        color: #aaaaaa !important;
-        border: 0.5px solid #aaaaaa;
-      }
-    }
-    &-add:hover {
-      background: #bce8ff;
-    }
-  }
-  &__error {
-    color: #f36262;
-    margin-bottom: 10px;
-  }
-}
 .dd {
   &__items {
     height: 200px;
