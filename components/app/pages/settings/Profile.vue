@@ -1,23 +1,25 @@
 <template>
   <div class="profile">
     <div class="profile__title">
-      {{ $t('settings.profileInfo') }}
+      {{ $t("settings.profileInfo") }}
     </div>
     <div class="profile__personal">
       <div class="profile__personal-main">
-        <div
-          class="profile__avatar"
-        >
+        <div class="profile__avatar">
           <img
             :src="imageData ? imageData : require('~/assets/img/app/avatar_empty.png')"
             alt="avatar-image"
             class="profile__avatar-img"
           >
           <input
+            id="avatar"
             type="file"
             class="profile__avatar-input"
           >
-          <div class="icon icon-edit profile__avatar-hover" />
+          <label
+            class="icon icon-edit profile__avatar-hover"
+            for="avatar"
+          />
         </div>
         <div class="profile__personal-info">
           <verified
@@ -26,7 +28,7 @@
           />
           <base-field
             v-model="userFirstName"
-            :placeholder="userFirstName|| $t('settings.nameInput')"
+            :placeholder="userFirstName || $t('settings.nameInput')"
             mode="icon"
             :name="$t('settings.firstName')"
           >
@@ -132,13 +134,11 @@
           v-if="true"
           class="profile__knowledge-container"
         >
-          <div
-            class="profile__knowledge-title"
-          >
-            {{ $t('settings.educations') }}
+          <div class="profile__knowledge-title">
+            {{ $t("settings.educations") }}
           </div>
           <div
-            v-if="userEducation.length !==0"
+            v-if="userEducation.length !== 0"
             class="profile__knowledge-added"
           >
             <add-form
@@ -171,10 +171,10 @@
             v-if="true"
             class="profile__knowledge-title"
           >
-            {{ $t('settings.workExp') }}
+            {{ $t("settings.workExp") }}
           </div>
           <div
-            v-if="userWorkExp.length !==0"
+            v-if="userWorkExp.length !== 0"
             class="profile__knowledge-added"
           >
             <add-form
@@ -245,10 +245,8 @@
         v-if="true"
         class="profile__save"
       >
-        <base-btn
-          class="profile__btn"
-        >
-          {{ $t('settings.save') }}
+        <base-btn class="profile__btn">
+          {{ $t("settings.save") }}
         </base-btn>
       </div>
     </div>
@@ -299,7 +297,6 @@ export default {
 
       addresses: [],
       isSearchDDStatus: false,
-
     };
   },
   computed: {
@@ -408,7 +405,9 @@ export default {
       knowledgeArray.splice(index, 1);
     },
     clearError(value, observerName) {
-      const isClear = Object.keys(value).every((field) => value[field] === '' || value[field] === null);
+      const isClear = Object.keys(value).every(
+        (field) => value[field] === '' || value[field] === null,
+      );
       if (isClear) {
         this.$refs[observerName].reset();
       }
@@ -420,119 +419,120 @@ export default {
 <style lang="scss" scoped>
 .profile {
   display: grid;
-    background: $white;
-    padding: 20px;
+  background: $white;
+  padding: 20px;
+  gap: 20px;
+  &__personal {
+    display: grid;
     gap: 20px;
-    &__personal {
-      display: grid;
-      gap: 20px;
+  }
+  &__personal-main {
+    display: grid;
+    grid-template-columns: 1fr 7fr;
+    grid-gap: 20px;
+  }
+  &__avatar {
+    position: relative;
+    height: 151px;
+    width: 151px;
+  }
+  &__avatar:hover > &__avatar-hover {
+    opacity: 1;
+  }
+  &__avatar-img {
+    height: 151px;
+    width: 151px;
+    border-radius: 6px;
+    object-fit: cover;
+  }
+  &__avatar-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+  }
+  &__avatar-hover {
+    display: flex;
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    background: white;
+    transition: opacity 0.3s;
+  }
+  &__personal-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+  }
+  &__status {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    max-width: 159px;
+    padding: 8px 13px;
+    display: flex;
+    background: $blue;
+    color: $white;
+    border-radius: 36px;
+    max-height: 34px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  &__row-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+  }
+  &__company {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+  &__description {
+    display: grid;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    padding: 10px 10px 0 10px;
+    margin: 0;
+    border-radius: 6px;
+    height: 114px;
+    width: 100%;
+    border: 0;
+    background-color: $black0;
+    resize: none;
+    &::placeholder {
+      color: $black200;
     }
-    &__personal-main {
-        display: grid;
-        grid-template-columns: 1fr 7fr;
-        grid-gap: 20px;
-    }
-    &__avatar {
-        position: relative;
-        height: 151px;
-        width: 151px;
-    }
-    &__avatar:hover > &__avatar-hover {
-        display: flex;
-    }
-    &__avatar-img {
-        height: 151px;
-        width: 151px;
-        border-radius: 6px;
-        object-fit: cover;
-    }
-    &__avatar-input {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        opacity: 0;
-    }
-    &__avatar-hover {
-        display: none;
-        position: absolute;
-        opacity: 1;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
-        width: 40px;
-        height: 40px;
-      border-radius: 6px;
-      justify-content: center;
-      align-items: center;
-      font-size: 18px;
-      background: white;
-    }
-    &__personal-info {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      column-gap: 20px;
-    }
-    &__status {
-      grid-column-start: 1;
-      grid-column-end: 3;
-      max-width: 159px;
-      padding: 8px 13px;
-      display: flex;
-      background: $blue;
-      color: $white;
-      border-radius: 36px;
-      max-height: 34px;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    &__row-data {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      column-gap: 20px
-    }
-    &__company {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 20px;
-      grid-column-start: 1;
-      grid-column-end: 3;
-    }
-    &__description {
-      display: grid;
-      grid-column-start: 1;
-      grid-column-end: 3;
-      padding: 10px 10px 0 10px;
-      margin: 0;
-      border-radius: 6px;
-      height: 114px;
-      width: 100%;
-      border: 0;
-      background-color: $black0;
-      resize: none;
-      &::placeholder {
-        color: $black200;
-      }
-    }
-    &__knowledge-title {
-      margin-bottom: 15px;
-    }
-    &__socials {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
-      column-gap: 20px;
-    }
-    &__save {
-      display: flex;
+  }
+  &__knowledge-title {
+    margin-bottom: 15px;
+  }
+  &__socials {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    column-gap: 20px;
+  }
+  &__save {
+    display: flex;
     justify-content: flex-end;
-    }
-    &__btn {
-      max-width: 250px;
-    }
+  }
+  &__btn {
+    max-width: 250px;
+  }
 }
 
 .icon {
