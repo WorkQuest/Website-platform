@@ -218,12 +218,13 @@ export default {
       padding: 10.5px 20px;
       align-items: center;
       button {
+        min-width: 220px;
         max-width: 220px;
       }
     }
   }
   &__option-buttons {
-    width: 220px;
+    min-width: 220px;
     display: grid;
     gap: 10px;
   }
@@ -244,6 +245,12 @@ export default {
     &:checked {
       background: radial-gradient($blue 40%, rgba(255, 0, 0, 0) 45%);
     }
+  }
+}
+
+@include _991 {
+  .advanced {
+    grid-template-columns: 1fr;
   }
 }
 
