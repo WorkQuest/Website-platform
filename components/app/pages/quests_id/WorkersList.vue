@@ -25,7 +25,7 @@
         <base-dd
           class="worker__menu"
           :placeholder="30"
-          :items="ddUserActions"
+          :items="response.worker.status ? ddUserActions : ddUserFullActions"
           is-dots-vue
           @input="handleUserAction($event, response)"
         />
@@ -89,6 +89,10 @@ export default {
       currUsers: [],
       ddUserActions: [
         this.$t('btn.goToChat'),
+        this.$t('quests.decline'),
+      ],
+      ddUserFullActions: [
+        this.$t('btn.goToChat'),
         this.$t('quests.startQuest'),
         this.$t('quests.decline'),
       ],
@@ -108,8 +112,6 @@ export default {
     },
   },
   async created() {
-    this.SetLoader(true);
-    await this.initData();
     this.SetLoader(false);
   },
   methods: {
@@ -120,8 +122,8 @@ export default {
     goToChat(response) {
       this.$router.push(`/messages/${response.questChat.chatId}`);
     },
-    async initData() {
-      await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+    async getQuest() {
+      await this.$store.dispatch('quests/getQuest', this.questData.id);
     },
     async startQuest(response) {
       this.SetLoader(true);
@@ -132,11 +134,13 @@ export default {
         questId: this.questData.id,
       };
       await this.$store.dispatch('quests/startQuest', payload);
+      await this.getQuest();
       this.SetLoader(false);
     },
     async reject(response) {
       this.SetLoader(true);
       await this.$store.dispatch(`quests/${this.isInvited ? 'rejectQuestInvitation' : 'rejectTheAnswerToTheQuest'}`, response.worker.id);
+      await this.getQuest();
       this.SetLoader(false);
     },
   },

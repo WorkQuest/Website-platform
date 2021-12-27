@@ -36,7 +36,7 @@
         class="info__right"
       >
         <base-btn
-          v-if="Object.keys(respondOnQuest).length > 0 || (questData.response && questData.response.message)"
+          v-if="respondOnQuest || (questData.response && questData.response.message)"
           v-click-outside="closeMessage"
           class="message message__btn"
           mode="showYourMessage"
@@ -54,7 +54,7 @@
               {{ $t('info.yourMessage') }}
             </div>
             <div class="message__body">
-              {{ respondOnQuest.message ? respondOnQuest.message : questData.response.message }}
+              {{ respondOnQuest.message || questData.response.message }}
             </div>
           </div>
         </base-btn>
@@ -67,7 +67,7 @@
 
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import { InfoModeEmployer, InfoModeWorker } from '~/utils/enums';
+import { InfoModeEmployer, InfoModeWorker, responseStatus } from '~/utils/enums';
 
 export default {
   name: 'InfoVue',
@@ -89,12 +89,17 @@ export default {
     ...mapGetters({
       respondOnQuest: 'quests/getRespondOnQuest',
       questData: 'quests/getQuest',
+      userRole: 'user/getUserRole',
+      infoDataMode: 'quests/getInfoDataMode',
     }),
     InfoModeEmployer() {
       return InfoModeEmployer;
     },
     InfoModeWorker() {
       return InfoModeWorker;
+    },
+    responseStatus() {
+      return responseStatus;
     },
     infoStatusText() {
       if (this.userRole === 'employer') {
@@ -109,17 +114,21 @@ export default {
         return this.$t(`${obj[this.infoDataMode]}`);
       }
       if (this.userRole === 'worker') {
+        const { response } = this.questData;
         const obj = {
           [InfoModeWorker.ADChat]: 'invite.title',
           [InfoModeWorker.Active]: 'quests.activeQuest',
           [InfoModeWorker.Rejected]: 'quests.requested',
-          [InfoModeWorker.WaitConfirm]: 'quests.pendingConsideration',
+          [InfoModeWorker.WaitWorker]: 'quests.pendingConsideration',
           [InfoModeWorker.Dispute]: 'quests.dispute',
           [InfoModeWorker.Closed]: 'quests.questClosed',
           [InfoModeWorker.Done]: 'quests.completed',
           [InfoModeWorker.Responded]: 'quests.responded',
           [InfoModeWorker.Invited]: 'quests.invited',
         };
+        if (this.infoDataMode === InfoModeWorker.Invited && [-1, 1].includes(response.status)) {
+          return this.$t(`quests.${response.status === responseStatus.accepted ? 'acceptedTheInvitation' : 'declinedTheInvitation'}`);
+        }
         return this.$t(`${obj[this.infoDataMode]}`);
       }
       return '';
@@ -127,13 +136,14 @@ export default {
     infoClass() {
       const { infoDataMode } = this;
       if (this.userRole === 'worker') {
+        const { response } = this.questData;
         return [
           { 'info-hide': infoDataMode === InfoModeWorker.Created },
           { 'info_bg-yellow': [InfoModeWorker.ADChat, InfoModeWorker.Invited].includes(infoDataMode) },
-          { 'info_bg-green': infoDataMode === InfoModeWorker.Active },
+          { 'info_bg-green': infoDataMode === InfoModeWorker.Active || (InfoModeWorker.Invited && response?.status === responseStatus.accepted) },
           { 'info_bg-grey': infoDataMode === InfoModeWorker.Rejected },
-          { 'info_bg-blue': [InfoModeWorker.WaitConfirm, InfoModeWorker.Done, InfoModeWorker.Responded].includes(infoDataMode) },
-          { 'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(infoDataMode) },
+          { 'info_bg-blue': [InfoModeWorker.WaitWorker, InfoModeWorker.Done, InfoModeWorker.Responded].includes(infoDataMode) },
+          { 'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(infoDataMode) || (InfoModeWorker.Invited && response?.status === responseStatus.rejected) },
         ];
       }
       if (this.userRole === 'employer') {
@@ -148,10 +158,6 @@ export default {
       }
       return '';
     },
-    ...mapGetters({
-      userRole: 'user/getUserRole',
-      infoDataMode: 'quests/getInfoDataMode',
-    }),
   },
   methods: {
     closeMessage() {
@@ -162,7 +168,6 @@ export default {
     },
   },
 };
-
 </script>
 
 <style lang="scss" scoped>
@@ -211,11 +216,11 @@ export default {
   &-hide {
     display: none;
   }
-  &_bg-green {
-    background-color: $green;
-  }
   &_bg-yellow {
     background-color: $yellow;
+  }
+  &_bg-green {
+    background-color: $green;
   }
   &_bg-grey {
     background-color: $grey;

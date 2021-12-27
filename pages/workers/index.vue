@@ -152,9 +152,7 @@
                   {{ $t('quests.price') }}
                 </span>
                 <template v-slot:right>
-                  <span
-                    class="icon-caret_down icon_blue"
-                  />
+                  <span class="icon-caret_down icon_blue" />
                 </template>
               </base-btn>
             </div>

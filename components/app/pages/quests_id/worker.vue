@@ -2,96 +2,35 @@
   <div
     :class="[
       {'btns__container':
-        ![InfoModeWorker.WaitConfirm, InfoModeWorker.Closed, InfoModeWorker.Done].includes(infoDataMode)},
-      {'btns__margin': [InfoModeWorker.WaitConfirm, InfoModeWorker.Closed, InfoModeWorker.Done].includes(infoDataMode)}
+        ![InfoModeWorker.WaitWorker, InfoModeWorker.Closed, InfoModeWorker.Done].includes(infoDataMode)},
+      {'btns__margin': [InfoModeWorker.WaitWorker, InfoModeWorker.Closed, InfoModeWorker.Done].includes(infoDataMode)}
     ]"
   >
-    <div
-      v-if="infoDataMode === InfoModeWorker.ADChat"
-      class="btns__wrapper"
-    >
-      <div class="btn__wrapper">
-        <base-btn @click="acceptWorkOnQuest">
-          {{ $t('btn.agree') }}
-        </base-btn>
-      </div>
-      <div class="btn__wrapper">
+    <div class="btns__wrapper">
+      <div
+        v-for="(btn, i) in setBtnsArr"
+        :key="i"
+        class="btn__wrapper"
+      >
         <base-btn
-          mode="outline"
-          @click="rejectWorkOnQuest"
+          :class="btn.class"
+          :mode="btn.mode"
+          :disabled="btn.disabled"
+          @click="handleClickSpecBtn(btn.funcKey)"
         >
-          {{ $t('btn.disagree') }}
-        </base-btn>
-      </div>
-      <div class="btn__wrapper">
-        <base-btn
-          class="base-btn_goToChat"
-          @click="goToChat"
-        >
-          {{ $t('btn.goToChat') }}
-          <template v-slot:right>
-            <span class="icon-chat icon_fs-20" />
+          {{ btn.name }}
+          <template
+            v-if="btn.icon"
+            v-slot:right
+          >
+            <span :class="btn.icon" />
           </template>
-        </base-btn>
-      </div>
-    </div>
-    <div
-      v-if="infoDataMode === InfoModeWorker.Active"
-      class="btns__wrapper"
-    >
-      <div class="btn__wrapper">
-        <base-btn
-          disabled="true"
-          class="base-btn_dispute"
-        >
-          {{ $t('btn.dispute') }}
-        </base-btn>
-      </div>
-      <div class="btn__wrapper">
-        <base-btn
-          @click="completeWorkOnQuest"
-        >
-          {{ $t('btn.completeWorkOnQuest') }}
-        </base-btn>
-      </div>
-      <div class="btn__wrapper">
-        <base-btn
-          class="base-btn_goToChat"
-          @click="goToChat"
-        >
-          {{ $t('btn.goToChat') }}
-          <template v-slot:right>
-            <span class="icon-chat icon_fs-20" />
-          </template>
-        </base-btn>
-      </div>
-    </div>
-    <div
-      v-if="[InfoModeWorker.Rejected, InfoModeWorker.Created].includes(infoDataMode)"
-      class="btns__wrapper"
-    >
-      <div class="btn__wrapper">
-        <base-btn
-          :disabled="!questData.response"
-          @click="sendARequestOnQuest"
-        >
-          {{ InfoModeWorker.Created ? $t('btn.sendARequest') : $t('btn.responded') }}
-        </base-btn>
-      </div>
-    </div>
-    <div
-      v-if="infoDataMode === InfoModeWorker.Dispute"
-      class="btns__wrapper"
-    >
-      <div class="btn__wrapper">
-        <base-btn>
-          {{ $t('btn.dispute') }}
         </base-btn>
       </div>
     </div>
     <div class="priority">
       <div
-        v-if="![InfoModeWorker.WaitConfirm, InfoModeWorker.Closed].includes(infoDataMode)"
+        v-if="![InfoModeWorker.WaitWorker, InfoModeWorker.Closed].includes(infoDataMode)"
         class="price__container"
       >
         <span class="price__value">
@@ -102,7 +41,7 @@
         class="priority__container"
       >
         <div
-          v-if="![InfoModeWorker.WaitConfirm, InfoModeWorker.Closed].includes(infoDataMode)"
+          v-if="![InfoModeWorker.WaitWorker, InfoModeWorker.Closed].includes(infoDataMode)"
           class="priority__title"
           :class="getPriorityClass(questData.priority)"
         >
@@ -116,7 +55,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { InfoModeWorker } from '~/utils/enums';
+import { InfoModeWorker, responseStatus } from '~/utils/enums';
 
 export default {
   name: 'QuestIdWorker',
@@ -128,8 +67,173 @@ export default {
     InfoModeWorker() {
       return InfoModeWorker;
     },
+    setBtnsArr() {
+      const {
+        ADChat, Active, Rejected, Created, Dispute, Invited, WaitWorker,
+      } = InfoModeWorker;
+      const { response } = this.questData;
+
+      let arr = [];
+      switch (this.infoDataMode) {
+        case ADChat: {
+          arr = [{
+            name: this.$t('btn.agree'),
+            class: '',
+            mode: '',
+            funcKey: 'acceptWorkOnQuest',
+            icon: '',
+            disabled: false,
+          },
+          {
+            name: this.$t('btn.disagree'),
+            class: '',
+            mode: 'outline',
+            funcKey: 'rejectWorkOnQuest',
+            icon: '',
+            disabled: false,
+          },
+          {
+            name: this.$t('btn.goToChat'),
+            class: 'base-btn_goToChat',
+            mode: '',
+            funcKey: 'goToChat',
+            icon: 'icon-chat icon_fs-20',
+            disabled: false,
+          }];
+          break;
+        }
+        case Active: {
+          arr = [{
+            name: this.$t('btn.dispute'),
+            class: 'base-btn_dispute',
+            mode: '',
+            funcKey: '',
+            icon: '',
+            disabled: true,
+          },
+          {
+            name: this.$t('btn.completeWorkOnQuest'),
+            class: '',
+            mode: '',
+            funcKey: 'completeWorkOnQuest',
+            icon: '',
+            disabled: false,
+          },
+          {
+            name: this.$t('btn.goToChat'),
+            class: 'base-btn_goToChat',
+            mode: '',
+            funcKey: 'goToChat',
+            icon: 'icon-chat icon_fs-20',
+            disabled: false,
+          }];
+          break;
+        }
+        case Rejected:
+        case Created: {
+          arr = [{
+            name: this.$t(`btn.${Created ? 'sendARequest' : 'responded'}`),
+            class: 'base-btn_dispute',
+            mode: '',
+            funcKey: 'sendARequestOnQuest',
+            icon: '',
+            disabled: !response,
+          }];
+          break;
+        }
+        case Dispute: {
+          arr = [{
+            name: this.$t('btn.dispute'),
+            class: 'base-btn_dispute',
+            mode: '',
+            funcKey: '',
+            icon: '',
+            disabled: true,
+          }];
+          break;
+        }
+        case Invited: {
+          if (response.status === responseStatus.rejected) break;
+
+          arr = [{
+            name: this.$t('btn.goToChat'),
+            class: 'base-btn_goToChat',
+            mode: '',
+            funcKey: 'goToChat',
+            icon: 'icon-chat icon_fs-20',
+            disabled: false,
+          }];
+          if (response.status === responseStatus.awaiting) {
+            arr = [{
+              name: this.$t('btn.agree'),
+              class: '',
+              mode: '',
+              funcKey: 'acceptQuestInvitation',
+              icon: '',
+              disabled: false,
+            },
+            {
+              name: this.$t('btn.disagree'),
+              class: '',
+              mode: 'outline',
+              funcKey: 'rejectQuestInvitation',
+              icon: '',
+              disabled: false,
+            }].concat(arr);
+          }
+          break;
+        }
+        case WaitWorker: {
+          arr = [{
+            name: this.$t('btn.agree'),
+            class: '',
+            mode: '',
+            funcKey: 'acceptWorkOnQuest',
+            icon: '',
+            disabled: false,
+          },
+          {
+            name: this.$t('btn.disagree'),
+            class: '',
+            mode: 'outline',
+            funcKey: 'rejectWorkOnQuest',
+            icon: '',
+            disabled: false,
+          },
+          {
+            name: this.$t('btn.goToChat'),
+            class: 'base-btn_goToChat',
+            mode: '',
+            funcKey: 'goToChat',
+            icon: 'icon-chat icon_fs-20',
+            disabled: false,
+          }];
+          break;
+        }
+        default: break;
+      }
+      return arr;
+    },
   },
   methods: {
+    async rejectQuestInvitation() {
+      this.SetLoader(true);
+      await this.$store.dispatch('quests/rejectQuestInvitation', this.questData.response.id);
+      await this.getQuest();
+      this.SetLoader(false);
+    },
+    async acceptQuestInvitation() {
+      this.SetLoader(true);
+      await this.$store.dispatch('quests/acceptQuestInvitation', this.questData.response.id);
+      await this.getQuest();
+      this.SetLoader(false);
+    },
+    async getQuest() {
+      await this.$store.dispatch('quests/getQuest', this.questData.id);
+    },
+    handleClickSpecBtn(funcKey) {
+      this[funcKey]();
+    },
     getPriority(index) {
       const priority = {
         0: this.$t('priority.low'),
@@ -160,7 +264,7 @@ export default {
         title: this.$t('quests.questInfo'),
         subtitle: this.$t('quests.workOnQuestAccepted'),
       });
-      await this.$store.commit('quests/setInfoDataMode', InfoModeWorker.Active);
+      await this.getQuest();
       this.SetLoader(false);
     },
     async rejectWorkOnQuest() {
@@ -172,7 +276,7 @@ export default {
         title: this.$t('quests.questInfo'),
         subtitle: this.$t('quests.workOnQuestRejected'),
       });
-      await this.$store.commit('quests/setInfoDataMode', InfoModeWorker.Created);
+      await this.getQuest();
       this.SetLoader(false);
     },
     async completeWorkOnQuest() {
@@ -184,7 +288,7 @@ export default {
         title: this.$t('quests.questInfo'),
         subtitle: this.$t('quests.pleaseWaitEmp'),
       });
-      await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.WaitConfirm);
+      await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.WaitWorker);
       this.SetLoader(false);
     },
     async sendARequestOnQuest() {
@@ -270,7 +374,7 @@ export default {
   }
   &__container {
     display: grid;
-    grid-template-columns: 8fr 4fr;
+    grid-template-columns: 2fr 1fr;
     margin-bottom: 20px;
   }
   &__wrapper {

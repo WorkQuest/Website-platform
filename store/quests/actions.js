@@ -1,3 +1,5 @@
+import { InfoModeEmployer, InfoModeWorker, QuestStatuses } from '~/utils/enums';
+
 export default {
   async getWorkerData({ commit }, userId) {
     try {
@@ -62,11 +64,43 @@ export default {
       return console.log(e);
     }
   },
-  async getQuest({ commit }, payload) {
+  async getQuest({ commit, rootState }, payload) {
     try {
-      const response = await this.$axios.$get(`/v1/quest/${payload}`);
-      commit('setQuest', response.result);
-      return response.result;
+      const { result } = await this.$axios.$get(`/v1/quest/${payload}`);
+      const { role } = rootState.user.userData;
+      let currStat = 1;
+      const { assignedWorkerId, status, response } = result;
+
+      const questStatuses = Object.entries(QuestStatuses);
+
+      if (role === 'employer') {
+        questStatuses.some(([key, val]) => {
+          if (val === status) {
+            currStat = InfoModeEmployer[key];
+            // val === Created && !responsesData.count ? RaiseViews :
+            return true;
+          }
+          return false;
+        });
+
+        // case status === QuestStatuses.WaitConfirm && Object.keys(assignedWorker).length > 0: payload = InfoModeEmployer.WaitConfirm; break;
+        // case status === QuestStatuses.Done && responsesCount > 0: payload = InfoModeEmployer.Done; break;
+      } else if (role === 'worker') {
+        questStatuses.some(([key, val]) => {
+          if (val === status) {
+            if (val === QuestStatuses.Created && response) key = response.type ? 'Invited' : 'Responded';
+            currStat = InfoModeWorker[key];
+            return true;
+          }
+          return false;
+        });
+
+        // case status === QuestStatuses.Rejected && this.questData.response !== null: payload = InfoModeWorker.Rejected; break;
+      }
+
+      commit('setInfoDataMode', currStat);
+      commit('setQuest', result);
+      return result;
     } catch (e) {
       return console.log(e);
     }

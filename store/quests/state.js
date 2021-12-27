@@ -1,5 +1,5 @@
 export default () => ({
-  respondOnQuest: {},
+  respondOnQuest: null,
   questListForInvitation: {},
   chatInfoInviteOnQuest: {},
   currentWorker: null,

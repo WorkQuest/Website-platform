@@ -144,10 +144,7 @@ export default {
     ...mapGetters({
       questData: 'quests/getQuest',
       userRole: 'user/getUserRole',
-      userData: 'user/getUserData',
-      respondedList: 'data/getRespondedList',
       responsesToQuest: 'quests/getResponsesToQuest',
-      responsesData: 'quests/getResponsesData',
       infoDataMode: 'quests/getInfoDataMode',
     }),
     InfoModeEmployer() {
@@ -172,7 +169,6 @@ export default {
   async beforeMount() {
     await this.initData();
     await this.getResponsesToQuest();
-    await this.checkPageMode();
   },
   mounted() {
     this.SetLoader(false);
@@ -183,59 +179,6 @@ export default {
     },
     async getResponsesToQuest() {
       if (this.userRole === 'employer') await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
-    },
-    async checkPageMode() {
-      let payload = 1;
-      const { questData: { assignedWorkerId, status }, userRole } = this;
-
-      const questStatuses = Object.entries(QuestStatuses);
-
-      if (userRole === 'employer') {
-        const { RaiseViews, WaitWorker } = InfoModeEmployer;
-        const {
-          Closed, Dispute, WaitConfirm, Done, Created,
-        } = QuestStatuses;
-
-        if (assignedWorkerId && ![Closed, Dispute, WaitConfirm, Done].includes(status)) {
-          payload = WaitWorker;
-        } else {
-          questStatuses.some(([key, val]) => {
-            if (val === status) {
-              payload = val === Created && !this.responsesData.count ? RaiseViews : InfoModeEmployer[key];
-              return true;
-            }
-            return false;
-          });
-        }
-
-        // case status === QuestStatuses.WaitConfirm && Object.keys(assignedWorker).length > 0: payload = InfoModeEmployer.WaitConfirm; break;
-        // case status === QuestStatuses.Done && responsesCount > 0: payload = InfoModeEmployer.Done; break;
-      } else if (userRole === 'worker') {
-        const { Active, Dispute, Created } = QuestStatuses;
-        const { ADChat } = InfoModeWorker;
-
-        const { response } = this.questData;
-
-        if (assignedWorkerId === this.userData.id && ![Active, Dispute].includes(status)) {
-          payload = ADChat;
-        } else {
-          questStatuses.some(([key, val]) => {
-            if (val === status) {
-              if (val === Created && response) key = response.type ? 'Invited' : 'Responded';
-
-              console.log(key);
-
-              payload = InfoModeWorker[key];
-              return true;
-            }
-            return false;
-          });
-        }
-
-        // case status === QuestStatuses.Rejected && this.questData.response !== null: payload = InfoModeWorker.Rejected; break;
-      }
-
-      await this.$store.commit('quests/setInfoDataMode', payload);
     },
     coordinatesChange(item) {
       if (Object.keys(this.currentLocation).length > 0) {

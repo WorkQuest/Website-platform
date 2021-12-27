@@ -22,7 +22,7 @@ export default {
   getMapCenter: (state) => state.mapCenter || '',
   getResponsesToQuest: (state) => state.responses.responses || [],
   getResponded: (state) => state.responses.responses.filter((response) => response.status === 0 && response.type === responsesType.Responded),
-  getInvited: (state) => state.responses.responses.filter((response) => response.status === 0 && response.type === responsesType.Invited),
+  getInvited: (state) => state.responses.responses.filter((response) => response.status >= 0 && response.type === responsesType.Invited),
   getResponsesData: (state) => state.responses || '',
   getResponsesMy: (state) => state.responsesMy || '',
   getRespondOnQuest: (state) => state.respondOnQuest,

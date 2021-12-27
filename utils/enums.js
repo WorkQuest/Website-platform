@@ -53,7 +53,7 @@ export const InfoModeWorker = {
   ADChat: 1,
   Active: 2,
   Rejected: 3,
-  WaitConfirm: 4,
+  WaitWorker: 4,
   Created: 5,
   Dispute: 7,
   Closed: 8,
@@ -69,6 +69,11 @@ export const questPriority = {
 export const responsesType = {
   Responded: 0,
   Invited: 1,
+};
+export const responseStatus = {
+  rejected: -1,
+  awaiting: 0,
+  accepted: 1,
 };
 export const keyCodes = {
   Escape: 27,
