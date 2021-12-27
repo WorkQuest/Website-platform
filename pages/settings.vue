@@ -66,9 +66,9 @@ export default {
       },
       skills: {
         perHour: 0,
-        selectedSpecAndSkills: [],
         priorityIndex: -1,
         distantIndex: -1,
+        selectedSpecAndSkills: [],
       },
       isShowInfo: true,
       addresses: [],
@@ -84,29 +84,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      firstName: 'user/getFirstName',
-      lastName: 'user/getLastName',
-      address: 'user/getUserAddress',
-      company: 'user/getUserCompany',
-      userCEO: 'user/getUserCEO',
-      userDesc: 'user/getUserDesc',
-      userWorkExp: 'user/getUserWorkExp',
-      userEducations: 'user/getUserEducations',
-      userWebsite: 'user/getUserWebsite',
-      userInstagram: 'user/getUserInstagram',
-      userTwitter: 'user/getUserTwitter',
-      userLinkedin: 'user/getUserLinkedin',
-      userFacebook: 'user/getUserFacebook',
-      secondMobileNumber: 'user/getUserSecondMobileNumber',
-      imageData: 'user/getImageData',
-      additionalInfo: 'user/getAdditionalInfo',
-      getUserAddress: 'user/getUserAddress',
       applicantStatus: 'sumsub/getApplicantStatus',
       accessToken: 'sumsub/getSumSubBackendToken',
-      status2FA: 'user/getStatus2FA',
       filters: 'quests/getFilters',
     }),
     userSpecializations() {
@@ -138,9 +119,11 @@ export default {
       additionalInfo: JSON.parse(JSON.stringify(this.userData.additionalInfo)),
       location: this.userData.location,
     };
-    this.skills.skillspriorityIndex = this.userData.priority;
-    this.skills.skillsdistantIndex = this.distantIndexByWorkplace(this.userData.workplace);
-    this.skills.perHour = await this.perHourData();
+    this.skills = {
+      priorityIndex: this.userData.priority,
+      distantIndex: this.distantIndexByWorkplace(this.userData.workplace),
+      perHour: this.userData.wagePerHour,
+    };
     this.SetLoader(false);
   },
   methods: {
@@ -151,9 +134,6 @@ export default {
       return null;
     },
 
-    perHourData() {
-      return this.userData.wagePerHour;
-    },
     getApplicantStatus() {
       try {
         this.$store.dispatch('sumsub/applicantStatus', this.accessToken.userId);
@@ -379,7 +359,13 @@ export default {
 }
 @include _1199 {
   .settings {
-    margin: 0 20px;
+    margin: 20px 20px 41px;
+  }
+}
+@include _575 {
+  .settings {
+    margin: 20px 0px 41px;
+    width: 100%;
   }
 }
 </style>
