@@ -82,5 +82,23 @@ export default {
       margin-top: 10px;
     }
 }
+@include _991 {
+  .knowledge {
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    column-gap: 20px;
+    margin-bottom: 20px;
+    span {
+      display: none;
+    }
+  }
+}
+@include _575 {
+  .knowledge {
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-bottom: 20px;
+  }
+}
 
 </style>

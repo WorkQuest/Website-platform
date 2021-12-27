@@ -48,7 +48,7 @@
           </base-field>
           <vue-phone-number-input
             v-model="userSecondMobileNumber"
-            class="phone__input"
+            class="profile__phone-input"
             error-color="#EB5757"
             clearable
             show-code-on-list
@@ -544,6 +544,47 @@ export default {
 }
 
 @include _991 {
+  .profile {
+    &__personal-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    &__phone-input {
+      margin-bottom: 20px;
+    }
+  }
+}
 
+@include _767 {
+  .profile {
+    &__company {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+}
+
+@include _575 {
+  .profile {
+    &__personal-main {
+      display: block;
+    }
+    &__avatar {
+      margin: 0 auto 10px;
+    }
+    &__status {
+      margin: 0 auto 10px;
+    }
+    &__socials {
+      grid-template-columns: 1fr;
+    }
+    &__save {
+      width: 100%;
+    }
+    &__btn {
+      max-width: none;
+    }
+  }
 }
 </style>
