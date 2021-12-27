@@ -118,6 +118,7 @@ export default {
       });
       this.id += 1;
     }
+    this.$emit('change', this.files);
   },
   methods: {
     uploaderStyles() {
