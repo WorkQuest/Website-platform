@@ -462,11 +462,21 @@ export default {
       const web3 = new Web3(ethereum);
       const accountAddress = await getAccountAddress();
 
-      let newValue = null;
-      if (balance > new BigNumber(amount).plus(0.00000002).toNumber()) newValue = new BigNumber(amount).shiftedBy(18);
-      else newValue = new BigNumber(amount).minus(0.00000002).shiftedBy(18);
+      const _amount = new BigNumber(amount).shiftedBy(18);
+      const gasPrice = await web3.eth.getGasPrice();
+      const gasEstimate = await web3.eth.estimateGas({
+        from: accountAddress,
+        to: address,
+        value: _amount,
+      });
 
-      return await web3.eth.sendTransaction({ from: accountAddress, to: address, value: newValue });
+      return await web3.eth.sendTransaction({
+        from: accountAddress,
+        to: address,
+        value: _amount,
+        gasPrice,
+        gas: gasEstimate,
+      });
     } catch (err) {
       showToast('Send transaction error', `${err.message}`, 'danger');
       return error(500, 'send transaction error', err);
