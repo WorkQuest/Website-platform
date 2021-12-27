@@ -62,7 +62,9 @@
     "required": "{_field_} ঘর আবশ্যক",
     "size": "{_field_} ঘরের আকার অবশ্যই {size}KB এর ছোট হতে হবে",
     "decimal": "{_field_} ঘরে শুধুমাত্র দশমিক মান বসবে",
-    "decimalPlaces": "{_field_} ??? {places}"
+    "decimalPlaces": "{_field_} ??? {places}",
+    "is": "The values do not match",
+    "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
     "firstName": "নামের প্রথম অংশ",
@@ -217,7 +219,16 @@
     "password": "পাসওয়ার্ড",
     "confirmPassword": "পুনরায় পাসওয়ার্ড",
     "create": "অ্যাকাউন্ট তৈরি করুন",
-    "back": "পিছনে"
+  },
+  "createWallet": {
+    "savePhrase": "Save your secret phrase",
+    "keptPhrase": "I have kept a secret phrase",
+    "confirmSecretPhrase": "Confirm secret phrase",
+    "typeSecret": "Type secret word #{a}",
+    "secret": "Secret word #{a}",
+    "create": "Create wallet",
+    "importWallet": "Import wallet",
+    "createOrImport": "Create or import secret wallet"
   },
   "forgot": {
     "title": "পাসওয়ার্ড ভুলে গেছেন?",

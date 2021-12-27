@@ -16,10 +16,3 @@ export const createWallet = (mnemonic) => {
 
 export const encryptStringWithKey = (toEncrypt, key) => AES.encrypt(toEncrypt, key).toString();
 export const decryptStringWitheKey = (toDecrypt, key) => AES.decrypt(toDecrypt, key).toString(enc.Utf8);
-
-// const toEncrypt = this.mnemonic;
-// const encrypt = encryptStringWithKey(toEncrypt, 'secret');
-// console.log(toEncrypt, ' >> encrypt:');
-// console.log(encrypt.toString());
-// const decrypt = decryptStringWitheKey(encrypt, 'secret');
-// console.log('decrypt >>', decrypt);

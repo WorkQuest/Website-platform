@@ -62,7 +62,9 @@
     "required": "O campo {_field_} é obrigatório",
     "size": "O tamanho do campo {_field_} deve ser inferior a {size}KB",
     "decimal": "O campo {_field_} deve conter apenas valores decimais",
-    "decimalPlaces": "{_field_} ??? {places}"
+    "decimalPlaces": "{_field_} ??? {places}",
+    "is": "The values do not match",
+    "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
     "firstName": "Primeiro nome",
@@ -217,7 +219,16 @@
     "password": "Palavra-passe",
     "confirmPassword": "Repetir palavra-passe",
     "create": "Criar conta",
-    "back": "voltar"
+  },
+  "createWallet": {
+    "savePhrase": "Save your secret phrase",
+    "keptPhrase": "I have kept a secret phrase",
+    "confirmSecretPhrase": "Confirm secret phrase",
+    "typeSecret": "Type secret word #{a}",
+    "secret": "Secret word #{a}",
+    "create": "Create wallet",
+    "importWallet": "Import wallet",
+    "createOrImport": "Create or import secret wallet"
   },
   "forgot": {
     "title": "Esqueceu-se da palavra-passe?",
