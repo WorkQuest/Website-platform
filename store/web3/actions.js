@@ -38,7 +38,7 @@ import {
   pensionExtendLockTime,
   getTxFee,
   getPoolTotalSupplyBSC, getPoolTokensAmountBSC,
-  sendTransaction, createInstance,
+  sendTransaction, createInstance, error,
 } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 import { StakingTypes } from '~/utils/enums';
@@ -457,23 +457,35 @@ export default {
 
   // добавленно только для страницы demo-blockchain
   async sendTransaction({ commit }, { address, amount }) {
-    const { ethereum } = window;
-    const web3 = new Web3(ethereum);
-    const accountAddress = await getAccountAddress();
-    return web3.eth.sendTransaction({ from: accountAddress, to: address, value: new BigNumber(amount).shiftedBy(18).toString() });
+    try {
+      BigNumber.config({ EXPONENTIAL_AT: 60 });
+      const { ethereum } = window;
+      const web3 = new Web3(ethereum);
+      const accountAddress = await getAccountAddress();
+      const newValue = new BigNumber(amount).minus(0.00000002).shiftedBy(18);
+      return await web3.eth.sendTransaction({ from: accountAddress, to: address, value: newValue });
+    } catch (err) {
+      showToast('Send transaction error', `${err.message}`, 'danger');
+      return error(500, 'send transaction error', err);
+    }
   },
   async showBalanceOnDemo() {
     let balance = 0;
-    const { ethereum } = window;
-    const web3 = new Web3(ethereum);
-    const accountAddress = await getAccountAddress();
-    await web3.eth.getBalance(accountAddress, (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        balance = result;
-      }
-    });
-    return new BigNumber(balance).shiftedBy(-18).toString();
+    try {
+      const { ethereum } = window;
+      const web3 = new Web3(ethereum);
+      const accountAddress = await getAccountAddress();
+      await web3.eth.getBalance(accountAddress, (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          balance = result;
+        }
+      });
+      return new BigNumber(balance).shiftedBy(-18).toString();
+    } catch (err) {
+      showToast('Balance error', `${err.message}`, 'danger');
+      return error(500, 'balance error', err);
+    }
   },
 };

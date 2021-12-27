@@ -97,6 +97,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { error, showToast } from '~/utils/web3';
 
 export default {
   name: 'DemoBlockchain',
@@ -104,7 +105,7 @@ export default {
   data() {
     return {
       amount: null,
-      address: '',
+      address: '0x03B2c81D8179a0237287eEdb920BD9f34694539C',
       maxAmount: 0,
     };
   },
@@ -120,13 +121,28 @@ export default {
       if (!this.isConnected) {
         await this.$store.dispatch('web3/goToChain', { chain: 'WUSD' });
         await this.$store.dispatch('web3/connectToMetaMask');
-        this.maxAmount = await this.$store.dispatch('web3/showBalanceOnDemo');
+        this.maxAmount = Number(await this.$store.dispatch('web3/showBalanceOnDemo'));
       }
       this.SetLoader(false);
     },
     async send() {
       this.SetLoader(true);
-      const result = await this.$store.dispatch('web3/sendTransaction', { address: this.address, amount: this.amount });
+      if (+this.amount > +this.maxAmount) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.incorrectAmount'),
+        });
+        this.amount = 0;
+        this.SetLoader(false);
+        return;
+      }
+      const result = await this.$store.dispatch('web3/sendTransaction', {
+        address: this.address,
+        amount: this.amount,
+      });
       if (result.status) {
         this.ShowModal({
           key: modals.transactionSend,
@@ -134,7 +150,12 @@ export default {
       }
       this.SetLoader(false);
     },
-    maxBalance() {
+    async maxBalance() {
+      this.maxAmount = Number(await this.$store.dispatch('web3/showBalanceOnDemo'));
+      if (this.maxAmount <= 0.001) {
+        this.maxAmount = 0;
+      }
+      this.maxAmount = +this.maxAmount.toFixed(3);
       this.amount = this.maxAmount;
     },
   },
