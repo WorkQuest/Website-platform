@@ -470,9 +470,9 @@ export default {
         value: _amount,
       });
 
-      const amountGas = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toNumber();
+      const amountGas = new BigNumber(gasPrice + 1).multipliedBy(gasEstimate).shiftedBy(-18).toString();
       const amountGasPlusAmount = new BigNumber(amountGas).plus(amount).toNumber();
-      if (new BigNumber(balance).isLessThan(amountGasPlusAmount)) _amount = new BigNumber(amount).minus(amountGas).shiftedBy(18);
+      if (new BigNumber(balance).isLessThan(amountGasPlusAmount)) _amount = new BigNumber(amount).minus(amountGas).shiftedBy(18).toNumber();
 
       return await web3.eth.sendTransaction({
         from: accountAddress,
