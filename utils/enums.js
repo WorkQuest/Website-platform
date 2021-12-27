@@ -6,6 +6,7 @@ export const ChainsId = {
   BSC_TEST: '0x61',
   MATIC_MAIN: '0x13881',
   MUMBAI_TEST: '0x89',
+  WUSD_TEST: '0x1346618',
 };
 
 export const NativeTokenSymbolByChainId = {
@@ -19,6 +20,7 @@ export const Chains = {
   ETHEREUM: 'ETH',
   BINANCE: 'BSC',
   BNB: 'BNB', // Same as bsc for bridge
+  WUSD: 'WUSD',
 };
 
 export const StakingTypes = {
@@ -84,3 +86,8 @@ export const priorityFilter = [
   2, // shortTerm
   1, // fixedDelivery
 ];
+
+export const questChatStatus = {
+  Active: 0,
+  Closed: 1,
+};

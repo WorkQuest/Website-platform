@@ -70,7 +70,7 @@ export default {
     },
     async getAllPortfolios() {
       try {
-        await this.$store.dispatch('user/getUserPortfolios', this.userData.id);
+        await this.$store.dispatch('user/getUserPortfolios', { userId: this.userData.id });
       } catch (e) {
         this.showToastError(e);
       }

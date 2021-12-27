@@ -34,7 +34,7 @@
             </div>
             <div
               class="card__number"
-              :class="item.ratingMode ? 'card__number_rating' : ''"
+              :class="{'card__number_rating' : item.ratingMode}"
             >
               {{ numberValidate(item.number) }}
             </div>
@@ -66,7 +66,7 @@
                 <li
                   v-for="(skill, key) in skills"
                   :key="key"
-                  class="skills__item skills__item_blue"
+                  class="skills__item"
                 >
                   {{ $t(`filters.items.${specialization}.sub.${skill}`) }}
                 </li>
@@ -87,7 +87,7 @@
           <quests
             v-if="questsObject.count !== 0"
             :object="questsObject"
-            :page="'quests'"
+            page="quests"
           />
           <emptyData
             v-else
@@ -184,7 +184,7 @@
           </div>
           <portfolioTab
             class="profile__portfolio"
-            :object="portfolioObject"
+            :object="portfolios"
           />
           <div
             v-if="selectedTab === 'portfolio' && totalPortfoliosPages > 1"
@@ -198,7 +198,7 @@
             </div>
           </div>
           <div
-            v-if="selectedTab === 'commonInfo' && portfolioObject.count > 3"
+            v-if="selectedTab === 'commonInfo' && portfolios.count > 3"
             class="portfolio__button button"
           >
             <div
@@ -237,7 +237,6 @@ export default {
       selectedTab: 'commonInfo',
       questsObject: {},
       reviewsObject: {},
-      portfolioObject: {},
       userStatistics: {
         reviewCount: 0,
         averageMark: 0,
@@ -421,10 +420,12 @@ export default {
     async changePortfoliosData(limit) {
       const payload = {
         userId: this.userId,
-        query: `limit=${limit || 0}&offset=${(this.pagePortfolios - 1) * limit}`,
+        query: {
+          limit: limit || this.perPagerPortfolios,
+          offset: (this.pagePortfolios - 1) * this.perPagerPortfolios,
+        },
       };
       await this.$store.dispatch('user/getUserPortfolios', payload);
-      this.portfolioObject = this.portfolios;
     },
     getSkillTitle() {
       const specData = {};
@@ -539,12 +540,10 @@ export default {
     &__item {
       font-size: 16px;
       line-height: 130%;
-      &_blue {
-        background-color: rgba(0, 131, 199, 0.1);
-        border-radius: 44px;
-        padding: 5px;
-        color: #0083C7;
-      }
+      background-color: rgba(0, 131, 199, 0.1);
+      border-radius: 44px;
+      padding: 5px;
+      color: #0083C7;
     }
   }
 }

@@ -122,6 +122,7 @@ export default {
       const questId = this.questData.id;
       await this.$store.dispatch('quests/startQuest', { questId, payload });
       await this.$store.dispatch('quests/setInfoDataMode', 4);
+      await this.$store.dispatch('quests/getQuest', this.$route.params.id);
       this.SetLoader(false);
     },
   },
