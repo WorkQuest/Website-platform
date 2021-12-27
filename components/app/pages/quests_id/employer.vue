@@ -418,7 +418,7 @@ export default {
     },
     toRaisingViews() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
-        this.$router.push('/edit-quest');
+        this.$router.push(`/edit-quest/${this.questData.id}`);
         this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
       } else {
         this.showToastWrongStatusRaisingViews();

@@ -1,14 +1,18 @@
 export default {
   async getChatsList({ commit, rootState }, params) {
-    const { result } = await this.$axios.$get('/v1/user/me/chats', { params });
+    try {
+      const { result } = await this.$axios.$get('/v1/user/me/chats', { params });
 
-    result.chats.forEach((chat) => {
-      chat.userMembers = chat.userMembers.filter((member) => member.id !== rootState.user.userData.id);
-      chat.isUnread = chat.meMember.unreadCountMessages > 0;
-    });
-    if (params.offset) result.chats = rootState.chat.chats.list.concat(result.chats);
+      result.chats.forEach((chat) => {
+        chat.userMembers = chat.userMembers.filter((member) => member.id !== rootState.user.userData.id);
+        chat.isUnread = chat.meMember.unreadCountMessages > 0;
+      });
+      if (params.offset) result.chats = rootState.chat.chats.list.concat(result.chats);
 
-    commit('setChatsList', result);
+      commit('setChatsList', result);
+    } catch (e) {
+      console.log(e);
+    }
   },
   async getMessagesList({ commit, rootState: { user, chat } }, {
     config, chatId, direction, offset,

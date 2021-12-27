@@ -205,11 +205,11 @@ export default {
           href: `mailto:${this.userData.email}`,
         });
       }
-      if (this.userData.phone) {
+      if (this.userData.additionalInfo.secondMobileNumber) {
         userData.push({
-          name: this.userData.phone,
+          name: this.userData.additionalInfo.secondMobileNumber,
           icon: 'icon-phone',
-          href: `tel:${this.userData.phone}`,
+          href: `tel:${this.userData.additionalInfo.secondMobileNumber}`,
         });
       }
       if (this.userData.additionalInfo.address) {
