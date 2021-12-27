@@ -7,26 +7,13 @@
       <div class="message">
         <div class="message__content">
           <div class="modal__desc">
-            <ValidationProvider
-              v-slot="{ validate }"
-              rules="required|ext:png,jpeg,jpg,gif"
-              tag="div"
-            >
-              <input
-                id="coverUpload"
-                class="edit__avatar"
-                type="file"
-                accept="image/*"
-                @change="processFile($event, validate)"
-              >
-            </ValidationProvider>
             <validation-observer v-slot="{ validated, passed, invalid }">
-              <div>
+              <div class="message__title">
                 <base-field
                   v-model="caseTitle"
                   :label="$t('modals.title')"
                   :placeholder="$t('modals.addTitle')"
-                  rules="required|text-title"
+                  rules="required|text-title|max:70"
                   :mode="'gray'"
                   :name="$t('modals.title')"
                 />
@@ -38,15 +25,30 @@
                   :label="$t('modals.description')"
                   class="message__textarea"
                   :placeholder="$t('modals.addDesc')"
-                  rules="required|text-desc"
+                  rules="required|text-desc|max:350"
                   :name="$t('modals.description')"
+                />
+              </div>
+              <div class="message__portfolio portfolio">
+                <div class="portfolio__title">
+                  {{ $t('uploader.uploadFile') }}
+                </div>
+                <files-uploader
+                  :multiple="false"
+                  :limit="1"
+                  :limit-bytes="10485760"
+                  :limit-bytes-video="10485760"
+                  :accept="'image/png, image/jpg, image/jpeg'"
+                  :preloaded-files="options.media"
+                  rules="required"
+                  @change="updateFiles"
                 />
               </div>
               <div class="btn__container">
                 <div class="btn__wrapper">
                   <base-btn
                     class="message__action"
-                    :disabled="!valid || !validated || !passed || invalid"
+                    :disabled="invalid || files.length === 0"
                     @click="editUserCase(options.id)"
                   >
                     {{ $t('meta.send') }}
@@ -85,6 +87,7 @@ export default {
         data: {},
         file: {},
       },
+      files: [],
     };
   },
   computed: {
@@ -102,17 +105,16 @@ export default {
     hide() {
       this.CloseModal();
     },
+    updateFiles(files) {
+      this.files = files;
+    },
     async editUserCase(id) {
       try {
         this.SetLoader(true);
-        await this.setCaseImage();
         await this.setCaseData(id);
-        await this.getPortfolios();
-        this.showToastEdited();
-        this.hide();
+        await this.getAllPortfolios();
         this.SetLoader(false);
       } catch (e) {
-        this.hide();
         this.showToastError(e);
         this.SetLoader(false);
       }
@@ -135,44 +137,25 @@ export default {
         text: `${e}`,
       });
     },
-    async getPortfolios() {
-      return await this.$store.dispatch('user/getUserPortfolios', { userId: this.userData.id });
-    },
-    async setCaseImage() {
-      const { file, data } = this.portfolio;
-      const formData = new FormData();
-      formData.append('image', file);
-      if (data.ok) {
-        const payload = {
-          url: data.result.url,
-          formData: file,
-          type: file.type,
-        };
-        await this.$store.dispatch('user/setCaseImage', payload);
-      }
-    },
     async setCaseData(id) {
-      const { data } = this.portfolio;
-      const payload = {
-        title: this.caseTitle,
-        description: this.caseDescription,
-        medias: [data.result.mediaId],
-      };
-      await this.$store.dispatch('user/editCaseData', { payload, id });
-    },
-    async processFile(e, validate) {
-      this.valid = await validate(e);
-      const file = e.target.files[0];
-      if (this.valid.valid) {
-        if (!file) {
-          return false;
-        }
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        this.portfolio.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
-        this.portfolio.file = file;
+      const medias = await this.uploadFiles(this.files);
+      if (medias.length) {
+        const payload = {
+          title: this.caseTitle,
+          description: this.caseDescription,
+          medias,
+        };
+        await this.$store.dispatch('user/editCaseData', { payload, id });
+        await this.hide();
+        this.showToastEdited();
       }
-      return this.portfolio;
+    },
+    async getAllPortfolios() {
+      try {
+        await this.$store.dispatch('user/getUserPortfolios', { userId: this.userData.id });
+      } catch (e) {
+        this.showToastError(e);
+      }
     },
     showRequestSendModal() {
       this.ShowModal({
@@ -252,9 +235,6 @@ export default {
   }
 }
 .message {
-  &__wrapper {
-    margin: 0 0 25px 0;
-  }
   &__content {
     display: grid;
     grid-template-columns: 1fr;
@@ -263,6 +243,11 @@ export default {
   }
   &__action {
     margin-top: 10px;
+  }
+}
+.portfolio {
+  &__title {
+    margin-bottom: 15px;
   }
 }
 .btn {

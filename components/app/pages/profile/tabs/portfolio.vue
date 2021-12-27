@@ -1,7 +1,7 @@
 <template>
   <div>
     <emptyData
-      v-if="object.count === 0"
+      v-if="!object || object.count === 0"
       :description="$t('errors.emptyData.emptyPortfolios')"
     />
     <div
@@ -33,7 +33,7 @@
               <base-btn
                 class="portfolio__edit"
                 mode="portfolioEdit"
-                @click="showEditCaseModal(item.id, item.title, item.description)"
+                @click="showEditCaseModal(item.id, item.title, item.description, item.medias)"
               >
                 <span
                   class="icon-edit"
@@ -113,12 +113,13 @@ export default {
         id,
       });
     },
-    showEditCaseModal(id, title, desc) {
+    showEditCaseModal(id, title, desc, media) {
       this.ShowModal({
         key: modals.editCase,
         id,
         title,
         desc,
+        media,
       });
     },
   },
