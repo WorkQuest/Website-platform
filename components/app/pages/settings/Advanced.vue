@@ -163,8 +163,37 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
+
 export default {
   name: 'Advanced',
+  computed: {
+    ...mapGetters({
+      status2FA: 'user/getStatus2FA',
+    }),
+  },
+  methods: {
+    modalsKey(modalKey) {
+      const keys = {
+        disable2FA: modals.disable2FA,
+        chooseNecessarySkills: modals.chooseNecessarySkills,
+        changePassInSettings: modals.changePassInSettings,
+        twoFAAuth: modals.twoFAAuth,
+        smsVerification: modals.smsVerification,
+        changeRoleWarning: modals.changeRoleWarning,
+      };
+      return keys[modalKey];
+    },
+    showModalKey(modalKey) {
+      this.ShowModal({
+        key: this.modalsKey(modalKey),
+      });
+    },
+    async changeRole() {
+      this.showModalKey('changeRoleWarning');
+    },
+  },
 
 };
 </script>
