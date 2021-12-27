@@ -65,4 +65,29 @@ export default {
         width: 100%;
     }
 }
+@include _1199 {
+  .verification {
+    &__title {
+      font-size: 20px;
+      line-height: 26px;
+    }
+  }
+}
+@include _991 {
+  .verification {
+    grid-template-columns: 1fr;
+    padding-right: 20px;
+    &__img {
+      display: none;
+    }
+  }
+}
+@include _480 {
+  .verification {
+    &__button {
+      max-width: none;
+      width: 100%;
+    }
+  }
+}
 </style>

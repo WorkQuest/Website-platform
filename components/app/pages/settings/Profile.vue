@@ -542,4 +542,8 @@ export default {
     align-items: center;
   }
 }
+
+@include _991 {
+
+}
 </style>

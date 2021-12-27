@@ -11,8 +11,9 @@
         :addresses="addresses"
         :local-user-data="localUserData"
       />
+      <!--
       <skills />
-      <advanced />
+      <advanced /> -->
     </div>
   </div>
 </template>
@@ -31,7 +32,7 @@ import Advanced from '~/components/app/pages/settings/Advanced.vue';
 export default {
   name: 'Settings',
   components: {
-    VerificationCard, Profile, Skills, Advanced,
+    VerificationCard, Profile, /* , Skills, Advanced, */
   },
   directives: {
     ClickOutside,
@@ -407,6 +408,26 @@ export default {
     display: grid;
     gap: 20px;
   }
+}
+@include _1199 {
+  .settings {
+    margin: 0 20px;
+  }
+}
+@include _991 {
+
+}
+@include _767 {
+
+}
+@include _575 {
+
+}
+@include _480 {
+
+}
+@include _380 {
+
 }
 /*
 @include _1199 {
