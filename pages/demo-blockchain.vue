@@ -105,7 +105,7 @@ export default {
   data() {
     return {
       amount: null,
-      address: '0x03B2c81D8179a0237287eEdb920BD9f34694539C',
+      address: '',
       maxAmount: 0,
     };
   },
