@@ -136,7 +136,10 @@
                 class="header__button header__button_locale"
                 @click="showLocale()"
               >
-                <span v-if="currentLocale">
+                <span
+                  v-if="currentLocale"
+                  class="header__button_locale-name"
+                >
                   {{ currentLocale.toUpperCase() }}
                 </span>
                 <span v-else>
@@ -144,37 +147,41 @@
                 </span>
                 <span class="icon-caret_down" />
                 <transition name="fade">
-                  <div
+                  <ul
                     v-if="isShowLocale"
                     class="locale"
                   >
-                    <div
-                      v-for="(item, i) in locales"
-                      :key="i"
-                      class="locale__container"
+                    <li
+                      v-for="item in locales"
+                      :key="item.localeText"
+                      class="locale__item"
+                      :class="[{'locale__item_active' : currentLocale === item.localeText}]"
+                      @click="setLocale(item)"
                     >
-                      <div
-                        class="locale__items"
-                        @click="setLocale(item)"
+                      <img
+                        :src="require(`assets/img/lang/${item.localeSrc}`)"
+                        :alt="item.localeText"
+                        class="locale__icon"
                       >
-                        <img
-                          :src="require(`assets/img/lang/${item.localeSrc}`)"
-                          :alt="item.localeText"
-                          class="locale__icon"
-                        >
-                        <div class="locale__text">
-                          {{ item.localeText.toUpperCase() }}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                      <span class="locale__text">
+                        {{ item.localeText.toUpperCase() }}
+                      </span>
+                    </li>
+                  </ul>
                 </transition>
               </button>
               <button
                 class="header__button"
                 @click="goToMessages()"
               >
-                <span class="icon-message" />
+                <img
+                  v-if="hasUnreadMessage"
+                  src="~assets/img/ui/message_unread.svg"
+                >
+                <span
+                  v-else
+                  class="icon-message"
+                />
               </button>
               <button class="header__button header__button_notify">
                 <span
@@ -566,6 +573,11 @@ export default {
   },
   data() {
     return {
+      chatFilter: {
+        limit: 15,
+        offset: 0,
+        starred: false,
+      },
       localUserData: {},
       isInstrumentDropdownOpened: false,
       isUserDDOpened: false,
@@ -590,6 +602,7 @@ export default {
       chatId: 'chat/getCurrChatId',
       messagesFilter: 'chat/getMessagesFilter',
       isChatOpened: 'chat/isChatOpened',
+      hasUnreadMessage: 'chat/hasUnreadMessage',
     }),
     headerLinksWorker() {
       return [
@@ -624,48 +637,10 @@ export default {
       ];
     },
     locales() {
-      return [
-        {
-          localeSrc: 'en.svg',
-          localeText: this.$t('ui.locals.en'),
-        },
-        // {
-        //   localeSrc: 'ru.svg',
-        //   localeText: this.$t('ui.locals.ru'),
-        // },
-        // {
-        //   localeSrc: 'bn.svg',
-        //   localeText: this.$t('ui.locals.bn'),
-        // },
-        // {
-        //   localeSrc: 'zh.svg',
-        //   localeText: this.$t('ui.locals.zh'),
-        // },
-        // {
-        //   localeSrc: 'fr.svg',
-        //   localeText: this.$t('ui.locals.fr'),
-        // },
-        // {
-        //   localeSrc: 'hi.svg',
-        //   localeText: this.$t('ui.locals.hi'),
-        // },
-        // {
-        //   localeSrc: 'id.svg',
-        //   localeText: this.$t('ui.locals.id'),
-        // },
-        // {
-        //   localeSrc: 'pt.svg',
-        //   localeText: this.$t('ui.locals.pt'),
-        // },
-        // {
-        //   localeSrc: 'es.svg',
-        //   localeText: this.$t('ui.locals.es'),
-        // },
-        // {
-        //   localeSrc: 'ar.svg',
-        //   localeText: this.$t('ui.locals.ar'),
-        // },
-      ];
+      return this.$i18n.locales.map((item) => ({
+        localeSrc: `${item}.svg`,
+        localeText: this.$t(`ui.locals.${item}`),
+      }));
     },
     instrumentDDLinks() {
       return [
@@ -808,6 +783,7 @@ export default {
   },
   async mounted() {
     await this.initWSListeners();
+    await this.getChats();
     this.loginCheck();
     this.GetLocation();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
@@ -820,6 +796,9 @@ export default {
     window.removeEventListener('resize', this.userWindowChange);
   },
   methods: {
+    async getChats() {
+      await this.$store.dispatch('chat/getChatsList', this.chatFilter);
+    },
     loginCheck() {
       localStorage.setItem('userLogin', true);
     },
@@ -828,12 +807,9 @@ export default {
       if (!chatConnection) {
         await this.$wsChat.connect(this.token);
         this.$wsChat.subscribe('/notifications/chat', async ({ data, action }) => {
-          if (this.$route.name === 'messages') {
-            await this.$store.dispatch('chat/getChatsList', {
-              limit: 30,
-              offset: 0,
-            });
-          } else if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
+          await this.getChats();
+
+          if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
             if (action !== 'messageReadByRecipient') this.$store.commit('chat/addMessageToList', data);
 
             if (data.type === 'info') {
@@ -1441,9 +1417,9 @@ export default {
     &_locale {
       width: 86px;
       height: 46px;
-      span {
-        padding-left: 10px;
-      }
+    }
+    &_locale-name {
+      padding-left: 10px;
     }
   }
   &__links {
@@ -1547,32 +1523,35 @@ export default {
 }
 .locale {
   position: absolute;
-  top: calc(72px + 5px);
+  top: 90px;
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
-  overflow-y: scroll;
-  max-height: 172px;
-  min-width: 86px;
   z-index: 10000000;
-  &__container {
-    width: 100%;
-  }
-  &__items {
-    padding: 10px 15px;
-    display: flex;
-    gap: 15px;
-  }
+  padding: 15px 20px;
   &__item {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 10px;
+    width: 46px;
+    display: flex;
     align-items: center;
-    min-height: 20px;
+    opacity: 0.7;
+
+    &_active {
+      opacity: 1;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+  &__item:not(:last-child) {
+    margin-bottom: 15px;
   }
   &__icon {
-    border-radius: 100%;
+    display: block;
+    margin-right: 10px;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
   }
   &__text {
     font-family: 'Inter', sans-serif;
