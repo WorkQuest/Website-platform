@@ -456,13 +456,16 @@ export default {
   },
 
   // добавленно только для страницы demo-blockchain
-  async sendTransaction({ commit }, { address, amount }) {
+  async sendTransaction({ commit }, { address, amount, balance }) {
     try {
-      BigNumber.config({ EXPONENTIAL_AT: 60 });
       const { ethereum } = window;
       const web3 = new Web3(ethereum);
       const accountAddress = await getAccountAddress();
-      const newValue = new BigNumber(amount).minus(0.00000002).shiftedBy(18);
+
+      let newValue = null;
+      if (balance > new BigNumber(amount).plus(0.00000002).toNumber()) newValue = new BigNumber(amount).shiftedBy(18);
+      else newValue = new BigNumber(amount).minus(0.00000002).shiftedBy(18);
+
       return await web3.eth.sendTransaction({ from: accountAddress, to: address, value: newValue });
     } catch (err) {
       showToast('Send transaction error', `${err.message}`, 'danger');
