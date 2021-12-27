@@ -218,7 +218,7 @@
     "email": "E-mail",
     "password": "Palavra-passe",
     "confirmPassword": "Repetir palavra-passe",
-    "create": "Criar conta",
+    "create": "Criar conta"
   },
   "createWallet": {
     "savePhrase": "Save your secret phrase",
