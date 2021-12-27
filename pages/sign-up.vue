@@ -5,7 +5,7 @@
       class="auth__back"
       @click="goStep(step - 1)"
     >
-      <span class="icon-long_left" /> {{ $t('signUp.back') }}
+      <span class="icon-long_left" /> {{ $t('meta.back') }}
     </div>
     <ValidationObserver
       v-if="step === 1"
@@ -20,12 +20,12 @@
       </div>
       <div class="auth__text auth__text_simple">
         <span>{{ $t('signUp.haveAccount') }}</span>
-        <n-link
+        <nuxt-link
           class="auth__text auth__text_link"
           to="/sign-in"
         >
           {{ $t('signUp.auth') }}
-        </n-link>
+        </nuxt-link>
       </div>
       <form
         class="auth__fields"
@@ -110,104 +110,115 @@
         </base-field>
         <div class="auth__action">
           <base-btn :disabled="!valid">
-            {{ $t('signUp.next') }}
+            {{ $t('meta.next') }}
           </base-btn>
         </div>
       </form>
     </ValidationObserver>
-    <ValidationObserver
-      v-if="step === 2"
-      v-slot="{ handleSubmit }"
-      class="auth__container"
-    >
-      <div
-        class="auth__text auth__text_title"
-      >
-        {{ $t('signUp.savePhrase') }}
-      </div>
-      <form
-        class="auth__fields"
-        @submit.prevent="handleSubmit(goStep(3))"
-      >
-        <div class="auth__mnemonic">
-          {{ mnemonic }}
-          <button
-            v-clipboard:copy="mnemonic"
-            v-clipboard:success="ClipboardSuccessHandler"
-            v-clipboard:error="ClipboardErrorHandler"
-            type="button"
-          >
-            <span class="icon-copy auth__mnemonic_copy" />
-          </button>
-        </div>
-        <div class="auth__confirm-phrase">
-          <input
-            id="savedMnemonic"
-            v-model="savedMnemonicValue"
-            type="checkbox"
-            class="auth__confirm-phrase_box"
-          >
-          <label
-            for="savedMnemonic"
-            class="auth__confirm-phrase_label"
-          >
-            {{ $t('signUp.keptPhrase') }}
-          </label>
-        </div>
+    <!--    <ValidationObserver-->
+    <!--      v-if="step === 2"-->
+    <!--      v-slot="{ handleSubmit }"-->
+    <!--      class="auth__container"-->
+    <!--    >-->
+    <!--      <div-->
+    <!--        class="auth__text auth__text_title"-->
+    <!--      >-->
+    <!--        {{ $t('signUp.savePhrase') }}-->
+    <!--      </div>-->
+    <!--      <form-->
+    <!--        class="auth__fields"-->
+    <!--        @submit.prevent="handleSubmit(goStep(3))"-->
+    <!--      >-->
+    <!--        <div class="auth__mnemonic">-->
+    <!--          {{ mnemonic }}-->
+    <!--          <button-->
+    <!--            v-clipboard:copy="mnemonic"-->
+    <!--            v-clipboard:success="ClipboardSuccessHandler"-->
+    <!--            v-clipboard:error="ClipboardErrorHandler"-->
+    <!--            type="button"-->
+    <!--          >-->
+    <!--            <span class="icon-copy auth__mnemonic_copy" />-->
+    <!--          </button>-->
+    <!--        </div>-->
+    <!--        <div class="auth__confirm-phrase">-->
+    <!--          <input-->
+    <!--            id="savedMnemonic"-->
+    <!--            v-model="savedMnemonicValue"-->
+    <!--            type="checkbox"-->
+    <!--            class="auth__confirm-phrase_box"-->
+    <!--          >-->
+    <!--          <label-->
+    <!--            for="savedMnemonic"-->
+    <!--            class="auth__confirm-phrase_label"-->
+    <!--          >-->
+    <!--            {{ $t('signUp.keptPhrase') }}-->
+    <!--          </label>-->
+    <!--        </div>-->
 
-        <div class="auth__action">
-          <base-btn :disabled="!savedMnemonicValue">
-            {{ $t('signUp.next') }}
-          </base-btn>
-        </div>
-      </form>
-    </ValidationObserver>
-    <ValidationObserver
-      v-if="step === 3"
-      v-slot="{ handleSubmit, valid }"
-      class="auth__container"
+    <!--        <div class="auth__action">-->
+    <!--          <base-btn :disabled="!savedMnemonicValue">-->
+    <!--            {{ $t('signUp.next') }}-->
+    <!--          </base-btn>-->
+    <!--        </div>-->
+    <!--      </form>-->
+    <!--    </ValidationObserver>-->
+    <!--    <ValidationObserver-->
+    <!--      v-if="step === 3"-->
+    <!--      v-slot="{ handleSubmit, valid }"-->
+    <!--      class="auth__container"-->
+    <!--    >-->
+    <!--      <div class="auth__text auth__text_title">-->
+    <!--        {{ $t('signUp.confirmSecretPhrase') }}-->
+    <!--      </div>-->
+    <!--      <form-->
+    <!--        class="auth__fields"-->
+    <!--        @submit.prevent="handleSubmit(signUp)"-->
+    <!--      >-->
+    <!--        <base-field-->
+    <!--          v-model="confirmMnemonic.first"-->
+    <!--          :rules="`required|is:${confirmMnemonicData.first}`"-->
+    <!--          :placeholder="$t('signUp.typeSecret', { a: 3 })"-->
+    <!--          :name="$t('signUp.secret', { a: 3 })"-->
+    <!--        />-->
+    <!--        <base-field-->
+    <!--          v-model="confirmMnemonic.second"-->
+    <!--          :rules="`required|is:${confirmMnemonicData.second}`"-->
+    <!--          :placeholder="$t('signUp.typeSecret', { a: 7 })"-->
+    <!--          :name="$t('signUp.secret', { a: 7 })"-->
+    <!--        />-->
+    <!--        <div class="auth__action">-->
+    <!--          <base-btn :disabled="!valid">-->
+    <!--            {{ $t('signUp.create') }}-->
+    <!--          </base-btn>-->
+    <!--        </div>-->
+    <!--      </form>-->
+    <!--    </ValidationObserver>-->
+    <CreateWallet
+      :step="step"
+      @goStep="goStep"
+      @submit="signUp"
     >
-      <div class="auth__text auth__text_title">
-        {{ $t('signUp.confirmSecretPhrase') }}
-      </div>
-      <form
-        class="auth__fields"
-        @submit.prevent="handleSubmit(signUp)"
-      >
-        <base-field
-          v-model="confirmMnemonic.first"
-          :rules="`required|is:${confirmMnemonicData.first}`"
-          :placeholder="$t('signUp.typeSecret', { a: 3 })"
-          :name="$t('signUp.secret', { a: 3 })"
-        />
-        <base-field
-          v-model="confirmMnemonic.second"
-          :rules="`required|is:${confirmMnemonicData.second}`"
-          :placeholder="$t('signUp.typeSecret', { a: 7 })"
-          :name="$t('signUp.secret', { a: 7 })"
-        />
-        <div class="auth__action">
-          <base-btn :disabled="!valid">
-            {{ $t('signUp.create') }}
-          </base-btn>
-        </div>
-      </form>
-    </ValidationObserver>
+      <template slot="actionText">
+        {{ $t('signUp.create') }}
+      </template>
+    </CreateWallet>
   </div>
 </template>
 
 <script>
 import modals from '~/store/modals/modals';
+import CreateWallet from '~/components/ui/CreateWallet';
 import {
-  createWallet,
   encryptStringWithKey,
-  decryptStringWitheKey,
   generateMnemonic,
 } from '~/utils/wallet';
 
 export default {
   name: 'SignUp',
   layout: 'auth',
+  components: {
+    CreateWallet,
+  },
   data() {
     return {
       error: '',
@@ -232,54 +243,42 @@ export default {
     };
   },
   async mounted() {
-    this.SetLoader(true);
     this.mnemonic = generateMnemonic();
     const s = this.mnemonic.split(' ');
     this.confirmMnemonicData = {
       first: s[2],
       second: s[6],
     };
-    this.SetLoader(false);
-
-    // const toEncrypt = this.mnemonic;
-    // const encrypt = encryptStringWithKey(toEncrypt, 'secret');
-    // console.log(toEncrypt, ' >>>>> ', encrypt.toString());
-    // const decrypt = decryptStringWitheKey(encrypt, 'secret');
-    // console.log('>>>', decrypt);
   },
   methods: {
     goStep(step) {
       this.step = step;
     },
-    async signUp() {
-      console.log('all ok');
-      const wallet = createWallet(this.mnemonic);
-      console.log('>>> WALLET:', wallet);
-      const data = {};
-      data.publicKey = wallet.publicKey;
-      data.privateKey = wallet.privateKey;
-      data.address = wallet.address;
-
+    async signUp(wallet) {
       const payload = {
         firstName: this.model.firstName,
         lastName: this.model.lastName,
         email: this.model.email,
         password: this.model.password,
       };
-      // const response = await this.$store.dispatch('user/signUp', payload);
-      // if (response.ok) {
-      const storageData = {
-        ...JSON.parse(localStorage.getItem('mnemonic')),
-        [wallet.address]: encryptStringWithKey(this.mnemonic, this.model.password),
-      };
-      localStorage.setItem('mnemonic', JSON.stringify(storageData));
-      const sessionData = {
-        ...JSON.parse(sessionStorage.getItem('menmonic')),
-        [wallet.address]: this.mnemonic,
-      };
-      sessionStorage.setItem('mnemonic', JSON.stringify(sessionData));
-      this.showConfirmEmailModal();
-      // }
+      const response = await this.$store.dispatch('user/signUp', payload);
+      if (response.ok) {
+        const res = await this.$store.dispatch('user/registerWallet', {
+          address: wallet.address,
+          publicKey: wallet.publicKey,
+        });
+        if (res.ok) {
+          localStorage.setItem('mnemonic', JSON.stringify({
+            ...JSON.parse(localStorage.getItem('mnemonic')),
+            [wallet.address]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
+          }));
+          sessionStorage.setItem('mnemonic', JSON.stringify({
+            ...JSON.parse(sessionStorage.getItem('mnemonic')),
+            [wallet.address]: wallet.mnemonic.phrase,
+          }));
+          this.showConfirmEmailModal();
+        }
+      }
     },
     showConfirmEmailModal() {
       this.ShowModal({

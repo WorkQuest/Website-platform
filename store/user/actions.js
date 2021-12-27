@@ -1,3 +1,5 @@
+import { error } from '~/utils/web3';
+
 export default {
   async getUserPortfolios({ commit }, { userId, query }) {
     try {
@@ -65,13 +67,24 @@ export default {
       return console.log(e);
     }
   },
-  async signIn({ commit, dispatch }, payload) {
-    const response = await this.$axios.$post('/v1/auth/login', payload);
-    commit('setTokens', response.result);
-    if (response.result.userStatus === 1) {
-      await dispatch('getUserData');
+  async registerWallet({ commit }, payload) {
+    try {
+      return await this.$axios.$post('/v1/auth/register/wallet', payload);
+    } catch (e) {
+      return error(e.response.data.code, e.response.data.message);
     }
-    return response;
+  },
+  async signIn({ commit, dispatch }, payload) {
+    try {
+      const response = await this.$axios.$post('/v1/auth/login', payload);
+      commit('setTokens', response.result);
+      if (response.result.userStatus === 1) {
+        await dispatch('getUserData');
+      }
+      return response;
+    } catch (e) {
+      return error();
+    }
   },
   async signUp({ commit }, payload) {
     try {
@@ -82,14 +95,17 @@ export default {
       return error();
     }
   },
+  // TODO: fix it
+  async logout({ commit }) {
+    commit('logOut');
+  },
   async logOut({ commit }) {
     commit('logOut');
   },
   async confirm({ commit }, payload) {
     commit('setTokens', { access: this.$cookies.get('access'), refresh: this.$cookies.get('refresh') });
     this.$cookies.set('role', payload.role);
-    const response = await this.$axios.$post('/v1/auth/confirm-email', payload);
-    return response;
+    return await this.$axios.$post('/v1/auth/confirm-email', payload);
   },
   async getUserData({ commit }) {
     try {
@@ -130,9 +146,6 @@ export default {
     } catch (e) {
       return console.log(e);
     }
-  },
-  async logout({ commit }) {
-    commit('logOut');
   },
   async refreshTokens({ commit }) {
     const response = await this.$axios.$post('/v1/auth/refresh-tokens');

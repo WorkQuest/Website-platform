@@ -91,3 +91,11 @@ export const questChatStatus = {
   Active: 0,
   Closed: 1,
 };
+
+export const walletState = {
+  signPage: 1,
+  saveMnemonic: 2,
+  confirmMnemonic: 3,
+  importOrCreate: 4,
+  importMnemonic: 5,
+};
