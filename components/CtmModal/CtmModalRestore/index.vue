@@ -13,14 +13,15 @@
         <base-field
           v-model="emailInput"
           :name="$t('placeholders.email')"
-          :placeholder="$t('placeholders.default')"
+          :placeholder="$t('placeholders.email')"
           rules="required|email"
           class="content__input"
+          @enter="handleSubmit(restore)"
         />
         <base-btn
           class="content__action"
           :disabled="!validated || !passed || invalid"
-          @click="handleSubmit(hide)"
+          @click="handleSubmit(restore)"
         >
           {{ $t('meta.send') }}
         </base-btn>
@@ -61,8 +62,12 @@ export default {
           });
         }
       } catch (e) {
-        this.errorMsg = e;
         console.log(e);
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('toasts.error'),
+          variant: 'warning',
+          text: e.response?.data?.msg,
+        });
       }
     },
   },

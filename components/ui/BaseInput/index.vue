@@ -9,11 +9,12 @@
       {'ctm-field_search': isSearch},
       {'ctm-field_icon': mode === 'icon'},
       {'ctm-field_smallError': mode === 'smallError'},
-      {'ctm-field_white': mode === 'white'}]"
+      {'ctm-field_white': mode === 'white'},
+      {'ctm-field_chat': mode === 'chat'}]"
     :rules="rules"
     :name="name"
     :vid="vid"
-    mode="eager"
+    :mode="validationMode || 'eager'"
     slim
   >
     <div
@@ -38,11 +39,16 @@
       </div>
       <input
         class="ctm-field__input"
+        :class="{'ctm-field__input_error': errors[0]}"
         :placeholder="placeholder"
         :value="mode === 'convertDate' ? convertDate(value) : value"
         :type="type"
         :autocomplete="autocomplete"
         @input="input"
+        @keyup.enter="enter"
+        @keypress.enter="onEnterPress"
+        @focus="$emit('focus')"
+        @blur="$emit('blur')"
       >
       <div
         v-if="value && isSearch"
@@ -74,8 +80,12 @@ import moment from 'moment';
 
 export default {
   props: {
+    onEnterPress: {
+      type: Function,
+      default: () => {},
+    },
     value: {
-      type: String,
+      type: [String, Number],
       default: '',
     },
     mode: {
@@ -140,8 +150,15 @@ export default {
       type: Boolean,
       default: false,
     },
+    validationMode: {
+      type: String,
+      default: 'eager',
+    },
   },
   methods: {
+    enter($event) {
+      this.$emit('enter', $event.target.value);
+    },
     input($event) {
       this.$emit('input', $event.target.value);
       if (this.selector) {
@@ -237,6 +254,9 @@ export default {
     padding: 0 20px;
     transition: .3s;
     width: 100%;
+    &_error {
+      border: 1px solid red !important
+    }
   }
   &_disabled {
     .ctm-field__input {
@@ -283,6 +303,12 @@ export default {
         background: #FFFFFF;
         border: 1px solid #0083C7;
       }
+    }
+  }
+  &_chat {
+    .ctm-field__input {
+      height: 40px;
+      background: #F7F8FA;
     }
   }
   &_icon {

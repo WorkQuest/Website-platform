@@ -12,18 +12,25 @@
           <div class="search__toggle">
             <base-checkbox
               v-model="isShowMap"
+              data-selector="ACTION-IS-SHOW-MAP-USER"
               name="map"
               :label="$t('quests.ui.showMap')"
             />
           </div>
-          <div class="search__inputs">
+          <div
+            class="search__inputs"
+            data-selector="ACTION-TOGGLE-SEARCH-DD-USER"
+            @click="toggleSearchDD"
+          >
             <base-field
               v-model="search"
+              v-click-outside="hideSearchDD"
+              data-selector="INPUT-SEARCH-ADDRESS-USER"
               class="search__input"
               is-search
               :placeholder="$t('quests.ui.search')"
               mode="icon"
-              :selector="true"
+              :selector="isSearchDDStatus"
               @selector="getAddressInfo(search)"
             >
               <template v-slot:left />
@@ -31,11 +38,13 @@
                 <div
                   v-if="addresses.length"
                   class="selector"
+                  :class="{'selector_hide': isSearchDDStatus === false}"
                 >
                   <div class="selector__items">
                     <div
                       v-for="(item, i) in addresses"
                       :key="i"
+                      :data-selector="`ACTION-SELECT-ADDRESS-${item.key}`"
                       class="selector__item"
                       @click="selectAddress(item)"
                     >
@@ -49,12 +58,13 @@
           <div class="search__dd">
             <base-dd
               v-model="distanceIndex"
-              :items="distance"
+              :items="distanceItems"
             />
           </div>
           <div class="search__actions">
             <base-btn
               class="search__btn"
+              data-selector="ACTION-MAP-CENTER-CHANGE-USER"
               @click="centerChange"
             >
               {{ userRole === 'worker' ? $t('quests.searchResults') : $t('workers.searchWorkers') }}
@@ -68,13 +78,14 @@
         >
           <base-dd
             v-model="distanceIndex"
-            :items="distance"
+            :items="distanceItems"
           />
         </div>
         <div class="filter__toggle">
           <base-checkbox
             v-model="isShowMap"
             name="map"
+            data-selector="ACTION-IS-SHOW-MAP-USER"
             :label="$t('quests.ui.showMap')"
           />
         </div>
@@ -90,20 +101,54 @@
             <div class="panel__left">
               <base-filter-dd class="panel__item" />
               <base-dd
-                v-for="(item, i) in panelDDLeft"
-                :key="i"
-                v-model="item.vmodel"
-                :class="item.class"
-                :items="item.items"
-                :mode="item.mode"
-                :placeholder="item.placeholder"
+                v-model="selectedRating"
+                class="panel__item"
+                :items="ratingItems"
+                mode="blackFont"
+                :placeholder="$t('quests.rating.title')"
+              />
+              <base-dd
+                v-model="selectedPriority"
+                class="panel__item"
+                :items="priorityItems"
+                mode="blackFont"
+                :placeholder="$t('quests.priority.title')"
+              />
+              <base-dd
+                v-model="selectedDistantWork"
+                class="panel__item"
+                :items="distantWorkItem"
+                mode="blackFont"
+                :placeholder="$t('quests.distantWork.title')"
               />
               <base-btn
                 class="panel__item"
                 :mode="'light'"
+                data-selector="ACTION-SHOW-PRICE-SEARCH-USER"
                 @click="showPriceSearch"
               >
-                <span class="tools__text">
+                <span
+                  v-if="selectedPriceFilter.from && selectedPriceFilter.to"
+                  class="tools__text tools__text_price"
+                >
+                  {{ selectedPriceFilter.from }} - {{ selectedPriceFilter.to }}
+                </span>
+                <span
+                  v-else-if="!selectedPriceFilter.from && selectedPriceFilter.to"
+                  class="tools__text tools__text_price"
+                >
+                  0 - {{ selectedPriceFilter.to }}
+                </span>
+                <span
+                  v-else-if="selectedPriceFilter.from && !selectedPriceFilter.to"
+                  class="tools__text tools__text_price"
+                >
+                  > {{ selectedPriceFilter.from }}
+                </span>
+                <span
+                  v-else
+                  class="tools__text"
+                >
                   {{ $t('quests.price') }}
                 </span>
                 <template v-slot:right>
@@ -117,6 +162,8 @@
               <base-btn
                 class="tools__item"
                 :mode="'light'"
+                data-selector="ACTION-TIME-SORT-USER"
+                @click="changeSorting('time')"
               >
                 <span class="tools__text">
                   {{ $t('quests.time') }}
@@ -134,13 +181,15 @@
           </div>
         </div>
         <div class="content">
+          <div v-if="workersList.count === 0">
+            {{ $t('workers.noWorkers') }}
+          </div>
           <div
             v-for="(user, i) in workersList.users"
             :key="i"
-            class="card card_higher"
+            class="card card_lower"
             @click="showDetails(user)"
           >
-            <!-- :class="cardsLevelsBorder(i)" -->
             <div
               class="card__content"
             >
@@ -157,39 +206,33 @@
                     <span
                       class="card__name"
                     >
-                      <!-- :class="{'card__name_center': card.level.code === '0'}" -->
                       {{ user.firstName ? user.firstName : $t('quests.namelessWorker') }} {{ user.lastName ? user.lastName : "" }}
                     </span>
-                    <!-- <div
-                      class="card__level"
-                      :class="{'card__level_disabled': card.level.code === '0'}"
-                    >
-                      <span class="icon-circle_up icon_blue" />
-                      <span
-                        class="card__level_higher"
-                        :class="cardsLevels(i)"
-                      >{{ card.level.title }}</span>
-                    </div> -->
                   </div>
                 </div>
               </div>
               <div class="card__spec_title">
                 {{ $t('workers.specializations') }}
               </div>
+              <div
+                v-if="user.userSpecializations.length !== 0"
+                class="badge__container"
+              >
+                <ul class="badge-list">
+                  <li
+                    v-for="(skill, spec) in user.userSpecializations"
+                    :key="spec"
+                    class="badge__item"
+                  >
+                    {{ getSkillTitle(skill.path) }}
+                  </li>
+                </ul>
+              </div>
               <span
                 v-if="user.userSpecializations.length === 0"
                 class="card__spec"
               >
                 {{ $t('quests.dontHaveSpec') }}
-              </span>
-              <span v-if="user.userSpecializations.length > 0">
-                <span
-                  v-for="(spec, j) in user.userSpecializations"
-                  :key="j"
-                  class="card__spec"
-                >
-                  {{ spec.title }}
-                </span>
               </span>
               <div
                 v-if="user.additionalInfo"
@@ -209,16 +252,25 @@
               >
                 {{ user.additionalInfo.address ? user.additionalInfo.address : $t('quests.unknownAddress') }}
               </div>
-              <!-- <div class="card__cost cost">
+              <div class="card__cost cost">
                 <div class="cost__title">
                   {{ $t('workers.costTitle') }}
                 </div>
                 <div class="cost__value">
-                  {{ user.cost }}
+                  {{ user.wagePerHour !== null ? user.wagePerHour : $t('worker.cost.notIndicated') }} {{ user.wagePerHour !== null ? $t('quests.wusd') : '' }}
                 </div>
-              </div> -->
+              </div>
             </div>
           </div>
+        </div>
+        <div
+          v-if="totalPagesValue > 1"
+          class="pager"
+        >
+          <base-pager
+            v-model="page"
+            :total-pages="totalPagesValue"
+          />
         </div>
       </div>
     </div>
@@ -228,54 +280,35 @@
 <script>
 import { mapGetters } from 'vuex';
 import { GeoCode } from 'geo-coder';
+import ClickOutside from 'vue-click-outside';
 import GmapSearchBlock from '~/components/app/GmapSearch';
 import modals from '~/store/modals/modals';
+import { priorityFilter, ratingFilter, workplaceFilter } from '~/utils/enums';
 
 export default {
   name: 'Workers',
+  directives: {
+    ClickOutside,
+  },
   components: {
     GmapSearchBlock,
   },
   data() {
     return {
+      page: 1,
+      perPager: 12,
+      additionalValue: '',
+      totalPagesValue: 1,
+      isSearchDDStatus: true,
       isShowMap: true,
-      currentLocation: {},
-      circleOptions: {},
-      locations: [
-        {
-          lat: 44.933076,
-          lng: 15.629058,
-        },
-        {
-          lat: 45.815,
-          lng: '15.9819',
-        },
-        {
-          lat: '45.12',
-          lng: '16.21',
-        },
-      ],
       rating: [],
-      selectedUrgent: '',
-      selectedDistantWork: '',
+      sortData: '',
+      selectedPriority: null,
+      selectedDistantWork: null,
+      selectedRating: null,
       selectedTypeOfJob: '',
-      pins: {
-        selected: '/img/app/marker_blue.svg',
-        notSelected: '/img/app/marker_red.svg',
-      },
-      clusterStyle: [
-        {
-          url:
-            'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m1.png',
-          width: 56,
-          height: 56,
-          textColor: '#fff',
-        },
-      ],
       search: '',
-      priorityIndex: 0,
       distanceIndex: 0,
-      priceSort: 'desc',
       timeSort: 'desc',
       addresses: [],
       coordinates: null,
@@ -287,135 +320,139 @@ export default {
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
       workersList: 'quests/getWorkersList',
+      selectedSpecializationsFilters: 'quests/getSelectedSpecializationsFilters',
+      selectedPriceFilter: 'quests/getSelectedPriceFilter',
     }),
-    distantWork() {
+    totalPages() {
+      if (this.workersList.count > 0) {
+        return Math.ceil(this.workersList.count / this.perPager);
+      }
+      return 0;
+    },
+    distantWorkItem() {
       return [
+        this.$t('quests.distantWork.allWorkplaces'),
         this.$t('quests.distantWork.distantWork'),
         this.$t('quests.distantWork.workInOffice'),
         this.$t('quests.distantWork.bothVariant'),
       ];
     },
-    typeOfJob() {
-      return [
-        this.$t('quests.fullTime'),
-        this.$t('quests.partTime'),
-        this.$t('quests.fixedTerm'),
-        this.$t('quests.contract'),
-        this.$t('quests.remoteWork'),
-      ];
-    },
-    urgent() {
-      return [
-        this.$t('priority.urgent'),
-        this.$t('priority.normal'),
-        this.$t('priority.low'),
-      ];
-    },
-    distance() {
-      return [
-        '+ 100 m',
-        '+ 500 m',
-        '+ 1000 m',
-      ];
-    },
-    priority() {
+    priorityItems() {
       return [
         this.$t('quests.priority.all'),
-        this.$t('quests.priority.low'),
-        this.$t('quests.priority.normal'),
-        this.$t('quests.priority.urgent'),
+        this.$t('quests.runtime.urgent'),
+        this.$t('quests.runtime.shortTerm'),
+        this.$t('quests.runtime.fixedDelivery'),
       ];
     },
-    panelDDLeft() {
+    ratingItems() {
       return [
-        {
-          vmodel: this.selectedTypeOfJob,
-          class: 'panel__item',
-          items: this.typeOfJob,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.typeOfJob'),
-        },
-        {
-          vmodel: this.selectedUrgent,
-          class: 'panel__item',
-          items: this.urgent,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.urgent'),
-        },
-        {
-          vmodel: this.selectedDistantWork,
-          class: 'panel__item',
-          items: this.distantWork,
-          mode: 'blackFont',
-          placeholder: this.$t('quests.distantWork.title'),
-        },
+        this.$t('quests.allVariants'),
+        this.$t('quests.rating.verified'),
+        this.$t('quests.rating.reliable'),
+        this.$t('quests.rating.topRanked'),
       ];
     },
-    cardLevelClass(idx) {
-      const { cards } = this;
+    distanceItems() {
       return [
-        { card__level_reliable: cards[idx].level.code === 2 },
-        { card__level_checked: cards[idx].level.code === 3 },
+        this.$t('quests.distance.100'),
+        this.$t('quests.distance.500'),
+        this.$t('quests.distance.1000'),
       ];
+    },
+    formattedSpecFilters() {
+      const filtersData = this.selectedSpecializationsFilters?.query || [];
+      if (!filtersData.length) return '';
+      let filters = `specialization[]=${filtersData[0]}`;
+      for (let i = 1; i < filtersData.length; i += 1) { filters += `&specialization[]=${filtersData[i]}`; }
+      return filters;
+    },
+  },
+  watch: {
+    async isShowMap() {
+      this.SetLoader(true);
+      this.additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      await this.fetchWorkersList();
+      this.SetLoader(false);
+    },
+    async page() {
+      this.SetLoader(true);
+      this.additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      await this.fetchWorkersList();
+      this.SetLoader(false);
+    },
+    async mapBounds() {
+      await this.fetchWorkersList();
+    },
+    async formattedSpecFilters() {
+      await this.fetchWorkersList();
+    },
+    async selectedPriceFilter() {
+      await this.fetchWorkersList();
+    },
+    async selectedPriority() {
+      await this.fetchWorkersList();
+    },
+    async selectedDistantWork() {
+      await this.fetchWorkersList();
+    },
+    async selectedTypeOfJob() {
+      await this.fetchWorkersList();
+    },
+    async selectedRating() {
+      await this.fetchWorkersList();
     },
   },
   async mounted() {
     this.SetLoader(true);
-    if (this.userRole === 'employer') {
-      await this.$store.dispatch('quests/workersList');
-      this.showWelcomeModal();
-    }
+    await this.fetchWorkersList();
     this.SetLoader(false);
   },
   methods: {
+    toggleSearchDD() {
+      this.isSearchDDStatus = !this.isSearchDDStatus;
+    },
+    hideSearchDD() {
+      this.isSearchDDStatus = false;
+    },
+    getSkillTitle(path) {
+      const [spec, skill] = path.split('.');
+      return this.$t(`filters.items.${spec}.sub.${skill}`);
+    },
+    async changeSorting(type) {
+      let sortValue = '';
+      if (type === 'time') {
+        this.timeSort = this.timeSort === 'desc' ? 'asc' : 'desc';
+        sortValue = `&sort[createdAt]=${this.timeSort}`;
+      }
+      this.sortData = sortValue;
+      await this.fetchWorkersList();
+    },
+    async fetchWorkersList() {
+      let payload = this.formattedSpecFilters;
+      payload += this.sortData;
+      if (!this.isShowMap) {
+        await this.$store.dispatch('quests/workersList', `${this.additionalValue}&${payload}`);
+      } else if (this.isShowMap && Object.keys(this.mapBounds).length > 0) {
+        const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
+        if (this.selectedPriority) payload += `&priority=${priorityFilter[this.selectedPriority]}`;
+        else if (this.selectedDistantWork > 0) payload += `&workplace[]=${workplaceFilter[this.selectedDistantWork]}`;
+        else if (this.selectedRating > 0) payload += `&ratingStatus=${ratingFilter[this.selectedRating]}`;
+        else if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) {
+          payload += `&betweenWagePerHour[from]=${this.selectedPriceFilter.from || 0}&betweenWagePerHour[to]=${this.selectedPriceFilter.to || 99999999999999}`;
+        }
+        await this.$store.dispatch('quests/workersList', `${this.additionalValue}&${bounds}&${payload}`);
+      }
+      this.totalPagesValue = this.totalPages;
+    },
     showPriceSearch() {
       this.ShowModal({
         key: modals.priceSearch,
       });
     },
-    showWelcomeModal() {
-      if (this.checkWelcomeModal === true) {
-        this.ShowModal({
-          key: modals.welcome,
-        });
-      }
-      this.$store.dispatch('modals/checkWelcomeModal', false);
-    },
     showDetails(worker) {
       this.$store.dispatch('quests/setCurrentWorker', worker);
-      this.$router.push(`/workers/${worker.id}`);
-    },
-    cardsLevels(idx) {
-      const { cards } = this;
-      return [
-        { card__level_reliable: cards[idx].level.code === 2 },
-        { card__level_checked: cards[idx].level.code === 3 },
-        { card__level_disabled: cards[idx].level.code === 0 },
-      ];
-    },
-    cardsLevelsBorder(idx) {
-      const { cards } = this;
-      return [
-        { card_lower: cards[idx].level.code === 2 },
-        { card_lower: cards[idx].level.code === 3 },
-        { card_lower: cards[idx].level.code === 0 },
-      ];
-    },
-    getPriority(index) {
-      const priority = {
-        0: this.$t('priority.low'),
-        1: this.$t('priority.normal'),
-        2: this.$t('priority.urgent'),
-      };
-      return priority[index] || 'None';
-    },
-    getPriorityClass(index) {
-      const priority = {
-        0: 'block__priority_low',
-        1: 'block__priority_normal',
-        2: 'block__priority_urgent',
-      };
-      return priority[index] || '';
+      this.$router.push(`/profile/${worker.id}`);
     },
     centerChange() {
       this.$store.dispatch('quests/setMapCenter', this.coordinates);
@@ -442,6 +479,62 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.pager {
+  margin-top: 25px;
+}
+
+.badge {
+  &-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  &__container {
+    padding: 0;
+    height: 21px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  &__item {
+    @include text-simple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    color: $blue;
+  }
+}
+.selector {
+  @include box;
+  width: 100%;
+  z-index: 140;
+  &_hide {
+    display: none;
+  }
+  &__items {
+    background: #FFFFFF;
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  &__item {
+    @include text-simple;
+    padding: 15px 20px;
+    background: #FFFFFF;
+    font-weight: 500;
+    font-size: 16px;
+    color: $black800;
+    cursor: pointer;
+    transition: .3s;
+    &:hover {
+      background: #F3F7FA;
+    }
+  }
+}
 .panel {
   display: flex;
   flex-direction: row;
@@ -456,6 +549,9 @@ export default {
     display: grid;
     grid-gap: 10px;
     grid-template-columns: 1fr;
+  }
+  &__item {
+    min-width: 180px !important;
   }
 }
 .quests {
@@ -502,6 +598,12 @@ export default {
       line-height: 130%;
       color: $black800;
     }
+    &_price {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100px;
+    }
   }
   &__tags {
     padding-top: 30px;
@@ -510,6 +612,23 @@ export default {
   &__tools {
     padding-top:  20px;
     margin-bottom: 20px;
+  }
+}
+.tools {
+  &__text {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 130%;
+    color: $black800;
+    display: block;
+    &_price {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100px;
+    }
   }
 }
 .main {
@@ -592,16 +711,10 @@ export default {
   align-items: center;
   cursor: pointer;
   box-shadow: none;
-  transition: .2s;
+  transition: .5s;
   &:hover {
     cursor: pointer;
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
-  }
-  &_higher {
-    border: 1px solid #F6CF00;
-  }
-  &_lower {
-    border: none;
   }
   &__content {
     width: 100%;
@@ -643,42 +756,6 @@ export default {
     @include text-simple;
     font-size: 18px;
     font-weight: 500;
-  }
-  &__level {
-    display: grid;
-    grid-template-columns: 20px auto;
-    grid-gap: 7px;
-    font-size: 12px;
-    justify-content: flex-start;
-    align-items: center;
-    height: 20px;
-    &_higher {
-      display: flex;
-      padding: 0 4px;
-      align-items: center;
-      background-color: #F6CF00;
-      border-radius: 3px;
-      color: $white;
-    }
-    &_reliable {
-      display: flex;
-      padding: 0 4px;
-      align-items: center;
-      background-color: #BBC0C7;
-      border-radius: 3px;
-      color: $white;
-    }
-    &_checked {
-      display: flex;
-      padding: 0 4px;
-      align-items: center;
-      background-color: #B79768;
-      border-radius: 3px;
-      color: $white;
-    }
-    &_disabled {
-      display: none;
-    }
   }
   &__title {
     margin: 15px 0 0 0;
@@ -760,7 +837,7 @@ export default {
       justify-items: center;
       align-items: center;
       height: 100%;
-      width: 144px;
+      width: 146px;
     }
     &__icon {
       margin-bottom: -10px;

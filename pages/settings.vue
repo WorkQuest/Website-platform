@@ -43,502 +43,499 @@
           </div>
         </transition>
       </div>
-      <div class="page__profile">
-        <div class="profile__title">
-          {{ $t('settings.profileInfo') }}
-        </div>
-        <div class="avatar__row">
-          <div class="avatar__container">
-            <img
-              v-if="imageData"
-              id="userAvatar"
-              class="profile__img"
-              :src="imageData"
-              alt=""
-            >
-            <img
-              v-if="!imageData"
-              id="userAvatarTwo"
-              class="profile__img"
-              src="~/assets/img/app/avatar_empty.png"
-              alt=""
-            >
-            <label class="user_edit_avatar">
-              <div class="icon-edit" />
-              <ValidationProvider
-                v-slot="{ validate }"
-                rules="required|ext:png,jpeg,jpg"
-                tag="div"
-              >
-                <input
-                  id="coverUpload"
-                  class="edit_avatar"
-                  type="file"
-                  accept="image/*"
-                  @change="processFile($event, validate)"
-                >
-              </ValidationProvider>
-            </label>
-          </div>
-          <div>
-            <span
-              v-if="userRole === 'worker'"
-              class="profile__status"
-            >
-              {{ $t('settings.notVerified') }}
-              <span class="icon-check_all_big" />
-            </span>
-            <div>
-              <div class="profile__row-data">
-                <base-field
-                  v-if="firstName"
-                  v-model="localUserData.firstName"
-                  :placeholder="firstName || $t('settings.nameInput')"
-                  mode="icon"
-                >
-                  <template v-slot:left>
-                    <span class="icon-user" />
-                  </template>
-                </base-field>
-                <base-field
-                  v-if="lastName"
-                  v-model="localUserData.lastName"
-                  :placeholder="$t('settings.lastNameInput')"
-                  mode="icon"
-                >
-                  <template v-slot:left>
-                    <span class="icon-user" />
-                  </template>
-                </base-field>
-              </div>
-              <div class="profile__row-data profile__row-data_big">
-                <vue-phone-number-input
-                  v-model="localUserData.additionalInfo.firstMobileNumber"
-                  class="Phone"
-                  error-color="#EB5757"
-                  clearable
-                  show-code-on-list
-                  @update="updatedPhone = $event"
-                />
-                <base-field
-                  v-model="localUserData.additionalInfo.address"
-                  :placeholder="address || $t('settings.addressInput')"
-                  mode="icon"
-                  :selector="true"
-                  @selector="getAddressInfo(localUserData.additionalInfo.address)"
-                >
-                  <template v-slot:left>
-                    <span class="icon-location" />
-                  </template>
-                  <template v-slot:selector>
-                    <div
-                      v-if="addresses.length"
-                      class="selector"
-                    >
-                      <div class="selector__items">
-                        <div
-                          v-for="(item, i) in addresses"
-                          :key="i"
-                          class="selector__item"
-                          @click="selectAddress(item)"
-                        >
-                          {{ item.formatted }}
-                        </div>
-                      </div>
-                    </div>
-                  </template>
-                </base-field>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          v-if="userRole === 'employer'"
-          class="company__inputs"
-        >
-          <base-field
-            v-model="localUserData.additionalInfo.company"
-            :placeholder="company || $t('settings.company')"
-            mode="icon"
-          >
-            <template v-slot:left>
-              <span class="icon-Case" />
-            </template>
-          </base-field>
-          <base-field
-            v-model="localUserData.additionalInfo.CEO"
-            :placeholder="userCEO || $t('settings.ceo')"
-            mode="icon"
-          >
-            <template v-slot:left>
-              <span class="icon-id_card" />
-            </template>
-          </base-field>
-          <base-field
-            v-model="localUserData.additionalInfo.website"
-            :placeholder="userWebsite || $t('settings.website')"
-            mode="icon"
-          >
-            <template v-slot:left>
-              <span class="icon-Earth" />
-            </template>
-          </base-field>
-        </div>
-        <div
-          class="profile__row-1col"
-        >
-          <textarea
-            id="textarea"
-            v-model="localUserData.additionalInfo.description"
-            class="profile__textarea"
-            :placeholder="userDesc || $t('settings.userDesc')"
-          />
-        </div>
-        <div
-          v-if="userRole === 'worker'"
-          class="page__knowledge knowledge"
-        >
-          <label
-            class="knowledge__label"
-          >{{ $t('settings.educations') }}</label>
-          <div
-            v-if="localUserData.additionalInfo.educations.length !==0"
-          >
-            <div
-              v-for="(k, i) in localUserData.additionalInfo.educations"
-              :key="k.id"
-              class="knowledge__container"
-            >
-              <div class="knowledge__content">
-                <base-field
-                  v-model="localUserData.additionalInfo.educations[i].from"
-                  type="grey"
-                  mode="convertDate"
-                  class="knowledge__data"
-                  :disabled="true"
-                  :placeholder="$t('settings.education.from')"
-                />
-                <div class="knowledge__dash">
-                  -
-                </div>
-                <base-field
-                  v-model="localUserData.additionalInfo.educations[i].to"
-                  type="grey"
-                  mode="convertDate"
-                  class="knowledge__data"
-                  :disabled="true"
-                  :placeholder="$t('settings.education.to')"
-                />
-              </div>
-              <div class="knowledge__content">
-                <base-field
-                  v-model="localUserData.additionalInfo.educations[i].place"
-                  type="grey"
-                  class="knowledge__data knowledge__data_big"
-                  :disabled="true"
-                  :placeholder="$t('settings.education.educationalInstitution')"
-                />
-                <base-btn
-                  class="knowledge__btn"
-                  @click="deleteKnowledge(i)"
-                >
-                  {{ $t('settings.delete') }}
-                </base-btn>
-              </div>
-            </div>
-          </div>
-          <div
-            class="knowledge__container"
-          >
-            <div class="knowledge__content">
-              <base-field
-                v-model="newKnowledge.from"
-                type="date"
-                class="knowledge__data"
-                :placeholder="$t('settings.workExps.from')"
-              />
-              <div class="knowledge__dash">
-                -
-              </div>
-              <base-field
-                v-model="newKnowledge.to"
-                type="date"
-                class="knowledge__data"
-                :placeholder="$t('settings.workExps.to')"
-              />
-            </div>
-            <div class="knowledge__content">
-              <base-field
-                v-model="newKnowledge.place"
-                type="grey"
-                class="knowledge__data knowledge__data_big"
-                :placeholder="$t('settings.education.educationalInstitution')"
-              />
-              <base-btn
-                class="knowledge__btn"
-                @click="addNewKnowledge()"
-              >
-                {{ $t('settings.add') }}
-              </base-btn>
-            </div>
-          </div>
-
-          <label
-            v-if="userRole === 'worker'"
-            class="knowledge__label"
-          >{{ $t('settings.workExp') }}</label>
-          <div
-            v-if="localUserData.additionalInfo.workExperiences.length !==0"
-          >
-            <div
-              v-for="(k, i) in localUserData.additionalInfo.workExperiences"
-              :key="k.id"
-              class="knowledge__container"
-            >
-              <div class="knowledge__content">
-                <base-field
-                  v-model="localUserData.additionalInfo.workExperiences[i].from"
-                  type="gray"
-                  mode="convertDate"
-                  class="knowledge__data"
-                  :disabled="true"
-                  :placeholder="$t('settings.term')"
-                />
-                <div class="knowledge__dash">
-                  -
-                </div>
-                <base-field
-                  v-model="localUserData.additionalInfo.workExperiences[i].to"
-                  type="gray"
-                  mode="convertDate"
-                  class="knowledge__data"
-                  :disabled="true"
-                  :placeholder="$t('settings.term')"
-                />
-              </div>
-              <div class="knowledge__content">
-                <base-field
-                  v-model="localUserData.additionalInfo.workExperiences[i].place"
-                  type="grey"
-                  class="knowledge__data knowledge__data_big"
-                  :disabled="true"
-                  :placeholder="$t('settings.workExps.companyName')"
-                />
-                <base-btn
-                  class="knowledge__btn"
-                  @click="deleteWorkExp(i)"
-                >
-                  {{ $t('settings.delete') }}
-                </base-btn>
-              </div>
-            </div>
-          </div>
-          <div class="knowledge__container">
-            <div class="knowledge__content">
-              <base-field
-                v-model="newWorkExp.from"
-                type="date"
-                class="knowledge__data"
-                :placeholder="$t('settings.term')"
-              />
-              <div class="knowledge__dash">
-                -
-              </div>
-              <base-field
-                v-model="newWorkExp.to"
-                type="date"
-                class="knowledge__data"
-                :placeholder="$t('settings.term')"
-              />
-            </div>
-            <div class="knowledge__content">
-              <base-field
-                v-model="newWorkExp.place"
-                type="grey"
-                class="knowledge__data knowledge__data_big"
-                :placeholder="$t('settings.workExps.companyName')"
-              />
-              <base-btn
-                class="knowledge__btn"
-                @click="addNewWorkExp()"
-              >
-                {{ $t('settings.add') }}
-              </base-btn>
-            </div>
-          </div>
-        </div>
-        <div class="profile__row-4col">
-          <base-field
-            v-model="localUserData.additionalInfo.socialNetwork.instagram"
-            :placeholder="userInstagram || $t('settings.instagramUsername')"
-            mode="icon"
-          >
-            <template v-slot:left>
-              <span class="icon-instagram" />
-            </template>
-          </base-field>
-          <base-field
-            v-model="localUserData.additionalInfo.socialNetwork.twitter"
-            :placeholder="userTwitter || $t('settings.twitterUsername')"
-            mode="icon"
-          >
-            <template v-slot:left>
-              <span class="icon-twitter" />
-            </template>
-          </base-field>
-          <base-field
-            v-model="localUserData.additionalInfo.socialNetwork.linkedin"
-            :placeholder="userLinkedin || $t('settings.linkedInUsername')"
-            mode="icon"
-          >
-            <template v-slot:left>
-              <span class="icon-LinkedIn" />
-            </template>
-          </base-field>
-          <base-field
-            v-model="localUserData.additionalInfo.socialNetwork.facebook"
-            :placeholder="userFacebook || $t('settings.facebookUsername')"
-            mode="icon"
-          >
-            <template v-slot:left>
-              <span class="icon-facebook" />
-            </template>
-          </base-field>
-        </div>
-        <div
-          v-if="userRole === 'employer'"
-          class="page__btn btn"
-        >
-          <base-btn
-            class="btn__save"
-            @click="editUserData()"
-          >
-            {{ $t('settings.save') }}
-          </base-btn>
-        </div>
-      </div>
-      <h2
-        v-if="userRole === 'worker'"
-        class="page__title"
+      <ValidationObserver
+        ref="observerCheckForm"
       >
-        {{ $t('settings.employmentInfo') }}
-      </h2>
-      <div
-        v-if="userRole === 'worker'"
-        class="main-white"
-      >
-        <div class="page__skills skills">
-          <div
-            v-for="key in specCount"
-            :key="key"
-            class="skills__block block"
-          >
-            <div class="block__skill-spec">
-              <div class="block__specialization specialization">
-                <base-dd
-                  v-model="specIndex[key]"
-                  class="specialization__dd"
-                  type="gray"
-                  :placeholder="$t('settings.selectSpec')"
-                  :items="specializations.titles"
-                  :mode="'small'"
-                  :label="$t('settings.specialization')"
-                  @input="switchSkill($event, key)"
-                />
-                <div class="specialization__skills skills">
-                  <base-dd
-                    v-model="skillIndex[key]"
-                    class="specialization__dd"
-                    :type="specIndex[key] < 0 ? 'disabled' : 'gray'"
-                    :disabled="specIndex[key] < 0"
-                    :placeholder="$t('settings.selectSkills')"
-                    :items="specializations.skills[specIndex[key]]"
-                    :mode="'small'"
-                    :label="$t('settings.skillsInput')"
-                    @input="addSkillToBadge($event, specializations.skills[specIndex[key]], skillIndex[key], key)"
-                  />
-                  <div
-                    v-if="selectedSkills[key].length === 5"
-                    class="skills__error"
+        <div>
+          <div class="page__profile">
+            <div class="profile__title">
+              {{ $t('settings.profileInfo') }}
+            </div>
+            <div class="avatar__row">
+              <div class="avatar__container">
+                <img
+                  id="userAvatar"
+                  class="profile__img"
+                  :src="imageData ? imageData : require('~/assets/img/app/avatar_empty.png')"
+                  alt=""
+                >
+                <label class="user_edit_avatar">
+                  <div class="icon-edit" />
+                  <ValidationProvider
+                    v-slot="{ validate }"
+                    rules="ext:png,jpeg,jpg"
+                    tag="div"
                   >
-                    {{ $t('ui.buttons.errors.manySkills') }}
+                    <input
+                      id="coverUpload"
+                      class="edit_avatar"
+                      type="file"
+                      accept="image/*"
+                      @change="processFile($event, validate)"
+                    >
+                  </ValidationProvider>
+                </label>
+              </div>
+              <div>
+                <span
+                  v-if="userRole === 'worker'"
+                  class="profile__status"
+                >
+                  {{ status2FA === 0 ? $t('settings.notVerified') : $t('settings.verified') }}
+                  <span class="icon-check_all_big" />
+                </span>
+                <div>
+                  <div class="profile__row-data">
+                    <base-field
+                      v-if="firstName"
+                      v-model="localUserData.firstName"
+                      :placeholder="firstName || $t('settings.nameInput')"
+                      mode="icon"
+                      :name="$t('settings.firstName')"
+                    >
+                      <template v-slot:left>
+                        <span class="icon-user" />
+                      </template>
+                    </base-field>
+                    <base-field
+                      v-if="lastName"
+                      v-model="localUserData.lastName"
+                      :placeholder="$t('settings.lastNameInput')"
+                      mode="icon"
+                      :name="$t('settings.lastName')"
+                    >
+                      <template v-slot:left>
+                        <span class="icon-user" />
+                      </template>
+                    </base-field>
+                  </div>
+                  <div
+                    class="profile__row-data profile__row-data_big"
+                    @click="toggleSearchDD"
+                  >
+                    <vue-phone-number-input
+                      v-model="localUserData.additionalInfo.secondMobileNumber"
+                      class="phone__input"
+                      error-color="#EB5757"
+                      clearable
+                      show-code-on-list
+                      required
+                      size="lg"
+                      @update="updatedPhone = $event"
+                    />
+                    <base-field
+                      v-model="localUserData.additionalInfo.address"
+                      v-click-outside="hideSearchDD"
+                      :placeholder="address || $t('settings.addressInput')"
+                      rules="max:100"
+                      mode="icon"
+                      :selector="isSearchDDStatus"
+                      :name="$t('settings.address')"
+                      @selector="getAddressInfo(localUserData.additionalInfo.address)"
+                    >
+                      <template v-slot:left>
+                        <span class="icon-location" />
+                      </template>
+                      <template v-slot:selector>
+                        <div
+                          v-if="addresses.length"
+                          class="selector"
+                          :class="{'selector_hide': isSearchDDStatus === false}"
+                        >
+                          <div class="selector__items">
+                            <div
+                              v-for="(item, i) in addresses"
+                              :key="i"
+                              class="selector__item"
+                              @click="selectAddress(item)"
+                            >
+                              {{ item.formatted }}
+                            </div>
+                          </div>
+                        </div>
+                      </template>
+                    </base-field>
                   </div>
                 </div>
               </div>
-              <div class="block__skill skill">
+            </div>
+            <div
+              v-if="userRole === 'employer'"
+              class="company__inputs"
+            >
+              <base-field
+                v-model="localUserData.additionalInfo.company"
+                :placeholder="company || $t('settings.company')"
+                mode="icon"
+                rules="max:100"
+              >
+                <template v-slot:left>
+                  <span class="icon-Case" />
+                </template>
+              </base-field>
+              <base-field
+                v-model="localUserData.additionalInfo.CEO"
+                :placeholder="userCEO || $t('settings.ceo')"
+                mode="icon"
+              >
+                <template v-slot:left>
+                  <span class="icon-id_card" />
+                </template>
+              </base-field>
+              <base-field
+                v-model="localUserData.additionalInfo.website"
+                :placeholder="userWebsite || $t('settings.website')"
+                mode="icon"
+                rules="max:100"
+              >
+                <template v-slot:left>
+                  <span class="icon-Earth" />
+                </template>
+              </base-field>
+            </div>
+            <ValidationProvider
+              v-slot="{ errors }"
+              rules="max:1000"
+              tag="div"
+              :name="'description'"
+            >
+              <div
+                class="profile__row-1col"
+              >
+                <textarea
+                  id="textarea"
+                  v-model="localUserData.additionalInfo.description"
+                  class="profile__textarea"
+                  :placeholder="userDesc || $t('settings.userDesc')"
+                />
+                <span class="error">{{ errors[0] }}</span>
+              </div>
+            </ValidationProvider>
+            <div
+              v-if="userRole === 'worker'"
+              class="page__knowledge knowledge"
+            >
+              <label
+                class="knowledge__label"
+              >{{ $t('settings.educations') }}</label>
+              <div
+                v-if="localUserData.additionalInfo.educations.length !==0"
+              >
                 <div
-                  v-for="(item, i) in selectedSkills[key]"
-                  :key="i"
-                  class="skill__badge"
+                  v-for="(k, i) in localUserData.additionalInfo.educations"
+                  :key="k.id"
+                  class="knowledge__container"
                 >
-                  {{ item }}
-                  <button
-                    class="skill__remove"
-                    @click="removeSkillToBadge(item, key)"
-                  >
-                    <img
-                      src="~assets/img/ui/close_blue.svg"
-                      alt="x"
+                  <div class="knowledge__content">
+                    <base-field
+                      v-model="localUserData.additionalInfo.educations[i].from"
+                      type="grey"
+                      mode="convertDate"
+                      class="knowledge__data"
+                      :disabled="true"
+                      :placeholder="$t('settings.education.from')"
+                    />
+                    <div class="knowledge__dash">
+                      -
+                    </div>
+                    <base-field
+                      v-model="localUserData.additionalInfo.educations[i].to"
+                      type="grey"
+                      mode="convertDate"
+                      class="knowledge__data"
+                      :disabled="true"
+                      :placeholder="$t('settings.education.to')"
+                    />
+                  </div>
+                  <div class="knowledge__content">
+                    <base-field
+                      v-model="localUserData.additionalInfo.educations[i].place"
+                      rules="max:100"
+                      type="grey"
+                      class="knowledge__data knowledge__data_big"
+                      :disabled="true"
+                      :placeholder="$t('settings.education.educationalInstitution')"
+                    />
+                    <base-btn
+                      class="knowledge__btn"
+                      @click="deleteKnowledge(i)"
                     >
-                  </button>
+                      {{ $t('settings.delete') }}
+                    </base-btn>
+                  </div>
                 </div>
               </div>
+              <ValidationObserver
+                ref="observerAddNewKnowledge"
+                disabled
+              >
+                <form
+                  class="knowledge__container"
+                  @submit.prevent="addNewKnowledge"
+                >
+                  <div class="knowledge__content">
+                    <base-field
+                      v-model="newKnowledge.from"
+                      :name="$t('settings.workExps.from')"
+                      type="date"
+                      class="knowledge__data"
+                      :placeholder="$t('settings.workExps.from')"
+                      :rules="`required||between-date:${newKnowledge.from},${newKnowledge.to}`"
+                      validation-mode="passive"
+                      @blur="clearError('observerAddNewKnowledge', newKnowledge)"
+                    />
+                    <div class="knowledge__dash">
+                      -
+                    </div>
+                    <base-field
+                      v-model="newKnowledge.to"
+                      :name="$t('settings.workExps.to')"
+                      type="date"
+                      class="knowledge__data"
+                      :placeholder="$t('settings.workExps.to')"
+                      :rules="`required||between-date:${newKnowledge.from},${newKnowledge.to}`"
+                      validation-mode="passive"
+                      @blur="clearError('observerAddNewKnowledge', newKnowledge)"
+                    />
+                  </div>
+                  <div class="knowledge__content">
+                    <base-field
+                      v-model="newKnowledge.place"
+                      rules="max:100||required"
+                      :name="$t('settings.education.educationalInstitution')"
+                      type="grey"
+                      class="knowledge__data knowledge__data_big"
+                      :placeholder="$t('settings.education.educationalInstitution')"
+                      validation-mode="passive"
+                      @blur="clearError('observerAddNewKnowledge', newKnowledge)"
+                    />
+                    <base-btn
+                      class="knowledge__btn"
+                      type="submit"
+                    >
+                      {{ $t('settings.add') }}
+                    </base-btn>
+                  </div>
+                </form>
+              </ValidationObserver>
+
+              <label
+                v-if="userRole === 'worker'"
+                class="knowledge__label"
+              >{{ $t('settings.workExp') }}</label>
+              <div
+                v-if="localUserData.additionalInfo.workExperiences.length !==0"
+              >
+                <div
+                  v-for="(k, i) in localUserData.additionalInfo.workExperiences"
+                  :key="k.id"
+                  class="knowledge__container"
+                >
+                  <div class="knowledge__content">
+                    <base-field
+                      v-model="localUserData.additionalInfo.workExperiences[i].from"
+                      type="gray"
+                      mode="convertDate"
+                      class="knowledge__data"
+                      :disabled="true"
+                      :placeholder="$t('settings.term')"
+                    />
+                    <div class="knowledge__dash">
+                      -
+                    </div>
+                    <base-field
+                      v-model="localUserData.additionalInfo.workExperiences[i].to"
+                      type="gray"
+                      mode="convertDate"
+                      class="knowledge__data"
+                      :disabled="true"
+                      :placeholder="$t('settings.term')"
+                    />
+                  </div>
+                  <div class="knowledge__content">
+                    <base-field
+                      v-model="localUserData.additionalInfo.workExperiences[i].place"
+                      rules="max:100"
+                      type="grey"
+                      class="knowledge__data knowledge__data_big"
+                      :disabled="true"
+                      :placeholder="$t('settings.workExps.companyName')"
+                    />
+                    <base-btn
+                      class="knowledge__btn"
+                      @click="deleteWorkExp(i)"
+                    >
+                      {{ $t('settings.delete') }}
+                    </base-btn>
+                  </div>
+                </div>
+              </div>
+              <ValidationObserver
+                ref="observerAddNewWorkExp"
+                disabled
+              >
+                <form
+                  class="knowledge__container"
+                  @submit.prevent="addNewWorkExp"
+                >
+                  <div class="knowledge__content">
+                    <base-field
+                      v-model="newWorkExp.from"
+                      type="date"
+                      class="knowledge__data"
+                      :placeholder="$t('settings.term')"
+                      :name="$t('settings.workExps.from')"
+                      :rules="`required||between-date:${newWorkExp.from},${newWorkExp.to}`"
+                      validation-mode="passive"
+                      @blur="clearError('observerAddNewWorkExp', newWorkExp)"
+                    />
+                    <div class="knowledge__dash">
+                      -
+                    </div>
+                    <base-field
+                      v-model="newWorkExp.to"
+                      type="date"
+                      class="knowledge__data"
+                      :placeholder="$t('settings.term')"
+                      :name="$t('settings.workExps.to')"
+                      :rules="`required||between-date:${newWorkExp.from},${newWorkExp.to}`"
+                      validation-mode="passive"
+                      @blur="clearError('observerAddNewWorkExp', newWorkExp)"
+                    />
+                  </div>
+                  <div class="knowledge__content">
+                    <base-field
+                      v-model="newWorkExp.place"
+                      rules="max:100||required"
+                      type="grey"
+                      class="knowledge__data knowledge__data_big"
+                      :placeholder="$t('settings.workExps.companyName')"
+                      :name="$t('settings.workExps.companyName')"
+                      @blur="clearError('observerAddNewWorkExp', newWorkExp)"
+                    />
+                    <base-btn
+                      class="knowledge__btn"
+                      type="submit"
+                    >
+                      {{ $t('settings.add') }}
+                    </base-btn>
+                  </div>
+                </form>
+              </ValidationObserver>
             </div>
-            <base-btn
-              :text="$t('settings.removeSpec')"
-              class="specialization__btn specialization__btn_remove"
-              @click="removeSpecialization(key)"
-            />
-          </div>
-          <base-btn
-            :text="$t('settings.addSpec')"
-            :disabled="specCount === 3"
-            class="skills__btn-add"
-            :class="specCount === 3 ? 'skills__btn-add_disabled' : ''"
-            @click="addSpecialization"
-          />
-          <div
-            v-if="specCount === 3"
-            class="skills__error"
-          >
-            {{ $t('ui.buttons.errors.manySpec') }}
-          </div>
-          <div class="skills__add-info">
-            <base-dd
-              v-model="priorityIndex"
-              class="specialization__dd"
-              type="gray"
-              :placeholder="$t('priority.title')"
-              :items="priority"
-              :mode="'small'"
-              :label="$t('settings.priority')"
-            />
-            <base-dd
-              v-model="distantIndex"
-              class="specialization__dd"
-              type="gray"
-              :placeholder="$t('settings.distantWork.select')"
-              :items="distantWork"
-              :mode="'small'"
-              :label="$t('settings.distantWork.title')"
-            />
-            <base-field
-              v-model="perHour"
-              class="specialization__skills"
-              :label="$t('settings.costPerHour')"
-              type="gray"
-            />
-          </div>
-          <div class="page__btn btn">
-            <base-btn
-              class="btn__save"
-              @click="editUserData()"
+            <div class="profile__row-4col">
+              <base-field
+                v-model="localUserData.additionalInfo.socialNetwork.instagram"
+                rules="max:50"
+                :placeholder="userInstagram || $t('settings.instagramUsername')"
+                mode="icon"
+                :name="$t('settings.instagram')"
+              >
+                <template v-slot:left>
+                  <span class="icon-instagram" />
+                </template>
+              </base-field>
+              <base-field
+                v-model="localUserData.additionalInfo.socialNetwork.twitter"
+                :placeholder="userTwitter || $t('settings.twitterUsername')"
+                rules="max:50"
+                mode="icon"
+                :name="$t('settings.twitter')"
+              >
+                <template v-slot:left>
+                  <span class="icon-twitter" />
+                </template>
+              </base-field>
+              <base-field
+                v-model="localUserData.additionalInfo.socialNetwork.linkedin"
+                :placeholder="userLinkedin || $t('settings.linkedInUsername')"
+                rules="max:50"
+                mode="icon"
+                :name="$t('settings.linkedin')"
+              >
+                <template v-slot:left>
+                  <span class="icon-LinkedIn" />
+                </template>
+              </base-field>
+              <base-field
+                v-model="localUserData.additionalInfo.socialNetwork.facebook"
+                :placeholder="userFacebook || $t('settings.facebookUsername')"
+                rules="max:50"
+                mode="icon"
+                :name="$t('settings.facebook')"
+              >
+                <template v-slot:left>
+                  <span class="icon-facebook" />
+                </template>
+              </base-field>
+            </div>
+            <div
+              v-if="userRole === 'employer'"
+              class="page__btn page__btn_margin"
             >
-              {{ $t('settings.save') }}
-            </base-btn>
+              <base-btn
+                class="btn__save"
+                @click="editUserData"
+              >
+                {{ $t('settings.save') }}
+              </base-btn>
+            </div>
+          </div>
+          <h2
+            v-if="userRole === 'worker'"
+            class="page__title"
+          >
+            {{ $t('settings.employmentInfo') }}
+          </h2>
+          <div
+            v-if="userRole === 'worker'"
+            class="main-white"
+          >
+            <div class="page__skills skills">
+              <specializations-selector
+                :skills="userSpecializations"
+                @changeSkills="updateSelectedSkills"
+              />
+              <div class="skills__add-info">
+                <base-dd
+                  v-model="priorityIndex"
+                  class="specialization__dd"
+                  type="gray"
+                  :placeholder="$t('priority.title')"
+                  :items="priority"
+                  :mode="'small'"
+                  :label="$t('settings.priority')"
+                />
+                <base-dd
+                  v-model="distantIndex"
+                  class="specialization__dd"
+                  type="gray"
+                  :placeholder="$t('settings.distantWork.select')"
+                  :items="distantWork"
+                  :mode="'small'"
+                  :label="$t('settings.distantWork.title')"
+                />
+                <base-field
+                  v-model="perHour"
+                  class="specialization__skills"
+                  :placeholder="perHour ||$t('priority.title')"
+                  :label="$t('settings.costPerHour')"
+                  :name="$t('settings.costPerHour')"
+                  type="gray"
+                />
+              </div>
+              <div class="page__btn">
+                <base-btn
+                  class="btn__save"
+                  @click="editUserData"
+                >
+                  {{ $t('settings.save') }}
+                </base-btn>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </ValidationObserver>
       <div class="settings">
         <div class="settings__left">
           <div>{{ $t('settings.settings') }}</div>
@@ -638,7 +635,7 @@
             <div class="settings_blue">
               <div>{{ $t('settings.changePass') }}</div>
               <div>
-                <base-btn @click="modalChangePassword()">
+                <base-btn @click="showModalKey('changePassInSettings')">
                   {{ $t('settings.change') }}
                 </base-btn>
               </div>
@@ -649,13 +646,15 @@
               </div>
               <div>
                 <base-btn
+                  :disabled="status2FA === 0"
                   class="margin__bottom"
-                  @click="disable2FA"
+                  @click="showModalKey('disable2FA')"
                 >
                   {{ $t('meta.disable') }}
                 </base-btn>
                 <base-btn
-                  @click="modalTwoFAAuth()"
+                  :disabled="status2FA === 1"
+                  @click="showModalKey('twoFAAuth')"
                 >
                   {{ $t('settings.enable') }}
                 </base-btn>
@@ -665,7 +664,7 @@
               <div>{{ $t('settings.smsVerification') }}</div>
               <div>
                 <base-btn
-                  @click="showModalEnableSmsVerification"
+                  @click="showModalKey('smsVerification')"
                 >
                   {{ $t('settings.enable') }}
                 </base-btn>
@@ -688,36 +687,27 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import ClickOutside from 'vue-click-outside';
 import { GeoCode } from 'geo-coder';
 import modals from '~/store/modals/modals';
 import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 
 export default {
   name: 'Settings',
+  directives: {
+    ClickOutside,
+  },
   data() {
     return {
+      isSearchDDStatus: true,
       specCount: 0,
-      perHour: '0',
-      specIndex: {
-        1: -1,
-        2: -1,
-        3: -1,
-      },
-      skillIndex: {
-        1: -1,
-        2: -1,
-        3: -1,
-      },
-      selectedSkills: {
-        1: [],
-        2: [],
-        3: [],
-      },
+      perHour: 0,
+      selectedSpecAndSkills: [],
       priorityIndex: -1,
       distantIndex: -1,
       updatedPhone: null,
       addresses: [],
-      sms: false,
+      isSms: false,
       isShowInfo: true,
       localUserData: {
         avatarId: null,
@@ -725,7 +715,6 @@ export default {
         lastName: null,
         skillFilters: null,
         additionalInfo: {
-          // firstMobileNumber: null,
           secondMobileNumber: null,
           address: null,
           socialNetwork: {
@@ -747,7 +736,7 @@ export default {
           latitude: 0,
         },
       },
-      avatar_change: {
+      avatarChange: {
         data: {},
         file: {},
       },
@@ -787,18 +776,11 @@ export default {
       getUserAddress: 'user/getUserAddress',
       applicantStatus: 'sumsub/getApplicantStatus',
       accessToken: 'sumsub/getSumSubBackendToken',
+      status2FA: 'user/getStatus2FA',
+      filters: 'quests/getFilters',
     }),
-    specializations() {
-      const specializations = Object.keys(this.$t('settings.specializations')).length;
-      const specs = {
-        titles: [],
-        skills: [],
-      };
-      for (let i = 1; i < specializations; i += 1) {
-        specs.skills.push(this.$t(`settings.specializations.${i}.sub`));
-        specs.titles.push(this.$t(`settings.specializations.${i}.title`));
-      }
-      return specs;
+    userSpecializations() {
+      return this.userData.userSpecializations || [];
     },
     distantWork() {
       return [
@@ -809,6 +791,7 @@ export default {
     },
     priority() {
       return [
+        this.$t('priority.all'),
         this.$t('priority.employee.low'),
         this.$t('priority.employee.normal'),
         this.$t('priority.employee.urgent'),
@@ -817,6 +800,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    if (!this.filters) await this.$store.dispatch('quests/getFilters');
     this.localUserData = {
       avatarId: this.userData.avatarId,
       firstName: this.userData.firstName,
@@ -824,56 +808,45 @@ export default {
       additionalInfo: JSON.parse(JSON.stringify(this.userData.additionalInfo)),
       location: this.userData.location,
     };
+    this.priorityIndex = this.userData.priority;
+    this.distantIndex = this.distantIndexByWorkplace(this.userData.workplace);
+    await this.perHourData();
     this.SetLoader(false);
   },
   methods: {
+    distantIndexByWorkplace(workplace) {
+      if (workplace === 'distance') return 0;
+      if (workplace === 'office') return 1;
+      if (workplace === 'both') return 2;
+      return null;
+    },
+    parseDistantWork(index) {
+      if (index === 0) return 'distant';
+      if (index === 1) return 'office';
+      if (index === 2) return 'both';
+      return null;
+    },
+    updateSelectedSkills(specAndSkills) {
+      this.selectedSpecAndSkills = specAndSkills;
+    },
+    async perHourData() {
+      this.perHour = await this.userData.wagePerHour;
+    },
+    toggleSearchDD() {
+      this.isSearchDDStatus = !this.isSearchDDStatus;
+    },
+    hideSearchDD() {
+      this.isSearchDDStatus = false;
+    },
     getApplicantStatus() {
-      const id = this.accessToken.userId;
       try {
-        this.$store.dispatch('sumsub/applicantStatus', id);
+        this.$store.dispatch('sumsub/applicantStatus', this.accessToken.userId);
       } catch (e) {
         console.log(e);
       }
     },
     goToSumSub() {
       this.$router.push('/sumsub');
-    },
-    addSkillToBadge(event, object, index, key) {
-      if (!this.selectedSkills[key].includes(object[index]) && this.selectedSkills[key].length <= 4) {
-        this.selectedSkills[key].push(object[index]);
-      }
-    },
-    removeSkillToBadge(skillName, key) {
-      const numberInArray = this.selectedSkills[key].indexOf(skillName);
-      this.selectedSkills[key].splice(numberInArray, 1);
-      if (!this.selectedSkills[key].length) {
-        this.skillIndex[key] = -1;
-      }
-    },
-    switchSkill(event, key) {
-      this.skillIndex[key] = -1;
-      this.selectedSkills[key] = [];
-    },
-    addSpecialization() {
-      if (this.specCount <= 2) {
-        this.specCount += 1;
-      }
-    },
-    removeSpecialization(key) {
-      this.selectedSkills[key] = [];
-      this.specIndex[key] = -1;
-      this.skillIndex[key] = -1;
-      this.specCount -= 1;
-    },
-    disable2FA() {
-      this.ShowModal({
-        key: modals.disable2FA,
-      });
-    },
-    chooseNecessarySkills() {
-      this.ShowModal({
-        key: modals.chooseNecessarySkills,
-      });
     },
     selectAddress(address) {
       this.localUserData.additionalInfo.address = address.formatted;
@@ -892,26 +865,34 @@ export default {
         console.log(e);
       }
     },
-    addNewKnowledge() {
-      this.localUserData.additionalInfo.educations.push({ ...this.newKnowledge });
-      this.newKnowledge = {
-        from: null,
-        to: null,
-        place: null,
-      };
-      this.showModalAddEducationOk();
+    async addNewKnowledge() {
+      const validate = await this.$refs.observerAddNewKnowledge.validate();
+      if (validate) {
+        this.localUserData.additionalInfo.educations.push({ ...this.newKnowledge });
+        this.newKnowledge = {
+          from: null,
+          to: null,
+          place: null,
+        };
+        this.showModalStatus('educationAddSuccessful');
+        this.$refs.observerAddNewKnowledge.reset();
+      }
     },
     deleteKnowledge(i) {
       this.localUserData.additionalInfo.educations.splice(i, 1);
     },
-    addNewWorkExp() {
-      this.localUserData.additionalInfo.workExperiences.push({ ...this.newWorkExp });
-      this.newWorkExp = {
-        from: null,
-        to: null,
-        place: null,
-      };
-      this.showModalAddWorkExpOk();
+    async addNewWorkExp() {
+      const validate = await this.$refs.observerAddNewWorkExp.validate();
+      if (validate) {
+        this.localUserData.additionalInfo.workExperiences.push({ ...this.newWorkExp });
+        this.newWorkExp = {
+          from: null,
+          to: null,
+          place: null,
+        };
+        this.showModalStatus('workExpAddSuccessful');
+        this.$refs.observerAddNewWorkExp.reset();
+      }
     },
     deleteWorkExp(i) {
       this.localUserData.additionalInfo.workExperiences.splice(i, 1);
@@ -919,18 +900,17 @@ export default {
     // eslint-disable-next-line consistent-return
     async processFile(e, validate) {
       const isValid = await validate(e);
+      const reader = new FileReader();
       const file = e.target.files[0];
       if (isValid.valid) {
         if (!file) {
           return false;
         }
-
-        const reader = new FileReader();
         reader.readAsDataURL(file);
-
-        this.avatar_change.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
-        this.avatar_change.file = file;
+        this.avatarChange.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
+        this.avatarChange.file = file;
         let output = document.getElementById('userAvatar');
+        const modalMode = 'imageLoadedSuccessful';
         if (!output) {
           output = document.getElementById('userAvatarTwo');
         }
@@ -939,190 +919,193 @@ export default {
         output.onload = function () {
           URL.revokeObjectURL(output.src);
         };
-        this.showModalImageOk();
+        this.showModalStatus(modalMode);
         reader.onerror = (evt) => {
           console.error(evt);
         };
       }
     },
-    showModalEnableSmsVerification() {
+
+    modalsStatusTitle(modalMode) {
+      const titles = {
+        enterPhoneNumber: this.$t('settings.enterPhoneNumber'),
+        enterCurrentLocation: this.$t('settings.enterCurrentLocation'),
+        imageLoadedSuccessful: this.$t('modals.imageLoadedSuccessful'),
+        educationAddSuccessful: this.$t('modals.educationAddSuccessful'),
+        workExpAddSuccessful: this.$t('modals.workExpAddSuccessful'),
+        saved: this.$t('modals.saved'),
+      };
+      return titles[modalMode];
+    },
+    modalsStatusSubtitles(modalMode) {
+      const subtitles = {
+        enterPhoneNumber: this.$t('modals.pressSaveBtn'),
+        enterCurrentLocation: this.$t('modals.pressSaveBtn'),
+        imageLoadedSuccessful: this.$t('modals.pressSaveBtn'),
+        educationAddSuccessful: this.$t('modals.pressSaveBtn'),
+        workExpAddSuccessful: this.$t('modals.pressSaveBtn'),
+        saved: this.$t('modals.userDataHasBeenSaved'),
+      };
+      return subtitles[modalMode];
+    },
+    modalsKey(modalKey) {
+      const keys = {
+        disable2FA: modals.disable2FA,
+        chooseNecessarySkills: modals.chooseNecessarySkills,
+        changePassInSettings: modals.changePassInSettings,
+        twoFAAuth: modals.twoFAAuth,
+        smsVerification: modals.smsVerification,
+        changeRoleWarning: modals.changeRoleWarning,
+      };
+      return keys[modalKey];
+    },
+    showModalKey(modalKey) {
       this.ShowModal({
-        key: modals.smsVerification,
+        key: this.modalsKey(modalKey),
       });
     },
-    showModalImageOk() {
+    showModalStatus(modalMode) {
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.imageLoadedSuccessful'),
-        subtitle: this.$t('modals.pressSaveBtn'),
-        path: '/settings',
+        title: this.modalsStatusTitle(modalMode),
+        subtitle: this.modalsStatusSubtitles(modalMode),
       });
-    },
-    showModalAddEducationOk() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.educationAddSuccessful'),
-        subtitle: this.$t('modals.pressSaveBtn'),
-        path: '/settings',
-      });
-    },
-    showModalAddWorkExpOk() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.workExpAddSuccessful'),
-        subtitle: this.$t('modals.pressSaveBtn'),
-        path: '/settings',
-      });
-    },
-    showModalSave() {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.saved'),
-        subtitle: this.$t('modals.userDataHasBeenSaved'),
-        path: '/settings',
-      });
-    },
-    modalChangePassword() {
-      this.ShowModal({
-        key: modals.changePassInSettings,
-      });
-    },
-    modalTwoFAAuth() {
-      this.ShowModal({
-        key: modals.twoFAAuth,
-      });
-    },
-    isCloseInfo() {
-      this.isShowInfo = !this.isShowInfo;
-    },
-    switch2Fa() {
-      this.twoFa = !this.twoFa;
-    },
-    switchSms() {
-      this.sms = !this.sms;
-      this.$router.push('/sms-verification');
     },
     async changeRole() {
-      this.ShowModal({
-        key: modals.changeRoleWarning,
-      });
-      // try {
-      //   const response = await this.$store.dispatch('user/setUserRole');
-      //   if (response?.ok) {
-      //     console.log('good response');
-      //   }
-      // } catch (e) {
-      //   console.log(e);
-      // }
+      this.showModalKey('changeRoleWarning');
     },
-    async changePassword() {
-      try {
-        this.ShowModal({
-          key: modals.changePassword,
-        });
-      } catch (e) {
-        console.log(e);
+    async checkPhoneNumber() {
+      if (this.updatedPhone.formatInternational) {
+        this.localUserData.additionalInfo.secondMobileNumber = this.updatedPhone.formatInternational.replace(/\s/g, '');
+      } if (!this.updatedPhone.formatInternational) {
+        this.localUserData.additionalInfo.secondMobileNumber = '';
+      }
+    },
+    async validateExperienceForm(observerName, value) {
+      const isDirty = Object.keys(value).some((field) => value[field] !== '' && value[field] !== null);
+      if (isDirty) {
+        return await this.$refs[observerName].validate();
+      }
+      return true;
+    },
+    clearError(observerName, value) {
+      const isClear = Object.keys(value).every((field) => value[field] === '' || value[field] === null);
+      if (isClear) {
+        this.$refs[observerName].reset();
       }
     },
     async editUserData() {
+      const validateKnowledge = await this.validateExperienceForm('observerAddNewKnowledge', this.newKnowledge);
+      const validateWorkExp = await this.validateExperienceForm('observerAddNewWorkExp', this.newWorkExp);
+      const validateSettingsForm = await this.$refs.observerCheckForm.validate();
+      if (validateKnowledge === false || validateWorkExp === false || validateSettingsForm === false) {
+        return;
+      }
+
+      const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
+      const { secondMobileNumber } = this.localUserData.additionalInfo;
+      await this.setAvatar();
+      await this.checkPhoneNumber();
+      if (secondMobileNumber) {
+        await this.editProfile(checkAvatarID);
+      }
+      if (!secondMobileNumber) this.showModalStatus('enterPhoneNumber');
+    },
+    async setAvatar() {
       const formData = new FormData();
-      formData.append('image', this.avatar_change.file);
+      formData.append('image', this.avatarChange.file);
       try {
-        if (this.avatar_change.data.ok) {
+        if (this.avatarChange.data.ok) {
           const data = {
-            url: this.avatar_change.data.result.url,
-            formData: this.avatar_change.file,
-            type: this.avatar_change.file.type,
+            url: this.avatarChange.data.result.url,
+            formData: this.avatarChange.file,
+            type: this.avatarChange.file.type,
           };
           await this.$store.dispatch('user/setImage', data);
         }
       } catch (error) {
         console.log(error);
       }
-      this.localUserData.additionalInfo.secondMobileNumber = this.updatedPhone.formatInternational.replace(/\s/g, '');
-      delete this.localUserData.additionalInfo.firstMobileNumber;
-      if (this.coordinates !== undefined) {
-        this.localUserData.location = { longitude: this.coordinates.lng, latitude: this.coordinates.lat };
-      }
-      let payload = {};
-      const checkAvatarID = this.avatar_change.data.ok ? this.avatar_change.data.result.mediaId : this.userData.avatarId;
-      const additionalInfo = {
-        ...this.filterEmpty(this.localUserData.additionalInfo),
-        socialNetwork: this.filterEmpty(this.localUserData.additionalInfo.socialNetwork),
+    },
+    async editProfile(checkAvatarID) {
+      const {
+        instagram, twitter, linkedin, facebook,
+      } = this.localUserData.additionalInfo.socialNetwork;
+      let payload = {
+        avatarId: checkAvatarID,
+        firstName: this.localUserData.firstName,
+        lastName: this.localUserData.lastName,
+        location: {
+          longitude: this.coordinates ? this.coordinates.lng : this.localUserData.location?.longitude || 0,
+          latitude: this.coordinates ? this.coordinates.lat : this.localUserData.location?.latitude || 0,
+        },
+        additionalInfo: {
+          secondMobileNumber: this.localUserData.additionalInfo.secondMobileNumber,
+          address: this.localUserData.additionalInfo.address,
+          socialNetwork: {
+            instagram: instagram !== '' ? instagram : null,
+            twitter: twitter !== '' ? twitter : null,
+            linkedin: linkedin !== '' ? linkedin : null,
+            facebook: facebook !== '' ? facebook : null,
+          },
+        },
       };
-      if (this.userRole === 'employer') {
-        payload = {
-          ...this.localUserData,
-          avatarId: checkAvatarID,
-          skillFilters: { test: ['test'] },
-          additionalInfo: {
-            ...additionalInfo,
-            ...{
-              educations: undefined,
-              workExperiences: undefined,
-              skills: undefined,
-            },
-          },
+      if (this.userRole === 'worker') {
+        payload.additionalInfo = {
+          ...payload.additionalInfo,
+          educations: this.localUserData.additionalInfo.educations,
+          workExperiences: this.localUserData.additionalInfo.workExperiences,
+          description: this.localUserData.additionalInfo.description,
         };
-      } else {
-        const specAndSkills = {};
-        // eslint-disable-next-line no-restricted-syntax
-        for (const spec in this.specIndex) {
-          if (this.specIndex[spec] !== -1) {
-            const specName = this.specializations.titles[this.specIndex[spec]];
-            specAndSkills[specName] = this.selectedSkills[spec];
-          }
-        }
         payload = {
-          ...this.localUserData,
-          avatarId: checkAvatarID,
-          skillFilters: specAndSkills,
-          additionalInfo: {
-            ...additionalInfo,
-            ...{
-              company: undefined,
-              CEO: undefined,
-              website: undefined,
-            },
-          },
+          ...payload,
+          workplace: this.parseDistantWork(this.distantIndex),
+          priority: this.priorityIndex,
+          wagePerHour: this.perHour ? this.perHour : this.userData.wagePerHour,
+          specializationKeys: this.selectedSpecAndSkills || null,
         };
+        await this.editProfileResponse('user/editWorkerData', payload);
+      } if (this.userRole === 'employer') {
+        payload.additionalInfo = {
+          ...payload.additionalInfo,
+          description: this.localUserData.additionalInfo.description,
+          company: this.localUserData.additionalInfo.company,
+          CEO: this.localUserData.additionalInfo.CEO,
+          website: this.localUserData.additionalInfo.website,
+        };
+        await this.editProfileResponse('user/editEmployerData', payload);
       }
+    },
+    async editProfileResponse(action, payload) {
       try {
-        await this.$store.dispatch('user/editUserData', payload);
-        this.showModalSave();
+        await this.$store.dispatch(action, payload);
+        this.showModalStatus('saved');
       } catch (e) {
         console.log(e);
       }
-    },
-    filterEmpty(obj) {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const key of Object.keys(obj)) {
-        if (obj[key] === '') {
-          obj[key] = null;
-        }
-      }
-      return obj;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
 .margin {
   &__bottom {
     margin-bottom: 10px;
   }
 }
-
+.error {
+  color: #bb5151;
+  font-size: 12px;
+}
 .selector {
   @include box;
   width: 100%;
   z-index: 140;
+  &_hide {
+    display: none;
+  }
   &__items {
     background: #FFFFFF;
     display: grid;
@@ -1548,7 +1531,7 @@ export default {
   &__row-1col {
     @extend .profile;
     grid-template-columns: 1fr;
-    margin: 0 20px 0 20px;
+    margin: 0 20px 20px;
     width: 100%;
   }
   &__row-data {
@@ -1573,7 +1556,7 @@ export default {
   &__textarea {
     padding: 10px 10px 0 10px;
     border-radius: 6px;
-    margin: 11px 40px 20px 0;
+    margin: 11px 40px 0 0;
     height: 114px;
     border: 0;
     background-color: #F7F8FA;
@@ -1635,43 +1618,6 @@ export default {
   &__skills {
     width: 100%;
     padding: 0 20px 20px 20px;
-    .block {
-      display: flex;
-      grid-gap: 20px;
-      justify-content: space-between;
-      margin-top: 20px;
-      &__skill-spec {
-        width: 100%;
-      }
-      &__specialization {
-        display: flex;
-        align-items: flex-start;
-        flex-direction: row;
-        grid-gap: 20px;
-      }
-      &__skill {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        flex-wrap: wrap;
-        grid-gap: 10px;
-        .skill {
-          &__badge {
-            background: rgba(0, 131, 199, 0.1);
-            border-radius: 44px;
-            color: $blue;
-            white-space: nowrap;
-            grid-gap: 8px;
-            padding: 5px 10px 5px 10px;
-            display: flex;
-            text-align: center;
-            &-skills {
-              padding: 15px;
-            }
-          }
-        }
-      }
-    }
   }
   &__grid {
     display: grid;
@@ -1728,10 +1674,12 @@ export default {
     max-width: 1180px;
     width: 100%;
     justify-content: flex-start;
-    //padding: 0 20px 0 0;
   }
   &__btn {
-    margin-bottom: 10px;
+    height: 60px;
+    &_margin {
+      margin: 0 20px 0 0;
+    }
   }
 }
 .skills {

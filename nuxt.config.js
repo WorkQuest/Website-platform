@@ -1,4 +1,13 @@
 import localeEn from './locales/en.json';
+import localeRu from './locales/ru.json';
+import localeAr from './locales/ar.json';
+import localeFr from './locales/fr.json';
+import localeBn from './locales/bn.json';
+import localeZh from './locales/zh.json';
+import localeHi from './locales/hi.json';
+import localeId from './locales/id.json';
+import localePt from './locales/pt.json';
+import localeEs from './locales/es.json';
 
 require('dotenv').config();
 
@@ -20,6 +29,7 @@ export default {
     '@/assets/scss/main.scss',
   ],
   plugins: [
+    { src: '@plugins/ws', mode: 'client' },
     { src: '@plugins/axios.js' },
     { src: '@plugins/main.js' },
     { src: '@plugins/vee-validate.js' },
@@ -33,6 +43,7 @@ export default {
     '@nuxtjs/eslint-module',
     '@nuxtjs/dotenv',
     '@nuxtjs/color-mode',
+    '@nuxtjs/moment',
   ],
   styleResources: {
     scss: ['./assets/scss/resources.scss'],
@@ -77,12 +88,22 @@ export default {
   //   icons: true,
   // },
   i18n: {
+    // locales: ['en', 'ru', 'bn', 'ar', 'fr', 'hi', 'id', 'pt', 'es', 'zh'],
     locales: ['en'],
     defaultLocale: 'en',
     strategy: 'no_prefix',
     vueI18n: {
       messages: {
         en: localeEn,
+        // ru: localeRu,
+        // ar: localeAr,
+        // fr: localeFr,
+        // bn: localeBn,
+        // zh: localeZh,
+        // hi: localeHi,
+        // id: localeId,
+        // pt: localePt,
+        // es: localeEs,
       },
     },
     detectBrowserLanguage: {
@@ -97,6 +118,9 @@ export default {
     GMAPKEY: process.env.GMAPKEY,
     SECRET_SUMSUB: process.env.SECRET_SUMSUB,
 
+    WS_NOTIFS_URL: process.env.WS_NOTIFS_URL,
+    WS_CHAT_URL: process.env.WS_CHAT_URL,
+
     ETHEREUM_BRIDGE: process.env.ETHEREUM_BRIDGE,
     ETHEREUM_LP_TOKEN: process.env.ETHEREUM_LP_TOKEN,
     ETHEREUM_MINING: process.env.ETHEREUM_MINING,
@@ -109,6 +133,7 @@ export default {
     BSC_OLD_WQT_TOKEN: process.env.BSC_OLD_WQT_TOKEN,
     BSC_WQT_EXCHANGE: process.env.BSC_WQT_EXCHANGE,
     BSC_WQT_TOKEN: process.env.BSC_WQT_TOKEN,
+    BSC_RPC_URL: process.env.BSC_RPC_URL,
     BSC_WS_MORALIS: process.env.BSC_WS_MORALIS,
 
     WQT_STAKING: process.env.WQT_STAKING,
@@ -116,5 +141,7 @@ export default {
 
     WETH_TOKEN: process.env.WETH_TOKEN,
     WBNB_TOKEN: process.env.WBNB_TOKEN,
+
+    PENSION_FUND: process.env.PENSION_FUND,
   },
 };

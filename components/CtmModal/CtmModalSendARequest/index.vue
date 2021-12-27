@@ -4,47 +4,62 @@
     :title="$t('modals.sendARequest')"
   >
     <div class="ctm-modal__content">
-      <div class="message">
-        <div class="message__content">
-          <div class="modal__desc">
-            <div class="message__wrapper">
-              <label
-                for="textarea"
-                class="modal__labelMessage"
-              >
-                {{ $t('modals.message') }}
-              </label>
-              <div>
-                <textarea
-                  id="textarea"
-                  v-model="text"
-                  class="message__textarea"
-                  :placeholder="$t('modals.hello')"
+      <validation-observer
+        v-slot="{handleSubmit}"
+      >
+        <div class="message">
+          <div class="message__content">
+            <div class="modal__desc">
+              <div class="message__wrapper">
+                <label
+                  for="textarea"
+                  class="modal__labelMessage"
+                >
+                  {{ $t('modals.message') }}
+                </label>
+                <div>
+                  <textarea
+                    id="textarea"
+                    v-model="text"
+                    class="message__textarea"
+                    rules="required"
+                    :placeholder="$t('modals.hello')"
+                  />
+                </div>
+                <files-uploader
+                  :multiple="true"
+                  :limit="10"
+                  :limit-bytes="10485760"
+                  :limit-bytes-video="10485760"
+                  :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
+                  class="message__uploader"
+                  @change="updateFiles"
                 />
               </div>
-            </div>
-            <div class="btn__container">
-              <div class="btn__wrapper">
-                <base-btn
-                  class="message__action"
-                  @click="showRequestSendModal() "
-                >
-                  {{ $t('meta.send') }}
-                </base-btn>
-              </div>
-              <div class="btn__wrapper">
-                <base-btn
-                  :mode="'outline'"
-                  class="message__action"
-                  @click="hide()"
-                >
-                  {{ $t('meta.cancel') }}
-                </base-btn>
+              <div class="btn__container">
+                <div class="btn__wrapper">
+                  <base-btn
+                    class="message__action"
+                    :disabled="!text"
+                    @click="handleSubmit(showRequestSendModal)"
+                  >
+                    {{ $t('meta.send') }}
+                  </base-btn>
+                </div>
+                <div class="btn__wrapper">
+                  <base-btn
+                    :mode="'outline'"
+                    class="message__action"
+                    @click="hide()"
+                  >
+                    {{ $t('meta.cancel') }}
+                  </base-btn>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -53,13 +68,14 @@
 /* eslint-disable object-shorthand,no-var */
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { InfoModeWorker, QuestStatuses } from '~/utils/enums';
 
 export default {
   name: 'ModalSendARequest',
-  components: {},
   data() {
     return {
       text: '',
+      files: [],
     };
   },
   computed: {
@@ -68,26 +84,35 @@ export default {
     }),
   },
   methods: {
+    updateFiles(files) {
+      this.files = files;
+    },
     hide() {
       this.CloseModal();
     },
     async respondOnQuest() {
+      const medias = await this.uploadFiles(this.files);
       const { questId } = this.options;
       const data = {
         message: this.text,
+        medias,
       };
-      try {
-        await this.$store.dispatch('quests/respondOnQuest', { data, questId });
-        await this.$store.dispatch('quests/setInfoDataMode', 3);
-      } catch (e) {
-        console.log(e);
+      if (QuestStatuses.Rejected) {
+        const res = await this.$store.dispatch('quests/respondOnQuest', { data, questId });
+        if (res.ok) {
+          await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.Rejected);
+          return true;
+        }
       }
+      return false;
     },
     async showRequestSendModal() {
-      await this.respondOnQuest();
-      this.ShowModal({
-        key: modals.requestSend,
-      });
+      const ok = await this.respondOnQuest();
+      if (ok) {
+        this.ShowModal({
+          key: modals.requestSend,
+        });
+      }
     },
   },
 };
@@ -148,6 +173,10 @@ export default {
     &::placeholder {
       color: $black200;
     }
+  }
+
+  &__uploader {
+    margin-top: 20px;
   }
 }
 .btn {

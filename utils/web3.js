@@ -6,6 +6,7 @@ import WalletConnectProvider from '@walletconnect/web3-provider';
 import * as abi from '~/abi/abi';
 import { Chains, ChainsId, StakingTypes } from '~/utils/enums';
 
+let bscRpcContract = null;
 let web3 = null;
 let web4 = null;
 
@@ -13,7 +14,8 @@ let account = {};
 
 let store;
 let axios;
-
+let web3Modal;
+let web3ModalCache;
 if (process.browser) {
   window.onNuxtReady(({ $store, $axios }) => {
     store = $store;
@@ -56,6 +58,8 @@ export const getChainIdByChain = (chain) => {
     case Chains.BNB:
       if (!isProd) return ChainsId.BSC_TEST;
       return ChainsId.BSC_MAIN;
+    case Chains.WUSD:
+      return ChainsId.WUSD_TEST;
     default:
       throw error(-1, `wrong chain name: ${chain} ${Chains.BINANCE} ${Chains.ETHEREUM}`);
   }
@@ -81,7 +85,6 @@ export const getStakingDataByType = (stakingType) => {
   let _stakingAddress;
   let _stakingAbi;
   let _tokenAddress;
-
   const _miningPoolId = localStorage.getItem('miningPoolId');
   switch (stakingType) {
     case StakingTypes.MINING:
@@ -122,7 +125,10 @@ export const getStakingDataByType = (stakingType) => {
 
 export const fetchContractData = async (_method, _abi, _address, _params, _provider = web3) => {
   try {
-    if (_provider === undefined) return {};
+    if (!_provider) {
+      console.error('_provider is undefined');
+      return {};
+    }
     const Contract = new _provider.eth.Contract(_abi, _address);
     return await Contract.methods[_method].apply(this, _params).call();
   } catch (e) {
@@ -135,22 +141,23 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
   let transactionData;
   const inst = new web3.eth.Contract(payload.abi, payload.address);
   const gasPrice = await web3.eth.getGasPrice();
+  const accountAddress = await getAccountAddress();
   if (_method === 'claim') {
     const data = inst.methods[_method].apply(null).encodeABI();
-    const gasEstimate = await inst.methods[_method].apply(null).estimateGas({ from: account.address });
+    const gasEstimate = await inst.methods[_method].apply(null).estimateGas({ from: accountAddress });
     transactionData = {
       to: payload.address,
-      from: account.address,
+      from: accountAddress,
       data,
       gasPrice,
       gas: gasEstimate,
     };
   } else {
     const data = inst.methods[_method].apply(null, payload.data).encodeABI();
-    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: account.address });
+    const gasEstimate = await inst.methods[_method].apply(null, payload.data).estimateGas({ from: accountAddress });
     transactionData = {
       to: payload.address,
-      from: account.address,
+      from: accountAddress,
       data,
       gasPrice,
       gas: gasEstimate,
@@ -177,83 +184,81 @@ export const handleMetamaskStatus = (callback) => {
   ethereum.on('chainChanged', callback);
   ethereum.on('accountsChanged', callback);
 };
+// Подключение к MetaMask only. TODO: Delete
+export const initMetaMaskWeb3 = async () => {
+  try {
+    const { ethereum } = window;
+    if (ethereum) {
+      web3 = new Web3(ethereum);
+      if ((await web3.eth.getCoinbase()) === null) {
+        await ethereum.request({ method: 'eth_requestAccounts' });
+      }
+      const [userAddress, chainId] = await Promise.all([
+        web3.eth.getCoinbase(),
+        web3.eth.net.getId(),
+      ]);
 
-// export const initWeb3 = async () => {
-//   try {
-//     const { ethereum } = window;
-//     if (ethereum) {
-//       web3 = new Web3(ethereum);
-//       if ((await web3.eth.getCoinbase()) === null) {
-//         await ethereum.enable();
-//       }
-//       const [userAddress, chainId] = await Promise.all([
-//         web3.eth.getCoinbase(),
-//         web3.eth.net.getId(),
-//       ]);
-//       if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
-//         return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
-//       }
-//       if (process.env.PROD === 'false' && ![4, 97].includes(+chainId)) {
-//         return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
-//       }
-//       account = {
-//         address: userAddress,
-//         netId: chainId,
-//         netType: getChainTypeById(chainId),
-//       };
-//       web4 = new Web4();
-//       await web4.setProvider(ethereum, userAddress);
-//       return success(account);
-//     }
-//     return false;
-//   } catch (e) {
-//     return error(500, '', e.message);
-//   }
-// };
-let walletOptions = {};
-export const initWeb3Modal = async (chain) => {
-  if (process.env.PROD === 'false') {
-    if (chain === 'ETH') {
-      walletOptions = {
-        rpc: {
-          4: 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-        },
-        // network: 'ethereum',
+      if (process.env.PROD === 'true' && ![1, 56, 20211224].includes(+chainId)) {
+        return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
+      }
+      if (process.env.PROD === 'false' && ![4, 97, 20211224].includes(+chainId)) {
+        return error(500, 'Wrong blockchain in metamask', 'Current site work on testnet. Please change network.');
+      }
+      account = {
+        address: userAddress,
+        netId: chainId,
+        netType: getChainTypeById(chainId),
       };
-    } else if (chain === 'BNB') {
-      walletOptions = {
-        rpc: {
-          97: 'https://data-seed-prebsc-2-s1.binance.org:8545/',
-        },
-        // network: 'binance',
-      };
+      web4 = new Web4();
+      await web4.setProvider(ethereum, userAddress);
+      return success(account);
     }
-  }
-  if (process.env.PROD === 'true') {
-    if (chain === 'ETH') {
-      walletOptions = {
-        rpc: {
-          1: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-        },
-        // network: 'ethereum',
-      };
-    } else {
-      walletOptions = {
-        rpc: {
-          56: 'https://bsc-dataseed.binance.org/',
-        },
-        // network: 'binance',
-      };
-    }
+    return false;
+  } catch (e) {
+    return error(500, '', e.message);
   }
 };
-
-export const initWeb3 = async (chain) => {
+export const initProvider = async (payload) => {
+  const isReconnection = payload?.isReconnection;
+  const { chain } = payload;
   try {
-    let provider = null;
-    let userAddress;
-    await initWeb3Modal(chain);
-    const web3Modal = new Web3Modal({
+    let walletOptions;
+    if (process.env.PROD === 'false') {
+      if (chain === 'ETH') {
+        walletOptions = {
+          rpc: {
+            4: 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+          },
+          // network: 'ethereum',
+        };
+      } else if (chain === 'BNB') {
+        walletOptions = {
+          rpc: {
+            97: 'https://data-seed-prebsc-2-s1.binance.org:8545/',
+          },
+          // network: 'binance',
+        };
+      }
+    }
+    if (process.env.PROD === 'true') {
+      if (chain === 'ETH') {
+        walletOptions = {
+          rpc: {
+            1: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+          },
+          // network: 'ethereum',
+        };
+      } else if (chain === 'BNB') {
+        walletOptions = {
+          rpc: {
+            56: 'https://bsc-dataseed.binance.org/',
+          },
+          // network: 'binance',
+        };
+      }
+    }
+
+    web3Modal = new Web3Modal({
       // theme: 'dark',
       cacheProvider: true, // optional
       providerOptions: {
@@ -263,8 +268,28 @@ export const initWeb3 = async (chain) => {
         },
       }, // required
     });
-    provider = await web3Modal.connect();
-    store.dispatch('web3/setMetaMaskStatus', provider.isMetaMask);
+
+    let provider = web3ModalCache;
+    if (!isReconnection) {
+      provider = await web3Modal.connect();
+    }
+    web3ModalCache = provider;
+    if (provider.isMetaMask) {
+      localStorage.setItem('isMetaMask', 'true');
+    } else {
+      localStorage.setItem('isMetaMask', 'false');
+    }
+    return provider;
+  } catch (e) {
+    console.log(e);
+    return error(500, 'User has not selected a wallet', e);
+  }
+};
+
+export const initWeb3 = async (payload) => {
+  try {
+    let userAddress;
+    const provider = await initProvider(payload);
     web3 = new Web3(provider);
     web4 = new Web4();
     userAddress = await web3.eth.getCoinbase();
@@ -275,7 +300,7 @@ export const initWeb3 = async (chain) => {
     }
     const chainId = await web3.eth.net.getId();
     if ((await web3.eth.getCoinbase()) === null) {
-      await window.ethereum.enable();
+      await ethereum.request({ method: 'eth_requestAccounts' });
     }
     if (process.env.PROD === 'true' && ![1, 56].includes(+chainId)) {
       return error(500, 'Wrong blockchain in metamask', 'Current site work on mainnet. Please change network.');
@@ -288,8 +313,6 @@ export const initWeb3 = async (chain) => {
       netId: chainId,
       netType: getChainTypeById(chainId),
     };
-    web4 = new Web4();
-    await web4.setProvider(window.ethereum, userAddress);
     return success(account);
   } catch (e) {
     return error(500, '', 'Connected error');
@@ -297,6 +320,13 @@ export const initWeb3 = async (chain) => {
 };
 
 export const disconnectWeb3 = () => {
+  if (localStorage.getItem('WEB3_CONNECT_CACHED_PROVIDER') === 'walletconnect') {
+    localStorage.removeItem('walletconnect');
+    localStorage.removeItem('WEB3_CONNECT_CACHED_PROVIDER');
+  }
+  if (web3Modal) {
+    web3Modal.clearCachedProvider();
+  }
   web3 = null;
   web4 = null;
   account = {};
@@ -313,23 +343,14 @@ let allowance;
 let amount;
 let nonce;
 
-export const getStakingRewardTxFee = async (stakingType) => {
-  let inst;
-  if (stakingType === StakingTypes.WQT) {
-    inst = new web3.eth.Contract(abi.WQStaking, process.env.WQT_STAKING);
-  } else if (stakingType === StakingTypes.WUSD) {
-    inst = new web3.eth.Contract(abi.WQStakingNative, process.env.WQT_STAKING_NATIVE);
-  } else {
-    console.error('[rewardTxFee] wrong staking type:', stakingType);
-    return 0;
-  }
+export const getTxFee = async (_abi, _contractAddress, method, data = null) => {
   try {
+    if (!method) console.error('getTxFee undefined method');
+    const inst = new web3.eth.Contract(_abi, _contractAddress);
     const gasPrice = await web3.eth.getGasPrice();
-    const gasEstimate = await inst.methods.claim.apply(null)
-      .estimateGas({ from: account.address });
-    return new BigNumber(gasPrice * gasEstimate).shiftedBy(-18)
-      .decimalPlaces(8)
-      .toString();
+    const gasEstimate = await inst.methods[method].apply(null, data).estimateGas({ from: account.address });
+    const fee = new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString();
+    return success(fee);
   } catch (e) {
     return error(500, 'TxFee error', e);
   }
@@ -401,7 +422,7 @@ export const unStaking = async (_decimals, _amount, _stakingAddress, _stakingAbi
   }
 };
 
-export const claimRewards = async (_stakingAddress, _stakingAbi, _amount) => {
+export const claimRewards = async (_stakingAddress, _stakingAbi) => {
   try {
     showToast('Claiming', 'Claiming...', 'success');
     const payload = {
@@ -412,8 +433,33 @@ export const claimRewards = async (_stakingAddress, _stakingAbi, _amount) => {
     showToast('Claiming', 'Claiming done', 'success');
     return '';
   } catch (e) {
-    showToast('Claim error', `${e.message}`, 'danger');
+    if (e.message.toString().includes('You cannot claim tokens yet')) {
+      showToast('Stacking error', 'You cannot claim tokens yet', 'danger');
+    } else {
+      showToast('Claim error', `${e.message}`, 'danger');
+    }
     return error(500, 'claim error', e);
+  }
+};
+
+export const authRenewal = async (_stakingAddress, _stakingAbi) => {
+  showToast('Auto renewal', 'Accepting...', 'success');
+  try {
+    const payload = {
+      abi: _stakingAbi,
+      address: _stakingAddress,
+    };
+    await sendTransaction('autoRenewal', payload);
+    return success();
+  } catch (e) {
+    if (e.message.toString().includes('You cannot claim tokens yet')) {
+      showToast('Stacking error', 'You cannot claim tokens yet', 'danger');
+    } else if (e.message.toString().includes('You cannot stake tokens yet')) {
+      showToast('Stacking error', 'You cannot stake tokens yet', 'danger');
+    } else {
+      showToast('Auto renewal error', `${e.message}`, 'danger');
+    }
+    return error(500, 'auto renewal', e);
   }
 };
 
@@ -505,25 +551,24 @@ export const redeemSwap = async (props) => {
 let actionsListeners = [];
 let lastActionHash = null;
 
-export const unsubscirbeStakingListeners = () => {
+export const unsubscirbeListeners = () => {
   for (let i = 0; i < actionsListeners.length; i += 1) {
     actionsListeners[i].unsubscribe();
   }
   actionsListeners = [];
+  lastActionHash = null;
 };
-export const fetchContractAction = (inst, method, callback, params) => inst.events[method]({
-  ...params,
-}, (err, result) => {
+export const fetchContractAction = (inst, method, callback, params) => inst.events[method](params, (err, result) => {
   if (!err && callback && lastActionHash !== result.transactionHash) {
     lastActionHash = result.transactionHash;
     callback(method, result);
   }
 });
-export const fetchStakingActions = async (stakingAbi, stakingAddress, callback, events) => {
-  const inst = new web3.eth.Contract(stakingAbi, stakingAddress);
-  await unsubscirbeStakingListeners();
+export const fetchActions = async (stakingAbi, stakingAddress, callback, events, params = []) => {
+  const contractInst = new web3.eth.Contract(stakingAbi, stakingAddress);
+  await unsubscirbeListeners();
   for (let i = 0; i < events.length; i += 1) {
-    actionsListeners.push(fetchContractAction(inst, events[i], callback));
+    actionsListeners.push(fetchContractAction(contractInst, events[i], callback, params[i]));
   }
 };
 
@@ -551,6 +596,139 @@ export const initStackingContract = async (chain) => {
   }));
   const liquidityMiningContract = new liquidityMiningProvider.eth.Contract(stakingAbi, stakingAddress);
   return await liquidityMiningContract.methods.getStakingInfo().call();
+};
+
+export const getBinanceContractRPC = async () => {
+  if (bscRpcContract) return bscRpcContract;
+  try {
+    const address = process.env.PROD === 'true' ? process.env.BSC_LP_TOKEN : '0x3ea2de549ae9dcb7992f91227e8d6629a22c3b40';
+    const provider = await new Web3.providers.HttpProvider(process.env.BSC_RPC_URL);
+    const web3Bsc = await new Web3(provider);
+    bscRpcContract = await new web3Bsc.eth.Contract(abi.BSCPool, address);
+    return bscRpcContract;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
+export const getPoolTokensAmountBSC = async () => {
+  try {
+    const poolContract = await getBinanceContractRPC();
+    const res = await poolContract.methods.getReserves().call();
+    return {
+      wqtAmount: new BigNumber(res._reserve0).shiftedBy(-18).toString(),
+      wbnbAmount: new BigNumber(res._reserve1).shiftedBy(-18).toString(),
+    };
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
+
+export const getPoolTotalSupplyBSC = async () => {
+  try {
+    const poolContract = await getBinanceContractRPC();
+    const res = await poolContract.methods.totalSupply().call();
+    return new BigNumber(res).shiftedBy(-18).toString();
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
+
+export const getPensionDefaultData = async () => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND;
+    const [lockTime, defaultFee] = await Promise.all([
+      fetchContractData('lockTime', _abi, _pensionAddress),
+      fetchContractData('defaultFee', _abi, _pensionAddress),
+    ]);
+    return {
+      defaultFee: new BigNumber(defaultFee.toString()).shiftedBy(-18).toString(),
+      lockTime: Math.floor(lockTime / 365 / 24 / 60 / 60),
+    };
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+export const getPensionWallet = async () => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND;
+    const wallet = await fetchContractData('wallets', _abi, _pensionAddress, [account.address]);
+    const {
+      unlockDate, fee,
+    } = wallet;
+    const _amount = new BigNumber(wallet.amount).shiftedBy(-18);
+    let _fee = new BigNumber(fee).shiftedBy(-18);
+    if (_fee.isGreaterThan('0') && _fee.isLessThan('0.0000001')) {
+      _fee = '>0.0000001';
+    } else _fee = _fee.decimalPlaces(8);
+    return {
+      ...wallet,
+      unlockDate: new Date(unlockDate * 1000),
+      fee: _fee.toString(),
+      amount: _amount.isGreaterThan('0') && _amount.isLessThan('0.0001') ? '>0.0001' : _amount.decimalPlaces(4).toString(),
+      _amount: _amount.toString(),
+    };
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+export const pensionContribute = async (_amount) => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND;
+    const contractInst = await createInstance(_abi, _pensionAddress);
+    _amount = new BigNumber(_amount).shiftedBy(18).toString();
+    await contractInst.contribute(account.address, { value: _amount });
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+};
+export const pensionUpdateFee = async (_fee) => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND;
+    const contractInst = await createInstance(_abi, _pensionAddress);
+    _fee = new BigNumber(_fee).shiftedBy(18).toString();
+    await contractInst.updateFee(_fee);
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+};
+export const pensionsWithdraw = async (_amount) => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND;
+    const contractInst = await createInstance(_abi, _pensionAddress);
+    _amount = new BigNumber(_amount).shiftedBy(18).toString();
+    await contractInst.withdraw(_amount);
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+};
+export const pensionExtendLockTime = async () => {
+  try {
+    const _abi = abi.WQPensionFund;
+    const _pensionAddress = process.env.PENSION_FUND;
+    const contractInst = await createInstance(_abi, _pensionAddress);
+    await contractInst.extendLockTime();
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
 };
 
 export const addAffiliat = async () => {

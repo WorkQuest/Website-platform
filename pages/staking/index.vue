@@ -74,7 +74,15 @@ export default {
   data() {
     return {
       firstLoading: true,
-      fields: [
+      poolsData: null,
+    };
+  },
+  computed: {
+    ...mapGetters({
+      isConnected: 'web3/isConnected',
+    }),
+    fields() {
+      return [
         {
           key: 'poolAddress',
           label: this.$t('staking.tableHead.poolAddress'),
@@ -147,15 +155,8 @@ export default {
             style: 'padding-left: 0; padding-right: 20px',
           },
         },
-      ],
-      poolsData: null,
-    };
-  },
-  computed: {
-    ...mapGetters({
-      options: 'modals/getOptions',
-      isConnected: 'web3/isConnected',
-    }),
+      ];
+    },
   },
   watch: {
     async isConnected(newValue) {
@@ -176,7 +177,7 @@ export default {
     this.firstLoading = false;
   },
   async beforeDestroy() {
-    await this.$store.dispatch('web3/unsubscribeStakingActions');
+    await this.$store.dispatch('web3/unsubscribeActions');
   },
   methods: {
     async getPoolsData() {
@@ -216,8 +217,8 @@ export default {
           });
         } else {
           localStorage.setItem('metamaskStatus', 'installed');
+          await this.$store.dispatch('web3/connectToMetaMask');
           await this.$store.dispatch('web3/goToChain', { chain: Chains.ETHEREUM });
-          await this.$store.dispatch('web3/connect');
         }
       }
     },

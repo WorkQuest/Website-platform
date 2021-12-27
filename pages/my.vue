@@ -2,36 +2,23 @@
   <div class="quests">
     <div class="quests__container">
       <div class="quests__body">
-        <div
-          class="quests__title"
-        >
+        <div class="quests__title">
           {{ $t('quests.MyQuests') }}
         </div>
-        <div
-          class="quests__content"
-          :class="{'quests__content_employer': userRole === 'employer'}"
-        >
+        <div class="quests__content">
           <base-btn
-            v-for="(item, i) in questStatus"
+            v-for="(item, i) in filterTabs"
             :key="i"
-            :mode="btnMode(i)"
+            :mode="selectedTab === item.id ? '' : 'light'"
             class="quests__btn"
-            @click="item.click"
+            @click="filterByStatus(item.id)"
           >
             {{ item.name }}
           </base-btn>
         </div>
         <quests
-          v-if="questsData.count !== 0 && userRole === 'employer'"
-          :limit="questLimits"
-          :selected-tab="selectedTab"
+          v-if="questsData.count"
           :object="questsData"
-        />
-        <quests
-          v-if="questsList.count !== 0 && userRole === 'worker'"
-          :limit="questLimits"
-          :selected-tab="selectedTab"
-          :object="questResponses.responses"
         />
         <emptyData
           v-else
@@ -39,11 +26,13 @@
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
           link="/create-quest"
         />
-        <base-pager
-          v-if="questsData.count !== 0 && totalPagesValue !== 1"
-          v-model="page"
-          :total-pages="totalPagesValue"
-        />
+        <div class="quests__pager">
+          <base-pager
+            v-if="totalPages > 1"
+            v-model="page"
+            :total-pages="totalPages"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -51,12 +40,10 @@
 
 <script>
 
-import Vue from 'vue';
 import { mapGetters } from 'vuex';
+import { QuestStatuses } from '~/utils/enums';
 import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
-
-const value = new Vue();
 
 export default {
   name: 'My',
@@ -66,134 +53,82 @@ export default {
   },
   data() {
     return {
-      questResponses: {},
       selectedTab: 0,
-      isShowFavourite: false,
-      questLimits: 100,
-      questsObjects: {},
       page: 1,
-      perPager: 11,
-      totalPagesValue: 1,
-      sortData: '',
+      offset: 10,
+      statuses: '',
+      requestParams: {},
     };
   },
   computed: {
     ...mapGetters({
-      tabs: 'data/getTabs',
-      userRole: 'user/getUserRole',
       userData: 'user/getUserData',
       questsData: 'quests/getUserInfoQuests',
-      questsList: 'quests/getAllQuests',
     }),
-    questStatus() {
-      return [
-        {
-          name: this.$t('myQuests.statuses.all'),
-          click: () => this.switchQuests('', 0, 0),
-        },
-        {
-          name: this.$t('myQuests.statuses.fav'),
-          click: () => this.switchQuests('starred=true', 0, 1),
-        },
-        {
-          name: this.$t('myQuests.statuses.requested'),
-          click: () => this.switchQuests('status=5', 0, 2),
-        },
-        {
-          name: this.$t('myQuests.statuses.completed'),
-          click: () => this.switchQuests('status=6', 0, 3),
-        },
-        {
-          name: this.$t('myQuests.statuses.active'),
-          click: () => this.switchQuests('status=2', 0, 4),
-        },
-        {
-          name: this.$t('myQuests.statuses.invited'),
-          click: () => this.switchQuests('status=4', 0, 5),
-        },
+    userRole() {
+      return this.userData.role;
+    },
+    filterTabs() {
+      const tabs = [
+        { name: this.$t('myQuests.statuses.all'), id: 0 },
+        { name: this.$t('myQuests.statuses.favorites'), id: 1 },
+        { name: this.$t('myQuests.statuses.responded'), id: 2 },
+        { name: this.$t('myQuests.statuses.active'), id: 3 },
+        { name: this.$t('myQuests.statuses.invited'), id: 4 },
+        { name: this.$t('myQuests.statuses.performed'), id: 5 },
       ];
+      return this.userRole === 'employer'
+        ? tabs.filter((tab) => (tab.id < 1 || tab.id > 2))
+        : tabs;
     },
     totalPages() {
-      return Math.ceil(this.questsData.count / this.perPager);
+      return Math.ceil(this.questsData.count / this.offset);
     },
   },
   watch: {
     async page() {
       this.SetLoader(true);
-      if (this.userRole === 'employer') {
-        const payload = {
-          userId: this.userData.id,
-          query: `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`,
-        };
-        await this.$store.dispatch('quests/getUserQuests', payload);
-      } if (this.userRole === 'worker') {
-        const payload = `performing=${true}`;
-        await this.$store.dispatch('quests/getAllQuests', payload);
-      }
-      this.totalPagesValue = this.totalPages;
+      this.requestParams.query.offset = (this.page - 1) * this.offset;
+      await this.$store.dispatch('quests/getUserQuests', this.requestParams);
       this.SetLoader(false);
     },
   },
   async mounted() {
     this.SetLoader(true);
-    await this.getResponsesToQuestForAuthUser();
-    await this.$store.dispatch('quests/getAllQuests');
-    await this.$store.dispatch('quests/getUserQuests', {
+    this.requestParams = {
       userId: this.userData.id,
-      query: `limit=${this.perPager}`,
-    });
-    this.totalPagesValue = this.totalPages;
+      role: this.userRole,
+      query: {
+        limit: 10,
+        offset: 0,
+        starred: false,
+      },
+    };
+    await this.$store.dispatch('quests/getUserQuests', this.requestParams);
     this.SetLoader(false);
   },
   methods: {
-    async getResponsesToQuestForAuthUser() {
-      if (this.userRole === 'worker') {
-        this.questResponses = await this.$store.dispatch('quests/getResponsesToQuestForAuthUser');
-        console.log(this.questResponses);
-      }
-    },
-    async switchQuests(query, perPage, id) {
+    async filterByStatus(id) {
       this.SetLoader(true);
       this.page = 1;
       this.selectedTab = id;
-      this.sortData = query;
-      if (this.userRole === 'employer') {
-        const payload = {
-          userId: this.userData.id,
-          query: `limit=${this.perPager}&offset=${(this.page - 1) * perPage}&${this.sortData}`,
-        };
-        await this.$store.dispatch('quests/getUserQuests', payload);
-      } if (this.userRole === 'worker') {
-        const payload = `performing=${true}`;
-        await this.$store.dispatch('quests/getAllQuests', payload);
-      }
-      this.totalPagesValue = this.totalPages;
+      this.requestParams.query.offset = 0;
+      this.requestParams.query.starred = id === 1;
+
+      if (id <= 1) delete this.requestParams.query['statuses[0]'];
+      else if (id === 2) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitConfirm;
+      else if (id === 3) this.requestParams.query['statuses[0]'] = QuestStatuses.Active;
+      else if (id === 4) this.requestParams.query['statuses[0]'] = QuestStatuses.WaitWorker;
+      else if (id === 5) this.requestParams.query['statuses[0]'] = QuestStatuses.Done;
+
+      await this.$store.dispatch('quests/getUserQuests', this.requestParams);
       this.SetLoader(false);
-    },
-    btnMode(id) {
-      if (this.selectedTab === id) {
-        return '';
-      }
-      return 'light';
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.main {
-  &__body {
-    justify-self: center;
-    width: 100%;
-    max-width: 1180px;
-  }
-}
-.styles {
-  &__full {
-    width: 100%;
-    height: 100%;
-  }
-}
 .quests {
   width: 100%;
   background-color: #f6f8fa;
@@ -211,7 +146,7 @@ export default {
     margin: 20px 0 20px 0;
   }
   &__body {
-    @extend .styles__full;
+    width: 100%;
     max-width: 1180px;
   }
   &__content {
@@ -220,9 +155,9 @@ export default {
     grid-template-columns: repeat(6, auto);
     grid-gap: 10px;
     margin-bottom: 20px;
-    &_employer {
-      margin-bottom: 0;
-    }
+  }
+  &__pager {
+    margin-top: 25px;
   }
 }
 </style>

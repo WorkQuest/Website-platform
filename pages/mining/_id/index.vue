@@ -16,7 +16,7 @@
           mode="light"
           class="mining-page__connect"
           :disabled="statusBusy"
-          @click="checkMetamaskStatus()"
+          @click="checkWalletStatus()"
         >
           {{ $t('mining.connectWallet') }}
         </base-btn>
@@ -25,7 +25,7 @@
           mode="light"
           class="mining-page__connect"
           :disabled="statusBusy"
-          @click="disconnectFromMetamask"
+          @click="disconnectFromWallet"
         >
           {{ $t('meta.disconnect') }}
         </base-btn>
@@ -33,7 +33,7 @@
       <div class="mining-page__content">
         <div
           class="info-block__grid"
-          :class="commonBtnContainerWidth()"
+          :class="{'info-block__grid_double': currentPool === 'BNB'}"
         >
           <div class="info-block__icons">
             <div
@@ -50,24 +50,24 @@
           </div>
           <div class="info-block__about">
             <div class="info-block__title_black info-block__title_big">
-              {{ $t(`mining.${miningPoolId === 'BNB' ? 'wusdBnbPool' : 'wusdEthPool'}`) }}
+              {{ $t(`mining.${currentPool === 'BNB' ? 'wusdBnbPool' : 'wusdEthPool'}`) }}
             </div>
           </div>
           <div
             class="info-block__btns"
-            :class="buttonContainerStyles()"
+            :class="{'info-block__btns_double': currentPool === 'BNB'}"
           >
             <base-btn
-              v-if="miningPoolId === 'BNB'"
+              v-if="currentPool === 'BNB'"
               class="btn_bl"
               mode="outline"
-              :disabled="statusBusy || metamaskStatus === 'notInstalled'"
+              :disabled="statusBusy || metamaskStatus === 'notInstalled' || !isConnected"
               @click="openSwapTokens()"
             >
               {{ $t('mining.swapTokens.title') }}
             </base-btn>
             <base-btn
-              v-if="miningPoolId === 'ETH'"
+              v-if="currentPool === 'ETH'"
               :link="'https://app.uniswap.org/#/add/v2/0x06677dc4fe12d3ba3c7ccfd0df8cd45e4d4095bf/ETH'"
               class="btn_bl"
               :disabled="statusBusy"
@@ -75,7 +75,7 @@
               {{ $t('mining.addLiquidity') }}
             </base-btn>
             <base-btn
-              v-if="miningPoolId === 'BNB'"
+              v-if="currentPool === 'BNB'"
               :link="'https://pancakeswap.finance/add/BNB/0xe89508D74579A06A65B907c91F697CF4F8D9Fac7'"
               class="btn_bl"
               :disabled="statusBusy"
@@ -85,14 +85,12 @@
           </div>
         </div>
         <div class="info-block__double">
-          <div
-            class="info-block__third"
-          >
+          <div class="info-block__third">
             <div class="info-block third">
               <div class="third__wrapper">
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.dollarsCount', isNaN(totalLiquidityUSD) ? 'loading...' : totalLiquidityUSD) }}
+                    {{ $tc('mining.dollarsCount', !totalLiquidityUSD ? $t('mining.loading') : Floor(totalLiquidityUSD)) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.totalLiquidity') }}
@@ -100,7 +98,7 @@
                 </div>
                 <div class="third__container">
                   <div class="third info-block__title_big info-block__title_blue">
-                    {{ $tc('mining.wqtCount', profitWQT) }}
+                    {{ isLoadingAPY ? $t('mining.loading') : $tc('mining.wqtCount', profitWQT) }}
                   </div>
                   <div class="info-block__title_small">
                     {{ $t('mining.APY') }}
@@ -138,7 +136,7 @@
               <base-btn
                 class="btn_bl"
                 :disabled="!isConnected || statusBusy || disabled"
-                @click="openModalClaimRewards()"
+                @click="openModalStaking()"
               >
                 {{ $t('mining.stake') }}
               </base-btn>
@@ -173,9 +171,7 @@
           <div class="info-block__name">
             {{ $t('mining.liquidity') }}
           </div>
-          <chart
-            :special-chart-data="miningPoolId === 'ETH' ? wqtWethData : wqtWbnbData"
-          />
+          <chart :special-chart-data="miningChartData" />
         </div>
         <div class="info-block">
           <div class="info-block__name">
@@ -183,8 +179,8 @@
           </div>
           <div class="mining-page__table">
             <b-table
-              :items="items"
-              :fields="testFields"
+              :items="tableData"
+              :fields="tableHeaders"
               borderless
               caption-top
               thead-class="table__header"
@@ -214,7 +210,7 @@
               </template>
               <template #cell(account)="el">
                 <a
-                  v-if="miningPoolId === 'ETH'"
+                  v-if="currentPool === 'ETH'"
                   class="user__value_green"
                   :href="`https://etherscan.io/address/${el.item.account}`"
                   target="_blank"
@@ -222,7 +218,7 @@
                   {{ el.item.accountView }}
                 </a>
                 <a
-                  v-if="miningPoolId === 'BNB'"
+                  v-if="currentPool === 'BNB'"
                   class="user__value_green"
                   :href="`https://bscscan.com/address/${el.item.account}`"
                   target="_blank"
@@ -240,9 +236,9 @@
         </div>
         <div class="pager__block">
           <base-pager
-            v-if="totalPagesValue > 1"
+            v-if="totalPages > 1"
             v-model="page"
-            :total-pages="totalPagesValue"
+            :total-pages="totalPages"
           />
         </div>
       </div>
@@ -258,139 +254,108 @@ import chart from './graphics_data';
 import { StakingTypes } from '~/utils/enums';
 
 export default {
+  name: 'Pool',
   layout: 'guest',
+  middleware: 'mining',
   components: {
     chart,
   },
   data() {
     return {
-      firstLoading: true,
       updateInterval: null,
       disabled: false,
-      miningPoolId: '',
       metamaskStatus: localStorage.getItem('metamaskStatus'),
-      items: [],
-      testFields: [
-        {
-          key: 'poolAddress',
-          label: this.$t('mining.tableHead.swaps'),
-          thStyle: {
-            padding: '0 0 0 23px',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'totalValue',
-          label: this.$t('mining.tableHead.totalValue'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'tokenAmount0',
-          label: this.$t('mining.tableHead.tokenAmount'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'tokenAmount1',
-          label: this.$t('mining.tableHead.tokenAmount'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'account',
-          label: this.$t('mining.tableHead.account'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-        {
-          key: 'time',
-          label: this.$t('mining.tableHead.time'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
-        },
-      ],
-      totalLiquidityUSD: '',
       page: 1,
       perPager: 10,
-      totalPagesValue: this.totalPages,
       rewardAmount: 0,
       fullRewardAmount: 0,
       stakedAmount: 0,
-      wqtWbnbData: [],
-      wqtWethData: [],
-      totalLP: 0,
+      availableBalanceForStake: null,
       profitWQT: 0,
+      isLoadingAPY: false,
     };
   },
   computed: {
     ...mapGetters({
-      wqtWbnbSwaps: 'defi/getWqtWbnbSwaps',
-      wqtWbnbTokenDay: 'defi/getWqtWbnbTokenDay',
-      wqtWbnbTableData: 'defi/getTableWqtWbnbTokenDay',
-      wqtWbnbTokenDayLast: 'defi/getWqtWbnbTokenDayLast',
-      wqtWethSwaps: 'defi/getWqtWethSwaps',
-      wqtWethTokenDay: 'defi/getWqtWethTokenDay',
-      wqtWethTableData: 'defi/getTableWqtWethTokenDay',
-      wqtWethTokenDayLast: 'defi/getWqtWethTokenDayLast',
+      miningSwaps: 'mining/getTableData',
+      miningChartData: 'mining/getChartData',
+      totalLiquidityUSD: 'mining/getTotalLiquidityUSD',
+
       isConnected: 'web3/isConnected',
       accountData: 'web3/getAccountData',
       tokensData: 'web3/getTokensAmount',
-      tokenLP: 'web3/getLPTokenPrice',
       statusBusy: 'web3/getStatusBusy',
+
       userData: 'user/getUserData',
     }),
+    currentPool() {
+      return this.$route.params.id;
+    },
+    tableHeaders() {
+      return [
+        {
+          key: 'poolAddress',
+          label: this.$t('mining.tableHead.swaps'),
+          thStyle: { padding: '0 0 0 23px', height: '27px', lineHeight: '27px' },
+          tdAttr: { style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px' },
+        },
+        {
+          key: 'totalValue',
+          label: this.$t('mining.tableHead.totalValue'),
+          thStyle: { padding: '0', height: '27px', lineHeight: '27px' },
+          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
+        },
+        {
+          key: 'tokenAmount0',
+          label: this.$t('mining.tableHead.tokenAmount'),
+          thStyle: { padding: '0', height: '27px', lineHeight: '27px' },
+          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
+        },
+        {
+          key: 'tokenAmount1',
+          label: this.$t('mining.tableHead.tokenAmount'),
+          thStyle: { padding: '0', height: '27px', lineHeight: '27px' },
+          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
+        },
+        {
+          key: 'account',
+          label: this.$t('mining.tableHead.account'),
+          thStyle: { padding: '0', height: '27px', lineHeight: '27px' },
+          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
+        },
+        {
+          key: 'time',
+          label: this.$t('mining.tableHead.time'),
+          thStyle: { padding: '0', height: '27px', lineHeight: '27px' },
+          tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
+        },
+      ];
+    },
+    tableData() {
+      const arr = [];
+      this.miningSwaps.forEach((data) => {
+        arr.push({
+          totalValue: `${this.Floor(data.amountUSD, 2)} $`,
+          account: data.to,
+          accountView: this.CutTxn(data.to),
+          time: moment(new Date(data.transaction.timestamp * 1000)).startOf('hour').fromNow(),
+          ...this.getTokensAmount(data),
+        });
+      });
+      return arr;
+    },
     totalPages() {
-      if (this.wqtWbnbTableData) {
-        return Math.ceil(100 / this.perPager);
-      }
-      if (this.wqtWethTableData) {
-        return Math.ceil(100 / this.perPager);
-      }
+      if (this.miningSwaps.length) return Math.ceil(100 / this.perPager);
       return 0;
     },
   },
   watch: {
     async isConnected(newValue) {
-      if (this.firstLoading) return;
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
+      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.currentPool);
       if (newValue && rightChain) {
+        await this.$store.dispatch('web3/initContract');
         await this.tokensDataUpdate();
-        this.updateInterval = setInterval(() => this.tokensDataUpdate(), 15000);
+        this.updateInterval = setInterval(() => this.tokensDataUpdate(), 30000);
       } else {
         this.fullRewardAmount = 0;
         this.rewardAmount = 0;
@@ -400,184 +365,108 @@ export default {
       }
     },
     async page() {
-      // TODO: FIX
-      if (this.miningPoolId === 'BNB') {
-        await this.tableWqtWbnbTokenDay(`limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
-        await this.initTableData();
-      } else if (this.miningPoolId === 'ETH') {
-        await this.tableWqtWethTokenDay(`limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`);
-        await this.initTableData();
-      }
+      await this.$store.dispatch(
+        `mining/getTableDataForWqtW${this.currentPool.toLowerCase()}Pool`,
+        {
+          limit: this.perPager,
+          offset: (this.page - 1) * this.perPager,
+        },
+      );
     },
-  },
-  created() {
-    localStorage.setItem('miningPoolId', this.$route.params.id);
-    this.miningPoolId = localStorage.getItem('miningPoolId');
   },
   async mounted() {
-    // this.SetLoader(false);
     this.SetLoader(true);
-    // await this.checkMetamaskStatus();
-    if (this.$route.params.id === 'ETH') {
-      await Promise.all([
-        this.getWqtWethTokenDay(),
-        this.getWqtWethTokenDayLast(),
-      ]);
-    } else {
-      await Promise.all([
-        this.getWqtWbnbTokenDay(),
-        this.getWqtWbnbTokenDayLast(),
-      ]);
-    }
-    await Promise.all([
-      // this.tokensDataUpdate(),
-      this.initTokenDays(),
-      this.initGraphData(),
-    ]);
+    localStorage.setItem('miningPoolId', this.currentPool);
+    const currentPool = this.currentPool.toLowerCase();
+    await this.$store.dispatch(`mining/getChartDataForWqtW${currentPool}Pool`);
+    await this.$store.dispatch(`mining/getTableDataForWqtW${currentPool}Pool`, {});
     this.SetLoader(false);
-    if (this.$route.params.id === 'ETH') {
-      await this.tableWqtWethTokenDay();
-    } else {
-      await this.tableWqtWbnbTokenDay();
-    }
-    await this.initTableData();
-    this.firstLoading = false;
   },
-  beforeDestroy() {
+  async beforeDestroy() {
     clearInterval(this.updateInterval);
+    await this.disconnectFromWallet();
+    await Promise.all([
+      this.$store.commit('mining/setChartData', []),
+      this.$store.commit('mining/setTableData', []),
+      this.$store.commit('mining/setTotalLiquidityUSD', null),
+    ]);
   },
   methods: {
-    async checkMetamaskStatus() {
-      if (typeof window.ethereum === 'undefined') {
-        localStorage.setItem('metamaskStatus', 'notInstalled');
-        this.ShowModal({
-          key: modals.status,
-          img: '~assets/img/ui/cardHasBeenAdded.svg',
-          title: 'Please install Metamask!',
-          subtitle: 'Please click install...',
-          button: 'Install',
-          type: 'installMetamask',
-        });
-      } else {
-        localStorage.setItem('metamaskStatus', 'installed');
-        const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
-        if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: this.miningPoolId });
-        await this.connectToMetamask();
-      }
-    },
-    async connectToMetamask() {
-      if (!this.isConnected) {
-        await this.$store.dispatch('web3/connect', this.$route.params.id);
-      }
-      localStorage.setItem('miningPoolId', this.$route.params.id);
-      this.miningPoolId = localStorage.getItem('miningPoolId');
-      await this.$store.dispatch('web3/initContract');
-    },
-    async initTokenDays() {
-      const totalLiquidity = this.miningPoolId === 'BNB' ? this.wqtWbnbTokenDay[0]?.reserveUSD : this.wqtWethTokenDay[0]?.reserveUSD;
-      this.totalLiquidityUSD = Math.floor(await totalLiquidity);
-    },
-    async initGraphData() {
-      this.wqtWbnbData = await this.wqtWbnbTokenDay;
-      this.wqtWethData = await this.wqtWethTokenDay;
-    },
-    async initTableData() {
-      if (this.items.length !== 0) {
-        this.items.splice(0, this.perPager);
-      }
-      let tableArr = [];
-      if (this.miningPoolId === 'BNB') {
-        tableArr = this.wqtWbnbTableData;
-      }
-      if (this.miningPoolId === 'ETH') {
-        tableArr = this.wqtWethTableData;
-      }
-      tableArr.forEach((data) => {
-        this.items.push({
-          totalValue: `${this.Floor(data.amountUSD, 2)} $`,
-          account: data.to,
-          accountView: this.cropTxt(data.to),
-          time: moment(new Date(data.transaction.timestamp * 1000)).startOf('hour').fromNow(),
-          ...this.getTokensAmount(data),
-        });
-      });
-      this.totalPagesValue = this.totalPages;
-    },
     getTokensAmount(data) {
+      const { currentPool } = this;
       if (data.amount0Out > 0) {
         return {
-          poolAddress: this.miningPoolId === 'ETH' ? 'Swap WETH for WQT' : 'Swap WQT for WBNB',
-          tokenAmount0: `${this.Floor(data.amount1In, 3)} ${this.miningPoolId === 'ETH' ? 'WETH' : 'WQT'}`,
-          tokenAmount1: `${this.Floor(data.amount0Out, 3)} ${this.miningPoolId === 'ETH' ? 'WQT' : 'WBNB'}`,
+          poolAddress: currentPool === 'ETH' ? 'Swap WETH for WQT' : 'Swap WQT for WBNB',
+          tokenAmount0: `${this.Floor(data.amount1In, 3)} ${currentPool === 'ETH' ? 'WETH' : 'WQT'}`,
+          tokenAmount1: `${this.Floor(data.amount0Out, 3)} ${currentPool === 'ETH' ? 'WQT' : 'WBNB'}`,
         };
       }
       return {
-        poolAddress: this.miningPoolId === 'ETH' ? 'Swap WQT for WETH' : 'Swap WBNB for WQT',
-        tokenAmount0: `${this.Floor(data.amount0In, 3)} ${this.miningPoolId === 'ETH' ? 'WQT' : 'WBNB'}`,
-        tokenAmount1: `${this.Floor(data.amount1Out, 3)} ${this.miningPoolId === 'ETH' ? 'WETH' : 'WQT'}`,
+        poolAddress: currentPool === 'ETH' ? 'Swap WQT for WETH' : 'Swap WBNB for WQT',
+        tokenAmount0: `${this.Floor(data.amount0In, 3)} ${currentPool === 'ETH' ? 'WQT' : 'WBNB'}`,
+        tokenAmount1: `${this.Floor(data.amount1Out, 3)} ${currentPool === 'ETH' ? 'WETH' : 'WQT'}`,
       };
     },
 
-    async getWqtWbnbSwaps() {
-      await this.$store.dispatch('defi/wqtWbnbSwaps');
+    async checkWalletStatus() {
+      if (this.isConnected) return;
+      let incorrectChain = false;
+      const { currentPool } = this;
+      this.SetLoader(true);
+      await this.connectToWallet();
+      if (this.isConnected) {
+        if (localStorage.getItem('isMetaMask') === 'true') {
+          const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', currentPool);
+          if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: currentPool });
+        } else {
+          const walletConnectData = JSON.parse(localStorage.getItem('walletconnect'));
+          switch (walletConnectData.chainId) {
+            case 1:
+              incorrectChain = this.currentPool !== 'ETH';
+              break;
+            case 56:
+              incorrectChain = this.currentPool !== 'BNB';
+              break;
+            default:
+              incorrectChain = false;
+              break;
+          }
+          if (incorrectChain) {
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/warning.svg'),
+              title: this.$t('modals.connectError'),
+              recipient: '',
+              subtitle: this.$t('modals.incorrectChain'),
+            });
+            await this.disconnectFromWallet();
+          }
+        }
+      }
+      this.SetLoader(false);
     },
-    async getWqtWbnbTokenDay(query) {
-      await this.$store.dispatch('defi/wqtWbnbTokenDay', query);
-    },
-    async tableWqtWbnbTokenDay(query) {
-      await this.$store.dispatch('defi/tableWqtWbnbTokenDay', query);
-    },
-    async getWqtWbnbTokenDayLast() {
-      const query = 'limit=1';
-      await this.$store.dispatch('defi/wqtWbnbTokenDayLast', query);
+    async connectToWallet() {
+      await this.$store.dispatch('web3/connect', { chain: this.currentPool });
     },
 
-    async getWqtWethSwaps() {
-      await this.$store.dispatch('defi/wqtWethSwaps');
-    },
-    async tableWqtWethTokenDay(query) {
-      await this.$store.dispatch('defi/tableWqtWethTokenDay', query);
-    },
-    async getWqtWethTokenDay(query) {
-      await this.$store.dispatch('defi/wqtWethTokenDay', query);
-    },
-    async getWqtWethTokenDayLast() {
-      const query = 'limit=1';
-      await this.$store.dispatch('defi/wqtWethTokenDayLast', query);
-    },
-
-    commonBtnContainerWidth() {
-      let style;
-      if (this.miningPoolId === 'BNB') {
-        style = 'info-block__grid_double';
-      }
-      return style;
-    },
-    buttonContainerStyles() {
-      let style;
-      if (this.miningPoolId === 'BNB') {
-        style = 'info-block__btns_double';
-      }
-      return style;
-    },
     async tokensDataUpdate() {
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', this.miningPoolId);
-      if (!rightChain) {
-        return;
+      this.isLoadingAPY = true;
+      const { balanceTokenAmount, rewardTokenAmount, stakeTokenAmount } = await this.$store.dispatch('web3/getTokensData');
+      this.fullRewardAmount = rewardTokenAmount;
+      this.rewardAmount = this.Floor(rewardTokenAmount);
+      this.stakedAmount = this.Floor(stakeTokenAmount);
+      this.availableBalanceForStake = balanceTokenAmount;
+
+      if (+stakeTokenAmount > 0) {
+        const payload = {
+          chain: this.currentPool,
+          stakedAmount: stakeTokenAmount,
+        };
+        const profit = await this.$store.dispatch('web3/getAPY', payload);
+        this.profitWQT = this.Floor(profit);
       }
-      const tokensData = await this.$store.dispatch('web3/getTokensData');
-      this.fullRewardAmount = tokensData.rewardTokenAmount;
-      this.rewardAmount = this.Floor(tokensData.rewardTokenAmount);
-      this.stakedAmount = this.Floor(tokensData.stakeTokenAmount);
-      const payload = {
-        chain: this.miningPoolId,
-        stakedAmount: tokensData.stakeTokenAmount,
-      };
-      const profit = await this.$store.dispatch('web3/getAPY', payload);
-      this.profitWQT = this.Floor(profit);
-    },
-    async disconnectFromMetamask() {
-      await this.$store.dispatch('web3/disconnect');
+
+      this.isLoadingAPY = false;
     },
     async claimRewards() {
       this.SetLoader(true);
@@ -596,45 +485,64 @@ export default {
       }
       this.SetLoader(false);
     },
-    cropTxt(str) {
-      if (str.length > 40) str = `${str.slice(0, 10)}...${str.slice(-10)}`;
-      return str;
-    },
     openSwapTokens() {
       if (!this.isConnected) {
-        this.connectToMetamask();
+        this.connectToWallet();
       }
       this.ShowModal({
         key: modals.swapTokens,
       });
     },
     async openModalUnstaking() {
-      await this.checkMetamaskStatus();
-      this.ShowModal({
-        key: modals.claimRewards,
-        type: 2,
-        decimals: this.accountData.decimals.stakeDecimal,
-        stakingType: StakingTypes.MINING,
-        updateMethod: this.tokensDataUpdate,
-      });
+      await this.checkWalletStatus();
+      if (this.stakedAmount > 0) {
+        this.ShowModal({
+          key: modals.claimRewards,
+          type: 2,
+          decimals: this.accountData.decimals.stakeDecimal,
+          stakingType: StakingTypes.MINING,
+          updateMethod: this.tokensDataUpdate,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.incorrectAmount'),
+        });
+      }
     },
-    async openModalClaimRewards() {
-      await this.checkMetamaskStatus();
-      this.ShowModal({
-        key: modals.claimRewards,
-        type: 1,
-        stakingType: StakingTypes.MINING,
-        decimals: this.accountData.decimals.stakeDecimal,
-        updateMethod: this.tokensDataUpdate,
-      });
+    async openModalStaking() {
+      await this.checkWalletStatus();
+      if (this.availableBalanceForStake > 0) {
+        this.ShowModal({
+          key: modals.claimRewards,
+          type: 1,
+          stakingType: StakingTypes.MINING,
+          decimals: this.accountData.decimals.stakeDecimal,
+          updateMethod: this.tokensDataUpdate,
+        });
+      } else {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('modals.transactionFail'),
+          recipient: '',
+          subtitle: this.$t('modals.incorrectAmount'),
+        });
+      }
     },
+
     async handleBackToMainMining() {
       await this.$router.push('/mining');
-      await this.disconnectFromMetamask();
+    },
+    async disconnectFromWallet() {
+      await this.$store.dispatch('web3/disconnect');
     },
     iconUrls() {
       return [
-        require(`~/assets/img/ui/${this.miningPoolId === 'BNB' ? 'bnb_yellow' : 'eth_white'}.svg`),
+        require(`~/assets/img/ui/${this.currentPool === 'BNB' ? 'bnb_yellow' : 'eth_white'}.svg`),
         require('~/assets/img/ui/wqt-logo.svg'),
       ];
     },
@@ -652,6 +560,10 @@ export default {
   background: linear-gradient(to bottom, #103D7C 325px, #f6f8fa 325px);
   display: flex;
   justify-content: center;
+
+  &__pager {
+    margin-top: 25px;
+  }
 
   &__connect {
     width: 150px;
@@ -966,6 +878,7 @@ export default {
 }
 .pager {
   &__block {
+    margin-top: 25px;
     width: auto;
   }
 }

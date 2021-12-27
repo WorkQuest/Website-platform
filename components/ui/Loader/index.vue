@@ -46,7 +46,12 @@ export default {
   },
   methods: {
     checkPage() {
-      return ['/mining/BNB', '/mining/ETH', '/crosschain', '/staking', '/staking/WQT', '/staking/WUSD'].includes(this.$route.path);
+      return [
+        '/mining/BNB', '/mining/ETH',
+        '/crosschain',
+        '/staking', '/staking/WQT', '/staking/WUSD',
+        '/pension', '/pension/my',
+      ].includes(this.$route.path);
     },
   },
 };
@@ -61,7 +66,7 @@ export default {
   right: 0;
   left: 0;
   background: rgba(#000000, .5);
-  z-index: 1500;
+  z-index: 100000;
   align-items: center;
   justify-content: center;
   display: flex;

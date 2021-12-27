@@ -8,19 +8,16 @@
         <div class="grid__field grid__field_top">
           <div class="ctm-modal__content-field">
             <div class="avatar__container">
-              <!-- TODO: Вывести список созданных квестов без воркеров -->
               <div>
-                <!-- {{ options.currentWorker }} -->
                 <img
-                  alt=""
                   class="ctm-modal__img"
-                  :src="options.currentWorker.avatar ?
-                    options.currentWorker.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+                  :src="userData.avatar && userData.avatar.url ? userData.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                  :alt="userData.avatar && userData.avatar.url ? userData.avatar.url : 'avatar_empty'"
                 >
               </div>
               <div>
-                {{ options.currentWorker.firstName ? options.currentWorker.firstName : "Nameless worker" }}
-                {{ options.currentWorker.lastName ? options.currentWorker.lastName : "" }}
+                {{ userData.firstName ? userData.firstName : "Nameless worker" }}
+                {{ userData.lastName ? userData.lastName : "" }}
               </div>
               <div>
                 <div
@@ -38,11 +35,11 @@
         </div>
         <div class="grid__field">
           <div class="ctm-modal__content-field">
-            <!--TODO: Вывести тайтлы -->
             <base-dd
               v-model="questIndex"
               type="gray"
-              :items="questList.quests"
+              data-type="object"
+              :items="questFiltered"
               :label="$t('modals.chooseQuest')"
             />
           </div>
@@ -60,7 +57,7 @@
           <div class="btn__wrapper">
             <base-btn
               class="message__action"
-              @click="showTransactionSendModal()"
+              @click="inviteOnQuest(questIndex)"
             >
               {{ $t('meta.send') }}
             </base-btn>
@@ -88,6 +85,7 @@ export default {
   name: 'ModalInvitation',
   data() {
     return {
+      questFiltered: [],
       questIndex: 0,
       message_input: '',
       chooseQuest_input: '',
@@ -115,13 +113,30 @@ export default {
   },
   async beforeMount() {
     await this.getQuestList();
+    await this.questFilter();
   },
   methods: {
     async getQuestList() {
       await this.$store.dispatch('quests/questListForInvitation', this.userData.id);
     },
+    async questFilter() {
+      this.questFiltered = this.questList.quests.filter((quest) => quest.status === 0);
+    },
+    async inviteOnQuest(questIndex) {
+      const questId = this.questList.quests[questIndex].id || '';
+      const payload = {
+        invitedUserId: this.options.userId || '',
+        message: this.message_input || '',
+      };
+      try {
+        await this.$store.dispatch('quests/inviteOnQuest', { questId, payload });
+        this.showTransactionSendModal();
+      } catch (e) {
+        console.log(e);
+      }
+    },
     cardsLevels() {
-      const { card, disabled } = this;
+      const { card } = this;
       return [
         { card__level_reliable: card.level.code === '2' },
         { card__level_checked: card.level.code === '3' },
@@ -137,6 +152,8 @@ export default {
         img: require('~/assets/img/ui/inviteSend.svg'),
         title: this.$t('modals.inviteSend'),
         subtitle: this.$t('modals.invitationSendText'),
+        type: 'goToChat',
+        button: this.$t('btn.goToChat'),
       });
     },
   },

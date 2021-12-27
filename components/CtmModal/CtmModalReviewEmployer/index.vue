@@ -5,11 +5,12 @@
   >
     <div class="review__body body">
       <div class="body__rating">
-        <button class="body__button">
-          <b-form-rating
-            v-model="localRating"
-          />
-        </button>
+        <star-rating
+          :rating-type="'modal'"
+          :rating="rating"
+          :stars-number="5"
+          @input="changeReview($event)"
+        />
       </div>
       <div class="body__content content">
         <div class="content__desc">
@@ -29,7 +30,7 @@
             <div class="buttons__wrapper">
               <base-btn
                 class="buttons__action"
-                @click="showThanksModal"
+                @click="sendReviewForUser()"
               >
                 {{ $t('meta.send') }}
               </base-btn>
@@ -61,8 +62,7 @@ export default {
   data() {
     return {
       textArea: '',
-      rating: '',
-      localRating: 0,
+      rating: 0,
     };
   },
   computed: {
@@ -70,9 +70,35 @@ export default {
       options: 'modals/getOptions',
     }),
   },
+  mounted() {
+    this.getQuestRating();
+  },
   methods: {
+    changeReview(value) {
+      this.rating = value;
+    },
+    getQuestRating() {
+      this.rating = this.options.rating;
+    },
+    removeLocalStorageRating() {
+      localStorage.removeItem('questRating');
+    },
     hide() {
       this.CloseModal();
+    },
+    sendReviewForUser() {
+      const payload = {
+        questId: this.options.item.id,
+        message: this.textArea,
+        mark: this.rating,
+      };
+      try {
+        this.$store.dispatch('user/sendReviewForUser', payload);
+        this.showThanksModal();
+        this.removeLocalStorageRating();
+      } catch (e) {
+        console.log(e);
+      }
     },
     showThanksModal() {
       this.ShowModal({

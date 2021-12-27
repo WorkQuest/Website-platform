@@ -1,9 +1,7 @@
 <template>
   <div>
     <info />
-    <div
-      class="main-white"
-    >
+    <div class="main main-white">
       <div class="main__body">
         <questPanel
           :avatar-url="userAvatar"
@@ -20,91 +18,99 @@
           </span>
         </div>
         <div class="divider" />
-        <div class="quest_materials__container">
-          <h2 class="quest_materials__title">
-            {{ $t('quests.questMaterials') }}
-          </h2>
-          <div class="img__container">
-            <img
-              v-for="n in 4"
-              :key="n"
-              class="img__item"
-              src="https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg"
-              alt=""
-              @click="openImage('https://3dnews.ru/assets/external/illustrations/2020/09/14/1020548/03.jpg')"
-            >
-          </div>
-          <div class="divider" />
-
-          <questIdEmployer
-            :user-avatar="userAvatar"
-            :assign-worker="questData.assignedWorker ? questData.assignedWorker : questData.assignedWorker = null"
-          />
-
-          <questIdWorker />
+        <div class="quest_materials__title">
+          {{ $t('quests.questMaterials') }}
         </div>
-      </div>
-    </div>
-    <div
-      class="map__container gmap"
-    >
-      <div class="gmap__block">
-        <transition name="fade-fast">
-          <GmapMap
-            ref="gMap"
-            class="quests__map"
-            language="en"
-            :center="questLocation"
-            :zoom="zoom"
-            :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
-          >
-            <GMapMarker
-              v-for="(item, key) in locations"
-              :key="key"
-              :position="questLocation"
-              :options="{ icon: pins.quest.blue, show: true}"
-              @click="coordinatesChange(item)"
-            >
-              <GMapInfoWindow
-                :options="{maxWidth: 280}"
-              >
-                <div>
-                  <h3>{{ questData.title }}</h3>
-                  <span>{{ questData.description }}</span>
-                </div>
-              </GMapInfoWindow>
-            </GMapMarker>
-          </GmapMap>
-        </transition>
+        <files-preview :medias="questData.medias" />
+        <div
+          v-if="userRole === 'employer'
+            ? [InfoModeEmployer.Active, InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode)
+            : [InfoModeWorker.ADChat, InfoModeWorker.Active, InfoModeWorker.Rejected,
+               InfoModeWorker.Created, InfoModeWorker.Done].includes(infoDataMode)"
+          class="divider"
+        />
+        <questIdEmployer
+          :user-avatar="questData.assignedWorker && questData.assignedWorker.avatar ? questData.assignedWorker.avatar.url : null"
+          :assign-worker="questData.assignedWorker"
+          :worker-id="questData.assignedWorkerId"
+        />
+        <questIdWorker />
       </div>
     </div>
     <div class="main">
-      <div class="spec__container">
-        <div class="quest__group">
-          <h2 class="quest__spec">
-            {{ $t('quests.otherQuestsSpec') }}
-            <nuxt-link
-              to="#"
-              class="spec__link"
-            >
-              "{{ payload.spec }}"
-            </nuxt-link>
-          </h2>
+      <div class="main__body">
+        <div v-if="userRole === 'employer'">
+          <div v-if="infoDataMode === InfoModeEmployer.Created">
+            <invited-worker-list
+              :current-worker="currentWorker"
+              :filtered-invited="filteredInvited"
+            />
+            <responded-worker-list
+              :current-worker="currentWorker"
+              :filtered-responses="filteredResponses"
+            />
+          </div>
         </div>
-        {{ responsesToQuest.responses }}
-        <div class="quest__card">
-          <quests
-            v-if="questsObjects.count !== 0"
-            :limit="questLimits"
-            :object="questsObjects"
-            :page="'quests'"
-          />
-          <emptyData
-            v-else
-            :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
-            :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-            :link="userRole === 'employer' ? '/create-quest' : '/quests'"
-          />
+        <div
+          class="map__container gmap"
+        >
+          <div class="gmap__block">
+            <transition name="fade-fast">
+              <GmapMap
+                ref="gMap"
+                class="quests__map"
+                language="en"
+                :center="questLocation"
+                :zoom="zoom"
+                :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
+              >
+                <GMapMarker
+                  v-for="(item, key) in locations"
+                  :key="key"
+                  :position="questLocation"
+                  :options="{ icon: pins.quest.blue, show: true}"
+                  @click="coordinatesChange(item)"
+                >
+                  <GMapInfoWindow
+                    :options="{maxWidth: 280}"
+                  >
+                    <div>
+                      <h3>{{ questData.title }}</h3>
+                      <span>{{ questData.description }}</span>
+                    </div>
+                  </GMapInfoWindow>
+                </GMapMarker>
+              </GmapMap>
+            </transition>
+          </div>
+        </div>
+        <div class="spec__container">
+          <div class="quest__group">
+            <h2 class="quest__spec">
+              {{ $t('quests.otherQuestsSpec') }}
+              <nuxt-link
+                to="#"
+                class="spec__link"
+              >
+                "{{ payload.spec }}"
+              </nuxt-link>
+            </h2>
+          </div>
+          {{ responsesToQuest.responses }}
+          <div class="quest__card">
+            <quests
+              v-if="questsObjects.count !== 0"
+              :limit="questLimits"
+              :object="questsObjects"
+              :page="'quests'"
+            />
+            <emptyData
+              v-else
+              :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
+              :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+              :link="userRole === 'employer' ? '/create-quest' : '/quests'"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -112,6 +118,9 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import {
+  QuestStatuses, InfoModeWorker, InfoModeEmployer, responsesType,
+} from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
@@ -135,16 +144,12 @@ export default {
       badge: {
         code: 1,
       },
-      selectedWorker: [],
       payload: {
         spec: 'Painting works',
       },
+      filteredResponses: [],
+      filteredInvited: [],
       isShowMap: true,
-      priority: [
-        this.$t('quests.priority.low'),
-        this.$t('quests.priority.normal'),
-        this.$t('quests.priority.urgent'),
-      ],
       priorityIndex: 0,
       distanceIndex: 0,
       priceSort: 'desc',
@@ -172,6 +177,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      currentWorker: 'quests/getCurrentWorker',
       questData: 'quests/getQuest',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
@@ -181,6 +187,19 @@ export default {
       responsesData: 'quests/getResponsesData',
       infoDataMode: 'quests/getInfoDataMode',
     }),
+    InfoModeEmployer() {
+      return InfoModeEmployer;
+    },
+    InfoModeWorker() {
+      return InfoModeWorker;
+    },
+    priority() {
+      return [
+        this.$t('quests.priority.low'),
+        this.$t('quests.priority.normal'),
+        this.$t('quests.priority.urgent'),
+      ];
+    },
   },
   watch: {
     questData: {
@@ -199,69 +218,71 @@ export default {
     await this.initData();
     await this.initUserAvatar();
     await this.getResponsesToQuest();
+    this.getFilteredResponses();
     await this.checkPageMode();
     this.SetLoader(false);
   },
   methods: {
+    async initData() {
+      await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+    },
     async getResponsesToQuest() {
       if (this.userRole === 'employer') {
         await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
       }
     },
-    async initData() {
-      await this.$store.dispatch('quests/getQuest', this.$route.params.id);
+    getFilteredResponses() {
+      if (this.userRole === 'employer') {
+        this.filteredResponses = this.responsesToQuest ? this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Responded) : [];
+        this.filteredInvited = this.responsesToQuest ? this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Invited) : [];
+        return this.filteredResponses && this.filteredInvited;
+      }
+      return '';
     },
     async initUserAvatar() {
-      this.userAvatar = this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
+      this.userAvatar = await this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
     },
     async checkPageMode() {
-      // questStatus
-      // Created = 0,
-      // Active = 1
-      // Closed = 2
-      // Dispute = 3
-      // WaitWorker = 4
-      // WaitConfirm = 5
-      // Done = 6
-
-      if (['employer'].includes(this.userRole)) {
-        if ([0].includes(this.responsesData.count)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 1);
-        } if ([1].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 2);
-        } if (this.responsesData.count > 0) {
-          await this.$store.dispatch('quests/setInfoDataMode', 3);
-        } if (this.questData.assignedWorker !== null) {
-          if (![2].includes(this.questData.status)) {
-            await this.$store.dispatch('quests/setInfoDataMode', 4);
-          }
-        } if ([5].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 6);
-        } if ([3].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 7);
-        } if ([2].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 8);
-        } if ([6].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 9);
+      let payload = 1;
+      const responsesCount = this.userRole === 'employer'
+        ? this.responsesData.count : Object.keys(this.respondedList).length;
+      const { assignedWorker } = this.questData;
+      const { assignedWorkerId } = this.questData;
+      const { userRole } = this;
+      const userId = this.userData.id;
+      const questStatus = this.questData.status;
+      if (userRole === 'employer') {
+        switch (true) {
+          case responsesCount === 0
+          && questStatus === QuestStatuses.Created: payload = InfoModeEmployer.RaiseViews; break;
+          case responsesCount > 0
+          && questStatus === QuestStatuses.Created: payload = InfoModeEmployer.Created; break;
+          case Object.keys(assignedWorker).length > 0
+          && ![QuestStatuses.Closed, QuestStatuses.Dispute, QuestStatuses.WaitConfirm, QuestStatuses.Done].includes(questStatus):
+            payload = InfoModeEmployer.WaitWorker; break;
+          case questStatus === QuestStatuses.Active: payload = InfoModeEmployer.Active; break;
+          case questStatus === QuestStatuses.Closed: payload = InfoModeEmployer.Closed; break;
+          case questStatus === QuestStatuses.Dispute: payload = InfoModeEmployer.Dispute; break;
+          case questStatus === QuestStatuses.WaitConfirm && Object.keys(assignedWorker).length > 0: payload = InfoModeEmployer.WaitConfirm; break;
+          case questStatus === QuestStatuses.Done && responsesCount > 0: payload = InfoModeEmployer.Done; break;
+          default: { payload = InfoModeEmployer.RaiseViews; break; }
         }
+        await this.$store.dispatch('quests/setInfoDataMode', payload);
       }
-      if (['worker'].includes(this.userRole)) {
-        if (this.questData.assignedWorker === null && ![1].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 5);
-        } if ([1].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 2);
-        } if ([3].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 7);
-        } if (this.questData.assignedWorkerId === this.userData.id
-          && ![1, 3].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 1);
-        } if ([5].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 4);
-        } if ([6].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 9);
-        } if ([2].includes(this.questData.status)) {
-          await this.$store.dispatch('quests/setInfoDataMode', 8);
+      if (userRole === 'worker') {
+        switch (true) {
+          case questStatus === QuestStatuses.Rejected && this.questData.response !== null: payload = InfoModeWorker.Rejected; break;
+          case questStatus === QuestStatuses.Created: payload = InfoModeWorker.Created; break;
+          case questStatus === QuestStatuses.Active: payload = InfoModeWorker.Active; break;
+          case questStatus === QuestStatuses.Closed: payload = InfoModeWorker.Closed; break;
+          case questStatus === QuestStatuses.Dispute: payload = InfoModeWorker.Dispute; break;
+          case questStatus === QuestStatuses.WaitConfirm: payload = InfoModeWorker.WaitConfirm; break;
+          case questStatus === QuestStatuses.Done: payload = InfoModeWorker.Done; break;
+          case assignedWorkerId === userId
+          && ![InfoModeWorker.Active, InfoModeWorker.Dispute].includes(questStatus): payload = InfoModeWorker.ADChat; break;
+          default: { payload = InfoModeWorker.ADChat; break; }
         }
+        await this.$store.dispatch('quests/setInfoDataMode', payload);
       }
     },
     coordinatesChange(item) {
@@ -282,19 +303,17 @@ export default {
         key: modals.raiseViews,
       });
     },
-    openImage(src) {
-      if (window.innerWidth >= 761) {
-        this.ShowModal({
-          key: modals.showImage,
-          imageSrc: src,
-        });
-      }
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.divider {
+  margin: 20px 0 20px 0;
+  background-color: $black0;
+  width:100%;
+  height: 1px;
+}
 .quest {
   &__map {
     height: 205px;
@@ -374,12 +393,6 @@ export default {
     margin-bottom: 20px;
   }
 }
-.divider {
-  margin: 20px 0 20px 0;
-  background-color: $black0;
-  width:100%;
-  height: 1px;
-}
 .main {
   @include main;
   &-white {
@@ -407,7 +420,7 @@ export default {
     font-weight: 500;
     font-size: 18px;
     color: $black800;
-    padding: 20px 0 20px 0;
+    padding: 0 0 20px 0;
   }
 }
 
@@ -437,6 +450,7 @@ export default {
   &__container {
     @extend .price;
     justify-content: flex-end;
+    text-align: center;
   }
   &__wrapper {
     @extend .price;
@@ -450,26 +464,6 @@ export default {
     flex-direction: row;
     align-items: center;
     margin: 25.5px 0 0 0;
-  }
-}
-.img {
-  transition: 0.5s;
-  &__container{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 20px;
-    margin: 0 0 20px 0;
-  }
-  &__item{
-    @extend .img;
-    border-radius: 6px;
-    max-width: 280px;
-    max-height: 210px;
-    &:hover {
-      @extend .img;
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }
   }
 }
 .star {
@@ -512,11 +506,11 @@ export default {
   }
 }
 .icon {
-  color:$black500;
+  color: $black500;
   font-size: 20px;
   &-chat::before {
     @extend .icon;
-    color:$green;
+    color: $green !important;
   }
   &-location::before {
     @extend .icon;
@@ -569,15 +563,6 @@ export default {
 @include _991 {
   .main-white {
     display: block;
-  }
-  .img {
-    &__container {
-      grid-template-columns: repeat(2, auto);
-      img {
-        max-width: 100%;
-        max-height: 100%;
-      }
-    }
   }
 }
 @include _767 {
@@ -636,11 +621,6 @@ export default {
   .icon {
     &-clock, &-location {
       width: 30px;
-    }
-  }
-  .img {
-    &__container {
-      grid-template-columns: 1fr;
     }
   }
   .quest {

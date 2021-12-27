@@ -194,7 +194,7 @@ export default {
       return this.$route.params.id;
     },
     stakeDurationIsOver() {
-      return this.userInfo && moment.duration(moment(this.userInfo.date).diff(moment.now())).asMilliseconds() < 0;
+      return this.userInfo && moment.duration(moment(this.userInfo.date).diff(moment.now())).asMilliseconds() <= 0;
     },
     cards() {
       if (!this.poolData) {
@@ -283,11 +283,27 @@ export default {
         },
       ];
       if (this.userInfo.date && this.userInfo.staked !== '0') {
-        const days = Math.ceil(moment.duration(moment(this.userInfo.date).diff(moment.now())).asDays());
-        data.push({
-          name: this.$t('staking.stakingCards.duration'),
-          about: this.$t('staking.days', { n: days >= 0 ? days : 0 }),
-        });
+        const now = moment.now();
+        const ends = moment(this.userInfo.date);
+        const minutes = ends.diff(now, 'minutes');
+        const hours = ends.diff(now, 'hours');
+        const days = ends.diff(now, 'days');
+        if (minutes <= 60) {
+          data.push({
+            name: this.$t('staking.stakingCards.duration'),
+            about: this.$t('staking.min', { n: minutes >= 0 ? minutes : 0 }),
+          });
+        } else if (hours <= 24) {
+          data.push({
+            name: this.$t('staking.stakingCards.duration'),
+            about: this.$t('staking.hours', { n: hours >= 0 ? hours : 0 }),
+          });
+        } else {
+          data.push({
+            name: this.$t('staking.stakingCards.duration'),
+            about: this.$t('staking.days', { n: days >= 0 ? days : 0 }),
+          });
+        }
       }
       return data;
     },
@@ -343,7 +359,7 @@ export default {
     await this.initPage();
   },
   async beforeDestroy() {
-    await this.$store.dispatch('web3/unsubscribeStakingActions');
+    await this.$store.dispatch('web3/unsubscribeActions');
     clearInterval(this.updateInterval);
   },
   methods: {
@@ -358,7 +374,7 @@ export default {
       await this.$store.dispatch('web3/fetchStakingActions', {
         stakingType: this.slug,
         events,
-        callback: (method, tx) => {
+        callback: () => {
           this.getPoolData();
           this.getUserInfo();
         },
@@ -383,15 +399,44 @@ export default {
           localStorage.setItem('metamaskStatus', 'installed');
           const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
           if (!rightChain) await this.$store.dispatch('web3/goToChain', { chain: Chains.ETHEREUM });
-          await this.$store.dispatch('web3/connect');
+          await this.$store.dispatch('web3/connectToMetaMask');
         }
       }
     },
     handleAutoRenewal() {
+      if (new BigNumber(this.userInfo._staked).isGreaterThanOrEqualTo(this.poolData._maxStake)) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('staking.notification'),
+          subtitle: this.$t('staking.stakeLimitReached'),
+        });
+        return;
+      }
+      let renewalValue;
+      if (this.userInfo.claim >= this.poolData._maxStake) {
+        renewalValue = new BigNumber(this.poolData._maxStake).minus(this.userInfo._staked).toString();
+      } else {
+        renewalValue = this.userInfo.claim;
+      }
+      if (!+renewalValue) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/warning.svg'),
+          title: this.$t('staking.notification'),
+          subtitle: this.$t('staking.notEnoughClaim'),
+        });
+        return;
+      }
       this.ShowModal({
-        key: modals.status,
-        title: this.$t('staking.notification'),
-        subtitle: this.$t('staking._inDev'),
+        key: modals.areYouSureNotification,
+        title: this.$t('modals.areYouSure'),
+        text: this.$t('staking.renewalTokens', { n: renewalValue }),
+        callback: async () => {
+          this.SetLoader(true);
+          await this.$store.dispatch('web3/autoRenewal', { stakingType: this.slug });
+          this.SetLoader(false);
+        },
       });
     },
     async getPoolData() {
@@ -445,7 +490,7 @@ export default {
       }
       this.ShowModal({
         key: modals.claim,
-        txFee: txFeeData,
+        txFee: txFeeData.result,
         stakingType: this.slug,
         rewardAmount: this.userInfo.claim,
         tokenSymbol: this.poolData.tokenSymbol,
@@ -492,7 +537,7 @@ export default {
         });
         return;
       }
-      if (new BigNumber(this.userInfo._staked).isGreaterThanOrEqualTo(this.poolData.maxStake)) {
+      if (new BigNumber(this.userInfo._staked).isGreaterThanOrEqualTo(this.poolData._maxStake)) {
         await this.ShowModal({
           key: modals.status,
           img: require('~/assets/img/ui/warning.svg'),

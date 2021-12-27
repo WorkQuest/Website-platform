@@ -1,16 +1,26 @@
 <template>
   <div>
-    <div class="portfolio portfolio__items">
+    <emptyData
+      v-if="object.count === 0"
+      :description="$t('errors.emptyData.emptyPortfolios')"
+    />
+    <div
+      v-else
+      class="portfolio portfolio__items"
+    >
       <div
-        v-for="(item, i) in portfolios"
-        :key="i"
+        v-for="(item) in object.cases"
+        :key="item.id"
         class="portfolio__item"
       >
         <div
           class="portfolio__card"
         >
           <div class="portfolio__body">
-            <div class="portfolio__btns">
+            <div
+              v-if="userId === mainUserData.id"
+              class="portfolio__btns"
+            >
               <base-btn
                 class="portfolio__close"
                 mode="portfolioClose"
@@ -57,17 +67,26 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'PortfolioTab',
+  components: {
+    emptyData,
+  },
+  props: {
+    object: {
+      type: Object,
+      default: () => {},
+    },
+  },
   computed: {
     ...mapGetters({
-      portfolios: 'user/getUserPortfolios',
-      userData: 'user/getUserData',
+      mainUserData: 'user/getUserData',
     }),
-  },
-  async mounted() {
-    await this.getAllPortfolios();
+    userId() {
+      return this.$route.params.id;
+    },
   },
   methods: {
     openImage(src, name, desc) {
@@ -75,20 +94,10 @@ export default {
         this.ShowModal({
           key: modals.showImage,
           portfolio: true,
-          imageSrc: src,
+          url: src,
           title: name,
           desc,
         });
-      }
-    },
-    async getAllPortfolios() {
-      try {
-        this.SetLoader(true);
-        await this.$store.dispatch('user/getUserPortfolios', this.userData.id);
-        this.SetLoader(false);
-      } catch (e) {
-        this.showToastError(e);
-        this.SetLoader(false);
       }
     },
     showToastError(e) {
@@ -117,6 +126,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.styles {
+  &__flex {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
+.button {
+  &__container {
+    @extend .styles__flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+  &__more {
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 130%;
+    color: #0083C7;
+    border: 1px solid rgba(0, 131, 199, 0.1);
+    border-radius: 6px;
+    padding: 13px 67px 13px 28px;
+    background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E\a           %3Cpath d='M5.5 5.5L10.5 0.5L0.5 0.5L5.5 5.5Z' fill='%230083C7'/%3E\a           %3C/svg%3E                                                          \a           ");
+    background-position: 82% 21px;
+    background-repeat: no-repeat;
+  }
+}
 
 .portfolio {
   &__btns {
@@ -172,6 +212,9 @@ export default {
     height: 82px;
     display: flex;
     width: 100%;
+  }
+  &__pager {
+    margin-top: 25px;
   }
 }
 .portfolio__item:hover .portfolio__edit,

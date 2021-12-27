@@ -7,17 +7,13 @@
             class="user__left"
             @click="showProfile()"
           >
-            <span>
-              <img
-                class="user__img"
-                :src="avatarUrl"
-                alt=""
-                loading="lazy"
-              >
-            </span>
-            <span
-              class="user__username"
+            <img
+              class="user__img"
+              :src="avatarUrl"
+              alt=""
+              loading="lazy"
             >
+            <span class="user__username">
               {{ `${userInfo.firstName} ${userInfo.lastName}` }}
             </span>
             <span
@@ -31,7 +27,10 @@
             <span class="user__date">
               {{ convertDate() }}
             </span>
-            <quest-dd />
+            <quest-dd
+              v-if="questData.status === questStatuses.Created"
+              :item-id="questData.id"
+            />
           </div>
         </div>
         <div class="location__container">
@@ -39,34 +38,29 @@
             v-if="questData"
             class="quest__location"
           >
+            <span class="icon icon-location icon_fs-20" />
             <span
-              class="icon icon-location icon_fs-20"
-            />
-            <span class="quest__address">{{ questData.locationPlaceName ? questData.locationPlaceName : '' }}</span>
-            <span
-              class="user__distance"
-            >
-              {{ showDistance() }} {{ $t('meta.fromYou') }}
+              v-if="questData.locationPlaceName"
+              class="quest__address"
+            >{{ questData.locationPlaceName }}</span>
+            <span class="user__distance">
+              {{ showDistance() }} {{ $t('distance.m') }} {{ $t('meta.fromYou') }}
             </span>
           </div>
         </div>
       </div>
     </div>
     <div
-      v-if="questData.skillFilters"
+      v-if="questData.questSpecializations"
       class="badge__container"
     >
-      <ul
-        v-for="(skills, spec) in questData.skillFilters"
-        :key="spec"
-        class="badge-list"
-      >
+      <ul class="badge-list">
         <li
-          v-for="(skill, key) in skills"
-          :key="key"
+          v-for="(skill, spec) in questData.questSpecializations"
+          :key="spec"
           class="badge__item badge__item_blue"
         >
-          {{ skill }}
+          {{ getSkillTitle(skill.path) }}
         </li>
       </ul>
     </div>
@@ -76,6 +70,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
+import { InfoModeEmployer, InfoModeWorker, QuestStatuses } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -114,13 +109,27 @@ export default {
       userInfo: 'quests/getQuestUser',
       userAvatar: 'quests/getQuestUserAvatar',
       userCompany: 'quests/getQuestUserCompany',
+      infoDataMode: 'quests/getInfoDataMode',
     }),
+    InfoModeEmployer() {
+      return InfoModeEmployer;
+    },
+    InfoModeWorker() {
+      return InfoModeWorker;
+    },
+    questStatuses() {
+      return QuestStatuses;
+    },
   },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
   },
   methods: {
+    getSkillTitle(path) {
+      const [spec, skill] = path.split('.');
+      return this.$t(`filters.items.${spec}.sub.${skill}`);
+    },
     showDistance() {
       return this.getDistanceFromLatLonInKm(
         this.location.lat,
@@ -135,11 +144,7 @@ export default {
       });
     },
     showProfile() {
-      if (this.questData.user.id === this.userData.id) {
-        this.$router.push(`/profile/${this.userData.id}`);
-      } else {
-        this.$router.push('/show-profile');
-      }
+      this.$router.push(`/profile/${this.questData.userId}`);
     },
     convertDate() {
       if (this.questData.createdAt) {
@@ -209,21 +214,16 @@ export default {
   }
 }
 
-.badge-list{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-}
 .badge {
-  &__container {
-    padding-top: 20px;
+  &-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
   }
-}
-.badge {
   &__container {
-    padding: 0 0 20px 0;
+    padding: 20px 0 20px 0;
   }
   &__item {
     @include text-simple;

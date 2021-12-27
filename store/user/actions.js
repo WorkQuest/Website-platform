@@ -1,8 +1,14 @@
 export default {
-  async getUserPortfolios({ commit }, id) {
-    const response = await this.$axios.$get(`/v1/user/${id}/portfolio/cases`);
-    commit('setUserPortfolioCases', response.result);
-    return response;
+  async getUserPortfolios({ commit }, { userId, query }) {
+    try {
+      const response = await this.$axios.$get(`/v1/user/${userId}/portfolio/cases`, {
+        params: { ...query },
+      });
+      commit('setUserPortfolioCases', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
   async setCaseImage({ commit }, { url, formData, type }) {
     const response = await this.$axios.$put(url, formData, {
@@ -15,27 +21,50 @@ export default {
     return response;
   },
   async setCaseData({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/portfolio/add-case', payload);
-    commit('setCaseData', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$post('/v1/portfolio/add-case', payload);
+      commit('setCaseData', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
   async editCaseData({ commit }, { payload, id }) {
-    const response = await this.$axios.$put(`/v1/portfolio/${id}`, payload);
-    commit('setCaseData', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$put(`/v1/portfolio/${id}`, payload);
+      commit('setCaseData', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
   async deletePortfolio({ commit }, id) {
-    const response = await this.$axios.$delete(`/v1/portfolio/${id}`);
-    commit('setUserPortfolioCases', response.result);
-    return response;
+    try {
+      const response = await this.$axios.$delete(`/v1/portfolio/${id}`);
+      commit('setUserPortfolioCases', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
 
-  async getAllUserReviews({ commit }, id) {
-    const response = await this.$axios.$get(`/v1/user/${id}/reviews`);
-    commit('setUserReviews', response.result);
-    return response;
+  async getAllUserReviews({ commit }, { userId, query }) {
+    try {
+      const response = await this.$axios.$get(`/v1/user/${userId}/reviews?${query}`);
+      commit('setUserReviews', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
-
+  async sendReviewForUser({ commit }, payload) {
+    try {
+      const response = await this.$axios.$post('/v1/review/send', payload);
+      return response.result;
+    } catch (e) {
+      return console.log(e);
+    }
+  },
   async signIn({ commit, dispatch }, payload) {
     const response = await this.$axios.$post('/v1/auth/login', payload);
     commit('setTokens', response.result);
@@ -63,19 +92,44 @@ export default {
     return response;
   },
   async getUserData({ commit }) {
-    const response = await this.$axios.$get('/v1/profile/me');
-    commit('setUserData', response.result);
+    try {
+      const response = await this.$axios.$get('/v1/profile/me');
+      commit('setUserData', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
+  },
+  async getAnotherUserData({ commit }, payload) {
+    const response = await this.$axios.$get(`/v1/profile/${payload}`);
+    commit('setAnotherUserData', response.result);
     return response;
+  },
+  clearAnotherUserData({ commit }) {
+    commit('setAnotherUserData', {});
   },
   async setUserRole({ commit }, payload) {
     const response = await this.$axios.$post('/v1/profile/set-role', payload);
     commit('setUserRole', response.result);
     return response;
   },
-  async editUserData({ commit }, payload) {
-    const response = await this.$axios.$put('/v1/profile/edit', payload);
-    commit('setUserData', response.result);
-    return response;
+  async editEmployerData({ commit }, payload) {
+    try {
+      const response = await this.$axios.$put('/v1/employer/profile/edit', payload);
+      commit('setUserData', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
+  },
+  async editWorkerData({ commit }, payload) {
+    try {
+      const response = await this.$axios.$put('/v1/worker/profile/edit', payload);
+      commit('setUserData', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
   },
   async logout({ commit }) {
     commit('logOut');
@@ -119,13 +173,46 @@ export default {
     commit('setImage', response.result);
     return response;
   },
-  async disable2FA({ commit }, payload) {
-    const response = await this.$axios.$post('/v1/totp/disable', payload);
-    commit('setDisable2FA', response.result);
-    return response;
+  async getUploadFileLink({ commit }, config) {
+    try {
+      const { result } = await this.$axios.$post('/v1/storage/get-upload-link', config);
+      return result;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
   },
-  async enable2FA(payload) {
-    return await this.$axios.$post('/v1/totp/enable', payload);
+  async uploadFile({ commit }, payload) {
+    try {
+      await this.$axios.$put(payload.url, payload.data, {
+        headers: {
+          'Content-Type': payload.contentType,
+          'x-amz-acl': 'public-read',
+        },
+      });
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  },
+
+  async disable2FA({ commit }, payload) {
+    try {
+      const response = await this.$axios.$post('/v1/totp/disable', payload);
+      commit('setDisable2FA', response.result);
+      return response;
+    } catch (e) {
+      return console.log(e);
+    }
+  },
+  async enable2FA({ commit }, payload) {
+    try {
+      const response = await this.$axios.$post('/v1/totp/enable', payload);
+      return response.result;
+    } catch (e) {
+      return console.log(e);
+    }
   },
   async confirmEnable2FA({ commit }, payload) {
     const response = await this.$axios.$post('/v1/totp/confirm', payload);
@@ -133,10 +220,20 @@ export default {
     return response;
   },
 
-  async sendPhone(payload) {
-    return await this.$axios.$post('/v1/profile/phone/send-code', payload);
+  async sendPhone({ commit }, payload) {
+    try {
+      const response = await this.$axios.$post('/v1/profile/phone/send-code', payload);
+      return response.result;
+    } catch (e) {
+      return console.log(e);
+    }
   },
-  async confirmPhone(payload) {
-    return await this.$axios.$post('/v1/profile/phone/confirm', payload);
+  async confirmPhone({ commit }, payload) {
+    try {
+      const response = await this.$axios.$post('/v1/profile/phone/confirm', payload);
+      return response.result;
+    } catch (e) {
+      return console.log(e);
+    }
   },
 };

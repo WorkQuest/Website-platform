@@ -136,7 +136,16 @@ export default {
       this.locations = Object.keys(this.questsLocations).length > 0 ? this.questsLocations : {};
     },
   },
+  mounted() {
+    this.checkUserCoordinates();
+  },
   methods: {
+    checkUserCoordinates() {
+      if (this.userData.location && this.userData.location.latitude && this.userData.location.longitude) {
+        this.userLocation.lat = this.userData.location.latitude;
+        this.userLocation.lng = this.userData.location.longitude;
+      }
+    },
     coordinatesChange(item) {
       if (Object.keys(this.currentLocation).length > 0) {
         this.currentLocation = {};
@@ -193,7 +202,7 @@ export default {
 <style lang="scss" scoped>
 .map__container::v-deep {
   .GMap__Wrapper {
-    height: 205px;
+    height: 435px;
     display: block;
   }
   .ctm-field__left {
@@ -210,7 +219,7 @@ export default {
 }
 .gmap {
   &__top {
-    height: 205px;
+    height: 435px;
   }
   &__search {
     position: relative;
