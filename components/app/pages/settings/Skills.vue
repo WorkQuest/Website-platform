@@ -89,9 +89,29 @@ export default {
   &__save {
     display: flex;
     justify-content: flex-end;
+    margin: 0;
   }
   &__btn {
     max-width: 250px;
+    margin: 0;
+  }
+}
+
+@include _767 {
+  .skills {
+    &__add-info {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+@include _575 {
+  .skills {
+    &__save {
+      button {
+        max-width: none;
+        width: 100%;
+      }
+    }
   }
 }
 </style>

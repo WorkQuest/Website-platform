@@ -268,7 +268,6 @@ export default {
       display: flex;
       grid-gap: 20px;
       justify-content: space-between;
-      margin-top: 20px;
       &__skill-spec {
         width: 100%;
       }
@@ -343,7 +342,6 @@ export default {
   &__btn {
     &-add {
       text-align: center;
-      margin-top: 20px;
       width: 250px;
       background: #FFFFFF;
       color: #0083C7;
@@ -360,6 +358,49 @@ export default {
   &__error {
     color: #f36262;
     margin-bottom: 10px;
+  }
+}
+@include _767 {
+  .selector {
+    &__skills {
+      .block {
+        flex-direction: column;
+        &__specialization {
+          flex-direction: column;
+        }
+      }
+    }
+  }
+  .specialization {
+    &__btn {
+      &_remove {
+        margin-top: 0;
+      }
+    }
+  }
+  .skills {
+    &__add-info {
+      display: flex;
+      flex-wrap: nowrap;
+      grid-gap: 20px;
+      margin-top: 20px;
+    }
+  }
+}
+@include _575 {
+  .specialization {
+    &__btn {
+      &_remove {
+        width: 100%;
+      }
+    }
+  }
+  .skills {
+    &__btn {
+      &-add {
+        width: 100%;
+      }
+    }
   }
 }
 </style>
