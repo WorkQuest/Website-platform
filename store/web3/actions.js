@@ -462,13 +462,17 @@ export default {
       const web3 = new Web3(ethereum);
       const accountAddress = await getAccountAddress();
 
-      const _amount = new BigNumber(amount).shiftedBy(18);
+      let _amount = new BigNumber(amount).shiftedBy(18);
       const gasPrice = await web3.eth.getGasPrice();
       const gasEstimate = await web3.eth.estimateGas({
         from: accountAddress,
         to: address,
         value: _amount,
       });
+
+      const amountGas = new BigNumber(gasPrice).multipliedBy(gasEstimate).shiftedBy(-18).toNumber();
+      const amountGasPlusAmount = new BigNumber(amountGas).plus(amount).toNumber();
+      if (new BigNumber(balance).isLessThan(amountGasPlusAmount)) _amount = new BigNumber(amount).minus(amountGas).shiftedBy(18);
 
       return await web3.eth.sendTransaction({
         from: accountAddress,
