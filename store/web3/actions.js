@@ -24,8 +24,6 @@ import {
   getAccount,
   swapWithBridge,
   getStakingDataByType,
-  getStakingRewardTxFee, handleMetamaskStatus, fetchStakingActions, unsubscirbeStakingListeners, getChainIdByChain,
-  addAffiliat, calcReferral, claimReferral,
   handleMetamaskStatus,
   fetchActions,
   unsubscirbeListeners,
@@ -477,15 +475,5 @@ export default {
       }
     });
     return new BigNumber(balance).shiftedBy(-18).toString();
-  },
-
-  async addAffiliat() {
-    await addAffiliat();
-  },
-  async calcReferral() {
-    await calcReferral();
-  },
-  async claimReferral() {
-    await claimReferral();
   },
 };

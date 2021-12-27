@@ -30,7 +30,6 @@
     "ua-parser-js": "1.0.1",
     "crypto-js": "^4.1.1",
     "ethers": "^5.5.2",
-    "nuxt-dropzone": "^1.0.4",
     "nuxt-gmaps": "^1.2.10",
     "nuxt-i18n": "^6.13.12",
     "vee-validate": "^3.4.5",

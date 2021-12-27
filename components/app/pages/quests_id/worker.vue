@@ -119,7 +119,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
-import { InfoModeWorker, QuestStatuses, ChainsId } from '~/utils/enums';
+import { InfoModeWorker, QuestStatuses } from '~/utils/enums';
 
 export default {
   name: 'QuestIdWorker',
@@ -136,7 +136,6 @@ export default {
       userRole: 'user/getUserRole',
       questData: 'quests/getQuest',
       infoDataMode: 'quests/getInfoDataMode',
-      isConnected: 'web3/isConnected',
     }),
     QuestStatuses() {
       return QuestStatuses;
@@ -183,52 +182,6 @@ export default {
       await this.$router.push('/messages/1');
       this.SetLoader(false);
     },
-    async checkMetamaskStatus() {
-      if (!this.isConnected) {
-        if (typeof window.ethereum === 'undefined') {
-          localStorage.setItem('metamaskStatus', 'notInstalled');
-          this.ShowModal({
-            key: modals.status,
-            img: '~assets/img/ui/cardHasBeenAdded.svg',
-            title: 'Please install Metamask!',
-            subtitle: 'Please click install...',
-            button: 'Install',
-            type: 'installMetamask',
-          });
-        } else {
-          localStorage.setItem('metamaskStatus', 'installed');
-          // await this.$store.dispatch('web3/goToChain', { chain: Chains.ETHEREUM });
-          await this.$store.dispatch('web3/connect');
-        }
-      }
-    },
-    async test() {
-      await this.$store.dispatch('web3/connect');
-      await this.$store.dispatch('web3/addAffiliat'); // TODO: запрашивать данные с бэка для этой функции
-    },
-    /*
-    async acceptWorkOnQuest() {
-      await this.checkMetamaskStatus();
-      if (this.isConnected) {
-        this.SetLoader(true);
-        // const isRightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', ChainsId.ETH_TEST); // TODO: change to our net
-        // if (!isRightChain) {
-        //   await this.$store.dispatch('web3/goToChain', ChainsId.ETH_TEST);
-        // }
-        this.SetLoader(true);
-        // await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id);
-        await this.$store.dispatch('web3/addAffiliat'); // TODO: запрашивать данные с бэка для этой функции
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/questAgreed.svg'),
-          title: 'Quest info',
-          subtitle: 'Work on quest accepted!',
-        });
-        await this.$store.dispatch('quests/setInfoDataMode', 2);
-      }
-      this.SetLoader(false);
-    },
-     */
     async acceptWorkOnQuest() {
       this.SetLoader(true);
       await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id);
@@ -253,29 +206,6 @@ export default {
       await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.Created);
       this.SetLoader(false);
     },
-    /*
-    async completeWorkOnQuest() {
-      await this.$store.dispatch('web3/connect');
-      if (this.isConnected) {
-        this.SetLoader(true);
-        // const isRightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', ChainsId.ETH_TEST);
-        // if (!isRightChain) {
-        //   await this.$store.dispatch('web3/goToChain', ChainsId.ETH_TEST);
-        // }
-        await this.$store.dispatch('quests/completeWorkOnQuest', this.questData.id);
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/questAgreed.svg'),
-          title: 'Quest info',
-          subtitle: 'Work on quest completed! Please, wait your employer!',
-        });
-        await this.$store.dispatch('quests/setInfoDataMode', 4);
-      } else {
-        // TODO: modal "need to connect wallet"
-      }
-      this.SetLoader(false);
-    },
-     */
     async completeWorkOnQuest() {
       this.SetLoader(true);
       await this.$store.dispatch('quests/completeWorkOnQuest', this.questData.id);
