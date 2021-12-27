@@ -3,13 +3,19 @@
     <div class="settings__title">
       {{ $t('settings.settings') }}
     </div>
-    <div class="settings__body">
+    <ValidationObserver
+      ref="settings"
+      class="settings__body"
+      tag="div"
+    >
       <verification-card
         v-if="userRole === 'worker' && isShowInfo === true"
       />
       <profile
         :addresses="addresses"
         :local-user-data="localUserData"
+        :new-education="newEducation"
+        :new-work-exp="newWorkExp"
         @click="editUserData"
       />
       <skills
@@ -17,7 +23,7 @@
         @click="editUserData"
       />
       <advanced />
-    </div>
+    </ValidationObserver>
   </div>
 </template>
 
@@ -72,6 +78,16 @@ export default {
       },
       isShowInfo: true,
       addresses: [],
+      newEducation: {
+        from: '',
+        to: '',
+        place: '',
+      },
+      newWorkExp: {
+        from: '',
+        to: '',
+        place: '',
+      },
 
       specCount: 0,
       updatedPhone: null,
@@ -90,24 +106,6 @@ export default {
       accessToken: 'sumsub/getSumSubBackendToken',
       filters: 'quests/getFilters',
     }),
-    userSpecializations() {
-      return this.userData.userSpecializations || [];
-    },
-    distantWork() {
-      return [
-        this.$t('settings.distantWork.distantWork'),
-        this.$t('settings.distantWork.workInOffice'),
-        this.$t('settings.distantWork.bothVariant'),
-      ];
-    },
-    priority() {
-      return [
-        this.$t('priority.all'),
-        this.$t('priority.employee.low'),
-        this.$t('priority.employee.normal'),
-        this.$t('priority.employee.urgent'),
-      ];
-    },
   },
   async mounted() {
     this.SetLoader(true);
@@ -221,14 +219,18 @@ export default {
 
     // Обновление данных пользователя
     async editUserData() {
-      console.log('test', this.localUserData, this.skills);
-      /*       const validateKnowledge = await this.validateExperienceForm('observerAddNewKnowledge', this.newKnowledge);
-      const validateWorkExp = await this.validateExperienceForm('observerAddNewWorkExp', this.newWorkExp);
-      const validateSettingsForm = await this.$refs.observerCheckForm.validate();
-      if (validateKnowledge === false || validateWorkExp === false || validateSettingsForm === false) {
+      const validateEducation = await this.validateKnowledge('education', this.newEducation);
+      const validateWorkExp = await this.validateKnowledge('work', this.newWorkExp);
+      const validateSettings = await this.$refs.settings.validate();
+      if (
+        validateEducation === false
+        || validateWorkExp === false
+        || validateSettings === false) {
+        console.log('error');
         return;
       }
-
+      console.log('check');
+      /*
       const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
       const { secondMobileNumber } = this.localUserData.additionalInfo;
       await this.setAvatar();
@@ -238,10 +240,10 @@ export default {
       }
       if (!secondMobileNumber) this.showModalStatus('enterPhoneNumber'); */
     },
-    async validateExperienceForm(observerName, value) {
+    async validateKnowledge(observerName, value) {
       const isDirty = Object.keys(value).some((field) => value[field] !== '' && value[field] !== null);
       if (isDirty) {
-        return await this.$refs[observerName].validate();
+        return await this.$refs.settings.$children[1].$refs[observerName].validate();
       }
       return true;
     },

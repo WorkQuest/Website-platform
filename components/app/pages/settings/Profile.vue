@@ -153,6 +153,7 @@
             ref="education"
             tag="div"
             class="profile__validation"
+            disabled
           >
             <add-form
               :item="newEducation"
@@ -189,6 +190,7 @@
             ref="work"
             tag="div"
             class="profile__validation"
+            disabled
           >
             <add-form
               :item="newWorkExp"
@@ -279,20 +281,17 @@ export default {
       type: Array,
       default: () => {},
     },
+    newEducation: {
+      type: Object,
+      default: null,
+    },
+    newWorkExp: {
+      type: Object,
+      default: null,
+    },
   },
   data() {
     return {
-      newEducation: {
-        from: '',
-        to: '',
-        place: '',
-      },
-      newWorkExp: {
-        from: '',
-        to: '',
-        place: '',
-      },
-
       isSearchDDStatus: false,
     };
   },
