@@ -97,9 +97,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import {
-  QuestStatuses, InfoModeWorker, InfoModeEmployer,
-} from '~/utils/enums';
+import { InfoModeEmployer } from '~/utils/enums';
 import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
 import quests from '~/components/app/pages/common/quests';
@@ -149,9 +147,6 @@ export default {
     }),
     InfoModeEmployer() {
       return InfoModeEmployer;
-    },
-    InfoModeWorker() {
-      return InfoModeWorker;
     },
   },
   watch: {
