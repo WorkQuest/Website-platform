@@ -253,5 +253,20 @@ export default {
     grid-template-columns: 1fr;
   }
 }
+@include _575 {
+  .advanced {
+    &__option_blue {
+      flex-direction: column;
+      button {
+        min-width: none;
+        max-width: none;
+        width: 100%;
+      }
+    }
+    &__option-buttons {
+      width: 100%;
+    }
+  }
+}
 
 </style>
