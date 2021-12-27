@@ -249,6 +249,9 @@ export default {
     border-radius: 12px;
     font-weight: 500;
     min-height: 50px;
+    ::before {
+      color: $black600;
+    }
     &_copy {
       position: absolute;
       right: 10px;
