@@ -10,6 +10,7 @@
       <div class="verification__button">
         <base-btn
           mode="ver"
+          @click="goToSumSub"
         >
           {{ $t('settings.getVerification') }}
         </base-btn>
@@ -26,6 +27,11 @@
 <script>
 export default {
   name: 'VerificationCard',
+  methods: {
+    goToSumSub() {
+      this.$router.push('/sumsub');
+    },
+  },
 
 };
 </script>

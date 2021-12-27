@@ -10,8 +10,12 @@
       <profile
         :addresses="addresses"
         :local-user-data="localUserData"
+        @click="editUserData"
       />
-      <skills />
+      <skills
+        :skills="skills"
+        @click="editUserData"
+      />
       <advanced />
     </div>
   </div>
@@ -19,8 +23,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import ClickOutside from 'vue-click-outside';
-import { GeoCode } from 'geo-coder';
 import modals from '~/store/modals/modals';
 import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 import VerificationCard from '~/components/app/pages/settings/VerificationCard.vue';
@@ -33,21 +35,8 @@ export default {
   components: {
     VerificationCard, Profile, Skills, Advanced,
   },
-  directives: {
-    ClickOutside,
-  },
   data() {
     return {
-      isSearchDDStatus: true,
-      specCount: 0,
-      perHour: 0,
-      selectedSpecAndSkills: [],
-      priorityIndex: -1,
-      distantIndex: -1,
-      updatedPhone: null,
-      addresses: [],
-      isSms: false,
-      isShowInfo: true,
       localUserData: {
         avatarId: null,
         firstName: null,
@@ -66,7 +55,7 @@ export default {
           skills: [],
           educations: [],
           workExperiences: [],
-          CEO: null,
+          ceo: null,
           company: null,
           website: null,
         },
@@ -75,19 +64,21 @@ export default {
           latitude: 0,
         },
       },
+      skills: {
+        perHour: 0,
+        selectedSpecAndSkills: [],
+        priorityIndex: -1,
+        distantIndex: -1,
+      },
+      isShowInfo: true,
+      addresses: [],
+
+      specCount: 0,
+      updatedPhone: null,
+      isSms: false,
       avatarChange: {
         data: {},
         file: {},
-      },
-      newKnowledge: {
-        from: null,
-        to: null,
-        place: null,
-      },
-      newWorkExp: {
-        from: null,
-        to: null,
-        place: null,
       },
     };
   },
@@ -147,9 +138,9 @@ export default {
       additionalInfo: JSON.parse(JSON.stringify(this.userData.additionalInfo)),
       location: this.userData.location,
     };
-    this.priorityIndex = this.userData.priority;
-    this.distantIndex = this.distantIndexByWorkplace(this.userData.workplace);
-    await this.perHourData();
+    this.skills.skillspriorityIndex = this.userData.priority;
+    this.skills.skillsdistantIndex = this.distantIndexByWorkplace(this.userData.workplace);
+    this.skills.perHour = await this.perHourData();
     this.SetLoader(false);
   },
   methods: {
@@ -159,41 +150,13 @@ export default {
       if (workplace === 'both') return 2;
       return null;
     },
-    parseDistantWork(index) {
-      if (index === 0) return 'distant';
-      if (index === 1) return 'office';
-      if (index === 2) return 'both';
-      return null;
-    },
-    updateSelectedSkills(specAndSkills) {
-      this.selectedSpecAndSkills = specAndSkills;
-    },
-    async perHourData() {
-      this.perHour = await this.userData.wagePerHour;
+
+    perHourData() {
+      return this.userData.wagePerHour;
     },
     getApplicantStatus() {
       try {
         this.$store.dispatch('sumsub/applicantStatus', this.accessToken.userId);
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    goToSumSub() {
-      this.$router.push('/sumsub');
-    },
-    selectAddress(address) {
-      this.localUserData.additionalInfo.address = address.formatted;
-      this.addresses = [];
-    },
-    async getAddressInfo(address) {
-      let response = [];
-      const geoCode = new GeoCode('google', { key: process.env.GMAPKEY });
-      try {
-        if (address.length) {
-          response = await geoCode.geolookup(address);
-          this.addresses = JSON.parse(JSON.stringify(response));
-          this.coordinates = JSON.parse(JSON.stringify({ lng: response[0].lng, lat: response[0].lat }));
-        }
       } catch (e) {
         console.log(e);
       }
@@ -228,6 +191,7 @@ export default {
       }
     },
 
+    // Модалки
     modalsStatusTitle(modalMode) {
       const titles = {
         enterPhoneNumber: this.$t('settings.enterPhoneNumber'),
@@ -274,26 +238,11 @@ export default {
         subtitle: this.modalsStatusSubtitles(modalMode),
       });
     },
-    async changeRole() {
-      this.showModalKey('changeRoleWarning');
-    },
-    async checkPhoneNumber() {
-      if (this.updatedPhone.formatInternational) {
-        this.localUserData.additionalInfo.secondMobileNumber = this.updatedPhone.formatInternational.replace(/\s/g, '');
-      } if (!this.updatedPhone.formatInternational) {
-        this.localUserData.additionalInfo.secondMobileNumber = '';
-      }
-    },
-    async validateExperienceForm(observerName, value) {
-      const isDirty = Object.keys(value).some((field) => value[field] !== '' && value[field] !== null);
-      if (isDirty) {
-        return await this.$refs[observerName].validate();
-      }
-      return true;
-    },
 
+    // Обновление данных пользователя
     async editUserData() {
-      const validateKnowledge = await this.validateExperienceForm('observerAddNewKnowledge', this.newKnowledge);
+      console.log('test', this.localUserData, this.skills);
+      /*       const validateKnowledge = await this.validateExperienceForm('observerAddNewKnowledge', this.newKnowledge);
       const validateWorkExp = await this.validateExperienceForm('observerAddNewWorkExp', this.newWorkExp);
       const validateSettingsForm = await this.$refs.observerCheckForm.validate();
       if (validateKnowledge === false || validateWorkExp === false || validateSettingsForm === false) {
@@ -307,7 +256,14 @@ export default {
       if (secondMobileNumber) {
         await this.editProfile(checkAvatarID);
       }
-      if (!secondMobileNumber) this.showModalStatus('enterPhoneNumber');
+      if (!secondMobileNumber) this.showModalStatus('enterPhoneNumber'); */
+    },
+    async validateExperienceForm(observerName, value) {
+      const isDirty = Object.keys(value).some((field) => value[field] !== '' && value[field] !== null);
+      if (isDirty) {
+        return await this.$refs[observerName].validate();
+      }
+      return true;
     },
     async setAvatar() {
       const formData = new FormData();
@@ -323,6 +279,13 @@ export default {
         }
       } catch (error) {
         console.log(error);
+      }
+    },
+    async checkPhoneNumber() {
+      if (this.updatedPhone.formatInternational) {
+        this.localUserData.additionalInfo.secondMobileNumber = this.updatedPhone.formatInternational.replace(/\s/g, '');
+      } if (!this.updatedPhone.formatInternational) {
+        this.localUserData.additionalInfo.secondMobileNumber = '';
       }
     },
     async editProfile(checkAvatarID) {
@@ -368,11 +331,17 @@ export default {
           ...payload.additionalInfo,
           description: this.localUserData.additionalInfo.description,
           company: this.localUserData.additionalInfo.company,
-          CEO: this.localUserData.additionalInfo.CEO,
+          ceo: this.localUserData.additionalInfo.ceo,
           website: this.localUserData.additionalInfo.website,
         };
         await this.editProfileResponse('user/editEmployerData', payload);
       }
+    },
+    parseDistantWork(index) {
+      if (index === 0) return 'distant';
+      if (index === 1) return 'office';
+      if (index === 2) return 'both';
+      return null;
     },
     async editProfileResponse(action, payload) {
       try {

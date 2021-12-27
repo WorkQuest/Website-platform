@@ -27,8 +27,8 @@
             class="profile__status"
           />
           <base-field
-            v-model="userFirstName"
-            :placeholder="userFirstName || $t('settings.nameInput')"
+            v-model="localUserData.firstName"
+            :placeholder="localUserData.firstName || $t('settings.nameInput')"
             mode="icon"
             :name="$t('settings.firstName')"
           >
@@ -37,8 +37,8 @@
             </template>
           </base-field>
           <base-field
-            v-model="userLastName"
-            :placeholder="$t('settings.lastNameInput')"
+            v-model="localUserData.lastName"
+            :placeholder="localUserData.lastName || $t('settings.lastNameInput')"
             mode="icon"
             :name="$t('settings.lastName')"
           >
@@ -47,7 +47,7 @@
             </template>
           </base-field>
           <vue-phone-number-input
-            v-model="userSecondMobileNumber"
+            v-model="localUserData.additionalInfo.secondMobileNumber"
             class="profile__phone-input"
             error-color="#EB5757"
             clearable
@@ -57,15 +57,15 @@
             @update="updatedPhone = $event"
           />
           <base-field
-            v-model="userAddress"
+            v-model="localUserData.additionalInfo.address"
             v-click-outside="hideSearchDD"
-            :placeholder="userAddress || $t('settings.addressInput')"
+            :placeholder="localUserData.additionalInfo.address || $t('settings.addressInput')"
             rules="max:100"
             mode="icon"
             :selector="isSearchDDStatus"
             :name="$t('settings.address')"
             @focus="isSearchDDStatus = true"
-            @selector="getAddressInfo(userAddress)"
+            @selector="getAddressInfo(localUserData.additionalInfo.address)"
           >
             <template v-slot:left>
               <span class="icon icon-location" />
@@ -94,8 +94,8 @@
           class="profile__company"
         >
           <base-field
-            v-model="userCompany"
-            :placeholder="company || $t('settings.company')"
+            v-model="localUserData.additionalInfo.company"
+            :placeholder="localUserData.additionalInfo.company || $t('settings.company')"
             mode="icon"
           >
             <template v-slot:left>
@@ -103,8 +103,8 @@
             </template>
           </base-field>
           <base-field
-            v-model="userCEO"
-            :placeholder="userCEO || $t('settings.ceo')"
+            v-model="localUserData.additionalInfo.ceo"
+            :placeholder="localUserData.additionalInfo.ceo || $t('settings.ceo')"
             mode="icon"
           >
             <template v-slot:left>
@@ -112,8 +112,8 @@
             </template>
           </base-field>
           <base-field
-            v-model="userWebsite"
-            :placeholder="userWebsite || $t('settings.website')"
+            v-model="localUserData.additionalInfo.website"
+            :placeholder="localUserData.additionalInfo.website || $t('settings.website')"
             mode="icon"
             rules="max:100"
           >
@@ -124,9 +124,9 @@
         </div>
         <textarea
           id="textarea"
-          v-model="userDesc"
+          v-model="localUserData.additionalInfo.description"
           class="profile__description"
-          :placeholder="userDesc || $t('settings.userDesc')"
+          :placeholder="localUserData.additionalInfo.description || $t('settings.userDesc')"
         />
       </div>
       <div class="profile__knowledge">
@@ -138,15 +138,15 @@
             {{ $t("settings.educations") }}
           </div>
           <div
-            v-if="userEducation.length !== 0"
+            v-if="localUserData.additionalInfo.educations.length !== 0"
             class="profile__knowledge-added"
           >
             <add-form
-              v-for="(education, index) in userEducation"
+              v-for="(education, index) in localUserData.additionalInfo.educations"
               :key="education.id"
               :item="education"
               :is-adding="false"
-              @click="deleteKnowledge(userEducation, index)"
+              @click="deleteKnowledge(localUserData.additionalInfo.educations, index)"
             />
           </div>
           <ValidationObserver
@@ -158,7 +158,7 @@
               :item="newEducation"
               :is-adding="true"
               :validation-mode="'passive'"
-              @click="addNewKnowledge(userEducation, 'newEducation', 'education', 'education')"
+              @click="addNewKnowledge(localUserData.additionalInfo.educations, 'newEducation', 'education', 'education')"
               @blur="clearError(newEducation, 'education')"
             />
           </ValidationObserver>
@@ -174,15 +174,15 @@
             {{ $t("settings.workExp") }}
           </div>
           <div
-            v-if="userWorkExp.length !== 0"
+            v-if="localUserData.additionalInfo.workExperiences.length !== 0"
             class="profile__knowledge-added"
           >
             <add-form
-              v-for="(work, index) in userWorkExp"
+              v-for="(work, index) in localUserData.additionalInfo.workExperiences"
               :key="work.id"
               :item="work"
               :is-adding="false"
-              @click="deleteKnowledge(userWorkExp, index)"
+              @click="deleteKnowledge(localUserData.additionalInfo.workExperiences, index)"
             />
           </div>
           <ValidationObserver
@@ -193,7 +193,7 @@
             <add-form
               :item="newWorkExp"
               :is-adding="true"
-              @click="addNewKnowledge(userWorkExp, 'newWorkExp', 'work', 'work')"
+              @click="addNewKnowledge(localUserData.additionalInfo.workExperiences, 'newWorkExp', 'work', 'work')"
               @blur="clearError(newWorkExp, 'work')"
             />
           </ValidationObserver>
@@ -201,8 +201,8 @@
       </div>
       <div class="profile__socials">
         <base-field
-          v-model="userInstagram"
-          :placeholder="userInstagram || $t('settings.instagramUsername')"
+          v-model="localUserData.additionalInfo.socialNetwork.instagram"
+          :placeholder="localUserData.additionalInfo.socialNetwork.instagram || $t('settings.instagramUsername')"
           mode="icon"
           :name="$t('settings.instagram')"
         >
@@ -211,8 +211,8 @@
           </template>
         </base-field>
         <base-field
-          v-model="userTwitter"
-          :placeholder="userTwitter || $t('settings.twitterUsername')"
+          v-model="localUserData.additionalInfo.socialNetwork.twitter"
+          :placeholder="localUserData.additionalInfo.socialNetwork.twitter || $t('settings.twitterUsername')"
           mode="icon"
           :name="$t('settings.twitter')"
         >
@@ -221,8 +221,8 @@
           </template>
         </base-field>
         <base-field
-          v-model="userLinkedin"
-          :placeholder="userLinkedin || $t('settings.linkedInUsername')"
+          v-model="localUserData.additionalInfo.socialNetwork.linkedin"
+          :placeholder="localUserData.additionalInfo.socialNetwork.linkedin || $t('settings.linkedInUsername')"
           mode="icon"
           :name="$t('settings.linkedin')"
         >
@@ -231,8 +231,8 @@
           </template>
         </base-field>
         <base-field
-          v-model="userFacebook"
-          :placeholder="userFacebook || $t('settings.facebookUsername')"
+          v-model="localUserData.additionalInfo.socialNetwork.facebook"
+          :placeholder="localUserData.additionalInfo.socialNetwork.facebook || $t('settings.facebookUsername')"
           mode="icon"
           :name="$t('settings.facebook')"
         >
@@ -245,7 +245,10 @@
         v-if="true"
         class="profile__save"
       >
-        <base-btn class="profile__btn">
+        <base-btn
+          class="profile__btn"
+          @click="$emit('click')"
+        >
           {{ $t("settings.save") }}
         </base-btn>
       </div>
@@ -267,23 +270,18 @@ export default {
   directives: {
     ClickOutside,
   },
+  props: {
+    localUserData: {
+      type: Object,
+      default: null,
+    },
+    addresses: {
+      type: Array,
+      default: () => {},
+    },
+  },
   data() {
     return {
-      userFirstName: '',
-      userLastName: '',
-      userSecondMobileNumber: '',
-      userAddress: '',
-      userCompany: '',
-      userCEO: '',
-      userWebsite: '',
-      userDesc: '',
-      userInstagram: '',
-      userTwitter: '',
-      userLinkedin: '',
-      userFacebook: '',
-      userEducation: [],
-      userWorkExp: [],
-
       newEducation: {
         from: '',
         to: '',
@@ -295,7 +293,6 @@ export default {
         place: '',
       },
 
-      addresses: [],
       isSearchDDStatus: false,
     };
   },
@@ -303,42 +300,12 @@ export default {
     ...mapGetters({
       imageData: 'user/getImageData',
       userRole: 'user/getUserRole',
-      firstName: 'user/getFirstName',
-      lastName: 'user/getLastName',
-      secondMobileNumber: 'user/getUserSecondMobileNumber',
-      address: 'user/getUserAddress',
-      company: 'user/getUserCompany',
-      ceo: 'user/getUserCEO',
-      website: 'user/getUserWebsite',
-      desc: 'user/getUserDesc',
-      instagram: 'user/getUserInstagram',
-      twitter: 'user/getUserTwitter',
-      linkedin: 'user/getUserLinkedin',
-      facebook: 'user/getUserFacebook',
-      educations: 'user/getUserEducations',
-      workExp: 'user/getUserWorkExp',
     }),
   },
 
-  mounted() {
-    this.userFirstName = this.firstName || '';
-    this.userLastName = this.lastName || '';
-    this.userSecondMobileNumber = this.secondMobileNumber || '';
-    this.userAddress = this.address || '';
-    this.userCompany = this.company || '';
-    this.userCEO = this.ceo || '';
-    this.userWebsite = this.website || '';
-    this.userDesc = this.desc || '';
-    this.userInstagram = this.instagram || '';
-    this.userTwitter = this.twitter || '';
-    this.userLinkedin = this.linkedin || '';
-    this.userFacebook = this.facebook || '';
-    this.userEducation = [...this.educations] || [];
-    this.userWorkExp = [...this.workExp] || [];
-  },
   methods: {
     selectAddress(address) {
-      this.userAddress = address.formatted;
+      this.localUserData.additionalInfo.address = address.formatted;
       this.addresses = [];
     },
     async getAddressInfo(address) {

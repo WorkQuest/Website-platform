@@ -17,7 +17,7 @@
         />
         <div class="skills__add-info">
           <base-dd
-            v-model="priorityIndex"
+            v-model="skills.priorityIndex"
             class="skills__drop-down"
             type="gray"
             :placeholder="$t('priority.title')"
@@ -26,7 +26,7 @@
             :label="$t('settings.priority')"
           />
           <base-dd
-            v-model="distantIndex"
+            v-model="skills.distantIndex"
             class="skills__drop-down"
             type="gray"
             :placeholder="$t('settings.distantWork.select')"
@@ -35,16 +35,19 @@
             :label="$t('settings.distantWork.title')"
           />
           <base-field
-            v-model="perHour"
+            v-model="skills.perHour"
             class="skills__cost"
-            :placeholder="perHour || $t('priority.title')"
+            :placeholder="skills.perHour || $t('priority.title')"
             :label="$t('settings.costPerHour')"
             :name="$t('settings.costPerHour')"
             type="gray"
           />
         </div>
         <div class="skills__save">
-          <base-btn class="skills__btn">
+          <base-btn
+            class="skills__btn"
+            @click="$emit('click')"
+          >
             {{ $t("settings.save") }}
           </base-btn>
         </div>
@@ -54,14 +57,43 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Skills',
-  data() {
-    return {
-      perHour: 0,
-      priorityIndex: -1,
-      distantIndex: -1,
-    };
+  props: {
+    skills: {
+      type: Object,
+      default: null,
+    },
+  },
+  computed: {
+    ...mapGetters({
+      userData: 'user/getUserData',
+    }),
+    userSpecializations() {
+      return this.userData.userSpecializations || [];
+    },
+    distantWork() {
+      return [
+        this.$t('settings.distantWork.distantWork'),
+        this.$t('settings.distantWork.workInOffice'),
+        this.$t('settings.distantWork.bothVariant'),
+      ];
+    },
+    priority() {
+      return [
+        this.$t('priority.all'),
+        this.$t('priority.employee.low'),
+        this.$t('priority.employee.normal'),
+        this.$t('priority.employee.urgent'),
+      ];
+    },
+  },
+  methods: {
+    updateSelectedSkills(specAndSkills) {
+      this.skills.selectedSpecAndSkills = specAndSkills;
+    },
   },
 };
 </script>
