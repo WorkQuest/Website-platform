@@ -10,7 +10,7 @@
       </div>
       <div class="banner__left">
         <div class="banner__title">
-          Blockchain is work
+          Testnet launched successfully
         </div>
         <div class="banner__subtitle">
           Fill the fields and check it yourself
@@ -31,7 +31,7 @@
                 class="content__field"
                 type="number"
                 placeholder="3500"
-                rules="required|decimal|decimalPlaces:18"
+                rules="required|decimal|decimalPlaces:18|min_value:0.001"
                 :name="$t('modals.amount')"
               >
                 <template
@@ -81,14 +81,19 @@
     </div>
     <div class="blockchain__description description">
       <div class="description__title">
-        How i can test it?
+        How can i test it?
       </div>
       <ul class="description__content">
-        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget fermentum elit lectus orci diam id nulla. Sed sit gravida ornare praesent diam mauris, egestas fringilla felis. Dolor ipsum ipsum est mauris proin a, lectus. Pulvinar et sit integer fames tellus. Semper ut nibh at sit diam neque. Augue aliquam, nec erat a diam vel, sed non gravida. Bibendum neque, urna vel scelerisque diam.</li>
-        <li>Suspendisse morbi nisl est augue eget cras amet. Donec orci eget maecenas risus tempor elit ultricies. Pretium consectetur gravida rhoncus nulla et et. Eget egestas ut netus suspendisse porttitor. Lacus tellus sed enim quis. Porttitor dolor elementum eget ornare id convallis mattis. Tincidunt sit praesent imperdiet velit dui in dictum. Vitae lectus sed nec tincidunt nec vitae. Massa semper rutrum consectetur eu ultrices ac id auctor sit. Lobortis mi pharetra, sit rutrum diam tristique interdum sed eu. Proin sagittis risus, enim commodo ut. Pellentesque libero eget eu, sed. Ultricies sed enim, eget malesuada massa.</li>
-        <li>Viverra adipiscing molestie euismod enim, eget. Sem felis, non venenatis, turpis et adipiscing. Senectus aliquam neque gravida at magnis lacus, vestibulum. Velit ut sem nibh vitae. Tincidunt venenatis bibendum rhoncus quis bibendum purus. Arcu ante donec quisque enim, sit nunc tincidunt quis. Scelerisque gravida ut tellus etiam mauris. Iaculis eu risus mattis risus felis, non nibh leo. Arcu accumsan posuere dolor in. Ullamcorper eleifend aliquet arcu, neque. Sit commodo amet tempus sed orci, accumsan, molestie. Non felis dolor nunc tellus. Pretium at risus faucibus aliquet. Pellentesque ut nunc, amet amet, ac sit ut. Urna nisl aliquet felis, ipsum morbi porttitor.</li>
-        <li>Egestas eget ut sed blandit volutpat diam. Praesent sed nunc ut tincidunt lacus leo, sed turpis lectus. Egestas amet morbi nec eu aenean blandit. Dictum volutpat felis elit egestas. Faucibus dis tellus amet, arcu, aliquam. Dolor sit lacus enim cras. Blandit diam a nisl, lectus dapibus quis. Consectetur enim ullamcorper ac quam suspendisse vulputate in. Amet at aliquam vitae risus. Parturient et rhoncus in quis urna. Congue neque, facilisis velit ullamcorper senectus.</li>
-        <li>Pulvinar faucibus eu quisque tincidunt egestas tristique tempor elit. Quis sit sit ac iaculis habitasse. Neque sit elit et libero iaculis ante tincidunt. Id consequat enim ut augue varius aliquet maecenas. Auctor sit cras turpis nec sollicitudin nam placerat ultrices integer. Morbi aliquam sit nisi, eleifend quam integer nulla elementum amet. Mattis ultricies adipiscing massa tortor risus urna. Lectus ipsum lorem facilisi ligula sapien, at id ultrices id. Porttitor eleifend sed luctus volutpat lacus, a tortor eget egestas. Purus at integer elit facilisis sit eget volutpat. Nascetur quis habitasse sit cursus porta egestas nibh consequat. Blandit maecenas sit lacinia ut nunc. Porttitor viverra dolor, pretium sed vestibulum faucibus et rhoncus. At facilisi pharetra elementum dui donec maecenas in magna.</li>
+        <li>
+          Add the WorkQuest Dev network to Metamask:
+          <p>Network Name: <b>WorkQuest DEV</b></p>
+          <p>RPC URL: <b>https://dev-node-nyc3.workquest.co</b></p>
+          <p>Chain ID: <b>20211224</b></p>
+          <p>Currency Symbol: <b>WUSD</b></p>
+        </li>
+        <li>Fill in the form to receive test $WUSD tokens.</li>
+        <li>Connect your wallet and conduct a transaction on this page.</li>
+        <li>Sending transactions directly from Metamask is available.</li>
       </ul>
     </div>
   </div>
@@ -118,6 +123,15 @@ export default {
   methods: {
     async connectToMetamask() {
       this.SetLoader(true);
+      if (await this.$store.dispatch('web3/checkIsMobileMetamaskNeed')) {
+        this.ShowModal({
+          key: modals.status,
+          title: 'Please install Metamask!',
+          subtitle: 'Please open site from Metamask app',
+        });
+        this.SetLoader(false);
+        return;
+      }
       if (!this.isConnected) {
         await this.$store.dispatch('web3/goToChain', { chain: 'WUSD' });
         await this.$store.dispatch('web3/connectToMetaMask');
@@ -153,9 +167,6 @@ export default {
     },
     async maxBalance() {
       this.maxAmount = Number(await this.$store.dispatch('web3/showBalanceOnDemo'));
-      if (this.maxAmount <= 0.001) {
-        this.maxAmount = 0;
-      }
       this.maxAmount = +this.maxAmount.toFixed(3);
       this.amount = this.maxAmount;
     },
@@ -250,6 +261,7 @@ export default {
       list-style: disc;
       color: #4C5767;
       padding-left: 15px;
+      font-size: 18px;
     }
   }
   .max__button {
