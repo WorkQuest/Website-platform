@@ -8,4 +8,5 @@ export default {
   getGroupChatUsers: (state) => state.groupChatUsers,
   getChatMembers: (state) => (state.messages.chat?.members || []),
   isChatOpened: (state) => state.isChatOpened,
+  hasUnreadMessage: (state) => state.chats.list.some(((chat) => chat.isUnread)),
 };

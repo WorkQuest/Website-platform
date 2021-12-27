@@ -142,7 +142,7 @@ export default {
   max-height: 800px;
   height: 100vh;
   max-width: 1200px;
-  width: 100vw;
+  width: 100%;
   &__btns {
     position: absolute;
     left: 25px;
