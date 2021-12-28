@@ -218,7 +218,7 @@
     "email": "电子邮件",
     "password": "密码",
     "confirmPassword": "再次输入密码",
-    "create": "创建帐户",
+    "create": "创建帐户"
   },
   "createWallet": {
     "savePhrase": "Save your secret phrase",

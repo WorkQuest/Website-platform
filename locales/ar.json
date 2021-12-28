@@ -218,7 +218,7 @@
     "email": "البريد الإلكتروني",
     "password": "كلمة المرور",
     "confirmPassword": "تكرار كلمة المرور",
-    "create": "إنشاء حساب",
+    "create": "إنشاء حساب"
   },
   "createWallet": {
     "savePhrase": "Save your secret phrase",

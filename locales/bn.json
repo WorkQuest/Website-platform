@@ -218,7 +218,7 @@
     "email": "ইমেইল",
     "password": "পাসওয়ার্ড",
     "confirmPassword": "পুনরায় পাসওয়ার্ড",
-    "create": "অ্যাকাউন্ট তৈরি করুন",
+    "create": "অ্যাকাউন্ট তৈরি করুন"
   },
   "createWallet": {
     "savePhrase": "Save your secret phrase",

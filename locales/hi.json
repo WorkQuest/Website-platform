@@ -218,7 +218,7 @@
     "email": "ईमेल",
     "password": "पासवर्ड",
     "confirmPassword": "पासवर्ड दोहराएं",
-    "create": "अकाउंट बनाएं",
+    "create": "अकाउंट बनाएं"
   },
   "createWallet": {
     "savePhrase": "Save your secret phrase",
