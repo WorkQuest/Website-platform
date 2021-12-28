@@ -36,7 +36,8 @@
           />
           <base-field
             v-model="profile.firstName"
-            :placeholder="profile.firstName || $t('settings.nameInput')"
+            rules="required"
+            :placeholder="$t('settings.nameInput')"
             mode="icon"
             :name="$t('settings.firstName')"
           >
@@ -46,7 +47,8 @@
           </base-field>
           <base-field
             v-model="profile.lastName"
-            :placeholder="profile.lastName || $t('settings.lastNameInput')"
+            rules="required"
+            :placeholder="$t('settings.lastNameInput')"
             mode="icon"
             :name="$t('settings.lastName')"
           >
@@ -57,8 +59,8 @@
           <base-field
             v-model="profile.additionalInfo.address"
             v-click-outside="hideSearchDD"
-            :placeholder="profile.additionalInfo.address || $t('settings.addressInput')"
-            rules="max:100"
+            :placeholder="$t('settings.addressInput')"
+            rules="max:100||required"
             mode="icon"
             :selector="isSearchDDStatus"
             :name="$t('settings.address')"
@@ -88,24 +90,15 @@
           </base-field>
           <base-field
             v-model="profile.email"
-            :placeholder="profile.email || $t('placeholders.mail')"
+            :name="this.$t('placeholders.email')"
+            rules="max:100||email"
+            :placeholder="$t('placeholders.mail')"
             mode="icon"
-            :name="$t('settings.firstName')"
           >
             <template v-slot:left>
               <span class="icon icon-mail" />
             </template>
           </base-field>
-          <vue-phone-number-input
-            v-model="profile.firstPhone"
-            class="profile__phone-input"
-            error-color="#EB5757"
-            clearable
-            show-code-on-list
-            required
-            size="lg"
-            @update="updateFirstPhone($event)"
-          />
           <vue-phone-number-input
             v-model="profile.additionalInfo.secondMobileNumber"
             class="profile__phone-input"
@@ -116,24 +109,36 @@
             size="lg"
             @update="updateSecondPhone($event)"
           />
+          <vue-phone-number-input
+            v-if="userRole === 'employer'"
+            v-model="profile.firstPhone"
+            class="profile__phone-input"
+            error-color="#EB5757"
+            size="lg"
+            disabled
+          />
         </div>
         <div
-          v-if="true"
+          v-if="userRole === 'employer'"
           class="profile__company"
         >
           <base-field
             v-model="profile.additionalInfo.company"
-            :placeholder="profile.additionalInfo.company || $t('settings.company')"
+            rules="max:100"
+            :placeholder="$t('settings.company')"
             mode="icon"
+            :name="$t('settings.companyName')"
           >
             <template v-slot:left>
               <span class="icon icon-Case" />
             </template>
           </base-field>
           <base-field
-            v-model="profile.additionalInfo.ceo"
-            :placeholder="profile.additionalInfo.ceo || $t('settings.ceo')"
+            v-model="profile.additionalInfo.CEO"
+            rules="max:100"
+            :placeholder="$t('settings.ceo')"
             mode="icon"
+            :name="$t('settings.ceoName')"
           >
             <template v-slot:left>
               <span class="icon icon-id_card" />
@@ -141,7 +146,8 @@
           </base-field>
           <base-field
             v-model="profile.additionalInfo.website"
-            :placeholder="profile.additionalInfo.website || $t('settings.website')"
+            :name="$t('settings.websiteName')"
+            :placeholder="$t('settings.website')"
             mode="icon"
             rules="max:100"
           >
@@ -150,18 +156,29 @@
             </template>
           </base-field>
         </div>
-        <textarea
-          id="textarea"
-          v-model="profile.additionalInfo.description"
+        <ValidationProvider
+          v-slot="{ errors }"
+          tag="div"
           class="profile__description"
-          :placeholder="profile.additionalInfo.description || $t('settings.userDesc')"
-        />
-      </div>
-      <div class="profile__knowledge">
-        <div
-          v-if="true"
-          class="profile__knowledge-container"
+          rules="max:100||required"
         >
+          <textarea
+            id="textarea"
+            v-model="profile.additionalInfo.description"
+            :placeholder="$t('settings.userDesc')"
+            class="profile__description-textarea"
+            :class="{ 'profile__description-textarea_error': errors[0] }"
+          />
+          <span class="profile__description-error">
+            {{ errors[0] }}
+          </span>
+        </ValidationProvider>
+      </div>
+      <div
+        v-if="userRole === 'worker'"
+        class="profile__knowledge"
+      >
+        <div class="profile__knowledge-container">
           <div class="profile__knowledge-title">
             {{ $t("settings.educations") }}
           </div>
@@ -192,14 +209,8 @@
             />
           </ValidationObserver>
         </div>
-        <div
-          v-if="true"
-          class="profile__knowledge-container"
-        >
-          <div
-            v-if="true"
-            class="profile__knowledge-title"
-          >
+        <div class="profile__knowledge-container">
+          <div class="profile__knowledge-title">
             {{ $t("settings.workExp") }}
           </div>
           <div
@@ -232,7 +243,8 @@
       <div class="profile__socials">
         <base-field
           v-model="profile.additionalInfo.socialNetwork.instagram"
-          :placeholder="profile.additionalInfo.socialNetwork.instagram || $t('settings.instagramUsername')"
+          rules="max:50"
+          :placeholder="$t('settings.instagramUsername')"
           mode="icon"
           :name="$t('settings.instagram')"
         >
@@ -242,7 +254,8 @@
         </base-field>
         <base-field
           v-model="profile.additionalInfo.socialNetwork.twitter"
-          :placeholder="profile.additionalInfo.socialNetwork.twitter || $t('settings.twitterUsername')"
+          rules="max:50"
+          :placeholder="$t('settings.twitterUsername')"
           mode="icon"
           :name="$t('settings.twitter')"
         >
@@ -252,7 +265,8 @@
         </base-field>
         <base-field
           v-model="profile.additionalInfo.socialNetwork.linkedin"
-          :placeholder="profile.additionalInfo.socialNetwork.linkedin || $t('settings.linkedInUsername')"
+          rules="max:50"
+          :placeholder="$t('settings.linkedInUsername')"
           mode="icon"
           :name="$t('settings.linkedin')"
         >
@@ -262,7 +276,8 @@
         </base-field>
         <base-field
           v-model="profile.additionalInfo.socialNetwork.facebook"
-          :placeholder="profile.additionalInfo.socialNetwork.facebook || $t('settings.facebookUsername')"
+          rules="max:50"
+          :placeholder="$t('settings.facebookUsername')"
           mode="icon"
           :name="$t('settings.facebook')"
         >
@@ -272,7 +287,7 @@
         </base-field>
       </div>
       <div
-        v-if="true"
+        v-if="userRole === 'employer'"
         class="profile__save"
       >
         <base-btn
@@ -324,7 +339,6 @@ export default {
   data() {
     return {
       isSearchDDStatus: false,
-      firstPhone: null,
       secondPhone: null,
     };
   },
@@ -373,10 +387,6 @@ export default {
     },
 
     // UPDATE PHONE NUMBERS
-    updateFirstPhone(value) {
-      this.firstPhone = value;
-      this.$emit('updateFirstPhone', this.firstPhone);
-    },
     updateSecondPhone(value) {
       this.secondPhone = value;
       this.$emit('updateSecondPhone', this.secondPhone);
@@ -524,17 +534,26 @@ export default {
     display: grid;
     grid-column-start: 1;
     grid-column-end: 3;
+    &::placeholder {
+      color: $black200;
+    }
+  }
+  &__description-textarea {
+    background-color: $black0;
+    resize: none;
     padding: 10px 10px 0 10px;
     margin: 0;
     border-radius: 6px;
     height: 114px;
-    width: 100%;
-    border: 0;
-    background-color: $black0;
-    resize: none;
-    &::placeholder {
-      color: $black200;
+    border: 1px solid transparent;
+    &_error {
+      border: 1px solid red
     }
+  }
+  &__description-error {
+    color: #bb5151;
+    font-size: 12px;
+    min-height: 23px;
   }
   &__knowledge-title {
     margin-bottom: 15px;

@@ -36,6 +36,7 @@
           />
           <base-field
             v-model="skills.perHour"
+            rules="max:7"
             class="skills__cost"
             :placeholder="skills.perHour || $t('priority.title')"
             :label="$t('settings.costPerHour')"

@@ -37,7 +37,7 @@
       class="knowledge__data knowledge__data_big"
       :placeholder="$t('settings.education.educationalInstitution')"
       :validation-mode="validationMode"
-      :rules="`required`"
+      rules="required||max:100"
       @blur="$emit('blur')"
     />
     <base-btn

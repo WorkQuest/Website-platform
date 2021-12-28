@@ -8,9 +8,7 @@
       class="settings__body"
       tag="div"
     >
-      <verification-card
-        v-if="userRole === 'worker' && isShowInfo === true"
-      />
+      <verification-card v-if="userRole === 'worker' && isShowInfo === true" />
       <profile
         :addresses="addresses"
         :profile="profile"
@@ -18,11 +16,11 @@
         :new-work-exp="newWorkExp"
         :avatar-change="avatarChange"
         @click="editUserData"
-        @updateFirstPhone="updateFirstPhone($event)"
         @updateSecondPhone="updateSecondPhone($event)"
         @showModalStatus="showModalStatus"
       />
       <skills
+        v-if="userRole === 'worker'"
         :skills="skills"
         @click="editUserData"
       />
@@ -66,7 +64,7 @@ export default {
           skills: [],
           educations: [],
           workExperiences: [],
-          ceo: null,
+          CEO: null,
           company: null,
           website: null,
         },
@@ -119,7 +117,7 @@ export default {
       firstName: this.userData.firstName,
       lastName: this.userData.lastName,
       email: this.userData.email,
-      firstPhone: this.userData.tempPhone,
+      firstPhone: this.userData.tempPhone || this.userData.phone,
       additionalInfo: JSON.parse(JSON.stringify(this.userData.additionalInfo)),
       location: this.userData.location,
     };
@@ -195,9 +193,6 @@ export default {
     },
 
     // UPDATE PHONE
-    updateFirstPhone(value) {
-      this.updatedFirstPhone = value;
-    },
     updateSecondPhone(value) {
       this.updatedSecondPhone = value;
     },
@@ -264,7 +259,6 @@ export default {
         avatarId: checkAvatarID,
         firstName: this.profile.firstName,
         lastName: this.profile.lastName,
-        tempPhone: this.profile.firstPhone || null,
         location: {
           longitude: this.coordinates ? this.coordinates.lng : this.profile.location?.longitude || 0,
           latitude: this.coordinates ? this.coordinates.lat : this.profile.location?.latitude || 0,
@@ -298,11 +292,13 @@ export default {
       } if (this.userRole === 'employer') {
         payload.additionalInfo = {
           ...payload.additionalInfo,
-          description: this.profile.additionalInfo.description,
-          company: this.profile.additionalInfo.company,
-          ceo: this.profile.additionalInfo.ceo,
-          website: this.profile.additionalInfo.website,
+          description: this.profile.additionalInfo.description || null,
+          company: this.profile.additionalInfo.company || null,
+          CEO: this.profile.additionalInfo.CEO || null,
+          website: this.profile.additionalInfo.website || null,
         };
+        console.log(this.profile.additionalInfo.CEO);
+        console.log(payload.additionalInfo);
         await this.editProfileResponse('user/editEmployerData', payload);
       }
     },
