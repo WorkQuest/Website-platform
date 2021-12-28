@@ -157,7 +157,7 @@ export default {
     max-width: 800px !important;
   }
   &__content {
-    padding: 28px 28px 0 28px;
+    padding: 28px 28px 0 28px !important;
   }
   &_center {
     align-items: center;
