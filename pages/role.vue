@@ -8,7 +8,7 @@
         <template v-slot:left>
           <span class="icon-chevron_big_left" />
         </template>
-        {{ $t('signUp.back') }}
+        {{ $t('meta.back') }}
       </base-btn>
     </div>
     <div class="role__title">

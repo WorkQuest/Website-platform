@@ -62,7 +62,9 @@
     "required": "Kolom {_field_} wajib diisi",
     "size": "Ukuran kolom {_field_} harus kurang dari {size} KB",
     "decimal": "Kolom {_field_} hanya boleh berisi nilai desimal saja",
-    "decimalPlaces": "{_field_} ??? {places}"
+    "decimalPlaces": "{_field_} ??? {places}",
+    "is": "The values do not match",
+    "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
     "firstName": "Nama depan",
@@ -217,7 +219,19 @@
     "password": "Kata sandi",
     "confirmPassword": "Masukkan kembali kata sandi",
     "create": "Buat akun",
-    "back": "kembali"
+
+  },
+  "createWallet": {
+    "savePhrase": "Save your secret phrase",
+    "keptPhrase": "I have kept a secret phrase",
+    "confirmSecretPhrase": "Confirm secret phrase",
+    "typeSecret": "Type secret word #{a}",
+    "secret": "Secret word #{a}",
+    "create": "Create wallet",
+    "importWallet": "Import wallet",
+    "createOrImport": "Create or import secret wallet",
+    "typeSecretPhrase": "Type secret phrase",
+    "secretPhrase": "Secret phrase"
   },
   "forgot": {
     "title": "Lupa kata sandi?",

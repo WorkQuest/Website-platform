@@ -91,3 +91,17 @@ export const questChatStatus = {
   Active: 0,
   Closed: 1,
 };
+
+export const WalletState = {
+  SignPage: 1,
+  SaveMnemonic: 2,
+  ConfirmMnemonic: 3,
+  ImportOrCreate: 4,
+  ImportMnemonic: 5,
+};
+
+export const UserStatuses = {
+  Unconfirmed: 0,
+  Confirmed: 1,
+  NeedSetRole: 2,
+};
