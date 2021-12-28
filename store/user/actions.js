@@ -95,11 +95,7 @@ export default {
       return error();
     }
   },
-  // TODO: fix it
   async logout({ commit }) {
-    commit('logOut');
-  },
-  async logOut({ commit }) {
     commit('logOut');
   },
   async confirm({ commit }, payload) {
