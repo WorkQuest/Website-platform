@@ -12,6 +12,7 @@
           class="profile__avatar"
         >
           <img
+            id="userAvatar"
             :src="imageData ? imageData : require('~/assets/img/app/avatar_empty.png')"
             alt="avatar-image"
             class="profile__avatar-img"
@@ -53,16 +54,6 @@
               <span class="icon icon-user" />
             </template>
           </base-field>
-          <vue-phone-number-input
-            v-model="profile.additionalInfo.secondMobileNumber"
-            class="profile__phone-input"
-            error-color="#EB5757"
-            clearable
-            show-code-on-list
-            required
-            size="lg"
-            @update="updatePhone($event)"
-          />
           <base-field
             v-model="profile.additionalInfo.address"
             v-click-outside="hideSearchDD"
@@ -95,6 +86,36 @@
               </div>
             </template>
           </base-field>
+          <base-field
+            v-model="profile.email"
+            :placeholder="profile.email || $t('placeholders.mail')"
+            mode="icon"
+            :name="$t('settings.firstName')"
+          >
+            <template v-slot:left>
+              <span class="icon icon-mail" />
+            </template>
+          </base-field>
+          <vue-phone-number-input
+            v-model="profile.firstPhone"
+            class="profile__phone-input"
+            error-color="#EB5757"
+            clearable
+            show-code-on-list
+            required
+            size="lg"
+            @update="updateFirstPhone($event)"
+          />
+          <vue-phone-number-input
+            v-model="profile.additionalInfo.secondMobileNumber"
+            class="profile__phone-input"
+            error-color="#EB5757"
+            clearable
+            show-code-on-list
+            required
+            size="lg"
+            @update="updateSecondPhone($event)"
+          />
         </div>
         <div
           v-if="true"
@@ -145,7 +166,7 @@
             {{ $t("settings.educations") }}
           </div>
           <div
-            v-if="profile.additionalInfo.educations.length !== 0"
+            v-if="getEducation"
             class="profile__knowledge-added"
           >
             <add-form
@@ -182,7 +203,7 @@
             {{ $t("settings.workExp") }}
           </div>
           <div
-            v-if="profile.additionalInfo.workExperiences.length !== 0"
+            v-if="getWorkExp"
             class="profile__knowledge-added"
           >
             <add-form
@@ -271,7 +292,6 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import Verified from '~/components/app/pages/settings/Verified.vue';
 import AddForm from './AddForm.vue';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'Profile',
@@ -304,7 +324,8 @@ export default {
   data() {
     return {
       isSearchDDStatus: false,
-      updatedPhone: null,
+      firstPhone: null,
+      secondPhone: null,
     };
   },
   computed: {
@@ -312,6 +333,12 @@ export default {
       imageData: 'user/getImageData',
       userRole: 'user/getUserRole',
     }),
+    getEducation() {
+      return this.profile.additionalInfo?.educations?.length !== 0;
+    },
+    getWorkExp() {
+      return this.profile.additionalInfo?.workExperiences?.length !== 0;
+    },
   },
 
   methods: {
@@ -345,10 +372,14 @@ export default {
       }
     },
 
-    // UPDATE PHONE NUMBER
-    updatePhone(value) {
-      this.updatedPhone = value;
-      this.$emit('updatePhone', this.updatedPhone);
+    // UPDATE PHONE NUMBERS
+    updateFirstPhone(value) {
+      this.firstPhone = value;
+      this.$emit('updateFirstPhone', this.firstPhone);
+    },
+    updateSecondPhone(value) {
+      this.secondPhone = value;
+      this.$emit('updateSecondPhone', this.secondPhone);
     },
 
     // GEOPOSITION METHODS

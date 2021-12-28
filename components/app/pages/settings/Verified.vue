@@ -6,12 +6,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Verified',
-  data() {
-    return {
-      status2FA: 0,
-    };
+  computed: {
+    ...mapGetters({
+      status2FA: 'user/getStatus2FA',
+    }),
   },
 };
 </script>

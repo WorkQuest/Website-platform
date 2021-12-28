@@ -153,7 +153,7 @@
           <div>
             {{ $t('settings.changeRole') }}
           </div>
-          <base-btn @click="changeRole()">
+          <base-btn @click="showModalKey('changeRoleWarning')">
             {{ $t('settings.change') }}
           </base-btn>
         </div>
@@ -164,7 +164,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import modals from '~/store/modals/modals';
 
 export default {
   name: 'Advanced',
@@ -174,24 +173,8 @@ export default {
     }),
   },
   methods: {
-    modalsKey(modalKey) {
-      const keys = {
-        disable2FA: modals.disable2FA,
-        chooseNecessarySkills: modals.chooseNecessarySkills,
-        changePassInSettings: modals.changePassInSettings,
-        twoFAAuth: modals.twoFAAuth,
-        smsVerification: modals.smsVerification,
-        changeRoleWarning: modals.changeRoleWarning,
-      };
-      return keys[modalKey];
-    },
-    showModalKey(modalKey) {
-      this.ShowModal({
-        key: this.modalsKey(modalKey),
-      });
-    },
-    async changeRole() {
-      this.showModalKey('changeRoleWarning');
+    async showModalKey(modalKey) {
+      this.$emit('showModalKey', modalKey);
     },
   },
 

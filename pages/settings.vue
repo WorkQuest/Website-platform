@@ -18,14 +18,15 @@
         :new-work-exp="newWorkExp"
         :avatar-change="avatarChange"
         @click="editUserData"
-        @updatePhone="updatePhone($event)"
+        @updateFirstPhone="updateFirstPhone($event)"
+        @updateSecondPhone="updateSecondPhone($event)"
         @showModalStatus="showModalStatus"
       />
       <skills
         :skills="skills"
         @click="editUserData"
       />
-      <advanced />
+      <advanced @showModalKey="showModalKey" />
     </ValidationObserver>
   </div>
 </template>
@@ -51,6 +52,7 @@ export default {
         firstName: null,
         lastName: null,
         skillFilters: null,
+        firstPhone: null,
         additionalInfo: {
           secondMobileNumber: null,
           address: null,
@@ -91,14 +93,13 @@ export default {
         to: '',
         place: '',
       },
-
-      specCount: 0,
-      updatedPhone: null,
-      isSms: false,
       avatarChange: {
         data: {},
         file: {},
       },
+      updatedFirstPhone: null,
+      updatedSecondPhone: null,
+      specCount: 0,
     };
   },
   computed: {
@@ -117,6 +118,8 @@ export default {
       avatarId: this.userData.avatarId,
       firstName: this.userData.firstName,
       lastName: this.userData.lastName,
+      email: this.userData.email,
+      firstPhone: this.userData.tempPhone,
       additionalInfo: JSON.parse(JSON.stringify(this.userData.additionalInfo)),
       location: this.userData.location,
     };
@@ -192,8 +195,11 @@ export default {
     },
 
     // UPDATE PHONE
-    updatePhone(value) {
-      this.updatedPhone = value;
+    updateFirstPhone(value) {
+      this.updatedFirstPhone = value;
+    },
+    updateSecondPhone(value) {
+      this.updatedSecondPhone = value;
     },
 
     // UPDATE USER INFO METHODS
@@ -243,9 +249,9 @@ export default {
     },
 
     async checkPhoneNumber() {
-      if (this.updatedPhone.formatInternational) {
-        this.profile.additionalInfo.secondMobileNumber = this.updatedPhone.formatInternational.replace(/\s/g, '');
-      } if (!this.updatedPhone.formatInternational) {
+      if (this.updatedSecondPhone.formatInternational) {
+        this.profile.additionalInfo.secondMobileNumber = this.updatedSecondPhone.formatInternational.replace(/\s/g, '');
+      } if (!this.updatedSecondPhone.formatInternational) {
         this.profile.additionalInfo.secondMobileNumber = '';
       }
     },
@@ -258,6 +264,7 @@ export default {
         avatarId: checkAvatarID,
         firstName: this.profile.firstName,
         lastName: this.profile.lastName,
+        tempPhone: this.profile.firstPhone || null,
         location: {
           longitude: this.coordinates ? this.coordinates.lng : this.profile.location?.longitude || 0,
           latitude: this.coordinates ? this.coordinates.lat : this.profile.location?.latitude || 0,
@@ -282,10 +289,10 @@ export default {
         };
         payload = {
           ...payload,
-          workplace: this.parseDistantWork(this.distantIndex),
-          priority: this.priorityIndex,
-          wagePerHour: this.perHour ? this.perHour : this.userData.wagePerHour,
-          specializationKeys: this.selectedSpecAndSkills || null,
+          workplace: this.parseDistantWork(this.skills.distantIndex),
+          priority: this.skills.priorityIndex,
+          wagePerHour: this.skills.perHour ? this.skills.perHour : this.userData.wagePerHour,
+          specializationKeys: this.skills.selectedSpecAndSkills || null,
         };
         await this.editProfileResponse('user/editWorkerData', payload);
       } if (this.userRole === 'employer') {
