@@ -7,7 +7,7 @@ const bip39 = require('bip39');
 export const generateMnemonic = () => bip39.generateMnemonic();
 export const createWallet = (mnemonic) => {
   try {
-    return ethers.utils.HDNode.fromMnemonic(mnemonic);
+    return ethers.utils.HDNode.fromMnemonic(mnemonic).derivePath("m/44'/60'/0'/0/0");
   } catch (e) {
     // incorrect mnemonic
     return false;
