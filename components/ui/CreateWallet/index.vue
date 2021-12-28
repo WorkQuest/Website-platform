@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wallet">
     <ValidationObserver
       v-if="step === walletState.saveMnemonic"
       v-slot="{ handleSubmit }"

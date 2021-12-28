@@ -1,122 +1,120 @@
 <template>
-  <div>
+  <div class="auth">
     <ValidationObserver
       v-if="step === walletState.signPage"
       v-slot="{ handleSubmit }"
-      class="auth"
+      class="auth__container"
       tag="div"
     >
-      <div class="auth__container">
-        <div class="auth__text auth__text_title">
-          <span>{{ $t('signIn.title') }}</span>
-        </div>
-        <div class="auth__text auth__text_simple">
-          <span>{{ $t('signIn.account') }}</span>
-          <nuxt-link
-            class="auth__text auth__text_link"
-            to="/sign-up"
-          >
-            {{ $t('signIn.regs') }}
-          </nuxt-link>
-        </div>
-        <form
-          class="auth__fields"
-          action=""
-          @submit.prevent="handleSubmit(signIn)"
+      <div class="auth__text auth__text_title">
+        <span>{{ $t('signIn.title') }}</span>
+      </div>
+      <div class="auth__text auth__text_simple">
+        <span>{{ $t('signIn.account') }}</span>
+        <nuxt-link
+          class="auth__text auth__text_link"
+          to="/sign-up"
         >
-          <base-field
-            v-model="model.email"
-            rules="required|email"
-            :name="$t('signUp.email')"
-            :placeholder="$t('signUp.email')"
-            :mode="'icon'"
-            autocomplete="username"
+          {{ $t('signIn.regs') }}
+        </nuxt-link>
+      </div>
+      <form
+        class="auth__fields"
+        action=""
+        @submit.prevent="handleSubmit(signIn)"
+      >
+        <base-field
+          v-model="model.email"
+          rules="required|email"
+          :name="$t('signUp.email')"
+          :placeholder="$t('signUp.email')"
+          :mode="'icon'"
+          autocomplete="username"
+        >
+          <template v-slot:left>
+            <img
+              src="~assets/img/icons/email.svg"
+              alt=""
+            >
+          </template>
+        </base-field>
+        <base-field
+          v-model="model.password"
+          :placeholder="$t('signUp.password')"
+          :mode="'icon'"
+          :name="$t('signUp.password')"
+          autocomplete="current-password"
+          rules="required_if|min:8"
+          type="password"
+          vid="confirmation"
+        >
+          <template v-slot:left>
+            <img
+              src="~assets/img/icons/password.svg"
+              alt=""
+            >
+          </template>
+        </base-field>
+        <div class="auth__tools">
+          <base-checkbox
+            v-model="remember"
+            name="remember"
+            :label="$t('signIn.remember')"
+          />
+          <div
+            class="auth__text auth__text_link"
+            @click="showRestoreModal()"
           >
-            <template v-slot:left>
-              <img
-                src="~assets/img/icons/email.svg"
-                alt=""
-              >
-            </template>
-          </base-field>
-          <base-field
-            v-model="model.password"
-            :placeholder="$t('signUp.password')"
-            :mode="'icon'"
-            :name="$t('signUp.password')"
-            autocomplete="current-password"
-            rules="required_if|min:8"
-            type="password"
-            vid="confirmation"
+            {{ $t('signIn.forgot') }}
+          </div>
+        </div>
+        <div class="auth__action">
+          <base-btn :disabled="inProgress">
+            {{ $t('signIn.login') }}
+          </base-btn>
+        </div>
+        <div class="auth__text auth__text_wrap">
+          {{ $t('signIn.or') }}
+        </div>
+      </form>
+      <div class="auth__social">
+        <div class="auth__text auth__text_dark">
+          {{ $t('signIn.loginWith') }}
+        </div>
+        <div class="auth__icons">
+          <button
+            class="auth__btn auth__btn_workQuest"
+            @click="showSignWorkQuest()"
           >
-            <template v-slot:left>
-              <img
-                src="~assets/img/icons/password.svg"
-                alt=""
-              >
-            </template>
-          </base-field>
-          <div class="auth__tools">
-            <base-checkbox
-              v-model="remember"
-              name="remember"
-              :label="$t('signIn.remember')"
-            />
-            <div
-              class="auth__text auth__text_link"
-              @click="showRestoreModal()"
+            <img
+              src="~assets/img/app/logo.svg"
+              alt="WorkQuest"
             >
-              {{ $t('signIn.forgot') }}
-            </div>
-          </div>
-          <div class="auth__action">
-            <base-btn :disabled="inProgress">
-              {{ $t('signIn.login') }}
-            </base-btn>
-          </div>
-          <div class="auth__text auth__text_wrap">
-            {{ $t('signIn.or') }}
-          </div>
-        </form>
-        <div class="auth__social">
-          <div class="auth__text auth__text_dark">
-            {{ $t('signIn.loginWith') }}
-          </div>
-          <div class="auth__icons">
-            <button
-              class="auth__btn auth__btn_workQuest"
-              @click="showSignWorkQuest()"
-            >
-              <img
-                src="~assets/img/app/logo.svg"
-                alt="WorkQuest"
-              >
-            </button>
-            <button
-              class="auth__btn auth__btn_google"
-              @click="redirectSocialLink('google')"
-            >
-              <span class="icon-google" />
-            </button>
-            <button
-              class="auth__btn auth__btn_twitter"
-              @click="redirectSocialLink('twitter')"
-            >
-              <span class="icon-twitter" />
-            </button>
-            <button
-              class="auth__btn auth__btn_facebook"
-              @click="redirectSocialLink('facebook')"
-            >
-              <span class="icon-facebook" />
-            </button>
-            <button
-              class="auth__btn auth__btn_LinkedIn"
-              @click="redirectSocialLink('linkedin')"
-            >
-              <span class="icon-LinkedIn" />
-            </button>
-          </div>
+          </button>
+          <button
+            class="auth__btn auth__btn_google"
+            @click="redirectSocialLink('google')"
+          >
+            <span class="icon-google" />
+          </button>
+          <button
+            class="auth__btn auth__btn_twitter"
+            @click="redirectSocialLink('twitter')"
+          >
+            <span class="icon-twitter" />
+          </button>
+          <button
+            class="auth__btn auth__btn_facebook"
+            @click="redirectSocialLink('facebook')"
+          >
+            <span class="icon-facebook" />
+          </button>
+          <button
+            class="auth__btn auth__btn_LinkedIn"
+            @click="redirectSocialLink('linkedin')"
+          >
+            <span class="icon-LinkedIn" />
+          </button>
         </div>
       </div>
     </ValidationObserver>
