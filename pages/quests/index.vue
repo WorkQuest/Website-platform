@@ -322,9 +322,10 @@ export default {
     },
   },
   watch: {
-    async isShowMap() {
+    async isShowMap(newVal) {
       this.page = 1;
       await this.updateQuests();
+      localStorage.setItem('isShowMap', JSON.stringify(newVal));
     },
     async page() {
       await this.updateQuests();
@@ -360,6 +361,10 @@ export default {
       };
       this.zoomNumber = zoom[this.distanceIndex];
     },
+  },
+  mounted() {
+    const isShow = JSON.parse(localStorage.getItem('isShowMap'));
+    if (typeof isShow === 'boolean') this.isShowMap = isShow;
   },
   methods: {
     toggleSearchDD() {

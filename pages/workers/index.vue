@@ -369,11 +369,12 @@ export default {
     },
   },
   watch: {
-    async isShowMap() {
+    async isShowMap(newVal) {
       this.SetLoader(true);
       this.additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
       await this.fetchWorkersList();
       this.SetLoader(false);
+      localStorage.setItem('isShowMap', JSON.stringify(newVal));
     },
     async page() {
       this.SetLoader(true);
@@ -405,6 +406,8 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    const isShow = JSON.parse(localStorage.getItem('isShowMap'));
+    if (typeof isShow === 'boolean') this.isShowMap = isShow;
     await this.fetchWorkersList();
     this.SetLoader(false);
   },
