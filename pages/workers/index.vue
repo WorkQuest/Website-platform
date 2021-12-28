@@ -312,6 +312,7 @@ export default {
       timeSort: 'desc',
       addresses: [],
       coordinates: null,
+      boundsTimeout: null,
     };
   },
   computed: {
@@ -382,8 +383,17 @@ export default {
       await this.fetchWorkersList();
       this.SetLoader(false);
     },
-    async mapBounds() {
-      await this.fetchWorkersList();
+    async mapBounds(newVal, prevVal) {
+      if (newVal?.center?.lng === prevVal?.center?.lng
+        && newVal?.center?.lat === prevVal?.center?.lat
+        && newVal?.northEast?.lng === prevVal?.northEast?.lng
+        && newVal?.northEast?.lat === prevVal?.northEast?.lat
+        && newVal?.southWest?.lng === prevVal?.southWest?.lng
+        && newVal?.southWest?.lat === prevVal?.southWest?.lat) {
+        return;
+      }
+      clearTimeout(this.boundsTimeout);
+      this.boundsTimeout = setTimeout(async () => await this.fetchWorkersList(), 100);
     },
     async formattedSpecFilters() {
       await this.fetchWorkersList();
@@ -410,6 +420,9 @@ export default {
     if (typeof isShow === 'boolean') this.isShowMap = isShow;
     await this.fetchWorkersList();
     this.SetLoader(false);
+  },
+  beforeDestroy() {
+    clearTimeout(this.boundsTimeout);
   },
   methods: {
     toggleSearchDD() {

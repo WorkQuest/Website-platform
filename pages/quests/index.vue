@@ -350,12 +350,12 @@ export default {
       await this.updateQuests();
     },
     async mapBounds(newVal, prevVal) {
-      if (newVal.center.lng === prevVal.center.lng
-      && newVal.center.lat === prevVal.center.lat
-      && newVal.northEast.lng === prevVal.northEast.lng
-      && newVal.northEast.lat === prevVal.northEast.lat
-      && newVal.southWest.lng === prevVal.southWest.lng
-      && newVal.southWest.lat === prevVal.southWest.lat) {
+      if (newVal?.center?.lng === prevVal?.center?.lng
+      && newVal?.center?.lat === prevVal?.center?.lat
+      && newVal?.northEast?.lng === prevVal?.northEast?.lng
+      && newVal?.northEast?.lat === prevVal?.northEast?.lat
+      && newVal?.southWest?.lng === prevVal?.southWest?.lng
+      && newVal?.southWest?.lat === prevVal?.southWest?.lat) {
         return;
       }
       this.page = 1;
