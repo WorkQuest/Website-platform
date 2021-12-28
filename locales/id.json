@@ -218,7 +218,8 @@
     "email": "Email",
     "password": "Kata sandi",
     "confirmPassword": "Masukkan kembali kata sandi",
-    "create": "Buat akun"
+    "create": "Buat akun",
+
   },
   "createWallet": {
     "savePhrase": "Save your secret phrase",
@@ -228,7 +229,9 @@
     "secret": "Secret word #{a}",
     "create": "Create wallet",
     "importWallet": "Import wallet",
-    "createOrImport": "Create or import secret wallet"
+    "createOrImport": "Create or import secret wallet",
+    "typeSecretPhrase": "Type secret phrase",
+    "secretPhrase": "Secret phrase"
   },
   "forgot": {
     "title": "Lupa kata sandi?",

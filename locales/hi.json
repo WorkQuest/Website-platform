@@ -228,7 +228,9 @@
     "secret": "Secret word #{a}",
     "create": "Create wallet",
     "importWallet": "Import wallet",
-    "createOrImport": "Create or import secret wallet"
+    "createOrImport": "Create or import secret wallet",
+    "typeSecretPhrase": "Type secret phrase",
+    "secretPhrase": "Secret phrase"
   },
   "forgot": {
     "title": "पासवर्ड भूल गए?",

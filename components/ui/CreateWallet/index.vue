@@ -116,8 +116,8 @@
         <base-field
           v-model="mnemonicInput"
           rules="required|mnemonic"
-          :placeholder="'Type secret phrase'"
-          :name="'Secret phrase'"
+          :placeholder="$t('createWallet.typeSecretPhrase')"
+          :name="$t('createWallet.secretPhrase')"
         />
         <div class="wallet__action">
           <base-btn :disabled="!valid || isLoading">
