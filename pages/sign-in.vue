@@ -277,6 +277,7 @@ export default {
         this.step = WalletState.ImportMnemonic;
         this.SetLoader(false);
       }
+      this.SetLoader(false);
     },
     async assignWallet(wallet) {
       const res = await this.$store.dispatch('user/registerWallet', {
