@@ -13,10 +13,13 @@
       />
       <profile
         :addresses="addresses"
-        :local-user-data="localUserData"
+        :profile="profile"
         :new-education="newEducation"
         :new-work-exp="newWorkExp"
+        :avatar-change="avatarChange"
         @click="editUserData"
+        @updatePhone="updatePhone($event)"
+        @showModalStatus="showModalStatus"
       />
       <skills
         :skills="skills"
@@ -43,7 +46,7 @@ export default {
   },
   data() {
     return {
-      localUserData: {
+      profile: {
         avatarId: null,
         firstName: null,
         lastName: null,
@@ -110,7 +113,7 @@ export default {
   async mounted() {
     this.SetLoader(true);
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
-    this.localUserData = {
+    this.profile = {
       avatarId: this.userData.avatarId,
       firstName: this.userData.firstName,
       lastName: this.userData.lastName,
@@ -140,36 +143,7 @@ export default {
       }
     },
 
-    // eslint-disable-next-line consistent-return
-    async processFile(e, validate) {
-      const isValid = await validate(e);
-      const reader = new FileReader();
-      const file = e.target.files[0];
-      if (isValid.valid) {
-        if (!file) {
-          return false;
-        }
-        reader.readAsDataURL(file);
-        this.avatarChange.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
-        this.avatarChange.file = file;
-        let output = document.getElementById('userAvatar');
-        const modalMode = 'imageLoadedSuccessful';
-        if (!output) {
-          output = document.getElementById('userAvatarTwo');
-        }
-        output.src = URL.createObjectURL(file);
-        // eslint-disable-next-line func-names
-        output.onload = function () {
-          URL.revokeObjectURL(output.src);
-        };
-        this.showModalStatus(modalMode);
-        reader.onerror = (evt) => {
-          console.error(evt);
-        };
-      }
-    },
-
-    // Модалки
+    // MODALS METHODS
     modalsStatusTitle(modalMode) {
       const titles = {
         enterPhoneNumber: this.$t('settings.enterPhoneNumber'),
@@ -217,7 +191,12 @@ export default {
       });
     },
 
-    // Обновление данных пользователя
+    // UPDATE PHONE
+    updatePhone(value) {
+      this.updatedPhone = value;
+    },
+
+    // UPDATE USER INFO METHODS
     async editUserData() {
       const validateEducation = await this.validateKnowledge('education', this.newEducation);
       const validateWorkExp = await this.validateKnowledge('work', this.newWorkExp);
@@ -226,20 +205,18 @@ export default {
         validateEducation === false
         || validateWorkExp === false
         || validateSettings === false) {
-        console.log('error');
         return;
       }
-      console.log('check');
-      /*
       const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
-      const { secondMobileNumber } = this.localUserData.additionalInfo;
+      const { secondMobileNumber } = this.profile.additionalInfo;
       await this.setAvatar();
       await this.checkPhoneNumber();
       if (secondMobileNumber) {
         await this.editProfile(checkAvatarID);
       }
-      if (!secondMobileNumber) this.showModalStatus('enterPhoneNumber'); */
+      if (!secondMobileNumber) this.showModalStatus('enterPhoneNumber');
     },
+
     async validateKnowledge(observerName, value) {
       const isDirty = Object.keys(value).some((field) => value[field] !== '' && value[field] !== null);
       if (isDirty) {
@@ -247,6 +224,7 @@ export default {
       }
       return true;
     },
+
     async setAvatar() {
       const formData = new FormData();
       formData.append('image', this.avatarChange.file);
@@ -263,28 +241,30 @@ export default {
         console.log(error);
       }
     },
+
     async checkPhoneNumber() {
       if (this.updatedPhone.formatInternational) {
-        this.localUserData.additionalInfo.secondMobileNumber = this.updatedPhone.formatInternational.replace(/\s/g, '');
+        this.profile.additionalInfo.secondMobileNumber = this.updatedPhone.formatInternational.replace(/\s/g, '');
       } if (!this.updatedPhone.formatInternational) {
-        this.localUserData.additionalInfo.secondMobileNumber = '';
+        this.profile.additionalInfo.secondMobileNumber = '';
       }
     },
+
     async editProfile(checkAvatarID) {
       const {
         instagram, twitter, linkedin, facebook,
-      } = this.localUserData.additionalInfo.socialNetwork;
+      } = this.profile.additionalInfo.socialNetwork;
       let payload = {
         avatarId: checkAvatarID,
-        firstName: this.localUserData.firstName,
-        lastName: this.localUserData.lastName,
+        firstName: this.profile.firstName,
+        lastName: this.profile.lastName,
         location: {
-          longitude: this.coordinates ? this.coordinates.lng : this.localUserData.location?.longitude || 0,
-          latitude: this.coordinates ? this.coordinates.lat : this.localUserData.location?.latitude || 0,
+          longitude: this.coordinates ? this.coordinates.lng : this.profile.location?.longitude || 0,
+          latitude: this.coordinates ? this.coordinates.lat : this.profile.location?.latitude || 0,
         },
         additionalInfo: {
-          secondMobileNumber: this.localUserData.additionalInfo.secondMobileNumber,
-          address: this.localUserData.additionalInfo.address,
+          secondMobileNumber: this.profile.additionalInfo.secondMobileNumber,
+          address: this.profile.additionalInfo.address,
           socialNetwork: {
             instagram: instagram !== '' ? instagram : null,
             twitter: twitter !== '' ? twitter : null,
@@ -296,9 +276,9 @@ export default {
       if (this.userRole === 'worker') {
         payload.additionalInfo = {
           ...payload.additionalInfo,
-          educations: this.localUserData.additionalInfo.educations,
-          workExperiences: this.localUserData.additionalInfo.workExperiences,
-          description: this.localUserData.additionalInfo.description,
+          educations: this.profile.additionalInfo.educations,
+          workExperiences: this.profile.additionalInfo.workExperiences,
+          description: this.profile.additionalInfo.description,
         };
         payload = {
           ...payload,
@@ -311,20 +291,22 @@ export default {
       } if (this.userRole === 'employer') {
         payload.additionalInfo = {
           ...payload.additionalInfo,
-          description: this.localUserData.additionalInfo.description,
-          company: this.localUserData.additionalInfo.company,
-          ceo: this.localUserData.additionalInfo.ceo,
-          website: this.localUserData.additionalInfo.website,
+          description: this.profile.additionalInfo.description,
+          company: this.profile.additionalInfo.company,
+          ceo: this.profile.additionalInfo.ceo,
+          website: this.profile.additionalInfo.website,
         };
         await this.editProfileResponse('user/editEmployerData', payload);
       }
     },
+
     parseDistantWork(index) {
       if (index === 0) return 'distant';
       if (index === 1) return 'office';
       if (index === 2) return 'both';
       return null;
     },
+
     async editProfileResponse(action, payload) {
       try {
         await this.$store.dispatch(action, payload);

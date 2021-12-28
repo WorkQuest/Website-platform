@@ -5,7 +5,12 @@
     </div>
     <div class="profile__personal">
       <div class="profile__personal-main">
-        <div class="profile__avatar">
+        <ValidationProvider
+          v-slot="{ validate }"
+          rules="ext:png,jpeg,jpg"
+          tag="div"
+          class="profile__avatar"
+        >
           <img
             :src="imageData ? imageData : require('~/assets/img/app/avatar_empty.png')"
             alt="avatar-image"
@@ -13,22 +18,24 @@
           >
           <input
             id="avatar"
-            type="file"
             class="profile__avatar-input"
+            type="file"
+            accept="image/*"
+            @change="processFile($event, validate)"
           >
           <label
             class="icon icon-edit profile__avatar-hover"
             for="avatar"
           />
-        </div>
+        </ValidationProvider>
         <div class="profile__personal-info">
           <verified
             v-if="userRole === 'worker'"
             class="profile__status"
           />
           <base-field
-            v-model="localUserData.firstName"
-            :placeholder="localUserData.firstName || $t('settings.nameInput')"
+            v-model="profile.firstName"
+            :placeholder="profile.firstName || $t('settings.nameInput')"
             mode="icon"
             :name="$t('settings.firstName')"
           >
@@ -37,8 +44,8 @@
             </template>
           </base-field>
           <base-field
-            v-model="localUserData.lastName"
-            :placeholder="localUserData.lastName || $t('settings.lastNameInput')"
+            v-model="profile.lastName"
+            :placeholder="profile.lastName || $t('settings.lastNameInput')"
             mode="icon"
             :name="$t('settings.lastName')"
           >
@@ -47,25 +54,25 @@
             </template>
           </base-field>
           <vue-phone-number-input
-            v-model="localUserData.additionalInfo.secondMobileNumber"
+            v-model="profile.additionalInfo.secondMobileNumber"
             class="profile__phone-input"
             error-color="#EB5757"
             clearable
             show-code-on-list
             required
             size="lg"
-            @update="updatedPhone = $event"
+            @update="updatePhone($event)"
           />
           <base-field
-            v-model="localUserData.additionalInfo.address"
+            v-model="profile.additionalInfo.address"
             v-click-outside="hideSearchDD"
-            :placeholder="localUserData.additionalInfo.address || $t('settings.addressInput')"
+            :placeholder="profile.additionalInfo.address || $t('settings.addressInput')"
             rules="max:100"
             mode="icon"
             :selector="isSearchDDStatus"
             :name="$t('settings.address')"
             @focus="isSearchDDStatus = true"
-            @selector="getAddressInfo(localUserData.additionalInfo.address)"
+            @selector="getAddressInfo(profile.additionalInfo.address)"
           >
             <template v-slot:left>
               <span class="icon icon-location" />
@@ -94,8 +101,8 @@
           class="profile__company"
         >
           <base-field
-            v-model="localUserData.additionalInfo.company"
-            :placeholder="localUserData.additionalInfo.company || $t('settings.company')"
+            v-model="profile.additionalInfo.company"
+            :placeholder="profile.additionalInfo.company || $t('settings.company')"
             mode="icon"
           >
             <template v-slot:left>
@@ -103,8 +110,8 @@
             </template>
           </base-field>
           <base-field
-            v-model="localUserData.additionalInfo.ceo"
-            :placeholder="localUserData.additionalInfo.ceo || $t('settings.ceo')"
+            v-model="profile.additionalInfo.ceo"
+            :placeholder="profile.additionalInfo.ceo || $t('settings.ceo')"
             mode="icon"
           >
             <template v-slot:left>
@@ -112,8 +119,8 @@
             </template>
           </base-field>
           <base-field
-            v-model="localUserData.additionalInfo.website"
-            :placeholder="localUserData.additionalInfo.website || $t('settings.website')"
+            v-model="profile.additionalInfo.website"
+            :placeholder="profile.additionalInfo.website || $t('settings.website')"
             mode="icon"
             rules="max:100"
           >
@@ -124,9 +131,9 @@
         </div>
         <textarea
           id="textarea"
-          v-model="localUserData.additionalInfo.description"
+          v-model="profile.additionalInfo.description"
           class="profile__description"
-          :placeholder="localUserData.additionalInfo.description || $t('settings.userDesc')"
+          :placeholder="profile.additionalInfo.description || $t('settings.userDesc')"
         />
       </div>
       <div class="profile__knowledge">
@@ -138,15 +145,15 @@
             {{ $t("settings.educations") }}
           </div>
           <div
-            v-if="localUserData.additionalInfo.educations.length !== 0"
+            v-if="profile.additionalInfo.educations.length !== 0"
             class="profile__knowledge-added"
           >
             <add-form
-              v-for="(education, index) in localUserData.additionalInfo.educations"
+              v-for="(education, index) in profile.additionalInfo.educations"
               :key="education.id"
               :item="education"
               :is-adding="false"
-              @click="deleteKnowledge(localUserData.additionalInfo.educations, index)"
+              @click="deleteKnowledge(profile.additionalInfo.educations, index)"
             />
           </div>
           <ValidationObserver
@@ -159,7 +166,7 @@
               :item="newEducation"
               :is-adding="true"
               :validation-mode="'passive'"
-              @click="addNewKnowledge(localUserData.additionalInfo.educations, 'newEducation', 'education', 'education')"
+              @click="addNewKnowledge(profile.additionalInfo.educations, 'newEducation', 'education', 'education')"
               @blur="clearError(newEducation, 'education')"
             />
           </ValidationObserver>
@@ -175,15 +182,15 @@
             {{ $t("settings.workExp") }}
           </div>
           <div
-            v-if="localUserData.additionalInfo.workExperiences.length !== 0"
+            v-if="profile.additionalInfo.workExperiences.length !== 0"
             class="profile__knowledge-added"
           >
             <add-form
-              v-for="(work, index) in localUserData.additionalInfo.workExperiences"
+              v-for="(work, index) in profile.additionalInfo.workExperiences"
               :key="work.id"
               :item="work"
               :is-adding="false"
-              @click="deleteKnowledge(localUserData.additionalInfo.workExperiences, index)"
+              @click="deleteKnowledge(profile.additionalInfo.workExperiences, index)"
             />
           </div>
           <ValidationObserver
@@ -195,7 +202,7 @@
             <add-form
               :item="newWorkExp"
               :is-adding="true"
-              @click="addNewKnowledge(localUserData.additionalInfo.workExperiences, 'newWorkExp', 'work', 'work')"
+              @click="addNewKnowledge(profile.additionalInfo.workExperiences, 'newWorkExp', 'work', 'work')"
               @blur="clearError(newWorkExp, 'work')"
             />
           </ValidationObserver>
@@ -203,8 +210,8 @@
       </div>
       <div class="profile__socials">
         <base-field
-          v-model="localUserData.additionalInfo.socialNetwork.instagram"
-          :placeholder="localUserData.additionalInfo.socialNetwork.instagram || $t('settings.instagramUsername')"
+          v-model="profile.additionalInfo.socialNetwork.instagram"
+          :placeholder="profile.additionalInfo.socialNetwork.instagram || $t('settings.instagramUsername')"
           mode="icon"
           :name="$t('settings.instagram')"
         >
@@ -213,8 +220,8 @@
           </template>
         </base-field>
         <base-field
-          v-model="localUserData.additionalInfo.socialNetwork.twitter"
-          :placeholder="localUserData.additionalInfo.socialNetwork.twitter || $t('settings.twitterUsername')"
+          v-model="profile.additionalInfo.socialNetwork.twitter"
+          :placeholder="profile.additionalInfo.socialNetwork.twitter || $t('settings.twitterUsername')"
           mode="icon"
           :name="$t('settings.twitter')"
         >
@@ -223,8 +230,8 @@
           </template>
         </base-field>
         <base-field
-          v-model="localUserData.additionalInfo.socialNetwork.linkedin"
-          :placeholder="localUserData.additionalInfo.socialNetwork.linkedin || $t('settings.linkedInUsername')"
+          v-model="profile.additionalInfo.socialNetwork.linkedin"
+          :placeholder="profile.additionalInfo.socialNetwork.linkedin || $t('settings.linkedInUsername')"
           mode="icon"
           :name="$t('settings.linkedin')"
         >
@@ -233,8 +240,8 @@
           </template>
         </base-field>
         <base-field
-          v-model="localUserData.additionalInfo.socialNetwork.facebook"
-          :placeholder="localUserData.additionalInfo.socialNetwork.facebook || $t('settings.facebookUsername')"
+          v-model="profile.additionalInfo.socialNetwork.facebook"
+          :placeholder="profile.additionalInfo.socialNetwork.facebook || $t('settings.facebookUsername')"
           mode="icon"
           :name="$t('settings.facebook')"
         >
@@ -273,7 +280,11 @@ export default {
     ClickOutside,
   },
   props: {
-    localUserData: {
+    avatarChange: {
+      type: Object,
+      default: null,
+    },
+    profile: {
       type: Object,
       default: null,
     },
@@ -293,6 +304,7 @@ export default {
   data() {
     return {
       isSearchDDStatus: false,
+      updatedPhone: null,
     };
   },
   computed: {
@@ -303,8 +315,45 @@ export default {
   },
 
   methods: {
+    // UPDATE AVATAR
+    // eslint-disable-next-line consistent-return
+    async processFile(e, validate) {
+      const isValid = await validate(e);
+      const reader = new FileReader();
+      const file = e.target.files[0];
+      if (isValid.valid) {
+        if (!file) {
+          return false;
+        }
+        reader.readAsDataURL(file);
+        this.avatarChange.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
+        this.avatarChange.file = file;
+        let output = document.getElementById('userAvatar');
+        const modalMode = 'imageLoadedSuccessful';
+        if (!output) {
+          output = document.getElementById('userAvatarTwo');
+        }
+        output.src = URL.createObjectURL(file);
+        // eslint-disable-next-line func-names
+        output.onload = function () {
+          URL.revokeObjectURL(output.src);
+        };
+        this.$emit('showModalStatus', modalMode);
+        reader.onerror = (evt) => {
+          console.error(evt);
+        };
+      }
+    },
+
+    // UPDATE PHONE NUMBER
+    updatePhone(value) {
+      this.updatedPhone = value;
+      this.$emit('updatePhone', this.updatedPhone);
+    },
+
+    // GEOPOSITION METHODS
     selectAddress(address) {
-      this.localUserData.additionalInfo.address = address.formatted;
+      this.profile.additionalInfo.address = address.formatted;
       this.addresses = [];
     },
     async getAddressInfo(address) {
@@ -324,36 +373,7 @@ export default {
       this.isSearchDDStatus = false;
     },
 
-    modalsStatusTitle(modalMode) {
-      const titles = {
-        enterPhoneNumber: this.$t('settings.enterPhoneNumber'),
-        enterCurrentLocation: this.$t('settings.enterCurrentLocation'),
-        imageLoadedSuccessful: this.$t('modals.imageLoadedSuccessful'),
-        educationAddSuccessful: this.$t('modals.educationAddSuccessful'),
-        workExpAddSuccessful: this.$t('modals.workExpAddSuccessful'),
-        saved: this.$t('modals.saved'),
-      };
-      return titles[modalMode];
-    },
-    modalsStatusSubtitles(modalMode) {
-      const subtitles = {
-        enterPhoneNumber: this.$t('modals.pressSaveBtn'),
-        enterCurrentLocation: this.$t('modals.pressSaveBtn'),
-        imageLoadedSuccessful: this.$t('modals.pressSaveBtn'),
-        educationAddSuccessful: this.$t('modals.pressSaveBtn'),
-        workExpAddSuccessful: this.$t('modals.pressSaveBtn'),
-        saved: this.$t('modals.userDataHasBeenSaved'),
-      };
-      return subtitles[modalMode];
-    },
-    showModalStatus(modalMode) {
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.modalsStatusTitle(modalMode),
-        subtitle: this.modalsStatusSubtitles(modalMode),
-      });
-    },
+    // ADD KNOWLEDGE METHODS
     async addNewKnowledge(knowledgeArray, newKnowledge, observerName, modalMsg) {
       const validate = await this.$refs[observerName].validate();
       if (validate) {
@@ -363,7 +383,8 @@ export default {
           to: '',
           place: '',
         };
-        this.showModalStatus(modalMsg === 'education' ? 'educationAddSuccessful' : 'workExpAddSuccessful');
+        const modalMode = modalMsg === 'education' ? 'educationAddSuccessful' : 'workExpAddSuccessful';
+        this.$emit('showModalStatus', modalMode);
         this.$refs[observerName].reset();
       }
     },
