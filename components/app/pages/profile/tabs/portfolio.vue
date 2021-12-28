@@ -1,21 +1,19 @@
 <template>
-  <div>
+  <div class="portfolio">
     <emptyData
-      v-if="!object || object.count === 0"
+      v-if="object.count === 0"
       :description="$t('errors.emptyData.emptyPortfolios')"
     />
     <div
       v-else
-      class="portfolio portfolio__items"
+      class="portfolio__items"
     >
       <div
         v-for="(item) in object.cases"
         :key="item.id"
         class="portfolio__item"
       >
-        <div
-          class="portfolio__card"
-        >
+        <div class="portfolio__card">
           <div class="portfolio__body">
             <div
               v-if="userId === mainUserData.id"
@@ -35,9 +33,7 @@
                 mode="portfolioEdit"
                 @click="showEditCaseModal(item)"
               >
-                <span
-                  class="icon-edit"
-                />
+                <span class="icon-edit" />
               </base-btn>
             </div>
             <div

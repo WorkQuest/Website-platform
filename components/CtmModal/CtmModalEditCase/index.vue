@@ -8,39 +8,35 @@
         v-slot="{ validated, passed, invalid }"
         class="content__block"
       >
-        <div class="content__portfolio portfolio">
-          <files-uploader
-            :multiple="false"
-            :limit="1"
-            :limit-bytes="10485760"
-            :limit-bytes-video="10485760"
-            :accept="'image/png, image/jpg, image/jpeg'"
-            :preloaded-files="options.media"
-            rules="required"
-            @change="updateFiles"
-          />
-        </div>
-        <div class="content__title">
-          <base-field
-            v-model="caseTitle"
-            :label="$t('modals.title')"
-            :placeholder="$t('modals.addTitle')"
-            rules="required|text-title|max:70"
-            :mode="'gray'"
-            :name="$t('modals.title')"
-          />
-        </div>
-        <div class="content__wrapper">
-          <base-textarea
-            id="textarea"
-            v-model="caseDescription"
-            :label="$t('modals.description')"
-            class="content__textarea"
-            :placeholder="$t('modals.addDesc')"
-            rules="required|text-desc|max:350"
-            :name="$t('modals.description')"
-          />
-        </div>
+        <files-uploader
+          class="content__portfolio portfolio"
+          :multiple="false"
+          :limit="1"
+          :limit-bytes="10485760"
+          :limit-bytes-video="10485760"
+          :accept="'image/png, image/jpg, image/jpeg'"
+          :preloaded-files="options.media"
+          rules="required"
+          @change="updateFiles"
+        />
+        <base-field
+          v-model="caseTitle"
+          class="content__title"
+          :label="$t('modals.title')"
+          :placeholder="$t('modals.addTitle')"
+          rules="required|text-title|max:70"
+          :mode="'gray'"
+          :name="$t('modals.title')"
+        />
+        <base-textarea
+          id="textarea"
+          v-model="caseDescription"
+          :label="$t('modals.description')"
+          class="content__textarea"
+          :placeholder="$t('modals.addDesc')"
+          rules="required|text-desc|max:350"
+          :name="$t('modals.description')"
+        />
         <div class="content__btn btn">
           <div class="btn__wrapper">
             <base-btn
