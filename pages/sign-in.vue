@@ -201,6 +201,7 @@ export default {
     async signIn() {
       if (this.inProgress) return;
       this.inProgress = true;
+      this.model.email = this.model.email.trim();
       const { email, password } = this.model;
       const response = await this.$store.dispatch('user/signIn', {
         email,

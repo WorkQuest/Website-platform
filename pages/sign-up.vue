@@ -177,6 +177,9 @@ export default {
       this.step = step;
     },
     async signUp(wallet) {
+      this.model.email = this.model.email.trim();
+      this.model.firstName = this.model.firstName.trim();
+      this.model.lastName = this.model.lastName.trim();
       const payload = {
         firstName: this.model.firstName,
         lastName: this.model.lastName,
