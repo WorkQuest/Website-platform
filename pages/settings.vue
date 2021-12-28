@@ -284,8 +284,6 @@ export default {
           CEO: this.profile.additionalInfo.CEO || null,
           website: this.profile.additionalInfo.website || null,
         };
-        console.log(this.profile.additionalInfo.CEO);
-        console.log(payload.additionalInfo);
         await this.editProfileResponse('user/editEmployerData', payload);
       }
     },
