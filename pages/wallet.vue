@@ -86,6 +86,7 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
+  name: 'Wallet',
   data() {
     return {
       cardClosed: false,
@@ -126,11 +127,17 @@ export default {
       ];
     },
   },
-  async mounted() {
-    this.SetLoader(true);
-    this.SetLoader(false);
+  beforeCreate() {
+    this.$store.dispatch('wallet/checkWalletConnected', this.$nuxt);
+  },
+  mounted() {
+    console.log('test');
   },
   methods: {
+    async loadData() {
+      this.SetLoader(true);
+      this.SetLoader(false);
+    },
     closeCard() {
       this.cardClosed = true;
     },
