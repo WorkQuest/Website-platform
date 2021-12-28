@@ -153,7 +153,8 @@ export default {
     height: 214px;
     width: 100%;
     border: 0;
-    background-color: $black0;
+    color: $black700;
+    background: #F3F7FA;
     resize: none;
     &::placeholder {
       color: $black300;

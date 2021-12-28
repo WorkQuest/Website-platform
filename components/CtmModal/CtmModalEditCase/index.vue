@@ -156,6 +156,9 @@ export default {
   &__box {
     max-width: 800px !important;
   }
+  &__content {
+    padding: 28px 28px 0 28px;
+  }
   &_center {
     align-items: center;
     justify-content: center;
