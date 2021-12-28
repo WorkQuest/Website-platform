@@ -1,73 +1,67 @@
 <template>
   <ctm-modal-box
-    class="message"
+    class="ctm-modal ctm-modal_center"
     :title="$t('modals.editCase')"
   >
-    <div class="ctm-modal__content">
-      <div class="message">
-        <div class="message__content">
-          <div class="modal__desc">
-            <validation-observer v-slot="{ validated, passed, invalid }">
-              <div class="message__title">
-                <base-field
-                  v-model="caseTitle"
-                  :label="$t('modals.title')"
-                  :placeholder="$t('modals.addTitle')"
-                  rules="required|text-title|max:70"
-                  :mode="'gray'"
-                  :name="$t('modals.title')"
-                />
-              </div>
-              <div class="message__wrapper">
-                <base-textarea
-                  id="textarea"
-                  v-model="caseDescription"
-                  :label="$t('modals.description')"
-                  class="message__textarea"
-                  :placeholder="$t('modals.addDesc')"
-                  rules="required|text-desc|max:350"
-                  :name="$t('modals.description')"
-                />
-              </div>
-              <div class="message__portfolio portfolio">
-                <div class="portfolio__title">
-                  {{ $t('uploader.uploadFile') }}
-                </div>
-                <files-uploader
-                  :multiple="false"
-                  :limit="1"
-                  :limit-bytes="10485760"
-                  :limit-bytes-video="10485760"
-                  :accept="'image/png, image/jpg, image/jpeg'"
-                  :preloaded-files="options.media"
-                  rules="required"
-                  @change="updateFiles"
-                />
-              </div>
-              <div class="btn__container">
-                <div class="btn__wrapper">
-                  <base-btn
-                    class="message__action"
-                    :disabled="invalid || files.length === 0"
-                    @click="editUserCase(options.id)"
-                  >
-                    {{ $t('meta.send') }}
-                  </base-btn>
-                </div>
-                <div class="btn__wrapper">
-                  <base-btn
-                    :mode="'outline'"
-                    class="message__action"
-                    @click="hide()"
-                  >
-                    {{ $t('meta.cancel') }}
-                  </base-btn>
-                </div>
-              </div>
-            </validation-observer>
+    <div class="ctm-modal__content content">
+      <validation-observer
+        v-slot="{ validated, passed, invalid }"
+        class="content__block"
+      >
+        <div class="content__portfolio portfolio">
+          <files-uploader
+            :multiple="false"
+            :limit="1"
+            :limit-bytes="10485760"
+            :limit-bytes-video="10485760"
+            :accept="'image/png, image/jpg, image/jpeg'"
+            :preloaded-files="options.media"
+            rules="required"
+            @change="updateFiles"
+          />
+        </div>
+        <div class="content__title">
+          <base-field
+            v-model="caseTitle"
+            :label="$t('modals.title')"
+            :placeholder="$t('modals.addTitle')"
+            rules="required|text-title|max:70"
+            :mode="'gray'"
+            :name="$t('modals.title')"
+          />
+        </div>
+        <div class="content__wrapper">
+          <base-textarea
+            id="textarea"
+            v-model="caseDescription"
+            :label="$t('modals.description')"
+            class="content__textarea"
+            :placeholder="$t('modals.addDesc')"
+            rules="required|text-desc|max:350"
+            :name="$t('modals.description')"
+          />
+        </div>
+        <div class="content__btn btn">
+          <div class="btn__wrapper">
+            <base-btn
+              :mode="'outline'"
+              class="btn__action"
+              @click="hide()"
+            >
+              {{ $t('meta.cancel') }}
+            </base-btn>
+          </div>
+          <div class="btn__wrapper">
+            <base-btn
+              class="btn__action"
+              :disabled="invalid || files.length === 0"
+              @click="editUserCase(options.id)"
+            >
+              {{ $t('meta.send') }}
+            </base-btn>
           </div>
         </div>
-      </div>
+      </validation-observer>
     </div>
   </ctm-modal-box>
 </template>
@@ -77,25 +71,18 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
-  name: 'ModalAddCase',
+  name: 'ModalEditCase',
   data() {
     return {
-      valid: '',
       caseTitle: '',
       caseDescription: '',
-      portfolio: {
-        data: {},
-        file: {},
-      },
       files: [],
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      portfolios: 'user/getUserPortfolios',
       userData: 'user/getUserData',
-      medias: 'user/getUserPortfolio',
     }),
   },
   mounted() {
@@ -173,92 +160,28 @@ export default {
   &__box {
     max-width: 800px !important;
   }
-  &__title {
-    margin: 0 0 0 9% !important;
+  &_center {
+    align-items: center;
+    justify-content: center;
+    height: auto !important;
   }
 }
 
-.file {
-  &__wrapper {
-    margin: 0 0 25px 0;
+.content {
+  &__block {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 15px;
   }
-}
-.uploader-message {
-  &__container {
-    margin: 0 0 0 10% !important;
-  }
-}
-.icon {
-  &-close_big_white:before {
-    content: "\e948";
-    color: #FFFFFF;
-  }
-  &-add_to_queue_blue:before {
-    content: "\e995";
-    color: #0083C7;
-    font-size: 20px;
-  }
-}
-
-.input {
-  &_grey {
-    border-radius: 6px;
-    padding: 11px 20px 11px 15px;
-    height: 46px;
-    width: 100%;
-    border: 0;
-    background-color: $black0;
-    resize: none;
-    &::placeholder {
-      color: $black200;
-    }
-  }
-}
-
-.modal {
-  &__title {
-    @include text-simple;
-    justify-self: left;
-    font-weight: 500;
-    font-size: 23px;
-  }
-  &__desc {
-    @include text-simple;
-    width: 100%;
-    display: grid;
-    grid-gap: 10px;
-  }
-  &__labelMessage {
-    @include text-simple;
-    font-size: 16px;
-    color: $black800;
-  }
-}
-.message {
-  &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    grid-gap: 20px;
-  }
-  &__action {
-    margin-top: 10px;
-  }
-}
-.portfolio {
-  &__title {
-    margin-bottom: 15px;
+  &__btn {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
   }
 }
 .btn {
-  &__container {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    margin: 15px 0 0 0;
-  }
   &__wrapper {
-    width: 45%;
+    width: 40%;
   }
 }
 </style>
