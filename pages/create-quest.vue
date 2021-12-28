@@ -253,6 +253,7 @@ const { GeoCode } = require('geo-coder');
 
 export default {
   name: 'CreateQuest',
+  middleware: ['employer-role'],
   data() {
     return {
       ads: {

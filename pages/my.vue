@@ -24,7 +24,7 @@
           v-else
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-          link="/create-quest"
+          :link="getEmptyLink"
         />
         <div class="quests__pager">
           <base-pager
@@ -41,7 +41,7 @@
 <script>
 
 import { mapGetters } from 'vuex';
-import { QuestStatuses } from '~/utils/enums';
+import { QuestStatuses, UserRole, Path } from '~/utils/enums';
 import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
 
@@ -77,12 +77,17 @@ export default {
         { name: this.$t('myQuests.statuses.invited'), id: 4 },
         { name: this.$t('myQuests.statuses.performed'), id: 5 },
       ];
-      return this.userRole === 'employer'
+      return this.userRole === UserRole.EMPLOYER
         ? tabs.filter((tab) => (tab.id < 1 || tab.id > 2))
         : tabs;
     },
     totalPages() {
       return Math.ceil(this.questsData.count / this.offset);
+    },
+    getEmptyLink() {
+      return this.userRole === UserRole.WORKER
+        ? ''
+        : Path.CREATE_QUEST;
     },
   },
   watch: {

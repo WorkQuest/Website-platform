@@ -91,3 +91,13 @@ export const questChatStatus = {
   Active: 0,
   Closed: 1,
 };
+
+export const UserRole = {
+  WORKER: 'worker',
+  EMPLOYER: 'employer',
+};
+
+export const Path = {
+  ROOT: '/quests',
+  CREATE_QUEST: '/create-quest',
+};
