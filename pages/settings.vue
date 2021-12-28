@@ -10,7 +10,6 @@
     >
       <verification-card v-if="userRole === 'worker' && isShowInfo === true" />
       <profile
-        :addresses="addresses"
         :profile="profile"
         :new-education="newEducation"
         :new-work-exp="newWorkExp"
@@ -80,7 +79,6 @@ export default {
         selectedSpecAndSkills: [],
       },
       isShowInfo: true,
-      addresses: [],
       newEducation: {
         from: '',
         to: '',

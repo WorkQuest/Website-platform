@@ -73,7 +73,7 @@
             <template v-slot:selector>
               <div
                 v-if="addresses.length && isSearchDDStatus"
-                class="selector"
+                class="profile__selector selector"
               >
                 <div class="selector__items">
                   <div
@@ -323,10 +323,6 @@ export default {
       type: Object,
       default: null,
     },
-    addresses: {
-      type: Array,
-      default: () => {},
-    },
     newEducation: {
       type: Object,
       default: null,
@@ -340,6 +336,7 @@ export default {
     return {
       isSearchDDStatus: false,
       secondPhone: null,
+      addresses: [],
     };
   },
   computed: {
@@ -569,6 +566,15 @@ export default {
   }
   &__btn {
     max-width: 250px;
+  }
+  .selector {
+    &__items {
+      padding: 10px;
+      background-color: $black0;
+      border-radius: 5px;
+      border: 1px solid $blue;
+      cursor: pointer;
+    }
   }
 }
 
