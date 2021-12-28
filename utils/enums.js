@@ -42,14 +42,14 @@ export const QuestStatuses = {
 };
 
 export const InfoModeEmployer = {
-  RaiseViews: 1,
-  Active: 2,
-  Created: 3,
+  Rejected: -1,
+  Created: 0,
+  Active: 1,
+  Closed: 2,
+  Dispute: 3,
   WaitWorker: 4,
-  WaitConfirm: 6,
-  Dispute: 7,
-  Closed: 8,
-  Done: 9,
+  WaitConfirm: 5,
+  Done: 6,
 };
 export const InfoModeWorker = {
   ADChat: 1,

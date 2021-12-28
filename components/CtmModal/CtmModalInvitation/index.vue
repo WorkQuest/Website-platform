@@ -104,10 +104,10 @@ export default {
       userData: 'user/getUserData',
     }),
     cardLevelClass() {
-      const { card } = this;
+      const { code } = this.card.level;
       return [
-        { card__level_reliable: card.level.code === '2' },
-        { card__level_checked: card.level.code === '3' },
+        { card__level_reliable: code === '2' },
+        { card__level_checked: code === '3' },
       ];
     },
   },
@@ -123,10 +123,10 @@ export default {
       this.questFiltered = this.questList.quests.filter((quest) => quest.status === 0);
     },
     async inviteOnQuest(questIndex) {
-      const questId = this.questList.quests[questIndex].id || '';
+      const questId = this.questFiltered[questIndex].id || '';
       const payload = {
         invitedUserId: this.options.userId || '',
-        message: this.message_input || '',
+        message: this.message_input || null,
       };
       try {
         await this.$store.dispatch('quests/inviteOnQuest', { questId, payload });

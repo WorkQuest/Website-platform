@@ -28,25 +28,18 @@
         </base-btn>
       </div>
     </div>
-    <div class="priority">
+    <div
+      v-if="![InfoModeWorker.WaitWorker, InfoModeWorker.Closed].includes(infoDataMode)"
+      class="priority"
+    >
+      <span class="price__value">
+        {{ questData.price }} {{ $t('quests.wusd') }}
+      </span>
       <div
-        v-if="![InfoModeWorker.WaitWorker, InfoModeWorker.Closed].includes(infoDataMode)"
-        class="price__container"
+        class="priority__title"
+        :class="getPriorityClass(questData.priority)"
       >
-        <span class="price__value">
-          {{ questData.price }} {{ $t('quests.wusd') }}
-        </span>
-      </div>
-      <div
-        class="priority__container"
-      >
-        <div
-          v-if="![InfoModeWorker.WaitWorker, InfoModeWorker.Closed].includes(infoDataMode)"
-          class="priority__title"
-          :class="getPriorityClass(questData.priority)"
-        >
-          {{ getPriority(questData.priority) }}
-        </div>
+        {{ getPriority(questData.priority) }}
       </div>
     </div>
   </div>
@@ -61,6 +54,8 @@ export default {
   name: 'QuestIdWorker',
   computed: {
     ...mapGetters({
+      assignedWorker: 'quests/getAssignedWorker',
+      userData: 'user/getUserData',
       questData: 'quests/getQuest',
       infoDataMode: 'quests/getInfoDataMode',
     }),
@@ -71,10 +66,10 @@ export default {
       const {
         ADChat, Active, Rejected, Created, Dispute, Invited, WaitWorker,
       } = InfoModeWorker;
-      const { response } = this.questData;
+      const { questData: { response, assignedWorkerId }, userData, infoDataMode } = this;
 
       let arr = [];
-      switch (this.infoDataMode) {
+      switch (infoDataMode) {
         case ADChat: {
           arr = [{
             name: this.$t('btn.agree'),
@@ -103,6 +98,8 @@ export default {
           break;
         }
         case Active: {
+          if (assignedWorkerId !== userData.id) break;
+
           arr = [{
             name: this.$t('btn.dispute'),
             class: 'base-btn_dispute',
@@ -137,7 +134,7 @@ export default {
             mode: '',
             funcKey: 'sendARequestOnQuest',
             icon: '',
-            disabled: !response,
+            disabled: response,
           }];
           break;
         }
@@ -153,7 +150,7 @@ export default {
           break;
         }
         case Invited: {
-          if (response.status === responseStatus.rejected) break;
+          if (response.status === responseStatus.rejected || (assignedWorkerId && assignedWorkerId !== userData.id)) break;
 
           arr = [{
             name: this.$t('btn.goToChat'),
@@ -163,6 +160,7 @@ export default {
             icon: 'icon-chat icon_fs-20',
             disabled: false,
           }];
+
           if (response.status === responseStatus.awaiting) {
             arr = [{
               name: this.$t('btn.agree'),
@@ -184,6 +182,8 @@ export default {
           break;
         }
         case WaitWorker: {
+          if (assignedWorkerId !== userData.id) break;
+
           arr = [{
             name: this.$t('btn.agree'),
             class: '',
@@ -316,14 +316,6 @@ export default {
   align-items: center;
   justify-content: flex-end;
   gap: 15px;
-  &__container {
-    @include text-simple;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    display: flex;
-    grid-gap: 10px;
-  }
   &__title {
     @include text-simple;
     display: flex;
@@ -349,23 +341,11 @@ export default {
   }
 }
 .price {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   &__value {
     @include text-simple;
     color: $green;
     font-weight: bold;
     font-size: 25px;
-  }
-  &__container {
-    @extend .price;
-    justify-content: flex-end;
-  }
-  &__wrapper {
-    @extend .price;
-    margin:0 0 30px 0;
-    justify-content: space-between;
   }
 }
 .btns {
@@ -378,16 +358,15 @@ export default {
     margin-bottom: 20px;
   }
   &__wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 20px;
+    justify-content: start;
   }
 }
 .btn {
   &__wrapper {
     width: 220px;
-    margin: 0 20px 0 0;
   }
 }
-
 </style>

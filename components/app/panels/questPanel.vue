@@ -50,12 +50,10 @@
         </div>
       </div>
     </div>
-    <div
+    <skills
       v-if="questData.questSpecializations"
-      class="badge-cont"
-    >
-      <skills :specializations="questData.questSpecializations" />
-    </div>
+      :specializations="questData.questSpecializations"
+    />
   </div>
 </template>
 
@@ -181,9 +179,6 @@ export default {
   }
 }
 
-.badge-cont {
-  margin-bottom: 10px;
-}
 .user {
   @include text-simple;
   color: $black800;

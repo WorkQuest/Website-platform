@@ -1,8 +1,11 @@
 <template>
-  <div>
+  <div
+    v-if="questData"
+    class="quest-page"
+  >
     <info />
     <div class="main main-white">
-      <div class="main__body">
+      <div class="main__body main__body_20gap">
         <questPanel :location="questLocation" />
 
         <div class="quest__container">
@@ -20,13 +23,12 @@
           </div>
           <files-preview :medias="questData.medias" />
         </template>
-        <div class="divider" />
         <questIdEmployer v-if="userRole === 'employer'" />
         <questIdWorker v-if="userRole === 'worker'" />
       </div>
     </div>
     <div class="main">
-      <div class="main__body main__body_grid">
+      <div class="main__body main__body_30gap">
         <div class="main__map">
           <transition name="fade-fast">
             <GmapMap
@@ -162,10 +164,9 @@ export default {
     },
   },
   async beforeMount() {
+    this.SetLoader(true);
     await this.initData();
     await this.getResponsesToQuest();
-  },
-  mounted() {
     this.SetLoader(false);
   },
   methods: {
@@ -288,10 +289,14 @@ export default {
   }
 
   &__body {
+    display: grid;
 
-    &_grid {
-      display: grid;
+    &_30gap {
       gap: 30px;
+    }
+
+    &_20gap {
+      gap: 20px;
     }
   }
 }

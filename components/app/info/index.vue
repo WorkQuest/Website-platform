@@ -4,7 +4,7 @@
     :class="infoClass"
   >
     <div
-      v-if="userRole === 'employer' && ![InfoModeEmployer.RaiseViews, InfoModeEmployer.Created].includes(infoDataMode)"
+      v-if="userRole === 'employer' && infoDataMode !== InfoModeEmployer.Created"
       class="info__body"
     >
       <div class="info__left">

@@ -68,8 +68,8 @@ export default {
     try {
       const { result } = await this.$axios.$get(`/v1/quest/${payload}`);
       const { role } = rootState.user.userData;
-      let currStat = 1;
-      const { assignedWorkerId, status, response } = result;
+      let currStat = 0;
+      const { status, response } = result;
 
       const questStatuses = Object.entries(QuestStatuses);
 
@@ -77,14 +77,10 @@ export default {
         questStatuses.some(([key, val]) => {
           if (val === status) {
             currStat = InfoModeEmployer[key];
-            // val === Created && !responsesData.count ? RaiseViews :
             return true;
           }
           return false;
         });
-
-        // case status === QuestStatuses.WaitConfirm && Object.keys(assignedWorker).length > 0: payload = InfoModeEmployer.WaitConfirm; break;
-        // case status === QuestStatuses.Done && responsesCount > 0: payload = InfoModeEmployer.Done; break;
       } else if (role === 'worker') {
         questStatuses.some(([key, val]) => {
           if (val === status) {
@@ -94,8 +90,6 @@ export default {
           }
           return false;
         });
-
-        // case status === QuestStatuses.Rejected && this.questData.response !== null: payload = InfoModeWorker.Rejected; break;
       }
 
       commit('setInfoDataMode', currStat);

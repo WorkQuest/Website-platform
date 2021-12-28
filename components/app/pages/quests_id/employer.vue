@@ -1,275 +1,67 @@
 <template>
-  <div>
-    <div
-      v-if="infoDataMode === InfoModeEmployer.RaiseViews"
-      class="btns__container"
-    >
-      <div
-        class="btns__wrapper"
-      >
-        <div class="btn__wrapper">
-          <base-btn @click="toRaisingViews">
-            {{ $t('quests.raiseViews') }}
-          </base-btn>
-        </div>
-        <div class="btn__wrapper">
-          <base-btn
-            mode="delete"
-            @click="closeQuest"
-          >
-            {{ $t('btn.closeQuest') }}
-          </base-btn>
-        </div>
-      </div>
-    </div>
-    <div v-if="infoDataMode === InfoModeEmployer.Active && assignedWorker">
+  <div class="employer-cont">
+    <template v-if="assignedWorker">
       <div class="worker__title">
         {{ $t('quests.worker') }}
       </div>
       <div class="worker__container">
-        <div>
-          <img
-            class="worker__avatar"
-            :src="assignedWorker.avatar ? assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-            alt=""
-          >
-        </div>
-        <div
-          class="worker__name"
+        <nuxt-link
+          :to="`/profile/${assignedWorker.id}`"
+          class="worker__user-data"
         >
-          {{ assignedWorker.firstName }} {{ assignedWorker.lastName }}
-        </div>
-        <div>
-          <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА Нет Бэка-->
-          <!--          <div-->
-          <!--            v-if="badge.code !== 0"-->
-          <!--            class="card__level_higher"-->
-          <!--            :class="[-->
-          <!--              {'card__level_higher': badge.code === 1},-->
-          <!--              {'card__level_reliable': badge.code === 2},-->
-          <!--              {'card__level_checked': badge.code === 3}-->
-          <!--            ]"-->
-          <!--          >-->
-          <!--            <span v-if="badge.code === 1">-->
-          <!--              {{ $t('levels.higher') }}-->
-          <!--            </span>-->
-          <!--            <span v-if="badge.code === 2">-->
-          <!--              {{ $t('levels.reliableEmp') }}-->
-          <!--            </span>-->
-          <!--            <span v-if="badge.code === 3">-->
-          <!--              {{ $t('levels.checkedByTime') }}-->
-          <!--            </span>-->
-          <!--          </div>-->
-        </div>
-      </div>
-    </div>
-    <!--                      TODO: НАСТРОИТЬ ВЫВОД ЕСЛИ ПОЛЬЗОВАТЕЛЬ ПРИГЛАШЕН КЕМ-ТО INVITED-->
-    <!--              <div class="worker__title">{{ $t('quests.youInvited') }}</div>-->
-    <!--              <div class="worker__container">-->
-    <!--                <div>-->
-    <!--                  <img-->
-    <!--                    class="worker__avatar"-->
-    <!--                    src="~/assets/img/temp/avatar.jpg"-->
-    <!--                    alt=""-->
-    <!--                  >-->
-    <!--                </div>-->
-    <!--                <div class="worker__name">-->
-    <!--                  Rosalia Vans-->
-    <!--                </div>-->
-    <!--                <div>-->
-    <!--                  <div-->
-    <!--                    v-if="badge.code !== 0"-->
-    <!--                    class="card__level_higher"-->
-    <!--                    :class="[-->
-    <!--                      {'card__level_higher': badge.code === 1},-->
-    <!--                      {'card__level_reliable': badge.code === 2},-->
-    <!--                      {'card__level_checked': badge.code === 3}-->
-    <!--                    ]"-->
-    <!--                  >-->
-    <!--                    <span v-if="badge.code === 1">-->
-    <!--                      {{ $t('levels.higher') }}-->
-    <!--                    </span>-->
-    <!--                    <span v-if="badge.code === 2">-->
-    <!--                      {{ $t('levels.reliableEmp') }}-->
-    <!--                    </span>-->
-    <!--                    <span v-if="badge.code === 3">-->
-    <!--                      {{ $t('levels.checkedByTime') }}-->
-    <!--                    </span>-->
-    <!--                  </div>-->
-    <!--                </div>-->
-    <!--              </div>-->
-    <!--    </div>-->
-    <div v-if="infoDataMode === InfoModeEmployer.WaitWorker && assignedWorker">
-      <div
-        class="worker__title"
-      >
-        {{ $t('quests.worker') }}
-      </div>
-      <div class="worker__container_row">
-        <nuxt-link :to="`/profile/${workerId}`">
           <img
             class="worker__avatar"
-            :src="assignedWorker.avatar ? assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+            :src="avatar"
             alt=""
           >
-        </nuxt-link>
-        <div
-          class="worker__name"
-        >
-          {{ assignedWorker.firstName }} {{ assignedWorker.lastName }}
-        </div>
-        <div>
-          <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
-          <div
-            v-if="![0].includes(badge.code)"
-            class="card__level_higher"
-            :class="cardBadgeLevel"
-          >
-            {{ cardBadgeLevelText }}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      v-if="infoDataMode === InfoModeEmployer.WaitConfirm && assignedWorker"
-      class="btns__container"
-    >
-      <div>
-        <div class="worker__title">
-          {{ $t('quests.worker') }}
-        </div>
-        <div class="worker__container_row">
-          <img
-            class="worker__avatar"
-            :src="assignedWorker.avatar ? assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-            alt=""
-          >
-          <div
-            class="worker__name"
-          >
+          <div class="worker__name">
             {{ assignedWorker.firstName }} {{ assignedWorker.lastName }}
           </div>
-          <div>
-            <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
-            <div
-              v-if="![0].includes(badge.code)"
-              class="card__level_higher"
-              :class="cardBadgeLevel"
-            >
-              {{ cardBadgeLevelText }}
-            </div>
-          </div>
-        </div>
-        <div class="btns__wrapper">
-          <div class="btn__wrapper">
-            <base-btn
-              mode="approve"
-              @click="acceptCompletedWorkOnQuest"
-            >
-              {{ $t('btn.acceptCompletedWorkOnQuest') }}
-            </base-btn>
-          </div>
-          <div class="btn__wrapper">
-            <base-btn
-              @click="rejectCompletedWorkOnQuest"
-            >
-              {{ $t('btn.rejectCompletedWorkOnQuest') }}
-            </base-btn>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-if="[InfoModeEmployer.Dispute, InfoModeEmployer.Closed].includes(infoDataMode) && assignedWorker">
-      <div class="worker__title">
-        {{ $t('quests.worker') }}
-      </div>
-      <div class="worker__container_row">
-        <div>
-          <img
-            class="worker__avatar"
-            :src="assignedWorker.avatar ? assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-            alt=""
-          >
-        </div>
+        </nuxt-link>
         <div
-          class="worker__name"
+          v-if="![0].includes(badge.code)"
+          class="card__level_higher"
+          :class="cardBadgeLevel"
         >
-          {{ assignedWorker.firstName }} {{ assignedWorker.lastName }}
-        </div>
-        <div>
-          <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
-          <div
-            v-if="![0].includes(badge.code)"
-            class="card__level_higher"
-            :class="cardBadgeLevel"
-          >
-            {{ cardBadgeLevelText }}
-          </div>
+          {{ cardBadgeLevelText }}
         </div>
       </div>
-      <div class="btns__container">
-        <div
-          v-if="infoDataMode === InfoModeEmployer.Dispute"
-          class="btns__wrapper"
-        >
-          <div class="btn__wrapper">
-            <base-btn @click="openDispute()">
-              {{ $t('btn.dispute') }}
-            </base-btn>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-if="infoDataMode === InfoModeEmployer.Done && assignedWorker">
-      <div class="worker__title">
-        {{ $t('quests.worker') }}
-      </div>
-      <div class="worker__container_row">
-        <div>
-          <img
-            class="worker__avatar"
-            :src="assignedWorker.avatar ? assignedWorker.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-            alt=""
-          >
-        </div>
-        <div
-          class="worker__name"
-        >
-          {{ assignedWorker.firstName }} {{ assignedWorker.lastName }}
-        </div>
-        <div>
-          <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
-          <div
-            v-if="![0].includes(badge.code)"
-            class="card__level_higher"
-            :class="cardBadgeLevel"
-          >
-            {{ cardBadgeLevelText }}
-          </div>
-        </div>
-      </div>
-    </div>
+    </template>
     <div
-      v-if="![InfoModeEmployer.WaitWorker, InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode)"
-      class="btns__container"
+      v-if="actionBtnsArr.length || ![InfoModeEmployer.WaitWorker, InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode)"
+      class="employer-cont__more-data"
     >
-      <div class="priority">
+      <div
+        v-if="actionBtnsArr.length"
+        class="btns__wrapper"
+      >
         <div
-          class="price__container"
+          v-for="(btn, i) in actionBtnsArr"
+          :key="i"
+          class="btn__wrapper"
         >
-          <span class="price__value">
-            {{ questData.price }} {{ $t('quests.wusd') }}
-          </span>
-        </div>
-        <div
-          class="priority__container"
-        >
-          <div
-            class="priority__title"
-            :class="getPriorityClass(questData.priority)"
+          <base-btn
+            :class="btn.class"
+            :mode="btn.mode"
+            :disabled="btn.disabled"
+            @click="handleClickSpecBtn(btn.funcKey)"
           >
-            {{ getPriority(questData.priority) }}
-          </div>
+            {{ btn.name }}
+          </base-btn>
+        </div>
+      </div>
+      <div
+        v-if="![InfoModeEmployer.WaitWorker, InfoModeEmployer.Closed, InfoModeEmployer.Done].includes(infoDataMode)"
+        class="priority"
+      >
+        <span class="price__value">
+          {{ questData.price }} {{ $t('quests.wusd') }}
+        </span>
+        <div
+          class="priority__title"
+          :class="getPriorityClass"
+        >
+          {{ getPriority }}
         </div>
       </div>
     </div>
@@ -283,12 +75,6 @@ import { InfoModeEmployer, QuestStatuses } from '~/utils/enums';
 
 export default {
   name: 'QuestIdEmployer',
-  props: {
-    workerId: {
-      type: String,
-      default: '',
-    },
-  },
   data() {
     return {
       badge: {
@@ -328,23 +114,77 @@ export default {
       }
       return '';
     },
+    avatar() {
+      return this.assignedWorker.avatar?.url || require('~/assets/img/app/avatar_empty.png');
+    },
+    getPriority() {
+      const { priority } = this.questData;
+
+      return priority !== null ? this.$t(`priority.${['low', 'normal', 'urgent'][priority]}`) : '';
+    },
+    getPriorityClass() {
+      const { priority } = this.questData;
+
+      return priority !== null ? `priority__title_${['low', 'normal', 'urgent'][priority]}` : '';
+    },
+    actionBtnsArr() {
+      const { WaitConfirm, Dispute, Created } = InfoModeEmployer;
+
+      let arr = [];
+
+      switch (this.infoDataMode) {
+        case Created: {
+          arr = [{
+            name: this.$t('quests.raiseViews'),
+            class: '',
+            mode: '',
+            funcKey: 'toRaisingViews',
+            disabled: false,
+          },
+          {
+            name: this.$t('btn.closeQuest'),
+            class: '',
+            mode: 'delete',
+            funcKey: 'closeQuest',
+            disabled: false,
+          }];
+          break;
+        }
+        case WaitConfirm: {
+          arr = [{
+            name: this.$t('btn.acceptCompletedWorkOnQuest'),
+            class: '',
+            mode: 'approve',
+            funcKey: 'acceptCompletedWorkOnQuest',
+            disabled: false,
+          },
+          {
+            name: this.$t('btn.rejectCompletedWorkOnQuest'),
+            class: '',
+            mode: '',
+            funcKey: 'rejectCompletedWorkOnQuest',
+            disabled: false,
+          }];
+          break;
+        }
+        case Dispute: {
+          arr = [{
+            name: this.$t('btn.dispute'),
+            class: '',
+            mode: '',
+            funcKey: 'openDispute',
+            disabled: false,
+          }];
+          break;
+        }
+        default: break;
+      }
+      return arr;
+    },
   },
   methods: {
-    getPriority(index) {
-      const priority = {
-        0: this.$t('priority.low'),
-        1: this.$t('priority.normal'),
-        2: this.$t('priority.urgent'),
-      };
-      return priority[index] || '';
-    },
-    getPriorityClass(index) {
-      const priority = {
-        0: 'priority__title_low',
-        1: 'priority__title_normal',
-        2: 'priority__title_urgent',
-      };
-      return priority[index] || '';
+    handleClickSpecBtn(funcKey) {
+      this[funcKey]();
     },
     async closeQuest() {
       const modalMode = 1;
@@ -413,20 +253,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.priority {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 15px;
-  &__container {
-    @include text-simple;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    display: flex;
-    grid-gap: 10px;
+.employer-cont {
+
+  &__more-data {
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    padding: 20px 0;
+    border-top: 1px solid #F7F8FA;
   }
+}
+.priority {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 15px;
+  align-items: center;
+  justify-content: end;
+
   &__title {
     @include text-simple;
     display: flex;
@@ -451,14 +293,6 @@ export default {
     }
   }
 }
-.info__message {
-  margin: 10px 0;
-}
-.badge-list {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
 
 .price {
   display: flex;
@@ -470,76 +304,40 @@ export default {
     font-weight: bold;
     font-size: 25px;
   }
-  &__container {
-    @extend .price;
-    justify-content: flex-end;
-  }
-  &__wrapper {
-    @extend .price;
-    margin:0 0 30px 0;
-    justify-content: space-between;
-  }
 }
 .btns {
-  &__container {
-    display: grid;
-    margin-bottom: 20px;
-  }
   &__wrapper {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-auto-flow: column;
     align-items: center;
+    gap: 20px;
+    justify-content: start;
   }
 }
 .btn {
   &__wrapper {
     width: 220px;
-    margin: 0 20px 0 0;
   }
 }
-.row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin: 0 0 10px 0;
-}
+
 .worker {
   font-size: 16px;
   font-weight: 500;
   color: $black800;
-  &__card {
-    margin: 30px 0;
-    background: $white;
-    border-radius: 6px;
-  }
-  &__message {
-    @include text-simple;
-    margin: 0 0 10px 0;
-    font-size: 16px;
-    color: $black500;
-  }
-  &__col {
-    &_two {
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(2, auto);
-      justify-content: space-between;
-      align-items: center;
-    }
-  }
-  &__container_row {
-    display: flex;
-    flex-direction: row;
-    justify-items: flex-start;
+  &__container {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 10px;
+    justify-content: start;
     align-items: center;
     margin: 20px 0;
   }
-  &__container {
-    display: flex;
-    flex-direction: column;
-    justify-items: flex-start;
-    align-items: flex-start;
-    margin: 20px 0;
+  &__user-data {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 10px;
+    justify-content: start;
+    align-items: center;
   }
   &__avatar {
     border-radius: 50%;
@@ -554,7 +352,6 @@ export default {
   &__title {
     @extend .worker;
     font-size: 18px;
-    margin: 20px 0 20px 0;
   }
 }
 .card {

@@ -25,7 +25,7 @@
         <base-dd
           class="worker__menu"
           :placeholder="30"
-          :items="response.worker.status ? ddUserActions : ddUserFullActions"
+          :items="!isInvited || response.status ? ddUserFullActions : ddUserActions"
           is-dots-vue
           @input="handleUserAction($event, response)"
         />
@@ -160,7 +160,7 @@ export default {
 }
 .user-data {
   display: grid;
-  grid-template-columns: 40px 1fr;
+  grid-template-columns: 40px max-content;
   align-items: center;
   gap: 10px;
 }
