@@ -98,6 +98,7 @@ export default {
 
   beforeDestroy() {
     this.$GMaps.loaded = false;
+    clearTimeout(this.timeoutIdRequest);
   },
 
   methods: {
