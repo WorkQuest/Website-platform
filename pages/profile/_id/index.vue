@@ -302,10 +302,7 @@ export default {
       return Math.ceil(this.reviews.count / this.perPagerReviews);
     },
     totalPortfoliosPages() {
-      if (this.portfolios) {
-        return Math.ceil(this.portfolios.count / this.perPagerPortfolios);
-      }
-      return 0;
+      return Math.ceil(this.portfolios.count / this.perPagerPortfolios);
     },
     statisticsData() {
       return [

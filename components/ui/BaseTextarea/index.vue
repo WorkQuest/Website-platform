@@ -155,9 +155,6 @@ export default {
     border: 0;
     background-color: $black0;
     resize: none;
-    //&::placeholder {
-    //  color: $black200;
-    //}
     &::placeholder {
       color: $black300;
     }
