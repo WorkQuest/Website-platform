@@ -95,16 +95,13 @@ export default {
         data: {},
         file: {},
       },
-      updatedFirstPhone: null,
       updatedSecondPhone: null,
-      specCount: 0,
     };
   },
   computed: {
     ...mapGetters({
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      applicantStatus: 'sumsub/getApplicantStatus',
       accessToken: 'sumsub/getSumSubBackendToken',
       filters: 'quests/getFilters',
     }),
@@ -134,14 +131,6 @@ export default {
       if (workplace === 'office') return 1;
       if (workplace === 'both') return 2;
       return null;
-    },
-
-    getApplicantStatus() {
-      try {
-        this.$store.dispatch('sumsub/applicantStatus', this.accessToken.userId);
-      } catch (e) {
-        console.log(e);
-      }
     },
 
     // MODALS METHODS

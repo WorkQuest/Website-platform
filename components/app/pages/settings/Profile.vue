@@ -36,7 +36,7 @@
           />
           <base-field
             v-model="profile.firstName"
-            rules="required"
+            rules="required||max:50"
             :placeholder="$t('settings.nameInput')"
             mode="icon"
             :name="$t('settings.firstName')"
@@ -47,7 +47,7 @@
           </base-field>
           <base-field
             v-model="profile.lastName"
-            rules="required"
+            rules="required||max:50"
             :placeholder="$t('settings.lastNameInput')"
             mode="icon"
             :name="$t('settings.lastName')"
