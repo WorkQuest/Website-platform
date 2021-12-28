@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="knowledge"
-  >
+  <div class="knowledge">
     <base-field
       v-model="item.from"
       :name="$t('settings.workExps.from')"
