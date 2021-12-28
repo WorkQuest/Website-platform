@@ -1,7 +1,7 @@
 <template>
   <div class="auth">
     <ValidationObserver
-      v-if="step === walletState.signPage"
+      v-if="step === walletState.SignPage"
       v-slot="{ handleSubmit }"
       class="auth__container"
       tag="div"
@@ -69,7 +69,7 @@
           </div>
         </div>
         <div class="auth__action">
-          <base-btn :disabled="inProgress">
+          <base-btn :disabled="isLoading">
             {{ $t('signIn.login') }}
           </base-btn>
         </div>
@@ -119,7 +119,7 @@
       </div>
     </ValidationObserver>
     <div
-      v-if="step > walletState.signPage"
+      v-if="step > walletState.SignPage"
       class="auth__back"
       @click="back"
     >
@@ -141,7 +141,7 @@ import {
   createWallet, decryptStringWitheKey, encryptStringWithKey,
 } from '~/utils/wallet';
 import CreateWallet from '~/components/ui/CreateWallet';
-import { walletState } from '~/utils/enums';
+import { userStatuses, walletState } from '~/utils/enums';
 
 export default {
   name: 'SignIn',
@@ -151,20 +151,21 @@ export default {
   },
   data() {
     return {
-      inProgress: false,
       addressAssigned: false,
       userAddress: null,
-      step: walletState.signPage,
+      step: walletState.SignPage,
       model: {
         email: '',
         password: '',
       },
       remember: false,
+      userStatus: null,
     };
   },
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
+      isLoading: 'main/getIsLoading',
     }),
     walletState() {
       return walletState;
@@ -177,28 +178,28 @@ export default {
   },
   methods: {
     back() {
-      if (this.step === walletState.importOrCreate) {
-        this.step = walletState.signPage;
+      if (this.step === walletState.ImportOrCreate) {
+        this.step = walletState.SignPage;
         return;
       }
-      if (this.step === walletState.importMnemonic) {
-        this.step = !this.userAddress ? walletState.importOrCreate : walletState.signPage;
+      if (this.step === walletState.ImportMnemonic) {
+        this.step = !this.userAddress ? walletState.ImportOrCreate : walletState.SignPage;
         return;
       }
-      if (this.step === walletState.saveMnemonic) {
-        this.step = walletState.importOrCreate;
+      if (this.step === walletState.SaveMnemonic) {
+        this.step = walletState.ImportOrCreate;
         return;
       }
-      if (this.step === walletState.confirmMnemonic) {
-        this.step = walletState.saveMnemonic;
+      if (this.step === walletState.ConfirmMnemonic) {
+        this.step = walletState.SaveMnemonic;
       }
     },
     goStep(step) {
       this.step = step;
     },
     async signIn() {
-      if (this.inProgress) return;
-      this.inProgress = true;
+      if (this.isLoading) return;
+      this.SetLoader(true);
       this.model.email = this.model.email.trim();
       const { email, password } = this.model;
       const response = await this.$store.dispatch('user/signIn', {
@@ -206,12 +207,13 @@ export default {
         password,
       });
       if (response?.ok) {
-        if (response.result.userStatus === 0) { // Unconfirmed account
+        this.userStatus = response.result.userStatus;
+        if (this.userStatus === userStatuses.Unconfirmed) { // Unconfirmed account
           await this.$store.dispatch('main/showToast', {
             title: this.$t('registration.emailConfirmTitle'),
             text: this.$t('registration.emailConfirm'),
           });
-          this.inProgress = false;
+          this.SetLoader(false);
           return;
         }
 
@@ -220,8 +222,8 @@ export default {
 
         // Wallet is not assigned to this account
         if (!address) {
-          this.step = walletState.importOrCreate;
-          this.inProgress = false;
+          this.step = walletState.ImportOrCreate;
+          this.SetLoader(false);
           return;
         }
 
@@ -229,16 +231,16 @@ export default {
         const sessionData = JSON.parse(sessionStorage.getItem('mnemonic'));
         const storageData = JSON.parse(localStorage.getItem('mnemonic'));
         if (!sessionData && !storageData) {
-          this.step = walletState.importMnemonic;
-          this.inProgress = false;
+          this.step = walletState.ImportMnemonic;
+          this.SetLoader(false);
           return;
         }
 
         const sessionMnemonic = sessionData ? sessionData[address] : null;
         const storageMnemonic = storageData ? storageData[address] : null;
         if (!sessionMnemonic && !storageMnemonic) {
-          this.step = walletState.importMnemonic;
-          this.inProgress = false;
+          this.step = walletState.ImportMnemonic;
+          this.SetLoader(false);
           return;
         }
 
@@ -248,7 +250,7 @@ export default {
           if (wallet && wallet.address === this.userAddress) {
             this.saveMnemonic(wallet);
             this.redirectUser();
-            this.inProgress = false;
+            this.SetLoader(false);
             return;
           }
         }
@@ -260,7 +262,7 @@ export default {
           if (wallet && wallet.address === this.userAddress) {
             this.saveMnemonic(wallet);
             this.redirectUser();
-            this.inProgress = false;
+            this.SetLoader(false);
             return;
           }
         }
@@ -272,8 +274,8 @@ export default {
         });
         // Reset mnemonic for address -> importing
         this.saveMnemonic({ address, mnemonic: '' });
-        this.step = walletState.importMnemonic;
-        this.inProgress = false;
+        this.step = walletState.ImportMnemonic;
+        this.SetLoader(false);
       }
     },
     async assignWallet(wallet) {
@@ -328,7 +330,7 @@ export default {
         this.$router.push('/workers');
       } else if (this.userData.role === 'worker') {
         this.$router.push('/quests');
-      } else if (response.result.userStatus === 2) {
+      } else if (this.userStatus === userStatuses.NeedSetRole) {
         this.$router.push('/role');
       }
     },

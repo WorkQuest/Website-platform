@@ -93,9 +93,15 @@ export const questChatStatus = {
 };
 
 export const walletState = {
-  signPage: 1,
-  saveMnemonic: 2,
-  confirmMnemonic: 3,
-  importOrCreate: 4,
-  importMnemonic: 5,
+  SignPage: 1,
+  SaveMnemonic: 2,
+  ConfirmMnemonic: 3,
+  ImportOrCreate: 4,
+  ImportMnemonic: 5,
+};
+
+export const userStatuses = {
+  Unconfirmed: 0,
+  Confirmed: 1,
+  NeedSetRole: 2,
 };

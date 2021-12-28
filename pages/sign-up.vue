@@ -1,14 +1,14 @@
 <template>
   <div class="auth">
     <div
-      v-if="step > walletState.signPage"
+      v-if="step > walletState.SignPage"
       class="auth__back"
       @click="goStep(step - 1)"
     >
       <span class="icon-long_left" /> {{ $t('meta.back') }}
     </div>
     <ValidationObserver
-      v-if="step === walletState.signPage"
+      v-if="step === walletState.SignPage"
       v-slot="{ handleSubmit, valid }"
       tag="div"
       class="auth__container"
@@ -28,7 +28,7 @@
       <form
         class="auth__fields"
         action=""
-        @submit.prevent="handleSubmit(goStep(walletState.saveMnemonic))"
+        @submit.prevent="handleSubmit(goStep(walletState.SaveMnemonic))"
       >
         <base-field
           v-model="model.firstName"
@@ -143,7 +143,7 @@ export default {
   data() {
     return {
       error: '',
-      step: walletState.signPage,
+      step: walletState.SignPage,
       model: {
         firstName: '',
         lastName: '',
