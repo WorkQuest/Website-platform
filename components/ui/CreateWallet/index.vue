@@ -4,9 +4,7 @@
       v-if="step === walletState.SaveMnemonic"
       class="wallet__container"
     >
-      <div
-        class="wallet__text wallet__text_title"
-      >
+      <div class="wallet__text wallet__text_title">
         {{ $t('createWallet.savePhrase') }}
       </div>
       <form
