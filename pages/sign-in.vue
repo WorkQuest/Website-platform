@@ -275,7 +275,6 @@ export default {
         // Reset mnemonic for address -> importing
         this.saveMnemonic({ address, mnemonic: '' });
         this.step = WalletState.ImportMnemonic;
-        this.SetLoader(false);
       }
       this.SetLoader(false);
     },
