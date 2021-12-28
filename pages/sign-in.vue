@@ -119,7 +119,7 @@
       </div>
     </ValidationObserver>
     <div
-      v-if="step > 1"
+      v-if="step > walletState.signPage"
       class="auth__back"
       @click="back"
     >
@@ -154,7 +154,7 @@ export default {
       inProgress: false,
       addressAssigned: false,
       userAddress: null,
-      step: 1,
+      step: walletState.signPage,
       model: {
         email: '',
         password: '',
