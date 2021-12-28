@@ -1,8 +1,7 @@
 <template>
   <div class="wallet">
-    <ValidationObserver
+    <div
       v-if="step === walletState.SaveMnemonic"
-      v-slot="{ handleSubmit }"
       class="wallet__container"
     >
       <div
@@ -12,7 +11,7 @@
       </div>
       <form
         class="wallet__fields"
-        @submit.prevent="handleSubmit($emit('goStep', walletState.ConfirmMnemonic))"
+        @submit.prevent="$emit('goStep', walletState.ConfirmMnemonic)"
       >
         <div class="wallet__mnemonic">
           {{ mnemonic }}
@@ -46,7 +45,7 @@
           </base-btn>
         </div>
       </form>
-    </ValidationObserver>
+    </div>
     <ValidationObserver
       v-if="step === walletState.ConfirmMnemonic"
       v-slot="{ handleSubmit, valid }"
@@ -57,7 +56,7 @@
       </div>
       <form
         class="wallet__fields"
-        @submit.prevent="handleSubmit(submitNewWallet)"
+        @submit.prevent="submitNewWallet"
       >
         <base-field
           v-model="confirmMnemonic.first"
@@ -72,7 +71,7 @@
           :name="$t('createWallet.secret', { a: 7 })"
         />
         <div class="wallet__action">
-          <base-btn :disabled="!valid">
+          <base-btn :disabled="!valid || isLoading">
             <slot name="actionText">
               {{ $t('createWallet.create') }}
             </slot>
@@ -121,7 +120,7 @@
           :name="'Secret phrase'"
         />
         <div class="wallet__action">
-          <base-btn :disabled="!valid">
+          <base-btn :disabled="!valid || isLoading">
             <slot name="actionText">
               {{ $t('createWallet.importWallet') }}
             </slot>
@@ -133,9 +132,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { createWallet, generateMnemonic } from '~/utils/wallet';
 
-const { walletState } = require('~/utils/enums');
+const { WalletState } = require('~/utils/enums');
 
 export default {
   name: 'CreateWallet',
@@ -161,13 +161,16 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      isLoading: 'main/getIsLoading',
+    }),
     walletState() {
-      return walletState;
+      return WalletState;
     },
   },
   watch: {
     step(newVal) {
-      if (newVal === walletState.SignPage) this.generate();
+      if (newVal === WalletState.SignPage) this.generate();
     },
   },
   mounted() {

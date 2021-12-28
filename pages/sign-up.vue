@@ -28,7 +28,7 @@
       <form
         class="auth__fields"
         action=""
-        @submit.prevent="handleSubmit(goStep(walletState.SaveMnemonic))"
+        @submit.prevent="goStep(walletState.SaveMnemonic)"
       >
         <base-field
           v-model="model.firstName"
@@ -107,7 +107,7 @@
           </template>
         </base-field>
         <div class="auth__action">
-          <base-btn :disabled="!valid">
+          <base-btn :disabled="!valid || isLoading">
             {{ $t('meta.next') }}
           </base-btn>
         </div>
@@ -126,13 +126,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import CreateWallet from '~/components/ui/CreateWallet';
 import {
   encryptStringWithKey,
   generateMnemonic,
 } from '~/utils/wallet';
-import { walletState } from '~/utils/enums';
+import { WalletState } from '~/utils/enums';
 
 export default {
   name: 'SignUp',
@@ -143,7 +144,7 @@ export default {
   data() {
     return {
       error: '',
-      step: walletState.SignPage,
+      step: WalletState.SignPage,
       model: {
         firstName: '',
         lastName: '',
@@ -164,8 +165,11 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      isLoading: 'main/getIsLoading',
+    }),
     walletState() {
-      return walletState;
+      return WalletState;
     },
   },
   async mounted() {
@@ -181,6 +185,7 @@ export default {
       this.step = step;
     },
     async signUp(wallet) {
+      this.SetLoader(true);
       this.model.email = this.model.email.trim();
       this.model.firstName = this.model.firstName.trim();
       this.model.lastName = this.model.lastName.trim();
@@ -208,6 +213,7 @@ export default {
           this.showConfirmEmailModal();
         }
       }
+      this.SetLoader(false);
     },
     showConfirmEmailModal() {
       this.ShowModal({
