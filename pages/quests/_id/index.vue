@@ -148,12 +148,6 @@
               :object="questsObjects"
               :page="'quests'"
             />
-            <emptyData
-              v-else
-              :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
-              :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-              :link="userRole === 'employer' ? '/create-quest' : '/quests'"
-            />
           </div>
         </div>
       </div>
@@ -164,13 +158,14 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
-  InfoModeEmployer, InfoModeWorker, QuestStatuses, responseStatus,
+  QuestStatuses, InfoModeWorker, InfoModeEmployer, responsesType, UserRole,
 } from '~/utils/enums';
+import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
 import quests from '~/components/app/pages/common/quests';
-import emptyData from '~/components/app/info/emptyData';
-import modals from '~/store/modals/modals';
+import questIdEmployer from '~/components/app/pages/quests_id/employer';
+import questIdWorker from '~/components/app/pages/quests_id/worker';
 
 export default {
   name: 'Quests',
@@ -178,7 +173,8 @@ export default {
     info,
     questPanel,
     quests,
-    emptyData,
+    questIdEmployer,
+    questIdWorker,
   },
   data() {
     return {
@@ -469,7 +465,63 @@ export default {
       await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     },
     async getResponsesToQuest() {
-      if (this.userRole === 'employer') await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
+      if (this.userRole === UserRole.EMPLOYER) {
+        await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
+      }
+    },
+    getFilteredResponses() {
+      if (this.userRole === UserRole.EMPLOYER) {
+        this.filteredResponses = this.responsesToQuest ? this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Responded) : [];
+        this.filteredInvited = this.responsesToQuest ? this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Invited) : [];
+        return this.filteredResponses && this.filteredInvited;
+      }
+      return '';
+    },
+    async initUserAvatar() {
+      this.userAvatar = await this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
+    },
+    async checkPageMode() {
+      let payload = 1;
+      const responsesCount = this.userRole === UserRole.EMPLOYER
+        ? this.responsesData.count : Object.keys(this.respondedList).length;
+      const { assignedWorker } = this.questData;
+      const { assignedWorkerId } = this.questData;
+      const { userRole } = this;
+      const userId = this.userData.id;
+      const questStatus = this.questData.status;
+      if (userRole === UserRole.EMPLOYER) {
+        switch (true) {
+          case responsesCount === 0
+          && questStatus === QuestStatuses.Created: payload = InfoModeEmployer.RaiseViews; break;
+          case responsesCount > 0
+          && questStatus === QuestStatuses.Created: payload = InfoModeEmployer.Created; break;
+          case Object.keys(assignedWorker).length > 0
+          && ![QuestStatuses.Closed, QuestStatuses.Dispute, QuestStatuses.WaitConfirm, QuestStatuses.Done].includes(questStatus):
+            payload = InfoModeEmployer.WaitWorker; break;
+          case questStatus === QuestStatuses.Active: payload = InfoModeEmployer.Active; break;
+          case questStatus === QuestStatuses.Closed: payload = InfoModeEmployer.Closed; break;
+          case questStatus === QuestStatuses.Dispute: payload = InfoModeEmployer.Dispute; break;
+          case questStatus === QuestStatuses.WaitConfirm && Object.keys(assignedWorker).length > 0: payload = InfoModeEmployer.WaitConfirm; break;
+          case questStatus === QuestStatuses.Done && responsesCount > 0: payload = InfoModeEmployer.Done; break;
+          default: { payload = InfoModeEmployer.RaiseViews; break; }
+        }
+        await this.$store.dispatch('quests/setInfoDataMode', payload);
+      }
+      if (userRole === UserRole.WORKER) {
+        switch (true) {
+          case questStatus === QuestStatuses.Rejected && this.questData.response !== null: payload = InfoModeWorker.Rejected; break;
+          case questStatus === QuestStatuses.Created: payload = InfoModeWorker.Created; break;
+          case questStatus === QuestStatuses.Active: payload = InfoModeWorker.Active; break;
+          case questStatus === QuestStatuses.Closed: payload = InfoModeWorker.Closed; break;
+          case questStatus === QuestStatuses.Dispute: payload = InfoModeWorker.Dispute; break;
+          case questStatus === QuestStatuses.WaitConfirm: payload = InfoModeWorker.WaitConfirm; break;
+          case questStatus === QuestStatuses.Done: payload = InfoModeWorker.Done; break;
+          case assignedWorkerId === userId
+          && ![InfoModeWorker.Active, InfoModeWorker.Dispute].includes(questStatus): payload = InfoModeWorker.ADChat; break;
+          default: { payload = InfoModeWorker.ADChat; break; }
+        }
+        await this.$store.dispatch('quests/setInfoDataMode', payload);
+      }
     },
     coordinatesChange(item) {
       if (Object.keys(this.currentLocation).length > 0) {

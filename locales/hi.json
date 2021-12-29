@@ -62,7 +62,9 @@
     "required": "{_field_} फील्ड आवश्यक है",
     "size": "{_field_} फील्ड साइज {size}KB से कम होना चाहिए",
     "decimal": "{_field_} फील्ड में केवल दशमलव मान होने चाहिए",
-    "decimalPlaces": "{_field_} ??? {places}"
+    "decimalPlaces": "{_field_} ??? {places}",
+    "is": "The values do not match",
+    "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
     "firstName": "नाम का पहला शब्द",
@@ -216,8 +218,19 @@
     "email": "ईमेल",
     "password": "पासवर्ड",
     "confirmPassword": "पासवर्ड दोहराएं",
-    "create": "अकाउंट बनाएं",
-    "back": "वापस"
+    "create": "अकाउंट बनाएं"
+  },
+  "createWallet": {
+    "savePhrase": "Save your secret phrase",
+    "keptPhrase": "I have kept a secret phrase",
+    "confirmSecretPhrase": "Confirm secret phrase",
+    "typeSecret": "Type secret word #{a}",
+    "secret": "Secret word #{a}",
+    "create": "Create wallet",
+    "importWallet": "Import wallet",
+    "createOrImport": "Create or import secret wallet",
+    "typeSecretPhrase": "Type secret phrase",
+    "secretPhrase": "Secret phrase"
   },
   "forgot": {
     "title": "पासवर्ड भूल गए?",

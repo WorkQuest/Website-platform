@@ -155,7 +155,7 @@ export default {
       }
       const result = await this.$store.dispatch('web3/sendTransaction', {
         address: this.address,
-        amount: this.amount,
+        amount: this.amount - 0.001,
         balance: this.maxAmount,
       });
       if (result.status) {

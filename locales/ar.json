@@ -62,7 +62,9 @@
     "required": "الحقل {_field_} مطلوب",
     "size": "يجب ألا تزيد قيمة الحقل {_field_} عن {size} كيلوبايت",
     "decimal": "يجب ألا يحتوي الحقل {_field_} إلا على قيم عشرية",
-    "decimalPlaces": "{_field_} ??? {places}"
+    "decimalPlaces": "{_field_} ??? {places}",
+    "is": "The values do not match",
+    "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
     "firstName": "الاسم الأول",
@@ -216,8 +218,19 @@
     "email": "البريد الإلكتروني",
     "password": "كلمة المرور",
     "confirmPassword": "تكرار كلمة المرور",
-    "create": "إنشاء حساب",
-    "back": "العودة"
+    "create": "إنشاء حساب"
+  },
+  "createWallet": {
+    "savePhrase": "Save your secret phrase",
+    "keptPhrase": "I have kept a secret phrase",
+    "confirmSecretPhrase": "Confirm secret phrase",
+    "typeSecret": "Type secret word #{a}",
+    "secret": "Secret word #{a}",
+    "create": "Create wallet",
+    "importWallet": "Import wallet",
+    "createOrImport": "Create or import secret wallet",
+    "typeSecretPhrase": "Type secret phrase",
+    "secretPhrase": "Secret phrase"
   },
   "forgot": {
     "title": "نسيت كلمة المرور؟",

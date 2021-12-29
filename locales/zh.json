@@ -62,7 +62,9 @@
     "required": "“{_field_}”字段为必填字段",
     "size": "“{_field_}”字段必须小于 {size}KB",
     "decimal": "“{_field_}”字段必须仅包含十进制值",
-    "decimalPlaces": "{_field_} ??? {places}"
+    "decimalPlaces": "{_field_} ??? {places}",
+    "is": "The values do not match",
+    "mnemonic": "Incorrect secret phrase"
     },
   "labels": {
     "firstName": "名字",
@@ -216,8 +218,19 @@
     "email": "电子邮件",
     "password": "密码",
     "confirmPassword": "再次输入密码",
-    "create": "创建帐户",
-    "back": "后退"
+    "create": "创建帐户"
+  },
+  "createWallet": {
+    "savePhrase": "Save your secret phrase",
+    "keptPhrase": "I have kept a secret phrase",
+    "confirmSecretPhrase": "Confirm secret phrase",
+    "typeSecret": "Type secret word #{a}",
+    "secret": "Secret word #{a}",
+    "create": "Create wallet",
+    "importWallet": "Import wallet",
+    "createOrImport": "Create or import secret wallet",
+    "typeSecretPhrase": "Type secret phrase",
+    "secretPhrase": "Secret phrase"
   },
   "forgot": {
     "title": "忘记了密码？",

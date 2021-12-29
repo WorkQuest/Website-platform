@@ -18,7 +18,7 @@ export default {
   getQuestsLocation: (state) => state.questsLocation || '',
   getCurrentStepEditQuest: (state) => state.currentStepEditQuest || '',
   getCurrentStepCreateQuest: (state) => state.currentStepCreateQuest || '',
-  getMapBounds: (state) => state.mapBounds || '',
+  getMapBounds: (state) => state.mapBounds,
   getMapCenter: (state) => state.mapCenter || '',
   getResponsesToQuest: (state) => state.responses.responses || [],
   getResponded: (state) => state.responses.responses?.filter((response) => response.status === 0 && response.type === responsesType.Responded) || [],
