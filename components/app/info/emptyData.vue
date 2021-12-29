@@ -4,7 +4,7 @@
       <img
         class="absence__img"
         src="~/assets/img/temp/smile_sad.svg"
-        alt=""
+        alt="empty-icon"
       >
       <div
         v-if="description !== ''"

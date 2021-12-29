@@ -92,6 +92,16 @@ export const questChatStatus = {
   Closed: 1,
 };
 
+export const UserRole = {
+  WORKER: 'worker',
+  EMPLOYER: 'employer',
+};
+
+export const Path = {
+  ROOT: '/quests',
+  CREATE_QUEST: '/create-quest',
+};
+
 export const WalletState = {
   SignPage: 1,
   SaveMnemonic: 2,

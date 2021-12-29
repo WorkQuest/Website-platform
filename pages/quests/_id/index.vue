@@ -99,16 +99,10 @@
           {{ responsesToQuest.responses }}
           <div class="quest__card">
             <quests
-              v-if="questsObjects.count !== 0"
+              v-if="questsObjects.count"
               :limit="questLimits"
               :object="questsObjects"
               :page="'quests'"
-            />
-            <emptyData
-              v-else
-              :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
-              :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-              :link="userRole === 'employer' ? '/create-quest' : '/quests'"
             />
           </div>
         </div>
@@ -119,13 +113,12 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
-  QuestStatuses, InfoModeWorker, InfoModeEmployer, responsesType,
+  QuestStatuses, InfoModeWorker, InfoModeEmployer, responsesType, UserRole,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
 import quests from '~/components/app/pages/common/quests';
-import emptyData from '~/components/app/info/emptyData';
 import questIdEmployer from '~/components/app/pages/quests_id/employer';
 import questIdWorker from '~/components/app/pages/quests_id/worker';
 
@@ -135,7 +128,6 @@ export default {
     info,
     questPanel,
     quests,
-    emptyData,
     questIdEmployer,
     questIdWorker,
   },
@@ -227,12 +219,12 @@ export default {
       await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     },
     async getResponsesToQuest() {
-      if (this.userRole === 'employer') {
+      if (this.userRole === UserRole.EMPLOYER) {
         await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
       }
     },
     getFilteredResponses() {
-      if (this.userRole === 'employer') {
+      if (this.userRole === UserRole.EMPLOYER) {
         this.filteredResponses = this.responsesToQuest ? this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Responded) : [];
         this.filteredInvited = this.responsesToQuest ? this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Invited) : [];
         return this.filteredResponses && this.filteredInvited;
@@ -244,14 +236,14 @@ export default {
     },
     async checkPageMode() {
       let payload = 1;
-      const responsesCount = this.userRole === 'employer'
+      const responsesCount = this.userRole === UserRole.EMPLOYER
         ? this.responsesData.count : Object.keys(this.respondedList).length;
       const { assignedWorker } = this.questData;
       const { assignedWorkerId } = this.questData;
       const { userRole } = this;
       const userId = this.userData.id;
       const questStatus = this.questData.status;
-      if (userRole === 'employer') {
+      if (userRole === UserRole.EMPLOYER) {
         switch (true) {
           case responsesCount === 0
           && questStatus === QuestStatuses.Created: payload = InfoModeEmployer.RaiseViews; break;
@@ -269,7 +261,7 @@ export default {
         }
         await this.$store.dispatch('quests/setInfoDataMode', payload);
       }
-      if (userRole === 'worker') {
+      if (userRole === UserRole.WORKER) {
         switch (true) {
           case questStatus === QuestStatuses.Rejected && this.questData.response !== null: payload = InfoModeWorker.Rejected; break;
           case questStatus === QuestStatuses.Created: payload = InfoModeWorker.Created; break;
@@ -410,6 +402,7 @@ export default {
   }
   &__container{
     margin: 40px 0;
+    padding-bottom: 86px;
   }
 }
 
