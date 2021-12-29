@@ -218,7 +218,6 @@ export default {
         }
 
         const { address } = response.result;
-        this.userAddress = address.toLowerCase();
 
         // Wallet is not assigned to this account
         if (!address) {
@@ -226,6 +225,7 @@ export default {
           this.SetLoader(false);
           return;
         }
+        this.userAddress = address.toLowerCase();
 
         // Wallet assigned, checking storage
         const sessionData = JSON.parse(sessionStorage.getItem('mnemonic'));
