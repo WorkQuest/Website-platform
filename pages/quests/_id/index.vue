@@ -164,8 +164,6 @@ import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
 import quests from '~/components/app/pages/common/quests';
-import questIdEmployer from '~/components/app/pages/quests_id/employer';
-import questIdWorker from '~/components/app/pages/quests_id/worker';
 
 export default {
   name: 'Quests',
@@ -173,8 +171,6 @@ export default {
     info,
     questPanel,
     quests,
-    questIdEmployer,
-    questIdWorker,
   },
   data() {
     return {
