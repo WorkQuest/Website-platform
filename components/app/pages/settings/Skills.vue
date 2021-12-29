@@ -12,7 +12,8 @@
     >
       <div class="skills__items">
         <specializations-selector
-          :skills="userSpecializations"
+          v-if="skills.selectedSpecAndSkills !== null"
+          :skills="skills.selectedSpecAndSkills"
           @changeSkills="updateSelectedSkills"
         />
         <div class="skills__add-info">
@@ -72,9 +73,6 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
     }),
-    userSpecializations() {
-      return this.userData.userSpecializations || [];
-    },
     distantWork() {
       return [
         this.$t('settings.distantWork.distantWork'),

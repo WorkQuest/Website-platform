@@ -76,7 +76,7 @@ export default {
         perHour: 0,
         priorityIndex: -1,
         distantIndex: -1,
-        selectedSpecAndSkills: [],
+        selectedSpecAndSkills: null,
       },
       isShowInfo: true,
       newEducation: {
@@ -120,6 +120,7 @@ export default {
       priorityIndex: this.userData.priority,
       distantIndex: this.distantIndexByWorkplace(this.userData.workplace),
       perHour: this.userData.wagePerHour,
+      selectedSpecAndSkills: this.userData.userSpecializations || [],
     };
     this.SetLoader(false);
   },
@@ -273,7 +274,7 @@ export default {
           workplace: this.parseDistantWork(this.skills.distantIndex),
           priority: this.skills.priorityIndex,
           wagePerHour: this.skills.perHour ? this.skills.perHour : this.userData.wagePerHour,
-          specializationKeys: this.skills.selectedSpecAndSkills || null,
+          specializationKeys: this.skills.selectedSpecAndSkills || [],
         };
         await this.editProfileResponse('user/editWorkerData', payload);
       } if (this.userRole === 'employer') {
