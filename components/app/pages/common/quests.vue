@@ -142,11 +142,15 @@
                   v-if="item.status === questStatuses.Done && item.assignedWorkerId === userData.id"
                   class="block__rating"
                 >
-                  <div class="block__rating block__rating_star">
+                  <div
+                    class="block__rating block__rating_star"
+                  >
                     <star-rating
+                      :id="i"
                       :rating-type="'questPage'"
                       :stars-number="5"
                       :rating="getRating(item)"
+                      :is-disabled="item.yourReview !== null"
                       @input="showReviewModal($event, item)"
                     />
                   </div>
@@ -339,7 +343,7 @@ export default {
       return priority[index] || '';
     },
     getRating(item) {
-      return item?.review?.mark || 0;
+      return item?.yourReview?.mark || 0;
     },
   },
 };

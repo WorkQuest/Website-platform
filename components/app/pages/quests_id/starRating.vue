@@ -6,19 +6,20 @@
       v-for="(star,index) in starsNumber"
       :key="index"
       class="rating-area__star"
+      :class="getStarStyles"
     >
       <input
-        :id="`${ratingType}-star-${starsNumber-index}`"
+        :id="`${ratingType}-star-${id}-${starsNumber-index}`"
         type="radio"
         name="rating"
         :checked="(starsNumber-index)===rating"
         @click="$emit('input', starsNumber-index)"
       >
       <label
-        :for="`${ratingType}-star-${starsNumber-index}`"
+        :for="`${ratingType}-star-${id}-${starsNumber-index}`"
         :title="`«${starsNumber-index}»`"
         class="rating-area__star-label"
-        :class="(starsNumber-index)<=rating ? 'rating-area__star-label_golden' : ''"
+        :class="fillGoldenStars(index)"
       />
     </li>
   </ul>
@@ -38,6 +39,26 @@ export default {
     starsNumber: {
       type: Number,
       default: 0,
+    },
+    id: {
+      type: Number,
+      default: 0,
+    },
+    isDisabled: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    getStarStyles() {
+      return [
+        { disabled: this.isDisabled },
+      ];
+    },
+  },
+  methods: {
+    fillGoldenStars(index) {
+      return (this.starsNumber - index) <= this.rating ? 'rating-area__star-label_golden' : '';
     },
   },
 };
@@ -74,5 +95,8 @@ export default {
     color: gold;
     text-shadow: 1px 1px goldenrod;
   }
+}
+.disabled {
+  pointer-events: none;
 }
 </style>
