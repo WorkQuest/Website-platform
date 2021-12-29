@@ -46,7 +46,10 @@
                 {{ assignedWorker.firstName }} {{ assignedWorker.lastName }}
               </div>
             </nuxt-link>
-            <!--              TODO status-component-->
+            <item-rating
+              v-if="assignedWorker.ratingStatistic.status !== 'noStatus'"
+              :rating="assignedWorker.ratingStatistic.status"
+            />
           </div>
         </div>
 
@@ -109,9 +112,7 @@
                 :options="{ icon: pins.quest.blue, show: true}"
                 @click="coordinatesChange(item)"
               >
-                <GMapInfoWindow
-                  :options="{maxWidth: 280}"
-                >
+                <GMapInfoWindow :options="{maxWidth: 280}">
                   <div>
                     <h3>{{ questData.title }}</h3>
                     <span>{{ questData.description }}</span>
@@ -164,6 +165,7 @@ import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
 import quests from '~/components/app/pages/common/quests';
+import itemRating from '~/components/app/info/item-rating';
 
 export default {
   name: 'Quests',
@@ -171,6 +173,7 @@ export default {
     info,
     questPanel,
     quests,
+    itemRating,
   },
   data() {
     return {
