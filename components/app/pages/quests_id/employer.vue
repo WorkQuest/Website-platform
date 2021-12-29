@@ -42,26 +42,7 @@
           {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
         </div>
         <div>
-          <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА Нет Бэка-->
-          <!--          <div-->
-          <!--            v-if="badge.code !== 0"-->
-          <!--            class="card__level_higher"-->
-          <!--            :class="[-->
-          <!--              {'card__level_higher': badge.code === 1},-->
-          <!--              {'card__level_reliable': badge.code === 2},-->
-          <!--              {'card__level_checked': badge.code === 3}-->
-          <!--            ]"-->
-          <!--          >-->
-          <!--            <span v-if="badge.code === 1">-->
-          <!--              {{ $t('levels.higher') }}-->
-          <!--            </span>-->
-          <!--            <span v-if="badge.code === 2">-->
-          <!--              {{ $t('levels.reliableEmp') }}-->
-          <!--            </span>-->
-          <!--            <span v-if="badge.code === 3">-->
-          <!--              {{ $t('levels.checkedByTime') }}-->
-          <!--            </span>-->
-          <!--          </div>-->
+          <itemRating :rating="assignWorker ? assignWorker.ratingStatistic.status : ''" />
         </div>
       </div>
     </div>
@@ -119,14 +100,15 @@
           {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
         </div>
         <div>
+          <itemRating :rating="assignWorker ? assignWorker.ratingStatistic.status : ''" />
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
-          <div
-            v-if="![0].includes(badge.code)"
-            class="card__level_higher"
-            :class="cardBadgeLevel"
-          >
-            {{ cardBadgeLevelText }}
-          </div>
+          <!--          <div-->
+          <!--            v-if="![0].includes(badge.code)"-->
+          <!--            class="card__level_higher"-->
+          <!--            :class="cardBadgeLevel"-->
+          <!--          >-->
+          <!--            {{ cardBadgeLevelText }}-->
+          <!--          </div>-->
         </div>
       </div>
     </div>
@@ -150,14 +132,15 @@
             {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
           </div>
           <div>
+            <itemRating :rating="assignWorker ? assignWorker.ratingStatistic.status : ''" />
             <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА-->
-            <div
-              v-if="![0].includes(badge.code)"
-              class="card__level_higher"
-              :class="cardBadgeLevel"
-            >
-              {{ cardBadgeLevelText }}
-            </div>
+            <!--            <div-->
+            <!--              v-if="![0].includes(badge.code)"-->
+            <!--              class="card__level_higher"-->
+            <!--              :class="cardBadgeLevel"-->
+            <!--            >-->
+            <!--              {{ cardBadgeLevelText }}-->
+            <!--            </div>-->
           </div>
         </div>
         <div class="btns__wrapper">
@@ -197,14 +180,15 @@
           {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
         </div>
         <div>
+          <itemRating :rating="assignWorker ? assignWorker.ratingStatistic.status : ''" />
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
-          <div
-            v-if="![0].includes(badge.code)"
-            class="card__level_higher"
-            :class="cardBadgeLevel"
-          >
-            {{ cardBadgeLevelText }}
-          </div>
+          <!--          <div-->
+          <!--            v-if="![0].includes(badge.code)"-->
+          <!--            class="card__level_higher"-->
+          <!--            :class="cardBadgeLevel"-->
+          <!--          >-->
+          <!--            {{ cardBadgeLevelText }}-->
+          <!--          </div>-->
         </div>
       </div>
       <div class="btns__container">
@@ -238,14 +222,15 @@
           {{ assignWorker ? assignWorker.firstName : 'Nameless' }} {{ assignWorker ? assignWorker.lastName : '' }}
         </div>
         <div>
+          <itemRating :rating="assignWorker ? assignWorker.ratingStatistic.status : ''" />
           <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
-          <div
-            v-if="![0].includes(badge.code)"
-            class="card__level_higher"
-            :class="cardBadgeLevel"
-          >
-            {{ cardBadgeLevelText }}
-          </div>
+          <!--          <div-->
+          <!--            v-if="![0].includes(badge.code)"-->
+          <!--            class="card__level_higher"-->
+          <!--            :class="cardBadgeLevel"-->
+          <!--          >-->
+          <!--            {{ cardBadgeLevelText }}-->
+          <!--          </div>-->
         </div>
       </div>
     </div>
@@ -280,9 +265,13 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import { InfoModeEmployer, QuestStatuses } from '~/utils/enums';
+import itemRating from '~/components/app/info/item-rating';
 
 export default {
   name: 'QuestIdEmployer',
+  components: {
+    itemRating,
+  },
   props: {
     infoData: {
       type: Object,

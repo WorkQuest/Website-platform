@@ -84,14 +84,7 @@
                     {{ item.assignedWorker.firstName }} {{ item.assignedWorker.lastName }}
                   </div>
                 </div>
-                <!--                <div class="container__status status">-->
-                <!--                  <span-->
-                <!--                    class="status__level"-->
-                <!--                    :class="getStatusCard(item.level.code)"-->
-                <!--                  >-->
-                <!--                    {{ $t(`levels.${item.level.code}`) }}-->
-                <!--                  </span>-->
-                <!--                </div>-->
+                <itemRating :rating="item.assignedWorker ? item.assignedWorker.ratingStatistic.status : ''" />
               </div>
             </div>
             <div class="block__locate">
@@ -165,10 +158,14 @@ import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import { QuestStatuses, questPriority } from '~/utils/enums';
 import modals from '~/store/modals/modals';
+import itemRating from '~/components/app/info/item-rating';
 
 const value = new Vue();
 export default {
   name: 'QuestsTab',
+  components: {
+    itemRating,
+  },
   props: {
     object: {
       type: Object,

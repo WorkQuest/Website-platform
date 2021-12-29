@@ -14,7 +14,7 @@
     :rules="rules"
     :name="name"
     :vid="vid"
-    :mode="validationMode || 'eager'"
+    :mode="validationMode"
     slim
   >
     <div
@@ -76,7 +76,6 @@
   </ValidationProvider>
 </template>
 <script>
-import moment from 'moment';
 
 export default {
   props: {
@@ -152,7 +151,7 @@ export default {
     },
     validationMode: {
       type: String,
-      default: 'eager',
+      default: 'aggressive',
     },
   },
   methods: {
@@ -169,7 +168,7 @@ export default {
       this.$emit('input', '');
     },
     convertDate(date) {
-      return moment(date).format('DD.MM.YYYY');
+      return this.$moment(date).format('DD.MM.YYYY');
     },
   },
 };
