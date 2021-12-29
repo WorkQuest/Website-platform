@@ -1,7 +1,7 @@
 <template>
   <div class="verified">
     {{ status2FA === 0 ? $t("settings.notVerified") : $t("settings.verified") }}
-    <span class="icon-check_all_big" />
+    <span class="verified__icon icon-check_all_big" />
   </div>
 </template>
 

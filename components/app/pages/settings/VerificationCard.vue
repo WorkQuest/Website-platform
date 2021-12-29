@@ -88,6 +88,11 @@ export default {
     }
   }
 }
+@include _575 {
+  .verification {
+    border-radius: 0px;
+  }
+}
 @include _480 {
   .verification {
     &__button {

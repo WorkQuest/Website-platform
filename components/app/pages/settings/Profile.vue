@@ -35,25 +35,16 @@
             class="profile__status"
           />
           <base-field
-            v-model="profile.firstName"
-            rules="required||max:50"
-            :placeholder="$t('settings.nameInput')"
+            v-for="main in mainInputs"
+            :key="main.index"
+            v-model="profile[main.model]"
+            :rules="main.rules"
+            :placeholder="$t(main.placeholder)"
             mode="icon"
-            :name="$t('settings.firstName')"
+            :name="$t(main.name)"
           >
             <template v-slot:left>
-              <span class="icon icon-user" />
-            </template>
-          </base-field>
-          <base-field
-            v-model="profile.lastName"
-            rules="required||max:50"
-            :placeholder="$t('settings.lastNameInput')"
-            mode="icon"
-            :name="$t('settings.lastName')"
-          >
-            <template v-slot:left>
-              <span class="icon icon-user" />
+              <span :class="['icon', main.icon]" />
             </template>
           </base-field>
           <base-field
@@ -88,17 +79,6 @@
               </div>
             </template>
           </base-field>
-          <base-field
-            v-model="profile.email"
-            :name="this.$t('placeholders.email')"
-            rules="max:100||email"
-            :placeholder="$t('placeholders.mail')"
-            mode="icon"
-          >
-            <template v-slot:left>
-              <span class="icon icon-mail" />
-            </template>
-          </base-field>
           <vue-phone-number-input
             v-model="profile.additionalInfo.secondMobileNumber"
             class="profile__phone-input"
@@ -123,36 +103,16 @@
           class="profile__company"
         >
           <base-field
-            v-model="profile.additionalInfo.company"
-            rules="max:100"
-            :placeholder="$t('settings.company')"
+            v-for="company in companyInputs"
+            :key="company.index"
+            v-model="profile.additionalInfo[company.model]"
+            :rules="company.rules"
+            :placeholder="$t(company.placeholder)"
             mode="icon"
-            :name="$t('settings.companyName')"
+            :name="$t(company.name)"
           >
             <template v-slot:left>
-              <span class="icon icon-Case" />
-            </template>
-          </base-field>
-          <base-field
-            v-model="profile.additionalInfo.CEO"
-            rules="max:100"
-            :placeholder="$t('settings.ceo')"
-            mode="icon"
-            :name="$t('settings.ceoName')"
-          >
-            <template v-slot:left>
-              <span class="icon icon-id_card" />
-            </template>
-          </base-field>
-          <base-field
-            v-model="profile.additionalInfo.website"
-            :name="$t('settings.websiteName')"
-            :placeholder="$t('settings.website')"
-            mode="icon"
-            rules="max:100"
-          >
-            <template v-slot:left>
-              <span class="icon icon-Earth" />
+              <span :class="['icon', company.icon]" />
             </template>
           </base-field>
         </div>
@@ -242,47 +202,16 @@
       </div>
       <div class="profile__socials">
         <base-field
-          v-model="profile.additionalInfo.socialNetwork.instagram"
-          rules="max:50"
-          :placeholder="$t('settings.instagramUsername')"
+          v-for="social in socials"
+          :key="social.index"
+          v-model="profile.additionalInfo.socialNetwork[social.model]"
+          :rules="social.rules"
+          :placeholder="$t(social.placeholder)"
           mode="icon"
-          :name="$t('settings.instagram')"
+          :name="$t(social.name)"
         >
           <template v-slot:left>
-            <span class="icon icon-instagram" />
-          </template>
-        </base-field>
-        <base-field
-          v-model="profile.additionalInfo.socialNetwork.twitter"
-          rules="max:50"
-          :placeholder="$t('settings.twitterUsername')"
-          mode="icon"
-          :name="$t('settings.twitter')"
-        >
-          <template v-slot:left>
-            <span class="icon icon-twitter" />
-          </template>
-        </base-field>
-        <base-field
-          v-model="profile.additionalInfo.socialNetwork.linkedin"
-          rules="max:50"
-          :placeholder="$t('settings.linkedInUsername')"
-          mode="icon"
-          :name="$t('settings.linkedin')"
-        >
-          <template v-slot:left>
-            <span class="icon icon-LinkedIn" />
-          </template>
-        </base-field>
-        <base-field
-          v-model="profile.additionalInfo.socialNetwork.facebook"
-          rules="max:50"
-          :placeholder="$t('settings.facebookUsername')"
-          mode="icon"
-          :name="$t('settings.facebook')"
-        >
-          <template v-slot:left>
-            <span class="icon icon-facebook" />
+            <span :class="['icon', social.icon]" />
           </template>
         </base-field>
       </div>
@@ -337,6 +266,83 @@ export default {
       isSearchDDStatus: false,
       secondPhone: null,
       addresses: [],
+      mainInputs: [
+        {
+          model: 'firstName',
+          rules: 'required||max:50',
+          placeholder: 'settings.nameInput',
+          name: 'settings.firstName',
+          icon: 'icon-user',
+        },
+        {
+          model: 'lastName',
+          rules: 'required||max:50',
+          placeholder: 'settings.lastNameInput',
+          name: 'settings.lastName',
+          icon: 'icon-user',
+        },
+        {
+          model: 'email',
+          name: 'placeholders.email',
+          rules: 'max:100||email',
+          placeholder: 'placeholders.mail',
+          icon: 'icon-mail',
+        },
+      ],
+      companyInputs: [
+        {
+          model: 'company',
+          rules: 'max:100',
+          placeholder: 'settings.company',
+          name: 'settings.companyName',
+          icon: 'icon-Case',
+        },
+        {
+          model: 'CEO',
+          rules: 'max:100',
+          placeholder: 'settings.ceo',
+          name: 'settings.ceoName',
+          icon: 'icon-id_card',
+        },
+        {
+          model: 'website',
+          rules: 'max:100',
+          placeholder: 'settings.website',
+          name: 'settings.websiteName',
+          icon: 'icon-Earth',
+        },
+
+      ],
+      socials: [
+        {
+          model: 'instagram',
+          rules: 'max:50',
+          placeholder: 'settings.instagramUsername',
+          name: 'settings.instagram',
+          icon: 'icon-instagram',
+        },
+        {
+          model: 'twitter',
+          rules: 'max:50',
+          placeholder: 'settings.twitterUsername',
+          name: 'settings.twitter',
+          icon: 'icon-twitter',
+        },
+        {
+          model: 'linkedin',
+          rules: 'max:50',
+          placeholder: 'settings.linkedInUsername',
+          name: 'settings.linkedin',
+          icon: 'icon-LinkedIn',
+        },
+        {
+          model: 'facebook',
+          rules: 'max:50',
+          placeholder: 'settings.facebookUsername',
+          name: 'settings.facebook',
+          icon: 'icon-facebook',
+        },
+      ],
     };
   },
   computed: {
@@ -447,6 +453,7 @@ export default {
   background: $white;
   padding: 20px;
   gap: 20px;
+  border-radius: 6px;
   &__personal {
     display: grid;
     gap: 20px;
@@ -610,6 +617,7 @@ export default {
 
 @include _575 {
   .profile {
+    border-radius: 0px;
     &__personal-main {
       display: block;
     }

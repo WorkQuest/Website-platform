@@ -12,22 +12,15 @@
         />
         <div class="skills__add-info">
           <base-dd
-            v-model="skills.priorityIndex"
+            v-for="(dd,index) in dropdowns"
+            :key="index"
+            v-model="skills[dd.model]"
             class="skills__drop-down"
             type="gray"
-            :placeholder="$t('priority.title')"
-            :items="priority"
+            :placeholder="$t(dd.placeholder)"
+            :items="dd.items"
             :mode="'small'"
-            :label="$t('settings.priority')"
-          />
-          <base-dd
-            v-model="skills.distantIndex"
-            class="skills__drop-down"
-            type="gray"
-            :placeholder="$t('settings.distantWork.select')"
-            :items="distantWork"
-            :mode="'small'"
-            :label="$t('settings.distantWork.title')"
+            :label="$t(dd.label)"
           />
           <base-field
             v-model="skills.perHour"
@@ -63,25 +56,37 @@ export default {
       default: null,
     },
   },
+  data() {
+    return {
+      dropdowns: [
+        {
+          model: 'priorityIndex',
+          placeholder: 'priority.title',
+          items: [
+            this.$t('settings.distantWork.distantWork'),
+            this.$t('settings.distantWork.workInOffice'),
+            this.$t('settings.distantWork.bothVariant'),
+          ],
+          label: 'settings.priority',
+        },
+        {
+          model: 'distantIndex',
+          placeholder: 'settings.distantWork.select',
+          items: [
+            this.$t('priority.all'),
+            this.$t('priority.employee.low'),
+            this.$t('priority.employee.normal'),
+            this.$t('priority.employee.urgent'),
+          ],
+          label: 'settings.distantWork.title',
+        },
+      ],
+    };
+  },
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
     }),
-    distantWork() {
-      return [
-        this.$t('settings.distantWork.distantWork'),
-        this.$t('settings.distantWork.workInOffice'),
-        this.$t('settings.distantWork.bothVariant'),
-      ];
-    },
-    priority() {
-      return [
-        this.$t('priority.all'),
-        this.$t('priority.employee.low'),
-        this.$t('priority.employee.normal'),
-        this.$t('priority.employee.urgent'),
-      ];
-    },
   },
   methods: {
     updateSelectedSkills(specAndSkills) {
@@ -104,6 +109,7 @@ export default {
   &__container {
     background: $white;
     padding: 20px;
+    border-radius: 6px;
   }
   &__add-info {
     display: grid;
@@ -131,6 +137,9 @@ export default {
 }
 @include _575 {
   .skills {
+    &__container {
+      border-radius: 0;
+    }
     &__save {
       button {
         max-width: none;

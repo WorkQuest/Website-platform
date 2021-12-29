@@ -4,104 +4,31 @@
       <div class="advanced__title">
         {{ $t('settings.settings') }}
       </div>
-      <div class="advanced__options advanced__options_left">
+      <div
+        v-for="(radio) in radioButtons"
+        :key="radio.index"
+        class="advanced__options advanced__options_left"
+      >
         <div class="advanced__subtitle">
           {{ $t('settings.whoCanSee') }}
         </div>
-        <div class="advanced__option">
+        <div
+          v-for="input in radio"
+          :key="input.index"
+          class="advanced__option"
+        >
           <input
-            id="allUsers"
-            name="whoCanSee"
+            :id="input.id"
+            :name="input.name"
             type="radio"
-            class="radio__input"
-            value="allUsers"
+            class="advanced__input"
+            :value="input.value"
           >
           <label
             class="advanced__label"
-            for="allUsers"
+            :for="input.id"
           >
-            {{ $t('settings.allUsers') }}
-          </label>
-        </div>
-        <div class="advanced__option">
-          <input
-            id="allInternet"
-            name="whoCanSee"
-            type="radio"
-            class="radio__input"
-            value="allInternet"
-            checked
-          >
-          <label
-            class="advanced__label"
-            for="allInternet"
-          >
-            {{ $t('settings.allInternet') }}
-          </label>
-        </div>
-        <div class="advanced__option">
-          <input
-            id="onlyWhenSubmittedWork"
-            name="whoCanSee"
-            type="radio"
-            class="radio__input"
-            value="onlyWhenSubmittedWork"
-          >
-          <label
-            class="advanced__label"
-            for="onlyWhenSubmittedWork"
-          >
-            {{ $t('settings.onlyWhenSubmittedWork') }}
-          </label>
-        </div>
-      </div>
-      <div class="advanced__options advanced__options_left">
-        <div class="advanced__subtitle">
-          {{ $t('settings.filterAllEmployeeProfiles') }}
-        </div>
-        <div class="advanced__option">
-          <input
-            id="urgentProposals"
-            name="filterAllWorkProposals"
-            type="radio"
-            class="radio__input"
-            value="urgentJobOffers"
-          >
-          <label
-            class="advanced__label"
-            for="urgentProposals"
-          >
-            {{ $t('settings.urgentJobOffers') }}
-          </label>
-        </div>
-        <div class="advanced__option">
-          <input
-            id="onlyImplementation"
-            name="filterAllWorkProposals"
-            type="radio"
-            class="radio__input"
-            value="shortTermJobOffers"
-          >
-          <label
-            class="advanced__label"
-            for="onlyImplementation"
-          >
-            {{ $t('settings.shortTermJobOffers') }}
-          </label>
-        </div>
-        <div class="advanced__option">
-          <input
-            id="onlyReady"
-            name="filterAllWorkProposals"
-            type="radio"
-            class="radio__input"
-            value="fixedDeliveryJobOffers"
-          >
-          <label
-            class="advanced__label"
-            for="onlyReady"
-          >
-            {{ $t('settings.fixedDeliveryJobOffers') }}
+            {{ $t(input.local) }}
           </label>
         </div>
       </div>
@@ -111,51 +38,37 @@
         {{ $t('settings.settings') }}
       </div>
       <div class="advanced__options">
-        <div class="advanced__option advanced__option_blue">
+        <div
+          v-for="(button, index) in rightSideButtons"
+          :key="index"
+          class="advanced__option advanced__option_blue"
+        >
           <div class="advanced__option-title">
-            {{ $t('settings.changePass') }}
+            {{ $t(button.title) }}
           </div>
-          <base-btn @click="showModalKey('changePassInSettings')">
-            {{ $t('settings.change') }}
+          <base-btn
+            v-if="!button.isSwitcher"
+            @click="showModalKey(button.modal)"
+          >
+            {{ $t(button.buttonName) }}
           </base-btn>
-        </div>
-        <div class="advanced__option advanced__option_blue">
-          <div>
-            {{ $t('settings.enableTwoStepAuth') }}
-          </div>
-          <div class="advanced__option-buttons">
+          <div
+            v-if="button.isSwitcher"
+            class="advanced__option-buttons"
+          >
             <base-btn
               :disabled="status2FA === 0"
-              class="margin__bottom"
-              @click="showModalKey('disable2FA')"
+              @click="showModalKey(button.firstModal)"
             >
-              {{ $t('meta.disable') }}
+              {{ $t(button.firstButtonName) }}
             </base-btn>
             <base-btn
               :disabled="status2FA === 1"
-              @click="showModalKey('twoFAAuth')"
+              @click="showModalKey(button.secondModal)"
             >
-              {{ $t('settings.enable') }}
+              {{ $t(button.secondButtonName) }}
             </base-btn>
           </div>
-        </div>
-        <div class="advanced__option advanced__option_blue">
-          <div>
-            {{ $t('settings.smsVerification') }}
-          </div>
-          <base-btn
-            @click="showModalKey('smsVerification')"
-          >
-            {{ $t('settings.enable') }}
-          </base-btn>
-        </div>
-        <div class="advanced__option advanced__option_blue">
-          <div>
-            {{ $t('settings.changeRole') }}
-          </div>
-          <base-btn @click="showModalKey('changeRoleWarning')">
-            {{ $t('settings.change') }}
-          </base-btn>
         </div>
       </div>
     </div>
@@ -167,6 +80,83 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'Advanced',
+  data() {
+    return {
+      radioButtons: {
+        whoCanSeeeInputs: [
+          {
+            id: 'allUsers',
+            value: 'allUsers',
+            local: 'settings.allUsers',
+            name: 'whoCanSee',
+          },
+          {
+            id: 'allInternet',
+            value: 'allInternet',
+            local: 'settings.allInternet',
+            name: 'whoCanSee',
+          },
+          {
+            id: 'onlyWhenSubmittedWork',
+            value: 'onlyWhenSubmittedWork',
+            local: 'settings.onlyWhenSubmittedWork',
+            name: 'whoCanSee',
+          },
+        ],
+        employeeProfilesInputs: [
+          {
+            id: 'urgentProposals',
+            value: 'urgentJobOffers',
+            local: 'settings.urgentJobOffers',
+            name: 'filterAllWorkProposals',
+          },
+          {
+            id: 'onlyImplementation',
+            value: 'shortTermJobOffers',
+            local: 'settings.shortTermJobOffers',
+            name: 'filterAllWorkProposals',
+          },
+          {
+            id: 'onlyReady',
+            value: 'fixedDeliveryJobOffers',
+            local: 'settings.fixedDeliveryJobOffers',
+            name: 'filterAllWorkProposals',
+          },
+        ],
+      },
+
+      rightSideButtons: [
+        {
+          title: 'settings.changePass',
+          buttonName: 'settings.change',
+          modal: 'changePassInSettings',
+          isSwitcher: false,
+        },
+        {
+          title: 'settings.enableTwoStepAuth',
+          firstButtonName: 'meta.disable',
+          secondButtonName: 'settings.enable',
+          firstModal: 'disable2FA',
+          secondModal: 'twoFAAuth',
+          firstDisabled: this.status2FA === 0,
+          secondDisable: this.status2FA === 1,
+          isSwitcher: true,
+        },
+        {
+          title: 'settings.smsVerification',
+          buttonName: 'settings.enable',
+          modal: 'smsVerification',
+          isSwitcher: false,
+        },
+        {
+          title: 'settings.changeRole',
+          buttonName: 'settings.change',
+          modal: 'changeRoleWarning',
+          isSwitcher: false,
+        },
+      ],
+    };
+  },
   computed: {
     ...mapGetters({
       status2FA: 'user/getStatus2FA',
@@ -189,10 +179,12 @@ export default {
   &__left {
     background: $white;
     padding: 20px;
+    border-radius: 6px;
   }
   &__right {
     background: $white;
     padding: 20px;
+    border-radius: 6px;
   }
   &__title {
     font-family: Inter, Arial, sans-serif;
@@ -209,6 +201,19 @@ export default {
     line-height: 21px;
     color: #7C838D;
     margin-bottom: 8px;
+  }
+  &__input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    border: 1px solid $blue;
+    cursor: pointer;
+    &:checked {
+      background: radial-gradient($blue 40%, rgba(255, 0, 0, 0) 45%);
+    }
   }
   &__options {
     display: grid;
@@ -244,21 +249,6 @@ export default {
     margin: 0;
   }
 }
-.radio {
-    &__input {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    border: 1px solid $blue;
-    cursor: pointer;
-    &:checked {
-      background: radial-gradient($blue 40%, rgba(255, 0, 0, 0) 45%);
-    }
-  }
-}
 
 @include _991 {
   .advanced {
@@ -267,6 +257,12 @@ export default {
 }
 @include _575 {
   .advanced {
+    &__left {
+      border-radius: 0px;
+    }
+    &__right {
+      border-radius: 0px;
+    }
     &__option_blue {
       flex-direction: column;
       button {
