@@ -114,6 +114,7 @@ export const disconnect = () => {
 
 const min = new BigNumber(0.0001);
 const getStyledAmount = (amount, full = false) => {
+  if (amount === 0) return '0';
   const value = new BigNumber(amount).shiftedBy(-18);
   if (full) return value.toString();
   if (value.isLessThan(min)) return `<${min.toString()}`;
