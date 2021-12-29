@@ -216,7 +216,7 @@
           v-else-if="questsArray.length === 0"
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-          :link="userRole === 'employer' ? '/create-quest' : ''"
+          :link="getEmptyLink"
         />
       </div>
     </div>
@@ -230,7 +230,9 @@ import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
 import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
-import { priorityFilter, typeOfJobFilter, workplaceFilter } from '~/utils/enums';
+import {
+  priorityFilter, typeOfJobFilter, workplaceFilter, Path, UserRole,
+} from '~/utils/enums';
 
 export default {
   name: 'QuestsList',
@@ -321,6 +323,11 @@ export default {
         return filters;
       }
       return '';
+    },
+    getEmptyLink() {
+      return this.userRole === UserRole.WORKER
+        ? ''
+        : Path.CREATE_QUEST;
     },
   },
   watch: {
