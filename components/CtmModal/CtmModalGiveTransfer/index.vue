@@ -5,7 +5,7 @@
   >
     <div class="transfer__content content">
       <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-slot="{handleSubmit, invalid}"
       >
         <div
           class="content__container"
@@ -15,7 +15,7 @@
               {{ $t('modals.recepient') }}
             </span>
             <base-field
-              v-model="recepient"
+              v-model="recipient"
               class="input__field"
               :placeholder="'Enter address'"
               rules="required"
@@ -30,7 +30,7 @@
               v-model="amount"
               class="input__field"
               :placeholder="'Enter amount'"
-              rules="required|decimal"
+              :rules="`required|decimal|max:${balance}`"
               :name="$t('modals.amountField')"
             >
               <template
@@ -40,6 +40,7 @@
                 <base-btn
                   mode="max"
                   class="max__button"
+                  @click="maxBalance"
                 >
                   <span class="max__text">
                     {{ $t('modals.maximum') }}
@@ -59,10 +60,10 @@
           </base-btn>
           <base-btn
             class="buttons__action"
-            :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(showWithdrawInfo)"
+            :disabled="invalid || isLoading"
+            @click="handleSubmit(transfer)"
           >
-            {{ $t('meta.next') }}
+            {{ $t('meta.send') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -71,26 +72,59 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'ModalTakeTransfer',
   data() {
     return {
-      recepient: '',
+      recipient: '0xAc6dbbD2148A4A06D44080d2bB23743288B54C84', // TODO: remove to ''
       amount: '',
       step: 1,
+      balance: 0,
     };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+      isLoading: 'main/getIsLoading',
+    }),
+  },
+  mounted() {
+    this.balance = this.options.balance || 0;
   },
   methods: {
     hide() {
       this.CloseModal();
     },
+    maxBalance() {
+      this.amount = this.balance;
+    },
+    async transfer() { // TODO: выводить инфу о транзакции перед ее отправкой
+      this.SetLoader(true);
+      const { callback } = this.options;
+      this.hide();
+      const res = await this.$store.dispatch('wallet/transfer', {
+        recipient: this.recipient,
+        value: this.amount,
+      });
+      if (res?.ok) {
+        if (callback) {
+          await callback();
+        }
+        this.ShowModal({
+          key: modals.transactionSend,
+        });
+      }
+      this.SetLoader(false);
+    },
     showWithdrawInfo() {
       this.ShowModal({
         key: modals.withdrawInfo,
         title: this.$t('modals.transferInfo'),
-        recepientAddress: 'Recepient address',
+        recipient: this.recipient,
+        amount: this.amount,
       });
     },
   },
@@ -111,6 +145,9 @@ export default {
   justify-content: space-between;
   &__action{
     width: 212px!important;
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
   }
 }
 

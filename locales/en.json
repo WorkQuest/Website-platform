@@ -1050,7 +1050,7 @@
     "message": "Message",
     "bodyMessage": "Hello",
     "areYouSure": "Are You Sure?",
-    "transactionSend": "Transaction send",
+    "transactionSent": "Transaction sent",
     "transactionFail": "Transaction fail",
     "transactionCheck": "Check transaction",
     "cardHasBeenAdded": "Card has been added",
@@ -1329,7 +1329,7 @@
     "deposit": "Receive",
     "withdraw": "Withdraw",
     "transfer": "Buy / Send",
-    "addCardProposal": "Add your own card for easy withdrawal",
+    "addCardProposal": "Add bank card for easy withdrawal",
     "addCard": "Add card",
     "table": {
       "trx": "Transactions",

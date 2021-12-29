@@ -1049,7 +1049,7 @@
     "message": "Pesan",
     "bodyMessage": "Halo",
     "areYouSure": "Yakin?",
-    "transactionSend": "Transaksi terkirim",
+    "transactionSent": "Transaksi terkirim",
     "transactionFail": "???",
     "transactionCheck": "???",
     "cardHasBeenAdded": "Kartu telah ditambahkan",

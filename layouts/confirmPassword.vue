@@ -50,6 +50,10 @@ export default {
     }),
   },
   mounted() {
+    if (!this.userAddress) {
+      this.disconnect();
+      return;
+    }
     // Try to find mnemonic in storage by user wallet address
     // Checking session storage
     const session = JSON.parse(sessionStorage.getItem('mnemonic'));

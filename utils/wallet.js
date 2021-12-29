@@ -20,6 +20,7 @@ export const createWallet = (mnemonic) => {
 export const encryptStringWithKey = (toEncrypt, key) => AES.encrypt(toEncrypt, key).toString();
 export const decryptStringWitheKey = (toDecrypt, key) => AES.decrypt(toDecrypt, key).toString(enc.Utf8);
 
+const web3 = new Web3(process.env.PROVIDER);
 const wallet = {
   address: null,
   privateKey: null,
@@ -27,6 +28,10 @@ const wallet = {
     this.address = address;
     this.privateKey = privateKey;
     if (privateKey) {
+      const account = web3.eth.accounts.privateKeyToAccount(wallet.privateKey);
+      web3.eth.accounts.wallet.add(account);
+      web3.eth.defaultAccount = account.address;
+
       sessionStorage.setItem('keys', JSON.stringify({
         ...JSON.parse(sessionStorage.getItem('keys')),
         [address]: privateKey,
@@ -108,18 +113,49 @@ export const disconnect = () => {
 };
 
 const min = new BigNumber(0.0001);
-const getStyledAmount = (amount) => {
+const getStyledAmount = (amount, full = false) => {
   const value = new BigNumber(amount).shiftedBy(-18);
-  if (value.isLessThan(min)) return '<0.0001';
-  return value.toFixed(4);
+  if (full) return value.toString();
+  if (value.isLessThan(min)) return `<${min.toString()}`;
+  return value.decimalPlaces(4);
 };
+
+// web3.eth.net.getId() - если нужно будет получить chainId
 
 export const getBalance = async () => {
-  const web3 = new Web3(process.env.PROVIDER);
-  const balance = await web3.eth.getBalance(wallet.address);
-  return getStyledAmount(balance);
+  try {
+    const balance = await web3.eth.getBalance(wallet.address);
+    return success({
+      balance: getStyledAmount(balance),
+      fullBalance: getStyledAmount(balance, true),
+    });
+  } catch (e) {
+    console.error('get balance error', e);
+    return error();
+  }
 };
 
-const sendTransaction = async () => {
-
+export const transfer = async (recipient, value) => {
+  try {
+    value = new BigNumber(value).shiftedBy(18).toString();
+    const [gasPrice, gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      web3.eth.estimateGas({
+        from: wallet.address,
+        to: recipient,
+        value,
+      }),
+    ]);
+    const txRes = await web3.eth.sendTransaction({
+      from: wallet.address,
+      to: recipient,
+      value,
+      gas: gasEstimate,
+      gasPrice,
+    });
+    return success(txRes);
+  } catch (e) {
+    console.error('transfer error', e);
+    return error();
+  }
 };

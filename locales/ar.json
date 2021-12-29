@@ -1049,7 +1049,7 @@
     "message": "رسالة",
     "bodyMessage": "مرحبًا",
     "areYouSure": "هل أنت متأكد؟",
-    "transactionSend": "إرسال معاملة",
+    "transactionSent": "إرسال معاملة",
     "transactionFail": "???",
     "transactionCheck": "???",
     "cardHasBeenAdded": "تمت إضافة البطاقة",

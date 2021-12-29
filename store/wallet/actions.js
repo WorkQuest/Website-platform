@@ -1,5 +1,5 @@
 import {
-  connectWallet, disconnect, getBalance, getIsWalletConnected, setWalletAddress,
+  connectWallet, disconnect, getBalance, getIsWalletConnected, setWalletAddress, transfer,
 } from '~/utils/wallet';
 
 export default {
@@ -37,5 +37,13 @@ export default {
   },
   async getBalance() {
     return await getBalance();
+  },
+  /**
+   * Send transfer
+   * @param recipient
+   * @param value
+   */
+  async transfer({ commit }, { recipient, value }) {
+    return await transfer(recipient, value);
   },
 };
