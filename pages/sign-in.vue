@@ -1,21 +1,22 @@
 <template>
-  <ValidationObserver
-    v-slot="{ handleSubmit }"
-    class="auth"
-    tag="div"
-  >
-    <div class="auth__container">
+  <div class="auth">
+    <ValidationObserver
+      v-if="step === walletState.SignPage"
+      v-slot="{ handleSubmit }"
+      class="auth__container"
+      tag="div"
+    >
       <div class="auth__text auth__text_title">
         <span>{{ $t('signIn.title') }}</span>
       </div>
       <div class="auth__text auth__text_simple">
         <span>{{ $t('signIn.account') }}</span>
-        <n-link
+        <nuxt-link
           class="auth__text auth__text_link"
           to="/sign-up"
         >
           {{ $t('signIn.regs') }}
-        </n-link>
+        </nuxt-link>
       </div>
       <form
         class="auth__fields"
@@ -68,7 +69,7 @@
           </div>
         </div>
         <div class="auth__action">
-          <base-btn>
+          <base-btn :disabled="isLoading">
             {{ $t('signIn.login') }}
           </base-btn>
         </div>
@@ -116,59 +117,221 @@
           </button>
         </div>
       </div>
+    </ValidationObserver>
+    <div
+      v-if="step > walletState.SignPage"
+      class="auth__back"
+      @click="back"
+    >
+      <span class="icon-long_left" /> {{ $t('meta.back') }}
     </div>
-  </ValidationObserver>
+    <CreateWallet
+      :step="step"
+      @goStep="goStep"
+      @submit="assignWallet"
+      @import="importWallet"
+    />
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import {
+  createWallet, decryptStringWitheKey, encryptStringWithKey,
+} from '~/utils/wallet';
+import CreateWallet from '~/components/ui/CreateWallet';
+import { UserStatuses, WalletState } from '~/utils/enums';
 
 export default {
   name: 'SignIn',
   layout: 'auth',
-  data: () => ({
-    model: {
-      email: '',
-      password: '',
-    },
-    remember: false,
-  }),
+  components: {
+    CreateWallet,
+  },
+  data() {
+    return {
+      addressAssigned: false,
+      userAddress: null,
+      step: WalletState.SignPage,
+      model: {
+        email: '',
+        password: '',
+      },
+      remember: false,
+      userStatus: null,
+    };
+  },
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
+      isLoading: 'main/getIsLoading',
     }),
+    walletState() {
+      return WalletState;
+    },
   },
-  async mounted() {
-    this.SetLoader(true);
-    this.SetLoader(false);
+  beforeDestroy() {
+    if (!this.addressAssigned) {
+      this.$store.dispatch('user/logout');
+    }
   },
   methods: {
+    back() {
+      if (this.step === WalletState.ImportOrCreate) {
+        this.step = WalletState.SignPage;
+        return;
+      }
+      if (this.step === WalletState.ImportMnemonic) {
+        this.step = !this.userAddress ? WalletState.ImportOrCreate : WalletState.SignPage;
+        return;
+      }
+      if (this.step === WalletState.SaveMnemonic) {
+        this.step = WalletState.ImportOrCreate;
+        return;
+      }
+      if (this.step === WalletState.ConfirmMnemonic) {
+        this.step = WalletState.SaveMnemonic;
+      }
+    },
+    goStep(step) {
+      this.step = step;
+    },
     async signIn() {
-      try {
-        const { email, password } = this.model;
-        const response = await this.$store.dispatch('user/signIn', {
-          email,
-          password,
-        });
-        if (response?.ok) {
-          if (this.userData.role === 'employer') {
-            this.$router.push('/workers');
-          } else if (this.userData.role === 'worker') {
-            this.$router.push('/quests');
-          } else if (response.result.userStatus === 2) {
-            this.$router.push('/role');
+      if (this.isLoading) return;
+      this.SetLoader(true);
+      this.model.email = this.model.email.trim();
+      const { email, password } = this.model;
+      const response = await this.$store.dispatch('user/signIn', {
+        email,
+        password,
+      });
+      if (response?.ok) {
+        this.userStatus = response.result.userStatus;
+        if (this.userStatus === UserStatuses.Unconfirmed) { // Unconfirmed account
+          await this.$store.dispatch('main/showToast', {
+            title: this.$t('registration.emailConfirmTitle'),
+            text: this.$t('registration.emailConfirm'),
+          });
+          this.SetLoader(false);
+          return;
+        }
+
+        const { address } = response.result;
+        this.userAddress = address;
+
+        // Wallet is not assigned to this account
+        if (!address) {
+          this.step = WalletState.ImportOrCreate;
+          this.SetLoader(false);
+          return;
+        }
+
+        // Wallet assigned, checking storage
+        const sessionData = JSON.parse(sessionStorage.getItem('mnemonic'));
+        const storageData = JSON.parse(localStorage.getItem('mnemonic'));
+        if (!sessionData && !storageData) {
+          this.step = WalletState.ImportMnemonic;
+          this.SetLoader(false);
+          return;
+        }
+
+        const sessionMnemonic = sessionData ? sessionData[address] : null;
+        const storageMnemonic = storageData ? storageData[address] : null;
+        if (!sessionMnemonic && !storageMnemonic) {
+          this.step = WalletState.ImportMnemonic;
+          this.SetLoader(false);
+          return;
+        }
+
+        // Check in session if exists
+        if (sessionMnemonic) {
+          const wallet = createWallet(sessionMnemonic);
+          if (wallet && wallet.address === this.userAddress) {
+            this.saveMnemonic(wallet);
+            this.redirectUser();
+            this.SetLoader(false);
+            return;
           }
         }
-        // if (response?.ok) {
-        //   const response =
-        //   if (response?.ok) {
-        //     this.$cookies.set('role', profile.role, { path: '/' });
-        //     this.$router.push('/quests');
-        //   }
-        // }
-      } catch (e) {
-        console.log(e);
+
+        // Check in storage
+        if (storageMnemonic) {
+          const mnemonic = decryptStringWitheKey(storageMnemonic, this.model.password);
+          const wallet = createWallet(mnemonic);
+          if (wallet && wallet.address === this.userAddress) {
+            this.saveMnemonic(wallet);
+            this.redirectUser();
+            this.SetLoader(false);
+            return;
+          }
+        }
+
+        // Session & Storage invalid mnemonics
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('toasts.error'),
+          text: this.$t('messages.mnemonic'),
+        });
+        // Reset mnemonic for address -> importing
+        this.saveMnemonic({ address, mnemonic: '' });
+        this.step = WalletState.ImportMnemonic;
+      }
+      this.SetLoader(false);
+    },
+    async assignWallet(wallet) {
+      const res = await this.$store.dispatch('user/registerWallet', {
+        address: wallet.address,
+        publicKey: wallet.publicKey,
+      });
+      if (res.ok) {
+        this.saveMnemonic(wallet);
+        this.redirectUser();
+        return;
+      }
+      if (res.code === 400011) {
+        // На данный mnemonic уже привязан какой-то аккаунт
+        await this.$store.dispatch('main/showToast', {
+          title: this.$t('toasts.error'),
+          text: this.$t('messages.mnemonic'),
+        });
+      }
+    },
+    async importWallet(wallet) {
+      // Correct phrase, but not assigned to this account
+      if (!this.userAddress) {
+        await this.assignWallet(wallet);
+        return;
+      }
+      // All ok
+      if (wallet.address === this.userAddress) {
+        this.saveMnemonic(wallet);
+        this.redirectUser();
+        return;
+      }
+      // Phrase not assigned to this account
+      await this.$store.dispatch('main/showToast', {
+        title: this.$t('toasts.error'),
+        text: this.$t('messages.mnemonic'),
+      });
+    },
+    saveMnemonic(wallet) {
+      localStorage.setItem('mnemonic', JSON.stringify({
+        ...JSON.parse(localStorage.getItem('mnemonic')),
+        [wallet.address]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
+      }));
+      sessionStorage.setItem('mnemonic', JSON.stringify({
+        ...JSON.parse(sessionStorage.getItem('mnemonic')),
+        [wallet.address]: wallet.mnemonic.phrase,
+      }));
+    },
+    redirectUser() {
+      this.addressAssigned = true;
+      if (this.userData.role === 'employer') {
+        this.$router.push('/workers');
+      } else if (this.userData.role === 'worker') {
+        this.$router.push('/quests');
+      } else if (this.userStatus === UserStatuses.NeedSetRole) {
+        this.$router.push('/role');
       }
     },
     async redirectSocialLink(socialNetwork) {
@@ -190,6 +353,9 @@ export default {
 
 <style lang="scss" scoped>
 .auth {
+  &__back {
+    cursor: pointer;
+  }
   &__container {
     display: grid;
     grid-template-rows: auto;

@@ -101,3 +101,17 @@ export const Path = {
   ROOT: '/quests',
   CREATE_QUEST: '/create-quest',
 };
+
+export const WalletState = {
+  SignPage: 1,
+  SaveMnemonic: 2,
+  ConfirmMnemonic: 3,
+  ImportOrCreate: 4,
+  ImportMnemonic: 5,
+};
+
+export const UserStatuses = {
+  Unconfirmed: 0,
+  Confirmed: 1,
+  NeedSetRole: 2,
+};

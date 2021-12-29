@@ -1,21 +1,19 @@
 <template>
-  <div>
+  <div class="portfolio">
     <emptyData
       v-if="object.count === 0"
       :description="$t('errors.emptyData.emptyPortfolios')"
     />
     <div
       v-else
-      class="portfolio portfolio__items"
+      class="portfolio__items"
     >
       <div
         v-for="(item) in object.cases"
         :key="item.id"
         class="portfolio__item"
       >
-        <div
-          class="portfolio__card"
-        >
+        <div class="portfolio__card">
           <div class="portfolio__body">
             <div
               v-if="userId === mainUserData.id"
@@ -33,11 +31,9 @@
               <base-btn
                 class="portfolio__edit"
                 mode="portfolioEdit"
-                @click="showEditCaseModal(item.id, item.title, item.description)"
+                @click="showEditCaseModal(item)"
               >
-                <span
-                  class="icon-edit"
-                />
+                <span class="icon-edit" />
               </base-btn>
             </div>
             <div
@@ -113,12 +109,13 @@ export default {
         id,
       });
     },
-    showEditCaseModal(id, title, desc) {
+    showEditCaseModal(item) {
       this.ShowModal({
         key: modals.editCase,
-        id,
-        title,
-        desc,
+        id: item.id,
+        title: item.title,
+        desc: item.description,
+        media: item.medias,
       });
     },
   },

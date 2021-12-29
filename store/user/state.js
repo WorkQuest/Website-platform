@@ -13,7 +13,9 @@ export default () => ({
   secretKey: '',
   confirmCode: '',
   totp: '',
-  portfolios: {},
+  portfolios: {
+    count: 0,
+  },
   portfolio: {},
   medias: null,
   userReviews: {},
