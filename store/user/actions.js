@@ -42,9 +42,7 @@ export default {
   },
   async deletePortfolio({ commit }, id) {
     try {
-      const response = await this.$axios.$delete(`/v1/portfolio/${id}`);
-      commit('setUserPortfolioCases', response.result);
-      return response;
+      return await this.$axios.$delete(`/v1/portfolio/${id}`);
     } catch (e) {
       return console.log(e);
     }
