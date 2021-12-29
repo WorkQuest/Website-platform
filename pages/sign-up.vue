@@ -198,17 +198,17 @@ export default {
       const response = await this.$store.dispatch('user/signUp', payload);
       if (response.ok) {
         const res = await this.$store.dispatch('user/registerWallet', {
-          address: wallet.address,
+          address: wallet.address.toLowerCase(),
           publicKey: wallet.publicKey,
         });
         if (res.ok) {
           localStorage.setItem('mnemonic', JSON.stringify({
             ...JSON.parse(localStorage.getItem('mnemonic')),
-            [wallet.address]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
+            [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
           }));
           sessionStorage.setItem('mnemonic', JSON.stringify({
             ...JSON.parse(sessionStorage.getItem('mnemonic')),
-            [wallet.address]: wallet.mnemonic.phrase,
+            [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
           }));
           this.showConfirmEmailModal();
         }
