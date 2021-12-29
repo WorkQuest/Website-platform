@@ -39,26 +39,30 @@
                   {{ `${item.user.firstName} ${item.user.lastName}` }}
                 </div>
               </div>
-              <quest-dd
-                v-if="item.status === questStatuses.Created"
-                class="block__icon block__icon_fav"
-                mode="vertical"
-                :item-id="item.id"
-              />
-              <div
-                class="block__icon block__icon_fav star"
-                @click="clickFavoriteStar(item)"
-              >
-                <img
-                  class="star__hover"
-                  src="~assets/img/ui/star_hover.svg"
-                  alt="favorite star"
+              <div class="block__head-right">
+                <div
+                  class="block__icon block__icon_fav star"
+                  @click="clickFavoriteStar(item)"
                 >
-                <img
-                  :class="[{'star__default': !item.star},{'star__checked': item.star}]"
-                  :src="!item.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
-                  alt=""
-                >
+                  <img
+                    class="star__hover"
+                    src="~assets/img/ui/star_hover.svg"
+                    alt="favorite star"
+                  >
+                  <img
+                    :class="[{'star__default': !item.star},{'star__checked': item.star}]"
+                    :src="!item.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
+                    alt=""
+                  >
+                </div>
+                <div class="block__shared">
+                  <quest-dd
+                    v-if="item.status === questStatuses.Created"
+                    class="block__icon block__icon_fav"
+                    mode="vertical"
+                    :item-id="item.id"
+                  />
+                </div>
               </div>
             </div>
             <div
@@ -237,7 +241,7 @@ export default {
       return str;
     },
     progressQuestText(status) {
-      if (this.userRole) {
+      if (!this.userRole) {
         return '';
       }
       switch (status) {
@@ -248,11 +252,11 @@ export default {
         case QuestStatuses.Dispute:
           return this.$t('quests.questDispute:');
         case QuestStatuses.WaitWorker:
-          return this.$t('quests.inProgressBy:');
+          return this.$t('quests.inProgressBy');
         case QuestStatuses.WaitConfirm:
           return this.$t('quests.questWaitConfirm:');
         case QuestStatuses.Done:
-          return this.$t('quests.finishedBy:');
+          return this.$t('quests.finishedBy');
         default:
           return '';
       }
@@ -667,6 +671,15 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+  &__head-right {
+    display: flex;
+    width: 70px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  &__shared {
+    margin-left: 10px;
   }
   &__icon {
     &_fav {
