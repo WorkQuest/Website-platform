@@ -1,15 +1,9 @@
 <template>
   <div class="skills">
-    <div
-      v-if="true"
-      class="skills__title"
-    >
+    <div class="skills__title">
       {{ $t("settings.employmentInfo") }}
     </div>
-    <div
-      v-if="true"
-      class="skills__container"
-    >
+    <div class="skills__container">
       <div class="skills__items">
         <specializations-selector
           v-if="skills.selectedSpecAndSkills !== null"
