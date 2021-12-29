@@ -5,9 +5,9 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('wallet.wallet') }}</span>
           <div class="wallet__address">
-            <span class="user__wallet">{{ userInfo.userWallet }}</span>
+            <span class="user__wallet">{{ userAddress }}</span>
             <button
-              v-clipboard:copy="userInfo.userWallet"
+              v-clipboard:copy="userAddress"
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               type="button"
@@ -24,7 +24,7 @@
           <div class="wallet__balance balance">
             <div class="balance__top">
               <span class="balance__title">{{ $t('wallet.balance') }}</span>
-              <span class="balance__currency">{{ `${userInfo.userBalance} ${userInfo.currency}` }}</span>
+              <span class="balance__currency">{{ `${balance} ${userInfo.currency}` }}</span>
               <span class="balance__usd">{{ `$ ${userInfo.usd}` }}</span>
             </div>
             <div class="balance__bottom">
@@ -90,6 +90,7 @@ export default {
   data() {
     return {
       cardClosed: false,
+      balance: '',
     };
   },
   computed: {
@@ -100,6 +101,8 @@ export default {
       userInfo: 'data/getUserInfo',
       transactions: 'data/getTransactions',
       transactionsData: 'data/getTransactionsData',
+      isWalletConnected: 'wallet/isWalletConnected',
+      userAddress: 'wallet/userAddress',
     }),
     walletTableFields() {
       return [
@@ -128,10 +131,13 @@ export default {
     },
   },
   beforeCreate() {
-    this.$store.dispatch('wallet/checkWalletConnected', this.$nuxt);
+    if (!this.isWalletConnected) this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
-  mounted() {
-    console.log('test');
+  async mounted() {
+    if (!this.isWalletConnected) return;
+    this.SetLoader(true);
+    this.balance = await this.$store.dispatch('wallet/getBalance');
+    this.SetLoader(false);
   },
   methods: {
     async loadData() {

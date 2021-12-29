@@ -1,26 +1,41 @@
-import { connectWallet, getWallet, isWalletConnected } from '~/utils/wallet';
+import {
+  connectWallet, disconnect, getBalance, getIsWalletConnected, setWalletAddress,
+} from '~/utils/wallet';
 
 export default {
   /**
    * Check wallet is connected
    * @returns boolean
    */
-  checkWalletConnected({ commit }, nuxt) {
-    const connected = isWalletConnected();
+  checkWalletConnected({ commit, getters }, { nuxt, callbackLayout }) {
+    const connected = getIsWalletConnected();
     if (!connected) {
+      if (callbackLayout) commit('setCallbackLayout', callbackLayout);
       nuxt.setLayout('confirmPassword');
+    } else {
+      commit('setIsWalletConnected', true);
     }
   },
   /**
    * Connect wallet with password
    * Use when checkWalletConnected from confirmPassword modal
+   * @param commit
    * @param getters
    * @param userPassword
    */
-  connectWallet({ getters }, userPassword) {
-    connectWallet(getters.userAddress, userPassword);
+  connectWallet({ commit, getters }, userPassword) {
+    const res = connectWallet(getters.userAddress, userPassword);
+    if (res?.ok) commit('setIsWalletConnected', true);
+    return res;
   },
-  getAccountAddress() {
-    return getWallet().address;
+  disconnect() {
+    disconnect();
+  },
+  setUserAddress({ commit }, userAddress) {
+    commit('setUserAddress', userAddress);
+    setWalletAddress(userAddress);
+  },
+  async getBalance() {
+    return await getBalance();
   },
 };

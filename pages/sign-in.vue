@@ -248,7 +248,7 @@ export default {
         if (sessionMnemonic) {
           const wallet = createWallet(sessionMnemonic);
           if (wallet && wallet.address === this.userAddress) {
-            this.saveMnemonic(wallet);
+            this.saveToStore(wallet);
             this.redirectUser();
             this.SetLoader(false);
             return;
@@ -260,7 +260,7 @@ export default {
           const mnemonic = decryptStringWitheKey(storageMnemonic, this.model.password);
           const wallet = createWallet(mnemonic);
           if (wallet && wallet.address === this.userAddress) {
-            this.saveMnemonic(wallet);
+            this.saveToStore(wallet);
             this.redirectUser();
             this.SetLoader(false);
             return;
@@ -273,7 +273,7 @@ export default {
           text: this.$t('messages.mnemonic'),
         });
         // Reset mnemonic for address -> importing
-        this.saveMnemonic({ address, mnemonic: '' });
+        this.saveToStore({ address, mnemonic: '' });
         this.step = WalletState.ImportMnemonic;
       }
       this.SetLoader(false);
@@ -284,7 +284,7 @@ export default {
         publicKey: wallet.publicKey,
       });
       if (res.ok) {
-        this.saveMnemonic(wallet);
+        this.saveToStore(wallet);
         this.redirectUser();
         return;
       }
@@ -304,7 +304,7 @@ export default {
       }
       // All ok
       if (wallet.address === this.userAddress) {
-        this.saveMnemonic(wallet);
+        this.saveToStore(wallet);
         this.redirectUser();
         return;
       }
@@ -314,10 +314,14 @@ export default {
         text: this.$t('messages.mnemonic'),
       });
     },
-    saveMnemonic(wallet) {
+    saveToStore(wallet) {
       localStorage.setItem('mnemonic', JSON.stringify({
         ...JSON.parse(localStorage.getItem('mnemonic')),
         [wallet.address]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
+      }));
+      sessionStorage.setItem('keys', JSON.stringify({
+        ...JSON.parse(sessionStorage.getItem('keys')),
+        [wallet.address]: wallet.privateKey,
       }));
       sessionStorage.setItem('mnemonic', JSON.stringify({
         ...JSON.parse(sessionStorage.getItem('mnemonic')),
@@ -325,6 +329,7 @@ export default {
       }));
     },
     redirectUser() {
+      this.$store.dispatch('wallet/setUserAddress', this.userAddress);
       this.addressAssigned = true;
       if (this.userData.role === 'employer') {
         this.$router.push('/workers');
