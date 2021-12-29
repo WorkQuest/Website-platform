@@ -40,7 +40,7 @@
               v-for="(img, j) in item.medias"
               :key="j"
               class="portfolio__img"
-              @click="openImage(img.url, item.title, item.description, item.id)"
+              @click="openImage(img.url, item)"
             >
               <img
                 class="portfolio__image"
@@ -85,14 +85,18 @@ export default {
     },
   },
   methods: {
-    openImage(src, name, desc) {
+    openImage(src, {
+      title, description, id, medias,
+    }) {
       if (window.innerWidth >= 761) {
         this.ShowModal({
           key: modals.showImage,
           portfolio: true,
           url: src,
-          title: name,
-          desc,
+          title,
+          description,
+          id,
+          medias,
         });
       }
     },

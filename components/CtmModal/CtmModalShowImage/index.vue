@@ -11,7 +11,7 @@
         <base-btn
           class="content portfolio__close"
           mode="portfolioClose"
-          @click="showDeleteCaseModal(id)"
+          @click="showDeleteCaseModal(options.id)"
         >
           <span
             class="icon-close_big"
@@ -20,7 +20,7 @@
         <base-btn
           class="content portfolio__edit"
           mode="portfolioEdit"
-          @click="showEditCaseModal(id)"
+          @click="showEditCaseModal(options.id)"
         >
           <span
             class="icon-edit"
@@ -41,7 +41,7 @@
       >
     </div>
     <div
-      v-if="options.title || options.desc"
+      v-if="options.title || options.description"
       class="ctm-modal__desc desc"
     >
       <div
@@ -51,10 +51,10 @@
         {{ options.title }}
       </div>
       <div
-        v-if="options.desc"
+        v-if="options.description"
         class="desc__desc"
       >
-        {{ options.desc }}
+        {{ options.description }}
       </div>
     </div>
   </ctm-modal-box>
@@ -89,6 +89,9 @@ export default {
       this.ShowModal({
         key: modals.editCase,
         id,
+        title: this.options.title,
+        desc: this.options.description,
+        media: this.options.medias,
       });
     },
   },
