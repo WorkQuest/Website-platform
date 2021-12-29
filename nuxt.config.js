@@ -142,6 +142,8 @@ export default {
     WETH_TOKEN: process.env.WETH_TOKEN,
     WBNB_TOKEN: process.env.WBNB_TOKEN,
 
+    WQ_PROVIDER: process.env.WQ_PROVIDER,
+
     PENSION_FUND: process.env.PENSION_FUND,
   },
 };
