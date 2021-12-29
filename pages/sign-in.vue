@@ -259,7 +259,6 @@ export default {
         if (storageMnemonic) {
           const mnemonic = decryptStringWitheKey(storageMnemonic, this.model.password);
           const wallet = createWallet(mnemonic);
-          console.log('storage address', wallet.address.toLowerCase());
           if (wallet && wallet.address.toLowerCase() === this.userAddress) {
             this.saveToStore(wallet);
             this.redirectUser();
