@@ -40,12 +40,13 @@ export default {
       password: '',
       context: 'default',
       toDecrypt: null,
+      counter: 1,
     };
   },
   computed: {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
-      userAddress: 'wallet/userAddress',
+      userAddress: 'user/getUserWalletAddress',
       callbackLayout: 'wallet/callbackLayout',
     }),
   },
@@ -57,15 +58,15 @@ export default {
     // Try to find mnemonic in storage by user wallet address
     // Checking session storage
     const session = JSON.parse(sessionStorage.getItem('mnemonic'));
-    if (!session) {
-      this.disconnect();
-      return;
+    let mnemonic = null;
+    if (session) {
+      mnemonic = session[this.userAddress];
+      if (mnemonic) {
+        this.toDecrypt = mnemonic;
+        return;
+      }
     }
-    let mnemonic = session[this.userAddress];
-    if (mnemonic) {
-      this.toDecrypt = mnemonic;
-      return;
-    }
+
     // Checking local storage
     const storage = JSON.parse(localStorage.getItem('mnemonic'));
     if (!storage) {
@@ -81,15 +82,28 @@ export default {
   },
   methods: {
     async submit() {
-      // TODO: check password from api, then =>
-      const res = await this.$store.dispatch('wallet/connectWallet', this.password);
-      if (res?.ok) this.$nuxt.setLayout(this.callbackLayout);
+      const check = await this.$store.dispatch('wallet/checkPassword', this.password);
+      if (check) {
+        const res = await this.$store.dispatch('wallet/connectWallet', { userAddress: this.userAddress, userPassword: this.password });
+        if (res?.ok) this.$nuxt.setLayout(this.callbackLayout);
+      } else {
+        if (this.counter >= 5) {
+          this.disconnect(false);
+        }
+        await this.$store.dispatch('main/showToast', {
+          title: 'Error',
+          text: 'Wrong password!',
+        });
+        this.counter += 1;
+      }
     },
-    disconnect() {
-      this.$store.dispatch('main/showToast', {
-        title: 'Secret phrase not found',
-        text: 'Please login with secret phrase',
-      });
+    disconnect(showToast = true) {
+      if (showToast) {
+        this.$store.dispatch('main/showToast', {
+          title: 'Secret phrase not found',
+          text: 'Please login with secret phrase',
+        });
+      }
       this.$store.dispatch('user/logout');
       this.$store.dispatch('wallet/disconnect');
       this.$nuxt.setLayout('auth');
@@ -124,7 +138,6 @@ export default {
   }
   &__password {
     margin-top: 20px;
-    margin-bottom: 20px;
   }
 }
 </style>

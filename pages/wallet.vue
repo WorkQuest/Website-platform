@@ -108,7 +108,7 @@ export default {
       transactions: 'data/getTransactions',
       transactionsData: 'data/getTransactionsData',
       isWalletConnected: 'wallet/isWalletConnected',
-      userAddress: 'wallet/userAddress',
+      userAddress: 'user/getUserWalletAddress',
     }),
     walletTableFields() {
       return [

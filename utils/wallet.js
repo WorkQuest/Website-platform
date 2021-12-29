@@ -72,7 +72,7 @@ export const getIsWalletConnected = () => {
 export const connectWallet = (userAddress, userPassword) => {
   if (!userPassword || !userAddress) return error();
   if (wallet.address && wallet.privateKey) return success();
-  let _wallet;
+  let _walletTemp;
   const sessionData = JSON.parse(sessionStorage.getItem('mnemonic'));
   const storageData = JSON.parse(localStorage.getItem('mnemonic'));
   if (!sessionData && !storageData) {
@@ -87,9 +87,9 @@ export const connectWallet = (userAddress, userPassword) => {
 
   // Check in session if exists
   if (sessionMnemonic) {
-    _wallet = createWallet(sessionMnemonic);
-    if (_wallet && _wallet.address === userAddress) {
-      wallet.init(_wallet.address, _wallet.privateKey);
+    _walletTemp = createWallet(sessionMnemonic);
+    if (_walletTemp && _walletTemp.address.toLowerCase() === userAddress) {
+      wallet.init(_walletTemp.address.toLowerCase(), _walletTemp.privateKey);
       return success();
     }
   }
@@ -97,9 +97,9 @@ export const connectWallet = (userAddress, userPassword) => {
   // Check in storage
   if (storageMnemonic) {
     const mnemonic = decryptStringWitheKey(storageMnemonic, userPassword);
-    _wallet = createWallet(mnemonic);
-    if (wallet && wallet.address === this.userAddress) {
-      wallet.init(_wallet.address, _wallet.privateKey);
+    _walletTemp = createWallet(mnemonic);
+    if (_walletTemp && _walletTemp.address.toLowerCase() === userAddress) {
+      wallet.init(_walletTemp.address.toLowerCase(), _walletTemp.privateKey);
       return success();
     }
   }

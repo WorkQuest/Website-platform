@@ -3,6 +3,17 @@ import {
 } from '~/utils/wallet';
 
 export default {
+  async checkPassword({ commit }, password) {
+    try {
+      const res = await this.$axios.$post('/v1/auth/validate-password', { password });
+      if (res.ok) {
+        return res.result.isValid;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  },
   /**
    * Check wallet is connected
    * @returns boolean
@@ -23,8 +34,8 @@ export default {
    * @param getters
    * @param userPassword
    */
-  connectWallet({ commit, getters }, userPassword) {
-    const res = connectWallet(getters.userAddress, userPassword);
+  connectWallet({ commit }, { userAddress, userPassword }) {
+    const res = connectWallet(userAddress, userPassword);
     if (res?.ok) commit('setIsWalletConnected', true);
     return res;
   },
