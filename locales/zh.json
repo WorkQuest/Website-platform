@@ -1049,7 +1049,7 @@
     "message": "消息",
     "bodyMessage": "您好",
     "areYouSure": "确定吗？",
-    "transactionSend": "已发送交易",
+    "transactionSent": "已发送交易",
     "transactionFail": "???",
     "transactionCheck": "???",
     "cardHasBeenAdded": "银行卡已添加",

@@ -1049,7 +1049,7 @@
     "message": "বার্তা",
     "bodyMessage": "হ্যালো",
     "areYouSure": "আপনি কি নিশ্চিত?",
-    "transactionSend": "লেনদেন পাঠান",
+    "transactionSent": "লেনদেন পাঠান",
     "transactionFail": "???",
     "transactionCheck": "???",
     "cardHasBeenAdded": "কার্ড যোগ করা হয়েছে",

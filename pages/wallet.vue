@@ -5,9 +5,9 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('wallet.wallet') }}</span>
           <div class="wallet__address">
-            <span class="user__wallet">{{ userInfo.userWallet }}</span>
+            <span class="user__wallet">{{ userAddress }}</span>
             <button
-              v-clipboard:copy="userInfo.userWallet"
+              v-clipboard:copy="userAddress"
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               type="button"
@@ -19,16 +19,17 @@
         </div>
         <div
           class="wallet__info"
-          :class="{'wallet__info_full' : userInfo.cardClosed }"
+          :class="{'wallet__info_full' : cardClosed }"
         >
           <div class="wallet__balance balance">
             <div class="balance__top">
               <span class="balance__title">{{ $t('wallet.balance') }}</span>
-              <span class="balance__currency">{{ `${userInfo.userBalance} ${userInfo.currency}` }}</span>
-              <span class="balance__usd">{{ `$ ${userInfo.usd}` }}</span>
+              <span class="balance__currency">{{ `${balance} ${userInfo.currency}` }}</span>
+              <span class="balance__usd">{{ `$ ${balance}` }}</span>
             </div>
             <div class="balance__bottom">
               <base-btn
+                :disabled="true"
                 mode="outline"
                 class="balance__btn"
                 @click="showDepositModal()"
@@ -36,6 +37,7 @@
                 {{ $t('wallet.deposit') }}
               </base-btn>
               <base-btn
+                :disabled="true"
                 mode="outline"
                 class="balance__btn"
                 @click="showWithdrawModal()"
@@ -60,6 +62,7 @@
               @click="closeCard()"
             />
             <base-btn
+              :disabled="true"
               class="card__btn"
               mode="outline"
               @click="showAddCardModal()"
@@ -68,14 +71,16 @@
             </base-btn>
           </div>
         </div>
-        <div class="wallet__table">
-          <base-table
-            class="wallet__table"
-            :title="$t('wallet.table.trx')"
-            :items="transactionsData"
-            :fields="walletTableFields"
-          />
-        </div>
+        <!--        TODO: вернуть позже как добавится на бэке -->
+        <!--        <div class="wallet__table">-->
+        <!--          <base-table-->
+        <!--            class="wallet__table"-->
+        <!--            :title="$t('wallet.table.trx')"-->
+        <!--            :items="transactionsData"-->
+        <!--            :fields="walletTableFields"-->
+        <!--          />-->
+        <!--        </div>-->
+        <!--      </div>-->
       </div>
     </div>
   </div>
@@ -86,9 +91,12 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
+  name: 'Wallet',
   data() {
     return {
       cardClosed: false,
+      balance: '',
+      fullBalance: '',
     };
   },
   computed: {
@@ -99,6 +107,8 @@ export default {
       userInfo: 'data/getUserInfo',
       transactions: 'data/getTransactions',
       transactionsData: 'data/getTransactionsData',
+      isWalletConnected: 'wallet/isWalletConnected',
+      userAddress: 'user/getUserWalletAddress',
     }),
     walletTableFields() {
       return [
@@ -126,17 +136,31 @@ export default {
       ];
     },
   },
+  beforeMount() {
+    this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
   async mounted() {
-    this.SetLoader(true);
-    this.SetLoader(false);
+    if (!this.isWalletConnected) return;
+    await this.loadData();
   },
   methods: {
+    async loadData() {
+      this.SetLoader(true);
+      const res = await this.$store.dispatch('wallet/getBalance');
+      if (res.ok) {
+        this.balance = res.result.balance;
+        this.fullBalance = res.result.fullBalance;
+      }
+      this.SetLoader(false);
+    },
     closeCard() {
       this.cardClosed = true;
     },
     showTransferModal() {
       this.ShowModal({
         key: modals.giveTransfer,
+        balance: this.fullBalance,
+        callback: async () => await this.loadData(),
       });
     },
     showDepositModal() {
