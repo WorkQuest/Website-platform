@@ -19,6 +19,7 @@
         <quests
           v-if="questsData.count"
           :object="questsData"
+          @clickFavoriteStar="updateQuests"
         />
         <emptyData
           v-else
@@ -108,6 +109,16 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async updateQuests(item) {
+      this.SetLoader(true);
+      if (!item.star) {
+        await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      } else {
+        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+      }
+      await this.$store.dispatch('quests/getUserQuests', this.requestParams);
+      this.SetLoader(false);
+    },
     async filterByStatus(id) {
       this.SetLoader(true);
       this.page = 1;

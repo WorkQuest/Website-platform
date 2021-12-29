@@ -2,8 +2,8 @@
   <div class="quests">
     <div class="quests__card card">
       <div
-        v-for="(item, i) in object.quests"
-        :key="i"
+        v-for="item in object.quests"
+        :key="item.id"
         class="card__content"
       >
         <div class="card__block block">
@@ -46,14 +46,13 @@
                 :item-id="item.id"
               />
               <div
-                v-if="[questStatuses.Closed, questStatuses.Dispute].includes(item.status)"
                 class="block__icon block__icon_fav star"
-                @click="setStar(item)"
+                @click="clickFavoriteStar(item)"
               >
                 <img
                   class="star__hover"
                   src="~assets/img/ui/star_hover.svg"
-                  alt=""
+                  alt="favorite star"
                 >
                 <img
                   :class="[{'star__default': !item.star},{'star__checked': item.star}]"
@@ -229,12 +228,8 @@ export default {
         alt: 'Fake quest preview',
       };
     },
-    async setStar(item) {
-      if (!item.star) {
-        await this.$store.dispatch('quests/setStarOnQuest', item.id);
-      } if (item.star) {
-        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
-      }
+    clickFavoriteStar(item) {
+      this.$emit('clickFavoriteStar', item);
     },
     cropTxt(str) {
       const maxLength = 120;
@@ -243,14 +238,24 @@ export default {
     },
     progressQuestText(status) {
       if (this.userRole) {
-        if (status === QuestStatuses.Active) return this.$t('quests.questActive:');
-        if (status === QuestStatuses.Closed) return this.$t('quests.questClosed:');
-        if (status === QuestStatuses.Dispute) return this.$t('quests.questDispute:');
-        if (status === QuestStatuses.WaitWorker) return this.$t('quests.inProgressBy');
-        if (status === QuestStatuses.WaitConfirm) return this.$t('quests.questWaitConfirm:');
-        if (status === QuestStatuses.Done) return this.$t('quests.finishedBy');
+        return '';
       }
-      return '';
+      switch (status) {
+        case QuestStatuses.Active:
+          return this.$t('quests.questActive:');
+        case QuestStatuses.Closed:
+          return this.$t('quests.questClosed:');
+        case QuestStatuses.Dispute:
+          return this.$t('quests.questDispute:');
+        case QuestStatuses.WaitWorker:
+          return this.$t('quests.inProgressBy:');
+        case QuestStatuses.WaitConfirm:
+          return this.$t('quests.questWaitConfirm:');
+        case QuestStatuses.Done:
+          return this.$t('quests.finishedBy:');
+        default:
+          return '';
+      }
     },
     async getResponsesToQuestForAuthUser() {
       if (this.userRole === 'worker') {

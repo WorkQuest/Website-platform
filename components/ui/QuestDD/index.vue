@@ -21,7 +21,7 @@
         class="quest menu"
       >
         <div class="menu menu__items">
-          <span class="menu__container">
+          <div class="menu__container">
             <div
               v-if="['employer'].includes(userRole)"
               class="menu__item"
@@ -57,7 +57,7 @@
                 {{ $t('modals.delete') }}
               </div>
             </div>
-          </span>
+          </div>
         </div>
       </div>
     </transition>
