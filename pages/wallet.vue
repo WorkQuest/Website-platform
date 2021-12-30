@@ -160,6 +160,10 @@ export default {
     ddValue(val) {
       this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
     },
+    selectedToken() {
+      const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
+      this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
+    },
   },
   beforeMount() {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
