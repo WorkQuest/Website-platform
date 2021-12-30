@@ -39,7 +39,7 @@
               v-model="amount"
               class="input__field"
               :placeholder="'Enter amount'"
-              :rules="`required|decimal|max_bn:${maxAmount}`"
+              :rules="`required|decimal|max_bn:${maxAmount}|decimalPlaces:18`"
               :name="$t('modals.amountField')"
             >
               <template
