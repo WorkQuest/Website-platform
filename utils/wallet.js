@@ -2,7 +2,8 @@ import { ethers } from 'ethers';
 import { AES, enc } from 'crypto-js';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
-import { error, success } from '~/utils/web3';
+import { error, getAccountAddress, success } from '~/utils/web3';
+import * as abi from '~/abi/abi';
 
 const bip39 = require('bip39');
 
@@ -113,16 +114,23 @@ export const disconnect = () => {
 };
 
 const min = new BigNumber(0.0001);
-const getStyledAmount = (amount, full = false) => {
-  if (amount === 0) return '0';
-  const value = new BigNumber(amount).shiftedBy(-18);
+/**
+ * @param amount
+ * @param full - returns with all decimals
+ * @param decimals
+ * @returns {string|BigNumber}
+ */
+export const getStyledAmount = (amount, full = false, decimals = 18) => {
+  const value = new BigNumber(amount).shiftedBy(-decimals);
+  if (value.isEqualTo(0)) return '0';
   if (full) return value.toString();
   if (value.isLessThan(min)) return `<${min.toString()}`;
-  return value.decimalPlaces(4);
+  return value.decimalPlaces(4).toString();
 };
 
 // web3.eth.net.getId() - если нужно будет получить chainId
 
+// WUSD
 export const getBalance = async () => {
   try {
     const balance = await web3.eth.getBalance(wallet.address);
@@ -135,7 +143,6 @@ export const getBalance = async () => {
     return error();
   }
 };
-
 export const transfer = async (recipient, value) => {
   try {
     value = new BigNumber(value).shiftedBy(18).toString();
@@ -157,6 +164,40 @@ export const transfer = async (recipient, value) => {
     return success(txRes);
   } catch (e) {
     console.error('transfer error', e);
+    return error();
+  }
+};
+
+// Contracts
+export const fetchContractData = async (_method, _abi, _address, _params) => {
+  try {
+    if (!web3) {
+      console.error('_provider is undefined');
+      return {};
+    }
+    const Contract = new web3.eth.Contract(_abi, _address);
+    return await Contract.methods[_method].apply(this, _params).call();
+  } catch (e) {
+    console.log(e.message);
+    return error();
+  }
+};
+export const transferToken = async (recipient, value) => {
+  try {
+    value = new BigNumber(value).shiftedBy(18).toString();
+    const inst = new web3.eth.Contract(abi.ERC20, process.env.WQT_TOKEN);
+    const [gasPrice, gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      inst.methods.transfer.apply(null, [recipient, value]).estimateGas({ from: wallet.address }),
+    ]);
+    const res = await inst.methods.transfer(recipient, value).send({
+      from: wallet.address,
+      gas: gasEstimate,
+      gasPrice,
+    });
+    return success(res);
+  } catch (e) {
+    console.error(e.message);
     return error();
   }
 };

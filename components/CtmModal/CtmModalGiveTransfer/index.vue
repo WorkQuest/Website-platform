@@ -18,8 +18,17 @@
               v-model="recipient"
               class="input__field"
               :placeholder="'Enter address'"
-              rules="required"
+              rules="required|address"
               :name="$t('modals.addressField')"
+            />
+          </div>
+          <div class="content__input input">
+            <span class="input__title">
+              Select token
+            </span>
+            <base-dd
+              v-model="ddValue"
+              :items="tokenSymbolsDd"
             />
           </div>
           <div class="content__input input">
@@ -30,7 +39,7 @@
               v-model="amount"
               class="input__field"
               :placeholder="'Enter amount'"
-              :rules="`required|decimal|max:${balance}`"
+              :rules="`required|decimal|max_bn:${maxAmount}|decimalPlaces:18`"
               :name="$t('modals.amountField')"
             >
               <template
@@ -74,6 +83,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'ModalTakeTransfer',
@@ -82,33 +92,57 @@ export default {
       recipient: '',
       amount: '',
       step: 1,
-      balance: 0,
+      maxAmount: 0,
+      ddValue: 0,
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
       isLoading: 'main/getIsLoading',
+      balance: 'wallet/getBalanceData',
+      selectedToken: 'wallet/getSelectedToken',
     }),
+    tokenSymbolsDd() {
+      return Object.keys(TokenSymbols);
+    },
+  },
+  watch: {
+    selectedToken(val) {
+      this.maxAmount = this.balance[val].fullBalance;
+    },
+    ddValue(val) {
+      this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
+    },
   },
   mounted() {
-    this.balance = this.options.balance || 0;
+    const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
+    this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
+    this.maxAmount = this.balance[this.selectedToken].fullBalance;
   },
   methods: {
     hide() {
       this.CloseModal();
     },
     maxBalance() {
-      this.amount = this.balance;
+      this.amount = this.maxAmount;
     },
     async transfer() { // TODO: выводить инфу о транзакции перед ее отправкой
       this.SetLoader(true);
       const { callback } = this.options;
       this.hide();
-      const res = await this.$store.dispatch('wallet/transfer', {
-        recipient: this.recipient,
-        value: this.amount,
-      });
+      let res;
+      if (this.selectedToken === TokenSymbols.WUSD) {
+        res = await this.$store.dispatch('wallet/transfer', {
+          recipient: this.recipient,
+          value: this.amount,
+        });
+      } else if (this.selectedToken === TokenSymbols.WQT) {
+        res = await this.$store.dispatch('wallet/transferWQT', {
+          recipient: this.recipient,
+          value: this.amount,
+        });
+      }
       if (res?.ok) {
         if (callback) {
           await callback();

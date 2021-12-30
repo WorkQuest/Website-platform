@@ -1,5 +1,7 @@
 export default {
-  isWalletConnected: (state) => state.isWalletConnected,
-  userAddress: (state) => state.userAddress,
-  callbackLayout: (state) => state.callbackLayout || 'default',
+  getIsWalletConnected: (state) => state.isWalletConnected,
+  getUserAddress: (state) => state.userAddress,
+  getCallbackLayout: (state) => state.callbackLayout || 'default',
+  getBalanceData: (state) => state.balance,
+  getSelectedToken: (state) => state.selectedToken,
 };
