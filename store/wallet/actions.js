@@ -1,6 +1,15 @@
 import {
-  connectWallet, disconnect, getBalance, getIsWalletConnected, setWalletAddress, transfer,
+  connectWallet,
+  disconnect,
+  fetchContractData,
+  getBalance,
+  getIsWalletConnected,
+  getStyledAmount,
+  setWalletAddress,
+  transfer, transferToken,
 } from '~/utils/wallet';
+import * as abi from '~/abi/abi';
+import { TokenSymbols } from '~/utils/enums';
 
 export default {
   async checkPassword({ commit }, password) {
@@ -46,8 +55,24 @@ export default {
     commit('setUserAddress', userAddress);
     setWalletAddress(userAddress);
   },
-  async getBalance() {
-    return await getBalance();
+  setSelectedToken({ commit }, token) {
+    commit('setSelectedToken', token);
+  },
+  async getBalance({ commit }) {
+    const res = await getBalance();
+    commit('setBalance', {
+      symbol: TokenSymbols.WUSD,
+      balance: res.result.balance,
+      fullBalance: res.result.fullBalance,
+    });
+  },
+  async getBalanceWQT({ commit }, userAddress) {
+    const value = await fetchContractData('balanceOf', abi.ERC20, process.env.WQT_TOKEN, [userAddress]);
+    commit('setBalance', {
+      symbol: TokenSymbols.WQT,
+      balance: getStyledAmount(value),
+      fullBalance: getStyledAmount(value, true),
+    });
   },
   /**
    * Send transfer
@@ -56,5 +81,14 @@ export default {
    */
   async transfer({ commit }, { recipient, value }) {
     return await transfer(recipient, value);
+  },
+  /**
+   * Send transfer for WQT token
+   * @param commit
+   * @param recipient
+   * @param value
+   */
+  async transferWQT({ commit }, { recipient, value }) {
+    return await transferToken(recipient, value);
   },
 };
