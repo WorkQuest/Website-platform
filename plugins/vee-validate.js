@@ -10,6 +10,8 @@ import {
 
 import * as rules from 'vee-validate/dist/rules';
 import { validateMnemonic } from 'bip39';
+import BigNumber from 'bignumber.js';
+import { utils } from 'web3';
 
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
@@ -119,6 +121,27 @@ extend('mnemonic', {
     };
   },
   message: 'Incorrect secret phrase',
+});
+
+extend('max_bn', {
+  validate(value, { max }) {
+    return {
+      required: true,
+      valid: new BigNumber(value).isLessThanOrEqualTo(new BigNumber(max)),
+    };
+  },
+  params: ['max'],
+  message: 'Value must be less than or equal {max}',
+});
+
+extend('address', {
+  validate(value) {
+    return {
+      required: true,
+      valid: utils.isAddress(value),
+    };
+  },
+  message: 'Type correct address',
 });
 
 extend('text-title', {

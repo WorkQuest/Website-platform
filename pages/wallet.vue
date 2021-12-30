@@ -11,7 +11,6 @@
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               type="button"
-              @click="showSuccessCopied()"
             >
               <span class="icon-copy wallet__icon" />
             </button>
@@ -24,8 +23,21 @@
           <div class="wallet__balance balance">
             <div class="balance__top">
               <span class="balance__title">{{ $t('wallet.balance') }}</span>
-              <span class="balance__currency">{{ `${balance} ${userInfo.currency}` }}</span>
-              <span class="balance__usd">{{ `$ ${balance}` }}</span>
+              <span class="balance__currency">
+                <span class="balance__currency-text">
+                  {{ balance[selectedToken].balance + ' ' + selectedToken }}
+                </span>
+                <base-dd
+                  v-model="ddValue"
+                  class="balance__token"
+                  :items="tokenSymbolsDd"
+                />
+              </span>
+              <span class="balance__usd">
+                <span v-if="selectedToken === tokenSymbols.WUSD">
+                  {{ `$ ${balance[tokenSymbols.WUSD].balance}` }}
+                </span>
+              </span>
             </div>
             <div class="balance__bottom">
               <base-btn
@@ -89,14 +101,14 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'Wallet',
   data() {
     return {
       cardClosed: false,
-      balance: '',
-      fullBalance: '',
+      ddValue: 0,
     };
   },
   computed: {
@@ -107,9 +119,17 @@ export default {
       userInfo: 'data/getUserInfo',
       transactions: 'data/getTransactions',
       transactionsData: 'data/getTransactionsData',
-      isWalletConnected: 'wallet/isWalletConnected',
+      isWalletConnected: 'wallet/getIsWalletConnected',
       userAddress: 'user/getUserWalletAddress',
+      balance: 'wallet/getBalanceData',
+      selectedToken: 'wallet/getSelectedToken',
     }),
+    tokenSymbolsDd() {
+      return Object.keys(TokenSymbols);
+    },
+    tokenSymbols() {
+      return TokenSymbols;
+    },
     walletTableFields() {
       return [
         {
@@ -136,22 +156,34 @@ export default {
       ];
     },
   },
+  watch: {
+    ddValue(val) {
+      this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
+    },
+  },
   beforeMount() {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
   },
   async mounted() {
     if (!this.isWalletConnected) return;
     await this.loadData();
+    const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
+    this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
   },
   methods: {
     async loadData() {
       this.SetLoader(true);
-      const res = await this.$store.dispatch('wallet/getBalance');
-      if (res.ok) {
-        this.balance = res.result.balance;
-        this.fullBalance = res.result.fullBalance;
-      }
+      await Promise.all([
+        this.updateBalanceWQT(),
+        this.updateBalanceWUSD(),
+      ]);
       this.SetLoader(false);
+    },
+    async updateBalanceWQT() {
+      await this.$store.dispatch('wallet/getBalanceWQT', this.userAddress);
+    },
+    async updateBalanceWUSD() {
+      await this.$store.dispatch('wallet/getBalance');
     },
     closeCard() {
       this.cardClosed = true;
@@ -159,7 +191,6 @@ export default {
     showTransferModal() {
       this.ShowModal({
         key: modals.giveTransfer,
-        balance: this.fullBalance,
         callback: async () => await this.loadData(),
       });
     },
@@ -178,11 +209,6 @@ export default {
       this.ShowModal({
         key: modals.addingCard,
         branch: 'adding',
-      });
-    },
-    showSuccessCopied() {
-      this.ShowModal({
-        key: modals.copiedSuccess,
       });
     },
   },
@@ -260,6 +286,7 @@ export default {
     @include text-simple;
     font-size: 25px;
     font-weight: 500;
+    margin-right: 10px;
   }
 
   &__info {
@@ -327,11 +354,33 @@ export default {
     font-weight: 600;
     font-size: 35px;
     line-height: 130%;
+
+    display: flex;
+    justify-content: space-between;
+
+    @include _767 {
+      font-size: 26px;
+    }
+
+    &-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 1000px;
+      padding-right: 20px;
+    }
+  }
+
+  &__token {
+    height: 49px;
+    border: 1px solid $black100;
+    border-radius: 6px;
+    box-sizing: border-box;
   }
 
   &__usd {
     @include text-simple;
     color: $blue;
+    height: 24px;
   }
 }
 

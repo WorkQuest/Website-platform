@@ -102,16 +102,22 @@ export const Path = {
   CREATE_QUEST: '/create-quest',
 };
 
-export const WalletState = {
+// WALLET
+export const WalletState = Object.freeze({
   SignPage: 1,
   SaveMnemonic: 2,
   ConfirmMnemonic: 3,
   ImportOrCreate: 4,
   ImportMnemonic: 5,
-};
+});
 
-export const UserStatuses = {
+export const UserStatuses = Object.freeze({
   Unconfirmed: 0,
   Confirmed: 1,
   NeedSetRole: 2,
-};
+});
+
+export const TokenSymbols = Object.freeze({
+  WQT: 'WQT',
+  WUSD: 'WUSD',
+});

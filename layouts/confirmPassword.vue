@@ -47,7 +47,7 @@ export default {
     ...mapGetters({
       isLoading: 'main/getIsLoading',
       userAddress: 'user/getUserWalletAddress',
-      callbackLayout: 'wallet/callbackLayout',
+      callbackLayout: 'wallet/getCallbackLayout',
     }),
   },
   mounted() {
