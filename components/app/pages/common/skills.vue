@@ -75,7 +75,7 @@ export default {
       &_blue {
         background-color: rgba(0, 131, 199, 0.1);
         border-radius: 44px;
-        padding: 5px;
+        padding: 5px 7px;
         color: #0083C7;
       }
     }

@@ -120,6 +120,7 @@ export default {
           [InfoModeWorker.Active]: 'quests.activeQuest',
           [InfoModeWorker.Rejected]: 'quests.requested',
           [InfoModeWorker.WaitWorker]: 'quests.pendingConsideration',
+          [InfoModeWorker.WaitConfirm]: 'quests.pendingConsideration',
           [InfoModeWorker.Dispute]: 'quests.dispute',
           [InfoModeWorker.Closed]: 'quests.questClosed',
           [InfoModeWorker.Done]: 'quests.completed',
@@ -142,7 +143,7 @@ export default {
           { 'info_bg-yellow': [InfoModeWorker.ADChat, InfoModeWorker.Invited].includes(infoDataMode) },
           { 'info_bg-green': infoDataMode === InfoModeWorker.Active || (InfoModeWorker.Invited && response?.status === responseStatus.accepted) },
           { 'info_bg-grey': infoDataMode === InfoModeWorker.Rejected },
-          { 'info_bg-blue': [InfoModeWorker.WaitWorker, InfoModeWorker.Done, InfoModeWorker.Responded].includes(infoDataMode) },
+          { 'info_bg-blue': [InfoModeWorker.WaitWorker, InfoModeWorker.WaitConfirm, InfoModeWorker.Done, InfoModeWorker.Responded].includes(infoDataMode) },
           { 'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(infoDataMode) || (InfoModeWorker.Invited && response?.status === responseStatus.rejected) },
         ];
       }

@@ -103,7 +103,7 @@
               language="en"
               :center="questLocation"
               :zoom="15"
-              :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false,}"
+              :options="{scrollWheel: false, navigationControl: false, mapTypeControl: false, scaleControl: false, height: '205px'}"
             >
               <GMapMarker
                 v-for="(item, key) in locations"
@@ -658,9 +658,6 @@ export default {
 </script>
 
 <style lang="scss">
-.GMap__Wrapper {
-  height: 205px;
-}
 .gm-svpc {
   top: 27px !important;
 }

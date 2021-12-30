@@ -52,11 +52,12 @@ export const InfoModeEmployer = {
   Done: 6,
 };
 export const InfoModeWorker = {
+  Created: 0,
   ADChat: 1,
   Active: 2,
   Rejected: 3,
   WaitWorker: 4,
-  Created: 5,
+  WaitConfirm: 5,
   Dispute: 7,
   Closed: 8,
   Done: 9,
