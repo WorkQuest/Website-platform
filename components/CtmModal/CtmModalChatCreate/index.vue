@@ -220,6 +220,7 @@ export default {
           chatId,
         };
 
+        this.memberUserIds = [];
         await this.$store.dispatch('chat/addNewMembers', payload);
       }
 
