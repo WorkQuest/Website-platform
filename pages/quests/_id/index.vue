@@ -113,10 +113,10 @@
                 @click="coordinatesChange(item)"
               >
                 <GMapInfoWindow :options="{maxWidth: 280}">
-                  <div>
+                  <template>
                     <h3>{{ questData.title }}</h3>
                     <span>{{ questData.description }}</span>
-                  </div>
+                  </template>
                 </GMapInfoWindow>
               </GMapMarker>
             </GmapMap>
@@ -141,7 +141,6 @@
               </nuxt-link>
             </h2>
           </div>
-          {{ responsesToQuest.responses }}
           <div class="quest__card">
             <quests
               v-if="questsObjects.count"
@@ -159,7 +158,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
-  QuestStatuses, InfoModeWorker, InfoModeEmployer, responsesType, UserRole,
+  QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
@@ -204,7 +203,6 @@ export default {
       questData: 'quests/getQuest',
       assignedWorker: 'quests/getAssignedWorker',
       userRole: 'user/getUserRole',
-      responsesToQuest: 'quests/getResponsesToQuest',
       infoDataMode: 'quests/getInfoDataMode',
       userData: 'user/getUserData',
     }),
@@ -217,12 +215,16 @@ export default {
     getPriority() {
       const { priority } = this.questData;
 
-      return priority !== null ? this.$t(`priority.${['low', 'normal', 'urgent'][priority]}`) : '';
+      const priorityLocale = ['low', 'normal', 'urgent'][priority];
+
+      return priority !== null ? this.$t(`priority.${priorityLocale}`) : '';
     },
     getPriorityClass() {
       const { priority } = this.questData;
 
-      return priority !== null ? `worker-data__priority-title_${['low', 'normal', 'urgent'][priority]}` : '';
+      const priorityModifier = ['low', 'normal', 'urgent'][priority];
+
+      return priority !== null ? `worker-data__priority-title_${priorityModifier}` : '';
     },
   },
   watch: {
@@ -236,6 +238,10 @@ export default {
         this.locations = this.questLocation;
       },
     },
+    infoDataMode(newVal, oldVal) {
+      if (oldVal === undefined || newVal === oldVal) return;
+      this.setActionBtnsArr();
+    },
   },
   async beforeMount() {
     this.SetLoader(true);
@@ -243,16 +249,6 @@ export default {
     await this.getResponsesToQuest();
     await this.setActionBtnsArr();
     this.SetLoader(false);
-  },
-  mounted() {
-    this.$watch(
-      'infoDataMode',
-      (newVal, oldVal) => {
-        if (oldVal === undefined || newVal === oldVal) return;
-        this.setActionBtnsArr();
-      },
-      { immediate: true },
-    );
   },
   methods: {
     setActionBtnsArr() {
@@ -399,7 +395,7 @@ export default {
             break;
           }
           case Invited: {
-            if (response.status === responseStatus.rejected || (assignedWorkerId && assignedWorkerId !== userData.id)) break;
+            if (response.status === ResponseStatus.rejected || (assignedWorkerId && assignedWorkerId !== userData.id)) break;
 
             arr = [{
               name: this.$t('btn.agree'),
@@ -468,69 +464,12 @@ export default {
         await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
       }
     },
-    getFilteredResponses() {
-      if (this.userRole === UserRole.EMPLOYER) {
-        this.filteredResponses = this.responsesToQuest ? this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Responded) : [];
-        this.filteredInvited = this.responsesToQuest ? this.responsesToQuest.filter((response) => response.status === 0 && response.type === responsesType.Invited) : [];
-        return this.filteredResponses && this.filteredInvited;
-      }
-      return '';
-    },
-    async initUserAvatar() {
-      this.userAvatar = await this.questData?.user?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
-    },
-    async checkPageMode() {
-      let payload = 1;
-      const responsesCount = this.userRole === UserRole.EMPLOYER
-        ? this.responsesData.count : Object.keys(this.respondedList).length;
-      const { assignedWorker } = this.questData;
-      const { assignedWorkerId } = this.questData;
-      const { userRole } = this;
-      const userId = this.userData.id;
-      const questStatus = this.questData.status;
-      if (userRole === UserRole.EMPLOYER) {
-        switch (true) {
-          case responsesCount === 0
-          && questStatus === QuestStatuses.Created: payload = InfoModeEmployer.RaiseViews; break;
-          case responsesCount > 0
-          && questStatus === QuestStatuses.Created: payload = InfoModeEmployer.Created; break;
-          case Object.keys(assignedWorker).length > 0
-          && ![QuestStatuses.Closed, QuestStatuses.Dispute, QuestStatuses.WaitConfirm, QuestStatuses.Done].includes(questStatus):
-            payload = InfoModeEmployer.WaitWorker; break;
-          case questStatus === QuestStatuses.Active: payload = InfoModeEmployer.Active; break;
-          case questStatus === QuestStatuses.Closed: payload = InfoModeEmployer.Closed; break;
-          case questStatus === QuestStatuses.Dispute: payload = InfoModeEmployer.Dispute; break;
-          case questStatus === QuestStatuses.WaitConfirm && Object.keys(assignedWorker).length > 0: payload = InfoModeEmployer.WaitConfirm; break;
-          case questStatus === QuestStatuses.Done && responsesCount > 0: payload = InfoModeEmployer.Done; break;
-          default: { payload = InfoModeEmployer.RaiseViews; break; }
-        }
-        await this.$store.dispatch('quests/setInfoDataMode', payload);
-      }
-      if (userRole === UserRole.WORKER) {
-        switch (true) {
-          case questStatus === QuestStatuses.Rejected && this.questData.response !== null: payload = InfoModeWorker.Rejected; break;
-          case questStatus === QuestStatuses.Created: payload = InfoModeWorker.Created; break;
-          case questStatus === QuestStatuses.Active: payload = InfoModeWorker.Active; break;
-          case questStatus === QuestStatuses.Closed: payload = InfoModeWorker.Closed; break;
-          case questStatus === QuestStatuses.Dispute: payload = InfoModeWorker.Dispute; break;
-          case questStatus === QuestStatuses.WaitConfirm: payload = InfoModeWorker.WaitConfirm; break;
-          case questStatus === QuestStatuses.Done: payload = InfoModeWorker.Done; break;
-          case assignedWorkerId === userId
-          && ![InfoModeWorker.Active, InfoModeWorker.Dispute].includes(questStatus): payload = InfoModeWorker.ADChat; break;
-          default: { payload = InfoModeWorker.ADChat; break; }
-        }
-        await this.$store.dispatch('quests/setInfoDataMode', payload);
-      }
-    },
     coordinatesChange(item) {
       if (Object.keys(this.currentLocation).length > 0) {
         this.currentLocation = {};
       } else {
         this.currentLocation = item;
       }
-    },
-    back() {
-      this.$router.go(-1);
     },
     async closeQuest() {
       const modalMode = 1;
@@ -587,7 +526,7 @@ export default {
     },
     modalMode(modalMode) {
       const subtitles = {
-        1: this.$t('quests.questClosed!'),
+        1: this.$t('quests.questClosed'),
         2: this.$t('quests.completedWorkAccepted'),
         3: this.$t('quests.completedWorkRejected'),
         4: 'Discussion flow in progress..',
@@ -664,12 +603,6 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-.divider {
-  margin: 20px 0 20px 0;
-  background-color: $black0;
-  width:100%;
-  height: 1px;
-}
 .quest {
   &__container {
     display: flex;
@@ -693,59 +626,6 @@ export default {
     word-wrap: break-word
   }
 }
-.hide {
-  display: none;
-}
-.gallery {
-  &__image {
-    border-radius: 6px;
-    margin: 0 0 10px 0;
-    &_big {
-      width: 100%;
-      height: 280px;
-    }
-  }
-  &__small {
-    width: 147px;
-    height: 61px;
-  }
-}
-.btn {
-  &__container {
-    margin: 0 16px 0 16px;
-  }
-}
-.quest-materials {
-  margin: 10px 0 0 10px;
-  &__title {
-    @extend .quest-materials;
-    font-weight: 500;
-    font-size: 18px;
-    color: $black800;
-  }
-  &__gallery {
-    @extend .quest-materials;
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    grid-gap: 13px;
-  }
-}
-.runtime {
-  &__container {
-    margin: 0 0 0 30px;
-  }
-  &__title {
-    margin: 0 5px 0 5px;
-  }
-}
-
-.btns {
-  &__container {
-    display: grid;
-    grid-template-columns: 8fr 4fr;
-    margin-bottom: 20px;
-  }
-}
 .main {
   @include main;
   &-white {
@@ -767,37 +647,6 @@ export default {
   &__quest_materials {
     padding-top: 20px;
     border-top: 1px solid #F7F8FA;
-  }
-}
-
-.card {
-  padding: 2px 8px;
-  align-items: center;
-  border-radius: 3px;
-  color: $white;
-  &__level {
-    display: grid;
-    grid-template-columns: 20px auto;
-    grid-gap: 7px;
-    font-size: 12px;
-    justify-content: flex-start;
-    align-items: center;
-    height: 20px;
-    &_higher {
-      @extend .card;
-      background-color: #F6CF00;
-
-    }
-    &_reliable {
-      @extend .card;
-      background-color: #BBC0C7;
-    }
-    &_checked {
-      background-color: #B79768;
-    }
-    &_disabled {
-      display: none;
-    }
   }
 }
 
@@ -927,35 +776,6 @@ export default {
     }
   }
 }
-.location {
-  &__container{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin: 25.5px 0 0 0;
-  }
-}
-.star {
-  &__default {
-    display: flex;
-  }
-  &__hover {
-    display: none;
-  }
-  &:hover {
-    .star {
-      &__hover {
-        display: flex;
-      }
-      &__default {
-        display: none;
-      }
-      &__checked {
-        display: none;
-      }
-    }
-  }
-}
 
 .quests::v-deep {
 
@@ -963,15 +783,7 @@ export default {
     padding-top: 6px;
   }
 }
-.uploader {
-  &__message {
-    @include text-simple;
-    font-size: 16px;
-    font-weight: 400;
-    text-align: center;
-    color: $black800;
-  }
-}
+
 .icon {
   color: $black500;
   font-size: 20px;
@@ -1011,20 +823,9 @@ export default {
 }
 
 @include _1199 {
-  .main__body, .main {
+  .main__body,
+  .main {
     padding: 10px;
-  }
-  .user__distance {
-    margin: 0 20px;
-  }
-  .img {
-    &__container {
-      grid-template-columns: repeat(3, auto);
-      img {
-        max-width: 100%;
-        max-height: 100%;
-      }
-    }
   }
 }
 @include _991 {
@@ -1033,43 +834,11 @@ export default {
   }
 }
 @include _767 {
-  .user {
-    &__container {
-      padding: 0;
-    }
-  }
   .main {
     display: block;
-    .block {
-      grid-template-columns: auto;
-      &__img {
-        height: 200px;
-        max-width: 100%;
-        .image {
-          width: 100%;
-          border-radius: 6px;
-          object-fit: cover;
-          max-height: 500px;
-          height: 100%;
-        }
-      }
-    }
   }
 }
 @include _575 {
-  .user {
-    &__head {
-      display: grid;
-      grid-template-columns: auto auto;
-      grid-gap: 5px;
-    }
-    &__right {
-      align-items: center;
-      .icon-share_outline {
-        margin-left: 25px;
-      }
-    }
-  }
   .location {
     &__container {
       display: grid;
@@ -1090,25 +859,6 @@ export default {
   .spec {
     &__link {
       font-size: 16px;
-    }
-  }
-  .block {
-    &__right {
-      padding: 10px;
-    }
-    &__head {
-      display: flex !important;
-    }
-    &__btn {
-      padding: 0;
-      margin-top: 10px;
-    }
-    &__actions {
-      display: grid;
-      grid-template-columns: 1fr;
-      .block__btn {
-        display: flex !important;
-      }
     }
   }
 }

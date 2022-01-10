@@ -1,4 +1,6 @@
-import { InfoModeEmployer, InfoModeWorker, QuestStatuses } from '~/utils/enums';
+import {
+  InfoModeEmployer, InfoModeWorker, QuestStatuses, ResponsesType,
+} from '~/utils/enums';
 
 export default {
   async getWorkerData({ commit }, userId) {
@@ -204,9 +206,11 @@ export default {
   },
   async responsesToQuest({ commit }, questId) {
     try {
-      const response = await this.$axios.$get(`/v1/quest/${questId}/responses`);
-      commit('setResponses', response.result);
-      return response.result;
+      const { result } = await this.$axios.$get(`/v1/quest/${questId}/responses`);
+      const responded = result.responses.filter((response) => response.status === 0 && response.type === ResponsesType.Responded) || [];
+      const invited = result.responses.filter((response) => response.status >= 0 && response.type === ResponsesType.Invited) || [];
+      commit('setResponses', { result, responded, invited });
+      return result;
     } catch (e) {
       return console.log(e);
     }
@@ -276,18 +280,21 @@ export default {
 
   async rejectQuestInvitation({ commit }, responseId) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/response/${responseId}/reject`);
-      return response.result;
+      const { result } = await this.$axios.$post(`/v1/quest/response/${responseId}/reject`);
+      return result.ok;
     } catch (e) {
-      return console.log(e);
+      console.log(e);
+      return false;
     }
   },
 
   async rejectTheAnswerToTheQuest({ commit }, responseId) {
     try {
       const { result } = await this.$axios.$post(`/v1/quest/employer/${responseId}/reject`);
+      return result.ok;
     } catch (e) {
       console.log(e);
+      return false;
     }
   },
 

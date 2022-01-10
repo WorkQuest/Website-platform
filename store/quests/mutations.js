@@ -41,8 +41,10 @@ export default {
   setStarredQuests(state, data) {
     state.starredQuests = data;
   },
-  setResponses(state, data) {
-    state.responses = data;
+  setResponses(state, { result, responded, invited }) {
+    state.responses = result;
+    state.responded = responded;
+    state.invited = invited;
   },
   setResponsesMy(state, data) {
     state.responsesMy = data;

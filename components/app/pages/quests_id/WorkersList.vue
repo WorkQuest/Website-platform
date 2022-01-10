@@ -21,15 +21,19 @@
           <div class="worker__name">
             {{ `${response.worker.firstName} ${response.worker.lastName}` }}
           </div>
+          <item-rating
+            v-if="ratingStatistic(response.worker.ratingStatistic) !== 'noStatus'"
+            :rating="ratingStatistic(response.worker.ratingStatistic)"
+          />
         </div>
         <base-dd
           class="worker__menu"
           :placeholder="30"
           :items="!isInvited || response.status ? ddUserFullActions : ddUserActions"
-          is-dots-vue
+          is-dots-view
           @input="handleUserAction($event, response)"
         />
-        <div>
+        <div class="worker__message-cont">
           <div class="worker__message">
             {{ response.message }}
           </div>
@@ -40,28 +44,6 @@
             />
           </div>
         </div>
-        <!--        <div>-->
-        <!--                      TODO: НАСТРОИТЬ ВЫВОД СТАТУСА нет бэка-->
-        <!--                    <div-->
-        <!--                      v-if="item.badge.code !== 0"-->
-        <!--                      class="card__level_higher"-->
-        <!--                      :class="[-->
-        <!--                        {'card__level_higher': item.badge.code === 1},-->
-        <!--                        {'card__level_reliable': item.badge.code === 2},-->
-        <!--                        {'card__level_checked': item.badge.code === 3}-->
-        <!--                      ]"-->
-        <!--                    >-->
-        <!--                      <span v-if="item.badge.code === 1">-->
-        <!--                        {{ $t('levels.higher') }}-->
-        <!--                      </span>-->
-        <!--                      <span v-if="item.badge.code === 2">-->
-        <!--                        {{ $t('levels.reliableEmp') }}-->
-        <!--                      </span>-->
-        <!--                      <span v-if="item.badge.code === 3">-->
-        <!--                        {{ $t('levels.checkedByTime') }}-->
-        <!--                      </span>-->
-        <!--                    </div>-->
-        <!--        </div>-->
       </div>
     </div>
     <div
@@ -75,9 +57,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import itemRating from '~/components/app/info/item-rating';
 
 export default {
   name: 'WorkersList',
+  components: {
+    itemRating,
+  },
   props: {
     isInvited: {
       type: Boolean,
@@ -115,6 +101,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    ratingStatistic(ratingStatistic) {
+      return ratingStatistic?.status || 'noStatus';
+    },
     handleUserAction(index, response) {
       const funcKey = ['goToChat', 'startQuest', 'reject'][index];
       this[funcKey](response);
@@ -139,8 +128,7 @@ export default {
     },
     async reject(response) {
       this.SetLoader(true);
-      await this.$store.dispatch(`quests/${this.isInvited ? 'rejectQuestInvitation' : 'rejectTheAnswerToTheQuest'}`, response.worker.id);
-      await this.getQuest();
+      if (await this.$store.dispatch(`quests/${this.isInvited ? 'rejectQuestInvitation' : 'rejectTheAnswerToTheQuest'}`, response.worker.id)) await this.getQuest();
       this.SetLoader(false);
     },
   },
@@ -160,7 +148,7 @@ export default {
 }
 .user-data {
   display: grid;
-  grid-template-columns: 40px max-content;
+  grid-template-columns: 40px 1fr max-content;
   align-items: center;
   gap: 10px;
 }

@@ -9,7 +9,7 @@
     <div
       v-click-outside="hideDd"
       class="dd"
-      :class="[{'dd__top': mode === 'top' }, {'dd_small' : isDotsVue}]"
+      :class="[{'dd__top': mode === 'top' }, {'dd_small' : isDotsView}]"
     >
       <slot name="card" />
 
@@ -85,7 +85,7 @@
         <div
           v-if="isShown && !isIcon"
           class="dd__items"
-          :class="[{'dd__items_small' : mode === 'small'}, {'dd__items_wide' : isDotsVue}]"
+          :class="[{'dd__items_small' : mode === 'small'}, {'dd__items_wide' : isDotsView}]"
         >
           <button
             v-for="(item, i) in items"
@@ -156,7 +156,7 @@ export default {
       type: Array,
       default: () => [],
     },
-    isDotsVue: {
+    isDotsView: {
       type: Boolean,
       default: false,
     },
@@ -169,14 +169,14 @@ export default {
       return this.items.length - this.hideSelected.length <= 0;
     },
     ddClass() {
-      const { type, isDotsVue } = this;
+      const { type, isDotsView } = this;
       return [
         { dd__btn_dark: type === 'dark' },
         { dd__btn_disabled: type === 'disabled' || this.elementsIsEmpty },
         { dd__btn_gray: type === 'gray' },
         { dd__btn_blue: type === 'blue' },
         { dd__btn_border: type === 'border' },
-        { 'dd__dots-btn': isDotsVue },
+        { 'dd__dots-btn': isDotsView },
       ];
     },
   },

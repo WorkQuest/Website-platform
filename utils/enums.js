@@ -69,16 +69,16 @@ export const questPriority = {
   Normal: 2,
   Urgent: 3,
 };
-export const responsesType = {
+export const ResponsesType = {
   Responded: 0,
   Invited: 1,
 };
-export const responseStatus = {
+export const ResponseStatus = {
   rejected: -1,
   awaiting: 0,
   accepted: 1,
 };
-export const keyCodes = {
+export const KeyCodes = {
   Escape: 27,
   ArrowLeft: 37,
   ArrowRight: 39,

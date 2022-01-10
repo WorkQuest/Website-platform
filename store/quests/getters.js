@@ -1,5 +1,3 @@
-import { responsesType } from '~/utils/enums';
-
 export default {
   getChatInfoInviteOnQuest: (state) => state.chatInfoInviteOnQuest,
   getQuestListForInvitation: (state) => state.questListForInvitation || {},
@@ -20,9 +18,8 @@ export default {
   getCurrentStepCreateQuest: (state) => state.currentStepCreateQuest || '',
   getMapBounds: (state) => state.mapBounds,
   getMapCenter: (state) => state.mapCenter || '',
-  getResponsesToQuest: (state) => state.responses.responses || [],
-  getResponded: (state) => state.responses.responses?.filter((response) => response.status === 0 && response.type === responsesType.Responded) || [],
-  getInvited: (state) => state.responses.responses?.filter((response) => response.status >= 0 && response.type === responsesType.Invited) || [],
+  getResponded: (state) => state.responded,
+  getInvited: (state) => state.invited,
   getResponsesMy: (state) => state.responsesMy || '',
   getRespondOnQuest: (state) => state.respondOnQuest,
   getFilters: (state) => state.filters,

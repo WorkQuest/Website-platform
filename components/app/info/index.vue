@@ -67,7 +67,7 @@
 
 import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
-import { InfoModeEmployer, InfoModeWorker, responseStatus } from '~/utils/enums';
+import { InfoModeEmployer, InfoModeWorker, ResponseStatus } from '~/utils/enums';
 
 export default {
   name: 'InfoVue',
@@ -99,7 +99,7 @@ export default {
       return InfoModeWorker;
     },
     responseStatus() {
-      return responseStatus;
+      return ResponseStatus;
     },
     infoStatusText() {
       if (this.userRole === 'employer') {
@@ -115,6 +115,7 @@ export default {
       }
       if (this.userRole === 'worker') {
         const { response } = this.questData;
+        const { awaiting, accepted } = ResponseStatus;
         const obj = {
           [InfoModeWorker.ADChat]: 'invite.title',
           [InfoModeWorker.Active]: 'quests.activeQuest',
@@ -127,8 +128,8 @@ export default {
           [InfoModeWorker.Responded]: 'quests.responded',
           [InfoModeWorker.Invited]: 'quests.invited',
         };
-        if (this.infoDataMode === InfoModeWorker.Invited && [-1, 1].includes(response.status)) {
-          return this.$t(`quests.${response.status === responseStatus.accepted ? 'acceptedTheInvitation' : 'declinedTheInvitation'}`);
+        if (this.infoDataMode === InfoModeWorker.Invited && response.status !== awaiting) {
+          return this.$t(`quests.${response.status === accepted ? 'acceptedTheInvitation' : 'declinedTheInvitation'}`);
         }
         return this.$t(`${obj[this.infoDataMode]}`);
       }
@@ -141,10 +142,10 @@ export default {
         return [
           { 'info-hide': infoDataMode === InfoModeWorker.Created },
           { 'info_bg-yellow': [InfoModeWorker.ADChat, InfoModeWorker.Invited].includes(infoDataMode) },
-          { 'info_bg-green': infoDataMode === InfoModeWorker.Active || (InfoModeWorker.Invited && response?.status === responseStatus.accepted) },
+          { 'info_bg-green': infoDataMode === InfoModeWorker.Active || (InfoModeWorker.Invited && response?.status === ResponseStatus.accepted) },
           { 'info_bg-grey': infoDataMode === InfoModeWorker.Rejected },
           { 'info_bg-blue': [InfoModeWorker.WaitWorker, InfoModeWorker.WaitConfirm, InfoModeWorker.Done, InfoModeWorker.Responded].includes(infoDataMode) },
-          { 'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(infoDataMode) || (InfoModeWorker.Invited && response?.status === responseStatus.rejected) },
+          { 'info_bg-red': [InfoModeWorker.Dispute, InfoModeWorker.Closed].includes(infoDataMode) || (InfoModeWorker.Invited && response?.status === ResponseStatus.rejected) },
         ];
       }
       if (this.userRole === 'employer') {
