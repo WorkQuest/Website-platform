@@ -1052,7 +1052,7 @@
     "message": "मैसेज",
     "bodyMessage": "नमस्ते",
     "areYouSure": "क्या आपको यकीन है?",
-    "transactionSend": "ट्रांजेक्शन भेजा गया",
+    "transactionSent": "ट्रांजेक्शन भेजा गया",
     "transactionFail": "???",
     "transactionCheck": "???",
     "cardHasBeenAdded": "कार्ड जोड़ा गया",

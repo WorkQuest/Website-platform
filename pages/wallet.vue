@@ -5,13 +5,12 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('wallet.wallet') }}</span>
           <div class="wallet__address">
-            <span class="user__wallet">{{ userInfo.userWallet }}</span>
+            <span class="user__wallet">{{ userAddress }}</span>
             <button
-              v-clipboard:copy="userInfo.userWallet"
+              v-clipboard:copy="userAddress"
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               type="button"
-              @click="showSuccessCopied()"
             >
               <span class="icon-copy wallet__icon" />
             </button>
@@ -19,16 +18,30 @@
         </div>
         <div
           class="wallet__info"
-          :class="{'wallet__info_full' : userInfo.cardClosed }"
+          :class="{'wallet__info_full' : cardClosed }"
         >
           <div class="wallet__balance balance">
             <div class="balance__top">
               <span class="balance__title">{{ $t('wallet.balance') }}</span>
-              <span class="balance__currency">{{ `${userInfo.userBalance} ${userInfo.currency}` }}</span>
-              <span class="balance__usd">{{ `$ ${userInfo.usd}` }}</span>
+              <span class="balance__currency">
+                <span class="balance__currency-text">
+                  {{ balance[selectedToken].balance + ' ' + selectedToken }}
+                </span>
+                <base-dd
+                  v-model="ddValue"
+                  class="balance__token"
+                  :items="tokenSymbolsDd"
+                />
+              </span>
+              <span class="balance__usd">
+                <span v-if="selectedToken === tokenSymbols.WUSD">
+                  {{ `$ ${balance[tokenSymbols.WUSD].balance}` }}
+                </span>
+              </span>
             </div>
             <div class="balance__bottom">
               <base-btn
+                :disabled="true"
                 mode="outline"
                 class="balance__btn"
                 @click="showDepositModal()"
@@ -36,6 +49,7 @@
                 {{ $t('wallet.deposit') }}
               </base-btn>
               <base-btn
+                :disabled="true"
                 mode="outline"
                 class="balance__btn"
                 @click="showWithdrawModal()"
@@ -60,6 +74,7 @@
               @click="closeCard()"
             />
             <base-btn
+              :disabled="true"
               class="card__btn"
               mode="outline"
               @click="showAddCardModal()"
@@ -68,14 +83,16 @@
             </base-btn>
           </div>
         </div>
-        <div class="wallet__table">
-          <base-table
-            class="wallet__table"
-            :title="$t('wallet.table.trx')"
-            :items="transactionsData"
-            :fields="walletTableFields"
-          />
-        </div>
+        <!--        TODO: вернуть позже как добавится на бэке -->
+        <!--        <div class="wallet__table">-->
+        <!--          <base-table-->
+        <!--            class="wallet__table"-->
+        <!--            :title="$t('wallet.table.trx')"-->
+        <!--            :items="transactionsData"-->
+        <!--            :fields="walletTableFields"-->
+        <!--          />-->
+        <!--        </div>-->
+        <!--      </div>-->
       </div>
     </div>
   </div>
@@ -84,11 +101,14 @@
 <script>
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { TokenSymbols } from '~/utils/enums';
 
 export default {
+  name: 'Wallet',
   data() {
     return {
       cardClosed: false,
+      ddValue: 0,
     };
   },
   computed: {
@@ -99,7 +119,17 @@ export default {
       userInfo: 'data/getUserInfo',
       transactions: 'data/getTransactions',
       transactionsData: 'data/getTransactionsData',
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      userAddress: 'user/getUserWalletAddress',
+      balance: 'wallet/getBalanceData',
+      selectedToken: 'wallet/getSelectedToken',
     }),
+    tokenSymbolsDd() {
+      return Object.keys(TokenSymbols);
+    },
+    tokenSymbols() {
+      return TokenSymbols;
+    },
     walletTableFields() {
       return [
         {
@@ -126,17 +156,46 @@ export default {
       ];
     },
   },
+  watch: {
+    ddValue(val) {
+      this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
+    },
+    selectedToken() {
+      const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
+      this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
+    },
+  },
+  beforeMount() {
+    this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
   async mounted() {
-    this.SetLoader(true);
-    this.SetLoader(false);
+    if (!this.isWalletConnected) return;
+    await this.loadData();
+    const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
+    this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
   },
   methods: {
+    async loadData() {
+      this.SetLoader(true);
+      await Promise.all([
+        this.updateBalanceWQT(),
+        this.updateBalanceWUSD(),
+      ]);
+      this.SetLoader(false);
+    },
+    async updateBalanceWQT() {
+      await this.$store.dispatch('wallet/getBalanceWQT', this.userAddress);
+    },
+    async updateBalanceWUSD() {
+      await this.$store.dispatch('wallet/getBalance');
+    },
     closeCard() {
       this.cardClosed = true;
     },
     showTransferModal() {
       this.ShowModal({
         key: modals.giveTransfer,
+        callback: async () => await this.loadData(),
       });
     },
     showDepositModal() {
@@ -154,11 +213,6 @@ export default {
       this.ShowModal({
         key: modals.addingCard,
         branch: 'adding',
-      });
-    },
-    showSuccessCopied() {
-      this.ShowModal({
-        key: modals.copiedSuccess,
       });
     },
   },
@@ -236,6 +290,7 @@ export default {
     @include text-simple;
     font-size: 25px;
     font-weight: 500;
+    margin-right: 10px;
   }
 
   &__info {
@@ -303,11 +358,33 @@ export default {
     font-weight: 600;
     font-size: 35px;
     line-height: 130%;
+
+    display: flex;
+    justify-content: space-between;
+
+    @include _767 {
+      font-size: 26px;
+    }
+
+    &-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 1000px;
+      padding-right: 20px;
+    }
+  }
+
+  &__token {
+    height: 49px;
+    border: 1px solid $black100;
+    border-radius: 6px;
+    box-sizing: border-box;
   }
 
   &__usd {
     @include text-simple;
     color: $blue;
+    height: 24px;
   }
 }
 

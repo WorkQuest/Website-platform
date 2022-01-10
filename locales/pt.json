@@ -1052,7 +1052,7 @@
     "message": "Mensagem",
     "bodyMessage": "Olá",
     "areYouSure": "Tem a certeza?",
-    "transactionSend": "Enviar transação",
+    "transactionSent": "Enviar transação",
     "transactionFail": "???",
     "transactionCheck": "???",
     "cardHasBeenAdded": "Cartão foi adicionado",
