@@ -79,4 +79,5 @@ export default {
   gallery: 'gallery',
   areYouSureDeleteMember: 'areYouSureDeleteMember',
   areYouSureLeaveChat: 'areYouSureLeaveChat',
+  confirmPassword: 'confirmPassword',
 };

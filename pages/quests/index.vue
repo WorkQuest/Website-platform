@@ -104,21 +104,21 @@
             <base-dd
               v-model="selectedPriority"
               class="tools__item"
-              mode:="blackFont"
+              mode="blackFont"
               :placeholder="$t('quests.priority.title')"
               :items="priorityItems"
             />
             <base-dd
               v-model="selectedTypeOfJob"
               class="tools__item"
-              mode:="blackFont"
+              mode="blackFont"
               :placeholder="$t('quests.typeOfJob')"
               :items="typeOfJobItems"
             />
             <base-dd
               v-model="selectedDistantWork"
               class="tools__item"
-              mode:="blackFont"
+              mode="blackFont"
               :placeholder="$t('quests.distantWork.title')"
               :items="distantWorkItems"
             />
@@ -215,7 +215,7 @@
           v-else-if="questsArray.length === 0"
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-          :link="userRole === 'employer' ? '/create-quest' : ''"
+          :link="getEmptyLink"
         />
       </div>
     </div>
@@ -229,7 +229,9 @@ import modals from '~/store/modals/modals';
 import GmapSearchBlock from '~/components/app/GmapSearch';
 import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
-import { priorityFilter, typeOfJobFilter, workplaceFilter } from '~/utils/enums';
+import {
+  priorityFilter, typeOfJobFilter, workplaceFilter, Path, UserRole,
+} from '~/utils/enums';
 
 export default {
   name: 'QuestsList',
@@ -321,6 +323,11 @@ export default {
       }
       return '';
     },
+    getEmptyLink() {
+      return this.userRole === UserRole.WORKER
+        ? ''
+        : Path.CREATE_QUEST;
+    },
   },
   watch: {
     async isShowMap(newVal) {
@@ -408,6 +415,8 @@ export default {
       if (this.selectedTypeOfJob > 0) payload += `&employments[]=${typeOfJobFilter[this.selectedTypeOfJob]}`;
       if (this.selectedPriority) payload += `&priorities[]=${priorityFilter[this.selectedPriority]}`;
       if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) payload += `&priceBetween[from]=${this.selectedPriceFilter.from || 0}&priceBetween[to]=${this.selectedPriceFilter.to || 99999999999999}`;
+
+      // workerId - my quests
 
       if (!this.isShowMap) {
         this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);

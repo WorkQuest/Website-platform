@@ -59,14 +59,14 @@
         <base-field
           v-model="confirmMnemonic.first"
           :rules="`required|is:${confirmMnemonicData.first}`"
-          :placeholder="$t('createWallet.typeSecret', { a: 3 })"
-          :name="$t('createWallet.secret', { a: 3 })"
+          :placeholder="$t('createWallet.typeSecret', { a: confirmMnemonicData.firstIndex })"
+          :name="$t('createWallet.secret', { a: confirmMnemonicData.firstIndex })"
         />
         <base-field
           v-model="confirmMnemonic.second"
           :rules="`required|is:${confirmMnemonicData.second}`"
-          :placeholder="$t('createWallet.typeSecret', { a: 7 })"
-          :name="$t('createWallet.secret', { a: 7 })"
+          :placeholder="$t('createWallet.typeSecret', { a: confirmMnemonicData.secondIndex })"
+          :name="$t('createWallet.secret', { a: confirmMnemonicData.secondIndex })"
         />
         <div class="wallet__action">
           <base-btn :disabled="!valid || isLoading">
@@ -153,6 +153,8 @@ export default {
         second: '',
       },
       confirmMnemonicData: {
+        firstIndex: null,
+        secondIndex: null,
         first: '',
         second: '',
       },
@@ -178,9 +180,17 @@ export default {
     generate() {
       this.mnemonic = generateMnemonic();
       const s = this.mnemonic.split(' ');
+
+      const len = s.length;
+      const first = Math.floor(Math.random() * len);
+      let second = Math.floor(Math.random() * len);
+      while (second === first) second = Math.floor(Math.random() * len);
+
       this.confirmMnemonicData = {
-        first: s[2],
-        second: s[6],
+        firstIndex: first + 1,
+        secondIndex: second + 1,
+        first: s[first],
+        second: s[second],
       };
     },
     submitNewWallet() {

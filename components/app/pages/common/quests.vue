@@ -27,7 +27,7 @@
                 <div class="block__avatar avatar">
                   <img
                     class="avatar__image"
-                    :src="item.user.avatar ? item.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                    :src=" item.user.avatar ? item.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                     :alt="item.user.firstName"
                     @click="goToProfile(item.user.id)"
                   >
@@ -84,14 +84,7 @@
                     {{ item.assignedWorker.firstName }} {{ item.assignedWorker.lastName }}
                   </div>
                 </div>
-                <!--                <div class="container__status status">-->
-                <!--                  <span-->
-                <!--                    class="status__level"-->
-                <!--                    :class="getStatusCard(item.level.code)"-->
-                <!--                  >-->
-                <!--                    {{ $t(`levels.${item.level.code}`) }}-->
-                <!--                  </span>-->
-                <!--                </div>-->
+                <itemRating :rating="getRatingValue(item)" />
               </div>
             </div>
             <div class="block__locate">
@@ -167,10 +160,14 @@ import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import { QuestStatuses, questPriority } from '~/utils/enums';
 import modals from '~/store/modals/modals';
+import itemRating from '~/components/app/info/item-rating';
 
 const value = new Vue();
 export default {
   name: 'QuestsTab',
+  components: {
+    itemRating,
+  },
   props: {
     object: {
       type: Object,
@@ -211,6 +208,9 @@ export default {
         { block__amount_gray: item.status === this.questStatuses.Done },
       ];
     },
+    getRatingValue(item) {
+      return item.assignedWorker?.ratingStatistic?.status || 'noStatus';
+    },
     goToProfile(id) {
       this.$router.push(`/profile/${id}`);
     },
@@ -245,11 +245,11 @@ export default {
     },
     progressQuestText(status) {
       if (this.userRole) {
-        if (status === QuestStatuses.Active) return this.$t('quests.questActive:');
-        if (status === QuestStatuses.Closed) return this.$t('quests.questClosed:');
-        if (status === QuestStatuses.Dispute) return this.$t('quests.questDispute:');
+        if (status === QuestStatuses.Active) return this.$t('quests.questActive');
+        if (status === QuestStatuses.Closed) return this.$t('quests.questClosed');
+        if (status === QuestStatuses.Dispute) return this.$t('quests.questDispute');
         if (status === QuestStatuses.WaitWorker) return this.$t('quests.inProgressBy');
-        if (status === QuestStatuses.WaitConfirm) return this.$t('quests.questWaitConfirm:');
+        if (status === QuestStatuses.WaitConfirm) return this.$t('quests.questWaitConfirm');
         if (status === QuestStatuses.Done) return this.$t('quests.finishedBy');
       }
       return '';
