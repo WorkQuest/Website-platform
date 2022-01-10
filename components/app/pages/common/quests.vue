@@ -84,7 +84,7 @@
                     {{ item.assignedWorker.firstName }} {{ item.assignedWorker.lastName }}
                   </div>
                 </div>
-                <itemRating :rating="item.assignedWorker ? item.assignedWorker.ratingStatistic.status : ''" />
+                <itemRating :rating="getRatingValue(item)" />
               </div>
             </div>
             <div class="block__locate">
@@ -205,6 +205,9 @@ export default {
         { block__amount_green: item.status !== this.questStatuses.Done },
         { block__amount_gray: item.status === this.questStatuses.Done },
       ];
+    },
+    getRatingValue(item) {
+      return item.assignedWorker?.ratingStatistic?.status || 'noStatus';
     },
     goToProfile(id) {
       this.$router.push(`/profile/${id}`);
