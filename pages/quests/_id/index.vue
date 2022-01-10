@@ -58,7 +58,6 @@
             v-if="actionBtnsArr.length"
             class="worker-data__btns"
           >
-            {{ actionBtnsArr }}
             <div
               v-for="(btn, i) in actionBtnsArr"
               :key="i"
