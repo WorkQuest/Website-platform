@@ -248,21 +248,16 @@ export default {
       isShowMap: true,
       search: '',
       isSearchDDStatus: true,
-      selectedQuest: '',
-      selectedUrgent: '',
       searchDDStatus: true,
       selectedDistantWork: null,
       selectedPriority: null,
       selectedTypeOfJob: null,
       distanceIndex: 0,
-      priceSort: 'desc',
       timeSort: 'desc',
       questsObjects: {},
       questsArray: [],
-      sortData: '',
       page: 1,
       perPager: 10,
-      additionalValue: '',
       zoomNumber: 15,
       addresses: [],
       coordinates: null,
@@ -316,12 +311,9 @@ export default {
     },
     formattedSpecFilters() {
       const filtersData = this.selectedSpecializationsFilters.query || [];
-      if (filtersData.length) {
-        const filters = {};
-        for (let i = 0; i < filtersData.length; i += 1) { filters[`specializations[${i}]`] = filtersData[i]; }
-        return filters;
-      }
-      return '';
+      const filters = {};
+      for (let i = 0; i < filtersData.length; i += 1) { filters[`specializations[${i}]`] = filtersData[i]; }
+      return filters;
     },
     getEmptyLink() {
       return this.userRole === UserRole.WORKER
@@ -332,9 +324,6 @@ export default {
   watch: {
     async isShowMap(newVal) {
       this.page = 1;
-      if (!this.isShowMap) {
-        this.sortData = 'desc';
-      }
       await this.updateQuests();
       localStorage.setItem('isShowMap', JSON.stringify(newVal));
     },
@@ -400,30 +389,23 @@ export default {
         key: modals.priceSearch,
       });
     },
-    showFilter() {
-      this.ShowModal({
-        key: modals.questFilter,
-      });
-    },
     async updateQuests() {
       if (!this.isShowMap) this.SetLoader(true);
-      // const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`;
-      const additionalValue = {
+      await this.fetchQuests({
         limit: this.perPager,
         offset: (this.page - 1) * this.perPager,
-      };
-      additionalValue['sort[createdAt]'] = this.sortData ? `${this.sortData}` : 'desc';
-      await this.fetchQuests(additionalValue);
+        'sort[createdAt]': this.timeSort,
+      });
       this.SetLoader(false);
     },
     async fetchQuests(payload = {}) {
       const obj = Object.assign(payload, this.formattedSpecFilters);
-      // payload += this.formattedSpecFilters;
       if (this.selectedDistantWork > 0) obj['workplaces[]'] = workplaceFilter[this.selectedDistantWork];
       if (this.selectedTypeOfJob > 0) obj['employments[]'] = typeOfJobFilter[this.selectedTypeOfJob];
       if (this.selectedPriority) obj['priorities[]'] = priorityFilter[this.selectedPriority];
       if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) {
-        obj['priceBetween[from]'] = this.selectedPriceFilter.from || 0; obj['priceBetween[to]'] = this.selectedPriceFilter.to || 99999999999999;
+        obj['priceBetween[from]'] = this.selectedPriceFilter.from || 0;
+        obj['priceBetween[to]'] = this.selectedPriceFilter.to || 99999999999999;
       }
       if (!this.isShowMap) {
         this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
@@ -433,68 +415,33 @@ export default {
         if (!Object.keys(this.mapBounds).length) {
           this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
         } else {
-          const coordinates = {
+          const bounds = {
             'north[longitude]': this.mapBounds.northEast.lng,
             'north[latitude]': this.mapBounds.northEast.lat,
             'south[longitude]': this.mapBounds.southWest.lng,
             'south[latitude]': this.mapBounds.southWest.lat,
           };
-          this.questsObjects = await this.$store.dispatch('quests/getAllQuests', Object.assign(obj, coordinates));
-          await this.$store.dispatch('quests/getQuestsLocation', coordinates);
+          this.questsObjects = await this.$store.dispatch('quests/getAllQuests', Object.assign(obj, bounds));
+          await this.$store.dispatch('quests/getQuestsLocation', bounds);
           this.questsArray = this.questsObjects.quests;
         }
-        // const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
       }
-    },
-    toNotifications() {
-      this.$router.push('/notification');
     },
     toggleMap() {
       this.isShowMap = !this.isShowMap;
     },
-    showDetails() {
-      this.$router.push('/quests/1');
-    },
     async changeSorting(type) {
-      let sortValue = '';
       if (type === 'time') {
         this.timeSort = this.timeSort === 'desc' ? 'asc' : 'desc';
-        sortValue = `${this.timeSort}`;
       }
-      this.sortData = sortValue;
-      // const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      const additionalValue = {
+      await this.updateQuests({
         limit: this.perPager,
         offset: (this.page - 1) * this.perPager,
         'sort[createdAt]': this.timeSort,
-      };
-      await this.updateQuests(additionalValue);
+      });
     },
     deleteTag(tag) {
       this.$store.dispatch('ui/deleteTags', tag);
-    },
-    showSkillsModal() {
-      this.ShowModal({
-        key: modals.skills,
-      });
-    },
-    getPriority(index) {
-      const priority = {
-        0: '',
-        1: this.$t('priority.low'),
-        2: this.$t('priority.normal'),
-        3: this.$t('priority.urgent'),
-      };
-      return priority[index] || '';
-    },
-    getPriorityClass(index) {
-      const priority = {
-        0: '',
-        1: 'block__priority_low',
-        2: 'block__priority_normal',
-        3: 'block__priority_urgent',
-      };
-      return priority[index] || '';
     },
     centerChange() {
       this.$store.dispatch('quests/setMapCenter', this.coordinates);
