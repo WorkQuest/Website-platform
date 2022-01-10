@@ -104,21 +104,21 @@
             <base-dd
               v-model="selectedPriority"
               class="tools__item"
-              mode:="blackFont"
+              mode="blackFont"
               :placeholder="$t('quests.priority.title')"
               :items="priorityItems"
             />
             <base-dd
               v-model="selectedTypeOfJob"
               class="tools__item"
-              mode:="blackFont"
+              mode="blackFont"
               :placeholder="$t('quests.typeOfJob')"
               :items="typeOfJobItems"
             />
             <base-dd
               v-model="selectedDistantWork"
               class="tools__item"
-              mode:="blackFont"
+              mode="blackFont"
               :placeholder="$t('quests.distantWork.title')"
               :items="distantWorkItems"
             />
@@ -415,6 +415,8 @@ export default {
       if (this.selectedTypeOfJob > 0) payload += `&employments[]=${typeOfJobFilter[this.selectedTypeOfJob]}`;
       if (this.selectedPriority) payload += `&priorities[]=${priorityFilter[this.selectedPriority]}`;
       if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) payload += `&priceBetween[from]=${this.selectedPriceFilter.from || 0}&priceBetween[to]=${this.selectedPriceFilter.to || 99999999999999}`;
+
+      // workerId - my quests
 
       if (!this.isShowMap) {
         this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);

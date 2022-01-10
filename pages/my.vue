@@ -111,7 +111,6 @@ export default {
     };
     await this.$store.dispatch('quests/getUserQuests', this.requestParams);
     this.SetLoader(false);
-    console.log(this.questsData);
   },
   methods: {
     async filterByStatus(id) {

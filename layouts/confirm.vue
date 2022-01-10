@@ -10,7 +10,3 @@ export default {
   name: 'ConfirmLayout',
 };
 </script>
-
-<style scoped>
-
-</style>
