@@ -1137,7 +1137,7 @@ export default {
 }
 .notify {
   position: absolute;
-  top: calc(60px + 5px);
+  top: 57px;
   right: calc(100% - 43px);
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
@@ -1256,7 +1256,7 @@ export default {
 }
 .profile {
   position: absolute;
-  top: calc(60px + 5px);
+  top: 57px;
   right: calc(100% - 43px);
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
@@ -1453,7 +1453,7 @@ export default {
 }
 .menu {
   position: absolute;
-  top: 55px;
+  top: 50px;
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
@@ -1521,7 +1521,7 @@ export default {
 }
 .locale {
   position: absolute;
-  top: 80px;
+  top: 73px;
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
