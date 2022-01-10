@@ -58,6 +58,7 @@
             v-if="actionBtnsArr.length"
             class="worker-data__btns"
           >
+            {{ actionBtnsArr }}
             <div
               v-for="(btn, i) in actionBtnsArr"
               :key="i"
@@ -503,7 +504,7 @@ export default {
     },
     toRaisingViews() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
-        this.$router.push(`/edit-quest/${this.questData.id}`);
+        this.$router.push({ path: `/edit-quest/${this.itemId}`, query: { mode: 'raise' } });
         this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
       } else {
         this.showToastWrongStatusRaisingViews();
