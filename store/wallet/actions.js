@@ -8,7 +8,7 @@ import {
   setWalletAddress,
   transfer, transferToken,
 } from '~/utils/wallet';
-import * as abi from '~/abi/abi';
+import abi from '~/abi/index';
 import { TokenSymbols } from '~/utils/enums';
 
 export default {

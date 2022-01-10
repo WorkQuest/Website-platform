@@ -1,9 +1,9 @@
 import { ethers } from 'ethers';
 import { AES, enc } from 'crypto-js';
-import Web3 from 'web3';
+import Web3, { sendTransaction } from 'web3';
 import BigNumber from 'bignumber.js';
 import { error, success } from '~/utils/web3';
-import * as abi from '~/abi/abi';
+import abi from '~/abi/index';
 
 const bip39 = require('bip39');
 
@@ -199,5 +199,83 @@ export const transferToken = async (recipient, value) => {
   } catch (e) {
     console.error(e.message);
     return error();
+  }
+};
+
+//
+// QUESTS
+//
+
+/* Work Quest Factory */
+export const createQuest = async (payload) => {
+  const { cost, description } = payload;
+  try {
+    const hash = ethers.utils.formatBytes32String(description.slice(0, 31));
+    const _cost = new BigNumber(cost).shiftedBy(18).toString();
+    const _abi = abi.WorkQuestFactory;
+    const _abiAddress = process.env.WORK_QUEST_FACTORY;
+    console.log('creating new quest (hash, cost)', hash, _cost, `(${cost})`);
+    const res = await sendTransaction('newWorkQuest', {
+      abi: _abi,
+      address: _abiAddress,
+      data: [hash, _cost, 0],
+    });
+    console.log('NEW WORK QUEST CONTRACT', res);
+    return success(res);
+  } catch (e) {
+    console.error(e);
+    return error(500, '', e.message);
+  }
+};
+export const getAccountQuests = async () => {
+  try {
+    const _abi = abi.WorkQuestFactory;
+    const _abiAddress = process.env.WORK_QUEST_FACTORY;
+    return await fetchContractData('getWorkQuests', _abi, _abiAddress, [account.address]);
+  } catch (e) {
+    return error(500, '', e.message);
+  }
+};
+
+/* Work Quest */
+/*
+  cancelJob
+  assignJob (workerAddress)
+  acceptJob
+  processJob
+  verificationJob
+  arbitration
+
+  arbitrationRework
+  arbitrationDecreaseCost (_forfeit)
+  arbitrationRejectWork
+ */
+export const depositCostToQuestContract = async (contractAddress, _amount) => {
+  try {
+    // *multiplied by fee percent
+    const value = new BigNumber(_amount).multipliedBy('1.02').shiftedBy(18).toString();
+    console.log('deposit value', value, 'contract', contractAddress);
+    const res = await web3.eth.sendTransaction({
+      from: account.address,
+      to: contractAddress,
+      value,
+    });
+    return success(res);
+  } catch (e) {
+    console.error(e);
+    return error(500, '', e.message);
+  }
+};
+export const fetchJobMethod = async (contractAddress, method, param = []) => {
+  try {
+    const res = await sendTransaction(method, {
+      abi: abi.WorkQuest,
+      address: contractAddress,
+      data: param,
+    });
+    return success(res);
+  } catch (e) {
+    console.error(e);
+    return error(500, '', e.message);
   }
 };

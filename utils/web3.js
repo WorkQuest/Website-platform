@@ -3,7 +3,7 @@ import Web4 from '@cryptonteam/web4';
 import BigNumber from 'bignumber.js';
 import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
-import * as abi from '~/abi/abi';
+import abi from '~/abi/index';
 import { Chains, ChainsId, StakingTypes } from '~/utils/enums';
 
 let bscRpcContract = null;

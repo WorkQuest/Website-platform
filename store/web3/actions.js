@@ -40,7 +40,7 @@ import {
   getPoolTotalSupplyBSC, getPoolTokensAmountBSC,
   sendTransaction, createInstance, error,
 } from '~/utils/web3';
-import * as abi from '~/abi/abi';
+import abi from '~/abi/index';
 import { StakingTypes } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
