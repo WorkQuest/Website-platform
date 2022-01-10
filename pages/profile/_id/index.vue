@@ -53,25 +53,8 @@
           <div class="skills-spec__title">
             {{ $t('skills.title') }}
           </div>
-          <div class="skills-spec__container skills-spec__container_white">
-            <div
-              v-for="(skills, specialization) in getSkillTitle()"
-              :key="specialization"
-              class="skills-spec__spec skills-spec__spec_white spec"
-            >
-              <div class="spec__title">
-                {{ $t(`filters.items.${specialization}.title`) }}
-              </div>
-              <ul class="spec__skills">
-                <li
-                  v-for="(skill, key) in skills"
-                  :key="key"
-                  class="skills__item"
-                >
-                  {{ $t(`filters.items.${specialization}.sub.${skill}`) }}
-                </li>
-              </ul>
-            </div>
+          <div class="skills-spec__container">
+            <skills :specializations="userData.userSpecializations" />
           </div>
         </div>
         <div
@@ -222,6 +205,7 @@ import userInfo from '~/components/app/pages/common/userInfo';
 import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
 import modals from '~/store/modals/modals';
+import skills from '~/components/app/pages/common/skills';
 
 export default {
   name: 'Index',
@@ -231,6 +215,7 @@ export default {
     userInfo,
     emptyData,
     portfolioTab,
+    skills,
   },
   data() {
     return {
@@ -427,15 +412,6 @@ export default {
       };
       await this.$store.dispatch('user/getUserPortfolios', payload);
     },
-    getSkillTitle() {
-      const specData = {};
-      this.userData.userSpecializations.forEach((data) => {
-        const [spec, skill] = data.path.split('.');
-        if (!specData[spec]) specData[spec] = [];
-        specData[spec].push(skill);
-      });
-      return specData;
-    },
     isRating(type) {
       return (type === 3);
     },
@@ -502,49 +478,14 @@ export default {
 .skills-spec {
   &__container {
     padding: 20px;
-    display: flex;
-    grid-gap: 20px;
     flex-direction: column;
-    &_white {
-      background: #FFFFFF;
-      border-radius: 6px;
-    }
+    background: #FFFFFF;
+    border-radius: 6px;
   }
   &__title {
     font-size: 16px;
     line-height: 130%;
     margin-bottom: 10px;
-  }
-  &__spec {
-    display: flex;
-    flex-direction: column;
-    grid-gap: 10px;
-  }
-  .spec {
-    &__container {
-      display: flex;
-      flex-direction: column;
-      grid-gap: 10px;
-    }
-    &__title {
-      font-size: 14px;
-      line-height: 130%;
-    }
-    &__skills {
-      display: flex;
-      grid-gap: 8px;
-      flex-wrap: wrap;
-    }
-  }
-  .skills {
-    &__item {
-      font-size: 16px;
-      line-height: 130%;
-      background-color: rgba(0, 131, 199, 0.1);
-      border-radius: 44px;
-      padding: 5px;
-      color: #0083C7;
-    }
   }
 }
 .statistic {
