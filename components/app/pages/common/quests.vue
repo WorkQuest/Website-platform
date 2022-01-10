@@ -142,9 +142,9 @@
                   v-if="item.status === questStatuses.Done && item.assignedWorkerId === userData.id"
                   class="block__rating"
                 >
-                  <div class="block__rating block__rating_star">
+                  <div class="block__rating_star">
                     <star-rating
-                      :id="i"
+                      :quest-index="i"
                       :rating-type="'questPage'"
                       :stars-number="5"
                       :rating="getRating(item)"

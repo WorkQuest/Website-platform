@@ -9,14 +9,14 @@
       :class="getStarStyles"
     >
       <input
-        :id="`${ratingType}-star-${id}-${starsNumber-index}`"
+        :id="`${ratingType}-star-${questIndex}-${starsNumber-index}`"
         type="radio"
         name="rating"
         :checked="(starsNumber-index)===rating"
         @click="$emit('input', starsNumber-index)"
       >
       <label
-        :for="`${ratingType}-star-${id}-${starsNumber-index}`"
+        :for="`${ratingType}-star-${questIndex}-${starsNumber-index}`"
         :title="`«${starsNumber-index}»`"
         class="rating-area__star-label"
         :class="fillGoldenStars(index)"
@@ -40,7 +40,7 @@ export default {
       type: Number,
       default: 0,
     },
-    id: {
+    questIndex: {
       type: Number,
       default: 0,
     },
