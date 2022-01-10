@@ -14,14 +14,18 @@
         :new-education="newEducation"
         :new-work-exp="newWorkExp"
         :avatar-change="avatarChange"
+        :validation-error="validationError"
         @click="editUserData"
         @updateSecondPhone="updateSecondPhone($event)"
         @showModalStatus="showModalStatus"
+        @checkValidate="checkValidate"
       />
       <skills
         v-if="userRole === 'worker'"
         :skills="skills"
+        :validation-error="validationError"
         @click="editUserData"
+        @checkValidate="checkValidate"
       />
       <advanced @showModalKey="showModalKey" />
     </ValidationObserver>
@@ -94,6 +98,7 @@ export default {
         file: {},
       },
       updatedSecondPhone: null,
+      validationError: false,
     };
   },
   computed: {
@@ -187,13 +192,8 @@ export default {
 
     // UPDATE USER INFO METHODS
     async editUserData() {
-      const validateEducation = await this.validateKnowledge('education', this.newEducation);
-      const validateWorkExp = await this.validateKnowledge('work', this.newWorkExp);
-      const validateSettings = await this.$refs.settings.validate();
-      if (
-        validateEducation === false
-        || validateWorkExp === false
-        || validateSettings === false) {
+      if (await this.checkValidate()) {
+        this.validationError = true;
         return;
       }
       const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
@@ -204,6 +204,20 @@ export default {
         await this.editProfile(checkAvatarID);
       }
       if (!secondMobileNumber) this.showModalStatus('enterPhoneNumber');
+    },
+
+    async checkValidate() {
+      const validateEducation = await this.validateKnowledge('education', this.newEducation);
+      const validateWorkExp = await this.validateKnowledge('work', this.newWorkExp);
+      const validateSettings = await this.$refs.settings.validate();
+      if (
+        validateEducation === false
+        || validateWorkExp === false
+        || validateSettings === false) {
+        return true;
+      }
+      this.validationError = false;
+      return false;
     },
 
     async validateKnowledge(observerName, value) {

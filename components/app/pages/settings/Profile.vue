@@ -42,6 +42,7 @@
             :placeholder="$t(main.placeholder)"
             mode="icon"
             :name="$t(main.name)"
+            @blur="checkValidate"
           >
             <template v-slot:left>
               <span :class="['icon', main.icon]" />
@@ -56,6 +57,7 @@
             :selector="isSearchDDStatus"
             :name="$t('settings.address')"
             @focus="isSearchDDStatus = true"
+            @blur="checkValidate"
             @selector="getAddressInfo(profile.additionalInfo.address)"
           >
             <template v-slot:left>
@@ -128,6 +130,7 @@
             :placeholder="$t('settings.userDesc')"
             class="profile__description-textarea"
             :class="{ 'profile__description-textarea_error': errors[0] }"
+            @blur="checkValidate"
           />
           <span class="profile__description-error">
             {{ errors[0] }}
@@ -225,6 +228,9 @@
         >
           {{ $t("settings.save") }}
         </base-btn>
+        <span v-if="validationError">
+          {{ $t('messages.formError') }}
+        </span>
       </div>
     </div>
   </div>
@@ -259,6 +265,10 @@ export default {
     newWorkExp: {
       type: Object,
       default: null,
+    },
+    validationError: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -443,6 +453,9 @@ export default {
         this.$refs[observerName].reset();
       }
     },
+    checkValidate() {
+      this.$emit('checkValidate');
+    },
   },
 };
 </script>
@@ -569,8 +582,17 @@ export default {
   }
   &__save {
     display: flex;
+    flex-direction: column;
     justify-content: flex-end;
-  }
+    align-items: flex-end;
+    span {
+      color: #bb5151;
+      font-size: 14px;
+      min-height: 23px;
+      width: 250px;
+      text-align: center;
+      }
+    }
   &__btn {
     max-width: 250px;
   }
@@ -632,6 +654,9 @@ export default {
     }
     &__save {
       width: 100%;
+      span {
+        width: 100%;
+      }
     }
     &__btn {
       max-width: none;

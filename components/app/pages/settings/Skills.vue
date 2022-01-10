@@ -39,6 +39,9 @@
           >
             {{ $t("settings.save") }}
           </base-btn>
+          <span v-if="validationError">
+            {{ $t('messages.formError') }}
+          </span>
         </div>
       </div>
     </div>
@@ -54,6 +57,10 @@ export default {
     skills: {
       type: Object,
       default: null,
+    },
+    validationError: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -119,8 +126,17 @@ export default {
   }
   &__save {
     display: flex;
+    flex-direction: column;
     justify-content: flex-end;
+    align-items: flex-end;
     margin: 0;
+    span {
+      color: #bb5151;
+      font-size: 14px;
+      min-height: 23px;
+      width: 250px;
+      text-align: center;
+      }
   }
   &__btn {
     max-width: 250px;
@@ -143,6 +159,9 @@ export default {
     &__save {
       button {
         max-width: none;
+        width: 100%;
+      }
+      span {
         width: 100%;
       }
     }

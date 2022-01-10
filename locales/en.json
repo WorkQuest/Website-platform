@@ -62,7 +62,8 @@
     "required": "The {_field_} field is required",
     "size": "The {_field_} field size must be less than {size}KB",
     "decimal": "The {_field_} field must contain only decimal values",
-    "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places"
+    "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places",
+    "formError": "Fill in all required fields"    
   },
   "labels": {
     "firstName": "First name",
