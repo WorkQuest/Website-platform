@@ -757,11 +757,6 @@ export default {
     }
   }
 }
-@include _1199 {
-  .quests {
-    padding: 10px;
-  }
-}
 @include _991 {
   .quests {
     .limit__container {
@@ -790,6 +785,7 @@ export default {
       grid-template-columns: auto;
       &__left {
         height: 200px;
+        border-radius: 6px 6px 0 0;
         img {
           border-radius: 6px;
           height: 100%;
@@ -804,7 +800,7 @@ export default {
     .block {
       &__actions{
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
       }
       &__btn {
         margin-top: 10px;

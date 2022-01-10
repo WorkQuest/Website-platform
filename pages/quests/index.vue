@@ -399,13 +399,13 @@ export default {
       this.SetLoader(false);
     },
     async fetchQuests(payload = {}) {
-      const obj = Object.assign(payload, this.formattedSpecFilters);
-      if (this.selectedDistantWork > 0) obj['workplaces[]'] = workplaceFilter[this.selectedDistantWork];
-      if (this.selectedTypeOfJob > 0) obj['employments[]'] = typeOfJobFilter[this.selectedTypeOfJob];
-      if (this.selectedPriority) obj['priorities[]'] = priorityFilter[this.selectedPriority];
+      payload = Object.assign(payload, this.formattedSpecFilters);
+      if (this.selectedDistantWork > 0) payload['workplaces[]'] = workplaceFilter[this.selectedDistantWork];
+      if (this.selectedTypeOfJob > 0) payload['employments[]'] = typeOfJobFilter[this.selectedTypeOfJob];
+      if (this.selectedPriority) payload['priorities[]'] = priorityFilter[this.selectedPriority];
       if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) {
-        obj['priceBetween[from]'] = this.selectedPriceFilter.from || 0;
-        obj['priceBetween[to]'] = this.selectedPriceFilter.to || 99999999999999;
+        payload['priceBetween[from]'] = this.selectedPriceFilter.from || 0;
+        payload['priceBetween[to]'] = this.selectedPriceFilter.to || 99999999999999;
       }
       if (!this.isShowMap) {
         this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
@@ -421,7 +421,7 @@ export default {
             'south[longitude]': this.mapBounds.southWest.lng,
             'south[latitude]': this.mapBounds.southWest.lat,
           };
-          this.questsObjects = await this.$store.dispatch('quests/getAllQuests', Object.assign(obj, bounds));
+          this.questsObjects = await this.$store.dispatch('quests/getAllQuests', Object.assign(payload, bounds));
           await this.$store.dispatch('quests/getQuestsLocation', bounds);
           this.questsArray = this.questsObjects.quests;
         }
@@ -468,50 +468,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 
-.block {
-  &__container {
-    display: flex;
-    align-self: center;
-    justify-content: flex-end;
-  }
-}
-
-.bg {
-  &_white {
-    background-color: $white;
-  }
-}
-
-.distance {
-  &__container {
-    display: flex;
-    flex-direction: row;
-    justify-items: flex-start;
-    align-items: center;
-    margin: 20px 20px 0 20px;
-  }
-  &__distance {
-    justify-self: flex-start;
-    align-self: center;
-    font-weight: 400;
-    font-size: 14px;
-    color: $black500;
-  }
-}
-.user {
-  &__avatar {
-    border-radius: 37px;
-    max-width: 30px;
-    max-height: 30px;
-    width: 100%;
-    height: 100%;
-  }
-
-  &__name {
-    justify-self: flex-start;
-  }
-}
-
 .icon {
   cursor: pointer;
   font-size: 25px;
@@ -538,163 +494,6 @@ export default {
   }
 }
 
-.star {
-  &__default {
-    display: flex;
-  }
-  &__hover {
-    display: none;
-  }
-  &:hover {
-    .star {
-      &__hover {
-        display: flex;
-      }
-      &__default {
-        display: none;
-      }
-      &__checked {
-        display: none;
-      }
-    }
-  }
-}
-.block {
-  background: $white;
-  border-radius: 6px;
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  min-height: 230px;
-  &__img {
-    max-width: 240px;
-  }
-  &__locate {
-    display: grid;
-    grid-template-columns: 20px 1fr;
-    grid-gap: 5px;
-    align-items: center;
-    span::before {
-      font-size: 20px;
-      color: $black500;
-    }
-  }
-  &__status {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-gap: 15px;
-  }
-  &__amount {
-    font-style: normal;
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 130%;
-    color: #00AA5B;
-    text-transform: uppercase;
-  }
-  &__priority {
-    @include text-simple;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 3px;
-    font-size: 12px;
-    line-height: 130%;
-    height: 24px;
-    padding: 0 5px;
-    &_low {
-      background: rgba(34, 204, 20, 0.1);
-      color: #22CC14;
-    }
-    &_urgent {
-      background: rgba(223, 51, 51, 0.1);
-      color: #DF3333;
-    }
-    &_normal {
-      background: rgba(232, 210, 13, 0.1);
-      color: #E8D20D;
-    }
-  }
-  &__actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  &__right {
-    padding: 20px 20px 20px 30px;
-    display: grid;
-    grid-template-columns: auto;
-    grid-gap: 10px;
-  }
-  &__head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  &__icon {
-    &_fav {
-      cursor: pointer;
-    }
-  }
-  &__btn {
-    @extend .block__actions;
-    padding: 0 10px;
-    min-width: 146px;
-    height: 34px;
-    background: transparent;
-    span::before {
-      font-size: 24px;
-      color: $blue;
-    }
-  }
-  &__text {
-    @include text-simple;
-    &_details {
-      font-size: 16px;
-      line-height: 130%;
-      color: $blue;
-    }
-    &_desc {
-      font-size: 16px;
-      line-height: 130%;
-      color: $black700;
-    }
-    &_blue {
-      font-weight: 500;
-      font-size: 18px;
-      line-height: 130%;
-      color: $blue;
-    }
-    &_title {
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 130%;
-      color: $black800;
-    }
-    &_locate {
-      font-size: 14px;
-      line-height: 130%;
-      color: #7C838D;
-    }
-    &_grey {
-      font-size: 16px;
-      line-height: 130%;
-      color: #7C838D;
-    }
-  }
-  &__avatar {
-    max-width: 30px;
-    max-height: 30px;
-    img {
-      border-radius: 100%;
-    }
-  }
-  &__title {
-    display: grid;
-    grid-template-columns: 30px 1fr;
-    grid-gap: 10px;
-    align-items: center;
-  }
-}
 .quests {
   &__pager {
     margin-top: 25px;
@@ -748,7 +547,6 @@ export default {
   }
   &__tools {
     padding-top:  20px;
-    margin-bottom: 20px;
   }
 }
 .tags {
@@ -914,63 +712,6 @@ export default {
     }
   }
 }
-.checkbox {
-  &__isShowMap {
-    margin: 30px 50px 0 10px;
-    display: flex;
-    flex-direction: row;
-    height: 25px;
-    align-items: center;
-  }
-  &-input {
-    width: 24px;
-    height: 24px;
-  }
-  &__label {
-    display: flex;
-    flex-direction: row;
-    flex-shrink: 0;
-    margin: 0 0 0 5px;
-    font-size: 16px;
-  }
-}
-.search-bar {
-  left: 18%;
-  bottom: 30px;
-  margin: 10px 0 0 0;
-  position: absolute;
-  max-width: 1180px;
-  width: 100%;
-  height: 84px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 6px;
-  background-color: $white;
-  z-index: 10;
-  box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
-  &__body {
-    display: flex;
-    flex-direction: row;
-    flex-shrink: 0;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-    height: 40px;
-  }
-  &__input {
-    margin: 30px 10px 0 0;
-    height: 25px;
-    width: 510px;
-  }
-  &__btn {
-    margin: 30px 10px 0 0;
-    flex-shrink: 0;
-  }
-  &__btn-search {
-    margin: 30px 10px 0 0;
-    width: 220px;
-  }
-}
 
 @include _1300 {
   .search {
@@ -1007,15 +748,6 @@ export default {
     &__content {
       grid-template-columns: 1fr;
     }
-    .block {
-      &__img {
-        height: 100%;
-        width: 100%;
-        img {
-          border-radius: 6px;
-        }
-      }
-    }
   }
 }
 @include _767 {
@@ -1024,35 +756,23 @@ export default {
       display: grid;
       grid-template-columns: auto;
     }
-    .block {
-      grid-template-columns: auto;
-      &__img {
-        max-width: 100%;
-        img {
-          height: 200px;
-          object-fit: cover;
-          width: 100%;
-        }
-      }
-    }
     &__search-gmap {
       padding: 20px;
       height: auto;
     }
-  }
-  .quests {
+    &__body {
+      display: flex;
+      grid-gap: 15px;
+      flex-direction: column;
+    }
     &__tools {
       padding: 0;
-      margin-bottom: 20px;
     }
   }
   .tools {
     &__panel {
       grid-template-columns: repeat(3, 1fr);
     }
-  }
-  .dd {
-    grid-column: 1/3;
   }
   .search-gmap {
     &__search {
@@ -1074,10 +794,6 @@ export default {
       padding: 0 10px;
     }
   }
-  .dd__btn {
-    justify-content: center;
-    padding: 0 0;
-  }
   .search-gmap {
     &__filter {
       display: flex;
@@ -1095,18 +811,6 @@ export default {
       padding: 10px;
       border-radius: 6px;
       background: #FFFFFF;
-    }
-  }
-}
-@include _575 {
-  .block {
-    &__actions {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-    }
-    &__btn {
-      margin-top: 10px;
-      display: flex;
     }
   }
 }
@@ -1148,7 +852,7 @@ export default {
   }
   .search {
     &__actions {
-      width: 60%;
+      width: 100%;
       padding: 10px;
     }
   }
