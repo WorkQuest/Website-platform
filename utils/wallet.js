@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import { AES, enc } from 'crypto-js';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
-import { error, getAccountAddress, success } from '~/utils/web3';
+import { error, success } from '~/utils/web3';
 import * as abi from '~/abi/abi';
 
 const bip39 = require('bip39');
@@ -178,7 +178,7 @@ export const fetchContractData = async (_method, _abi, _address, _params) => {
     const Contract = new web3.eth.Contract(_abi, _address);
     return await Contract.methods[_method].apply(this, _params).call();
   } catch (e) {
-    console.log(e.message);
+    console.error(e.message);
     return error();
   }
 };
