@@ -207,7 +207,9 @@
     "confCode": "Google कंफर्मेशन कोड",
     "placeholder": "प्लेसहोल्डर",
     "confCodeDesc": "Google Authenticator ऐप से 6 अंकों का कोड दर्ज करें",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "साइन अप करें",
@@ -400,7 +402,6 @@
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
     "questActive": "???:",
-    "questClosed": "???:",
     "questDispute": "???:",
     "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",

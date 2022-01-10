@@ -207,7 +207,9 @@
     "confCode": "Código de confirmação do Google",
     "placeholder": "Marcador de posição de texto",
     "confCodeDesc": "Introduza o código de 6 dígitos da aplicação Google Authentication",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "Inscreva-se",
@@ -400,7 +402,6 @@
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
     "questActive": "???:",
-    "questClosed": "???:",
     "questDispute": "???:",
     "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",

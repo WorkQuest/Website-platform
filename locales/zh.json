@@ -207,7 +207,9 @@
     "confCode": "Google 确认码",
     "placeholder": "占位符",
     "confCodeDesc": "输入来自 Google 身份验证器应用的 6 位代码",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "注册",
@@ -400,7 +402,6 @@
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
     "questActive": "???:",
-    "questClosed": "???:",
     "questDispute": "???:",
     "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",

@@ -207,7 +207,9 @@
     "confCode": "Código de confirmación de Google",
     "placeholder": "Marcador de posición",
     "confCodeDesc": "Escriba el código de 6 dígitos de la aplicación Autenticador de Google",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "Registrarse",

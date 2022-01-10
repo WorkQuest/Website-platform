@@ -2,10 +2,10 @@
   <div class="page">
     <div class="confirm">
       <div class="confirm__title">
-        Confirm access
+        {{ $t('securityCheck.confirmAccess') }}
       </div>
       <div class="confirm__text">
-        You need to confirm your password to continue.
+        {{ $t('securityCheck.confirmPassToContinue') }}
       </div>
       <ValidationObserver
         v-slot="{ handleSubmit, valid }"
@@ -23,7 +23,7 @@
           autocomplete="current-password"
         />
         <base-btn :disabled="!valid || isLoading">
-          Submit
+          {{ $t('meta.submit') }}
         </base-btn>
       </ValidationObserver>
     </div>
