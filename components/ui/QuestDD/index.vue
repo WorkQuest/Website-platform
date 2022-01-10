@@ -21,11 +21,11 @@
         class="quest menu"
       >
         <div class="menu menu__items">
-          <span class="menu__container">
+          <div class="menu__container">
             <div
               v-if="['employer'].includes(userRole)"
               class="menu__item"
-              @click="toRaisingViews()"
+              @click="toRaisingViews"
             >
               <div class="menu__text">
                 {{ $t('modals.raiseViews') }}
@@ -57,7 +57,7 @@
                 {{ $t('modals.delete') }}
               </div>
             </div>
-          </span>
+          </div>
         </div>
       </div>
     </transition>
@@ -108,7 +108,7 @@ export default {
     toRaisingViews() {
       // TODO: Добавить тост или модалку
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
-        this.$router.push(`/edit-quest/${this.itemId}`);
+        this.$router.push({ path: `/edit-quest/${this.itemId}`, query: { mode: 'raise' } });
         this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
       } else {
         this.showToastWrongStatusRaisingViews();

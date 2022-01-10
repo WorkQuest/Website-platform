@@ -9,7 +9,7 @@
       >
         <div class="btn__wrapper">
           <base-btn
-            @click="toRaisingViews()"
+            @click="toRaisingViews"
           >
             {{ $t('quests.raiseViews') }}
           </base-btn>
@@ -407,7 +407,7 @@ export default {
     },
     toRaisingViews() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
-        this.$router.push(`/edit-quest/${this.questData.id}`);
+        this.$router.push({ path: `/edit-quest/${this.itemId}`, query: { mode: 'raise' } });
         this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
       } else {
         this.showToastWrongStatusRaisingViews();

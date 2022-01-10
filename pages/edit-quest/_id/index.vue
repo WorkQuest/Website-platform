@@ -145,7 +145,7 @@
             <div class="btn-container__btn_back">
               <base-btn
                 :mode="'back'"
-                @click="goBack()"
+                @click="clickBackBtnHandler"
               >
                 {{ $t('meta.back') }}
                 <template v-slot:left>
@@ -484,8 +484,12 @@ export default {
         step: 1,
       });
     },
-    goBack() {
-      this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
+    clickBackBtnHandler() {
+      if (this.$route.query?.mode) {
+        this.$router.go(-1);
+      } else {
+        this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
+      }
     },
     selectAddress(address) {
       this.addresses = [];
