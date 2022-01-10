@@ -55,7 +55,9 @@ export default {
   },
   async getAllQuests({ commit }, payload) {
     try {
-      const response = await this.$axios.$get(`/v1/quests?${payload || ''}`);
+      const response = await this.$axios.$get('/v1/quests', {
+        params: { ...payload },
+      });
       commit('setAllQuests', response.result);
       return response.result;
     } catch (e) {
@@ -93,7 +95,9 @@ export default {
   },
   async getQuestsLocation({ commit }, payload) {
     try {
-      const response = await this.$axios.$get(`/v1/quests/map/points?${payload}`);
+      const response = await this.$axios.$get('/v1/quests/map/points', {
+        params: { ...payload },
+      });
       commit('setQuestsLocation', response.result);
       return response.result;
     } catch (e) {

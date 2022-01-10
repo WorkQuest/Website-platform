@@ -317,8 +317,8 @@ export default {
     formattedSpecFilters() {
       const filtersData = this.selectedSpecializationsFilters.query || [];
       if (filtersData.length) {
-        let filters = '';
-        for (let i = 0; i < filtersData.length; i += 1) { filters += `&specializations[]=${filtersData[i]}`; }
+        const filters = {};
+        for (let i = 0; i < filtersData.length; i += 1) { filters[`specializations[${i}]`] = filtersData[i]; }
         return filters;
       }
       return '';
@@ -333,7 +333,7 @@ export default {
     async isShowMap(newVal) {
       this.page = 1;
       if (!this.isShowMap) {
-        this.sortData = 'sort[createdAt]=desc';
+        this.sortData = 'desc';
       }
       await this.updateQuests();
       localStorage.setItem('isShowMap', JSON.stringify(newVal));
@@ -407,29 +407,40 @@ export default {
     },
     async updateQuests() {
       if (!this.isShowMap) this.SetLoader(true);
-      let additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`;
-      additionalValue += this.sortData ? `&${this.sortData}` : '';
+      // const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}`;
+      const additionalValue = {
+        limit: this.perPager,
+        offset: (this.page - 1) * this.perPager,
+      };
+      additionalValue['sort[createdAt]'] = this.sortData ? `${this.sortData}` : 'desc';
       await this.fetchQuests(additionalValue);
       this.SetLoader(false);
     },
-    async fetchQuests(payload = '') {
-      payload += this.formattedSpecFilters;
-      if (this.selectedDistantWork > 0) payload += `&workplaces[]=${workplaceFilter[this.selectedDistantWork]}`;
-      if (this.selectedTypeOfJob > 0) payload += `&employments[]=${typeOfJobFilter[this.selectedTypeOfJob]}`;
-      if (this.selectedPriority) payload += `&priorities[]=${priorityFilter[this.selectedPriority]}`;
-      if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) payload += `&priceBetween[from]=${this.selectedPriceFilter.from || 0}&priceBetween[to]=${this.selectedPriceFilter.to || 99999999999999}`;
-
+    async fetchQuests(payload = {}) {
+      const obj = Object.assign(payload, this.formattedSpecFilters);
+      // payload += this.formattedSpecFilters;
+      if (this.selectedDistantWork > 0) obj['workplaces[]'] = workplaceFilter[this.selectedDistantWork];
+      if (this.selectedTypeOfJob > 0) obj['employments[]'] = typeOfJobFilter[this.selectedTypeOfJob];
+      if (this.selectedPriority) obj['priorities[]'] = priorityFilter[this.selectedPriority];
+      if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) {
+        obj['priceBetween[from]'] = this.selectedPriceFilter.from || 0; obj['priceBetween[to]'] = this.selectedPriceFilter.to || 99999999999999;
+      }
       if (!this.isShowMap) {
         this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
         this.questsArray = this.questsObjects.quests;
       } else {
-        this.additionalValue = payload;
+        // eslint-disable-next-line no-lonely-if
         if (!Object.keys(this.mapBounds).length) {
           this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
         } else {
-          const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
-          this.questsObjects = await this.$store.dispatch('quests/getAllQuests', `${bounds}&${payload}`);
-          await this.$store.dispatch('quests/getQuestsLocation', `${bounds}`);
+          const coordinates = {
+            'north[longitude]': this.mapBounds.northEast.lng,
+            'north[latitude]': this.mapBounds.northEast.lat,
+            'south[longitude]': this.mapBounds.southWest.lng,
+            'south[latitude]': this.mapBounds.southWest.lat,
+          };
+          this.questsObjects = await this.$store.dispatch('quests/getAllQuests', Object.assign(obj, coordinates));
+          await this.$store.dispatch('quests/getQuestsLocation', coordinates);
           this.questsArray = this.questsObjects.quests;
         }
         // const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
@@ -448,10 +459,15 @@ export default {
       let sortValue = '';
       if (type === 'time') {
         this.timeSort = this.timeSort === 'desc' ? 'asc' : 'desc';
-        sortValue = `sort[createdAt]=${this.timeSort}`;
+        sortValue = `${this.timeSort}`;
       }
       this.sortData = sortValue;
-      const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      // const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      const additionalValue = {
+        limit: this.perPager,
+        offset: (this.page - 1) * this.perPager,
+        'sort[createdAt]': this.timeSort,
+      };
       await this.updateQuests(additionalValue);
     },
     deleteTag(tag) {
