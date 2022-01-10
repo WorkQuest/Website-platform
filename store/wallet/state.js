@@ -3,7 +3,7 @@ import { StakingTypes as TokensSymbols } from '~/utils/enums';
 export default () => ({
   isWalletConnected: false,
   userAddress: null,
-  callbackLayout: null,
+  callbackLayout: 'default',
   selectedToken: TokensSymbols.WUSD,
   balance: {
     WQT: {
