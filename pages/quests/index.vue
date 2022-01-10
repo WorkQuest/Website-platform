@@ -332,6 +332,9 @@ export default {
   watch: {
     async isShowMap(newVal) {
       this.page = 1;
+      if (!this.isShowMap) {
+        this.sortData = 'sort[createdAt]=desc';
+      }
       await this.updateQuests();
       localStorage.setItem('isShowMap', JSON.stringify(newVal));
     },
@@ -445,7 +448,7 @@ export default {
       let sortValue = '';
       if (type === 'time') {
         this.timeSort = this.timeSort === 'desc' ? 'asc' : 'desc';
-        sortValue = `&sort[createdAt]=${this.timeSort}`;
+        sortValue = `sort[createdAt]=${this.timeSort}`;
       }
       this.sortData = sortValue;
       const additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
