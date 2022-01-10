@@ -934,7 +934,7 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout');
-      this.$router.push('/');
+      await this.$router.push('/');
     },
     closeAll() {
       this.isShowProfile = false;
@@ -946,15 +946,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-
-.profile {
-  &__img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-}
 
 .hidden {
   display: none;
@@ -1146,7 +1137,7 @@ export default {
 }
 .notify {
   position: absolute;
-  top: calc(72px + 5px);
+  top: 57px;
   right: calc(100% - 43px);
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.0325794), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
@@ -1265,7 +1256,7 @@ export default {
 }
 .profile {
   position: absolute;
-  top: calc(72px + 5px);
+  top: 57px;
   right: calc(100% - 43px);
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
@@ -1274,6 +1265,12 @@ export default {
   width: 100%;
   min-height: 235px;
   z-index: 10000000;
+  &__img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
   &__header {
     border-bottom: 1px solid #F7F8FA;
     display: grid;
@@ -1305,6 +1302,7 @@ export default {
     color: $black800;
     width: 100%;
     transition: .3s;
+    border-radius: 6px;
     &_red {
       color: $red;
     }
@@ -1455,7 +1453,7 @@ export default {
 }
 .menu {
   position: absolute;
-  top: 72px;
+  top: 50px;
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
@@ -1523,7 +1521,7 @@ export default {
 }
 .locale {
   position: absolute;
-  top: 90px;
+  top: 73px;
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
@@ -1534,11 +1532,9 @@ export default {
     display: flex;
     align-items: center;
     opacity: 0.7;
-
     &_active {
       opacity: 1;
     }
-
     &:hover {
       opacity: 1;
     }
@@ -1567,10 +1563,6 @@ export default {
     display: none;
   }
 }
-@include _1700 {}
-@include _1600 {}
-@include _1500 {}
-@include _1300 {}
 @include _1199 {
   .ctm-menu {
     &__toggle {
@@ -1587,7 +1579,6 @@ export default {
     &__links {
       display: none;
     }
-    &__right {}
     &__button {
       &_profile {
         display: none;
@@ -1605,7 +1596,6 @@ export default {
     }
   }
 }
-@include _767 {}
 @include _575 {
   .header {
     &__logo {
@@ -1627,8 +1617,6 @@ export default {
     min-width: 350px;
   }
 }
-
-@include _480 {}
 
 @include _380 {
   .notify {
