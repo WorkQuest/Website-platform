@@ -37,7 +37,9 @@ export default {
     this.$cookies.remove('refresh');
     this.$cookies.remove('userStatus');
     this.$cookies.remove('role');
+    this.$cookies.remove('userLogin');
     state.userData = {};
+    state.tokens = { access: '', refresh: '' };
   },
   setCurrentUserPosition(state, data) {
     state.currentUserPosition = data;
