@@ -41,6 +41,7 @@ export default {
    * Use when checkWalletConnected from confirmPassword modal
    * @param commit
    * @param getters
+   * @param userAddress
    * @param userPassword
    */
   connectWallet({ commit }, { userAddress, userPassword }) {

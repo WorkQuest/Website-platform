@@ -17,14 +17,14 @@
             <base-field
               v-model="recipient"
               class="input__field"
-              :placeholder="'Enter address'"
+              :placeholder="$t('modals.address')"
               rules="required|address"
               :name="$t('modals.addressField')"
             />
           </div>
           <div class="content__input input">
             <span class="input__title">
-              Select token
+              {{ $t('modals.selectToken') }}
             </span>
             <base-dd
               v-model="ddValue"
@@ -38,8 +38,8 @@
             <base-field
               v-model="amount"
               class="input__field"
-              :placeholder="'Enter amount'"
-              :rules="`required|decimal|max_bn:${maxAmount}|decimalPlaces:18`"
+              :placeholder="$t('modals.amount')"
+              :rules="`required|decimal|min_value:0.00001|max_bn:${maxAmount}|decimalPlaces:18`"
               :name="$t('modals.amountField')"
             >
               <template
