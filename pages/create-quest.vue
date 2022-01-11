@@ -283,6 +283,8 @@ export default {
       userData: 'user/getUserData',
       step: 'quests/getCurrentStepCreateQuest',
       filters: 'quests/getFilters',
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      balance: 'wallet/getBalanceData',
     }),
     days() {
       return [
@@ -406,10 +408,6 @@ export default {
       ];
     },
   },
-  async mounted() {
-    this.SetLoader(true);
-    this.SetLoader(false);
-  },
   methods: {
     updateFiles(files) {
       this.files = files;
@@ -507,6 +505,40 @@ export default {
       }
     },
     async createQuest() {
+      await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+      if (!this.isWalletConnected) return;
+
+      // Checking user balance
+      if (this.balance.WUSD.fullBalance < this.price) { // TODO: change to modal transactionReceipt
+        await this.$store.dispatch('main/showToast', {
+          title: 'Error',
+          text: 'Not enough funds',
+        });
+        return;
+      }
+
+      // TODO: Show modal send transaction to create quest before
+      const createRes = this.$store.dispatch('wallet/createQuest', {
+        cost: this.price,
+        description: this.description,
+      });
+      if (createRes?.ok === false) {
+        await this.$store.dispatch('main/showToast', {
+          title: 'Create quest error',
+          text: '*need to handle error*',
+        });
+        return;
+      }
+
+      // TODO: Show modal send transaction WUSD to quest before
+      await this.$store.dispatch('wallet/depositCostToQuestContract', {
+        contractAddress: createRes.address, // TODO: check address from contract!
+        amount: this.price,
+      });
+
+      // TODO: генерация контракта квеста
+      // then: пополнение баланса квеста
+
       this.SetLoader(true);
       const medias = await this.uploadFiles(this.files);
       const payload = {

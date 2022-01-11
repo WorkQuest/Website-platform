@@ -120,7 +120,6 @@ export default {
       transactions: 'data/getTransactions',
       transactionsData: 'data/getTransactionsData',
       isWalletConnected: 'wallet/getIsWalletConnected',
-      userAddress: 'user/getUserWalletAddress',
       balance: 'wallet/getBalanceData',
       selectedToken: 'wallet/getSelectedToken',
     }),
@@ -184,7 +183,7 @@ export default {
       this.SetLoader(false);
     },
     async updateBalanceWQT() {
-      await this.$store.dispatch('wallet/getBalanceWQT', this.userAddress);
+      await this.$store.dispatch('wallet/getBalanceWQT', this.userData.wallet.address);
     },
     async updateBalanceWUSD() {
       await this.$store.dispatch('wallet/getBalance');

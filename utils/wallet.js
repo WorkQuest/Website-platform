@@ -251,10 +251,10 @@ export const getAccountQuests = async () => {
   arbitrationDecreaseCost (_forfeit)
   arbitrationRejectWork
  */
-export const depositCostToQuestContract = async (contractAddress, _amount) => {
+export const depositCostToQuestContract = async (contractAddress, amount) => {
   try {
     // *multiplied by fee percent
-    const value = new BigNumber(_amount).multipliedBy('1.02').shiftedBy(18).toString();
+    const value = new BigNumber(amount).multipliedBy('1.02').shiftedBy(18).toString();
     console.log('deposit value', value, 'contract', contractAddress);
     const res = await web3.eth.sendTransaction({
       from: wallet.address,
