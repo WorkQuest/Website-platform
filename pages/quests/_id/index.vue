@@ -460,8 +460,10 @@ export default {
       await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     },
     async getResponsesToQuest() {
-      if (this.userRole === UserRole.EMPLOYER) {
-        await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
+      const { questData: { id, user }, userData } = this;
+
+      if (this.userRole === UserRole.EMPLOYER && user.id === userData.id) {
+        await this.$store.dispatch('quests/responsesToQuest', id);
       }
     },
     coordinatesChange(item) {
