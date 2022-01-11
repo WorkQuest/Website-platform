@@ -9,7 +9,7 @@
         alt="Quest created"
       >
       <div class="quest__title">
-        {{ $t('modals.questCreated') }}
+        {{ options.title }}
       </div>
       <base-btn
         class="quest__action"
