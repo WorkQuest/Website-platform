@@ -50,6 +50,12 @@ export default {
       callbackLayout: 'wallet/getCallbackLayout',
     }),
   },
+  beforeCreate() {
+    if (!this.$cookies.get('userLogin')) {
+      this.$store.dispatch('user/logout');
+      this.$router.push('/sign-in');
+    }
+  },
   mounted() {
     if (!this.userAddress) {
       this.disconnect();
