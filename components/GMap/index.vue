@@ -3,6 +3,7 @@
     <div
       ref="map"
       class="GMap__Wrapper"
+      :style="options.height ? `height:${options.height}` : null"
     />
     <slot />
   </div>
