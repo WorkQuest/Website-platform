@@ -1,8 +1,8 @@
 export default () => ({
-  respondOnQuest: {},
+  respondOnQuest: null,
   questListForInvitation: {},
   chatInfoInviteOnQuest: {},
-  currentWorker: {},
+  currentWorker: null,
   workersList: {},
   allQuests: {
     count: 0,
@@ -14,6 +14,8 @@ export default () => ({
   questsLocation: {},
   starredQuests: {},
   responses: {},
+  responded: [],
+  invited: [],
   currentStepCreateQuest: 1,
   currentStepEditQuest: 1,
   mapBounds: {},

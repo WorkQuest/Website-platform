@@ -56,7 +56,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { keyCodes } from '~/utils/enums';
+import { KeyCodes } from '~/utils/enums';
 
 export default {
   name: 'CtmGallery',
@@ -82,17 +82,17 @@ export default {
   methods: {
     handleClickBtn(ev) {
       if (this.options.count > 1) {
-        if (ev.keyCode === keyCodes.ArrowRight) {
+        if (ev.keyCode === KeyCodes.ArrowRight) {
           this.turnOver(true);
           return;
         }
-        if (ev.keyCode === keyCodes.ArrowLeft) {
+        if (ev.keyCode === KeyCodes.ArrowLeft) {
           this.turnOver(false);
           return;
         }
       }
 
-      if (ev.keyCode === keyCodes.Escape) this.hide();
+      if (ev.keyCode === KeyCodes.Escape) this.hide();
     },
     getCurrFile() {
       const { files, index } = this.options;

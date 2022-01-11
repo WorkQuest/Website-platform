@@ -537,10 +537,7 @@ export default {
     },
     showModalCreatedQuest() {
       this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.yourSkillsHaveBeenAdded'),
-        subtitle: this.$t('modals.youCanUpdateThisInYourProfile'),
+        key: modals.questCreated,
       });
     },
     showToastCreated() {

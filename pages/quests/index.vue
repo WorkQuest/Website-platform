@@ -104,21 +104,21 @@
             <base-dd
               v-model="selectedPriority"
               class="tools__item"
-              mode:="blackFont"
+              mode="blackFont"
               :placeholder="$t('quests.priority.title')"
               :items="priorityItems"
             />
             <base-dd
               v-model="selectedTypeOfJob"
               class="tools__item"
-              mode:="blackFont"
+              mode="blackFont"
               :placeholder="$t('quests.typeOfJob')"
               :items="typeOfJobItems"
             />
             <base-dd
               v-model="selectedDistantWork"
               class="tools__item"
-              mode:="blackFont"
+              mode="blackFont"
               :placeholder="$t('quests.distantWork.title')"
               :items="distantWorkItems"
             />

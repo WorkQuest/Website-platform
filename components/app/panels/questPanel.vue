@@ -5,11 +5,11 @@
         <div class="user__head">
           <div
             class="user__left"
-            @click="showProfile()"
+            @click="showProfile"
           >
             <img
               class="user__img"
-              :src="avatarUrl"
+              :src="userAvatar || require('~/assets/img/app/avatar_empty.png')"
               alt=""
               loading="lazy"
             >
@@ -25,7 +25,7 @@
           </div>
           <div class="user__right">
             <span class="user__date">
-              {{ convertDate() }}
+              {{ convertDate }}
             </span>
             <quest-dd
               v-if="questData.status === questStatuses.Created"
@@ -33,11 +33,11 @@
             />
           </div>
         </div>
-        <div class="location__container">
-          <div
-            v-if="questData"
-            class="quest__location"
-          >
+        <div
+          v-if="questData"
+          class="location__container"
+        >
+          <div class="quest__location">
             <span class="icon icon-location icon_fs-20" />
             <span
               v-if="questData.locationPlaceName"
@@ -50,20 +50,10 @@
         </div>
       </div>
     </div>
-    <div
+    <skills
       v-if="questData.questSpecializations"
-      class="badge__container"
-    >
-      <ul class="badge-list">
-        <li
-          v-for="(skill, spec) in questData.questSpecializations"
-          :key="spec"
-          class="badge__item badge__item_blue"
-        >
-          {{ getSkillTitle(skill.path) }}
-        </li>
-      </ul>
-    </div>
+      :specializations="questData.questSpecializations"
+    />
   </div>
 </template>
 
@@ -71,45 +61,27 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import { InfoModeEmployer, InfoModeWorker, QuestStatuses } from '~/utils/enums';
-import modals from '~/store/modals/modals';
+import skills from '~/components/app/pages/common/skills';
 
 export default {
   name: 'QuestPanel',
+  components: {
+    skills,
+  },
   props: {
-    avatarUrl: {
-      type: String,
-      default: '',
-    },
     location: {
       type: Object,
       default: null,
     },
-    questData: {
-      type: Object,
-      default: null,
-    },
-  },
-  data() {
-    return {
-      localsTime: '',
-      questLat: 0,
-      questLng: 0,
-      userLat: 0,
-      userLng: 0,
-      questSkills: [],
-    };
   },
   computed: {
     ...mapGetters({
-      tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      imageData: 'user/getImageData',
-      badgeList: 'data/getBadgeList',
       userInfo: 'quests/getQuestUser',
       userAvatar: 'quests/getQuestUserAvatar',
       userCompany: 'quests/getQuestUserCompany',
-      infoDataMode: 'quests/getInfoDataMode',
+      questData: 'quests/getQuest',
     }),
     InfoModeEmployer() {
       return InfoModeEmployer;
@@ -120,9 +92,12 @@ export default {
     questStatuses() {
       return QuestStatuses;
     },
+    convertDate() {
+      const { createdAt } = this.questData;
+      return createdAt ? moment(createdAt).format('MMMM Do YYYY, h:mm') : '';
+    },
   },
-  async mounted() {
-    this.SetLoader(true);
+  mounted() {
     this.SetLoader(false);
   },
   methods: {
@@ -131,26 +106,16 @@ export default {
       return this.$t(`filters.items.${spec}.sub.${skill}`);
     },
     showDistance() {
+      const { location: { lat, lng }, userData: { location } } = this;
       return this.getDistanceFromLatLonInKm(
-        this.location.lat,
-        this.location.lng,
-        this.userData.location ? this.userData.location.latitude : 0,
-        this.userData.location ? this.userData.location.longitude : 0,
+        lat,
+        lng,
+        location?.latitude || 0,
+        location?.longitude || 0,
       );
-    },
-    shareModal() {
-      this.ShowModal({
-        key: modals.sharingQuest,
-      });
     },
     showProfile() {
       this.$router.push(`/profile/${this.questData.userId}`);
-    },
-    convertDate() {
-      if (this.questData.createdAt) {
-        return moment(this.questData.createdAt).format('MMMM Do YYYY, h:mm');
-      }
-      return '';
     },
   },
 };
@@ -214,48 +179,6 @@ export default {
   }
 }
 
-.badge {
-  &-list {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-  }
-  &__container {
-    padding: 20px 0 20px 0;
-  }
-  &__item {
-    @include text-simple;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-style: normal;
-    font-weight: normal;
-    padding: 0 5px;
-    &_green {
-      @extend .badge__item;
-      background-color: rgba(34, 204, 20, 0.1);
-      color:$green;
-      margin: 0 0 0 15px;
-      border-radius: 5px;
-    }
-    &_blue {
-      @extend .badge__item;
-      background-color: rgba(0, 131, 199, 0.1);
-      margin: 0 9px 5px 0;
-      border-radius: 44px;
-      font-size: 16px;
-      color: $blue;
-      height: 31px;
-    }
-  }
-  &__wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-}
 .user {
   @include text-simple;
   color: $black800;

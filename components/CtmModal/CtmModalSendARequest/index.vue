@@ -100,7 +100,8 @@ export default {
       if (QuestStatuses.Rejected) {
         const res = await this.$store.dispatch('quests/respondOnQuest', { data, questId });
         if (res.ok) {
-          await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.Rejected);
+          await this.$store.dispatch('quests/getQuest', questId);
+          // await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.Rejected);
           return true;
         }
       }

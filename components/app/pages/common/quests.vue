@@ -27,7 +27,7 @@
                 <div class="block__avatar avatar">
                   <img
                     class="avatar__image"
-                    :src="item.user.avatar ? item.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+                    :src=" item.user.avatar ? item.user.avatar.url : require('~/assets/img/app/avatar_empty.png')"
                     :alt="item.user.firstName"
                     @click="goToProfile(item.user.id)"
                   >
@@ -243,11 +243,11 @@ export default {
     },
     progressQuestText(status) {
       if (this.userRole) {
-        if (status === QuestStatuses.Active) return this.$t('quests.questActive:');
-        if (status === QuestStatuses.Closed) return this.$t('quests.questClosed:');
-        if (status === QuestStatuses.Dispute) return this.$t('quests.questDispute:');
+        if (status === QuestStatuses.Active) return this.$t('quests.questActive');
+        if (status === QuestStatuses.Closed) return this.$t('quests.questClosed');
+        if (status === QuestStatuses.Dispute) return this.$t('quests.questDispute');
         if (status === QuestStatuses.WaitWorker) return this.$t('quests.inProgressBy');
-        if (status === QuestStatuses.WaitConfirm) return this.$t('quests.questWaitConfirm:');
+        if (status === QuestStatuses.WaitConfirm) return this.$t('quests.questWaitConfirm');
         if (status === QuestStatuses.Done) return this.$t('quests.finishedBy');
       }
       return '';
