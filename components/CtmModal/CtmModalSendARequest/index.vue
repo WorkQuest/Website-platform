@@ -40,7 +40,7 @@
                 <div class="btn__wrapper">
                   <base-btn
                     class="message__action"
-                    :disabled="!text"
+                    :disabled="!text || isRespondActionInProgress"
                     @click="handleSubmit(showRequestSendModal)"
                   >
                     {{ $t('meta.send') }}
@@ -74,6 +74,7 @@ export default {
   name: 'ModalSendARequest',
   data() {
     return {
+      isRespondActionInProgress: false,
       text: '',
       files: [],
     };
@@ -101,13 +102,14 @@ export default {
         const res = await this.$store.dispatch('quests/respondOnQuest', { data, questId });
         if (res.ok) {
           await this.$store.dispatch('quests/getQuest', questId);
-          // await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.Rejected);
           return true;
         }
       }
       return false;
     },
     async showRequestSendModal() {
+      if (this.isRespondActionInProgress) return;
+      this.isRespondActionInProgress = true;
       const ok = await this.respondOnQuest();
       if (ok) {
         this.ShowModal({
