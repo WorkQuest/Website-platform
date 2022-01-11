@@ -441,14 +441,14 @@ export default {
         payload['priceBetween[from]'] = this.selectedPriceFilter.from || 0;
         payload['priceBetween[to]'] = this.selectedPriceFilter.to || 99999999999999;
       }
-      if (!this.isShowMap) {
+      if (!this.isShowMap || !this.mapBounds.center) {
         await this.$store.dispatch('quests/getAllQuests', payload);
       } else {
         const bounds = {
-          'north[longitude]': this.mapBounds.northEast.lng,
-          'north[latitude]': this.mapBounds.northEast.lat,
-          'south[longitude]': this.mapBounds.southWest.lng,
-          'south[latitude]': this.mapBounds.southWest.lat,
+          'north[longitude]': await this.mapBounds?.northEast?.lng,
+          'north[latitude]': await this.mapBounds?.northEast?.lat,
+          'south[longitude]': await this.mapBounds?.southWest?.lng,
+          'south[latitude]': await this.mapBounds?.southWest?.lat,
         };
         await this.$store.dispatch('quests/getAllQuests', Object.assign(payload, bounds));
         await this.$store.dispatch('quests/getQuestsLocation', bounds);

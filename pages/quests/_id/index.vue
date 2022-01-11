@@ -143,8 +143,14 @@
           </div>
           <div class="quest__card">
             <quests
-              v-if="otherQuest.count"
-              :object="otherQuest"
+              v-if="otherQuestsCount"
+              :quests="otherQuests"
+            />
+            <emptyData
+              v-else
+              :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
+              :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+              :link="getEmptyLink"
             />
           </div>
         </div>
@@ -156,13 +162,14 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
-  QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus,
+  QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus, Path,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
 import quests from '~/components/app/pages/common/quests';
 import itemRating from '~/components/app/info/item-rating';
+import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Quests',
@@ -171,14 +178,12 @@ export default {
     questPanel,
     quests,
     itemRating,
+    emptyData,
   },
   data() {
     return {
       payload: { // ???
         spec: 'Painting works',
-      },
-      questsObjects: { // ???
-        count: 0,
       },
       questLocation: { lat: 0, lng: 0 },
       locations: {},
@@ -205,7 +210,8 @@ export default {
       userRole: 'user/getUserRole',
       infoDataMode: 'quests/getInfoDataMode',
       userData: 'user/getUserData',
-      otherQuest: 'quests/getAllQuests',
+      otherQuests: 'quests/getAllQuests',
+      otherQuestsCount: 'quests/getAllQuestsCount',
     }),
     InfoModeEmployer() {
       return InfoModeEmployer;
@@ -227,6 +233,11 @@ export default {
 
       return priority !== null ? `worker-data__priority-title_${priorityModifier}` : '';
     },
+    getEmptyLink() {
+      return this.userRole === UserRole.WORKER
+        ? ''
+        : Path.CREATE_QUEST;
+    },
   },
   watch: {
     questData: {
@@ -239,7 +250,6 @@ export default {
         this.locations = this.questLocation;
         this.randomSpec = Math.floor(this.questData.questSpecializations[Math.floor(Math.random() * this.questData.questSpecializations.length)].path);
         const skills = Object.keys(this.$t(`filters.items.${this.randomSpec}.sub`));
-        console.log(this.randomSpec);
         const query = {};
         for (let i = 0; i < skills.length; i += 1) {
           if (i === 0) {
@@ -249,14 +259,6 @@ export default {
           }
           query[`specializations[${i}]`] = `${this.randomSpec}.${skills[i]}`;
         }
-        // eslint-disable-next-line guard-for-in,no-restricted-syntax
-        // for (const item in query) {
-        //   if (item === 'specializations[0]') {
-        //     this.questsLink += `?${item}`;
-        //   } else {
-        //     this.questsLink += `&${item}`;
-        //   }
-        // }
         query.limit = 1;
         await this.$store.dispatch('quests/getAllQuests', query);
       },
