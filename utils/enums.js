@@ -42,35 +42,43 @@ export const QuestStatuses = {
 };
 
 export const InfoModeEmployer = {
-  RaiseViews: 1,
-  Active: 2,
-  Created: 3,
+  Rejected: -1,
+  Created: 0,
+  Active: 1,
+  Closed: 2,
+  Dispute: 3,
   WaitWorker: 4,
-  WaitConfirm: 6,
-  Dispute: 7,
-  Closed: 8,
-  Done: 9,
+  WaitConfirm: 5,
+  Done: 6,
 };
 export const InfoModeWorker = {
+  Created: 0,
   ADChat: 1,
   Active: 2,
   Rejected: 3,
-  WaitConfirm: 4,
-  Created: 5,
+  WaitWorker: 4,
+  WaitConfirm: 5,
   Dispute: 7,
   Closed: 8,
   Done: 9,
+  Responded: 10,
+  Invited: 11,
 };
 export const questPriority = {
   Low: 1,
   Normal: 2,
   Urgent: 3,
 };
-export const responsesType = {
+export const ResponsesType = {
   Responded: 0,
   Invited: 1,
 };
-export const keyCodes = {
+export const ResponseStatus = {
+  rejected: -1,
+  awaiting: 0,
+  accepted: 1,
+};
+export const KeyCodes = {
   Escape: 27,
   ArrowLeft: 37,
   ArrowRight: 39,

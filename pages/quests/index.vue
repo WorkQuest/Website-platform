@@ -104,21 +104,21 @@
             <base-dd
               v-model="selectedPriority"
               class="tools__item"
-              mode:="blackFont"
+              mode="blackFont"
               :placeholder="$t('quests.priority.title')"
               :items="priorityItems"
             />
             <base-dd
               v-model="selectedTypeOfJob"
               class="tools__item"
-              mode:="blackFont"
+              mode="blackFont"
               :placeholder="$t('quests.typeOfJob')"
               :items="typeOfJobItems"
             />
             <base-dd
               v-model="selectedDistantWork"
               class="tools__item"
-              mode:="blackFont"
+              mode="blackFont"
               :placeholder="$t('quests.distantWork.title')"
               :items="distantWorkItems"
             />
@@ -201,6 +201,7 @@
           v-if="questsArray.length > 0"
           :object="questsObjects"
           :page="'quests'"
+          @clickFavoriteStar="clickFavoriteStarHandler"
         />
         <div
           v-if="totalPages > 1"
@@ -409,12 +410,24 @@ export default {
       await this.fetchQuests(additionalValue);
       this.SetLoader(false);
     },
+    async clickFavoriteStarHandler(item) {
+      this.SetLoader(true);
+      if (!item.star) {
+        await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      } else {
+        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+      }
+      await this.updateQuests();
+      this.SetLoader(false);
+    },
     async fetchQuests(payload = '') {
       payload += this.formattedSpecFilters;
       if (this.selectedDistantWork > 0) payload += `&workplaces[]=${workplaceFilter[this.selectedDistantWork]}`;
       if (this.selectedTypeOfJob > 0) payload += `&employments[]=${typeOfJobFilter[this.selectedTypeOfJob]}`;
       if (this.selectedPriority) payload += `&priorities[]=${priorityFilter[this.selectedPriority]}`;
       if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) payload += `&priceBetween[from]=${this.selectedPriceFilter.from || 0}&priceBetween[to]=${this.selectedPriceFilter.to || 99999999999999}`;
+
+      // workerId - my quests
 
       if (!this.isShowMap) {
         this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
