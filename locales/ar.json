@@ -64,6 +64,7 @@
     "decimal": "يجب ألا يحتوي الحقل {_field_} إلا على قيم عشرية",
     "decimalPlaces": "{_field_} ??? {places}",
     "is": "The values do not match",
+    "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
@@ -1236,7 +1237,10 @@
     "thanksText": "",
     "emailVerificationCodeField": "???",
     "youCanAttachUpToNFiles": "???",
-    "youTryToAttachUnsupportedFileFormat": "???"
+    "youTryToAttachUnsupportedFileFormat": "???",
+    "connectError": "Error connection",
+    "incorrectChain": "You choose incorrect chain !",
+    "selectToken": "Select token"
   },
   "ui": {
     "jobQuestors": "أصحاب الوظائف",
@@ -1935,6 +1939,9 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "عذرًا، حدث خطأ ما. تحقَّق من البيانات وحاول مرة أخرى.",
     "emptyData": {
       "emptyQuests": "???",

@@ -64,6 +64,7 @@
     "decimal": "{_field_} फील्ड में केवल दशमलव मान होने चाहिए",
     "decimalPlaces": "{_field_} ??? {places}",
     "is": "The values do not match",
+    "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
@@ -1236,7 +1237,10 @@
     "thanksText": "",
     "emailVerificationCodeField": "???",
     "youCanAttachUpToNFiles": "???",
-    "youTryToAttachUnsupportedFileFormat": "???"
+    "youTryToAttachUnsupportedFileFormat": "???",
+    "connectError": "Error connection",
+    "incorrectChain": "You choose incorrect chain !",
+    "selectToken": "Select token"
   },
   "ui": {
     "jobQuestors": "जॉब तलाशकर्ता",
@@ -1935,6 +1939,9 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "ओह! कुछ गलत हो गया है। डेटा जांचें और फिर से कोशिश करें।",
     "emptyData": {
       "emptyQuests": "???",
