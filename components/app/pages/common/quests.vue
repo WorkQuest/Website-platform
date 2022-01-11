@@ -205,6 +205,9 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    getRatingValue(item) {
+      return item.assignedWorker?.ratingStatistic?.status || 'noStatus';
+    },
     getAmountStyles(item) {
       return [
         { block__amount_green: item.status !== this.questStatuses.Done },
@@ -240,24 +243,15 @@ export default {
       return str;
     },
     progressQuestText(status) {
-      if (!this.userRole) {
-        return '';
-      }
+      if (!this.userRole) return '';
       switch (status) {
-        case QuestStatuses.Active:
-          return this.$t('quests.questActive:');
-        case QuestStatuses.Closed:
-          return this.$t('quests.questClosed:');
-        case QuestStatuses.Dispute:
-          return this.$t('quests.questDispute:');
-        case QuestStatuses.WaitWorker:
-          return this.$t('quests.inProgressBy');
-        case QuestStatuses.WaitConfirm:
-          return this.$t('quests.questWaitConfirm:');
-        case QuestStatuses.Done:
-          return this.$t('quests.finishedBy');
-        default:
-          return '';
+        case QuestStatuses.Active: return this.$t('quests.questActive:');
+        case QuestStatuses.Closed: return this.$t('quests.questClosed:');
+        case QuestStatuses.Dispute: return this.$t('quests.questDispute:');
+        case QuestStatuses.WaitWorker: return this.$t('quests.inProgressBy');
+        case QuestStatuses.WaitConfirm: return this.$t('quests.questWaitConfirm:');
+        case QuestStatuses.Done: return this.$t('quests.finishedBy');
+        default: return '';
       }
     },
     async getResponsesToQuestForAuthUser() {
