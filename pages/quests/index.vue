@@ -254,7 +254,6 @@ export default {
       selectedTypeOfJob: null,
       distanceIndex: 0,
       timeSort: 'desc',
-      questsObjects: {},
       questsArray: [],
       page: 1,
       perPager: 10,
@@ -269,6 +268,7 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
+      questsObjects: 'quests/getAllQuests',
       selectedSpecializationsFilters: 'quests/getSelectedSpecializationsFilters',
       selectedPriceFilter: 'quests/getSelectedPriceFilter',
     }),
@@ -408,23 +408,18 @@ export default {
         payload['priceBetween[to]'] = this.selectedPriceFilter.to || 99999999999999;
       }
       if (!this.isShowMap) {
-        this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
+        await this.$store.dispatch('quests/getAllQuests', payload);
         this.questsArray = this.questsObjects.quests;
       } else {
-        // eslint-disable-next-line no-lonely-if
-        if (!Object.keys(this.mapBounds).length) {
-          this.questsObjects = await this.$store.dispatch('quests/getAllQuests', payload);
-        } else {
-          const bounds = {
-            'north[longitude]': this.mapBounds.northEast.lng,
-            'north[latitude]': this.mapBounds.northEast.lat,
-            'south[longitude]': this.mapBounds.southWest.lng,
-            'south[latitude]': this.mapBounds.southWest.lat,
-          };
-          this.questsObjects = await this.$store.dispatch('quests/getAllQuests', Object.assign(payload, bounds));
-          await this.$store.dispatch('quests/getQuestsLocation', bounds);
-          this.questsArray = this.questsObjects.quests;
-        }
+        const bounds = {
+          'north[longitude]': this.mapBounds.northEast.lng,
+          'north[latitude]': this.mapBounds.northEast.lat,
+          'south[longitude]': this.mapBounds.southWest.lng,
+          'south[latitude]': this.mapBounds.southWest.lat,
+        };
+        await this.$store.dispatch('quests/getAllQuests', Object.assign(payload, bounds));
+        await this.$store.dispatch('quests/getQuestsLocation', bounds);
+        this.questsArray = this.questsObjects.quests;
       }
     },
     toggleMap() {
