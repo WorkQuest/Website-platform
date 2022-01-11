@@ -2,7 +2,7 @@
   <div class="quests">
     <div class="quests__card card">
       <div
-        v-for="item in array"
+        v-for="item in quests"
         :key="item.id"
         class="card__content"
       >
@@ -172,7 +172,7 @@ export default {
     itemRating,
   },
   props: {
-    array: {
+    quests: {
       type: Array,
       default: () => [],
     },

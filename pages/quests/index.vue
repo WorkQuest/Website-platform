@@ -198,8 +198,8 @@
           </div>
         </div>
         <quests
-          v-if="questsObjectLength > 0"
-          :array="questsData"
+          v-if="questsData.length > 0"
+          :quests="questsData"
           @clickFavoriteStar="clickFavoriteStarHandler"
         />
         <div
@@ -212,7 +212,7 @@
           />
         </div>
         <emptyData
-          v-else-if="questsObjectLength === 0"
+          v-else-if="questsData.length === 0"
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
           :link="getEmptyLink"
@@ -316,9 +316,6 @@ export default {
       return this.userRole === UserRole.WORKER
         ? ''
         : Path.CREATE_QUEST;
-    },
-    questsObjectLength() {
-      return Object.keys(this.questsData).length;
     },
   },
   watch: {

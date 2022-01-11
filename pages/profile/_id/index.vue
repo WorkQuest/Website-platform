@@ -69,7 +69,7 @@
           </div>
           <quests
             v-if="questsCount !== 0"
-            :array="questsData"
+            :quests="questsData"
             page="quests"
           />
           <emptyData

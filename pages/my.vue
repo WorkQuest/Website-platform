@@ -18,7 +18,7 @@
         </div>
         <quests
           v-if="questsCount"
-          :array="questsData"
+          :quests="questsData"
           @clickFavoriteStar="updateQuests"
         />
         <emptyData
