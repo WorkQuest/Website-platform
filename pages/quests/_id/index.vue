@@ -144,9 +144,7 @@
           <div class="quest__card">
             <quests
               v-if="questsObjects.count"
-              :limit="1"
-              :object="questsObjects"
-              :page="'quests'"
+              :quests="questsObjects"
             />
           </div>
         </div>

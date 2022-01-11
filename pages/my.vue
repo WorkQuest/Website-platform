@@ -17,8 +17,8 @@
           </base-btn>
         </div>
         <quests
-          v-if="questsData.count"
-          :object="questsData"
+          v-if="questsCount"
+          :quests="questsData"
           @clickFavoriteStar="updateQuests"
         />
         <emptyData
@@ -65,6 +65,7 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
       questsData: 'quests/getUserInfoQuests',
+      questsCount: 'quests/getUserInfoQuestsCount',
     }),
     userRole() {
       return this.userData.role;
@@ -83,7 +84,7 @@ export default {
         : tabs;
     },
     totalPages() {
-      return Math.ceil(this.questsData.count / this.offset);
+      return Math.ceil(this.questsCount / this.offset);
     },
     getEmptyLink() {
       return this.userRole === UserRole.WORKER
