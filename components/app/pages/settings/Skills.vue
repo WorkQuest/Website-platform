@@ -1,9 +1,9 @@
 <template>
   <div class="skills">
-    <div class="skills__title">
-      {{ $t("settings.employmentInfo") }}
-    </div>
     <div class="skills__container">
+      <div class="skills__title">
+        {{ $t("settings.employmentInfo") }}
+      </div>
       <div class="skills__items">
         <specializations-selector
           v-if="skills.selectedSpecAndSkills !== null"
@@ -105,18 +105,12 @@ export default {
 
 <style lang="scss" scoped>
 .skills {
-  display: grid;
-  gap: 20px;
-  &__title {
-    font-family: Inter, Arial, sans-serif;
-    font-weight: 500;
-    font-size: 25px;
-    line-height: 32px;
-  }
   &__container {
     background: $white;
     padding: 20px;
     border-radius: 6px;
+    display: grid;
+    gap: 20px;
   }
   &__add-info {
     display: grid;

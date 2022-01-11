@@ -62,7 +62,9 @@
     "required": "{_field_} ঘর আবশ্যক",
     "size": "{_field_} ঘরের আকার অবশ্যই {size}KB এর ছোট হতে হবে",
     "decimal": "{_field_} ঘরে শুধুমাত্র দশমিক মান বসবে",
-    "decimalPlaces": "{_field_} ??? {places}"
+    "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???" 
   },
   "labels": {
     "firstName": "নামের প্রথম অংশ",

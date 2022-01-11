@@ -62,7 +62,9 @@
     "required": "الحقل {_field_} مطلوب",
     "size": "يجب ألا تزيد قيمة الحقل {_field_} عن {size} كيلوبايت",
     "decimal": "يجب ألا يحتوي الحقل {_field_} إلا على قيم عشرية",
-    "decimalPlaces": "{_field_} ??? {places}"
+    "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???" 
   },
   "labels": {
     "firstName": "الاسم الأول",
