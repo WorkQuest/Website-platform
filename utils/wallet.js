@@ -231,7 +231,7 @@ export const getAccountQuests = async () => {
   try {
     const _abi = abi.WorkQuestFactory;
     const _abiAddress = process.env.WORK_QUEST_FACTORY;
-    return await fetchContractData('getWorkQuests', _abi, _abiAddress, [account.address]);
+    return await fetchContractData('getWorkQuests', _abi, _abiAddress, [wallet.address]);
   } catch (e) {
     return error(500, '', e.message);
   }
@@ -239,6 +239,7 @@ export const getAccountQuests = async () => {
 
 /* Work Quest */
 /*
+  :QuestMethods:
   cancelJob
   assignJob (workerAddress)
   acceptJob
@@ -256,7 +257,7 @@ export const depositCostToQuestContract = async (contractAddress, _amount) => {
     const value = new BigNumber(_amount).multipliedBy('1.02').shiftedBy(18).toString();
     console.log('deposit value', value, 'contract', contractAddress);
     const res = await web3.eth.sendTransaction({
-      from: account.address,
+      from: wallet.address,
       to: contractAddress,
       value,
     });
