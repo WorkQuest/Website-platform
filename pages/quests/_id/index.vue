@@ -134,19 +134,17 @@
             <h2 class="quest__spec">
               {{ $t('quests.otherQuestsSpec') }}
               <nuxt-link
-                to="#"
+                :to="`/quests${questsLink}`"
                 class="spec__link"
               >
-                "{{ payload.spec }}"
+                "{{ $t(`filters.items.${randomSpec}.title`) }}"
               </nuxt-link>
             </h2>
           </div>
           <div class="quest__card">
             <quests
-              v-if="questsObjects.count"
-              :limit="1"
-              :object="questsObjects"
-              :page="'quests'"
+              v-if="otherQuest.count"
+              :object="otherQuest"
             />
           </div>
         </div>
@@ -196,6 +194,8 @@ export default {
         notSelected: '/img/app/marker_red.svg',
       },
       actionBtnsArr: [],
+      randomSpec: 1,
+      questsLink: '',
     };
   },
   computed: {
@@ -205,6 +205,7 @@ export default {
       userRole: 'user/getUserRole',
       infoDataMode: 'quests/getInfoDataMode',
       userData: 'user/getUserData',
+      otherQuest: 'quests/getAllQuests',
     }),
     InfoModeEmployer() {
       return InfoModeEmployer;
@@ -230,12 +231,34 @@ export default {
   watch: {
     questData: {
       deep: true,
-      handler() {
+      async handler() {
         this.questLocation = {
           lat: this.questData.location.latitude,
           lng: this.questData.location.longitude,
         };
         this.locations = this.questLocation;
+        this.randomSpec = Math.floor(this.questData.questSpecializations[Math.floor(Math.random() * this.questData.questSpecializations.length)].path);
+        const skills = Object.keys(this.$t(`filters.items.${this.randomSpec}.sub`));
+        console.log(this.randomSpec);
+        const query = {};
+        for (let i = 0; i < skills.length; i += 1) {
+          if (i === 0) {
+            this.questsLink += `?${this.randomSpec}.${skills[i]}`;
+          } else {
+            this.questsLink += `&${this.randomSpec}.${skills[i]}`;
+          }
+          query[`specializations[${i}]`] = `${this.randomSpec}.${skills[i]}`;
+        }
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        // for (const item in query) {
+        //   if (item === 'specializations[0]') {
+        //     this.questsLink += `?${item}`;
+        //   } else {
+        //     this.questsLink += `&${item}`;
+        //   }
+        // }
+        query.limit = 1;
+        await this.$store.dispatch('quests/getAllQuests', query);
       },
     },
     infoDataMode(newVal, oldVal) {
