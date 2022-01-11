@@ -201,6 +201,7 @@
           v-if="questsArray.length > 0"
           :object="questsObjects"
           :page="'quests'"
+          @clickFavoriteStar="clickFavoriteStarHandler"
         />
         <div
           v-if="totalPages > 1"
@@ -396,6 +397,16 @@ export default {
         offset: (this.page - 1) * this.perPager,
         'sort[createdAt]': this.timeSort,
       });
+      this.SetLoader(false);
+    },
+    async clickFavoriteStarHandler(item) {
+      this.SetLoader(true);
+      if (!item.star) {
+        await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      } else {
+        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+      }
+      await this.updateQuests();
       this.SetLoader(false);
     },
     async fetchQuests(payload = {}) {
