@@ -71,6 +71,7 @@
             v-if="questsObject.count !== 0"
             :object="questsObject"
             page="quests"
+            @clickFavoriteStar="updateQuests"
           />
           <emptyData
             v-else
@@ -419,6 +420,16 @@ export default {
       this.ShowModal({
         key: modals.addCase,
       });
+    },
+    async updateQuests(item) {
+      this.SetLoader(true);
+      if (!item.star) {
+        await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      } else {
+        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+      }
+      await this.changeQuestsData();
+      this.SetLoader(false);
     },
   },
 };

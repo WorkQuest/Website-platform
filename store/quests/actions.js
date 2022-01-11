@@ -51,7 +51,8 @@ export default {
   },
   async questCreate({ commit }, payload) {
     try {
-      return await this.$axios.$post('/v1/quest/create', payload);
+      const response = await this.$axios.$post('/v1/quest/create', payload);
+      return response;
     } catch (e) {
       return console.log(e);
     }
