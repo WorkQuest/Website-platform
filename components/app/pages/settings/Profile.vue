@@ -81,16 +81,24 @@
               </div>
             </template>
           </base-field>
-          <vue-phone-number-input
-            v-model="profile.additionalInfo.secondMobileNumber"
-            class="profile__phone-input"
-            error-color="#EB5757"
-            clearable
-            show-code-on-list
-            required
-            size="lg"
-            @update="updateSecondPhone($event)"
-          />
+          <div class="profile__phone-input">
+            <vue-phone-number-input
+              v-model="profile.additionalInfo.secondMobileNumber"
+              error-color="#EB5757"
+              clearable
+              show-code-on-list
+              required
+              size="lg"
+              :error="!isValidPhoneNumber"
+              @update="updateSecondPhone($event)"
+            />
+            <span
+              v-if="!isValidPhoneNumber"
+              class="profile__error"
+            >
+              {{ $t('messages.invalidPhone') }}
+            </span>
+          </div>
           <vue-phone-number-input
             v-if="userRole === 'employer'"
             v-model="profile.firstPhone"
@@ -122,7 +130,7 @@
           v-slot="{ errors }"
           tag="div"
           class="profile__description"
-          rules="max:100||required"
+          rules="max:100"
         >
           <textarea
             id="textarea"
@@ -130,9 +138,8 @@
             :placeholder="$t('settings.userDesc')"
             class="profile__description-textarea"
             :class="{ 'profile__description-textarea_error': errors[0] }"
-            @blur="checkValidate"
           />
-          <span class="profile__description-error">
+          <span class="profile__error">
             {{ errors[0] }}
           </span>
         </ValidationProvider>
@@ -270,11 +277,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    isValidPhoneNumber: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       isSearchDDStatus: false,
-      secondPhone: null,
       addresses: [],
       mainInputs: [
         {
@@ -401,8 +411,7 @@ export default {
 
     // UPDATE PHONE NUMBERS
     updateSecondPhone(value) {
-      this.secondPhone = value;
-      this.$emit('updateSecondPhone', this.secondPhone);
+      this.$emit('updateSecondPhone', value);
     },
 
     // GEOPOSITION METHODS
@@ -567,7 +576,7 @@ export default {
       border: 1px solid red
     }
   }
-  &__description-error {
+  &__error {
     color: #bb5151;
     font-size: 12px;
     min-height: 23px;

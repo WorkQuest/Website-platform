@@ -15,6 +15,7 @@
         :new-work-exp="newWorkExp"
         :avatar-change="avatarChange"
         :validation-error="validationError"
+        :is-valid-phone-number="isValidPhoneNumber"
         @click="editUserData"
         @updateSecondPhone="updateSecondPhone($event)"
         @showModalStatus="showModalStatus"
@@ -99,6 +100,7 @@ export default {
       },
       updatedSecondPhone: null,
       validationError: false,
+      isValidPhoneNumber: true,
     };
   },
   computed: {
@@ -187,6 +189,7 @@ export default {
 
     // UPDATE PHONE
     updateSecondPhone(value) {
+      this.isValidPhoneNumber = value.isValid;
       this.updatedSecondPhone = value;
     },
 
@@ -213,7 +216,8 @@ export default {
       if (
         validateEducation === false
         || validateWorkExp === false
-        || validateSettings === false) {
+        || validateSettings === false
+        || this.isValidPhoneNumber === false) {
         return true;
       }
       this.validationError = false;
@@ -281,7 +285,7 @@ export default {
           ...payload.additionalInfo,
           educations: this.profile.additionalInfo.educations,
           workExperiences: this.profile.additionalInfo.workExperiences,
-          description: this.profile.additionalInfo.description,
+          description: this.profile.additionalInfo.description || null,
         };
         payload = {
           ...payload,

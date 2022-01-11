@@ -63,6 +63,7 @@
     "size": "The {_field_} field size must be less than {size}KB",
     "decimal": "The {_field_} field must contain only decimal values",
     "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone": "Неверный номер телефона",
     "formError": "Заполните все обязательные поля"
   },
   "labels": {
