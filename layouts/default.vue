@@ -781,12 +781,6 @@ export default {
       this.closeAll();
     },
   },
-  beforeCreate() {
-    if (!this.$cookies.get('userLogin')) {
-      this.$store.dispatch('user/logout');
-      this.$router.push('/sign-in');
-    }
-  },
   async mounted() {
     await this.initWSListeners();
     await this.getChats();
