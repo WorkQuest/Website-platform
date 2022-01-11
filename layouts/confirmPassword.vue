@@ -35,6 +35,7 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'ConfirmPassword',
+  middleware: 'auth',
   data() {
     return {
       password: '',
