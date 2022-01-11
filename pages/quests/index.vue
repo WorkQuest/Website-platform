@@ -198,9 +198,8 @@
           </div>
         </div>
         <quests
-          v-if="questsArray.length > 0"
-          :object="questsObjects"
-          :page="'quests'"
+          v-if="questsObjectLength > 0"
+          :array="questsData"
           @clickFavoriteStar="clickFavoriteStarHandler"
         />
         <div
@@ -213,7 +212,7 @@
           />
         </div>
         <emptyData
-          v-else-if="questsArray.length === 0"
+          v-else-if="questsObjectLength === 0"
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
           :link="getEmptyLink"
@@ -255,7 +254,6 @@ export default {
       selectedTypeOfJob: null,
       distanceIndex: 0,
       timeSort: 'desc',
-      questsArray: [],
       page: 1,
       perPager: 10,
       zoomNumber: 15,
@@ -269,7 +267,8 @@ export default {
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
-      questsObjects: 'quests/getAllQuests',
+      questsData: 'quests/getAllQuests',
+      questsCount: 'quests/getAllQuestsCount',
       selectedSpecializationsFilters: 'quests/getSelectedSpecializationsFilters',
       selectedPriceFilter: 'quests/getSelectedPriceFilter',
     }),
@@ -305,10 +304,7 @@ export default {
       ];
     },
     totalPages() {
-      if (this.questsObjects) {
-        return Math.ceil(this.questsObjects.count / this.perPager);
-      }
-      return 0;
+      return Math.ceil(this.questsCount / this.perPager);
     },
     formattedSpecFilters() {
       const filtersData = this.selectedSpecializationsFilters.query || [];
@@ -320,6 +316,9 @@ export default {
       return this.userRole === UserRole.WORKER
         ? ''
         : Path.CREATE_QUEST;
+    },
+    questsObjectLength() {
+      return Object.keys(this.questsData).length;
     },
   },
   watch: {
@@ -420,7 +419,6 @@ export default {
       }
       if (!this.isShowMap) {
         await this.$store.dispatch('quests/getAllQuests', payload);
-        this.questsArray = this.questsObjects.quests;
       } else {
         const bounds = {
           'north[longitude]': this.mapBounds.northEast.lng,
@@ -430,7 +428,6 @@ export default {
         };
         await this.$store.dispatch('quests/getAllQuests', Object.assign(payload, bounds));
         await this.$store.dispatch('quests/getQuestsLocation', bounds);
-        this.questsArray = this.questsObjects.quests;
       }
     },
     toggleMap() {
