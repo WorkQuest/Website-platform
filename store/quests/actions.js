@@ -161,8 +161,8 @@ export default {
   },
   async completeWorkOnQuest({ commit }, questId) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/complete-work`, questId);
-      return response.result;
+      const { ok } = await this.$axios.$post(`/v1/quest/${questId}/complete-work`, questId);
+      return ok;
     } catch (e) {
       return console.log(e);
     }
@@ -185,8 +185,8 @@ export default {
   },
   async acceptWorkOnQuest({ commit }, questId) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/accept-work`);
-      return response.result;
+      const { ok } = await this.$axios.$post(`/v1/quest/${questId}/accept-work`);
+      return ok;
     } catch (e) {
       return console.log(e);
     }

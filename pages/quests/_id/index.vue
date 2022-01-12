@@ -579,14 +579,16 @@ export default {
     },
     async completeWorkOnQuest() {
       this.SetLoader(true);
-      await this.$store.dispatch('quests/completeWorkOnQuest', this.questData.id);
-      await this.getQuest();
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('quests.questInfo'),
-        subtitle: this.$t('quests.pleaseWaitEmp'),
-      });
+      if (await this.$store.dispatch('quests/completeWorkOnQuest', this.questData.id)) {
+        await this.getQuest();
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/questAgreed.svg'),
+          title: this.$t('quests.questInfo'),
+          subtitle: this.$t('quests.pleaseWaitEmp'),
+        });
+      }
+
       await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.WaitWorker);
       this.SetLoader(false);
     },
