@@ -144,9 +144,7 @@
           <div class="quest__card">
             <quests
               v-if="questsObjects.count"
-              :limit="1"
-              :object="questsObjects"
-              :page="'quests'"
+              :quests="questsObjects"
             />
           </div>
         </div>
@@ -460,8 +458,10 @@ export default {
       await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     },
     async getResponsesToQuest() {
-      if (this.userRole === UserRole.EMPLOYER) {
-        await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
+      const { questData: { id, user }, userData } = this;
+
+      if (this.userRole === UserRole.EMPLOYER && user.id === userData.id) {
+        await this.$store.dispatch('quests/responsesToQuest', id);
       }
     },
     coordinatesChange(item) {
@@ -552,31 +552,35 @@ export default {
     },
     async acceptWorkOnQuest() {
       this.SetLoader(true);
-      await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id);
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('quests.questInfo'),
-        subtitle: this.$t('quests.workOnQuestAccepted'),
-      });
-      await this.getQuest();
+      if (await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id)) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/questAgreed.svg'),
+          title: this.$t('quests.questInfo'),
+          subtitle: this.$t('quests.workOnQuestAccepted'),
+        });
+        await this.getQuest();
+      }
       this.SetLoader(false);
     },
     async rejectWorkOnQuest() {
       this.SetLoader(true);
-      await this.$store.dispatch('quests/rejectWorkOnQuest', this.questData.id);
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('quests.questInfo'),
-        subtitle: this.$t('quests.workOnQuestRejected'),
-      });
-      await this.getQuest();
+      if (await this.$store.dispatch('quests/rejectWorkOnQuest', this.questData.id)) {
+        await this.getQuest();
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/questAgreed.svg'),
+          title: this.$t('quests.questInfo'),
+          subtitle: this.$t('quests.workOnQuestRejected'),
+        });
+        await this.getQuest();
+      }
       this.SetLoader(false);
     },
     async completeWorkOnQuest() {
       this.SetLoader(true);
       await this.$store.dispatch('quests/completeWorkOnQuest', this.questData.id);
+      await this.getQuest();
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),
