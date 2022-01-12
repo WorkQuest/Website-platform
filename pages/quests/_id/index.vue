@@ -588,8 +588,6 @@ export default {
           subtitle: this.$t('quests.pleaseWaitEmp'),
         });
       }
-
-      await this.$store.dispatch('quests/setInfoDataMode', InfoModeWorker.WaitWorker);
       this.SetLoader(false);
     },
     async sendARequestOnQuest() {
