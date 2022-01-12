@@ -134,17 +134,22 @@
             <h2 class="quest__spec">
               {{ $t('quests.otherQuestsSpec') }}
               <nuxt-link
-                to="#"
+                :to="`/quests?specialization=${randomSpec}`"
                 class="spec__link"
               >
-                "{{ payload.spec }}"
+                "{{ $t(`filters.items.${randomSpec}.title`) }}"
               </nuxt-link>
             </h2>
           </div>
           <div class="quest__card">
             <quests
-              v-if="questsObjects.count"
-              :quests="questsObjects"
+              v-if="otherQuestsCount"
+              :quests="otherQuests"
+            />
+            <emptyData
+              v-else
+              :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
+              :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
             />
           </div>
         </div>
@@ -163,6 +168,7 @@ import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
 import quests from '~/components/app/pages/common/quests';
 import itemRating from '~/components/app/info/item-rating';
+import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Quests',
@@ -171,15 +177,10 @@ export default {
     questPanel,
     quests,
     itemRating,
+    emptyData,
   },
   data() {
     return {
-      payload: { // ???
-        spec: 'Painting works',
-      },
-      questsObjects: { // ???
-        count: 0,
-      },
       questLocation: { lat: 0, lng: 0 },
       locations: {},
       currentLocation: {},
@@ -203,6 +204,8 @@ export default {
       userRole: 'user/getUserRole',
       infoDataMode: 'quests/getInfoDataMode',
       userData: 'user/getUserData',
+      otherQuests: 'quests/getAllQuests',
+      otherQuestsCount: 'quests/getAllQuestsCount',
     }),
     InfoModeEmployer() {
       return InfoModeEmployer;
@@ -224,11 +227,15 @@ export default {
 
       return priority !== null ? `worker-data__priority-title_${priorityModifier}` : '';
     },
+    randomSpec() {
+      const { questSpecializations } = this.questData;
+      return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
+    },
   },
   watch: {
     questData: {
       deep: true,
-      handler() {
+      async handler() {
         this.questLocation = {
           lat: this.questData.location.latitude,
           lng: this.questData.location.longitude,
@@ -244,11 +251,21 @@ export default {
   async beforeMount() {
     this.SetLoader(true);
     await this.getQuest();
+    if (this.userRole === UserRole.WORKER) await this.getSameQuests();
     await this.getResponsesToQuest();
     await this.setActionBtnsArr();
     this.SetLoader(false);
   },
   methods: {
+    async getSameQuests() {
+      const skills = Object.keys(this.$t(`filters.items.${this.randomSpec}.sub`));
+      const query = {};
+      for (let i = 0; i < skills.length; i += 1) {
+        query[`specializations[${i}]`] = `${this.randomSpec}.${skills[i]}`;
+      }
+      query.limit = 1;
+      await this.$store.dispatch('quests/getAllQuests', query);
+    },
     setActionBtnsArr() {
       let arr = [];
 
