@@ -552,31 +552,35 @@ export default {
     },
     async acceptWorkOnQuest() {
       this.SetLoader(true);
-      await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id);
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('quests.questInfo'),
-        subtitle: this.$t('quests.workOnQuestAccepted'),
-      });
-      await this.getQuest();
+      if (await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id)) {
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/questAgreed.svg'),
+          title: this.$t('quests.questInfo'),
+          subtitle: this.$t('quests.workOnQuestAccepted'),
+        });
+        await this.getQuest();
+      }
       this.SetLoader(false);
     },
     async rejectWorkOnQuest() {
       this.SetLoader(true);
-      await this.$store.dispatch('quests/rejectWorkOnQuest', this.questData.id);
-      this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('quests.questInfo'),
-        subtitle: this.$t('quests.workOnQuestRejected'),
-      });
-      await this.getQuest();
+      if (await this.$store.dispatch('quests/rejectWorkOnQuest', this.questData.id)) {
+        await this.getQuest();
+        this.ShowModal({
+          key: modals.status,
+          img: require('~/assets/img/ui/questAgreed.svg'),
+          title: this.$t('quests.questInfo'),
+          subtitle: this.$t('quests.workOnQuestRejected'),
+        });
+        await this.getQuest();
+      }
       this.SetLoader(false);
     },
     async completeWorkOnQuest() {
       this.SetLoader(true);
       await this.$store.dispatch('quests/completeWorkOnQuest', this.questData.id);
+      await this.getQuest();
       this.ShowModal({
         key: modals.status,
         img: require('~/assets/img/ui/questAgreed.svg'),

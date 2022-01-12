@@ -169,16 +169,16 @@ export default {
   },
   async rejectWorkOnQuest({ commit }, questId) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/reject-work`, questId);
-      return response.result;
+      const { ok } = await this.$axios.$post(`/v1/quest/${questId}/reject-work`, questId);
+      return ok;
     } catch (e) {
       return console.log(e);
     }
   },
   async acceptCompletedWorkOnQuest({ commit }, questId) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/accept-completed-work`, questId);
-      return response.result;
+      const { ok } = await this.$axios.$post(`/v1/quest/${questId}/accept-completed-work`, questId);
+      return ok;
     } catch (e) {
       return console.log(e);
     }
