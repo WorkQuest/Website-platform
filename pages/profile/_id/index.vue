@@ -68,8 +68,8 @@
             {{ $t('quests.activeQuests') }}
           </div>
           <quests
-            v-if="questsObject.count !== 0"
-            :object="questsObject"
+            v-if="questsCount !== 0"
+            :quests="questsData"
             page="quests"
           />
           <emptyData
@@ -86,7 +86,7 @@
             </div>
           </div>
           <div
-            v-if="selectedTab === 'commonInfo' && questsObject.count > 2"
+            v-if="selectedTab === 'commonInfo' && questsCount > 2"
             class="quests__button button"
           >
             <div
@@ -220,7 +220,6 @@ export default {
   data() {
     return {
       selectedTab: 'commonInfo',
-      questsObject: {},
       reviewsObject: {},
       userStatistics: {
         reviewCount: 0,
@@ -241,7 +240,8 @@ export default {
   computed: {
     ...mapGetters({
       mainUser: 'user/getUserData',
-      questUserData: 'quests/getUserInfoQuests',
+      questsData: 'quests/getUserInfoQuests',
+      questsCount: 'quests/getUserInfoQuestsCount',
       portfolios: 'user/getUserPortfolios',
       reviews: 'user/getAllUserReviews',
     }),
@@ -281,7 +281,7 @@ export default {
       return tabs;
     },
     totalQuestsPages() {
-      return Math.ceil(this.questsObject.count / this.perPagerQuests);
+      return Math.ceil(this.questsCount / this.perPagerQuests);
     },
     totalReviewsPages() {
       return Math.ceil(this.reviews.count / this.perPagerReviews);
@@ -392,7 +392,6 @@ export default {
         },
       };
       await this.$store.dispatch('quests/getUserQuests', payload);
-      this.questsObject = this.questUserData;
     },
     async changeReviewsData(limit) {
       const payload = {
