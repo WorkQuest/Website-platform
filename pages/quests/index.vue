@@ -260,6 +260,7 @@ export default {
       addresses: [],
       coordinates: null,
       boundsTimeout: null,
+      skillsArray: [],
     };
   },
   computed: {
@@ -371,17 +372,18 @@ export default {
     if (typeof isShow === 'boolean') this.isShowMap = isShow;
     const { query } = this.$route;
     if (Object.keys(query).length) {
-      this.formattedSpecFilters(Object.keys(query));
+      const skills = Object.keys(this.$t(`filters.items.${this.$route.query.specialization}.sub`));
       const selected = {};
-      // eslint-disable-next-line guard-for-in,no-restricted-syntax
-      for (const skill in query) {
-        selected[skill] = true;
+      for (let i = 0; i < skills.length; i += 1) {
+        this.skillsArray.push(`${this.$route.query.specialization}.${skills[i]}`);
+        selected[`${this.$route.query.specialization}.${skills[i]}`] = true;
       }
+      this.formattedSpecFilters();
       const data = {
-        query: Object.keys(this.$route.query),
+        query: this.skillsArray,
         selected,
         selectedAll: {},
-        visible: { [Math.floor(Object.keys(query)[0] - 1)]: true },
+        visible: { [this.$route.query.specialization - 1]: true },
       };
       await this.$store.dispatch('quests/setSelectedSpecializationsFilters', data);
     }
@@ -393,8 +395,8 @@ export default {
   methods: {
     formattedSpecFilters() {
       let filtersData = [];
-      if (Object.keys(this.$route.query).length) {
-        filtersData = Object.keys(this.$route.query);
+      if (this.$route.query.specialization) {
+        filtersData = this.skillsArray;
       } else {
         filtersData = this.selectedSpecializationsFilters.query || [];
       }

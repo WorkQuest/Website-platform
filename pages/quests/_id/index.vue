@@ -122,10 +122,6 @@
             </GmapMap>
           </transition>
         </div>
-        <template v-if="userRole === 'employer' && infoDataMode === InfoModeEmployer.Created">
-          <workers-list is-invited />
-          <workers-list />
-        </template>
         <div
           v-if="userRole === 'worker'"
           class="spec__container"
@@ -134,7 +130,7 @@
             <h2 class="quest__spec">
               {{ $t('quests.otherQuestsSpec') }}
               <nuxt-link
-                :to="`/quests${questsLink}`"
+                :to="`/quests?specialization=${randomSpec}`"
                 class="spec__link"
               >
                 "{{ $t(`filters.items.${randomSpec}.title`) }}"
@@ -150,7 +146,6 @@
               v-else
               :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
               :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-              :link="getEmptyLink"
             />
           </div>
         </div>
@@ -182,9 +177,6 @@ export default {
   },
   data() {
     return {
-      payload: { // ???
-        spec: 'Painting works',
-      },
       questLocation: { lat: 0, lng: 0 },
       locations: {},
       currentLocation: {},
@@ -200,7 +192,6 @@ export default {
       },
       actionBtnsArr: [],
       randomSpec: 1,
-      questsLink: '',
     };
   },
   computed: {
@@ -233,11 +224,6 @@ export default {
 
       return priority !== null ? `worker-data__priority-title_${priorityModifier}` : '';
     },
-    getEmptyLink() {
-      return this.userRole === UserRole.WORKER
-        ? ''
-        : Path.CREATE_QUEST;
-    },
   },
   watch: {
     questData: {
@@ -248,19 +234,6 @@ export default {
           lng: this.questData.location.longitude,
         };
         this.locations = this.questLocation;
-        this.randomSpec = Math.floor(this.questData.questSpecializations[Math.floor(Math.random() * this.questData.questSpecializations.length)].path);
-        const skills = Object.keys(this.$t(`filters.items.${this.randomSpec}.sub`));
-        const query = {};
-        for (let i = 0; i < skills.length; i += 1) {
-          if (i === 0) {
-            this.questsLink += `?${this.randomSpec}.${skills[i]}`;
-          } else {
-            this.questsLink += `&${this.randomSpec}.${skills[i]}`;
-          }
-          query[`specializations[${i}]`] = `${this.randomSpec}.${skills[i]}`;
-        }
-        query.limit = 1;
-        await this.$store.dispatch('quests/getAllQuests', query);
       },
     },
     infoDataMode(newVal, oldVal) {
@@ -271,11 +244,22 @@ export default {
   async beforeMount() {
     this.SetLoader(true);
     await this.getQuest();
+    await this.getSameQuests();
     await this.getResponsesToQuest();
     await this.setActionBtnsArr();
     this.SetLoader(false);
   },
   methods: {
+    async getSameQuests() {
+      this.randomSpec = Math.floor(this.questData.questSpecializations[Math.floor(Math.random() * this.questData.questSpecializations.length)].path);
+      const skills = Object.keys(this.$t(`filters.items.${this.randomSpec}.sub`));
+      const query = {};
+      for (let i = 0; i < skills.length; i += 1) {
+        query[`specializations[${i}]`] = `${this.randomSpec}.${skills[i]}`;
+      }
+      query.limit = 1;
+      await this.$store.dispatch('quests/getAllQuests', query);
+    },
     setActionBtnsArr() {
       let arr = [];
 
