@@ -373,18 +373,18 @@ export default {
     const { query } = this.$route;
     if (Object.keys(query).length) {
       this.isShowMap = false;
-      const skills = Object.keys(this.$t(`filters.items.${this.$route.query.specialization}.sub`));
+      const skills = Object.keys(this.$t(`filters.items.${query.specialization}.sub`));
       const selected = {};
       for (let i = 0; i < skills.length; i += 1) {
-        this.skillsArray.push(`${this.$route.query.specialization}.${skills[i]}`);
-        selected[`${this.$route.query.specialization}.${skills[i]}`] = true;
+        this.skillsArray.push(`${query.specialization}.${skills[i]}`);
+        selected[`${query.specialization}.${skills[i]}`] = true;
       }
       this.formattedSpecFilters();
       const data = {
         query: this.skillsArray,
         selected,
         selectedAll: {},
-        visible: { [this.$route.query.specialization - 1]: true },
+        visible: { [query.specialization - 1]: true },
       };
       await this.$store.dispatch('quests/setSelectedSpecializationsFilters', data);
     }
