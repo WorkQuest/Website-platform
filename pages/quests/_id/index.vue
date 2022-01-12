@@ -191,7 +191,6 @@ export default {
         notSelected: '/img/app/marker_red.svg',
       },
       actionBtnsArr: [],
-      randomSpec: 1,
     };
   },
   computed: {
@@ -224,6 +223,10 @@ export default {
 
       return priority !== null ? `worker-data__priority-title_${priorityModifier}` : '';
     },
+    randomSpec() {
+      const { questSpecializations } = this.questData;
+      return Math.floor(questSpecializations[Math.floor(Math.random() * questSpecializations.length)].path);
+    },
   },
   watch: {
     questData: {
@@ -251,7 +254,6 @@ export default {
   },
   methods: {
     async getSameQuests() {
-      this.randomSpec = Math.floor(this.questData.questSpecializations[Math.floor(Math.random() * this.questData.questSpecializations.length)].path);
       const skills = Object.keys(this.$t(`filters.items.${this.randomSpec}.sub`));
       const query = {};
       for (let i = 0; i < skills.length; i += 1) {
