@@ -28,6 +28,8 @@
         class="ctm-field__textarea"
         :placeholder="placeholder"
         @input="input"
+        @focus="$emit('focus')"
+        @blur="$emit('blur')"
       />
       <div class="ctm-field__selector">
         <slot name="selector" />
@@ -151,10 +153,15 @@ export default {
     height: 214px;
     width: 100%;
     border: 0;
-    background-color: $black0;
+    color: $black700;
+    background: #F3F7FA;
     resize: none;
     &::placeholder {
-      color: $black200;
+      color: $black300;
+    }
+    &:focus {
+      background: #FFFFFF;
+      border: 1px solid #0083C7;
     }
   }
     &__right {

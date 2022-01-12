@@ -1,21 +1,19 @@
 <template>
-  <div>
+  <div class="portfolio">
     <emptyData
       v-if="object.count === 0"
       :description="$t('errors.emptyData.emptyPortfolios')"
     />
     <div
       v-else
-      class="portfolio portfolio__items"
+      class="portfolio__items"
     >
       <div
         v-for="(item) in object.cases"
         :key="item.id"
         class="portfolio__item"
       >
-        <div
-          class="portfolio__card"
-        >
+        <div class="portfolio__card">
           <div class="portfolio__body">
             <div
               v-if="userId === mainUserData.id"
@@ -33,18 +31,16 @@
               <base-btn
                 class="portfolio__edit"
                 mode="portfolioEdit"
-                @click="showEditCaseModal(item.id, item.title, item.description)"
+                @click="showEditCaseModal(item)"
               >
-                <span
-                  class="icon-edit"
-                />
+                <span class="icon-edit" />
               </base-btn>
             </div>
             <div
               v-for="(img, j) in item.medias"
               :key="j"
               class="portfolio__img"
-              @click="openImage(img.url, item.title, item.description, item.id)"
+              @click="openImage(img.url, item)"
             >
               <img
                 class="portfolio__image"
@@ -89,14 +85,18 @@ export default {
     },
   },
   methods: {
-    openImage(src, name, desc) {
+    openImage(src, {
+      title, description, id, medias,
+    }) {
       if (window.innerWidth >= 761) {
         this.ShowModal({
           key: modals.showImage,
           portfolio: true,
           url: src,
-          title: name,
-          desc,
+          title,
+          description,
+          id,
+          medias,
         });
       }
     },
@@ -113,12 +113,13 @@ export default {
         id,
       });
     },
-    showEditCaseModal(id, title, desc) {
+    showEditCaseModal(item) {
       this.ShowModal({
         key: modals.editCase,
-        id,
-        title,
-        desc,
+        id: item.id,
+        title: item.title,
+        desc: item.description,
+        media: item.medias,
       });
     },
   },

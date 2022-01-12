@@ -17,14 +17,15 @@
           </base-btn>
         </div>
         <quests
-          v-if="questsData.count"
-          :object="questsData"
+          v-if="questsCount"
+          :quests="questsData"
+          @clickFavoriteStar="updateQuests"
         />
         <emptyData
           v-else
           :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
           :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
-          link="/create-quest"
+          :link="getEmptyLink"
         />
         <div class="quests__pager">
           <base-pager
@@ -41,7 +42,7 @@
 <script>
 
 import { mapGetters } from 'vuex';
-import { QuestStatuses } from '~/utils/enums';
+import { QuestStatuses, UserRole, Path } from '~/utils/enums';
 import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
 
@@ -64,6 +65,7 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
       questsData: 'quests/getUserInfoQuests',
+      questsCount: 'quests/getUserInfoQuestsCount',
     }),
     userRole() {
       return this.userData.role;
@@ -77,12 +79,17 @@ export default {
         { name: this.$t('myQuests.statuses.invited'), id: 4 },
         { name: this.$t('myQuests.statuses.performed'), id: 5 },
       ];
-      return this.userRole === 'employer'
+      return this.userRole === UserRole.EMPLOYER
         ? tabs.filter((tab) => (tab.id < 1 || tab.id > 2))
         : tabs;
     },
     totalPages() {
-      return Math.ceil(this.questsData.count / this.offset);
+      return Math.ceil(this.questsCount / this.offset);
+    },
+    getEmptyLink() {
+      return this.userRole === UserRole.WORKER
+        ? ''
+        : Path.CREATE_QUEST;
     },
   },
   watch: {
@@ -108,6 +115,16 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async updateQuests(item) {
+      this.SetLoader(true);
+      if (!item.star) {
+        await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      } else {
+        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+      }
+      await this.$store.dispatch('quests/getUserQuests', this.requestParams);
+      this.SetLoader(false);
+    },
     async filterByStatus(id) {
       this.SetLoader(true);
       this.page = 1;

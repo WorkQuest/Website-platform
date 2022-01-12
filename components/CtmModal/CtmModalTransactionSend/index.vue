@@ -10,7 +10,7 @@
         class="transaction__image"
       >
       <div class="transaction__title">
-        {{ $t('modals.transactionSend') }}
+        {{ $t('modals.transactionSent') }}
       </div>
       <div class="transaction__desc">
         {{ $t('modals.transactionSentText') }}

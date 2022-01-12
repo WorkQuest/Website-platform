@@ -53,25 +53,8 @@
           <div class="skills-spec__title">
             {{ $t('skills.title') }}
           </div>
-          <div class="skills-spec__container skills-spec__container_white">
-            <div
-              v-for="(skills, specialization) in getSkillTitle()"
-              :key="specialization"
-              class="skills-spec__spec skills-spec__spec_white spec"
-            >
-              <div class="spec__title">
-                {{ $t(`filters.items.${specialization}.title`) }}
-              </div>
-              <ul class="spec__skills">
-                <li
-                  v-for="(skill, key) in skills"
-                  :key="key"
-                  class="skills__item"
-                >
-                  {{ $t(`filters.items.${specialization}.sub.${skill}`) }}
-                </li>
-              </ul>
-            </div>
+          <div class="skills-spec__container">
+            <skills :specializations="userData.userSpecializations" />
           </div>
         </div>
         <div
@@ -85,8 +68,8 @@
             {{ $t('quests.activeQuests') }}
           </div>
           <quests
-            v-if="questsObject.count !== 0"
-            :object="questsObject"
+            v-if="questsCount !== 0"
+            :quests="questsData"
             page="quests"
           />
           <emptyData
@@ -103,7 +86,7 @@
             </div>
           </div>
           <div
-            v-if="selectedTab === 'commonInfo' && questsObject.count > 2"
+            v-if="selectedTab === 'commonInfo' && questsCount > 2"
             class="quests__button button"
           >
             <div
@@ -222,6 +205,7 @@ import userInfo from '~/components/app/pages/common/userInfo';
 import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
 import modals from '~/store/modals/modals';
+import skills from '~/components/app/pages/common/skills';
 
 export default {
   name: 'Index',
@@ -231,11 +215,11 @@ export default {
     userInfo,
     emptyData,
     portfolioTab,
+    skills,
   },
   data() {
     return {
       selectedTab: 'commonInfo',
-      questsObject: {},
       reviewsObject: {},
       userStatistics: {
         reviewCount: 0,
@@ -256,7 +240,8 @@ export default {
   computed: {
     ...mapGetters({
       mainUser: 'user/getUserData',
-      questUserData: 'quests/getUserInfoQuests',
+      questsData: 'quests/getUserInfoQuests',
+      questsCount: 'quests/getUserInfoQuestsCount',
       portfolios: 'user/getUserPortfolios',
       reviews: 'user/getAllUserReviews',
     }),
@@ -296,7 +281,7 @@ export default {
       return tabs;
     },
     totalQuestsPages() {
-      return Math.ceil(this.questsObject.count / this.perPagerQuests);
+      return Math.ceil(this.questsCount / this.perPagerQuests);
     },
     totalReviewsPages() {
       return Math.ceil(this.reviews.count / this.perPagerReviews);
@@ -407,7 +392,6 @@ export default {
         },
       };
       await this.$store.dispatch('quests/getUserQuests', payload);
-      this.questsObject = this.questUserData;
     },
     async changeReviewsData(limit) {
       const payload = {
@@ -426,15 +410,6 @@ export default {
         },
       };
       await this.$store.dispatch('user/getUserPortfolios', payload);
-    },
-    getSkillTitle() {
-      const specData = {};
-      this.userData.userSpecializations.forEach((data) => {
-        const [spec, skill] = data.path.split('.');
-        if (!specData[spec]) specData[spec] = [];
-        specData[spec].push(skill);
-      });
-      return specData;
     },
     isRating(type) {
       return (type === 3);
@@ -502,49 +477,14 @@ export default {
 .skills-spec {
   &__container {
     padding: 20px;
-    display: flex;
-    grid-gap: 20px;
     flex-direction: column;
-    &_white {
-      background: #FFFFFF;
-      border-radius: 6px;
-    }
+    background: #FFFFFF;
+    border-radius: 6px;
   }
   &__title {
     font-size: 16px;
     line-height: 130%;
     margin-bottom: 10px;
-  }
-  &__spec {
-    display: flex;
-    flex-direction: column;
-    grid-gap: 10px;
-  }
-  .spec {
-    &__container {
-      display: flex;
-      flex-direction: column;
-      grid-gap: 10px;
-    }
-    &__title {
-      font-size: 14px;
-      line-height: 130%;
-    }
-    &__skills {
-      display: flex;
-      grid-gap: 8px;
-      flex-wrap: wrap;
-    }
-  }
-  .skills {
-    &__item {
-      font-size: 16px;
-      line-height: 130%;
-      background-color: rgba(0, 131, 199, 0.1);
-      border-radius: 44px;
-      padding: 5px;
-      color: #0083C7;
-    }
   }
 }
 .statistic {

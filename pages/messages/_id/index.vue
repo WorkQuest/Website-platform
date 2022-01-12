@@ -394,7 +394,6 @@ export default {
     this.$store.commit('chat/setIsChatOpened', false);
   },
   methods: {
-
     setFullName({ itsMe, infoMessage: { user }, sender }) {
       return itsMe
         ? `${user?.firstName || ''} ${user?.lastName || ''}`

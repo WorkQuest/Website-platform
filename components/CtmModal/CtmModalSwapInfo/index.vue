@@ -123,7 +123,7 @@ export default {
       this.ShowModal({
         key: modals.status,
         img: swapObj.code === 500 ? require('~/assets/img/ui/warning.svg') : require('~/assets/img/ui/success.svg'),
-        title: swapObj.code === 500 ? this.$t('modals.transactionFail') : this.$t('modals.transactionSend'),
+        title: swapObj.code === 500 ? this.$t('modals.transactionFail') : this.$t('modals.transactionSent'),
         recipient: '',
         txHash: swapObj.tx,
         chainTo,

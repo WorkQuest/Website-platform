@@ -64,7 +64,9 @@
     "decimal": "Le champ {_field_} ne doit contenir que des valeurs décimales",
     "decimalPlaces": "{_field_} ??? {places}",
     "invalidPhone":"???",
-    "formError": "???" 
+    "formError": "???",
+    "is": "The values do not match",
+    "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
     "firstName": "Prénom",
@@ -218,8 +220,19 @@
     "email": "E-mail",
     "password": "Mot de passe",
     "confirmPassword": "Répéter le mot de passe",
-    "create": "Créer un compte",
-    "back": "retour"
+    "create": "Créer un compte"
+  },
+  "createWallet": {
+    "savePhrase": "Save your secret phrase",
+    "keptPhrase": "I have kept a secret phrase",
+    "confirmSecretPhrase": "Confirm secret phrase",
+    "typeSecret": "Type secret word #{a}",
+    "secret": "Secret word #{a}",
+    "create": "Create wallet",
+    "importWallet": "Import wallet",
+    "createOrImport": "Create or import secret wallet",
+    "typeSecretPhrase": "Type secret phrase",
+    "secretPhrase": "Secret phrase"
   },
   "forgot": {
     "title": "Mot de passe oublié ?",
@@ -275,7 +288,6 @@
     "questTitle": "???",
     "questDesc": "???",
     "questInfo": "???",
-    "questClosed!": "???",
     "closed": "???",
     "completed": "???",
     "rejected": "???",
@@ -356,7 +368,10 @@
       "limit": "???"
     },
     "hours": "heures",
+    "responded": "???",
     "invited": "Invité(e)",
+    "acceptedTheInvitation": "???",
+    "declinedTheInvitation": "???",
     "active": "Active",
     "performed": "Exécutée",
     "requested": "Demandée",
@@ -386,10 +401,10 @@
     "unknownAddress": "???...",
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
-    "questActive:": "???:",
-    "questClosed:": "???:",
-    "questDispute:": "???:",
-    "questWaitConfirm:": "???:",
+    "questActive": "???:",
+    "questClosed": "???:",
+    "questDispute": "???:",
+    "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
     "proposal": "Proposition",
     "category": "Sélectionner une catégorie",
@@ -421,7 +436,7 @@
     "showAllActiveQuests": "Afficher toutes les quêtes actives",
     "performanceTimer": "Active jusqu'au :",
     "questAmount": "quêtes",
-    "otherQuestsSpec": "Autres quêtes par spécialisation",
+    "otherQuestsSpec": "???",
     "questMaterials": "Documents de quête supplémentaires",
     "searchResults": "Résultats de recherche",
     "type": "Type de travail",
@@ -1038,7 +1053,7 @@
     "message": "Message",
     "bodyMessage": "Bonjour",
     "areYouSure": "Confirmer ?",
-    "transactionSend": "Transaction envoyée",
+    "transactionSent": "Transaction envoyée",
     "transactionFail": "???",
     "transactionCheck": "???",
     "cardHasBeenAdded": "La carte a été ajoutée",
@@ -2374,6 +2389,20 @@
     "errors": {
       "fileSizeLimit": "???: {n}",
       "filesLimit": "???: {n}"
+    }
+  },
+  "rating": {
+    "topRanked": {
+      "title": "Gold",
+      "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
+    },
+    "verified": {
+      "title": "Silver",
+      "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
+    },
+    "reliable": {
+      "title": "Bronze",
+      "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
   }
 }

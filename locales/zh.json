@@ -64,7 +64,9 @@
     "decimal": "“{_field_}”字段必须仅包含十进制值",
     "decimalPlaces": "{_field_} ??? {places}",
     "invalidPhone":"???",
-    "formError": "???" 
+    "formError": "???",
+    "is": "The values do not match",
+    "mnemonic": "Incorrect secret phrase"
     },
   "labels": {
     "firstName": "名字",
@@ -218,8 +220,19 @@
     "email": "电子邮件",
     "password": "密码",
     "confirmPassword": "再次输入密码",
-    "create": "创建帐户",
-    "back": "后退"
+    "create": "创建帐户"
+  },
+  "createWallet": {
+    "savePhrase": "Save your secret phrase",
+    "keptPhrase": "I have kept a secret phrase",
+    "confirmSecretPhrase": "Confirm secret phrase",
+    "typeSecret": "Type secret word #{a}",
+    "secret": "Secret word #{a}",
+    "create": "Create wallet",
+    "importWallet": "Import wallet",
+    "createOrImport": "Create or import secret wallet",
+    "typeSecretPhrase": "Type secret phrase",
+    "secretPhrase": "Secret phrase"
   },
   "forgot": {
     "title": "忘记了密码？",
@@ -275,7 +288,6 @@
     "questTitle": "???",
     "questDesc": "???",
     "questInfo": "???",
-    "questClosed!": "???",
     "closed": "???",
     "completed": "???",
     "rejected": "???",
@@ -356,7 +368,10 @@
       "limit": "???"
     },
     "hours": "小时",
+    "responded": "???",
     "invited": "已邀请",
+    "acceptedTheInvitation": "???",
+    "declinedTheInvitation": "???",
     "active": "有效",
     "performed": "已执行",
     "requested": "已请求",
@@ -386,10 +401,10 @@
     "unknownAddress": "???...",
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
-    "questActive:": "???:",
-    "questClosed:": "???:",
-    "questDispute:": "???:",
-    "questWaitConfirm:": "???:",
+    "questActive": "???:",
+    "questClosed": "???:",
+    "questDispute": "???:",
+    "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
     "proposal": "提议",
     "category": "选择类别",
@@ -421,7 +436,7 @@
     "showAllActiveQuests": "显示所有有效 Quest",
     "performanceTimer": "有效期至：",
     "questAmount": "Quest",
-    "otherQuestsSpec": "其他 Quest（按专业）",
+    "otherQuestsSpec": "???",
     "questMaterials": "额外 Quest 材料",
     "searchResults": "搜索结果",
     "type": "工作类型",
@@ -1038,7 +1053,7 @@
     "message": "消息",
     "bodyMessage": "您好",
     "areYouSure": "确定吗？",
-    "transactionSend": "已发送交易",
+    "transactionSent": "已发送交易",
     "transactionFail": "???",
     "transactionCheck": "???",
     "cardHasBeenAdded": "银行卡已添加",
@@ -2374,6 +2389,20 @@
     "errors": {
       "fileSizeLimit": "???: {n}",
       "filesLimit": "???: {n}"
+    }
+  },
+  "rating": {
+    "topRanked": {
+      "title": "Gold",
+      "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
+    },
+    "verified": {
+      "title": "Silver",
+      "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
+    },
+    "reliable": {
+      "title": "Bronze",
+      "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
   }
 }

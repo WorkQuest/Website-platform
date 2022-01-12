@@ -152,9 +152,7 @@
                   {{ $t('quests.price') }}
                 </span>
                 <template v-slot:right>
-                  <span
-                    class="icon-caret_down icon_blue"
-                  />
+                  <span class="icon-caret_down icon_blue" />
                 </template>
               </base-btn>
             </div>
@@ -312,6 +310,7 @@ export default {
       timeSort: 'desc',
       addresses: [],
       coordinates: null,
+      boundsTimeout: null,
     };
   },
   computed: {
@@ -369,11 +368,12 @@ export default {
     },
   },
   watch: {
-    async isShowMap() {
+    async isShowMap(newVal) {
       this.SetLoader(true);
       this.additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
       await this.fetchWorkersList();
       this.SetLoader(false);
+      localStorage.setItem('isShowMap', JSON.stringify(newVal));
     },
     async page() {
       this.SetLoader(true);
@@ -381,8 +381,17 @@ export default {
       await this.fetchWorkersList();
       this.SetLoader(false);
     },
-    async mapBounds() {
-      await this.fetchWorkersList();
+    async mapBounds(newVal, prevVal) {
+      if (newVal?.center?.lng === prevVal?.center?.lng
+        && newVal?.center?.lat === prevVal?.center?.lat
+        && newVal?.northEast?.lng === prevVal?.northEast?.lng
+        && newVal?.northEast?.lat === prevVal?.northEast?.lat
+        && newVal?.southWest?.lng === prevVal?.southWest?.lng
+        && newVal?.southWest?.lat === prevVal?.southWest?.lat) {
+        return;
+      }
+      clearTimeout(this.boundsTimeout);
+      this.boundsTimeout = setTimeout(async () => await this.fetchWorkersList(), 100);
     },
     async formattedSpecFilters() {
       await this.fetchWorkersList();
@@ -405,8 +414,13 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    const isShow = JSON.parse(localStorage.getItem('isShowMap'));
+    if (typeof isShow === 'boolean') this.isShowMap = isShow;
     await this.fetchWorkersList();
     this.SetLoader(false);
+  },
+  beforeDestroy() {
+    clearTimeout(this.boundsTimeout);
   },
   methods: {
     toggleSearchDD() {

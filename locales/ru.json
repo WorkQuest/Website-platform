@@ -64,7 +64,9 @@
     "decimal": "The {_field_} field must contain only decimal values",
     "decimalPlaces": "{_field_} ??? {places}",
     "invalidPhone":"Неверный формат телефона",
-    "formError": "Заполните все обязательные поля"
+    "formError": "Заполните все обязательные поля",
+    "is": "The values do not match",
+    "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
     "firstName": "First name",
@@ -218,8 +220,19 @@
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Repeat password",
-    "create": "Create account",
-    "back": "back"
+    "create": "Create account"
+  },
+  "createWallet": {
+    "savePhrase": "Save your secret phrase",
+    "keptPhrase": "I have kept a secret phrase",
+    "confirmSecretPhrase": "Confirm secret phrase",
+    "typeSecret": "Type secret word #{a}",
+    "secret": "Secret word #{a}",
+    "create": "Create wallet",
+    "importWallet": "Import wallet",
+    "createOrImport": "Create or import secret wallet",
+    "typeSecretPhrase": "Type secret phrase",
+    "secretPhrase": "Secret phrase"
   },
   "forgot": {
     "title": "Forgot password?",
@@ -275,7 +288,6 @@
     "questTitle": "Quest title",
     "questDesc": "Quest description",
     "questInfo": "???",
-    "questClosed!": "???",
     "closed": "???",
     "completed": "???",
     "rejected": "???",
@@ -356,7 +368,10 @@
       "limit": "You can choose up to 5 skills"
     },
     "hours": "hours",
+    "responded": "???",
     "invited": "Invited",
+    "acceptedTheInvitation": "???",
+    "declinedTheInvitation": "???",
     "active": "Active",
     "performed": "Performed",
     "requested": "Requested",
@@ -386,10 +401,10 @@
     "unknownAddress": "???...",
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
-    "questActive:": "???:",
-    "questClosed:": "???:",
-    "questDispute:": "???:",
-    "questWaitConfirm:": "???:",
+    "questActive": "???:",
+    "questClosed": "???:",
+    "questDispute": "???:",
+    "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
     "proposal": "Proposal",
     "category": "Select a category",
@@ -421,7 +436,7 @@
     "showAllActiveQuests": "Show all active quests",
     "performanceTimer": "Active until:",
     "questAmount": "quests",
-    "otherQuestsSpec": "Other quests by specialization",
+    "otherQuestsSpec": "???",
     "questMaterials": "Additional quest materials",
     "searchResults": "Search results",
     "type": "Type of job",
@@ -1038,7 +1053,7 @@
     "message": "Message",
     "bodyMessage": "Hello",
     "areYouSure": "Are You Sure?",
-    "transactionSend": "Transaction send",
+    "transactionSent": "Transaction sent",
     "transactionFail": "Transaction fail",
     "transactionCheck": "Check transaction",
     "cardHasBeenAdded": "Card has been added",
@@ -2374,6 +2389,20 @@
     "errors": {
       "fileSizeLimit": "???: {n}",
       "filesLimit": "???: {n}"
+    }
+  },
+  "rating": {
+    "topRanked": {
+      "title": "Gold",
+      "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
+    },
+    "verified": {
+      "title": "Silver",
+      "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
+    },
+    "reliable": {
+      "title": "Bronze",
+      "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
   }
 }

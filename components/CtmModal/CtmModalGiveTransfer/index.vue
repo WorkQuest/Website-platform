@@ -5,7 +5,7 @@
   >
     <div class="transfer__content content">
       <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-slot="{handleSubmit, invalid}"
       >
         <div
           class="content__container"
@@ -15,11 +15,20 @@
               {{ $t('modals.recepient') }}
             </span>
             <base-field
-              v-model="recepient"
+              v-model="recipient"
               class="input__field"
               :placeholder="'Enter address'"
-              rules="required"
+              rules="required|address"
               :name="$t('modals.addressField')"
+            />
+          </div>
+          <div class="content__input input">
+            <span class="input__title">
+              Select token
+            </span>
+            <base-dd
+              v-model="ddValue"
+              :items="tokenSymbolsDd"
             />
           </div>
           <div class="content__input input">
@@ -30,7 +39,7 @@
               v-model="amount"
               class="input__field"
               :placeholder="'Enter amount'"
-              rules="required|decimal"
+              :rules="`required|decimal|max_bn:${maxAmount}|decimalPlaces:18`"
               :name="$t('modals.amountField')"
             >
               <template
@@ -40,6 +49,7 @@
                 <base-btn
                   mode="max"
                   class="max__button"
+                  @click="maxBalance"
                 >
                   <span class="max__text">
                     {{ $t('modals.maximum') }}
@@ -59,10 +69,10 @@
           </base-btn>
           <base-btn
             class="buttons__action"
-            :disabled="!validated || !passed || invalid"
-            @click="handleSubmit(showWithdrawInfo)"
+            :disabled="invalid || isLoading"
+            @click="handleSubmit(transfer)"
           >
-            {{ $t('meta.next') }}
+            {{ $t('meta.send') }}
           </base-btn>
         </div>
       </validation-observer>
@@ -71,26 +81,84 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
+import { TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'ModalTakeTransfer',
   data() {
     return {
-      recepient: '',
+      recipient: '',
       amount: '',
       step: 1,
+      maxAmount: 0,
+      ddValue: 0,
     };
+  },
+  computed: {
+    ...mapGetters({
+      options: 'modals/getOptions',
+      isLoading: 'main/getIsLoading',
+      balance: 'wallet/getBalanceData',
+      selectedToken: 'wallet/getSelectedToken',
+    }),
+    tokenSymbolsDd() {
+      return Object.keys(TokenSymbols);
+    },
+  },
+  watch: {
+    selectedToken(val) {
+      this.maxAmount = this.balance[val].fullBalance;
+    },
+    ddValue(val) {
+      this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
+    },
+  },
+  mounted() {
+    const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
+    this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
+    this.maxAmount = this.balance[this.selectedToken].fullBalance;
   },
   methods: {
     hide() {
       this.CloseModal();
     },
+    maxBalance() {
+      this.amount = this.maxAmount;
+    },
+    async transfer() { // TODO: выводить инфу о транзакции перед ее отправкой
+      this.SetLoader(true);
+      const { callback } = this.options;
+      this.hide();
+      let res;
+      if (this.selectedToken === TokenSymbols.WUSD) {
+        res = await this.$store.dispatch('wallet/transfer', {
+          recipient: this.recipient,
+          value: this.amount,
+        });
+      } else if (this.selectedToken === TokenSymbols.WQT) {
+        res = await this.$store.dispatch('wallet/transferWQT', {
+          recipient: this.recipient,
+          value: this.amount,
+        });
+      }
+      if (res?.ok) {
+        if (callback) {
+          await callback();
+        }
+        this.ShowModal({
+          key: modals.transactionSend,
+        });
+      }
+      this.SetLoader(false);
+    },
     showWithdrawInfo() {
       this.ShowModal({
         key: modals.withdrawInfo,
         title: this.$t('modals.transferInfo'),
-        recepientAddress: 'Recepient address',
+        recipient: this.recipient,
+        amount: this.amount,
       });
     },
   },
@@ -111,6 +179,9 @@ export default {
   justify-content: space-between;
   &__action{
     width: 212px!important;
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
   }
 }
 

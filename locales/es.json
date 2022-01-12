@@ -64,7 +64,9 @@
     "decimal": "El campo {_field_} solo puede contener valores decimales",
     "decimalPlaces": "{_field_} ??? {places}",
     "invalidPhone":"???",
-    "formError": "???" 
+    "formError": "???",
+    "is": "The values do not match",
+    "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
     "firstName": "Nombre",
@@ -218,8 +220,19 @@
     "email": "Correo electrónico",
     "password": "Contraseña",
     "confirmPassword": "Repetir contraseña",
-    "create": "Crear cuenta",
-    "back": "volver"
+    "create": "Crear cuenta"
+  },
+  "createWallet": {
+    "savePhrase": "Save your secret phrase",
+    "keptPhrase": "I have kept a secret phrase",
+    "confirmSecretPhrase": "Confirm secret phrase",
+    "typeSecret": "Type secret word #{a}",
+    "secret": "Secret word #{a}",
+    "create": "Create wallet",
+    "importWallet": "Import wallet",
+    "createOrImport": "Create or import secret wallet",
+    "typeSecretPhrase": "Type secret phrase",
+    "secretPhrase": "Secret phrase"
   },
   "forgot": {
     "title": "¿Olvidó la contraseña?",
@@ -275,7 +288,6 @@
     "questTitle": "???",
     "questDesc": "???",
     "questInfo": "???",
-    "questClosed!": "???",
     "closed": "???",
     "completed": "???",
     "rejected": "???",
@@ -356,7 +368,10 @@
       "limit": "???"
     },
     "hours": "horas",
+    "responded": "???",
     "invited": "Invitado",
+    "acceptedTheInvitation": "???",
+    "declinedTheInvitation": "???",
     "active": "Activas",
     "performed": "Completadas",
     "requested": "Solicitadas",
@@ -386,10 +401,9 @@
     "unknownAddress": "???...",
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
-    "questActive:": "???:",
-    "questClosed:": "???:",
-    "questDispute:": "???:",
-    "questWaitConfirm:": "???:",
+    "questActive": "???:",
+    "questDispute": "???:",
+    "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
     "proposal": "Propuesta",
     "category": "Seleccione una categoría",
@@ -421,7 +435,7 @@
     "showAllActiveQuests": "Mostrar todas las ofertas activas",
     "performanceTimer": "Activa hasta el:",
     "questAmount": "ofertas",
-    "otherQuestsSpec": "Otras ofertas por especialización",
+    "otherQuestsSpec": "???",
     "questMaterials": "Documentación adicional de la oferta",
     "searchResults": "Resultados de búsqueda",
     "type": "Tipo de trabajo",
@@ -1038,7 +1052,7 @@
     "message": "Mensaje",
     "bodyMessage": "Hola",
     "areYouSure": "¿Seguro?",
-    "transactionSend": "Transacción enviada",
+    "transactionSent": "Transacción enviada",
     "transactionFail": "???",
     "transactionCheck": "???",
     "cardHasBeenAdded": "Se añadió la tarjeta",
@@ -2374,6 +2388,20 @@
     "errors": {
       "fileSizeLimit": "???: {n}",
       "filesLimit": "???: {n}"
+    }
+  },
+  "rating": {
+    "topRanked": {
+      "title": "Gold",
+      "desc": "Notifications for employees who were looking for quests with a direct offer to review the promoted quest based on the most recent search categories of the employee. Plus the ability to choose three categories and three locations to promote the quest."
+    },
+    "verified": {
+      "title": "Silver",
+      "desc": "Pin quest on the main page for three hours, with the ability to choose two categories and two locations for promotion the quest."
+    },
+    "reliable": {
+      "title": "Bronze",
+      "desc": "Pin the quest on the main page for one hour, with the ability to choose one category and one location to promote the quest."
     }
   }
 }
