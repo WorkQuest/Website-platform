@@ -122,6 +122,7 @@ export default {
         },
         questId: this.questData.id,
       };
+
       await this.$store.dispatch('quests/startQuest', payload);
       await this.getQuest();
       this.SetLoader(false);
