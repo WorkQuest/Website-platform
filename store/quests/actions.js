@@ -283,8 +283,8 @@ export default {
 
   async rejectQuestInvitation({ commit }, responseId) {
     try {
-      const { result } = await this.$axios.$post(`/v1/quest/response/${responseId}/reject`);
-      return result.ok;
+      const { ok } = await this.$axios.$post(`/v1/quest/response/${responseId}/reject`);
+      return ok;
     } catch (e) {
       console.log(e);
       return false;
@@ -293,8 +293,8 @@ export default {
 
   async rejectTheAnswerToTheQuest({ commit }, responseId) {
     try {
-      const { result } = await this.$axios.$post(`/v1/quest/employer/${responseId}/reject`);
-      return result.ok;
+      const { ok } = await this.$axios.$post(`/v1/quest/employer/${responseId}/reject`);
+      return ok;
     } catch (e) {
       console.log(e);
       return false;
