@@ -115,6 +115,8 @@ export default {
         this.ShowModal({
           key: modals.requestSend,
         });
+      } else {
+        this.CloseModal();
       }
     },
   },
