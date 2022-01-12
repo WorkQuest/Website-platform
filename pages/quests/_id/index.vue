@@ -122,6 +122,10 @@
             </GmapMap>
           </transition>
         </div>
+        <template v-if="userRole === 'employer' && infoDataMode === InfoModeEmployer.Created">
+          <workers-list is-invited />
+          <workers-list />
+        </template>
         <div
           v-if="userRole === 'worker'"
           class="spec__container"
@@ -157,7 +161,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
-  QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus, Path,
+  QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
@@ -247,7 +251,7 @@ export default {
   async beforeMount() {
     this.SetLoader(true);
     await this.getQuest();
-    await this.getSameQuests();
+    if (this.userRole === UserRole.WORKER) await this.getSameQuests();
     await this.getResponsesToQuest();
     await this.setActionBtnsArr();
     this.SetLoader(false);

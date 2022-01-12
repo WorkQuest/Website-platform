@@ -245,7 +245,7 @@ export default {
   },
   data() {
     return {
-      isShowMap: true,
+      isShowMap: localStorage.getItem('isShowMap') ? JSON.parse(localStorage.getItem('isShowMap')) : true,
       search: '',
       isSearchDDStatus: true,
       searchDDStatus: true,
@@ -341,17 +341,19 @@ export default {
       await this.updateQuests();
     },
     async mapBounds(newVal, prevVal) {
-      if (newVal?.center?.lng === prevVal?.center?.lng
-      && newVal?.center?.lat === prevVal?.center?.lat
-      && newVal?.northEast?.lng === prevVal?.northEast?.lng
-      && newVal?.northEast?.lat === prevVal?.northEast?.lat
-      && newVal?.southWest?.lng === prevVal?.southWest?.lng
-      && newVal?.southWest?.lat === prevVal?.southWest?.lat) {
-        return;
+      if (this.isShowMap) {
+        if (newVal?.center?.lng === prevVal?.center?.lng
+          && newVal?.center?.lat === prevVal?.center?.lat
+          && newVal?.northEast?.lng === prevVal?.northEast?.lng
+          && newVal?.northEast?.lat === prevVal?.northEast?.lat
+          && newVal?.southWest?.lng === prevVal?.southWest?.lng
+          && newVal?.southWest?.lat === prevVal?.southWest?.lat) {
+          return;
+        }
+        this.page = 1;
+        clearTimeout(this.boundsTimeout);
+        this.boundsTimeout = setTimeout(async () => await this.updateQuests(), 100);
       }
-      this.page = 1;
-      clearTimeout(this.boundsTimeout);
-      this.boundsTimeout = setTimeout(async () => await this.updateQuests(), 100);
     },
     distanceIndex() {
       const zoom = {
@@ -368,10 +370,9 @@ export default {
     },
   },
   async mounted() {
-    const isShow = JSON.parse(localStorage.getItem('isShowMap'));
-    if (typeof isShow === 'boolean') this.isShowMap = isShow;
     const { query } = this.$route;
     if (Object.keys(query).length) {
+      this.isShowMap = false;
       const skills = Object.keys(this.$t(`filters.items.${this.$route.query.specialization}.sub`));
       const selected = {};
       for (let i = 0; i < skills.length; i += 1) {
