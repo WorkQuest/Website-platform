@@ -248,7 +248,7 @@ export default {
         if (sessionMnemonic) {
           const wallet = createWallet(sessionMnemonic);
           if (wallet && wallet.address.toLowerCase() === this.userAddress) {
-            this.saveToStore(wallet);
+            this.saveToStorage(wallet);
             this.redirectUser();
             this.SetLoader(false);
             return;
@@ -260,7 +260,7 @@ export default {
           const mnemonic = decryptStringWitheKey(storageMnemonic, this.model.password);
           const wallet = createWallet(mnemonic);
           if (wallet && wallet.address.toLowerCase() === this.userAddress) {
-            this.saveToStore(wallet);
+            this.saveToStorage(wallet);
             this.redirectUser();
             this.SetLoader(false);
             return;
@@ -273,7 +273,7 @@ export default {
           text: this.$t('messages.mnemonic'),
         });
         // Reset mnemonic for address -> importing
-        this.saveToStore({ address: this.userAddress, mnemonic: '' });
+        this.saveToStorage({ address: this.userAddress, mnemonic: {} });
         this.step = WalletState.ImportMnemonic;
       }
       this.SetLoader(false);
@@ -284,7 +284,7 @@ export default {
         publicKey: wallet.publicKey,
       });
       if (res.ok) {
-        this.saveToStore(wallet);
+        this.saveToStorage(wallet);
         this.redirectUser();
         return;
       }
@@ -304,7 +304,7 @@ export default {
       }
       // All ok
       if (wallet.address.toLowerCase() === this.userAddress) {
-        this.saveToStore(wallet);
+        this.saveToStorage(wallet);
         this.redirectUser();
         return;
       }
@@ -314,7 +314,7 @@ export default {
         text: this.$t('messages.mnemonic'),
       });
     },
-    saveToStore(wallet) {
+    saveToStorage(wallet) {
       localStorage.setItem('mnemonic', JSON.stringify({
         ...JSON.parse(localStorage.getItem('mnemonic')),
         [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
@@ -327,6 +327,7 @@ export default {
         ...JSON.parse(sessionStorage.getItem('mnemonic')),
         [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
       }));
+      this.$store.dispatch('wallet/connectWallet', { userAddress: wallet.address, userPassword: this.model.password });
     },
     redirectUser() {
       this.$store.dispatch('wallet/setUserAddress', this.userAddress);

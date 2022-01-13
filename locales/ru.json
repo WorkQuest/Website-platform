@@ -66,6 +66,7 @@
     "invalidPhone":"Неверный формат телефона",
     "formError": "Заполните все обязательные поля",
     "is": "The values do not match",
+    "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
@@ -1238,7 +1239,10 @@
     "thanksText": "",
     "emailVerificationCodeField": "email verification",
     "youCanAttachUpToNFiles": "???",
-    "youTryToAttachUnsupportedFileFormat": "???"
+    "youTryToAttachUnsupportedFileFormat": "???",
+    "connectError": "Error connection",
+    "incorrectChain": "You choose incorrect chain !",
+    "selectToken": "Select token"
   },
   "ui": {
     "jobQuestors": "Job Questors",
@@ -1941,6 +1945,9 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "Oops, something went wrong. Check the data and try again.",
     "emptyData": {
       "emptyQuests": "???",
