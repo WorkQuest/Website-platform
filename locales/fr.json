@@ -1344,6 +1344,7 @@
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "Ouvrir le litige",
     "approveQuest": "Approuver la quête",
     "starredMessages": "???",

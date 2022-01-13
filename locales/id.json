@@ -1344,6 +1344,7 @@
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "Ajukan sengketa",
     "approveQuest": "Setujui quest",
     "starredMessages": "???",
