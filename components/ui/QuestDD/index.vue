@@ -1,6 +1,6 @@
 <template>
   <div
-    v-click-outside="closeQuestMenu()"
+    v-click-outside="closeQuestMenu"
     class="quest quest__menu"
   >
     <button
