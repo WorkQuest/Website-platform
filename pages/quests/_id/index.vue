@@ -140,11 +140,14 @@
                 "{{ $t(`filters.items.${randomSpec}.title`) }}"
               </nuxt-link>
             </h2>
+            <div class="quest__count">
+              {{ `${otherQuestsCount} ${$t('quests.questsSmall')}` }}
+            </div>
           </div>
           <div class="quest__card">
             <quests
               v-if="otherQuestsCount"
-              :quests="otherQuests"
+              :quests="sameQuest"
             />
             <emptyData
               v-else
@@ -195,6 +198,7 @@ export default {
         notSelected: '/img/app/marker_red.svg',
       },
       actionBtnsArr: [],
+      sameQuest: [],
     };
   },
   computed: {
@@ -204,7 +208,6 @@ export default {
       userRole: 'user/getUserRole',
       infoDataMode: 'quests/getInfoDataMode',
       userData: 'user/getUserData',
-      otherQuests: 'quests/getAllQuests',
       otherQuestsCount: 'quests/getAllQuestsCount',
     }),
     InfoModeEmployer() {
@@ -263,8 +266,13 @@ export default {
       for (let i = 0; i < skills.length; i += 1) {
         query[`specializations[${i}]`] = `${this.randomSpec}.${skills[i]}`;
       }
-      query.limit = 1;
-      await this.$store.dispatch('quests/getAllQuests', query);
+      query.limit = 2;
+      const questsData = await this.$store.dispatch('quests/getAllQuests', query);
+      if (questsData.quests[0].id === this.questData.id) {
+        this.sameQuest.push(questsData.quests[1]);
+      } else {
+        this.sameQuest.push(questsData.quests[0]);
+      }
     },
     setActionBtnsArr() {
       let arr = [];
@@ -645,6 +653,13 @@ export default {
     line-height: 20px;
     color: $black700;
     word-wrap: break-word
+  }
+  &__count {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 130%;
+    color: #8D96A2;
   }
 }
 .main {
