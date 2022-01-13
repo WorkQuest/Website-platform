@@ -83,6 +83,7 @@ export default {
         const response = await this.$store.dispatch('user/passwordChange', payload);
         if (response?.ok) {
           this.showChangeModal();
+          this.$router.push('/sign-in');
         }
       } catch (e) {
         console.log(e);

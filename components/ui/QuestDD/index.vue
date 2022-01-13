@@ -1,11 +1,11 @@
 <template>
   <div
-    v-click-outside="hideDd"
+    v-click-outside="closeQuestMenu()"
     class="quest quest__menu"
   >
     <button
       class="quest__button quest__button_menu"
-      @click="showQuestMenu()"
+      @click="toggleQuestMenu()"
     >
       <span
         :class="[
@@ -134,7 +134,7 @@ export default {
         itemId: this.itemId,
       });
     },
-    hideDd() {
+    closeQuestMenu() {
       this.isShowQuestMenu = false;
     },
     showAreYouSureDeleteQuestModal() {
@@ -147,7 +147,7 @@ export default {
         key: modals.openADispute,
       });
     },
-    showQuestMenu() {
+    toggleQuestMenu() {
       this.isShowQuestMenu = !this.isShowQuestMenu;
     },
   },
