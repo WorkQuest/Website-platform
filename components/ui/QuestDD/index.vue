@@ -1,11 +1,11 @@
 <template>
   <div
-    v-click-outside="hideDd"
+    v-click-outside="closeQuestMenu"
     class="quest quest__menu"
   >
     <button
       class="quest__button quest__button_menu"
-      @click="showQuestMenu()"
+      @click="toggleQuestMenu()"
     >
       <span
         :class="[
@@ -21,7 +21,7 @@
         class="quest menu"
       >
         <div class="menu menu__items">
-          <span class="menu__container">
+          <div class="menu__container">
             <div
               v-if="['employer'].includes(userRole)"
               class="menu__item"
@@ -57,7 +57,7 @@
                 {{ $t('modals.delete') }}
               </div>
             </div>
-          </span>
+          </div>
         </div>
       </div>
     </transition>
@@ -134,7 +134,7 @@ export default {
         itemId: this.itemId,
       });
     },
-    hideDd() {
+    closeQuestMenu() {
       this.isShowQuestMenu = false;
     },
     showAreYouSureDeleteQuestModal() {
@@ -147,7 +147,7 @@ export default {
         key: modals.openADispute,
       });
     },
-    showQuestMenu() {
+    toggleQuestMenu() {
       this.isShowQuestMenu = !this.isShowQuestMenu;
     },
   },
@@ -181,8 +181,10 @@ export default {
     width: 20px;
     height: 20px;
     border: 1px solid transparent;
+    opacity: 0.5;
     &:hover {
       color: $black800;
+      opacity: 1;
     }
     &_menu {
       display: flex;

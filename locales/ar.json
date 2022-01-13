@@ -63,7 +63,10 @@
     "size": "يجب ألا تزيد قيمة الحقل {_field_} عن {size} كيلوبايت",
     "decimal": "يجب ألا يحتوي الحقل {_field_} إلا على قيم عشرية",
     "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???",
     "is": "The values do not match",
+    "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
@@ -207,7 +210,9 @@
     "confCode": "رمز تأكيد Google",
     "placeholder": "عنصر نائب",
     "confCodeDesc": "أدخل الرمز المكوَّن من 6 أرقام من تطبيق مصادقة Google",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "الاشتراك",
@@ -400,7 +405,6 @@
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
     "questActive": "???:",
-    "questClosed": "???:",
     "questDispute": "???:",
     "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
@@ -1236,7 +1240,10 @@
     "thanksText": "",
     "emailVerificationCodeField": "???",
     "youCanAttachUpToNFiles": "???",
-    "youTryToAttachUnsupportedFileFormat": "???"
+    "youTryToAttachUnsupportedFileFormat": "???",
+    "connectError": "Error connection",
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token"
   },
   "ui": {
     "jobQuestors": "أصحاب الوظائف",
@@ -1342,6 +1349,7 @@
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "نزاع مفتوح",
     "approveQuest": "الموافقة على طلب العمل",
     "starredMessages": "???",
@@ -1392,6 +1400,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "مكان الدراسة",
@@ -1935,6 +1946,9 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "عذرًا، حدث خطأ ما. تحقَّق من البيانات وحاول مرة أخرى.",
     "emptyData": {
       "emptyQuests": "???",

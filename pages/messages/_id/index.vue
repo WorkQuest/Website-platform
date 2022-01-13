@@ -243,6 +243,7 @@
               :placeholder="$t('chat.writeYouMessage')"
               is-hide-error
               mode="chat"
+              :auto-focus="true"
               :on-enter-press="handleSendMessage"
             />
             <button

@@ -128,7 +128,7 @@ export default {
     },
     async reject(response) {
       this.SetLoader(true);
-      if (await this.$store.dispatch(`quests/${this.isInvited ? 'rejectQuestInvitation' : 'rejectTheAnswerToTheQuest'}`, response.worker.id)) await this.getQuest();
+      if (await this.$store.dispatch(`quests/${this.isInvited ? 'rejectQuestInvitation' : 'rejectTheAnswerToTheQuest'}`, response.id)) await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
       this.SetLoader(false);
     },
   },

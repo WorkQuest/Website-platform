@@ -17,8 +17,9 @@
           </base-btn>
         </div>
         <quests
-          v-if="questsData.count"
-          :object="questsData"
+          v-if="questsCount"
+          :quests="questsData"
+          @clickFavoriteStar="updateQuests"
         />
         <emptyData
           v-else
@@ -64,6 +65,7 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
       questsData: 'quests/getUserInfoQuests',
+      questsCount: 'quests/getUserInfoQuestsCount',
     }),
     userRole() {
       return this.userData.role;
@@ -82,7 +84,7 @@ export default {
         : tabs;
     },
     totalPages() {
-      return Math.ceil(this.questsData.count / this.offset);
+      return Math.ceil(this.questsCount / this.offset);
     },
     getEmptyLink() {
       return this.userRole === UserRole.WORKER
@@ -113,6 +115,16 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    async updateQuests(item) {
+      this.SetLoader(true);
+      if (!item.star) {
+        await this.$store.dispatch('quests/setStarOnQuest', item.id);
+      } else {
+        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
+      }
+      await this.$store.dispatch('quests/getUserQuests', this.requestParams);
+      this.SetLoader(false);
+    },
     async filterByStatus(id) {
       this.SetLoader(true);
       this.page = 1;
