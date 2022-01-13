@@ -1,8 +1,7 @@
 import { ethers } from 'ethers';
 import { AES, enc } from 'crypto-js';
-import Web3, { sendTransaction } from 'web3';
+import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
-import { HttpProviderOptions } from 'web3-core-helpers';
 import { error, success } from '~/utils/web3';
 import abi from '~/abi/index';
 
@@ -22,24 +21,7 @@ export const createWallet = (mnemonic) => {
 export const encryptStringWithKey = (toEncrypt, key) => AES.encrypt(toEncrypt, key).toString();
 export const decryptStringWitheKey = (toDecrypt, key) => AES.decrypt(toDecrypt, key).toString(enc.Utf8);
 
-// 20220112 chain id
-// const options = {
-//   keepAlive: true,
-//   timeout: 20000, // milliseconds,
-//   headers: [{ name: 'Access-Control-Allow-Headers', value: '*' }],
-//   withCredentials: false,
-// };
-// const provider = new Web3.providers.HttpProvider(process.env.WQ_PROVIDER, options);
-// const web3 = new Web3(provider);
-
-console.log('CONNECTION');
 const web3 = new Web3(process.env.WQ_PROVIDER);
-(async () => { // TODO: DELETE LATER
-  const id = await web3.eth.getChainId();
-  console.log(id);
-  console.log('AFTER GETTEING CHAIN ID');
-})();
-
 const wallet = {
   address: null,
   privateKey: null,
@@ -83,10 +65,10 @@ export const getIsWalletConnected = () => {
 };
 
 /**
- * Check wallet for current address
- * @param userAddress from api
- * @param userPassword from user
- * @returns {result: *, ok: boolean}
+ * * Check wallet for current address
+ * @param userAddress
+ * @param userPassword
+ * @returns {{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}}
  */
 export const connectWallet = (userAddress, userPassword) => {
   if (!userPassword || !userAddress) return error();
@@ -146,6 +128,8 @@ export const getStyledAmount = (amount, full = false, decimals = 18) => {
   return value.decimalPlaces(4).toString();
 };
 
+// web3.eth.net.getId() - если нужно будет получить chainId
+
 // WUSD
 export const getBalance = async () => {
   try {
@@ -159,6 +143,7 @@ export const getBalance = async () => {
     return error();
   }
 };
+// Send WUSD
 export const transfer = async (recipient, value) => {
   try {
     value = new BigNumber(value).shiftedBy(18).toString();
@@ -183,6 +168,27 @@ export const transfer = async (recipient, value) => {
     return error();
   }
 };
+export const getTransferFeeData = async (recipient, value) => {
+  try {
+    value = new BigNumber(value).shiftedBy(18).toString();
+    const [gasPrice, gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      web3.eth.estimateGas({
+        from: wallet.address,
+        to: recipient,
+        value,
+      }),
+    ]);
+    return success({
+      gasPrice,
+      gasEstimate,
+      fee: new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString(),
+    });
+  } catch (e) {
+    console.error('txFee error', e);
+    return error();
+  }
+};
 
 // Contracts
 export const fetchContractData = async (_method, _abi, _address, _params) => {
@@ -192,7 +198,8 @@ export const fetchContractData = async (_method, _abi, _address, _params) => {
       return {};
     }
     const Contract = new web3.eth.Contract(_abi, _address);
-    return await Contract.methods[_method].apply(this, _params).call();
+    const res = await Contract.methods[_method].apply(this, _params).call();
+    return success(res);
   } catch (e) {
     console.error(e.message);
     return error();

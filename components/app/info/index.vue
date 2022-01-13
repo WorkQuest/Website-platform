@@ -74,12 +74,6 @@ export default {
   directives: {
     ClickOutside,
   },
-  props: {
-    info: {
-      type: Number,
-      default: () => 0,
-    },
-  },
   data() {
     return {
       isShowMessage: false,
@@ -117,6 +111,7 @@ export default {
         const { response } = this.questData;
         const { awaiting, accepted } = ResponseStatus;
         const obj = {
+          [InfoModeWorker.Created]: '',
           [InfoModeWorker.ADChat]: 'invite.title',
           [InfoModeWorker.Active]: 'quests.activeQuest',
           [InfoModeWorker.Rejected]: 'quests.requested',
