@@ -63,6 +63,8 @@
     "size": "Ukuran kolom {_field_} harus kurang dari {size} KB",
     "decimal": "Kolom {_field_} hanya boleh berisi nilai desimal saja",
     "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???",
     "is": "The values do not match",
     "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase"
@@ -1346,6 +1348,7 @@
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "Ajukan sengketa",
     "approveQuest": "Setujui quest",
     "starredMessages": "???",
@@ -1396,6 +1399,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "Tempat belajar",

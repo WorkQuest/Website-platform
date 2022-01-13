@@ -332,6 +332,7 @@ export default {
     redirectUser() {
       this.$store.dispatch('wallet/setUserAddress', this.userAddress);
       this.addressAssigned = true;
+      this.$cookies.set('userLogin', true);
       if (this.userData.role === 'employer') {
         this.$router.push('/workers');
       } else if (this.userData.role === 'worker') {

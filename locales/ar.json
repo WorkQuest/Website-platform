@@ -63,6 +63,8 @@
     "size": "يجب ألا تزيد قيمة الحقل {_field_} عن {size} كيلوبايت",
     "decimal": "يجب ألا يحتوي الحقل {_field_} إلا على قيم عشرية",
     "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???",
     "is": "The values do not match",
     "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase"
@@ -1346,6 +1348,7 @@
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "نزاع مفتوح",
     "approveQuest": "الموافقة على طلب العمل",
     "starredMessages": "???",
@@ -1396,6 +1399,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "مكان الدراسة",

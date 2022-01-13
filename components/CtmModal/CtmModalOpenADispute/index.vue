@@ -12,7 +12,7 @@
         type="gray"
         :items="items"
         class="content__drop"
-        :placeholder="$t('placeholders.chooseTheme')"
+        :placeholder="$t('chat.reason')"
       />
       <div class="content__subtitle">
         {{ $t('modals.description') }}
