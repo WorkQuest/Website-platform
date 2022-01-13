@@ -1051,6 +1051,7 @@
     "messageSend": "Mensaje enviado",
     "questAgreed": "Oferta acordada",
     "requestSend": "Solicitud enviada",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "Enviar una solicitud",
     "message": "Mensaje",
     "bodyMessage": "Hola",
@@ -1070,6 +1071,7 @@
     "addCard": "Añadir tarjeta",
     "inviteSend": "Invitación enviada",
     "questCreated": "Oferta creada",
+    "questUpdated": "???",
     "invitation": "Invitación",
     "chooseQuest": "Seleccionar oferta",
     "raiseViews": "Aumentar visualizaciones",
@@ -1243,7 +1245,8 @@
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
     "incorrectChain": "You choose incorrect chain!",
-    "selectToken": "Select token"
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "Demandantes de empleo",

@@ -1051,6 +1051,7 @@
     "messageSend": "Message envoyé",
     "questAgreed": "Quête acceptée",
     "requestSend": "Demande envoyée",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "Envoyer une demande",
     "message": "Message",
     "bodyMessage": "Bonjour",
@@ -1070,6 +1071,7 @@
     "addCard": "Ajouter une carte",
     "inviteSend": "Invitation envoyée",
     "questCreated": "Quête créée",
+    "questUpdated": "???",
     "invitation": "Invitation",
     "chooseQuest": "Choisir une quête",
     "raiseViews": "Augmenter les vues",
@@ -1243,7 +1245,8 @@
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
     "incorrectChain": "You choose incorrect chain!",
-    "selectToken": "Select token"
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "Demandeurs d'emploi",

@@ -538,6 +538,7 @@ export default {
     showModalCreatedQuest() {
       this.ShowModal({
         key: modals.questCreated,
+        title: this.$t('modals.questCreated'),
       });
     },
     showToastCreated() {

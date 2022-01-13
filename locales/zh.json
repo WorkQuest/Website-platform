@@ -1051,6 +1051,7 @@
     "messageSend": "已发送消息",
     "questAgreed": "已同意 Quest",
     "requestSend": "请求已发送",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "发送请求",
     "message": "消息",
     "bodyMessage": "您好",
@@ -1070,6 +1071,7 @@
     "addCard": "添加银行卡",
     "inviteSend": "邀请已发送",
     "questCreated": "已创建 Quest",
+    "questUpdated": "???",
     "invitation": "邀请",
     "chooseQuest": "选择 Quest",
     "raiseViews": "提高浏览量",
@@ -1243,7 +1245,8 @@
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
     "incorrectChain": "You choose incorrect chain!",
-    "selectToken": "Select token"
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "求职者",
