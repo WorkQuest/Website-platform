@@ -135,6 +135,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      email: 'user/getUserEmail',
     }),
   },
   methods: {
@@ -147,9 +148,14 @@ export default {
         oldPassword: this.currentPasswordInput.trim(),
         newPassword: this.newPasswordInput.trim(),
       };
+      this.SetLoader(true);
       try {
         const response = await this.$store.dispatch('user/editUserPassword', payload);
         if (response?.ok) {
+          await this.$store.dispatch('user/signIn', {
+            email: this.email,
+            password: this.confirmNewPasswordInput,
+          });
           this.ShowModal({
             key: modals.changePassword,
           });
@@ -158,6 +164,7 @@ export default {
         this.errorMsg = e;
         console.log(e);
       }
+      this.SetLoader(false);
     },
   },
 };
