@@ -521,6 +521,9 @@ export default {
       }
     },
     async editQuest() {
+      // TODO: дать возможность изменять описание и прайс только если employer на квест еще не закинули деньги
+      // TODO: [Если деньги не закинули еще на квест] и изменилось description или price ТО обновлять данные на контракте, ИНАЧЕ только на бэке
+
       this.SetLoader(true);
       const medias = await this.uploadFiles(this.files);
       const payload = {

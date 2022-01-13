@@ -1,243 +1,134 @@
 <template>
-  <div
-    class="main"
-    :class="{'main-white': step === 1}"
-  >
+  <div class="main main-white">
     <div class="main__body page">
       <validation-observer
         v-slot="{handleSubmit, validated, passed, invalid}"
+        tag="div"
+        class="page"
       >
-        <div
-          v-if="step === 1"
-          class="page"
-        >
-          <h2 class="page__title">
-            {{ $t('quests.createAQuest') }}
-          </h2>
-          <div class="page__category">
-            <div class="page runtime">
-              <div class="runtime__container">
-                <div class="runtime page__dd">
-                  <base-dd
-                    v-model="runtimeValue"
-                    :items="runtime"
-                    type="gray"
-                    :label="$t('quests.runtime.runtime')"
-                    :placeholder="runtime[0]"
-                    :name="$t('quests.runtime.runtime')"
-                    rules="required"
-                  />
-                </div>
+        <h2 class="page__title">
+          {{ $t('quests.createAQuest') }}
+        </h2>
+        <div class="page__category">
+          <div class="page runtime">
+            <div class="runtime__container">
+              <div class="runtime page__dd">
+                <base-dd
+                  v-model="runtimeValue"
+                  :items="runtime"
+                  type="gray"
+                  :label="$t('quests.runtime.runtime')"
+                  :placeholder="runtime[0]"
+                  :name="$t('quests.runtime.runtime')"
+                  rules="required"
+                />
               </div>
             </div>
-            <div class="page__input">
-              <base-field
-                v-model="price"
-                :type="'number'"
-                :label="$t('quests.price')"
-                :placeholder="+0 + currency"
-                rules="required|decimal"
-                :name="$t('quests.price')"
-              />
-            </div>
-            <div class="page__dd">
-              <base-dd
-                v-model="employmentIndex"
-                :label="$t('quests.employment.employment')"
-                type="gray"
-                :items="employment"
-                rules="required"
-                :name="$t('quests.employment.employment')"
-              />
-            </div>
-            <div class="page__dd">
-              <base-dd
-                v-model="workplaceIndex"
-                :label="$t('quests.distantWork.distantWork')"
-                type="gray"
-                :items="distantWork"
-                rules="required"
-                :name="$t('quests.distantWork.distantWork')"
-              />
-            </div>
-          </div>
-          <specializations-selector @changeSkills="updateSelectedSkills" />
-          <div class="page__address">
-            <base-field
-              v-model="address"
-              :label="$t('quests.address')"
-              :placeholder="$t('quests.address')"
-              mode="icon"
-              :selector="true"
-              rules="required"
-              :name="$t('quests.address')"
-              @selector="getAddressInfo(address)"
-            >
-              <template v-slot:left>
-                <span class="icon-map" />
-              </template>
-              <template v-slot:selector>
-                <div
-                  v-if="addresses.length"
-                  class="selector"
-                >
-                  <div class="selector__items">
-                    <div
-                      v-for="(item, i) in addresses"
-                      :key="i"
-                      class="selector__item"
-                      @click="selectAddress(item)"
-                    >
-                      {{ item.formatted }}
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </base-field>
           </div>
           <div class="page__input">
             <base-field
-              v-model="questTitle"
+              v-model="price"
+              :type="'number'"
+              :label="$t('quests.price')"
+              :placeholder="+0 + currency"
+              rules="required|decimal"
+              :name="$t('quests.price')"
+            />
+          </div>
+          <div class="page__dd">
+            <base-dd
+              v-model="employmentIndex"
+              :label="$t('quests.employment.employment')"
+              type="gray"
+              :items="employment"
               rules="required"
-              :name="$t('quests.questTitle')"
-              :placeholder="$t('quests.questTitle')"
+              :name="$t('quests.employment.employment')"
             />
           </div>
-          <div class="page__input">
-            <textarea
-              id="textarea"
-              v-model="textarea"
+          <div class="page__dd">
+            <base-dd
+              v-model="workplaceIndex"
+              :label="$t('quests.distantWork.distantWork')"
+              type="gray"
+              :items="distantWork"
               rules="required"
-              class="page__textarea"
-              :placeholder="$t('quests.questDesc')"
+              :name="$t('quests.distantWork.distantWork')"
             />
-          </div>
-          <div class="page upload__container">
-            <div class="upload__title">
-              {{ $t('quests.uploadMaterials') }}
-            </div>
-            <files-uploader
-              :multiple="true"
-              :limit="10"
-              :limit-bytes="10485760"
-              :limit-bytes-video="10485760"
-              :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
-              @change="updateFiles"
-            />
-          </div>
-          <div class="upload btn btn__container btn__container_right">
-            <div class="btn__create">
-              <base-btn
-                :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
-                @click="handleSubmit(toRiseViews)"
-              >
-                {{ $t('quests.createAQuest') }}
-              </base-btn>
-            </div>
           </div>
         </div>
-        <div
-          v-if="step === 2"
-          class="page"
-        >
-          <div class="page btn-container__left">
-            <div class="btn-container__btn_back">
-              <base-btn
-                :mode="'back'"
-                @click="goBack()"
-              >
-                {{ $t('meta.back') }}
-                <template v-slot:left>
-                  <span class="icon-chevron_big_left" />
-                </template>
-              </base-btn>
-            </div>
-          </div>
-          <div class="page page__raising">
-            {{ $t('raising-views.raisingViews') }}
-          </div>
-          <div class="page period">
-            <h3 class="period__choose">
-              {{ $t('raising-views.choosePeriod') }}
-            </h3>
-            <div class="period__container">
+        <specializations-selector @changeSkills="updateSelectedSkills" />
+        <div class="page__address">
+          <base-field
+            v-model="address"
+            :label="$t('quests.address')"
+            :placeholder="$t('quests.address')"
+            mode="icon"
+            :selector="true"
+            rules="required"
+            :name="$t('quests.address')"
+            @selector="getAddressInfo(address)"
+          >
+            <template v-slot:left>
+              <span class="icon-map" />
+            </template>
+            <template v-slot:selector>
               <div
-                v-for="(item, i) in periodTabs"
-                :key="i"
-                class="period__period"
-                :class="{'period__period_active': period === item.number}"
-                @click="switchPeriod(item, i)"
+                v-if="addresses.length"
+                class="selector"
               >
-                <h2
-                  class="period__title"
-                  :class="{'period__title_active': period === item.number}"
-                >
-                  {{ item.title }}
-                </h2>
-              </div>
-            </div>
-
-            <div class="period level">
-              <div class="level__title">
-                {{ $t('raising-views.chooseLevel') }}
-              </div>
-              <div
-                v-if="period"
-                class="level__container"
-              >
-                <div
-                  v-for="(item, i) in periods(period)"
-                  :key="i"
-                  class="level__card"
-                  @click="selectRadio(i)"
-                >
-                  <div class="level__option">
-                    <input
-                      :ref="`radio${i}`"
-                      name="higherLevel"
-                      type="radio"
-                      class="radio__input"
-                      :value="item.cost"
-                      @input="selectRadio(i)"
-                    >
-                  </div>
-                  <div class="level card">
-                    <div
-                      class="card__level"
-                      :class="cardStatus(item)"
-                    >
-                      {{ item.level }}
-                    </div>
-                    <div class="card__desc">
-                      {{ item.desc }}
-                    </div>
-                  </div>
-                  <div class="cost__container">
-                    <div class="card__cost">
-                      {{ item.cost }}$
-                    </div>
+                <div class="selector__items">
+                  <div
+                    v-for="(item, i) in addresses"
+                    :key="i"
+                    class="selector__item"
+                    @click="selectAddress(item)"
+                  >
+                    {{ item.formatted }}
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="btn-container">
-              <div class="btn-container__btn">
-                <base-btn
-                  :mode="'outline'"
-                  @click="createQuest"
-                >
-                  {{ $t('meta.skipAndEnd') }}
-                </base-btn>
-              </div>
-              <div class="btn-container__btn">
-                <base-btn
-                  :disabled="ads.currentAdPrice === ''"
-                  @click="showPaymentModal"
-                >
-                  {{ $t('meta.pay') }}
-                </base-btn>
-              </div>
-            </div>
+            </template>
+          </base-field>
+        </div>
+        <div class="page__input">
+          <base-field
+            v-model="questTitle"
+            rules="required"
+            :name="$t('quests.questTitle')"
+            :placeholder="$t('quests.questTitle')"
+          />
+        </div>
+        <div class="page__input">
+          <textarea
+            id="textarea"
+            v-model="textarea"
+            rules="required"
+            class="page__textarea"
+            :placeholder="$t('quests.questDesc')"
+          />
+        </div>
+        <div class="page upload__container">
+          <div class="upload__title">
+            {{ $t('quests.uploadMaterials') }}
+          </div>
+          <files-uploader
+            :multiple="true"
+            :limit="10"
+            :limit-bytes="10485760"
+            :limit-bytes-video="10485760"
+            :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
+            @change="updateFiles"
+          />
+        </div>
+        <div class="upload btn btn__container btn__container_right">
+          <div class="btn__create">
+            <base-btn
+              :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
+              create-quest-
+              @click="handleSubmit(createQuest)"
+            >
+              {{ $t('quests.createAQuest') }}
+            </base-btn>
           </div>
         </div>
       </validation-observer>
@@ -281,7 +172,6 @@ export default {
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
-      step: 'quests/getCurrentStepCreateQuest',
       filters: 'quests/getFilters',
       isWalletConnected: 'wallet/getIsWalletConnected',
       balance: 'wallet/getBalanceData',
@@ -408,6 +298,9 @@ export default {
       ];
     },
   },
+  async beforeCreate() {
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
   methods: {
     updateFiles(files) {
       this.files = files;
@@ -505,19 +398,43 @@ export default {
       }
     },
     async createQuest() {
-      await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
       if (!this.isWalletConnected) return;
 
-      // Checking user balance
-      if (this.balance.WUSD.fullBalance < this.price) { // TODO: change to modal transactionReceipt
-        await this.$store.dispatch('main/showToast', {
-          title: 'Error',
-          text: 'Not enough funds',
+      this.SetLoader(true);
+      // const medias = await this.uploadFiles(this.files);
+      // const payload = {
+      //   workplace: this.convertWorkplace(this.workplaceIndex),
+      //   priority: this.runtimeIndex,
+      //   employment: this.convertEmployment(this.employmentIndex),
+      //   category: 'Default',
+      //   title: this.questTitle,
+      //   description: this.textarea,
+      //   price: this.price,
+      //   medias,
+      //   adType: 0,
+      //   locationPlaceName: this.address,
+      //   specializationKeys: this.selectedSpecAndSkills,
+      //   location: {
+      //     longitude: this.coordinates.lng,
+      //     latitude: this.coordinates.lat,
+      //   },
+      // };
+      // const response = await this.$store.dispatch('quests/questCreate', payload);
+      this.SetLoader(false);
+      const response = { ok: true }; // TODO: delete
+      if (response.ok) {
+        // После создания квеста на бэке - генерируем новый контракт квеста
+        // TODO: Show modal send transaction to create quest contract
+        await this.$store.dispatch('modals/show', {
+          key: modals.transactionReceipt,
+          fields: {
+          },
         });
-        return;
-      }
 
-      // TODO: Show modal send transaction to create quest before
+        // TODO: вывести инфу, что квест создан и ожидает пока создастся на контракте
+      }
+    },
+    async createQuestContract() {
       const createRes = this.$store.dispatch('wallet/createQuest', {
         cost: this.price,
         description: this.description,
@@ -529,43 +446,9 @@ export default {
         });
         return;
       }
-
-      // TODO: Show modal send transaction WUSD to quest before
-      await this.$store.dispatch('wallet/depositCostToQuestContract', {
-        contractAddress: createRes.address, // TODO: check address from contract!
-        amount: this.price,
-      });
-
-      // TODO: генерация контракта квеста
-      // then: пополнение баланса квеста
-
-      this.SetLoader(true);
-      const medias = await this.uploadFiles(this.files);
-      const payload = {
-        workplace: this.convertWorkplace(this.workplaceIndex),
-        priority: this.runtimeIndex,
-        employment: this.convertEmployment(this.employmentIndex),
-        category: 'Default',
-        title: this.questTitle,
-        description: this.textarea,
-        price: this.price,
-        medias,
-        adType: 0,
-        locationPlaceName: this.address,
-        specializationKeys: this.selectedSpecAndSkills,
-        location: {
-          longitude: this.coordinates.lng,
-          latitude: this.coordinates.lat,
-        },
-      };
-      const response = await this.$store.dispatch('quests/questCreate', payload);
-      this.SetLoader(false);
-      if (response.ok) {
-        this.showModalCreatedQuest();
-        this.showToastCreated();
-        await this.$router.push(`/quests/${response.result.id}`);
-        await this.$store.dispatch('quests/getCurrentStepCreateQuest', 1);
-      }
+      this.showModalCreatedQuest();
+      this.showToastCreated();
+      await this.$router.push(`/quests/${response.result.id}`); // TODO: в квесте нужно будет добавить информацию мол ожидается создание квеста
     },
     showModalCreatedQuest() {
       this.ShowModal({

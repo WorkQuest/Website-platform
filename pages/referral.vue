@@ -19,6 +19,11 @@
             </div>
             <div class="info-block__tokens">
               {{ $tc('referral.wqtCount', 0) }}
+              <div class="info-block__claim">
+                <base-btn>
+                  Claim
+                </base-btn>
+              </div>
             </div>
             <div class="info-block__name">
               {{ $t('referral.lastRefReward') }}
@@ -44,30 +49,20 @@
               {{ $t('referral.yourRefers') }}
             </div>
             <div class="info-block__refers">
-              <div class="info-block__avatar">
+              <div
+                v-for="(i) of 5"
+                :key="i"
+                class="info-block__avatar"
+              >
                 <img
                   class="ava_list"
-                  src="~/assets/img/social/FACEBOOK.png"
-                  alt=""
-                >
-              </div>
-              <div class="info-block__avatar">
-                <img
-                  class="ava_list"
-                  src="~/assets/img/social/TWITTER.png"
-                  alt=""
-                >
-              </div>
-              <div class="info-block__avatar">
-                <img
-                  class="ava_list"
-                  src="~/assets/img/social/GOOGLE_+_.png"
+                  src="~/assets/img/temp/avatar.jpg"
                   alt=""
                 >
               </div>
               <div class="info-block__avatar">
                 <div class="info-block__more">
-                  {{ $tc('referral.plusCount', 0) }}
+                  {{ $tc('referral.plusCount', 17) }}
                 </div>
               </div>
             </div>
@@ -330,10 +325,19 @@ export default {
       border-radius: 6px;
 
       &__tokens {
+        position: relative;
         font-weight: 700;
         font-size: 25px;
         color: #0083C7;
         padding: 0 20px;
+      }
+
+      &__claim {
+        position: absolute;
+        right: 0;
+        top: 0;
+        right: 20px;
+        min-width: 136px;
       }
 
       &__name {

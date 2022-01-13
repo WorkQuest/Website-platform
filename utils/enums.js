@@ -33,12 +33,13 @@ export const StakingTypes = {
 export const QuestStatuses = {
   Rejected: -1,
   Created: 0,
-  Active: 1,
-  Closed: 2,
-  Dispute: 3,
-  WaitWorker: 4,
-  WaitConfirm: 5,
-  Done: 6,
+  AwaitingReplenishment: 1, // Ожидает пополнение баланса. Этот квест все еще можно редактировать
+  Active: 2,
+  Closed: 3,
+  Dispute: 4,
+  WaitWorker: 5,
+  WaitConfirm: 6,
+  Done: 7,
 };
 
 export const InfoModeEmployer = {

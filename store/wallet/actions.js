@@ -1,3 +1,5 @@
+import { ethers } from 'ethers';
+import BigNumber from 'bignumber.js';
 import {
   connectWallet, createQuest, depositCostToQuestContract,
   disconnect,
@@ -101,6 +103,11 @@ export default {
   async createQuest({ commit }, payload) {
     return await createQuest(payload);
   },
+  async editQuest({ commit }, { contractAddress, cost, description }) {
+    const hash = ethers.utils.formatBytes32String(description.slice(0, 31));
+    const _cost = new BigNumber(cost).shiftedBy(18).toString();
+    return await fetchJobMethod(contractAddress, 'editJob', [_cost, hash]);
+  },
   async cancelJob({ commit }, contractAddress) { // employer cancel quest
     return await fetchJobMethod(contractAddress, 'cancelJob');
   },
@@ -137,7 +144,7 @@ export default {
   async arbitration({ commit }, contractAddress) { // employer отменил (reject) результат работы или прошло 3 дня с момента начала verification
     return await fetchJobMethod(contractAddress, 'arbitration');
   },
-  async arbitrationRework({ commit }, contractAddress) {
+  async arbitrationRework({ commit }, contractAddress) { // арбитр возвращает квест в статус выполнения
     return await fetchJobMethod(contractAddress, 'arbitrationRework');
   },
   async arbitrationDecreaseCost({ commit }, { contractAddress, _forfeit }) {

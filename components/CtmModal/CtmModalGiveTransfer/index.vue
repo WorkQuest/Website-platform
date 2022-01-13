@@ -17,14 +17,14 @@
             <base-field
               v-model="recipient"
               class="input__field"
-              :placeholder="'Enter address'"
+              :placeholder="$t('modals.address')"
               rules="required|address"
               :name="$t('modals.addressField')"
             />
           </div>
           <div class="content__input input">
             <span class="input__title">
-              Select token
+              {{ $t('modals.selectToken') }}
             </span>
             <base-dd
               v-model="ddValue"
@@ -38,8 +38,8 @@
             <base-field
               v-model="amount"
               class="input__field"
-              :placeholder="'Enter amount'"
-              :rules="`required|decimal|max_bn:${maxAmount}|decimalPlaces:18`"
+              :placeholder="$t('modals.amount')"
+              :rules="`required|decimal|is_not:0|max_bn:${maxAmount}|decimalPlaces:18`"
               :name="$t('modals.amountField')"
             >
               <template
@@ -69,8 +69,8 @@
           </base-btn>
           <base-btn
             class="buttons__action"
-            :disabled="invalid || isLoading"
-            @click="handleSubmit(transfer)"
+            :disabled="invalid"
+            @click="handleSubmit(showWithdrawInfo)"
           >
             {{ $t('meta.send') }}
           </base-btn>
@@ -84,13 +84,15 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
+import { error, success } from '~/utils/web3';
+import abi from '~/abi/index';
 
 export default {
   name: 'ModalTakeTransfer',
   data() {
     return {
-      recipient: '',
-      amount: '',
+      recipient: '0x7a7B3101f68702b226F8345D9c4f36fb416519c7',
+      amount: '1',
       step: 1,
       maxAmount: 0,
       ddValue: 0,
@@ -102,6 +104,7 @@ export default {
       isLoading: 'main/getIsLoading',
       balance: 'wallet/getBalanceData',
       selectedToken: 'wallet/getSelectedToken',
+      userData: 'user/getUserData',
     }),
     tokenSymbolsDd() {
       return Object.keys(TokenSymbols);
@@ -115,7 +118,7 @@ export default {
       this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
     },
   },
-  mounted() {
+  async mounted() {
     const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
     this.maxAmount = this.balance[this.selectedToken].fullBalance;
@@ -127,10 +130,7 @@ export default {
     maxBalance() {
       this.amount = this.maxAmount;
     },
-    async transfer() { // TODO: выводить инфу о транзакции перед ее отправкой
-      this.SetLoader(true);
-      const { callback } = this.options;
-      this.hide();
+    async transfer() {
       let res;
       if (this.selectedToken === TokenSymbols.WUSD) {
         res = await this.$store.dispatch('wallet/transfer', {
@@ -144,21 +144,44 @@ export default {
         });
       }
       if (res?.ok) {
-        if (callback) {
-          await callback();
-        }
-        this.ShowModal({
-          key: modals.transactionSend,
+        return success();
+      }
+      return error();
+    },
+    async showWithdrawInfo() {
+      const { callback } = this.options;
+      this.SetLoader(true);
+      this.hide();
+      let feeRes;
+      if (this.selectedToken === TokenSymbols.WUSD) {
+        feeRes = await this.$store.dispatch('wallet/getTransferFeeData', {
+          recipient: this.recipient,
+          value: this.amount,
+        });
+      } else {
+        feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'transfer',
+          _abi: abi.ERC20,
+          contractAddress: process.env.WQT_TOKEN,
+          recipient: this.recipient,
+          value: this.amount,
         });
       }
       this.SetLoader(false);
-    },
-    showWithdrawInfo() {
       this.ShowModal({
-        key: modals.withdrawInfo,
-        title: this.$t('modals.transferInfo'),
-        recipient: this.recipient,
-        amount: this.amount,
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('modals.fromAddress'), value: this.userData.wallet.address },
+          to: { name: this.$t('modals.toAddress'), value: this.recipient },
+          amount: {
+            name: this.$t('modals.amount'),
+            value: this.amount,
+            symbol: this.selectedToken, // REQUIRED!
+          },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => this.transfer(),
+        callback,
       });
     },
   },

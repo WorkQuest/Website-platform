@@ -240,6 +240,7 @@ export const getAccountQuests = async () => {
 /* Work Quest */
 /*
   :QuestMethods:
+  editJob - edit before deposit
   cancelJob
   assignJob (workerAddress)
   acceptJob
@@ -254,6 +255,7 @@ export const getAccountQuests = async () => {
 export const depositCostToQuestContract = async (contractAddress, amount) => {
   try {
     // *multiplied by fee percent
+    // TODO: вынести fee percent в модальное окно чека
     const value = new BigNumber(amount).multipliedBy('1.02').shiftedBy(18).toString();
     console.log('deposit value', value, 'contract', contractAddress);
     const res = await web3.eth.sendTransaction({
