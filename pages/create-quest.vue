@@ -1,8 +1,9 @@
 <template>
   <div class="main main-white">
     <div class="main__body page">
+      <!--      validated, passed, invalid TODO: вернуть в обсервер-->
       <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
+        v-slot="{handleSubmit}"
         tag="div"
         class="page"
       >
@@ -122,8 +123,8 @@
         </div>
         <div class="upload btn btn__container btn__container_right">
           <div class="btn__create">
+            <!--            :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))" TODO: вернуть в кнопку ниже-->
             <base-btn
-              :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
               create-quest-
               @click="handleSubmit(createQuest)"
             >
@@ -138,7 +139,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
+import { ethers } from 'ethers';
 import modals from '~/store/modals/modals';
+import { TokenSymbols } from '~/utils/enums';
+import abi from '~/abi/index';
 
 const { GeoCode } = require('geo-coder');
 
@@ -401,6 +406,22 @@ export default {
       if (!this.isWalletConnected) return;
 
       this.SetLoader(true);
+
+      // Check balance to send contract method
+      const amount = new BigNumber(this.price).multipliedBy(1.02);
+      const fee = await this.$store.dispatch('wallet/getContractFeeData', {
+        method: 'newWorkQuest',
+        _abi: abi.WorkQuestFactory,
+        contractAddress: process.env.WORK_QUEST_FACTORY,
+        value: [amount.shiftedBy(-18).toString(), ethers.utils.formatBytes32String(this.textarea.slice(0, 31)), 0],
+      });
+      console.log('fee', fee);
+      // Если у пользователя недостаточно денег для создания квеста
+      if (new BigNumber(fee.balance).isGreaterThanOrEqualTo(balance.WUSD.fullBalance) === false) {
+        this.showSendTransactionModal(amount);
+        return;
+      }
+
       // const medias = await this.uploadFiles(this.files);
       // const payload = {
       //   workplace: this.convertWorkplace(this.workplaceIndex),
@@ -424,31 +445,36 @@ export default {
       const response = { ok: true }; // TODO: delete
       if (response.ok) {
         // После создания квеста на бэке - генерируем новый контракт квеста
-        // TODO: Show modal send transaction to create quest contract
-        await this.$store.dispatch('modals/show', {
-          key: modals.transactionReceipt,
-          fields: {
-          },
-        });
-
-        // TODO: вывести инфу, что квест создан и ожидает пока создастся на контракте
+        this.showSendTransactionModal(amount);
       }
     },
-    async createQuestContract() {
-      const createRes = this.$store.dispatch('wallet/createQuest', {
-        cost: this.price,
-        description: this.description,
+    showSendTransactionModal(amount) {
+      this.$store.dispatch('modals/show', {
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('modals.fromAddress'), value: this.userData.wallet.address },
+          to: { name: this.$t('modals.toAddress'), value: process.env.WORK_QUEST_FACTORY },
+          amount: { name: this.$t('modals.amount'), value: amount.toString(), symbol: TokenSymbols.WUSD },
+          fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(this.price).multipliedBy(1.02).toString(), symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: () => this.createQuestContract(),
       });
-      if (createRes?.ok === false) {
-        await this.$store.dispatch('main/showToast', {
-          title: 'Create quest error',
-          text: '*need to handle error*',
-        });
-        return;
-      }
+    },
+    async createQuestContract() { // TODO: check this contract method
+      // const createRes = this.$store.dispatch('wallet/createQuest', {
+      //   cost: this.price,
+      //   description: this.textarea,
+      // });
+      // if (createRes?.ok === false) {
+      //   await this.$store.dispatch('main/showToast', {
+      //     title: 'Create quest error',
+      //     text: '*need to handle error*',
+      //   });
+      //   return;
+      // }
       this.showModalCreatedQuest();
       this.showToastCreated();
-      await this.$router.push(`/quests/${response.result.id}`); // TODO: в квесте нужно будет добавить информацию мол ожидается создание квеста
+      // await this.$router.push(`/quests/${response.result.id}`); // TODO: в квесте нужно будет добавить информацию мол ожидается создание квеста
     },
     showModalCreatedQuest() {
       this.ShowModal({

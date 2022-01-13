@@ -4,7 +4,7 @@ import {
   connectWallet, createQuest, depositCostToQuestContract,
   disconnect,
   fetchContractData, fetchJobMethod, getAccountQuests,
-  getBalance,
+  getBalance, getContractFeeData,
   getIsWalletConnected,
   getStyledAmount,
   setWalletAddress,
@@ -93,6 +93,21 @@ export default {
    */
   async transferWQT({ commit }, { recipient, value }) {
     return await transferToken(recipient, value);
+  },
+  /**
+   * Get Fee Data from contract method
+   * @param commit
+   * @param method
+   * @param _abi
+   * @param contractAddress
+   * @param recipient
+   * @param value
+   * @returns {Promise<{result: *, ok: boolean}|{msg: string, code: number, data: null, ok: boolean}|undefined>}
+   */
+  async getContractFeeData({ commit }, {
+    method, _abi, contractAddress, recipient, value,
+  }) {
+    return await getContractFeeData(method, _abi, contractAddress, recipient, value);
   },
 
   /* QUESTS */

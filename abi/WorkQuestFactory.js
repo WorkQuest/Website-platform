@@ -1,5 +1,10 @@
 export default [
   {
+    inputs: [],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -516,6 +521,19 @@ export default [
       },
     ],
     name: 'updateFeeReceiver',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address payable',
+        name: '_pensionFund',
+        type: 'address',
+      },
+    ],
+    name: 'updatePensionFund',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

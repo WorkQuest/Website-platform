@@ -88,12 +88,14 @@ export default {
       const { callback, submitMethod } = this.options;
       this.hide();
       this.SetLoader(true);
-      const res = await submitMethod();
-      if (res?.ok) {
-        if (callback) await callback();
-        await this.$store.dispatch('modals/show', {
-          key: modals.transactionSend,
-        });
+      if (submitMethod) {
+        const res = await submitMethod();
+        if (res?.ok) {
+          if (callback) await callback();
+          await this.$store.dispatch('modals/show', {
+            key: modals.transactionSend,
+          });
+        }
       }
       this.SetLoader(false);
     },

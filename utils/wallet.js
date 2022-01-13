@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import { AES, enc } from 'crypto-js';
 import Web3, { sendTransaction } from 'web3';
 import BigNumber from 'bignumber.js';
+import { HttpProviderOptions } from 'web3-core-helpers';
 import { error, success } from '~/utils/web3';
 import abi from '~/abi/index';
 
@@ -21,7 +22,24 @@ export const createWallet = (mnemonic) => {
 export const encryptStringWithKey = (toEncrypt, key) => AES.encrypt(toEncrypt, key).toString();
 export const decryptStringWitheKey = (toDecrypt, key) => AES.decrypt(toDecrypt, key).toString(enc.Utf8);
 
+// 20220112 chain id
+// const options = {
+//   keepAlive: true,
+//   timeout: 20000, // milliseconds,
+//   headers: [{ name: 'Access-Control-Allow-Headers', value: '*' }],
+//   withCredentials: false,
+// };
+// const provider = new Web3.providers.HttpProvider(process.env.WQ_PROVIDER, options);
+// const web3 = new Web3(provider);
+
+console.log('CONNECTION');
 const web3 = new Web3(process.env.WQ_PROVIDER);
+(async () => { // TODO: DELETE LATER
+  const id = await web3.eth.getChainId();
+  console.log(id);
+  console.log('AFTER GETTEING CHAIN ID');
+})();
+
 const wallet = {
   address: null,
   privateKey: null,
@@ -128,8 +146,6 @@ export const getStyledAmount = (amount, full = false, decimals = 18) => {
   return value.decimalPlaces(4).toString();
 };
 
-// web3.eth.net.getId() - если нужно будет получить chainId
-
 // WUSD
 export const getBalance = async () => {
   try {
@@ -198,6 +214,26 @@ export const transferToken = async (recipient, value) => {
     return success(res);
   } catch (e) {
     console.error(e.message);
+    return error();
+  }
+};
+export const getContractFeeData = async (_method, _abi, _contractAddress, recipient, value) => {
+  try {
+    if (!isNaN(value)) {
+      value = new BigNumber(value).shiftedBy(18).toString();
+    }
+    const inst = new web3.eth.Contract(_abi, _contractAddress);
+    const [gasPrice, gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      inst.methods[_method].apply(null, [recipient, value]).estimateGas({ from: wallet.address }),
+    ]);
+    return success({
+      gasPrice,
+      gasEstimate,
+      fee: new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString(),
+    });
+  } catch (e) {
+    console.error('Get contract fee data error. Method:', _method);
     return error();
   }
 };
