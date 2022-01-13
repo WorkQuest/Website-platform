@@ -331,6 +331,7 @@ export default {
     redirectUser() {
       this.$store.dispatch('wallet/setUserAddress', this.userAddress);
       this.addressAssigned = true;
+      this.$cookies.set('userLogin', true);
       // redirect to confirm access if token exists & unconfirmed account
       const confirmToken = JSON.parse(sessionStorage.getItem('confirmToken'));
       if (this.userStatus === UserStatuses.Unconfirmed && confirmToken) {
