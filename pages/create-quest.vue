@@ -57,7 +57,10 @@
             />
           </div>
         </div>
-        <specializations-selector @changeSkills="updateSelectedSkills" />
+        <specializations-selector
+          class="page__specializations"
+          @changeSkills="updateSelectedSkills"
+        />
         <div class="page__address">
           <base-field
             v-model="address"
@@ -417,10 +420,10 @@ export default {
       });
       console.log('fee', fee);
       // Если у пользователя недостаточно денег для создания квеста
-      if (new BigNumber(fee.balance).isGreaterThanOrEqualTo(balance.WUSD.fullBalance) === false) {
-        this.showSendTransactionModal(amount);
-        return;
-      }
+      // if (new BigNumber(fee.balance).isGreaterThanOrEqualTo(balance.WUSD.fullBalance) === false) { // TODO: вернуть
+      //   this.showSendTransactionModal(amount);
+      //   return;
+      // }
 
       // const medias = await this.uploadFiles(this.files);
       // const payload = {
@@ -955,6 +958,9 @@ export default {
 @include _1199 {
   .main__body {
     padding: 10px;
+  }
+  .page__specializations {
+    margin-top: 20px;
   }
 }
 
