@@ -979,7 +979,6 @@ export default {
   }
 
   @include _767 {
-    background: linear-gradient(to bottom, #103D7C 220px, #f6f8fa 220px);
     &__container {
       grid-template-rows: auto auto;
       gap: 24px;
