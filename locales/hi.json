@@ -63,6 +63,8 @@
     "size": "{_field_} फील्ड साइज {size}KB से कम होना चाहिए",
     "decimal": "{_field_} फील्ड में केवल दशमलव मान होने चाहिए",
     "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???",
     "is": "The values do not match",
     "mnemonic": "Incorrect secret phrase"
   },
@@ -1392,6 +1394,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "पढ़ाई का स्थान",

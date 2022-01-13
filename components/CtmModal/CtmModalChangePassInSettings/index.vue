@@ -140,9 +140,13 @@ export default {
   },
   methods: {
     async hide() {
+      if (this.newPasswordInput.trim() !== this.confirmNewPasswordInput.trim() || this.newPasswordInput === '') {
+        this.errorMsg = true;
+        return;
+      }
       const payload = {
-        oldPassword: this.currentPasswordInput,
-        newPassword: this.confirmNewPasswordInput,
+        oldPassword: this.currentPasswordInput.trim(),
+        newPassword: this.newPasswordInput.trim(),
       };
       try {
         const response = await this.$store.dispatch('user/editUserPassword', payload);
