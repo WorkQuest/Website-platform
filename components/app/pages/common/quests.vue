@@ -2,7 +2,7 @@
   <div class="quests">
     <div class="quests__card card">
       <div
-        v-for="item in quests"
+        v-for="(item, i) in quests"
         :key="item.id"
         class="card__content"
       >
@@ -245,11 +245,11 @@ export default {
     progressQuestText(status) {
       if (!this.userRole) return '';
       switch (status) {
-        case QuestStatuses.Active: return this.$t('quests.questActive:');
-        case QuestStatuses.Closed: return this.$t('quests.questClosed:');
-        case QuestStatuses.Dispute: return this.$t('quests.questDispute:');
+        case QuestStatuses.Active: return this.$t('quests.questActive');
+        case QuestStatuses.Closed: return this.$t('quests.questClosed');
+        case QuestStatuses.Dispute: return this.$t('quests.questDispute');
         case QuestStatuses.WaitWorker: return this.$t('quests.inProgressBy');
-        case QuestStatuses.WaitConfirm: return this.$t('quests.questWaitConfirm:');
+        case QuestStatuses.WaitConfirm: return this.$t('quests.questWaitConfirm');
         case QuestStatuses.Done: return this.$t('quests.finishedBy');
         default: return '';
       }

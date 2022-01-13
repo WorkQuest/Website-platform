@@ -66,6 +66,7 @@
     "invalidPhone":"???",
     "formError": "???",
     "is": "The values do not match",
+    "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
@@ -209,9 +210,7 @@
     "confCode": "Código de confirmación de Google",
     "placeholder": "Marcador de posición",
     "confCodeDesc": "Escriba el código de 6 dígitos de la aplicación Autenticador de Google",
-    "confCodeField": "???",
-    "confirmAccess": "Confirm access",
-    "confirmPassToContinue": "You need to confirm your password to continue"
+    "confCodeField": "???"
   },
   "signUp": {
     "title": "Registrarse",
@@ -1241,7 +1240,8 @@
     "youCanAttachUpToNFiles": "???",
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
-    "incorrectChain": "You choose incorrect chain!"
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token"
   },
   "ui": {
     "jobQuestors": "Demandantes de empleo",
@@ -1944,6 +1944,9 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "Vaya, se produjo un problema. Compruebe los datos y vuelva a intentarlo.",
     "emptyData": {
       "emptyQuests": "???",

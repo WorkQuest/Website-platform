@@ -91,12 +91,14 @@
       <CtmModalGallery v-if="modals.gallery === currentModalKey" />
       <CtmModalAreYouSureDeleteMember v-if="modals.areYouSureDeleteMember === currentModalKey" />
       <CtmModalAreYouSureLeaveChat v-if="modals.areYouSureLeaveChat === currentModalKey" />
+      <CtmModalTransactionReceipt v-if="modals.transactionReceipt === currentModalKey" />
     </div>
   </transition>
 </template>
 <script>
 import { mapGetters } from 'vuex';
 import modals from '@/store/modals/modals';
+import CtmModalTransactionReceipt from './CtmModalTransactionReceipt';
 import CtmModalConfirmPassword from './CtmModalConfirmPassword';
 import CtmModalConfirmEmail from './CtmModalConfirmEmail';
 import CtmModalChangePassword from './CtmModalChangePassword';
@@ -180,6 +182,7 @@ import CtmModalAreYouSureLeaveChat from './CtmModalAreYouSureLeaveChat';
 export default {
   name: 'ModalBox',
   components: {
+    CtmModalTransactionReceipt,
     CtmModalConfirmPassword,
     CtmModalQuestFilterFull,
     CtmModalConfirmEmail,
