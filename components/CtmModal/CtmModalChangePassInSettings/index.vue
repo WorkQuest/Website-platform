@@ -135,6 +135,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      email: 'user/getUserEmail',
     }),
   },
   methods: {
@@ -146,6 +147,10 @@ export default {
       try {
         const response = await this.$store.dispatch('user/editUserPassword', payload);
         if (response?.ok) {
+          await this.$store.dispatch('user/signIn', {
+            email: this.email,
+            password: this.confirmNewPasswordInput,
+          });
           this.ShowModal({
             key: modals.changePassword,
           });
