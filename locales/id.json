@@ -210,7 +210,9 @@
     "confCode": "Kode konfirmasi Google",
     "placeholder": "Placeholder",
     "confCodeDesc": "Masukkan kode 6 digit dari aplikasi Google Authenticator",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "Daftar",
@@ -403,7 +405,6 @@
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
     "questActive": "???:",
-    "questClosed": "???:",
     "questDispute": "???:",
     "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
@@ -1241,7 +1242,7 @@
     "youCanAttachUpToNFiles": "???",
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
-    "incorrectChain": "You choose incorrect chain !",
+    "incorrectChain": "You choose incorrect chain!",
     "selectToken": "Select token"
   },
   "ui": {

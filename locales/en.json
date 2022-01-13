@@ -210,7 +210,9 @@
     "confCode": "Google confirmation code",
     "placeholder": "Placeholder",
     "confCodeDesc": "Enter the 6-digit code from the Google Authentication app",
-    "confCodeField": "google verification"
+    "confCodeField": "google verification",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "Sign Up",
