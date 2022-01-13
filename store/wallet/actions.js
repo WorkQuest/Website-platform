@@ -62,16 +62,16 @@ export default {
     const res = await getBalance();
     commit('setBalance', {
       symbol: TokenSymbols.WUSD,
-      balance: res.result.balance,
-      fullBalance: res.result.fullBalance,
+      balance: res.ok ? res.result.balance : 0,
+      fullBalance: res.ok ? res.result.fullBalance : 0,
     });
   },
   async getBalanceWQT({ commit }, userAddress) {
-    const value = await fetchContractData('balanceOf', abi.ERC20, process.env.WQT_TOKEN, [userAddress]);
+    const res = await fetchContractData('balanceOf', abi.ERC20, process.env.WQT_TOKEN, [userAddress]);
     commit('setBalance', {
       symbol: TokenSymbols.WQT,
-      balance: getStyledAmount(value),
-      fullBalance: getStyledAmount(value, true),
+      balance: res.ok ? getStyledAmount(res.result) : 0,
+      fullBalance: res.ok ? getStyledAmount(res.result, true) : 0,
     });
   },
   /**

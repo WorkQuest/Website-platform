@@ -176,7 +176,8 @@ export const fetchContractData = async (_method, _abi, _address, _params) => {
       return {};
     }
     const Contract = new web3.eth.Contract(_abi, _address);
-    return await Contract.methods[_method].apply(this, _params).call();
+    const res = await Contract.methods[_method].apply(this, _params).call();
+    return success(res);
   } catch (e) {
     console.error(e.message);
     return error();
