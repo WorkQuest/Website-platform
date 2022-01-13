@@ -264,6 +264,8 @@ export default {
 .selector {
   &__skills {
     width: 100%;
+    display: grid;
+    gap: 20px;
     .block {
       display: flex;
       grid-gap: 20px;

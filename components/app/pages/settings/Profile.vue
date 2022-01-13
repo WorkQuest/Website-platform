@@ -41,6 +41,7 @@
             :rules="main.rules"
             :placeholder="$t(main.placeholder)"
             mode="icon"
+            :disabled="main.isDisabled"
             :name="$t(main.name)"
             @blur="checkValidate"
           >
@@ -294,6 +295,7 @@ export default {
           placeholder: 'settings.nameInput',
           name: 'settings.firstName',
           icon: 'icon-user',
+          isDisabled: false,
         },
         {
           model: 'lastName',
@@ -301,6 +303,7 @@ export default {
           placeholder: 'settings.lastNameInput',
           name: 'settings.lastName',
           icon: 'icon-user',
+          isDisabled: false,
         },
         {
           model: 'email',
@@ -308,6 +311,7 @@ export default {
           rules: 'max:100||email',
           placeholder: 'placeholders.mail',
           icon: 'icon-mail',
+          isDisabled: true,
         },
       ],
       companyInputs: [
