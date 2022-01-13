@@ -80,4 +80,5 @@ export default {
   areYouSureDeleteMember: 'areYouSureDeleteMember',
   areYouSureLeaveChat: 'areYouSureLeaveChat',
   confirmPassword: 'confirmPassword',
+  transactionReceipt: 'transactionReceipt',
 };

@@ -63,7 +63,10 @@
     "size": "{_field_} फील्ड साइज {size}KB से कम होना चाहिए",
     "decimal": "{_field_} फील्ड में केवल दशमलव मान होने चाहिए",
     "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???",
     "is": "The values do not match",
+    "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
@@ -207,7 +210,9 @@
     "confCode": "Google कंफर्मेशन कोड",
     "placeholder": "प्लेसहोल्डर",
     "confCodeDesc": "Google Authenticator ऐप से 6 अंकों का कोड दर्ज करें",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "साइन अप करें",
@@ -401,7 +406,6 @@
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
     "questActive": "???:",
-    "questClosed": "???:",
     "questDispute": "???:",
     "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
@@ -1237,7 +1241,10 @@
     "thanksText": "",
     "emailVerificationCodeField": "???",
     "youCanAttachUpToNFiles": "???",
-    "youTryToAttachUnsupportedFileFormat": "???"
+    "youTryToAttachUnsupportedFileFormat": "???",
+    "connectError": "Error connection",
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token"
   },
   "ui": {
     "jobQuestors": "जॉब तलाशकर्ता",
@@ -1343,6 +1350,7 @@
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "खुला विवाद",
     "approveQuest": "Quest मंजूर करें",
     "starredMessages": "???",
@@ -1393,6 +1401,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "पढ़ाई का स्थान",
@@ -1936,6 +1947,9 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "ओह! कुछ गलत हो गया है। डेटा जांचें और फिर से कोशिश करें।",
     "emptyData": {
       "emptyQuests": "???",
