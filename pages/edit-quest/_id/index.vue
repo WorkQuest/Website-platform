@@ -4,7 +4,10 @@
     :class="{'main-white': step === 1}"
   >
     <div class="main__body page">
-      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+        tag="div"
+      >
         <div
           v-if="step === 1"
           class="page"
@@ -141,11 +144,11 @@
           v-if="step === 2"
           class="page"
         >
-          <div class="page btn-container__left">
+          <div class="page btn-container btn-container__left">
             <div class="btn-container__btn_back">
               <base-btn
-                :mode="'back'"
-                @click="goBack()"
+                mode="back"
+                @click="clickBackBtnHandler"
               >
                 {{ $t('meta.back') }}
                 <template v-slot:left>
@@ -484,8 +487,12 @@ export default {
         step: 1,
       });
     },
-    goBack() {
-      this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
+    clickBackBtnHandler() {
+      if (this.$route.query?.mode) {
+        this.$router.go(-1);
+      } else {
+        this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
+      }
     },
     selectAddress(address) {
       this.addresses = [];
@@ -585,13 +592,20 @@ export default {
   margin: 20px 0 0 0;
   &__left {
     justify-content: flex-start;
-    margin: 35px 0 0 0;
+    margin: 30px 0 0 0;
   }
   &__btn {
     width: 200px;
     margin: 0 10px 0 0;
     &_back {
-      width: 50px;
+      display: flex;
+      justify-content: left;
+      align-items: center;
+
+      & .icon-chevron_big_left {
+        font-weight: 800;
+        font-size: 24px;
+      }
     }
     &:last-child {
       margin: 0;
