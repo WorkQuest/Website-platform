@@ -13,7 +13,7 @@ import {
   getIsWalletConnected,
   getStyledAmount,
   setWalletAddress,
-  transfer, transferToken,
+  transfer, transferToken, getTransferFeeData,
 } from '~/utils/wallet';
 import abi from '~/abi/index';
 import { TokenSymbols } from '~/utils/enums';

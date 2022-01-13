@@ -5,9 +5,9 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('wallet.wallet') }}</span>
           <div class="wallet__address">
-            <span class="user__wallet">{{ userAddress }}</span>
+            <span class="user__wallet">{{ userData.wallet.address }}</span>
             <button
-              v-clipboard:copy="userAddress"
+              v-clipboard:copy="userData.wallet.address"
               v-clipboard:success="ClipboardSuccessHandler"
               v-clipboard:error="ClipboardErrorHandler"
               type="button"

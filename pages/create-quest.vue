@@ -183,6 +183,7 @@ export default {
       filters: 'quests/getFilters',
       isWalletConnected: 'wallet/getIsWalletConnected',
       balance: 'wallet/getBalanceData',
+      questsFee: 'wallet/getQuestsFee',
     }),
     days() {
       return [
@@ -411,13 +412,17 @@ export default {
       this.SetLoader(true);
 
       // Check balance to send contract method
-      const amount = new BigNumber(this.price).multipliedBy(1.02);
+      const amount = new BigNumber(this.price).multipliedBy(1 + this.questsFee);
       const [fee] = await Promise.all([
         this.$store.dispatch('wallet/getContractFeeData', {
           method: 'newWorkQuest',
           _abi: abi.WorkQuestFactory,
           contractAddress: process.env.WORK_QUEST_FACTORY,
-          value: [amount.shiftedBy(-18).toString(), ethers.utils.formatBytes32String(this.textarea.slice(0, 31)), 0],
+          value: [
+            ethers.utils.formatBytes32String(this.textarea.slice(0, 31)),
+            amount.shiftedBy(-18).toString(),
+            0,
+          ],
         }),
         this.$store.dispatch('wallet/getBalance'), // update wusd balance
       ]);
@@ -454,14 +459,14 @@ export default {
         this.showSendTransactionModal(amount);
       }
     },
-    showSendTransactionModal(amount) {
+    showSendTransactionModal(amountWithFee) {
       this.$store.dispatch('modals/show', {
         key: modals.transactionReceipt,
         fields: {
           from: { name: this.$t('modals.fromAddress'), value: this.userData.wallet.address },
           to: { name: this.$t('modals.toAddress'), value: process.env.WORK_QUEST_FACTORY },
-          amount: { name: this.$t('modals.amount'), value: amount.toString(), symbol: TokenSymbols.WUSD },
-          fee: { name: this.$t('wallet.table.trxFee'), value: new BigNumber(this.price).multipliedBy(1.02).toString(), symbol: TokenSymbols.WUSD },
+          amount: { name: this.$t('modals.amount'), value: this.price.toString(), symbol: TokenSymbols.WUSD },
+          fee: { name: this.$t('wallet.table.trxFee'), value: amountWithFee, symbol: TokenSymbols.WUSD },
         },
         submitMethod: () => this.createQuestContract(),
       });

@@ -15,4 +15,5 @@ export default () => ({
       fullBalance: 0,
     },
   },
+  questsFee: 0.01, // Комиссия 1%
 });

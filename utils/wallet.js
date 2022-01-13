@@ -225,13 +225,18 @@ export const transferToken = async (recipient, value) => {
 };
 export const getContractFeeData = async (_method, _abi, _contractAddress, recipient, value) => {
   try {
+    let data;
     if (!isNaN(value)) {
       value = new BigNumber(value).shiftedBy(18).toString();
+      data = [recipient, value];
+    } else {
+      data = value;
     }
+    console.log(data);
     const inst = new web3.eth.Contract(_abi, _contractAddress);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
-      inst.methods[_method].apply(null, [recipient, value]).estimateGas({ from: wallet.address }),
+      inst.methods[_method].apply(null, data).estimateGas({ from: wallet.address }),
     ]);
     return success({
       gasPrice,
