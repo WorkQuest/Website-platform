@@ -63,6 +63,8 @@
     "size": "El tamaño del campo {_field_} debe ser inferior a {size} KB",
     "decimal": "El campo {_field_} solo puede contener valores decimales",
     "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???",
     "is": "The values do not match",
     "mnemonic": "Incorrect secret phrase"
   },
@@ -1391,6 +1393,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "Lugar de estudio",
