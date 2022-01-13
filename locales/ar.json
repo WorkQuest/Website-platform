@@ -1242,7 +1242,8 @@
     "youCanAttachUpToNFiles": "???",
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
-    "incorrectChain": "You choose incorrect chain!"
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token"
   },
   "ui": {
     "jobQuestors": "أصحاب الوظائف",
