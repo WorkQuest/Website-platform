@@ -71,10 +71,12 @@ export default {
   },
   mounted() {
     const { fields } = this.options;
-    if (fields.fee && fields.amount && fields.amount.symbol === TokenSymbols.WUSD) { // If we send WUSD
-      this.canSend = new BigNumber(fields.amount.value).plus(fields.fee.value).isLessThanOrEqualTo(this.balance.WUSD.fullBalance);
-    } else {
-      this.canSend = new BigNumber(fields.fee.value).isLessThanOrEqualTo(this.balance.WUSD.fullBalance);
+    if (fields && fields.fee && fields.amount) {
+      if (fields.amount.symbol === TokenSymbols.WUSD) { // If we send WUSD
+        this.canSend = new BigNumber(fields.amount.value).plus(fields.fee.value).isLessThanOrEqualTo(this.balance.WUSD.fullBalance);
+      } else {
+        this.canSend = new BigNumber(fields.fee.value).isLessThanOrEqualTo(this.balance.WUSD.fullBalance);
+      }
     }
   },
   methods: {
