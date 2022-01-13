@@ -81,6 +81,15 @@
               </div>
             </template>
           </base-field>
+          <vue-phone-number-input
+            v-if="userRole === 'employer'"
+            v-model="profile.firstPhone"
+            class="profile__phone-input"
+            error-color="#EB5757"
+            size="lg"
+            color="#ccc"
+            disabled
+          />
           <div class="profile__phone-input">
             <vue-phone-number-input
               v-model="profile.additionalInfo.secondMobileNumber"
@@ -99,14 +108,6 @@
               {{ $t('messages.invalidPhone') }}
             </span>
           </div>
-          <vue-phone-number-input
-            v-if="userRole === 'employer'"
-            v-model="profile.firstPhone"
-            class="profile__phone-input"
-            error-color="#EB5757"
-            size="lg"
-            disabled
-          />
         </div>
         <div
           v-if="userRole === 'employer'"
