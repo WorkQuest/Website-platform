@@ -143,7 +143,7 @@
           <div class="page btn-container btn-container__left">
             <div class="btn-container__btn_back">
               <base-btn
-                :mode="'back'"
+                mode="back"
                 @click="goBack"
               >
                 {{ $t('meta.back') }}
@@ -567,7 +567,7 @@ export default {
   margin: 20px 0 0 0;
   &__left {
     justify-content: flex-start;
-    margin: 35px 0 0 0;
+    margin: 30px 0 0 0;
   }
   &__btn {
     width: 200px;
@@ -578,8 +578,8 @@ export default {
       align-items: center;
 
       & .icon-chevron_big_left {
-        font-weight: 700;
-        font-size: 18px;
+        font-weight: 800;
+        font-size: 24px;
       }
     }
     &:last-child {
