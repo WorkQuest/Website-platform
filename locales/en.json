@@ -1242,7 +1242,7 @@
     "youCanAttachUpToNFiles": "You can attach up to {n} files",
     "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
     "connectError": "Error connection",
-    "incorrectChain": "You choose incorrect chain !"
+    "incorrectChain": "You choose incorrect chain!"
   },
   "ui": {
     "jobQuestors": "Job Questors",
