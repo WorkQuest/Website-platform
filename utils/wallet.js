@@ -22,6 +22,7 @@ export const encryptStringWithKey = (toEncrypt, key) => AES.encrypt(toEncrypt, k
 export const decryptStringWitheKey = (toDecrypt, key) => AES.decrypt(toDecrypt, key).toString(enc.Utf8);
 
 const web3 = new Web3(process.env.WQ_PROVIDER);
+
 const wallet = {
   address: null,
   privateKey: null,
@@ -127,8 +128,6 @@ export const getStyledAmount = (amount, full = false, decimals = 18) => {
   if (value.isLessThan(min)) return `<${min.toString()}`;
   return value.decimalPlaces(4).toString();
 };
-
-// web3.eth.net.getId() - если нужно будет получить chainId
 
 // WUSD
 export const getBalance = async () => {

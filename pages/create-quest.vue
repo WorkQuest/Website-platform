@@ -412,12 +412,15 @@ export default {
 
       // Check balance to send contract method
       const amount = new BigNumber(this.price).multipliedBy(1.02);
-      const fee = await this.$store.dispatch('wallet/getContractFeeData', {
-        method: 'newWorkQuest',
-        _abi: abi.WorkQuestFactory,
-        contractAddress: process.env.WORK_QUEST_FACTORY,
-        value: [amount.shiftedBy(-18).toString(), ethers.utils.formatBytes32String(this.textarea.slice(0, 31)), 0],
-      });
+      const [fee] = await Promise.all([
+        this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'newWorkQuest',
+          _abi: abi.WorkQuestFactory,
+          contractAddress: process.env.WORK_QUEST_FACTORY,
+          value: [amount.shiftedBy(-18).toString(), ethers.utils.formatBytes32String(this.textarea.slice(0, 31)), 0],
+        }),
+        this.$store.dispatch('wallet/getBalance'), // update wusd balance
+      ]);
       console.log('fee', fee);
       // Если у пользователя недостаточно денег для создания квеста
       // if (new BigNumber(fee.balance).isGreaterThanOrEqualTo(balance.WUSD.fullBalance) === false) { // TODO: вернуть
