@@ -1344,6 +1344,7 @@
     }
   },
   "chat": {
+    "reason": "Please add reason",
     "openDispute": "Open dispute",
     "approveQuest": "Approve quest",
     "starredMessages": "Starred messages",

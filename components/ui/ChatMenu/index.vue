@@ -3,7 +3,7 @@
     <button
       v-click-outside="closeChatMenu"
       class="chat__button chat__button_menu"
-      @click="showChatMenu"
+      @click="toggleChatMenu"
     >
       <span class="icon-more_horizontal" />
       <transition name="fade">
@@ -98,8 +98,8 @@ export default {
         key: modals.openADispute,
       });
     },
-    showChatMenu() {
-      this.isShowChatMenu = true;
+    toggleChatMenu() {
+      this.isShowChatMenu = !this.isShowChatMenu;
     },
     closeChatMenu() {
       this.isShowChatMenu = false;

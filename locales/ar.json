@@ -1342,6 +1342,7 @@
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "نزاع مفتوح",
     "approveQuest": "الموافقة على طلب العمل",
     "starredMessages": "???",
