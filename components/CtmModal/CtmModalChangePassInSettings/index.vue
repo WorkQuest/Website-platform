@@ -148,6 +148,7 @@ export default {
         oldPassword: this.currentPasswordInput.trim(),
         newPassword: this.newPasswordInput.trim(),
       };
+      this.SetLoader(true);
       try {
         const response = await this.$store.dispatch('user/editUserPassword', payload);
         if (response?.ok) {
@@ -163,6 +164,7 @@ export default {
         this.errorMsg = e;
         console.log(e);
       }
+      this.SetLoader(false);
     },
   },
 };
