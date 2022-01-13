@@ -91,8 +91,8 @@ export default {
   name: 'ModalTakeTransfer',
   data() {
     return {
-      recipient: '0x7a7B3101f68702b226F8345D9c4f36fb416519c7',
-      amount: '1',
+      recipient: '',
+      amount: '',
       step: 1,
       maxAmount: 0,
       ddValue: 0,
