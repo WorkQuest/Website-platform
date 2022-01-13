@@ -63,6 +63,8 @@
     "size": "La taille du champ {_field_} doit être inférieure à {size} Ko",
     "decimal": "Le champ {_field_} ne doit contenir que des valeurs décimales",
     "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???",
     "is": "The values do not match",
     "mnemonic": "Incorrect secret phrase"
   },
@@ -1393,6 +1395,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "Lieu d'étude",
