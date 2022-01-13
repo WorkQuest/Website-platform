@@ -181,8 +181,10 @@ export default {
     width: 20px;
     height: 20px;
     border: 1px solid transparent;
+    opacity: 0.5;
     &:hover {
       color: $black800;
+      opacity: 1;
     }
     &_menu {
       display: flex;

@@ -4,10 +4,16 @@ export default () => ({
   chatInfoInviteOnQuest: {},
   currentWorker: null,
   workersList: {},
-  allQuests: {},
+  allQuests: {
+    count: 0,
+    quests: [],
+  },
   quest: null,
   infoDataMode: 0,
-  userInfoQuests: {},
+  userInfoQuests: {
+    count: 0,
+    quests: [],
+  },
   questsLocation: {},
   starredQuests: {},
   responses: {},
