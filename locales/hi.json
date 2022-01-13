@@ -1344,6 +1344,7 @@
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "खुला विवाद",
     "approveQuest": "Quest मंजूर करें",
     "starredMessages": "???",
