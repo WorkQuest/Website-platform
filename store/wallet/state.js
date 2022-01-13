@@ -7,7 +7,7 @@ export default () => ({
   selectedToken: TokensSymbols.WUSD,
   balance: {
     WQT: {
-      balance: 0,
+      balance: 0, // Display balance
       fullBalance: 0,
     },
     WUSD: {

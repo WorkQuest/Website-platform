@@ -63,7 +63,10 @@
     "size": "O tamanho do campo {_field_} deve ser inferior a {size}KB",
     "decimal": "O campo {_field_} deve conter apenas valores decimais",
     "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???",
     "is": "The values do not match",
+    "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
@@ -207,7 +210,9 @@
     "confCode": "Código de confirmação do Google",
     "placeholder": "Marcador de posição de texto",
     "confCodeDesc": "Introduza o código de 6 dígitos da aplicação Google Authentication",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "Inscreva-se",
@@ -400,7 +405,6 @@
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
     "questActive": "???:",
-    "questClosed": "???:",
     "questDispute": "???:",
     "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
@@ -1237,7 +1241,10 @@
     "thanksText": "",
     "emailVerificationCodeField": "???",
     "youCanAttachUpToNFiles": "???",
-    "youTryToAttachUnsupportedFileFormat": "???"
+    "youTryToAttachUnsupportedFileFormat": "???",
+    "connectError": "Error connection",
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token"
   },
   "ui": {
     "jobQuestors": "Questores de emprego",
@@ -1343,6 +1350,7 @@
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "Abrir disputa",
     "approveQuest": "Aprovar busca",
     "starredMessages": "???",
@@ -1393,6 +1401,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "Local de estudo",
@@ -1936,6 +1947,9 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "Ocorreu um erro. Verifique os dados e tente novamente.",
     "emptyData": {
       "emptyQuests": "???",
