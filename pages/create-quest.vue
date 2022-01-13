@@ -140,11 +140,11 @@
           v-if="step === 2"
           class="page"
         >
-          <div class="page btn-container__left">
+          <div class="page btn-container btn-container__left">
             <div class="btn-container__btn_back">
               <base-btn
                 :mode="'back'"
-                @click="goBack()"
+                @click="goBack"
               >
                 {{ $t('meta.back') }}
                 <template v-slot:left>
@@ -573,7 +573,14 @@ export default {
     width: 200px;
     margin: 0 10px 0 0;
     &_back {
-      width: 50px;
+      display: flex;
+      justify-content: left;
+      align-items: center;
+
+      & .icon-chevron_big_left {
+        font-weight: 700;
+        font-size: 18px;
+      }
     }
     &:last-child {
       margin: 0;

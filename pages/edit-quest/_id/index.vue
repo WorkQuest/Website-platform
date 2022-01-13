@@ -4,7 +4,10 @@
     :class="{'main-white': step === 1}"
   >
     <div class="main__body page">
-      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+        tag="div"
+      >
         <div
           v-if="step === 1"
           class="page"
@@ -141,7 +144,7 @@
           v-if="step === 2"
           class="page"
         >
-          <div class="page btn-container__left">
+          <div class="page btn-container btn-container__left">
             <div class="btn-container__btn_back">
               <base-btn
                 :mode="'back'"
@@ -595,7 +598,14 @@ export default {
     width: 200px;
     margin: 0 10px 0 0;
     &_back {
-      width: 50px;
+      display: flex;
+      justify-content: left;
+      align-items: center;
+
+      & .icon-chevron_big_left {
+        font-weight: 700;
+        font-size: 18px;
+      }
     }
     &:last-child {
       margin: 0;
