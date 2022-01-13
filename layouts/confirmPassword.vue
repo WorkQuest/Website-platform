@@ -35,6 +35,7 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'ConfirmPassword',
+  middleware: 'auth',
   data() {
     return {
       password: '',
@@ -49,6 +50,12 @@ export default {
       userAddress: 'user/getUserWalletAddress',
       callbackLayout: 'wallet/getCallbackLayout',
     }),
+  },
+  beforeCreate() {
+    if (!this.$cookies.get('userLogin')) {
+      this.$store.dispatch('user/logout');
+      this.$router.push('/sign-in');
+    }
   },
   mounted() {
     if (!this.userAddress) {
