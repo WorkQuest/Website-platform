@@ -63,7 +63,10 @@
     "size": "{_field_} ঘরের আকার অবশ্যই {size}KB এর ছোট হতে হবে",
     "decimal": "{_field_} ঘরে শুধুমাত্র দশমিক মান বসবে",
     "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???",
     "is": "The values do not match",
+    "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
@@ -207,7 +210,9 @@
     "confCode": "গুগল নিশ্চিতকরণ কোড",
     "placeholder": "স্থানধারী",
     "confCodeDesc": "Google প্রমাণীকরণ অ্যাপ থেকে 6-ডিজিটের কোড লিখুন",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "নিবন্ধন করুন",
@@ -400,7 +405,6 @@
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
     "questActive": "???:",
-    "questClosed": "???:",
     "questDispute": "???:",
     "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
@@ -1236,7 +1240,10 @@
     "thanksText": "",
     "emailVerificationCodeField": "???",
     "youCanAttachUpToNFiles": "???",
-    "youTryToAttachUnsupportedFileFormat": "???"
+    "youTryToAttachUnsupportedFileFormat": "???",
+    "connectError": "Error connection",
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token"
   },
   "ui": {
     "jobQuestors": "জব কোয়েস্টার",
@@ -1342,6 +1349,7 @@
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "বিতর্ক শুরু করুন",
     "approveQuest": "Quest অনুমোদন করুন",
     "starredMessages": "???",
@@ -1392,6 +1400,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "অধ্যয়নের স্থান",
@@ -1935,6 +1946,9 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "আহ্, কোনো ভুল হয়েছে। ডেটা পরীক্ষা করে আবার চেষ্টা করুন।",
     "emptyData": {
       "emptyQuests": "???",

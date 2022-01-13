@@ -63,7 +63,10 @@
     "size": "The {_field_} field size must be less than {size}KB",
     "decimal": "The {_field_} field must contain only decimal values",
     "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"Неверный формат телефона",
+    "formError": "Заполните все обязательные поля",
     "is": "The values do not match",
+    "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
@@ -207,7 +210,9 @@
     "confCode": "Google confirmation code",
     "placeholder": "Placeholder",
     "confCodeDesc": "Enter the 6-digit code from the Google Authentication app",
-    "confCodeField": "google verification"
+    "confCodeField": "google verification",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "Sign Up",
@@ -400,7 +405,6 @@
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
     "questActive": "???:",
-    "questClosed": "???:",
     "questDispute": "???:",
     "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
@@ -1236,7 +1240,10 @@
     "thanksText": "",
     "emailVerificationCodeField": "email verification",
     "youCanAttachUpToNFiles": "???",
-    "youTryToAttachUnsupportedFileFormat": "???"
+    "youTryToAttachUnsupportedFileFormat": "???",
+    "connectError": "Error connection",
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token"
   },
   "ui": {
     "jobQuestors": "Job Questors",
@@ -1342,6 +1349,7 @@
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "Open dispute",
     "approveQuest": "Approve quest",
     "starredMessages": "???",
@@ -1392,6 +1400,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "Place of studying",
@@ -1935,6 +1946,9 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "Oops, something went wrong. Check the data and try again.",
     "emptyData": {
       "emptyQuests": "???",

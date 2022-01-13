@@ -14,7 +14,7 @@ export default async function ({ app, redirect, store }) {
     if (access && refresh) {
       store.commit('user/setTokens', payload);
     }
-    if (!access || !refresh) {
+    if (!access || !refresh || !app.$cookies.get('userLogin')) {
       return redirect('/sign-in');
     }
     if (!Object.keys(userData).length) {
