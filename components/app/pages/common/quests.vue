@@ -2,8 +2,8 @@
   <div class="quests">
     <div class="quests__card card">
       <div
-        v-for="(item, i) in object.quests"
-        :key="i"
+        v-for="item in quests"
+        :key="item.id"
         class="card__content"
       >
         <div class="card__block block">
@@ -39,27 +39,30 @@
                   {{ `${item.user.firstName} ${item.user.lastName}` }}
                 </div>
               </div>
-              <quest-dd
-                v-if="item.status === questStatuses.Created"
-                class="block__icon block__icon_fav"
-                mode="vertical"
-                :item-id="item.id"
-              />
-              <div
-                v-if="[questStatuses.Closed, questStatuses.Dispute].includes(item.status)"
-                class="block__icon block__icon_fav star"
-                @click="setStar(item)"
-              >
-                <img
-                  class="star__hover"
-                  src="~assets/img/ui/star_hover.svg"
-                  alt=""
+              <div class="block__head-right">
+                <div
+                  class="block__icon block__icon_fav star"
+                  @click="clickFavoriteStar(item)"
                 >
-                <img
-                  :class="[{'star__default': !item.star},{'star__checked': item.star}]"
-                  :src="!item.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
-                  alt=""
-                >
+                  <img
+                    class="star__hover"
+                    src="~assets/img/ui/star_hover.svg"
+                    alt="favorite star"
+                  >
+                  <img
+                    :class="[{'star__default': !item.star},{'star__checked': item.star}]"
+                    :src="!item.star ? require('~/assets/img/ui/star_simple.svg') : require('~/assets/img/ui/star_checked.svg')"
+                    alt=""
+                  >
+                </div>
+                <div class="block__shared">
+                  <quest-dd
+                    v-if="item.status === questStatuses.Created"
+                    class="block__icon block__icon_fav"
+                    mode="vertical"
+                    :item-id="item.id"
+                  />
+                </div>
               </div>
             </div>
             <div
@@ -135,11 +138,13 @@
                   v-if="item.status === questStatuses.Done && item.assignedWorkerId === userData.id"
                   class="block__rating"
                 >
-                  <div class="block__rating block__rating_star">
+                  <div class="block__star">
                     <star-rating
+                      :quest-index="i"
                       :rating-type="'questPage'"
                       :stars-number="5"
                       :rating="getRating(item)"
+                      :is-disabled="item.yourReview !== null"
                       @input="showReviewModal($event, item)"
                     />
                   </div>
@@ -167,9 +172,9 @@ export default {
     itemRating,
   },
   props: {
-    object: {
-      type: Object,
-      default: () => {},
+    quests: {
+      type: Array,
+      default: () => [],
     },
   },
   data() {
@@ -200,14 +205,14 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    getRatingValue(item) {
+      return item.assignedWorker?.ratingStatistic?.status || 'noStatus';
+    },
     getAmountStyles(item) {
       return [
         { block__amount_green: item.status !== this.questStatuses.Done },
         { block__amount_gray: item.status === this.questStatuses.Done },
       ];
-    },
-    getRatingValue(item) {
-      return item.assignedWorker?.ratingStatistic?.status || 'noStatus';
     },
     goToProfile(id) {
       this.$router.push(`/profile/${id}`);
@@ -229,12 +234,8 @@ export default {
         alt: 'Fake quest preview',
       };
     },
-    async setStar(item) {
-      if (!item.star) {
-        await this.$store.dispatch('quests/setStarOnQuest', item.id);
-      } if (item.star) {
-        await this.$store.dispatch('quests/takeAwayStarOnQuest', item.id);
-      }
+    clickFavoriteStar(item) {
+      this.$emit('clickFavoriteStar', item);
     },
     cropTxt(str) {
       const maxLength = 120;
@@ -242,15 +243,16 @@ export default {
       return str;
     },
     progressQuestText(status) {
-      if (this.userRole) {
-        if (status === QuestStatuses.Active) return this.$t('quests.questActive');
-        if (status === QuestStatuses.Closed) return this.$t('quests.questClosed');
-        if (status === QuestStatuses.Dispute) return this.$t('quests.questDispute');
-        if (status === QuestStatuses.WaitWorker) return this.$t('quests.inProgressBy');
-        if (status === QuestStatuses.WaitConfirm) return this.$t('quests.questWaitConfirm');
-        if (status === QuestStatuses.Done) return this.$t('quests.finishedBy');
+      if (!this.userRole) return '';
+      switch (status) {
+        case QuestStatuses.Active: return this.$t('quests.questActive:');
+        case QuestStatuses.Closed: return this.$t('quests.questClosed:');
+        case QuestStatuses.Dispute: return this.$t('quests.questDispute:');
+        case QuestStatuses.WaitWorker: return this.$t('quests.inProgressBy');
+        case QuestStatuses.WaitConfirm: return this.$t('quests.questWaitConfirm:');
+        case QuestStatuses.Done: return this.$t('quests.finishedBy');
+        default: return '';
       }
-      return '';
     },
     async getResponsesToQuestForAuthUser() {
       if (this.userRole === 'worker') {
@@ -339,7 +341,7 @@ export default {
       return priority[index] || '';
     },
     getRating(item) {
-      return item?.review?.mark || 0;
+      return item?.yourReview?.mark || 0;
     },
   },
 };
@@ -663,6 +665,15 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
+  &__head-right {
+    display: flex;
+    width: 70px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  &__shared {
+    margin-left: 10px;
+  }
   &__icon {
     &_fav {
       cursor: pointer;
@@ -757,11 +768,6 @@ export default {
     }
   }
 }
-@include _1199 {
-  .quests {
-    padding: 10px;
-  }
-}
 @include _991 {
   .quests {
     .limit__container {
@@ -790,6 +796,7 @@ export default {
       grid-template-columns: auto;
       &__left {
         height: 200px;
+        border-radius: 6px 6px 0 0;
         img {
           border-radius: 6px;
           height: 100%;
@@ -804,7 +811,7 @@ export default {
     .block {
       &__actions{
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
       }
       &__btn {
         margin-top: 10px;
