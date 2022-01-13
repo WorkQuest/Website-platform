@@ -35,7 +35,6 @@ export default {
   methods: {
     hide() {
       this.CloseModal();
-      this.$router.push('/sign-in');
     },
   },
 };
