@@ -63,6 +63,8 @@
     "size": "“{_field_}”字段必须小于 {size}KB",
     "decimal": "“{_field_}”字段必须仅包含十进制值",
     "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???",
     "is": "The values do not match",
     "mnemonic": "Incorrect secret phrase"
     },
@@ -1342,6 +1344,7 @@
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "发起争议",
     "approveQuest": "批准 Quest",
     "starredMessages": "???",
@@ -1392,6 +1395,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "学习地点",
