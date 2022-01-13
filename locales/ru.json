@@ -1051,6 +1051,7 @@
     "messageSend": "Message Send",
     "questAgreed": "Quest Agreed",
     "requestSend": "Request sent",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "Send a request",
     "message": "Message",
     "bodyMessage": "Hello",
@@ -1244,7 +1245,8 @@
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
     "incorrectChain": "You choose incorrect chain!",
-    "selectToken": "Select token"
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "Job Questors",

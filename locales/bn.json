@@ -1051,6 +1051,7 @@
     "messageSend": "বার্তা পাঠানো হয়েছে",
     "questAgreed": "Quest-এ সম্মত",
     "requestSend": "অনুরোধ পাঠানো হয়েছে",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "একটি অনুরোধ পাঠান",
     "message": "বার্তা",
     "bodyMessage": "হ্যালো",
@@ -1244,7 +1245,8 @@
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
     "incorrectChain": "You choose incorrect chain!",
-    "selectToken": "Select token"
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "জব কোয়েস্টার",

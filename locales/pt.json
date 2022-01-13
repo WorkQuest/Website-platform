@@ -1051,6 +1051,7 @@
     "messageSend": "Mensagem enviada",
     "questAgreed": "Busca Acordada",
     "requestSend": "Pedido enviado",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "Enviar um pedido",
     "message": "Mensagem",
     "bodyMessage": "Olá",
@@ -1244,7 +1245,8 @@
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
     "incorrectChain": "You choose incorrect chain!",
-    "selectToken": "Select token"
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "Questores de emprego",
