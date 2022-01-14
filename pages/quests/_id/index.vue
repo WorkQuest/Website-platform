@@ -521,7 +521,7 @@ export default {
     toRaisingViews() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
         this.$router.push({ path: `/edit-quest/${this.questData.id}`, query: { mode: 'raise' } });
-        this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
+        this.$store.commit('quests/setCurrentStepEditQuest', 2);
       } else {
         this.showToastWrongStatusRaisingViews();
       }

@@ -100,7 +100,7 @@ export default {
     toEditQuest() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
         this.$router.push(`/edit-quest/${this.itemId}`);
-        this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
+        this.setCurrentStepEditQuest(1);
       } else {
         this.showToastWrongStatusEdit();
       }
@@ -109,10 +109,13 @@ export default {
       // TODO: Добавить тост или модалку
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
         this.$router.push({ path: `/edit-quest/${this.itemId}`, query: { mode: 'raise' } });
-        this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
+        this.setCurrentStepEditQuest(2);
       } else {
         this.showToastWrongStatusRaisingViews();
       }
+    },
+    setCurrentStepEditQuest(step) {
+      this.$store.commit('quests/setCurrentStepEditQuest', step);
     },
     showToastWrongStatusEdit() {
       return this.$store.dispatch('main/showToast', {

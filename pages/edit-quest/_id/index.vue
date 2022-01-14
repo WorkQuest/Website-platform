@@ -133,7 +133,7 @@
             <div class="btn__create">
               <base-btn
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
-                @click="handleSubmit(toRiseViews)"
+                @click="handleSubmit(toRiseViews(2))"
               >
                 {{ $t('quests.editAQuest') }}
               </base-btn>
@@ -473,8 +473,8 @@ export default {
         this.ads.currentAdPrice = '';
       }
     },
-    toRiseViews() {
-      this.$store.commit('quests/setCurrentStepEditQuest', 2);
+    toRiseViews(step) {
+      this.$store.commit('quests/setCurrentStepEditQuest', step);
     },
     showPaymentModal() {
       this.ShowModal({
@@ -486,7 +486,7 @@ export default {
       if (this.mode === 'raise') {
         this.goBack();
       } else {
-        this.$store.commit('quests/setCurrentStepEditQuest', 1);
+        this.toRiseViews(1);
       }
     },
     goBack() {
@@ -557,7 +557,7 @@ export default {
         this.showModalEditQuest();
         this.showToastEdited();
         await this.$router.push(`/quests/${questId}`);
-        await this.$store.commit('quests/setCurrentStepEditQuest', 1);
+        this.toRiseViews(1);
       }
     },
     showModalEditQuest() {
