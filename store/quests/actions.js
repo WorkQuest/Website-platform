@@ -40,9 +40,6 @@ export default {
   async getCurrentStepCreateQuest({ commit }, data) {
     commit('setCurrentStepCreateQuest', data);
   },
-  async getCurrentStepEditQuest({ commit }, data) {
-    commit('setCurrentStepEditQuest', data);
-  },
   setMapBounds({ commit }, payload) {
     commit('setMapBounds', payload);
   },
