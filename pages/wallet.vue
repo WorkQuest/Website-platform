@@ -485,11 +485,6 @@ export default {
   }
 }
 @include _480 {
-  .user {
-    &__wallet {
-      font-size: 12px;
-    }
-  }
   .balance {
     &__currency {
       display: flex;
