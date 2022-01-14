@@ -5,7 +5,7 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('wallet.wallet') }}</span>
           <div class="wallet__address">
-            <span class="user__wallet">{{ userAddress }}</span>
+            <span class="user__wallet">{{ userAddress.slice(0, 8) + '...' + userAddress.slice(-8) }}</span>
             <button
               v-clipboard:copy="userAddress"
               v-clipboard:success="ClipboardSuccessHandler"
@@ -26,6 +26,11 @@
               <span class="balance__currency">
                 <span class="balance__currency-text">
                   {{ balance[selectedToken].balance + ' ' + selectedToken }}
+                </span>
+                <span class="balance__usd_mobile">
+                  <span v-if="selectedToken === tokenSymbols.WUSD">
+                    {{ `$ ${balance[tokenSymbols.WUSD].balance}` }}
+                  </span>
                 </span>
                 <base-dd
                   v-model="ddValue"
@@ -360,6 +365,7 @@ export default {
     line-height: 130%;
 
     display: flex;
+    align-items: center;
     justify-content: space-between;
 
     @include _767 {
@@ -385,6 +391,13 @@ export default {
     @include text-simple;
     color: $blue;
     height: 24px;
+    &_mobile {
+      display: none;
+      height: 33px;
+      color: $blue;
+      font-size: 18px;
+      font-weight: normal;
+    }
   }
 }
 
@@ -441,7 +454,6 @@ export default {
 
 @include _1199 {
   .wallet {
-    margin: 0 20px 0 20px;
     &__info {
       display: flex;
       flex-direction: column-reverse;
@@ -468,18 +480,25 @@ export default {
   .card {
     grid-template-columns: repeat(2, 1fr);
   }
-}
-@include _480 {
-  .user {
-    &__wallet {
-      font-size: 13px;
-    }
+  .balance__bottom {
+    gap: 10px;
   }
 }
 @include _480 {
-  .user {
-    &__wallet {
-      font-size: 12px;
+  .balance {
+    &__currency {
+      display: flex;
+      flex-direction: column;
+      align-items: unset;
+    }
+    &__token {
+      margin-top: 5px;
+    }
+  }
+  .balance__usd {
+    display: none;
+    &_mobile {
+      display: block;
     }
   }
 }
