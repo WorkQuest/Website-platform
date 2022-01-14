@@ -20,7 +20,7 @@
           target="_blank"
           class="table__url"
         >
-          {{ el.item.tx_hash.slice(0, 8) + '...' + el.item.tx_hash.slice(-4) }}
+          {{ CutTxn(el.item.tx_hash, 8, 4) }}
         </a>
       </template>
       <template #cell(status)="el">
@@ -42,7 +42,7 @@
           target="_blank"
           class="table__url"
         >
-          {{ el.item.from_address.slice(0, 4) + '...' + el.item.from_address.slice(-4) }}
+          {{ CutTxn(el.item.from_address, 4, 4) }}
         </a>
       </template>
       <template #cell(to_address)="el">
@@ -51,7 +51,7 @@
           target="_blank"
           class="table__url"
         >
-          {{ el.item.to_address.slice(0, 4) + '...' + el.item.to_address.slice(-4) }}
+          {{ CutTxn(el.item.to_address, 4, 4) }}
         </a>
       </template>
       <template #cell(transaction_fee)="el">

@@ -129,8 +129,9 @@ Vue.mixin({
         navigator.geolocation.getCurrentPosition(this.FormatPosition);
       }
     },
-    CutTxn(txn) {
-      return `${txn.slice(0, 10)}...${txn.slice(-10)}`;
+    CutTxn(txn, first = 10, second = 10) {
+      if (!txn) return '';
+      return `${txn.slice(0, first)}...${txn.slice(-second)}`;
     },
     FormatPosition(position) {
       const payload = {

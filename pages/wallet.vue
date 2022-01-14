@@ -210,9 +210,6 @@ export default {
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
   },
   methods: {
-    cutString(s, first = 4) {
-      return `${s.slice(0, first)}...${s.slice(-4)}`;
-    },
     async getTransactions() {
       await this.$store.dispatch('wallet/getTransactions', {
         limit: this.txsPerPage,
