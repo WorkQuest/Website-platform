@@ -1,6 +1,7 @@
 <template>
   <div class="container__status status">
     <span
+      v-if="rating !== 'noStatus'"
       class="status__level"
       :class="`status__level_${rating}`"
     >

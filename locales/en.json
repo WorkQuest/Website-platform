@@ -63,7 +63,10 @@
     "size": "The {_field_} field size must be less than {size}KB",
     "decimal": "The {_field_} field must contain only decimal values",
     "decimalPlaces": "The {_field_} field must contain maximum {places} decimal places",
+    "invalidPhone":"Invalid phone number",
+    "formError": "Fill in all required fields",
     "is": "The values do not match",
+    "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
@@ -207,7 +210,9 @@
     "confCode": "Google confirmation code",
     "placeholder": "Placeholder",
     "confCodeDesc": "Enter the 6-digit code from the Google Authentication app",
-    "confCodeField": "google verification"
+    "confCodeField": "google verification",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "Sign Up",
@@ -1066,6 +1071,7 @@
     "addCard": "Add Card",
     "inviteSend": "Invite sent",
     "questCreated": "Quest Created",
+    "questUpdated": "Quest Updated",
     "invitation": "Invitation",
     "chooseQuest": "Choose Quest",
     "raiseViews": "Raise views",
@@ -1238,7 +1244,9 @@
     "youCanAttachUpToNFiles": "You can attach up to {n} files",
     "youTryToAttachUnsupportedFileFormat": "You try to attach unsupported file format",
     "connectError": "Error connection",
-    "incorrectChain": "You choose incorrect chain !"
+    "incorrectChain": "You choose incorrect chain !",
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "Job Questors",
@@ -1344,6 +1352,7 @@
     }
   },
   "chat": {
+    "reason": "Please add reason",
     "openDispute": "Open dispute",
     "approveQuest": "Approve quest",
     "starredMessages": "Starred messages",
@@ -1394,6 +1403,9 @@
     "address": "address",
     "lastName": "last name",
     "firstName": "first name",
+    "companyName":"company",
+    "ceoName":"ceo",
+    "websiteName":"website",
     "enterPhoneNumber": "Please enter your phone number",
     "enterCurrentLocation": "Please select current location",
     "placeOfStudying": "Place of studying",
@@ -1937,6 +1949,9 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "Oops, something went wrong. Check the data and try again.",
     "emptyData": {
       "emptyQuests": "Oops, there's no quests here yet",

@@ -65,10 +65,10 @@ export const getIsWalletConnected = () => {
 };
 
 /**
- * Check wallet for current address
- * @param userAddress from api
- * @param userPassword from user
- * @returns {result: *, ok: boolean}
+ * * Check wallet for current address
+ * @param userAddress
+ * @param userPassword
+ * @returns {{msg: string, code: number, data: null, ok: boolean}|{result: *, ok: boolean}}
  */
 export const connectWallet = (userAddress, userPassword) => {
   if (!userPassword || !userAddress) return error();
@@ -143,6 +143,7 @@ export const getBalance = async () => {
     return error();
   }
 };
+// Send WUSD
 export const transfer = async (recipient, value) => {
   try {
     value = new BigNumber(value).shiftedBy(18).toString();
@@ -164,6 +165,27 @@ export const transfer = async (recipient, value) => {
     return success(txRes);
   } catch (e) {
     console.error('transfer error', e);
+    return error();
+  }
+};
+export const getTransferFeeData = async (recipient, value) => {
+  try {
+    value = new BigNumber(value).shiftedBy(18).toString();
+    const [gasPrice, gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      web3.eth.estimateGas({
+        from: wallet.address,
+        to: recipient,
+        value,
+      }),
+    ]);
+    return success({
+      gasPrice,
+      gasEstimate,
+      fee: new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString(),
+    });
+  } catch (e) {
+    console.error('txFee error', e);
     return error();
   }
 };
@@ -199,6 +221,24 @@ export const transferToken = async (recipient, value) => {
     return success(res);
   } catch (e) {
     console.error(e.message);
+    return error();
+  }
+};
+export const getContractFeeData = async (_method, _abi, _contractAddress, recipient, value) => {
+  try {
+    value = new BigNumber(value).shiftedBy(18).toString();
+    const inst = new web3.eth.Contract(_abi, _contractAddress);
+    const [gasPrice, gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      inst.methods[_method].apply(null, [recipient, value]).estimateGas({ from: wallet.address }),
+    ]);
+    return success({
+      gasPrice,
+      gasEstimate,
+      fee: new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString(),
+    });
+  } catch (e) {
+    console.error('Get contract fee data error. Method:', _method);
     return error();
   }
 };

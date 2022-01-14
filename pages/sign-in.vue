@@ -208,7 +208,7 @@ export default {
       });
       if (response?.ok) {
         this.userStatus = response.result.userStatus;
-        if (this.userStatus === UserStatuses.Unconfirmed) { // Unconfirmed account
+        if (this.userStatus === UserStatuses.Unconfirmed && !sessionStorage.getItem('confirmToken')) { // Unconfirmed account w/o confirm token
           await this.$store.dispatch('main/showToast', {
             title: this.$t('registration.emailConfirmTitle'),
             text: this.$t('registration.emailConfirm'),
@@ -248,7 +248,7 @@ export default {
         if (sessionMnemonic) {
           const wallet = createWallet(sessionMnemonic);
           if (wallet && wallet.address.toLowerCase() === this.userAddress) {
-            this.saveToStore(wallet);
+            this.saveToStorage(wallet);
             this.redirectUser();
             this.SetLoader(false);
             return;
@@ -260,7 +260,7 @@ export default {
           const mnemonic = decryptStringWitheKey(storageMnemonic, this.model.password);
           const wallet = createWallet(mnemonic);
           if (wallet && wallet.address.toLowerCase() === this.userAddress) {
-            this.saveToStore(wallet);
+            this.saveToStorage(wallet);
             this.redirectUser();
             this.SetLoader(false);
             return;
@@ -273,7 +273,7 @@ export default {
           text: this.$t('messages.mnemonic'),
         });
         // Reset mnemonic for address -> importing
-        this.saveToStore({ address: this.userAddress, mnemonic: '' });
+        this.saveToStorage({ address: this.userAddress, mnemonic: {} });
         this.step = WalletState.ImportMnemonic;
       }
       this.SetLoader(false);
@@ -284,7 +284,7 @@ export default {
         publicKey: wallet.publicKey,
       });
       if (res.ok) {
-        this.saveToStore(wallet);
+        this.saveToStorage(wallet);
         this.redirectUser();
         return;
       }
@@ -304,7 +304,7 @@ export default {
       }
       // All ok
       if (wallet.address.toLowerCase() === this.userAddress) {
-        this.saveToStore(wallet);
+        this.saveToStorage(wallet);
         this.redirectUser();
         return;
       }
@@ -314,7 +314,7 @@ export default {
         text: this.$t('messages.mnemonic'),
       });
     },
-    saveToStore(wallet) {
+    saveToStorage(wallet) {
       localStorage.setItem('mnemonic', JSON.stringify({
         ...JSON.parse(localStorage.getItem('mnemonic')),
         [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
@@ -327,10 +327,19 @@ export default {
         ...JSON.parse(sessionStorage.getItem('mnemonic')),
         [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
       }));
+      this.$store.dispatch('wallet/connectWallet', { userAddress: wallet.address, userPassword: this.model.password });
     },
     redirectUser() {
       this.$store.dispatch('wallet/setUserAddress', this.userAddress);
       this.addressAssigned = true;
+      this.$cookies.set('userLogin', true);
+      // redirect to confirm access if token exists & unconfirmed account
+      const confirmToken = JSON.parse(sessionStorage.getItem('confirmToken'));
+      if (this.userStatus === UserStatuses.Unconfirmed && confirmToken) {
+        this.$router.push(`/confirm/?token=${confirmToken}`);
+        return;
+      }
+      sessionStorage.removeItem('confirmToken');
       if (this.userData.role === 'employer') {
         this.$router.push('/workers');
       } else if (this.userData.role === 'worker') {

@@ -63,7 +63,10 @@
     "size": "“{_field_}”字段必须小于 {size}KB",
     "decimal": "“{_field_}”字段必须仅包含十进制值",
     "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???",
     "is": "The values do not match",
+    "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase"
     },
   "labels": {
@@ -207,7 +210,9 @@
     "confCode": "Google 确认码",
     "placeholder": "占位符",
     "confCodeDesc": "输入来自 Google 身份验证器应用的 6 位代码",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "注册",
@@ -400,7 +405,6 @@
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
     "questActive": "???:",
-    "questClosed": "???:",
     "questDispute": "???:",
     "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
@@ -1047,6 +1051,7 @@
     "messageSend": "已发送消息",
     "questAgreed": "已同意 Quest",
     "requestSend": "请求已发送",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "发送请求",
     "message": "消息",
     "bodyMessage": "您好",
@@ -1066,6 +1071,7 @@
     "addCard": "添加银行卡",
     "inviteSend": "邀请已发送",
     "questCreated": "已创建 Quest",
+    "questUpdated": "???",
     "invitation": "邀请",
     "chooseQuest": "选择 Quest",
     "raiseViews": "提高浏览量",
@@ -1236,7 +1242,11 @@
     "thanksText": "",
     "emailVerificationCodeField": "???",
     "youCanAttachUpToNFiles": "???",
-    "youTryToAttachUnsupportedFileFormat": "???"
+    "youTryToAttachUnsupportedFileFormat": "???",
+    "connectError": "Error connection",
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "求职者",
@@ -1342,6 +1352,7 @@
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "发起争议",
     "approveQuest": "批准 Quest",
     "starredMessages": "???",
@@ -1392,6 +1403,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "学习地点",
@@ -1935,6 +1949,9 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "哎呀，出错了。检查数据并重试。",
     "emptyData": {
       "emptyQuests": "???",

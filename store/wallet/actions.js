@@ -2,9 +2,9 @@ import {
   connectWallet,
   disconnect,
   fetchContractData,
-  getBalance,
+  getBalance, getContractFeeData,
   getIsWalletConnected,
-  getStyledAmount,
+  getStyledAmount, getTransferFeeData,
   setWalletAddress,
   transfer, transferToken,
 } from '~/utils/wallet';
@@ -41,6 +41,7 @@ export default {
    * Use when checkWalletConnected from confirmPassword modal
    * @param commit
    * @param getters
+   * @param userAddress
    * @param userPassword
    */
   connectWallet({ commit }, { userAddress, userPassword }) {
@@ -82,6 +83,9 @@ export default {
   async transfer({ commit }, { recipient, value }) {
     return await transfer(recipient, value);
   },
+  async getTransferFeeData({ commit }, { recipient, value }) {
+    return await getTransferFeeData(recipient, value);
+  },
   /**
    * Send transfer for WQT token
    * @param commit
@@ -90,5 +94,20 @@ export default {
    */
   async transferWQT({ commit }, { recipient, value }) {
     return await transferToken(recipient, value);
+  },
+  /**
+   * Get Fee Data from contract method
+   * @param commit
+   * @param method
+   * @param _abi
+   * @param contractAddress
+   * @param recipient
+   * @param value
+   * @returns {Promise<{result: *, ok: boolean}|{msg: string, code: number, data: null, ok: boolean}|undefined>}
+   */
+  async getContractFeeData({ commit }, {
+    method, _abi, contractAddress, recipient, value,
+  }) {
+    return await getContractFeeData(method, _abi, contractAddress, recipient, value);
   },
 };

@@ -784,7 +784,6 @@ export default {
   async mounted() {
     await this.initWSListeners();
     await this.getChats();
-    this.loginCheck();
     this.GetLocation();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
     this.currentLocale = this.$i18n.localeProperties.code;
@@ -798,9 +797,6 @@ export default {
   methods: {
     async getChats() {
       await this.$store.dispatch('chat/getChatsList', this.chatFilter);
-    },
-    loginCheck() {
-      localStorage.setItem('userLogin', true);
     },
     async initWSListeners() {
       const { chatConnection, notifsConnection } = this.connections;

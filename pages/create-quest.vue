@@ -140,11 +140,11 @@
           v-if="step === 2"
           class="page"
         >
-          <div class="page btn-container__left">
+          <div class="page btn-container btn-container__left">
             <div class="btn-container__btn_back">
               <base-btn
-                :mode="'back'"
-                @click="goBack()"
+                mode="back"
+                @click="goBack"
               >
                 {{ $t('meta.back') }}
                 <template v-slot:left>
@@ -538,6 +538,7 @@ export default {
     showModalCreatedQuest() {
       this.ShowModal({
         key: modals.questCreated,
+        title: this.$t('modals.questCreated'),
       });
     },
     showToastCreated() {
@@ -567,13 +568,20 @@ export default {
   margin: 20px 0 0 0;
   &__left {
     justify-content: flex-start;
-    margin: 35px 0 0 0;
+    margin: 30px 0 0 0;
   }
   &__btn {
     width: 200px;
     margin: 0 10px 0 0;
     &_back {
-      width: 50px;
+      display: flex;
+      justify-content: left;
+      align-items: center;
+
+      & .icon-chevron_big_left {
+        font-weight: 800;
+        font-size: 24px;
+      }
     }
     &:last-child {
       margin: 0;

@@ -177,4 +177,19 @@ export default {
     margin-top: 25px;
   }
 }
+@include _1199 {
+  .quests__body {
+    padding: 0 10px;
+  }
+}
+@include _767 {
+  .quests__content {
+    grid-template-columns: repeat(3, auto);
+  }
+}
+@include _480 {
+  .quests__content {
+    grid-template-columns: repeat(2, auto);
+  }
+}
 </style>
