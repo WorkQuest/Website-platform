@@ -1052,6 +1052,7 @@
     "messageSend": "Pesan Terkirim",
     "questAgreed": "Quest Disetujui",
     "requestSend": "Permintaan terkirim",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "Kirim permintaan",
     "message": "Pesan",
     "bodyMessage": "Halo",
@@ -1071,6 +1072,7 @@
     "addCard": "Tambahkan Kartu",
     "inviteSend": "Undangan terkirim",
     "questCreated": "Quest Dibuat",
+    "questUpdated": "???",
     "invitation": "Undangan",
     "chooseQuest": "Pilih Quest",
     "raiseViews": "Tingkatkan tampilan",
@@ -1244,7 +1246,8 @@
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
     "incorrectChain": "You choose incorrect chain!",
-    "selectToken": "Select token"
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "Questor Pekerjaan",

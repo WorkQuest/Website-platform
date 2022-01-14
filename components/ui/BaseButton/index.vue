@@ -23,13 +23,13 @@
     @click="$emit('click')"
   >
     {{ text }}
-    <div class="icon-btn_left">
+    <span class="icon-btn_left">
       <slot name="left" />
-    </div>
+    </span>
     <slot />
-    <div class="icon-btn_right">
+    <span class="icon-btn_right">
       <slot name="right" />
-    </div>
+    </span>
   </button>
 </template>
 <script>
@@ -93,10 +93,10 @@ export default {
 .icon {
   &-btn {
     &_left {
-      margin: 0 5px 0 0;
+      padding-right: 5px;
     }
     &_right {
-      margin: 0 0 0 5px;
+      padding-left: 5px;
     }
   }
 }
@@ -206,12 +206,14 @@ export default {
     }
   }
   &_back {
+    padding: 0 17px;
     transition: .3s !important;
     background-color: transparent !important;
-    color: $black500 !important;
+    color: $black800 !important;
+    opacity: 1;
     &:hover {
       background-color: transparent !important;
-      color: $black500 !important;
+      opacity: 0.8;
     }
   }
   &_approve {

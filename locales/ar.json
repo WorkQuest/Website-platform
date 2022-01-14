@@ -1052,6 +1052,7 @@
     "messageSend": "إرسال رسالة",
     "questAgreed": "تمت الموافقة على الطلب",
     "requestSend": "تم إرسال الطلب",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "إرسال طلب",
     "message": "رسالة",
     "bodyMessage": "مرحبًا",
@@ -1071,6 +1072,7 @@
     "addCard": "إضافة بطاقة",
     "inviteSend": "تم إرسال الدعوة",
     "questCreated": "تم إنشاء الطلب",
+    "questUpdated": "???",
     "invitation": "الدعوة",
     "chooseQuest": "اختيار الطلب",
     "raiseViews": "زيادة المشاهدات",
@@ -1244,7 +1246,8 @@
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
     "incorrectChain": "You choose incorrect chain!",
-    "selectToken": "Select token"
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "أصحاب الوظائف",

@@ -1052,6 +1052,7 @@
     "messageSend": "मैसेज भेजा गया",
     "questAgreed": "Quest सहमति",
     "requestSend": "अनुरोध भेजा गया",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "अनुरोध भेजें",
     "message": "मैसेज",
     "bodyMessage": "नमस्ते",
@@ -1071,6 +1072,7 @@
     "addCard": "कार्ड जोड़ें",
     "inviteSend": "इन्वाइट भेजा गया",
     "questCreated": "Quest बनाई गई",
+    "questUpdated": "???",
     "invitation": "इन्विटेशन",
     "chooseQuest": "Quest चुनें",
     "raiseViews": "व्यू बढ़ाएं",
@@ -1244,7 +1246,8 @@
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
     "incorrectChain": "You choose incorrect chain!",
-    "selectToken": "Select token"
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "जॉब तलाशकर्ता",
