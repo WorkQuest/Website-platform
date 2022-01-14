@@ -994,6 +994,7 @@
     "pressSaveBtn": "请按“保存”按钮",
     "imageLoadedSuccessful": "图片加载成功",
     "success": "成功",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "您的角色已更改",
     "chooseSkills": "选择必要的技能",
     "securityCheck": "安全检查",
@@ -1349,7 +1350,8 @@
       "timestamp": "时间戳",
       "transferred": "已转移代币",
       "value": "数量",
-      "trxFee": "交易费用"
+      "trxFee": "交易费用",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {

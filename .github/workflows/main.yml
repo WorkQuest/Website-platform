@@ -51,6 +51,7 @@ jobs:
           echo WQT_STAKING_NATIVE=${{ secrets.WQT_STAKING_NATIVE }} >> .env
 
           echo WQ_PROVIDER=${{ secrets.WQ_PROVIDER }} >> .env
+          echo WQ_EXPLORER=${{ secrets.WQ_EXPLORER }} >> .env
           echo WQT_TOKEN=${{ secrets.WQT_TOKEN }} >> .env
 
           echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
@@ -120,6 +121,7 @@ jobs:
           echo WBNB_TOKEN=${{ secrets.WBNB_TOKEN }} >> .env
 
           echo WQ_PROVIDER=${{ secrets.WQ_PROVIDER }} >> .env
+          echo WQ_EXPLORER=${{ secrets.WQ_EXPLORER }} >> .env
           echo WQT_TOKEN=${{ secrets.WQT_TOKEN }} >> .env
 
           echo PENSION_FUND=${{ secrets.PENSION_FUND }} >> .env
@@ -183,6 +185,7 @@ jobs:
           echo WQT_STAKING_NATIVE=${{ secrets.WQT_STAKING_NATIVE }} >> .env
 
           echo WQ_PROVIDER=${{ secrets.WQ_PROVIDER }} >> .env
+          echo WQ_EXPLORER=${{ secrets.WQ_EXPLORER }} >> .env
           echo WQT_TOKEN=${{ secrets.WQT_TOKEN }} >> .env
 
           echo WETH_TOKEN=${{ secrets.WETH_TOKEN }} >> .env
