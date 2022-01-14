@@ -86,6 +86,9 @@ export default {
       return;
     }
     this.toDecrypt = mnemonic;
+
+    this.SetLoader(false);
+    this.CloseModal();
   },
   methods: {
     async submit() {

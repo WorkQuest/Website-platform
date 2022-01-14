@@ -994,6 +994,7 @@
     "pressSaveBtn": "يُرجى الضغط على زر الحفظ",
     "imageLoadedSuccessful": "تم تحميل الصورة بنجاح",
     "success": "تم بنجاح",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "تم تغيير دورك",
     "chooseSkills": "اختر المهارات الضرورية",
     "securityCheck": "الفحص الأمني",
@@ -1349,7 +1350,8 @@
       "timestamp": "الطابع الزمني",
       "transferred": "الرموز المحوَّلة",
       "value": "الكمية",
-      "trxFee": "رسوم المعاملة"
+      "trxFee": "رسوم المعاملة",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {

@@ -994,6 +994,7 @@
     "pressSaveBtn": "অনুগ্রহ করে সংরক্ষণ বোতাম চাপুন",
     "imageLoadedSuccessful": "ছবি লোড করা সফল হয়েছে",
     "success": "সাফল্য",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "আপনার ভূমিকা পরিবর্তন করা হয়েছে",
     "chooseSkills": "প্রয়োজনীয় দক্ষতা নির্বাচন করুন",
     "securityCheck": "নিরাপত্তা পরীক্ষা",
@@ -1349,7 +1350,8 @@
       "timestamp": "টাইমস্ট্যাম্প",
       "transferred": "স্থানান্তরিত টোকেন",
       "value": "পরিমাণ",
-      "trxFee": "লেনদেন ফি"
+      "trxFee": "লেনদেন ফি",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {
