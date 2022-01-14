@@ -134,7 +134,7 @@ export default {
   border: 1px solid $blue;
   box-shadow: 0 4px 9px rgba(0, 0, 0, 0.15);
   background: white;
-  width: 400px;
+  max-width: 400px;
   padding: 20px;
   margin: 0 auto;
   border-radius: 16px;
@@ -148,6 +148,11 @@ export default {
   }
   &__password {
     margin-top: 20px;
+  }
+}
+@include _767 {
+  .page {
+    padding: 30px !important;
   }
 }
 </style>
