@@ -270,10 +270,8 @@ export default {
         query[`specializations[${i}]`] = `${this.randomSpec}.${skills[i]}`;
       }
       await this.$store.dispatch('quests/getAllQuests', query);
-      if (this.otherQuests) {
-        const questsData = this.otherQuests.filter((quest) => quest.id !== this.questData.id);
-        this.sameQuest.push(questsData[Math.floor(Math.random() * questsData.length)]);
-      }
+      const questsData = this.otherQuests.filter((quest) => quest.id !== this.questData.id);
+      if (questsData.length) this.sameQuest.push(questsData[Math.floor(Math.random() * questsData.length)]);
     },
     setActionBtnsArr() {
       let arr = [];
