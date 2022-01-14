@@ -600,6 +600,9 @@ export default {
       display: grid;
       grid-template-columns: 1fr;
       grid-gap: 30px;
+      &_hidden {
+        display: none;
+      }
     }
     &__items {
       flex-direction: column;

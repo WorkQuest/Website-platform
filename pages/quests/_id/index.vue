@@ -269,7 +269,7 @@ export default {
     setActionBtnsArr() {
       let arr = [];
 
-      const { questChat } = this.questData;
+      const { questData: { questChat }, userData } = this;
 
       if (this.userRole === 'employer') {
         const {
@@ -343,7 +343,7 @@ export default {
         const {
           ADChat, Active, Rejected, Created, Dispute, Invited, WaitWorker,
         } = InfoModeWorker;
-        const { questData: { assignedWorkerId, response }, userData, infoDataMode } = this;
+        const { questData: { assignedWorkerId, response }, infoDataMode } = this;
 
         switch (infoDataMode) {
           case ADChat: {
@@ -455,7 +455,7 @@ export default {
         }
       }
 
-      if (questChat) {
+      if (questChat?.workerId === userData.id || questChat?.employerId === userData.id) {
         arr.push({
           name: this.$t('btn.goToChat'),
           class: 'base-btn_goToChat',
@@ -520,7 +520,7 @@ export default {
     },
     toRaisingViews() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
-        this.$router.push(`/edit-quest/${this.questData.id}`);
+        this.$router.push({ path: `/edit-quest/${this.questData.id}`, query: { mode: 'raise' } });
         this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
       } else {
         this.showToastWrongStatusRaisingViews();

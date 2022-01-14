@@ -83,15 +83,18 @@ export default {
       confirmCode: '',
     };
   },
-  async mounted() {
-    this.SetLoader(true);
+  mounted() {
     const { token } = this.$route.query;
     if (!token) {
       this.$router.push('/sign-in');
     } else {
+      if (!this.$cookies.get('access') && !this.$cookies.get('refresh')) {
+        sessionStorage.setItem('confirmToken', JSON.stringify(token));
+        this.$router.push('/sign-in');
+        return;
+      }
       this.confirmCode = token;
     }
-    this.SetLoader(false);
   },
   methods: {
     showPrivacy(role) {
