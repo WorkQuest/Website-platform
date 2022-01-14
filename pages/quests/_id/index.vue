@@ -341,9 +341,11 @@ export default {
         }
       } else {
         const {
-          ADChat, Active, Rejected, Created, Dispute, Invited, WaitWorker,
+          ADChat, Active, Created, Dispute, Invited, WaitWorker,
         } = InfoModeWorker;
         const { questData: { assignedWorkerId, response }, infoDataMode } = this;
+
+        console.log(infoDataMode);
 
         switch (infoDataMode) {
           case ADChat: {
@@ -386,15 +388,14 @@ export default {
             }];
             break;
           }
-          // case Rejected:
           case Created: {
             arr = [{
-              name: this.$t(`btn.${Created ? 'sendARequest' : 'responded'}`),
-              class: 'base-btn_dispute',
+              name: this.$t('btn.sendARequest'),
+              class: '',
               mode: '',
               funcKey: 'sendARequestOnQuest',
               icon: '',
-              disabled: response,
+              disabled: false,
             }];
             break;
           }
@@ -412,22 +413,22 @@ export default {
           case Invited: {
             if (response.status === ResponseStatus.rejected || (assignedWorkerId && assignedWorkerId !== userData.id)) break;
 
-            arr = [{
-              name: this.$t('btn.agree'),
-              class: '',
-              mode: '',
-              funcKey: 'acceptQuestInvitation',
-              icon: '',
-              disabled: false,
-            },
-            {
-              name: this.$t('btn.disagree'),
-              class: '',
-              mode: 'outline',
-              funcKey: 'rejectQuestInvitation',
-              icon: '',
-              disabled: false,
-            }].concat(arr);
+            // arr = [{
+            //   name: this.$t('btn.agree'),
+            //   class: '',
+            //   mode: '',
+            //   funcKey: 'acceptQuestInvitation',
+            //   icon: '',
+            //   disabled: false,
+            // },
+            // {
+            //   name: this.$t('btn.disagree'),
+            //   class: '',
+            //   mode: 'outline',
+            //   funcKey: 'rejectQuestInvitation',
+            //   icon: '',
+            //   disabled: false,
+            // }].concat(arr);
             break;
           }
           case WaitWorker: {
