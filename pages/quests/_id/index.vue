@@ -134,22 +134,24 @@
             <h2 class="quest__spec">
               {{ $t('quests.otherQuestsSpec') }}
               <nuxt-link
-                :to="`/quests?specialization=${randomSpec}`"
+                :to="`/quests?specialization=${randomSpec}&statuses=0`"
                 class="spec__link"
               >
                 "{{ $t(`filters.items.${randomSpec}.title`) }}"
               </nuxt-link>
             </h2>
+            <div class="quest__count">
+              {{ `${otherQuestsCount} ${$t('quests.questsSmall')}` }}
+            </div>
           </div>
           <div class="quest__card">
             <quests
               v-if="otherQuestsCount"
-              :quests="otherQuests"
+              :quests="sameQuest"
             />
             <emptyData
               v-else
-              :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
-              :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+              :description="$t(`errors.emptyData.emptyQuests`)"
             />
           </div>
         </div>
@@ -195,6 +197,7 @@ export default {
         notSelected: '/img/app/marker_red.svg',
       },
       actionBtnsArr: [],
+      sameQuest: [],
     };
   },
   computed: {
@@ -204,8 +207,8 @@ export default {
       userRole: 'user/getUserRole',
       infoDataMode: 'quests/getInfoDataMode',
       userData: 'user/getUserData',
-      otherQuests: 'quests/getAllQuests',
       otherQuestsCount: 'quests/getAllQuestsCount',
+      otherQuests: 'quests/getAllQuests',
     }),
     InfoModeEmployer() {
       return InfoModeEmployer;
@@ -259,203 +262,23 @@ export default {
   methods: {
     async getSameQuests() {
       const skills = Object.keys(this.$t(`filters.items.${this.randomSpec}.sub`));
-      const query = {};
+      const query = {
+        limit: 10,
+        statuses: [0],
+      };
       for (let i = 0; i < skills.length; i += 1) {
         query[`specializations[${i}]`] = `${this.randomSpec}.${skills[i]}`;
       }
-      query.limit = 1;
       await this.$store.dispatch('quests/getAllQuests', query);
+      const questsData = this.otherQuests.filter((quest) => quest.id !== this.questData.id);
+      if (questsData.length) this.sameQuest.push(questsData[Math.floor(Math.random() * questsData.length)]);
     },
     setActionBtnsArr() {
-      let arr = [];
+      const { questData: { questChat, assignedWorkerId }, userData, userRole } = this;
 
-      const { questData: { questChat }, userData } = this;
+      const arr = userRole === UserRole.EMPLOYER ? this.setEmployerBtnsArr() : this.setWorkerBtnsArr();
 
-      if (this.userRole === 'employer') {
-        const {
-          WaitConfirm, Dispute, Created, Active,
-        } = InfoModeEmployer;
-
-        switch (this.infoDataMode) {
-          case Created: {
-            arr = [{
-              name: this.$t('quests.raiseViews'),
-              class: '',
-              mode: '',
-              funcKey: 'toRaisingViews',
-              icon: '',
-              disabled: false,
-            },
-            {
-              name: this.$t('btn.closeQuest'),
-              class: '',
-              mode: 'delete',
-              funcKey: 'closeQuest',
-              icon: '',
-              disabled: false,
-            }];
-            break;
-          }
-          case Active: {
-            arr = [{
-              name: this.$t('quests.approve'),
-              class: '',
-              mode: 'approve',
-              funcKey: '',
-              icon: '',
-              disabled: true,
-            }];
-            break;
-          }
-          case WaitConfirm: {
-            arr = [{
-              name: this.$t('btn.acceptCompletedWorkOnQuest'),
-              class: '',
-              mode: 'approve',
-              funcKey: 'acceptCompletedWorkOnQuest',
-              icon: '',
-              disabled: false,
-            },
-            {
-              name: this.$t('btn.rejectCompletedWorkOnQuest'),
-              class: '',
-              mode: '',
-              funcKey: 'rejectCompletedWorkOnQuest',
-              icon: '',
-              disabled: false,
-            }];
-            break;
-          }
-          case Dispute: {
-            arr = [{
-              name: this.$t('btn.dispute'),
-              class: '',
-              mode: '',
-              funcKey: 'openDispute',
-              icon: '',
-              disabled: false,
-            }];
-            break;
-          }
-          default: break;
-        }
-      } else {
-        const {
-          ADChat, Active, Rejected, Created, Dispute, Invited, WaitWorker,
-        } = InfoModeWorker;
-        const { questData: { assignedWorkerId, response }, infoDataMode } = this;
-
-        switch (infoDataMode) {
-          case ADChat: {
-            arr = [{
-              name: this.$t('btn.agree'),
-              class: '',
-              mode: '',
-              funcKey: 'acceptWorkOnQuest',
-              icon: '',
-              disabled: false,
-            },
-            {
-              name: this.$t('btn.disagree'),
-              class: '',
-              mode: 'outline',
-              funcKey: 'rejectWorkOnQuest',
-              icon: '',
-              disabled: false,
-            }];
-            break;
-          }
-          case Active: {
-            if (assignedWorkerId !== userData.id) break;
-
-            arr = [{
-              name: this.$t('btn.dispute'),
-              class: 'base-btn_dispute',
-              mode: '',
-              funcKey: '',
-              icon: '',
-              disabled: true,
-            },
-            {
-              name: this.$t('btn.completeWorkOnQuest'),
-              class: '',
-              mode: '',
-              funcKey: 'completeWorkOnQuest',
-              icon: '',
-              disabled: false,
-            }];
-            break;
-          }
-          // case Rejected:
-          case Created: {
-            arr = [{
-              name: this.$t(`btn.${Created ? 'sendARequest' : 'responded'}`),
-              class: 'base-btn_dispute',
-              mode: '',
-              funcKey: 'sendARequestOnQuest',
-              icon: '',
-              disabled: response,
-            }];
-            break;
-          }
-          case Dispute: {
-            arr = [{
-              name: this.$t('btn.dispute'),
-              class: 'base-btn_dispute',
-              mode: '',
-              funcKey: '',
-              icon: '',
-              disabled: true,
-            }];
-            break;
-          }
-          case Invited: {
-            if (response.status === ResponseStatus.rejected || (assignedWorkerId && assignedWorkerId !== userData.id)) break;
-
-            arr = [{
-              name: this.$t('btn.agree'),
-              class: '',
-              mode: '',
-              funcKey: 'acceptQuestInvitation',
-              icon: '',
-              disabled: false,
-            },
-            {
-              name: this.$t('btn.disagree'),
-              class: '',
-              mode: 'outline',
-              funcKey: 'rejectQuestInvitation',
-              icon: '',
-              disabled: false,
-            }].concat(arr);
-            break;
-          }
-          case WaitWorker: {
-            if (assignedWorkerId !== userData.id) break;
-
-            arr = [{
-              name: this.$t('btn.agree'),
-              class: '',
-              mode: '',
-              funcKey: 'acceptWorkOnQuest',
-              icon: '',
-              disabled: false,
-            },
-            {
-              name: this.$t('btn.disagree'),
-              class: '',
-              mode: 'outline',
-              funcKey: 'rejectWorkOnQuest',
-              icon: '',
-              disabled: false,
-            }];
-            break;
-          }
-          default: break;
-        }
-      }
-
-      if (questChat?.workerId === userData.id || questChat?.employerId === userData.id) {
+      if (questChat?.workerId === userData.id || (questChat?.employerId === userData.id && assignedWorkerId)) {
         arr.push({
           name: this.$t('btn.goToChat'),
           class: 'base-btn_goToChat',
@@ -467,6 +290,199 @@ export default {
       }
 
       this.actionBtnsArr = arr;
+    },
+    setEmployerBtnsArr() {
+      if (this.userData.id !== this.questData.userId) return [];
+
+      const {
+        WaitConfirm, Dispute, Created, Active,
+      } = InfoModeEmployer;
+
+      let arr = [];
+
+      switch (this.infoDataMode) {
+        case Created: {
+          arr = [{
+            name: this.$t('quests.raiseViews'),
+            class: '',
+            mode: '',
+            funcKey: 'toRaisingViews',
+            icon: '',
+            disabled: false,
+          },
+          {
+            name: this.$t('btn.closeQuest'),
+            class: '',
+            mode: 'delete',
+            funcKey: 'closeQuest',
+            icon: '',
+            disabled: false,
+          }];
+          break;
+        }
+        case Active: {
+          arr = [{
+            name: this.$t('quests.approve'),
+            class: '',
+            mode: 'approve',
+            funcKey: '',
+            icon: '',
+            disabled: true,
+          }];
+          break;
+        }
+        case WaitConfirm: {
+          arr = [{
+            name: this.$t('btn.acceptCompletedWorkOnQuest'),
+            class: '',
+            mode: 'approve',
+            funcKey: 'acceptCompletedWorkOnQuest',
+            icon: '',
+            disabled: false,
+          },
+          {
+            name: this.$t('btn.rejectCompletedWorkOnQuest'),
+            class: '',
+            mode: '',
+            funcKey: 'rejectCompletedWorkOnQuest',
+            icon: '',
+            disabled: false,
+          }];
+          break;
+        }
+        case Dispute: {
+          arr = [{
+            name: this.$t('btn.dispute'),
+            class: '',
+            mode: '',
+            funcKey: 'openDispute',
+            icon: '',
+            disabled: false,
+          }];
+          break;
+        }
+        default: break;
+      }
+
+      return arr;
+    },
+    setWorkerBtnsArr() {
+      const { questData: { assignedWorkerId, response }, userData, infoDataMode } = this;
+      const {
+        ADChat, Active, Created, Dispute, Invited, WaitWorker,
+      } = InfoModeWorker;
+
+      let arr = [];
+
+      switch (infoDataMode) {
+        case ADChat: {
+          arr = [{
+            name: this.$t('btn.agree'),
+            class: '',
+            mode: '',
+            funcKey: 'acceptWorkOnQuest',
+            icon: '',
+            disabled: false,
+          },
+          {
+            name: this.$t('btn.disagree'),
+            class: '',
+            mode: 'outline',
+            funcKey: 'rejectWorkOnQuest',
+            icon: '',
+            disabled: false,
+          }];
+          break;
+        }
+        case Active: {
+          if (assignedWorkerId !== userData.id) break;
+
+          arr = [{
+            name: this.$t('btn.dispute'),
+            class: 'base-btn_dispute',
+            mode: '',
+            funcKey: '',
+            icon: '',
+            disabled: true,
+          },
+          {
+            name: this.$t('btn.completeWorkOnQuest'),
+            class: '',
+            mode: '',
+            funcKey: 'completeWorkOnQuest',
+            icon: '',
+            disabled: false,
+          }];
+          break;
+        }
+        case Created: {
+          arr = [{
+            name: this.$t('btn.sendARequest'),
+            class: '',
+            mode: '',
+            funcKey: 'sendARequestOnQuest',
+            icon: '',
+            disabled: false,
+          }];
+          break;
+        }
+        case Dispute: {
+          arr = [{
+            name: this.$t('btn.dispute'),
+            class: 'base-btn_dispute',
+            mode: '',
+            funcKey: '',
+            icon: '',
+            disabled: true,
+          }];
+          break;
+        }
+        case Invited: {
+          if (response.status !== ResponseStatus.awaiting || (assignedWorkerId && assignedWorkerId !== userData.id)) break;
+
+          arr = [{
+            name: this.$t('btn.agree'),
+            class: '',
+            mode: '',
+            funcKey: 'acceptQuestInvitation',
+            icon: '',
+            disabled: false,
+          },
+          {
+            name: this.$t('btn.disagree'),
+            class: '',
+            mode: 'outline',
+            funcKey: 'rejectQuestInvitation',
+            icon: '',
+            disabled: false,
+          }].concat(arr);
+          break;
+        }
+        case WaitWorker: {
+          if (assignedWorkerId !== userData.id) break;
+
+          arr = [{
+            name: this.$t('btn.agree'),
+            class: '',
+            mode: '',
+            funcKey: 'acceptWorkOnQuest',
+            icon: '',
+            disabled: false,
+          },
+          {
+            name: this.$t('btn.disagree'),
+            class: '',
+            mode: 'outline',
+            funcKey: 'rejectWorkOnQuest',
+            icon: '',
+            disabled: false,
+          }];
+          break;
+        }
+        default: break;
+      }
+
+      return arr;
     },
     handleClickSpecBtn(funcKey) {
       this[funcKey]();
@@ -554,12 +570,14 @@ export default {
       this.SetLoader(true);
       await this.$store.dispatch('quests/rejectQuestInvitation', this.questData.response.id);
       await this.getQuest();
+      this.setActionBtnsArr();
       this.SetLoader(false);
     },
     async acceptQuestInvitation() {
       this.SetLoader(true);
       await this.$store.dispatch('quests/acceptQuestInvitation', this.questData.response.id);
       await this.getQuest();
+      this.setActionBtnsArr();
       this.SetLoader(false);
     },
     async goToChat() {
@@ -645,6 +663,13 @@ export default {
     line-height: 20px;
     color: $black700;
     word-wrap: break-word
+  }
+  &__count {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 130%;
+    color: #8D96A2;
   }
 }
 .main {
