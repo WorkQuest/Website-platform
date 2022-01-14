@@ -874,7 +874,6 @@ export default {
       grid-auto-flow: row;
     }
     &__more-data {
-      grid-template-columns: 1fr;
       justify-items: center;
     }
   }
