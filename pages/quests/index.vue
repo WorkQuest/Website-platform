@@ -158,7 +158,7 @@
               </template>
             </base-btn>
             <base-btn
-              class="tools__item"
+              class="tools__item tools__item_time"
               :mode="'light'"
               @click="changeSorting('time')"
             >

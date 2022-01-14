@@ -160,19 +160,20 @@
               <base-btn
                 class="tools__item"
                 :mode="'light'"
+                :padding="true"
                 data-selector="ACTION-TIME-SORT-USER"
                 @click="changeSorting('time')"
               >
-                <span class="tools__text">
+                <span
+                  class="tools__text"
+                >
                   {{ $t('quests.time') }}
                 </span>
                 <span
-                  v-if="timeSort === 'desc'"
-                  class="icon-Sorting_descending"
-                />
-                <span
-                  v-if="timeSort === 'asc'"
-                  class="icon-Sorting_ascending"
+                  :class="{
+                    'icon-Sorting_descending': timeSort === 'desc',
+                    'icon-Sorting_ascending': timeSort === 'asc'
+                  }"
                 />
               </base-btn>
             </div>
@@ -216,15 +217,17 @@
                 v-if="user.userSpecializations.length !== 0"
                 class="badge__container"
               >
-                <ul class="badge-list">
-                  <li
-                    v-for="(skill, spec) in user.userSpecializations"
-                    :key="spec"
+                <div class="badge-list">
+                  <div class="badge__item">
+                    {{ getSkillTitle(user.userSpecializations[0].path) }}
+                  </div>
+                  <div
+                    v-if="user.userSpecializations.length - 1"
                     class="badge__item"
                   >
-                    {{ getSkillTitle(skill.path) }}
-                  </li>
-                </ul>
+                    &nbsp;(+{{ user.userSpecializations.length - 1 }})
+                  </div>
+                </div>
               </div>
               <span
                 v-if="user.userSpecializations.length === 0"
@@ -508,7 +511,6 @@ export default {
   &__container {
     padding: 0;
     height: 21px;
-    overflow-y: auto;
     overflow-x: hidden;
   }
   &__item {
@@ -718,21 +720,20 @@ export default {
 
 .card {
   width: 100%;
-  max-height: 360px;
   height: 360px;
   box-sizing: border-box;
   border-radius: 6px;
   align-items: center;
   cursor: pointer;
   box-shadow: none;
-  transition: .5s;
+  padding: 10px;
+  transition: box-shadow .25s ease-in-out;
   &:hover {
     cursor: pointer;
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
   }
   &__content {
     width: 100%;
-    max-width: 240px;
   }
   &__spec {
     font-weight: 400;
@@ -747,7 +748,6 @@ export default {
   &__header {
     display: flex;
     flex-direction: column;
-    margin: 20px 0 0 0;
     &_top {
       display: grid;
       grid-template-columns: 61px 1fr;
@@ -770,6 +770,9 @@ export default {
     @include text-simple;
     font-size: 18px;
     font-weight: 500;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   &__title {
     margin: 15px 0 0 0;
@@ -936,8 +939,6 @@ export default {
   .card {
     padding: 10px;
   }
-}
-@include _991 {
   .content {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -945,7 +946,7 @@ export default {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@include _767 {
+@include _991 {
   .panel {
     &__left {
       grid-template-columns: repeat(2, 1fr);
