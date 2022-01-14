@@ -310,6 +310,7 @@ export default {
     .info-block {
       background-color: #fff;
       border-radius: 6px;
+      overflow: hidden;
 
       &__couple {
         display: grid;
