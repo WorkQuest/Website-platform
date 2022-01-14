@@ -155,15 +155,10 @@ export default {
   middleware: ['employer-role'],
   data() {
     return {
-      ads: {
-        currentAdPrice: '',
-      },
-      period: 1,
       selectedSpecAndSkills: [],
       employmentIndex: 0,
       workplaceIndex: 0,
       runtimeIndex: 0,
-      periodIndex: 0,
       runtimeValue: '',
       questTitle: '',
       address: '',
@@ -185,106 +180,6 @@ export default {
       balance: 'wallet/getBalanceData',
       questsFee: 'wallet/getQuestsFee',
     }),
-    days() {
-      return [
-        {
-          level: this.$t('quests.levels.1.title'),
-          code: 1,
-          desc: this.$t('quests.levels.1.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.2.title'),
-          code: 2,
-          desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.3.title'),
-          code: 3,
-          desc: this.$t('quests.levels.3.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.4.title'),
-          code: 4,
-          desc: this.$t('quests.levels.4.desc'),
-          cost: '10',
-        },
-      ];
-    },
-    weeks() {
-      return [
-        {
-          level: this.$t('quests.levels.1.title'),
-          code: 1,
-          desc: this.$t('quests.levels.1.desc'),
-          cost: '40',
-        },
-        {
-          level: this.$t('quests.levels.2.title'),
-          code: 2,
-          desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.3.title'),
-          code: 3,
-          desc: this.$t('quests.levels.3.desc'),
-          cost: '40',
-        },
-        {
-          level: this.$t('quests.levels.4.title'),
-          code: 4,
-          desc: this.$t('quests.levels.4.desc'),
-          cost: '40',
-        },
-      ];
-    },
-    months() {
-      return [
-        {
-          level: this.$t('quests.levels.1.title'),
-          code: 1,
-          desc: this.$t('quests.levels.1.desc'),
-          cost: '70',
-        },
-        {
-          level: this.$t('quests.levels.2.title'),
-          code: 2,
-          desc: this.$t('quests.levels.2.desc'),
-          cost: '10',
-        },
-        {
-          level: this.$t('quests.levels.3.title'),
-          code: 3,
-          desc: this.$t('quests.levels.3.desc'),
-          cost: '70',
-        },
-        {
-          level: this.$t('quests.levels.4.title'),
-          code: 4,
-          desc: this.$t('quests.levels.4.desc'),
-          cost: '70',
-        },
-      ];
-    },
-    periodTabs() {
-      return [
-        {
-          number: 1,
-          title: this.$t('raising-views.forOneDay'),
-        },
-        {
-          number: 2,
-          title: this.$t('raising-views.forOneWeek'),
-        },
-        {
-          number: 3,
-          title: this.$t('raising-views.forOneMonth'),
-        },
-      ];
-    },
     runtime() {
       return [
         this.$t('quests.runtime.urgent'),
@@ -339,28 +234,6 @@ export default {
       }
       return val;
     },
-    selectRadio(idx) {
-      const radio = this.$refs[`radio${idx}`];
-      for (let i = 0; i < Object.keys(this.$refs[`radio${i}`]).length; i += 1) {
-        if (radio[i].checked) {
-          radio[i].checked = false;
-          this.ads.currentAdPrice = '';
-        } else if (!radio[i].checked) {
-          radio[i].checked = true;
-          this.ads.currentAdPrice = radio[i].value;
-        }
-      }
-    },
-    switchPeriod(item) {
-      for (let idx = 0; idx < Object.keys(this.$refs).length - 1; idx += 1) {
-        const radio = this.$refs[`radio${idx}`];
-        for (let i = 0; i < Object.keys(radio).length; i += 1) {
-          radio[0].checked = false;
-        }
-        this.period = item.number;
-        this.ads.currentAdPrice = '';
-      }
-    },
     toRiseViews() {
       this.$store.dispatch('quests/getCurrentStepCreateQuest', 2);
     },
@@ -406,6 +279,9 @@ export default {
         console.log(e);
       }
     },
+    async updateBalanceWUSD() {
+      await this.$store.dispatch('wallet/getBalance');
+    },
     async createQuest() {
       if (!this.isWalletConnected) return;
 
@@ -413,25 +289,17 @@ export default {
 
       // Check balance to send contract method
       const amount = new BigNumber(this.price).multipliedBy(1 + this.questsFee);
-      const [fee] = await Promise.all([
-        this.$store.dispatch('wallet/getContractFeeData', {
-          method: 'newWorkQuest',
-          _abi: abi.WorkQuestFactory,
-          contractAddress: process.env.WORK_QUEST_FACTORY,
-          value: [
-            ethers.utils.formatBytes32String(this.textarea.slice(0, 31)),
-            amount.shiftedBy(-18).toString(),
-            0,
-          ],
-        }),
-        this.$store.dispatch('wallet/getBalance'), // update wusd balance
+      const [feeRes] = await Promise.all([
+        this.$store.dispatch('wallet/getCreateQuestFeeData', { cost: this.price * this.questsFee, description: this.textarea }),
+        this.updateBalanceWUSD(),
       ]);
-      console.log('fee', fee);
       // Если у пользователя недостаточно денег для создания квеста
-      // if (new BigNumber(fee.balance).isGreaterThanOrEqualTo(balance.WUSD.fullBalance) === false) { // TODO: вернуть
-      //   this.showSendTransactionModal(amount);
-      //   return;
-      // }
+      if (new BigNumber(feeRes.result.fee).plus(amount.toString()).isGreaterThan(this.balance.WUSD.fullBalance) === true) {
+        console.log(feeRes.result.fee, this.balance.WUSD.fullBalance);
+        this.showSendTransactionModal(amount, feeRes.result.fee);
+        this.SetLoader(false);
+        return;
+      }
 
       // const medias = await this.uploadFiles(this.files);
       // const payload = {
@@ -452,37 +320,43 @@ export default {
       //   },
       // };
       // const response = await this.$store.dispatch('quests/questCreate', payload);
-      this.SetLoader(false);
       const response = { ok: true }; // TODO: delete
       if (response.ok) {
         // После создания квеста на бэке - генерируем новый контракт квеста
-        this.showSendTransactionModal(amount);
+        this.showSendTransactionModal(amount, feeRes.result.fee);
       }
+      this.SetLoader(false);
     },
-    showSendTransactionModal(amountWithFee) {
+    /**
+     * Show receipt modal
+     * @param amountWithQuestFee - цена * %комиссии
+     * @param fee - цена отправки транзакции
+     */
+    showSendTransactionModal(amountWithQuestFee, fee) {
       this.$store.dispatch('modals/show', {
         key: modals.transactionReceipt,
         fields: {
           from: { name: this.$t('modals.fromAddress'), value: this.userData.wallet.address },
           to: { name: this.$t('modals.toAddress'), value: process.env.WORK_QUEST_FACTORY },
-          amount: { name: this.$t('modals.amount'), value: this.price.toString(), symbol: TokenSymbols.WUSD },
-          fee: { name: this.$t('wallet.table.trxFee'), value: amountWithFee, symbol: TokenSymbols.WUSD },
+          amount: { name: this.$t('modals.amount'), value: amountWithQuestFee.toString(), symbol: TokenSymbols.WUSD },
+          fee: { name: this.$t('wallet.table.trxFee'), value: fee.toString(), symbol: TokenSymbols.WUSD },
         },
         submitMethod: () => this.createQuestContract(),
       });
     },
-    async createQuestContract() { // TODO: check this contract method
-      // const createRes = this.$store.dispatch('wallet/createQuest', {
-      //   cost: this.price,
-      //   description: this.textarea,
-      // });
-      // if (createRes?.ok === false) {
-      //   await this.$store.dispatch('main/showToast', {
-      //     title: 'Create quest error',
-      //     text: '*need to handle error*',
-      //   });
-      //   return;
-      // }
+    async createQuestContract() {
+      const createRes = await this.$store.dispatch('wallet/createQuest', {
+        cost: this.price,
+        description: this.textarea,
+      });
+      console.log('newWorkQuest', createRes);
+      if (createRes?.ok === false) {
+        await this.$store.dispatch('main/showToast', {
+          title: 'Create quest error',
+          text: '*need to handle error*',
+        });
+        return;
+      }
       this.showModalCreatedQuest();
       this.showToastCreated();
       // await this.$router.push(`/quests/${response.result.id}`); // TODO: в квесте нужно будет добавить информацию мол ожидается создание квеста
@@ -748,28 +622,6 @@ export default {
     &:hover {
       background: #F3F7FA;
     }
-  }
-}
-
-.payment {
-  &__container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-  }
-  &__title {
-    @include text-simple;
-    color: $black500;
-    font-weight:400;
-    font-size: 16px;
-  }
-  &__cost {
-    @include text-simple;
-    color: $blue;
-    font-weight: 500;
-    font-size: 16px;
-    padding: 0 0 0 5px;
   }
 }
 

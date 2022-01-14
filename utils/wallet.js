@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import { AES, enc } from 'crypto-js';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
-import { error, success } from '~/utils/web3';
+import { error, getAccountAddress, success } from '~/utils/web3';
 import abi from '~/abi/index';
 
 const bip39 = require('bip39');
@@ -223,16 +223,15 @@ export const transferToken = async (recipient, value) => {
     return error();
   }
 };
-export const getContractFeeData = async (_method, _abi, _contractAddress, recipient, value) => {
+export const getContractFeeData = async (_method, _abi, _contractAddress, value, recipient = null) => {
   try {
     let data;
-    if (!isNaN(value)) {
+    if (!isNaN(value) && recipient) {
       value = new BigNumber(value).shiftedBy(18).toString();
       data = [recipient, value];
     } else {
       data = value;
     }
-    console.log(data);
     const inst = new web3.eth.Contract(_abi, _contractAddress);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
@@ -247,6 +246,22 @@ export const getContractFeeData = async (_method, _abi, _contractAddress, recipi
     console.error('Get contract fee data error. Method:', _method);
     return error();
   }
+};
+
+export const sendTransaction = async (_method, payload, _provider = web3) => {
+  const inst = new web3.eth.Contract(payload.abi, payload.address);
+  const data = inst.methods[_method].apply(null, payload.data).encodeABI();
+  const [gasPrice, gasEstimate] = await Promise.all([
+    web3.eth.getGasPrice(),
+    inst.methods[_method].apply(null, payload.data).estimateGas({ from: wallet.address }),
+  ]);
+  return await web3.eth.sendTransaction({
+    to: payload.address,
+    from: wallet.address,
+    data,
+    gasPrice,
+    gas: gasEstimate,
+  });
 };
 
 //
@@ -272,6 +287,29 @@ export const createQuest = async (payload) => {
   } catch (e) {
     console.error(e);
     return error(500, '', e.message);
+  }
+};
+export const getCreateQuestFeeData = async (cost, description) => {
+  try {
+    if (web3 === null) {
+      console.error('provider is null!');
+      return error();
+    }
+    const inst = new web3.eth.Contract(abi.WorkQuestFactory, process.env.WORK_QUEST_FACTORY);
+    cost = new BigNumber(cost).shiftedBy(18).toString();
+    const hash = ethers.utils.formatBytes32String(description.slice(0, 31));
+    const [gasPrice, gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      inst.methods.newWorkQuest.apply(null, [hash, cost, 0]).estimateGas({ from: wallet.address }),
+    ]);
+    return success({
+      gasPrice,
+      gasEstimate,
+      fee: new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString(),
+    });
+  } catch (e) {
+    console.error('quest create fee', e);
+    return error();
   }
 };
 export const getAccountQuests = async () => {

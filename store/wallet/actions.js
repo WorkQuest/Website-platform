@@ -13,7 +13,7 @@ import {
   getIsWalletConnected,
   getStyledAmount,
   setWalletAddress,
-  transfer, transferToken, getTransferFeeData,
+  transfer, transferToken, getTransferFeeData, getCreateQuestFeeData,
 } from '~/utils/wallet';
 import abi from '~/abi/index';
 import { TokenSymbols } from '~/utils/enums';
@@ -116,7 +116,7 @@ export default {
   async getContractFeeData({ commit }, {
     method, _abi, contractAddress, recipient, value,
   }) {
-    return await getContractFeeData(method, _abi, contractAddress, recipient, value);
+    return await getContractFeeData(method, _abi, contractAddress, value, recipient);
   },
 
   /* QUESTS */
@@ -126,6 +126,9 @@ export default {
    */
   async createQuest({ commit }, payload) {
     return await createQuest(payload);
+  },
+  async getCreateQuestFeeData({ commit }, { cost, description }) {
+    return await getCreateQuestFeeData(cost, description);
   },
   async editQuest({ commit }, { contractAddress, cost, description }) {
     const hash = ethers.utils.formatBytes32String(description.slice(0, 31));
