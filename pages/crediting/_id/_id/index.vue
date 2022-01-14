@@ -357,6 +357,7 @@ export default {
     .info-block {
       background-color: #fff;
       border-radius: 6px;
+      overflow: hidden;
 
       &_gray {
         border-radius: 5px;
