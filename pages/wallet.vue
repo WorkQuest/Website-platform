@@ -94,6 +94,7 @@
             :title="$t('wallet.table.trx')"
             :items="styledTransactions"
             :fields="walletTableFields"
+            :change-font-size="false"
           />
           <empty-data
             v-if="!totalPages"
@@ -348,8 +349,8 @@ export default {
   }
   &__table {
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
-    max-width: 90vw;
-    overflow-x: scroll;
+    max-width: 100%;
+    overflow-x: auto;
   }
 }
 
