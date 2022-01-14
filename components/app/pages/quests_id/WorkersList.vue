@@ -29,7 +29,7 @@
         <base-dd
           class="worker__menu"
           :placeholder="30"
-          :items="!isInvited || response.status ? ddUserFullActions : ddUserActions"
+          :items="userActionsArr(response)"
           is-dots-view
           @input="handleUserAction($event, response)"
         />
@@ -58,6 +58,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import itemRating from '~/components/app/info/item-rating';
+import { ResponseStatus } from '~/utils/enums';
 
 export default {
   name: 'WorkersList',
@@ -72,10 +73,12 @@ export default {
   },
   data() {
     return {
-      currUsers: [],
       ddUserActions: [
         this.$t('btn.goToChat'),
-        this.$t('quests.decline'),
+      ],
+      ddInvitedUserActions: [
+        this.$t('btn.goToChat'),
+        this.$t('quests.startQuest'),
       ],
       ddUserFullActions: [
         this.$t('btn.goToChat'),
@@ -101,6 +104,14 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    userActionsArr({ status }) {
+      if (this.isInvited) {
+        if (status === ResponseStatus.accepted) return this.ddInvitedUserActions;
+
+        return this.ddUserActions;
+      }
+      return this.ddUserFullActions;
+    },
     ratingStatistic(ratingStatistic) {
       return ratingStatistic?.status || 'noStatus';
     },
@@ -122,13 +133,14 @@ export default {
         },
         questId: this.questData.id,
       };
+
       await this.$store.dispatch('quests/startQuest', payload);
       await this.getQuest();
       this.SetLoader(false);
     },
     async reject(response) {
       this.SetLoader(true);
-      if (await this.$store.dispatch(`quests/${this.isInvited ? 'rejectQuestInvitation' : 'rejectTheAnswerToTheQuest'}`, response.id)) await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
+      if (await this.$store.dispatch('quests/rejectTheAnswerToTheQuest', response.id)) await this.$store.dispatch('quests/responsesToQuest', this.questData.id);
       this.SetLoader(false);
     },
   },
