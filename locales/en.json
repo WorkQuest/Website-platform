@@ -993,6 +993,7 @@
     "pressSaveBtn": "Please press save button",
     "imageLoadedSuccessful": "Image loaded successful",
     "success": "Success",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "Your role has been changed",
     "chooseSkills": "Choose necessary skills",
     "securityCheck": "Security check",
@@ -1348,7 +1349,8 @@
       "timestamp": "Timestamp",
       "transferred": "Tokens Transferred",
       "value": "Quantity",
-      "trxFee": "Transaction fee"
+      "trxFee": "Transaction fee",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {

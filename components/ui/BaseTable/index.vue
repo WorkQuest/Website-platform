@@ -14,21 +14,45 @@
       >
         <span class="table__title">{{ $props.title }}</span>
       </template>
+      <template #cell(tx_hash)="el">
+        <a
+          :href="getTransactionUrl(el.item.tx_hash)"
+          target="_blank"
+          class="table__url"
+        >
+          {{ el.item.tx_hash.slice(0, 8) + '...' + el.item.tx_hash.slice(-4) }}
+        </a>
+      </template>
       <template #cell(status)="el">
         <span
-          v-if="el.item.status === 'Success'"
-          class="table__success"
-        >{{ el.item.status }}</span>
-        <span
-          v-else
-          class="table__failed"
-        >{{ el.item.status }}</span>
+          :class="{table__success: el.item.status, table__failed: !el.item.status}"
+        >
+          {{ el.item.status ? $t('modals.success') : $t('modals.failed') }}
+        </span>
       </template>
       <template #cell(block)="el">
         <span class="table__grey">{{ el.item.block }}</span>
       </template>
       <template #cell(timestamp)="el">
         <span class="table__grey">{{ el.item.timestamp }}</span>
+      </template>
+      <template #cell(from_address)="el">
+        <a
+          :href="getAddressUrl(el.item.from_address)"
+          target="_blank"
+          class="table__url"
+        >
+          {{ el.item.from_address.slice(0, 4) + '...' + el.item.from_address.slice(-4) }}
+        </a>
+      </template>
+      <template #cell(to_address)="el">
+        <a
+          :href="getAddressUrl(el.item.to_address)"
+          target="_blank"
+          class="table__url"
+        >
+          {{ el.item.to_address.slice(0, 4) + '...' + el.item.to_address.slice(-4) }}
+        </a>
       </template>
       <template #cell(transaction_fee)="el">
         <span class="table__grey">{{ el.item.transaction_fee }}</span>
@@ -53,6 +77,20 @@ export default {
       default: () => [],
     },
   },
+  methods: {
+    getTransactionUrl(hash) {
+      if (process.env.PROD === 'true') {
+        return `https://dev-explorer.workquest.co/transactions/${hash}`;
+      }
+      return `https://dev-explorer.workquest.co/transactions/${hash}`;
+    },
+    getAddressUrl(address) {
+      if (process.env.PROD === 'true') {
+        return `https://dev-explorer.workquest.co/address/${address}`;
+      }
+      return `https://dev-explorer.workquest.co/address/${address}`;
+    },
+  },
 };
 </script>
 
@@ -75,6 +113,9 @@ export default {
   }
   &__grey {
     color: $black500;
+  }
+  &__url:hover {
+    text-decoration: none;
   }
   &__header {
     @include text-simple;
