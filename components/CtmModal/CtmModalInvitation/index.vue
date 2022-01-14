@@ -123,7 +123,7 @@ export default {
       this.questFiltered = this.questList.quests.filter((quest) => quest.status === 0);
     },
     async inviteOnQuest(questIndex) {
-      const questId = 'f85bec6d-073d-4390-9e43-7a51401ea629' || this.questFiltered[questIndex].id || '';
+      const questId = this.questFiltered[questIndex].id || '';
       const payload = {
         invitedUserId: this.options.userId || '',
         message: this.message_input || null,
