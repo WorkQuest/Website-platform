@@ -164,6 +164,9 @@ export default {
       const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
       this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
     },
+    isConnected(newVal) {
+      if (!newVal) this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+    },
   },
   beforeMount() {
     this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
