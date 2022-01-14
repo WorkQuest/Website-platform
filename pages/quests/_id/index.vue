@@ -267,14 +267,9 @@ export default {
       await this.$store.dispatch('quests/getAllQuests', query);
     },
     setActionBtnsArr() {
-      const { questData: { questChat, assignedWorkerId, userId }, userData, userRole } = this;
+      const { questData: { questChat, assignedWorkerId }, userData, userRole } = this;
 
-      let arr = [];
-      if (userRole === UserRole.EMPLOYER) {
-        if (userData.id === userId) arr = this.setEmployerBtnsArr();
-      } else {
-        arr = this.setWorkerBtnsArr();
-      }
+      const arr = userRole === UserRole.EMPLOYER ? this.setEmployerBtnsArr() : this.setWorkerBtnsArr();
 
       if (questChat?.workerId === userData.id || (questChat?.employerId === userData.id && assignedWorkerId)) {
         arr.push({
@@ -290,6 +285,8 @@ export default {
       this.actionBtnsArr = arr;
     },
     setEmployerBtnsArr() {
+      if (this.userData.id !== this.questData.userId) return [];
+
       const {
         WaitConfirm, Dispute, Created, Active,
       } = InfoModeEmployer;
