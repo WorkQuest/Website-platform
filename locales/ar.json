@@ -1938,6 +1938,7 @@
     "incorrectPass": "عذرًا، حدث خطأ ما. تحقَّق من البيانات وحاول مرة أخرى.",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {

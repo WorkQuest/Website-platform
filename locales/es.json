@@ -1937,6 +1937,7 @@
     "incorrectPass": "Vaya, se produjo un problema. Compruebe los datos y vuelva a intentarlo.",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {

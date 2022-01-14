@@ -1938,6 +1938,7 @@
     "incorrectPass": "Ups! Ada yang tidak beres. Periksa data dan coba lagi.",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {

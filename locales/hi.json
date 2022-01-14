@@ -1938,6 +1938,7 @@
     "incorrectPass": "ओह! कुछ गलत हो गया है। डेटा जांचें और फिर से कोशिश करें।",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {

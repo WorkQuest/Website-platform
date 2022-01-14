@@ -1938,6 +1938,7 @@
     "incorrectPass": "哎呀，出错了。检查数据并重试。",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {

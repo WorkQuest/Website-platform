@@ -34,7 +34,7 @@
             </template>
             <template v-else>
               <div
-                v-if="!canILeave"
+                v-if="!canILeave && (status === 1 || status === 5)"
                 class="chat-menu__item"
                 @click="showOpenADisputeModal()"
               >
@@ -79,6 +79,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    questId: {
+      type: String,
+      default: '',
+    },
+    status: {
+      type: Number,
+      default: -1,
+    },
   },
   data() {
     return {
@@ -96,6 +104,7 @@ export default {
       this.closeChatMenu();
       this.ShowModal({
         key: modals.openADispute,
+        questId: this.questId,
       });
     },
     showChatMenu() {

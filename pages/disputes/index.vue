@@ -16,7 +16,10 @@
             <img src="~assets/img/ui/youAreHaven'tDisputs.svg">
           </div>
         </span>
-        <div class="page__grid">
+        <div
+          v-if="disputesCount > 0"
+          class="page__grid"
+        >
           <span
             v-for="(item, i) in disputes"
             :key="i"
@@ -73,6 +76,10 @@
             </div>
           </span>
         </div>
+        <emptyData
+          v-else
+          :description="$t(`errors.emptyData.emptyDisputes`)"
+        />
       </div>
     </div>
   </div>
@@ -80,19 +87,25 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import emptyData from '~/components/app/info/emptyData';
 
 export default {
   name: 'Disputes',
+  components: {
+    emptyData,
+  },
   computed: {
     ...mapGetters({
       tags: 'ui/getTags',
       userRole: 'user/getUserRole',
       userData: 'user/getUserData',
-      disputes: 'data/getDisputes',
+      disputes: 'disputes/getUserDisputes',
+      disputesCount: 'disputes/getUserDisputesCount',
     }),
   },
   async mounted() {
     this.SetLoader(true);
+    await this.$store.dispatch('disputes/getUserDisputes');
     this.SetLoader(false);
   },
   methods: {

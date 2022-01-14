@@ -1938,6 +1938,7 @@
     "incorrectPass": "Oups, un problème est survenu. Vérifiez les données et réessayez.",
     "emptyData": {
       "emptyQuests": "???",
+      "emptyDisputes": "???",
       "emptyPortfolios": "???",
       "emptyReviews": "???",
       "employer": {
