@@ -73,7 +73,6 @@ export default {
   },
   data() {
     return {
-      currUsers: [],
       ddUserActions: [
         this.$t('btn.goToChat'),
       ],
