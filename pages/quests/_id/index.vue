@@ -151,8 +151,7 @@
             />
             <emptyData
               v-else
-              :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
-              :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+              :description="$t(`errors.emptyData.emptyQuests`)"
             />
           </div>
         </div>
@@ -209,6 +208,7 @@ export default {
       infoDataMode: 'quests/getInfoDataMode',
       userData: 'user/getUserData',
       otherQuestsCount: 'quests/getAllQuestsCount',
+      otherQuests: 'quests/getAllQuests',
     }),
     InfoModeEmployer() {
       return InfoModeEmployer;
@@ -262,16 +262,17 @@ export default {
   methods: {
     async getSameQuests() {
       const skills = Object.keys(this.$t(`filters.items.${this.randomSpec}.sub`));
-      const query = {};
+      const query = {
+        limit: 10,
+        statuses: [0],
+      };
       for (let i = 0; i < skills.length; i += 1) {
         query[`specializations[${i}]`] = `${this.randomSpec}.${skills[i]}`;
       }
-      query.limit = 2;
-      const questsData = await this.$store.dispatch('quests/getAllQuests', query);
-      if (questsData.quests[0].id === this.questData.id) {
-        this.sameQuest.push(questsData.quests[1]);
-      } else {
-        this.sameQuest.push(questsData.quests[0]);
+      await this.$store.dispatch('quests/getAllQuests', query);
+      if (this.otherQuests) {
+        const questsData = this.otherQuests.filter((quest) => quest.id !== this.questData.id);
+        this.sameQuest.push(questsData[Math.floor(Math.random() * questsData.length)]);
       }
     },
     setActionBtnsArr() {
