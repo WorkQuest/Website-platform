@@ -411,24 +411,24 @@ export default {
             break;
           }
           case Invited: {
-            if (response.status === ResponseStatus.rejected || (assignedWorkerId && assignedWorkerId !== userData.id)) break;
+            if (response.status !== ResponseStatus.awaiting || (assignedWorkerId && assignedWorkerId !== userData.id)) break;
 
-            // arr = [{
-            //   name: this.$t('btn.agree'),
-            //   class: '',
-            //   mode: '',
-            //   funcKey: 'acceptQuestInvitation',
-            //   icon: '',
-            //   disabled: false,
-            // },
-            // {
-            //   name: this.$t('btn.disagree'),
-            //   class: '',
-            //   mode: 'outline',
-            //   funcKey: 'rejectQuestInvitation',
-            //   icon: '',
-            //   disabled: false,
-            // }].concat(arr);
+            arr = [{
+              name: this.$t('btn.agree'),
+              class: '',
+              mode: '',
+              funcKey: 'acceptQuestInvitation',
+              icon: '',
+              disabled: false,
+            },
+            {
+              name: this.$t('btn.disagree'),
+              class: '',
+              mode: 'outline',
+              funcKey: 'rejectQuestInvitation',
+              icon: '',
+              disabled: false,
+            }].concat(arr);
             break;
           }
           case WaitWorker: {
@@ -555,12 +555,14 @@ export default {
       this.SetLoader(true);
       await this.$store.dispatch('quests/rejectQuestInvitation', this.questData.response.id);
       await this.getQuest();
+      this.setActionBtnsArr();
       this.SetLoader(false);
     },
     async acceptQuestInvitation() {
       this.SetLoader(true);
       await this.$store.dispatch('quests/acceptQuestInvitation', this.questData.response.id);
       await this.getQuest();
+      this.setActionBtnsArr();
       this.SetLoader(false);
     },
     async goToChat() {
