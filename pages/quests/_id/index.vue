@@ -134,22 +134,24 @@
             <h2 class="quest__spec">
               {{ $t('quests.otherQuestsSpec') }}
               <nuxt-link
-                :to="`/quests?specialization=${randomSpec}`"
+                :to="`/quests?specialization=${randomSpec}&statuses=0`"
                 class="spec__link"
               >
                 "{{ $t(`filters.items.${randomSpec}.title`) }}"
               </nuxt-link>
             </h2>
+            <div class="quest__count">
+              {{ `${otherQuestsCount} ${$t('quests.questsSmall')}` }}
+            </div>
           </div>
           <div class="quest__card">
             <quests
               v-if="otherQuestsCount"
-              :quests="otherQuests"
+              :quests="sameQuest"
             />
             <emptyData
               v-else
-              :description="$t(`errors.emptyData.${userRole}.allQuests.desc`)"
-              :btn-text="$t(`errors.emptyData.${userRole}.allQuests.btnText`)"
+              :description="$t(`errors.emptyData.emptyQuests`)"
             />
           </div>
         </div>
@@ -195,6 +197,7 @@ export default {
         notSelected: '/img/app/marker_red.svg',
       },
       actionBtnsArr: [],
+      sameQuest: [],
     };
   },
   computed: {
@@ -204,8 +207,8 @@ export default {
       userRole: 'user/getUserRole',
       infoDataMode: 'quests/getInfoDataMode',
       userData: 'user/getUserData',
-      otherQuests: 'quests/getAllQuests',
       otherQuestsCount: 'quests/getAllQuestsCount',
+      otherQuests: 'quests/getAllQuests',
     }),
     InfoModeEmployer() {
       return InfoModeEmployer;
@@ -259,12 +262,16 @@ export default {
   methods: {
     async getSameQuests() {
       const skills = Object.keys(this.$t(`filters.items.${this.randomSpec}.sub`));
-      const query = {};
+      const query = {
+        limit: 10,
+        statuses: [0],
+      };
       for (let i = 0; i < skills.length; i += 1) {
         query[`specializations[${i}]`] = `${this.randomSpec}.${skills[i]}`;
       }
-      query.limit = 1;
       await this.$store.dispatch('quests/getAllQuests', query);
+      const questsData = this.otherQuests.filter((quest) => quest.id !== this.questData.id);
+      if (questsData.length) this.sameQuest.push(questsData[Math.floor(Math.random() * questsData.length)]);
     },
     setActionBtnsArr() {
       const { questData: { questChat, assignedWorkerId }, userData, userRole } = this;
@@ -656,6 +663,13 @@ export default {
     line-height: 20px;
     color: $black700;
     word-wrap: break-word
+  }
+  &__count {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 130%;
+    color: #8D96A2;
   }
 }
 .main {
