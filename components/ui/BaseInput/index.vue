@@ -38,6 +38,7 @@
         <slot name="left" />
       </div>
       <input
+        ref="input"
         class="ctm-field__input"
         :class="{'ctm-field__input_error': errors[0]}"
         :placeholder="placeholder"
@@ -79,6 +80,10 @@
 
 export default {
   props: {
+    autoFocus: {
+      type: Boolean,
+      default: () => false,
+    },
     onEnterPress: {
       type: Function,
       default: () => {},
@@ -154,7 +159,13 @@ export default {
       default: 'aggressive',
     },
   },
+  mounted() {
+    this.focus();
+  },
   methods: {
+    focus() {
+      if (this.autoFocus) this.$refs.input.focus();
+    },
     enter($event) {
       this.$emit('enter', $event.target.value);
     },

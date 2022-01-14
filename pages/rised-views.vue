@@ -417,7 +417,7 @@ export default {
   margin: 20px 0 0 0;
   &__left {
     justify-content: flex-start;
-    margin: 35px 0 0 0;
+    margin: 30px 0 0 0;
   }
   &__btn {
     width: 200px;
