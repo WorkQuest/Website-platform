@@ -379,6 +379,7 @@ export default {
     .info-block {
       background-color: #fff;
       border-radius: 6px;
+      overflow: hidden;
 
       &__faqs {
         margin: 0 20px 20px 20px;

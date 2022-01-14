@@ -161,32 +161,32 @@ export default {
   },
   async completeWorkOnQuest({ commit }, questId) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/complete-work`, questId);
-      return response.result;
+      const { ok } = await this.$axios.$post(`/v1/quest/${questId}/complete-work`, questId);
+      return ok;
     } catch (e) {
       return console.log(e);
     }
   },
   async rejectWorkOnQuest({ commit }, questId) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/reject-work`, questId);
-      return response.result;
+      const { ok } = await this.$axios.$post(`/v1/quest/${questId}/reject-work`, questId);
+      return ok;
     } catch (e) {
       return console.log(e);
     }
   },
   async acceptCompletedWorkOnQuest({ commit }, questId) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/accept-completed-work`, questId);
-      return response.result;
+      const { ok } = await this.$axios.$post(`/v1/quest/${questId}/accept-completed-work`, questId);
+      return ok;
     } catch (e) {
       return console.log(e);
     }
   },
   async acceptWorkOnQuest({ commit }, questId) {
     try {
-      const response = await this.$axios.$post(`/v1/quest/${questId}/accept-work`);
-      return response.result;
+      const { ok } = await this.$axios.$post(`/v1/quest/${questId}/accept-work`);
+      return ok;
     } catch (e) {
       return console.log(e);
     }
