@@ -269,7 +269,7 @@ export default {
     setActionBtnsArr() {
       let arr = [];
 
-      const { questData: { questChat }, userData } = this;
+      const { questData: { questChat, assignedWorkerId }, userData } = this;
 
       if (this.userRole === 'employer') {
         const {
@@ -343,7 +343,7 @@ export default {
         const {
           ADChat, Active, Created, Dispute, Invited, WaitWorker,
         } = InfoModeWorker;
-        const { questData: { assignedWorkerId, response }, infoDataMode } = this;
+        const { questData: { response }, infoDataMode } = this;
 
         console.log(infoDataMode);
 
@@ -456,7 +456,7 @@ export default {
         }
       }
 
-      if (questChat?.workerId === userData.id || questChat?.employerId === userData.id) {
+      if (questChat?.workerId === userData.id || (questChat?.employerId === userData.id && assignedWorkerId)) {
         arr.push({
           name: this.$t('btn.goToChat'),
           class: 'base-btn_goToChat',
