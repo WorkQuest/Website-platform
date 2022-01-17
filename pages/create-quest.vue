@@ -286,12 +286,14 @@ export default {
       if (!this.isWalletConnected) return;
 
       this.SetLoader(true);
-
-      // Check balance to send contract method
       const amount = new BigNumber(this.price).multipliedBy(1 + this.questsFee);
       const [feeRes] = await Promise.all([
-        this.$store.dispatch('wallet/getCreateQuestFeeData', { cost: this.price * this.questsFee, description: this.textarea }),
-        // this.updateBalanceWUSD(),
+        this.$store.dispatch('wallet/getCreateQuestFeeData', {
+          cost: this.price,
+          depositAmount: amount,
+          description: this.textarea,
+        }),
+        this.updateBalanceWUSD(),
       ]);
       console.log(feeRes);
       if (!feeRes.ok) {
@@ -351,6 +353,7 @@ export default {
     },
     async createQuestContract() {
       const createRes = await this.$store.dispatch('wallet/createQuest', {
+        depositAmount: new BigNumber(this.price).multipliedBy(1 + this.questsFee),
         cost: this.price,
         description: this.textarea,
       });

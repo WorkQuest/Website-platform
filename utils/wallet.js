@@ -271,10 +271,11 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
 
 /* Work Quest Factory */
 export const createQuest = async (payload) => {
-  const { cost, description } = payload;
+  const { cost, depositAmount, description } = payload;
   try {
     const hash = ethers.utils.formatBytes32String(description.slice(0, 31));
     const _cost = new BigNumber(cost).shiftedBy(18).toString();
+    const _depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
     const _abi = abi.WorkQuestFactory;
     const _abiAddress = process.env.WORK_QUEST_FACTORY;
     console.log('creating new quest (hash, cost)', hash, _cost, `(${cost})`);
@@ -282,6 +283,7 @@ export const createQuest = async (payload) => {
       abi: _abi,
       address: _abiAddress,
       data: [hash, _cost, 0],
+      value: _depositAmount,
     });
     console.log('NEW WORK QUEST CONTRACT', res);
     return success(res);
@@ -290,20 +292,25 @@ export const createQuest = async (payload) => {
     return error(500, '', e.message);
   }
 };
-export const getCreateQuestFeeData = async (cost, description) => {
+// cost - награда за квест, depositAmount - пополнение квеста (цена * комиссию 1%)
+export const getCreateQuestFeeData = async (cost, depositAmount, description) => {
   try {
     if (web3 === null) {
       console.error('provider is null!');
       return error();
     }
     const inst = new web3.eth.Contract(abi.WorkQuestFactory, process.env.WORK_QUEST_FACTORY);
-    console.log(abi.WorkQuestFactory, process.env.WORK_QUEST_FACTORY);
     cost = new BigNumber(cost).shiftedBy(18).toString();
+    depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
     const hash = ethers.utils.formatBytes32String(description.slice(0, 31));
-    console.log([hash, cost, 0], wallet.address);
+    console.log(depositAmount, hash, 'cost:', cost);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
-      inst.methods.newWorkQuest.apply(null, [hash, cost, 0]).estimateGas({ from: wallet.address }),
+      inst.methods.newWorkQuest.apply(null, [hash, cost, 0]).estimateGas({
+        from: wallet.address,
+        to: process.env.WORK_QUEST_FACTORY,
+        value: depositAmount,
+      }),
     ]);
     return success({
       gasPrice,

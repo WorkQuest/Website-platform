@@ -133,13 +133,13 @@ export default {
   /* QUESTS */
   /**
    * @param commit
-   * @param payload { cost & description }
+   * @param payload { cost & depositAmount & description }
    */
   async createQuest({ commit }, payload) {
     return await createQuest(payload);
   },
-  async getCreateQuestFeeData({ commit }, { cost, description }) {
-    return await getCreateQuestFeeData(cost, description);
+  async getCreateQuestFeeData({ commit }, { cost, depositAmount, description }) {
+    return await getCreateQuestFeeData(cost, depositAmount, description);
   },
   async editQuest({ commit }, { contractAddress, cost, description }) {
     const hash = ethers.utils.formatBytes32String(description.slice(0, 31));
