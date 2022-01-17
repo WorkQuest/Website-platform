@@ -18,7 +18,6 @@
     "agree": "同意",
     "disagree": "Disagree",
     "completeWorkOnQuest": "???",
-    "rejectCompletedWorkOnQuest": "???",
     "acceptCompletedWorkOnQuest": "???",
     "closeQuest": "???",
     "goToChat": "转到聊天",
@@ -1357,7 +1356,6 @@
   "chat": {
     "reason": "???",
     "openDispute": "发起争议",
-    "approveQuest": "批准 Quest",
     "starredMessages": "???",
     "starredChats": "???",
     "allChats": "???",

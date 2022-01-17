@@ -18,7 +18,6 @@
     "agree": "Aceptar",
     "disagree": "Disagree",
     "completeWorkOnQuest": "???",
-    "rejectCompletedWorkOnQuest": "???",
     "acceptCompletedWorkOnQuest": "???",
     "closeQuest": "???",
     "goToChat": "Ir al chat",
@@ -1357,7 +1356,6 @@
   "chat": {
     "reason": "???",
     "openDispute": "Abrir disputa",
-    "approveQuest": "Aprobar oferta",
     "starredMessages": "???",
     "starredChats": "???",
     "allChats": "???",

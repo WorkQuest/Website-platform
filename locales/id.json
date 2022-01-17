@@ -18,7 +18,6 @@
     "agree": "Setuju",
     "disagree": "???",
     "completeWorkOnQuest": "???",
-    "rejectCompletedWorkOnQuest": "???",
     "acceptCompletedWorkOnQuest": "???",
     "closeQuest": "???",
     "goToChat": "Kunjungi obrolan",
@@ -1357,7 +1356,6 @@
   "chat": {
     "reason": "???",
     "openDispute": "Ajukan sengketa",
-    "approveQuest": "Setujui quest",
     "starredMessages": "???",
     "starredChats": "???",
     "allChats": "???",
