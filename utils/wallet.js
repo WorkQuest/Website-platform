@@ -297,8 +297,10 @@ export const getCreateQuestFeeData = async (cost, description) => {
       return error();
     }
     const inst = new web3.eth.Contract(abi.WorkQuestFactory, process.env.WORK_QUEST_FACTORY);
+    console.log(abi.WorkQuestFactory, process.env.WORK_QUEST_FACTORY);
     cost = new BigNumber(cost).shiftedBy(18).toString();
     const hash = ethers.utils.formatBytes32String(description.slice(0, 31));
+    console.log([hash, cost, 0], wallet.address);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       inst.methods.newWorkQuest.apply(null, [hash, cost, 0]).estimateGas({ from: wallet.address }),

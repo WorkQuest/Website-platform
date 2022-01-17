@@ -145,6 +145,7 @@ export default {
     WQ_PROVIDER: process.env.WQ_PROVIDER,
     WQ_EXPLORER: process.env.WQ_EXPLORER,
     WQT_TOKEN: process.env.WQT_TOKEN,
+    WORK_QUEST_FACTORY: process.env.WORK_QUEST_FACTORY,
 
     PENSION_FUND: process.env.PENSION_FUND,
   },

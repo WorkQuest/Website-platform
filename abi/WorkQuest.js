@@ -47,7 +47,7 @@ export default [
         type: 'address',
       },
     ],
-    stateMutability: 'nonpayable',
+    stateMutability: 'payable',
     type: 'constructor',
   },
   {
@@ -263,13 +263,6 @@ export default [
   },
   {
     inputs: [],
-    name: 'cancelJob',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
     name: 'cost',
     outputs: [
       {
@@ -297,24 +290,6 @@ export default [
   {
     inputs: [],
     name: 'declineJob',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'bytes32',
-        name: '_jobHash',
-        type: 'bytes32',
-      },
-      {
-        internalType: 'uint256',
-        name: '_cost',
-        type: 'uint256',
-      },
-    ],
-    name: 'editJob',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

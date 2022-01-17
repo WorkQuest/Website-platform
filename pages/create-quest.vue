@@ -124,6 +124,7 @@
             @change="updateFiles"
           />
         </div>
+        {{ userAddress }} wallet
         <div class="upload btn btn__container btn__container_right">
           <div class="btn__create">
             <!--            :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))" TODO: вернуть в кнопку ниже-->
@@ -143,10 +144,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
-import { ethers } from 'ethers';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
-import abi from '~/abi/index';
 
 const { GeoCode } = require('geo-coder');
 
@@ -174,6 +173,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      userAddress: 'user/getUserWalletAddress',
       userData: 'user/getUserData',
       filters: 'quests/getFilters',
       isWalletConnected: 'wallet/getIsWalletConnected',
@@ -291,8 +291,13 @@ export default {
       const amount = new BigNumber(this.price).multipliedBy(1 + this.questsFee);
       const [feeRes] = await Promise.all([
         this.$store.dispatch('wallet/getCreateQuestFeeData', { cost: this.price * this.questsFee, description: this.textarea }),
-        this.updateBalanceWUSD(),
+        // this.updateBalanceWUSD(),
       ]);
+      console.log(feeRes);
+      if (!feeRes.ok) {
+        this.SetLoader(false);
+        return;
+      }
       // Если у пользователя недостаточно денег для создания квеста
       if (new BigNumber(feeRes.result.fee).plus(amount.toString()).isGreaterThan(this.balance.WUSD.fullBalance) === true) {
         console.log(feeRes.result.fee, this.balance.WUSD.fullBalance);

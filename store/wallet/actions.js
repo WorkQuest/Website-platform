@@ -13,6 +13,7 @@ import {
   getIsWalletConnected,
   getStyledAmount,
   setWalletAddress,
+  getWalletAddress,
   transfer, transferToken, getTransferFeeData, getCreateQuestFeeData,
 } from '~/utils/wallet';
 import abi from '~/abi/index';

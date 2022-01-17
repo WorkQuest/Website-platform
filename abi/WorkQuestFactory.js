@@ -403,14 +403,8 @@ export default [
       },
     ],
     name: 'newWorkQuest',
-    outputs: [
-      {
-        internalType: 'address',
-        name: 'workquest',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'nonpayable',
+    outputs: [],
+    stateMutability: 'payable',
     type: 'function',
   },
   {
