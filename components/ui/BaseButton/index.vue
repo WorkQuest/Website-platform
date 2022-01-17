@@ -55,6 +55,10 @@ export default {
       type: String,
       default: '',
     },
+    padding: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     btnClass() {
@@ -84,6 +88,7 @@ export default {
         { 'base-btn_portfolio-edit': mode === 'portfolioEdit' },
         { 'base-btn_portfolio-close': mode === 'portfolioClose' },
         { 'base-btn_share-user-info': mode === 'share-btn' },
+        { 'base-btn_padding': this.padding },
       ];
     },
   },
@@ -118,6 +123,9 @@ export default {
   border-radius: 6px;
   &:hover {
     background: #103D7C;
+  }
+  &_padding {
+    padding: 0 10px;
   }
   &_share-user-info {
     @include share-user;
