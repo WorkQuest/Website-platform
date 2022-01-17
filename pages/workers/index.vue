@@ -221,12 +221,12 @@
                   <div class="badge__item">
                     {{ getSkillTitle(user.userSpecializations[0].path) }}
                   </div>
-                  <div
-                    v-if="user.userSpecializations.length - 1"
-                    class="badge__item"
+                  <span
+                    v-if="user.userSpecializations.length - 1 > 0"
+                    class="badge__item_counter"
                   >
-                    &nbsp;(+{{ user.userSpecializations.length - 1 }})
-                  </div>
+                    (+{{ user.userSpecializations.length - 1 }})
+                  </span>
                 </div>
               </div>
               <span
@@ -245,7 +245,10 @@
                 v-if="user.additionalInfo"
                 class="card__about"
               >
-                {{ user.additionalInfo.description ? user.additionalInfo.description: $t('quests.nothingAboutMe') }}
+                <!--                {{ user.additionalInfo.description ? user.additionalInfo.description: $t('quests.nothingAboutMe') }}-->
+                Pellentesque in ipsum id orci porta dapibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat. Donec sollicitudin molestie malesuada.
+
+                Cras ultricies ligula sed magna dictum porta. Nulla quis lorem ut libero malesuada feugiat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
               </div>
               <div
                 v-if="user.additionalInfo"
@@ -503,25 +506,27 @@ export default {
 
 .badge {
   &-list {
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
   }
   &__container {
     padding: 0;
-    height: 21px;
-    overflow-x: hidden;
-  }
-  &__item {
-    @include text-simple;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     color: $blue;
+  }
+  &__item {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 85%;
+    &_counter {
+      margin-left: 2px;
+    }
   }
 }
 .selector {
@@ -784,10 +789,14 @@ export default {
     font-weight: 400;
     font-size: 14px;
     color: $black300;
-    white-space: normal;
-    overflow: hidden;
     max-height: 65px;
+
+    overflow: hidden;
     text-overflow: ellipsis;
+    white-space: initial;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
   }
   &__address {
     margin: 0 0 15px 0;
