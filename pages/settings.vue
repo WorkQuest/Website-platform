@@ -11,8 +11,6 @@
       <verification-card v-if="userRole === 'worker' && isShowInfo === true" />
       <profile
         :profile="profile"
-        :new-education="newEducation"
-        :new-work-exp="newWorkExp"
         :avatar-change="avatarChange"
         :validation-error="validationError"
         :is-valid-phone-number="isValidPhoneNumber"
@@ -20,6 +18,7 @@
         @updateSecondPhone="updateSecondPhone($event)"
         @showModalStatus="showModalStatus"
         @checkValidate="checkValidate"
+        @updateEducation="addEducation"
       />
       <skills
         v-if="userRole === 'worker'"
@@ -84,16 +83,6 @@ export default {
         selectedSpecAndSkills: null,
       },
       isShowInfo: true,
-      newEducation: {
-        from: '',
-        to: '',
-        place: '',
-      },
-      newWorkExp: {
-        from: '',
-        to: '',
-        place: '',
-      },
       avatarChange: {
         data: {},
         file: {},
@@ -140,6 +129,10 @@ export default {
     },
 
     // MODALS METHODS
+    addEducation(knowledge, data) {
+      this.profile.additionalInfo[knowledge === 'newEducation' ? 'educations' : 'workExperiences']
+        .push({ ...data });
+    },
     modalsStatusTitle(modalMode) {
       const titles = {
         enterPhoneNumber: this.$t('settings.enterPhoneNumber'),
