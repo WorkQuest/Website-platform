@@ -1513,7 +1513,9 @@
     "Dispute": "النزاع",
     "pending": "قيد الانتظار",
     "chatHistory": "سجل الدردشة",
-    "disputeTime": "وقت فتح النزاع:"
+    "disputeTime": "وقت فتح النزاع:",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
     "noWorkers": "???...",

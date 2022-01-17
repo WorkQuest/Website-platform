@@ -10,12 +10,15 @@
           <span class="dispute__back_text">{{ $t('disputes.Dispute') }}</span>
         </div>
         <div class="dispute__number">
-          № 87974121
+          {{ `№ ${disputeData.disputeNumber}` }}
         </div>
         <div class="dispute__status">
-          {{ $t('disputes.pending') }}
+          {{ disputeStatus }}
         </div>
       </div>
+      <quests
+        :quests="disputeData.quest ? [disputeData.quest] : []"
+      />
       <div class="chat-history">
         <div class="chat-history__container">
           <div class="chat-history__title">
@@ -31,15 +34,40 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Messages from '~/components/app/pages/common/messages';
+import quests from '~/components/app/pages/common/quests';
 
 export default {
   name: 'Index',
   components: {
     Messages,
+    quests,
+  },
+  data() {
+    return {
+      disputeId: this.$route.params.id,
+    };
+  },
+  computed: {
+    ...mapGetters({
+      disputeData: 'disputes/getDispute',
+    }),
+    disputeStatus() {
+      const obj = {
+        0: this.$t('disputes.pending'),
+        1: this.$t('disputes.inProgress'),
+        2: this.$t('disputes.completed'),
+      };
+      return obj[this.disputeData.status];
+    },
+  },
+  beforeMount() {
+    this.$store.dispatch('disputes/getDispute', this.disputeId);
   },
   async mounted() {
     this.SetLoader(true);
+    console.log(this.disputeData);
     this.SetLoader(false);
   },
   methods: {

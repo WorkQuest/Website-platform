@@ -92,12 +92,7 @@ export default {
       };
       const response = await this.$store.dispatch('disputes/createDispute', payload);
       if (response.ok) {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/dispute.svg'),
-          title: this.$t('modals.requestSend'),
-          subtitle: this.$t('modals.openDisputeText'),
-        });
+        await this.$router.push(`/disputes/${this.options.questId}`);
       }
     },
   },

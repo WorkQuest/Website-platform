@@ -1,3 +1,5 @@
+import disputes from '~/pages/disputes';
+
 export default {
   async createDispute({ commit }, payload) {
     try {
@@ -8,8 +10,9 @@ export default {
     }
   },
   async getDispute({ commit }, disputeId) {
+    console.log(typeof disputeId);
     try {
-      const { result } = await this.$axios.$get(`/v1/${disputeId}/getDispute`);
+      const { result } = await this.$axios.$get(`/v1/quest/dispute/${disputeId}`);
       commit('setDispute', result);
       return result;
     } catch (e) {

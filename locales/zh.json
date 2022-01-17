@@ -1513,7 +1513,9 @@
     "Dispute": "争议",
     "pending": "待办",
     "chatHistory": "聊天记录",
-    "disputeTime": "争议提交时间："
+    "disputeTime": "争议提交时间：",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
     "noWorkers": "???...",

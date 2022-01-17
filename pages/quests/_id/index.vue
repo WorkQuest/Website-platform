@@ -342,11 +342,11 @@ export default {
           },
           {
             name: this.$t('btn.dispute'),
-            class: 'base-btn_dispute',
+            class: '',
             mode: '',
-            funcKey: '',
+            funcKey: 'openDispute',
             icon: '',
-            disabled: true,
+            disabled: false,
           }];
           break;
         }
@@ -514,9 +514,20 @@ export default {
       await this.$router.push('/my');
       this.SetLoader(false);
     },
-    openDispute() {
+    async openDispute() {
       const modalMode = 4;
-      this.showQuestModal(modalMode);
+      if (this.questData.status === 3) {
+        await this.$router.push(`/disputes/${this.questData.id}`);
+      } else {
+        this.ShowModal({
+          key: modals.openADispute,
+          questId: this.questData.id,
+        });
+        await this.getQuest();
+        await this.getResponsesToQuest();
+        await this.setActionBtnsArr();
+      }
+      // this.showQuestModal(modalMode);
     },
     async acceptCompletedWorkOnQuest() {
       const modalMode = 2;

@@ -1513,7 +1513,9 @@
     "Dispute": "বিরোধ",
     "pending": "অনিষ্পন্ন",
     "chatHistory": "চ্যাটের ইতিহাস",
-    "disputeTime": "খোলার সময় নিয়ে বিরোধ :"
+    "disputeTime": "খোলার সময় নিয়ে বিরোধ :",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
     "noWorkers": "???...",

@@ -1,64 +1,64 @@
 <template>
   <div class="messages__container">
-    <div
-      v-for="(item, i) in messages"
-      :key="i"
-    >
-      <div
-        class="chat__message"
-      >
-        <div>
-          <div class="row__container">
-            <div class="chat__img-container">
-              <img
-                class="chat__img"
-                src="~/assets/img/temp/profile.svg"
-              >
-            </div>
-            <div class="chat__name-container">
-              <div class="chat__name">
-                {{ item.name }}
-              </div>
-              <div class="chat__star">
-                <div
-                  class="block__icon block__icon_fav star"
-                  @click="item.isFavourite = !item.isFavourite"
-                >
-                  <img
-                    class="star__hover"
-                    src="~assets/img/ui/star_hover.svg"
-                    alt=""
-                  >
-                  <img
-                    v-if="!item.isFavourite"
-                    class="star__default"
-                    src="~assets/img/ui/star_simple.svg"
-                    alt=""
-                  >
-                  <img
-                    v-if="item.isFavourite"
-                    class="star__checked"
-                    src="~assets/img/ui/star_checked.svg"
-                    alt=""
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="message__interlocutor"
-            :class="{ message__owner: +item.type === 2 }"
-          >
-            <span class="message__body">
-              {{ item.body }}
-            </span>
-            <div class="message__time">
-              {{ item.messageTime }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!--    <div-->
+    <!--      v-for="(item, i) in messages"-->
+    <!--      :key="i"-->
+    <!--    >-->
+    <!--      <div-->
+    <!--        class="chat__message"-->
+    <!--      >-->
+    <!--        <div>-->
+    <!--          <div class="row__container">-->
+    <!--            <div class="chat__img-container">-->
+    <!--              <img-->
+    <!--                class="chat__img"-->
+    <!--                src="~/assets/img/temp/profile.svg"-->
+    <!--              >-->
+    <!--            </div>-->
+    <!--            <div class="chat__name-container">-->
+    <!--              <div class="chat__name">-->
+    <!--                {{ item.name }}-->
+    <!--              </div>-->
+    <!--              <div class="chat__star">-->
+    <!--                <div-->
+    <!--                  class="block__icon block__icon_fav star"-->
+    <!--                  @click="item.isFavourite = !item.isFavourite"-->
+    <!--                >-->
+    <!--                  <img-->
+    <!--                    class="star__hover"-->
+    <!--                    src="~assets/img/ui/star_hover.svg"-->
+    <!--                    alt=""-->
+    <!--                  >-->
+    <!--                  <img-->
+    <!--                    v-if="!item.isFavourite"-->
+    <!--                    class="star__default"-->
+    <!--                    src="~assets/img/ui/star_simple.svg"-->
+    <!--                    alt=""-->
+    <!--                  >-->
+    <!--                  <img-->
+    <!--                    v-if="item.isFavourite"-->
+    <!--                    class="star__checked"-->
+    <!--                    src="~assets/img/ui/star_checked.svg"-->
+    <!--                    alt=""-->
+    <!--                  >-->
+    <!--                </div>-->
+    <!--              </div>-->
+    <!--            </div>-->
+    <!--          </div>-->
+    <!--          <div-->
+    <!--            class="message__interlocutor"-->
+    <!--            :class="{ message__owner: +item.type === 2 }"-->
+    <!--          >-->
+    <!--            <span class="message__body">-->
+    <!--              {{ item.body }}-->
+    <!--            </span>-->
+    <!--            <div class="message__time">-->
+    <!--              {{ item.messageTime }}-->
+    <!--            </div>-->
+    <!--          </div>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </div>-->
   </div>
 </template>
 

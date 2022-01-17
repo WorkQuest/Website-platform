@@ -1513,7 +1513,9 @@
     "Dispute": "Disputa",
     "pending": "Pendiente",
     "chatHistory": "Historial de chats",
-    "disputeTime": "Hora de apertura de la disputa:"
+    "disputeTime": "Hora de apertura de la disputa:",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
     "noWorkers": "???...",

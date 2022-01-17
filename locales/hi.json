@@ -1513,7 +1513,9 @@
     "Dispute": "विवाद",
     "pending": "पेंडिंग",
     "chatHistory": "चैट हिस्ट्री",
-    "disputeTime": "विवाद खुलने का समय:"
+    "disputeTime": "विवाद खुलने का समय:",
+    "inProgress": "???",
+    "completed": "???"
   },
   "workers": {
     "noWorkers": "???...",

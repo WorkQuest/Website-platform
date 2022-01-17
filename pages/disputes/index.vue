@@ -5,17 +5,6 @@
         <h2 class="page__title">
           {{ $t('disputes.disputes') }}
         </h2>
-        <span
-          v-for="(item, i) in disputes"
-          :key="i"
-        >
-          <div
-            v-if="item.number.length === 0"
-            class="page__none"
-          >
-            <img src="~assets/img/ui/youAreHaven'tDisputs.svg">
-          </div>
-        </span>
         <div
           v-if="disputesCount > 0"
           class="page__grid"
@@ -26,50 +15,36 @@
           >
             <div
               class="page__card"
-              @click="toDisputes(item.number)"
+              @click="toDisputes(item.id)"
             >
               <div class="page__card-body">
                 <div class="page__text">
-                  {{ $t('disputes.dispute') }} <span class="page__text_blue">{{ item.number }}</span>
+                  {{ $t('disputes.dispute') }} <span class="page__text_blue">{{ item.disputeNumber }}</span>
                 </div>
                 <div class="page__text">
-                  {{ $t('disputes.quest') }} <span class="page__text_blue">{{ item.quest }}</span>
+                  {{ $t('disputes.quest') }} <span class="page__text_blue">{{ item.quest.title }}</span>
                 </div>
                 <div class="page__text">
-                  {{ $t('disputes.employer') }} <span class="page__text_blue">{{ item.employer }}</span>
+                  {{ $t('disputes.employer') }} <span class="page__text_blue">{{ `${item.quest.user.firstName} ${item.quest.user.lastName}` }}</span>
                 </div>
                 <div class="page__text">
-                  {{ $t('disputes.questSalary') }} <span class="page__text_blue">{{ item.questSalary }}</span>
+                  {{ $t('disputes.questSalary') }} <span class="page__text_blue">{{ item.quest.price }}</span>
                 </div>
                 <div class="page__text">
-                  {{ $t('disputes.disputeTime') }} <span class="page__text_blue">{{ item.time }}</span>
+                  {{ $t('disputes.disputeTime') }} <span class="page__text_blue">{{ convertDate(item.quest.createdAt) }}</span>
                 </div>
                 <div class="page__text">
                   {{ $t('disputes.status') }} <span
-                    v-if="item.status === 'Pending'"
                     class="page__text_yellow"
-                  >{{ item.status }}</span>
-                  <span
-                    v-if="item.status === 'Completed'"
-                    class="page__text_green"
-                  >{{ item.status }}</span>
+                  >{{ disputeStatus(item.status) }}</span>
                 </div>
               </div>
               <div class="page__vl" />
               <div class="page__card-body">
                 <div class="page__text">
                   {{ $t('disputes.decision') }}
-                  <div
-                    v-if="item.decision.length === 0"
-                    class="page__decision"
-                  >
-                    -
-                  </div>
-                  <div
-                    v-if="item.decision.length !== 0"
-                    class="page__decision"
-                  >
-                    {{ item.decision }}
+                  <div class="page__decision">
+                    {{ item.decisionDescription ? item.decisionDescription : '-' }}
                   </div>
                 </div>
               </div>
@@ -87,6 +62,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 import emptyData from '~/components/app/info/emptyData';
 
 export default {
@@ -111,6 +87,17 @@ export default {
   methods: {
     toDisputes(item) {
       this.$router.push({ path: `/disputes/${item}` });
+    },
+    convertDate(createdAt) {
+      return createdAt ? moment(createdAt).format('MMMM Do YYYY, h:mm') : '';
+    },
+    disputeStatus(status) {
+      const obj = {
+        0: this.$t('disputes.pending'),
+        1: this.$t('disputes.inProgress'),
+        2: this.$t('disputes.completed'),
+      };
+      return obj[status];
     },
   },
 };
