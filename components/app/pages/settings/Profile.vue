@@ -132,7 +132,7 @@
           v-slot="{ errors }"
           tag="div"
           class="profile__description"
-          rules="max:650"
+          rules="max:100"
         >
           <textarea
             id="textarea"
