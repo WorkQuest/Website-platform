@@ -1,8 +1,6 @@
 <template>
   <div>
-    <GmapSearchBlock
-      :is-show-map="isShowMap"
-    />
+    <GmapSearchBlock :is-show-map="isShowMap" />
     <div
       class="gmap-block search"
       :class="!isShowMap ? 'gmap-block_shift' : ''"
@@ -73,9 +71,7 @@
         </div>
       </div>
       <div class="search__filter filter">
-        <div
-          class="filter__dd"
-        >
+        <div class="filter__dd">
           <base-dd
             v-model="distanceIndex"
             :items="distanceItems"
@@ -160,6 +156,7 @@
               <base-btn
                 class="tools__item"
                 :mode="'light'"
+                :padding="true"
                 data-selector="ACTION-TIME-SORT-USER"
                 @click="changeSorting('time')"
               >
@@ -167,12 +164,10 @@
                   {{ $t('quests.time') }}
                 </span>
                 <span
-                  v-if="timeSort === 'desc'"
-                  class="icon-Sorting_descending"
-                />
-                <span
-                  v-if="timeSort === 'asc'"
-                  class="icon-Sorting_ascending"
+                  :class="{
+                    'icon-Sorting_descending': timeSort === 'desc',
+                    'icon-Sorting_ascending': timeSort === 'asc'
+                  }"
                 />
               </base-btn>
             </div>
@@ -188,9 +183,7 @@
             class="card card_lower"
             @click="showDetails(user)"
           >
-            <div
-              class="card__content"
-            >
+            <div class="card__content">
               <div class="card__header">
                 <div class="card__header_top">
                   <div class="card__header_left">
@@ -201,9 +194,7 @@
                     >
                   </div>
                   <div class="card__header_right">
-                    <span
-                      class="card__name"
-                    >
+                    <span class="card__name">
                       {{ user.firstName ? user.firstName : $t('quests.namelessWorker') }} {{ user.lastName ? user.lastName : "" }}
                     </span>
                   </div>
@@ -216,15 +207,17 @@
                 v-if="user.userSpecializations.length !== 0"
                 class="badge__container"
               >
-                <ul class="badge-list">
-                  <li
-                    v-for="(skill, spec) in user.userSpecializations"
-                    :key="spec"
-                    class="badge__item"
+                <div class="badge-list">
+                  <div class="badge__item">
+                    {{ getSkillTitle(user.userSpecializations[0].path) }}
+                  </div>
+                  <span
+                    v-if="user.userSpecializations.length - 1 > 0"
+                    class="badge__item_counter"
                   >
-                    {{ getSkillTitle(skill.path) }}
-                  </li>
-                </ul>
+                    (+{{ user.userSpecializations.length - 1 }})
+                  </span>
+                </div>
               </div>
               <span
                 v-if="user.userSpecializations.length === 0"
@@ -500,26 +493,27 @@ export default {
 
 .badge {
   &-list {
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
   }
   &__container {
     padding: 0;
-    height: 21px;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-  &__item {
-    @include text-simple;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     color: $blue;
+  }
+  &__item {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 85%;
+    &_counter {
+      margin-left: 2px;
+    }
   }
 }
 .selector {
@@ -718,21 +712,20 @@ export default {
 
 .card {
   width: 100%;
-  max-height: 360px;
   height: 360px;
   box-sizing: border-box;
   border-radius: 6px;
   align-items: center;
   cursor: pointer;
   box-shadow: none;
-  transition: .5s;
+  padding: 10px;
+  transition: box-shadow .25s ease-in-out;
   &:hover {
     cursor: pointer;
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
   }
   &__content {
     width: 100%;
-    max-width: 240px;
   }
   &__spec {
     font-weight: 400;
@@ -747,7 +740,6 @@ export default {
   &__header {
     display: flex;
     flex-direction: column;
-    margin: 20px 0 0 0;
     &_top {
       display: grid;
       grid-template-columns: 61px 1fr;
@@ -770,6 +762,9 @@ export default {
     @include text-simple;
     font-size: 18px;
     font-weight: 500;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   &__title {
     margin: 15px 0 0 0;
@@ -781,10 +776,14 @@ export default {
     font-weight: 400;
     font-size: 14px;
     color: $black300;
-    white-space: normal;
-    overflow: hidden;
     max-height: 65px;
+
+    overflow: hidden;
     text-overflow: ellipsis;
+    white-space: initial;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
   }
   &__address {
     margin: 0 0 15px 0;
@@ -936,8 +935,6 @@ export default {
   .card {
     padding: 10px;
   }
-}
-@include _991 {
   .content {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -945,7 +942,7 @@ export default {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@include _767 {
+@include _991 {
   .panel {
     &__left {
       grid-template-columns: repeat(2, 1fr);
