@@ -18,7 +18,6 @@
     "agree": "सहमत",
     "disagree": "???",
     "completeWorkOnQuest": "???",
-    "rejectCompletedWorkOnQuest": "???",
     "acceptCompletedWorkOnQuest": "???",
     "closeQuest": "???",
     "goToChat": "चैट पर जाएं",
@@ -1357,7 +1356,6 @@
   "chat": {
     "reason": "???",
     "openDispute": "खुला विवाद",
-    "approveQuest": "Quest मंजूर करें",
     "starredMessages": "???",
     "starredChats": "???",
     "allChats": "???",

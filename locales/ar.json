@@ -18,7 +18,6 @@
     "agree": "أوافق",
     "disagree": "???",
     "completeWorkOnQuest": "???",
-    "rejectCompletedWorkOnQuest": "???",
     "acceptCompletedWorkOnQuest": "???",
     "closeQuest": "???",
     "goToChat": "الانتقال إلى الدردشة",
@@ -1357,7 +1356,6 @@
   "chat": {
     "reason": "???",
     "openDispute": "نزاع مفتوح",
-    "approveQuest": "الموافقة على طلب العمل",
     "starredMessages": "???",
     "starredChats": "???",
     "allChats": "???",

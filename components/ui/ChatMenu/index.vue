@@ -41,12 +41,6 @@
                 {{ $t('chat.openDispute') }}
               </div>
               <div
-                v-if="!canILeave"
-                class="chat-menu__item"
-              >
-                {{ $t('chat.approveQuest') }}
-              </div>
-              <div
                 v-if="canILeave"
                 class="chat-menu__item"
                 @click="tryLeaveChat"
