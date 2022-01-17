@@ -341,12 +341,12 @@ export default {
             disabled: false,
           },
           {
-            name: this.$t('btn.rejectCompletedWorkOnQuest'),
-            class: '',
+            name: this.$t('btn.dispute'),
+            class: 'base-btn_dispute',
             mode: '',
-            funcKey: 'rejectCompletedWorkOnQuest',
+            funcKey: '',
             icon: '',
-            disabled: false,
+            disabled: true,
           }];
           break;
         }
@@ -524,14 +524,6 @@ export default {
       await this.$store.dispatch('quests/acceptCompletedWorkOnQuest', this.questData.id);
       this.showQuestModal(modalMode);
       await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Done);
-      this.SetLoader(false);
-    },
-    async rejectCompletedWorkOnQuest() {
-      const modalMode = 3;
-      this.SetLoader(true);
-      await this.$store.dispatch('quests/rejectCompletedWorkOnQuest', this.questData.id);
-      this.showQuestModal(modalMode);
-      await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Dispute);
       this.SetLoader(false);
     },
     toRaisingViews() {
