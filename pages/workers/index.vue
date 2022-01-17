@@ -1,8 +1,6 @@
 <template>
   <div>
-    <GmapSearchBlock
-      :is-show-map="isShowMap"
-    />
+    <GmapSearchBlock :is-show-map="isShowMap" />
     <div
       class="gmap-block search"
       :class="!isShowMap ? 'gmap-block_shift' : ''"
@@ -73,9 +71,7 @@
         </div>
       </div>
       <div class="search__filter filter">
-        <div
-          class="filter__dd"
-        >
+        <div class="filter__dd">
           <base-dd
             v-model="distanceIndex"
             :items="distanceItems"
@@ -164,9 +160,7 @@
                 data-selector="ACTION-TIME-SORT-USER"
                 @click="changeSorting('time')"
               >
-                <span
-                  class="tools__text"
-                >
+                <span class="tools__text">
                   {{ $t('quests.time') }}
                 </span>
                 <span
@@ -189,9 +183,7 @@
             class="card card_lower"
             @click="showDetails(user)"
           >
-            <div
-              class="card__content"
-            >
+            <div class="card__content">
               <div class="card__header">
                 <div class="card__header_top">
                   <div class="card__header_left">
@@ -202,9 +194,7 @@
                     >
                   </div>
                   <div class="card__header_right">
-                    <span
-                      class="card__name"
-                    >
+                    <span class="card__name">
                       {{ user.firstName ? user.firstName : $t('quests.namelessWorker') }} {{ user.lastName ? user.lastName : "" }}
                     </span>
                   </div>
@@ -245,10 +235,7 @@
                 v-if="user.additionalInfo"
                 class="card__about"
               >
-                <!--                {{ user.additionalInfo.description ? user.additionalInfo.description: $t('quests.nothingAboutMe') }}-->
-                Pellentesque in ipsum id orci porta dapibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat. Donec sollicitudin molestie malesuada.
-
-                Cras ultricies ligula sed magna dictum porta. Nulla quis lorem ut libero malesuada feugiat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
+                {{ user.additionalInfo.description ? user.additionalInfo.description: $t('quests.nothingAboutMe') }}
               </div>
               <div
                 v-if="user.additionalInfo"
