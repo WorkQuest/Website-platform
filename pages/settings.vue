@@ -11,6 +11,8 @@
       <verification-card v-if="userRole === 'worker' && isShowInfo === true" />
       <profile
         :profile="profile"
+        :new-education="newEducation"
+        :new-work-exp="newWorkExp"
         :avatar-change="avatarChange"
         :validation-error="validationError"
         :is-valid-phone-number="isValidPhoneNumber"
@@ -87,9 +89,15 @@ export default {
         data: {},
         file: {},
       },
-      updatedSecondPhone: null,
+      updatedSecondPhone: {
+        codeRegion: null,
+        phone: null,
+        fullPhone: null,
+      },
       validationError: false,
       isValidPhoneNumber: true,
+      newEducation: [],
+      newWorkExp: [],
     };
   },
   computed: {
@@ -109,7 +117,14 @@ export default {
       lastName: this.userData.lastName,
       email: this.userData.email,
       firstPhone: this.userData.tempPhone || this.userData.phone,
-      additionalInfo: JSON.parse(JSON.stringify(this.userData.additionalInfo)),
+      additionalInfo: {
+        secondMobileNumber: {
+          codeRegion: null,
+          phone: null,
+          fullPhone: null,
+        },
+        ...this.userData.additionalInfo,
+      },
       location: this.userData.location,
     };
     this.skills = {
@@ -183,7 +198,11 @@ export default {
     // UPDATE PHONE
     updateSecondPhone(value) {
       this.isValidPhoneNumber = value.isValid;
-      this.updatedSecondPhone = value;
+      this.updatedSecondPhone = {
+        phone: value?.nationalNumber || null,
+        fullPhone: value?.formatInternational ? value.formatInternational.replace(/\s/g, '') : null,
+        codeRegion: value?.countryCode || null,
+      };
     },
 
     // UPDATE USER INFO METHODS
@@ -195,7 +214,6 @@ export default {
       const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
       const { secondMobileNumber } = this.profile.additionalInfo;
       await this.setAvatar();
-      await this.checkPhoneNumber();
       if (secondMobileNumber) {
         await this.editProfile(checkAvatarID);
       }
@@ -242,14 +260,6 @@ export default {
       }
     },
 
-    async checkPhoneNumber() {
-      if (this.updatedSecondPhone.formatInternational) {
-        this.profile.additionalInfo.secondMobileNumber = this.updatedSecondPhone.formatInternational.replace(/\s/g, '');
-      } if (!this.updatedSecondPhone.formatInternational) {
-        this.profile.additionalInfo.secondMobileNumber = '';
-      }
-    },
-
     async editProfile(checkAvatarID) {
       const {
         instagram, twitter, linkedin, facebook,
@@ -263,7 +273,7 @@ export default {
           latitude: this.coordinates ? this.coordinates.lat : this.profile.location?.latitude || 0,
         },
         additionalInfo: {
-          secondMobileNumber: this.profile.additionalInfo.secondMobileNumber,
+          secondMobileNumber: this.updatedSecondPhone,
           address: this.profile.additionalInfo.address,
           socialNetwork: {
             instagram: instagram !== '' ? instagram : null,

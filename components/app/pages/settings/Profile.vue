@@ -93,13 +93,14 @@
           />
           <div class="profile__phone-input">
             <vue-phone-number-input
-              v-model="profile.additionalInfo.secondMobileNumber"
+              v-model="secondPhoneNumber.fullPhone"
+              :default-country-code="secondPhoneNumber.codeRegion"
+              :error="!isValidPhoneNumber"
               error-color="#EB5757"
               clearable
               show-code-on-list
               required
               size="lg"
-              :error="!isValidPhoneNumber"
               @update="updateSecondPhone($event)"
             />
             <span
@@ -278,6 +279,9 @@ export default {
   },
   data() {
     return {
+      secondPhoneNumber: {
+        fullPhone: null,
+      },
       newEducation: {
         from: '',
         to: '',
@@ -384,7 +388,18 @@ export default {
       return this.profile.additionalInfo?.workExperiences?.length !== 0;
     },
   },
-
+  watch: {
+    profile: {
+      deep: true,
+      handler() {
+        this.secondPhoneNumber = {
+          codeRegion: this.profile?.additionalInfo?.secondMobileNumber?.codeRegion || null,
+          phone: null,
+          fullPhone: this.profile?.additionalInfo?.secondMobileNumber?.fullPhone || null,
+        };
+      },
+    },
+  },
   methods: {
     // UPDATE AVATAR
     // eslint-disable-next-line consistent-return
