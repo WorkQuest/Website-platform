@@ -210,7 +210,9 @@
     "confCode": "Google कंफर्मेशन कोड",
     "placeholder": "प्लेसहोल्डर",
     "confCodeDesc": "Google Authenticator ऐप से 6 अंकों का कोड दर्ज करें",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "साइन अप करें",
@@ -298,6 +300,7 @@
     "workOnQuestRejected": "???",
     "pleaseWaitEmp": "???",
     "quests": "???",
+    "questsSmall": "quests",
     "publicationDate": "???",
     "urgent": "अर्जेंट",
     "specQuests": "???",
@@ -403,7 +406,6 @@
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
     "questActive": "???:",
-    "questClosed": "???:",
     "questDispute": "???:",
     "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
@@ -992,6 +994,7 @@
     "pressSaveBtn": "कृपया सेव करें बटन दबाएं",
     "imageLoadedSuccessful": "इमेज लोड हो गई",
     "success": "सफल",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "आपकी भूमिका बदल दी गई है",
     "chooseSkills": "आवश्यक स्किल चुनें",
     "securityCheck": "सुरक्षा जांच",
@@ -1050,6 +1053,7 @@
     "messageSend": "मैसेज भेजा गया",
     "questAgreed": "Quest सहमति",
     "requestSend": "अनुरोध भेजा गया",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "अनुरोध भेजें",
     "message": "मैसेज",
     "bodyMessage": "नमस्ते",
@@ -1069,6 +1073,7 @@
     "addCard": "कार्ड जोड़ें",
     "inviteSend": "इन्वाइट भेजा गया",
     "questCreated": "Quest बनाई गई",
+    "questUpdated": "???",
     "invitation": "इन्विटेशन",
     "chooseQuest": "Quest चुनें",
     "raiseViews": "व्यू बढ़ाएं",
@@ -1241,8 +1246,9 @@
     "youCanAttachUpToNFiles": "???",
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
-    "incorrectChain": "You choose incorrect chain !",
-    "selectToken": "Select token"
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "जॉब तलाशकर्ता",
@@ -1344,7 +1350,8 @@
       "timestamp": "टाइमस्टैम्प",
       "transferred": "टोकन स्थानांतरित",
       "value": "मात्रा",
-      "trxFee": "ट्रांजेक्शन शुल्क"
+      "trxFee": "ट्रांजेक्शन शुल्क",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {

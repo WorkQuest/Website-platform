@@ -46,6 +46,7 @@ const wallet = {
   },
 };
 
+export const getWalletAddress = () => wallet.address;
 export const setWalletAddress = (userAddress) => wallet.init(userAddress, null);
 
 /**

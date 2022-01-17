@@ -19,6 +19,16 @@ import abi from '~/abi/index';
 import { TokenSymbols } from '~/utils/enums';
 
 export default {
+  async getTransactions({ commit }, params) {
+    try {
+      const res = await this.$axios({ url: `/account/${getWalletAddress()}/txs`, baseURL: process.env.WQ_EXPLORER, params });
+      commit('setTransactions', res.data.result.txs);
+      commit('setTransactionsCount', res.data.result.count);
+    } catch (e) {
+      commit('setTransactions', []);
+      commit('setTransactionsCount', 0);
+    }
+  },
   async checkPassword({ commit }, password) {
     try {
       const res = await this.$axios.$post('/v1/auth/validate-password', { password });

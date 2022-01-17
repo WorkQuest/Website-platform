@@ -158,7 +158,7 @@
               </template>
             </base-btn>
             <base-btn
-              class="tools__item"
+              class="tools__item tools__item_time"
               :mode="'light'"
               @click="changeSorting('time')"
             >
@@ -444,6 +444,7 @@ export default {
         payload['priceBetween[from]'] = this.selectedPriceFilter.from || 0;
         payload['priceBetween[to]'] = this.selectedPriceFilter.to || 99999999999999;
       }
+      if (this.$route.query.statuses) payload['statuses[]'] = 0;
       if (!this.isShowMap || !this.mapBounds.center) {
         await this.$store.dispatch('quests/getAllQuests', payload);
       } else {

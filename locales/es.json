@@ -210,7 +210,9 @@
     "confCode": "Código de confirmación de Google",
     "placeholder": "Marcador de posición",
     "confCodeDesc": "Escriba el código de 6 dígitos de la aplicación Autenticador de Google",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "Registrarse",
@@ -298,6 +300,7 @@
     "workOnQuestRejected": "???",
     "pleaseWaitEmp": "???",
     "quests": "Ofertas",
+    "questsSmall": "quests",
     "publicationDate": "???",
     "urgent": "Urgente",
     "specQuests": "???",
@@ -991,6 +994,7 @@
     "pressSaveBtn": "Pulse el botón Guardar",
     "imageLoadedSuccessful": "Imagen cargada correctamente",
     "success": "Operación correcta",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "Se cambió su rol",
     "chooseSkills": "Seleccione las habilidades necesarias",
     "securityCheck": "Comprobación de seguridad",
@@ -1049,6 +1053,7 @@
     "messageSend": "Mensaje enviado",
     "questAgreed": "Oferta acordada",
     "requestSend": "Solicitud enviada",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "Enviar una solicitud",
     "message": "Mensaje",
     "bodyMessage": "Hola",
@@ -1068,6 +1073,7 @@
     "addCard": "Añadir tarjeta",
     "inviteSend": "Invitación enviada",
     "questCreated": "Oferta creada",
+    "questUpdated": "???",
     "invitation": "Invitación",
     "chooseQuest": "Seleccionar oferta",
     "raiseViews": "Aumentar visualizaciones",
@@ -1240,8 +1246,9 @@
     "youCanAttachUpToNFiles": "???",
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
-    "incorrectChain": "You choose incorrect chain !",
-    "selectToken": "Select token"
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "Demandantes de empleo",
@@ -1343,7 +1350,8 @@
       "timestamp": "Marca de tiempo",
       "transferred": "Tokens transferidos",
       "value": "Cantidad",
-      "trxFee": "Tarifa de transacción"
+      "trxFee": "Tarifa de transacción",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {

@@ -210,7 +210,9 @@
     "confCode": "رمز تأكيد Google",
     "placeholder": "عنصر نائب",
     "confCodeDesc": "أدخل الرمز المكوَّن من 6 أرقام من تطبيق مصادقة Google",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "الاشتراك",
@@ -298,6 +300,7 @@
     "workOnQuestRejected": "???",
     "pleaseWaitEmp": "???",
     "quests": "طلبات العمل",
+    "questsSmall": "quests",
     "publicationDate": "???",
     "urgent": "عاجلة",
     "specQuests": "???",
@@ -403,7 +406,6 @@
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
     "questActive": "???:",
-    "questClosed": "???:",
     "questDispute": "???:",
     "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
@@ -992,6 +994,7 @@
     "pressSaveBtn": "يُرجى الضغط على زر الحفظ",
     "imageLoadedSuccessful": "تم تحميل الصورة بنجاح",
     "success": "تم بنجاح",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "تم تغيير دورك",
     "chooseSkills": "اختر المهارات الضرورية",
     "securityCheck": "الفحص الأمني",
@@ -1050,6 +1053,7 @@
     "messageSend": "إرسال رسالة",
     "questAgreed": "تمت الموافقة على الطلب",
     "requestSend": "تم إرسال الطلب",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "إرسال طلب",
     "message": "رسالة",
     "bodyMessage": "مرحبًا",
@@ -1069,6 +1073,7 @@
     "addCard": "إضافة بطاقة",
     "inviteSend": "تم إرسال الدعوة",
     "questCreated": "تم إنشاء الطلب",
+    "questUpdated": "???",
     "invitation": "الدعوة",
     "chooseQuest": "اختيار الطلب",
     "raiseViews": "زيادة المشاهدات",
@@ -1241,8 +1246,9 @@
     "youCanAttachUpToNFiles": "???",
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
-    "incorrectChain": "You choose incorrect chain !",
-    "selectToken": "Select token"
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "أصحاب الوظائف",
@@ -1344,7 +1350,8 @@
       "timestamp": "الطابع الزمني",
       "transferred": "الرموز المحوَّلة",
       "value": "الكمية",
-      "trxFee": "رسوم المعاملة"
+      "trxFee": "رسوم المعاملة",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {

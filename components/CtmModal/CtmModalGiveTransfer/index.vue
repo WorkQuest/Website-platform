@@ -69,7 +69,7 @@
           </base-btn>
           <base-btn
             class="buttons__action"
-            :disabled="invalid"
+            :disabled="invalid || !isCanSubmit"
             @click="handleSubmit(showWithdrawInfo)"
           >
             {{ $t('meta.send') }}
@@ -94,8 +94,12 @@ export default {
       recipient: '',
       amount: '',
       step: 1,
-      maxAmount: 0,
       ddValue: 0,
+      maxFee: {
+        WUSD: 0,
+        WQT: 0,
+      },
+      isCanSubmit: true,
     };
   },
   computed: {
@@ -105,9 +109,13 @@ export default {
       balance: 'wallet/getBalanceData',
       selectedToken: 'wallet/getSelectedToken',
       userData: 'user/getUserData',
+      isConnected: 'wallet/getIsWalletConnected',
     }),
     tokenSymbolsDd() {
       return Object.keys(TokenSymbols);
+    },
+    maxAmount() {
+      return this.balance[this.selectedToken].fullBalance || 0;
     },
   },
   watch: {
@@ -117,18 +125,47 @@ export default {
     ddValue(val) {
       this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
     },
+    balance: {
+      deep: true,
+      handler: async () => {
+        this.isCanSubmit = false;
+        await this.updateMaxFee();
+        this.isCanSubmit = true;
+      },
+    },
   },
   async mounted() {
+    this.isCanSubmit = false;
     const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
-    this.maxAmount = this.balance[this.selectedToken].fullBalance;
+    await this.updateMaxFee();
+    this.isCanSubmit = true;
   },
   methods: {
+    // Для просчета максимальной суммы транзакции от комиссии
+    async updateMaxFee() {
+      if (!this.isConnected) return;
+      const [wusd, wqt] = await Promise.all([
+        this.$store.dispatch('wallet/getTransferFeeData', {
+          recipient: this.userData.wallet.address,
+          value: this.balance.WUSD.fullBalance,
+        }),
+        this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'transfer',
+          _abi: abi.ERC20,
+          contractAddress: process.env.WQT_TOKEN,
+          recipient: process.env.WQT_TOKEN,
+          value: this.balance.WQT.fullBalance,
+        }),
+      ]);
+      this.maxFee.WQT = wqt.ok ? wqt.result.fee : 0;
+      this.maxFee.WUSD = wusd.ok ? wusd.result.fee : 0;
+    },
     hide() {
       this.CloseModal();
     },
     maxBalance() {
-      this.amount = this.maxAmount;
+      this.amount = this.maxAmount - this.maxFee[this.selectedToken];
     },
     async transfer() {
       let res;

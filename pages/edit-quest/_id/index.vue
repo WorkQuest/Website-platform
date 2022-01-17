@@ -4,7 +4,10 @@
     :class="{'main-white': step === 1}"
   >
     <div class="main__body page">
-      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
+      <validation-observer
+        v-slot="{handleSubmit, validated, passed, invalid}"
+        tag="div"
+      >
         <div
           v-if="step === 1"
           class="page"
@@ -130,7 +133,7 @@
             <div class="btn__create">
               <base-btn
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
-                @click="handleSubmit(toRiseViews)"
+                @click="handleSubmit(toRiseViews(2))"
               >
                 {{ $t('quests.editAQuest') }}
               </base-btn>
@@ -141,11 +144,11 @@
           v-if="step === 2"
           class="page"
         >
-          <div class="page btn-container__left">
+          <div class="page btn-container btn-container__left">
             <div class="btn-container__btn_back">
               <base-btn
-                :mode="'back'"
-                @click="goBack()"
+                mode="back"
+                @click="clickBackBtnHandler"
               >
                 {{ $t('meta.back') }}
                 <template v-slot:left>
@@ -224,7 +227,7 @@
             <div class="btn-container">
               <div class="btn-container__btn">
                 <base-btn
-                  :mode="'outline'"
+                  mode="outline"
                   @click="editQuest"
                 >
                   {{ $t('meta.skipAndEnd') }}
@@ -264,27 +267,22 @@ export default {
       priorityIndex: 1,
       employmentIndex: 0,
       categoryIndex: 0,
-      runtimeIndex: 0,
-      periodIndex: 0,
       runtimeValue: '',
       questTitle: '',
       address: '',
       textarea: '',
       price: '',
-      priceOfClick: '',
-      city: '',
       coordinates: {},
       currency: ' WUSD',
       addresses: [],
       files: [],
+      mode: this.$route.query?.mode || '',
     };
   },
   computed: {
     ...mapGetters({
       questData: 'quests/getQuest',
-      userData: 'user/getUserData',
       step: 'quests/getCurrentStepEditQuest',
-      filters: 'quests/getFilters',
     }),
     days() {
       return [
@@ -475,8 +473,8 @@ export default {
         this.ads.currentAdPrice = '';
       }
     },
-    toRiseViews() {
-      this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
+    toRiseViews(step) {
+      this.$store.commit('quests/setCurrentStepEditQuest', step);
     },
     showPaymentModal() {
       this.ShowModal({
@@ -484,8 +482,15 @@ export default {
         step: 1,
       });
     },
+    clickBackBtnHandler() {
+      if (this.mode === 'raise') {
+        this.goBack();
+      } else {
+        this.toRiseViews(1);
+      }
+    },
     goBack() {
-      this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
+      this.$router.go(-1);
     },
     selectAddress(address) {
       this.addresses = [];
@@ -523,6 +528,10 @@ export default {
     async editQuest() {
       // TODO: дать возможность изменять описание и прайс только если employer на квест еще не закинули деньги
       // TODO: [Если деньги не закинули еще на квест] и изменилось description или price ТО обновлять данные на контракте, ИНАЧЕ только на бэке
+      if (this.mode === 'raise') {
+        this.goBack();
+        return;
+      }
 
       this.SetLoader(true);
       const medias = await this.uploadFiles(this.files);
@@ -550,15 +559,13 @@ export default {
         this.showModalEditQuest();
         this.showToastEdited();
         await this.$router.push(`/quests/${questId}`);
-        await this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
+        this.toRiseViews(1);
       }
     },
     showModalEditQuest() {
       this.ShowModal({
-        key: modals.status,
-        img: require('~/assets/img/ui/questAgreed.svg'),
-        title: this.$t('modals.yourSkillsHaveBeenAdded'),
-        subtitle: this.$t('modals.youCanUpdateThisInYourProfile'),
+        key: modals.questCreated,
+        title: this.$t('modals.questUpdated'),
       });
     },
     showToastEdited() {
@@ -588,13 +595,20 @@ export default {
   margin: 20px 0 0 0;
   &__left {
     justify-content: flex-start;
-    margin: 35px 0 0 0;
+    margin: 30px 0 0 0;
   }
   &__btn {
     width: 200px;
     margin: 0 10px 0 0;
     &_back {
-      width: 50px;
+      display: flex;
+      justify-content: left;
+      align-items: center;
+
+      & .icon-chevron_big_left {
+        font-weight: 800;
+        font-size: 24px;
+      }
     }
     &:last-child {
       margin: 0;

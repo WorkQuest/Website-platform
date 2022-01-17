@@ -210,7 +210,9 @@
     "confCode": "Google confirmation code",
     "placeholder": "Placeholder",
     "confCodeDesc": "Enter the 6-digit code from the Google Authentication app",
-    "confCodeField": "google verification"
+    "confCodeField": "google verification",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "Sign Up",
@@ -298,6 +300,7 @@
     "workOnQuestRejected": "Work on quest rejected!",
     "pleaseWaitEmp": "Work on quest completed! Please, wait your employer!",
     "quests": "Quests",
+    "questsSmall": "quests",
     "publicationDate": "Publication date",
     "urgent": "Urgent",
     "specQuests": "Specialized quests",
@@ -991,6 +994,7 @@
     "pressSaveBtn": "Please press save button",
     "imageLoadedSuccessful": "Image loaded successful",
     "success": "Success",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "Your role has been changed",
     "chooseSkills": "Choose necessary skills",
     "securityCheck": "Security check",
@@ -1069,6 +1073,7 @@
     "addCard": "Add Card",
     "inviteSend": "Invite sent",
     "questCreated": "Quest Created",
+    "questUpdated": "Quest Updated",
     "invitation": "Invitation",
     "chooseQuest": "Choose Quest",
     "raiseViews": "Raise views",
@@ -1345,7 +1350,8 @@
       "timestamp": "Timestamp",
       "transferred": "Tokens Transferred",
       "value": "Quantity",
-      "trxFee": "Transaction fee"
+      "trxFee": "Transaction fee",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {

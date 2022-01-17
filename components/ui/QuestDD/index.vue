@@ -25,7 +25,7 @@
             <div
               v-if="['employer'].includes(userRole)"
               class="menu__item"
-              @click="toRaisingViews()"
+              @click="toRaisingViews"
             >
               <div class="menu__text">
                 {{ $t('modals.raiseViews') }}
@@ -100,7 +100,7 @@ export default {
     toEditQuest() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
         this.$router.push(`/edit-quest/${this.itemId}`);
-        this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
+        this.setCurrentStepEditQuest(1);
       } else {
         this.showToastWrongStatusEdit();
       }
@@ -108,11 +108,14 @@ export default {
     toRaisingViews() {
       // TODO: Добавить тост или модалку
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
-        this.$router.push(`/edit-quest/${this.itemId}`);
-        this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
+        this.$router.push({ path: `/edit-quest/${this.itemId}`, query: { mode: 'raise' } });
+        this.setCurrentStepEditQuest(2);
       } else {
         this.showToastWrongStatusRaisingViews();
       }
+    },
+    setCurrentStepEditQuest(step) {
+      this.$store.commit('quests/setCurrentStepEditQuest', step);
     },
     showToastWrongStatusEdit() {
       return this.$store.dispatch('main/showToast', {

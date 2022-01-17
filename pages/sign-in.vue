@@ -208,7 +208,7 @@ export default {
       });
       if (response?.ok) {
         this.userStatus = response.result.userStatus;
-        if (this.userStatus === UserStatuses.Unconfirmed) { // Unconfirmed account
+        if (this.userStatus === UserStatuses.Unconfirmed && !sessionStorage.getItem('confirmToken')) { // Unconfirmed account w/o confirm token
           await this.$store.dispatch('main/showToast', {
             title: this.$t('registration.emailConfirmTitle'),
             text: this.$t('registration.emailConfirm'),
@@ -333,6 +333,13 @@ export default {
       this.$store.dispatch('wallet/setUserAddress', this.userAddress);
       this.addressAssigned = true;
       this.$cookies.set('userLogin', true);
+      // redirect to confirm access if token exists & unconfirmed account
+      const confirmToken = JSON.parse(sessionStorage.getItem('confirmToken'));
+      if (this.userStatus === UserStatuses.Unconfirmed && confirmToken) {
+        this.$router.push(`/confirm/?token=${confirmToken}`);
+        return;
+      }
+      sessionStorage.removeItem('confirmToken');
       if (this.userData.role === 'employer') {
         this.$router.push('/workers');
       } else if (this.userData.role === 'worker') {

@@ -210,7 +210,9 @@
     "confCode": "Google confirmation code",
     "placeholder": "Placeholder",
     "confCodeDesc": "Enter the 6-digit code from the Google Authentication app",
-    "confCodeField": "google verification"
+    "confCodeField": "google verification",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "Sign Up",
@@ -298,6 +300,7 @@
     "workOnQuestRejected": "???",
     "pleaseWaitEmp": "???",
     "quests": "Quests",
+    "questsSmall": "quests",
     "publicationDate": "???",
     "urgent": "Urgent",
     "specQuests": "Specialized quests",
@@ -403,7 +406,6 @@
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
     "questActive": "???:",
-    "questClosed": "???:",
     "questDispute": "???:",
     "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
@@ -992,6 +994,7 @@
     "pressSaveBtn": "Please press save button",
     "imageLoadedSuccessful": "Image loaded successful",
     "success": "Success",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "Your role has been changed",
     "chooseSkills": "Choose necessary skills",
     "securityCheck": "Security check",
@@ -1050,6 +1053,7 @@
     "messageSend": "Message Send",
     "questAgreed": "Quest Agreed",
     "requestSend": "Request sent",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "Send a request",
     "message": "Message",
     "bodyMessage": "Hello",
@@ -1069,6 +1073,7 @@
     "addCard": "Add Card",
     "inviteSend": "Invite sent",
     "questCreated": "Quest Created",
+    "questUpdated": "Quest Updated",
     "invitation": "Invitation",
     "chooseQuest": "Choose Quest",
     "raiseViews": "Raise views",
@@ -1241,8 +1246,9 @@
     "youCanAttachUpToNFiles": "???",
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
-    "incorrectChain": "You choose incorrect chain !",
-    "selectToken": "Select token"
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "Job Questors",
@@ -1344,7 +1350,8 @@
       "timestamp": "Timestamp",
       "transferred": "Tokens Transferred",
       "value": "Quantity",
-      "trxFee": "Transaction fee"
+      "trxFee": "Transaction fee",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {

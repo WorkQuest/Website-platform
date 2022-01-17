@@ -210,7 +210,9 @@
     "confCode": "Código de confirmação do Google",
     "placeholder": "Marcador de posição de texto",
     "confCodeDesc": "Introduza o código de 6 dígitos da aplicação Google Authentication",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "Inscreva-se",
@@ -298,6 +300,7 @@
     "workOnQuestRejected": "???",
     "pleaseWaitEmp": "???",
     "quests": "Buscas",
+    "questsSmall": "quests",
     "publicationDate": "???",
     "urgent": "Urgente",
     "specQuests": "???",
@@ -403,7 +406,6 @@
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
     "questActive": "???:",
-    "questClosed": "???:",
     "questDispute": "???:",
     "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
@@ -992,6 +994,7 @@
     "pressSaveBtn": "Prima o botão guardar",
     "imageLoadedSuccessful": "Imagem carregada com sucesso",
     "success": "Sucesso",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "A sua função foi alterada",
     "chooseSkills": "Escolha as competências necessárias",
     "securityCheck": "Verificação de segurança",
@@ -1050,6 +1053,7 @@
     "messageSend": "Mensagem enviada",
     "questAgreed": "Busca Acordada",
     "requestSend": "Pedido enviado",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "Enviar um pedido",
     "message": "Mensagem",
     "bodyMessage": "Olá",
@@ -1069,6 +1073,7 @@
     "addCard": "Adicionar Cartão",
     "inviteSend": "Convite enviado",
     "questCreated": "Busca criada",
+    "questUpdated": "???",
     "invitation": "Convite",
     "chooseQuest": "Escolher Busca",
     "raiseViews": "Aumentar visualizações",
@@ -1241,8 +1246,9 @@
     "youCanAttachUpToNFiles": "???",
     "youTryToAttachUnsupportedFileFormat": "???",
     "connectError": "Error connection",
-    "incorrectChain": "You choose incorrect chain !",
-    "selectToken": "Select token"
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "Questores de emprego",
@@ -1344,7 +1350,8 @@
       "timestamp": "Carimbo da hora",
       "transferred": "Tokens transferidos",
       "value": "Quantidade",
-      "trxFee": "Montante da transação"
+      "trxFee": "Montante da transação",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {

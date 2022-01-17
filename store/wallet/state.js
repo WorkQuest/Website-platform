@@ -1,6 +1,8 @@
 import { StakingTypes as TokensSymbols } from '~/utils/enums';
 
 export default () => ({
+  transactions: [],
+  transactionsCount: 0,
   isWalletConnected: false,
   userAddress: null,
   callbackLayout: 'default',
