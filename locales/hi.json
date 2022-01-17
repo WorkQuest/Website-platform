@@ -300,6 +300,7 @@
     "workOnQuestRejected": "???",
     "pleaseWaitEmp": "???",
     "quests": "???",
+    "questsSmall": "quests",
     "publicationDate": "???",
     "urgent": "अर्जेंट",
     "specQuests": "???",
@@ -993,6 +994,7 @@
     "pressSaveBtn": "कृपया सेव करें बटन दबाएं",
     "imageLoadedSuccessful": "इमेज लोड हो गई",
     "success": "सफल",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "आपकी भूमिका बदल दी गई है",
     "chooseSkills": "आवश्यक स्किल चुनें",
     "securityCheck": "सुरक्षा जांच",
@@ -1348,7 +1350,8 @@
       "timestamp": "टाइमस्टैम्प",
       "transferred": "टोकन स्थानांतरित",
       "value": "मात्रा",
-      "trxFee": "ट्रांजेक्शन शुल्क"
+      "trxFee": "ट्रांजेक्शन शुल्क",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {

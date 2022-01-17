@@ -1,4 +1,10 @@
 export default {
+  setTransactions(state, transactions) {
+    state.transactions = transactions;
+  },
+  setTransactionsCount(state, count) {
+    state.transactionsCount = count;
+  },
   setIsWalletConnected(state, isWalletConnected) {
     state.isWalletConnected = isWalletConnected;
   },

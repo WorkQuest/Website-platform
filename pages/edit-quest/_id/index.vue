@@ -133,7 +133,7 @@
             <div class="btn__create">
               <base-btn
                 :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
-                @click="handleSubmit(toRiseViews)"
+                @click="handleSubmit(toRiseViews(2))"
               >
                 {{ $t('quests.editAQuest') }}
               </base-btn>
@@ -227,7 +227,7 @@
             <div class="btn-container">
               <div class="btn-container__btn">
                 <base-btn
-                  :mode="'outline'"
+                  mode="outline"
                   @click="editQuest"
                 >
                   {{ $t('meta.skipAndEnd') }}
@@ -267,27 +267,22 @@ export default {
       priorityIndex: 1,
       employmentIndex: 0,
       categoryIndex: 0,
-      runtimeIndex: 0,
-      periodIndex: 0,
       runtimeValue: '',
       questTitle: '',
       address: '',
       textarea: '',
       price: '',
-      priceOfClick: '',
-      city: '',
       coordinates: {},
       currency: ' WUSD',
       addresses: [],
       files: [],
+      mode: this.$route.query?.mode || '',
     };
   },
   computed: {
     ...mapGetters({
       questData: 'quests/getQuest',
-      userData: 'user/getUserData',
       step: 'quests/getCurrentStepEditQuest',
-      filters: 'quests/getFilters',
     }),
     days() {
       return [
@@ -478,8 +473,8 @@ export default {
         this.ads.currentAdPrice = '';
       }
     },
-    toRiseViews() {
-      this.$store.dispatch('quests/getCurrentStepEditQuest', 2);
+    toRiseViews(step) {
+      this.$store.commit('quests/setCurrentStepEditQuest', step);
     },
     showPaymentModal() {
       this.ShowModal({
@@ -488,11 +483,14 @@ export default {
       });
     },
     clickBackBtnHandler() {
-      if (this.$route.query?.mode) {
-        this.$router.go(-1);
+      if (this.mode === 'raise') {
+        this.goBack();
       } else {
-        this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
+        this.toRiseViews(1);
       }
+    },
+    goBack() {
+      this.$router.go(-1);
     },
     selectAddress(address) {
       this.addresses = [];
@@ -528,6 +526,11 @@ export default {
       }
     },
     async editQuest() {
+      if (this.mode === 'raise') {
+        this.goBack();
+        return;
+      }
+
       this.SetLoader(true);
       const medias = await this.uploadFiles(this.files);
       const payload = {
@@ -554,7 +557,7 @@ export default {
         this.showModalEditQuest();
         this.showToastEdited();
         await this.$router.push(`/quests/${questId}`);
-        await this.$store.dispatch('quests/getCurrentStepEditQuest', 1);
+        this.toRiseViews(1);
       }
     },
     showModalEditQuest() {

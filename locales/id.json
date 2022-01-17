@@ -300,6 +300,7 @@
     "workOnQuestRejected": "???",
     "pleaseWaitEmp": "???",
     "quests": "???",
+    "questsSmall": "quests",
     "publicationDate": "???",
     "urgent": "Urgen",
     "specQuests": "???",
@@ -993,6 +994,7 @@
     "pressSaveBtn": "Silakan tekan tombol simpan",
     "imageLoadedSuccessful": "Gambar berhasil dimuat",
     "success": "Berhasil",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "Peran Anda telah diubah",
     "chooseSkills": "Pilih keterampilan yang diperlukan",
     "securityCheck": "Pemeriksaan keamanan",
@@ -1348,7 +1350,8 @@
       "timestamp": "Stempel waktu",
       "transferred": "Token Ditransfer",
       "value": "Jumlah",
-      "trxFee": "Biaya transaksi"
+      "trxFee": "Biaya transaksi",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {
