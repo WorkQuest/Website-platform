@@ -63,7 +63,10 @@
     "size": "El tamaño del campo {_field_} debe ser inferior a {size} KB",
     "decimal": "El campo {_field_} solo puede contener valores decimales",
     "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???",
     "is": "The values do not match",
+    "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
@@ -207,7 +210,9 @@
     "confCode": "Código de confirmación de Google",
     "placeholder": "Marcador de posición",
     "confCodeDesc": "Escriba el código de 6 dígitos de la aplicación Autenticador de Google",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "Registrarse",
@@ -295,6 +300,7 @@
     "workOnQuestRejected": "???",
     "pleaseWaitEmp": "???",
     "quests": "Ofertas",
+    "questsSmall": "quests",
     "publicationDate": "???",
     "urgent": "Urgente",
     "specQuests": "???",
@@ -988,6 +994,7 @@
     "pressSaveBtn": "Pulse el botón Guardar",
     "imageLoadedSuccessful": "Imagen cargada correctamente",
     "success": "Operación correcta",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "Se cambió su rol",
     "chooseSkills": "Seleccione las habilidades necesarias",
     "securityCheck": "Comprobación de seguridad",
@@ -1046,6 +1053,7 @@
     "messageSend": "Mensaje enviado",
     "questAgreed": "Oferta acordada",
     "requestSend": "Solicitud enviada",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "Enviar una solicitud",
     "message": "Mensaje",
     "bodyMessage": "Hola",
@@ -1065,6 +1073,7 @@
     "addCard": "Añadir tarjeta",
     "inviteSend": "Invitación enviada",
     "questCreated": "Oferta creada",
+    "questUpdated": "???",
     "invitation": "Invitación",
     "chooseQuest": "Seleccionar oferta",
     "raiseViews": "Aumentar visualizaciones",
@@ -1235,7 +1244,11 @@
     "thanksText": "",
     "emailVerificationCodeField": "???",
     "youCanAttachUpToNFiles": "???",
-    "youTryToAttachUnsupportedFileFormat": "???"
+    "youTryToAttachUnsupportedFileFormat": "???",
+    "connectError": "Error connection",
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "Demandantes de empleo",
@@ -1337,10 +1350,12 @@
       "timestamp": "Marca de tiempo",
       "transferred": "Tokens transferidos",
       "value": "Cantidad",
-      "trxFee": "Tarifa de transacción"
+      "trxFee": "Tarifa de transacción",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "Abrir disputa",
     "approveQuest": "Aprobar oferta",
     "starredMessages": "???",
@@ -1391,6 +1406,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "Lugar de estudio",
@@ -1934,6 +1952,9 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "Vaya, se produjo un problema. Compruebe los datos y vuelva a intentarlo.",
     "emptyData": {
       "emptyQuests": "???",

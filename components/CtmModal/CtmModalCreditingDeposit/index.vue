@@ -6,6 +6,7 @@
     <div class="deposit__content content">
       <validation-observer
         v-slot="{handleSubmit, validated, passed, invalid}"
+        tag="div"
       >
         <div class="content__grid">
           <div class="content__body">
@@ -45,21 +46,25 @@
               </div>
             </div>
             <div class="content__field">
+              <div class="content__label">
+                {{ $t('modals.howMuchEthWouldYouLikeToLock') }}
+              </div>
               <base-field
                 v-model="quantity"
                 class="content__input"
-                :label="$t('modals.howMuchEthWouldYouLikeToLock')"
                 :placeholder="'1000 ETH'"
                 rules="required|decimal"
                 :name="$t('modals.quantityField')"
               />
             </div>
             <div class="content__field">
+              <div class="content__label">
+                {{ $t('modals.howMuchWusdWouldYouLikeToGenerate') }}
+              </div>
               <base-field
                 id="amountOfPercents_input"
                 v-model="generate"
                 class="content__input"
-                :label="$t('modals.howMuchWusdWouldYouLikeToGenerate')"
                 :placeholder="'10 ETH'"
                 rules="required|decimal"
                 :name="$t('modals.generateField')"
@@ -202,6 +207,9 @@ export default {
     margin-top: 3px;
     font-weight: 500;
   }
+  &__label {
+    margin-bottom: 13px;
+  }
   &__text {
     color: $black500;
     font-size: 14px;
@@ -272,4 +280,16 @@ export default {
     font-size: 14px;
   }
 }
+
+@include _575 {
+  .content {
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+    &__label {
+      margin-bottom: 5px;
+    }
+  }
+}
+
 </style>

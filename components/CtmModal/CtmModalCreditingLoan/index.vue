@@ -41,30 +41,36 @@
             </div>
           </div>
           <div class="content__field">
+            <div class="content__label">
+              {{ $t('modals.howMuchETHWouldYouLikeToOpen') }}
+            </div>
             <base-field
               v-model="quantity"
               class="content__input"
-              :label="$t('modals.howMuchETHWouldYouLikeToOpen')"
               :placeholder="'10 ETH'"
               rules="required|decimal"
               :name="$t('modals.quantityField')"
             />
           </div>
           <div class="content__field">
+            <div class="content__label">
+              {{ $t('modals.howMuchPercentWouldYouLikeToSet') }}
+            </div>
             <base-field
               id="amountOfPercents_input"
               v-model="percents"
               class="content__input"
-              :label="$t('modals.howMuchPercentWouldYouLikeToSet')"
               :placeholder="'10 ETH'"
               rules="required|decimal"
               :name="$t('modals.percentField')"
             />
           </div>
           <div class="content__field">
+            <div class="content__label">
+              {{ $t('modals.enterTermToReturnDebtBack') }}
+            </div>
             <base-field
               v-model="debt"
-              :label="$t('modals.enterTermToReturnDebtBack')"
               class="content__input"
               :placeholder="'10 ETH'"
               rules="required|decimal"
@@ -163,6 +169,9 @@ export default {
 .content{
   &__field{
     margin-top: 3px;
+  }
+  &__label {
+    margin-bottom: 5px;
   }
   &__text {
     color: #7C838D;

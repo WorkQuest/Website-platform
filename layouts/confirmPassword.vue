@@ -2,10 +2,10 @@
   <div class="page">
     <div class="confirm">
       <div class="confirm__title">
-        Confirm access
+        {{ $t('securityCheck.confirmAccess') }}
       </div>
       <div class="confirm__text">
-        You need to confirm your password to continue.
+        {{ $t('securityCheck.confirmPassToContinue') }}
       </div>
       <ValidationObserver
         v-slot="{ handleSubmit, valid }"
@@ -23,7 +23,7 @@
           autocomplete="current-password"
         />
         <base-btn :disabled="!valid || isLoading">
-          Submit
+          {{ $t('meta.submit') }}
         </base-btn>
       </ValidationObserver>
     </div>
@@ -35,6 +35,7 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'ConfirmPassword',
+  middleware: 'auth',
   data() {
     return {
       password: '',
@@ -49,6 +50,12 @@ export default {
       userAddress: 'user/getUserWalletAddress',
       callbackLayout: 'wallet/getCallbackLayout',
     }),
+  },
+  beforeCreate() {
+    if (!this.$cookies.get('userLogin')) {
+      this.$store.dispatch('user/logout');
+      this.$router.push('/sign-in');
+    }
   },
   mounted() {
     if (!this.userAddress) {
@@ -79,6 +86,9 @@ export default {
       return;
     }
     this.toDecrypt = mnemonic;
+
+    this.SetLoader(false);
+    this.CloseModal();
   },
   methods: {
     async submit() {
@@ -124,7 +134,7 @@ export default {
   border: 1px solid $blue;
   box-shadow: 0 4px 9px rgba(0, 0, 0, 0.15);
   background: white;
-  width: 400px;
+  max-width: 400px;
   padding: 20px;
   margin: 0 auto;
   border-radius: 16px;
@@ -138,6 +148,11 @@ export default {
   }
   &__password {
     margin-top: 20px;
+  }
+}
+@include _767 {
+  .page {
+    padding: 30px !important;
   }
 }
 </style>

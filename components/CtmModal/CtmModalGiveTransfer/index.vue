@@ -17,14 +17,14 @@
             <base-field
               v-model="recipient"
               class="input__field"
-              :placeholder="'Enter address'"
+              :placeholder="$t('modals.address')"
               rules="required|address"
               :name="$t('modals.addressField')"
             />
           </div>
           <div class="content__input input">
             <span class="input__title">
-              Select token
+              {{ $t('modals.selectToken') }}
             </span>
             <base-dd
               v-model="ddValue"
@@ -38,8 +38,8 @@
             <base-field
               v-model="amount"
               class="input__field"
-              :placeholder="'Enter amount'"
-              :rules="`required|decimal|max_bn:${maxAmount}|decimalPlaces:18`"
+              :placeholder="$t('modals.amount')"
+              :rules="`required|decimal|is_not:0|max_bn:${maxAmount}|decimalPlaces:18`"
               :name="$t('modals.amountField')"
             >
               <template
@@ -69,8 +69,8 @@
           </base-btn>
           <base-btn
             class="buttons__action"
-            :disabled="invalid || isLoading"
-            @click="handleSubmit(transfer)"
+            :disabled="invalid || !isCanSubmit"
+            @click="handleSubmit(showWithdrawInfo)"
           >
             {{ $t('meta.send') }}
           </base-btn>
@@ -84,6 +84,8 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import { TokenSymbols } from '~/utils/enums';
+import { error, success } from '~/utils/web3';
+import * as abi from '~/abi/abi';
 
 export default {
   name: 'ModalTakeTransfer',
@@ -92,8 +94,12 @@ export default {
       recipient: '',
       amount: '',
       step: 1,
-      maxAmount: 0,
       ddValue: 0,
+      maxFee: {
+        WUSD: 0,
+        WQT: 0,
+      },
+      isCanSubmit: true,
     };
   },
   computed: {
@@ -102,9 +108,14 @@ export default {
       isLoading: 'main/getIsLoading',
       balance: 'wallet/getBalanceData',
       selectedToken: 'wallet/getSelectedToken',
+      userData: 'user/getUserData',
+      isConnected: 'wallet/getIsWalletConnected',
     }),
     tokenSymbolsDd() {
       return Object.keys(TokenSymbols);
+    },
+    maxAmount() {
+      return this.balance[this.selectedToken].fullBalance || 0;
     },
   },
   watch: {
@@ -114,23 +125,49 @@ export default {
     ddValue(val) {
       this.$store.dispatch('wallet/setSelectedToken', TokenSymbols[this.tokenSymbolsDd[val]]);
     },
+    balance: {
+      deep: true,
+      handler: async () => {
+        this.isCanSubmit = false;
+        await this.updateMaxFee();
+        this.isCanSubmit = true;
+      },
+    },
   },
-  mounted() {
+  async mounted() {
+    this.isCanSubmit = false;
     const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
-    this.maxAmount = this.balance[this.selectedToken].fullBalance;
+    await this.updateMaxFee();
+    this.isCanSubmit = true;
   },
   methods: {
+    // Для просчета максимальной суммы транзакции от комиссии
+    async updateMaxFee() {
+      if (!this.isConnected) return;
+      const [wusd, wqt] = await Promise.all([
+        this.$store.dispatch('wallet/getTransferFeeData', {
+          recipient: this.userData.wallet.address,
+          value: this.balance.WUSD.fullBalance,
+        }),
+        this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'transfer',
+          _abi: abi.ERC20,
+          contractAddress: process.env.WQT_TOKEN,
+          recipient: process.env.WQT_TOKEN,
+          value: this.balance.WQT.fullBalance,
+        }),
+      ]);
+      this.maxFee.WQT = wqt.ok ? wqt.result.fee : 0;
+      this.maxFee.WUSD = wusd.ok ? wusd.result.fee : 0;
+    },
     hide() {
       this.CloseModal();
     },
     maxBalance() {
-      this.amount = this.maxAmount;
+      this.amount = this.maxAmount - this.maxFee[this.selectedToken];
     },
-    async transfer() { // TODO: выводить инфу о транзакции перед ее отправкой
-      this.SetLoader(true);
-      const { callback } = this.options;
-      this.hide();
+    async transfer() {
       let res;
       if (this.selectedToken === TokenSymbols.WUSD) {
         res = await this.$store.dispatch('wallet/transfer', {
@@ -144,21 +181,44 @@ export default {
         });
       }
       if (res?.ok) {
-        if (callback) {
-          await callback();
-        }
-        this.ShowModal({
-          key: modals.transactionSend,
+        return success();
+      }
+      return error();
+    },
+    async showWithdrawInfo() {
+      const { callback } = this.options;
+      this.SetLoader(true);
+      this.hide();
+      let feeRes;
+      if (this.selectedToken === TokenSymbols.WUSD) {
+        feeRes = await this.$store.dispatch('wallet/getTransferFeeData', {
+          recipient: this.recipient,
+          value: this.amount,
+        });
+      } else {
+        feeRes = await this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'transfer',
+          _abi: abi.ERC20,
+          contractAddress: process.env.WQT_TOKEN,
+          recipient: this.recipient,
+          value: this.amount,
         });
       }
       this.SetLoader(false);
-    },
-    showWithdrawInfo() {
       this.ShowModal({
-        key: modals.withdrawInfo,
-        title: this.$t('modals.transferInfo'),
-        recipient: this.recipient,
-        amount: this.amount,
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('modals.fromAddress'), value: this.userData.wallet.address },
+          to: { name: this.$t('modals.toAddress'), value: this.recipient },
+          amount: {
+            name: this.$t('modals.amount'),
+            value: this.amount,
+            symbol: this.selectedToken, // REQUIRED!
+          },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee, symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => this.transfer(),
+        callback,
       });
     },
   },

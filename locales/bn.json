@@ -63,7 +63,10 @@
     "size": "{_field_} ঘরের আকার অবশ্যই {size}KB এর ছোট হতে হবে",
     "decimal": "{_field_} ঘরে শুধুমাত্র দশমিক মান বসবে",
     "decimalPlaces": "{_field_} ??? {places}",
+    "invalidPhone":"???",
+    "formError": "???",
     "is": "The values do not match",
+    "is_not": "Incorrect value",
     "mnemonic": "Incorrect secret phrase"
   },
   "labels": {
@@ -207,7 +210,9 @@
     "confCode": "গুগল নিশ্চিতকরণ কোড",
     "placeholder": "স্থানধারী",
     "confCodeDesc": "Google প্রমাণীকরণ অ্যাপ থেকে 6-ডিজিটের কোড লিখুন",
-    "confCodeField": "???"
+    "confCodeField": "???",
+    "confirmAccess": "Confirm access",
+    "confirmPassToContinue": "You need to confirm your password to continue"
   },
   "signUp": {
     "title": "নিবন্ধন করুন",
@@ -295,6 +300,7 @@
     "workOnQuestRejected": "???",
     "pleaseWaitEmp": "???",
     "quests": "???",
+    "questsSmall": "quests",
     "publicationDate": "???",
     "urgent": "জরুরি",
     "specQuests": "???",
@@ -400,7 +406,6 @@
     "unknownPhoneNumber": "???...",
     "unknownEmailAddress": "???..",
     "questActive": "???:",
-    "questClosed": "???:",
     "questDispute": "???:",
     "questWaitConfirm": "???:",
     "skillsNotSpecified": "???...",
@@ -989,6 +994,7 @@
     "pressSaveBtn": "অনুগ্রহ করে সংরক্ষণ বোতাম চাপুন",
     "imageLoadedSuccessful": "ছবি লোড করা সফল হয়েছে",
     "success": "সাফল্য",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "আপনার ভূমিকা পরিবর্তন করা হয়েছে",
     "chooseSkills": "প্রয়োজনীয় দক্ষতা নির্বাচন করুন",
     "securityCheck": "নিরাপত্তা পরীক্ষা",
@@ -1047,6 +1053,7 @@
     "messageSend": "বার্তা পাঠানো হয়েছে",
     "questAgreed": "Quest-এ সম্মত",
     "requestSend": "অনুরোধ পাঠানো হয়েছে",
+    "waitResponseFromEmployer": "Wait for a response from the employer",
     "sendARequest": "একটি অনুরোধ পাঠান",
     "message": "বার্তা",
     "bodyMessage": "হ্যালো",
@@ -1066,6 +1073,7 @@
     "addCard": "কার্ড যোগ করুন",
     "inviteSend": "আমন্ত্রণ পাঠানো হয়েছে",
     "questCreated": "Quest তৈরি করা হয়েছে",
+    "questUpdated": "???",
     "invitation": "আমন্ত্রণ",
     "chooseQuest": "Quest নির্বাচন করুন",
     "raiseViews": "মতামত দিন",
@@ -1236,7 +1244,11 @@
     "thanksText": "",
     "emailVerificationCodeField": "???",
     "youCanAttachUpToNFiles": "???",
-    "youTryToAttachUnsupportedFileFormat": "???"
+    "youTryToAttachUnsupportedFileFormat": "???",
+    "connectError": "Error connection",
+    "incorrectChain": "You choose incorrect chain!",
+    "selectToken": "Select token",
+    "txInfo": "Transaction info"
   },
   "ui": {
     "jobQuestors": "জব কোয়েস্টার",
@@ -1338,10 +1350,12 @@
       "timestamp": "টাইমস্ট্যাম্প",
       "transferred": "স্থানান্তরিত টোকেন",
       "value": "পরিমাণ",
-      "trxFee": "লেনদেন ফি"
+      "trxFee": "লেনদেন ফি",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {
+    "reason": "???",
     "openDispute": "বিতর্ক শুরু করুন",
     "approveQuest": "Quest অনুমোদন করুন",
     "starredMessages": "???",
@@ -1392,6 +1406,9 @@
     "address": "???",
     "lastName": "???",
     "firstName": "???",
+    "companyName":"???",
+    "ceoName":"???",
+    "websiteName":"???",
     "enterPhoneNumber": "???",
     "enterCurrentLocation": "???",
     "placeOfStudying": "অধ্যয়নের স্থান",
@@ -1935,6 +1952,9 @@
     }
   },
   "errors": {
+    "transaction": {
+      "notEnoughFunds": "Not enough funds"
+    },
     "incorrectPass": "আহ্, কোনো ভুল হয়েছে। ডেটা পরীক্ষা করে আবার চেষ্টা করুন।",
     "emptyData": {
       "emptyQuests": "???",

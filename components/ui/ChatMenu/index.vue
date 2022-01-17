@@ -3,7 +3,7 @@
     <button
       v-click-outside="closeChatMenu"
       class="chat__button chat__button_menu"
-      @click="showChatMenu"
+      @click="toggleChatMenu"
     >
       <span class="icon-more_horizontal" />
       <transition name="fade">
@@ -107,8 +107,8 @@ export default {
         questId: this.questId,
       });
     },
-    showChatMenu() {
-      this.isShowChatMenu = true;
+    toggleChatMenu() {
+      this.isShowChatMenu = !this.isShowChatMenu;
     },
     closeChatMenu() {
       this.isShowChatMenu = false;
@@ -154,6 +154,7 @@ export default {
       border: 1px solid $black100;
     }
     &_menu {
+      position: relative;
       width: 40px;
       height: 40px;
     }
@@ -162,12 +163,12 @@ export default {
 
 .chat-menu {
   position: absolute;
-  top: calc(210px + 5px);
+  top: 55px;
   background: #FFFFFF;
   box-shadow: 0 17px 17px rgba(0, 0, 0, 0.05), 0 5.125px 5.125px rgba(0, 0, 0, 0.03), 0 2.12866px 2.12866px rgba(0, 0, 0, 0.025), 0 0.769896px 0.769896px rgba(0, 0, 0, 0.0174206);
   border-radius: 6px;
   min-width: 86px;
-  z-index: 10000000;
+  z-index: 1;
   margin: 0 90px 0 0;
   width: max-content;
   &__items {
