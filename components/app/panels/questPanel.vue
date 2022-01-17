@@ -244,4 +244,20 @@ export default {
     color: $black500;
   }
 }
+
+@include _991 {
+  .user {
+    &__container {
+      padding-top: 20px;
+    }
+  }
+}
+
+@include _767 {
+  .user {
+    &__container {
+      padding-top: 5px;
+    }
+  }
+}
 </style>
