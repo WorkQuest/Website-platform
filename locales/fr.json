@@ -300,6 +300,7 @@
     "workOnQuestRejected": "???",
     "pleaseWaitEmp": "???",
     "quests": "Quêtes",
+    "questsSmall": "quests",
     "publicationDate": "???",
     "urgent": "Urgent",
     "specQuests": "???",
@@ -993,6 +994,7 @@
     "pressSaveBtn": "Veuillez appuyer sur le bouton « Enregistrer »",
     "imageLoadedSuccessful": "Image chargée avec succès",
     "success": "Succès",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "Votre rôle a été modifié",
     "chooseSkills": "Choisir les compétences nécessaires",
     "securityCheck": "Vérification de sécurité",
@@ -1348,7 +1350,8 @@
       "timestamp": "Horodatage",
       "transferred": "Jetons transférés",
       "value": "Quantité",
-      "trxFee": "Frais de transaction"
+      "trxFee": "Frais de transaction",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {

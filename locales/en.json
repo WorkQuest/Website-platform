@@ -300,6 +300,7 @@
     "workOnQuestRejected": "Work on quest rejected!",
     "pleaseWaitEmp": "Work on quest completed! Please, wait your employer!",
     "quests": "Quests",
+    "questsSmall": "quests",
     "publicationDate": "Publication date",
     "urgent": "Urgent",
     "specQuests": "Specialized quests",
@@ -993,6 +994,7 @@
     "pressSaveBtn": "Please press save button",
     "imageLoadedSuccessful": "Image loaded successful",
     "success": "Success",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "Your role has been changed",
     "chooseSkills": "Choose necessary skills",
     "securityCheck": "Security check",
@@ -1348,7 +1350,8 @@
       "timestamp": "Timestamp",
       "transferred": "Tokens Transferred",
       "value": "Quantity",
-      "trxFee": "Transaction fee"
+      "trxFee": "Transaction fee",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {

@@ -300,6 +300,7 @@
     "workOnQuestRejected": "???",
     "pleaseWaitEmp": "???",
     "quests": "Buscas",
+    "questsSmall": "quests",
     "publicationDate": "???",
     "urgent": "Urgente",
     "specQuests": "???",
@@ -993,6 +994,7 @@
     "pressSaveBtn": "Prima o botão guardar",
     "imageLoadedSuccessful": "Imagem carregada com sucesso",
     "success": "Sucesso",
+    "failed": "Failed",
     "yourRoleHasBeenChanged": "A sua função foi alterada",
     "chooseSkills": "Escolha as competências necessárias",
     "securityCheck": "Verificação de segurança",
@@ -1348,7 +1350,8 @@
       "timestamp": "Carimbo da hora",
       "transferred": "Tokens transferidos",
       "value": "Quantidade",
-      "trxFee": "Montante da transação"
+      "trxFee": "Montante da transação",
+      "empty": "Transactions list is empty"
     }
   },
   "chat": {
