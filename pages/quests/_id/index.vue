@@ -875,8 +875,26 @@ export default {
   .main {
     display: block;
   }
+
+  .worker-data {
+    &__btns {
+      margin-bottom: 10px;
+    }
+    &__more-data {
+      grid-template-columns: 1fr;
+    }
+  }
 }
 @include _575 {
+  .worker-data {
+    &__btns {
+      grid-auto-flow: row;
+    }
+    &__more-data {
+      justify-items: center;
+    }
+  }
+
   .location {
     &__container {
       display: grid;
