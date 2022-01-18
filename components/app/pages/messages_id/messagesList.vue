@@ -53,21 +53,24 @@
         <template v-else>
           <img
             v-if="!message.itsMe"
-            :src="message.sender && message.sender.avatar ? message.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
+            :src="setSenderAvatar(message)"
             alt=""
             class="message__avatar"
-            :class="{'message__avatar_hidden' : i && messages.list[i - 1].senderUserId == message.senderUserId && messages.list[i - 1].type !== 'info'}"
+            :class="{'message__avatar_hidden' : isPrevMessageSameSender(i, message)}"
           >
           <div class="message__data">
             <div
-              v-if="!message.itsMe && (!i || (i && messages.list[i - 1].senderUserId != message.senderUserId || messages.list[i - 1].type === 'info'))"
+              v-if="!message.itsMe && !isPrevMessageSameSender(i, message)"
               class="message__title"
             >
               {{ message.sender.firstName + ' ' + message.sender.lastName }}
             </div>
             <div
               class="message__bubble"
-              :class="[{'message__bubble_bl' : message.itsMe}, {'message__bubble_link' : chatId === 'starred'}]"
+              :class="[
+                {'message__bubble_bl' : message.itsMe},
+                {'message__bubble_link' : chatId === 'starred'}
+              ]"
               @click="goToCurrChat(message)"
             >
               <div class="message__title">
@@ -233,6 +236,15 @@ export default {
     this.$store.commit('chat/clearMessagesFilter');
   },
   methods: {
+    isPrevMessageSameSender(i, message) {
+      const { list } = this.messages;
+      const prevMessage = i ? list[i - 1] : null;
+
+      return prevMessage?.senderUserId === message.senderUserId && prevMessage?.type !== 'info';
+    },
+    setSenderAvatar({ sender }) {
+      return sender?.avatar?.url || require('~/assets/img/app/avatar_empty.png');
+    },
     async getMessages(direction, currBottomOffset) {
       const {
         filter: {
@@ -405,14 +417,12 @@ export default {
     },
     async readMessages() {
       const {
-        messages: { list }, chatId, isReadingInProgress, userData, currChat,
+        messages: { list }, chatId, isReadingInProgress, currChat,
       } = this;
 
-      if (isReadingInProgress || !list.length || !currChat) return;
+      if (isReadingInProgress || !list.length || !currChat?.isUnread) return;
 
-      const { senderStatus, senderUserId, id } = currChat.lastMessage;
-
-      if (senderStatus === 'read' || senderUserId === userData.id) return;
+      const { id } = currChat.lastMessage;
 
       this.isReadingInProgress = true;
 
