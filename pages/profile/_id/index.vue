@@ -244,6 +244,7 @@ export default {
       questsCount: 'quests/getUserInfoQuestsCount',
       portfolios: 'user/getUserPortfolios',
       reviews: 'user/getAllUserReviews',
+      anotherUserData: 'user/getAnotherUserData',
     }),
     cardLevelClass(idx) {
       const { cards } = this;
@@ -352,8 +353,8 @@ export default {
   },
   async mounted() {
     if (this.userId !== this.mainUser.id) {
-      this.userData = await this.$store.dispatch('user/getAnotherUserData', this.userId);
-      this.userData = this.userData.result;
+      await this.$store.dispatch('user/getAnotherUserData', this.userId);
+      this.userData = this.anotherUserData;
     } else {
       this.userData = this.mainUser;
     }
