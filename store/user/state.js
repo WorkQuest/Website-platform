@@ -27,4 +27,5 @@ export default () => ({
     questsStatistic: null,
     ratingStatistic: null,
   },
+  unreadChatsCount: 0,
 });

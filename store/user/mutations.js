@@ -67,5 +67,6 @@ export default {
   },
   setStatisticData(state, data) {
     state.statisticData = data;
+    state.unreadChatsCount = data.chatsStatistic?.unreadCountChats || 0;
   },
 };
