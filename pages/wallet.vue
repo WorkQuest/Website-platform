@@ -94,7 +94,6 @@
             :title="$t('wallet.table.trx')"
             :items="styledTransactions"
             :fields="walletTableFields"
-            :change-font-size="false"
           />
           <empty-data
             v-if="!totalPages"
@@ -174,13 +173,13 @@ export default {
     },
     walletTableFields() {
       return [
-        { key: 'tx_hash', label: this.$t('wallet.table.txHash'), sortable: false },
-        { key: 'status', label: this.$t('wallet.table.status'), sortable: false },
+        { key: 'tx_hash', label: this.$t('wallet.table.txHash'), sortable: true },
+        { key: 'status', label: this.$t('wallet.table.status'), sortable: true },
         { key: 'block', label: this.$t('wallet.table.block'), sortable: false },
-        { key: 'timestamp', label: this.$t('wallet.table.timestamp'), sortable: false },
-        { key: 'from_address', label: this.$t('modals.fromAddress'), sortable: false },
-        { key: 'to_address', label: this.$t('modals.toAddress'), sortable: false },
-        { key: 'value', label: this.$t('wallet.table.transferred'), sortable: false },
+        { key: 'timestamp', label: this.$t('wallet.table.timestamp'), sortable: true },
+        { key: 'from_address', label: this.$t('modals.fromAddress'), sortable: true },
+        { key: 'to_address', label: this.$t('modals.toAddress'), sortable: true },
+        { key: 'value', label: this.$t('wallet.table.transferred'), sortable: true },
         { key: 'transaction_fee', label: this.$t('wallet.table.trxFee'), sortable: false },
       ];
     },
@@ -345,6 +344,7 @@ export default {
     }
   }
   &__table {
+    position: relative;
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
     max-width: 100%;
     overflow-x: auto;
