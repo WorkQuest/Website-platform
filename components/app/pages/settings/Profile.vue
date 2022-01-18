@@ -84,7 +84,7 @@
           </base-field>
           <vue-phone-number-input
             v-if="userRole === 'employer'"
-            v-model="profile.firstPhone"
+            v-model="firstPhone"
             class="profile__phone-input"
             error-color="#EB5757"
             size="lg"
@@ -279,6 +279,7 @@ export default {
   },
   data() {
     return {
+      firstPhone: null,
       secondPhoneNumber: {
         fullPhone: null,
       },
@@ -397,6 +398,7 @@ export default {
           phone: null,
           fullPhone: this.profile?.additionalInfo?.secondMobileNumber?.fullPhone || null,
         };
+        if (this.userRole === 'employer') this.firstPhone = this.profile.firstPhone.phone || null;
       },
     },
   },
