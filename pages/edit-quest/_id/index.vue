@@ -228,7 +228,7 @@
               <div class="btn-container__btn">
                 <base-btn
                   mode="outline"
-                  @click="editQuest"
+                  @click="toEditQuest"
                 >
                   {{ $t('meta.skipAndEnd') }}
                 </base-btn>
@@ -251,7 +251,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import { QuestMethods } from '~/utils/enums';
+import { hashText } from '~/utils/wallet';
 
 const { GeoCode } = require('geo-coder');
 
@@ -277,12 +280,17 @@ export default {
       addresses: [],
       files: [],
       mode: this.$route.query?.mode || '',
+
+      prevPrice: 0,
+      prevDescription: '',
     };
   },
   computed: {
     ...mapGetters({
       questData: 'quests/getQuest',
       step: 'quests/getCurrentStepEditQuest',
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      questFee: 'wallet/getQuestsFee',
     }),
     days() {
       return [
@@ -428,6 +436,9 @@ export default {
       this.textarea = this.questData.description;
       this.coordinates.lng = this.questData.location.longitude;
       this.coordinates.lat = this.questData.location.latitude;
+
+      this.prevPrice = this.price;
+      this.prevDescription = this.textarea;
     },
     cardStatus(item) {
       let style;
@@ -525,9 +536,36 @@ export default {
         console.log(e);
       }
     },
+    async toEditQuest() {
+      if (!this.isWalletConnected) {
+        await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+      }
+
+      const contractAddress = '0xA4704c1250520577196C98aBBE09E980B57e04d1'; // TODO: get from back
+      if (this.prevPrice !== this.price || this.prevDescription !== this.textarea) {
+        let newPrice;
+        if (this.prevPrice > this.price) {
+          newPrice = new BigNumber(this.price).shiftedBy(18).toString();
+        } else {
+          newPrice = new BigNumber(this.price).multipliedBy(this.questFee).shiftedBy(18).toString();
+        }
+        const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
+          method: QuestMethods.EditJob,
+          data: [hashText(this.textarea), newPrice],
+          contractAddress,
+        });
+        if (feeRes.ok === false) {
+          await this.$store.dispatch('main/showToast', {
+            title: 'Error',
+            text: 'Not enough funds',
+          });
+          return;
+        }
+        console.log(feeRes);
+      }
+      // await this.editQuest();
+    },
     async editQuest() {
-      // TODO: дать возможность изменять описание и прайс только если employer на квест еще не закинули деньги
-      // TODO: [Если деньги не закинули еще на квест] и изменилось description или price ТО обновлять данные на контракте, ИНАЧЕ только на бэке
       if (this.mode === 'raise') {
         this.goBack();
         return;
