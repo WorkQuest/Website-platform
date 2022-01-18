@@ -233,27 +233,17 @@ export default {
     userData() {
       if (!Object.keys(this.userInfo).length) {
         return {
-          avatar: {
-            url: '',
-          },
+          avatar: { url: '' },
           additionalInfo: {
             company: '',
             address: '',
             description: '',
-            educations: {
-              length: 0,
-            },
-            workExperiences: {
-              length: 0,
-            },
+            secondMobileNumber: { fullNumber: '' },
+            educations: { length: 0 },
+            workExperiences: { length: 0 },
           },
-          questsStatistic: {
-            opened: 0,
-          },
-          ratingStatistic: {
-            averageMark: 0,
-            reviewCount: 0,
-          },
+          questsStatistic: { opened: 0 },
+          ratingStatistic: { averageMark: 0, reviewCount: 0 },
           role: 'employer',
         };
       }
