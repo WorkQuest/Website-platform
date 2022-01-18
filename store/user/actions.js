@@ -231,6 +231,7 @@ export default {
   async sendPhone({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/profile/phone/send-code', payload);
+      commit('setVerificationCode', response.result);
       return response.result;
     } catch (e) {
       return console.log(e);

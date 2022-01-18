@@ -134,10 +134,12 @@ export default {
     ...mapGetters({
       userData: 'user/getUserData',
       secondNumber: 'user/getUserSecondMobileNumber',
+      currentConfirmCode: 'user/getVerificationCode',
     }),
   },
   async beforeMount() {
     await this.$store.dispatch('user/getUserData');
+    this.confirmCode = this.currentConfirmCode;
   },
   methods: {
     hide() {

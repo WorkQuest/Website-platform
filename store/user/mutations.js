@@ -1,6 +1,9 @@
 /* eslint-disable no-param-reassign */
 
 export default {
+  setVerificationCode(state, data) {
+    state.verificationCode = data;
+  },
   setTwoFACode(state, data) {
     state.twoFACode = data;
   },
