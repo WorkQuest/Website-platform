@@ -266,34 +266,44 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
 };
 
 //
-// QUESTS
+// Work Quest Factory
 //
 
 /* Work Quest Factory */
-export const createQuest = async (payload) => {
-  const { cost, depositAmount, description } = payload;
+export const createQuest = async (cost, depositAmount, description, nonce) => {
   try {
+    const _abi = abi.WorkQuestFactory;
+    const _abiAddress = process.env.WORK_QUEST_FACTORY;
+
     const hash = ethers.utils.formatBytes32String(description.slice(0, 31));
     const _cost = new BigNumber(cost).shiftedBy(18).toString();
     const _depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
-    const _abi = abi.WorkQuestFactory;
-    const _abiAddress = process.env.WORK_QUEST_FACTORY;
-    console.log('creating new quest (hash, cost)', hash, _cost, `(${cost})`);
-    const res = await sendTransaction('newWorkQuest', {
-      abi: _abi,
-      address: _abiAddress,
-      data: [hash, _cost, 0],
+    const data = [hash, _cost, 0, nonce];
+
+    const inst = new web3.eth.Contract(_abi, _abiAddress);
+    const sendData = inst.methods.newWorkQuest.apply(null, data).encodeABI();
+    const [gasPrice, gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      inst.methods.newWorkQuest.apply(null, data).estimateGas({ from: wallet.address, value: _depositAmount }),
+    ]);
+    const res = await web3.eth.sendTransaction({
+      to: _abiAddress,
+      from: wallet.address,
       value: _depositAmount,
+      data: sendData,
+      gasPrice,
+      gas: gasEstimate,
     });
-    console.log('NEW WORK QUEST CONTRACT', res);
+    console.log('NEW WORK QUEST RES: ', res);
     return success(res);
   } catch (e) {
     console.error(e);
-    return error(500, '', e.message);
+    return error();
   }
 };
+// Получить цену транзакции за создание квеста
 // cost - награда за квест, depositAmount - пополнение квеста (цена * комиссию 1%)
-export const getCreateQuestFeeData = async (cost, depositAmount, description) => {
+export const getCreateQuestFeeData = async (cost, depositAmount, description, nonce) => {
   try {
     if (web3 === null) {
       console.error('provider is null!');
@@ -303,10 +313,9 @@ export const getCreateQuestFeeData = async (cost, depositAmount, description) =>
     cost = new BigNumber(cost).shiftedBy(18).toString();
     depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
     const hash = ethers.utils.formatBytes32String(description.slice(0, 31));
-    console.log(depositAmount, hash, 'cost:', cost);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
-      inst.methods.newWorkQuest.apply(null, [hash, cost, 0]).estimateGas({
+      inst.methods.newWorkQuest.apply(null, [hash, cost, 0, nonce]).estimateGas({
         from: wallet.address,
         to: process.env.WORK_QUEST_FACTORY,
         value: depositAmount,
@@ -332,7 +341,9 @@ export const getAccountQuests = async () => {
   }
 };
 
-/* Work Quest */
+//
+// Work Quest
+//
 /*
   :QuestMethods:
   editJob - edit before deposit
@@ -347,23 +358,23 @@ export const getAccountQuests = async () => {
   arbitrationDecreaseCost (_forfeit)
   arbitrationRejectWork
  */
-export const depositCostToQuestContract = async (contractAddress, amount) => {
-  try {
-    // *multiplied by fee percent
-    // TODO: вынести fee percent в модальное окно чека
-    const value = new BigNumber(amount).multipliedBy('1.02').shiftedBy(18).toString();
-    console.log('deposit value', value, 'contract', contractAddress);
-    const res = await web3.eth.sendTransaction({
-      from: wallet.address,
-      to: contractAddress,
-      value,
-    });
-    return success(res);
-  } catch (e) {
-    console.error(e);
-    return error(500, '', e.message);
-  }
-};
+// TODO: метод похоже вырезать нужно тк на контракт пополнение происходит сразу
+// export const depositCostToQuestContract = async (contractAddress, amount) => {
+//   try {
+//     // *multiplied by fee percent
+//     const value = new BigNumber(amount).multipliedBy('1.02').shiftedBy(18).toString();
+//     console.log('deposit value', value, 'contract', contractAddress);
+//     const res = await web3.eth.sendTransaction({
+//       from: wallet.address,
+//       to: contractAddress,
+//       value,
+//     });
+//     return success(res);
+//   } catch (e) {
+//     console.error(e);
+//     return error(500, '', e.message);
+//   }
+// };
 export const fetchJobMethod = async (contractAddress, method, param = []) => {
   try {
     const res = await sendTransaction(method, {

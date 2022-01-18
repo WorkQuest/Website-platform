@@ -201,6 +201,10 @@ export default {
         this.$t('quests.distantWork.bothVariant'),
       ];
     },
+    depositAmount() {
+      if (!this.price) return '0';
+      return new BigNumber(this.price).multipliedBy(1 + this.questsFee).toString();
+    },
   },
   async beforeCreate() {
     await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
@@ -282,28 +286,31 @@ export default {
     async updateBalanceWUSD() {
       await this.$store.dispatch('wallet/getBalance');
     },
+    showToast(text, title = this.$t('toasts.error')) {
+      this.$store.dispatch('main/showToast', {
+        title,
+        text,
+      });
+    },
     async createQuest() {
       if (!this.isWalletConnected) return;
 
       this.SetLoader(true);
-      const amount = new BigNumber(this.price).multipliedBy(1 + this.questsFee);
       const [feeRes] = await Promise.all([
         this.$store.dispatch('wallet/getCreateQuestFeeData', {
           cost: this.price,
-          depositAmount: amount,
+          depositAmount: this.depositAmount,
           description: this.textarea,
+          nonce: '12', // TODO: get from back
         }),
         this.updateBalanceWUSD(),
       ]);
+
       console.log(feeRes);
-      if (!feeRes.ok) {
-        this.SetLoader(false);
-        return;
-      }
+
       // Если у пользователя недостаточно денег для создания квеста
-      if (new BigNumber(feeRes.result.fee).plus(amount.toString()).isGreaterThan(this.balance.WUSD.fullBalance) === true) {
-        console.log(feeRes.result.fee, this.balance.WUSD.fullBalance);
-        this.showSendTransactionModal(amount, feeRes.result.fee);
+      if (!feeRes.ok || new BigNumber(feeRes.result.fee).plus(this.depositAmount).isGreaterThan(this.balance.WUSD.fullBalance) === true) {
+        this.showToast(this.$t('errors.transaction.notEnoughFunds'));
         this.SetLoader(false);
         return;
       }
@@ -328,34 +335,35 @@ export default {
       // };
       // const response = await this.$store.dispatch('quests/questCreate', payload);
       const response = { ok: true }; // TODO: delete
+
       if (response.ok) {
         // После создания квеста на бэке - генерируем новый контракт квеста
-        this.showSendTransactionModal(amount, feeRes.result.fee);
+        this.showSendTransactionModal(feeRes.result.fee);
       }
       this.SetLoader(false);
     },
     /**
      * Show receipt modal
-     * @param amountWithQuestFee - цена * %комиссии
-     * @param fee - цена отправки транзакции
+     * @param txFee - цена отправки транзакции
      */
-    showSendTransactionModal(amountWithQuestFee, fee) {
+    showSendTransactionModal(txFee) {
       this.$store.dispatch('modals/show', {
         key: modals.transactionReceipt,
         fields: {
           from: { name: this.$t('modals.fromAddress'), value: this.userData.wallet.address },
           to: { name: this.$t('modals.toAddress'), value: process.env.WORK_QUEST_FACTORY },
-          amount: { name: this.$t('modals.amount'), value: amountWithQuestFee.toString(), symbol: TokenSymbols.WUSD },
-          fee: { name: this.$t('wallet.table.trxFee'), value: fee.toString(), symbol: TokenSymbols.WUSD },
+          amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
+          fee: { name: this.$t('wallet.table.trxFee'), value: txFee.toString(), symbol: TokenSymbols.WUSD },
         },
         submitMethod: () => this.createQuestContract(),
       });
     },
     async createQuestContract() {
       const createRes = await this.$store.dispatch('wallet/createQuest', {
-        depositAmount: new BigNumber(this.price).multipliedBy(1 + this.questsFee),
+        depositAmount: this.depositAmount,
         cost: this.price,
         description: this.textarea,
+        nonce: '12', // TODO: get from back
       });
       console.log('newWorkQuest', createRes);
       if (createRes?.ok === false) {

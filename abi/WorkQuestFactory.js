@@ -151,6 +151,12 @@ export default [
         name: 'createdAt',
         type: 'uint256',
       },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'nonce',
+        type: 'uint256',
+      },
     ],
     name: 'WorkQuestCreated',
     type: 'event',
@@ -399,6 +405,11 @@ export default [
       {
         internalType: 'uint256',
         name: 'deadline',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'nonce',
         type: 'uint256',
       },
     ],

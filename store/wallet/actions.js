@@ -3,7 +3,6 @@ import BigNumber from 'bignumber.js';
 import {
   connectWallet,
   createQuest,
-  depositCostToQuestContract,
   disconnect,
   fetchJobMethod,
   getAccountQuests,
@@ -133,13 +132,17 @@ export default {
   /* QUESTS */
   /**
    * @param commit
-   * @param payload { cost & depositAmount & description }
+   * @param payload { cost & depositAmount & description & nonce }
    */
-  async createQuest({ commit }, payload) {
-    return await createQuest(payload);
+  async createQuest({ commit }, {
+    cost, depositAmount, description, nonce,
+  }) {
+    return await createQuest(cost, depositAmount, description, nonce);
   },
-  async getCreateQuestFeeData({ commit }, { cost, depositAmount, description }) {
-    return await getCreateQuestFeeData(cost, depositAmount, description);
+  async getCreateQuestFeeData({ commit }, {
+    cost, depositAmount, description, nonce,
+  }) {
+    return await getCreateQuestFeeData(cost, depositAmount, description, nonce);
   },
   async editQuest({ commit }, { contractAddress, cost, description }) {
     const hash = ethers.utils.formatBytes32String(description.slice(0, 31));
@@ -158,16 +161,19 @@ export default {
   async getQuestInfo({ commit }, contractAddress) {
     return await fetchContractData('getInfo', abi.WorkQuest, contractAddress);
   },
-  async depositCostToQuestContract({ commit }, { contractAddress, amount }) {
-    return await depositCostToQuestContract(contractAddress, amount);
-  },
-  async assignJob({ commit }, { contractAddress, workerAddress }) { // employer invites worker to job
+  // async depositCostToQuestContract({ commit }, { contractAddress, amount }) {
+  //   return await depositCostToQuestContract(contractAddress, amount);
+  // },
+  // Employer приглашает работника на квест
+  async assignJob({ commit }, { contractAddress, workerAddress }) {
     return await fetchJobMethod(contractAddress, 'assignJob', [workerAddress]);
   },
-  async declineJob({ commit }, contractAddress) { // worker отклоняет квест
+  // Worker отклоняет квест
+  async declineJob({ commit }, contractAddress) {
     return await fetchJobMethod(contractAddress, 'declineJob');
   },
-  async acceptJob({ commit }, contractAddress) { // worker принимает
+  // Worker принимает квест
+  async acceptJob({ commit }, contractAddress) {
     return await fetchJobMethod(contractAddress, 'acceptJob');
   },
   async processJob({ commit }, contractAddress) { // worker начинает (вызывается сразу после acceptJob)
