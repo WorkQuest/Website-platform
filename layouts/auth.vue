@@ -63,6 +63,7 @@ export default {
             };
             this.$store.commit('user/setTokens', payload);
             await this.$store.dispatch('user/getUserData');
+            await this.getStatistic();
             if (this.userData.role === 'employer') {
               await this.$router.push('/workers');
             } else if (this.userData.role === 'worker') {
@@ -85,6 +86,7 @@ export default {
         await this.$router.push('/role');
       } else {
         await this.$store.dispatch('user/getUserData');
+        await this.getStatistic();
         if (this.userData.role === 'employer') {
           await this.$router.push('/workers');
         } else if (this.userData.role === 'worker') {
@@ -101,6 +103,9 @@ export default {
     }
   },
   methods: {
+    async getStatistic() {
+      await this.$store.dispatch('user/getStatistic');
+    },
     getTokensFromMobile() {
       this.getTokensFromMobileInterval = setInterval(() => {
         this.accessTokenMobile = localStorage.getItem('accessToken');
