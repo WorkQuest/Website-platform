@@ -6,6 +6,24 @@
     <div
       class="verification__content content"
     >
+      <div v-if="userData.phone && Object.keys(userData.phone).length > 0">
+        <img
+          src="~assets/img/ui/warning.svg"
+          alt="Already Verified!"
+          class="content__picture"
+        >
+        <div class="content__subtitle content__subtitle_error">
+          Phone number already verified!
+        </div>
+        <div class="content__buttons buttons">
+          <base-btn
+            class="buttons__button"
+            @click="hide"
+          >
+            {{ $t('meta.confirm') }}
+          </base-btn>
+        </div>
+      </div>
       <div v-if="!secondNumber">
         <img
           src="~assets/img/ui/warning.svg"
@@ -25,7 +43,7 @@
         </div>
       </div>
       <validation-observer
-        v-if="secondNumber && secondNumber.fullPhone"
+        v-if="!userData.phone && secondNumber && secondNumber.fullPhone"
         v-slot="{handleSubmit, validated, passed, invalid}"
       >
         <div class="content__subtitle">
@@ -71,7 +89,10 @@
           class="content__bottom"
         >
           {{ $t('modals.haventSMS') }}
-          <button class="content__resend">
+          <button
+            class="content__resend"
+            @click="confirmPhone()"
+          >
             {{ $t('meta.resendSMS') }}
           </button>
         </div>
@@ -141,16 +162,18 @@ export default {
       });
       this.confirmPhone();
     },
+    async getCodeFromSms() {
+      try {
+        const payload = { phoneNumber: this.secondNumber };
+        await this.$store.dispatch('user/sendPhone', payload);
+      } catch (e) {
+        console.log(e);
+      }
+    },
     async nextStep() {
-      if (this.userData.tempPhone || this.userData.phone || this.secondNumber) {
-        try {
-          const payload = { phoneNumber: this.secondNumber || this.userData.tempPhone };
-          await this.$store.dispatch('user/sendPhone', payload);
-        } catch (e) {
-          console.log(e);
-        }
-        // eslint-disable-next-line no-plusplus
-        this.step++;
+      if (this.secondNumber) {
+        await this.getCodeFromSms();
+        this.step += 1;
       }
       if (!this.userData.tempPhone) this.hide();
     },
@@ -178,7 +201,10 @@ export default {
     font-size: 16px;
     margin-top: 10px;
     &_error {
-      margin: 10px 0;
+      margin: 10px auto;
+      display: flex;
+      justify-content: center;
+      width: 100%;
     }
   }
   &__top {
