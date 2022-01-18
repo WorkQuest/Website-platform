@@ -122,12 +122,12 @@
             </GmapMap>
           </transition>
         </div>
-        <template v-if="userRole === 'employer' && infoDataMode === InfoModeEmployer.Created">
+        <template v-if="userRole === userRoles.EMPLOYER && infoDataMode === InfoModeEmployer.Created">
           <workers-list is-invited />
           <workers-list />
         </template>
         <div
-          v-if="userRole === 'worker'"
+          v-if="userRole === userRoles.WORKER"
           class="spec__container"
         >
           <div class="quest__group">
@@ -163,7 +163,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import {
-  QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus,
+  QuestStatuses, InfoModeWorker, InfoModeEmployer, UserRole, ResponseStatus, TokenSymbols, QuestMethods,
 } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
@@ -171,6 +171,7 @@ import questPanel from '~/components/app/panels/questPanel';
 import quests from '~/components/app/pages/common/quests';
 import itemRating from '~/components/app/info/item-rating';
 import emptyData from '~/components/app/info/emptyData';
+import { success } from '~/utils/web3';
 
 export default {
   name: 'Quests',
@@ -209,7 +210,12 @@ export default {
       userData: 'user/getUserData',
       otherQuestsCount: 'quests/getAllQuestsCount',
       otherQuests: 'quests/getAllQuests',
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      userAddress: 'user/getUserWalletAddress',
     }),
+    userRoles() {
+      return UserRole;
+    },
     InfoModeEmployer() {
       return InfoModeEmployer;
     },
@@ -519,12 +525,40 @@ export default {
       this.showQuestModal(modalMode);
     },
     async acceptCompletedWorkOnQuest() {
-      const modalMode = 2;
+      if (await this.checkConnected() === false) return;
+
+      const contractAddress = '0xC716797Bd95525bf9FB8F90e53d2CDc32F4C4884'; // TODO: get from back
       this.SetLoader(true);
-      await this.$store.dispatch('quests/acceptCompletedWorkOnQuest', this.questData.id);
-      this.showQuestModal(modalMode);
-      await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Done);
+      const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
+        method: QuestMethods.AcceptJobResult,
+        contractAddress,
+      });
       this.SetLoader(false);
+      if (feeRes.ok === false) {
+        // TODO:: handle error
+        await this.$store.dispatch('main/showToast', {
+          title: 'Error',
+          text: 'Not enough funds',
+        });
+        return;
+      }
+
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('modals.fromAddress'), value: this.userAddress },
+          to: { name: this.$t('modals.toAddress'), value: contractAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => {
+          const txRes = await this.$store.dispatch('wallet/acceptJobResult', contractAddress);
+          console.log('accept completed work res:', txRes);
+          await this.$store.dispatch('quests/acceptCompletedWorkOnQuest', this.questData.id);
+          const modalMode = 2;
+          this.showQuestModal(modalMode);
+          await this.$store.dispatch('quests/setInfoDataMode', InfoModeEmployer.Done);
+        },
+      });
     },
     toRaisingViews() {
       if (![QuestStatuses.Closed, QuestStatuses.Dispute].includes(this.questData.status)) {
@@ -577,45 +611,136 @@ export default {
       await this.$router.push(`/messages/${this.questData.questChat.chatId}`);
       this.SetLoader(false);
     },
-    async acceptWorkOnQuest() {
-      this.SetLoader(true);
-      if (await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id)) {
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/questAgreed.svg'),
-          title: this.$t('quests.questInfo'),
-          subtitle: this.$t('quests.workOnQuestAccepted'),
-        });
-        await this.getQuest();
+    async checkConnected() {
+      if (!this.isWalletConnected) {
+        await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+        return false;
       }
+      return true;
+    },
+    async acceptWorkOnQuest() {
+      if (await this.checkConnected() === false) return;
+
+      const contractAddress = '0xC716797Bd95525bf9FB8F90e53d2CDc32F4C4884'; // TODO: get from back
+      this.SetLoader(true);
+      const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
+        method: QuestMethods.AcceptJob,
+        contractAddress,
+      });
       this.SetLoader(false);
+      if (feeRes.ok === false) {
+        // TODO:: handle error
+        await this.$store.dispatch('main/showToast', {
+          title: 'Error',
+          text: 'Not enough funds',
+        });
+        return;
+      }
+
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('modals.fromAddress'), value: this.userAddress },
+          to: { name: this.$t('modals.toAddress'), value: contractAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => {
+          const txRes = await this.$store.dispatch('wallet/acceptJob', contractAddress);
+          console.log('accept work res:', txRes);
+          if (await this.$store.dispatch('quests/acceptWorkOnQuest', this.questData.id)) {
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/questAgreed.svg'),
+              title: this.$t('quests.questInfo'),
+              subtitle: this.$t('quests.workOnQuestAccepted'),
+            });
+            await this.getQuest();
+          }
+        },
+      });
     },
     async rejectWorkOnQuest() {
+      if (await this.checkConnected() === false) return;
+
+      const contractAddress = ''; // TODO: get from back
       this.SetLoader(true);
-      if (await this.$store.dispatch('quests/rejectWorkOnQuest', this.questData.id)) {
-        await this.getQuest();
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/questAgreed.svg'),
-          title: this.$t('quests.questInfo'),
-          subtitle: this.$t('quests.workOnQuestRejected'),
-        });
-        await this.getQuest();
-      }
+      const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
+        method: QuestMethods.DeclineJob,
+        contractAddress,
+      });
       this.SetLoader(false);
+      if (feeRes.ok === false) {
+        // TODO:: handle error
+        await this.$store.dispatch('main/showToast', {
+          title: 'Error',
+          text: 'Not enough funds',
+        });
+        return;
+      }
+
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('modals.fromAddress'), value: this.userAddress },
+          to: { name: this.$t('modals.toAddress'), value: contractAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => {
+          const txRes = await this.$store.dispatch('wallet/declineJob', contractAddress);
+          console.log('reject work res:', txRes);
+          if (await this.$store.dispatch('quests/rejectWorkOnQuest', this.questData.id)) {
+            await this.getQuest();
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/questAgreed.svg'),
+              title: this.$t('quests.questInfo'),
+              subtitle: this.$t('quests.workOnQuestRejected'),
+            });
+            await this.getQuest();
+          }
+        },
+      });
     },
     async completeWorkOnQuest() {
+      if (await this.checkConnected() === false) return;
+
+      const contractAddress = '0xC716797Bd95525bf9FB8F90e53d2CDc32F4C4884'; // TODO: get from back
       this.SetLoader(true);
-      if (await this.$store.dispatch('quests/completeWorkOnQuest', this.questData.id)) {
-        await this.getQuest();
-        this.ShowModal({
-          key: modals.status,
-          img: require('~/assets/img/ui/questAgreed.svg'),
-          title: this.$t('quests.questInfo'),
-          subtitle: this.$t('quests.pleaseWaitEmp'),
-        });
-      }
+      const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
+        method: QuestMethods.VerificationJob,
+        contractAddress,
+      });
       this.SetLoader(false);
+      if (feeRes.ok === false) {
+        // TODO:: handle error
+        await this.$store.dispatch('main/showToast', {
+          title: 'Error',
+          text: 'Not enough funds',
+        });
+        return;
+      }
+
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('modals.fromAddress'), value: this.userAddress },
+          to: { name: this.$t('modals.toAddress'), value: contractAddress },
+          fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => {
+          const txRes = await this.$store.dispatch('wallet/verificationJob', contractAddress);
+          console.log('complete work res:', txRes);
+          if (await this.$store.dispatch('quests/completeWorkOnQuest', this.questData.id)) {
+            await this.getQuest();
+            this.ShowModal({
+              key: modals.status,
+              img: require('~/assets/img/ui/questAgreed.svg'),
+              title: this.$t('quests.questInfo'),
+              subtitle: this.$t('quests.pleaseWaitEmp'),
+            });
+          }
+        },
+      });
     },
     async sendARequestOnQuest() {
       this.ShowModal({

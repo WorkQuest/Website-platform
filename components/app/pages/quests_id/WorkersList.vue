@@ -135,7 +135,7 @@ export default {
       }
 
       // TODO: брать данные ниже из response переменной
-      const contractAddress = '0xfD6c0F9643FE826A4F1f0DF57403270A03BC2b32';
+      const contractAddress = '0xC716797Bd95525bf9FB8F90e53d2CDc32F4C4884';
       const workerAddress = '0xdad69079e34d777fa94da584472d03cb2f7d6b04';
 
       const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {

@@ -157,12 +157,6 @@ export default {
   async cancelJob({ commit }, contractAddress) {
     return await fetchJobMethod(contractAddress, QuestMethods.CancelJob);
   },
-  async getQuests() {
-    return await getAccountQuests();
-  },
-  async getQuestCost({ commit }, contractAddress) {
-    return await fetchContractData('cost', abi.WorkQuest, contractAddress);
-  },
   // Пригласить воркера на квест
   async assignJob({ commit }, { contractAddress, workerAddress }) {
     return await fetchJobMethod(contractAddress, QuestMethods.AssignJob, [workerAddress]);
@@ -187,12 +181,6 @@ export default {
   // Отправить результат работы на проверку employer'у
   async verificationJob({ commit }, contractAddress) { // worker отправляет квест на проверку
     return await fetchJobMethod(contractAddress, QuestMethods.VerificationJob);
-  },
-
-  // TODO: удалить как на контракте удалят
-  // вызывается сразу после acceptJob чтобы статус поставить в inProgress
-  async processJob({ commit }, contractAddress) {
-    return await fetchJobMethod(contractAddress, 'processJob');
   },
 
   // Арбитр
