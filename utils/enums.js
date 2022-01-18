@@ -130,3 +130,15 @@ export const TokenSymbols = Object.freeze({
   WQT: 'WQT',
   WUSD: 'WUSD',
 });
+
+export const QuestMethods = Object.freeze({
+  // Employer
+  CancelJob: 'cancelJob',
+  AssignJob: 'assignJob',
+  AcceptJobResult: 'acceptJobResult',
+  Arbitration: 'arbitration',
+  // Worker
+  AcceptJob: 'acceptJob',
+  DeclineJob: 'declineJob',
+  VerificationJob: 'verificationJob',
+});

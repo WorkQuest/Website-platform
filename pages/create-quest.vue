@@ -1,9 +1,8 @@
 <template>
   <div class="main main-white">
     <div class="main__body page">
-      <!--      validated, passed, invalid TODO: вернуть в обсервер-->
       <validation-observer
-        v-slot="{handleSubmit}"
+        v-slot="{handleSubmit, validated, passed, invalid}"
         tag="div"
         class="page"
       >
@@ -124,12 +123,10 @@
             @change="updateFiles"
           />
         </div>
-        {{ userAddress }} wallet
         <div class="upload btn btn__container btn__container_right">
           <div class="btn__create">
-            <!--            :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))" TODO: вернуть в кнопку ниже-->
             <base-btn
-              create-quest-
+              :disabled="!(invalid === false && !(selectedSpecAndSkills.length === 0))"
               @click="handleSubmit(createQuest)"
             >
               {{ $t('quests.createAQuest') }}
@@ -286,12 +283,6 @@ export default {
     async updateBalanceWUSD() {
       await this.$store.dispatch('wallet/getBalance');
     },
-    showToast(text, title = this.$t('toasts.error')) {
-      this.$store.dispatch('main/showToast', {
-        title,
-        text,
-      });
-    },
     async createQuest() {
       if (!this.isWalletConnected) return;
 
@@ -301,52 +292,54 @@ export default {
           cost: this.price,
           depositAmount: this.depositAmount,
           description: this.textarea,
-          nonce: '12', // TODO: get from back
+          nonce: '123',
         }),
         this.updateBalanceWUSD(),
       ]);
 
-      console.log(feeRes);
-
       // Если у пользователя недостаточно денег для создания квеста
       if (!feeRes.ok || new BigNumber(feeRes.result.fee).plus(this.depositAmount).isGreaterThan(this.balance.WUSD.fullBalance) === true) {
-        this.showToast(this.$t('errors.transaction.notEnoughFunds'));
+        this.showToastError(this.$t('errors.transaction.notEnoughFunds'));
         this.SetLoader(false);
         return;
       }
 
-      // const medias = await this.uploadFiles(this.files);
-      // const payload = {
-      //   workplace: this.convertWorkplace(this.workplaceIndex),
-      //   priority: this.runtimeIndex,
-      //   employment: this.convertEmployment(this.employmentIndex),
-      //   category: 'Default',
-      //   title: this.questTitle,
-      //   description: this.textarea,
-      //   price: this.price,
-      //   medias,
-      //   adType: 0,
-      //   locationPlaceName: this.address,
-      //   specializationKeys: this.selectedSpecAndSkills,
-      //   location: {
-      //     longitude: this.coordinates.lng,
-      //     latitude: this.coordinates.lat,
-      //   },
-      // };
-      // const response = await this.$store.dispatch('quests/questCreate', payload);
-      const response = { ok: true }; // TODO: delete
+      console.log('fee ok');
 
+      const medias = await this.uploadFiles(this.files);
+      const payload = {
+        workplace: this.convertWorkplace(this.workplaceIndex),
+        priority: this.runtimeIndex,
+        employment: this.convertEmployment(this.employmentIndex),
+        category: 'Default',
+        title: this.questTitle,
+        description: this.textarea,
+        price: this.price,
+        medias,
+        adType: 0,
+        locationPlaceName: this.address,
+        specializationKeys: this.selectedSpecAndSkills,
+        location: {
+          longitude: this.coordinates.lng,
+          latitude: this.coordinates.lat,
+        },
+      };
+      const response = await this.$store.dispatch('quests/questCreate', payload);
       if (response.ok) {
         // После создания квеста на бэке - генерируем новый контракт квеста
-        this.showSendTransactionModal(feeRes.result.fee);
+        // const { nonce } = reponse.result;
+        const nonce = '123'; // TODO: remove this line, uncomment up line
+        this.showSendTransactionModal(feeRes.result.fee, response.result.id, nonce);
       }
       this.SetLoader(false);
     },
     /**
      * Show receipt modal
      * @param txFee - цена отправки транзакции
+     * @param questId
+     * @param nonce
      */
-    showSendTransactionModal(txFee) {
+    showSendTransactionModal(txFee, questId, nonce) {
       this.$store.dispatch('modals/show', {
         key: modals.transactionReceipt,
         fields: {
@@ -355,27 +348,24 @@ export default {
           amount: { name: this.$t('modals.amount'), value: this.depositAmount, symbol: TokenSymbols.WUSD },
           fee: { name: this.$t('wallet.table.trxFee'), value: txFee.toString(), symbol: TokenSymbols.WUSD },
         },
-        submitMethod: () => this.createQuestContract(),
+        submitMethod: async () => await this.createQuestContract(questId, nonce),
       });
     },
-    async createQuestContract() {
-      const createRes = await this.$store.dispatch('wallet/createQuest', {
+    async createQuestContract(questId, nonce) {
+      const response = await this.$store.dispatch('wallet/createQuest', {
         depositAmount: this.depositAmount,
         cost: this.price,
         description: this.textarea,
-        nonce: '12', // TODO: get from back
+        nonce,
       });
-      console.log('newWorkQuest', createRes);
-      if (createRes?.ok === false) {
-        await this.$store.dispatch('main/showToast', {
-          title: 'Create quest error',
-          text: '*need to handle error*',
-        });
+      console.log('newWorkQuest', response);
+      if (response?.ok === false) {
+        this.showToastError(this.$t('errors.transaction.notEnoughFunds')); // TODO: как обработать ошибку создания квеста?
         return;
       }
       this.showModalCreatedQuest();
       this.showToastCreated();
-      // await this.$router.push(`/quests/${response.result.id}`); // TODO: в квесте нужно будет добавить информацию мол ожидается создание квеста
+      await this.$router.push(`/quests/${questId}`);
     },
     showModalCreatedQuest() {
       this.ShowModal({

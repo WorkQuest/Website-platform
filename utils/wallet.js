@@ -155,7 +155,7 @@ export const transfer = async (recipient, value) => {
         value,
       }),
     ]);
-    const txRes = await web3.eth.sendTransaction({
+    const txRes = web3.eth.sendTransaction({
       from: wallet.address,
       to: recipient,
       value,
@@ -244,7 +244,7 @@ export const getContractFeeData = async (_method, _abi, _contractAddress, value,
       fee: new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString(),
     });
   } catch (e) {
-    console.error('Get contract fee data error. Method:', _method);
+    console.error(`Get contract fee data error: ${_method}.`, e.message);
     return error();
   }
 };
@@ -265,10 +265,7 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
   });
 };
 
-//
-// Work Quest Factory
-//
-
+/** Quests */
 /* Work Quest Factory */
 export const createQuest = async (cost, depositAmount, description, nonce) => {
   try {
@@ -302,7 +299,7 @@ export const createQuest = async (cost, depositAmount, description, nonce) => {
   }
 };
 // Получить цену транзакции за создание квеста
-// cost - награда за квест, depositAmount - пополнение квеста (цена * комиссию 1%)
+// cost - награда за квест, depositAmount - пополнение квеста (quest reward * комиссию 1%)
 export const getCreateQuestFeeData = async (cost, depositAmount, description, nonce) => {
   try {
     if (web3 === null) {
@@ -313,6 +310,7 @@ export const getCreateQuestFeeData = async (cost, depositAmount, description, no
     cost = new BigNumber(cost).shiftedBy(18).toString();
     depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
     const hash = ethers.utils.formatBytes32String(description.slice(0, 31));
+    console.log(cost, depositAmount, description, hash, nonce);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       inst.methods.newWorkQuest.apply(null, [hash, cost, 0, nonce]).estimateGas({
@@ -341,40 +339,6 @@ export const getAccountQuests = async () => {
   }
 };
 
-//
-// Work Quest
-//
-/*
-  :QuestMethods:
-  editJob - edit before deposit
-  cancelJob
-  assignJob (workerAddress)
-  acceptJob
-  processJob
-  verificationJob
-  arbitration
-
-  arbitrationRework
-  arbitrationDecreaseCost (_forfeit)
-  arbitrationRejectWork
- */
-// TODO: метод похоже вырезать нужно тк на контракт пополнение происходит сразу
-// export const depositCostToQuestContract = async (contractAddress, amount) => {
-//   try {
-//     // *multiplied by fee percent
-//     const value = new BigNumber(amount).multipliedBy('1.02').shiftedBy(18).toString();
-//     console.log('deposit value', value, 'contract', contractAddress);
-//     const res = await web3.eth.sendTransaction({
-//       from: wallet.address,
-//       to: contractAddress,
-//       value,
-//     });
-//     return success(res);
-//   } catch (e) {
-//     console.error(e);
-//     return error(500, '', e.message);
-//   }
-// };
 export const fetchJobMethod = async (contractAddress, method, param = []) => {
   try {
     const res = await sendTransaction(method, {

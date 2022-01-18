@@ -16,7 +16,7 @@ import {
   transfer, transferToken, getTransferFeeData, getCreateQuestFeeData,
 } from '~/utils/wallet';
 import abi from '~/abi/index';
-import { TokenSymbols } from '~/utils/enums';
+import { QuestMethods, TokenSymbols } from '~/utils/enums';
 
 export default {
   async getTransactions({ commit }, params) {
@@ -45,6 +45,7 @@ export default {
    * @returns boolean
    */
   checkWalletConnected({ commit, getters }, { nuxt, callbackLayout }) {
+    if (!nuxt) console.error('Need to set nuxt ref');
     const connected = getIsWalletConnected();
     if (!connected) {
       if (callbackLayout) commit('setCallbackLayout', callbackLayout);
@@ -129,11 +130,8 @@ export default {
     return await getContractFeeData(method, _abi, contractAddress, value, recipient);
   },
 
-  /* QUESTS */
-  /**
-   * @param commit
-   * @param payload { cost & depositAmount & description & nonce }
-   */
+  /** QUESTS */
+  /** EMPLOYER */
   async createQuest({ commit }, {
     cost, depositAmount, description, nonce,
   }) {
@@ -144,13 +142,20 @@ export default {
   }) {
     return await getCreateQuestFeeData(cost, depositAmount, description, nonce);
   },
+
+  async getFeeDataJobMethod({ commit }, {
+    method, contractAddress, data,
+  }) {
+    return await getContractFeeData(method, abi.WorkQuest, contractAddress, data);
+  },
   async editQuest({ commit }, { contractAddress, cost, description }) {
     const hash = ethers.utils.formatBytes32String(description.slice(0, 31));
     const _cost = new BigNumber(cost).shiftedBy(18).toString();
     return await fetchJobMethod(contractAddress, 'editJob', [_cost, hash]);
   },
-  async cancelJob({ commit }, contractAddress) { // employer cancel quest
-    return await fetchJobMethod(contractAddress, 'cancelJob');
+  // Отмена/Удаление квеста
+  async cancelJob({ commit }, contractAddress) {
+    return await fetchJobMethod(contractAddress, QuestMethods.CancelJob);
   },
   async getQuests() {
     return await getAccountQuests();
@@ -158,37 +163,40 @@ export default {
   async getQuestCost({ commit }, contractAddress) {
     return await fetchContractData('cost', abi.WorkQuest, contractAddress);
   },
-  async getQuestInfo({ commit }, contractAddress) {
-    return await fetchContractData('getInfo', abi.WorkQuest, contractAddress);
-  },
-  // async depositCostToQuestContract({ commit }, { contractAddress, amount }) {
-  //   return await depositCostToQuestContract(contractAddress, amount);
-  // },
-  // Employer приглашает работника на квест
+  // Пригласить воркера на квест
   async assignJob({ commit }, { contractAddress, workerAddress }) {
-    return await fetchJobMethod(contractAddress, 'assignJob', [workerAddress]);
+    return await fetchJobMethod(contractAddress, QuestMethods.AssignJob, [workerAddress]);
   },
-  // Worker отклоняет квест
-  async declineJob({ commit }, contractAddress) {
-    return await fetchJobMethod(contractAddress, 'declineJob');
-  },
-  // Worker принимает квест
-  async acceptJob({ commit }, contractAddress) {
-    return await fetchJobMethod(contractAddress, 'acceptJob');
-  },
-  async processJob({ commit }, contractAddress) { // worker начинает (вызывается сразу после acceptJob)
-    return await fetchJobMethod(contractAddress, 'processJob');
-  },
-  async verificationJob({ commit }, contractAddress) { // worker отправляет квест на проверку
-    return await fetchJobMethod(contractAddress, 'verificationJob');
-  },
+  // Принять результат работы воркера
   async acceptJobResult({ commit }, contractAddress) {
-    return await fetchJobMethod(contractAddress, 'acceptJobResult');
+    return await fetchJobMethod(contractAddress, QuestMethods.AcceptJobResult);
   },
   async arbitration({ commit }, contractAddress) { // employer отменил (reject) результат работы или прошло 3 дня с момента начала verification
-    return await fetchJobMethod(contractAddress, 'arbitration');
+    return await fetchJobMethod(contractAddress, QuestMethods.Arbitration);
   },
-  async arbitrationRework({ commit }, contractAddress) { // арбитр возвращает квест в статус выполнения
+
+  /** WORKER */
+  // Отклонить приглашение на квест
+  async declineJob({ commit }, contractAddress) {
+    return await fetchJobMethod(contractAddress, QuestMethods.DeclineJob);
+  },
+  // Принять и начать квест
+  async acceptJob({ commit }, contractAddress) {
+    return await fetchJobMethod(contractAddress, QuestMethods.AcceptJob);
+  },
+  // Отправить результат работы на проверку employer'у
+  async verificationJob({ commit }, contractAddress) { // worker отправляет квест на проверку
+    return await fetchJobMethod(contractAddress, QuestMethods.VerificationJob);
+  },
+
+  // TODO: удалить как на контракте удалят
+  // вызывается сразу после acceptJob чтобы статус поставить в inProgress
+  async processJob({ commit }, contractAddress) {
+    return await fetchJobMethod(contractAddress, 'processJob');
+  },
+
+  // Арбитр
+  /* async arbitrationRework({ commit }, contractAddress) { // арбитр возвращает квест в статус выполнения
     return await fetchJobMethod(contractAddress, 'arbitrationRework');
   },
   async arbitrationDecreaseCost({ commit }, { contractAddress, _forfeit }) {
@@ -196,5 +204,5 @@ export default {
   },
   async arbitrationRejectWork({ commit }, contractAddress) {
     return await fetchJobMethod(contractAddress, 'arbitrationRejectWork');
-  },
+  }, */
 };

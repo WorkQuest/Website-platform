@@ -36,7 +36,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { QuestStatuses } from '~/utils/enums';
+import { QuestMethods, QuestStatuses, TokenSymbols } from '~/utils/enums';
 import modals from '~/store/modals/modals';
 
 export default {
@@ -48,6 +48,8 @@ export default {
     ...mapGetters({
       options: 'modals/getOptions',
       questData: 'quests/getQuest',
+      userAddress: 'user/getUserWalletAddress',
+      isWalletConnected: 'wallet/getIsWalletConnected',
     }),
   },
   methods: {
@@ -58,17 +60,50 @@ export default {
       await this.$store.dispatch('quests/getAllQuests');
     },
     async deleteQuest() {
+      if (!this.isWalletConnected) {
+        await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+        return;
+      }
+
       const questId = this.questData.id;
       const questStatus = this.questData.status;
+
+      // TODO: get from quest data
+      // const contractAddress = this.questData.contractAddress;
+      const contractAddress = '0x35958472cC81F68E3B9B14143FEBa6Ccafe1C41d';
+
       if ([QuestStatuses.Closed, QuestStatuses.Created].includes(questStatus)) {
-        await this.$store.dispatch('quests/deleteQuest', { questId });
-        this.hide();
-        this.toMyQuests();
-        this.showToastDeleted();
-        await this.getAllQuests();
+        const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
+          method: QuestMethods.CancelJob,
+          contractAddress,
+        });
+        console.log('deleteQuestFeeData', feeRes);
+        if (feeRes.ok === false) {
+          // how to handle error?
+          this.hide();
+          return;
+        }
+        await this.ShowModal({
+          key: modals.transactionReceipt,
+          fields: {
+            from: { name: this.$t('modals.fromAddress'), value: this.userAddress },
+            to: { name: this.$t('modals.toAddress'), value: contractAddress },
+            fee: { name: this.$t('wallet.table.trxFee'), value: feeRes.result.fee.toString(), symbol: TokenSymbols.WUSD },
+          },
+          submitMethod: async () => await this.deleteQuestCallback(questId, contractAddress),
+        });
       } else {
         this.hide();
         this.showToastWrongStatus();
+      }
+    },
+    async deleteQuestCallback(questId, contractAddress) {
+      const txRes = await this.$store.dispatch('wallet/cancelJob', contractAddress);
+      console.log('>>> cancelJobResult: ', txRes);
+      if (txRes.ok) {
+        this.toMyQuests();
+        this.showToastDeleted();
+        await this.getAllQuests();
       }
     },
     toMyQuests() {

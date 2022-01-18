@@ -1,6 +1,7 @@
 import {
   InfoModeEmployer, InfoModeWorker, QuestStatuses, ResponsesType,
 } from '~/utils/enums';
+import { error } from '~/utils/web3';
 
 export default {
   async getWorkerData({ commit }, userId) {
@@ -144,7 +145,8 @@ export default {
       const response = await this.$axios.$delete(`/v1/quest/${questId}`);
       return response.result;
     } catch (e) {
-      return console.log(e);
+      console.error(e);
+      return error();
     }
   },
   async startQuest({ commit }, { questId, config }) {
