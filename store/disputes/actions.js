@@ -10,7 +10,6 @@ export default {
     }
   },
   async getDispute({ commit }, disputeId) {
-    console.log(typeof disputeId);
     try {
       const { result } = await this.$axios.$get(`/v1/quest/dispute/${disputeId}`);
       commit('setDispute', result);
