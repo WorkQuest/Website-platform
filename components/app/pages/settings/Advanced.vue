@@ -57,9 +57,9 @@
             class="advanced__option-buttons"
           >
             <base-btn
-              @click="status2FA === 0 ? showModalKey(button.firstModal) : showModalKey(button.secondModal)"
+              @click="status2FA === 0 ? showModalKey(button.secondModal) : showModalKey(button.firstModal)"
             >
-              {{ status2FA === 0 ? $t(button.firstButtonName) : $t(button.secondButtonName) }}
+              {{ status2FA === 0 ? $t(button.secondButtonName) : $t(button.firstButtonName) }}
             </base-btn>
           </div>
         </div>

@@ -3,6 +3,7 @@ export default {
   accessToken: (state) => state.tokens.access,
   refreshToken: (state) => state.tokens.refresh,
   getUserData: (state) => state.userData,
+  getTwoFACode: (state) => state.twoFACode,
   getUserWalletAddress: (state) => state.userData.wallet.address,
   getStatus2FA: (state) => state.userData.statusKYC,
   getAnotherUserData: (state) => state.anotherUserData,

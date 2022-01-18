@@ -4,87 +4,48 @@
     :title="$t('modals.twoFAAuth')"
   >
     <div class="ctm-modal__content">
-      <validation-observer
-        v-slot="{handleSubmit, validated, passed, invalid}"
-      >
-        <div
-          class="step-panel"
-        >
+      <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
+        <div class="step-panel">
           <div
             class="__step"
-            :class="[
-              {'step-panel__step_active': [1,2,3,4].includes(step)},
-            ]"
+            :class="[{'step-panel__step_active': [1,2,3,4].includes(step)}]"
           >
             <span class="step-panel__block">
-              <span
-                :class="[
-                  {'hide': [2,3,4].includes(step)},
-                ]"
-              >{{ $t('modals.step') }}
-              </span>
-              <span
-                :class="[
-                  {'step__number': [2,3,4].includes(step)},
-                ]"
-              >1</span>
+              <span :class="[{'hide': [2,3,4].includes(step)}]">{{ $t('modals.step') }}</span>
+              <span :class="[{'step__number': [2,3,4].includes(step)}]">1</span>
             </span>
           </div>
           <div
             class="line"
-            :class="[
-              {'line__active': [2,3,4].includes(step)},
-            ]"
+            :class="[{'line__active': [2,3,4].includes(step)}]"
           />
           <div
             class="step-panel__step"
-            :class="[
-              {'step-panel__step_active': [2,3,4].includes(step)},
-            ]"
+            :class="[{'step-panel__step_active': [2,3,4].includes(step)}]"
           >
             <span class="step-panel__block">
               <span
-                :class="[
-                  {'hide': [3,4].includes(step)},
-                ]"
+                :class="[{'hide': [3,4].includes(step)}]"
               >{{ $t('modals.step') }}</span>
-              <span
-                :class="[
-                  {'step__number': [3,4].includes(step)},
-                ]"
-              >2</span>
+              <span :class="[{'step__number': [3,4].includes(step)}]">2</span>
             </span>
           </div>
           <div
             class="line"
-            :class="[
-              {'line__active': [3,4].includes(step)},
-            ]"
+            :class="[{'line__active': [3,4].includes(step)}]"
           />
           <div
             class="step-panel__step"
-            :class="[
-              {'step-panel__step_active': [3,4].includes(step)},
-            ]"
+            :class="[{'step-panel__step_active': [3,4].includes(step)}]"
           >
             <span class="step-panel__block">
-              <span
-                :class="[
-                  {'hide': step === 4},
-                ]"
-              >{{ $t('modals.step') }}</span>
-              <span
-                :class="[
-                  {'step__number': [2,3,4].includes(step)},
-                ]"
-              >3</span>
+              <span :class="[{'hide': step === 4}]">{{ $t('modals.step') }}</span>
+              <span :class="[{'step__number': [2,3,4].includes(step)}]">3</span>
             </span>
           </div>
           <div
             class="line"
-            :class="[
-              {'line__active': step === 4}
-            ]"
+            :class="[{'line__active': step === 4}]"
           />
           <div
             class="step-panel__step"
@@ -101,28 +62,24 @@
           v-if="step === 1"
           class="step__container"
         >
-          <div
-            class="ctm-modal__content-field"
-          >
-            <div>
-              <span class="content__text">{{ $t('modals.installGoogleAuth') }}</span>
+          <div class="ctm-modal__content-field">
+            <div class="content__text">
+              {{ $t('modals.installGoogleAuth') }}
             </div>
             <div class="btn__container">
               <div class="btn__store">
-                <div>
-                  <base-btn
-                    mode="black"
-                    @click="goToAppleStore"
-                  >
-                    {{ $t('modals.appleStore') }}
-                    <template v-slot:left>
-                      <img
-                        :alt="$t('modals.appleStore')"
-                        src="~/assets/img/ui/apple-icon.svg"
-                      >
-                    </template>
-                  </base-btn>
-                </div>
+                <base-btn
+                  mode="black"
+                  @click="goToAppleStore"
+                >
+                  {{ $t('modals.appleStore') }}
+                  <template v-slot:left>
+                    <img
+                      :alt="$t('modals.appleStore')"
+                      src="~/assets/img/ui/apple-icon.svg"
+                    >
+                  </template>
+                </base-btn>
               </div>
               <div class="btn__store">
                 <div>
@@ -158,12 +115,12 @@
             <span class="content__text">{{ $t('modals.ifYouCantScanBarcode') }}</span>
             <div class="code__input">
               <base-field
-                v-model="codeFromApi"
-                :placeholder="codeFromApi"
+                v-model="twoFACode"
+                :placeholder="twoFACode"
               />
               <div>
                 <button
-                  v-clipboard:copy="codeFromApi"
+                  v-clipboard:copy="twoFACode"
                   v-clipboard:success="ClipboardSuccessHandler"
                   v-clipboard:error="ClipboardErrorHandler"
                   class="btn__copy"
@@ -183,14 +140,14 @@
             <span class="content__text">{{ $t('modals.pleaseSaveThisKey') }}</span>
             <div class="code__input">
               <base-field
-                v-model="codeFromApi"
-                :placeholder="codeFromApi"
+                v-model="twoFACode"
+                :placeholder="twoFACode"
               />
               <div>
                 <button
                   v-clipboard:success="ClipboardSuccessHandler"
                   v-clipboard:error="ClipboardErrorHandler"
-                  v-clipboard:copy="codeFromApi"
+                  v-clipboard:copy="twoFACode"
                   class="btn__copy"
                   type="button"
                 >
@@ -225,7 +182,7 @@
           <div class="ctm-modal__content-field">
             <base-field
               id="twoFACode"
-              v-model="twoFACode"
+              v-model="authCode"
               :label="$t('modals.googleVerificationCode')"
               :placeholder="$t('modals.codePlaceholder')"
               rules="required|alpha_num"
@@ -318,16 +275,19 @@ export default {
     return {
       step: 1,
       confirmEmailCode: '',
-      twoFACode: '',
-      codeFromApi: '',
       qrLink: '',
+      authCode: '',
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
       userData: 'user/getUserData',
+      twoFACode: 'user/getTwoFACode',
     }),
+  },
+  async beforeMount() {
+    await this.$store.dispatch('user/getUserData');
   },
   methods: {
     goToGooglePlay(to, from, next) {
@@ -338,11 +298,8 @@ export default {
     },
     async enable2FA() {
       try {
-        const response = await this.$store.dispatch('user/enable2FA');
-        if (response?.ok) {
-          this.codeFromApi = response.result;
-          this.qrLink = `otpauth://totp/${this.userData.email}?secret=${this.codeFromApi}&issuer=WorkQuest.co`;
-        }
+        await this.$store.dispatch('user/enable2FA');
+        this.qrLink = `otpauth://totp/${this.userData.email}?secret=${this.twoFACode}&issuer=WorkQuest.co`;
       } catch (e) {
         console.log(e);
       }
@@ -351,10 +308,10 @@ export default {
       try {
         const payload = {
           confirmCode: this.confirmEmailCode,
-          totp: this.twoFACode,
+          totp: this.authCode,
         };
         const response = await this.$store.dispatch('user/confirmEnable2FA', payload);
-        if (response?.ok) {
+        if (response.ok) {
           this.hide();
           this.showModalSuccess();
         }
@@ -374,17 +331,14 @@ export default {
       this.CloseModal();
     },
     previousStep() {
-      // eslint-disable-next-line no-plusplus
-      this.step--;
+      this.step -= 1;
     },
     nextStep() {
-      // eslint-disable-next-line no-plusplus
-      this.step++;
+      this.step += 1;
     },
     nextStepWithEnable2FA() {
       this.enable2FA();
-      // eslint-disable-next-line no-plusplus
-      this.step++;
+      this.step += 1;
     },
   },
 };

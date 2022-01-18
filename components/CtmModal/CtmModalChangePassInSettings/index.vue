@@ -203,7 +203,7 @@ export default {
 }
 .field {
   &__button {
-    background-color: transparent!important;
+    background-color: transparent !important;
   }
 }
 

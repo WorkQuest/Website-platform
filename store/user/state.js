@@ -1,4 +1,5 @@
 export default () => ({
+  twoFACode: '',
   tokens: {
     access: '',
     refresh: '',

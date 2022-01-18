@@ -115,7 +115,6 @@ export default {
     this.SetLoader(true);
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
     await this.$store.dispatch('user/getUserData');
-    console.log(this.userData);
     this.profile = {
       avatarId: this.userData.avatarId,
       firstName: this.userData.firstName,

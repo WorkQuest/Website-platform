@@ -216,6 +216,7 @@ export default {
   async enable2FA({ commit }, payload) {
     try {
       const response = await this.$axios.$post('/v1/totp/enable', payload);
+      commit('setTwoFACode', response.result);
       return response.result;
     } catch (e) {
       return console.log(e);

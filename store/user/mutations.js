@@ -1,6 +1,9 @@
 /* eslint-disable no-param-reassign */
 
 export default {
+  setTwoFACode(state, data) {
+    state.twoFACode = data;
+  },
   setUserPortfolioCases(state, data) {
     state.portfolios = data;
   },

@@ -42,7 +42,6 @@ export default {
     async getApiHealthStatus() {
       try {
         const response = await this.$store.dispatch('sumsub/apiHealth');
-        console.log(response.result);
       } catch (e) {
         console.log(e);
       }

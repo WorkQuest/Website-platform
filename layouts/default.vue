@@ -679,7 +679,6 @@ export default {
   },
   async mounted() {
     if (!this.userData) await this.$store.dispatch('user/getUserData');
-    console.log(this.userData, this.imageData);
     await this.initWSListeners();
     await this.getChats();
     this.GetLocation();
