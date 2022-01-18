@@ -30,17 +30,17 @@ export const StakingTypes = {
   CROSS_CHAIN: 'CROSS_CHAIN',
 };
 
-export const QuestStatuses = {
+// Должны совпадать с бэком!
+export const QuestStatuses = Object.freeze({
   Rejected: -1,
   Created: 0,
-  AwaitingReplenishment: 1, // Ожидает пополнение баланса. Этот квест все еще можно редактировать
-  Active: 2,
-  Closed: 3,
-  Dispute: 4,
-  WaitWorker: 5,
-  WaitConfirm: 6,
-  Done: 7,
-};
+  Active: 1,
+  Closed: 2,
+  Dispute: 3,
+  WaitWorker: 4,
+  WaitConfirm: 5,
+  Done: 6,
+});
 
 export const InfoModeEmployer = {
   Rejected: -1,
