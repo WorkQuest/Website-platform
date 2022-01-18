@@ -1,6 +1,14 @@
 import { error } from '~/utils/web3';
 
 export default {
+  async getStatistic({ commit }) {
+    try {
+      const { result } = await this.$axios.$get('/v1/profile/statistic/me');
+      commit('setStatisticData', result);
+    } catch (e) {
+      console.log(e);
+    }
+  },
   async getUserPortfolios({ commit }, { userId, query }) {
     try {
       const response = await this.$axios.$get(`/v1/user/${userId}/portfolio/cases`, {

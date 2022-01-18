@@ -523,6 +523,7 @@ export default {
 
       try {
         await this.$store.dispatch('chat/setMessageAsRead', payload);
+        await this.$store.dispatch('user/getStatistic');
 
         this.isReadingInProgress = false;
       } catch (e) {
