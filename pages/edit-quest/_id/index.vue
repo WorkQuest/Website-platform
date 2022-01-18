@@ -544,6 +544,10 @@ export default {
       const contractAddress = '0xA4704c1250520577196C98aBBE09E980B57e04d1'; // TODO: get from back
       if (this.prevPrice !== this.price || this.prevDescription !== this.textarea) {
         let newPrice;
+
+        // TODO: {!!!!!} Нужно вызывать разные методы, если мы собираемся докидывать WUSD (написать новый для редактирования)
+        // TODO: {!!!!!} или лишь уменьшать price (простой fetchJobMethod)
+
         if (this.prevPrice > this.price) {
           newPrice = new BigNumber(this.price).shiftedBy(18).toString();
         } else {
