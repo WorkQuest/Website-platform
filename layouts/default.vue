@@ -175,7 +175,7 @@
                 @click="goToMessages()"
               >
                 <img
-                  v-if="hasUnreadMessage"
+                  v-if="unreadMessagesCount"
                   src="~assets/img/ui/message_unread.svg"
                 >
                 <span
@@ -602,7 +602,7 @@ export default {
       chatId: 'chat/getCurrChatId',
       messagesFilter: 'chat/getMessagesFilter',
       isChatOpened: 'chat/isChatOpened',
-      hasUnreadMessage: 'chat/hasUnreadMessage',
+      unreadMessagesCount: 'user/getUnreadChatsCount',
     }),
     headerLinksWorker() {
       return [
@@ -783,7 +783,6 @@ export default {
   },
   async mounted() {
     await this.initWSListeners();
-    await this.getChats();
     this.GetLocation();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));
     this.currentLocale = this.$i18n.localeProperties.code;
@@ -799,11 +798,15 @@ export default {
       await this.$store.dispatch('chat/getChatsList', this.chatFilter);
     },
     async initWSListeners() {
+      console.log(this.$route);
       const { chatConnection, notifsConnection } = this.connections;
       if (!chatConnection) {
         await this.$wsChat.connect(this.token);
         this.$wsChat.subscribe('/notifications/chat', async ({ data, action }) => {
-          await this.getChats();
+          if (this.$route.name === 'messages') {
+            await this.getChats();
+            await this.$store.dispatch('user/getStatistic');
+          }
 
           if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
             if (action !== 'messageReadByRecipient') this.$store.commit('chat/addMessageToList', data);

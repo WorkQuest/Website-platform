@@ -22,4 +22,9 @@ export default () => ({
   userEnable2FA: {},
   userDisable2FA: {},
   user2FA: false,
+  statisticData: {
+    chatsStatistic: null,
+    questsStatistic: null,
+    ratingStatistic: null,
+  },
 });

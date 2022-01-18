@@ -3,7 +3,8 @@ import { error } from '~/utils/web3';
 export default {
   async getStatistic({ commit }) {
     try {
-      const response = await this.$axios.$get('/v1/profile/statistic/me');
+      const { result } = await this.$axios.$get('/v1/profile/statistic/me');
+      commit('setStatisticData', result);
     } catch (e) {
       console.log(e);
     }
