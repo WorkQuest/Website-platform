@@ -15,7 +15,7 @@
         </span>
         <base-field
           v-if="step === 1"
-          v-model="userData.tempPhone"
+          v-model="secondNumber.fullPhone"
           class="content__action"
           :placeholder="$t('modals.phoneNumber')"
           mode="icon"
@@ -91,6 +91,7 @@ export default {
   computed: {
     ...mapGetters({
       userData: 'user/getUserData',
+      secondNumber: 'user/getUserSecondMobileNumber',
     }),
   },
   async beforeMount() {
@@ -120,10 +121,10 @@ export default {
       this.confirmPhone();
     },
     async nextStep() {
-      if (this.userData.tempPhone || this.userData.phone) {
+      if (this.userData.tempPhone || this.userData.phone || this.secondNumber) {
         try {
-          const payload = { phoneNumber: this.secondMobileNumber };
-          const response = await this.$store.dispatch('user/sendPhone', payload);
+          const payload = { phoneNumber: this.secondNumber || this.userData.tempPhone };
+          await this.$store.dispatch('user/sendPhone', payload);
         } catch (e) {
           console.log(e);
         }
