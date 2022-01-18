@@ -382,10 +382,10 @@ export default {
       userRole: 'user/getUserRole',
     }),
     getEducation() {
-      return this.profile.additionalInfo?.educations?.length !== 0;
+      return this.profile.additionalInfo.educations.length !== 0;
     },
     getWorkExp() {
-      return this.profile.additionalInfo?.workExperiences?.length !== 0;
+      return this.profile.additionalInfo.workExperiences.length !== 0;
     },
   },
   watch: {

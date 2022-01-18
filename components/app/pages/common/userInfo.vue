@@ -206,7 +206,7 @@ export default {
         });
       }
 
-      const secondNumber = this.userData.additionalInfo.secondMobileNumber.fullPhone;
+      const secondNumber = this.userData.additionalInfo.secondMobileNumber?.fullPhone;
       if (secondNumber) {
         userData.push({
           name: secondNumber,

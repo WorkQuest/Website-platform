@@ -8,24 +8,14 @@
         v-slot="{handleSubmit, validated, passed, invalid}"
       >
         <div class="content__subtitle">
-          <span v-if="step === 1">{{ $t('modals.enterPhone') }}</span>
-          <span v-if="step === 2">{{ $t('modals.enterSMSCode') }}</span>
+          {{ step === 1 ? $t('modals.enterPhone') : $t('modals.enterSMSCode') }}
         </div>
-        <span
-          v-if="step === 1"
-          class="content__top"
-        >
-          {{ $t('modals.phoneNumber') }}
-        </span>
-        <span
-          v-if="step === 2"
-          class="content__top"
-        >
-          {{ $t('modals.codeFromSMS') }}
+        <span class="content__top">
+          {{ step === 1 ? $t('modals.phoneNumber') : $t('modals.codeFromSMS') }}
         </span>
         <base-field
           v-if="step === 1"
-          v-model="secondMobileNumber"
+          v-model="userData.tempPhone"
           class="content__action"
           :placeholder="$t('modals.phoneNumber')"
           mode="icon"
@@ -100,27 +90,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      secondMobileNumber: 'user/getUserSecondMobileNumber',
+      userData: 'user/getUserData',
     }),
+  },
+  async beforeMount() {
+    await this.$store.dispatch('user/getUserData');
   },
   methods: {
     hide() {
       this.CloseModal();
     },
-    async sendPhoneNumber() {
-      try {
-        const payload = {
-          phoneNumber: await this.secondMobileNumber,
-        };
-        const response = await this.$store.dispatch('user/sendPhone', payload);
-        if (response?.ok) {
-          console.log(response);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    },
-
     async confirmPhone() {
       try {
         const payload = {
@@ -140,10 +119,18 @@ export default {
       });
       this.confirmPhone();
     },
-    nextStep() {
-      this.sendPhoneNumber();
-      // eslint-disable-next-line no-plusplus
-      this.step++;
+    async nextStep() {
+      if (this.userData.tempPhone || this.userData.phone) {
+        try {
+          const payload = { phoneNumber: this.secondMobileNumber };
+          const response = await this.$store.dispatch('user/sendPhone', payload);
+        } catch (e) {
+          console.log(e);
+        }
+        // eslint-disable-next-line no-plusplus
+        this.step++;
+      }
+      if (!this.userData.tempPhone) this.hide();
     },
   },
 };

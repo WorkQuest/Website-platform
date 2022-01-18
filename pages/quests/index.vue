@@ -370,6 +370,7 @@ export default {
     },
   },
   async mounted() {
+    await this.$store.dispatch('user/getUserData');
     const { query } = this.$route;
     if (Object.keys(query).length) {
       this.isShowMap = false;

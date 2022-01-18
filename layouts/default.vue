@@ -606,34 +606,16 @@ export default {
     }),
     headerLinksWorker() {
       return [
-        {
-          url: '/quests',
-          title: this.$t('ui.quests'),
-        },
-        {
-          url: '/my',
-          title: this.$t('ui.myQuests'),
-        },
-        {
-          url: '/wallet',
-          title: this.$t('ui.wallet'),
-        },
+        { url: '/quests', title: this.$t('ui.quests') },
+        { url: '/my', title: this.$t('ui.myQuests') },
+        { url: '/wallet', title: this.$t('ui.wallet') },
       ];
     },
     headerLinksEmployer() {
       return [
-        {
-          url: '/workers',
-          title: this.$t('ui.jobQuestors'),
-        },
-        {
-          url: '/my',
-          title: this.$t('ui.myQuests'),
-        },
-        {
-          url: '/wallet',
-          title: this.$t('ui.wallet'),
-        },
+        { url: '/workers', title: this.$t('ui.jobQuestors') },
+        { url: '/my', title: this.$t('ui.myQuests') },
+        { url: '/wallet', title: this.$t('ui.wallet') },
       ];
     },
     locales() {
@@ -644,134 +626,48 @@ export default {
     },
     instrumentDDLinks() {
       return [
-        {
-          link: '/pension',
-          title: this.$t('ui.menu.pension.title'),
-        },
-        {
-          link: '/referral',
-          title: this.$t('ui.menu.referral.title'),
-        },
-        {
-          link: '/insuring',
-          title: this.$t('ui.menu.p2p.title'),
-        },
-        {
-          link: '/savings',
-          title: this.$t('ui.menu.savings.title'),
-        },
-        {
-          link: '/crediting',
-          title: this.$t('ui.menu.crediting.title'),
-        },
-        {
-          link: '/mining',
-          title: this.$t('ui.menu.mining.title'),
-        },
-        {
-          link: '/crosschain',
-          title: this.$t('ui.menu.crosschain.title'),
-        },
-        {
-          link: '/staking',
-          title: this.$t('ui.menu.staking.title'),
-        },
+        { link: '/pension', title: this.$t('ui.menu.pension.title') },
+        { link: '/referral', title: this.$t('ui.menu.referral.title') },
+        { link: '/insuring', title: this.$t('ui.menu.p2p.title') },
+        { link: '/savings', title: this.$t('ui.menu.savings.title') },
+        { link: '/crediting', title: this.$t('ui.menu.crediting.title') },
+        { link: '/mining', title: this.$t('ui.menu.mining.title') },
+        { link: '/crosschain', title: this.$t('ui.menu.crosschain.title') },
+        { link: '/staking', title: this.$t('ui.menu.staking.title') },
       ];
     },
     mobileMenuLinks() {
       return [
-        {
-          path: '/quests',
-          title: this.$t('ui.quests'),
-        },
-        {
-          path: '/my',
-          title: this.$t('ui.myQuests'),
-        },
-        {
-          path: '/wallet',
-          title: this.$t('ui.wallet'),
-        },
+        { path: '/quests', title: this.$t('ui.quests') },
+        { path: '/my', title: this.$t('ui.myQuests') },
+        { path: '/wallet', title: this.$t('ui.wallet') },
       ];
     },
     userDDLinks() {
       return [
-        {
-          link: `/profile/${this.userData.id}`,
-          title: this.$t('ui.profile.myProfile'),
-        },
-        {
-          link: '/settings',
-          title: this.$t('ui.profile.settings'),
-        },
-        {
-          link: '/disputes',
-          title: this.$t('ui.profile.disputes'),
-        },
-        {
-          link: '/',
-          title: this.$t('ui.profile.logout'),
-        },
+        { link: `/profile/${this.userData.id}`, title: this.$t('ui.profile.myProfile') },
+        { link: '/settings', title: this.$t('ui.profile.settings') },
+        { link: '/disputes', title: this.$t('ui.profile.disputes') },
+        { link: '/', title: this.$t('ui.profile.logout') },
       ];
     },
     profileLinks() {
       return [
-        {
-          title: this.$t('ui.profile.myProfile'),
-          path: `/profile/${this.userData.id}`,
-        },
-        {
-          title: this.$t('ui.profile.settings'),
-          path: '/settings',
-        },
-        {
-          title: this.$t('ui.profile.disputes'),
-          path: '/disputes',
-        },
+        { title: this.$t('ui.profile.myProfile'), path: `/profile/${this.userData.id}` },
+        { title: this.$t('ui.profile.settings'), path: '/settings' },
+        { title: this.$t('ui.profile.disputes'), path: '/disputes' },
       ];
     },
     additionalMenuLinks() {
       return [
-        {
-          title: this.$t('ui.menu.pension.title'),
-          desc: this.$t('ui.menu.pension.desc'),
-          path: '/pension',
-        },
-        {
-          title: this.$t('ui.menu.referral.title'),
-          desc: this.$t('ui.menu.referral.desc'),
-          path: '/referral',
-        },
-        {
-          title: this.$t('ui.menu.p2p.title'),
-          desc: this.$t('ui.menu.p2p.desc'),
-          path: '/insuring',
-        },
-        {
-          title: this.$t('ui.menu.savings.title'),
-          desc: this.$t('ui.menu.savings.desc'),
-          path: '/savings',
-        },
-        {
-          title: this.$t('ui.menu.crediting.title'),
-          desc: this.$t('ui.menu.crediting.desc'),
-          path: '/crediting',
-        },
-        {
-          title: this.$t('ui.menu.mining.title'),
-          desc: this.$t('ui.menu.mining.desc'),
-          path: '/mining',
-        },
-        {
-          title: this.$t('ui.menu.crosschain.title'),
-          desc: this.$t('ui.menu.crosschain.desc'),
-          path: '/crosschain',
-        },
-        {
-          title: this.$t('ui.menu.staking.title'),
-          desc: this.$t('ui.menu.staking.desc'),
-          path: '/staking',
-        },
+        { title: this.$t('ui.menu.pension.title'), desc: this.$t('ui.menu.pension.desc'), path: '/pension' },
+        { title: this.$t('ui.menu.referral.title'), desc: this.$t('ui.menu.referral.desc'), path: '/referral' },
+        { title: this.$t('ui.menu.p2p.title'), desc: this.$t('ui.menu.p2p.desc'), path: '/insuring' },
+        { title: this.$t('ui.menu.savings.title'), desc: this.$t('ui.menu.savings.desc'), path: '/savings' },
+        { title: this.$t('ui.menu.crediting.title'), desc: this.$t('ui.menu.crediting.desc'), path: '/crediting' },
+        { title: this.$t('ui.menu.mining.title'), desc: this.$t('ui.menu.mining.desc'), path: '/mining' },
+        { title: this.$t('ui.menu.crosschain.title'), desc: this.$t('ui.menu.crosschain.desc'), path: '/crosschain' },
+        { title: this.$t('ui.menu.staking.title'), desc: this.$t('ui.menu.staking.desc'), path: '/staking' },
       ];
     },
   },
@@ -782,6 +678,8 @@ export default {
     },
   },
   async mounted() {
+    if (!this.userData) await this.$store.dispatch('user/getUserData');
+    console.log(this.userData, this.imageData);
     await this.initWSListeners();
     await this.getChats();
     this.GetLocation();
@@ -829,9 +727,7 @@ export default {
     kitcutDescription(text) {
       text = text.trim();
       if (text.length <= 120) return text;
-
       text = text.slice(0, 120);
-
       return `${text.trim()}...`;
     },
     userWindowChange() {

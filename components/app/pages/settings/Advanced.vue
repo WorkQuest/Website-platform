@@ -57,16 +57,9 @@
             class="advanced__option-buttons"
           >
             <base-btn
-              :disabled="status2FA === 0"
-              @click="showModalKey(button.firstModal)"
+              @click="status2FA === 0 ? showModalKey(button.firstModal) : showModalKey(button.secondModal)"
             >
-              {{ $t(button.firstButtonName) }}
-            </base-btn>
-            <base-btn
-              :disabled="status2FA === 1"
-              @click="showModalKey(button.secondModal)"
-            >
-              {{ $t(button.secondButtonName) }}
+              {{ status2FA === 0 ? $t(button.firstButtonName) : $t(button.secondButtonName) }}
             </base-btn>
           </div>
         </div>
@@ -80,10 +73,16 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'Advanced',
+  props: {
+    userData: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
       radioButtons: {
-        whoCanSeeeInputs: [
+        whoCanSeeInputs: [
           {
             id: 'allUsers',
             value: 'allUsers',
@@ -138,8 +137,6 @@ export default {
           secondButtonName: 'settings.enable',
           firstModal: 'disable2FA',
           secondModal: 'twoFAAuth',
-          firstDisabled: this.status2FA === 0,
-          secondDisable: this.status2FA === 1,
           isSwitcher: true,
         },
         {
@@ -258,10 +255,10 @@ export default {
 @include _575 {
   .advanced {
     &__left {
-      border-radius: 0px;
+      border-radius: 0;
     }
     &__right {
-      border-radius: 0px;
+      border-radius: 0;
     }
     &__option_blue {
       flex-direction: column;

@@ -102,6 +102,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    await this.$store.dispatch('user/getUserData');
     this.requestParams = {
       userId: this.userData.id,
       role: this.userRole,

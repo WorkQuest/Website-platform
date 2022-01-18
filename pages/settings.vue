@@ -29,7 +29,10 @@
         @click="editUserData"
         @checkValidate="checkValidate"
       />
-      <advanced @showModalKey="showModalKey" />
+      <advanced
+        :user-data="userData"
+        @showModalKey="showModalKey"
+      />
     </ValidationObserver>
   </div>
 </template>
@@ -111,6 +114,8 @@ export default {
   async mounted() {
     this.SetLoader(true);
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
+    await this.$store.dispatch('user/getUserData');
+    console.log(this.userData);
     this.profile = {
       avatarId: this.userData.avatarId,
       firstName: this.userData.firstName,
@@ -212,7 +217,7 @@ export default {
         return;
       }
       const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
-      const { secondMobileNumber } = this.profile.additionalInfo;
+      const secondMobileNumber = this.updatedSecondPhone.fullPhone;
       await this.setAvatar();
       if (secondMobileNumber) {
         await this.editProfile(checkAvatarID);
@@ -358,7 +363,7 @@ export default {
 }
 @include _575 {
   .settings {
-    margin: 20px 0px 41px;
+    margin: 20px 0 41px;
     width: 100%;
   }
 }

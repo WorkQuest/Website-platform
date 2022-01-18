@@ -354,6 +354,7 @@ export default {
     },
   },
   async mounted() {
+    await this.$store.dispatch('user/getUserData');
     this.$watch(
       'lastMessageId',
       (newVal, oldVal) => {
