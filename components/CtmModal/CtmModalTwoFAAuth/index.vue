@@ -82,20 +82,18 @@
                 </base-btn>
               </div>
               <div class="btn__store">
-                <div>
-                  <base-btn
-                    mode="black"
-                    @click="goToGooglePlay"
-                  >
-                    {{ $t('modals.googlePlay') }}
-                    <template v-slot:left>
-                      <img
-                        :alt="$t('modals.googlePlay')"
-                        src="~/assets/img/ui/google-play-icon.svg"
-                      >
-                    </template>
-                  </base-btn>
-                </div>
+                <base-btn
+                  mode="black"
+                  @click="goToGooglePlay"
+                >
+                  {{ $t('modals.googlePlay') }}
+                  <template v-slot:left>
+                    <img
+                      :alt="$t('modals.googlePlay')"
+                      src="~/assets/img/ui/google-play-icon.svg"
+                    >
+                  </template>
+                </base-btn>
               </div>
             </div>
           </div>

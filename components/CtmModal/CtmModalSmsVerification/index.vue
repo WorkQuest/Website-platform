@@ -1,10 +1,31 @@
 <template>
   <ctm-modal-box
-    :title="$t('modals.smsVerification')"
+    :title="!secondNumber ? 'Error SMS verification' : $t('modals.smsVerification')"
     class="verification"
   >
-    <div class="verification__content content">
+    <div
+      class="verification__content content"
+    >
+      <div v-if="!secondNumber">
+        <img
+          src="~assets/img/ui/warning.svg"
+          alt="Please fill phone number!"
+          class="content__picture"
+        >
+        <div class="content__subtitle content__subtitle_error">
+          {{ this.$t('modals.fillNumber') }}
+        </div>
+        <div class="content__buttons buttons">
+          <base-btn
+            class="buttons__button"
+            @click="hide"
+          >
+            {{ $t('meta.confirm') }}
+          </base-btn>
+        </div>
+      </div>
       <validation-observer
+        v-if="secondNumber && secondNumber.fullPhone"
         v-slot="{handleSubmit, validated, passed, invalid}"
       >
         <div class="content__subtitle">
@@ -141,16 +162,24 @@ export default {
 .verification {
   max-width: 382px !important;
   &__content {
-    padding: 0 28px 30px 28px!important;
+    padding: 0 28px 30px 28px !important;
   }
 }
-.content{
+.content {
+  &__picture {
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+  }
   &__subtitle {
     @include text-simple;
     font-weight: 400;
     color: $black400;
     font-size: 16px;
     margin-top: 10px;
+    &_error {
+      margin: 10px 0;
+    }
   }
   &__top {
     margin: 25px 0 4px 0;
@@ -160,8 +189,8 @@ export default {
   &__action {
     width: 100%;
   }
-  &__icon:before{
-    font-size: 25px!important;
+  &__icon:before {
+    font-size: 25px !important;
     color: $blue;
   }
   &__bottom {

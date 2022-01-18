@@ -44,7 +44,7 @@ export default {
       default: '',
     },
     disabled: {
-      type: [Boolean, String],
+      type: [Boolean, String, Function],
       default: false,
     },
     mode: {

@@ -922,6 +922,7 @@
     "error": "Error!"
   },
   "modals": {
+    "fillNumber": "Please fill phone number in settings page...",
     "disputes": {
       "thereIsNoResponseFromTheEmployerOrEmployee": "There is no response from the employer / employee",
       "badlyDoneWork": "Badly done work",

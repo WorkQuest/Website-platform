@@ -70,6 +70,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import modals from '~/store/modals/modals';
 
 export default {
   name: 'Advanced',
@@ -157,11 +158,22 @@ export default {
   computed: {
     ...mapGetters({
       status2FA: 'user/getStatus2FA',
+      secondNumber: 'user/getUserSecondMobileNumber',
     }),
+  },
+  async beforeMount() {
+    await this.$store.dispatch('user/getUserData');
   },
   methods: {
     async showModalKey(modalKey) {
       this.$emit('showModalKey', modalKey);
+    },
+    smsVerErrorModal() {
+      this.ShowModal({
+        key: modals.status,
+        title: 'Error sms ver',
+        subtitle: 'Please, fill phone number in settings',
+      });
     },
   },
 
