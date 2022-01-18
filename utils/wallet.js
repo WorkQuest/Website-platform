@@ -266,13 +266,17 @@ export const sendTransaction = async (_method, payload, _provider = web3) => {
 };
 
 /** Quests */
+export const hashText = (value) => {
+  if (!value) console.error('Wrong value for hashText');
+  return ethers.utils.formatBytes32String(value.slice(0, 31));
+};
 /* Work Quest Factory */
 export const createQuest = async (cost, depositAmount, description, nonce) => {
   try {
     const _abi = abi.WorkQuestFactory;
     const _abiAddress = process.env.WORK_QUEST_FACTORY;
 
-    const hash = ethers.utils.formatBytes32String(description.slice(0, 31));
+    const hash = hashText(description);
     const _cost = new BigNumber(cost).shiftedBy(18).toString();
     const _depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
     const data = [hash, _cost, 0, nonce];
@@ -309,7 +313,7 @@ export const getCreateQuestFeeData = async (cost, depositAmount, description, no
     const inst = new web3.eth.Contract(abi.WorkQuestFactory, process.env.WORK_QUEST_FACTORY);
     cost = new BigNumber(cost).shiftedBy(18).toString();
     depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
-    const hash = ethers.utils.formatBytes32String(description.slice(0, 31));
+    const hash = hashText(description);
     console.log(cost, depositAmount, description, hash, nonce);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),

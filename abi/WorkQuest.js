@@ -47,7 +47,7 @@ export default [
         type: 'address',
       },
     ],
-    stateMutability: 'payable',
+    stateMutability: 'nonpayable',
     type: 'constructor',
   },
   {
@@ -91,12 +91,6 @@ export default [
       },
     ],
     name: 'Assigned',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [],
-    name: 'JobAccepted',
     type: 'event',
   },
   {
@@ -151,12 +145,6 @@ export default [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: false,
-        internalType: 'address',
-        name: 'sender',
-        type: 'address',
-      },
       {
         indexed: false,
         internalType: 'uint256',
@@ -263,6 +251,13 @@ export default [
   },
   {
     inputs: [],
+    name: 'cancelJob',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'cost',
     outputs: [
       {
@@ -292,6 +287,24 @@ export default [
     name: 'declineJob',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'bytes32',
+        name: '_jobHash',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'uint256',
+        name: '_cost',
+        type: 'uint256',
+      },
+    ],
+    name: 'editJob',
+    outputs: [],
+    stateMutability: 'payable',
     type: 'function',
   },
   {
@@ -418,13 +431,6 @@ export default [
       },
     ],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'processJob',
-    outputs: [],
-    stateMutability: 'nonpayable',
     type: 'function',
   },
   {

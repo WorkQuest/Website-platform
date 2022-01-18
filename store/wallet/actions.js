@@ -13,7 +13,7 @@ import {
   getStyledAmount,
   setWalletAddress,
   getWalletAddress,
-  transfer, transferToken, getTransferFeeData, getCreateQuestFeeData,
+  transfer, transferToken, getTransferFeeData, getCreateQuestFeeData, hashText,
 } from '~/utils/wallet';
 import abi from '~/abi/index';
 import { QuestMethods, TokenSymbols } from '~/utils/enums';
@@ -149,9 +149,9 @@ export default {
     return await getContractFeeData(method, abi.WorkQuest, contractAddress, data);
   },
   async editQuest({ commit }, { contractAddress, cost, description }) {
-    const hash = ethers.utils.formatBytes32String(description.slice(0, 31));
+    const hash = hashText(description);
     const _cost = new BigNumber(cost).shiftedBy(18).toString();
-    return await fetchJobMethod(contractAddress, 'editJob', [_cost, hash]);
+    return await fetchJobMethod(contractAddress, QuestMethods.EditJob, [hash, _cost]);
   },
   // Отмена/Удаление квеста
   async cancelJob({ commit }, contractAddress) {

@@ -133,6 +133,7 @@ export const TokenSymbols = Object.freeze({
 
 export const QuestMethods = Object.freeze({
   // Employer
+  EditJob: 'editJob',
   CancelJob: 'cancelJob',
   AssignJob: 'assignJob',
   AcceptJobResult: 'acceptJobResult',
