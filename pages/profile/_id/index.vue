@@ -3,7 +3,7 @@
     <div class="section section__container section__container_white">
       <div class="container container__block">
         <userInfo
-          :user-info="userData"
+          :user-id="userId"
         />
         <div class="block__routes routes">
           <button
