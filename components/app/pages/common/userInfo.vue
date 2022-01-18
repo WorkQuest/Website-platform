@@ -205,11 +205,12 @@ export default {
           href: `mailto:${this.userData.email}`,
         });
       }
-      if (this.userData.additionalInfo.secondMobileNumber) {
+      const secondNumber = this.userData.additionalInfo.secondMobileNumber;
+      if (secondNumber) {
         userData.push({
-          name: this.userData.additionalInfo.secondMobileNumber,
+          name: secondNumber.fullPhone,
           icon: 'icon-phone',
-          href: `tel:${this.userData.additionalInfo.secondMobileNumber}`,
+          href: `tel:${secondNumber.fullPhone}`,
         });
       }
       if (this.userData.additionalInfo.address) {
@@ -231,27 +232,17 @@ export default {
     userData() {
       if (!Object.keys(this.userInfo).length) {
         return {
-          avatar: {
-            url: '',
-          },
+          avatar: { url: '' },
           additionalInfo: {
             company: '',
             address: '',
             description: '',
-            educations: {
-              length: 0,
-            },
-            workExperiences: {
-              length: 0,
-            },
+            secondMobileNumber: null,
+            educations: { length: 0 },
+            workExperiences: { length: 0 },
           },
-          questsStatistic: {
-            opened: 0,
-          },
-          ratingStatistic: {
-            averageMark: 0,
-            reviewCount: 0,
-          },
+          questsStatistic: { opened: 0 },
+          ratingStatistic: { averageMark: 0, reviewCount: 0 },
           role: 'employer',
         };
       }

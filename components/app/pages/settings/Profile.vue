@@ -93,13 +93,14 @@
           />
           <div class="profile__phone-input">
             <vue-phone-number-input
-              v-model="profile.additionalInfo.secondMobileNumber"
+              v-model="secondPhoneNumber.fullPhone"
+              :default-country-code="secondPhoneNumber.codeRegion"
+              :error="!isValidPhoneNumber"
               error-color="#EB5757"
               clearable
               show-code-on-list
               required
               size="lg"
-              :error="!isValidPhoneNumber"
               @update="updateSecondPhone($event)"
             />
             <span
@@ -132,7 +133,7 @@
           v-slot="{ errors }"
           tag="div"
           class="profile__description"
-          rules="max:100"
+          rules="max:650"
         >
           <textarea
             id="textarea"
@@ -253,7 +254,7 @@ import Verified from '~/components/app/pages/settings/Verified.vue';
 import AddForm from './AddForm.vue';
 
 export default {
-  name: 'Profile',
+  name: 'SettingsProfile',
   components: { Verified, AddForm },
   directives: {
     ClickOutside,
@@ -264,14 +265,6 @@ export default {
       default: null,
     },
     profile: {
-      type: Object,
-      default: null,
-    },
-    newEducation: {
-      type: Object,
-      default: null,
-    },
-    newWorkExp: {
       type: Object,
       default: null,
     },
@@ -286,6 +279,19 @@ export default {
   },
   data() {
     return {
+      secondPhoneNumber: {
+        fullPhone: null,
+      },
+      newEducation: {
+        from: '',
+        to: '',
+        place: '',
+      },
+      newWorkExp: {
+        from: '',
+        to: '',
+        place: '',
+      },
       isSearchDDStatus: false,
       addresses: [],
       mainInputs: [
@@ -382,7 +388,18 @@ export default {
       return this.profile.additionalInfo?.workExperiences?.length !== 0;
     },
   },
-
+  watch: {
+    profile: {
+      deep: true,
+      handler() {
+        this.secondPhoneNumber = {
+          codeRegion: this.profile?.additionalInfo?.secondMobileNumber?.codeRegion || null,
+          phone: null,
+          fullPhone: this.profile?.additionalInfo?.secondMobileNumber?.fullPhone || null,
+        };
+      },
+    },
+  },
   methods: {
     // UPDATE AVATAR
     // eslint-disable-next-line consistent-return
@@ -445,7 +462,7 @@ export default {
     async addNewKnowledge(knowledgeArray, newKnowledge, observerName, modalMsg) {
       const validate = await this.$refs[observerName].validate();
       if (validate) {
-        knowledgeArray.push({ ...this[newKnowledge] });
+        this.$emit('updateEducation', newKnowledge, this[newKnowledge]);
         this[newKnowledge] = {
           from: '',
           to: '',
