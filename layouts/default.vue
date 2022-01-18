@@ -798,7 +798,6 @@ export default {
       await this.$store.dispatch('chat/getChatsList', this.chatFilter);
     },
     async initWSListeners() {
-      console.log(this.$route);
       const { chatConnection, notifsConnection } = this.connections;
       if (!chatConnection) {
         await this.$wsChat.connect(this.token);
