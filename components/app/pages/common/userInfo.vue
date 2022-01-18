@@ -170,17 +170,6 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'UserInfo',
-  props: {
-    userId: {
-      type: String,
-      default: '',
-    },
-  },
-  data() {
-    return {
-      userData: {},
-    };
-  },
   computed: {
     ...mapGetters({
       mainUser: 'user/getUserData',
@@ -189,8 +178,11 @@ export default {
       userRole: 'user/getUserRole',
       anotherUserData: 'user/getAnotherUserData',
     }),
+    emptyObject() {
+      return !Object.keys(this.userData).length;
+    },
     socialNetworks() {
-      if (!Object.keys(this.userData).length) return [];
+      if (this.emptyObject) return [];
       const socialNetworksData = this.userData.additionalInfo.socialNetwork;
       const filledNetworks = {};
       if (socialNetworksData) {
@@ -203,7 +195,7 @@ export default {
       return filledNetworks;
     },
     contactData() {
-      if (!Object.keys(this.userData).length) return [];
+      if (this.emptyObject) return [];
       const {
         email, tempPhone, phone, additionalInfo: {
           secondMobileNumber, address, company, website,
@@ -255,21 +247,19 @@ export default {
       return userData;
     },
     isShowEducations() {
-      if (!Object.keys(this.userData).length) return false;
+      if (this.emptyObject) return false;
       return this.userData.role === 'worker' && this.userData.additionalInfo.educations.length > 0;
     },
     isShowWorkExp() {
-      if (!Object.keys(this.userData).length) return false;
+      if (this.emptyObject) return false;
       return this.userData.role === 'worker' && this.userData.additionalInfo.workExperiences.length > 0;
     },
-  },
-  async beforeMount() {
-    if (this.userId !== this.mainUser.id) {
-      await this.$store.dispatch('user/getAnotherUserData', this.userId);
-      this.userData = this.anotherUserData;
-    } else {
-      this.userData = this.mainUser;
-    }
+    userId() {
+      return this.$route.params.id;
+    },
+    userData() {
+      return this.userId !== this.mainUser.id ? this.anotherUserData : this.mainUser;
+    },
   },
   methods: {
     initStarClass(star) {

@@ -2,9 +2,7 @@
   <div>
     <div class="section section__container section__container_white">
       <div class="container container__block">
-        <userInfo
-          :user-id="userId"
-        />
+        <userInfo />
         <div class="block__routes routes">
           <button
             v-for="(item, i) in pageTabs"
