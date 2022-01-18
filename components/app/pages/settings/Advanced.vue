@@ -158,13 +158,11 @@ export default {
   computed: {
     ...mapGetters({
       status2FA: 'user/getStatus2FA',
-      userData: 'user/getUserData',
       secondNumber: 'user/getUserSecondMobileNumber',
     }),
   },
   async beforeMount() {
     await this.$store.dispatch('user/getUserData');
-    console.log(this.userData.phone === Object);
   },
   methods: {
     async showModalKey(modalKey) {
