@@ -1515,7 +1515,6 @@
     "disputeTime": "Dispute opening time:"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "Search quests",
     "searchWorkers": "Search workers",
     "topWorkers": "Top employees",
@@ -1977,7 +1976,8 @@
           "desc": "You have not responded to quests yet",
           "btnText": "Respond to the quest !"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {

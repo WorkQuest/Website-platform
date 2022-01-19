@@ -1515,7 +1515,6 @@
     "disputeTime": "Heure d'ouverture du litige :"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "Rechercher des quêtes",
     "searchWorkers": "Rechercher des travailleurs",
     "topWorkers": "Meilleurs employés",
@@ -1977,7 +1976,8 @@
           "desc": "Vous n'avez pas encore répondu aux quêtes",
           "btnText": "Répondez à la quête !"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {

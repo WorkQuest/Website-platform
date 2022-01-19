@@ -1515,7 +1515,6 @@
     "disputeTime": "Hora de abertura da disputa:"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "Pesquisa de buscas",
     "searchWorkers": "Pesquisar trabalhadores",
     "topWorkers": "Melhores empregados",
@@ -1977,7 +1976,8 @@
           "desc": "Ainda não respondeu a buscas",
           "btnText": "Responda à busca!"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {

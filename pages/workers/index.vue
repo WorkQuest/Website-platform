@@ -173,10 +173,14 @@
             </div>
           </div>
         </div>
-        <div class="content">
-          <div v-if="workersList.count === 0">
-            {{ $t('workers.noWorkers') }}
-          </div>
+        <emptyData
+          v-if="!workersList.count"
+          :description="$t('errors.emptyData.noEmployees')"
+        />
+        <div
+          v-else
+          class="content"
+        >
           <div
             v-for="(user, i) in workersList.users"
             :key="i"
@@ -273,6 +277,7 @@ import { mapGetters } from 'vuex';
 import { GeoCode } from 'geo-coder';
 import ClickOutside from 'vue-click-outside';
 import MapBlock from '~/components/app/MapBlock';
+import emptyData from '~/components/app/info/emptyData';
 import modals from '~/store/modals/modals';
 import { priorityFilter, ratingFilter, workplaceFilter } from '~/utils/enums';
 
@@ -283,6 +288,7 @@ export default {
   },
   components: {
     MapBlock,
+    emptyData,
   },
   data() {
     return {

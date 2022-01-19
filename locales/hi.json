@@ -1515,7 +1515,6 @@
     "disputeTime": "विवाद खुलने का समय:"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "Quest खोजें",
     "searchWorkers": "वर्कर्स खोजें",
     "topWorkers": "टॉप कर्मचारी",
@@ -1977,7 +1976,8 @@
           "desc": "आपने अभी तक Quest को रिस्पॉन्ड नहीं किया है",
           "btnText": "Quest को रिस्पॉन्ड करें!"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {

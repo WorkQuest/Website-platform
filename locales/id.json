@@ -1515,7 +1515,6 @@
     "disputeTime": "Waktu pembukaan sengketa:"
   },
   "workers": {
-    "noWorkers": "???...",
     "searchQuests": "Cari quest",
     "searchWorkers": "Cari pekerja",
     "topWorkers": "Karyawan unggulan",
@@ -1977,7 +1976,8 @@
           "desc": "Anda belum menanggapi quest",
           "btnText": "Tanggapi quest!"
         }
-      }
+      },
+      "noEmployees": "Oops, there are no employees..."
     }
   },
   "sharing": {
