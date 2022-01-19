@@ -34,7 +34,7 @@
             </template>
             <template v-else>
               <div
-                v-if="!canILeave && (status === 1 || status === 5)"
+                v-if="!canILeave"
                 class="chat-menu__item"
                 @click="showOpenADisputeModal()"
               >
@@ -73,14 +73,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    questId: {
-      type: String,
-      default: '',
-    },
-    status: {
-      type: Number,
-      default: -1,
-    },
   },
   data() {
     return {
@@ -96,10 +88,11 @@ export default {
     },
     showOpenADisputeModal() {
       this.closeChatMenu();
-      this.ShowModal({
-        key: modals.openADispute,
-        questId: this.questId,
-      });
+      // TODO: добавить вывод окна, на добавление диспута, после завершения логики на странице чата
+      // this.ShowModal({
+      //   key: modals.openADispute,
+      //   questId: this.questId,
+      // });
     },
     toggleChatMenu() {
       this.isShowChatMenu = !this.isShowChatMenu;

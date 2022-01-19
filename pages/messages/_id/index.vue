@@ -186,7 +186,6 @@ export default {
     this.SetLoader(true);
 
     if (this.currChat?.questChat?.status === questChatStatus.Closed) this.isClosedQuestChat = true;
-
     this.SetLoader(false);
 
     const isChatNotificationShown = !!localStorage.getItem('isChatNotificationShown');
