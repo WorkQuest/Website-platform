@@ -70,7 +70,7 @@ export default {
 
       // TODO: get from quest data
       // const contractAddress = this.questData.contractAddress;
-      const contractAddress = '0xC716797Bd95525bf9FB8F90e53d2CDc32F4C4884';
+      const contractAddress = '0xA49E2cB9AfA956caD44d24fa6f2c31475a202F62';
 
       if ([QuestStatuses.Closed, QuestStatuses.Created].includes(questStatus)) {
         const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {

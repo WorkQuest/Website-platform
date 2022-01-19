@@ -541,23 +541,24 @@ export default {
         await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
       }
 
-      const contractAddress = '0xA4704c1250520577196C98aBBE09E980B57e04d1'; // TODO: get from back
+      const contractAddress = '0x991E2f9e759e4d2C4FF0e882Cc651D48aE7D600C'; // TODO: get from back
       if (this.prevPrice !== this.price || this.prevDescription !== this.textarea) {
-        let newPrice;
-
-        // TODO: {!!!!!} Нужно вызывать разные методы, если мы собираемся докидывать WUSD (написать новый для редактирования)
-        // TODO: {!!!!!} или лишь уменьшать price (простой fetchJobMethod)
-
-        if (this.prevPrice > this.price) {
-          newPrice = new BigNumber(this.price).shiftedBy(18).toString();
+        let feeRes;
+        if (this.price > this.prevPrice) { // Цена за квест стала ВЫШЕ
+          feeRes = await this.$store.dispatch('wallet/getEditQuestFeeData', {
+            contractAddress,
+            description: this.textarea,
+            cost: this.price,
+            depositAmount: new BigNumber(this.price).minus(this.prevPrice).multipliedBy(1 + this.questFee).toString(),
+          });
         } else {
-          newPrice = new BigNumber(this.price).multipliedBy(this.questFee).shiftedBy(18).toString();
+            feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
+              contractAddress,
+              method: QuestMethods.EditJob,
+              data: [hashText(this.textarea), new BigNumber(this.price).shiftedBy(18).toString()],
+            });
+          }
         }
-        const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
-          method: QuestMethods.EditJob,
-          data: [hashText(this.textarea), newPrice],
-          contractAddress,
-        });
         if (feeRes.ok === false) {
           await this.$store.dispatch('main/showToast', {
             title: 'Error',

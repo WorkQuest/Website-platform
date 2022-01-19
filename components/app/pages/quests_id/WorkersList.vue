@@ -135,8 +135,9 @@ export default {
       }
 
       // TODO: брать данные ниже из response переменной
-      const contractAddress = '0xC716797Bd95525bf9FB8F90e53d2CDc32F4C4884';
-      const workerAddress = '0xdad69079e34d777fa94da584472d03cb2f7d6b04';
+      const contractAddress = '0xA49E2cB9AfA956caD44d24fa6f2c31475a202F62';
+      const { worker } = response;
+      const workerAddress = worker.wallet.address;
 
       const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
         method: QuestMethods.AssignJob,
@@ -166,7 +167,7 @@ export default {
           console.log('assign job res', res);
           const payload = {
             config: {
-              assignedWorkerId: response.worker.id,
+              assignedWorkerId: worker.id,
             },
             questId: this.questData.id,
           };

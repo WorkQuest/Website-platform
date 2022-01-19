@@ -13,7 +13,7 @@ import {
   getStyledAmount,
   setWalletAddress,
   getWalletAddress,
-  transfer, transferToken, getTransferFeeData, getCreateQuestFeeData, hashText,
+  transfer, transferToken, getTransferFeeData, getCreateQuestFeeData, hashText, getEditQuestFeeData,
 } from '~/utils/wallet';
 import abi from '~/abi/index';
 import { QuestMethods, TokenSymbols } from '~/utils/enums';
@@ -141,6 +141,11 @@ export default {
     cost, depositAmount, description, nonce,
   }) {
     return await getCreateQuestFeeData(cost, depositAmount, description, nonce);
+  },
+  async getEditQuestFeeData({ commit }, {
+    contractAddress, description, cost, depositAmount,
+  }) {
+    return await getEditQuestFeeData(contractAddress, description, cost, depositAmount || null);
   },
 
   async getFeeDataJobMethod({ commit }, {

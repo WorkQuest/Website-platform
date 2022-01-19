@@ -333,6 +333,35 @@ export const getCreateQuestFeeData = async (cost, depositAmount, description, no
     return error();
   }
 };
+export const getEditQuestFeeData = async (contractAddress, description, cost, depositAmount) => {
+  try {
+    if (web3 === null) {
+      console.error('provider is null!');
+      return error();
+    }
+    cost = new BigNumber(cost).shiftedBy(18).toString();
+    depositAmount = depositAmount ? new BigNumber(depositAmount).shiftedBy(18).toString() : null;
+    const hash = hashText(description);
+    const inst = new web3.eth.Contract(abi.WorkQuest, contractAddress);
+    console.log(inst);
+    const [gasPrice, gasEstimate] = await Promise.all([
+      web3.eth.getGasPrice(),
+      inst.methods.editJob.apply(null, [hash, cost]).estimateGas({
+        from: wallet.address,
+        to: contractAddress,
+        value: depositAmount,
+      }),
+    ]);
+    return success({
+      gasPrice,
+      gasEstimate,
+      fee: new BigNumber(gasPrice * gasEstimate).shiftedBy(-18).toString(),
+    });
+  } catch (e) {
+    console.error('edit quest fee', e);
+    return error();
+  }
+};
 export const getAccountQuests = async () => {
   try {
     const _abi = abi.WorkQuestFactory;
