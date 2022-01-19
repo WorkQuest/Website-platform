@@ -1029,6 +1029,8 @@ export default {
   .page {
     &__category {
       grid-template-columns: repeat(2, 1fr);
+      margin-bottom: 25px;
+      grid-gap:5px 20px;
     }
   }
 }

@@ -369,6 +369,7 @@ export default {
         flex-direction: column;
         &__specialization {
           flex-direction: column;
+          grid-gap: 0;
         }
       }
     }

@@ -33,7 +33,10 @@ export default {
         }
       });
 
-      if (result.chat) result.chat.members = result.chat.userMembers.filter((member) => member.id !== myId);
+      if (result.chat) {
+        result.chat.members = result.chat.userMembers.filter((member) => member.id !== myId);
+        result.chat.isUnread = result.chat.meMember.unreadCountMessages > 0;
+      }
 
       if (direction) {
         result.messages = chat.messages.list.concat(result.messages);
