@@ -1,6 +1,6 @@
 <template>
   <div class="workers">
-    <MapBlock :is-show-map="isShowMap" />
+    <map-block :is-show-map="isShowMap" />
     <div
       class="workers__search search"
       :class="{ 'search_map-hidden': !isShowMap }"
@@ -173,7 +173,7 @@
             </div>
           </div>
         </div>
-        <emptyData
+        <empty-data
           v-if="!workersList.count"
           :description="$t('errors.emptyData.noEmployees')"
         />
@@ -181,82 +181,12 @@
           v-else
           class="content"
         >
-          <div
-            v-for="(user, i) in workersList.users"
-            :key="i"
-            class="card card_lower"
+          <employee-card
+            v-for="(user,id) in workersList.users"
+            :key="id"
+            :user="user"
             @click="showDetails(user)"
-          >
-            <div class="card__content">
-              <div class="card__header">
-                <div class="card__header_top">
-                  <div class="card__header_left">
-                    <img
-                      class="card__img"
-                      :src="user.avatar !== null ? user.avatar.url: require('~/assets/img/app/avatar_empty.png')"
-                      :alt="user.firstName"
-                    >
-                  </div>
-                  <div class="card__header_right">
-                    <span class="card__name">
-                      {{ user.firstName ? user.firstName : $t('quests.namelessWorker') }} {{ user.lastName ? user.lastName : "" }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div class="card__spec_title">
-                {{ $t('workers.specializations') }}
-              </div>
-              <div
-                v-if="user.userSpecializations.length !== 0"
-                class="badge__container"
-              >
-                <div class="badge-list">
-                  <div class="badge__item">
-                    {{ getSkillTitle(user.userSpecializations[0].path) }}
-                  </div>
-                  <span
-                    v-if="user.userSpecializations.length - 1 > 0"
-                    class="badge__item_counter"
-                  >
-                    (+{{ user.userSpecializations.length - 1 }})
-                  </span>
-                </div>
-              </div>
-              <span
-                v-if="user.userSpecializations.length === 0"
-                class="card__spec"
-              >
-                {{ $t('quests.dontHaveSpec') }}
-              </span>
-              <div
-                v-if="user.additionalInfo"
-                class="card__title"
-              >
-                {{ $t('workers.aboutMe') }}
-              </div>
-              <div
-                v-if="user.additionalInfo"
-                class="card__about"
-              >
-                {{ user.additionalInfo.description ? user.additionalInfo.description: $t('quests.nothingAboutMe') }}
-              </div>
-              <div
-                v-if="user.additionalInfo"
-                class="card__address"
-              >
-                {{ user.additionalInfo.address ? user.additionalInfo.address : $t('quests.unknownAddress') }}
-              </div>
-              <div class="card__cost cost">
-                <div class="cost__title">
-                  {{ $t('workers.costTitle') }}
-                </div>
-                <div class="cost__value">
-                  {{ user.wagePerHour !== null ? user.wagePerHour : $t('worker.cost.notIndicated') }} {{ user.wagePerHour !== null ? $t('quests.wusd') : '' }}
-                </div>
-              </div>
-            </div>
-          </div>
+          />
         </div>
         <div
           v-if="totalPagesValue > 1"
@@ -276,8 +206,6 @@
 import { mapGetters } from 'vuex';
 import { GeoCode } from 'geo-coder';
 import ClickOutside from 'vue-click-outside';
-import MapBlock from '~/components/app/MapBlock';
-import emptyData from '~/components/app/info/emptyData';
 import modals from '~/store/modals/modals';
 import { priorityFilter, ratingFilter, workplaceFilter } from '~/utils/enums';
 
@@ -285,10 +213,6 @@ export default {
   name: 'Workers',
   directives: {
     ClickOutside,
-  },
-  components: {
-    MapBlock,
-    emptyData,
   },
   data() {
     return {
@@ -428,10 +352,6 @@ export default {
     hideSearchDD() {
       this.isSearchDDStatus = false;
     },
-    getSkillTitle(path) {
-      const [spec, skill] = path.split('.');
-      return this.$t(`filters.items.${spec}.sub.${skill}`);
-    },
     async changeSorting(type) {
       let sortValue = '';
       if (type === 'time') {
@@ -497,31 +417,6 @@ export default {
   margin-top: 25px;
 }
 
-.badge {
-  &-list {
-    white-space: nowrap;
-    width: 100%;
-    overflow: hidden;
-    display: flex;
-  }
-  &__container {
-    padding: 0;
-    width: 100%;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    color: $blue;
-  }
-  &__item {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 85%;
-    &_counter {
-      margin-left: 2px;
-    }
-  }
-}
 .selector {
   @include box;
   width: 100%;
@@ -716,106 +611,6 @@ export default {
   }
 }
 
-.card {
-  width: 100%;
-  height: 360px;
-  box-sizing: border-box;
-  border-radius: 6px;
-  align-items: center;
-  cursor: pointer;
-  box-shadow: none;
-  padding: 10px;
-  transition: box-shadow .25s ease-in-out;
-  &:hover {
-    cursor: pointer;
-    box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
-  }
-  &__content {
-    width: 100%;
-  }
-  &__spec {
-    font-weight: 400;
-    font-size: 14px;
-    color: $blue;
-    &_title {
-      margin: 15px 0 0 0;
-      font-size: 14px;
-      font-weight: 400;
-    }
-  }
-  &__header {
-    display: flex;
-    flex-direction: column;
-    &_top {
-      display: grid;
-      grid-template-columns: 61px 1fr;
-      grid-gap: 15px;
-      align-items: center;
-    }
-    &_right {
-      display: grid;
-      grid-template-rows: 20px 1fr;
-      grid-gap: 7px;
-    }
-  }
-  &__img {
-    width: 61px;
-    height: 61px;
-    border-radius: 100%;
-    object-fit: cover;
-  }
-  &__name {
-    @include text-simple;
-    font-size: 18px;
-    font-weight: 500;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-  &__title {
-    margin: 15px 0 0 0;
-    font-weight: 400;
-    font-size: 14px;
-  }
-  &__about {
-    margin: 0 0 15px 0;
-    font-weight: 400;
-    font-size: 14px;
-    color: $black300;
-    max-height: 65px;
-
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: initial;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-  }
-  &__address {
-    margin: 0 0 15px 0;
-    font-weight: 500;
-    font-size: 12px;
-    color: $black500;
-  }
-}
-
-.cost {
-  font-family: 'Inter', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-
-  &__title {
-    font-size: 14px;
-    line-height: 18px;
-    margin-bottom: 5px;
-  }
-  &__value {
-    font-size: 18px;
-    line-height: 23px;
-    color: $green;
-  }
-}
-
 .checkbox {
   &-input {
     width: 24px;
@@ -935,9 +730,6 @@ export default {
   }
   .menu {
     grid-template-columns: auto auto;
-  }
-  .card {
-    padding: 10px;
   }
   .content {
     grid-template-columns: repeat(3, 1fr);

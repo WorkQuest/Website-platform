@@ -23,6 +23,8 @@ import StarRating from '~/components/app/pages/quests_id/starRating';
 import SpecializationsSelector from '~/components/ui/SpecializationsSelector';
 import FilesUploader from '~/components/ui/FilesUploader';
 import FilesPreview from '~/components/ui/FilesPreview';
+import EmptyData from '~/components/app/info/emptyData';
+import EmployeeCard from '~/components/app/pages/common/employeeCard';
 
 Vue.component('ctm-modal', CtmModal);
 Vue.component('ctm-modal-box', CtmModalBox);
@@ -47,3 +49,5 @@ Vue.component('specializations-selector', SpecializationsSelector);
 Vue.component('files-uploader', FilesUploader);
 Vue.component('files-preview', FilesPreview);
 Vue.component('map-block', MapBlock);
+Vue.component('empty-data', EmptyData);
+Vue.component('employee-card', EmployeeCard);
