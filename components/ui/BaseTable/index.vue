@@ -4,10 +4,10 @@
       :items="items"
       :fields="fields"
       borderless
-      :thead-class="{'table__header': changeFontSize}"
+      thead-class="table__header"
       caption-top
       :responsive="true"
-      :tbody-tr-class="{'table__row': changeFontSize}"
+      tbody-tr-class="table__row"
     >
       <template
         #table-caption
@@ -75,10 +75,6 @@ export default {
     fields: {
       type: Array,
       default: () => [],
-    },
-    changeFontSize: { // on low resolution
-      type: Boolean,
-      default: true,
     },
   },
   methods: {
