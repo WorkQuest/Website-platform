@@ -30,7 +30,7 @@
           v-if="message.type === 'info' && message.infoMessage"
           class="info-message"
         >
-          <div>
+          <div class="info-message__title">
             {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
           </div>
           <template v-if="message.infoMessage.messageAction !== 'groupChatCreate' || (message.infoMessage.messageAction === 'groupChatCreate' && !message.itsMe)">
