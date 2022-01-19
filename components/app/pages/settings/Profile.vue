@@ -262,11 +262,11 @@ export default {
   props: {
     avatarChange: {
       type: Object,
-      default: null,
+      default: () => {},
     },
     profile: {
       type: Object,
-      default: null,
+      default: () => {},
     },
     validationError: {
       type: Boolean,
@@ -280,19 +280,9 @@ export default {
   data() {
     return {
       firstPhone: null,
-      secondPhoneNumber: {
-        fullPhone: null,
-      },
-      newEducation: {
-        from: '',
-        to: '',
-        place: '',
-      },
-      newWorkExp: {
-        from: '',
-        to: '',
-        place: '',
-      },
+      secondPhoneNumber: { fullPhone: null },
+      newEducation: { from: '', to: '', place: '' },
+      newWorkExp: { from: '', to: '', place: '' },
       isSearchDDStatus: false,
       addresses: [],
       mainInputs: [
@@ -410,26 +400,18 @@ export default {
       const reader = new FileReader();
       const file = e.target.files[0];
       if (isValid.valid) {
-        if (!file) {
-          return false;
-        }
+        if (!file) return false;
         reader.readAsDataURL(file);
         this.avatarChange.data = await this.$store.dispatch('user/imageType', { contentType: file.type });
         this.avatarChange.file = file;
         let output = document.getElementById('userAvatar');
         const modalMode = 'imageLoadedSuccessful';
-        if (!output) {
-          output = document.getElementById('userAvatarTwo');
-        }
+        if (!output) output = document.getElementById('userAvatarTwo');
         output.src = URL.createObjectURL(file);
         // eslint-disable-next-line func-names
-        output.onload = function () {
-          URL.revokeObjectURL(output.src);
-        };
+        output.onload = function () { URL.revokeObjectURL(output.src); };
         this.$emit('showModalStatus', modalMode);
-        reader.onerror = (evt) => {
-          console.error(evt);
-        };
+        reader.onerror = (evt) => { console.error(evt); };
       }
     },
 
@@ -446,14 +428,10 @@ export default {
     async getAddressInfo(address) {
       let response = [];
       const geoCode = new GeoCode('google', { key: process.env.GMAPKEY });
-      try {
-        if (address.length) {
-          response = await geoCode.geolookup(address);
-          this.addresses = JSON.parse(JSON.stringify(response));
-          this.coordinates = JSON.parse(JSON.stringify({ lng: response[0].lng, lat: response[0].lat }));
-        }
-      } catch (e) {
-        console.log(e);
+      if (address.length) {
+        response = await geoCode.geolookup(address);
+        this.addresses = JSON.parse(JSON.stringify(response));
+        this.coordinates = JSON.parse(JSON.stringify({ lng: response[0].lng, lat: response[0].lat }));
       }
     },
     hideSearchDD() {
@@ -465,11 +443,7 @@ export default {
       const validate = await this.$refs[observerName].validate();
       if (validate) {
         this.$emit('updateEducation', newKnowledge, this[newKnowledge]);
-        this[newKnowledge] = {
-          from: '',
-          to: '',
-          place: '',
-        };
+        this[newKnowledge] = { from: '', to: '', place: '' };
         const modalMode = modalMsg === 'education' ? 'educationAddSuccessful' : 'workExpAddSuccessful';
         this.$emit('showModalStatus', modalMode);
         this.$refs[observerName].reset();
@@ -479,12 +453,8 @@ export default {
       knowledgeArray.splice(index, 1);
     },
     clearError(value, observerName) {
-      const isClear = Object.keys(value).every(
-        (field) => value[field] === '' || value[field] === null,
-      );
-      if (isClear) {
-        this.$refs[observerName].reset();
-      }
+      const isClear = Object.keys(value).every((field) => value[field] === '' || value[field] === null);
+      if (isClear) this.$refs[observerName].reset();
     },
     checkValidate() {
       this.$emit('checkValidate');

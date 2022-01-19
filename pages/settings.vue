@@ -56,8 +56,9 @@ export default {
         lastName: null,
         skillFilters: null,
         firstPhone: null,
+        tempPhone: { codeRegion: null, phone: null, fullPhone: null },
         additionalInfo: {
-          secondMobileNumber: null,
+          secondMobileNumber: { codeRegion: null, phone: null, fullPhone: null },
           address: null,
           socialNetwork: {
             instagram: null, twitter: null, linkedin: null, facebook: null,
@@ -98,6 +99,7 @@ export default {
   async mounted() {
     this.SetLoader(true);
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
+    const addInfo = this.userData.additionalInfo;
     this.profile = {
       avatarId: this.userData.avatarId,
       firstName: this.userData.firstName,
@@ -105,8 +107,25 @@ export default {
       email: this.userData.email,
       firstPhone: this.userData.tempPhone || this.userData.phone,
       additionalInfo: {
-        secondMobileNumber: { codeRegion: null, phone: null, fullPhone: null },
-        ...this.userData.additionalInfo,
+        secondMobileNumber: {
+          codeRegion: this.userData.secondMobileNumber?.codeRegion || null,
+          phone: this.userData.secondMobileNumber?.phone || null,
+          fullPhone: this.userData.secondMobileNumber?.fullPhone || null,
+        },
+        address: addInfo.address,
+        socialNetwork: {
+          instagram: addInfo.socialNetwork.instagram,
+          twitter: addInfo.socialNetwork.twitter,
+          linkedin: addInfo.socialNetwork.linkedin,
+          facebook: addInfo.socialNetwork.facebook,
+        },
+        description: addInfo.description,
+        skills: addInfo.skills,
+        educations: addInfo.educations,
+        workExperiences: addInfo.workExperiences,
+        CEO: addInfo.CEO,
+        company: addInfo.company,
+        website: addInfo.website,
       },
       location: this.userData.location,
     };
@@ -247,10 +266,10 @@ export default {
           secondMobileNumber: this.updatedSecondPhone,
           address: this.profile.additionalInfo.address,
           socialNetwork: {
-            instagram: instagram.length > 0 ? instagram : null,
-            twitter: twitter.length > 0 ? twitter : null,
-            linkedin: linkedin.length > 0 ? linkedin : null,
-            facebook: facebook.length > 0 ? facebook : null,
+            instagram: instagram || null,
+            twitter: twitter || null,
+            linkedin: linkedin || null,
+            facebook: facebook || null,
           },
         },
       };
@@ -259,6 +278,7 @@ export default {
           ...payload,
           additionalInfo: {
             ...payload.additionalInfo,
+            secondMobileNumber: this.updatedSecondPhone,
             educations: this.profile.additionalInfo.educations,
             workExperiences: this.profile.additionalInfo.workExperiences,
             description: this.profile.additionalInfo.description || null,
