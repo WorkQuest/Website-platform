@@ -74,85 +74,73 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'Advanced',
-  props: {
-    userData: {
-      type: Object,
-      default: () => {},
-    },
-  },
   data() {
     return {
       radioButtons: {
-        whoCanSeeInputs: [
-          {
-            id: 'allUsers',
-            value: 'allUsers',
-            local: 'settings.allUsers',
-            name: 'whoCanSee',
-          },
-          {
-            id: 'allInternet',
-            value: 'allInternet',
-            local: 'settings.allInternet',
-            name: 'whoCanSee',
-          },
-          {
-            id: 'onlyWhenSubmittedWork',
-            value: 'onlyWhenSubmittedWork',
-            local: 'settings.onlyWhenSubmittedWork',
-            name: 'whoCanSee',
-          },
-        ],
-        employeeProfilesInputs: [
-          {
-            id: 'urgentProposals',
-            value: 'urgentJobOffers',
-            local: 'settings.urgentJobOffers',
-            name: 'filterAllWorkProposals',
-          },
-          {
-            id: 'onlyImplementation',
-            value: 'shortTermJobOffers',
-            local: 'settings.shortTermJobOffers',
-            name: 'filterAllWorkProposals',
-          },
-          {
-            id: 'onlyReady',
-            value: 'fixedDeliveryJobOffers',
-            local: 'settings.fixedDeliveryJobOffers',
-            name: 'filterAllWorkProposals',
-          },
-        ],
+        whoCanSeeInputs: [{
+          id: 'allUsers',
+          value: 'allUsers',
+          local: 'settings.allUsers',
+          name: 'whoCanSee',
+        },
+        {
+          id: 'allInternet',
+          value: 'allInternet',
+          local: 'settings.allInternet',
+          name: 'whoCanSee',
+        },
+        {
+          id: 'onlyWhenSubmittedWork',
+          value: 'onlyWhenSubmittedWork',
+          local: 'settings.onlyWhenSubmittedWork',
+          name: 'whoCanSee',
+        }],
+        employeeProfilesInputs: [{
+          id: 'urgentProposals',
+          value: 'urgentJobOffers',
+          local: 'settings.urgentJobOffers',
+          name: 'filterAllWorkProposals',
+        },
+        {
+          id: 'onlyImplementation',
+          value: 'shortTermJobOffers',
+          local: 'settings.shortTermJobOffers',
+          name: 'filterAllWorkProposals',
+        },
+        {
+          id: 'onlyReady',
+          value: 'fixedDeliveryJobOffers',
+          local: 'settings.fixedDeliveryJobOffers',
+          name: 'filterAllWorkProposals',
+        }],
       },
 
-      rightSideButtons: [
-        {
-          title: 'settings.changePass',
-          buttonName: 'settings.change',
-          modal: 'changePassInSettings',
-          isSwitcher: false,
-        },
-        {
-          title: 'settings.enableTwoStepAuth',
-          firstButtonName: 'meta.disable',
-          secondButtonName: 'settings.enable',
-          firstModal: 'disable2FA',
-          secondModal: 'twoFAAuth',
-          isSwitcher: true,
-        },
-        {
-          title: 'settings.smsVerification',
-          buttonName: 'settings.enable',
-          modal: 'smsVerification',
-          isSwitcher: false,
-        },
-        {
-          title: 'settings.changeRole',
-          buttonName: 'settings.change',
-          modal: 'changeRoleWarning',
-          isSwitcher: false,
-        },
-      ],
+      rightSideButtons: [{
+        title: 'settings.changePass',
+        buttonName: 'settings.change',
+        modal: 'changePassInSettings',
+        isSwitcher: false,
+      },
+      {
+        title: 'settings.enableTwoStepAuth',
+        firstButtonName: 'meta.disable',
+        secondButtonName: 'settings.enable',
+        firstModal: 'disable2FA',
+        secondModal: 'twoFAAuth',
+        isSwitcher: true,
+      },
+      {
+        title: 'settings.smsVerification',
+        buttonName: 'settings.enable',
+        modal: 'smsVerification',
+        isSwitcher: false,
+      },
+      {
+        title: 'settings.changeRole',
+        buttonName: 'settings.change',
+        modal: 'changeRoleWarning',
+        isSwitcher: false,
+      }],
     };
   },
   computed: {
@@ -161,17 +149,15 @@ export default {
       secondNumber: 'user/getUserSecondMobileNumber',
     }),
   },
-  async beforeMount() {
-    await this.$store.dispatch('user/getUserData');
-  },
   methods: {
     async showModalKey(modalKey) {
       this.$emit('showModalKey', modalKey);
     },
     smsVerErrorModal() {
+      // TODO: Localization
       this.ShowModal({
         key: modals.status,
-        title: 'Error sms ver',
+        title: 'Error sms verification',
         subtitle: 'Please, fill phone number in settings',
       });
     },

@@ -91,16 +91,9 @@ export default {
       this.CloseModal();
     },
     async changeRole() {
-      let payload;
-      if (this.userRole === 'worker') payload = { role: 'employer' };
-      if (this.userRole === 'employer') payload = { role: 'worker' };
-      try {
-        // TODO: Сделать смену роли
-        const response = await this.$store.dispatch('user/setUserRole', payload);
-        if (response?.ok) this.success();
-      } catch (e) {
-        console.log(e);
-      }
+      // TODO: Сделать смену роли
+      const response = await this.$store.dispatch('user/setUserRole');
+      if (response?.ok) this.success();
     },
     success() {
       this.ShowModal({

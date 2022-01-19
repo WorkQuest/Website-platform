@@ -1398,6 +1398,7 @@
     "loadMore": "Load more"
   },
   "settings": {
+    "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",
     "twitter": "twitter",

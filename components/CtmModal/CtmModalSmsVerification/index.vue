@@ -3,9 +3,7 @@
     :title="!secondNumber ? 'Error SMS verification' : $t('modals.smsVerification')"
     class="verification"
   >
-    <div
-      class="verification__content content"
-    >
+    <div class="verification__content content">
       <div v-if="userData.phone && Object.keys(userData.phone).length > 0">
         <img
           src="~assets/img/ui/warning.svg"
@@ -13,7 +11,7 @@
           class="content__picture"
         >
         <div class="content__subtitle content__subtitle_error">
-          Phone number already verified!
+          {{ $t('settings.phoneVerified') }}
         </div>
         <div class="content__buttons buttons">
           <base-btn
@@ -146,14 +144,7 @@ export default {
       this.CloseModal();
     },
     async confirmPhone() {
-      try {
-        const payload = {
-          confirmCode: this.confirmCode,
-        };
-        await this.$store.dispatch('user/confirmPhone', payload);
-      } catch (e) {
-        console.log(e);
-      }
+      await this.$store.dispatch('user/confirmPhone', { confirmCode: this.confirmCode });
     },
     success() {
       this.ShowModal({
@@ -165,12 +156,7 @@ export default {
       this.confirmPhone();
     },
     async getCodeFromSms() {
-      try {
-        const payload = { phoneNumber: this.secondNumber };
-        await this.$store.dispatch('user/sendPhone', payload);
-      } catch (e) {
-        console.log(e);
-      }
+      await this.$store.dispatch('user/sendPhone', { phoneNumber: this.secondNumber });
     },
     async nextStep() {
       if (this.secondNumber) {

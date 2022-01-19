@@ -678,7 +678,7 @@ export default {
     },
   },
   async mounted() {
-    if (!this.userData) await this.$store.dispatch('user/getUserData');
+    await this.$store.dispatch('user/getUserData');
     await this.initWSListeners();
     this.GetLocation();
     this.localUserData = JSON.parse(JSON.stringify(this.userData));

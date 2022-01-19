@@ -29,10 +29,7 @@
         @click="editUserData"
         @checkValidate="checkValidate"
       />
-      <advanced
-        :user-data="userData"
-        @showModalKey="showModalKey"
-      />
+      <advanced @showModalKey="showModalKey" />
     </ValidationObserver>
   </div>
 </template>
@@ -114,7 +111,6 @@ export default {
   async mounted() {
     this.SetLoader(true);
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
-    await this.$store.dispatch('user/getUserData');
     this.profile = {
       avatarId: this.userData.avatarId,
       firstName: this.userData.firstName,

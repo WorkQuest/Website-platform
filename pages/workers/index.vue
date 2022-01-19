@@ -407,7 +407,6 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    await this.$store.dispatch('user/getUserData');
     const isShow = JSON.parse(localStorage.getItem('isShowMap'));
     if (typeof isShow === 'boolean') this.isShowMap = isShow;
     await this.fetchWorkersList();

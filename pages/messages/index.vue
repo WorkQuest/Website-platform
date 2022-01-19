@@ -145,7 +145,6 @@ export default {
     },
   },
   async mounted() {
-    await this.$store.dispatch('user/getUserData');
     this.filter.starred = this.$route.query.starred === 'true';
     await this.getChats();
     this.SetLoader(false);

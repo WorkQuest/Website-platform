@@ -184,7 +184,6 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-    await this.$store.dispatch('user/getUserData');
 
     if (this.currChat?.questChat?.status === questChatStatus.Closed) this.isClosedQuestChat = true;
 

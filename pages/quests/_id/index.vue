@@ -253,7 +253,6 @@ export default {
   },
   async beforeMount() {
     this.SetLoader(true);
-    await this.$store.dispatch('user/getUserData');
     await this.getQuest();
     if (this.userRole === UserRole.WORKER) await this.getSameQuests();
     await this.getResponsesToQuest();
@@ -299,16 +298,31 @@ export default {
       switch (this.infoDataMode) {
         case Created: {
           arr = [{
-            name: this.$t('quests.raiseViews'), class: '', mode: '', funcKey: 'toRaisingViews', icon: '', disabled: false,
+            name: this.$t('quests.raiseViews'),
+            class: '',
+            mode: '',
+            funcKey: 'toRaisingViews',
+            icon: '',
+            disabled: false,
           },
           {
-            name: this.$t('btn.closeQuest'), class: '', mode: 'delete', funcKey: 'closeQuest', icon: '', disabled: false,
+            name: this.$t('btn.closeQuest'),
+            class: '',
+            mode: 'delete',
+            funcKey: 'closeQuest',
+            icon: '',
+            disabled: false,
           }];
           break;
         }
         case Active: {
           arr = [{
-            name: this.$t('quests.approve'), class: '', mode: 'approve', funcKey: '', icon: '', disabled: true,
+            name: this.$t('quests.approve'),
+            class: '',
+            mode: 'approve',
+            funcKey: '',
+            icon: '',
+            disabled: true,
           }];
           break;
         }
@@ -322,13 +336,23 @@ export default {
             disabled: false,
           },
           {
-            name: this.$t('btn.dispute'), class: 'base-btn_dispute', mode: '', funcKey: '', icon: '', disabled: true,
+            name: this.$t('btn.dispute'),
+            class: 'base-btn_dispute',
+            mode: '',
+            funcKey: '',
+            icon: '',
+            disabled: true,
           }];
           break;
         }
         case Dispute: {
           arr = [{
-            name: this.$t('btn.dispute'), class: '', mode: '', funcKey: 'openDispute', icon: '', disabled: false,
+            name: this.$t('btn.dispute'),
+            class: '',
+            mode: '',
+            funcKey: 'openDispute',
+            icon: '',
+            disabled: false,
           }];
           break;
         }
@@ -348,10 +372,20 @@ export default {
       switch (infoDataMode) {
         case ADChat: {
           arr = [{
-            name: this.$t('btn.agree'), class: '', mode: '', funcKey: 'acceptWorkOnQuest', icon: '', disabled: false,
+            name: this.$t('btn.agree'),
+            class: '',
+            mode: '',
+            funcKey: 'acceptWorkOnQuest',
+            icon: '',
+            disabled: false,
           },
           {
-            name: this.$t('btn.disagree'), class: '', mode: 'outline', funcKey: 'rejectWorkOnQuest', icon: '', disabled: false,
+            name: this.$t('btn.disagree'),
+            class: '',
+            mode: 'outline',
+            funcKey: 'rejectWorkOnQuest',
+            icon: '',
+            disabled: false,
           }];
           break;
         }
@@ -359,22 +393,42 @@ export default {
           if (assignedWorkerId !== userData.id) break;
 
           arr = [{
-            name: this.$t('btn.dispute'), class: 'base-btn_dispute', mode: '', funcKey: '', icon: '', disabled: true,
+            name: this.$t('btn.dispute'),
+            class: 'base-btn_dispute',
+            mode: '',
+            funcKey: '',
+            icon: '',
+            disabled: true,
           },
           {
-            name: this.$t('btn.completeWorkOnQuest'), class: '', mode: '', funcKey: 'completeWorkOnQuest', icon: '', disabled: false,
+            name: this.$t('btn.completeWorkOnQuest'),
+            class: '',
+            mode: '',
+            funcKey: 'completeWorkOnQuest',
+            icon: '',
+            disabled: false,
           }];
           break;
         }
         case Created: {
           arr = [{
-            name: this.$t('btn.sendARequest'), class: '', mode: '', funcKey: 'sendARequestOnQuest', icon: '', disabled: false,
+            name: this.$t('btn.sendARequest'),
+            class: '',
+            mode: '',
+            funcKey: 'sendARequestOnQuest',
+            icon: '',
+            disabled: false,
           }];
           break;
         }
         case Dispute: {
           arr = [{
-            name: this.$t('btn.dispute'), class: 'base-btn_dispute', mode: '', funcKey: '', icon: '', disabled: true,
+            name: this.$t('btn.dispute'),
+            class: 'base-btn_dispute',
+            mode: '',
+            funcKey: '',
+            icon: '',
+            disabled: true,
           }];
           break;
         }
@@ -382,10 +436,20 @@ export default {
           if (response.status !== ResponseStatus.awaiting || (assignedWorkerId && assignedWorkerId !== userData.id)) break;
 
           arr = [{
-            name: this.$t('btn.agree'), class: '', mode: '', funcKey: 'acceptQuestInvitation', icon: '', disabled: false,
+            name: this.$t('btn.agree'),
+            class: '',
+            mode: '',
+            funcKey: 'acceptQuestInvitation',
+            icon: '',
+            disabled: false,
           },
           {
-            name: this.$t('btn.disagree'), class: '', mode: 'outline', funcKey: 'rejectQuestInvitation', icon: '', disabled: false,
+            name: this.$t('btn.disagree'),
+            class: '',
+            mode: 'outline',
+            funcKey: 'rejectQuestInvitation',
+            icon: '',
+            disabled: false,
           }].concat(arr);
           break;
         }
@@ -393,10 +457,20 @@ export default {
           if (assignedWorkerId !== userData.id) break;
 
           arr = [{
-            name: this.$t('btn.agree'), class: '', mode: '', funcKey: 'acceptWorkOnQuest', icon: '', disabled: false,
+            name: this.$t('btn.agree'),
+            class: '',
+            mode: '',
+            funcKey: 'acceptWorkOnQuest',
+            icon: '',
+            disabled: false,
           },
           {
-            name: this.$t('btn.disagree'), class: '', mode: 'outline', funcKey: 'rejectWorkOnQuest', icon: '', disabled: false,
+            name: this.$t('btn.disagree'),
+            class: '',
+            mode: 'outline',
+            funcKey: 'rejectWorkOnQuest',
+            icon: '',
+            disabled: false,
           }];
           break;
         }
