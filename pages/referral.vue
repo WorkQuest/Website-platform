@@ -14,11 +14,22 @@
       <div class="referral-page__content">
         <div class="info-block_couple">
           <div class="info-block">
-            <div class="info-block__name">
-              {{ $t('referral.referralReward') }}
-            </div>
-            <div class="info-block__tokens">
-              {{ $tc('referral.wqtCount', 0) }}
+            <div class="info-block__wrap">
+              <div class="info-block__inner">
+                <div class="info-block__name">
+                  {{ $t('referral.referralReward') }}
+                </div>
+                <div class="info-block__tokens">
+                  {{ $tc('referral.wqtCount', 0) }}
+                </div>
+              </div>
+              <div class="info-block__btn-wrap">
+                <base-btn
+                  @click="clickClaimBtnHandler"
+                >
+                  {{ $t('modals.claim') }}
+                </base-btn>
+              </div>
             </div>
             <div class="info-block__name">
               {{ $t('referral.lastRefReward') }}
@@ -28,7 +39,7 @@
                 <img
                   class="ava"
                   src="~/assets/img/temp/avatar-small.jpg"
-                  alt=""
+                  alt="avatar"
                 >
                 <div class="user__name">
                   Edward Cooper
@@ -166,17 +177,127 @@
             </b-table>
           </div>
         </div>
+        <div class="referral-page__pager">
+          <base-pager
+            v-if="totalPages > 1"
+            v-model="page"
+            :total-pages="totalPages"
+          />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import modals from '~/store/modals/modals';
+
 export default {
   data() {
     return {
+      page: 1,
+      offset: 10,
       referLink: 'https://www.workquest.com/ref?v=44T7iUSo1vU',
       items: [
+        {
+          userName: this.$t('referral.table.userName'),
+          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
+          userID: this.$t('referral.table.userId'),
+          txHash: this.$t('referral.table.txHash'),
+          time: this.$t('referral.table.time'),
+          amount: this.$tc('referral.wqtCount', 12),
+          status: this.$t('referral.table.status'),
+        },
+        {
+          userName: this.$t('referral.table.userName'),
+          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
+          userID: this.$t('referral.table.userId'),
+          txHash: this.$t('referral.table.txHash'),
+          time: this.$t('referral.table.time'),
+          amount: this.$tc('referral.wqtCount', 12),
+          status: this.$t('referral.table.status'),
+        },
+        {
+          userName: this.$t('referral.table.userName'),
+          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
+          userID: this.$t('referral.table.userId'),
+          txHash: this.$t('referral.table.txHash'),
+          time: this.$t('referral.table.time'),
+          amount: this.$tc('referral.wqtCount', 12),
+          status: this.$t('referral.table.status'),
+        },
+        {
+          userName: this.$t('referral.table.userName'),
+          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
+          userID: this.$t('referral.table.userId'),
+          txHash: this.$t('referral.table.txHash'),
+          time: this.$t('referral.table.time'),
+          amount: this.$tc('referral.wqtCount', 12),
+          status: this.$t('referral.table.status'),
+        },
+        {
+          userName: this.$t('referral.table.userName'),
+          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
+          userID: this.$t('referral.table.userId'),
+          txHash: this.$t('referral.table.txHash'),
+          time: this.$t('referral.table.time'),
+          amount: this.$tc('referral.wqtCount', 12),
+          status: this.$t('referral.table.status'),
+        },
+        {
+          userName: this.$t('referral.table.userName'),
+          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
+          userID: this.$t('referral.table.userId'),
+          txHash: this.$t('referral.table.txHash'),
+          time: this.$t('referral.table.time'),
+          amount: this.$tc('referral.wqtCount', 12),
+          status: this.$t('referral.table.status'),
+        },
+        {
+          userName: this.$t('referral.table.userName'),
+          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
+          userID: this.$t('referral.table.userId'),
+          txHash: this.$t('referral.table.txHash'),
+          time: this.$t('referral.table.time'),
+          amount: this.$tc('referral.wqtCount', 12),
+          status: this.$t('referral.table.status'),
+        },
+        {
+          userName: this.$t('referral.table.userName'),
+          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
+          userID: this.$t('referral.table.userId'),
+          txHash: this.$t('referral.table.txHash'),
+          time: this.$t('referral.table.time'),
+          amount: this.$tc('referral.wqtCount', 12),
+          status: this.$t('referral.table.status'),
+        },
+        {
+          userName: this.$t('referral.table.userName'),
+          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
+          userID: this.$t('referral.table.userId'),
+          txHash: this.$t('referral.table.txHash'),
+          time: this.$t('referral.table.time'),
+          amount: this.$tc('referral.wqtCount', 12),
+          status: this.$t('referral.table.status'),
+        },
+        {
+          userName: this.$t('referral.table.userName'),
+          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
+          userID: this.$t('referral.table.userId'),
+          txHash: this.$t('referral.table.txHash'),
+          time: this.$t('referral.table.time'),
+          amount: this.$tc('referral.wqtCount', 12),
+          status: this.$t('referral.table.status'),
+        },
+        {
+          userName: this.$t('referral.table.userName'),
+          avaUrl: '~/assets/img/social/GOOGLE_+_.png',
+          userID: this.$t('referral.table.userId'),
+          txHash: this.$t('referral.table.txHash'),
+          time: this.$t('referral.table.time'),
+          amount: this.$tc('referral.wqtCount', 12),
+          status: this.$t('referral.table.status'),
+        },
         {
           userName: this.$t('referral.table.userName'),
           avaUrl: '~/assets/img/social/GOOGLE_+_.png',
@@ -272,6 +393,11 @@ export default {
       ],
     };
   },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.items.length / this.offset);
+    },
+  },
   async mounted() {
     this.SetLoader(true);
     this.SetLoader(false);
@@ -279,7 +405,11 @@ export default {
   methods: {
     doCopy(ev) {
       ev.stopPropagation();
-      this.$copyText(this.referLink).then(() => {
+      this.$copyText(this.referLink);
+    },
+    clickClaimBtnHandler() {
+      this.ShowModal({
+        key: modals.thanks,
       });
     },
   },
@@ -328,6 +458,17 @@ export default {
     .info-block {
       background-color: #fff;
       border-radius: 6px;
+
+      &__wrap {
+        display: grid;
+        grid-auto-flow: column;
+        justify-content: space-between;
+      }
+
+      &__btn-wrap {
+        padding: 34px 20px 0 0;
+        width: 156px;
+      }
 
       &__tokens {
         font-weight: 700;
@@ -542,6 +683,7 @@ export default {
   }
 
   &__table {
+    margin-bottom: 25px;
     table {
       margin: 0 !important;
       border-radius: 0 !important;
