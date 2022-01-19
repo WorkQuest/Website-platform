@@ -2,9 +2,7 @@
   <div>
     <div class="section section__container section__container_white">
       <div class="container container__block">
-        <userInfo
-          :user-info="userData"
-        />
+        <userInfo />
         <div class="block__routes routes">
           <button
             v-for="(item, i) in pageTabs"
@@ -244,6 +242,7 @@ export default {
       questsCount: 'quests/getUserInfoQuestsCount',
       portfolios: 'user/getUserPortfolios',
       reviews: 'user/getAllUserReviews',
+      anotherUserData: 'user/getAnotherUserData',
     }),
     cardLevelClass(idx) {
       const { cards } = this;
@@ -352,8 +351,8 @@ export default {
   },
   async mounted() {
     if (this.userId !== this.mainUser.id) {
-      this.userData = await this.$store.dispatch('user/getAnotherUserData', this.userId);
-      this.userData = this.userData.result;
+      await this.$store.dispatch('user/getAnotherUserData', this.userId);
+      this.userData = this.anotherUserData;
     } else {
       this.userData = this.mainUser;
     }

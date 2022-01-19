@@ -120,8 +120,8 @@ export default {
   },
   async getAnotherUserData({ commit }, payload) {
     const response = await this.$axios.$get(`/v1/profile/${payload}`);
-    commit('setAnotherUserData', response.result);
-    return response;
+    await commit('setAnotherUserData', response.result);
+    return response.result;
   },
   clearAnotherUserData({ commit }) {
     commit('setAnotherUserData', {});
