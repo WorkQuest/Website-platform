@@ -17,16 +17,26 @@
         </div>
       </div>
       <quests
+        class="dispute__quests"
         :quests="disputeData.quest ? [disputeData.quest] : []"
       />
-      <div class="chat-history">
-        <div class="chat-history__container">
-          <div class="chat-history__title">
-            {{ $t('disputes.chatHistory') }}
+      <div class="dispute__chat-history">
+        <div class="chat-history">
+          <div class="chat-history__container">
+            <div class="chat-history__title">
+              {{ $t('disputes.chatHistory') }}
+            </div>
           </div>
-        </div>
-        <div class="messages__container">
-          <Messages />
+          <div
+            v-if="disputeData.quest && disputeData.quest.questChat.chatId"
+            class="messages__container"
+          >
+            <messages-list
+              class="messages__block"
+              :chat-id="disputeData.quest.questChat.chatId"
+              :is-hide-footer="false"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -35,13 +45,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Messages from '~/components/app/pages/common/messages';
+import MessagesList from '~/components/app/pages/messages_id/messagesList';
 import quests from '~/components/app/pages/common/quests';
 
 export default {
   name: 'Index',
   components: {
-    Messages,
+    MessagesList,
     quests,
   },
   data() {
@@ -62,13 +72,11 @@ export default {
       return obj[this.disputeData.status];
     },
   },
-  beforeMount() {
-    this.$store.dispatch('disputes/getDispute', this.disputeId);
+  async beforeMount() {
+    await this.$store.dispatch('disputes/getDispute', this.disputeId);
   },
-  async mounted() {
-    this.SetLoader(true);
-    console.log(this.disputeData);
-    this.SetLoader(false);
+  async beforeDestroy() {
+    await this.$store.commit('disputes/setDispute', {});
   },
   methods: {
     backToDisputes() {
@@ -96,6 +104,9 @@ export default {
   &__container {
     margin: 0 20px 20px 20px;
     padding: 0 0 20px 0;
+  }
+  &__block {
+    max-height: 450px;
   }
 }
 
@@ -149,6 +160,16 @@ export default {
     font-weight: 500;
     font-size: 16px;
     color: #E8D20D;
+  }
+}
+@include _1199() {
+  .dispute {
+    &__quests {
+      padding: 0 10px;
+    }
+    &__chat-history {
+      padding: 0 10px;
+    }
   }
 }
 </style>

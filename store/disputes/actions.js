@@ -12,7 +12,7 @@ export default {
   async getDispute({ commit }, disputeId) {
     try {
       const { result } = await this.$axios.$get(`/v1/quest/dispute/${disputeId}`);
-      commit('setDispute', result);
+      await commit('setDispute', result);
       return result;
     } catch (e) {
       return console.log(e);

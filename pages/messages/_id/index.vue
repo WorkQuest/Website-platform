@@ -41,8 +41,6 @@
           <ChatMenu
             v-show="canShowMenu"
             :can-i-leave="canLeave"
-            :quest-id="messages.chat ? messages.chat.questChat.questId : ''"
-            :status="messages.chat ? messages.chat.questChat.status : ''"
           />
         </div>
         <div

@@ -185,6 +185,10 @@ export default {
       type: String,
       default: '',
     },
+    isHideFooter: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -226,7 +230,6 @@ export default {
 
       localStorage.setItem('selStarredMessageNumber', '0');
     }
-
     await this.getMessages(direction, bottomOffset);
     await this.readMessages();
     this.scrollToBottom(true);
@@ -266,6 +269,7 @@ export default {
         chatId,
         direction,
         offset,
+        isHideFooter: this.isHideFooter,
       };
 
       await this.$store.dispatch('chat/getMessagesList', payload);
