@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="workers">
     <GmapSearchBlock :is-show-map="isShowMap" />
     <div
-      class="gmap-block search"
-      :class="!isShowMap ? 'gmap-block_shift' : ''"
+      class="workers__search search"
+      :class="{ 'search_map-hidden': !isShowMap }"
     >
       <div class="search__block">
         <div class="search__content">
@@ -823,76 +823,75 @@ export default {
     font-size: 16px;
   }
 }
-.gmap-block {
+
+.search {
   height: 0;
-  .search {
-    &__block {
-      position: relative;
-      max-width: 1180px;
-      height: 83px;
-      bottom: 100px;
-      left: 0;
-      right: 0;
-      margin: auto;
-      z-index: 1200;
-      @include box;
-    }
-    &__content {
-      display: grid;
-      grid-template-columns: 154px 1fr 143px 260px;
-      align-items: center;
-      height: 100%;
-      justify-items: center;
-    }
-    &__dd {
-      display: flex;
-      border-left: 1px solid #F7F8FA;
-      justify-items: center;
-      align-items: center;
-      height: 100%;
-      width: 146px;
-    }
-    &__icon {
-      margin-bottom: -10px;
-      &::before {
-        font-size: 24px;
-        color: $blue;
-      }
-    }
-    &__inputs {
-      padding: 0 20px;
-      width: 100%;
-      display: grid;
-      align-items: center;
-    }
-    &__input {
-      display: flex;
-      align-items: center;
-    }
-    &__btn {
-      max-width: 220px;
-    }
-    &__toggle {
-      height: 100%;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-right: 1px solid #F7F8FA;
-    }
-    &__actions {
-      height: 100%;
-      border-left: 1px solid #F7F8FA;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-    }
-    &__filter {
-      display: none;
+  &__block {
+    position: relative;
+    max-width: 1180px;
+    height: 83px;
+    bottom: 100px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 1200;
+    @include box;
+  }
+  &__content {
+    display: grid;
+    grid-template-columns: 154px 1fr 143px 260px;
+    align-items: center;
+    height: 100%;
+    justify-items: center;
+  }
+  &__dd {
+    display: flex;
+    border-left: 1px solid #F7F8FA;
+    justify-items: center;
+    align-items: center;
+    height: 100%;
+    width: 146px;
+  }
+  &__icon {
+    margin-bottom: -10px;
+    &::before {
+      font-size: 24px;
+      color: $blue;
     }
   }
-  &_shift {
+  &__inputs {
+    padding: 0 20px;
+    width: 100%;
+    display: grid;
+    align-items: center;
+  }
+  &__input {
+    display: flex;
+    align-items: center;
+  }
+  &__btn {
+    max-width: 220px;
+  }
+  &__toggle {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #F7F8FA;
+  }
+  &__actions {
+    height: 100%;
+    border-left: 1px solid #F7F8FA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  &__filter {
+    display: none;
+  }
+  &_map-hidden {
     padding: 20px 0;
     height: auto;
     .search__block {
@@ -900,20 +899,19 @@ export default {
     }
   }
 }
+
 @include _1300 {
-  .gmap-block {
-    .search {
-      &__content {
-        grid-template-columns: repeat(4, auto);
-      }
+  .search {
+    &__content {
+      grid-template-columns: repeat(4, auto);
+    }
 
-      &__actions, &__toggle {
-        padding: 10px;
-      }
+    &__actions, &__toggle {
+      padding: 10px;
+    }
 
-      &__block {
-        width: 80%;
-      }
+    &__block {
+      width: 80%;
     }
   }
 }
@@ -962,38 +960,36 @@ export default {
   .dd {
     grid-column: 1/3;
   }
-  .gmap-block {
+  .search {
     width: 100%;
     position: initial;
     padding: 20px;
     height: auto;
-    .search {
-      &__block {
-        width: 100%;
-        position: initial;
-      }
-      &__content {
-        grid-template-columns: 1fr 0.5fr;
-        padding: 0 10px;
-        grid-gap: 10px;
-      }
-      &__toggle, &__dd {
-        display: none;
-      }
-      &__actions {
-        border: none;
-      }
-      &__inputs {
-        padding: 0 10px;
-      }
-      &__filter {
-        display: flex;
-        flex-direction: row;
-        position: relative;
-        justify-content: space-between;
-        top: 20px;
-        align-content: center;
-      }
+    &__block {
+      width: 100%;
+      position: initial;
+    }
+    &__content {
+      grid-template-columns: 1fr 0.5fr;
+      padding: 0 10px;
+      grid-gap: 10px;
+    }
+    &__toggle, &__dd {
+      display: none;
+    }
+    &__actions {
+      border: none;
+    }
+    &__inputs {
+      padding: 0 10px;
+    }
+    &__filter {
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      justify-content: space-between;
+      top: 20px;
+      align-content: center;
     }
   }
   .dd__btn {

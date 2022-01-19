@@ -5,10 +5,6 @@
   >
     <div class="gmap__top">
       <transition name="fade-fast">
-        <!--          in GMAP-->
-        <!--          v-if="isShowMap && userPosition"-->
-        <!--          :cluster="{options: {styles: clusterStyle}}"-->
-        <!--          :center="{lat: userPosition.latitude, lng: userPosition.longitude}"-->
         <GmapMap
           ref="gMap"
           language="en"
