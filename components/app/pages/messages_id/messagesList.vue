@@ -452,6 +452,8 @@ export default {
   height: inherit;
   overflow: auto;
   position: relative;
+  display: grid;
+  align-items: flex-end;
 
   &__no-msgs {
     display: flex;

@@ -59,6 +59,14 @@ export default {
       return console.log(e);
     }
   },
+  async getCurrChatData({ commit }, chatId) {
+    try {
+      return await this.$axios.$get(`/v1/user/me/chat/${chatId}`);
+    } catch (e) {
+      console.log(e);
+      return { ok: false };
+    }
+  },
   async handleCreateGroupChat({ commit }, config) {
     try {
       const response = await this.$wsChat.$post('/api/v1/user/me/chat/group/create', config);

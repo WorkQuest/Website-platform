@@ -29,6 +29,17 @@ export default {
     state.messages.count += 1;
     state.messages.list.push(message);
   },
+  updateChatsList(state, chat) {
+    const chatIndex = state.chats.list.findIndex((chatList) => chatList.id === chat.id);
+
+    if (chatIndex >= 0) state.chats.list.splice(chatIndex, 1);
+
+    this.commit('chat/addChatToList', chat);
+  },
+  addChatToList(state, chat) {
+    state.chats.count += 1;
+    state.chats.list.unshift(chat);
+  },
   setChatStarVal(state, { chatId, val }) {
     state.chats.list.some((chat) => {
       if (chat.id !== chatId) return false;

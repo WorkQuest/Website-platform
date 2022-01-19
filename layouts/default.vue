@@ -573,11 +573,6 @@ export default {
   },
   data() {
     return {
-      chatFilter: {
-        limit: 15,
-        offset: 0,
-        starred: false,
-      },
       localUserData: {},
       isInstrumentDropdownOpened: false,
       isUserDDOpened: false,
@@ -603,6 +598,7 @@ export default {
       messagesFilter: 'chat/getMessagesFilter',
       isChatOpened: 'chat/isChatOpened',
       unreadMessagesCount: 'user/getUnreadChatsCount',
+      chats: 'chat/getChats',
     }),
     headerLinksWorker() {
       return [
@@ -792,19 +788,30 @@ export default {
   },
   destroyed() {
     window.removeEventListener('resize', this.userWindowChange);
+    this.$wsChat.disconnect();
   },
   methods: {
-    async getChats() {
-      await this.$store.dispatch('chat/getChatsList', this.chatFilter);
-    },
     async initWSListeners() {
       const { chatConnection, notifsConnection } = this.connections;
       if (!chatConnection) {
         await this.$wsChat.connect(this.token);
         this.$wsChat.subscribe('/notifications/chat', async ({ data, action }) => {
+          await this.$store.dispatch('user/getStatistic');
+
           if (this.$route.name === 'messages') {
-            await this.getChats();
-            await this.$store.dispatch('user/getStatistic');
+            if (action === 'groupChatCreate') {
+              data.isUnread = true;
+              data.userMembers = data.userMembers.filter((member) => member.id !== this.userData.id);
+              this.$store.commit('chat/addChatToList', data);
+            } else if (action === 'newMessage') {
+              const { ok, result } = await this.$store.dispatch('chat/getCurrChatData', data.chatId);
+              if (ok) {
+                result.isUnread = true;
+                result.userMembers = result.userMembers.filter((member) => member.id !== this.userData.id);
+                this.$store.commit('chat/updateChatsList', result);
+              }
+            }
+            return;
           }
 
           if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {

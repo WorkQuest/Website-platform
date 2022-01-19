@@ -162,7 +162,6 @@ export default {
       messageText: '',
       files: [],
       chatId: this.$route.params.id,
-      isClosedQuestChat: false,
     };
   },
   computed: {
@@ -175,6 +174,9 @@ export default {
       return !isClosedQuestChat ? currChat?.type !== 'group'
         || (currChat?.type === 'group' && !this.amIOwner) : false;
     },
+    isClosedQuestChat() {
+      return this.currChat?.questChat?.status === questChatStatus.Closed;
+    },
     canLeave() {
       return this.currChat?.type === 'group' && !this.amIOwner;
     },
@@ -184,8 +186,6 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
-
-    if (this.currChat?.questChat?.status === questChatStatus.Closed) this.isClosedQuestChat = true;
 
     this.SetLoader(false);
 
