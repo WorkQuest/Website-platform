@@ -36,7 +36,7 @@
           {{ userData.company }}
         </div>
         <div
-          v-if="userData.additionalInfo.description"
+          v-if="userData.additionalInfo && userData.additionalInfo.description"
           class="block__description"
         >
           {{ userData.additionalInfo.description }}
@@ -121,14 +121,14 @@
         class="right__header"
       >
         <div
-          v-if="userData.role === 'worker' && userInfo.wagePerHour"
+          v-if="userData.role === 'worker' && userData.wagePerHour"
           class="right__price"
         >
           <div class="price__text">
             {{ $t('settings.costPerHour') }}
           </div>
           <div class="price__value">
-            {{ $tc('saving.wusdCount', userInfo.wagePerHour) }}
+            {{ $tc('saving.wusdCount', userData.wagePerHour) }}
           </div>
         </div>
         <base-btn
@@ -154,7 +154,7 @@
           <base-btn
             :mode="'approve'"
             :disabled="mainUserData.questsStatistic ? mainUserData.questsStatistic.opened <= 0 : true"
-            @click="sendInvait()"
+            @click="sendInvite()"
           >
             {{ $t('workers.giveAQuest') }}
           </base-btn>
@@ -170,20 +170,19 @@ import modals from '~/store/modals/modals';
 
 export default {
   name: 'UserInfo',
-  props: {
-    userInfo: {
-      type: Object,
-      default: () => {},
-    },
-  },
   computed: {
     ...mapGetters({
+      mainUser: 'user/getUserData',
       tags: 'ui/getTags',
       mainUserData: 'user/getUserData',
       userRole: 'user/getUserRole',
+      anotherUserData: 'user/getAnotherUserData',
     }),
+    isEmptyUserData() {
+      return !Object.keys(this.userData).length;
+    },
     socialNetworks() {
-      if (!Object.keys(this.userData).length) return [];
+      if (this.isEmptyUserData) return [];
       const socialNetworksData = this.userData.additionalInfo.socialNetwork;
       const filledNetworks = {};
       if (socialNetworksData) {
@@ -196,73 +195,75 @@ export default {
       return filledNetworks;
     },
     contactData() {
-      if (!Object.keys(this.userData).length) return [];
+      if (this.isEmptyUserData) return [];
+      const {
+        email, tempPhone, phone, additionalInfo: {
+          secondMobileNumber, address, company, website,
+        },
+      } = this.userData;
       const userData = [];
-      if (this.userData.email) {
+      if (email) {
         userData.push({
-          name: this.userData.email,
+          name: email,
           icon: 'icon-mail',
-          href: `mailto:${this.userData.email}`,
+          href: `mailto:${email}`,
         });
       }
-      const secondNumber = this.userData.additionalInfo.secondMobileNumber;
-      if (secondNumber) {
+      const mainPhone = tempPhone?.fullPhone || phone?.fullPhone;
+      if (mainPhone) {
         userData.push({
-          name: secondNumber.fullPhone,
+          name: mainPhone,
           icon: 'icon-phone',
-          href: `tel:${secondNumber.fullPhone}`,
+          href: `tel:${mainPhone}`,
         });
       }
-      if (this.userData.additionalInfo.address) {
+      if (secondMobileNumber?.fullPhone) {
         userData.push({
-          name: this.userData.additionalInfo.address,
+          name: secondMobileNumber.fullPhone,
+          icon: 'icon-phone',
+          href: `tel:${secondMobileNumber.fullPhone}`,
+        });
+      }
+      if (address) {
+        userData.push({
+          name: address,
           icon: 'icon-location',
-          href: `https://maps.google.com/?q=${this.userData.additionalInfo.address}`,
+          href: `https://maps.google.com/?q=${address}`,
         });
       }
-      if (this.userData.additionalInfo.company) {
+      if (company) {
         userData.push({
-          name: this.userData.additionalInfo.company,
+          name: company,
+          icon: 'icon-Case',
+        });
+      }
+      if (website) {
+        userData.push({
+          name: website,
           icon: 'icon-Earth',
-          href: `https://${this.userData.additionalInfo.company}`,
+          href: `https://${website}`,
         });
       }
       return userData;
     },
-    userData() {
-      if (!Object.keys(this.userInfo).length) {
-        return {
-          avatar: { url: '' },
-          additionalInfo: {
-            company: '',
-            address: '',
-            description: '',
-            secondMobileNumber: null,
-            educations: { length: 0 },
-            workExperiences: { length: 0 },
-          },
-          questsStatistic: { opened: 0 },
-          ratingStatistic: { averageMark: 0, reviewCount: 0 },
-          role: 'employer',
-        };
-      }
-      return this.userInfo;
-    },
     isShowEducations() {
-      if (!Object.keys(this.userInfo).length) return false;
-      return this.userInfo.role === 'worker' && this.userInfo.additionalInfo.educations.length > 0;
+      if (this.isEmptyUserData) return false;
+      return this.userData.role === 'worker' && this.userData.additionalInfo.educations.length > 0;
     },
     isShowWorkExp() {
-      if (!Object.keys(this.userInfo).length) return false;
-      return this.userInfo.role === 'worker' && this.userInfo.additionalInfo.workExperiences.length > 0;
+      if (this.isEmptyUserData) return false;
+      return this.userData.role === 'worker' && this.userData.additionalInfo.workExperiences.length > 0;
     },
     userId() {
       return this.$route.params.id;
     },
+    userData() {
+      return this.userId !== this.mainUser.id ? this.anotherUserData : this.mainUser;
+    },
   },
   methods: {
     initStarClass(star) {
-      const reviewMark = this.userInfo?.ratingStatistic?.averageMark;
+      const reviewMark = this.userData?.ratingStatistic?.averageMark;
       const a = this.Floor(star - reviewMark, 2);
       return [
         { rating__star_full: star <= reviewMark },
@@ -274,13 +275,10 @@ export default {
         key: modals.sharingQuest,
       });
     },
-    showMessages() {
-      this.$router.push('/messages/1');
-    },
     toRaisedViews() {
-      this.$router.push('/rised-views');
+      this.$router.push('/raised-views');
     },
-    sendInvait() {
+    sendInvite() {
       this.ShowModal({
         key: modals.invitation,
         userId: this.userData.id,
@@ -428,6 +426,7 @@ export default {
 }
 .contact {
   display: flex;
+  flex-wrap: wrap;
   &__container {
     display: flex;
     align-items: baseline;
