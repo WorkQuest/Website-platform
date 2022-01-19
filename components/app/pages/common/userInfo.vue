@@ -154,7 +154,7 @@
           <base-btn
             :mode="'approve'"
             :disabled="mainUserData.questsStatistic ? mainUserData.questsStatistic.opened <= 0 : true"
-            @click="sendInvait()"
+            @click="sendInvite()"
           >
             {{ $t('workers.giveAQuest') }}
           </base-btn>
@@ -178,11 +178,11 @@ export default {
       userRole: 'user/getUserRole',
       anotherUserData: 'user/getAnotherUserData',
     }),
-    emptyObject() {
+    isEmptyUserData() {
       return !Object.keys(this.userData).length;
     },
     socialNetworks() {
-      if (this.emptyObject) return [];
+      if (this.isEmptyUserData) return [];
       const socialNetworksData = this.userData.additionalInfo.socialNetwork;
       const filledNetworks = {};
       if (socialNetworksData) {
@@ -195,7 +195,7 @@ export default {
       return filledNetworks;
     },
     contactData() {
-      if (this.emptyObject) return [];
+      if (this.isEmptyUserData) return [];
       const {
         email, tempPhone, phone, additionalInfo: {
           secondMobileNumber, address, company, website,
@@ -247,11 +247,11 @@ export default {
       return userData;
     },
     isShowEducations() {
-      if (this.emptyObject) return false;
+      if (this.isEmptyUserData) return false;
       return this.userData.role === 'worker' && this.userData.additionalInfo.educations.length > 0;
     },
     isShowWorkExp() {
-      if (this.emptyObject) return false;
+      if (this.isEmptyUserData) return false;
       return this.userData.role === 'worker' && this.userData.additionalInfo.workExperiences.length > 0;
     },
     userId() {
@@ -275,13 +275,10 @@ export default {
         key: modals.sharingQuest,
       });
     },
-    showMessages() {
-      this.$router.push('/messages/1');
-    },
     toRaisedViews() {
-      this.$router.push('/rised-views');
+      this.$router.push('/raised-views');
     },
-    sendInvait() {
+    sendInvite() {
       this.ShowModal({
         key: modals.invitation,
         userId: this.userData.id,
