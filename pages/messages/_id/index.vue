@@ -14,26 +14,26 @@
             <span>{{ $t('chat.chat') }}</span>
           </div>
           <div class="chat-container__chat-name">
-            <template v-if="messages.chat">
+            <template v-if="currChat">
               <div
-                v-if="messages.chat.type === 'quest'"
+                v-if="currChat.type === 'quest'"
                 class="chat-container__quest-link"
                 @click="goToQuest"
               >
-                {{ messages && messages.chat && messages.chat.questChat && messages.chat.questChat.quest.title }}
+                {{ currChat && currChat.questChat && currChat.questChat.quest.title }}
               </div>
               <div
-                v-if="messages.chat.type === 'group'"
+                v-if="currChat.type === 'group'"
                 class="chat-container__group-chat-cont"
               >
                 <div class="chat-container__group-name">
-                  {{ messages.chat.name }}
+                  {{ currChat.name }}
                 </div>
                 <div
                   class="chat-container__quest-link chat-container__quest-link_small"
                   @click="goToMembersList"
                 >
-                  {{ $tc('chat.membersNum', messages.chat.userMembers.length) }}
+                  {{ $tc('chat.membersNum', currChat.userMembers.length) }}
                 </div>
               </div>
             </template>
@@ -44,174 +44,14 @@
           />
         </div>
         <div
-          ref="HandleScrollContainer"
-          class="chat-container__scroll-cont"
+          class="chat-container__body"
           :class="[
-            {'chat-container__scroll-cont_small' : files.length},
-            {'chat-container__scroll-cont_big' : chatId === 'starred' || isClosedQuestChat}]"
-          @scroll="handleScroll"
+            {'chat-container__body_small' : files.length},
+            {'chat-container__body_big' : chatId === 'starred' || isClosedQuestChat}]"
         >
-          <div
-            v-if="messages.list.length"
-            ref="ScrollContainer"
-            class="chat-container__messages"
-          >
-            <div
-              v-if="isTopChatsLoading"
-              class="chat-container__loader-cont"
-            >
-              <loader class="chat-container__loader" />
-            </div>
-            <div
-              v-for="(message, i) in messages.list"
-              :key="message.id"
-              :ref="message.number === selStarredMessageNumber ? 'starredMessage' : ''"
-              class="chat-container__message message"
-              :class="[{'message_right' : message.itsMe}, {'message_blink' : message.number === selStarredMessageNumber}, {'message_info' : message.type === 'info'}]"
-            >
-              <div
-                v-if="message.type === 'info' && message.infoMessage"
-                class="info-message"
-              >
-                <div>
-                  {{ setInfoMessageText(message.infoMessage.messageAction, message.itsMe) }}
-                </div>
-                <template v-if="message.infoMessage.messageAction !== 'groupChatCreate' || (message.infoMessage.messageAction === 'groupChatCreate' && !message.itsMe)">
-                  <div
-                    class="info-message__link"
-                    :class="{'info-message__link_left' : !message.itsMe}"
-                    @click="openProfile(message.infoMessage.userId || message.senderUserId, message.itsMe)"
-                  >
-                    {{ setFullName(message) }}
-                  </div>
-                  <div
-                    v-if="!message.itsMe && ['groupChatAddUser', 'groupChatDeleteUser'].includes(message.infoMessage.messageAction) && message.infoMessage.user"
-                    class="info-message__link"
-                    @click="openProfile(message.infoMessage.userId, message.itsMe)"
-                  >
-                    {{ (message.infoMessage.user.firstName || '') + ' ' + (message.infoMessage.user.lastName || '') }}
-                  </div>
-                </template>
-              </div>
-              <template v-else>
-                <img
-                  v-if="!message.itsMe"
-                  :src="message.sender && message.sender.avatar ? message.sender.avatar.url : require('~/assets/img/app/avatar_empty.png')"
-                  alt=""
-                  class="message__avatar"
-                  :class="{'message__avatar_hidden' : i && messages.list[i - 1].senderUserId == message.senderUserId && messages.list[i - 1].type !== 'info'}"
-                >
-                <div class="message__data">
-                  <div
-                    v-if="!message.itsMe && (!i || (i && messages.list[i - 1].senderUserId != message.senderUserId || messages.list[i - 1].type === 'info'))"
-                    class="message__title"
-                  >
-                    {{ message.sender.firstName + ' ' + message.sender.lastName }}
-                  </div>
-                  <div
-                    class="message__bubble"
-                    :class="[{'message__bubble_bl' : message.itsMe}, {'message__bubble_link' : chatId === 'starred'}]"
-                    @click="goToCurrChat(message)"
-                  >
-                    <div class="message__title">
-                      {{ message.text }}
-                    </div>
-                    <div
-                      v-if="message.medias.length"
-                      class="message__media"
-                    >
-                      <div
-                        v-for="file in message.medias"
-                        :key="file.id"
-                        class="image-cont image-cont_margin"
-                      >
-                        <img
-                          v-if="file.type === 'image'"
-                          :src="file.url"
-                          class="image-cont__image"
-                          alt=""
-                          @click="selFile($event, message.medias, file.url)"
-                        >
-                        <a
-                          v-else
-                          :href="file.url"
-                          target="_blank"
-                          class="image-cont image-cont__other-media image-cont__other-media_block"
-                          @click="file.type === 'video' ? selFile($event, message.medias, file.url) : openFile"
-                        >
-                          <span
-                            :class="[
-                              {'icon-play_circle_outline' : file.type === 'video'},
-                              {'icon-file_blank_outline' : file.type !== 'video'}
-                            ]"
-                          />
-                        </a>
-                      </div>
-                    </div>
-                    <div
-                      class="message__time message__title message__title_gray"
-                      :class="{'message__title_white' : message.itsMe}"
-                    >
-                      {{ setCurrDate(message.createdAt) }}
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="message__star-cont"
-                  :class="{'message__star-cont_left' : message.itsMe}"
-                >
-                  <div
-                    v-show="chatId !== 'starred'"
-                    class="star"
-                    @click="handleChangeStarVal(message)"
-                  >
-                    <img
-                      class="star__hover"
-                      src="~assets/img/ui/star_hover.svg"
-                      alt=""
-                    >
-                    <img
-                      v-if="message.star"
-                      class="star__checked"
-                      src="~assets/img/ui/star_checked.svg"
-                      alt=""
-                    >
-                    <img
-                      v-else
-                      class="star__default"
-                      src="~assets/img/ui/star_simple.svg"
-                      alt=""
-                    >
-                  </div>
-                </div>
-              </template>
-            </div>
-            <div
-              v-if="isBottomChatsLoading"
-              class="chat-container__loader-cont"
-            >
-              <loader class="chat-container__loader" />
-            </div>
-          </div>
-          <div
-            v-else
-            class="chat-container__no-msgs"
-          >
-            {{ $t('chat.noMessages') }}
-          </div>
+          <messages-list :chat-id="chatId" />
         </div>
         <div class="chat-container__footer footer">
-          <div
-            v-if="isScrollBtnVis"
-            class="footer__scroll-btn"
-            @click="scrollToBottom"
-          >
-            <img
-              src="~assets/img/ui/arrow-down.svg"
-              alt=""
-              class="footer__scroll-svg"
-            >
-          </div>
           <div
             v-show="chatId !== 'starred' && !isClosedQuestChat"
             class="footer__controls"
@@ -306,39 +146,28 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import moment from 'moment';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
+import MessagesList from '~/components/app/pages/messages_id/messagesList';
 import { questChatStatus } from '~/utils/enums';
 
 export default {
   name: 'Messages',
   components: {
     ChatMenu,
+    MessagesList,
   },
   data() {
     return {
-      isTopChatsLoading: false,
-      isBottomChatsLoading: false,
-      isShowFavorite: false,
       messageText: '',
       files: [],
-      today: moment(new Date()),
-      minScrollDifference: 0,
-      isScrollBtnVis: false,
       chatId: this.$route.params.id,
-      selStarredMessageNumber: 0,
-      isReadingInProgress: false,
       isClosedQuestChat: false,
     };
   },
   computed: {
     ...mapGetters({
-      messages: 'chat/getMessages',
       userData: 'user/getUserData',
-      lastMessageId: 'chat/getLastMessageId',
-      chats: 'chat/getChats',
-      filter: 'chat/getMessagesFilter',
       currChat: 'chat/getCurrChatInfo',
     }),
     canShowMenu() {
@@ -354,106 +183,21 @@ export default {
     },
   },
   async mounted() {
-    await this.$store.dispatch('user/getUserData');
-    this.$watch(
-      'lastMessageId',
-      (newVal, oldVal) => {
-        if (!this.isScrollBtnVis && oldVal) this.scrollToBottom();
-      },
-      { immediate: true },
-    );
-
     this.SetLoader(true);
-    const selStarredMessageNumber = +localStorage.getItem('selStarredMessageNumber');
-
-    let direction = 0;
-    let bottomOffset = 0;
-
-    if (selStarredMessageNumber) {
-      bottomOffset = selStarredMessageNumber >= 20 ? selStarredMessageNumber - 10 : 0;
-      direction = 1;
-
-      this.selStarredMessageNumber = selStarredMessageNumber;
-
-      localStorage.setItem('selStarredMessageNumber', '0');
-    }
-
-    await this.getMessages(direction, bottomOffset);
+    await this.$store.dispatch('user/getUserData');
 
     if (this.currChat?.questChat?.status === questChatStatus.Closed) this.isClosedQuestChat = true;
 
-    await this.readMessages();
-
-    this.scrollToBottom(true);
     this.SetLoader(false);
 
     const isChatNotificationShown = !!localStorage.getItem('isChatNotificationShown');
     if (!isChatNotificationShown) this.showNoticeModal();
   },
   destroyed() {
-    this.$store.commit('chat/setMessagesList', { messages: [], count: 0, chat: null });
-    this.$store.commit('chat/clearMessagesFilter');
     this.$store.commit('chat/setIsChatOpened', false);
   },
   methods: {
-    setFullName({ itsMe, infoMessage: { user }, sender }) {
-      return itsMe
-        ? `${user?.firstName || ''} ${user?.lastName || ''}`
-        : `${sender?.firstName || ''} ${sender?.lastName || ''}`;
-    },
-    setInfoMessageText(action, itsMe) {
-      let text = 'chat.systemMessages.';
-      switch (action) {
-        case 'employerInviteOnQuest': {
-          text += itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest';
-          break;
-        }
-        case 'workerResponseOnQuest': {
-          text += itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest';
-          break;
-        }
-        case 'employerRejectResponseOnQuest': {
-          text += itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest';
-          break;
-        }
-        case 'workerRejectInviteOnQuest': {
-          text += itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest';
-          break;
-        }
-        case 'workerAcceptInviteOnQuest': {
-          text += itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest';
-          break;
-        }
-        case 'groupChatCreate': {
-          text += itsMe ? 'youCreatedAGroupChat' : 'createdAGroupChat';
-          break;
-        }
-        case 'groupChatDeleteUser': {
-          text += itsMe ? 'youHaveRemovedFromChat' : 'removedFromChat';
-          break;
-        }
-        case 'groupChatAddUser': {
-          text += itsMe ? 'youAddedToChat' : 'addedToChat';
-          break;
-        }
-        case 'groupChatLeaveUser': {
-          text += itsMe ? 'youLeftTheChat' : 'leftTheChat';
-          break;
-        }
-        default: {
-          text = '';
-          break;
-        }
-      }
-
-      return this.$t(text);
-    },
-    openProfile(userId, itsMe) {
-      this.$router.push(`/${itsMe ? 'workers' : 'profile'}/${userId}`);
-    },
     goToMembersList() {
-      const { messages: { chat }, userData } = this;
-
       this.ShowModal({
         key: modals.chatCreate,
         itsOwner: this.amIOwner,
@@ -463,7 +207,7 @@ export default {
       });
     },
     goToQuest() {
-      const { questId } = this.messages.chat.questChat;
+      const { questId } = this.currChat.questChat;
       this.$router.push(`/quests/${questId}`);
     },
     openFile(ev) {
@@ -485,51 +229,6 @@ export default {
     },
     handleRemoveFile(index) {
       this.files.splice(index, 1);
-    },
-    goToCurrChat(message) {
-      if (this.chatId !== 'starred') return;
-      localStorage.setItem('selStarredMessageNumber', JSON.stringify(message.number));
-      this.$router.push(`/messages/${message.chatId}`);
-    },
-    async handleChangeStarVal(message) {
-      const messageId = message.id;
-      const { chatId } = this;
-      try {
-        await this.$store.dispatch(`chat/${message.star ? 'removeStarForMessage' : 'setStarForMessage'}`, { messageId, chatId });
-        this.$forceUpdate();
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-      }
-    },
-    async readMessages() {
-      const {
-        messages: { list }, chatId, isReadingInProgress, userData, currChat,
-      } = this;
-
-      if (isReadingInProgress || !list.length || !currChat) return;
-
-      const { senderStatus, senderUserId, id } = currChat.lastMessage;
-
-      if (senderStatus === 'read' || senderUserId === userData.id) return;
-
-      this.isReadingInProgress = true;
-
-      const payload = {
-        config: {
-          messageId: id,
-        },
-        chatId,
-      };
-
-      try {
-        await this.$store.dispatch('chat/setMessageAsRead', payload);
-
-        this.isReadingInProgress = false;
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-      }
     },
     async getFiles(ev, validate) {
       const { files } = ev.target;
@@ -593,81 +292,6 @@ export default {
         }
       }
     },
-    async handleScroll({ target: { scrollTop, scrollHeight, clientHeight } }) {
-      const { minScrollDifference, filter: { canLoadToBottom, canLoadToTop } } = this;
-
-      const currScrollOffset = scrollHeight - scrollTop;
-
-      this.isScrollBtnVis = currScrollOffset > minScrollDifference;
-      const scrollBottom = currScrollOffset - clientHeight;
-
-      if (scrollBottom < 300) {
-        if (canLoadToBottom && !this.isBottomChatsLoading) {
-          this.isBottomChatsLoading = true;
-          await this.getMessages(1);
-          setTimeout(() => { this.isBottomChatsLoading = false; }, 300);
-        }
-
-        await this.readMessages();
-
-        return;
-      }
-
-      if (canLoadToTop && scrollTop < 300 && !this.isTopChatsLoading) {
-        this.isTopChatsLoading = true;
-        await this.getMessages(0);
-        setTimeout(() => { this.isTopChatsLoading = false; }, 300);
-      }
-    },
-    async getMessages(direction, currBottomOffset) {
-      const {
-        filter: {
-          topOffset,
-          bottomOffset,
-        }, chatId, messages: { list, count },
-      } = this;
-
-      const offset = direction ? currBottomOffset || bottomOffset : topOffset || count - list[0]?.number + 1 || 0;
-
-      const payload = {
-        config: {
-          params: {
-            limit: 25,
-            offset,
-            'sort[createdAt]': direction ? 'asc' : undefined,
-          },
-        },
-        chatId,
-        direction,
-        offset,
-      };
-
-      await this.$store.dispatch('chat/getMessagesList', payload);
-    },
-    setCurrDate(msgDate) {
-      const { today } = this;
-      const momentDate = moment(msgDate);
-      let format = '';
-      if (momentDate.format('DD MM YY') !== today.format('DD MM YY')) {
-        format += 'DD MMM';
-        if (momentDate.format('YYYY') > today.format('YYYY')) {
-          format += ' YY';
-        }
-        format += ', ';
-      }
-
-      return momentDate.format(`${format}HH:mm`);
-    },
-    scrollToBottom(isInit) {
-      setTimeout(() => {
-        const { HandleScrollContainer, ScrollContainer, starredMessage } = this.$refs;
-
-        if (ScrollContainer) ScrollContainer.scrollIntoView(isInit === true ? false : { block: 'end', behavior: 'smooth' });
-        this.minScrollDifference = (HandleScrollContainer.scrollHeight - HandleScrollContainer.scrollTop) * 2;
-
-        if (starredMessage && isInit) HandleScrollContainer.scrollTo(0, starredMessage[0].offsetTop - HandleScrollContainer.offsetTop - 20);
-      }, 200);
-    },
     showNoticeModal() {
       this.ShowModal({
         key: modals.notice,
@@ -682,7 +306,7 @@ export default {
     },
     async handleSendMessage() {
       const {
-        messageText, files, isScrollBtnVis, chatId,
+        messageText, files, chatId,
       } = this;
       if (!messageText) return;
 
@@ -725,8 +349,6 @@ export default {
 
       try {
         await this.$store.dispatch('chat/handleSendMessage', payload);
-
-        if (!isScrollBtnVis) this.scrollToBottom();
       } catch (e) {
         console.log(e);
         this.showToastError(e);
@@ -763,15 +385,6 @@ export default {
   border: 1px solid #E9EDF2;
   border-radius: 6px;
 
-  &__no-msgs {
-    display: flex;
-    padding: 50px 10px;
-    justify-content: center;
-    color: #8D96A2;
-    height: 100%;
-    align-items: center;
-  }
-
   &__header {
     border-bottom: 1px solid #E9EDF2;
     padding: 0 15px;
@@ -781,6 +394,19 @@ export default {
     grid-template-columns: max-content 1fr max-content;
     align-items: center;
     height: 71px;
+  }
+
+  &__body {
+    height: calc(100vh - 370px);
+    min-height: 400px;
+
+    &_small {
+      height: calc(100vh - 485px);
+    }
+
+    &_big {
+      height: calc(100vh - 295px);
+    }
   }
 
   &__arrow-back {
@@ -811,27 +437,6 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-
-  &__scroll-cont {
-    overflow: auto;
-    padding: 20px 20px 0;
-    height: calc(100vh - 370px);
-    min-height: 400px;
-    display: grid;
-    align-items: end;
-
-    &_small {
-      height: calc(100vh - 485px);
-    }
-
-    &_big {
-      height: calc(100vh - 295px);
-    }
-  }
-
-  &__footer {
-
   }
 
   &__file-cont {
@@ -900,34 +505,6 @@ export default {
 .footer {
   position: relative;
 
-  &__scroll-btn {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    background-color: #fff;
-    border: 1px solid #E9EDF2;
-    right: 20px;
-    top: -50px;
-    opacity: .5;
-    transition: .3s;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #F7F8FA;
-      opacity: .8;
-      box-shadow: 0 0 10px 2px rgba(34, 60, 80, 0.3);
-    }
-  }
-
-  &__scroll-svg {
-    height: 20px;
-    width: 20px;
-  }
-
   &__controls {
     height: 70px;
     padding: 0 15px;
@@ -964,20 +541,12 @@ export default {
     object-fit: cover;
   }
 
-  &_margin {
-    margin: 10px 10px 0 0;
-  }
-
   &__other-media {
     padding: 10px;
     display: grid;
     grid-template-rows: 1fr 20px;
     border: 1px solid #E9EDF2;
     text-decoration: unset;
-
-    &_block {
-      grid-template-rows: 1fr;
-    }
   }
 
   &__title {
@@ -1028,125 +597,6 @@ export default {
   &:before {
     color: #AAB0B9;
     font-size: 60px;
-  }
-}
-
-.message {
-  width: 70%;
-  display: grid;
-  grid-template-columns: 43px minmax(auto, max-content) max-content;
-  gap: 20px;
-  height: max-content;
-
-  &__media {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  &_blink {
-    animation: blink 1s;
-  }
-
-  @keyframes blink {
-    50% {
-      opacity: .5;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  &_right {
-    grid-template-columns: max-content minmax(auto, max-content);
-    justify-content: flex-end;
-    margin-left: 30%;
-  }
-
-  &__star-cont {
-    &_left {
-      grid-column: 1;
-      grid-row: 1;
-    }
-  }
-
-  &_info {
-    display: flex;
-    grid-template-columns: unset;
-    justify-content: center;
-    margin: 0;
-    width: 100%;
-  }
-
-  &:last-child {
-    padding-bottom: 20px;
-  }
-
-  &__time {
-    justify-self: end;
-  }
-
-  &__title {
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 1.2;
-
-    &_gray {
-      color: #AAB0B9;
-      font-size: 14px;
-    }
-
-    &_white {
-      color: #fff;
-    }
-  }
-
-  &__avatar {
-    height: 43px;
-    width: 43px;
-    border-radius: 50%;
-
-    &_hidden {
-      visibility: hidden;
-    }
-  }
-
-  &__data {
-    display: grid;
-    gap: 10px;
-  }
-
-  &__bubble {
-    display: grid;
-    gap: 10px;
-    padding: 15px;
-    border-radius: 6px;
-    background-color: #F7F8FA;
-
-    &_bl {
-      background-color: #0083C7;
-      color: #fff;
-    }
-
-    &_link {
-      cursor: pointer;
-    }
-  }
-}
-
-.info-message {
-  display: grid;
-  grid-template-columns: repeat(3, max-content);
-  gap: 5px;
-
-  &__link {
-    text-decoration: underline #1D2127;
-    color: #1D2127;
-    cursor: pointer;
-
-    &_left {
-      grid-column: 1;
-      grid-row: 1;
-    }
   }
 }
 
@@ -1237,32 +687,6 @@ export default {
   }
 }
 
-.star {
-  cursor: pointer;
-
-  &__default {
-    display: flex;
-  }
-
-  &__hover {
-    display: none;
-  }
-
-  &:hover {
-
-    .star {
-      &__hover {
-        display: flex;
-      }
-
-      &__default,
-      &__checked {
-        display: none;
-      }
-    }
-  }
-}
-
 .block {
   background: #FFFFFF;
   border-radius: 6px;
@@ -1304,10 +728,6 @@ export default {
   font-weight: 400;
 }
 
-.name {
-
-}
-
 .input {
   width: 100%;
   margin: 11px;
@@ -1318,22 +738,6 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-  }
-}
-
-.profile {
-  &__img {
-    height: 30px;
-    width: 30px;
-    border-radius: 84px;
-    object-fit: cover;
-  }
-
-  &__name {
-    color: $black800;
-    font-size: 16px;
-    font-weight: 500;
-    margin: 0 10px 0 10px;
   }
 }
 
@@ -1355,13 +759,6 @@ export default {
     border-radius: 0 0 6px 6px;
   }
 
-  &__name-container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
-  }
-
   &__title {
     background-color: $white;
     margin: 15px 0 15px 15px;
@@ -1381,21 +778,6 @@ export default {
     max-width: 1180px;
   }
 
-  &__message {
-    cursor: pointer;
-    margin: 0 0 20px 0;
-    display: inline-block;
-  }
-
-  &__messages {
-    overflow-y: scroll;
-    height: 100%;
-    width: 100%;
-    max-height: 722px;
-    overflow: -moz-scrollbars-none;
-    -ms-overflow-style: none;
-  }
-
   &__messages::-webkit-scrollbar {
     width: 0;
   }
@@ -1411,16 +793,6 @@ export default {
 
   &__name {
     padding: 0 0 0 12px;
-  }
-
-  &__star {
-    margin: 0 20px 0 0;
-  }
-}
-
-.page {
-  &__title {
-    margin: 20px 0 20px 0;
   }
 }
 
@@ -1462,7 +834,7 @@ export default {
   }
 
   .chat-container {
-    &__scroll-cont {
+    &__body {
       height: calc(100vh - 295px);
 
       &_small {

@@ -71,4 +71,8 @@ export default {
   setDisable2FA(state, data) {
     state.userDisable2FA = data;
   },
+  setStatisticData(state, data) {
+    state.statisticData = data;
+    state.unreadChatsCount = data.chatsStatistic?.unreadCountChats || 0;
+  },
 };
