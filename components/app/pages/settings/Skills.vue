@@ -49,8 +49,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
   name: 'Skills',
   props: {
@@ -89,11 +87,6 @@ export default {
         },
       ],
     };
-  },
-  computed: {
-    ...mapGetters({
-      userData: 'user/getUserData',
-    }),
   },
   methods: {
     updateSelectedSkills(specAndSkills) {

@@ -77,70 +77,75 @@ export default {
   data() {
     return {
       radioButtons: {
-        whoCanSeeInputs: [{
-          id: 'allUsers',
-          value: 'allUsers',
-          local: 'settings.allUsers',
-          name: 'whoCanSee',
+        whoCanSeeInputs: [
+          {
+            id: 'allUsers',
+            value: 'allUsers',
+            local: 'settings.allUsers',
+            name: 'whoCanSee',
+          },
+          {
+            id: 'allInternet',
+            value: 'allInternet',
+            local: 'settings.allInternet',
+            name: 'whoCanSee',
+          },
+          {
+            id: 'onlyWhenSubmittedWork',
+            value: 'onlyWhenSubmittedWork',
+            local: 'settings.onlyWhenSubmittedWork',
+            name: 'whoCanSee',
+          },
+        ],
+        employeeProfilesInputs: [
+          {
+            id: 'urgentProposals',
+            value: 'urgentJobOffers',
+            local: 'settings.urgentJobOffers',
+            name: 'filterAllWorkProposals',
+          },
+          {
+            id: 'onlyImplementation',
+            value: 'shortTermJobOffers',
+            local: 'settings.shortTermJobOffers',
+            name: 'filterAllWorkProposals',
+          },
+          {
+            id: 'onlyReady',
+            value: 'fixedDeliveryJobOffers',
+            local: 'settings.fixedDeliveryJobOffers',
+            name: 'filterAllWorkProposals',
+          },
+        ],
+      },
+      rightSideButtons: [
+        {
+          title: 'settings.changePass',
+          buttonName: 'settings.change',
+          modal: 'changePassInSettings',
+          isSwitcher: false,
         },
         {
-          id: 'allInternet',
-          value: 'allInternet',
-          local: 'settings.allInternet',
-          name: 'whoCanSee',
+          title: 'settings.enableTwoStepAuth',
+          firstButtonName: 'meta.disable',
+          secondButtonName: 'settings.enable',
+          firstModal: 'disable2FA',
+          secondModal: 'twoFAAuth',
+          isSwitcher: true,
         },
         {
-          id: 'onlyWhenSubmittedWork',
-          value: 'onlyWhenSubmittedWork',
-          local: 'settings.onlyWhenSubmittedWork',
-          name: 'whoCanSee',
-        }],
-        employeeProfilesInputs: [{
-          id: 'urgentProposals',
-          value: 'urgentJobOffers',
-          local: 'settings.urgentJobOffers',
-          name: 'filterAllWorkProposals',
+          title: 'settings.smsVerification',
+          buttonName: 'settings.enable',
+          modal: 'smsVerification',
+          isSwitcher: false,
         },
         {
-          id: 'onlyImplementation',
-          value: 'shortTermJobOffers',
-          local: 'settings.shortTermJobOffers',
-          name: 'filterAllWorkProposals',
+          title: 'settings.changeRole',
+          buttonName: 'settings.change',
+          modal: 'changeRoleWarning',
+          isSwitcher: false,
         },
-        {
-          id: 'onlyReady',
-          value: 'fixedDeliveryJobOffers',
-          local: 'settings.fixedDeliveryJobOffers',
-          name: 'filterAllWorkProposals',
-        }],
-      },
-
-      rightSideButtons: [{
-        title: 'settings.changePass',
-        buttonName: 'settings.change',
-        modal: 'changePassInSettings',
-        isSwitcher: false,
-      },
-      {
-        title: 'settings.enableTwoStepAuth',
-        firstButtonName: 'meta.disable',
-        secondButtonName: 'settings.enable',
-        firstModal: 'disable2FA',
-        secondModal: 'twoFAAuth',
-        isSwitcher: true,
-      },
-      {
-        title: 'settings.smsVerification',
-        buttonName: 'settings.enable',
-        modal: 'smsVerification',
-        isSwitcher: false,
-      },
-      {
-        title: 'settings.changeRole',
-        buttonName: 'settings.change',
-        modal: 'changeRoleWarning',
-        isSwitcher: false,
-      }],
+      ],
     };
   },
   computed: {

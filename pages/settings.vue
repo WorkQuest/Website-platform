@@ -60,10 +60,7 @@ export default {
           secondMobileNumber: null,
           address: null,
           socialNetwork: {
-            instagram: null,
-            twitter: null,
-            linkedin: null,
-            facebook: null,
+            instagram: null, twitter: null, linkedin: null, facebook: null,
           },
           description: null,
           skills: [],
@@ -73,10 +70,7 @@ export default {
           company: null,
           website: null,
         },
-        location: {
-          longitude: 0,
-          latitude: 0,
-        },
+        location: { longitude: 0, latitude: 0 },
       },
       skills: {
         perHour: 0,
@@ -85,15 +79,8 @@ export default {
         selectedSpecAndSkills: null,
       },
       isShowInfo: true,
-      avatarChange: {
-        data: {},
-        file: {},
-      },
-      updatedSecondPhone: {
-        codeRegion: null,
-        phone: null,
-        fullPhone: null,
-      },
+      avatarChange: { data: {}, file: {} },
+      updatedSecondPhone: { codeRegion: null, phone: null, fullPhone: null },
       validationError: false,
       isValidPhoneNumber: true,
       newEducation: [],
@@ -118,11 +105,7 @@ export default {
       email: this.userData.email,
       firstPhone: this.userData.tempPhone || this.userData.phone,
       additionalInfo: {
-        secondMobileNumber: {
-          codeRegion: null,
-          phone: null,
-          fullPhone: null,
-        },
+        secondMobileNumber: { codeRegion: null, phone: null, fullPhone: null },
         ...this.userData.additionalInfo,
       },
       location: this.userData.location,
@@ -182,9 +165,7 @@ export default {
       return keys[modalKey];
     },
     showModalKey(modalKey) {
-      this.ShowModal({
-        key: this.modalsKey(modalKey),
-      });
+      this.ShowModal({ key: this.modalsKey(modalKey) });
     },
     showModalStatus(modalMode) {
       this.ShowModal({
@@ -214,9 +195,7 @@ export default {
       const checkAvatarID = this.avatarChange.data.ok ? this.avatarChange.data.result.mediaId : this.userData.avatarId;
       const secondMobileNumber = this.updatedSecondPhone.fullPhone;
       await this.setAvatar();
-      if (secondMobileNumber) {
-        await this.editProfile(checkAvatarID);
-      }
+      if (secondMobileNumber) await this.editProfile(checkAvatarID);
       if (!secondMobileNumber) this.showModalStatus('enterPhoneNumber');
     },
 
@@ -224,8 +203,7 @@ export default {
       const validateEducation = await this.validateKnowledge('education', this.newEducation);
       const validateWorkExp = await this.validateKnowledge('work', this.newWorkExp);
       const validateSettings = await this.$refs.settings.validate();
-      if (
-        validateEducation === false
+      if (validateEducation === false
         || validateWorkExp === false
         || validateSettings === false
         || this.isValidPhoneNumber === false) {
@@ -237,26 +215,19 @@ export default {
 
     async validateKnowledge(observerName, value) {
       const isDirty = Object.keys(value).some((field) => value[field] !== '' && value[field] !== null);
-      if (isDirty) {
-        return await this.$refs.settings.$children[1].$refs[observerName].validate();
-      }
+      if (isDirty) return await this.$refs.settings.$children[1].$refs[observerName].validate();
       return true;
     },
 
     async setAvatar() {
       const formData = new FormData();
       formData.append('image', this.avatarChange.file);
-      try {
-        if (this.avatarChange.data.ok) {
-          const data = {
-            url: this.avatarChange.data.result.url,
-            formData: this.avatarChange.file,
-            type: this.avatarChange.file.type,
-          };
-          await this.$store.dispatch('user/setImage', data);
-        }
-      } catch (error) {
-        console.log(error);
+      if (this.avatarChange.data.ok) {
+        await this.$store.dispatch('user/setImage', {
+          url: this.avatarChange.data.result.url,
+          formData: this.avatarChange.file,
+          type: this.avatarChange.file.type,
+        });
       }
     },
 
@@ -276,22 +247,22 @@ export default {
           secondMobileNumber: this.updatedSecondPhone,
           address: this.profile.additionalInfo.address,
           socialNetwork: {
-            instagram: instagram !== '' ? instagram : null,
-            twitter: twitter !== '' ? twitter : null,
-            linkedin: linkedin !== '' ? linkedin : null,
-            facebook: facebook !== '' ? facebook : null,
+            instagram: instagram.length > 0 ? instagram : null,
+            twitter: twitter.length > 0 ? twitter : null,
+            linkedin: linkedin.length > 0 ? linkedin : null,
+            facebook: facebook.length > 0 ? facebook : null,
           },
         },
       };
       if (this.userRole === 'worker') {
-        payload.additionalInfo = {
-          ...payload.additionalInfo,
-          educations: this.profile.additionalInfo.educations,
-          workExperiences: this.profile.additionalInfo.workExperiences,
-          description: this.profile.additionalInfo.description || null,
-        };
         payload = {
           ...payload,
+          additionalInfo: {
+            ...payload.additionalInfo,
+            educations: this.profile.additionalInfo.educations,
+            workExperiences: this.profile.additionalInfo.workExperiences,
+            description: this.profile.additionalInfo.description || null,
+          },
           workplace: this.parseDistantWork(this.skills.distantIndex),
           priority: this.skills.priorityIndex,
           wagePerHour: this.skills.perHour ? this.skills.perHour : this.userData.wagePerHour,
@@ -318,12 +289,8 @@ export default {
     },
 
     async editProfileResponse(action, payload) {
-      try {
-        await this.$store.dispatch(action, payload);
-        this.showModalStatus('saved');
-      } catch (e) {
-        console.log(e);
-      }
+      await this.$store.dispatch(action, payload);
+      this.showModalStatus('saved');
     },
   },
 };
