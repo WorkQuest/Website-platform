@@ -97,8 +97,11 @@ export default {
     const { result } = await this.$axios.$post('/v1/storage/get-upload-link', config);
     return result;
   },
-  async setMessageAsRead({ commit }, { config, chatId }) {
+  async setMessageAsRead({ commit, rootState }, { config, chatId }) {
     const { result } = await this.$axios.$post(`/v1/read/message/${chatId}`, config);
+
+    commit('setChatAsRead');
+    this.$store.commit('user/changeUnreadChatsCount', { needAdd: true, count: -1 });
     return result;
   },
   async setStarForChat({ commit }, chatId) {

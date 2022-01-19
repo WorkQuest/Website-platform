@@ -796,13 +796,12 @@ export default {
       if (!chatConnection) {
         await this.$wsChat.connect(this.token);
         this.$wsChat.subscribe('/notifications/chat', async ({ data, action }) => {
-          await this.$store.dispatch('user/getStatistic');
-
           if (this.$route.name === 'messages') {
             if (action === 'groupChatCreate') {
               data.isUnread = true;
               data.userMembers = data.userMembers.filter((member) => member.id !== this.userData.id);
               this.$store.commit('chat/addChatToList', data);
+              this.$store.commit('user/changeUnreadChatsCount', { needAdd: true, count: 1 });
             } else if (action === 'newMessage') {
               const { ok, result } = await this.$store.dispatch('chat/getCurrChatData', data.chatId);
               if (ok) {

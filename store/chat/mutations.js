@@ -32,9 +32,19 @@ export default {
   updateChatsList(state, chat) {
     const chatIndex = state.chats.list.findIndex((chatList) => chatList.id === chat.id);
 
-    if (chatIndex >= 0) state.chats.list.splice(chatIndex, 1);
+    if (chatIndex >= 0) {
+      if (!state.chats.list[chatIndex].isUnread) this.commit('user/changeUnreadChatsCount', { needAdd: true, count: 1 });
+
+      state.chats.list.splice(chatIndex, 1);
+      state.chats.count -= 1;
+    } else {
+      this.commit('user/changeUnreadChatsCount', { needAdd: true, count: 1 });
+    }
 
     this.commit('chat/addChatToList', chat);
+  },
+  setChatAsRead(state) {
+    state.messages.chat.isUnread = false;
   },
   addChatToList(state, chat) {
     state.chats.count += 1;

@@ -43,14 +43,13 @@
             :can-i-leave="canLeave"
           />
         </div>
-        <div
+        <messages-list
+          :chat-id="chatId"
           class="chat-container__body"
           :class="[
             {'chat-container__body_small' : files.length},
             {'chat-container__body_big' : chatId === 'starred' || isClosedQuestChat}]"
-        >
-          <messages-list :chat-id="chatId" />
-        </div>
+        />
         <div class="chat-container__footer footer">
           <div
             v-show="chatId !== 'starred' && !isClosedQuestChat"
