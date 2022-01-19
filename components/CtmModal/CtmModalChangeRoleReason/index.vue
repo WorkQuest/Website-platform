@@ -1,11 +1,14 @@
 <template>
   <ctm-modal-box
     :is-unclosable="true"
-    :title="$t('modals.reason')"
+    :title="step === 1 ? $t('modals.reason') : $t('modals.securityCheck')"
     class="messageSend"
   >
     <div class="ctm-modal__content">
-      <div class="messageSend">
+      <div
+        v-if="step === 1"
+        class="messageSend"
+      >
         <span class="messageSend__title">{{ $t('modals.pleaseDescribe') }}</span>
         <div class="messageSend__content">
           <base-field
@@ -17,7 +20,7 @@
             <div class="btn__wrapper">
               <base-btn
                 class="message__action"
-                @click="secureCheck()"
+                @click="nextStep()"
               >
                 {{ $t('meta.change') }}
               </base-btn>
@@ -34,27 +37,74 @@
           </div>
         </div>
       </div>
+      <div
+        v-if="step === 2"
+        class="messageSend"
+      >
+        <div class="messageSend__content">
+          <base-field
+            v-model="codeInput"
+            :label="$t('modals.googleConfCode')"
+            class="message__action"
+            :placeholder="$t('modals.googleConfCode')"
+          />
+          <div class="message__sub">
+            {{ $t('modals.enterCode') }}
+          </div>
+          <div class="btn__container">
+            <base-btn
+              class="message__action"
+              @click="success()"
+            >
+              {{ $t('meta.send') }}
+            </base-btn>
+          </div>
+        </div>
+      </div>
     </div>
   </ctm-modal-box>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 
 export default {
   name: 'CtmModalChangeRoleReason',
   data() {
     return {
+      step: 1,
       reasonInput: '',
+      codeInput: '',
     };
   },
+  computed: {
+    ...mapGetters({
+      userRole: 'user/getUserRole',
+    }),
+  },
   methods: {
+    nextStep() {
+      this.step += 1;
+    },
     hide() {
       this.CloseModal();
     },
-    secureCheck() {
+    async changeRole() {
+      let payload;
+      if (this.userRole === 'worker') payload = { role: 'employer' };
+      if (this.userRole === 'employer') payload = { role: 'worker' };
+      try {
+        // TODO: Сделать смену роли
+        const response = await this.$store.dispatch('user/setUserRole', payload);
+        if (response?.ok) this.success();
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    success() {
       this.ShowModal({
-        key: modals.changeRoleSecureCheck,
+        key: modals.status, img: require('~/assets/img/ui/success.svg'), title: 'Success', subtitle: 'Your role has been changed',
       });
     },
   },
