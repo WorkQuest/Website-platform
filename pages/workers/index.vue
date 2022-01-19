@@ -1,6 +1,6 @@
 <template>
   <div class="workers">
-    <GmapSearchBlock :is-show-map="isShowMap" />
+    <MapBlock :is-show-map="isShowMap" />
     <div
       class="workers__search search"
       :class="{ 'search_map-hidden': !isShowMap }"
@@ -272,7 +272,7 @@
 import { mapGetters } from 'vuex';
 import { GeoCode } from 'geo-coder';
 import ClickOutside from 'vue-click-outside';
-import GmapSearchBlock from '~/components/app/GmapSearch';
+import MapBlock from '~/components/app/MapBlock';
 import modals from '~/store/modals/modals';
 import { priorityFilter, ratingFilter, workplaceFilter } from '~/utils/enums';
 
@@ -282,7 +282,7 @@ export default {
     ClickOutside,
   },
   components: {
-    GmapSearchBlock,
+    MapBlock,
   },
   data() {
     return {

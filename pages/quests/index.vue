@@ -1,6 +1,6 @@
 <template>
   <div class="quests">
-    <GmapSearchBlock
+    <MapBlock
       :is-show-map="isShowMap"
       :zoom="zoomNumber"
     />
@@ -226,7 +226,7 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import { GeoCode } from 'geo-coder';
 import modals from '~/store/modals/modals';
-import GmapSearchBlock from '~/components/app/GmapSearch';
+import MapBlock from '~/components/app/MapBlock';
 import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
 import {
@@ -239,7 +239,7 @@ export default {
     ClickOutside,
   },
   components: {
-    GmapSearchBlock,
+    MapBlock,
     quests,
     emptyData,
   },

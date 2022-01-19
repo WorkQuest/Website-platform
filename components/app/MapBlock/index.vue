@@ -76,7 +76,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'Index',
+  name: 'Map',
   props: {
     isShowMap: {
       type: Boolean,
