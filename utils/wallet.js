@@ -21,22 +21,18 @@ export const createWallet = (mnemonic) => {
 export const encryptStringWithKey = (toEncrypt, key) => AES.encrypt(toEncrypt, key).toString();
 export const decryptStringWitheKey = (toDecrypt, key) => AES.decrypt(toDecrypt, key).toString(enc.Utf8);
 
-const web3 = new Web3(process.env.WQ_PROVIDER);
+let web3 = new Web3(process.env.WQ_PROVIDER);
 const wallet = {
   address: null,
   privateKey: null,
   init(address, privateKey) {
-    this.address = address;
+    if (!web3) web3 = new Web3(process.env.WQ_PROVIDER);
+    this.address = address.toLowerCase();
     this.privateKey = privateKey;
     if (privateKey) {
       const account = web3.eth.accounts.privateKeyToAccount(wallet.privateKey);
       web3.eth.accounts.wallet.add(account);
       web3.eth.defaultAccount = account.address;
-
-      sessionStorage.setItem('keys', JSON.stringify({
-        ...JSON.parse(sessionStorage.getItem('keys')),
-        [address]: privateKey,
-      }));
     }
   },
   reset() {
@@ -44,25 +40,11 @@ const wallet = {
     this.privateKey = null;
   },
 };
-
+export const getIsWalletConnected = () => !!wallet.address && !!wallet.privateKey;
 export const getWalletAddress = () => wallet.address;
-export const setWalletAddress = (userAddress) => wallet.init(userAddress, null);
-
-/**
- * trying to get key from session then return wallet connected
- * @returns {boolean}
- */
-export const getIsWalletConnected = () => {
-  if (!wallet.privateKey && wallet.address) {
-    const session = JSON.parse(sessionStorage.getItem('keys'));
-    if (!session) return false;
-    const key = session[wallet.address];
-    if (key) {
-      wallet.init(wallet.address, key);
-      return true;
-    }
-  }
-  return !!wallet.address && !!wallet.privateKey;
+// Метод нужен для вызова метода wallet не затрагивая другие данные
+export const initWallet = (address, key) => {
+  wallet.init(address, key);
 };
 
 /**
@@ -75,25 +57,14 @@ export const connectWallet = (userAddress, userPassword) => {
   if (!userPassword || !userAddress) return error();
   if (wallet.address && wallet.privateKey) return success();
   let _walletTemp;
-  const sessionData = JSON.parse(sessionStorage.getItem('mnemonic'));
   const storageData = JSON.parse(localStorage.getItem('mnemonic'));
-  if (!sessionData && !storageData) {
+  if (!storageData) {
     return error();
   }
 
-  const sessionMnemonic = sessionData ? sessionData[userAddress] : null;
   const storageMnemonic = storageData ? storageData[userAddress] : null;
-  if (!sessionMnemonic && !storageMnemonic) {
+  if (!storageMnemonic) {
     return error();
-  }
-
-  // Check in session if exists
-  if (sessionMnemonic) {
-    _walletTemp = createWallet(sessionMnemonic);
-    if (_walletTemp && _walletTemp.address.toLowerCase() === userAddress) {
-      wallet.init(_walletTemp.address.toLowerCase(), _walletTemp.privateKey);
-      return success();
-    }
   }
 
   // Check in storage
@@ -102,6 +73,10 @@ export const connectWallet = (userAddress, userPassword) => {
     _walletTemp = createWallet(mnemonic);
     if (_walletTemp && _walletTemp.address.toLowerCase() === userAddress) {
       wallet.init(_walletTemp.address.toLowerCase(), _walletTemp.privateKey);
+      sessionStorage.setItem('mnemonic', JSON.stringify({
+        ...JSON.parse(sessionStorage.getItem('mnemonic')),
+        [userAddress]: mnemonic,
+      }));
       return success();
     }
   }
@@ -110,11 +85,26 @@ export const connectWallet = (userAddress, userPassword) => {
   return error();
 };
 
+/**
+ * Connect to wallet with mnemonic from session
+ * @param userAddress
+ */
+export const connectWithMnemonic = (userAddress) => {
+  const sessionData = JSON.parse(sessionStorage.getItem('mnemonic'));
+  if (!sessionData) return;
+  const mnemonic = sessionData[userAddress];
+  if (!mnemonic) return;
+  const _walletTemp = createWallet(mnemonic);
+  if (_walletTemp && _walletTemp.address.toLowerCase() === userAddress) {
+    wallet.init(_walletTemp.address.toLowerCase(), _walletTemp.privateKey);
+  }
+};
+
 export const disconnect = () => {
   wallet.reset();
 };
 
-const min = new BigNumber(0.0001);
+const min = Object.freeze(new BigNumber(0.0001));
 /**
  * @param amount
  * @param full - returns with all decimals
