@@ -516,6 +516,7 @@ export default {
     },
     async openDispute() {
       if (this.questData.status === 3) {
+        // TODO: заменить данные для формирования ссылки, когда они появятся
         await this.$router.push(`/disputes/${this.questData.id}`);
       } else {
         this.ShowModal({

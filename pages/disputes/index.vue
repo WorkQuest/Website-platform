@@ -91,9 +91,9 @@ export default {
     },
     disputeStatus(status) {
       const obj = {
-        [disputeStatues.Pending]: this.$t('disputes.pending'),
-        [disputeStatues.InProgress]: this.$t('disputes.inProgress'),
-        [disputeStatues.Completed]: this.$t('disputes.completed'),
+        [disputeStatues.PENDING]: this.$t('disputes.pending'),
+        [disputeStatues.IN_PROGRESS]: this.$t('disputes.inProgress'),
+        [disputeStatues.COMPLETED]: this.$t('disputes.completed'),
       };
       return obj[status];
     },
