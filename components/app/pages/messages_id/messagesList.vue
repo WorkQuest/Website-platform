@@ -192,7 +192,6 @@ export default {
       isBottomChatsLoading: false,
       selStarredMessageNumber: 0,
       today: moment(new Date()),
-      isReadingInProgress: false,
       isScrollBtnVis: false,
       minScrollDifference: 0,
     };
@@ -205,11 +204,15 @@ export default {
       userData: 'user/getUserData',
       currChat: 'chat/getCurrChatInfo',
       chats: 'chat/getChats',
+      currChatIsUnread: 'chat/currChatIsUnread',
     }),
   },
   watch: {
     lastMessageId(newVal, oldVal) {
       if (!this.isScrollBtnVis && oldVal) this.scrollToBottom();
+    },
+    currChatIsUnread(newVal, oldVal) {
+      if (newVal && this.lastMessageId) this.readMessages();
     },
   },
   async mounted() {
@@ -228,7 +231,7 @@ export default {
     }
 
     await this.getMessages(direction, bottomOffset);
-    await this.readMessages();
+    // if (this.currChatIsUnread && this.lastMessageId) await this.readMessages();
     this.scrollToBottom(true);
   },
   destroyed() {
@@ -253,7 +256,7 @@ export default {
         }, chatId, messages: { list, count },
       } = this;
 
-      const offset = direction ? currBottomOffset || bottomOffset : topOffset || count - list[0]?.number + 1 || 0;
+      const offset = direction ? currBottomOffset || bottomOffset : topOffset || (count - list[0]?.number + 1) || 0;
 
       const payload = {
         config: {
@@ -294,9 +297,6 @@ export default {
           await this.getMessages(1);
           setTimeout(() => { this.isBottomChatsLoading = false; }, 300);
         }
-
-        await this.readMessages();
-
         return;
       }
 
@@ -416,31 +416,18 @@ export default {
       });
     },
     async readMessages() {
-      const {
-        messages: { list }, chatId, isReadingInProgress, currChat,
-      } = this;
-
-      if (isReadingInProgress || !list.length || !currChat?.isUnread) return;
-
-      const { id } = currChat.lastMessage;
-
-      this.isReadingInProgress = true;
+      const { chatId, lastMessageId } = this;
 
       const payload = {
         config: {
-          messageId: id,
+          messageId: lastMessageId,
         },
         chatId,
       };
 
-      try {
-        await this.$store.dispatch('chat/setMessageAsRead', payload);
+      const response = await this.$store.dispatch('chat/setMessageAsRead', payload);
 
-        this.isReadingInProgress = false;
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-      }
+      if (!response.ok) this.showToastError(response);
     },
   },
 };

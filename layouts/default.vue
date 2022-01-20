@@ -803,18 +803,18 @@ export default {
               this.$store.commit('chat/addChatToList', data);
               this.$store.commit('user/changeUnreadChatsCount', { needAdd: true, count: 1 });
             } else if (action === 'newMessage') {
-              const { ok, result } = await this.$store.dispatch('chat/getCurrChatData', data.chatId);
-              if (ok) {
-                result.isUnread = true;
-                result.userMembers = result.userMembers.filter((member) => member.id !== this.userData.id);
-                this.$store.commit('chat/updateChatsList', result);
-              }
+              await this.$store.dispatch('chat/getCurrChatData', data.chatId);
+              await this.getStatistic();
             }
             return;
           }
 
+          await this.getStatistic();
+
           if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
-            if (action !== 'messageReadByRecipient') this.$store.commit('chat/addMessageToList', data);
+            if (action === 'messageReadByRecipient') return;
+            this.$store.commit('chat/addMessageToList', data);
+            this.$store.commit('chat/setChatAsUnread');
 
             if (data.type === 'info') {
               const { user } = data.infoMessage;
@@ -828,6 +828,9 @@ export default {
           }
         });
       }
+    },
+    async getStatistic() {
+      await this.$store.dispatch('user/getStatistic');
     },
     setLocale(item) {
       this.currentLocale = item.localeText;

@@ -1,3 +1,5 @@
+import content from '~/components/wiki/content';
+
 export default {
   async getChatsList({ commit, rootState }, params) {
     try {
@@ -59,9 +61,16 @@ export default {
       return console.log(e);
     }
   },
-  async getCurrChatData({ commit }, chatId) {
+  async getCurrChatData({ commit, rootState }, chatId) {
     try {
-      return await this.$axios.$get(`/v1/user/me/chat/${chatId}`);
+      const { result } = await this.$axios.$get(`/v1/user/me/chat/${chatId}`);
+
+      result.isUnread = true;
+      result.userMembers = result.userMembers.filter((member) => member.id !== rootState.user.userData.id);
+
+      commit('updateChatsList', result);
+
+      return result;
     } catch (e) {
       console.log(e);
       return { ok: false };
@@ -97,12 +106,17 @@ export default {
     const { result } = await this.$axios.$post('/v1/storage/get-upload-link', config);
     return result;
   },
-  async setMessageAsRead({ commit, rootState }, { config, chatId }) {
-    const { result } = await this.$axios.$post(`/v1/read/message/${chatId}`, config);
+  async setMessageAsRead({ commit, rootState: { user } }, { config, chatId }) {
+    try {
+      const response = await this.$axios.$post(`/v1/read/message/${chatId}`, config);
 
-    commit('setChatAsRead');
-    this.$store.commit('user/changeUnreadChatsCount', { needAdd: true, count: -1 });
-    return result;
+      commit('setChatAsRead');
+      commit('user/changeUnreadChatsCount', { needAdd: true, count: -1 }, { root: true });
+      return response;
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
   },
   async setStarForChat({ commit }, chatId) {
     const { result } = await this.$axios.$post(`/v1/user/me/chat/${chatId}/star`);

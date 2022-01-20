@@ -15,7 +15,7 @@ export default {
 
     state.messages.list = messages;
     state.messages.count = count;
-    state.messages.chat = chat;
+    state.currChat = chat;
   },
   clearMessagesFilter(state) {
     state.messagesFilter = {
@@ -33,18 +33,17 @@ export default {
     const chatIndex = state.chats.list.findIndex((chatList) => chatList.id === chat.id);
 
     if (chatIndex >= 0) {
-      if (!state.chats.list[chatIndex].isUnread) this.commit('user/changeUnreadChatsCount', { needAdd: true, count: 1 });
-
       state.chats.list.splice(chatIndex, 1);
       state.chats.count -= 1;
-    } else {
-      this.commit('user/changeUnreadChatsCount', { needAdd: true, count: 1 });
     }
 
     this.commit('chat/addChatToList', chat);
   },
   setChatAsRead(state) {
-    state.messages.chat.isUnread = false;
+    state.currChat.isUnread = false;
+  },
+  setChatAsUnread(state) {
+    state.currChat.isUnread = true;
   },
   addChatToList(state, chat) {
     state.chats.count += 1;
@@ -69,14 +68,14 @@ export default {
     state.groupChatUsers.count = count;
   },
   removeUserFromChat(state, userId) {
-    const { members, userMembers } = state.messages.chat;
+    const { members, userMembers } = state.currChat;
 
-    state.messages.chat.members = members.filter((member) => member.id !== userId);
-    state.messages.chat.userMembers = userMembers.filter((member) => member.id !== userId);
+    state.currChat.members = members.filter((member) => member.id !== userId);
+    state.currChat.userMembers = userMembers.filter((member) => member.id !== userId);
   },
   addUserToChat(state, user) {
-    state.messages.chat.members.push(user);
-    state.messages.chat.userMembers.push(user);
+    state.currChat.members.push(user);
+    state.currChat.userMembers.push(user);
   },
   setIsChatOpened(state, val) {
     state.isChatOpened = val;
