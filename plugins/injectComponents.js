@@ -22,6 +22,7 @@ import StarRating from '~/components/app/pages/quests_id/starRating';
 import SpecializationsSelector from '~/components/ui/SpecializationsSelector';
 import FilesUploader from '~/components/ui/FilesUploader';
 import FilesPreview from '~/components/ui/FilesPreview';
+import MessagesList from '~/components/app/pages/messages_id/messagesList';
 
 Vue.component('ctm-modal', CtmModal);
 Vue.component('ctm-modal-box', CtmModalBox);
@@ -45,3 +46,4 @@ Vue.component('star-rating', StarRating);
 Vue.component('specializations-selector', SpecializationsSelector);
 Vue.component('files-uploader', FilesUploader);
 Vue.component('files-preview', FilesPreview);
+Vue.component('MessagesList', MessagesList);

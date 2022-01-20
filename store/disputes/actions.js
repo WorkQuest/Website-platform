@@ -13,7 +13,7 @@ export default {
     try {
       const { result } = await this.$axios.$get(`/v1/quest/dispute/${disputeId}`);
       await commit('setDispute', result);
-      return result;
+      return result.ok;
     } catch (e) {
       return console.log(e);
     }
@@ -22,7 +22,7 @@ export default {
     try {
       const { result } = await this.$axios.$get('v1/user/me/quest/disputes');
       commit('setUserDisputes', result);
-      return result;
+      return result.ok;
     } catch (e) {
       return console.log(e);
     }

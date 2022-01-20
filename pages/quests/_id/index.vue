@@ -515,7 +515,6 @@ export default {
       this.SetLoader(false);
     },
     async openDispute() {
-      const modalMode = 4;
       if (this.questData.status === 3) {
         await this.$router.push(`/disputes/${this.questData.id}`);
       } else {
@@ -527,7 +526,6 @@ export default {
         await this.getResponsesToQuest();
         await this.setActionBtnsArr();
       }
-      // this.showQuestModal(modalMode);
     },
     async acceptCompletedWorkOnQuest() {
       const modalMode = 2;

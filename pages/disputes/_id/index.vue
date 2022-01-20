@@ -45,13 +45,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import MessagesList from '~/components/app/pages/messages_id/messagesList';
 import quests from '~/components/app/pages/common/quests';
+import { disputeStatues, InfoModeWorker } from '~/utils/enums';
 
 export default {
   name: 'Index',
   components: {
-    MessagesList,
     quests,
   },
   data() {
@@ -65,9 +64,9 @@ export default {
     }),
     disputeStatus() {
       const obj = {
-        0: this.$t('disputes.pending'),
-        1: this.$t('disputes.inProgress'),
-        2: this.$t('disputes.completed'),
+        [disputeStatues.Pending]: this.$t('disputes.pending'),
+        [disputeStatues.InProgress]: this.$t('disputes.inProgress'),
+        [disputeStatues.Completed]: this.$t('disputes.completed'),
       };
       return obj[this.disputeData.status];
     },

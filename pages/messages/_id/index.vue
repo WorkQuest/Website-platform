@@ -148,14 +148,12 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
-import MessagesList from '~/components/app/pages/messages_id/messagesList';
 import { questChatStatus } from '~/utils/enums';
 
 export default {
   name: 'Messages',
   components: {
     ChatMenu,
-    MessagesList,
   },
   data() {
     return {
