@@ -80,7 +80,7 @@ export default {
         { name: this.$t('myQuests.statuses.performed'), id: 5 },
       ];
       return this.userRole === UserRole.EMPLOYER
-        ? tabs.filter((tab) => (tab.id < 1 || tab.id > 2))
+        ? tabs.filter((tab) => (tab.id !== 2))
         : tabs;
     },
     totalPages() {
