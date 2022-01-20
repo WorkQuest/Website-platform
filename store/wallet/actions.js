@@ -153,9 +153,15 @@ export default {
   }) {
     return await getContractFeeData(method, abi.WorkQuest, contractAddress, data);
   },
-  async editQuest({ commit }, { contractAddress, cost, description }) {
+  async editQuest({ commit }, {
+    contractAddress, cost, description, depositAmount = 0,
+  }) {
     const hash = hashText(description);
     const _cost = new BigNumber(cost).shiftedBy(18).toString();
+    if (depositAmount) { // Пополнение
+      const _depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
+      return await editQuest(contractAddress, _cost, _depositAmount, description);
+    }
     return await fetchJobMethod(contractAddress, QuestMethods.EditJob, [hash, _cost]);
   },
   // Отмена/Удаление квеста

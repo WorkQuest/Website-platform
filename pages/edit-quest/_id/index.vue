@@ -63,6 +63,7 @@
             </div>
           </div>
           <specializations-selector
+            v-if="questData"
             :skills="questData.questSpecializations"
             @changeSkills="updateSelectedSkills"
           />
@@ -125,7 +126,7 @@
               :limit-bytes="10485760"
               :limit-bytes-video="10485760"
               :accept="'image/png, image/jpg, image/jpeg, video/mp4'"
-              :preloaded-files="questData.medias"
+              :preloaded-files="questData ? questData.medias : []"
               @change="updateFiles"
             />
           </div>
@@ -253,7 +254,7 @@
 import { mapGetters } from 'vuex';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { QuestMethods } from '~/utils/enums';
+import { QuestMethods, TokenSymbols } from '~/utils/enums';
 import { hashText } from '~/utils/wallet';
 
 const { GeoCode } = require('geo-coder');
@@ -290,6 +291,7 @@ export default {
       questData: 'quests/getQuest',
       step: 'quests/getCurrentStepEditQuest',
       isWalletConnected: 'wallet/getIsWalletConnected',
+      userAddress: 'user/getUserWalletAddress',
       questFee: 'wallet/getQuestsFee',
     }),
     days() {
@@ -415,6 +417,10 @@ export default {
     },
   },
   async mounted() {
+    if (!this.isWalletConnected) {
+      await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+      return;
+    }
     this.SetLoader(true);
     await this.$store.dispatch('quests/getQuest', this.$route.params.id);
     await this.editQuestFill();
@@ -537,38 +543,82 @@ export default {
       }
     },
     async toEditQuest() {
+      if (this.prevPrice === this.price && this.prevDescription === this.textarea) {
+        await this.editQuest();
+        return;
+      }
+
       if (!this.isWalletConnected) {
         await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
       }
 
-      const contractAddress = '0x991E2f9e759e4d2C4FF0e882Cc651D48aE7D600C'; // TODO: get from back
-      if (this.prevPrice !== this.price || this.prevDescription !== this.textarea) {
-        let feeRes;
-        if (this.price > this.prevPrice) { // Цена за квест стала ВЫШЕ
-          feeRes = await this.$store.dispatch('wallet/getEditQuestFeeData', {
-            contractAddress,
-            description: this.textarea,
-            cost: this.price,
-            depositAmount: new BigNumber(this.price).minus(this.prevPrice).multipliedBy(1 + this.questFee).toString(),
-          });
-        } else {
-            feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
-              contractAddress,
-              method: QuestMethods.EditJob,
-              data: [hashText(this.textarea), new BigNumber(this.price).shiftedBy(18).toString()],
-            });
-          }
-        }
-        if (feeRes.ok === false) {
-          await this.$store.dispatch('main/showToast', {
-            title: 'Error',
-            text: 'Not enough funds',
-          });
-          return;
-        }
-        console.log(feeRes);
+      const contractAddress = '0x1A54E37bFD6A0449d32987D80ECdea8CD9C84c84'; // TODO: get from back
+      let feeRes;
+      let deposit;
+      if (this.price > this.prevPrice) { // Цена за квест стала ВЫШЕ
+        // .minus(this.prevPrice)
+        deposit = new BigNumber(this.price).multipliedBy(1 + this.questFee).toString();
+        feeRes = await this.$store.dispatch('wallet/getEditQuestFeeData', {
+          contractAddress,
+          description: this.textarea,
+          cost: this.price,
+          depositAmount: deposit,
+        });
+      } else {
+        feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
+          contractAddress,
+          method: QuestMethods.EditJob,
+          data: [hashText(this.textarea), new BigNumber(this.price).shiftedBy(18).toString()],
+        });
       }
-      // await this.editQuest();
+
+      if (feeRes.ok === false) {
+        await this.$store.dispatch('main/showToast', {
+          title: 'Error',
+          text: 'Not enough funds',
+        });
+        return;
+      }
+      console.log(feeRes);
+
+      const fields = {
+        from: {
+          name: this.$t('modals.fromAddress'),
+          value: this.userAddress,
+        },
+        to: {
+          name: this.$t('modals.toAddress'),
+          value: contractAddress,
+        },
+        fee: {
+          name: this.$t('wallet.table.trxFee'),
+          value: feeRes.result.fee,
+          symbol: TokenSymbols.WUSD,
+        },
+      };
+      if (deposit) {
+        fields.amount = {
+          name: this.$t('modals.amount'),
+          value: deposit,
+          symbol: TokenSymbols.WUSD,
+        };
+      }
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields,
+        submitMethod: async () => {
+          const res = await this.$store.dispatch('wallet/editQuest', {
+            contractAddress,
+            cost: this.price,
+            description: this.textarea,
+            depositAmount: deposit,
+          });
+          if (res.ok) {
+            console.log('EDIT QUEST RES: ', res);
+            await this.editQuest();
+          }
+        },
+      });
     },
     async editQuest() {
       if (this.mode === 'raise') {
