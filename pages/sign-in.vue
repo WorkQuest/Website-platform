@@ -285,7 +285,6 @@ export default {
     async importWallet(wallet) {
       // Correct phrase, but not assigned to this account
       if (!this.userAddress) {
-        console.log('nu ne suda je...');
         await this.assignWallet(wallet);
         return;
       }
@@ -302,7 +301,6 @@ export default {
       });
     },
     saveToStorage(wallet) {
-      console.log(wallet);
       initWallet(wallet.address, wallet.privateKey);
       localStorage.setItem('mnemonic', JSON.stringify({
         ...JSON.parse(localStorage.getItem('mnemonic')),

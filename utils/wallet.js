@@ -28,7 +28,6 @@ const wallet = {
   init(address, privateKey) {
     this.address = address.toLowerCase();
     this.privateKey = privateKey;
-    console.error(this.address, this.privateKey);
     if (privateKey) {
       const account = web3.eth.accounts.privateKeyToAccount(wallet.privateKey);
       web3.eth.accounts.wallet.add(account);
