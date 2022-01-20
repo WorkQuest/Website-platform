@@ -1,6 +1,12 @@
 import { error } from '~/utils/web3';
 
 export default {
+  async addEducation({ commit }, data) {
+    commit('setEducations', data);
+  },
+  async addWorkExperiences({ commit }, data) {
+    commit('setWorkExperiences', data);
+  },
   async getStatistic({ commit }) {
     try {
       const { result } = await this.$axios.$get('/v1/profile/statistic/me');

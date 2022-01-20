@@ -123,8 +123,8 @@ export default {
         },
         description: addInfo.description,
         skills: addInfo.skills,
-        educations: addInfo.educations,
-        workExperiences: addInfo.workExperiences,
+        educations: addInfo.educations.slice(),
+        workExperiences: addInfo.workExperiences.slice(),
         CEO: addInfo.CEO,
         company: addInfo.company,
         website: addInfo.website,
@@ -149,12 +149,14 @@ export default {
 
     // MODALS METHODS
     addEducation(knowledge, data) {
+      const educations = this.profile.additionalInfo.educations.slice();
+      const workExperiences = this.profile.additionalInfo.workExperiences.slice();
       if (knowledge === 'newEducation') {
         this.newEducation.push({ ...data });
-        this.profile.additionalInfo.educations = this.newEducation;
+        this.profile.additionalInfo.educations = educations.concat(this.newEducation);
       } else {
         this.newWorkExp.push({ ...data });
-        this.profile.additionalInfo.workExperiences = this.newWorkExp;
+        this.profile.additionalInfo.workExperiences = workExperiences.concat(this.newWorkExp);
       }
     },
     modalsStatusTitle(modalMode) {

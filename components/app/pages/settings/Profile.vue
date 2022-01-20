@@ -446,6 +446,7 @@ export default {
       this.$refs[observerName].reset();
     },
     deleteKnowledge(knowledgeArray, index) {
+      console.log(knowledgeArray);
       knowledgeArray.splice(index, 1);
     },
     clearError(value, observerName) {
