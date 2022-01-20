@@ -5,7 +5,7 @@ export default {
   async getTableDataForWqtWbnbPool({ commit }, { limit = 10, offset = 0 }) {
     try {
       const response = await this.$axios.$get(`/v1/pool-liquidity/wqt-wbnb/swaps?limit=${limit}&offset=${offset}`);
-      commit('setTableData', response.result);
+      commit('setTableData', response.result.swaps);
       return response;
     } catch (e) {
       console.error('error in getTableDataForWqtWbnbPool', e);

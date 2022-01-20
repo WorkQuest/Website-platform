@@ -249,6 +249,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import chart from './graphics_data';
 import { StakingTypes } from '~/utils/enums';
@@ -334,13 +335,14 @@ export default {
     tableData() {
       const arr = [];
       this.miningSwaps.forEach((data) => {
-        arr.push({
+        const info = {
           totalValue: `${this.Floor(data.amountUSD, 2)} $`,
           account: data.to,
           accountView: this.CutTxn(data.to),
-          time: moment(new Date(data.transaction.timestamp * 1000)).startOf('hour').fromNow(),
-          ...this.getTokensAmount(data),
-        });
+          time: moment(new Date((data.timestamp || data.transaction.timestamp) * 1000)).startOf('hour').fromNow(),
+          ...this.getTokensAmount(data, !!data.timestamp),
+        };
+        arr.push(info);
       });
       return arr;
     },
@@ -392,13 +394,28 @@ export default {
     ]);
   },
   methods: {
-    getTokensAmount(data) {
+    // isBNB удалить проверку, если на бэке сделают приведение из десимал
+    getTokensAmount(data, isBNB) {
       const { currentPool } = this;
       if (data.amount0Out > 0) {
+        if (isBNB) {
+          return {
+            poolAddress: currentPool === 'ETH' ? 'Swap WETH for WQT' : 'Swap WQT for WBNB',
+            tokenAmount0: `${new BigNumber(data.amount1In || 0).shiftedBy(-18).decimalPlaces(3).toString()} ${currentPool === 'ETH' ? 'WETH' : 'WQT'}`,
+            tokenAmount1: `${new BigNumber(data.amount0Out || 0).shiftedBy(-18).decimalPlaces(3).toString()} ${currentPool === 'ETH' ? 'WQT' : 'WBNB'}`,
+          };
+        }
         return {
           poolAddress: currentPool === 'ETH' ? 'Swap WETH for WQT' : 'Swap WQT for WBNB',
           tokenAmount0: `${this.Floor(data.amount1In, 3)} ${currentPool === 'ETH' ? 'WETH' : 'WQT'}`,
           tokenAmount1: `${this.Floor(data.amount0Out, 3)} ${currentPool === 'ETH' ? 'WQT' : 'WBNB'}`,
+        };
+      }
+      if (isBNB) {
+        return {
+          poolAddress: currentPool === 'ETH' ? 'Swap WETH for WQT' : 'Swap WQT for WBNB',
+          tokenAmount0: `${new BigNumber(data.amount0In || 0).shiftedBy(-18).decimalPlaces(3).toString()} ${currentPool === 'ETH' ? 'WETH' : 'WQT'}`,
+          tokenAmount1: `${new BigNumber(data.amount1Out || 0).shiftedBy(-18).decimalPlaces(3).toString()} ${currentPool === 'ETH' ? 'WQT' : 'WBNB'}`,
         };
       }
       return {
