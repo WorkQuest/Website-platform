@@ -73,6 +73,10 @@ export const connectWallet = (userAddress, userPassword) => {
     _walletTemp = createWallet(mnemonic);
     if (_walletTemp && _walletTemp.address.toLowerCase() === userAddress) {
       wallet.init(_walletTemp.address.toLowerCase(), _walletTemp.privateKey);
+      sessionStorage.setItem('mnemonic', JSON.stringify({
+        ...JSON.parse(sessionStorage.getItem('mnemonic')),
+        [userAddress]: mnemonic,
+      }));
       return success();
     }
   }
@@ -81,6 +85,10 @@ export const connectWallet = (userAddress, userPassword) => {
   return error();
 };
 
+/**
+ * Connect to wallet with mnemonic from session
+ * @param userAddress
+ */
 export const connectWithMnemonic = (userAddress) => {
   const sessionData = JSON.parse(sessionStorage.getItem('mnemonic'));
   if (!sessionData) return;
