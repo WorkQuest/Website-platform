@@ -18,7 +18,7 @@ export default {
     config, chatId, direction, offset,
   }) {
     try {
-      const method = chatId === 'starred' ? '/v1/user/me/chat/messages/star' : `/v1/user/me/chat/${chatId}/messages`;
+      const method = `/v1/user/me/chat/${chatId === 'starred' ? 'messages/star' : `${chatId}/messages`}`;
       const { result } = await this.$axios.$get(method, config);
       const myId = user.userData.id;
 
@@ -82,10 +82,10 @@ export default {
       return console.log(e);
     }
   },
-  async handleSendMessage({ commit, rootState: { chat: { messages, messagesFilter } } }, { chatId, config }) {
+  async handleSendMessage({ commit, state }, { chatId, config }) {
     const { payload } = await this.$wsChat.$post(`/api/v1/chat/${chatId}/send-message`, config);
 
-    if (payload.ok && !messagesFilter.canLoadToBottom) {
+    if (payload.ok && !state.messagesFilter.canLoadToBottom) {
       const message = payload.result;
       message.itsMe = true;
 
@@ -104,7 +104,7 @@ export default {
     const { result } = await this.$axios.$post('/v1/storage/get-upload-link', config);
     return result;
   },
-  async setMessageAsRead({ commit, rootState: { user } }, { config, chatId }) {
+  async setMessageAsRead({ commit }, { config, chatId }) {
     try {
       const response = await this.$axios.$post(`/v1/read/message/${chatId}`, config);
 
@@ -150,13 +150,13 @@ export default {
 
     commit('setGroupChatUsers', result);
   },
-  async removeMember({ commit, rootState: { chat: { messagesFilter } } }, { chatId, userId }) {
+  async removeMember({ commit, state }, { chatId, userId }) {
     const response = await this.$axios.$delete(`/v1/user/me/chat/group/${chatId}/remove/${userId}`);
 
     if (response.ok) {
       const message = response.result;
 
-      if (!messagesFilter.canLoadToBottom) {
+      if (!state.messagesFilter.canLoadToBottom) {
         message.itsMe = true;
 
         await commit('addMessageToList', message);
@@ -167,13 +167,13 @@ export default {
 
     return response;
   },
-  async addNewMembers({ commit, rootState: { chat: { messagesFilter } } }, { chatId, config }) {
+  async addNewMembers({ commit, state }, { chatId, config }) {
     try {
       const response = await this.$axios.$post(`/v1/user/me/chat/group/${chatId}/add`, config);
 
       if (response.ok) {
         response.result.forEach((message) => {
-          if (!messagesFilter.canLoadToBottom) {
+          if (!state.messagesFilter.canLoadToBottom) {
             message.itsMe = true;
 
             commit('addMessageToList', message);
