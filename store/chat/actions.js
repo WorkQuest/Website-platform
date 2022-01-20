@@ -1,5 +1,3 @@
-import content from '~/components/wiki/content';
-
 export default {
   async getChatsList({ commit, rootState }, params) {
     try {
