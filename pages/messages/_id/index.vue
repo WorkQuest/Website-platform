@@ -16,14 +16,14 @@
           <div class="chat-container__chat-name">
             <template v-if="currChat">
               <div
-                v-if="currChat.type === 'quest'"
+                v-if="currChat.type === ChatType.QUEST"
                 class="chat-container__quest-link"
                 @click="goToQuest"
               >
                 {{ currChat && currChat.questChat && currChat.questChat.quest.title }}
               </div>
               <div
-                v-if="currChat.type === 'group'"
+                v-if="currChat.type === ChatType.GROUP"
                 class="chat-container__group-chat-cont"
               >
                 <div class="chat-container__group-name">
@@ -148,7 +148,7 @@ import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import ChatMenu from '~/components/ui/ChatMenu';
 import MessagesList from '~/components/app/pages/messages_id/messagesList';
-import { questChatStatus } from '~/utils/enums';
+import { ChatType, QuestChatStatus } from '~/utils/enums';
 
 export default {
   name: 'Messages',
@@ -168,16 +168,19 @@ export default {
       userData: 'user/getUserData',
       currChat: 'chat/getCurrChatInfo',
     }),
+    ChatType() {
+      return ChatType;
+    },
     canShowMenu() {
       const { isClosedQuestChat, currChat } = this;
-      return !isClosedQuestChat ? currChat?.type !== 'group'
-        || (currChat?.type === 'group' && !this.amIOwner) : false;
+      return !isClosedQuestChat ? currChat?.type !== ChatType.GROUP
+        || (currChat?.type === ChatType.GROUP && !this.amIOwner) : false;
     },
     isClosedQuestChat() {
-      return this.currChat?.questChat?.status === questChatStatus.Closed;
+      return this.currChat?.questChat?.status === QuestChatStatus.Closed;
     },
     canLeave() {
-      return this.currChat?.type === 'group' && !this.amIOwner;
+      return this.currChat?.type === ChatType.GROUP && !this.amIOwner;
     },
     amIOwner() {
       return this.currChat?.owner.id === this.userData.id;

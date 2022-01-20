@@ -95,7 +95,17 @@ export const priorityFilter = [
   1, // fixedDelivery
 ];
 
-export const questChatStatus = {
+export const ChatType = {
+  GROUP: 'group',
+  QUEST: 'quest',
+};
+
+export const MessageType = {
+  INFO: 'info',
+  MESSAGE: 'message',
+};
+
+export const QuestChatStatus = {
   Active: 0,
   Closed: 1,
 };

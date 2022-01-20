@@ -42,20 +42,23 @@
                     </div>
                   </div>
                   <div class="chat__title chat__title_bold">
-                    {{ chat.type === 'group' ? chat.name : (chat.userMembers[0].firstName || '') + ' ' + (chat.userMembers[0].lastName || '') }}
+                    {{ chat.type === ChatType.GROUP ? chat.name : (chat.userMembers[0].firstName || '') + ' ' + (chat.userMembers[0].lastName || '') }}
                   </div>
                   <div
-                    v-if="chat.type === 'group' || chat.type === 'quest'"
+                    v-if="chat.type === ChatType.GROUP || chat.type === ChatType.QUEST"
                     class="chat__title"
-                    :class="[{'chat__title_gray' : chat.type === 'group'}, {'chat__title_link' : chat.type === 'quest'}]"
-                    @click="chat.type === 'quest' ? goToQuest($event, chat.questChat.questId) : handleSelChat(chat.id)"
+                    :class="[
+                      {'chat__title_gray' : chat.type === ChatType.GROUP},
+                      {'chat__title_link' : chat.type === ChatType.QUEST}
+                    ]"
+                    @click="chat.type === ChatType.QUEST ? goToQuest($event, chat.questChat.questId) : handleSelChat(chat.id)"
                   >
-                    {{ chat.type === 'group' ? $t('chat.group') : (chat && chat.questChat && chat.questChat.quest.title) }}
+                    {{ chat.type === ChatType.QUEST ? $t('chat.group') : (chat && chat.questChat && chat.questChat.quest.title) }}
                   </div>
                 </div>
                 <div class="chat__row">
                   <div
-                    v-if="userData.id === chat.lastMessage.sender.id || chat.type === 'group'"
+                    v-if="userData.id === chat.lastMessage.sender.id || chat.type === ChatType.GROUP"
                     class="chat__title"
                   >
                     {{ userData.id === chat.lastMessage.sender.id ? $t('chat.you') : `${chat.lastMessage.sender.firstName || ''} ${chat.lastMessage.sender.lastName || ''}:` }}
@@ -118,6 +121,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import ChatMenu from '~/components/ui/ChatMenu';
+import { ChatType } from '~/utils/enums';
 
 export default {
   name: 'Messages',
@@ -138,6 +142,9 @@ export default {
       chats: 'chat/getChats',
       userData: 'user/getUserData',
     }),
+    ChatType() {
+      return ChatType;
+    },
     canLoadMoreChats() {
       const { count, list } = this.chats;
 

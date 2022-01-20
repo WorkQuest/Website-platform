@@ -23,11 +23,11 @@
         :class="[
           {'message_right' : message.itsMe},
           {'message_blink' : message.number === selStarredMessageNumber},
-          {'message_info' : message.type === 'info'}
+          {'message_info' : message.type === MessageType.INFO}
         ]"
       >
         <div
-          v-if="message.type === 'info' && message.infoMessage"
+          v-if="message.type === MessageType.INFO && message.infoMessage"
           class="info-message"
         >
           <div class="info-message__title">
@@ -177,6 +177,7 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import modals from '~/store/modals/modals';
+import { MessageType } from '~/utils/enums';
 
 export default {
   name: 'MessagesList',
@@ -206,6 +207,9 @@ export default {
       chats: 'chat/getChats',
       currChatIsUnread: 'chat/currChatIsUnread',
     }),
+    MessageType() {
+      return MessageType;
+    },
   },
   watch: {
     lastMessageId(newVal, oldVal) {
@@ -231,7 +235,6 @@ export default {
     }
 
     await this.getMessages(direction, bottomOffset);
-    // if (this.currChatIsUnread && this.lastMessageId) await this.readMessages();
     this.scrollToBottom(true);
   },
   destroyed() {
@@ -243,7 +246,7 @@ export default {
       const { list } = this.messages;
       const prevMessage = i ? list[i - 1] : null;
 
-      return prevMessage?.senderUserId === message.senderUserId && prevMessage?.type !== 'info';
+      return prevMessage?.senderUserId === message.senderUserId && prevMessage?.type !== MessageType.INFO;
     },
     setSenderAvatar({ sender }) {
       return sender?.avatar?.url || require('~/assets/img/app/avatar_empty.png');

@@ -73,7 +73,7 @@ export default {
       return result;
     } catch (e) {
       console.log(e);
-      return { ok: false };
+      return e;
     }
   },
   async handleCreateGroupChat({ commit }, config) {
