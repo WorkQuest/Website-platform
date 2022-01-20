@@ -171,7 +171,7 @@ import questPanel from '~/components/app/panels/questPanel';
 import quests from '~/components/app/pages/common/quests';
 import itemRating from '~/components/app/info/item-rating';
 import emptyData from '~/components/app/info/emptyData';
-import { success } from '~/utils/web3';
+import abi from '~/abi/index';
 
 export default {
   name: 'Quests',
@@ -258,6 +258,12 @@ export default {
     },
   },
   async beforeMount() {
+    console.log(await this.$store.dispatch('wallet/fetchContractData', {
+      _abi: abi.WorkQuest,
+      address: '0x1A54E37bFD6A0449d32987D80ECdea8CD9C84c84',
+      method: 'getInfo',
+    }));
+
     this.SetLoader(true);
     await this.getQuest();
     if (this.userRole === UserRole.WORKER) await this.getSameQuests();

@@ -1,11 +1,9 @@
-import { ethers } from 'ethers';
 import BigNumber from 'bignumber.js';
 import {
   connectWallet,
   createQuest,
   disconnect,
   fetchJobMethod,
-  getAccountQuests,
   getBalance,
   getContractFeeData,
   fetchContractData,
@@ -93,6 +91,11 @@ export default {
       fullBalance: res.ok ? getStyledAmount(res.result, true) : 0,
     });
   },
+  async fetchContractData({ commit }, {
+    method, _abi, address, params,
+  }) {
+    return await fetchContractData(method, _abi, address, params);
+  },
   /**
    * Send transfer
    * @param recipient
@@ -145,7 +148,7 @@ export default {
   async getEditQuestFeeData({ commit }, {
     contractAddress, description, cost, depositAmount,
   }) {
-    return await getEditQuestFeeData(contractAddress, description, cost, depositAmount || null);
+    return await getEditQuestFeeData(contractAddress, description, cost, depositAmount);
   },
 
   async getFeeDataJobMethod({ commit }, {

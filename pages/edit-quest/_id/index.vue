@@ -556,8 +556,7 @@ export default {
       let feeRes;
       let deposit;
       if (this.price > this.prevPrice) { // Цена за квест стала ВЫШЕ
-        // .minus(this.prevPrice)
-        deposit = new BigNumber(this.price).multipliedBy(1 + this.questFee).toString();
+        deposit = new BigNumber(this.price).minus(this.prevPrice).multipliedBy(1 + this.questFee).toString();
         feeRes = await this.$store.dispatch('wallet/getEditQuestFeeData', {
           contractAddress,
           description: this.textarea,
