@@ -44,28 +44,11 @@ const wallet = {
     this.privateKey = null;
   },
 };
+export const getIsWalletConnected = () => !!wallet.address && !!wallet.privateKey;
 export const getWalletAddress = () => wallet.address;
 export const initWallet = (address, key) => {
   wallet.init(address, key);
 };
-
-/**
- * trying to get key from session then return wallet connected
- * @returns {boolean}
- */
-export const getIsWalletConnected = () => !!wallet.address && !!wallet.privateKey;
-// { todo: del
-// if (!wallet.privateKey && wallet.address) {
-//   const session = JSON.parse(sessionStorage.getItem('keys'));
-//   if (!session) return false;
-//   const key = session[wallet.address];
-//   if (key) {
-//     wallet.init(wallet.address, key);
-//     return true;
-//   }
-// }
-// return !!wallet.address && !!wallet.privateKey;
-// };
 
 /**
  * * Check wallet for current address
