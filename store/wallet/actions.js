@@ -1,5 +1,5 @@
 import {
-  connectWallet,
+  connectWallet, connectWithMnemonic,
   disconnect,
   fetchContractData,
   getBalance, getContractFeeData,

@@ -229,37 +229,51 @@ export default {
         this.userAddress = address.toLowerCase();
 
         // Wallet assigned, checking storage
+        const sessionData = JSON.parse(sessionStorage.getItem('mnemonic'));
         const storageData = JSON.parse(localStorage.getItem('mnemonic'));
-        if (!storageData) {
+        if (!sessionData && !storageData) {
           this.step = WalletState.ImportMnemonic;
           this.SetLoader(false);
           return;
         }
 
+        const sessionMnemonic = sessionData ? sessionData[address.toLowerCase()] : null;
         const storageMnemonic = storageData ? storageData[address.toLowerCase()] : null;
-        if (!storageMnemonic) {
+        if (!sessionMnemonic && !storageMnemonic) {
           this.step = WalletState.ImportMnemonic;
           this.SetLoader(false);
           return;
+        }
+
+        // Check in session if exists
+        if (sessionMnemonic) {
+          const wallet = createWallet(sessionMnemonic);
+          if (wallet && wallet.address.toLowerCase() === this.userAddress) {
+            this.saveToStorage(wallet);
+            this.redirectUser();
+            this.SetLoader(false);
+            return;
+          }
         }
 
         // Check in storage
-        const mnemonic = decryptStringWitheKey(storageMnemonic, this.model.password);
-        const wallet = createWallet(mnemonic);
-        if (wallet && wallet.address.toLowerCase() === this.userAddress) {
-          this.saveToStorage(wallet);
-          this.redirectUser();
-          this.SetLoader(false);
-          return;
+        if (storageMnemonic) {
+          const mnemonic = decryptStringWitheKey(storageMnemonic, this.model.password);
+          const wallet = createWallet(mnemonic);
+          if (wallet && wallet.address.toLowerCase() === this.userAddress) {
+            this.saveToStorage(wallet);
+            this.redirectUser();
+            this.SetLoader(false);
+            return;
+          }
         }
 
-        // Storage invalid mnemonics
+        // Session & Storage invalid mnemonics
         await this.$store.dispatch('main/showToast', {
           title: this.$t('toasts.error'),
           text: this.$t('messages.mnemonic'),
         });
         // Reset mnemonic for address -> importing
-        // this.saveToStorage({ address: this.userAddress, mnemonic: {} });
         this.step = WalletState.ImportMnemonic;
       }
       this.SetLoader(false);
@@ -306,6 +320,11 @@ export default {
         ...JSON.parse(localStorage.getItem('mnemonic')),
         [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
       }));
+      sessionStorage.setItem('mnemonic', JSON.stringify({
+        ...JSON.parse(sessionStorage.getItem('mnemonic')),
+        [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
+      }));
+      this.$store.dispatch('wallet/connectWallet', { userAddress: wallet.address, userPassword: this.model.password });
     },
     redirectUser() {
       this.addressAssigned = true;

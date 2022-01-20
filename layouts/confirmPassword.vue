@@ -63,13 +63,24 @@ export default {
       return;
     }
     // Try to find mnemonic in storage by user wallet address
+    // Checking session storage
+    const session = JSON.parse(sessionStorage.getItem('mnemonic'));
+    let mnemonic = null;
+    if (session) {
+      mnemonic = session[this.userAddress];
+      if (mnemonic) {
+        this.toDecrypt = mnemonic;
+        return;
+      }
+    }
+
     // Checking local storage
     const storage = JSON.parse(localStorage.getItem('mnemonic'));
     if (!storage) {
       this.disconnect();
       return;
     }
-    const mnemonic = storage[this.userAddress];
+    mnemonic = storage[this.userAddress];
     if (!mnemonic) {
       this.disconnect();
       return;

@@ -206,6 +206,10 @@ export default {
             ...JSON.parse(localStorage.getItem('mnemonic')),
             [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
           }));
+          sessionStorage.setItem('mnemonic', JSON.stringify({
+            ...JSON.parse(sessionStorage.getItem('mnemonic')),
+            [wallet.address.toLowerCase()]: wallet.mnemonic.phrase,
+          }));
           this.showConfirmEmailModal();
         }
       }
