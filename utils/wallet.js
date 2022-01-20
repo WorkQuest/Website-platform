@@ -374,7 +374,7 @@ export const getEditQuestFeeData = async (contractAddress, description, cost, de
     depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
     const hash = hashText(description);
     const inst = new web3.eth.Contract(abi.WorkQuest, contractAddress);
-    console.log(cost, depositAmount, description, contractAddress);
+    console.log(cost, depositAmount, hash, contractAddress);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       inst.methods[QuestMethods.EditJob].apply(null, [hash, cost]).estimateGas({
@@ -393,16 +393,6 @@ export const getEditQuestFeeData = async (contractAddress, description, cost, de
     return error();
   }
 };
-// Удалить позже (уже будет не нужен как появится бэк)
-// export const getAccountQuests = async () => {
-//   try {
-//     const _abi = abi.WorkQuestFactory;
-//     const _abiAddress = process.env.WORK_QUEST_FACTORY;
-//     return await fetchContractData('getWorkQuests', _abi, _abiAddress, [wallet.address]);
-//   } catch (e) {
-//     return error(500, '', e.message);
-//   }
-// };
 
 export const fetchJobMethod = async (contractAddress, method, param = []) => {
   try {

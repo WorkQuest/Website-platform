@@ -327,7 +327,7 @@ export default {
       const response = await this.$store.dispatch('quests/questCreate', payload);
       if (response.ok) {
         // После создания квеста на бэке - генерируем новый контракт квеста
-        // const { nonce } = reponse.result;
+        // const { nonce } = response.result; // взять nonce
         const nonce = '123'; // TODO: remove this line, uncomment up line
         this.showSendTransactionModal(feeRes.result.fee, response.result.id, nonce);
       }

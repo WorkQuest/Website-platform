@@ -258,6 +258,7 @@ export default {
     },
   },
   async beforeMount() {
+    // TODO: DELETE!!!
     console.log(await this.$store.dispatch('wallet/fetchContractData', {
       _abi: abi.WorkQuest,
       address: '0x1A54E37bFD6A0449d32987D80ECdea8CD9C84c84',
@@ -533,7 +534,7 @@ export default {
     async acceptCompletedWorkOnQuest() {
       if (await this.checkConnected() === false) return;
 
-      const contractAddress = '0x1A54E37bFD6A0449d32987D80ECdea8CD9C84c84'; // TODO: get from back
+      const contractAddress = '0xCAacf8Ac02F96574D7cAb1d7077587ADAC43B458'; // TODO: get from back
       this.SetLoader(true);
       const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
         method: QuestMethods.AcceptJobResult,
@@ -627,7 +628,7 @@ export default {
     async acceptWorkOnQuest() {
       if (await this.checkConnected() === false) return;
 
-      const contractAddress = '0x1A54E37bFD6A0449d32987D80ECdea8CD9C84c84'; // TODO: get from back
+      const contractAddress = '0xCAacf8Ac02F96574D7cAb1d7077587ADAC43B458'; // TODO: get from back
       this.SetLoader(true);
       const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
         method: QuestMethods.AcceptJob,
@@ -668,7 +669,7 @@ export default {
     async rejectWorkOnQuest() {
       if (await this.checkConnected() === false) return;
 
-      const contractAddress = '0x1A54E37bFD6A0449d32987D80ECdea8CD9C84c84'; // TODO: get from back
+      const contractAddress = '0xCAacf8Ac02F96574D7cAb1d7077587ADAC43B458'; // TODO: get from back
       this.SetLoader(true);
       const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
         method: QuestMethods.DeclineJob,
@@ -710,7 +711,7 @@ export default {
     async completeWorkOnQuest() {
       if (await this.checkConnected() === false) return;
 
-      const contractAddress = '0x1A54E37bFD6A0449d32987D80ECdea8CD9C84c84'; // TODO: get from back
+      const contractAddress = '0xCAacf8Ac02F96574D7cAb1d7077587ADAC43B458'; // TODO: get from back
       this.SetLoader(true);
       const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
         method: QuestMethods.VerificationJob,

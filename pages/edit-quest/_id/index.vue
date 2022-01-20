@@ -552,7 +552,7 @@ export default {
         await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
       }
 
-      const contractAddress = '0x1A54E37bFD6A0449d32987D80ECdea8CD9C84c84'; // TODO: get from back
+      const contractAddress = '0xCAacf8Ac02F96574D7cAb1d7077587ADAC43B458'; // TODO: get from back
       let feeRes;
       let deposit;
       if (this.price > this.prevPrice) { // Цена за квест стала ВЫШЕ
