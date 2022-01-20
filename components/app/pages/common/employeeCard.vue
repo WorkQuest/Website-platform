@@ -4,20 +4,18 @@
     @click="$emit('click')"
   >
     <div class="card__header">
-      <div class="card__header_top">
-        <div class="card__header_left">
-          <img
-            class="card__img"
-            :src="user.avatar !== null ? user.avatar.url: require('~/assets/img/app/avatar_empty.png')"
-            :alt="user.firstName"
-          >
-        </div>
-        <div class="card__header_right">
-          <span class="card__name">
-            {{ user.firstName ? user.firstName : $t('quests.namelessWorker') }}
-            {{ user.lastName ? user.lastName : "" }}
-          </span>
-        </div>
+      <div class="card__header_left">
+        <img
+          class="card__img"
+          :src="user.avatar !== null ? user.avatar.url: require('~/assets/img/app/avatar_empty.png')"
+          :alt="user.firstName"
+        >
+      </div>
+      <div class="card__header_right">
+        <span class="card__name">
+          {{ user.firstName ? user.firstName : $t('quests.namelessWorker') }}
+          {{ user.lastName ? user.lastName : "" }}
+        </span>
       </div>
     </div>
     <div class="card__spec_title">
@@ -118,6 +116,20 @@ export default {
   &:hover {
     box-shadow: -1px 1px 8px 0px rgba(34, 60, 80, 0.2);
   }
+
+  &__header {
+    display: grid;
+    grid-template-columns: 61px 1fr;
+    grid-gap: 15px;
+    align-items: center;
+
+    &_right {
+      display: grid;
+      grid-template-rows: 20px 1fr;
+      grid-gap: 7px;
+    }
+  }
+
   &__spec {
     font-weight: 400;
     font-size: 14px;
@@ -128,27 +140,14 @@ export default {
       font-weight: 400;
     }
   }
-  &__header {
-    display: flex;
-    flex-direction: column;
-    &_top {
-      display: grid;
-      grid-template-columns: 61px 1fr;
-      grid-gap: 15px;
-      align-items: center;
-    }
-    &_right {
-      display: grid;
-      grid-template-rows: 20px 1fr;
-      grid-gap: 7px;
-    }
-  }
+
   &__img {
     width: 61px;
     height: 61px;
     border-radius: 100%;
     object-fit: cover;
   }
+
   &__name {
     @include text-simple;
     font-size: 18px;
@@ -157,11 +156,13 @@ export default {
     text-overflow: ellipsis;
     overflow: hidden;
   }
+
   &__title {
     margin: 15px 0 0 0;
     font-weight: 400;
     font-size: 14px;
   }
+
   &__about {
     margin: 0 0 15px 0;
     font-weight: 400;
@@ -176,6 +177,7 @@ export default {
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
   }
+
   &__address {
     margin: 0 0 15px 0;
     font-weight: 500;
@@ -184,12 +186,14 @@ export default {
   }
 }
 .badge {
+
   &-list {
     white-space: nowrap;
     width: 100%;
     overflow: hidden;
     display: flex;
   }
+
   &__container {
     padding: 0;
     width: 100%;
@@ -198,6 +202,7 @@ export default {
     font-size: 14px;
     color: $blue;
   }
+
   &__item {
     white-space: nowrap;
     overflow: hidden;
@@ -218,6 +223,7 @@ export default {
     line-height: 18px;
     margin-bottom: 5px;
   }
+
   &__value {
     font-size: 18px;
     line-height: 23px;
