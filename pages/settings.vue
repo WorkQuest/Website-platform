@@ -9,6 +9,7 @@
       tag="div"
     >
       <verification-card v-if="userRole === 'worker' && isShowInfo === true" />
+      {{ profile }}
       <profile
         :profile="profile"
         :new-education="newEducation"
@@ -94,6 +95,7 @@ export default {
       userData: 'user/getUserData',
       accessToken: 'sumsub/getSumSubBackendToken',
       filters: 'quests/getFilters',
+      secondNumber: 'user/getUserSecondMobileNumber',
     }),
   },
   async mounted() {
@@ -108,9 +110,9 @@ export default {
       firstPhone: this.userData.tempPhone || this.userData.phone,
       additionalInfo: {
         secondMobileNumber: {
-          codeRegion: this.userData.secondMobileNumber?.codeRegion || null,
-          phone: this.userData.secondMobileNumber?.phone || null,
-          fullPhone: this.userData.secondMobileNumber?.fullPhone || null,
+          codeRegion: this.secondNumber.codeRegion || null,
+          phone: this.secondNumber.phone || null,
+          fullPhone: this.secondNumber.fullPhone || null,
         },
         address: addInfo.address,
         socialNetwork: {
@@ -278,7 +280,6 @@ export default {
           ...payload,
           additionalInfo: {
             ...payload.additionalInfo,
-            secondMobileNumber: this.updatedSecondPhone,
             educations: this.profile.additionalInfo.educations,
             workExperiences: this.profile.additionalInfo.workExperiences,
             description: this.profile.additionalInfo.description || null,
@@ -299,6 +300,7 @@ export default {
         };
         await this.editProfileResponse('user/editEmployerData', payload);
       }
+      await this.$store.dispatch('user/getUserData');
     },
 
     parseDistantWork(index) {
