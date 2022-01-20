@@ -255,7 +255,7 @@ export default {
       const {
         instagram, twitter, linkedin, facebook,
       } = this.profile.additionalInfo.socialNetwork;
-      let payload = {
+      const payload = {
         avatarId: checkAvatarID,
         firstName: this.profile.firstName,
         lastName: this.profile.lastName,
@@ -274,31 +274,28 @@ export default {
           },
         },
       };
-      if (this.userRole === 'worker') {
-        payload = {
-          ...payload,
-          additionalInfo: {
-            ...payload.additionalInfo,
-            educations: this.profile.additionalInfo.educations,
-            workExperiences: this.profile.additionalInfo.workExperiences,
-            description: this.profile.additionalInfo.description || null,
-          },
-          workplace: this.parseDistantWork(this.skills.distantIndex),
-          priority: this.skills.priorityIndex,
-          wagePerHour: this.skills.perHour ? this.skills.perHour : this.userData.wagePerHour,
-          specializationKeys: this.skills.selectedSpecAndSkills || [],
-        };
-        await this.editProfileResponse('user/editWorkerData', payload);
-      } if (this.userRole === 'employer') {
-        payload.additionalInfo = {
+      await this.editProfileResponse('user/editWorkerData', this.userRole === 'worker' ? {
+        ...payload,
+        additionalInfo: {
+          ...payload.additionalInfo,
+          educations: this.profile.additionalInfo.educations,
+          workExperiences: this.profile.additionalInfo.workExperiences,
+          description: this.profile.additionalInfo.description || null,
+        },
+        workplace: this.parseDistantWork(this.skills.distantIndex),
+        priority: this.skills.priorityIndex,
+        wagePerHour: this.skills.perHour ? this.skills.perHour : this.userData.wagePerHour,
+        specializationKeys: this.skills.selectedSpecAndSkills || [],
+      } : {
+        ...payload,
+        additionalInfo: {
           ...payload.additionalInfo,
           description: this.profile.additionalInfo.description || null,
           company: this.profile.additionalInfo.company || null,
           CEO: this.profile.additionalInfo.CEO || null,
           website: this.profile.additionalInfo.website || null,
-        };
-        await this.editProfileResponse('user/editEmployerData', payload);
-      }
+        },
+      });
       await this.$store.dispatch('user/getUserData');
     },
 
