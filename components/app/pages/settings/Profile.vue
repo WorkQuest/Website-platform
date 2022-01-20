@@ -167,20 +167,19 @@
               @click="deleteKnowledge(profile.additionalInfo.educations, index)"
             />
           </div>
-          <ValidationObserver
+          <ValidationProvider
             ref="education"
             tag="div"
             class="profile__validation"
-            disabled
+            :mode="'passive'"
           >
             <add-form
               :item="newEducation"
               :is-adding="true"
-              :validation-mode="'passive'"
               @click="addNewKnowledge(profile.additionalInfo.educations, 'newEducation', 'education', 'education')"
               @blur="clearError(newEducation, 'education')"
             />
-          </ValidationObserver>
+          </ValidationProvider>
         </div>
         <div class="profile__knowledge-container">
           <div class="profile__knowledge-title">
@@ -198,11 +197,11 @@
               @click="deleteKnowledge(profile.additionalInfo.workExperiences, index)"
             />
           </div>
-          <ValidationObserver
+          <ValidationProvider
             ref="work"
             tag="div"
             class="profile__validation"
-            disabled
+            :mode="'passive'"
           >
             <add-form
               :item="newWorkExp"
@@ -210,7 +209,7 @@
               @click="addNewKnowledge(profile.additionalInfo.workExperiences, 'newWorkExp', 'work', 'work')"
               @blur="clearError(newWorkExp, 'work')"
             />
-          </ValidationObserver>
+          </ValidationProvider>
         </div>
       </div>
       <div class="profile__socials">
@@ -440,14 +439,11 @@ export default {
 
     // ADD KNOWLEDGE METHODS
     async addNewKnowledge(knowledgeArray, newKnowledge, observerName, modalMsg) {
-      const validate = await this.$refs[observerName].validate();
-      if (validate) {
-        this.$emit('updateEducation', newKnowledge, this[newKnowledge]);
-        this[newKnowledge] = { from: '', to: '', place: '' };
-        const modalMode = modalMsg === 'education' ? 'educationAddSuccessful' : 'workExpAddSuccessful';
-        this.$emit('showModalStatus', modalMode);
-        this.$refs[observerName].reset();
-      }
+      this.$emit('updateEducation', newKnowledge, this[newKnowledge]);
+      this[newKnowledge] = { from: '', to: '', place: '' };
+      const modalMode = modalMsg === 'education' ? 'educationAddSuccessful' : 'workExpAddSuccessful';
+      this.$emit('showModalStatus', modalMode);
+      this.$refs[observerName].reset();
     },
     deleteKnowledge(knowledgeArray, index) {
       knowledgeArray.splice(index, 1);

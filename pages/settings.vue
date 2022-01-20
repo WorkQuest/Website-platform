@@ -101,6 +101,7 @@ export default {
     this.SetLoader(true);
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
     const addInfo = this.userData.additionalInfo;
+    console.log(addInfo);
     this.profile = {
       avatarId: this.userData.avatarId,
       firstName: this.userData.firstName,
@@ -148,8 +149,13 @@ export default {
 
     // MODALS METHODS
     addEducation(knowledge, data) {
-      this.profile.additionalInfo[knowledge === 'newEducation' ? 'educations' : 'workExperiences']
-        .push({ ...data });
+      if (knowledge === 'newEducation') {
+        this.newEducation.push({ ...data });
+        this.profile.additionalInfo.educations = this.newEducation;
+      } else {
+        this.newWorkExp.push({ ...data });
+        this.profile.additionalInfo.workExperiences = this.newWorkExp;
+      }
     },
     modalsStatusTitle(modalMode) {
       const titles = {
@@ -223,10 +229,7 @@ export default {
       const validateEducation = await this.validateKnowledge('education', this.newEducation);
       const validateWorkExp = await this.validateKnowledge('work', this.newWorkExp);
       const validateSettings = await this.$refs.settings.validate();
-      if (validateEducation === false
-        || validateWorkExp === false
-        || validateSettings === false
-        || this.isValidPhoneNumber === false) {
+      if (validateSettings === false && validateEducation === false && validateWorkExp === false && this.isValidPhoneNumber === false) {
         return true;
       }
       this.validationError = false;
@@ -235,7 +238,9 @@ export default {
 
     async validateKnowledge(observerName, value) {
       const isDirty = Object.keys(value).some((field) => value[field] !== '' && value[field] !== null);
-      if (isDirty) return await this.$refs.settings.$children[1].$refs[observerName].validate();
+      const refs = this.$refs.settings.$children[1];
+      if (isDirty && observerName === 'education') return refs.$refs.education.validate();
+      if (isDirty && observerName === 'work') return refs.$refs.work.validate();
       return true;
     },
 
@@ -252,9 +257,10 @@ export default {
     },
 
     async editProfile(checkAvatarID) {
+      const addInfo = this.profile.additionalInfo;
       const {
         instagram, twitter, linkedin, facebook,
-      } = this.profile.additionalInfo.socialNetwork;
+      } = addInfo.socialNetwork;
       const payload = {
         avatarId: checkAvatarID,
         firstName: this.profile.firstName,
@@ -265,7 +271,7 @@ export default {
         },
         additionalInfo: {
           secondMobileNumber: this.updatedSecondPhone,
-          address: this.profile.additionalInfo.address,
+          address: addInfo.address,
           socialNetwork: {
             instagram: instagram || null,
             twitter: twitter || null,
@@ -278,22 +284,22 @@ export default {
         ...payload,
         additionalInfo: {
           ...payload.additionalInfo,
-          educations: this.profile.additionalInfo.educations,
-          workExperiences: this.profile.additionalInfo.workExperiences,
-          description: this.profile.additionalInfo.description || null,
+          educations: addInfo.educations,
+          workExperiences: addInfo.workExperiences,
+          description: addInfo.description || null,
         },
         workplace: this.parseDistantWork(this.skills.distantIndex),
         priority: this.skills.priorityIndex,
-        wagePerHour: this.skills.perHour ? this.skills.perHour : this.userData.wagePerHour,
+        wagePerHour: this.skills.perHour || this.userData.wagePerHour,
         specializationKeys: this.skills.selectedSpecAndSkills || [],
       } : {
         ...payload,
         additionalInfo: {
           ...payload.additionalInfo,
-          description: this.profile.additionalInfo.description || null,
-          company: this.profile.additionalInfo.company || null,
-          CEO: this.profile.additionalInfo.CEO || null,
-          website: this.profile.additionalInfo.website || null,
+          description: addInfo.description || null,
+          company: addInfo.company || null,
+          CEO: addInfo.CEO || null,
+          website: addInfo.website || null,
         },
       });
       await this.$store.dispatch('user/getUserData');
