@@ -273,7 +273,6 @@ export default {
           title: this.$t('toasts.error'),
           text: this.$t('messages.mnemonic'),
         });
-        // Reset mnemonic for address -> importing
         this.step = WalletState.ImportMnemonic;
       }
       this.SetLoader(false);
