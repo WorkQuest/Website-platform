@@ -9,7 +9,6 @@
       tag="div"
     >
       <verification-card v-if="userRole === 'worker' && isShowInfo === true" />
-      {{ profile }}
       <profile
         :profile="profile"
         :new-education="newEducation"
