@@ -401,8 +401,6 @@ export default {
         },
       };
 
-      // amount0 - WQT
-      // amount1 - pool's token
       const amount0 = this.Floor(data.isOut ? data.amount1 : data.amount0, 3);
       const amount1 = this.Floor(data.isOut ? data.amount0 : data.amount1, 3);
 

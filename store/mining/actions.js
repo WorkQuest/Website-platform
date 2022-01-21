@@ -10,7 +10,9 @@ function prepareDataForSwapsTable(swaps) {
     arr.push({
       isOut,
       totalValue: swap.amountUSD,
+      // amount0 - WQT
       amount0: isOut ? swap.amount0Out : swap.amount0In,
+      // amount1 - pool's token
       amount1: isOut ? swap.amount1In : swap.amount1Out,
       account: swap.to,
       timestamp: swap.timestamp || swap.transaction.timestamp,
