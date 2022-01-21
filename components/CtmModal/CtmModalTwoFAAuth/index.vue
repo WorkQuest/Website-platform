@@ -7,54 +7,24 @@
       <validation-observer v-slot="{handleSubmit, validated, passed, invalid}">
         <div class="step-panel">
           <div
-            class="__step"
-            :class="[{'step-panel__step_active': [1,2,3,4].includes(step)}]"
+            v-for="(item, i) in stepPanel"
+            :key="i"
+            class="step-panel__container"
           >
-            <span class="step-panel__block">
-              <span :class="[{'hide': [2,3,4].includes(step)}]">{{ $t('modals.step') }}</span>
-              <span :class="[{'step__number': [2,3,4].includes(step)}]">1</span>
-            </span>
-          </div>
-          <div
-            class="line"
-            :class="[{'line__active': [2,3,4].includes(step)}]"
-          />
-          <div
-            class="step-panel__step"
-            :class="[{'step-panel__step_active': [2,3,4].includes(step)}]"
-          >
-            <span class="step-panel__block">
-              <span
-                :class="[{'hide': [3,4].includes(step)}]"
-              >{{ $t('modals.step') }}</span>
-              <span :class="[{'step__number': [3,4].includes(step)}]">2</span>
-            </span>
-          </div>
-          <div
-            class="line"
-            :class="[{'line__active': [3,4].includes(step)}]"
-          />
-          <div
-            class="step-panel__step"
-            :class="[{'step-panel__step_active': [3,4].includes(step)}]"
-          >
-            <span class="step-panel__block">
-              <span :class="[{'hide': step === 4}]">{{ $t('modals.step') }}</span>
-              <span :class="[{'step__number': [2,3,4].includes(step)}]">3</span>
-            </span>
-          </div>
-          <div
-            class="line"
-            :class="[{'line__active': step === 4}]"
-          />
-          <div
-            class="step-panel__step"
-            :class="[{'step-panel__step_active': step === 4}]"
-          >
-            <span class="step-panel__block">
-              <span> {{ $t('modals.step') }}</span>
-              <span>4</span>
-            </span>
+            <div
+              class="step-panel__step"
+              :class="[{'step-panel__step_active': item.stepActive.includes(step)}]"
+            >
+              <span class="step-panel__block">
+                <span :class="[{'hide': item.hideStepWord.includes(step)}]">{{ $t('modals.step') }}</span>
+                <span :class="[{'step__number': item.stepNumber.includes(step)}]">{{ item.step }}</span>
+              </span>
+            </div>
+            <div
+              v-if="item.step !== 4"
+              class="line"
+              :class="[{'line__active': item.line.includes(step)}]"
+            />
           </div>
         </div>
         <!-- Steps -->
@@ -67,30 +37,20 @@
               {{ $t('modals.installGoogleAuth') }}
             </div>
             <div class="btn__container">
-              <div class="btn__store">
+              <div
+                v-for="(item, i) in shopBtns"
+                :key="i"
+                class="btn__store"
+              >
                 <base-btn
-                  mode="black"
-                  @click="goToAppleStore"
+                  :mode="item.mode"
+                  @click="item.click"
                 >
-                  {{ $t('modals.appleStore') }}
+                  {{ item.text }}
                   <template v-slot:left>
                     <img
-                      :alt="$t('modals.appleStore')"
-                      src="~/assets/img/ui/apple-icon.svg"
-                    >
-                  </template>
-                </base-btn>
-              </div>
-              <div class="btn__store">
-                <base-btn
-                  mode="black"
-                  @click="goToGooglePlay"
-                >
-                  {{ $t('modals.googlePlay') }}
-                  <template v-slot:left>
-                    <img
-                      :alt="$t('modals.googlePlay')"
-                      src="~/assets/img/ui/google-play-icon.svg"
+                      :alt="item.text"
+                      :src="item.img"
                     >
                   </template>
                 </base-btn>
@@ -169,67 +129,45 @@
           </div>
           <div class="ctm-modal__content-field">
             <base-field
-              id="confirmEmailCode"
-              v-model="confirmEmailCode"
-              :label="$t('modals.emailVerificationCode')"
-              :placeholder="$t('modals.emailPlaceholder')"
-              rules="required|alpha_num"
-              :name="$t('modals.emailVerificationCodeField')"
-            />
-          </div>
-          <div class="ctm-modal__content-field">
-            <base-field
-              id="twoFACode"
-              v-model="authCode"
-              :label="$t('modals.googleVerificationCode')"
-              :placeholder="$t('modals.codePlaceholder')"
-              rules="required|alpha_num"
-              :name="$t('securityCheck.confCodeField')"
+              v-for="(item, i) in inputs"
+              :id="item.id"
+              :key="i"
+              v-model="item.model"
+              :label="item.label"
+              :placeholder="item.placeholder"
+              :rules="item.rules"
+              :name="item.name"
             />
           </div>
         </div>
         <!-- Steps btns -->
         <div class="btn__container">
           <div
-            v-if="![2,3,4].includes(step)"
-            class="btn__onebtn"
+            v-if="step === 1"
+            class="step__container"
           >
-            <span
-              v-if="step === 1"
-              class="step__container"
+            <base-btn
+              class="message__action"
+              @click="nextStepWithEnable2FA()"
             >
-              <base-btn
-                class="message__action"
-                @click="nextStepWithEnable2FA()"
-              >
-                {{ $t('meta.next') }}
-              </base-btn>
-            </span>
+              {{ $t('meta.next') }}
+            </base-btn>
           </div>
           <div
-            v-if="step !==1"
+            v-if="step > 1"
             class="btn__wrapper"
           >
             <span
-              v-if="step === 2"
+              v-for="(item, i) in stepBtns"
+              :key="i"
               class="step__container"
             >
               <base-btn
+                v-if="item.step.includes(step)"
                 class="message__action"
-                @click="nextStep()"
+                @click="item.click"
               >
-                {{ $t('meta.next') }}
-              </base-btn>
-            </span>
-            <span
-              v-if="step === 3"
-              class="step__container"
-            >
-              <base-btn
-                class="message__action"
-                @click="nextStep()"
-              >
-                {{ $t('meta.next') }}
+                {{ item.text }}
               </base-btn>
             </span>
             <span
@@ -245,8 +183,9 @@
               </base-btn>
             </span>
           </div>
+
           <div
-            v-if="step !==1"
+            v-if="step > 1"
             class="btn__wrapper"
           >
             <base-btn
@@ -275,6 +214,45 @@ export default {
       confirmEmailCode: '',
       qrLink: '',
       authCode: '',
+      shopBtns: [
+        {
+          mode: 'black',
+          click: this.goToAppleStore,
+          text: this.$t('modals.appleStore'),
+          img: require('~/assets/img/ui/apple-icon.svg'),
+        },
+        {
+          mode: 'black',
+          click: this.goToGooglePlay,
+          text: this.$t('modals.googlePlay'),
+          img: require('~/assets/img/ui/google-play-icon.svg'),
+        },
+      ],
+      stepBtns: [
+        {
+          step: [2, 3],
+          click: this.nextStep,
+          text: this.$t('meta.next'),
+        },
+      ],
+      inputs: [
+        {
+          id: 'confirmEmailCode',
+          model: this.confirmEmailCode,
+          label: this.$t('modals.emailVerificationCode'),
+          placeholder: this.$t('modals.emailPlaceholder'),
+          rules: 'required|alpha_num',
+          name: this.$t('modals.emailVerificationCodeField'),
+        },
+        {
+          id: 'twoFACode',
+          model: this.authCode,
+          label: this.$t('modals.googleVerificationCode'),
+          placeholder: this.$t('modals.codePlaceholder'),
+          rules: 'required|alpha_num',
+          name: this.$t('securityCheck.confCodeField'),
+        },
+      ],
     };
   },
   computed: {
@@ -283,6 +261,22 @@ export default {
       userData: 'user/getUserData',
       twoFACode: 'user/getTwoFACode',
     }),
+    stepPanel() {
+      return [
+        {
+          stepActive: [1, 2, 3, 4], hideStepWord: [2, 3, 4], stepNumber: [2, 3, 4], line: [2, 3, 4], step: 1,
+        },
+        {
+          stepActive: [2, 3, 4], hideStepWord: [3, 4], stepNumber: [3, 4], line: [3, 4], step: 2,
+        },
+        {
+          stepActive: [3, 4], hideStepWord: [4], stepNumber: [4], line: [4], step: 3,
+        },
+        {
+          stepActive: [4], hideStepWord: [], stepNumber: [], line: [], step: 4,
+        },
+      ];
+    },
   },
   async beforeMount() {
     await this.$store.dispatch('user/getUserData');
@@ -295,27 +289,15 @@ export default {
       window.location.href = 'https://apps.apple.com/ru/app/google-authenticator/id388497605';
     },
     async enable2FA() {
-      try {
-        await this.$store.dispatch('user/enable2FA');
-        this.qrLink = `otpauth://totp/${this.userData.email}?secret=${this.twoFACode}&issuer=WorkQuest.co`;
-      } catch (e) {
-        console.log(e);
-      }
+      await this.$store.dispatch('user/enable2FA');
+      this.qrLink = `otpauth://totp/${this.userData.email}?secret=${this.twoFACode}&issuer=WorkQuest.co`;
     },
     async confirmEnable2FA() {
-      try {
-        const payload = {
-          confirmCode: this.confirmEmailCode,
-          totp: this.authCode,
-        };
-        const response = await this.$store.dispatch('user/confirmEnable2FA', payload);
-        if (response.ok) {
-          this.hide();
-          this.showModalSuccess();
-        }
-      } catch (e) {
-        console.log(e);
-      }
+      const response = await this.$store.dispatch('user/confirmEnable2FA', {
+        confirmCode: this.confirmEmailCode,
+        totp: this.authCode,
+      });
+      if (response.ok) this.hide(); this.showModalSuccess();
     },
     showModalSuccess() {
       this.ShowModal({
@@ -343,197 +325,204 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.flex {
-  &__two-cols {
-    display: flex;
-    justify-content: space-between;
+.message {
+  &__action {
+    width: 100% !important;
   }
 }
-
-.content {
-  &__text {
-    @include text-simple;
-    margin: 20px 0;
-    font-weight: 400;
-    color: $black700;
-    font-size: 18px;
-    &_grey {
-      @extend .content__text;
-      font-size: 16px;
-      color: $black400;
+  .flex {
+    &__two-cols {
+      display: flex;
+      justify-content: space-between;
     }
   }
-}
 
-.icon {
-  &-copy:before {
-    content: "\e996";
-    color: $blue;
-    font-size: 20px;
+  .content {
+    &__text {
+      @include text-simple;
+      margin: 20px 0;
+      font-weight: 400;
+      color: $black700;
+      font-size: 18px;
+      &_grey {
+        @extend .content__text;
+        font-size: 16px;
+        color: $black400;
+      }
+    }
   }
-}
 
-.qr {
-  &__container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
+  .icon {
+    &-copy:before {
+      content: "\e996";
+      color: $blue;
+      font-size: 20px;
+    }
   }
-}
 
-.code {
-  &__input {
-    padding: 10px 0 0 0;
-    display: grid;
-    grid-template-columns: 6fr 1fr;
-    grid-gap: 10px;
+  .qr {
+    &__container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
   }
-  &__container {
-    display: flex;
-    border: 1px solid $black0;
-    border-radius: 6px;
-    justify-content: space-between;
-    padding: 12px;
-    margin: 33px 10px 0 0;
-    width: 100%;
-  }
-  &__text {
-    font-weight: 400;
-    font-size: 16px;
-    color: $black800;
-  }
-}
 
-.hide {
-  display: none;
-}
-
-.grid {
-  &__2col {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    justify-content: space-between;
-    align-items: flex-end;
-    grid-gap: 10px;
-  }
-  &__3col {
-    display: grid;
-    grid-template-columns: 6fr 1fr 6fr;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-}
-
-.step {
-  &__number {
-    padding: 10px;
-  }
-  &__container {
-    &_grid {
+  .code {
+    &__input {
+      padding: 10px 0 0 0;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 6fr 1fr;
+      grid-gap: 10px;
     }
-  }
-}
-
-.step-panel {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  &__block{
-    white-space: nowrap;
-  }
-  &__step {
-    @include text-simple;
-    background: rgba(0, 131, 199, 0.1);
-    border-radius: 6px;
-    font-weight: 400;
-    font-size: 16px;
-    color: $black500;
-    padding: 10px;
-    text-align: center;
-    &_active {
-      @extend .step-panel__step;
-      color: $white;
-      background: $blue;
+    &__container {
+      display: flex;
+      border: 1px solid $black0;
+      border-radius: 6px;
+      justify-content: space-between;
+      padding: 12px;
+      margin: 33px 10px 0 0;
+      width: 100%;
     }
-  }
-}
-.line {
-  display: block;
-  height: 1px;
-  border-top: 1px solid rgba(0, 131, 199, 0.1);
-  margin: auto 0;
-  padding: 0;
-  width: 33px;
-  &__active {
-    @extend .line;
-    border-top: 1px solid $blue;
-  }
-}
-.ctm-modal {
-  &__content-field {
-    margin: 15px 0 0 0;
-  }
-  &__equal {
-    margin: 0 0 35px 10px;
-  }
-}
-
-.ctm-modal {
-  @include modalKit;
-}
-
-.input {
-  &_white {
-    border-radius: 6px;
-    border: 1px solid $black0;
-    padding: 11px 20px 11px 15px;
-    height: 46px;
-    width: 100%;
-    background-color: $white;
-    resize: none;
-    &::placeholder {
+    &__text {
+      font-weight: 400;
+      font-size: 16px;
       color: $black800;
     }
   }
-}
-.btn {
-  &__container {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-  }
-  &__wrapper {
-    width: 45%;
-  }
-  &__store{
-    width: 47%;
-    margin-bottom: 25px;
-  }
-  &__onebtn {
-    width: 100%;
-  }
-  &__copy {
-    background: $white;
-    border: 1px solid $black0;
-    padding: 11px;
-    border-radius: 6px;
-  }
-}
 
-.messageSend {
-  max-width: 430px !important;
-  &__content {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: center;
-    grid-gap: 20px;
+  .hide {
+    display: none;
   }
-  &__action {
-    margin-top: 10px;
+
+  .grid {
+    &__2col {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      justify-content: space-between;
+      align-items: flex-end;
+      grid-gap: 10px;
+    }
+    &__3col {
+      display: grid;
+      grid-template-columns: 6fr 1fr 6fr;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
   }
-}
+
+  .step {
+    &__number {
+      padding: 10px;
+    }
+    &__container {
+      width: 100%;
+      &_grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+
+  .step-panel {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    &__container {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+    }
+    &__block {
+      white-space: nowrap;
+    }
+    &__step {
+      @include text-simple;
+      background: rgba(0, 131, 199, 0.1);
+      border-radius: 6px;
+      font-weight: 400;
+      font-size: 16px;
+      color: $black500;
+      padding: 10px;
+      text-align: center;
+      &_active {
+        @extend .step-panel__step;
+        color: $white;
+        background: $blue;
+      }
+    }
+  }
+  .line {
+    display: block;
+    height: 1px;
+    border-top: 1px solid rgba(0, 131, 199, 0.1);
+    margin: auto 0;
+    padding: 0;
+    width: 33px;
+    &__active {
+      @extend .line;
+      border-top: 1px solid $blue;
+    }
+  }
+  .ctm-modal {
+    &__content-field {
+      margin: 15px 0 0 0;
+    }
+    &__equal {
+      margin: 0 0 35px 10px;
+    }
+  }
+
+  .ctm-modal {
+    @include modalKit;
+  }
+
+  .input {
+    &_white {
+      border-radius: 6px;
+      border: 1px solid $black0;
+      padding: 11px 20px 11px 15px;
+      height: 46px;
+      width: 100%;
+      background-color: $white;
+      resize: none;
+      &::placeholder {
+        color: $black800;
+      }
+    }
+  }
+  .btn {
+    &__container {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: space-between;
+    }
+    &__wrapper {
+      width: 45%;
+    }
+    &__store {
+      width: 47%;
+      margin-bottom: 25px;
+    }
+    &__copy {
+      background: $white;
+      border: 1px solid $black0;
+      padding: 11px;
+      border-radius: 6px;
+    }
+  }
+
+  .messageSend {
+    max-width: 430px !important;
+    &__content {
+      display: grid;
+      grid-template-columns: 1fr;
+      justify-items: center;
+      grid-gap: 20px;
+    }
+    &__action {
+      margin-top: 10px;
+    }
+  }
 </style>

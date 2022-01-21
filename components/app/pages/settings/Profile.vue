@@ -347,7 +347,6 @@ export default {
           name: 'settings.websiteName',
           icon: 'icon-Earth',
         },
-
       ],
       socials: [
         {
