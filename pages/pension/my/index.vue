@@ -65,66 +65,66 @@
               </div>
             </div>
           </div>
-          <div class="info-block">
-            <div class="info-block__name">
-              {{ $t('pension.transactionHistory') }}
-            </div>
-            <div class="pension-page__table">
-              <b-table
-                :items="historyByPage"
-                :fields="historyFields"
-                borderless
-                caption-top
-                thead-class="table__header"
-                tbody-tr-class="table__row"
-              >
-                <template #cell(userName)="el">
-                  <div class="user__info">
-                    <img
-                      class="ava"
-                      src="~/assets/img/temp/avatar-small.jpg"
-                      alt=""
-                    >
-                    <div class="user__name">
-                      {{ el.item.userName }}
-                    </div>
-                  </div>
-                </template>
-                <template #cell(userID)="el">
-                  <div class="user__value_gray">
-                    {{ el.item.userID }}
-                  </div>
-                </template>
-                <template #cell(txHash)="el">
-                  <div class="user__value_gray">
-                    {{ getStyledHash(el.item.txHash) }}
-                  </div>
-                </template>
-                <template #cell(time)="el">
-                  <div class="user__value_gray">
-                    {{ el.item.time }}
-                  </div>
-                </template>
-                <template #cell(status)="el">
-                  <div class="user__value_green">
-                    {{ el.item.status }}
-                  </div>
-                </template>
-                <template #cell(amount)="el">
-                  <div class="user__value">
-                    {{ $t(`pension.${currentChainName}Count`, { count: el.item.amount}) }}
-                  </div>
-                </template>
-              </b-table>
-            </div>
-          </div>
-          <div class="info-block__pager">
-            <base-pager
-              v-if="totalPages > 1"
-              v-model="page"
-              :total-pages="totalPages"
-            />
-          </div>
+          <!--          <div class="info-block">-->
+          <!--            <div class="info-block__name">-->
+          <!--              {{ $t('pension.transactionHistory') }}-->
+          <!--            </div>-->
+          <!--            <div class="pension-page__table">-->
+          <!--              <b-table-->
+          <!--                :items="historyByPage"-->
+          <!--                :fields="historyFields"-->
+          <!--                borderless-->
+          <!--                caption-top-->
+          <!--                thead-class="table__header"-->
+          <!--                tbody-tr-class="table__row"-->
+          <!--              >-->
+          <!--                <template #cell(userName)="el">-->
+          <!--                  <div class="user__info">-->
+          <!--                    <img-->
+          <!--                      class="ava"-->
+          <!--                      src="~/assets/img/temp/avatar-small.jpg"-->
+          <!--                      alt=""-->
+          <!--                    >-->
+          <!--                    <div class="user__name">-->
+          <!--                      {{ el.item.userName }}-->
+          <!--                    </div>-->
+          <!--                  </div>-->
+          <!--                </template>-->
+          <!--                <template #cell(userID)="el">-->
+          <!--                  <div class="user__value_gray">-->
+          <!--                    {{ el.item.userID }}-->
+          <!--                  </div>-->
+          <!--                </template>-->
+          <!--                <template #cell(txHash)="el">-->
+          <!--                  <div class="user__value_gray">-->
+          <!--                    {{ getStyledHash(el.item.txHash) }}-->
+          <!--                  </div>-->
+          <!--                </template>-->
+          <!--                <template #cell(time)="el">-->
+          <!--                  <div class="user__value_gray">-->
+          <!--                    {{ el.item.time }}-->
+          <!--                  </div>-->
+          <!--                </template>-->
+          <!--                <template #cell(status)="el">-->
+          <!--                  <div class="user__value_green">-->
+          <!--                    {{ el.item.status }}-->
+          <!--                  </div>-->
+          <!--                </template>-->
+          <!--                <template #cell(amount)="el">-->
+          <!--                  <div class="user__value">-->
+          <!--                    {{ $t(`pension.${currentChainName}Count`, { count: el.item.amount}) }}-->
+          <!--                  </div>-->
+          <!--                </template>-->
+          <!--              </b-table>-->
+          <!--            </div>-->
+          <!--          </div>-->
+          <!--          <div class="info-block__pager">-->
+          <!--            <base-pager-->
+          <!--              v-if="totalPages > 1"-->
+          <!--              v-model="page"-->
+          <!--              :total-pages="totalPages"-->
+          <!--            />-->
+          <!--          </div>-->
         </template>
         <template v-if="isDeadline">
           <div class="info-block__grid">
@@ -171,61 +171,61 @@
               </base-btn>
             </div>
           </div>
-          <div class="info-block">
-            <div class="info-block__name">
-              {{ $t('pension.transactionHistory') }}
-            </div>
-            <div class="pension-page__table">
-              <b-table
-                :items="historyByPage"
-                :fields="historyFields"
-                borderless
-                caption-top
-                thead-class="table__header"
-                tbody-tr-class="table__row"
-              >
-                <template #cell(userName)="el">
-                  <div class="user__info">
-                    <img
-                      class="ava"
-                      src="~/assets/img/temp/avatar-small.jpg"
-                      alt=""
-                    >
-                    <div class="user__name">
-                      {{ el.item.userName }}
-                    </div>
-                  </div>
-                </template>
-                <template #cell(userID)="el">
-                  <div class="user__value_gray">
-                    {{ el.item.userID }}
-                  </div>
-                </template>
-                <template #cell(txHash)="el">
-                  <div class="user__value_gray">
-                    {{ getStyledHash(el.item.txHash) }}
-                  </div>
-                </template>
-                <template #cell(time)="el">
-                  <div class="user__value_gray">
-                    {{ el.item.time }}
-                  </div>
-                </template>
-                <template #cell(status)="el">
-                  <div class="user__value_green">
-                    {{ el.item.status }}
-                  </div>
-                </template>
-              </b-table>
-            </div>
-          </div>
-          <div class="info-block__pager">
-            <base-pager
-              v-if="totalPages > 1"
-              v-model="page"
-              :total-pages="totalPages"
-            />
-          </div>
+          <!--          <div class="info-block">-->
+          <!--            <div class="info-block__name">-->
+          <!--              {{ $t('pension.transactionHistory') }}-->
+          <!--            </div>-->
+          <!--            <div class="pension-page__table">-->
+          <!--              <b-table-->
+          <!--                :items="historyByPage"-->
+          <!--                :fields="historyFields"-->
+          <!--                borderless-->
+          <!--                caption-top-->
+          <!--                thead-class="table__header"-->
+          <!--                tbody-tr-class="table__row"-->
+          <!--              >-->
+          <!--                <template #cell(userName)="el">-->
+          <!--                  <div class="user__info">-->
+          <!--                    <img-->
+          <!--                      class="ava"-->
+          <!--                      src="~/assets/img/temp/avatar-small.jpg"-->
+          <!--                      alt=""-->
+          <!--                    >-->
+          <!--                    <div class="user__name">-->
+          <!--                      {{ el.item.userName }}-->
+          <!--                    </div>-->
+          <!--                  </div>-->
+          <!--                </template>-->
+          <!--                <template #cell(userID)="el">-->
+          <!--                  <div class="user__value_gray">-->
+          <!--                    {{ el.item.userID }}-->
+          <!--                  </div>-->
+          <!--                </template>-->
+          <!--                <template #cell(txHash)="el">-->
+          <!--                  <div class="user__value_gray">-->
+          <!--                    {{ getStyledHash(el.item.txHash) }}-->
+          <!--                  </div>-->
+          <!--                </template>-->
+          <!--                <template #cell(time)="el">-->
+          <!--                  <div class="user__value_gray">-->
+          <!--                    {{ el.item.time }}-->
+          <!--                  </div>-->
+          <!--                </template>-->
+          <!--                <template #cell(status)="el">-->
+          <!--                  <div class="user__value_green">-->
+          <!--                    {{ el.item.status }}-->
+          <!--                  </div>-->
+          <!--                </template>-->
+          <!--              </b-table>-->
+          <!--            </div>-->
+          <!--          </div>-->
+          <!--          <div class="info-block__pager">-->
+          <!--            <base-pager-->
+          <!--              v-if="totalPages > 1"-->
+          <!--              v-model="page"-->
+          <!--              :total-pages="totalPages"-->
+          <!--            />-->
+          <!--          </div>-->
         </template>
         <div
           v-if="FAQs.length"
@@ -266,10 +266,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import { getWalletAddress } from '~/utils/wallet';
+import { TokenSymbols } from '~/utils/enums';
 
 export default {
   data() {
@@ -277,7 +277,6 @@ export default {
       page: 1,
       itemsPerPage: 10,
       isFetchingActions: false,
-      isFirstLoading: true,
       walletAddress: null,
       currentChainName: null,
       isDeadline: false,
@@ -397,7 +396,7 @@ export default {
     },
     pensionBalance() {
       const balance = this.pensionWallet?.amount || 0;
-      return this.$t(`pension.${this.currentChainName || 'ETH'}Count`, { count: balance });
+      return this.$t(`pension.${TokenSymbols.WUSD}Count`, { count: balance });
     },
     totalPages() {
       const len = this.history.length;
@@ -418,7 +417,6 @@ export default {
       } else {
         clearInterval(this.updateInterval);
         this.history = [];
-        // await this.$store.dispatch('wallet/unsubscribeActions');
         this.isFetchingActions = false;
       }
     },
@@ -428,11 +426,9 @@ export default {
     await this.getWallet();
     clearInterval(this.updateInterval);
     this.updateInterval = setInterval(() => this.getWallet(), 30000);
-    this.isFirstLoading = false;
     this.SetLoader(false);
   },
   async beforeDestroy() {
-    // await this.$store.dispatch('web3/unsubscribeActions');
     clearInterval(this.updateInterval);
   },
   methods: {
@@ -442,15 +438,15 @@ export default {
         return;
       }
       const { unlockDate } = this.pensionWallet;
-      const now = moment.now();
-      const ends = moment(unlockDate);
+      const now = this.$moment.now();
+      const ends = this.$moment(unlockDate);
       this.isDeadline = ends.diff(now, 'milliseconds') <= 0;
     },
     endOfPeriod() {
       if (!this.pensionWallet) return '';
       const { unlockDate } = this.pensionWallet;
-      const now = moment.now();
-      const ends = moment(unlockDate);
+      const now = this.$moment.now();
+      const ends = this.$moment(unlockDate);
 
       const minutes = ends.diff(now, 'minutes');
       if (minutes <= 60) {
@@ -480,64 +476,7 @@ export default {
         await this.$router.push('/pension');
       }
       this.walletAddress = getWalletAddress();
-      // if (this.isFetchingActions) return;
-      // await this.$store.dispatch('wallet/fetchPensionActions', {
-      //   callback: (method, result) => this.handleAction(method, result),
-      //   events: ['Received', 'Withdrew', 'Claimed', 'Borrowed', 'Refunded'],
-      //   params: [
-      //     {
-      //       filter: {
-      //         user: this.walletAddress,
-      //       },
-      //       fromBlock: 0,
-      //     },
-      //     {
-      //       filter: {
-      //         user: this.walletAddress,
-      //       },
-      //       fromBlock: 0,
-      //     },
-      //     {
-      //       filter: {
-      //         user: this.walletAddress,
-      //       },
-      //       fromBlock: 0,
-      //     },
-      //     {
-      //       filter: {
-      //         user: this.walletAddress,
-      //       },
-      //       fromBlock: 0,
-      //     },
-      //     {
-      //       filter: {
-      //         user: this.walletAddress,
-      //       },
-      //       fromBlock: 0,
-      //     },
-      //   ],
-      // });
-      this.isFetchingActions = true;
       this.checkIsDeadLine();
-    },
-    handleAction(method, result) {
-      const { transactionHash, returnValues } = result;
-      const tx = {
-        operation: result.event,
-        txHash: transactionHash,
-        userName: this.$t('pension.table.userName'),
-        avaUrl: '~/assets/img/social/GOOGLE_+_.png',
-        userID: this.$t('pension.table.userId'),
-        time: this.$t('pension.table.time'),
-        status: this.$t('pension.table.status'),
-      };
-      // eslint-disable-next-line no-case-declarations
-      let amount = new BigNumber(returnValues.amount).shiftedBy(-18);
-      if (amount.isLessThan('0.0000001') && amount.isGreaterThan('0')) amount = '>0.0000001';
-      else amount = amount.decimalPlaces(6).toString();
-      tx.amount = amount;
-      tx.time = moment(new Date(returnValues.timestamp * 1000)).format('DD.MM.YY HH:mm');
-      this.history.unshift(tx);
     },
     showWithdrawModal() {
       this.ShowModal({

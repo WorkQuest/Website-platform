@@ -93,41 +93,51 @@ export default {
       let txFee;
       const equalsFee = new BigNumber(defaultFee).shiftedBy(-18).isEqualTo(new BigNumber(this.depositPercentFromAQuest).shiftedBy(-18));
       if (!this.firstDepositAmount || !equalsFee) {
-        txFee = await this.$store.dispatch('wallet/getContractFeeData', {
-          method: 'updateFee',
-          _abi: abi.WQPensionFund,
-          contractAddress: process.env.PENSION_FUND,
-          value: [new BigNumber(this.depositPercentFromAQuest).shiftedBy(18).toString()],
-        });
+        const [fee] = await Promise.all([
+          this.$store.dispatch('wallet/getContractFeeData', {
+            method: 'updateFee',
+            _abi: abi.WQPensionFund,
+            contractAddress: process.env.PENSION_FUND,
+            data: [new BigNumber(this.depositPercentFromAQuest).shiftedBy(18).toString()],
+          }),
+          this.$store.dispatch('wallet/getBalance'),
+        ]);
+        txFee = fee;
       } else if (this.firstDepositAmount) {
-        txFee = await this.$store.dispatch('wallet/getContractFeeData', {
-          method: 'contribute',
-          _abi: abi.WQPensionFund,
-          contractAddress: process.env.PENSION_FUND,
-          value: [getWalletAddress(), { value: new BigNumber(this.firstDepositAmount).shiftedBy(18).toString() }],
-          // recipient: process.env.PENSION_FUND,
-        });
+        const [fee] = await Promise.all([
+          this.$store.dispatch('wallet/getContractFeeData', {
+            method: 'contribute',
+            _abi: abi.WQPensionFund,
+            contractAddress: process.env.PENSION_FUND,
+            data: [getWalletAddress()],
+            amount: this.firstDepositAmount,
+            recipient: process.env.PENSION_FUND,
+          }),
+          this.$store.dispatch('wallet/getBalance'),
+        ]);
+        txFee = fee;
       }
 
-      await this.$store.dispatch('wallet/getBalance');
-      // TODO: Чекнуть баланс юзера перед отправкой транзакции
-      console.log(this.balanceData.WUSD.balance);
-
-      if (!txFee?.ok) {
+      if (!txFee?.ok || this.balanceData.WUSD.balance === 0) {
         await this.$store.dispatch('main/showToast', {
-          text: 'TX Fee',
+          text: this.$t('errors.transaction.notEnoughFunds'),
         });
         this.inProgress = false;
         return;
       }
 
+      const fields = {
+        from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
+        to: { name: this.$t('modals.toAddress'), value: process.env.PENSION_FUND },
+        fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+      };
+      if (this.firstDepositAmount) {
+        fields.amount = { name: this.$t('modals.amount'), value: this.firstDepositAmount, symbol: TokenSymbols.WUSD };
+      }
+
       this.ShowModal({
         key: modals.transactionReceipt,
-        fields: {
-          from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
-          to: { name: this.$t('modals.toAddress'), value: process.env.PENSION_FUND },
-          fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
-        },
+        fields,
         submitMethod: async () => {
           const ok = await this.$store.dispatch('wallet/pensionStartProgram', {
             fee: this.depositPercentFromAQuest,

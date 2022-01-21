@@ -46,7 +46,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
+import * as abi from '~/abi/abi';
+import { getWalletAddress } from '~/utils/wallet';
+import { TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'ModalApplyForAPension',
@@ -58,6 +62,7 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
+      balanceData: 'wallet/getBalanceData',
     }),
   },
   methods: {
@@ -68,11 +73,36 @@ export default {
       const { updateMethod } = this.options;
       this.hide();
       this.SetLoader(true);
-      const ok = await this.$store.dispatch('web3/pensionUpdateFee', this.amount);
-      if (ok) {
-        this.showPercentIsChanged();
-        if (updateMethod) await updateMethod();
+
+      const [txFee] = await Promise.all([
+        this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'updateFee',
+          _abi: abi.WQPensionFund,
+          contractAddress: process.env.PENSION_FUND,
+          data: [new BigNumber(this.amount).shiftedBy(18).toString()],
+        }),
+        this.$store.dispatch('wallet/getBalance'),
+      ]);
+      if (!txFee?.ok || this.balanceData.WUSD.balance === 0) {
+        await this.$store.dispatch('main/showToast', {
+          text: this.$t('errors.transaction.notEnoughFunds'),
+        });
+        this.SetLoader(false);
+        return;
       }
+
+      const fields = {
+        from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
+        to: { name: this.$t('modals.toAddress'), value: process.env.PENSION_FUND },
+        fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+      };
+
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields,
+        submitMethod: async () => await this.$store.dispatch('wallet/pensionUpdateFee', this.amount),
+        callback: updateMethod,
+      });
       this.SetLoader(false);
     },
     showPercentIsChanged() {
