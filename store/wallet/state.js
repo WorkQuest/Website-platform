@@ -16,4 +16,5 @@ export default () => ({
       fullBalance: 0,
     },
   },
+  pensionWallet: null,
 });

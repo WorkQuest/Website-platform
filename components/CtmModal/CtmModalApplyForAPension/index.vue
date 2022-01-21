@@ -44,7 +44,7 @@
           </base-btn>
           <base-btn
             class="buttons__button"
-            :disabled="invalid"
+            :disabled="invalid || inProgress"
             @click="handleSubmit(submitPensionRegistration)"
           >
             {{ $t('meta.submit') }}
@@ -57,8 +57,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { Chains } from '~/utils/enums';
+import { getWalletAddress } from '~/utils/wallet';
+import * as abi from '~/abi/abi';
+import { TokenSymbols } from '~/utils/enums';
 
 export default {
   name: 'ModalApplyForAPension',
@@ -66,15 +69,18 @@ export default {
     return {
       depositPercentFromAQuest: '',
       firstDepositAmount: '',
+      inProgress: false,
     };
   },
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      isConnected: 'web3/isConnected',
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      balanceData: 'wallet/getBalanceData',
     }),
   },
   mounted() {
+    this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
     this.depositPercentFromAQuest = this.options.defaultFee;
   },
   methods: {
@@ -82,21 +88,57 @@ export default {
       this.CloseModal();
     },
     async submitPensionRegistration() {
-      await this.$store.dispatch('web3/checkMetaMaskStatus', Chains.ETHEREUM);
-      if (this.isConnected) {
-        const { defaultFee } = this.options;
-        this.hide();
-        this.SetLoader(true);
-        const ok = await this.$store.dispatch('web3/pensionStartProgram', {
-          fee: this.depositPercentFromAQuest,
-          firstDeposit: this.firstDepositAmount,
-          defaultFee,
+      const { defaultFee } = this.options;
+      this.inProgress = true;
+      let txFee;
+      const equalsFee = new BigNumber(defaultFee).shiftedBy(-18).isEqualTo(new BigNumber(this.depositPercentFromAQuest).shiftedBy(-18));
+      if (!this.firstDepositAmount || !equalsFee) {
+        txFee = await this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'updateFee',
+          _abi: abi.WQPensionFund,
+          contractAddress: process.env.PENSION_FUND,
+          value: [new BigNumber(this.depositPercentFromAQuest).shiftedBy(18).toString()],
         });
-        this.SetLoader(false);
-        if (ok) {
-          this.showPensionIsRegisteredModal();
-        }
+      } else if (this.firstDepositAmount) {
+        txFee = await this.$store.dispatch('wallet/getContractFeeData', {
+          method: 'contribute',
+          _abi: abi.WQPensionFund,
+          contractAddress: process.env.PENSION_FUND,
+          value: [getWalletAddress(), { value: new BigNumber(this.firstDepositAmount).shiftedBy(18).toString() }],
+          // recipient: process.env.PENSION_FUND,
+        });
       }
+
+      await this.$store.dispatch('wallet/getBalance');
+      // TODO: Чекнуть баланс юзера перед отправкой транзакции
+      console.log(this.balanceData.WUSD.balance);
+
+      if (!txFee?.ok) {
+        await this.$store.dispatch('main/showToast', {
+          text: 'TX Fee',
+        });
+        this.inProgress = false;
+        return;
+      }
+
+      this.ShowModal({
+        key: modals.transactionReceipt,
+        fields: {
+          from: { name: this.$t('modals.fromAddress'), value: getWalletAddress() },
+          to: { name: this.$t('modals.toAddress'), value: process.env.PENSION_FUND },
+          fee: { name: this.$t('wallet.table.trxFee'), value: txFee.result.fee, symbol: TokenSymbols.WUSD },
+        },
+        submitMethod: async () => {
+          const ok = await this.$store.dispatch('wallet/pensionStartProgram', {
+            fee: this.depositPercentFromAQuest,
+            firstDeposit: this.firstDepositAmount,
+            defaultFee,
+          });
+          if (ok) {
+            this.showPensionIsRegisteredModal();
+          }
+        },
+      });
     },
     showPensionIsRegisteredModal() {
       this.ShowModal({

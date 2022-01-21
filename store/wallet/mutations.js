@@ -18,4 +18,7 @@ export default {
   setSelectedToken(state, token) {
     state.selectedToken = token;
   },
+  setPensionWallet(state, pensionWallet) {
+    state.pensionWallet = pensionWallet;
+  },
 };

@@ -269,7 +269,7 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
-import { Chains, NativeTokenSymbolByChainId } from '~/utils/enums';
+import { getWalletAddress } from '~/utils/wallet';
 
 export default {
   data() {
@@ -278,7 +278,6 @@ export default {
       itemsPerPage: 10,
       isFetchingActions: false,
       isFirstLoading: true,
-      wallet: null,
       walletAddress: null,
       currentChainName: null,
       isDeadline: false,
@@ -341,7 +340,8 @@ export default {
   computed: {
     ...mapGetters({
       options: 'modals/getOptions',
-      isConnected: 'web3/isConnected',
+      isWalletConnected: 'wallet/getIsWalletConnected',
+      pensionWallet: 'wallet/getPensionWallet',
     }),
     historyFields() {
       return [
@@ -396,7 +396,7 @@ export default {
       ];
     },
     pensionBalance() {
-      const balance = this.wallet?.amount || 0;
+      const balance = this.pensionWallet?.amount || 0;
       return this.$t(`pension.${this.currentChainName || 'ETH'}Count`, { count: balance });
     },
     totalPages() {
@@ -411,17 +411,14 @@ export default {
     },
   },
   watch: {
-    async isConnected(newValue) {
-      if (this.isFirstLoading) return;
-      const rightChain = await this.$store.dispatch('web3/chainIsCompareToCurrent', Chains.ETHEREUM);
-      if (newValue && rightChain) {
+    async isWalletConnected(newValue) {
+      if (newValue) {
         await this.getWallet();
         this.updateInterval = setInterval(() => this.getWallet(), 30000);
       } else {
         clearInterval(this.updateInterval);
-        this.wallet = null;
         this.history = [];
-        await this.$store.dispatch('web3/unsubscribeActions');
+        // await this.$store.dispatch('wallet/unsubscribeActions');
         this.isFetchingActions = false;
       }
     },
@@ -435,23 +432,23 @@ export default {
     this.SetLoader(false);
   },
   async beforeDestroy() {
-    await this.$store.dispatch('web3/unsubscribeActions');
+    // await this.$store.dispatch('web3/unsubscribeActions');
     clearInterval(this.updateInterval);
   },
   methods: {
     checkIsDeadLine() {
-      if (!this.wallet) {
+      if (!this.pensionWallet) {
         this.isDeadline = false;
         return;
       }
-      const { unlockDate } = this.wallet;
+      const { unlockDate } = this.pensionWallet;
       const now = moment.now();
       const ends = moment(unlockDate);
       this.isDeadline = ends.diff(now, 'milliseconds') <= 0;
     },
     endOfPeriod() {
-      if (!this.wallet) return '';
-      const { unlockDate } = this.wallet;
+      if (!this.pensionWallet) return '';
+      const { unlockDate } = this.pensionWallet;
       const now = moment.now();
       const ends = moment(unlockDate);
 
@@ -472,57 +469,54 @@ export default {
       return `${y}${d}`;
     },
     getFeePercent() {
-      return this.wallet?.fee || '';
+      return this.pensionWallet?.fee || '';
     },
     getStyledHash(txHash) {
       return `${txHash.slice(0, 8)}...${txHash.slice(-4)}`;
     },
     async getWallet() {
-      await this.$store.dispatch('web3/checkMetaMaskStatus', Chains.ETHEREUM);
-      this.wallet = await this.$store.dispatch('web3/getPensionWallet');
-      if (this.wallet.createdAt === '0') {
+      await this.$store.dispatch('wallet/pensionGetWalletInfo');
+      if (!this.pensionWallet || !this.pensionWallet.isCreated) {
         await this.$router.push('/pension');
       }
-      const account = await this.$store.dispatch('web3/getAccount');
-      this.walletAddress = account.address;
-      this.currentChainName = NativeTokenSymbolByChainId[account.netId];
-      if (this.isFetchingActions) return;
-      await this.$store.dispatch('web3/fetchPensionActions', {
-        callback: (method, result) => this.handleAction(method, result),
-        events: ['Received', 'Withdrew', 'Claimed', 'Borrowed', 'Refunded'],
-        params: [
-          {
-            filter: {
-              user: this.walletAddress,
-            },
-            fromBlock: 0,
-          },
-          {
-            filter: {
-              user: this.walletAddress,
-            },
-            fromBlock: 0,
-          },
-          {
-            filter: {
-              user: this.walletAddress,
-            },
-            fromBlock: 0,
-          },
-          {
-            filter: {
-              user: this.walletAddress,
-            },
-            fromBlock: 0,
-          },
-          {
-            filter: {
-              user: this.walletAddress,
-            },
-            fromBlock: 0,
-          },
-        ],
-      });
+      this.walletAddress = getWalletAddress();
+      // if (this.isFetchingActions) return;
+      // await this.$store.dispatch('wallet/fetchPensionActions', {
+      //   callback: (method, result) => this.handleAction(method, result),
+      //   events: ['Received', 'Withdrew', 'Claimed', 'Borrowed', 'Refunded'],
+      //   params: [
+      //     {
+      //       filter: {
+      //         user: this.walletAddress,
+      //       },
+      //       fromBlock: 0,
+      //     },
+      //     {
+      //       filter: {
+      //         user: this.walletAddress,
+      //       },
+      //       fromBlock: 0,
+      //     },
+      //     {
+      //       filter: {
+      //         user: this.walletAddress,
+      //       },
+      //       fromBlock: 0,
+      //     },
+      //     {
+      //       filter: {
+      //         user: this.walletAddress,
+      //       },
+      //       fromBlock: 0,
+      //     },
+      //     {
+      //       filter: {
+      //         user: this.walletAddress,
+      //       },
+      //       fromBlock: 0,
+      //     },
+      //   ],
+      // });
       this.isFetchingActions = true;
       this.checkIsDeadLine();
     },
@@ -549,7 +543,7 @@ export default {
       this.ShowModal({
         key: modals.takeWithdraw,
         walletAddress: this.walletAddress,
-        maxValue: this.wallet._amount,
+        maxValue: this.pensionWallet._amount,
         symbol: this.currentChainName,
         withdrawType: 'pension',
         updateMethod: async () => await this.getWallet(),
