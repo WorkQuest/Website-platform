@@ -5,7 +5,7 @@
         <div class="wallet__nav">
           <span class="wallet__title">{{ $t('wallet.wallet') }}</span>
           <div class="wallet__address">
-            <span class="user__wallet">{{ userAddress.slice(0, 8) + '...' + userAddress.slice(-8) }}</span>
+            <span class="user__wallet">{{ CutTxn(userAddress, 8, 8) }}</span>
             <button
               v-clipboard:copy="userAddress"
               v-clipboard:success="ClipboardSuccessHandler"
@@ -204,9 +204,9 @@ export default {
   },
   async mounted() {
     if (!this.isWalletConnected) return;
-    await this.loadData();
     const i = this.tokenSymbolsDd.indexOf(this.selectedToken);
     this.ddValue = i >= 0 && i < this.tokenSymbolsDd.length ? i : 1;
+    await this.loadData();
   },
   methods: {
     async getTransactions() {

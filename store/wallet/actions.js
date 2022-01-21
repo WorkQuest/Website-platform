@@ -1,11 +1,10 @@
 import {
-  connectWallet,
+  connectWallet, connectWithMnemonic,
   disconnect,
   fetchContractData,
   getBalance, getContractFeeData,
   getIsWalletConnected,
   getStyledAmount, getTransferFeeData, getWalletAddress,
-  setWalletAddress,
   transfer, transferToken,
 } from '~/utils/wallet';
 import * as abi from '~/abi/abi';
@@ -61,10 +60,6 @@ export default {
   },
   disconnect() {
     disconnect();
-  },
-  setUserAddress({ commit }, userAddress) {
-    commit('setUserAddress', userAddress);
-    setWalletAddress(userAddress);
   },
   setSelectedToken({ commit }, token) {
     commit('setSelectedToken', token);
