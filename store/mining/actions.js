@@ -3,6 +3,20 @@ import { getPoolTokensAmountBSC } from '~/utils/web3';
 
 BigNumber.config({ EXPONENTIAL_AT: 60 });
 
+/**
+ * Returns prepared data for swaps table on liquidity mining page.
+ * @param {Array} swaps - array of swaps from back
+ * @returns {Array.<{
+ * isOut: boolean,
+ * totalValue: string,
+ * amount0: string,
+ * amount1: string,
+ * account: string,
+ * timestamp: string,
+ * }>}
+ * amount0 - have to WQT!
+ * amount1 - pool's token
+ */
 function prepareDataForSwapsTable(swaps) {
   const arr = [];
   swaps.forEach((swap) => {
@@ -10,9 +24,7 @@ function prepareDataForSwapsTable(swaps) {
     arr.push({
       isOut,
       totalValue: swap.amountUSD,
-      // amount0 - WQT
       amount0: isOut ? swap.amount0Out : swap.amount0In,
-      // amount1 - pool's token
       amount1: isOut ? swap.amount1In : swap.amount1Out,
       account: swap.to,
       timestamp: swap.timestamp || swap.transaction.timestamp,
