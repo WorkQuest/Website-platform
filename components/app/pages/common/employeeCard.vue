@@ -4,14 +4,14 @@
     @click="$emit('click')"
   >
     <div class="card__header">
-      <div class="card__header_left">
+      <div class="card__avatar">
         <img
           class="card__img"
           :src="user.avatar ? user.avatar.url: EmptyAvatar()"
           :alt="userName"
         >
       </div>
-      <div class="card__header_right">
+      <div class="card__user">
         <span class="card__name">{{ userName }}</span>
       </div>
     </div>
@@ -24,14 +24,8 @@
         class="specializations__list"
       >
         <div class="specializations__item">
-          {{ getSkills(user.userSpecializations) }}
+          {{ skills }}
         </div>
-        <span
-          v-if="user.userSpecializations.length - 1 > 0"
-          class="specializations__counter"
-        >
-          (+{{ user.userSpecializations.length - 1 }})
-        </span>
       </div>
       <span
         v-else
@@ -65,30 +59,19 @@
 export default {
   name: 'EmployeeCard',
   props: {
-    id: {
-      type: Number,
-      default: null,
-    },
     user: {
       type: Object,
       default: () => {},
     },
-  },
-  data() {
-    return {
-      data: 1,
-    };
   },
   computed: {
     userName() {
       const { firstName, lastName } = this.user;
       return firstName && lastName ? `${firstName} ${lastName}` : this.$t('quests.namelessWorker');
     },
-  },
-  methods: {
-    getSkills(specializations) {
+    skills() {
       let string = '';
-      specializations.forEach((item, i) => {
+      this.user.userSpecializations.forEach((item, i) => {
         const [spec, skill] = item.path.split('.');
         const name = this.$t(`filters.items.${spec}.sub.${skill}`);
         string += `${i ? ', ' : ''}${name}`;
@@ -102,6 +85,8 @@ export default {
 <style lang="scss" scoped>
 
 .card {
+  @include text-simple;
+
   width: 100%;
   height: 360px;
 
@@ -123,12 +108,6 @@ export default {
     grid-template-columns: 61px 1fr;
     grid-gap: 15px;
     align-items: center;
-
-    &_right {
-      display: grid;
-      grid-template-rows: auto auto;
-      grid-gap: 7px;
-    }
   }
 
   &__img {
@@ -138,10 +117,16 @@ export default {
     object-fit: cover;
   }
 
+  &__user {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-gap: 7px;
+  }
+
   &__name {
-    @include text-simple;
     font-size: 18px;
     font-weight: 500;
+
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -153,8 +138,6 @@ export default {
   }
 
   &__about {
-    //height: 20%;
-
     margin-top: 5px;
     font-size: 14px;
     line-height: 18px;
