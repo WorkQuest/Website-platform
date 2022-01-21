@@ -140,7 +140,6 @@ export default {
     }),
   },
   async beforeMount() {
-    await this.$store.dispatch('user/getUserData');
     this.confirmCode = this.currentConfirmCode;
   },
   methods: {

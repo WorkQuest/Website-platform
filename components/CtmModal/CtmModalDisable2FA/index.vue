@@ -67,22 +67,12 @@ export default {
       this.CloseModal();
     },
     async disable2FA() {
-      try {
-        const payload = {
-          totp: this.twoFACode,
-        };
-        this.twoFACode = '';
-        const response = await this.$store.dispatch('user/disable2FA', payload);
-        if (response.ok) {
-          this.hide();
-          this.showModalSuccess();
-        }
-        if (!response.ok) {
-          this.hide();
-        }
-      } catch (e) {
-        this.errorMessage = e.response.data.msg;
-      }
+      this.twoFACode = '';
+      const response = await this.$store.dispatch('user/disable2FA', {
+        totp: this.twoFACode,
+      });
+      if (response.ok) this.hide(); this.showModalSuccess();
+      if (!response.ok) this.hide();
     },
     showModalSuccess() {
       this.ShowModal({
