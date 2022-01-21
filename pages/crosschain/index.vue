@@ -40,18 +40,16 @@
                 {{ $t("crosschain.sourceBlockchain") }}
               </div>
               <div class="contract-data">
-                <div>
-                  <div class="contract-data__title">
-                    {{ $t('crosschain.blockchain') }}
-                  </div>
-                  <base-dd
-                    v-model="sourceAddressInd"
-                    type="border"
-                    :items="addresses"
-                    :is-icon="true"
-                    @input="handleChangePool"
-                  />
+                <div class="contract-data__title">
+                  {{ $t('crosschain.blockchain') }}
                 </div>
+                <base-dd
+                  v-model="sourceAddressInd"
+                  type="border"
+                  :items="addresses"
+                  :is-icon="true"
+                  @input="handleChangePool"
+                />
               </div>
             </div>
             <img
@@ -65,18 +63,16 @@
                 {{ $t("crosschain.targetBlockchain") }}
               </div>
               <div class="contract-data">
-                <div>
-                  <div class="contract-data__title">
-                    {{ $t('crosschain.blockchain') }}
-                  </div>
-                  <base-dd
-                    v-model="targetAddressInd"
-                    type="border"
-                    :items="addresses"
-                    :is-icon="true"
-                    @input="handleChangePool"
-                  />
+                <div class="contract-data__title">
+                  {{ $t('crosschain.blockchain') }}
                 </div>
+                <base-dd
+                  v-model="targetAddressInd"
+                  type="border"
+                  :items="addresses"
+                  :is-icon="true"
+                  @input="handleChangePool"
+                />
               </div>
             </div>
           </div>
@@ -85,10 +81,6 @@
               :disabled="metamaskStatus === 'notInstalled' || !isConnected"
               @click="showSwapModal"
             >
-              <!--            <base-btn-->
-              <!--              :disabled="true"-->
-              <!--              @click="showSwapModal"-->
-              <!--            >-->
               {{ $t('crosschain.createSwap') }}
             </base-btn>
           </div>
@@ -162,6 +154,12 @@
               </template>
             </b-table>
           </div>
+          <div
+            v-if="crosschainTableData.length === 0"
+            class="crosschain-page__empty-info"
+          >
+            {{ $t('meta.listIsEmpty') }}
+          </div>
         </div>
       </div>
     </div>
@@ -178,24 +176,27 @@ export default {
     return {
       miningPoolId: localStorage.getItem('miningPoolId'),
       metamaskStatus: localStorage.getItem('metamaskStatus'),
-      referLink: '0xnf8o2…9b74thb3',
       sourceAddressInd: 0,
       targetAddressInd: 1,
-      tableItems: {},
-      items: [],
       updateInterval: null,
     };
   },
   computed: {
     ...mapGetters({
-      tokens: 'web3/getTokens',
       account: 'web3/getAccount',
-      userData: 'user/getUserData',
       isConnected: 'web3/isConnected',
       crosschainTableData: 'defi/getCrosschainTokensData',
       statusBusy: 'web3/getStatusBusy',
     }),
     testFields() {
+      const copyStyle = {
+        thStyle: {
+          padding: '0',
+          height: '27px',
+          lineHeight: '27px',
+        },
+        tdAttr: { style: 'padding: 0; height: 64px; line-height: 64px' },
+      };
       return [
         {
           key: 'direction',
@@ -205,45 +206,22 @@ export default {
             height: '27px',
             lineHeight: '27px',
           },
-          tdAttr: {
-            style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px',
-          },
+          tdAttr: { style: 'padding: 0 0 0 23px; height: 64px; line-height: 64px' },
         },
         {
           key: 'recipient',
           label: this.$t('crosschain.tableHead.recipient'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
+          ...copyStyle,
         },
         {
           key: 'tx',
           label: this.$t('crosschain.tableHead.tx'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
+          ...copyStyle,
         },
         {
           key: 'created',
           label: this.$t('crosschain.tableHead.created'),
-          thStyle: {
-            padding: '0',
-            height: '27px',
-            lineHeight: '27px',
-          },
-          tdAttr: {
-            style: 'padding: 0; height: 64px; line-height: 64px',
-          },
+          ...copyStyle,
         },
         {
           key: 'redeem',
@@ -253,9 +231,7 @@ export default {
             height: '27px',
             lineHeight: '27px',
           },
-          tdAttr: {
-            style: 'display: flex; align-items: center; height: 64px; line-height: 64px',
-          },
+          tdAttr: { style: 'display: flex; align-items: center; height: 64px; line-height: 64px' },
         },
       ];
     },
@@ -285,14 +261,6 @@ export default {
       }
     },
   },
-  async mounted() {
-    this.SetLoader(false);
-    // this.SetLoader(true);
-    // await this.swapsTableData(this.purseData);
-    // await this.checkWalletStatus();
-    // await this.checkMiningPoolId();
-    // this.SetLoader(false);
-  },
   async beforeDestroy() {
     await this.disconnectFromWallet();
   },
@@ -311,20 +279,7 @@ export default {
     async checkWalletStatus() {
       if (this.isConnected) return;
       const chainName = this.sourceAddressInd === 0 ? 'ETH' : 'BNB';
-      // if (typeof window.ethereum === 'undefined') {
-      //   localStorage.setItem('metamaskStatus', 'notInstalled');
-      //   this.ShowModal({
-      //     key: modals.status,
-      //     img: '~assets/img/ui/cardHasBeenAdded.svg',
-      //     title: 'Please install Metamask!',
-      //     subtitle: 'Please click install...',
-      //     button: 'Install',
-      //     type: 'installMetamask',
-      //   });
-      // } else {
-      //   localStorage.setItem('metamaskStatus', 'installed');
       await this.connectToMetamask(chainName);
-      // }
     },
     async redeemAction(data) {
       this.SetLoader(true);
@@ -343,9 +298,6 @@ export default {
         subtitle: '',
       });
       this.SetLoader(false);
-    },
-    showToast(title, text, variant) {
-      this.$store.dispatch('defi/showToast', { title, text, variant });
     },
     async connectToMetamask(chainName) {
       if (!this.isConnected) {
@@ -368,15 +320,6 @@ export default {
         query: connectedStatus ? '&offset=0&limit=10' : false,
       };
       await this.$store.dispatch('defi/swapsForCrosschain', payload);
-    },
-    togglePools(selInd) {
-      if (this.sourceAddressInd === 0) {
-        this.sourceAddressInd = selInd ? 0 : 1;
-        this.targetAddressInd = selInd ? 1 : 0;
-      } else if (this.sourceAddressInd === 1) {
-        this.sourceAddressInd = selInd ? 1 : 0;
-        this.targetAddressInd = selInd ? 0 : 1;
-      }
     },
     handleChangePool(selInd) {
       this.sourceAddressInd = selInd ? 1 : 0;
@@ -423,13 +366,19 @@ export default {
   display: flex;
   justify-content: center;
 
+  &__empty-info {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+    color: $black500;
+  }
+
   &__container {
     display: grid;
     grid-template-rows: 190px max-content;
     max-width: 1180px;
     grid-row-gap: 20px;
     width: 100%;
-    padding: 10px;
     box-sizing: border-box;
   }
 
@@ -438,6 +387,7 @@ export default {
     justify-content: space-between;
     align-items: flex-start;
     align-self: flex-end;
+
     .header {
       &__btn {
         width: 200px;
@@ -492,6 +442,7 @@ export default {
           background-color: #103d7c;
         }
       }
+
       &__redeem {
         &_disabled {
           color: #D8DFE3 !important;
@@ -519,7 +470,7 @@ export default {
         .contract-data {
           display: grid;
           grid-template-rows: repeat(1, 1fr);
-          gap: 15px;
+          gap: 5px;
           margin-top: 20px;
 
           &__title {
@@ -537,23 +488,28 @@ export default {
             gap: 10px;
             height: 46px;
             align-items: center;
+
             button {
               margin-top: 3px;
             }
+
             .address {
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
               font-size: 16px;
               color: #1D2127;
+
               &__icon {
                 font-size: 24px;
+
                 &::before {
                   color: $blue;
                 }
               }
             }
           }
+
           &__balance {
             border: 1px solid #F7F8FA;
             border-radius: 6px;
@@ -605,9 +561,6 @@ export default {
 
   &__table {
     .table {
-      margin: 0;
-      border-radius: 0 !important;
-
       &__value {
         font-weight: 400;
         font-size: 16px;
@@ -636,10 +589,18 @@ export default {
     }
   }
 
+  @include _1199 {
+    .crosschain-page__container {
+      padding: 0 30px!important;
+    }
+  }
+
   @include _991 {
-    &__table {
+    .crosschain-page__table {
       overflow: auto;
-      width: calc(100vw - 20px);
+    }
+    &__table {
+      width: calc(100vw - 80px);
 
       .table {
         width: 1180px;

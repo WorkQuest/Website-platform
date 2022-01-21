@@ -167,7 +167,8 @@
     "resendSMS": "إعادة إرسال SMS",
     "disable": "إيقاف",
     "remindLater": "تذكيري لاحقًا",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "تحديد الأولوية",
