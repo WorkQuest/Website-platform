@@ -100,6 +100,7 @@ export default {
   },
   async mounted() {
     this.SetLoader(true);
+    console.log(this.userData);
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
     if (!this.profile.firstName) await this.$store.dispatch('user/getUserData');
     const addInfo = this.userData.additionalInfo;
@@ -108,7 +109,7 @@ export default {
       firstName: this.userData.firstName,
       lastName: this.userData.lastName,
       email: this.userData.email,
-      firstPhone: this.userData.tempPhone || this.userData.phone,
+      firstPhone: this.userData.tempPhone || this.userData.phone || {},
       additionalInfo: {
         secondMobileNumber: {
           codeRegion: this.secondNumber ? this.secondNumber.codeRegion : 'RU',
@@ -142,7 +143,6 @@ export default {
   },
   methods: {
     distantIndexByWorkplace(workplace) {
-      // TODO lable for phones additional phone employer
       if (workplace === 'distance') return workplaceIndex.Distance;
       if (workplace === 'office') return workplaceIndex.Office;
       if (workplace === 'both') return workplaceIndex.Both;

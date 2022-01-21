@@ -4,7 +4,8 @@
     class="verification"
   >
     <div class="verification__content content">
-      <div v-if="userData.phone && Object.keys(userData.phone).length > 0">
+      {{ userData.phone && userData.tempPhone }}
+      <div v-if="userData.phone && userData.tempPhone && userData.tempPhone === userData.phone">
         <img
           src="~assets/img/ui/warning.svg"
           alt="Already Verified!"
