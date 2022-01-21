@@ -43,7 +43,7 @@
                 class="btn__store"
               >
                 <base-btn
-                  :mode="item.mode"
+                  :mode="'black'"
                   @click="item.click"
                 >
                   {{ item.text }}
@@ -216,13 +216,11 @@ export default {
       authCode: '',
       shopBtns: [
         {
-          mode: 'black',
           click: this.goToAppleStore,
           text: this.$t('modals.appleStore'),
           img: require('~/assets/img/ui/apple-icon.svg'),
         },
         {
-          mode: 'black',
           click: this.goToGooglePlay,
           text: this.$t('modals.googlePlay'),
           img: require('~/assets/img/ui/google-play-icon.svg'),
