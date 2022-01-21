@@ -74,10 +74,53 @@ export const goToChain = async (chain) => {
     });
     return { ok: true };
   } catch (e) {
-    if (typeof window.ethereum !== 'undefined') {
+    if (e.code === 4902) {
+      try {
+        const networkParams = {
+          chainId: '',
+          chainName: '',
+          rpcUrls: [],
+        };
+        if (chain === Chains.ETHEREUM) {
+          if (process.env.PROD === true) {
+            networkParams.chainId = ChainsId.ETH_MAIN;
+            networkParams.chainName = 'Ethereum Mainnet';
+            networkParams.rpcUrls.push('https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161');
+          } else {
+            networkParams.chainId = ChainsId.ETH_TEST;
+            networkParams.chainName = 'Ethereum Testnet';
+            networkParams.rpcUrls.push('https://rinkey.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161');
+          }
+        } else if (chain === Chains.BNB) {
+          if (process.env.PROD === true) {
+            networkParams.chainId = ChainsId.BSC_MAIN;
+            networkParams.chainName = 'BSC Mainnet';
+            networkParams.rpcUrls.push('https://bsc-dataseed1.binance.org/');
+          } else {
+            networkParams.chainId = ChainsId.BSC_TEST;
+            networkParams.chainName = 'BSC Testnet';
+            networkParams.rpcUrls.push('https://data-seed-prebsc-1-s1.binance.org:8545/');
+          }
+          networkParams.nativeCurrency = {
+            name: 'BNB',
+            symbol: 'BNB',
+            decimals: 18,
+          };
+        }
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [networkParams],
+        });
+        return { ok: true };
+      } catch (addError) {
+        showToast('Added chain error:', `${addError.message}`, 'danger');
+        return error(500, 'added chain error', e);
+      }
+    } else if (typeof window.ethereum !== 'undefined') {
       showToast('Switch chain error:', `${e.message}`, 'danger');
+      return error(500, 'switch chain error', e);
     }
-    return error(500, 'switch chain error', e);
+    return { ok: false };
   }
 };
 
