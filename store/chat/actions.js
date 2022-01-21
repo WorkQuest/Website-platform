@@ -73,15 +73,19 @@ export default {
       return false;
     }
   },
-  async handleCreateGroupChat({ commit }, config) {
+  async handleCreateGroupChat({ commit, dispatch }, config) {
     try {
-      const response = await this.$wsChat.$post('/api/v1/user/me/chat/group/create', config);
-      return response;
+      const { payload } = await this.$wsChat.$post('/api/v1/user/me/chat/group/create', config);
+      return payload;
     } catch (e) {
+      await dispatch('main/showToast', {
+        title: 'Error',
+        text: e.data.msg,
+      }, { root: true });
       return { ok: false };
     }
   },
-  async handleSendMessage({ commit, state }, { chatId, config }) {
+  async handleSendMessage({ commit, state, dispatch }, { chatId, config }) {
     try {
       const { payload } = await this.$wsChat.$post(`/api/v1/chat/${chatId}/send-message`, config);
 
@@ -100,6 +104,10 @@ export default {
       }
       return payload.ok;
     } catch (e) {
+      await dispatch('main/showToast', {
+        title: 'Error',
+        text: e.data.msg,
+      }, { root: true });
       return false;
     }
   },

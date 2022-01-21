@@ -186,7 +186,7 @@ export default {
       return this.isGroupChat && !this.amIOwner;
     },
     amIOwner() {
-      return this.currChat?.owner.id === this.userData.id;
+      return this.currChat?.owner?.id === this.userData.id;
     },
   },
   async mounted() {
