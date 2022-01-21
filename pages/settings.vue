@@ -258,7 +258,10 @@ export default {
         });
       }
     },
-
+    editProfileRoute() {
+      if (this.userRole === 'worker') return 'editWorkerData';
+      return 'editEmployerData';
+    },
     async editProfile(checkAvatarID) {
       const addInfo = this.profile.additionalInfo;
       const {
@@ -283,7 +286,7 @@ export default {
           },
         },
       };
-      await this.editProfileResponse('user/editWorkerData', this.userRole === 'worker' ? {
+      await this.editProfileResponse(`user/${this.editProfileRoute()}`, this.userRole === 'worker' ? {
         ...payload,
         additionalInfo: {
           ...payload.additionalInfo,
