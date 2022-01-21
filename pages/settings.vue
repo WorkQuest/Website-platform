@@ -42,6 +42,7 @@ import VerificationCard from '~/components/app/pages/settings/VerificationCard.v
 import Profile from '~/components/app/pages/settings/Profile.vue';
 import Skills from '~/components/app/pages/settings/Skills.vue';
 import Advanced from '~/components/app/pages/settings/Advanced.vue';
+import { workplaceIndex } from '~/utils/enums';
 
 export default {
   name: 'Settings',
@@ -100,6 +101,7 @@ export default {
   async mounted() {
     this.SetLoader(true);
     if (!this.filters) await this.$store.dispatch('quests/getFilters');
+    if (!this.profile.firstName) await this.$store.dispatch('user/getUserData');
     const addInfo = this.userData.additionalInfo;
     this.profile = {
       avatarId: this.userData.avatarId,
@@ -140,16 +142,16 @@ export default {
   },
   methods: {
     distantIndexByWorkplace(workplace) {
-      if (workplace === 'distance') return 0;
-      if (workplace === 'office') return 1;
-      if (workplace === 'both') return 2;
+      // TODO lable for phones additional phone employer
+      if (workplace === 'distance') return workplaceIndex.Distance;
+      if (workplace === 'office') return workplaceIndex.Office;
+      if (workplace === 'both') return workplaceIndex.Both;
       return null;
     },
 
     // MODALS METHODS
     addEducation(knowledge, data) {
-      const educations = this.profile.additionalInfo.educations.slice();
-      const workExperiences = this.profile.additionalInfo.workExperiences.slice();
+      const { educations, workExperiences } = this.profile.additionalInfo;
       if (knowledge === 'newEducation') {
         this.newEducation.push({ ...data });
         this.profile.additionalInfo.educations = educations.concat(this.newEducation);
@@ -239,9 +241,9 @@ export default {
 
     async validateKnowledge(observerName, value) {
       const isDirty = Object.keys(value).some((field) => value[field] !== '' && value[field] !== null);
-      const refs = this.$refs.settings.$children[1];
-      if (isDirty && observerName === 'education') return refs.$refs.education.validate();
-      if (isDirty && observerName === 'work') return refs.$refs.work.validate();
+      const refs = this.$refs.settings.$children[1].$refs;
+      if (isDirty && observerName === 'education') return refs.education.validate();
+      if (isDirty && observerName === 'work') return refs.work.validate();
       return true;
     },
 
