@@ -895,6 +895,28 @@ export default {
     }
   }
 
+  .worker-data {
+    &__btns {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      .worker-data__button {
+        width: 100% !important;
+      }
+    }
+    &__priority {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row-reverse;
+      align-items: center;
+      &-title {
+        font-size: 16px;
+        height: 100%;
+      }
+    }
+  }
+
   .location {
     &__container {
       display: grid;
