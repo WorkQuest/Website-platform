@@ -42,26 +42,26 @@
                     </div>
                   </div>
                   <div class="chat__title chat__title_bold">
-                    {{ chat.type === ChatType.GROUP ? chat.name : (chat.userMembers[0].firstName || '') + ' ' + (chat.userMembers[0].lastName || '') }}
+                    {{ isGroupChat(chat.type) ? chat.name : (chat.userMembers[0].firstName || '') + ' ' + (chat.userMembers[0].lastName || '') }}
                   </div>
                   <div
-                    v-if="chat.type === ChatType.GROUP || chat.type === ChatType.QUEST"
+                    v-if="isGroupChat(chat.type) || isQuestChat(chat.type)"
                     class="chat__title"
                     :class="[
-                      {'chat__title_gray' : chat.type === ChatType.GROUP},
-                      {'chat__title_link' : chat.type === ChatType.QUEST}
+                      {'chat__title_gray' : isGroupChat(chat.type)},
+                      {'chat__title_link' : isQuestChat(chat.type)}
                     ]"
-                    @click="chat.type === ChatType.QUEST ? goToQuest($event, chat.questChat.questId) : handleSelChat(chat.id)"
+                    @click="isQuestChat(chat.type) ? goToQuest($event, chat.questChat.questId) : handleSelChat(chat.id)"
                   >
-                    {{ chat.type === ChatType.QUEST ? $t('chat.group') : (chat && chat.questChat && chat.questChat.quest.title) }}
+                    {{ isGroupChat(chat.type) ? $t('chat.group') : (chat.questChat && chat.questChat.quest.title) }}
                   </div>
                 </div>
                 <div class="chat__row">
                   <div
-                    v-if="userData.id === chat.lastMessage.sender.id || chat.type === ChatType.GROUP"
+                    v-if="isItMyLastMessage(chat.lastMessage.sender.id) || isGroupChat(chat.type)"
                     class="chat__title"
                   >
-                    {{ userData.id === chat.lastMessage.sender.id ? $t('chat.you') : `${chat.lastMessage.sender.firstName || ''} ${chat.lastMessage.sender.lastName || ''}:` }}
+                    {{ isItMyLastMessage(chat.lastMessage.sender.id) ? $t('chat.you') : `${chat.lastMessage.sender.firstName || ''} ${chat.lastMessage.sender.lastName || ''}:` }}
                   </div>
                   <div class="chat__title chat__title_gray chat__title_ellipsis">
                     {{ setCurrMessageText(chat.lastMessage, userData.id === chat.lastMessage.sender.id) }}
@@ -121,7 +121,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import ChatMenu from '~/components/ui/ChatMenu';
-import { ChatType } from '~/utils/enums';
+import { ChatType, MessageType, MessageAction } from '~/utils/enums';
 
 export default {
   name: 'Messages',
@@ -157,6 +157,15 @@ export default {
     this.SetLoader(false);
   },
   methods: {
+    isItMyLastMessage(senderId) {
+      return this.userData.id === senderId;
+    },
+    isGroupChat(chatType) {
+      return chatType === ChatType.GROUP;
+    },
+    isQuestChat(chatType) {
+      return chatType === ChatType.QUEST;
+    },
     async loadMoreChats() {
       this.filter.offset += this.filter.limit;
 
@@ -167,42 +176,42 @@ export default {
     setCurrMessageText({
       text, type, infoMessage, sender,
     }, itsMe) {
-      if (type === 'info') {
+      if (type === MessageType.INFO) {
         text = 'chat.systemMessages.';
         switch (infoMessage.messageAction) {
-          case 'employerInviteOnQuest': {
+          case MessageAction.EMPLOYER_INVITE_ON_QUEST: {
             text += itsMe ? 'youInvitedToTheQuest' : 'invitedYouToAQuest';
             break;
           }
-          case 'workerResponseOnQuest': {
+          case MessageAction.WORKER_RESPONSE_ON_QUEST: {
             text += itsMe ? 'youHaveRespondedToTheQuest' : 'respondedToTheQuest';
             break;
           }
-          case 'employerRejectResponseOnQuest': {
+          case MessageAction.EMPLOYER_REJECT_RESPONSE_ON_QUEST: {
             text += itsMe ? 'youRejectTheResponseOnQuest' : 'rejectedTheResponseToTheQuest';
             break;
           }
-          case 'workerRejectInviteOnQuest': {
+          case MessageAction.WORKER_REJECT_INVITE_ON_QUEST: {
             text += itsMe ? 'youRejectedTheInviteToTheQuest' : 'rejectedTheInviteToTheQuest';
             break;
           }
-          case 'workerAcceptInviteOnQuest': {
+          case MessageAction.WORKER_ACCEPT_INVITE_ON_QUEST: {
             text += itsMe ? 'youAcceptedTheInviteToTheQuest' : 'acceptedTheInviteToTheQuest';
             break;
           }
-          case 'groupChatCreate': {
+          case MessageAction.GROUP_CHAT_CREATE: {
             text += 'createdAGroupChat';
             break;
           }
-          case 'groupChatDeleteUser': {
+          case MessageAction.GROUP_CHAT_DELETE_USER: {
             text += 'userRemovedFromChat';
             break;
           }
-          case 'groupChatAddUser': {
+          case MessageAction.GROUP_CHAT_ADD_USERS: {
             text += 'userAddedToChat';
             break;
           }
-          case 'groupChatLeaveUser': {
+          case MessageAction.GROUP_CHAT_LEAVE_USER: {
             text += 'leftTheChat';
             break;
           }
@@ -234,30 +243,14 @@ export default {
     handleChangeStarVal(ev, chat) {
       ev.stopPropagation();
       const chatId = chat.id;
-      try {
-        this.$store.dispatch(`chat/${chat.star ? 'removeStarForChat' : 'setStarForChat'}`, chatId);
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-      }
+
+      this.$store.dispatch(`chat/${chat.star ? 'removeStarForChat' : 'setStarForChat'}`, chatId);
     },
     async getChats() {
-      try {
-        await this.$store.dispatch('chat/getChatsList', this.filter);
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-      }
+      await this.$store.dispatch('chat/getChatsList', this.filter);
     },
     handleSelChat(chatId) {
       this.$router.push(`/messages/${chatId}`);
-    },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: e.response?.data?.msg,
-      });
     },
   },
 };

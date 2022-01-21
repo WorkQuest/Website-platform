@@ -170,20 +170,8 @@ export default {
         },
       };
 
-      try {
-        await this.$store.dispatch('chat/getUsersForGroupChat', config);
-        this.members = users.list;
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-      }
-    },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: e.response?.data?.msg,
-      });
+      await this.$store.dispatch('chat/getUsersForGroupChat', config);
+      this.members = users.list;
     },
     hide() {
       const { options: { isAdding }, chatMembers } = this;

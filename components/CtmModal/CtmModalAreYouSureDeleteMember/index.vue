@@ -65,12 +65,7 @@ export default {
     async removeUser() {
       const { options: { userId }, chatId } = this;
 
-      try {
-        await this.$store.dispatch('chat/removeMember', { userId, chatId });
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-      }
+      await this.$store.dispatch('chat/removeMember', { userId, chatId });
 
       this.hide();
     },

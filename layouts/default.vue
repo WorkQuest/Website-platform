@@ -562,6 +562,7 @@ import { mapGetters } from 'vuex';
 import ClickOutside from 'vue-click-outside';
 import moment from 'moment';
 import Footer from '~/components/app/Footer';
+import { MessageAction } from '~/utils/enums';
 
 export default {
   scrollToTop: true,
@@ -797,12 +798,12 @@ export default {
         await this.$wsChat.connect(this.token);
         this.$wsChat.subscribe('/notifications/chat', async ({ data, action }) => {
           if (this.$route.name === 'messages') {
-            if (action === 'groupChatCreate') {
+            if (action === MessageAction.GROUP_CHAT_CREATE) {
               data.isUnread = true;
               data.userMembers = data.userMembers.filter((member) => member.id !== this.userData.id);
               this.$store.commit('chat/addChatToList', data);
               this.$store.commit('user/changeUnreadChatsCount', { needAdd: true, count: 1 });
-            } else if (action === 'newMessage') {
+            } else if (action === MessageAction.NEW_MESSAGE) {
               await this.$store.dispatch('chat/getCurrChatData', data.chatId);
               await this.getStatistic();
             }
@@ -812,16 +813,16 @@ export default {
           await this.getStatistic();
 
           if (data.chatId === this.chatId && !this.messagesFilter.canLoadToBottom) {
-            if (action === 'messageReadByRecipient') return;
+            if (action === MessageAction.MESSAGE_READ_BY_RECIPIENT) return;
             this.$store.commit('chat/addMessageToList', data);
             this.$store.commit('chat/setChatAsUnread');
 
             if (data.type === 'info') {
               const { user } = data.infoMessage;
 
-              if (action === 'groupChatAddUsers') {
+              if (action === MessageAction.GROUP_CHAT_ADD_USERS) {
                 this.$store.commit('chat/addUserToChat', user);
-              } else if (action === 'groupChatDeleteUser') {
+              } else if (action === MessageAction.GROUP_CHAT_DELETE_USER) {
                 this.$store.commit('chat/removeUserFromChat', user.id);
               }
             }

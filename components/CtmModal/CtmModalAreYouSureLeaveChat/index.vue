@@ -51,24 +51,9 @@ export default {
     async leaveChat() {
       const { id } = this.chat;
 
-      try {
-        const response = await this.$store.dispatch('chat/leaveFromChat', id);
-        if (response.ok) {
-          this.hide();
-          this.$router.push('/messages');
-        }
-      } catch (e) {
-        console.log(e);
-        this.showToastError(e);
-        this.hide();
-      }
-    },
-    showToastError(e) {
-      return this.$store.dispatch('main/showToast', {
-        title: this.$t('toasts.error'),
-        variant: 'warning',
-        text: e.response?.data?.msg,
-      });
+      if (await this.$store.dispatch('chat/leaveFromChat', id)) this.$router.push('/messages');
+
+      this.hide();
     },
   },
 };
