@@ -293,7 +293,7 @@ export default {
   data() {
     return {
       firstPhone: null,
-      secondPhoneNumber: { codeRegion: null, phone: null, fullPhone: null },
+      secondPhoneNumber: { codeRegion: 'RU', phone: null, fullPhone: null },
       newEducation: { from: '', to: '', place: '' },
       newWorkExp: { from: '', to: '', place: '' },
       isSearchDDStatus: false,

@@ -111,9 +111,9 @@ export default {
       firstPhone: this.userData.tempPhone || this.userData.phone,
       additionalInfo: {
         secondMobileNumber: {
-          codeRegion: this.secondNumber.codeRegion || null,
-          phone: this.secondNumber.phone || null,
-          fullPhone: this.secondNumber.fullPhone || null,
+          codeRegion: this.secondNumber ? this.secondNumber.codeRegion : 'RU',
+          phone: this.secondNumber ? this.secondNumber.phone : null,
+          fullPhone: this.secondNumber ? this.secondNumber.fullPhone : null,
         },
         address: addInfo.address,
         socialNetwork: {
