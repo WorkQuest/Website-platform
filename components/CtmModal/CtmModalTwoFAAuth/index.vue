@@ -226,13 +226,7 @@ export default {
           img: require('~/assets/img/ui/google-play-icon.svg'),
         },
       ],
-      stepBtns: [
-        {
-          step: [2, 3],
-          click: this.nextStep,
-          text: this.$t('meta.next'),
-        },
-      ],
+      stepBtns: [{ step: [2, 3], click: this.nextStep, text: this.$t('meta.next') }],
       inputs: [
         {
           id: 'confirmEmailCode',
