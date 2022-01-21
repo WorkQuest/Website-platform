@@ -82,17 +82,31 @@
               </div>
             </template>
           </base-field>
-          <vue-phone-number-input
+          <div
             v-if="userRole === 'employer'"
-            v-model="firstPhone"
             class="profile__phone-input"
-            error-color="#EB5757"
-            size="lg"
-            color="#ccc"
-            disabled
-          />
-          <div class="profile__phone-input">
+          >
+            <label for="phone2">
+              <!--              TODO: Localization-->
+              Main phone number
+            </label>
             <vue-phone-number-input
+              id="phone2"
+              v-model="firstPhone"
+              class="profile__phone-input"
+              error-color="#EB5757"
+              size="lg"
+              color="#ccc"
+              disabled
+            />
+          </div>
+          <div class="profile__phone-input">
+            <label for="phone1">
+              <!--              TODO: Localization-->
+              {{ userRole === 'employer' ? 'Additional phone number' : 'Main phone number' }}
+            </label>
+            <vue-phone-number-input
+              id="phone1"
               v-model="secondPhoneNumber.fullPhone"
               :default-country-code="secondPhoneNumber.codeRegion"
               :error="!isValidPhoneNumber"
