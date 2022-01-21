@@ -4,8 +4,10 @@
     class="verification"
   >
     <div class="verification__content content">
-      {{ userData.phone && userData.tempPhone }}
-      <div v-if="userData.phone && userData.tempPhone && userData.tempPhone === userData.phone">
+      <div
+        v-if="secondNumber && userData.tempPhone && userData.tempPhone.fullPhone === secondNumber.fullPhone
+          || secondNumber.fullPhone === userData.phone.fullPhone"
+      >
         <img
           src="~assets/img/ui/warning.svg"
           alt="Already Verified!"
@@ -42,7 +44,8 @@
         </div>
       </div>
       <validation-observer
-        v-if="!userData.phone && secondNumber && secondNumber.fullPhone"
+        v-if="secondNumber && userData.tempPhone && userData.tempPhone.fullPhone !== secondNumber.fullPhone
+          || secondNumber.fullPhone !== userData.phone.fullPhone"
         v-slot="{handleSubmit, validated, passed, invalid}"
       >
         <div class="content__subtitle">
@@ -90,7 +93,7 @@
           {{ $t('modals.haventSMS') }}
           <button
             class="content__resend"
-            @click="confirmPhone()"
+            @click="getCodeFromSms()"
           >
             {{ $t('meta.resendSMS') }}
           </button>
@@ -157,7 +160,7 @@ export default {
       this.confirmPhone();
     },
     async getCodeFromSms() {
-      await this.$store.dispatch('user/sendPhone', { phoneNumber: this.secondNumber });
+      if (this.secondNumber) await this.$store.dispatch('user/sendPhone', { phoneNumber: this.secondNumber });
     },
     async nextStep() {
       if (this.secondNumber) {

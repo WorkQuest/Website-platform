@@ -124,6 +124,7 @@
               error-color="#EB5757"
               size="lg"
               color="#ccc"
+              disabled
             />
           </div>
         </div>
