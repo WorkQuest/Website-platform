@@ -1398,6 +1398,9 @@
     "loadMore": "???"
   },
   "settings": {
+    "additionalPhoneNumber": "???",
+    "mainPhoneNumber": "???",
+    "workProposals": "???",
     "phoneVerified": "???",
     "facebook": "facebook",
     "linkedin": "linkedin",

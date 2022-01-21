@@ -87,8 +87,7 @@
               v-if="userRole === 'employer'"
               for="phone1"
             >
-              <!--              TODO: Localization-->
-              {{ 'Main phone number' }}
+              {{ $t('settings.mainPhoneNumber') }}
             </label>
             <vue-phone-number-input
               id="phone1"
@@ -114,8 +113,7 @@
             class="profile__phone-input"
           >
             <label for="phone2">
-              <!--              TODO: Localization-->
-              {{ 'Additional phone number' }}
+              {{ $t('settings.additionalPhoneNumber') }}
             </label>
             <vue-phone-number-input
               id="phone2"

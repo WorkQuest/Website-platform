@@ -1398,6 +1398,9 @@
     "loadMore": "Load more"
   },
   "settings": {
+    "additionalPhoneNumber": "Additional phone number",
+    "mainPhoneNumber": "Main phone number",
+    "workProposals": "Filter all work proposals",
     "phoneVerified": "Phone number already verified!",
     "facebook": "facebook",
     "linkedin": "linkedin",

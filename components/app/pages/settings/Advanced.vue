@@ -10,7 +10,7 @@
         class="advanced__options advanced__options_left"
       >
         <div class="advanced__subtitle">
-          {{ $t('settings.whoCanSee') }}
+          {{ radio[0].id === 'allUsers' ? $t('settings.whoCanSee') : $t('settings.workProposals') }}
         </div>
         <div
           v-for="input in radio"
