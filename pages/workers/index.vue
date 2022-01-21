@@ -99,8 +99,8 @@
               <base-dd
                 v-model="selectedRating"
                 class="panel__item"
-                :items="ratingItems"
                 mode="blackFont"
+                :items="ratingItems"
                 :placeholder="$t('quests.rating.title')"
               />
               <base-dd
@@ -111,9 +111,9 @@
                 :placeholder="$t('quests.priority.title')"
               />
               <base-dd
-                v-model="selectedDistantWork"
+                v-model="selectedWorkplace"
                 class="panel__item"
-                :items="distantWorkItem"
+                :items="workplaceItems"
                 mode="blackFont"
                 :placeholder="$t('quests.distantWork.title')"
               />
@@ -155,20 +155,15 @@
             <div class="panel__right">
               <base-btn
                 class="tools__item"
-                :mode="'light'"
+                mode="light"
                 :padding="true"
                 data-selector="ACTION-TIME-SORT-USER"
-                @click="changeSorting('time')"
+                @click="sortByTime()"
               >
                 <span class="tools__text">
                   {{ $t('quests.time') }}
                 </span>
-                <span
-                  :class="{
-                    'icon-Sorting_descending': timeSort === 'desc',
-                    'icon-Sorting_ascending': timeSort === 'asc'
-                  }"
-                />
+                <span :class="`icon-Sorting_${query['sort[createdAt]'] === 'desc' ? 'descending' : 'ascending'}`" />
               </base-btn>
             </div>
           </div>
@@ -193,6 +188,7 @@
           v-model="page"
           class="employees__pager"
           :total-pages="totalPages"
+          @input="setPage($event)"
         />
       </div>
     </div>
@@ -204,7 +200,7 @@ import { mapGetters } from 'vuex';
 import { GeoCode } from 'geo-coder';
 import ClickOutside from 'vue-click-outside';
 import modals from '~/store/modals/modals';
-import { priorityFilter, ratingFilter, workplaceFilter } from '~/utils/enums';
+import { RatingFilter, PriorityFilter, WorkplaceFilter } from '~/utils/enums';
 
 export default {
   name: 'Employees',
@@ -214,19 +210,23 @@ export default {
   data() {
     return {
       page: 1,
-      perPager: 12,
+      query: {
+        limit: 12,
+        offset: 0,
+        'sort[createdAt]': 'desc',
+      },
+      isFetching: false,
+      selectedRating: null,
+      selectedPriority: null,
+      selectedWorkplace: null,
+
       additionalValue: '',
       isSearchDDStatus: true,
       isShowMap: true,
       rating: [],
       sortData: '',
-      selectedPriority: null,
-      selectedDistantWork: null,
-      selectedRating: null,
-      selectedTypeOfJob: '',
       search: '',
       distanceIndex: 0,
-      timeSort: 'desc',
       addresses: [],
       coordinates: null,
       boundsTimeout: null,
@@ -238,36 +238,28 @@ export default {
       userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
       workersList: 'quests/getWorkersList',
-      selectedSpecializationsFilters: 'quests/getSelectedSpecializationsFilters',
       selectedPriceFilter: 'quests/getSelectedPriceFilter',
+      selectedSpecializationsFilters: 'quests/getSelectedSpecializationsFilters',
     }),
-    totalPages() {
-      return Math.ceil(this.workersList.count / this.perPager);
-    },
-    distantWorkItem() {
-      return [
-        this.$t('quests.distantWork.allWorkplaces'),
-        this.$t('quests.distantWork.distantWork'),
-        this.$t('quests.distantWork.workInOffice'),
-        this.$t('quests.distantWork.bothVariant'),
-      ];
-    },
-    priorityItems() {
-      return [
-        this.$t('quests.priority.all'),
-        this.$t('quests.runtime.urgent'),
-        this.$t('quests.runtime.shortTerm'),
-        this.$t('quests.runtime.fixedDelivery'),
-      ];
+    totalPages() { return Math.ceil(this.workersList.count / this.query.limit); },
+    specFiltersQuery() {
+      const filtersData = this.selectedSpecializationsFilters?.query || [];
+      const query = {};
+      filtersData.forEach((item, i) => { query[`specialization[${i}]`] = item; });
+      return query;
     },
     ratingItems() {
-      return [
-        this.$t('quests.allVariants'),
-        this.$t('quests.rating.verified'),
-        this.$t('quests.rating.reliable'),
-        this.$t('quests.rating.topRanked'),
-      ];
+      const filters = [this.$t('quests.allVariants')];
+      RatingFilter.forEach((item) => { if (item) filters.push(this.$t(`quests.rating.${item}`)); });
+      return filters;
     },
+    priorityItems() {
+      const filters = [this.$t('quests.priority.all')];
+      PriorityFilter.forEach((item) => { if (item.value) filters.push(this.$t(`quests.runtime.${item.key}`)); });
+      return filters;
+    },
+    workplaceItems() { return WorkplaceFilter.map((item) => this.$t(`workPlaces.${item}`)); },
+
     distanceItems() {
       return [
         this.$t('quests.distance.100'),
@@ -275,28 +267,50 @@ export default {
         this.$t('quests.distance.1000'),
       ];
     },
-    formattedSpecFilters() {
-      const filtersData = this.selectedSpecializationsFilters?.query || [];
-      if (!filtersData.length) return '';
-      let filters = `specialization[]=${filtersData[0]}`;
-      for (let i = 1; i < filtersData.length; i += 1) { filters += `&specialization[]=${filtersData[i]}`; }
-      return filters;
-    },
   },
   watch: {
     async isShowMap(newVal) {
       this.SetLoader(true);
       this.additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      await this.fetchWorkersList();
+      await this.fetchEmployeeList();
       this.SetLoader(false);
       localStorage.setItem('isShowMap', JSON.stringify(newVal));
     },
-    async page() {
-      this.SetLoader(true);
-      this.additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
-      await this.fetchWorkersList();
-      this.SetLoader(false);
+    async specFiltersQuery() {
+      this.page = 1;
+      await this.fetchEmployeeList();
     },
+    async selectedRating() {
+      this.page = 1;
+      if (!this.selectedRating) delete this.query['ratingStatus[0]'];
+      else this.query['ratingStatus[0]'] = RatingFilter[this.selectedRating];
+      await this.fetchEmployeeList();
+    },
+    async selectedPriority() {
+      this.page = 1;
+      if (!this.selectedPriority) delete this.query['priority[0]'];
+      else this.query['priority[0]'] = PriorityFilter[this.selectedPriority].value;
+      await this.fetchEmployeeList();
+    },
+    async selectedWorkplace() {
+      this.page = 1;
+      if (!this.selectedWorkplace) delete this.query['workplace[0]'];
+      else this.query['workplace[0]'] = WorkplaceFilter[this.selectedWorkplace];
+      await this.fetchEmployeeList();
+    },
+    async selectedPriceFilter() {
+      this.page = 1;
+      const { selectedPriceFilter: { from, to } } = this;
+      if (from || to) {
+        this.query['betweenWagePerHour[from]'] = from || 0;
+        this.query['betweenWagePerHour[to]'] = to || 99999999999999;
+      } else {
+        delete this.query['betweenWagePerHour[from]'];
+        delete this.query['betweenWagePerHour[to]'];
+      }
+      await this.fetchEmployeeList();
+    },
+
     async mapBounds(newVal, prevVal) {
       if (newVal?.center?.lng === prevVal?.center?.lng
         && newVal?.center?.lat === prevVal?.center?.lat
@@ -307,32 +321,14 @@ export default {
         return;
       }
       clearTimeout(this.boundsTimeout);
-      this.boundsTimeout = setTimeout(async () => await this.fetchWorkersList(), 100);
-    },
-    async formattedSpecFilters() {
-      await this.fetchWorkersList();
-    },
-    async selectedPriceFilter() {
-      await this.fetchWorkersList();
-    },
-    async selectedPriority() {
-      await this.fetchWorkersList();
-    },
-    async selectedDistantWork() {
-      await this.fetchWorkersList();
-    },
-    async selectedTypeOfJob() {
-      await this.fetchWorkersList();
-    },
-    async selectedRating() {
-      await this.fetchWorkersList();
+      this.boundsTimeout = setTimeout(async () => await this.fetchEmployeeList(), 1000);
     },
   },
   async mounted() {
     this.SetLoader(true);
     const isShow = JSON.parse(localStorage.getItem('isShowMap'));
     if (typeof isShow === 'boolean') this.isShowMap = isShow;
-    await this.fetchWorkersList();
+    await this.fetchEmployeeList();
     this.SetLoader(false);
   },
   beforeDestroy() {
@@ -345,30 +341,40 @@ export default {
     hideSearchDD() {
       this.isSearchDDStatus = false;
     },
-    async changeSorting(type) {
-      let sortValue = '';
-      if (type === 'time') {
-        this.timeSort = this.timeSort === 'desc' ? 'asc' : 'desc';
-        sortValue = `&sort[createdAt]=${this.timeSort}`;
-      }
-      this.sortData = sortValue;
-      await this.fetchWorkersList();
+    async setPage(newPage) {
+      this.page = newPage;
+      await this.fetchEmployeeList();
     },
-    async fetchWorkersList() {
-      let payload = this.formattedSpecFilters;
-      payload += this.sortData;
-      if (!this.isShowMap) {
-        await this.$store.dispatch('quests/workersList', `${this.additionalValue}&${payload}`);
-      } else if (this.isShowMap && Object.keys(this.mapBounds).length > 0) {
-        const bounds = `north[longitude]=${this.mapBounds.northEast.lng}&north[latitude]=${this.mapBounds.northEast.lat}&south[longitude]=${this.mapBounds.southWest.lng}&south[latitude]=${this.mapBounds.southWest.lat}`;
-        if (this.selectedPriority) payload += `&priority=${priorityFilter[this.selectedPriority]}`;
-        else if (this.selectedDistantWork > 0) payload += `&workplace[]=${workplaceFilter[this.selectedDistantWork]}`;
-        else if (this.selectedRating > 0) payload += `&ratingStatus=${ratingFilter[this.selectedRating]}`;
-        else if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) {
-          payload += `&betweenWagePerHour[from]=${this.selectedPriceFilter.from || 0}&betweenWagePerHour[to]=${this.selectedPriceFilter.to || 99999999999999}`;
-        }
-        await this.$store.dispatch('quests/workersList', `${this.additionalValue}&${bounds}&${payload}`);
+    async sortByTime() {
+      this.query['sort[createdAt]'] = this.query['sort[createdAt]'] === 'desc' ? 'asc' : 'desc';
+      await this.fetchEmployeeList();
+    },
+    async fetchEmployeeList() {
+      if (this.isFetching) return;
+      this.SetLoader(true);
+      this.isFetching = true;
+
+      if (this.isShowMap && Object.keys(this.mapBounds).length) {
+        this.query['north[longitude]'] = this.mapBounds.northEast.lng;
+        this.query['north[latitude]'] = this.mapBounds.northEast.lat;
+        this.query['south[longitude]'] = this.mapBounds.southWest.lng;
+        this.query['south[latitude]'] = this.mapBounds.southWest.lat;
+      } else {
+        delete this.query['north[longitude]'];
+        delete this.query['north[latitude]'];
+        delete this.query['south[longitude]'];
+        delete this.query['south[latitude]'];
       }
+
+      const { query: { limit }, page } = this;
+      this.query.offset = (page - 1) * limit;
+      await this.$store.dispatch('quests/employeeList', {
+        query: this.query,
+        specFilter: this.specFiltersQuery,
+      });
+
+      this.isFetching = false;
+      this.SetLoader(false);
     },
     showPriceSearch() {
       this.ShowModal({

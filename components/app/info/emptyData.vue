@@ -28,8 +28,8 @@ export default {
   name: 'EmptyData',
   props: {
     description: {
-      type: Object,
-      default: () => {},
+      type: String,
+      default: '',
     },
     btnText: {
       type: String,

@@ -21,9 +21,15 @@ export default {
       return console.log(e);
     }
   },
-  async workersList({ commit }, payload) {
+  async employeeList({ commit }, { query, specFilter }) {
     try {
-      const response = await this.$axios.$get(`/v1/profile/workers?${payload}`);
+      if (query.q === '') delete query.q;
+      const response = await this.$axios.$get('/v1/profile/workers', {
+        params: {
+          ...query,
+          ...specFilter,
+        },
+      });
       commit('setWorkersList', response.result);
       return response.result;
     } catch (e) {
