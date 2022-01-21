@@ -1,5 +1,5 @@
 <template>
-  <div class="workers">
+  <div class="employees">
     <map-block :is-show-map="isShowMap" />
     <div
       class="workers__search search"
@@ -173,13 +173,9 @@
             </div>
           </div>
         </div>
-        <empty-data
-          v-if="!workersList.count"
-          :description="$t('errors.emptyData.noEmployees')"
-        />
         <div
-          v-else
-          class="content"
+          v-if="workersList.count"
+          class="employees__cards"
         >
           <employee-card
             v-for="(user,id) in workersList.users"
@@ -188,15 +184,16 @@
             @click="showDetails(user)"
           />
         </div>
-        <div
-          v-if="totalPagesValue > 1"
-          class="pager"
-        >
-          <base-pager
-            v-model="page"
-            :total-pages="totalPagesValue"
-          />
-        </div>
+        <empty-data
+          v-else
+          :description="$t('errors.emptyData.noEmployees')"
+        />
+        <base-pager
+          v-if="totalPages > 1"
+          v-model="page"
+          class="employees__pager"
+          :total-pages="totalPages"
+        />
       </div>
     </div>
   </div>
@@ -210,7 +207,7 @@ import modals from '~/store/modals/modals';
 import { priorityFilter, ratingFilter, workplaceFilter } from '~/utils/enums';
 
 export default {
-  name: 'Workers',
+  name: 'Employees',
   directives: {
     ClickOutside,
   },
@@ -219,7 +216,6 @@ export default {
       page: 1,
       perPager: 12,
       additionalValue: '',
-      totalPagesValue: 1,
       isSearchDDStatus: true,
       isShowMap: true,
       rating: [],
@@ -246,10 +242,7 @@ export default {
       selectedPriceFilter: 'quests/getSelectedPriceFilter',
     }),
     totalPages() {
-      if (this.workersList.count > 0) {
-        return Math.ceil(this.workersList.count / this.perPager);
-      }
-      return 0;
+      return Math.ceil(this.workersList.count / this.perPager);
     },
     distantWorkItem() {
       return [
@@ -376,7 +369,6 @@ export default {
         }
         await this.$store.dispatch('quests/workersList', `${this.additionalValue}&${bounds}&${payload}`);
       }
-      this.totalPagesValue = this.totalPages;
     },
     showPriceSearch() {
       this.ShowModal({
@@ -413,8 +405,19 @@ export default {
 
 <style lang="scss" scoped>
 
-.pager {
-  margin-top: 25px;
+.employees {
+
+  &__cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 360px;
+    grid-gap: 20px;
+    margin-top: 20px;
+  }
+
+  &__pager {
+    margin-top: 20px;
+  }
 }
 
 .selector {
@@ -579,13 +582,7 @@ export default {
     position: relative;
   }
 }
-.content {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 360px;
-  grid-gap: 20px;
-  margin-top: 20px;
-}
+
 .btn_white {
   font-size: 14px;
   background-color: $white;
@@ -717,6 +714,13 @@ export default {
   }
 }
 @include _1199 {
+  .employees {
+
+    &__cards {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
   .panel {
     display: flex;
     flex-direction: column;
@@ -731,14 +735,18 @@ export default {
   .menu {
     grid-template-columns: auto auto;
   }
-  .content {
-    grid-template-columns: repeat(3, 1fr);
-  }
   .menu__right {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 @include _991 {
+  .employees {
+
+    &__cards {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   .panel {
     &__left {
       grid-template-columns: repeat(2, 1fr);
@@ -746,9 +754,6 @@ export default {
   }
   .main {
     display: block;
-    .content {
-      grid-template-columns: repeat(2, 1fr);
-    }
   }
   .tools {
     &__panel {
@@ -806,6 +811,13 @@ export default {
 }
 
 @include _575 {
+  .employees {
+
+    &__cards {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .main {
     .menu {
       display: flex;
@@ -816,9 +828,7 @@ export default {
       display: flex;
       flex-direction: column;
     }
-    .content {
-      grid-template-columns: 1fr;
-    }
+
     .menu__right {
       grid-template-columns: repeat(2, 1fr);
     }
