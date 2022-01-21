@@ -401,7 +401,9 @@ export default {
         },
       };
 
+      // amount0 - сколько токенов вошло в пул
       const amount0 = this.Floor(data.isOut ? data.amount1 : data.amount0, 3);
+      // amount1 - сколько токенов вышло из пула
       const amount1 = this.Floor(data.isOut ? data.amount0 : data.amount1, 3);
 
       const { currentPool } = this;
