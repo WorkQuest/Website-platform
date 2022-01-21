@@ -534,7 +534,7 @@ export default {
     async acceptCompletedWorkOnQuest() {
       if (await this.checkConnected() === false) return;
 
-      const contractAddress = '0xCAacf8Ac02F96574D7cAb1d7077587ADAC43B458'; // TODO: get from back
+      const contractAddress = '0x495bb3DadB7187D79D216017471807dCe4CB28F3'; // TODO: get from back
       this.SetLoader(true);
       const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
         method: QuestMethods.AcceptJobResult,
@@ -628,7 +628,7 @@ export default {
     async acceptWorkOnQuest() {
       if (await this.checkConnected() === false) return;
 
-      const contractAddress = '0xCAacf8Ac02F96574D7cAb1d7077587ADAC43B458'; // TODO: get from back
+      const contractAddress = '0x495bb3DadB7187D79D216017471807dCe4CB28F3'; // TODO: get from back
       this.SetLoader(true);
       const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
         method: QuestMethods.AcceptJob,
@@ -669,7 +669,7 @@ export default {
     async rejectWorkOnQuest() {
       if (await this.checkConnected() === false) return;
 
-      const contractAddress = '0xCAacf8Ac02F96574D7cAb1d7077587ADAC43B458'; // TODO: get from back
+      const contractAddress = '0x495bb3DadB7187D79D216017471807dCe4CB28F3'; // TODO: get from back
       this.SetLoader(true);
       const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
         method: QuestMethods.DeclineJob,
@@ -711,7 +711,7 @@ export default {
     async completeWorkOnQuest() {
       if (await this.checkConnected() === false) return;
 
-      const contractAddress = '0xCAacf8Ac02F96574D7cAb1d7077587ADAC43B458'; // TODO: get from back
+      const contractAddress = '0x495bb3DadB7187D79D216017471807dCe4CB28F3'; // TODO: get from back
       this.SetLoader(true);
       const feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
         method: QuestMethods.VerificationJob,

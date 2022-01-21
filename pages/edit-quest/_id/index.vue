@@ -416,9 +416,11 @@ export default {
       ];
     },
   },
+  async beforeCreate() {
+    await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+  },
   async mounted() {
     if (!this.isWalletConnected) {
-      await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
       return;
     }
     this.SetLoader(true);
@@ -548,14 +550,12 @@ export default {
         return;
       }
 
-      if (!this.isWalletConnected) {
-        await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
-      }
-
-      const contractAddress = '0xCAacf8Ac02F96574D7cAb1d7077587ADAC43B458'; // TODO: get from back
+      const contractAddress = '0x495bb3DadB7187D79D216017471807dCe4CB28F3'; // TODO: get from back
       let feeRes;
       let deposit;
-      if (this.price > this.prevPrice) { // Цена за квест стала ВЫШЕ
+      console.log('new', this.price, 'prev:', this.prevPrice);
+      if (new BigNumber(this.price).isGreaterThan(this.prevPrice)) { // Цена за квест стала ВЫШЕ
+        console.log('need deposit');
         deposit = new BigNumber(this.price).minus(this.prevPrice).multipliedBy(1 + this.questFee).toString();
         feeRes = await this.$store.dispatch('wallet/getEditQuestFeeData', {
           contractAddress,
@@ -564,6 +564,7 @@ export default {
           depositAmount: deposit,
         });
       } else {
+        console.log('ffff');
         feeRes = await this.$store.dispatch('wallet/getFeeDataJobMethod', {
           contractAddress,
           method: QuestMethods.EditJob,
@@ -602,6 +603,7 @@ export default {
           symbol: TokenSymbols.WUSD,
         };
       }
+      await this.$store.dispatch('wallet/getBalance');
       this.ShowModal({
         key: modals.transactionReceipt,
         fields,

@@ -11,7 +11,7 @@ import {
   getStyledAmount,
   setWalletAddress,
   getWalletAddress,
-  transfer, transferToken, getTransferFeeData, getCreateQuestFeeData, hashText, getEditQuestFeeData,
+  transfer, transferToken, getTransferFeeData, getCreateQuestFeeData, hashText, getEditQuestFeeData, editQuest,
 } from '~/utils/wallet';
 import abi from '~/abi/index';
 import { QuestMethods, TokenSymbols } from '~/utils/enums';
@@ -145,7 +145,7 @@ export default {
   }) {
     return await getCreateQuestFeeData(cost, depositAmount, description, nonce);
   },
-  async getEditQuestFeeData({ commit }, {
+  async getEditQuestFeeData({ commit }, { // If we send WUSD
     contractAddress, description, cost, depositAmount,
   }) {
     return await getEditQuestFeeData(contractAddress, description, cost, depositAmount);

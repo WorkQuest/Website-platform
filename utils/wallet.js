@@ -314,7 +314,6 @@ export const getCreateQuestFeeData = async (cost, depositAmount, description, no
     cost = new BigNumber(cost).shiftedBy(18).toString();
     depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
     const hash = hashText(description);
-    console.log(cost, depositAmount, description, hash, nonce);
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
       inst.methods.newWorkQuest.apply(null, [hash, cost, 0, nonce]).estimateGas({
@@ -336,28 +335,26 @@ export const getCreateQuestFeeData = async (cost, depositAmount, description, no
 // Edit quest
 export const editQuest = async (contractAddress, cost, depositAmount, description) => {
   try {
-    const _abi = abi.WorkQuestFactory;
-    const _abiAddress = process.env.WORK_QUEST_FACTORY;
-
     const hash = hashText(description);
-    const _cost = new BigNumber(cost).shiftedBy(18).toString();
-    const _depositAmount = new BigNumber(depositAmount).shiftedBy(18).toString();
-    const data = [hash, _cost];
-    const inst = new web3.eth.Contract(_abi, _abiAddress);
+    const data = [hash, cost];
+    const inst = new web3.eth.Contract(abi.WorkQuest, contractAddress);
+    console.log('1', inst);
     const sendData = inst.methods[QuestMethods.EditJob].apply(null, data).encodeABI();
+    console.log('2', sendData);
+
     const [gasPrice, gasEstimate] = await Promise.all([
       web3.eth.getGasPrice(),
-      inst.methods[QuestMethods.EditJob].apply(null, data).estimateGas({ from: wallet.address, value: _depositAmount }),
+      inst.methods[QuestMethods.EditJob].apply(null, data).estimateGas({ from: wallet.address, value: depositAmount }),
     ]);
     const res = await web3.eth.sendTransaction({
-      to: _abiAddress,
+      to: contractAddress,
       from: wallet.address,
-      value: _depositAmount,
+      value: depositAmount,
       data: sendData,
       gasPrice,
       gas: gasEstimate,
     });
-    console.log('NEW WORK QUEST RES: ', res);
+    console.log('Edit quest ress: ', res);
     return success(res);
   } catch (e) {
     console.error(e);

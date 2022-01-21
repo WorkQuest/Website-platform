@@ -135,7 +135,7 @@ export default {
       }
 
       // TODO: брать данные ниже из response переменной
-      const contractAddress = '0xCAacf8Ac02F96574D7cAb1d7077587ADAC43B458';
+      const contractAddress = '0x495bb3DadB7187D79D216017471807dCe4CB28F3';
       const { worker } = response;
       const workerAddress = worker.wallet.address;
 
