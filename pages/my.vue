@@ -79,7 +79,9 @@ export default {
         { name: this.$t('myQuests.statuses.invited'), id: 4 },
         { name: this.$t('myQuests.statuses.performed'), id: 5 },
       ];
-      return tabs;
+      return this.userRole === UserRole.EMPLOYER
+        ? tabs.filter((tab) => (tab.id !== 2))
+        : tabs;
     },
     totalPages() {
       return Math.ceil(this.questsCount / this.offset);

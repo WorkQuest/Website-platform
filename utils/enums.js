@@ -153,3 +153,46 @@ export const TokenSymbols = Object.freeze({
   WQT: 'WQT',
   WUSD: 'WUSD',
 });
+
+export const NetworksData = {
+  ETH_MAIN: {
+    chainId: '0x1',
+    chainName: 'Ethereum Mainnet',
+    rpcUrls: ['https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+  },
+  ETH_TEST: {
+    chainId: '0x4',
+    chainName: 'Ethereum Testnet',
+    rpcUrls: ['https://rinkey.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+  },
+  BSC_MAIN: {
+    chainId: '0x38',
+    chainName: 'BSC Mainnet',
+    rpcUrls: ['https://bsc-dataseed1.binance.org/'],
+    nativeCurrency: {
+      name: 'BNB',
+      symbol: 'BNB',
+      decimals: 18,
+    },
+  },
+  BSC_TEST: {
+    chainId: '0x61',
+    chainName: 'BSC Testnet',
+    rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
+    nativeCurrency: {
+      name: 'BNB',
+      symbol: 'BNB',
+      decimals: 18,
+    },
+  },
+  WUSD_TEST: {
+    chainId: '0x1346618',
+    chainName: 'WorkQuest DEV',
+    rpcUrls: ['https://dev-node-nyc3.workquest.co'],
+    nativeCurrency: {
+      name: 'WUSD',
+      symbol: 'WUSD',
+      decimals: 18,
+    },
+  },
+};
