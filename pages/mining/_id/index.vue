@@ -249,7 +249,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import moment from 'moment';
-import BigNumber from 'bignumber.js';
 import modals from '~/store/modals/modals';
 import chart from './graphics_data';
 import { StakingTypes } from '~/utils/enums';
@@ -335,14 +334,13 @@ export default {
     tableData() {
       const arr = [];
       this.miningSwaps.forEach((data) => {
-        const info = {
+        arr.push({
           totalValue: `${this.Floor(data.totalValue, 2)} $`,
           account: data.account,
           accountView: this.CutTxn(data.account),
           time: moment(new Date(data.timestamp * 1000)).startOf('hour').fromNow(),
           ...this.getTokensAmount(data),
-        };
-        arr.push(info);
+        });
       });
       return arr;
     },
