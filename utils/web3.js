@@ -77,36 +77,29 @@ export const goToChain = async (chain) => {
     if (e.code === 4902) {
       try {
         const networkParams = {
-          chainId: '',
-          chainName: '',
           rpcUrls: [],
         };
+        let key = '';
+        let chainName = '';
+        let url = '';
         if (chain === Chains.ETHEREUM) {
-          if (process.env.PROD === true) {
-            networkParams.chainId = ChainsId.ETH_MAIN;
-            networkParams.chainName = 'Ethereum Mainnet';
-            networkParams.rpcUrls.push('https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161');
-          } else {
-            networkParams.chainId = ChainsId.ETH_TEST;
-            networkParams.chainName = 'Ethereum Testnet';
-            networkParams.rpcUrls.push('https://rinkey.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161');
-          }
+          key = process.env.PROD === true ? 'ETH_MAIN' : 'ETH_TEST';
+          chainName = process.env.PROD === true ? 'Ethereum Mainnet' : 'Ethereum Testnet';
+          url = process.env.PROD === true ? 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161' : 'https://rinkey.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161';
         } else if (chain === Chains.BNB) {
-          if (process.env.PROD === true) {
-            networkParams.chainId = ChainsId.BSC_MAIN;
-            networkParams.chainName = 'BSC Mainnet';
-            networkParams.rpcUrls.push('https://bsc-dataseed1.binance.org/');
-          } else {
-            networkParams.chainId = ChainsId.BSC_TEST;
-            networkParams.chainName = 'BSC Testnet';
-            networkParams.rpcUrls.push('https://data-seed-prebsc-1-s1.binance.org:8545/');
-          }
+          key = process.env.PROD === true ? 'BSC_MAIN' : 'BSC_TEST';
+          chainName = process.env.PROD === true ? 'BSC Mainnet' : 'BSC Testnet';
+          url = process.env.PROD === true ? 'https://bsc-dataseed1.binance.org/' : 'https://data-seed-prebsc-1-s1.binance.org:8545/';
           networkParams.nativeCurrency = {
             name: 'BNB',
             symbol: 'BNB',
             decimals: 18,
           };
         }
+
+        networkParams.chainId = ChainsId[key];
+        networkParams.chainName = chainName;
+        networkParams.rpcUrls.push(url);
         await window.ethereum.request({
           method: 'wallet_addEthereumChain',
           params: [networkParams],
