@@ -4,7 +4,9 @@ import BigNumber from 'bignumber.js';
 import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import * as abi from '~/abi/abi';
-import { Chains, ChainsId, StakingTypes } from '~/utils/enums';
+import {
+  Chains, ChainsId, NetworksData, StakingTypes,
+} from '~/utils/enums';
 
 let bscRpcContract = null;
 let web3 = null;
@@ -64,6 +66,24 @@ export const getChainIdByChain = (chain) => {
       throw error(-1, `wrong chain name: ${chain} ${Chains.BINANCE} ${Chains.ETHEREUM}`);
   }
 };
+export const addedNetwork = async (chain) => {
+  try {
+    let networkParams = {};
+    if (chain === Chains.ETHEREUM) {
+      networkParams = process.env.PROD === 'true' ? NetworksData.ETH_MAIN : NetworksData.ETH_TEST;
+    } else if (chain === Chains.BNB) {
+      networkParams = process.env.PROD === 'true' ? NetworksData.BSC_MAIN : NetworksData.BSC_TEST;
+    }
+    await window.ethereum.request({
+      method: 'wallet_addEthereumChain',
+      params: [networkParams],
+    });
+    return { ok: true };
+  } catch (addError) {
+    showToast('Added chain error:', `${addError.message}`, 'danger');
+    return error(500, 'added chain error', addError);
+  }
+};
 export const goToChain = async (chain) => {
   const methodName = 'wallet_switchEthereumChain';
   const chainIdParam = [{ chainId: getChainIdByChain(chain) }];
@@ -75,48 +95,15 @@ export const goToChain = async (chain) => {
     return { ok: true };
   } catch (e) {
     if (e.code === 4902) {
-      try {
-        const networkParams = {
-          rpcUrls: [],
-        };
-        let key = '';
-        let chainName = '';
-        let url = '';
-        if (chain === Chains.ETHEREUM) {
-          key = process.env.PROD === true ? 'ETH_MAIN' : 'ETH_TEST';
-          chainName = process.env.PROD === true ? 'Ethereum Mainnet' : 'Ethereum Testnet';
-          url = process.env.PROD === true ? 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161' : 'https://rinkey.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161';
-        } else if (chain === Chains.BNB) {
-          key = process.env.PROD === true ? 'BSC_MAIN' : 'BSC_TEST';
-          chainName = process.env.PROD === true ? 'BSC Mainnet' : 'BSC Testnet';
-          url = process.env.PROD === true ? 'https://bsc-dataseed1.binance.org/' : 'https://data-seed-prebsc-1-s1.binance.org:8545/';
-          networkParams.nativeCurrency = {
-            name: 'BNB',
-            symbol: 'BNB',
-            decimals: 18,
-          };
-        }
-
-        networkParams.chainId = ChainsId[key];
-        networkParams.chainName = chainName;
-        networkParams.rpcUrls.push(url);
-        await window.ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [networkParams],
-        });
-        return { ok: true };
-      } catch (addError) {
-        showToast('Added chain error:', `${addError.message}`, 'danger');
-        return error(500, 'added chain error', e);
-      }
-    } else if (typeof window.ethereum !== 'undefined') {
+      return await addedNetwork(chain);
+    }
+    if (typeof window.ethereum !== 'undefined') {
       showToast('Switch chain error:', `${e.message}`, 'danger');
       return error(500, 'switch chain error', e);
     }
     return { ok: false };
   }
 };
-
 export const getStakingDataByType = (stakingType) => {
   let _stakingAddress;
   let _stakingAbi;
