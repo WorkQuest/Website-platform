@@ -24,16 +24,17 @@ export default {
   async employeeList({ commit }, { query, specFilter }) {
     try {
       if (query.q === '') delete query.q;
-      const response = await this.$axios.$get('/v1/profile/workers', {
+      const { ok, result } = await this.$axios.$get('/v1/profile/workers', {
         params: {
           ...query,
           ...specFilter,
         },
       });
-      commit('setWorkersList', response.result);
-      return response.result;
+      commit('setEmployeeList', result);
+      return { ok };
     } catch (e) {
-      return console.log(e);
+      console.log('quests/employeeList');
+      return false;
     }
   },
   async setCurrentWorker({ commit }, worker) {

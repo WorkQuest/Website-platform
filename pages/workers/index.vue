@@ -65,7 +65,7 @@
               data-selector="ACTION-MAP-CENTER-CHANGE-USER"
               @click="centerChange"
             >
-              {{ userRole === 'worker' ? $t('quests.searchResults') : $t('workers.searchWorkers') }}
+              {{ $t('workers.searchWorkers') }}
             </base-btn>
           </div>
         </div>
@@ -158,7 +158,7 @@
                 mode="light"
                 :padding="true"
                 data-selector="ACTION-TIME-SORT-USER"
-                @click="sortByTime()"
+                @click="sortByTime"
               >
                 <span class="tools__text">
                   {{ $t('quests.time') }}
@@ -169,11 +169,11 @@
           </div>
         </div>
         <div
-          v-if="workersList.count"
+          v-if="employeeCount"
           class="employees__cards"
         >
           <employee-card
-            v-for="(user,id) in workersList.users"
+            v-for="(user,id) in employeeList"
             :key="id"
             :user="user"
             @click="showDetails(user)"
@@ -188,7 +188,7 @@
           v-model="page"
           class="employees__pager"
           :total-pages="totalPages"
-          @input="setPage($event)"
+          @input="setPage"
         />
       </div>
     </div>
@@ -215,33 +215,30 @@ export default {
         offset: 0,
         'sort[createdAt]': 'desc',
       },
+      isShowMap: true,
       isFetching: false,
+      boundsTimeout: null,
       selectedRating: null,
       selectedPriority: null,
       selectedWorkplace: null,
 
-      additionalValue: '',
       isSearchDDStatus: true,
-      isShowMap: true,
-      rating: [],
-      sortData: '',
       search: '',
       distanceIndex: 0,
       addresses: [],
       coordinates: null,
-      boundsTimeout: null,
     };
   },
   computed: {
     ...mapGetters({
       userPosition: 'user/getUserCurrentPosition',
-      userRole: 'user/getUserRole',
       mapBounds: 'quests/getMapBounds',
-      workersList: 'quests/getWorkersList',
+      employeeList: 'quests/getEmployeeList',
+      employeeCount: 'quests/getEmployeeCount',
       selectedPriceFilter: 'quests/getSelectedPriceFilter',
       selectedSpecializationsFilters: 'quests/getSelectedSpecializationsFilters',
     }),
-    totalPages() { return Math.ceil(this.workersList.count / this.query.limit); },
+    totalPages() { return Math.ceil(this.employeeCount / this.query.limit); },
     specFiltersQuery() {
       const filtersData = this.selectedSpecializationsFilters?.query || [];
       const query = {};
@@ -270,11 +267,8 @@ export default {
   },
   watch: {
     async isShowMap(newVal) {
-      this.SetLoader(true);
-      this.additionalValue = `limit=${this.perPager}&offset=${(this.page - 1) * this.perPager}&${this.sortData}`;
+      localStorage.setItem('isShowMap', newVal);
       await this.fetchEmployeeList();
-      this.SetLoader(false);
-      localStorage.setItem('isShowMap', JSON.stringify(newVal));
     },
     async specFiltersQuery() {
       this.page = 1;
@@ -310,18 +304,21 @@ export default {
       }
       await this.fetchEmployeeList();
     },
-
-    async mapBounds(newVal, prevVal) {
-      if (newVal?.center?.lng === prevVal?.center?.lng
-        && newVal?.center?.lat === prevVal?.center?.lat
-        && newVal?.northEast?.lng === prevVal?.northEast?.lng
-        && newVal?.northEast?.lat === prevVal?.northEast?.lat
-        && newVal?.southWest?.lng === prevVal?.southWest?.lng
-        && newVal?.southWest?.lat === prevVal?.southWest?.lat) {
-        return;
-      }
+    async mapBounds(newV, oldV) {
+      if (!this.isShowMap || !Object.keys(oldV).length) return;
+      if (
+        newV?.center?.lng === oldV?.center?.lng
+        && newV?.center?.lat === oldV?.center?.lat
+        && newV?.northEast?.lng === oldV?.northEast?.lng
+        && newV?.northEast?.lat === oldV?.northEast?.lat
+        && newV?.southWest?.lng === oldV?.southWest?.lng
+        && newV?.southWest?.lat === oldV?.southWest?.lat
+      ) return;
       clearTimeout(this.boundsTimeout);
-      this.boundsTimeout = setTimeout(async () => await this.fetchEmployeeList(), 1000);
+      this.boundsTimeout = setTimeout(async () => {
+        this.page = 1;
+        await this.fetchEmployeeList();
+      }, 500);
     },
   },
   async mounted() {
@@ -333,14 +330,13 @@ export default {
   },
   beforeDestroy() {
     clearTimeout(this.boundsTimeout);
+    this.$store.commit('quests/setEmployeeList', { count: null, users: [] });
+    this.$store.commit('quests/setSelectedPriceFilter', { from: null, to: null });
+    this.$store.commit('quests/setSelectedSpecializationsFilters', {
+      query: '', selected: {}, visible: {}, selectedAll: {},
+    });
   },
   methods: {
-    toggleSearchDD() {
-      this.isSearchDDStatus = !this.isSearchDDStatus;
-    },
-    hideSearchDD() {
-      this.isSearchDDStatus = false;
-    },
     async setPage(newPage) {
       this.page = newPage;
       await this.fetchEmployeeList();
@@ -351,7 +347,6 @@ export default {
     },
     async fetchEmployeeList() {
       if (this.isFetching) return;
-      this.SetLoader(true);
       this.isFetching = true;
 
       if (this.isShowMap && Object.keys(this.mapBounds).length) {
@@ -374,7 +369,13 @@ export default {
       });
 
       this.isFetching = false;
-      this.SetLoader(false);
+    },
+
+    toggleSearchDD() {
+      this.isSearchDDStatus = !this.isSearchDDStatus;
+    },
+    hideSearchDD() {
+      this.isSearchDDStatus = false;
     },
     showPriceSearch() {
       this.ShowModal({
