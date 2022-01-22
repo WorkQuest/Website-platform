@@ -162,7 +162,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      userPosition: 'user/getUserCurrentPosition', // TODO check, is need it?
       mapBounds: 'quests/getMapBounds',
       employeeList: 'quests/getEmployeeList',
       employeeCount: 'quests/getEmployeeCount',
@@ -193,10 +192,7 @@ export default {
         && newV?.southWest?.lat === oldV?.southWest?.lat
       ) return;
       clearTimeout(this.boundsTimeout);
-      this.boundsTimeout = setTimeout(async () => {
-        this.page = 1;
-        await this.fetchEmployeeList();
-      }, 500);
+      this.boundsTimeout = setTimeout(async () => await this.fetchEmployeeList(true), 500);
     },
   },
   async mounted() {
@@ -215,7 +211,6 @@ export default {
       this.page = newPage;
       await this.fetchEmployeeList();
     },
-
     async fetchEmployeeList(isResetPage = false) {
       if (this.isFetching) return;
       this.isFetching = true;
