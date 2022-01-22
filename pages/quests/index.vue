@@ -230,7 +230,7 @@ import MapBlock from '~/components/app/MapBlock';
 import quests from '~/components/app/pages/common/quests';
 import emptyData from '~/components/app/info/emptyData';
 import {
-  PriorityFilter, typeOfJobFilter, WorkplaceFilter, Path, UserRole,
+  PriorityFilter, TypeOfJobFilter, WorkplaceFilter, Path, UserRole,
 } from '~/utils/enums';
 
 export default {
@@ -438,7 +438,7 @@ export default {
     async fetchQuests(payload = {}) {
       payload = Object.assign(payload, this.formattedSpecFilters());
       if (this.selectedDistantWork > 0) payload['workplaces[]'] = WorkplaceFilter[this.selectedDistantWork];
-      if (this.selectedTypeOfJob > 0) payload['employments[]'] = typeOfJobFilter[this.selectedTypeOfJob];
+      if (this.selectedTypeOfJob > 0) payload['employments[]'] = TypeOfJobFilter[this.selectedTypeOfJob];
       if (this.selectedPriority) payload['priorities[]'] = PriorityFilter[this.selectedPriority].value;
       if (this.selectedPriceFilter.from || this.selectedPriceFilter.to) {
         payload['priceBetween[from]'] = this.selectedPriceFilter.from || 0;

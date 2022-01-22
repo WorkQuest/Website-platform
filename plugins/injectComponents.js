@@ -25,6 +25,7 @@ import FilesUploader from '~/components/ui/FilesUploader';
 import FilesPreview from '~/components/ui/FilesPreview';
 import EmptyData from '~/components/app/info/emptyData';
 import EmployeeCard from '~/components/app/pages/common/employeeCard';
+import FiltersPanel from '~/components/app/panels/filters';
 
 Vue.component('ctm-modal', CtmModal);
 Vue.component('ctm-modal-box', CtmModalBox);
@@ -51,3 +52,4 @@ Vue.component('files-preview', FilesPreview);
 Vue.component('map-block', MapBlock);
 Vue.component('empty-data', EmptyData);
 Vue.component('employee-card', EmployeeCard);
+Vue.component('filters-panel', FiltersPanel);
