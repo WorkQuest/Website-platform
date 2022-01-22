@@ -138,7 +138,7 @@
 import { mapGetters } from 'vuex';
 import modals from '~/store/modals/modals';
 import {
-  createWallet, decryptStringWitheKey, encryptStringWithKey,
+  createWallet, decryptStringWitheKey, encryptStringWithKey, initWallet,
 } from '~/utils/wallet';
 import CreateWallet from '~/components/ui/CreateWallet';
 import { UserStatuses, WalletState } from '~/utils/enums';
@@ -208,7 +208,8 @@ export default {
       });
       if (response?.ok) {
         this.userStatus = response.result.userStatus;
-        if (this.userStatus === UserStatuses.Unconfirmed && !sessionStorage.getItem('confirmToken')) { // Unconfirmed account w/o confirm token
+        // Unconfirmed account w/o confirm token
+        if (this.userStatus === UserStatuses.Unconfirmed && !sessionStorage.getItem('confirmToken')) {
           await this.$store.dispatch('main/showToast', {
             title: this.$t('registration.emailConfirmTitle'),
             text: this.$t('registration.emailConfirm'),
@@ -272,8 +273,6 @@ export default {
           title: this.$t('toasts.error'),
           text: this.$t('messages.mnemonic'),
         });
-        // Reset mnemonic for address -> importing
-        this.saveToStorage({ address: this.userAddress, mnemonic: {} });
         this.step = WalletState.ImportMnemonic;
       }
       this.SetLoader(false);
@@ -315,13 +314,10 @@ export default {
       });
     },
     saveToStorage(wallet) {
+      initWallet(wallet.address, wallet.privateKey);
       localStorage.setItem('mnemonic', JSON.stringify({
         ...JSON.parse(localStorage.getItem('mnemonic')),
         [wallet.address.toLowerCase()]: encryptStringWithKey(wallet.mnemonic.phrase, this.model.password),
-      }));
-      sessionStorage.setItem('keys', JSON.stringify({
-        ...JSON.parse(sessionStorage.getItem('keys')),
-        [wallet.address.toLowerCase()]: wallet.privateKey,
       }));
       sessionStorage.setItem('mnemonic', JSON.stringify({
         ...JSON.parse(sessionStorage.getItem('mnemonic')),
@@ -330,7 +326,6 @@ export default {
       this.$store.dispatch('wallet/connectWallet', { userAddress: wallet.address, userPassword: this.model.password });
     },
     redirectUser() {
-      this.$store.dispatch('wallet/setUserAddress', this.userAddress);
       this.addressAssigned = true;
       this.$cookies.set('userLogin', true);
       // redirect to confirm access if token exists & unconfirmed account
