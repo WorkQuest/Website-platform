@@ -7,7 +7,7 @@
         </h2>
         <div
           v-if="disputesCount > 0"
-          class="page__grid"
+          class="page__dispute-cards"
         >
           <div
             v-for="(item, i) in disputes"
@@ -57,7 +57,7 @@
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import emptyData from '~/components/app/info/emptyData';
-import { disputeStatues } from '~/utils/enums';
+import { DisputeStatues } from '~/utils/enums';
 
 export default {
   name: 'Disputes',
@@ -111,9 +111,9 @@ export default {
     },
     disputeStatus(status) {
       const obj = {
-        [disputeStatues.PENDING]: this.$t('disputes.pending'),
-        [disputeStatues.IN_PROGRESS]: this.$t('disputes.inProgress'),
-        [disputeStatues.COMPLETED]: this.$t('disputes.completed'),
+        [DisputeStatues.PENDING]: this.$t('disputes.pending'),
+        [DisputeStatues.IN_PROGRESS]: this.$t('disputes.inProgress'),
+        [DisputeStatues.COMPLETED]: this.$t('disputes.completed'),
       };
       return obj[status];
     },
@@ -154,7 +154,7 @@ export default {
   &__card-body {
     margin: 20px;
   }
-  &__grid {
+  &__dispute-cards {
     display: grid;
     width: 100%;
     grid-template-columns: repeat(2, 1fr);
@@ -200,7 +200,7 @@ export default {
     }
   }
   .page {
-    &__grid {
+    &__dispute-cards {
       grid-template-columns: 1fr;
       grid-gap: 15px;
     }
@@ -216,7 +216,7 @@ export default {
     }
   }
   .page {
-    &__grid {
+    &__dispute-cards {
       grid-gap: 15px;
     }
     &__text {

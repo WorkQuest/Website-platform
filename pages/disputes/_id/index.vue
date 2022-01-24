@@ -16,27 +16,25 @@
           {{ disputeStatus }}
         </div>
       </div>
-      <quests
+      <Quests
         class="dispute__quests"
         :quests="disputeData.quest ? [disputeData.quest] : []"
       />
       <div class="dispute__chat-history">
-        <div class="chat-history">
-          <div class="chat-history__container">
-            <div class="chat-history__title">
-              {{ $t('disputes.chatHistory') }}
-            </div>
+        <div class="chat-history__container">
+          <div class="chat-history__title">
+            {{ $t('disputes.chatHistory') }}
           </div>
-          <div
-            v-if="disputeData.quest && disputeData.quest.questChat.chatId"
-            class="messages__container"
-          >
-            <messages-list
-              class="messages__block"
-              :chat-id="disputeData.quest.questChat.chatId"
-              :is-hide-footer="false"
-            />
-          </div>
+        </div>
+        <div
+          v-if="disputeData.quest && disputeData.quest.questChat.chatId"
+          class="messages__container"
+        >
+          <messages-list
+            class="messages__block"
+            :chat-id="disputeData.quest.questChat.chatId"
+            :is-hide-footer="false"
+          />
         </div>
       </div>
     </div>
@@ -45,7 +43,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { disputeStatues, InfoModeWorker } from '~/utils/enums';
+import { DisputeStatues, InfoModeWorker } from '~/utils/enums';
 
 export default {
   name: 'Index',
@@ -60,9 +58,9 @@ export default {
     }),
     disputeStatus() {
       const obj = {
-        [disputeStatues.PENDING]: this.$t('disputes.pending'),
-        [disputeStatues.IN_PROGRESS]: this.$t('disputes.inProgress'),
-        [disputeStatues.COMPLETED]: this.$t('disputes.completed'),
+        [DisputeStatues.PENDING]: this.$t('disputes.pending'),
+        [DisputeStatues.IN_PROGRESS]: this.$t('disputes.inProgress'),
+        [DisputeStatues.COMPLETED]: this.$t('disputes.completed'),
       };
       return obj[this.disputeData.status];
     },
@@ -106,9 +104,6 @@ export default {
 }
 
 .chat-history {
-  background: $white;
-  border-radius: 6px;
-  margin: 20px 0 0 0;
   &__container {
     display: flex;
     align-items: flex-start;
@@ -155,6 +150,11 @@ export default {
     font-weight: 500;
     font-size: 16px;
     color: #E8D20D;
+  }
+  &__chat-history {
+    background: $white;
+    border-radius: 6px;
+    margin: 20px 0 0 0;
   }
 }
 @include _1199() {

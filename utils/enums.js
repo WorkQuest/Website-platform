@@ -64,7 +64,7 @@ export const InfoModeWorker = {
   Responded: 10,
   Invited: 11,
 };
-export const disputeStatues = {
+export const DisputeStatues = {
   PENDING: 0,
   IN_PROGRESS: 1,
   COMPLETED: 2,

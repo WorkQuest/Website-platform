@@ -145,7 +145,7 @@
             </div>
           </div>
           <div class="quest__card">
-            <quests
+            <Quests
               v-if="otherQuestsCount"
               :quests="sameQuest"
             />
@@ -168,7 +168,6 @@ import {
 import modals from '~/store/modals/modals';
 import info from '~/components/app/info/index.vue';
 import questPanel from '~/components/app/panels/questPanel';
-import quests from '~/components/app/pages/common/quests';
 import itemRating from '~/components/app/info/item-rating';
 import emptyData from '~/components/app/info/emptyData';
 
@@ -177,7 +176,6 @@ export default {
   components: {
     info,
     questPanel,
-    quests,
     itemRating,
     emptyData,
   },
