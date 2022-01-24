@@ -18,10 +18,7 @@ export default {
   setSelectedToken(state, token) {
     state.selectedToken = token;
   },
-  setStakingPoolDataWUSD(state, data) {
-    state.stakingPoolsData.WUSD.data = data;
-  },
-  setStakingPoolDataWQT(state, data) {
-    state.stakingPoolsData.WQT.data = data;
+  setStakingPoolData(state, { pool, data }) {
+    state.stakingPoolsData[pool] = data;
   },
 };

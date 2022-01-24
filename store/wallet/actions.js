@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import {
   connectWallet, connectWithMnemonic,
   disconnect,
@@ -8,7 +9,7 @@ import {
   transfer, transferToken,
 } from '~/utils/wallet';
 import * as abi from '~/abi/abi';
-import { TokenSymbols } from '~/utils/enums';
+import { StakingTypes, TokenSymbols } from '~/utils/enums';
 
 export default {
   async getTransactions({ commit }, params) {
@@ -119,6 +120,65 @@ export default {
 
   /** Staking */
   async getStakingPoolsData({ commit }, pool) {
+    let _abi = null;
+    let contractAddress = null;
+    if (pool === StakingTypes.WQT) {
+      _abi = abi.WQStaking;
+      contractAddress = process.env.WQT_STAKING;
+    } else if (pool === StakingTypes.WUSD) {
+      _abi = abi.WQStakingNative;
+      contractAddress = process.env.WQT_STAKING_NATIVE;
+    } else {
+      console.error(`Wrong pool: ${pool}`);
+      return;
+    }
+    const res = await fetchContractData('getStakingInfo', _abi, contractAddress, []);
+    if (!res.ok) commit('setStakingPoolData', { pool });
 
+    const stakingInfo = res.result;
+
+    const {
+      rewardTokenAddress, totalStaked, totalDistributed, rewardTotal, maxStake, minStake,
+    } = res.result;
+
+    let decimals;
+    let tokenSymbol;
+    if (!rewardTokenAddress) {
+      decimals = 18;
+      tokenSymbol = pool;
+    } else {
+      const [decimalsRes, tokenSymbolRes] = await Promise.all([
+        fetchContractData('decimals', abi.ERC20, rewardTokenAddress),
+        fetchContractData('symbol', abi.ERC20, rewardTokenAddress),
+      ]);
+      decimals = decimalsRes.result;
+      tokenSymbol = tokenSymbolRes.result;
+    }
+
+    const min = new BigNumber(0.0001);
+    const fullMinStake = new BigNumber(minStake).shiftedBy(-decimals).isLessThan(min)
+      ? min.toString() : new BigNumber(minStake).shiftedBy(-decimals).toString();
+
+    commit('setStakingPoolData', {
+      pool,
+      data: {
+        ...stakingInfo,
+        link: pool,
+        poolAddress: contractAddress,
+        decimals,
+        tokenSymbol,
+        stakeTokenSymbol: tokenSymbol,
+        claimPeriod: new BigNumber(stakingInfo.claimPeriod / 60 / 60).decimalPlaces(3).toString(),
+        stakePeriod: new BigNumber(stakingInfo.stakePeriod / 60 / 60).decimalPlaces(3).toString(),
+        distributionTime: new BigNumber(stakingInfo.distributionTime / 60).decimalPlaces(3).toString(),
+        totalStaked: new BigNumber(totalStaked).shiftedBy(-decimals).decimalPlaces(4).toString(),
+        totalDistributed: new BigNumber(totalDistributed).shiftedBy(-decimals).decimalPlaces(4).toString(),
+        rewardTotal: new BigNumber(rewardTotal).shiftedBy(-decimals).decimalPlaces(4).toString(),
+        maxStake: new BigNumber(maxStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
+        fullMaxStake: new BigNumber(maxStake).shiftedBy(-decimals).toString(),
+        minStake: new BigNumber(minStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
+        fullMinStake,
+      },
+    });
   },
 };

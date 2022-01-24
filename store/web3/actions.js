@@ -234,51 +234,6 @@ export default {
     const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
     return getTxFee(stakingAbi, stakingAddress, 'claim');
   },
-  async fetchStakingInfo({ commit }, { stakingType }) {
-    const { stakingAbi, stakingAddress } = getStakingDataByType(stakingType);
-    const stakingInfo = await fetchContractData('getStakingInfo', stakingAbi, stakingAddress);
-    if (!stakingInfo) {
-      return false;
-    }
-    const {
-      rewardTokenAddress, totalStaked, totalDistributed, rewardTotal, maxStake, minStake,
-    } = stakingInfo;
-
-    let decimals;
-    let tokenSymbol;
-    if (!rewardTokenAddress) {
-      decimals = 18;
-      tokenSymbol = null;
-    } else {
-      const [_decimals, _tokenSymbol] = await Promise.all([
-        fetchContractData('decimals', abi.ERC20, rewardTokenAddress),
-        fetchContractData('symbol', abi.ERC20, rewardTokenAddress),
-      ]);
-      decimals = _decimals;
-      tokenSymbol = _tokenSymbol;
-    }
-
-    const min = new BigNumber(0.0001);
-    const _minStake = new BigNumber(minStake).shiftedBy(-decimals).isLessThan(min)
-      ? min.toString() : new BigNumber(minStake).shiftedBy(-decimals).toString();
-
-    return {
-      ...stakingInfo,
-      decimals,
-      tokenSymbol,
-      stakeTokenSymbol: tokenSymbol,
-      claimPeriod: new BigNumber(stakingInfo.claimPeriod / 60 / 60).decimalPlaces(3).toString(),
-      stakePeriod: new BigNumber(stakingInfo.stakePeriod / 60 / 60).decimalPlaces(3).toString(),
-      distributionTime: new BigNumber(stakingInfo.distributionTime / 60).decimalPlaces(3).toString(),
-      totalStaked: new BigNumber(totalStaked).shiftedBy(-decimals).decimalPlaces(4).toString(),
-      totalDistributed: new BigNumber(totalDistributed).shiftedBy(-decimals).decimalPlaces(4).toString(),
-      rewardTotal: new BigNumber(rewardTotal).shiftedBy(-decimals).decimalPlaces(4).toString(),
-      maxStake: new BigNumber(maxStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
-      _maxStake: new BigNumber(maxStake).shiftedBy(-decimals).toString(),
-      _minStake,
-      minStake: new BigNumber(minStake).shiftedBy(-decimals).decimalPlaces(4).toString(),
-    };
-  },
   unsubscribeActions() {
     unsubscirbeListeners();
   },

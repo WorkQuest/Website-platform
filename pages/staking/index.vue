@@ -24,9 +24,13 @@
               tbody-tr-class="table__row"
             >
               <template #cell(poolAddress)="el">
-                <div class="table__value table__value_gray">
-                  {{ getFormattedAddress(el.item.poolAddress) }}
-                </div>
+                <a
+                  :href="`${explorerRef}/address/${el.item.poolAddress ? el.item.poolAddress.toLowerCase() : ''}`"
+                  target="_blank"
+                  class="table__value table__value_gray"
+                >
+                  {{ CutTxn(el.item.poolAddress, 8, 4) }}
+                </a>
               </template>
               <template #cell(totalStaked)="el">
                 <div class="table__value">
@@ -39,13 +43,23 @@
                 </div>
               </template>
               <template #cell(stakeTokenAddress)="el">
-                <div class="table__value table__value_blue">
-                  {{ getFormattedAddress(el.item.rewardTokenAddress) }}
-                </div>
+                <a
+                  :href="`${explorerRef}/address/${el.item.rewardTokenAddress ? el.item.rewardTokenAddress.toLowerCase() : ''}`"
+                  target="_blank"
+                  class="table__value table__value_blue"
+                >
+                  {{ CutTxn(el.item.rewardTokenAddress, 8, 4) }}
+                </a>
               </template>
               <template #cell(rewardTokenAddress)="el">
                 <div class="table__value table__value_blue">
-                  {{ getFormattedAddress(el.item.rewardTokenAddress) }}
+                  <a
+                    :href="`${explorerRef}/address/${el.item.rewardTokenAddress ? el.item.rewardTokenAddress.toLowerCase() : ''}`"
+                    target="_blank"
+                    class="table__value table__value_blue"
+                  >
+                    {{ CutTxn(el.item.rewardTokenAddress, 8, 4) }}
+                  </a>
                 </div>
               </template>
               <template #cell(open)="el">
@@ -153,43 +167,27 @@ export default {
       ];
     },
     poolsData() {
-      return {};
+      console.log(this.stakingPoolsData.WQT.rewardTokenAddress, this.stakingPoolsData.WUSD.rewardTokenAddress);
+      return [this.stakingPoolsData.WUSD, this.stakingPoolsData.WQT];
     },
-  },
-  watch: {
-    async isWalletConnected(newValue) {
-      if (newValue) {
-        await this.getPoolsData();
-      } else {
-        this.poolsData = [];
-      }
+    explorerRef() {
+      if (process.env.PROD === 'true') return 'https://dev-explorer.workquest.co';
+      return 'https://dev-explorer.workquest.co';
     },
   },
   async mounted() {
     this.SetLoader(true);
     await this.$store.dispatch('wallet/checkWalletConnected', { nuxt: this.$nuxt });
+    if (this.isWalletConnected === false) return;
     await this.getPoolsData();
     this.SetLoader(false);
   },
   methods: {
     async getPoolsData() {
-      const [wqtPool, wusdPool] = await Promise.all([
-        this.$store.dispatch('wallet/fetchStakingInfo', { stakingType: StakingTypes.WQT }),
-        this.$store.dispatch('wallet/fetchStakingInfo', { stakingType: StakingTypes.WUSD }),
+      await Promise.all([
+        this.$store.dispatch('wallet/getStakingPoolsData', StakingTypes.WQT),
+        this.$store.dispatch('wallet/getStakingPoolsData', StakingTypes.WUSD),
       ]);
-      if (wqtPool && wusdPool) {
-        wqtPool.poolAddress = process.env.WQT_STAKING;
-        wqtPool.link = StakingTypes.WQT;
-
-        const { netId } = await this.$store.dispatch('web3/getAccount');
-        wusdPool.poolAddress = process.env.WQT_STAKING_NATIVE;
-        wusdPool.rewardTokenAddress = '';
-        wusdPool.stakeTokenSymbol = NativeTokenSymbolByChainId[netId];
-        wusdPool.tokenSymbol = NativeTokenSymbolByChainId[netId];
-        wusdPool.link = StakingTypes.WUSD;
-
-        this.poolsData = [wqtPool, wusdPool];
-      }
     },
     handleOpenPool(el) {
       this.$router.push(`/staking/${el.item.link}`);

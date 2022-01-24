@@ -17,16 +17,8 @@ export default () => ({
     },
   },
   stakingPoolsData: {
-    WQT: {
-      poolAddress: process.env.WQT_STAKING,
-      link: StakingTypes.WQT,
-      data: {},
-    },
-    WUSD: {
-      poolAddress: process.env.WQT_STAKING_NATIVE,
-      link: StakingTypes.WUSD,
-      data: {},
-    },
+    WQT: {},
+    WUSD: {},
   },
   stakingUserData: null,
 });
