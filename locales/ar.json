@@ -167,7 +167,8 @@
     "resendSMS": "إعادة إرسال SMS",
     "disable": "إيقاف",
     "remindLater": "تذكيري لاحقًا",
-    "leave": "???"
+    "leave": "???",
+    "listIsEmpty": "List is empty"
   },
   "priority": {
     "title": "تحديد الأولوية",
@@ -428,7 +429,6 @@
     "EstimatedPayment": "الدفعة المقدَّرة:",
     "createAQuest": "إنشاء طلب عمل",
     "editAQuest": "???",
-    "activeQuests": "طلبات العمل النشطة",
     "openedQuests": "???",
     "completedQuests": "طلبات العمل المكتملة",
     "oneTime": "مرة واحدة",
