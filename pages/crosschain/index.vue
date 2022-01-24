@@ -157,9 +157,9 @@
                 v-if="crosschainTableData.length === 0"
                 slot="empty"
               >
-                <!--                <div class="crosschain-page__empty-info">-->
-                <empty-data :description="$t('meta.listIsEmpty')" />
-                <!--                </div>-->
+                <div class="crosschain-page__empty-info">
+                  <empty-data :description="$t('meta.listIsEmpty')" />
+                </div>
               </template>
             </b-table>
           </div>
@@ -373,7 +373,6 @@ export default {
 
   &__empty-info {
     .absence {
-      margin: 10px 0;
       background: white;
     }
   }
